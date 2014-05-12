@@ -18,7 +18,7 @@
 //    NSManagedObjectContext *managedContext;
 }
 
-+ (A3DaysCounterModelManager*)sharedManager;
+//+ (A3DaysCounterModelManager*)sharedManager;
 + (UIImage*)circularScaleNCrop:(UIImage*)image rect:(CGRect)rect;
 + (UIImage*)strokCircleImageSize:(CGSize)size color:(UIColor*)color;
 + (UIImage*)resizeImage:(UIImage*)image toSize:(CGSize)toSize isFill:(BOOL)isFill backgroundColor:(UIColor*)color;
@@ -74,9 +74,9 @@
 - (NSArray*)favoriteEventsList;
 - (NSArray*)reminderList;
 
-- (NSDate*)nextDateWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay;
-- (NSDate*)repeatDateOfCurrentNotNextWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate; // 반복 시작이 당해 혹은 현재 시점 날짜 출력을 위하여 추가.
-- (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay isShortStyle:(BOOL)isShortStyle;
++ (NSDate*)nextDateWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay;
++ (NSDate*)repeatDateOfCurrentNotNextWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate; // 반복 시작이 당해 혹은 현재 시점 날짜 출력을 위하여 추가.
++ (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay isShortStyle:(BOOL)isShortStyle;
 
 
 - (NSString*)stringForSlideshowTransitionType:(NSInteger)type;
@@ -86,7 +86,7 @@
 - (BOOL)isSupportLunar;
 
 - (NSString*)dateFormatForAddEditIsAllDays:(BOOL)isAllDays;
-- (NSString*)dateFormatForDetailIsAllDays:(BOOL)isAllDays;
++ (NSString*)dateFormatForDetailIsAllDays:(BOOL)isAllDays;
 - (NSString*)dateFormatForPhotoWithIsAllDays:(BOOL)isAllDays;
 
 #pragma mark - Specific Condition Validation
@@ -96,18 +96,18 @@
 - (DaysCounterEvent *)closestEventObjectOfCalendar:(DaysCounterCalendar *)calendar;
 - (void)renewEffectiveStartDates:(DaysCounterCalendar *)calendar;
 - (void)renewAllEffectiveStartDates;
-- (NSDate *)effectiveDateForEvent:(DaysCounterEvent *)event basisTime:(NSDate *)now;
++ (NSDate *)effectiveDateForEvent:(DaysCounterEvent *)event basisTime:(NSDate *)now;
 #pragma mark EventModel Dictionary
 - (void)recalculateEventDatesForEvent:(DaysCounterEvent *)event;
 
 #pragma mark - EventTime Management (AlertTime, EffectiveStartDate)
-- (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event;
-- (void)reloadAlertDateListForLocalNotification;
++ (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event;
++ (void)reloadAlertDateListForLocalNotification;
 
 #pragma mark - Lunar
-- (NSDateComponents *)nextSolarDateComponentsFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;
-- (NSDate *)nextSolarDateFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;
-- (NSDateComponents *)dateComponentsOfRepeatForLunarDateComponent:(NSDateComponents *)lunarComponents aboutNextTime:(BOOL)isAboutNextTime leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate repeatType:(NSInteger)repeatType;
++ (NSDateComponents *)nextSolarDateComponentsFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;
++ (NSDate *)nextSolarDateFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;
++ (NSDateComponents *)dateComponentsOfRepeatForLunarDateComponent:(NSDateComponents *)lunarComponents aboutNextTime:(BOOL)isAboutNextTime leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate repeatType:(NSInteger)repeatType;
 
 #pragma mark - Manipulate DaysCounterDateModel Object
 + (void)setDateModelObjectForDateComponents:(NSDateComponents *)dateComponents withEventModel:(DaysCounterEvent *)eventModel endDate:(BOOL)isEndDate;

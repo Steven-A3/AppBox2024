@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class A3DaysCounterModelManager;
 @interface A3DaysCounterAddAndEditCalendarViewController : UITableViewController <UITextFieldDelegate, UIActionSheetDelegate>
-
+@property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) NSMutableDictionary *calendarItem;
 @property (assign, nonatomic) BOOL isEditMode;
 

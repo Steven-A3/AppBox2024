@@ -53,10 +53,10 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     [self rightBarButtonDoneButton];
     if ( !_isEditMode ) {
-        self.calendarItem = [[A3DaysCounterModelManager sharedManager] itemForNewUserCalendar];
+        self.calendarItem = [_sharedManager itemForNewUserCalendar];
     }
     
-    self.colorArray = [[A3DaysCounterModelManager sharedManager] calendarColorList];
+    self.colorArray = [_sharedManager calendarColorList];
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willDismissRightSideView) name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -274,7 +274,7 @@
 
 - (IBAction)deleteCalendarAction:(id)sender {
     // 모델 삭제 하고
-    [[A3DaysCounterModelManager sharedManager] removeCalendarItem:_calendarItem];
+    [_sharedManager removeCalendarItem:_calendarItem];
     // 창 닫기
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -293,10 +293,10 @@
     }
     
     if ( !_isEditMode ) {
-        [[A3DaysCounterModelManager sharedManager] addCalendarItem:_calendarItem];
+        [_sharedManager addCalendarItem:_calendarItem];
     }
     else {
-        [[A3DaysCounterModelManager sharedManager] updateCalendarItem:_calendarItem];
+        [_sharedManager updateCalendarItem:_calendarItem];
     }
     
     [self cancelAction:nil];

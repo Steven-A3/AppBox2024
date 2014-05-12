@@ -74,11 +74,11 @@
     else{
         NSArray *sourceArray = nil;
         if( [_calendarItem.calendarId isEqualToString:SystemCalendarID_All] )
-            sourceArray = [[A3DaysCounterModelManager sharedManager] allEventsList];
+            sourceArray = [_sharedManager allEventsList];
         else if( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Past] )
-            sourceArray = [[A3DaysCounterModelManager sharedManager] pastEventsListWithDate:[NSDate date]];
+            sourceArray = [_sharedManager pastEventsListWithDate:[NSDate date]];
         else if( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Upcoming] )
-            sourceArray = [[A3DaysCounterModelManager sharedManager] upcomingEventsListWithDate:[NSDate date]];
+            sourceArray = [_sharedManager upcomingEventsListWithDate:[NSDate date]];
         self.itemArray = [NSMutableArray arrayWithArray:sourceArray];
     }
     [self.tableView reloadData];
@@ -320,11 +320,11 @@
         for (DaysCounterEvent *event in _selectedArray) {
             // 7 days until (계산된 날짜)
             NSString *eventName = event.eventName;
-            NSString *daysString = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[event.durationOption integerValue]
-                                                                                            fromDate:[NSDate date]
-                                                                                              toDate:event.effectiveStartDate
-                                                                                            isAllDay:[event.isAllDay boolValue]
-                                                                                        isShortStyle:IS_IPHONE ? YES : NO];
+            NSString *daysString = [A3DaysCounterModelManager stringOfDurationOption:[event.durationOption integerValue]
+                                                                            fromDate:[NSDate date]
+                                                                              toDate:event.effectiveStartDate
+                                                                            isAllDay:[event.isAllDay boolValue]
+                                                                        isShortStyle:IS_IPHONE ? YES : NO];
             NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                            toDate:event.effectiveStartDate
                                                                      allDayOption:[event.isAllDay boolValue]
@@ -335,7 +335,7 @@
             
             //         Friday, April 11, 2014 (사용자가 입력한 날)
             [txt appendFormat:@"%@<br/><br/>", [A3DateHelper dateStringFromDate:[event effectiveStartDate]
-                                                                     withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[event.isAllDay boolValue]]] ];
+                                                                     withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[event.isAllDay boolValue]]] ];
         }
         
 
@@ -349,11 +349,11 @@
         
         for (DaysCounterEvent *event in _selectedArray) {
             // 7 days until (계산된 날짜)
-            NSString *daysString = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[event.durationOption integerValue]
-                                                                                            fromDate:[NSDate date]
-                                                                                              toDate:event.effectiveStartDate
-                                                                                            isAllDay:[event.isAllDay boolValue]
-                                                                                        isShortStyle:IS_IPHONE ? YES : NO];
+            NSString *daysString = [A3DaysCounterModelManager stringOfDurationOption:[event.durationOption integerValue]
+                                                                            fromDate:[NSDate date]
+                                                                              toDate:event.effectiveStartDate
+                                                                            isAllDay:[event.isAllDay boolValue]
+                                                                        isShortStyle:IS_IPHONE ? YES : NO];
             NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                            toDate:event.effectiveStartDate
                                                                      allDayOption:[event.isAllDay boolValue]
@@ -364,7 +364,7 @@
             
             //         Friday, April 11, 2014 (사용자가 입력한 날)
             [txt appendFormat:@"%@\n\n", [A3DateHelper dateStringFromDate:[event effectiveStartDate]
-                                                             withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[event.isAllDay boolValue]]] ];
+                                                             withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[event.isAllDay boolValue]]] ];
         }
 
         

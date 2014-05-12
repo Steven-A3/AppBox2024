@@ -55,7 +55,7 @@
 	[self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
     
-    [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
+    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -63,7 +63,7 @@
     [super viewWillAppear:animated];
     self.navigationController.delegate = nil;
     [self registerContentSizeCategoryDidChangeNotification];
-    self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] reminderList]];
+    self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager reminderList]];
     [self.tableView reloadData];
     [self.navigationController setToolbarHidden:NO];
     
@@ -152,7 +152,7 @@
                                                                        strict:[A3DaysCounterModelManager hasHourMinDurationOption:[item.durationOption integerValue]]];
         if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
             cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:reminder.startDate
-                                                              withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+                                                              withFormat:[_sharedManager dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
         }
         else {
             if ([[NSDate date] compare:reminder.startDate] == NSOrderedDescending) {
@@ -162,7 +162,7 @@
                 // Reminder 의 startDate == EffectiveStartDate 이다.
                 // 양력/음력 모두 얄력기준 실제 이벤트 날짜가 startDate 로 정해진다.
                 cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:reminder.startDate
-                                                                  withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+                                                                  withFormat:[_sharedManager dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
             }
         }
         unreadMarkView.hidden = [reminder.isUnread boolValue] ? NO : YES;
@@ -207,29 +207,31 @@
     }
     [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
-    self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] reminderList]];
+    self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager reminderList]];
 
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
     viewCtrl.eventItem = item;
+    viewCtrl.sharedManager = _sharedManager;
     [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 
 #pragma mark - action method
 - (IBAction)photoViewAction:(id)sender {
-    A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController"
-                                                                                                                      bundle:nil];
+    A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
+    viewCtrl.sharedManager = _sharedManager;
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
 - (IBAction)calendarViewAction:(id)sender {
-    A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController"
-                                                                                                                          bundle:nil];
+    A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
+    viewCtrl.sharedManager = _sharedManager;
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController"
                                                                                                           bundle:nil];
+    viewCtrl.sharedManager = _sharedManager;
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -242,6 +244,7 @@
 
 - (IBAction)favoriteAction:(id)sender {
     A3DaysCounterFavoriteListViewController *viewCtrl = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];
+    viewCtrl.sharedManager = _sharedManager;
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 

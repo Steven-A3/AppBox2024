@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-
+@class A3DaysCounterModelManager;
 @interface A3DaysCounterSlideshowViewController : UIViewController<UIAlertViewDelegate>{
     NSInteger currentIndex;
     NSTimer *slideTimer;
 }
-
+@property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) NSDictionary *optionDict;
 @property (strong, nonatomic) void (^completionBlock)(void);
 @end

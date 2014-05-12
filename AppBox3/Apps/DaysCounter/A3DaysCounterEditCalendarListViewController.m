@@ -50,7 +50,7 @@
 {
     [super viewWillAppear:animated];
     self.modalVC = nil;
-    NSMutableArray *array = [[A3DaysCounterModelManager sharedManager] allCalendarList];
+    NSMutableArray *array = [_sharedManager allCalendarList];
     if ( self.itemArray == nil ) {
         self.itemArray = array;
     }
@@ -141,11 +141,11 @@
     if ( [item.calendarType integerValue] == CalendarCellType_System ) {
         NSInteger numberOfEvents = 0;
         if ( [item.calendarId isEqualToString:SystemCalendarID_All] )
-            numberOfEvents = [[A3DaysCounterModelManager sharedManager] numberOfAllEvents];
+            numberOfEvents = [_sharedManager numberOfAllEvents];
         else if ( [item.calendarId isEqualToString:SystemCalendarID_Upcoming])
-            numberOfEvents = [[A3DaysCounterModelManager sharedManager] numberOfUpcomingEventsWithDate:[NSDate date]];
+            numberOfEvents = [_sharedManager numberOfUpcomingEventsWithDate:[NSDate date]];
         else if ( [item.calendarId isEqualToString:SystemCalendarID_Past] )
-            numberOfEvents = [[A3DaysCounterModelManager sharedManager] numberOfPastEventsWithDate:[NSDate date]];
+            numberOfEvents = [_sharedManager numberOfPastEventsWithDate:[NSDate date]];
         detailTextLabel.text = [NSString stringWithFormat:@"%ld", (long)numberOfEvents];
     }
     
@@ -280,7 +280,7 @@
     
     A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:@"A3DaysCounterAddAndEditCalendarViewController" bundle:nil];
     viewCtrl.isEditMode = YES;
-    viewCtrl.calendarItem = [[A3DaysCounterModelManager sharedManager] dictionaryFromCalendarEntity:item];
+    viewCtrl.calendarItem = [_sharedManager dictionaryFromCalendarEntity:item];
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
     self.modalVC = navCtrl;

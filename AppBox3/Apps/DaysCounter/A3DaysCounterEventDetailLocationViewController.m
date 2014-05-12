@@ -44,8 +44,8 @@
     self.title = @"Location";
     [self makeBackButtonEmptyArrow];
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
-    self.locationItem = [[A3DaysCounterModelManager sharedManager] fsvenueFromEventLocationModel:_location];
-    self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
+    self.locationItem = [_sharedManager fsvenueFromEventLocationModel:_location];
+    self.addressStr = [_sharedManager addressFromVenue:_locationItem isDetail:YES];
     _tableView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:0.95];
     self.tableView.tableFooterView = [UIView new];
     [self.view addSubview:self.tableViewTopBlurView];

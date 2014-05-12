@@ -54,7 +54,7 @@
     
     if( self.optionDict == nil )
         self.optionDict = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterSlideshowOption];
-    self.itemArray = [[A3DaysCounterModelManager sharedManager] allEventsListContainedImage];
+    self.itemArray = [_sharedManager allEventsListContainedImage];
     
     if( [[_optionDict objectForKey:OptionKey_Shuffle] boolValue] ){
         self.itemArray = [self shuffleArray:self.itemArray];
@@ -65,7 +65,7 @@
     
     self.currentView = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterSlideshowEventSummaryView" owner:nil options:nil] objectAtIndex:0];
     
-    [[A3DaysCounterModelManager sharedManager] setupEventSummaryInfo:[_itemArray objectAtIndex:currentIndex] toView:self.currentView];
+    [_sharedManager setupEventSummaryInfo:[_itemArray objectAtIndex:currentIndex] toView:self.currentView];
     
     self.currentView.userInteractionEnabled = NO;
     [self addView:self.currentView];
@@ -90,10 +90,7 @@
 {
     [super viewDidLayoutSubviews];
     if( slideTimer == nil )
-        [[A3DaysCounterModelManager sharedManager] setupEventSummaryInfo:[_itemArray objectAtIndex:currentIndex] toView:self.currentView];
-//    else if( self.nextView )
-//        [[A3DaysCounterModelManager sharedManager] setupEventSummaryInfo:[_itemArray objectAtIndex:currentIndex] toView:self.nextView];
-
+        [_sharedManager setupEventSummaryInfo:[_itemArray objectAtIndex:currentIndex] toView:self.currentView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -266,7 +263,7 @@
     CGSize size = ( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ? CGSizeMake(self.view.frame.size.height, self.view.frame.size.width) : self.view.frame.size );
     _nextView.frame = CGRectMake(0, 0, size.width, size.height);
     
-    [[A3DaysCounterModelManager sharedManager] setupEventSummaryInfo:[_itemArray objectAtIndex:currentIndex] toView:self.nextView];
+    [_sharedManager setupEventSummaryInfo:[_itemArray objectAtIndex:currentIndex] toView:self.nextView];
     self.nextView.userInteractionEnabled = NO;
     
     NSInteger transitionType = [[_optionDict objectForKey:OptionKey_Transition] integerValue];

@@ -97,7 +97,7 @@
     }
     else {
         cell.textLabel.textColor = [UIColor darkTextColor];
-        NSString *address = [[A3DaysCounterModelManager sharedManager] addressFromPlacemark:[self.tableDataSource objectAtIndex:indexPath.row]];
+        NSString *address = [_sharedManager addressFromPlacemark:[self.tableDataSource objectAtIndex:indexPath.row]];
         cell.textLabel.text = address;
     }
     

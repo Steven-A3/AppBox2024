@@ -65,7 +65,7 @@
         make.bottom.equalTo(self.mapView.bottom);
     }];
     
-    self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
+    self.addressStr = [_sharedManager addressFromVenue:_locationItem isDetail:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -83,8 +83,8 @@
             ([locItem.latitude doubleValue] != _locationItem.location.coordinate.latitude ||
              [locItem.longitude doubleValue] != _locationItem.location.coordinate.longitude) ) {
                 [_mapView removeAnnotation:self.locationItem];
-                self.locationItem = [[A3DaysCounterModelManager sharedManager] fsvenueFromEventModel:locItem];
-                self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
+                self.locationItem = [_sharedManager fsvenueFromEventModel:locItem];
+                self.addressStr = [_sharedManager addressFromVenue:_locationItem isDetail:YES];
                 
                 [_tableView reloadData];
         }
@@ -254,6 +254,7 @@
 {
     A3DaysCounterSetupLocationViewController *viewCtrl = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
     viewCtrl.eventModel = self.eventModel;
+    viewCtrl.sharedManager = _sharedManager;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self presentViewController:navCtrl animated:YES completion:nil];

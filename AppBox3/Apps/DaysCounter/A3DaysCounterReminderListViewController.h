@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class A3DaysCounterModelManager;
 @interface A3DaysCounterReminderListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
-
+@property (strong, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIButton *addEventButton;

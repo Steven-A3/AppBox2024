@@ -315,8 +315,8 @@
     }
     
     // 커스텀 얼럿 여부 설정.
-    NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:_eventModel.effectiveStartDate
-                                                                                  alertDate:_eventModel.alertDatetime];
+    NSInteger alertType = [_sharedManager alertTypeIndexFromDate:_eventModel.effectiveStartDate
+                                                       alertDate:_eventModel.alertDatetime];
     if (alertType == AlertType_Custom) {
         _eventModel.alertType = @(1);
     }
@@ -370,8 +370,8 @@
     _eventModel.alertInterval = @(self.customAlertInterval);
     
     // alertType 저장.
-    NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:_eventModel.effectiveStartDate
-                                                                                  alertDate:_eventModel.alertDatetime];
+    NSInteger alertType = [_sharedManager alertTypeIndexFromDate:_eventModel.effectiveStartDate
+                                                       alertDate:_eventModel.alertDatetime];
     if (alertType == AlertType_Custom) {
         _eventModel.alertType = @(1);
     }

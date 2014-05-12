@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @class FSVenue;
+@class A3DaysCounterModelManager;
 @interface A3DaysCounterLocationPopupViewController : UITableViewController
-
+@property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) FSVenue *locationItem;
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (assign, nonatomic) BOOL showDoneButton;
