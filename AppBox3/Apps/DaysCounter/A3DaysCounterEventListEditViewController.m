@@ -159,12 +159,10 @@
 {
     if( buttonIndex == actionSheet.destructiveButtonIndex ){
         if( actionSheet.tag == ActionSheet_DeleteAll ){
-            NSManagedObjectContext *context = [[A3DaysCounterModelManager sharedManager] managedObjectContext];
             for(DaysCounterEvent *event in _itemArray){
-                [event MR_deleteInContext:context];
+                [event MR_deleteEntity];
             }
             _calendarItem.events = nil;
-            [context MR_saveToPersistentStoreAndWait];
             [_checkStatusDict removeAllObjects];
             [_itemArray removeAllObjects];
             [self.tableView reloadData];
@@ -181,11 +179,9 @@
                 }
             }
             
-            NSManagedObjectContext *context = [[A3DaysCounterModelManager sharedManager] managedObjectContext];
             for(DaysCounterEvent *event in removeItems){
-                [event MR_deleteInContext:context];
+                [event MR_deleteEntity];
             }
-            [context MR_saveToPersistentStoreAndWait];
             [_itemArray removeObjectsInArray:removeItems];
             removeItems = nil;
             [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -193,6 +189,8 @@
         if( [self.itemArray count] < 1 ){
             [self cancelAction:nil];
         }
+        
+        [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     }
 }
 

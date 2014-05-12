@@ -15,7 +15,7 @@
 @class DaysCounterEventLocation;
 @class DaysCounterDateModel;
 @interface A3DaysCounterModelManager : NSObject{
-    NSManagedObjectContext *managedContext;
+//    NSManagedObjectContext *managedContext;
 }
 
 + (A3DaysCounterModelManager*)sharedManager;
@@ -28,7 +28,7 @@
 + (UIImage*)photoThumbnailFromFilename:(NSString*)imageFilename;
 + (NSString*)thumbnailFilenameFromFilename:(NSString*)imageFilename;
 
-- (NSManagedObjectContext*)managedObjectContext;
+//- (NSManagedObjectContext*)managedObjectContext;
 - (void)prepare;
 - (NSString*)repeatTypeStringFromValue:(NSInteger)repeatType;
 - (NSString*)repeatTypeStringForDetailValue:(NSInteger)repeatType;

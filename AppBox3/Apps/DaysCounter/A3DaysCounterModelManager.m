@@ -26,7 +26,6 @@
 
 #define DEFAULT_CALENDAR_COLOR      [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0]
 
-static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 @interface A3DaysCounterModelManager ()
 @property (strong, nonatomic) NSMutableArray *calendarColorArray;
@@ -37,11 +36,12 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 + (A3DaysCounterModelManager*)sharedManager
 {
-    @synchronized (self) {
-        if (daysCounterModelManager == nil) {
-            daysCounterModelManager = [[self alloc] init];
-        }
-    }
+    static A3DaysCounterModelManager* daysCounterModelManager;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        daysCounterModelManager = [[self alloc] init];
+    });
+
     return daysCounterModelManager;
 }
 
@@ -169,14 +169,14 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return [[[imageFilename stringByDeletingPathExtension] stringByAppendingString:@".thumbnail"] stringByAppendingPathExtension:[imageFilename pathExtension]];
 }
 
-- (NSManagedObjectContext*)managedObjectContext
-{
-    if ( managedContext == nil ) {
-        managedContext = [[MagicalRecordStack defaultStack] context];
-	}
-    
-    return managedContext;
-}
+//- (NSManagedObjectContext*)managedObjectContext
+//{
+//    if ( managedContext == nil ) {
+//        managedContext = [[MagicalRecordStack defaultStack] context];
+//	}
+//    
+//    return managedContext;
+//}
 
 - (NSMutableDictionary *)dictionaryFromCalendarEntity:(DaysCounterCalendar*)item
 {
@@ -230,7 +230,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     if ( ![[NSFileManager defaultManager] fileExistsAtPath:[A3DaysCounterModelManager thumbnailPath]] ) {
         [[NSFileManager defaultManager] createDirectoryAtPath:[A3DaysCounterModelManager thumbnailPath] withIntermediateDirectories:YES attributes:nil error:nil];
     }
-//    self.calendarDict = [NSMutableDictionary dictionary];
+
     self.calendarColorArray = [NSMutableArray array];
     [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0], CalendarItem_Name : @"Red" }];
     [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:149.0/255.0 blue:0 alpha:1.0], CalendarItem_Name : @"Orange" }];
@@ -242,15 +242,13 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:162.0/255.0 green:132.0/255.0 blue:94.0/255.0 alpha:1.0], CalendarItem_Name : @"Brown" }];
     [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0], CalendarItem_Name : @"Gray" }];
     
-    NSManagedObjectContext *context = [self managedObjectContext];
-    NSUInteger count = [DaysCounterCalendar MR_countOfEntitiesWithContext:context];
+    NSUInteger count = [DaysCounterCalendar MR_countOfEntities];
     
     if ( count == 0 ) {
         [self addDefaultUserCalendarItems];
     }
     [self checkAndAddSystemCalendarItems];
     
-//    [self initEventStore];
     // slideshow option create
     NSDictionary *opt = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterSlideshowOption];
     if ( opt == nil || [opt count] < 4 ) {
@@ -362,7 +360,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSInteger)alertTypeIndexFromDate:(NSDate*)date alertDate:(id)alertDate
 {
-    if ( [alertDate isKindOfClass:[NSNull class]] || !date || !alertDate) {
+    if (!date || !alertDate) {
         return AlertType_None;
     }
     
@@ -521,7 +519,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (id)eventItemByID:(NSString*)eventId
 {
-    DaysCounterEvent *item = [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"eventId == %@",eventId] inContext:[self managedObjectContext]];
+    DaysCounterEvent *item = [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"eventId == %@",eventId]];
     return item;
 }
 
@@ -627,24 +625,21 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSMutableArray*)visibleCalendarList
 {
-    NSManagedObjectContext *context = [self managedObjectContext];
-    NSArray *result = [DaysCounterCalendar MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"isShow == %@",[NSNumber numberWithBool:YES]] inContext:context];
+    NSArray *result = [DaysCounterCalendar MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"isShow == %@",[NSNumber numberWithBool:YES]]];
     
     return [NSMutableArray arrayWithArray:result];
 }
 
 - (NSMutableArray*)allCalendarList
 {
-    NSManagedObjectContext *context = [self managedObjectContext];
-    NSArray *result = [DaysCounterCalendar MR_findAllSortedBy:@"order" ascending:YES inContext:context];
+    NSArray *result = [DaysCounterCalendar MR_findAllSortedBy:@"order" ascending:YES];
     
     return [NSMutableArray arrayWithArray:result];
 }
 
 - (NSMutableArray*)allUserCalendarList
 {
-    NSManagedObjectContext *context = [self managedObjectContext];
-    NSArray *result = [DaysCounterCalendar MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"calendarType == %@",[NSNumber numberWithInteger:CalendarCellType_User]] inContext:context];
+    NSArray *result = [DaysCounterCalendar MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"calendarType == %@",[NSNumber numberWithInteger:CalendarCellType_User]]];
     
     return [NSMutableArray arrayWithArray:result];
 }
@@ -665,7 +660,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (id)calendarItemByID:(NSString*)calendarId
 {
-    return [DaysCounterCalendar MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarId == %@",calendarId] inContext:[self managedObjectContext]];
+    return [DaysCounterCalendar MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarId == %@",calendarId]];
 }
 
 - (BOOL)removeCalendarItem:(NSMutableDictionary*)item
@@ -711,9 +706,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     if ( [self calendarItemByID:[item objectForKey:CalendarItem_ID]] )
         return NO;
     
-    NSUInteger numberOfItems = [DaysCounterCalendar MR_countOfEntitiesWithContext:[self managedObjectContext]];
+    NSUInteger numberOfItems = [DaysCounterCalendar MR_countOfEntities];
     // save to core data storage
-    DaysCounterCalendar *calendar = [DaysCounterCalendar MR_createInContext:[self managedObjectContext]];
+    DaysCounterCalendar *calendar = [DaysCounterCalendar MR_createEntity];
     calendar.calendarId = [item objectForKey:CalendarItem_ID];
     calendar.calendarName = [item objectForKey:CalendarItem_Name];
     calendar.calendarColor = [NSKeyedArchiver archivedDataWithRootObject:[item objectForKey:CalendarItem_Color]];
@@ -756,27 +751,28 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@))", @(YES), date, date, @(RepeatType_Never), [NSNull null]] inContext:[self managedObjectContext]];
+//    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@))", @(YES), date, date, @(RepeatType_Never), [NSNull null]]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == nil))", @(YES), date, date, @(RepeatType_Never)]];
 }
 
 - (NSInteger)numberOfPastEventsWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && ((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@))", @(YES), date, @(RepeatType_Never), [NSNull null], date] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && ((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate == nil && repeatEndDate < %@))", @(YES), date, @(RepeatType_Never), date]];
 }
 
 - (NSInteger)numberOfUserCalendarVisible
 {
-    return [DaysCounterCalendar MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"isShow == %@ and calendarType == %@",[NSNumber numberWithBool:YES],[NSNumber numberWithInteger:CalendarCellType_User]] inContext:[self managedObjectContext]];
+    return [DaysCounterCalendar MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"isShow == %@ and calendarType == %@",[NSNumber numberWithBool:YES],[NSNumber numberWithInteger:CalendarCellType_User]]];
 }
 
 - (NSInteger)numberOfEventContainedImage
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && imageFilename.length > 0", @(YES)] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && imageFilename.length > 0", @(YES)]];
 }
 
 - (NSDate*)dateOfLatestEvent
 {
-    DaysCounterEvent *event = [DaysCounterEvent MR_findFirstOrderedByAttribute:@"regDate" ascending:NO inContext:[self managedObjectContext]];
+    DaysCounterEvent *event = [DaysCounterEvent MR_findFirstOrderedByAttribute:@"regDate" ascending:NO];
     if ( event == nil )
         return nil;
     
@@ -785,7 +781,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (DaysCounterCalendar*)defaultCalendar
 {
-    DaysCounterCalendar *defaultCalendar = [DaysCounterCalendar MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"isDefault == %@", [NSNumber numberWithBool:YES]] inContext:[self managedObjectContext]];
+    DaysCounterCalendar *defaultCalendar = [DaysCounterCalendar MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"isDefault == %@", [NSNumber numberWithBool:YES]]];
     if ( defaultCalendar == nil ) {
         NSArray *calendarList = [self visibleCalendarList];
         if ( [calendarList count] < 1 )
@@ -814,19 +810,19 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@))", @(YES), date, date, @(RepeatType_Never), [NSNull null]]
-                                           inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && !repeatEndDate))", @(YES), date, date, @(RepeatType_Never)]
+                                           ];
 }
 
 - (NSArray*)pastEventsListWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && ((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@))", @(YES), date, @(RepeatType_Never), [NSNull null], date]
-                                           inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && ((effectiveStartDate < %@ && repeatType == %@) || (!repeatEndDate && repeatEndDate < %@))", @(YES), date, @(RepeatType_Never), date]
+                                           ];
 }
 
 - (NSArray*)favoriteEventsList
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"isFavorite ==  %@",[NSNumber numberWithBool:YES]] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"isFavorite ==  %@",[NSNumber numberWithBool:YES]]];
 }
 
 - (void)arrangeReminderList
@@ -1479,7 +1475,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     // EffectiveAlertDate 갱신.
     NSDate *alertDate = eventModel.alertDatetime;
-    if (alertDate && ![alertDate isKindOfClass:[NSNull class]]) {
+    if (alertDate) {
         NSDateComponents *alertIntervalComp = [NSDateComponents new];
         alertIntervalComp.minute = -labs([eventModel.alertInterval integerValue]);
         NSDate *alertDate = [[NSCalendar currentCalendar] dateByAddingComponents:alertIntervalComp toDate:eventModel.effectiveStartDate options:0];

@@ -77,7 +77,7 @@
         item.order = [NSNumber numberWithInteger:i+1];
     }
     
-    [[[A3DaysCounterModelManager sharedManager] managedObjectContext] MR_saveToPersistentStoreAndWait];
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 #pragma mark - Table view data source

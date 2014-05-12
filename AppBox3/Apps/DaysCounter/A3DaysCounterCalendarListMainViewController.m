@@ -167,7 +167,7 @@
     //    UIBarButtonItem *search = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
     //    search.enabled = ([[A3DaysCounterModelManager sharedManager] numberOfAllEvents] > 0);
 
-    [[[A3DaysCounterModelManager sharedManager] managedObjectContext] MR_saveToPersistentStoreAndWait];
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
     [self setupHeaderInfo];
     [self.tableView reloadData];
@@ -319,14 +319,15 @@
         return [_searchResultArray count];
     }
     
-    NSInteger numberOfPage = (tableView.frame.size.height - _headerView.frame.size.height - _bottomToolbar.frame.size.height) / 84.0;
-    
-    if ([_itemArray count] > numberOfPage) {
-        return [_itemArray count] + 1;
-    }
-    else {
-        return numberOfPage + 1;;
-    }
+    return [_itemArray count];
+//    NSInteger numberOfPage = (tableView.frame.size.height - _headerView.frame.size.height - _bottomToolbar.frame.size.height) / 84.0;
+//    
+//    if ([_itemArray count] > numberOfPage) {
+//        return [_itemArray count] + 1;
+//    }
+//    else {
+//        return numberOfPage + 1;;
+//    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -601,6 +602,11 @@
         [self setupHeaderInfo];
         [self.tableView reloadData];
     }
+}
+
+-(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleNone;
 }
 
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
