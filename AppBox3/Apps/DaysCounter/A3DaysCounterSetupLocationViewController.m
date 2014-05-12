@@ -216,6 +216,7 @@
 {
     A3DaysCounterLocationDetailViewController *viewCtrl = [[A3DaysCounterLocationDetailViewController alloc] initWithNibName:@"A3DaysCounterLocationDetailViewController" bundle:nil];
     viewCtrl.eventModel = self.eventModel;
+    viewCtrl.sharedManager = _sharedManager;
     viewCtrl.locationItem = item;
     viewCtrl.isEditMode = NO;
     [self.navigationController pushViewController:viewCtrl animated:YES];
@@ -460,7 +461,7 @@
         FSVenue *item = [self.nearbyVenues objectAtIndex:indexPath.row];
         
         cell.textLabel.text = item.name;
-        cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] addressFromVenue:item isDetail:NO];
+        cell.detailTextLabel.text = [_sharedManager addressFromVenue:item isDetail:NO];
         cell.textLabel.textColor = [UIColor blackColor];
         cell.detailTextLabel.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
         
@@ -496,7 +497,7 @@
         FSVenue *item = [self.nearbyVenuesOfSearchResults objectAtIndex:indexPath.row];
         
         cell.textLabel.text = item.name;
-        cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] addressFromVenue:item isDetail:NO];
+        cell.detailTextLabel.text = [_sharedManager addressFromVenue:item isDetail:NO];
         cell.textLabel.textColor = [UIColor blackColor];
         cell.detailTextLabel.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
         
@@ -524,7 +525,7 @@
     }
     
     if (self.changedPlace) {
-        cell.textLabel.text = [[[A3DaysCounterModelManager sharedManager] addressFromPlacemark:self.changedPlace] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        cell.textLabel.text = [[_sharedManager addressFromPlacemark:self.changedPlace] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     }
     else {
         cell.textLabel.text = @"Current Location";
@@ -555,6 +556,7 @@
         [self hideCurrentLocationTableView];
         A3DaysCounterChangeLocationViewController *viewCtrl = [[A3DaysCounterChangeLocationViewController alloc] initWithNibName:@"A3DaysCounterChangeLocationViewController" bundle:nil];
         viewCtrl.delegate = self;
+        viewCtrl.sharedManager = _sharedManager;
         [self.navigationController pushViewController:viewCtrl animated:YES];
         return;
     }

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class A3DaysCounterModelManager;
 @interface A3DaysCounterEditCalendarListViewController : UITableViewController
-
+@property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @end

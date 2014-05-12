@@ -266,13 +266,16 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 		return;
 	}
 
-	[[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
+	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 	FNLOG(@"%@", _localNotificationUserInfo[A3LocalNotificationDataID]);
 
 	DaysCounterEvent *eventItem = [DaysCounterEvent MR_findFirstByAttribute:@"eventId" withValue:_localNotificationUserInfo[A3LocalNotificationDataID]];
 	A3DaysCounterEventDetailViewController *viewController = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:[NSBundle mainBundle]];
 	viewController.isModal = YES;
 	viewController.eventItem = eventItem;
+    A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
+    [sharedManager prepare];
+    viewController.sharedManager = sharedManager;
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 	[self.navigationController presentViewController:navigationController animated:YES completion:NULL];

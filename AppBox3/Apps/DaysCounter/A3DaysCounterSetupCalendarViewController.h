@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 @class DaysCounterEvent;
+@class A3DaysCounterModelManager;
 @interface A3DaysCounterSetupCalendarViewController : UITableViewController
-
+@property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) DaysCounterEvent *eventModel;
 @property (strong, nonatomic) void (^completionBlock)();
 @property (strong, nonatomic) void (^dismissCompletionBlock)();

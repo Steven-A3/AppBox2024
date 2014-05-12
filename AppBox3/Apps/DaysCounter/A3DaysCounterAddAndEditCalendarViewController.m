@@ -12,6 +12,7 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "DaysCounterCalendar.h"
 
 @interface A3DaysCounterAddAndEditCalendarViewController ()
 @property (strong, nonatomic) NSArray *colorArray;
@@ -53,10 +54,10 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     [self rightBarButtonDoneButton];
     if ( !_isEditMode ) {
-        self.calendarItem = [[A3DaysCounterModelManager sharedManager] itemForNewUserCalendar];
+        self.calendarItem = [_sharedManager itemForNewUserCalendar];
     }
     
-    self.colorArray = [[A3DaysCounterModelManager sharedManager] calendarColorList];
+    self.colorArray = [_sharedManager calendarColorList];
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willDismissRightSideView) name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -99,7 +100,15 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return (_isEditMode ? 3 : 2);
+    if (_isEditMode) {
+        if ([DaysCounterCalendar MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendarType == %@", @(CalendarCellType_User)]] == 1) {
+            return 2;
+        }
+        
+        return 3;
+    }
+    
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -124,7 +133,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-
     if ( section == 0 ) {
         return 35;
     }
@@ -137,7 +145,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if ( section == (_isEditMode ? 2 : 1) ) {
+    BOOL hasOneCalendar = [DaysCounterCalendar MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendarType == %@", @(CalendarCellType_User)]] == 1 ? YES : NO;
+
+    if ( section == ((_isEditMode && !hasOneCalendar) ? 2 : 1) ) {
         return 38;
     }
     return 0.01;
@@ -274,7 +284,7 @@
 
 - (IBAction)deleteCalendarAction:(id)sender {
     // 모델 삭제 하고
-    [[A3DaysCounterModelManager sharedManager] removeCalendarItem:_calendarItem];
+    [_sharedManager removeCalendarItem:_calendarItem];
     // 창 닫기
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -293,10 +303,10 @@
     }
     
     if ( !_isEditMode ) {
-        [[A3DaysCounterModelManager sharedManager] addCalendarItem:_calendarItem];
+        [_sharedManager addCalendarItem:_calendarItem];
     }
     else {
-        [[A3DaysCounterModelManager sharedManager] updateCalendarItem:_calendarItem];
+        [_sharedManager updateCalendarItem:_calendarItem];
     }
     
     [self cancelAction:nil];

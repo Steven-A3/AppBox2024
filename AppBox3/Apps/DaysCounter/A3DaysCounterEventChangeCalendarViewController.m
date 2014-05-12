@@ -41,7 +41,7 @@
     
     self.navigationController.navigationBar.topItem.prompt = @"Move these events to a new calendar.";
     
-    NSMutableArray *array = [[A3DaysCounterModelManager sharedManager] allUserCalendarList];
+    NSMutableArray *array = [_sharedManager allUserCalendarList];
     self.itemArray = [array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarId != %@",_currentCalendar.calendarId]];
     [self.tableView reloadData];
 }

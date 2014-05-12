@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class A3DaysCounterModelManager;
 @interface A3DaysCounterSlideshowTimeSelectViewController : UITableViewController
-
+@property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) NSMutableDictionary *optionDict;
 @end

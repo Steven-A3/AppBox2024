@@ -121,7 +121,7 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 		}
 	} else {
 		[A3CurrencyDataManager setupFavorites];
-		[[A3DaysCounterModelManager new] reloadAlertDateListForLocalNotification];
+		[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 		[A3LadyCalendarModelManager setupLocalNotification];
 	}
 
@@ -469,7 +469,7 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	[userDefaults setObject:fetchDates forKey:@"BackgroundFetchUpDates"];
 	[userDefaults synchronize];
 
-	[[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
+	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 	[A3LadyCalendarModelManager setupLocalNotification];
 
 	NSLog(@"%s - EXIT", __PRETTY_FUNCTION__);

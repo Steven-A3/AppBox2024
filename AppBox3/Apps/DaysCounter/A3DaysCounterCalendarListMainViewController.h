@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class A3DaysCounterModelManager;
 @interface A3DaysCounterCalendarListMainViewController : UIViewController
-
+@property (strong, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 @property (strong, nonatomic) IBOutlet UIView *rightTopButtonView;
 @property (strong, nonatomic) IBOutlet UIView *headerView;

@@ -10,9 +10,9 @@
 #import <CoreLocation/CoreLocation.h>
 
 @protocol A3DaysCounterChangeLocationViewControllerDelegate;
-
+@class A3DaysCounterModelManager;
 @interface A3DaysCounterChangeLocationViewController : UIViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
-
+@property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) id<A3DaysCounterChangeLocationViewControllerDelegate> delegate;

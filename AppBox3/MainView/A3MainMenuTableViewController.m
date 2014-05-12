@@ -307,29 +307,29 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	UIViewController *targetViewController;
 
 	if ([menuElement.title isEqualToString:@"Days Counter"]) {
-		[[A3DaysCounterModelManager sharedManager] prepare];
+        A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
+        [sharedManager prepare];
         NSInteger lastOpenedMainIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"DaysCounterLastOpenedMainIndex"];
         switch (lastOpenedMainIndex) {
             case 1:
                 targetViewController = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
+                ((A3DaysCounterSlidershowMainViewController *)targetViewController).sharedManager = sharedManager;
                 break;
             case 3:
                 targetViewController = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
+                ((A3DaysCounterReminderListViewController *)targetViewController).sharedManager = sharedManager;
                 break;
             case 4:
                 targetViewController = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];
+                ((A3DaysCounterFavoriteListViewController *)targetViewController).sharedManager = sharedManager;
                 break;
                 
             default:
                 targetViewController = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
+                ((A3DaysCounterCalendarListMainViewController *)targetViewController).sharedManager = sharedManager;
                 break;
         }
-//		if( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] > 0 ){
-//			targetViewController = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
-//		}
-//		else{
-//			targetViewController = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
-//		}
+
 		return targetViewController;
 	}
 

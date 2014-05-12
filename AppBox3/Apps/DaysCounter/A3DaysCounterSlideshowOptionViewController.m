@@ -159,7 +159,7 @@
     cell.accessoryType = UITableViewCellAccessoryNone;
     switch (cellType) {
         case SlideshowOptionType_Transition:
-            cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] stringForSlideshowTransitionType:[[_optionDict objectForKey:OptionKey_Transition] integerValue]];
+            cell.detailTextLabel.text = [_sharedManager stringForSlideshowTransitionType:[[_optionDict objectForKey:OptionKey_Transition] integerValue]];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         case SlideshowOptionType_Showtime:
@@ -216,15 +216,17 @@
     if ( cellType == SlideshowOptionType_Transition ) {
         A3DaysCounterSlideshowTransitionSelectViewController *viewCtrl = [[A3DaysCounterSlideshowTransitionSelectViewController alloc] initWithNibName:@"A3DaysCounterSlideshowTransitionSelectViewController" bundle:nil];
         viewCtrl.optionDict = self.optionDict;
+        viewCtrl.sharedManager = _sharedManager;
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
     else if ( cellType == SlideshowOptionType_Showtime ) {
         A3DaysCounterSlideshowTimeSelectViewController *viewCtrl = [[A3DaysCounterSlideshowTimeSelectViewController alloc] initWithNibName:@"A3DaysCounterSlideshowTimeSelectViewController" bundle:nil];
         viewCtrl.optionDict = self.optionDict;
+        viewCtrl.sharedManager = _sharedManager;
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
     else if ( cellType == SlideshowOptionType_Startshow ) {
-        if ( [[A3DaysCounterModelManager sharedManager] numberOfAllEvents] < 1 ) {
+        if ( [_sharedManager numberOfAllEvents] < 1 ) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"There is no events" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [alertView show];
             return;

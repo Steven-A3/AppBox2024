@@ -103,14 +103,14 @@
     [super viewWillAppear:animated];
     self.isRotating = NO;
     self.navigationController.delegate = self;
-    self.eventsArray = [[A3DaysCounterModelManager sharedManager] allEventsListContainedImage];
+    self.eventsArray = [_sharedManager allEventsListContainedImage];
     NSDate *now = [NSDate date];
     
     // Start Timer 화면 갱신.
     NSDateComponents *nowComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:now];
     [self performSelector:@selector(startTimer) withObject:nil afterDelay:60 - [nowComp second]];
 
-    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] > 0 ) {
+    if ( [_sharedManager numberOfEventContainedImage] > 0 ) {
         if ( !_isShowMoreMenu ) {
             self.navigationController.navigationBarHidden = YES;
         }
@@ -240,7 +240,7 @@
                                         animated:NO];
     }
     
-    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
+    if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
         self.navigationItem.title = @"Days Counter";
     }
     else {
@@ -349,7 +349,7 @@
 
 - (void)showTopToolbarAnimated:(BOOL)animated
 {
-    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
+    if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
         _infoButton.enabled = NO;
         _shareButton.enabled = NO;
     }
@@ -376,7 +376,7 @@
 
 - (void)updateNavigationTitle
 {
-    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
+    if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
         self.navigationItem.title = @"Days Counter";
     }
     else {
@@ -496,18 +496,21 @@
     
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
     viewCtrl.eventItem = item;
+    viewCtrl.sharedManager = _sharedManager;
     viewCtrl.delegate = self;
     [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 
 - (IBAction)calendarViewAction:(id)sender {
     A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
+    viewCtrl.sharedManager = _sharedManager;
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
     viewCtrl.landscapeFullScreen = YES;
+    viewCtrl.sharedManager = _sharedManager;
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -520,11 +523,13 @@
 
 - (IBAction)reminderAction:(id)sender {
     A3DaysCounterReminderListViewController *viewCtrl = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
+    viewCtrl.sharedManager = _sharedManager;
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
 - (IBAction)favoriteAction:(id)sender {
     A3DaysCounterFavoriteListViewController *viewCtrl = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];
+    viewCtrl.sharedManager = _sharedManager;
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
@@ -590,7 +595,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"summaryCell" forIndexPath:indexPath];
-    [[A3DaysCounterModelManager sharedManager] setupEventSummaryInfo:[_eventsArray objectAtIndex:indexPath.row] toView:cell];
+    [_sharedManager setupEventSummaryInfo:[_eventsArray objectAtIndex:indexPath.row] toView:cell];
     
     return cell;
 }
@@ -615,7 +620,7 @@
         NSLog(@"%@",indexPath);
     }
     
-    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
+    if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
         self.navigationItem.title = @"Days Counter";
     }
     else {
@@ -653,11 +658,11 @@
 		[txt appendString:@"<html><body>I'd like to share a event with you.<br/><br/>"];
         
         // 7 days until (계산된 날짜)
-        NSString *daysString = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[eventItem.durationOption integerValue]
-                                                                                        fromDate:[NSDate date]
-                                                                                          toDate:eventItem.effectiveStartDate
-                                                                                        isAllDay:[eventItem.isAllDay boolValue]
-                                                                                    isShortStyle:IS_IPHONE ? YES : NO];
+        NSString *daysString = [A3DaysCounterModelManager stringOfDurationOption:[eventItem.durationOption integerValue]
+                                                                        fromDate:[NSDate date]
+                                                                          toDate:eventItem.effectiveStartDate
+                                                                        isAllDay:[eventItem.isAllDay boolValue]
+                                                                    isShortStyle:IS_IPHONE ? YES : NO];
         NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                        toDate:eventItem.effectiveStartDate
                                                                  allDayOption:[eventItem.isAllDay boolValue]
@@ -668,7 +673,7 @@
         
         //         Friday, April 11, 2014 (사용자가 입력한 날)
         [txt appendFormat:@"%@<br/>", [A3DateHelper dateStringFromDate:[eventItem effectiveStartDate]
-                                                            withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[eventItem.isAllDay boolValue]]] ];
+                                                            withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[eventItem.isAllDay boolValue]]] ];
         
 		[txt appendString:@"<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8'>Download from AppStore</a></body></html>"];
         
@@ -677,11 +682,11 @@
 	else {
 		NSMutableString *txt = [NSMutableString new];
         // 7 days until (계산된 날짜)
-        NSString *daysString = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[eventItem.durationOption integerValue]
-                                                                                        fromDate:[NSDate date]
-                                                                                          toDate:eventItem.effectiveStartDate
-                                                                                        isAllDay:[eventItem.isAllDay boolValue]
-                                                                                    isShortStyle:IS_IPHONE ? YES : NO];
+        NSString *daysString = [A3DaysCounterModelManager stringOfDurationOption:[eventItem.durationOption integerValue]
+                                                                        fromDate:[NSDate date]
+                                                                          toDate:eventItem.effectiveStartDate
+                                                                        isAllDay:[eventItem.isAllDay boolValue]
+                                                                    isShortStyle:IS_IPHONE ? YES : NO];
         NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                        toDate:eventItem.effectiveStartDate
                                                                  allDayOption:[eventItem.isAllDay boolValue]
@@ -692,7 +697,7 @@
         
         //         Friday, April 11, 2014 (사용자가 입력한 날)
         [txt appendFormat:@"%@\n", [A3DateHelper dateStringFromDate:[eventItem effectiveStartDate]
-                                                         withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[eventItem.isAllDay boolValue]]] ];
+                                                         withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[eventItem.isAllDay boolValue]]] ];
         
 		return txt;
 	}

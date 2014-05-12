@@ -75,7 +75,7 @@
     }
     
     NSInteger type = [[_itemArray objectAtIndex:indexPath.row] integerValue];
-    cell.textLabel.text = [[A3DaysCounterModelManager sharedManager] stringForSlideshowTransitionType:type];
+    cell.textLabel.text = [_sharedManager stringForSlideshowTransitionType:type];
     cell.accessoryType = ( type == [[_optionDict objectForKey:OptionKey_Transition] integerValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone );
     
     return cell;
@@ -90,17 +90,6 @@
     NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:currentType inSection:indexPath.section];
 
     [_optionDict setObject:@(indexPath.row) forKey:OptionKey_Transition];
-
-//    [CATransaction begin];
-//    [CATransaction setCompletionBlock:^{
-//        [self.navigationController popViewControllerAnimated:YES];
-//    }];
-//    UITableViewCell *prevCell = [tableView cellForRowAtIndexPath:prevIndexPath];
-//    UITableViewCell *curCell = [tableView cellForRowAtIndexPath:indexPath];
-//    prevCell.accessoryType = UITableViewCellAccessoryNone;
-//    curCell.accessoryType = UITableViewCellAccessoryCheckmark;
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    [CATransaction commit];
     
     UITableViewCell *prevCell = [tableView cellForRowAtIndexPath:prevIndexPath];
     UITableViewCell *curCell = [tableView cellForRowAtIndexPath:indexPath];

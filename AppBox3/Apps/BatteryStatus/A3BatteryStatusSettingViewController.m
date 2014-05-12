@@ -268,7 +268,7 @@ static NSString *CellIdentifier3 = @"Cell3";
 		return;
 	}
 	A3BasicWebViewController *viewController = [[A3BasicWebViewController alloc] init];
-	viewController.url = [A3BatteryStatusManager howToMaximizePowerUse];
+	viewController.url = url;
 	if (IS_IPHONE) {
 		[self.navigationController pushViewController:viewController animated:YES];
 	} else {

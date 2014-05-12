@@ -44,7 +44,7 @@
     self.title = @"Calendar";
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     
-    self.itemArray = [[A3DaysCounterModelManager sharedManager] allUserCalendarList];
+    self.itemArray = [_sharedManager allUserCalendarList];
 }
 
 - (void)didReceiveMemoryWarning
@@ -112,7 +112,7 @@
 {
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
     _eventModel.calendarId = item.calendarId;
-    _eventModel.calendar = [[A3DaysCounterModelManager sharedManager] calendarItemByID:item.calendarId];
+    _eventModel.calendar = [_sharedManager calendarItemByID:item.calendarId];
     
     [tableView reloadData];
     [self doneButtonAction:nil];

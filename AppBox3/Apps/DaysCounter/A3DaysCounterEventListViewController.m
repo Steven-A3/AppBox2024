@@ -105,7 +105,7 @@
     [self.navigationController setToolbarHidden:NO];
 
     if ( [self.changedCalendarID length] > 0 && ![self.changedCalendarID isEqualToString:_calendarItem.calendarId] ) {
-        self.calendarItem = [[A3DaysCounterModelManager sharedManager] calendarItemByID:self.changedCalendarID];
+        self.calendarItem = [_sharedManager calendarItemByID:self.changedCalendarID];
         self.changedCalendarID = nil;
         if ( self.calendarItem ) {
             self.title = [NSString stringWithFormat:@"%@%@",_calendarItem.calendarName, [_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : @" Events"];
@@ -211,13 +211,13 @@
     }
     else {
         if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_All] ) {
-            self.sourceArray = [[A3DaysCounterModelManager sharedManager] allEventsList];
+            self.sourceArray = [_sharedManager allEventsList];
         }
         else if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Past] ) {
-            self.sourceArray = [[A3DaysCounterModelManager sharedManager] pastEventsListWithDate:[NSDate date]];
+            self.sourceArray = [_sharedManager pastEventsListWithDate:[NSDate date]];
         }
         else if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Upcoming] ) {
-            self.sourceArray = [[A3DaysCounterModelManager sharedManager] upcomingEventsListWithDate:[NSDate date]];
+            self.sourceArray = [_sharedManager upcomingEventsListWithDate:[NSDate date]];
         }
     }
     
@@ -520,11 +520,11 @@
             daysLabel.text = @" ";
         }
         else {
-            daysLabel.text = [NSString stringWithFormat:@"%@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue]
-                                                                                                                        fromDate:now
-                                                                                                                          toDate:startDate //[item startDate]
-                                                                                                                        isAllDay:[item.isAllDay boolValue]
-                                                                                                                    isShortStyle:IS_IPHONE ? YES : NO]];
+            daysLabel.text = [NSString stringWithFormat:@"%@", [A3DaysCounterModelManager stringOfDurationOption:[item.durationOption integerValue]
+                                                                                                        fromDate:now
+                                                                                                          toDate:startDate //[item startDate]
+                                                                                                        isAllDay:[item.isAllDay boolValue]
+                                                                                                    isShortStyle:IS_IPHONE ? YES : NO]];
         }
         
         markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
@@ -553,7 +553,7 @@
             if ( IS_IPAD ) {
                 UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
                 dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate
-                                                       withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
+                                                       withFormat:[_sharedManager dateFormatForAddEditIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
                 dateLabel.hidden = NO;
                 ((A3DaysCounterEventListNameCell *)cell).titleRightSpaceConst.constant = [dateLabel sizeThatFits:CGSizeMake(500, 30)].width + 5;
             }
@@ -601,6 +601,7 @@
     
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
     viewCtrl.eventItem = item;
+    viewCtrl.sharedManager = _sharedManager;
     viewCtrl.delegate = self;
     [self.navigationController pushViewController:viewCtrl animated:YES];
 }
@@ -616,7 +617,7 @@
             item = [items objectAtIndex:indexPath.row];
         }
         
-        [[A3DaysCounterModelManager sharedManager] removeEvent:item];
+        [_sharedManager removeEvent:item];
         [self loadEventDatas];
     }
 }
@@ -642,10 +643,10 @@
                                               isAllDay:[item.isAllDay boolValue]];
     }
     else {
-        NSDate *nextRepeatStartDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
-                                                                                                firstDate:[item.startDate solarDate]
-                                                                                                 fromDate:today
-                                                                                                 isAllDay:[item.isAllDay boolValue]];
+        NSDate *nextRepeatStartDate = [A3DaysCounterModelManager nextDateWithRepeatOption:[item.repeatType integerValue]
+                                                                                firstDate:[item.startDate solarDate]
+                                                                                 fromDate:today
+                                                                                 isAllDay:[item.isAllDay boolValue]];
         resultDaysGap = [A3DateHelper diffDaysFromDate:today
                                                 toDate:nextRepeatStartDate
                                               isAllDay:[item.isAllDay boolValue]];
@@ -666,10 +667,10 @@
                                         isAllDay:[item.isAllDay boolValue]];
     }
     else {
-        nextRepeatStartDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
-                                                                                        firstDate:[item.startDate solarDate]
-                                                                                         fromDate:today
-                                                                                         isAllDay:[item.isAllDay boolValue]];
+        nextRepeatStartDate = [A3DaysCounterModelManager nextDateWithRepeatOption:[item.repeatType integerValue]
+                                                                        firstDate:[item.startDate solarDate]
+                                                                         fromDate:today
+                                                                         isAllDay:[item.isAllDay boolValue]];
         daysGap = [A3DateHelper diffDaysFromDate:today
                                           toDate:nextRepeatStartDate
                                         isAllDay:[item.isAllDay boolValue]];
@@ -822,6 +823,7 @@
 
 - (IBAction)editAction:(id)sender {
     A3DaysCounterEventListEditViewController *viewCtrl = [[A3DaysCounterEventListEditViewController alloc] initWithNibName:@"A3DaysCounterEventListEditViewController" bundle:nil];
+    viewCtrl.sharedManager = _sharedManager;
     viewCtrl.calendarItem = _calendarItem;
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
@@ -836,22 +838,29 @@
 #pragma mark - action method
 - (IBAction)photoViewAction:(id)sender {
     A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
+    viewCtrl.sharedManager = _sharedManager;
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
 - (IBAction)reminderAction:(id)sender {
     A3DaysCounterReminderListViewController *viewCtrl = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
+    viewCtrl.sharedManager = _sharedManager;
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
 - (IBAction)favoriteAction:(id)sender {
     A3DaysCounterFavoriteListViewController *viewCtrl = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];
+    viewCtrl.sharedManager = _sharedManager;
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
     viewCtrl.calendarId = _calendarItem.calendarId;
+    viewCtrl.sharedManager = _sharedManager;
+    if ([_calendarItem.calendarType integerValue] == CalendarCellType_System) {
+        viewCtrl.calendarId = nil;
+    }
 
     viewCtrl.landscapeFullScreen = NO;
     if ( IS_IPHONE ) {

@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @class DaysCounterEvent;
-
+@class A3DaysCounterModelManager;
 @protocol A3DaysCounterEventDetailViewControllerDelegate;
 @interface A3DaysCounterEventDetailViewController : UITableViewController
-
+@property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) DaysCounterEvent *eventItem;
 @property (assign, nonatomic) id<A3DaysCounterEventDetailViewControllerDelegate> delegate;
 @property (assign, nonatomic) BOOL isModal;

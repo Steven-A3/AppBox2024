@@ -38,7 +38,7 @@
     if ( self.showDoneButton )
         [self rightBarButtonDoneButton];
     
-    self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
+    self.addressStr = [_sharedManager addressFromVenue:_locationItem isDetail:YES];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     if (IS_IPAD) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"information"]

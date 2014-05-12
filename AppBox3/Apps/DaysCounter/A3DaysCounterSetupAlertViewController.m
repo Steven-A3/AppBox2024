@@ -134,8 +134,8 @@
 	NSString *CellIdentifier = (indexPath.row == ([_itemArray count]-1) ? @"customInputCell" : @"Cell");
     
 	NSDictionary *item = [_itemArray objectAtIndex:indexPath.row];
-	NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:_eventModel.effectiveStartDate
-																				  alertDate:_eventModel.alertDatetime];
+	NSInteger alertType = [_sharedManager alertTypeIndexFromDate:_eventModel.effectiveStartDate
+                                                      alertDate:_eventModel.alertDatetime];
 	NSInteger rowType = [[item objectForKey:EventRowType] integerValue];
     
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -217,7 +217,7 @@
 	id value = nil;
 
 	NSDate *startDate = [_eventModel.startDate solarDate];
-	NSInteger prevIndex = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:startDate alertDate:prevValue];
+	NSInteger prevIndex = [_sharedManager alertTypeIndexFromDate:startDate alertDate:prevValue];
 	double alertTimeInterval;
 
 	switch (indexPath.row) {
@@ -299,8 +299,8 @@
 		_eventModel.alertInterval = @(alertTimeInterval);
 
 		// alertType 저장.
-		NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:_eventModel.effectiveStartDate
-																					  alertDate:_eventModel.alertDatetime];
+		NSInteger alertType = [_sharedManager alertTypeIndexFromDate:_eventModel.effectiveStartDate
+                                                           alertDate:_eventModel.alertDatetime];
 		if (alertType == AlertType_Custom) {
 			_eventModel.alertType = @(1);
 		}
@@ -397,8 +397,8 @@
 		_eventModel.alertInterval = nil;
 	}
     
-	NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:_eventModel.effectiveStartDate
-																				  alertDate:_eventModel.alertDatetime];
+	NSInteger alertType = [_sharedManager alertTypeIndexFromDate:_eventModel.effectiveStartDate
+                                                       alertDate:_eventModel.alertDatetime];
 	if (alertType == AlertType_Custom) {
 		_eventModel.alertType = @(1);
 	}

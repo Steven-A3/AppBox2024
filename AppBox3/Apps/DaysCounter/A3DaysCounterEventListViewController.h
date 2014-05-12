@@ -11,13 +11,14 @@
 
 @class DaysCounterCalendar;
 @class A3WalletSegmentedControl;
+@class A3DaysCounterModelManager;
 @interface A3DaysCounterEventListViewController : UIViewController
 {
     NSInteger _sortType;
     BOOL _isDateAscending;
     BOOL _isNameAscending;
 }
-
+@property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) DaysCounterCalendar *calendarItem;
 @property (weak, nonatomic) IBOutlet A3WalletSegmentedControl *sortTypeSegmentCtrl;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
