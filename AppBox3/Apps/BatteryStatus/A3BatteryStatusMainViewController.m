@@ -9,6 +9,7 @@
 #import "A3BatteryStatusMainViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
+#import "UIViewController+iPad_rightSideView.h"
 #import "A3BatteryStatusManager.h"
 #import "A3BatterStatusBatteryPanelView.h"
 #import "A3BatteryStatusListPageSectionView.h"
@@ -78,28 +79,7 @@
 {
     [super viewWillAppear:animated];
 
-    if (self.sectionHeaderView.tableSegmentButton.selectedSegmentIndex == 0) {
-        _tableDataSourceArray = [A3BatteryStatusManager deviceInfoDataArray];
-    } else {
-        _tableDataSourceArray = [A3BatteryStatusManager remainTimeDataArray];
-        NSArray * adjustedIndex = [A3BatteryStatusManager adjustedIndex];
-        if (adjustedIndex) {
-            //NSAssert(_tableDataSourceArray.count == adjustedIndex.count, @"둘이 같아야 합니다.");
-            
-            NSMutableArray * array = [NSMutableArray arrayWithCapacity:_tableDataSourceArray.count];
-            for (NSDictionary *rowDic in adjustedIndex) {
-                NSNumber *index = [rowDic objectForKey:@"index"];
-                NSNumber *checked = [rowDic objectForKey:@"checked"];
-                
-                if ([checked isEqualToNumber:@1] && (index.integerValue < _tableDataSourceArray.count) ) {
-                    [array addObject:[_tableDataSourceArray objectAtIndex:index.integerValue]];
-                }
-            }
-            
-            _tableDataSourceArray = array;
-        }
-    }
-
+    [self reloadTableViewDataSource];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(batteryLevelDidChangeNotification:)
 												 name:UIDeviceBatteryLevelDidChangeNotification
@@ -115,6 +95,30 @@
 											   object:nil];
 
 	[self refreshHeaderView];
+}
+
+#pragma mark -
+- (void)reloadTableViewDataSource
+{
+    if (self.sectionHeaderView.tableSegmentButton.selectedSegmentIndex == 0) {
+        _tableDataSourceArray = [A3BatteryStatusManager deviceInfoDataArray];
+    } else {
+        _tableDataSourceArray = [A3BatteryStatusManager remainTimeDataArray];
+        NSArray * adjustedIndex = [A3BatteryStatusManager adjustedIndex];
+        if (adjustedIndex) {
+            NSMutableArray * array = [NSMutableArray arrayWithCapacity:_tableDataSourceArray.count];
+            for (NSDictionary *rowDic in adjustedIndex) {
+                NSNumber *index = [rowDic objectForKey:@"index"];
+                NSNumber *checked = [rowDic objectForKey:@"checked"];
+                
+                if ([checked isEqualToNumber:@1] && (index.integerValue < _tableDataSourceArray.count) ) {
+                    [array addObject:[_tableDataSourceArray objectAtIndex:index.integerValue]];
+                }
+            }
+            
+            _tableDataSourceArray = array;
+        }
+    }
 }
 
 - (void)batteryThemeChanged {
@@ -153,7 +157,8 @@
 		CGFloat height;
 		if (IS_IPHONE) {
 			height = 219.0;
-		} else {
+		}
+        else {
 			if (IS_LANDSCAPE) {
 				height = 275.0;
 			} else {
@@ -171,7 +176,8 @@
     CGRect rect = self.headerView.frame;
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
         rect.size.height = 275.0;
-    } else {
+    }
+    else {
         rect.size.height = 321.0;
     }
     _headerView.frame = rect;
@@ -186,11 +192,17 @@
 
 - (void)generalButtonAction:(id)sender {
     @autoreleasepool {
-        //A3BatteryStatusSettingViewController * viewController = [[A3BatteryStatusSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
         self.settingViewController = [[A3BatteryStatusSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
-
 		[self presentSubViewController:self.settingViewController];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willDismissSettingViewController:) name:A3NotificationRightSideViewWillDismiss object:nil];
     }
+}
+
+- (void)willDismissSettingViewController:(NSNotification *)notification
+{
+    [self reloadTableViewDataSource];
+    [self.tableView reloadData];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 }
 
 #pragma mark - Battery Notifications

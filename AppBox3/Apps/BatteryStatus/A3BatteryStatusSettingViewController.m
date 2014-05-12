@@ -23,7 +23,6 @@
     NSArray * _tableDataSourceArray;
     UIColor * _chosenTheme;
     NSMutableArray * _adjustedIndex;
-    //NSMutableArray * _showIndex;
     UIImage * _blankImage;
     NSMutableArray * _presentViews;
 }
@@ -90,7 +89,6 @@
 }
 
 #pragma mark - Actions
-
 -(void)doneButtonAction:(id)sender {
 	if (IS_IPAD) {
 		[[A3AppDelegate instance].rootViewController dismissRightSideViewController];
@@ -125,17 +123,16 @@
     }
 }
 
-static NSString *CellIdentifier1 = @"Cell1";
-static NSString *CellIdentifier2 = @"Cell2";
-static NSString *CellIdentifier3 = @"Cell3";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    static NSString * const CellIdentifier1 = @"Cell1";
+    static NSString * const CellIdentifier2 = @"Cell2";
+    static NSString * const CellIdentifier3 = @"Cell3";
     // Configure the cell...
     if (indexPath.section==0) {
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
-            //cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17];
             cell.textLabel.font = [UIFont systemFontOfSize:17.0];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -172,7 +169,6 @@ static NSString *CellIdentifier3 = @"Cell3";
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
-            //cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17];
             cell.textLabel.font = [UIFont systemFontOfSize:17];
         }
         
@@ -190,8 +186,6 @@ static NSString *CellIdentifier3 = @"Cell3";
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier3];
-            //cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"information"]];
-            //cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17];
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             
             UIImageView * info = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"information"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
@@ -208,8 +202,6 @@ static NSString *CellIdentifier3 = @"Cell3";
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier3];
-            //cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"information"]];
-            //cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17];
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             
             UIImageView * info = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"information"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
@@ -244,7 +236,11 @@ static NSString *CellIdentifier3 = @"Cell3";
             [_adjustedIndex insertObject:@{ @"index" : index, @"checked" : @0 } atIndex:indexPath.row];
         }
 
-        [tableView reloadData];
+        //[tableView reloadData];
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        if (cell) {
+            cell.imageView.image = ([checked integerValue] == 0) ? [UIImage imageNamed:@"check_02"] : _blankImage;
+        }
         [A3BatteryStatusManager setAdjustedIndex:_adjustedIndex];
 
 
