@@ -19,6 +19,7 @@
 #import "A3UserDefaults.h"
 #import "A3AppDelegate+appearance.h"
 #import "A3WalletNoteCell.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 extern NSString *const A3WalletItemFieldNoteCellID;
 
@@ -232,18 +233,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             case PeriodCellType_Notes:{
 				A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID forIndexPath:indexPath];
 				[noteCell setupTextView];
-				noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-				GCPlaceholderTextView *textView = noteCell.textView;
-				textView.backgroundColor = [UIColor clearColor];
-				textView.delegate = self;
-				textView.bounces = NO;
-				textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-				textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
-				noteCell.textView.font = [UIFont systemFontOfSize:17];
-
-				textView.placeholder = @"Notes";
-				textView.text = _periodItem.notes;
+				noteCell.textView.delegate = self;
+				noteCell.textView.text = _periodItem.notes;
 
                 cell = noteCell;
             }
@@ -328,19 +320,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     
     switch (cellType)  {
         case PeriodCellType_Notes:{
-			CGFloat cellHeight = CGFLOAT_MAX;
-			if (IS_IPHONE) {
-				cellHeight = MIN(cellHeight, 568 - 216 - 64);
-			} else if (IS_IPHONE35) {
-				cellHeight = MIN(cellHeight, 480 - 216 - 64);
-			} else {
-				if (IS_PORTRAIT) {
-					cellHeight = MIN(cellHeight, 1024 - 264 - 64);
-				} else {
-					cellHeight = MIN(cellHeight, 768 - 352 - 64);
-				}
-			}
-			return cellHeight - 30.0;
+			return [UIViewController noteCellHeight];
 		}
         case PeriodCellType_DateInput:
             retHeight = 236.0;

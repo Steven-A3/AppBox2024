@@ -515,15 +515,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
     if (_fieldItems[indexPath.row] == self.noteItem) {
         // note
         A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID forIndexPath:indexPath];
-        
-        noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [noteCell setupTextView];
         noteCell.textView.delegate = self;
-        noteCell.textView.bounces = NO;
-        noteCell.textView.placeholder = @"Notes";
-        noteCell.textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
-		noteCell.textView.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-        noteCell.textView.font = [UIFont systemFontOfSize:17];
-
 		[noteCell setNoteText:_item.note];
 
         cell = noteCell;

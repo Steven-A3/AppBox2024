@@ -19,6 +19,8 @@
 #import "NSString+conversion.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UITableView+utility.h"
+#import "A3WalletNoteCell.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -28,6 +30,8 @@
 @property (copy, nonatomic) NSString *originalName;
 
 @end
+
+extern NSString *const A3WalletItemFieldNoteCellID;
 
 @implementation A3LadyCalendarAddAccountViewController {
 	BOOL _sameNameExists;
@@ -60,6 +64,7 @@
 	self.navigationItem.rightBarButtonItem.enabled = _isEditMode;
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
 
+	[self.tableView registerClass:[A3WalletNoteCell class] forCellReuseIdentifier:A3WalletItemFieldNoteCellID];
 	[self registerContentSizeCategoryDidChangeNotification];
 
 	if (IS_IPAD) {
@@ -160,9 +165,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if( section == 1 )
-        return 36.0;
-    return 0.01;
+	BOOL isLastSection = [self.tableView numberOfSections] - 1 == section;
+	return [self standardHeightForFooterIsLastSection:isLastSection];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -195,12 +199,11 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         else if( cellType == AccountCell_Notes ){
-            cell = [cellArray objectAtIndex:1];
-            GCPlaceholderTextView *textView = (GCPlaceholderTextView *)[cell viewWithTag:10];
-			textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
-			textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-			textView.delegate = self;
-			textView.placeholder = @"Notes";
+			A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID forIndexPath:indexPath];
+			[noteCell setupTextView];
+			noteCell.textView.delegate = self;
+			noteCell.textView.text = _accountItem.notes;
+			cell = noteCell;
         }
         else if( cellType == AccountCell_Birthday){
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
@@ -245,12 +248,6 @@
 			}
 		}
     }
-    else if( cellType == AccountCell_Notes){
-        UITextView *textView = (UITextView*)[cell viewWithTag:10];
-        textView.text = _accountItem.notes;
-        textView.textColor = ([_accountItem.notes length] < 1 ? [UIColor colorWithWhite:0.8 alpha:1.0] : [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]);
-
-    }
     else if( cellType == AccountCell_DateInput ){
         UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
         datePicker.datePickerMode = UIDatePickerModeDate;
@@ -278,9 +275,7 @@
         if( cellType == AccountCell_DateInput )
             retHeight = 236.0;
         else if( cellType == AccountCell_Notes ){
-            NSString *str = _accountItem.notes;
-            CGRect strBounds = [str boundingRectWithSize:CGSizeMake(tableView.frame.size.width, 99999.0) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]} context:nil];
-            retHeight = (strBounds.size.height + 30.0 < 180.0 ? 180.0 : strBounds.size.height + 30.0);
+			return [UIViewController noteCellHeight];
         }
     }
     
@@ -432,24 +427,14 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-	_accountItem.notes = textView.text;
+	_accountItem.notes = [textView.text stringByTrimmingSpaceCharacters];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     NSString *str = [textView.text stringByReplacingCharactersInRange:range withString:text];
-    
+
 	_accountItem.notes = [str length] > 0 ? str : @"";
-    textView.textColor = ( [str length] > 0 ? [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0] : [UIColor colorWithWhite:0.8 alpha:1.0] );
-    
-    CGRect strBounds = [textView.text boundingRectWithSize:CGSizeMake(textView.frame.size.width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : textView.font} context:nil];
-    
-    UITableViewCell *cell = (UITableViewCell*)[[[textView superview] superview] superview];
-    CGFloat diffHeight = (strBounds.size.height + 30.0 < 180.0 ? 0.0 : (strBounds.size.height + 30.0) - cell.frame.size.height);
-    
-    cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height + diffHeight);
-    self.tableView.contentSize = CGSizeMake(self.tableView.contentSize.width, self.tableView.contentSize.height + diffHeight);
-    [self.tableView scrollRectToVisible:cell.frame animated:YES];
     [self checkInputValues];
     
     return YES;

@@ -34,6 +34,7 @@
 #import "A3CalculatorDelegate.h"
 #import "A3SearchViewController.h"
 #import "UITableView+utility.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
@@ -2465,28 +2466,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         }
         else if (indexPath.section == 4) {
             if (self.advItems[indexPath.row] == self.noteItem) {
-                NSDictionary *textAttributes = @{
-                                                 NSFontAttributeName : [UIFont systemFontOfSize:17]
-                                                 };
-                
-                NSString *testText = self.loanData.note ? self.loanData.note : @"";
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:testText attributes:textAttributes];
-                UITextView *txtView = [[UITextView alloc] init];
-                [txtView setAttributedText:attributedString];
-                float margin = IS_IPAD ? 49:31;
-                CGSize txtViewSize = [txtView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, CGFLOAT_MAX)];
-                //float cellHeight = txtViewSize.height + 20;
-                float cellHeight = txtViewSize.height;
-                
-                // memo카테고리에서는 화면의 가장 아래까지 노트필드가 채워진다.
-                float defaultCellHeight = 180.0;
-                
-                if (cellHeight < defaultCellHeight) {
-                    return defaultCellHeight;
-                }
-                else {
-                    return cellHeight;
-                }
+				return [UIViewController noteCellHeight];
             }
             else if (_advItems[indexPath.row] == self.dateInputItem) {
                 return 218.0;
@@ -2501,18 +2481,18 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    float nonTitleHieght = 35.0;
-    float titleHeight = 55.0;
+    CGFloat nonTitleHeight = 35.0;
+    CGFloat titleHeight = 55.0;
 
     if (!_isComparisonMode) {
         if (section == 0) {
             return 1;
         }
         else if (section == 1) {
-            return nonTitleHieght-1;
+            return nonTitleHeight -1;
         }
         else if (section == 2) {
-            return nonTitleHieght-1;
+            return nonTitleHeight -1;
         }
         else if (section == 3) {
             return self.loanData.showExtraPayment ? titleHeight-1:1;
@@ -2527,7 +2507,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             return 1;
         }
         else {
-            return nonTitleHieght-1;
+            return nonTitleHeight -1;
         }
     }
 }
@@ -2820,17 +2800,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             else if (_advItems[indexPath.row] == self.noteItem) {
                 // note
                 A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanNoteCellID forIndexPath:indexPath];
-                
-                noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                noteCell.textView.delegate = self;
-                noteCell.textView.bounces = NO;
-                noteCell.textView.placeholder = @"Notes";
-                noteCell.textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
-                noteCell.textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                noteCell.textView.font = [UIFont systemFontOfSize:17];
+				[noteCell setupTextView];
+				noteCell.textView.delegate = self;
                 noteCell.textView.text = self.loanData.note;
-                noteCell.textView.scrollEnabled = NO;
-                
+
                 cell = noteCell;
             }
             else if (_advItems[indexPath.row] == self.dateInputItem) {

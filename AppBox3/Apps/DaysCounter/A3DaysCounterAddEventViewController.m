@@ -32,6 +32,8 @@
 #import "A3AppDelegate+appearance.h"
 #import "A3DateHelper.h"
 #import "A3DateKeyboardViewController.h"
+#import "A3WalletNoteCell.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 
 #define ActionTag_Location      100
@@ -508,12 +510,12 @@
                 }
                     break;
                 case EventCellType_Notes:{
-                    cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventNotesCell" owner:nil options:nil] lastObject];
-                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    UITextView *textView = (UITextView*)[cell viewWithTag:10];
-                    textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                    textView.delegate = self;
-                    textView.scrollEnabled = NO;
+					A3WalletNoteCell *noteCell = [A3WalletNoteCell new];
+					[noteCell setupTextView];
+
+					noteCell.textView.delegate = self;
+
+					cell = noteCell;
                 }
                     break;
                 case EventCellType_DateInput:{
@@ -889,14 +891,8 @@
 
 - (void)noteTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType
 {
-    UITextView *textView = (UITextView*)[cell viewWithTag:10];
-    textView.text = ([_eventItem.notes length] > 0 ? _eventItem.notes : @"Notes");
-    if ( [_eventItem.notes length] > 0 ) {
-        textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-    }
-    else {
-        textView.textColor = [UIColor colorWithRed:199/255.0 green:199/255.0 blue:205/255.0 alpha:1.0];
-    }
+	A3WalletNoteCell *noteCell = (A3WalletNoteCell *) cell;
+	noteCell.textView.text = _eventItem.notes;
 }
 
 - (void)dateInputTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType
@@ -1331,32 +1327,10 @@
             case EventCellType_DateInput:
                 retHeight = 236.0;
                 break;
+
             case EventCellType_Notes:
-            {
-                NSString *str = _eventItem.notes;
-                NSDictionary *textAttributes = @{
-                                                 NSFontAttributeName : [UIFont systemFontOfSize:17]
-                                                 };
-                
-                NSString *testText = str ? str : @"";
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:testText attributes:textAttributes];
-                UITextView *txtView = [[UITextView alloc] init];
-                [txtView setAttributedText:attributedString];
-                float margin = IS_IPAD ? 49:31;
-                CGSize txtViewSize = [txtView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, CGFLOAT_MAX)];
-                float cellHeight = txtViewSize.height;
-                
-                // memo카테고리에서는 화면의 가장 아래까지 노트필드가 채워진다.
-                float defaultCellHeight = 180.0;
-                
-                if (cellHeight < defaultCellHeight) {
-                    return defaultCellHeight;
-                }
-                else {
-                    return cellHeight;
-                }
-            }
-                break;
+				return [UIViewController noteCellHeight];
+
             case EventCellType_Advanced:
                 retHeight = IS_RETINA ? 55.5 : 56.0;
                 break;
@@ -2288,6 +2262,7 @@
 }
 
 #pragma mark - UITextViewDelegate
+
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     if ( [_eventItem.notes length] < 1 ) {
@@ -2303,49 +2278,7 @@
 {
     _eventItem.notes = textView.text;
 
-    if ( [_eventItem.notes length] < 1 ) {
-        textView.text = @"Notes";
-    }
-    else {
-        UITableViewCell *cell = (UITableViewCell*)[[[textView superview] superview] superview];
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }
-    
     self.textViewResponder = nil;
-}
-
-- (void)textViewDidChange:(UITextView *)textView
-{
-    _eventItem.notes = textView.text;
-    
-    if ( [textView.text length] > 0 ) {
-        textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-    }
-    else {
-        textView.textColor = [UIColor colorWithRed:178.0/255.0 green:178.0/255.0 blue:178.0/255.0 alpha:1.0];
-    }
-
-    CGSize newSize = [textView sizeThatFits:CGSizeMake(textView.frame.size.width, MAXFLOAT)];
-    if (newSize.height < 180) {
-        return;
-    }
-    UITableViewCell *currentCell = (UITableViewCell *)[[[textView superview] superview] superview];
-    CGFloat diffHeight = newSize.height - currentCell.frame.size.height;
-    
-    currentCell.frame = CGRectMake(currentCell.frame.origin.x,
-                                   currentCell.frame.origin.y,
-                                   currentCell.frame.size.width,
-                                   newSize.height);
-
-    [UIView beginAnimations:@"cellExpand" context:nil];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationCurve:7];
-    [UIView setAnimationDuration:0.25];
-    self.tableView.contentOffset = CGPointMake(0.0, self.tableView.contentOffset.y + diffHeight);
-    [UIView commitAnimations];
-    
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 @end

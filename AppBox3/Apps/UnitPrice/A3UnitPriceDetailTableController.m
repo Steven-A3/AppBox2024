@@ -750,12 +750,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 		}
 		else if ([self.items objectAtIndex:indexPath.row] == self.noteItem) {
 			A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceNoteCellID forIndexPath:indexPath];
-
-			noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
+			[noteCell setupTextView];
 			noteCell.textView.delegate = self;
-			noteCell.textView.bounces = NO;
-			noteCell.textView.placeholder = @"Notes";
-			noteCell.textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
 			noteCell.textView.text = self.price.note ? self.price.note : @"";
 
 			cell = noteCell;
@@ -783,7 +779,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
         return IS_IPAD ? 158 : 104;
     }
     else if ([self.items objectAtIndex:indexPath.row] == self.noteItem) {
-		return [self noteCellHeight];
+		return [UIViewController noteCellHeight];
 	}
     return 44.0;
 }

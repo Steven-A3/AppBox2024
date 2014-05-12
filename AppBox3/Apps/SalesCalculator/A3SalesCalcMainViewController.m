@@ -489,10 +489,6 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
         _notes = [A3TextViewElement new];
     }
     _notes.identifier = A3TableElementCellType_Note;
-    _notes.value = @"";
-    _notes.placeHolder = @"Notes";
-    _notes.minHeight = 180.0;
-    _notes.currentHeight = 0.0;
     __weak A3SalesCalcMainViewController *weakSelf = self;
     _notes.onEditingBegin = ^(A3TextViewElement *element, UITextView *textView) {
         weakSelf.textViewResponder = textView;
