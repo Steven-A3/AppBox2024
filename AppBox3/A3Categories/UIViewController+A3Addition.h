@@ -37,6 +37,10 @@
 - (void)historyButtonAction:(UIButton *)button;
 - (UIButton *)settingsButton;
 - (void)settingsButtonAction:(UIButton *)button;
+
+- (UIButton *)composeButton;
+- (void)composeButtonAction:(UIButton *)button;
+
 - (void)presentSubViewController:(UIViewController *)viewController;
 - (void)rightBarButtonDoneButton;
 - (void)doneButtonAction:(UIBarButtonItem *)button;

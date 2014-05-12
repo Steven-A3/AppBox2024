@@ -220,6 +220,24 @@
 	[view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[button1]-[button2]-[button3]-|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:views]];
 }
 
+- (void)addFourButtons:(NSArray *)buttons toView:(UIView *)view {
+	NSAssert([buttons count] == 4, @"The number of buttons must 4 but it is %lu", (unsigned long)[buttons count]);
+	NSInteger numberOfButtons = [buttons count];
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat width = (screenBounds.size.width + 40) / (numberOfButtons + 1);
+	NSInteger buttonIndex = 1;
+	for (UIButton *button in buttons) {
+		[view addSubview:button];
+
+		[button makeConstraints:^(MASConstraintMaker *make) {
+			make.bottom.equalTo(view.bottom).with.offset(-10);
+			make.width.equalTo(@44.0);
+			make.centerX.equalTo(view.left).with.offset(width * buttonIndex - 20);
+		}];
+		buttonIndex++;
+	}
+}
+
 - (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray {
 	CGRect frame;
 	frame = self.view.frame;
@@ -234,10 +252,16 @@
 	bottomLineView.backgroundColor = [UIColor colorWithRed:178.0 / 255.0 green:178.0 / 255.0 blue:178.0 / 255.0 alpha:1.0];
 	[moreMenuView addSubview:bottomLineView];
 
-	if ([buttonsArray count] == 2) {
-		[self addTwoButtons:buttonsArray toView:moreMenuView];
-	} else {
-		[self addThreeButtons:buttonsArray toView:moreMenuView];
+	switch ([buttonsArray count]) {
+		case 2:
+			[self addTwoButtons:buttonsArray toView:moreMenuView];
+			break;
+		case 3:
+			[self addThreeButtons:buttonsArray toView:moreMenuView];
+			break;
+		case 4:
+			[self addFourButtons:buttonsArray toView:moreMenuView];
+			break;
 	}
 
 	return moreMenuView;
@@ -350,6 +374,18 @@
 }
 
 - (void)settingsButtonAction:(UIButton *)button {
+
+}
+
+- (UIButton *)composeButton {
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+	[button setImage:[UIImage imageNamed:@"add07"] forState:UIControlStateNormal];
+	[button addTarget:self action:@selector(composeButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+	return button;
+	return button;
+}
+
+- (void)composeButtonAction:(UIButton *)button {
 
 }
 

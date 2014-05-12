@@ -885,54 +885,45 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {
-    @autoreleasepool {
-        [self disposeInitializedCondition];
-        
-        UIBarButtonItem *save = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(saveToHistoryAndInitialize:)];
-        UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
-        self.navigationItem.rightBarButtonItems = @[done, save];
-        
-        _arrMenuButtons = @[self.shareButton, [self historyButton:NULL], self.settingsButton];
-        _moreMenuView = [self presentMoreMenuWithButtons:_arrMenuButtons tableView:self.tableView];
-        _isShowMoreMenu = YES;
-        
-        [self refreshMoreButtonState];
-    };
+	[self disposeInitializedCondition];
+
+	[self rightBarButtonDoneButton];
+
+	_arrMenuButtons = @[self.composeButton, self.shareButton, [self historyButton:NULL], self.settingsButton];
+	_moreMenuView = [self presentMoreMenuWithButtons:_arrMenuButtons tableView:self.tableView];
+	_isShowMoreMenu = YES;
+
+	[self refreshMoreButtonState];
+}
+
+- (void)composeButtonAction:(UIButton *)button {
+	[self saveToHistoryAndInitialize:button];
 }
 
 - (void)doneButtonAction:(id)button {
-	@autoreleasepool {
-		[self dismissMoreMenu];
-	}
+	[self dismissMoreMenu];
 }
 
 - (void)dismissMoreMenu {
-	@autoreleasepool {
-		if ( !_isShowMoreMenu || IS_IPAD ) return;
-        
-		[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
-	}
+	if ( !_isShowMoreMenu || IS_IPAD ) return;
+
+	[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
 }
 
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
-	@autoreleasepool {
-		if (!_isShowMoreMenu) return;
-        
-		_isShowMoreMenu = NO;
-        
-		[self rightButtonMoreButton];
-		[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
-		[self.view removeGestureRecognizer:gestureRecognizer];
-	}
+	if (!_isShowMoreMenu) return;
+
+	_isShowMoreMenu = NO;
+
+	[self rightButtonMoreButton];
+	[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
+	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 
 - (void)rightBarButtons {
     if (IS_IPHONE) {
-        UIImage *image = [UIImage imageNamed:@"more"];
-        UIBarButtonItem *moreButtonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(moreButtonAction:)];
-        UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(saveToHistoryAndInitialize:)];
-        self.navigationItem.rightBarButtonItems = @[moreButtonItem, saveItem];
-    }
+		[self rightButtonMoreButton];
+	}
     else {
         self.navigationItem.hidesBackButton = YES;
         
@@ -1014,14 +1005,14 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)refreshMoreButtonState {
-    if (IS_IPHONE) {
-        UIBarButtonItem *save = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
-        save.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
-        if (_isShowMoreMenu) {
-            UIBarButtonItem *share = [_arrMenuButtons objectAtIndex:0];
-            share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
-        }
-    }
+	if (IS_IPHONE) {
+		if (_isShowMoreMenu) {
+			UIButton *save = [_arrMenuButtons objectAtIndex:0];
+			save.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
+			UIBarButtonItem *share = [_arrMenuButtons objectAtIndex:1];
+			share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
+		}
+	}
     else {
         UIBarButtonItem *save = [self.navigationItem.rightBarButtonItems objectAtIndex:3];
         save.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
