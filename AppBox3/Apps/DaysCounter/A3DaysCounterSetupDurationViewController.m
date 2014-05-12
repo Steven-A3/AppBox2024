@@ -148,8 +148,12 @@
         cell.userInteractionEnabled = YES;
         cell.textLabel.textColor = [UIColor blackColor];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        
         cell.accessoryType = ( self.selectedOptionFlag & itemRowType ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+    }
+    
+    if (itemRowType == DurationOption_Day) {
+        cell.userInteractionEnabled = NO;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     return cell;
@@ -158,9 +162,14 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSDictionary *item = [_itemArray objectAtIndex:indexPath.row];
+    NSInteger itemRowType = [[item objectForKey:EventRowType] integerValue];
+    if (itemRowType == DurationOption_Day) {
+        return;
+    }
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NSDictionary *item = [_itemArray objectAtIndex:indexPath.row];
     NSInteger optionValue = self.selectedOptionFlag;//[[_eventModel objectForKey:EventItem_DurationOption] integerValue];
     NSInteger flag = [[item objectForKey:EventRowType] integerValue];
 
