@@ -1550,11 +1550,12 @@ EXIT_FUCTION:
             
         case EventCellType_Notes:
         {
-            CGSize textSize = [_eventItem.notes sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]}];
-            retHeight = ceilf(textSize.height) + 11.0 + 30.0;
-        }
-            break;
-            
+			if (![_eventItem.notes length]) return 74.0;
+			CGRect strBounds = [_eventItem.notes boundingRectWithSize:CGSizeMake(tableView.frame.size.width - (IS_IPHONE ? 20.0 : 28.0 * 2), CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]} context:nil];
+			retHeight = MAX((strBounds.size.height + 31.0), 74.0);
+			break;
+		}
+
         case EventCellType_Alert:
         case EventCellType_Location:
         case EventCellType_DurationOption:

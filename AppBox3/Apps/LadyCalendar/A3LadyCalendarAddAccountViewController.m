@@ -165,9 +165,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if( section == 1 )
-        return 36.0;
-    return 0.01;
+	BOOL isLastSection = [self.tableView numberOfSections] - 1 == section;
+	return [self standardHeightForFooterIsLastSection:isLastSection];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
