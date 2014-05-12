@@ -14,9 +14,10 @@
 #define A3UITableViewTextLabelFont				[UIFont systemFontOfSize:17]
 #define A3UITableViewSeparatorInset				UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0)
 
-@interface UITableViewController (standardDimension)
+@interface UIViewController (tableViewStandardDimension)
 
 - (CGFloat)standardHeightForHeaderInSection:(NSInteger)section;
-- (CGFloat)standardHeightForFooterInSection:(NSInteger)section;
+- (CGFloat)standardHeightForFooterIsLastSection:(BOOL)isLastSection;
 
+- (CGFloat)noteCellHeight;
 @end

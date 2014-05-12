@@ -24,7 +24,7 @@
 #import "TranslatorGroup.h"
 #import "NSString+conversion.h"
 #import "TranslatorHistory+manager.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate+appearance.h"
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";

@@ -7,9 +7,6 @@
 //
 
 #import "A3CurrencyTVDataCell.h"
-#import "A3UIDevice.h"
-#import "common.h"
-//#import "NSNumberExtensions.h"
 
 @interface A3CurrencyTVDataCell ()
 @property (nonatomic, strong) UIView *menuView;

@@ -7,7 +7,7 @@
 //
 
 #import "A3WalletNoteCell.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @implementation A3WalletNoteCell
 

@@ -26,7 +26,7 @@
 #import "UIImage+Extension2.h"
 #import "WalletFieldItem+initialize.h"
 #import "WalletFieldItemImage.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3WalletPhotoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, MWPhotoBrowserDelegate>
 

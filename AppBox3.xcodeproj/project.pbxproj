@@ -901,7 +901,7 @@
 		68F319FC18D83D1F0003BE62 /* A3LaunchSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F319F718D83D1F0003BE62 /* A3LaunchSceneViewController.m */; };
 		68F319FD18D83D1F0003BE62 /* A3LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F319F918D83D1F0003BE62 /* A3LaunchViewController.m */; };
 		68F319FE18D83D1F0003BE62 /* Launch_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68F319FA18D83D1F0003BE62 /* Launch_iPhone.storyboard */; };
-		68F32E51188AC3C600248F16 /* UITableViewController+standardDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F32E50188AC3C600248F16 /* UITableViewController+standardDimension.m */; };
+		68F32E51188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F32E50188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m */; };
 		68F4EE8F17E4C0F9009BDE05 /* A3FSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F4EE8E17E4C0F9009BDE05 /* A3FSegmentedControl.m */; };
 		68F9391917D0DDBB0082234C /* FMMoveTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391617D0DDBB0082234C /* FMMoveTableView.m */; };
 		68F9391A17D0DDBB0082234C /* FMMoveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */; };
@@ -2492,8 +2492,8 @@
 		68F319F818D83D1F0003BE62 /* A3LaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LaunchViewController.h; sourceTree = "<group>"; };
 		68F319F918D83D1F0003BE62 /* A3LaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LaunchViewController.m; sourceTree = "<group>"; };
 		68F319FA18D83D1F0003BE62 /* Launch_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Launch_iPhone.storyboard; sourceTree = "<group>"; };
-		68F32E4F188AC3C600248F16 /* UITableViewController+standardDimension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewController+standardDimension.h"; sourceTree = "<group>"; };
-		68F32E50188AC3C600248F16 /* UITableViewController+standardDimension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewController+standardDimension.m"; sourceTree = "<group>"; };
+		68F32E4F188AC3C600248F16 /* UIViewController+tableViewStandardDimension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+tableViewStandardDimension.h"; sourceTree = "<group>"; };
+		68F32E50188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+tableViewStandardDimension.m"; sourceTree = "<group>"; };
 		68F4EE8D17E4C0F9009BDE05 /* A3FSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3FSegmentedControl.h; sourceTree = "<group>"; };
 		68F4EE8E17E4C0F9009BDE05 /* A3FSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3FSegmentedControl.m; sourceTree = "<group>"; };
 		68F9391517D0DDBB0082234C /* FMMoveTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMMoveTableView.h; sourceTree = "<group>"; };
@@ -2677,8 +2677,8 @@
 				68F1C90218D814F9009FAE8A /* UIPopoverController+Override.m */,
 				17D426B199FD2AC623B42755 /* UITableViewCell+accessory.h */,
 				17D4212AA5D840ED553C3647 /* UITableViewCell+accessory.m */,
-				68F32E4F188AC3C600248F16 /* UITableViewController+standardDimension.h */,
-				68F32E50188AC3C600248F16 /* UITableViewController+standardDimension.m */,
+				68F32E4F188AC3C600248F16 /* UIViewController+tableViewStandardDimension.h */,
+				68F32E50188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m */,
 				6818E034179D3EE30061A70B /* UITableViewController+swipeMenu.h */,
 				6818E035179D3EE30061A70B /* UITableViewController+swipeMenu.m */,
 				17D42BFE6234E14E8D9A2970 /* UIViewController+A3Addition.h */,
@@ -5913,7 +5913,7 @@
 				68F1C8AF18D7F37D009FAE8A /* A3DaysCounterSlideshowViewController.m in Sources */,
 				68B6A2AA18CEC76D004084EF /* A3LoanCalcExtraPaymentViewController.m in Sources */,
 				68F1C8C118D7F37D009FAE8A /* A3LadyCalendarAddAccountViewController.m in Sources */,
-				68F32E51188AC3C600248F16 /* UITableViewController+standardDimension.m in Sources */,
+				68F32E51188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m in Sources */,
 				680D639918CFF9D400938AD0 /* A3CalculatorViewController_iPhone.m in Sources */,
 				689C9A4E1839CD7F007C97EE /* AFSecurityPolicy.m in Sources */,
 				68B6A49018CF31B5004084EF /* UnitPriceFavorite.m in Sources */,

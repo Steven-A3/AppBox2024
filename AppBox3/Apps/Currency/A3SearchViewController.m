@@ -10,7 +10,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "A3CurrencySelectViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @implementation A3SearchTargetItem
 @end

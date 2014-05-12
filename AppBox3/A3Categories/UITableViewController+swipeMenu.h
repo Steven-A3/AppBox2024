@@ -19,14 +19,10 @@
 @interface UITableViewController (swipeMenu)
 
 - (void)setupSwipeRecognizers;
-
 - (void)shiftRight:(NSMutableSet *)cells;
-
 - (void)shiftLeft:(UITableViewCell <A3TableViewSwipeCellDelegate> *)cell;
-
 - (void)unSwipeAll;
-
 - (NSMutableSet *)swipedCells;
-
 - (void)setSwipedCells:(NSMutableSet *)swipedCells;
+
 @end

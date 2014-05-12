@@ -11,7 +11,7 @@
 #import "A3UIDevice.h"
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+A3Addition.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 #import "A3StandardLeft15Cell.h"
 
 @interface A3LanguagePickerController () <UISearchBarDelegate>

@@ -12,7 +12,7 @@
 #import "A3WalletMoreTableViewCell.h"
 #import "UIViewController+A3Addition.h"
 #import "A3WalletMainTabBarController.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 #import "A3WalletAllViewController.h"
 #import "A3WalletFavoritesViewController.h"
 #import "A3WalletCategoryViewController.h"

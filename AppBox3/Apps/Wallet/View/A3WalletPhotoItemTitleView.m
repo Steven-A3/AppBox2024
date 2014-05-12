@@ -9,7 +9,7 @@
 #import "A3WalletPhotoItemTitleView.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @implementation A3WalletPhotoItemTitleView
 

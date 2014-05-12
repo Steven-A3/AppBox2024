@@ -12,7 +12,7 @@
 #import "A3KeychainUtils.h"
 #import "A3AppDelegate+appearance.h"
 #import "A3UIDevice.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate+iCloud.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
@@ -78,7 +78,8 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if (section == 0) return UITableViewAutomaticDimension;
-	return [self standardHeightForFooterInSection:section];
+	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
+	return [self standardHeightForFooterIsLastSection:isLastSection];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

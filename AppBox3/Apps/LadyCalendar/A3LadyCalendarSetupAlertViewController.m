@@ -14,7 +14,7 @@
 #import "A3NumberKeyboardViewController.h"
 #import "A3UserDefaults.h"
 #import "UIColor+A3Addition.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3LadyCalendarSetupAlertViewController () <UITextFieldDelegate, A3KeyboardDelegate>
 

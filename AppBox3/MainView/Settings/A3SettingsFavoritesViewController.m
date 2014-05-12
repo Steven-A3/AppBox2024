@@ -12,7 +12,7 @@
 #import "A3AppDelegate+mainMenu.h"
 #import "A3SettingsAddFavoritesViewController.h"
 #import "A3CenterViewDelegate.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3SettingsFavoritesViewController () <A3ChildViewControllerDelegate>
 

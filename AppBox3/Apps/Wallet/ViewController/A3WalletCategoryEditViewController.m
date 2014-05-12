@@ -22,7 +22,7 @@
 #import "A3WalletMainTabBarController.h"
 #import "NSString+conversion.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 #import "A3WalletCategoryEditAddNewFieldCell.h"
 
 @interface A3WalletCategoryEditViewController () <UIActionSheetDelegate, WalletIconSelectDelegate, WalletEditFieldDelegate,  UITextFieldDelegate>

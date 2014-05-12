@@ -10,7 +10,7 @@
 #import "A3SettingsDropboxSelectBackupViewController.h"
 #import "NSDate+TimeAgo.h"
 #import "MBProgressHUD.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3SettingsDropboxSelectBackupViewController () <UIActionSheetDelegate, DBRestClientDelegate, MBProgressHUDDelegate>
 

@@ -27,7 +27,7 @@
 #import "UIImage+Extension2.h"
 #import "UITableView+utility.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 #import "A3WalletItemTitleCell.h"
 #import "WalletFieldItemVideo.h"
 #import "WalletFieldItemImage.h"
@@ -1334,19 +1334,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 {
     if (indexPath.section == 0) {
         if ([self.sectionItems objectAtIndex:indexPath.row] == self.noteItem) {
-			CGFloat cellHeight = CGFLOAT_MAX;
-			if (IS_IPHONE) {
-				cellHeight = MIN(cellHeight, 568 - 216 - 64);
-			} else if (IS_IPHONE35) {
-				cellHeight = MIN(cellHeight, 480 - 216 - 64);
-			} else {
-				if (IS_PORTRAIT) {
-					cellHeight = MIN(cellHeight, 1024 - 264 - 64);
-				} else {
-					cellHeight = MIN(cellHeight, 768 - 352 - 64);
-				}
-			}
-			return cellHeight - 30.0;
+			return [self noteCellHeight];
         }
         else if ([self.sectionItems objectAtIndex:indexPath.row] == self.dateInputItem) {
 
@@ -1647,7 +1635,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-	return [self standardHeightForFooterInSection:section];
+	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
+	return [self standardHeightForFooterIsLastSection:isLastSection];
 }
 
 @end

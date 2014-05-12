@@ -10,7 +10,7 @@
 #import "A3AppDelegate.h"
 #import "A3AppDelegate+appearance.h"
 #import "A3UIDevice.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3SettingsChooseColorViewController ()
 
@@ -78,7 +78,8 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	return [self standardHeightForFooterInSection:section];
+	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
+	return [self standardHeightForFooterIsLastSection:isLastSection];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
