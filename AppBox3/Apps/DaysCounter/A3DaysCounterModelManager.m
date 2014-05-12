@@ -992,10 +992,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     NSUInteger flag = 0;
     NSUInteger flagCount = 0;
-//    if ( option & DurationOption_Seconds) {
-//        flag |= NSSecondCalendarUnit;
-//        flagCount++;
-//    }
+
     if ( option & DurationOption_Minutes) {
         flag |= NSMinuteCalendarUnit;
         flagCount++;
@@ -1025,9 +1022,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         if (IS_IPHONE && flagCount >= 3) {
             isShortStyle = YES;
         }
-//        else if (IS_IPAD && IS_PORTRAIT && flagCount == 6) {
-//            isShortStyle = YES;
-//        }
     }
     if (IS_IPAD && !isShortStyle && flagCount == 6) {
         isShortStyle = YES;
@@ -1038,8 +1032,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     if ( (([largeDate timeIntervalSince1970] - [smallDate timeIntervalSince1970]) < 86400) &&
          (!(flag & NSHourCalendarUnit) && !(flag & NSMinuteCalendarUnit) && !(flag & NSSecondCalendarUnit)) &&
         !isAllDay ) {
-        flag = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-        option = DurationOption_Seconds | DurationOption_Minutes | DurationOption_Hour;
+        flag = NSHourCalendarUnit | NSMinuteCalendarUnit;
+        option = DurationOption_Minutes | DurationOption_Hour;
     }
 
 	NSCalendar *calendar = [NSCalendar currentCalendar];

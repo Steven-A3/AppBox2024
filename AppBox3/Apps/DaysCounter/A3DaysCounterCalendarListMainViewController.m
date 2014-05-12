@@ -383,18 +383,28 @@
                                                                  repeat:YES
                                                                  strict:NO];
             
+            BOOL isAllDay = [event.isAllDay boolValue];
+            if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.startDate.solarDate timeIntervalSince1970]) > 86400)) {
+                isAllDay = YES;
+            }
+            
             result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
                                                                                                                    fromDate:today
                                                                                                                      toDate:nextDate
-                                                                                                                   isAllDay:[event.isAllDay boolValue]
+                                                                                                                   isAllDay:isAllDay
                                                                                                                isShortStyle:![event.isAllDay boolValue]]
                                                         , untilSinceString];
         }
         else {
+            BOOL isAllDay = [event.isAllDay boolValue];
+            if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.startDate.solarDate timeIntervalSince1970]) > 86400)) {
+                isAllDay = YES;
+            }
+            
             result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
                                                                                                                    fromDate:today
                                                                                                                      toDate:[event.startDate solarDate]
-                                                                                                                   isAllDay:[event.isAllDay boolValue]
+                                                                                                                   isAllDay:isAllDay
                                                                                                                isShortStyle:![event.isAllDay boolValue]]
                                                         , untilSinceString];
         }
