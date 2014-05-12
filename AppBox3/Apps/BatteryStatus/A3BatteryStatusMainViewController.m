@@ -79,7 +79,9 @@
 {
     [super viewWillAppear:animated];
 
+	[self refreshHeaderView];
     [self reloadTableViewDataSource];
+    [self.tableView reloadData];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(batteryLevelDidChangeNotification:)
 												 name:UIDeviceBatteryLevelDidChangeNotification
@@ -93,8 +95,6 @@
 											 selector:@selector(batteryThemeChanged)
 												 name:A3BatteryStatusThemeColorChanged
 											   object:nil];
-
-	[self refreshHeaderView];
 }
 
 #pragma mark -
@@ -200,6 +200,7 @@
 
 - (void)willDismissSettingViewController:(NSNotification *)notification
 {
+	[self refreshHeaderView];
     [self reloadTableViewDataSource];
     [self.tableView reloadData];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];

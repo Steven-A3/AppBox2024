@@ -242,12 +242,12 @@
             cell.imageView.image = ([checked integerValue] == 0) ? [UIImage imageNamed:@"check_02"] : _blankImage;
         }
         [A3BatteryStatusManager setAdjustedIndex:_adjustedIndex];
-
-
-    } else if (indexPath.section == 2) {
+    }
+    else if (indexPath.section == 2) {
         // Battery How to Maximize
 		[self presentWebViewControllerURL:[A3BatteryStatusManager howToMaximizePowerUse]];
-	} else if (indexPath.section == 3) {
+	}
+    else if (indexPath.section == 3) {
         // More Info About Battery
 		[self presentWebViewControllerURL:[A3BatteryStatusManager moreInformationAboutBatteries]];
     }
