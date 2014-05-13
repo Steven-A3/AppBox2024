@@ -103,20 +103,20 @@ NSString *const A3MainMenuResignFirstResponder = @"A3MainMenuResignFirstResponde
 	}
 }
 
+- (void)viewWillLayoutSubviews {
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+}
+
 - (void)menuContentsChanged {
-	@autoreleasepool {
-		[self setupData];
-		[self.tableView reloadData];
-	}
+	[self setupData];
+	[self.tableView reloadData];
 }
 
 - (void)coreDataAvailable {
-	@autoreleasepool {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self setupData];
-			[self.tableView reloadData];
-		});
-	}
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self setupData];
+		[self.tableView reloadData];
+	});
 }
 
 - (void)dealloc {
