@@ -1652,6 +1652,7 @@ EXIT_FUCTION:
 {
     A3DaysCounterEventDetailLocationViewController *viewCtrl = [[A3DaysCounterEventDetailLocationViewController alloc] initWithNibName:@"A3DaysCounterEventDetailLocationViewController" bundle:nil];
     viewCtrl.location = _eventItem.location;
+    viewCtrl.sharedManager = _sharedManager;
     [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 
