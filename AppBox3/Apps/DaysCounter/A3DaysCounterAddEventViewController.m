@@ -1626,7 +1626,7 @@
     if ([swButton isOn] == NO && !_isDurationInitialized) {
         _eventItem.durationOption = @(DurationOption_Day|DurationOption_Hour|DurationOption_Minutes);
     }
-    else if ([swButton isOn] == NO && _isDurationIntialized) {
+    else if ([swButton isOn] == NO && _isDurationInitialized ) {
         _eventItem.durationOption = @([_eventItem.durationOption integerValue] | DurationOption_Hour | DurationOption_Minutes);
     }
     else if ([swButton isOn]) {

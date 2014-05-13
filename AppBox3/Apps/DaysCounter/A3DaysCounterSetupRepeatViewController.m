@@ -207,7 +207,8 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if ( indexPath.row == ([_itemArray count]-1) ) {
+    
+	if ( ![_eventModel.isLunar boolValue] && indexPath.row == ([_itemArray count]-1) ) {
 		// 키보드 보여주기
 		[self showNumberKeyboard];
 		return;
