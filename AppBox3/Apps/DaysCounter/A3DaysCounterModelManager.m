@@ -23,6 +23,7 @@
 #import "NSDateFormatter+LunarDate.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "A3AppDelegate.h"
+#import "DaysCounterFavorite.h"
 
 #define DEFAULT_CALENDAR_COLOR      [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0]
 
@@ -822,7 +823,7 @@
 
 - (NSArray*)favoriteEventsList
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"isFavorite ==  %@",[NSNumber numberWithBool:YES]]];
+    return [DaysCounterFavorite MR_findAllSortedBy:@"order" ascending:YES];
 }
 
 - (void)arrangeReminderList

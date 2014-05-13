@@ -101,9 +101,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         UIImage *image = [UIImage imageNamed:@"more"];
         UIBarButtonItem *moreButtonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(moreButtonAction:)];
 
-        UIBarButtonItem *composeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeButtonAction:)];
-        self.navigationItem.rightBarButtonItems = @[moreButtonItem, composeItem];
-        
+        self.navigationItem.rightBarButtonItem = moreButtonItem;
+
     } else {
         UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
         UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
@@ -378,16 +377,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             composeItem.enabled = [self.loanData calculated] ? YES : NO;
         }
     }
-    else {
-        UIBarButtonItem *composeItem = self.navigationItem.rightBarButtonItems[1];
-        
-        if (_isComparisonMode) {
-            composeItem.enabled = [_loanDataA calculated] && [_loanDataB calculated]  ? YES : NO;
-        }
-        else {
-            composeItem.enabled = [self.loanData calculated] ? YES : NO;
-        }
-    }
 }
 
 - (NSMutableDictionary *)controlsEnableInfo
@@ -627,45 +616,51 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {
-    @autoreleasepool {
-		[self.firstResponder resignFirstResponder];
-		[self setFirstResponder:nil];
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
 
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
-        
-        _moreMenuButtons = @[self.shareButton, [self historyButton:NULL], self.settingsButton];
-        _moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
-        _isShowMoreMenu = YES;
-        
-        if (self.tableView.contentOffset.y == -63) {
-            CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-            frame = CGRectOffset(frame, 0, 1);
-            [self.tableView scrollRectToVisible:frame animated:YES];
-        }
-        
-        // 히스토리가 존재하는지 체크
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith = nil"];
-        LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"created" ascending:NO];
-        LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"calculateDate" ascending:NO];
-        
-        UIButton *shareBtn = _moreMenuButtons[0];
-        UIButton *historyBtn = _moreMenuButtons[1];
+	[self rightBarButtonDoneButton];
 
-        if (!history && !comparison) {
-            // 둘다 없음
-            historyBtn.enabled = NO;
-        }
-        else {
-            historyBtn.enabled = YES;
-        }
-        
-        if (_isComparisonMode) {
-            shareBtn.enabled = ([_loanDataA calculated] && [_loanDataB calculated]) ? YES:NO;
-        }
-        else {
-            shareBtn.enabled = [self.loanData calculated] ? YES:NO;
-        }
-    };
+	UIButton *composeButton = self.composeButton;
+	UIButton *shareButton = self.shareButton;
+	UIButton *historyButton = [self historyButton:NULL];
+	UIButton *settingsButton = self.settingsButton;
+
+	_moreMenuButtons = @[composeButton, shareButton, historyButton, settingsButton];
+	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
+	_isShowMoreMenu = YES;
+
+	if (self.tableView.contentOffset.y == -63) {
+		CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+		frame = CGRectOffset(frame, 0, 1);
+		[self.tableView scrollRectToVisible:frame animated:YES];
+	}
+
+	// 히스토리가 존재하는지 체크
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith = nil"];
+	LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"created" ascending:NO];
+	LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"calculateDate" ascending:NO];
+
+	if (!history && !comparison) {
+		// 둘다 없음
+		historyButton.enabled = NO;
+	}
+	else {
+		historyButton.enabled = YES;
+	}
+
+	if (_isComparisonMode) {
+		shareButton.enabled = ([_loanDataA calculated] && [_loanDataB calculated]) ? YES:NO;
+	}
+	else {
+		shareButton.enabled = [self.loanData calculated] ? YES:NO;
+	}
+	if (_isComparisonMode) {
+		composeButton.enabled = [_loanDataA calculated] && [_loanDataB calculated]  ? YES : NO;
+	}
+	else {
+		composeButton.enabled = [self.loanData calculated] ? YES : NO;
+	}
 }
 
 - (void)doneButtonAction:(id)button {
@@ -676,33 +671,31 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)composeButtonAction:(id)button
 {
-    @autoreleasepool {
-        if (!_isComparisonMode) {
-            if ([self.loanData calculated]) {
-                [self putLoanHistory];
-                
-                // clear
-                [self clearLoanData:self.loanData];
-                
-                [self deleteLoanData];
-                
-                [self.tableView reloadData];
-            }
-        }
-        else {
-            if ([_loanDataA calculated] && [_loanDataB calculated]) {
-                [self putComparisonHistory];
-                
-                // clear
-                [self clearLoanData:_loanDataA];
-                [self clearLoanData:_loanDataB];
-                
-                [self deleteLoanDataA];
-                [self deleteLoanDataB];
-                
-                [self.tableView reloadData];
-            }
-        }
+	if (!_isComparisonMode) {
+		if ([self.loanData calculated]) {
+			[self putLoanHistory];
+
+			// clear
+			[self clearLoanData:self.loanData];
+
+			[self deleteLoanData];
+
+			[self.tableView reloadData];
+		}
+	}
+	else {
+		if ([_loanDataA calculated] && [_loanDataB calculated]) {
+			[self putComparisonHistory];
+
+			// clear
+			[self clearLoanData:_loanDataA];
+			[self clearLoanData:_loanDataB];
+
+			[self deleteLoanDataA];
+			[self deleteLoanDataB];
+
+			[self.tableView reloadData];
+		}
 	}
 
     [self refreshRightBarItems];

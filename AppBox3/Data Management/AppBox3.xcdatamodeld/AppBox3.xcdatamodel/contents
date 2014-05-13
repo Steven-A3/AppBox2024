@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Calculation" representedClassName="Calculation" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="expression" optional="YES" attributeType="String" syncable="YES"/>
@@ -68,7 +68,6 @@
         <attribute name="hasReminder" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="imageFilename" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isAllDay" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isFavorite" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isLunar" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isPeriod" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
@@ -77,10 +76,11 @@
         <attribute name="repeatType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="useLeapMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="calendar" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterCalendar" inverseName="events" inverseEntity="DaysCounterCalendar" syncable="YES"/>
-        <relationship name="endDate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterDateModel" inverseName="endDate" inverseEntity="DaysCounterDateModel" syncable="YES"/>
+        <relationship name="endDate" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DaysCounterDateModel" inverseName="endDate" inverseEntity="DaysCounterDateModel" syncable="YES"/>
+        <relationship name="favorite" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DaysCounterFavorite" inverseName="event" inverseEntity="DaysCounterFavorite" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DaysCounterEventLocation" inverseName="event" inverseEntity="DaysCounterEventLocation" syncable="YES"/>
-        <relationship name="reminder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterReminder" inverseName="event" inverseEntity="DaysCounterReminder" syncable="YES"/>
-        <relationship name="startDate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterDateModel" inverseName="startDate" inverseEntity="DaysCounterDateModel" syncable="YES"/>
+        <relationship name="reminder" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DaysCounterReminder" inverseName="event" inverseEntity="DaysCounterReminder" syncable="YES"/>
+        <relationship name="startDate" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DaysCounterDateModel" inverseName="startDate" inverseEntity="DaysCounterDateModel" syncable="YES"/>
     </entity>
     <entity name="DaysCounterEventLocation" representedClassName="DaysCounterEventLocation" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
@@ -93,6 +93,10 @@
         <attribute name="longitude" optional="YES" attributeType="Float" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterEvent" inverseName="location" inverseEntity="DaysCounterEvent" syncable="YES"/>
+    </entity>
+    <entity name="DaysCounterFavorite" representedClassName="DaysCounterFavorite" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterEvent" inverseName="favorite" inverseEntity="DaysCounterEvent" syncable="YES"/>
     </entity>
     <entity name="DaysCounterReminder" representedClassName="DaysCounterReminder" syncable="YES">
         <attribute name="alertDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -140,6 +144,7 @@
         <attribute name="itemDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="itemName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="num" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="price" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="qty" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="subTotal" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -399,14 +404,15 @@
         <element name="CurrencyRateItem" positionX="54" positionY="-504" width="128" height="135"/>
         <element name="DaysCounterCalendar" positionX="-414" positionY="-837" width="128" height="163"/>
         <element name="DaysCounterDateModel" positionX="-407" positionY="-610" width="128" height="178"/>
-        <element name="DaysCounterEvent" positionX="-236" positionY="-837" width="128" height="418"/>
+        <element name="DaysCounterEvent" positionX="-236" positionY="-837" width="128" height="420"/>
         <element name="DaysCounterEventLocation" positionX="-81" positionY="-801" width="162" height="193"/>
-        <element name="DaysCounterReminder" positionX="-83" positionY="-523" width="128" height="118"/>
+        <element name="DaysCounterFavorite" positionX="-576" positionY="-684" width="128" height="73"/>
+        <element name="DaysCounterReminder" positionX="-83" positionY="-523" width="128" height="120"/>
         <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="238"/>
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="178"/>
         <element name="ExpenseListCategories" positionX="540" positionY="-432" width="135" height="75"/>
         <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="73"/>
-        <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="163"/>
+        <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="180"/>
         <element name="LadyCalendarAccount" positionX="-765" positionY="950" width="128" height="148"/>
         <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="238"/>
         <element name="LoanCalcComparisonHistory" positionX="198" positionY="837" width="128" height="135"/>
