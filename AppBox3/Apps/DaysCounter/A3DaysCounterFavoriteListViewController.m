@@ -203,7 +203,8 @@
                                                                       fromDate:today
                                                                         toDate:[favorite.event effectiveStartDate] //nextDate
                                                                       isAllDay:[favorite.event.isAllDay boolValue]
-                                                                  isShortStyle:IS_IPHONE ? YES : NO];
+                                                                  isShortStyle:IS_IPHONE ? YES : NO
+                                                             isStrictShortType:NO];
             if ( IS_IPAD ) {
                 UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
                 dateLabel.text = [A3DateHelper dateStringFromDate:favorite.event.effectiveStartDate

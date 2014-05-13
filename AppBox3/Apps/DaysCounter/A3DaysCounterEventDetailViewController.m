@@ -630,7 +630,8 @@
                                                                       fromDate:now
                                                                         toDate:[info.startDate solarDate]
                                                                       isAllDay:[info.isAllDay boolValue]
-                                                                  isShortStyle:NO];
+                                                                  isShortStyle:NO
+                                                             isStrictShortType:NO];
         }
         
         if (hasEndDate) {
@@ -728,7 +729,7 @@
                                                                       fromDate:now
                                                                         toDate:hasSince ? nextDate : startDate
                                                                       isAllDay:[info.isAllDay boolValue]
-                                                                  isShortStyle:NO];
+                                                                  isShortStyle:NO isStrictShortType:NO];
         }
         
         // from / to string / repeat
@@ -908,7 +909,7 @@ EXIT_FUCTION:
                                                               fromDate:startDate
                                                                 toDate:now
                                                               isAllDay:[info.isAllDay boolValue]
-                                                          isShortStyle:NO];
+                                                          isShortStyle:NO isStrictShortType:NO];
     // from / to string / repeat
     if (hasEndDate) {
         //* case 2. 162pt  (start 안 지남, end있음)
@@ -1083,7 +1084,7 @@ EXIT_FUCTION:
                                                                       fromDate:now
                                                                         toDate:startDate
                                                                       isAllDay:[info.isAllDay boolValue]
-                                                                  isShortStyle:NO];
+                                                                  isShortStyle:NO isStrictShortType:NO];
         }
         
         if (hasEndDate) {
@@ -1163,7 +1164,7 @@ EXIT_FUCTION:
                                                                           fromDate:now
                                                                             toDate:hasSince ? nextDate : startDate
                                                                           isAllDay:[info.isAllDay boolValue]
-                                                                      isShortStyle:NO];
+                                                                      isShortStyle:NO isStrictShortType:NO];
             }
         }
         else {
@@ -1171,7 +1172,7 @@ EXIT_FUCTION:
                                                                       fromDate:startDate
                                                                         toDate:now
                                                                       isAllDay:[info.isAllDay boolValue]
-                                                                  isShortStyle:NO];
+                                                                  isShortStyle:NO isStrictShortType:NO];
         }
         
         // from / to string / repeat
@@ -1796,7 +1797,7 @@ EXIT_FUCTION:
                                                                         fromDate:[NSDate date]
                                                                           toDate:_eventItem.effectiveStartDate
                                                                         isAllDay:[_eventItem.isAllDay boolValue]
-                                                                    isShortStyle:NO];
+                                                                    isShortStyle:NO isStrictShortType:NO];
         NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                        toDate:_eventItem.effectiveStartDate
                                                                  allDayOption:[_eventItem.isAllDay boolValue]
@@ -1820,7 +1821,7 @@ EXIT_FUCTION:
                                                                         fromDate:[NSDate date]
                                                                           toDate:_eventItem.effectiveStartDate
                                                                         isAllDay:[_eventItem.isAllDay boolValue]
-                                                                    isShortStyle:NO];
+                                                                    isShortStyle:NO isStrictShortType:NO];
         NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                        toDate:_eventItem.effectiveStartDate
                                                                  allDayOption:[_eventItem.isAllDay boolValue]

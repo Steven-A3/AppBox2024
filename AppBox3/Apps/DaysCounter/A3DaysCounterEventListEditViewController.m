@@ -324,7 +324,8 @@
                                                                             fromDate:[NSDate date]
                                                                               toDate:event.effectiveStartDate
                                                                             isAllDay:[event.isAllDay boolValue]
-                                                                        isShortStyle:IS_IPHONE ? YES : NO];
+                                                                        isShortStyle:IS_IPHONE ? YES : NO
+                                                                   isStrictShortType:NO];
             NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                            toDate:event.effectiveStartDate
                                                                      allDayOption:[event.isAllDay boolValue]
@@ -353,7 +354,8 @@
                                                                             fromDate:[NSDate date]
                                                                               toDate:event.effectiveStartDate
                                                                             isAllDay:[event.isAllDay boolValue]
-                                                                        isShortStyle:IS_IPHONE ? YES : NO];
+                                                                        isShortStyle:IS_IPHONE ? YES : NO
+                                                                   isStrictShortType:NO];
             NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                            toDate:event.effectiveStartDate
                                                                      allDayOption:[event.isAllDay boolValue]

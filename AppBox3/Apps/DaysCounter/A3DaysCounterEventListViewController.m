@@ -525,7 +525,8 @@
                                                                                                         fromDate:now
                                                                                                           toDate:startDate //[item startDate]
                                                                                                         isAllDay:[item.isAllDay boolValue]
-                                                                                                    isShortStyle:IS_IPHONE ? YES : NO]];
+                                                                                                    isShortStyle:IS_IPHONE ? YES : NO
+                                                                                               isStrictShortType:NO]];
         }
         
         markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;

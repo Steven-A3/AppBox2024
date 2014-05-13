@@ -987,7 +987,7 @@
     return retDate;
 }
 
-+ (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay isShortStyle:(BOOL)isShortStyle
++ (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay isShortStyle:(BOOL)isShortStyle isStrictShortType:(BOOL)isStrictShortType
 {
     if ( toDate == nil || fromDate == nil) {
 		return @" ";
@@ -1029,25 +1029,27 @@
         flagCount++;
     }
 
+
     if (!isShortStyle) {
         if (IS_IPHONE && flagCount >= 3) {
             isShortStyle = YES;
         }
     }
+
     if (IS_IPHONE && isShortStyle && flagCount <= 2) {
         isShortStyle = NO;
     }
     if (IS_IPAD && !isShortStyle && flagCount == 6) {
         isShortStyle = YES;
     }
-    
-    
+//    NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.effectiveStartDate isAllDay:YES];
     // DurationOption 이 day 이상인 경우에 대한 예외처리. (하루가 안 되는 기간은 0day가 아닌 시분초를 출력함), (또한 hms 에 대한 옵션이 없는 경우만 해당함.)
     if ( (([largeDate timeIntervalSince1970] - [smallDate timeIntervalSince1970]) < 86400) &&
-         (!(flag & NSHourCalendarUnit) && !(flag & NSMinuteCalendarUnit) && !(flag & NSSecondCalendarUnit)) &&
+         (!(flag & NSHourCalendarUnit) && !(flag & NSMinuteCalendarUnit)) &&
+//         (!(flag & NSHourCalendarUnit) && !(flag & NSMinuteCalendarUnit) && !(flag & NSSecondCalendarUnit)) &&
         !isAllDay ) {
-        flag = NSHourCalendarUnit | NSMinuteCalendarUnit;
-        option = DurationOption_Minutes | DurationOption_Hour;
+            flag = NSHourCalendarUnit | NSMinuteCalendarUnit;
+            option = DurationOption_Minutes | DurationOption_Hour;
     }
 
 	NSCalendar *calendar = [NSCalendar currentCalendar];
@@ -1077,6 +1079,8 @@
     }
 
     NSMutableArray * resultArray = [NSMutableArray new];
+    
+    
     if (!isShortStyle) {
         if ( option & DurationOption_Year && [diffComponent year] != 0) {
             [resultArray addObject:[NSString stringWithFormat:@"%ld year%@", (long)labs([diffComponent year]), (labs([diffComponent year]) > 1 ? @"s" : @"")]];
@@ -1093,10 +1097,14 @@
         
         if (!isAllDay) {
             if (option & DurationOption_Hour && [diffComponent hour] != 0) {
-                [resultArray addObject:[NSString stringWithFormat:@"%ld hour%@", (long)labs([diffComponent hour]), (labs([diffComponent hour]) > 1 ? @"s" : @"")]];
+                [resultArray addObject:[NSString stringWithFormat: isStrictShortType ? @"%ld hr%@" : @"%ld hour%@",
+                                        (long)labs([diffComponent hour]),
+                                        (labs([diffComponent hour]) > 1 ? @"s" : @"")]];
             }
             if (option & DurationOption_Minutes && [diffComponent minute] != 0) {
-                [resultArray addObject:[NSString stringWithFormat:@"%ld minute%@", (long)labs([diffComponent minute]), (labs([diffComponent minute]) > 1 ? @"s" : @"")]];
+                [resultArray addObject:[NSString stringWithFormat: isStrictShortType ? @"%ld min%@" : @"%ld minute%@",
+                                        (long)labs([diffComponent minute]),
+                                        (labs([diffComponent minute]) > 1 ? @"s" : @"")]];
             }
         }
     }
