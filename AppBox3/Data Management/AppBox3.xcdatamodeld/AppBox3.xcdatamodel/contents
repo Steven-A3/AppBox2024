@@ -143,7 +143,6 @@
         <attribute name="hasData" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="itemDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="itemName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="num" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="price" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="qty" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -412,7 +411,7 @@
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="178"/>
         <element name="ExpenseListCategories" positionX="540" positionY="-432" width="135" height="75"/>
         <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="73"/>
-        <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="180"/>
+        <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="163"/>
         <element name="LadyCalendarAccount" positionX="-765" positionY="950" width="128" height="148"/>
         <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="238"/>
         <element name="LoanCalcComparisonHistory" positionX="198" positionY="837" width="128" height="135"/>

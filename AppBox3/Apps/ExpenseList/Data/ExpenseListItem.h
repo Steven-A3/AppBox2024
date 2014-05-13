@@ -2,7 +2,7 @@
 //  ExpenseListItem.h
 //  AppBox3
 //
-//  Created by A3 on 3/13/14.
+//  Created by A3 on 5/13/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -16,7 +16,7 @@
 @property (nonatomic, retain) NSNumber * hasData;
 @property (nonatomic, retain) NSDate * itemDate;
 @property (nonatomic, retain) NSString * itemName;
-@property (nonatomic, retain) NSNumber * num;
+@property (nonatomic, retain) NSString * order;
 @property (nonatomic, retain) NSNumber * price;
 @property (nonatomic, retain) NSNumber * qty;
 @property (nonatomic, retain) NSNumber * subTotal;

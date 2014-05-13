@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ATSDragToReorderTableViewController.h"
 
 extern NSString *const A3ExpenseListCurrentBudgetID;
 extern NSString *const A3ExpenseListCurrencyCode;
@@ -20,7 +21,6 @@ extern NSString *const A3NotificationExpenseListCurrencyCodeChanged;
 
 @end
 
-@interface A3ExpenseListMainViewController : UITableViewController
-//@property (nonatomic, strong) NSString *currentBudgetId;
+@interface A3ExpenseListMainViewController : ATSDragToReorderTableViewController
 - (NSString *)defaultCurrencyCode;
 @end

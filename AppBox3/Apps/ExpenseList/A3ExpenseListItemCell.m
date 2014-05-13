@@ -1,4 +1,4 @@
-	//
+//
 //  A3ExpenseListItemCell.m
 //  A3TeamWork
 //
@@ -14,10 +14,9 @@
 #import "A3CalculatorDelegate.h"
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 #import "A3ExpenseListMainViewcontroller.h"
-#import "NSString+conversion.h"
 
 
-	@interface A3ExpenseListItemCell() <UITextFieldDelegate, A3KeyboardDelegate, A3ExpenseListAccessoryDelegate, A3CalculatorDelegate>
+@interface A3ExpenseListItemCell() <UITextFieldDelegate, A3KeyboardDelegate, A3ExpenseListAccessoryDelegate, A3CalculatorDelegate>
 @property (nonatomic, strong) UIButton *checkButton;
 @property (nonatomic, strong) UIView *sep1View;
 @property (nonatomic, strong) UIView *sep2View;
@@ -41,7 +40,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [self setSelectionStyle:UITableViewCellSelectionStyleDefault];
         [self initializeSubviews];
         [self setupConstraintLayout];
     }

@@ -481,6 +481,8 @@
 		6896DC851921C13E00FA98F3 /* DaysCounterFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896DC841921C13E00FA98F3 /* DaysCounterFavorite.m */; };
 		6896DC8B1921CA2900FA98F3 /* DaysCounterEvent+management.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896DC8A1921CA2900FA98F3 /* DaysCounterEvent+management.m */; };
 		6896DC8E1921CC4900FA98F3 /* DaysCounterEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896DC8D1921CC4900FA98F3 /* DaysCounterEvent.m */; };
+		6896DC971921D64F00FA98F3 /* ExpenseListItem+management.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896DC961921D64F00FA98F3 /* ExpenseListItem+management.m */; };
+		6896DC9A1921FD2700FA98F3 /* ExpenseListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896DC991921FD2700FA98F3 /* ExpenseListItem.m */; };
 		6897918E1865C57600F74826 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6897918D1865C57600F74826 /* CurrencyFavorite.m */; };
 		689791911865C68200F74826 /* CurrencyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689791901865C68200F74826 /* CurrencyHistory.m */; };
 		689791921865C75100F74826 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6897918D1865C57600F74826 /* CurrencyFavorite.m */; };
@@ -779,7 +781,6 @@
 		68E2A6C218D0B41E00E834D9 /* ExpenseListBudget.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6C118D0B41E00E834D9 /* ExpenseListBudget.m */; };
 		68E2A6C518D0B41E00E834D9 /* ExpenseListHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6C418D0B41E00E834D9 /* ExpenseListHistory.m */; };
 		68E2A6C818D0B41E00E834D9 /* ExpenseListCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6C718D0B41E00E834D9 /* ExpenseListCategories.m */; };
-		68E2A6CB18D0B41E00E834D9 /* ExpenseListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6CA18D0B41E00E834D9 /* ExpenseListItem.m */; };
 		68E2A6CF18D0B46400E834D9 /* TipCalcRoundMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6CE18D0B46400E834D9 /* TipCalcRoundMethod.m */; };
 		68E2A6D218D0B46500E834D9 /* TipCalcRecently.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6D118D0B46500E834D9 /* TipCalcRecently.m */; };
 		68E2A6D518D0B46500E834D9 /* TipCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6D418D0B46500E834D9 /* TipCalcHistory.m */; };
@@ -1736,6 +1737,10 @@
 		6896DC8A1921CA2900FA98F3 /* DaysCounterEvent+management.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DaysCounterEvent+management.m"; sourceTree = "<group>"; };
 		6896DC8C1921CC4900FA98F3 /* DaysCounterEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaysCounterEvent.h; sourceTree = "<group>"; };
 		6896DC8D1921CC4900FA98F3 /* DaysCounterEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterEvent.m; sourceTree = "<group>"; };
+		6896DC951921D64F00FA98F3 /* ExpenseListItem+management.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ExpenseListItem+management.h"; path = "Data/ExpenseListItem+management.h"; sourceTree = "<group>"; };
+		6896DC961921D64F00FA98F3 /* ExpenseListItem+management.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ExpenseListItem+management.m"; path = "Data/ExpenseListItem+management.m"; sourceTree = "<group>"; };
+		6896DC981921FD2700FA98F3 /* ExpenseListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListItem.h; path = Data/ExpenseListItem.h; sourceTree = "<group>"; };
+		6896DC991921FD2700FA98F3 /* ExpenseListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListItem.m; path = Data/ExpenseListItem.m; sourceTree = "<group>"; };
 		6897918C1865C57600F74826 /* CurrencyFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyFavorite.h; path = Apps/Currency/Model/CurrencyFavorite.h; sourceTree = "<group>"; };
 		6897918D1865C57600F74826 /* CurrencyFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyFavorite.m; path = Apps/Currency/Model/CurrencyFavorite.m; sourceTree = "<group>"; };
 		6897918F1865C68200F74826 /* CurrencyHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyHistory.h; path = Apps/Currency/Model/CurrencyHistory.h; sourceTree = "<group>"; };
@@ -2295,8 +2300,6 @@
 		68E2A6C418D0B41E00E834D9 /* ExpenseListHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListHistory.m; path = Data/ExpenseListHistory.m; sourceTree = "<group>"; };
 		68E2A6C618D0B41E00E834D9 /* ExpenseListCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListCategories.h; path = Data/ExpenseListCategories.h; sourceTree = "<group>"; };
 		68E2A6C718D0B41E00E834D9 /* ExpenseListCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListCategories.m; path = Data/ExpenseListCategories.m; sourceTree = "<group>"; };
-		68E2A6C918D0B41E00E834D9 /* ExpenseListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListItem.h; path = Data/ExpenseListItem.h; sourceTree = "<group>"; };
-		68E2A6CA18D0B41E00E834D9 /* ExpenseListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListItem.m; path = Data/ExpenseListItem.m; sourceTree = "<group>"; };
 		68E2A6CD18D0B46400E834D9 /* TipCalcRoundMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TipCalcRoundMethod.h; path = Data/TipCalcRoundMethod.h; sourceTree = "<group>"; };
 		68E2A6CE18D0B46400E834D9 /* TipCalcRoundMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TipCalcRoundMethod.m; path = Data/TipCalcRoundMethod.m; sourceTree = "<group>"; };
 		68E2A6D018D0B46500E834D9 /* TipCalcRecently.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TipCalcRecently.h; path = Data/TipCalcRecently.h; sourceTree = "<group>"; };
@@ -4823,8 +4826,8 @@
 		68E2A6BC18D0B3F600E834D9 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				68E2A6C918D0B41E00E834D9 /* ExpenseListItem.h */,
-				68E2A6CA18D0B41E00E834D9 /* ExpenseListItem.m */,
+				6896DC981921FD2700FA98F3 /* ExpenseListItem.h */,
+				6896DC991921FD2700FA98F3 /* ExpenseListItem.m */,
 				68E2A6C618D0B41E00E834D9 /* ExpenseListCategories.h */,
 				68E2A6C718D0B41E00E834D9 /* ExpenseListCategories.m */,
 				68E2A6C318D0B41E00E834D9 /* ExpenseListHistory.h */,
@@ -4833,6 +4836,8 @@
 				68E2A6C118D0B41E00E834D9 /* ExpenseListBudget.m */,
 				68E2A6BD18D0B41D00E834D9 /* ExpenseListBudgetLocation.h */,
 				68E2A6BE18D0B41D00E834D9 /* ExpenseListBudgetLocation.m */,
+				6896DC951921D64F00FA98F3 /* ExpenseListItem+management.h */,
+				6896DC961921D64F00FA98F3 /* ExpenseListItem+management.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -5990,6 +5995,7 @@
 				68F1C92318D82500009FAE8A /* NYXProgressiveImageView.m in Sources */,
 				68B635BF17B504C100570B09 /* A3RootViewController_iPad.m in Sources */,
 				68143D6618E3EC7C00569691 /* A3TableViewMenuElement.m in Sources */,
+				6896DC9A1921FD2700FA98F3 /* ExpenseListItem.m in Sources */,
 				68E6F35217B2722000F10ED9 /* NSUserDefaults+A3Defaults.m in Sources */,
 				68B6A2DA18CEC76D004084EF /* TemperatureConveter.m in Sources */,
 				68B6A2F918CEC76D004084EF /* A3UnitPriceNoteCell.m in Sources */,
@@ -6229,6 +6235,7 @@
 				17D42564DA81AFE9484B0D58 /* A3TranslatorMessageCell.m in Sources */,
 				6825365218A7AA4C00EAFB84 /* MASLayoutConstraint.m in Sources */,
 				68F1C89418D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.m in Sources */,
+				6896DC971921D64F00FA98F3 /* ExpenseListItem+management.m in Sources */,
 				68143CFB18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.m in Sources */,
 				68B6A2D918CEC76D004084EF /* A3UnitConverterViewController.m in Sources */,
 				68E2A6D218D0B46500E834D9 /* TipCalcRecently.m in Sources */,
@@ -6279,7 +6286,6 @@
 				68B6A31118CEC76D004084EF /* WalletItem+initialize.m in Sources */,
 				17D42BE8FBF00830AA2C09E7 /* A3MainMenuTableViewController.m in Sources */,
 				68F1C8F818D7FA41009FAE8A /* MPFoldTransition.m in Sources */,
-				68E2A6CB18D0B41E00E834D9 /* ExpenseListItem.m in Sources */,
 				68143D4F18E3EC7C00569691 /* A3JHSelectTableViewController.m in Sources */,
 				68DC38251871BD0C0088DDA0 /* A3KeychainUtils.m in Sources */,
 				68F1C8C618D7F37D009FAE8A /* A3LadyCalendarChartViewController.m in Sources */,

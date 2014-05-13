@@ -20,6 +20,9 @@
 #import "A3AppDelegate.h"
 #import "ExpenseListHistory.h"
 #import "NSString+conversion.h"
+#import "ExpenseListItem+management.h"
+#import "FMMoveTableView.h"
+#import "NSMutableArray+A3Sort.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -28,7 +31,7 @@ NSString *const A3ExpenseListCurrentBudgetID = @"A3ExpenseListCurrentBudgetID";
 NSString *const A3ExpenseListCurrencyCode = @"A3ExpenseListCurrencyCode";
 NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationExpenseListCurrencyCodeChanged";
 
-@interface A3ExpenseListMainViewController () <UIPopoverControllerDelegate, A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate, A3ExpenseListHistoryDelegate>
+@interface A3ExpenseListMainViewController () <ATSDragToReorderTableViewControllerDelegate, UIPopoverControllerDelegate, A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate, A3ExpenseListHistoryDelegate>
 @property (nonatomic, strong) A3ExpenseListHeaderView *headerView;
 @property (nonatomic, strong) UIView *sep1View;
 @property (nonatomic, strong) UIView *sep2View;
@@ -40,7 +43,7 @@ NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationE
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, strong) A3ExpenseListColumnSectionView *columnSectionView;
-@property (nonatomic, strong) NSArray *tableDataSourceArray;
+@property (nonatomic, strong) NSMutableArray *tableDataSourceArray;
 @property (nonatomic, strong) NSNumberFormatter *priceNumberFormatter;
 @property (nonatomic, strong) UIButton *addItemButton;
 @property (strong, nonatomic) UIView *topWhitePaddingView;
@@ -55,33 +58,28 @@ NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationE
 	BOOL _isAutoMovingAddBudgetView;
 }
 
-- (id)init {
-	self = [super initWithStyle:UITableViewStylePlain];
-	if (self) {
-		_isAutoMovingAddBudgetView = NO;
-	}
-
-	return self;
-}
-
 NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+	_isAutoMovingAddBudgetView = NO;
+
     [self makeBackButtonEmptyArrow];
 	[self leftBarButtonAppsButton];
     [self registerContentSizeCategoryDidChangeNotification];
     
     self.title = @"Expense List";
-    
+
+	self.dragDelegate = self;
+
     _addItemButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_addItemButton setImage:[UIImage imageNamed:@"add03"] forState:UIControlStateNormal];
     [self.view addSubview:_addItemButton];
     [_addItemButton addTarget:self action:@selector(addItemButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     _addItemButton.hidden = YES;
-    
+
     // 테이블 뷰 Column 구분선.
     _sep1View = [[UIView alloc] initWithFrame:CGRectZero];
     _sep2View = [[UIView alloc] initWithFrame:CGRectZero];
@@ -291,25 +289,29 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 {
     ExpenseListItem *item = [ExpenseListItem MR_createEntity];
     [_currentBudget addExpenseItemsObject:item];
-    item.num = @(_tableDataSourceArray.count);
     item.itemDate = [NSDate date];
     item.itemName = @"";
     item.price = @0;
     item.qty = @1;
+	item.order = [item makeOrderString];
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+	NSInteger focusingRow = _currentBudget.expenseItems.count - 1;
+
     _tableDataSourceArray = [self loadBudgetFromDB];
+	[self.tableView reloadData];
 
     [CATransaction begin];
     [CATransaction setCompletionBlock:^{
         if (focus) {
-            A3ExpenseListItemCell *cell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_tableDataSourceArray.count-1 inSection:0]];
+            A3ExpenseListItemCell *cell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:focusingRow inSection:0]];
             [cell.nameTextField becomeFirstResponder];
         }
     }];
-    [self.tableView beginUpdates];
-    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_tableDataSourceArray.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-    [self.tableView endUpdates];
+//    [self.tableView beginUpdates];
+//    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_tableDataSourceArray.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//    [self.tableView endUpdates];
     [CATransaction commit];
 }
 
@@ -343,7 +345,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	_sharePopoverController = nil;
 }
 
--(void) didTapOnTableView:(UIGestureRecognizer *)recognizer {
+- (void) didTapOnTableView:(UIGestureRecognizer *)recognizer {
     CGPoint tapLocation = [recognizer locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:tapLocation];
 	FNLOG(@"%ld", (long)indexPath.row);
@@ -467,7 +469,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
                                                                                  action:@selector(doneButtonAction:)];
         _isShowMoreMenu = YES;
         _moreMenuButtons = @[self.shareButton, self.addNewButton, [self historyButton:NULL]];
-        [self disableMoreButtonsIfBugdetNotExist];
+		[self disableMoreButtonsIfBudgetNotExist];
         _moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
     };
 }
@@ -478,6 +480,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     
     ExpenseListItem *item = [ExpenseListItem MR_createEntity];
     [_currentBudget addExpenseItemsObject:item];
+	item.order = [item makeOrderString];
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
@@ -487,7 +490,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     
     [self.tableView reloadData];
     [self setAddItemButtonPosition];
-    //[self setExpandContentSizeForAddItem];
 }
 
 #pragma mark - Data Manipulate
@@ -570,37 +572,37 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     }
 }
 
--(NSArray *)loadBudgetFromDB
+- (NSMutableArray *)loadBudgetFromDB
 {
+	FNLOG();
     NSArray *result = nil;
 
     if (_currentBudget) {
-        [_currentBudget.expenseItems sortedArrayUsingDescriptors:nil];
-        
-        result = [[_currentBudget.expenseItems allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            ExpenseListItem *item1 = (ExpenseListItem *)obj1;
-            ExpenseListItem *item2 = (ExpenseListItem *)obj2;
-            //return [item1.itemDate compare:item2.itemDate];
-            return [item1.num compare:item2.num];
-        }];
-        
-        
-        // 시뮬레이터에서 , iPhone->iPad, 기본 아이템 카운트가 안 맞는 경우가 있음.
-        if (IS_IPAD && result.count < kDefaultItemCount_iPad) {
-            NSUInteger leakCount = kDefaultItemCount_iPad - result.count;
-            NSMutableArray * tempArray = [NSMutableArray arrayWithArray:result];
-            
-            for (int i=0; i < leakCount; i++) {
-                ExpenseListItem *item = [ExpenseListItem MR_createEntity];
-                [tempArray addObject:item];
-                [_currentBudget addExpenseItemsObject:item];
-            }
-            
-            result = tempArray;
-        }
-    };
+		// Delete !hasData rows and recreate it with required number of rows
+		for (ExpenseListItem *item in _currentBudget.expenseItems) {
+			if (![item.hasData boolValue]) {
+				[item MR_deleteEntity];
+			}
+		}
+
+		NSInteger minimumNumberOfRows = IS_IPHONE ? kDefaultItemCount_iPhone : kDefaultItemCount_iPad;
+
+		if ([_currentBudget.expenseItems count] < minimumNumberOfRows) {
+			NSUInteger leakCount = minimumNumberOfRows - [_currentBudget.expenseItems count];
+
+			for (NSInteger idx = 0; idx < leakCount; idx++) {
+				ExpenseListItem *item = [ExpenseListItem MR_createEntity];
+				item.order = [item makeOrderString];
+				[_currentBudget addExpenseItemsObject:item];
+			}
+		}
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+		NSSortDescriptor *sortByOrder = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
+		result = [_currentBudget.expenseItems sortedArrayUsingDescriptors:@[sortByOrder]];
+	};
     
-    return result;
+    return [NSMutableArray arrayWithArray:result];
 }
 
 - (void)setAddItemButtonPosition
@@ -669,11 +671,11 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
             defaultCount = kDefaultItemCount_iPad;
         }
         
-        for (int i = 0; i < defaultCount; i++) {
+        for (NSInteger i = 0; i < defaultCount; i++) {
             ExpenseListItem *item = [ExpenseListItem MR_createEntity];
-            item.num = @(i);
+			item.order = [item makeOrderString];
             [_currentBudget addExpenseItemsObject:item];
-            if (i==0) {
+            if (i == 0) {
                 item.itemDate = [NSDate date];
                 item.itemName = @"";
                 item.price = @0;
@@ -689,68 +691,21 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     [self calculateAndDisplayResultWithAnimation:animation];
     _tableDataSourceArray = [self loadBudgetFromDB];
     [self.tableView reloadData];
-    [self disableMoreButtonsIfBugdetNotExist];
+	[self disableMoreButtonsIfBudgetNotExist];
 }
 
--(void)reloadBudgetDataAndRemoveEmptyItem {
-    
+- (void)reloadBudgetDataAndRemoveEmptyItem {
     _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"budgetId" withValue:[self currentBudgetId]];
-    
-    if (!_currentBudget) {
-        [self reloadBudgetDataWithAnimation:NO];
-        return;
-        
-    } else {
-        _tableDataSourceArray = [self loadBudgetFromDB];
-        
-        // 값이 있는 데이터를 상위로.
-        NSMutableArray * valideValueArray1 = [NSMutableArray new];
-        NSMutableArray * noDateValueArray2 = [NSMutableArray new];
-        
-        
-        for (ExpenseListItem * aItem in _tableDataSourceArray) {
-            if ([aItem.hasData boolValue]) {
-                [valideValueArray1 addObject:aItem];
-            }
-            else {
-                // 유효한 아이템 데이터가 없는 경우, itemDate 를 없애고 순서에서 제외 시킨다.
-                aItem.itemDate = nil;
-                [noDateValueArray2 addObject:aItem];
-            }
-        }
-        
-        // 기록 당시 순서 고려하여 정렬 시작.
-        NSMutableArray * result = [NSMutableArray new];
-        // 1. 유효한 값 리스트, 순서에 맞춰 정렬 후, 대입.
-        [result addObjectsFromArray:[valideValueArray1 sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            ExpenseListItem *item1 = (ExpenseListItem *)obj1;
-            ExpenseListItem *item2 = (ExpenseListItem *)obj2;
-            
-            return [item1.num compare:item2.num];
-        }]];
-        
-        // 2. 유효하지 않은 값 리스트, 대입.
-        [result addObjectsFromArray:noDateValueArray2];
-        
-        // 3. 대입된 아이템들, 순서 재지정.
-        for (int i =0 ; i < result.count; i++) {
-            ExpenseListItem * aItem = [result objectAtIndex:i];
-            if (i==0 && (aItem.itemDate == nil || ![aItem.hasData boolValue])) {
-                aItem.itemDate = [NSDate date];   // 0번째 줄에서는 출력이 가능하도록...
-                aItem.itemName = @"";
-                aItem.price = @0;
-                aItem.qty = @1;
-            }
-            aItem.num = @(i);
-        }
-        
-        _tableDataSourceArray = result;
-        
-        [self reloadBudgetDataWithAnimation:NO];
+
+    if (_currentBudget) {
+		_tableDataSourceArray = [self loadBudgetFromDB];
     }
+	[self reloadBudgetDataWithAnimation:NO];
 }
+
 #pragma mark Save Related
--(void)saveCurrentBudget
+
+- (void)saveCurrentBudget
 {
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
@@ -758,7 +713,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     NSLog(@"Budget count : %ld", (long)[[ExpenseListBudget MR_findAll] count]);
 }
 
--(void)saveCurrentBudgetToHistory
+- (void)saveCurrentBudgetToHistory
 {
     NSDate * updateDate = [NSDate date];
 
@@ -782,7 +737,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 #pragma mark - misc
-- (void)disableMoreButtonsIfBugdetNotExist {
+
+- (void)disableMoreButtonsIfBudgetNotExist {
 
     if (IS_IPHONE) {
         // AddNew
@@ -874,6 +830,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+	FNLOG(@"%ld", (long)[_tableDataSourceArray count]);
     return [_tableDataSourceArray count];
 }
 
@@ -883,36 +840,50 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     if (!cell) {
         cell = [[A3ExpenseListItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ExpenseListMainCellIdentifier];
     }
+	[self setupCell:cell atIndexPath:indexPath];
 
-    ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
-    cell.delegate = self;
-
-    if ([item.hasData boolValue] || indexPath.row == 0) {    // kjh 추후에 변경하도록
-        cell.nameTextField.text = item.itemName;
-        cell.priceTextField.text = [self.priceNumberFormatter stringFromNumber:item.price];
-        cell.qtyTextField.text = item.qty.stringValue;
-        cell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:@(item.price.floatValue * item.qty.floatValue)];
-    } else {
-        cell.nameTextField.text = @"";
-        cell.priceTextField.text = @"";
-        cell.qtyTextField.text = @"";
-        cell.subTotalLabel.text = @"";
-        cell.nameTextField.placeholder = @"";
-        cell.priceTextField.placeholder = @"";
-        cell.qtyTextField.placeholder = @"";
-    }
-    
     return cell;
 }
 
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UITableViewCell *)cellIdenticalToCellAtIndexPath:(NSIndexPath *)indexPath forDragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController {
+	A3ExpenseListItemCell *cell = [[A3ExpenseListItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ExpenseListMainCellIdentifier];
+	[self setupCell:cell atIndexPath:indexPath];
+
+	return cell;
+}
+
+- (BOOL)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController shouldHideDraggableIndicatorForDraggingToRow:(NSIndexPath *)destinationIndexPath {
+	return NO;
+}
+
+- (void)setupCell:(A3ExpenseListItemCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+	ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
+	cell.delegate = self;
+
+	if ([item.hasData boolValue] || indexPath.row == 0) {    // kjh 추후에 변경하도록
+		cell.nameTextField.text = item.itemName;
+		cell.priceTextField.text = [self.priceNumberFormatter stringFromNumber:item.price];
+		cell.qtyTextField.text = item.qty.stringValue;
+		cell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:@(item.price.floatValue * item.qty.floatValue)];
+	} else {
+		cell.nameTextField.text = @"";
+		cell.priceTextField.text = @"";
+		cell.qtyTextField.text = @"";
+		cell.subTotalLabel.text = @"";
+		cell.nameTextField.placeholder = @"";
+		cell.priceTextField.placeholder = @"";
+		cell.qtyTextField.placeholder = @"";
+	}
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     [_columnSectionView setNeedsDisplay];
     _addItemButton.userInteractionEnabled = _currentBudget == nil ? NO : YES;
     
     return _columnSectionView;
 }
 
--(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
 	//if (item.itemDate == nil || ![item.hasData boolValue]) {
@@ -923,12 +894,12 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     return YES;
 }
 
--(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return UITableViewCellEditingStyleDelete;
 }
 
--(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int defaultItemCount = 1;
     
@@ -977,16 +948,16 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     }
 }
 
--(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return IS_RETINA ? 56.0 : 57.0;
 }
 
--(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     return indexPath.row == 0 ? (IS_RETINA ? 43.5 : 43) : 44.0;
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
     if (_topWhitePaddingView) {
         if (scrollView.contentOffset.y < -scrollView.contentInset.top ) {
@@ -1003,9 +974,18 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     }
 }
 
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+	return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+	FNLOG();
+	[_tableDataSourceArray moveItemInSortedArrayFromIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
+}
+
 #pragma mark - BudgetSetting Delegate
 
--(void)setExpenseBudgetDataFor:(ExpenseListBudget *)aBudget
+- (void)setExpenseBudgetDataFor:(ExpenseListBudget *)aBudget
 {
     _currentBudget = aBudget;
     
@@ -1057,11 +1037,11 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
         ExpenseListItem *temp = [ExpenseListItem MR_createEntity];
         temp.itemDate = item.itemDate;
         temp.itemName = item.itemName;
-        temp.num = item.num;
         temp.price = item.price;
         temp.qty = item.qty;
         temp.subTotal = item.subTotal;
         temp.hasData = item.hasData;
+		temp.order = [item makeOrderString];
         temp.budget = _currentBudget;
     }
 
@@ -1077,7 +1057,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 -(void)didDismissExpenseHistoryViewController {
-    [self disableMoreButtonsIfBugdetNotExist];
+	[self disableMoreButtonsIfBudgetNotExist];
     NSLog(@"History : %ld", (long)[[ExpenseListHistory MR_findAll] count]);
     NSLog(@"Budget : %ld", (long)[[ExpenseListBudget MR_findAll] count]);
     NSLog(@"Items : %ld", (long)[[ExpenseListItem MR_findAll] count]);
@@ -1167,7 +1147,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     item.hasData = @(YES);
     
     // More Button 활성화.
-    [self disableMoreButtonsIfBugdetNotExist];
+	[self disableMoreButtonsIfBudgetNotExist];
     
     // 예외처리, itemName 편집 종료시, top scroll 적용.
     if (textField == aCell.nameTextField && textField == [self firstResponder]) {

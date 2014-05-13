@@ -97,44 +97,42 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 {
     [super viewDidLoad];
 
-    @autoreleasepool {
-		self.title = NSLocalizedString(@"Currency", @"Currency");
-		self.dragDelegate = self;
+	self.title = NSLocalizedString(@"Currency", @"Currency");
+	self.dragDelegate = self;
 
-		self.refreshControl = [UIRefreshControl new];
-		[self.refreshControl addTarget:self action:@selector(refreshControlValueChanged) forControlEvents:UIControlEventValueChanged];
+	self.refreshControl = [UIRefreshControl new];
+	[self.refreshControl addTarget:self action:@selector(refreshControlValueChanged) forControlEvents:UIControlEventValueChanged];
 
-        [self setupSwipeRecognizers];
+	[self setupSwipeRecognizers];
 
-        [self makeBackButtonEmptyArrow];
-        [self leftBarButtonAppsButton];
+	[self makeBackButtonEmptyArrow];
+	[self leftBarButtonAppsButton];
 
-        if (IS_IPHONE) {
-            [self rightButtonMoreButton];
-        } else {
-            self.navigationItem.hidesBackButton = YES;
+	if (IS_IPHONE) {
+		[self rightButtonMoreButton];
+	} else {
+		self.navigationItem.hidesBackButton = YES;
 
-            UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
-            UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
-            UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-			self.historyBarButton = [self historyBarButton:[CurrencyHistory class]];
-            space.width = 24.0;
+		UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+		UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
+		UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+		self.historyBarButton = [self historyBarButton:[CurrencyHistory class]];
+		space.width = 24.0;
 
-            self.navigationItem.rightBarButtonItems = @[settings, space, self.historyBarButton, space, share];
-        }
+		self.navigationItem.rightBarButtonItems = @[settings, space, self.historyBarButton, space, share];
+	}
 
-        [self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
-        [self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyActionCellID];
-        [self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVEqualCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyEqualCellID];
+	[self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
+	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyActionCellID];
+	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVEqualCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyEqualCellID];
 
-        self.tableView.rowHeight = 84.0;
-        self.tableView.separatorColor = [UIColor colorWithRed:200.0 / 255.0 green:200.0 / 255.0 blue:200.0 / 255.0 alpha:1.0];
-        self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
-        self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.rowHeight = 84.0;
+	self.tableView.separatorColor = [UIColor colorWithRed:200.0 / 255.0 green:200.0 / 255.0 blue:200.0 / 255.0 alpha:1.0];
+	self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+	self.tableView.showsVerticalScrollIndicator = NO;
 
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:USMStoreDidImportChangesNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3CurrencySettingsChangedNotification object:nil];
-    };
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:USMStoreDidImportChangesNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3CurrencySettingsChangedNotification object:nil];
 }
 
 - (void)settingsChanged {
@@ -600,10 +598,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 // Assumption : self.favorites is a sorted list.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-	@autoreleasepool {
-		[self.favorites moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-		FNLOG(@"from: %ld, to: %ld", (long)fromIndexPath.row, (long)toIndexPath.row);
-	}
+	[self.favorites moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+	FNLOG(@"from: %ld, to: %ld", (long)fromIndexPath.row, (long)toIndexPath.row);
 }
 
 #pragma mark - ATSDragToReorderTableViewControllerDraggableIndicators
@@ -997,7 +993,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 #endif
 
 - (BOOL)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController shouldHideDraggableIndicatorForDraggingToRow:(NSIndexPath *)destinationIndexPath {
-	FNLOG();
 	return NO;
 }
 
