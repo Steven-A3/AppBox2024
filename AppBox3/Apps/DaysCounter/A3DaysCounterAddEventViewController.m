@@ -6,7 +6,6 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <AssetsLibrary/AssetsLibrary.h>
 #import <AddressBookUI/AddressBookUI.h>
 #import "A3DaysCounterAddEventViewController.h"
 #import "UIViewController+A3Addition.h"
@@ -20,7 +19,6 @@
 #import "A3DaysCounterSetupCalendarViewController.h"
 #import "A3DaysCounterSetupDurationViewController.h"
 #import "A3DaysCounterSetupLocationViewController.h"
-#import "A3DaysCounterLocationDetailViewController.h"
 #import "DaysCounterCalendar.h"
 #import "DaysCounterCalendar+Extension.h"
 #import "DaysCounterEvent.h"
@@ -32,28 +30,28 @@
 #import "Reachability.h"
 #import "A3AppDelegate+appearance.h"
 #import "A3DateHelper.h"
-#import "A3DateKeyboardViewController.h"
 #import "A3WalletNoteCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "DaysCounterFavorite.h"
-#import "NSString+conversion.h"
 #import "DaysCounterEvent+management.h"
+#import "A3JHTableViewExpandableHeaderCell.h"
+#import "UITableView+utility.h"
 
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
 #define ActionTag_DeleteEvent   102
 
-@interface A3DaysCounterAddEventViewController () <UITextFieldDelegate, UITextViewDelegate, UIActionSheetDelegate, A3PhotoSelectViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate, UIPopoverControllerDelegate, A3DateKeyboardDelegate>
+@interface A3DaysCounterAddEventViewController () <UITextFieldDelegate, UITextViewDelegate, UIActionSheetDelegate, A3PhotoSelectViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate, UIPopoverControllerDelegate, A3DateKeyboardDelegate, A3TableViewExpandableHeaderCellProtocol>
 @property (strong, nonatomic) NSArray *cellIDArray;
 @property (strong, nonatomic) NSMutableArray *sectionTitleArray;
 @property (strong, nonatomic) NSString *inputDateKey;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) UIPopoverController *imagePopover;
 @property (assign, nonatomic) BOOL isAdvancedCellOpen;
-@property (assign, nonatomic) BOOL isDurationIntialized;//temp...
+@property (assign, nonatomic) BOOL isDurationInitialized;//temp...
 @property (weak, nonatomic) UITextView *textViewResponder;
-@property (strong, nonatomic) UIImage *thumnailImage;
+@property (strong, nonatomic) UIImage *thumbnailImage;
 @property (strong, nonatomic) UIImage *photoImage;
 @end
 
@@ -83,7 +81,7 @@
     if (_eventItem) {
         self.title = @"Edit Event";
         _isAdvancedCellOpen = [self hasAdvancedData];
-        _isDurationIntialized = YES;
+        _isDurationInitialized = YES;
     }
     else {
         self.title = @"Add Event";
@@ -129,9 +127,9 @@
     if ( _eventItem ) {
         [self configureTableViewDataSourceForEventInfo:_eventItem];
         if (_eventItem.imageFilename) {
-            _thumnailImage = [A3DaysCounterModelManager photoThumbnailFromFilename:_eventItem.imageFilename];
+            _thumbnailImage = [A3DaysCounterModelManager photoThumbnailFromFilename:_eventItem.imageFilename];
             _photoImage = [A3DaysCounterModelManager photoImageFromFilename:_eventItem.imageFilename];
-            _thumnailImage = [A3DaysCounterModelManager circularScaleNCrop:_thumnailImage rect:CGRectMake(0, 0, _thumnailImage.size.width, _thumnailImage.size.height)];
+            _thumbnailImage = [A3DaysCounterModelManager circularScaleNCrop:_thumbnailImage rect:CGRectMake(0, 0, _thumbnailImage.size.width, _thumbnailImage.size.height)];
         }
     }
     else {
@@ -472,16 +470,16 @@
                     textField.delegate = self;
                     [button addTarget:self action:@selector(toggleFavorite:) forControlEvents:UIControlEventTouchUpInside];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                }
-                    break;
+					break;
+				}
                 case EventCellType_Photo:
                 {
                     cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventPhotoCell" owner:nil options:nil] lastObject];
                     UIButton *button = (UIButton*)[cell viewWithTag:11];
                     [button addTarget:self action:@selector(photoAction:) forControlEvents:UIControlEventTouchUpInside];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                }
-                    break;
+					break;
+				}
                 case EventCellType_IsLunar:
                 case EventCellType_IsAllDay:
                 case EventCellType_IsPeriod:
@@ -491,27 +489,25 @@
                     UISwitch *swButton = (UISwitch*)[cell viewWithTag:11];
                     [swButton addTarget:self action:@selector(toggleSwitchAction:) forControlEvents:UIControlEventValueChanged];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                }
-                    break;
+					break;
+				}
                 case EventCellType_StartDate:
                 case EventCellType_EndDate:{
                     cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventDateCell" owner:nil options:nil] lastObject];
                     UIImageView *imageView = (UIImageView*)[cell viewWithTag:11];
-//                    imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//                    imageView.tintColor = [UIColor lightGrayColor];
                     [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:46.0]];
                     [SFKImage setDefaultColor:[UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0]];
                     imageView.image = [SFKImage imageNamed:@"f"];
                     imageView.tintColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
-                }
-                    break;
+					break;
+				}
                 case EventCellType_Calendar:
                 {
                     cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCalendarCell" owner:nil options:nil] lastObject];
                     UIImageView *imageView = (UIImageView*)[cell viewWithTag:11];
                     imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-                }
-                    break;
+					break;
+				}
                 case EventCellType_Notes:{
 					A3WalletNoteCell *noteCell = [A3WalletNoteCell new];
 					[noteCell setupTextView];
@@ -519,22 +515,22 @@
 					noteCell.textView.delegate = self;
 
 					cell = noteCell;
-                }
-                    break;
+					break;
+				}
                 case EventCellType_DateInput:{
                     cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventDateInputCell" owner:nil options:nil] lastObject];
                     UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
                     [datePicker addTarget:self action:@selector(dateChangeAction:) forControlEvents:UIControlEventValueChanged];
-                }
-                    break;
+					break;
+				}
                 case EventCellType_Advanced:{
-                    cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventAdvancedCell" owner:nil options:nil] lastObject];
-                    cell.contentView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
-                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    UIButton *button = (UIButton*)[cell viewWithTag:11];
-                    button.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((_isAdvancedCellOpen ?  90 : 270)));
-                }
-                    break;
+					A3JHTableViewExpandableHeaderCell *expandableCell = [[A3JHTableViewExpandableHeaderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+					expandableCell.expandButton.transform = CGAffineTransformRotate(CGAffineTransformIdentity, (CGFloat) DegreesToRadians(_isAdvancedCellOpen ? -179.9 : 0 ));
+					expandableCell.delegate = self;
+					expandableCell.titleLabel.text = @"ADVANCED";
+					cell = expandableCell;
+					break;
+				}
             }
         }
         if ( cell && (itemType != EventCellType_DateInput) ) {
@@ -549,6 +545,10 @@
     }
     
     return cell;
+}
+
+- (void)expandButtonPressed:(UIButton *)expandButton {
+	[self advancedRowTouchedUp:[self.tableView indexPathForCellSubview:expandButton]];
 }
 
 - (void)updateTableViewCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
@@ -668,8 +668,8 @@
     UIButton *button = (UIButton*)[cell viewWithTag:11];
     //UIImage *image = [A3DaysCounterModelManager photoThumbnailFromFilename:_eventItem.imageFilename];
     //if (image) {
-    if (_thumnailImage) {
-        [button setImage:_thumnailImage forState:UIControlStateNormal];
+    if (_thumbnailImage) {
+		[button setImage:_thumbnailImage forState:UIControlStateNormal];
     }
     else {
         NSMutableArray *array = [NSMutableArray array];
@@ -940,15 +940,14 @@
 
 - (void)advancedTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType
 {
-    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-    UILabel *button = (UILabel*)[cell viewWithTag:11];
+	A3JHTableViewExpandableHeaderCell *expandableCell = (A3JHTableViewExpandableHeaderCell *) cell;
     if (_isAdvancedCellOpen) {
-        textLabel.textColor = [A3AppDelegate instance].themeColor;
+        expandableCell.titleLabel.textColor = [A3AppDelegate instance].themeColor;
     }
     else {
-        textLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
+        expandableCell.titleLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
     }
-    button.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((_isAdvancedCellOpen ?  270 : 90)));
+    expandableCell.expandButton.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((_isAdvancedCellOpen ?  -179.9 : 0)));
     cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
@@ -1038,7 +1037,9 @@
             break;
     }
 }
-#pragma mark didSelect spectific row
+
+#pragma mark didSelect specific row
+
 - (void)didSelectStartEndDateCellAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView rowItemType:(NSInteger)rowItemType
 {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -1240,7 +1241,7 @@
         NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
         NSIndexPath *durationIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_DurationOption atSectionArray:section1_items]
                                                             inSection:AddSection_Section_1];
-        self.isDurationIntialized = YES;
+        self.isDurationInitialized = YES;
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:durationIndexPath];
         UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
         detailTextLabel.text = [_sharedManager durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
@@ -1335,7 +1336,7 @@
 				return [UIViewController noteCellHeight];
 
             case EventCellType_Advanced:
-                retHeight = IS_RETINA ? 55.5 : 56.0;
+                retHeight = IS_RETINA ? 56.5 : 57.0;
                 break;
             default:
                 retHeight = 44.0;
@@ -1622,7 +1623,7 @@
 {
     _eventItem.isAllDay = @(swButton.on);
     
-    if ([swButton isOn] == NO && !_isDurationIntialized) {
+    if ([swButton isOn] == NO && !_isDurationInitialized) {
         _eventItem.durationOption = @(DurationOption_Day|DurationOption_Hour|DurationOption_Minutes);
     }
     else if ([swButton isOn]) {
@@ -1857,15 +1858,14 @@
 {
     [self resignAllAction];
     
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-    UIButton *button = (UIButton*)[cell viewWithTag:11];
+    A3JHTableViewExpandableHeaderCell *expandableCell = (A3JHTableViewExpandableHeaderCell *) [self.tableView cellForRowAtIndexPath:indexPath];
+
     NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
     
     _isAdvancedCellOpen = !_isAdvancedCellOpen;
     
     [UIView animateWithDuration:0.35 animations:^{
-        button.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((_isAdvancedCellOpen ?  270 : 90)));
+        expandableCell.expandButton.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((_isAdvancedCellOpen ?  0 : -179.9)));
     }];
 
     [CATransaction begin];
@@ -1881,7 +1881,7 @@
     
     if (!_isAdvancedCellOpen) {
         NSUInteger advancedCellRowIndex = [self indexOfRowForItemType:EventCellType_Advanced atSectionArray:section1_items];
-        textLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
+        expandableCell.titleLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
         // remove Advanced Rows
         NSMutableArray *indexPathsToRemove = [NSMutableArray array];
         for (NSInteger row = advancedCellRowIndex + 1; row < [section1_items count]; row++) {
@@ -1903,7 +1903,7 @@
         [advancedRows addObject:@{ EventRowTitle : @"Location", EventRowType : @(EventCellType_Location)}];
         [advancedRows addObject:@{ EventRowTitle : @"Notes", EventRowType : @(EventCellType_Notes)}];
         
-        textLabel.textColor = [A3AppDelegate instance].themeColor;
+        expandableCell.titleLabel.textColor = [A3AppDelegate instance].themeColor;
         NSMutableArray *indexPathsToAdd = [NSMutableArray array];
         for (NSInteger row = [section1_items count]; row < ([section1_items count] + [advancedRows count]); row++) {
             [indexPathsToAdd addObject:[NSIndexPath indexPathForRow:row inSection:AddSection_Section_1]];
@@ -2093,7 +2093,7 @@
     if ( actionSheet.tag == ActionTag_Photo ) {
         if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
             _eventItem.imageFilename = nil;
-            _thumnailImage = nil;
+            _thumbnailImage = nil;
             _photoImage = nil;
             [self.tableView reloadData];
         }
@@ -2244,7 +2244,7 @@
     }
     
     UIImage *circleImage = [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 64.0, 64.0)];
-    _thumnailImage = circleImage;
+    _thumbnailImage = circleImage;
     _photoImage = image;
 
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];

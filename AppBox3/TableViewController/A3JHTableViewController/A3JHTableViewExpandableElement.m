@@ -19,7 +19,6 @@
 	A3JHTableViewExpandableHeaderCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
 	if (!cell) {
 		cell = [[A3JHTableViewExpandableHeaderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.expandButton.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((self.isCollapsed ? 0 : -179.9)));
 	}
 	cell.titleLabel.text = self.title;
@@ -37,43 +36,41 @@
 }
 
 - (void)expandButtonPressed:(UIButton *)expandButton {
-	@autoreleasepool {
-		_collapsed = !_collapsed;
-        
-        // KJH - 2013.11.20
-        [UIView animateWithDuration:0.35 animations:^{
-            expandButton.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((self.isCollapsed ? 0 : -179.9)));
-        }];
-        
-        [CATransaction begin];
-        [CATransaction setCompletionBlock:^{
-            if (_onExpandCompletion) {
-                _onExpandCompletion(self);
-            }
-            if (!self.isCollapsed) {
-                [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.indexPath.row + 1 inSection:self.indexPath.section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            }
-        }];
+	_collapsed = !_collapsed;
 
-        [_tableView beginUpdates];
-        [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.indexPath.row  inSection:self.indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-		NSMutableArray *indexPaths = [NSMutableArray new];
-		for (NSInteger idx = 0; idx < [self.elements count]; idx++) {
-			[indexPaths addObject:[NSIndexPath indexPathForRow:idx + self.indexPath.row + 1 inSection:self.indexPath.section]];
-		}
-        
-		if (self.isCollapsed) {
-            [_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
-            self.titleLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
-		} else {
-            [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
-			//[_tableView scrollToRowAtIndexPath:indexPaths[0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            self.titleLabel.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
-		}
+	// KJH - 2013.11.20
+	[UIView animateWithDuration:0.35 animations:^{
+		expandButton.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((self.isCollapsed ? 0 : -179.9)));
+	}];
 
-        [_tableView endUpdates];
-        [CATransaction commit];
+	[CATransaction begin];
+	[CATransaction setCompletionBlock:^{
+		if (_onExpandCompletion) {
+			_onExpandCompletion(self);
+		}
+		if (!self.isCollapsed) {
+			[_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.indexPath.row + 1 inSection:self.indexPath.section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+		}
+	}];
+
+	[_tableView beginUpdates];
+	[_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.indexPath.row  inSection:self.indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+	NSMutableArray *indexPaths = [NSMutableArray new];
+	for (NSInteger idx = 0; idx < [self.elements count]; idx++) {
+		[indexPaths addObject:[NSIndexPath indexPathForRow:idx + self.indexPath.row + 1 inSection:self.indexPath.section]];
 	}
+
+	if (self.isCollapsed) {
+		[_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
+		self.titleLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
+	} else {
+		[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
+		//[_tableView scrollToRowAtIndexPath:indexPaths[0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+		self.titleLabel.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
+	}
+
+	[_tableView endUpdates];
+	[CATransaction commit];
 }
 
 // kjh
