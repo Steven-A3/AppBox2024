@@ -35,6 +35,7 @@
 #import "A3SearchViewController.h"
 #import "UITableView+utility.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
@@ -133,7 +134,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingNoti:) name:A3LoanCalcNotificationExtraPaymentDisabled object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingNoti:) name:A3LoanCalcNotificationExtraPaymentEnabled object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewDismissed:) name:@"A3_Pad_RightSubViewDismissed" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewDismissed:) name:A3NotificationRightSideViewDidDismiss object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeChanged) name:A3LoanCalcCurrencyCodeChanged object:nil];
 
 	// Keyboard Notification
@@ -508,7 +509,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = _advancedTitleView.bounds;
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        button.contentEdgeInsets = UIEdgeInsetsMake(20, 0, 0, 15);
+        button.contentEdgeInsets = UIEdgeInsetsMake(26, 0, 0, 13.5);
         if (self.loanData.showAdvanced) {
             [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:17]];
             [SFKImage setDefaultColor:[UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0]];
@@ -524,7 +525,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         [button addTarget:self action:@selector(advButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [_advancedTitleView addSubview:button];
 
-        UILabel *adv = [[UILabel alloc] initWithFrame:CGRectMake(IS_IPAD ? 28:15, 20, 100, 35)];
+        UILabel *adv = [[UILabel alloc] initWithFrame:CGRectMake(IS_IPAD ? 28:15, 18.5, 100, 35)];
         adv.text = @"ADVANCED";
         adv.tag = 1234;
         
@@ -915,8 +916,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
 	[self clearEverything];
 
-	UIStoryboard *stroyBoard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
-	A3LoanCalcSettingViewController *viewController = [stroyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcSettingViewController"];
+	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
+	A3LoanCalcSettingViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcSettingViewController"];
 	[self presentSubViewController:viewController];
 	[viewController setSettingChangedCompletionBlock:^{
 

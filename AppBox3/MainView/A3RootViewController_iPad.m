@@ -65,7 +65,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-static const CGFloat kSideViewWidth = 319.0;
+static const CGFloat kSideViewWidth = 320.0;
 
 - (void)layoutSubviews {
 	FNLOG();
@@ -84,7 +84,7 @@ static const CGFloat kSideViewWidth = 319.0;
 		[self bringUpCenterCoverView];
 	} else if (self.showRightView) {
 		_leftNavigationController.view.frame = CGRectMake(-kSideViewWidth - 1,0,kSideViewWidth, bounds.size.height);
-		_rightNavigationController.view.frame = CGRectMake(bounds.size.width - kSideViewWidth + 1.0, 0, kSideViewWidth, bounds.size.height);
+		_rightNavigationController.view.frame = CGRectMake(bounds.size.width - kSideViewWidth, 0, kSideViewWidth, bounds.size.height);
 		[self bringUpCenterCoverView];
 	} else {
 		_leftNavigationController.view.frame = CGRectMake(-kSideViewWidth - 1,0,kSideViewWidth, bounds.size.height);
@@ -133,6 +133,7 @@ static const CGFloat kSideViewWidth = 319.0;
 }
 
 - (void)animateLeftView {
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[UIView animateWithDuration:0.3 animations:^{
 		CGRect frame = _leftNavigationController.view.frame;
 		if (self.showLeftView) {

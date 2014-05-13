@@ -29,6 +29,7 @@
 #import "TemperatureConveter.h"
 #import "FMMoveTableView.h"
 #import "UITableView+utility.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
@@ -136,7 +137,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		make.bottom.equalTo(self.view.bottom).with.offset(-20);
 	}];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewDismissed:) name:@"A3_Pad_RightSubViewDismissed" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewDismissed:) name:A3NotificationRightSideViewDidDismiss object:nil];
 }
 
 - (void)rightSubViewDismissed:(NSNotification *)noti

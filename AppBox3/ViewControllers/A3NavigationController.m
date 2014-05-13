@@ -49,7 +49,8 @@
 }
 
 - (void)setupBorderLayer {
-	self.borderLayer.frame = CGRectInset(self.view.bounds, -1.0, -1.0);
+	CGFloat inset = IS_RETINA ? -0.5 : -1.0;
+	self.borderLayer.frame = CGRectInset(self.view.bounds, inset, inset);
 }
 
 - (void)viewWillLayoutSubviews {
