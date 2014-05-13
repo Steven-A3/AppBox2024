@@ -17,6 +17,7 @@
 #import "SFKImage.h"
 #import "DaysCounterEvent.h"
 #import "A3DateHelper.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3DaysCounterSetupEndRepeatViewController ()
 @property (strong,nonatomic) NSArray *itemArray;
@@ -145,15 +146,18 @@
         
         if ( cell == nil ) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
-            cell.detailTextLabel.textColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
+            //cell.detailTextLabel.textColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
         }
         
         cell.textLabel.text = [_itemArray objectAtIndex:indexPath.row];
         cell.detailTextLabel.text = @"";
+        cell.detailTextLabel.textColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
         
         if ( indexPath.row == 1 && self.eventModel.repeatEndDate) {
             //cell.detailTextLabel.text = [A3Formatter stringFromDate:self.eventModel.repeatEndDate format:DaysCounterDefaultDateFormat];
             cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[self.eventModel repeatEndDate] withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:YES]];
+            
+            cell.detailTextLabel.textColor = [self.itemArray count] == 3 ? [A3AppDelegate instance].themeColor : [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
         else if ( indexPath.row == 0 && !self.eventModel.repeatEndDate ) {
@@ -197,9 +201,11 @@
             
             if ([self.itemArray count] == 3) {
                 [self hideDatePicker];
+                cell_1row.detailTextLabel.textColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
             }
             else {
                 [self showDatePicker:[self.eventModel repeatEndDate]];
+                cell_1row.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
             }
         }
             break;
