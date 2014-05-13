@@ -24,6 +24,7 @@
 #import "SFKImage.h"
 #import "A3AppDelegate+appearance.h"
 #import "DaysCounterReminder.h"
+#import "DaysCounterEvent+management.h"
 
 @interface A3DaysCounterEventDetailViewController () <UIAlertViewDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate, UIActivityItemSource>
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -327,7 +328,7 @@
         case EventCellType_Favorites:
         {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            textLabel.text = ([_eventItem.isFavorite boolValue] ? @"Remove from Favorites" : @"Add to Favorites");
+            textLabel.text = _eventItem.favorite != nil ? @"Remove from Favorites" : @"Add to Favorites";
             textLabel.textColor = [A3AppDelegate instance].themeColor;
         }
             break;
@@ -359,7 +360,7 @@
 
     cell.eventTitleLabel.text = info.eventName;
     CGSize calculatedTitleSize = [cell.eventTitleLabel.text sizeWithAttributes:@{ NSFontAttributeName : cell.eventTitleLabel.font }];
-    CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - ([info.isFavorite boolValue] ? 43 : 15) - ([info.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
+    CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - (info.favorite != nil ? 43 : 15) - ([info.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
 
     if (calculatedTitleSize.width > titleMaxWidth) {
         calculatedTitleSize = [cell.eventTitleLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
@@ -372,7 +373,7 @@
         cell.titleHeightConst.constant = calculatedTitleSize.height;
     }
 
-    cell.favoriteStarImageView.hidden = ![info.isFavorite boolValue];
+    cell.favoriteStarImageView.hidden = info.favorite == nil;
     
     if ( [info.repeatType integerValue] == RepeatType_Never ) {
         [self updateEventInfoCellToNoRepeatEventInfo:info cell:cell];
@@ -1515,7 +1516,7 @@ EXIT_FUCTION:
                 UIFont *titleFont = IS_IPHONE ? [UIFont boldSystemFontOfSize:17.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
                 CGSize calculatedTitleSize = [_eventItem.eventName sizeWithAttributes:@{ NSFontAttributeName : titleFont }];
                 //CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - 48 - ([_eventItem.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
-                CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - ([_eventItem.isFavorite boolValue] ? 43 : 15) - ([_eventItem.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
+                CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - (_eventItem.favorite != nil ? 43 : 15) - ([_eventItem.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
                 
                 if (calculatedTitleSize.width > titleMaxWidth) {
 ////                    UILabel *label = [[UILabel alloc] init];
@@ -1668,9 +1669,11 @@ EXIT_FUCTION:
 
 - (void)didSelectFavoriteRow
 {
-    _eventItem.isFavorite = [NSNumber numberWithBool:![_eventItem.isFavorite boolValue]];
+	[_eventItem toggleFavorite];
     [_eventItem.managedObjectContext MR_saveToPersistentStoreAndWait];
+
     [self.tableView reloadData];
+
     if ( self.delegate && [self.delegate respondsToSelector:@selector(willChangeEventDetailViewController:)]) {
         [self.delegate willChangeEventDetailViewController:self];
     }

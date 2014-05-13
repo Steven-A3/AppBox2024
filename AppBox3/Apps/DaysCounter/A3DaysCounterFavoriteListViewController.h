@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 @class A3DaysCounterModelManager;
-@interface A3DaysCounterFavoriteListViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@class FMMoveTableView;
+
+@interface A3DaysCounterFavoriteListViewController : UIViewController
 @property (strong, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet FMMoveTableView *tableView;
 @property (strong, nonatomic) IBOutlet UIButton *addEventButton;
 
 - (IBAction)photoViewAction:(id)sender;

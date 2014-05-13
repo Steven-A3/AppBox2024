@@ -34,6 +34,9 @@
 #import "A3DateKeyboardViewController.h"
 #import "A3WalletNoteCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "DaysCounterFavorite.h"
+#import "NSString+conversion.h"
+#import "DaysCounterEvent+management.h"
 
 
 #define ActionTag_Location      100
@@ -92,7 +95,6 @@
         _eventItem.isLunar = @(NO);
         _eventItem.isPeriod = @(NO);
         _eventItem.durationOption = @(DurationOption_Day);
-        _eventItem.isFavorite = @(NO);
         _eventItem.repeatType = @(RepeatType_Never);
         _eventItem.repeatEndDate = nil;
 
@@ -563,7 +565,7 @@
             UIButton *button = (UIButton*)[cell viewWithTag:11];
             textField.text = _eventItem.eventName;
             
-            BOOL isSelected = [_eventItem.isFavorite boolValue];
+            BOOL isSelected = _eventItem.favorite != nil;
             [button setImage:[UIImage imageNamed:isSelected ? @"star02_on" : @"star02"] forState:UIControlStateNormal];
             button.tintColor = [A3AppDelegate instance].themeColor;
         }
@@ -1430,11 +1432,9 @@
 
 - (void)toggleFavorite:(id)sender
 {
-    BOOL isSelected = [_eventItem.isFavorite boolValue];
-    isSelected = !isSelected;
-    _eventItem.isFavorite = @(isSelected);
+	[_eventItem toggleFavorite];
 
-    [((UIButton *)sender) setImage:[UIImage imageNamed:isSelected ? @"star02_on" : @"star02"] forState:UIControlStateNormal];
+    [((UIButton *)sender) setImage:[UIImage imageNamed:_eventItem.favorite != nil ? @"star02_on" : @"star02"] forState:UIControlStateNormal];
     ((UIButton *)sender).tintColor = [A3AppDelegate instance].themeColor;
 }
 

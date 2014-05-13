@@ -2,7 +2,7 @@
 //  DaysCounterEvent.m
 //  AppBox3
 //
-//  Created by dotnetguy83 on 5/4/14.
+//  Created by A3 on 5/13/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -10,6 +10,7 @@
 #import "DaysCounterCalendar.h"
 #import "DaysCounterDateModel.h"
 #import "DaysCounterEventLocation.h"
+#import "DaysCounterFavorite.h"
 #import "DaysCounterReminder.h"
 
 
@@ -27,7 +28,6 @@
 @dynamic hasReminder;
 @dynamic imageFilename;
 @dynamic isAllDay;
-@dynamic isFavorite;
 @dynamic isLunar;
 @dynamic isPeriod;
 @dynamic notes;
@@ -37,6 +37,7 @@
 @dynamic useLeapMonth;
 @dynamic calendar;
 @dynamic endDate;
+@dynamic favorite;
 @dynamic location;
 @dynamic reminder;
 @dynamic startDate;

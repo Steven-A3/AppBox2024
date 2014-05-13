@@ -13,22 +13,23 @@
 #import "A3DaysCounterAddEventViewController.h"
 #import "A3DaysCounterCalendarListMainViewController.h"
 #import "A3DaysCounterReminderListViewController.h"
-#import "A3DaysCounterFavoriteListViewController.h"
+#import "FMMoveTableView.h"
 #import "A3DaysCounterEventDetailViewController.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
-#import "DaysCounterCalendar.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterDateModel.h"
 #import "A3DateHelper.h"
-#import "SFKImage.h"
 #import "A3DaysCounterEventListNameCell.h"
-#import "NSDate+formatting.h"
+#import "DaysCounterFavorite.h"
+#import "NSMutableArray+A3Sort.h"
 
-@interface A3DaysCounterFavoriteListViewController ()
+@interface A3DaysCounterFavoriteListViewController () <FMMoveTableViewDelegate, FMMoveTableViewDataSource>
+
 @property (strong, nonatomic) NSMutableArray *itemArray;
 
 - (void)editAction:(id)sender;
+
 @end
 
 @implementation A3DaysCounterFavoriteListViewController
@@ -142,32 +143,32 @@
     }
     
     if ( [_itemArray count] > 0) {
-        DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
-        textLabel.text = item.eventName;
-        UIImage *image = [item.imageFilename length] > 0 ? [A3DaysCounterModelManager photoThumbnailFromFilename:item.imageFilename] : nil;
+        DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
+        textLabel.text = favorite.event.eventName;
+        UIImage *image = [favorite.event.imageFilename length] > 0 ? [A3DaysCounterModelManager photoThumbnailFromFilename:favorite.event.imageFilename] : nil;
         imageView.image =  image ? [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 32, 32)]  : nil;
         NSDate *today = [NSDate date];
-        //NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue] firstDate:[item.startDate solarDate] fromDate:today isAllDay:[item.isAllDay boolValue]];
-        
+
+		A3DaysCounterEventListNameCell *eventListNameCell = (A3DaysCounterEventListNameCell *) cell;
         if (image) {
-            ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
-            ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 52 : 65;
-            ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 52 : 65;
-            ((A3DaysCounterEventListNameCell *)cell).photoWidthConst.constant = 32;
+            eventListNameCell.photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
+            eventListNameCell.sinceLeadingConst.constant = IS_IPHONE ? 52 : 65;
+            eventListNameCell.nameLeadingConst.constant = IS_IPHONE ? 52 : 65;
+            eventListNameCell.photoWidthConst.constant = 32;
         }
         else {
-            ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 15 : 28;
-            ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 15 : 28;
-            ((A3DaysCounterEventListNameCell *)cell).photoWidthConst.constant = 0;
+            eventListNameCell.sinceLeadingConst.constant = IS_IPHONE ? 15 : 28;
+            eventListNameCell.nameLeadingConst.constant = IS_IPHONE ? 15 : 28;
+            eventListNameCell.photoWidthConst.constant = 0;
         }
         
         
         // markLabel until/since
         markLabel.text = [A3DateHelper untilSinceStringByFromDate:today
-                                                           toDate:[item effectiveStartDate] //nextDate
-                                                     allDayOption:[item.isAllDay boolValue]
-                                                           repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO
-                                                           strict:[A3DaysCounterModelManager hasHourMinDurationOption:[item.durationOption integerValue]]];
+                                                           toDate:[favorite.event effectiveStartDate] //nextDate
+                                                     allDayOption:[favorite.event.isAllDay boolValue]
+                                                           repeat:[favorite.event.repeatType integerValue] != RepeatType_Never ? YES : NO
+                                                           strict:[A3DaysCounterModelManager hasHourMinDurationOption:[favorite.event.durationOption integerValue]]];
         
         if ([markLabel.text isEqualToString:@"since"]) {
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
@@ -187,26 +188,26 @@
 
             if ( IS_IPAD ) {
                 UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
-                NSDate *repeatDate = [A3DaysCounterModelManager repeatDateOfCurrentNotNextWithRepeatOption:[item.repeatType integerValue]
-                                                                                                 firstDate:[item.startDate solarDate]
+                NSDate *repeatDate = [A3DaysCounterModelManager repeatDateOfCurrentNotNextWithRepeatOption:[favorite.event.repeatType integerValue]
+                                                                                                 firstDate:[favorite.event.startDate solarDate]
                                                                                                   fromDate:[NSDate date]];
                 dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
-                                                       withFormat:[_sharedManager dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+                                                       withFormat:[_sharedManager dateFormatForAddEditIsAllDays:[favorite.event.isAllDay boolValue]]];
                 
                 dateLabel.hidden = NO;
                 ((A3DaysCounterEventListNameCell *)cell).titleRightSpaceConst.constant = [dateLabel sizeThatFits:CGSizeMake(500, 30)].width + 5;
             }
         }
         else {
-            daysLabel.text = [A3DaysCounterModelManager stringOfDurationOption:[item.durationOption integerValue]
+            daysLabel.text = [A3DaysCounterModelManager stringOfDurationOption:[favorite.event.durationOption integerValue]
                                                                       fromDate:today
-                                                                        toDate:[item effectiveStartDate] //nextDate
-                                                                      isAllDay:[item.isAllDay boolValue]
+                                                                        toDate:[favorite.event effectiveStartDate] //nextDate
+                                                                      isAllDay:[favorite.event.isAllDay boolValue]
                                                                   isShortStyle:IS_IPHONE ? YES : NO];
             if ( IS_IPAD ) {
                 UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
-                dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate
-                                                       withFormat:[_sharedManager dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+                dateLabel.text = [A3DateHelper dateStringFromDate:favorite.event.effectiveStartDate
+                                                       withFormat:[_sharedManager dateFormatForAddEditIsAllDays:[favorite.event.isAllDay boolValue]]];
                 
                 dateLabel.hidden = NO;
                 ((A3DaysCounterEventListNameCell *)cell).titleRightSpaceConst.constant = [dateLabel sizeThatFits:CGSizeMake(500, 30)].width + 5;
@@ -232,9 +233,9 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        DaysCounterEvent *event = [_itemArray objectAtIndex:indexPath.row];
-        event.isFavorite = [NSNumber numberWithBool:NO];
-        [event.managedObjectContext MR_saveToPersistentStoreAndWait];
+        DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
+		[favorite MR_deleteEntity];
+        [favorite.managedObjectContext MR_saveToPersistentStoreAndWait];
         [_itemArray removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
@@ -251,15 +252,23 @@
     if ( [_itemArray count] < 1 ) {
         return;
     }
-    DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
+    DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
     
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
-    viewCtrl.eventItem = item;
+    viewCtrl.eventItem = favorite.event;
     viewCtrl.sharedManager = _sharedManager;
     [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 
+#pragma mark - FMMoveTableView delegate
+
+- (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+	[_itemArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+}
+
 #pragma mark - action method
+
 - (IBAction)photoViewAction:(id)sender {
     A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
