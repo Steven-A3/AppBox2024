@@ -12,6 +12,7 @@
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "DaysCounterCalendar.h"
+#import "DaysCounterCalendar+Extension.h"
 #import "A3DaysCounterSetupCalendarCell.h"
 #import "SFKImage.h"
 #import "DaysCounterEvent.h"

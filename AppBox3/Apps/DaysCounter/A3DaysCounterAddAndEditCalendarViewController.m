@@ -16,6 +16,7 @@
 
 @interface A3DaysCounterAddAndEditCalendarViewController ()
 @property (strong, nonatomic) NSArray *colorArray;
+@property (strong, nonatomic) NSString *colorID;
 
 - (void)cancelAction:(id)sender;
 - (NSInteger)indexOfCurrentColor:(UIColor*)color;
@@ -196,7 +197,13 @@
             cell.textLabel.text = [colorItem objectForKey:CalendarItem_Name];
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             cell.imageView.tintColor = [colorItem objectForKey:CalendarItem_Color];
-            cell.accessoryType = ( CGColorEqualToColor([[colorItem objectForKey:CalendarItem_Color] CGColor], [[_calendarItem objectForKey:CalendarItem_Color] CGColor]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+
+            if ([[colorItem objectForKey:CalendarItem_Name] isEqualToString:[_calendarItem objectForKey:CalendarItem_ColorID]]) {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            }
+            else {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
         }
     }
     else {
@@ -231,6 +238,7 @@
         
         UIColor *color = [[_colorArray objectAtIndex:indexPath.row] objectForKey:CalendarItem_Color];
         [_calendarItem setObject:color forKey:CalendarItem_Color];
+        _colorID = [[_colorArray objectAtIndex:indexPath.row] objectForKey:CalendarItem_Name];
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         UITableViewCell *prevCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:indexPath.section]];
@@ -303,12 +311,13 @@
     }
     
     if ( !_isEditMode ) {
-        [_sharedManager addCalendarItem:_calendarItem];
+        [_sharedManager addCalendarItem:_calendarItem colorID:_colorID];
     }
     else {
-        [_sharedManager updateCalendarItem:_calendarItem];
+        [_sharedManager updateCalendarItem:_calendarItem colorID:_colorID];
     }
     
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     [self cancelAction:nil];
 }
 
