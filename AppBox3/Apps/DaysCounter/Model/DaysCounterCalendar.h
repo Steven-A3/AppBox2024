@@ -1,9 +1,9 @@
 //
 //  DaysCounterCalendar.h
-//  A3TeamWork
+//  AppBox3
 //
-//  Created by coanyaa on 2013. 11. 5..
-//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//  Created by dotnetguy83 on 5/13/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -13,16 +13,15 @@
 
 @interface DaysCounterCalendar : NSManagedObject
 
+@property (nonatomic, retain) NSData * calendarColor;
 @property (nonatomic, retain) NSString * calendarId;
 @property (nonatomic, retain) NSString * calendarName;
-@property (nonatomic, retain) NSData * calendarColor;
-@property (nonatomic, retain) NSNumber * isShow;
-@property (nonatomic, retain) NSOrderedSet *events;
 @property (nonatomic, retain) NSNumber * calendarType;
-@property (nonatomic, retain) NSNumber * order;
 @property (nonatomic, retain) NSNumber * isDefault;
-
-- (UIColor*)color;
+@property (nonatomic, retain) NSNumber * isShow;
+@property (nonatomic, retain) NSNumber * order;
+@property (nonatomic, retain) NSString * calendarColorID;
+@property (nonatomic, retain) NSOrderedSet *events;
 @end
 
 @interface DaysCounterCalendar (CoreDataGeneratedAccessors)

@@ -1,9 +1,9 @@
 //
 //  DaysCounterCalendar.m
-//  A3TeamWork
+//  AppBox3
 //
-//  Created by coanyaa on 2013. 11. 5..
-//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//  Created by dotnetguy83 on 5/13/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "DaysCounterCalendar.h"
@@ -12,17 +12,14 @@
 
 @implementation DaysCounterCalendar
 
+@dynamic calendarColor;
 @dynamic calendarId;
 @dynamic calendarName;
-@dynamic calendarColor;
-@dynamic isShow;
-@dynamic events;
 @dynamic calendarType;
-@dynamic order;
 @dynamic isDefault;
+@dynamic isShow;
+@dynamic order;
+@dynamic calendarColorID;
+@dynamic events;
 
-- (UIColor*)color
-{
-    return (self.calendarColor ? [NSKeyedUnarchiver unarchiveObjectWithData:self.calendarColor] : nil);
-}
 @end

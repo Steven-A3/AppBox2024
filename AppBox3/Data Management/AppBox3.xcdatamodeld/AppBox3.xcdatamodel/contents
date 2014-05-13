@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Calculation" representedClassName="Calculation" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="expression" optional="YES" attributeType="String" syncable="YES"/>
@@ -36,6 +36,7 @@
     </entity>
     <entity name="DaysCounterCalendar" representedClassName="DaysCounterCalendar" syncable="YES">
         <attribute name="calendarColor" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="calendarColorID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="calendarId" attributeType="String" syncable="YES"/>
         <attribute name="calendarName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="calendarType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -402,7 +403,7 @@
         <element name="CurrencyHistory" positionX="207" positionY="-549" width="128" height="135"/>
         <element name="CurrencyHistoryItem" positionX="54" positionY="-621" width="128" height="105"/>
         <element name="CurrencyRateItem" positionX="54" positionY="-504" width="128" height="135"/>
-        <element name="DaysCounterCalendar" positionX="-414" positionY="-837" width="128" height="163"/>
+        <element name="DaysCounterCalendar" positionX="-414" positionY="-837" width="128" height="178"/>
         <element name="DaysCounterDateModel" positionX="-407" positionY="-610" width="128" height="178"/>
         <element name="DaysCounterEvent" positionX="-236" positionY="-837" width="128" height="420"/>
         <element name="DaysCounterEventLocation" positionX="-81" positionY="-801" width="162" height="193"/>

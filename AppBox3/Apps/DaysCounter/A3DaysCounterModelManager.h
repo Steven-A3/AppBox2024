@@ -38,7 +38,7 @@
 - (NSString*)alertStringForType:(NSInteger)alertType;
 - (NSString*)durationOptionStringFromValue:(NSInteger)value;
 - (NSString*)titleForCellType:(NSInteger)cellType;
-- (NSString*)addressFromVenue:(FSVenue*)venue isDetail:(BOOL)isDetail;\
+- (NSString*)addressFromVenue:(FSVenue*)venue isDetail:(BOOL)isDetail;
 - (NSString*)addressFromPlacemark:(CLPlacemark*)placemark;
 - (FSVenue*)fsvenueFromEventModel:(DaysCounterEventLocation *)locationItem;
 - (FSVenue*)fsvenueFromEventLocationModel:(id)location;
@@ -56,8 +56,8 @@
 - (id)calendarItemByID:(NSString*)calendarId;
 - (BOOL)removeCalendarItem:(NSMutableDictionary*)item;
 - (BOOL)removeCalendarItemWithID:(NSString*)calendarID;
-- (BOOL)addCalendarItem:(NSDictionary*)item;
-- (BOOL)updateCalendarItem:(NSMutableDictionary*)item;
+- (DaysCounterCalendar *)addCalendarItem:(NSDictionary*)item colorID:(NSString *)colorID;
+- (BOOL)updateCalendarItem:(NSMutableDictionary*)item colorID:(NSString *)colorID;
 - (NSInteger)numberOfAllEvents;
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date;
 - (NSInteger)numberOfPastEventsWithDate:(NSDate*)date;

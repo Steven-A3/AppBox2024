@@ -22,6 +22,7 @@
 #import "A3DaysCounterSetupLocationViewController.h"
 #import "A3DaysCounterLocationDetailViewController.h"
 #import "DaysCounterCalendar.h"
+#import "DaysCounterCalendar+Extension.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
 #import "DaysCounterDateModel.h"
