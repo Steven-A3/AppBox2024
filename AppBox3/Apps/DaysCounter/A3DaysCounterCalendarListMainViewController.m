@@ -390,38 +390,38 @@
                 isAllDay = YES;
             }
             
-//            result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
-//                                                                                                   fromDate:today
-//                                                                                                     toDate:nextDate
-//                                                                                                   isAllDay:isAllDay
-//                                                                                               isShortStyle:isAllDay? NO : YES
-//                                                                                          isStrictShortType:YES]
-//                      , untilSinceString];
-            if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]) < 86400)) {
-                NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:event.effectiveStartDate isAllDay:YES];
-                if (diffDays == 1) {
-                    result = [NSString stringWithFormat:@"%ld day %@", (long)diffDays, untilSinceString];
-                }
-                else {
-                    result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
-                                                                                                           fromDate:today
-                                                                                                             toDate:nextDate
-                                                                                                           isAllDay:isAllDay
-                                                                                                       isShortStyle:isAllDay? NO : YES
-                                                                                                  isStrictShortType:YES]
-                              , untilSinceString];
-
-                }
-            }
-            else {
-                result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
-                                                                                                       fromDate:today
-                                                                                                         toDate:nextDate
-                                                                                                       isAllDay:isAllDay
-                                                                                                   isShortStyle:isAllDay? NO : YES
-                                                                                              isStrictShortType:YES]
-                          , untilSinceString];
-            }
+            result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
+                                                                                                   fromDate:today
+                                                                                                     toDate:nextDate
+                                                                                                   isAllDay:isAllDay
+                                                                                               isShortStyle:isAllDay? NO : YES
+                                                                                          isStrictShortType:YES]
+                      , untilSinceString];
+//            if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]) < 86400)) {
+//                NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:event.effectiveStartDate isAllDay:YES];
+//                if (diffDays == 1) {
+//                    result = [NSString stringWithFormat:@"%ld day %@", (long)diffDays, untilSinceString];
+//                }
+//                else {
+//                    result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
+//                                                                                                           fromDate:today
+//                                                                                                             toDate:nextDate
+//                                                                                                           isAllDay:isAllDay
+//                                                                                                       isShortStyle:isAllDay? NO : YES
+//                                                                                                  isStrictShortType:YES]
+//                              , untilSinceString];
+//
+//                }
+//            }
+//            else {
+//                result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
+//                                                                                                       fromDate:today
+//                                                                                                         toDate:nextDate
+//                                                                                                       isAllDay:isAllDay
+//                                                                                                   isShortStyle:isAllDay? NO : YES
+//                                                                                              isStrictShortType:YES]
+//                          , untilSinceString];
+//            }
         }
         else {
             BOOL isAllDay = [event.isAllDay boolValue];
@@ -437,30 +437,39 @@
 //                    isAllDay = YES;
 //                }
 //            }
-            if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]) < 86400)) {
-                NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:event.effectiveStartDate isAllDay:YES];
-                if (diffDays == 1) {
-                    result = [NSString stringWithFormat:@"%ld day %@", (long)diffDays, untilSinceString];
-                }
-                else {
-                    result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
-                                                                                                           fromDate:today
-                                                                                                             toDate:[event effectiveStartDate] //[event.startDate solarDate]
-                                                                                                           isAllDay:isAllDay
-                                                                                                       isShortStyle:isAllDay? NO : YES //![event.isAllDay boolValue]
-                                                                                                  isStrictShortType:YES]
-                              , untilSinceString];
-                }
-            }
-            else {
-                result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
-                                                                                                       fromDate:today
-                                                                                                         toDate:[event effectiveStartDate] //[event.startDate solarDate]
-                                                                                                       isAllDay:isAllDay
-                                                                                                   isShortStyle:isAllDay? NO : YES //![event.isAllDay boolValue]
-                                                                                              isStrictShortType:YES]
-                          , untilSinceString];
-            }
+
+            result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
+                                                                                                   fromDate:today
+                                                                                                     toDate:[event effectiveStartDate] //[event.startDate solarDate]
+                                                                                                   isAllDay:isAllDay
+                                                                                               isShortStyle:isAllDay? NO : YES //![event.isAllDay boolValue]
+                                                                                          isStrictShortType:YES]
+                      , untilSinceString];
+            
+//            if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]) < 86400)) {
+//                NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:event.effectiveStartDate isAllDay:YES];
+//                if (diffDays == 1) {
+//                    result = [NSString stringWithFormat:@"%ld day %@", (long)diffDays, untilSinceString];
+//                }
+//                else {
+//                    result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
+//                                                                                                           fromDate:today
+//                                                                                                             toDate:[event effectiveStartDate] //[event.startDate solarDate]
+//                                                                                                           isAllDay:isAllDay
+//                                                                                                       isShortStyle:isAllDay? NO : YES //![event.isAllDay boolValue]
+//                                                                                                  isStrictShortType:YES]
+//                              , untilSinceString];
+//                }
+//            }
+//            else {
+//                result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
+//                                                                                                       fromDate:today
+//                                                                                                         toDate:[event effectiveStartDate] //[event.startDate solarDate]
+//                                                                                                       isAllDay:isAllDay
+//                                                                                                   isShortStyle:isAllDay? NO : YES //![event.isAllDay boolValue]
+//                                                                                              isStrictShortType:YES]
+//                          , untilSinceString];
+//            }
         }
     }
     
