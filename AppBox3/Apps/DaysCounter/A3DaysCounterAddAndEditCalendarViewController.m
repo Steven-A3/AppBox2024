@@ -198,17 +198,12 @@
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             cell.imageView.tintColor = [colorItem objectForKey:CalendarItem_Color];
 
-            //if ( CGColorEqualToColor([[colorItem objectForKey:CalendarItem_Color] CGColor], [[_calendarItem objectForKey:CalendarItem_Color] CGColor]) ) {
             if ([[colorItem objectForKey:CalendarItem_Name] isEqualToString:[_calendarItem objectForKey:CalendarItem_ColorID]]) {
-                NSLog(@"match : %@ , %@", [colorItem objectForKey:CalendarItem_Color], [_calendarItem objectForKey:CalendarItem_Color]);
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }
             else {
-                NSLog(@"diff : %@ , %@", [colorItem objectForKey:CalendarItem_Color], [_calendarItem objectForKey:CalendarItem_Color]);
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }
-            
-//            cell.accessoryType = ( CGColorEqualToColor([[colorItem objectForKey:CalendarItem_Color] CGColor], [[_calendarItem objectForKey:CalendarItem_Color] CGColor]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
         }
     }
     else {

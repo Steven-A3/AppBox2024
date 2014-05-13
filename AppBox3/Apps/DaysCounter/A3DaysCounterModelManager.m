@@ -826,13 +826,13 @@
 
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && !repeatEndDate))", @(YES), date, date, @(RepeatType_Never)]
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == nil))", @(YES), date, date, @(RepeatType_Never)]
                                            ];
 }
 
 - (NSArray*)pastEventsListWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && ((effectiveStartDate < %@ && repeatType == %@) || (!repeatEndDate && repeatEndDate < %@))", @(YES), date, @(RepeatType_Never), date]
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && ((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate == nil && repeatEndDate < %@))", @(YES), date, @(RepeatType_Never), date]
                                            ];
 }
 
