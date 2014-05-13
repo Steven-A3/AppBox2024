@@ -201,6 +201,8 @@
     for (NSDictionary *item in array) {
         [self addCalendarItem:item colorID:nil];
     }
+    
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)addDefaultUserCalendarItems
@@ -736,6 +738,8 @@
     calendar.isDefault = [item objectForKey:CalendarItem_IsDefault];
     calendar.calendarColorID = colorID;
     
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    
     return calendar;
 }
 
@@ -751,6 +755,8 @@
     existsCalendar.calendarName = [item objectForKey:CalendarItem_Name];
     existsCalendar.isShow = [item objectForKey:CalendarItem_IsShow];
     existsCalendar.calendarColorID = colorID;
+    
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
     return YES;
 }
