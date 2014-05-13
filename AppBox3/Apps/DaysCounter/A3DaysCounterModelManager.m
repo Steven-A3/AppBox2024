@@ -450,7 +450,7 @@
         [resultOptionStrings addObject: isShortType ? @"m" : @"Months"];
     }
     if ( option & DurationOption_Week ) {
-        [resultOptionStrings addObject: isShortType ? @"w" : @"Months"];
+        [resultOptionStrings addObject: isShortType ? @"w" : @"Weeks"];
     }
     if ( option & DurationOption_Day ) {
         [resultOptionStrings addObject: isShortType ? @"d" : @"Days"];
