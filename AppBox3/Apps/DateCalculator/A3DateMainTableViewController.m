@@ -157,8 +157,7 @@ NSString *kCalculationString;
     self.fromToTextField.hidden = YES;
     self.fromToTextField.delegate = self;
     [self.view addSubview:_fromToTextField];
-    
-    [self setResultToHeaderViewWithAnimation:NO];
+//    [self setResultToHeaderViewWithAnimation:NO];
 }
 
 -(void)viewWillLayoutSubviews
@@ -166,6 +165,12 @@ NSString *kCalculationString;
     [super viewWillLayoutSubviews];
     
 //	[self.dateKeyboardViewController rotateToInterfaceOrientation:self.interfaceOrientation];
+
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        [self setResultToHeaderViewWithAnimation:NO];
+//    });
+//    [self setResultToHeaderViewWithAnimation:NO];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
@@ -803,8 +808,12 @@ NSString *kCalculationString;
 	textField.placeholder = @"0";
     
     A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    if (!footerCell) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    }
 
-	if ([footerCell hasEqualTextField:_selectedTextField]) {
+	if (self.isAddSubMode && [footerCell hasEqualTextField:_selectedTextField]) {
 		if (_simpleNormalNumberKeyboard==nil) {
 			_simpleNormalNumberKeyboard = [self simplePrevNextNumberKeyboard];
 			if (IS_IPHONE) {
@@ -870,7 +879,7 @@ NSString *kCalculationString;
 	UITextField *textField = notification.object;
     A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
     
-	if ([footerCell hasEqualTextField:textField]) {
+	if (self.isAddSubMode && [footerCell hasEqualTextField:textField]) {
         if (_selectedTextField == footerCell.yearTextField) {
             self.offsetComp.year = _selectedTextField.text.integerValue;
         }
@@ -921,7 +930,7 @@ NSString *kCalculationString;
 {
     A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
     // 풋터뷰 필드(ADD/SUB모드)
-    if (_selectedTextField == footerCell.yearTextField || _selectedTextField == footerCell.monthTextField || _selectedTextField == footerCell.dayTextField) {
+    if (self.isAddSubMode && (_selectedTextField == footerCell.yearTextField || _selectedTextField == footerCell.monthTextField || _selectedTextField == footerCell.dayTextField)) {
         NSDateComponents *changed = [[A3DateCalcStateManager currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
                                                                                 fromDate:date];
         if (_selectedTextField == footerCell.yearTextField) {
@@ -1023,8 +1032,8 @@ NSString *kCalculationString;
 
 - (void)updateOffsetDateCompWithTextField:(UITextField *)textField {
     A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
-    
-	if (_selectedTextField == footerCell.yearTextField || _selectedTextField==footerCell.monthTextField || _selectedTextField==footerCell.dayTextField) {
+
+	if (self.isAddSubMode && (_selectedTextField == footerCell.yearTextField || _selectedTextField==footerCell.monthTextField || _selectedTextField==footerCell.dayTextField)) {
 		if (_selectedTextField==footerCell.yearTextField) {
 			self.offsetComp.year = _selectedTextField.text.integerValue;
 		}

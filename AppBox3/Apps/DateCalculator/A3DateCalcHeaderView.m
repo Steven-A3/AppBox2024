@@ -521,7 +521,12 @@
 - (void)setToValue:(CGFloat)newValue {
     _toValue = newValue;
     if (_toValue > CGRectGetWidth(_sliderLineView.frame) - SLIDER_OFFSET) {
-        _toValue = CGRectGetWidth(_sliderLineView.frame) - SLIDER_OFFSET;
+        if (IS_IPAD && IS_LANDSCAPE) {
+            _toValue = 1024.0 - SLIDER_OFFSET;
+        }
+        else {
+            _toValue = CGRectGetWidth(_sliderLineView.frame) - SLIDER_OFFSET;
+        }
         _toLabel.textColor = [UIColor blackColor];
     } else {
         _toLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
@@ -586,7 +591,12 @@
 
     self.toLabel.text = [A3DateCalcStateManager formattedStringDate:_toDate];
     [_toLabel sizeToFit];
-    self.toValue = CGRectGetWidth(self.sliderLineView.frame);
+    if (IS_IPAD && IS_LANDSCAPE) {
+        self.toValue = 1024.0;
+    }
+    else {
+        self.toValue = CGRectGetWidth(self.sliderLineView.frame);
+    }
 }
 
 // Between two Days 출력 부분.
