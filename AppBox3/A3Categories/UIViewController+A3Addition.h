@@ -11,6 +11,12 @@
 #import "A3PasscodeViewController.h"
 #import "A3PasswordViewController.h"
 
+typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
+	A3RightBarButtonTagShareButton = 1,
+	A3RightBarButtonTagHistoryButton,
+	A3RightBarButtonTagSettingsButton
+};
+
 @interface UIViewController (A3Addition)
 
 - (void)cleanUp;

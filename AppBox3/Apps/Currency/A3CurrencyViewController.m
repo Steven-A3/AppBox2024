@@ -31,14 +31,7 @@
 #import "A3CalculatorDelegate.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "UITableView+utility.h"
 #import "UIColor+A3Addition.h"
-
-typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
-	A3RightBarButtonTagShareButton = 1,
-	A3RightBarButtonTagHistoryButton,
-	A3RightBarButtonTagSettingsButton
-};
 
 NSString *const A3CurrencyLastInputValue = @"A3CurrencyLastInputValue";
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
@@ -338,6 +331,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 - (void)shareButtonAction:(id)sender {
 	[self clearEverything];
 
+	[self enableControls:NO];
 	[self shareAll:sender];
 }
 
@@ -1174,9 +1168,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	// Popover controller, iPad only.
 	[self unSwipeAll];
 
-	[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-		[buttonItem setEnabled:YES];
-	}];
+	[self enableControls:YES];
+
 	_sharePopoverController = nil;
 }
 
