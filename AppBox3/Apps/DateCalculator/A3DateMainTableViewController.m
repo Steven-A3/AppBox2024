@@ -34,7 +34,7 @@ NSString *kCalculationString;
 @property (strong, nonatomic) A3DateCalcHeaderView *headerView;
 @property (strong, nonatomic) NSArray *sectionTitles;
 @property (strong, nonatomic) NSArray *sections;
-@property (strong, nonatomic) NSIndexPath *selectedIndexPath;
+@property (strong, nonatomic) NSIndexPath *editingIndexPath;
 
 @property (assign, nonatomic) BOOL isAddSubMode;
 @property (strong, nonatomic) NSDate * fromDate;
@@ -184,10 +184,10 @@ NSString *kCalculationString;
 
 - (void)clearEverything {
 	@autoreleasepool {
-        if (_selectedIndexPath) {
-            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_selectedIndexPath];
+        if (_editingIndexPath) {
+            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_editingIndexPath];
             cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
-            _selectedIndexPath = nil;
+            _editingIndexPath = nil;
         }
         
         [_fromToTextField resignFirstResponder];
@@ -582,8 +582,8 @@ NSString *kCalculationString;
 
     CGFloat keyboardPadding = IS_IPHONE ? -1.0 : 0.0;
     
-    self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.selectedIndexPath];
+    self.editingIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.editingIndexPath];
     cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
     cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
     cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
@@ -594,7 +594,7 @@ NSString *kCalculationString;
         return;
     }
     
-    CGRect cellRect = [self.tableView rectForRowAtIndexPath:self.selectedIndexPath];
+    CGRect cellRect = [self.tableView rectForRowAtIndexPath:self.editingIndexPath];
     CGFloat offset = (cellRect.origin.y + cellRect.size.height + keyboardPadding) - (self.tableView.frame.size.height-self.dateKeyboardViewController.view.bounds.size.height);
     _oldTableOffset = self.tableView.contentOffset.y;
     NSLog(@"%f", offset);
@@ -608,8 +608,8 @@ NSString *kCalculationString;
 
     CGFloat keyboardPadding = IS_IPHONE ? -1.0 : 0.0;
     
-    self.selectedIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.selectedIndexPath];
+    self.editingIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.editingIndexPath];
     cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
     cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
@@ -619,7 +619,7 @@ NSString *kCalculationString;
         return;
     }
     
-    CGRect cellRect = [self.tableView rectForRowAtIndexPath:self.selectedIndexPath];
+    CGRect cellRect = [self.tableView rectForRowAtIndexPath:self.editingIndexPath];
 	FNLOGRECT(self.tableView.frame);
 	FNLOGRECT(self.dateKeyboardViewController.view.bounds);
 	FNLOGRECT(cellRect);
@@ -847,6 +847,11 @@ NSString *kCalculationString;
 	[self updateOffsetDateCompWithTextField:_selectedTextField];
 
 	textField.placeholder = _placeholderBeforeEditingText;
+    
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.editingIndexPath];
+    if (cell) {
+        cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
+    }
 }
 
 - (void)textFieldDidChange:(NSNotification *)notification {
@@ -918,7 +923,7 @@ NSString *kCalculationString;
     }
     else {
         // From/To Cell
-        if (self.selectedIndexPath.row==0) {
+        if (self.editingIndexPath.row==0) {
             if (self.isAddSubMode) {
                 self.fromDate = date==nil? [NSDate date] : date;
             }
@@ -935,7 +940,7 @@ NSString *kCalculationString;
         
         if (_isSelectedFromToCell) {
             _isSelectedFromToCell = NO;
-            [self.tableView deselectRowAtIndexPath:_selectedIndexPath animated:YES];
+            [self.tableView deselectRowAtIndexPath:_editingIndexPath animated:YES];
         }
         
         [self setResultToHeaderViewWithAnimation:YES];
@@ -990,7 +995,7 @@ NSString *kCalculationString;
 	[self.fromToTextField resignFirstResponder];
     _isKeyboardShown = NO;
 
-	_selectedIndexPath = nil;
+	_editingIndexPath = nil;
 
     [self.tableView reloadData];
     [self setResultToHeaderViewWithAnimation:YES];
@@ -1261,12 +1266,12 @@ NSString *kCalculationString;
             cell.detailTextLabel.frame = rect;
             
             // 선택된 셀로 이동.
-            if (indexPath.section==_selectedIndexPath.section && indexPath.row==_selectedIndexPath.row && _isSelectedFromToCell) {
+            if (indexPath.section==_editingIndexPath.section && indexPath.row==_editingIndexPath.row && _isSelectedFromToCell) {
                 [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
             }
             
             // 선택된 셀 텍스트 색상 편집 중에만 변경.
-            if (_isKeyboardShown && _selectedIndexPath && (indexPath.row==_selectedIndexPath.row)) {
+            if (_isKeyboardShown && _editingIndexPath && (indexPath.row==_editingIndexPath.row)) {
                 cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
             } else {
                 cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
