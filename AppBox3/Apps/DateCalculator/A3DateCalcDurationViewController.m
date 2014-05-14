@@ -101,7 +101,9 @@ static NSString *CellIdentifier = @"Cell";
     cell.textLabel.text = self.sections[indexPath.section][indexPath.row];
     //cell.textLabel.font = FONT_TABLE_TEXTLABEL_DEFAULT_SIZE(17);
     cell.textLabel.font = [UIFont systemFontOfSize:17];
-
+    cell.textLabel.textColor = [UIColor blackColor];
+    cell.userInteractionEnabled = YES;
+    
     switch (indexPath.row) {
         case 0:
         {
@@ -125,6 +127,8 @@ static NSString *CellIdentifier = @"Cell";
         {
             cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Day? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.userInteractionEnabled = NO;
+            cell.textLabel.textColor = [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
         }
             break;
     }
@@ -134,30 +138,29 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
     switch (indexPath.row) {
         case 0:
         {
             [A3DateCalcStateManager setDurationType:DurationType_Year];
+            cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Year? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         }
             break;
         case 1:
         {
             [A3DateCalcStateManager setDurationType:DurationType_Month];
+            cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Month? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         }
             break;
         case 2:
         {
             [A3DateCalcStateManager setDurationType:DurationType_Week];
+            cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Week? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         }
             break;
-//        case 3:
-//        {
-//            [A3DateCalcStateManager setDurationType:DurationType_Day];
-//        }
-            break;
     }
-    
-    [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
 
     if ([self.delegate respondsToSelector:@selector(durationSettingChanged)]) {
         [self.delegate durationSettingChanged];
