@@ -164,7 +164,7 @@ NSString *kCalculationString;
 {
     [super viewWillLayoutSubviews];
     
-	[self.dateKeyboardViewController rotateToInterfaceOrientation:self.interfaceOrientation];
+//	[self.dateKeyboardViewController rotateToInterfaceOrientation:self.interfaceOrientation];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
@@ -174,6 +174,11 @@ NSString *kCalculationString;
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self.dateKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
 }
 
 - (void)clearEverything {
@@ -212,9 +217,10 @@ NSString *kCalculationString;
 -(void)setFromDate:(NSDate *)fromDate
 {
     _fromDate = [fromDate copy];
-    NSDateComponents *comp = [[A3DateCalcStateManager currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
+    NSDateComponents *comp = [[A3DateCalcStateManager currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit
                                                                          fromDate:_fromDate];
-    comp.hour = 12;
+    comp.hour = 0;
+    comp.minute = 0;
     _fromDate = [[A3DateCalcStateManager currentCalendar] dateFromComponents:comp];
     
     [[NSUserDefaults standardUserDefaults] setObject:_fromDate forKey:@"fromDate"];
@@ -224,9 +230,10 @@ NSString *kCalculationString;
 -(void)setToDate:(NSDate *)toDate
 {
     _toDate = [toDate copy];
-    NSDateComponents *comp = [[A3DateCalcStateManager currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
+    NSDateComponents *comp = [[A3DateCalcStateManager currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit
                                                                          fromDate:_toDate];
-    comp.hour = 12;
+    comp.hour = 0;
+    comp.minute = 0;
     _toDate = [[A3DateCalcStateManager currentCalendar] dateFromComponents:comp];
     
     [[NSUserDefaults standardUserDefaults] setObject:_toDate forKey:@"toDate"];
@@ -347,17 +354,26 @@ NSString *kCalculationString;
                 
                 NSMutableString *intervals = [[NSMutableString alloc] init];
                 if (self.offsetComp.year!=0) {
-                    [intervals appendString:[NSString stringWithFormat:@" %ld years", (long)self.offsetComp.year]];
+                    [intervals appendString:[NSString stringWithFormat:@" %ld year", (long)self.offsetComp.year]];
+                    if ([self.offsetComp year] > 1) {
+                        [intervals appendString:@"s"];
+                    }
                 }
                 if (self.offsetComp.month!=0) {
-                    [intervals appendString:[NSString stringWithFormat:@" %ld months", (long)self.offsetComp.month]];
+                    [intervals appendString:[NSString stringWithFormat:@" %ld month", (long)self.offsetComp.month]];
+                    if ([self.offsetComp month] > 1) {
+                        [intervals appendString:@"s"];
+                    }
                 }
                 if (self.offsetComp.day!=0) {
-                    [intervals appendString:[NSString stringWithFormat:@" %ld days", (long)self.offsetComp.day]];
+                    [intervals appendString:[NSString stringWithFormat:@" %ld day", (long)self.offsetComp.day]];
+                    if ([self.offsetComp day] > 1) {
+                        [intervals appendString:@"s"];
+                    }
                 }
                 
                 if (intervals.length <= 0) {
-                    [shareString appendString:[NSString stringWithFormat:@"Added: 0 days\n"]];
+                    [shareString appendString:[NSString stringWithFormat:@"Added: 0 day\n"]];
                 }
                 else {
                     [shareString appendString:[NSString stringWithFormat:@"Added: %@\n", intervals]];
@@ -381,17 +397,26 @@ NSString *kCalculationString;
                 
                 NSMutableString *intervals = [[NSMutableString alloc] init];
                 if (self.offsetComp.year!=0) {
-                    [intervals appendString:[NSString stringWithFormat:@" %ld years", (long)self.offsetComp.year]];
+                    [intervals appendString:[NSString stringWithFormat:@" %ld year", (long)self.offsetComp.year]];
+                    if ([self.offsetComp year] > 1) {
+                        [intervals appendString:@"s"];
+                    }
                 }
                 if (self.offsetComp.month!=0) {
-                    [intervals appendString:[NSString stringWithFormat:@" %ld months", (long)self.offsetComp.month]];
+                    [intervals appendString:[NSString stringWithFormat:@" %ld month", (long)self.offsetComp.month]];
+                    if ([self.offsetComp month] > 1) {
+                        [intervals appendString:@"s"];
+                    }
                 }
                 if (self.offsetComp.day!=0) {
-                    [intervals appendString:[NSString stringWithFormat:@" %ld days", (long)self.offsetComp.day]];
+                    [intervals appendString:[NSString stringWithFormat:@" %ld day", (long)self.offsetComp.day]];
+                    if ([self.offsetComp day] > 1) {
+                        [intervals appendString:@"s"];
+                    }
                 }
                 
                 if (intervals.length <= 0) {
-                    [shareString appendString:[NSString stringWithFormat:@"Subtracted: 0 days\n"]];
+                    [shareString appendString:[NSString stringWithFormat:@"Subtracted: 0 day\n"]];
                 } else {
                     [shareString appendString:[NSString stringWithFormat:@"Subtracted: %@\n", intervals]];
                 }
@@ -417,19 +442,31 @@ NSString *kCalculationString;
             NSMutableString *intervals = [[NSMutableString alloc] init];
             
             if ( (durationType & DurationType_Year) && intervalComp.year!=0 ) {
-                [intervals appendString:[NSString stringWithFormat:@" %ld years", (long)intervalComp.year]];
+                [intervals appendString:[NSString stringWithFormat:@" %ld year", (long)intervalComp.year]];
+                if ([intervalComp year] > 1) {
+                    [intervals appendString:@"s"];
+                }
             }
             
             if ( (durationType & DurationType_Month) && intervalComp.month!=0 ) {
-                [intervals appendString:[NSString stringWithFormat:@" %ld months", (long)intervalComp.month]];
+                [intervals appendString:[NSString stringWithFormat:@" %ld month", (long)intervalComp.month]];
+                if ([intervalComp month] > 1) {
+                    [intervals appendString:@"s"];
+                }
             }
             
             if ( (durationType & DurationType_Week) && intervalComp.week!=0 ) {
-                [intervals appendString:[NSString stringWithFormat:@" %ld weeks", (long)intervalComp.week]];
+                [intervals appendString:[NSString stringWithFormat:@" %ld week", (long)intervalComp.week]];
+                if ([intervalComp week] > 1) {
+                    [intervals appendString:@"s"];
+                }
             }
             
             if ( (durationType & DurationType_Day) && intervalComp.day!=0 ) {
-                [intervals appendString:[NSString stringWithFormat:@" %ld days", (long)intervalComp.day]];
+                [intervals appendString:[NSString stringWithFormat:@" %ld day", (long)intervalComp.day]];
+                if ([intervalComp day] > 1) {
+                    [intervals appendString:@"s"];
+                }
             }
             
             [shareString appendString:[NSString stringWithFormat:@"Result: %@", intervals]];
@@ -877,7 +914,6 @@ NSString *kCalculationString;
         }
         
         [_footerCell setOffsetDateComp:self.offsetComp];
-        
     }
     else {
         // From/To Cell
@@ -917,11 +953,13 @@ NSString *kCalculationString;
 	if (_selectedTextField==_footerCell.yearTextField) {
 		_selectedTextField = _footerCell.monthTextField;
 		[_footerCell.monthTextField becomeFirstResponder];
-	} else if (_selectedTextField==_footerCell.monthTextField) {
+	}
+    else if (_selectedTextField==_footerCell.monthTextField) {
 		_selectedTextField = _footerCell.dayTextField;
 		[_footerCell.dayTextField becomeFirstResponder];
 
-	} else if (_selectedTextField==_footerCell.dayTextField) {
+	}
+    else if (_selectedTextField==_footerCell.dayTextField) {
 		return;
 	}
 }
@@ -932,12 +970,14 @@ NSString *kCalculationString;
 		_selectedTextField = _footerCell.monthTextField;
 		[_footerCell.monthTextField becomeFirstResponder];
 
-	} else if (_selectedTextField==_footerCell.monthTextField) {
+	}
+    else if (_selectedTextField==_footerCell.monthTextField) {
 		_footerCell.monthTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.month];
 		_selectedTextField = _footerCell.yearTextField;
 		[_footerCell.yearTextField becomeFirstResponder];
 
-	} else if (_selectedTextField==_footerCell.yearTextField) {
+	}
+    else if (_selectedTextField==_footerCell.yearTextField) {
 		_footerCell.yearTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.year];
 		_selectedTextField = self.fromToTextField;
 		[self.fromToTextField becomeFirstResponder];
@@ -961,9 +1001,11 @@ NSString *kCalculationString;
 	if (_selectedTextField==_footerCell.yearTextField || _selectedTextField==_footerCell.monthTextField || _selectedTextField==_footerCell.dayTextField) {
 		if (_selectedTextField==_footerCell.yearTextField) {
 			self.offsetComp.year = _selectedTextField.text.integerValue;
-		} else if (_selectedTextField==_footerCell.monthTextField) {
+		}
+        else if (_selectedTextField==_footerCell.monthTextField) {
 			self.offsetComp.month = _selectedTextField.text.integerValue;
-		} else if (_selectedTextField==_footerCell.dayTextField) {
+		}
+        else if (_selectedTextField==_footerCell.dayTextField) {
 			self.offsetComp.day = _selectedTextField.text.integerValue;
 		}
 
