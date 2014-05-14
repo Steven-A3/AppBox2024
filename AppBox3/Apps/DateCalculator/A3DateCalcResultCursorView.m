@@ -63,7 +63,7 @@ const CGFloat LINE_WITH = 1.0;
 //        attributes = @{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] };
 //    }
     attributes = @{ NSFontAttributeName : self.contentLabel.font };
-    CGRect rect = [_resultText boundingRectWithSize:CGSizeMake(280.0, 25.0)
+    CGRect rect = [_resultText boundingRectWithSize:CGSizeMake(IS_IPAD ? 500.0 : 300.0, 25.0)
                                            options:NSStringDrawingUsesLineFragmentOrigin
                                         attributes:attributes
                                            context:nil];
