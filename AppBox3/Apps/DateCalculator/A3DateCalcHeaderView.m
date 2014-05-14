@@ -99,18 +99,7 @@
     self.resultLabel = [[A3DateCalcResultCursorView alloc] initWithFrame:CGRectZero];
     self.fromLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.toLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    
-//    test = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 70, 40)];
-//    test.layer.borderColor = [COLOR_POSITIVE CGColor];
-//    test.layer.borderWidth = 1.0;
-//    test.backgroundColor = [UIColor clearColor];
-//    [self addSubview:test];
-//    //test.text = [A3DateCalcStateManager formattedStringDate:[NSDate date]];
-//    test.text = @"2016";
-//    test.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
-//    test.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
 
-    
     if (IS_IPHONE) {
         CGFloat baseLineCenterY = 59.0;
         CGFloat lineHeight = IS_RETINA ? 0.5 : 1.0;
@@ -235,12 +224,10 @@
     CGRect rect = _fromToRangeLineView.frame;
     CGFloat fXpos = _fromValue + CGRectGetWidth(fRect)/8;
     CGFloat tXpos = _toValue - CGRectGetWidth(tRect)/8;
-    
-//    NSLog(@"_toThumbView.center.x: %f", _toThumbView.center.x);
-    
+
     rect.origin = CGPointMake(fXpos, rect.origin.y);
     rect.size = CGSizeMake(tXpos - fXpos, rect.size.height);
-    
+    FNLOG(@"\nadjustFromToBetweenLineWidth: %@", NSStringFromCGRect(rect));
     [UIView animateWithDuration:0.5
                           delay:0
          usingSpringWithDamping:500.0f
@@ -251,61 +238,6 @@
                      } completion:^(BOOL finished) {
                          
                      }];
-    
-    //    // From Label 위치 지정
-    //    [_fromLabel sizeToFit];
-    //    NSDictionary *attributes;
-    //    if (IS_IPAD) {
-    //        attributes = @{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] };
-    //    } else {
-    //        attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Helvetica Neue" size:13.0] };
-    //    }
-    //    CGRect fontRect = [_fromLabel.text boundingRectWithSize:CGSizeMake(240.0, 26.0)
-    //                                                    options:NSStringDrawingUsesLineFragmentOrigin
-    //                                                 attributes:attributes
-    //                                                    context:nil];
-    //
-    //    _fromLabel.center = CGPointMake(_fromThumbView.center.x, _toLabel.center.y);
-    //    CGRect labelRect = _fromLabel.frame;
-    //    if (IS_IPHONE) {
-    //        labelRect.origin.y = _sliderLineView.center.y + 9.0;
-    //    } else {
-    //        labelRect.origin.y = _sliderLineView.center.y + 23.0;
-    //    }
-    //
-    //    labelRect.size.width = fontRect.size.width;
-    //    if (labelRect.origin.x < self.bounds.origin.x + SLIDER_OFFSET_LABEL ) {
-    //        labelRect.origin.x = self.bounds.origin.x + SLIDER_OFFSET_LABEL;
-    //    } else if ((labelRect.origin.x+labelRect.size.width+SLIDER_OFFSET_LABEL) > _toLabel.frame.origin.x) {
-    //        labelRect.origin.x = _toLabel.frame.origin.x - labelRect.size.width - SLIDER_OFFSET_LABEL;
-    //    }
-    //
-    //    _fromLabel.frame = labelRect;
-    //
-    //    // ToLabel 위치 지정
-    //    [_toLabel sizeToFit];
-    //    //attributes = @{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]};
-    //    fontRect = [_toLabel.text boundingRectWithSize:CGSizeMake(240.0, 26.0)
-    //                                           options:NSStringDrawingUsesLineFragmentOrigin
-    //                                        attributes:attributes
-    //                                           context:nil];
-    //    _toLabel.center = CGPointMake(_toThumbView.center.x, _toLabel.center.y);
-    //    labelRect = _toLabel.frame;
-    //    labelRect.size.width = fontRect.size.width;
-    //    if (IS_IPHONE) {
-    //        labelRect.origin.y = _sliderLineView.center.y + 9.0;
-    //    } else {
-    //        labelRect.origin.y = _sliderLineView.center.y + 23.0;
-    //    }
-    //
-    //    if ((labelRect.origin.x+labelRect.size.width) > (CGRectGetWidth(self.bounds) - SLIDER_OFFSET_LABEL)) {
-    //        labelRect.origin.x = CGRectGetWidth(self.bounds) - labelRect.size.width - SLIDER_OFFSET_LABEL;
-    //
-    //    } else if (labelRect.origin.x < (_fromLabel.frame.origin.x + _fromLabel.frame.size.width + SLIDER_OFFSET_LABEL)) {
-    //        labelRect.origin.x = _fromLabel.frame.origin.x + _fromLabel.frame.size.width + SLIDER_OFFSET_LABEL;
-    //    }
-    //
-    //    _toLabel.frame = labelRect;
 }
 
 - (void)adjustFromToLabelPosition {

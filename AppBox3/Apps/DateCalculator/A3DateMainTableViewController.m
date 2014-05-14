@@ -68,8 +68,8 @@ NSString *kCalculationString;
     CGFloat _oldTableOffset;
     UITextField *_selectedTextField;
     A3NumberKeyboardViewController *_simpleNormalNumberKeyboard;
-    A3DateCalcAddSubCell1 *_footerAddSubCell;
-    A3DateCalcAddSubCell2 *_footerCell;
+//    A3DateCalcAddSubCell1 *_footerAddSubCell;
+//    A3DateCalcAddSubCell2 *footerCell;
 }
 
 @synthesize fromDate = _fromDate;
@@ -282,13 +282,14 @@ NSString *kCalculationString;
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     BOOL isMinusSelected = [[NSUserDefaults standardUserDefaults] boolForKey:kDefault_didSelectMinus];
-    
-    _footerAddSubCell.addModeButton.selected = isMinusSelected ? NO : YES;
-    _footerAddSubCell.subModeButton.selected = isMinusSelected ? YES : NO;
-    [_footerAddSubCell.addModeButton setBackgroundColor:isMinusSelected ? kDefaultButtonColor : kSelectedButtonColor];
-    [_footerAddSubCell.subModeButton setBackgroundColor:isMinusSelected ? kSelectedButtonColor : kDefaultButtonColor];
-    [_footerAddSubCell.addModeButton setNeedsDisplay];
-    [_footerAddSubCell.subModeButton setNeedsDisplay];
+
+    A3DateCalcAddSubCell1 *footerAddSubCell = (A3DateCalcAddSubCell1 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+    footerAddSubCell.addModeButton.selected = isMinusSelected ? NO : YES;
+    footerAddSubCell.subModeButton.selected = isMinusSelected ? YES : NO;
+    [footerAddSubCell.addModeButton setBackgroundColor:isMinusSelected ? kDefaultButtonColor : kSelectedButtonColor];
+    [footerAddSubCell.subModeButton setBackgroundColor:isMinusSelected ? kSelectedButtonColor : kDefaultButtonColor];
+    [footerAddSubCell.addModeButton setNeedsDisplay];
+    [footerAddSubCell.subModeButton setNeedsDisplay];
     
     [self refreshAddSubModeButtonForResultWithAnimation:YES];
 }
@@ -300,12 +301,13 @@ NSString *kCalculationString;
     
     BOOL isMinusSelected = [[NSUserDefaults standardUserDefaults] boolForKey:kDefault_didSelectMinus];
     
-    _footerAddSubCell.addModeButton.selected = isMinusSelected ? NO : YES;
-    _footerAddSubCell.subModeButton.selected = isMinusSelected ? YES : NO;
-    [_footerAddSubCell.addModeButton setBackgroundColor:isMinusSelected ? kDefaultButtonColor : kSelectedButtonColor];
-    [_footerAddSubCell.subModeButton setBackgroundColor:isMinusSelected ? kSelectedButtonColor : kDefaultButtonColor];
-    [_footerAddSubCell.addModeButton setNeedsDisplay];
-    [_footerAddSubCell.subModeButton setNeedsDisplay];
+    A3DateCalcAddSubCell1 *footerAddSubCell = (A3DateCalcAddSubCell1 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+    footerAddSubCell.addModeButton.selected = isMinusSelected ? NO : YES;
+    footerAddSubCell.subModeButton.selected = isMinusSelected ? YES : NO;
+    [footerAddSubCell.addModeButton setBackgroundColor:isMinusSelected ? kDefaultButtonColor : kSelectedButtonColor];
+    [footerAddSubCell.subModeButton setBackgroundColor:isMinusSelected ? kSelectedButtonColor : kDefaultButtonColor];
+    [footerAddSubCell.addModeButton setNeedsDisplay];
+    [footerAddSubCell.subModeButton setNeedsDisplay];
     
     [self refreshAddSubModeButtonForResultWithAnimation:YES];
 }
@@ -691,9 +693,9 @@ NSString *kCalculationString;
 }
 
 -(void)dateCalcHeaderAddSubResult:(NSDateComponents *)compResult {
-    //    _footerCell.yearTextField.text = [NSString stringWithFormat:@"%d", compResult.year];
-    //    _footerCell.monthTextField.text = [NSString stringWithFormat:@"%d", compResult.month];
-    //    _footerCell.dayTextField.text = [NSString stringWithFormat:@"%d", compResult.day];
+    //    footerCell.yearTextField.text = [NSString stringWithFormat:@"%d", compResult.year];
+    //    footerCell.monthTextField.text = [NSString stringWithFormat:@"%d", compResult.month];
+    //    footerCell.dayTextField.text = [NSString stringWithFormat:@"%d", compResult.day];
 }
 
 -(void)dateCalcHeaderFromThumbTapped {
@@ -743,7 +745,13 @@ NSString *kCalculationString;
 			[self.fromToTextField becomeFirstResponder];
             [self moveToFromDateCell];
         } else {
-            [_footerCell.yearTextField becomeFirstResponder];
+            A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+            if (!footerCell) {
+                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+                footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+            }
+            
+            [footerCell.yearTextField becomeFirstResponder];
         }
     }
 }
@@ -770,7 +778,8 @@ NSString *kCalculationString;
         
     } else {
         if ([self didSelectedAdd]) {
-            [_footerCell.yearTextField becomeFirstResponder];
+            A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+            [footerCell.yearTextField becomeFirstResponder];
         } else {
 			self.dateKeyboardViewController.date = self.fromDate;
             [self.fromToTextField becomeFirstResponder];
@@ -792,8 +801,10 @@ NSString *kCalculationString;
 	self.placeholderBeforeEditingText = textField.placeholder;
 	textField.text = @"";
 	textField.placeholder = @"0";
+    
+    A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
 
-	if ([_footerCell hasEqualTextField:_selectedTextField]) {
+	if ([footerCell hasEqualTextField:_selectedTextField]) {
 		if (_simpleNormalNumberKeyboard==nil) {
 			_simpleNormalNumberKeyboard = [self simplePrevNextNumberKeyboard];
 			if (IS_IPHONE) {
@@ -806,16 +817,16 @@ NSString *kCalculationString;
 		_simpleNormalNumberKeyboard.delegate = self;
 		_selectedTextField.inputView = _simpleNormalNumberKeyboard.view;
 
-		if (_selectedTextField==_footerCell.yearTextField) {
+		if (_selectedTextField == footerCell.yearTextField) {
 			_datePrevShow = NO;
 			_dateNextShow = YES;
 
 		}
-		else if (_selectedTextField==_footerCell.monthTextField) {
+		else if (_selectedTextField == footerCell.monthTextField) {
 			_datePrevShow = YES;
 			_dateNextShow = YES;
 		}
-		else if (_selectedTextField==_footerCell.dayTextField) {
+		else if (_selectedTextField == footerCell.dayTextField) {
 			_datePrevShow = YES;
 			_dateNextShow = NO;
 		}
@@ -857,19 +868,20 @@ NSString *kCalculationString;
 - (void)textFieldDidChange:(NSNotification *)notification {
     
 	UITextField *textField = notification.object;
+    A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
     
-	if ([_footerCell hasEqualTextField:textField]) {
-        if (_selectedTextField == _footerCell.yearTextField) {
+	if ([footerCell hasEqualTextField:textField]) {
+        if (_selectedTextField == footerCell.yearTextField) {
             self.offsetComp.year = _selectedTextField.text.integerValue;
         }
-        else if (_selectedTextField==_footerCell.monthTextField) {
+        else if (_selectedTextField == footerCell.monthTextField) {
             self.offsetComp.month = _selectedTextField.text.integerValue;
         }
-        else if (_selectedTextField==_footerCell.dayTextField) {
+        else if (_selectedTextField == footerCell.dayTextField) {
             self.offsetComp.day = _selectedTextField.text.integerValue;
         }
         
-        [_footerCell saveInputedTextField:textField];
+        [footerCell saveInputedTextField:textField];
 	}
     else {
         NSLog(@"from/to: %@", notification);
@@ -878,7 +890,9 @@ NSString *kCalculationString;
 
 -(void)keyboardWillShow:(NSNotification *)aNoti
 {
-    if (self.isAddSubMode && [_footerCell hasEqualTextField:_selectedTextField]) {
+    A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    
+    if (self.isAddSubMode && [footerCell hasEqualTextField:_selectedTextField]) {
         NSDictionary *aDict = [aNoti userInfo];
         CGRect keyboardSize = [self.view convertRect:[[aDict valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue] fromView:nil];
         keyboardSize.size.height = keyboardSize.size.height-90.0;
@@ -905,21 +919,22 @@ NSString *kCalculationString;
 #pragma mark  A3KeyboardViewControllerDelegate
 - (void)dateKeyboardValueChangedDate:(NSDate *)date
 {
+    A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
     // 풋터뷰 필드(ADD/SUB모드)
-    if (_selectedTextField==_footerCell.yearTextField || _selectedTextField==_footerCell.monthTextField || _selectedTextField==_footerCell.dayTextField) {
+    if (_selectedTextField == footerCell.yearTextField || _selectedTextField == footerCell.monthTextField || _selectedTextField == footerCell.dayTextField) {
         NSDateComponents *changed = [[A3DateCalcStateManager currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
                                                                                 fromDate:date];
-        if (_selectedTextField==_footerCell.yearTextField) {
+        if (_selectedTextField == footerCell.yearTextField) {
             self.offsetComp.year = changed.year;
         }
-        else if (_selectedTextField==_footerCell.monthTextField) {
+        else if (_selectedTextField == footerCell.monthTextField) {
             self.offsetComp.month = changed.month;
         }
-        else if (_selectedTextField==_footerCell.dayTextField) {
+        else if (_selectedTextField == footerCell.dayTextField) {
             self.offsetComp.day = changed.day;
         }
         
-        [_footerCell setOffsetDateComp:self.offsetComp];
+        [footerCell setOffsetDateComp:self.offsetComp];
     }
     else {
         // From/To Cell
@@ -956,35 +971,38 @@ NSString *kCalculationString;
 }
 
 - (void)nextButtonPressed{
-	if (_selectedTextField==_footerCell.yearTextField) {
-		_selectedTextField = _footerCell.monthTextField;
-		[_footerCell.monthTextField becomeFirstResponder];
+    A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    
+	if (_selectedTextField == footerCell.yearTextField) {
+		_selectedTextField = footerCell.monthTextField;
+		[footerCell.monthTextField becomeFirstResponder];
 	}
-    else if (_selectedTextField==_footerCell.monthTextField) {
-		_selectedTextField = _footerCell.dayTextField;
-		[_footerCell.dayTextField becomeFirstResponder];
+    else if (_selectedTextField == footerCell.monthTextField) {
+		_selectedTextField = footerCell.dayTextField;
+		[footerCell.dayTextField becomeFirstResponder];
 
 	}
-    else if (_selectedTextField==_footerCell.dayTextField) {
+    else if (_selectedTextField == footerCell.dayTextField) {
 		return;
 	}
 }
 
 - (void)prevButtonPressed{
-	if (_selectedTextField==_footerCell.dayTextField) {
-		_footerCell.dayTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.day];
-		_selectedTextField = _footerCell.monthTextField;
-		[_footerCell.monthTextField becomeFirstResponder];
+    A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    
+	if (_selectedTextField == footerCell.dayTextField) {
+		footerCell.dayTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.day];
+		_selectedTextField = footerCell.monthTextField;
+		[footerCell.monthTextField becomeFirstResponder];
+	}
+    else if (_selectedTextField == footerCell.monthTextField) {
+		footerCell.monthTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.month];
+		_selectedTextField = footerCell.yearTextField;
+		[footerCell.yearTextField becomeFirstResponder];
 
 	}
-    else if (_selectedTextField==_footerCell.monthTextField) {
-		_footerCell.monthTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.month];
-		_selectedTextField = _footerCell.yearTextField;
-		[_footerCell.yearTextField becomeFirstResponder];
-
-	}
-    else if (_selectedTextField==_footerCell.yearTextField) {
-		_footerCell.yearTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.year];
+    else if (_selectedTextField == footerCell.yearTextField) {
+		footerCell.yearTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.year];
 		_selectedTextField = self.fromToTextField;
 		[self.fromToTextField becomeFirstResponder];
 		[self moveToFromDateCell];
@@ -1004,19 +1022,21 @@ NSString *kCalculationString;
 }
 
 - (void)updateOffsetDateCompWithTextField:(UITextField *)textField {
-	if (_selectedTextField==_footerCell.yearTextField || _selectedTextField==_footerCell.monthTextField || _selectedTextField==_footerCell.dayTextField) {
-		if (_selectedTextField==_footerCell.yearTextField) {
+    A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    
+	if (_selectedTextField == footerCell.yearTextField || _selectedTextField==footerCell.monthTextField || _selectedTextField==footerCell.dayTextField) {
+		if (_selectedTextField==footerCell.yearTextField) {
 			self.offsetComp.year = _selectedTextField.text.integerValue;
 		}
-        else if (_selectedTextField==_footerCell.monthTextField) {
+        else if (_selectedTextField==footerCell.monthTextField) {
 			self.offsetComp.month = _selectedTextField.text.integerValue;
 		}
-        else if (_selectedTextField==_footerCell.dayTextField) {
+        else if (_selectedTextField==footerCell.dayTextField) {
 			self.offsetComp.day = _selectedTextField.text.integerValue;
 		}
 
 		//[self.footerView setOffsetDate:self.offsetDate];
-		[_footerCell setOffsetDateComp:self.offsetComp];
+		[footerCell setOffsetDateComp:self.offsetComp];
 		[self setResultToHeaderViewWithAnimation:YES];
 	}
 }
@@ -1033,18 +1053,20 @@ NSString *kCalculationString;
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
     _selectedTextField.text = @"";
 	_textBeforeEditingText = nil;
-	if ([_footerCell hasEqualTextField:_selectedTextField]) {
-		if (_selectedTextField == _footerCell.yearTextField) {
+    A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    
+	if ([footerCell hasEqualTextField:_selectedTextField]) {
+		if (_selectedTextField == footerCell.yearTextField) {
 			self.offsetComp.year = 0;
 		}
-		else if (_selectedTextField==_footerCell.monthTextField) {
+		else if (_selectedTextField==footerCell.monthTextField) {
 			self.offsetComp.month = 0;
 		}
-		else if (_selectedTextField==_footerCell.dayTextField) {
+		else if (_selectedTextField==footerCell.dayTextField) {
 			self.offsetComp.day = 0;
 		}
 
-		[_footerCell saveInputedTextField:_selectedTextField];
+		[footerCell saveInputedTextField:_selectedTextField];
 	}
 }
 
@@ -1175,23 +1197,22 @@ NSString *kCalculationString;
     if (self.isAddSubMode==YES) {
         if (indexPath.section==2 && indexPath.row==0) {
             // FooterViewCell - Add Sub Button Cell
-            A3DateCalcAddSubCell1 *footerCell = [tableView dequeueReusableCellWithIdentifier:cellAddSubCell1];
-            if (!footerCell) {
-                footerCell = [[[NSBundle mainBundle] loadNibNamed:@"A3DateCalcAddSubCell1" owner:self options:nil] lastObject];
+            A3DateCalcAddSubCell1 *footerAddSubCell = [tableView dequeueReusableCellWithIdentifier:cellAddSubCell1];
+            if (!footerAddSubCell) {
+                footerAddSubCell = [[[NSBundle mainBundle] loadNibNamed:@"A3DateCalcAddSubCell1" owner:self options:nil] lastObject];
             }
             
-            [footerCell.addModeButton addTarget:self action:@selector(addButtonTouchUpAction:) forControlEvents:UIControlEventTouchUpInside];
-            [footerCell.subModeButton addTarget:self action:@selector(subButtonTouchUpAction:) forControlEvents:UIControlEventTouchUpInside];
+            [footerAddSubCell.addModeButton addTarget:self action:@selector(addButtonTouchUpAction:) forControlEvents:UIControlEventTouchUpInside];
+            [footerAddSubCell.subModeButton addTarget:self action:@selector(subButtonTouchUpAction:) forControlEvents:UIControlEventTouchUpInside];
             
             BOOL isMinusSelected = [[NSUserDefaults standardUserDefaults] boolForKey:kDefault_didSelectMinus];
-            footerCell.addModeButton.selected = isMinusSelected ? NO : YES;
-            footerCell.subModeButton.selected = isMinusSelected ? YES : NO;
+            footerAddSubCell.addModeButton.selected = isMinusSelected ? NO : YES;
+            footerAddSubCell.subModeButton.selected = isMinusSelected ? YES : NO;
             
-            [footerCell.addModeButton setBackgroundColor:footerCell.addModeButton.selected? kSelectedButtonColor : kDefaultButtonColor];
-            [footerCell.subModeButton setBackgroundColor:footerCell.subModeButton.selected? kSelectedButtonColor : kDefaultButtonColor];
-            _footerAddSubCell = footerCell;
+            [footerAddSubCell.addModeButton setBackgroundColor:footerAddSubCell.addModeButton.selected? kSelectedButtonColor : kDefaultButtonColor];
+            [footerAddSubCell.subModeButton setBackgroundColor:footerAddSubCell.subModeButton.selected? kSelectedButtonColor : kDefaultButtonColor];
             
-            return footerCell;
+            return footerAddSubCell;
             
         } else if (indexPath.section==3 && indexPath.row==0) {
             // FooterViewCell - Year Month Day, Input TextField Cell
@@ -1205,8 +1226,6 @@ NSString *kCalculationString;
             footerCell.dayTextField.delegate = self;
             
 			[footerCell setOffsetDateComp:self.offsetComp];
-
-            _footerCell =  footerCell;
             
             return footerCell;
         }
