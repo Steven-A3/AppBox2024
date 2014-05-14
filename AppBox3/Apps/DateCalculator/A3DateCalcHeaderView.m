@@ -205,12 +205,14 @@
     if (IS_IPAD) {
         self.fromLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         self.toLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        self.resultLabel.contentLabel.font = _calcType == CALC_TYPE_BETWEEN ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        //self.resultLabel.contentLabel.font = _calcType == CALC_TYPE_BETWEEN ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        self.resultLabel.contentLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     }
     else {
         self.fromLabel.font = [UIFont systemFontOfSize:13];
         self.toLabel.font = [UIFont systemFontOfSize:13];
-        self.resultLabel.contentLabel.font = _calcType == CALC_TYPE_BETWEEN ? [UIFont systemFontOfSize:17] : [UIFont systemFontOfSize:13];
+        //self.resultLabel.contentLabel.font = _calcType == CALC_TYPE_BETWEEN ? [UIFont systemFontOfSize:17] : [UIFont systemFontOfSize:13];
+        self.resultLabel.contentLabel.font = [UIFont boldSystemFontOfSize:17];
     }
 
     [self.fromLabel sizeToFit];
