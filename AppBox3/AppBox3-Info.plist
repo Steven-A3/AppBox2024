@@ -23,11 +23,9 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.appboxpro</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>open</string>
+				<string>appbox://foursquare</string>
 			</array>
 		</dict>
 		<dict>
