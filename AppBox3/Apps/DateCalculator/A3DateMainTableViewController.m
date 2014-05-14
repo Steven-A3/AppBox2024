@@ -154,6 +154,7 @@ NSString *kCalculationString;
     // Etc
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.fromToTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, -100, 50, 30)];
+    self.fromToTextField.hidden = YES;
     self.fromToTextField.delegate = self;
     [self.view addSubview:_fromToTextField];
     

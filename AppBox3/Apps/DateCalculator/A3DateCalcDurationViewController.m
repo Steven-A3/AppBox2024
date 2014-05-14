@@ -40,9 +40,7 @@ static NSString *CellIdentifier = @"Cell";
 
     self.title = @"Duration";
     
-    if (IS_IPAD) {
-        [self rightBarButtonDoneButton];
-    } else {
+    if (IS_IPHONE) {
         [self makeBackButtonEmptyArrow];
     }
     
