@@ -133,7 +133,6 @@ static const CGFloat kSideViewWidth = 320.0;
 }
 
 - (void)animateLeftView {
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[UIView animateWithDuration:0.3 animations:^{
 		CGRect frame = _leftNavigationController.view.frame;
 		if (self.showLeftView) {

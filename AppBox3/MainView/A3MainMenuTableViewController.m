@@ -103,10 +103,6 @@ NSString *const A3MainMenuResignFirstResponder = @"A3MainMenuResignFirstResponde
 	}
 }
 
-- (void)viewWillLayoutSubviews {
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-}
-
 - (void)menuContentsChanged {
 	[self setupData];
 	[self.tableView reloadData];
