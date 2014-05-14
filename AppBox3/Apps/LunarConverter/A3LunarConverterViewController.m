@@ -123,7 +123,7 @@
 	[self calculateDate];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuBecameFirstResponder) name:A3MainMenuBecameFirstResponder object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuResignFirstResponder) name:A3MainMenuResignFirstResponder object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuResignFirstResponder) name:A3NotificationMainMenuDidHide object:nil];
 
 	[self registerContentSizeCategoryDidChangeNotification];
 }

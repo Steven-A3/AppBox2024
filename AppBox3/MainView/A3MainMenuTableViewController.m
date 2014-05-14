@@ -40,7 +40,7 @@ NSString *const kA3MainMenuMaxRecentlyUsed = @"kA3MainMenuMaxRecentlyUsed";	// S
 
 NSString *const A3AppsMainMenuContentsChangedNotification = @"A3AppsMainMenuContentsChangedNotification";
 NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponder";
-NSString *const A3MainMenuResignFirstResponder = @"A3MainMenuResignFirstResponder";
+NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide";
 
 @interface A3MainMenuTableViewController () <UISearchDisplayDelegate, UISearchBarDelegate, A3PasscodeViewControllerDelegate, A3TableViewExpandableElementDelegate>
 

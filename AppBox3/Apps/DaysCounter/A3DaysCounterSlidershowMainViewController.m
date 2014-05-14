@@ -62,24 +62,23 @@
 {
     [super viewDidLoad];
 
-    @autoreleasepool {
-        UIView *rightButtonView = nil;
-        if ( IS_IPHONE ) {
-            [self leftBarButtonAppsButton];
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
-            rightButtonView = _naviRightButtonViewiPhone;
-        }
-        else {
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonView];
-            rightButtonView = _naviRightButtonView;
-        }
-        self.infoButton = (UIButton*)[rightButtonView viewWithTag:10];
-        self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];
-        self.infoButton.tintColor = [A3AppDelegate instance].themeColor;
-        self.shareButton.tintColor = [A3AppDelegate instance].themeColor;
-        [self.infoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
-        [self.shareButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"share"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
-    }
+	UIView *rightButtonView = nil;
+	if ( IS_IPHONE ) {
+		[self leftBarButtonAppsButton];
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
+		rightButtonView = _naviRightButtonViewiPhone;
+	}
+	else {
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonView];
+		rightButtonView = _naviRightButtonView;
+	}
+	self.infoButton = (UIButton*)[rightButtonView viewWithTag:10];
+	self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];
+	self.infoButton.tintColor = [A3AppDelegate instance].themeColor;
+	self.shareButton.tintColor = [A3AppDelegate instance].themeColor;
+	[self.infoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
+	[self.shareButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"share"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
+
     [self.navigationController setToolbarHidden:YES];
     [self setToolbarItems:_bottomToolbar.items];
     [self leftBarButtonAppsButton];
@@ -248,34 +247,20 @@
     }
 }
 
+- (void)cleanUp {
+	[self stopTimer];
+
+	self.eventsArray = nil;
+	self.infoButton = nil;
+	self.shareButton = nil;
+}
+
 - (void)dealloc
 {
-    self.eventsArray = nil;
-    self.infoButton = nil;
-    self.shareButton = nil;
+	[self cleanUp];
 }
 
 #pragma mark -
-
-- (CGRect)orientataionFrame
-{
-    CGSize size = self.view.frame.size;
-    if ( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ) {
-        size = CGSizeMake(size.height, size.width);
-    }
-    
-    return CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, size.width, size.height);
-}
-
-- (CGRect)orientataionBounds
-{
-    CGSize size = self.view.bounds.size;
-    if ( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ) {
-        size = CGSizeMake(size.height, size.width);
-    }
-    
-    return CGRectMake(0, 0, size.width, size.height);
-}
 
 - (void)presentMoreMenuView
 {
@@ -390,8 +375,8 @@
         return;
     
     addView.translatesAutoresizingMaskIntoConstraints = NO;
-    addView.frame = [self orientataionBounds];
-    [self.view addSubview:addView];
+    addView.frame = [self screenBoundsAdjustedWithOrientation];
+	[self.view addSubview:addView];
 
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:addView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:addView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
@@ -408,11 +393,6 @@
 - (BOOL)hidesNavigationBar
 {
     return self.navigationController.navigationBarHidden;
-}
-
-- (void)cleanUp
-{
-    
 }
 
 - (void)toggleMenu:(UITapGestureRecognizer*)gesture

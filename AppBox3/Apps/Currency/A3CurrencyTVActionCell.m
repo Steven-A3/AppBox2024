@@ -27,25 +27,15 @@
     // Configure the view for the selected state
 }
 
-//- (void)prepareForReuse {
-//	[super prepareForReuse];
-//}
-- (CGFloat)menuWidth {
-	return 0.0;
-}
-
 - (void)awakeFromNib {
 	[super awakeFromNib];
 
 	[_centerButton makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.contentView.centerX);
 		make.centerY.equalTo(self.contentView.centerY);
+		make.width.equalTo(@44);
+		make.height.equalTo(@44);
 	}];
 }
 
-- (void)prepareForMove {
-
-}
-
 @end
-

@@ -25,12 +25,20 @@
 #import "UIViewController+MMDrawerController.h"
 #import "NSString+conversion.h"
 #import "UIViewController+A3Addition.h"
-#import "A3CacheStoreManager.h"
 #import "A3CurrencyDataManager.h"
 #import "CurrencyRateItem.h"
 #import "NSDate+TimeAgo.h"
 #import "A3CalculatorDelegate.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIViewController+iPad_rightSideView.h"
+#import "UITableView+utility.h"
+#import "UIColor+A3Addition.h"
+
+typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
+	A3RightBarButtonTagShareButton = 1,
+	A3RightBarButtonTagHistoryButton,
+	A3RightBarButtonTagSettingsButton
+};
 
 NSString *const A3CurrencyLastInputValue = @"A3CurrencyLastInputValue";
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
@@ -39,7 +47,6 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 @interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate,
 		A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate,
 		UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource, A3CalculatorDelegate>
-
 
 @property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *equalItem;
@@ -114,9 +121,12 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		self.navigationItem.hidesBackButton = YES;
 
 		UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+		share.tag = A3RightBarButtonTagShareButton;
 		UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
+		settings.tag = A3RightBarButtonTagSettingsButton;
 		UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 		self.historyBarButton = [self historyBarButton:[CurrencyHistory class]];
+		self.historyBarButton.tag = A3RightBarButtonTagHistoryButton;
 		space.width = 24.0;
 
 		self.navigationItem.rightBarButtonItems = @[settings, space, self.historyBarButton, space, share];
@@ -133,6 +143,17 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:USMStoreDidImportChangesNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3CurrencySettingsChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
+}
+
+- (void)mainMenuViewDidHide {
+	[self enableControls:YES];
+}
+
+- (void)rightViewWillDismiss {
+	[self enableControls:YES];
+	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
 - (void)settingsChanged {
@@ -170,6 +191,37 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 												 selector:@selector(coreDataChanged:)
 													 name:NSManagedObjectContextObjectsDidChangeNotification
 												   object:[[MagicalRecordStack defaultStack] context]];
+	}
+}
+
+- (void)enableControls:(BOOL)enable {
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	[self.plusButton setEnabled:enable];
+
+	if (IS_IPAD) {
+		if (enable) {
+			[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
+				switch (barButtonItem.tag) {
+					case A3RightBarButtonTagHistoryButton:
+						[barButtonItem setEnabled:[CurrencyHistory MR_countOfEntities] > 0];
+						break;
+					case A3RightBarButtonTagShareButton:
+					case A3RightBarButtonTagSettingsButton:
+						[barButtonItem setEnabled:YES];
+						break;
+				}
+			}];
+		} else {
+			[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
+				[barButtonItem setEnabled:NO];
+			}];
+		}
+	}
+
+	CGRect cellFrame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+	if (!CGRectEqualToRect(cellFrame, CGRectZero)) {
+		A3CurrencyTVDataCell *cell = (A3CurrencyTVDataCell *) [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+		cell.valueField.textColor = enable ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
 	}
 }
 
@@ -234,89 +286,78 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 			[self rightButtonMoreButton];
 		}
 	} else {
-		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+		A3RootViewController_iPad *rootViewController = self.A3RootViewController;
+		[self enableControls: rootViewController.showLeftView ];
+		[self.A3RootViewController toggleLeftMenuViewOnOff];
 	}
 }
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {
-    @autoreleasepool {
-		[self.firstResponder resignFirstResponder];
-		[self setFirstResponder:nil];
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
 
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
 
-		_moreMenuButtons = @[self.shareButton, [self historyButton:[CurrencyHistory class] ], self.settingsButton];
-		_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
-		_isShowMoreMenu = YES;
-	};
+	_moreMenuButtons = @[self.shareButton, [self historyButton:[CurrencyHistory class] ], self.settingsButton];
+	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
+	_isShowMoreMenu = YES;
 }
 
 - (void)doneButtonAction:(id)button {
-	@autoreleasepool {
-		[self dismissMoreMenu];
-	}
+	[self dismissMoreMenu];
 }
 
 - (void)dismissMoreMenu {
-	@autoreleasepool {
-		if ( !_isShowMoreMenu || IS_IPAD ) return;
+	if ( !_isShowMoreMenu || IS_IPAD ) return;
 
-		[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
-	}
+	[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
 }
 
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
-	@autoreleasepool {
-		if (!_isShowMoreMenu) return;
+	if (!_isShowMoreMenu) return;
 
-		_isShowMoreMenu = NO;
+	_isShowMoreMenu = NO;
 
-		[self rightButtonMoreButton];
-		[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
-		[self.view removeGestureRecognizer:gestureRecognizer];
-	}
+	[self rightButtonMoreButton];
+	[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
+	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 
 - (NSString *)stringFromNumber:(NSNumber *)value withCurrencyCode:(NSString *)currencyCode {
-	@autoreleasepool {
-		NSNumberFormatter *formatter = [NSNumberFormatter new];
-		[formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-		[formatter setCurrencyCode:currencyCode];
-		if (IS_IPHONE) {
-			[formatter setCurrencySymbol:@""];
-		}
-		NSString *string = [formatter stringFromNumber:value];
-		FNLOG(@"%@", string);
-		return [string stringByTrimmingSpaceCharacters];
+	NSNumberFormatter *formatter = [NSNumberFormatter new];
+	[formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[formatter setCurrencyCode:currencyCode];
+	if (IS_IPHONE) {
+		[formatter setCurrencySymbol:@""];
 	}
+	NSString *string = [formatter stringFromNumber:value];
+	FNLOG(@"%@", string);
+	return [string stringByTrimmingSpaceCharacters];
 }
 
 - (void)shareButtonAction:(id)sender {
-	@autoreleasepool {
-		[self clearEverything];
+	[self clearEverything];
 
-		[self shareAll:sender];
-	}
+	[self shareAll:sender];
 }
 
 - (void)historyButtonAction:(UIButton *)button {
-	@autoreleasepool {
-		[self clearEverything];
+	[self clearEverything];
 
-		A3CurrencyHistoryViewController *viewController = [[A3CurrencyHistoryViewController alloc] initWithNibName:nil bundle:nil];
-		[self presentSubViewController:viewController];
-	}
+	[self enableControls:NO];
+	A3CurrencyHistoryViewController *viewController = [[A3CurrencyHistoryViewController alloc] initWithNibName:nil bundle:nil];
+	[self presentSubViewController:viewController];
 }
 
 - (void)settingsButtonAction:(UIButton *)button {
-	@autoreleasepool {
-		[self clearEverything];
+	[self clearEverything];
 
-		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"A3CurrencySettings" bundle:nil];
-		A3CurrencySettingsViewController *viewController = [storyboard instantiateInitialViewController];
-		viewController.delegate = self;
-		[self presentSubViewController:viewController];
-	}
+	[self enableControls:NO];
+
+	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"A3CurrencySettings" bundle:nil];
+	A3CurrencySettingsViewController *viewController = [storyboard instantiateInitialViewController];
+	viewController.delegate = self;
+	[self presentSubViewController:viewController];
 }
 
 - (void)currencyConfigurationChanged {
@@ -350,83 +391,77 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)updateCurrencyRates {
-	@autoreleasepool {
-		if (_isUpdating) return;
+	if (_isUpdating) return;
 
-		_isUpdating = YES;
-		_updateStartDate = [NSDate date];
+	_isUpdating = YES;
+	_updateStartDate = [NSDate date];
 
-		[self dismissMoreMenu];
+	[self dismissMoreMenu];
 
-		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyRatesUpdated) name:A3NotificationCurrencyRatesUpdated object:nil];
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyRatesUpdated) name:A3NotificationCurrencyRatesUpdated object:nil];
 
 
-		if (!self.firstResponder) {
-			[self.refreshControl beginRefreshing];
-		}
-
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-			[A3CurrencyDataManager updateCurrencyRatesInContext:[A3AppDelegate instance].cacheStoreManager.context];
-		});
+	if (!self.firstResponder) {
+		[self.refreshControl beginRefreshing];
 	}
+
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		[A3CurrencyDataManager updateCurrencyRatesInContext:[A3AppDelegate instance].cacheStoreManager.context];
+	});
 }
 
 - (void)currencyRatesUpdated {
-	@autoreleasepool {
-		_isUpdating = NO;
+	_isUpdating = NO;
 
-		[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3CurrencyUpdateDate];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3CurrencyUpdateDate];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
-		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
-		if (self.isDraggingCell) return;
+	if (self.isDraggingCell) return;
 
-		NSMutableArray *visibleRows = [[self.tableView indexPathsForVisibleRows] mutableCopy];
-		NSUInteger firstRowIdx = [visibleRows indexOfObjectPassingTest:^BOOL(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
-			return obj.row == 0;
+	NSMutableArray *visibleRows = [[self.tableView indexPathsForVisibleRows] mutableCopy];
+	NSUInteger firstRowIdx = [visibleRows indexOfObjectPassingTest:^BOOL(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
+		return obj.row == 0;
+	}];
+	if (firstRowIdx != NSNotFound) {
+		[visibleRows removeObjectAtIndex:firstRowIdx];
+	}
+	if ([self.swipedCells count]) {
+		NSIndexPath *swipedCellIndexPath = [self.tableView indexPathForCell:[self.swipedCells anyObject]];
+		NSUInteger swipedCellIndex = [visibleRows indexOfObjectPassingTest:^BOOL(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
+			return obj.row == swipedCellIndexPath.row;
 		}];
-		if (firstRowIdx != NSNotFound) {
-			[visibleRows removeObjectAtIndex:firstRowIdx];
+		if (swipedCellIndex != NSNotFound) {
+			[visibleRows removeObjectAtIndex:swipedCellIndex];
 		}
-		if ([self.swipedCells count]) {
-			NSIndexPath *swipedCellIndexPath = [self.tableView indexPathForCell:[self.swipedCells anyObject]];
-			NSUInteger swipedCellIndex = [visibleRows indexOfObjectPassingTest:^BOOL(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
-				return obj.row == swipedCellIndexPath.row;
-			}];
-			if (swipedCellIndex != NSNotFound) {
-				[visibleRows removeObjectAtIndex:swipedCellIndex];
-			}
-		}
+	}
 
-		[self.tableView reloadRowsAtIndexPaths:visibleRows withRowAnimation:UITableViewRowAnimationNone];
+	[self.tableView reloadRowsAtIndexPaths:visibleRows withRowAnimation:UITableViewRowAnimationNone];
 
-		if ([self.refreshControl isRefreshing]) {
-			NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:_updateStartDate];
-			if (interval < 1.5) {
-				double delayInSeconds = 1.5 - interval;
-				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-					[self.refreshControl endRefreshing];
-					[self reloadUpdateDateLabel];
-				});
-			} else {
+	if ([self.refreshControl isRefreshing]) {
+		NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:_updateStartDate];
+		if (interval < 1.5) {
+			double delayInSeconds = 1.5 - interval;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 				[self.refreshControl endRefreshing];
 				[self reloadUpdateDateLabel];
-			}
+			});
+		} else {
+			[self.refreshControl endRefreshing];
+			[self reloadUpdateDateLabel];
 		}
 	}
 }
 
 - (void)reloadUpdateDateLabel {
-	@autoreleasepool {
-		double delayInSeconds = 0.2;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[self setRefreshControlTitle];
-		});
-	};
+	double delayInSeconds = 0.2;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[self setRefreshControlTitle];
+	});
 }
 
 - (void)setRefreshControlTitle {
@@ -623,48 +658,44 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 #pragma mark -- A3SearchViewDelegate / A3CurrencySelectViewController delegate
 
 - (void)willDismissSearchViewController {
-	@autoreleasepool {
-		NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-	}
+	NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
-	@autoreleasepool {
-		NSArray *result = [CurrencyRateItem MR_findByAttribute:A3KeyCurrencyCode withValue:selectedItem inContext:[A3AppDelegate instance].cacheStoreManager.context];
-		if (_isAddingCurrency) {
-			if ([result count]) {
-				CurrencyRateItem *currencyItem = result[0];
-				CurrencyFavorite *newFavorite = [CurrencyFavorite MR_createEntity];
-				[A3CurrencyDataManager copyCurrencyFrom:currencyItem to:newFavorite];
-				NSInteger insertIdx = [self.favorites count];
-				[self.favorites insertObjectToSortedArray:newFavorite atIndex:insertIdx];
+	NSArray *result = [CurrencyRateItem MR_findByAttribute:A3KeyCurrencyCode withValue:selectedItem inContext:[A3AppDelegate instance].cacheStoreManager.context];
+	if (_isAddingCurrency) {
+		if ([result count]) {
+			CurrencyRateItem *currencyItem = result[0];
+			CurrencyFavorite *newFavorite = [CurrencyFavorite MR_createEntity];
+			[A3CurrencyDataManager copyCurrencyFrom:currencyItem to:newFavorite];
+			NSInteger insertIdx = [self.favorites count];
+			[self.favorites insertObjectToSortedArray:newFavorite atIndex:insertIdx];
 
-				[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
-				[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:insertIdx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
-			}
-		} else {
-			CurrencyFavorite *favorite = self.favorites[_selectedRow];
-			if ([result count]) {
-				CurrencyRateItem *currencyRateItem = result[0];
-				[self replaceTextFieldKeyFrom:favorite.currencyCode to:currencyRateItem.currencyCode];
-				[A3CurrencyDataManager copyCurrencyFrom:result[0] to:favorite];
+			[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:insertIdx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+		}
+	} else {
+		CurrencyFavorite *favorite = self.favorites[_selectedRow];
+		if ([result count]) {
+			CurrencyRateItem *currencyRateItem = result[0];
+			[self replaceTextFieldKeyFrom:favorite.currencyCode to:currencyRateItem.currencyCode];
+			[A3CurrencyDataManager copyCurrencyFrom:result[0] to:favorite];
 
-				[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
-				// Reload favorites
-				_favorites = nil;
-				[self favorites];
+			// Reload favorites
+			_favorites = nil;
+			[self favorites];
 
-				[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
 
-				double delayInSeconds = 0.3;
-				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-					[self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
-				});
-			}
+			double delayInSeconds = 0.3;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+			});
 		}
 	}
 }
@@ -672,64 +703,64 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	@autoreleasepool {
-		if (self.firstResponder) {
-			[self.firstResponder resignFirstResponder];
-			[self setFirstResponder:nil];
-			[tableView deselectRowAtIndexPath:indexPath animated:YES];
-			return;
-		}
+	if (self.firstResponder) {
+		[self.firstResponder resignFirstResponder];
+		[self setFirstResponder:nil];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		return;
+	}
 
-		if ([self.swipedCells.allObjects count]) {
-			[self unSwipeAll];
-			[tableView deselectRowAtIndexPath:indexPath animated:YES];
-			return;
-		}
+	if ([self.swipedCells.allObjects count]) {
+		[self unSwipeAll];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		return;
+	}
 
-		[self clearEverything];
+	[self clearEverything];
 
-		id object = self.favorites[indexPath.row];
-		if (object != _equalItem) {
-			_selectedRow = indexPath.row;
-			_isAddingCurrency = NO;
-			A3CurrencySelectViewController *viewController = [self currencySelectViewControllerWithSelectedCurrency:_selectedRow];
-			if (IS_IPHONE) {
-				viewController.shouldPopViewController = YES;
-				[self.navigationController pushViewController:viewController animated:YES];
-			} else {
-				[self presentSubViewController:viewController];
-			}
+	id object = self.favorites[indexPath.row];
+	if (object != _equalItem) {
+		_selectedRow = indexPath.row;
+		_isAddingCurrency = NO;
+
+		[self enableControls:NO];
+
+		A3CurrencySelectViewController *viewController = [self currencySelectViewControllerWithSelectedCurrency:_selectedRow];
+		if (IS_IPHONE) {
+			viewController.shouldPopViewController = YES;
+			[self.navigationController pushViewController:viewController animated:YES];
 		} else {
-			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+			[self presentSubViewController:viewController];
 		}
+	} else {
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 }
 
-
 - (void)plusButtonAction:(UIButton *)button {
-	@autoreleasepool {
-		if (self.firstResponder) {
-			[self.firstResponder resignFirstResponder];
-			[self setFirstResponder:nil];
-			return;
-		}
-
-		if ([self.swipedCells.allObjects count]) {
-			[self unSwipeAll];
-			return;
-		}
-
-		[self clearEverything];
-
-		_isAddingCurrency = YES;
-
-		A3CurrencySelectViewController *viewController = [self currencySelectViewControllerWithSelectedCurrency:-1];
-		if (IS_IPHONE) {
-			viewController.shouldPopViewController = NO;
-			viewController.showCancelButton = YES;
-		}
-		[self presentSubViewController:viewController];
+	if (self.firstResponder) {
+		[self.firstResponder resignFirstResponder];
+		[self setFirstResponder:nil];
+		return;
 	}
+
+	if ([self.swipedCells.allObjects count]) {
+		[self unSwipeAll];
+		return;
+	}
+
+	[self clearEverything];
+
+	_isAddingCurrency = YES;
+
+	[self enableControls:NO];
+
+	A3CurrencySelectViewController *viewController = [self currencySelectViewControllerWithSelectedCurrency:-1];
+	if (IS_IPHONE) {
+		viewController.shouldPopViewController = NO;
+		viewController.showCancelButton = YES;
+	}
+	[self presentSubViewController:viewController];
 }
 
 /*! Push CurrencySelectViewController filling with selected currency code
@@ -750,56 +781,54 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 #pragma mark -- UITextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-	@autoreleasepool {
-		_lastEditingTextField = textField;
+	_lastEditingTextField = textField;
 
-		CurrencyFavorite *favorite = self.favorites[0];
+	CurrencyFavorite *favorite = self.favorites[0];
 
-		if (textField == _textFields[favorite.currencyCode]) {
-			self.previousValue = textField.text;
+	if (textField == _textFields[favorite.currencyCode]) {
+		self.previousValue = textField.text;
 
-			[self.refreshControl endRefreshing];
-			[self.tableView scrollsToTop];
-			[self unSwipeAll];
+		[self.refreshControl endRefreshing];
+		[self.tableView scrollsToTop];
+		[self unSwipeAll];
 
-			textField.text = @"";
+		textField.text = @"";
 
-			A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
-			self.numberKeyboardViewController = keyboardVC;
-			CurrencyFavorite *currencyFavorite = self.favorites[0];
-			self.numberKeyboardViewController.currencyCode = currencyFavorite.currencyCode;
-			self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
-			keyboardVC.textInputTarget = textField;
-			keyboardVC.delegate = self;
-			self.numberKeyboardViewController = keyboardVC;
-			textField.inputView = [keyboardVC view];
+		A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
+		self.numberKeyboardViewController = keyboardVC;
+		CurrencyFavorite *currencyFavorite = self.favorites[0];
+		self.numberKeyboardViewController.currencyCode = currencyFavorite.currencyCode;
+		self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
+		keyboardVC.textInputTarget = textField;
+		keyboardVC.delegate = self;
+		self.numberKeyboardViewController = keyboardVC;
+		textField.inputView = [keyboardVC view];
 
-			[self setFirstResponder:textField];
+		[self setFirstResponder:textField];
 
-			return YES;
-		} else {
-			[self.firstResponder resignFirstResponder];
-			[self setFirstResponder:nil];
+		return YES;
+	} else {
+		[self.firstResponder resignFirstResponder];
+		[self setFirstResponder:nil];
 
-			// shifted 0 : shift self
-			// shifted 1 and it is me. unshift self
-			// shifted 1 and it is not me. unshift him and shift me.
-			NSArray *swipped = self.swipedCells.allObjects;
-			if (![swipped count]) {
-				CGPoint center = [textField convertPoint:textField.center toView:nil];
-				NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[self.view convertPoint:center fromView:nil]];
-				UITableViewCell <A3TableViewSwipeCellDelegate> *cell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) [self.tableView cellForRowAtIndexPath:indexPath];
+		// shifted 0 : shift self
+		// shifted 1 and it is me. unshift self
+		// shifted 1 and it is not me. unshift him and shift me.
+		NSArray *swipped = self.swipedCells.allObjects;
+		if (![swipped count]) {
+			CGPoint center = [textField convertPoint:textField.center toView:nil];
+			NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[self.view convertPoint:center fromView:nil]];
+			UITableViewCell <A3TableViewSwipeCellDelegate> *cell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) [self.tableView cellForRowAtIndexPath:indexPath];
 
-				if (cell) {
-					[self shiftLeft:cell];
-				} else {
-					FNLOG(@"Attention : Cell is nil");
-				}
+			if (cell) {
+				[self shiftLeft:cell];
 			} else {
-				[self unSwipeAll];
+				FNLOG(@"Attention : Cell is nil");
 			}
-			return NO;
+		} else {
+			[self unSwipeAll];
 		}
+		return NO;
 	}
 }
 
@@ -945,35 +974,33 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController didEndDraggingToRow:(NSIndexPath *)destinationIndexPath {
-	@autoreleasepool {
-		NSInteger equalIndex;
+	NSInteger equalIndex;
 
-		equalIndex = [self indexOfObject:self.equalItem];
+	equalIndex = [self indexOfObject:self.equalItem];
 
-		if (equalIndex != 1) {
-			FNLOG(@"equal index %ld is not 1.", (long)equalIndex);
-			[self.favorites moveItemInSortedArrayFromIndex:equalIndex toIndex:1];
-			[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:equalIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-			if (equalIndex == 0) {
-				[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]  withRowAnimation:UITableViewRowAnimationNone];
-			}
+	if (equalIndex != 1) {
+		FNLOG(@"equal index %ld is not 1.", (long)equalIndex);
+		[self.favorites moveItemInSortedArrayFromIndex:equalIndex toIndex:1];
+		[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:equalIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+		if (equalIndex == 0) {
+			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]  withRowAnimation:UITableViewRowAnimationNone];
 		}
+	}
 
-		if ((_draggingFirstRow && (destinationIndexPath.row != 0)) || (destinationIndexPath.row == 0)) {
-			double delayInSeconds = 0.3;
-			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				[self.tableView reloadData];
-			});
-		}
+	if ((_draggingFirstRow && (destinationIndexPath.row != 0)) || (destinationIndexPath.row == 0)) {
+		double delayInSeconds = 0.3;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[self.tableView reloadData];
+		});
+	}
 
-		[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
+	[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
 
 #ifdef DEBUG
-		[self logFavorites];
-		FNLOG(@"%@", _textFields);
+	[self logFavorites];
+	FNLOG(@"%@", _textFields);
 #endif
-	}
 }
 
 #ifdef	DEBUG
@@ -1002,46 +1029,41 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)swapActionForCell:(UITableViewCell *)cell {
-	@autoreleasepool {
-		[self unSwipeAll];
+	[self unSwipeAll];
 
-		UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) cell;
-		[swipedCell removeMenuView];
+	UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) cell;
+	[swipedCell removeMenuView];
 
-		NSIndexPath *sourceIndexPath = [self.tableView indexPathForCell:cell];
-		NSIndexPath *targetIndexPath;
-		if (sourceIndexPath.row == 0) {
-			targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
-		} else {
-			targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-		}
-		[self.favorites exchangeObjectInSortedArrayAtIndex:sourceIndexPath.row withObjectAtIndex:targetIndexPath.row];
-		[self.tableView reloadRowsAtIndexPaths:@[sourceIndexPath, targetIndexPath] withRowAnimation:UITableViewRowAnimationMiddle];
-
-		double delayInSeconds = 0.3;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[self.tableView reloadData];
-		});
+	NSIndexPath *sourceIndexPath = [self.tableView indexPathForCell:cell];
+	NSIndexPath *targetIndexPath;
+	if (sourceIndexPath.row == 0) {
+		targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+	} else {
+		targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 	}
-}
+	[self.favorites exchangeObjectInSortedArrayAtIndex:sourceIndexPath.row withObjectAtIndex:targetIndexPath.row];
+	[self.tableView reloadRowsAtIndexPaths:@[sourceIndexPath, targetIndexPath] withRowAnimation:UITableViewRowAnimationMiddle];
 
+	double delayInSeconds = 0.3;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[self.tableView reloadData];
+	});
+}
 
 #pragma mark - Chart View Controller
 
 - (void)chartActionForCell:(UITableViewCell *)cell {
-	@autoreleasepool {
-		[self unSwipeAll];
+	[self unSwipeAll];
 
-		A3CurrencyChartViewController *viewController = [[A3CurrencyChartViewController alloc] initWithNibName:@"A3CurrencyChartViewController" bundle:nil];
-		viewController.delegate = self;
-		viewController.initialValue = [self lastInputValue];
-		NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-		CurrencyFavorite *favoriteZero = self.favorites[0], *favorite = self.favorites[indexPath.row == 0 ? 2 : indexPath.row ];
-		viewController.sourceCurrencyCode = viewController.originalSourceCode = favoriteZero.currencyCode;
-		viewController.targetCurrencyCode = viewController.originalTargetCode = favorite.currencyCode;
-		[self.navigationController pushViewController:viewController animated:YES];
-	}
+	A3CurrencyChartViewController *viewController = [[A3CurrencyChartViewController alloc] initWithNibName:@"A3CurrencyChartViewController" bundle:nil];
+	viewController.delegate = self;
+	viewController.initialValue = [self lastInputValue];
+	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+	CurrencyFavorite *favoriteZero = self.favorites[0], *favorite = self.favorites[indexPath.row == 0 ? 2 : indexPath.row ];
+	viewController.sourceCurrencyCode = viewController.originalSourceCode = favoriteZero.currencyCode;
+	viewController.targetCurrencyCode = viewController.originalTargetCode = favorite.currencyCode;
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)replaceTextFieldKeyFrom:(NSString *)oldKey to:(NSString *)newKey {
@@ -1053,104 +1075,97 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)chartViewControllerValueChangedChartViewController:(A3CurrencyChartViewController *)chartViewController valueChanged:(NSNumber *)newValue newCodes:(NSArray *)newCodesArray {
-	@autoreleasepool {
-
-		if ([newValue doubleValue] != [self.previousValue doubleValue]) {
-			[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:A3CurrencyLastInputValue];
-			[[NSUserDefaults standardUserDefaults] synchronize];
-			[self putHistoryWithValue:newValue];
-		}
-
-		NSMutableArray *reloadingRows = [NSMutableArray new];
-		[reloadingRows addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
-
-		CurrencyRateItem *newSource = newCodesArray[0], *newDestination = newCodesArray[1];
-		if (![chartViewController.originalSourceCode isEqualToString:newSource.currencyCode]) {
-			[self replaceTextFieldKeyFrom:chartViewController.originalSourceCode to:newSource.currencyCode];
-
-			CurrencyFavorite *oldSource = self.favorites[0];
-			[A3CurrencyDataManager copyCurrencyFrom:newSource to:oldSource];
-		}
-		if (![newSource.currencyCode isEqualToString:newDestination.currencyCode] &&
-				![newDestination.currencyCode isEqualToString:chartViewController.originalTargetCode]) {
-			[self replaceTextFieldKeyFrom:chartViewController.originalTargetCode to:newDestination.currencyCode];
-
-			NSUInteger oldDestinationIndex = [self.favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite *obj, NSUInteger idx, BOOL *stop) {
-				if (![obj isKindOfClass:[CurrencyFavorite class]]) return NO;
-				return [obj.currencyCode isEqualToString:chartViewController.originalTargetCode];
-			}];
-			if (oldDestinationIndex != NSNotFound) {
-				NSUInteger indexOfNewCodeInExistingFavorites = [self.favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite *obj, NSUInteger idx, BOOL *stop) {
-					if (![obj isKindOfClass:[CurrencyFavorite class]]) return NO;
-					return [obj.currencyCode isEqualToString:newDestination.currencyCode];
-				}];
-				if (indexOfNewCodeInExistingFavorites != NSNotFound) {
-					CurrencyFavorite *duplicatedItem = _favorites[indexOfNewCodeInExistingFavorites];
-					[duplicatedItem MR_deleteEntity];
-					[_favorites removeObjectAtIndex:indexOfNewCodeInExistingFavorites];
-					NSIndexPath *indexPathToDelete = [NSIndexPath indexPathForRow:indexOfNewCodeInExistingFavorites inSection:0];
-					[self.tableView deleteRowsAtIndexPaths:@[indexPathToDelete] withRowAnimation:UITableViewRowAnimationAutomatic];
-				}
-				CurrencyFavorite *oldDestination = _favorites[oldDestinationIndex];
-				[A3CurrencyDataManager copyCurrencyFrom:newDestination to:oldDestination];
-
-				[reloadingRows addObject:[NSIndexPath indexPathForRow:oldDestinationIndex inSection:0]];
-			}
-		}
-		if ([reloadingRows count]) {
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-
-			_favorites = nil;
-			[self favorites];
-
-			[self.tableView reloadRowsAtIndexPaths:reloadingRows withRowAnimation:UITableViewRowAnimationAutomatic];
-		}
-
-		[self updateTextFieldsWithSourceTextField:_textFields[newSource.currencyCode]];
+	if ([newValue doubleValue] != [self.previousValue doubleValue]) {
+		[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:A3CurrencyLastInputValue];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+		[self putHistoryWithValue:newValue];
 	}
+
+	NSMutableArray *reloadingRows = [NSMutableArray new];
+	[reloadingRows addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
+
+	CurrencyRateItem *newSource = newCodesArray[0], *newDestination = newCodesArray[1];
+	if (![chartViewController.originalSourceCode isEqualToString:newSource.currencyCode]) {
+		[self replaceTextFieldKeyFrom:chartViewController.originalSourceCode to:newSource.currencyCode];
+
+		CurrencyFavorite *oldSource = self.favorites[0];
+		[A3CurrencyDataManager copyCurrencyFrom:newSource to:oldSource];
+	}
+	if (![newSource.currencyCode isEqualToString:newDestination.currencyCode] &&
+			![newDestination.currencyCode isEqualToString:chartViewController.originalTargetCode]) {
+		[self replaceTextFieldKeyFrom:chartViewController.originalTargetCode to:newDestination.currencyCode];
+
+		NSUInteger oldDestinationIndex = [self.favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite *obj, NSUInteger idx, BOOL *stop) {
+			if (![obj isKindOfClass:[CurrencyFavorite class]]) return NO;
+			return [obj.currencyCode isEqualToString:chartViewController.originalTargetCode];
+		}];
+		if (oldDestinationIndex != NSNotFound) {
+			NSUInteger indexOfNewCodeInExistingFavorites = [self.favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite *obj, NSUInteger idx, BOOL *stop) {
+				if (![obj isKindOfClass:[CurrencyFavorite class]]) return NO;
+				return [obj.currencyCode isEqualToString:newDestination.currencyCode];
+			}];
+			if (indexOfNewCodeInExistingFavorites != NSNotFound) {
+				CurrencyFavorite *duplicatedItem = _favorites[indexOfNewCodeInExistingFavorites];
+				[duplicatedItem MR_deleteEntity];
+				[_favorites removeObjectAtIndex:indexOfNewCodeInExistingFavorites];
+				NSIndexPath *indexPathToDelete = [NSIndexPath indexPathForRow:indexOfNewCodeInExistingFavorites inSection:0];
+				[self.tableView deleteRowsAtIndexPaths:@[indexPathToDelete] withRowAnimation:UITableViewRowAnimationAutomatic];
+			}
+			CurrencyFavorite *oldDestination = _favorites[oldDestinationIndex];
+			[A3CurrencyDataManager copyCurrencyFrom:newDestination to:oldDestination];
+
+			[reloadingRows addObject:[NSIndexPath indexPathForRow:oldDestinationIndex inSection:0]];
+		}
+	}
+	if ([reloadingRows count]) {
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+		_favorites = nil;
+		[self favorites];
+
+		[self.tableView reloadRowsAtIndexPaths:reloadingRows withRowAnimation:UITableViewRowAnimationAutomatic];
+	}
+
+	[self updateTextFieldsWithSourceTextField:_textFields[newSource.currencyCode]];
 }
 
 #pragma mark --- Share
 
 - (void)shareActionForCell:(UITableViewCell *)cell sender:(id)sender {
-	@autoreleasepool {
-		[self unSwipeAll];
+	[self unSwipeAll];
 
-		NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-		NSInteger targetIdx = indexPath.row == 0 ? 2 : indexPath.row;
-		NSAssert(self.favorites[indexPath.row] != _equalItem, @"Selected row must not the equal cell and/or plus cell");
-		[self shareActionForSourceIndex:0 targetIndex:targetIdx sender:sender ];
-	}
+	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+	NSInteger targetIdx = indexPath.row == 0 ? 2 : indexPath.row;
+	NSAssert(self.favorites[indexPath.row] != _equalItem, @"Selected row must not the equal cell and/or plus cell");
+	[self shareActionForSourceIndex:0 targetIndex:targetIdx sender:sender ];
 }
 
 - (void)deleteActionForCell:(UITableViewCell *)cell {
-	@autoreleasepool {
-		[self unSwipeAll];
+	[self unSwipeAll];
 
-		UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) cell;
-		[swipedCell removeMenuView];
+	UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) cell;
+	[swipedCell removeMenuView];
 
-		NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-		CurrencyFavorite *favorite = self.favorites[indexPath.row];
-		if ([favorite isKindOfClass:[CurrencyFavorite class]]) {
-			[self.textFields removeObjectForKey:favorite.currencyCode];
+	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+	CurrencyFavorite *favorite = self.favorites[indexPath.row];
+	if ([favorite isKindOfClass:[CurrencyFavorite class]]) {
+		[self.textFields removeObjectForKey:favorite.currencyCode];
 
-			[favorite MR_deleteEntity];
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[favorite MR_deleteEntity];
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
-			[self.favorites removeObjectAtIndex:indexPath.row];
+		[self.favorites removeObjectAtIndex:indexPath.row];
 
-			[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+		[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 
-			if (indexPath.row == 0) {
-				[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] toIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+		if (indexPath.row == 0) {
+			[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] toIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 
-				double delayInSeconds = 0.3;
-				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-					[self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationMiddle];
-				});
-			}
+			double delayInSeconds = 0.3;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationMiddle];
+			});
 		}
 	}
 }
@@ -1186,22 +1201,20 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 // http://itunes.apple.com/us/app/appbox-pro-alarm-clock-wallet/id318404385?mt=8
 - (void)shareActionForSourceIndex:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx sender:(id)sender {
-	@autoreleasepool {
-		_shareSourceIndex = sourceIdx;
-		_shareTargetIndex = targetIdx;
-		_shareAll = NO;
-		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
-		if (IS_IPHONE) {
-			[self presentViewController:activityController animated:YES completion:nil];
-		} else {
-			_sharePopoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
-			UIView *view = (UIView *)sender;
-			FNLOGRECT(view.frame);
-			CGRect rect = [view convertRect:view.frame toView:self.view];
-			rect.origin.x -= 144.0;
-			[_sharePopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
-			_sharePopoverController.delegate = self;
-		}
+	_shareSourceIndex = sourceIdx;
+	_shareTargetIndex = targetIdx;
+	_shareAll = NO;
+	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+	if (IS_IPHONE) {
+		[self presentViewController:activityController animated:YES completion:nil];
+	} else {
+		_sharePopoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+		UIView *view = (UIView *)sender;
+		FNLOGRECT(view.frame);
+		CGRect rect = [view convertRect:view.frame toView:self.view];
+		rect.origin.x -= 144.0;
+		[_sharePopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+		_sharePopoverController.delegate = self;
 	}
 }
 
@@ -1251,14 +1264,12 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (NSString *)stringForShareOfSource:(NSUInteger)sourceIdx target:(NSUInteger)targetIdx {
-	@autoreleasepool {
-		CurrencyFavorite *source = self.favorites[sourceIdx], *target = self.favorites[targetIdx];
-		float rate = [self rateForSource:source target:target];
-		return [NSString stringWithFormat:@"%@ %@ = %@<br/>",
-										  source.currencyCode,
-										  [self stringFromNumber:self.lastInputValue withCurrencyCode:source.currencyCode],
-										  [self stringFromNumber:@(self.lastInputValue.floatValue * rate) withCurrencyCode:target.currencyCode]];
-	}
+	CurrencyFavorite *source = self.favorites[sourceIdx], *target = self.favorites[targetIdx];
+	float rate = [self rateForSource:source target:target];
+	return [NSString stringWithFormat:@"%@ %@ = %@<br/>",
+									  source.currencyCode,
+									  [self stringFromNumber:self.lastInputValue withCurrencyCode:source.currencyCode],
+									  [self stringFromNumber:@(self.lastInputValue.floatValue * rate) withCurrencyCode:target.currencyCode]];
 }
 
 #pragma mark - History
@@ -1270,49 +1281,47 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)putHistoryWithValue:(NSNumber *)value {
-	@autoreleasepool {
-		if ([value doubleValue] == 1.0 && _currentValueIsNotFromUser) {
+	if ([value doubleValue] == 1.0 && _currentValueIsNotFromUser) {
+		return;
+	}
+	_currentValueIsNotFromUser = NO;
+
+	CurrencyFavorite *baseCurrency = self.favorites[0];
+	CurrencyHistory *latestHistory = [CurrencyHistory MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+
+	// Compare code and value.
+	if (latestHistory) {
+		if ([latestHistory.currencyCode isEqualToString:baseCurrency.currencyCode] &&
+				[value isEqualToNumber:latestHistory.value]) {
+
+			FNLOG(@"Does not make new history for same code and value, in history %@, %@", latestHistory.value, value);
 			return;
 		}
-		_currentValueIsNotFromUser = NO;
-
-		CurrencyFavorite *baseCurrency = self.favorites[0];
-		CurrencyHistory *latestHistory = [CurrencyHistory MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
-
-		// Compare code and value.
-		if (latestHistory) {
-			if ([latestHistory.currencyCode isEqualToString:baseCurrency.currencyCode] &&
-					[value isEqualToNumber:latestHistory.value]) {
-
-				FNLOG(@"Does not make new history for same code and value, in history %@, %@", latestHistory.value, value);
-				return;
-			}
-		}
-
-		CurrencyHistory *history = [CurrencyHistory MR_createEntity];
-		NSDate *keyDate = [NSDate date];
-		history.updateDate = keyDate;
-		history.currencyCode = baseCurrency.currencyCode;
-		history.rate = @([[A3AppDelegate instance].cacheStoreManager rateForCurrencyCode:baseCurrency.currencyCode]);
-		history.value = value;
-
-		NSInteger historyItemCount = MIN([self.favorites count] - 2, 4);
-		NSInteger idx = 0;
-		NSMutableSet *targets = [[NSMutableSet alloc] init];
-		for (; idx < historyItemCount; idx++) {
-			CurrencyHistoryItem *item = [CurrencyHistoryItem MR_createEntity];
-			CurrencyFavorite *favorite = self.favorites[idx + 2];
-			item.currencyCode = favorite.currencyCode;
-			item.rate = @([[A3AppDelegate instance].cacheStoreManager rateForCurrencyCode:favorite.currencyCode]);
-			item.order = favorite.order;
-			[targets addObject:item];
-		}
-		history.targets = targets;
-
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-
-		[self.historyBarButton setEnabled:YES];
 	}
+
+	CurrencyHistory *history = [CurrencyHistory MR_createEntity];
+	NSDate *keyDate = [NSDate date];
+	history.updateDate = keyDate;
+	history.currencyCode = baseCurrency.currencyCode;
+	history.rate = @([[A3AppDelegate instance].cacheStoreManager rateForCurrencyCode:baseCurrency.currencyCode]);
+	history.value = value;
+
+	NSInteger historyItemCount = MIN([self.favorites count] - 2, 4);
+	NSInteger idx = 0;
+	NSMutableSet *targets = [[NSMutableSet alloc] init];
+	for (; idx < historyItemCount; idx++) {
+		CurrencyHistoryItem *item = [CurrencyHistoryItem MR_createEntity];
+		CurrencyFavorite *favorite = self.favorites[idx + 2];
+		item.currencyCode = favorite.currencyCode;
+		item.rate = @([[A3AppDelegate instance].cacheStoreManager rateForCurrencyCode:favorite.currencyCode]);
+		item.order = favorite.order;
+		[targets addObject:item];
+	}
+	history.targets = targets;
+
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+	[self.historyBarButton setEnabled:YES];
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)note {

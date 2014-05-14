@@ -60,7 +60,11 @@
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
-	[_modalPresentingParentViewController dismissViewControllerAnimated:YES completion:NULL];
+	if (_modalPresentingParentViewController) {
+		[_modalPresentingParentViewController dismissViewControllerAnimated:YES completion:NULL];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:NULL];
+	}
 }
 
 - (NSMutableArray *)allData {

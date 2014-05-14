@@ -182,4 +182,51 @@
 	NSLog(@"%@", log);
 }
 
+- (void)testNumberFormat {
+	NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
+	[numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+	
+	NSMutableString *log = [NSMutableString new];
+	[numberFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US"]];
+	[log appendFormat:@"%@\n", [numberFormatter stringFromNumber:@123456789.123]];
+	
+	[numberFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"de_DE"]];
+	[log appendFormat:@"%@\n", [numberFormatter stringFromNumber:@123456789.123]];
+	
+	[numberFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"fr_FR"]];
+	[log appendFormat:@"%@\n", [numberFormatter stringFromNumber:@123456789.123]];
+	
+	NSLog(@"%@", log);
+}
+
+- (void)testDateCalculation {
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+	NSDateComponents *fromComponents = [NSDateComponents new];
+	fromComponents.year = 2013;
+	fromComponents.month = 5;
+	fromComponents.day = 30;
+//	fromComponents.hour = 0;
+	
+	NSDate *fromDate = [calendar dateFromComponents:fromComponents];
+	
+	NSDateComponents *toComponents = [NSDateComponents new];
+	toComponents.year = 2014;
+	toComponents.month = 5;
+	toComponents.day = 12;
+//	toComponents.hour = 12;
+	NSDate *toDate = [calendar dateFromComponents:toComponents];
+	
+	NSDateComponents *diffComponents = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit fromDate:fromDate toDate:toDate options:0];
+	NSLog(@"%@", diffComponents);
+	
+	fromComponents.year = 2013;
+	fromComponents.month = 5;
+	fromComponents.day = 31;
+//	fromComponents.hour = 12;
+	fromDate = [calendar dateFromComponents:fromComponents];
+	
+	diffComponents = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit fromDate:fromDate toDate:toDate options:0];
+	NSLog(@"%@", diffComponents);
+}
+
 @end

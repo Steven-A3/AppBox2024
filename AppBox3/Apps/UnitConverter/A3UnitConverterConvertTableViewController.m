@@ -134,7 +134,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 	[self.addButton makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
-		make.bottom.equalTo(self.view.bottom).with.offset(-20);
+		make.centerY.equalTo(self.view.bottom).with.offset(-32);
+		make.width.equalTo(@44);
+		make.height.equalTo(@44);
 	}];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewDismissed:) name:A3NotificationRightSideViewDidDismiss object:nil];
@@ -392,9 +394,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (UIButton *)addButton
 {
     if (!_addButton) {
-        _addButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _addButton = [UIButton buttonWithType:UIButtonTypeSystem];
         [_addButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateNormal];
-        _addButton.frame = CGRectMake(0, 0, 44, 44);
         [_addButton addTarget:self action:@selector(addUnitAction) forControlEvents:UIControlEventTouchUpInside];
     }
     
