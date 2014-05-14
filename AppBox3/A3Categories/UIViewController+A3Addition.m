@@ -17,9 +17,12 @@
 
 /*! MainMenuViewController에서 app switch 할 때 popToRootViewController를 한 뒤에, 각 ViewController에 cleanUp을 호출합니다.
  *  이때 removeObserver와 nil을 할당하면 메모리를 효율적으로 제거할 수 있습니다.
+ *  개별 viewController 에서 cleanUp을 구현하지 않은 경우, removeObserver 는 기본적으로 실행이 됩니다.
+ *  만약 별도 구현한 경우에는 필요한 조치를 개별 구현하던가, [super cleanUp]을 호출해 주면 되겠습니다.
  */
-- (void)cleanUp {
 
+- (void)cleanUp {
+	[self removeObserver];
 }
 
 - (CGRect)screenBoundsAdjustedWithOrientation {

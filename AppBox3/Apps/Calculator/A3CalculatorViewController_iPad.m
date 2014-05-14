@@ -22,6 +22,8 @@
 #import "MBProgressHUD.h"
 #import "A3KeyboardView.h"
 #import "NSAttributedString+Append.h"
+#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 
 @interface A3CalculatorViewController_iPad ()<A3CalcKeyboardViewIPadDelegate, UIPopoverControllerDelegate, MBProgressHUDDelegate, A3CalcMessagShowDelegate, UITextFieldDelegate>
@@ -45,8 +47,8 @@
     BOOL scientific;
     BOOL radian;
     BOOL _isShowMoreMenu;
-    UIBarButtonItem *share;
-    UIBarButtonItem *history;
+    UIBarButtonItem *_share;
+    UIBarButtonItem *_history;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -84,6 +86,9 @@
     }
 
 	[self addTextFieldForPlayInputClick];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightViewDidHide) name:A3NotificationRightSideViewDidDismiss object:nil];
 }
 
 - (void)addTextFieldForPlayInputClick {
@@ -97,13 +102,49 @@
 }
 
 - (void)rightBarButtons {
-	share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
-	history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
+	_share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+	_share.tag = A3RightBarButtonTagShareButton;
+	_history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
+	_history.tag = A3RightBarButtonTagHistoryButton;
 	UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 	space.width = 24.0;
 
-	self.navigationItem.rightBarButtonItems = @[history, space, share];
+	self.navigationItem.rightBarButtonItems = @[_history, space, _share];
 	[self checkRightButtonDisable];
+}
+
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[super appsButtonAction:barButtonItem];
+
+	[self enableControls:!self.A3RootViewController.showLeftView];
+}
+
+- (void)mainMenuDidHide {
+	[self enableControls:YES];
+}
+
+- (void)rightViewDidHide {
+	[self enableControls:YES];
+}
+
+- (void)enableControls:(BOOL)enable {
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	if (enable) {
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
+			switch (barButtonItem.tag) {
+				case A3RightBarButtonTagShareButton:
+					[barButtonItem setEnabled:![self isCalculationHistoryEmpty]];
+					break;
+				case A3RightBarButtonTagHistoryButton:
+					[barButtonItem setEnabled:[self.expressionLabel.text length] > 0];
+					break;
+			}
+		}];
+	} else {
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
+			[barButtonItem setEnabled:NO];
+		}];
+	}
 }
 
 - (BOOL)usesFullScreenInLandscape {
@@ -353,14 +394,11 @@
 #pragma mark - Right Button more
 
 - (void)shareAll:(id)sender {
-	@autoreleasepool {
-		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
-        _sharePopoverController.delegate = self;
-        [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-            [buttonItem setEnabled:NO];
-        }];
-        
-	}
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+	_sharePopoverController.delegate = self;
+	[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
+		[buttonItem setEnabled:NO];
+	}];
 }
 
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
@@ -393,20 +431,18 @@
     return @"Calculator";
 }
 
+#pragma mark -
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    
-	[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-		[buttonItem setEnabled:YES];
-	}];
 	_sharePopoverController = nil;
+	[self enableControls:YES];
 }
 
 
 - (void)shareButtonAction:(id)sender {
-	@autoreleasepool {
-		[self shareAll:sender];
-	}
+	[self shareAll:sender];
+
+	[self enableControls:NO];
 }
 
 
@@ -421,51 +457,47 @@
 
 - (void) checkRightButtonDisable {
     if ([self isCalculationHistoryEmpty]) {
-        history.enabled = NO;
+        _history.enabled = NO;
     } else {
-        history.enabled = YES;
+        _history.enabled = YES;
     }
     
     if([self.expressionLabel.text length] > 0) {
-        share.enabled = YES;
+        _share.enabled = YES;
     } else {
-        share.enabled = NO;
+        _share.enabled = NO;
     }
 }
 
 #pragma mark - History
+
 - (void)historyButtonAction:(UIButton *)button {
-	@autoreleasepool {
-        A3CalculatorHistoryViewController *viewController = [[A3CalculatorHistoryViewController alloc] initWithNibName:nil bundle:nil];
-        viewController.calculator = self.calculator;
-        viewController.iPadViewController = self;
-        [self presentSubViewController:viewController];
-        
-        //	_currencyHistory = nil;
-	}
+	[self enableControls:NO];
+
+	A3CalculatorHistoryViewController *viewController = [[A3CalculatorHistoryViewController alloc] initWithNibName:nil bundle:nil];
+	viewController.calculator = self.calculator;
+	viewController.iPadViewController = self;
+	[self presentSubViewController:viewController];
 }
 
 - (void)putCalculationHistoryWithExpression:(NSString *)expression{
-	@autoreleasepool {
-        
-		Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"date" ascending:NO];
-        NSString *mathExpression = [self.calculator getMathExpression];
-		// Compare code and value.
-		if (lastcalculation) {
-			if ([lastcalculation.expression isEqualToString:mathExpression]) {
-				return;
-			}
+	Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"date" ascending:NO];
+	NSString *mathExpression = [self.calculator getMathExpression];
+	// Compare code and value.
+	if (lastcalculation) {
+		if ([lastcalculation.expression isEqualToString:mathExpression]) {
+			return;
 		}
-        
-        
-		Calculation *calculation = [Calculation MR_createEntity];
-		NSDate *keyDate = [NSDate date];
-        calculation.expression = mathExpression;
-        calculation.result = self.evaluatedResultLabel.text;
-        calculation.date = keyDate;
-
-        [[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
 	}
+
+
+	Calculation *calculation = [Calculation MR_createEntity];
+	NSDate *keyDate = [NSDate date];
+	calculation.expression = mathExpression;
+	calculation.result = self.evaluatedResultLabel.text;
+	calculation.date = keyDate;
+
+	[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
 }
 
 - (void) ShowMessage:(NSString *)message {
@@ -486,4 +518,5 @@
     [HUD show:YES];
     [HUD hide:YES afterDelay:3];
 }
+
 @end
