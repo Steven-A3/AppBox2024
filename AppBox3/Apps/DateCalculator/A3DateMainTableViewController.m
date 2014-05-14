@@ -164,13 +164,9 @@ NSString *kCalculationString;
 {
     [super viewWillLayoutSubviews];
     
-//	[self.dateKeyboardViewController rotateToInterfaceOrientation:self.interfaceOrientation];
-
-//    static dispatch_once_t onceToken;
-//    dispatch_once(&onceToken, ^{
-//        [self setResultToHeaderViewWithAnimation:NO];
-//    });
-//    [self setResultToHeaderViewWithAnimation:NO];
+    if (IS_IPAD) {
+        [self.headerView setFromDate:self.fromDate toDate:self.toDate];
+    }
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
