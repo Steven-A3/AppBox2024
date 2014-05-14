@@ -171,6 +171,7 @@ NSString *kCalculationString;
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
     [self.headerView setNeedsLayout];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -1231,6 +1232,22 @@ NSString *kCalculationString;
             footerCell.dayTextField.delegate = self;
             
 			[footerCell setOffsetDateComp:self.offsetComp];
+            
+            if (IS_IPHONE) {
+                //        _yearLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
+                //        _monthLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
+                //        _dayLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
+                footerCell.yearLabel.font = [UIFont systemFontOfSize:13];
+                footerCell.monthLabel.font = [UIFont systemFontOfSize:13];
+                footerCell.dayLabel.font = [UIFont systemFontOfSize:13];
+                
+            } else {
+                footerCell.yearLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+                footerCell.monthLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+                footerCell.dayLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+            }
+            
+            
             
             return footerCell;
         }
