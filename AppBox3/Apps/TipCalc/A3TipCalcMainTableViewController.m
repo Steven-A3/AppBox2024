@@ -10,6 +10,7 @@
 #import "A3TipCalcDataManager.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
+#import "UIViewController+iPad_rightSideView.h"
 #import "A3RoundedSideButton.h"
 #import "A3TipCalcSettingViewController.h"
 #import "UIViewController+MMDrawerController.h"
@@ -156,7 +157,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (void)setBarButtonsEnable:(BOOL)enable {
     [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
-        barButton.enabled = enable;
+        if (barButton.tag == 1) {
+            barButton.enabled = [TipCalcHistory MR_countOfEntities] > 0 ? YES : NO;
+        }
+        else {
+            barButton.enabled = enable;
+        }
     }];
     self.headerView.detailInfoButton.enabled = enable;
     self.headerView.beforeSplitButton.enabled = enable;
@@ -639,6 +645,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)dismissTipCalcSettingsViewController {
+    if (IS_IPAD) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+    }
+    
     [self setBarButtonsEnable:YES];
 }
 
@@ -889,7 +899,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 	[self rightBarButtonDoneButton];
 
-	_arrMenuButtons = @[self.composeButton, self.shareButton, [self historyButton:NULL], self.settingsButton];
+	_arrMenuButtons = @[self.composeButton, self.shareButton, [self historyButton:[TipCalcHistory class]], self.settingsButton];
 	_moreMenuView = [self presentMoreMenuWithButtons:_arrMenuButtons tableView:self.tableView];
 	_isShowMoreMenu = YES;
 
@@ -930,6 +940,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
         UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(saveToHistoryAndInitialize:)];
         UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
+        history.tag = 1;
         UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
         UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
         space.width = 24.0;
@@ -972,6 +983,9 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         A3TipCalcHistoryViewController* viewController = [[A3TipCalcHistoryViewController alloc] init];
         viewController.delegate = self;
         [self presentSubViewController:viewController];
+        if (IS_IPAD) {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissTipCalcSettingsViewController) name:A3NotificationRightSideViewWillDismiss object:nil];
+        }
 	}
 }
 
@@ -983,6 +997,9 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	viewController.dataManager = self.dataManager;
 	viewController.delegate = self;
 	[self presentSubViewController:viewController];
+    if (IS_IPAD) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissTipCalcSettingsViewController) name:A3NotificationRightSideViewWillDismiss object:nil];
+    }
 }
 
 - (void)saveToHistoryAndInitialize:(id)sender {
@@ -1014,12 +1031,13 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		}
 	}
     else {
+        UIBarButtonItem *history = [self.navigationItem.rightBarButtonItems objectAtIndex:2];
+        history.enabled = [TipCalcHistory MR_countOfEntities] > 0 ? YES : NO;
         UIBarButtonItem *save = [self.navigationItem.rightBarButtonItems objectAtIndex:3];
         save.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
         UIBarButtonItem *share = [self.navigationItem.rightBarButtonItems objectAtIndex:5];
         share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
     }
-    
 }
 
 - (UIViewController *)containerViewController {
@@ -1033,7 +1051,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 #pragma mark - Currency Select Delegate
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
-
+    
 	[[NSUserDefaults standardUserDefaults] setObject:selectedItem forKey:A3TipCalcCurrencyCode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 

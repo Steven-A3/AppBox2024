@@ -87,7 +87,7 @@
 - (void)reloadTableView
 {
     if (IS_IPAD) {
-        [[NSNotificationCenter defaultCenter] removeObserver:A3NotificationRightSideViewWillDismiss];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
     }
     
     if( [_calendarItem.calendarType integerValue] == CalendarCellType_User )
