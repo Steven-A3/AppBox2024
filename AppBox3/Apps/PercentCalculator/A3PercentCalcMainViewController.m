@@ -133,6 +133,7 @@
 }
 
 - (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
 	if (enable) {
 		[self setBarButtonEnable:YES];
 	} else {

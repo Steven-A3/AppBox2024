@@ -117,6 +117,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 - (void)enableControls:(BOOL)enable
 {
+	if (!IS_IPAD) return;
 	self.navigationItem.leftBarButtonItem.enabled = enable;
     if (enable) {
 		self.composeBarItem.enabled = price1UnitPrice > 0 && price2UnitPrice > 0;

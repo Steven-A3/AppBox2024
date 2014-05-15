@@ -128,6 +128,7 @@
 }
 
 - (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	if (enable) {
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
