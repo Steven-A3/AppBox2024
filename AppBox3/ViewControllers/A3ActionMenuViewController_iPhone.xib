@@ -261,7 +261,7 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">shareAction</string>
+						<string key="label">shareButtonAction</string>
 						<reference key="source" ref="562873186"/>
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
@@ -320,7 +320,7 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">shareAction</string>
+						<string key="label">shareButtonAction</string>
 						<reference key="source" ref="230894541"/>
 						<reference key="destination" ref="841351856"/>
 					</object>

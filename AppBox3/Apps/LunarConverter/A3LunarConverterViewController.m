@@ -19,6 +19,7 @@
 #import "NSUserDefaults+A3Addition.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
+#import "UIColor+A3Addition.h"
 
 
 @interface A3LunarConverterViewController ()
@@ -33,6 +34,7 @@
 @property (strong, nonatomic) MASConstraint *keyboardHeightConstraint, *keyboardTopConstraint;
 @property (strong, nonatomic) NSMutableArray *cellHeightConstraints;
 @property (weak, nonatomic) NSCalendar *calendar;
+@property (strong, nonatomic) NSMutableArray *addToDaysCounterButtons;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
@@ -61,7 +63,7 @@
 	// Do any additional setup after loading the view from its nib.
 
 	[self leftBarButtonAppsButton];
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareAction)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareButtonAction)];
 
 	self.title = @"Lunar Converter";
 	_pageControl.hidden = YES;
@@ -116,6 +118,13 @@
 
 }
 
+- (NSMutableArray *)addToDaysCounterButtons {
+	if (!_addToDaysCounterButtons) {
+		_addToDaysCounterButtons = [NSMutableArray new];
+	}
+	return _addToDaysCounterButtons;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
@@ -123,7 +132,7 @@
 	[self calculateDate];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuBecameFirstResponder) name:A3MainMenuBecameFirstResponder object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuResignFirstResponder) name:A3NotificationMainMenuDidHide object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 
 	[self registerContentSizeCategoryDidChangeNotification];
 }
@@ -146,9 +155,9 @@
 	[self dateKeyboardDoneButtonPressed:nil ];
 }
 
-- (void)mainMenuResignFirstResponder {
-	FNLOG();
+- (void)mainMenuDidHide {
 	[self showKeyboardAnimated:YES];
+	[self enableControls:YES];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -186,7 +195,6 @@
 	line3 = [pageView viewWithTag:202];
 	line4 = [pageView viewWithTag:203];
 
-
 	A3LunarConverterCellView *cellView = (A3LunarConverterCellView*)[pageView viewWithTag:100];
 	topCell = cellView;
 	cellView.dateLabel.textColor = [A3AppDelegate instance].themeColor;
@@ -201,6 +209,8 @@
 
 	[addToDaysCounterButton addTarget:self action:@selector(addToDaysCounterAction:) forControlEvents:UIControlEventTouchUpInside];
 	[cellView setActionButton:addToDaysCounterButton];
+	[self.addToDaysCounterButtons addObject:addToDaysCounterButton];
+
 	cellView.descriptionLabel.text = @"Lunar";
 
 	middleCell = [pageView viewWithTag:102];
@@ -729,6 +739,8 @@
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
     self.popoverVC = nil;
+	[self showKeyboardAnimated:YES];
+	[self enableControls:YES];
 }
 
 #pragma mark - action method
@@ -737,9 +749,12 @@
     NSLog(@"%s",__FUNCTION__);
 }
 
-- (void)shareAction
+- (void)shareButtonAction
 {
-    NSDateComponents *outputComponents = (_pageControl.currentPage > 0 ? self.secondPageResultDateComponents : self.firstPageResultDateComponents);
+	[self enableControls:NO];
+	[self dateKeyboardDoneButtonPressed:nil];
+
+	NSDateComponents *outputComponents = (_pageControl.currentPage > 0 ? self.secondPageResultDateComponents : self.firstPageResultDateComponents);
 	[self.dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 
 	NSArray *activityItems = @[[NSString stringWithFormat:@"%@ Date: %@ converted to %@ date %@",(_isLunarInput ? @"Lunar" : @"Solar"),
@@ -753,90 +768,87 @@
 }
 
 - (IBAction)swapAction:(id)sender {
-    UIButton *button = (UIButton*)sender;
-    button.enabled = NO;
-    _isLunarInput = !_isLunarInput;
-    
-    // swap 애니메이션
-    @autoreleasepool {
-    
-        UIView *baseView = button.superview.superview;
-        A3LunarConverterCellView *topView = (A3LunarConverterCellView*)[baseView viewWithTag:100];
-        topView.descriptionLabel.hidden = YES;
+	UIButton *button = (UIButton*)sender;
+	button.enabled = NO;
+	_isLunarInput = !_isLunarInput;
 
-        UILabel *topLabel = [[UILabel alloc] initWithFrame:topView.descriptionLabel.bounds];
-        topLabel.font = [UIFont systemFontOfSize:topView.descriptionLabel.font.pointSize];
-        topLabel.attributedText = topView.descriptionLabel.attributedText;
-		topLabel.frame = [baseView convertRect:topView.descriptionLabel.frame fromView:topView];
-        topLabel.textAlignment = topView.descriptionLabel.textAlignment;
-		[baseView addSubview:topLabel];
+	// swap 애니메이션
+	UIView *baseView = button.superview.superview;
+	A3LunarConverterCellView *topView = (A3LunarConverterCellView*)[baseView viewWithTag:100];
+	topView.descriptionLabel.hidden = YES;
 
-        A3LunarConverterCellView *bottomView = (A3LunarConverterCellView*)[baseView viewWithTag:101];
-        bottomView.descriptionLabel.hidden = YES;
-        UILabel *bottomLabel = [[UILabel alloc] initWithFrame:bottomView.descriptionLabel.bounds];
-        bottomLabel.font = [UIFont systemFontOfSize:bottomView.descriptionLabel.font.pointSize];
-        bottomLabel.attributedText = bottomView.descriptionLabel.attributedText;
-		bottomLabel.frame = [baseView convertRect:bottomView.descriptionLabel.frame fromView:bottomView];
-        bottomLabel.textAlignment = bottomView.descriptionLabel.textAlignment;
-		[baseView addSubview:bottomLabel];
+	UILabel *topLabel = [[UILabel alloc] initWithFrame:topView.descriptionLabel.bounds];
+	topLabel.font = [UIFont systemFontOfSize:topView.descriptionLabel.font.pointSize];
+	topLabel.attributedText = topView.descriptionLabel.attributedText;
+	topLabel.frame = [baseView convertRect:topView.descriptionLabel.frame fromView:topView];
+	topLabel.textAlignment = topView.descriptionLabel.textAlignment;
+	[baseView addSubview:topLabel];
 
-		[topLabel makeConstraints:^(MASConstraintMaker *make) {
-			if (IS_IPAD) {
-				make.right.equalTo(bottomView.actionButton.left);
-				make.centerY.equalTo(bottomView.centerY);
-			} else {
-				make.left.equalTo(bottomView.left).with.offset(15);
-				make.right.equalTo(bottomView.right).with.offset(15);
-				make.bottom.equalTo(bottomView.bottom).with.offset(-10);
+	A3LunarConverterCellView *bottomView = (A3LunarConverterCellView*)[baseView viewWithTag:101];
+	bottomView.descriptionLabel.hidden = YES;
+	UILabel *bottomLabel = [[UILabel alloc] initWithFrame:bottomView.descriptionLabel.bounds];
+	bottomLabel.font = [UIFont systemFontOfSize:bottomView.descriptionLabel.font.pointSize];
+	bottomLabel.attributedText = bottomView.descriptionLabel.attributedText;
+	bottomLabel.frame = [baseView convertRect:bottomView.descriptionLabel.frame fromView:bottomView];
+	bottomLabel.textAlignment = bottomView.descriptionLabel.textAlignment;
+	[baseView addSubview:bottomLabel];
+
+	[topLabel makeConstraints:^(MASConstraintMaker *make) {
+		if (IS_IPAD) {
+			make.right.equalTo(bottomView.actionButton.left);
+			make.centerY.equalTo(bottomView.centerY);
+		} else {
+			make.left.equalTo(bottomView.left).with.offset(15);
+			make.right.equalTo(bottomView.right).with.offset(15);
+			make.bottom.equalTo(bottomView.bottom).with.offset(-10);
+		}
+	}];
+
+	[bottomLabel makeConstraints:^(MASConstraintMaker *make) {
+		if (IS_IPAD) {
+			make.right.equalTo(topView.right).with.offset(-15);
+			make.centerY.equalTo(topView.centerY);
+		} else {
+			make.left.equalTo(topView.left).with.offset(15);
+			make.right.equalTo(topView.right).with.offset(15);
+			make.bottom.equalTo(topView.bottom).with.offset(-10);
+		}
+	}];
+
+	[UIView animateWithDuration:0.35 animations:^{
+		[baseView layoutIfNeeded];
+	} completion:^(BOOL finished) {
+		button.enabled = YES;
+		A3LunarConverterCellView *cellView = (A3LunarConverterCellView*)[baseView viewWithTag:100];
+		cellView.descriptionLabel.attributedText = bottomLabel.attributedText;
+		cellView.descriptionLabel.hidden = NO;
+
+		cellView = (A3LunarConverterCellView*)[baseView viewWithTag:101];
+		cellView.descriptionLabel.attributedText = topLabel.attributedText;
+		cellView.descriptionLabel.hidden = NO;
+
+		[topLabel removeFromSuperview];
+		[bottomLabel removeFromSuperview];
+
+		if (_isLunarInput) {
+			BOOL isKorean = [[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion];
+			NSInteger maxDay = [NSDate lastMonthDayForLunarYear:_inputDateComponents.year month:_inputDateComponents.month isKorean:isKorean];
+			if (_inputDateComponents.day > maxDay) {
+				_inputDateComponents.day = maxDay;
 			}
-		}];
-
-		[bottomLabel makeConstraints:^(MASConstraintMaker *make) {
-			if (IS_IPAD) {
-				make.right.equalTo(topView.right).with.offset(-15);
-				make.centerY.equalTo(topView.centerY);
-			} else {
-				make.left.equalTo(topView.left).with.offset(15);
-				make.right.equalTo(topView.right).with.offset(15);
-				make.bottom.equalTo(topView.bottom).with.offset(-10);
+		} else {
+			NSDateComponents *verifyingComponents = [_inputDateComponents copy];
+			verifyingComponents.day = 1;
+			NSDate *verifyingDate = [self.calendar dateFromComponents:verifyingComponents];
+			NSRange range = [self.calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:verifyingDate];
+			if (_inputDateComponents.day > range.length) {
+				_inputDateComponents.day = range.length;
 			}
-		}];
+		}
 
-        [UIView animateWithDuration:0.35 animations:^{
-            [baseView layoutIfNeeded];
-        } completion:^(BOOL finished) {
-            button.enabled = YES;
-            A3LunarConverterCellView *cellView = (A3LunarConverterCellView*)[baseView viewWithTag:100];
-            cellView.descriptionLabel.attributedText = bottomLabel.attributedText;
-            cellView.descriptionLabel.hidden = NO;
-            
-            cellView = (A3LunarConverterCellView*)[baseView viewWithTag:101];
-            cellView.descriptionLabel.attributedText = topLabel.attributedText;
-            cellView.descriptionLabel.hidden = NO;
-            
-            [topLabel removeFromSuperview];
-            [bottomLabel removeFromSuperview];
-
-			if (_isLunarInput) {
-				BOOL isKorean = [[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion];
-				NSInteger maxDay = [NSDate lastMonthDayForLunarYear:_inputDateComponents.year month:_inputDateComponents.month isKorean:isKorean];
-				if (_inputDateComponents.day > maxDay) {
-					_inputDateComponents.day = maxDay;
-				}
-			} else {
-				NSDateComponents *verifyingComponents = [_inputDateComponents copy];
-				verifyingComponents.day = 1;
-				NSDate *verifyingDate = [self.calendar dateFromComponents:verifyingComponents];
-				NSRange range = [self.calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:verifyingDate];
-				if (_inputDateComponents.day > range.length) {
-					_inputDateComponents.day = range.length;
-				}
-			}
-
-            [self calculateDate];
-			self.dateKeyboardVC.isLunarDate = _isLunarInput;
-        }];
-	}
+		[self calculateDate];
+		self.dateKeyboardVC.isLunarDate = _isLunarInput;
+	}];
 }
 
 - (IBAction)pageChangedAction:(id)sender {
@@ -858,9 +870,25 @@
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[super appsButtonAction:barButtonItem];
 
+	[self enableControls:!self.A3RootViewController.showLeftView];
 	if (IS_IPAD) {
 		[self dateKeyboardDoneButtonPressed:nil ];
 	}
+}
+
+- (void)enableControls:(BOOL)enable {
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	[self.navigationItem.rightBarButtonItem setEnabled:enable];
+	[self.addToDaysCounterButtons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
+		[button setEnabled:enable];
+	}];
+	[[self dateLabelInView:_firstPageView] setTextColor: enable ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255] ];
+	[[self dateLabelInView:_secondPageView] setTextColor: enable ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255] ];
+}
+
+- (UILabel *)dateLabelInView:(UIView *)view {
+	A3LunarConverterCellView *cellView = (A3LunarConverterCellView *) [view viewWithTag:100];
+	return cellView.dateLabel;
 }
 
 @end

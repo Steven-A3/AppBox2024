@@ -93,10 +93,10 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     
     [self registerContentSizeCategoryDidChangeNotification];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
 
-- (void)keyboardWillHide:(NSNotification *)notification {
+- (void)keyboardDidHide:(NSNotification *)notification {
 	[self.tableView setContentOffset:CGPointMake(0, - self.tableView.contentInset.top) animated:YES];
 }
 
