@@ -61,7 +61,7 @@
     
     [super layoutSubviews];
     
-    if ([self.dataManager tipSplitOption] == TCTipSplitOption_BeforeSplit) {
+    if ([self.dataManager tipSplitOption] == TipSplitOption_BeforeSplit) {
         _beforeSplitButton.selected = YES;
         _perPersonButton.selected = NO;
     }
@@ -259,7 +259,7 @@
     // tipLabel
     double dTip = 0.0;
     if (result) {
-        if ([self.dataManager tipSplitOption] == TCTipSplitOption_PerPerson) {
+        if ([self.dataManager tipSplitOption] == TipSplitOption_PerPerson) {
             dTip = [[self.dataManager tipValueWithSplit] doubleValue];
         }
         else {
@@ -292,19 +292,34 @@
     double dTotal = 0.0;
     if (result) {
         if ([self.dataManager isSplitOptionOn]) {
-            if ([self.dataManager tipSplitOption] == TCTipSplitOption_PerPerson) {
-                dTotal = [[self.dataManager totalPerPerson] doubleValue] + ([[self.dataManager taxValue] doubleValue]  / [[self.dataManager.tipCalcData split] doubleValue]);
+            if ([self.dataManager tipSplitOption] == TipSplitOption_PerPerson) {
+                dTotal = [[self.dataManager totalPerPersonWithTax] doubleValue];
+//                if (self.dataManager.roundingMethodValue == TCRoundingMethodValue_TotalPerPerson) {
+//                    dTotal = [[self.dataManager totalPerPerson] doubleValue];
+//                }
+//                else {
+//                    dTotal = [[self.dataManager totalPerPerson] doubleValue] + ([[self.dataManager taxValue] doubleValue]  / [[self.dataManager.tipCalcData split] doubleValue]);
+//                }
+                
                 NSString *total = [self.dataManager currencyStringFromDouble:dTotal];
                 strings = @[total, @" Total Per Person"];
             }
             else {
-                dTotal = [[self.dataManager totalBeforeSplit] doubleValue] + [[self.dataManager taxValue] doubleValue];
+                dTotal = [[self.dataManager totalBeforeSplitWithTax] doubleValue];
+//                if (self.dataManager.roundingMethodValue == TCRoundingMethodValue_Total) {
+//                    dTotal = [[self.dataManager totalBeforeSplit] doubleValue];
+//                }
+//                else {
+//                    dTotal = [[self.dataManager totalBeforeSplit] doubleValue] + [[self.dataManager taxValue] doubleValue];
+//                }
+                
                 NSString *total = [self.dataManager currencyStringFromDouble:dTotal];
                 strings = @[total, @" Total Before Split"];
             }
         }
         else {
-            dTotal = [[self.dataManager totalBeforeSplit] doubleValue] + [[self.dataManager taxValue] doubleValue];
+            dTotal = [[self.dataManager totalBeforeSplitWithTax] doubleValue];
+//            dTotal = [[self.dataManager totalBeforeSplit] doubleValue] + [[self.dataManager taxValue] doubleValue];
             NSString *total = [self.dataManager currencyStringFromDouble:dTotal];
             strings = @[total, @" Total"];
         }
@@ -328,7 +343,7 @@
     _totalLabel.attributedText = totalAttributeText;
     
     float fWidthRate = 0.0;
-    dTotal = [self.dataManager tipSplitOption] == TCTipSplitOption_BeforeSplit ? [self.dataManager.costBeforeTax doubleValue] : [self.dataManager.costBeforeTaxWithSplit doubleValue];
+    dTotal = [self.dataManager tipSplitOption] == TipSplitOption_BeforeSplit ? [self.dataManager.costBeforeTax doubleValue] : [self.dataManager.costBeforeTaxWithSplit doubleValue];
     
     if (dTip > 0.0 && dTotal > 0.0) {
         if (dTotal == 0 || dTip == 0) {

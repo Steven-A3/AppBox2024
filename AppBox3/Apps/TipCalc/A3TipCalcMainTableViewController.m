@@ -299,7 +299,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     
 	__weak NSNumberFormatter *formatter = self.dataManager.currencyFormatter;
 
-    if ([self.dataManager tipSplitOption] == TCTipSplitOption_BeforeSplit) {
+    if ([self.dataManager tipSplitOption] == TipSplitOption_BeforeSplit) {
         values = [NSMutableArray new];
         [values addObject:[formatter stringFromNumber:[self.dataManager costBeforeTax]]];
         [values addObject:[formatter stringFromNumber:[self.dataManager taxValue]]];
@@ -312,7 +312,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         [titles addObject:@[@"Subtotal", @"Tip"]];
         [details addObject:values];
     }
-    else if ([self.dataManager tipSplitOption] == TCTipSplitOption_PerPerson) {
+    else if ([self.dataManager tipSplitOption] == TipSplitOption_PerPerson) {
         values = [NSMutableArray new];
         [values addObject:[formatter stringFromNumber:[self.dataManager costBeforeTaxWithSplit]]];
         [values addObject:[formatter stringFromNumber:[self.dataManager taxValueWithSplit]]];
@@ -343,7 +343,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 {
     _headerView.beforeSplitButton.selected = YES;
     _headerView.perPersonButton.selected = NO;
-	self.dataManager.tipSplitOption = TCTipSplitOption_BeforeSplit;
+	self.dataManager.tipSplitOption = TipSplitOption_BeforeSplit;
     
     [self outputAllResultWithAnimation:YES];
 }
@@ -351,7 +351,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 - (void)perPersonButtonTouchedUp:(id)aSender {
     _headerView.beforeSplitButton.selected = NO;
     _headerView.perPersonButton.selected = YES;
-	self.dataManager.tipSplitOption = TCTipSplitOption_PerPerson;
+	self.dataManager.tipSplitOption = TipSplitOption_PerPerson;
     
     [self outputAllResultWithAnimation:YES];
 }
@@ -684,13 +684,13 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     if ([viewController.root.title isEqualToString:@"Option"]) {
 		self.dataManager.roundingMethodOption = index;
         
-        NSNumber * result = [self.dataManager numberByRoundingMethodForValue:@0.4];
+        NSNumber * result = [self.dataManager numberByRoundingMethodForValue:@0.455];
         NSLog(@"result: %@", result);
         
-        result = [self.dataManager numberByRoundingMethodForValue:@0.5];
+        result = [self.dataManager numberByRoundingMethodForValue:@0.555];
         NSLog(@"result: %@", result);
         
-        result = [self.dataManager numberByRoundingMethodForValue:@0.6];
+        result = [self.dataManager numberByRoundingMethodForValue:@0.655];
         NSLog(@"result: %@", result);
     }
     else {
@@ -720,7 +720,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [self reloadTableDataSource];
     [self.tableView reloadData];
     
-    if ([self.dataManager tipSplitOption] == TCTipSplitOption_BeforeSplit) {
+    if ([self.dataManager tipSplitOption] == TipSplitOption_BeforeSplit) {
         _headerView.beforeSplitButton.selected = YES;
         _headerView.perPersonButton.selected = NO;
     }
@@ -775,14 +775,14 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     A3JHTableViewElement * element = [self.tableDataSource elementForIndexPath:indexPath];
     
     if ([cell isKindOfClass:[A3JHTableViewEntryCell class]]) {
-        ((A3JHTableViewEntryCell *)cell).textField.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
+        ((A3JHTableViewEntryCell *)cell).textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
         ((A3JHTableViewEntryCell *)cell).textField.font = [UIFont systemFontOfSize:17];
     }
     
     switch (element.identifier) {
         case RowElementID_Value:
-            break;
         case RowElementID_Option:
+            cell.detailTextLabel.textColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
             break;
         case RowElementID_Split:
             ((A3JHTableViewEntryCell *)cell).textField.placeholder = @"";

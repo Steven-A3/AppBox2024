@@ -19,9 +19,9 @@ typedef enum{
     TipCalcRoundingFlagOff          // 반올림
 }TipCalcRoundingFlag;
 
-typedef NS_ENUM (NSInteger, TCTipSplitOption) {
-	TCTipSplitOption_BeforeSplit = 0,
-    TCTipSplitOption_PerPerson
+typedef NS_ENUM (NSInteger, TipSplitOption) {
+	TipSplitOption_BeforeSplit = 0,
+    TipSplitOption_PerPerson
 };
 
 typedef NS_ENUM (NSInteger, TCKnownValue) {
@@ -95,8 +95,8 @@ extern NSString *const A3TipCalcCurrencyCode;
 - (void)setTipCalcDataForHistoryData:(TipCalcHistory *)aHistory;
 
 #pragma mark Split Option
-- (void)setTipSplitOption:(TCTipSplitOption)option;
-- (TCTipSplitOption)tipSplitOption;
+- (void)setTipSplitOption:(TipSplitOption)option;
+- (TipSplitOption)tipSplitOption;
 
 #pragma mark KnownValue
 - (void)setKnownValue:(TCKnownValue)value;
@@ -117,8 +117,8 @@ extern NSString *const A3TipCalcCurrencyCode;
 - (NSNumber *)costBeforeTaxWithSplit;
 - (NSNumber *)subtotal;
 - (NSNumber *)subtotalWithSplit;
-- (NSNumber *)totalBeforeSplit;
-- (NSNumber *)totalPerPerson;
+- (NSNumber *)totalBeforeSplitWithTax;
+- (NSNumber *)totalPerPersonWithTax;
 - (NSNumber *)taxPercent;
 - (NSNumber *)taxValue;
 - (NSNumber *)taxValueWithSplit;
