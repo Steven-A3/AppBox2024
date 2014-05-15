@@ -334,6 +334,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
                 [button setBackgroundColorForDefaultState:[UIColor colorWithRed:252.0 / 255.0 green:252.0 / 255.0 blue:253.0 / 255.0 alpha:1.0]];
                 [button setBackgroundColorForHighlightedState:[UIColor colorWithRed:234.0 / 255.0 green:234.0 / 255.0 blue:235.0 / 255.0 alpha:1.0]];
 				[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                				[button setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
             }
 		}
 	}
