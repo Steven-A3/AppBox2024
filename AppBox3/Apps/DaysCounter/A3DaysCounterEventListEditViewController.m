@@ -9,6 +9,7 @@
 #import "A3DaysCounterEventListEditViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
+#import "UIViewController+iPad_rightSideView.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "DaysCounterCalendar.h"
@@ -24,7 +25,7 @@
 #define ActionSheet_DeleteAll           100
 #define ActionSheet_DeleteSelected      101
 
-@interface A3DaysCounterEventListEditViewController ()
+@interface A3DaysCounterEventListEditViewController () <UIPopoverControllerDelegate, UIActionSheetDelegate, UIActivityItemSource>
 @property (strong, nonatomic) NSMutableArray *itemArray;
 @property (strong, nonatomic) UIImage *checkNormalImage;
 @property (strong, nonatomic) NSMutableDictionary *checkStatusDict;
@@ -69,6 +70,26 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self reloadTableView];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    self.checkNormalImage = nil;
+}
+
+- (void)reloadTableView
+{
+    if (IS_IPAD) {
+        [[NSNotificationCenter defaultCenter] removeObserver:A3NotificationRightSideViewWillDismiss];
+    }
+    
     if( [_calendarItem.calendarType integerValue] == CalendarCellType_User )
         self.itemArray = [NSMutableArray arrayWithArray:[_calendarItem.events array]];
     else{
@@ -82,17 +103,6 @@
         self.itemArray = [NSMutableArray arrayWithArray:sourceArray];
     }
     [self.tableView reloadData];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc
-{
-    self.checkNormalImage = nil;
 }
 
 #pragma mark
@@ -197,12 +207,12 @@
 #pragma mark - action method
 - (void)cancelAction:(id)sender
 {
-    if( IS_IPHONE )
+    if ( IS_IPHONE ) {
         [self dismissViewControllerAnimated:YES completion:nil];
-    else{
-        [self.A3RootViewController dismissRightSideViewController];
+    }
+    else {
+        [self.A3RootViewController dismissCenterViewController];
         [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
-        
     }
 }
 
@@ -252,21 +262,31 @@
     viewCtrl.currentCalendar = _calendarItem;
     viewCtrl.eventArray = _selectedArray;
     viewCtrl.sharedManager = _sharedManager;
-    
-    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-    if (IS_IPAD) {
-        // 왼쪽 바운드 라인이 사라지는 버그 수정을 위하여 추가.
-        UIView *leftLineView = [[UIView alloc] initWithFrame:CGRectMake(-(IS_RETINA ? 0.5 : 1), 0, (IS_RETINA ? 0.5 : 1), CGRectGetHeight(navCtrl.view.frame))];
-        leftLineView.backgroundColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
-        [navCtrl.view addSubview:leftLineView];
-        [self presentViewController:navCtrl animated:YES completion:^{
-            _modalVC = navCtrl;
-        }];
-    }
-    else {
+
+    if ( IS_IPHONE ) {
+        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
+    else {
+        [self.A3RootViewController presentRightSideViewController:viewCtrl];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:A3NotificationRightSideViewWillDismiss object:nil];
+    }
+
+//    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+//    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+//    if (IS_IPAD) {
+//        // 왼쪽 바운드 라인이 사라지는 버그 수정을 위하여 추가.
+//        UIView *leftLineView = [[UIView alloc] initWithFrame:CGRectMake(-(IS_RETINA ? 0.5 : 1), 0, (IS_RETINA ? 0.5 : 1), CGRectGetHeight(navCtrl.view.frame))];
+//        leftLineView.backgroundColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
+//        [navCtrl.view addSubview:leftLineView];
+//        [self presentViewController:navCtrl animated:YES completion:^{
+//            _modalVC = navCtrl;
+//        }];
+//    }
+//    else {
+//        [self presentViewController:navCtrl animated:YES completion:nil];
+//    }
 }
 
 - (IBAction)shareAction:(id)sender {
@@ -277,7 +297,17 @@
     }
     
     UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
-    [self presentViewController:activityController animated:YES completion:NULL];
+	if (IS_IPHONE) {
+		[self presentViewController:activityController animated:YES completion:NULL];
+	}
+    else {
+		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+        popoverController.delegate = self;
+        self.popoverVC = popoverController;
+        [popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        activityController.completionHandler = ^(NSString* activityType, BOOL completed) {
+        };
+	}
 }
 
 #pragma mark - UIPopoverControllerDelegate

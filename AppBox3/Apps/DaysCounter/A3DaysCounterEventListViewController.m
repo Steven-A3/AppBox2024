@@ -827,14 +827,29 @@
     A3DaysCounterEventListEditViewController *viewCtrl = [[A3DaysCounterEventListEditViewController alloc] initWithNibName:@"A3DaysCounterEventListEditViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
     viewCtrl.calendarItem = _calendarItem;
+
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self presentViewController:navCtrl animated:YES completion:nil];
+        navCtrl.delegate = self;
+        [self presentViewController:navCtrl animated:YES completion:^{
+        }];
     }
     else {
-        [self.A3RootViewController presentRightSideViewController:viewCtrl];
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+        [rootViewController presentCenterViewController:[[A3NavigationController alloc] initWithRootViewController:viewCtrl]
+                                     fromViewController:self
+                                         withCompletion:^{
+                                         }];
     }
+//    if ( IS_IPHONE ) {
+//        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+//        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+//        [self presentViewController:navCtrl animated:YES completion:nil];
+//    }
+//    else {
+//        [self.A3RootViewController presentRightSideViewController:viewCtrl];
+//    }
 }
 
 #pragma mark - action method

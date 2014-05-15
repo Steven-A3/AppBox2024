@@ -37,8 +37,10 @@
     [super viewDidLoad];
 
     self.title = [NSString stringWithFormat:@"%ld Event%@", (long)[_eventArray count], ([_eventArray count] > 1 ? @"s" : @"")];
-    [self rightBarButtonDoneButton];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
+    if (IS_IPHONE) {
+        [self rightBarButtonDoneButton];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
+    }
     
     self.navigationController.navigationBar.topItem.prompt = @"Move these events to a new calendar.";
     
@@ -102,6 +104,10 @@
         [tableView reloadRowsAtIndexPaths:@[prevIndexPath] withRowAnimation:UITableViewRowAnimationFade];
     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [tableView endUpdates];
+    
+    if (IS_IPAD) {
+        [self doneButtonAction:nil];
+    }
 }
 
 #pragma mark - action method
@@ -124,7 +130,12 @@
 
 - (void)cancelAction:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (IS_IPHONE) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else {
+        [self.A3RootViewController dismissRightSideViewController];
+    }
 }
 
 @end

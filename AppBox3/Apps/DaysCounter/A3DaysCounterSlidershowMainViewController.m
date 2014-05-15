@@ -529,7 +529,6 @@
     };
 
     UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:@[slideActivity]];
-    
     activityController.excludedActivityTypes = @[UIActivityTypeCopyToPasteboard];
 	if (IS_IPHONE) {
 		[self presentViewController:activityController animated:YES completion:NULL];

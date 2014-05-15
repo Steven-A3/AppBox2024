@@ -10,7 +10,7 @@
 
 @class DaysCounterCalendar;
 @class A3DaysCounterModelManager;
-@interface A3DaysCounterEventListEditViewController : UITableViewController<UIPopoverControllerDelegate,UIActionSheetDelegate>
+@interface A3DaysCounterEventListEditViewController : UITableViewController
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) DaysCounterCalendar *calendarItem;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
