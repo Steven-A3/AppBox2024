@@ -51,20 +51,6 @@
 		_borderLayer.cornerRadius = self.bounds.size.height / 2.0;
 		[self.layer addSublayer:_borderLayer];
 	}
-//	if (!selected) {
-//		[_borderLayer removeFromSuperlayer];
-//		_borderLayer = nil;
-//	} else {
-//        if(_borderLayer != nil)
-//            return;
-//        
-//		_borderLayer = [CALayer layer];
-//		_borderLayer.frame = self.bounds;
-//		_borderLayer.borderColor = self.tintColor.CGColor;
-//		_borderLayer.borderWidth = 1.0;
-//		_borderLayer.cornerRadius = self.bounds.size.height / 2.0;
-//		[self.layer addSublayer:_borderLayer];
-//	}
 }
 
 - (void)setFrame:(CGRect)frame {
@@ -72,6 +58,10 @@
 
 	[_borderLayer setFrame:self.bounds];
 	_borderLayer.cornerRadius = self.bounds.size.height / 2.0;
+}
+
+- (void)setBorderColor:(UIColor *)color {
+	_borderLayer.borderColor = color.CGColor;
 }
 
 @end

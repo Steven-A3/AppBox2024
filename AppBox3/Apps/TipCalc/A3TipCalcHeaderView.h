@@ -21,23 +21,8 @@
 @property (nonatomic, strong) UIButton *detailInfoButton;
 
 - (id)initWithFrame:(CGRect)frame dataManager:(A3TipCalcDataManager *)dataManager;
-
 - (void)showDetailInfoButton;
 - (void)setResult:(TipCalcRecently *)result;
 - (void)setResult:(TipCalcRecently *)result withAnimation:(BOOL)animate;
-
-@property (strong, nonatomic) IBOutlet UIView *viewBackBar;
-@property (strong, nonatomic) IBOutlet UIView *viewValueBar;
-@property (strong, nonatomic) IBOutlet A3TipCalcCircle *viewCercle;
-
-
-@property (strong, nonatomic) IBOutlet UILabel *lbTip;
-@property (strong, nonatomic) IBOutlet UILabel *lbTipCaption;
-
-@property (strong, nonatomic) IBOutlet UILabel *lbTotal;
-@property (strong, nonatomic) IBOutlet UILabel *lbTotalCaption;
-
-@property (strong, nonatomic) IBOutlet UIButton *btnDetail;
-
 
 @end
