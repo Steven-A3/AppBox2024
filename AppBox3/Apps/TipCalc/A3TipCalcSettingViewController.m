@@ -84,7 +84,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.textLabel.font = [UIFont systemFontOfSize:18];
+        cell.textLabel.font = [UIFont systemFontOfSize:17];
         cell.accessoryView = [[UISwitch alloc] initWithFrame:CGRectZero];
         [((UISwitch *)cell.accessoryView) addTarget:self action:@selector(switchButtonFliped:) forControlEvents:UIControlEventValueChanged];
     }
@@ -118,25 +118,17 @@
         {
 			self.dataManager.taxOption = [sender isOn];
             if ([sender isOn]) {
-                //self.dataManager.knownValue = TCKnownValue_CostsBeforeTax;
+                self.dataManager.knownValue = TCKnownValue_CostsBeforeTax;
                 //if (![self.dataManager hasCalcData] && [self.dataManager isTaxByLocation] || ![self.dataManager defaultTax]) {
                 if ([self.dataManager.taxPercent isEqualToNumber:@0]) {
                     [self.dataManager getUSTaxRateByLocation];
                 }
-            }
-            
-            if ([_delegate respondsToSelector:@selector(tipCalcSettingsChanged)]) {
-                [_delegate tipCalcSettingsChanged];
             }
         }
             break;
         case 1:
         {
 			self.dataManager.splitOption = [sender isOn];
-            
-            if ([_delegate respondsToSelector:@selector(tipCalcSettingsChanged)]) {
-                [_delegate tipCalcSettingsChanged];
-            }
         }
             break;
         case 2:
@@ -145,15 +137,15 @@
             if ([sender isOn]) {
                 //self.dataManager.roundingMethodOption = TCRoundingMethodOption_Exact;
             }
-            
-            if ([_delegate respondsToSelector:@selector(tipCalcSettingsChanged)]) {
-                [_delegate tipCalcSettingsChanged];
-            }
         }
             break;
             
         default:
             break;
+    }
+    
+    if ([_delegate respondsToSelector:@selector(tipCalcSettingsChanged)]) {
+        [_delegate tipCalcSettingsChanged];
     }
 }
 
