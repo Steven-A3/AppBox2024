@@ -403,6 +403,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 	} else if ([title isKindOfClass:[UIImage class]]) {
 	
 		[button setImage:title forState:UIControlStateNormal];
+        [button setImage:title forState:UIControlStateSelected];    // 이전 이미지가 selected 이미지로 남아 있는 오류 수정.
 	}
 }
 
@@ -456,7 +457,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 	A3ExpressionKind input = (A3ExpressionKind)button.identifier;
 	if (input == A3E_2ND) {
         bSecondButtonSelected = !bSecondButtonSelected;
-        //button.selected = bSecondButtonSelected;
+        button.selected = bSecondButtonSelected;
 		[self setLevel:bSecondButtonSelected];
 
 	} else {
