@@ -21,6 +21,8 @@
 #import "A3LoanCalcLoanGraphCell.h"
 #import "A3NumberKeyboardViewController.h"
 #import "UITableView+utility.h"
+#import "UIViewController+iPad_rightSideView.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate, A3KeyboardDelegate, UITextFieldDelegate, A3CalculatorDelegate, A3SearchViewControllerDelegate>
 {
@@ -50,8 +52,6 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 	self.dataSectionStartIndex = 1;
 
-    [self makeBackButtonEmptyArrow];
-
     // init loan
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
@@ -67,35 +67,55 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     [self.percentFormatter setMaximumFractionDigits:3];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
- 
-    [self registerContentSizeCategoryDidChangeNotification];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+
+	[self registerContentSizeCategoryDidChangeNotification];
 }
 
-- (void)dealloc {
-	[self removeObserver];
+- (void)rightSideViewWillHide {
+	[self enableControls:YES];
+}
+
+- (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
+
+	if (enable) {
+		A3LoanCalcLoanGraphCell *cell = (A3LoanCalcLoanGraphCell *) [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+		cell.monthlyButton.enabled = YES;
+		cell.totalButton.enabled = YES;
+
+		[cell.monthlyButton setTitleColor:[[A3AppDelegate instance] themeColor] forState:UIControlStateNormal];
+		[cell.totalButton setTitleColor:[[A3AppDelegate instance] themeColor] forState:UIControlStateNormal];
+		if (cell.monthlyButton.layer.borderColor != [UIColor clearColor].CGColor) {
+			cell.monthlyButton.layer.borderColor = cell.monthlyButton.currentTitleColor.CGColor;
+		}
+		if (cell.totalButton.layer.borderColor != [UIColor clearColor].CGColor) {
+			cell.totalButton.layer.borderColor = cell.totalButton.currentTitleColor.CGColor;
+		}
+	} else {
+		UIColor *disabledColor = [UIColor colorWithRed:201.0 / 255.0 green:201.0 / 255.0 blue:201.0 / 255.0 alpha:1.0];
+		A3LoanCalcLoanGraphCell *cell = (A3LoanCalcLoanGraphCell *) [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+		cell.infoButton.enabled = NO;
+		cell.monthlyButton.enabled = NO;
+		cell.totalButton.enabled = NO;
+
+		[cell.monthlyButton setTitleColor:disabledColor forState:UIControlStateDisabled];
+		[cell.totalButton setTitleColor:disabledColor forState:UIControlStateDisabled];
+		if (cell.monthlyButton.layer.borderColor != [UIColor clearColor].CGColor) {
+			cell.monthlyButton.layer.borderColor = disabledColor.CGColor;
+		}
+		if (cell.totalButton.layer.borderColor != [UIColor clearColor].CGColor) {
+			cell.totalButton.layer.borderColor = disabledColor.CGColor;
+		}
+	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification
 {
     [self.tableView reloadData];
 }
-
-/*
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    if (![self.navigationController.viewControllers containsObject:self]) {
-        //pop this controller
-        if (_isLoanCalcEdited) {
-            
-            if (_delegate && [_delegate respondsToSelector:@selector(didEditedLoanData:)]) {
-                [_delegate didEditedLoanData:_loanData];
-            }
-        }
-    }
-}
- */
 
 -(void)willMoveToParentViewController:(UIViewController *)parent {
     NSLog(@"This VC has has been pushed popped OR covered");
@@ -560,7 +580,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
             A3LoanCalcSelectFrequencyViewController *viewController = [[A3LoanCalcSelectFrequencyViewController alloc] initWithStyle:UITableViewStyleGrouped];
             viewController.delegate = self;
             viewController.currentFrequency = self.loanData.frequencyIndex;
-            
+
+			[self enableControls:NO];
             [self presentSubViewController:viewController];
         }
         else {
@@ -579,7 +600,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
             viewController.exPaymentType = exPaymentItem;
             viewController.loanCalcData = self.loanData;
             viewController.delegate = self;
-            
+
+			[self enableControls:NO];
             [self presentSubViewController:viewController];
         }
         else if (exPaymentItem == A3LC_ExtraPaymentMonthly) {

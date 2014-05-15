@@ -96,8 +96,10 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     
     [self registerContentSizeCategoryDidChangeNotification];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewDismissed:) name:A3NotificationRightSideViewDidDismiss object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeChanged:) name:A3NotificationUnitPriceCurrencyCodeChanged object:nil];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
 }
 
 - (void)cleanUp {
@@ -115,7 +117,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	[self.tableView reloadData];
 }
 
-- (void)rightSubViewDismissed:(NSNotification *)noti
+- (void)rightSideViewWillHide
 {
     [self enableControls:YES];
 }

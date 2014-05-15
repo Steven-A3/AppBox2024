@@ -136,15 +136,17 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:USMStoreDidImportChangesNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3CurrencySettingsChangedNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	}
 }
 
 - (void)mainMenuViewDidHide {
 	[self enableControls:YES];
 }
 
-- (void)rightViewWillDismiss {
+- (void)rightSideViewWillDismiss {
 	[self enableControls:YES];
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }

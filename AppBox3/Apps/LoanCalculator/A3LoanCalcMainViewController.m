@@ -135,9 +135,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingNoti:) name:A3LoanCalcNotificationExtraPaymentDisabled object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingNoti:) name:A3LoanCalcNotificationExtraPaymentEnabled object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidHide:) name:A3NotificationRightSideViewDidDismiss object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeChanged) name:A3LoanCalcCurrencyCodeChanged object:nil];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide:) name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	}
 
 	// Keyboard Notification
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
@@ -160,7 +162,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self.tableView reloadData];
 }
 
-- (void)rightSideViewDidHide:(NSNotification *)noti
+- (void)rightSideViewWillHide:(NSNotification *)noti
 {
     [self enableControls:YES];
     
@@ -2317,6 +2319,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 [self.navigationController pushViewController:viewController animated:YES];
             }
             else {
+				[self enableControls:NO];
                 [self presentSubViewController:viewController];
             }
             [self dismissDatePicker];
@@ -2335,6 +2338,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                     [self.navigationController pushViewController:viewController animated:YES];
                 }
                 else {
+					[self enableControls:NO];
                     [self presentSubViewController:viewController];
                 }
                 
@@ -2365,6 +2369,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                     [self.navigationController pushViewController:viewController animated:YES];
                 }
                 else {
+					[self enableControls:NO];
                     [self presentSubViewController:viewController];
                 }
                 [self dismissDatePicker];

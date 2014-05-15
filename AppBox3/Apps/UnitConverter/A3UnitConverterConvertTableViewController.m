@@ -139,10 +139,10 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		make.height.equalTo(@44);
 	}];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewDismissed:) name:A3NotificationRightSideViewDidDismiss object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewWillHide:) name:A3NotificationRightSideViewWillDismiss object:nil];
 }
 
-- (void)rightSubViewDismissed:(NSNotification *)noti
+- (void)rightSubViewWillHide:(NSNotification *)noti
 {
     [self enableControls:YES];
 }

@@ -88,7 +88,7 @@
 	[self addTextFieldForPlayInputClick];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightViewDidHide) name:A3NotificationRightSideViewDidDismiss object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 }
 
 - (void)addTextFieldForPlayInputClick {
@@ -123,7 +123,7 @@
 	[self enableControls:YES];
 }
 
-- (void)rightViewDidHide {
+- (void)rightViewWillHide {
 	[self enableControls:YES];
 }
 

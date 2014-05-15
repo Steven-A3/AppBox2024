@@ -19,6 +19,7 @@
 #import "A3DefaultColorDefines.h"
 #import "A3JHTableViewEntryCell.h"
 #import "NSNumberFormatter+Extention.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 
 @interface A3PercentCalcMainViewController () <UITextFieldDelegate, A3PercentCalcHistoryDelegate>
@@ -115,7 +116,31 @@
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+
     [self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)mainMenuDidHide {
+	[self enableControls:YES];
+}
+
+- (void)rightSideViewWillHide {
+	[self enableControls:YES];
+}
+
+- (void)enableControls:(BOOL)enable {
+	if (enable) {
+		[self setBarButtonEnable:YES];
+	} else {
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
+			[barButtonItem setEnabled:NO];
+		}];
+	}
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 }
 
 - (void)keyboardDidHide:(NSNotification *)notification {
@@ -195,11 +220,6 @@
     }
     
     [self reloadTableHeaderView];
-    
-//    _topWhitePaddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.0)];
-//    _topWhitePaddingView.backgroundColor = COLOR_HEADERVIEW_BG;
-//    _topWhitePaddingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
-//    [self.tableView addSubview:_topWhitePaddingView];
 }
 
 - (void)rightButtonHistoryButton {
@@ -227,19 +247,18 @@
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[super appsButtonAction:barButtonItem];
-	
+
+	[self enableControls:!self.A3RootViewController.showLeftView];
     [self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 }
 
-//-(void)enableBarButtons
 -(void)setBarButtonEnable:(BOOL)enable
 {
     if (enable) {
         // History 버튼, 히스토리가 있는 경우에만 활성.
-        PercentCalcHistory *aData = [PercentCalcHistory MR_findFirst];
         UIBarButtonItem *historyButton = [self.navigationItem.rightBarButtonItems objectAtIndex:0];
-        historyButton.enabled = aData ? YES : NO;
+        historyButton.enabled = [PercentCalcHistory MR_countOfEntities] > 0;
         
         
         // Compose 버튼, 헤더에 값이 있는 경우에만 활성하도록..
@@ -315,6 +334,8 @@
 -(void)historyButtonAction:(id)sender {
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
+
+	[self enableControls:NO];
 
 	A3PercentCalcHistoryViewController *viewController = [[A3PercentCalcHistoryViewController alloc] initWithStyle:UITableViewStylePlain];
 	viewController.delegate = self;
