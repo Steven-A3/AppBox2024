@@ -251,6 +251,7 @@
     A3DaysCounterEventChangeCalendarViewController *viewCtrl = [[A3DaysCounterEventChangeCalendarViewController alloc] initWithNibName:@"A3DaysCounterEventChangeCalendarViewController" bundle:nil];
     viewCtrl.currentCalendar = _calendarItem;
     viewCtrl.eventArray = _selectedArray;
+    viewCtrl.sharedManager = _sharedManager;
     
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
