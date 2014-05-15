@@ -17,6 +17,8 @@ typedef NS_ENUM(NSInteger, CALC_TYPE) {
 @protocol A3DateCalcHeaderViewDelegate <NSObject>
 @required
 - (void)dateCalcHeaderChangedFromDate:(NSDate *)fDate toDate:(NSDate *)tDate;
+- (void)dateCalcHeaderThumbPositionChangeOfFromDate:(NSDate *)fDate toDate:(NSDate *)toDate;
+- (void)dateCalcHeaderThumbPositionChangeOfAddSubDateComponents:(NSDateComponents *)dateComp;
 - (void)dateCalcHeaderAddSubResult:(NSDateComponents *)compResult;
 - (void)dateCalcHeaderFromThumbTapped;
 - (void)dateCalcHeaderToThumbTapped;
@@ -31,8 +33,8 @@ typedef NS_ENUM(NSInteger, CALC_TYPE) {
 - (void)setCalcType:(CALC_TYPE)aType;
 
 - (void)setResultBetweenDate:(NSDateComponents *)resultDate withAnimation:(BOOL)animation;
-- (void)setResultAddDate:(NSDate *)resultDate withAnimation:(BOOL)animation;
-- (void)setResultSubDate:(NSDate *)resultDate withAnimation:(BOOL)animation;
+- (NSDateComponents *)setResultAddDate:(NSDate *)resultDate withAnimation:(BOOL)animation;
+- (NSDateComponents *)setResultSubDate:(NSDate *)resultDate withAnimation:(BOOL)animation;
 
 @property (nonatomic, weak) id<A3DateCalcHeaderViewDelegate> delegate;
 
