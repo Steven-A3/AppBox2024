@@ -21,7 +21,7 @@
 - (id)init
 {
     self = [super init];
-    if( self ){
+    if ( self ) {
         self.playImage = [UIImage imageNamed:IS_IPHONE ? @"share_slideshow" : @"share_slideshow_iPad"];
     }
     

@@ -25,7 +25,9 @@
 #import "A3AppDelegate.h"
 #import "DaysCounterFavorite.h"
 
-#define DEFAULT_CALENDAR_COLOR      [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0]
+//#define DEFAULT_CALENDAR_COLOR      [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0]
+#define DEFAULT_CALENDAR_COLOR        [self.calendarColorArray[6] objectForKey:CalendarItem_Color]
+#define DEFAULT_CALENDAR_COLORID        [self.calendarColorArray[6] objectForKey:CalendarItem_Name]
 
 
 @interface A3DaysCounterModelManager ()
@@ -673,6 +675,7 @@
     [item setObject:@(YES) forKey:CalendarItem_IsShow];
     [item setObject:@(CalendarCellType_User) forKey:CalendarItem_Type];
     [item setObject:DEFAULT_CALENDAR_COLOR forKey:CalendarItem_Color];
+    [item setObject:DEFAULT_CALENDAR_COLORID forKey:CalendarItem_ColorID];
     [item setObject:[NSNumber numberWithInteger:0] forKey:CalendarItem_NumberOfEvents];
     
     return item;

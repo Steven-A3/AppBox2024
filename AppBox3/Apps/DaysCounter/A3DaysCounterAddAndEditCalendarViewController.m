@@ -239,12 +239,16 @@
         UIColor *color = [[_colorArray objectAtIndex:indexPath.row] objectForKey:CalendarItem_Color];
         [_calendarItem setObject:color forKey:CalendarItem_Color];
         _colorID = [[_colorArray objectAtIndex:indexPath.row] objectForKey:CalendarItem_Name];
+        [_calendarItem setObject:_colorID forKey:CalendarItem_ColorID];
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         UITableViewCell *prevCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:indexPath.section]];
         UITableViewCell *curCell = [tableView cellForRowAtIndexPath:indexPath];
         prevCell.accessoryType = UITableViewCellAccessoryNone;
         curCell.accessoryType = UITableViewCellAccessoryCheckmark;
+        
+        UITableViewCell *calendarNameCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        calendarNameCell.imageView.tintColor = [_calendarItem objectForKey:CalendarItem_Color];
     }
     else if ( indexPath.section == 2) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Calendar" otherButtonTitles:nil];
