@@ -846,6 +846,20 @@ NSString *kCalculationString;
     }
 }
 
+-(void)dateCalcHeaderThumbPositionChangeOfFromDate:(NSDate *)fDate toDate:(NSDate *)toDate
+{
+    NSLog(@"f: %@, t: %@", fDate, toDate);
+    UITableViewCell *fromCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+    UITableViewCell *toCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+
+    
+}
+
+-(void)dateCalcHeaderThumbPositionChangeOfAddSubDateComponents:(NSDateComponents *)dateComp
+{
+    NSLog(@"%@", dateComp);
+}
+
 #pragma mark - UITextField Related
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -912,6 +926,8 @@ NSString *kCalculationString;
 -(void)textFieldDidEndEditing:(UITextField *)textField {
 	[self setFirstResponder:nil];
 
+    _isSelectedFromToCell = NO;
+    
 	if (![textField.text length] && _textBeforeEditingText) {
 		textField.text = [NSString stringWithFormat:@"%ld", (long)[_textBeforeEditingText floatValueEx]];
 	}

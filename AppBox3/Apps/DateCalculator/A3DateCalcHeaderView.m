@@ -333,7 +333,6 @@
             rRect.origin.x = ceilf(CGRectGetWidth(self.bounds) - rRect.size.width);
         }
         _resultLabel.frame = rRect;
-//        _resultTextLabel.frame = CGRectMake(ceilf(rRect.origin.x), ceilf(rRect.origin.y), 100, 25);
     }
     else {
         CGRect rRect = _resultLabel.frame;
@@ -348,8 +347,6 @@
             rRect.origin.x = 0;
         }
         _resultLabel.frame = rRect;
-        //_resultTextLabel.frame = rRect;
-//        _resultTextLabel.frame = CGRectMake(ceilf(rRect.origin.x), ceilf(rRect.origin.y), 100, 25);
     }
 }
 
@@ -752,16 +749,27 @@
         NSLog(@"MaxDate: %@, ToDate: %@", _maxDate, _toDate);
 
         [self setResultBetweenDate:resultComp withAnimation:YES];
-//        if ([_delegate respondsToSelector:@selector(dateCalcHeaderChangedFromDate:toDate:)]) {
-//            [_delegate dateCalcHeaderChangedFromDate:fDate toDate:tDate];
-//        }
-
+        
         _fromLabel.text = [A3DateCalcStateManager formattedStringDate:fDate];
         _toLabel.text = [A3DateCalcStateManager formattedStringDate:tDate];
+        
+//        if ([_delegate respondsToSelector:@selector(dateCalcHeaderThumbPositionChangeOfFromDate:toDate:)]) {
+//            [_delegate dateCalcHeaderThumbPositionChangeOfFromDate:fDate toDate:tDate];
+//        }
+        if ([_delegate respondsToSelector:@selector(dateCalcHeaderChangedFromDate:toDate:)]) {
+            [_delegate dateCalcHeaderChangedFromDate:fDate toDate:tDate];
+        }
+        
     } else if (_calcType == CALC_TYPE_ADD) {
-        [self setResultAddDate:tDate withAnimation:YES];
+        NSDateComponents *changedComp = [self setResultAddDate:tDate withAnimation:YES];
+        if ([_delegate respondsToSelector:@selector(dateCalcHeaderThumbPositionChangeOfAddSubDateComponents:)]) {
+            [_delegate dateCalcHeaderThumbPositionChangeOfAddSubDateComponents:changedComp];
+        }
     } else if (_calcType == CALC_TYPE_SUB) {
-        [self setResultSubDate:fDate withAnimation:YES];
+        NSDateComponents *changedComp = [self setResultSubDate:fDate withAnimation:YES];
+        if ([_delegate respondsToSelector:@selector(dateCalcHeaderThumbPositionChangeOfAddSubDateComponents:)]) {
+            [_delegate dateCalcHeaderThumbPositionChangeOfAddSubDateComponents:changedComp];
+        }
     }
 }
 
@@ -878,7 +886,7 @@
     
 }
 
-- (void)setResultAddDate:(NSDate *)resultDate withAnimation:(BOOL)animation
+- (NSDateComponents *)setResultAddDate:(NSDate *)resultDate withAnimation:(BOOL)animation
 {
     _calcType = CALC_TYPE_ADD;
     [_resultLabel setResultText:[A3DateCalcStateManager formattedStringDate:resultDate]];
@@ -943,9 +951,10 @@
     }
     
     _resultLabel.isPositive = YES;
+    return comp;
 }
 
-- (void)setResultSubDate:(NSDate *)resultDate withAnimation:(BOOL)animation
+- (NSDateComponents *)setResultSubDate:(NSDate *)resultDate withAnimation:(BOOL)animation
 {
     _calcType = CALC_TYPE_SUB;
     [_resultLabel setResultText:[A3DateCalcStateManager formattedStringDate:resultDate]];
@@ -1016,6 +1025,7 @@
     }
 
     _resultLabel.isPositive = NO;
+    return comp;
 }
 
 
