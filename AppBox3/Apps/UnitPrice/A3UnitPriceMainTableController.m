@@ -31,11 +31,6 @@ NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUni
 {
     float price1UnitPrice;
     float price2UnitPrice;
-    
-    BOOL historyInsertNeed;
-    
-    BOOL composeItemEnabled;
-    BOOL historyItemEnabled;
 }
 
 @property (nonatomic, strong) UnitPriceInfo *price1;
@@ -64,12 +59,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     self.navigationItem.title = @"Unit Price";
     
     [self makeBackButtonEmptyArrow];
@@ -92,12 +81,12 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     [self.tableView addSubview:lineView];
     
     [self updateUnitPrices:NO];
-    historyInsertNeed = YES;
-    
-    [self registerContentSizeCategoryDidChangeNotification];
+
+	[self registerContentSizeCategoryDidChangeNotification];
     
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeChanged:) name:A3NotificationUnitPriceCurrencyCodeChanged object:nil];
 	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 }
@@ -122,29 +111,27 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     [self enableControls:YES];
 }
 
-- (void)enableControls:(BOOL) onoff
+- (void)mainMenuDidHide {
+	[self enableControls:YES];
+}
+
+- (void)enableControls:(BOOL)enable
 {
-    UIBarButtonItem *composeItem = self.navigationItem.rightBarButtonItems[0];
-    UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[1];
-    
-    if (onoff) {
-        
-        self.navigationItem.leftBarButtonItem.enabled = YES;
-        composeItem.enabled = composeItemEnabled;
-        historyItem.enabled = historyItemEnabled;
-        
+	self.navigationItem.leftBarButtonItem.enabled = enable;
+    if (enable) {
+		self.composeBarItem.enabled = price1UnitPrice > 0 && price2UnitPrice > 0;
+		self.historyBarItem.enabled = [UnitPriceHistory MR_countOfEntities] > 0;
     }
     else {
-        
-        composeItemEnabled = composeItem.enabled;
-        historyItemEnabled = historyItem.enabled;
-        
-        self.navigationItem.leftBarButtonItem.enabled = NO;
-        composeItem.enabled = NO;
-        historyItem.enabled = NO;
+		self.composeBarItem.enabled = NO;
+		self.historyBarItem.enabled = NO;
     }
-    
-    
+}
+
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[super appsButtonAction:barButtonItem];
+
+	[self enableControls:!self.A3RootViewController.showLeftView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -156,14 +143,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    NSArray *historys = [UnitPriceHistory MR_findAll];
-    if (historys.count>0) {
-        self.historyBarItem.enabled = YES;
-    }
-    else {
-        self.historyBarItem.enabled = NO;
-    }
+
+	[self enableControls:YES];
 }
 
 - (UILabel *)resultLB
@@ -179,8 +160,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     
     return _resultLB;
 }
-
-
 
 - (UIBarButtonItem *)composeBarItem
 {
@@ -289,9 +268,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         
         [self updateUnitPrices:NO];
-        
-        historyInsertNeed = NO;
-    }
+
+	}
 }
 
 #pragma mark - A3UnitPriceInfoModifyDelegate
@@ -322,8 +300,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
     [self updateUnitPrices:YES];
-    
-    historyInsertNeed = YES;
+
 }
 
 #pragma mark - UnitPriceInputDelegate
@@ -664,15 +641,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     else {
         self.resultLB.text = @"";
     }
-    
-    // compose button enable/disable
-    if (price1UnitPrice>0 && price2UnitPrice>0) {
-        self.composeBarItem.enabled = YES;
-    }
-    else {
-        self.composeBarItem.enabled = NO;
-    }
-    
+
+	[self enableControls:YES];
 }
 
 - (void)configureInfo1Cell:(A3UnitPriceInfoCell *)cell

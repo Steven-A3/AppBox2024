@@ -27,6 +27,7 @@
 #import "A3TextViewElement.h"
 #import "SalesCalcHistory.h"
 #import "A3SearchViewController.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 
 enum A3TableElementCellType {
@@ -90,7 +91,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 	[self leftBarButtonAppsButton];
     [self rightButtonHistoryButton];
     [self registerContentSizeCategoryDidChangeNotification];
-    [self setBarButtonsEnable:YES];
+	[self enableControls:YES];
     
     self.tableView.tableHeaderView = self.headerView;
     self.tableView.showsVerticalScrollIndicator = NO;
@@ -104,6 +105,19 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     }
 
     [self.headerView setResultData:[_preferences calcData] withAnimation:NO];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)rightSideViewWillHide {
+	[self enableControls:YES];
+}
+
+- (void)mainMenuDidHide {
+	[self enableControls:YES];
 }
 
 -(void)contentSizeDidChange:(NSNotification *)notification
@@ -142,33 +156,40 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
                                                                     style:UIBarButtonItemStylePlain
                                                                    target:self
                                                                    action:@selector(historyButtonAction:)];
+	historyItem.tag = A3RightBarButtonTagHistoryButton;
     
-    UIBarButtonItem *compoItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(saveToHistory:)];
+    UIBarButtonItem *composeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(saveToHistory:)];
+	composeItem.tag = A3RightBarButtonTagComposeButton;
     
-    self.navigationItem.rightBarButtonItems = @[historyItem, compoItem];
+    self.navigationItem.rightBarButtonItems = @[historyItem, composeItem];
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[self.textViewResponder resignFirstResponder];
 
 	[super appsButtonAction:barButtonItem];
+	[self enableControls:!self.A3RootViewController.showLeftView];
 }
 
--(void)setBarButtonsEnable:(BOOL)enable
+-(void)enableControls:(BOOL)enable
 {
     if (enable) {
-        SalesCalcHistory *aData = [SalesCalcHistory MR_findFirst];
-        UIBarButtonItem *historyButton = [self.navigationItem.rightBarButtonItems objectAtIndex:0];
-        historyButton.enabled = aData ? YES : NO;
-        
-        UIBarButtonItem *compo = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
-        compo.enabled = (![self.preferences.calcData.price isEqualToNumber:@0] && ![self.preferences.calcData.discount isEqualToNumber:@0]) ? YES : NO;
-        
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
+			switch (barButtonItem.tag) {
+				case A3RightBarButtonTagHistoryButton:
+					[barButtonItem setEnabled: [SalesCalcHistory MR_countOfEntities] > 0];
+					break;
+				case A3RightBarButtonTagComposeButton:
+					[barButtonItem setEnabled: ![self.preferences.calcData.price isEqualToNumber:@0] && ![self.preferences.calcData.discount isEqualToNumber:@0] ];
+			}
+		}];
     } else {
         [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
             barButton.enabled = NO;
         }];
     }
+	_headerView.detailInfoButton.enabled = enable;
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 }
 
 -(void)saveInputTextData:(A3SalesCalcData *)inputTextData {
@@ -189,7 +210,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     }
     
     [self scrollToTopOfTableView];
-    [self setBarButtonsEnable:YES];
+	[self enableControls:YES];
 }
 
 #pragma mark - History
@@ -199,23 +220,13 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     [self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
+	[self enableControls:NO];
+
     [self.textViewResponder resignFirstResponder];
     A3SalesCalcHistoryViewController *viewController = [[A3SalesCalcHistoryViewController alloc] initWithStyle:UITableViewStylePlain];
     viewController.delegate = self;
     
-//    if (_preferences.calcData && [_preferences didSaveBefore]==NO) {
-//        [_preferences.calcData saveDataForcingly];
-//        [_preferences setOldCalcData:_preferences.calcData];
-//    }
-    
     [self presentSubViewController:viewController];
-    
-    if (IS_IPAD) {
-        [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-            [buttonItem setEnabled:NO];
-        }];
-        _headerView.detailInfoButton.enabled = NO;
-    }
 }
 
 -(void)didSelectHistoryData:(A3SalesCalcData *)aData
@@ -241,11 +252,11 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 }
 
 -(void)clearSelectHistoryData {
-    [self setBarButtonsEnable:YES];
+	[self enableControls:YES];
 }
 
 -(void)dismissHistoryViewController {
-    [self setBarButtonsEnable:YES];
+	[self enableControls:YES];
     _headerView.detailInfoButton.enabled = YES;
 }
 
@@ -323,13 +334,11 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     [self.localPopoverController setPopoverContentSize:CGSizeMake(224, infoView.tableView.contentSize.height) animated:NO];
     
     // 기타 & 버튼들, 비활성 처리.
-    [self setBarButtonsEnable:NO];
+	[self enableControls:NO];
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    _headerView.detailInfoButton.enabled = YES;
-
-    [self setBarButtonsEnable:YES];
+	[self enableControls:YES];
 }
 
 - (NSString *)defaultCurrencyCode {
@@ -340,8 +349,8 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 	return currencyCode;
 }
 
-
 #pragma mark TableView DataSource Configuration
+
 - (void)configureTableData {
 	@autoreleasepool {
         _preferences = [self preferences];
@@ -684,7 +693,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
             
             // 계산 결과 반영.
             [weakSelf.headerView setResultData:weakSelf.preferences.calcData withAnimation:YES];
-            [weakSelf setBarButtonsEnable:YES];
+			[weakSelf enableControls:YES];
             
             // 계산 결과 저장.
             if (NO == [weakSelf.preferences didSaveBefore]) {
