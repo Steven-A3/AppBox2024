@@ -98,7 +98,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     }
     [self refreshMoreButtonState];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)keyboardDidHide:(NSNotification *)notification {
@@ -341,6 +341,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (void)beforeSplitButtonTouchedUp:(id)aSender
 {
+    [self disposeInitializedCondition];
+    
     _headerView.beforeSplitButton.selected = YES;
     _headerView.perPersonButton.selected = NO;
 	self.dataManager.tipSplitOption = TipSplitOption_BeforeSplit;
@@ -349,6 +351,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)perPersonButtonTouchedUp:(id)aSender {
+    [self disposeInitializedCondition];
+
     _headerView.beforeSplitButton.selected = NO;
     _headerView.perPersonButton.selected = YES;
 	self.dataManager.tipSplitOption = TipSplitOption_PerPerson;
@@ -625,11 +629,33 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (BasicBlock)cellInputDoneButtonPressed {
     if (!_cellInputDoneButtonPressed) {
+        __weak A3TipCalcMainTableViewController * weakSelf = self;
         _cellInputDoneButtonPressed = ^(id sender){
+            if ([weakSelf.dataManager hasCalcData]) {
+                [weakSelf scrollToTopOfTableView];
+            }
         };
     }
     
     return _cellInputDoneButtonPressed;
+}
+
+-(void)scrollToTopOfTableView {
+    if (IS_LANDSCAPE) {
+        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationCurve:7];
+        [UIView setAnimationDuration:0.35];
+        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
+        [UIView commitAnimations];
+    } else {
+        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationCurve:7];
+        [UIView setAnimationDuration:0.35];
+        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height));
+        [UIView commitAnimations];
+    }
 }
 
 #pragma mark - Delegate
@@ -856,6 +882,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         case RowElementID_Value:
         case RowElementID_Option:
         {
+            [self disposeInitializedCondition];
+            
             A3JHTableViewSelectElement *selectItem = (A3JHTableViewSelectElement *)[self.tableDataSource elementForIndexPath:indexPath];
             A3ItemSelectListViewController *selectTableViewController = [[A3ItemSelectListViewController alloc] initWithStyle:UITableViewStyleGrouped];
             selectTableViewController.root = selectItem;

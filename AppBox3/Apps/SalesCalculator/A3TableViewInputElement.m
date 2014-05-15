@@ -219,10 +219,10 @@
 			break;
 	}
 
-	NSIndexPath *indexPath = [_rootTableView indexPathForCellSubview:textField];
-	if (indexPath) {
-		[self moveTableScrollToIndexPath:indexPath textField:textField ];
-	}
+//	NSIndexPath *indexPath = [_rootTableView indexPathForCellSubview:textField];
+//	if (indexPath) {
+//		[self moveTableScrollToIndexPath:indexPath textField:textField ];
+//	}
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
