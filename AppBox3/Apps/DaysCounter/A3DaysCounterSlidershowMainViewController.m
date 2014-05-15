@@ -516,11 +516,13 @@
 - (IBAction)shareOtherAction:(id)sender
 {
     A3SlideshowActivity *slideActivity = [[A3SlideshowActivity alloc] init];
+    slideActivity.sharedManager = _sharedManager;
     slideActivity.completionBlock = ^(NSDictionary *userInfo, UIActivity *activity) {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
             [activity activityDidFinish:YES];
             A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
             viewCtrl.optionDict = userInfo;
+            viewCtrl.sharedManager = _sharedManager;
             viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self presentViewController:viewCtrl animated:YES completion:nil];
         }];
@@ -543,6 +545,7 @@
         activityController.completionHandler = ^(NSString* activityType, BOOL completed) {
             if ( completed && [activityType isEqualToString:@"Slideshow"] ) {
                 A3DaysCounterSlideshowOptionViewController *viewCtrl = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:@"A3DaysCounterSlideshowOptionViewController" bundle:nil];
+                viewCtrl.sharedManager = _sharedManager;
                 [self presentSubViewController:viewCtrl];
             }
         };

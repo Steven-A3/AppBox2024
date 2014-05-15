@@ -76,6 +76,7 @@
     if( IS_IPHONE ){
         A3DaysCounterSlideshowOptionViewController *viewCtrl = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:@"A3DaysCounterSlideshowOptionViewController" bundle:nil];
         viewCtrl.activity = self;
+        viewCtrl.sharedManager = _sharedManager;
         viewCtrl.completionBlock = _completionBlock;
 
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];

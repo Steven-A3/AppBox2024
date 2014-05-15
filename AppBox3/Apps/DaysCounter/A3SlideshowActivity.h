@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class A3DaysCounterModelManager;
 @interface A3SlideshowActivity : UIActivity
+@property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) void (^completionBlock)(NSDictionary *userInfo, UIActivity *activity);
 @end

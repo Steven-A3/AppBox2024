@@ -246,6 +246,7 @@
 
             A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
             viewCtrl.optionDict = self.optionDict;
+            viewCtrl.sharedManager = _sharedManager;
             viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self presentViewController:viewCtrl animated:YES completion:nil];
         }
