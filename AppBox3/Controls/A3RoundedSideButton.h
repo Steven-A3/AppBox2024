@@ -10,4 +10,5 @@
 
 @interface A3RoundedSideButton : UIButton
 
+- (void)setBorderColor:(UIColor *)color;
 @end

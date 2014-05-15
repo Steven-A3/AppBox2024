@@ -12,7 +12,8 @@
 #import "A3PasswordViewController.h"
 
 typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
-	A3RightBarButtonTagShareButton = 1,
+	A3RightBarButtonTagComposeButton = 1,
+	A3RightBarButtonTagShareButton,
 	A3RightBarButtonTagHistoryButton,
 	A3RightBarButtonTagSettingsButton
 };

@@ -27,6 +27,7 @@
 #import "A3ItemSelectListViewController.h"
 #import "A3CalculatorDelegate.h"
 #import "A3SearchViewController.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 #define kColorPlaceHolder [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 
@@ -98,6 +99,19 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [self refreshMoreButtonState];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)mainMenuDidHide {
+	[self enableControls:YES];
+}
+
+- (void)rightSideViewWillHide {
+	[self enableControls:YES];
 }
 
 - (void)keyboardDidHide:(NSNotification *)notification {
@@ -108,13 +122,17 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)cleanUp {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self removeObserver];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
@@ -154,18 +172,53 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     }
 }
 
-- (void)setBarButtonsEnable:(BOOL)enable {
-    [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
-        barButton.enabled = enable;
-    }];
-    self.headerView.detailInfoButton.enabled = enable;
-    self.headerView.beforeSplitButton.enabled = enable;
-    self.headerView.perPersonButton.enabled = enable;
-    self.navigationItem.leftBarButtonItem.enabled = enable;
-    
-    if (enable) {
-        [self refreshMoreButtonState];
-    }
+- (void)enableControls:(BOOL)enable {
+	if ( !IS_IPAD ) return;
+
+	if (enable) {
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
+			switch (barButton.tag) {
+				case A3RightBarButtonTagShareButton:
+				case A3RightBarButtonTagComposeButton:
+				 	[barButton setEnabled: ![self.dataManager.tipCalcData.costs isEqualToNumber:@0] ];
+					break;
+				case A3RightBarButtonTagHistoryButton:
+					[barButton setEnabled: [TipCalcHistory MR_countOfEntities] > 0];
+					break;
+				case A3RightBarButtonTagSettingsButton:
+					[barButton setEnabled: YES ];
+					break;
+			}
+		}];
+
+		UIColor *enabledColor = [[A3AppDelegate instance] themeColor];
+		[self.headerView.beforeSplitButton setTitleColor:enabledColor forState:UIControlStateNormal];
+		[self.headerView.perPersonButton setTitleColor:enabledColor forState:UIControlStateNormal];
+		if ([self.headerView.beforeSplitButton isSelected]) {
+			[self.headerView.beforeSplitButton setBorderColor: enabledColor ];
+		}
+		if ([self.headerView.perPersonButton isSelected]) {
+			[self.headerView.perPersonButton setBorderColor: enabledColor ];
+		}
+
+	} else {
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
+			[barButton setEnabled:NO];
+		}];
+		UIColor *disabledColor = [UIColor colorWithRed:201.0 / 255.0 green:201.0 / 255.0 blue:201.0 / 255.0 alpha:1.0];
+		[self.headerView.beforeSplitButton setTitleColor:disabledColor forState:UIControlStateNormal];
+		[self.headerView.perPersonButton setTitleColor:disabledColor forState:UIControlStateNormal];
+		if ([self.headerView.beforeSplitButton isSelected]) {
+			[self.headerView.beforeSplitButton setBorderColor:disabledColor];
+		}
+		if ([self.headerView.perPersonButton isSelected]) {
+			[self.headerView.perPersonButton setBorderColor:disabledColor];
+		}
+	}
+	self.headerView.detailInfoButton.enabled = enable;
+	self.headerView.beforeSplitButton.enabled = enable;
+	self.headerView.perPersonButton.enabled = enable;
+	self.navigationItem.leftBarButtonItem.enabled = enable;
 }
 
 - (A3TipCalcHeaderView *)headerView
@@ -330,7 +383,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                                permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
     [self.localPopoverController setPopoverContentSize:CGSizeMake(224, popoverTableView.tableView.contentSize.height)
                                               animated:NO];
-    [self setBarButtonsEnable:NO];
+	[self enableControls:NO];
 }
 
 - (void)beforeSplitButtonTouchedUp:(id)aSender
@@ -527,7 +580,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 #pragma mark - Table InputElement Manipulate Blocks
 
--(CellTextInputBlock)cellTextInputBeginBlock
+- (CellTextInputBlock)cellTextInputBeginBlock
 {
     if (!_cellTextInputBeginBlock) {
         __weak A3TipCalcMainTableViewController * weakSelf = self;
@@ -547,7 +600,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     return _cellTextInputBeginBlock;
 }
 
--(CellTextInputBlock)cellTextInputChangedBlock
+- (CellTextInputBlock)cellTextInputChangedBlock
 {
     if (!_cellTextInputChangedBlock) {
         _cellTextInputChangedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
@@ -558,7 +611,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     return _cellTextInputChangedBlock;
 }
 
--(CellTextInputBlock)cellTextInputFinishedBlock
+- (CellTextInputBlock)cellTextInputFinishedBlock
 {
     if (!_cellTextInputFinishedBlock) {
         __weak A3TipCalcMainTableViewController * weakSelf = self;
@@ -607,10 +660,11 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                     break;
             }
             
-            [weakSelf.headerView showDetailInfoButton];
-            [weakSelf.headerView setResult:weakSelf.dataManager.tipCalcData withAnimation:YES];
-            [weakSelf refreshMoreButtonState];
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+			[weakSelf.headerView showDetailInfoButton];
+			[weakSelf.headerView setResult:weakSelf.dataManager.tipCalcData withAnimation:YES];
+			[weakSelf enableControls:YES];
         };
     }
     
@@ -639,7 +693,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)dismissTipCalcSettingsViewController {
-    [self setBarButtonsEnable:YES];
+	[self enableControls:YES];
 }
 
 #pragma mark A3TipCalcHistorySelectDelegate
@@ -657,7 +711,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)dismissHistoryViewController {
-    [self setBarButtonsEnable:YES];
+	[self enableControls:YES];
 }
 
 - (void)tipCalcRoundingChanged {
@@ -667,8 +721,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 #pragma mark A3SelectTableViewController Delegate
--(void)selectTableViewController:(A3JHSelectTableViewController *)viewController selectedItemIndex:(NSInteger)index indexPathOrigin:(NSIndexPath *)indexPathOrigin {
-    [self setBarButtonsEnable:YES];
+- (void)selectTableViewController:(A3JHSelectTableViewController *)viewController selectedItemIndex:(NSInteger)index indexPathOrigin:(NSIndexPath *)indexPathOrigin {
+	[self enableControls:YES];
     viewController.root.selectedIndex = index;
     
     if ([viewController.root.title isEqualToString:@"Option"]) {
@@ -694,6 +748,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 #pragma mark Location Manager Delegate
+
 - (void)dataManager:(id)manager taxValueUpdated:(NSNumber *)taxRate {
     NSNumberFormatter *formatter = [NSNumberFormatter new];
 	[self.dataManager setTipCalcDataTax:taxRate isPercentType:YES];
@@ -732,7 +787,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     return [self.tableSectionTitles objectAtIndex:section];
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     NSString *title = [self.tableSectionTitles objectAtIndex:section];
     if ([title length] == 0) {
         return 35;
@@ -741,7 +796,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     return 55;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if ([self.tableSectionTitles count] - 1 == section) {
         return 0;
     }
@@ -754,7 +809,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     return [self.tableDataSource numberOfRowsInSection:section];
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell * cell = [self.tableDataSource cellForRowAtIndexPath:indexPath];
     [self updateTableViewCell:cell atIndexPath:indexPath];
     
@@ -783,9 +838,9 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     }
 }
 
-#pragma mark - tableview delegate
+#pragma mark - tableView delegate
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self dismissMoreMenu];
@@ -878,9 +933,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		if ([_moreMenuView superview]) {
 			[self rightBarButtons];
 		}
-	}
-	else {
-		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+	} else {
+		A3RootViewController_iPad *rootViewController = self.A3RootViewController;
+		[rootViewController toggleLeftMenuViewOnOff];
+		[self enableControls: !rootViewController.showLeftView];
 	}
 }
 
@@ -928,56 +984,55 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         self.navigationItem.hidesBackButton = YES;
         
         UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+		share.tag = A3RightBarButtonTagShareButton;
         UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(saveToHistoryAndInitialize:)];
+		saveItem.tag = A3RightBarButtonTagComposeButton;
         UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
-        UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
+		history.tag = A3RightBarButtonTagHistoryButton;
+		UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
+		settings.tag = A3RightBarButtonTagSettingsButton;
         UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
         space.width = 24.0;
         
-        self.navigationItem.rightBarButtonItems = @[settings, space, history, saveItem, space, share];
+        self.navigationItem.rightBarButtonItems = @[settings, space, history, space, saveItem, space, share];
     }
 }
 
 - (void)shareButtonAction:(id)sender {
-	@autoreleasepool {
-        if (self.localPopoverController) {
-            [self disposeInitializedCondition];
-            return;
-        }
-        
-        [self disposeInitializedCondition];
+	if (self.localPopoverController) {
+		[self disposeInitializedCondition];
+		return;
+	}
 
-        
-        NSString *activityItem = [self.dataManager sharedData];
+	[self disposeInitializedCondition];
 
-        self.localPopoverController = [self presentActivityViewControllerWithActivityItems:@[activityItem] fromBarButtonItem:sender];
-        self.localPopoverController.delegate = self;
-        if (IS_IPAD) {
-            [self setBarButtonsEnable:NO];
-        }
-    }
+
+	NSString *activityItem = [self.dataManager sharedData];
+
+	self.localPopoverController = [self presentActivityViewControllerWithActivityItems:@[activityItem] fromBarButtonItem:sender];
+	self.localPopoverController.delegate = self;
+	[self enableControls:NO];
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    [self setBarButtonsEnable:YES];
+	[self enableControls:YES];
     
     self.localPopoverController = nil;
 }
 
 - (void)historyButtonAction:(UIButton *)button {
-	@autoreleasepool {
-        [self disposeInitializedCondition];
-        [self setBarButtonsEnable:NO];
-        
-        A3TipCalcHistoryViewController* viewController = [[A3TipCalcHistoryViewController alloc] init];
-        viewController.delegate = self;
-        [self presentSubViewController:viewController];
-	}
+	[self disposeInitializedCondition];
+
+	[self enableControls:NO];
+
+	A3TipCalcHistoryViewController* viewController = [[A3TipCalcHistoryViewController alloc] init];
+	viewController.delegate = self;
+	[self presentSubViewController:viewController];
 }
 
 - (void)settingsButtonAction:(UIButton *)button {
 	[self disposeInitializedCondition];
-	[self setBarButtonsEnable:NO];
+	[self enableControls:NO];
 
 	A3TipCalcSettingViewController *viewController = [[A3TipCalcSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	viewController.dataManager = self.dataManager;
@@ -1013,13 +1068,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 			share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
 		}
 	}
-    else {
-        UIBarButtonItem *save = [self.navigationItem.rightBarButtonItems objectAtIndex:3];
-        save.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
-        UIBarButtonItem *share = [self.navigationItem.rightBarButtonItems objectAtIndex:5];
-        share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
-    }
-    
 }
 
 - (UIViewController *)containerViewController {
