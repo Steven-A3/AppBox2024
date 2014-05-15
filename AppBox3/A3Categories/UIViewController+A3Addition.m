@@ -25,10 +25,6 @@
 	[self removeObserver];
 }
 
-- (void)dealloc {
-	[self removeObserver];
-}
-
 - (CGRect)screenBoundsAdjustedWithOrientation {
 	CGRect bounds = [[UIScreen mainScreen] bounds];
 	if (IS_LANDSCAPE) {
