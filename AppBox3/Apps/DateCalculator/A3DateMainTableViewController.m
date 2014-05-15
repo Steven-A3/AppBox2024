@@ -118,8 +118,10 @@ NSString *kCalculationString;
     }
     _isKeyboardShown = NO;
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    if (IS_IPHONE) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    }
 
     [self initializeControl];
     [self reloadTableViewData:YES];
@@ -849,8 +851,8 @@ NSString *kCalculationString;
 -(void)dateCalcHeaderThumbPositionChangeOfFromDate:(NSDate *)fDate toDate:(NSDate *)toDate
 {
     NSLog(@"f: %@, t: %@", fDate, toDate);
-    UITableViewCell *fromCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
-    UITableViewCell *toCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+//    UITableViewCell *fromCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+//    UITableViewCell *toCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
 
     
 }
@@ -1088,12 +1090,16 @@ NSString *kCalculationString;
 }
 
 - (void)dateKeyboardDoneButtonPressed:(A3DateKeyboardViewController *)keyboardViewController {
-	[self.fromToTextField resignFirstResponder];
+//	[self.fromToTextField resignFirstResponder];
+    if (!self.isAddSubMode) {
+        [self.fromToTextField resignFirstResponder];
+    }
+
     _isKeyboardShown = NO;
 
 	_editingIndexPath = nil;
 
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
     [self setResultToHeaderViewWithAnimation:YES];
 
 	self.dateKeyboardViewController = nil;

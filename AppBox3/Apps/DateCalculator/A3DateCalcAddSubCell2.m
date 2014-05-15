@@ -40,12 +40,15 @@
         CGRect rect;
         rect = _yearTextField.frame;
         rect.size.width = lWidth;
+        rect.size.height = self.bounds.size.height;
         _yearTextField.frame = rect;
         rect = _monthTextField.frame;
         rect.size.width = lWidth;
+        rect.size.height = self.bounds.size.height;
         _monthTextField.frame = rect;
         rect = _dayTextField.frame;
         rect.size.width = lWidth;
+        rect.size.height = self.bounds.size.height;
         _dayTextField.frame = rect;
         
         rect = _yearLabel.frame;
@@ -74,19 +77,22 @@
         [_yearLabel setTextAlignment:NSTextAlignmentLeft];
         [_monthLabel setTextAlignment:NSTextAlignmentLeft];
         [_dayLabel setTextAlignment:NSTextAlignmentLeft];
-        
-    } else if (IS_IPAD && IS_PORTRAIT) {
+    }
+    else if (IS_IPAD && IS_PORTRAIT) {
         CGFloat width = self.bounds.size.width;
         CGFloat lWidth = ceilf(width / 3 / 2);
         CGRect rect;
         rect = _yearTextField.frame;
         rect.size.width = lWidth;
+        rect.size.height = self.bounds.size.height;
         _yearTextField.frame = rect;
         rect = _monthTextField.frame;
         rect.size.width = lWidth;
+        rect.size.height = self.bounds.size.height;
         _monthTextField.frame = rect;
         rect = _dayTextField.frame;
         rect.size.width = lWidth;
+        rect.size.height = self.bounds.size.height;
         _dayTextField.frame = rect;
         
         rect = _yearLabel.frame;
@@ -121,16 +127,18 @@
         CGRect rect;
         rect = _yearTextField.frame;
         rect.size.width = ceilf(width / 3);
+//        rect.size.height = self.bounds.size.height;
         _yearTextField.frame = rect;
         
         rect = _monthTextField.frame;
         rect.size.width = ceilf(width / 3);
+//        rect.size.height = self.bounds.size.height;
         _monthTextField.frame = rect;
         
         rect = _dayTextField.frame;
         rect.size.width = ceilf(width / 3);
+//        rect.size.height = self.bounds.size.height;
         _dayTextField.frame = rect;
-    
         
         [_yearTextField setCenter:CGPointMake(ceilf(width / 3 / 2), ceilf(15.0 + _yearTextField.frame.size.height / 2.0))];
         [_monthTextField setCenter:CGPointMake(ceilf(width / 2), ceilf(15.0 + _monthTextField.frame.size.height / 2.0))];
@@ -151,14 +159,11 @@
     
     // Set Font
     if (IS_IPHONE) {
-//        _yearLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
-//        _monthLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
-//        _dayLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
         _yearLabel.font = [UIFont systemFontOfSize:13];
         _monthLabel.font = [UIFont systemFontOfSize:13];
         _dayLabel.font = [UIFont systemFontOfSize:13];
-
-    } else {
+    }
+    else {
         _yearLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         _monthLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         _dayLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
@@ -185,7 +190,6 @@
 
 +(NSDateComponents *)dateComponentBySavedText {
     NSDateComponents * date = [NSDateComponents new];
-
     NSString *year = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedYearText"];
     NSString *month = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedMonthText"];
     NSString *day = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedDayText"];
@@ -201,10 +205,12 @@
     if (textField == _yearTextField) {
         [[NSUserDefaults standardUserDefaults] setObject:_yearTextField.text forKey:@"savedYearText"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-    } else if (textField == _monthTextField) {
+    }
+    else if (textField == _monthTextField) {
         [[NSUserDefaults standardUserDefaults] setObject:_monthTextField.text forKey:@"savedMonthText"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-    } else if (textField == _dayTextField) {
+    }
+    else if (textField == _dayTextField) {
         [[NSUserDefaults standardUserDefaults] setObject:_dayTextField.text forKey:@"savedDayText"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
