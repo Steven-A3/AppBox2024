@@ -149,6 +149,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)enableControls:(BOOL) onoff
 {
+	if (!IS_IPAD) return;
+
     UIBarButtonItem *shareItem = self.navigationItem.rightBarButtonItems[2];
     UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[0];
     
@@ -168,8 +170,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
         shareItem.enabled = NO;
         historyItem.enabled = NO;
     }
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated

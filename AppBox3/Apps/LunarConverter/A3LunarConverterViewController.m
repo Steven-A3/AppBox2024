@@ -877,6 +877,7 @@
 }
 
 - (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.navigationItem.rightBarButtonItem setEnabled:enable];
 	[self.addToDaysCounterButtons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {

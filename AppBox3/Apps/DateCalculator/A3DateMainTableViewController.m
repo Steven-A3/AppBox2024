@@ -23,6 +23,7 @@
 #import "A3DefaultColorDefines.h"
 #import "A3AppDelegate+appearance.h"
 #import "NSString+conversion.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 #define kDefaultBackgroundColor     [UIColor lightGrayColor]
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]
@@ -126,6 +127,19 @@ NSString *kCalculationString;
     [self initializeControl];
     [self reloadTableViewData:YES];
     [self registerContentSizeCategoryDidChangeNotification];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)rightSideViewWillHide {
+	[self enableControls:YES];
+}
+
+- (void)mainMenuDidHide {
+	[self enableControls:YES];
 }
 
 - (void)initializeControl
@@ -344,6 +358,9 @@ NSString *kCalculationString;
 
 	[self clearEverything];
 	[super appsButtonAction:barButtonItem];
+	if (IS_IPAD) {
+		[self enableControls:!self.A3RootViewController.showLeftView];
+	}
 }
 
 - (void)addEventButtonAction:(UIButton *)button
@@ -356,14 +373,14 @@ NSString *kCalculationString;
     } else {
         viewController.delegate = self;
         [self presentSubViewController:viewController];
-        [self enableBarButtons:NO];
+		[self enableControls:NO];
     }
 }
 
-- (void)enableBarButtons:(BOOL)enable {
-    [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-        buttonItem.enabled = enable;
-    }];
+- (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	[self.navigationItem.rightBarButtonItem setEnabled:enable];
 }
 
 #pragma mark Share
@@ -374,9 +391,7 @@ NSString *kCalculationString;
     _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
     if (IS_IPAD) {
         _sharePopoverController.delegate = self;
-        [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-            [buttonItem setEnabled:NO];
-        }];
+		[self enableControls:NO];
     }
 }
 
@@ -581,57 +596,46 @@ NSString *kCalculationString;
 
 - (void)moreButtonAction:(UIButton *)button
 {
-    @autoreleasepool {
-        
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(doneButtonAction:)];
-        
-        UIButton *add = [UIButton buttonWithType:UIButtonTypeSystem];
-        [add setImage:[UIImage imageNamed:@"addToDaysCounter"] forState:UIControlStateNormal];
-        [add addTarget:self action:@selector(addEventButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIButton *space = [UIButton buttonWithType:UIButtonTypeSystem];
-        
-        _moreMenuButtons = @[add, space, self.shareButton];
-        
-        _moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
-        _isShowMoreMenu = YES;
-    };
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+																			  style:UIBarButtonItemStylePlain
+																			 target:self
+																			 action:@selector(doneButtonAction:)];
+
+	UIButton *add = [UIButton buttonWithType:UIButtonTypeSystem];
+	[add setImage:[UIImage imageNamed:@"addToDaysCounter"] forState:UIControlStateNormal];
+	[add addTarget:self action:@selector(addEventButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+
+	UIButton *space = [UIButton buttonWithType:UIButtonTypeSystem];
+
+	_moreMenuButtons = @[add, space, self.shareButton];
+
+	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
+	_isShowMoreMenu = YES;
 }
 
 - (void)doneButtonAction:(id)button {
-	@autoreleasepool {
-        [self clearEverything];
-	}
+	[self clearEverything];
 }
 
 - (void)dismissMoreMenu {
-	@autoreleasepool {
-		if ( !_isShowMoreMenu || IS_IPAD ) return;
-        
-		[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
-	}
+	if ( !_isShowMoreMenu || IS_IPAD ) return;
+
+	[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
 }
 
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
-	@autoreleasepool {
-		if (!_isShowMoreMenu) return;
-        
-		_isShowMoreMenu = NO;
-        
-		[self rightButtonMoreButton];
-		[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
-		[self.view removeGestureRecognizer:gestureRecognizer];
-	}
+	if (!_isShowMoreMenu) return;
+
+	_isShowMoreMenu = NO;
+
+	[self rightButtonMoreButton];
+	[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
+	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-	// Popver controller, iPad only.
-	[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-		[buttonItem setEnabled:YES];
-	}];
+	// Popover controller, iPad only.
+	[self enableControls:YES];
 	_sharePopoverController = nil;
 }
 
@@ -732,7 +736,8 @@ NSString *kCalculationString;
 }
 
 #pragma mark - HeaderView Delegate
--(void)dateCalcHeaderChangedFromDate:(NSDate *)fDate toDate:(NSDate *)tDate
+
+- (void)dateCalcHeaderChangedFromDate:(NSDate *)fDate toDate:(NSDate *)tDate
 {
     NSLog(@"fDate: %@", fDate);
     NSLog(@"tDate: %@", tDate);
@@ -1601,7 +1606,7 @@ NSString *kCalculationString;
             [self.navigationController pushViewController:viewController animated:YES];
         } else {
             [self presentSubViewController:viewController];
-            [self enableBarButtons:NO];
+			[self enableControls:NO];
         }
         
     } else if (indexPath.section == 3 && indexPath.row == 0) {
@@ -1619,7 +1624,7 @@ NSString *kCalculationString;
             [self.navigationController pushViewController:viewController animated:YES];
         } else {
             [self presentSubViewController:viewController];
-            [self enableBarButtons:NO];
+			[self enableControls:NO];
         }
     }
 }
@@ -1638,15 +1643,15 @@ NSString *kCalculationString;
 }
 
 -(void)dismissDateCalcDurationViewController {
-    [self enableBarButtons:YES];
+	[self enableControls:YES];
 }
 
 -(void)dismissExcludeSettingViewController {
-    [self enableBarButtons:YES];
+	[self enableControls:YES];
 }
 
 -(void)dismissEditEventViewController {
-    [self enableBarButtons:YES];
+	[self enableControls:YES];
 }
 
 @end

@@ -173,6 +173,8 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 
 -(void)enableControls:(BOOL)enable
 {
+	if (!IS_IPAD) return;
+
     if (enable) {
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
 			switch (barButtonItem.tag) {

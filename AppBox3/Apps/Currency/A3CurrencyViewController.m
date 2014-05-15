@@ -190,6 +190,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.plusButton setEnabled:enable];
 

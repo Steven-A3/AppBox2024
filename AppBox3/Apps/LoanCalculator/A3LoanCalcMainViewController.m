@@ -170,9 +170,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)enableControls:(BOOL) onoff {
-	if (!IS_IPAD) {
-		return;
-	}
+	if (!IS_IPAD) return;
 	UIBarButtonItem *settingItem = self.navigationItem.rightBarButtonItems[0];
 	UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[1];
 	UIBarButtonItem *composeItem = self.navigationItem.rightBarButtonItems[2];
