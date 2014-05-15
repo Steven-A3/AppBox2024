@@ -117,9 +117,9 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TipCalcHistory *aHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
-    TipCalcRecently *aData = aHistory.rRecently;
-    NSLog(@"%@", aData);
+    TipCalcHistory *aHistory = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//    TipCalcRecently *aData = aHistory.rRecently;
+//    NSLog(@"%@", aData);
     
     A3TipCalcHistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:A3TipCalcHistoryCellID forIndexPath:indexPath];
     [cell setHistoryData:aHistory];
@@ -132,7 +132,7 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if ([_delegate respondsToSelector:@selector(didSelectHistoryData:)]) {
-        TipCalcHistory *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
+        TipCalcHistory *aData = [self.fetchedResultsController objectAtIndexPath:indexPath];
         [_delegate didSelectHistoryData:aData];
         [self doneButtonAction:nil];
     }
@@ -151,7 +151,7 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        TipCalcHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
+        TipCalcHistory *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
         [history MR_deleteEntity];
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         _fetchedResultsController = nil;

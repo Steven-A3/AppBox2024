@@ -75,6 +75,10 @@
 }
 
 -(void)adjustConstraintLayoutForData:(TipCalcHistory *)aHistory {
+    if (![aHistory labelTip] || ![aHistory labelTotal]) {
+        return;
+    }
+    
     NSNumberFormatter *nFormatter = [NSNumberFormatter new];
     [nFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     //TipCalcRecently * aData = aHistory.rRecently;
@@ -82,7 +86,6 @@
     
     NSArray * strings;
     strings = @[[aHistory labelTip], @" of ", [aHistory labelTotal]];
-
     
     _dateLabel.text = [aHistory.dateTime timeAgo];
     _resultLabel.text = [strings componentsJoinedByString:@""];
