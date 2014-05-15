@@ -56,6 +56,7 @@
     [self rightBarButtonDoneButton];
     if ( !_isEditMode ) {
         self.calendarItem = [_sharedManager itemForNewUserCalendar];
+        _colorID = [self.calendarItem objectForKey:CalendarItem_ColorID];
     }
     
     self.colorArray = [_sharedManager calendarColorList];
