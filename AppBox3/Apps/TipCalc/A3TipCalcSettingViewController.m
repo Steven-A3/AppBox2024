@@ -11,7 +11,7 @@
 #import "A3TipCalcDataManager.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
-
+#import "A3AppDelegate+appearance.h"
 
 @interface A3TipCalcSettingViewController ()
 
@@ -87,6 +87,7 @@
         cell.textLabel.font = [UIFont systemFontOfSize:17];
         cell.accessoryView = [[UISwitch alloc] initWithFrame:CGRectZero];
         [((UISwitch *)cell.accessoryView) addTarget:self action:@selector(switchButtonFliped:) forControlEvents:UIControlEventValueChanged];
+        
     }
     
     // Configure the cell...

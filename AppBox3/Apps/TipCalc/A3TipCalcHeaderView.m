@@ -15,6 +15,7 @@
 #import "A3DefaultColorDefines.h"
 #import "UIImage+JHExtension.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIImage+imageWithColor.h"
 
 @implementation A3TipCalcHeaderView
 {
@@ -87,7 +88,7 @@
 	[_perPersonButton setTitle:@"Per Person" forState:UIControlStateNormal];
 	[_perPersonButton setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
     _detailInfoButton.frame = CGRectMake(0.0, 0.0, 44.0, 44.0);
-    [_detailInfoButton setImage:[UIImage imageNamed:@"information"] forState:UIControlStateNormal];
+    [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
     [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
     
     // Layout Views
