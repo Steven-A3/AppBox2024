@@ -13,7 +13,7 @@
 #import "A3AppDelegate+appearance.h"
 
 @implementation A3CalcKeyboardView_iPhone {
-
+    BOOL bSecondButtonSelected;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -22,6 +22,7 @@
     if (self) {
         // Initialization code
 		[self setupSubviews];
+        bSecondButtonSelected = NO;
     }
     return self;
 }
@@ -310,9 +311,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 			[self addSubview:button];
 
 			id title = buttonTitle[idx];
-            [button setImage:nil forState:UIControlStateNormal];
 			[self setTitle:title forButton:button];
-
 			if (column == 7) {
                 /*
 				[button setBackgroundColor:[UIColor colorWithRed:0 green:122.0/255.0 blue:1.0 alpha:0.75]];
@@ -335,6 +334,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
                 [button setBackgroundColorForDefaultState:[UIColor colorWithRed:252.0 / 255.0 green:252.0 / 255.0 blue:253.0 / 255.0 alpha:1.0]];
                 [button setBackgroundColorForHighlightedState:[UIColor colorWithRed:234.0 / 255.0 green:234.0 / 255.0 blue:235.0 / 255.0 alpha:1.0]];
 				[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                				[button setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
             }
 		}
 	}
@@ -347,10 +347,10 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
     
     if(IS_PORTRAIT) {
         width = 80, height = 54;
-        buttonTitle = [self buttonTitlesLevel1_p];
+        buttonTitle = bSecondButtonSelected ? [self buttonTitlesLevel2_p]: [self buttonTitlesLevel1_p];
     } else {
         width = (screenBounds.size.width == 480 ? 60: 71), height = 40;
-        buttonTitle = [self buttonTitlesLevel1_h];
+        buttonTitle = bSecondButtonSelected ? [self buttonTitlesLevel2_h]:[self buttonTitlesLevel1_h];
     }
 	for (NSUInteger row = 0; row < 6; row++) {
 		for (NSUInteger column = 0; column < 8; column++) {
@@ -376,7 +376,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
                     button.contentEdgeInsets = UIEdgeInsetsMake(-5, 0, 0, 0);
                 }
             }
-            [button setImage:nil forState:UIControlStateNormal];
+           // [button setImage:nil forState:UIControlStateNormal];
 			[self setTitle:title forButton:button];
         }
     }
@@ -392,16 +392,19 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
             button.titleLabel.font = [UIFont fontWithName:titleInfo[kA3CalcButtonFont] size:[titleInfo[kA3CalcButtonFontSize] floatValue]];
         }
     }
+    [button setAttributedTitle:nil forState:UIControlStateNormal];
+    [button setTitle:nil forState:UIControlStateNormal];
+    [button setImage:nil forState:UIControlStateNormal];
 	if ([title isKindOfClass:[NSString class]]) {
-		[button setAttributedTitle:nil forState:UIControlStateNormal];
+	
 		[button setTitle:title forState:UIControlStateNormal];
 	} else if ([title isKindOfClass:[NSAttributedString class]]) {
-		[button setTitle:nil forState:UIControlStateNormal];
+	
 		[button setAttributedTitle:title forState:UIControlStateNormal];
 	} else if ([title isKindOfClass:[UIImage class]]) {
-		[button setTitle:nil forState:UIControlStateNormal];
-		[button setAttributedTitle:nil forState:UIControlStateNormal];
+	
 		[button setImage:title forState:UIControlStateNormal];
+        [button setImage:title forState:UIControlStateSelected];    // 이전 이미지가 selected 이미지로 남아 있는 오류 수정.
 	}
 }
 
@@ -431,9 +434,9 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 	} completion:^(BOOL finished) {
 		NSArray *buttonTitles = nil;
         if (IS_PORTRAIT) {
-            buttonTitles =  level ? [self buttonTitlesLevel1_p] : [self buttonTitlesLevel2_p];
+            buttonTitles =  level ? [self buttonTitlesLevel2_p] : [self buttonTitlesLevel1_p];
         } else {
-            buttonTitles =  level ? [self buttonTitlesLevel1_h] : [self buttonTitlesLevel2_h];
+            buttonTitles =  level ? [self buttonTitlesLevel2_h] : [self buttonTitlesLevel1_h];
         }
 		for (NSUInteger row = 0; row < 5; row++) {
 			for (NSUInteger column = 0; column < 4; column++) {
@@ -441,7 +444,6 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 					NSUInteger idx = row * 8 + column;
 					A3KeyboardButton_iOS7_iPhone *button = (A3KeyboardButton_iOS7_iPhone *) [self viewWithTag:idx + KBD_BUTTON_TAG_BASE];
 					id title = buttonTitles[idx];
-                                [button setImage:nil forState:UIControlStateNormal];
 					[self setTitle:title forButton:button];
 				}
 			}
@@ -455,8 +457,10 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 	
 	A3ExpressionKind input = (A3ExpressionKind)button.identifier;
 	if (input == A3E_2ND) {
-		[self setLevel:!button.selected ? 0 : 1];
-		button.selected = !button.selected;
+        bSecondButtonSelected = !bSecondButtonSelected;
+        button.selected = bSecondButtonSelected;
+		[self setLevel:bSecondButtonSelected];
+
 	} else {
 		if ([_delegate respondsToSelector:@selector(keyboardButtonPressed:)]) {
             if (input == A3E_RADIAN_DEGREE) {
