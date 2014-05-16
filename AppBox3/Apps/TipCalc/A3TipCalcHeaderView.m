@@ -192,9 +192,7 @@
         [_sliderMeterLabelViews enumerateObjectsUsingBlock:^(UILabel *aLabel, NSUInteger idx, BOOL *stop) {
             [aLabel makeConstraints:^(MASConstraintMaker *make) {
                 make.trailing.equalTo(((UIView *)_sliderMeterViews[idx]).left).with.offset(IS_RETINA ? -4.5 : -5);
-                //[baselineConsts addObject: make.baseline.equalTo(self.top).with.offset(IS_RETINA ? 83: 82) ];
                 [baselineConsts addObject: make.baseline.equalTo(self.top).with.offset(83) ];
-                //[baselineConsts addObject: make.baseline.equalTo(self.top).with.offset(IS_RETINA ? 93.5 : 93 ) ];
             }];
         }];
         _meterLabelBaselineConstArray = baselineConsts;
@@ -209,7 +207,6 @@
     
     // Labels
     [_tipLabel makeConstraints:^(MASConstraintMaker *make) {
-		//make.baseline.equalTo(self.top).with.offset(IS_IPHONE ? 30: (IS_RETINA? 53.5 : 53) );
         make.baseline.equalTo(self.top).with.offset(IS_IPHONE ? 31 : 54 );
 		make.leading.equalTo(self.left).with.offset(IS_IPHONE ? 15.0 : 28.0); }];
     [_totalLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -219,23 +216,13 @@
         } else {
 			make.baseline.equalTo(self.top).with.offset(IS_RETINA? 110.5 : 111);
         }
-        //make.baseline.equalTo(self.bottom).with.offset(IS_IPHONE ? -58 : -82);
-        
-        
-        //make.right.equalTo(_detailInfoButton.left);
-        //_totalLabelTrailingConst = make.trailing.equalTo(self.right).with.offset(-15);
-        
-        //_totalLabelTrailingConst = make.trailing.equalTo(_detailInfoButton.left);
         _totalLabelTrailingConst = make.trailing.equalTo(self.right);
     }];
 }
 
 - (void)showDetailInfoButton {
-    //if ([self.dataManager hasCalcData] && [self.dataManager isTaxOptionOn] && ![self.dataManager isSplitOptionOn]) {
     if ([self.dataManager hasCalcData] && [self.dataManager isTaxOptionOn]) {
         self.detailInfoButton.hidden = NO;
-        //_totalLabelTrailingConst.equalTo(@(-CGRectGetWidth(_detailInfoButton.bounds)));
-        
         _totalLabelTrailingConst.equalTo(@(IS_RETINA ? -45 : -46));
     }
     else {
@@ -295,32 +282,17 @@
         if ([self.dataManager isSplitOptionOn]) {
             if ([self.dataManager tipSplitOption] == TipSplitOption_PerPerson) {
                 dTotal = [[self.dataManager totalPerPersonWithTax] doubleValue];
-//                if (self.dataManager.roundingMethodValue == TCRoundingMethodValue_TotalPerPerson) {
-//                    dTotal = [[self.dataManager totalPerPerson] doubleValue];
-//                }
-//                else {
-//                    dTotal = [[self.dataManager totalPerPerson] doubleValue] + ([[self.dataManager taxValue] doubleValue]  / [[self.dataManager.tipCalcData split] doubleValue]);
-//                }
-                
                 NSString *total = [self.dataManager currencyStringFromDouble:dTotal];
                 strings = @[total, @" Total Per Person"];
             }
             else {
                 dTotal = [[self.dataManager totalBeforeSplitWithTax] doubleValue];
-//                if (self.dataManager.roundingMethodValue == TCRoundingMethodValue_Total) {
-//                    dTotal = [[self.dataManager totalBeforeSplit] doubleValue];
-//                }
-//                else {
-//                    dTotal = [[self.dataManager totalBeforeSplit] doubleValue] + [[self.dataManager taxValue] doubleValue];
-//                }
-                
                 NSString *total = [self.dataManager currencyStringFromDouble:dTotal];
                 strings = @[total, @" Total Before Split"];
             }
         }
         else {
             dTotal = [[self.dataManager totalBeforeSplitWithTax] doubleValue];
-//            dTotal = [[self.dataManager totalBeforeSplit] doubleValue] + [[self.dataManager taxValue] doubleValue];
             NSString *total = [self.dataManager currencyStringFromDouble:dTotal];
             strings = @[total, @" Total"];
         }

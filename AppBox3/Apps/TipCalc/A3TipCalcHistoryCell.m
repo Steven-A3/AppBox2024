@@ -83,9 +83,33 @@
     [nFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     //TipCalcRecently * aData = aHistory.rRecently;
     //[[A3TipCalcDataManager sharedInstance] setTipCalcDataForHistoryData:aHistory];
+    A3TipCalcDataManager *dataManager = [[A3TipCalcDataManager alloc] init];
+    [dataManager setTipCalcDataForHistoryData:aHistory];
     
-    NSArray * strings;
-    strings = @[[aHistory labelTip], @" of ", [aHistory labelTotal]];
+    double dTip = 0.0;
+    if ([dataManager tipSplitOption] == TipSplitOption_PerPerson) {
+        dTip = [[dataManager tipValueWithSplitWithRounding:YES] doubleValue];
+    }
+    else {
+        dTip = [[dataManager tipValueWithRounding:YES] doubleValue];
+    }
+    NSString *tip = [dataManager currencyStringFromDouble:dTip];
+    
+
+    double dTotal = 0.0;
+    if ([dataManager isSplitOptionOn]) {
+        if ([dataManager tipSplitOption] == TipSplitOption_PerPerson) {
+            dTotal = [[dataManager totalPerPersonWithTax] doubleValue];
+        }
+        else {
+            dTotal = [[dataManager totalBeforeSplitWithTax] doubleValue];
+        }
+    }
+    else {
+        dTotal = [[dataManager totalBeforeSplitWithTax] doubleValue];
+    }
+    NSString *total = [dataManager currencyStringFromDouble:dTotal];
+    NSArray *strings = @[tip, @" of ", total];
     
     _dateLabel.text = [aHistory.dateTime timeAgo];
     _resultLabel.text = [strings componentsJoinedByString:@""];

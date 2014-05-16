@@ -71,7 +71,13 @@
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     [self makeBackButtonEmptyArrow];
     
-    self.sectionArray = @[@{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : @"Transitions",EventRowType : @(SlideshowOptionType_Transition)}]},@{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : @"Play Each Slide For",EventRowType : @(SlideshowOptionType_Showtime)}]},@{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : @"Repeat",EventRowType : @(SlideshowOptionType_Repeat)},@{EventRowTitle : @"Shuffle",EventRowType : @(SlideshowOptionType_Shuffle)}]},@{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : @"Start Slideshow",EventRowType : @(SlideshowOptionType_Startshow)}]}];
+    self.sectionArray = @[
+                          @{EventRowTitle : @"", EventKey_Items : @[@{EventRowTitle : @"Transitions", EventRowType : @(SlideshowOptionType_Transition)}]},
+                          @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : @"Play Each Slide For",EventRowType : @(SlideshowOptionType_Showtime)}]},
+                          @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : @"Repeat",EventRowType : @(SlideshowOptionType_Repeat)},
+                                                                   @{EventRowTitle : @"Shuffle",EventRowType : @(SlideshowOptionType_Shuffle)}]},
+                          @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : @"Start Slideshow",EventRowType : @(SlideshowOptionType_Startshow)}]}];
+    
     NSDictionary *opt = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterSlideshowOption];
     self.optionDict = [NSMutableDictionary dictionaryWithDictionary:opt];
 }
@@ -262,13 +268,11 @@
     }
     else {
         [self.A3RootViewController dismissRightSideViewController];
-//        [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
     }
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-//    [self saveCurrentOption];
     [self cancelAction:nil];
 }
 
