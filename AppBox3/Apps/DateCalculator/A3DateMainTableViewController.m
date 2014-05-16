@@ -448,14 +448,6 @@ NSString *kCalculationString;
      From and including: 시작날
      To, but not including: 끝날
      Result:  ? years ? months ? days" */
-    
-//    [shareString appendString:[NSString stringWithFormat:@"Calculate duration between two dates.\n"]];
-//    [shareString appendString:[NSString stringWithFormat:@"From and including: %@\n", [A3DateCalcStateManager formattedStringDate:_fromDate]]];
-//    [shareString appendString:[NSString stringWithFormat:@"To  %@\n", [A3DateCalcStateManager formattedStringDate:_toDate]]];
-//    if ([A3DateCalcStateManager excludeOptions] != ExcludeOptions_None) {
-//        [shareString appendString:[NSString stringWithFormat:@"but not including: %@\n", [A3DateCalcStateManager excludeOptionsString]]];
-//    }
-    
     [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager formattedStringDate:_fromDate]]];
     [shareString appendString:[NSString stringWithFormat:@"To: %@<br>", [A3DateCalcStateManager formattedStringDate:_toDate]]];
     if ([A3DateCalcStateManager excludeOptions] != ExcludeOptions_None) {

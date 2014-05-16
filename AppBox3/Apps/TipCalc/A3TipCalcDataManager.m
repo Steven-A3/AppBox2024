@@ -265,30 +265,55 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 {
     NSMutableString* mstrOutput = [[NSMutableString alloc] init];
     
-    if (![self isTaxOptionOn])
-        [mstrOutput appendFormat:@"Costs : %@", [self currencyStringFromDouble:[self costsAfterTax]]];
-    else if([self.tipCalcData.knownValue intValue] == 0) // 세후가격
-        [mstrOutput appendFormat:@"Costs After Tax : %@", [self currencyStringFromDouble:[self costsAfterTax]]];
-    else
-        [mstrOutput appendFormat:@"Costs Before Tax : %@", [self currencyStringFromDouble:[self costsBeforeTax]]];
+    [mstrOutput appendString:@"Calculation<br>"];
+    [mstrOutput appendFormat:@"Total: %@<br>", [self currencyStringFromDouble:[[self totalBeforeSplitWithTax] doubleValue]]];
+    [mstrOutput appendFormat:@"Tip: %@<br>", [self currencyStringFromDouble:[[self tipValueWithRounding:self.roundingMethodValue == TCRoundingMethodValue_Tip ? YES : NO] doubleValue]]];
+    if ([self isSplitOptionOn] && [self.tipCalcData.split integerValue] > 1) {
+        [mstrOutput appendFormat:@"Total Per Person: %@<br>", [self currencyStringFromDouble:[[self totalPerPersonWithTax] doubleValue]]];
+        [mstrOutput appendFormat:@"Tip Per Person: %@<br>", [self currencyStringFromDouble:[[self tipValueWithSplitWithRounding:self.roundingMethodValue == TCRoundingMethodValue_Tip ? YES : NO] doubleValue]]];
+    }
     
-    [mstrOutput appendFormat:@"\r\n"];
+    [mstrOutput appendString:@"<br>Input<br>"];
     
-    if ([self isTaxOptionOn])
-        [mstrOutput appendFormat:@"Tax : %@", [self currencyStringFromDouble:[self taxRst]]];
     
-    [mstrOutput appendFormat:@"\r\n"];
+    if (![self isTaxOptionOn]) {
+        [mstrOutput appendFormat:@"Costs : %@<br>", [self currencyStringFromDouble:[self.tipCalcData.costs doubleValue]]];
+    }
+    else {
+        if([self.tipCalcData.knownValue intValue] == TCKnownValue_Subtotal) {
+            [mstrOutput appendFormat:@"Costs After Tax : %@<br>", [self currencyStringFromDouble:[self.tipCalcData.costs doubleValue]]];
+        }
+        else {
+            [mstrOutput appendFormat:@"Costs Before Tax : %@<br>", [self currencyStringFromDouble:[self.tipCalcData.costs doubleValue]]];
+        }
+    }
     
-    [mstrOutput appendFormat:@"Tip : %@", [self currencyStringFromDouble:[self tipRst:0]]];
+    if ([self isTaxOptionOn]) {
+        if ([self.tipCalcData.isPercentTax boolValue]) {
+            NSNumberFormatter *formatter = [NSNumberFormatter new];
+            formatter.numberStyle = NSNumberFormatterPercentStyle;
+            [mstrOutput appendFormat:@"Tax : %@<br>", [formatter stringFromNumber:@([self.tipCalcData.tax doubleValue] / 100.0)]];
+        }
+        else {
+            NSNumberFormatter *formatter = [NSNumberFormatter new];
+            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+            [mstrOutput appendFormat:@"Tax : %@<br>", [formatter stringFromNumber:self.tipCalcData.tax]];
+        }
+    }
     
-    [mstrOutput appendFormat:@"\r\n"];
+    if ([self.tipCalcData.isPercentTip boolValue]) {
+        NSNumberFormatter *formatter = [NSNumberFormatter new];
+        formatter.numberStyle = NSNumberFormatterPercentStyle;
+        [mstrOutput appendFormat:@"Tip : %@<br>", [formatter stringFromNumber:@([self.tipCalcData.tip doubleValue] / 100.0)]];
+    }
+    else {
+        NSNumberFormatter *formatter = [NSNumberFormatter new];
+        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+        [mstrOutput appendFormat:@"Tip : %@<br>", [formatter stringFromNumber:self.tipCalcData.tip]];
+    }
     
-    if([self.tipCalcData.beforeSplit intValue] == 0)
-        [mstrOutput appendFormat:@"Total : %@", [self currencyStringFromDouble:[self totalRst:0]]];
-    else
-    {
-        [mstrOutput appendFormat:@"Split : %@\r\n", self.tipCalcData.split];
-        [mstrOutput appendFormat:@"Per Person : %@", [self currencyStringFromDouble:[self totalRst:1]]];
+    if ([self isSplitOptionOn] && [self.tipCalcData.split integerValue] > 1) {
+        [mstrOutput appendFormat:@"Split : %@<br>", self.tipCalcData.split];
     }
     
     return mstrOutput;

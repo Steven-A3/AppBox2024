@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 };
 
 
-@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, UIPopoverControllerDelegate, A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate, A3SearchViewControllerDelegate>
+@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, UIPopoverControllerDelegate, A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate, A3SearchViewControllerDelegate, UIActivityItemSource>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *tableDataSource;
 @property (nonatomic, strong) NSArray * tableSectionTitles;
@@ -97,8 +97,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         [self.dataManager getUSTaxRateByLocation];     // to calledFromAreaTax
     }
     [self refreshMoreButtonState];
-
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)keyboardDidHide:(NSNotification *)notification {
@@ -979,22 +977,18 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)shareButtonAction:(id)sender {
-	@autoreleasepool {
-        if (self.localPopoverController) {
-            [self disposeInitializedCondition];
-            return;
-        }
-        
+    if (self.localPopoverController) {
         [self disposeInitializedCondition];
+        return;
+    }
 
-        
-        NSString *activityItem = [self.dataManager sharedData];
+    [self disposeInitializedCondition];
 
-        self.localPopoverController = [self presentActivityViewControllerWithActivityItems:@[activityItem] fromBarButtonItem:sender];
+//    NSString *activityItem = [self.dataManager sharedData];
+    self.localPopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+    if (IS_IPAD) {
         self.localPopoverController.delegate = self;
-        if (IS_IPAD) {
-            [self setBarButtonsEnable:NO];
-        }
+        [self setBarButtonsEnable:NO];
     }
 }
 
@@ -1005,17 +999,15 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)historyButtonAction:(UIButton *)button {
-	@autoreleasepool {
-        [self disposeInitializedCondition];
-        [self setBarButtonsEnable:NO];
-        
-        A3TipCalcHistoryViewController* viewController = [[A3TipCalcHistoryViewController alloc] init];
-        viewController.delegate = self;
-        [self presentSubViewController:viewController];
-        if (IS_IPAD) {
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissTipCalcSettingsViewController) name:A3NotificationRightSideViewWillDismiss object:nil];
-        }
-	}
+    [self disposeInitializedCondition];
+    [self setBarButtonsEnable:NO];
+    
+    A3TipCalcHistoryViewController* viewController = [[A3TipCalcHistoryViewController alloc] init];
+    viewController.delegate = self;
+    [self presentSubViewController:viewController];
+    if (IS_IPAD) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissTipCalcSettingsViewController) name:A3NotificationRightSideViewWillDismiss object:nil];
+    }
 }
 
 - (void)settingsButtonAction:(UIButton *)button {
@@ -1075,6 +1067,43 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (id <A3SearchViewControllerDelegate>)delegateForCurrencySelector {
 	return self;
+}
+
+#pragma mark Share Activities releated
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
+{
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		return @"Tip Calculator using AppBox Pro";
+	}
+    
+	return @"";
+}
+
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
+{
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		NSMutableString *txt = [NSMutableString new];
+		[txt appendString:@"<html><body>I'd like to share a calculation with you.<br/><br/>"];
+		[txt appendString:[self stringForShare]];
+		[txt appendString:@"<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8'>Download from AppStore</a></body></html>"];
+        
+		return txt;
+	}
+	else {
+        NSString *shareString = [self stringForShare];
+        shareString = [shareString stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
+		return shareString;
+	}
+}
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
+{
+	return @"Share Currency Converter Data";
+}
+
+- (NSString *)stringForShare {
+    NSString *shareString = [self.dataManager sharedData];
+    return shareString;
 }
 
 #pragma mark - Currency Select Delegate
