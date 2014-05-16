@@ -326,6 +326,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
                 } else {
                     button.contentEdgeInsets = UIEdgeInsetsMake(-5, 0, 0, 0);
                 }
+                [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
 			//} else if (row > 1 && column >= 4) {
 			//	[button setBackgroundColor:[UIColor colorWithRed:250.0/255.0 green:250.0/255.0 blue:250.0/255.0 alpha:1.0]];
 			//	[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
