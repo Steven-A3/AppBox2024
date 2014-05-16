@@ -178,7 +178,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     if (!_headerView) {
         if ([self.dataManager isSplitOptionOn]) {
             if (IS_IPAD) {
-                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), IS_RETINA ? 192.5 : 193);
+                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 193);
             }
             else {
                 frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 134);
@@ -186,7 +186,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         }
         else {
             if (IS_IPAD) {
-                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), IS_RETINA ? 157.5 : 158);
+                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 158);
             }
             else {
                 frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 104);
@@ -204,7 +204,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         
         if ([self.dataManager isSplitOptionOn]) {
             if (IS_IPAD) {
-                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), IS_RETINA ? 192.5 : 193);
+                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 193);
             }
             else {
                 frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 134);
@@ -212,7 +212,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         }
         else {
             if (IS_IPAD) {
-                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), IS_RETINA ? 157.5 : 158);
+                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 158);
             }
             else {
                 frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 104);
