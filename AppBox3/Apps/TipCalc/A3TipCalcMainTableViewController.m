@@ -710,14 +710,14 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     if ([viewController.root.title isEqualToString:@"Option"]) {
 		self.dataManager.roundingMethodOption = index;
         
-        NSNumber * result = [self.dataManager numberByRoundingMethodForValue:@0.455];
-        NSLog(@"result: %@", result);
-        
-        result = [self.dataManager numberByRoundingMethodForValue:@0.555];
-        NSLog(@"result: %@", result);
-        
-        result = [self.dataManager numberByRoundingMethodForValue:@0.655];
-        NSLog(@"result: %@", result);
+//        NSNumber * result = [self.dataManager numberByRoundingMethodForValue:@0.455];
+//        NSLog(@"result: %@", result);
+//        
+//        result = [self.dataManager numberByRoundingMethodForValue:@0.555];
+//        NSLog(@"result: %@", result);
+//        
+//        result = [self.dataManager numberByRoundingMethodForValue:@0.655];
+//        NSLog(@"result: %@", result);
     }
     else {
 		self.dataManager.roundingMethodValue = index;

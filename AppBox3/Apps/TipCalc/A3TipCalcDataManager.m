@@ -530,6 +530,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 - (NSNumber *)totalPerPersonWithTax {
 //    double totalBeforeSplit = [[self costBeforeTax] doubleValue] + [[self tipValue] doubleValue];
     double totalBeforeSplit = [[self costBeforeTax] doubleValue] + [[self taxValue] doubleValue] + [[self tipValue] doubleValue];
+
     if ([[self.tipCalcData split] isEqualToNumber:@0]) {
         if (self.roundingMethodValue == TCRoundingMethodValue_TotalPerPerson) {
             totalBeforeSplit = [[self numberByRoundingMethodForValue:@(totalBeforeSplit)] doubleValue];
@@ -640,25 +641,61 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 }
 
 - (NSNumber *)tipValueWithSplit {
-    double tipValueWithSplit = 0.0;
+//    double tipValueWithSplit = 0.0;
+//    
+//    if ([self.tipCalcData.split isEqualToNumber:@0]) {
+//        tipValueWithSplit = [[self tipValue] doubleValue];
+//        
+//        if (self.roundingMethodValue == TCRoundingMethodValue_TipPerPerson && [self tipSplitOption] == TipSplitOption_PerPerson && [self isRoundingOptionOn]) {
+//            tipValueWithSplit = [[self numberByRoundingMethodForValue:@(tipValueWithSplit)] doubleValue];
+//        }
+//        return @(tipValueWithSplit);
+//    }
+//    
+//    
+//    tipValueWithSplit = [[self tipValue] doubleValue] / [self.tipCalcData.split doubleValue];
+//    
+//    if (self.roundingMethodValue == TCRoundingMethodValue_TipPerPerson && [self tipSplitOption] == TipSplitOption_PerPerson && [self isRoundingOptionOn]) {
+//        tipValueWithSplit = [[self numberByRoundingMethodForValue:@(tipValueWithSplit)] doubleValue];
+//    }
+//    
+//    return @(tipValueWithSplit);
+    NSNumber *tipValue = self.tipCalcData.tip;
     
-    if ([self.tipCalcData.split isEqualToNumber:@0]) {
-        tipValueWithSplit = [[self tipValue] doubleValue];
+    // valueType
+    if (![self.tipCalcData.isPercentTip boolValue]) {
+        tipValue = @([tipValue doubleValue] / [self.tipCalcData.split doubleValue]);
         
-        if (self.roundingMethodValue == TCRoundingMethodValue_TipPerPerson && [self tipSplitOption] == TipSplitOption_PerPerson && [self isRoundingOptionOn]) {
-            tipValueWithSplit = [[self numberByRoundingMethodForValue:@(tipValueWithSplit)] doubleValue];
+        if ([self tipSplitOption] == TipSplitOption_BeforeSplit) {
+            if (self.roundingMethodValue == TCRoundingMethodValue_Tip && [self isRoundingOptionOn]) {
+                tipValue = [self numberByRoundingMethodForValue:tipValue];
+            }
         }
-        return @(tipValueWithSplit);
+        else {
+            if (self.roundingMethodValue == TCRoundingMethodValue_TipPerPerson && [self isRoundingOptionOn]) {
+                tipValue = [self numberByRoundingMethodForValue:tipValue];
+            }
+        }
+        
+        return tipValue;
     }
     
+    // percentType
+    double resultTipValue = [[self costBeforeTax] doubleValue] * [tipValue doubleValue] / 100.0;
+    resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
     
-    tipValueWithSplit = [[self tipValue] doubleValue] / [self.tipCalcData.split doubleValue];
-    
-    if (self.roundingMethodValue == TCRoundingMethodValue_TipPerPerson && [self tipSplitOption] == TipSplitOption_PerPerson && [self isRoundingOptionOn]) {
-        tipValueWithSplit = [[self numberByRoundingMethodForValue:@(tipValueWithSplit)] doubleValue];
+    if ([self tipSplitOption] == TipSplitOption_BeforeSplit) {
+        if (self.roundingMethodValue == TCRoundingMethodValue_Tip && [self isRoundingOptionOn]) {
+            resultTipValue = [[self numberByRoundingMethodForValue:@(resultTipValue)] doubleValue];
+        }
+    }
+    else {
+        if (self.roundingMethodValue == TCRoundingMethodValue_TipPerPerson && [self isRoundingOptionOn]) {
+            resultTipValue = [[self numberByRoundingMethodForValue:@(resultTipValue)] doubleValue];
+        }
     }
     
-    return @(tipValueWithSplit);
+    return @(resultTipValue);
 }
 
 
