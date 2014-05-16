@@ -272,6 +272,7 @@ static const CGFloat kSideViewWidth = 320.0;
 		sideViewFrame.origin.x -= kSideViewWidth;
 		_rightNavigationController.view.frame = sideViewFrame;
 	} completion:^(BOOL finished) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationRightSideViewDidAppear object:nil];
 	}];
 }
 

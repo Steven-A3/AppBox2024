@@ -98,11 +98,21 @@
     self.isFirstViewLoad = YES;
 
 	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
 }
 
 - (void)mainMenuViewDidHide {
+	[self enableControls:YES];
+}
+
+- (void)rightSideViewDidAppear {
+	[self enableControls:NO];
+}
+
+- (void)rightSideViewWillDismiss {
 	[self enableControls:YES];
 }
 
@@ -116,6 +126,7 @@
 		[self.infoButton setEnabled:NO];
 		[self.shareButton setEnabled:NO];
 	}
+	[self.toolbarItems[0] setEnabled:enable];
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
@@ -473,6 +484,7 @@
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
     self.popoverVC = nil;
+	[self enableControls:YES];
 }
 
 #pragma mark - A3DaysCounterEventDetailViewControllerDelegate
@@ -562,6 +574,8 @@
 		[self presentViewController:activityController animated:YES completion:NULL];
 	}
     else {
+		[self enableControls:NO];
+
         UIButton *button = (UIButton*)sender;
 		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
         popoverController.delegate = self;
@@ -571,6 +585,7 @@
                          permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         activityController.completionHandler = ^(NSString* activityType, BOOL completed) {
             if ( completed && [activityType isEqualToString:@"Slideshow"] ) {
+				[self enableControls:NO];
                 A3DaysCounterSlideshowOptionViewController *viewCtrl = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:@"A3DaysCounterSlideshowOptionViewController" bundle:nil];
                 viewCtrl.sharedManager = _sharedManager;
                 [self presentSubViewController:viewCtrl];

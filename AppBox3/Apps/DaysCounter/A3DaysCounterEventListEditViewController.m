@@ -65,6 +65,28 @@
     self.checkStatusDict = [NSMutableDictionary dictionary];
     self.selectedArray = [NSMutableArray array];
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 48, 0, 0)];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)rightSideViewDidAppear {
+	[self enableControls:NO];
+}
+
+- (void)rightSideViewWillDismiss {
+	[self enableControls:YES];
+	[self reloadTableView];
+}
+
+- (void)enableControls:(BOOL)enable {
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	[self.navigationItem.rightBarButtonItem setEnabled:enable];
+	[self.toolbarItems[0] setEnabled:enable];
+	[self.toolbarItems[2] setEnabled:enable];
+	[self.toolbarItems[4] setEnabled:enable];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -82,14 +104,11 @@
 - (void)dealloc
 {
     self.checkNormalImage = nil;
+	[self removeObserver];
 }
 
 - (void)reloadTableView
 {
-    if (IS_IPAD) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
-    }
-    
     if( [_calendarItem.calendarType integerValue] == CalendarCellType_User )
         self.itemArray = [NSMutableArray arrayWithArray:[_calendarItem.events array]];
     else{
@@ -270,7 +289,6 @@
     }
     else {
         [self.A3RootViewController presentRightSideViewController:viewCtrl];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:A3NotificationRightSideViewWillDismiss object:nil];
     }
 
 //    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
@@ -317,6 +335,7 @@
     _calendarBarButton.enabled = YES;
     _shareBarButton.enabled = YES;
     self.popoverVC = nil;
+	[self enableControls:YES];
 }
 
 #pragma mark - UIActivityItemSource
