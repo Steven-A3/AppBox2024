@@ -97,6 +97,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 
 - (NSNumber *)numberByRoundingMethodForValue:(NSNumber *)aValue {
     NSNumber *result;
+    
     double temp;
     switch (self.roundingMethodOption) {
         case TCRoundingMethodOption_Exact:
@@ -109,12 +110,11 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
         case TCRoundingMethodOption_Down:
             temp = [aValue doubleValue];
             temp = floor(temp);
-            
             result = @(temp);
             break;
         case TCRoundingMethodOption_Off:
-            temp = round([aValue doubleValue]);
-            
+            temp = round([aValue doubleValue] * 100.0) / 100.0;
+            temp = round(temp);
             result = @(temp);
             break;
             

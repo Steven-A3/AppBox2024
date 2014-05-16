@@ -81,8 +81,6 @@
     
     NSNumberFormatter *nFormatter = [NSNumberFormatter new];
     [nFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-    //TipCalcRecently * aData = aHistory.rRecently;
-    //[[A3TipCalcDataManager sharedInstance] setTipCalcDataForHistoryData:aHistory];
     A3TipCalcDataManager *dataManager = [[A3TipCalcDataManager alloc] init];
     [dataManager setTipCalcDataForHistoryData:aHistory];
     
