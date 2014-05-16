@@ -518,7 +518,8 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 
 - (NSNumber *)totalBeforeSplitWithTax {
 //    double totalBeforeSplit = [[self costBeforeTax] doubleValue] + [[self tipValue] doubleValue];
-    double totalBeforeSplit = [[self costBeforeTax] doubleValue] + [[self taxValue] doubleValue] + [[self tipValueWithSplitWithRounding:NO] doubleValue];
+    //double totalBeforeSplit = [[self costBeforeTax] doubleValue] + [[self taxValue] doubleValue] + [[self tipValueWithSplitWithRounding:NO] doubleValue];
+    double totalBeforeSplit = [[self costBeforeTax] doubleValue] + [[self taxValue] doubleValue] + [[self tipValueWithRounding:self.roundingMethodValue == TCRoundingMethodValue_Tip ? YES : NO] doubleValue];
     
     if (self.roundingMethodValue == TCRoundingMethodValue_Total) {
         totalBeforeSplit = [[self numberByRoundingMethodForValue:@(totalBeforeSplit)] doubleValue];
