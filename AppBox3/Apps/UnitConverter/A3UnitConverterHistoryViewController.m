@@ -46,8 +46,10 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
     [super viewDidLoad];
 
     self.title = @"History";
-    
-	[self rightBarButtonDoneButton];
+
+	if (IS_IPHONE) {
+		[self rightBarButtonDoneButton];
+	}
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
 
 	self.tableView.showsVerticalScrollIndicator = NO;

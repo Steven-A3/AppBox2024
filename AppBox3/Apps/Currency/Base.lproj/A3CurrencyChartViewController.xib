@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4488.2" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3715.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3CurrencyChartViewController">
@@ -9,7 +9,7 @@
                 <outlet property="chartView" destination="xV6-wu-1m2" id="4fU-or-Ihy"/>
                 <outlet property="line1" destination="Ukk-Z6-Jsj" id="BpM-97-n0W"/>
                 <outlet property="line2" destination="WgZ-84-AYt" id="ziW-B6-d6r"/>
-                <outlet property="segmentedControlRef" destination="7k9-Yw-aZ1" id="9l8-R1-zRq"/>
+                <outlet property="segmentedControl" destination="7k9-Yw-aZ1" id="Sgp-TV-WtU"/>
                 <outlet property="tableView" destination="g4S-ZW-4BT" id="3C7-ag-LxI"/>
                 <outlet property="titleView" destination="reF-rx-dxl" id="jaX-uC-ImL"/>
                 <outlet property="valueView" destination="5Rv-gj-VEg" id="fLa-iT-gGC"/>
@@ -21,7 +21,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="84" sectionHeaderHeight="22" sectionFooterHeight="22" id="g4S-ZW-4BT">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="84" sectionHeaderHeight="22" sectionFooterHeight="22" id="g4S-ZW-4BT">
                     <rect key="frame" x="0.0" y="64" width="320" height="168"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

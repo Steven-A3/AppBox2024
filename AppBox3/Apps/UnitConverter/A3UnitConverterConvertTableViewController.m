@@ -30,6 +30,8 @@
 #import "FMMoveTableView.h"
 #import "UITableView+utility.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIColor+A3Addition.h"
+#import "A3AppDelegate+appearance.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
@@ -61,10 +63,7 @@
     BOOL		_isShowMoreMenu;
     
     BOOL        _isTemperatureMode;
-    BOOL        _isFeetInchMode;
-    
-    BOOL 		_shareItemEnabled;
-    BOOL 		_historyItemEnabled;
+
 	BOOL 		_isSwitchingFractionMode;
 }
 
@@ -140,6 +139,11 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	}];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewWillHide:) name:A3NotificationRightSideViewWillDismiss object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+}
+
+- (void)mainMenuDidHide {
+	[self enableControls:YES];
 }
 
 - (void)rightSubViewWillHide:(NSNotification *)noti
@@ -147,29 +151,29 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     [self enableControls:YES];
 }
 
-- (void)enableControls:(BOOL) onoff
+- (void)enableControls:(BOOL)enable
 {
 	if (!IS_IPAD) return;
 
+	UIColor *disabledColor = [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
     UIBarButtonItem *shareItem = self.navigationItem.rightBarButtonItems[2];
     UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[0];
-    
-    if (onoff) {
-        
-        self.navigationItem.leftBarButtonItem.enabled = YES;
-        shareItem.enabled = _shareItemEnabled;
-        historyItem.enabled = _historyItemEnabled;
-        
-    }
-    else {
-        
-        _shareItemEnabled = shareItem.enabled;
-        _historyItemEnabled = historyItem.enabled;
-        
-        self.navigationItem.leftBarButtonItem.enabled = NO;
-        shareItem.enabled = NO;
+	[self.addButton setEnabled:enable];
+	self.tabBarController.tabBar.selectedImageTintColor = enable ? nil : disabledColor;
+	self.navigationItem.leftBarButtonItem.enabled = enable;
+	shareItem.enabled = enable;
+
+	if (enable) {
+        historyItem.enabled = [UnitHistory MR_countOfEntities] > 0;
+    } else {
         historyItem.enabled = NO;
     }
+	NSIndexPath *firstRowIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [self.fmMoveTableView cellForRowAtIndexPath:firstRowIndexPath];
+	cell.valueField.textColor = enable ? [[A3AppDelegate instance] themeColor] : disabledColor;
+	cell.value2Field.textColor = enable ? [[A3AppDelegate instance] themeColor] : disabledColor;
+	cell.valueLabel.textColor = enable ? [[A3AppDelegate instance] themeColor] : disabledColor;
+	cell.value2Label.textColor = enable ? [[A3AppDelegate instance] themeColor] : disabledColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -194,7 +198,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 	[self showLeftNavigationItems];
 
-    [self refreshRightBarItems];
+    [self enableControls:YES];
 
     [_fmMoveTableView reloadData];
 }
@@ -234,19 +238,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)dealloc {
 	[self removeObserver];
-}
-
-- (void)refreshRightBarItems
-{
-    UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[0];
-    
-    // history
-    NSArray *histories = [UnitHistory MR_findAll];
-    if (histories.count == 0) {
-        historyItem.enabled = NO;
-    } else {
-        historyItem.enabled = YES;
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -294,7 +285,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			[self rightButtonMoreButton];
 		}
 	} else {
-		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+		[self.A3RootViewController toggleLeftMenuViewOnOff];
+		[self enableControls:!self.A3RootViewController.showLeftView];
 	}
 }
 
@@ -338,12 +330,11 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (void)historyButtonAction:(UIButton *)button {
 	[self clearEverything];
 
-	A3UnitConverterHistoryViewController *viewController = [[A3UnitConverterHistoryViewController alloc] initWithNibName:nil bundle:nil];
-	[self presentSubViewController:viewController];
-
 	if (IS_IPAD) {
 		[self enableControls:NO];
 	}
+	A3UnitConverterHistoryViewController *viewController = [[A3UnitConverterHistoryViewController alloc] initWithNibName:nil bundle:nil];
+	[self presentSubViewController:viewController];
 }
 
 - (NSMutableArray *)convertItems {
@@ -443,6 +434,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		return;
 	}
 
+	if (IS_IPAD) {
+		[self enableControls:NO];
+	}
 	_isAddingUnit = YES;
 	UIViewController *viewController = [self unitAddViewController];
 
@@ -494,81 +488,78 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 #pragma mark - Action
 
 - (void)shareAll:(id)sender {
-	@autoreleasepool {
-        
-        self.shareTextList = [NSMutableArray new];
-    
-        UnitConvertItem *first = _convertItems[0];
-        for (NSInteger index = 1; index < _convertItems.count; index++) {
-            if ([_convertItems[index] isKindOfClass:[UnitConvertItem class]]) {
-                
-                NSString *convertInfoText = @"";
-                
-                UnitConvertItem *item = _convertItems[index];
-                float rate = first.item.conversionRate.floatValue / item.item.conversionRate.floatValue;
-                
-                if (_isTemperatureMode) {
-                    float celsiusValue = [TemperatureConveter convertToCelsiusFromUnit:first.item.unitName andTemperature:self.unitValue.floatValue];
-                    float targetValue = [TemperatureConveter convertCelsius:celsiusValue toUnit:item.item.unitName];
-                    convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
-                }
-                else {
-                    float targetValue = self.unitValue.floatValue * rate;
-                    convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
-                }
-                [_shareTextList addObject:convertInfoText];
-            }
-        }
-        
-        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
-        [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-            NSLog(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
-        }];
-        if (IS_IPHONE) {
-            [self presentViewController:activityController animated:YES completion:NULL];
-        } else {
-            UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
-            [popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            _sharePopoverController = popoverController;
-        }
-        
-        if (IS_IPAD) {
-			_sharePopoverController.delegate = self;
-			[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-				[buttonItem setEnabled:NO];
-			}];
+	self.shareTextList = [NSMutableArray new];
+
+	UnitConvertItem *first = _convertItems[0];
+	for (NSInteger index = 1; index < _convertItems.count; index++) {
+		if ([_convertItems[index] isKindOfClass:[UnitConvertItem class]]) {
+
+			NSString *convertInfoText = @"";
+
+			UnitConvertItem *item = _convertItems[index];
+			float rate = first.item.conversionRate.floatValue / item.item.conversionRate.floatValue;
+
+			if (_isTemperatureMode) {
+				float celsiusValue = [TemperatureConveter convertToCelsiusFromUnit:first.item.unitName andTemperature:self.unitValue.floatValue];
+				float targetValue = [TemperatureConveter convertCelsius:celsiusValue toUnit:item.item.unitName];
+				convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
+			}
+			else {
+				float targetValue = self.unitValue.floatValue * rate;
+				convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
+			}
+			[_shareTextList addObject:convertInfoText];
 		}
+	}
+
+	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+	[activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+		NSLog(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+	}];
+	if (IS_IPHONE) {
+		[self presentViewController:activityController animated:YES completion:NULL];
+	} else {
+		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+		[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		_sharePopoverController = popoverController;
+	}
+
+	if (IS_IPAD) {
+		[self enableControls:NO];
+		_sharePopoverController.delegate = self;
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
+			[buttonItem setEnabled:NO];
+		}];
 	}
 }
 
 - (void)shareActionForSourceIndex:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx sender:(id)sender {
-	@autoreleasepool {
-        
-        self.shareTextList = [NSMutableArray new];
-        
-        UnitConvertItem *first = _convertItems[sourceIdx];
-        UnitConvertItem *item = _convertItems[targetIdx];
-        NSString *convertInfoText = @"";
-        float rate = first.item.conversionRate.floatValue / item.item.conversionRate.floatValue;
-        
-        if (_isTemperatureMode) {
-            float celsiusValue = [TemperatureConveter convertToCelsiusFromUnit:first.item.unitName andTemperature:self.unitValue.floatValue];
-            float targetValue = [TemperatureConveter convertCelsius:celsiusValue toUnit:item.item.unitName];
-            convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
-        }
-        else {
-            float targetValue = self.unitValue.floatValue * rate;
-            convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
-        }
-        [_shareTextList addObject:convertInfoText];
-        
-		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromSubView:sender];
-        if (IS_IPAD) {
-			_sharePopoverController.delegate = self;
-			[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-				[buttonItem setEnabled:NO];
-			}];
-		}
+	self.shareTextList = [NSMutableArray new];
+
+	UnitConvertItem *first = _convertItems[sourceIdx];
+	UnitConvertItem *item = _convertItems[targetIdx];
+	NSString *convertInfoText = @"";
+	float rate = first.item.conversionRate.floatValue / item.item.conversionRate.floatValue;
+
+	if (_isTemperatureMode) {
+		float celsiusValue = [TemperatureConveter convertToCelsiusFromUnit:first.item.unitName andTemperature:self.unitValue.floatValue];
+		float targetValue = [TemperatureConveter convertCelsius:celsiusValue toUnit:item.item.unitName];
+		convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
+	}
+	else {
+		float targetValue = self.unitValue.floatValue * rate;
+		convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
+	}
+	[_shareTextList addObject:convertInfoText];
+
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromSubView:sender];
+	if (IS_IPAD) {
+		[self enableControls:NO];
+
+		_sharePopoverController.delegate = self;
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
+			[buttonItem setEnabled:NO];
+		}];
 	}
 }
 
@@ -576,12 +567,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
-    if (IS_IPAD) {
-        [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-            [buttonItem setEnabled:YES
-             ];
-        }];
-    }
+	[self enableControls:YES];
 }
 
 #pragma mark - UIActivityItemSource
@@ -672,126 +658,124 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)configureDataCell:(A3UnitConverterTVDataCell *)dataCell atIndexPath:(NSIndexPath *)indexPath {
-    @autoreleasepool {
-		dataCell.menuDelegate = self;
-        
-		NSInteger dataIndex = indexPath.row;
-        
-		dataCell.valueField.delegate = self;
-        dataCell.value2Field.delegate = self;
-        
-		UnitConvertItem *convertItem = self.convertItems[dataIndex];
+	dataCell.menuDelegate = self;
 
-        // <- dictionary key reset
-        NSSet *keys = [_text1Fields keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
-			if (obj == dataCell.valueField) {
-				*stop = YES;
-				return YES;
-			}
-			return NO;
-		}];
-		if ([keys count]>0) {
-			NSString *key = keys.allObjects[0];
-            [self.text1Fields removeObjectForKey:key];
-		}
-        
-        NSSet *keys2 = [_text2Fields keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
-			if (obj == dataCell.value2Field) {
-				*stop = YES;
-				return YES;
-			}
-			return NO;
-		}];
-		if ([keys2 count]>0) {
-			NSString *key2 = keys2.allObjects[0];
-            [self.text2Fields removeObjectForKey:key2];
-		}
-        // ->
-        
-        [self.text1Fields setObject:dataCell.valueField forKey:convertItem.item.unitName];
-        [self.text2Fields setObject:dataCell.value2Field forKey:convertItem.item.unitName];
-        
-        BOOL isFeetInchMode = NO;
-        if ([convertItem.item.unitName isEqualToString:@"feet inches"]) {
-            // 0.3048, 0.0254
-            isFeetInchMode = YES;
-            dataCell.inputType = UnitInput_FeetInch;
-        } else {
-            dataCell.inputType = UnitInput_Normal;
-        }
-        
-		NSNumber *value;
-		value = self.unitValue;
-        
-		if (dataIndex == 0) {
-			dataCell.valueField.textColor = _fmMoveTableView.tintColor;
-            dataCell.value2Field.textColor = _fmMoveTableView.tintColor;
-            dataCell.valueLabel.textColor = _fmMoveTableView.tintColor;
-            dataCell.value2Label.textColor = _fmMoveTableView.tintColor;
-			dataCell.rateLabel.text = @"";
-            
-            if (!value) {
-                value = @(1);
-            }
-            
-            dataCell.codeLabel.text = convertItem.item.unitShortName;
-            dataCell.rateLabel.text = convertItem.item.unitName;
-            
-		} else {
-            
-            dataCell.valueField.textColor = [UIColor blackColor];
-            dataCell.value2Field.textColor = [UIColor blackColor];
-            dataCell.valueLabel.textColor = [UIColor blackColor];
-            dataCell.value2Label.textColor = [UIColor blackColor];
-            dataCell.rateLabel.text = @"";
-            
-            float conversionRate = 0;
-            
-			UnitConvertItem *convertItemZero = nil;
-			for (id object in self.convertItems) {
-				if ([object isKindOfClass:[UnitConvertItem class]]) {
-					convertItemZero = object;
-					break;
-				}
-			}
-            
-            if (_isTemperatureMode) {
-                // 먼저 입력된 값을 섭씨기준의 온도로 변환한다.
-                // 섭씨온도를 해당 unit값으로 변환한다
-                float celsiusValue = [TemperatureConveter convertToCelsiusFromUnit:convertItemZero.item.unitName andTemperature:value.floatValue];
-                value = @([TemperatureConveter convertCelsius:celsiusValue toUnit:convertItem.item.unitName]);
-                
-            }
-            else {
-                conversionRate = convertItemZero.item.conversionRate.floatValue / convertItem.item.conversionRate.floatValue;
-                value = @(value.floatValue * conversionRate);
-            }
-            
-            // code 및 rate 정보 표시
-            dataCell.codeLabel.text = convertItem.item.unitName;
-            // 온도 모드에서는 rate값에 일정 비율이 없으므로 표시하지 않는다.
-            if (_isTemperatureMode) {
-                dataCell.rateLabel.text = [TemperatureConveter rateStringFromTemperUnit:convertItemZero.item.unitName toTemperUnit:convertItem.item.unitName];
-            }
-            else {
-                dataCell.rateLabel.text = [NSString stringWithFormat:@"%@, rate = %@", convertItem.item.unitShortName, [self.decimalFormatter stringFromNumber:@(conversionRate)]];
-            }
-		}
+	NSInteger dataIndex = indexPath.row;
 
-        // 계산값 표시
-        if (isFeetInchMode) {
-            // 0.3048, 0.0254
-            // feet 계산
-            int feet = (int)value.floatValue;
-            float inch = (value.floatValue - feet)*kInchesPerFeet;
-            dataCell.valueField.text = [self.decimalFormatter stringFromNumber:@(feet)];
-            dataCell.value2Field.text = [self.decimalFormatter stringFromNumber:@(inch)];
-        }
-        else {
-            dataCell.valueField.text = [self.decimalFormatter stringFromNumber:value];
-        }
-		[dataCell updateMultiTextFieldModeConstraintsWithEditingTextField:nil];
+	dataCell.valueField.delegate = self;
+	dataCell.value2Field.delegate = self;
+
+	UnitConvertItem *convertItem = self.convertItems[dataIndex];
+
+	// <- dictionary key reset
+	NSSet *keys = [_text1Fields keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
+		if (obj == dataCell.valueField) {
+			*stop = YES;
+			return YES;
+		}
+		return NO;
+	}];
+	if ([keys count]>0) {
+		NSString *key = keys.allObjects[0];
+		[self.text1Fields removeObjectForKey:key];
 	}
+
+	NSSet *keys2 = [_text2Fields keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
+		if (obj == dataCell.value2Field) {
+			*stop = YES;
+			return YES;
+		}
+		return NO;
+	}];
+	if ([keys2 count]>0) {
+		NSString *key2 = keys2.allObjects[0];
+		[self.text2Fields removeObjectForKey:key2];
+	}
+	// ->
+
+	[self.text1Fields setObject:dataCell.valueField forKey:convertItem.item.unitName];
+	[self.text2Fields setObject:dataCell.value2Field forKey:convertItem.item.unitName];
+
+	BOOL isFeetInchMode = NO;
+	if ([convertItem.item.unitName isEqualToString:@"feet inches"]) {
+		// 0.3048, 0.0254
+		isFeetInchMode = YES;
+		dataCell.inputType = UnitInput_FeetInch;
+	} else {
+		dataCell.inputType = UnitInput_Normal;
+	}
+
+	NSNumber *value;
+	value = self.unitValue;
+
+	if (dataIndex == 0) {
+		dataCell.valueField.textColor = _fmMoveTableView.tintColor;
+		dataCell.value2Field.textColor = _fmMoveTableView.tintColor;
+		dataCell.valueLabel.textColor = _fmMoveTableView.tintColor;
+		dataCell.value2Label.textColor = _fmMoveTableView.tintColor;
+		dataCell.rateLabel.text = @"";
+
+		if (!value) {
+			value = @(1);
+		}
+
+		dataCell.codeLabel.text = convertItem.item.unitShortName;
+		dataCell.rateLabel.text = convertItem.item.unitName;
+
+	} else {
+
+		dataCell.valueField.textColor = [UIColor blackColor];
+		dataCell.value2Field.textColor = [UIColor blackColor];
+		dataCell.valueLabel.textColor = [UIColor blackColor];
+		dataCell.value2Label.textColor = [UIColor blackColor];
+		dataCell.rateLabel.text = @"";
+
+		float conversionRate = 0;
+
+		UnitConvertItem *convertItemZero = nil;
+		for (id object in self.convertItems) {
+			if ([object isKindOfClass:[UnitConvertItem class]]) {
+				convertItemZero = object;
+				break;
+			}
+		}
+
+		if (_isTemperatureMode) {
+			// 먼저 입력된 값을 섭씨기준의 온도로 변환한다.
+			// 섭씨온도를 해당 unit값으로 변환한다
+			float celsiusValue = [TemperatureConveter convertToCelsiusFromUnit:convertItemZero.item.unitName andTemperature:value.floatValue];
+			value = @([TemperatureConveter convertCelsius:celsiusValue toUnit:convertItem.item.unitName]);
+
+		}
+		else {
+			conversionRate = convertItemZero.item.conversionRate.floatValue / convertItem.item.conversionRate.floatValue;
+			value = @(value.floatValue * conversionRate);
+		}
+
+		// code 및 rate 정보 표시
+		dataCell.codeLabel.text = convertItem.item.unitName;
+		// 온도 모드에서는 rate값에 일정 비율이 없으므로 표시하지 않는다.
+		if (_isTemperatureMode) {
+			dataCell.rateLabel.text = [TemperatureConveter rateStringFromTemperUnit:convertItemZero.item.unitName toTemperUnit:convertItem.item.unitName];
+		}
+		else {
+			dataCell.rateLabel.text = [NSString stringWithFormat:@"%@, rate = %@", convertItem.item.unitShortName, [self.decimalFormatter stringFromNumber:@(conversionRate)]];
+		}
+	}
+
+	// 계산값 표시
+	if (isFeetInchMode) {
+		// 0.3048, 0.0254
+		// feet 계산
+		int feet = (int)value.floatValue;
+		float inch = (value.floatValue - feet)*kInchesPerFeet;
+		dataCell.valueField.text = [self.decimalFormatter stringFromNumber:@(feet)];
+		dataCell.value2Field.text = [self.decimalFormatter stringFromNumber:@(inch)];
+	}
+	else {
+		dataCell.valueField.text = [self.decimalFormatter stringFromNumber:value];
+	}
+	[dataCell updateMultiTextFieldModeConstraintsWithEditingTextField:nil];
 }
 
 - (A3UnitConverterTVActionCell *)reusableActionCellForTableView:(UITableView *)tableView {
@@ -822,44 +806,43 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	@autoreleasepool {
-        
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        
-		if ([self.firstResponder isFirstResponder]) {
-			[self.firstResponder resignFirstResponder];
-			[self setFirstResponder:nil];
-			return;
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+	if ([self.firstResponder isFirstResponder]) {
+		[self.firstResponder resignFirstResponder];
+		[self setFirstResponder:nil];
+		return;
+	}
+
+	if ([self.swipedCells.allObjects count]) {
+		[self unSwipeAll];
+		return;
+	}
+
+	[self clearEverything];
+
+	id object = self.convertItems[indexPath.row];
+
+	if (object != _equalItem) {
+		_selectedRow = indexPath.row;
+		_isAddingUnit = NO;
+		A3UnitConverterSelectViewController *viewController = [self unitSelectViewControllerWithSelectedUnit:_selectedRow];
+		if (IS_IPHONE) {
+			viewController.shouldPopViewController = YES;
+			[self.navigationController pushViewController:viewController animated:YES];
+		} else {
+			[self enableControls:NO];
+
+			viewController.shouldPopViewController = NO;
+			A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+			[rootViewController presentRightSideViewController:viewController];
+
+			// share, history, more item disable 처리하기
+			[self rightBarItemsEnabling:NO];
 		}
-        
-		if ([self.swipedCells.allObjects count]) {
-			[self unSwipeAll];
-			return;
-		}
-        
-		[self clearEverything];
-        
-		id object = self.convertItems[indexPath.row];
-        
-		if (object != _equalItem) {
-			_selectedRow = indexPath.row;
-			_isAddingUnit = NO;
-			A3UnitConverterSelectViewController *viewController = [self unitSelectViewControllerWithSelectedUnit:_selectedRow];
-			if (IS_IPHONE) {
-                viewController.shouldPopViewController = YES;
-				[self.navigationController pushViewController:viewController animated:YES];
-			} else {
-                viewController.shouldPopViewController = NO;
-				A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
-                [rootViewController presentRightSideViewController:viewController];
-                
-                // share, history, more item disable 처리하기
-                [self rightBarItemsEnabling:NO];
-			}
-		}
-        else {
-            
-		}
+	}
+	else {
+
 	}
 }
 
@@ -1320,58 +1303,54 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)shareActionForCell:(UITableViewCell *)cell sender:(id)sender {
-	@autoreleasepool {
-		NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
-		NSInteger targetIdx = indexPath.row == 0 ? 2 : indexPath.row;
-		NSAssert(self.convertItems[indexPath.row] != _equalItem, @"Selected row must not the equal cell");
-		[self shareActionForSourceIndex:0 targetIndex:targetIdx sender:sender ];
-        
-        [self unSwipeAll];
-	}
+	NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
+	NSInteger targetIdx = indexPath.row == 0 ? 2 : indexPath.row;
+	NSAssert(self.convertItems[indexPath.row] != _equalItem, @"Selected row must not the equal cell");
+	[self shareActionForSourceIndex:0 targetIndex:targetIdx sender:sender ];
+
+	[self unSwipeAll];
 }
 
 - (void)deleteActionForCell:(UITableViewCell *)cell
 {
-    @autoreleasepool {
-		[self unSwipeAll];
-        
-		UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) cell;
-		[swipedCell removeMenuView];
-        
-        if ([_convertItems count] < 4) {
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-															message:@"To convert values, need two units."
-														   delegate:nil
-												  cancelButtonTitle:@"OK"
-												  otherButtonTitles:nil];
-			[alert show];
-			return;
-		}
-        
-		NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
-		UnitConvertItem *convertItem = self.convertItems[indexPath.row];
-		if ([convertItem isKindOfClass:[UnitConvertItem class]]) {
-			[self.text1Fields removeObjectForKey:convertItem.item.unitName];
-            [self.text2Fields removeObjectForKey:convertItem.item.unitName];
-            
-			[convertItem MR_deleteEntity];
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-			[self.convertItems removeObjectAtIndex:indexPath.row];
-            
-			[_fmMoveTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-            
-			if (indexPath.row == 0) {
-				_convertItems = nil;
-				[self convertItems];
-                
-				[_fmMoveTableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] toIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-                
-				double delayInSeconds = 0.3;
-				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-					[_fmMoveTableView reloadRowsAtIndexPaths:[_fmMoveTableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationMiddle];
-				});
-			}
+	[self unSwipeAll];
+
+	UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) cell;
+	[swipedCell removeMenuView];
+
+	if ([_convertItems count] < 4) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+														message:@"To convert values, need two units."
+													   delegate:nil
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
+		[alert show];
+		return;
+	}
+
+	NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
+	UnitConvertItem *convertItem = self.convertItems[indexPath.row];
+	if ([convertItem isKindOfClass:[UnitConvertItem class]]) {
+		[self.text1Fields removeObjectForKey:convertItem.item.unitName];
+		[self.text2Fields removeObjectForKey:convertItem.item.unitName];
+
+		[convertItem MR_deleteEntity];
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[self.convertItems removeObjectAtIndex:indexPath.row];
+
+		[_fmMoveTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+
+		if (indexPath.row == 0) {
+			_convertItems = nil;
+			[self convertItems];
+
+			[_fmMoveTableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] toIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+
+			double delayInSeconds = 0.3;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[_fmMoveTableView reloadRowsAtIndexPaths:[_fmMoveTableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationMiddle];
+			});
 		}
 	}
 }
@@ -1537,9 +1516,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	NSMutableSet *targets = [[NSMutableSet alloc] init];
 	for (; idx < historyItemCount; idx++) {
 		UnitHistoryItem *item = [UnitHistoryItem MR_createEntity];
-		UnitConvertItem *convetItem = self.convertItems[idx + 2];
-		item.unit = convetItem.item;
-		item.order = convetItem.order;
+		UnitConvertItem *convertItem = self.convertItems[idx + 2];
+		item.unit = convertItem.item;
+		item.order = convertItem.order;
 		[targets addObject:item];
 	}
 	history.targets = targets;
@@ -1548,7 +1527,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 	_unitValue = nil;
 
-	[self refreshRightBarItems];
+	[self enableControls:YES];
 }
 
 #pragma mark -- Swipe Gesture

@@ -45,7 +45,9 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 
 	self.title = @"History";
 
-	[self rightBarButtonDoneButton];
+	if (IS_IPHONE) {
+		[self rightBarButtonDoneButton];
+	}
 
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
 
