@@ -308,7 +308,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         
         values = [NSMutableArray new];
         [values addObject:[formatter stringFromNumber:[self.dataManager subtotal]]];
-        [values addObject:[formatter stringFromNumber:[self.dataManager tipValue]]];
+        [values addObject:[formatter stringFromNumber:[self.dataManager tipValueWithSplitWithRounding:YES]]];
         [titles addObject:@[@"Subtotal", @"Tip"]];
         [details addObject:values];
     }
@@ -321,7 +321,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         
         values = [NSMutableArray new];
         [values addObject:[formatter stringFromNumber:[self.dataManager subtotalWithSplit]]];
-        [values addObject:[formatter stringFromNumber:[self.dataManager tipValueWithSplit]]];
+        [values addObject:[formatter stringFromNumber:[self.dataManager tipValueWithSplitWithRounding:YES]]];
         [titles addObject:@[@"Subtotal", @"Tip"]];
         [details addObject:values];
     }

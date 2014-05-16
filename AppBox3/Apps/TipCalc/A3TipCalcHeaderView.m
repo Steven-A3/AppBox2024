@@ -261,10 +261,10 @@
     double dTip = 0.0;
     if (result) {
         if ([self.dataManager tipSplitOption] == TipSplitOption_PerPerson) {
-            dTip = [[self.dataManager tipValueWithSplit] doubleValue];
+            dTip = [[self.dataManager tipValueWithSplitWithRounding:YES] doubleValue];
         }
         else {
-            dTip = [[self.dataManager tipValue] doubleValue];
+            dTip = [[self.dataManager tipValueWithRounding:YES] doubleValue];
         }
     }
     

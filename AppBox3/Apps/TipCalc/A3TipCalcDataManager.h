@@ -122,9 +122,9 @@ extern NSString *const A3TipCalcCurrencyCode;
 - (NSNumber *)taxPercent;
 - (NSNumber *)taxValue;
 - (NSNumber *)taxValueWithSplit;
-- (NSNumber *)tipValue;
+- (NSNumber *)tipValueWithRounding:(BOOL)rounding;
+- (NSNumber *)tipValueWithSplitWithRounding:(BOOL)rounding;
 - (NSNumber *)tipPercent;
-- (NSNumber *)tipValueWithSplit;
 
 #pragma mark - Rounding Method
 - (void)setRoundingMethodValue:(TCRoundingMethodValue)value;
