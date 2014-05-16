@@ -76,7 +76,7 @@ extern NSString *const A3TipCalcCurrencyCode;
 - (double)tipRst:(int)aBeforeSplitFlag;
 - (double)totalRst:(int)aBeforeSplitFlag;
 
-- (NSString*)sharedData;
+- (NSString*)sharedDataIsMail:(BOOL)isMail;
 
 #pragma mark - calculate
 - (NSNumber *)numberByRoundingMethodForValue:(NSNumber *)aValue;

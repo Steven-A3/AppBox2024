@@ -261,17 +261,25 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     return dRst;
 }
 
-- (NSString*)sharedData
+- (NSString*)sharedDataIsMail:(BOOL)isMail
 {
     NSMutableString* mstrOutput = [[NSMutableString alloc] init];
     
-    [mstrOutput appendString:@"Calculation<br>"];
+    if (isMail) {
+        [mstrOutput appendString:@"Calculation<br>"];
+    }
+    
     [mstrOutput appendFormat:@"Total: %@<br>", [self currencyStringFromDouble:[[self totalBeforeSplitWithTax] doubleValue]]];
     [mstrOutput appendFormat:@"Tip: %@<br>", [self currencyStringFromDouble:[[self tipValueWithRounding:self.roundingMethodValue == TCRoundingMethodValue_Tip ? YES : NO] doubleValue]]];
     if ([self isSplitOptionOn] && [self.tipCalcData.split integerValue] > 1) {
         [mstrOutput appendFormat:@"Total Per Person: %@<br>", [self currencyStringFromDouble:[[self totalPerPersonWithTax] doubleValue]]];
         [mstrOutput appendFormat:@"Tip Per Person: %@<br>", [self currencyStringFromDouble:[[self tipValueWithSplitWithRounding:self.roundingMethodValue == TCRoundingMethodValue_Tip ? YES : NO] doubleValue]]];
     }
+    
+    if (!isMail) {
+        return mstrOutput;
+    }
+    
     
     [mstrOutput appendString:@"<br>Input<br>"];
     
