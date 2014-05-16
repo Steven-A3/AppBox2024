@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "A3CenterViewDelegate.h"
 @class A3DaysCounterModelManager;
-@interface A3DaysCounterSlidershowMainViewController : UIViewController<A3CenterViewDelegate, UIPopoverControllerDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource,UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>{
+@interface A3DaysCounterSlideShowMainViewController : UIViewController<A3CenterViewDelegate, UIPopoverControllerDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource,UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>{
     NSInteger currentIndex;
 }
 @property (strong, nonatomic) A3DaysCounterModelManager *sharedManager;

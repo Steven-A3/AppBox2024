@@ -12,7 +12,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
-#import "A3DaysCounterSlidershowMainViewController.h"
+#import "A3DaysCounterSlideShowMainViewController.h"
 #import "A3DaysCounterAddEventViewController.h"
 #import "A3DaysCounterEditCalendarListViewController.h"
 #import "A3DaysCounterAddAndEditCalendarViewController.h"
@@ -26,6 +26,7 @@
 #import "A3DateHelper.h"
 #import "NSDate+LunarConverter.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIColor+A3Addition.h"
 
 @interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) NSArray *itemArray;
@@ -110,6 +111,37 @@
     [self mySearchDisplayController];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)mainMenuViewDidHide {
+	[self enableControls:YES];
+}
+
+- (void)rightSideViewWillDismiss {
+	[self enableControls:YES];
+	[self reloadTableView];
+}
+
+- (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
+
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	[self.navigationItem.rightBarButtonItem setEnabled:enable];
+	[self.addEventButton setEnabled:enable];
+
+	[self.toolbarItems[2] setEnabled:enable];
+}
+
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[super appsButtonAction:barButtonItem];
+	if (IS_IPAD) {
+		[self enableControls:!self.A3RootViewController.showLeftView];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -159,16 +191,11 @@
 
 - (void)reloadTableView
 {
-    //    UIBarButtonItem *search = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
-    //    search.enabled = ([[A3DaysCounterModelManager sharedManager] numberOfAllEvents] > 0);
-
     [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     self.itemArray = [_sharedManager visibleCalendarList];
     [self setupHeaderInfo];
     [self.tableView reloadData];
     self.addEventButton.tintColor = [A3AppDelegate instance].themeColor;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 }
 
 #pragma mark Initialize FontSize
@@ -216,7 +243,7 @@
 
 #pragma mark - action method
 - (IBAction)photoViewAction:(id)sender {
-    A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
+    A3DaysCounterSlideShowMainViewController *viewCtrl = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
@@ -265,8 +292,8 @@
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
     else {
+		[self enableControls:NO];
         [self.A3RootViewController presentRightSideViewController:viewCtrl];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:A3NotificationRightSideViewWillDismiss object:nil];
     }
 }
 

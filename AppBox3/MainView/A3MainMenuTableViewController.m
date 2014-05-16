@@ -24,7 +24,7 @@
 #import "A3AppDelegate+mainMenu.h"
 #import "A3TableViewExpandableCell.h"
 #import "A3DaysCounterModelManager.h"
-#import "A3DaysCounterSlidershowMainViewController.h"
+#import "A3DaysCounterSlideShowMainViewController.h"
 #import "A3DaysCounterCalendarListMainViewController.h"
 #import "A3DaysCounterReminderListViewController.h"
 #import "A3DaysCounterFavoriteListViewController.h"
@@ -308,8 +308,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
         NSInteger lastOpenedMainIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"DaysCounterLastOpenedMainIndex"];
         switch (lastOpenedMainIndex) {
             case 1:
-                targetViewController = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
-                ((A3DaysCounterSlidershowMainViewController *)targetViewController).sharedManager = sharedManager;
+                targetViewController = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];
+                ((A3DaysCounterSlideShowMainViewController *)targetViewController).sharedManager = sharedManager;
                 break;
             case 3:
                 targetViewController = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];

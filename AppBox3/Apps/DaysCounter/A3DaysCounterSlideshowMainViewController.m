@@ -6,7 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3DaysCounterSlidershowMainViewController.h"
+#import "A3DaysCounterSlideShowMainViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3SlideshowActivity.h"
@@ -28,10 +28,11 @@
 #import "A3DaysCounterSlideshowViewController.h"
 #import "A3AppDelegate+appearance.h"
 #import "DaysCounterDateModel.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 #define VISIBLE_INDEX_INTERVAL      2
 
-@interface A3DaysCounterSlidershowMainViewController () <A3DaysCounterEventDetailViewControllerDelegate, UIActivityItemSource>
+@interface A3DaysCounterSlideShowMainViewController () <A3DaysCounterEventDetailViewControllerDelegate, UIActivityItemSource>
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (strong, nonatomic) NSArray *eventsArray;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -46,7 +47,7 @@
 
 @end
 
-@implementation A3DaysCounterSlidershowMainViewController
+@implementation A3DaysCounterSlideShowMainViewController
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -95,6 +96,33 @@
     [_collectionView addGestureRecognizer:tapGesture];
     
     self.isFirstViewLoad = YES;
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)mainMenuViewDidHide {
+	[self enableControls:YES];
+}
+
+- (void)enableControls:(BOOL)enable {
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	if (enable) {
+		BOOL hasPhotos = [_sharedManager numberOfEventContainedImage] > 0;
+		[self.infoButton setEnabled:hasPhotos];
+		[self.shareButton setEnabled:hasPhotos];
+	} else {
+		[self.infoButton setEnabled:NO];
+		[self.shareButton setEnabled:NO];
+	}
+}
+
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[super appsButtonAction:barButtonItem];
+	if (IS_IPAD) {
+		[self enableControls:!self.A3RootViewController.showLeftView];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -9,7 +9,7 @@
 #import "A3DaysCounterReminderListViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
-#import "A3DaysCounterSlidershowMainViewController.h"
+#import "A3DaysCounterSlideShowMainViewController.h"
 #import "A3DaysCounterAddEventViewController.h"
 #import "A3DaysCounterCalendarListMainViewController.h"
 #import "A3DaysCounterReminderListViewController.h"
@@ -56,6 +56,29 @@
     [self makeBackButtonEmptyArrow];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)mainMenuViewDidHide {
+	[self enableControls:YES];
+}
+
+- (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
+
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+
+	[self.toolbarItems[4] setEnabled:enable];
+}
+
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[super appsButtonAction:barButtonItem];
+	if (IS_IPAD) {
+		[self enableControls:!self.A3RootViewController.showLeftView];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -80,6 +103,7 @@
 - (void)dealloc
 {
     self.itemArray = nil;
+	[self removeObserver];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
@@ -217,7 +241,7 @@
 
 #pragma mark - action method
 - (IBAction)photoViewAction:(id)sender {
-    A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
+    A3DaysCounterSlideShowMainViewController *viewCtrl = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }

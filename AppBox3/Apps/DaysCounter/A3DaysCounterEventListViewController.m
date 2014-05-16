@@ -20,7 +20,7 @@
 #import "A3DaysCounterEventListEditViewController.h"
 #import "A3DateHelper.h"
 #import "A3RoundDateView.h"
-#import "A3DaysCounterSlidershowMainViewController.h"
+#import "A3DaysCounterSlideShowMainViewController.h"
 #import "A3DaysCounterCalendarListMainViewController.h"
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3DaysCounterReminderListViewController.h"
@@ -854,7 +854,7 @@
 
 #pragma mark - action method
 - (IBAction)photoViewAction:(id)sender {
-    A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
+    A3DaysCounterSlideShowMainViewController *viewCtrl = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
