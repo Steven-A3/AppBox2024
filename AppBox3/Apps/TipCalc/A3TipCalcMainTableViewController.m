@@ -683,6 +683,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [self.dataManager historyToRecently:aHistory];
 
     self.tableView.tableHeaderView = [self headerView];
+    [_headerView showDetailInfoButton];
     [_headerView setResult:self.dataManager.tipCalcData withAnimation:YES];
     [self reloadTableDataSource];
     [self.tableView reloadData];
