@@ -1091,6 +1091,9 @@ NSString *kCalculationString;
     if (!self.isAddSubMode) {
         [self.fromToTextField resignFirstResponder];
     }
+    else {
+        [self.firstResponder resignFirstResponder];
+    }
 
     _isKeyboardShown = NO;
 
@@ -1100,6 +1103,7 @@ NSString *kCalculationString;
     [self setResultToHeaderViewWithAnimation:YES];
 
 	self.dateKeyboardViewController = nil;
+//    self.firstResponder = nil;
 }
 
 - (void)updateOffsetDateCompWithTextField:(UITextField *)textField {
