@@ -7,23 +7,18 @@
 //
 
 #import "A3TranslatorViewController.h"
-#import "A3UIDevice.h"
 #import "UIViewController+A3AppCategory.h"
-#import "MMDrawerController.h"
-#import "UIViewController+MMDrawerController.h"
 #import "A3TranslatorMessageViewController.h"
 #import "TranslatorHistory.h"
 #import "NSDate+TimeAgo.h"
 #import "A3TranslatorCircleView.h"
 #import "A3TranslatorFavoriteDataSource.h"
 #import "A3TranslatorListCell.h"
-#import "common.h"
 #import "UIView+Screenshot.h"
 #import "UIViewController+A3Addition.h"
 #import "TranslatorGroup.h"
 #import "A3TranslatorLanguage.h"
 #import "TranslatorFavorite.h"
-#import "FMMoveTableView.h"
 #import "NSMutableArray+A3Sort.h"
 #import "UIViewController+tableViewStandardDimension.h"
 
@@ -37,16 +32,6 @@
 @end
 
 @implementation A3TranslatorViewController
-
-- (void)cleanUp {
-	[self removeObserver];
-
-	_fetchedResultsController = nil;
-	_segmentedControl = nil;
-	_tableView = nil;
-	_addButton = nil;
-	_favoriteDataSource = nil;
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -72,7 +57,10 @@
 	[self setupSubviews];
 
 	[self registerContentSizeCategoryDidChangeNotification];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -81,72 +69,103 @@
 	// Dispose of any resources that can be recreated.
 }
 
-- (void)applicationDidEnterBackground:(NSNotification *)notification {
+- (void)cleanUp {
+	[self removeObserver];
+
+	_fetchedResultsController = nil;
+	_segmentedControl = nil;
+	_tableView = nil;
+	_addButton = nil;
+	_favoriteDataSource = nil;
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
-	@autoreleasepool {
-		[self.tableView reloadData];
+	[self.tableView reloadData];
+}
+
+- (void)mainMenuDidHide {
+	[self enableControls:YES];
+}
+
+- (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
+
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	if (enable) {
+		[_segmentedControl setTintColor:nil];
+	} else {
+		[_segmentedControl setTintColor:[UIColor colorWithRed:138.0/255.0 green:138.0/255.0 blue:138.0/255.0 alpha:1.0]];
+	}
+	[self.addButton setEnabled:enable];
+}
+
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[super appsButtonAction:barButtonItem];
+
+	if (IS_IPAD) {
+		[self enableControls:!self.A3RootViewController.showLeftView];
 	}
 }
 
 #pragma mark - Setup Subview
 
 - (void)setupSubviews {
-	@autoreleasepool {;
-		FNLOGRECT(self.view.frame);
-		FNLOGRECT(self.navigationController.view.frame);
+	FNLOGRECT(self.view.frame);
+	FNLOGRECT(self.navigationController.view.frame);
 
-		_segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"All", @"Favorites"]];
-		_segmentedControl.selectedSegmentIndex = 0;
-		[_segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
-		[self.view addSubview:_segmentedControl];
+	_segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"All", @"Favorites"]];
+	_segmentedControl.selectedSegmentIndex = 0;
+	[_segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+	[self.view addSubview:_segmentedControl];
 
-		[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
-			make.top.equalTo(self.view.top).with.offset(64.0 + 10.0);
-			make.centerX.equalTo(self.view.centerX);
-			make.width.equalTo(@(IS_IPHONE ? 170.0 : 300.0));
-			make.height.equalTo(@28);
-		}];
+	[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
+		make.top.equalTo(self.view.top).with.offset(64.0 + 10.0);
+		make.centerX.equalTo(self.view.centerX);
+		make.width.equalTo(@(IS_IPHONE ? 170.0 : 300.0));
+		make.height.equalTo(@28);
+	}];
 
-		UIView *line = [[UIView alloc] init];
-		line.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
-		[self.view addSubview:line];
+	UIView *line = [[UIView alloc] init];
+	line.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
+	[self.view addSubview:line];
 
-		[line makeConstraints:^(MASConstraintMaker *make) {
-			make.top.equalTo(self.view.top).with.offset(64.0 + (IS_RETINA ? 47.5 : 47.0));
-			make.centerX.equalTo(self.view.centerX);
-			make.width.equalTo(self.view.width);
-			make.height.equalTo(IS_RETINA ? @0.5 : @1);
-		}];
+	[line makeConstraints:^(MASConstraintMaker *make) {
+		make.top.equalTo(self.view.top).with.offset(64.0 + (IS_RETINA ? 47.5 : 47.0));
+		make.centerX.equalTo(self.view.centerX);
+		make.width.equalTo(self.view.width);
+		make.height.equalTo(IS_RETINA ? @0.5 : @1);
+	}];
 
-		_tableView = [[FMMoveTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-		_tableView.dataSource = self;
-		_tableView.delegate = self;
-		if (IS_IPAD) self.tableView.separatorInset = UIEdgeInsetsMake(0, 28, 0, 0);
-		_tableView.separatorColor = A3UITableViewSeparatorColor;
-		_tableView.rowHeight = 48.0;
-		[self.view addSubview:_tableView];
+	_tableView = [[FMMoveTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+	_tableView.dataSource = self;
+	_tableView.delegate = self;
+	if (IS_IPAD) self.tableView.separatorInset = UIEdgeInsetsMake(0, 28, 0, 0);
+	_tableView.separatorColor = A3UITableViewSeparatorColor;
+	_tableView.rowHeight = 48.0;
+	[self.view addSubview:_tableView];
 
-		[_tableView makeConstraints:^(MASConstraintMaker *make) {
-			make.top.equalTo(line.bottom);
-			make.bottom.equalTo(self.view.bottom);
-			make.left.equalTo(self.view.left);
-			make.right.equalTo(self.view.right);
-		}];
+	[_tableView makeConstraints:^(MASConstraintMaker *make) {
+		make.top.equalTo(line.bottom);
+		make.bottom.equalTo(self.view.bottom);
+		make.left.equalTo(self.view.left);
+		make.right.equalTo(self.view.right);
+	}];
 
-		_addButton = [UIButton buttonWithType:UIButtonTypeSystem];
-		[_addButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateNormal];
-		[_addButton addTarget:self action:@selector(addButtonAction) forControlEvents:UIControlEventTouchUpInside];
-		[self.view addSubview:_addButton];
+	_addButton = [UIButton buttonWithType:UIButtonTypeSystem];
+	[_addButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateNormal];
+	[_addButton addTarget:self action:@selector(addButtonAction) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview:_addButton];
 
-		[_addButton makeConstraints:^(MASConstraintMaker *make) {
-			make.centerX.equalTo(self.view.centerX);
-			make.width.equalTo(@44);
-			make.height.equalTo(@44);
-			make.bottom.equalTo(self.view.bottom).with.offset(IS_RETINA ? -10.5 : -10);
-		}];
-	}
+	[_addButton makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(self.view.centerX);
+		make.width.equalTo(@44);
+		make.height.equalTo(@44);
+		make.bottom.equalTo(self.view.bottom).with.offset(IS_RETINA ? -10.5 : -10);
+	}];
 }
 
 #pragma mark -------------- SegmentedControl
@@ -210,45 +229,43 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell *cell;
-	@autoreleasepool {
-		static NSString *cellIdentifier = @"TranslatorListCell";
+	static NSString *cellIdentifier = @"TranslatorListCell";
 
-		TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
+	TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
 
-		if (IS_IPHONE) {
-			UITableViewCell *iPhone_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (IS_IPHONE) {
+		UITableViewCell *iPhone_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
-			if(iPhone_cell == nil) {
-				iPhone_cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-			}
-
-			iPhone_cell.textLabel.font = [UIFont systemFontOfSize:15];
-			iPhone_cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
-			iPhone_cell.detailTextLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:142.0/255.0 alpha:1.0];
-
-			cell = iPhone_cell;
-			cell.detailTextLabel.text = [[group.texts valueForKeyPath:@"@max.date"] timeAgo];
-		} else {
-			A3TranslatorListCell *iPad_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-
-			if(iPad_cell == nil) {
-				iPad_cell = [[A3TranslatorListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-			}
-
-			cell = iPad_cell;
-			iPad_cell.dateLabel.text = [[group.texts valueForKeyPath:@"@max.date"] timeAgo];
+		if(iPhone_cell == nil) {
+			iPhone_cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 		}
 
-		cell.textLabel.text = [NSString stringWithFormat:@"%@ to %@",
-														 [A3TranslatorLanguage localizedNameForCode:group.sourceLanguage],
-														 [A3TranslatorLanguage localizedNameForCode:group.targetLanguage]];
+		iPhone_cell.textLabel.font = [UIFont systemFontOfSize:15];
+		iPhone_cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+		iPhone_cell.detailTextLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:142.0/255.0 alpha:1.0];
 
-		A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-		circleView.textLabel.text = [NSString stringWithFormat:@"%ld", (long)[group.texts count]];
-		cell.imageView.image = [circleView imageByRenderingView];
+		cell = iPhone_cell;
+		cell.detailTextLabel.text = [[group.texts valueForKeyPath:@"@max.date"] timeAgo];
+	} else {
+		A3TranslatorListCell *iPad_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		if(iPad_cell == nil) {
+			iPad_cell = [[A3TranslatorListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+		}
+
+		cell = iPad_cell;
+		iPad_cell.dateLabel.text = [[group.texts valueForKeyPath:@"@max.date"] timeAgo];
 	}
+
+	cell.textLabel.text = [NSString stringWithFormat:@"%@ to %@",
+													 [A3TranslatorLanguage localizedNameForCode:group.sourceLanguage],
+													 [A3TranslatorLanguage localizedNameForCode:group.targetLanguage]];
+
+	A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+	circleView.textLabel.text = [NSString stringWithFormat:@"%ld", (long)[group.texts count]];
+	cell.imageView.image = [circleView imageByRenderingView];
+
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 	return cell;
 }

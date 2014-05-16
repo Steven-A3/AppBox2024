@@ -168,7 +168,9 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 	[self.textViewResponder resignFirstResponder];
 
 	[super appsButtonAction:barButtonItem];
-	[self enableControls:!self.A3RootViewController.showLeftView];
+	if (IS_IPAD) {
+		[self enableControls:!self.A3RootViewController.showLeftView];
+	}
 }
 
 -(void)enableControls:(BOOL)enable
