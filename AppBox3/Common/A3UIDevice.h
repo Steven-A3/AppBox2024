@@ -31,7 +31,7 @@
 #define A3_TABLE_VIEW_ROW_HEIGHT_IPHONE		44.0
 #define PICKER_VIEW_HEIGHT					216.0
 
-#define A3_TEXT_COLOR_DISABLED              [UIColor colorWithRed:194.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1.0]
+#define A3_TEXT_COLOR_DISABLED              [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0]
 #define A3_TEXT_COLOR_DEFAULT				[UIColor blackColor]
 
 #define IS_IPAD    	([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)

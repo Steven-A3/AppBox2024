@@ -395,6 +395,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 - (A3LanguagePickerController *)presentLanguagePickerControllerWithDetectLanguage:(BOOL)detectLanguage {
 	A3LanguagePickerController *viewController = [[A3LanguagePickerController alloc] initWithLanguages:[A3TranslatorLanguage findAllWithDetectLanguage:detectLanguage]];
 	viewController.delegate = self;
+	viewController.selectedCode = detectLanguage ? _originalTextLanguage : _translatedTextLanguage;
 	[self presentSubViewController:viewController];
 	return viewController;
 }

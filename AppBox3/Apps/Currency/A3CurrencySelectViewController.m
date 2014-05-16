@@ -117,7 +117,7 @@
 			textColor = [UIColor blackColor];
 		} else {
 			if ([self isFavoriteItemForCurrencyItem:data.code]) {
-				textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
+				textColor = A3_TEXT_COLOR_DISABLED;
 			} else {
 				textColor = [UIColor blackColor];
 			}

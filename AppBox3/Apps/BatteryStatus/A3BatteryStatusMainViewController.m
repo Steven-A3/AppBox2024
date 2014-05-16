@@ -97,7 +97,7 @@
 	if (!IS_IPAD) return;
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.navigationItem.rightBarButtonItem setEnabled:enable];
-	[self.sectionHeaderView.tableSegmentButton setTintColor:enable ? nil : [UIColor colorWithRGBRed:138.0 green:138.0 blue:138.0 alpha:255.0]];
+	[self.sectionHeaderView.tableSegmentButton setTintColor:enable ? nil : SEGMENTED_CONTROL_DISABLED_TINT_COLOR2];
 	[self.sectionHeaderView.tableSegmentButton setEnabled:enable];
 }
 

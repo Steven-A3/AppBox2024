@@ -92,8 +92,9 @@ enum SortingKind {
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.navigationItem.rightBarButtonItem setEnabled:enable];
 	[self.addButton setEnabled:enable];
-	[self.segmentedControlRef setTintColor:enable ? nil : [UIColor colorWithRGBRed:138.0 green:138.0 blue:138.0 alpha:255.0]];
-	[self.segmentedControlRef setEnabled:enable];
+	BOOL segmentedControlEnable = enable && [WalletItem MR_countOfEntities] > 0;
+	[self.segmentedControlRef setTintColor:segmentedControlEnable ? nil : [UIColor colorWithRGBRed:194 green:194 blue:194 alpha:255]];
+	[self.segmentedControlRef setEnabled:segmentedControlEnable];
 	self.tabBarController.tabBar.selectedImageTintColor = enable ? nil : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
 }
 

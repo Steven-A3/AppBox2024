@@ -15,6 +15,7 @@
 #import "UnitItem.h"
 #import "A3UnitConverterTVActionCell.h"
 #import "A3UnitPriceAddViewController.h"
+#import "UIColor+A3Addition.h"
 
 #define kCellHeight 56
 
@@ -37,12 +38,6 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -220,7 +215,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	cell.textLabel.text = @"None";
     if (!_selectedUnit) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        cell.textLabel.textColor = [UIColor lightGrayColor];
+        cell.textLabel.textColor = [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
     }
     else {
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -403,61 +398,58 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *toCell=nil;
-	@autoreleasepool {
-		toCell = nil;
-        
-        if (!_isFavoriteMode && (tableView != self.searchDisplayController.searchResultsTableView) && ([self.allData objectAtIndex:indexPath.row] == self.noneItem)) {
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-                cell.textLabel.font = [UIFont systemFontOfSize:17];
-            }
-            [self configureNoneCell:cell];
-            toCell = cell;
-        }
-        else {
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-                cell.textLabel.font = [UIFont systemFontOfSize:17];
-            }
-            
-            // Configure the cell...
-            BOOL checkedItem = NO;
-            UnitItem *data;
-            if (tableView == self.searchDisplayController.searchResultsTableView) {
-                data = self.filteredResults[indexPath.row];
-            }
-            else {
-                if (_isFavoriteMode) {
-                    UnitPriceFavorite *favorite = _favorites[indexPath.row];
-                    data = favorite.item;
-                }
-                else {
-                    data = _allData[indexPath.row];
-                }
-            }
-            
-            cell.textLabel.text = data.unitName;
-            
-            if (_selectedUnit && ([[data objectID] isEqual:[_selectedUnit objectID]])) {
-                checkedItem = YES;
-            }
-            
-            if (checkedItem) {
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-                cell.textLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
-            }
-            else {
-                cell.accessoryType = UITableViewCellAccessoryNone;
-                cell.textLabel.textColor = [UIColor blackColor];
-            }
-            
-            toCell = cell;
-        }
+	UITableViewCell *toCell=nil;
+
+	if (!_isFavoriteMode && (tableView != self.searchDisplayController.searchResultsTableView) && ([self.allData objectAtIndex:indexPath.row] == self.noneItem)) {
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		if (cell == nil) {
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+			cell.textLabel.font = [UIFont systemFontOfSize:17];
+		}
+		[self configureNoneCell:cell];
+		toCell = cell;
 	}
-    
+	else {
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		if (cell == nil) {
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+			cell.textLabel.font = [UIFont systemFontOfSize:17];
+		}
+
+		// Configure the cell...
+		BOOL checkedItem = NO;
+		UnitItem *data;
+		if (tableView == self.searchDisplayController.searchResultsTableView) {
+			data = self.filteredResults[indexPath.row];
+		}
+		else {
+			if (_isFavoriteMode) {
+				UnitPriceFavorite *favorite = _favorites[indexPath.row];
+				data = favorite.item;
+			}
+			else {
+				data = _allData[indexPath.row];
+			}
+		}
+
+		cell.textLabel.text = data.unitName;
+
+		if (_selectedUnit && ([[data objectID] isEqual:[_selectedUnit objectID]])) {
+			checkedItem = YES;
+		}
+
+		if (checkedItem) {
+			cell.accessoryType = UITableViewCellAccessoryCheckmark;
+			cell.textLabel.textColor = [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0];
+		}
+		else {
+			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.textLabel.textColor = [UIColor blackColor];
+		}
+
+		toCell = cell;
+	}
+
     return toCell;
 }
 

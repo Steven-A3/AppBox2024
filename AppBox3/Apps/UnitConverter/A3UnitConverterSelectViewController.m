@@ -424,55 +424,55 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *toCell=nil;
-	@autoreleasepool {
-		toCell = nil;
-        
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            cell.textLabel.font = [UIFont systemFontOfSize:17.0];
-        }
-        
-        // Configure the cell...
-        BOOL checkedItem = NO;
-        UnitItem *data;
-        if (tableView == self.searchDisplayController.searchResultsTableView) {
-            data = self.filteredResults[indexPath.row];
-        }
-        else {
-            if (isFavoriteMode) {
-                UnitFavorite *favorite = _favorites[indexPath.row];
-                data = favorite.item;
-            }
-            else {
-                data = _allData[indexPath.row];
-            }
-        }
-        
-        cell.textLabel.text = data.unitName;
-        
-        if ([data.unitName isEqualToString:_selectedItem.item.unitName]) {
-            checkedItem = YES;
-        }
-        
-        if (checkedItem) {
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            cell.textLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
-        }
-        else {
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.textLabel.textColor = [UIColor blackColor];
-        }
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item == %@", data];
-        NSArray *items = [self.convertItems filteredArrayUsingPredicate:predicate];
-        if (items.count > 0) {
-            cell.textLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
-        }
-        
-        toCell = cell;
+
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if (cell == nil) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+		cell.textLabel.font = [UIFont systemFontOfSize:17.0];
 	}
-    
+
+	// Configure the cell...
+	BOOL checkedItem = NO;
+	UnitItem *data;
+	if (tableView == self.searchDisplayController.searchResultsTableView) {
+		data = self.filteredResults[indexPath.row];
+	}
+	else {
+		if (isFavoriteMode) {
+			UnitFavorite *favorite = _favorites[indexPath.row];
+			data = favorite.item;
+		}
+		else {
+			data = _allData[indexPath.row];
+		}
+	}
+
+	cell.textLabel.text = data.unitName;
+
+	if ([data.unitName isEqualToString:_selectedItem.item.unitName]) {
+		checkedItem = YES;
+	}
+
+	if (checkedItem) {
+		cell.accessoryType = UITableViewCellAccessoryCheckmark;
+		cell.textLabel.textColor = [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0];
+		FNLOG(@"%@", cell.textLabel.text);
+	}
+	else {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+		cell.textLabel.textColor = [UIColor blackColor];
+	}
+
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item == %@", data];
+	NSArray *items = [self.convertItems filteredArrayUsingPredicate:predicate];
+	if (items.count > 0) {
+		cell.textLabel.textColor = [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0];
+		FNLOG(@"%@", cell.textLabel.text);
+	}
+	FNLOG(@"%@", cell.textLabel.text);
+
+	toCell = cell;
+
     return toCell;
 }
 

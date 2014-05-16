@@ -13,6 +13,7 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3StandardLeft15Cell.h"
+#import "UIColor+A3Addition.h"
 
 @interface A3LanguagePickerController () <UISearchBarDelegate>
 
@@ -90,6 +91,11 @@ static NSString *CellIdentifier = @"Cell";
 	}
 	cell.textLabel.font = A3UITableViewTextLabelFont;
 	cell.textLabel.text = data.displayName;
+	if (_selectedCode && data.code && [_selectedCode isEqualToString:data.code]) {
+		cell.textLabel.textColor = [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
+	} else {
+		cell.textLabel.textColor = [UIColor blackColor];
+	}
 
 	return cell;
 }
