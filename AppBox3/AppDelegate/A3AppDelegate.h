@@ -43,6 +43,7 @@ extern NSString *const kA3MainMenuRecentlyUsed;
 extern NSString *const A3AppsMainMenuContentsChangedNotification;
 extern NSString *const A3DrawerStateChanged;
 extern NSString *const A3MainMenuBecameFirstResponder;
+extern NSString *const A3NotificationMainMenuDidShow;
 extern NSString *const A3NotificationMainMenuDidHide;
 extern NSString *const A3DropboxLoginWithSuccess;
 extern NSString *const A3DropboxLoginFailed;

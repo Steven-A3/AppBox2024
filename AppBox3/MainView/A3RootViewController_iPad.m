@@ -148,7 +148,9 @@ static const CGFloat kSideViewWidth = 320.0;
 
 	} completion:^(BOOL finished) {
 		[self layoutSubviews];
-		if (!self.showLeftView) {
+		if (self.showLeftView) {
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidShow object:_leftMenuViewController];
+		} else {
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:_leftMenuViewController];
 		}
 	}];

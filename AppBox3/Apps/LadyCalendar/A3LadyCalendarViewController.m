@@ -93,8 +93,50 @@
 
 	[_collectionView registerNib:[UINib nibWithNibName:@"CalendarViewCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"fullCalendarCell"];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(periodDataChanged:) name:A3NotificationLadyCalendarPeriodDataChanged object:nil];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)mainMenuDidShow {
+	[self enableControls:NO];
+}
+
+- (void)mainMenuDidHide {
+	[self enableControls:YES];
+}
+
+- (void)rightSideViewDidAppear {
+	[self enableControls:NO];
+}
+
+- (void)rightSideViewWillDismiss {
+	[self enableControls:YES];
+	[self setupCalendarRange];
+	[self.collectionView reloadData];
+	[self updateCurrentMonthLabel];
+}
+
+- (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	[self.addButton setEnabled:enable];
+	if (enable) {
+		[_chartBarButton setEnabled:[self.dataManager numberOfPeriodsWithAccountID:[[self.dataManager currentAccount] uniqueID] ] > 0];
+		[_accountBarButton setEnabled:YES];
+		[_settingBarButton setEnabled:YES];
+	} else {
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
+			[barButtonItem setEnabled:NO];
+		}];
+	}
+	[self.toolbarItems[0] setEnabled:enable];
+	[self.toolbarItems[2] setEnabled:enable];
+	[self.toolbarItems[4] setEnabled:enable];
 }
 
 - (void)periodDataChanged:(NSNotification *)notification {
@@ -109,12 +151,6 @@
 
 - (void)dealloc {
 	[self removeObserver];
-}
-
-- (void)rightSideViewDidDismiss {
-	[self setupCalendarRange];
-	[self.collectionView reloadData];
-	[self updateCurrentMonthLabel];
 }
 
 - (void)viewWillAppear:(BOOL)animated
