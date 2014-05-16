@@ -41,8 +41,10 @@ static NSString *CellIdentifier = @"Cell";
     self.title = @"History";
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction)];
-    [self rightBarButtonDoneButton];
-    
+	if (IS_IPHONE) {
+		[self rightBarButtonDoneButton];
+	}
+
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
 	[self.tableView registerClass:[A3ExpenseListHistoryCell class] forCellReuseIdentifier:CellIdentifier];

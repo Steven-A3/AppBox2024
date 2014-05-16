@@ -23,6 +23,7 @@
 #import "ExpenseListItem+management.h"
 #import "FMMoveTableView.h"
 #import "NSMutableArray+A3Sort.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -114,14 +115,17 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
                                                                 style:UIBarButtonItemStylePlain
                                                                target:self
                                                                action:@selector(addNewButtonAction:)];
+		add.tag = A3RightBarButtonTagComposeButton;
         UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"]
                                                                   style:UIBarButtonItemStylePlain
                                                                  target:self
                                                                  action:@selector(historyButtonAction:)];
+		history.tag = A3RightBarButtonTagHistoryButton;
         UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"]
                                                                   style:UIBarButtonItemStylePlain
                                                                  target:self
                                                                  action:@selector(shareButtonAction:)];
+		share.tag = A3RightBarButtonTagShareButton;
         
         self.navigationItem.rightBarButtonItems = @[history, add, share];
     }
@@ -133,6 +137,76 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     [self moveToAddBudgetIfBudgetNotExistWithDelay:1.0];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeChanged:) name:A3NotificationExpenseListCurrencyCodeChanged object:nil];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)mainMenuDidHide {
+	[self enableControls:YES];
+}
+
+- (void)rightSideViewDidAppear {
+	[self enableControls:NO];
+}
+
+- (void)rightSideViewWillDismiss {
+	[self enableControls:YES];
+}
+
+- (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	if (enable) {
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
+			switch (barButtonItem.tag) {
+				case A3RightBarButtonTagComposeButton:{
+					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budget.budgetId == %@ and hasData == YES", _currentBudget.budgetId];
+					[barButtonItem setEnabled:[ExpenseListItem MR_countOfEntitiesWithPredicate:predicate] > 0];
+					break;
+				}
+				case A3RightBarButtonTagHistoryButton:
+					[barButtonItem setEnabled:[ExpenseListHistory MR_countOfEntities] > 0];
+					break;
+				case A3RightBarButtonTagShareButton:
+					[barButtonItem setEnabled:_currentBudget.category != nil];
+					break;
+			}
+		}];
+	} else {
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
+			[barButtonItem setEnabled:NO];
+		}];
+	}
+	[_headerView.detailInfoButton setEnabled:enable];
+}
+
+- (void)enableMoreMenuButtons {
+	// AddNew
+	UIButton *button = [_moreMenuButtons objectAtIndex:1];
+	if (button) {
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budget.budgetId == %@ and hasData == YES", _currentBudget.budgetId];
+		button.enabled = [ExpenseListItem MR_countOfEntitiesWithPredicate:predicate] > 0;
+	}
+
+	// History
+	button = [_moreMenuButtons objectAtIndex:2];
+	if (button) {
+		button.enabled = [ExpenseListHistory MR_countOfEntities] > 0;
+	}
+
+	// Share
+	button = [_moreMenuButtons objectAtIndex:0];
+	if (button) {
+		button.enabled = _currentBudget.category != nil;
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)cleanUp {
@@ -224,6 +298,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	[self clearEverything];
 
 	[super appsButtonAction:barButtonItem];
+	if (IS_IPAD) {
+		[self enableControls:!self.A3RootViewController.showLeftView];
+	}
 }
 
 - (NSNumberFormatter *)priceNumberFormatter
@@ -338,10 +415,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
 	// Popver controller, iPad only.
-    
-	[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-		[buttonItem setEnabled:YES];
-	}];
+
+	[self enableControls:YES];
 	_sharePopoverController = nil;
 }
 
@@ -399,11 +474,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     }
     
     if (IS_IPAD) {
+		[self enableControls:NO];
         _sharePopoverController.delegate = self;
-        [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-            [buttonItem setEnabled:NO];
-        }];
-        
         _headerView.detailInfoButton.enabled = NO;
     }
     
@@ -414,20 +486,16 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (void)shareButtonAction:(id)sender {
-	@autoreleasepool {
-		[self clearEverything];
-        
-        if (_isAutoMovingAddBudgetView) {
-            return;
-        }
-        
-        _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[@"test"] fromBarButtonItem:sender];
-        if (IS_IPAD) {
-            _sharePopoverController.delegate = self;
-            [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-                [buttonItem setEnabled:NO];
-            }];
-        }
+	[self clearEverything];
+
+	if (_isAutoMovingAddBudgetView) {
+		return;
+	}
+
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[@"test"] fromBarButtonItem:sender];
+	if (IS_IPAD) {
+		_sharePopoverController.delegate = self;
+		[self enableControls:NO];
 	}
 }
 
@@ -455,23 +523,21 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 - (void)moreButtonAction:(UIButton *)button
 {
-    @autoreleasepool {
-        [self.firstResponder resignFirstResponder];
-		[self setFirstResponder:nil];
-        
-        if (_isAutoMovingAddBudgetView) {
-            return;
-        }
-        
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(doneButtonAction:)];
-        _isShowMoreMenu = YES;
-        _moreMenuButtons = @[self.shareButton, self.addNewButton, [self historyButton:NULL]];
-		[self disableMoreButtonsIfBudgetNotExist];
-        _moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
-    };
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
+
+	if (_isAutoMovingAddBudgetView) {
+		return;
+	}
+
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+																			  style:UIBarButtonItemStylePlain
+																			 target:self
+																			 action:@selector(doneButtonAction:)];
+	_isShowMoreMenu = YES;
+	_moreMenuButtons = @[self.shareButton, self.addNewButton, [self historyButton:NULL]];
+	[self enableMoreMenuButtons];
+	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
 }
 
 - (void)addItemButtonAction:(id)sender
@@ -651,17 +717,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
         _currentBudget = [ExpenseListBudget MR_createEntity];
         _currentBudget.budgetId = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];
         
-        if (IS_IPHONE) {
-            for (UIBarButtonItem *aItem in _moreMenuButtons) {
-                aItem.enabled = NO;
-            }
-        }
-        else {
-            for (UIBarButtonItem *aItem in self.navigationItem.rightBarButtonItems) {
-                aItem.enabled = NO;
-            }
-        }
-        
         int defaultCount = 1;
         
         if (IS_IPHONE) {
@@ -691,7 +746,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     [self calculateAndDisplayResultWithAnimation:animation];
     _tableDataSourceArray = [self loadBudgetFromDB];
     [self.tableView reloadData];
-	[self disableMoreButtonsIfBudgetNotExist];
+	[self enableControls:YES];
 }
 
 - (void)reloadBudgetDataAndRemoveEmptyItem {
@@ -737,54 +792,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 #pragma mark - misc
-
-- (void)disableMoreButtonsIfBudgetNotExist {
-
-    if (IS_IPHONE) {
-        // AddNew
-        UIButton *aBtn = [_moreMenuButtons objectAtIndex:1];
-        if (aBtn) {
-            NSSet *filteredSet = [_currentBudget.expenseItems filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"hasData == YES"]];
-            aBtn.enabled = [filteredSet count] > 0 ? YES : NO;
-        }
-
-        // History
-        aBtn = [_moreMenuButtons objectAtIndex:2];
-        if (aBtn) {
-            NSArray * budgets = [ExpenseListHistory MR_findAll];
-            aBtn.enabled = (!budgets || budgets.count == 0) ? NO : YES;
-        }
-
-        // Share
-        aBtn = [_moreMenuButtons objectAtIndex:0];
-        if (aBtn) {
-            aBtn.enabled = (!_currentBudget || _currentBudget.category == nil) ? NO : YES;
-        }
-    }
-    else if (IS_IPAD) {
-        // AddNew
-        UIBarButtonItem *aBtn = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
-        if (aBtn) {
-            NSSet *filteredSet = [_currentBudget.expenseItems filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"hasData == YES"]];
-            aBtn.enabled = [filteredSet count] > 0 ? YES : NO;
-        }
-        
-        // History
-        aBtn = [self.navigationItem.rightBarButtonItems objectAtIndex:0];
-        if (aBtn) {
-            NSArray * budgets = [ExpenseListHistory MR_findAll];
-            aBtn.enabled = (!budgets || budgets.count == 0) ? NO : YES;
-        }
-        
-        // Share
-        aBtn = [self.navigationItem.rightBarButtonItems objectAtIndex:2];
-        if (aBtn) {
-            aBtn.enabled = (!_currentBudget || _currentBudget.category == nil) ? NO : YES;
-        }
-        
-        _headerView.detailInfoButton.enabled = YES;
-    }
-}
 
 - (void)moveToAddBudgetIfBudgetNotExistWithDelay:(CGFloat)delay {
     
@@ -1057,13 +1064,11 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 -(void)didDismissExpenseHistoryViewController {
-	[self disableMoreButtonsIfBudgetNotExist];
-    NSLog(@"History : %ld", (long)[[ExpenseListHistory MR_findAll] count]);
-    NSLog(@"Budget : %ld", (long)[[ExpenseListBudget MR_findAll] count]);
-    NSLog(@"Items : %ld", (long)[[ExpenseListItem MR_findAll] count]);
+	[self enableControls:YES];
 }
 
 #pragma mark - A3ExpenseListItemCell Delegate
+
 -(void)itemCellTextFieldBeginEditing:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
 {
 	[self setFirstResponder:textField];
@@ -1145,10 +1150,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
     // 유효한 아이템 구분. itemName 에 빈 스트링 입력.
     item.hasData = @(YES);
-    
-    // More Button 활성화.
-	[self disableMoreButtonsIfBudgetNotExist];
-    
+
     // 예외처리, itemName 편집 종료시, top scroll 적용.
     if (textField == aCell.nameTextField && textField == [self firstResponder]) {
         [self scrollToTopOfTableView];
@@ -1159,6 +1161,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
             self.firstResponder = nil;
         }
     }
+
+	[self enableControls:YES];
 }
 
 - (BOOL)isEmptyItemRow:(ExpenseListItem *)item {
