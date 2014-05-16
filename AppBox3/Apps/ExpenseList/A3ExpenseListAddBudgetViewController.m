@@ -28,6 +28,7 @@
 #import "A3Formatter.h"
 #import "A3SearchViewController.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 enum A3ExpenseListAddBudgetCellType {
     AddBudgetCellID_Budget = 100,
@@ -118,6 +119,28 @@ enum A3ExpenseListAddBudgetCellType {
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)rightSideViewDidAppear {
+	[self enableControls:NO];
+}
+
+- (void)rightSideViewWillDismiss {
+	[self enableControls:YES];
+}
+
+- (void)enableControls:(BOOL)enable {
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	[self.navigationItem.rightBarButtonItem setEnabled:enable];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)didReceiveMemoryWarning
