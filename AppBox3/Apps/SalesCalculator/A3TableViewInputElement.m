@@ -84,7 +84,8 @@
 			}
 			else {
 				if (_valueType == A3TableViewValueTypePercent) {
-					cell.textField.text = [NSString stringWithFormat:@"%@%%", [self value]];
+					NSNumber *value = [self.decimalFormatter numberFromString:self.value];
+                    cell.textField.text = [self.percentFormatter stringFromNumber:@([value doubleValue] / 100.0)];
 				} else {
 					NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
 					[decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -280,7 +281,8 @@
 					textField.text = [self.currencyFormatter stringFromNumber:@0];
 				}
 			} else {
-				textField.text = [self.currencyFormatter stringFromNumber:@([self.value doubleValue])];
+				//textField.text = [self.currencyFormatter stringFromNumber:@([self.value doubleValue])];
+                textField.text = [self.currencyFormatter stringFromNumber:[self.decimalFormatter numberFromString:[self value]]];
 			}
 			break;
 		}
@@ -308,7 +310,6 @@
                 
                 if (_valueType == A3TableViewValueTypePercent) {
 					NSNumber *value = [self.decimalFormatter numberFromString:self.value];
-
                     textField.text = [self.percentFormatter stringFromNumber:@([value doubleValue] / 100.0)];
                 }
                 else {
