@@ -87,6 +87,18 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     [self.tableView setEditing:YES animated:NO];
     
     [self registerContentSizeCategoryDidChangeNotification];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)rightSideViewWillDismiss {
+	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

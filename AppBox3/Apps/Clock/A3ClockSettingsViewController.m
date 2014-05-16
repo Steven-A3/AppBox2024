@@ -294,11 +294,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 }
 
 - (void)setSegmentedControlEnabled:(BOOL)enabled {
-	if (enabled) {
-		[self.segmentedControl setTintColor:nil];
-	} else {
-		[self.segmentedControl setTintColor:[UIColor colorWithRed:138.0/255.0 green:138.0/255.0 blue:138.0/255.0 alpha:1.0]];
-	}
+	[self.segmentedControl setTintColor:enabled ? nil : [UIColor colorWithRed:138.0 / 255.0 green:138.0 / 255.0 blue:138.0 / 255.0 alpha:1.0]];
 	[self.segmentedControl setEnabled:enabled];
 }
 
