@@ -18,6 +18,7 @@
 #import "A3UnitConverterHistory3RowCell.h"
 #import "TemperatureConveter.h"
 #import "A3UnitConverterHistoryViewController.h"
+#import "UIViewController+navigation.h"
 
 @interface A3UnitConverterHistoryViewController () <UIActionSheetDelegate>
 {
@@ -58,6 +59,12 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 
 	[self.tableView registerClass:[A3UnitConverterHistory3RowCell class] forCellReuseIdentifier:A3UnitConverterHistory3RowCellID];
 	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+	}
 }
 
 - (void)setupTableFooterView {

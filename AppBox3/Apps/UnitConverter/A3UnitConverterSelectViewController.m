@@ -17,6 +17,7 @@
 #import "A3UnitConverterTVActionCell.h"
 #import "A3UnitConverterAddViewController.h"
 #import "NSMutableArray+A3Sort.h"
+#import "UIViewController+navigation.h"
 
 
 @interface A3UnitConverterSelectViewController () <UISearchDisplayDelegate, A3UnitConverterAddViewControllerDelegate>
@@ -98,6 +99,12 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
         // 보고
         [self updateEditedDataToDelegate];
     }
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+	}
 }
 
 - (void)didReceiveMemoryWarning

@@ -679,7 +679,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 				[self.firstResponder resignFirstResponder];
 				[self setFirstResponder:nil];
 
-				[self presentSubViewController:[self unitsTabBarController]];
+				[self.A3RootViewController presentRightSideViewController:[self unitsTabBarController]];
 			}
 		}
 		else {

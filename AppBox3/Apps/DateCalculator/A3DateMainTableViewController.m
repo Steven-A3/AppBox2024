@@ -357,13 +357,13 @@ NSString *kCalculationString;
 {
     [self clearEverything];
     A3DateCalcEditEventViewController *viewController = [[A3DateCalcEditEventViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    
+	viewController.delegate = self;
+
     if (IS_IPHONE) {
         [self.navigationController pushViewController:viewController animated:YES];
     } else {
-        viewController.delegate = self;
-        [self presentSubViewController:viewController];
 		[self enableControls:NO];
+		[self.A3RootViewController presentRightSideViewController:viewController];
     }
 }
 
@@ -1535,9 +1535,9 @@ NSString *kCalculationString;
         if (IS_IPHONE) {
             [self.navigationController pushViewController:viewController animated:YES];
         } else {
-            [self presentSubViewController:viewController];
 			[self enableControls:NO];
-        }
+			[self.A3RootViewController presentRightSideViewController:viewController];
+		}
         
     } else if (indexPath.section == 3 && indexPath.row == 0) {
         // Duration
@@ -1553,9 +1553,9 @@ NSString *kCalculationString;
         if (IS_IPHONE) {
             [self.navigationController pushViewController:viewController animated:YES];
         } else {
-            [self presentSubViewController:viewController];
 			[self enableControls:NO];
-        }
+			[self.A3RootViewController presentRightSideViewController:viewController];
+		}
     }
 }
 

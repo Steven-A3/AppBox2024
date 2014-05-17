@@ -218,7 +218,6 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
 	A3UnitConverterAddViewController *viewController = [self unitAddViewController];
 
 	[self.navigationController pushViewController:viewController animated:YES];
-	//        [self presentSubViewController:viewController];
 }
 
 - (A3UnitConverterAddViewController *)unitAddViewController {
