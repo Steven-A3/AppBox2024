@@ -233,7 +233,7 @@
     [_expressionLabel makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.left).with.offset(15);
         self.expressionLabelRightConstraint =  make.right.equalTo(self.view.right).with.offset([self getExpressionLabelRightOffSet:screenBounds]);
-        make.height.equalTo(@21);
+        make.height.equalTo(@23);
         self.expressionTopconstraint = make.top.equalTo(self.view.top).with.offset([self getExpressionLabelTopOffSet:screenBounds]);
     }];
     

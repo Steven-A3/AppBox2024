@@ -353,7 +353,7 @@ typedef CMathParser<char, double> MathParser;
 
 - (NSAttributedString *) getExpressionWith:(NSString *) mExpression isDefault:(BOOL)bDefault{
     FNLOG(@"mExpression = %@",mExpression);
-    NSAttributedString *temp = [[NSAttributedString alloc] init];
+    NSAttributedString *temp = [[NSAttributedString alloc] initWithAttributedString:[calutil invisibleString]];
     NSUInteger i, length = [mExpression length];
     NSString *currentString;
     NSRange range;
