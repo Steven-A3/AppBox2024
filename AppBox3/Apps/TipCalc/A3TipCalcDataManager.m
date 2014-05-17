@@ -69,11 +69,8 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     destination.split = source.split;
     destination.tax = source.tax;
     destination.tip = source.tip;
-    destination.rRoundMethod.tip = source.rRoundMethod.tip;
-    destination.rRoundMethod.tipPerPerson = source.rRoundMethod.tipPerPerson;
-    destination.rRoundMethod.total = source.rRoundMethod.total;
-    destination.rRoundMethod.totalPerPerson = source.rRoundMethod.totalPerPerson;
     destination.rRoundMethod.optionType = source.rRoundMethod.optionType;
+    destination.rRoundMethod.valueType = source.rRoundMethod.valueType;
 }
 
 - (void)addHistory:(NSString*)aCaptionTip total:(NSString*)aCaptionTotal
@@ -143,124 +140,6 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     return aSrc;
 }
 
-// elf 수정중 - round method 적용하기
-- (double)costsAfterTax
-{
-    double dRst = 0.0;
-    
-    double dCosts = [self.tipCalcData.costs doubleValue];
-    
-    if([self.tipCalcData.knownValue intValue] == 0 || ![self isTaxOptionOn]) // 세후금액
-        dRst = dCosts;
-    else
-        dRst = [self costsBeforeTax] + [self taxRst];
-    
-    return dRst;
-}
-
-- (double)costsBeforeTax    // //세전금액 역산-_-
-{
-    double dRst = 0.0;
-    
-    if([self.tipCalcData.knownValue intValue] == 1) // 세전금액입력일경우 그냥 리턴
-        return [self.tipCalcData.costs doubleValue];
-    
-    double dCosts = [self.tipCalcData.costs doubleValue];
-    double dTaxPer = [self.tipCalcData.tax doubleValue];
-    
-    dRst = dCosts / ((100+dTaxPer) * 0.01);
-    
-    return dRst;
-}
-
-// elf 수정중 - round method 적용하기
-- (double)taxRst
-{
-    double dRst = 0.0;
-    
-    double dCosts = [self.tipCalcData.costs doubleValue];
-    double dTaxPer = [self.tipCalcData.tax doubleValue];
-    
-    if(![self.tipCalcData.isPercentTax boolValue])
-        return dTaxPer;
-    
-    if([self.tipCalcData.knownValue intValue] == 0) // 세후금액일때세금
-        dRst = dCosts - [self costsBeforeTax];
-    else    // 세전금액일때세금
-        dRst = dCosts * (dTaxPer * 0.01);
-    
-    return dRst;
-}
-
-- (double)tipRst:(int)aBeforeSplitFlag
-{
-    double dRst = 0.0;
-    
-    double dCosts = [self.tipCalcData.costs doubleValue];
-    double dTipPer = [self.tipCalcData.tip doubleValue];
-    double dSplit = [self.tipCalcData.split doubleValue];
-    
-    if(![self.tipCalcData.isPercentTip boolValue])
-    {
-        dRst = dTipPer;
-    }
-    else
-    {
-        if([self.tipCalcData.knownValue intValue] == 0) // 세후가격
-        {
-            double dCostsBeforeTax = [self costsBeforeTax];
-            
-            dRst = dCostsBeforeTax * (dTipPer * 0.01);
-        }
-        else
-        {// 세전가격
-            dRst = dCosts * (dTipPer * 0.01);
-        }
-        
-        if ([self roundingMethodValue] == TCRoundingMethodValue_Tip) {
-            dRst = [self roundingValue:dRst rdMethod:[self.tipCalcData.rRoundMethod.tip intValue]];
-        }
-    }
-
-    if(aBeforeSplitFlag == 1)
-    {
-        dRst = dRst / dSplit;
-        
-        if ([self roundingMethodValue] == TCRoundingMethodValue_Tip) {
-            dRst = [self roundingValue:dRst rdMethod:[self.tipCalcData.rRoundMethod.tipPerPerson intValue]];
-        }
-    }
-    
-    return dRst;
-}
-
-- (double)totalRst:(int)aBeforeSplitFlag
-{
-    double dRst = 0.0;
-    
-    double dCosts = [self.tipCalcData.costs doubleValue];
-    double dSplit = [self.tipCalcData.split doubleValue];
-    
-    if([self.tipCalcData.knownValue intValue] == 0) // 세후가격
-        dRst = dCosts + [self tipRst:0];
-    else    // 세전가격
-        dRst = dCosts + [self taxRst] + [self tipRst:0];
-    
-    if ([self roundingMethodValue] == TCRoundingMethodValue_Total) {
-        dRst = [self roundingValue:dRst rdMethod:[self.tipCalcData.rRoundMethod.total intValue]];
-    }
-    
-    if (aBeforeSplitFlag == 1) {
-        dRst = dRst / dSplit;
-
-        if ([self roundingMethodValue] == TCRoundingMethodValue_TotalPerPerson) {
-            dRst = [self roundingValue:dRst rdMethod:[self.tipCalcData.rRoundMethod.totalPerPerson intValue]];
-        }
-    }
-    
-    return dRst;
-}
-
 - (NSString*)sharedDataIsMail:(BOOL)isMail
 {
     NSMutableString* mstrOutput = [[NSMutableString alloc] init];
@@ -300,6 +179,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
         if ([self.tipCalcData.isPercentTax boolValue]) {
             NSNumberFormatter *formatter = [NSNumberFormatter new];
             formatter.numberStyle = NSNumberFormatterPercentStyle;
+            formatter.maximumFractionDigits = 3;
             [mstrOutput appendFormat:@"Tax : %@<br>", [formatter stringFromNumber:@([self.tipCalcData.tax doubleValue] / 100.0)]];
         }
         else {
@@ -312,6 +192,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     if ([self.tipCalcData.isPercentTip boolValue]) {
         NSNumberFormatter *formatter = [NSNumberFormatter new];
         formatter.numberStyle = NSNumberFormatterPercentStyle;
+        formatter.maximumFractionDigits = 3;
         [mstrOutput appendFormat:@"Tip : %@<br>", [formatter stringFromNumber:@([self.tipCalcData.tip doubleValue] / 100.0)]];
     }
     else {

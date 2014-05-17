@@ -2,7 +2,7 @@
 //  TipCalcRoundMethod.m
 //  AppBox3
 //
-//  Created by A3 on 3/13/14.
+//  Created by dotnetguy83 on 5/17/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -13,10 +13,6 @@
 @implementation TipCalcRoundMethod
 
 @dynamic optionType;
-@dynamic tip;
-@dynamic tipPerPerson;
-@dynamic total;
-@dynamic totalPerPerson;
 @dynamic valueType;
 @dynamic rRecently;
 

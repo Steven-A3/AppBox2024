@@ -307,7 +307,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         
         values = [NSMutableArray new];
         [values addObject:[formatter stringFromNumber:[self.dataManager subtotal]]];
-        [values addObject:[formatter stringFromNumber:[self.dataManager tipValueWithSplitWithRounding:YES]]];
+        [values addObject:[formatter stringFromNumber:[self.dataManager tipValueWithRounding:YES]]];
         [titles addObject:@[@"Subtotal", @"Tip"]];
         [details addObject:values];
     }
@@ -680,11 +680,11 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 #pragma mark A3TipCalcHistorySelectDelegate
 - (void)didSelectHistoryData:(TipCalcHistory *)aHistory {
     [self.dataManager historyToRecently:aHistory];
+    [self reloadTableDataSource];
 
     self.tableView.tableHeaderView = [self headerView];
     [_headerView showDetailInfoButton];
     [_headerView setResult:self.dataManager.tipCalcData withAnimation:YES];
-    [self reloadTableDataSource];
     [self.tableView reloadData];
 }
 
