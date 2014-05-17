@@ -16,6 +16,7 @@
 #import "PercentCalcHistory.h"
 #import "A3DefaultColorDefines.h"
 #import "NSDate+TimeAgo.h"
+#import "UIViewController+navigation.h"
 
 NSString *const A3PercentCalcHistoryCellID = @"cell1";
 NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
@@ -61,6 +62,12 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 	[self.tableView registerClass:[A3PercentCalcHistoryCompareCell class] forCellReuseIdentifier:A3PercentCalcHistoryCompareCellID];
     
     [self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+	}
 }
 
 - (void)didReceiveMemoryWarning

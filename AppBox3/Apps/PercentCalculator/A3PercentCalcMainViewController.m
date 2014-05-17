@@ -20,6 +20,7 @@
 #import "A3JHTableViewEntryCell.h"
 #import "NSNumberFormatter+Extention.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIViewController+navigation.h"
 
 
 @interface A3PercentCalcMainViewController () <UITextFieldDelegate, A3PercentCalcHistoryDelegate>
@@ -29,6 +30,7 @@
 @property (strong, nonatomic) NSArray *sections;
 @property (assign, nonatomic) PercentCalcType calcType;
 @property (copy, nonatomic) NSString *textBeforeEditingTextField;
+@property (strong, nonatomic) UINavigationController *modalNavigationController;
 
 @end
 
@@ -329,24 +331,27 @@
     formattedData.dataType = self.calcType;
     formattedData.values = @[_factorX1, _factorY1, _factorX2, _factorY2];
     _formattedFactorValues = [formattedData formattedStringValuesByCalcType];
-    NSLog(@"here????????");
 }
 
 -(void)historyButtonAction:(id)sender {
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
-	[self enableControls:NO];
-
 	A3PercentCalcHistoryViewController *viewController = [[A3PercentCalcHistoryViewController alloc] initWithStyle:UITableViewStylePlain];
 	viewController.delegate = self;
-	[self presentSubViewController:viewController];
-
-	if (IS_IPAD) {
-		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
-			barButton.enabled = NO;
-		}];
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+	} else {
+		[self enableControls:NO];
+		[self.A3RootViewController presentRightSideViewController:viewController];
 	}
+}
+
+- (void)historyViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
+	_modalNavigationController = nil;
 }
 
 -(void)saveToHistory:(id)sender
