@@ -16,6 +16,7 @@
 #import "ExpenseListHistory.h"
 #import "ExpenseListItem.h"
 #import "ExpenseListBudgetLocation.h"
+#import "UIViewController+navigation.h"
 
 static NSString *CellIdentifier = @"Cell";
 
@@ -48,6 +49,12 @@ static NSString *CellIdentifier = @"Cell";
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
 	[self.tableView registerClass:[A3ExpenseListHistoryCell class] forCellReuseIdentifier:CellIdentifier];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+	}
 }
 
 - (NSFetchedResultsController *)fetchedResultsController {

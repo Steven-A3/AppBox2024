@@ -10,6 +10,7 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3DefaultColorDefines.h"
+#import "UIViewController+navigation.h"
 
 @interface A3ItemSelectListViewController ()
 
@@ -42,6 +43,12 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+	}
 }
 
 - (void)doneButtonAction:(id)sender

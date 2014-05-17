@@ -24,6 +24,7 @@
 #import "FMMoveTableView.h"
 #import "NSMutableArray+A3Sort.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIViewController+navigation.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -33,6 +34,7 @@ NSString *const A3ExpenseListCurrencyCode = @"A3ExpenseListCurrencyCode";
 NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationExpenseListCurrencyCodeChanged";
 
 @interface A3ExpenseListMainViewController () <ATSDragToReorderTableViewControllerDelegate, UIPopoverControllerDelegate, A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate, A3ExpenseListHistoryDelegate>
+
 @property (nonatomic, strong) A3ExpenseListHeaderView *headerView;
 @property (nonatomic, strong) UIView *sep1View;
 @property (nonatomic, strong) UIView *sep2View;
@@ -47,7 +49,9 @@ NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationE
 @property (nonatomic, strong) NSMutableArray *tableDataSourceArray;
 @property (nonatomic, strong) NSNumberFormatter *priceNumberFormatter;
 @property (nonatomic, strong) UIButton *addItemButton;
-@property (strong, nonatomic) UIView *topWhitePaddingView;
+@property (nonatomic, strong) UIView *topWhitePaddingView;
+@property (nonatomic, strong) UINavigationController *modalNavigationController;
+
 @end
 
 @implementation A3ExpenseListMainViewController
@@ -477,8 +481,19 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     
     A3ExpenseListHistoryViewController *viewController = [[A3ExpenseListHistoryViewController alloc] initWithStyle:UITableViewStylePlain];
     viewController.delegate = self;
-    
-    [self presentSubViewController:viewController];
+
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(expenseHistoryViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+	} else {
+		[self.A3RootViewController presentRightSideViewController:viewController];
+	}
+}
+
+- (void)expenseHistoryViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
+	_modalNavigationController = nil;
 }
 
 - (void)shareButtonAction:(id)sender {

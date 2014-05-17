@@ -29,6 +29,7 @@
 #import "A3SearchViewController.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIViewController+navigation.h"
 
 enum A3ExpenseListAddBudgetCellType {
     AddBudgetCellID_Budget = 100,
@@ -50,6 +51,7 @@ enum A3ExpenseListAddBudgetCellType {
 @property (nonatomic, strong) CellExpandedBlock cellExpandedBlock;
 @property (nonatomic, strong) CellValueChangedBlock cellValueChangedBlock;
 @property (nonatomic, strong) BasicBlock cellInputDoneButtonPressed;
+@property (nonatomic, strong) UINavigationController *modalNavigationController;
 
 #pragma mark - Table View Data Element
 @property (nonatomic, strong) NSArray *section0_Array;
@@ -650,13 +652,25 @@ static NSString *CellIdentifier = @"Cell";
             selectTableViewController.root = _section0_Array[indexPath.row];
             selectTableViewController.delegate = self;
             selectTableViewController.indexPathOfOrigin = indexPath;
-            [self presentSubViewController:selectTableViewController];
+
+			if (IS_IPHONE) {
+				_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:selectTableViewController];
+				[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+				[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectTableViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:selectTableViewController];
+			} else {
+				[self.A3RootViewController presentRightSideViewController:selectTableViewController];
+			}
         }
         
         return;
     }
     
     [self.root didSelectRowAtIndexPath:indexPath];
+}
+
+- (void)selectTableViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
+	_modalNavigationController = nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
