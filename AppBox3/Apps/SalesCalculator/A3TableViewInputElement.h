@@ -33,16 +33,12 @@ typedef NS_ENUM(NSInteger, A3TableElementBigButtonType) {
 @class A3JHTableViewRootElement;
 @class A3TableViewInputElement;
 @class A3NumberKeyboardViewController;
-@protocol A3CalculatorDelegate;
-@protocol A3SearchViewControllerDelegate;
 
 typedef void (^CellTextInputBlock)(A3TableViewInputElement *, UITextField *);
 typedef void (^BasicBlock)(id sender);
 
 @protocol A3TableViewInputElementDelegate <NSObject>
 @optional
-- (UIViewController *)containerViewController;
-- (id<A3SearchViewControllerDelegate>)delegateForCurrencySelector;
 - (NSNumberFormatter *)currencyFormatterForTableViewInputElement;
 @end
 

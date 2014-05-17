@@ -7,12 +7,7 @@
 //
 
 #import "A3NumberKeyboardViewController_iPhone.h"
-#import "A3KeyboardButton_iPhone.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
-#import "A3CalculatorViewController_iPhone.h"
-#import "A3CalculatorDelegate.h"
-#import "A3CalculatorViewController_iPad.h"
-#import "A3NumberKeyboardViewController.h"
 
 @interface A3NumberKeyboardViewController_iPhone ()
 

@@ -7,7 +7,6 @@
 //
 
 
-@protocol A3CalculatorDelegate;
 @class HTCopyableLabel;
 
 extern NSString *const A3NotificationCalculatorDismissedWithValue;
@@ -16,7 +15,6 @@ extern NSString *const A3NotificationCalculatorDismissedWithValue;
 	UIViewController *_modalPresentingParentViewController;
 }
 
-@property (nonatomic, weak) id<A3CalculatorDelegate> delegate;
 @property (nonatomic, strong) HTCopyableLabel *evaluatedResultLabel;
 
 - (instancetype)initWithPresentingViewController:(UIViewController *)modalPresentingParentViewController;

@@ -18,12 +18,9 @@
 
 #import "A3AppDelegate.h"
 #import "A3NumberKeyboardViewController.h"
-#import "UIViewController+A3Addition.h"
 #import "UILabel+BaseAlignment.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3UnitPriceMainTableController.h"
-#import "A3CalculatorDelegate.h"
-#import "A3SearchViewController.h"
 #import "UITableView+utility.h"
 #import "A3WalletNoteCell.h"
 #import "NSString+conversion.h"
@@ -34,7 +31,7 @@ typedef NS_ENUM(NSInteger, PriceDiscountType) {
     Price_Amount,
 };
 
-@interface A3UnitPriceDetailTableController () <UITextFieldDelegate, UITextViewDelegate, A3KeyboardDelegate, UINavigationControllerDelegate, A3UnitSelectViewControllerDelegate, A3CalculatorDelegate, A3SearchViewControllerDelegate>
+@interface A3UnitPriceDetailTableController () <UITextFieldDelegate, UITextViewDelegate, A3KeyboardDelegate, UINavigationControllerDelegate, A3UnitSelectViewControllerDelegate>
 {
     PriceDiscountType _discountType;
     
@@ -812,10 +809,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	return self;
 }
 
-- (id <A3CalculatorDelegate>)delegateForCalculator {
-	return self;
-}
-
 - (void)calculatorViewController:(UIViewController *)viewController didDismissWithValue:(NSString *)value {
 	_calculatorTargetTextField.text = value;
 	[self textFieldDidEndEditing:_calculatorTargetTextField];
@@ -824,10 +817,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 #pragma mark --- Response to Currency Select Button and result
 
 - (UIViewController *)modalPresentingParentViewControllerForCurrencySelector {
-	return self;
-}
-
-- (id <A3SearchViewControllerDelegate>)delegateForCurrencySelector {
 	return self;
 }
 

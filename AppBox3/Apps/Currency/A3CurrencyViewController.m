@@ -28,7 +28,6 @@
 #import "A3CurrencyDataManager.h"
 #import "CurrencyRateItem.h"
 #import "NSDate+TimeAgo.h"
-#import "A3CalculatorDelegate.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIColor+A3Addition.h"
@@ -40,7 +39,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 
 @interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate,
 		A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate,
-		UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource, A3CalculatorDelegate>
+		UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource>
 
 @property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *equalItem;
@@ -918,14 +917,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
 	[self.numberKeyboardViewController.textInputTarget resignFirstResponder];
-}
-
-- (UIViewController *)modalPresentingParentViewControllerForCalculator {
-	return self;
-}
-
-- (id <A3CalculatorDelegate>)delegateForCalculator {
-	return self;
 }
 
 #pragma mark -- CalculatorDelegate

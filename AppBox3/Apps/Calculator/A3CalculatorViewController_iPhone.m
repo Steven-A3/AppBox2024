@@ -10,7 +10,6 @@
 #import "HTCopyableLabel.h"
 #import "A3CalcKeyboardView_iPhone.h"
 #import "FXPageControl.h"
-#import "A3CalculatorDelegate.h"
 #import "A3ExpressionComponent.h"
 #import "UIViewController+A3Addition.h"
 #import "A3Calculator.h"
@@ -234,7 +233,7 @@
     [_expressionLabel makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.left).with.offset(15);
         self.expressionLabelRightConstraint =  make.right.equalTo(self.view.right).with.offset([self getExpressionLabelRightOffSet:screenBounds]);
-        make.height.equalTo(@21);
+        make.height.equalTo(@23);
         self.expressionTopconstraint = make.top.equalTo(self.view.top).with.offset([self getExpressionLabelTopOffSet:screenBounds]);
     }];
     

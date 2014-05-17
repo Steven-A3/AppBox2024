@@ -26,7 +26,6 @@
 #import "A3PopoverTableViewController.h"
 #import "A3DefaultColorDefines.h"
 #import "A3ItemSelectListViewController.h"
-#import "A3CalculatorDelegate.h"
 #import "A3SearchViewController.h"
 #import "UIViewController+navigation.h"
 
@@ -1081,14 +1080,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         UIBarButtonItem *share = [self.navigationItem.rightBarButtonItems objectAtIndex:5];
         share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
     }
-}
-
-- (UIViewController *)containerViewController {
-	return self;
-}
-
-- (id <A3SearchViewControllerDelegate>)delegateForCurrencySelector {
-	return self;
 }
 
 #pragma mark Share Activities releated

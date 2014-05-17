@@ -1019,7 +1019,6 @@
 		17D4290B326C03E3DAF080A7 /* A3TranslatorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorViewController.m; path = Translator/A3TranslatorViewController.m; sourceTree = "<group>"; };
 		17D4292480B4F2F878AD138E /* A3TranslatorMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorMessageCell.m; path = Translator/A3TranslatorMessageCell.m; sourceTree = "<group>"; };
 		17D42943209504ED58B4EADB /* A3TranslatorMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorMessageCell.h; path = Translator/A3TranslatorMessageCell.h; sourceTree = "<group>"; };
-		17D429465C11ACC574B89369 /* A3CalculatorDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorDelegate.h; sourceTree = "<group>"; };
 		17D429E235298A15262EEEDB /* A3WalletMoreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletMoreTableViewCell.m; sourceTree = "<group>"; };
 		17D42A37BC5D591287131422 /* A3LoanCalcContentsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LoanCalcContentsTableViewController.m; sourceTree = "<group>"; };
 		17D42A471D06BA3584A4935C /* A3LadyCalendarDetailViewExpectedTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LadyCalendarDetailViewExpectedTitleCell.h; sourceTree = "<group>"; };
@@ -2845,7 +2844,6 @@
 				680D638118CFF9D400938AD0 /* NSAttributedString+Append.m */,
 				680D638218CFF9D400938AD0 /* UILabel+Boldify.h */,
 				680D638318CFF9D400938AD0 /* UILabel+Boldify.m */,
-				17D429465C11ACC574B89369 /* A3CalculatorDelegate.h */,
 				17D4236125BF62298D2D0D15 /* A3CalculatorViewController.h */,
 				17D423DD97AB2009AC80EA88 /* A3CalculatorViewController.m */,
 			);

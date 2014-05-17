@@ -14,13 +14,9 @@
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 #import "A3JHTableViewExpandableHeaderCell.h"
 #import "A3TextViewCell.h"
-#import "UITableView+utility.h"
-#import "A3SearchViewController.h"
-#import "A3CalculatorDelegate.h"
 
-@interface A3TableViewInputElement () <UITextFieldDelegate, A3KeyboardDelegate, A3CalculatorDelegate>
+@interface A3TableViewInputElement () <UITextFieldDelegate, A3KeyboardDelegate>
 
-@property (nonatomic, weak) UITextField *calculatorTargetTextField;
 @property (nonatomic, strong) NSNumberFormatter *currencyFormatter;
 @property (nonatomic, strong) NSNumberFormatter *percentFormatter;
 @property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
@@ -468,57 +464,7 @@
 	[UIView commitAnimations];
 }
 
-#pragma mark --- Response to Calculator Button and result
-
-- (UIViewController *)modalPresentingParentViewControllerForCalculator {
-	_calculatorTargetTextField = _firstResponder;
-	FNLOG(@"%@", _calculatorTargetTextField);
-
-	UIViewController *viewController = nil;
-	id <A3TableViewInputElementDelegate> o = self.delegate;
-	if ([o respondsToSelector:@selector(containerViewController)]) {
-		viewController = [o containerViewController];
-	}
-	return viewController;
-}
-
-- (id <A3CalculatorDelegate>)delegateForCalculator {
-	return self;
-}
-
-- (void)calculatorViewController:(UIViewController *)viewController didDismissWithValue:(NSString *)value {
-	_calculatorTargetTextField.text = value;
-	[self textFieldDidEndEditing:_calculatorTargetTextField];
-	[_rootTableView setContentOffset:CGPointMake(0, -_rootTableView.contentInset.top) animated:YES];
-}
-
 #pragma mark --- Response to Currency Select Button and result
-
-- (UIViewController *)modalPresentingParentViewControllerForCurrencySelector {
-	double delayInSeconds = 0.3;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		[_firstResponder resignFirstResponder];
-		_firstResponder = nil;
-	});
-
-
-	UIViewController *viewController = nil;
-	id <A3TableViewInputElementDelegate> o = self.delegate;
-	if ([o respondsToSelector:@selector(containerViewController)]) {
-		viewController = [o containerViewController];
-	}
-	return viewController;
-}
-
-- (id <A3SearchViewControllerDelegate>)delegateForCurrencySelector {
-	id<A3SearchViewControllerDelegate> delegate = nil;
-	id <A3TableViewInputElementDelegate> o = self.delegate;
-	if ([o respondsToSelector:@selector(delegateForCurrencySelector)]) {
-		delegate = [o delegateForCurrencySelector];
-	}
-	return delegate;
-}
 
 - (NSNumberFormatter *)currencyFormatter {
 	id <A3TableViewInputElementDelegate> delegate = self.delegate;

@@ -99,7 +99,7 @@
 		if (_shouldPopViewController) {
 			[self.navigationController popViewControllerAnimated:YES];
 		} else {
-			[self dismissViewControllerAnimated:YES completion:nil];
+			[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 		}
 	} else {
 		if (self.showCancelButton) {

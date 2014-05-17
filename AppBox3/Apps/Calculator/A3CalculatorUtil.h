@@ -77,4 +77,5 @@
 
 - (id) stringCuberoot_h;
 - (id) stringSquareroot_h;
+- (id) invisibleString ;
 @end

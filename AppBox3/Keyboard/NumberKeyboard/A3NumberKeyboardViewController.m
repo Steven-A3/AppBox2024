@@ -346,7 +346,7 @@
 		case A3NumberKeyboardTypeCurrency:
 			// Launch Currency Select View
 			[self presentCurrencySelectViewController];
-			break;
+			return;
 		case A3NumberKeyboardTypePercent:
 		case A3NumberKeyboardTypeMonthYear:
 		case A3NumberKeyboardTypeInterestRate:
@@ -373,7 +373,7 @@
 		case A3NumberKeyboardTypeFraction:
 			// Switch to calculator
 			[self calculatorButtonAction:nil];
-			break;
+			return;
 		case A3NumberKeyboardTypePercent:
 		case A3NumberKeyboardTypeMonthYear:
 		case A3NumberKeyboardTypeInterestRate:
