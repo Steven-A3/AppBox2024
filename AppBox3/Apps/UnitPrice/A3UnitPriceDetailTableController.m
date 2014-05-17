@@ -424,6 +424,9 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     else if ([self.items objectAtIndex:_currentIndexPath.row] == self.sizeItem) {
         if (textField.text.length > 0) {
             self.price.size = [self.decimalFormatter numberFromString:textField.text];
+            if ([self.price.size isEqualToNumber:@0]) {
+                self.price.size = nil;
+            }
         }
         else {
             self.price.size = nil;

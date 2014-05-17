@@ -40,7 +40,6 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    
     [self.allData insertObject:self.noneItem atIndex:0];
     
 	self.tableView = [UITableView new];
@@ -190,6 +189,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
         }
         else {
             self.tabBarController.navigationItem.leftBarButtonItem = nil;
+//            self.tabBarController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         }
     }
     
@@ -320,24 +320,26 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     
     // 삭제하기
     NSMutableArray *removedIndexPaths = [[NSMutableArray alloc] init];
+//    [self.tableView beginUpdates];
     for (int i=0; i<removedItems.count; i++) {
         UnitItem *item = removedItems[i];
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item == %@", item];
         NSArray *filtered = [_favorites filteredArrayUsingPredicate:predicate];
         
-        if (filtered.count>0) {
+        if (filtered.count > 0) {
             UnitPriceFavorite *favor = filtered[0];
             NSUInteger itemIdx = [_favorites indexOfObject:favor];
             [favor MR_deleteEntity];
             [_favorites removeObject:favor];
             
-            NSIndexPath *ip = [NSIndexPath indexPathForRow:itemIdx inSection:0];
-            [removedIndexPaths addObject:ip];
+            [removedIndexPaths addObject:[NSIndexPath indexPathForRow:itemIdx inSection:0]];
         }
     }
-    [self.tableView deleteRowsAtIndexPaths:removedIndexPaths withRowAnimation:UITableViewRowAnimationLeft];
+//    [self.tableView deleteRowsAtIndexPaths:removedIndexPaths withRowAnimation:UITableViewRowAnimationLeft];
+//    [self.tableView endUpdates];
     
     // 추가하기
+//    [self.tableView beginUpdates];
     NSMutableArray *addIndexPaths = [[NSMutableArray alloc] init];
     for (int i=0; i<addedItems.count; i++) {
         NSUInteger lastIdx = [_favorites count];
@@ -350,7 +352,8 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
         NSIndexPath *ip = [NSIndexPath indexPathForRow:lastIdx inSection:0];
         [addIndexPaths addObject:ip];
     }
-    [self.tableView insertRowsAtIndexPaths:addIndexPaths withRowAnimation:UITableViewRowAnimationRight];
+//    [self.tableView insertRowsAtIndexPaths:addIndexPaths withRowAnimation:UITableViewRowAnimationRight];
+//    [self.tableView endUpdates];
     
     [self resetOrdering];
     
