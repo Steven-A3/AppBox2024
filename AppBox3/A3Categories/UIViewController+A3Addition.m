@@ -392,18 +392,6 @@
 
 }
 
-- (UIViewController *)presentSubViewController:(UIViewController *)viewController {
-	if (IS_IPHONE) {
-		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[self presentViewController:navigationController animated:YES completion:nil];
-		return navigationController;
-	} else {
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
-		[rootViewController presentRightSideViewController:viewController];
-		return viewController;
-	}
-}
-
 - (void)rightBarButtonDoneButton {
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
 }

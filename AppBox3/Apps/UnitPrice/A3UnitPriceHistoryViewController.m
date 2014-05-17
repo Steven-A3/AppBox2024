@@ -14,6 +14,7 @@
 #import "UnitItem.h"
 #import "UnitPriceHistoryItem.h"
 #import "A3UnitPriceHistoryCell.h"
+#import "UIViewController+navigation.h"
 
 @interface A3UnitPriceHistoryViewController () <UIActionSheetDelegate>
 
@@ -78,6 +79,12 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 		[self.A3RootViewController dismissRightSideViewController];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];
+	}
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
 	}
 }
 

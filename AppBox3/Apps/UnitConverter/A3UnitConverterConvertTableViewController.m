@@ -32,6 +32,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIColor+A3Addition.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIViewController+navigation.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
@@ -53,6 +54,7 @@
 @property (nonatomic, strong) NSString *vcTitle;
 @property (nonatomic, strong) NSNumber *unitValue;
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
+@property (strong, nonatomic) UINavigationController *modalNavigationController;
 
 @end
 
@@ -330,11 +332,20 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (void)historyButtonAction:(UIButton *)button {
 	[self clearEverything];
 
-	if (IS_IPAD) {
-		[self enableControls:NO];
-	}
 	A3UnitConverterHistoryViewController *viewController = [[A3UnitConverterHistoryViewController alloc] initWithNibName:nil bundle:nil];
-	[self presentSubViewController:viewController];
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+	} else {
+		[self enableControls:NO];
+		[self.A3RootViewController presentRightSideViewController:viewController];
+	}
+}
+
+- (void)historyViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
+	_modalNavigationController = nil;
 }
 
 - (NSMutableArray *)convertItems {
@@ -434,13 +445,22 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		return;
 	}
 
-	if (IS_IPAD) {
-		[self enableControls:NO];
-	}
 	_isAddingUnit = YES;
 	UIViewController *viewController = [self unitAddViewController];
 
-	[self presentSubViewController:viewController];
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unitAddViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+	} else {
+		[self enableControls:NO];
+		[self.A3RootViewController presentRightSideViewController:viewController];
+	}
+}
+
+- (void)unitAddViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
+	_modalNavigationController = nil;
 }
 
 - (A3UnitConverterSelectViewController *)unitAddViewController {

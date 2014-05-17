@@ -23,6 +23,7 @@
 #import "UIViewController+A3Addition.h"
 #import "UILabel+BaseAlignment.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIViewController+navigation.h"
 
 NSString *const A3UnitPriceCurrencyCode = @"A3UnitPriceCurrencyCode";
 NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUnitPriceCurrencyCodeChanged";
@@ -38,6 +39,7 @@ NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUni
 @property (nonatomic, strong) UIBarButtonItem *historyBarItem;
 @property (nonatomic, strong) UIBarButtonItem *composeBarItem;
 @property (nonatomic, strong) UILabel *resultLB;
+@property (strong, nonatomic) UINavigationController *modalNavigationController;
 
 @end
 
@@ -220,11 +222,20 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (void)historyButtonAction:(UIButton *)button {
 	A3UnitPriceHistoryViewController *viewController = [[A3UnitPriceHistoryViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self;
-	[self presentSubViewController:viewController];
 
-	if (IS_IPAD) {
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+	} else {
 		[self enableControls:NO];
+		[self.A3RootViewController presentRightSideViewController:viewController];
 	}
+}
+
+- (void)historyViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
+	_modalNavigationController = nil;
 }
 
 #pragma mark - UnitHistoryViewController delegate

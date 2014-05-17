@@ -260,7 +260,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     [self presentSubViewController:_editFieldViewController];
 }
 
-- (UIViewController *)presentSubViewController:(UIViewController *)viewController {
+- (void)presentSubViewController:(UIViewController *)viewController {
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
@@ -276,7 +276,6 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 			[rootViewController presentRightSideViewController:viewController];
 		}
 	}
-	return viewController;
 }
 
 - (void)disableBarItems
