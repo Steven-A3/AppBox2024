@@ -752,7 +752,6 @@ NSString *kCalculationString;
             }
             
             [footerCell.yearTextField becomeFirstResponder];
-            self.firstResponder = footerCell.yearTextField;
         }
     }
 }
@@ -776,7 +775,6 @@ NSString *kCalculationString;
         if ([self didSelectedAdd]) {
             A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
             [footerCell.yearTextField becomeFirstResponder];
-            self.firstResponder = footerCell.yearTextField;
         } else {
 			self.dateKeyboardViewController.date = self.fromDate;
             [self moveToFromDateCell];
@@ -853,8 +851,6 @@ NSString *kCalculationString;
 	}
 
 	_isKeyboardShown = YES;
-
-	[self setFirstResponder:textField];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 }
@@ -977,11 +973,9 @@ NSString *kCalculationString;
     A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
     
 	if (self.firstResponder == footerCell.yearTextField) {
-		self.firstResponder = footerCell.monthTextField;
 		[footerCell.monthTextField becomeFirstResponder];
 	}
     else if (self.firstResponder == footerCell.monthTextField) {
-		self.firstResponder = footerCell.dayTextField;
 		[footerCell.dayTextField becomeFirstResponder];
 	}
     else if (self.firstResponder == footerCell.dayTextField) {
@@ -995,12 +989,10 @@ NSString *kCalculationString;
     
 	if (self.firstResponder == footerCell.dayTextField) {
 		footerCell.dayTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.day];
-		self.firstResponder = footerCell.monthTextField;
 		[footerCell.monthTextField becomeFirstResponder];
 	}
     else if (self.firstResponder == footerCell.monthTextField) {
 		footerCell.monthTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.month];
-		self.firstResponder = footerCell.yearTextField;
 		[footerCell.yearTextField becomeFirstResponder];
 	}
     else if (self.firstResponder == footerCell.yearTextField) {
