@@ -313,7 +313,8 @@
                     textField.text = [self.percentFormatter stringFromNumber:@([value doubleValue] / 100.0)];
                 }
                 else {
-                    textField.text = [self.currencyFormatter stringFromNumber:@([self.value doubleValue])];
+					NSNumber *value = [self.decimalFormatter numberFromString:self.value];
+                    textField.text = [self.currencyFormatter stringFromNumber:value];
                 }
             }
 			break;

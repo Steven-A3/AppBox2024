@@ -179,6 +179,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
         if ([self.tipCalcData.isPercentTax boolValue]) {
             NSNumberFormatter *formatter = [NSNumberFormatter new];
             formatter.numberStyle = NSNumberFormatterPercentStyle;
+            formatter.maximumFractionDigits = 3;
             [mstrOutput appendFormat:@"Tax : %@<br>", [formatter stringFromNumber:@([self.tipCalcData.tax doubleValue] / 100.0)]];
         }
         else {
@@ -191,6 +192,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     if ([self.tipCalcData.isPercentTip boolValue]) {
         NSNumberFormatter *formatter = [NSNumberFormatter new];
         formatter.numberStyle = NSNumberFormatterPercentStyle;
+        formatter.maximumFractionDigits = 3;
         [mstrOutput appendFormat:@"Tip : %@<br>", [formatter stringFromNumber:@([self.tipCalcData.tip doubleValue] / 100.0)]];
     }
     else {
