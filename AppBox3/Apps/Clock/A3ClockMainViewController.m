@@ -19,6 +19,7 @@
 #import "A3ClockInfo.h"
 #import "NSUserDefaults+A3Defaults.h"
 #import "UIViewController+MMDrawerController.h"
+#import "UIViewController+navigation.h"
 
 #define kCntPage 4.0
 
@@ -39,6 +40,7 @@
 @property (nonatomic, strong) UIView *chooseColorView;
 @property (nonatomic, strong) MASConstraint *appsButtonTop;
 @property (nonatomic, strong) NSTimer *buttonsTimer;
+@property (nonatomic, strong) UINavigationController *modalNavigationController;
 
 @end
 
@@ -400,7 +402,18 @@
 
 	A3ClockSettingsViewController *viewController = [[A3ClockSettingsViewController alloc] init];
 	viewController.clockDataManager = self.clockDataManager;
-	[self presentSubViewController:viewController];
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+	} else {
+		[self.A3RootViewController presentRightSideViewController:viewController];
+	}
+}
+
+- (void)settingsViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
+	_modalNavigationController = nil;
 }
 
 #pragma mark - datetime event

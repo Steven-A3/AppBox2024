@@ -24,6 +24,7 @@
 #import "A3CacheStoreManager.h"
 #import "A3CacheStoreManager.h"
 #import "CurrencyRateItem.h"
+#import "UIViewController+navigation.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, A3SearchViewControllerDelegate>
 
@@ -43,6 +44,7 @@
 @property (nonatomic, strong) NSNumber *sourceValue;
 @property (nonatomic, copy) NSString *previousValue;
 @property (nonatomic, strong) NSMutableArray *constraints;
+@property (nonatomic, strong) UINavigationController *modalNavigationController;
 
 @end
 
@@ -349,13 +351,27 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	_selectionInSource = indexPath.row == 0;
+
 	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self;
 	viewController.allowChooseFavorite = YES;
-	if (IS_IPHONE) viewController.showCancelButton = YES;
-	[self presentSubViewController:viewController];
+
+	if (IS_IPHONE) {
+		viewController.showCancelButton = YES;
+
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+	} else {
+		[self.A3RootViewController presentRightSideViewController:viewController];
+	}
 
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+- (void)currencySelectViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
+	_modalNavigationController = nil;
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
