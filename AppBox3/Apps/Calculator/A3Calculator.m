@@ -1131,11 +1131,14 @@ typedef CMathParser<char, double> MathParser;
             lastChar = [mathexpression substringFromIndex:[mathexpression length] - 6];
             if([lastChar isEqualToString:@"NTHRT("]) {
                 mathexpression = [mathexpression substringToIndex:[mathexpression length] - 6];
+                return;
             }
-        } else if ([mathexpression length] >= 5){
+        }
+        if ([mathexpression length] >= 5){
             lastChar = [mathexpression substringFromIndex:[mathexpression length] - 5];
             if([lastChar isEqualToString:@"LOGN("]) {
                 mathexpression = [mathexpression substringToIndex:[mathexpression length] - 5];
+                return;
             }
         }
         return;
