@@ -87,7 +87,7 @@ NSString *kCalculationString;
     [self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
 
-	self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+	self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
     
@@ -158,9 +158,6 @@ NSString *kCalculationString;
                                                              target:self
                                                              action:@selector(shareButtonAction:)];
     self.navigationItem.rightBarButtonItems = @[share];
-    
-    // Etc
-    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 }
 
 -(void)viewWillLayoutSubviews
@@ -627,8 +624,6 @@ NSString *kCalculationString;
 {
     _datePrevShow = NO;
     _dateNextShow = YES;
-
-//    CGFloat keyboardPadding = IS_IPHONE ? -1.0 : 0.0;
     
     self.editingIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.editingIndexPath];
@@ -639,24 +634,12 @@ NSString *kCalculationString;
     cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
     cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
     _isSelectedFromToCell = YES;
-    
-//    if (IS_IPAD && IS_PORTRAIT) {
-//        return;
-//    }
-    
-//    CGRect cellRect = [self.tableView rectForRowAtIndexPath:self.editingIndexPath];
-//    CGFloat offset = (cellRect.origin.y + cellRect.size.height + keyboardPadding) - (self.tableView.frame.size.height-self.dateKeyboardViewController.view.bounds.size.height);
-//    _oldTableOffset = self.tableView.contentOffset.y;
-//    NSLog(@"%f", offset);
-//    [self.tableView setContentOffset:CGPointMake(0.0, offset) animated:YES];
 }
 
 - (void)moveToToDateCell
 {
     _datePrevShow = NO;
     _dateNextShow = YES;
-
-//    CGFloat keyboardPadding = IS_IPHONE ? -1.0 : 0.0;
     
     self.editingIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.editingIndexPath];
@@ -671,33 +654,6 @@ NSString *kCalculationString;
     if (IS_IPAD && IS_PORTRAIT) {
         return;
     }
-    
-//    CGRect cellRect = [self.tableView rectForRowAtIndexPath:self.editingIndexPath];
-//	FNLOGRECT(self.tableView.frame);
-//	FNLOGRECT(self.dateKeyboardViewController.view.bounds);
-//	FNLOGRECT(cellRect);
-//    CGFloat offset = (cellRect.origin.y + cellRect.size.height + keyboardPadding) - (self.tableView.frame.size.height-self.dateKeyboardViewController.view.bounds.size.height);
-//    _oldTableOffset = self.tableView.contentOffset.y;
-//    [self.tableView setContentOffset:CGPointMake(0.0, offset) animated:YES];
-}
-
-- (void)moveToFooterView
-{
-    if (IS_IPAD && IS_PORTRAIT) {
-        return;
-    }
-    
-    CGPoint contentOffset = CGPointZero;
-    CGRect cellRect = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
-    CGFloat keyboardPadding = IS_IPHONE ? 0.0 : 2.0;
-    contentOffset.y = (cellRect.origin.y + cellRect.size.height + keyboardPadding) - (self.tableView.frame.size.height-self.simpleNumberKeyboard.view.bounds.size.height);
-	FNLOGRECT(self.tableView.frame);
-	FNLOGRECT(self.simpleNumberKeyboard.view.frame);
-	FNLOGRECT(cellRect);
-	FNLOG(@"contentOffset.y = %f", contentOffset.y);
-
-    _oldTableOffset = self.tableView.contentOffset.y;
-    self.tableView.contentOffset = contentOffset;
 }
 
 - (void)setResultToHeaderViewWithAnimation:(BOOL)animation
@@ -878,7 +834,6 @@ NSString *kCalculationString;
 		if (textField == footerCell.yearTextField) {
 			_datePrevShow = NO;
 			_dateNextShow = YES;
-
 		}
 		else if (textField == footerCell.monthTextField) {
 			_datePrevShow = YES;
@@ -949,30 +904,6 @@ NSString *kCalculationString;
         NSLog(@"from/to: %@", notification);
 	}
 }
-
-//-(void)keyboardWillShow:(NSNotification *)aNoti
-//{
-//    A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
-//    
-//    if (self.isAddSubMode && [footerCell hasEqualTextField:_selectedTextField]) {
-//        NSDictionary *aDict = [aNoti userInfo];
-//        CGRect keyboardSize = [self.view convertRect:[[aDict valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue] fromView:nil];
-//        keyboardSize.size.height = keyboardSize.size.height-90.0;
-//        NSNumber *animationCurve = [aNoti.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey];
-//        NSNumber *animationDuration = [aNoti.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey];
-//        
-//        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
-//        [UIView setAnimationBeginsFromCurrentState:YES];
-//        [UIView setAnimationCurve:[animationCurve intValue]];
-//        [UIView setAnimationDuration:[animationDuration doubleValue]];
-//        
-//        if (self.isAddSubMode) {
-//            [self moveToFooterView];
-//        }
-//        
-//        [UIView commitAnimations];
-//    }
-//}
 
 - (void)keyboardDidHide:(NSNotification *)noti {
 	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:NO];
@@ -1081,11 +1012,12 @@ NSString *kCalculationString;
 - (void)dateKeyboardDoneButtonPressed:(A3DateKeyboardViewController *)keyboardViewController
 {
     [self.firstResponder resignFirstResponder];
-
+    
     _isKeyboardShown = NO;
 	_editingIndexPath = nil;
     [self setResultToHeaderViewWithAnimation:YES];
 	self.dateKeyboardViewController = nil;
+    [self scrollToTopOfTableView];
 }
 
 - (void)updateOffsetDateCompWithTextField:(UITextField *)textField
@@ -1113,8 +1045,9 @@ NSString *kCalculationString;
 		return;
 	}
 
-	[self.firstResponder resignFirstResponder];
 	_isKeyboardShown = NO;
+    [self.firstResponder resignFirstResponder];
+    [self scrollToTopOfTableView];
 }
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
@@ -1217,7 +1150,7 @@ NSString *kCalculationString;
     return footerAddSubCell;
 }
 
-- (A3DateCalcAddSubCell2 *)cellOfAddSub2CellForID:(NSString *)cellAddSubCell2 tableView:(UITableView *)tableView
+- (A3DateCalcAddSubCell2 *)cellOfAddSubInputCellForID:(NSString *)cellAddSubCell2 tableView:(UITableView *)tableView
 {
     // FooterViewCell - Year Month Day, Input TextField Cell
     A3DateCalcAddSubCell2 *footerCell = [tableView dequeueReusableCellWithIdentifier:cellAddSubCell2];
@@ -1258,7 +1191,7 @@ NSString *kCalculationString;
         }
         else if (indexPath.section==3 && indexPath.row==0) {
             A3DateCalcAddSubCell2 *footerCell;
-            footerCell = [self cellOfAddSub2CellForID:cellAddSubCell2 tableView:tableView];
+            footerCell = [self cellOfAddSubInputCellForID:cellAddSubCell2 tableView:tableView];
             return footerCell;
         }
     }
@@ -1556,6 +1489,24 @@ NSString *kCalculationString;
             [self presentSubViewController:viewController];
 			[self enableControls:NO];
         }
+    }
+}
+
+-(void)scrollToTopOfTableView {
+    if (IS_LANDSCAPE) {
+        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationCurve:7];
+        [UIView setAnimationDuration:0.35];
+        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
+        [UIView commitAnimations];
+    } else {
+        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationCurve:7];
+        [UIView setAnimationDuration:0.35];
+        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height));
+        [UIView commitAnimations];
     }
 }
 

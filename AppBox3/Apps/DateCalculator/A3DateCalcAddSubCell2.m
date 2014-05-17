@@ -125,36 +125,57 @@
     else {
         CGFloat width = self.bounds.size.width;
         CGRect rect;
+//        rect = _yearTextField.frame;
+//        rect.size.width = ceilf(width / 3);
+////        rect.size.height = self.bounds.size.height;
+//        _yearTextField.frame = rect;
+//        
+//        rect = _monthTextField.frame;
+//        rect.size.width = ceilf(width / 3);
+////        rect.size.height = self.bounds.size.height;
+//        _monthTextField.frame = rect;
+//        
+//        rect = _dayTextField.frame;
+//        rect.size.width = ceilf(width / 3);
+////        rect.size.height = self.bounds.size.height;
+//        _dayTextField.frame = rect;
+//        
+//        [_yearTextField setCenter:CGPointMake(ceilf(width / 3 / 2), ceilf(15.0 + _yearTextField.frame.size.height / 2.0))];
+//        [_monthTextField setCenter:CGPointMake(ceilf(width / 2), ceilf(15.0 + _monthTextField.frame.size.height / 2.0))];
+//        [_dayTextField setCenter:CGPointMake(ceilf(width - (width / 3 / 2)), ceilf(15.0 + _dayTextField.frame.size.height / 2.0))];
+//        
+//        [_yearLabel setCenter:CGPointMake(ceilf(width / 3 / 2), ceilf(_yearTextField.frame.origin.y + _yearTextField.frame.size.height + (_yearLabel.bounds.size.height / 2)))];
+//        [_monthLabel setCenter:CGPointMake(ceilf(width / 2), ceilf(_monthTextField.frame.origin.y + _monthTextField.frame.size.height + (_monthLabel.bounds.size.height / 2)))];
+//        [_dayLabel setCenter:CGPointMake(ceilf(width - (width / 3 / 2)), ceilf(_dayTextField.frame.origin.y + _dayTextField.frame.size.height + (_dayLabel.bounds.size.height / 2)))];
+        
+        
         rect = _yearTextField.frame;
+        rect.origin.x = 0;
+        rect.origin.y = 15;
         rect.size.width = ceilf(width / 3);
-//        rect.size.height = self.bounds.size.height;
+        rect.size.height = CGRectGetHeight(self.bounds) - 15.0;
         _yearTextField.frame = rect;
         
         rect = _monthTextField.frame;
+        rect.origin.x = ceilf(width / 3);
+        rect.origin.y = 15;
         rect.size.width = ceilf(width / 3);
-//        rect.size.height = self.bounds.size.height;
+        rect.size.height = CGRectGetHeight(self.bounds) - 15.0;
         _monthTextField.frame = rect;
         
         rect = _dayTextField.frame;
+        rect.origin.x = ceilf(width / 3) * 2;
+        rect.origin.y = 15;
         rect.size.width = ceilf(width / 3);
-//        rect.size.height = self.bounds.size.height;
+        rect.size.height = CGRectGetHeight(self.bounds) - 15.0;
         _dayTextField.frame = rect;
         
-        [_yearTextField setCenter:CGPointMake(ceilf(width / 3 / 2), ceilf(15.0 + _yearTextField.frame.size.height / 2.0))];
-        [_monthTextField setCenter:CGPointMake(ceilf(width / 2), ceilf(15.0 + _monthTextField.frame.size.height / 2.0))];
-        [_dayTextField setCenter:CGPointMake(ceilf(width - (width / 3 / 2)), ceilf(15.0 + _dayTextField.frame.size.height / 2.0))];
-        
-        [_yearLabel setCenter:CGPointMake(ceilf(width / 3 / 2), ceilf(_yearTextField.frame.origin.y + _yearTextField.frame.size.height + (_yearLabel.bounds.size.height / 2)))];
-        [_monthLabel setCenter:CGPointMake(ceilf(width / 2), ceilf(_monthTextField.frame.origin.y + _monthTextField.frame.size.height + (_monthLabel.bounds.size.height / 2)))];
-        [_dayLabel setCenter:CGPointMake(ceilf(width - (width / 3 / 2)), ceilf(_dayTextField.frame.origin.y + _dayTextField.frame.size.height + (_dayLabel.bounds.size.height / 2)))];
-        
-        [_yearTextField setTextAlignment:NSTextAlignmentCenter];
-        [_monthTextField setTextAlignment:NSTextAlignmentCenter];
-        [_dayTextField setTextAlignment:NSTextAlignmentCenter];
-        
-        [_yearLabel setTextAlignment:NSTextAlignmentCenter];
-        [_monthLabel setTextAlignment:NSTextAlignmentCenter];
-        [_dayLabel setTextAlignment:NSTextAlignmentCenter];
+        _yearTextField.textAlignment = NSTextAlignmentCenter;
+        _monthTextField.textAlignment = NSTextAlignmentCenter;
+        _dayTextField.textAlignment = NSTextAlignmentCenter;
+        _yearTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+        _monthTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+        _dayTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     }
     
     // Set Font
