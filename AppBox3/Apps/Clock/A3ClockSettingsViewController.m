@@ -12,6 +12,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3ClockDataManager.h"
 #import "UIViewController+A3AppCategory.h"
+#import "UIViewController+navigation.h"
 
 typedef NS_ENUM(NSUInteger, A3ClockSettingsTypes) {
 	kTagSwitchWithSecond = 1000,
@@ -79,6 +80,12 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	[[UIApplication sharedApplication] setStatusBarHidden:YES];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+	}
 }
 
 - (void)doneButtonAction:(id)button {
