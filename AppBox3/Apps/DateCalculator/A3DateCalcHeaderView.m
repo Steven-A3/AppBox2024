@@ -17,14 +17,12 @@
 #import "A3DefaultColorDefines.h"
 #import "A3OverlappedCircleView.h"
 
-//#define SLIDER_OFFSET       23
 #define SLIDER_OFFSET_LABEL     20
 #define SLIDER_THUMB_MARGIN     20
 
 #define COLOR_ELLIPSE_0                 [UIColor colorWithRed:229.0/255.0 green:229.0/255.0 blue:229.0/255.0 alpha:1.0]
 #define COLOR_ELLIPSE_1                 [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]
 #define COLOR_ELLIPSE_1_BORDER          [UIColor colorWithRed:188.0/255.0 green:188.0/255.0 blue:188.0/255.0 alpha:1.0]
-//#define COLOR_ELLIPSE_2_Center     [UIColor colorWithRed:12.0/255.0 green:95.0/255.0 blue:200.0/255.0 alpha:1.0]
 #define COLOR_ELLIPSE_2_Center          [UIColor colorWithRed:0/255.0 green:122/255.0 blue:255/255.0 alpha:1.0]
 #define COLOR_ELLIPSE_2_Center_GRAY     [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]
 
@@ -51,9 +49,7 @@
 
 @property (strong, nonatomic) UIView *fromToRangeLineView;   // 슬라이더 커서 간격 표시 라인
 @property (strong, nonatomic) UIView *bottomLineView;
-
 @property (assign, nonatomic) CGFloat availableWidth;
-
 @end
 
 @implementation A3DateCalcHeaderView
