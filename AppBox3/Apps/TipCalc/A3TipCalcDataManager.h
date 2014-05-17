@@ -70,12 +70,6 @@ extern NSString *const A3TipCalcCurrencyCode;
 - (void)addHistory:(NSString*)aCaptionTip total:(NSString*)aCaptionTotal;
 - (void)historyToRecently:(TipCalcHistory*)aHistory;
 
-- (double)costsAfterTax;
-- (double)costsBeforeTax;
-- (double)taxRst;
-- (double)tipRst:(int)aBeforeSplitFlag;
-- (double)totalRst:(int)aBeforeSplitFlag;
-
 - (NSString*)sharedDataIsMail:(BOOL)isMail;
 
 #pragma mark - calculate

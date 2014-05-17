@@ -781,7 +781,6 @@
 		68E2A6C218D0B41E00E834D9 /* ExpenseListBudget.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6C118D0B41E00E834D9 /* ExpenseListBudget.m */; };
 		68E2A6C518D0B41E00E834D9 /* ExpenseListHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6C418D0B41E00E834D9 /* ExpenseListHistory.m */; };
 		68E2A6C818D0B41E00E834D9 /* ExpenseListCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6C718D0B41E00E834D9 /* ExpenseListCategories.m */; };
-		68E2A6CF18D0B46400E834D9 /* TipCalcRoundMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6CE18D0B46400E834D9 /* TipCalcRoundMethod.m */; };
 		68E2A6D218D0B46500E834D9 /* TipCalcRecently.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6D118D0B46500E834D9 /* TipCalcRecently.m */; };
 		68E2A6D518D0B46500E834D9 /* TipCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6D418D0B46500E834D9 /* TipCalcHistory.m */; };
 		68E39FF9186D845300D8482E /* A3SettingsRequireForViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E39FF8186D845300D8482E /* A3SettingsRequireForViewController.m */; };
@@ -910,6 +909,7 @@
 		68F967BF1818D74300D64A0A /* NSArray+validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F967BE1818D74300D64A0A /* NSArray+validation.m */; };
 		80187FF318FBCF3E0018B840 /* A3DaysCounterAddEventRepeatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80187FF218FBCF3E0018B840 /* A3DaysCounterAddEventRepeatCell.xib */; };
 		80187FF518FBD0650018B840 /* A3DaysCounterAddEventCalendarListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80187FF418FBD0650018B840 /* A3DaysCounterAddEventCalendarListCell.xib */; };
+		803F94B619279FBD00ED42A9 /* TipCalcRoundMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 803F94B519279FBD00ED42A9 /* TipCalcRoundMethod.m */; };
 		804282B41917CA9800B16D0B /* DaysCounterDateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 804282B31917CA9800B16D0B /* DaysCounterDateModel.m */; };
 		804A405E18E070A200556029 /* A3DaysCounterEventListNameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 804A405D18E070A200556029 /* A3DaysCounterEventListNameCell.m */; };
 		804A406118E070C500556029 /* A3DaysCounterEventListDateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 804A406018E070C500556029 /* A3DaysCounterEventListDateCell.m */; };
@@ -2301,8 +2301,6 @@
 		68E2A6C418D0B41E00E834D9 /* ExpenseListHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListHistory.m; path = Data/ExpenseListHistory.m; sourceTree = "<group>"; };
 		68E2A6C618D0B41E00E834D9 /* ExpenseListCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListCategories.h; path = Data/ExpenseListCategories.h; sourceTree = "<group>"; };
 		68E2A6C718D0B41E00E834D9 /* ExpenseListCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListCategories.m; path = Data/ExpenseListCategories.m; sourceTree = "<group>"; };
-		68E2A6CD18D0B46400E834D9 /* TipCalcRoundMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TipCalcRoundMethod.h; path = Data/TipCalcRoundMethod.h; sourceTree = "<group>"; };
-		68E2A6CE18D0B46400E834D9 /* TipCalcRoundMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TipCalcRoundMethod.m; path = Data/TipCalcRoundMethod.m; sourceTree = "<group>"; };
 		68E2A6D018D0B46500E834D9 /* TipCalcRecently.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TipCalcRecently.h; path = Data/TipCalcRecently.h; sourceTree = "<group>"; };
 		68E2A6D118D0B46500E834D9 /* TipCalcRecently.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TipCalcRecently.m; path = Data/TipCalcRecently.m; sourceTree = "<group>"; };
 		68E2A6D318D0B46500E834D9 /* TipCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TipCalcHistory.h; path = Data/TipCalcHistory.h; sourceTree = "<group>"; };
@@ -2512,6 +2510,8 @@
 		68F967BE1818D74300D64A0A /* NSArray+validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+validation.m"; sourceTree = "<group>"; };
 		80187FF218FBCF3E0018B840 /* A3DaysCounterAddEventRepeatCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterAddEventRepeatCell.xib; sourceTree = "<group>"; };
 		80187FF418FBD0650018B840 /* A3DaysCounterAddEventCalendarListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterAddEventCalendarListCell.xib; sourceTree = "<group>"; };
+		803F94B419279FBD00ED42A9 /* TipCalcRoundMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TipCalcRoundMethod.h; path = Data/TipCalcRoundMethod.h; sourceTree = "<group>"; };
+		803F94B519279FBD00ED42A9 /* TipCalcRoundMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TipCalcRoundMethod.m; path = Data/TipCalcRoundMethod.m; sourceTree = "<group>"; };
 		804282B21917CA9800B16D0B /* DaysCounterDateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaysCounterDateModel.h; sourceTree = "<group>"; };
 		804282B31917CA9800B16D0B /* DaysCounterDateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterDateModel.m; sourceTree = "<group>"; };
 		804A405C18E070A200556029 /* A3DaysCounterEventListNameCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterEventListNameCell.h; sourceTree = "<group>"; };
@@ -4852,8 +4852,8 @@
 				68E2A6D418D0B46500E834D9 /* TipCalcHistory.m */,
 				68E2A6D018D0B46500E834D9 /* TipCalcRecently.h */,
 				68E2A6D118D0B46500E834D9 /* TipCalcRecently.m */,
-				68E2A6CD18D0B46400E834D9 /* TipCalcRoundMethod.h */,
-				68E2A6CE18D0B46400E834D9 /* TipCalcRoundMethod.m */,
+				803F94B419279FBD00ED42A9 /* TipCalcRoundMethod.h */,
+				803F94B519279FBD00ED42A9 /* TipCalcRoundMethod.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -5941,6 +5941,7 @@
 				68E2A64F18D0B1FC00E834D9 /* A3ItemSelectListViewController.m in Sources */,
 				8054E88818E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m in Sources */,
 				68B6A46118CEE781004084EF /* SDWebImageManager.m in Sources */,
+				803F94B619279FBD00ED42A9 /* TipCalcRoundMethod.m in Sources */,
 				68507F80191CA72400C1C895 /* A3AppDelegate.m in Sources */,
 				68143D5C18E3EC7C00569691 /* A3TableViewCell.m in Sources */,
 				687F45D417E747DF005AEB0D /* A3HolidaysFlickrDownloadManager.m in Sources */,
@@ -6123,7 +6124,6 @@
 				6823F702186329DC00E6E90D /* A3CurrencyDataManager.m in Sources */,
 				687F928918F69C74006377B9 /* A3MoreTableViewCell.m in Sources */,
 				687D0D1017CAE519005AB571 /* HolidayData.m in Sources */,
-				68E2A6CF18D0B46400E834D9 /* TipCalcRoundMethod.m in Sources */,
 				684D92F218BC1FBC005016F7 /* A3DateCalcDurationViewController.m in Sources */,
 				68B6A44418CEE781004084EF /* MWTapDetectingImageView.m in Sources */,
 				68F1C88D18D7F37D009FAE8A /* A3DaysCounterEventListViewController.m in Sources */,
