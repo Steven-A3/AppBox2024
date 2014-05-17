@@ -17,6 +17,7 @@
 #import "A3DaysCounterSlideshowViewController.h"
 #import "A3AppDelegate.h"
 #import "A3DaysCounterCalendarListMainViewController.h"
+#import "UIViewController+navigation.h"
 
 @interface A3DaysCounterSlideshowOptionViewController ()
 @property (strong, nonatomic) NSArray *sectionArray;
@@ -33,6 +34,7 @@
 @end
 
 @implementation A3DaysCounterSlideshowOptionViewController
+
 - (void)saveCurrentOption
 {
     [[NSUserDefaults standardUserDefaults] setObject:_optionDict forKey:A3DaysCounterSlideshowOption];
@@ -86,6 +88,12 @@
 {
     [super viewWillAppear:animated];
     [self.tableView reloadData];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+	}
 }
 
 - (void)didReceiveMemoryWarning

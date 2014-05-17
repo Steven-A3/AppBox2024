@@ -29,6 +29,7 @@
 #import "A3AppDelegate+appearance.h"
 #import "DaysCounterDateModel.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIViewController+navigation.h"
 
 #define VISIBLE_INDEX_INTERVAL      2
 
@@ -44,6 +45,7 @@
 @property (assign, nonatomic) BOOL isRotating;
 @property (assign, nonatomic) BOOL isFirstViewLoad;
 @property (strong, nonatomic) NSString *prevShownEventID;
+@property (strong, nonatomic) UINavigationController *modalNavigationController;
 
 @end
 
@@ -586,12 +588,24 @@
         activityController.completionHandler = ^(NSString* activityType, BOOL completed) {
             if ( completed && [activityType isEqualToString:@"Slideshow"] ) {
 				[self enableControls:NO];
-                A3DaysCounterSlideshowOptionViewController *viewCtrl = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:@"A3DaysCounterSlideshowOptionViewController" bundle:nil];
-                viewCtrl.sharedManager = _sharedManager;
-                [self presentSubViewController:viewCtrl];
+                A3DaysCounterSlideshowOptionViewController *viewController = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:@"A3DaysCounterSlideshowOptionViewController" bundle:nil];
+                viewController.sharedManager = _sharedManager;
+
+				if (IS_IPHONE) {
+					_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+					[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+					[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(optionViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+				} else {
+					[self.A3RootViewController presentRightSideViewController:viewController];
+				}
             }
         };
 	}
+}
+
+- (void)optionViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
+	_modalNavigationController = nil;
 }
 
 #pragma mark - UINavigationControllerDelegate
