@@ -47,6 +47,9 @@ NSString *const CellIdentifier = @"Cell";
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
 }
 
+
+
+
 - (void)didMoveToParentViewController:(UIViewController *)parent {
 	if (!parent) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
