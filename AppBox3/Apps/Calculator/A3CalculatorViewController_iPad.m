@@ -41,7 +41,6 @@
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, strong) UITextField *textFieldForPlayInputClick;
 @property (nonatomic, strong) A3KeyboardView *inputViewForPlayInputClick;
-@property (nonatomic, strong) UINavigationController *modalNavigationController;
 
 @end
 
@@ -481,18 +480,7 @@
 	viewController.calculator = self.calculator;
 	viewController.iPadViewController = self;
 
-	if (IS_IPHONE) {
-		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
-	} else {
-		[self.A3RootViewController presentRightSideViewController:viewController];
-	}
-}
-
-- (void)historyViewControllerDidDismiss {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
-	_modalNavigationController = nil;
+	[self.A3RootViewController presentRightSideViewController:viewController];
 }
 
 - (void)putCalculationHistoryWithExpression:(NSString *)expression{

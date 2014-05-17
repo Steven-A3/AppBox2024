@@ -19,6 +19,7 @@
 #import "MBProgressHUD.h"
 #import "A3KeyboardView.h"
 #import "NSAttributedString+Append.h"
+#import "UIViewController+navigation.h"
 
 @interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate,MBProgressHUDDelegate, A3CalcMessagShowDelegate, UITextFieldDelegate>
 
@@ -41,6 +42,7 @@
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, strong) UITextField *textFieldForPlayInputClick;
 @property (nonatomic, strong) A3KeyboardView *inputViewForPlayInputClick;
+@property (nonatomic, strong) UINavigationController *modalNavigationController;
 //@property (nonatomic, strong) A3Expression *expression;
 
 @end
@@ -508,22 +510,22 @@
 
 
 - (void)shareButtonAction:(id)sender {
-	//[self clearEverything];
-
 	[self shareAll:sender];
 }
 
-
-
 #pragma mark - History
 - (void)historyButtonAction:(UIButton *)button {
-	//[self clearEverything];
-
 	A3CalculatorHistoryViewController *viewController = [[A3CalculatorHistoryViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.calculator = self.calculator;
-	[self presentSubViewController:viewController];
 
-	//	_currencyHistory = nil;
+	_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+}
+
+- (void)historyViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
+	_modalNavigationController = nil;
 }
 
 - (void)putCalculationHistoryWithExpression:(NSString *)expression{
@@ -536,7 +538,6 @@
 			return;
 		}
 	}
-
 
 	Calculation *calculation = [Calculation MR_createEntity];
 	NSDate *keyDate = [NSDate date];
