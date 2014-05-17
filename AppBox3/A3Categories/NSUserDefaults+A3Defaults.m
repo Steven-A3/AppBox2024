@@ -253,17 +253,13 @@
 
 - (void)setUnitConverterCurrentUnitTap:(NSUInteger)tapIndex
 {
-    @autoreleasepool {
-		[self setInteger:tapIndex forKey:A3UnitConverterDefaultCurrentUnitTap];
-		[self synchronize];
-	}
+	[self setInteger:tapIndex forKey:A3UnitConverterDefaultCurrentUnitTap];
+	[self synchronize];
 }
 
 - (NSUInteger)unitConverterCurrentUnitTap
 {
-    @autoreleasepool {
-		return [self integerForKey:A3UnitConverterDefaultCurrentUnitTap];
-	}
+	return [self integerForKey:A3UnitConverterDefaultCurrentUnitTap];
 }
 
 @end

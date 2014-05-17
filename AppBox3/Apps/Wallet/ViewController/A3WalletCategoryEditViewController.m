@@ -34,6 +34,7 @@
 @property (nonatomic, strong) UIViewController *rightSideViewController;
 @property (nonatomic, weak) UITextField *titleTextField;
 @property (nonatomic, strong) MBProgressHUD *alertHUD;
+@property (nonatomic, strong) A3WalletEditFieldViewController *editFieldViewController;
 
 @end
 
@@ -87,6 +88,18 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     [self.tableView setEditing:YES animated:NO];
     
     [self registerContentSizeCategoryDidChangeNotification];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)rightSideViewWillDismiss {
+	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -216,16 +229,23 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     return viewController;
 }
 
+- (A3WalletEditFieldViewController *)editFieldViewController {
+	if (!_editFieldViewController) {
+		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
+		_editFieldViewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletEditFieldViewController"];
+		_editFieldViewController.delegate = self;
+
+	}
+	return _editFieldViewController;
+}
+
 - (UIViewController *)editFieldViewController:(NSInteger)index
 {
     WalletField *field = _fields[index];
-    
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
-    A3WalletEditFieldViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletEditFieldViewController"];
-    viewController.field = field;
-    viewController.delegate = self;
-    
-    return viewController;
+
+	self.editFieldViewController.field = field;
+
+    return _editFieldViewController;
 }
 
 - (void)addWalletField
@@ -234,17 +254,13 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 	[self.toAddField initValues];
     _toAddField.category = self.category;
 
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
-    A3WalletEditFieldViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletEditFieldViewController"];
-    viewController.isAddMode = YES;
-    viewController.field = _toAddField;
-    viewController.delegate = self;
-    
-    [self presentSubViewController:viewController];
+    self.editFieldViewController.isAddMode = YES;
+    _editFieldViewController.field = _toAddField;
+
+    [self presentSubViewController:_editFieldViewController];
 }
 
-- (void)presentSubViewController:(UIViewController *)viewController {
-
+- (UIViewController *)presentSubViewController:(UIViewController *)viewController {
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
@@ -260,6 +276,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 			[rootViewController presentRightSideViewController:viewController];
 		}
 	}
+	return viewController;
 }
 
 - (void)disableBarItems

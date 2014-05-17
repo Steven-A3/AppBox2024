@@ -26,6 +26,7 @@
 #import "TranslatorHistory+manager.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIViewController+navigation.h"
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 
@@ -48,8 +49,8 @@ static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 @property (nonatomic, strong) UITableView *searchResultsTableView;
 @property (nonatomic, strong) A3TranslatorLanguageTVDelegate *searchResultsDelegate;
 @property (nonatomic, strong) NSArray *languages;
-@property (nonatomic, weak) A3LanguagePickerController *sourceLanguagePicker;
-@property (nonatomic, weak) A3LanguagePickerController *targetLanguagePicker;
+@property (nonatomic, strong) A3LanguagePickerController *sourceLanguagePicker;
+@property (nonatomic, strong) A3LanguagePickerController *targetLanguagePicker;
 @property (nonatomic, strong) UIButton *setSourceLanguageButton;
 @property (nonatomic, strong) UIButton *setTargetLanguageButton;
 @property (nonatomic, strong) NSLayoutConstraint *setTargetLanguageButtonConstraint;
@@ -64,6 +65,8 @@ static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 @property (nonatomic, strong) NSLayoutConstraint *messageTableViewBottomConstraint;
 @property (nonatomic, strong) UIView *sameLanguagePrompter;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
+@property (nonatomic, strong) UINavigationController *modalNavigationController;
+@property (nonatomic, strong) A3LanguagePickerController *languagePickerController;
 
 @end
 
@@ -116,6 +119,14 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:kReachabilityChangedNotification object:nil];
 
 	[self setupBarButtons];
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	FNLOG(@"%@", parent);
+	if (parent == nil) {
+		[_sourceLanguageSelectTextField resignFirstResponder];
+		[_targetLanguageSelectTextField resignFirstResponder];
+	}
 }
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification {
@@ -395,8 +406,21 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 - (A3LanguagePickerController *)presentLanguagePickerControllerWithDetectLanguage:(BOOL)detectLanguage {
 	A3LanguagePickerController *viewController = [[A3LanguagePickerController alloc] initWithLanguages:[A3TranslatorLanguage findAllWithDetectLanguage:detectLanguage]];
 	viewController.delegate = self;
-	[self presentSubViewController:viewController];
+	viewController.selectedCode = detectLanguage ? _originalTextLanguage : _translatedTextLanguage;
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(languagePickerControllerDidDismiss:) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+	} else {
+		[self.A3RootViewController presentRightSideViewController:viewController];
+	}
 	return viewController;
+}
+
+- (void)languagePickerControllerDidDismiss:(NSNotification *)notification {
+	if (notification.object == _modalNavigationController.childViewControllers[0]) {
+		_modalNavigationController = nil;
+	}
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
@@ -559,6 +583,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+	FNLOG();
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 	[self layoutLanguageSelectView];
 }

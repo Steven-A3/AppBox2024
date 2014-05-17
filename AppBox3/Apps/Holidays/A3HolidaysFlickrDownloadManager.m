@@ -129,61 +129,57 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 }
 
 - (void)addDownloadTaskForCountryCode:(NSString *)countryCode {
-	@autoreleasepool {
-		if ([self hasUserSuppliedImageForCountry:countryCode]) {
-			return;
-		}
-
-		if ([self.downloadQueue containsObject:countryCode]) return;
-
-		NSDate *downloadDate = [self downloadDateForCountryCode:countryCode];
-		if (!downloadDate || [[NSDate date] timeIntervalSinceDate:downloadDate] > 5) {
-			[self.downloadQueue addObject:countryCode];
-		}
-        
-        [self startDownload];
+	if ([self hasUserSuppliedImageForCountry:countryCode]) {
+		return;
 	}
+
+	if ([self.downloadQueue containsObject:countryCode]) return;
+
+	NSDate *downloadDate = [self downloadDateForCountryCode:countryCode];
+	if (!downloadDate || [[NSDate date] timeIntervalSinceDate:downloadDate] > 5) {
+		[self.downloadQueue addObject:countryCode];
+	}
+
+	[self startDownload];
 }
 
 - (void)startDownload {
-	@autoreleasepool {
-		if (self.downloadInProgress || ![self.downloadQueue count]) {
-			return;
-		}
-		if ([[Reachability reachabilityWithHostname:@"www.flickr.com"] isReachableViaWiFi]) {
-			self.downloadInProgress = YES;
+	if (self.downloadInProgress || ![self.downloadQueue count]) {
+		return;
+	}
+	if ([[Reachability reachabilityWithHostname:@"www.flickr.com"] isReachableViaWiFi]) {
+		self.downloadInProgress = YES;
 
-			NSString *filePath = [[NSBundle mainBundle] pathForResource:@"FlickrRecommendation" ofType:@"json"];
-			NSError *error;
-			NSArray *candidates = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:0 error:&error];
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"country == %@", self.downloadQueue[0]];
-			candidates = [candidates filteredArrayUsingPredicate:predicate];
-			if ([candidates count]) {
-				static NSUInteger photoIndex = 0;
+		NSString *filePath = [[NSBundle mainBundle] pathForResource:@"FlickrRecommendation" ofType:@"json"];
+		NSError *error;
+		NSArray *candidates = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:0 error:&error];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"country == %@", self.downloadQueue[0]];
+		candidates = [candidates filteredArrayUsingPredicate:predicate];
+		if ([candidates count]) {
+			static NSUInteger photoIndex = 0;
 
-				NSString *prevPhotoID = [self imageIDForCountryCode:self.downloadQueue[0]];
-				if (prevPhotoID) {
-					[candidates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-						if ([prevPhotoID isEqualToString:obj[@"photo_id"]]) {
-							photoIndex = (idx + 1) % [candidates count];
-							*stop = YES;
-						}
-					}];
-				}
+			NSString *prevPhotoID = [self imageIDForCountryCode:self.downloadQueue[0]];
+			if (prevPhotoID) {
+				[candidates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+					if ([prevPhotoID isEqualToString:obj[@"photo_id"]]) {
+						photoIndex = (idx + 1) % [candidates count];
+						*stop = YES;
+					}
+				}];
+			}
 
-				self.photoInfo = candidates[photoIndex];
-				NSURL *photoURL = [NSURL URLWithString:self.photoInfo[@"url"]];
+			self.photoInfo = candidates[photoIndex];
+			NSURL *photoURL = [NSURL URLWithString:self.photoInfo[@"url"]];
 
-				NSURLRequest *request = [NSURLRequest requestWithURL:photoURL];
-				self.downloadTask = [self.session downloadTaskWithRequest:request];
-                self.downloadTask.taskDescription = self.downloadQueue[0];
-				[self.downloadTask resume];
-			} else {
-                self.downloadInProgress = NO;
-                [self.downloadQueue removeObjectAtIndex:0];
-                
-                [self startDownload];
-            }
+			NSURLRequest *request = [NSURLRequest requestWithURL:photoURL];
+			self.downloadTask = [self.session downloadTaskWithRequest:request];
+			self.downloadTask.taskDescription = self.downloadQueue[0];
+			[self.downloadTask resume];
+		} else {
+			self.downloadInProgress = NO;
+			[self.downloadQueue removeObjectAtIndex:0];
+
+			[self startDownload];
 		}
 	}
 }
@@ -226,15 +222,13 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 }
 
 - (void)saveUserSuppliedImage:(UIImage *)image forCountryCode:(NSString *)countryCode {
-	@autoreleasepool {
-		[self deleteImageForCountryCode:countryCode];
+	[self deleteImageForCountryCode:countryCode];
 
-		NSString *imageName = [self userSuppliedImageNameForCountryCode:countryCode];
-		[self setImageName:imageName forCountryCode:countryCode];
+	NSString *imageName = [self userSuppliedImageNameForCountryCode:countryCode];
+	[self setImageName:imageName forCountryCode:countryCode];
 
-		UIImage *rotatedImage = [self rotateImage:image];
-		[self cropSetOriginalImage:rotatedImage name:imageName];
-	}
+	UIImage *rotatedImage = [self rotateImage:image];
+	[self cropSetOriginalImage:rotatedImage name:imageName];
 }
 
 - (NSString *)userSuppliedImageNameForCountryCode:(NSString *)countryCode {
@@ -250,14 +244,12 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 }
 
 - (void)setImageName:(NSString *)path forCountryCode:(NSString *)countryCode {
-	@autoreleasepool {
-		if (!path) {
-			[[NSUserDefaults standardUserDefaults] removeObjectForKey:[self imageNameKeyForCountryCode:countryCode]];
-		} else {
-			[[NSUserDefaults standardUserDefaults] setObject:path forKey:[self imageNameKeyForCountryCode:countryCode]];
-		}
-		[[NSUserDefaults standardUserDefaults] synchronize];
+	if (!path) {
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:[self imageNameKeyForCountryCode:countryCode]];
+	} else {
+		[[NSUserDefaults standardUserDefaults] setObject:path forKey:[self imageNameKeyForCountryCode:countryCode]];
 	}
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)ownerStringForCountryCode:(NSString *)countryCode {
@@ -265,10 +257,8 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 }
 
 - (void)setOwner:(NSString *)owner forCountryCode:(NSString *)countryCode {
-	@autoreleasepool {
-		[[NSUserDefaults standardUserDefaults] setObject:owner forKey:[self ownerKeyForCountryCode:countryCode]];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-	}
+	[[NSUserDefaults standardUserDefaults] setObject:owner forKey:[self ownerKeyForCountryCode:countryCode]];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)urlStringForCountryCode:(NSString *)countryCode {
@@ -276,10 +266,8 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 }
 
 - (void)setURLString:(NSString *)urlString forCountryCode:(NSString *)countryCode {
-	@autoreleasepool {
-		[[NSUserDefaults standardUserDefaults] setObject:urlString forKey:[self urlKeyForCountryCode:countryCode]];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-	}
+	[[NSUserDefaults standardUserDefaults] setObject:urlString forKey:[self urlKeyForCountryCode:countryCode]];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)licenseStringForCountryCode:(NSString *)countryCode {
@@ -287,10 +275,8 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 }
 
 - (void)setLicenseString:(NSString *)urlString forCountryCode:(NSString *)countryCode {
-	@autoreleasepool {
-		[[NSUserDefaults standardUserDefaults] setObject:urlString forKey:[self licenseKeyForCountryCode:countryCode]];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-	}
+	[[NSUserDefaults standardUserDefaults] setObject:urlString forKey:[self licenseKeyForCountryCode:countryCode]];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)imageIDForCountryCode:(NSString *)countryCode {
@@ -298,10 +284,8 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 }
 
 - (void)setImageID:(NSString *)urlString forCountryCode:(NSString *)countryCode {
-	@autoreleasepool {
-		[[NSUserDefaults standardUserDefaults] setObject:urlString forKey:[self idKeyForCountryCode:countryCode]];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-	}
+	[[NSUserDefaults standardUserDefaults] setObject:urlString forKey:[self idKeyForCountryCode:countryCode]];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSDate *)downloadDateForCountryCode:(NSString *)countryCode {
@@ -309,10 +293,8 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 }
 
 - (void)setDownloadDateForCountryCode:(NSString *)countryCode {
-	@autoreleasepool {
-		[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:[self dateKeyForCountryCode:countryCode]];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-	}
+	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:[self dateKeyForCountryCode:countryCode]];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)ownerKeyForCountryCode:(NSString *)countryCode {
@@ -337,215 +319,207 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 
 - (UIImage *)rotateImage:(UIImage *)image {
 	UIImage *imageCopy=nil;
-	@autoreleasepool {
-		UIImageOrientation translatedOrientation = image.imageOrientation;
-		switch (image.imageOrientation) {
-			case UIImageOrientationUp:
-				translatedOrientation = UIImageOrientationDownMirrored;
-				break;
-			case UIImageOrientationDown:
-				translatedOrientation = UIImageOrientationUpMirrored;
-				break;
-			case UIImageOrientationLeft:
-				translatedOrientation = UIImageOrientationLeftMirrored;
-				break;
-			case UIImageOrientationRight:
-				translatedOrientation = UIImageOrientationRightMirrored;
-				break;
-			case UIImageOrientationUpMirrored:
-				translatedOrientation = UIImageOrientationUp;
-				break;
-			case UIImageOrientationDownMirrored:
-				translatedOrientation = UIImageOrientationDown;
-				break;
-			case UIImageOrientationLeftMirrored:
-				translatedOrientation = UIImageOrientationLeft;
-				break;
-			case UIImageOrientationRightMirrored:
-				translatedOrientation = UIImageOrientationRight;
-				break;
-		}
-
-		CGImageRef imgRef = image.CGImage;
-
-		CGFloat width = CGImageGetWidth(imgRef);
-		CGFloat height = CGImageGetHeight(imgRef);
-
-		CGAffineTransform transform;
-		CGRect bounds = CGRectMake(0, 0, width, height);
-		CGSize imageSize = CGSizeMake(CGImageGetWidth(imgRef), CGImageGetHeight(imgRef));
-		CGFloat boundHeight;
-		switch (translatedOrientation) {
-			case UIImageOrientationUp: //EXIF = 1
-				transform = CGAffineTransformIdentity;
-				break;
-
-			case UIImageOrientationUpMirrored: //EXIF = 2
-				transform = CGAffineTransformMakeTranslation(imageSize.width, 0.0);
-				transform = CGAffineTransformScale(transform, -1.0, 1.0);
-				break;
-
-			case UIImageOrientationDown: //EXIF = 3
-				transform = CGAffineTransformMakeTranslation(imageSize.width, imageSize.height);
-				transform = CGAffineTransformRotate(transform, M_PI);
-				break;
-
-			case UIImageOrientationDownMirrored: //EXIF = 4
-				transform = CGAffineTransformMakeTranslation(0.0, imageSize.height);
-				transform = CGAffineTransformScale(transform, 1.0, -1.0);
-				break;
-
-			case UIImageOrientationLeftMirrored: //EXIF = 5
-				boundHeight = bounds.size.height;
-				bounds.size.height = bounds.size.width;
-				bounds.size.width = boundHeight;
-				transform = CGAffineTransformMakeTranslation(imageSize.height, imageSize.width);
-				transform = CGAffineTransformScale(transform, -1.0, 1.0);
-				transform = CGAffineTransformRotate(transform, 3.0 * M_PI / 2.0);
-				break;
-
-			case UIImageOrientationLeft: //EXIF = 6
-				boundHeight = bounds.size.height;
-				bounds.size.height = bounds.size.width;
-				bounds.size.width = boundHeight;
-				transform = CGAffineTransformMakeTranslation(0.0, imageSize.width);
-				transform = CGAffineTransformRotate(transform, 3.0 * M_PI / 2.0);
-				break;
-
-			case UIImageOrientationRightMirrored: //EXIF = 7
-				boundHeight = bounds.size.height;
-				bounds.size.height = bounds.size.width;
-				bounds.size.width = boundHeight;
-				transform = CGAffineTransformMakeScale(-1.0, 1.0);
-				transform = CGAffineTransformRotate(transform, M_PI / 2.0);
-				break;
-
-			case UIImageOrientationRight: //EXIF = 8
-				boundHeight = bounds.size.height;
-				bounds.size.height = bounds.size.width;
-				bounds.size.width = boundHeight;
-				transform = CGAffineTransformMakeTranslation(imageSize.height, 0.0);
-				transform = CGAffineTransformRotate(transform, M_PI / 2.0);
-				break;
-
-			default:
-				[NSException raise:NSInternalInconsistencyException format:@"Invalid image orientation"];
-
-		}
-
-		UIGraphicsBeginImageContext(bounds.size);
-
-		CGContextRef context = UIGraphicsGetCurrentContext();
-
-		CGContextConcatCTM(context, transform);
-
-		CGContextDrawImage(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, width, height), imgRef);
-		imageCopy = UIGraphicsGetImageFromCurrentImageContext();
-		UIGraphicsEndImageContext();
+	UIImageOrientation translatedOrientation = image.imageOrientation;
+	switch (image.imageOrientation) {
+		case UIImageOrientationUp:
+			translatedOrientation = UIImageOrientationDownMirrored;
+			break;
+		case UIImageOrientationDown:
+			translatedOrientation = UIImageOrientationUpMirrored;
+			break;
+		case UIImageOrientationLeft:
+			translatedOrientation = UIImageOrientationLeftMirrored;
+			break;
+		case UIImageOrientationRight:
+			translatedOrientation = UIImageOrientationRightMirrored;
+			break;
+		case UIImageOrientationUpMirrored:
+			translatedOrientation = UIImageOrientationUp;
+			break;
+		case UIImageOrientationDownMirrored:
+			translatedOrientation = UIImageOrientationDown;
+			break;
+		case UIImageOrientationLeftMirrored:
+			translatedOrientation = UIImageOrientationLeft;
+			break;
+		case UIImageOrientationRightMirrored:
+			translatedOrientation = UIImageOrientationRight;
+			break;
 	}
+
+	CGImageRef imgRef = image.CGImage;
+
+	CGFloat width = CGImageGetWidth(imgRef);
+	CGFloat height = CGImageGetHeight(imgRef);
+
+	CGAffineTransform transform;
+	CGRect bounds = CGRectMake(0, 0, width, height);
+	CGSize imageSize = CGSizeMake(CGImageGetWidth(imgRef), CGImageGetHeight(imgRef));
+	CGFloat boundHeight;
+	switch (translatedOrientation) {
+		case UIImageOrientationUp: //EXIF = 1
+			transform = CGAffineTransformIdentity;
+			break;
+
+		case UIImageOrientationUpMirrored: //EXIF = 2
+			transform = CGAffineTransformMakeTranslation(imageSize.width, 0.0);
+			transform = CGAffineTransformScale(transform, -1.0, 1.0);
+			break;
+
+		case UIImageOrientationDown: //EXIF = 3
+			transform = CGAffineTransformMakeTranslation(imageSize.width, imageSize.height);
+			transform = CGAffineTransformRotate(transform, M_PI);
+			break;
+
+		case UIImageOrientationDownMirrored: //EXIF = 4
+			transform = CGAffineTransformMakeTranslation(0.0, imageSize.height);
+			transform = CGAffineTransformScale(transform, 1.0, -1.0);
+			break;
+
+		case UIImageOrientationLeftMirrored: //EXIF = 5
+			boundHeight = bounds.size.height;
+			bounds.size.height = bounds.size.width;
+			bounds.size.width = boundHeight;
+			transform = CGAffineTransformMakeTranslation(imageSize.height, imageSize.width);
+			transform = CGAffineTransformScale(transform, -1.0, 1.0);
+			transform = CGAffineTransformRotate(transform, 3.0 * M_PI / 2.0);
+			break;
+
+		case UIImageOrientationLeft: //EXIF = 6
+			boundHeight = bounds.size.height;
+			bounds.size.height = bounds.size.width;
+			bounds.size.width = boundHeight;
+			transform = CGAffineTransformMakeTranslation(0.0, imageSize.width);
+			transform = CGAffineTransformRotate(transform, 3.0 * M_PI / 2.0);
+			break;
+
+		case UIImageOrientationRightMirrored: //EXIF = 7
+			boundHeight = bounds.size.height;
+			bounds.size.height = bounds.size.width;
+			bounds.size.width = boundHeight;
+			transform = CGAffineTransformMakeScale(-1.0, 1.0);
+			transform = CGAffineTransformRotate(transform, M_PI / 2.0);
+			break;
+
+		case UIImageOrientationRight: //EXIF = 8
+			boundHeight = bounds.size.height;
+			bounds.size.height = bounds.size.width;
+			bounds.size.width = boundHeight;
+			transform = CGAffineTransformMakeTranslation(imageSize.height, 0.0);
+			transform = CGAffineTransformRotate(transform, M_PI / 2.0);
+			break;
+
+		default:
+			[NSException raise:NSInternalInconsistencyException format:@"Invalid image orientation"];
+
+	}
+
+	UIGraphicsBeginImageContext(bounds.size);
+
+	CGContextRef context = UIGraphicsGetCurrentContext();
+
+	CGContextConcatCTM(context, transform);
+
+	CGContextDrawImage(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, width, height), imgRef);
+	imageCopy = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
 
 	return imageCopy;
 }
 
 - (UIImage *)cropSetOriginalImage:(UIImage *)originalImage name:(NSString *)filename {
 	UIImage *handledImage;
-	@autoreleasepool {
-		CGFloat interpolationFactor = 10;
+	CGFloat interpolationFactor = 10;
 
-		if (IS_IPAD) {
-			UIImage *returnedImage;
-			CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	if (IS_IPAD) {
+		UIImage *returnedImage;
+		CGRect screenBounds = [[UIScreen mainScreen] bounds];
 
-			CGRect bounds = CGRectInset(screenBounds, -interpolationFactor, -interpolationFactor);
-			NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortrait] pathInLibraryDirectory];
-			returnedImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
+		CGRect bounds = CGRectInset(screenBounds, -interpolationFactor, -interpolationFactor);
+		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortrait] pathInLibraryDirectory];
+		returnedImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
 
-			if (IS_PORTRAIT) handledImage = returnedImage;
+		if (IS_PORTRAIT) handledImage = returnedImage;
 
-			bounds = screenBounds;
-			bounds.size.height = 84;
-			path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortraitList] pathInLibraryDirectory];
-			[self saveImage:returnedImage bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
+		bounds = screenBounds;
+		bounds.size.height = 84;
+		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortraitList] pathInLibraryDirectory];
+		[self saveImage:returnedImage bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
 
-			bounds = screenBounds;
-			bounds.size.width = screenBounds.size.height;
-			bounds.size.height = screenBounds.size.width;
+		bounds = screenBounds;
+		bounds.size.width = screenBounds.size.height;
+		bounds.size.height = screenBounds.size.width;
 
-			bounds = CGRectInset(bounds, -interpolationFactor, -interpolationFactor);
-			path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScape] pathInLibraryDirectory];
-			returnedImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
+		bounds = CGRectInset(bounds, -interpolationFactor, -interpolationFactor);
+		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScape] pathInLibraryDirectory];
+		returnedImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
 
-			if (IS_LANDSCAPE) handledImage = returnedImage;
+		if (IS_LANDSCAPE) handledImage = returnedImage;
 
-			bounds = screenBounds;
-			bounds.size.width = screenBounds.size.height;
-			bounds.size.height = 84;
+		bounds = screenBounds;
+		bounds.size.width = screenBounds.size.height;
+		bounds.size.height = 84;
 
-			path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScapeList] pathInLibraryDirectory];
-			[self saveImage:returnedImage bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
+		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScapeList] pathInLibraryDirectory];
+		[self saveImage:returnedImage bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
 
-		} else {
-			CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	} else {
+		CGRect screenBounds = [[UIScreen mainScreen] bounds];
 
-			CGRect bounds = CGRectInset(screenBounds, -interpolationFactor, -interpolationFactor);
-			NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhone] pathInLibraryDirectory];
-			handledImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
+		CGRect bounds = CGRectInset(screenBounds, -interpolationFactor, -interpolationFactor);
+		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhone] pathInLibraryDirectory];
+		handledImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
 
-			bounds = screenBounds;
-			bounds.size.height = 84;
-			path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhoneList] pathInLibraryDirectory];
-			[self saveImage:handledImage bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
-		}
+		bounds = screenBounds;
+		bounds.size.height = 84;
+		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhoneList] pathInLibraryDirectory];
+		[self saveImage:handledImage bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
 	}
 	return handledImage;
 }
 
 - (UIImage *)saveImage:(UIImage *)image bounds:(CGRect)bounds path:(NSString *)path usingMode:(NYXCropMode)cropMode {
 	UIImage *croppedImage=nil;
-	@autoreleasepool {
-		CGSize newSize = CGSizeMake(CGRectGetWidth(bounds), CGRectGetHeight(bounds));
-		FNLOG(@"%f, %f", newSize.width, newSize.height);
-		UIImage *scaledImage = [image scaleToCoverSize:newSize];
+	CGSize newSize = CGSizeMake(CGRectGetWidth(bounds), CGRectGetHeight(bounds));
+	FNLOG(@"%f, %f", newSize.width, newSize.height);
+	UIImage *scaledImage = [image scaleToCoverSize:newSize];
 
-		croppedImage = [scaledImage cropToSize:newSize usingMode:cropMode];
-		[UIImagePNGRepresentation(croppedImage) writeToFile:path atomically:YES];
-	}
+	croppedImage = [scaledImage cropToSize:newSize usingMode:cropMode];
+	[UIImagePNGRepresentation(croppedImage) writeToFile:path atomically:YES];
 
 	return croppedImage;
 }
 
 - (void)deleteImageForCountryCode:(NSString *)countryCode {
-    FNLOG(@"Delete for %@, downloadQueue %@, deleteQueue %@", countryCode, _downloadQueue, _deleteQueue);
-	@autoreleasepool {
-		if ([self.downloadQueue containsObject:countryCode]) {
-			if (self.downloadInProgress && [self.downloadQueue indexOfObject:countryCode] == 0) {
-				[self.downloadTask cancel];
-                if (![self.deleteQueue containsObject:countryCode])
-                    [self.deleteQueue addObject:countryCode];
-				return;
-			} else {
-				[self.downloadQueue removeObject:countryCode];
-			}
-		}
-		NSString *filename = [[NSUserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];
-		NSFileManager *fileManager = [NSFileManager defaultManager];
-		if (IS_IPAD) {
-			NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortrait] pathInLibraryDirectory];
-			[fileManager removeItemAtPath:path error:nil];
-			path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScape] pathInLibraryDirectory];
-			[fileManager removeItemAtPath:path error:nil];
+	FNLOG(@"Delete for %@, downloadQueue %@, deleteQueue %@", countryCode, _downloadQueue, _deleteQueue);
+	if ([self.downloadQueue containsObject:countryCode]) {
+		if (self.downloadInProgress && [self.downloadQueue indexOfObject:countryCode] == 0) {
+			[self.downloadTask cancel];
+			if (![self.deleteQueue containsObject:countryCode])
+				[self.deleteQueue addObject:countryCode];
+			return;
 		} else {
-			NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhone] pathInLibraryDirectory];
-			[fileManager removeItemAtPath:path error:nil];
+			[self.downloadQueue removeObject:countryCode];
 		}
-
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		[defaults removeObjectForKey:[self imageNameKeyForCountryCode:countryCode]];
-		[defaults removeObjectForKey:[self ownerKeyForCountryCode:countryCode]];
-		[defaults removeObjectForKey:[self urlKeyForCountryCode:countryCode]];
-		[defaults removeObjectForKey:[self dateKeyForCountryCode:countryCode]];
-		[defaults synchronize];
 	}
+	NSString *filename = [[NSUserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if (IS_IPAD) {
+		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortrait] pathInLibraryDirectory];
+		[fileManager removeItemAtPath:path error:nil];
+		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScape] pathInLibraryDirectory];
+		[fileManager removeItemAtPath:path error:nil];
+	} else {
+		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhone] pathInLibraryDirectory];
+		[fileManager removeItemAtPath:path error:nil];
+	}
+
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults removeObjectForKey:[self imageNameKeyForCountryCode:countryCode]];
+	[defaults removeObjectForKey:[self ownerKeyForCountryCode:countryCode]];
+	[defaults removeObjectForKey:[self urlKeyForCountryCode:countryCode]];
+	[defaults removeObjectForKey:[self dateKeyForCountryCode:countryCode]];
+	[defaults synchronize];
 }
 
 @end

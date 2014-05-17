@@ -111,16 +111,14 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void)doneButtonAction:(id)sender
 {
-	@autoreleasepool {
-		if (IS_IPAD) {
-			[self.A3RootViewController dismissRightSideViewController];
-		} else {
-			[self dismissViewControllerAnimated:YES completion:nil];
-		}
-        
-        if ([_delegate respondsToSelector:@selector(didDismissExpenseHistoryViewController)]) {
-            [_delegate didDismissExpenseHistoryViewController];
-        }
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissRightSideViewController];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
+
+	if ([_delegate respondsToSelector:@selector(didDismissExpenseHistoryViewController)]) {
+		[_delegate didDismissExpenseHistoryViewController];
 	}
 }
 

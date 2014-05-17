@@ -28,18 +28,15 @@
 
 	self.view.backgroundColor = [UIColor whiteColor];
 
-	self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+	self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.showsVerticalScrollIndicator = NO;
 	_tableView.separatorColor = A3UITableViewSeparatorColor;
 	_tableView.separatorInset = A3UITableViewSeparatorInset;
 	_tableView.contentInset = UIEdgeInsetsMake(kSearchBarHeight + 4, 0, 0, 0);
+	_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:_tableView];
-
-	[_tableView makeConstraints:^(MASConstraintMaker *make) {
-		make.edges.equalTo(self.view);
-	}];
 
 	[self.view addSubview:self.searchBar];
 	[self mySearchDisplayController];
@@ -65,7 +62,7 @@
 		if (_shouldPopViewController) {
 			[self.navigationController popViewControllerAnimated:YES];
 		} else {
-			[self dismissViewControllerAnimated:YES completion:nil];
+			[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 		}
 	}
 }

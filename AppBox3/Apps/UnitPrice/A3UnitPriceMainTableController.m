@@ -209,25 +209,21 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 }
 
 - (void)composeButtonAction:(UIButton *)button {
-	@autoreleasepool {
-        // history 입력 및 데이타 초기화
-        
-        if (price1UnitPrice>0 && price2UnitPrice>0) {
-            [self putHistory];
-        }
-        [self clearCalculation];
+	// history 입력 및 데이타 초기화
+
+	if (price1UnitPrice>0 && price2UnitPrice>0) {
+		[self putHistory];
 	}
+	[self clearCalculation];
 }
 
 - (void)historyButtonAction:(UIButton *)button {
-	@autoreleasepool {
-        A3UnitPriceHistoryViewController *viewController = [[A3UnitPriceHistoryViewController alloc] initWithNibName:nil bundle:nil];
-        viewController.delegate = self;
-		[self presentSubViewController:viewController];
-        
-        if (IS_IPAD) {
-            [self enableControls:NO];
-        }
+	A3UnitPriceHistoryViewController *viewController = [[A3UnitPriceHistoryViewController alloc] initWithNibName:nil bundle:nil];
+	viewController.delegate = self;
+	[self presentSubViewController:viewController];
+
+	if (IS_IPAD) {
+		[self enableControls:NO];
 	}
 }
 
@@ -864,35 +860,33 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	@autoreleasepool {
-	    UITableViewCell *cell=nil;
+	UITableViewCell *cell=nil;
 
-        if (indexPath.section == 0) {
-            A3UnitPriceCompareSliderCell *compareCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceCompareSliderCellID forIndexPath:indexPath];
-            [self configureCompareCell:compareCell];
-            
-            cell = compareCell;
-        }
-        else {
-            
-            if (indexPath.section == 1) {
-                A3UnitPriceInfoCell *infoCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceInfoCellID forIndexPath:indexPath];
-                [self configureInfo1Cell:infoCell];
-                
-                cell = infoCell;
-            }
-            else {
-                A3UnitPriceInfoCell *infoCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceInfoCellID forIndexPath:indexPath];
-                [self configureInfo2Cell:infoCell];
-                
-                cell = infoCell;
-            }
-        }
+	if (indexPath.section == 0) {
+		A3UnitPriceCompareSliderCell *compareCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceCompareSliderCellID forIndexPath:indexPath];
+		[self configureCompareCell:compareCell];
 
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-		return cell;
+		cell = compareCell;
 	}
+	else {
+
+		if (indexPath.section == 1) {
+			A3UnitPriceInfoCell *infoCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceInfoCellID forIndexPath:indexPath];
+			[self configureInfo1Cell:infoCell];
+
+			cell = infoCell;
+		}
+		else {
+			A3UnitPriceInfoCell *infoCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceInfoCellID forIndexPath:indexPath];
+			[self configureInfo2Cell:infoCell];
+
+			cell = infoCell;
+		}
+	}
+
+	cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+	return cell;
 }
 
 - (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section

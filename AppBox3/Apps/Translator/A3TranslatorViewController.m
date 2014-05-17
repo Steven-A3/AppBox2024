@@ -98,7 +98,7 @@
 	if (enable) {
 		[_segmentedControl setTintColor:nil];
 	} else {
-		[_segmentedControl setTintColor:[UIColor colorWithRed:138.0/255.0 green:138.0/255.0 blue:138.0/255.0 alpha:1.0]];
+		[_segmentedControl setTintColor:SEGMENTED_CONTROL_DISABLED_TINT_COLOR];
 	}
 	[self.addButton setEnabled:enable];
 }

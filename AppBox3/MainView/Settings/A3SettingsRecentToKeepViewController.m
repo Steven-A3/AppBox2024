@@ -51,10 +51,8 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	@autoreleasepool {
-		NSDictionary *recentMenus = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuRecentlyUsed];
-		return recentMenus ? 2 : 1;
-	}
+	NSDictionary *recentMenus = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuRecentlyUsed];
+	return recentMenus ? 2 : 1;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

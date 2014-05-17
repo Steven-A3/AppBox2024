@@ -371,29 +371,26 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell=nil;
-	@autoreleasepool {
-		cell = nil;
-        
-        if (_isComparisonMode) {
-            
-            A3LoanCalcComparisonHistoryCell *compareCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcComparisonHistoryCellID forIndexPath:indexPath];
-            
-            LoanCalcComparisonHistory *comparisonHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
-            [self configureComparisonCell:compareCell withHistory:comparisonHistory];
-            cell = compareCell;
-        }
-        else {
-            A3LoanCalcLoanHistoryCell *loanCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanHistoryCellID forIndexPath:indexPath];
-            
-            LoanCalcHistory *loanHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
-            [self configureLoanCell:loanCell withHistory:loanHistory];
-            
-            cell = loanCell;
-        }
+	UITableViewCell *cell=nil;
+
+	if (_isComparisonMode) {
+
+		A3LoanCalcComparisonHistoryCell *compareCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcComparisonHistoryCellID forIndexPath:indexPath];
+
+		LoanCalcComparisonHistory *comparisonHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
+		[self configureComparisonCell:compareCell withHistory:comparisonHistory];
+		cell = compareCell;
 	}
-    
-    return cell;
+	else {
+		A3LoanCalcLoanHistoryCell *loanCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanHistoryCellID forIndexPath:indexPath];
+
+		LoanCalcHistory *loanHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
+		[self configureLoanCell:loanCell withHistory:loanHistory];
+
+		cell = loanCell;
+	}
+
+	return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

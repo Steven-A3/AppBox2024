@@ -11,6 +11,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSUserDefaults+A3Defaults.h"
 #import "A3CurrencyViewController.h"
+#import "UIViewController+navigation.h"
 
 @interface A3CurrencySettingsViewController ()
 
@@ -44,6 +45,15 @@ NSString *const CellIdentifier = @"Cell";
 		[self rightBarButtonDoneButton];
 	}
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+}
+
+
+
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+	}
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {

@@ -357,9 +357,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (void)doneButtonAction:(id)button {
-	@autoreleasepool {
-        [self clearEverything];
-	}
+	[self clearEverything];
 }
 
 - (void)addItemWithFocus:(BOOL)focus
@@ -406,11 +404,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
-	@autoreleasepool {
-		[self rightButtonMoreButton];
-		[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
-		[self.view removeGestureRecognizer:gestureRecognizer];
-	}
+	[self rightButtonMoreButton];
+	[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
+	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {

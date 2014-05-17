@@ -219,48 +219,46 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			__typeof(self) __weak weakSelf = self;
 
 			element.onSelected = ^(A3TableViewElement *elementObject) {
-				@autoreleasepool {
-					A3TableViewMenuElement *menuElement = (A3TableViewMenuElement *) elementObject;
-					UIViewController *targetViewController= [self getViewControllerForElement:menuElement];
+				A3TableViewMenuElement *menuElement = (A3TableViewMenuElement *) elementObject;
+				UIViewController *targetViewController= [self getViewControllerForElement:menuElement];
 
-					BOOL proceedPasscodeCheck = NO;
-					// Check active view controller
-					if (![weakSelf isActiveViewController:[targetViewController class]]) {
-						if ([A3KeychainUtils getPassword] && [menuElement respondsToSelector:@selector(needSecurityCheck)] && [menuElement needSecurityCheck]) {
-							proceedPasscodeCheck = YES;
+				BOOL proceedPasscodeCheck = NO;
+				// Check active view controller
+				if (![weakSelf isActiveViewController:[targetViewController class]]) {
+					if ([A3KeychainUtils getPassword] && [menuElement respondsToSelector:@selector(needSecurityCheck)] && [menuElement needSecurityCheck]) {
+						proceedPasscodeCheck = YES;
 
-							if ([menuElement.storyboardName_iPhone isEqualToString:@"A3Settings"]) {
-								proceedPasscodeCheck &= [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
-							}
+						if ([menuElement.storyboardName_iPhone isEqualToString:@"A3Settings"]) {
+							proceedPasscodeCheck &= [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
 						}
-						if (proceedPasscodeCheck) {
-							weakSelf.selectedElement = menuElement;
-							weakSelf.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-							UIViewController *passcodeTargetViewController;
-							if (IS_IPHONE) {
-								passcodeTargetViewController = [self mm_drawerController];
-							} else {
-								passcodeTargetViewController = [[A3AppDelegate instance] rootViewController];
-							}
-							[_passcodeViewController showLockscreenInViewController:passcodeTargetViewController];
+					}
+					if (proceedPasscodeCheck) {
+						weakSelf.selectedElement = menuElement;
+						weakSelf.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+						UIViewController *passcodeTargetViewController;
+						if (IS_IPHONE) {
+							passcodeTargetViewController = [self mm_drawerController];
 						} else {
-							[weakSelf popToRootAndPushViewController:targetViewController];
-							[weakSelf updateRecentlyUsedAppsWithElement:menuElement];
-
-							if (IS_IPHONE) {
-								[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
-									[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
-								}];
-							}
+							passcodeTargetViewController = [[A3AppDelegate instance] rootViewController];
 						}
+						[_passcodeViewController showLockscreenInViewController:passcodeTargetViewController];
 					} else {
+						[weakSelf popToRootAndPushViewController:targetViewController];
+						[weakSelf updateRecentlyUsedAppsWithElement:menuElement];
+
 						if (IS_IPHONE) {
 							[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
 								[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
 							}];
-						} else if (IS_PORTRAIT) {
-							[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 						}
+					}
+				} else {
+					if (IS_IPHONE) {
+						[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
+							[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
+						}];
+					} else if (IS_PORTRAIT) {
+						[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 					}
 				}
 
@@ -494,56 +492,54 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 }
 
 - (void)updateRecentlyUsedAppsWithElement:(A3TableViewMenuElement *)element {
-	@autoreleasepool {
-		if (![element isKindOfClass:[A3TableViewMenuElement class]] || element.doNotKeepAsRecent) {
-			return;
-		}
-		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-		NSMutableDictionary *recentlyUsed = [[userDefaults objectForKey:kA3MainMenuRecentlyUsed] mutableCopy];
-		if (!recentlyUsed) {
-			recentlyUsed = [NSMutableDictionary new];
-			recentlyUsed[kA3AppsMenuName] = @"Recent";
-			recentlyUsed[kA3AppsMenuCollapsed] = @NO;
-			recentlyUsed[kA3AppsMenuExpandable] = @YES;
-		}
-		NSMutableArray *appsList = [recentlyUsed[kA3AppsExpandableChildren] mutableCopy];
-		if (!appsList) {
-			appsList = [NSMutableArray new];
-		}
-
-		NSUInteger idx = [appsList indexOfObjectPassingTest:^BOOL(NSDictionary *menuDictionary, NSUInteger idx, BOOL *stop) {
-			if ([element.title isEqualToString:menuDictionary[kA3AppsMenuName]]) {
-				*stop = YES;
-				return YES;
-			}
-			return NO;
-		}];
-		if (idx != NSNotFound) {
-			if (idx > 0) {
-				[appsList moveObjectFromIndex:idx toIndex:0];
-				recentlyUsed[kA3AppsExpandableChildren] = appsList;
-			}
-		} else {
-			NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
-
-			if (maxRecent == 1) {
-				recentlyUsed[kA3AppsExpandableChildren] = [self dataFromElements:@[element]];
-			} else {
-				NSArray *newDataArray = [self dataFromElements:@[element]];
-				[appsList insertObject:newDataArray[0] atIndex:0];
-
-				if ([appsList count] > maxRecent) {
-					[appsList removeObjectsInRange:NSMakeRange(maxRecent, [appsList count] - maxRecent)];
-				}
-				recentlyUsed[kA3AppsExpandableChildren] = appsList;
-			}
-		}
-
-		[[A3AppDelegate instance] storeRecentlyUsedMenuDictionary:recentlyUsed withDate:[NSDate date]];
-
-		[self setupData];
-		[self.tableView reloadData];
+	if (![element isKindOfClass:[A3TableViewMenuElement class]] || element.doNotKeepAsRecent) {
+		return;
 	}
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	NSMutableDictionary *recentlyUsed = [[userDefaults objectForKey:kA3MainMenuRecentlyUsed] mutableCopy];
+	if (!recentlyUsed) {
+		recentlyUsed = [NSMutableDictionary new];
+		recentlyUsed[kA3AppsMenuName] = @"Recent";
+		recentlyUsed[kA3AppsMenuCollapsed] = @NO;
+		recentlyUsed[kA3AppsMenuExpandable] = @YES;
+	}
+	NSMutableArray *appsList = [recentlyUsed[kA3AppsExpandableChildren] mutableCopy];
+	if (!appsList) {
+		appsList = [NSMutableArray new];
+	}
+
+	NSUInteger idx = [appsList indexOfObjectPassingTest:^BOOL(NSDictionary *menuDictionary, NSUInteger idx, BOOL *stop) {
+		if ([element.title isEqualToString:menuDictionary[kA3AppsMenuName]]) {
+			*stop = YES;
+			return YES;
+		}
+		return NO;
+	}];
+	if (idx != NSNotFound) {
+		if (idx > 0) {
+			[appsList moveObjectFromIndex:idx toIndex:0];
+			recentlyUsed[kA3AppsExpandableChildren] = appsList;
+		}
+	} else {
+		NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
+
+		if (maxRecent == 1) {
+			recentlyUsed[kA3AppsExpandableChildren] = [self dataFromElements:@[element]];
+		} else {
+			NSArray *newDataArray = [self dataFromElements:@[element]];
+			[appsList insertObject:newDataArray[0] atIndex:0];
+
+			if ([appsList count] > maxRecent) {
+				[appsList removeObjectsInRange:NSMakeRange(maxRecent, [appsList count] - maxRecent)];
+			}
+			recentlyUsed[kA3AppsExpandableChildren] = appsList;
+		}
+	}
+
+	[[A3AppDelegate instance] storeRecentlyUsedMenuDictionary:recentlyUsed withDate:[NSDate date]];
+
+	[self setupData];
+	[self.tableView reloadData];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {

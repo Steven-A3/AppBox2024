@@ -12,6 +12,7 @@
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+A3Addition.h"
 #import "Calculation.h"
+#import "UIViewController+navigation.h"
 
 NSString *const A3CalculatorHisotryRowCellID = @"CcellRow";
 
@@ -61,6 +62,12 @@ NSString *const A3CalculatorHisotryRowCellID = @"CcellRow";
     */
 	[self.tableView registerClass:[A3CalculatorHistoryCell class] forCellReuseIdentifier:A3CalculatorHisotryRowCellID];
 	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+	}
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {

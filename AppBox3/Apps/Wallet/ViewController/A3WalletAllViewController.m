@@ -26,6 +26,8 @@
 #import "A3WalletItemEditViewController.h"
 #import "WalletFieldItem+initialize.h"
 #import "NSString+WalletStyle.h"
+#import "UIViewController+iPad_rightSideView.h"
+#import "UIColor+A3Addition.h"
 
 
 #define TopHeaderHeight 96
@@ -70,8 +72,35 @@ enum SortingKind {
     
     [self.view addSubview:self.searchBar];
 	[self mySearchDisplayController];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	}
 }
 
+- (void)mainMenuDidShow {
+	[self enableControls:NO];
+}
+
+- (void)mainMenuDidHide {
+	[self enableControls:YES];
+}
+
+- (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	[self.navigationItem.rightBarButtonItem setEnabled:enable];
+	[self.addButton setEnabled:enable];
+	BOOL segmentedControlEnable = enable && [WalletItem MR_countOfEntities] > 0;
+	[self.segmentedControlRef setTintColor:segmentedControlEnable ? nil : [UIColor colorWithRGBRed:194 green:194 blue:194 alpha:255]];
+	[self.segmentedControlRef setEnabled:segmentedControlEnable];
+	self.tabBarController.tabBar.selectedImageTintColor = enable ? nil : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
 
 - (void)contentSizeDidChange:(NSNotification *) notification
 {

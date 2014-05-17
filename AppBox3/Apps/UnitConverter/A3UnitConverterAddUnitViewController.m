@@ -210,19 +210,15 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
 }
 
 - (void)doneButtonAction:(id)button {
-	@autoreleasepool {
-		[self.A3RootViewController dismissRightSideViewController];
-	}
+	[self.A3RootViewController dismissRightSideViewController];
 }
 
 - (void)addUnitAction {
-	@autoreleasepool {
-        
-        A3UnitConverterAddViewController *viewController = [self unitAddViewController];
-        
-        [self.navigationController pushViewController:viewController animated:YES];
-        //        [self presentSubViewController:viewController];
-	}
+
+	A3UnitConverterAddViewController *viewController = [self unitAddViewController];
+
+	[self.navigationController pushViewController:viewController animated:YES];
+	//        [self presentSubViewController:viewController];
 }
 
 - (A3UnitConverterAddViewController *)unitAddViewController {
@@ -348,54 +344,51 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *toCell=nil;
-	@autoreleasepool {
-		toCell = nil;
-        
-        if (isFavoriteMode && ([self.favorites objectAtIndex:indexPath.row] == self.plusItem) ) {
-            A3UnitConverterTVActionCell *actionCell = [self reusableActionCellForTableView:tableView];
-            [self configurePlusCell:actionCell];
-            toCell = actionCell;
-        }
-        else {
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            }
-            
-            // Configure the cell...
-            BOOL checkedItem = NO;
-            UnitItem *data;
-            if (tableView == self.searchDisplayController.searchResultsTableView) {
-                data = self.filteredResults[indexPath.row];
-            }
-            else {
-                if (isFavoriteMode) {
-                    UnitFavorite *favorite = _favorites[indexPath.row];
-                    data = favorite.item;
-                }
-                else {
-                    data = _allData[indexPath.row];
-                }
-            }
-            
-            cell.textLabel.text = data.unitName;
-            
-            if (checkedItem) {
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-                cell.textLabel.textColor = [UIColor lightGrayColor];
-            }
-            else {
-                cell.accessoryType = UITableViewCellAccessoryNone;
-                cell.textLabel.textColor = [UIColor blackColor];
-            }
-            
-            toCell = cell;
-        }
+	static NSString *CellIdentifier = @"Cell";
+	UITableViewCell *toCell = nil;
+
+	if (isFavoriteMode && ([self.favorites objectAtIndex:indexPath.row] == self.plusItem) ) {
+		A3UnitConverterTVActionCell *actionCell = [self reusableActionCellForTableView:tableView];
+		[self configurePlusCell:actionCell];
+		toCell = actionCell;
 	}
-    
-    return toCell;
+	else {
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		if (cell == nil) {
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+		}
+
+		// Configure the cell...
+		BOOL checkedItem = NO;
+		UnitItem *data;
+		if (tableView == self.searchDisplayController.searchResultsTableView) {
+			data = self.filteredResults[indexPath.row];
+		}
+		else {
+			if (isFavoriteMode) {
+				UnitFavorite *favorite = _favorites[indexPath.row];
+				data = favorite.item;
+			}
+			else {
+				data = _allData[indexPath.row];
+			}
+		}
+
+		cell.textLabel.text = data.unitName;
+
+		if (checkedItem) {
+			cell.accessoryType = UITableViewCellAccessoryCheckmark;
+			cell.textLabel.textColor = [UIColor lightGrayColor];
+		}
+		else {
+			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.textLabel.textColor = [UIColor blackColor];
+		}
+
+		toCell = cell;
+	}
+
+	return toCell;
 }
 
 // Override to support conditional editing of the table view.
@@ -466,36 +459,33 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	@autoreleasepool {
-        
-        if (isFavoriteMode && ([self.favorites objectAtIndex:indexPath.row] == self.plusItem) ) {
-            [self addUnitAction];
-			[tableView deselectRowAtIndexPath:indexPath animated:YES];
-        }
-        else {
-            UnitItem *data;
-            if (tableView == self.searchDisplayController.searchResultsTableView) {
-                data = self.filteredResults[indexPath.row];
-            } else {
-                if (isFavoriteMode) {
-                    
-                    if ([_favorites[indexPath.row] isKindOfClass:[UnitFavorite class]]) {
-                        UnitFavorite *favorite = _favorites[indexPath.row];
-                        data = favorite.item;
-                    }
-                    else {
-                        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                        return;
-                    }
-                }
-                else {
-                    data = _allData[indexPath.row];
-                }
-            }
-            
-            [self callDelegate:data];
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        }
+	if (isFavoriteMode && ([self.favorites objectAtIndex:indexPath.row] == self.plusItem) ) {
+		[self addUnitAction];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	}
+	else {
+		UnitItem *data;
+		if (tableView == self.searchDisplayController.searchResultsTableView) {
+			data = self.filteredResults[indexPath.row];
+		} else {
+			if (isFavoriteMode) {
+
+				if ([_favorites[indexPath.row] isKindOfClass:[UnitFavorite class]]) {
+					UnitFavorite *favorite = _favorites[indexPath.row];
+					data = favorite.item;
+				}
+				else {
+					[tableView deselectRowAtIndexPath:indexPath animated:YES];
+					return;
+				}
+			}
+			else {
+				data = _allData[indexPath.row];
+			}
+		}
+
+		[self callDelegate:data];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 }
 

@@ -21,6 +21,7 @@
 #import "NSString+WalletStyle.h"
 #import "NSMutableArray+A3Sort.h"
 #import "A3WalletItemEditViewController.h"
+#import "UIColor+A3Addition.h"
 
 
 @interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource>
@@ -49,6 +50,31 @@
 	}
 
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.infoButton];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)mainMenuDidShow {
+	[self enableControls:NO];
+}
+
+- (void)mainMenuDidHide {
+	[self enableControls:YES];
+}
+
+- (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	[self.navigationItem.rightBarButtonItem setEnabled:enable];
+	[self.addButton setEnabled:enable];
+	self.tabBarController.tabBar.selectedImageTintColor = enable ? nil : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -230,90 +256,87 @@
 }
 
 - (void)shareItemAction:(id)sender {
-    @autoreleasepool {
-
-        if (self.editing == NO) {
-            return;
-        }
-
-        self.shareTextList = [NSMutableArray new];
-
-        NSArray *ips = [self.tableView indexPathsForSelectedRows];
-
-        for (NSInteger index = 0; index < ips.count; index++) {
-            NSIndexPath *ip = ips[index];
-            if ([self.items[ip.row] isKindOfClass:[WalletItem class]]) {
-
-                WalletItem *item = self.items[ip.row];
-                NSString *convertInfoText = @"";
-
-                if ([self.category.name isEqualToString:WalletCategoryTypePhoto]) {
-                    NSString *itemName = item.name;
-                    NSString *firstFieldItemValue = @"Photo";
-
-                    convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
-                }
-                else if ([self.category.name isEqualToString:WalletCategoryTypeVideo]) {
-                    NSString *itemName = item.name;
-                    NSString *firstFieldItemValue = @"Video";
-
-                    convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
-                }
-                else {
-
-                    NSString *itemName = item.name;
-                    NSString *firstFieldItemValue = @"";
-
-                    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
-                    NSArray *fieldItems = [item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
-                    if (fieldItems.count>0) {
-                        WalletFieldItem *fieldItem = fieldItems[0];
-                        NSString *itemValue;
-                        if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
-                            NSDateFormatter *df = [[NSDateFormatter alloc] init];
-							[df setDateStyle:NSDateFormatterFullStyle];
-                            itemValue = [df stringFromDate:fieldItem.date];
-                        }
-                        else {
-                            itemValue = fieldItem.value;
-                        }
-
-                        if (itemValue && (itemValue.length>0)) {
-                            firstFieldItemValue = [itemValue stringForStyle:fieldItem.field.style];
-                        }
-                    }
-
-                    convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
-                }
-
-                [_shareTextList addObject:convertInfoText];
-            }
-        }
-
-        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
-        [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-            NSLog(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
-
-            [self editCancelAction:nil];
-        }];
-
-        [activityController setValue:@"My Subject Text" forKey:@"subject"];
-        if (IS_IPHONE) {
-            [self presentViewController:activityController animated:YES completion:NULL];
-        } else {
-            UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
-            [popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            _sharePopoverController = popoverController;
-            _sharePopoverController.delegate = self;
-        }
-
-        /*
-        _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
-        if (IS_IPAD) {
-			_sharePopoverController.delegate = self;
-		}
-         */
+	if (self.editing == NO) {
+		return;
 	}
+
+	self.shareTextList = [NSMutableArray new];
+
+	NSArray *ips = [self.tableView indexPathsForSelectedRows];
+
+	for (NSInteger index = 0; index < ips.count; index++) {
+		NSIndexPath *ip = ips[index];
+		if ([self.items[ip.row] isKindOfClass:[WalletItem class]]) {
+
+			WalletItem *item = self.items[ip.row];
+			NSString *convertInfoText = @"";
+
+			if ([self.category.name isEqualToString:WalletCategoryTypePhoto]) {
+				NSString *itemName = item.name;
+				NSString *firstFieldItemValue = @"Photo";
+
+				convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
+			}
+			else if ([self.category.name isEqualToString:WalletCategoryTypeVideo]) {
+				NSString *itemName = item.name;
+				NSString *firstFieldItemValue = @"Video";
+
+				convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
+			}
+			else {
+
+				NSString *itemName = item.name;
+				NSString *firstFieldItemValue = @"";
+
+				NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
+				NSArray *fieldItems = [item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
+				if (fieldItems.count>0) {
+					WalletFieldItem *fieldItem = fieldItems[0];
+					NSString *itemValue;
+					if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
+						NSDateFormatter *df = [[NSDateFormatter alloc] init];
+						[df setDateStyle:NSDateFormatterFullStyle];
+						itemValue = [df stringFromDate:fieldItem.date];
+					}
+					else {
+						itemValue = fieldItem.value;
+					}
+
+					if (itemValue && (itemValue.length>0)) {
+						firstFieldItemValue = [itemValue stringForStyle:fieldItem.field.style];
+					}
+				}
+
+				convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
+			}
+
+			[_shareTextList addObject:convertInfoText];
+		}
+	}
+
+	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+	[activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+		NSLog(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+
+		[self editCancelAction:nil];
+	}];
+
+	[activityController setValue:@"My Subject Text" forKey:@"subject"];
+	if (IS_IPHONE) {
+		[self presentViewController:activityController animated:YES completion:NULL];
+	} else {
+		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+		[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		_sharePopoverController = popoverController;
+		_sharePopoverController.delegate = self;
+	}
+
+	/*
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+	if (IS_IPAD) {
+		_sharePopoverController.delegate = self;
+	}
+	 */
 }
 
 - (void)shareAll:(id)sender {

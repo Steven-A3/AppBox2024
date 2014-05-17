@@ -734,54 +734,52 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
 	if (!_locationManager) return;
-	
-	@autoreleasepool {
-		[manager stopUpdatingLocation];
-		
-		CLGeocoder* geocoder = [[CLGeocoder alloc] init];
-		
-		[geocoder reverseGeocodeLocation: _locationManager.location completionHandler:
-		 ^(NSArray *placemarks, NSError *error) {
-			 
-			 NSLog(@"ori------");
-			 CLPlacemark *placemark = [placemarks objectAtIndex:0];
-			 NSLog(@"%@", placemark.ISOcountryCode);// 1
-			 NSLog(@"%@", placemark.country);
-			 NSLog(@"%@", placemark.postalCode);
-			 NSLog(@"%@", placemark.administrativeArea);//4
-			 NSLog(@"%@", placemark.subAdministrativeArea);
-			 NSLog(@"%@", placemark.locality);
-			 NSLog(@"%@", placemark.subLocality);
-			 NSLog(@"%@", placemark.thoroughfare);
-			 NSLog(@"%@", placemark.subThoroughfare);
-			 NSLog(@"--------");
-             
-			 NSNumber *knownTax = nil;
-			 if ([placemark.ISOcountryCode isEqualToString:@"US"] &&
-				 [placemark.administrativeArea length]) {
-				 NSString *knownTaxString = self.knownUSTaxes[placemark.administrativeArea];
-				 if ([knownTaxString length]) {
-					 knownTax = @([knownTaxString doubleValue]);
-				 }
-			 }
-             else {
-                 knownTax = @10;  // 기타 지역 기본 Tax 10%. - KJH
-             }
-			 
-			 if (knownTax) {
-                 _defaultTax = knownTax;  // US 지역 기본 Tax 지정. - KJH
-                 [self setTipCalcDataTax:_defaultTax isPercentType:YES];
-                 
-				 id <A3TipCalcDataManagerDelegate> o = self.delegate;
-				 if ([o respondsToSelector:@selector(dataManager:taxValueUpdated:)]) {
-					 [o dataManager:self taxValueUpdated:knownTax];
-				 }
-			 }
-			 
-			 _locationManager.delegate = nil;
-			 _locationManager = nil;
-		 }];
-	}
+
+	[manager stopUpdatingLocation];
+
+	CLGeocoder* geocoder = [[CLGeocoder alloc] init];
+
+	[geocoder reverseGeocodeLocation: _locationManager.location completionHandler:
+			^(NSArray *placemarks, NSError *error) {
+
+				NSLog(@"ori------");
+				CLPlacemark *placemark = [placemarks objectAtIndex:0];
+				NSLog(@"%@", placemark.ISOcountryCode);// 1
+				NSLog(@"%@", placemark.country);
+				NSLog(@"%@", placemark.postalCode);
+				NSLog(@"%@", placemark.administrativeArea);//4
+				NSLog(@"%@", placemark.subAdministrativeArea);
+				NSLog(@"%@", placemark.locality);
+				NSLog(@"%@", placemark.subLocality);
+				NSLog(@"%@", placemark.thoroughfare);
+				NSLog(@"%@", placemark.subThoroughfare);
+				NSLog(@"--------");
+
+				NSNumber *knownTax = nil;
+				if ([placemark.ISOcountryCode isEqualToString:@"US"] &&
+						[placemark.administrativeArea length]) {
+					NSString *knownTaxString = self.knownUSTaxes[placemark.administrativeArea];
+					if ([knownTaxString length]) {
+						knownTax = @([knownTaxString doubleValue]);
+					}
+				}
+				else {
+					knownTax = @10;  // 기타 지역 기본 Tax 10%. - KJH
+				}
+
+				if (knownTax) {
+					_defaultTax = knownTax;  // US 지역 기본 Tax 지정. - KJH
+					[self setTipCalcDataTax:_defaultTax isPercentType:YES];
+
+					id <A3TipCalcDataManagerDelegate> o = self.delegate;
+					if ([o respondsToSelector:@selector(dataManager:taxValueUpdated:)]) {
+						[o dataManager:self taxValueUpdated:knownTax];
+					}
+				}
+
+				_locationManager.delegate = nil;
+				_locationManager = nil;
+			}];
 }
 
 - (NSDictionary *)knownUSTaxes {

@@ -16,6 +16,7 @@
 #import "A3AppDelegate.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
+#import "UIViewController+navigation.h"
 
 @interface A3BatteryStatusSettingViewController ()
 @end
@@ -69,8 +70,6 @@
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0);
     _blankImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
-    NSLog(@"viewController nav: %@", self.navigationController);
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -95,7 +94,8 @@
 	if (IS_IPAD) {
 		[[A3AppDelegate instance].rootViewController dismissRightSideViewController];
 	} else {
-		[self dismissViewControllerAnimated:YES completion:nil];
+		[self.navigationController dismissViewControllerAnimated:YES completion:nil];
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
 	}
 }
 

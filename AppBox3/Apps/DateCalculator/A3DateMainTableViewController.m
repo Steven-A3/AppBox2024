@@ -201,21 +201,20 @@ NSString *kCalculationString;
 }
 
 - (void)clearEverything {
-	@autoreleasepool {
-        if (_editingIndexPath) {
-            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_editingIndexPath];
-            cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
-            _editingIndexPath = nil;
-        }
-        
-        [_fromToTextField resignFirstResponder];
-        [_selectedTextField resignFirstResponder];
-		[self dismissMoreMenu];
+	if (_editingIndexPath) {
+		UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_editingIndexPath];
+		cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
+		_editingIndexPath = nil;
 	}
+
+	[_fromToTextField resignFirstResponder];
+	[_selectedTextField resignFirstResponder];
+	[self dismissMoreMenu];
 }
 
 #pragma mark - Properties
 #define kDefault_didSelectMinus @"didSelectMinus"
+
 -(void)setIsAddSubMode:(BOOL)isAddSubMode
 {
     [[NSUserDefaults standardUserDefaults] setBool:isAddSubMode forKey:@"isAddSubMode"];

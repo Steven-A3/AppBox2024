@@ -109,6 +109,7 @@ typedef CMathParser<char, double> MathParser;
         maxDigitLen = 9;
         maxSignificantDigits = 8;
     }
+    FNLOG(@"%@", [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]);
     [nf setLocale:[NSLocale currentLocale]];
     [nf setMaximumFractionDigits:maxFractionDigt];
     //[nf setUsesSignificantDigits:YES];

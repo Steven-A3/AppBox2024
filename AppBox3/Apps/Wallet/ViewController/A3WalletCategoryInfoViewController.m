@@ -111,7 +111,7 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     [self presentSubViewController:viewController];
 }
 
-- (void)presentSubViewController:(UIViewController *)viewController {
+- (UIViewController *)presentSubViewController:(UIViewController *)viewController {
 	if (IS_IPAD) {
         [self.navigationController pushViewController:viewController animated:NO];
         

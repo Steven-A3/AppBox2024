@@ -139,30 +139,27 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell=nil;
-	@autoreleasepool {
-		cell = nil;
-        
-        if (indexPath.section == 0) {
-            A3LoanCalcSettingSwitchCell *switchCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSettingSwitchCellID forIndexPath:indexPath];
-            switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            switchCell.titleLabel.text = @"Down Payment";
-            switchCell.onoffSwitch.on = self.preference.showDownPayment;
-            [switchCell.onoffSwitch addTarget:self action:@selector(downPaymentSwitchAction:) forControlEvents:UIControlEventValueChanged];
-            
-            cell = switchCell;
-        }
-        else if (indexPath.section == 1) {
-            A3LoanCalcSettingSwitchCell *switchCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSettingSwitchCellID forIndexPath:indexPath];
-            switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            switchCell.titleLabel.text = @"Extra Payment";
-            switchCell.onoffSwitch.on = self.preference.showExtraPayment;
-            [switchCell.onoffSwitch addTarget:self action:@selector(extraPaymentSwitchAction:) forControlEvents:UIControlEventValueChanged];
-            
-            cell = switchCell;
-        }
+    UITableViewCell *cell = nil;
+
+	if (indexPath.section == 0) {
+		A3LoanCalcSettingSwitchCell *switchCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSettingSwitchCellID forIndexPath:indexPath];
+		switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
+		switchCell.titleLabel.text = @"Down Payment";
+		switchCell.onoffSwitch.on = self.preference.showDownPayment;
+		[switchCell.onoffSwitch addTarget:self action:@selector(downPaymentSwitchAction:) forControlEvents:UIControlEventValueChanged];
+
+		cell = switchCell;
 	}
-    
+	else if (indexPath.section == 1) {
+		A3LoanCalcSettingSwitchCell *switchCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSettingSwitchCellID forIndexPath:indexPath];
+		switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
+		switchCell.titleLabel.text = @"Extra Payment";
+		switchCell.onoffSwitch.on = self.preference.showExtraPayment;
+		[switchCell.onoffSwitch addTarget:self action:@selector(extraPaymentSwitchAction:) forControlEvents:UIControlEventValueChanged];
+
+		cell = switchCell;
+	}
+
     return cell;
 }
 

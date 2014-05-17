@@ -43,6 +43,7 @@
 - (id)stringWithSuperscriptMiddleFont:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(id) index{
 	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:input];
 	[string addAttribute:(NSString *)kCTSuperscriptAttributeName value:index   range:NSMakeRange(loc,len)];
+    //[string addAttribute: NSBaselineOffsetAttributeName value: [NSNumber numberWithFloat: -10.0] range:NSMakeRange(loc,len)];
 	[string addAttribute:(NSString *)kCTFontAttributeName value:[self superscriptMiddleFont] range:NSMakeRange(loc,len)];
 	return string;
 }
@@ -103,7 +104,7 @@
 }
 
 - (id)stringLog10 {
-	return [self stringWithSuperscriptMiddleFont:@"log10" location:3 length:2 value:@-1];
+	return [self stringWithSuperscriptMiddleFont:@"log10" location:3 length:2 value:@0];
 }
 
 - (id)string10X {

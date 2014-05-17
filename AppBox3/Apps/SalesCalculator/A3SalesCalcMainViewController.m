@@ -356,18 +356,16 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 #pragma mark TableView DataSource Configuration
 
 - (void)configureTableData {
-	@autoreleasepool {
-        _preferences = [self preferences];
-        
-		NSMutableArray *sectionsArray = [NSMutableArray new];
-		[sectionsArray addObject:[self knownValueTypeElements] ];
-		[sectionsArray addObject:[self valueAndPriceElementsFor:nil]];
-        //[sectionsArray addObject:[self expandable:nil]];
-        [sectionsArray addObject:[self advancedSectionWithData:nil]];
+	_preferences = [self preferences];
 
-		[self.root setSectionsArray:sectionsArray];
+	NSMutableArray *sectionsArray = [NSMutableArray new];
+	[sectionsArray addObject:[self knownValueTypeElements] ];
+	[sectionsArray addObject:[self valueAndPriceElementsFor:nil]];
+	//[sectionsArray addObject:[self expandable:nil]];
+	[sectionsArray addObject:[self advancedSectionWithData:nil]];
+
+	[self.root setSectionsArray:sectionsArray];
 //        [self adjustElementValue];
-	}
 }
 
 -(id)knownValueTypeElements
@@ -1075,45 +1073,43 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 }
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-    if (!_lm) return;
+	if (!_lm) return;
 
-    @autoreleasepool {
-        [manager stopUpdatingLocation];
-        
-        CLGeocoder* geocoder = [[CLGeocoder alloc] init];
-        
-        [geocoder reverseGeocodeLocation: _lm.location completionHandler:^(NSArray *placemarks, NSError *error) {
-            
-            NSLog(@"ori------");
-            CLPlacemark *placemark = [placemarks objectAtIndex:0];
-            NSLog(@"%@", placemark.ISOcountryCode);// 1
-            NSLog(@"%@", placemark.country);
-            NSLog(@"%@", placemark.postalCode);
-            NSLog(@"%@", placemark.administrativeArea);//4
-            NSLog(@"%@", placemark.subAdministrativeArea);
-            NSLog(@"%@", placemark.locality);
-            NSLog(@"%@", placemark.subLocality);
-            NSLog(@"%@", placemark.thoroughfare);
-            NSLog(@"%@", placemark.subThoroughfare);
-            NSLog(@"--------");
-            
-            NSNumber *knownTax = nil;
-            if ([placemark.ISOcountryCode isEqualToString:@"US"] &&
-                [placemark.administrativeArea length]) {
-                NSString *knownTaxString = self.knownUSTaxes[placemark.administrativeArea];
-                if ([knownTaxString length]) {
-                    knownTax = @([knownTaxString doubleValue]);
-                    _locationTax = knownTax;
-                    _locationCode = @"US";
-                    [self reloadLocationTax];
-                    [self.tableView reloadData];
-                }
-            }
-            
-            _lm.delegate = nil;
-            _lm = nil;
-        }];
-    }
+	[manager stopUpdatingLocation];
+
+	CLGeocoder* geocoder = [[CLGeocoder alloc] init];
+
+	[geocoder reverseGeocodeLocation: _lm.location completionHandler:^(NSArray *placemarks, NSError *error) {
+
+		NSLog(@"ori------");
+		CLPlacemark *placemark = [placemarks objectAtIndex:0];
+		NSLog(@"%@", placemark.ISOcountryCode);// 1
+		NSLog(@"%@", placemark.country);
+		NSLog(@"%@", placemark.postalCode);
+		NSLog(@"%@", placemark.administrativeArea);//4
+		NSLog(@"%@", placemark.subAdministrativeArea);
+		NSLog(@"%@", placemark.locality);
+		NSLog(@"%@", placemark.subLocality);
+		NSLog(@"%@", placemark.thoroughfare);
+		NSLog(@"%@", placemark.subThoroughfare);
+		NSLog(@"--------");
+
+		NSNumber *knownTax = nil;
+		if ([placemark.ISOcountryCode isEqualToString:@"US"] &&
+				[placemark.administrativeArea length]) {
+			NSString *knownTaxString = self.knownUSTaxes[placemark.administrativeArea];
+			if ([knownTaxString length]) {
+				knownTax = @([knownTaxString doubleValue]);
+				_locationTax = knownTax;
+				_locationCode = @"US";
+				[self reloadLocationTax];
+				[self.tableView reloadData];
+			}
+		}
+
+		_lm.delegate = nil;
+		_lm = nil;
+	}];
 }
 
 - (void)reloadLocationTax {

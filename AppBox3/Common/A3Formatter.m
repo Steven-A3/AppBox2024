@@ -95,16 +95,14 @@
  * ko_KR: 2014년 1월 4일 토
  */
 + (NSString *)fullStyleStringFromDate:(NSDate *)date {
-	@autoreleasepool {
-		NSDateFormatter *df = [NSDateFormatter new];
-		[df setDateStyle:NSDateFormatterFullStyle];
-		NSString *format = [df dateFormat];
-		format = [format stringByReplacingOccurrencesOfString:@"EEEE" withString:@"EEE"];
-		format = [format stringByReplacingOccurrencesOfString:@"MMMM" withString:@"MMM"];
-		[df setDateFormat:format];
-		
-		return [df stringFromDate:date];
-	}
+	NSDateFormatter *df = [NSDateFormatter new];
+	[df setDateStyle:NSDateFormatterFullStyle];
+	NSString *format = [df dateFormat];
+	format = [format stringByReplacingOccurrencesOfString:@"EEEE" withString:@"EEE"];
+	format = [format stringByReplacingOccurrencesOfString:@"MMMM" withString:@"MMM"];
+	[df setDateFormat:format];
+
+	return [df stringFromDate:date];
 }
 
 @end

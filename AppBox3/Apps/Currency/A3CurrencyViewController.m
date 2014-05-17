@@ -32,6 +32,7 @@
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIColor+A3Addition.h"
+#import "UIViewController+navigation.h"
 
 NSString *const A3CurrencyLastInputValue = @"A3CurrencyLastInputValue";
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
@@ -54,6 +55,10 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 @property (nonatomic, strong) NSDate *updateStartDate;
 @property (nonatomic, strong) UIBarButtonItem *historyBarButton;
 @property (nonatomic, weak) UITextField *lastEditingTextField;
+@property (nonatomic, strong) UINavigationController *modalNavigationController;
+@property (nonatomic, strong) A3CurrencyHistoryViewController *historyViewController;
+@property (nonatomic, strong) A3CurrencySettingsViewController *settingsViewController;
+@property (nonatomic, strong) A3CurrencySelectViewController *currencySelectViewController;
 
 @end
 
@@ -341,20 +346,46 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 - (void)historyButtonAction:(UIButton *)button {
 	[self clearEverything];
 
-	[self enableControls:NO];
-	A3CurrencyHistoryViewController *viewController = [[A3CurrencyHistoryViewController alloc] initWithNibName:nil bundle:nil];
-	[self presentSubViewController:viewController];
+	_historyViewController = [[A3CurrencyHistoryViewController alloc] initWithNibName:nil bundle:nil];
+
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:_historyViewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_historyViewController];
+	} else {
+		[self enableControls:NO];
+		[self.A3RootViewController presentRightSideViewController:_historyViewController];
+	}
+}
+
+- (void)historyViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_historyViewController];
+	_modalNavigationController = nil;
+	_historyViewController = nil;
 }
 
 - (void)settingsButtonAction:(UIButton *)button {
 	[self clearEverything];
 
-	[self enableControls:NO];
-
 	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"A3CurrencySettings" bundle:nil];
-	A3CurrencySettingsViewController *viewController = [storyboard instantiateInitialViewController];
-	viewController.delegate = self;
-	[self presentSubViewController:viewController];
+	_settingsViewController = [storyboard instantiateInitialViewController];
+	_settingsViewController.delegate = self;
+
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:_settingsViewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_settingsViewController];
+
+	} else {
+		[self enableControls:NO];
+		[self.A3RootViewController presentRightSideViewController:_settingsViewController];
+	}
+}
+
+- (void)settingsViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_settingsViewController];
+	_settingsViewController = nil;
+	_modalNavigationController = nil;
 }
 
 - (void)currencyConfigurationChanged {
@@ -722,16 +753,23 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 		[self enableControls:NO];
 
-		A3CurrencySelectViewController *viewController = [self currencySelectViewControllerWithSelectedCurrency:_selectedRow];
+		_currencySelectViewController = [self currencySelectViewControllerWithSelectedCurrency:_selectedRow];
 		if (IS_IPHONE) {
-			viewController.shouldPopViewController = YES;
-			[self.navigationController pushViewController:viewController animated:YES];
+			_currencySelectViewController.shouldPopViewController = YES;
+			[self.navigationController pushViewController:_currencySelectViewController animated:YES];
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectViewDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_currencySelectViewController];
 		} else {
-			[self presentSubViewController:viewController];
+			[self.A3RootViewController presentRightSideViewController:_currencySelectViewController];
 		}
 	} else {
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
+}
+
+- (void)currencySelectViewDidDismiss {
+	FNLOG();
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_currencySelectViewController];
+	_currencySelectViewController = nil;
 }
 
 - (void)plusButtonAction:(UIButton *)button {
@@ -752,12 +790,16 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	[self enableControls:NO];
 
-	A3CurrencySelectViewController *viewController = [self currencySelectViewControllerWithSelectedCurrency:-1];
+	_currencySelectViewController = [self currencySelectViewControllerWithSelectedCurrency:-1];
 	if (IS_IPHONE) {
-		viewController.shouldPopViewController = NO;
-		viewController.showCancelButton = YES;
+		_currencySelectViewController.shouldPopViewController = NO;
+		_currencySelectViewController.showCancelButton = YES;
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:_currencySelectViewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectViewDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_currencySelectViewController];
+	} else {
+		[self.A3RootViewController presentRightSideViewController:_currencySelectViewController];
 	}
-	[self presentSubViewController:viewController];
 }
 
 /*! Push CurrencySelectViewController filling with selected currency code

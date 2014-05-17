@@ -18,10 +18,13 @@
 #import "A3DefaultColorDefines.h"
 #import "A3RootViewController_iPad.h"
 #import "A3AppDelegate.h"
+#import "UIColor+A3Addition.h"
+#import "UIViewController+navigation.h"
 
 @interface A3BatteryStatusMainViewController ()
-@property (nonatomic, strong) A3BatteryStatusSettingViewController * settingViewController;
+@property (nonatomic, strong) A3BatteryStatusSettingViewController *settingsViewController;
 @property (nonatomic, strong) A3BatteryStatusListPageSectionView *sectionHeaderView;
+@property (nonatomic, strong) UINavigationController *modalNavigationController;
 @end
 
 @implementation A3BatteryStatusMainViewController
@@ -65,6 +68,43 @@
     }
     
     [self setupTopWhitePaddingView];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)mainMenuDidShow {
+	[self enableControls:NO];
+}
+
+- (void)mainMenuDidHide {
+	[self enableControls:YES];
+}
+
+- (void)rightSideViewDidAppear {
+	[self enableControls:NO];
+}
+
+- (void)rightSideViewWillDismiss {
+	[self enableControls:YES];
+	[self refreshHeaderView];
+	[self reloadTableViewDataSource];
+	[self.tableView reloadData];
+}
+
+- (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	[self.navigationItem.rightBarButtonItem setEnabled:enable];
+	[self.sectionHeaderView.tableSegmentButton setTintColor:enable ? nil : SEGMENTED_CONTROL_DISABLED_TINT_COLOR2];
+	[self.sectionHeaderView.tableSegmentButton setEnabled:enable];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)setupTopWhitePaddingView
@@ -139,7 +179,7 @@
 	[UIDevice currentDevice].batteryMonitoringEnabled = NO;
 }
 
--(void)rightBarButton {
+- (void)rightBarButton {
     UIImage *image = [UIImage imageNamed:@"general"];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(generalButtonAction:)];
     
@@ -152,7 +192,7 @@
     // Dispose of any resources that can be recreated.
 }
 
--(A3BatterStatusBatteryPanelView *)headerView {
+- (A3BatterStatusBatteryPanelView *)headerView {
 	if (!_headerView) {
 		CGFloat height;
 		if (IS_IPHONE) {
@@ -171,7 +211,7 @@
 	return _headerView;
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     
     CGRect rect = self.headerView.frame;
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
@@ -191,19 +231,23 @@
 #pragma mark - Actions
 
 - (void)generalButtonAction:(id)sender {
-    @autoreleasepool {
-        self.settingViewController = [[A3BatteryStatusSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
-		[self presentSubViewController:self.settingViewController];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willDismissSettingViewController:) name:A3NotificationRightSideViewWillDismiss object:nil];
-    }
+	self.settingsViewController = [[A3BatteryStatusSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
+
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:_settingsViewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss:) name:A3NotificationChildViewControllerDidDismiss object:_settingsViewController];
+	} else {
+		[self.A3RootViewController presentRightSideViewController:_settingsViewController];
+	}
 }
 
-- (void)willDismissSettingViewController:(NSNotification *)notification
-{
-	[self refreshHeaderView];
-    [self reloadTableViewDataSource];
-    [self.tableView reloadData];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+- (void)settingsViewControllerDidDismiss:(NSNotification *)notification {
+	if (notification.object == _settingsViewController) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_settingsViewController];
+		_modalNavigationController = nil;
+		_settingsViewController = nil;
+	}
 }
 
 #pragma mark - Battery Notifications
@@ -313,7 +357,8 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 #pragma mark - List Page Section
--(void)sectionSegmentControlChanged:(id)sender {
+
+- (void)sectionSegmentControlChanged:(id)sender {
     UISegmentedControl *sectionSegment = (UISegmentedControl *)sender;
     
     if (sectionSegment.selectedSegmentIndex==0) {

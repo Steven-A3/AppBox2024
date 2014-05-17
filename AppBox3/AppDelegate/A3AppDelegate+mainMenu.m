@@ -100,17 +100,17 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 }
 
 - (NSArray *)allMenuArrayFromUserDefaults {
-	@autoreleasepool {
-		NSMutableDictionary *allMenusDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuAllMenu];
+	NSMutableDictionary *allMenusDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuAllMenu];
 
-		NSArray *allMenuArray;
-		if (allMenusDictionary) {
-			allMenuArray = allMenusDictionary[kA3AppsMenuArray];
-		} else {
-			allMenuArray = [self allMenu];
-		}
-		NSMutableArray *sortedMenuArray = [NSMutableArray new];
-		for (NSDictionary *section in allMenuArray) {
+	NSArray *allMenuArray;
+	if (allMenusDictionary) {
+		allMenuArray = allMenusDictionary[kA3AppsMenuArray];
+	} else {
+		allMenuArray = [self allMenu];
+	}
+	NSMutableArray *sortedMenuArray = [NSMutableArray new];
+	for (NSDictionary *section in allMenuArray) {
+		@autoreleasepool {
 			NSMutableDictionary *modifiedSection = 	[section mutableCopy];
 			NSMutableArray *originalMenus = [modifiedSection[kA3AppsExpandableChildren] mutableCopy];
 			NSMutableArray *localizedMenus = [NSMutableArray new];
@@ -125,8 +125,8 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 			modifiedSection[kA3AppsExpandableChildren] = localizedMenus;
 			[sortedMenuArray addObject:modifiedSection];
 		}
-		return sortedMenuArray;
 	}
+	return sortedMenuArray;
 }
 
 - (void)storeAllMenu:(NSArray *)menuArray withDate:(NSDate *)date {
