@@ -808,6 +808,7 @@ NSString *kCalculationString;
             }
             
             [footerCell.yearTextField becomeFirstResponder];
+            _selectedTextField = footerCell.yearTextField;
         }
     }
 }
@@ -819,7 +820,6 @@ NSString *kCalculationString;
 	[self.dateKeyboardViewController changeInputToYear];
 
 	if (!self.isAddSubMode) {
-        
         if ([self.fromDate compare:self.toDate] == NSOrderedDescending) {
             // from > to, 큰 값이 오른쪽(to)에 위치한다.
 			self.dateKeyboardViewController.date = self.fromDate;
@@ -831,11 +831,12 @@ NSString *kCalculationString;
             [self.fromToTextField becomeFirstResponder];
             [self moveToToDateCell];
         }
-        
-    } else {
+    }
+    else {
         if ([self didSelectedAdd]) {
             A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
             [footerCell.yearTextField becomeFirstResponder];
+            _selectedTextField = footerCell.yearTextField;
         } else {
 			self.dateKeyboardViewController.date = self.fromDate;
             [self.fromToTextField becomeFirstResponder];
@@ -1557,16 +1558,20 @@ NSString *kCalculationString;
             return;
         } else {
             self.isAddSubMode = !self.isAddSubMode;
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
             cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:!indexPath.row inSection:indexPath.section]];
             cell.accessoryType = UITableViewCellAccessoryNone;
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
             [self reloadTableViewData:NO];
+            if ([self isAddSubMode]) {
+                [self refreshAddSubModeButtonForResultWithAnimation:NO];
+            }
         }
-        
-    } else if (indexPath.section == 1) {
+    }
+    else if (indexPath.section == 1) {
         // From, To Date Input
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
@@ -1584,9 +1589,8 @@ NSString *kCalculationString;
             self.dateKeyboardViewController.date = self.toDate;
             [self moveToToDateCell];
         }
-        
-    } else if (indexPath.section == 2 && indexPath.row == 0) {
-        
+    }
+    else if (indexPath.section == 2 && indexPath.row == 0) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
         if (self.isAddSubMode) {

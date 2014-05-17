@@ -553,20 +553,32 @@
 
 - (void)setFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
-    if (_calcType == CALC_TYPE_BETWEEN) {
-        if ([fromDate compare:toDate] == NSOrderedAscending || [fromDate compare:toDate] == NSOrderedSame) {
+    switch (_calcType) {
+        case CALC_TYPE_BETWEEN:
+        {
+            if ([fromDate compare:toDate] == NSOrderedAscending || [fromDate compare:toDate] == NSOrderedSame) {
+                _fromLagerThanTo = NO;
+                [self setFromDate:fromDate];
+                [self setToDate:toDate];
+            } else {
+                _fromLagerThanTo = YES;
+                [self setFromDate:toDate];
+                [self setToDate:fromDate];
+            }
+        }
+            break;
+            
+        case CALC_TYPE_ADD:
+        case CALC_TYPE_SUB:
+        {
+            FNLOG(@"\fromDate: %@, toDate: %@", fromDate, toDate);
             _fromLagerThanTo = NO;
             [self setFromDate:fromDate];
             [self setToDate:toDate];
-        } else {
-            _fromLagerThanTo = YES;
-            [self setFromDate:toDate];
-            [self setToDate:fromDate];
         }
-    } else {
-        _fromLagerThanTo = NO;
-        [self setFromDate:fromDate];
-        [self setToDate:toDate];
+            break;
+        default:
+            break;
     }
 }
 
