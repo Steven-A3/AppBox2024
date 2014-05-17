@@ -13,7 +13,7 @@
 @class LoanCalcData;
 @class A3LoanCalcLoanGraphCell;
 
-@interface A3LoanCalcContentsTableViewController : UITableViewController <UITextFieldDelegate, A3CalculatorDelegate, A3SearchViewControllerDelegate>
+@interface A3LoanCalcContentsTableViewController : UITableViewController <UITextFieldDelegate>
 
 @property (nonatomic, strong) LoanCalcData *loanData;
 @property (nonatomic, assign, getter=isTotalMode) BOOL totalMode;

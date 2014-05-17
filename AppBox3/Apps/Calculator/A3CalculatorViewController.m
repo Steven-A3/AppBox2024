@@ -10,6 +10,8 @@
 #import "A3CalculatorViewController.h"
 #import "A3CalculatorDelegate.h"
 
+NSString *const A3NotificationCalculatorDismissedWithValue = @"A3NotificationCalculatorDismissedWithValue";
+
 @implementation A3CalculatorViewController
 
 - (instancetype)initWithPresentingViewController:(UIViewController *)modalPresentingParentViewController {
@@ -23,15 +25,15 @@
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	[self dismissViewControllerAnimated:YES completion:nil];
 	id <A3CalculatorDelegate> delegate = self.delegate;
+	NSNumberFormatter *nf = [NSNumberFormatter new];
+	[nf setNumberStyle:NSNumberFormatterDecimalStyle];
+	[nf setUsesGroupingSeparator:NO];
+	NSNumber *resultNumber = [nf numberFromString:self.evaluatedResultLabel.text];
+	NSString *value = [nf stringFromNumber:resultNumber];
 	if ([delegate respondsToSelector:@selector(calculatorViewController:didDismissWithValue:)]) {
-		NSNumberFormatter *nf = [NSNumberFormatter new];
-		[nf setNumberStyle:NSNumberFormatterDecimalStyle];
-		NSNumber *resultNumber = [nf numberFromString:self.evaluatedResultLabel.text];
-		if ([resultNumber doubleValue] != 0.0) {
-			[nf setUsesGroupingSeparator:NO];
-			[delegate calculatorViewController:self didDismissWithValue:[nf stringFromNumber:resultNumber]];
-		}
+		[delegate calculatorViewController:self didDismissWithValue:value];
 	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCalculatorDismissedWithValue object:value];
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {

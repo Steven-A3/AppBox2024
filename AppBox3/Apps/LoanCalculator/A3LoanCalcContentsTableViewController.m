@@ -16,8 +16,20 @@
 #import "LoanCalcString.h"
 #import "A3LoanCalcMonthlyDataViewController.h"
 #import "A3NumberKeyboardViewController.h"
+#import "A3CurrencySelectViewController.h"
+#import "A3CalculatorViewController.h"
 
 @implementation A3LoanCalcContentsTableViewController
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectButtonAction:) name:A3NotificationCurrencyButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeSelected:) name:A3NotificationCurrencyCodeSelected object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorButtonAction) name:A3NotificationCalculatorButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorDismissedWithValue:) name:A3NotificationCalculatorDismissedWithValue object:nil];
+}
 
 - (NSMutableArray *)extraPaymentItems
 {
@@ -373,23 +385,6 @@
 
 #pragma mark --- Response to Calculator Button and result
 
-- (id <A3CalculatorDelegate>)delegateForCalculator {
-	return self;
-}
-
-- (UIViewController *)modalPresentingParentViewControllerForCalculator {
-	_calculatorTargetTextField = (UITextField *) self.firstResponder;
-	return self;
-}
-
-- (id <A3SearchViewControllerDelegate>)delegateForCurrencySelector {
-	return self;
-}
-
-- (UIViewController *)modalPresentingParentViewControllerForCurrencySelector {
-	return self;
-}
-
 - (NSString *)defaultCurrencyCode {
 	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
 	if (!currencyCode) {
@@ -400,15 +395,29 @@
 
 #pragma mark --- Currency Select View Controller
 
-- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
-	if ([selectedItem length]) {
-		[[NSUserDefaults standardUserDefaults] setObject:selectedItem forKey:A3LoanCalcCustomCurrencyCode];
+- (void)currencySelectButtonAction:(NSNotification *)notification {
+	[self presentCurrencySelectVieControllerWithCurrencyCode:notification.object];
+}
+
+- (void)currencyCodeSelected:(NSNotification *)notification {
+	NSString *currencyCode = notification.object;
+	if ([currencyCode length]) {
+		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3LoanCalcCustomCurrencyCode];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
-		[self.loanFormatter setCurrencyCode:selectedItem];
+		[self.loanFormatter setCurrencyCode:currencyCode];
 
 		[self.tableView reloadData];
 	}
+}
+
+- (void)calculatorButtonAction {
+	[self presentCalculatorViewController];
+}
+
+- (void)calculatorDismissedWithValue:(NSNotification *)notification {
+	_calculatorTargetTextField.text = notification.object;
+	[self textFieldDidEndEditing:_calculatorTargetTextField];
 }
 
 #pragma mark --- Calculator View Delegate
@@ -423,11 +432,6 @@
 {
 	// Virtual method, real implementation is in sub classes
 	return nil;
-}
-
-- (void)calculatorViewController:(UIViewController *)viewController didDismissWithValue:(NSString *)value {
-	_calculatorTargetTextField.text = value;
-	[self textFieldDidEndEditing:_calculatorTargetTextField];
 }
 
 #pragma mark - A3KeyboardDelegate

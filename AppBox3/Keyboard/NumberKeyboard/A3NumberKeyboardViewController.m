@@ -15,6 +15,7 @@
 #import "A3AppDelegate.h"
 #import "A3CacheStoreManager.h"
 #import "CurrencyRateItem.h"
+#import "UIViewController+A3AppCategory.h"
 
 @interface A3NumberKeyboardViewController ()
 
@@ -434,39 +435,13 @@
 }
 
 - (void)presentCurrencySelectViewController {
-	id <A3KeyboardDelegate> delegate = self.delegate;
-	if ([delegate respondsToSelector:@selector(modalPresentingParentViewControllerForCurrencySelector)]) {
-		UIViewController *modalPresentingViewController = [delegate modalPresentingParentViewControllerForCurrencySelector];
-		A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithPresentingViewController:modalPresentingViewController];
-		viewController.showCancelButton = YES;
-		viewController.allowChooseFavorite = YES;
-		if ([delegate respondsToSelector:@selector(delegateForCurrencySelector)]) {
-			viewController.delegate = [delegate delegateForCurrencySelector];
-		}
-		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[modalPresentingViewController presentViewController:navigationController animated:YES completion:nil];
-	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyButtonPressed object:nil];
 }
 
 - (IBAction)calculatorButtonAction:(UIButton *)sender {
 	[[UIDevice currentDevice] playInputClick];
 
-	id <A3KeyboardDelegate> delegate = self.delegate;
-	if ([delegate respondsToSelector:@selector(modalPresentingParentViewControllerForCalculator)]) {
-		UIViewController *modalPresentingParentViewController = [delegate modalPresentingParentViewControllerForCalculator];
-		A3CalculatorViewController *viewController;
-		if (IS_IPHONE) {
-			viewController = [[A3CalculatorViewController_iPhone alloc] initWithPresentingViewController:modalPresentingParentViewController];
-		} else {
-			viewController = [[A3CalculatorViewController_iPad alloc] initWithPresentingViewController:modalPresentingParentViewController];
-		}
-
-		if ([delegate respondsToSelector:@selector(delegateForCalculator)]) {
-			viewController.delegate = [delegate delegateForCalculator];
-		}
-		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[modalPresentingParentViewController presentViewController:navigationController animated:YES completion:nil];
-	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCalculatorButtonPressed object:nil];
 }
 
 - (IBAction)fractionButtonAction:(UIButton *)sender {

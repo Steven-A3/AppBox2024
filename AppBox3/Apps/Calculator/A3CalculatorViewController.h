@@ -10,6 +10,8 @@
 @protocol A3CalculatorDelegate;
 @class HTCopyableLabel;
 
+extern NSString *const A3NotificationCalculatorDismissedWithValue;
+
 @interface A3CalculatorViewController : UIViewController {
 	UIViewController *_modalPresentingParentViewController;
 }
