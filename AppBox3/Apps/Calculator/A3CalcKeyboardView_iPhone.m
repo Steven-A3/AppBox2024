@@ -95,7 +95,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 			@{kA3CalcButtonTitle:@"Deg", kA3CalcButtonID:@(A3E_RADIAN_DEGREE), kA3CalcButtonFont:@".HelveticaNeueInterface-Light",kA3CalcButtonFontSize:@16.0},
 			@{kA3CalcButtonTitle:@"0", kA3CalcButtonID:@(A3E_0), kA3CalcButtonFont:@".HelveticaNeueInterface-Light",kA3CalcButtonFontSize:@20.0},
 			@{kA3CalcButtonTitle:@"00", kA3CalcButtonID:@(A3E_00), kA3CalcButtonFont:@".HelveticaNeueInterface-Light",kA3CalcButtonFontSize:@20.0},
-			@{kA3CalcButtonTitle:@".", kA3CalcButtonID:@(A3E_DECIMAL_SEPARATOR), kA3CalcButtonFont:@"SystemFont",kA3CalcButtonFontSize:@18.0},
+			@{kA3CalcButtonTitle:[[NSLocale currentLocale] objectForKey:NSLocaleDecimalSeparator], kA3CalcButtonID:@(A3E_DECIMAL_SEPARATOR), kA3CalcButtonFont:@"SystemFont",kA3CalcButtonFontSize:@18.0},
 			@{kA3CalcButtonTitle:@""},
 	];
 }
@@ -153,7 +153,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 			@{kA3CalcButtonTitle:@"Deg", kA3CalcButtonID:@(A3E_RADIAN_DEGREE), kA3CalcButtonFont:@".HelveticaNeueInterface-Light",kA3CalcButtonFontSize:@16.0},
 			@{kA3CalcButtonTitle:@"0", kA3CalcButtonID:@(A3E_0), kA3CalcButtonFont:@".HelveticaNeueInterface-Light",kA3CalcButtonFontSize:@20.0},
 			@{kA3CalcButtonTitle:@"00", kA3CalcButtonID:@(A3E_00), kA3CalcButtonFont:@".HelveticaNeueInterface-Light",kA3CalcButtonFontSize:@20.0},
-			@{kA3CalcButtonTitle:@".", kA3CalcButtonID:@(A3E_DECIMAL_SEPARATOR), kA3CalcButtonFont:@"SystemFont",kA3CalcButtonFontSize:@18.0},
+			@{kA3CalcButtonTitle:[[NSLocale currentLocale] objectForKey:NSLocaleDecimalSeparator], kA3CalcButtonID:@(A3E_DECIMAL_SEPARATOR), kA3CalcButtonFont:@"SystemFont",kA3CalcButtonFontSize:@18.0},
 			@{kA3CalcButtonTitle:@""},
 	];
 }
@@ -211,7 +211,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
              @{kA3CalcButtonTitle:@"Deg", kA3CalcButtonID:@(A3E_RADIAN_DEGREE),kA3CalcButtonFont:@".HelveticaNeueInterface-Light",kA3CalcButtonFontSize:@22.0},
              @{kA3CalcButtonTitle:@"0", kA3CalcButtonID:@(A3E_0),kA3CalcButtonFont:@".HelveticaNeueInterface-Thin",kA3CalcButtonFontSize:@34.0},
              @{kA3CalcButtonTitle:@"00", kA3CalcButtonID:@(A3E_00),kA3CalcButtonFont:@".HelveticaNeueInterface-Thin",kA3CalcButtonFontSize:@34.0},
-             @{kA3CalcButtonTitle:@".", kA3CalcButtonID:@(A3E_DECIMAL_SEPARATOR),kA3CalcButtonFont:@"SystemFont",kA3CalcButtonFontSize:@36.0},
+             @{kA3CalcButtonTitle:[[NSLocale currentLocale] objectForKey:NSLocaleDecimalSeparator], kA3CalcButtonID:@(A3E_DECIMAL_SEPARATOR),kA3CalcButtonFont:@"SystemFont",kA3CalcButtonFontSize:@36.0},
              @{kA3CalcButtonTitle:@""},
              ];
 }
@@ -269,7 +269,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
              @{kA3CalcButtonTitle:@"Deg", kA3CalcButtonID:@(A3E_RADIAN_DEGREE),kA3CalcButtonFont:@".HelveticaNeueInterface-Light",kA3CalcButtonFontSize:@22.0},
              @{kA3CalcButtonTitle:@"0", kA3CalcButtonID:@(A3E_0),kA3CalcButtonFont:@".HelveticaNeueInterface-Thin",kA3CalcButtonFontSize:@34.0},
              @{kA3CalcButtonTitle:@"00", kA3CalcButtonID:@(A3E_00),kA3CalcButtonFont:@".HelveticaNeueInterface-Thin",kA3CalcButtonFontSize:@34.0},
-             @{kA3CalcButtonTitle:@".", kA3CalcButtonID:@(A3E_DECIMAL_SEPARATOR),kA3CalcButtonFont:@"SystemFont",kA3CalcButtonFontSize:@36.0},
+             @{kA3CalcButtonTitle:[[NSLocale currentLocale] objectForKey:NSLocaleDecimalSeparator], kA3CalcButtonID:@(A3E_DECIMAL_SEPARATOR),kA3CalcButtonFont:@"SystemFont",kA3CalcButtonFontSize:@36.0},
              @{kA3CalcButtonTitle:@""},
              ];
 }

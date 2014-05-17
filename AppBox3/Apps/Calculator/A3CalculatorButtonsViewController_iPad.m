@@ -36,6 +36,7 @@
         [self setTitle:buttonTitle forButton:button];
         
     }
+    [self.decimalpointbutton setTitle:[[NSLocale currentLocale] objectForKey:NSLocaleDecimalSeparator] forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning
