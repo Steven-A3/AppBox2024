@@ -826,14 +826,6 @@ static NSString *CellIdentifier = @"Cell";
     [self.tableView reloadData];
 }
 
-- (UIViewController *)containerViewController {
-	return self;
-}
-
-- (id <A3SearchViewControllerDelegate>)delegateForCurrencySelector {
-	return self;
-}
-
 - (NSNumberFormatter *)currencyFormatterForTableViewInputElement {
 	return self.currencyFormatter;
 }

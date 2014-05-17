@@ -33,7 +33,6 @@
 #import "A3CalculatorViewController.h"
 #import "UITableView+utility.h"
 
-
 enum A3TableElementCellType {
     A3TableElementCellType_Price = 100,
     A3TableElementCellType_Discount,
@@ -63,7 +62,8 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 @property (nonatomic, strong) A3TextViewElement *notes;
 @property (nonatomic, strong) UITextView *textViewResponder;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
-@property (nonatomic, weak) UITextField *calculatorTargetTextField;
+@property (nonatomic, strong) A3TableViewInputElement *calculatorTargetElement;
+@property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
 
 @end
 
@@ -1149,13 +1149,10 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     }
 }
 
-- (UIViewController *)containerViewController {
-	return self;
-}
-
 #pragma mark - Currency Select Delegate
 
 - (void)currencySelectButtonAction:(NSNotification *)notification {
+	[self.firstResponder resignFirstResponder];
 	[self presentCurrencySelectVieControllerWithCurrencyCode:notification.object];
 }
 
@@ -1174,14 +1171,16 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 }
 
 - (void)calculatorButtonAction {
-	_calculatorTargetTextField = (UITextField *) self.firstResponder;
+	_calculatorTargetIndexPath = [self.tableView indexPathForCellSubview:(UIView *) self.firstResponder];
+	_calculatorTargetElement = (A3TableViewInputElement *) [self.root elementForIndexPath:_calculatorTargetIndexPath];
+	[self.firstResponder resignFirstResponder];
 	[self presentCalculatorViewController];
 }
 
 - (void)calculatorDismissedWithValue:(NSNotification *)notification {
-	NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:_calculatorTargetTextField];
-	A3TableViewInputElement *element = (A3TableViewInputElement *) [self.root elementForIndexPath:indexPath];
-	_cellTextInputFinishAllBlock(element, _calculatorTargetTextField);
+	A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *) [self.root cellForRowAtIndexPath:_calculatorTargetIndexPath];
+	cell.textField.text = notification.object;
+	_cellTextInputFinishAllBlock(_calculatorTargetElement, cell.textField);
 }
 
 - (NSNumberFormatter *)currencyFormatterForTableViewInputElement {

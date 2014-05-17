@@ -1082,14 +1082,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     }
 }
 
-- (UIViewController *)containerViewController {
-	return self;
-}
-
-- (id <A3SearchViewControllerDelegate>)delegateForCurrencySelector {
-	return self;
-}
-
 #pragma mark Share Activities releated
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {

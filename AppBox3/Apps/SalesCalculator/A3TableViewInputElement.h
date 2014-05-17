@@ -39,8 +39,6 @@ typedef void (^BasicBlock)(id sender);
 
 @protocol A3TableViewInputElementDelegate <NSObject>
 @optional
-- (UIViewController *)containerViewController;
-- (id<A3SearchViewControllerDelegate>)delegateForCurrencySelector;
 - (NSNumberFormatter *)currencyFormatterForTableViewInputElement;
 @end
 
