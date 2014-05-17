@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "A3ActionMenuViewControllerDelegate.h"
 
+extern NSString *const A3NotificationChildViewControllerDidDismiss;
+
 @interface UIViewController (navigation)
 
 @property (nonatomic, strong) UIViewController *actionMenuViewController;

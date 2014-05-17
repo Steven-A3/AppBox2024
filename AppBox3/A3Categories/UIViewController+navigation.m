@@ -20,6 +20,7 @@
 #define A3_ACTION_MENU_COVER_VIEW_TAG		79325
 static char const *const key_actionMenuViewController 			= "key_actionMenuViewController";
 static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
+NSString *const A3NotificationChildViewControllerDidDismiss = @"A3NotificationChildViewControllerDidDismiss";
 
 @implementation UIViewController (navigation)
 

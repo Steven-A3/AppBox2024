@@ -17,6 +17,7 @@
 #import "NSDate+TimeAgo.h"
 #import "A3UIDevice.h"
 #import "UIViewController+A3Addition.h"
+#import "UIViewController+navigation.h"
 
 @interface A3CurrencyHistoryViewController () <UIActionSheetDelegate>
 
@@ -76,7 +77,8 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 		A3AppDelegate *appDelegate = (A3AppDelegate *) [[UIApplication sharedApplication] delegate];
 		[appDelegate.rootViewController dismissRightSideViewController];
 	} else {
-		[self dismissViewControllerAnimated:YES completion:nil];
+		[self.navigationController dismissViewControllerAnimated:YES completion:nil];
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
 	}
 }
 

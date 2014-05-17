@@ -19,10 +19,12 @@
 #import "A3RootViewController_iPad.h"
 #import "A3AppDelegate.h"
 #import "UIColor+A3Addition.h"
+#import "UIViewController+navigation.h"
 
 @interface A3BatteryStatusMainViewController ()
-@property (nonatomic, strong) A3BatteryStatusSettingViewController * settingViewController;
+@property (nonatomic, strong) A3BatteryStatusSettingViewController *settingsViewController;
 @property (nonatomic, strong) A3BatteryStatusListPageSectionView *sectionHeaderView;
+@property (nonatomic, strong) UINavigationController *modalNavigationController;
 @end
 
 @implementation A3BatteryStatusMainViewController
@@ -177,7 +179,7 @@
 	[UIDevice currentDevice].batteryMonitoringEnabled = NO;
 }
 
--(void)rightBarButton {
+- (void)rightBarButton {
     UIImage *image = [UIImage imageNamed:@"general"];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(generalButtonAction:)];
     
@@ -190,7 +192,7 @@
     // Dispose of any resources that can be recreated.
 }
 
--(A3BatterStatusBatteryPanelView *)headerView {
+- (A3BatterStatusBatteryPanelView *)headerView {
 	if (!_headerView) {
 		CGFloat height;
 		if (IS_IPHONE) {
@@ -209,7 +211,7 @@
 	return _headerView;
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     
     CGRect rect = self.headerView.frame;
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
@@ -229,8 +231,23 @@
 #pragma mark - Actions
 
 - (void)generalButtonAction:(id)sender {
-	self.settingViewController = [[A3BatteryStatusSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
-	[self presentSubViewController:self.settingViewController];
+	self.settingsViewController = [[A3BatteryStatusSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
+
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:_settingsViewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss:) name:A3NotificationChildViewControllerDidDismiss object:_settingsViewController];
+	} else {
+		[self.A3RootViewController presentRightSideViewController:_settingsViewController];
+	}
+}
+
+- (void)settingsViewControllerDidDismiss:(NSNotification *)notification {
+	if (notification.object == _settingsViewController) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_settingsViewController];
+		_modalNavigationController = nil;
+		_settingsViewController = nil;
+	}
 }
 
 #pragma mark - Battery Notifications
@@ -340,7 +357,8 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 #pragma mark - List Page Section
--(void)sectionSegmentControlChanged:(id)sender {
+
+- (void)sectionSegmentControlChanged:(id)sender {
     UISegmentedControl *sectionSegment = (UISegmentedControl *)sender;
     
     if (sectionSegment.selectedSegmentIndex==0) {

@@ -13,6 +13,7 @@
 #import "CurrencyRateItem.h"
 #import "A3CurrencyDataManager.h"
 #import "UIViewController+A3Addition.h"
+#import "UIViewController+navigation.h"
 
 @interface A3CurrencySelectViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
 
@@ -46,6 +47,12 @@
 		if (self.showCancelButton) {
 			[self leftBarButtonCancelButton];
 		}
+	}
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
 	}
 }
 

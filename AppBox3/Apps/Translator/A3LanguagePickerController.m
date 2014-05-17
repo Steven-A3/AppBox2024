@@ -14,6 +14,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3StandardLeft15Cell.h"
 #import "UIColor+A3Addition.h"
+#import "UIViewController+navigation.h"
 
 @interface A3LanguagePickerController () <UISearchBarDelegate>
 
@@ -54,6 +55,12 @@ static NSString *CellIdentifier = @"Cell";
 	}
 
 	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+	}
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {

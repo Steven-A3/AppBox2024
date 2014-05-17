@@ -48,6 +48,8 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (UIButton *)composeButton;
 - (void)composeButtonAction:(UIButton *)button;
 
+- (UIViewController *)presentModalViewController:(UIViewController *)viewController;
+
 - (UIViewController *)presentSubViewController:(UIViewController *)viewController;
 - (void)rightBarButtonDoneButton;
 - (void)doneButtonAction:(UIBarButtonItem *)button;
