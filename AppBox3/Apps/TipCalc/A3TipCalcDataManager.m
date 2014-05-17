@@ -74,6 +74,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     destination.rRoundMethod.total = source.rRoundMethod.total;
     destination.rRoundMethod.totalPerPerson = source.rRoundMethod.totalPerPerson;
     destination.rRoundMethod.optionType = source.rRoundMethod.optionType;
+    destination.rRoundMethod.valueType = source.rRoundMethod.valueType;
 }
 
 - (void)addHistory:(NSString*)aCaptionTip total:(NSString*)aCaptionTotal
