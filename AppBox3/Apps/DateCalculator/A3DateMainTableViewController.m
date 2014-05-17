@@ -773,6 +773,10 @@ NSString *kCalculationString;
     else {
         if ([self didSelectedAdd]) {
             A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+            if (!footerCell) {
+                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+                footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+            }
             [footerCell.yearTextField becomeFirstResponder];
         } else {
 			self.dateKeyboardViewController.date = self.fromDate;
@@ -881,6 +885,10 @@ NSString *kCalculationString;
     
 	UITextField *textField = notification.object;
     A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    if (!footerCell) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    }
     
 	if (self.isAddSubMode && [footerCell hasEqualTextField:textField]) {
         if (textField == footerCell.yearTextField) {
@@ -908,6 +916,11 @@ NSString *kCalculationString;
 - (void)dateKeyboardValueChangedDate:(NSDate *)date
 {
     A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    if (!footerCell) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    }
+    
     // 풋터뷰 필드(ADD/SUB모드)
     if (self.isAddSubMode && (self.firstResponder == footerCell.yearTextField || self.firstResponder == footerCell.monthTextField || self.firstResponder == footerCell.dayTextField)) {
         NSDateComponents *changed = [[A3DateCalcStateManager currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
@@ -970,6 +983,10 @@ NSString *kCalculationString;
 
 - (void)nextButtonPressed{
     A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    if (!footerCell) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    }
     
 	if (self.firstResponder == footerCell.yearTextField) {
 		[footerCell.monthTextField becomeFirstResponder];
@@ -985,6 +1002,10 @@ NSString *kCalculationString;
 - (void)prevButtonPressed
 {
     A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    if (!footerCell) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    }
     
 	if (self.firstResponder == footerCell.dayTextField) {
 		footerCell.dayTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.day];
@@ -1014,6 +1035,10 @@ NSString *kCalculationString;
 - (void)updateOffsetDateCompWithTextField:(UITextField *)textField
 {
     A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    if (!footerCell) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    }
 
 	if (self.isAddSubMode && (self.firstResponder == footerCell.yearTextField || self.firstResponder == footerCell.monthTextField || self.firstResponder == footerCell.dayTextField)) {
 		if (self.firstResponder == footerCell.yearTextField) {
@@ -1046,6 +1071,10 @@ NSString *kCalculationString;
     selectedTextField.text = @"";
 	_textBeforeEditingText = nil;
     A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    if (!footerCell) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    }
     
 	if ([footerCell hasEqualTextField:selectedTextField]) {
 		if (selectedTextField == footerCell.yearTextField) {
