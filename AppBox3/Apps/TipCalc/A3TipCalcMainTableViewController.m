@@ -28,6 +28,7 @@
 #import "A3ItemSelectListViewController.h"
 #import "A3CalculatorDelegate.h"
 #import "A3SearchViewController.h"
+#import "UIViewController+navigation.h"
 
 #define kColorPlaceHolder [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 
@@ -56,6 +57,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 @property (nonatomic, strong) UIPopoverController * localPopoverController;
 @property (nonatomic, strong) A3TipCalcHeaderView * headerView;
 @property (nonatomic, strong) A3TipCalcDataManager *dataManager;
+@property (strong, nonatomic) UINavigationController *modalNavigationController;
 
 @end
 
@@ -892,8 +894,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                 [self.navigationController pushViewController:selectTableViewController animated:YES];
             }
             else {
-                [self presentSubViewController:selectTableViewController];
-            }
+				[self.A3RootViewController presentRightSideViewController:selectTableViewController];
+			}
         }
             break;
             
@@ -1004,10 +1006,20 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     
     A3TipCalcHistoryViewController* viewController = [[A3TipCalcHistoryViewController alloc] init];
     viewController.delegate = self;
-    [self presentSubViewController:viewController];
-    if (IS_IPAD) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissTipCalcSettingsViewController) name:A3NotificationRightSideViewWillDismiss object:nil];
-    }
+
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+	} else {
+		[self.A3RootViewController presentRightSideViewController:viewController];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissTipCalcSettingsViewController) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)historyViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
+	_modalNavigationController = nil;
 }
 
 - (void)settingsButtonAction:(UIButton *)button {
@@ -1017,10 +1029,20 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	A3TipCalcSettingViewController *viewController = [[A3TipCalcSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	viewController.dataManager = self.dataManager;
 	viewController.delegate = self;
-	[self presentSubViewController:viewController];
-    if (IS_IPAD) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissTipCalcSettingsViewController) name:A3NotificationRightSideViewWillDismiss object:nil];
-    }
+
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+	} else {
+		[self.A3RootViewController presentRightSideViewController:viewController];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissTipCalcSettingsViewController) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)settingsViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
+	_modalNavigationController = nil;
 }
 
 - (void)saveToHistoryAndInitialize:(id)sender {

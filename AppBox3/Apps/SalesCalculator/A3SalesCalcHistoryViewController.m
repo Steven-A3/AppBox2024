@@ -13,6 +13,7 @@
 #import "A3SalesCalcData.h"
 #import "A3SalesCalcHistoryCell.h"
 #import "A3DefaultColorDefines.h"
+#import "UIViewController+navigation.h"
 
 NSString *const A3SalesCalcHistoryCellID = @"cell1";
 
@@ -45,6 +46,12 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
     
     [self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+	}
 }
 
 -(void)contentSizeDidChange:(NSNotification *)notification {

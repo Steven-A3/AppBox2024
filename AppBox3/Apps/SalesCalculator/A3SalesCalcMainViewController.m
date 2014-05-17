@@ -28,6 +28,7 @@
 #import "SalesCalcHistory.h"
 #import "A3SearchViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIViewController+navigation.h"
 
 
 enum A3TableElementCellType {
@@ -58,6 +59,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 @property (nonatomic, strong) A3TableViewInputElement *price;
 @property (nonatomic, strong) A3TextViewElement *notes;
 @property (nonatomic, strong) UITextView *textViewResponder;
+@property (strong, nonatomic) UINavigationController *modalNavigationController;
 
 @end
 
@@ -224,13 +226,23 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     [self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
-	[self enableControls:NO];
-
     [self.textViewResponder resignFirstResponder];
     A3SalesCalcHistoryViewController *viewController = [[A3SalesCalcHistoryViewController alloc] initWithStyle:UITableViewStylePlain];
     viewController.delegate = self;
-    
-    [self presentSubViewController:viewController];
+
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+	} else {
+		[self enableControls:NO];
+		[self.A3RootViewController presentRightSideViewController:viewController];
+	}
+}
+
+- (void)historyViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
+	_modalNavigationController = nil;
 }
 
 -(void)didSelectHistoryData:(A3SalesCalcData *)aData

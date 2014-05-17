@@ -12,6 +12,7 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIViewController+navigation.h"
 
 @interface A3TipCalcSettingViewController ()
 
@@ -42,6 +43,12 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+	}
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {

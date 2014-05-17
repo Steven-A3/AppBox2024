@@ -37,6 +37,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIViewController+navigation.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
@@ -65,6 +66,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 @property (nonatomic, strong) LoanCalcData *loanDataA;
 @property (nonatomic, strong) LoanCalcData *loanDataB;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
+@property (nonatomic, strong) UINavigationController *modalNavigationController;
 
 @end
 
@@ -922,7 +924,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
 	A3LoanCalcSettingViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcSettingViewController"];
-	[self presentSubViewController:viewController];
 	[viewController setSettingChangedCompletionBlock:^{
 
 	}];
@@ -931,9 +932,19 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		[self refreshRightBarItems];
 	}];
 
-	if (IS_IPAD) {
+	if (IS_IPHONE) {
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+	} else {
 		[self enableControls:NO];
+		[self.A3RootViewController presentRightSideViewController:viewController];
 	}
+}
+
+- (void)settingsViewControllerDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
+	_modalNavigationController = nil;
 }
 
 - (void)clearEverything {
@@ -2316,8 +2327,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             }
             else {
 				[self enableControls:NO];
-                [self presentSubViewController:viewController];
-            }
+				[self.A3RootViewController presentRightSideViewController:viewController];
+			}
             [self dismissDatePicker];
         }
         else if (indexPath.section == 2) {
@@ -2335,8 +2346,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 }
                 else {
 					[self enableControls:NO];
-                    [self presentSubViewController:viewController];
-                }
+					[self.A3RootViewController presentRightSideViewController:viewController];
+				}
                 
                 [self dismissDatePicker];
             }
@@ -2366,8 +2377,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 }
                 else {
 					[self enableControls:NO];
-                    [self presentSubViewController:viewController];
-                }
+					[self.A3RootViewController presentRightSideViewController:viewController];
+				}
                 [self dismissDatePicker];
             }
         }

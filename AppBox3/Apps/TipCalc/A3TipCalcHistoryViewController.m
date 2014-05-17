@@ -13,6 +13,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "A3TipCalcHistoryCell.h"
 #import "A3DefaultColorDefines.h"
+#import "UIViewController+navigation.h"
 
 NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 
@@ -45,6 +46,13 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 -(void)contentSizeDidChange:(NSNotification *)notification {
     [self.tableView reloadData];
 }
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+	}
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
