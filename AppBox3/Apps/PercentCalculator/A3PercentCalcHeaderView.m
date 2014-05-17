@@ -170,168 +170,165 @@
 
 - (void)setupLayoutForPercentCalcType:(PercentCalcType)calcType
 {
-    @autoreleasepool {
-        
-        //CGFloat kResultCenterY = 71.0;
-        CGFloat kResultCenterY = 76;
-        CGFloat kResult2CenterY = 143;
-        if (IS_IPAD) {
-            //kResultCenterY = 106.0;
-            //kResult2CenterY = 193.0;
-            kResultCenterY = 111;
-            kResult2CenterY = 198;
-        }
-        
-        if (_factorViews==nil) {
-            _factorViews = [[NSMutableArray alloc] init];
-        }
-        
-        [_factorViews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            [obj removeFromSuperview];
-        }];
-        [_factorViews removeAllObjects];
-        
-        
-        if (_operators==nil) {
-            _operators = [[NSMutableArray alloc] init];
-        }
-        
-        [_operators removeAllObjects];
-        
-        NSArray *fViews1;
-        NSArray *fViews2;
-        
-        if (calcType==PercentCalcType_5) {
-            _sliderLine2View.hidden = NO;
-            _sliderLine2Thumb.hidden = NO;
-            _sliderLine2GaugeView.hidden = NO;
-            _sliderThumb2Label.hidden = NO;
-            for (UIView * aView in _slider2MeterViews) {
-                aView.hidden = NO;
-            }
-            for (UIView * aView in _slider2MeterLabelViews) {
-                aView.hidden = NO;
-            }
-            
-        } else {
-            _sliderLine2View.hidden = YES;
-            _sliderLine2Thumb.hidden = YES;
-            _sliderLine2GaugeView.hidden = YES;
-            _sliderThumb2Label.hidden = YES;
-            for (UIView * aView in _slider2MeterViews) {
-                aView.hidden = YES;
-            }
-            for (UIView * aView in _slider2MeterLabelViews) {
-                aView.hidden = YES;
-            }
-        }
+	//CGFloat kResultCenterY = 71.0;
+	CGFloat kResultCenterY = 76;
+	CGFloat kResult2CenterY = 143;
+	if (IS_IPAD) {
+		//kResultCenterY = 106.0;
+		//kResult2CenterY = 193.0;
+		kResultCenterY = 111;
+		kResult2CenterY = 198;
+	}
 
-        switch (calcType) {
-            case PercentCalcType_1:
-            {
-                // X is Y% of What
-                UILabel *answerLabel = [self labelWithFrame:CGRectZero];
-                UILabel *values1Label = [self labelWithFrame:CGRectZero];
-                UILabel *values2Label = [self labelWithFrame:CGRectZero];
-                answerLabel.tag = kAnswer1Tag;
-                values1Label.tag = kValues1Tag;
-                values2Label.tag = kValues1_1Tag;
-                
-                values2Label.text = @"X = ";
-                values1Label.text = @" × Y%";
-                answerLabel.text = @"";
+	if (_factorViews==nil) {
+		_factorViews = [[NSMutableArray alloc] init];
+	}
 
-                fViews1 = [NSArray arrayWithObjects:values1Label, answerLabel, values2Label, nil];
-            }
-                break;
-                
-            case PercentCalcType_2:
-            {
-                // What is X% of Y
-                UILabel *answerLabel = [self labelWithFrame:CGRectZero];
-                UILabel *valuesLabel = [self labelWithFrame:CGRectZero];
-                answerLabel.tag = kAnswer1Tag;
-                valuesLabel.tag = kValues1Tag;
-                valuesLabel.text = @" = Y × X%";
+	[_factorViews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		[obj removeFromSuperview];
+	}];
+	[_factorViews removeAllObjects];
 
-                fViews1 = [NSArray arrayWithObjects:valuesLabel, answerLabel, nil];
-            }
-                break;
-            case PercentCalcType_3:
-            {
-                // X is What % of Y, (X = Y x ANSWER)
-                UILabel *answerLabel = [self labelWithFrame:CGRectZero];
-                UILabel *valuesLabel = [self labelWithFrame:CGRectZero];
-                answerLabel.tag = kAnswer1Tag;
-                valuesLabel.tag = kValues1Tag;
-                valuesLabel.text = @"X = Y × ";
-                
-                fViews1 = [NSArray arrayWithObjects:answerLabel, valuesLabel, nil];
-            }
-                break;
-            case PercentCalcType_4:
-            {
-                // % Change from X to Y
-                UILabel *answerLabel = [self labelWithFrame:CGRectZero];
-                UILabel *valuesLabel = [self labelWithFrame:CGRectZero];
-                answerLabel.tag = kAnswer1Tag;
-                valuesLabel.tag = kValues1Tag;
-                
-                valuesLabel.text = @" = ( Y − X ) ÷ X × 100";
 
-                fViews1 = [NSArray arrayWithObjects:valuesLabel, answerLabel, nil];
-            }
-                break;
-            case PercentCalcType_5:
-            {
-                // Compare % Change from X to Y
-                _slider1AMarkLabel.hidden = NO;
-                _slider1AMarkLabel.layer.cornerRadius = _slider1AMarkLabel.bounds.size.width / 2.0;
-                _slider1AMarkLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
-                _slider1AMarkLabel.adjustsFontSizeToFitWidth = NO;
-                [_slider1AMarkLabel setBackgroundColor:[UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]];
-                
-                _slider2BMarkLabel.hidden = NO;
-                _slider2BMarkLabel.layer.cornerRadius = _slider2BMarkLabel.bounds.size.width / 2.0;
-                _slider2BMarkLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
-                _slider2BMarkLabel.adjustsFontSizeToFitWidth = NO;
-                [_slider2BMarkLabel setBackgroundColor:[UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]];
-                
-                
-                UILabel *answerLabel = [self labelWithFrame:CGRectZero];
-                UILabel *valuesLabel = [self labelWithFrame:CGRectZero];
-                answerLabel.tag = kAnswer1Tag;
-                valuesLabel.tag = kValues1Tag;
-                valuesLabel.text = @" = ( Y − X ) ÷ X × 100";
-                fViews1 = [NSArray arrayWithObjects:valuesLabel, answerLabel, nil];
-                
-                UILabel *answerLabel2 = [self labelWithFrame:CGRectZero];
-                UILabel *valuesLabel2 = [self labelWithFrame:CGRectZero];
-                answerLabel2.tag = kAnswer2Tag;
-                valuesLabel2.tag = kValues2Tag;
-                valuesLabel2.text = @" = ( Y − X ) ÷ X × 100";
-                fViews2 = [NSArray arrayWithObjects:valuesLabel2, answerLabel2, nil];
-            }
-                break;
-                
-            default:
-                break;
-        }
-        
-        [self setValuesToFactorViewArray:fViews1];
-        [self adjustFactorViewsFont:fViews1];
-        [self adjustFactorViewsFrame:fViews1 centerY:kResultCenterY];
+	if (_operators==nil) {
+		_operators = [[NSMutableArray alloc] init];
+	}
 
-        
-        if (self.calcType==PercentCalcType_5) {
-            [self setValuesToFactorViewArray:fViews2];
-            [self adjustFactorViewsFont:fViews2];
-            [self adjustFactorViewsFrame:fViews2 centerY:kResult2CenterY];
-        }
-        
-        [_factorViews addObjectsFromArray:fViews1];
-        [_factorViews addObjectsFromArray:fViews2];
-    }
+	[_operators removeAllObjects];
+
+	NSArray *fViews1;
+	NSArray *fViews2;
+
+	if (calcType==PercentCalcType_5) {
+		_sliderLine2View.hidden = NO;
+		_sliderLine2Thumb.hidden = NO;
+		_sliderLine2GaugeView.hidden = NO;
+		_sliderThumb2Label.hidden = NO;
+		for (UIView * aView in _slider2MeterViews) {
+			aView.hidden = NO;
+		}
+		for (UIView * aView in _slider2MeterLabelViews) {
+			aView.hidden = NO;
+		}
+
+	} else {
+		_sliderLine2View.hidden = YES;
+		_sliderLine2Thumb.hidden = YES;
+		_sliderLine2GaugeView.hidden = YES;
+		_sliderThumb2Label.hidden = YES;
+		for (UIView * aView in _slider2MeterViews) {
+			aView.hidden = YES;
+		}
+		for (UIView * aView in _slider2MeterLabelViews) {
+			aView.hidden = YES;
+		}
+	}
+
+	switch (calcType) {
+		case PercentCalcType_1:
+		{
+			// X is Y% of What
+			UILabel *answerLabel = [self labelWithFrame:CGRectZero];
+			UILabel *values1Label = [self labelWithFrame:CGRectZero];
+			UILabel *values2Label = [self labelWithFrame:CGRectZero];
+			answerLabel.tag = kAnswer1Tag;
+			values1Label.tag = kValues1Tag;
+			values2Label.tag = kValues1_1Tag;
+
+			values2Label.text = @"X = ";
+			values1Label.text = @" × Y%";
+			answerLabel.text = @"";
+
+			fViews1 = [NSArray arrayWithObjects:values1Label, answerLabel, values2Label, nil];
+		}
+			break;
+
+		case PercentCalcType_2:
+		{
+			// What is X% of Y
+			UILabel *answerLabel = [self labelWithFrame:CGRectZero];
+			UILabel *valuesLabel = [self labelWithFrame:CGRectZero];
+			answerLabel.tag = kAnswer1Tag;
+			valuesLabel.tag = kValues1Tag;
+			valuesLabel.text = @" = Y × X%";
+
+			fViews1 = [NSArray arrayWithObjects:valuesLabel, answerLabel, nil];
+		}
+			break;
+		case PercentCalcType_3:
+		{
+			// X is What % of Y, (X = Y x ANSWER)
+			UILabel *answerLabel = [self labelWithFrame:CGRectZero];
+			UILabel *valuesLabel = [self labelWithFrame:CGRectZero];
+			answerLabel.tag = kAnswer1Tag;
+			valuesLabel.tag = kValues1Tag;
+			valuesLabel.text = @"X = Y × ";
+
+			fViews1 = [NSArray arrayWithObjects:answerLabel, valuesLabel, nil];
+		}
+			break;
+		case PercentCalcType_4:
+		{
+			// % Change from X to Y
+			UILabel *answerLabel = [self labelWithFrame:CGRectZero];
+			UILabel *valuesLabel = [self labelWithFrame:CGRectZero];
+			answerLabel.tag = kAnswer1Tag;
+			valuesLabel.tag = kValues1Tag;
+
+			valuesLabel.text = @" = ( Y − X ) ÷ X × 100";
+
+			fViews1 = [NSArray arrayWithObjects:valuesLabel, answerLabel, nil];
+		}
+			break;
+		case PercentCalcType_5:
+		{
+			// Compare % Change from X to Y
+			_slider1AMarkLabel.hidden = NO;
+			_slider1AMarkLabel.layer.cornerRadius = _slider1AMarkLabel.bounds.size.width / 2.0;
+			_slider1AMarkLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
+			_slider1AMarkLabel.adjustsFontSizeToFitWidth = NO;
+			[_slider1AMarkLabel setBackgroundColor:[UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]];
+
+			_slider2BMarkLabel.hidden = NO;
+			_slider2BMarkLabel.layer.cornerRadius = _slider2BMarkLabel.bounds.size.width / 2.0;
+			_slider2BMarkLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
+			_slider2BMarkLabel.adjustsFontSizeToFitWidth = NO;
+			[_slider2BMarkLabel setBackgroundColor:[UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]];
+
+
+			UILabel *answerLabel = [self labelWithFrame:CGRectZero];
+			UILabel *valuesLabel = [self labelWithFrame:CGRectZero];
+			answerLabel.tag = kAnswer1Tag;
+			valuesLabel.tag = kValues1Tag;
+			valuesLabel.text = @" = ( Y − X ) ÷ X × 100";
+			fViews1 = [NSArray arrayWithObjects:valuesLabel, answerLabel, nil];
+
+			UILabel *answerLabel2 = [self labelWithFrame:CGRectZero];
+			UILabel *valuesLabel2 = [self labelWithFrame:CGRectZero];
+			answerLabel2.tag = kAnswer2Tag;
+			valuesLabel2.tag = kValues2Tag;
+			valuesLabel2.text = @" = ( Y − X ) ÷ X × 100";
+			fViews2 = [NSArray arrayWithObjects:valuesLabel2, answerLabel2, nil];
+		}
+			break;
+
+		default:
+			break;
+	}
+
+	[self setValuesToFactorViewArray:fViews1];
+	[self adjustFactorViewsFont:fViews1];
+	[self adjustFactorViewsFrame:fViews1 centerY:kResultCenterY];
+
+
+	if (self.calcType==PercentCalcType_5) {
+		[self setValuesToFactorViewArray:fViews2];
+		[self adjustFactorViewsFont:fViews2];
+		[self adjustFactorViewsFrame:fViews2 centerY:kResult2CenterY];
+	}
+
+	[_factorViews addObjectsFromArray:fViews1];
+	[_factorViews addObjectsFromArray:fViews2];
 }
 
 - (BOOL)setValuesToFactorViewArray:(NSArray *)aViews

@@ -250,27 +250,21 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 }
 
 - (void)doneButtonAction:(id)button {
-	@autoreleasepool {
-        
-        if (self.presentedViewController) {
-            [self.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
-        }
-        else {
-            [self.A3RootViewController dismissRightSideViewController];
-        }
+	if (self.presentedViewController) {
+		[self.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
+	}
+	else {
+		[self.A3RootViewController dismissRightSideViewController];
 	}
 }
 
 - (void)addUnitAction {
-	@autoreleasepool {
-        
-        A3UnitPriceAddViewController *viewController = [self unitAddViewController];
-        
-        viewController.shouldPopViewController = NO;
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-        nav.modalPresentationStyle= UIModalPresentationCurrentContext;
-        [self.tabBarController.navigationController presentViewController:nav animated:YES completion:NULL];
-	}
+	A3UnitPriceAddViewController *viewController = [self unitAddViewController];
+
+	viewController.shouldPopViewController = NO;
+	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
+	nav.modalPresentationStyle= UIModalPresentationCurrentContext;
+	[self.tabBarController.navigationController presentViewController:nav animated:YES completion:NULL];
 }
 
 - (A3UnitPriceAddViewController *)unitAddViewController {
@@ -532,55 +526,52 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	@autoreleasepool {
-        
-        if (!_isFavoriteMode && (tableView != self.searchDisplayController.searchResultsTableView) && ([self.allData objectAtIndex:indexPath.row] == self.noneItem)) {
-            [self callDelegate:nil];
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        }
-        else {
-            UnitItem *data;
-            if (tableView == self.searchDisplayController.searchResultsTableView) {
-                data = self.filteredResults[indexPath.row];
-                [self.searchDisplayController setActive:NO animated:NO];
-                
-            } else {
-                if (_isFavoriteMode) {
-                    
-                    if ([_favorites[indexPath.row] isKindOfClass:[UnitPriceFavorite class]]) {
-                        UnitPriceFavorite *favorite = _favorites[indexPath.row];
-                        data = favorite.item;
-                    }
-                    else {
-                        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                        return;
-                    }
-                }
-                else {
-                    data = _allData[indexPath.row];
-                }
-            }
-            
-            if (_selectedUnit && ([[data objectID] isEqual:[_selectedUnit objectID]])) {
-                [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                
-                // 원래 아이템을 선택하였으므로 아무일 없이 돌아간다.
-                if (IS_IPHONE) {
-                    if (_shouldPopViewController) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    } else {
-                        [self dismissViewControllerAnimated:YES completion:nil];
-                    }
-                } else {
-                    [self.A3RootViewController dismissRightSideViewController];
-                }
-                
-                return;
-            }
-            
-            [self callDelegate:data];
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        }
+	if (!_isFavoriteMode && (tableView != self.searchDisplayController.searchResultsTableView) && ([self.allData objectAtIndex:indexPath.row] == self.noneItem)) {
+		[self callDelegate:nil];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	}
+	else {
+		UnitItem *data;
+		if (tableView == self.searchDisplayController.searchResultsTableView) {
+			data = self.filteredResults[indexPath.row];
+			[self.searchDisplayController setActive:NO animated:NO];
+
+		} else {
+			if (_isFavoriteMode) {
+
+				if ([_favorites[indexPath.row] isKindOfClass:[UnitPriceFavorite class]]) {
+					UnitPriceFavorite *favorite = _favorites[indexPath.row];
+					data = favorite.item;
+				}
+				else {
+					[tableView deselectRowAtIndexPath:indexPath animated:YES];
+					return;
+				}
+			}
+			else {
+				data = _allData[indexPath.row];
+			}
+		}
+
+		if (_selectedUnit && ([[data objectID] isEqual:[_selectedUnit objectID]])) {
+			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+			// 원래 아이템을 선택하였으므로 아무일 없이 돌아간다.
+			if (IS_IPHONE) {
+				if (_shouldPopViewController) {
+					[self.navigationController popViewControllerAnimated:YES];
+				} else {
+					[self dismissViewControllerAnimated:YES completion:nil];
+				}
+			} else {
+				[self.A3RootViewController dismissRightSideViewController];
+			}
+
+			return;
+		}
+
+		[self callDelegate:data];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 }
 

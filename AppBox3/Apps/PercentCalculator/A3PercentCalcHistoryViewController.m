@@ -109,16 +109,14 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 
 - (void)doneButtonAction:(id)sender
 {
-	@autoreleasepool {
-		if (IS_IPAD) {
-			[self.A3RootViewController dismissRightSideViewController];
-            if ([_delegate respondsToSelector:@selector(dismissHistoryViewController)]) {
-                [_delegate performSelector:@selector(dismissHistoryViewController)];
-            }
-            
-		} else {
-			[self dismissViewControllerAnimated:YES completion:nil];
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissRightSideViewController];
+		if ([_delegate respondsToSelector:@selector(dismissHistoryViewController)]) {
+			[_delegate performSelector:@selector(dismissHistoryViewController)];
 		}
+
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
 	}
 }
 

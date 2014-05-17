@@ -15,11 +15,9 @@
 - (void)awakeFromFetch {
 	[super awakeFromFetch];
 
-	@autoreleasepool {
-		NSDateComponents *components = [NSDateComponents new];
-		components.day = [self.cycleLength integerValue];
-		self.periodEnds = [[A3AppDelegate instance].calendar dateByAddingComponents:components toDate:self.startDate options:0];
-	}
+	NSDateComponents *components = [NSDateComponents new];
+	components.day = [self.cycleLength integerValue];
+	self.periodEnds = [[A3AppDelegate instance].calendar dateByAddingComponents:components toDate:self.startDate options:0];
 }
 
 @end

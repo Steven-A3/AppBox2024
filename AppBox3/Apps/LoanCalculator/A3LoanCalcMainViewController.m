@@ -712,11 +712,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)dismissMoreMenu {
-	@autoreleasepool {
-		if ( !_isShowMoreMenu || IS_IPAD ) return;
-        
-		[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
-	}
+	if ( !_isShowMoreMenu || IS_IPAD ) return;
+
+	[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
 }
 
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
@@ -2550,19 +2548,15 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 #pragma mark Configure TableView Cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell=nil;
-	@autoreleasepool {
-		cell = nil;
-        
-        if (_isComparisonMode) {
-            cell = [self tableView:tableView cellForComparisonModeRowAtIndexPath:indexPath];
-        }
-        else {
-            cell = [self tableView:tableView cellForLoanModeRowAtIndexPath:indexPath];
-        }
+	UITableViewCell *cell;
+
+	if (_isComparisonMode) {
+		cell = [self tableView:tableView cellForComparisonModeRowAtIndexPath:indexPath];
 	}
-    
-    return cell;
+	else {
+		cell = [self tableView:tableView cellForLoanModeRowAtIndexPath:indexPath];
+	}
+	return cell;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForComparisonModeRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -642,14 +642,11 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (void)selectViewController:(UIViewController *)viewController unitSelectedWithItem:(UnitItem *)selectedItem
 {
-    @autoreleasepool {
-        
-        self.price.unit = selectedItem;
-        
-        NSIndexPath *sliderIP = [NSIndexPath indexPathForRow:0 inSection:0];
-        NSIndexPath *unitIP = [NSIndexPath indexPathForRow:[self.items indexOfObject:self.unitItem] inSection:1];
-        [self.tableView reloadRowsAtIndexPaths:@[sliderIP, unitIP] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
+	self.price.unit = selectedItem;
+
+	NSIndexPath *sliderIP = [NSIndexPath indexPathForRow:0 inSection:0];
+	NSIndexPath *unitIP = [NSIndexPath indexPathForRow:[self.items indexOfObject:self.unitItem] inSection:1];
+	[self.tableView reloadRowsAtIndexPaths:@[sliderIP, unitIP] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 - (void)didCancledSelectUnit
@@ -661,37 +658,35 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    @autoreleasepool {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-        if (indexPath.section == 0) {
-            
-        }
-        else {
-            if ([self.items objectAtIndex:indexPath.row] == self.noteItem) {
-                A3WalletNoteCell *noteCell = (A3WalletNoteCell *)[tableView cellForRowAtIndexPath:indexPath];
-                [noteCell.textView becomeFirstResponder];
-            }
-            else if ([self.items objectAtIndex:indexPath.row] == self.unitItem) {
-                if (IS_IPHONE) {
-                    //[self makeBackButtonEmptyArrow];
-                    [self.navigationController pushViewController:[self unitsTabBarController] animated:YES];
-                }
-                else {
-                    self.navigationController.navigationItem.backBarButtonItem.enabled = NO;
+	if (indexPath.section == 0) {
 
-					[self.firstResponder resignFirstResponder];
-					[self setFirstResponder:nil];
+	}
+	else {
+		if ([self.items objectAtIndex:indexPath.row] == self.noteItem) {
+			A3WalletNoteCell *noteCell = (A3WalletNoteCell *)[tableView cellForRowAtIndexPath:indexPath];
+			[noteCell.textView becomeFirstResponder];
+		}
+		else if ([self.items objectAtIndex:indexPath.row] == self.unitItem) {
+			if (IS_IPHONE) {
+				//[self makeBackButtonEmptyArrow];
+				[self.navigationController pushViewController:[self unitsTabBarController] animated:YES];
+			}
+			else {
+				self.navigationController.navigationItem.backBarButtonItem.enabled = NO;
 
-                    [self presentSubViewController:[self unitsTabBarController]];
-                }
-            }
-            else {
-                A3UnitPriceInputCell *inputCell = (A3UnitPriceInputCell *)[tableView cellForRowAtIndexPath:indexPath];
-                [inputCell.textField becomeFirstResponder];
-            }
-        }
-    }
+				[self.firstResponder resignFirstResponder];
+				[self setFirstResponder:nil];
+
+				[self presentSubViewController:[self unitsTabBarController]];
+			}
+		}
+		else {
+			A3UnitPriceInputCell *inputCell = (A3UnitPriceInputCell *)[tableView cellForRowAtIndexPath:indexPath];
+			[inputCell.textField becomeFirstResponder];
+		}
+	}
 }
 
 #pragma mark TableView Manipulate

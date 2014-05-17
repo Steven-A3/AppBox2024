@@ -95,17 +95,15 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 
 - (void)doneButtonAction:(id)sender
 {
-	@autoreleasepool {
-		if (IS_IPAD) {
-			[self.A3RootViewController dismissRightSideViewController];
-		} else {
-			[self dismissViewControllerAnimated:YES completion:nil];
-		}
-        
-        if ([_delegate respondsToSelector:@selector(dismissHistoryViewController)]) {
-            [_delegate performSelector:@selector(dismissHistoryViewController)];
-            
-        }
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissRightSideViewController];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
+
+	if ([_delegate respondsToSelector:@selector(dismissHistoryViewController)]) {
+		[_delegate performSelector:@selector(dismissHistoryViewController)];
+
 	}
 }
 

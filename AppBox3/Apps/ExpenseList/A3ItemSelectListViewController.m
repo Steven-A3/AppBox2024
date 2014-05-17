@@ -46,15 +46,13 @@
 
 - (void)doneButtonAction:(id)sender
 {
-	@autoreleasepool {
-		if (IS_IPAD) {
-			[self.A3RootViewController dismissRightSideViewController];
-		} else {
-			//[self dismissViewControllerAnimated:YES completion:nil];
-            
-            //[self.navigationController popToRootViewControllerAnimated:YES];
-            [self.navigationController popViewControllerAnimated:YES];
-		}
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissRightSideViewController];
+	} else {
+		//[self dismissViewControllerAnimated:YES completion:nil];
+
+		//[self.navigationController popToRootViewControllerAnimated:YES];
+		[self.navigationController popViewControllerAnimated:YES];
 	}
 }
 

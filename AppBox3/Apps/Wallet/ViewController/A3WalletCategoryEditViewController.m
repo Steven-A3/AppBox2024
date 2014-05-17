@@ -255,7 +255,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     [self presentSubViewController:viewController];
 }
 
-- (void)presentSubViewController:(UIViewController *)viewController {
+- (UIViewController *)presentSubViewController:(UIViewController *)viewController {
 
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];

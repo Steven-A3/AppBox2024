@@ -54,6 +54,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 @property (nonatomic, strong) NSDate *updateStartDate;
 @property (nonatomic, strong) UIBarButtonItem *historyBarButton;
 @property (nonatomic, weak) UITextField *lastEditingTextField;
+@property (nonatomic, strong) UIViewController *childViewController;
 
 @end
 
@@ -343,7 +344,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	[self enableControls:NO];
 	A3CurrencyHistoryViewController *viewController = [[A3CurrencyHistoryViewController alloc] initWithNibName:nil bundle:nil];
-	[self presentSubViewController:viewController];
+	_childViewController = [self presentSubViewController:viewController];
 }
 
 - (void)settingsButtonAction:(UIButton *)button {
@@ -354,7 +355,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"A3CurrencySettings" bundle:nil];
 	A3CurrencySettingsViewController *viewController = [storyboard instantiateInitialViewController];
 	viewController.delegate = self;
-	[self presentSubViewController:viewController];
+	_childViewController = [self presentSubViewController:viewController];
 }
 
 - (void)currencyConfigurationChanged {
@@ -727,7 +728,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 			viewController.shouldPopViewController = YES;
 			[self.navigationController pushViewController:viewController animated:YES];
 		} else {
-			[self presentSubViewController:viewController];
+			_childViewController = [self presentSubViewController:viewController];
 		}
 	} else {
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -757,7 +758,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		viewController.shouldPopViewController = NO;
 		viewController.showCancelButton = YES;
 	}
-	[self presentSubViewController:viewController];
+	_childViewController = [self presentSubViewController:viewController];
 }
 
 /*! Push CurrencySelectViewController filling with selected currency code

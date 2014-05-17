@@ -81,36 +81,34 @@
 }
 
 - (void)expandButtonPressed:(UIButton *)expandButton {
-	@autoreleasepool {
-		NSIndexPath *indexPath = [self.tableView indexPathForCell:self.cell];
+	NSIndexPath *indexPath = [self.tableView indexPathForCell:self.cell];
 
-		[self.section toggleExpandableElementAtIndexPath:indexPath];
+	[self.section toggleExpandableElementAtIndexPath:indexPath];
 
-		NSMutableArray *indexPaths = [NSMutableArray new];
-		for (NSInteger idx = 0; idx < [self.elements count]; idx++) {
-			[indexPaths addObject:[NSIndexPath indexPathForRow:idx + indexPath.row + 1 inSection:indexPath.section]];
-		}
-		if (_collapsed) {
-			[_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-			[expandButton setTitle:@"j" forState:UIControlStateNormal];
-			self.titleLabel.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
-		} else {
-			[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-			[_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-			[expandButton setTitle:@"i" forState:UIControlStateNormal];
-			self.titleLabel.textColor = _tableView.tintColor;
-		}
+	NSMutableArray *indexPaths = [NSMutableArray new];
+	for (NSInteger idx = 0; idx < [self.elements count]; idx++) {
+		[indexPaths addObject:[NSIndexPath indexPathForRow:idx + indexPath.row + 1 inSection:indexPath.section]];
+	}
+	if (_collapsed) {
+		[_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+		[expandButton setTitle:@"j" forState:UIControlStateNormal];
+		self.titleLabel.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
+	} else {
+		[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+		[_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+		[expandButton setTitle:@"i" forState:UIControlStateNormal];
+		self.titleLabel.textColor = _tableView.tintColor;
+	}
 
-		NSInteger index = [self.section.elementsMatchingTableView indexOfObject:self];
-		if (index == [self.section.elementsMatchingTableView count] - 1) {
-			[self.cell setBottomSeparatorForBottomRow];
-		} else {
-			[self.cell setBottomSeparatorForMiddleRow];
-		}
+	NSInteger index = [self.section.elementsMatchingTableView indexOfObject:self];
+	if (index == [self.section.elementsMatchingTableView count] - 1) {
+		[self.cell setBottomSeparatorForBottomRow];
+	} else {
+		[self.cell setBottomSeparatorForMiddleRow];
+	}
 
-		if ([_delegate respondsToSelector:@selector(element:cellStateChangedAtIndexPath:)]) {
-			[_delegate element:self cellStateChangedAtIndexPath:indexPath];
-		}
+	if ([_delegate respondsToSelector:@selector(element:cellStateChangedAtIndexPath:)]) {
+		[_delegate element:self cellStateChangedAtIndexPath:indexPath];
 	}
 }
 

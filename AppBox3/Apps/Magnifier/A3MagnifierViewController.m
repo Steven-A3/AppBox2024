@@ -197,16 +197,13 @@ static const int MAX_ZOOM_FACTOR = 6;
 }
 
 - (void)setupGestureRecognizer {
-	@autoreleasepool {
-        UIGestureRecognizer *recognizer;
-        recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView)];
-		[previewLayer addGestureRecognizer:recognizer];
-        
-        recognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-        recognizer.delegate = self;
-        [previewLayer addGestureRecognizer:recognizer];
-        
-	}
+	UIGestureRecognizer *recognizer;
+	recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView)];
+	[previewLayer addGestureRecognizer:recognizer];
+
+	recognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
+	recognizer.delegate = self;
+	[previewLayer addGestureRecognizer:recognizer];
 }
 
 - (void)setupMagnifier {
@@ -234,10 +231,8 @@ static const int MAX_ZOOM_FACTOR = 6;
 }
 
 - (void)tapOnPreviewView {
-	@autoreleasepool {
-		BOOL toolBarsHidden = self.topToolBar.hidden;
-		[self setToolBarsHidden:!toolBarsHidden];
-	}
+	BOOL toolBarsHidden = self.topToolBar.hidden;
+	[self setToolBarsHidden:!toolBarsHidden];
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
@@ -281,47 +276,43 @@ static const int MAX_ZOOM_FACTOR = 6;
 }
 
 - (void)setNavigationBarHidden:(BOOL)hidden {
-	@autoreleasepool {
-        [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        [self.navigationController.navigationBar setShadowImage:nil];
-		
-		[self.navigationController setNavigationBarHidden:hidden];
-	}
+	[self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+	[self.navigationController.navigationBar setShadowImage:nil];
+
+	[self.navigationController setNavigationBarHidden:hidden];
 }
 
 - (void)setToolBarsHidden:(BOOL)hidden {
-	@autoreleasepool {
-        self.topToolBar.hidden = hidden;
-        self.bottomToolBar.hidden = hidden;
-        if (hidden == YES) {
-            [self.flashToolBar setFrame:CGRectMake(self.flashToolBar.frame.origin.x,
-                                                        self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.flashToolBar.frame.size.height,
-                                                        self.flashToolBar.frame.size.width,
-                                                        self.flashToolBar.frame.size.height)];
-            [self.brightnessToolBar setFrame:CGRectMake(self.brightnessToolBar.frame.origin.x,
-                                                        self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height,
-                                                        self.brightnessToolBar.frame.size.width,
-                                                        self.brightnessToolBar.frame.size.height)];
-            [self.magnifierToolBar setFrame:CGRectMake(self.magnifierToolBar.frame.origin.x,
-                                                        self.view.frame.size.height - self.magnifierToolBar.frame.size.height,
-                                                        self.magnifierToolBar.frame.size.width,
-                                                        self.magnifierToolBar.frame.size.height)];
-        } else {
-            [self.flashToolBar setFrame:CGRectMake(self.flashToolBar.frame.origin.x,
-                                                        self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.bottomToolBar.frame.size.height-self.flashToolBar.frame.size.height,
-                                                        self.flashToolBar.frame.size.width,
-                                                        self.flashToolBar.frame.size.height)];
-            [self.brightnessToolBar setFrame:CGRectMake(self.brightnessToolBar.frame.origin.x,
-                                                        self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.bottomToolBar.frame.size.height,
-                                                        self.brightnessToolBar.frame.size.width,
-                                                        self.brightnessToolBar.frame.size.height)];
-            [self.magnifierToolBar setFrame:CGRectMake(self.magnifierToolBar.frame.origin.x,
-                                                       self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.bottomToolBar.frame.size.height,
-                                                       self.magnifierToolBar.frame.size.width,
-                                                       self.magnifierToolBar.frame.size.height)];        }
-        self.statusBarBackground.hidden = hidden;
-        [[UIApplication sharedApplication] setStatusBarHidden:hidden];
-    }
+	self.topToolBar.hidden = hidden;
+	self.bottomToolBar.hidden = hidden;
+	if (hidden == YES) {
+		[self.flashToolBar setFrame:CGRectMake(self.flashToolBar.frame.origin.x,
+				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.flashToolBar.frame.size.height,
+				self.flashToolBar.frame.size.width,
+				self.flashToolBar.frame.size.height)];
+		[self.brightnessToolBar setFrame:CGRectMake(self.brightnessToolBar.frame.origin.x,
+				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height,
+				self.brightnessToolBar.frame.size.width,
+				self.brightnessToolBar.frame.size.height)];
+		[self.magnifierToolBar setFrame:CGRectMake(self.magnifierToolBar.frame.origin.x,
+				self.view.frame.size.height - self.magnifierToolBar.frame.size.height,
+				self.magnifierToolBar.frame.size.width,
+				self.magnifierToolBar.frame.size.height)];
+	} else {
+		[self.flashToolBar setFrame:CGRectMake(self.flashToolBar.frame.origin.x,
+				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.bottomToolBar.frame.size.height-self.flashToolBar.frame.size.height,
+				self.flashToolBar.frame.size.width,
+				self.flashToolBar.frame.size.height)];
+		[self.brightnessToolBar setFrame:CGRectMake(self.brightnessToolBar.frame.origin.x,
+				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.bottomToolBar.frame.size.height,
+				self.brightnessToolBar.frame.size.width,
+				self.brightnessToolBar.frame.size.height)];
+		[self.magnifierToolBar setFrame:CGRectMake(self.magnifierToolBar.frame.origin.x,
+				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.bottomToolBar.frame.size.height,
+				self.magnifierToolBar.frame.size.width,
+				self.magnifierToolBar.frame.size.height)];        }
+	self.statusBarBackground.hidden = hidden;
+	[[UIApplication sharedApplication] setStatusBarHidden:hidden];
 }
 
 
@@ -442,93 +433,88 @@ static const int MAX_ZOOM_FACTOR = 6;
 }
 
 - (void) snapAnimation{
-    @autoreleasepool {
-        UIView *flashView = [[UIView alloc] initWithFrame:[previewLayer frame]];
-        [flashView setBackgroundColor:[UIColor whiteColor]];
-        [flashView setAlpha:0.f];
-        [[[self view] window] addSubview:flashView];
-        
-        [UIView animateWithDuration:.4f
-                         animations:^{
-                             [flashView setAlpha:1.f];
-                         }
-                         completion:^(BOOL finished) {
-                             [UIView animateWithDuration:.4f
-                                              animations:^{
-                                                  [flashView setAlpha:0.f];
-                                              }
-                                              completion:^(BOOL finished){
-                                                  [flashView removeFromSuperview];
-                                              }
-                              ];
-                         }
-         ];
-    }
+	UIView *flashView = [[UIView alloc] initWithFrame:[previewLayer frame]];
+	[flashView setBackgroundColor:[UIColor whiteColor]];
+	[flashView setAlpha:0.f];
+	[[[self view] window] addSubview:flashView];
+
+	[UIView animateWithDuration:.4f
+					 animations:^{
+						 [flashView setAlpha:1.f];
+					 }
+					 completion:^(BOOL finished) {
+						 [UIView animateWithDuration:.4f
+										  animations:^{
+											  [flashView setAlpha:0.f];
+										  }
+										  completion:^(BOOL finished){
+											  [flashView removeFromSuperview];
+										  }
+						 ];
+					 }
+	];
 }
 
 
 - (IBAction)snapButton:(id)sender {
-    // Find out the current orientation and tell the still image output.
-    @autoreleasepool {
-        
+	// Find out the current orientation and tell the still image output.
 	AVCaptureConnection *stillImageConnection = [stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
 	UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
 	AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation:curDeviceOrientation];
 	[stillImageConnection setVideoOrientation:avcaptureOrientation];
-        if (bLosslessZoom == NO) {
-            [stillImageConnection setVideoScaleAndCropFactor:effectiveScale];
-        }
-	
+	if (bLosslessZoom == NO) {
+		[stillImageConnection setVideoScaleAndCropFactor:effectiveScale];
+	}
+
 	[stillImageOutput setOutputSettings:[NSDictionary dictionaryWithObject:AVVideoCodecJPEG
-																		forKey:AVVideoCodecKey]];
-    [self snapAnimation];
+																	forKey:AVVideoCodecKey]];
+	[self snapAnimation];
 	[stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection
-                                                  completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-                                                      if (error) {
-                                                          [self displayErrorOnMainQueue:error withMessage:@"Take picture failed"];
-                                                      }
-                                                      else {
-                                                          // trivial simple JPEG case
-                                                          NSData *jpegData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-                                                         // CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault,
-                                                         //                                                             imageDataSampleBuffer,
-                                                          //                                                            kCMAttachmentMode_ShouldPropagate);
-                                                          
-                                                          CIImage *ciSaveImg = [[CIImage alloc] initWithData:jpegData];
-                                                          
-                                                          ciSaveImg = [self ApplyFilters:ciSaveImg];
-                                                          
-                                                          CGAffineTransform t;
-                                                          
-                                                          if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-                                                              t = CGAffineTransformMakeRotation(-M_PI / 2);
-                                                          } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-                                                              t = CGAffineTransformMakeRotation(M_PI / 2);
-                                                          } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight ||
-                                                                     curDeviceOrientation == UIDeviceOrientationFaceUp) {
-                                                              t = CGAffineTransformMakeRotation(M_PI);
-                                                          } else {
-                                                              t = CGAffineTransformMakeRotation(0);
-                                                          }
-                                                          
-                                                          CGImageRef cgimgRef = [_ciContext createCGImage:ciSaveImg fromRect:[ciSaveImg extent]];
-                                                          
-                                                          
-                                                          ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-                                                          [library writeImageToSavedPhotosAlbum:cgimgRef metadata:[ciSaveImg properties]/*CFBridgingRelease(attachments)*/ completionBlock:^(NSURL *assetURL, NSError *error) {
-                                                              if (error) {
-                                                                  [self displayErrorOnMainQueue:error withMessage:@"Save to camera roll failed"];
-                                                              } else {
-                                                                  [self setImageOnCameraRollButton:[UIImage imageWithCIImage:[ciSaveImg imageByApplyingTransform:t]]];
-                                                              }
-                                                          }];
-                                                          
-                                                             // if (attachments)
-                                                               //   CFRelease(attachments);
-                                                          }
-                                                  }
-	 ];
-    }
+												  completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+													  if (error) {
+														  [self displayErrorOnMainQueue:error withMessage:@"Take picture failed"];
+													  }
+													  else {
+														  // trivial simple JPEG case
+														  NSData *jpegData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+														  // CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault,
+														  //                                                             imageDataSampleBuffer,
+														  //                                                            kCMAttachmentMode_ShouldPropagate);
+
+														  CIImage *ciSaveImg = [[CIImage alloc] initWithData:jpegData];
+
+														  ciSaveImg = [self ApplyFilters:ciSaveImg];
+
+														  CGAffineTransform t;
+
+														  if (curDeviceOrientation == UIDeviceOrientationPortrait) {
+															  t = CGAffineTransformMakeRotation(-M_PI / 2);
+														  } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+															  t = CGAffineTransformMakeRotation(M_PI / 2);
+														  } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight ||
+																  curDeviceOrientation == UIDeviceOrientationFaceUp) {
+															  t = CGAffineTransformMakeRotation(M_PI);
+														  } else {
+															  t = CGAffineTransformMakeRotation(0);
+														  }
+
+														  CGImageRef cgimgRef = [_ciContext createCGImage:ciSaveImg fromRect:[ciSaveImg extent]];
+
+
+														  ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+														  [library writeImageToSavedPhotosAlbum:cgimgRef metadata:[ciSaveImg properties]/*CFBridgingRelease(attachments)*/ completionBlock:^(NSURL *assetURL, NSError *error) {
+															  if (error) {
+																  [self displayErrorOnMainQueue:error withMessage:@"Save to camera roll failed"];
+															  } else {
+																  [self setImageOnCameraRollButton:[UIImage imageWithCIImage:[ciSaveImg imageByApplyingTransform:t]]];
+															  }
+														  }];
+
+														  // if (attachments)
+														  //   CFRelease(attachments);
+													  }
+												  }
+	];
 }
 
 - (IBAction)loadCameraRoll:(id)sender {
@@ -742,39 +728,35 @@ static const int MAX_ZOOM_FACTOR = 6;
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
-    @autoreleasepool {
-        NSMutableArray *assetArray = [NSMutableArray new];
-        if (index < [_assetrollGroup numberOfAssets])
-        {
-            [_assetrollGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[_assetrollGroup numberOfAssets] - index-1] options:NSEnumerationConcurrent usingBlock:^(ALAsset *result, NSUInteger i, BOOL *stop) {
-                if (result != nil) {
-                    [assetArray addObject:result];
-                    *stop = YES;
-                }
-            }];
-            ALAsset *asset = [assetArray objectAtIndex:0];
-            return [MWPhoto photoWithURL:asset.defaultRepresentation.url];
-        }
-    }
-    return nil;
+	NSMutableArray *assetArray = [NSMutableArray new];
+	if (index < [_assetrollGroup numberOfAssets])
+	{
+		[_assetrollGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[_assetrollGroup numberOfAssets] - index-1] options:NSEnumerationConcurrent usingBlock:^(ALAsset *result, NSUInteger i, BOOL *stop) {
+			if (result != nil) {
+				[assetArray addObject:result];
+				*stop = YES;
+			}
+		}];
+		ALAsset *asset = [assetArray objectAtIndex:0];
+		return [MWPhoto photoWithURL:asset.defaultRepresentation.url];
+	}
+	return nil;
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index {
-    @autoreleasepool {
-        NSMutableArray *assetArray = [NSMutableArray new];
-        if (index < [_assetrollGroup numberOfAssets])
-        {
-            [_assetrollGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[_assetrollGroup numberOfAssets] - index-1] options:NSEnumerationConcurrent usingBlock:^(ALAsset *result, NSUInteger i, BOOL *stop) {
-                if (result != nil) {
-                    [assetArray addObject:result];
-                    *stop = YES;
-                }
-            }];
-            ALAsset *asset = [assetArray objectAtIndex:0];
-            return [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
-        }
-    }
-    return nil;
+	NSMutableArray *assetArray = [NSMutableArray new];
+	if (index < [_assetrollGroup numberOfAssets])
+	{
+		[_assetrollGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[_assetrollGroup numberOfAssets] - index-1] options:NSEnumerationConcurrent usingBlock:^(ALAsset *result, NSUInteger i, BOOL *stop) {
+			if (result != nil) {
+				[assetArray addObject:result];
+				*stop = YES;
+			}
+		}];
+		ALAsset *asset = [assetArray objectAtIndex:0];
+		return [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
+	}
+	return nil;
 }
 
 //- (MWCaptionView *)photoBrowser:(MWPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index {

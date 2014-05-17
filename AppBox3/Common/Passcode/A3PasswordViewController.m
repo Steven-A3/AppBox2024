@@ -638,17 +638,15 @@ static CGFloat const kFontSizeModifier = 1.5f;
 }
 
 - (void)showHint:(NSString *)text {
-	@autoreleasepool {
-		[self setMessage:text];
-		_failedAttemptLabel.backgroundColor = [UIColor lightGrayColor];
-		
-		double delayInSeconds = 3.0;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			_failedAttemptLabel.hidden = YES;
-			_failedAttemptLabel.backgroundColor = kFailedAttemptLabelBackgroundColor;
-		});
-	}
+	[self setMessage:text];
+	_failedAttemptLabel.backgroundColor = [UIColor lightGrayColor];
+
+	double delayInSeconds = 3.0;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		_failedAttemptLabel.hidden = YES;
+		_failedAttemptLabel.backgroundColor = kFailedAttemptLabelBackgroundColor;
+	});
 }
 
 - (void)viewWillLayoutSubviews {

@@ -55,17 +55,14 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
-	@autoreleasepool {
-
-		if (IS_IPAD) {
-			[self.A3RootViewController dismissRightSideViewController];
-            if ([_delegate respondsToSelector:@selector(dismissDateCalcDurationViewController)]) {
-                [_delegate performSelector:@selector(dismissDateCalcDurationViewController)];
-            }
-
-		} else {
-			[self dismissViewControllerAnimated:YES completion:nil];
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissRightSideViewController];
+		if ([_delegate respondsToSelector:@selector(dismissDateCalcDurationViewController)]) {
+			[_delegate performSelector:@selector(dismissDateCalcDurationViewController)];
 		}
+
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
 	}
 }
 

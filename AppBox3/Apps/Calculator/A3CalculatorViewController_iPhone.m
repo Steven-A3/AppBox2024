@@ -114,29 +114,23 @@
 }
 
 - (void)setupGestureRecognizer {
-	@autoreleasepool {
-		navGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnScrollView)];
-		[self.view addGestureRecognizer:navGestureRecognizer];
-        if ([self hidesNavigationBar] == NO) {
-            navGestureRecognizer.enabled = NO;
-        }
+	navGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnScrollView)];
+	[self.view addGestureRecognizer:navGestureRecognizer];
+	if ([self hidesNavigationBar] == NO) {
+		navGestureRecognizer.enabled = NO;
 	}
 }
 
 - (void)tapOnScrollView {
-	@autoreleasepool {
-		BOOL navigationBarHidden = self.navigationController.navigationBarHidden;
-		[self setNavigationBarHidden:!navigationBarHidden];
-	}
+	BOOL navigationBarHidden = self.navigationController.navigationBarHidden;
+	[self setNavigationBarHidden:!navigationBarHidden];
 }
 
 - (void)setNavigationBarHidden:(BOOL)hidden {
-	@autoreleasepool {
-        [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        [self.navigationController.navigationBar setShadowImage:nil];
-		
-		[self.navigationController setNavigationBarHidden:hidden];
-	}
+	[self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+	[self.navigationController.navigationBar setShadowImage:nil];
+
+	[self.navigationController setNavigationBarHidden:hidden];
 }
 
 - (BOOL)hidesNavigationBar {

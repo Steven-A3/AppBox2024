@@ -87,14 +87,11 @@
 }
 
 - (void)doneButtonAction:(id)button {
-	@autoreleasepool {
-        
-        if (self.presentedViewController) {
-            [self.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
-        }
-        else {
-            [self.A3RootViewController dismissRightSideViewController];
-        }
+	if (self.presentedViewController) {
+		[self.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
+	}
+	else {
+		[self.A3RootViewController dismissRightSideViewController];
 	}
 }
 

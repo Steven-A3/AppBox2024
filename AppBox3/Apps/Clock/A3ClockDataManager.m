@@ -480,11 +480,9 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-	@autoreleasepool {
+	[manager stopMonitoringSignificantLocationChanges];
 
-		[manager stopMonitoringSignificantLocationChanges];
-
-		CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
+	CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
 
 #ifdef  ALERT_LOCATION
 		CLLocation *location = locations[0];
@@ -493,48 +491,46 @@
 		[alertView show];
 #endif
 
-		[geoCoder reverseGeocodeLocation:locations[0] completionHandler:^(NSArray *placeMarks, NSError *error) {
-			if (error) {
+	[geoCoder reverseGeocodeLocation:locations[0] completionHandler:^(NSArray *placeMarks, NSError *error) {
+		if (error) {
 #ifdef        ALERT_LOCATION
 			CLLocation *location = locations[0];
 			NSString *log = [NSString stringWithFormat:@"%@\n%f, %f", error.localizedDescription, location.coordinate.latitude, location.coordinate.longitude];
 			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Location" message:log delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alertView show];
 #endif
-				return;
-			}
-			for (CLPlacemark *placeMark in placeMarks) {
+			return;
+		}
+		for (CLPlacemark *placeMark in placeMarks) {
 
-				NSMutableString *log = [NSMutableString new];
+			NSMutableString *log = [NSMutableString new];
 
-				[log appendString:[NSString stringWithFormat:@"Description:%@\n", [placeMarks description]]];
-				[log appendString:[NSString stringWithFormat:@"addressDictionary:%@\n", placeMark.addressDictionary]];
-				[log appendString:[NSString stringWithFormat:@"administrativeArea:%@\n", placeMark.administrativeArea]];
-				[log appendString:[NSString stringWithFormat:@"areaOfInterest:%@\n", placeMark.areasOfInterest]];
-				[log appendString:[NSString stringWithFormat:@"locality:%@\n", placeMark.locality]];
-				[log appendString:[NSString stringWithFormat:@"name:%@\n", placeMark.name]];
-				[log appendString:[NSString stringWithFormat:@"subLocality:%@\n", placeMark.subLocality]];
-				FNLOG(@"%@", log);
+			[log appendString:[NSString stringWithFormat:@"Description:%@\n", [placeMarks description]]];
+			[log appendString:[NSString stringWithFormat:@"addressDictionary:%@\n", placeMark.addressDictionary]];
+			[log appendString:[NSString stringWithFormat:@"administrativeArea:%@\n", placeMark.administrativeArea]];
+			[log appendString:[NSString stringWithFormat:@"areaOfInterest:%@\n", placeMark.areasOfInterest]];
+			[log appendString:[NSString stringWithFormat:@"locality:%@\n", placeMark.locality]];
+			[log appendString:[NSString stringWithFormat:@"name:%@\n", placeMark.name]];
+			[log appendString:[NSString stringWithFormat:@"subLocality:%@\n", placeMark.subLocality]];
+			FNLOG(@"%@", log);
 
 #ifdef  ALERT_LOCATION
 			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Location" message:log delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alertView show];
 #endif
 
-				if (!_addressCandidates) _addressCandidates = [NSMutableArray new];
-				if ([placeMark.subLocality length]) [_addressCandidates addObject:placeMark.subLocality];
-				if ([placeMark.administrativeArea length]) [_addressCandidates addObject:placeMark.administrativeArea];
-				if ([placeMark.locality length]) [_addressCandidates addObject:placeMark.locality];
-			}
+			if (!_addressCandidates) _addressCandidates = [NSMutableArray new];
+			if ([placeMark.subLocality length]) [_addressCandidates addObject:placeMark.subLocality];
+			if ([placeMark.administrativeArea length]) [_addressCandidates addObject:placeMark.administrativeArea];
+			if ([placeMark.locality length]) [_addressCandidates addObject:placeMark.locality];
+		}
 
-			if ([_addressCandidates count]) {
-				[self getWOEIDWithCandidates];
-			} else {
-				[manager startMonitoringSignificantLocationChanges];
-			}
-		}];
-	}
-
+		if ([_addressCandidates count]) {
+			[self getWOEIDWithCandidates];
+		} else {
+			[manager startMonitoringSignificantLocationChanges];
+		}
+	}];
 }
 
 #pragma mark -
