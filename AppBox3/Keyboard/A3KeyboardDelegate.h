@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-@protocol A3CalculatorDelegate;
 @protocol A3SearchViewControllerDelegate;
 @class A3NumberKeyboardViewController;
 
@@ -37,9 +36,5 @@ typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 - (BOOL)isNextEntryExists;
 - (void)prevButtonPressed;
 - (void)nextButtonPressed;
-- (UIViewController *)modalPresentingParentViewControllerForCalculator;
-- (id<A3CalculatorDelegate>)delegateForCalculator;
-- (UIViewController *)modalPresentingParentViewControllerForCurrencySelector;
-- (id<A3SearchViewControllerDelegate>)delegateForCurrencySelector;
 
 @end

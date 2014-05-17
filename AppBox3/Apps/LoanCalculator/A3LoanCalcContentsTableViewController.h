@@ -7,7 +7,6 @@
 //
 
 #import "LoanCalcMode.h"
-#import "A3CalculatorDelegate.h"
 #import "A3SearchViewController.h"
 
 @class LoanCalcData;

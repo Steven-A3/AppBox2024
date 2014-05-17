@@ -11,12 +11,11 @@
 #import "A3NumberKeyboardViewController.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "A3NumberKeyboardViewController_iPad.h"
-#import "A3CalculatorDelegate.h"
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 #import "A3ExpenseListMainViewcontroller.h"
 
 
-@interface A3ExpenseListItemCell() <UITextFieldDelegate, A3KeyboardDelegate, A3ExpenseListAccessoryDelegate, A3CalculatorDelegate>
+@interface A3ExpenseListItemCell() <UITextFieldDelegate, A3KeyboardDelegate, A3ExpenseListAccessoryDelegate>
 @property (nonatomic, strong) UIButton *checkButton;
 @property (nonatomic, strong) UIView *sep1View;
 @property (nonatomic, strong) UIView *sep2View;
@@ -477,24 +476,6 @@
 {
 	[[_firstResponder.undoManager prepareWithInvocationTarget:self] setFirstResponderText:_firstResponder.text];
     _firstResponder.text = newText;
-}
-
-- (UIViewController *)modalPresentingParentViewControllerForCalculator {
-	UIViewController *viewController = nil;
-	if ([_delegate respondsToSelector:@selector(modalPresentingViewControllerForCalculator)]) {
-		viewController = [_delegate modalPresentingViewControllerForCalculator];
-	}
-	return viewController;
-}
-
-- (id <A3CalculatorDelegate>)delegateForCalculator {
-	_calculatorTargetTextField = _firstResponder;
-	return self;
-}
-
-- (void)calculatorViewController:(UIViewController *)viewController didDismissWithValue:(NSString *)value {
-	_calculatorTargetTextField.text = value;
-	[self textFieldDidEndEditing:_calculatorTargetTextField];
 }
 
 @end

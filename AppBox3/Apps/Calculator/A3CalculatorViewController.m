@@ -8,7 +8,6 @@
 
 #import "HTCopyableLabel.h"
 #import "A3CalculatorViewController.h"
-#import "A3CalculatorDelegate.h"
 
 NSString *const A3NotificationCalculatorDismissedWithValue = @"A3NotificationCalculatorDismissedWithValue";
 
@@ -24,15 +23,12 @@ NSString *const A3NotificationCalculatorDismissedWithValue = @"A3NotificationCal
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	[self dismissViewControllerAnimated:YES completion:nil];
-	id <A3CalculatorDelegate> delegate = self.delegate;
 	NSNumberFormatter *nf = [NSNumberFormatter new];
 	[nf setNumberStyle:NSNumberFormatterDecimalStyle];
 	[nf setUsesGroupingSeparator:NO];
 	NSNumber *resultNumber = [nf numberFromString:self.evaluatedResultLabel.text];
 	NSString *value = [nf stringFromNumber:resultNumber];
-	if ([delegate respondsToSelector:@selector(calculatorViewController:didDismissWithValue:)]) {
-		[delegate calculatorViewController:self didDismissWithValue:value];
-	}
+
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCalculatorDismissedWithValue object:value];
 }
 

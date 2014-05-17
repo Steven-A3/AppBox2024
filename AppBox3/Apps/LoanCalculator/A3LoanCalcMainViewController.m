@@ -31,14 +31,11 @@
 #import "UIViewController+A3Addition.h"
 #import "SFKImage.h"
 #import "UIViewController+LoanCalcAddtion.h"
-#import "A3CalculatorDelegate.h"
-#import "A3SearchViewController.h"
 #import "UITableView+utility.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+navigation.h"
-#import "A3CurrencySelectViewController.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 

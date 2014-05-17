@@ -9,29 +9,15 @@
 #import "A3LoanCalcExtraPaymentViewController.h"
 #import "A3LoanCalcTextInputCell.h"
 #import "A3LoanCalcDateInputCell.h"
-#import "LoanCalcData.h"
-#import "LoanCalcMode.h"
-#import "LoanCalcString.h"
 #import "A3NumberKeyboardViewController.h"
-#import "common.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3AppCategory.h"
-#import "NSMutableArray+A3Sort.h"
-#import "NSManagedObject+MagicalFinders.h"
-#import "NSManagedObjectContext+MagicalSaves.h"
-#import "NSManagedObject+MagicalRecord.h"
-#import "NSUserDefaults+A3Defaults.h"
-#import "A3UIDevice.h"
-#import "UIViewController+MMDrawerController.h"
-#import "A3RootViewController_iPad.h"
-#import "NSString+conversion.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "UIViewController+LoanCalcAddtion.h"
-#import "A3CalculatorDelegate.h"
 #import "A3SearchViewController.h"
 #import "UITableView+utility.h"
 
-@interface A3LoanCalcExtraPaymentViewController () <A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, A3CalculatorDelegate, A3SearchViewControllerDelegate>
+@interface A3LoanCalcExtraPaymentViewController () <A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, A3SearchViewControllerDelegate>
 {
     NSIndexPath *_currentIndexPath;
     
@@ -740,24 +726,12 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 	return self;
 }
 
-- (id <A3CalculatorDelegate>)delegateForCalculator {
-	return self;
-}
-
 - (void)calculatorViewController:(UIViewController *)viewController didDismissWithValue:(NSString *)value {
 	_calculatorOutputTargetTextField.text = value;
 	[self textFieldDidEndEditing:_calculatorOutputTargetTextField];
 }
 
 #pragma mark --- Response to Currency Select Button and result
-
-- (UIViewController *)modalPresentingParentViewControllerForCurrencySelector {
-	return self;
-}
-
-- (id <A3SearchViewControllerDelegate>)delegateForCurrencySelector {
-	return self;
-}
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
 	if ([selectedItem length]) {

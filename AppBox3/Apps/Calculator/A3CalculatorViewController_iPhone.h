@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "A3CalculatorViewController.h"
 
-@protocol A3CalculatorDelegate;
-
 @interface A3CalculatorViewController_iPhone : A3CalculatorViewController <UIActivityItemSource>
 
 @end

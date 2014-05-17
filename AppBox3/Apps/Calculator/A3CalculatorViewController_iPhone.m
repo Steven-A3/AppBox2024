@@ -10,7 +10,6 @@
 #import "HTCopyableLabel.h"
 #import "A3CalcKeyboardView_iPhone.h"
 #import "FXPageControl.h"
-#import "A3CalculatorDelegate.h"
 #import "A3ExpressionComponent.h"
 #import "UIViewController+A3Addition.h"
 #import "A3Calculator.h"

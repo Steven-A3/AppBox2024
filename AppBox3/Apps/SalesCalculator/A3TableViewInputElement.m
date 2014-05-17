@@ -14,11 +14,9 @@
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 #import "A3JHTableViewExpandableHeaderCell.h"
 #import "A3TextViewCell.h"
-#import "UITableView+utility.h"
 #import "A3SearchViewController.h"
-#import "A3CalculatorDelegate.h"
 
-@interface A3TableViewInputElement () <UITextFieldDelegate, A3KeyboardDelegate, A3CalculatorDelegate>
+@interface A3TableViewInputElement () <UITextFieldDelegate>
 
 @property (nonatomic, weak) UITextField *calculatorTargetTextField;
 @property (nonatomic, strong) NSNumberFormatter *currencyFormatter;
@@ -479,10 +477,6 @@
 		viewController = [o containerViewController];
 	}
 	return viewController;
-}
-
-- (id <A3CalculatorDelegate>)delegateForCalculator {
-	return self;
 }
 
 - (void)calculatorViewController:(UIViewController *)viewController didDismissWithValue:(NSString *)value {

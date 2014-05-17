@@ -412,6 +412,7 @@
 }
 
 - (void)calculatorButtonAction {
+	_calculatorTargetTextField = (UITextField *) self.firstResponder;
 	[self presentCalculatorViewController];
 }
 

@@ -26,7 +26,6 @@
 #import "A3PopoverTableViewController.h"
 #import "A3DefaultColorDefines.h"
 #import "A3ItemSelectListViewController.h"
-#import "A3CalculatorDelegate.h"
 #import "A3SearchViewController.h"
 #import "UIViewController+navigation.h"
 
