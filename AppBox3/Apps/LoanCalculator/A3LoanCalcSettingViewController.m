@@ -12,6 +12,7 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+A3Addition.h"
+#import "UIViewController+navigation.h"
 
 @interface A3LoanCalcSettingViewController ()
 
@@ -53,6 +54,12 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
     if (IS_IPHONE) {
         [self rightBarButtonDoneButton];
     }
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+	}
 }
 
 - (LoanCalcPreference *)preference

@@ -162,18 +162,12 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	[self setFirstResponder:nil];
 }
 
-- (UIViewController *)presentSubViewController:(UIViewController *)viewController {
+- (void)presentSubViewController:(UIViewController *)viewController {
 	if (IS_IPHONE) {
         [self.navigationController pushViewController:viewController animated:YES];
-        /*
-		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[self presentViewController:navigationController animated:YES completion:nil];
-         */
 	} else {
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
-		[rootViewController presentRightSideViewController:viewController];
+		[self.A3RootViewController presentRightSideViewController:viewController];
 	}
-	return nil;
 }
 
 - (void)configureInputCell:(A3LoanCalcTextInputCell *)inputCell withCalculationItem:(A3LoanCalcCalculationItem) calcItem
