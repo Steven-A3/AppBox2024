@@ -25,7 +25,7 @@
 #import "NSString+conversion.h"
 #import "UIViewController+iPad_rightSideView.h"
 
-#define kDefaultBackgroundColor     [UIColor lightGrayColor]
+#define kDefaultBackgroundColor [UIColor lightGrayColor]
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]
 #define kSelectedButtonColor    [A3AppDelegate instance].themeColor
 NSString *kCalculationString;
@@ -54,9 +54,6 @@ NSString *kCalculationString;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, copy) NSString *textBeforeEditingText;
 @property (nonatomic, copy) NSString *placeholderBeforeEditingText;
-
-- (IBAction)addButtonTouchUpAction:(id)sender;
-- (IBAction)subButtonTouchUpAction:(id)sender;
 @end
 
 
@@ -69,8 +66,6 @@ NSString *kCalculationString;
     CGFloat _oldTableOffset;
     UITextField *_selectedTextField;
     A3NumberKeyboardViewController *_simpleNormalNumberKeyboard;
-//    A3DateCalcAddSubCell1 *_footerAddSubCell;
-//    A3DateCalcAddSubCell2 *footerCell;
 }
 
 @synthesize fromDate = _fromDate;
@@ -181,7 +176,12 @@ NSString *kCalculationString;
     [super viewWillLayoutSubviews];
     
     if (IS_IPAD) {
-        [self.headerView setFromDate:self.fromDate toDate:self.toDate];
+        if ([self isAddSubMode]) {
+            [self refreshAddSubModeButtonForResultWithAnimation:YES];
+        }
+        else {
+            [self.headerView setFromDate:self.fromDate toDate:self.toDate];
+        }
     }
 }
 
