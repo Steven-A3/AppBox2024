@@ -388,36 +388,33 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell=nil;
-	@autoreleasepool {
-		cell = nil;
-        
-        if (indexPath.section == 0){
-            A3LoanCalcLoanInfo3Cell *infoCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanInfoCell3ID forIndexPath:indexPath];
-            infoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            infoCell.valueCount = [self countForLoanItem:_loanData];
-            
-            if ([_loanData calculated]) {
-                [self updateInfoCell:infoCell withLoanInfo:_loanData];
-            }
-            else {
-                [self makeClearInfoCell:infoCell];
-            }
-            
-            cell = infoCell;
-        }
-        else if (indexPath.section == 1){
-            A3LoanCalcPaymentInfoCell *payInfoCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcPaymentInfoCellID forIndexPath:indexPath];
-            payInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            NSDictionary *paymentInfo = _paymentList[indexPath.row];
-            [self configurePayInfoCell:payInfoCell withPayment:paymentInfo];
-            
-            cell = payInfoCell;
-        }
+	UITableViewCell *cell = nil;
+
+	if (indexPath.section == 0){
+		A3LoanCalcLoanInfo3Cell *infoCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanInfoCell3ID forIndexPath:indexPath];
+		infoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+		infoCell.valueCount = [self countForLoanItem:_loanData];
+
+		if ([_loanData calculated]) {
+			[self updateInfoCell:infoCell withLoanInfo:_loanData];
+		}
+		else {
+			[self makeClearInfoCell:infoCell];
+		}
+
+		cell = infoCell;
 	}
-    
-    return cell;
+	else if (indexPath.section == 1){
+		A3LoanCalcPaymentInfoCell *payInfoCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcPaymentInfoCellID forIndexPath:indexPath];
+		payInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+		NSDictionary *paymentInfo = _paymentList[indexPath.row];
+		[self configurePayInfoCell:payInfoCell withPayment:paymentInfo];
+
+		cell = payInfoCell;
+	}
+
+	return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

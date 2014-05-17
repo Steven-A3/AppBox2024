@@ -266,18 +266,15 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 }
 
 - (void)doneButtonAction:(id)button {
-	@autoreleasepool {
-        
-        if (_delegate && [_delegate respondsToSelector:@selector(didUnitSelectCancled)]) {
-            [_delegate didUnitSelectCancled];
-        }
-        
-        if (self.presentedViewController) {
-            [self.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
-        }
-        else {
-            [self.A3RootViewController dismissRightSideViewController];
-        }
+	if (_delegate && [_delegate respondsToSelector:@selector(didUnitSelectCancled)]) {
+		[_delegate didUnitSelectCancled];
+	}
+
+	if (self.presentedViewController) {
+		[self.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
+	}
+	else {
+		[self.A3RootViewController dismissRightSideViewController];
 	}
 }
 
@@ -291,15 +288,12 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 }
 
 - (void)addUnitAction {
-	@autoreleasepool {
-        
-        A3UnitConverterAddViewController *viewController = [self unitAddViewController];
-        
-        viewController.shouldPopViewController = NO;
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-        nav.modalPresentationStyle= UIModalPresentationCurrentContext;
-        [self presentViewController:nav animated:YES completion:NULL];
-	}
+	A3UnitConverterAddViewController *viewController = [self unitAddViewController];
+
+	viewController.shouldPopViewController = NO;
+	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
+	nav.modalPresentationStyle= UIModalPresentationCurrentContext;
+	[self presentViewController:nav animated:YES completion:NULL];
 }
 
 - (A3UnitConverterAddViewController *)unitAddViewController {
@@ -550,47 +544,44 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	@autoreleasepool {
-        
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-        UnitItem *data;
-        if (tableView == self.searchDisplayController.searchResultsTableView) {
-            data = self.filteredResults[indexPath.row];
-        } else {
-            if (isFavoriteMode) {
-                
-                if ([_favorites[indexPath.row] isKindOfClass:[UnitFavorite class]]) {
-                    UnitFavorite *favorite = _favorites[indexPath.row];
-                    data = favorite.item;
-                }
-                else {
-                    return;
-                }
-            }
-            else {
-                data = _allData[indexPath.row];
-            }
-        }
-        
-        if ([data.unitName isEqualToString:_selectedItem.item.unitName]) {
-            
-            // 원래 아이템을 선택하였으므로 아무일 없이 돌아간다.
-            if (IS_IPHONE) {
-                if (_shouldPopViewController) {
-                    [self.navigationController popViewControllerAnimated:YES];
-                } else {
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                }
-            } else {
-                [self.A3RootViewController dismissRightSideViewController];
-            }
-            
-            return;
-        }
-        
-        [self callDelegate:data];
+	UnitItem *data;
+	if (tableView == self.searchDisplayController.searchResultsTableView) {
+		data = self.filteredResults[indexPath.row];
+	} else {
+		if (isFavoriteMode) {
+
+			if ([_favorites[indexPath.row] isKindOfClass:[UnitFavorite class]]) {
+				UnitFavorite *favorite = _favorites[indexPath.row];
+				data = favorite.item;
+			}
+			else {
+				return;
+			}
+		}
+		else {
+			data = _allData[indexPath.row];
+		}
 	}
+
+	if ([data.unitName isEqualToString:_selectedItem.item.unitName]) {
+
+		// 원래 아이템을 선택하였으므로 아무일 없이 돌아간다.
+		if (IS_IPHONE) {
+			if (_shouldPopViewController) {
+				[self.navigationController popViewControllerAnimated:YES];
+			} else {
+				[self dismissViewControllerAnimated:YES completion:nil];
+			}
+		} else {
+			[self.A3RootViewController dismissRightSideViewController];
+		}
+
+		return;
+	}
+
+	[self callDelegate:data];
 }
 
 #pragma mark- UISearchDisplayControllerDelegate

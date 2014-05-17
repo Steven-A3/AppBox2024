@@ -57,7 +57,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
-	[self dismissViewControllerAnimated:YES completion:NULL];
+	[self.navigationController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {

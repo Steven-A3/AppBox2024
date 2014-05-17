@@ -230,174 +230,167 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 
 #pragma mark - Migrate Local Data and remvoe duplication
 
-
 - (void)migrateLocalDataToCloudContext:(NSManagedObjectContext *)cloudContext {
-	@autoreleasepool {
-		NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:nil];
-		NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
-		NSURL *localStoreURL = self.ubiquityStoreManager.localStoreURL;
-		
-		NSError *error;
-		NSPersistentStore *localStore = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:localStoreURL options:nil error:&error];
-		NSManagedObjectContext *localContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-		[localContext setPersistentStoreCoordinator:psc];
+	NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:nil];
+	NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+	NSURL *localStoreURL = self.ubiquityStoreManager.localStoreURL;
 
-		BOOL needMigration = NO;
+	NSError *error;
+	NSPersistentStore *localStore = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:localStoreURL options:nil error:&error];
+	NSManagedObjectContext *localContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+	[localContext setPersistentStoreCoordinator:psc];
 
-		[CurrencyFavorite MR_truncateAllInContext:localContext];
+	BOOL needMigration = NO;
 
-		[localContext save:&error];
-		[localContext reset];
-		
-		[cloudContext save:&error];
-		[cloudContext reset];
+	[CurrencyFavorite MR_truncateAllInContext:localContext];
 
-		if (needMigration) {
-			NSURL *targetURL = self.ubiquityStoreManager.URLForCloudStore;
-			
-			NSDictionary *cloudOptions = [(id<UbiquityStoreManagerInternal>)self.ubiquityStoreManager optionsForCloudStoreURL:targetURL];
-			
-			[psc lock];
-			[psc migratePersistentStore:localStore toURL:targetURL options:cloudOptions withType:NSSQLiteStoreType error:nil];
-			[psc unlock];
-		}
+	[localContext save:&error];
+	[localContext reset];
+
+	[cloudContext save:&error];
+	[cloudContext reset];
+
+	if (needMigration) {
+		NSURL *targetURL = self.ubiquityStoreManager.URLForCloudStore;
+
+		NSDictionary *cloudOptions = [(id<UbiquityStoreManagerInternal>)self.ubiquityStoreManager optionsForCloudStoreURL:targetURL];
+
+		[psc lock];
+		[psc migratePersistentStore:localStore toURL:targetURL options:cloudOptions withType:NSSQLiteStoreType error:nil];
+		[psc unlock];
 	}
 }
 
 - (BOOL)deDuplicateForEntity:(NSString *)entityName ignoreUpdateDate:(BOOL)ignoreUpdateDate localContext:(NSManagedObjectContext *)localContext cloudContext:(NSManagedObjectContext *)cloudContext {
-	@autoreleasepool {
-		Class managedObject = NSClassFromString(entityName);
-		NSArray *localData = [managedObject MR_findAllInContext:localContext];
-		if (![localData count]) {
-			return NO;
-		}
+	Class managedObject = NSClassFromString(entityName);
+	NSArray *localData = [managedObject MR_findAllInContext:localContext];
+	if (![localData count]) {
+		return NO;
+	}
 
-		NSString *uniqueIdentifier = @"uniqueIdentifier";
+	NSString *uniqueIdentifier = @"uniqueIdentifier";
 
-		NSArray *uniqueIdentifiers = [localData valueForKeyPath:uniqueIdentifier];
+	NSArray *uniqueIdentifiers = [localData valueForKeyPath:uniqueIdentifier];
 
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K IN (%@)", uniqueIdentifier, uniqueIdentifiers];
-		NSArray *duplicatesInCloud = [managedObject MR_findAllSortedBy:uniqueIdentifier
-															 ascending:YES
-														 withPredicate:predicate
-															 inContext:cloudContext];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K IN (%@)", uniqueIdentifier, uniqueIdentifiers];
+	NSArray *duplicatesInCloud = [managedObject MR_findAllSortedBy:uniqueIdentifier
+														 ascending:YES
+													 withPredicate:predicate
+														 inContext:cloudContext];
 
-		NSArray *uuidsDuplicated = [duplicatesInCloud valueForKeyPath:uniqueIdentifier];
+	NSArray *uuidsDuplicated = [duplicatesInCloud valueForKeyPath:uniqueIdentifier];
 
-		predicate = [NSPredicate predicateWithFormat:@"%K IN (%@)", uniqueIdentifier, uuidsDuplicated];
-		NSArray *duplicatedObjectsInLocal = [managedObject MR_findAllSortedBy:uniqueIdentifier
-																	ascending:YES
-																withPredicate:predicate
-																	inContext:localContext];
+	predicate = [NSPredicate predicateWithFormat:@"%K IN (%@)", uniqueIdentifier, uuidsDuplicated];
+	NSArray *duplicatedObjectsInLocal = [managedObject MR_findAllSortedBy:uniqueIdentifier
+																ascending:YES
+															withPredicate:predicate
+																inContext:localContext];
 
-		NSString *updateDate = @"updateDate";
-		[duplicatedObjectsInLocal enumerateObjectsUsingBlock:^(NSManagedObject *objInLocal, NSUInteger idx, BOOL *stop) {
-			NSManagedObject *objectInCloud = duplicatesInCloud[idx];
-			if (ignoreUpdateDate) {
+	NSString *updateDate = @"updateDate";
+	[duplicatedObjectsInLocal enumerateObjectsUsingBlock:^(NSManagedObject *objInLocal, NSUInteger idx, BOOL *stop) {
+		NSManagedObject *objectInCloud = duplicatesInCloud[idx];
+		if (ignoreUpdateDate) {
+			[localContext deleteObject:objInLocal];
+		} else {
+			NSDate *dateInLocal = [objInLocal valueForKeyPath:updateDate];
+			NSDate *dateInCloud = [objectInCloud valueForKeyPath:updateDate];
+			NSComparisonResult result = [dateInLocal compare:dateInCloud];
+			if (result == NSOrderedAscending || result == NSOrderedSame) {
 				[localContext deleteObject:objInLocal];
 			} else {
-				NSDate *dateInLocal = [objInLocal valueForKeyPath:updateDate];
-				NSDate *dateInCloud = [objectInCloud valueForKeyPath:updateDate];
-				NSComparisonResult result = [dateInLocal compare:dateInCloud];
-				if (result == NSOrderedAscending || result == NSOrderedSame) {
-					[localContext deleteObject:objInLocal];
-				} else {
-					[cloudContext deleteObject:objectInCloud];
-				}
+				[cloudContext deleteObject:objectInCloud];
 			}
-		}];
+		}
+	}];
 
-		return [managedObject MR_countOfEntitiesWithContext:localContext] > 0;
-	}
+	return [managedObject MR_countOfEntitiesWithContext:localContext] > 0;
 }
 
 - (void)deDupeForEntity:(NSString *)entityName {
 	//if importNotification, scope dedupe by inserted records
 	//else no search scope, prey for efficiency.
-	@autoreleasepool {
-		NSError *error = nil;
-		NSManagedObjectContext *moc = self.managedObjectContext;
+	NSError *error = nil;
+	NSManagedObjectContext *moc = self.managedObjectContext;
 
-		NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:entityName];
-		[fr setIncludesPendingChanges:NO]; //distinct has to go down to the db, not implemented for in memory filtering
-		[fr setFetchBatchSize:1000]; //protect thy memory
+	NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:entityName];
+	[fr setIncludesPendingChanges:NO]; //distinct has to go down to the db, not implemented for in memory filtering
+	[fr setFetchBatchSize:1000]; //protect thy memory
 
-		NSExpression *countExpr = [NSExpression expressionWithFormat:@"count:(uniqueIdentifier)"];
-		NSExpressionDescription *countExprDesc = [[NSExpressionDescription alloc] init];
-		[countExprDesc setName:@"count"];
-		[countExprDesc setExpression:countExpr];
-		[countExprDesc setExpressionResultType:NSInteger64AttributeType];
+	NSExpression *countExpr = [NSExpression expressionWithFormat:@"count:(uniqueIdentifier)"];
+	NSExpressionDescription *countExprDesc = [[NSExpressionDescription alloc] init];
+	[countExprDesc setName:@"count"];
+	[countExprDesc setExpression:countExpr];
+	[countExprDesc setExpressionResultType:NSInteger64AttributeType];
 
-		NSAttributeDescription *uniqueIdentifierAttr = [[[NSEntityDescription entityForName:entityName inManagedObjectContext:moc] propertiesByName] objectForKey:A3UniqueIdentifier];
-		[fr setPropertiesToFetch:[NSArray arrayWithObjects:uniqueIdentifierAttr, countExprDesc, nil]];
-		[fr setPropertiesToGroupBy:[NSArray arrayWithObject:uniqueIdentifierAttr]];
+	NSAttributeDescription *uniqueIdentifierAttr = [[[NSEntityDescription entityForName:entityName inManagedObjectContext:moc] propertiesByName] objectForKey:A3UniqueIdentifier];
+	[fr setPropertiesToFetch:[NSArray arrayWithObjects:uniqueIdentifierAttr, countExprDesc, nil]];
+	[fr setPropertiesToGroupBy:[NSArray arrayWithObject:uniqueIdentifierAttr]];
 
-		[fr setResultType:NSDictionaryResultType];
+	[fr setResultType:NSDictionaryResultType];
 
-		NSArray *countDictionaries = [moc executeFetchRequest:fr error:&error];
-		NSMutableArray *uidWithDupes = [[NSMutableArray alloc] init];
-		for (NSDictionary *dict in countDictionaries) {
-			NSNumber *count = [dict objectForKey:@"count"];
-			if ([count integerValue] > 1) {
-				[uidWithDupes addObject:[dict objectForKey:A3UniqueIdentifier]];
-			}
+	NSArray *countDictionaries = [moc executeFetchRequest:fr error:&error];
+	NSMutableArray *uidWithDupes = [[NSMutableArray alloc] init];
+	for (NSDictionary *dict in countDictionaries) {
+		NSNumber *count = [dict objectForKey:@"count"];
+		if ([count integerValue] > 1) {
+			[uidWithDupes addObject:[dict objectForKey:A3UniqueIdentifier]];
 		}
+	}
 
-		NSLog(@"uniqueIdentifiers with dupes: %@", uidWithDupes);
-		if (![uidWithDupes count]) {
-			return;
-		}
+	NSLog(@"uniqueIdentifiers with dupes: %@", uidWithDupes);
+	if (![uidWithDupes count]) {
+		return;
+	}
 
-		//fetch out all the duplicate records
-		fr = [NSFetchRequest fetchRequestWithEntityName:entityName];
-		[fr setIncludesPendingChanges:NO];
+	//fetch out all the duplicate records
+	fr = [NSFetchRequest fetchRequestWithEntityName:entityName];
+	[fr setIncludesPendingChanges:NO];
 
-		NSPredicate *p = [NSPredicate predicateWithFormat:@"%K IN (%@)", A3UniqueIdentifier, uidWithDupes];
-		[fr setPredicate:p];
+	NSPredicate *p = [NSPredicate predicateWithFormat:@"%K IN (%@)", A3UniqueIdentifier, uidWithDupes];
+	[fr setPredicate:p];
 
-		NSSortDescriptor *uniqueIdentifierSort = [NSSortDescriptor sortDescriptorWithKey:A3UniqueIdentifier ascending:YES];
-		[fr setSortDescriptors:[NSArray arrayWithObject:uniqueIdentifierSort]];
+	NSSortDescriptor *uniqueIdentifierSort = [NSSortDescriptor sortDescriptorWithKey:A3UniqueIdentifier ascending:YES];
+	[fr setSortDescriptors:[NSArray arrayWithObject:uniqueIdentifierSort]];
 
-		NSUInteger batchSize = 500; //can be set 100-10000 objects depending on individual object size and available device memory
-		[fr setFetchBatchSize:batchSize];
-		NSArray *dupes = [moc executeFetchRequest:fr error:&error];
+	NSUInteger batchSize = 500; //can be set 100-10000 objects depending on individual object size and available device memory
+	[fr setFetchBatchSize:batchSize];
+	NSArray *dupes = [moc executeFetchRequest:fr error:&error];
 
-		NSManagedObject<A3CloudCompatibleData> *prevObject = nil;
+	NSManagedObject<A3CloudCompatibleData> *prevObject = nil;
 
-		NSUInteger i = 1;
-		for (NSManagedObject<A3CloudCompatibleData> *object in dupes) {
-			if (prevObject) {
-				if ([object.uniqueIdentifier isEqualToString:prevObject.uniqueIdentifier]) {
-					if ([object.updateDate compare:prevObject.updateDate] == NSOrderedAscending) {
-						[moc deleteObject:object];
-					} else {
-						[moc deleteObject:prevObject];
-						prevObject = object;
-					}
+	NSUInteger i = 1;
+	for (NSManagedObject<A3CloudCompatibleData> *object in dupes) {
+		if (prevObject) {
+			if ([object.uniqueIdentifier isEqualToString:prevObject.uniqueIdentifier]) {
+				if ([object.updateDate compare:prevObject.updateDate] == NSOrderedAscending) {
+					[moc deleteObject:object];
 				} else {
+					[moc deleteObject:prevObject];
 					prevObject = object;
 				}
 			} else {
 				prevObject = object;
 			}
-
-			if (0 == (i % batchSize)) {
-				//save the changes after each batch, this helps control memory pressure by turning previously examined objects back in to faults
-				if ([moc save:&error]) {
-					NSLog(@"Saved successfully after uniquing");
-				} else {
-					NSLog(@"Error saving unique results: %@", error);
-				}
-			}
-
-			i++;
-		}
-
-		if ([moc save:&error]) {
-			NSLog(@"Saved successfully after uniquing");
 		} else {
-			NSLog(@"Error saving unique results: %@", error);
+			prevObject = object;
 		}
+
+		if (0 == (i % batchSize)) {
+			//save the changes after each batch, this helps control memory pressure by turning previously examined objects back in to faults
+			if ([moc save:&error]) {
+				NSLog(@"Saved successfully after uniquing");
+			} else {
+				NSLog(@"Error saving unique results: %@", error);
+			}
+		}
+
+		i++;
+	}
+
+	if ([moc save:&error]) {
+		NSLog(@"Saved successfully after uniquing");
+	} else {
+		NSLog(@"Error saving unique results: %@", error);
 	}
 }
 

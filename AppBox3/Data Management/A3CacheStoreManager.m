@@ -54,11 +54,9 @@
 
 - (float)rateForCurrencyCode:(NSString *)currency {
 	float rate;
-	@autoreleasepool {
-		CurrencyRateItem *currencyItem = [CurrencyRateItem MR_findFirstByAttribute:@"currencyCode" withValue:currency inContext:self.context];
-		NSAssert(currencyItem, @"CurrencyRateItem: Currency data does not exist for '%@'", currency);
-		rate = currencyItem.rateToUSD.floatValue;
-	}
+	CurrencyRateItem *currencyItem = [CurrencyRateItem MR_findFirstByAttribute:@"currencyCode" withValue:currency inContext:self.context];
+	NSAssert(currencyItem, @"CurrencyRateItem: Currency data does not exist for '%@'", currency);
+	rate = currencyItem.rateToUSD.floatValue;
 	return rate;
 }
 

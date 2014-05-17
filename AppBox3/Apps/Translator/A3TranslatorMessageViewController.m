@@ -64,6 +64,7 @@ static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 @property (nonatomic, strong) NSLayoutConstraint *messageTableViewBottomConstraint;
 @property (nonatomic, strong) UIView *sameLanguagePrompter;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
+@property (nonatomic, strong) UIViewController *childViewController;
 
 @end
 
@@ -116,6 +117,14 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:kReachabilityChangedNotification object:nil];
 
 	[self setupBarButtons];
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	FNLOG(@"%@", parent);
+	if (parent == nil) {
+		[_sourceLanguageSelectTextField resignFirstResponder];
+		[_targetLanguageSelectTextField resignFirstResponder];
+	}
 }
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification {
@@ -396,7 +405,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	A3LanguagePickerController *viewController = [[A3LanguagePickerController alloc] initWithLanguages:[A3TranslatorLanguage findAllWithDetectLanguage:detectLanguage]];
 	viewController.delegate = self;
 	viewController.selectedCode = detectLanguage ? _originalTextLanguage : _translatedTextLanguage;
-	[self presentSubViewController:viewController];
+	_childViewController = [self presentSubViewController:viewController];
 	return viewController;
 }
 
@@ -560,6 +569,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+	FNLOG();
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 	[self layoutLanguageSelectView];
 }

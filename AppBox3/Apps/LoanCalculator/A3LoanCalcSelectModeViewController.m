@@ -62,9 +62,7 @@
 }
 
 - (void)doneButtonAction:(id)button {
-	@autoreleasepool {
-		[self.A3RootViewController dismissRightSideViewController];
-	}
+	[self.A3RootViewController dismissRightSideViewController];
 }
 
 #pragma mark - Table view delegate

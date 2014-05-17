@@ -206,9 +206,7 @@ static char const *const key_firstResponder 					= "key_firstResponder";
  *  You must to override - (void)contentSizeDidChange:(NSNotification *)notification
  */
 - (void)registerContentSizeCategoryDidChangeNotification {
-	@autoreleasepool {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentSizeDidChange:) name:UIContentSizeCategoryDidChangeNotification object:nil];
-	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentSizeDidChange:) name:UIContentSizeCategoryDidChangeNotification object:nil];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {

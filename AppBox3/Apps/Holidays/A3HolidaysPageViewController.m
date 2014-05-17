@@ -70,69 +70,63 @@
 
 - (void)viewDidLoad
 {
-	@autoreleasepool {
-		[super viewDidLoad];
+	[super viewDidLoad];
 
-		FNLOG();
-		[self prepareDateFormat];
+	FNLOG();
+	[self prepareDateFormat];
 
-		_viewControllerCache = [NSMutableDictionary new];
+	_viewControllerCache = [NSMutableDictionary new];
 
-		self.automaticallyAdjustsScrollViewInsets = NO;
-		_pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-		_pageViewController.delegate = self;
-		_pageViewController.dataSource = self;
-		_pageViewController.view.backgroundColor = [UIColor blackColor];
-		[self addChildViewController:_pageViewController];
-		[self.view addSubview:_pageViewController.view];
+	self.automaticallyAdjustsScrollViewInsets = NO;
+	_pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+	_pageViewController.delegate = self;
+	_pageViewController.dataSource = self;
+	_pageViewController.view.backgroundColor = [UIColor blackColor];
+	[self addChildViewController:_pageViewController];
+	[self.view addSubview:_pageViewController.view];
 
-		[self setupNavigationBar];
+	[self setupNavigationBar];
 
-		[self setupFooterView];
-		[self topGradientView];
+	[self setupFooterView];
+	[self topGradientView];
 
-		[self.view layoutIfNeeded];
-	}
+	[self.view layoutIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	@autoreleasepool {
-		[super viewWillAppear:animated];
+	[super viewWillAppear:animated];
 
-		if (self.isMovingToParentViewController) {
-			[self jumpToPage:0 direction:UIPageViewControllerNavigationDirectionForward animated:NO];
-		} else {
-			[self setNavigationBarHidden:YES];
-		}
+	if (self.isMovingToParentViewController) {
+		[self jumpToPage:0 direction:UIPageViewControllerNavigationDirectionForward animated:NO];
+	} else {
+		[self setNavigationBarHidden:YES];
 	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	@autoreleasepool {
-		[super viewDidAppear:animated];
+	[super viewDidAppear:animated];
 
-		if (self.isMovingToParentViewController) {
+	if (self.isMovingToParentViewController) {
 
-			[self startAskLocation];
+		[self startAskLocation];
 
-			NSDate *fireDate = [[NSDate dateTomorrow] dateAtStartOfDay];
-			FNLOG(@"%@, %f", fireDate, [fireDate timeIntervalSinceNow]/(60 * 60));
-			_dayChangedTimer = [[NSTimer alloc] initWithFireDate:fireDate
-														interval:0
-														  target:self
-														selector:@selector(dayChanged:)
-														userInfo:nil
-														 repeats:YES];
+		NSDate *fireDate = [[NSDate dateTomorrow] dateAtStartOfDay];
+		FNLOG(@"%@, %f", fireDate, [fireDate timeIntervalSinceNow]/(60 * 60));
+		_dayChangedTimer = [[NSTimer alloc] initWithFireDate:fireDate
+													interval:0
+													  target:self
+													selector:@selector(dayChanged:)
+													userInfo:nil
+													 repeats:YES];
 
-			NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-			[runLoop addTimer:_dayChangedTimer forMode:NSDefaultRunLoopMode];
+		NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+		[runLoop addTimer:_dayChangedTimer forMode:NSDefaultRunLoopMode];
 
-			[self registerContentSizeCategoryDidChangeNotification];
+		[self registerContentSizeCategoryDidChangeNotification];
 
-			[self prepareViewControllerAtPage:1];
+		[self prepareViewControllerAtPage:1];
 
-			[self alertDisclaimer];
-		}
+		[self alertDisclaimer];
 	}
 }
 
@@ -152,31 +146,25 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-	@autoreleasepool {
-		[super viewWillDisappear:animated];
+	[super viewWillDisappear:animated];
 
-		if (self.isMovingFromParentViewController) {
-			[_dayChangedTimer invalidate];
-			_dayChangedTimer = nil;
+	if (self.isMovingFromParentViewController) {
+		[_dayChangedTimer invalidate];
+		_dayChangedTimer = nil;
 
-			[self removeObserver];
-		}
+		[self removeObserver];
 	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
-	@autoreleasepool {
-		[self.currentContentViewController reloadDataRedrawImage:NO];
-	}
+	[self.currentContentViewController reloadDataRedrawImage:NO];
 }
 
 - (void)dayChanged:(NSTimer *)timer {
-	@autoreleasepool {
-		[_dayChangedTimer invalidate];
-		_dayChangedTimer = nil;
+	[_dayChangedTimer invalidate];
+	_dayChangedTimer = nil;
 
-		[self.currentContentViewController updateTableHeaderView];
-	}
+	[self.currentContentViewController updateTableHeaderView];
 }
 
 - (void)startAskLocation {
@@ -187,133 +175,115 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-	@autoreleasepool {
-		[manager stopUpdatingLocation];
+	[manager stopUpdatingLocation];
 
-		CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
-		[geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placeMarks, NSError *error) {
-			NSString *_countryCodeOfCurrentLocation;
-			for (CLPlacemark *placeMark in placeMarks) {
-				//			FNLOG(@"%@", [placeMarks description]);
-				//			FNLOG(@"address Dictionary: %@", placeMark.addressDictionary);
-				//			FNLOG(@"Administrative Area: %@", placeMark.administrativeArea);
-				//			FNLOG(@"areas of Interest: %@", placeMark.areasOfInterest);
-				//			FNLOG(@"locality: %@", placeMark.locality);
-				//			FNLOG(@"name: %@", placeMark.name);
-				//			FNLOG(@"subLocality: %@", placeMark.subLocality);
+	CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
+	[geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placeMarks, NSError *error) {
+		NSString *_countryCodeOfCurrentLocation;
+		for (CLPlacemark *placeMark in placeMarks) {
+			//			FNLOG(@"%@", [placeMarks description]);
+			//			FNLOG(@"address Dictionary: %@", placeMark.addressDictionary);
+			//			FNLOG(@"Administrative Area: %@", placeMark.administrativeArea);
+			//			FNLOG(@"areas of Interest: %@", placeMark.areasOfInterest);
+			//			FNLOG(@"locality: %@", placeMark.locality);
+			//			FNLOG(@"name: %@", placeMark.name);
+			//			FNLOG(@"subLocality: %@", placeMark.subLocality);
 
-				_countryCodeOfCurrentLocation = [placeMark.addressDictionary[@"CountryCode"] lowercaseString];
-			}
+			_countryCodeOfCurrentLocation = [placeMark.addressDictionary[@"CountryCode"] lowercaseString];
+		}
 
-			if ([_countryCodeOfCurrentLocation length]) {
-				if (![self.countries[0] isEqualToString:_countryCodeOfCurrentLocation]) {
-					NSMutableArray *tempArray = [_countries mutableCopy];
-					if ([tempArray containsObject:_countryCodeOfCurrentLocation]) {
-						NSInteger idx = [tempArray indexOfObject:_countryCodeOfCurrentLocation];
-						[tempArray removeObjectAtIndex:idx];
-					}
-
-					[tempArray insertObject:_countryCodeOfCurrentLocation atIndex:0];
-					_countries = tempArray;
-
-					[HolidayData setUserSelectedCountries:_countries];
-
-					[self jumpToPage:0 direction:UIPageViewControllerNavigationDirectionForward animated:NO];
+		if ([_countryCodeOfCurrentLocation length]) {
+			if (![self.countries[0] isEqualToString:_countryCodeOfCurrentLocation]) {
+				NSMutableArray *tempArray = [_countries mutableCopy];
+				if ([tempArray containsObject:_countryCodeOfCurrentLocation]) {
+					NSInteger idx = [tempArray indexOfObject:_countryCodeOfCurrentLocation];
+					[tempArray removeObjectAtIndex:idx];
 				}
+
+				[tempArray insertObject:_countryCodeOfCurrentLocation atIndex:0];
+				_countries = tempArray;
+
+				[HolidayData setUserSelectedCountries:_countries];
+
+				[self jumpToPage:0 direction:UIPageViewControllerNavigationDirectionForward animated:NO];
 			}
-		}];
-	}
+		}
+	}];
 }
 
 - (void)viewWillLayoutSubviews{
-	@autoreleasepool {
-		[super viewWillLayoutSubviews];
+	[super viewWillLayoutSubviews];
 
-		CGSize size = [_pageControl sizeForNumberOfPages:_pageControl.numberOfPages];
-		_pageControlWidth.offset(size.width);
-	}
+	CGSize size = [_pageControl sizeForNumberOfPages:_pageControl.numberOfPages];
+	_pageControlWidth.offset(size.width);
 }
 
 - (void)setupNavigationBar {
-	@autoreleasepool {
-		UIImage *image = [[UIImage alloc] init];
-		[self.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
-		[self.navigationController.navigationBar setShadowImage:image];
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+	UIImage *image = [[UIImage alloc] init];
+	[self.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+	[self.navigationController.navigationBar setShadowImage:image];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
-		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-		[self.navigationController setNavigationBarHidden:YES];
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+	[self.navigationController setNavigationBarHidden:YES];
 
-		[self leftBarButtonAppsButton];
-		self.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
-		[self setupRightBarButtonItems];
+	[self leftBarButtonAppsButton];
+	self.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
+	[self setupRightBarButtonItems];
 
-		[self setupGestureRecognizer];
-	}
+	[self setupGestureRecognizer];
 }
 
 - (void)setupGestureRecognizer {
-	@autoreleasepool {
-		UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnScrollView)];
-		[self.view addGestureRecognizer:gestureRecognizer];
-	}
+	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnScrollView)];
+	[self.view addGestureRecognizer:gestureRecognizer];
 }
 
 - (void)tapOnScrollView {
-	@autoreleasepool {
-		BOOL navigationBarHidden = self.navigationController.navigationBarHidden;
-		[self setNavigationBarHidden:!navigationBarHidden];
-	}
+	BOOL navigationBarHidden = self.navigationController.navigationBarHidden;
+	[self setNavigationBarHidden:!navigationBarHidden];
 }
 
 - (void)setNavigationBarHidden:(BOOL)hidden {
-	@autoreleasepool {
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-		[[UIApplication sharedApplication] setStatusBarHidden:hidden];
-		[self.navigationController setNavigationBarHidden:hidden];
-		[_topGradientView setHidden:hidden];
-	}
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+	[[UIApplication sharedApplication] setStatusBarHidden:hidden];
+	[self.navigationController setNavigationBarHidden:hidden];
+	[_topGradientView setHidden:hidden];
 }
 
 - (A3GradientView *)topGradientView {
-	@autoreleasepool {
-		if (!_topGradientView) {
-			_topGradientView = [A3GradientView new];
-			_topGradientView.gradientColors = @[(id) [UIColor colorWithWhite:0.0 alpha:0.15].CGColor, (id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor];
-			[self.view addSubview:_topGradientView];
+	if (!_topGradientView) {
+		_topGradientView = [A3GradientView new];
+		_topGradientView.gradientColors = @[(id) [UIColor colorWithWhite:0.0 alpha:0.15].CGColor, (id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor];
+		[self.view addSubview:_topGradientView];
 
-			[_topGradientView makeConstraints:^(MASConstraintMaker *make) {
-				make.top.equalTo(self.view.top);
-				make.left.equalTo(self.view.left);
-				make.right.equalTo(self.view.right);
-				make.height.equalTo(@80);
-			}];
+		[_topGradientView makeConstraints:^(MASConstraintMaker *make) {
+			make.top.equalTo(self.view.top);
+			make.left.equalTo(self.view.left);
+			make.right.equalTo(self.view.right);
+			make.height.equalTo(@80);
+		}];
 
-			[_topGradientView setHidden:YES];
-		}
-
-		return _topGradientView;
+		[_topGradientView setHidden:YES];
 	}
+
+	return _topGradientView;
 }
 
 - (void)setupRightBarButtonItems {
-	@autoreleasepool {
-		UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonAction)];
-		self.navigationItem.rightBarButtonItem = editButton;
-		self.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
-	}
+	UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonAction)];
+	self.navigationItem.rightBarButtonItem = editButton;
+	self.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
 }
 
 - (void)editButtonAction {
-	@autoreleasepool {
-		A3HolidaysEditViewController *viewController = [[A3HolidaysEditViewController alloc] initWithStyle:UITableViewStyleGrouped];
-		viewController.delegate = self;
-		viewController.pageViewController = self;
-		viewController.countryCode = _countries[_pageControl.currentPage];
+	A3HolidaysEditViewController *viewController = [[A3HolidaysEditViewController alloc] initWithStyle:UITableViewStyleGrouped];
+	viewController.delegate = self;
+	viewController.pageViewController = self;
+	viewController.countryCode = _countries[_pageControl.currentPage];
 
-		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[self presentViewController:navigationController animated:YES completion:nil];
-	}
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (NSArray *)countries {
@@ -330,39 +300,33 @@
 }
 
 - (NSUInteger)currentPage {
-	@autoreleasepool {
-		A3HolidaysPageContentViewController *contentViewController = (A3HolidaysPageContentViewController *)_pageViewController.viewControllers[0];
-		return [self.countries indexOfObject:contentViewController.countryCode];
-	}
+	A3HolidaysPageContentViewController *contentViewController = (A3HolidaysPageContentViewController *)_pageViewController.viewControllers[0];
+	return [self.countries indexOfObject:contentViewController.countryCode];
 }
 
 - (void)prepareViewControllerAtPage:(NSUInteger)page {
 	dispatch_async(dispatch_get_main_queue(), ^{
-		@autoreleasepool {
-			if ([_countries count] > page) {
-				A3HolidaysPageContentViewController *viewController = [[A3HolidaysPageContentViewController alloc] initWithCountryCode:_countries[page]];
-				viewController.pageViewController = self;
-				[viewController view];
-				[_viewControllerCache setObject:viewController forKey:_countries[page]];
-			}
+		if ([_countries count] > page) {
+			A3HolidaysPageContentViewController *viewController = [[A3HolidaysPageContentViewController alloc] initWithCountryCode:_countries[page]];
+			viewController.pageViewController = self;
+			[viewController view];
+			[_viewControllerCache setObject:viewController forKey:_countries[page]];
 		}
 	});
 }
 
 - (A3HolidaysPageContentViewController *)contentViewControllerAtPage:(NSUInteger)page {
-	@autoreleasepool {
-		A3HolidaysPageContentViewController *viewController;
-		viewController = _viewControllerCache[_countries[page]];
-		if (!viewController) {
-			viewController = [[A3HolidaysPageContentViewController alloc] initWithCountryCode:_countries[page]];
-			viewController.pageViewController = self;
-			[_viewControllerCache setObject:viewController forKey:_countries[page]];
-		} else {
-			FNLOG(@"Cache hit for %@, %lu", _countries[page], (unsigned long)page);
-		}
-
-		return viewController;
+	A3HolidaysPageContentViewController *viewController;
+	viewController = _viewControllerCache[_countries[page]];
+	if (!viewController) {
+		viewController = [[A3HolidaysPageContentViewController alloc] initWithCountryCode:_countries[page]];
+		viewController.pageViewController = self;
+		[_viewControllerCache setObject:viewController forKey:_countries[page]];
+	} else {
+		FNLOG(@"Cache hit for %@, %lu", _countries[page], (unsigned long)page);
 	}
+
+	return viewController;
 }
 
 - (A3HolidaysPageContentViewController *)currentContentViewController {
@@ -378,15 +342,13 @@
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
-	@autoreleasepool {
-		NSUInteger page = [self currentPage];
-		if (page == [_countries count] - 1) {
-			return nil;
-		}
-
-		[self prepareViewControllerAtPage:page + 2];
-		return [self contentViewControllerAtPage:page + 1];
+	NSUInteger page = [self currentPage];
+	if (page == [_countries count] - 1) {
+		return nil;
 	}
+
+	[self prepareViewControllerAtPage:page + 2];
+	return [self contentViewControllerAtPage:page + 1];
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers {
@@ -396,12 +358,8 @@
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed {
 	FNLOG(@"%@", _pageViewController.viewControllers);
-	@autoreleasepool {
-		_pageControl.currentPage = [self currentPage];
-		[self updatePhotoLabelText];
-//		[[A3HolidaysFlickrDownloadManager sharedInstance].downloadTask resume];
-//		FNLOG(@"[[A3HolidaysFlickrDownloadManager sharedInstance].downloadTask resume];");
-	}
+	_pageControl.currentPage = [self currentPage];
+	[self updatePhotoLabelText];
 }
 
 - (BOOL)usesFullScreenInLandscape {
@@ -413,212 +371,194 @@
 }
 
 - (void)editViewController:(UIViewController *)viewController willDismissViewControllerWithDataUpdated:(BOOL)updated {
-	@autoreleasepool {
-		if (updated) {
-			[[self currentContentViewController] reloadDataRedrawImage:YES];
-			[self updatePhotoLabelText];
-		}
-	}
-}
-
-- (void)setupFooterView {
-	@autoreleasepool {
-		_footerView = [UIView new];
-		[self.view addSubview:_footerView];
-
-		[_footerView makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.view.left);
-			make.right.equalTo(self.view.right);
-			make.bottom.equalTo(self.view.bottom);
-			make.height.equalTo(@44);
-		}];
-
-		UIView *line = [UIView new];
-		line.backgroundColor = [UIColor clearColor];
-		line.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:0.4].CGColor;
-		line.layer.borderWidth = IS_RETINA ? 0.25 : 0.5;
-		[self.view addSubview:line];
-
-		[line makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.view.left).with.offset(-1);
-			make.right.equalTo(self.view.right);
-			make.bottom.equalTo(self.view.bottom).with.offset(-44);
-			make.height.equalTo(@1);
-		}];
-
-		[self pageControl];
-
-		[self photoLabel1];
-
-		UIButton *listButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		[listButton setImage:[[UIImage imageNamed:@"list"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-		[listButton addTarget:self action:@selector(listButtonAction) forControlEvents:UIControlEventTouchUpInside];
-		[listButton setTintColor:[UIColor colorWithWhite:1.0 alpha:0.6]];
-		[self.view addSubview:listButton];
-
-		[listButton makeConstraints:^(MASConstraintMaker *make) {
-			make.width.equalTo(@44);
-			make.height.equalTo(@44);
-			make.right.equalTo(_footerView.right).with.offset(IS_IPAD ? -28 : -15);
-			make.centerY.equalTo(_footerView.centerY);
-		}];
-	}
-}
-
-- (FXPageControl *)pageControl {
-	@autoreleasepool {
-		if (!_pageControl) {
-			_pageControl = [FXPageControl new];
-			_pageControl.backgroundColor = [UIColor clearColor];
-			_pageControl.tintColor = [UIColor colorWithWhite:1.0 alpha:0.6];
-			_pageControl.numberOfPages = [self.countries count];
-			_pageControl.dotColor = [UIColor colorWithRed:77.0 / 255.0 green:77.0 / 255.0 blue:77.0 / 255.0 alpha:1.0];
-			_pageControl.selectedDotColor = [UIColor whiteColor];
-			_pageControl.delegate = self;
-			[_pageControl addTarget:self action:@selector(pageControlValuedChanged:) forControlEvents:UIControlEventValueChanged];
-			[_footerView addSubview:_pageControl];
-
-			CGSize size = [_pageControl sizeForNumberOfPages:_pageControl.numberOfPages];
-			[_pageControl makeConstraints:^(MASConstraintMaker *make) {
-				_pageControlWidth = make.width.equalTo(@(size.width));
-				make.height.equalTo(@30);
-				make.centerX.equalTo(_footerView.centerX);
-				make.centerY.equalTo(_footerView.centerY);
-			}];
-
-			[_pageControl setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-		}
-		return _pageControl;
-	}
-}
-
-- (UILabel *)photoLabel1 {
-	@autoreleasepool {
-		if (!_photoLabel1) {
-			_photoLabel1 = [UILabel new];
-			_photoLabel1.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11];
-			_photoLabel1.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
-			_photoLabel1.userInteractionEnabled = YES;
-			[_footerView addSubview:_photoLabel1];
-
-			[_photoLabel1 makeConstraints:^(MASConstraintMaker *make) {
-				make.left.equalTo(_footerView.left).with.offset(IS_IPAD ? 28 : 15);
-				make.right.lessThanOrEqualTo(_pageControl.left).with.offset(-5);
-				make.centerY.equalTo(_footerView.centerY).with.offset(-7);
-			}];
-
-			[_photoLabel1 setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-
-			UITapGestureRecognizer *tapGestureRecognizer1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openURL)];
-			[_photoLabel1 addGestureRecognizer:tapGestureRecognizer1];
-
-			_photoLabel2 = [UILabel new];
-			_photoLabel2.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11];
-			_photoLabel2.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
-			_photoLabel2.text = @"on flickr";
-			_photoLabel2.userInteractionEnabled = YES;
-			[_footerView addSubview:_photoLabel2];
-
-			[_photoLabel2 makeConstraints:^(MASConstraintMaker *make) {
-				make.left.equalTo(_footerView.left).with.offset(IS_IPAD ? 28 : 15);
-				make.right.lessThanOrEqualTo(_pageControl.left).with.offset(-5);
-				make.centerY.equalTo(_footerView.centerY).with.offset(7);
-			}];
-			[_photoLabel2 setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-
-			UITapGestureRecognizer *tapGestureRecognizer2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openURL)];
-			[_photoLabel2 addGestureRecognizer:tapGestureRecognizer2];
-
-			[_photoLabel1 setHidden:YES];
-			[_photoLabel2 setHidden:YES];
-		}
-		return _photoLabel1;
-	}
-}
-
-- (void)pageControlValuedChanged:(FXPageControl *)pageControl {
-	@autoreleasepool {
-		A3HolidaysPageContentViewController *contentViewController = _pageViewController.viewControllers[0];
-		NSInteger oldPage = [self.countries indexOfObject:contentViewController.countryCode];
-
-		if (oldPage != pageControl.currentPage) {
-			[self jumpToPage:pageControl.currentPage direction:oldPage < pageControl.currentPage ?
-					UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse
-					animated:YES];
-		}
-	}
-}
-
-- (void)jumpToPage:(NSUInteger)page direction:(UIPageViewControllerNavigationDirection)direction animated:(BOOL)animated {
-	@autoreleasepool {
-		[_pageViewController setViewControllers:@[[self contentViewControllerAtPage:page]] direction:direction animated:animated completion:NULL];
+	if (updated) {
+		[[self currentContentViewController] reloadDataRedrawImage:YES];
 		[self updatePhotoLabelText];
 	}
 }
 
-- (UIImage *)pageControl:(FXPageControl *)pageControl imageForDotAtIndex:(NSInteger)index1 {
-	@autoreleasepool {
-		if (index1 == 0) {
-			[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:10]];
-			[SFKImage setDefaultColor:[UIColor colorWithWhite:1.0 alpha:0.2]];
-			return [SFKImage imageNamed:@"k"];
-		} else {
-			UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0,6,6)];
-			view.layer.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.2].CGColor;
-			view.layer.cornerRadius = 3;
-			view.opaque = NO;
-			return [view imageByRenderingView];
-		}
-		return nil;
+- (void)setupFooterView {
+	_footerView = [UIView new];
+	[self.view addSubview:_footerView];
+
+	[_footerView makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.view.left);
+		make.right.equalTo(self.view.right);
+		make.bottom.equalTo(self.view.bottom);
+		make.height.equalTo(@44);
+	}];
+
+	UIView *line = [UIView new];
+	line.backgroundColor = [UIColor clearColor];
+	line.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:0.4].CGColor;
+	line.layer.borderWidth = IS_RETINA ? 0.25 : 0.5;
+	[self.view addSubview:line];
+
+	[line makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.view.left).with.offset(-1);
+		make.right.equalTo(self.view.right);
+		make.bottom.equalTo(self.view.bottom).with.offset(-44);
+		make.height.equalTo(@1);
+	}];
+
+	[self pageControl];
+
+	[self photoLabel1];
+
+	UIButton *listButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	[listButton setImage:[[UIImage imageNamed:@"list"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+	[listButton addTarget:self action:@selector(listButtonAction) forControlEvents:UIControlEventTouchUpInside];
+	[listButton setTintColor:[UIColor colorWithWhite:1.0 alpha:0.6]];
+	[self.view addSubview:listButton];
+
+	[listButton makeConstraints:^(MASConstraintMaker *make) {
+		make.width.equalTo(@44);
+		make.height.equalTo(@44);
+		make.right.equalTo(_footerView.right).with.offset(IS_IPAD ? -28 : -15);
+		make.centerY.equalTo(_footerView.centerY);
+	}];
+}
+
+- (FXPageControl *)pageControl {
+	if (!_pageControl) {
+		_pageControl = [FXPageControl new];
+		_pageControl.backgroundColor = [UIColor clearColor];
+		_pageControl.tintColor = [UIColor colorWithWhite:1.0 alpha:0.6];
+		_pageControl.numberOfPages = [self.countries count];
+		_pageControl.dotColor = [UIColor colorWithRed:77.0 / 255.0 green:77.0 / 255.0 blue:77.0 / 255.0 alpha:1.0];
+		_pageControl.selectedDotColor = [UIColor whiteColor];
+		_pageControl.delegate = self;
+		[_pageControl addTarget:self action:@selector(pageControlValuedChanged:) forControlEvents:UIControlEventValueChanged];
+		[_footerView addSubview:_pageControl];
+
+		CGSize size = [_pageControl sizeForNumberOfPages:_pageControl.numberOfPages];
+		[_pageControl makeConstraints:^(MASConstraintMaker *make) {
+			_pageControlWidth = make.width.equalTo(@(size.width));
+			make.height.equalTo(@30);
+			make.centerX.equalTo(_footerView.centerX);
+			make.centerY.equalTo(_footerView.centerY);
+		}];
+
+		[_pageControl setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+	}
+	return _pageControl;
+}
+
+- (UILabel *)photoLabel1 {
+	if (!_photoLabel1) {
+		_photoLabel1 = [UILabel new];
+		_photoLabel1.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11];
+		_photoLabel1.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
+		_photoLabel1.userInteractionEnabled = YES;
+		[_footerView addSubview:_photoLabel1];
+
+		[_photoLabel1 makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(_footerView.left).with.offset(IS_IPAD ? 28 : 15);
+			make.right.lessThanOrEqualTo(_pageControl.left).with.offset(-5);
+			make.centerY.equalTo(_footerView.centerY).with.offset(-7);
+		}];
+
+		[_photoLabel1 setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+
+		UITapGestureRecognizer *tapGestureRecognizer1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openURL)];
+		[_photoLabel1 addGestureRecognizer:tapGestureRecognizer1];
+
+		_photoLabel2 = [UILabel new];
+		_photoLabel2.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11];
+		_photoLabel2.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
+		_photoLabel2.text = @"on flickr";
+		_photoLabel2.userInteractionEnabled = YES;
+		[_footerView addSubview:_photoLabel2];
+
+		[_photoLabel2 makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(_footerView.left).with.offset(IS_IPAD ? 28 : 15);
+			make.right.lessThanOrEqualTo(_pageControl.left).with.offset(-5);
+			make.centerY.equalTo(_footerView.centerY).with.offset(7);
+		}];
+		[_photoLabel2 setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+
+		UITapGestureRecognizer *tapGestureRecognizer2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openURL)];
+		[_photoLabel2 addGestureRecognizer:tapGestureRecognizer2];
+
+		[_photoLabel1 setHidden:YES];
+		[_photoLabel2 setHidden:YES];
+	}
+	return _photoLabel1;
+}
+
+- (void)pageControlValuedChanged:(FXPageControl *)pageControl {
+	A3HolidaysPageContentViewController *contentViewController = _pageViewController.viewControllers[0];
+	NSInteger oldPage = [self.countries indexOfObject:contentViewController.countryCode];
+
+	if (oldPage != pageControl.currentPage) {
+		[self jumpToPage:pageControl.currentPage direction:oldPage < pageControl.currentPage ?
+				UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse
+				animated:YES];
 	}
 }
 
-- (UIImage *)pageControl:(FXPageControl *)pageControl selectedImageForDotAtIndex:(NSInteger)index1 {
-	@autoreleasepool {
-		if (index1 == 0) {
-			[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:10]];
-			[SFKImage setDefaultColor:[UIColor colorWithWhite:1.0 alpha:0.6]];
+- (void)jumpToPage:(NSUInteger)page direction:(UIPageViewControllerNavigationDirection)direction animated:(BOOL)animated {
+	[_pageViewController setViewControllers:@[[self contentViewControllerAtPage:page]] direction:direction animated:animated completion:NULL];
+	[self updatePhotoLabelText];
+}
 
-			return [SFKImage imageNamed:@"k"];
-		} else {
-			UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0,6,6)];
-			view.layer.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.6].CGColor;
-			view.layer.cornerRadius = 3;
-			view.opaque = NO;
-			return [view imageByRenderingView];
-		}
-		return nil;
+- (UIImage *)pageControl:(FXPageControl *)pageControl imageForDotAtIndex:(NSInteger)index1 {
+	if (index1 == 0) {
+		[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:10]];
+		[SFKImage setDefaultColor:[UIColor colorWithWhite:1.0 alpha:0.2]];
+		return [SFKImage imageNamed:@"k"];
+	} else {
+		UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0,6,6)];
+		view.layer.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.2].CGColor;
+		view.layer.cornerRadius = 3;
+		view.opaque = NO;
+		return [view imageByRenderingView];
 	}
+	return nil;
+}
+
+- (UIImage *)pageControl:(FXPageControl *)pageControl selectedImageForDotAtIndex:(NSInteger)index1 {
+	if (index1 == 0) {
+		[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:10]];
+		[SFKImage setDefaultColor:[UIColor colorWithWhite:1.0 alpha:0.6]];
+
+		return [SFKImage imageNamed:@"k"];
+	} else {
+		UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0,6,6)];
+		view.layer.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.6].CGColor;
+		view.layer.cornerRadius = 3;
+		view.opaque = NO;
+		return [view imageByRenderingView];
+	}
+	return nil;
 }
 
 extern NSString *const kA3HolidayScreenImageOwner;		// USE key + country code
 extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 
 - (void)updatePhotoLabelText {
-	@autoreleasepool {
-		NSString *license = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageLicense, self.countryCode]];
-		NSString *owner = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageOwner, self.countryCode]];
+	NSString *license = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageLicense, self.countryCode]];
+	NSString *owner = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageOwner, self.countryCode]];
 
-		if ([owner length]) {
-			NSMutableAttributedString *licenseString;
-			if ([license isEqualToString:@"cc"]) {
-				licenseString = [[NSMutableAttributedString alloc] initWithString:@"a" attributes:@{NSFontAttributeName:[UIFont fontWithName:@"appbox" size:10],NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
-			} else {
-				licenseString = [[NSMutableAttributedString alloc] initWithString:@"©" attributes:@{NSFontAttributeName:[UIFont fontWithName:@".HelveticaNeueInterface-M3" size:12],NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
-			}
-			NSAttributedString *text = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" by %@", owner] attributes:@{NSFontAttributeName:[UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11], NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
-			[licenseString appendAttributedString:text];
-
-			[self.photoLabel1 setHidden:NO];
-			[self.photoLabel2 setHidden:NO];
-			self.photoLabel1.attributedText = licenseString;
-			self.photoLabel2.text = @"on flickr";
+	if ([owner length]) {
+		NSMutableAttributedString *licenseString;
+		if ([license isEqualToString:@"cc"]) {
+			licenseString = [[NSMutableAttributedString alloc] initWithString:@"a" attributes:@{NSFontAttributeName:[UIFont fontWithName:@"appbox" size:10],NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
 		} else {
-			[self.photoLabel1 setHidden:YES];
-			[self.photoLabel2 setHidden:YES];
-			self.photoLabel1.text = @"";
-			self.photoLabel2.text = @"";
+			licenseString = [[NSMutableAttributedString alloc] initWithString:@"©" attributes:@{NSFontAttributeName:[UIFont fontWithName:@".HelveticaNeueInterface-M3" size:12],NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
 		}
+		NSAttributedString *text = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" by %@", owner] attributes:@{NSFontAttributeName:[UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11], NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
+		[licenseString appendAttributedString:text];
+
+		[self.photoLabel1 setHidden:NO];
+		[self.photoLabel2 setHidden:NO];
+		self.photoLabel1.attributedText = licenseString;
+		self.photoLabel2.text = @"on flickr";
+	} else {
+		[self.photoLabel1 setHidden:YES];
+		[self.photoLabel2 setHidden:YES];
+		self.photoLabel1.text = @"";
+		self.photoLabel2.text = @"";
 	}
 }
 
@@ -631,48 +571,42 @@ extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 }
 
 - (void)openURL {
-	@autoreleasepool {
-		NSString *urlString = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageURL, self.countryCode]];
-		if ([urlString length]) {
-			NSURL *url = [NSURL URLWithString:urlString];
-			UIApplication *application = [UIApplication sharedApplication];
-			if (url && [application canOpenURL:url]) {
-				[application openURL:url];
-			}
+	NSString *urlString = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageURL, self.countryCode]];
+	if ([urlString length]) {
+		NSURL *url = [NSURL URLWithString:urlString];
+		UIApplication *application = [UIApplication sharedApplication];
+		if (url && [application canOpenURL:url]) {
+			[application openURL:url];
 		}
 	}
 }
 
 - (void)listButtonAction {
-	@autoreleasepool {
-		A3HolidaysCountryViewController *viewController = [[A3HolidaysCountryViewController alloc] initWithNibName:nil bundle:nil];
-		viewController.pageViewController = self;
-		viewController.delegate = self;
+	A3HolidaysCountryViewController *viewController = [[A3HolidaysCountryViewController alloc] initWithNibName:nil bundle:nil];
+	viewController.pageViewController = self;
+	viewController.delegate = self;
 
-		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[self presentViewController:navigationController animated:YES completion:nil];
-	}
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)viewController:(UIViewController *)viewController didFinishPickingCountry:(NSString *)countryCode dataChanged:(BOOL)dataChanged {
-	@autoreleasepool {
-		if (dataChanged) {
-			_countries = nil;
-			_pageControl.numberOfPages = [self.countries count];
-		}
-		NSInteger page = [self.countries indexOfObject:countryCode];
-		[self jumpToPage:page direction:UIPageViewControllerNavigationDirectionForward animated:NO ];
-		_pageControl.currentPage = page;
-
-		dispatch_async(dispatch_get_main_queue(), ^{
-			NSArray *allKeys = [_viewControllerCache allKeys];
-			for (NSString *key in allKeys) {
-				if (![self.countries containsObject:key]) {
-					[_viewControllerCache removeObjectForKey:key];
-				}
-			}
-		});
+	if (dataChanged) {
+		_countries = nil;
+		_pageControl.numberOfPages = [self.countries count];
 	}
+	NSInteger page = [self.countries indexOfObject:countryCode];
+	[self jumpToPage:page direction:UIPageViewControllerNavigationDirectionForward animated:NO ];
+	_pageControl.currentPage = page;
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		NSArray *allKeys = [_viewControllerCache allKeys];
+		for (NSString *key in allKeys) {
+			if (![self.countries containsObject:key]) {
+				[_viewControllerCache removeObjectForKey:key];
+			}
+		}
+	});
 }
 
 - (NSUInteger)pageViewControllerSupportedInterfaceOrientations:(UIPageViewController *)pageViewController {

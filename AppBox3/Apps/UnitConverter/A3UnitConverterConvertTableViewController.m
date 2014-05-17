@@ -849,62 +849,59 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 #pragma mark - FMMoveTableView
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-	@autoreleasepool {
+	[self.convertItems moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
-		[self.convertItems moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		NSInteger equalIndex;
+		equalIndex = [self.convertItems indexOfObject:self.equalItem];
 
-		dispatch_async(dispatch_get_main_queue(), ^{
-			NSInteger equalIndex;
-			equalIndex = [self.convertItems indexOfObject:self.equalItem];
-
-			if (equalIndex != 1) {
-				FNLOG(@"equal index %ld is not 1.", (long)equalIndex);
-				FNLOG(@"%@", _convertItems);
-				[self.convertItems moveItemInSortedArrayFromIndex:equalIndex toIndex:1];
-				FNLOG(@"%@", _convertItems);
-				[_fmMoveTableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:equalIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-				if (equalIndex == 0) {
-					[_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]  withRowAnimation:UITableViewRowAnimationNone];
-				}
-				[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		if (equalIndex != 1) {
+			FNLOG(@"equal index %ld is not 1.", (long)equalIndex);
+			FNLOG(@"%@", _convertItems);
+			[self.convertItems moveItemInSortedArrayFromIndex:equalIndex toIndex:1];
+			FNLOG(@"%@", _convertItems);
+			[_fmMoveTableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:equalIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+			if (equalIndex == 0) {
+				[_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]  withRowAnimation:UITableViewRowAnimationNone];
 			}
-		});
-
-		if ((_draggingFirstRow && (toIndexPath.row != 0)) || (toIndexPath.row == 0)) {
-			double delayInSeconds = 0.3;
-			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				[_fmMoveTableView reloadData];
-
-				// khkim_131217 : 드래그를 통해서 값이 업데이트 될때도 history에 추가한다.
-				A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-				UITextField *textField;
-				float fromValue;
-				if (cell.inputType == UnitInput_Normal) {
-					textField = cell.valueField;
-					fromValue = [[self.decimalFormatter numberFromString:textField.text] floatValue];
-				}
-				else if (cell.inputType == UnitInput_Fraction) {
-					float num = [[self.decimalFormatter numberFromString:textField.text] floatValue];
-					float deviderNumber = [[self.decimalFormatter numberFromString:textField.text] floatValue];
-					fromValue = num / deviderNumber;
-				}
-				else if (cell.inputType == UnitInput_FeetInch) {
-					// 0.3048, 0.0254
-					// feet inch 값을 inch값으로 변화시킨다.
-					float feet = [[self.decimalFormatter numberFromString:cell.valueField.text] floatValue];
-					float inch = [[self.decimalFormatter numberFromString:cell.value2Field.text] floatValue];
-					fromValue = feet + inch/kInchesPerFeet;
-					NSLog(@"Feet : %f / Inch : %f", feet, inch);
-					NSLog(@"Calculated : %f", fromValue);
-				}
-				else {
-					fromValue = 1;
-				}
-				[self putHistoryWithValue:@(fromValue)];
-			});
+			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 		}
+	});
+
+	if ((_draggingFirstRow && (toIndexPath.row != 0)) || (toIndexPath.row == 0)) {
+		double delayInSeconds = 0.3;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[_fmMoveTableView reloadData];
+
+			// khkim_131217 : 드래그를 통해서 값이 업데이트 될때도 history에 추가한다.
+			A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+			UITextField *textField;
+			float fromValue;
+			if (cell.inputType == UnitInput_Normal) {
+				textField = cell.valueField;
+				fromValue = [[self.decimalFormatter numberFromString:textField.text] floatValue];
+			}
+			else if (cell.inputType == UnitInput_Fraction) {
+				float num = [[self.decimalFormatter numberFromString:textField.text] floatValue];
+				float deviderNumber = [[self.decimalFormatter numberFromString:textField.text] floatValue];
+				fromValue = num / deviderNumber;
+			}
+			else if (cell.inputType == UnitInput_FeetInch) {
+				// 0.3048, 0.0254
+				// feet inch 값을 inch값으로 변화시킨다.
+				float feet = [[self.decimalFormatter numberFromString:cell.valueField.text] floatValue];
+				float inch = [[self.decimalFormatter numberFromString:cell.value2Field.text] floatValue];
+				fromValue = feet + inch/kInchesPerFeet;
+				NSLog(@"Feet : %f / Inch : %f", feet, inch);
+				NSLog(@"Calculated : %f", fromValue);
+			}
+			else {
+				fromValue = 1;
+			}
+			[self putHistoryWithValue:@(fromValue)];
+		});
 	}
 }
 
@@ -923,110 +920,104 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)didUnitSelectCancled
 {
-    @autoreleasepool {
-        
-        if (IS_IPAD) {
-            [self rightBarItemsEnabling:YES];
-        }
-    }
+	if (IS_IPAD) {
+		[self rightBarItemsEnabling:YES];
+	}
 }
 
 - (void)selectViewController:(UIViewController *)viewController unitSelectedWithItem:(UnitItem *)selectedItem
 {
-    @autoreleasepool {
-        
-        if (IS_IPAD) {
-            [self rightBarItemsEnabling:YES];
-        }
-        
-        if (_isAddingUnit) {
-            if (selectedItem) {
-                
-                // 존재 유무 체크
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item==%@", selectedItem];
-                NSArray *items = [_convertItems filteredArrayUsingPredicate:predicate];
-                if (items.count > 0) {
-                    // 이미 존재하는 unitItem임
-                    return;
-                }
-                
-                UnitConvertItem *convertItem = [UnitConvertItem MR_createEntity];
-                convertItem.item = selectedItem;
+	if (IS_IPAD) {
+		[self rightBarItemsEnabling:YES];
+	}
 
-                NSUInteger idx = [_convertItems count];
-                [self.convertItems insertObjectToSortedArray:convertItem atIndex:idx];
+	if (_isAddingUnit) {
+		if (selectedItem) {
+
+			// 존재 유무 체크
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item==%@", selectedItem];
+			NSArray *items = [_convertItems filteredArrayUsingPredicate:predicate];
+			if (items.count > 0) {
+				// 이미 존재하는 unitItem임
+				return;
+			}
+
+			UnitConvertItem *convertItem = [UnitConvertItem MR_createEntity];
+			convertItem.item = selectedItem;
+
+			NSUInteger idx = [_convertItems count];
+			[self.convertItems insertObjectToSortedArray:convertItem atIndex:idx];
+			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+			[_fmMoveTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+
+			double delayInSeconds = 0.3;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[_fmMoveTableView reloadData];
+			});
+		}
+	}
+	else {
+		// 선택된 unitItem이 이미 convertItems에 추가된 unit이면, swap을 한다.
+		if (selectedItem) {
+
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item==%@", selectedItem];
+			NSArray *filtered = [_convertItems filteredArrayUsingPredicate:predicate];
+			if (filtered.count > 0) {
+				if (_selectedRow == 0) {
+					NSUInteger pickedUnitIdx = [_convertItems indexOfObject:filtered[0]];
+
+					NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:pickedUnitIdx inSection:0];
+					NSIndexPath *targetIndexPath;
+					if (sourceIndexPath.row == 0) {
+						targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+					} else {
+						targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+					}
+
+					[self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
+				}
+				else {
+					NSUInteger pickedUnitIdx = [_convertItems indexOfObject:filtered[0]];
+
+					// 선택된 unitItem이 첫번째 unit이면, swap한다.
+					if (pickedUnitIdx == 0) {
+						NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:_selectedRow inSection:0];
+						NSIndexPath *targetIndexPath;
+						if (sourceIndexPath.row == 0) {
+							targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+						} else {
+							targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+						}
+
+						[self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
+					}
+							// 선택된 unitItem이 첫번째 unit이 아닐경우, swap한다.
+					else {
+
+						NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:_selectedRow inSection:0];
+						NSIndexPath *targetIndexPath = [NSIndexPath indexPathForRow:pickedUnitIdx inSection:0];
+
+						[self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
+					}
+				}
+			}
+					// 아니면, 현재 unit을 교체한다.
+			else {
+				UnitConvertItem *replacedItem = _convertItems[_selectedRow];
+				replacedItem.item = selectedItem;
 				[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-                
-                [_fmMoveTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
-                
-                double delayInSeconds = 0.3;
-                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                    [_fmMoveTableView reloadData];
-                });
-            }
-        }
-        else {
-            // 선택된 unitItem이 이미 convertItems에 추가된 unit이면, swap을 한다.
-            if (selectedItem) {
-                
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item==%@", selectedItem];
-                NSArray *filtered = [_convertItems filteredArrayUsingPredicate:predicate];
-                if (filtered.count > 0) {
-                    if (_selectedRow == 0) {
-                        NSUInteger pickedUnitIdx = [_convertItems indexOfObject:filtered[0]];
-                        
-                        NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:pickedUnitIdx inSection:0];
-                        NSIndexPath *targetIndexPath;
-                        if (sourceIndexPath.row == 0) {
-                            targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
-                        } else {
-                            targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-                        }
-                        
-                        [self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
-                    }
-                    else {
-                        NSUInteger pickedUnitIdx = [_convertItems indexOfObject:filtered[0]];
-                        
-                        // 선택된 unitItem이 첫번째 unit이면, swap한다.
-                        if (pickedUnitIdx == 0) {
-                            NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:_selectedRow inSection:0];
-                            NSIndexPath *targetIndexPath;
-                            if (sourceIndexPath.row == 0) {
-                                targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
-                            } else {
-                                targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-                            }
-                            
-                            [self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
-                        }
-                        // 선택된 unitItem이 첫번째 unit이 아닐경우, swap한다.
-                        else {
-                            
-                            NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:_selectedRow inSection:0];
-                            NSIndexPath *targetIndexPath = [NSIndexPath indexPathForRow:pickedUnitIdx inSection:0];
-                            
-                            [self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
-                        }
-                    }
-                }
-                // 아니면, 현재 unit을 교체한다.
-                else {
-                    UnitConvertItem *replacedItem = _convertItems[_selectedRow];
-                    replacedItem.item = selectedItem;
-					[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-                    
-                    [_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
-                    
-                    double delayInSeconds = 0.3;
-                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                        [_fmMoveTableView reloadData];
-                    });
-                }
-            }
-        }
+
+				[_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+
+				double delayInSeconds = 0.3;
+				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+					[_fmMoveTableView reloadData];
+				});
+			}
+		}
 	}
 }
 
@@ -1182,83 +1173,80 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)updateTextFieldsWithSourceTextField:(UITextField *)textField {
-	@autoreleasepool {
-        
-        A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
+	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
 
-        float fromValue;
-        
-        if (cell.inputType == UnitInput_Normal) {
-            textField = cell.valueField;
-            fromValue = [[self.decimalFormatter numberFromString:textField.text] floatValue];
-        }
-        else if (cell.inputType == UnitInput_Fraction) {
-            float num = [[self.decimalFormatter numberFromString:cell.valueField.text] floatValue];
-			float denum = [[self.decimalFormatter numberFromString:cell.value2Field.text] floatValue];
-			fromValue = num / denum;
-        }
-        else if (cell.inputType == UnitInput_FeetInch) {
-            // 0.3048, 0.0254
-            // feet inch 값을 inch값으로 변화시킨다.
-            float feet = [[self.decimalFormatter numberFromString:cell.valueField.text] floatValue];
-            float inch = [[self.decimalFormatter numberFromString:cell.value2Field.text] floatValue];
-			fromValue = feet + inch/kInchesPerFeet;
-            NSLog(@"Feet : %f / Inch : %f", feet, inch);
-            NSLog(@"Calculated : %f", fromValue);
-        }
-        else {
-            fromValue = 1;
-        }
-		
-		self.unitValue = @(fromValue);
-        
-		NSInteger fromIndex = 0;
-        UnitConvertItem *zeroConvertItem = _convertItems[0];
-        NSString *zeroKey = zeroConvertItem.item.unitName;
-        
-		for (NSString *key in [_text1Fields allKeys]) {
-            
-            if ([zeroKey isEqualToString:key]) {
-				continue;
+	float fromValue;
+
+	if (cell.inputType == UnitInput_Normal) {
+		textField = cell.valueField;
+		fromValue = [[self.decimalFormatter numberFromString:textField.text] floatValue];
+	}
+	else if (cell.inputType == UnitInput_Fraction) {
+		float num = [[self.decimalFormatter numberFromString:cell.valueField.text] floatValue];
+		float denum = [[self.decimalFormatter numberFromString:cell.value2Field.text] floatValue];
+		fromValue = num / denum;
+	}
+	else if (cell.inputType == UnitInput_FeetInch) {
+		// 0.3048, 0.0254
+		// feet inch 값을 inch값으로 변화시킨다.
+		float feet = [[self.decimalFormatter numberFromString:cell.valueField.text] floatValue];
+		float inch = [[self.decimalFormatter numberFromString:cell.value2Field.text] floatValue];
+		fromValue = feet + inch/kInchesPerFeet;
+		NSLog(@"Feet : %f / Inch : %f", feet, inch);
+		NSLog(@"Calculated : %f", fromValue);
+	}
+	else {
+		fromValue = 1;
+	}
+
+	self.unitValue = @(fromValue);
+
+	NSInteger fromIndex = 0;
+	UnitConvertItem *zeroConvertItem = _convertItems[0];
+	NSString *zeroKey = zeroConvertItem.item.unitName;
+
+	for (NSString *key in [_text1Fields allKeys]) {
+
+		if ([zeroKey isEqualToString:key]) {
+			continue;
+		}
+
+		UITextField *targetTextField = _text1Fields[key];
+
+		UnitConvertItem *sourceUnit = self.convertItems[fromIndex];
+		NSUInteger targetIndex = [self indexForUnitName:key];
+		if (targetIndex != NSNotFound) {
+			UnitConvertItem *targetUnit = self.convertItems[targetIndex];
+
+			if (_isTemperatureMode) {
+				// 먼저 입력된 값을 섭씨기준의 온도로 변환한다.
+				// 섭씨온도를 해당 unit값으로 변환한다
+				float celsiusValue = [TemperatureConveter convertToCelsiusFromUnit:sourceUnit.item.unitName andTemperature:fromValue];
+				float targetValue = [TemperatureConveter convertCelsius:celsiusValue toUnit:targetUnit.item.unitName];
+				targetTextField.text = [self.decimalFormatter stringFromNumber:@(targetValue)];
 			}
-            
-			UITextField *targetTextField = _text1Fields[key];
-			
-			UnitConvertItem *sourceUnit = self.convertItems[fromIndex];
-			NSUInteger targetIndex = [self indexForUnitName:key];
-			if (targetIndex != NSNotFound) {
-				UnitConvertItem *targetUnit = self.convertItems[targetIndex];
-                
-                if (_isTemperatureMode) {
-                    // 먼저 입력된 값을 섭씨기준의 온도로 변환한다.
-                    // 섭씨온도를 해당 unit값으로 변환한다
-                    float celsiusValue = [TemperatureConveter convertToCelsiusFromUnit:sourceUnit.item.unitName andTemperature:fromValue];
-                    float targetValue = [TemperatureConveter convertCelsius:celsiusValue toUnit:targetUnit.item.unitName];
-                    targetTextField.text = [self.decimalFormatter stringFromNumber:@(targetValue)];
-                }
-                else {
-                    BOOL isFeetInchMode = NO;
-                    if ([key isEqualToString:@"feet inches"]) {
-                        isFeetInchMode = YES;
-                    }
-                    if (isFeetInchMode) {
-                        // 0.3048, 0.0254
-                        // feet 계산
-                        float rate = [sourceUnit.item.conversionRate floatValue] / [targetUnit.item.conversionRate floatValue];
-                        float value = fromValue * rate;
-                        int feet = (int)value;
-                        float inch = (value -feet) * kInchesPerFeet;
-                        targetTextField.text = [self.decimalFormatter stringFromNumber:@(feet)];
-                        UITextField *targetValue2TextFiled = _text2Fields[key];
-                        targetValue2TextFiled.text = [self.decimalFormatter stringFromNumber:@(inch)];
-                    }
-                    else {
-                        float rate = [sourceUnit.item.conversionRate floatValue] / [targetUnit.item.conversionRate floatValue];
-                        targetTextField.text = [self.decimalFormatter stringFromNumber:@(fromValue*rate)];
-                    }
-                }
-				targetTextField.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:65];
+			else {
+				BOOL isFeetInchMode = NO;
+				if ([key isEqualToString:@"feet inches"]) {
+					isFeetInchMode = YES;
+				}
+				if (isFeetInchMode) {
+					// 0.3048, 0.0254
+					// feet 계산
+					float rate = [sourceUnit.item.conversionRate floatValue] / [targetUnit.item.conversionRate floatValue];
+					float value = fromValue * rate;
+					int feet = (int)value;
+					float inch = (value -feet) * kInchesPerFeet;
+					targetTextField.text = [self.decimalFormatter stringFromNumber:@(feet)];
+					UITextField *targetValue2TextFiled = _text2Fields[key];
+					targetValue2TextFiled.text = [self.decimalFormatter stringFromNumber:@(inch)];
+				}
+				else {
+					float rate = [sourceUnit.item.conversionRate floatValue] / [targetUnit.item.conversionRate floatValue];
+					targetTextField.text = [self.decimalFormatter stringFromNumber:@(fromValue*rate)];
+				}
 			}
+			targetTextField.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:65];
 		}
 	}
 }
@@ -1284,22 +1272,20 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)swapActionForCell:(UITableViewCell *)cell {
-	@autoreleasepool {
-		[self unSwipeAll];
-        
-		UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) cell;
-		[swipedCell removeMenuView];
-        
-		NSIndexPath *sourceIndexPath = [_fmMoveTableView indexPathForCell:cell];
-		NSIndexPath *targetIndexPath;
-		if (sourceIndexPath.row == 0) {
-			targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
-		} else {
-			targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-		}
+	[self unSwipeAll];
 
-        [self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
+	UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) cell;
+	[swipedCell removeMenuView];
+
+	NSIndexPath *sourceIndexPath = [_fmMoveTableView indexPathForCell:cell];
+	NSIndexPath *targetIndexPath;
+	if (sourceIndexPath.row == 0) {
+		targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+	} else {
+		targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 	}
+
+	[self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
 }
 
 - (void)shareActionForCell:(UITableViewCell *)cell sender:(id)sender {

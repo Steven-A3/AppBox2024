@@ -1514,13 +1514,12 @@ EXIT_FUCTION:
                 }
             }
 
-            @autoreleasepool {
-                UIFont *titleFont = IS_IPHONE ? [UIFont boldSystemFontOfSize:17.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-                CGSize calculatedTitleSize = [_eventItem.eventName sizeWithAttributes:@{ NSFontAttributeName : titleFont }];
-                //CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - 48 - ([_eventItem.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
-                CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - (_eventItem.favorite != nil ? 43 : 15) - ([_eventItem.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
-                
-                if (calculatedTitleSize.width > titleMaxWidth) {
+			UIFont *titleFont = IS_IPHONE ? [UIFont boldSystemFontOfSize:17.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+			CGSize calculatedTitleSize = [_eventItem.eventName sizeWithAttributes:@{ NSFontAttributeName : titleFont }];
+			//CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - 48 - ([_eventItem.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
+			CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - (_eventItem.favorite != nil ? 43 : 15) - ([_eventItem.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
+
+			if (calculatedTitleSize.width > titleMaxWidth) {
 ////                    UILabel *label = [[UILabel alloc] init];
 ////                    label.font = titleFont;
 ////                    label.text = _eventItem.eventName;
@@ -1535,22 +1534,21 @@ EXIT_FUCTION:
 //                                                       attributes:@{ NSFontAttributeName : titleFont }
 //                                                          context:nil];
 //                    retHeight += calculatedTitleRect.size.height - aLineRect.size.height;
-                    
-                    
-                    self.heightCalculateLabel.font = titleFont;
-                    
-                    CGSize calculatedTitleSize;
-                    CGSize aLineSize;
-                    self.heightCalculateLabel.text = _eventItem.eventName;
-                    calculatedTitleSize = [self.heightCalculateLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
-                    self.heightCalculateLabel.text = @"A";
-                    aLineSize = [self.heightCalculateLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
-                    retHeight += calculatedTitleSize.height - aLineSize.height;
-                }
-            }
-        }
-            break;
-            
+
+
+				self.heightCalculateLabel.font = titleFont;
+
+				CGSize calculatedTitleSize;
+				CGSize aLineSize;
+				self.heightCalculateLabel.text = _eventItem.eventName;
+				calculatedTitleSize = [self.heightCalculateLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
+				self.heightCalculateLabel.text = @"A";
+				aLineSize = [self.heightCalculateLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
+				retHeight += calculatedTitleSize.height - aLineSize.height;
+			}
+			break;
+		}
+
         case EventCellType_Notes:
         {
 			if (![_eventItem.notes length]) return 74.0;

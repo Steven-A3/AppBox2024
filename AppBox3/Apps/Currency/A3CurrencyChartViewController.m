@@ -254,13 +254,11 @@
 }
 
 - (void)updateDisplay {
-	@autoreleasepool {
-		self.title = [NSString stringWithFormat:@"%@ to %@", self.sourceItem.currencyCode, self.targetItem.currencyCode];
+	self.title = [NSString stringWithFormat:@"%@ to %@", self.sourceItem.currencyCode, self.targetItem.currencyCode];
 
-		[self fillCurrencyTable];
-		self.segmentedControl.selectedSegmentIndex = 0;
-		[self reloadChartImage];
-	}
+	[self fillCurrencyTable];
+	self.segmentedControl.selectedSegmentIndex = 0;
+	[self reloadChartImage];
 }
 
 #pragma mark - CurrencyItem

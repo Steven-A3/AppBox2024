@@ -45,16 +45,14 @@
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
-	@autoreleasepool {
-		if (IS_IPAD) {
-			[self.A3RootViewController dismissRightSideViewController];
-		} else {
-			[self dismissViewControllerAnimated:YES completion:nil];
-		}
-        
-        if ([_delegate respondsToSelector:@selector(dismissTipCalcSettingsViewController)]) {
-            [_delegate dismissTipCalcSettingsViewController];
-        }
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissRightSideViewController];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
+
+	if ([_delegate respondsToSelector:@selector(dismissTipCalcSettingsViewController)]) {
+		[_delegate dismissTipCalcSettingsViewController];
 	}
 }
 

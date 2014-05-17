@@ -57,18 +57,17 @@
 }
 
 #pragma mark - Actions
+
 - (void)doneButtonAction:(id)sender
 {
-	@autoreleasepool {
-		if (IS_IPAD) {
-			[self.A3RootViewController dismissRightSideViewController];
-            if ([_delegate respondsToSelector:@selector(dismissEditEventViewController)]) {
-                [_delegate performSelector:@selector(dismissEditEventViewController)];
-            }
-            
-		} else {
-			[self dismissViewControllerAnimated:YES completion:nil];
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissRightSideViewController];
+		if ([_delegate respondsToSelector:@selector(dismissEditEventViewController)]) {
+			[_delegate performSelector:@selector(dismissEditEventViewController)];
 		}
+
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
 	}
 }
 
