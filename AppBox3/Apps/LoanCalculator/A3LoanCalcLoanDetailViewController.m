@@ -24,7 +24,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3AppDelegate+appearance.h"
 
-@interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate, A3KeyboardDelegate, UITextFieldDelegate, A3CalculatorDelegate, A3SearchViewControllerDelegate>
+@interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate, A3KeyboardDelegate, UITextFieldDelegate>
 {
     BOOL _isLoanCalcEdited;
 }

@@ -18,6 +18,14 @@
 #import "A3AppDelegate.h"
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 #import "A3PasscodeKeyboard_iPad.h"
+#import "A3CurrencySelectViewController.h"
+#import "UIViewController+navigation.h"
+#import "A3CalculatorViewController.h"
+#import "A3CalculatorViewController_iPhone.h"
+#import "A3CalculatorViewController_iPad.h"
+
+NSString *const A3NotificationCurrencyButtonPressed = @"A3NotificationCurrencyButtonPressed";
+NSString *const A3NotificationCalculatorButtonPressed = @"A3NotificationCalculatorButtonPressed";
 
 static char const *const key_numberKeyboardViewController 		= "key_numberKeyboardViewController";
 static char const *const key_dateKeyboardViewController 		= "key_dateKeyboardViewController";
@@ -25,6 +33,7 @@ static char const *const key_currencyFormatter					= "key_currencyFormatter";
 static char const *const key_decimalFormatter 					= "key_decimalFormatter";
 static char const *const key_percentFormatter					= "key_percentFormatter";
 static char const *const key_firstResponder 					= "key_firstResponder";
+static char const *const key_navigationControllerForKeyboard	= "key_navigationControllerForKeyboard";
 
 @implementation UIViewController (A3AppCategory)
 
@@ -232,6 +241,46 @@ static char const *const key_firstResponder 					= "key_firstResponder";
 
 - (void)setFirstResponder:(UIResponder *)firstResponder {
 	objc_setAssociatedObject(self, key_firstResponder, firstResponder, OBJC_ASSOCIATION_ASSIGN);
+}
+
+- (UINavigationController *)navigationControllerForKeyboard {
+	return objc_getAssociatedObject(self, key_navigationControllerForKeyboard);
+}
+
+- (void)setNavigationControllerForKeyboard:(UINavigationController *)controller {
+	objc_setAssociatedObject(self, key_navigationControllerForKeyboard, controller, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)presentCurrencySelectVieControllerWithCurrencyCode:(NSString *)currencyCode {
+	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] init];
+	viewController.showCancelButton = YES;
+	viewController.allowChooseFavorite = YES;
+	viewController.selectedCurrencyCode = currencyCode;
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self presentViewController:navigationController animated:YES completion:nil];
+	[self setNavigationControllerForKeyboard:navigationController];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(childViewControllerFromKeyboardDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+}
+
+- (void)presentCalculatorViewController {
+	A3CalculatorViewController *viewController;
+	if (IS_IPHONE) {
+		viewController = [[A3CalculatorViewController_iPhone alloc] initWithPresentingViewController:self];
+	} else {
+		viewController = [[A3CalculatorViewController_iPad alloc] initWithPresentingViewController:self];
+	}
+
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self presentViewController:navigationController animated:YES completion:nil];
+	[self setNavigationControllerForKeyboard:navigationController];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(childViewControllerFromKeyboardDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+}
+
+- (void)childViewControllerFromKeyboardDidDismiss {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:self.navigationControllerForKeyboard.childViewControllers[0]];
+	[self setNavigationControllerForKeyboard:nil];
 }
 
 @end

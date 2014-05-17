@@ -15,6 +15,8 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+navigation.h"
 
+NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCodeSelected";
+
 @interface A3CurrencySelectViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
 
 @property (nonatomic, weak) UIViewController *modalPresentingParentViewController;
@@ -118,7 +120,11 @@
 
 	UIColor *textColor;
 	if (self.allowChooseFavorite) {
-		textColor = [UIColor blackColor];
+		if ([_selectedCurrencyCode isEqualToString:data.code]) {
+			textColor = A3_TEXT_COLOR_DISABLED;
+		} else {
+			textColor = [UIColor blackColor];
+		}
 	} else {
 		if ([self isFavoriteItemForCurrencyItem:data.code]) {
 			textColor = A3_TEXT_COLOR_DISABLED;
@@ -174,6 +180,8 @@
 	}
 
 	[self callDelegate:data.code];
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyCodeSelected object:data.code];
 }
 
 @end

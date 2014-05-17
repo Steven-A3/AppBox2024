@@ -38,6 +38,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+navigation.h"
+#import "A3CurrencySelectViewController.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
@@ -49,7 +50,7 @@ NSString *const A3LoanCalcLoanNoteCellID = @"A3WalletNoteCell";
 NSString *const A3LoanCalcCompareGraphCellID = @"A3LoanCalcCompareGraphCell";
 NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
-@interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate, LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate, UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate, A3CalculatorDelegate, A3SearchViewControllerDelegate>
+@interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate, LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate, UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;

@@ -11,6 +11,9 @@
 #import "A3KeyboardDelegate.h"
 #import "A3RootViewController_iPad.h"
 
+extern NSString *const A3NotificationCurrencyButtonPressed;
+extern NSString *const A3NotificationCalculatorButtonPressed;
+
 @class A3NumberKeyboardViewController;
 @class A3DateKeyboardViewController;
 
@@ -21,6 +24,7 @@
 @property (nonatomic, strong) NSNumberFormatter *currencyFormatter;
 @property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
 @property (nonatomic, strong) NSNumberFormatter *percentFormatter;
+@property (nonatomic, strong) UINavigationController *navigationControllerForKeyboard;
 @property (nonatomic, weak) UIResponder *firstResponder;
 
 - (A3RootViewController_iPad *)A3RootViewController;
@@ -42,5 +46,8 @@
 
 - (UIColor *)tableViewSeparatorColor;
 - (UIColor *)selectedTextColor;
+
+- (void)presentCurrencySelectVieControllerWithCurrencyCode:(NSString *)currencyCode;
+- (void)presentCalculatorViewController;
 
 @end

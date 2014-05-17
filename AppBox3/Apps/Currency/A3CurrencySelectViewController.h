@@ -9,8 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "A3SearchViewController.h"
 
+extern NSString *const A3NotificationCurrencyCodeSelected;	// Object has selected currency code
 
 @interface A3CurrencySelectViewController : A3SearchViewController
+
+@property (nonatomic, strong) NSString *selectedCurrencyCode;
 
 - (instancetype)initWithPresentingViewController:(UIViewController *)modalPresentingParentViewController;
 
