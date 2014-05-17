@@ -170,7 +170,7 @@
         make.left.equalTo(self.view.left).with.offset(15);
         make.right.equalTo(self.view.right).with.offset(-15);
         make.top.equalTo(@91);
-        make.height.equalTo(@29.5);
+        make.height.equalTo(@33.5);
 	}];
     
     [self.view addSubview:self.degreeandradianLabel];
