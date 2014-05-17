@@ -111,13 +111,12 @@ NSString *kCalculationString;
     }
     _isKeyboardShown = NO;
 
-//    if (IS_IPHONE) {
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-//    }
-
     [self initializeControl];
     [self reloadTableViewData:YES];
+    if ([self isAddSubMode]) {
+        [self refreshAddSubModeButtonForResultWithAnimation:YES];
+    }
+    
     [self registerContentSizeCategoryDidChangeNotification];
 
 	if (IS_IPAD) {

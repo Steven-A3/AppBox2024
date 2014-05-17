@@ -217,6 +217,10 @@
     date.year = year.integerValue;
     date.month = month.integerValue;
     date.day = day.integerValue;
+    if (!year && !month && !day) {
+        date.month = 1;
+    }
+    
     date.hour = 0;
     
     return date;
