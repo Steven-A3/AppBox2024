@@ -25,6 +25,9 @@
 #import "A3WalletNoteCell.h"
 #import "NSString+conversion.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3TableViewInputElement.h"
+#import "A3CurrencySelectViewController.h"
+#import "A3CalculatorViewController.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
 	Price_Percent = 0,
@@ -47,7 +50,7 @@ typedef NS_ENUM(NSInteger, PriceDiscountType) {
 @property (nonatomic, strong) NSMutableDictionary *quantityItem;
 @property (nonatomic, strong) NSMutableDictionary *discountItem;
 @property (nonatomic, strong) NSMutableDictionary *noteItem;
-@property (nonatomic, weak) UITextField *calculatorTargetTextField;
+@property (nonatomic, strong) UITextField *calculatorTargetTextField;
 @property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
 @property (nonatomic, copy) NSString *placeholderBeforeEditingTextField;
@@ -91,6 +94,29 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     [self registerContentSizeCategoryDidChangeNotification];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectButtonAction:) name:A3NotificationCurrencyButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeSelected:) name:A3NotificationCurrencyCodeSelected object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorButtonAction) name:A3NotificationCalculatorButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorDismissedWithValue:) name:A3NotificationCalculatorDismissedWithValue object:nil];
+}
+
+- (void)removeObserver {
+	FNLOG();
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyCodeSelected object:nil];
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[self removeObserver];
+	}
 }
 
 - (void)keyboardDidHide:(NSNotification *)notification {
@@ -802,36 +828,38 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	return currencyCode;
 }
 
-#pragma mark --- Response to Calculator Button and result
+#pragma mark - Number Keyboard Currency Select Button Notification
 
-- (UIViewController *)modalPresentingParentViewControllerForCalculator {
-	_calculatorTargetTextField = (UITextField *) self.firstResponder;
-	return self;
+- (void)currencySelectButtonAction:(NSNotification *)notification {
+	[self presentCurrencySelectVieControllerWithCurrencyCode:notification.object];
 }
 
-- (void)calculatorViewController:(UIViewController *)viewController didDismissWithValue:(NSString *)value {
-	_calculatorTargetTextField.text = value;
-	[self textFieldDidEndEditing:_calculatorTargetTextField];
-}
-
-#pragma mark --- Response to Currency Select Button and result
-
-- (UIViewController *)modalPresentingParentViewControllerForCurrencySelector {
-	return self;
-}
-
-- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
-	if ([selectedItem length]) {
-		[[NSUserDefaults standardUserDefaults] setObject:selectedItem forKey:A3UnitPriceCurrencyCode];
+- (void)currencyCodeSelected:(NSNotification *)notification {
+	NSString *currencyCode = notification.object;
+	if ([currencyCode length]) {
+		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3UnitPriceCurrencyCode];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
-		[self.currencyFormatter setCurrencyCode:selectedItem];
+		[self.currencyFormatter setCurrencyCode:currencyCode];
 		[self.tableView reloadData];
 
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationUnitPriceCurrencyCodeChanged object:nil];
 		});
 	}
+}
+
+#pragma mark - Number Keyboard Calculator Button Notification
+
+- (void)calculatorButtonAction {
+	_calculatorTargetTextField = (UITextField *) self.firstResponder;
+	[self.firstResponder resignFirstResponder];
+	[self presentCalculatorViewController];
+}
+
+- (void)calculatorDismissedWithValue:(NSNotification *)notification {
+	_calculatorTargetTextField.text = notification.object;
+	[self textFieldDidEndEditing:_calculatorTargetTextField];
 }
 
 @end

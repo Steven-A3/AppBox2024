@@ -31,6 +31,30 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorDismissedWithValue:) name:A3NotificationCalculatorDismissedWithValue object:nil];
 }
 
+- (void)removeObserver {
+	FNLOG();
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyCodeSelected object:nil];
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[self removeObserver];
+	}
+}
+
+- (void)cleanUp {
+	[self removeObserver];
+}
+
+- (void)dealloc
+{
+	[self removeObserver];
+}
+
 - (NSMutableArray *)extraPaymentItems
 {
 	if (!_extraPaymentItems) {
@@ -393,7 +417,7 @@
 	return currencyCode;
 }
 
-#pragma mark --- Currency Select View Controller
+#pragma mark - Number Keyboard Currency Select Button Notification
 
 - (void)currencySelectButtonAction:(NSNotification *)notification {
 	[self presentCurrencySelectVieControllerWithCurrencyCode:notification.object];
@@ -411,8 +435,11 @@
 	}
 }
 
+#pragma mark - Number Keyboard Calculator Button Notification
+
 - (void)calculatorButtonAction {
 	_calculatorTargetTextField = (UITextField *) self.firstResponder;
+	[self.firstResponder resignFirstResponder];
 	[self presentCalculatorViewController];
 }
 

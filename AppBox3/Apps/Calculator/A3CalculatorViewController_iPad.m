@@ -92,6 +92,26 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 }
 
+- (void)removeObserver {
+	FNLOG();
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[self removeObserver];
+	}
+}
+
+- (void)cleanUp {
+	[self removeObserver];
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)addTextFieldForPlayInputClick {
 	_textFieldForPlayInputClick = [[UITextField alloc] initWithFrame:CGRectZero];
 	_textFieldForPlayInputClick.delegate = self;

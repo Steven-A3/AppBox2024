@@ -18,7 +18,7 @@
 @property (nonatomic, assign, getter=isTotalMode) BOOL totalMode;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath, *scrollToIndexPath;
 @property (nonatomic, strong) NSMutableArray *extraPaymentItems;
-@property (nonatomic, weak) UITextField *calculatorTargetTextField;
+@property (nonatomic, strong) UITextField *calculatorTargetTextField;
 @property (nonatomic, strong) NSMutableArray *calcItems;
 @property (nonatomic, assign) NSInteger dataSectionStartIndex;
 

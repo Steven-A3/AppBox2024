@@ -223,7 +223,6 @@ static char const *const key_navigationControllerForKeyboard	= "key_navigationCo
 }
 
 - (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (UIColor *)tableViewSeparatorColor

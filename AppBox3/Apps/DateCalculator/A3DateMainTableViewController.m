@@ -125,6 +125,14 @@ NSString *kCalculationString;
 	}
 }
 
+- (void)removeObserver {
+	FNLOG();
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
 - (void)rightSideViewWillHide {
 	[self enableControls:YES];
 }

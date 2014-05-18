@@ -20,7 +20,6 @@
 -(void)moveUpRowFor:(A3ExpenseListItemCell *)sender textField:(UITextField *)textField;
 -(void)moveDownRowFor:(A3ExpenseListItemCell *)sender textField:(UITextField *)textField;
 -(void)removeItemForCell:(A3ExpenseListItemCell *)sender responder:(UIResponder *)keyInputDelegate;
-- (UIViewController *)modalPresentingViewControllerForCalculator;
 @end
 
 @interface A3ExpenseListItemCell : UITableViewCell

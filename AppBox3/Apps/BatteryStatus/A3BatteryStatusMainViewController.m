@@ -74,6 +74,47 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(batteryLevelDidChangeNotification:)
+												 name:UIDeviceBatteryLevelDidChangeNotification
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(batteryStateDidChangeNotification:)
+												 name:UIDeviceBatteryStateDidChangeNotification
+											   object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(batteryThemeChanged)
+												 name:A3BatteryStatusThemeColorChanged
+											   object:nil];
+}
+
+- (void)removeObserver {
+	FNLOG();
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidAppear object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceBatteryLevelDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceBatteryStateDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3BatteryStatusThemeColorChanged object:nil];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[self removeObserver];
+	}
+}
+
+- (void)cleanUp {
+	[self removeObserver];
+	[UIDevice currentDevice].batteryMonitoringEnabled = NO;
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)mainMenuDidShow {
@@ -103,10 +144,6 @@
 	[self.sectionHeaderView.tableSegmentButton setEnabled:enable];
 }
 
-- (void)dealloc {
-	[self removeObserver];
-}
-
 - (void)setupTopWhitePaddingView
 {
     _topWhitePaddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.0)];
@@ -122,19 +159,6 @@
 	[self refreshHeaderView];
     [self reloadTableViewDataSource];
     [self.tableView reloadData];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(batteryLevelDidChangeNotification:)
-												 name:UIDeviceBatteryLevelDidChangeNotification
-											   object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(batteryStateDidChangeNotification:)
-												 name:UIDeviceBatteryStateDidChangeNotification
-											   object:nil];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(batteryThemeChanged)
-												 name:A3BatteryStatusThemeColorChanged
-											   object:nil];
 }
 
 #pragma mark -
@@ -172,11 +196,6 @@
 		_sectionHeaderView.tableSegmentButton.selectedSegmentIndex = 0;
 	}
 	return _sectionHeaderView;
-}
-
-- (void)cleanUp {
-	[self removeObserver];
-	[UIDevice currentDevice].batteryMonitoringEnabled = NO;
 }
 
 - (void)rightBarButton {

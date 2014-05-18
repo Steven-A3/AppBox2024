@@ -54,14 +54,6 @@
 	return _clockDataManager;
 }
 
-- (void)cleanUp {
-	FNLOG();
-	[_clockDataManager cleanUp];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_buttonsTimer invalidate];
-	_buttonsTimer = nil;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -131,6 +123,30 @@
 	[self.scrollView addGestureRecognizer:tapGestureRecognizer];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawerStateChanged) name:A3DrawerStateChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3NotificationClockSettingsChanged object:nil];
+}
+
+- (void)removeObserver {
+	FNLOG();
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3DrawerStateChanged object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationClockSettingsChanged object:nil];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[self removeObserver];
+	}
+}
+
+- (void)cleanUp {
+	[self removeObserver];
+	[_clockDataManager cleanUp];
+	[_buttonsTimer invalidate];
+	_buttonsTimer = nil;
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)drawerStateChanged {
@@ -143,8 +159,6 @@
 	if ([self isMovingToParentViewController]) {
 		[self layoutSubviews];
 		[self.clockDataManager startTimer];
-
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3NotificationClockSettingsChanged object:nil];
 	}
 }
 

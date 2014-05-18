@@ -123,6 +123,25 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorDismissedWithValue:) name:A3NotificationCalculatorDismissedWithValue object:nil];
 }
 
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	if (!parent) {
+		[self removeObserver];
+	}
+}
+
+- (void)removeObserver {
+	FNLOG();
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyCodeSelected object:nil];
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
+}
+
 - (void)cleanUp {
 	[self removeObserver];
 }
@@ -192,7 +211,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 	}
 }
 
--(void)enableControls:(BOOL)enable
+- (void)enableControls:(BOOL)enable
 {
 	if (!IS_IPAD) return;
 
@@ -1149,7 +1168,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     }
 }
 
-#pragma mark - Currency Select Delegate
+#pragma mark - Number Keyboard Currency Button Notification
 
 - (void)currencySelectButtonAction:(NSNotification *)notification {
 	[self.firstResponder resignFirstResponder];
@@ -1170,6 +1189,8 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top)];
 }
 
+#pragma mark - Number Keyboard, Calculator Button Notification
+
 - (void)calculatorButtonAction {
 	_calculatorTargetIndexPath = [self.tableView indexPathForCellSubview:(UIView *) self.firstResponder];
 	_calculatorTargetElement = (A3TableViewInputElement *) [self.root elementForIndexPath:_calculatorTargetIndexPath];
@@ -1180,7 +1201,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 - (void)calculatorDismissedWithValue:(NSNotification *)notification {
 	A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *) [self.root cellForRowAtIndexPath:_calculatorTargetIndexPath];
 	cell.textField.text = notification.object;
-	_cellTextInputFinishAllBlock(_calculatorTargetElement, cell.textField);
+	self.cellTextInputFinishAllBlock(_calculatorTargetElement, cell.textField);
 }
 
 - (NSNumberFormatter *)currencyFormatterForTableViewInputElement {

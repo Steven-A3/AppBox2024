@@ -23,13 +23,8 @@ NSString *const A3NotificationCalculatorDismissedWithValue = @"A3NotificationCal
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	[self dismissViewControllerAnimated:YES completion:nil];
-	NSNumberFormatter *nf = [NSNumberFormatter new];
-	[nf setNumberStyle:NSNumberFormatterDecimalStyle];
-	[nf setUsesGroupingSeparator:NO];
-	NSNumber *resultNumber = [nf numberFromString:self.evaluatedResultLabel.text];
-	NSString *value = [nf stringFromNumber:resultNumber];
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCalculatorDismissedWithValue object:value];
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCalculatorDismissedWithValue object:self.evaluatedResultLabel.text];
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {

@@ -148,10 +148,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
-- (void)cleanUp {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)currencyCodeChanged {
 	[self reloadCurrencyCode];
 	[self.tableView reloadData];
@@ -253,15 +249,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
      */
     
     [self refreshRightBarItems];
-}
-
-- (void)dealloc
-{
-    [self removeObserver];
-}
-
-- (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)settingNoti:(NSNotification *)noti

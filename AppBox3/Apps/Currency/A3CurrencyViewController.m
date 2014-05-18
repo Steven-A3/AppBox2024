@@ -32,6 +32,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIColor+A3Addition.h"
 #import "UIViewController+navigation.h"
+#import "A3CalculatorViewController.h"
 
 NSString *const A3CurrencyLastInputValue = @"A3CurrencyLastInputValue";
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
@@ -53,7 +54,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 @property (nonatomic, copy) NSString *previousValue;
 @property (nonatomic, strong) NSDate *updateStartDate;
 @property (nonatomic, strong) UIBarButtonItem *historyBarButton;
-@property (nonatomic, weak) UITextField *lastEditingTextField;
+@property (nonatomic, weak) UITextField *calculatorTargetTextField;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3CurrencyHistoryViewController *historyViewController;
 @property (nonatomic, strong) A3CurrencySettingsViewController *settingsViewController;
@@ -83,18 +84,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 
 	return self;
-}
-
-- (void)cleanUp{
-	[self removeObserver];
-
-	_favorites = nil;
-	_equalItem = nil;
-	_textFields = nil;
-	_history = nil;
-	_moreMenuButtons = nil;
-	[_plusButton removeFromSuperview];
-	_plusButton = nil;
 }
 
 - (void)viewDidLoad
@@ -144,6 +133,42 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorButtonAction) name:A3NotificationCalculatorButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorDismissedWithValue:) name:A3NotificationCalculatorDismissedWithValue object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataChanged:) name:NSManagedObjectContextObjectsDidChangeNotification object:[[MagicalRecordStack defaultStack] context]];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	[self removeObserver];
+}
+
+- (void)cleanUp{
+	[self removeObserver];
+
+	_favorites = nil;
+	_equalItem = nil;
+	_textFields = nil;
+	_history = nil;
+	_moreMenuButtons = nil;
+	[_plusButton removeFromSuperview];
+	_plusButton = nil;
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
+- (void)removeObserver {
+	FNLOG();
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:USMStoreDidImportChangesNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3CurrencySettingsChangedNotification object:nil];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	}
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:[[MagicalRecordStack defaultStack] context]];
 }
 
 - (void)mainMenuViewDidHide {
@@ -185,11 +210,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		[self registerContentSizeCategoryDidChangeNotification];
 
 		[self reloadUpdateDateLabel];
-
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(coreDataChanged:)
-													 name:NSManagedObjectContextObjectsDidChangeNotification
-												   object:[[MagicalRecordStack defaultStack] context]];
 	}
 }
 
@@ -819,7 +839,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 #pragma mark -- UITextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-	_lastEditingTextField = textField;
+	_calculatorTargetTextField = textField;
 
 	CurrencyFavorite *favorite = self.favorites[0];
 
@@ -871,7 +891,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
 }
 
 - (void)textFieldDidChange:(NSNotification *)notification {
@@ -880,7 +900,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:textField];
 
 	[self setFirstResponder:nil];
 	[self setNumberKeyboardViewController:nil];
@@ -919,20 +939,26 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[self.numberKeyboardViewController.textInputTarget resignFirstResponder];
 }
 
-#pragma mark -- CalculatorDelegate
+#pragma mark - Number Keyboard Calculator Button Notification
 
-- (void)calculatorViewController:(UIViewController *)viewController didDismissWithValue:(NSString *)valueObject {
+- (void)calculatorButtonAction {
+	_calculatorTargetTextField = (UITextField *) self.firstResponder;
+	[self.firstResponder resignFirstResponder];
+	[self presentCalculatorViewController];
+}
+
+- (void)calculatorDismissedWithValue:(NSNotification *)notification {
 	BOOL valueChanged = NO;
 	CurrencyFavorite *currencyFavorite = self.favorites[0];
 	NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
 	[numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
-	_lastEditingTextField.text = [self stringFromNumber:[numberFormatter numberFromString:valueObject] withCurrencyCode:currencyFavorite.currencyCode];
+	_calculatorTargetTextField.text = [self stringFromNumber:[numberFormatter numberFromString:notification.object] withCurrencyCode:currencyFavorite.currencyCode];
 
-	if (![_lastEditingTextField.text isEqualToString:self.previousValue]) {
+	if (![_calculatorTargetTextField.text isEqualToString:self.previousValue]) {
 		valueChanged = YES;
 	}
-	[self updateTextFieldsWithSourceTextField:_lastEditingTextField];
+	[self updateTextFieldsWithSourceTextField:_calculatorTargetTextField];
 
 	if (valueChanged) {
 		[self putHistoryWithValue:@([self.previousValue floatValueEx])];
