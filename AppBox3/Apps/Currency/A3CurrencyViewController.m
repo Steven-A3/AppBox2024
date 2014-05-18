@@ -136,10 +136,22 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorButtonAction) name:A3NotificationCalculatorButtonPressed object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorDismissedWithValue:) name:A3NotificationCalculatorDismissedWithValue object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataChanged:) name:NSManagedObjectContextObjectsDidChangeNotification object:[[MagicalRecordStack defaultStack] context]];
+	[self registerContentSizeCategoryDidChangeNotification];
+
 }
 
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	[self removeObserver];
+- (void)removeObserver {
+	FNLOG();
+	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:USMStoreDidImportChangesNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3CurrencySettingsChangedNotification object:nil];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	}
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:[[MagicalRecordStack defaultStack] context]];
 }
 
 - (void)cleanUp{
@@ -156,19 +168,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (void)dealloc {
 	[self removeObserver];
-}
-
-- (void)removeObserver {
-	FNLOG();
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:USMStoreDidImportChangesNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3CurrencySettingsChangedNotification object:nil];
-	if (IS_IPAD) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
-	}
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:[[MagicalRecordStack defaultStack] context]];
 }
 
 - (void)mainMenuViewDidHide {
@@ -206,8 +205,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 				[self updateCurrencyRates];
 			}
 		}
-
-		[self registerContentSizeCategoryDidChangeNotification];
 
 		[self reloadUpdateDateLabel];
 	}

@@ -48,16 +48,33 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
 - (void)didMoveToParentViewController:(UIViewController *)parent {
 	if (!parent) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
 	}
 }
 
+- (void)dealloc {
+	[self removeObserver];
+}
+
 -(void)contentSizeDidChange:(NSNotification *)notification {
     NSLog(@"%@", notification);
     [self.tableView reloadData];
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

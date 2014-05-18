@@ -101,10 +101,20 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:kReachabilityChangedNotification object:nil];
 }
 
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
+	[self removeObserver];
 	[self notifyDelegateValueChanged];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)notifyDelegateValueChanged {
@@ -605,10 +615,6 @@
 	if ([[A3AppDelegate instance].reachability isReachable]) {
 		[self reloadChartImage];
 	}
-}
-
-- (void)dealloc {
-	[self removeObserver];
 }
 
 @end

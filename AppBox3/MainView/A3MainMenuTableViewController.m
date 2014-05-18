@@ -96,6 +96,25 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentsChanged) name:A3AppsMainMenuContentsChangedNotification object:nil];
 }
 
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCoreDataReady object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3AppsMainMenuContentsChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:_usmStoreDidImportChangesObserver];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
@@ -114,12 +133,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 		[self setupData];
 		[self.tableView reloadData];
 	});
-}
-
-- (void)dealloc {
-	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-	[center removeObserver:_usmStoreDidImportChangesObserver];
-	[center removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning

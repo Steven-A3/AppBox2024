@@ -78,8 +78,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
     [self makeBackButtonEmptyArrow];
 	[self leftBarButtonAppsButton];
-    [self registerContentSizeCategoryDidChangeNotification];
-    
+
     self.title = @"Expense List";
 
 	self.dragDelegate = self;
@@ -155,10 +154,12 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorButtonAction) name:A3NotificationCalculatorButtonPressed object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorDismissedWithValue:) name:A3NotificationCalculatorDismissedWithValue object:nil];
+	[self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)removeObserver {
 	FNLOG();
+	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationExpenseListCurrencyCodeChanged object:nil];
 
 	if (IS_IPAD) {
@@ -171,8 +172,10 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
 }
 
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	if (!parent) {
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
 		[self removeObserver];
 	}
 }

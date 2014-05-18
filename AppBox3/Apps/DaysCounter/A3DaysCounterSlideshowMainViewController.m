@@ -106,6 +106,32 @@
 	}
 }
 
+- (void)removeObserver {
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidAppear object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+	if ( _isShowMoreMenu ) {
+		[self hideTopToolbarAnimated:YES];
+	}
+
+	[self stopTimer];
+}
+
+- (void)dealloc {
+	[self cleanUp];
+	[self removeObserver];
+}
+
 - (void)mainMenuViewDidHide {
 	[self enableControls:YES];
 }
@@ -203,16 +229,6 @@
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    if ( _isShowMoreMenu ) {
-        [self hideTopToolbarAnimated:YES];
-    }
-    
-    [self stopTimer];
-}
-
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
@@ -294,11 +310,6 @@
 	self.eventsArray = nil;
 	self.infoButton = nil;
 	self.shareButton = nil;
-}
-
-- (void)dealloc
-{
-	[self cleanUp];
 }
 
 #pragma mark -

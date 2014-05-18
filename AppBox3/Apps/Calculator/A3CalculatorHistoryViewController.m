@@ -64,26 +64,21 @@ NSString *const A3CalculatorHisotryRowCellID = @"CcellRow";
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	if (!parent) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
-	}
-}
-
-- (void)doneButtonAction:(UIBarButtonItem *)button {
-	if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
-	} else {
-		[self dismissViewControllerAnimated:YES completion:nil];
-	}
-}
-
-- (void)contentSizeDidChange:(NSNotification *)notification {
-	[self.tableView reloadData];
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
 }
 
 - (void)dealloc {
 	[self removeObserver];
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	[self dismissViewControllerAnimated:YES completion:nil];
+	[self removeObserver];
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
 }
 
 - (void)clearButtonAction:(id)button {

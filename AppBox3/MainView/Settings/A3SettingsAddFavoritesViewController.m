@@ -41,6 +41,22 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentsDidChange:) name:A3AppsMainMenuContentsChangedNotification object:nil];
 }
 
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3AppsMainMenuContentsChangedNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (IBAction)doneButtonAction:(id)sender {
 	if ([_delegate respondsToSelector:@selector(childViewControllerWillDismiss)]) {
 		[_delegate childViewControllerWillDismiss];
@@ -59,10 +75,6 @@
 		FNLOG(@"Notification received from self");
 	}
 #endif
-}
-
-- (void)dealloc {
-	[self removeObserver];
 }
 
 - (void)didReceiveMemoryWarning

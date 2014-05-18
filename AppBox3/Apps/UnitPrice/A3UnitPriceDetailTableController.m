@@ -91,8 +91,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     lineView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1.0];
     [self.tableView addSubview:lineView];
     
-    [self registerContentSizeCategoryDidChangeNotification];
-
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectButtonAction:) name:A3NotificationCurrencyButtonPressed object:nil];
@@ -100,10 +98,12 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorButtonAction) name:A3NotificationCalculatorButtonPressed object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorDismissedWithValue:) name:A3NotificationCalculatorDismissedWithValue object:nil];
+	[self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)removeObserver {
 	FNLOG();
+	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyButtonPressed object:nil];
@@ -113,18 +113,23 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
 }
 
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	if (!parent) {
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
+
+	if ([self isBeingDismissed]) {
 		[self removeObserver];
 	}
 }
 
-- (void)keyboardDidHide:(NSNotification *)notification {
-	[self.tableView setContentOffset:CGPointMake(0, - self.tableView.contentInset.top) animated:YES];
-}
-
 - (void)dealloc {
 	[self removeObserver];
+}
+
+- (void)keyboardDidHide:(NSNotification *)notification {
+	[self.tableView setContentOffset:CGPointMake(0, - self.tableView.contentInset.top) animated:YES];
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification
@@ -146,14 +151,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
             }
         }
     }
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
 }
 
 - (void)didReceiveMemoryWarning

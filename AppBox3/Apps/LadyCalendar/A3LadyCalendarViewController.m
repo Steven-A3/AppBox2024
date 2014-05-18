@@ -102,6 +102,40 @@
 	}
 }
 
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationLadyCalendarPeriodDataChanged object:nil];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidAppear object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+	// TODO: 아래 코드 검증
+	[self doneButtonAction:nil];
+
+	if ([self isMovingFromParentViewController]) {
+		[_calendarHeaderView removeFromSuperview];
+
+		[[NSUserDefaults standardUserDefaults] setObject:self.currentMonth forKey:A3LadyCalendarLastViewMonth];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+
+	} else {
+		[_calendarHeaderView setHidden:YES];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)mainMenuDidShow {
 	[self enableControls:NO];
 }
@@ -149,10 +183,6 @@
 	[self moveToCurrentMonth];
 }
 
-- (void)dealloc {
-	[self removeObserver];
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
@@ -193,22 +223,6 @@
 		[self updateCurrentMonthLabel];
 	});
 
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-
-	[self doneButtonAction:nil];
-
-	if ([self isMovingFromParentViewController]) {
-		[_calendarHeaderView removeFromSuperview];
-
-		[[NSUserDefaults standardUserDefaults] setObject:self.currentMonth forKey:A3LadyCalendarLastViewMonth];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-
-	} else {
-		[_calendarHeaderView setHidden:YES];
-	}
 }
 
 - (void)didReceiveMemoryWarning

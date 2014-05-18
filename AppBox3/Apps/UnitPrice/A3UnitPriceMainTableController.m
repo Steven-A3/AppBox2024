@@ -93,6 +93,28 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	}
 }
 
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationUnitPriceCurrencyCodeChanged object:nil];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)cleanUp {
 	[self removeObserver];
 }

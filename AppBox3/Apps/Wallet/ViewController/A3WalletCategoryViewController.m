@@ -57,6 +57,25 @@
 	}
 }
 
+- (void)removeObserver {
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)mainMenuDidShow {
 	[self enableControls:NO];
 }
@@ -71,10 +90,6 @@
 	[self.navigationItem.rightBarButtonItem setEnabled:enable];
 	[self.addButton setEnabled:enable];
 	self.tabBarController.tabBar.selectedImageTintColor = enable ? nil : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
-}
-
-- (void)dealloc {
-	[self removeObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated

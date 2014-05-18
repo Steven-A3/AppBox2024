@@ -116,6 +116,27 @@
 
 	_isShowKeyboard = YES;
 
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuBecameFirstResponder) name:A3MainMenuBecameFirstResponder object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3MainMenuBecameFirstResponder object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (NSMutableArray *)addToDaysCounterButtons {
@@ -131,10 +152,6 @@
 
 	[self calculateDate];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuBecameFirstResponder) name:A3MainMenuBecameFirstResponder object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
-
-	[self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {

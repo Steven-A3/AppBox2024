@@ -51,8 +51,7 @@
     //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
     self.toolbarItems = _bottomToolbar.items;
-    [self registerContentSizeCategoryDidChangeNotification];
-    
+
     [self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
     
@@ -61,6 +60,27 @@
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	self.itemArray = nil;
+	[self removeObserver];
 }
 
 - (void)mainMenuViewDidHide {
@@ -98,12 +118,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc
-{
-    self.itemArray = nil;
-	[self removeObserver];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {

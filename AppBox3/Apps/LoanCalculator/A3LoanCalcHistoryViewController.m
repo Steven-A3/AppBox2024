@@ -61,6 +61,22 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)contentSizeDidChange:(NSNotification *) notification
 {
     [self.tableView reloadData];
@@ -121,10 +137,6 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
     if ([_delegate respondsToSelector:@selector(historyViewControllerDismissed:)]) {
         [_delegate historyViewControllerDismissed:self];
     }
-}
-
-- (void)dealloc {
-	[self removeObserver];
 }
 
 - (void)clearButtonAction:(id)button {

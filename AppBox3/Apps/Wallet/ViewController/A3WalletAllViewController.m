@@ -79,6 +79,25 @@ enum SortingKind {
 	}
 }
 
+- (void)removeObserver {
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)mainMenuDidShow {
 	[self enableControls:NO];
 }
@@ -96,10 +115,6 @@ enum SortingKind {
 	[self.segmentedControlRef setTintColor:segmentedControlEnable ? nil : [UIColor colorWithRGBRed:194 green:194 blue:194 alpha:255]];
 	[self.segmentedControlRef setEnabled:segmentedControlEnable];
 	self.tabBarController.tabBar.selectedImageTintColor = enable ? nil : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
-}
-
-- (void)dealloc {
-	[self removeObserver];
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification

@@ -87,6 +87,22 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)contentSizeDidChange:(NSNotification *) notification
 {
     [self.tableView reloadData];

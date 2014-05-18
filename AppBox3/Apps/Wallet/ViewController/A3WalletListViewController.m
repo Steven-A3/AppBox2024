@@ -56,6 +56,22 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 	self.tabBarController.tabBar.translucent = NO;
 }
 
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)contentSizeDidChange:(NSNotification *) notification
 {
 	[self.tableView reloadData];

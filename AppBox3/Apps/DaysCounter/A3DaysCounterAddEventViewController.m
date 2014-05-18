@@ -173,6 +173,17 @@
 	}
 }
 
+- (void)removeObserver {
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidAppear object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)rightSideViewDidAppear {
 	[self enableControls:NO];
 }
@@ -183,10 +194,6 @@
 
 - (void)enableControls:(BOOL)enable {
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
-}
-
-- (void)dealloc {
-	[self removeObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1433,8 +1440,13 @@
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
     
-    // 창닫기
-    [self cancelAction:nil];
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissCenterViewController];
+	}
+	else {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
+	[self removeObserver];
 }
 
 - (void)cancelAction:(UIBarButtonItem *)button
@@ -1445,13 +1457,14 @@
 	if ([context hasChanges]) {
 		[context rollback];
 	}
-    
-    if (IS_IPAD) {
-        [self.A3RootViewController dismissCenterViewController];
-    }
-    else {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
+
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissCenterViewController];
+	}
+	else {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
+	[self removeObserver];
 }
 
 - (void)toggleFavorite:(id)sender

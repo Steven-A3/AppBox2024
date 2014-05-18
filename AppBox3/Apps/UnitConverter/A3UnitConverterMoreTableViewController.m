@@ -56,6 +56,22 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 }
 
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)managedObjectContextDidSave:(NSNotification *)notification {
 	_unitTypes = nil;
 	[self.tableView reloadData];

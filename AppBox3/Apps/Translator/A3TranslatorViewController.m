@@ -63,6 +63,25 @@
 	}
 }
 
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)didReceiveMemoryWarning
 {
 	[super didReceiveMemoryWarning];
@@ -77,10 +96,6 @@
 	_tableView = nil;
 	_addButton = nil;
 	_favoriteDataSource = nil;
-}
-
-- (void)dealloc {
-	[self removeObserver];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {

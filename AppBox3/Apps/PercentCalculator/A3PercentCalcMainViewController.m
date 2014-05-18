@@ -122,8 +122,31 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
-
     [self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)mainMenuDidHide {
@@ -148,13 +171,6 @@
 
 - (void)keyboardDidHide:(NSNotification *)notification {
 	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:NO];
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
 }
 
 - (void)didReceiveMemoryWarning

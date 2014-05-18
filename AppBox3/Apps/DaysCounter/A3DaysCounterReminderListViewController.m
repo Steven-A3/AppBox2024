@@ -60,6 +60,27 @@
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	self.itemArray = nil;
+	[self removeObserver];
 }
 
 - (void)mainMenuViewDidHide {
@@ -85,7 +106,6 @@
 {
     [super viewWillAppear:animated];
     self.navigationController.delegate = nil;
-    [self registerContentSizeCategoryDidChangeNotification];
     self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager reminderList]];
     [self.tableView reloadData];
     [self.navigationController setToolbarHidden:NO];
@@ -98,12 +118,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc
-{
-    self.itemArray = nil;
-	[self removeObserver];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {

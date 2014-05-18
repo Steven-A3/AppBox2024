@@ -66,6 +66,14 @@
 	}
 }
 
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -92,10 +100,6 @@
 
 - (void)willDismissRightSideView {
 	[self dismissViewControllerAnimated:NO completion:nil];
-}
-
-- (void)dealloc {
-	[self removeObserver];
 }
 
 #pragma mark - Table view data source
@@ -305,6 +309,7 @@
 - (void)cancelAction:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+	[self removeObserver];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button

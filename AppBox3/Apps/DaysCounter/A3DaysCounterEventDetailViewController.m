@@ -61,8 +61,7 @@
 
     [self.navigationController setToolbarHidden:YES];
     [self makeBackButtonEmptyArrow];
-    [self registerContentSizeCategoryDidChangeNotification];
-    
+
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
     self.initialCalendarID = _eventItem.calendarId;
     
@@ -73,6 +72,25 @@
     self.heightCalculateLabel.numberOfLines = 0;
     [self.view addSubview:_heightCalculateLabel];
     self.heightCalculateLabel.hidden = YES;
+
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	self.itemArray = nil;
+	[self removeObserver];
 }
 
 - (void)setupTopWhitePaddingView
@@ -103,19 +121,9 @@
     [self.tableView reloadData];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-}
-
-- (void)dealloc
-{
-    self.itemArray = nil;
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {

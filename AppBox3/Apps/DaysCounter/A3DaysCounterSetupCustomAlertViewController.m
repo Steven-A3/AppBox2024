@@ -271,6 +271,8 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+
     if ([textField.text length] == 0) {
         NSDate *alertDate;
         if ([self isCustomAlertType:_eventModel]) {
@@ -324,7 +326,6 @@
         _eventModel.alertType = @(0);
     }
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
     self.firstResponder = nil;
 }
 

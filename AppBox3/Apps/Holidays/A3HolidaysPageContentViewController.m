@@ -83,9 +83,27 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[self setupImageView];
 	[self setupTableView];
 
-	FNLOG();
-
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageDownloaded:) name:A3HolidaysFlickrDownloadManagerDownloadComplete object:[A3HolidaysFlickrDownloadManager sharedInstance]];
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)removeObserver {
+	[_imageView setScrollView:nil];
+	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3HolidaysFlickrDownloadManagerDownloadComplete object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+	_previousOrientation = CURRENT_ORIENTATION;
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -102,7 +120,6 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[self registerContentSizeCategoryDidChangeNotification];
 	[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:_countryCode];
 }
 
@@ -139,16 +156,6 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3HolidaysDoesNotNeedsShowAcknowledgement];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-
-	_previousOrientation = CURRENT_ORIENTATION;
-}
-
-- (void)dealloc {
-	[_imageView setScrollView:nil];
 }
 
 - (void)reloadDataRedrawImage:(BOOL)redrawImage {

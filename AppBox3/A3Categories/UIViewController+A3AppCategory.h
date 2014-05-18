@@ -41,6 +41,9 @@ extern NSString *const A3NotificationCalculatorButtonPressed;
 - (NSString *)currencyFormattedString:(NSString *)source;
 - (NSString *)percentFormattedString:(NSString *)source;
 - (void)registerContentSizeCategoryDidChangeNotification;
+
+- (void)removeContentSizeCategoryDidChangeNotification;
+
 - (void)contentSizeDidChange:(NSNotification *)notification;
 - (void)removeObserver;
 

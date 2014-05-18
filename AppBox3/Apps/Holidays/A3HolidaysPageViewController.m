@@ -91,6 +91,27 @@
 	[self topGradientView];
 
 	[self.view layoutIfNeeded];
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+	if (self.isMovingFromParentViewController) {
+		[_dayChangedTimer invalidate];
+		_dayChangedTimer = nil;
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -122,8 +143,6 @@
 		NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
 		[runLoop addTimer:_dayChangedTimer forMode:NSDefaultRunLoopMode];
 
-		[self registerContentSizeCategoryDidChangeNotification];
-
 		[self prepareViewControllerAtPage:1];
 
 		[self alertDisclaimer];
@@ -142,17 +161,6 @@
 	if (alertView.tag == 82093) {
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3HolidaysDoesNotNeedsShowDisclaimer];
 		[[NSUserDefaults standardUserDefaults] synchronize];
-	}
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-
-	if (self.isMovingFromParentViewController) {
-		[_dayChangedTimer invalidate];
-		_dayChangedTimer = nil;
-
-		[self removeObserver];
 	}
 }
 

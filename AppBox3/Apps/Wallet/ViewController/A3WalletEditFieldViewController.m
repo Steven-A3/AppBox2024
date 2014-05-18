@@ -62,13 +62,28 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 	}
 }
 
-- (void)viewWillDismiss {
-	[self removeObserver];
-	[self closeEditing];
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
 }
 
 - (void)dealloc {
 	[self removeObserver];
+}
+
+- (void)viewWillDismiss {
+	[self removeObserver];
+	[self closeEditing];
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification

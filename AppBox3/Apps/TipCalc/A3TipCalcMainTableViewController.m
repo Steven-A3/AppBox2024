@@ -109,10 +109,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorButtonAction) name:A3NotificationCalculatorButtonPressed object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorDismissedWithValue:) name:A3NotificationCalculatorDismissedWithValue object:nil];
+	[self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)removeObserver {
 	FNLOG();
+	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyButtonPressed object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyCodeSelected object:nil];
 
@@ -120,13 +122,19 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
 }
 
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	if (!parent) {
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
 		[self removeObserver];
 	}
 }
 
 - (void)cleanUp {
+	[self removeObserver];
+}
+
+- (void)dealloc {
 	[self removeObserver];
 }
 
@@ -155,7 +163,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     self.tableView.tableHeaderView = [self headerView];
     
     [self reloadTableDataSource];
-    [self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)disposeInitializedCondition

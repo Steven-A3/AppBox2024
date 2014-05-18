@@ -64,15 +64,24 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	if ([self isMovingFromParentViewController]) {
-		// 하단에 탭바에 표시되는 카테고리 정보 갱신을 위해 노티를 날린다.
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+
 		if (_categoryContentsChanged) {
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryChanged object:nil];
 		}
 	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification

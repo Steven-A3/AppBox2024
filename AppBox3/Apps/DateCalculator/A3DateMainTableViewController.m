@@ -127,10 +127,19 @@ NSString *kCalculationString;
 
 - (void)removeObserver {
 	FNLOG();
+	[self removeContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
+}
+
+- (void)cleanUp {
+	[self removeObserver];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)rightSideViewWillHide {

@@ -110,15 +110,47 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	}
 
 	[self layoutTextEntryBarViewAnimated:NO ];
-	[self observeKeyboard];
-	[self registerContentSizeCategoryDidChangeNotification];
 
 	[self.view layoutIfNeeded];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:kReachabilityChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+	[self registerContentSizeCategoryDidChangeNotification];
 
 	[self setupBarButtons];
+}
+
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+	[self.navigationController setToolbarHidden:YES animated:NO];
+
+	if ([_delegate respondsToSelector:@selector(translatorMessageViewControllerWillDismiss:)]) {
+		[_delegate translatorMessageViewControllerWillDismiss:self];
+	}
+
+	if (self.isMovingFromParentViewController) {
+		UIView *view = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:NO];
+		[self.view addSubview:view];
+		[self cleanUp];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
@@ -228,22 +260,6 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
     }
 	if (![[A3AppDelegate instance].reachability isReachable]) {
 		[self networkPrompter];
-	}
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-
-	[self.navigationController setToolbarHidden:YES animated:NO];
-
-	if ([_delegate respondsToSelector:@selector(translatorMessageViewControllerWillDismiss:)]) {
-		[_delegate translatorMessageViewControllerWillDismiss:self];
-	}
-
-	if (self.isMovingFromParentViewController) {
-		UIView *view = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:NO];
-		[self.view addSubview:view];
-		[self cleanUp];
 	}
 }
 
@@ -967,11 +983,6 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 }
 
 #pragma mark - Keyboard Handler
-
-- (void)observeKeyboard {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-}
 
 - (void)keyboardWillShow:(NSNotification *)notification {
 	NSDictionary *info = [notification userInfo];

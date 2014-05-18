@@ -40,8 +40,10 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
 }
 
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	if (!parent) {
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
 		[self removeObserver];
 	}
 }

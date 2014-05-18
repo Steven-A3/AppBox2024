@@ -148,6 +148,37 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3LoanCalcNotificationDownPaymentDisabled object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3LoanCalcNotificationDownPaymentEnabled object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3LoanCalcNotificationExtraPaymentDisabled object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3LoanCalcNotificationExtraPaymentEnabled object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3LoanCalcCurrencyCodeChanged object:nil];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	}
+
+	// Keyboard Notification
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)currencyCodeChanged {
 	[self reloadCurrencyCode];
 	[self.tableView reloadData];

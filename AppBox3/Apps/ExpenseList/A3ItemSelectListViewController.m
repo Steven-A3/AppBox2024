@@ -45,9 +45,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	if (!parent) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
 	}
 }
 

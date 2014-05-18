@@ -142,6 +142,26 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewWillHide:) name:A3NotificationRightSideViewWillDismiss object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self clearEverything];
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)mainMenuDidHide {
@@ -215,15 +235,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			NSUInteger vcIdx = [tabBar.unitTypes indexOfObject:self.unitType];
 			[[NSUserDefaults standardUserDefaults] setUnitConverterCurrentUnitTap:vcIdx];
 		}
-		[self registerContentSizeCategoryDidChangeNotification];
 	}
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    [self clearEverything];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -236,10 +248,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
 	[_fmMoveTableView reloadData];
-}
-
-- (void)dealloc {
-	[self removeObserver];
 }
 
 - (void)didReceiveMemoryWarning

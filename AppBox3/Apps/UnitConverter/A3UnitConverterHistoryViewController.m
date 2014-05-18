@@ -61,10 +61,26 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
 - (void)didMoveToParentViewController:(UIViewController *)parent {
 	if (!parent) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
 	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)setupTableFooterView {
@@ -93,10 +109,6 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
 	[self.tableView reloadData];
-}
-
-- (void)dealloc {
-	[self removeObserver];
 }
 
 - (void)clearButtonAction:(id)button {

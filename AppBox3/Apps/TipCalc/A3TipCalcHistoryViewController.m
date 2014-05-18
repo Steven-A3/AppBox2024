@@ -43,14 +43,30 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
--(void)contentSizeDidChange:(NSNotification *)notification {
-    [self.tableView reloadData];
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
 }
 
 - (void)didMoveToParentViewController:(UIViewController *)parent {
 	if (!parent) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
 	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
+-(void)contentSizeDidChange:(NSNotification *)notification {
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning

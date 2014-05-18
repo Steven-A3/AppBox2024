@@ -63,6 +63,23 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dropboxLoginFailed) name:A3DropboxLoginFailed object:nil];
 }
 
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3DropboxLoginWithSuccess object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3DropboxLoginFailed object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)dropboxLoginWithSuccess {
 	if ([[DBSession sharedSession] isLinked]) {
 		[self.restClient loadAccountInfo];
@@ -87,7 +104,6 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 		_selectBackupInProgress = NO;
 	}
 }
-
 
 - (void)didReceiveMemoryWarning
 {

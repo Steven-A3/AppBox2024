@@ -42,6 +42,22 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentChanged:) name:A3AppsMainMenuContentsChangedNotification object:nil];
 }
 
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3AppsMainMenuContentsChangedNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)menuContentChanged:(NSNotification *)notification {
 	if (notification.object != self) {
 		_favorites = nil;
@@ -53,10 +69,6 @@
 		FNLOG(@"Notification received from self");
 	}
 #endif
-}
-
-- (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSMutableArray *)favorites {

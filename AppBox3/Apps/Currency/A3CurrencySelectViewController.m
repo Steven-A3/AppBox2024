@@ -42,6 +42,15 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
+- (void)removeObserver {
+	FNLOG();
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
@@ -49,12 +58,6 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 		if (self.showCancelButton) {
 			[self leftBarButtonCancelButton];
 		}
-	}
-}
-
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	if (!parent) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
 	}
 }
 

@@ -57,10 +57,20 @@ static NSString *CellIdentifier = @"Cell";
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	if (!parent) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
 	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
@@ -69,10 +79,6 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
 	[self.tableView reloadData];
-}
-
-- (void)dealloc {
-	[self removeObserver];
 }
 
 - (void)didReceiveMemoryWarning

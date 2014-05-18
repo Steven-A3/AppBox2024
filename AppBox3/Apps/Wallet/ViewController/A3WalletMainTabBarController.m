@@ -61,7 +61,6 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
         [self categories];
         
         [self setupTabBar];
-		[self startReceiveNotification];
 
     }
     return self;
@@ -90,8 +89,6 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
         }
         
         [self setupTabBar];
-
-		[self startReceiveNotification];
     }
     
     return self;
@@ -101,9 +98,40 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    
-    //self.selectedIndex = [[NSUserDefaults standardUserDefaults] unitConverterCurrentUnitTap];
+
+	// 카테고리 이름/아이콘이 바뀌면 탭바의 표시되는 정보도 변경되어야 하므로 노티를 수신한다.
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryChangedNotification:) name:A3WalletNotificationCategoryChanged object:nil];
+
+	// 카테고리가 추가되면 탭바도 추가되어야 하므로 노티를 수신한다.
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryAddedNotification:) name:A3WalletNotificationCategoryAdded object:nil];
+
+	// 카테고리가 삭제되면 탭바도 삭제되어야 하므로 노티를 수신한다.
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryDeletedNotification:) name:A3WalletNotificationCategoryDeleted object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveItemCategoryMovedNotification:) name:A3WalletNotificationItemCategoryMoved object:nil];
+}
+
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3WalletNotificationCategoryChanged object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3WalletNotificationCategoryAdded object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3WalletNotificationCategoryDeleted object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3WalletNotificationItemCategoryMoved object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
+- (void)cleanUp {
+	[self removeObserver];
 }
 
 - (void)didReceiveMemoryWarning
@@ -132,20 +160,6 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 
 - (BOOL)hidesNavigationBar {
     return YES;
-}
-
-- (void)startReceiveNotification
-{
-    // 카테고리 이름/아이콘이 바뀌면 탭바의 표시되는 정보도 변경되어야 하므로 노티를 수신한다.
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryChangedNotification:) name:A3WalletNotificationCategoryChanged object:nil];
-    
-    // 카테고리가 추가되면 탭바도 추가되어야 하므로 노티를 수신한다.
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryAddedNotification:) name:A3WalletNotificationCategoryAdded object:nil];
-
-    // 카테고리가 삭제되면 탭바도 삭제되어야 하므로 노티를 수신한다.
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryDeletedNotification:) name:A3WalletNotificationCategoryDeleted object:nil];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveItemCategoryMovedNotification:) name:A3WalletNotificationItemCategoryMoved object:nil];
 }
 
 - (void)didReceiveItemCategoryMovedNotification:(NSNotification *)notification {

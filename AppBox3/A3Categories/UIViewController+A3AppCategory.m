@@ -218,6 +218,10 @@ static char const *const key_navigationControllerForKeyboard	= "key_navigationCo
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentSizeDidChange:) name:UIContentSizeCategoryDidChangeNotification object:nil];
 }
 
+- (void)removeContentSizeCategoryDidChangeNotification {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
+}
+
 - (void)contentSizeDidChange:(NSNotification *)notification {
 
 }

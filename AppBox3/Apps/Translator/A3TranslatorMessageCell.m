@@ -67,7 +67,7 @@ static const CGFloat kTranslatorCellGapBetweenMessage = 15.0;
 }
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
 }
 
 - (void)prepareForReuse {

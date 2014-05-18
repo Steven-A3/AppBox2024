@@ -96,7 +96,6 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     [self makeBackButtonEmptyArrow];
 	[self leftBarButtonAppsButton];
     [self rightButtonHistoryButton];
-    [self registerContentSizeCategoryDidChangeNotification];
 	[self enableControls:YES];
     
     self.tableView.tableHeaderView = self.headerView;
@@ -121,16 +120,12 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorButtonAction) name:A3NotificationCalculatorButtonPressed object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorDismissedWithValue:) name:A3NotificationCalculatorDismissedWithValue object:nil];
-}
-
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	if (!parent) {
-		[self removeObserver];
-	}
+	[self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)removeObserver {
 	FNLOG();
+	[self removeContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -140,6 +135,14 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorButtonPressed object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
 }
 
 - (void)cleanUp {

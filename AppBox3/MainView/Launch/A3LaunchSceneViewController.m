@@ -109,7 +109,7 @@
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
-	[super didMoveToParentViewController:parent];
+	[super willMoveToParentViewController:parent];
 
 	[self.view makeConstraints:^(MASConstraintMaker *make) {
 		make.edges.equalTo(self.view.superview);
@@ -120,13 +120,11 @@
 	FNLOGRECT(self.imageView.frame);
 }
 
-
 - (void)viewWillLayoutSubviews {
 	if (self.imageView) {
 		[self setBackgroundImage];
 	}
 }
-
 
 - (void)setBackgroundImage {
 	NSString *imageName;
@@ -156,7 +154,6 @@
 	[self.imageView setImage:[UIImage imageNamed:imageName]];
 	return;
 }
-
 
 - (IBAction)useiCloudButtonAction:(UIButton *)sender {
 	[self.delegate useICloudButtonPressedInViewController:self];

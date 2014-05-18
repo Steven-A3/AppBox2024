@@ -132,12 +132,6 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationClockSettingsChanged object:nil];
 }
 
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	if (!parent) {
-		[self removeObserver];
-	}
-}
-
 - (void)cleanUp {
 	[self removeObserver];
 	[_clockDataManager cleanUp];

@@ -72,22 +72,31 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	[self removeObserver];
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
 - (void)doneButtonAction:(UIBarButtonItem *)button {
-	if (IS_IPAD) {
-		A3AppDelegate *appDelegate = (A3AppDelegate *) [[UIApplication sharedApplication] delegate];
-		[appDelegate.rootViewController dismissRightSideViewController];
-	} else {
+	// iPad has no Done button.
+	if (IS_IPHONE) {
 		[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
+		[self removeObserver];
 	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
 	[self.tableView reloadData];
-}
-
-- (void)dealloc {
-	[self removeObserver];
 }
 
 - (void)clearButtonAction:(id)button {

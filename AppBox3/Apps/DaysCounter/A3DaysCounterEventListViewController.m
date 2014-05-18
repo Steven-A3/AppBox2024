@@ -63,7 +63,6 @@
     UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.rightBarButtonItems = @[edit, search];
     [self makeBackButtonEmptyArrow];
-    [self registerContentSizeCategoryDidChangeNotification];
     _sortType = EventSortType_Name;
     _sortTypeSegmentCtrl.selectedSegmentIndex = _sortType;
     _isDateAscending = YES;
@@ -98,6 +97,24 @@
     [self mySearchDisplayController];
 
     [self.view layoutIfNeeded];
+
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated

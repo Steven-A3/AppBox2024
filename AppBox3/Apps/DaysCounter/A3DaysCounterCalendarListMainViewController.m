@@ -57,8 +57,7 @@
 
     [self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
-    [self registerContentSizeCategoryDidChangeNotification];
-    
+
 //    UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchAction:)];
 //    UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
 //    self.navigationItem.rightBarButtonItems = @[edit, search];
@@ -112,10 +111,23 @@
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 
+	[self registerContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
+}
+
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)mainMenuViewDidHide {

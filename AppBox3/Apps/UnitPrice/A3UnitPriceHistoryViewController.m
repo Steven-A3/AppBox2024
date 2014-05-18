@@ -74,11 +74,15 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
-- (void)doneButtonAction:(UIBarButtonItem *)button {
-	if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
-	} else {
-		[self dismissViewControllerAnimated:YES completion:nil];
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isBeingDismissed]) {
+		[self removeObserver];
 	}
 }
 
@@ -88,12 +92,20 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 	}
 }
 
-- (void)contentSizeDidChange:(NSNotification *)notification {
-	[self.tableView reloadData];
-}
-
 - (void)dealloc {
 	[self removeObserver];
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissRightSideViewController];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
 }
 
 - (void)clearButtonAction:(id)button {

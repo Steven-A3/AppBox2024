@@ -77,18 +77,9 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-	[[UIApplication sharedApplication] setStatusBarHidden:YES];
-}
-
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	if (!parent) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
-	}
-}
-
 - (void)doneButtonAction:(id)button {
+	[[UIApplication sharedApplication] setStatusBarHidden:YES];
+
 	if (IS_IPAD) {
 		[self.A3RootViewController dismissRightSideViewController];
 	} else {

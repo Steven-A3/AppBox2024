@@ -152,10 +152,8 @@ enum A3ExpenseListAddBudgetCellType {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
 }
 
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	if (!parent) {
-		[self removeObserver];
-	}
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)rightSideViewDidAppear {
@@ -169,10 +167,6 @@ enum A3ExpenseListAddBudgetCellType {
 - (void)enableControls:(BOOL)enable {
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.navigationItem.rightBarButtonItem setEnabled:enable];
-}
-
-- (void)dealloc {
-	[self removeObserver];
 }
 
 - (void)didReceiveMemoryWarning
@@ -241,6 +235,7 @@ enum A3ExpenseListAddBudgetCellType {
 
 		[_delegate performSelector:@selector(setExpenseBudgetDataFor:) withObject:resultBudget];
 	}
+	[self removeObserver];
 }
 
 -(void)cancelButtonAction {
@@ -250,6 +245,7 @@ enum A3ExpenseListAddBudgetCellType {
 	else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
+	[self removeObserver];
 }
 
 -(NSString *) dateStringFromDate:(NSDate *)date {
