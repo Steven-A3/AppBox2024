@@ -757,7 +757,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	if (indexPath.section == 0) {
 		A3UnitPriceSliderCell *sliderCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceSliderCellID forIndexPath:indexPath];
 		[self configureSliderCell:sliderCell];
-
 		cell = sliderCell;
 	}
 	else {

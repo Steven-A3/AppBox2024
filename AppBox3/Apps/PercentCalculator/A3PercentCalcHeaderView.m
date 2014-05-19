@@ -285,14 +285,12 @@
 		{
 			// Compare % Change from X to Y
 			_slider1AMarkLabel.hidden = NO;
-            //			_slider1AMarkLabel.layer.cornerRadius = _slider1AMarkLabel.bounds.size.width / 2.0;
             _slider1AMarkLabel.layer.cornerRadius = 10.0;
 			_slider1AMarkLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
 			_slider1AMarkLabel.adjustsFontSizeToFitWidth = NO;
 			[_slider1AMarkLabel setBackgroundColor:[UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]];
 
 			_slider2BMarkLabel.hidden = NO;
-            //			_slider2BMarkLabel.layer.cornerRadius = _slider2BMarkLabel.bounds.size.width / 2.0;
             _slider2BMarkLabel.layer.cornerRadius = 10.0;
 			_slider2BMarkLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
 			_slider2BMarkLabel.adjustsFontSizeToFitWidth = NO;

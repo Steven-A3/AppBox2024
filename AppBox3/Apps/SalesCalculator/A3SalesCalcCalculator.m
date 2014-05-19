@@ -428,6 +428,13 @@
     NSNumber * result;
     NSNumber * originalPrice = [self originalPriceBeforeTaxAndDiscountForCalcData:aData];
     NSNumber * salePrice = [self salePriceWithoutTaxForCalcData:aData];
+    if ([originalPrice isEqualToNumber:[NSDecimalNumber notANumber]]) {
+        originalPrice = @0;
+    }
+    if ([salePrice isEqualToNumber:[NSDecimalNumber notANumber]]) {
+        salePrice = @0;
+    }
+    
     result = @([originalPrice doubleValue] - [salePrice doubleValue]);
 
     return result;
@@ -437,6 +444,13 @@
     NSNumber * result;
     NSNumber * originalPriceTax = [self originalPriceTaxForCalcData:aData];
     NSNumber * salePriceTax = [self salePriceTaxForCalcData:aData];
+    if ([originalPriceTax isEqualToNumber:[NSDecimalNumber notANumber]]) {
+        originalPriceTax = @0;
+    }
+    if ([salePriceTax isEqualToNumber:[NSDecimalNumber notANumber]]) {
+        salePriceTax = @0;
+    }
+    
     result = @([originalPriceTax doubleValue] - [salePriceTax doubleValue]);
     
     return result;
