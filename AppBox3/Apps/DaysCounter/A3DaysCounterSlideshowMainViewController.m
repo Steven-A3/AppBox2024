@@ -138,10 +138,12 @@
 }
 
 - (void)rightSideViewDidAppear {
+	FNLOG();
 	[self enableControls:NO];
 }
 
 - (void)rightSideViewWillDismiss {
+	FNLOG();
 	[self enableControls:YES];
 }
 
@@ -497,6 +499,7 @@
 #pragma mark - UIPopoverControllerDelegate
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
+	FNLOG();
     self.popoverVC = nil;
 	[self enableControls:YES];
 }
@@ -599,7 +602,6 @@
                          permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         activityController.completionHandler = ^(NSString* activityType, BOOL completed) {
             if ( completed && [activityType isEqualToString:@"Slideshow"] ) {
-				[self enableControls:NO];
                 A3DaysCounterSlideshowOptionViewController *viewController = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:@"A3DaysCounterSlideshowOptionViewController" bundle:nil];
                 viewController.sharedManager = _sharedManager;
 
@@ -609,6 +611,11 @@
 					[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(optionViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 				} else {
 					[self.A3RootViewController presentRightSideViewController:viewController];
+					double delayInSeconds = 0.6;
+					dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+					dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+						[self enableControls:NO];
+					});
 				}
             }
         };

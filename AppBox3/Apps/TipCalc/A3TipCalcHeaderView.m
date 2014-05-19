@@ -79,7 +79,7 @@
     // Buttons
     _beforeSplitButton = [A3RoundedSideButton buttonWithType:UIButtonTypeCustom];
     _perPersonButton = [A3RoundedSideButton buttonWithType:UIButtonTypeCustom];
-    _detailInfoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _detailInfoButton = [UIButton buttonWithType:UIButtonTypeSystem];
 	[self addSubview:_beforeSplitButton];
 	[self addSubview:_perPersonButton];
 	[self addSubview:_detailInfoButton];

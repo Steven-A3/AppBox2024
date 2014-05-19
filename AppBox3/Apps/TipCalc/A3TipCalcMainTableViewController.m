@@ -31,6 +31,7 @@
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
 #import "UITableView+utility.h"
+#import "UIColor+A3Addition.h"
 
 #define kColorPlaceHolder [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 
@@ -104,12 +105,20 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     }
     [self refreshMoreButtonState];
 
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	}
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)removeObserver {
 	FNLOG();
 	[self removeContentSizeCategoryDidChangeNotification];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -127,6 +136,14 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (void)dealloc {
 	[self removeObserver];
+}
+
+- (void)mainMenuViewDidHide {
+	[self setBarButtonsEnable:YES];
+}
+
+- (void)rightSideViewWillDismiss {
+	[self setBarButtonsEnable:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -174,17 +191,28 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 - (void)setBarButtonsEnable:(BOOL)enable {
     [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
         if (barButton.tag == 1) {
-            barButton.enabled = [TipCalcHistory MR_countOfEntities] > 0 ? YES : NO;
+            barButton.enabled = enable && [TipCalcHistory MR_countOfEntities] > 0;
         }
         else {
             barButton.enabled = enable;
         }
     }];
     self.headerView.detailInfoButton.enabled = enable;
-    self.headerView.beforeSplitButton.enabled = enable;
-    self.headerView.perPersonButton.enabled = enable;
     self.navigationItem.leftBarButtonItem.enabled = enable;
-    
+	self.headerView.beforeSplitButton.enabled = enable;
+	self.headerView.perPersonButton.enabled = enable;
+
+	UIColor *color = enable ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
+	[self.headerView.beforeSplitButton setTitleColor:color forState:UIControlStateNormal];
+	[self.headerView.perPersonButton setTitleColor:color forState:UIControlStateNormal];
+
+	if ([self.headerView.beforeSplitButton isSelected]) {
+		[self.headerView.beforeSplitButton setBorderColor:color];
+	}
+	if ([self.headerView.perPersonButton isSelected]) {
+		[self.headerView.perPersonButton setBorderColor:color];
+	}
+
     if (enable) {
         [self refreshMoreButtonState];
     }
@@ -912,11 +940,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                 [self.navigationController pushViewController:selectTableViewController animated:YES];
             }
             else {
+				[self setBarButtonsEnable:NO];
 				[self.A3RootViewController presentRightSideViewController:selectTableViewController];
 			}
-        }
-            break;
-            
+			break;
+		}
+
         default:
             break;
     }
@@ -937,7 +966,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		}
 	}
 	else {
-		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+		[self.A3RootViewController toggleLeftMenuViewOnOff];
+		[self setBarButtonsEnable:NO];
 	}
 }
 
@@ -987,12 +1017,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
         UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(saveToHistoryAndInitialize:)];
         UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
-        history.tag = 1;
+		history.tag = 1;
         UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
         UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
         space.width = 24.0;
         
-        self.navigationItem.rightBarButtonItems = @[settings, space, history, saveItem, space, share];
+        self.navigationItem.rightBarButtonItems = @[settings, space, history, space, saveItem, space, share];
     }
 }
 
