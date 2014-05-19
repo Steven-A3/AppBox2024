@@ -31,6 +31,7 @@
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
 #import "UITableView+utility.h"
+#import "UIColor+A3Addition.h"
 
 #define kColorPlaceHolder [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 
@@ -174,17 +175,28 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 - (void)setBarButtonsEnable:(BOOL)enable {
     [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
         if (barButton.tag == 1) {
-            barButton.enabled = [TipCalcHistory MR_countOfEntities] > 0 ? YES : NO;
+            barButton.enabled = [TipCalcHistory MR_countOfEntities] > 0;
         }
         else {
             barButton.enabled = enable;
         }
     }];
     self.headerView.detailInfoButton.enabled = enable;
-    self.headerView.beforeSplitButton.enabled = enable;
-    self.headerView.perPersonButton.enabled = enable;
     self.navigationItem.leftBarButtonItem.enabled = enable;
-    
+	self.headerView.beforeSplitButton.enabled = enable;
+	self.headerView.perPersonButton.enabled = enable;
+
+	UIColor *color = enable ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
+	[self.headerView.beforeSplitButton setTitleColor:color forState:UIControlStateNormal];
+	[self.headerView.perPersonButton setTitleColor:color forState:UIControlStateNormal];
+
+	if ([self.headerView.beforeSplitButton isSelected]) {
+		[self.headerView.beforeSplitButton setBorderColor:color];
+	}
+	if ([self.headerView.perPersonButton isSelected]) {
+		[self.headerView.perPersonButton setBorderColor:color];
+	}
+
     if (enable) {
         [self refreshMoreButtonState];
     }
@@ -992,7 +1004,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
         space.width = 24.0;
         
-        self.navigationItem.rightBarButtonItems = @[settings, space, history, saveItem, space, share];
+        self.navigationItem.rightBarButtonItems = @[settings, space, history, space, saveItem, space, share];
     }
 }
 
