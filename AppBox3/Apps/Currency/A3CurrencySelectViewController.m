@@ -86,6 +86,7 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 	} else {
 		[self.navigationController dismissViewControllerAnimated:YES completion:NULL];
 	}
+	[self removeObserver];
 }
 
 - (NSMutableArray *)allData {
@@ -194,6 +195,7 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 	[self callDelegate:data.code];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyCodeSelected object:data.code];
+	[self removeObserver];
 }
 
 @end

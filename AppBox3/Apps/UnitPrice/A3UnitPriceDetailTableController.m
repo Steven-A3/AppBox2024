@@ -28,6 +28,7 @@
 #import "A3TableViewInputElement.h"
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
+#import "UIViewController+A3Addition.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
 	Price_Percent = 0,
@@ -76,6 +77,10 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	if (IS_IPHONE) {
+		[self makeBackButtonEmptyArrow];
+	}
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPAD)?28:15, 0, 0);
