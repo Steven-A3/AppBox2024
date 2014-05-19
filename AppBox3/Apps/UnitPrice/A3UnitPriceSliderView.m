@@ -87,6 +87,9 @@
     
     _markLabel.font = [UIFont systemFontOfSize:11];
     _markLabel.backgroundColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
+    
+    // priceLabel 제거. 2014.05.19_KJH
+    _priceNumLabel.hidden = YES;
 }
 
 - (void)labelFontSetting {
@@ -179,41 +182,44 @@
     float unitPrice = _unitPriceValue;
     float pixelPerPrice = _lineView.frame.size.width/_maxValue;
     
+
+    // slider part
+    // 경계값 체크
     float thumbX = _thumbView.center.x;
-    float markX = _markLabel.center.x;
-    
+    float thumbX_Min, thumbX_Max, markX_Min, markX_Max;
     if (_maxValue > 0) {
         thumbX = pixelPerPrice * unitPrice;
-        markX = pixelPerPrice * _priceValue;
     }
     else {
         thumbX = 0;
-        markX = _lineView.frame.size.width - _markLabel.frame.size.width/2 - 15;
     }
-    
-    // slider part
-    // 경계값 체크
-    float thumbX_Min, thumbX_Max, markX_Min, markX_Max;
     thumbX_Min = _thumbView.frame.size.width/2;
     thumbX_Max = (_layoutType == Slider_StandAlone) ? (_lineView.frame.size.width - _thumbView.frame.size.width/2) : (_lineView.frame.size.width - _markLabel.frame.size.width - _thumbView.frame.size.width/2);
-    markX_Min = _markLabel.frame.size.width/2 + _thumbView.frame.size.width;
-    markX_Max = _lineView.frame.size.width - _markLabel.frame.size.width/2;
-    
-    markX = MIN(markX, markX_Max);
-    markX = MAX(markX, markX_Min);
     thumbX = MIN(thumbX, thumbX_Max);
     thumbX = MAX(thumbX, thumbX_Min);
-    
-    // label size fit
     [_unitPriceLabel sizeToFit];
-    [_priceLabel sizeToFit];
     [_unitPriceNumLabel sizeToFit];
-    [_priceNumLabel sizeToFit];
+    _unitPriceNumLabel.center = CGPointMake(thumbX, _unitPriceNumLabel.center.y);
+
     
+    float markX = _markLabel.center.x;
+    markX = _lineView.frame.size.width - (_markLabel.frame.size.width / 2) - 15;
+    //    if (_maxValue > 0) {
+    //        markX = pixelPerPrice * _priceValue;
+    //    }
+    //    else {
+    //        markX = _lineView.frame.size.width - (_markLabel.frame.size.width / 2) - 15;
+    //    }
+    markX_Min = _markLabel.frame.size.width/2 + _thumbView.frame.size.width;
+    markX_Max = _lineView.frame.size.width - _markLabel.frame.size.width/2;
+    markX = MIN(markX, markX_Max);
+    markX = MAX(markX, markX_Min);
     // number label
     // 센터값 대입
-    _unitPriceNumLabel.center = CGPointMake(thumbX, _unitPriceNumLabel.center.y);
+    [_priceLabel sizeToFit];
+    [_priceNumLabel sizeToFit];
     _priceNumLabel.center = CGPointMake(markX, _priceNumLabel.center.y);
+    
     
     // 경계값 체크
     switch (_layoutType) {
