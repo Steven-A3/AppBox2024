@@ -133,10 +133,6 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-		FNLOG();
-		[self removeObserver];
-	}
 	[self.navigationController setToolbarHidden:YES animated:NO];
 
 	if ([_delegate respondsToSelector:@selector(translatorMessageViewControllerWillDismiss:)]) {
@@ -147,6 +143,9 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		UIView *view = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:NO];
 		[self.view addSubview:view];
 		[self cleanUp];
+
+		FNLOG();
+		[self removeObserver];
 	}
 }
 
@@ -155,8 +154,10 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
+	[super willMoveToParentViewController:parent];
+
 	FNLOG(@"%@", parent);
-	if (parent == nil) {
+	if (!parent) {
 		[_sourceLanguageSelectTextField resignFirstResponder];
 		[_targetLanguageSelectTextField resignFirstResponder];
 	}
@@ -221,8 +222,8 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	FNLOG();
-    if (self.isMovingToParentViewController) {
+	FNLOG(@"%ld, %ld, %ld, %ld", (long)[self isMovingToParentViewController], (long)[self isMovingFromParentViewController], (long)[self isBeingPresented], (long)[self isBeingDismissed]);
+    if ([self isMovingToParentViewController]) {
         if (_messageTableView) {
             [self scrollToBottomAnimated:NO ];
             [_textView becomeFirstResponder];
@@ -236,8 +237,9 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-    
-    if (self.isMovingToParentViewController) {
+
+	FNLOG(@"%ld, %ld, %ld, %ld", (long)[self isMovingToParentViewController], (long)[self isMovingFromParentViewController], (long)[self isBeingPresented], (long)[self isBeingDismissed]);
+    if ([self isMovingToParentViewController]) {
         if (_selectItem) {
             NSUInteger index = [self.messages indexOfObject:_selectItem];
             if (index != NSNotFound) {

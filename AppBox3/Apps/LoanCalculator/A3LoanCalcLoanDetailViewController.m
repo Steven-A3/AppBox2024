@@ -139,6 +139,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 }
 
 -(void)willMoveToParentViewController:(UIViewController *)parent {
+	[super willMoveToParentViewController:parent];
+
     NSLog(@"This VC has has been pushed popped OR covered");
     
     if (parent) {

@@ -102,6 +102,9 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 }
 
 - (void)didMoveToParentViewController:(UIViewController *)parent {
+	[super didMoveToParentViewController:parent];
+
+	FNLOG(@"%@", parent);
 	if (!parent) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
 	}
