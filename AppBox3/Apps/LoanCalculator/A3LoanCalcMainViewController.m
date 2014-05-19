@@ -2068,6 +2068,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 			[keyboardVC reloadPrevNextButtons];
 		}
 	}
+	[self addNumberKeyboardNotificationObservers];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -2076,6 +2077,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+	[self removeNumberKeyboardNotificationObservers];
 	[self setFirstResponder:nil];
 
 	NSIndexPath *endIP = self.currentIndexPath;
