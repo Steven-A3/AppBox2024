@@ -225,7 +225,7 @@
 
     rect.origin = CGPointMake(fXpos, rect.origin.y);
     rect.size = CGSizeMake(tXpos - fXpos, rect.size.height);
-    FNLOG(@"\nadjustFromToBetweenLineWidth: %@", NSStringFromCGRect(rect));
+
     [UIView animateWithDuration:0.5
                           delay:0
          usingSpringWithDamping:500.0f
@@ -461,7 +461,6 @@
     if (sender.state == UIGestureRecognizerStateEnded)
     {
         // handling code
-        NSLog(@"fromThumbTapGesture");
         if ([_delegate respondsToSelector:@selector(dateCalcHeaderFromThumbTapped)]) {
             [_delegate dateCalcHeaderFromThumbTapped];
         }
@@ -472,7 +471,6 @@
     if (sender.state == UIGestureRecognizerStateEnded)
     {
         // handling code
-        NSLog(@"toThumbTapGesture");
         if ([_delegate respondsToSelector:@selector(dateCalcHeaderToThumbTapped)]) {
             [_delegate dateCalcHeaderToThumbTapped];
         }
@@ -533,7 +531,6 @@
     
     CGPoint point = _toThumbView.center;
     point.x = _toValue;
-//    NSLog(@"toValue: %f", _toValue);
     
     [UIView animateWithDuration:0.5
                           delay:0
@@ -567,7 +564,6 @@
         case CALC_TYPE_ADD:
         case CALC_TYPE_SUB:
         {
-            FNLOG(@"\fromDate: %@, toDate: %@", fromDate, toDate);
             _fromLagerThanTo = NO;
             [self setFromDate:fromDate];
             [self setToDate:toDate];
@@ -734,8 +730,8 @@
     
     CGFloat offsetFrom = minDayCount + ((_fromValue-SLIDER_OFFSET) / (_maxValue-SLIDER_OFFSET)) * maxDayCount;
     CGFloat offsetTo = minDayCount + (_toValue / (_maxValue-SLIDER_OFFSET)) * maxDayCount;
-    NSLog(@"offset From: %f = %ld + (%f / %f) * %ld", offsetFrom, (long)minDayCount, (_fromValue-SLIDER_OFFSET), _maxValue-SLIDER_OFFSET, (long)maxDayCount);
-    NSLog(@"offset To: %f = %ld + (%f / %f) * %ld", offsetTo, (long)minDayCount, _toValue, _maxValue-SLIDER_OFFSET, (long)maxDayCount);
+//    NSLog(@"offset From: %f = %ld + (%f / %f) * %ld", offsetFrom, (long)minDayCount, (_fromValue-SLIDER_OFFSET), _maxValue-SLIDER_OFFSET, (long)maxDayCount);
+//    NSLog(@"offset To: %f = %ld + (%f / %f) * %ld", offsetTo, (long)minDayCount, _toValue, _maxValue-SLIDER_OFFSET, (long)maxDayCount);
     NSDateComponents *fComp = [NSDateComponents new];
     NSDateComponents *tComp = [NSDateComponents new];
     if (_calcType == CALC_TYPE_SUB) {
@@ -753,8 +749,8 @@
         NSDateComponents *resultComp = [A3DateCalcStateManager dateComponentFromDate:fDate toDate:tDate];
         _fromDate = fDate;
         _toDate = tDate;
-        NSLog(@"MinDate: %@, FromDate: %@", _minDate, _fromDate);
-        NSLog(@"MaxDate: %@, ToDate: %@", _maxDate, _toDate);
+//        NSLog(@"MinDate: %@, FromDate: %@", _minDate, _fromDate);
+//        NSLog(@"MaxDate: %@, ToDate: %@", _maxDate, _toDate);
 
         [self setResultBetweenDate:resultComp withAnimation:YES];
         

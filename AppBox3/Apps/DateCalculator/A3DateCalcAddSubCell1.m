@@ -25,30 +25,28 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
+        
+        [_addModeButton makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.equalTo(self.left);
+            make.top.equalTo(self.top);
+            make.bottom.equalTo(self.bottom);
+            make.trailing.equalTo(self.centerX);
+        }];
+        
+        [_subModeButton makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.equalTo(self.centerX);
+            make.top.equalTo(self.top);
+            make.bottom.equalTo(self.bottom);
+            make.trailing.equalTo(self.right);
+        }];
     }
     return self;
 }
 
 -(void)layoutSubviews
 {
-    [super layoutSubviews];
     self.addModeButton.isAddButton = YES;
     self.subModeButton.isAddButton = NO;
-    
-    [_addModeButton makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.left);
-        make.top.equalTo(self.top);
-        make.bottom.equalTo(self.bottom);
-        make.trailing.equalTo(self.centerX);
-    }];
-    
-    [_subModeButton makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.centerX);
-        make.top.equalTo(self.top);
-        make.bottom.equalTo(self.bottom);
-        make.trailing.equalTo(self.right);
-    }];
-    
     [super layoutSubviews];
 }
 
