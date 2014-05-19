@@ -82,6 +82,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     lineView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1.0];
     [self.tableView addSubview:lineView];
     
+    self.currencyFormatter.maximumFractionDigits = 2;
     [self updateUnitPrices:NO];
 
 	[self registerContentSizeCategoryDidChangeNotification];
@@ -128,6 +129,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (void)currencyCodeChanged:(NSNotification *)notification {
 	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceCurrencyCode];
 	[self.currencyFormatter setCurrencyCode:currencyCode];
+    [self.currencyFormatter setMaximumFractionDigits:2];
 	[self.tableView reloadData];
 }
 

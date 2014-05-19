@@ -90,6 +90,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;     // KJH
     
     self.title = _isPriceA ? @"Price A":@"Price B";
+    self.currencyFormatter.maximumFractionDigits = 2;
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 1, self.view.bounds.size.width, IS_RETINA ? 0.5:1.0)];
     lineView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -844,6 +845,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
 		[self.currencyFormatter setCurrencyCode:currencyCode];
+        self.currencyFormatter.maximumFractionDigits = 2;
 		[self.tableView reloadData];
 
 		dispatch_async(dispatch_get_main_queue(), ^{
