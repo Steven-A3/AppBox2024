@@ -178,18 +178,18 @@
 
 - (void)setupGestureRecognizer
 {
-    UIPanGestureRecognizer *fromPan = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                              action:@selector(fromThumbPanGesture:)];
+    //    UIPanGestureRecognizer *fromPan = [[UIPanGestureRecognizer alloc] initWithTarget:self
+    //                                                                              action:@selector(fromThumbPanGesture:)];
     UITapGestureRecognizer *fromTap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                               action:@selector(fromThumbTapGesture:)];
-    [_fromThumbView addGestureRecognizer:fromPan];
+    //    [_fromThumbView addGestureRecognizer:fromPan];
     [_fromThumbView addGestureRecognizer:fromTap];
     
-    UIPanGestureRecognizer *toPan = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                            action:@selector(toThumbPanGesture:)];
+    //    UIPanGestureRecognizer *toPan = [[UIPanGestureRecognizer alloc] initWithTarget:self
+    //                                                                            action:@selector(toThumbPanGesture:)];
     UITapGestureRecognizer *toTap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                              action:@selector(toThumbTapGesture:)];
-    [_toThumbView addGestureRecognizer:toPan];
+                                                                            action:@selector(toThumbTapGesture:)];
+    //    [_toThumbView addGestureRecognizer:toPan];
     [_toThumbView addGestureRecognizer:toTap];
 }
 
