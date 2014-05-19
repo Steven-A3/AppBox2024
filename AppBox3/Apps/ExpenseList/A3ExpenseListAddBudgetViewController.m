@@ -773,7 +773,8 @@ static NSString *CellIdentifier = @"Cell";
 			[weakSelf removeNumberKeyboardNotificationObservers];
             
             if (textField.text && textField.text.length!=0) {
-                element.value = textField.text;
+				NSNumber *number = [weakSelf.decimalFormatter numberFromString:textField.text];
+				element.value = [number stringValue];
             }
             
             weakSelf.navigationItem.rightBarButtonItem.enabled = [weakSelf isBudgetModified] ? YES : NO;

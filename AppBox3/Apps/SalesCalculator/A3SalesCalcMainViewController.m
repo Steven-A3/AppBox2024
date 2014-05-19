@@ -600,7 +600,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 			[weakSelf removeNumberKeyboardNotificationObservers];
             
             NSString *inputString = textField.text;
-			NSNumberFormatter *formatter = [NSNumberFormatter new];
+			NSNumber *inputNumber = [weakSelf.decimalFormatter numberFromString:textField.text];
 
             switch (element.identifier) {
                 case A3TableElementCellType_Price:
@@ -609,8 +609,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
                 case A3TableElementCellType_Tax:
                 {
                     if (textField.text && textField.text.length!=0) {
-                        NSNumber *value = [formatter numberFromString:inputString];
-                        element.value = (!value || [value isEqualToNumber:@0]) ? @"" : inputString;
+                        element.value = (!inputNumber || [inputNumber isEqualToNumber:@0]) ? @"" : [inputNumber stringValue];
                     }
                 }
                     break;
@@ -626,20 +625,20 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 
             // InputString set to value.
             if (element.identifier == A3TableElementCellType_Price) {
-                [weakSelf.preferences.calcData setPrice:[formatter numberFromString:element.value]];
+                [weakSelf.preferences.calcData setPrice:inputNumber];
                 [weakSelf.preferences.calcData setPriceType:element.valueType];
             }
             else if (element.identifier == A3TableElementCellType_Discount) {
-                [weakSelf.preferences.calcData setDiscount:[formatter numberFromString:element.value]];
+                [weakSelf.preferences.calcData setDiscount:inputNumber];
                 [weakSelf.preferences.calcData setDiscountType:element.valueType];
             }
             else if (element.identifier == A3TableElementCellType_Additional) {
-                [weakSelf.preferences.calcData setAdditionalOff:[formatter numberFromString:element.value]];
+                [weakSelf.preferences.calcData setAdditionalOff:inputNumber];
                 [weakSelf.preferences.calcData setAdditionalOffType:element.valueType];
 				textField.placeholder = @"Optional";
             }
             else if (element.identifier == A3TableElementCellType_Tax) {
-                [weakSelf.preferences.calcData setTax:[formatter numberFromString:element.value]];
+                [weakSelf.preferences.calcData setTax:inputNumber];
                 [weakSelf.preferences.calcData setTaxType:element.valueType];
 				textField.placeholder = @"Optional";
             }
@@ -672,19 +671,19 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
                 else {
                     if (element.identifier == A3TableElementCellType_Discount || (element.identifier == A3TableElementCellType_Tax && [weakSelf.preferences.calcData shownPriceType] == ShowPriceType_SalePriceWithTax)) {
                         if ([element valueType] == A3TableViewValueTypePercent) {
-                            textField.text = [weakSelf.percentFormatter stringFromNumber:@([[formatter numberFromString:element.value] doubleValue]/ 100.0)];
+                            textField.text = [weakSelf.percentFormatter stringFromNumber:@([inputNumber doubleValue]/ 100.0)];
                         }
                         else {
-                            textField.text = [weakSelf.currencyFormatter stringFromNumber:[formatter numberFromString:element.value]];
+                            textField.text = [weakSelf.currencyFormatter stringFromNumber:inputNumber];
                         }
                     }
                     else {
                         if ([element.value doubleValue] > 0) {
                             if ([element valueType] == A3TableViewValueTypePercent) {
-								textField.text = [weakSelf.percentFormatter stringFromNumber:@([[formatter numberFromString:element.value] doubleValue] / 100.0)];
+								textField.text = [weakSelf.percentFormatter stringFromNumber:@([inputNumber doubleValue] / 100.0)];
                             }
                             else {
-                                textField.text = [weakSelf.currencyFormatter stringFromNumber:[formatter numberFromString:element.value]];
+                                textField.text = [weakSelf.currencyFormatter stringFromNumber:inputNumber];
                             }
                         }
                         else {
