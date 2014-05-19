@@ -142,8 +142,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 - (void)enableControls:(BOOL)enable
 {
-	if (!IS_IPAD) return;
-	self.navigationItem.leftBarButtonItem.enabled = enable;
     if (enable) {
 		self.composeBarItem.enabled = price1UnitPrice > 0 && price2UnitPrice > 0;
 		self.historyBarItem.enabled = [UnitPriceHistory MR_countOfEntities] > 0;
@@ -152,6 +150,9 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 		self.composeBarItem.enabled = NO;
 		self.historyBarItem.enabled = NO;
     }
+    
+	if (!IS_IPAD) return;
+	self.navigationItem.leftBarButtonItem.enabled = enable;
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
@@ -445,12 +446,14 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.upSliderView.markLabel.text = @"A";
     cell.upSliderView.layoutType = Slider_UpperOfTwo;
     cell.upSliderView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
+    cell.upSliderView.priceNumLabel.hidden = YES;
     
     [cell.downSliderView labelFontSetting];
     cell.downSliderView.displayColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
     cell.downSliderView.markLabel.text = @"B";
     cell.downSliderView.layoutType = Slider_LowerOfTwo;
     cell.downSliderView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
+    cell.downSliderView.priceNumLabel.hidden = YES;
     
     cell.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
  

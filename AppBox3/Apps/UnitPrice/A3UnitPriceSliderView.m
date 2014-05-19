@@ -87,9 +87,6 @@
     
     _markLabel.font = [UIFont systemFontOfSize:11];
     _markLabel.backgroundColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
-    
-    // priceLabel 제거. 2014.05.19_KJH
-    _priceNumLabel.hidden = YES;
 }
 
 - (void)labelFontSetting {
