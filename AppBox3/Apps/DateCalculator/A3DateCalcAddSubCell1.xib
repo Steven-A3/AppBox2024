@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,10 +13,13 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ueR-gK-b6a" userLabel="Button1" customClass="A3DateCalcAddSubButton">
-                        <rect key="frame" x="0.0" y="0.0" width="160" height="44"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ueR-gK-b6a" userLabel="Button1" customClass="A3DateCalcAddSubButton">
+                        <rect key="frame" x="0.0" y="0.0" width="160" height="43"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.12941176469999999" green="0.67450980390000004" blue="0.90980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="160" id="MfD-bd-AS9"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="47"/>
                         <inset key="titleEdgeInsets" minX="0.0" minY="-8" maxX="0.0" maxY="0.0"/>
                         <state key="normal">
@@ -26,8 +29,8 @@
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xbe-IN-sO4" userLabel="Button2" customClass="A3DateCalcAddSubButton">
-                        <rect key="frame" x="160" y="0.0" width="160" height="44"/>
+                    <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xbe-IN-sO4" userLabel="Button2" customClass="A3DateCalcAddSubButton">
+                        <rect key="frame" x="160" y="0.0" width="160" height="43"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="47"/>
@@ -44,8 +47,18 @@
                         </state>
                     </button>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="Xbe-IN-sO4" secondAttribute="trailing" id="0Kd-rT-IkH"/>
+                    <constraint firstItem="Xbe-IN-sO4" firstAttribute="leading" secondItem="ueR-gK-b6a" secondAttribute="trailing" id="9V6-xi-uX1"/>
+                    <constraint firstItem="ueR-gK-b6a" firstAttribute="top" secondItem="uIf-J5-8AI" secondAttribute="top" id="Azf-EC-ZFR"/>
+                    <constraint firstItem="Xbe-IN-sO4" firstAttribute="top" secondItem="uIf-J5-8AI" secondAttribute="top" id="BNd-fP-s0i"/>
+                    <constraint firstItem="ueR-gK-b6a" firstAttribute="leading" secondItem="uIf-J5-8AI" secondAttribute="leading" id="Sx4-ao-bCB"/>
+                    <constraint firstAttribute="bottom" secondItem="Xbe-IN-sO4" secondAttribute="bottom" id="gOP-FO-mKE"/>
+                    <constraint firstAttribute="bottom" secondItem="ueR-gK-b6a" secondAttribute="bottom" id="zBp-Nt-eJZ"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="addButtonWidthConst" destination="MfD-bd-AS9" id="yEx-RM-lr6"/>
                 <outlet property="addModeButton" destination="ueR-gK-b6a" id="fkT-Ey-Z1m"/>
                 <outlet property="subModeButton" destination="Xbe-IN-sO4" id="StE-oB-wNx"/>
             </connections>

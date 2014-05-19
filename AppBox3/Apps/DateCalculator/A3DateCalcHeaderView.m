@@ -356,7 +356,7 @@
         
         if (_fromLagerThanTo) {
             // From 날짜가 To 날짜보다 큰 경우.
-            _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center;
+            _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;//COLOR_ELLIPSE_2_Center;
             _toThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
             _freezeToDragLeftCircle = NO;
             _freezeToDragRightCircle = YES;
@@ -373,7 +373,7 @@
             else {
                 // From 날짜가 To 날짜보다 작은 경우.
                 _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
-                _toThumbView.centerColor = COLOR_ELLIPSE_2_Center;
+                _toThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;//COLOR_ELLIPSE_2_Center;
                 _freezeToDragLeftCircle = YES;
                 _freezeToDragRightCircle = NO;
             }
@@ -381,12 +381,12 @@
         
     } else if (_calcType == CALC_TYPE_ADD) {
         _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
-        _toThumbView.centerColor = COLOR_ELLIPSE_2_Center;
+        _toThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;//COLOR_ELLIPSE_2_Center;
         _freezeToDragLeftCircle = YES;
         _freezeToDragRightCircle = NO;
         
     } else if (_calcType == CALC_TYPE_SUB) {
-        _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center;
+        _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;//COLOR_ELLIPSE_2_Center;
         _toThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
         _freezeToDragLeftCircle = NO;
         _freezeToDragRightCircle = YES;
