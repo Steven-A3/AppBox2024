@@ -39,7 +39,9 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
     self.title = @"History";
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction)];
-    [self rightBarButtonDoneButton];
+    if (IS_IPHONE) {
+		[self rightBarButtonDoneButton];
+	}
     
 	[self.tableView registerClass:[A3SalesCalcHistoryCell class] forCellReuseIdentifier:A3SalesCalcHistoryCellID];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);

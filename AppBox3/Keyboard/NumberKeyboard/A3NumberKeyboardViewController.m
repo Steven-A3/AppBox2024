@@ -435,7 +435,7 @@
 }
 
 - (void)presentCurrencySelectViewController {
-	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyButtonPressed object:self.currencyCode];
 }
 
 - (IBAction)calculatorButtonAction:(UIButton *)sender {

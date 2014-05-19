@@ -16,6 +16,8 @@ extern NSString *const A3NotificationCalculatorButtonPressed;
 
 @class A3NumberKeyboardViewController;
 @class A3DateKeyboardViewController;
+@class A3CurrencySelectViewController;
+@class A3CalculatorViewController;
 
 @interface UIViewController (A3AppCategory) <A3KeyboardDelegate>
 
@@ -31,9 +33,7 @@ extern NSString *const A3NotificationCalculatorButtonPressed;
 - (A3NumberKeyboardViewController *)simpleNumberKeyboard;
 - (A3NumberKeyboardViewController *)simplePrevNextNumberKeyboard;
 - (A3NumberKeyboardViewController *)simplePrevNextClearNumberKeyboard;
-
 - (A3NumberKeyboardViewController *)simpleUnitConverterNumberKeyboard;
-
 - (A3NumberKeyboardViewController *)normalNumberKeyboard;
 - (A3NumberKeyboardViewController *)passcodeKeyboard;
 - (A3DateKeyboardViewController *)newDateKeyboardViewController;
@@ -50,7 +50,12 @@ extern NSString *const A3NotificationCalculatorButtonPressed;
 - (UIColor *)tableViewSeparatorColor;
 - (UIColor *)selectedTextColor;
 
-- (void)presentCurrencySelectVieControllerWithCurrencyCode:(NSString *)currencyCode;
-- (void)presentCalculatorViewController;
+- (A3CurrencySelectViewController *)presentCurrencySelectViewControllerWithCurrencyCode:(NSString *)currencyCode;
+- (A3CalculatorViewController *)presentCalculatorViewController;
+
+- (void)addNumberKeyboardNotificationObservers;
+- (void)removeNumberKeyboardNotificationObservers;
+- (void)currencySelectButtonAction:(NSNotification *)notification;
+- (void)calculatorButtonAction;
 
 @end

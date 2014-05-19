@@ -34,7 +34,9 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
     self.title = @"History";
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction)];
-    [self rightBarButtonDoneButton];
+    if (IS_IPHONE) {
+		[self rightBarButtonDoneButton];
+	}
     
 	[self.tableView registerClass:[A3TipCalcHistoryCell class] forCellReuseIdentifier:A3TipCalcHistoryCellID];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);

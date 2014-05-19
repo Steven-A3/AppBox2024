@@ -16,8 +16,10 @@
 #import "UIViewController+LoanCalcAddtion.h"
 #import "A3SearchViewController.h"
 #import "UITableView+utility.h"
+#import "A3CurrencySelectViewController.h"
+#import "A3CalculatorViewController.h"
 
-@interface A3LoanCalcExtraPaymentViewController () <A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, A3SearchViewControllerDelegate>
+@interface A3LoanCalcExtraPaymentViewController () <A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 {
     NSIndexPath *_currentIndexPath;
     
@@ -31,7 +33,7 @@
 @property (nonatomic, strong) NSMutableDictionary *amountItem;
 @property (nonatomic, strong) NSMutableDictionary *dateItem;
 @property (nonatomic, strong) NSMutableDictionary *dateInputItem;
-@property (nonatomic, weak) UITextField *calculatorOutputTargetTextField;
+@property (nonatomic, weak) UITextField *calculatortTargetTextField;
 
 @end
 
@@ -52,12 +54,6 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     if (_exPaymentType == A3LC_ExtraPaymentYearly) {
         self.navigationItem.title = @"Yearly";
         
@@ -354,11 +350,13 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 	textField.placeholder = @"";
 
 	_currentIndexPath = [self.tableView indexPathForCellSubview:textField];
+	[self addNumberKeyboardNotificationObservers];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     self.firstResponder = nil;
+	[self removeNumberKeyboardNotificationObservers];
     
     // update
     _isExtraPaymentEdited = YES;
@@ -737,17 +735,13 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     [self.numberKeyboardViewController.textInputTarget resignFirstResponder];
 }
 
-- (UIViewController *)modalPresentingParentViewControllerForCalculator {
-	_calculatorOutputTargetTextField = (UITextField *) self.firstResponder;
-	return self;
-}
-
-- (void)calculatorViewController:(UIViewController *)viewController didDismissWithValue:(NSString *)value {
-	_calculatorOutputTargetTextField.text = value;
-	[self textFieldDidEndEditing:_calculatorOutputTargetTextField];
-}
-
 #pragma mark --- Response to Currency Select Button and result
+
+- (void)currencySelectButtonAction:(NSNotification *)notification {
+	[self.firstResponder resignFirstResponder];
+	A3CurrencySelectViewController *viewController = [self presentCurrencySelectViewControllerWithCurrencyCode:notification.object];
+	viewController.delegate = self;
+}
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
 	if ([selectedItem length]) {
@@ -760,6 +754,18 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
 		[self.tableView reloadData];
 	}
+}
+
+- (void)calculatorButtonAction {
+	_calculatortTargetTextField = (UITextField *) self.firstResponder;
+	[self.firstResponder resignFirstResponder];
+	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
+	viewController.delegate = self;
+}
+
+- (void)calculatorDidDismissWithValue:(NSString *)value {
+	_calculatortTargetTextField.text = value;
+	[self textFieldDidEndEditing:_calculatortTargetTextField];
 }
 
 - (NSString *)defaultCurrencyCode {

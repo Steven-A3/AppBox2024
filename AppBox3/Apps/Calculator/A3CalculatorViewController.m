@@ -9,8 +9,6 @@
 #import "HTCopyableLabel.h"
 #import "A3CalculatorViewController.h"
 
-NSString *const A3NotificationCalculatorDismissedWithValue = @"A3NotificationCalculatorDismissedWithValue";
-
 @implementation A3CalculatorViewController
 
 - (instancetype)initWithPresentingViewController:(UIViewController *)modalPresentingParentViewController {
@@ -24,7 +22,7 @@ NSString *const A3NotificationCalculatorDismissedWithValue = @"A3NotificationCal
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	[self dismissViewControllerAnimated:YES completion:nil];
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCalculatorDismissedWithValue object:self.evaluatedResultLabel.text];
+	[_delegate calculatorDidDismissWithValue:self.evaluatedResultLabel.text];
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {

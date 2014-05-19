@@ -37,8 +37,10 @@ NSString *const A3CalculatorHisotryRowCellID = @"CcellRow";
     [super viewDidLoad];
     
 	self.title = @"History";
-    
-	[self rightBarButtonDoneButton];
+
+	if (IS_IPHONE) {
+		[self rightBarButtonDoneButton];
+	}
     
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
     

@@ -52,7 +52,9 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
     
     self.navigationItem.titleView = self.selectSegment;
     
-    [self rightBarButtonDoneButton];
+    if (IS_IPHONE) {
+		[self rightBarButtonDoneButton];
+	}
     [self.percentFormatter setMaximumFractionDigits:3];
     
 	self.tableView.showsVerticalScrollIndicator = NO;

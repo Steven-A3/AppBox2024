@@ -48,7 +48,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 };
 
 
-@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, UIPopoverControllerDelegate, A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate, UIActivityItemSource>
+@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, UIPopoverControllerDelegate, A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate, UIActivityItemSource, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *tableDataSource;
 @property (nonatomic, strong) NSArray * tableSectionTitles;
@@ -104,22 +104,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     }
     [self refreshMoreButtonState];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectButtonAction:) name:A3NotificationCurrencyButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeSelected:) name:A3NotificationCurrencyCodeSelected object:nil];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorButtonAction) name:A3NotificationCalculatorButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorDismissedWithValue:) name:A3NotificationCalculatorDismissedWithValue object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)removeObserver {
 	FNLOG();
 	[self removeContentSizeCategoryDidChangeNotification];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyCodeSelected object:nil];
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -570,6 +560,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         _cellTextInputBeginBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
             weakSelf.firstResponder = textField;
             [weakSelf dismissMoreMenu];
+			[weakSelf addNumberKeyboardNotificationObservers];
             
             if (element.identifier == RowElementID_Tip) {
                 textField.inputAccessoryView = [weakSelf keyboardAccessoryView];
@@ -603,6 +594,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             if (weakSelf.firstResponder == textField) {
                 weakSelf.firstResponder = nil;
             }
+			[weakSelf removeNumberKeyboardNotificationObservers];
 
             NSNumber *value;
             if ([textField.text length] == 0) {
@@ -1145,11 +1137,11 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (void)currencySelectButtonAction:(NSNotification *)notification {
 	[self.firstResponder resignFirstResponder];
-	[self presentCurrencySelectVieControllerWithCurrencyCode:notification.object];
+	A3CurrencySelectViewController *viewController = [self presentCurrencySelectViewControllerWithCurrencyCode:notification.object];
+	viewController.delegate = self;
 }
 
-- (void)currencyCodeSelected:(NSNotification *)notification {
-	NSString *currencyCode = notification.object;
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
 	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3TipCalcCurrencyCode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
@@ -1167,12 +1159,14 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	_calculatorTargetIndexPath = [self.tableView indexPathForCellSubview:(UIView *) self.firstResponder];
 	_calculatorTargetElement = (A3TableViewInputElement *) [self.tableDataSource elementForIndexPath:_calculatorTargetIndexPath];
 	[self.firstResponder resignFirstResponder];
-	[self presentCalculatorViewController];
+
+	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
+	viewController.delegate = self;
 }
 
-- (void)calculatorDismissedWithValue:(NSNotification *)notification {
+- (void)calculatorDidDismissWithValue:(NSString *)value {
 	A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *) [self.tableDataSource cellForRowAtIndexPath:_calculatorTargetIndexPath];
-	cell.textField.text = notification.object;
+	cell.textField.text = value;
 	_cellTextInputFinishedBlock(_calculatorTargetElement, cell.textField);
 	[self.tableView reloadRowsAtIndexPaths:@[_calculatorTargetIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }

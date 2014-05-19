@@ -19,25 +19,18 @@
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
 
+@interface A3LoanCalcContentsTableViewController () <A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
+@end
+
 @implementation A3LoanCalcContentsTableViewController
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectButtonAction:) name:A3NotificationCurrencyButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeSelected:) name:A3NotificationCurrencyCodeSelected object:nil];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorButtonAction) name:A3NotificationCalculatorButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorDismissedWithValue:) name:A3NotificationCalculatorDismissedWithValue object:nil];
 }
 
 - (void)removeObserver {
 	FNLOG();
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyCodeSelected object:nil];
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -423,11 +416,11 @@
 #pragma mark - Number Keyboard Currency Select Button Notification
 
 - (void)currencySelectButtonAction:(NSNotification *)notification {
-	[self presentCurrencySelectVieControllerWithCurrencyCode:notification.object];
+	A3CurrencySelectViewController *viewController = [self presentCurrencySelectViewControllerWithCurrencyCode:notification.object];
+	viewController.delegate = self;
 }
 
-- (void)currencyCodeSelected:(NSNotification *)notification {
-	NSString *currencyCode = notification.object;
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
 	if ([currencyCode length]) {
 		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3LoanCalcCustomCurrencyCode];
 		[[NSUserDefaults standardUserDefaults] synchronize];
@@ -443,11 +436,12 @@
 - (void)calculatorButtonAction {
 	_calculatorTargetTextField = (UITextField *) self.firstResponder;
 	[self.firstResponder resignFirstResponder];
-	[self presentCalculatorViewController];
+	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
+	viewController.delegate = self;
 }
 
-- (void)calculatorDismissedWithValue:(NSNotification *)notification {
-	_calculatorTargetTextField.text = notification.object;
+- (void)calculatorDidDismissWithValue:(NSString *)value {
+	_calculatorTargetTextField.text = value;
 	[self textFieldDidEndEditing:_calculatorTargetTextField];
 }
 
