@@ -12,6 +12,8 @@
 #import "UIImage+JHExtension.h"
 #import "A3SalesCalcData.h"
 #import "A3SalesCalcCalculator.h"
+#import "A3AppDelegate+appearance.h"
+#import "UIImage+imageWithColor.h"
 
 @interface A3SalesCalcHeaderView()
 
@@ -76,7 +78,7 @@
     [self addSubview:_detailInfoButton];
 
     _bottomGrayLineView.backgroundColor = COLOR_TABLE_SEPARATOR;
-    [_detailInfoButton setImage:[UIImage imageNamed:@"information"] forState:UIControlStateNormal];
+    [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
     [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled]; // 196, 196, 196
     
     _sliderThumbView = [[A3OverlappedCircleView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
@@ -123,7 +125,6 @@
     [_salesPricePrintLabel makeConstraints:^(MASConstraintMaker *make) {
         if (IS_IPAD) {
 			make.leading.equalTo(self.left).with.offset(28.0);
-            //make.bottom.equalTo(_sliderBaseLineView.top).with.offset(-10.0);
             make.baseline.equalTo(self.bottom).with.offset(-104.0);
             
         } else {
@@ -223,22 +224,10 @@
     if (_calcData != nil) {
         NSNumber *salePrice = [A3SalesCalcCalculator salePriceWithoutTaxForCalcData:_calcData];
         NSNumber *originalPrice = [A3SalesCalcCalculator originalPriceBeforeTaxAndDiscountForCalcData:_calcData];
-        //NSNumber *originalPrice = [A3SalesCalcCalculator originalPriceWithTax:_calcData];
-        //A3SalesCalcShowPriceType shownPriceType = _calcData.shownPriceType;
-
         
         if ( [originalPrice isEqualToNumber:@0] && [salePrice isEqualToNumber:@0] ) {
             _sliderThumbView.centerColor = COLOR_DEFAULT_GRAY;
             _sliderBaseLineView.backgroundColor = COLOR_DEFAULT_GRAY;
-            //_sliderRedLineView.backgroundColor = COLOR_DEFAULT_GRAY;
-
-//            [self setResultLabelForSalePrice:@0
-//                                 savedAmount:@0
-//                                orginalPrice:@0
-//                                salePriceTax:nil
-//                            originalPriceTax:nil
-//                              savedAmountTax:nil
-//                              shownPriceType:shownPriceType];
             [self setResultDataWithAnimation:nil];
             
             _sliderThumbLeadingConst.equalTo(@-22);
@@ -247,31 +236,23 @@
             return;
         }
         
-//        float costGauge;
-//        if (shownPriceType == ShowPriceType_SalePriceWithTax) {
-//            originalPrice = @([originalPrice doubleValue] - [[A3SalesCalcCalculator originalPriceBeforeTaxAndDiscountForCalcData:_calcData] doubleValue]);
-//            costGauge = (self.frame.size.width / 100.0) * (salePrice.doubleValue / originalPrice.doubleValue * 100.0);
-//        }
-//        else {
-//            costGauge = (self.frame.size.width / 100.0) * (salePrice.doubleValue / originalPrice.doubleValue * 100.0);
-//        }
         float costGauge = (self.frame.size.width / 100.0) * (salePrice.doubleValue / originalPrice.doubleValue * 100.0);
-		if (isnan(costGauge) || isfinite(costGauge)) {
+		if (isnan(costGauge) || !isfinite(costGauge)) {
 			costGauge = 0.0;
 		}
         
-        //if ((costGauge + _sliderThumbView.frame.size.width) > self.frame.size.width) {
         if (costGauge > self.frame.size.width) {
-            //costGauge = self.frame.size.width - _sliderThumbView.frame.size.width;
             costGauge = self.frame.size.width;
-        } else if (costGauge < 0.0) {
+        }
+        else if (costGauge < 0.0) {
             costGauge = 0.0;
         }
         
         if (salePrice.doubleValue <= 0) {
             _sliderThumbView.alpha = 0.0;
             _sliderRedLineView.alpha = 0.0;
-        } else {
+        }
+        else {
             _sliderThumbView.alpha = 1.0;
             _sliderRedLineView.alpha = 1.0;
         }
@@ -284,16 +265,8 @@
         _sliderThumbView.centerColor = COLOR_NEGATIVE;
         _sliderBaseLineView.backgroundColor = COLOR_POSITIVE;
         _sliderRedLineView.backgroundColor = COLOR_NEGATIVE;
-        
-    } else {
-
-//        [self setResultLabelForSalePrice:@0
-//                             savedAmount:@0
-//                            orginalPrice:@0
-//                            salePriceTax:nil
-//                        originalPriceTax:nil
-//                          savedAmountTax:nil
-//                          shownPriceType:ShowPriceType_Origin];
+    }
+    else {
         [self setResultDataWithAnimation:nil];
 
         _sliderThumbView.centerColor = COLOR_DEFAULT_GRAY;
@@ -314,176 +287,6 @@
 }
 
 #pragma mark -
-
-//-(void)setResultDictionary:(NSDictionary *)resultDic {
-//    _result = [resultDic copy];
-//}
-//
-////-(void)setResult:(NSDictionary *)resultDic {
-//-(void)setResultWithAnimation:(NSDictionary *)resultDic {
-//    
-//    _result = [resultDic copy];
-//    if (!_result) {
-//        [self adjustConstraintLayout];
-//        //[self setNeedsLayout];
-//        return;
-//    }
-//
-//    NSNumber *salePrice = [resultDic objectForKey:@"Sale Price"];
-//    NSNumber *originalPrice = [resultDic objectForKey:@"Original Price"];
-//    NSNumber *savedAmount = [resultDic objectForKey:@"Saved Amount"];
-//    NSNumber *salePriceTax = [resultDic objectForKey:@"Sale Price Tax"];
-//    NSNumber *originalPriceTax = [resultDic objectForKey:@"Original Price Tax"];
-//    NSNumber *savedAmountTax = [resultDic objectForKey:@"Saved Amount Tax"];
-//    NSNumber *taxedOriginalPrice = [resultDic objectForKey:@"Taxed Original Price"];
-//    A3SalesCalcShowPriceType shownPriceType = [[resultDic objectForKey:@"Shown Price Type"] integerValue];
-//        
-//    [self setResultLabelForSalePrice:salePrice
-//                         savedAmount:savedAmount
-//                        orginalPrice: taxedOriginalPrice != nil? taxedOriginalPrice : originalPrice
-//                        salePriceTax:salePriceTax
-//                    originalPriceTax:originalPriceTax
-//                      savedAmountTax:savedAmountTax
-//                      shownPriceType:shownPriceType];
-//    
-//    [UIView beginAnimations:@"KeyboardWillShow" context:nil];
-//    [UIView setAnimationBeginsFromCurrentState:YES];
-//    [UIView setAnimationCurve:7];
-//    [UIView setAnimationDuration:0.25];
-//    [UIView setAnimationDidStopSelector:@selector(setNeedsLayout)];
-//    
-//    [self adjustConstraintLayout];
-//    
-//    [_sliderBaseLineView layoutIfNeeded];
-//    [_sliderRedLineView layoutIfNeeded];
-//    [_bottomGrayLineView layoutIfNeeded];
-//    [_salesPricePrintLabel layoutIfNeeded];
-//    [_savedPricePrintLabel layoutIfNeeded];
-//    [_sliderThumbView layoutIfNeeded];
-//    
-//    [UIView commitAnimations];
-//}
-
-//-(void)setResultLabelForSalePrice:(NSNumber *)salePrice
-//                      savedAmount:(NSNumber *)savedAmount
-//                     orginalPrice:(NSNumber *)originalPrice
-//                     salePriceTax:(NSNumber *)salePriceTax
-//                 originalPriceTax:(NSNumber *)originalPriceTax
-//                   savedAmountTax:(NSNumber *)savedAmountTax
-//                   shownPriceType:(A3SalesCalcShowPriceType)shownPriceType
-//{
-//    NSNumberFormatter *formatter = [NSNumberFormatter new];
-//    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-//    //[formatter setPositiveFormat:[NSString stringWithFormat:@"%@#,##0.00", [formatter currencySymbol]]];
-//    //[formatter setNegativeFormat:[NSString stringWithFormat:@"(%@#,##0.00)", [formatter currencySymbol]]];
-//    
-//    NSArray *strings;
-//    if (salePriceTax != nil && originalPriceTax != nil && savedAmountTax != nil) {
-//        // 세금 있는 경우
-//        if (shownPriceType == ShowPriceType_Origin) {
-//            strings = @[[formatter stringFromNumber:@([salePrice doubleValue] + [salePriceTax doubleValue])], IS_IPAD? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
-//        }
-//        else {
-//            strings = @[[formatter stringFromNumber:@([salePrice doubleValue])], IS_IPAD? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
-//        }
-//        
-//        _detailInfoButton.hidden = NO;
-//        
-//        if (IS_IPAD) {
-//            _savedPriceLabelTrailingConst.equalTo(@(0)).with.offset(-(2+_detailInfoButton.frame.size.width));
-//        } else {
-//            _savedPriceLabelTrailingConst.equalTo(@(0)).with.offset(-(2+_detailInfoButton.frame.size.width));
-//        }
-//    } else {
-//        // 세금 없는 경우
-//        if (shownPriceType == ShowPriceType_SalePriceWithTax) {
-//            strings = @[[formatter stringFromNumber:salePrice], IS_IPAD? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
-//        }
-//        else {
-//            strings = @[[formatter stringFromNumber:salePrice], @"  Sale Price"];
-//        }
-//        
-//        _detailInfoButton.hidden = YES;
-//        if (IS_IPAD) {
-//            //_savedPriceLabelTrailingConst.equalTo(@-28);
-//			_savedPriceLabelTrailingConst.equalTo(@(0)).with.offset(-15);
-//        } else {
-//            //_savedPriceLabelTrailingConst.equalTo(@-10); 
-//			_savedPriceLabelTrailingConst.equalTo(@(0)).with.offset(-15);
-//		}
-//    }
-//    
-//    // SalePrice 금액 출력 레이블.
-//    if (salePrice.doubleValue < 0.0) {
-//        _sliderRedLineView.hidden = YES;
-//        _sliderThumbView.hidden = YES;
-//    } else {
-//        _sliderRedLineView.hidden = NO;
-//        _sliderThumbView.hidden = NO;
-//    }
-//    _salesPricePrintLabel.text = [strings componentsJoinedByString:@""];
-//    NSMutableAttributedString *salePriceAttribute = [[NSMutableAttributedString alloc] initWithAttributedString:_salesPricePrintLabel.attributedText];
-//    
-//    [salePriceAttribute addAttribute: NSForegroundColorAttributeName
-//                               value: [UIColor blackColor]
-//                               range: NSMakeRange(0, ((NSString *)strings[0]).length) ];
-//    [salePriceAttribute addAttribute: NSFontAttributeName
-//                               value: IS_IPHONE ? [UIFont systemFontOfSize:15] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
-//                               range: NSMakeRange( 0, ((NSString *)strings[0]).length) ];
-//    
-//    [salePriceAttribute addAttribute: NSFontAttributeName
-//                               value: IS_IPHONE ? [UIFont systemFontOfSize:13] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]
-//                               range: NSMakeRange( ((NSString *)strings[0]).length, ((NSString *)strings[1]).length)];
-//    [salePriceAttribute addAttribute: NSForegroundColorAttributeName
-//                               value: COLOR_DEFAULT_TEXT_GRAY
-//                               range: NSMakeRange( ((NSString *)strings[0]).length, ((NSString *)strings[1]).length)];
-//    _salesPricePrintLabel.attributedText = salePriceAttribute;
-//    [_salesPricePrintLabel sizeToFit];
-//
-//
-//
-//    // 하단 결과, Saved Amount
-//    CGFloat fontSize = 17.0;
-//    if (originalPriceTax && savedAmountTax) {
-//		strings = @[[formatter stringFromNumber:@([savedAmount doubleValue] + [savedAmountTax doubleValue])], @" saved of ", [formatter stringFromNumber:originalPrice]];
-//	} else {
-//    	strings = @[[formatter stringFromNumber:savedAmount], @" saved of ", [formatter stringFromNumber:originalPrice]];
-//	}
-//    _savedPricePrintLabel.text = [strings componentsJoinedByString:@""];
-//    if (IS_IPHONE) {
-//        _savedPricePrintLabel.font = [UIFont systemFontOfSize:fontSize];
-//        CGSize size = [_savedPricePrintLabel sizeThatFits:CGSizeMake(320, CGFLOAT_MAX)];
-//        if (size.width > 275) {
-//            fontSize = fontSize * 0.8;
-//            _savedPricePrintLabel.font = [UIFont systemFontOfSize:fontSize];
-//        }
-//    }
-//    NSMutableAttributedString *savedPriceAttribute = [[NSMutableAttributedString alloc] initWithAttributedString:_savedPricePrintLabel.attributedText];
-//    [savedPriceAttribute addAttribute: NSForegroundColorAttributeName
-//                                value: [UIColor blackColor]
-//                                range: NSMakeRange(0, ((NSString *)strings[0]).length)];
-//    [savedPriceAttribute addAttribute: NSFontAttributeName
-//                                value: IS_IPHONE ? [UIFont boldSystemFontOfSize:fontSize] : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]
-//                                range: NSMakeRange(0, ((NSString *)strings[0]).length)];
-//    
-//    [savedPriceAttribute addAttribute: NSForegroundColorAttributeName
-//                                value: COLOR_DEFAULT_TEXT_GRAY
-//                                range: NSMakeRange( ((NSString *)strings[0]).length, ((NSString *)strings[1]).length )];
-//    [savedPriceAttribute addAttribute: NSFontAttributeName
-//                                value: IS_IPHONE ? [UIFont systemFontOfSize:fontSize] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
-//                                range: NSMakeRange( ((NSString *)strings[0]).length, ((NSString *)strings[1]).length )];
-//    
-//    [savedPriceAttribute addAttribute: NSForegroundColorAttributeName
-//                                value: [UIColor blackColor]
-//                                range: NSMakeRange( ((NSString *)strings[0]).length + ((NSString *)strings[1]).length, ((NSString *)strings[2]).length )];
-//    [savedPriceAttribute addAttribute: NSFontAttributeName
-//                                value: IS_IPHONE ? [UIFont systemFontOfSize:fontSize] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
-//                                range: NSMakeRange( ((NSString *)strings[0]).length + ((NSString *)strings[1]).length, ((NSString *)strings[2]).length )];
-//    
-//    _savedPricePrintLabel.attributedText = savedPriceAttribute;
-//    [_savedPricePrintLabel sizeToFit];
-//}
-
 - (void)setResultData:(A3SalesCalcData *)resultData withAnimation:(BOOL)animate {
     
     self.calcData = resultData;
@@ -517,6 +320,10 @@
     
     if (!resultData) {
         resultData = [A3SalesCalcData new];
+        resultData.price = @0;
+        resultData.discount = @0;
+        resultData.additionalOff = @0;
+        resultData.tax = @0;
     }
     
     NSArray *strings;
@@ -600,16 +407,9 @@
     originalPriceWithTax = [A3SalesCalcCalculator originalPriceWithTax:resultData];
     savedTotalAmount = [A3SalesCalcCalculator savedTotalAmountForCalcData:resultData];
 
-    
-//    if (originalPriceTax && savedAmountTax) {
-//		strings = @[[formatter stringFromNumber:@([savedAmount doubleValue] + [savedAmountTax doubleValue])], @" saved of ", [formatter stringFromNumber:originalPrice]];
-//	} else {
-//    	strings = @[[formatter stringFromNumber:savedAmount], @" saved of ", [formatter stringFromNumber:originalPrice]];
-//	}
     strings = @[[_currencyFormatter stringFromNumber:savedTotalAmount], @" saved of ", [_currencyFormatter stringFromNumber:originalPriceWithTax]];
-    
-    
     _savedPricePrintLabel.text = [strings componentsJoinedByString:@""];
+    
     if (IS_IPHONE) {
         _savedPricePrintLabel.font = [UIFont systemFontOfSize:fontSize];
         CGSize size = [_savedPricePrintLabel sizeThatFits:CGSizeMake(320, CGFLOAT_MAX)];
