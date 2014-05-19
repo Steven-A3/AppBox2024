@@ -108,7 +108,10 @@
 }
 
 - (void)didMoveToParentViewController:(UIViewController *)parent {
-	if (!parent) {
+	[super didMoveToParentViewController:parent];
+
+	FNLOG(@"%@", parent);
+	if (parent) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
 	}
 }

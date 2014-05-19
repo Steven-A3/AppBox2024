@@ -75,6 +75,9 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 }
 
 - (void)didMoveToParentViewController:(UIViewController *)parent {
+	[super didMoveToParentViewController:parent];
+
+	FNLOG(@"%@", parent);
 	if (!parent) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
 	}
