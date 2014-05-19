@@ -119,7 +119,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
-	if ([self isBeingDismissed]) {
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
 		[self removeObserver];
 	}
 }

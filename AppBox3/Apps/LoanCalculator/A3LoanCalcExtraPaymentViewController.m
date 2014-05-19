@@ -86,7 +86,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	if ([self isBeingDismissed]) {
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
 		[self removeObserver];
 	}
 }

@@ -98,6 +98,15 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
+		[self removeObserver];
+	}
+}
+
 - (void)cleanUp {
 	[self removeObserver];
 }

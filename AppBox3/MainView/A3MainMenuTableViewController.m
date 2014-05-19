@@ -106,7 +106,8 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	if ([self isBeingDismissed]) {
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
 		[self removeObserver];
 	}
 }

@@ -71,7 +71,8 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	if ([self isBeingDismissed]) {
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
 		[self removeObserver];
 
 		if (_categoryContentsChanged) {

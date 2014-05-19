@@ -75,7 +75,8 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	if ([self isBeingDismissed]) {
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
 		[self removeObserver];
 	}
 }

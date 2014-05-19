@@ -180,6 +180,15 @@
 	}
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
+		[self removeObserver];
+	}
+}
+
 - (void)dealloc {
 	[self removeObserver];
 }

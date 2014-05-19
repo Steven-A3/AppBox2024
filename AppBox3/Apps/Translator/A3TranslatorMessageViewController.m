@@ -133,7 +133,8 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	if ([self isBeingDismissed]) {
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
 		[self removeObserver];
 	}
 	[self.navigationController setToolbarHidden:YES animated:NO];

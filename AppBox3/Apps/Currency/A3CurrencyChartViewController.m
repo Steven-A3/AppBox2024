@@ -109,7 +109,10 @@
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	[self removeObserver];
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
+		[self removeObserver];
+	}
 	[self notifyDelegateValueChanged];
 }
 

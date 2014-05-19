@@ -79,7 +79,10 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	[self removeObserver];
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
+		[self removeObserver];
+	}
 }
 
 - (void)dealloc {

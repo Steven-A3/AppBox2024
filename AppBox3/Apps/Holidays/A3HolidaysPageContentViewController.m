@@ -96,7 +96,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	if ([self isBeingDismissed]) {
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
 		[self removeObserver];
 	}
 	_previousOrientation = CURRENT_ORIENTATION;

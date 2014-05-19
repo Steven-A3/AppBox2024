@@ -154,6 +154,15 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:[[MagicalRecordStack defaultStack] context]];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
+		[self removeObserver];
+	}
+}
+
 - (void)cleanUp{
 	[self removeObserver];
 

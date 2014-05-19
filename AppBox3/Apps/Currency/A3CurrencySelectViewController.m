@@ -47,6 +47,15 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
+		[self removeObserver];
+	}
+}
+
 - (void)dealloc {
 	[self removeObserver];
 }
