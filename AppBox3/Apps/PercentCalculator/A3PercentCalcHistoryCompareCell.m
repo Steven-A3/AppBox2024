@@ -95,6 +95,7 @@
     }];
 
     _ALabel.layer.cornerRadius = _ALabel.bounds.size.width / 2.0;
+    _ALabel.layer.masksToBounds = YES;
     _ALabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
     _ALabel.adjustsFontSizeToFitWidth = NO;
     _ALabel.backgroundColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
@@ -102,6 +103,7 @@
     _ALabel.textAlignment = NSTextAlignmentCenter;
     _ALabel.text = @"A";
     _BLabel.layer.cornerRadius = _BLabel.bounds.size.width / 2.0;
+    _BLabel.layer.masksToBounds = YES;
     _BLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
     _BLabel.adjustsFontSizeToFitWidth = NO;
     _BLabel.backgroundColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];

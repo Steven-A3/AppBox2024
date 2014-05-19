@@ -86,6 +86,7 @@
     _slider1AMarkLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _slider1AMarkLabel.hidden = NO;
     _slider1AMarkLabel.layer.cornerRadius = 10.0;
+    _slider1AMarkLabel.layer.masksToBounds = YES;
     _slider1AMarkLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
     _slider1AMarkLabel.adjustsFontSizeToFitWidth = NO;
     _slider1AMarkLabel.text = @"A";
@@ -96,6 +97,7 @@
     _slider2BMarkLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _slider2BMarkLabel.hidden = NO;
     _slider2BMarkLabel.layer.cornerRadius = 10.0;
+    _slider2BMarkLabel.layer.masksToBounds = YES;
     _slider2BMarkLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
     _slider2BMarkLabel.adjustsFontSizeToFitWidth = NO;
     _slider2BMarkLabel.text = @"B";

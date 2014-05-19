@@ -180,6 +180,7 @@
     [_sectionALabel setTextAlignment:NSTextAlignmentCenter];
     [_sectionALabel setBackgroundColor:[UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]];
     [_sectionALabel setTextColor:[UIColor whiteColor]];
+    _sectionALabel.layer.masksToBounds = YES;
     _sectionALabel.layer.cornerRadius = _sectionALabel.bounds.size.width / 2.0;
     _sectionALabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
     _sectionALabel.adjustsFontSizeToFitWidth = NO;
@@ -189,6 +190,7 @@
     [_sectionBLabel setTextAlignment:NSTextAlignmentCenter];
     [_sectionBLabel setBackgroundColor:[UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]];
     [_sectionBLabel setTextColor:[UIColor whiteColor]];
+    _sectionBLabel.layer.masksToBounds = YES;
     _sectionBLabel.layer.cornerRadius = _sectionBLabel.bounds.size.width / 2.0;
     _sectionBLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
     _sectionBLabel.adjustsFontSizeToFitWidth = NO;
