@@ -118,6 +118,8 @@
 
 - (NSArray *)timesArray {
 	return @[
+			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 60 * 24],
+			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 60 * 12],
 			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 60],
 			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 30],
 			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 15],
@@ -142,6 +144,8 @@
 			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 30],
 			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 31],
 			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 60],
+			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 60 * 12],
+			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 60 * 24],
 			 ];
 }
 
