@@ -160,7 +160,6 @@
 
     [super layoutSubviews];
     
-//    [self adjustSliderThumbLimitedPosition];
     [self adjustSliderThumbLabelLimitedPosition];
 
     [super layoutSubviews];
@@ -284,13 +283,15 @@
 		{
 			// Compare % Change from X to Y
 			_slider1AMarkLabel.hidden = NO;
-			_slider1AMarkLabel.layer.cornerRadius = _slider1AMarkLabel.bounds.size.width / 2.0;
+            //			_slider1AMarkLabel.layer.cornerRadius = _slider1AMarkLabel.bounds.size.width / 2.0;
+            _slider1AMarkLabel.layer.cornerRadius = 10.0;
 			_slider1AMarkLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
 			_slider1AMarkLabel.adjustsFontSizeToFitWidth = NO;
 			[_slider1AMarkLabel setBackgroundColor:[UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]];
 
 			_slider2BMarkLabel.hidden = NO;
-			_slider2BMarkLabel.layer.cornerRadius = _slider2BMarkLabel.bounds.size.width / 2.0;
+            //			_slider2BMarkLabel.layer.cornerRadius = _slider2BMarkLabel.bounds.size.width / 2.0;
+            _slider2BMarkLabel.layer.cornerRadius = 10.0;
 			_slider2BMarkLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
 			_slider2BMarkLabel.adjustsFontSizeToFitWidth = NO;
 			[_slider2BMarkLabel setBackgroundColor:[UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]];
@@ -937,30 +938,14 @@
     [_sliderThumb2Label sizeToFit];
 }
 
-//-(void)adjustSliderThumbLimitedPosition
-//{
-//    CGFloat sliderWidth = self.frame.size.width - (_sliderLine1Thumb.bounds.size.width / 2.0);
-//    
-//    if (_sliderLine1Thumb.frame.origin.x > sliderWidth) {
-//        _sliderThumb1LeadingCenter.equalTo(@(sliderWidth));
-//    } else if (_sliderLine1Thumb.frame.origin.x < 0.0 || _sliderLine1Thumb.hidden == YES) {
-//        _sliderThumb1LeadingCenter.equalTo(@(-22.0));
-//    }
-//    
-//    if (_sliderLine2Thumb.frame.origin.x > sliderWidth) {
-//        _sliderThumb2LeadingCenter.equalTo(@(sliderWidth));
-//    } else if (_sliderLine2Thumb.frame.origin.x < 0.0 || _sliderLine2Thumb.hidden == YES) {
-//        _sliderThumb2LeadingCenter.equalTo(@(-22.0));
-//    }
-//}
-
 -(void)adjustSliderThumbLabelLimitedPosition
 {
     if (_sliderThumb1Label.frame.size.width + _sliderThumb1Label.frame.origin.x > self.bounds.size.width) {
         CGRect rect = _sliderThumb1Label.frame;
         rect.origin.x = self.bounds.size.width - _sliderThumb1Label.frame.size.width;
         _sliderThumb1Label.frame = rect;
-    } else if (_sliderThumb1Label.frame.origin.x < 0) {
+    }
+    else if (_sliderThumb1Label.frame.origin.x < 0) {
         CGRect rect = _sliderThumb1Label.frame;
         rect.origin.x = 0.0;
         _sliderThumb1Label.frame = rect;
@@ -970,7 +955,8 @@
         CGRect rect = _sliderThumb2Label.frame;
         rect.origin.x = self.bounds.size.width - _sliderThumb2Label.frame.size.width;
         _sliderThumb2Label.frame = rect;
-    } else if (_sliderThumb2Label.frame.origin.x < 0) {
+    }
+    else if (_sliderThumb2Label.frame.origin.x < 0) {
         CGRect rect = _sliderThumb2Label.frame;
         rect.origin.x = 0.0;
         _sliderThumb2Label.frame = rect;
