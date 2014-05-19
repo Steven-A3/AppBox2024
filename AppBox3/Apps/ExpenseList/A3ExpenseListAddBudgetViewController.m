@@ -38,7 +38,7 @@ enum A3ExpenseListAddBudgetCellType {
     AddBudgetCellID_Budget = 100,
     AddBudgetCellID_Categories,
     AddBudgetCellID_PaymentType,
-    AddBudgetCellID_Location,
+//    AddBudgetCellID_Location,
     AddBudgetCellID_Title,
     AddBudgetCellID_Date,
     A3TableElementCellType_Note
@@ -221,11 +221,12 @@ enum A3ExpenseListAddBudgetCellType {
 		// Advanced.
 		A3TableViewInputElement *title = elements[0];
 		A3JHTableViewDateEntryElement *date = elements[1];
-		A3JHTableViewElement *location = elements[2];
-		A3TableViewInputElement *notes = elements[3];
+        //		A3JHTableViewElement *location = elements[2];
+        //		A3TableViewInputElement *notes = elements[3];
+		A3TableViewInputElement *notes = elements[2];
 
 		resultBudget.title = title.value;
-		resultBudget.location = [location.value dataUsingEncoding:NSUTF8StringEncoding];
+        //		resultBudget.location = [location.value dataUsingEncoding:NSUTF8StringEncoding];
 		resultBudget.date = date.dateValue;
 		resultBudget.notes = notes.value;
 		resultBudget.updateDate = [NSDate date];
@@ -270,7 +271,8 @@ enum A3ExpenseListAddBudgetCellType {
 #pragma mark - Validation
 
 - (BOOL)isBudgetModified {
-    if (!_currentBudget || !_currentBudget.category) {
+    //if (!_currentBudget || !_currentBudget.category) {
+    if ([_currentBudget hasChanges]) {
         
         NSArray *section0 = [self section0_Array];
         NSArray *elements = [self expandableCellElements];
@@ -287,10 +289,11 @@ enum A3ExpenseListAddBudgetCellType {
         // Advanced.
         A3TableViewInputElement *title = elements[0];
         A3JHTableViewDateEntryElement *date = elements[1];
-        A3JHTableViewElement *location = elements[2];
-        A3TableViewInputElement *notes = elements[3];
+        //        A3JHTableViewElement *location = elements[2];
+        A3TableViewInputElement *notes = elements[2];
         
-        if ((title && [title.value length] > 0) || location.value || date.dateValue || (notes && [notes.value length])) {
+        //        if ((title && [title.value length] > 0) || location.value || date.dateValue || (notes && [notes.value length])) {
+        if ((title && [title.value length] > 0) || date.dateValue || (notes && [notes.value length])) {
             return YES;
         }
         
@@ -307,7 +310,8 @@ enum A3ExpenseListAddBudgetCellType {
     NSArray *elements = [self expandableCellElements];
     
     if (showDatePicker) {
-        self.advancedElement.elements = @[elements[0], elements[1], [self datePickerElement], elements[2], elements[3]];
+        //        self.advancedElement.elements = @[elements[0], elements[1], [self datePickerElement], elements[2], elements[3]];
+        self.advancedElement.elements = @[elements[0], elements[1], [self datePickerElement], elements[2]];
     }
     else {
         self.advancedElement.elements = elements;
@@ -432,10 +436,10 @@ enum A3ExpenseListAddBudgetCellType {
         date.dateValue = _currentBudget.date;
         date.identifier = AddBudgetCellID_Date;
         
-        // Location
-        A3JHTableViewElement *location = [A3JHTableViewElement new];
-        location.title = @"Location";
-        location.identifier = AddBudgetCellID_Location;
+        //        // Location
+        //        A3JHTableViewElement *location = [A3JHTableViewElement new];
+        //        location.title = @"Location";
+        //        location.identifier = AddBudgetCellID_Location;
         
         // Notes
         A3TextViewElement *notes = [A3TextViewElement new];
@@ -455,7 +459,8 @@ enum A3ExpenseListAddBudgetCellType {
             }
         };
         
-        _expandableCellElements = @[title, date, location, notes];
+        //        _expandableCellElements = @[title, date, location, notes];
+        _expandableCellElements = @[title, date, notes];
     }
     
     return _expandableCellElements;
@@ -568,12 +573,12 @@ static NSString *CellIdentifier = @"Cell";
         }
             break;
 
-        case AddBudgetCellID_Location:
-        {
-            cell.textLabel.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
-            break;
+//        case AddBudgetCellID_Location:
+//        {
+//            cell.textLabel.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+//            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//        }
+//            break;
         case AddBudgetCellID_Categories:
         {
             cell.separatorInset = UIEdgeInsetsMake(0.0, IS_IPAD ? 28.0 : 15.0, 0.0, 0.0);
@@ -634,9 +639,7 @@ static NSString *CellIdentifier = @"Cell";
     }
 
     // Row 6 Date
-    if (indexPath.section == 0 && indexPath.row == 6) {
-    }
-    else if (element.identifier == AddBudgetCellID_Date) {
+    if (element.identifier == AddBudgetCellID_Date) {
         _showDatePicker = !_showDatePicker;
         
         UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -662,7 +665,8 @@ static NSString *CellIdentifier = @"Cell";
             [tableView endUpdates];
         }
     }
-    else if ((indexPath.section == 0 && indexPath.row==1) || (indexPath.section == 0 && indexPath.row==2)) {
+    //else if ((indexPath.section == 0 && indexPath.row==1) || (indexPath.section == 0 && indexPath.row==2)) {
+    else if (element.identifier == AddBudgetCellID_Categories || element.identifier == AddBudgetCellID_PaymentType) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
         if (IS_IPHONE) {
@@ -699,7 +703,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section ==1 && indexPath.row == 1) {
+    if (indexPath.section == 1 && indexPath.row == 1) {
         return IS_RETINA ? 43.5 : 43;
     }
     else {
@@ -772,7 +776,7 @@ static NSString *CellIdentifier = @"Cell";
             }
 			[weakSelf removeNumberKeyboardNotificationObservers];
             
-            if (textField.text && textField.text.length!=0) {
+            if (textField.text && textField.text.length != 0) {
 				NSNumber *number = [weakSelf.decimalFormatter numberFromString:textField.text];
 				element.value = [number stringValue];
             }
