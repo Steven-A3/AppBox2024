@@ -289,11 +289,7 @@
 	_textBeforeEditingTextField = textField.text;
 
 	if (_nameTextField != textField) {
-		if (textField == _qtyTextField) {
-			textField.placeholder = @"1";
-		} else {
-			textField.placeholder = @"";
-		}
+        textField.placeholder = @"";
 		textField.text = @"";
 	}
 
@@ -313,6 +309,18 @@
 	[self.keyboardAccessoryView showEraseButton:[resultString length] || [_textBeforeEditingTextField length]];
     
     return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+	if (textField != _nameTextField && [textField.text length] == 0) {
+		textField.text = _textBeforeEditingTextField;
+	}
+    
+	if ([_delegate respondsToSelector:@selector(itemCellTextFieldFinished:textField:)]) {
+		[_delegate itemCellTextFieldFinished:self textField:textField];
+	}
+    
+//	_firstResponder = nil;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

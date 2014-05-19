@@ -134,6 +134,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	FNLOG();
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationExpenseListCurrencyCodeChanged object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
@@ -581,7 +582,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 - (void)moreButtonAction:(UIButton *)button
 {
 	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
 
 	if (_isAutoMovingAddBudgetView) {
 		return;
@@ -1245,7 +1245,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
         item.hasData = @(NO);
         
         if ([self isSameFocusingOnItemRow:item toTextField:textField] || index.row==0) {
-			self.firstResponder = nil;
+            if (textField == [self firstResponder]) {
+                self.firstResponder = nil;
+            }
             return;
         }
 
@@ -1261,7 +1263,10 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
         aCell.subTotalLabel.text = @"";
         aCell.priceTextField.placeholder = @"";
         aCell.qtyTextField.placeholder = @"";
-        self.firstResponder = nil;
+        if (textField == [self firstResponder]) {
+            self.firstResponder = nil;
+        }
+        
         return;
     }
 
@@ -1302,6 +1307,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 -(void)itemCellTextFieldDonePressed:(A3ExpenseListItemCell *)aCell
 {
+    self.firstResponder = nil;
+    
     NSIndexPath *index = [self.tableView indexPathForCell:aCell];
     ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:index.row];
     [self validateEmptyItem:item andAutoInsertCellBelow:aCell];
