@@ -274,7 +274,6 @@
         _sliderBaseLineView.backgroundColor = COLOR_DEFAULT_GRAY;
         _sliderThumbView.alpha = 0.0;
         _sliderRedLineView.alpha = 0.0;
-        
     }
     
     if (IS_IPAD) {

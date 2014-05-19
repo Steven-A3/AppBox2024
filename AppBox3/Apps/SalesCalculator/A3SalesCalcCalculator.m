@@ -350,7 +350,8 @@
 
     if (aData.taxType == A3TableViewValueTypeCurrency) {
         NSNumber *salePrice = [self salePriceWithoutTaxForCalcData:aData];
-        NSNumber *taxPercent = @([aData.tax doubleValue] / [salePrice doubleValue] * 100.0);
+        NSNumber *taxPercent = [self taxPercentForCalcData:aData];
+        //NSNumber *taxPercent = @([aData.tax doubleValue] / [salePrice doubleValue] * 100.0);
         result = @([salePrice doubleValue] / 100.0 * [taxPercent doubleValue]);
     }
     else {
