@@ -424,10 +424,12 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	self.numberKeyboardViewController = keyboardVC;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextFieldTextDidChangeNotification object:nil];
+	[self addNumberKeyboardNotificationObservers];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+	[self removeNumberKeyboardNotificationObservers];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
     NSIndexPath *endIndexPath = self.currentIndexPath;
@@ -613,8 +615,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
         A3LoanCalcExtraPaymentType exPaymentItem = exPaymentItemNum.integerValue;
         
         if ((exPaymentItem == A3LC_ExtraPaymentYearly) || (exPaymentItem == A3LC_ExtraPaymentOnetime)) {
-            UIStoryboard *stroyBoard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
-            A3LoanCalcExtraPaymentViewController *viewController = [stroyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcExtraPaymentViewController"];
+            UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
+            A3LoanCalcExtraPaymentViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcExtraPaymentViewController"];
             viewController.exPaymentType = exPaymentItem;
             viewController.loanCalcData = self.loanData;
             viewController.delegate = self;

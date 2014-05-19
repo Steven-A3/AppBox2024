@@ -39,15 +39,11 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     self.title = @"History";
     
-	[self rightBarButtonDoneButton];
+	if (IS_IPHONE) {
+		[self rightBarButtonDoneButton];
+	}
     
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
     

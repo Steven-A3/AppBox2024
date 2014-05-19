@@ -47,13 +47,11 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
     self.title = @"History";
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction)];
-    [self rightBarButtonDoneButton];
 
-//    if (IS_IPAD) {
-//        self.tableView.separatorInset = UIEdgeInsetsMake(0, 28.0, 0, 0);
-//    } else {
-//        self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
-//    }
+    if (IS_IPHONE) {
+		[self rightBarButtonDoneButton];
+	}
+
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;

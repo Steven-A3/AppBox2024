@@ -254,7 +254,7 @@ static char const *const key_navigationControllerForKeyboard	= "key_navigationCo
 	objc_setAssociatedObject(self, key_navigationControllerForKeyboard, controller, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)presentCurrencySelectVieControllerWithCurrencyCode:(NSString *)currencyCode {
+- (A3CurrencySelectViewController *)presentCurrencySelectViewControllerWithCurrencyCode:(NSString *)currencyCode {
 	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] init];
 	viewController.showCancelButton = YES;
 	viewController.allowChooseFavorite = YES;
@@ -264,9 +264,10 @@ static char const *const key_navigationControllerForKeyboard	= "key_navigationCo
 	[self setNavigationControllerForKeyboard:navigationController];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(childViewControllerFromKeyboardDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+	return viewController;
 }
 
-- (void)presentCalculatorViewController {
+- (A3CalculatorViewController *)presentCalculatorViewController {
 	A3CalculatorViewController *viewController;
 	if (IS_IPHONE) {
 		viewController = [[A3CalculatorViewController_iPhone alloc] initWithPresentingViewController:self];
@@ -279,11 +280,31 @@ static char const *const key_navigationControllerForKeyboard	= "key_navigationCo
 	[self setNavigationControllerForKeyboard:navigationController];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(childViewControllerFromKeyboardDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+	return viewController;
 }
 
 - (void)childViewControllerFromKeyboardDidDismiss {
+	FNLOG();
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:self.navigationControllerForKeyboard.childViewControllers[0]];
 	[self setNavigationControllerForKeyboard:nil];
+}
+
+- (void)addNumberKeyboardNotificationObservers {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectButtonAction:) name:A3NotificationCurrencyButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorButtonAction) name:A3NotificationCalculatorButtonPressed object:nil];
+}
+
+- (void)removeNumberKeyboardNotificationObservers {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyButtonPressed object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorButtonPressed object:nil];
+}
+
+- (void)currencySelectButtonAction:(NSNotification *)notification {
+	FNLOG(@"이 member는 override를 전제로 한 virtual member 입니다. addNumberKeyboardNotificationObsservers를 사용했다면, 이 member도 구현해야 합니다.");
+}
+
+- (void)calculatorButtonAction {
+	FNLOG(@"이 member는 override를 전제로 한 virtual member 입니다. addNumberKeyboardNotificationObsservers를 사용했다면, 이 member도 구현해야 합니다.");
 }
 
 @end

@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, PriceDiscountType) {
     Price_Amount,
 };
 
-@interface A3UnitPriceDetailTableController () <UITextFieldDelegate, UITextViewDelegate, A3KeyboardDelegate, UINavigationControllerDelegate, A3UnitSelectViewControllerDelegate>
+@interface A3UnitPriceDetailTableController () <UITextFieldDelegate, UITextViewDelegate, A3KeyboardDelegate, UINavigationControllerDelegate, A3UnitSelectViewControllerDelegate, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 {
     PriceDiscountType _discountType;
     
@@ -99,11 +99,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectButtonAction:) name:A3NotificationCurrencyButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeSelected:) name:A3NotificationCurrencyCodeSelected object:nil];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorButtonAction) name:A3NotificationCalculatorButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorDismissedWithValue:) name:A3NotificationCalculatorDismissedWithValue object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
@@ -111,12 +106,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	FNLOG();
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCurrencyCodeSelected object:nil];
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -530,6 +519,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	textField.placeholder = @"";
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+	[self addNumberKeyboardNotificationObservers];
 
 	[self setFirstResponder:textField];
 
@@ -572,6 +562,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+	[self removeNumberKeyboardNotificationObservers];
 
 	[self setFirstResponder:nil];
 
@@ -834,11 +825,11 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 #pragma mark - Number Keyboard Currency Select Button Notification
 
 - (void)currencySelectButtonAction:(NSNotification *)notification {
-	[self presentCurrencySelectVieControllerWithCurrencyCode:notification.object];
+	A3CurrencySelectViewController *viewController = [self presentCurrencySelectViewControllerWithCurrencyCode:notification.object];
+	viewController.delegate = self;
 }
 
-- (void)currencyCodeSelected:(NSNotification *)notification {
-	NSString *currencyCode = notification.object;
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
 	if ([currencyCode length]) {
 		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3UnitPriceCurrencyCode];
 		[[NSUserDefaults standardUserDefaults] synchronize];
@@ -858,11 +849,12 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (void)calculatorButtonAction {
 	_calculatorTargetTextField = (UITextField *) self.firstResponder;
 	[self.firstResponder resignFirstResponder];
-	[self presentCalculatorViewController];
+	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
+	viewController.delegate = self;
 }
 
-- (void)calculatorDismissedWithValue:(NSNotification *)notification {
-	_calculatorTargetTextField.text = notification.object;
+- (void)calculatorDidDismissWithValue:(NSString *)value {
+	_calculatorTargetTextField.text = value;
 	[self textFieldDidEndEditing:_calculatorTargetTextField];
 }
 

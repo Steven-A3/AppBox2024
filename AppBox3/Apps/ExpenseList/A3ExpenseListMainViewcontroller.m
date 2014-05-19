@@ -36,7 +36,7 @@ NSString *const A3ExpenseListCurrentBudgetID = @"A3ExpenseListCurrentBudgetID";
 NSString *const A3ExpenseListCurrencyCode = @"A3ExpenseListCurrencyCode";
 NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationExpenseListCurrencyCodeChanged";
 
-@interface A3ExpenseListMainViewController () <ATSDragToReorderTableViewControllerDelegate, UIPopoverControllerDelegate, A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate, A3ExpenseListHistoryDelegate>
+@interface A3ExpenseListMainViewController () <ATSDragToReorderTableViewControllerDelegate, UIPopoverControllerDelegate, A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate, A3ExpenseListHistoryDelegate, A3CalculatorViewControllerDelegate>
 
 @property (nonatomic, strong) A3ExpenseListHeaderView *headerView;
 @property (nonatomic, strong) UIView *sep1View;
@@ -152,8 +152,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorButtonAction) name:A3NotificationCalculatorButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calculatorDismissedWithValue:) name:A3NotificationCalculatorDismissedWithValue object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
@@ -167,9 +165,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorButtonPressed object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCalculatorDismissedWithValue object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -1131,6 +1126,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     }
     
     _selectedItem = item;
+	[self addNumberKeyboardNotificationObservers];
 }
 
 -(void)itemCellTextFieldChanged:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
@@ -1139,6 +1135,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 -(void)itemCellTextFieldFinished:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
 {
+	[self removeNumberKeyboardNotificationObservers];
     NSIndexPath *index = [self.tableView indexPathForCell:aCell];
     ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:index.row];
 
@@ -1293,11 +1290,12 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	_calculatorTargetTextField = (UITextField *) self.firstResponder;
 	_calculatorTargetCell = (A3ExpenseListItemCell *) [self.tableView cellForCellSubview:(UIView *) self.firstResponder];
 	[self.firstResponder resignFirstResponder];
-	[self presentCalculatorViewController];
+	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
+	viewController.delegate = self;
 }
 
-- (void)calculatorDismissedWithValue:(NSNotification *)notification {
-	_calculatorTargetTextField.text = notification.object;
+- (void)calculatorDidDismissWithValue:(NSString *)value {
+	_calculatorTargetTextField.text = value;
 	[self itemCellTextFieldFinished:_calculatorTargetCell textField:_calculatorTargetTextField];
 }
 
