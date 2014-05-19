@@ -645,6 +645,14 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     price2UnitPrice = unitPrice2;
     
     if (IS_IPAD) {
+        CGRect rect = cell.upSliderView.frame;
+        rect.origin.y = 27;
+        cell.upSliderView.frame = rect;
+        
+        rect = cell.downSliderView.frame;
+        rect.origin.y = 122;
+        cell.downSliderView.frame = rect;
+
         [cell.upSliderView.unitPriceLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:172];
         [cell.upSliderView.priceLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:172];
         [cell.upSliderView.unitPriceNumLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:115];
@@ -653,6 +661,10 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         [cell.downSliderView.priceNumLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:28];
     }
     else {
+        CGRect rect = cell.downSliderView.frame;
+        rect.origin.y = 82;
+        cell.downSliderView.frame = rect;
+        
         [cell.upSliderView.unitPriceLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:135];
         [cell.upSliderView.priceLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:135];
         [cell.upSliderView.unitPriceNumLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:90];
@@ -938,7 +950,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return IS_IPAD ? 225 : 166;
+        return IS_IPAD ? 226 : 166;
     }
     
     if (IS_RETINA) {

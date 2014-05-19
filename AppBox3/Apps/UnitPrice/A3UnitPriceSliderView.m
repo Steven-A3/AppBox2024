@@ -13,9 +13,6 @@
 
 @interface A3UnitPriceSliderView ()
 
-@property (weak, nonatomic) IBOutlet UIView *lineView;
-@property (weak, nonatomic) IBOutlet UIView *progressLineView;
-
 @property (nonatomic, strong) A3TripleCircleView *thumbView;
 
 @end
