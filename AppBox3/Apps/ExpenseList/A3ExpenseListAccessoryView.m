@@ -9,6 +9,7 @@
 #import "A3ExpenseListAccessoryView.h"
 #import "SFKImage.h"
 #import "UIImage+Rotating.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3ExpenseListAccessoryView() <UITextFieldDelegate>
 
@@ -54,6 +55,12 @@
 
 	_prevButton = [[UIBarButtonItem alloc] initWithTitle:@"Prev" style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonTouchUp:)];
 	_nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonAction:)];
+    
+    _undoButton.tintColor = [A3AppDelegate instance].themeColor;
+    _redoButton.tintColor = [A3AppDelegate instance].themeColor;
+    _clearButton.tintColor = [A3AppDelegate instance].themeColor;
+    _prevButton.tintColor = [A3AppDelegate instance].themeColor;
+    _nextButton.tintColor = [A3AppDelegate instance].themeColor;
 
     [_toolBar setItems:@[
 			self.fixedSpace, _undoButton,

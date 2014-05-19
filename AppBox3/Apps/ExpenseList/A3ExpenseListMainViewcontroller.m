@@ -28,6 +28,7 @@
 #import "A3CalculatorViewController.h"
 #import "A3TableViewInputElement.h"
 #import "UITableView+utility.h"
+#import "A3AppDelegate+appearance.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -111,40 +112,14 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     
     _columnSectionView = [[A3ExpenseListColumnSectionView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 45.0)];
 
-    if (IS_IPHONE) {
-        [self rightButtonMoreButton];
-        self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
-    }
-    else {
-        self.navigationItem.hidesBackButton = YES;
-        self.tableView.separatorInset = UIEdgeInsetsMake(0, 28.0, 0, 0);
-        
-        UIBarButtonItem *add = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add06"]
-                                                                style:UIBarButtonItemStylePlain
-                                                               target:self
-                                                               action:@selector(addNewButtonAction:)];
-		add.tag = A3RightBarButtonTagComposeButton;
-        UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"]
-                                                                  style:UIBarButtonItemStylePlain
-                                                                 target:self
-                                                                 action:@selector(historyButtonAction:)];
-		history.tag = A3RightBarButtonTagHistoryButton;
-        UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"]
-                                                                  style:UIBarButtonItemStylePlain
-                                                                 target:self
-                                                                 action:@selector(shareButtonAction:)];
-		share.tag = A3RightBarButtonTagShareButton;
-        
-        self.navigationItem.rightBarButtonItems = @[history, add, share];
-    }
-    
-    
+    [self makeRightBarButtons];
     [self reloadBudgetDataAndRemoveEmptyItem];
     [self setupTopWhitePaddingView];
     [self expandContentSizeForAddItem];
     [self moveToAddBudgetIfBudgetNotExistWithDelay:1.0];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeChanged:) name:A3NotificationExpenseListCurrencyCodeChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
@@ -316,6 +291,49 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     return _headerView;
 }
 
+- (void)makeRightBarButtons
+{
+//    if (IS_IPHONE) {
+//        [self rightButtonMoreButton];
+//        self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
+//    }
+//    else {
+//        self.navigationItem.hidesBackButton = YES;
+//        self.tableView.separatorInset = UIEdgeInsetsMake(0, 28.0, 0, 0);
+//        
+//        UIBarButtonItem *add = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add06"]
+//                                                                style:UIBarButtonItemStylePlain
+//                                                               target:self
+//                                                               action:@selector(addNewButtonAction:)];
+//		add.tag = A3RightBarButtonTagComposeButton;
+//        UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"]
+//                                                                    style:UIBarButtonItemStylePlain
+//                                                                   target:self
+//                                                                   action:@selector(historyButtonAction:)];
+//		history.tag = A3RightBarButtonTagHistoryButton;
+//        UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"]
+//                                                                  style:UIBarButtonItemStylePlain
+//                                                                 target:self
+//                                                                 action:@selector(shareButtonAction:)];
+//		share.tag = A3RightBarButtonTagShareButton;
+//        
+//        self.navigationItem.rightBarButtonItems = @[history, add, share];
+//    }
+    UIBarButtonItem *add = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add06"]
+                                                            style:UIBarButtonItemStylePlain
+                                                           target:self
+                                                           action:@selector(addNewButtonAction:)];
+    add.tag = A3RightBarButtonTagComposeButton;
+    
+    UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"]
+                                                                style:UIBarButtonItemStylePlain
+                                                               target:self
+                                                               action:@selector(historyButtonAction:)];
+    history.tag = A3RightBarButtonTagHistoryButton;
+
+    self.navigationItem.rightBarButtonItems = @[history, add];
+}
+
 -(void)setCurrentBudgetId:(NSString *)currentBudgetId {
 	[[NSUserDefaults standardUserDefaults] setObject:currentBudgetId forKey:A3ExpenseListCurrentBudgetID];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -425,6 +443,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	[self dismissMoreMenu];
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
+    [self.tableView setEditing:NO animated:YES];
 }
 
 - (void)dismissMoreMenu {
@@ -1111,6 +1130,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 {
 	[self setFirstResponder:textField];
     [self dismissMoreMenu];
+    [self.tableView setEditing:NO animated:YES];
     
     NSIndexPath *indexPath = [self.tableView indexPathForCell:aCell];
     ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
@@ -1129,8 +1149,65 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	[self addNumberKeyboardNotificationObservers];
 }
 
+- (void)textFieldDidChange:(NSNotification *)notification
+{
+    UITextField *textField = notification.object;
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:CGPointMake(100, [textField convertPoint:textField.center toView:self.tableView].y)];
+    if (!indexPath) {
+        return;
+    }
+    
+    A3ExpenseListItemCell *aCell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
+	if (textField == aCell.nameTextField) {
+		item.itemName = textField.text;
+	}
+	else if (textField == aCell.priceTextField) {
+		item.price = @([textField.text floatValueEx]);
+		textField.text = [self.priceNumberFormatter stringFromNumber:item.price];
+	}
+	else if (textField == aCell.qtyTextField) {
+		[self.decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+		if (![textField.text length]) {
+			textField.text = [self.decimalFormatter stringFromNumber:@0];
+		}
+		item.qty = [self.decimalFormatter numberFromString:textField.text];
+	}
+    
+    // price * qty 계산
+    item.subTotal = @(item.price.floatValue * item.qty.floatValue);
+    aCell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:item.subTotal];
+    
+    // 전체 항목 계산 & 화면(헤더뷰) 반영.
+    [self calculateAndDisplayResultWithAnimation:YES];
+}
+
 -(void)itemCellTextFieldChanged:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
 {
+//    NSIndexPath *index = [self.tableView indexPathForCell:aCell];
+//    ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:index.row];
+//    
+//	if (textField == aCell.nameTextField) {
+//		item.itemName = textField.text;
+//	}
+//	else if (textField == aCell.priceTextField) {
+//		item.price = @([textField.text floatValueEx]);
+//		textField.text = [self.priceNumberFormatter stringFromNumber:item.price];
+//	}
+//	else if (textField == aCell.qtyTextField) {
+//		[self.decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+//		if (![textField.text length]) {
+//			textField.text = [self.decimalFormatter stringFromNumber:@0];
+//		}
+//		item.qty = [self.decimalFormatter numberFromString:textField.text];
+//	}
+//    
+//    // price * qty 계산
+//    item.subTotal = @(item.price.floatValue * item.qty.floatValue);
+//    aCell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:item.subTotal];
+//    
+//    // 전체 항목 계산 & 화면(헤더뷰) 반영.
+//    [self calculateAndDisplayResultWithAnimation:YES];
 }
 
 -(void)itemCellTextFieldFinished:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
@@ -1204,6 +1281,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 	[self enableControls:YES];
 }
+
+
 
 - (BOOL)isEmptyItemRow:(ExpenseListItem *)item {
     if (item.itemName.length==0 && (!item.price || [item.price isEqualToNumber:@0]) && (!item.qty || [item.qty isEqualToNumber:@1] || [item.qty isEqualToNumber:@0] )) {

@@ -12,6 +12,8 @@
 #import "A3CommonColorDefine.h"
 #import "A3DefaultColorDefines.h"
 #import "UIImage+JHExtension.h"
+#import "A3AppDelegate+appearance.h"
+#import "UIImage+imageWithColor.h"
 
 @interface A3ExpenseListHeaderView()
 
@@ -73,8 +75,8 @@
     
     _detailInfoButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _detailInfoButton.frame = CGRectMake(0.0, 0.0, 44.0, 44.0);//19
-    [_detailInfoButton setImage:[UIImage imageNamed:@"add02"] forState:UIControlStateNormal];
-    [_detailInfoButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateHighlighted];
+    [_detailInfoButton setImage:[[UIImage imageNamed:@"add02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
+    [_detailInfoButton setImage:[[UIImage imageNamed:@"add01"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateHighlighted];
     [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"add02"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
     
     _sliderBaseLineView.backgroundColor = COLOR_DEFAULT_GRAY;
@@ -264,8 +266,8 @@
         resultAmount = @0;
         remainAmount = @0;
 
-        [_detailInfoButton setImage:[UIImage imageNamed:@"add02"] forState:UIControlStateNormal];
-        [_detailInfoButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateHighlighted];
+        [_detailInfoButton setImage:[[UIImage imageNamed:@"add02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
+        [_detailInfoButton setImage:[[UIImage imageNamed:@"add01"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateHighlighted];
         [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"add02"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
         
     }
@@ -281,8 +283,8 @@
         
         remainAmount = @(budget.totalAmount.floatValue - budget.usedAmount.floatValue);
         
-        [_detailInfoButton setImage:[UIImage imageNamed:@"information"] forState:UIControlStateNormal];
-        [_detailInfoButton setImage:[UIImage imageNamed:@"information"] forState:UIControlStateHighlighted];
+        [_detailInfoButton setImage:[[UIImage imageNamed:@"add02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
+        [_detailInfoButton setImage:[[UIImage imageNamed:@"add01"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateHighlighted];
         [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
     }
     

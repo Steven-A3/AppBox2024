@@ -8,6 +8,7 @@
 
 #import "A3JHTableViewExpandableElement.h"
 #import "A3JHTableViewExpandableHeaderCell.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3JHTableViewExpandableElement () <A3TableViewExpandableHeaderCellProtocol>
 @end
@@ -24,13 +25,12 @@
 	cell.titleLabel.text = self.title;
 	[cell.titleLabel sizeToFit];
 
-	//[cell.expandButton setTitle:self.isCollapsed ? @"j":@"i" forState:UIControlStateNormal];
     [cell.expandButton setTitle:@"j" forState:UIControlStateNormal];
 	cell.delegate = self;
 	self.tableView = tableView;
 	self.indexPath = indexPath;
 	self.titleLabel = cell.titleLabel;
-    self.titleLabel.textColor = self.isCollapsed ? [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0] : [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
+    self.titleLabel.textColor = self.isCollapsed ? [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0] : [A3AppDelegate instance].themeColor;
 
 	return cell;
 }
@@ -65,8 +65,7 @@
 		self.titleLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
 	} else {
 		[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
-		//[_tableView scrollToRowAtIndexPath:indexPaths[0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-		self.titleLabel.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
+		self.titleLabel.textColor = [A3AppDelegate instance].themeColor;
 	}
 
 	[_tableView endUpdates];

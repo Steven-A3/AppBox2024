@@ -33,6 +33,7 @@
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
 #import "UITableView+utility.h"
+#import "A3AppDelegate+appearance.h"
 
 enum A3ExpenseListAddBudgetCellType {
     AddBudgetCellID_Budget = 100,
@@ -569,7 +570,7 @@ static NSString *CellIdentifier = @"Cell";
         case AddBudgetCellID_Date:
         {
             cell.textLabel.textColor = [UIColor blackColor];
-            cell.detailTextLabel.textColor = _showDatePicker ? [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1] : COLOR_TABLE_DETAIL_TEXTLABEL;
+            cell.detailTextLabel.textColor = _showDatePicker ? [A3AppDelegate instance].themeColor : COLOR_TABLE_DETAIL_TEXTLABEL;
         }
             break;
 
@@ -649,7 +650,7 @@ static NSString *CellIdentifier = @"Cell";
             [CATransaction begin];
             [CATransaction setCompletionBlock:^{
                 [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-                cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255 blue:255.0/255.0 alpha:1];
+                cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
             }];
             [tableView beginUpdates];
             [tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
