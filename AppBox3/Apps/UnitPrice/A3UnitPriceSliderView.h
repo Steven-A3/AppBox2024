@@ -25,6 +25,8 @@ typedef NS_ENUM(NSInteger, UnitPriceSliderViewLayout) {
 @property (weak, nonatomic) IBOutlet UILabel *markLabel;
 @property (weak, nonatomic) IBOutlet UILabel *unitPriceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;
+@property (weak, nonatomic) IBOutlet UIView *lineView;
+@property (weak, nonatomic) IBOutlet UIView *progressLineView;
 
 @property (nonatomic, readwrite) float maxValue;
 @property (nonatomic, readwrite) float priceValue;

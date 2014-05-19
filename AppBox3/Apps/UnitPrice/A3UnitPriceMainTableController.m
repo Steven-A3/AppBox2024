@@ -82,6 +82,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     lineView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1.0];
     [self.tableView addSubview:lineView];
     
+    self.currencyFormatter.maximumFractionDigits = 2;
     [self updateUnitPrices:NO];
 
 	[self registerContentSizeCategoryDidChangeNotification];
@@ -128,6 +129,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (void)currencyCodeChanged:(NSNotification *)notification {
 	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceCurrencyCode];
 	[self.currencyFormatter setCurrencyCode:currencyCode];
+    [self.currencyFormatter setMaximumFractionDigits:2];
 	[self.tableView reloadData];
 }
 
@@ -142,8 +144,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 - (void)enableControls:(BOOL)enable
 {
-	if (!IS_IPAD) return;
-	self.navigationItem.leftBarButtonItem.enabled = enable;
     if (enable) {
 		self.composeBarItem.enabled = price1UnitPrice > 0 && price2UnitPrice > 0;
 		self.historyBarItem.enabled = [UnitPriceHistory MR_countOfEntities] > 0;
@@ -152,6 +152,9 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 		self.composeBarItem.enabled = NO;
 		self.historyBarItem.enabled = NO;
     }
+    
+	if (!IS_IPAD) return;
+	self.navigationItem.leftBarButtonItem.enabled = enable;
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
@@ -445,12 +448,14 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.upSliderView.markLabel.text = @"A";
     cell.upSliderView.layoutType = Slider_UpperOfTwo;
     cell.upSliderView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
+    cell.upSliderView.priceNumLabel.hidden = YES;
     
     [cell.downSliderView labelFontSetting];
     cell.downSliderView.displayColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
     cell.downSliderView.markLabel.text = @"B";
     cell.downSliderView.layoutType = Slider_LowerOfTwo;
     cell.downSliderView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
+    cell.downSliderView.priceNumLabel.hidden = YES;
     
     cell.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
  
@@ -642,6 +647,14 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     price2UnitPrice = unitPrice2;
     
     if (IS_IPAD) {
+        CGRect rect = cell.upSliderView.frame;
+        rect.origin.y = 27;
+        cell.upSliderView.frame = rect;
+        
+        rect = cell.downSliderView.frame;
+        rect.origin.y = 122;
+        cell.downSliderView.frame = rect;
+
         [cell.upSliderView.unitPriceLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:172];
         [cell.upSliderView.priceLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:172];
         [cell.upSliderView.unitPriceNumLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:115];
@@ -650,6 +663,10 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         [cell.downSliderView.priceNumLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:28];
     }
     else {
+        CGRect rect = cell.downSliderView.frame;
+        rect.origin.y = 82;
+        cell.downSliderView.frame = rect;
+        
         [cell.upSliderView.unitPriceLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:135];
         [cell.upSliderView.priceLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:135];
         [cell.upSliderView.unitPriceNumLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:90];
@@ -935,7 +952,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return IS_IPAD ? 225 : 166;
+        return IS_IPAD ? 226 : 166;
     }
     
     if (IS_RETINA) {
