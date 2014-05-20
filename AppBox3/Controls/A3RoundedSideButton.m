@@ -34,22 +34,20 @@
 
 - (void)setSelected:(BOOL)selected {
 	[super setSelected:selected];
-    
-    if (_borderLayer) {
-        [_borderLayer removeFromSuperlayer];
-		_borderLayer = nil;
-    }
 
-	if (!selected) {
-        return;
-	}
-    else {
-		_borderLayer = [CALayer layer];
-		_borderLayer.frame = self.bounds;
-		_borderLayer.borderColor = self.tintColor.CGColor;
-		_borderLayer.borderWidth = 1.0;
-		_borderLayer.cornerRadius = self.bounds.size.height / 2.0;
-		[self.layer addSublayer:_borderLayer];
+	FNLOG(@"%@, %ld", self.titleLabel.text, (long)selected);
+	if (selected) {
+		if (!_borderLayer) {
+			_borderLayer = [CALayer layer];
+			_borderLayer.frame = self.bounds;
+			_borderLayer.borderColor = self.tintColor.CGColor;
+			_borderLayer.borderWidth = 1.0;
+			_borderLayer.cornerRadius = self.bounds.size.height / 2.0;
+			[self.layer addSublayer:_borderLayer];
+		}
+	} else {
+		[_borderLayer removeFromSuperlayer];
+		_borderLayer = nil;
 	}
 }
 
