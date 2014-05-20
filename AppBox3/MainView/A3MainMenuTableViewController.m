@@ -125,6 +125,14 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	}
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	return UIStatusBarStyleDefault;
+}
+
+- (BOOL)prefersStatusBarHidden {
+	return NO;
+}
+
 - (void)menuContentsChanged {
 	[self setupData];
 	[self.tableView reloadData];

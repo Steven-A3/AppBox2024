@@ -244,12 +244,13 @@
         self.itemArray = [self sortedArrayByNameAscending:_isNameAscending];
     }
     else if ( _sortType == EventSortType_Date ) {
+
         self.itemArray = [self sortedArrayByDateAscending:_isDateAscending];
     }
     [self.tableView reloadData];
     
     _sortTypeSegmentCtrl.enabled = ([_sourceArray count] > 0);
-    _sortTypeSegmentCtrl.tintColor =(_sortTypeSegmentCtrl.enabled ? nil : [UIColor colorWithRed:196.0/255.0 green:196.0/255.0 blue:196.0/255.0 alpha:1.0]);
+    _sortTypeSegmentCtrl.tintColor =(_sortTypeSegmentCtrl.enabled ? nil : [UIColor colorWithRed:147.0/255.0 green:147.0/255.0 blue:147.0/255.0 alpha:1.0]);
     
     UIBarButtonItem *edit = [self.navigationItem.rightBarButtonItems objectAtIndex:0];
     UIBarButtonItem *search = [self.navigationItem.rightBarButtonItems objectAtIndex:1];

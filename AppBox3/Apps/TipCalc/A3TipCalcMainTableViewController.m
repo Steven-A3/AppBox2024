@@ -106,7 +106,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [self refreshMoreButtonState];
 
 	if (IS_IPAD) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
 	[self registerContentSizeCategoryDidChangeNotification];
@@ -116,7 +115,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	FNLOG();
 	[self removeContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	}
 }
@@ -155,6 +153,9 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)rightSideViewWillDismiss {
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
 	[self setBarButtonsEnable:YES];
 }
 
@@ -191,14 +192,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)setBarButtonsEnable:(BOOL)enable {
-    [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
-        if (barButton.tag == A3RightBarButtonTagHistoryButton) {
-            barButton.enabled = enable && [TipCalcHistory MR_countOfEntities] > 0;
-        }
-        else {
-            barButton.enabled = enable;
-        }
-    }];
     self.headerView.detailInfoButton.enabled = enable;
     self.navigationItem.leftBarButtonItem.enabled = enable;
 	self.headerView.beforeSplitButton.enabled = enable;
@@ -215,61 +208,71 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		[self.headerView.perPersonButton setBorderColor:color];
 	}
 
-    if (enable) {
+	if (enable) {
         [self refreshMoreButtonState];
-    }
+    } else {
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
+			[barButtonItem setEnabled:NO];
+		}];
+	}
+}
+
+- (void)refreshMoreButtonState {
+	if (IS_IPHONE) {
+		if (_isShowMoreMenu) {
+			UIButton *save = [_arrMenuButtons objectAtIndex:0];
+			save.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
+			UIBarButtonItem *share = [_arrMenuButtons objectAtIndex:1];
+			share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
+		}
+	}
+	else {
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
+			switch ((A3RightBarButtonTag)barButton.tag) {
+				case A3RightBarButtonTagComposeButton:
+				case A3RightBarButtonTagShareButton:
+					barButton.enabled = ([self.dataManager.tipCalcData.costs doubleValue] > 0.0 && [self.dataManager.tipCalcData.tip doubleValue] > 0.0);
+					break;
+				case A3RightBarButtonTagHistoryButton:
+					barButton.enabled = [TipCalcHistory MR_countOfEntities] > 0;
+					break;
+				case A3RightBarButtonTagSettingsButton:
+					barButton.enabled = YES;
+					break;
+			}
+		}];
+
+	}
 }
 
 - (A3TipCalcHeaderView *)headerView
 {
-    CGRect frame = CGRectZero;
+	CGRect frame = CGRectZero;
     if (!_headerView) {
-        if ([self.dataManager isSplitOptionOn]) {
-            if (IS_IPAD) {
-                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 193);
-            }
-            else {
-                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 134);
-            }
-        }
-        else {
-            if (IS_IPAD) {
-                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 158);
-            }
-            else {
-                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 104);
-            }
-        }
-
         _headerView = [[A3TipCalcHeaderView alloc] initWithFrame:frame dataManager:self.dataManager];
 		_headerView.dataManager = self.dataManager;
         [_headerView.beforeSplitButton addTarget:self action:@selector(beforeSplitButtonTouchedUp:) forControlEvents:UIControlEventTouchUpInside];
         [_headerView.perPersonButton addTarget:self action:@selector(perPersonButtonTouchedUp:) forControlEvents:UIControlEventTouchUpInside];
         [_headerView.detailInfoButton addTarget:self action:@selector(detailButtonTouchedUp:) forControlEvents:UIControlEventTouchUpInside];
     }
-    else {
-        frame = _headerView.frame;
-        
-        if ([self.dataManager isSplitOptionOn]) {
-            if (IS_IPAD) {
-                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 193);
-            }
-            else {
-                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 134);
-            }
-        }
-        else {
-            if (IS_IPAD) {
-                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 158);
-            }
-            else {
-                frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 104);
-            }
-        }
-        
-        _headerView.frame = frame;
-    }
-    
+	if ([self.dataManager isSplitOptionOn]) {
+		if (IS_IPAD) {
+			frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 193);
+		}
+		else {
+			frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 134);
+		}
+	}
+	else {
+		if (IS_IPAD) {
+			frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 158);
+		}
+		else {
+			frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 104);
+		}
+	}
+	_headerView.frame = frame;
+
     return _headerView;
 }
 
@@ -702,8 +705,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     }
 }
 
-#pragma mark - Delegate
 #pragma mark Settings
+
 - (void)tipCalcSettingsChanged {
     [_headerView setResult:self.dataManager.tipCalcData withAnimation:YES];
     //    [UIView animateWithDuration:0.3 animations:^{
@@ -711,18 +714,19 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [self reloadTableDataSource];
     [self.tableView reloadData];
     [_headerView showDetailInfoButton];
+
+	if (IS_IPAD && self.A3RootViewController.showRightView) {
+		[self setBarButtonsEnable:NO];
+	}
     //    }];
 }
 
 - (void)dismissTipCalcSettingsViewController {
-    if (IS_IPAD) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
-    }
-    
-    [self setBarButtonsEnable:YES];
+	[self setBarButtonsEnable:YES];
 }
 
 #pragma mark A3TipCalcHistorySelectDelegate
+
 - (void)didSelectHistoryData:(TipCalcHistory *)aHistory {
     [self.dataManager historyToRecently:aHistory];
     [self reloadTableDataSource];
@@ -939,7 +943,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             else {
 				[self setBarButtonsEnable:NO];
 				[self.A3RootViewController presentRightSideViewController:selectTableViewController];
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissTipCalcSettingsViewController) name:A3NotificationRightSideViewWillDismiss object:nil];
+				[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 			}
             
 			break;
@@ -1063,7 +1067,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
 		[self.A3RootViewController presentRightSideViewController:viewController];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissTipCalcSettingsViewController) name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 }
 
@@ -1086,7 +1090,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
 		[self.A3RootViewController presentRightSideViewController:viewController];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissTipCalcSettingsViewController) name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 }
 
@@ -1112,37 +1116,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [self reloadTableDataSource];
     [self.tableView reloadData];
     [self refreshMoreButtonState];
-}
-
-- (void)refreshMoreButtonState {
-	if (IS_IPHONE) {
-		if (_isShowMoreMenu) {
-			UIButton *save = [_arrMenuButtons objectAtIndex:0];
-			save.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
-			UIBarButtonItem *share = [_arrMenuButtons objectAtIndex:1];
-			share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
-		}
-	}
-    else {
-        [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
-            switch ([barButton tag]) {
-                case A3RightBarButtonTagComposeButton:
-                case A3RightBarButtonTagShareButton:
-                    barButton.enabled = ([self.dataManager.tipCalcData.costs doubleValue] > 0.0 && [self.dataManager.tipCalcData.tip doubleValue] > 0.0) ? YES : NO;
-                    break;
-                case A3RightBarButtonTagHistoryButton:
-                    barButton.enabled = [TipCalcHistory MR_countOfEntities] > 0 ? YES : NO;
-                    break;
-                case A3RightBarButtonTagSettingsButton:
-                    
-                    break;
-                    
-                default:
-                    break;
-            }
-        }];
-        
-    }
 }
 
 #pragma mark Share Activities releated

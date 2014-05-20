@@ -134,6 +134,12 @@ static const CGFloat kSideViewWidth = 320.0;
 }
 
 - (void)animateLeftView {
+	if (_showLeftView) {
+		[[UIApplication sharedApplication] setStatusBarHidden:NO];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	}
+	[_leftNavigationController setNeedsStatusBarAppearanceUpdate];
+
 	[UIView animateWithDuration:0.3 animations:^{
 		CGRect frame = _leftNavigationController.view.frame;
 		if (self.showLeftView) {
@@ -153,10 +159,6 @@ static const CGFloat kSideViewWidth = 320.0;
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidShow object:_leftMenuViewController];
 		} else {
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:_leftMenuViewController];
-		}
-		if (_showLeftView) {
-			[[UIApplication sharedApplication] setStatusBarHidden:NO];
-			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 		}
 	}];
 }
