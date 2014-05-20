@@ -1474,7 +1474,8 @@ NSString *kCalculationString;
         if ((self.isAddSubMode==YES && indexPath.row==kAddSubRowIndex) || (self.isAddSubMode==NO && indexPath.row==0)) {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             return;
-        } else {
+        }
+        else {
             self.isAddSubMode = !self.isAddSubMode;
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
@@ -1494,11 +1495,12 @@ NSString *kCalculationString;
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
 		self.dateKeyboardViewController = self.newDateKeyboardViewController;
 		[self.dateKeyboardViewController changeInputToYear];
-        
         if ([indexPath row] == 0) {
+            self.dateKeyboardViewController.date = self.fromDate;
             [self moveToFromDateCell];
         }
         else {
+            self.dateKeyboardViewController.date = self.toDate;
             [self moveToToDateCell];
         }
     }
@@ -1519,8 +1521,8 @@ NSString *kCalculationString;
 			[self enableControls:NO];
 			[self.A3RootViewController presentRightSideViewController:viewController];
 		}
-        
-    } else if (indexPath.section == 3 && indexPath.row == 0) {
+    }
+    else if (indexPath.section == 3 && indexPath.row == 0) {
         // Duration
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
@@ -1533,7 +1535,8 @@ NSString *kCalculationString;
         viewController.delegate = self;
         if (IS_IPHONE) {
             [self.navigationController pushViewController:viewController animated:YES];
-        } else {
+        }
+        else {
 			[self enableControls:NO];
 			[self.A3RootViewController presentRightSideViewController:viewController];
 		}
