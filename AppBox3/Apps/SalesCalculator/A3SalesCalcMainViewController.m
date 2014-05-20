@@ -607,7 +607,11 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
                 case A3TableElementCellType_Tax:
                 {
                     if (textField.text && textField.text.length!=0) {
-                        element.value = (!inputNumber || [inputNumber isEqualToNumber:@0]) ? @"" : [inputNumber stringValue];
+                        //element.value = (!inputNumber || [inputNumber isEqualToNumber:@0]) ? @"" : [inputNumber stringValue];
+                        element.value = (!inputNumber || [inputNumber isEqualToNumber:@0]) ? @"" : [weakSelf.decimalFormatter stringFromNumber:inputNumber];
+                    }
+                    else if ([textField.text length] == 0 && [element.value length] > 0) {
+                        inputNumber = [weakSelf.decimalFormatter numberFromString:element.value];
                     }
                 }
                     break;
