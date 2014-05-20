@@ -465,7 +465,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     NSString *unitPriceTxt1 = @"";
     NSString *unitShortName1;
     NSString *priceTxt1;
-    double maxPrice = MAX(self.price1.price.doubleValue, self.price2.price.doubleValue);
+    //double maxPrice = MAX(self.price1.price.doubleValue, self.price2.price.doubleValue);
     
     priceTxt1 = [self.currencyFormatter stringFromNumber:@(self.price1.price.doubleValue)];
     unitShortName1 = self.price1.unit ? self.price1.unit.unitShortName : @"None";
@@ -529,7 +529,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     // slider1
     cell.upSliderView.unitPriceNumLabel.text = unitPriceTxt1;
     cell.upSliderView.priceNumLabel.text = priceTxt1;
-    cell.upSliderView.maxValue = maxPrice;
     cell.upSliderView.unitPriceValue = unitPrice1;
     cell.upSliderView.priceValue = self.price1.price.floatValue;
     
@@ -628,7 +627,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             }
             else {
                 unitPriceTxt2 = [NSString stringWithFormat:@"-%@", [self.currencyFormatter stringFromNumber:@(unitPrice2*-1)]];
-                
             }
             
             cell.downSliderView.progressBarHidden = YES;
@@ -641,11 +639,14 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     // slider2
     cell.downSliderView.unitPriceNumLabel.text = unitPriceTxt2;
     cell.downSliderView.priceNumLabel.text = priceTxt2;
-    cell.downSliderView.maxValue = maxPrice;
     cell.downSliderView.unitPriceValue = unitPrice2;
     cell.downSliderView.priceValue = self.price2.price.floatValue;
     
     price2UnitPrice = unitPrice2;
+    
+    double maxPrice = MAX(unitPrice1, unitPrice2);
+    cell.upSliderView.maxValue = maxPrice;
+    cell.downSliderView.maxValue = maxPrice;
     
     if (IS_IPAD) {
         CGRect rect = cell.upSliderView.frame;

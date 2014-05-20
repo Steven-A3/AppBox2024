@@ -152,13 +152,13 @@
 
 - (void)setMaxValue:(float)maxValue
 {
-    _maxValue = (maxValue>0) ? maxValue:0;
+    _maxValue = (maxValue>0) ? maxValue : 0;
 }
 
 - (void)setPriceValue:(float)priceValue
 {
-    _priceValue = (priceValue>0) ? priceValue:0;
-    _priceValue = (priceValue<=_maxValue) ? priceValue:_maxValue;
+    _priceValue = (priceValue>0) ? priceValue : 0;
+    _priceValue = (priceValue<=_maxValue) ? priceValue : _maxValue;
 }
 
 - (BOOL)allValueValid
@@ -174,9 +174,10 @@
     float leftSideMargin = IS_IPAD ? 28.0:15.0;
     float rightSideMargin = 15.0;
     float lbBetweenMargin = 10.0;
+    float progressLineMaxWidth = _lineView.frame.size.width * 0.8;
     
     float unitPrice = _unitPriceValue;
-    float pixelPerPrice = _lineView.frame.size.width/_maxValue;
+    float pixelPerPrice = progressLineMaxWidth / _maxValue;
     
 
     // slider part
@@ -189,23 +190,18 @@
     else {
         thumbX = 0;
     }
-    thumbX_Min = _thumbView.frame.size.width/2;
-    thumbX_Max = (_layoutType == Slider_StandAlone) ? (_lineView.frame.size.width - _thumbView.frame.size.width/2) : (_lineView.frame.size.width - _markLabel.frame.size.width - _thumbView.frame.size.width/2);
+    thumbX_Min = _thumbView.frame.size.width / 2;
+    thumbX_Max = progressLineMaxWidth;
+    
+    
     thumbX = MIN(thumbX, thumbX_Max);
     thumbX = MAX(thumbX, thumbX_Min);
     [_unitPriceLabel sizeToFit];
     [_unitPriceNumLabel sizeToFit];
     _unitPriceNumLabel.center = CGPointMake(thumbX, _unitPriceNumLabel.center.y);
-
     
     float markX = _markLabel.center.x;
     markX = _lineView.frame.size.width - (_markLabel.frame.size.width / 2) - 15;
-    //    if (_maxValue > 0) {
-    //        markX = pixelPerPrice * _priceValue;
-    //    }
-    //    else {
-    //        markX = _lineView.frame.size.width - (_markLabel.frame.size.width / 2) - 15;
-    //    }
     markX_Min = _markLabel.frame.size.width/2 + _thumbView.frame.size.width;
     markX_Max = _lineView.frame.size.width - _markLabel.frame.size.width/2;
     markX = MIN(markX, markX_Max);
