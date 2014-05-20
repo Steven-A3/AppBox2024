@@ -1425,17 +1425,9 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
 		self.navigationItem.hidesBackButton = NO;
-	}
-	if ([_messageTableView isEditing]) {
 		if ([self.messages count]) {
-			self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Delete All" style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllAction:)];
+			[self rightBarButtonEditButton];
 		}
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(editButtonAction)];
-		self.navigationItem.hidesBackButton = YES;
-	} else {
-		self.navigationItem.leftBarButtonItem = nil;
-		[self rightBarButtonEditButton];
-		self.navigationItem.hidesBackButton = NO;
 	}
 }
 

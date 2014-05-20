@@ -216,6 +216,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         }
         else if( cellType == AccountCell_Notes ){
 			A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID forIndexPath:indexPath];
+			noteCell.keepShortInset = YES;
 			[noteCell setupTextView];
 			noteCell.textView.delegate = self;
 			noteCell.textView.text = _accountItem.notes;

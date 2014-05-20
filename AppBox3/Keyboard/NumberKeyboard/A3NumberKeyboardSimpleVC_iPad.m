@@ -96,6 +96,11 @@
 		[self.clearButton setFrame:CGRectMake(col_5, row_2, width_big, height_small)];
 		[self.num0Button setFrame:CGRectMake(col_2, row_4, width_extra, height_small)];
 	}
+
+	if (self.plusMinusButton) {
+		UIImage *image = [UIImage imageNamed:isLandscape ? @"minus_h" : @"minus_p"];
+		[self.plusMinusButton setImage:image forState:UIControlStateNormal];
+	}
 }
 
 

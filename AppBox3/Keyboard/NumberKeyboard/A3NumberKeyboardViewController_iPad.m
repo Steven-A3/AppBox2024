@@ -60,6 +60,11 @@
 	[@[self.clearButton, self.doneButton, self.prevButton, self.nextButton] enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
 		button.titleLabel.font = [UIFont systemFontOfSize:portrait ? 18 : 25];
 	}];
+
+	if (self.plusMinusButton) {
+		UIImage *image = [UIImage imageNamed:portrait ? @"minus_p" : @"minus_h"];
+		[self.plusMinusButton setImage:image forState:UIControlStateNormal];
+	}
 }
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {

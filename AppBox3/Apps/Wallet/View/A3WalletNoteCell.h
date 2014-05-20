@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic) IBOutlet GCPlaceholderTextView *textView;
 @property (strong, nonatomic) UIView *topSeparator;
+@property (assign, nonatomic) BOOL keepShortInset;
 
 - (void)setupTextView;
 

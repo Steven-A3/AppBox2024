@@ -767,7 +767,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 			A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceNoteCellID forIndexPath:indexPath];
 			[noteCell setupTextView];
 			noteCell.textView.delegate = self;
-			noteCell.textView.text = self.price.note ? self.price.note : @"";
+			noteCell.textView.text = [self.price.note length] ? self.price.note : nil;
 
 			cell = noteCell;
 		}

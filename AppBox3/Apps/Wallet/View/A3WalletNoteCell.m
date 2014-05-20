@@ -42,8 +42,8 @@
 	[_textView makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(self.top).with.offset(3);
 		make.bottom.equalTo(self.bottom).with.offset(-3);
-		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 10 : 23);
-		make.right.equalTo(self.right).with.offset(IS_IPHONE ? -10 : -23);
+		make.left.equalTo(self.left).with.offset(IS_IPHONE || _keepShortInset ? 10 : 23);
+		make.right.equalTo(self.right).with.offset(IS_IPHONE || _keepShortInset ? -10 : -23);
 	}];
 }
 
@@ -56,9 +56,9 @@
 - (CGFloat)calculatedHeight {
 	CGRect frame = _textView.frame;
 	frame.origin.y = 3.0;
-	frame.origin.x = IS_IPHONE ? 10 : 23;
+	frame.origin.x = IS_IPHONE || _keepShortInset ? 10 : 23;
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-	frame.size.width = screenBounds.size.width - (IS_IPHONE ? 10 : 23) * 2;
+	frame.size.width = screenBounds.size.width - (IS_IPHONE || _keepShortInset ? 10 : 23) * 2;
 	[_textView.layoutManager ensureLayoutForTextContainer:_textView.textContainer];
 	frame.size.height = MAX(180, [_textView.layoutManager usedRectForTextContainer:_textView.textContainer].size.height + 25.0);
 	_textView.frame = frame;
@@ -73,7 +73,7 @@
 		[self addSubview:_topSeparator];
 
 		[_topSeparator makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.left.equalTo(self.left).with.offset(IS_IPHONE || _keepShortInset ? 15 : 28);
 			make.right.equalTo(self.right);
 			make.top.equalTo(self.top);
 			make.height.equalTo(IS_RETINA ? @0.5 : @1.0);
