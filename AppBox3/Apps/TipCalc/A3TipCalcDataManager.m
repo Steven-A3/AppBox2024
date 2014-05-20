@@ -198,6 +198,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     else {
         NSNumberFormatter *formatter = [NSNumberFormatter new];
         formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+        formatter.maximumFractionDigits = 3;
         [mstrOutput appendFormat:@"Tip : %@<br>", [formatter stringFromNumber:self.tipCalcData.tip]];
     }
     
@@ -734,6 +735,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 		_currencyFormatter = [NSNumberFormatter new];
 		[_currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 		[_currencyFormatter setCurrencyCode:self.currencyCode];
+        [_currencyFormatter setMaximumFractionDigits:2];
 	}
 
 	return _currencyFormatter;
