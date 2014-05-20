@@ -12,6 +12,8 @@
 {
     NSArray *_percentALabels;
     NSArray *_percentBLabels;
+    NSArray *_percentA_meterViews;
+    NSArray *_percentB_meterViews;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -21,6 +23,12 @@
         // Initialization code
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self adjustMeterViewsPosition];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -76,14 +84,13 @@
     
     if (IS_IPAD) {
         // percent bar
-        
         float gapRight = 6;
         
         NSMutableArray *percentLabelArray = [NSMutableArray new];
+        NSMutableArray *percent_MeterView = [NSMutableArray new];
         
         for (int i=0; i<5; i++) {
             UIView *tmp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 23)];
-            tmp.backgroundColor = [UIColor clearColor];
             if (i<4) {
                 UIView *line = [[UIView alloc] initWithFrame:CGRectMake(49, 0, IS_RETINA ? 0.5:1.0, 18+5)];
                 line.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
@@ -95,17 +102,20 @@
             pctLB.textAlignment = NSTextAlignmentRight;
             pctLB.text = [NSString stringWithFormat:@"%d%%", (i+1)*20];
             [tmp addSubview:pctLB];
-            tmp.layer.anchorPoint = CGPointMake(1, 0);
             [_bg_A_Line addSubview:tmp];
-            tmp.center = CGPointMake(_bg_A_Line.bounds.size.width/5.0*(i+1), 0);
-            tmp.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+            CGRect frame = tmp.frame;
+            frame.origin.x = ceilf(_bg_A_Line.bounds.size.width / 5.0 * (i + 1)) - 50.0;
+            tmp.frame = frame;
             
             [percentLabelArray addObject:pctLB];
+            [percent_MeterView addObject:tmp];
         }
         _percentALabels = percentLabelArray;
+        _percentA_meterViews = percent_MeterView;
 
 
         percentLabelArray = [NSMutableArray new];
+        percent_MeterView = [NSMutableArray new];
         
         for (int i=0; i<5; i++) {
             UIView *tmp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 23)];
@@ -121,13 +131,16 @@
             pctLB.textAlignment = NSTextAlignmentRight;
             pctLB.text = [NSString stringWithFormat:@"%d%%", (i+1)*20];
             [tmp addSubview:pctLB];
-            tmp.layer.anchorPoint = CGPointMake(1, 0);
             [_bg_B_Line addSubview:tmp];
-            tmp.center = CGPointMake(_bg_B_Line.bounds.size.width/5.0*(i+1), 0);
-            tmp.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+            CGRect frame = tmp.frame;
+            frame.origin.x = ceilf(_bg_B_Line.bounds.size.width / 5.0 * (i + 1)) - 50.0;
+            tmp.frame = frame;
+            
             [percentLabelArray addObject:pctLB];
+            [percent_MeterView addObject:tmp];
         }
         _percentBLabels = percentLabelArray;
+        _percentB_meterViews = percent_MeterView;
     }
 }
 
@@ -178,6 +191,21 @@
             label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
         }];
     }
+}
+
+- (void)adjustMeterViewsPosition
+{
+    [_percentA_meterViews enumerateObjectsUsingBlock:^(UIView *meterView, NSUInteger idx, BOOL *stop) {
+       CGRect frame = meterView.frame;
+       frame.origin.x = ceilf(self.bg_A_Line.bounds.size.width / 5.0 * (idx + 1)) - 50.0;
+        meterView.frame = frame;
+    }];
+    
+    [_percentB_meterViews enumerateObjectsUsingBlock:^(UIView *meterView, NSUInteger idx, BOOL *stop) {
+        CGRect frame = meterView.frame;
+        frame.origin.x = ceilf(self.bg_A_Line.bounds.size.width / 5.0 * (idx + 1)) - 50.0;
+        meterView.frame = frame;
+    }];
 }
 
 @end
