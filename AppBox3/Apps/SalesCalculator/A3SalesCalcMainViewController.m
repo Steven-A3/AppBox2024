@@ -211,10 +211,10 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
 			switch (barButtonItem.tag) {
 				case A3RightBarButtonTagHistoryButton:
-					[barButtonItem setEnabled: [SalesCalcHistory MR_countOfEntities] > 0];
+                    barButtonItem.enabled = [SalesCalcHistory MR_countOfEntities] > 0 ? YES : NO;
 					break;
 				case A3RightBarButtonTagComposeButton:
-					[barButtonItem setEnabled: ![self.preferences.calcData.price isEqualToNumber:@0] && ![self.preferences.calcData.discount isEqualToNumber:@0] ];
+                    barButtonItem.enabled = ([self.preferences.calcData.price doubleValue] > 0.0 && [self.preferences.calcData.discount doubleValue] > 0.0) ? YES : NO;
 			}
 		}];
     } else {
@@ -725,18 +725,12 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
                         break;
                 }
             }
-            
+            [weakSelf enableControls:YES];
             [weakSelf reloadPercentValuesToTableDataSource];
             [weakSelf saveInputTextData:weakSelf.preferences.calcData];
-            
-            
-            if (!weakSelf.preferences.calcData.price || !weakSelf.preferences.calcData.discount) {
-                return;
-            }
-            
+
             // 계산 결과 반영.
             [weakSelf.headerView setResultData:weakSelf.preferences.calcData withAnimation:YES];
-			[weakSelf enableControls:YES];
             
             // 계산 결과 저장.
             if (NO == [weakSelf.preferences didSaveBefore]) {
