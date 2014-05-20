@@ -373,6 +373,11 @@
         result = aData.discount;
     }
 
+    
+    if (isinf([result doubleValue]) || isnan([result doubleValue])) {
+        return @0;
+    }
+    
     return result;
 }
 
@@ -395,6 +400,10 @@
         result = aData.additionalOff;
     }
 
+    if (isinf([result doubleValue]) || isnan([result doubleValue])) {
+        return @0;
+    }
+    
     return result;
 }
 
@@ -412,7 +421,7 @@
     else if (aData.shownPriceType == ShowPriceType_SalePriceWithTax) {
         if (aData.taxType == A3TableViewValueTypeCurrency) {
             NSNumber *salePriceBeforeTax = [self salePriceWithoutTaxForCalcData:aData];
-            if ([salePriceBeforeTax isEqualToNumber:@0]) {
+            if ([salePriceBeforeTax isEqualToNumber:@0] || (isinf([result doubleValue]) || isnan([result doubleValue]))) {
                 return @0;
             }
             result = @([aData.tax doubleValue] / [salePriceBeforeTax doubleValue] * 100.0);
@@ -420,6 +429,10 @@
         else {
             result = aData.tax;
         }
+    }
+    
+    if (isinf([result doubleValue]) || isnan([result doubleValue])) {
+        return @0;
     }
     
     return result;

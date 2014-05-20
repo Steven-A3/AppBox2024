@@ -430,8 +430,6 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 
 -(id)valueAndPriceElementsFor:(A3SalesCalcData *)aData
 {
-    NSNumberFormatter * formatter = [NSNumberFormatter new];
-    formatter.numberStyle = NSNumberFormatterDecimalStyle;
     NSMutableArray *elements = [NSMutableArray new];
 
     if (!_price) {
@@ -454,10 +452,10 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     [elements addObject:_price];
     if (aData) {
         // 세일된 가격
-        _price.value = [formatter stringFromNumber:aData.price];
+        _price.value = [self.decimalFormatter stringFromNumber:aData.price];
     }
     else {
-        _price.value = [formatter stringFromNumber:self.preferences.calcData.price];
+        _price.value = [self.decimalFormatter stringFromNumber:self.preferences.calcData.price];
     }
     
     A3TableViewInputElement *discount = [A3TableViewInputElement new];
@@ -476,18 +474,16 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 
     [elements addObject:discount];
     if (aData) {
-        discount.value = [formatter stringFromNumber:aData.discount];
+        discount.value = [self.decimalFormatter stringFromNumber:aData.discount];
+        discount.valueType = aData.discountType;
     } else {
-        discount.value = [formatter stringFromNumber:self.preferences.calcData.discount];
+        discount.value = [self.decimalFormatter stringFromNumber:self.preferences.calcData.discount];
     }
     
     return elements;
 }
 
 -(NSArray *)advancedSectionWithData:(A3SalesCalcData *)aData {
-    NSNumberFormatter *formatter = [NSNumberFormatter new];
-    formatter.numberStyle = NSNumberFormatterDecimalStyle;
-    
     NSMutableArray *elements = [NSMutableArray new];
     
     A3TableViewInputElement *additional = [A3TableViewInputElement new];
@@ -506,9 +502,10 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 	additional.delegate = self;
 	additional.currencyCode = self.defaultCurrencyCode;
     if (aData) {
-        additional.value = [formatter stringFromNumber:aData.additionalOff];
+        additional.value = [self.decimalFormatter stringFromNumber:aData.additionalOff];
+        additional.valueType = aData.additionalOffType;
     } else {
-        additional.value = [formatter stringFromNumber:self.preferences.calcData.additionalOff];
+        additional.value = [self.decimalFormatter stringFromNumber:self.preferences.calcData.additionalOff];
     }
     
     A3TableViewInputElement *tax = [A3TableViewInputElement new];
@@ -527,10 +524,11 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 	tax.delegate = self;
 	tax.currencyCode = self.defaultCurrencyCode;
     if (aData) {
-        tax.value = [formatter stringFromNumber:aData.tax];
+        tax.value = [self.decimalFormatter stringFromNumber:aData.tax];
+        tax.valueType = aData.taxType;
     }
     else {
-        tax.value = [formatter stringFromNumber:self.preferences.calcData.tax];
+        tax.value = [self.decimalFormatter stringFromNumber:self.preferences.calcData.tax];
     }
     
 //    _taxElement = tax;
@@ -837,7 +835,8 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
         {
             A3TableViewInputElement *discount = (A3TableViewInputElement *)element;
             if (discount.valueType == A3TableViewValueTypeCurrency) {
-                [self updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:@([[discount value] doubleValue]) andPercent:[A3SalesCalcCalculator discountPercentForCalcData:self.preferences.calcData] showPlaceholder:NO ];
+                NSNumber *value = [self.decimalFormatter numberFromString:[discount value]];
+                [self updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:value andPercent:[A3SalesCalcCalculator discountPercentForCalcData:self.preferences.calcData] showPlaceholder:NO ];
             }
         }
             break;
@@ -852,7 +851,8 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
             else {
                 A3TableViewInputElement *additional = (A3TableViewInputElement *)element;
                 if (additional.valueType == A3TableViewValueTypeCurrency) {
-                    [self updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:@([[additional value] doubleValue]) andPercent:[A3SalesCalcCalculator additionalOffPercentForCalcData:self.preferences.calcData] showPlaceholder:NO ];
+                    NSNumber *value = [self.decimalFormatter numberFromString:[additional value]];
+                    [self updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:value andPercent:[A3SalesCalcCalculator additionalOffPercentForCalcData:self.preferences.calcData] showPlaceholder:NO ];
                 }
             }
         }
@@ -870,7 +870,8 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
                 else {
                     A3TableViewInputElement *tax = (A3TableViewInputElement *)element;
                     if (tax.valueType == A3TableViewValueTypeCurrency) {
-                        [self updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:@([[tax value] doubleValue]) andPercent:[A3SalesCalcCalculator taxPercentForCalcData:self.preferences.calcData] showPlaceholder:YES ];
+                        NSNumber *value = [self.decimalFormatter numberFromString:[tax value]];
+                        [self updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:value andPercent:[A3SalesCalcCalculator taxPercentForCalcData:self.preferences.calcData] showPlaceholder:YES ];
                     }
                 }
             }
