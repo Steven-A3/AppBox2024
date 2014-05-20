@@ -358,6 +358,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     if (!_priceNumberFormatter) {
         _priceNumberFormatter = [NSNumberFormatter new];
         [_priceNumberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [_priceNumberFormatter setMaximumFractionDigits:2];
 		[_priceNumberFormatter setCurrencyCode:self.defaultCurrencyCode];
         if (IS_IPHONE) {
             _priceNumberFormatter.currencySymbol = @"";
@@ -1164,13 +1165,13 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	}
 	else if (textField == aCell.priceTextField) {
 		item.price = @([textField.text floatValueEx]);
-		textField.text = [self.priceNumberFormatter stringFromNumber:item.price];
+		//textField.text = [self.priceNumberFormatter stringFromNumber:item.price];
 	}
 	else if (textField == aCell.qtyTextField) {
 		[self.decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-		if (![textField.text length]) {
-			textField.text = [self.decimalFormatter stringFromNumber:@0];
-		}
+//		if (![textField.text length]) {
+//			textField.text = [self.decimalFormatter stringFromNumber:@0];
+//		}
 		item.qty = [self.decimalFormatter numberFromString:textField.text];
 	}
     

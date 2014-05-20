@@ -282,9 +282,8 @@
         }
         
         remainAmount = @(budget.totalAmount.floatValue - budget.usedAmount.floatValue);
-        
-        [_detailInfoButton setImage:[[UIImage imageNamed:@"add02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
-        [_detailInfoButton setImage:[[UIImage imageNamed:@"add01"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateHighlighted];
+        [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
+        [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateHighlighted];
         [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
     }
     
