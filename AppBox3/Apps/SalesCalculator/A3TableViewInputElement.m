@@ -14,6 +14,7 @@
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 #import "A3JHTableViewExpandableHeaderCell.h"
 #import "A3TextViewCell.h"
+#import "A3WalletNoteCell.h"
 
 @interface A3TableViewInputElement () <UITextFieldDelegate, A3KeyboardDelegate>
 
@@ -427,12 +428,16 @@
             }
         }
         
-        if (![cell isKindOfClass:[A3JHTableViewEntryCell class]] && ![cell isKindOfClass:[A3TextViewCell class]]) {
+        if (![cell isKindOfClass:[A3JHTableViewEntryCell class]] && ![cell isKindOfClass:[A3TextViewCell class]] && ![cell isKindOfClass:[A3WalletNoteCell class]]
+            ) {
             return;
         }
         
         if ([cell isKindOfClass:[A3JHTableViewEntryCell class]]) {
             [((A3JHTableViewEntryCell *)cell).textField becomeFirstResponder];
+        }
+        else if ([cell isKindOfClass:[A3WalletNoteCell class]]) {
+            [((A3WalletNoteCell *)cell).textView becomeFirstResponder];
         }
         else {
             // kjh

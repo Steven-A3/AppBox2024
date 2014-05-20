@@ -241,6 +241,11 @@
 			costGauge = 0.0;
 		}
         
+        if (([originalPrice doubleValue] > 0 || [salePrice doubleValue] > 0) && (!_calcData.discount || [_calcData.discount doubleValue] == 0) && (!_calcData.additionalOff || [_calcData.additionalOff doubleValue] == 0)) {
+            costGauge = 0.0;
+        }
+        
+        
         if (costGauge > self.frame.size.width) {
             costGauge = self.frame.size.width;
         }
@@ -262,9 +267,17 @@
         } else {
             _sliderThumbLeadingConst.equalTo(@(costGauge-22.0));
         }
-        _sliderThumbView.centerColor = COLOR_NEGATIVE;
-        _sliderBaseLineView.backgroundColor = COLOR_POSITIVE;
-        _sliderRedLineView.backgroundColor = COLOR_NEGATIVE;
+        
+        if (([originalPrice doubleValue] > 0 || [salePrice doubleValue] > 0) && (!_calcData.discount || [_calcData.discount doubleValue] == 0) && (!_calcData.additionalOff || [_calcData.additionalOff doubleValue] == 0)) {
+            _sliderThumbView.centerColor = COLOR_DEFAULT_GRAY;
+            _sliderBaseLineView.backgroundColor = COLOR_DEFAULT_GRAY;
+            _sliderRedLineView.backgroundColor = COLOR_DEFAULT_GRAY;
+        }
+        else {
+            _sliderThumbView.centerColor = COLOR_NEGATIVE;
+            _sliderBaseLineView.backgroundColor = COLOR_POSITIVE;
+            _sliderRedLineView.backgroundColor = COLOR_NEGATIVE;
+        }
     }
     else {
         [self setResultDataWithAnimation:nil];
