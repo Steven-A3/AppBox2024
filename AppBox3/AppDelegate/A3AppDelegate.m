@@ -95,6 +95,9 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 		[_drawerController setCenterHiddenInteractionMode:MMDrawerOpenCenterInteractionModeFull];
 		[_drawerController setGestureCompletionBlock:^(MMDrawerController *drawerController, UIGestureRecognizer *gesture) {
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
+			if (drawerController.openSide != MMDrawerSideLeft) {
+				[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:nil];
+			}
 		}];
 		[_drawerController setMaximumLeftDrawerWidth:320.0];
 		[_drawerController setShowsShadow:NO];

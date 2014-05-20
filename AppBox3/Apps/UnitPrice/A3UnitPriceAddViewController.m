@@ -13,6 +13,7 @@
 #import "UnitPriceFavorite.h"
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+A3Addition.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 @interface A3UnitPriceAddViewController ()
 
@@ -45,10 +46,39 @@
     self.title = [NSString stringWithFormat:@"%@ Units", firstItem.type.unitTypeName];
     
     self.tableView.rowHeight = 44.0;
+	self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
 
     [self rightBarButtonDoneButton];
     self.navigationItem.hidesBackButton = YES;
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willDismissRightSideView) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)removeObserver {
+	if (IS_IPAD) {
+		FNLOG();
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
+- (void)willDismissRightSideView {
+	[self dismissViewControllerAnimated:NO completion:NULL];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
+		[self removeObserver];
+	}
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {

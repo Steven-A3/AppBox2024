@@ -70,8 +70,14 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 			A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
 			[self.navigationController pushViewController:clockVC animated:NO];
 
-			if (IS_IPHONE) {
-				[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
+			if (IS_IPHONE && IS_PORTRAIT) {
+				double delayInSeconds = 0.5;
+				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+					[[UIApplication sharedApplication] setStatusBarHidden:NO];
+					[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+					[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+				});
 			}
 		}
 		else

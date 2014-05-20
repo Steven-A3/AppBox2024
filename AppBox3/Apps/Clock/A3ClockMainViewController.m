@@ -64,7 +64,6 @@
 	[self.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[self.navigationController.navigationBar setShadowImage:image];
 	[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor clearColor]}];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
 	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 	[self.navigationController setNavigationBarHidden:YES];
@@ -112,6 +111,7 @@
 			make.bottom.equalTo(self.view.bottom).with.offset(0);
 		}
 	}];
+	[self determineStatusBarStyle];
 
 	[self addChooseColorButton];
 
@@ -124,11 +124,13 @@
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawerStateChanged) name:A3DrawerStateChanged object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3NotificationClockSettingsChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 }
 
 - (void)removeObserver {
 	FNLOG();
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3DrawerStateChanged object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationClockSettingsChanged object:nil];
 }
 
@@ -271,10 +273,18 @@
 	if (IS_IPHONE) {
 		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:^(BOOL finished) {
 			[self.scrollView setScrollEnabled:self.mm_drawerController.openSide == MMDrawerSideNone];
+			[[UIApplication sharedApplication] setStatusBarHidden:NO];
+			[self determineStatusBarStyle];
 		}];
 	} else {
 		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+		[[UIApplication sharedApplication] setStatusBarHidden:NO];
+		[self determineStatusBarStyle];
 	}
+}
+
+- (void)mainMenuDidHide {
+	[self showMenus:NO];
 }
 
 - (void)onTapMainView {
@@ -289,18 +299,16 @@
 		[_buttonsTimer invalidate];
 		_buttonsTimer = nil;
 	}
-	_clockAppsButton.hidden = !show;
+	_clockAppsButton.hidden = !show || (IS_IPHONE && IS_LANDSCAPE);
 	_settingsButton.hidden = !show;
 	_pageControl.hidden = !show;
 	_chooseColorButton.hidden = !show;
 
 	if (!(show && IS_IPHONE && IS_LANDSCAPE)) {
-		[[UIApplication sharedApplication] setStatusBarHidden:!show withAnimation:UIStatusBarAnimationNone];
-		if (_pageControl.currentPage == 2) {
-			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-		} else {
-			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+		if (self.mm_drawerController.openSide != MMDrawerSideLeft) {
+			[[UIApplication sharedApplication] setStatusBarHidden:!show withAnimation:UIStatusBarAnimationNone];
 		}
+		[self determineStatusBarStyle];
 	}
 
 	if (show) {
@@ -528,6 +536,10 @@
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
+	if (IS_IPHONE && UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+		[self.mm_drawerController closeDrawerAnimated:MMDrawerSideLeft completion:NULL];
+		[self showMenus:NO];
+	}
 	[self layoutSubviews];
 }
 
@@ -547,8 +559,18 @@
 		_appsButtonTop.with.offset(5);
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 	} else {
+		BOOL hideStatusBar = [_clockAppsButton isHidden] || !self.A3RootViewController.showLeftView;
 		_appsButtonTop.with.offset(26);
-		[[UIApplication sharedApplication] setStatusBarHidden:_clockAppsButton.isHidden withAnimation:UIStatusBarAnimationNone];
+		[[UIApplication sharedApplication] setStatusBarHidden:hideStatusBar withAnimation:UIStatusBarAnimationNone];
+		[self determineStatusBarStyle];
+	}
+}
+
+- (void)determineStatusBarStyle {
+	BOOL useDefault = (IS_IPAD && self.A3RootViewController.showLeftView) || _pageControl.currentPage == 2 || (IS_IPHONE && self.mm_drawerController.openSide == MMDrawerSideLeft);
+	if (useDefault) {
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	} else {
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	}
 }

@@ -69,21 +69,22 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 {
     [super viewDidLoad];
 
-	UISearchBar *searchBar = [UISearchBar new];
-	searchBar.placeholder = @"Search by App or Contents";
-	searchBar.frame = self.navigationController.navigationBar.bounds;
-
-	self.navigationItem.titleView = searchBar;
-
-	self.mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-	_mySearchDisplayController.delegate = self;
-	_mySearchDisplayController.searchBar.delegate = self;
-	_mySearchDisplayController.searchResultsTableView.delegate = self;
-	_mySearchDisplayController.searchResultsTableView.dataSource = self;
-	_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
-	_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
-
-	_mySearchDisplayController.searchBar.barTintColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:248.0/255.0 alpha:1.0];
+	self.title = @"AppBox Pro";
+//	UISearchBar *searchBar = [UISearchBar new];
+//	searchBar.placeholder = @"Search by App or Contents";
+//	searchBar.frame = self.navigationController.navigationBar.bounds;
+//
+//	self.navigationItem.titleView = searchBar;
+//
+//	self.mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+//	_mySearchDisplayController.delegate = self;
+//	_mySearchDisplayController.searchBar.delegate = self;
+//	_mySearchDisplayController.searchResultsTableView.delegate = self;
+//	_mySearchDisplayController.searchResultsTableView.dataSource = self;
+//	_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
+//	_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
+//
+//	_mySearchDisplayController.searchBar.barTintColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:248.0/255.0 alpha:1.0];
 
 	__typeof(self) __weak weakSelf = self;
 	self.usmStoreDidImportChangesObserver =

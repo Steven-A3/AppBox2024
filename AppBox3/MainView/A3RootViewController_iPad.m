@@ -154,6 +154,10 @@ static const CGFloat kSideViewWidth = 320.0;
 		} else {
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:_leftMenuViewController];
 		}
+		if (_showLeftView) {
+			[[UIApplication sharedApplication] setStatusBarHidden:NO];
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+		}
 	}];
 }
 
