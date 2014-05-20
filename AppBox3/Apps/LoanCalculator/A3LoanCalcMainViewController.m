@@ -700,6 +700,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)composeButtonAction:(id)button
 {
+	[self dismissMoreMenu];
+
 	if (!_isComparisonMode) {
 		if ([self.loanData calculated]) {
 			[self putLoanHistory];
@@ -743,7 +745,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 	[self rightButtonMoreButton];
 	[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
-	[self.view removeGestureRecognizer:gestureRecognizer];
+	if (gestureRecognizer) {
+		[self.view removeGestureRecognizer:gestureRecognizer];
+	}
 }
 
 - (void)shareButtonAction:(id)sender {

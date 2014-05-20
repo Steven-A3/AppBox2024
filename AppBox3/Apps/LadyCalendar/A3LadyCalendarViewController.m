@@ -480,6 +480,7 @@
 
 - (void)moreButtonAction:(UIBarButtonItem *)button
 {
+	[self.navigationItem.leftBarButtonItem setEnabled:NO];
 	self.moreMenuView.alpha = 0.0;
 	[_calendarHeaderView addSubview:_moreMenuView];
 
@@ -499,13 +500,15 @@
 	if (isShowMoreMenu) {
 		[UIView animateWithDuration:0.3 animations:^{
 			_moreMenuView.alpha = 0.0;
-		}                completion:^(BOOL finished) {
-			[_moreMenuView removeFromSuperview];
-			_moreMenuView = nil;
+		}
+						 completion:^(BOOL finished) {
+							 [_moreMenuView removeFromSuperview];
+							 _moreMenuView = nil;
 
-			[self.view removeGestureRecognizer:_tapGestureRecognizer];
-			[self rightButtonMoreButton];
-		}];
+							 [self.view removeGestureRecognizer:_tapGestureRecognizer];
+							 [self rightButtonMoreButton];
+							 [self.navigationItem.leftBarButtonItem setEnabled:YES];
+						 }];
 		isShowMoreMenu = NO;
 	}
 }
