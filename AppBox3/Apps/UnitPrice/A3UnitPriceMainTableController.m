@@ -586,7 +586,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         if (unitPrice2 > 0) {
             if (self.price2.unit) {
                 if (self.price1.unit != self.price2.unit) {
-                    
                     float normalPrice2 = (priceValue2 - discountValue2) / (sizeValue2 * quantityValue2);
                     
                     if (IS_IPAD) {

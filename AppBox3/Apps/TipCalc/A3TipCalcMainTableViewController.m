@@ -128,6 +128,16 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	}
 }
 
+- (void)contentSizeDidChange:(NSNotification *)notification {
+    [_headerView setNeedsLayout];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 - (void)cleanUp {
 	[self removeObserver];
 }
@@ -135,6 +145,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 - (void)dealloc {
 	[self removeObserver];
 }
+
+#pragma mark -
 
 - (void)mainMenuViewDidHide {
 	[self setBarButtonsEnable:YES];
@@ -145,16 +157,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 	[self setBarButtonsEnable:YES];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)contentSizeDidChange:(NSNotification *)notification {
-    [_headerView setNeedsLayout];
 }
 
 - (void)initialize {
@@ -225,20 +227,21 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		}
 	}
 	else {
-		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
-			switch ((A3RightBarButtonTag)barButtonItem.tag) {
-				case A3RightBarButtonTagSettingsButton:
-					[barButtonItem setEnabled:YES];
-					break;
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
+			switch ((A3RightBarButtonTag)barButton.tag) {
 				case A3RightBarButtonTagComposeButton:
 				case A3RightBarButtonTagShareButton:
-					[barButtonItem setEnabled:![self.dataManager.tipCalcData.costs isEqualToNumber:@0]];
+					barButton.enabled = ([self.dataManager.tipCalcData.costs doubleValue] > 0.0 && [self.dataManager.tipCalcData.tip doubleValue] > 0.0);
 					break;
 				case A3RightBarButtonTagHistoryButton:
-					[barButtonItem setEnabled:[TipCalcHistory MR_countOfEntities] > 0];
+					barButton.enabled = [TipCalcHistory MR_countOfEntities] > 0;
+					break;
+				case A3RightBarButtonTagSettingsButton:
+					barButton.enabled = YES;
 					break;
 			}
 		}];
+
 	}
 }
 
@@ -628,10 +631,15 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
             NSNumber *value;
             if ([textField.text length] == 0) {
-                value = @([[element value] doubleValue]);
-            } else {
 				NSNumberFormatter *formatter = [NSNumberFormatter new];
 				[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+                formatter.maximumFractionDigits = 2;
+                value = [formatter numberFromString:[element value]];
+            }
+            else {
+				NSNumberFormatter *formatter = [NSNumberFormatter new];
+				[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+                formatter.maximumFractionDigits = 2;
                 value = [formatter numberFromString:textField.text];
                 element.value = textField.text;
             }
@@ -947,6 +955,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 				[self.A3RootViewController presentRightSideViewController:selectTableViewController];
 				[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 			}
+            
 			break;
 		}
 
@@ -1019,10 +1028,13 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         self.navigationItem.hidesBackButton = YES;
         
         UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+        share.tag = A3RightBarButtonTagShareButton;
         UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(saveToHistoryAndInitialize:)];
+        saveItem.tag = A3RightBarButtonTagComposeButton;
         UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
-		history.tag = 1;
+		history.tag = A3RightBarButtonTagHistoryButton;
         UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
+        settings.tag = A3RightBarButtonTagSettingsButton;
         UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
         space.width = 24.0;
         
@@ -1114,25 +1126,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [self reloadTableDataSource];
     [self.tableView reloadData];
     [self refreshMoreButtonState];
-}
-
-- (void)refreshMoreButtonState {
-	if (IS_IPHONE) {
-		if (_isShowMoreMenu) {
-			UIButton *save = [_arrMenuButtons objectAtIndex:0];
-			save.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
-			UIBarButtonItem *share = [_arrMenuButtons objectAtIndex:1];
-			share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
-		}
-	}
-    else {
-        UIBarButtonItem *history = [self.navigationItem.rightBarButtonItems objectAtIndex:2];
-        history.enabled = [TipCalcHistory MR_countOfEntities] > 0 ? YES : NO;
-        UIBarButtonItem *save = [self.navigationItem.rightBarButtonItems objectAtIndex:3];
-        save.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
-        UIBarButtonItem *share = [self.navigationItem.rightBarButtonItems objectAtIndex:5];
-        share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
-    }
 }
 
 #pragma mark Share Activities releated

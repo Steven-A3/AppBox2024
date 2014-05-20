@@ -1088,6 +1088,8 @@ NSString *kCalculationString;
 	}
 
 	_isKeyboardShown = NO;
+	_editingIndexPath = nil;
+    [self setResultToHeaderViewWithAnimation:YES];
     [self.firstResponder resignFirstResponder];
     [self scrollToTopOfTableView];
 }
@@ -1182,20 +1184,6 @@ NSString *kCalculationString;
     A3DateCalcAddSubCell1 *footerAddSubCell = [tableView dequeueReusableCellWithIdentifier:cellAddSubCell1];
     if (!footerAddSubCell) {
         footerAddSubCell = [[[NSBundle mainBundle] loadNibNamed:@"A3DateCalcAddSubCell1" owner:self options:nil] lastObject];
-
-//        [footerAddSubCell.addModeButton makeConstraints:^(MASConstraintMaker *make) {
-//            make.leading.equalTo(footerAddSubCell.contentView.left);
-//            make.top.equalTo(footerAddSubCell.contentView.top);
-//            make.bottom.equalTo(footerAddSubCell.contentView.bottom);
-//            make.trailing.equalTo(footerAddSubCell.contentView.centerX);
-//        }];
-//        
-//        [footerAddSubCell.subModeButton makeConstraints:^(MASConstraintMaker *make) {
-//            make.leading.equalTo(footerAddSubCell.contentView.centerX);
-//            make.top.equalTo(footerAddSubCell.contentView.top);
-//            make.bottom.equalTo(footerAddSubCell.contentView.bottom);
-//            make.trailing.equalTo(footerAddSubCell.contentView.right);
-//        }];
     }
     
     [footerAddSubCell.addModeButton addTarget:self action:@selector(addButtonTouchUpAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -1486,7 +1474,8 @@ NSString *kCalculationString;
         if ((self.isAddSubMode==YES && indexPath.row==kAddSubRowIndex) || (self.isAddSubMode==NO && indexPath.row==0)) {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             return;
-        } else {
+        }
+        else {
             self.isAddSubMode = !self.isAddSubMode;
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
@@ -1506,11 +1495,12 @@ NSString *kCalculationString;
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
 		self.dateKeyboardViewController = self.newDateKeyboardViewController;
 		[self.dateKeyboardViewController changeInputToYear];
-        
         if ([indexPath row] == 0) {
+            self.dateKeyboardViewController.date = self.fromDate;
             [self moveToFromDateCell];
         }
         else {
+            self.dateKeyboardViewController.date = self.toDate;
             [self moveToToDateCell];
         }
     }
@@ -1531,8 +1521,8 @@ NSString *kCalculationString;
 			[self enableControls:NO];
 			[self.A3RootViewController presentRightSideViewController:viewController];
 		}
-        
-    } else if (indexPath.section == 3 && indexPath.row == 0) {
+    }
+    else if (indexPath.section == 3 && indexPath.row == 0) {
         // Duration
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
@@ -1545,7 +1535,8 @@ NSString *kCalculationString;
         viewController.delegate = self;
         if (IS_IPHONE) {
             [self.navigationController pushViewController:viewController animated:YES];
-        } else {
+        }
+        else {
 			[self enableControls:NO];
 			[self.A3RootViewController presentRightSideViewController:viewController];
 		}

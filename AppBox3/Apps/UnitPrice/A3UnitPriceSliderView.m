@@ -90,13 +90,15 @@
     // text size
     if (IS_IPAD) {
         self.unitPriceLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-        self.unitPriceNumLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        //self.unitPriceNumLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        self.unitPriceNumLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         self.priceNumLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         self.priceLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     }
     else {
         self.unitPriceLabel.font = [UIFont systemFontOfSize:13];
-        self.unitPriceNumLabel.font = [UIFont systemFontOfSize:15];
+        //self.unitPriceNumLabel.font = [UIFont systemFontOfSize:15];
+        self.unitPriceNumLabel.font = [UIFont boldSystemFontOfSize:17];
         self.priceNumLabel.font = [UIFont boldSystemFontOfSize:17];
         self.priceLabel.font = [UIFont systemFontOfSize:17];
     }
