@@ -95,6 +95,10 @@
 }
 
 - (void)loadFontSettings {
+    if (IS_IPAD) {
+        _unitPriceBtn.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    }
+    
     if (!_labels) {
         return;
     }
