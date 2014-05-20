@@ -269,7 +269,6 @@
         [_detailInfoButton setImage:[[UIImage imageNamed:@"add02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
         [_detailInfoButton setImage:[[UIImage imageNamed:@"add01"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateHighlighted];
         [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"add02"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
-        
     }
     else {
         usedAmount = budget.usedAmount;

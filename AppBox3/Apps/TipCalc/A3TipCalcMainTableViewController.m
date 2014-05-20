@@ -455,9 +455,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (NSArray *)tableSectionDataAtSection:(NSInteger)section {
-    NSNumberFormatter *formatter = [NSNumberFormatter new];
-	[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-	[formatter setMaximumFractionDigits:3];
     NSArray * result;
     
     switch (section) {
@@ -489,7 +486,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                 costs.title = @"Cost";
             }
             
-            costs.value = [formatter stringFromNumber:[self.dataManager.tipCalcData costs]];
+            costs.value = [self.decimalFormatter stringFromNumber:[self.dataManager.tipCalcData costs]];
             costs.inputType = A3TableViewEntryTypeCurrency;
             costs.prevEnabled = NO;
             costs.nextEnabled = YES;
@@ -506,7 +503,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                 A3TableViewInputElement *tax = [A3TableViewInputElement new];
 				tax.delegate = self;
                 tax.title = @"Tax";
-                tax.value = [formatter stringFromNumber:[self.dataManager.tipCalcData tax]];
+                tax.value = [self.decimalFormatter stringFromNumber:[self.dataManager.tipCalcData tax]];
                 tax.inputType = A3TableViewEntryTypePercent;
                 tax.prevEnabled = YES;
                 tax.nextEnabled = YES;
@@ -524,7 +521,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             A3TableViewInputElement *tip = [A3TableViewInputElement new];
 			tip.delegate = self;
             tip.title = @"Tip";
-            tip.value = [formatter stringFromNumber:[self.dataManager.tipCalcData tip]];
+            tip.value = [self.decimalFormatter stringFromNumber:[self.dataManager.tipCalcData tip]];
             tip.inputType = A3TableViewEntryTypePercent;
             tip.prevEnabled = YES;
             tip.nextEnabled = YES;
@@ -541,7 +538,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                 A3TableViewInputElement *split = [A3TableViewInputElement new];
 				split.delegate = self;
                 split.title = @"Split";
-                split.value = [formatter stringFromNumber:[self.dataManager.tipCalcData split]];
+                split.value = [self.decimalFormatter stringFromNumber:[self.dataManager.tipCalcData split]];
                 split.inputType = A3TableViewEntryTypeInteger;
                 split.prevEnabled = YES;
                 split.nextEnabled = NO;
@@ -628,16 +625,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
             NSNumber *value;
             if ([textField.text length] == 0) {
-				NSNumberFormatter *formatter = [NSNumberFormatter new];
-				[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-                formatter.maximumFractionDigits = 2;
-                value = [formatter numberFromString:[element value]];
+                value = [weakSelf.decimalFormatter numberFromString:[element value]];
             }
             else {
-				NSNumberFormatter *formatter = [NSNumberFormatter new];
-				[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-                formatter.maximumFractionDigits = 2;
-                value = [formatter numberFromString:textField.text];
+                value = [weakSelf.decimalFormatter numberFromString:textField.text];
                 element.value = textField.text;
             }
             
@@ -785,9 +776,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 #pragma mark Location Manager Delegate
 - (void)dataManager:(id)manager taxValueUpdated:(NSNumber *)taxRate {
-    NSNumberFormatter *formatter = [NSNumberFormatter new];
 	[self.dataManager setTipCalcDataTax:taxRate isPercentType:YES];
-    _taxElement.value = [formatter stringFromNumber:taxRate];
+    _taxElement.value = [self.decimalFormatter stringFromNumber:taxRate];
     _taxElement.valueType = A3TableViewValueTypePercent;
 
 	[self.tableView reloadData];

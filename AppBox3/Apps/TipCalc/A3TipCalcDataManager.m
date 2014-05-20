@@ -183,9 +183,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
             [mstrOutput appendFormat:@"Tax : %@<br>", [formatter stringFromNumber:@([self.tipCalcData.tax doubleValue] / 100.0)]];
         }
         else {
-            NSNumberFormatter *formatter = [NSNumberFormatter new];
-            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-            [mstrOutput appendFormat:@"Tax : %@<br>", [formatter stringFromNumber:self.tipCalcData.tax]];
+            [mstrOutput appendFormat:@"Tax : %@<br>", [self.currencyFormatter stringFromNumber:self.tipCalcData.tax]];
         }
     }
     
@@ -196,10 +194,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
         [mstrOutput appendFormat:@"Tip : %@<br>", [formatter stringFromNumber:@([self.tipCalcData.tip doubleValue] / 100.0)]];
     }
     else {
-        NSNumberFormatter *formatter = [NSNumberFormatter new];
-        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-        formatter.maximumFractionDigits = 3;
-        [mstrOutput appendFormat:@"Tip : %@<br>", [formatter stringFromNumber:self.tipCalcData.tip]];
+        [mstrOutput appendFormat:@"Tip : %@<br>", [self.currencyFormatter stringFromNumber:self.tipCalcData.tip]];
     }
     
     if ([self isSplitOptionOn] && [self.tipCalcData.split integerValue] > 1) {
@@ -735,7 +730,6 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 		_currencyFormatter = [NSNumberFormatter new];
 		[_currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 		[_currencyFormatter setCurrencyCode:self.currencyCode];
-        [_currencyFormatter setMaximumFractionDigits:2];
 	}
 
 	return _currencyFormatter;

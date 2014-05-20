@@ -449,6 +449,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.upSliderView.layoutType = Slider_UpperOfTwo;
     cell.upSliderView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
     cell.upSliderView.priceNumLabel.hidden = YES;
+    cell.upSliderView.priceLabel.hidden = YES;
     
     [cell.downSliderView labelFontSetting];
     cell.downSliderView.displayColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
@@ -456,6 +457,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.downSliderView.layoutType = Slider_LowerOfTwo;
     cell.downSliderView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
     cell.downSliderView.priceNumLabel.hidden = YES;
+    cell.downSliderView.priceLabel.hidden = YES;
     
     cell.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
  

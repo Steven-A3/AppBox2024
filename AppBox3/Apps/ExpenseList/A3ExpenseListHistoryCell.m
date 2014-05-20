@@ -118,9 +118,7 @@
     //[_budgetNameLabel sizeToFit];
 }
 
--(void)setExpenseBudgetData:(ExpenseListBudget *)aBudget {
-    NSNumberFormatter *nFormatter = [NSNumberFormatter new];
-    [nFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+- (void)setExpenseBudgetData:(ExpenseListBudget *)aBudget currencyFormatter:(NSNumberFormatter *)nFormatter {
     NSDateFormatter *dFormatter = [NSDateFormatter new];
     [dFormatter setDateStyle:NSDateFormatterShortStyle];
     [dFormatter setTimeStyle:NSDateFormatterNoStyle];

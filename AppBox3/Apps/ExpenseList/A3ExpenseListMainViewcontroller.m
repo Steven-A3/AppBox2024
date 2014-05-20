@@ -173,7 +173,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (void)enableControls:(BOOL)enable {
-	if (!IS_IPAD) return;
+
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	if (enable) {
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
@@ -315,7 +315,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 //        UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"]
 //                                                                  style:UIBarButtonItemStylePlain
 //                                                                 target:self
-//                                                                 action:@selector(shareButtonAction:)];
+//                                                                  action:@selector(shareButtonAction:)];
 //		share.tag = A3RightBarButtonTagShareButton;
 //        
 //        self.navigationItem.rightBarButtonItems = @[history, add, share];
@@ -1360,9 +1360,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	UITextField *textField = (UITextField *) self.firstResponder;
     textField.text = @"";
     if (sender.priceTextField == keyInputDelegate) {
-        NSNumberFormatter *formatter = [NSNumberFormatter new];
-        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-        textField.placeholder = [formatter stringFromNumber:@0];
+        textField.placeholder = [self.priceNumberFormatter stringFromNumber:@0];
         aItem.price = @0;
     }
     else {
