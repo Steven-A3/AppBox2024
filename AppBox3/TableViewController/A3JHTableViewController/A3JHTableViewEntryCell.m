@@ -42,7 +42,8 @@
             x += ceil(textLabelBounds.size.width) + 10; // + self.leftSeparatorInset;
         }
         
-        self.textField.frame = CGRectMake(x, 10, CGRectGetWidth(self.frame) - x - 15, CGRectGetHeight(self.frame) - 20);
+        //self.textField.frame = CGRectMake(x, 10, CGRectGetWidth(self.frame) - x - 15, CGRectGetHeight(self.frame) - 20);
+        self.textField.frame = CGRectMake(x, 0, CGRectGetWidth(self.frame) - x - 15, CGRectGetHeight(self.frame));
 	}
 }
 
