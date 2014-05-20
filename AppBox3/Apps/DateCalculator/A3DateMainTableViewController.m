@@ -1088,6 +1088,8 @@ NSString *kCalculationString;
 	}
 
 	_isKeyboardShown = NO;
+	_editingIndexPath = nil;
+    [self setResultToHeaderViewWithAnimation:YES];
     [self.firstResponder resignFirstResponder];
     [self scrollToTopOfTableView];
 }
@@ -1182,20 +1184,6 @@ NSString *kCalculationString;
     A3DateCalcAddSubCell1 *footerAddSubCell = [tableView dequeueReusableCellWithIdentifier:cellAddSubCell1];
     if (!footerAddSubCell) {
         footerAddSubCell = [[[NSBundle mainBundle] loadNibNamed:@"A3DateCalcAddSubCell1" owner:self options:nil] lastObject];
-
-//        [footerAddSubCell.addModeButton makeConstraints:^(MASConstraintMaker *make) {
-//            make.leading.equalTo(footerAddSubCell.contentView.left);
-//            make.top.equalTo(footerAddSubCell.contentView.top);
-//            make.bottom.equalTo(footerAddSubCell.contentView.bottom);
-//            make.trailing.equalTo(footerAddSubCell.contentView.centerX);
-//        }];
-//        
-//        [footerAddSubCell.subModeButton makeConstraints:^(MASConstraintMaker *make) {
-//            make.leading.equalTo(footerAddSubCell.contentView.centerX);
-//            make.top.equalTo(footerAddSubCell.contentView.top);
-//            make.bottom.equalTo(footerAddSubCell.contentView.bottom);
-//            make.trailing.equalTo(footerAddSubCell.contentView.right);
-//        }];
     }
     
     [footerAddSubCell.addModeButton addTarget:self action:@selector(addButtonTouchUpAction:) forControlEvents:UIControlEventTouchUpInside];
