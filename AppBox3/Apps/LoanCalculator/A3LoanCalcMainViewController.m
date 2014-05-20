@@ -142,8 +142,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	}
 
 	// Keyboard Notification
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 
     [self registerContentSizeCategoryDidChangeNotification];
 }
@@ -163,8 +163,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	}
 
 	// Keyboard Notification
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -1976,7 +1976,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 	[self setFirstResponder:nil];
 
-	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
+//	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
 }
 
 #pragma mark - TextFieldDelegate
@@ -2166,7 +2166,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	}
 
 	[self updateLoanCalculation];
-	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
+//	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
 }
 
 #pragma mark - Keyboard Show/Hide notification

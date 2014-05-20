@@ -66,7 +66,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     self.totalMode = NO;
     [self.percentFormatter setMaximumFractionDigits:3];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
@@ -76,7 +76,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
