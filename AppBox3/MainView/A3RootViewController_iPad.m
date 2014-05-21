@@ -135,15 +135,20 @@ static const CGFloat kSideViewWidth = 320.0;
 
 - (void)animateLeftView {
 	if (_showLeftView) {
+		FNLOG(@"setStatusBarHidden:NO");
 		[[UIApplication sharedApplication] setStatusBarHidden:NO];
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
+		[_leftNavigationController setNavigationBarHidden:YES];
+		[_leftNavigationController setNavigationBarHidden:NO];
 	}
-	[_leftNavigationController setNeedsStatusBarAppearanceUpdate];
 
 	[UIView animateWithDuration:0.3 animations:^{
 		CGRect frame = _leftNavigationController.view.frame;
 		if (self.showLeftView) {
 			frame.origin.x = 0;
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+			[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 		} else {
 			if (IS_LANDSCAPE && ![self useFullScreenInLandscapeForCurrentTopViewController]) {
 				frame.origin.x = 0;
