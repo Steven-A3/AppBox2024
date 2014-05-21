@@ -176,6 +176,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	}
 }
 
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self.tableView reloadData];
+}
+
 - (void)dealloc {
 	[self removeObserver];
 }
@@ -1602,9 +1607,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         float totalFloat = [_loanDataA totalAmount].floatValue;
         percentOfMarkA = totalFloat/maxAmount;
         
-        compareCell.markA_Label.layer.anchorPoint = CGPointMake(0.5, 0.5);
+        //compareCell.markA_Label.layer.anchorPoint = CGPointMake(0.5, 0.5);
         CGPoint center = compareCell.markA_Label.center;
-        center.x = MIN(self.view.bounds.size.width * percentOfMarkA, self.view.bounds.size.width - compareCell.markA_Label.frame.size.width/2);
+        //center.x = MIN(self.view.bounds.size.width * percentOfMarkA, self.view.bounds.size.width - compareCell.markA_Label.frame.size.width/2);
+        center.x = self.view.bounds.size.width - compareCell.markA_Label.frame.size.width / 2;
         compareCell.markA_Label.center = center;
         
         NSLog(@"markA : %@", NSStringFromCGRect(compareCell.markA_Label.frame));
@@ -1700,9 +1706,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         float totalFloat = [_loanDataB totalAmount].floatValue;
         percentOfMarkB = totalFloat/maxAmount;
         
-        compareCell.markB_Label.layer.anchorPoint = CGPointMake(0.5, 0.5);
+        //compareCell.markB_Label.layer.anchorPoint = CGPointMake(0.5, 0.5);
         CGPoint center = compareCell.markB_Label.center;
-        center.x = MIN(self.view.bounds.size.width * percentOfMarkB, self.view.bounds.size.width - compareCell.markB_Label.frame.size.width/2);
+        //center.x = MIN(self.view.bounds.size.width * percentOfMarkB, self.view.bounds.size.width - compareCell.markB_Label.frame.size.width/2);
+        center.x = self.view.bounds.size.width - compareCell.markB_Label.frame.size.width / 4;
         compareCell.markB_Label.center = center;
         
         float circleOriginX = compareCell.circleB_View.frame.origin.x;
@@ -1806,8 +1813,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     
     compareCell.markA_Label.layer.anchorPoint = CGPointMake(1, 0.5);
     
+//    lbCenter = compareCell.markA_Label.center;
+//    lbCenter.x = self.view.bounds.size.width-right_hori_margin;
+//    compareCell.markA_Label.center = lbCenter;
     lbCenter = compareCell.markA_Label.center;
-    lbCenter.x = self.view.bounds.size.width-right_hori_margin;
+    lbCenter.x = self.view.bounds.size.width - compareCell.markA_Label.frame.size.width / 2;
     compareCell.markA_Label.center = lbCenter;
 }
 
@@ -1853,8 +1863,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     
     compareCell.markB_Label.layer.anchorPoint = CGPointMake(1, 0.5);
     
+//    lbCenter = compareCell.markB_Label.center;
+//    lbCenter.x = self.view.bounds.size.width-right_hori_margin;
+//    compareCell.markB_Label.center = lbCenter;
     lbCenter = compareCell.markB_Label.center;
-    lbCenter.x = self.view.bounds.size.width-right_hori_margin;
+    lbCenter.x = self.view.bounds.size.width - compareCell.markB_Label.frame.size.width / 2;
     compareCell.markB_Label.center = lbCenter;
 }
 
@@ -2670,6 +2683,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     if (indexPath.section == 0) {
         A3LoanCalcCompareGraphCell *compareCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcCompareGraphCellID forIndexPath:indexPath];
         compareCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [compareCell adjustSubviewsFontSize];
         
         // loan data A,B
         if ([_loanDataA calculated] || [_loanDataB calculated]) {
@@ -2678,8 +2692,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         else {
             [self makeCompareCellClear:compareCell];
         }
-        
-        [compareCell adjustSubviewsFontSize];
         
         cell = compareCell;
     }

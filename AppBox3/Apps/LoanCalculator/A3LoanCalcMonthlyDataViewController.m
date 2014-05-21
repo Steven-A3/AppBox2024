@@ -107,6 +107,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
         
         double downPayment = _loanData.downPayment ? _loanData.downPayment.doubleValue : 0;
         double balance = (_loanData.principal.doubleValue - downPayment);
+
         NSUInteger paymentIndex = 0;    // start from 0
         
         do {
@@ -114,12 +115,17 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
             NSNumber *interest = @(balance * [_loanData interestRateOfFrequency]);
             
             double paymentTmp = [_loanData paymentOfPaymentIndex:paymentIndex].doubleValue;
+            
             if ((paymentTmp-interest.floatValue) > balance) {
                 paymentTmp = balance + interest.floatValue;
             }
             NSNumber *payment = @(paymentTmp);
             NSNumber *principal = @(payment.doubleValue - interest.doubleValue);
             balance -= principal.doubleValue;
+            
+            if (isinf(balance) || isnan(balance)) {
+                break;
+            }
             
             // 간혹 마지막 차에서 소수점이 남는 문제를 보정하기 위해 0.5미만은 0으로 바꾼다.
             if (balance < 0.5) {

@@ -225,7 +225,8 @@
 	double interestRateOfFrequency = [self interestRateOfFrequency];
     
 	float calculatedPrincipal = principal - downPayment;
-	float term = logf(repayment/(repayment-calculatedPrincipal*interestRateOfFrequency))/log(interestRateOfFrequency+1);
+	float term = logf(fabsf(repayment / (repayment - calculatedPrincipal * interestRateOfFrequency))) / log(fabsf(interestRateOfFrequency + 1));
+    term = fabsf(term);
     
 	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterm = %f\ndownPayment = %f", principal, repayment, interestRateOfFrequency, term, downPayment);
     

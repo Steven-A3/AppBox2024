@@ -29,6 +29,7 @@
 {
     [super layoutSubviews];
     [self adjustMeterViewsPosition];
+    [self adjustABMarkPosition];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -206,6 +207,16 @@
         frame.origin.x = ceilf(self.bg_A_Line.bounds.size.width / 5.0 * (idx + 1)) - 50.0;
         meterView.frame = frame;
     }];
+}
+
+- (void)adjustABMarkPosition
+{
+    CGPoint point = [self.markA_Label center];
+    point.x = CGRectGetWidth(self.bounds) - (CGRectGetWidth(self.markA_Label.frame) / 2);
+    self.markA_Label.center = point;
+    point = [self.markB_Label center];
+    point.x = CGRectGetWidth(self.bounds) - (CGRectGetWidth(self.markB_Label.frame) / 2);
+    self.markB_Label.center = point;
 }
 
 @end
