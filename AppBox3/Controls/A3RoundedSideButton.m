@@ -7,6 +7,7 @@
 //
 
 #import "A3RoundedSideButton.h"
+#import "A3AppDelegate+appearance.h"
 
 @implementation A3RoundedSideButton {
 	CALayer *_borderLayer;
@@ -40,7 +41,7 @@
 		if (!_borderLayer) {
 			_borderLayer = [CALayer layer];
 			_borderLayer.frame = self.bounds;
-			_borderLayer.borderColor = self.tintColor.CGColor;
+			_borderLayer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
 			_borderLayer.borderWidth = 1.0;
 			_borderLayer.cornerRadius = self.bounds.size.height / 2.0;
 			[self.layer addSublayer:_borderLayer];

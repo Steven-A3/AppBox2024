@@ -562,6 +562,7 @@
 		BOOL hideStatusBar = [_clockAppsButton isHidden] || !self.A3RootViewController.showLeftView;
 		FNLOG(@"%ld, %ld", (long)hideStatusBar, (long)self.A3RootViewController.showLeftView);
 		_appsButtonTop.with.offset(26);
+		FNLOG(@"setStatusBarHidden:%ld", (long)hideStatusBar);
 		[[UIApplication sharedApplication] setStatusBarHidden:hideStatusBar withAnimation:UIStatusBarAnimationNone];
 		[self determineStatusBarStyle];
 	}
