@@ -471,29 +471,29 @@ NSString *kCalculationString;
     NSMutableString *intervals = [[NSMutableString alloc] init];
     
     if ( (durationType & DurationType_Year) && intervalComp.year!=0 ) {
-        [intervals appendString:[NSString stringWithFormat:@" %ld year", (long)intervalComp.year]];
-        if ([intervalComp year] > 1) {
+        [intervals appendString:[NSString stringWithFormat:@" %ld year", labs((long)intervalComp.year)]];
+        if (labs([intervalComp year]) > 1) {
             [intervals appendString:@"s"];
         }
     }
     
     if ( (durationType & DurationType_Month) && intervalComp.month!=0 ) {
-        [intervals appendString:[NSString stringWithFormat:@" %ld month", (long)intervalComp.month]];
-        if ([intervalComp month] > 1) {
+        [intervals appendString:[NSString stringWithFormat:@" %ld month", labs((long)intervalComp.month)]];
+        if (labs([intervalComp month]) > 1) {
             [intervals appendString:@"s"];
         }
     }
     
     if ( (durationType & DurationType_Week) && intervalComp.week!=0 ) {
-        [intervals appendString:[NSString stringWithFormat:@" %ld week", (long)intervalComp.week]];
-        if ([intervalComp week] > 1) {
+        [intervals appendString:[NSString stringWithFormat:@" %ld week", labs((long)intervalComp.week)]];
+        if (labs([intervalComp week]) > 1) {
             [intervals appendString:@"s"];
         }
     }
     
     if ( (durationType & DurationType_Day) && intervalComp.day!=0 ) {
-        [intervals appendString:[NSString stringWithFormat:@" %ld day", (long)intervalComp.day]];
-        if ([intervalComp day] > 1) {
+        [intervals appendString:[NSString stringWithFormat:@" %ld day", labs((long)intervalComp.day)]];
+        if (labs([intervalComp day]) > 1) {
             [intervals appendString:@"s"];
         }
     }
@@ -521,35 +521,34 @@ NSString *kCalculationString;
         //[shareString appendString:[NSString stringWithFormat:@"Date Calculator\n"]];
         [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager formattedStringDate:_fromDate]]];
         
-        NSMutableString *intervals = [[NSMutableString alloc] init];
+        NSMutableString *resultShareString = [[NSMutableString alloc] init];
         if (self.offsetComp.year!=0) {
-            [intervals appendString:[NSString stringWithFormat:@" %ld year", (long)self.offsetComp.year]];
-            if ([self.offsetComp year] > 1) {
-                [intervals appendString:@"s"];
+            [resultShareString appendString:[NSString stringWithFormat:@" %ld year", labs((long)self.offsetComp.year)]];
+            if (labs([self.offsetComp year]) > 1) {
+                [resultShareString appendString:@"s"];
             }
         }
         if (self.offsetComp.month!=0) {
-            [intervals appendString:[NSString stringWithFormat:@" %ld month", (long)self.offsetComp.month]];
-            if ([self.offsetComp month] > 1) {
-                [intervals appendString:@"s"];
+            [resultShareString appendString:[NSString stringWithFormat:@" %ld month", labs((long)self.offsetComp.month)]];
+            if (labs([self.offsetComp month]) > 1) {
+                [resultShareString appendString:@"s"];
             }
         }
         if (self.offsetComp.day!=0) {
-            [intervals appendString:[NSString stringWithFormat:@" %ld day", (long)self.offsetComp.day]];
-            if ([self.offsetComp day] > 1) {
-                [intervals appendString:@"s"];
+            [resultShareString appendString:[NSString stringWithFormat:@" %ld day", labs((long)self.offsetComp.day)]];
+            if (labs([self.offsetComp day]) > 1) {
+                [resultShareString appendString:@"s"];
             }
         }
         
-        if (intervals.length <= 0) {
+        if (resultShareString.length <= 0) {
             [shareString appendString:[NSString stringWithFormat:@"Add: 0 day<br>"]];
         }
         else {
-            [shareString appendString:[NSString stringWithFormat:@"Add: %@<br>", intervals]];
+            [shareString appendString:[NSString stringWithFormat:@"Add: %@<br>", resultShareString]];
         }
         
         [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager formattedStringDate:result]]];
-        
     }
     else {
         NSDateComponents *compAdd = [NSDateComponents new];
@@ -564,30 +563,30 @@ NSString *kCalculationString;
         //[shareString appendString:[NSString stringWithFormat:@"Date Calculator\n"]];
         [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager formattedStringDate:_fromDate]]];
         
-        NSMutableString *intervals = [[NSMutableString alloc] init];
+        NSMutableString *resultShareString = [[NSMutableString alloc] init];
         if (self.offsetComp.year!=0) {
-            [intervals appendString:[NSString stringWithFormat:@" %ld year", (long)self.offsetComp.year]];
-            if ([self.offsetComp year] > 1) {
-                [intervals appendString:@"s"];
+            [resultShareString appendString:[NSString stringWithFormat:@" %ld year", labs((long)self.offsetComp.year)]];
+            if (labs([self.offsetComp year]) > 1) {
+                [resultShareString appendString:@"s"];
             }
         }
         if (self.offsetComp.month!=0) {
-            [intervals appendString:[NSString stringWithFormat:@" %ld month", (long)self.offsetComp.month]];
-            if ([self.offsetComp month] > 1) {
-                [intervals appendString:@"s"];
+            [resultShareString appendString:[NSString stringWithFormat:@" %ld month", labs((long)self.offsetComp.month)]];
+            if (labs([self.offsetComp month]) > 1) {
+                [resultShareString appendString:@"s"];
             }
         }
         if (self.offsetComp.day!=0) {
-            [intervals appendString:[NSString stringWithFormat:@" %ld day", (long)self.offsetComp.day]];
-            if ([self.offsetComp day] > 1) {
-                [intervals appendString:@"s"];
+            [resultShareString appendString:[NSString stringWithFormat:@" %ld day", labs((long)self.offsetComp.day)]];
+            if (labs([self.offsetComp day]) > 1) {
+                [resultShareString appendString:@"s"];
             }
         }
         
-        if (intervals.length <= 0) {
+        if (resultShareString.length <= 0) {
             [shareString appendString:[NSString stringWithFormat:@"Subtract: 0 day<br>"]];
         } else {
-            [shareString appendString:[NSString stringWithFormat:@"Subtract: %@<br>", intervals]];
+            [shareString appendString:[NSString stringWithFormat:@"Subtract: %@<br>", resultShareString]];
         }
         
         [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager formattedStringDate:result]]];
