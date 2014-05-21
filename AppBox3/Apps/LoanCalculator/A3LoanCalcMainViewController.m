@@ -281,6 +281,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
      */
     
     [self refreshRightBarItems];
+    [self.tableView reloadData];
 }
 
 - (void)settingNoti:(NSNotification *)noti
