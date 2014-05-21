@@ -47,7 +47,7 @@ NSString *const A3LoanCalcLoanNoteCellID = @"A3WalletNoteCell";
 NSString *const A3LoanCalcCompareGraphCellID = @"A3LoanCalcCompareGraphCell";
 NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
-@interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate, LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate, UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate>
+@interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate, LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate, UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate, UIActivityItemSource>
 
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
@@ -767,131 +767,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)shareButtonAction:(id)sender {
 	[self clearEverything];
 
-	if (IS_IPAD) {
+    self.sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+    if (IS_IPAD) {
+        self.sharePopoverController.delegate = self;
 		[self enableControls:NO];
-	}
-	if (_isComparisonMode) {
-		NSMutableString *body = [NSMutableString new];
-		[body appendFormat:@"I'd like to share a calculation with you.\n\n"];
-
-		// * Loan A
-		[body appendFormat:@"* Loan A \n"];
-		[body appendFormat:@"Principal: %@\n", [self.loanFormatter stringFromNumber:_loanDataA.principal]];
-		if ([_loanDataA downPayment]) {
-			[body appendFormat:@"Down Payment: %@\n", [_loanDataA downPayment]];  // Down Payment: (값이 있는 경우)
-		}
-		[body appendFormat:@"Term: %@ years.\n", [_loanDataA termValueString]];
-		[body appendFormat:@"Interest Rate: %@\n", [_loanDataA interestRateString]];
-		[body appendFormat:@"Frequency: %@ \n", [LoanCalcString titleOfFrequency:_loanDataA.frequencyIndex]];  // Frequency: Monthly (선택값)
-		if (_loanDataA.extraPaymentMonthly && [_loanDataA.extraPaymentMonthly floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(monthly): %@ \n", [self.loanFormatter stringFromNumber:_loanDataA.extraPaymentMonthly]];  // Extra Payment(monthly): (값이 있는 경우)
-		}
-		if (_loanDataA.extraPaymentYearly && [_loanDataA.extraPaymentYearly floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(yearly): %@ \n", [self.loanFormatter stringFromNumber:_loanDataA.extraPaymentYearly]];  // Extra Payment(yearly): (값이 있는 경우)
-		}
-		if (_loanDataA.extraPaymentOneTime && [_loanDataA.extraPaymentOneTime floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(one-time): %@ \n", [self.loanFormatter stringFromNumber:_loanDataA.extraPaymentOneTime]];  // Extra Payment(one-time): (값이 있는 경우)
-		}
-
-		[body appendFormat:@"Payment: %@ \n", [self.loanFormatter stringFromNumber:_loanDataA.repayment]];  // Payment: (사용자가 선택한 calculation과 결과값. 위의 입력값은 calculation 선택값에 따라 달라집니다.)
-
-		if ([self isTotalMode]) {
-			[body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataA totalInterest]]];  // Interest: $23,981.60 (결과값)
-			[body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]]];  // Total Amount: $223,981.60 (결과값)
-		}
-		else {
-			[body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataA totalInterest]]];  // Interest: $23,981.60 (결과값)
-			[body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]]];  // Total Amount: $223,981.60 (결과값)
-		}
-
-		// * Loan B
-		[body appendFormat:@"\n* Loan B \n"];
-		[body appendFormat:@"Principal: %@\n", [self.loanFormatter stringFromNumber:_loanDataB.principal]];
-		if ([_loanDataB downPayment]) {
-			[body appendFormat:@"Down Payment: %@\n", [_loanDataB downPayment]];  // Down Payment: (값이 있는 경우)
-		}
-		[body appendFormat:@"Term: %@ years.\n", [_loanDataB termValueString]];
-		[body appendFormat:@"Interest Rate: %@\n", [_loanDataB interestRateString]];
-		[body appendFormat:@"Frequency: %@ \n", [LoanCalcString titleOfFrequency:_loanDataB.frequencyIndex]];  // Frequency: Monthly (선택값)
-		if (_loanDataB.extraPaymentMonthly && [_loanDataB.extraPaymentMonthly floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(monthly): %@ \n", [self.loanFormatter stringFromNumber:_loanDataB.extraPaymentMonthly]];  // Extra Payment(monthly): (값이 있는 경우)
-		}
-		if (_loanDataB.extraPaymentYearly && [_loanDataB.extraPaymentYearly floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(yearly): %@ \n", [self.loanFormatter stringFromNumber:_loanDataB.extraPaymentYearly]];  // Extra Payment(yearly): (값이 있는 경우)
-		}
-		if (_loanDataB.extraPaymentOneTime && [_loanDataB.extraPaymentOneTime floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(one-time): %@ \n", [self.loanFormatter stringFromNumber:_loanDataB.extraPaymentOneTime]];  // Extra Payment(one-time): (값이 있는 경우)
-		}
-
-		[body appendFormat:@"Payment: %@ \n", [self.loanFormatter stringFromNumber:_loanDataB.repayment]];  // Payment: (사용자가 선택한 calculation과 결과값. 위의 입력값은 calculation 선택값에 따라 달라집니다.)
-
-		if ([self isTotalMode]) {
-			[body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataB totalInterest]]];  // Interest: $23,981.60 (결과값)
-			[body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]]];  // Total Amount: $223,981.60 (결과값)
-		}
-		else {
-			[body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataB totalInterest]]];  // Interest: $23,981.60 (결과값)
-			[body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]]];  // Total Amount: $223,981.60 (결과값)
-		}
-
-
-		[body appendFormat:@"\nYou can calculate more in the AppBox Pro. \n"]; // You can calculate more in the AppBox Pro.
-		[body appendFormat:@"https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8 \n"]; // https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8
-		// AppBoxPro_amortization_loanA.csv
-		// AppBoxPro_amortization_loanb.csv
-		NSURL *fileUrlA = [NSURL fileURLWithPath:[_loanDataA filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanA.csv"]];
-		NSURL *fileUrlB = [NSURL fileURLWithPath:[_loanDataB filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanB.csv"]];
-		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[body, fileUrlA, fileUrlB]
-																			   subject:@"Loan Calculator in the AppBox Pro"
-																	 fromBarButtonItem:sender];
-	}
-	else {
-		NSMutableString *body = [NSMutableString new];
-		[body appendFormat:@"I'd like to share a calculation with you.\n\n"];
-		[body appendFormat:@"Principal: %@\n", [self.loanFormatter stringFromNumber:self.loanData.principal]];
-		if ([self.loanData downPayment]) {
-			[body appendFormat:@"Down Payment: %@\n", [self.loanData downPayment]];  // Down Payment: (값이 있는 경우)
-		}
-		[body appendFormat:@"Term: %@ years.\n", [self.loanData termValueString]];
-		[body appendFormat:@"Interest Rate: %@\n", [self.loanData interestRateString]];
-		[body appendFormat:@"Frequency: %@ \n", [LoanCalcString titleOfFrequency:self.loanData.frequencyIndex]];  // Frequency: Monthly (선택값)
-		if (self.loanData.extraPaymentMonthly && [self.loanData.extraPaymentMonthly floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(monthly): %@ \n", [self.loanFormatter stringFromNumber:self.loanData.extraPaymentMonthly]];  // Extra Payment(monthly): (값이 있는 경우)
-		}
-		if (self.loanData.extraPaymentYearly && [self.loanData.extraPaymentYearly floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(yearly): %@ \n", [self.loanFormatter stringFromNumber:self.loanData.extraPaymentYearly]];  // Extra Payment(yearly): (값이 있는 경우)
-		}
-		if (self.loanData.extraPaymentOneTime && [self.loanData.extraPaymentOneTime floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(one-time): %@ \n", [self.loanFormatter stringFromNumber:self.loanData.extraPaymentOneTime]];  // Extra Payment(one-time): (값이 있는 경우)
-		}
-
-		[body appendFormat:@"Payment: %@ \n", [self.loanFormatter stringFromNumber:self.loanData.repayment]];  // Payment: (사용자가 선택한 calculation과 결과값. 위의 입력값은 calculation 선택값에 따라 달라집니다.)
-
-		if ([self isTotalMode]) {
-			[body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[self.loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
-			[body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[self.loanData totalAmount]]];  // Total Amount: $223,981.60 (결과값)
-		}
-		else {
-			[body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[self.loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
-			[body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[self.loanData totalAmount]]];  // Total Amount: $223,981.60 (결과값)
-		}
-
-		[body appendFormat:@"\nYou can calculate more in the AppBox Pro. \n"];  // You can calculate more in the AppBox Pro.
-		[body appendFormat:@"https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8 \n"];  // https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8
-		// AppBoxPro_amortization.csv
-		NSURL *fileUrl = [NSURL fileURLWithPath:[self.loanData filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization.csv"]];
-		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[body, fileUrl]
-																			   subject:@"Loan Calculator in the AppBox Pro"
-																	 fromBarButtonItem:sender];
-	}
-
-
-	if (IS_IPAD) {
-		_sharePopoverController.delegate = self;
-		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-			[buttonItem setEnabled:NO];
-		}];
-	}
+    }
 }
 
 - (void)historyButtonAction:(UIButton *)button {
@@ -1294,6 +1174,147 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 	_sharePopoverController = nil;
 }
+
+#pragma mark Share Activities releated
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
+{
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		return @"Loan Calculator using AppBox Pro";
+	}
+    
+	return @"";
+}
+
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
+{
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		NSMutableString *txt = [NSMutableString new];
+		[txt appendString:@"<html><body>I'd like to share a calculation with you.<br/><br/>"];
+		[txt appendString:[self shareString]];
+		[txt appendString:@"<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8'>Download from AppStore</a></body></html>"];
+		// AppBoxPro_amortization_loanA.csv
+		// AppBoxPro_amortization_loanb.csv
+		NSURL *fileUrlA = [NSURL fileURLWithPath:[_loanDataA filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanA.csv"]];
+		NSURL *fileUrlB = [NSURL fileURLWithPath:[_loanDataB filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanB.csv"]];
+
+		return txt;
+	}
+	else {
+        NSString *shareString = [self shareString];
+        shareString = [shareString stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
+		return shareString;
+	}
+}
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
+{
+	return @"Share Loan Calculator Data";
+}
+
+- (NSString *)shareString
+{
+    NSMutableString *body = [NSMutableString new];
+    
+	if (_isComparisonMode) {
+		// * Loan A
+		[body appendFormat:@"* Loan A <br>"];
+		[body appendFormat:@"Principal: %@<br>", [self.loanFormatter stringFromNumber:_loanDataA.principal]];
+		if ([_loanDataA downPayment]) {
+			[body appendFormat:@"Down Payment: %@<br>", [_loanDataA downPayment]];  // Down Payment: (값이 있는 경우)
+		}
+		[body appendFormat:@"Term: %@ years.<br>", [_loanDataA termValueString]];
+		[body appendFormat:@"Interest Rate: %@<br>", [_loanDataA interestRateString]];
+		[body appendFormat:@"Frequency: %@ <br>", [LoanCalcString titleOfFrequency:_loanDataA.frequencyIndex]];  // Frequency: Monthly (선택값)
+		if (_loanDataA.extraPaymentMonthly && [_loanDataA.extraPaymentMonthly floatValue] > 0.0) {
+			[body appendFormat:@"Extra Payment(monthly): %@ <br>", [self.loanFormatter stringFromNumber:_loanDataA.extraPaymentMonthly]];  // Extra Payment(monthly): (값이 있는 경우)
+		}
+		if (_loanDataA.extraPaymentYearly && [_loanDataA.extraPaymentYearly floatValue] > 0.0) {
+			[body appendFormat:@"Extra Payment(yearly): %@ <br>", [self.loanFormatter stringFromNumber:_loanDataA.extraPaymentYearly]];  // Extra Payment(yearly): (값이 있는 경우)
+		}
+		if (_loanDataA.extraPaymentOneTime && [_loanDataA.extraPaymentOneTime floatValue] > 0.0) {
+			[body appendFormat:@"Extra Payment(one-time): %@ <br>", [self.loanFormatter stringFromNumber:_loanDataA.extraPaymentOneTime]];  // Extra Payment(one-time): (값이 있는 경우)
+		}
+        
+		[body appendFormat:@"Payment: %@ <br>", [self.loanFormatter stringFromNumber:_loanDataA.repayment]];  // Payment: (사용자가 선택한 calculation과 결과값. 위의 입력값은 calculation 선택값에 따라 달라집니다.)
+        
+		if ([self isTotalMode]) {
+			[body appendFormat:@"Interest: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataA totalInterest]]];  // Interest: $23,981.60 (결과값)
+			[body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]]];  // Total Amount: $223,981.60 (결과값)
+		}
+		else {
+			[body appendFormat:@"Interest: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataA totalInterest]]];  // Interest: $23,981.60 (결과값)
+			[body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]]];  // Total Amount: $223,981.60 (결과값)
+		}
+        
+		// * Loan B
+		[body appendFormat:@"<br>* Loan B <br>"];
+		[body appendFormat:@"Principal: %@<br>", [self.loanFormatter stringFromNumber:_loanDataB.principal]];
+		if ([_loanDataB downPayment]) {
+			[body appendFormat:@"Down Payment: %@<br>", [_loanDataB downPayment]];  // Down Payment: (값이 있는 경우)
+		}
+		[body appendFormat:@"Term: %@ years.<br>", [_loanDataB termValueString]];
+		[body appendFormat:@"Interest Rate: %@<br>", [_loanDataB interestRateString]];
+		[body appendFormat:@"Frequency: %@ <br>", [LoanCalcString titleOfFrequency:_loanDataB.frequencyIndex]];  // Frequency: Monthly (선택값)
+		if (_loanDataB.extraPaymentMonthly && [_loanDataB.extraPaymentMonthly floatValue] > 0.0) {
+			[body appendFormat:@"Extra Payment(monthly): %@ <br>", [self.loanFormatter stringFromNumber:_loanDataB.extraPaymentMonthly]];  // Extra Payment(monthly): (값이 있는 경우)
+		}
+		if (_loanDataB.extraPaymentYearly && [_loanDataB.extraPaymentYearly floatValue] > 0.0) {
+			[body appendFormat:@"Extra Payment(yearly): %@ <br>", [self.loanFormatter stringFromNumber:_loanDataB.extraPaymentYearly]];  // Extra Payment(yearly): (값이 있는 경우)
+		}
+		if (_loanDataB.extraPaymentOneTime && [_loanDataB.extraPaymentOneTime floatValue] > 0.0) {
+			[body appendFormat:@"Extra Payment(one-time): %@ <br>", [self.loanFormatter stringFromNumber:_loanDataB.extraPaymentOneTime]];  // Extra Payment(one-time): (값이 있는 경우)
+		}
+        
+		[body appendFormat:@"Payment: %@ <br>", [self.loanFormatter stringFromNumber:_loanDataB.repayment]];  // Payment: (사용자가 선택한 calculation과 결과값. 위의 입력값은 calculation 선택값에 따라 달라집니다.)
+        
+		if ([self isTotalMode]) {
+			[body appendFormat:@"Interest: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataB totalInterest]]];  // Interest: $23,981.60 (결과값)
+			[body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]]];  // Total Amount: $223,981.60 (결과값)
+		}
+		else {
+			[body appendFormat:@"Interest: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataB totalInterest]]];  // Interest: $23,981.60 (결과값)
+			[body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]]];  // Total Amount: $223,981.60 (결과값)
+		}
+	}
+	else {
+		[body appendFormat:@"Principal: %@<br>", [self.loanFormatter stringFromNumber:self.loanData.principal]];
+		if ([self.loanData downPayment]) {
+			[body appendFormat:@"Down Payment: %@<br>", [self.loanData downPayment]];  // Down Payment: (값이 있는 경우)
+		}
+		[body appendFormat:@"Term: %@ years.<br>", [self.loanData termValueString]];
+		[body appendFormat:@"Interest Rate: %@<br>", [self.loanData interestRateString]];
+		[body appendFormat:@"Frequency: %@ <br>", [LoanCalcString titleOfFrequency:self.loanData.frequencyIndex]];  // Frequency: Monthly (선택값)
+		if (self.loanData.extraPaymentMonthly && [self.loanData.extraPaymentMonthly floatValue] > 0.0) {
+			[body appendFormat:@"Extra Payment(monthly): %@ <br>", [self.loanFormatter stringFromNumber:self.loanData.extraPaymentMonthly]];  // Extra Payment(monthly): (값이 있는 경우)
+		}
+		if (self.loanData.extraPaymentYearly && [self.loanData.extraPaymentYearly floatValue] > 0.0) {
+			[body appendFormat:@"Extra Payment(yearly): %@ <br>", [self.loanFormatter stringFromNumber:self.loanData.extraPaymentYearly]];  // Extra Payment(yearly): (값이 있는 경우)
+		}
+		if (self.loanData.extraPaymentOneTime && [self.loanData.extraPaymentOneTime floatValue] > 0.0) {
+			[body appendFormat:@"Extra Payment(one-time): %@ <br>", [self.loanFormatter stringFromNumber:self.loanData.extraPaymentOneTime]];  // Extra Payment(one-time): (값이 있는 경우)
+		}
+        
+		[body appendFormat:@"Payment: %@ <br>", [self.loanFormatter stringFromNumber:self.loanData.repayment]];  // Payment: (사용자가 선택한 calculation과 결과값. 위의 입력값은 calculation 선택값에 따라 달라집니다.)
+        
+		if ([self isTotalMode]) {
+			[body appendFormat:@"Interest: %@ <br>", [self.loanFormatter stringFromNumber:[self.loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
+			[body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[self.loanData totalAmount]]];  // Total Amount: $223,981.60 (결과값)
+		}
+		else {
+			[body appendFormat:@"Interest: %@ <br>", [self.loanFormatter stringFromNumber:[self.loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
+			[body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[self.loanData totalAmount]]];  // Total Amount: $223,981.60 (결과값)
+		}
+        
+		// AppBoxPro_amortization.csv
+//	 	NSURL *fileUrl = [NSURL fileURLWithPath:[self.loanData filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization.csv"]];
+//		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[body, fileUrl]
+//																			   subject:@"Loan Calculator in the AppBox Pro"
+//																	 fromBarButtonItem:sender];
+	}
+    
+    return body;
+}
+
 
 #pragma mark - Loan Mode Calculation
 

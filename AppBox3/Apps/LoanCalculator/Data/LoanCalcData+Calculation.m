@@ -495,7 +495,7 @@
             balance = [numberFormatter stringFromNumber:data[@"Balance"]];
         }
         
-        [csvArray addObject:[NSString stringWithFormat:@"\"%@\", \"%@\", \"%@\", \"%@\", \"%@\"", date, principal, payment, interest, balance]];
+        [csvArray addObject:[NSString stringWithFormat:@"%@, %@, %@, %@, %@", date, principal, payment, interest, balance]];
     }];
     
     
