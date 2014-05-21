@@ -1381,6 +1381,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         
 		[self saveLoanData];
 		[self refreshRightBarItems];
+        
+        if ([self.loanData calculated]) {
+            [self scrollToTopOfTableView];
+        }
     }
 }
 
@@ -2175,7 +2179,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	}
 
 	[self updateLoanCalculation];
-//	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
 }
 
 #pragma mark - Keyboard Show/Hide notification
@@ -2626,6 +2629,24 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
     
     return nil;
+}
+
+-(void)scrollToTopOfTableView {
+    if (IS_LANDSCAPE) {
+        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationCurve:7];
+        [UIView setAnimationDuration:0.35];
+        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
+        [UIView commitAnimations];
+    } else {
+        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationCurve:7];
+        [UIView setAnimationDuration:0.35];
+        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height));
+        [UIView commitAnimations];
+    }
 }
 
 #pragma mark Configure TableView Cell

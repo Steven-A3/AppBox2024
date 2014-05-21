@@ -66,7 +66,6 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     self.totalMode = NO;
     [self.percentFormatter setMaximumFractionDigits:3];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
@@ -76,7 +75,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
-//	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
@@ -162,14 +161,6 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
--(void)onKeyboardHide:(NSNotification *)notification
-{
-    //keyboard will hide
-    NSLog(@"noti received:%@", notification.name);
-    
-    self.tableView.contentOffset = CGPointMake(0, -64);
 }
 
 - (NSMutableArray *)calcItems {
@@ -327,7 +318,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     
     if ([self.loanData calculated]) {
         // 계산이 되었으면, 상단 그래프가 보이도록 이동시킨다.
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        //[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
+        [self scrollToTopOfTableView];
     }
 }
 
@@ -781,6 +773,24 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     }
     
     return nil;
+}
+
+-(void)scrollToTopOfTableView {
+    if (IS_LANDSCAPE) {
+        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationCurve:7];
+        [UIView setAnimationDuration:0.35];
+        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
+        [UIView commitAnimations];
+    } else {
+        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationCurve:7];
+        [UIView setAnimationDuration:0.35];
+        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height));
+        [UIView commitAnimations];
+    }
 }
 
 @end
