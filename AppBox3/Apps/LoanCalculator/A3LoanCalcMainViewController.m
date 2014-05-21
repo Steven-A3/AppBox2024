@@ -291,6 +291,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         self.loanData.showExtraPayment = YES;
         self.loanDataA.showExtraPayment = YES;
         self.loanDataB.showExtraPayment = YES;
+        
+        self.loanData.extraPaymentMonthly = @0;
 
         if (!_isComparisonMode) {
             //[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
@@ -333,6 +335,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         self.loanData.showDownPayment = YES;
         self.loanDataA.showDownPayment = YES;
         self.loanDataB.showDownPayment = YES;
+        
+        self.loanData.downPayment = @0;
+        self.loanDataA.downPayment = @0;
+        self.loanDataB.downPayment = @0;
 
         if (!_isComparisonMode) {
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationFade];
