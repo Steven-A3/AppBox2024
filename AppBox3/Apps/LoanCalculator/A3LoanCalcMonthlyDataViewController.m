@@ -242,7 +242,8 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
             [extraItems addObject:@(A3LC_ExtraPaymentOnetime)];
         }
         
-        int calItemsCount = _loanData.showDownPayment ? 5:4;
+        
+        int calItemsCount = (_loanData.showDownPayment && [_loanData.downPayment doubleValue] > 0) ? 5:4;
         
         for (int idx = 0; idx < [extraItems count]; idx++) {
             UILabel *titleLB = infoCell.downTitleLBs[calItemsCount + idx];
