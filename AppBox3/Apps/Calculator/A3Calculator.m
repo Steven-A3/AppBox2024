@@ -353,7 +353,8 @@ typedef CMathParser<char, double> MathParser;
 
 - (NSAttributedString *) getExpressionWith:(NSString *) mExpression isDefault:(BOOL)bDefault{
     FNLOG(@"mExpression = %@",mExpression);
-    NSAttributedString *temp = [[NSAttributedString alloc] initWithAttributedString:[calutil invisibleString]];
+    //NSAttributedString *temp = [[NSAttributedString alloc] initWithAttributedString:[calutil invisibleString]];
+    NSAttributedString *temp = [NSAttributedString new];
     NSUInteger i, length = [mExpression length];
     NSString *currentString;
     NSRange range;
@@ -781,6 +782,7 @@ typedef CMathParser<char, double> MathParser;
         }
     }
     
+    temp = [temp appendWith:[calutil invisibleString]];
     return [temp copy];
 }
 

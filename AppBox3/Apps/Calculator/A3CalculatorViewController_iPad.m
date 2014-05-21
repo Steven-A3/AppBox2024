@@ -191,7 +191,7 @@
     [self.view addSubview:self.expressionLabel];
 	[_expressionLabel makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.left).with.offset(15);
-        make.right.equalTo(self.view.right).with.offset(-15);
+        make.right.equalTo(self.view.right).with.offset(-2.5);
         make.top.equalTo(@91);
         make.height.equalTo(@33.5);
 	}];
@@ -428,6 +428,9 @@
 
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
+    if ([activityType isEqualToString:UIActivityTypeMail]) {
+        return @"Calculator using AppBox Pro";
+    }
     return @"";
 }
 
@@ -435,13 +438,23 @@
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
 {
     if ([activityType isEqualToString:UIActivityTypeMail]) {
-        NSAttributedString *shareString = [[NSAttributedString alloc] init];
-        if (![self.expressionLabel.text hasSuffix:@"="]) {
-            shareString = [_expressionLabel.attributedText appendWithString:[NSString stringWithFormat:@"=%@\n", [self.calculator getResultString]]];
+        NSAttributedString *shareString = [[NSAttributedString alloc] initWithString:@"I'd like to share a calculation with you.\n\n"];
+        NSMutableAttributedString *expression = [[NSMutableAttributedString alloc] initWithAttributedString:_expressionLabel.attributedText];
+        if ([expression length] >= 3) {
+            NSRange range;
+            range.location = [expression length] - 3;
+            range.length = 3;
+            // remove invisible string
+            [expression replaceCharactersInRange:range withString:@""];
+        }
+        
+        if (![[expression string] hasSuffix:@"="]) {
+            shareString = [shareString appendWith:[expression appendWithString:[NSString stringWithFormat:@"=%@\n", [self.calculator getResultString]]]];
         } else {
-            shareString = [_expressionLabel.attributedText appendWithString:[self.calculator getResultString]];
+            shareString = [shareString appendWith:[expression appendWithString:[self.calculator getResultString]]];
             
         }
+        shareString = [shareString appendWithString:@"\n\nYou can calculate more in the AppBox Pro.\n https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8"];
         return shareString;
     } else {
         return [self.calculator getResultString];
