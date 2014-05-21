@@ -27,7 +27,7 @@
 }
 
 - (void)doAutolayout {
-	[self addConstraintLeft:_L1 right:_R1 centerY:1.9 * (1.0 / 4.0)];
+	[self addConstraintLeft:_L1 right:_R1 centerY:2.1 * (1.0 / 4.0)];
 	[self addConstraintLeft:_L2 right:_R2 centerY:1.425];
 }
 
