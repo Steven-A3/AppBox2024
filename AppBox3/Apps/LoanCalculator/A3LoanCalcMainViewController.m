@@ -293,7 +293,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         self.loanDataB.showExtraPayment = YES;
 
         if (!_isComparisonMode) {
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
+            //[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
         }
     }
     else if ([noti.name isEqualToString:A3LoanCalcNotificationExtraPaymentDisabled]) {
@@ -320,7 +321,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         self.loanData.extraPaymentOneTimeDate = nil;
         
         if (!_isComparisonMode) {
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
+            //[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
             [self updateLoanCalculation];
         }
     }
@@ -933,10 +935,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         bottomLine.hidden = NO;
     }
     
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:4] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:self.loanData.showExtraPayment ? 4 : 3] withRowAnimation:UITableViewRowAnimationFade];
     
     if (self.loanData.showAdvanced) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:4] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:self.loanData.showExtraPayment ? 4 : 3] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
 }
 
@@ -1019,7 +1021,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     } while (!exit);
 
     if (prevCell && selectedIP && [prevCell isKindOfClass:[A3LoanCalcTextInputCell class]]) {
-        if (selectedIP.section == 4) {
+        if (selectedIP.section == (self.loanData.showExtraPayment ? 4 : 3)) {
             return nil;
         }
         else if (selectedIP.section == 3) {
@@ -1893,8 +1895,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         [self.tableView beginUpdates];
         
         [_advItems removeObject:self.dateInputItem];
-        NSIndexPath *ip1 = [NSIndexPath indexPathForRow:0 inSection:4];
-        NSIndexPath *ip2 = [NSIndexPath indexPathForRow:1 inSection:4];
+        NSIndexPath *ip1 = [NSIndexPath indexPathForRow:0 inSection:self.loanData.showExtraPayment ? 4 : 3];
+        NSIndexPath *ip2 = [NSIndexPath indexPathForRow:1 inSection:self.loanData.showExtraPayment ? 4 : 3];
         [self.tableView reloadRowsAtIndexPaths:@[ip1] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView deleteRowsAtIndexPaths:@[ip2] withRowAnimation:UITableViewRowAnimationFade];
         
@@ -1907,8 +1909,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     if (![_advItems containsObject:self.dateInputItem]) {
         [_advItems insertObject:self.dateInputItem atIndex:1];
         [self.tableView beginUpdates];
-        NSIndexPath *ip1 = [NSIndexPath indexPathForRow:0 inSection:4];
-        NSIndexPath *ip2 = [NSIndexPath indexPathForRow:1 inSection:4];
+        NSIndexPath *ip1 = [NSIndexPath indexPathForRow:0 inSection:self.loanData.showExtraPayment ? 4 : 3];
+        NSIndexPath *ip2 = [NSIndexPath indexPathForRow:1 inSection:self.loanData.showExtraPayment ? 4 : 3];
         [self.tableView reloadRowsAtIndexPaths:@[ip1] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView insertRowsAtIndexPaths:@[ip2] withRowAnimation:UITableViewRowAnimationFade];
 		CGRect cellRect = [self.tableView rectForRowAtIndexPath:ip2];
@@ -1989,7 +1991,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 	self.scrollToIndexPath = [self.tableView indexPathForCellSubview:textField];
 
-	if (self.scrollToIndexPath.section == 4) {
+	if (self.scrollToIndexPath.section == (self.loanData.showExtraPayment ? 4 : 3)) {
 		if (_advItems[self.scrollToIndexPath.row] == self.startDateItem) {
 			return NO;
 		}
@@ -2308,6 +2310,55 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 #pragma mark - Table view delegate
 
+- (void)didSelectExtraPaymentSectionAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    // extra payment
+    NSNumber *exPaymentItemNum = self.extraPaymentItems[indexPath.row];
+    A3LoanCalcExtraPaymentType exPaymentItem = exPaymentItemNum.integerValue;
+    
+    if (exPaymentItem == A3LC_ExtraPaymentMonthly) {
+        A3LoanCalcTextInputCell *inputCell = (A3LoanCalcTextInputCell *)[tableView cellForRowAtIndexPath:indexPath];
+        [inputCell.textField becomeFirstResponder];
+    }
+    else if ((exPaymentItem == A3LC_ExtraPaymentYearly) || (exPaymentItem == A3LC_ExtraPaymentOnetime)) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
+        A3LoanCalcExtraPaymentViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"A3LoanCalcExtraPaymentViewController"];
+        viewController.delegate = self;
+        viewController.exPaymentType = exPaymentItem;
+        viewController.loanCalcData = self.loanData;
+        
+        if (IS_IPHONE) {
+            [self.navigationController pushViewController:viewController animated:YES];
+        }
+        else {
+            [self enableControls:NO];
+            [self.A3RootViewController presentRightSideViewController:viewController];
+        }
+        [self dismissDatePicker];
+    }
+}
+
+- (void)didSelectAdvancedSectionAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    if (_advItems[indexPath.row] == self.startDateItem) {
+        A3LoanCalcTextInputCell *inputCell = (A3LoanCalcTextInputCell *)[tableView cellForRowAtIndexPath:indexPath];
+        [inputCell.textField becomeFirstResponder];
+        
+        preDate = self.loanData.startDate;
+        
+        if ([_advItems containsObject:self.dateInputItem]) {
+            [self dismissDatePicker];
+        }
+        else {
+            [self datePickerActiveFromIndexPath:indexPath];
+        }
+    }
+    else if (_advItems[indexPath.row] == self.noteItem) {
+        A3WalletNoteCell *noteCell = (A3WalletNoteCell *)[tableView cellForRowAtIndexPath:indexPath];
+        [noteCell.textView becomeFirstResponder];
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -2380,49 +2431,18 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 [inputCell.textField becomeFirstResponder];
             }
         }
-        if (indexPath.section == 3) {
-            // extra payment
-            NSNumber *exPaymentItemNum = self.extraPaymentItems[indexPath.row];
-            A3LoanCalcExtraPaymentType exPaymentItem = exPaymentItemNum.integerValue;
-            
-            if (exPaymentItem == A3LC_ExtraPaymentMonthly) {
-                A3LoanCalcTextInputCell *inputCell = (A3LoanCalcTextInputCell *)[tableView cellForRowAtIndexPath:indexPath];
-                [inputCell.textField becomeFirstResponder];
+        
+        if (self.loanData.showExtraPayment) {
+            if (indexPath.section == 3) {
+                [self didSelectExtraPaymentSectionAtIndexPath:indexPath tableView:tableView];
             }
-            else if ((exPaymentItem == A3LC_ExtraPaymentYearly) || (exPaymentItem == A3LC_ExtraPaymentOnetime)) {
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
-                A3LoanCalcExtraPaymentViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"A3LoanCalcExtraPaymentViewController"];
-                viewController.delegate = self;
-                viewController.exPaymentType = exPaymentItem;
-                viewController.loanCalcData = self.loanData;
-                
-                if (IS_IPHONE) {
-                    [self.navigationController pushViewController:viewController animated:YES];
-                }
-                else {
-					[self enableControls:NO];
-					[self.A3RootViewController presentRightSideViewController:viewController];
-				}
-                [self dismissDatePicker];
+            if (indexPath.section == 4) {
+                [self didSelectAdvancedSectionAtIndexPath:indexPath tableView:tableView];
             }
         }
-        if (indexPath.section == 4) {
-            if (_advItems[indexPath.row] == self.startDateItem) {
-                A3LoanCalcTextInputCell *inputCell = (A3LoanCalcTextInputCell *)[tableView cellForRowAtIndexPath:indexPath];
-                [inputCell.textField becomeFirstResponder];
-                
-                preDate = self.loanData.startDate;
-                
-                if ([_advItems containsObject:self.dateInputItem]) {
-                    [self dismissDatePicker];
-                }
-                else {
-                    [self datePickerActiveFromIndexPath:indexPath];
-                }
-			}
-            else if (_advItems[indexPath.row] == self.noteItem) {
-                A3WalletNoteCell *noteCell = (A3WalletNoteCell *)[tableView cellForRowAtIndexPath:indexPath];
-                [noteCell.textView becomeFirstResponder];
+        else {
+            if (indexPath.section == 3) {
+                [self didSelectAdvancedSectionAtIndexPath:indexPath tableView:tableView];
             }
         }
     }
@@ -2437,7 +2457,12 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         return 3;
     }
     else {
-        return 5;
+        if (self.loanData.showExtraPayment) {
+            return 5;
+        }
+        else {
+            return 4;
+        }
     }
 }
 
@@ -2458,7 +2483,12 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             return self.calcItems.count;
         }
         else if (section == 3) {
-            return self.extraPaymentItems.count;
+            if (self.loanData.showExtraPayment) {
+                return self.extraPaymentItems.count;
+            }
+            else {
+                return self.loanData.showAdvanced ? self.advItems.count:0;
+            }
         }
         else if (section == 4){
             // advanced
@@ -2497,7 +2527,18 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             }
         }
         else if (indexPath.section == 3) {
-            return self.loanData.showExtraPayment ? 44:0;
+            if (self.loanData.showExtraPayment) {
+                return 44;
+            }
+            else {
+                if (self.advItems[indexPath.row] == self.noteItem) {
+                    return [UIViewController noteCellHeight];
+                }
+                else if (_advItems[indexPath.row] == self.dateInputItem) {
+                    return 218.0;
+                }
+                return 44;
+            }
         }
         else if (indexPath.section == 4) {
             if (self.advItems[indexPath.row] == self.noteItem) {
@@ -2530,7 +2571,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             return nonTitleHeight -1;
         }
         else if (section == 3) {
-            return self.loanData.showExtraPayment ? titleHeight-1:1;
+            return titleHeight - 1;
+//            return self.loanData.showExtraPayment ? titleHeight - 1 : 1;
         }
         else if (section == 4) {
             return self.loanData.showExtraPayment ? titleHeight-1:titleHeight-2;
@@ -2558,7 +2600,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         
     }
     else {
-        if (section == 4) {
+        if (section == (self.loanData.showExtraPayment ? 4 : 3)) {
             return self.advancedTitleView;
         }
     }
@@ -2661,6 +2703,85 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         cell = infoCell;
     }
     
+    return cell;
+}
+
+- (UITableViewCell *)cellOfExtraPaymentAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
+    // extra payment
+    UITableViewCell *cell;
+    NSNumber *exPaymentItemNum = self.extraPaymentItems[indexPath.row];
+    A3LoanCalcExtraPaymentType exPaymentItem = exPaymentItemNum.integerValue;
+    
+    if (exPaymentItem == A3LC_ExtraPaymentMonthly) {
+        A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
+        inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        inputCell.textField.font = [UIFont systemFontOfSize:17];
+        inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+        inputCell.textField.delegate = self;
+        
+        [self configureInputCell:inputCell withExtraPaymentItem:exPaymentItem];
+        
+        cell = inputCell;
+    }
+    else {
+        cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID forIndexPath:indexPath];
+        cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
+        cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+        
+        if (exPaymentItem == A3LC_ExtraPaymentYearly) {
+            [self configureExtraPaymentYearlyCell:cell];
+        }
+        else if (exPaymentItem == A3LC_ExtraPaymentOnetime) {
+            [self configureExtraPaymentOneTimeCell:cell];
+        }
+    }
+    return cell;
+}
+
+- (UITableViewCell *)cellOfAdvancedAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
+    // advanced
+    UITableViewCell *cell;
+    if (_advItems[indexPath.row] == self.startDateItem) {
+        A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
+        inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        inputCell.textField.font = [UIFont systemFontOfSize:17];
+        inputCell.titleLabel.text = _startDateItem[@"Title"];
+        inputCell.textField.delegate = self;
+        inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"None"
+                                                                                    attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
+        inputCell.textField.userInteractionEnabled = NO;
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        df.dateStyle = IS_IPAD ? NSDateFormatterFullStyle : NSDateFormatterMediumStyle;
+        inputCell.textField.text = [df stringFromDate:self.loanData.startDate];
+        
+        if ([_advItems containsObject:self.dateInputItem]) {
+            inputCell.textField.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
+        } else {
+            inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+        }
+        
+        cell = inputCell;
+    }
+    else if (_advItems[indexPath.row] == self.noteItem) {
+        // note
+        A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanNoteCellID forIndexPath:indexPath];
+        [noteCell setupTextView];
+        noteCell.textView.delegate = self;
+        noteCell.textView.text = self.loanData.note;
+        
+        cell = noteCell;
+    }
+    else if (_advItems[indexPath.row] == self.dateInputItem) {
+        // date input cell
+        A3WalletDateInputCell *dateInputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcDateInputCellID forIndexPath:indexPath];
+        dateInputCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        dateInputCell.datePicker.date = preDate;
+        dateInputCell.datePicker.datePickerMode = UIDatePickerModeDate;
+        [dateInputCell.datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
+        
+        cell = dateInputCell;
+    }
+
     return cell;
 }
 
@@ -2773,82 +2894,25 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		}
 
         case 3:
-        {
-            // extra payment
-            NSNumber *exPaymentItemNum = self.extraPaymentItems[indexPath.row];
-            A3LoanCalcExtraPaymentType exPaymentItem = exPaymentItemNum.integerValue;
-            
-            if (exPaymentItem == A3LC_ExtraPaymentMonthly) {
-                A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
-                inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                inputCell.textField.font = [UIFont systemFontOfSize:17];
-                inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                inputCell.textField.delegate = self;
-                
-                [self configureInputCell:inputCell withExtraPaymentItem:exPaymentItem];
-                
-                cell = inputCell;
-            }
-            else {
-                cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID forIndexPath:indexPath];
-                cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
-                cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                
-                if (exPaymentItem == A3LC_ExtraPaymentYearly) {
-                    [self configureExtraPaymentYearlyCell:cell];
-                }
-                else if (exPaymentItem == A3LC_ExtraPaymentOnetime) {
-                    [self configureExtraPaymentOneTimeCell:cell];
-                }
-            }
-			break;
-		}
-
         case 4:
         {
-            // advanced
-            if (_advItems[indexPath.row] == self.startDateItem) {
-                A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
-                inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                inputCell.textField.font = [UIFont systemFontOfSize:17];
-                inputCell.titleLabel.text = _startDateItem[@"Title"];
-                inputCell.textField.delegate = self;
-                inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"None"
-                                                                                            attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
-                inputCell.textField.userInteractionEnabled = NO;
-                NSDateFormatter *df = [[NSDateFormatter alloc] init];
-                df.dateStyle = IS_IPAD ? NSDateFormatterFullStyle : NSDateFormatterMediumStyle;
-                inputCell.textField.text = [df stringFromDate:self.loanData.startDate];
-                
-                if ([_advItems containsObject:self.dateInputItem]) {
-                    inputCell.textField.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
-                } else {
-                    inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+            if (self.loanData.showExtraPayment) {
+                if ([indexPath section] == 3) {
+                    cell = [self cellOfExtraPaymentAtIndexPath:indexPath tableView:tableView];
                 }
-                
-                cell = inputCell;
+                else if([indexPath section] == 4) {
+                    cell = [self cellOfAdvancedAtIndexPath:indexPath tableView:tableView];
+                }
             }
-            else if (_advItems[indexPath.row] == self.noteItem) {
-                // note
-                A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanNoteCellID forIndexPath:indexPath];
-				[noteCell setupTextView];
-				noteCell.textView.delegate = self;
-                noteCell.textView.text = self.loanData.note;
-
-                cell = noteCell;
-            }
-            else if (_advItems[indexPath.row] == self.dateInputItem) {
-                // date input cell
-                A3WalletDateInputCell *dateInputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcDateInputCellID forIndexPath:indexPath];
-                dateInputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                dateInputCell.datePicker.date = preDate;
-                dateInputCell.datePicker.datePickerMode = UIDatePickerModeDate;
-                [dateInputCell.datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
-                
-                cell = dateInputCell;
+            else {
+                if ([indexPath section] == 3) {
+                    cell = [self cellOfAdvancedAtIndexPath:indexPath tableView:tableView];
+                }
             }
 			break;
 		}
+
+
         default:
             break;
     }
