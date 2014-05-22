@@ -2,7 +2,7 @@
 //  LoanCalcComparisonHistory.h
 //  AppBox3
 //
-//  Created by A3 on 3/11/14.
+//  Created by dotnetguy83 on 5/22/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 

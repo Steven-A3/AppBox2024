@@ -688,8 +688,6 @@
 		68B6A46618CEE781004084EF /* UIImage+WebP.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A43B18CEE781004084EF /* UIImage+WebP.m */; };
 		68B6A46718CEE781004084EF /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A43D18CEE781004084EF /* UIImageView+WebCache.m */; };
 		68B6A46818CEE781004084EF /* MWPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A43E18CEE781004084EF /* MWPhotoBrowser.bundle */; };
-		68B6A48418CF3154004084EF /* LoanCalcComparisonHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A48318CF3154004084EF /* LoanCalcComparisonHistory.m */; };
-		68B6A48718CF3154004084EF /* LoanCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A48618CF3154004084EF /* LoanCalcHistory.m */; };
 		68B6A49018CF31B5004084EF /* UnitPriceFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A48F18CF31B5004084EF /* UnitPriceFavorite.m */; };
 		68B6A4A518CF335D004084EF /* UnitConvertItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A4A418CF335D004084EF /* UnitConvertItem.m */; };
 		68B6A4A818CF335E004084EF /* UnitType.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A4A718CF335E004084EF /* UnitType.m */; };
@@ -937,6 +935,8 @@
 		8076BCB918FA96B600613E70 /* A3DaysCounterCalendarListMainEditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8076BCB818FA96B600613E70 /* A3DaysCounterCalendarListMainEditCell.xib */; };
 		8079DFBC190F93B90084BD89 /* A3DateLunarTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8079DFBB190F93B90084BD89 /* A3DateLunarTest.m */; };
 		80A1623118DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A1623018DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m */; };
+		80A49634192DB46E004B7ECB /* LoanCalcComparisonHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A49633192DB46E004B7ECB /* LoanCalcComparisonHistory.m */; };
+		80A49637192DB46E004B7ECB /* LoanCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A49636192DB46E004B7ECB /* LoanCalcHistory.m */; };
 		80BFB6AF19220BCC003F047F /* DaysCounterCalendar+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BFB6AE19220BCC003F047F /* DaysCounterCalendar+Extension.m */; };
 		80BFB6B219220C2C003F047F /* DaysCounterCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BFB6B119220C2C003F047F /* DaysCounterCalendar.m */; };
 /* End PBXBuildFile section */
@@ -2133,10 +2133,6 @@
 		68B6A43C18CEE781004084EF /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		68B6A43D18CEE781004084EF /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		68B6A43E18CEE781004084EF /* MWPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = MWPhotoBrowser.bundle; path = External/MWPhotoBrowser/MWPhotoBrowser/MWPhotoBrowser.bundle; sourceTree = "<group>"; };
-		68B6A48218CF3154004084EF /* LoanCalcComparisonHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanCalcComparisonHistory.h; sourceTree = "<group>"; };
-		68B6A48318CF3154004084EF /* LoanCalcComparisonHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanCalcComparisonHistory.m; sourceTree = "<group>"; };
-		68B6A48518CF3154004084EF /* LoanCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanCalcHistory.h; sourceTree = "<group>"; };
-		68B6A48618CF3154004084EF /* LoanCalcHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanCalcHistory.m; sourceTree = "<group>"; };
 		68B6A48E18CF31B5004084EF /* UnitPriceFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitPriceFavorite.h; sourceTree = "<group>"; };
 		68B6A48F18CF31B5004084EF /* UnitPriceFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitPriceFavorite.m; sourceTree = "<group>"; };
 		68B6A4A318CF335D004084EF /* UnitConvertItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitConvertItem.h; sourceTree = "<group>"; };
@@ -2544,6 +2540,10 @@
 		8079DFBB190F93B90084BD89 /* A3DateLunarTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateLunarTest.m; sourceTree = "<group>"; };
 		80A1622F18DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterSlideshowEventSummaryView.h; sourceTree = "<group>"; };
 		80A1623018DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterSlideshowEventSummaryView.m; sourceTree = "<group>"; };
+		80A49632192DB46E004B7ECB /* LoanCalcComparisonHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanCalcComparisonHistory.h; sourceTree = "<group>"; };
+		80A49633192DB46E004B7ECB /* LoanCalcComparisonHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanCalcComparisonHistory.m; sourceTree = "<group>"; };
+		80A49635192DB46E004B7ECB /* LoanCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanCalcHistory.h; sourceTree = "<group>"; };
+		80A49636192DB46E004B7ECB /* LoanCalcHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanCalcHistory.m; sourceTree = "<group>"; };
 		80BFB6AD19220BCC003F047F /* DaysCounterCalendar+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DaysCounterCalendar+Extension.h"; sourceTree = "<group>"; };
 		80BFB6AE19220BCC003F047F /* DaysCounterCalendar+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DaysCounterCalendar+Extension.m"; sourceTree = "<group>"; };
 		80BFB6B019220C2C003F047F /* DaysCounterCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaysCounterCalendar.h; sourceTree = "<group>"; };
@@ -4109,10 +4109,6 @@
 		68B6A17A18CEC76C004084EF /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				68B6A48518CF3154004084EF /* LoanCalcHistory.h */,
-				68B6A48618CF3154004084EF /* LoanCalcHistory.m */,
-				68B6A48218CF3154004084EF /* LoanCalcComparisonHistory.h */,
-				68B6A48318CF3154004084EF /* LoanCalcComparisonHistory.m */,
 				68B6A17D18CEC76C004084EF /* LoanCalcData+Calculation.h */,
 				68B6A17E18CEC76C004084EF /* LoanCalcData+Calculation.m */,
 				68B6A17F18CEC76C004084EF /* LoanCalcData.h */,
@@ -4123,6 +4119,10 @@
 				68B6A18418CEC76C004084EF /* LoanCalcPreference.m */,
 				68B6A18518CEC76C004084EF /* LoanCalcString.h */,
 				68B6A18618CEC76C004084EF /* LoanCalcString.m */,
+				80A49635192DB46E004B7ECB /* LoanCalcHistory.h */,
+				80A49636192DB46E004B7ECB /* LoanCalcHistory.m */,
+				80A49632192DB46E004B7ECB /* LoanCalcComparisonHistory.h */,
+				80A49633192DB46E004B7ECB /* LoanCalcComparisonHistory.m */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -6002,6 +6002,7 @@
 				68143D6618E3EC7C00569691 /* A3TableViewMenuElement.m in Sources */,
 				6896DC9A1921FD2700FA98F3 /* ExpenseListItem.m in Sources */,
 				68E6F35217B2722000F10ED9 /* NSUserDefaults+A3Defaults.m in Sources */,
+				80A49634192DB46E004B7ECB /* LoanCalcComparisonHistory.m in Sources */,
 				68B6A2DA18CEC76D004084EF /* TemperatureConveter.m in Sources */,
 				68B6A2F918CEC76D004084EF /* A3UnitPriceNoteCell.m in Sources */,
 				68B6A2DB18CEC76D004084EF /* UnitCommon.m in Sources */,
@@ -6089,7 +6090,6 @@
 				680D639F18CFF9D400938AD0 /* A3MirrorViewController.m in Sources */,
 				68B6A2C618CEC76D004084EF /* A3LoanCalcMonthlyTableTitleView.m in Sources */,
 				680D638C18CFF9D400938AD0 /* A3CalcKeyboardView_iPhone.m in Sources */,
-				68B6A48718CF3154004084EF /* LoanCalcHistory.m in Sources */,
 				68B6A44F18CEE781004084EF /* PSTCollectionViewFlowLayout.m in Sources */,
 				68B6A32E18CEC76D004084EF /* A3WalletItemTitleView.m in Sources */,
 				680886D61891751B0093FD97 /* A3SBTickerView.m in Sources */,
@@ -6150,6 +6150,7 @@
 				684E9F09188A43DF00FAA48E /* A3ActivitySafari.m in Sources */,
 				68E2A66018D0B1FC00E834D9 /* A3PercentCalcHistoryEntity.m in Sources */,
 				68F1C8A518D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.m in Sources */,
+				80A49637192DB46E004B7ECB /* LoanCalcHistory.m in Sources */,
 				68E2A6AB18D0B22800E834D9 /* SalesCalcHistory.m in Sources */,
 				68F4EE8F17E4C0F9009BDE05 /* A3FSegmentedControl.m in Sources */,
 				68E6F37217B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m in Sources */,
@@ -6260,7 +6261,6 @@
 				687F927D18F5FEE3006377B9 /* UnitItem.m in Sources */,
 				68E2A6D518D0B46500E834D9 /* TipCalcHistory.m in Sources */,
 				68F1C8CD18D7F37D009FAE8A /* A3LadyCalendarModelManager.m in Sources */,
-				68B6A48418CF3154004084EF /* LoanCalcComparisonHistory.m in Sources */,
 				6829687618503C3300B70E13 /* NSObject+MagicalDataImport.m in Sources */,
 				17D42A39FA849C645CB674DD /* A3TranslatorFavoriteCell.m in Sources */,
 				689C9A4D1839CD7F007C97EE /* AFNetworkReachabilityManager.m in Sources */,

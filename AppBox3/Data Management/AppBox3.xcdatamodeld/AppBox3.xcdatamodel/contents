@@ -181,7 +181,7 @@
         <relationship name="details" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="LoanCalcHistory" inverseName="comparisonHistory" inverseEntity="LoanCalcHistory" syncable="YES"/>
     </entity>
     <entity name="LoanCalcHistory" representedClassName="LoanCalcHistory" syncable="YES">
-        <attribute name="calculationFor" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="calculationMode" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="downPayment" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="editing" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -412,7 +412,7 @@
         <element name="LadyCalendarAccount" positionX="-765" positionY="950" width="128" height="148"/>
         <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="238"/>
         <element name="LoanCalcComparisonHistory" positionX="198" positionY="837" width="128" height="135"/>
-        <element name="LoanCalcHistory" positionX="441" positionY="531" width="128" height="433"/>
+        <element name="LoanCalcHistory" positionX="441" positionY="531" width="128" height="435"/>
         <element name="PercentCalcHistory" positionX="-783" positionY="15" width="128" height="75"/>
         <element name="SalesCalcHistory" positionX="-407" positionY="-327" width="128" height="210"/>
         <element name="TipCalcHistory" positionX="-587" positionY="-310" width="128" height="103"/>

@@ -972,7 +972,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (LoanCalcHistory *)loanHistoryForLoanData:(LoanCalcData *)loan
 {
     LoanCalcHistory *history = [LoanCalcHistory MR_createEntity];
-    history.calculationFor = @(loan.calculationMode);
+    history.calculationMode = @(loan.calculationMode);
     history.created = [NSDate date];
     history.downPayment = loan.downPayment.stringValue;
     history.extraPaymentMonthly = loan.extraPaymentMonthly.stringValue;
@@ -1014,7 +1014,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     data.monthOfTerms = @(history.term.floatValue);
 	data.showsTermInMonths = history.termTypeMonth;
     data.calculationDate = history.created;
-    data.calculationMode = history.calculationFor.integerValue;
+    data.calculationMode = history.calculationMode.integerValue;
     data.showAdvanced = history.showAdvanced.boolValue;
     data.showDownPayment = history.showDownPayment.boolValue;
     data.showExtraPayment = history.showExtraPayment.boolValue;
