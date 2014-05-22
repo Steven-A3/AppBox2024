@@ -18,6 +18,8 @@
 #import "UITableView+utility.h"
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
+#import "A3AppDelegate+appearance.h"
+#import "UIImage+imageWithColor.h"
 
 @interface A3LoanCalcExtraPaymentViewController () <A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 {
@@ -551,7 +553,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         inputCell.textField.font = [UIFont systemFontOfSize:17];
         
         if ([_items containsObject:self.dateInputItem]) {
-            inputCell.textField.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
+            inputCell.textField.textColor = [A3AppDelegate instance].themeColor;
         }
         else {
             inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];

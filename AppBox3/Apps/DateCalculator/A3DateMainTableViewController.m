@@ -505,7 +505,6 @@ NSString *kCalculationString;
 }
 
 - (NSString *)stringOfAddSubModeForShare {
-    
     NSMutableString *shareString = [[NSMutableString alloc] init];
     
     /* Date Calculator
@@ -513,12 +512,9 @@ NSString *kCalculationString;
      Added (or Subtracted)  x years ?? months ?? days (값이 0이 아닌 경우만 표시)
      Result: 결과 값  */
     if ([self didSelectedAdd]) {
-        
         NSDate *result = [[A3DateCalcStateManager currentCalendar] dateByAddingComponents:self.offsetComp
                                                                                    toDate:_fromDate
                                                                                   options:0];
-        
-        //[shareString appendString:[NSString stringWithFormat:@"Date Calculator\n"]];
         [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager formattedStringDate:_fromDate]]];
         
         NSMutableString *resultShareString = [[NSMutableString alloc] init];
@@ -559,8 +555,6 @@ NSString *kCalculationString;
         NSDate *result = [[A3DateCalcStateManager currentCalendar] dateByAddingComponents:compAdd
                                                                                    toDate:_fromDate
                                                                                   options:0];
-        
-        //[shareString appendString:[NSString stringWithFormat:@"Date Calculator\n"]];
         [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager formattedStringDate:_fromDate]]];
         
         NSMutableString *resultShareString = [[NSMutableString alloc] init];

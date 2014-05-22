@@ -537,7 +537,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	self.loanData.startDate = sender.date;
 
     if (!_isComparisonMode) {
-        NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:4];
+        NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:self.loanData.showExtraPayment ? 4 : 3];
         [self.tableView reloadRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
@@ -578,7 +578,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         [_advancedTitleView addSubview:bottomLine];
         
         if (self.loanData.showAdvanced) {
-            adv.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
+            //adv.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
+            adv.textColor = [A3AppDelegate instance].themeColor;
             bottomLine.hidden = YES;
         }
         else {
@@ -818,7 +819,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     UILabel *adv = (UILabel *)[self.advancedTitleView viewWithTag:1234];
     UIView *bottomLine = [self.advancedTitleView viewWithTag:5678];
     if (self.loanData.showAdvanced) {
-        adv.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
+        //adv.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
+        adv.textColor = [A3AppDelegate instance].themeColor;
         bottomLine.hidden = YES;
     }
     else {
@@ -2766,85 +2768,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     return cell;
 }
 
-- (UITableViewCell *)cellOfExtraPaymentAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
-    // extra payment
-    UITableViewCell *cell;
-    NSNumber *exPaymentItemNum = self.extraPaymentItems[indexPath.row];
-    A3LoanCalcExtraPaymentType exPaymentItem = exPaymentItemNum.integerValue;
-    
-    if (exPaymentItem == A3LC_ExtraPaymentMonthly) {
-        A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
-        inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        inputCell.textField.font = [UIFont systemFontOfSize:17];
-        inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-        inputCell.textField.delegate = self;
-        
-        [self configureInputCell:inputCell withExtraPaymentItem:exPaymentItem];
-        
-        cell = inputCell;
-    }
-    else {
-        cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID forIndexPath:indexPath];
-        cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
-        cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-        
-        if (exPaymentItem == A3LC_ExtraPaymentYearly) {
-            [self configureExtraPaymentYearlyCell:cell];
-        }
-        else if (exPaymentItem == A3LC_ExtraPaymentOnetime) {
-            [self configureExtraPaymentOneTimeCell:cell];
-        }
-    }
-    return cell;
-}
-
-- (UITableViewCell *)cellOfAdvancedAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
-    // advanced
-    UITableViewCell *cell;
-    if (_advItems[indexPath.row] == self.startDateItem) {
-        A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
-        inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        inputCell.textField.font = [UIFont systemFontOfSize:17];
-        inputCell.titleLabel.text = _startDateItem[@"Title"];
-        inputCell.textField.delegate = self;
-        inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"None"
-                                                                                    attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
-        inputCell.textField.userInteractionEnabled = NO;
-        NSDateFormatter *df = [[NSDateFormatter alloc] init];
-        df.dateStyle = IS_IPAD ? NSDateFormatterFullStyle : NSDateFormatterMediumStyle;
-        inputCell.textField.text = [df stringFromDate:self.loanData.startDate];
-        
-        if ([_advItems containsObject:self.dateInputItem]) {
-            inputCell.textField.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
-        } else {
-            inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-        }
-        
-        cell = inputCell;
-    }
-    else if (_advItems[indexPath.row] == self.noteItem) {
-        // note
-        A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanNoteCellID forIndexPath:indexPath];
-        [noteCell setupTextView];
-        noteCell.textView.delegate = self;
-        noteCell.textView.text = self.loanData.note;
-        
-        cell = noteCell;
-    }
-    else if (_advItems[indexPath.row] == self.dateInputItem) {
-        // date input cell
-        A3WalletDateInputCell *dateInputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcDateInputCellID forIndexPath:indexPath];
-        dateInputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        dateInputCell.datePicker.date = preDate;
-        dateInputCell.datePicker.datePickerMode = UIDatePickerModeDate;
-        [dateInputCell.datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
-        
-        cell = dateInputCell;
-    }
-
-    return cell;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForLoanModeRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell;
     
@@ -2975,6 +2898,86 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
         default:
             break;
+    }
+    
+    return cell;
+}
+
+- (UITableViewCell *)cellOfExtraPaymentAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
+    // extra payment
+    UITableViewCell *cell;
+    NSNumber *exPaymentItemNum = self.extraPaymentItems[indexPath.row];
+    A3LoanCalcExtraPaymentType exPaymentItem = exPaymentItemNum.integerValue;
+    
+    if (exPaymentItem == A3LC_ExtraPaymentMonthly) {
+        A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
+        inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        inputCell.textField.font = [UIFont systemFontOfSize:17];
+        inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+        inputCell.textField.delegate = self;
+        
+        [self configureInputCell:inputCell withExtraPaymentItem:exPaymentItem];
+        
+        cell = inputCell;
+    }
+    else {
+        cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID forIndexPath:indexPath];
+        cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
+        cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+        
+        if (exPaymentItem == A3LC_ExtraPaymentYearly) {
+            [self configureExtraPaymentYearlyCell:cell];
+        }
+        else if (exPaymentItem == A3LC_ExtraPaymentOnetime) {
+            [self configureExtraPaymentOneTimeCell:cell];
+        }
+    }
+    return cell;
+}
+
+- (UITableViewCell *)cellOfAdvancedAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
+    // advanced
+    UITableViewCell *cell;
+    if (_advItems[indexPath.row] == self.startDateItem) {
+        A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
+        inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        inputCell.textField.font = [UIFont systemFontOfSize:17];
+        inputCell.titleLabel.text = _startDateItem[@"Title"];
+        inputCell.textField.delegate = self;
+        inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"None"
+                                                                                    attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
+        inputCell.textField.userInteractionEnabled = NO;
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        df.dateStyle = IS_IPAD ? NSDateFormatterFullStyle : NSDateFormatterMediumStyle;
+        inputCell.textField.text = [df stringFromDate:self.loanData.startDate];
+        
+        if ([_advItems containsObject:self.dateInputItem]) {
+            //            inputCell.textField.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
+            inputCell.textField.textColor = [A3AppDelegate instance].themeColor;
+        } else {
+            inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+        }
+        
+        cell = inputCell;
+    }
+    else if (_advItems[indexPath.row] == self.noteItem) {
+        // note
+        A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanNoteCellID forIndexPath:indexPath];
+        [noteCell setupTextView];
+        noteCell.textView.delegate = self;
+        noteCell.textView.text = self.loanData.note;
+        
+        cell = noteCell;
+    }
+    else if (_advItems[indexPath.row] == self.dateInputItem) {
+        // date input cell
+        A3WalletDateInputCell *dateInputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcDateInputCellID forIndexPath:indexPath];
+        dateInputCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        dateInputCell.datePicker.date = preDate;
+        dateInputCell.datePicker.datePickerMode = UIDatePickerModeDate;
+        [dateInputCell.datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
+        
+        cell = dateInputCell;
     }
     
     return cell;
