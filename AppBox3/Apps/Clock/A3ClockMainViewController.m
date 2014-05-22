@@ -11,7 +11,6 @@
 #import "A3ClockWaveViewController.h"
 #import "A3ClockFlipViewController.h"
 #import "A3ClockLEDViewController.h"
-#import "A3ChooseColor.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3ClockSettingsViewController.h"
@@ -20,6 +19,7 @@
 #import "NSUserDefaults+A3Defaults.h"
 #import "UIViewController+MMDrawerController.h"
 #import "UIViewController+navigation.h"
+#import "A3ChooseColorView.h"
 
 #define kCntPage 4.0
 
@@ -415,10 +415,10 @@
 			colors = [self.clockDataManager ledColors];
 			break;
 	}
-	_chooseColorView = [A3ChooseColor chooseColorWaveInViewController:self
-															   inView:self.view
-															   colors:colors
-														selectedIndex:selectedColorIndex];
+	_chooseColorView = [A3ChooseColorView chooseColorWaveInViewController:self
+																   inView:self.view
+																   colors:colors
+															selectedIndex:selectedColorIndex];
 }
 
 - (void)settingsButtonAction:(id)aSender

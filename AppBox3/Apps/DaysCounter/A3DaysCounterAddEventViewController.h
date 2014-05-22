@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import "A3PhotoSelectViewController.h"
 
 @class DaysCounterEvent;
 @class A3DaysCounterModelManager;
+
 @interface A3DaysCounterAddEventViewController : UITableViewController 
 {
     BOOL isFirstAppear;

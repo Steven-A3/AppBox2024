@@ -203,6 +203,33 @@
 	NSLog(@"%@", log);
 }
 
+- (void)addTimeFormatString:(NSMutableString *)log withLocale:(NSString *)localeID {
+	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+	[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:localeID]];
+	
+	NSDate *date = [NSDate date];
+	[dateFormatter setTimeStyle:NSDateFormatterFullStyle];
+	[log appendFormat:@"%@\n", [dateFormatter stringFromDate:date]];
+
+	[dateFormatter setTimeStyle:NSDateFormatterLongStyle];
+	[log appendFormat:@"%@\n", [dateFormatter stringFromDate:date]];
+
+	[dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+	[log appendFormat:@"%@\n", [dateFormatter stringFromDate:date]];
+
+	[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+	[log appendFormat:@"%@\n", [dateFormatter stringFromDate:date]];
+}
+
+- (void)testTimeFormat {
+	NSArray *locales = @[@"en_US", @"de_DE", @"ko_KR", @"ja_JP"];
+	NSMutableString *log = [NSMutableString new];
+	for (NSString *localeID in locales) {
+		[self addTimeFormatString:log withLocale:localeID];
+	}
+	NSLog(@"%@", log);
+}
+
 - (void)testDateCalculation {
 	NSCalendar *calendar = [NSCalendar currentCalendar];
 	NSDateComponents *fromComponents = [NSDateComponents new];

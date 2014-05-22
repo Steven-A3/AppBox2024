@@ -1,22 +1,22 @@
 //
-//  A3ChooseColorPhone.m
+//  A3ChooseColorView.m
 //  A3TeamWork
 //
 //  Created by Sanghyun Yu on 2013. 11. 29..
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3ChooseColorPhone.h"
-#import "A3ClockDataManager.h"
+#import "A3ChooseColorView.h"
+#import "A3AppDelegate+appearance.h"
 
-@interface A3ChooseColorPhone () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface A3ChooseColorView () <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, strong) NSArray *colorsArray;
 @property (nonatomic, strong) UIImageView *selectedMarkView;
 
 @end
 
-@implementation A3ChooseColorPhone {
+@implementation A3ChooseColorView {
 	NSUInteger _selectedIndex;
 }
 
@@ -98,6 +98,35 @@ NSString *const ClockColorChooseCell = @"ClockColorCell";
 
 #pragma mark - UICollectionViewDelegate
 
++ (A3ChooseColorView *)chooseColorWaveInViewController:(UIViewController <A3ChooseColorDelegate> *)targetViewController inView:(UIView *)view colors:(NSArray *)colors selectedIndex:(NSUInteger)selectedIndex {
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGRect frame = screenBounds;
+	frame.origin.y = screenBounds.size.height;
+	frame.size.height = IS_IPHONE ? 172 : 280;
+
+	A3ChooseColorView *chooseColorView = [[A3ChooseColorView alloc] initWithFrame:frame colors:colors selectedIndex:selectedIndex];
+    chooseColorView.delegate = targetViewController;
+
+	[view addSubview:chooseColorView];
+
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = chooseColorView.frame;
+		frame.origin.y -= frame.size.height;
+		chooseColorView.frame = frame;
+	} completion:^(BOOL finished) {
+		[chooseColorView makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(view.left);
+			make.right.equalTo(view.right);
+			make.bottom.equalTo(view.bottom);
+			make.height.equalTo(@(frame.size.height));
+		}];
+		UICollectionViewScrollPosition position = IS_IPAD && IS_PORTRAIT ? UICollectionViewScrollPositionCenteredVertically : UICollectionViewScrollPositionCenteredHorizontally;
+		[chooseColorView.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:selectedIndex inSection:0] atScrollPosition:position animated:YES];
+	}];
+
+    return chooseColorView;
+}
+
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section;
 {
 	return [_colorsArray count];
@@ -142,10 +171,18 @@ NSString *const ClockColorChooseCell = @"ClockColorCell";
 - (UIImageView *)selectedMarkView {
 	if (!_selectedMarkView) {
 		_selectedMarkView = [UIImageView new];
-		_selectedMarkView.image = [UIImage imageNamed:@"check"];
+		_selectedMarkView.image = [[UIImage imageNamed:@"check"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+		_selectedMarkView.tintColor = [[A3AppDelegate instance] themeColor];
 		[_selectedMarkView sizeToFit];
 	}
 	return _selectedMarkView;
 }
 
+- (void)closeButtonAction
+{
+	id <A3ChooseColorDelegate> o = self.delegate;
+	if ([o respondsToSelector:@selector(chooseColorDidCancel)]) {
+		[o chooseColorDidCancel];
+	}
+}
 @end

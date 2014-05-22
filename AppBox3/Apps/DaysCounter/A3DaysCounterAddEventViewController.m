@@ -43,7 +43,7 @@
 #define ActionTag_Photo         101
 #define ActionTag_DeleteEvent   102
 
-@interface A3DaysCounterAddEventViewController () <UITextFieldDelegate, UITextViewDelegate, UIActionSheetDelegate, A3PhotoSelectViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate, UIPopoverControllerDelegate, A3DateKeyboardDelegate, A3TableViewExpandableHeaderCellProtocol>
+@interface A3DaysCounterAddEventViewController () <UITextFieldDelegate, UITextViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate, UIPopoverControllerDelegate, A3DateKeyboardDelegate, A3TableViewExpandableHeaderCellProtocol>
 @property (strong, nonatomic) NSArray *cellIDArray;
 @property (strong, nonatomic) NSMutableArray *sectionTitleArray;
 @property (strong, nonatomic) NSString *inputDateKey;

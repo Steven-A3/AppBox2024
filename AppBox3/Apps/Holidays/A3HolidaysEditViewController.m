@@ -204,6 +204,7 @@ static NSString *CellIdentifier = @"Cell";
 				cell.textLabel.text = @"Wallpaper";
 				if ([[A3HolidaysFlickrDownloadManager sharedInstance] hasUserSuppliedImageForCountry:_countryCode]) {
 					UIImageView *imageView = [[A3HolidaysFlickrDownloadManager sharedInstance] thumbnailOfUserSuppliedImageForCountryCode:_countryCode];
+					imageView.contentMode = UIViewContentModeScaleAspectFill;
 					imageView.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
 					imageView.layer.borderWidth = 0.1;
 					imageView.layer.cornerRadius = 15;
