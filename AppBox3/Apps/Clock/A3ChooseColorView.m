@@ -83,6 +83,7 @@ NSString *const ClockColorChooseCell = @"ClockColorCell";
 		_collectionView.delegate = self;
 		_collectionView.backgroundColor = [UIColor colorWithRed:239.f / 255.f green:239.f / 255.f blue:244.f / 255.f alpha:1.f];
 		_collectionView.showsHorizontalScrollIndicator = NO;
+		_collectionView.showsVerticalScrollIndicator = NO;
 		[_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:ClockColorChooseCell];
 
 		[self addSubview:_collectionView];

@@ -8,7 +8,6 @@
 
 #import <CoreLocation/CoreLocation.h>
 #import "A3HolidaysPageViewController.h"
-#import "A3HolidaysViewController.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 #import "A3HolidaysPageContentViewController.h"
@@ -26,6 +25,7 @@
 #import "NSDate+LunarConverter.h"
 #import "NSUserDefaults+A3Addition.h"
 #import "NSDateFormatter+LunarDate.h"
+#import "A3HolidaysFlickrDownloadManager.h"
 
 @interface A3HolidaysPageViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource,
 		A3HolidaysEditViewControllerDelegate, FXPageControlDelegate, A3HolidaysCountryViewControllerDelegate,

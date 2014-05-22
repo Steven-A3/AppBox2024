@@ -62,6 +62,8 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 	_myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     _myTableView.dataSource = self;
     _myTableView.delegate = self;
+	_myTableView.showsVerticalScrollIndicator = NO;
+	_myTableView.showsHorizontalScrollIndicator = NO;
 	_myTableView.separatorColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
 	[self.view addSubview:_myTableView];
 

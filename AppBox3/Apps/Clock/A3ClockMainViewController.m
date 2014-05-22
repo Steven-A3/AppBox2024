@@ -28,6 +28,7 @@
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIButton *clockAppsButton;
 @property (nonatomic, strong) UIButton *settingsButton;
+@property (nonatomic, strong) UIButton *yahooButton;
 @property (nonatomic, strong) UIPageControl *pageControl;
 @property (nonatomic, strong) A3ClockWaveViewController *clockWaveViewController;
 @property (nonatomic, strong) A3ClockFlipViewController *clockFlipDarkViewController;
@@ -70,33 +71,9 @@
 
     [self.view addSubview:self.scrollView];
 
-	_clockAppsButton = [UIButton buttonWithType:UIButtonTypeSystem];
-	[_clockAppsButton setTitle:@"Apps" forState:UIControlStateNormal];
-	_clockAppsButton.titleLabel.font = [UIFont systemFontOfSize:17];
-	[_clockAppsButton sizeToFit];
-	[_clockAppsButton addTarget:self action:@selector(appsButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-	[_clockAppsButton setHidden:YES];
-	[self.view addSubview:_clockAppsButton];
-
-	[_clockAppsButton makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.view).with.offset(8);
-		_appsButtonTop = make.top.equalTo(self.view.top).with.offset(26);
-	}];
-
-	_settingsButton = [UIButton buttonWithType:UIButtonTypeSystem];
-	[_settingsButton setImage:[UIImage imageNamed:@"general"] forState:UIControlStateNormal];
-	[_settingsButton addTarget:self action:@selector(settingsButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-	_settingsButton.tintColor = [UIColor whiteColor];
-	[_settingsButton setHidden:YES];
-	[_settingsButton sizeToFit];
-	[self.view addSubview:_settingsButton];
-
-	[_settingsButton makeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.equalTo(self.view.right).with.offset(-28);
-		make.centerY.equalTo(_clockAppsButton.centerY);
-		make.width.equalTo(@40);
-		make.height.equalTo(@40);
-	}];
+	[self clockAppsButton];
+	[self settingsButton];
+	[self yahooButton];
 
 	[self.view addSubview:self.pageControl];
 
@@ -175,6 +152,66 @@
 	if ([self isMovingToParentViewController]) {
 		[self showMenus:YES];
 	}
+}
+
+- (UIButton *)clockAppsButton {
+	if (!_clockAppsButton) {
+		_clockAppsButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		[_clockAppsButton setTitle:@"Apps" forState:UIControlStateNormal];
+		_clockAppsButton.titleLabel.font = [UIFont systemFontOfSize:17];
+		[_clockAppsButton sizeToFit];
+		[_clockAppsButton addTarget:self action:@selector(appsButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+		[_clockAppsButton setHidden:YES];
+		[self.view addSubview:_clockAppsButton];
+
+		[_clockAppsButton makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.view).with.offset(8);
+			_appsButtonTop = make.top.equalTo(self.view.top).with.offset(26);
+		}];
+	}
+	return _clockAppsButton;
+}
+
+- (UIButton *)settingsButton {
+	if (!_settingsButton) {
+		_settingsButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		[_settingsButton setImage:[UIImage imageNamed:@"general"] forState:UIControlStateNormal];
+		[_settingsButton addTarget:self action:@selector(settingsButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+		_settingsButton.tintColor = [UIColor whiteColor];
+		[_settingsButton setHidden:YES];
+		[_settingsButton sizeToFit];
+		[self.view addSubview:_settingsButton];
+
+		[_settingsButton makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(self.view.right).with.offset(-28);
+			make.centerY.equalTo(_clockAppsButton.centerY);
+			make.width.equalTo(@40);
+			make.height.equalTo(@40);
+		}];
+	}
+	return _settingsButton;
+}
+
+- (UIButton *)yahooButton {
+	if (!_yahooButton) {
+		_yahooButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		[_yahooButton setImage:[UIImage imageNamed:@"yahoo"] forState:UIControlStateNormal];
+		[_yahooButton addTarget:self action:@selector(yahooButtonAction) forControlEvents:UIControlEventTouchUpInside];
+		[_yahooButton setHidden:YES];
+		[_yahooButton sizeToFit];
+		[self.view addSubview:_yahooButton];
+
+		[_yahooButton makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(self.view.right).offset(IS_IPHONE ? -40 : -56);
+			make.centerY.equalTo(self.view.bottom).offset(IS_IPHONE ? -18 : -36);
+			make.height.equalTo(@40);
+		}];
+	}
+	return _yahooButton;
+}
+
+- (void)yahooButtonAction {
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://weather.yahoo.com"]];
 }
 
 - (void)settingsChanged {
@@ -291,7 +328,7 @@
 	if (_chooseColorView) {
 		[self chooseColorDidCancel];
 	}
-	[self showMenus:_clockAppsButton.isHidden];
+	[self showMenus:_chooseColorButton.isHidden];
 }
 
 - (void)showMenus:(BOOL)show {
@@ -300,9 +337,14 @@
 		_buttonsTimer = nil;
 	}
 	_clockAppsButton.hidden = !show || (IS_IPHONE && IS_LANDSCAPE);
-	_settingsButton.hidden = !show;
+	_settingsButton.hidden = !show || (IS_IPHONE && IS_LANDSCAPE);
 	_pageControl.hidden = !show;
 	_chooseColorButton.hidden = !show;
+	if (show) {
+		_yahooButton.hidden = YES;
+	} else {
+		_yahooButton.hidden = _clockDataManager.clockInfo.currentWeather == nil;
+	}
 
 	if (!(show && IS_IPHONE && IS_LANDSCAPE)) {
 		if (self.mm_drawerController.openSide != MMDrawerSideLeft) {
@@ -466,6 +508,10 @@
 }
 
 - (void)refreshWeather:(A3ClockInfo *)clockInfo {
+	if (_chooseColorButton.hidden) {
+		_yahooButton.hidden = NO;
+	}
+
 	for (id<A3ClockDataManagerDelegate> viewController in self.viewControllers) {
 		if ([viewController respondsToSelector:@selector(refreshWeather:)]) {
 			[viewController refreshWeather:clockInfo];
@@ -527,6 +573,7 @@
 	_clockAppsButton.tintColor = tintColor;
 	_settingsButton.tintColor = tintColor;
 	_pageControl.tintColor = tintColor;
+	_yahooButton.tintColor = tintColor;
 }
 
 - (NSUInteger)a3SupportedInterfaceOrientations {

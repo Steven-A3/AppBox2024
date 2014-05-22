@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const kA3HolidayScreenImagePath;
+extern NSString *const kA3HolidayScreenImageLicense;
+extern NSString *const kA3HolidayScreenImageOwner;
+extern NSString *const kA3HolidayScreenImageURL;
+
 extern NSString *A3HolidaysFlickrDownloadManagerDownloadComplete;
 
 @interface A3HolidaysFlickrDownloadManager : NSObject
