@@ -10,7 +10,7 @@
 #import "A3LoanCalcSettingSwitchCell.h"
 #import "LoanCalcPreference.h"
 #import "A3AppDelegate.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+navigation.h"
 

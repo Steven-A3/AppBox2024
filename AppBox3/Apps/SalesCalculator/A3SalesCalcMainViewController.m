@@ -9,7 +9,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "A3SalesCalcMainViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3SalesCalcHeaderView.h"
 #import "A3SalesCalcHistoryViewController.h"
 #import "A3JHTableViewRootElement.h"

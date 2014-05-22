@@ -9,7 +9,7 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import "A3DaysCounterAddEventViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "A3Formatter.h"
@@ -48,12 +48,13 @@
 @property (strong, nonatomic) NSMutableArray *sectionTitleArray;
 @property (strong, nonatomic) NSString *inputDateKey;
 @property (strong, nonatomic) CLLocationManager *locationManager;
-@property (strong, nonatomic) UIPopoverController *imagePopover;
+@property (strong, nonatomic) UIPopoverController *imagePickerPopoverController;
 @property (assign, nonatomic) BOOL isAdvancedCellOpen;
 @property (assign, nonatomic) BOOL isDurationInitialized;//temp...
 @property (weak, nonatomic) UITextView *textViewResponder;
 @property (strong, nonatomic) UIImage *thumbnailImage;
 @property (strong, nonatomic) UIImage *photoImage;
+@property (strong, nonatomic) UIImagePickerController *imagePickerController;
 @end
 
 @implementation A3DaysCounterAddEventViewController
@@ -250,11 +251,11 @@
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    if (self.imagePopover) {
+    if (self.imagePickerPopoverController) {
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
         UIButton *button = (UIButton*)[cell viewWithTag:11];
         CGRect rect = [self.tableView convertRect:button.frame fromView:cell.contentView];
-        [self.imagePopover presentPopoverFromRect:rect inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [self.imagePickerPopoverController presentPopoverFromRect:rect inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
 }
 
@@ -1487,13 +1488,10 @@
 - (void)photoAction:(id)sender
 {
     [self resignAllAction];
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self
-                                                    cancelButtonTitle:@"Cancel"
-                                               destructiveButtonTitle:_eventItem.imageFilename ? @"Delete photo" : nil
-                                                    otherButtonTitles:@"Take Photo", @"Choose Existing", nil];
-    actionSheet.tag = ActionTag_Photo;
-    [actionSheet showInView:self.view];
+
+	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:NO delegate:self];
+	actionSheet.tag = ActionTag_Photo;
+	[actionSheet showInView:self.view];
 }
 
 - (void)updateEndDateDiffFromStartDate:(NSDate*)startDate
@@ -1515,6 +1513,7 @@
     [self reloadItems:items withType:EventCellType_EndDate section:AddSection_Section_1 animation:UITableViewRowAnimationNone];
     [self.tableView endUpdates];
 }
+
 #pragma mark Switch Button Toggle
 - (void)toggleSwitchAction:(id)sender
 {
@@ -2138,37 +2137,57 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if ( actionSheet.tag == ActionTag_Photo ) {
-        if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
+		if (buttonIndex == actionSheet.cancelButtonIndex) return;
+
+		if (buttonIndex == actionSheet.destructiveButtonIndex) {
             _eventItem.imageFilename = nil;
             _thumbnailImage = nil;
             _photoImage = nil;
             [self.tableView reloadData];
-        }
-        else if ( buttonIndex != actionSheet.cancelButtonIndex ) {
-            UIImagePickerController *pickerCtrl = [[UIImagePickerController alloc] init];
-            pickerCtrl.delegate = self;
-            
-            if ( buttonIndex == actionSheet.firstOtherButtonIndex ) {
-                pickerCtrl.sourceType = UIImagePickerControllerSourceTypeCamera;
-            }
-            else if ( buttonIndex == actionSheet.firstOtherButtonIndex+1 ) {
-                pickerCtrl.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            }
-            pickerCtrl.allowsEditing = YES;
-            pickerCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-            
-            if ( IS_IPHONE || pickerCtrl.sourceType == UIImagePickerControllerSourceTypeCamera ) {
-                [self presentViewController:pickerCtrl animated:YES completion:nil];
-            }
-            else {
+			return;
+		}
+
+		NSInteger myButtonIndex = buttonIndex;
+		_imagePickerController = [[UIImagePickerController alloc] init];
+		if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+			myButtonIndex++;
+		if (actionSheet.destructiveButtonIndex>=0)
+			myButtonIndex--;
+		switch (myButtonIndex) {
+			case 0:
+				_imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+				_imagePickerController.allowsEditing = NO;
+				break;
+			case 1:
+				_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+				_imagePickerController.allowsEditing = NO;
+				break;
+			case 2:
+				_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+				_imagePickerController.allowsEditing = YES;
+				break;
+		}
+
+		_imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
+		_imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
+		_imagePickerController.delegate = self;
+
+		if (IS_IPAD) {
+			if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
+				_imagePickerController.showsCameraControls = YES;
+				[self presentViewController:_imagePickerController animated:YES completion:NULL];
+			}
+			else {
+				self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
                 UIButton *button = (UIButton*)[cell viewWithTag:11];
                 CGRect rect = [self.tableView convertRect:button.frame fromView:cell.contentView];
-                self.imagePopover = [[UIPopoverController alloc] initWithContentViewController:pickerCtrl];
-                self.imagePopover.delegate = self;
-                [self.imagePopover presentPopoverFromRect:rect inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            }
-        }
+				[_imagePickerPopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			}
+		}
+		else {
+			[self presentViewController:_imagePickerController animated:YES completion:NULL];
+		}
     }
     else if ( actionSheet.tag == ActionTag_Location ) {
         if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
@@ -2217,7 +2236,7 @@
 #pragma mark - UIPopoverControllerDelegate
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
-    self.imagePopover = nil;
+    self.imagePickerPopoverController = nil;
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -2279,8 +2298,10 @@
         [picker dismissViewControllerAnimated:YES completion:nil];
     }
     else {
-        [self.imagePopover dismissPopoverAnimated:YES];
+        [_imagePickerPopoverController dismissPopoverAnimated:YES];
     }
+	_imagePickerController = nil;
+	_imagePickerPopoverController = nil;
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -2299,8 +2320,10 @@
         [picker dismissViewControllerAnimated:YES completion:nil];
     }
     else {
-        [self.imagePopover dismissPopoverAnimated:YES];
+        [_imagePickerPopoverController dismissPopoverAnimated:YES];
     }
+	_imagePickerController = nil;
+	_imagePickerPopoverController = nil;
 }
 
 #pragma mark - UIScrollViewDelegate

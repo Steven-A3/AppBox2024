@@ -41,7 +41,7 @@
 		_publicLabel = [UILabel new];
 		_publicLabel.textAlignment = NSTextAlignmentCenter;
 		_publicLabel.textColor = [UIColor colorWithRed:142.0 / 255.0 green:142.0 / 255.0 blue:147.0 / 255.0 alpha:1.0];
-		_publicLabel.font = [UIFont systemFontOfSize:11];
+		_publicLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:11] : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
 		_publicLabel.text = IS_IPHONE ? @"P" : @"Public";
 		[self addSubview:_publicLabel];
 
@@ -115,7 +115,7 @@
 - (void)setupFont {
 	_nameLabel.font = [UIFont systemFontOfSize:15];
 	if (IS_IPAD) {
-		_dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+		_dateLabel.font = [UIFont systemFontOfSize:15];
 	}
 }
 

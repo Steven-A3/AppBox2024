@@ -37,7 +37,7 @@
 		17D426A26D07018A5660B225 /* A3StandardLeft15Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42516142E89CE1E21A7E2 /* A3StandardLeft15Cell.m */; };
 		17D427689D46EABBC180DD14 /* A3LadyCalendarDetailViewExpectedTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D420920931B2410608C063 /* A3LadyCalendarDetailViewExpectedTitleCell.m */; };
 		17D427E06C341B1B48478B6A /* A3TranslatorLanguageTVDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42505EF075896601D91B4 /* A3TranslatorLanguageTVDelegate.m */; };
-		17D4287AB63C166472C101FE /* UIViewController+A3AppCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D428002E7CC2380AB2E2DA /* UIViewController+A3AppCategory.m */; };
+		17D4287AB63C166472C101FE /* UIViewController+NumberKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D428002E7CC2380AB2E2DA /* UIViewController+NumberKeyboard.m */; };
 		17D42A333EA60B3995BBAAC3 /* FSVenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D428FC38E495D26DF640DC /* FSVenue.m */; };
 		17D42A39FA849C645CB674DD /* A3TranslatorFavoriteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D426503D335516CC3EFD93 /* A3TranslatorFavoriteCell.m */; };
 		17D42A4A49204D56E526E117 /* A3TranslatorListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42CAFDD0B11EF0C713D0E /* A3TranslatorListCell.m */; };
@@ -1007,7 +1007,7 @@
 		17D427CE6C25E3FDE8D82EB7 /* A3LadyCalendarDetailViewTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LadyCalendarDetailViewTitleCell.m; sourceTree = "<group>"; };
 		17D427DBB6EAAE740BD75F4B /* A3LanguagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LanguagePickerController.h; path = Translator/A3LanguagePickerController.h; sourceTree = "<group>"; };
 		17D427EA0359B24E0984228C /* FSConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSConverter.h; sourceTree = "<group>"; };
-		17D428002E7CC2380AB2E2DA /* UIViewController+A3AppCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+A3AppCategory.m"; sourceTree = "<group>"; };
+		17D428002E7CC2380AB2E2DA /* UIViewController+NumberKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+NumberKeyboard.m"; sourceTree = "<group>"; };
 		17D42835AF604EA6A37B16D4 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		17D4283B29E7CACCE273EF77 /* NSMutableArray+MoveObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+MoveObject.m"; sourceTree = "<group>"; };
 		17D4283E196270552D6283A1 /* A3StandardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3StandardTableViewCell.m; sourceTree = "<group>"; };
@@ -1054,7 +1054,7 @@
 		17D42EC997503B3D74146BC8 /* A3TranslatorListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorListCell.h; path = Translator/A3TranslatorListCell.h; sourceTree = "<group>"; };
 		17D42ECA7D456D1062B38A3B /* A3CurrencyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyTableViewCell.m; path = Apps/Currency/A3CurrencyTableViewCell.m; sourceTree = "<group>"; };
 		17D42F0BDA7A76B8845AB764 /* HolidayData+Country.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+Country.h"; path = "Holidays/HolidayData+Country.h"; sourceTree = "<group>"; };
-		17D42F1A9B3BDE588908AA93 /* UIViewController+A3AppCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+A3AppCategory.h"; sourceTree = "<group>"; };
+		17D42F1A9B3BDE588908AA93 /* UIViewController+NumberKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+NumberKeyboard.h"; sourceTree = "<group>"; };
 		17D42F64418FD4FA28719114 /* A3BarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BarButton.h; sourceTree = "<group>"; };
 		17D42F730914FF3D6F379281 /* LadyCalendarPeriod+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LadyCalendarPeriod+extension.m"; sourceTree = "<group>"; };
 		17D42FE2C4AD09E611D37298 /* A3TranslatorMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorMessageViewController.h; path = Translator/A3TranslatorMessageViewController.h; sourceTree = "<group>"; };
@@ -2694,8 +2694,8 @@
 				17D42C97A50D5039256BA161 /* UIViewController+A3Addition.m */,
 				68B21A2C177AEAAA006FCC5F /* UIViewController+navigation.h */,
 				68B21A2D177AEAAA006FCC5F /* UIViewController+navigation.m */,
-				17D428002E7CC2380AB2E2DA /* UIViewController+A3AppCategory.m */,
-				17D42F1A9B3BDE588908AA93 /* UIViewController+A3AppCategory.h */,
+				17D428002E7CC2380AB2E2DA /* UIViewController+NumberKeyboard.m */,
+				17D42F1A9B3BDE588908AA93 /* UIViewController+NumberKeyboard.h */,
 				68F163AB18E91537007B425B /* UITableView+utility.h */,
 				68F163AC18E91537007B425B /* UITableView+utility.m */,
 				6852297E18FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.h */,
@@ -6319,7 +6319,7 @@
 				17D423113B5E0448C539636D /* FSConverter.m in Sources */,
 				17D42A333EA60B3995BBAAC3 /* FSVenue.m in Sources */,
 				17D42BAD7D2B6C3853B466B5 /* A3LocationPlacemarkView.m in Sources */,
-				17D4287AB63C166472C101FE /* UIViewController+A3AppCategory.m in Sources */,
+				17D4287AB63C166472C101FE /* UIViewController+NumberKeyboard.m in Sources */,
 				17D426A26D07018A5660B225 /* A3StandardLeft15Cell.m in Sources */,
 				17D42B5255C77BCC6928C271 /* A3StandardTableViewCell.m in Sources */,
 				17D426431E7AC7B8D2D21A72 /* A3CalculatorViewController.m in Sources */,

@@ -1231,9 +1231,10 @@
     [daysLabel sizeToFit];
     
     if ( [item.imageFilename length] > 0 ) {
-        UIImage *image = [A3DaysCounterModelManager photoImageFromFilename:item.imageFilename];
+		UIImage *image = [A3DaysCounterModelManager photoImageFromFilename:item.imageFilename];
         bgImageView.image = image;
-    }
+		FNLOG(@"%f", bgImageView.contentScaleFactor);
+	}
     else {
         bgImageView.image = nil;
     }

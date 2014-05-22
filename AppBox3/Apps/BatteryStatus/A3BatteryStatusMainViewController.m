@@ -8,7 +8,7 @@
 
 #import "A3BatteryStatusMainViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3BatteryStatusManager.h"
 #import "A3BatterStatusBatteryPanelView.h"

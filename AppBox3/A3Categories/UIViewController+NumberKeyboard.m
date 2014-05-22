@@ -7,7 +7,7 @@
 //
 
 #import <objc/runtime.h>
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3UIDevice.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3DateKeyboardViewController.h"
@@ -35,7 +35,7 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 static char const *const key_firstResponder 					= "key_firstResponder";
 static char const *const key_navigationControllerForKeyboard	= "key_navigationControllerForKeyboard";
 
-@implementation UIViewController (A3AppCategory)
+@implementation UIViewController (NumberKeyboard)
 
 - (A3RootViewController_iPad *)A3RootViewController {
 	return [[A3AppDelegate instance] rootViewController];

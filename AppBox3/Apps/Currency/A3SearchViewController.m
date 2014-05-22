@@ -7,7 +7,7 @@
 //
 
 #import "A3UIDevice.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3CurrencySelectViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"

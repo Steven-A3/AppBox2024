@@ -13,7 +13,7 @@
 #import "A3ClockLEDViewController.h"
 #import "A3ChooseColor.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3ClockSettingsViewController.h"
 #import "A3UserDefaults.h"
 #import "A3ClockInfo.h"

@@ -8,7 +8,7 @@
 
 #import "A3HolidaysAddToDaysCounterViewController.h"
 #import "A3UIDevice.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 #import "UIViewController+tableViewStandardDimension.h"

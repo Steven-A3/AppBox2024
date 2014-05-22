@@ -8,7 +8,7 @@
 
 #import "A3DaysCounterSlideshowViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "A3UserDefaults.h"

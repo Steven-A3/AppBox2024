@@ -10,7 +10,7 @@
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 
 @interface A3DaysCounterSlideshowTransitionSelectViewController ()
 @property (strong, nonatomic) NSArray *itemArray;

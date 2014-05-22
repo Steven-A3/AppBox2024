@@ -8,7 +8,7 @@
 
 #import "A3PercentCalcHistoryViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3PercentCalcData.h"
 #import "A3PercentCalculator.h"
 #import "A3PercentCalcHistoryCell.h"

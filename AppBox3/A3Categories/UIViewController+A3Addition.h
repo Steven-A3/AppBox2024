@@ -64,4 +64,6 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (void)willDismissFromRightSide;
 - (void)alertCloudNotEnabled;
 
+- (UIActionSheet *)actionSheetAskingImagePickupWithDelete:(BOOL)deleteEnable delegate:(id <UIActionSheetDelegate>)delegate;
+
 @end

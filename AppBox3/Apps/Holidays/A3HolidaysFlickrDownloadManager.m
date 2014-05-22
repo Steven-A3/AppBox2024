@@ -23,13 +23,6 @@ NSString *const kA3HolidayScreenImageID = @"kA3HolidayScreenImageID";			// USE k
 NSString *const kA3HolidayScreenImageLicense = @"kA3HolidayScreenImageLicense";			// USE key + country code
 NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownloadDate";			// USE key + country code
 
-NSString *const kA3HolidayImageiPadLandScape = @"ipadLandscape";
-NSString *const kA3HolidayImageiPadPortrait = @"ipadProtrait";
-NSString *const kA3HolidayImageiPhone = @"iPhone";
-NSString *const kA3HolidayImageiPadLandScapeList = @"ipadLandscapeList";
-NSString *const kA3HolidayImageiPadPortraitList = @"ipadProtraitList";
-NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
-
 @interface A3HolidaysFlickrDownloadManager () <NSURLSessionDelegate>
 
 @property (atomic, strong) NSMutableArray *downloadQueue;
@@ -87,18 +80,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 - (NSString *)holidayImagePathForCountryCode:(NSString *)countryCode orientation:(UIInterfaceOrientation)orientation forList:(BOOL)forList {
 	NSString *savedImageFilename = [[NSUserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];
 	if ([savedImageFilename length]) {
-		if (IS_IPHONE) {
-			savedImageFilename = [NSString stringWithFormat:@"%@%@", savedImageFilename, kA3HolidayImageiPhone];
-		} else {
-			savedImageFilename = [NSString stringWithFormat:@"%@%@", savedImageFilename, UIInterfaceOrientationIsLandscape(orientation) ? kA3HolidayImageiPadLandScape : kA3HolidayImageiPadPortrait];
-		}
-		if (forList) {
-			savedImageFilename = [savedImageFilename stringByAppendingString:@"List"];
-		}
-		NSString *filePath = [savedImageFilename pathInLibraryDirectory];
-		if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-			return filePath;
-		}
+		return [savedImageFilename pathInLibraryDirectory];
 	}
 	return nil;
 }
@@ -202,7 +184,8 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
     
     NSData *data = [NSData dataWithContentsOfURL:downloadURL];
     UIImage *image = [UIImage imageWithData:data];
-    [self cropSetOriginalImage:image name:imageName];
+
+	[UIImageJPEGRepresentation(image, 1.0) writeToFile:[imageName pathInLibraryDirectory] atomically:YES];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:A3HolidaysFlickrDownloadManagerDownloadComplete object:self userInfo:@{@"CountryCode" : countryCode}];
 }
@@ -226,9 +209,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 
 	NSString *imageName = [self userSuppliedImageNameForCountryCode:countryCode];
 	[self setImageName:imageName forCountryCode:countryCode];
-
-	UIImage *rotatedImage = [self rotateImage:image];
-	[self cropSetOriginalImage:rotatedImage name:imageName];
+	[UIImageJPEGRepresentation(image, 1.0) writeToFile:[imageName pathInLibraryDirectory] atomically:YES];
 }
 
 - (NSString *)userSuppliedImageNameForCountryCode:(NSString *)countryCode {
@@ -317,179 +298,6 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 	return [NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageID, countryCode];
 }
 
-- (UIImage *)rotateImage:(UIImage *)image {
-	UIImage *imageCopy=nil;
-	UIImageOrientation translatedOrientation = image.imageOrientation;
-	switch (image.imageOrientation) {
-		case UIImageOrientationUp:
-			translatedOrientation = UIImageOrientationDownMirrored;
-			break;
-		case UIImageOrientationDown:
-			translatedOrientation = UIImageOrientationUpMirrored;
-			break;
-		case UIImageOrientationLeft:
-			translatedOrientation = UIImageOrientationLeftMirrored;
-			break;
-		case UIImageOrientationRight:
-			translatedOrientation = UIImageOrientationRightMirrored;
-			break;
-		case UIImageOrientationUpMirrored:
-			translatedOrientation = UIImageOrientationUp;
-			break;
-		case UIImageOrientationDownMirrored:
-			translatedOrientation = UIImageOrientationDown;
-			break;
-		case UIImageOrientationLeftMirrored:
-			translatedOrientation = UIImageOrientationLeft;
-			break;
-		case UIImageOrientationRightMirrored:
-			translatedOrientation = UIImageOrientationRight;
-			break;
-	}
-
-	CGImageRef imgRef = image.CGImage;
-
-	CGFloat width = CGImageGetWidth(imgRef);
-	CGFloat height = CGImageGetHeight(imgRef);
-
-	CGAffineTransform transform;
-	CGRect bounds = CGRectMake(0, 0, width, height);
-	CGSize imageSize = CGSizeMake(CGImageGetWidth(imgRef), CGImageGetHeight(imgRef));
-	CGFloat boundHeight;
-	switch (translatedOrientation) {
-		case UIImageOrientationUp: //EXIF = 1
-			transform = CGAffineTransformIdentity;
-			break;
-
-		case UIImageOrientationUpMirrored: //EXIF = 2
-			transform = CGAffineTransformMakeTranslation(imageSize.width, 0.0);
-			transform = CGAffineTransformScale(transform, -1.0, 1.0);
-			break;
-
-		case UIImageOrientationDown: //EXIF = 3
-			transform = CGAffineTransformMakeTranslation(imageSize.width, imageSize.height);
-			transform = CGAffineTransformRotate(transform, M_PI);
-			break;
-
-		case UIImageOrientationDownMirrored: //EXIF = 4
-			transform = CGAffineTransformMakeTranslation(0.0, imageSize.height);
-			transform = CGAffineTransformScale(transform, 1.0, -1.0);
-			break;
-
-		case UIImageOrientationLeftMirrored: //EXIF = 5
-			boundHeight = bounds.size.height;
-			bounds.size.height = bounds.size.width;
-			bounds.size.width = boundHeight;
-			transform = CGAffineTransformMakeTranslation(imageSize.height, imageSize.width);
-			transform = CGAffineTransformScale(transform, -1.0, 1.0);
-			transform = CGAffineTransformRotate(transform, 3.0 * M_PI / 2.0);
-			break;
-
-		case UIImageOrientationLeft: //EXIF = 6
-			boundHeight = bounds.size.height;
-			bounds.size.height = bounds.size.width;
-			bounds.size.width = boundHeight;
-			transform = CGAffineTransformMakeTranslation(0.0, imageSize.width);
-			transform = CGAffineTransformRotate(transform, 3.0 * M_PI / 2.0);
-			break;
-
-		case UIImageOrientationRightMirrored: //EXIF = 7
-			boundHeight = bounds.size.height;
-			bounds.size.height = bounds.size.width;
-			bounds.size.width = boundHeight;
-			transform = CGAffineTransformMakeScale(-1.0, 1.0);
-			transform = CGAffineTransformRotate(transform, M_PI / 2.0);
-			break;
-
-		case UIImageOrientationRight: //EXIF = 8
-			boundHeight = bounds.size.height;
-			bounds.size.height = bounds.size.width;
-			bounds.size.width = boundHeight;
-			transform = CGAffineTransformMakeTranslation(imageSize.height, 0.0);
-			transform = CGAffineTransformRotate(transform, M_PI / 2.0);
-			break;
-
-		default:
-			[NSException raise:NSInternalInconsistencyException format:@"Invalid image orientation"];
-
-	}
-
-	UIGraphicsBeginImageContext(bounds.size);
-
-	CGContextRef context = UIGraphicsGetCurrentContext();
-
-	CGContextConcatCTM(context, transform);
-
-	CGContextDrawImage(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, width, height), imgRef);
-	imageCopy = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-
-	return imageCopy;
-}
-
-- (UIImage *)cropSetOriginalImage:(UIImage *)originalImage name:(NSString *)filename {
-	UIImage *handledImage;
-	CGFloat interpolationFactor = 10;
-
-	if (IS_IPAD) {
-		UIImage *returnedImage;
-		CGRect screenBounds = [[UIScreen mainScreen] bounds];
-
-		CGRect bounds = CGRectInset(screenBounds, -interpolationFactor, -interpolationFactor);
-		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortrait] pathInLibraryDirectory];
-		returnedImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
-
-		if (IS_PORTRAIT) handledImage = returnedImage;
-
-		bounds = screenBounds;
-		bounds.size.height = 84;
-		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortraitList] pathInLibraryDirectory];
-		[self saveImage:returnedImage bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
-
-		bounds = screenBounds;
-		bounds.size.width = screenBounds.size.height;
-		bounds.size.height = screenBounds.size.width;
-
-		bounds = CGRectInset(bounds, -interpolationFactor, -interpolationFactor);
-		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScape] pathInLibraryDirectory];
-		returnedImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
-
-		if (IS_LANDSCAPE) handledImage = returnedImage;
-
-		bounds = screenBounds;
-		bounds.size.width = screenBounds.size.height;
-		bounds.size.height = 84;
-
-		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScapeList] pathInLibraryDirectory];
-		[self saveImage:returnedImage bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
-
-	} else {
-		CGRect screenBounds = [[UIScreen mainScreen] bounds];
-
-		CGRect bounds = CGRectInset(screenBounds, -interpolationFactor, -interpolationFactor);
-		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhone] pathInLibraryDirectory];
-		handledImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
-
-		bounds = screenBounds;
-		bounds.size.height = 84;
-		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhoneList] pathInLibraryDirectory];
-		[self saveImage:handledImage bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
-	}
-	return handledImage;
-}
-
-- (UIImage *)saveImage:(UIImage *)image bounds:(CGRect)bounds path:(NSString *)path usingMode:(NYXCropMode)cropMode {
-	UIImage *croppedImage=nil;
-	CGSize newSize = CGSizeMake(CGRectGetWidth(bounds), CGRectGetHeight(bounds));
-	FNLOG(@"%f, %f", newSize.width, newSize.height);
-	UIImage *scaledImage = [image scaleToCoverSize:newSize];
-
-	croppedImage = [scaledImage cropToSize:newSize usingMode:cropMode];
-	[UIImagePNGRepresentation(croppedImage) writeToFile:path atomically:YES];
-
-	return croppedImage;
-}
-
 - (void)deleteImageForCountryCode:(NSString *)countryCode {
 	FNLOG(@"Delete for %@, downloadQueue %@, deleteQueue %@", countryCode, _downloadQueue, _deleteQueue);
 	if ([self.downloadQueue containsObject:countryCode]) {
@@ -504,15 +312,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 	}
 	NSString *filename = [[NSUserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];
 	NSFileManager *fileManager = [NSFileManager defaultManager];
-	if (IS_IPAD) {
-		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortrait] pathInLibraryDirectory];
-		[fileManager removeItemAtPath:path error:nil];
-		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScape] pathInLibraryDirectory];
-		[fileManager removeItemAtPath:path error:nil];
-	} else {
-		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhone] pathInLibraryDirectory];
-		[fileManager removeItemAtPath:path error:nil];
-	}
+	[fileManager removeItemAtPath:[filename pathInLibraryDirectory] error:NULL];
 
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults removeObjectForKey:[self imageNameKeyForCountryCode:countryCode]];

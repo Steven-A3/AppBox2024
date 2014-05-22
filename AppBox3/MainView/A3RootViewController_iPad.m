@@ -14,7 +14,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3MainViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 
 @interface A3RootViewController_iPad ()
 

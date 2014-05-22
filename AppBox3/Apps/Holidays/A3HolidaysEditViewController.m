@@ -9,7 +9,7 @@
 #import "A3HolidaysEditViewController.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3HolidaysEditCell.h"
 #import "A3HolidaysAddToDaysCounterViewController.h"
 #import "A3ImageCropperViewController.h"
@@ -17,12 +17,17 @@
 #import "UIViewController+A3Addition.h"
 #import "A3HolidaysPageViewController.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "UITableView+utility.h"
 
 @interface A3HolidaysEditViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate, A3ImageCropperDelegate>
 
 @property (nonatomic, strong) NSArray *holidaysForCountry;
 @property (nonatomic, strong) NSMutableArray *excludedHolidays;
 @property (nonatomic, strong) UIPopoverController *imagePickerPopoverController;
+@property (nonatomic, strong) UIImagePickerController *imagePickerController;
+@property (nonatomic, strong) NSIndexPath *currentIndexPath;
+@property (nonatomic, strong) UIButton *cameraButton;
+@property (nonatomic, strong) UISwitch *lunarSwitch;
 
 @end
 
@@ -45,14 +50,8 @@ static NSString *CellIdentifier = @"Cell";
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
-	UIBarButtonItem *addToDaysCounter = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"addToDaysCounter"] style:UIBarButtonItemStylePlain target:self action:@selector(addToDaysCounter:)];
-	self.navigationItem.leftBarButtonItem = addToDaysCounter;
+//	UIBarButtonItem *addToDaysCounter = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"addToDaysCounter"] style:UIBarButtonItemStylePlain target:self action:@selector(addToDaysCounter:)];
+//	self.navigationItem.leftBarButtonItem = addToDaysCounter;
 
 	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonAction:)];
     self.navigationItem.rightBarButtonItem = doneButton;
@@ -201,9 +200,7 @@ static NSString *CellIdentifier = @"Cell";
 				cell.textLabel.text = @"Reset Show/Hide Settings";
 				cell.textLabel.textColor = self.view.tintColor;
 				break;
-			case 2:
-			{
-
+			case 2: {
 				if ([[A3HolidaysFlickrDownloadManager sharedInstance] hasUserSuppliedImageForCountry:_countryCode]) {
 					cell.textLabel.textColor = [UIColor colorWithRed:255.0/255.0 green:58.0/255.0 blue:48.0/255.0 alpha:1.0];
 					cell.textLabel.text = @"Delete Wallpaper";
@@ -240,7 +237,7 @@ static NSString *CellIdentifier = @"Cell";
 			[self resetButtonAction:nil];
 			break;
 		case 2:
-			[self pickWallpaper];
+			[self photoButtonAction];
 			break;
 		case 3: {
 			UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -250,11 +247,13 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (UIButton *)cameraButton {
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-	[button setImage:[UIImage imageNamed:@"camera.png"] forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(pickWallpaper) forControlEvents:UIControlEventTouchUpInside];
-	[button sizeToFit];
-	return button;
+	if (!_cameraButton) {
+		_cameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		[_cameraButton setImage:[UIImage imageNamed:@"camera.png"] forState:UIControlStateNormal];
+		[_cameraButton addTarget:self action:@selector(photoButtonAction) forControlEvents:UIControlEventTouchUpInside];
+		[_cameraButton sizeToFit];
+	}
+	return _cameraButton;
 }
 
 - (void)switchControlAction:(UISwitch *)switchControl {
@@ -273,32 +272,73 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (UISwitch *)lunarSwitch {
-	UISwitch *lunarControl = [UISwitch new];
-	[lunarControl addTarget:self action:@selector(lunarOnOff:) forControlEvents:UIControlEventValueChanged];
-	return lunarControl;
+	if (!_lunarSwitch) {
+		_lunarSwitch = [UISwitch new];
+		[_lunarSwitch addTarget:self action:@selector(lunarOnOff:) forControlEvents:UIControlEventValueChanged];
+	}
+	return _lunarSwitch;
 }
 
-- (void)pickWallpaper {
+- (void)photoButtonAction {
+	self.currentIndexPath = [self.tableView indexPathForCellSubview:self.cameraButton];
+
 	A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
-	if ([downloadManager hasUserSuppliedImageForCountry:_countryCode]) {
+	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[downloadManager hasUserSuppliedImageForCountry:_countryCode] delegate:self];
+	[actionSheet showInView:self.view];
+}
+
+#pragma mark - UIActionSheet delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == actionSheet.cancelButtonIndex) return;
+
+	if (buttonIndex == actionSheet.destructiveButtonIndex) {
+		A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
 		[downloadManager deleteImageForCountryCode:_countryCode];
 		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]] withRowAnimation:UITableViewRowAnimationNone];
 
 		_dataUpdated = YES;
-	} else {
-		UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-		imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
-		imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-		imagePickerController.delegate = self;
+		return;
+	}
 
-		if (IS_IPHONE) {
-			[self presentViewController:imagePickerController animated:YES completion:nil];
-		} else {
-			_imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:imagePickerController];
-			UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
-			[_imagePickerPopoverController presentPopoverFromRect:[self.view convertRect:cell.frame fromView:self.tableView] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
-			_imagePickerPopoverController.delegate = self;
+	NSInteger myButtonIndex = buttonIndex;
+	_imagePickerController = [[UIImagePickerController alloc] init];
+	if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+		myButtonIndex++;
+	if (actionSheet.destructiveButtonIndex>=0)
+		myButtonIndex--;
+	switch (myButtonIndex) {
+		case 0:
+			_imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+			_imagePickerController.allowsEditing = NO;
+			break;
+		case 1:
+			_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+			_imagePickerController.allowsEditing = NO;
+			break;
+		case 2:
+			_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+			_imagePickerController.allowsEditing = YES;
+			break;
+	}
+
+	_imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
+	_imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
+	_imagePickerController.delegate = self;
+
+	if (IS_IPAD) {
+		if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
+			_imagePickerController.showsCameraControls = YES;
+			[self presentViewController:_imagePickerController animated:YES completion:NULL];
 		}
+		else {
+			self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+			CGRect rect = [self.view convertRect:self.cameraButton.frame fromView:self.cameraButton];
+			[_imagePickerPopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		}
+	}
+	else {
+		[self presentViewController:_imagePickerController animated:YES completion:NULL];
 	}
 }
 
@@ -310,13 +350,15 @@ static NSString *CellIdentifier = @"Cell";
 		_imagePickerPopoverController = nil;
 	}
 
-	UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
+	UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+	if (!image) {
+		image = [info valueForKey:UIImagePickerControllerOriginalImage];
+	}
 	if (image) {
-		A3ImageCropperViewController *cropper = [[A3ImageCropperViewController alloc] initWithImage:image withHudView:nil];
-		cropper.delegate = self;
-		[self.navigationController pushViewController:cropper animated:YES];
-	} else {
-        [self dismissImagePickerController];
+		[[A3HolidaysFlickrDownloadManager sharedInstance] saveUserSuppliedImage:image forCountryCode:_countryCode];
+		_dataUpdated = YES;
+
+		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]] withRowAnimation:UITableViewRowAnimationNone];
 	}
 }
 
@@ -329,7 +371,7 @@ static NSString *CellIdentifier = @"Cell";
         [_imagePickerPopoverController dismissPopoverAnimated:YES];
         _imagePickerPopoverController = nil;
     } else {
-        [self dismissViewControllerAnimated:YES completion:NULL];
+        [_imagePickerController dismissViewControllerAnimated:YES completion:NULL];
     }
 }
 

@@ -16,7 +16,7 @@
 #import "WalletFieldItem.h"
 #import "WalletCategory.h"
 #import "A3AppDelegate.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
 #import "NSString+WalletStyle.h"
 #import "NSMutableArray+A3Sort.h"

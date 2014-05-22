@@ -12,7 +12,7 @@
 #import "WalletData.h"
 #import "WalletField.h"
 #import "A3AppDelegate.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSString+conversion.h"

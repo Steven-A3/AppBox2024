@@ -12,7 +12,7 @@
 #import "UIView+Screenshot.h"
 #import "A3ActionMenuViewController_iPhone.h"
 #import "A3ActionMenuViewController_iPad.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import <objc/runtime.h>
 #import "UIViewController+navigation.h"
 #import "A3UIDevice.h"

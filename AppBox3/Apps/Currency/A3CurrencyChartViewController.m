@@ -11,7 +11,7 @@
 #import "common.h"
 #import "UIImageView+AFNetworking.h"
 #import "A3CurrencyViewController.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3CurrencySelectViewController.h"
 #import "A3UIDevice.h"

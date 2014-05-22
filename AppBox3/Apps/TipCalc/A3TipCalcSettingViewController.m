@@ -10,7 +10,7 @@
 #import "A3DefaultColorDefines.h"
 #import "A3TipCalcDataManager.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+navigation.h"
 

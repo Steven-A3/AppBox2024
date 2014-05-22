@@ -12,7 +12,7 @@
 #import "A3CurrencyTVDataCell.h"
 #import "A3AppDelegate.h"
 #import "A3NumberKeyboardViewController.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3CurrencyTVEqualCell.h"
 #import "NSMutableArray+A3Sort.h"
 #import "A3CurrencyChartViewController.h"

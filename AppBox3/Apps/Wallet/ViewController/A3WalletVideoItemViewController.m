@@ -19,7 +19,7 @@
 #import "WalletItem+Favorite.h"
 #import "WalletField.h"
 #import "NSDate+TimeAgo.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "WalletFieldItem.h"
 #import "UIImage+Extension2.h"
 #import "WalletFieldItem+initialize.h"

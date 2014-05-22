@@ -8,7 +8,7 @@
 
 #import "A3DateCalcDurationViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3RootViewController_iPad.h"
 #import "A3DateCalcStateManager.h"
 #import "A3DateCalcTableviewCell.h"

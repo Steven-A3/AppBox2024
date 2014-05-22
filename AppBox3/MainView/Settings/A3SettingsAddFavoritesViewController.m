@@ -9,7 +9,7 @@
 #import "A3SettingsAddFavoritesViewController.h"
 #import "A3AppDelegate.h"
 #import "A3AppDelegate+mainMenu.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3CenterViewDelegate.h"
 #import "UIViewController+tableViewStandardDimension.h"
 

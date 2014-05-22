@@ -8,7 +8,7 @@
 
 #import "A3TipCalcHeaderView.h"
 #import "A3TipCalcDataManager.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "NSUserDefaults+A3Defaults.h"
 #import "A3RoundedSideButton.h"
 #import "A3OverlappedCircleView.h"

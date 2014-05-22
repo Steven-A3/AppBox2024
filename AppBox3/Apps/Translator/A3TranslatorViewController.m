@@ -7,7 +7,7 @@
 //
 
 #import "A3TranslatorViewController.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3TranslatorMessageViewController.h"
 #import "TranslatorHistory.h"
 #import "NSDate+TimeAgo.h"
