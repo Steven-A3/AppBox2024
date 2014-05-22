@@ -765,16 +765,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	}
 }
 
-- (void)shareButtonAction:(id)sender {
-	[self clearEverything];
-
-    self.sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
-    if (IS_IPAD) {
-        self.sharePopoverController.delegate = self;
-		[self enableControls:NO];
-    }
-}
-
 - (void)historyButtonAction:(UIButton *)button {
 	[self clearEverything];
 
@@ -1177,6 +1167,18 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	_sharePopoverController = nil;
 }
 
+- (void)shareButtonAction:(id)sender {
+	[self clearEverything];
+    
+    NSURL *fileUrlA = [NSURL fileURLWithPath:[_loanDataA filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanA.csv"]];
+    NSURL *fileUrlB = [NSURL fileURLWithPath:[_loanDataB filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanB.csv"]];
+    self.sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self, fileUrlA, fileUrlB] fromBarButtonItem:sender];
+    if (IS_IPAD) {
+        self.sharePopoverController.delegate = self;
+		[self enableControls:NO];
+    }
+}
+
 #pragma mark Share Activities releated
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
@@ -1196,9 +1198,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		[txt appendString:@"<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8'>Download from AppStore</a></body></html>"];
 		// AppBoxPro_amortization_loanA.csv
 		// AppBoxPro_amortization_loanb.csv
-		NSURL *fileUrlA = [NSURL fileURLWithPath:[_loanDataA filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanA.csv"]];
-		NSURL *fileUrlB = [NSURL fileURLWithPath:[_loanDataB filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanB.csv"]];
-
 		return txt;
 	}
 	else {
@@ -1207,6 +1206,31 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		return shareString;
 	}
 }
+
+//-(NSString *)activityViewController:(UIActivityViewController *)activityViewController dataTypeIdentifierForActivityType:(NSString *)activityType
+//{
+//	if ([activityType isEqualToString:UIActivityTypeMail]) {
+//        
+//		NSString *filePathA = [_loanDataA filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanA.csv"];
+//		NSString *filePathB = [_loanDataB filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanB.csv"];
+//        if (![[NSFileManager defaultManager] fileExistsAtPath:filePathA]) {
+//            return nil;
+//        }
+//        // Borrowed from http://stackoverflow.com/questions/5996797/determine-mime-type-of-nsdata-loaded-from-a-file
+//        // itself, derived from  http://stackoverflow.com/questions/2439020/wheres-the-iphone-mime-type-database
+//        CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[filePathA pathExtension] , NULL);
+//        CFStringRef mimeType = UTTypeCopyPreferredTagWithClass (UTI, kUTTagClassMIMEType);
+//        CFRelease(UTI);
+//        if (!mimeType) {
+//            return @"application/octet-stream";
+//        }
+//
+//        NSString *resultUtiString = (__bridge_transfer NSString *)UTI;
+//        return resultUtiString;
+//    }
+//    FNLOG(@"");
+//    return nil;
+//}
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
