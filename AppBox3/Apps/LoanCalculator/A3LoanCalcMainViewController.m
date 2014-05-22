@@ -1201,14 +1201,14 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 		NSMutableString *txt = [NSMutableString new];
 		[txt appendString:@"<html><body>I'd like to share a calculation with you.<br/><br/>"];
-		[txt appendString:[self shareString]];
+		[txt appendString:[self shareStringForMail]];
 		[txt appendString:@"<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8'>Download from AppStore</a></body></html>"];
 		// AppBoxPro_amortization_loanA.csv
 		// AppBoxPro_amortization_loanb.csv
 		return txt;
 	}
 	else {
-        NSString *shareString = [self shareString];
+        NSString *shareString = [self shareStringForEtc];
         shareString = [shareString stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
 		return shareString;
 	}
@@ -1244,34 +1244,57 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	return @"Share Loan Calculator Data";
 }
 
-- (NSString *)shareString
+- (NSString *)shareStringForMail
 {
     NSMutableString *body = [NSMutableString new];
     
 	if (_isComparisonMode) {
 		// * Loan A
 		[body appendFormat:@"** Loan A <br>"];
-        [body appendString:[self shareStringForLoanCalcData:_loanDataA]];
+        [body appendString:[self shareStringForLoanCalcData:_loanDataA isShortType:NO]];
         
 		// * Loan B
 		[body appendFormat:@"<br>** Loan B <br>"];
-        [body appendString:[self shareStringForLoanCalcData:_loanDataB]];
+        [body appendString:[self shareStringForLoanCalcData:_loanDataB isShortType:NO]];
 	}
 	else {
         // Loan Mode
-        body = [self shareStringForLoanCalcData:self.loanData];
+        body = [self shareStringForLoanCalcData:self.loanData isShortType:NO];
 	}
     
     return body;
 }
 
-- (NSMutableString *)shareStringForLoanCalcData:(LoanCalcData *)loanData
+- (NSString *)shareStringForEtc
 {
     NSMutableString *body = [NSMutableString new];
-    [body appendString:@"*Calculation<br>"];
-    [body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[loanData totalAmount]]];
-    [body appendFormat:@"%@ :", [[LoanCalcString titleOfCalFor:loanData.calculationMode] uppercaseString]];
     
+	if (_isComparisonMode) {
+		// * Loan A
+		[body appendFormat:@"** Loan A <br>"];
+        [body appendString:[self shareStringForLoanCalcData:_loanDataA isShortType:YES]];
+        
+		// * Loan B
+		[body appendFormat:@"<br>** Loan B <br>"];
+        [body appendString:[self shareStringForLoanCalcData:_loanDataB isShortType:YES]];
+	}
+	else {
+        // Loan Mode
+        body = [self shareStringForLoanCalcData:self.loanData isShortType:YES];
+	}
+    
+    return body;
+}
+
+- (NSMutableString *)shareStringForLoanCalcData:(LoanCalcData *)loanData isShortType:(BOOL)isShortType
+{
+    NSMutableString *body = [NSMutableString new];
+    if (!isShortType) {
+        [body appendString:@"*Calculation<br>"];
+    }
+    // Result
+    // Payments or etc
+    [body appendFormat:@"%@ :", [[LoanCalcString titleOfCalFor:loanData.calculationMode] uppercaseString]];
     A3LoanCalcCalculationItem resultItem = [LoanCalcMode resltItemForCalcMode:loanData.calculationMode];
     if (loanData.calculationMode == A3LC_CalculationForTermOfMonths) {
         NSInteger monthInt =  (int)round(loanData.monthOfTerms.doubleValue);
@@ -1285,8 +1308,15 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         [body appendString:[LoanCalcString valueTextForCalcItem:resultItem fromData:loanData formatter:self.currencyFormatter]];
     }
     
+    [body appendFormat:@"<br>Interest: %@ <br>", [self.loanFormatter stringFromNumber:[loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
+    [body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[loanData totalAmount]]];
+    
+    if (isShortType) {
+        return body;
+    }
+    
     // Inputs
-    [body appendString:@"<br><br>*Input<br>"];
+    [body appendString:@"<br>*Input<br>"];
     BOOL downPaymentEnable = (loanData.showDownPayment && (loanData.downPayment.doubleValue >0)) ? YES:NO;
     NSArray *inputCalcItems = [LoanCalcMode calculateItemForMode:loanData.calculationMode withDownPaymentEnabled:downPaymentEnable];
     [inputCalcItems enumerateObjectsUsingBlock:^(NSNumber *itemID, NSUInteger idx, BOOL *stop) {
