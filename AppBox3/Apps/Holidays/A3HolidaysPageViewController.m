@@ -50,6 +50,7 @@
 @implementation A3HolidaysPageViewController
 
 - (void)cleanUp {
+	FNLOG();
 	[self removeObserver];
 
 	[_pageViewController.viewControllers enumerateObjectsUsingBlock:^(id<A3CenterViewDelegate> obj, NSUInteger idx, BOOL *stop) {
@@ -130,7 +131,9 @@
 
 	if (self.isMovingToParentViewController) {
 
-		[self startAskLocation];
+		if (![self startAskLocation]) {
+			[self.currentContentViewController startDownloadWallpaperFromFlickr];
+		}
 
 		NSDate *fireDate = [[NSDate dateTomorrow] dateAtStartOfDay];
 		FNLOG(@"%@, %f", fireDate, [fireDate timeIntervalSinceNow]/(60 * 60));
@@ -176,11 +179,16 @@
 	[self.currentContentViewController updateTableHeaderView];
 }
 
-- (void)startAskLocation {
+#pragma mark - Find location and udpate country list
+
+- (BOOL)startAskLocation {
+	if (![CLLocationManager locationServicesEnabled]) return NO;
+
 	_locationManager = [[CLLocationManager alloc] init];
 	[_locationManager setDesiredAccuracy:kCLLocationAccuracyKilometer];
 	[_locationManager setDelegate:self];
 	[_locationManager startUpdatingLocation];
+	return YES;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
@@ -217,6 +225,7 @@
 				[self jumpToPage:0 direction:UIPageViewControllerNavigationDirectionForward animated:NO];
 			}
 		}
+		[self.currentContentViewController startDownloadWallpaperFromFlickr];
 	}];
 }
 
@@ -360,14 +369,13 @@
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers {
-//	[[A3HolidaysFlickrDownloadManager sharedInstance].downloadTask suspend];
-//	FNLOG(@"[[A3HolidaysFlickrDownloadManager sharedInstance].downloadTask suspend];");
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed {
-	FNLOG(@"%@", _pageViewController.viewControllers);
 	_pageControl.currentPage = [self currentPage];
 	[self updatePhotoLabelText];
+
+	[self.currentContentViewController startDownloadWallpaperFromFlickr];
 }
 
 - (BOOL)usesFullScreenInLandscape {
@@ -385,17 +393,22 @@
 	}
 }
 
+- (UIView *)footerView {
+	if (!_footerView) {
+		_footerView = [UIView new];
+		[self.view addSubview:_footerView];
+
+		[_footerView makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.view.left);
+			make.right.equalTo(self.view.right);
+			make.bottom.equalTo(self.view.bottom);
+			make.height.equalTo(@44);
+		}];
+	}
+	return _footerView;
+}
+
 - (void)setupFooterView {
-	_footerView = [UIView new];
-	[self.view addSubview:_footerView];
-
-	[_footerView makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.view.left);
-		make.right.equalTo(self.view.right);
-		make.bottom.equalTo(self.view.bottom);
-		make.height.equalTo(@44);
-	}];
-
 	UIView *line = [UIView new];
 	line.backgroundColor = [UIColor clearColor];
 	line.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:0.4].CGColor;
@@ -422,7 +435,7 @@
 	[listButton makeConstraints:^(MASConstraintMaker *make) {
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);
-		make.right.equalTo(_footerView.right).with.offset(IS_IPAD ? -28 : -15);
+		make.right.equalTo(self.footerView.right).with.offset(IS_IPAD ? -28 : -15);
 		make.centerY.equalTo(_footerView.centerY);
 	}];
 }
@@ -437,7 +450,7 @@
 		_pageControl.selectedDotColor = [UIColor whiteColor];
 		_pageControl.delegate = self;
 		[_pageControl addTarget:self action:@selector(pageControlValuedChanged:) forControlEvents:UIControlEventValueChanged];
-		[_footerView addSubview:_pageControl];
+		[self.footerView addSubview:_pageControl];
 
 		CGSize size = [_pageControl sizeForNumberOfPages:_pageControl.numberOfPages];
 		[_pageControl makeConstraints:^(MASConstraintMaker *make) {
@@ -459,7 +472,7 @@
 		_photoLabel1.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11];
 		_photoLabel1.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
 		_photoLabel1.userInteractionEnabled = YES;
-		[_footerView addSubview:_photoLabel1];
+		[self.footerView addSubview:_photoLabel1];
 
 		[_photoLabel1 makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(_footerView.left).with.offset(IS_IPAD ? 28 : 15);

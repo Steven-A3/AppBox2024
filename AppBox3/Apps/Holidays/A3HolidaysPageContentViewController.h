@@ -16,6 +16,8 @@
 
 - (instancetype)initWithCountryCode:(NSString *)countryCode;
 
+- (void)startDownloadWallpaperFromFlickr;
+
 - (void)reloadDataRedrawImage:(BOOL)redrawImage;
 
 - (void)updateTableHeaderView;
