@@ -19,7 +19,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UITableView+utility.h"
 
-@interface A3HolidaysEditViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate, A3ImageCropperDelegate>
+@interface A3HolidaysEditViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) NSArray *holidaysForCountry;
 @property (nonatomic, strong) NSMutableArray *excludedHolidays;
@@ -201,9 +201,8 @@ static NSString *CellIdentifier = @"Cell";
 				cell.textLabel.textColor = self.view.tintColor;
 				break;
 			case 2: {
+				cell.textLabel.text = @"Wallpaper";
 				if ([[A3HolidaysFlickrDownloadManager sharedInstance] hasUserSuppliedImageForCountry:_countryCode]) {
-					cell.textLabel.textColor = [UIColor colorWithRed:255.0/255.0 green:58.0/255.0 blue:48.0/255.0 alpha:1.0];
-					cell.textLabel.text = @"Delete Wallpaper";
 					UIImageView *imageView = [[A3HolidaysFlickrDownloadManager sharedInstance] thumbnailOfUserSuppliedImageForCountryCode:_countryCode];
 					imageView.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
 					imageView.layer.borderWidth = 0.1;
@@ -211,8 +210,6 @@ static NSString *CellIdentifier = @"Cell";
 					imageView.layer.masksToBounds = YES;
 					cell.accessoryView = imageView;
 				} else {
-					cell.textLabel.textColor = [UIColor blackColor];
-					cell.textLabel.text = @"Choose Wallpaper";
 					cell.accessoryView = [self cameraButton];
 				}
 				break;
@@ -222,6 +219,7 @@ static NSString *CellIdentifier = @"Cell";
 				UISwitch *switchControl = [self lunarSwitch];
 				[switchControl setOn:[HolidayData needToShowLunarDatesForCountryCode:_countryCode]];
 				cell.accessoryView = switchControl;
+				cell.selectionStyle = UITableViewCellSelectionStyleNone;
 				break;
 			}
 		}
@@ -333,7 +331,8 @@ static NSString *CellIdentifier = @"Cell";
 		}
 		else {
 			self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-			CGRect rect = [self.view convertRect:self.cameraButton.frame fromView:self.cameraButton];
+			UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
+			CGRect rect = [self.view convertRect:self.cameraButton.frame fromView:cell];
 			[_imagePickerPopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		}
 	}
@@ -373,29 +372,6 @@ static NSString *CellIdentifier = @"Cell";
     } else {
         [_imagePickerController dismissViewControllerAnimated:YES completion:NULL];
     }
-}
-
-- (void)restoreNavigationBarBackground {
-	[self.navigationController.navigationBar setBackgroundImage:nil forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
-	[self.navigationController.navigationBar setShadowImage:nil];
-}
-
-- (void)imageCropper:(A3ImageCropperViewController *)cropper didFinishCroppingWithImage:(UIImage *)image {
-	[[A3HolidaysFlickrDownloadManager sharedInstance] saveUserSuppliedImage:image forCountryCode:_countryCode];
-	_dataUpdated = YES;
-
-	double delayInSeconds = 0.5;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]] withRowAnimation:UITableViewRowAnimationNone];
-	});
-	[self restoreNavigationBarBackground];
-	[self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)imageCropperDidCancel:(A3ImageCropperViewController *)cropper {
-	[self restoreNavigationBarBackground];
-	[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)lunarOnOff:(UISwitch *)switchControl {

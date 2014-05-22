@@ -15,6 +15,7 @@
 #import "SFKImage.h"
 #import "FXLabel.h"
 #import "A3HolidaysPageViewController.h"
+#import "UIImage+Resizing.h"
 
 @interface A3HolidaysCountryViewCell ()
 
@@ -148,7 +149,10 @@
 		_numberOfHolidays.text = [NSString stringWithFormat:@"%lu", (unsigned long)[holidays count]];
 	}
 
-	_backgroundImageView.image = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode orientation:CURRENT_ORIENTATION forList:YES];
+	UIImage *image = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode];
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	FNLOG(@"%@, %ld", countryCode, (long)image.imageOrientation);
+	_backgroundImageView.image = [image cropToSize:CGSizeMake(screenBounds.size.width, 84) usingMode:NYXCropModeTopCenter];
 }
 
 - (void)prepareForMove {

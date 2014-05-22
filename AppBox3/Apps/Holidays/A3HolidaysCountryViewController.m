@@ -51,12 +51,6 @@ extern NSString *const A3CurrencyActionCellID;
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[self.navigationController setNavigationBarHidden:YES];
 
-	// Uncomment the following line to preserve selection between presentations.
-	// self.clearsSelectionOnViewWillAppear = NO;
- 
-	// Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-	// self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
 	self.view.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
 
 	self.tableView.rowHeight = 84;

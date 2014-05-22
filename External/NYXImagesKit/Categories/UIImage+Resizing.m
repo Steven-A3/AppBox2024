@@ -59,6 +59,13 @@
 			break;
 	}
 
+	if (self.imageOrientation == UIImageOrientationLeft || self.imageOrientation == UIImageOrientationLeftMirrored || self.imageOrientation == UIImageOrientationRight || self.imageOrientation == UIImageOrientationRightMirrored)
+	{
+		CGFloat temp = x;
+		x = y;
+		y = temp;
+	}
+
 	CGRect cropRect = CGRectMake(x * self.scale, y * self.scale, newSize.width * self.scale, newSize.height * self.scale);
 
 	/// Create the cropped image
@@ -81,6 +88,25 @@
 {
 	CGSize scaledSize = CGSizeMake(self.size.width * scaleFactor, self.size.height * scaleFactor);
 	return [self scaleToFillSize:scaledSize];
+}
+
+-(UIImage*)scaleToSize:(CGSize)newSize usingMode:(NYXResizeMode)resizeMode
+{
+	switch (resizeMode)
+	{
+		case NYXResizeModeAspectFit:
+			return [self scaleToFitSize:newSize];
+		case NYXResizeModeAspectFill:
+			return [self scaleToCoverSize:newSize];
+		default:
+			return [self scaleToFillSize:newSize];
+	}
+}
+
+/* Convenience method to scale the image using the NYXResizeModeScaleToFill mode */
+-(UIImage*)scaleToSize:(CGSize)newSize
+{
+	return [self scaleToFillSize:newSize];
 }
 
 -(UIImage*)scaleToFillSize:(CGSize)newSize

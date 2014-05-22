@@ -314,14 +314,12 @@
 }
 
 - (void)prepareViewControllerAtPage:(NSUInteger)page {
-	dispatch_async(dispatch_get_main_queue(), ^{
-		if ([_countries count] > page) {
-			A3HolidaysPageContentViewController *viewController = [[A3HolidaysPageContentViewController alloc] initWithCountryCode:_countries[page]];
-			viewController.pageViewController = self;
-			[viewController view];
-			[_viewControllerCache setObject:viewController forKey:_countries[page]];
-		}
-	});
+	if ([_countries count] > page) {
+		A3HolidaysPageContentViewController *viewController = [[A3HolidaysPageContentViewController alloc] initWithCountryCode:_countries[page]];
+		viewController.pageViewController = self;
+		[viewController view];
+		[_viewControllerCache setObject:viewController forKey:_countries[page]];
+	}
 }
 
 - (A3HolidaysPageContentViewController *)contentViewControllerAtPage:(NSUInteger)page {
@@ -329,6 +327,7 @@
 	viewController = _viewControllerCache[_countries[page]];
 	if (!viewController) {
 		viewController = [[A3HolidaysPageContentViewController alloc] initWithCountryCode:_countries[page]];
+		[viewController view];
 		viewController.pageViewController = self;
 		[_viewControllerCache setObject:viewController forKey:_countries[page]];
 	} else {
@@ -455,6 +454,7 @@
 
 - (UILabel *)photoLabel1 {
 	if (!_photoLabel1) {
+		FNLOG();
 		_photoLabel1 = [UILabel new];
 		_photoLabel1.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11];
 		_photoLabel1.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
@@ -463,7 +463,7 @@
 
 		[_photoLabel1 makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(_footerView.left).with.offset(IS_IPAD ? 28 : 15);
-			make.right.lessThanOrEqualTo(_pageControl.left).with.offset(-5);
+			make.right.lessThanOrEqualTo(self.pageControl.left).with.offset(-5);
 			make.centerY.equalTo(_footerView.centerY).with.offset(-7);
 		}];
 

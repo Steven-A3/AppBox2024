@@ -14,6 +14,7 @@
 #import "Reachability.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
+#import "UIImage+imageWithColor.h"
 
 NSString *A3HolidaysFlickrDownloadManagerDownloadComplete = @"A3HolidaysFlickrDownloadManagerDownloadComplete";
 NSString *const kA3HolidayScreenImagePath = @"kA3HolidayScreenImagePath";		// USE key + country code
@@ -72,12 +73,12 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 	return self;
 }
 
-- (UIImage *)imageForCountryCode:(NSString *)countryCode orientation:(UIInterfaceOrientation)orientation forList:(BOOL)forList {
-	NSString *imagePath = [self holidayImagePathForCountryCode:countryCode orientation:orientation forList:forList];
+- (UIImage *)imageForCountryCode:(NSString *)countryCode {
+	NSString *imagePath = [self holidayImagePathForCountryCode:countryCode];
 	return [imagePath length] ? [UIImage imageWithContentsOfFile:imagePath] : nil;
 }
 
-- (NSString *)holidayImagePathForCountryCode:(NSString *)countryCode orientation:(UIInterfaceOrientation)orientation forList:(BOOL)forList {
+- (NSString *)holidayImagePathForCountryCode:(NSString *)countryCode {
 	NSString *savedImageFilename = [[NSUserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];
 	if ([savedImageFilename length]) {
 		return [savedImageFilename pathInLibraryDirectory];
@@ -98,7 +99,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 
 - (UIImageView *)thumbnailOfUserSuppliedImageForCountryCode:(NSString *)countryCode {
 	if ([self hasUserSuppliedImageForCountry:countryCode]) {
-		NSString *path = [self holidayImagePathForCountryCode:countryCode orientation:CURRENT_ORIENTATION forList:NO];
+		NSString *path = [self holidayImagePathForCountryCode:countryCode];
 		if (path) {
 			UIImage *image = [UIImage imageWithContentsOfFile:path];
 			CGSize size = CGSizeMake(30, 30);
@@ -207,9 +208,10 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 - (void)saveUserSuppliedImage:(UIImage *)image forCountryCode:(NSString *)countryCode {
 	[self deleteImageForCountryCode:countryCode];
 
+	UIImage *portraitImage = [image portraitImage];
 	NSString *imageName = [self userSuppliedImageNameForCountryCode:countryCode];
 	[self setImageName:imageName forCountryCode:countryCode];
-	[UIImageJPEGRepresentation(image, 1.0) writeToFile:[imageName pathInLibraryDirectory] atomically:YES];
+	[UIImageJPEGRepresentation(portraitImage, 1.0) writeToFile:[imageName pathInLibraryDirectory] atomically:YES];
 }
 
 - (NSString *)userSuppliedImageNameForCountryCode:(NSString *)countryCode {

@@ -1489,7 +1489,7 @@
 {
     [self resignAllAction];
 
-	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:NO delegate:self];
+	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:_photoImage != nil delegate:self];
 	actionSheet.tag = ActionTag_Photo;
 	[actionSheet showInView:self.view];
 }

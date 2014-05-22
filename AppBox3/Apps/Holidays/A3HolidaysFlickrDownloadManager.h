@@ -16,7 +16,7 @@ extern NSString *A3HolidaysFlickrDownloadManagerDownloadComplete;
 
 + (instancetype)sharedInstance;
 
-- (UIImage *)imageForCountryCode:(NSString *)countryCode orientation:(UIInterfaceOrientation)orientation forList:(BOOL)forList;
+- (UIImage *)imageForCountryCode:(NSString *)countryCode;
 - (BOOL)isDayForCountryCode:(NSString *)countryCode;
 - (BOOL)hasUserSuppliedImageForCountry:(NSString *)code;
 - (UIImageView *)thumbnailOfUserSuppliedImageForCountryCode:(NSString *)countryCode;
