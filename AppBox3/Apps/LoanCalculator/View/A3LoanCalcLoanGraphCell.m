@@ -9,6 +9,7 @@
 #import "A3LoanCalcLoanGraphCell.h"
 #import "A3TripleCircleView.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIImage+imageWithColor.h"
 
 @implementation A3LoanCalcLoanGraphCell
 {
@@ -56,6 +57,8 @@
     [_totalButton addTarget:self action:@selector(kindButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	[_totalButton setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
     _totalButton.layer.borderColor = [UIColor clearColor].CGColor;
+    
+    [_infoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
     
     // up label pos
     CGRect upLbFrame = _upLabel.frame;
