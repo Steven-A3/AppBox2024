@@ -35,7 +35,7 @@ extern NSString *const A3LoanCalcCurrencyCodeChanged;
 @property (nonatomic, strong) NSDate *extraPaymentOneTimeDate;
 
 // setting
-@property (nonatomic, readwrite) A3LoanCalcCalculationMode calculationFor;
+@property (nonatomic, readwrite) A3LoanCalcCalculationMode calculationMode;
 @property (nonatomic, readwrite) BOOL showAdvanced;
 @property (nonatomic, readwrite) BOOL showDownPayment;
 @property (nonatomic, readwrite) BOOL showExtraPayment;

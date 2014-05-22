@@ -76,8 +76,8 @@
         return;
     }
     
-    if (_delegate && [_delegate respondsToSelector:@selector(didSelectCalculationFor:)]) {
-        [_delegate didSelectCalculationFor:calMode];
+    if (_delegate && [_delegate respondsToSelector:@selector(didSelectCalculationForMode:)]) {
+        [_delegate didSelectCalculationForMode:calMode];
     }
     
     if (IS_IPHONE) {
@@ -129,7 +129,7 @@
         cell.textLabel.textColor = [UIColor blackColor];
     }
     
-    if (_currentCalcFor == calMode) {
+    if (_currentCalcMode == calMode) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;

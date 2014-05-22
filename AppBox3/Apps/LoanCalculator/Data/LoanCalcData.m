@@ -38,7 +38,7 @@ NSString *const A3LoanCalcCurrencyCodeChanged = @"A3LoanCalcCurrencyCodeChanged"
         _extraPaymentOneTimeDate = [aDecoder decodeObjectForKey:@"extraPaymentOneTimeDate"];
         
         // setting
-        _calculationFor = [aDecoder decodeIntegerForKey:@"calculationFor"];
+        _calculationMode = [aDecoder decodeIntegerForKey:@"calculationMode"];
         _showAdvanced = [aDecoder decodeBoolForKey:@"showAdvanced"];
         _showDownPayment = [aDecoder decodeBoolForKey:@"showDownPayment"];
         _showExtraPayment = [aDecoder decodeBoolForKey:@"showExtraPayment"];
@@ -68,7 +68,7 @@ NSString *const A3LoanCalcCurrencyCodeChanged = @"A3LoanCalcCurrencyCodeChanged"
     [aCoder encodeObject:_extraPaymentOneTime forKey:@"extraPaymentOneTime"];
     [aCoder encodeObject:_extraPaymentOneTimeDate forKey:@"extraPaymentOneTimeDate"];
     // setting
-    [aCoder encodeInteger:_calculationFor forKey:@"calculationFor"];
+    [aCoder encodeInteger:_calculationMode forKey:@"calculationMode"];
     [aCoder encodeBool:_showAdvanced forKey:@"showAdvanced"];
     [aCoder encodeBool:_showDownPayment forKey:@"showDownPayment"];
     [aCoder encodeBool:_showExtraPayment forKey:@"showExtraPayment"];

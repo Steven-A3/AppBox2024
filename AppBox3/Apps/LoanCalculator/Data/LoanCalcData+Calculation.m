@@ -495,17 +495,31 @@
             balance = [numberFormatter stringFromNumber:data[@"Balance"]];
         }
         
-        [csvArray addObject:[NSString stringWithFormat:@"%@, %@, %@, %@, %@", date, principal, payment, interest, balance]];
+        [csvArray addObject:[NSString stringWithFormat:@"%@, %@, %@, %@, %@",
+                             [self stringOfCSVFormatFromString:date],
+                             [self stringOfCSVFormatFromString:principal],
+                             [self stringOfCSVFormatFromString:payment],
+                             [self stringOfCSVFormatFromString:interest],
+                             [self stringOfCSVFormatFromString:balance]]];
     }];
     
-    
     NSString *csvString = [csvArray componentsJoinedByString:@"\n"];
-    
+
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
     BOOL result = [fileManager createFileAtPath:filePath contents:[csvString dataUsingEncoding:NSUTF8StringEncoding] attributes:nil];
     
     return result ? filePath : nil;
+}
+
+- (NSString *)stringOfCSVFormatFromString:(NSString *)string
+{
+    NSRange range = [string rangeOfString:@"," options:NSCaseInsensitiveSearch];
+    if (range.location != NSNotFound) {
+        string = [NSString stringWithFormat:@"\"%@\"", string];
+    }
+    
+    return string;
 }
 
 - (NSArray *)paymentList
@@ -544,7 +558,6 @@
                                  @"Balance": balanceNum
                                  }];
         paymentIndex++;
-        
     } while (balance > 0);
     
     return paymentList;

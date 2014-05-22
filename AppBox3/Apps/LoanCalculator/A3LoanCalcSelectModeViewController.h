@@ -12,13 +12,13 @@
 @protocol LoanCalcSelectCalcForDelegate <NSObject>
 
 @required
-- (void)didSelectCalculationFor:(A3LoanCalcCalculationMode) calculationFor;
+- (void)didSelectCalculationForMode:(A3LoanCalcCalculationMode) calculationFor;
 
 @end
 
 @interface A3LoanCalcSelectModeViewController : UITableViewController
 
 @property (nonatomic, assign) id<LoanCalcSelectCalcForDelegate> delegate;
-@property (readwrite) A3LoanCalcCalculationMode currentCalcFor;
+@property (readwrite) A3LoanCalcCalculationMode currentCalcMode;
 
 @end

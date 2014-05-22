@@ -203,13 +203,13 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
     }
     
     // 결과 아이템
-    infoCell.upSecondTitleLB.text = [[LoanCalcString titleOfCalFor:_loanData.calculationFor] uppercaseString];
-    A3LoanCalcCalculationItem resultItem = [LoanCalcMode resltItemForCalcFor:_loanData.calculationFor];
-    if (_loanData.calculationFor == A3LC_CalculationForTermOfMonths) {
+    infoCell.upSecondTitleLB.text = [[LoanCalcString titleOfCalFor:_loanData.calculationMode] uppercaseString];
+    A3LoanCalcCalculationItem resultItem = [LoanCalcMode resltItemForCalcFor:_loanData.calculationMode];
+    if (_loanData.calculationMode == A3LC_CalculationForTermOfMonths) {
         NSInteger monthInt =  (int)round(loan.monthOfTerms.doubleValue);
         infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%ld months", (long)monthInt];
     }
-    else if (_loanData.calculationFor == A3LC_CalculationForTermOfYears) {
+    else if (_loanData.calculationMode == A3LC_CalculationForTermOfYears) {
         NSInteger yearInt =  (int)round(loan.monthOfTerms.doubleValue/12.0);
         infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%ld years", (long)yearInt];
     }
@@ -218,7 +218,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
     }
     
     BOOL downPaymentEnable = (loan.showDownPayment && (loan.downPayment.doubleValue >0)) ? YES:NO;
-    NSArray *calItems = [LoanCalcMode calculateItemForMode:_loanData.calculationFor withDownPaymentEnabled:downPaymentEnable];
+    NSArray *calItems = [LoanCalcMode calculateItemForMode:_loanData.calculationMode withDownPaymentEnabled:downPaymentEnable];
     
     for (NSUInteger idx = 0; idx < calItems.count; idx++) {
         NSNumber *num = calItems[idx];
@@ -261,7 +261,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
             switch (extraType) {
                 case A3LC_ExtraPaymentMonthly:
                 {
-                    titleLB.text = IS_IPAD ? @"ExtraPayments(Monthly)":@"Extra(Monthly)";
+                    titleLB.text = IS_IPAD ? @"ExtraPayments(Monthly)" : @"Extra(Monthly)";
                     titleLB.text = [titleLB.text uppercaseString];
                     [titleLB sizeToFit];
                     valueLB.text = [self.currencyFormatter stringFromNumber:_loanData.extraPaymentMonthly];
@@ -366,7 +366,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
 {
     NSUInteger itemCount = 4;
     
-    if (_loanData.calculationFor == A3LC_CalculationForDownPayment) {
+    if (_loanData.calculationMode == A3LC_CalculationForDownPayment) {
         itemCount++;
     }
     else {
