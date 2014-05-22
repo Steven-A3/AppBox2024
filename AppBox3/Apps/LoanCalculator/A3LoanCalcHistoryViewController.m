@@ -15,7 +15,7 @@
 #import "LoanCalcComparisonHistory.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 
 @interface A3LoanCalcHistoryViewController () <UIActionSheetDelegate>
 {

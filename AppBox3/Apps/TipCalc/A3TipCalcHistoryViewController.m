@@ -10,7 +10,7 @@
 #import "A3TipCalcDataManager.h"
 #import "TipCalcRecently.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3TipCalcHistoryCell.h"
 #import "A3DefaultColorDefines.h"
 #import "UIViewController+navigation.h"

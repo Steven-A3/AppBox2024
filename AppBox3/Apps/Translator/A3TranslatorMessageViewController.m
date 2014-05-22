@@ -17,7 +17,7 @@
 #import "A3TranslatorLanguageTVDelegate.h"
 #import "A3TranslatorLanguage.h"
 #import "A3LanguagePickerController.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "Reachability.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"

@@ -23,7 +23,7 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "MWPhotoBrowser.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "WalletField.h"
 #import "UIImage+Extension2.h"
 #import "UITableView+utility.h"

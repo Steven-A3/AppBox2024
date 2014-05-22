@@ -14,7 +14,7 @@
 #import "LoanCalcString.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3AppDelegate.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3LoanCalcMonthlyTableTitleView.h"
 
 @interface A3LoanCalcMonthlyDataViewController ()

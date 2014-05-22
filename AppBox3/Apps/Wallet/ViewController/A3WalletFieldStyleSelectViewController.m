@@ -9,7 +9,7 @@
 #import "A3WalletFieldStyleSelectViewController.h"
 #import "WalletData.h"
 #import "A3AppDelegate.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "NSString+WalletStyle.h"
 
 @interface A3WalletFieldStyleSelectViewController ()

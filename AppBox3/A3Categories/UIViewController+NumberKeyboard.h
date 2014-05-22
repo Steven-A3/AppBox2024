@@ -19,7 +19,7 @@ extern NSString *const A3NotificationCalculatorButtonPressed;
 @class A3CurrencySelectViewController;
 @class A3CalculatorViewController;
 
-@interface UIViewController (A3AppCategory) <A3KeyboardDelegate>
+@interface UIViewController (NumberKeyboard) <A3KeyboardDelegate>
 
 @property (nonatomic, strong) A3NumberKeyboardViewController *numberKeyboardViewController;
 @property (nonatomic, strong) A3DateKeyboardViewController *dateKeyboardViewController;

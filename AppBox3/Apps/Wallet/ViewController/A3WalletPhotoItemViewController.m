@@ -21,7 +21,7 @@
 #import "WalletField.h"
 #import "WalletFieldItem.h"
 #import "NSDate+TimeAgo.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "MWPhotoBrowser.h"
 #import "UIImage+Extension2.h"
 #import "WalletFieldItem+initialize.h"

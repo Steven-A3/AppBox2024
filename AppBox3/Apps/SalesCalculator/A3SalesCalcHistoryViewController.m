@@ -8,7 +8,7 @@
 
 #import "A3SalesCalcHistoryViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "SalesCalcHistory.h"
 #import "A3SalesCalcData.h"
 #import "A3SalesCalcHistoryCell.h"

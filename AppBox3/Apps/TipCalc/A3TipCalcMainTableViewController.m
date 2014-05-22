@@ -9,7 +9,7 @@
 #import "A3TipCalcMainTableViewController.h"
 #import "A3TipCalcDataManager.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3RoundedSideButton.h"
 #import "A3TipCalcSettingViewController.h"

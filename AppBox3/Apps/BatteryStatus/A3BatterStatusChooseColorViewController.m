@@ -8,7 +8,7 @@
 
 #import "A3BatterStatusChooseColorViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3BatterStatusChooseColorCell.h"
 
 @interface A3BatterStatusChooseColorViewController ()

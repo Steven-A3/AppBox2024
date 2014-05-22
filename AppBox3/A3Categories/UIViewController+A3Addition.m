@@ -6,12 +6,13 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
+#import "A3WalletItemEditViewController.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+MMDrawerController.h"
 #import "A3CenterViewDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "A3KeychainUtils.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 
 @implementation UIViewController (A3Addition)
 
@@ -503,6 +504,51 @@
 - (void)alertCloudNotEnabled {
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"iCloud" message:@"Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[alertView show];
+}
+
+- (UIActionSheet *)actionSheetAskingImagePickupWithDelete:(BOOL)deleteEnable delegate:(id <UIActionSheetDelegate>)delegate {
+	UIActionSheet *actionSheet;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        if (deleteEnable) {
+			actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+													  delegate:delegate
+											 cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
+										destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete Photo", @"common", nil)
+											 otherButtonTitles:NSLocalizedStringFromTable(@"Take Photo", @"common", nil),
+															   NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
+															   NSLocalizedStringFromTable(@"Choose and Resize", @"common", nil), nil];
+        }
+        else {
+			actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+													  delegate:delegate
+											 cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
+										destructiveButtonTitle:nil
+											 otherButtonTitles:NSLocalizedStringFromTable(@"Take Photo", @"common", nil),
+															   NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
+															   NSLocalizedStringFromTable(@"Choose and Resize", @"common", nil), nil];
+        }
+
+	} else {
+        if (deleteEnable) {
+			actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+													  delegate:delegate
+											 cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
+										destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete Photo", @"common", nil)
+											 otherButtonTitles:
+													 NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
+													 NSLocalizedStringFromTable(@"Choose and Resize", @"common", nil), nil];
+        }
+        else {
+			actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+													  delegate:delegate
+											 cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
+										destructiveButtonTitle:nil
+											 otherButtonTitles:
+													 NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
+													 NSLocalizedStringFromTable(@"Choose and Resize", @"common", nil), nil];
+        }
+	}
+	return actionSheet;
 }
 
 @end

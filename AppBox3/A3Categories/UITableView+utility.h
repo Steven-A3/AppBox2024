@@ -11,6 +11,6 @@
 @interface UITableView (utility)
 
 - (NSIndexPath *)indexPathForCellSubview:(UIView *)view;
-
 - (UITableViewCell *)cellForCellSubview:(UIView *)view;
+
 @end

@@ -10,7 +10,7 @@
 #import "A3SalesCalcData.h"
 #import "A3SalesCalcCalculator.h"
 #import "A3DefaultColorDefines.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 
 @interface A3SalesCalcDetailInfoPopOverView ()
 

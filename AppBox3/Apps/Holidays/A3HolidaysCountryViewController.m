@@ -13,7 +13,7 @@
 #import "A3CurrencyTVActionCell.h"
 #import "FMMoveTableView.h"
 #import "A3HolidaysCountrySearchViewController.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "NSMutableArray+MoveObject.h"
 

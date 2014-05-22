@@ -22,7 +22,7 @@
 #import "WalletCategory+initialize.h"
 #import "WalletField.h"
 #import "A3AppDelegate+appearance.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
 #import "UIImage+Extension2.h"
 #import "UITableView+utility.h"
@@ -508,60 +508,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	[actionSheet showInView:self.view];
 }
 
-- (void)askImagePickupWithDelete:(BOOL)deleteEnable
-{
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        
-        if (deleteEnable) {
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                     delegate:self
-                                                            cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
-                                                       destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete Photo", @"common", nil)
-                                                            otherButtonTitles:NSLocalizedStringFromTable(@"Take Photo", @"common", nil),
-                                          NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
-                                          NSLocalizedStringFromTable(@"Choose and Resize", @"common", nil), nil];
-            actionSheet.tag = 1;
-            [actionSheet showInView:self.view];
-        }
-        else {
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                     delegate:self
-                                                            cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
-                                                       destructiveButtonTitle:nil
-                                                            otherButtonTitles:NSLocalizedStringFromTable(@"Take Photo", @"common", nil),
-                                          NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
-                                          NSLocalizedStringFromTable(@"Choose and Resize", @"common", nil), nil];
-            actionSheet.tag = 1;
-            [actionSheet showInView:self.view];
-        }
-        
-	} else {
-        
-        if (deleteEnable) {
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                     delegate:self
-                                                            cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
-                                                       destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete Photo", @"common", nil)
-                                                            otherButtonTitles:
-                                          NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
-                                          NSLocalizedStringFromTable(@"Choose and Resize", @"common", nil), nil];
-            actionSheet.tag = 1;
-            [actionSheet showInView:self.view];
-        }
-        else {
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                     delegate:self
-                                                            cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
-                                                       destructiveButtonTitle:nil
-                                                            otherButtonTitles:
-                                          NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
-                                          NSLocalizedStringFromTable(@"Choose and Resize", @"common", nil), nil];
-            actionSheet.tag = 1;
-            [actionSheet showInView:self.view];
-        }
-	}
-}
-
 - (void)askVideoPickupWithDelete:(BOOL)deleteEnable
 {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
@@ -852,7 +798,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	}
 	else {
 		FNLOG(@"%@", imageEditInfo);
-		UIImage *originalImage = [imageEditInfo objectForKey:UIImagePickerControllerEditedImage];;
+		UIImage *originalImage = [imageEditInfo objectForKey:UIImagePickerControllerEditedImage];
 		if (!originalImage) {
 			originalImage = [imageEditInfo objectForKey:UIImagePickerControllerOriginalImage];
 		}
@@ -1278,7 +1224,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
             else if ([field.type isEqualToString:WalletFieldTypeImage]) {
 				[self dismissDatePicker];
 
-                [self askImagePickupWithDelete:_currentFieldItem.image != nil];
+				UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:_currentFieldItem.image != nil delegate:self];
+				actionSheet.tag = 1;
+				[actionSheet showInView:self.view];
             }
             else if ([field.type isEqualToString:WalletFieldTypeVideo]) {
 				[self dismissDatePicker];

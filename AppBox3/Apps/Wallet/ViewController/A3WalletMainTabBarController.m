@@ -11,7 +11,7 @@
 #import "A3WalletAllViewController.h"
 #import "A3WalletFavoritesViewController.h"
 #import "WalletCategory+initialize.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3WalletMoreTableViewController.h"
 #import "A3WalletCategoryInfoViewController.h"
 #import "A3WalletItemViewController.h"

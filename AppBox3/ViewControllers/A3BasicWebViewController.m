@@ -8,7 +8,7 @@
 
 #import "A3BasicWebViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "NJKWebViewProgress.h"
 #import "NJKWebViewProgressView.h"
 #import "A3ActivitySafari.h"

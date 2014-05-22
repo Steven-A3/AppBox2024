@@ -18,7 +18,7 @@
 #import "A3WalletCategoryViewController.h"
 #import "NSString+conversion.h"
 #import "A3WalletCategoryEditViewController.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "UIColor+A3Addition.h"
 
 NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";

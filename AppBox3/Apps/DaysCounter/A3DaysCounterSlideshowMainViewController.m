@@ -8,7 +8,7 @@
 
 #import "A3DaysCounterSlideShowMainViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3SlideshowActivity.h"
 #import "A3DaysCounterAddEventViewController.h"
 #import "A3DaysCounterModelManager.h"
@@ -89,14 +89,21 @@
     
     currentIndex = 0;
     [self makeBackButtonEmptyArrow];
-    
+
+	UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	flowLayout.itemSize = screenBounds.size;
+	flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+	flowLayout.minimumInteritemSpacing = 0;
+	flowLayout.minimumLineSpacing = 0;
+	_collectionView.collectionViewLayout = flowLayout;
     self.navigationController.navigationBar.translucent = YES;
     [_collectionView registerNib:[UINib nibWithNibName:@"A3DaysCounterSlideshowEventSummaryView" bundle:nil] forCellWithReuseIdentifier:@"summaryCell"];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleMenu:)];
     tapGesture.delegate = self;
     [_collectionView addGestureRecognizer:tapGesture];
-    
+
     self.isFirstViewLoad = YES;
 
 	if (IS_IPAD) {
@@ -282,6 +289,15 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
+	flowLayout.itemSize = self.view.bounds.size;
+	flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+	flowLayout.minimumInteritemSpacing = 0;
+	flowLayout.minimumLineSpacing = 0;
+	_collectionView.collectionViewLayout = flowLayout;
+}
+
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     _isRotating = YES;
@@ -289,22 +305,22 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    _isRotating = YES;
-    
-    [_collectionView reloadData];
-    UICollectionViewCell *cell = [_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]];
-    if (cell) {
-        [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
-                                atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
-                                        animated:NO];
-    }
-    
-    if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
-        self.navigationItem.title = @"Days Counter";
-    }
-    else {
-        self.navigationItem.title = [NSString stringWithFormat:@"%ld of %ld", (long)currentIndex + 1, (long)[_eventsArray count]];
-    }
+//    _isRotating = YES;
+//
+//    [_collectionView reloadData];
+//    UICollectionViewCell *cell = [_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]];
+//    if (cell) {
+//        [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
+//                                atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+//                                        animated:NO];
+//    }
+//
+//    if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
+//        self.navigationItem.title = @"Days Counter";
+//    }
+//    else {
+//        self.navigationItem.title = [NSString stringWithFormat:@"%ld of %ld", (long)currentIndex + 1, (long)[_eventsArray count]];
+//    }
 }
 
 - (void)cleanUp {
@@ -658,11 +674,15 @@
     return cell;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    FNLOG(@"%@", NSStringFromCGSize(CGSizeMake(self.view.frame.size.width, self.view.frame.size.height)));
-    return CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
-}
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//	UICollectionViewFlowLayout *flowLayout = collectionViewLayout;
+//	FNLOG(@"%f, %f", flowLayout.itemSize.width, flowLayout.itemSize.height);
+//	FNLOG(@"%f, %f, %f, %f", flowLayout.sectionInset.top, flowLayout.sectionInset.left, flowLayout.sectionInset.right, flowLayout.sectionInset.bottom);
+//	FNLOG(@"%f, %f", flowLayout.minimumLineSpacing, flowLayout.minimumInteritemSpacing);
+//    FNLOG(@"%@", NSStringFromCGSize(CGSizeMake(self.view.frame.size.width, self.view.frame.size.height)));
+//    return CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
+//}
 
 #pragma mark UICollectionView Delegate
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {

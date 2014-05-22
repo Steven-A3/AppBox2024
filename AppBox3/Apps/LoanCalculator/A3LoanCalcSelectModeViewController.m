@@ -12,7 +12,7 @@
 
 #import "A3AppDelegate.h"
 #import "A3NumberKeyboardViewController.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 
 @interface A3LoanCalcSelectModeViewController ()
 

@@ -20,7 +20,7 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "NSDate+TimeAgo.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "WalletCategory.h"
 #import "A3WalletVideoItemViewController.h"
 #import "A3WalletItemEditViewController.h"

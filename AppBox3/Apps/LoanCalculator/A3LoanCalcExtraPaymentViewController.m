@@ -11,7 +11,7 @@
 #import "A3LoanCalcDateInputCell.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3AppDelegate.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "UIViewController+LoanCalcAddtion.h"
 #import "A3SearchViewController.h"

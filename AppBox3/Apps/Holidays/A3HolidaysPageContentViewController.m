@@ -21,7 +21,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3BackgroundWithPatternView.h"
 #import "FXLabel.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 
 typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	HolidaysHeaderViewSegmentedControl = 1000,
@@ -205,6 +205,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 
 - (void)setupImageView {
 	_imageView = [DKLiveBlurView new];
+	_imageView.contentMode = UIViewContentModeScaleAspectFill;
 	_imageView.userInteractionEnabled = NO;
 	[self.view insertSubview:_imageView aboveSubview:_backgroundView];
 
@@ -723,8 +724,8 @@ static NSString *const CellIdentifier = @"holidaysCell";
 - (void)scrollToRightPosition:(UIScrollView *)scrollView enforceToMiddle:(BOOL)enforceToMiddle animated:(BOOL)animated {
 	CGFloat middleTarget;
 	if (IS_IPHONE) {
-		CGRect screenBoudns = [self screenBoundsAdjustedWithOrientation];
-		if (screenBoudns.size.height == 480) {
+		CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+		if (screenBounds.size.height == 480) {
 			middleTarget = 280;
 		} else {
 			middleTarget = 359;

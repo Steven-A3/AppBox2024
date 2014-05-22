@@ -8,7 +8,7 @@
 
 #import "A3CurrencySelectViewController.h"
 #import "CurrencyFavorite.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3CacheStoreManager.h"
 #import "CurrencyRateItem.h"
 #import "A3CurrencyDataManager.h"

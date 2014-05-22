@@ -8,7 +8,7 @@
 
 #import "A3CalculatorHistoryViewController.h"
 #import "A3CalculatorHistoryCell.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+A3Addition.h"
 #import "Calculation.h"

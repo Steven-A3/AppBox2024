@@ -12,7 +12,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "UIViewController+LoanCalcAddtion.h"
 #import "A3LoanCalcLoanDetailViewController.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "LoanCalcString.h"
 #import "A3LoanCalcMonthlyDataViewController.h"
 #import "A3NumberKeyboardViewController.h"

@@ -8,7 +8,7 @@
 
 #import "UIViewController+A3Addition.h"
 #import "A3WalletCategoryViewController.h"
-#import "UIViewController+A3AppCategory.h"
+#import "UIViewController+NumberKeyboard.h"
 #import "A3WalletAllViewController.h"
 #import "WalletCategory.h"
 #import "WalletItem+Favorite.h"
