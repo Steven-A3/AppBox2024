@@ -96,10 +96,6 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-		FNLOG();
-		[self removeObserver];
-	}
 	_previousOrientation = CURRENT_ORIENTATION;
 }
 
@@ -118,9 +114,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	}
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-
+- (void)startDownloadWallpaperFromFlickr {
 	[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:_countryCode];
 }
 
@@ -130,15 +124,16 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 }
 
 - (void)imageDownloaded:(NSNotification *)notification {
-	dispatch_sync(dispatch_get_main_queue(), ^{
-		if ([notification.userInfo[@"CountryCode"] isEqualToString:_countryCode]) {
-			[self setupBottomGradientView];
-			[_pageViewController updatePhotoLabelText];
-			_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode];
+	FNLOG(@"%@, %@", notification.userInfo[@"CountryCode"], _countryCode);
+	if ([notification.userInfo[@"CountryCode"] isEqualToString:_countryCode]) {
+		[self setupBottomGradientView];
+		[_pageViewController updatePhotoLabelText];
+		_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode];
 
+		dispatch_async(dispatch_get_main_queue(), ^{
 			[self alertAcknowledgment];
-		}
-	});
+		});
+	}
 }
 
 - (void)alertAcknowledgment {
