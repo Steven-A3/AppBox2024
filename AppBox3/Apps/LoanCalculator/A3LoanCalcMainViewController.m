@@ -1126,16 +1126,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             case A3LC_CalculationForTermOfYears:
             {
                 NSString *unit = [LoanCalcString shortTitleOfFrequency:A3LC_FrequencyAnnually];
-//                int yearInt = (int)(data.monthOfTerms.doubleValue/12.0);
-//                int monthInt = (int)round(data.monthOfTerms.doubleValue);
-//                int yearInt = (int)(round(data.monthOfTerms.doubleValue / 12.0));
-//                int monthInt = (int)round(data.monthOfTerms.doubleValue);
-//                NSString *result = [NSString stringWithFormat:@"%d %@(%d mo)", yearInt, unit, monthInt];
-//                return result;
-//                break;
                 if (round([data.monthOfTerms doubleValue]) < 12.0) {
                     NSInteger monthInt = roundl([data.monthOfTerms doubleValue]);
-                    NSString *result = [NSString stringWithFormat:@"(%ld mo)", (long)monthInt];
+                    NSString *result = [NSString stringWithFormat:@"0 %@ %ld mo", unit, (long)monthInt];
                     return result;
                 }
                 else {
@@ -1146,7 +1139,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                         result = [NSString stringWithFormat:@"%ld %@", (long)yearInt, unit];
                     }
                     else {
-                        result = [NSString stringWithFormat:@"%ld %@(%ld mo)", (long)yearInt, unit, (long)monthInt];
+                        result = [NSString stringWithFormat:@"%ld %@ %ld mo", (long)yearInt, unit, (long)monthInt];
                     }
                     return result;
                 }
