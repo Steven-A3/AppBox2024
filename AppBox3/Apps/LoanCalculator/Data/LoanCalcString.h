@@ -38,6 +38,7 @@
 #define A3LC_ExtraPaymentTitle_Yearly   @"Yearly";
 #define A3LC_ExtraPaymentTitle_Onetime  @"One-Time";
 
+@class LoanCalcData;
 @interface LoanCalcString : NSObject
 
 + (NSString *)titleOfCalFor:(A3LoanCalcCalculationMode)mode;
@@ -45,5 +46,5 @@
 + (NSString *)titleOfFrequency:(A3LoanCalcFrequencyType)type;
 + (NSString *)titleOfExtraPayment:(A3LoanCalcExtraPaymentType)type;
 + (NSString *)shortTitleOfFrequency:(A3LoanCalcFrequencyType)type;
-
++ (NSString *)valueTextForCalcItem:(A3LoanCalcCalculationItem)calcItem fromData:(LoanCalcData *)loan formatter:(NSNumberFormatter *)currencyFormatter;
 @end

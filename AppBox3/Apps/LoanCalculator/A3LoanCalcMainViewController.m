@@ -1250,97 +1250,63 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     
 	if (_isComparisonMode) {
 		// * Loan A
-		[body appendFormat:@"* Loan A <br>"];
-		[body appendFormat:@"Principal: %@<br>", [self.loanFormatter stringFromNumber:_loanDataA.principal]];
-		if ([_loanDataA downPayment]) {
-			[body appendFormat:@"Down Payment: %@<br>", [_loanDataA downPayment]];  // Down Payment: (값이 있는 경우)
-		}
-		[body appendFormat:@"Term: %@ years.<br>", [_loanDataA termValueString]];
-		[body appendFormat:@"Interest Rate: %@<br>", [_loanDataA interestRateString]];
-		[body appendFormat:@"Frequency: %@ <br>", [LoanCalcString titleOfFrequency:_loanDataA.frequencyIndex]];  // Frequency: Monthly (선택값)
-		if (_loanDataA.extraPaymentMonthly && [_loanDataA.extraPaymentMonthly floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(monthly): %@ <br>", [self.loanFormatter stringFromNumber:_loanDataA.extraPaymentMonthly]];  // Extra Payment(monthly): (값이 있는 경우)
-		}
-		if (_loanDataA.extraPaymentYearly && [_loanDataA.extraPaymentYearly floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(yearly): %@ <br>", [self.loanFormatter stringFromNumber:_loanDataA.extraPaymentYearly]];  // Extra Payment(yearly): (값이 있는 경우)
-		}
-		if (_loanDataA.extraPaymentOneTime && [_loanDataA.extraPaymentOneTime floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(one-time): %@ <br>", [self.loanFormatter stringFromNumber:_loanDataA.extraPaymentOneTime]];  // Extra Payment(one-time): (값이 있는 경우)
-		}
-        
-		[body appendFormat:@"Payment: %@ <br>", [self.loanFormatter stringFromNumber:_loanDataA.repayment]];  // Payment: (사용자가 선택한 calculation과 결과값. 위의 입력값은 calculation 선택값에 따라 달라집니다.)
-        
-		if ([self isTotalMode]) {
-			[body appendFormat:@"Interest: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataA totalInterest]]];  // Interest: $23,981.60 (결과값)
-			[body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]]];  // Total Amount: $223,981.60 (결과값)
-		}
-		else {
-			[body appendFormat:@"Interest: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataA totalInterest]]];  // Interest: $23,981.60 (결과값)
-			[body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]]];  // Total Amount: $223,981.60 (결과값)
-		}
+		[body appendFormat:@"** Loan A <br>"];
+        [body appendString:[self shareStringForLoanCalcData:_loanDataA]];
         
 		// * Loan B
-		[body appendFormat:@"<br>* Loan B <br>"];
-		[body appendFormat:@"Principal: %@<br>", [self.loanFormatter stringFromNumber:_loanDataB.principal]];
-		if ([_loanDataB downPayment]) {
-			[body appendFormat:@"Down Payment: %@<br>", [_loanDataB downPayment]];  // Down Payment: (값이 있는 경우)
-		}
-		[body appendFormat:@"Term: %@ years.<br>", [_loanDataB termValueString]];
-		[body appendFormat:@"Interest Rate: %@<br>", [_loanDataB interestRateString]];
-		[body appendFormat:@"Frequency: %@ <br>", [LoanCalcString titleOfFrequency:_loanDataB.frequencyIndex]];  // Frequency: Monthly (선택값)
-		if (_loanDataB.extraPaymentMonthly && [_loanDataB.extraPaymentMonthly floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(monthly): %@ <br>", [self.loanFormatter stringFromNumber:_loanDataB.extraPaymentMonthly]];  // Extra Payment(monthly): (값이 있는 경우)
-		}
-		if (_loanDataB.extraPaymentYearly && [_loanDataB.extraPaymentYearly floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(yearly): %@ <br>", [self.loanFormatter stringFromNumber:_loanDataB.extraPaymentYearly]];  // Extra Payment(yearly): (값이 있는 경우)
-		}
-		if (_loanDataB.extraPaymentOneTime && [_loanDataB.extraPaymentOneTime floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(one-time): %@ <br>", [self.loanFormatter stringFromNumber:_loanDataB.extraPaymentOneTime]];  // Extra Payment(one-time): (값이 있는 경우)
-		}
-        
-		[body appendFormat:@"Payment: %@ <br>", [self.loanFormatter stringFromNumber:_loanDataB.repayment]];  // Payment: (사용자가 선택한 calculation과 결과값. 위의 입력값은 calculation 선택값에 따라 달라집니다.)
-        
-		if ([self isTotalMode]) {
-			[body appendFormat:@"Interest: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataB totalInterest]]];  // Interest: $23,981.60 (결과값)
-			[body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]]];  // Total Amount: $223,981.60 (결과값)
-		}
-		else {
-			[body appendFormat:@"Interest: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataB totalInterest]]];  // Interest: $23,981.60 (결과값)
-			[body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]]];  // Total Amount: $223,981.60 (결과값)
-		}
+		[body appendFormat:@"<br>** Loan B <br>"];
+        [body appendString:[self shareStringForLoanCalcData:_loanDataB]];
 	}
 	else {
         // Loan Mode
-        [body appendString:@"*Calculation<br>"];
-        [body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[self.loanData totalAmount]]];
-        
-		[body appendFormat:@"Principal: %@<br>", [self.loanFormatter stringFromNumber:self.loanData.principal]];
-		if ([self.loanData downPayment]) {
-			[body appendFormat:@"Down Payment: %@<br>", [self.loanData downPayment]];  // Down Payment: (값이 있는 경우)
-		}
-		[body appendFormat:@"Term: %@ years.<br>", [self.loanData termValueString]];
-		[body appendFormat:@"Interest Rate: %@<br>", [self.loanData interestRateString]];
-		[body appendFormat:@"Frequency: %@ <br>", [LoanCalcString titleOfFrequency:self.loanData.frequencyIndex]];  // Frequency: Monthly (선택값)
-		if (self.loanData.extraPaymentMonthly && [self.loanData.extraPaymentMonthly floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(monthly): %@ <br>", [self.loanFormatter stringFromNumber:self.loanData.extraPaymentMonthly]];  // Extra Payment(monthly): (값이 있는 경우)
-		}
-		if (self.loanData.extraPaymentYearly && [self.loanData.extraPaymentYearly floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(yearly): %@ <br>", [self.loanFormatter stringFromNumber:self.loanData.extraPaymentYearly]];  // Extra Payment(yearly): (값이 있는 경우)
-		}
-		if (self.loanData.extraPaymentOneTime && [self.loanData.extraPaymentOneTime floatValue] > 0.0) {
-			[body appendFormat:@"Extra Payment(one-time): %@ <br>", [self.loanFormatter stringFromNumber:self.loanData.extraPaymentOneTime]];  // Extra Payment(one-time): (값이 있는 경우)
-		}
-        
-		[body appendFormat:@"Payment: %@ <br>", [self.loanFormatter stringFromNumber:self.loanData.repayment]];  // Payment: (사용자가 선택한 calculation과 결과값. 위의 입력값은 calculation 선택값에 따라 달라집니다.)
-        
-		if ([self isTotalMode]) {
-			[body appendFormat:@"Interest: %@ <br>", [self.loanFormatter stringFromNumber:[self.loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
-			[body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[self.loanData totalAmount]]];  // Total Amount: $223,981.60 (결과값)
-		}
-		else {
-			[body appendFormat:@"Interest: %@ <br>", [self.loanFormatter stringFromNumber:[self.loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
-		}
+        body = [self shareStringForLoanCalcData:self.loanData];
 	}
+    
+    return body;
+}
+
+- (NSMutableString *)shareStringForLoanCalcData:(LoanCalcData *)loanData
+{
+    NSMutableString *body = [NSMutableString new];
+    [body appendString:@"*Calculation<br>"];
+    [body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[loanData totalAmount]]];
+    [body appendFormat:@"%@ :", [[LoanCalcString titleOfCalFor:loanData.calculationMode] uppercaseString]];
+    
+    A3LoanCalcCalculationItem resultItem = [LoanCalcMode resltItemForCalcMode:loanData.calculationMode];
+    if (loanData.calculationMode == A3LC_CalculationForTermOfMonths) {
+        NSInteger monthInt =  (int)round(loanData.monthOfTerms.doubleValue);
+        [body appendString:[NSString stringWithFormat:@"%ld months", (long)monthInt]];
+    }
+    else if (loanData.calculationMode == A3LC_CalculationForTermOfYears) {
+        NSInteger yearInt =  (int)round(loanData.monthOfTerms.doubleValue/12.0);
+        [body appendString:[NSString stringWithFormat:@"%ld years", (long)yearInt]];
+    }
+    else {
+        [body appendString:[LoanCalcString valueTextForCalcItem:resultItem fromData:loanData formatter:self.currencyFormatter]];
+    }
+    
+    // Inputs
+    [body appendString:@"<br><br>*Input<br>"];
+    BOOL downPaymentEnable = (loanData.showDownPayment && (loanData.downPayment.doubleValue >0)) ? YES:NO;
+    NSArray *inputCalcItems = [LoanCalcMode calculateItemForMode:loanData.calculationMode withDownPaymentEnabled:downPaymentEnable];
+    [inputCalcItems enumerateObjectsUsingBlock:^(NSNumber *itemID, NSUInteger idx, BOOL *stop) {
+        A3LoanCalcCalculationItem inputCalcItem = (A3LoanCalcCalculationItem)[itemID integerValue];
+        [body appendFormat:@"%@ : ", [LoanCalcString titleOfItem:inputCalcItem]];
+        [body appendFormat:@"%@<br>", [LoanCalcString valueTextForCalcItem:inputCalcItem fromData:loanData formatter:self.currencyFormatter]];
+    }];
+    
+    if (loanData.extraPaymentMonthly && [loanData.extraPaymentMonthly floatValue] > 0.0) {
+        // Extra Payment(monthly): (값이 있는 경우)
+        [body appendFormat:@"Extra Payment(monthly): %@ <br>", [self.loanFormatter stringFromNumber:loanData.extraPaymentMonthly]];
+    }
+    if (loanData.extraPaymentYearly && [loanData.extraPaymentYearly floatValue] > 0.0) {
+        // Extra Payment(yearly): (값이 있는 경우)
+        [body appendFormat:@"Extra Payment(yearly): %@ <br>", [self.loanFormatter stringFromNumber:loanData.extraPaymentYearly]];
+    }
+    if (loanData.extraPaymentOneTime && [loanData.extraPaymentOneTime floatValue] > 0.0) {
+        // Extra Payment(one-time): (값이 있는 경우)
+        [body appendFormat:@"Extra Payment(one-time): %@ <br>", [self.loanFormatter stringFromNumber:loanData.extraPaymentOneTime]];
+    }
     
     return body;
 }

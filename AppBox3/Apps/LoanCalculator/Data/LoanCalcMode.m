@@ -156,10 +156,10 @@
     }
 }
 
-+ (A3LoanCalcCalculationItem)resltItemForCalcFor:(A3LoanCalcCalculationMode)calFor
++ (A3LoanCalcCalculationItem)resltItemForCalcMode:(A3LoanCalcCalculationMode)calcMode
 {
     A3LoanCalcCalculationItem resultItem = A3LC_CalculationItemRepayment;
-    switch (calFor) {
+    switch (calcMode) {
         case A3LC_CalculationForDownPayment:
             resultItem = A3LC_CalculationItemDownPayment;
             break;

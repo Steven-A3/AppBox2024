@@ -48,6 +48,6 @@ typedef NS_ENUM(NSUInteger, A3LoanCalcExtraPaymentType) {
 + (NSArray *) extraPaymentTypes;
 + (NSArray *) calculateItemForMode:(A3LoanCalcCalculationMode) mode withDownPaymentEnabled:(BOOL)enabled;
 + (NSArray *) compareCalculateItemsForDownPaymentEnabled:(BOOL)onoff;
-+ (A3LoanCalcCalculationItem)resltItemForCalcFor:(A3LoanCalcCalculationMode)calFor;
++ (A3LoanCalcCalculationItem)resltItemForCalcMode:(A3LoanCalcCalculationMode)calcMode;
 
 @end

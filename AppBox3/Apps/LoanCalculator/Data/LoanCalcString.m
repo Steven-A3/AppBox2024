@@ -7,6 +7,7 @@
 //
 
 #import "LoanCalcString.h"
+#import "LoanCalcData.h"
 
 @implementation LoanCalcString
 
@@ -141,6 +142,38 @@
         default:
             return @"";
             break;
+    }
+}
+
++ (NSString *)valueTextForCalcItem:(A3LoanCalcCalculationItem)calcItem fromData:(LoanCalcData *)loan formatter:(NSNumberFormatter *)currencyFormatter
+{
+    switch (calcItem) {
+        case A3LC_CalculationItemDownPayment:
+        {
+            return [currencyFormatter stringFromNumber:loan.downPayment];
+        }
+        case A3LC_CalculationItemFrequency:
+        {
+            return [LoanCalcString titleOfFrequency:loan.frequencyIndex];
+        }
+        case A3LC_CalculationItemInterestRate:
+        {
+            return [loan interestRateString];
+        }
+        case A3LC_CalculationItemPrincipal:
+        {
+            return [currencyFormatter stringFromNumber:loan.principal];
+        }
+        case A3LC_CalculationItemRepayment:
+        {
+            return [NSString stringWithFormat:@"%@/%@", [currencyFormatter stringFromNumber:loan.repayment], [LoanCalcString shortTitleOfFrequency:loan.frequencyIndex]];
+        }
+        case A3LC_CalculationItemTerm:
+        {
+            return [loan termValueString];
+        }
+        default:
+            return @"";
     }
 }
 
