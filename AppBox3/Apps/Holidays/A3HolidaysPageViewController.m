@@ -37,7 +37,7 @@
 @property (nonatomic, strong) UILabel *photoLabel2;
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, strong) MASConstraint *pageControlWidth;
-@property (nonatomic, strong) A3GradientView *topGradientView;
+@property (nonatomic, strong) A3GradientView *coverGradientView;
 @property (nonatomic, strong) NSTimer *dayChangedTimer;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) UIPageViewController *pageViewController;
@@ -64,7 +64,7 @@
 	_photoLabel1 = nil;
 	_photoLabel2 = nil;
 	_footerView = nil;
-	_topGradientView = nil;
+	_coverGradientView = nil;
 	_dayChangedTimer = nil;
 	_viewControllerCache = nil;
 }
@@ -89,7 +89,7 @@
 	[self setupNavigationBar];
 
 	[self setupFooterView];
-	[self topGradientView];
+	[self coverGradientView];
 
 	[self.view layoutIfNeeded];
 	[self registerContentSizeCategoryDidChangeNotification];
@@ -266,26 +266,49 @@
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	[[UIApplication sharedApplication] setStatusBarHidden:hidden];
 	[self.navigationController setNavigationBarHidden:hidden];
-	[_topGradientView setHidden:hidden];
+	[self setupCoverGradientOnTappedStatus:!hidden];
 }
 
-- (A3GradientView *)topGradientView {
-	if (!_topGradientView) {
-		_topGradientView = [A3GradientView new];
-		_topGradientView.gradientColors = @[(id) [UIColor colorWithWhite:0.0 alpha:0.15].CGColor, (id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor];
-		[self.view addSubview:_topGradientView];
+- (A3GradientView *)coverGradientView {
+	if (!_coverGradientView) {
+		_coverGradientView = [A3GradientView new];
+		_coverGradientView.locations = @[@0, @0.5, @0.85, @1.0];
+		_coverGradientView.gradientColors = @[
+				(id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
+				(id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
+				(id) [UIColor colorWithWhite:0.0 alpha:0.17].CGColor,
+				(id) [UIColor colorWithWhite:0.0 alpha:0.17].CGColor
+		];
+		[self.view addSubview:_coverGradientView];
 
-		[_topGradientView makeConstraints:^(MASConstraintMaker *make) {
+		[_coverGradientView makeConstraints:^(MASConstraintMaker *make) {
 			make.top.equalTo(self.view.top);
 			make.left.equalTo(self.view.left);
 			make.right.equalTo(self.view.right);
-			make.height.equalTo(@80);
+			make.bottom.equalTo(self.view.bottom);
 		}];
-
-		[_topGradientView setHidden:YES];
 	}
 
-	return _topGradientView;
+	return _coverGradientView;
+}
+
+- (void)setupCoverGradientOnTappedStatus:(BOOL)tapped {
+	if (tapped) {
+		self.coverGradientView.gradientColors = @[
+				(id) [UIColor colorWithWhite:0.0 alpha:0.17].CGColor,
+				(id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
+				(id) [UIColor colorWithWhite:0.0 alpha:0.17].CGColor,
+				(id) [UIColor colorWithWhite:0.0 alpha:0.17].CGColor
+		];
+	} else {
+		self.coverGradientView.gradientColors = @[
+				(id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
+				(id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
+				(id) [UIColor colorWithWhite:0.0 alpha:0.17].CGColor,
+				(id) [UIColor colorWithWhite:0.0 alpha:0.17].CGColor
+		];
+	}
+	[self.coverGradientView setNeedsDisplay];
 }
 
 - (void)setupRightBarButtonItems {

@@ -7,10 +7,8 @@
 //
 
 #import "A3HolidaysCell.h"
-#import "UITableViewCell+accessory.h"
-#import "A3UIDevice.h"
-#import "FXLabel.h"
 #import "SFKImage.h"
+#import "UITableViewCell+accessory.h"
 
 @interface A3HolidaysCell ()
 
@@ -27,11 +25,10 @@
     if (self) {
 		// Initialization code
 
-		_titleLabel = [FXLabel new];
+		_titleLabel = [UILabel new];
 		_titleLabel.textColor = [UIColor whiteColor];
 		_titleLabel.adjustsFontSizeToFitWidth = YES;
 		_titleLabel.minimumScaleFactor = 0.5;
-		[self setShadowToLabel:_titleLabel];
 		[self addSubview:_titleLabel];
 
 		[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -40,12 +37,11 @@
 			_titleCenterY = make.centerY.equalTo(self.centerY).with.offset(0);
 		}];
 
-		_lunarDateLabel = [FXLabel new];
+		_lunarDateLabel = [UILabel new];
 		_lunarDateLabel.textAlignment = NSTextAlignmentRight;
 		_lunarDateLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
 		_lunarDateLabel.adjustsFontSizeToFitWidth = YES;
 		_lunarDateLabel.minimumScaleFactor = 0.5;
-		[self setShadowToLabel:_lunarDateLabel];
 		[self addSubview:_lunarDateLabel];
 
 		[_lunarDateLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -75,12 +71,6 @@
     return self;
 }
 
-- (void)setShadowToLabel:(FXLabel *)label {
-	label.shadowOffset = CGSizeMake(0, 1);
-	label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.45];
-	label.shadowBlur = 2;
-}
-
 - (void)assignFontsToLabels {
 	_titleLabel.textColor = [UIColor whiteColor];
 	_dateLabel.textColor = [UIColor whiteColor];
@@ -99,12 +89,11 @@
 
 - (UILabel *)dateLabel {
 	if (!_dateLabel) {
-		_dateLabel = [FXLabel new];
+		_dateLabel = [UILabel new];
 		_dateLabel.textColor = [UIColor whiteColor];
 		_dateLabel.adjustsFontSizeToFitWidth = YES;
 		_dateLabel.minimumScaleFactor = 0.5;
 		_dateLabel.textAlignment = NSTextAlignmentRight;
-		[self setShadowToLabel:_dateLabel];
 		[self addSubview:_dateLabel];
 
 		if (IS_IPHONE) {

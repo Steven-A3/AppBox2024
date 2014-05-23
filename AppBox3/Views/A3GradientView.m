@@ -44,6 +44,7 @@
 	_vertical = NO;
 	self.backgroundColor = [UIColor clearColor];
 	self.contentMode = UIViewContentModeRedraw;
+	self.userInteractionEnabled = NO;
 }
 
 - (void)awakeFromNib {

@@ -9,18 +9,15 @@
 #import "A3HolidaysPageContentViewController.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
-#import "A3UIDevice.h"
 #import "A3GradientView.h"
 #import "SFKImage.h"
 #import "A3FSegmentedControl.h"
-#import "common.h"
 #import "A3HolidaysCell.h"
 #import "NSDate+daysleft.h"
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "DKLiveBlurView.h"
 #import "UIViewController+A3Addition.h"
 #import "A3BackgroundWithPatternView.h"
-#import "FXLabel.h"
 #import "UIViewController+NumberKeyboard.h"
 
 typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
@@ -37,7 +34,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 @property (nonatomic, strong) DKLiveBlurView *imageView;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) A3BackgroundWithPatternView *backgroundView;
-@property (nonatomic, strong) A3GradientView *bottomGradientView;
+@property (nonatomic, strong) UIView *coverViewOnBlur;
 
 @end
 
@@ -126,7 +123,6 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 - (void)imageDownloaded:(NSNotification *)notification {
 	FNLOG(@"%@, %@", notification.userInfo[@"CountryCode"], _countryCode);
 	if ([notification.userInfo[@"CountryCode"] isEqualToString:_countryCode]) {
-		[self setupBottomGradientView];
 		[_pageViewController updatePhotoLabelText];
 		_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode];
 
@@ -159,7 +155,6 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[self updateTableHeaderView:_tableView.tableHeaderView];
 	[self.tableView reloadData];
 	if (redrawImage) {
-		[self setupBottomGradientView];
 		[_pageViewController updatePhotoLabelText];
 		_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode];
 		[_imageView setScrollView:_tableView];
@@ -180,25 +175,6 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	_backgroundView.frame = self.view.bounds;
 	_backgroundView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	[self.view insertSubview:_backgroundView atIndex:0];
-}
-
-- (void)setupBottomGradientView {
-	if (!_bottomGradientView) {
-		_bottomGradientView = [A3GradientView new];
-		_bottomGradientView.gradientColors = @[
-				(id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
-				(id) [UIColor colorWithWhite:0.0 alpha:1.0].CGColor
-		];
-
-		[self.view insertSubview:_bottomGradientView belowSubview:self.tableView];
-
-		[_bottomGradientView makeConstraints:^(MASConstraintMaker *make) {
-			make.top.equalTo(self.view.bottom).with.offset(-150);
-			make.left.equalTo(self.view.left);
-			make.right.equalTo(self.view.right);
-			make.bottom.equalTo(self.view.bottom);
-		}];
-	}
 }
 
 - (void)setupImageView {
@@ -229,9 +205,25 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	UIImage *image = [downloadManager imageForCountryCode:_countryCode];
 	if (image) {
 		_imageView.originalImage = image;
-
-		[self setupBottomGradientView];
 	}
+}
+
+- (UIView *)coverViewOnBlur {
+	if (!_coverViewOnBlur) {
+		_coverViewOnBlur = [UIView new];
+		_coverViewOnBlur.userInteractionEnabled = NO;
+		_coverViewOnBlur.backgroundColor = [UIColor colorWithWhite:0 alpha:0.17];
+		_coverViewOnBlur.hidden = YES;
+		[self.view addSubview:_coverViewOnBlur];
+
+		[_coverViewOnBlur makeConstraints:^(MASConstraintMaker *make) {
+			make.top.equalTo(self.view.top);
+			make.left.equalTo(self.view.left);
+			make.right.equalTo(self.view.right);
+			make.bottom.equalTo(self.view.bottom);
+		}];
+	}
+	return _coverViewOnBlur;
 }
 
 - (void)didReceiveMemoryWarning
@@ -411,9 +403,6 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	nameLabel.lineBreakMode = NSLineBreakByClipping;
 	nameLabel.adjustsFontSizeToFitWidth = YES;
 	nameLabel.minimumScaleFactor = 0.1;
-	nameLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.35];
-	nameLabel.shadowOffset = CGSizeMake(0, 1);
-//		[self setupShadow:nameLabel];
 	[headerView addSubview:nameLabel];
 
 	[nameLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -422,13 +411,12 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		make.bottom.equalTo(yearBorderView.top).with.offset(IS_IPHONE ? -62 : -124);
 	}];
 
-	FXLabel *daysLeftLabel = [FXLabel new];
+	UILabel *daysLeftLabel = [UILabel new];
 	daysLeftLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:17];
 	daysLeftLabel.tag = HolidaysHeaderViewDaysLeftLabel;
-	daysLeftLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
+	daysLeftLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.8];
 	daysLeftLabel.textAlignment = NSTextAlignmentCenter;
 	daysLeftLabel.lineBreakMode = NSLineBreakByClipping;
-	[self setupShadow:daysLeftLabel];
 	[headerView addSubview:daysLeftLabel];
 
 	[daysLeftLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -437,14 +425,13 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		make.bottom.equalTo(nameLabel.top).with.offset(4);
 	}];
 
-	FXLabel *countryNameLabel = [FXLabel new];
+	UILabel *countryNameLabel = [UILabel new];
 	countryNameLabel.tag = HolidaysHeaderViewCountryLabel;
 	countryNameLabel.textColor = [UIColor whiteColor];
 	countryNameLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:30];
 	countryNameLabel.textAlignment = NSTextAlignmentCenter;
 	countryNameLabel.adjustsFontSizeToFitWidth = YES;
 	countryNameLabel.minimumScaleFactor = 0.5;
-	[self setupShadow:countryNameLabel];
 	[headerView addSubview:countryNameLabel];
 
 	[countryNameLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -457,12 +444,6 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	[headerView layoutIfNeeded];
 
 	return headerView;
-}
-
-- (void)setupShadow:(FXLabel *)label {
-	label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.35];
-	label.shadowOffset = CGSizeMake(0, 1);
-	label.shadowBlur = 2;
 }
 
 - (void)updateTableHeaderView {
@@ -700,6 +681,10 @@ static NSString *const CellIdentifier = @"holidaysCell";
 }
 
 #pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+	[self.coverViewOnBlur setHidden:scrollView.contentOffset.y == 0];
+}
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
 	[_pageViewController setNavigationBarHidden:YES];
