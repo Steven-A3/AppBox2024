@@ -11,6 +11,7 @@
 #import "A3AppDelegate+iCloud.h"
 #import "A3SettingsDropboxSelectBackupViewController.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3AppDelegate+appearance.h"
 #import <DropboxSDK/DropboxSDK.h>
 
 NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
@@ -126,6 +127,8 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (cell.tag == 1100) {
 		cell.detailTextLabel.text = self.dropboxAccountInfo ? _dropboxAccountInfo.displayName : @"";
+	} else {
+		cell.textLabel.textColor = [[A3AppDelegate instance] themeColor];
 	}
 }
 
