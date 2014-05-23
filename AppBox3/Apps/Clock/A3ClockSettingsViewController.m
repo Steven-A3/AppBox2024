@@ -303,6 +303,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 }
 
 - (NSUInteger)a3SupportedInterfaceOrientations {
+	if (IS_IPHONE) return UIInterfaceOrientationMaskPortrait;
 	return UIInterfaceOrientationMaskAll;
 }
 

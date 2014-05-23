@@ -139,10 +139,10 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 		case 1:
 			switch (indexPath.row) {
 				case 0:
-					break;
-				case 1:
 					_selectBackupInProgress = YES;
 					[self.restClient loadMetadata:kDropboxDir];
+					break;
+				case 1:
 					break;
 			}
 			break;
@@ -173,20 +173,15 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 
 - (void)restClient:(DBRestClient *)client loadedAccountInfo:(DBAccountInfo *)info {
 	self.dropboxAccountInfo = info;
+	[self.restClient loadMetadata:kDropboxDir];
 
 	[self.tableView reloadData];
 }
 
 - (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
-	if (_selectBackupInProgress) {
-		if (![metadata.contents count]) {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Dropbox" message:@"You have no backup files stored in Dropbox." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-			[alertView show];
-		} else {
-			self.dropboxMetadata = metadata;
-			[self performSegueWithIdentifier:@"dropboxSelectBackup" sender:nil];
-		}
-	}
+	self.dropboxMetadata = metadata;
+	FNLOG(@"%@", self.dropboxMetadata);
+	[self.tableView reloadData];
 }
 
 - (void)restClient:(DBRestClient *)client loadedFile:(NSString *)destPath {
@@ -202,7 +197,6 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 	[_HUD hide:YES];
 	_HUD = nil;
 }
-
 
 #pragma mark - segue
 
