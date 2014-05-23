@@ -21,6 +21,7 @@
 - (void) setRadian:(bool) bRadian;
 - (NSAttributedString *) getExpressionWith:(NSString *)mathExpression;
 - (NSString *) getMathExpression;
+- (NSAttributedString *) getMathAttributedExpression;
 - (void) evaluateAndSet;
 - (NSString *) getResultString;
 - (void) setMathExpression:(NSString *) mathExpression;

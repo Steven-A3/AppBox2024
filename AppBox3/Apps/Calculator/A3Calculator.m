@@ -35,6 +35,10 @@ typedef CMathParser<char, double> MathParser;
 - (NSString *) getMathExpression {
     return mathexpression;
 }
+
+- (NSAttributedString *) getMathAttributedExpression {
+    return [self getExpressionWith:mathexpression];
+}
 - (id) initWithLabel:(HTCopyableLabel *) expression result:(HTCopyableLabel *) result {
     self = [super init];
     if (self) {

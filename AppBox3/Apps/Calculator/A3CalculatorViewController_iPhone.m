@@ -498,7 +498,7 @@
 {
     if ([activityType isEqualToString:UIActivityTypeMail]) {
         NSAttributedString *shareString = [[NSAttributedString alloc] initWithString:@"I'd like to share a calculation with you.\n\n"];
-        NSMutableAttributedString *expression = [[NSMutableAttributedString alloc] initWithAttributedString:_expressionLabel.attributedText];
+        NSMutableAttributedString *expression = [[NSMutableAttributedString alloc] initWithAttributedString:[self.calculator getMathAttributedExpression]];
         if ([expression length] >= 3) {
             NSRange range;
             range.location = [expression length] - 3;
