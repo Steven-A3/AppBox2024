@@ -476,7 +476,7 @@
             [txt appendString:_shareTextList[i]];
             [txt appendString:@"<br/>"];
         }
-        [txt appendString:@"<br/>You can wallet more in the AppBox Pro.<br/><a href='https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8'>https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8</a></body></html>"];
+        [txt appendString:@"<br/>You can wallet more in the AppBox Pro.<br/><a href='https://itunes.apple.com/app/id318404385'>https://itunes.apple.com/app/id318404385</a></body></html>"];
 
         return txt;
     }

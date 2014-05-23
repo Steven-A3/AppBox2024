@@ -9,7 +9,6 @@
 #import "A3HolidaysPageContentViewController.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
-#import "A3GradientView.h"
 #import "SFKImage.h"
 #import "A3FSegmentedControl.h"
 #import "A3HolidaysCell.h"
@@ -214,7 +213,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 		_coverViewOnBlur.userInteractionEnabled = NO;
 		_coverViewOnBlur.backgroundColor = [UIColor colorWithWhite:0 alpha:0.17];
 		_coverViewOnBlur.hidden = YES;
-		[self.view addSubview:_coverViewOnBlur];
+		[self.view insertSubview:_coverViewOnBlur belowSubview:_tableView];
 
 		[_coverViewOnBlur makeConstraints:^(MASConstraintMaker *make) {
 			make.top.equalTo(self.view.top);

@@ -22,6 +22,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 @property (nonatomic, strong) DBAccountInfo *dropboxAccountInfo;
 @property (nonatomic, strong) DBMetadata *dropboxMetadata;
 @property (nonatomic, strong) MBProgressHUD *HUD;
+@property (nonatomic, strong) NSString *backupInfoString;
 
 @end
 
@@ -120,8 +121,18 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	if (section == 1 && _backupInfoString) {
+		return 56 - 18;
+	}
 	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
 	return [self standardHeightForFooterIsLastSection:isLastSection];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+	if (section == 1 && _backupInfoString) {
+		return _backupInfoString;
+	}
+	return [super tableView:tableView titleForFooterInSection:section];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -163,7 +174,6 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 	return _restClient;
 }
 
-
 #pragma mark - Dropbox DBSessionDelegate
 
 - (void)sessionDidReceiveAuthorizationFailure:(DBSession *)session userId:(NSString *)userId {
@@ -180,8 +190,33 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 
 - (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
 	self.dropboxMetadata = metadata;
-	FNLOG(@"%@", self.dropboxMetadata);
-	[self.tableView reloadData];
+	if (_selectBackupInProgress) {
+		if (![metadata.contents count]) {
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Dropbox" message:@"You have no backup files stored in Dropbox." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+			[alertView show];
+		} else {
+			[self performSegueWithIdentifier:@"dropboxSelectBackup" sender:nil];
+		}
+	} else {
+		FNLOG(@"%@", self.dropboxMetadata);
+		FNLOG(@"%@", metadata.lastModifiedDate);
+		FNLOG(@"%@", metadata.contents);
+		if (![metadata.contents count]) {
+			_backupInfoString = nil;
+		} else {
+			[metadata.contents enumerateObjectsUsingBlock:^(DBMetadata *fileData, NSUInteger idx, BOOL *stop) {
+				FNLOG(@"%@", fileData.filename);
+				FNLOG(@"%@", fileData.lastModifiedDate);
+			}];
+			NSArray *sortedArray = [metadata.contents sortedArrayUsingComparator:^NSComparisonResult(DBMetadata *file1, DBMetadata *file2) {
+				return [file1.lastModifiedDate compare:file2.lastModifiedDate];
+			}];
+			DBMetadata *lastItem = [sortedArray lastObject];
+			_backupInfoString = [NSString stringWithFormat:@"Last Backup: %@", lastItem.filename];
+		}
+
+		[self.tableView reloadData];
+	}
 }
 
 - (void)restClient:(DBRestClient *)client loadedFile:(NSString *)destPath {

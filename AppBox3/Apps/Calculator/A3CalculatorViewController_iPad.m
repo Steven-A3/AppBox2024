@@ -454,7 +454,7 @@
             shareString = [shareString appendWith:[expression appendWithString:[self.calculator getResultString]]];
             
         }
-        shareString = [shareString appendWithString:@"\n\nYou can calculate more in the AppBox Pro.\n https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8"];
+        shareString = [shareString appendWithString:@"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385"];
         return shareString;
     } else {
         return [self.calculator getResultString];
