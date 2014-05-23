@@ -117,12 +117,13 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 #pragma mark - UITableViewDelegate, UITableViewDataSource
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	if (section == 2) return 26;
 	return [self standardHeightForHeaderInSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if (section == 1 && _backupInfoString) {
-		return 56 - 18;
+		return 56 - 26;
 	}
 	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
 	return [self standardHeightForFooterIsLastSection:isLastSection];
@@ -212,7 +213,10 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 				return [file1.lastModifiedDate compare:file2.lastModifiedDate];
 			}];
 			DBMetadata *lastItem = [sortedArray lastObject];
-			_backupInfoString = [NSString stringWithFormat:@"Last Backup: %@", lastItem.filename];
+			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+			[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+			[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+			_backupInfoString = [NSString stringWithFormat:@"Last Backup: %@", [dateFormatter stringFromDate:lastItem.lastModifiedDate]];
 		}
 
 		[self.tableView reloadData];

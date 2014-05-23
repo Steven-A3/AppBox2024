@@ -41,7 +41,8 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 - (UIImageView *)selectedMarkView {
 	if (!_selectedMarkView) {
 		_selectedMarkView = [UIImageView new];
-		_selectedMarkView.image = [UIImage imageNamed:@"check"];
+		_selectedMarkView.image = [[UIImage imageNamed:@"check"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+		_selectedMarkView.tintColor = [[A3AppDelegate instance] themeColor];
 		[_selectedMarkView sizeToFit];
 	}
 	return _selectedMarkView;
@@ -130,6 +131,7 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 	[collectionView reloadData];
 
 	[A3AppDelegate instance].window.tintColor = self.colorsArray[_selectedColorIndex];
+	self.selectedMarkView.tintColor = self.colorsArray[_selectedColorIndex];
 
 	[[NSUserDefaults standardUserDefaults] setObject:@(_selectedColorIndex) forKey:kA3ThemeColorIndex];
 	[[NSUserDefaults standardUserDefaults] synchronize];

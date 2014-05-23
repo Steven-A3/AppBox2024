@@ -11,8 +11,9 @@
 #import "A3AppDelegate+mainMenu.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate+appearance.h"
+#import "Calculation.h"
 
-@interface A3SettingsRecentToKeepViewController ()
+@interface A3SettingsRecentToKeepViewController () <UIActionSheetDelegate>
 
 @end
 
@@ -86,26 +87,29 @@
 		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 		[[A3AppDelegate instance] storeMaximumNumberRecentlyUsedMenus:(NSUInteger) cell.tag];
 
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3AppsMainMenuContentsChangedNotification object:self];
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:self];
 		
 		[tableView reloadData];
 	}
 	else if (indexPath.section == 1)
 	{
+		[self askClearUsedItems];
+	}
+}
+
+- (void)askClearUsedItems {
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+															 delegate:self
+													cancelButtonTitle:@"Cancel"
+											   destructiveButtonTitle:@"Clear Recent"
+													otherButtonTitles:nil];
+	[actionSheet showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == actionSheet.destructiveButtonIndex) {
 		[[A3AppDelegate instance] clearRecentlyUsedMenus];
 		[self.tableView reloadData];
-
-		MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-
-		// Configure for text only and offset down
-		hud.mode = MBProgressHUDModeText;
-		hud.labelText = @"Recently used records are cleared.";
-		hud.margin = 10.f;
-		hud.yOffset = 150.f;
-		hud.removeFromSuperViewOnHide = YES;
-
-		[hud hide:YES afterDelay:3];
-
 	}
 }
 

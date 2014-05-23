@@ -38,7 +38,7 @@ NSString *const kA3MainMenuRecentlyUsed = @"kA3MainMenuRecentlyUsed";		// Store 
 NSString *const kA3MainMenuAllMenu = @"kA3MainMenuAllMenu";					// Store NSArray
 NSString *const kA3MainMenuMaxRecentlyUsed = @"kA3MainMenuMaxRecentlyUsed";	// Store NSNumber
 
-NSString *const A3AppsMainMenuContentsChangedNotification = @"A3AppsMainMenuContentsChangedNotification";
+NSString *const A3NotificationAppsMainMenuContentsChanged = @"A3NotificationAppsMainMenuContentsChanged";
 NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponder";
 NSString *const A3NotificationMainMenuDidShow = @"A3NotificationMainMenuDidShow";
 NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide";
@@ -94,13 +94,13 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataAvailable) name:A3NotificationCoreDataReady object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentsChanged) name:A3AppsMainMenuContentsChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentsChanged) name:A3NotificationAppsMainMenuContentsChanged object:nil];
 }
 
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCoreDataReady object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3AppsMainMenuContentsChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationAppsMainMenuContentsChanged object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:_usmStoreDidImportChangesObserver];
 }
 

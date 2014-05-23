@@ -67,8 +67,8 @@ static CGFloat const kFontSizeModifier = 1.5f;
 	}];
 
 	_headerLabel = [UILabel new];
-	_headerLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:18];
-	_headerLabel.textColor = [UIColor blackColor];
+	_headerLabel.font = kLabelFont;
+	_headerLabel.textColor = [UIColor colorWithWhite:0.31f alpha:1.0f];
 	_headerLabel.text = @"Enter your passcode";
 	_headerLabel.textAlignment = NSTextAlignmentCenter;
 	[self.view addSubview:_headerLabel];
@@ -310,6 +310,7 @@ static CGFloat const kFontSizeModifier = 1.5f;
 {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
+	cell.textLabel.font = [UIFont systemFontOfSize:17];
 	
     if (_isUserEnablingPasscode) {
 		[self setupCell:cell forRowEnablingPasscodeAtIndexPath:indexPath];

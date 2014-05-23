@@ -38,11 +38,11 @@
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, 57, 0, 0);
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentsDidChange:) name:A3AppsMainMenuContentsChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentsDidChange:) name:A3NotificationAppsMainMenuContentsChanged object:nil];
 }
 
 - (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3AppsMainMenuContentsChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationAppsMainMenuContentsChanged object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -184,7 +184,7 @@
 			[self.favoritesMenuItems removeObjectAtIndex:idxFavorite];
 			[[A3AppDelegate instance] storeFavorites:self.favoritesMenuItems];
 
-			[[NSNotificationCenter defaultCenter] postNotificationName:A3AppsMainMenuContentsChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:self];
 
 			[button setSelected:NO];
 		} else {
@@ -197,7 +197,7 @@
 			FNLOG(@"%@", menuItem);
 			[[A3AppDelegate instance] storeFavorites:self.favoritesMenuItems];
 
-			[[NSNotificationCenter defaultCenter] postNotificationName:A3AppsMainMenuContentsChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:self];
 
 			[button setSelected:YES];
 		} else {

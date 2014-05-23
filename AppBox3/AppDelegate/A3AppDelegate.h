@@ -40,7 +40,7 @@ extern NSString *const kA3MainMenuMaxRecentlyUsed;		// Store NSNumber
 extern NSString *const kA3MainMenuRecentlyUsed;
 
 /* Notifications */
-extern NSString *const A3AppsMainMenuContentsChangedNotification;
+extern NSString *const A3NotificationAppsMainMenuContentsChanged;
 extern NSString *const A3DrawerStateChanged;
 extern NSString *const A3MainMenuBecameFirstResponder;
 extern NSString *const A3NotificationMainMenuDidShow;

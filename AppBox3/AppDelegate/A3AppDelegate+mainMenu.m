@@ -179,7 +179,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 	mutableDictionary[kA3AppsDataUpdateDate] = updateDate;
 	[self storeMenuDictionary:mutableDictionary forKey:kA3MainMenuRecentlyUsed];
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:A3AppsMainMenuContentsChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
 }
 
 - (void)storeMenuDictionary:(NSMutableDictionary *)mutableDictionary forKey:(NSString *)key {
@@ -215,6 +215,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 	if ([self.ubiquityStoreManager cloudEnabled]) {
 		[[NSUbiquitousKeyValueStore defaultStore] removeObjectForKey:kA3MainMenuRecentlyUsed];
 	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
 }
 
 @end
