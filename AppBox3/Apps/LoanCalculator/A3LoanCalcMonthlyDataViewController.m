@@ -229,7 +229,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
             switch (extraType) {
                 case A3LC_ExtraPaymentMonthly:
                 {
-                    titleLB.text = IS_IPAD ? @"ExtraPayments(Monthly)" : @"Extra(Monthly)";
+                    titleLB.text = IS_IPAD ? @"Extra Payments(Monthly)" : @"Extra(Monthly)";
                     titleLB.text = [titleLB.text uppercaseString];
                     [titleLB sizeToFit];
                     valueLB.text = [self.currencyFormatter stringFromNumber:_loanData.extraPaymentMonthly];
@@ -237,7 +237,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
                 }
                 case A3LC_ExtraPaymentYearly:
                 {
-                    titleLB.text = IS_IPAD ? @"ExtraPayments(Yearly)":@"Extra(Yearly)";
+                    titleLB.text = IS_IPAD ? @"Extra Payments(Yearly)":@"Extra(Yearly)";
                     titleLB.text = [titleLB.text uppercaseString];
                     [titleLB sizeToFit];
 
@@ -266,8 +266,9 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
                 }
                 case A3LC_ExtraPaymentOnetime:
                 {
-                    titleLB.text = IS_IPAD ? @"ExtraPayments(Onetime)":@"Extra(Onetime)";
+                    titleLB.text = IS_IPAD ? @"Extra Payments(One-time)":@"Extra(One-time)";
                     titleLB.text = [titleLB.text uppercaseString];
+                    [titleLB sizeToFit];
 
                     NSString *currencyText = @"";
                     if (_loanData.extraPaymentOneTime) {

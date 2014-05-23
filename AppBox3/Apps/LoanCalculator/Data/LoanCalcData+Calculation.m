@@ -225,11 +225,9 @@
 	double interestRateOfFrequency = [self interestRateOfFrequency];
     
 	float calculatedPrincipal = principal - downPayment;
-	float term = logf(fabsf(repayment / (repayment - calculatedPrincipal * interestRateOfFrequency))) / log(fabsf(interestRateOfFrequency + 1));
-    term = fabsf(term);
+    double term = log(repayment / (repayment - calculatedPrincipal * interestRateOfFrequency)) / log(interestRateOfFrequency + 1);
     
-	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterm = %f\ndownPayment = %f", principal, repayment, interestRateOfFrequency, term, downPayment);
-    
+	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterm = %f\ndownPayment = %f", principal, repayment, interestRateOfFrequency, term, downPayment);  
     self.monthOfTerms = @([self termsInMonth:term]);
 }
 
