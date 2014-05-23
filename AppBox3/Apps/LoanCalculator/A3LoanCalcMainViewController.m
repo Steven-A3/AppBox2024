@@ -1569,12 +1569,39 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     if (IS_IPAD) {
         infoCell.amountLabel.text = [self.loanFormatter stringFromNumber:loan.totalAmount];
     }
+
     NSString *paymentText = [loan calculated] ? [self.loanFormatter stringFromNumber:loan.repayment] : [self.loanFormatter stringFromNumber:@(0)];
     infoCell.paymentLabel.text = [NSString stringWithFormat:@"%@/%@", paymentText, [LoanCalcString shortTitleOfFrequency:loan.frequencyIndex]];
     infoCell.frequencyLabel.text = [LoanCalcString titleOfFrequency:loan.frequencyIndex];
     infoCell.interestLabel.text = [loan interestRateString];
     infoCell.termLabel.text = [loan termValueString];
 	infoCell.principalLabel.text = [self.loanFormatter stringFromNumber:loan.principal];
+    
+    [infoCell.paymentLabel sizeToFit];
+    [infoCell.frequencyLabel sizeToFit];
+    [infoCell.interestLabel sizeToFit];
+    [infoCell.termLabel sizeToFit];
+	[infoCell.principalLabel sizeToFit];
+
+    CGRect rect = infoCell.paymentLabel.frame;
+    rect.origin.x = (CGRectGetWidth(infoCell.contentView.frame) - 15 - 14) - rect.size.width;
+    infoCell.paymentLabel.frame = rect;
+    
+    rect = infoCell.frequencyLabel.frame;
+    rect.origin.x = (CGRectGetWidth(infoCell.contentView.frame) - 15) - rect.size.width;
+    infoCell.frequencyLabel.frame = rect;
+    
+    rect = infoCell.interestLabel.frame;
+    rect.origin.x = (CGRectGetWidth(infoCell.contentView.frame) - 15) - rect.size.width;
+    infoCell.interestLabel.frame = rect;
+    
+    rect = infoCell.termLabel.frame;
+    rect.origin.x = (CGRectGetWidth(infoCell.contentView.frame) - 15) - rect.size.width;
+    infoCell.termLabel.frame = rect;
+
+    rect = infoCell.principalLabel.frame;
+    rect.origin.x = (CGRectGetWidth(infoCell.contentView.frame) - 15) - rect.size.width;
+    infoCell.principalLabel.frame = rect;
 }
 
 - (void)makeClearInfoCell:(A3LoanCalcLoanInfoCell *)infoCell
@@ -1743,16 +1770,20 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         center.x = self.view.bounds.size.width - compareCell.markB_Label.frame.size.width / 4;
         compareCell.markB_Label.center = center;
         
-        float circleOriginX = compareCell.circleB_View.frame.origin.x;
-        CGRect rectLeft = compareCell.left_B_Label.frame;
-        rectLeft.origin.x = MAX(circleOriginX, IS_IPAD ? 28:15);
-        compareCell.left_B_Label.frame = rectLeft;
-        
         float markTailX = compareCell.markB_Label.frame.origin.x + compareCell.markB_Label.frame.size.width;
         markTailX = MIN(markTailX, self.view.bounds.size.width-15);
         CGRect rectRight = compareCell.right_B_Label.frame;
-        rectRight.origin.x = MAX(markTailX - rectRight.size.width, compareCell.left_B_Label.frame.origin.x + compareCell.left_B_Label.frame.size.width + 15);
+        //rectRight.origin.x = MAX(markTailX - rectRight.size.width, compareCell.left_B_Label.frame.origin.x + compareCell.left_B_Label.frame.size.width + 15);
+        rectRight.origin.x = markTailX - rectRight.size.width;
         compareCell.right_B_Label.frame = rectRight;
+        
+        float circleOriginX = compareCell.circleB_View.frame.origin.x;
+        CGRect rectLeft = compareCell.left_B_Label.frame;
+        rectLeft.origin.x = MAX(circleOriginX, IS_IPAD ? 28:15);
+        if ((rectLeft.origin.x + rectLeft.size.width) > rectLeft.origin.x) {
+            rectLeft.origin.x -= (rectLeft.origin.x + rectLeft.size.width) - rectRight.origin.x;
+        }
+        compareCell.left_B_Label.frame = rectLeft;
         
         // from bottom to label bottom : 28 / 23
         float gap = IS_IPAD ? 28 : 23;
