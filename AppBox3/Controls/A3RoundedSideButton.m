@@ -9,9 +9,7 @@
 #import "A3RoundedSideButton.h"
 #import "A3AppDelegate+appearance.h"
 
-@implementation A3RoundedSideButton {
-	CALayer *_borderLayer;
-}
+@implementation A3RoundedSideButton
 
 + (id)buttonWithType:(UIButtonType)buttonType {
 	id button = [super buttonWithType:buttonType];
@@ -29,8 +27,11 @@
 }
 
 - (void)setupLayout {
+	FNLOG();
 	[self setTitleColor:self.tintColor forState:UIControlStateNormal];
 	self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+	self.layer.cornerRadius = self.bounds.size.height / 2.0;
+	self.layer.borderWidth = 1.0;
 }
 
 - (void)setSelected:(BOOL)selected {
@@ -38,29 +39,21 @@
 
 	FNLOG(@"%@, %ld", self.titleLabel.text, (long)selected);
 	if (selected) {
-		if (!_borderLayer) {
-			_borderLayer = [CALayer layer];
-			_borderLayer.frame = self.bounds;
-			_borderLayer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
-			_borderLayer.borderWidth = 1.0;
-			_borderLayer.cornerRadius = self.bounds.size.height / 2.0;
-			[self.layer addSublayer:_borderLayer];
-		}
+		self.layer.cornerRadius = self.bounds.size.height / 2.0;
+		self.layer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
 	} else {
-		[_borderLayer removeFromSuperlayer];
-		_borderLayer = nil;
+		self.layer.borderColor = [UIColor clearColor].CGColor;
 	}
 }
 
 - (void)setFrame:(CGRect)frame {
 	[super setFrame:frame];
 
-	[_borderLayer setFrame:self.bounds];
-	_borderLayer.cornerRadius = self.bounds.size.height / 2.0;
+	self.layer.cornerRadius = self.bounds.size.height / 2.0;
 }
 
 - (void)setBorderColor:(UIColor *)color {
-	_borderLayer.borderColor = color.CGColor;
+	self.layer.borderColor = color.CGColor;
 }
 
 @end
