@@ -958,61 +958,66 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 }
 
 #pragma mark - etc_countries Rate List
+
+// 미국 판매세 세율은 일반 상품에 적용되는 세율과 식당에 적용되는 세율이 다른 경우가 있습니다.
+// Sales Calc는 일반 상품에 적용되는 세금을 이용합니다.
+// Tip Calc는 식당에 적용되는 세율을 적용합니다.
+// 최종 업데이트는 5월 23일 Wikipedia 정보 기준입니다.
 - (NSDictionary *)knownUSTaxes {
 	return @{
-             @"AL" : @"4",
-             @"AK" : @"0",
-             @"AZ" : @"6.60",
-             @"AR" : @"6",
-             @"CA" : @"7.50",
-             @"CO" : @"2.90",
-             @"CT" : @"6.35",
-             @"DE" : @"0",
-             @"DC" : @"10",
-             @"FL" : @"9",
-             @"GA" : @"4",
-             @"GU" : @"4",
-             @"HI" : @"4",
-             @"ID" : @"6",
-             @"IL" : @"8.25",
-             @"IN" : @"9",
-             @"IA" : @"6",
-             @"KS" : @"6.30",
-             @"KY" : @"6",
-             @"LA" : @"4",
-             @"ME" : @"7",
-             @"MD" : @"6",
-             @"MA" : @"7",
-             @"MI" : @"6",
-             @"MN" : @"10.78",
-             @"MS" : @"7",
-             @"MO" : @"4.23",
-             @"MT" : @"0",
-             @"NE" : @"9.50",
-             @"NV" : @"6.85",
-             @"NH" : @"9",
-             @"WY" : @"7",
-             @"NJ" : @"5.13",
-             @"NM" : @"8.50",
-             @"NY" : @"8.50",
-             @"NC" : @"5",
-             @"ND" : @"5.75",
-             @"OH" : @"4.50",
-             @"OK" : @"0",
-             @"OR" : @"6",
-             @"PA" : @"5.50",
-             @"PR" : @"8",
-             @"RI" : @"10.50",
-             @"SC" : @"4",
-             @"SD" : @"7",
-             @"TN" : @"6.25",
-             @"TX" : @"4.70",
-             @"UT" : @"9",
-             @"VT" : @"5.30",
-             @"VA" : @"10",
-             @"WA" : @"6",
-             @"WV" : @"5",
-             @"WI" : @"4",
+             @"AL" : @4,		// Alabama
+             @"AK" : @0,		// Alaska
+             @"AZ" : @5.6,		// Arizona
+             @"AR" : @6.5,		// Arkansas
+             @"CA" : @7.5,		// California
+             @"CO" : @2.9,		// Colorado
+             @"CT" : @6.35,		// Connecticut
+             @"DE" : @0,		// Delaware
+             @"DC" : @6,		// District of Columbia, 10%
+             @"FL" : @6,		// Florida, 9%
+             @"GA" : @4,		// Georgia
+             @"GU" : @4,		// Guam
+             @"HI" : @4,		// Hawaii
+             @"ID" : @6,		// Idaho
+             @"IL" : @6.25,		// Illinois, 8.25%
+             @"IN" : @7,		// Indiana, 9%
+             @"IA" : @6,		// Iowa
+             @"KS" : @6.15,		// Kansas
+             @"KY" : @6,		// Kentucky
+             @"LA" : @4,		// Louisiana
+             @"ME" : @5.5,		// Maine, 7%
+             @"MD" : @6,		// Maryland
+             @"MA" : @6.25,		// Massachusetts, 7%
+             @"MI" : @6,		// Michigan
+             @"MN" : @6.875,	// Minnesota, 10.775%
+             @"MS" : @7,		// Mississippi
+             @"MO" : @4.225,	// Missouri
+             @"MT" : @0,		// Montana
+             @"NE" : @5.5,		// Nebraska, 9.5%
+             @"NV" : @6.85,		// Nevada
+             @"NH" : @0,		// New Hampshire, 9%
+             @"NJ" : @7,		// New Jersey
+             @"NM" : @5.125,	// New Mexico
+             @"NY" : @4,		// New York
+             @"NC" : @4.75,		// North Carolina, 8.5
+             @"ND" : @5,		// North Dakota
+             @"OH" : @5.75,		// Ohio
+             @"OK" : @8.517,	// Oklahoma
+             @"OR" : @0,		// Oregon
+             @"PA" : @6,		// Pennsylvania
+             @"PR" : @7,		// Puerto Rico
+             @"RI" : @7,		// Rhode Island, 8%
+             @"SC" : @6,		// South Carolina, 10.5%
+             @"SD" : @4,		// South Dakota
+             @"TN" : @7,		// Tennessee
+             @"TX" : @6.25,		// Texas
+             @"UT" : @4.7,		// Utah
+             @"VT" : @6,		// Vermont, 9%
+             @"VA" : @4.3,		// Virginia, 5.3%
+             @"WA" : @6.5,		// Washington, 10%
+             @"WV" : @6,		// West Virginia
+             @"WI" : @5,		// Wisconsin
+			 @"WY" : @4,		// Wyoming
              };
 }
 
@@ -1134,12 +1139,10 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 		NSLog(@"%@", placemark.subThoroughfare);
 		NSLog(@"--------");
 
-		NSNumber *knownTax = nil;
 		if ([placemark.ISOcountryCode isEqualToString:@"US"] &&
 				[placemark.administrativeArea length]) {
-			NSString *knownTaxString = self.knownUSTaxes[placemark.administrativeArea];
-			if ([knownTaxString length]) {
-				knownTax = @([knownTaxString doubleValue]);
+			NSNumber *knownTax = self.knownUSTaxes[placemark.administrativeArea];
+			if (knownTax) {
 				_locationTax = knownTax;
 				_locationCode = @"US";
 				[self reloadLocationTax];
