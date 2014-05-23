@@ -121,7 +121,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.contentInset = UIEdgeInsetsMake(-1, 0, 36, 0);
     self.tableView.separatorColor = [self tableViewSeparatorColor];
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 2)];
@@ -141,10 +140,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
 
-	// Keyboard Notification
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
@@ -161,10 +156,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	}
-
-	// Keyboard Notification
-//	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
-//	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -2041,8 +2032,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
 	[self setFirstResponder:nil];
-
-//	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
 }
 
 #pragma mark - TextFieldDelegate
@@ -2232,40 +2221,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	}
 
 	[self updateLoanCalculation];
-}
-
-#pragma mark - Keyboard Show/Hide notification
-
-- (void)keyboardDidShow:(NSNotification *)notification {
-	if (self.scrollToIndexPath) {
-		[self moveTableScrollToIndexPath:self.scrollToIndexPath responder:self.firstResponder];
-	}
-	FNLOG(@"top:%f, bottom:%f", self.tableView.contentInset.top, self.tableView.contentInset.bottom);
-}
-
-- (void)keyboardDidHide:(NSNotification *)notification {
-	FNLOG(@"top:%f, bottom:%f", self.tableView.contentInset.top, self.tableView.contentInset.bottom);
-	self.scrollToIndexPath = nil;
-}
-
-- (void)moveTableScrollToIndexPath:(NSIndexPath *)indexPath responder:(UIResponder *)responder {
-	CGRect cellRect = [self.tableView rectForRowAtIndexPath:indexPath];
-	CGFloat keyboardHeight;
-	keyboardHeight = responder.inputView.bounds.size.height + responder.inputAccessoryView.bounds.size.height;
-
-	if ((cellRect.origin.y + cellRect.size.height + self.tableView.contentInset.top) < (self.tableView.frame.size.height - keyboardHeight)) {
-		return;
-	}
-
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:0.3];
-
-	CGFloat viewHeight = self.tableView.frame.size.height;
-	CGFloat offset = (cellRect.origin.y + cellRect.size.height) - (viewHeight - keyboardHeight);
-	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, keyboardHeight, 0);
-	self.tableView.contentOffset = CGPointMake(0.0, offset);
-
-	[UIView commitAnimations];
 }
 
 #pragma mark - LoanCalcHistoryViewController delegate
