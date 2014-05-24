@@ -80,6 +80,7 @@
 	if (_showAsWhatsNew) {
 		[self.leftButton setTitle:@"Close" forState:UIControlStateNormal];
 		[self.rightButton setTitle:@"Continue" forState:UIControlStateNormal];
+		FNLOG(@"%ld", (long)_sceneNumber);
 	}
 }
 
@@ -151,7 +152,11 @@
 }
 
 - (IBAction)continueButtonAction:(UIButton *)sender {
-	[self.delegate continueButtonPressedInViewController:self];
+	if (_showAsWhatsNew && _sceneNumber == 1) {
+		[self.delegate useAppBoxButtonPressedInViewController:self];
+	} else {
+		[self.delegate continueButtonPressedInViewController:self];
+	}
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
