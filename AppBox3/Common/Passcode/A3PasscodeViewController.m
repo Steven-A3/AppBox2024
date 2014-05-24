@@ -13,7 +13,6 @@
 #import "A3NumberKeyboardViewController.h"
 
 static NSString *const kPasscodeCharacter = @"\u2014"; // A longer "-"
-static CGFloat const kLabelFontSize = 15.0f;
 static CGFloat const kPasscodeFontSize = 33.0f;
 static CGFloat const kFontSizeModifier = 1.5f;
 static CGFloat const kiPhoneHorizontalGap = 40.0f;
@@ -49,7 +48,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 #define kPasscodeBackgroundColor [UIColor clearColor]
 #define kFailedAttemptLabelBackgroundColor [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f]
 // Fonts
-#define kLabelFont (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize * kFontSizeModifier] : [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize])
+#define kLabelFont [UIFont systemFontOfSize:17]
 #define kPasscodeFont (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [UIFont fontWithName: @"AvenirNext-Regular" size: kPasscodeFontSize * kFontSizeModifier] : [UIFont fontWithName: @"AvenirNext-Regular" size: kPasscodeFontSize])
 // Text Colors
 #define kLabelTextColor [UIColor colorWithWhite:0.31f alpha:1.0f]
@@ -91,7 +90,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
 																							   target: self
 																							   action: @selector(cancelAndDismissMe)];
-		self.title = NSLocalizedString(@"Enter Passcode", @"");
 	}
 
 	_isCurrentlyOnScreen = NO;
@@ -102,7 +100,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	_enterPasscodeLabel = [[UILabel alloc] initWithFrame: CGRectZero];
 	_enterPasscodeLabel.backgroundColor = kEnterPasscodeLabelBackgroundColor;
 	_enterPasscodeLabel.textColor = kLabelTextColor;
-	_enterPasscodeLabel.font = kLabelFont;
+	_enterPasscodeLabel.font = [UIFont systemFontOfSize:17];
 	_enterPasscodeLabel.textAlignment = NSTextAlignmentCenter;
 	[_animatingView addSubview: _enterPasscodeLabel];
 
@@ -482,7 +480,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 - (void)showForEnablingPasscodeInViewController:(UIViewController *)viewController {
 	[self prepareForEnablingPasscode];
 	[self prepareNavigationControllerWithController: viewController];
-	self.title = NSLocalizedString(@"Enable Passcode", @"");
+	self.title = NSLocalizedString(@"Set Passcode", @"");
 }
 
 

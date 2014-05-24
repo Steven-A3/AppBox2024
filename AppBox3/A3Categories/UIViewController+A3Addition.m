@@ -493,7 +493,7 @@
 }
 
 - (void)alertInternetConnectionIsNotAvailable {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info" message:@"Internet Connection is not available. Try again later." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info" message:@"Internet Connection is not available." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[alertView show];
 }
 

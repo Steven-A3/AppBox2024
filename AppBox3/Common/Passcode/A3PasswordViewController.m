@@ -11,8 +11,6 @@
 #import "A3KeychainUtils.h"
 
 #define kFailedAttemptLabelBackgroundColor [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f]
-static CGFloat const kLabelFontSize = 15.0f;
-static CGFloat const kFontSizeModifier = 1.5f;
 #define kLabelFont (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize * kFontSizeModifier] : [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize])
 
 @interface A3PasswordViewController () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
@@ -67,7 +65,7 @@ static CGFloat const kFontSizeModifier = 1.5f;
 	}];
 
 	_headerLabel = [UILabel new];
-	_headerLabel.font = kLabelFont;
+	_headerLabel.font = [UIFont systemFontOfSize:17];
 	_headerLabel.textColor = [UIColor colorWithWhite:0.31f alpha:1.0f];
 	_headerLabel.text = @"Enter your passcode";
 	_headerLabel.textAlignment = NSTextAlignmentCenter;
@@ -82,12 +80,11 @@ static CGFloat const kFontSizeModifier = 1.5f;
 
 	offset += 44.0 * [self tableView:self.tableView numberOfRowsInSection:0];
 	_failedAttemptLabel = [UILabel new];
-	_failedAttemptLabel.font = kLabelFont;
-	_failedAttemptLabel.textColor = [UIColor whiteColor];
+	_failedAttemptLabel.font = [UIFont systemFontOfSize:17];
+	_failedAttemptLabel.textColor = [UIColor colorWithWhite:0.31f alpha:1.0f];
 	_failedAttemptLabel.text = @"Enter your passcode";
 	_failedAttemptLabel.textAlignment = NSTextAlignmentCenter;
 	_failedAttemptLabel.hidden = YES;
-	_failedAttemptLabel.backgroundColor = kFailedAttemptLabelBackgroundColor;
 	_failedAttemptLabel.layer.cornerRadius = 22 * 0.5;
 	[self.view addSubview:_failedAttemptLabel];
 
@@ -269,7 +266,7 @@ static CGFloat const kFontSizeModifier = 1.5f;
 
 	[self prepareForEnablingPasscode];
 	[self prepareNavigationControllerWithController: viewController];
-	self.title = NSLocalizedString(@"Enter Passcode", @"");
+	self.title = NSLocalizedString(@"Set Passcode", @"");
 }
 
 - (void)showForChangingPasscodeInViewController:(UIViewController *)viewController {

@@ -43,6 +43,17 @@
 	return [self standardHeightForFooterIsLastSection:isLastSection];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0 && indexPath.row == 3 && ![MFMessageComposeViewController canSendText]) return 0;
+	return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0 && indexPath.row == 3 && ![MFMessageComposeViewController canSendText]) {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	}
+}
+
 #pragma mark -- UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -75,12 +86,18 @@
 		}
 		case 1: {
 			NSURL *twitterURL = [NSURL URLWithString:@"twitter://user?screen_name=AppBox_Pro"];
+			if (![[UIApplication sharedApplication] canOpenURL:twitterURL]) {
+				twitterURL = [NSURL URLWithString:@"https://twitter.com/AppBox_Pro"];
+			}
 			[[UIApplication sharedApplication] openURL:twitterURL];
 			break;
 		}
 		case 2: {
-			NSURL *twitterURL = [NSURL URLWithString:@"fb://profile/131703690193422"];
-			[[UIApplication sharedApplication] openURL:twitterURL];
+			NSURL *facebookURL = [NSURL URLWithString:@"fb://profile/131703690193422"];
+			if (![[UIApplication sharedApplication] canOpenURL:facebookURL])	{
+				facebookURL = [NSURL URLWithString:@"http://www.facebook.com/AllaboutappsFan"];
+			}
+			[[UIApplication sharedApplication] openURL:facebookURL];
 			break;
 		}
 		case 3: {
@@ -114,29 +131,22 @@
 }
 
 - (void)openMailComposerWithSubject:(NSString *)subject withBody:(NSString *)body withRecipient:(NSString *)recipient {
-	if (![MFMailComposeViewController canSendMail]) {
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", nil)
-														   message:NSLocalizedString(@"NoEmail", nil)
-														  delegate:nil
-												 cancelButtonTitle:NSLocalizedString(@"OK", nil)
-												 otherButtonTitles:nil];
-		[alert show];
-		return;
-	}
 	MFMailComposeViewController *viewController = [[MFMailComposeViewController alloc] init];
-	viewController.mailComposeDelegate = self;
+	if (viewController) {
+		viewController.mailComposeDelegate = self;
 
-	[viewController setSubject:subject];
+		[viewController setSubject:subject];
 
-	// Set up recipients
-	if (recipient) {
-		NSArray *toRecipients = [NSArray arrayWithObject:recipient];
-		[viewController setToRecipients:toRecipients];
+		// Set up recipients
+		if (recipient) {
+			NSArray *toRecipients = [NSArray arrayWithObject:recipient];
+			[viewController setToRecipients:toRecipients];
+		}
+		if (body)
+			[viewController setMessageBody:body isHTML:NO];
+
+		[self presentViewController:viewController animated:YES completion:nil];
 	}
-	if (body)
-		[viewController setMessageBody:body isHTML:NO];
-
-	[self presentViewController:viewController animated:YES completion:nil];
 }
 
 - (void)didSelectSectionOneAtRow:(NSInteger)row {
