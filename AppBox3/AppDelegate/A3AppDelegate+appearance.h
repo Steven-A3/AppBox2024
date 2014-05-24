@@ -12,5 +12,6 @@
 
 - (NSArray *)themeColors;
 - (UIColor *)themeColor;
+- (NSString *)getLaunchImageName;
 
 @end

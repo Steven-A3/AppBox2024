@@ -27,6 +27,7 @@
 @property (nonatomic, strong) MASConstraint *headerY;
 @property (nonatomic, strong) MASConstraint *footerY;
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, assign) BOOL shouldDismissViewController;
 
 @end
 
@@ -95,7 +96,6 @@
 		make.centerX.equalTo(self.view.centerX);
 		_footerY = make.centerY.equalTo(self.view.top).with.offset(headerHeight + headerHeight/2.0 + offset);
 	}];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -107,11 +107,19 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	if ([self isMovingToParentViewController]) {
-		if (_isUserEnablingPasscode) {
-			[_aNewPasswordField becomeFirstResponder];
-		} else {
+	[self.tableView reloadData];
+
+	if (_isUserEnablingPasscode) {
+		[_aNewPasswordField becomeFirstResponder];
+	} else {
+		if (_passwordField) {
 			[_passwordField becomeFirstResponder];
+		} else {
+			double delayInSeconds = 0.5;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[_passwordField becomeFirstResponder];
+			});
 		}
 	}
 }
@@ -123,7 +131,6 @@
 		[self.delegate passcodeViewDidDisappearWithSuccess:_passcodeValid ];
 	}
 }
-
 
 #pragma mark - Preparing
 
@@ -200,52 +207,25 @@
 	[self prepareAsLockscreen];
 
 	UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+	if (!mainWindow) {
+		UIViewController *rootViewController = IS_IPAD ? [[A3AppDelegate instance] rootViewController] : [[A3AppDelegate instance] rootViewController_iPhone];
+		[rootViewController presentViewController:self animated:NO completion:NULL];
+		_shouldDismissViewController = YES;
+	} else {
 
-	[mainWindow addSubview: self.view];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(statusBarFrameOrOrientationChanged:)
-												 name:UIApplicationDidChangeStatusBarOrientationNotification
-											   object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(statusBarFrameOrOrientationChanged:)
-												 name:UIApplicationDidChangeStatusBarFrameNotification
-											   object:nil];
-	[mainWindow.rootViewController addChildViewController: self];
+		[mainWindow addSubview: self.view];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(statusBarFrameOrOrientationChanged:)
+													 name:UIApplicationDidChangeStatusBarOrientationNotification
+												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(statusBarFrameOrOrientationChanged:)
+													 name:UIApplicationDidChangeStatusBarFrameNotification
+												   object:nil];
+		[mainWindow.rootViewController addChildViewController: self];
 
-	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
-	// All this hassle because a view added to UIWindow does not rotate automatically
-	// and if we would have added the view anywhere else, it wouldn't display properly
-	// (having a modal on screen when the user leaves the app, for example).
-
-//	CGPoint newCenter;
-//	if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft) {
-//		self.view.center = CGPointMake(self.view.center.x * -1.f, self.view.center.y);
-//		newCenter = CGPointMake(mainWindow.center.x - self.navigationController.navigationBar.frame.size.height / 2,
-//				mainWindow.center.y);
-//	}
-//	else if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeRight) {
-//		self.view.center = CGPointMake(self.view.center.x * 2.f, self.view.center.y);
-//		newCenter = CGPointMake(mainWindow.center.x + self.navigationController.navigationBar.frame.size.height / 2,
-//				mainWindow.center.y);
-//	}
-//	else if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) {
-//		self.view.center = CGPointMake(self.view.center.x, self.view.center.y * -1.f);
-//		newCenter = CGPointMake(mainWindow.center.x,
-//				mainWindow.center.y - self.navigationController.navigationBar.frame.size.height / 2);
-//	}
-//	else {
-//		self.view.center = CGPointMake(self.view.center.x, self.view.center.y * 2.f);
-//		newCenter = CGPointMake(mainWindow.center.x,
-//				mainWindow.center.y + self.navigationController.navigationBar.frame.size.height / 2);
-//	}
-//	if (animated) {
-//		[UIView animateWithDuration: 0.15 animations: ^{
-//			self.view.center = newCenter;
-//		}];
-//	} else {
-//		self.view.center = newCenter;
-//	}
-
+		[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+	}
 	self.title = NSLocalizedString(@"Enter Passcode", @"");
 }
 
@@ -470,7 +450,7 @@
 
 - (void)dismissMe {
 
-	if ([self navigationController]) {
+	if ([self navigationController] || _shouldDismissViewController) {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	} else {
 		[self.view removeFromSuperview];
@@ -637,13 +617,11 @@
 
 - (void)showHint:(NSString *)text {
 	[self setMessage:text];
-	_failedAttemptLabel.backgroundColor = [UIColor lightGrayColor];
 
 	double delayInSeconds = 3.0;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		_failedAttemptLabel.hidden = YES;
-		_failedAttemptLabel.backgroundColor = kFailedAttemptLabelBackgroundColor;
 	});
 }
 

@@ -12,10 +12,6 @@
 #import "A3MainMenuTableViewController.h"
 #import "MMDrawerController.h"
 #import "NSFileManager+A3Addtion.h"
-#import "A3AppDelegate+iCloud.h"
-#import "A3AppDelegate+passcode.h"
-#import "A3AppDelegate+keyValueStore.h"
-#import "A3AppDelegate+appearance.h"
 #import "Reachability.h"
 #import "A3KeychainUtils.h"
 #import "A3LaunchViewController.h"
@@ -25,10 +21,7 @@
 #import "A3DaysCounterEventDetailViewController.h"
 #import "A3DaysCounterModelManager.h"
 
-#import "A3DateHelper.h"
-#import "NSDate+LunarConverter.h"
 #import "A3LadyCalendarDetailViewController.h"
-#import "A3LadyCalendarModelManager.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -89,6 +82,8 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
 
 		_drawerController = [[MMDrawerController alloc] initWithCenterViewController:navigationController leftDrawerViewController:menuNavigationController];
+		_rootViewController_iPhone = _drawerController;
+
 		[_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeBezelPanningCenterView];
 		[_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
 		[_drawerController setDrawerVisualStateBlock:[self slideAndScaleVisualStateBlock]];

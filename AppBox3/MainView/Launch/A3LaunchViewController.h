@@ -16,4 +16,6 @@
 
 @interface A3LaunchViewController : UIViewController <A3LaunchSceneViewControllerDelegate>
 
+@property (nonatomic, assign) BOOL showAsWhatsNew;
+
 @end

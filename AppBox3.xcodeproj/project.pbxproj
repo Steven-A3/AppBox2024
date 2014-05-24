@@ -26,7 +26,6 @@
 		17D424B4BFD92CD7C21AC0A7 /* A3LoanCalcContentsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42A37BC5D591287131422 /* A3LoanCalcContentsTableViewController.m */; };
 		17D424CF600CB7D3A03DA0EE /* A3WalletMoreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D429E235298A15262EEEDB /* A3WalletMoreTableViewCell.m */; };
 		17D424D17668444DCC9A50D7 /* A3LadyCalendarDetailViewTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D427CE6C25E3FDE8D82EB7 /* A3LadyCalendarDetailViewTitleCell.m */; };
-		17D42522378AC9FE782E35CC /* A3AppDelegate+property.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42CF7F3580EDA89D61416 /* A3AppDelegate+property.m */; };
 		17D42564DA81AFE9484B0D58 /* A3TranslatorMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4292480B4F2F878AD138E /* A3TranslatorMessageCell.m */; };
 		17D425CA8B84A776935B9382 /* Foursquare2.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42335F0EAF9428BAC7BBD /* Foursquare2.m */; };
 		17D425D8B8511A61A52DBE3E /* A3SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4263A1F905EB73EA573B2 /* A3SearchViewController.m */; };
@@ -1006,7 +1005,6 @@
 		17D42835AF604EA6A37B16D4 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		17D4283B29E7CACCE273EF77 /* NSMutableArray+MoveObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+MoveObject.m"; sourceTree = "<group>"; };
 		17D4283E196270552D6283A1 /* A3StandardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3StandardTableViewCell.m; sourceTree = "<group>"; };
-		17D428951A699D2721C96124 /* A3AppDelegate+property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+property.h"; path = "AppDelegate/A3AppDelegate+property.h"; sourceTree = "<group>"; };
 		17D4289E801DA848F979FEC4 /* NSDate+calculation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+calculation.m"; sourceTree = "<group>"; };
 		17D428A5D07C3D7181154ED3 /* A3TranslatorFavoriteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorFavoriteCell.h; path = Translator/A3TranslatorFavoriteCell.h; sourceTree = "<group>"; };
 		17D428AB1CD232306110EBB3 /* UIView+A3Drawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+A3Drawing.h"; sourceTree = "<group>"; };
@@ -1034,7 +1032,6 @@
 		17D42C97A50D5039256BA161 /* UIViewController+A3Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+A3Addition.m"; sourceTree = "<group>"; };
 		17D42CAFDD0B11EF0C713D0E /* A3TranslatorListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorListCell.m; path = Translator/A3TranslatorListCell.m; sourceTree = "<group>"; };
 		17D42CE8989EC0F3EED05376 /* NSDate+calculation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+calculation.h"; sourceTree = "<group>"; };
-		17D42CF7F3580EDA89D61416 /* A3AppDelegate+property.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+property.m"; path = "AppDelegate/A3AppDelegate+property.m"; sourceTree = "<group>"; };
 		17D42D0A445854BDE905412D /* FSWebLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSWebLogin.h; sourceTree = "<group>"; };
 		17D42D2BD7342C5A173486D2 /* A3CenterViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CenterViewDelegate.h; sourceTree = "<group>"; };
 		17D42D3D707857C563B160A0 /* A3StandardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3StandardTableViewCell.h; sourceTree = "<group>"; };
@@ -3375,8 +3372,6 @@
 				6866956518839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m */,
 				68D455941886DD8C004F3877 /* A3AppDelegate+appearance.h */,
 				68D455951886DD8C004F3877 /* A3AppDelegate+appearance.m */,
-				17D42CF7F3580EDA89D61416 /* A3AppDelegate+property.m */,
-				17D428951A699D2721C96124 /* A3AppDelegate+property.h */,
 			);
 			name = AppDelegate;
 			sourceTree = "<group>";
@@ -6268,7 +6263,6 @@
 				68B6A44E18CEE781004084EF /* PSTCollectionViewData.m in Sources */,
 				686BB8671909676A009163F2 /* A3WalletFieldEditTitleCell.m in Sources */,
 				68B6A2E618CEC76D004084EF /* UIViewController+UnitConverter.m in Sources */,
-				17D42522378AC9FE782E35CC /* A3AppDelegate+property.m in Sources */,
 				68B6A2E218CEC76D004084EF /* UnitItem+initialize.m in Sources */,
 				68E2A64718D0B1FC00E834D9 /* A3ExpenseListAddBudgetViewController.m in Sources */,
 				17D42D3AD62EA698BD5E6A9B /* JNJProgressButton.m in Sources */,

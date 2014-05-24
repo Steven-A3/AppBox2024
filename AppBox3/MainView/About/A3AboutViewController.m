@@ -11,11 +11,12 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "Reachability.h"
+#import "A3LaunchViewController.h"
 #import <Social/Social.h>
 #import <MessageUI/MessageUI.h>
 
 @interface A3AboutViewController () <MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
-
+@property (nonatomic, strong) A3LaunchViewController *whatsNewViewController;
 @end
 
 @implementation A3AboutViewController
@@ -29,6 +30,12 @@
 
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	_whatsNewViewController = nil;
 }
 
 #pragma mark -- UITableViewDataSource
@@ -158,13 +165,25 @@
 			NSLocalizedString(@"AppBox Pro™ V%@ Contact Support", nil),
 			[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] ];
 
+	UIDevice *currentDevice = [UIDevice currentDevice];
+	NSLocale *currentLocale = [NSLocale currentLocale];
+	NSString *body = [NSString stringWithFormat:@"\n\n\n\n\nModel: %@ (%@)\niOS Version: %@\n%@\n",
+					[A3UIDevice platformString], [A3UIDevice platform],
+					[currentDevice systemVersion],
+					[currentLocale displayNameForKey:NSLocaleIdentifier value:[currentLocale localeIdentifier]]];
 	[self openMailComposerWithSubject:emailSubject
-							 withBody:nil
+							 withBody:body
 						withRecipient:@"support@allaboutapps.net"];
 }
 
 - (void)didSelectSectionTwoAtRow:(NSInteger)row {
+	switch (row) {
+		case 1:{
+			[self presentLaunchViewController];
+			break;
+		}
 
+	}
 }
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
@@ -174,6 +193,12 @@
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
 	[controller dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)presentLaunchViewController {
+	_whatsNewViewController = [A3LaunchViewController new];
+	_whatsNewViewController.showAsWhatsNew = YES;
+	[self presentViewController:_whatsNewViewController animated:YES completion:NULL];
 }
 
 @end

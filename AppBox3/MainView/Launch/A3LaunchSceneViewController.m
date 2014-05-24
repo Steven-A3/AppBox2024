@@ -8,6 +8,7 @@
 
 #import "A3LaunchSceneViewController.h"
 #import "A3LaunchViewController.h"
+#import "A3AppDelegate.h"
 
 @interface A3LaunchSceneViewController ()
 
@@ -75,6 +76,11 @@
 			make.right.equalTo(self.view.right);
 		}];
 	}
+
+	if (_showAsWhatsNew) {
+		[self.leftButton setTitle:@"Close" forState:UIControlStateNormal];
+		[self.rightButton setTitle:@"Continue" forState:UIControlStateNormal];
+	}
 }
 
 - (CGFloat)topOffset {
@@ -127,36 +133,17 @@
 }
 
 - (void)setBackgroundImage {
-	NSString *imageName;
-	if (IS_IPHONE) {
-		if (IS_IPHONE35) {
-			imageName = @"LaunchImage-700@2x.png";
-		} else {
-			imageName = @"LaunchImage-700-568h@2x.png";
-		}
-
-	} else {
-		if (IS_LANDSCAPE) {
-			if (IS_RETINA) {
-				imageName = @"LaunchImage-700-Landscape@2x~ipad.png";
-			} else {
-				imageName = @"LaunchImage-700-Landscape~ipad.png";
-			}
-		} else {
-			if (IS_RETINA) {
-				imageName = @"LaunchImage-700-Portrait@2x~ipad.png";
-			} else {
-				imageName = @"LaunchImage-700-Portrait~ipad.png";
-			}
-		}
-	}
-	FNLOG(@"%@", imageName);
+	NSString *imageName= [[A3AppDelegate instance] getLaunchImageName];
 	[self.imageView setImage:[UIImage imageNamed:imageName]];
 	return;
 }
 
 - (IBAction)useiCloudButtonAction:(UIButton *)sender {
-	[self.delegate useICloudButtonPressedInViewController:self];
+	if (!_showAsWhatsNew) {
+		[self.delegate useICloudButtonPressedInViewController:self];
+	} else {
+		[self.delegate continueButtonPressedInViewController:self];
+	}
 }
 
 - (IBAction)useAppBoxProAction:(UIButton *)sender {

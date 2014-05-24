@@ -60,7 +60,7 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 - (void)showLockScreen {
 	NSNumber *flag = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 
-	if ((!flag || [flag boolValue]) && [A3KeychainUtils getPassword] && [self didPasscodeTimerEnd]) {
+	if ([flag boolValue] && [A3KeychainUtils getPassword] && [self didPasscodeTimerEnd]) {
 		if (!self.passcodeViewController) {
 			self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
 			[self.passcodeViewController showLockscreenWithAnimation:NO showCacelButton:NO];
@@ -80,35 +80,61 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 	}
 }
 
-
 - (void)applicationDidBecomeActive_passcode {
-	if ([A3KeychainUtils getPassword] && [self didPasscodeTimerEnd]) {
-		UIViewController *topViewController = [[self navigationController] topViewController];
-		UIView *coverView = [topViewController.view viewWithTag:8080];
-		[coverView removeFromSuperview];
-	}
+	[self removeSecurityCoverView];
 }
 
 - (void)applicationWillEnterForeground_passcode {
 	[self showLockScreen];
+
+	[self removeSecurityCoverView];
 }
 
 - (void)applicationWillResignActive_passcode {
+	NSNumber *flag = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
+
+	if ([flag boolValue] && [A3KeychainUtils getPassword]) {
+		FNLOG(@"CoverView added to Window");
+		[[UIApplication sharedApplication] ignoreSnapshotOnNextApplicationLaunch];
+
+		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		self.coverView = [[UIImageView alloc] initWithFrame:screenBounds];
+		self.coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		self.coverView.image = [UIImage imageNamed:[self getLaunchImageName]];
+		[self.window addSubview:self.coverView];
+
+		[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(statusBarFrameOrOrientationChanged:)
+													 name:UIApplicationDidChangeStatusBarOrientationNotification
+												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarFrameOrOrientationChanged:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+	}
 	return;
+}
 
-	if ([A3KeychainUtils getPassword]) {
-		[self saveTimerStartTime];
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
+	return YES;
+}
 
-		if (!self.passcodeViewController) {
-			UIViewController *topViewController = [[self navigationController] topViewController];
-			UIView *coverView = [UIView new];
-			coverView.tag = 8080;
-			coverView.backgroundColor = [UIColor whiteColor];
-			coverView.frame = [topViewController.view bounds];
-			FNLOGRECT(coverView.frame);
-			coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-			[topViewController.view addSubview:coverView];
-		}
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
+	NSNumber *flag = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
+
+	if ([flag boolValue] && [A3KeychainUtils getPassword]) {
+		[application ignoreSnapshotOnNextApplicationLaunch];
+	}
+	return YES;
+}
+
+- (void)removeSecurityCoverView {
+	FNLOG();
+	if (self.coverView) {
+		[self.coverView removeFromSuperview];
+		self.coverView = nil;
+
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
 	}
 }
 
@@ -155,6 +181,95 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 
 - (BOOL)askPasscodeForWallet {
 	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForWallet];
+}
+
+#pragma mark - Security Cover View orientation change handling
+
+- (NSUInteger)supportedInterfaceOrientations {
+	if (IS_IPHONE) {
+		return UIInterfaceOrientationMaskPortrait;
+	} else {
+		return UIInterfaceOrientationMaskAll;
+	}
+}
+
+- (void)statusBarFrameOrOrientationChanged:(NSNotification *)notification {
+	/*
+	 This notification is most likely triggered inside an animation block,
+	 therefore no animation is needed to perform this nice transition.
+	 */
+	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+}
+
+
+// And to his AGWindowView: https://github.com/hfossli/AGWindowView
+// Without the 'desiredOrientation' method, using showLockscreen in one orientation,
+// then presenting it inside a modal in another orientation would display the view in the first orientation.
+- (UIInterfaceOrientation)desiredOrientation {
+	UIInterfaceOrientation statusBarOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+	UIInterfaceOrientationMask statusBarOrientationAsMask = UIInterfaceOrientationMaskFromOrientation(statusBarOrientation);
+	if(self.supportedInterfaceOrientations & statusBarOrientationAsMask) {
+		return statusBarOrientation;
+	}
+	else {
+		if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskPortrait) {
+			return UIInterfaceOrientationPortrait;
+		}
+		else if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskLandscapeLeft) {
+			return UIInterfaceOrientationLandscapeLeft;
+		}
+		else if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskLandscapeRight) {
+			return UIInterfaceOrientationLandscapeRight;
+		}
+		else {
+			return UIInterfaceOrientationPortraitUpsideDown;
+		}
+	}
+}
+
+- (void)rotateAccordingToStatusBarOrientationAndSupportedOrientations {
+	UIInterfaceOrientation orientation = [self desiredOrientation];
+	CGFloat angle = UIInterfaceOrientationAngleOfOrientation(orientation);
+	CGAffineTransform transform = CGAffineTransformMakeRotation(angle);
+
+	[self setIfNotEqualTransform: transform
+						   frame: self.coverView.window.bounds];
+}
+
+
+- (void)setIfNotEqualTransform:(CGAffineTransform)transform frame:(CGRect)frame {
+	if(!CGAffineTransformEqualToTransform(self.coverView.transform, transform)) {
+		self.coverView.transform = transform;
+	}
+	if(!CGRectEqualToRect(self.coverView.frame, frame)) {
+		self.coverView.frame = frame;
+	}
+}
+
+
+CGFloat UIInterfaceOrientationAngleOfOrientation(UIInterfaceOrientation orientation) {
+	CGFloat angle;
+
+	switch (orientation) {
+		case UIInterfaceOrientationPortraitUpsideDown:
+			angle = M_PI;
+			break;
+		case UIInterfaceOrientationLandscapeLeft:
+			angle = -M_PI_2;
+			break;
+		case UIInterfaceOrientationLandscapeRight:
+			angle = M_PI_2;
+			break;
+		default:
+			angle = 0.0;
+			break;
+	}
+
+	return angle;
+}
+
+UIInterfaceOrientationMask UIInterfaceOrientationMaskFromOrientation(UIInterfaceOrientation orientation) {
+	return 1 << orientation;
 }
 
 @end

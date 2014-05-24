@@ -71,6 +71,7 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MMDrawerController *drawerController;
 @property (strong, nonatomic) A3RootViewController_iPad *rootViewController;
+@property (strong, nonatomic) UIViewController *rootViewController_iPhone;
 @property (strong, nonatomic) UbiquityStoreManager *ubiquityStoreManager;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSDate *wakeUpTime;
@@ -80,6 +81,7 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 @property (strong, nonatomic) Reachability *reachability;
 @property (strong, nonatomic) NSCalendar *calendar;
 @property (strong, nonatomic) A3CacheStoreManager *cacheStoreManager;
+@property (strong, nonatomic) UIImageView *coverView;
 
 + (A3AppDelegate *)instance;
 
@@ -89,3 +91,9 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 - (UIViewController *)visibleViewController;
 
 @end
+
+#import "A3AppDelegate+iCloud.h"
+#import "A3AppDelegate+passcode.h"
+#import "A3AppDelegate+appearance.h"
+#import "A3AppDelegate+keyValueStore.h"
+#import "A3AppDelegate+mainMenu.h"

@@ -42,7 +42,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
+	if (!_showAsWhatsNew && [[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
 		return;
 	}
 	
@@ -66,7 +66,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 	[super viewWillAppear:animated];
 
 	if ([self isMovingToParentViewController]) {
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
+		if (!_showAsWhatsNew && [[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
 			A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
 			[self.navigationController pushViewController:clockVC animated:NO];
 
@@ -79,6 +79,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 					[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 				});
 			}
+			[[A3AppDelegate instance] showLockScreen];
 		}
 		else
 		{
@@ -116,6 +117,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 	A3LaunchSceneViewController *nextSceneViewController = [_launchStoryboard instantiateViewControllerWithIdentifier:[NSString stringWithFormat:@"LaunchScene%ld", (long) sceneNumber]];
 	nextSceneViewController.sceneNumber = sceneNumber;
 	nextSceneViewController.delegate = self;
+	nextSceneViewController.showAsWhatsNew = _showAsWhatsNew;
 
 	CGRect currentViewFrame = _currentSceneViewController.view.frame;
 
@@ -143,12 +145,16 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 }
 
 - (void)useAppBoxButtonPressedInViewController:(UIViewController *)viewController {
-	[viewController.view removeFromSuperview];
-	_currentSceneViewController = nil;
-	_launchStoryboard = nil;
+	if (!_showAsWhatsNew) {
+		[viewController.view removeFromSuperview];
+		_currentSceneViewController = nil;
+		_launchStoryboard = nil;
 
-	A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
-	[self.navigationController pushViewController:clockVC animated:NO];
+		A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
+		[self.navigationController pushViewController:clockVC animated:NO];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:NULL];
+	}
 }
 
 - (BOOL)hidesNavigationBar {

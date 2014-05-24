@@ -7,7 +7,7 @@
 //
 
 #import "A3PasscodeCommonViewController.h"
-
+#import "A3AppDelegate.h"
 
 @implementation A3PasscodeCommonViewController {
 
@@ -66,7 +66,6 @@
 	}
 }
 
-
 - (void)rotateAccordingToStatusBarOrientationAndSupportedOrientations {
 	UIInterfaceOrientation orientation = [self desiredOrientation];
 	CGFloat angle = UIInterfaceOrientationAngleOfOrientation(orientation);
@@ -95,32 +94,6 @@
 	else {
 		return [UIApplication sharedApplication].statusBarFrame.size.height;
 	}
-}
-
-
-CGFloat UIInterfaceOrientationAngleOfOrientation(UIInterfaceOrientation orientation) {
-	CGFloat angle;
-
-	switch (orientation) {
-		case UIInterfaceOrientationPortraitUpsideDown:
-			angle = M_PI;
-			break;
-		case UIInterfaceOrientationLandscapeLeft:
-			angle = -M_PI_2;
-			break;
-		case UIInterfaceOrientationLandscapeRight:
-			angle = M_PI_2;
-			break;
-		default:
-			angle = 0.0;
-			break;
-	}
-
-	return angle;
-}
-
-UIInterfaceOrientationMask UIInterfaceOrientationMaskFromOrientation(UIInterfaceOrientation orientation) {
-	return 1 << orientation;
 }
 
 @end

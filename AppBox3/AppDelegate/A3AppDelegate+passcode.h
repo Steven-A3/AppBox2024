@@ -45,3 +45,6 @@ extern NSString *const kUserDefaultsKeyForAskPasscodeForSettings;
 extern NSString *const kUserDefaultsKeyForAskPasscodeForDaysCounter;
 extern NSString *const kUserDefaultsKeyForAskPasscodeForLadyCalendar;
 extern NSString *const kUserDefaultsKeyForAskPasscodeForWallet;
+
+CGFloat UIInterfaceOrientationAngleOfOrientation(UIInterfaceOrientation orientation);
+UIInterfaceOrientationMask UIInterfaceOrientationMaskFromOrientation(UIInterfaceOrientation orientation);

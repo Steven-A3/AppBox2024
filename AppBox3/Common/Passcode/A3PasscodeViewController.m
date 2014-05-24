@@ -79,6 +79,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	NSString *_tempPasscode;
 	BOOL _timerStartInSeconds;
 	BOOL _passcodeValid;
+	BOOL _shouldDismissViewController;
 }
 
 - (void)viewDidLoad
@@ -305,7 +306,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	}
 }
 
-
 - (void)cancelAndDismissMe {
 	_isCurrentlyOnScreen = NO;
 	[_passcodeTextField resignFirstResponder];
@@ -323,7 +323,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	}
 	[self dismissViewControllerAnimated: YES completion: nil];
 }
-
 
 - (void)dismissMe {
 	_isCurrentlyOnScreen = NO;
@@ -366,7 +365,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 //		[[NSNotificationCenter defaultCenter] postNotificationName: @"dismissPasscodeViewController"
 //															object: self
 //														  userInfo: nil];
-		if (_beingDisplayedAsLockscreen && !self.navigationController) {
+		if (_beingDisplayedAsLockscreen && !self.navigationController && !_shouldDismissViewController) {
 			[self.view removeFromSuperview];
 			[self removeFromParentViewController];
 		}
@@ -414,48 +413,53 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 		// https://github.com/rolandleth/LTHPasscodeViewController/issues/16
 		// Usually not more than one window is needed, but your needs may vary; modify below.
 		UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
-//		UIWindow *mainWindow = [UIApplication sharedApplication].windows[0];
-		[mainWindow addSubview: self.view];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(statusBarFrameOrOrientationChanged:)
-													 name:UIApplicationDidChangeStatusBarOrientationNotification
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(statusBarFrameOrOrientationChanged:)
-													 name:UIApplicationDidChangeStatusBarFrameNotification
-												   object:nil];
-		[mainWindow.rootViewController addChildViewController: self];
-		// All this hassle because a view added to UIWindow does not rotate automatically
-		// and if we would have added the view anywhere else, it wouldn't display properly
-		// (having a modal on screen when the user leaves the app, for example).
-		[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
-		CGPoint newCenter;
-		if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft) {
-			self.view.center = CGPointMake(self.view.center.x * -1.f, self.view.center.y);
-			newCenter = CGPointMake(mainWindow.center.x - self.navigationController.navigationBar.frame.size.height / 2,
-					mainWindow.center.y);
-		}
-		else if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeRight) {
-			self.view.center = CGPointMake(self.view.center.x * 2.f, self.view.center.y);
-			newCenter = CGPointMake(mainWindow.center.x + self.navigationController.navigationBar.frame.size.height / 2,
-					mainWindow.center.y);
-		}
-		else if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) {
-			self.view.center = CGPointMake(self.view.center.x, self.view.center.y * -1.f);
-			newCenter = CGPointMake(mainWindow.center.x,
-					mainWindow.center.y - self.navigationController.navigationBar.frame.size.height / 2);
-		}
-		else {
-			self.view.center = CGPointMake(self.view.center.x, self.view.center.y * 2.f);
-			newCenter = CGPointMake(mainWindow.center.x,
-					mainWindow.center.y + self.navigationController.navigationBar.frame.size.height / 2);
-		}
-		if (animated) {
-			[UIView animateWithDuration: kLockAnimationDuration animations: ^{
-				self.view.center = newCenter;
-			}];
+		if (!mainWindow) {
+			UIViewController *rootViewController = IS_IPAD ? [[A3AppDelegate instance] rootViewController] : [[A3AppDelegate instance] rootViewController_iPhone];
+			[rootViewController presentViewController:self animated:NO completion:NULL];
+			_shouldDismissViewController = YES;
 		} else {
-			self.view.center = newCenter;
+			[mainWindow addSubview: self.view];
+			[[NSNotificationCenter defaultCenter] addObserver:self
+													 selector:@selector(statusBarFrameOrOrientationChanged:)
+														 name:UIApplicationDidChangeStatusBarOrientationNotification
+													   object:nil];
+			[[NSNotificationCenter defaultCenter] addObserver:self
+													 selector:@selector(statusBarFrameOrOrientationChanged:)
+														 name:UIApplicationDidChangeStatusBarFrameNotification
+													   object:nil];
+			[mainWindow.rootViewController addChildViewController: self];
+			// All this hassle because a view added to UIWindow does not rotate automatically
+			// and if we would have added the view anywhere else, it wouldn't display properly
+			// (having a modal on screen when the user leaves the app, for example).
+			[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+			CGPoint newCenter;
+			if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft) {
+				self.view.center = CGPointMake(self.view.center.x * -1.f, self.view.center.y);
+				newCenter = CGPointMake(mainWindow.center.x - self.navigationController.navigationBar.frame.size.height / 2,
+						mainWindow.center.y);
+			}
+			else if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeRight) {
+				self.view.center = CGPointMake(self.view.center.x * 2.f, self.view.center.y);
+				newCenter = CGPointMake(mainWindow.center.x + self.navigationController.navigationBar.frame.size.height / 2,
+						mainWindow.center.y);
+			}
+			else if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) {
+				self.view.center = CGPointMake(self.view.center.x, self.view.center.y * -1.f);
+				newCenter = CGPointMake(mainWindow.center.x,
+						mainWindow.center.y - self.navigationController.navigationBar.frame.size.height / 2);
+			}
+			else {
+				self.view.center = CGPointMake(self.view.center.x, self.view.center.y * 2.f);
+				newCenter = CGPointMake(mainWindow.center.x,
+						mainWindow.center.y + self.navigationController.navigationBar.frame.size.height / 2);
+			}
+			if (animated) {
+				[UIView animateWithDuration: kLockAnimationDuration animations: ^{
+					self.view.center = newCenter;
+				}];
+			} else {
+				self.view.center = newCenter;
+			}
 		}
 		_isCurrentlyOnScreen = YES;
 	}
