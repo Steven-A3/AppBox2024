@@ -72,6 +72,9 @@
             _headerView.frame = rect;
         }
         [self.tableView setTableHeaderView:_headerView];
+        self.numberOfCalendarLabel.font = [UIFont boldSystemFontOfSize:15];
+        self.numberOfEventsLabel.font = [UIFont boldSystemFontOfSize:15];
+        self.updateDateLabel.font = [UIFont boldSystemFontOfSize:15];
     }
     else {
         if (IS_RETINA) {

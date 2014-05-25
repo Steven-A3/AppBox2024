@@ -17,8 +17,11 @@
     if (self) {
         self.price = @0;
         self.discount = @0;
+        self.discountType = A3TableViewValueTypePercent;
         self.additionalOff = @0;
+        self.additionalOffType = A3TableViewValueTypePercent;
         self.tax = @0;
+        self.taxType = A3TableViewValueTypePercent;
         self.notes = @"";
     }
     return self;

@@ -935,8 +935,7 @@ EXIT_FUCTION:
                                                                                                           isLunar:[info.isLunar boolValue]
                                                                                                          isAllDay:[info.isAllDay boolValue]
                                                                                                       isLeapMonth:[info.useLeapMonth boolValue]]];
-        dateLabel2.text = @"first date";
-        dateLabel3.text = @"";
+        dateLabel3.text = @"first date";
         dateLabel4.text = @"";
     }
     else {  // ! hasEnd
@@ -1482,24 +1481,15 @@ EXIT_FUCTION:
             BOOL hasEndDate = [_eventItem.isPeriod boolValue];
             //BOOL hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:_eventItem.startDate] < 0 ? YES : NO;
             BOOL hasSince;
-            if ([_eventItem.isAllDay boolValue]) {
-                hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:[_eventItem.startDate solarDate] isAllDay:[_eventItem.isAllDay boolValue]] < 0 ? YES : NO;
-            }
-            else {
-                hasSince = [[NSDate date] timeIntervalSince1970] > [_eventItem.effectiveStartDate timeIntervalSince1970] ? YES : NO;
-            }
+//            if ([_eventItem.isAllDay boolValue]) {
+//                hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:[_eventItem.startDate solarDate] isAllDay:[_eventItem.isAllDay boolValue]] < 0 ? YES : NO;
+//            }
+//            else {
+//                hasSince = [[NSDate date] timeIntervalSince1970] > [_eventItem.effectiveStartDate timeIntervalSince1970] ? YES : NO;
+//            }
+            hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:[_eventItem.startDate solarDate] isAllDay:[_eventItem.isAllDay boolValue]] < 0 ? YES : NO;
             
-            if (!hasRepeat) {
-                if (hasEndDate) {
-                    //* case 2. 162pt  (start 안 지남, end있음)
-                    retHeight = IS_RETINA ? 162.5 : 163;
-                }
-                else {
-                    //* case 1. 현재의 142pt (start 안 지나거나 지났고, end없음, 다음 start없음)
-                    retHeight = IS_RETINA ? 142.5 : 143;
-                }
-            }
-            else {
+            if (hasRepeat) {
                 if (hasEndDate) {
                     if (hasSince) {
                         //* case 4. 276pt  (start 지남, end있음, 다음 start있음)
@@ -1519,6 +1509,16 @@ EXIT_FUCTION:
                         //* case 1. 현재의 142pt (start 안 지나거나 지났고, end없음, 다음 start없음)
                         retHeight = IS_RETINA ? 142.5 : 143;
                     }
+                }
+            }
+            else {
+                if (hasEndDate) {
+                    //* case 2. 162pt  (start 안 지남, end있음)
+                    retHeight = IS_RETINA ? 162.5 : 163;
+                }
+                else {
+                    //* case 1. 현재의 142pt (start 안 지나거나 지났고, end없음, 다음 start없음)
+                    retHeight = IS_RETINA ? 142.5 : 143;
                 }
             }
 

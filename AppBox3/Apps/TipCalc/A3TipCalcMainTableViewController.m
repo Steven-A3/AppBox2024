@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 };
 
 
-@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, UIPopoverControllerDelegate, A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate, UIActivityItemSource, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
+@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, UIActivityItemSource, UIPopoverControllerDelegate, CLLocationManagerDelegate,A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *tableDataSource;
 @property (nonatomic, strong) NSArray * tableSectionTitles;
@@ -63,7 +63,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3TableViewInputElement *calculatorTargetElement;
 @property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
-
+@property (nonatomic, strong) CLLocationManager * lm;
 @end
 
 @implementation A3TipCalcMainTableViewController
@@ -74,12 +74,18 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
     CGFloat _fTableDefaultOffset;
     A3TableViewInputElement *_taxElement;
+    
+    NSNumber * _locationTax;
+    NSString * _locationCode;
 }
 
 - (id)init {
 	self = [super initWithStyle:UITableViewStyleGrouped];
 	if (self) {
-		
+//        _lm = [[CLLocationManager alloc] init];
+//        _lm.delegate = self;
+//        _locationTax = @0.0;
+//        [self getReverseGeocode];
 	}
 	
 	return self;
@@ -1191,5 +1197,128 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 - (NSNumberFormatter *)currencyFormatterForTableViewInputElement {
 	return self.dataManager.currencyFormatter;
 }
+
+//#pragma mark - CLLocationManager stuff
+//
+////bool kIsFirstTipCalcGeocodeTemp = YES; // temp
+//- (void)getReverseGeocode
+//{
+//    if(_lm == nil)
+//        return;
+//    
+//	//if (!self.delegate) return;
+//    
+//	_lm.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
+//    [_lm startUpdatingLocation];
+//}
+//
+//-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+//	if (!_lm)
+//        return;
+//    
+//	[manager stopUpdatingLocation];
+//    
+//	CLGeocoder* geocoder = [[CLGeocoder alloc] init];
+//    
+//	[geocoder reverseGeocodeLocation: _lm.location completionHandler:^(NSArray *placemarks, NSError *error) {
+//        
+//		NSLog(@"ori------");
+//		CLPlacemark *placemark = [placemarks objectAtIndex:0];
+//		NSLog(@"%@", placemark.ISOcountryCode);// 1
+//		NSLog(@"%@", placemark.country);
+//		NSLog(@"%@", placemark.postalCode);
+//		NSLog(@"%@", placemark.administrativeArea);//4
+//		NSLog(@"%@", placemark.subAdministrativeArea);
+//		NSLog(@"%@", placemark.locality);
+//		NSLog(@"%@", placemark.subLocality);
+//		NSLog(@"%@", placemark.thoroughfare);
+//		NSLog(@"%@", placemark.subThoroughfare);
+//		NSLog(@"--------");
+//        
+//		if ([placemark.ISOcountryCode isEqualToString:@"US"] &&
+//            [placemark.administrativeArea length]) {
+//			NSNumber *knownTax = self.knownUSTaxes[placemark.administrativeArea];
+//			if (knownTax) {
+//				_locationTax = knownTax;
+//				_locationCode = @"US";
+//				[self reloadLocationTax];
+//				[self.tableView reloadData];
+//			}
+//		}
+//        
+//		_lm.delegate = nil;
+//		_lm = nil;
+//	}];
+//}
+//
+//- (void)reloadLocationTax {
+//    if (_taxElement && [_locationCode isEqualToString:@"US"]) {
+//        _taxElement.value = [self.decimalFormatter stringFromNumber:_locationTax];
+//    }
+//}
+//
+//#pragma mark - etc_countries Rate List
+//
+//// 미국 판매세 세율은 일반 상품에 적용되는 세율과 식당에 적용되는 세율이 다른 경우가 있습니다.
+//// Sales Calc는 일반 상품에 적용되는 세금을 이용합니다.
+//// Tip Calc는 식당에 적용되는 세율을 적용합니다.
+//// 최종 업데이트는 5월 23일 Wikipedia 정보 기준입니다.
+//- (NSDictionary *)knownUSTaxes {
+//	return @{
+//             @"AL" : @4,		// Alabama
+//             @"AK" : @0,		// Alaska
+//             @"AZ" : @5.6,		// Arizona
+//             @"AR" : @6.5,		// Arkansas
+//             @"CA" : @7.5,		// California
+//             @"CO" : @2.9,		// Colorado
+//             @"CT" : @6.35,		// Connecticut
+//             @"DE" : @0,		// Delaware
+//             @"DC" : @6,		// District of Columbia, 10%
+//             @"FL" : @6,		// Florida, 9%
+//             @"GA" : @4,		// Georgia
+//             @"GU" : @4,		// Guam
+//             @"HI" : @4,		// Hawaii
+//             @"ID" : @6,		// Idaho
+//             @"IL" : @6.25,		// Illinois, 8.25%
+//             @"IN" : @7,		// Indiana, 9%
+//             @"IA" : @6,		// Iowa
+//             @"KS" : @6.15,		// Kansas
+//             @"KY" : @6,		// Kentucky
+//             @"LA" : @4,		// Louisiana
+//             @"ME" : @5.5,		// Maine, 7%
+//             @"MD" : @6,		// Maryland
+//             @"MA" : @6.25,		// Massachusetts, 7%
+//             @"MI" : @6,		// Michigan
+//             @"MN" : @6.875,	// Minnesota, 10.775%
+//             @"MS" : @7,		// Mississippi
+//             @"MO" : @4.225,	// Missouri
+//             @"MT" : @0,		// Montana
+//             @"NE" : @5.5,		// Nebraska, 9.5%
+//             @"NV" : @6.85,		// Nevada
+//             @"NH" : @0,		// New Hampshire, 9%
+//             @"NJ" : @7,		// New Jersey
+//             @"NM" : @5.125,	// New Mexico
+//             @"NY" : @4,		// New York
+//             @"NC" : @4.75,		// North Carolina, 8.5
+//             @"ND" : @5,		// North Dakota
+//             @"OH" : @5.75,		// Ohio
+//             @"OK" : @8.517,	// Oklahoma
+//             @"OR" : @0,		// Oregon
+//             @"PA" : @6,		// Pennsylvania
+//             @"PR" : @7,		// Puerto Rico
+//             @"RI" : @7,		// Rhode Island, 8%
+//             @"SC" : @6,		// South Carolina, 10.5%
+//             @"SD" : @4,		// South Dakota
+//             @"TN" : @7,		// Tennessee
+//             @"TX" : @6.25,		// Texas
+//             @"UT" : @4.7,		// Utah
+//             @"VT" : @6,		// Vermont, 9%
+//             @"VA" : @4.3,		// Virginia, 5.3%
+//             @"WA" : @6.5,		// Washington, 10%
+//             @"WV" : @6,		// West Virginia
+//             @"WI" : @5,		// Wisconsin
+//			 @"WY" : @4,		// Wyoming
+//             };
+//}
 
 @end

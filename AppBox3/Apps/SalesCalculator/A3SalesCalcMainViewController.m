@@ -43,7 +43,7 @@ enum A3TableElementCellType {
 
 NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 
-@interface A3SalesCalcMainViewController () <A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate, A3TableViewInputElementDelegate, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
+@interface A3SalesCalcMainViewController () <CLLocationManagerDelegate, UIPopoverControllerDelegate, A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, A3TableViewInputElementDelegate, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *root;
 @property (nonatomic, strong) A3SalesCalcPreferences *preferences;
@@ -531,7 +531,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
         tax.value = [self.decimalFormatter stringFromNumber:self.preferences.calcData.tax];
     }
     
-//    _taxElement = tax;
+    _taxElement = tax;
     [self reloadLocationTax];
     
     if (!_notes) {
@@ -1118,7 +1118,8 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 }
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-	if (!_lm) return;
+	if (!_lm)
+        return;
 
 	[manager stopUpdatingLocation];
 
@@ -1147,7 +1148,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 				_locationCode = @"US";
 				[self reloadLocationTax];
 				[self.tableView reloadData];
-			}
+			}   
 		}
 
 		_lm.delegate = nil;
@@ -1156,9 +1157,8 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 }
 
 - (void)reloadLocationTax {
-    NSNumberFormatter *formatter = [NSNumberFormatter new];
     if (_taxElement && [_locationCode isEqualToString:@"US"]) {
-        _taxElement.value = [formatter stringFromNumber:_locationTax];
+        _taxElement.value = [self.decimalFormatter stringFromNumber:_locationTax];
         self.preferences.calcData.tax = _locationTax;
     }
 }
