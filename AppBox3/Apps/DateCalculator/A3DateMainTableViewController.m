@@ -1291,20 +1291,7 @@ NSString *kCalculationString;
                     break;
                 }
             }
-            
-//            [cell.detailTextLabel sizeToFit];
-//            
-//            // detailTextLabel 위치 조정, 실패.
-//            CGRect rect = cell.detailTextLabel.frame;
-//            //rect.origin.x = cell.contentView.bounds.size.width - cell.detailTextLabel.frame.size.width;
-//            rect.origin.x = 300;//cell.bounds.size.width - cell.detailTextLabel.frame.size.width;
-//            cell.detailTextLabel.frame = rect;
-            
-//            // 선택된 셀로 이동.
-//            if (indexPath.section==_editingIndexPath.section && indexPath.row==_editingIndexPath.row && _isSelectedFromToCell) {
-//                [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-//            }
-            
+
             // 선택된 셀 텍스트 색상 편집 중에만 변경.
             if (_isKeyboardShown && _editingIndexPath && (indexPath.row==_editingIndexPath.row)) {
                 cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
