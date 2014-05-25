@@ -117,7 +117,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 #pragma mark - UITableViewDelegate, UITableViewDataSource
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	if (section == 2) return 26;
+	if (section == 2 && _backupInfoString) return 25;
 	return [self standardHeightForHeaderInSection:section];
 }
 

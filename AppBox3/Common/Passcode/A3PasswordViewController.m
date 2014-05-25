@@ -9,6 +9,8 @@
 #import "A3PasswordViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "A3KeychainUtils.h"
+#import "A3StandardTableViewCell.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 #define kFailedAttemptLabelBackgroundColor [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f]
 #define kLabelFont (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize * kFontSizeModifier] : [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize])
@@ -59,6 +61,8 @@
 	self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
 	self.tableView.dataSource = self;
 	self.tableView.delegate = self;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	[self.view addSubview:self.tableView];
 
 	[self.tableView makeConstraints:^(MASConstraintMaker *make) {
@@ -285,7 +289,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    A3StandardTableViewCell *cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.textLabel.font = [UIFont systemFontOfSize:17];
 	
