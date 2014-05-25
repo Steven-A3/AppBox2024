@@ -245,8 +245,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 - (void) setFilterViewRotation:(GLKView *)filterView withScreenBounds:(CGRect)screenBounds{
 
 	[self setViewRotation:filterView];
-	if (bLosslessZoom == NO &&
-			effectiveScale <= 1) {
+	if (effectiveScale <= 1) {
 		filterView.frame = screenBounds;
 	}
 }
