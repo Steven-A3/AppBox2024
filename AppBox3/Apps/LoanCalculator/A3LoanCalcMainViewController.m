@@ -1650,9 +1650,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         compareCell.red_A_Line.hidden = NO;
         
         float maxAmount = MAX([_loanDataA totalAmount].floatValue, [_loanDataB totalAmount].floatValue);
-        
         float percentOfRedBar = 0;
-        
         float interestFloat = [_loanDataA totalInterest].floatValue;
         percentOfRedBar = interestFloat/maxAmount;
         
@@ -1661,24 +1659,15 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         compareCell.red_A_Line.frame = redRect;
         
         float percentOfMarkA = 0;
-        
         float totalFloat = [_loanDataA totalAmount].floatValue;
         percentOfMarkA = totalFloat/maxAmount;
         
-        //compareCell.markA_Label.layer.anchorPoint = CGPointMake(0.5, 0.5);
         CGPoint center = compareCell.markA_Label.center;
-        //center.x = MIN(self.view.bounds.size.width * percentOfMarkA, self.view.bounds.size.width - compareCell.markA_Label.frame.size.width/2);
         center.x = self.view.bounds.size.width - compareCell.markA_Label.frame.size.width / 2;
         compareCell.markA_Label.center = center;
         
         NSLog(@"markA : %@", NSStringFromCGRect(compareCell.markA_Label.frame));
         NSLog(@"redLine : %@", NSStringFromCGRect(compareCell.red_A_Line.frame));
-        
-        float circleOriginX = compareCell.circleA_View.frame.origin.x;
-        CGRect rectLeft = compareCell.left_A_Label.frame;
-        rectLeft.origin.x = MAX(circleOriginX, IS_IPAD ? 28:15);
-        compareCell.left_A_Label.frame = rectLeft;
-        NSLog(@"leftA : %@", NSStringFromCGRect(compareCell.left_A_Label.frame));
         
         float markTailX = compareCell.markA_Label.frame.origin.x + compareCell.markA_Label.frame.size.width;
         markTailX = MIN(markTailX, self.view.bounds.size.width-15);
@@ -1687,6 +1676,14 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         compareCell.right_A_Label.frame = rectRight;
         NSLog(@"rightA : %@", NSStringFromCGRect(compareCell.right_A_Label.frame));
 
+        float circleOriginX = compareCell.circleA_View.frame.origin.x;
+        CGRect rectLeft = compareCell.left_A_Label.frame;
+        rectLeft.origin.x = MAX(circleOriginX, IS_IPAD ? 28:15);
+        if ((rectLeft.origin.x + rectLeft.size.width) > rectRight.origin.x) {
+            rectLeft.origin.x -= (rectLeft.origin.x + rectLeft.size.width) - rectRight.origin.x;
+        }
+        compareCell.left_A_Label.frame = rectLeft;
+        NSLog(@"leftA : %@", NSStringFromCGRect(compareCell.left_A_Label.frame));
         
         // from bottom to label bottom : 115/90
         float gap = IS_IPAD ? 115 : 90;
@@ -1726,7 +1723,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         
         NSLog(@"leftA : %@", NSStringFromCGRect(compareCell.left_A_Label.frame));
         NSLog(@"rightA : %@", NSStringFromCGRect(compareCell.right_A_Label.frame));
-
     }
     else {
         [self makeClearGraphLoanA:compareCell];
@@ -1779,7 +1775,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         float circleOriginX = compareCell.circleB_View.frame.origin.x;
         CGRect rectLeft = compareCell.left_B_Label.frame;
         rectLeft.origin.x = MAX(circleOriginX, IS_IPAD ? 28:15);
-        if ((rectLeft.origin.x + rectLeft.size.width) > rectLeft.origin.x) {
+        if ((rectLeft.origin.x + rectLeft.size.width) > rectRight.origin.x) {
             rectLeft.origin.x -= (rectLeft.origin.x + rectLeft.size.width) - rectRight.origin.x;
         }
         compareCell.left_B_Label.frame = rectLeft;
@@ -2677,7 +2673,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         [UIView setAnimationDuration:0.35];
         self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
         [UIView commitAnimations];
-    } else {
+    }
+    else {
         [UIView beginAnimations:@"KeyboardWillShow" context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
