@@ -1330,27 +1330,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (BOOL)isSameHistory:(LoanCalcHistory *)history withLan:(LoanCalcData *)loan
 {
-    /*
-     data.downPayment = @(history.downPayment.doubleValue);
-     data.extraPaymentMonthly = @(history.extraPaymentMonthly.doubleValue);
-     data.extraPaymentOneTime = @(history.extraPaymentOnetime.doubleValue);
-     data.extraPaymentOneTimeDate = history.extraPaymentOnetimeYearMonth;
-     data.extraPaymentYearly = @(history.extraPaymentYearly.doubleValue);
-     data.extraPaymentYearlyDate = history.extraPaymentYearlyMonth;
-     data.frequencyIndex = history.frequency.integerValue;
-     data.annualInterestRate = @(history.interestRate.floatValue);
-     data.repayment = @(history.monthlyPayment.doubleValue);
-     data.note = history.notes;
-     data.principal = @(history.principal.doubleValue);
-     data.startDate = history.startDate;
-     data.monthOfTerms = @(history.term.floatValue);
-     data.calculationDate = history.created;
-     data.calculationFor = history.calculationFor.integerValue;
-     data.showAdvanced = history.showAdvanced.boolValue;
-     data.showDownPayment = history.showDownPayment.boolValue;
-     data.showExtraPayment = history.showExtraPayment.boolValue;
-     */
-    
     LoanCalcData *tmpLoan = [LoanCalcData new];
     [self loadLoanCalcData:tmpLoan fromLoanCalcHistory:history];
     
@@ -1464,33 +1443,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)saveLoanData
 {
-    /*
-    @property (nonatomic, strong) NSNumber *principal;
-    @property (nonatomic, strong) NSNumber *downPayment;
-    @property (nonatomic, strong) NSNumber *repayment;
-    @property (nonatomic, strong) NSNumber *monthOfTerms;
-    @property (nonatomic, strong) NSNumber *annualInterestRate;
-    @property (nonatomic, readwrite) A3LoanCalcFrequencyType frequencyIndex;
-    @property (nonatomic, strong) NSDate *calculationDate;
-    
-    // advanced
-    @property (nonatomic, strong) NSDate *startDate;
-    @property (nonatomic, strong) NSString *note;
-    
-    // extra payment
-    @property (nonatomic, strong) NSNumber *extraPaymentMonthly;
-    @property (nonatomic, strong) NSNumber *extraPaymentYearly;
-    @property (nonatomic, strong) NSDate *extraPaymentYearlyDate;
-    @property (nonatomic, strong) NSNumber *extraPaymentOneTime;
-    @property (nonatomic, strong) NSDate *extraPaymentOneTimeDate;
-    
-    // setting
-    @property (nonatomic, readwrite) A3LoanCalcCalculationMode calculationFor;
-    @property (nonatomic, readwrite) BOOL showAdvanced;
-    @property (nonatomic, readwrite) BOOL showDownPayment;
-    @property (nonatomic, readwrite) BOOL showExtraPayment;
-     */
-    
     NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:self.loanData];
     [[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:@"LoanCalcLoanData"];
     [[NSUserDefaults standardUserDefaults] synchronize];
