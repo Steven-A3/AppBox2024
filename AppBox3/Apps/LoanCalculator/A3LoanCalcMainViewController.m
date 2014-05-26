@@ -1733,7 +1733,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
     
     if ([_loanDataB calculated]) {
-        
         compareCell.left_B_Label.layer.anchorPoint = CGPointMake(0, 1.0);
         compareCell.right_B_Label.layer.anchorPoint = CGPointMake(1, 1.0);
         

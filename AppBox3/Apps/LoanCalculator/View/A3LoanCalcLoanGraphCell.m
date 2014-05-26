@@ -14,6 +14,7 @@
 @implementation A3LoanCalcLoanGraphCell
 {
     NSArray *_percentLabels;
+    NSArray *_percentA_meterViews;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -23,6 +24,12 @@
         // Initialization code
     }
     return self;
+}
+
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self adjustMeterViewsPosition];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -94,6 +101,7 @@
         
         float gapRight = 6;
         NSMutableArray *percentLabelArray = [NSMutableArray new];
+        NSMutableArray *percentViewArray = [NSMutableArray new];
         
         for (int i=0; i<5; i++) {
             UIView *tmp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 23)];
@@ -113,10 +121,12 @@
             [_bgLineView addSubview:tmp];
             tmp.center = CGPointMake(_bgLineView.bounds.size.width/5.0*(i+1), 0);
             tmp.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+            [percentViewArray addObject:tmp];
             [percentLabelArray addObject:pctLB];
         }
         
         _percentLabels = percentLabelArray;
+        _percentA_meterViews = percentViewArray;
     }
 }
 
@@ -158,5 +168,15 @@
         }];
     }
 }
+
+- (void)adjustMeterViewsPosition
+{
+    [_percentA_meterViews enumerateObjectsUsingBlock:^(UIView *meterView, NSUInteger idx, BOOL *stop) {
+        CGRect frame = meterView.frame;
+        frame.origin.x = ceilf(CGRectGetWidth([self bounds]) / 5.0 * (idx + 1)) - 50.0;
+        meterView.frame = frame;
+    }];
+}
+
 
 @end
