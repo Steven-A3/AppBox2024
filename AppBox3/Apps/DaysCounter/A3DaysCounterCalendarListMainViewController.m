@@ -22,7 +22,7 @@
 #import "DaysCounterCalendar.h"
 #import "DaysCounterCalendar+Extension.h"
 #import "DaysCounterEvent.h"
-#import "DaysCounterDateModel.h"
+#import "DaysCounterDate.h"
 #import "A3DateHelper.h"
 #import "NSDate+LunarConverter.h"
 #import "A3AppDelegate+appearance.h"
@@ -420,7 +420,7 @@
             if ([event.isLunar boolValue]) {
                 nextDate = [A3DaysCounterModelManager nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[event startDate]
                                                                                                                                                 toLunar:[event.isLunar boolValue]]
-                                                                                 leapMonth:[event.useLeapMonth boolValue]
+                                                                                 leapMonth:[event.startDate.isLeapMonth boolValue]
                                                                                   fromDate:today];
             }
             else {

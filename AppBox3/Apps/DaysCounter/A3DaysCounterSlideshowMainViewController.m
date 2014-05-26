@@ -27,7 +27,7 @@
 #import "A3DefaultColorDefines.h"
 #import "A3DaysCounterSlideshowViewController.h"
 #import "A3AppDelegate+appearance.h"
-#import "DaysCounterDateModel.h"
+#import "DaysCounterDate.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+navigation.h"
 
@@ -228,7 +228,7 @@
     
     if (_prevShownEventID) {
         [_eventsArray enumerateObjectsUsingBlock:^(DaysCounterEvent *item, NSUInteger idx, BOOL *stop) {
-            if ([item.eventId isEqualToString:_prevShownEventID]) {
+            if ([item.uniqueID isEqualToString:_prevShownEventID]) {
                 [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]
                                         atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                                 animated:NO];
@@ -545,7 +545,7 @@
     }
     [self hideTopToolbarAnimated:NO];
     DaysCounterEvent *item = [_eventsArray objectAtIndex:currentIndex];
-    _prevShownEventID = item.eventId;
+    _prevShownEventID = item.uniqueID;
     
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
     viewCtrl.eventItem = item;

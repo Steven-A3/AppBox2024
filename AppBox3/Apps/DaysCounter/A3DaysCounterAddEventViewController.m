@@ -23,12 +23,10 @@
 #import "DaysCounterCalendar+Extension.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
-#import "DaysCounterDateModel.h"
+#import "DaysCounterDate.h"
 #import "NSDate+LunarConverter.h"
 #import "SFKImage.h"
-#import "A3AppDelegate.h"
 #import "Reachability.h"
-#import "A3AppDelegate+appearance.h"
 #import "A3DateHelper.h"
 #import "A3WalletNoteCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
@@ -37,6 +35,7 @@
 #import "A3JHTableViewExpandableHeaderCell.h"
 #import "UITableView+utility.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIImage+Resizing.h"
 
 
 #define ActionTag_Location      100
@@ -52,14 +51,11 @@
 @property (assign, nonatomic) BOOL isAdvancedCellOpen;
 @property (assign, nonatomic) BOOL isDurationInitialized;//temp...
 @property (weak, nonatomic) UITextView *textViewResponder;
-@property (strong, nonatomic) UIImage *thumbnailImage;
-@property (strong, nonatomic) UIImage *photoImage;
 @property (strong, nonatomic) UIImagePickerController *imagePickerController;
 @end
 
-@implementation A3DaysCounterAddEventViewController
-{
-    NSIndexPath *_indexPathOfShownDatePickerCell;
+@implementation A3DaysCounterAddEventViewController {
+	BOOL _isAddingEvent;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -81,14 +77,19 @@
                          @"", @"", @"advancedCell", @"", @"switchCell"];    // 15 ~ 19
     
     if (_eventItem) {
+		_isAddingEvent = NO;
         self.title = @"Edit Event";
         _isAdvancedCellOpen = [self hasAdvancedData];
         _isDurationInitialized = YES;
+
+		[_eventItem copyThumbnailImageToTemporaryDirectory];
     }
     else {
+		_isAddingEvent = YES;
         self.title = @"Add Event";
         _isAdvancedCellOpen = NO;
         _eventItem = [DaysCounterEvent MR_createEntity];
+		_eventItem.uniqueID = [[NSUUID UUID] UUIDString];
         [A3DaysCounterModelManager setDateModelObjectForDateComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:NO];
         [A3DaysCounterModelManager setDateModelObjectForDateComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:YES];
 
@@ -102,7 +103,6 @@
         if (self.calendarId) {
             DaysCounterCalendar *selectedCalendar = [[[_sharedManager allUserCalendarList] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarId == %@", self.calendarId]] lastObject];
             if (selectedCalendar) {
-                _eventItem.calendarId = self.calendarId;
                 _eventItem.calendar = selectedCalendar;
             }
         }
@@ -115,7 +115,6 @@
                 anniversaryCalendar = [[_sharedManager allUserCalendarList] firstObject];
             }
             if (anniversaryCalendar) {
-                _eventItem.calendarId = anniversaryCalendar.calendarId;
                 _eventItem.calendar = anniversaryCalendar;
             }
         }
@@ -128,11 +127,6 @@
     
     if ( _eventItem ) {
         [self configureTableViewDataSourceForEventInfo:_eventItem];
-        if (_eventItem.imageFilename) {
-            _thumbnailImage = [A3DaysCounterModelManager photoThumbnailFromFilename:_eventItem.imageFilename];
-            _photoImage = [A3DaysCounterModelManager photoImageFromFilename:_eventItem.imageFilename];
-            _thumbnailImage = [A3DaysCounterModelManager circularScaleNCrop:_thumbnailImage rect:CGRectMake(0, 0, _thumbnailImage.size.width, _thumbnailImage.size.height)];
-        }
     }
     else {
         if ( [_sharedManager isSupportLunar] ) {
@@ -293,12 +287,11 @@
     return NO;
 }
 
-- (void)leapMonthCellEnable:(BOOL)useLeapMonth
+- (void)leapMonthCellEnable:(BOOL)isLeapMonth
 {
     NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
     NSIndexPath *leapMonthIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_IsLeapMonth atSectionArray:section1_items]
                                                          inSection:AddSection_Section_1];
-//    _eventItem.useLeapMonth = @(useLeapMonth);
     [self.tableView reloadRowsAtIndexPaths:@[leapMonthIndexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
@@ -411,7 +404,6 @@
     else {
         [section1_Items addObject:@{ EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)}];
         _eventItem.isLunar = @(NO);
-        _eventItem.useLeapMonth = @(NO);
     }
     
     if (![info.isLunar boolValue]) {
@@ -705,21 +697,15 @@
 - (void)photoTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType
 {
     UIButton *button = (UIButton*)[cell viewWithTag:11];
-    //UIImage *image = [A3DaysCounterModelManager photoThumbnailFromFilename:_eventItem.imageFilename];
-    //if (image) {
-    if (_thumbnailImage) {
-		[button setImage:_thumbnailImage forState:UIControlStateNormal];
-    }
-    else {
-        NSMutableArray *array = [NSMutableArray array];
-        for(CALayer *layer in button.layer.sublayers ) {
-            if ( [layer isKindOfClass:[CAShapeLayer class]] )
-                [array addObject:layer];
-        }
-        for(CALayer *layer in array)
-            [layer removeFromSuperlayer];
-        [button setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
-    }
+	if (_eventItem.photo) {
+		button.layer.cornerRadius = button.bounds.size.width / 2.0;
+		button.layer.masksToBounds = YES;
+		button.contentMode = UIViewContentModeScaleAspectFill;
+		[button setImage:[_eventItem thumbnailImageInTemporaryDirectory:YES] forState:UIControlStateNormal];
+	} else {
+		button.layer.masksToBounds = NO;
+		[button setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
+	}
 }
 
 - (void)leapMonthTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType title:(NSString *)title
@@ -730,7 +716,7 @@
     
     BOOL isStartDateLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.startDate toLunar:YES]
                                                                 isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-    BOOL isEndDateLeapMonth;
+    BOOL isEndDateLeapMonth = NO;
     if (_eventItem.endDate) {
         isEndDateLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.endDate toLunar:YES]
                                                              isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
@@ -738,12 +724,11 @@
     
     if (isStartDateLeapMonth || isEndDateLeapMonth) {
         swButton.enabled = YES;
-        swButton.on = [_eventItem.useLeapMonth boolValue];
+        swButton.on = YES;
     }
     else {
         swButton.enabled = NO;
         swButton.on = NO;
-        _eventItem.useLeapMonth = @(NO);
     }
 }
 
@@ -769,16 +754,11 @@
     if ( keyDate ) {
         if ([_eventItem.isLunar boolValue]) {
             dateLabel.text = [A3DaysCounterModelManager dateStringOfLunarFromDateModel:itemType == EventCellType_StartDate ? _eventItem.startDate : _eventItem.endDate
-                                                                           isLeapMonth:[_eventItem.useLeapMonth boolValue]];
+                                                                           isLeapMonth:itemType == EventCellType_StartDate ? [_eventItem.startDate.isLeapMonth boolValue] : [_eventItem.endDate.isLeapMonth boolValue] ];
         }
         else {
-            dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:itemType == EventCellType_StartDate ? _eventItem.startDate : _eventItem.endDate
-                                                                        isLunar:NO
-                                                                       isAllDay:[_eventItem.isAllDay boolValue]
-                                                                    isLeapMonth:[_eventItem.useLeapMonth boolValue]];
+            dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:itemType == EventCellType_StartDate ? _eventItem.startDate : _eventItem.endDate isLunar:NO isAllDay:[_eventItem.isAllDay boolValue]];
         }
-//        dateLabel.text = [A3Formatter stringFromDate:keyDate
-//                                              format:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[_eventItem.isLunar boolValue] ? YES : [_eventItem.isAllDay boolValue]]];
     }
     else {
         dateLabel.text = [A3Formatter stringFromDate:[NSDate date]
@@ -1310,7 +1290,7 @@
 #pragma mark etc
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [_sectionTitleArray count] + (_eventItem.eventId ? 1 : 0);
+    return [_sectionTitleArray count] + (_eventItem.uniqueID ? 1 : 0);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -1325,7 +1305,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if ( section == 2 ) {
-        if (_eventItem.eventId) {
+        if (_eventItem.uniqueID) {
             return IS_RETINA ? 35.5 : 35;
         }
         else {
@@ -1344,10 +1324,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (_eventItem.eventId && section == [_sectionTitleArray count]) {
+    if (_eventItem.uniqueID && section == [_sectionTitleArray count]) {
         return 38.0;
     }
-    else if (!_eventItem.eventId && section == [_sectionTitleArray count] - 1) {
+    else if (!_eventItem.uniqueID && section == [_sectionTitleArray count] - 1) {
         return 38.0;
     }
     
@@ -1440,13 +1420,15 @@
             }
         }
     }
-    
-    if ( !_eventItem.eventId ) {
-        [_sharedManager addEvent:_eventItem image:_photoImage];
+
+
+    if ( _isAddingEvent ) {
+        [_sharedManager addEvent:_eventItem];
     }
     else {
-        [_sharedManager modifyEvent:_eventItem image:_photoImage];
+        [_sharedManager modifyEvent:_eventItem];
     }
+	[_eventItem moveThumbnailImageToCachesDirectory];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
     
@@ -1489,7 +1471,7 @@
 {
     [self resignAllAction];
 
-	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:_photoImage != nil delegate:self];
+	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:_eventItem.photo != nil delegate:self];
 	actionSheet.tag = ActionTag_Photo;
 	[actionSheet showInView:self.view];
 }
@@ -1638,7 +1620,7 @@
 
 - (void)toggleLeapMonthSwitchButton:(UISwitch*)switchButton indexPath:(NSIndexPath *)indexPath
 {
-    _eventItem.useLeapMonth = @(switchButton.on);
+    _eventItem.startDate.isLeapMonth = @(switchButton.on);
     NSMutableArray *sectionRow_items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
 
     // Reload StartDate
@@ -1764,7 +1746,7 @@
     
     NSMutableArray *items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
     NSDate *prevDate = [_eventItem.startDate solarDate];
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *calendar = [[A3AppDelegate instance] calendar];
     NSDateComponents *dateComp;
     if ([_eventItem.isAllDay boolValue]) {
         dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[datePicker date]];
@@ -1775,7 +1757,7 @@
     else {
         dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[datePicker date]];
         dateComp.second = 0;
-        DaysCounterDateModel *dateData = [self.inputDateKey isEqualToString:EventItem_StartDate] ? _eventItem.startDate : _eventItem.endDate;
+        DaysCounterDate *dateData = [self.inputDateKey isEqualToString:EventItem_StartDate] ? _eventItem.startDate : _eventItem.endDate;
         if ([dateData.hour integerValue] != dateComp.hour || [dateData.minute integerValue] != dateComp.minute) {
             NSInteger durationFlag = [_eventItem.durationOption integerValue];
             durationFlag |= DurationOption_Hour|DurationOption_Minutes;
@@ -2060,13 +2042,10 @@
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:12];
             if ([_eventItem.isLunar boolValue]) {
                 dateLabel.text = [A3DaysCounterModelManager dateStringOfLunarFromDateModel:_eventItem.startDate
-                                                                               isLeapMonth:[_eventItem.useLeapMonth boolValue]];
+                                                                               isLeapMonth:[_eventItem.startDate.isLeapMonth boolValue]];
             }
             else {
-                dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:_eventItem.startDate
-                                                                            isLunar:NO
-                                                                           isAllDay:[_eventItem.isAllDay boolValue]
-                                                                        isLeapMonth:[_eventItem.useLeapMonth boolValue]];
+                dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:_eventItem.startDate isLunar:NO isAllDay:[_eventItem.isAllDay boolValue]];
             }
         }
     }
@@ -2082,13 +2061,10 @@
             
             if ([_eventItem.isLunar boolValue]) {
                 dateLabel.text = [A3DaysCounterModelManager dateStringOfLunarFromDateModel:_eventItem.endDate
-                                                                               isLeapMonth:[_eventItem.useLeapMonth boolValue]];
+                                                                               isLeapMonth:[_eventItem.endDate.isLeapMonth boolValue]];
             }
             else {
-                dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:_eventItem.endDate
-                                                                            isLunar:NO
-                                                                           isAllDay:[_eventItem.isAllDay boolValue]
-                                                                        isLeapMonth:[_eventItem.useLeapMonth boolValue]];
+                dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:_eventItem.endDate isLunar:NO isAllDay:[_eventItem.isAllDay boolValue]];
             }
         }
     }
@@ -2140,9 +2116,7 @@
 		if (buttonIndex == actionSheet.cancelButtonIndex) return;
 
 		if (buttonIndex == actionSheet.destructiveButtonIndex) {
-            _eventItem.imageFilename = nil;
-            _thumbnailImage = nil;
-            _photoImage = nil;
+			_eventItem.photo = nil;
             [self.tableView reloadData];
 			return;
 		}
@@ -2273,7 +2247,7 @@
             NSDictionary *addressDict = placeMark.addressDictionary;
             
             DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
-            locItem.eventId = _eventItem.eventId;
+            locItem.eventId = _eventItem.uniqueID;
             locItem.latitude = @(location.coordinate.latitude);
             locItem.longitude = @(location.coordinate.longitude);
             
@@ -2311,9 +2285,8 @@
         image = [info objectForKey:UIImagePickerControllerOriginalImage];
     }
     
-    UIImage *circleImage = [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 64.0, 64.0)];
-    _thumbnailImage = circleImage;
-    _photoImage = image;
+	_eventItem.photo = image;
+	[_eventItem saveThumbnailInTemporaryDirectory];
 
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     if ( IS_IPHONE || picker.sourceType == UIImagePickerControllerSourceTypeCamera) {

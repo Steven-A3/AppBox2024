@@ -102,7 +102,7 @@
     }
     
     imageView.tintColor = [item color];
-    cell.accessoryType = [item.calendarId isEqualToString:_eventModel.calendarId] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    cell.accessoryType = [item.calendarId isEqualToString:_eventModel.calendar.calendarId] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     
     return cell;
 }
@@ -111,9 +111,8 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
-    _eventModel.calendarId = item.calendarId;
-    _eventModel.calendar = [_sharedManager calendarItemByID:item.calendarId];
+    DaysCounterCalendar *calendar = [_itemArray objectAtIndex:indexPath.row];
+    _eventModel.calendar = calendar;
     
     [tableView reloadData];
     [self doneButtonAction:nil];
@@ -127,7 +126,6 @@
 - (void)cancelAction:(id)sender
 {
     _eventModel.calendar = self.originalValue;
-    _eventModel.calendarId = self.originalValue.calendarId;
 
     if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];

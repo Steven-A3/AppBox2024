@@ -13,8 +13,6 @@
 #define FOURSQUARE_CLIENTSECRET @"KQWO4HZHJLETEZNCLZULIEC3S2VIV3PFPZ0RJ4YMYDZOAHBU"
 #define FOURSQUARE_REDIRECTURI  @"appbox://foursquare"
 
-#define DaysCounterDefaultDateFormat            @"EEE, MMM d, yyyy"
-
 #define OptionKey_Transition                    @"transition"
 #define OptionKey_Showtime                      @"showtime"
 #define OptionKey_Repeat                        @"repeat"
@@ -42,40 +40,8 @@
 #define SystemCalendarID_Upcoming               @"U"
 #define SystemCalendarID_Past                   @"P"
 
-//#define EventItem_ID                            @"eventId"
-//#define EventItem_Name                          @"eventName"
-//#define EventItem_ImageFilename                 @"imageFilename"
-//#define EventItem_Image                         @"image"
-//#define EventItem_Thumbnail                     @"thumbnail"
-//#define EventItem_IsLunar                       @"isLunar"
-//#define EventItem_IsAllDay                      @"isAllDay"
-//#define EventItem_IsPeriod                      @"isPeriod"
-//#define EventItem_IsLeapMonthOn                 @"isLeapMonthOn"
-//#define EventItem_IsStartDateLeapMonth          @"isStartDateLeapMonth"
-//#define EventItem_IsEndDateLeapMonth            @"isEndDateLeapMonth"
 #define EventItem_StartDate                     @"startDate"
 #define EventItem_EndDate                       @"endDate"
-//#define EventItem_RepeatType                    @"repeatType"
-//#define EventItem_RepeatEndDate                 @"repeatEndDate"
-//#define EventItem_AlertDatetime                 @"alertDatetime"
-//#define EventItem_AlertDatetimeInterval         @"alertDatetimeInterval"
-//#define EventItem_AlertDateType                 @"alertDateType"
-//#define EventItem_DurationOption                @"durationOption"
-//#define EventItem_Notes                         @"notes"
-//#define EventItem_IsFavorite                    @"isFavorite"
-//#define EventItem_RegDate                       @"regDate"
-//#define EventItem_CalendarId                    @"calendarId"
-//#define EventItem_Calendar                      @"calendar"
-//#define EventItem_Location                      @"location"
-//#define EventItem_Latitude                      @"latitude"
-//#define EventItem_Longitude                     @"longitude"
-//#define EventItem_Address                       @"address"
-//#define EventItem_City                          @"city"
-//#define EventItem_State                         @"state"
-//#define EventItem_Country                       @"country"
-//#define EventItem_LocationName                  @"locationName"
-//#define EventItem_Contact                       @"contact"
-//#define EventItem_EffectiveStartDate            @"EffectiveStartDate"
 
 #define AlertMessage_NoPhoto                    @"No Photos\nYou can add photos into events."
 
@@ -90,7 +56,7 @@ typedef NS_ENUM(NSInteger, A3DaysCounterDurationOption) {
     DurationOption_Year     = 0x00000001 << 6,
 };
 
-enum A3DaysCounterRepeatType{
+typedef NS_ENUM(NSInteger, A3DaysCounterRepeatType) {
     RepeatType_EveryYear = -5,
     RepeatType_EveryMonth = -4,
     RepeatType_Every2Week = -3,
@@ -99,11 +65,7 @@ enum A3DaysCounterRepeatType{
     RepeatType_Never = 0,
 };
 
-enum A3DaysCounterAddSection {
-//    AddSection_DefaultInfo = 0,
-//    AddSection_DateInfo,
-//    AddSection_Advanced,
-//    AddSection_AdvancedSeperator,
+typedef NS_ENUM(NSInteger, A3DaysCounterAddSection) {
     AddSection_Section_0 = 0,
     AddSection_Section_1,
     AddSection_Section_2,
@@ -142,7 +104,7 @@ typedef NS_ENUM(NSInteger, A3DaysCounterCalendarCellType) {
     CalendarCellType_System
 };
 
-enum A3DaysCounterAlertType{
+typedef NS_ENUM(NSInteger, A3DaysCounterAlertType) {
     AlertType_None = 0,
     AlertType_AtTimeOfEvent,
     AlertType_5MinutesBefore,
@@ -156,19 +118,18 @@ enum A3DaysCounterAlertType{
     AlertType_Custom,
 };
 
-enum A3DaysCounterCustomAlertCellType{
+typedef NS_ENUM(NSInteger, A3DaysCounterCustomAlertCellType) {
     CustomAlertCell_DaysBefore,
     CustomAlertCell_Time,
     CustomAlertCell_TimeInput,
 };
 
-
-enum A3DaysCounterEventListSortType{
+typedef NS_ENUM(NSInteger, A3DaysCounterEventListSortType) {
     EventSortType_Date = 0,
     EventSortType_Name ,
 };
 
-enum A3DaysCounterSlideshowOptionType{
+typedef NS_ENUM(NSInteger, A3DaysCounterSlideshowOptionType) {
     SlideshowOptionType_Transition,
     SlideshowOptionType_Showtime,
     SlideshowOptionType_Repeat,
@@ -176,7 +137,7 @@ enum A3DaysCounterSlideshowOptionType{
     SlideshowOptionType_Startshow,
 };
 
-enum A3DaysCounterSlideshowTransitionType{
+typedef NS_ENUM(NSInteger, A3DaysCounterSlideshowTransitionType) {
     TransitionType_Cube,
     TransitionType_Dissolve,
     TransitionType_Origami,

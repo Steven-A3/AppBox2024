@@ -8,11 +8,12 @@
 
 #import "NSDate+daysleft.h"
 #import "HolidayData.h"
+#import "A3AppDelegate.h"
 
 @implementation NSDate (daysleft)
 
 - (NSString *)daysLeft {
-	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	NSDateComponents *components = [gregorian components:NSDayCalendarUnit fromDate:[HolidayData justDateWithDate:[NSDate date]] toDate:self options:NSWrapCalendarComponents];
 
 	return [NSString stringWithFormat:@"%ld Days Left", (long)components.day];

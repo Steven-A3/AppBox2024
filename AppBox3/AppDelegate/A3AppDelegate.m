@@ -267,7 +267,7 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 	FNLOG(@"%@", _localNotificationUserInfo[A3LocalNotificationDataID]);
 
-	DaysCounterEvent *eventItem = [DaysCounterEvent MR_findFirstByAttribute:@"eventId" withValue:_localNotificationUserInfo[A3LocalNotificationDataID]];
+	DaysCounterEvent *eventItem = [DaysCounterEvent MR_findFirstByAttribute:@"uniqueID" withValue:_localNotificationUserInfo[A3LocalNotificationDataID]];
 	A3DaysCounterEventDetailViewController *viewController = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:[NSBundle mainBundle]];
 	viewController.isModal = YES;
 	viewController.eventItem = eventItem;

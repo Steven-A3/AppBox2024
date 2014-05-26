@@ -121,7 +121,6 @@
     DaysCounterCalendar *targetCalendar = [_itemArray objectAtIndex:self.selectedIndexPath.row];
     NSManagedObjectContext *context = [_currentCalendar managedObjectContext];
     for(DaysCounterEvent *event in _eventArray){
-        event.calendarId = targetCalendar.calendarId;
         event.calendar = targetCalendar;
     }
     [context MR_saveToPersistentStoreAndWait];

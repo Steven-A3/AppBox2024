@@ -187,6 +187,11 @@
 	return [[paths objectAtIndex:0] stringByAppendingPathComponent:self];
 }
 
+- (NSString *)pathInCachesDirectory {
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+	return [[paths objectAtIndex:0] stringByAppendingPathComponent:self];
+}
+
 - (NSString *)stringByTrimmingSpaceCharacters {
 	return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }

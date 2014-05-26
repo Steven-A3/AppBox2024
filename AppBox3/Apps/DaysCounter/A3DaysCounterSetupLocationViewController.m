@@ -582,7 +582,7 @@
         }
 
         DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
-        locItem.eventId = _eventModel.eventId;
+        locItem.eventId = _eventModel.uniqueID;
         locItem.latitude = @(item.location.coordinate.latitude);
         locItem.longitude = @(item.location.coordinate.longitude);
         locItem.locationName = item.name;
@@ -739,7 +739,7 @@
         };
         viewCtrl.dismissCompletionBlock = ^(FSVenue *locationItem) {
             DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
-            locItem.eventId = _eventModel.eventId;
+            locItem.eventId = _eventModel.uniqueID;
             locItem.latitude = @(locationItem.location.coordinate.latitude);
             locItem.latitude = @(locationItem.location.coordinate.longitude);
             locItem.locationName = locationItem.name;

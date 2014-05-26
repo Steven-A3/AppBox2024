@@ -7,6 +7,7 @@
 //
 
 #import "HolidayData+MiddleEast.h"
+#import "A3AppDelegate.h"
 
 @implementation HolidayData (MiddleEast) 
 
@@ -16,8 +17,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -185,8 +185,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -336,8 +335,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -452,8 +450,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -573,8 +570,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -683,8 +679,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
