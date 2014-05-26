@@ -1278,7 +1278,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
     // Result
     // Payments or etc
-    [body appendFormat:@"%@ :", [[LoanCalcString titleOfCalFor:loanData.calculationMode] uppercaseString]];
+    [body appendFormat:@"%@: ", [[LoanCalcString titleOfCalFor:loanData.calculationMode] uppercaseString]];
     A3LoanCalcCalculationItem resultItem = [LoanCalcMode resltItemForCalcMode:loanData.calculationMode];
     if (loanData.calculationMode == A3LC_CalculationForTermOfMonths) {
         NSInteger monthInt =  (int)round(loanData.monthOfTerms.doubleValue);
@@ -1305,7 +1305,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     NSArray *inputCalcItems = [LoanCalcMode calculateItemForMode:loanData.calculationMode withDownPaymentEnabled:downPaymentEnable];
     [inputCalcItems enumerateObjectsUsingBlock:^(NSNumber *itemID, NSUInteger idx, BOOL *stop) {
         A3LoanCalcCalculationItem inputCalcItem = (A3LoanCalcCalculationItem)[itemID integerValue];
-        [body appendFormat:@"%@ : ", [LoanCalcString titleOfItem:inputCalcItem]];
+        [body appendFormat:@"%@: ", [LoanCalcString titleOfItem:inputCalcItem]];
         [body appendFormat:@"%@<br>", [LoanCalcString valueTextForCalcItem:inputCalcItem fromData:loanData formatter:self.currencyFormatter]];
     }];
     
