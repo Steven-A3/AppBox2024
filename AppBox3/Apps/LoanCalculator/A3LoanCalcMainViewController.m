@@ -2671,7 +2671,12 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.35];
-        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
+        if (self.tableView.contentInset.top == 0) {
+            self.tableView.contentOffset = CGPointMake(0.0, 0.0);
+        }
+        else {
+            self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
+        }
         [UIView commitAnimations];
     }
     else {
@@ -2679,7 +2684,12 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.35];
-        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height));
+        if (self.tableView.contentInset.top == 0) {
+            self.tableView.contentOffset = CGPointMake(0.0, 0.0);
+        }
+        else {
+            self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height));
+        }
         [UIView commitAnimations];
     }
 }
