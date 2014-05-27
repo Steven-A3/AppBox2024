@@ -21,6 +21,9 @@ extern NSString *const A3LadyCalendarChangedDateKey;
 + (void)alertMessage:(NSString*)message title:(NSString*)title;
 
 - (void)prepare;
+
+- (void)prepareAccount;
+
 - (void)savePredictItemBeforeNow;
 
 - (NSInteger)numberOfAccount;

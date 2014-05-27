@@ -27,6 +27,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+navigation.h"
+#import "TranslatorGroup+manage.h"
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 
@@ -946,14 +947,10 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 			_translatingMessage.group = groupCandidates[0];
 		} else if (![groupCandidates count]) {
 			TranslatorGroup *newGroup = [TranslatorGroup MR_createEntity];
+			[newGroup setupOrder];
 			newGroup.sourceLanguage = detectedLanguage;
 			newGroup.targetLanguage = _translatedTextLanguage;
 
-			NSString *largestInOrder = [TranslatorGroup MR_findLargestValueForAttribute:@"order"];
-			NSString *nextLargestInOrder = [NSString orderStringWithOrder:[largestInOrder integerValue] + 100000];
-			FNLOG(@"nextLargestInOrder = %@", nextLargestInOrder);
-
-			newGroup.order = nextLargestInOrder;
 			_translatingMessage.group = newGroup;
 		}
 	}
