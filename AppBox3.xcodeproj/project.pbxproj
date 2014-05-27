@@ -40,6 +40,7 @@
 		17D4269E6891386E9B4ADD5C /* NSMutableArray+MoveObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4283B29E7CACCE273EF77 /* NSMutableArray+MoveObject.m */; };
 		17D426A26D07018A5660B225 /* A3StandardLeft15Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42516142E89CE1E21A7E2 /* A3StandardLeft15Cell.m */; };
 		17D427689D46EABBC180DD14 /* A3LadyCalendarDetailViewExpectedTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D420920931B2410608C063 /* A3LadyCalendarDetailViewExpectedTitleCell.m */; };
+		17D427D61B3EEB8761EDC0B1 /* TranslatorGroup+manage.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D423B408AA7A5CEF1770C9 /* TranslatorGroup+manage.m */; };
 		17D427E06C341B1B48478B6A /* A3TranslatorLanguageTVDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42505EF075896601D91B4 /* A3TranslatorLanguageTVDelegate.m */; };
 		17D4281D6E4097F4FAAF976F /* A3SettingsLunarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4240D8D9E585110DEC8A3 /* A3SettingsLunarViewController.m */; };
 		17D4287AB63C166472C101FE /* UIViewController+NumberKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D428002E7CC2380AB2E2DA /* UIViewController+NumberKeyboard.m */; };
@@ -200,6 +201,14 @@
 		681E121B1933640E0077DCFA /* DaysCounterDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E121A1933640E0077DCFA /* DaysCounterDate.m */; };
 		681E121E1933640E0077DCFA /* DaysCounterCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E121D1933640E0077DCFA /* DaysCounterCalendar.m */; };
 		681E12211933640E0077DCFA /* DaysCounterEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E12201933640E0077DCFA /* DaysCounterEvent.m */; };
+		681E1224193440540077DCFA /* NSData-AES.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E1223193440540077DCFA /* NSData-AES.m */; };
+		681E125D193443F00077DCFA /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 681E122D193443F00077DCFA /* ioapi.c */; };
+		681E1264193443F00077DCFA /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 681E1235193443F00077DCFA /* mztools.c */; };
+		681E1265193443F00077DCFA /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 681E1237193443F00077DCFA /* unzip.c */; };
+		681E1266193443F00077DCFA /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 681E1239193443F00077DCFA /* zip.c */; };
+		681E1271193443F00077DCFA /* ZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E1256193443F00077DCFA /* ZipArchive.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		681E1281193447D70077DCFA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 681E1280193447D70077DCFA /* libz.dylib */; };
+		681E1284193448230077DCFA /* AAAZip.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E1283193448230077DCFA /* AAAZip.m */; };
 		682126861843902A009A7964 /* NSNumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 682126851843902A009A7964 /* NSNumberExtensions.m */; };
 		68236CD6186A8D75006F442B /* A3PasscodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68236CD5186A8D75006F442B /* A3PasscodeViewController.m */; };
 		68236CDD186AA7B4006F442B /* A3AppDelegate+passcode.m in Sources */ = {isa = PBXBuildFile; fileRef = 68236CDC186AA7B4006F442B /* A3AppDelegate+passcode.m */; };
@@ -979,6 +988,7 @@
 		17D42357892038841C42B47C /* FSOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSOAuth.h; sourceTree = "<group>"; };
 		17D4236125BF62298D2D0D15 /* A3CalculatorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorViewController.h; sourceTree = "<group>"; };
 		17D4237F77148AC8C7AB11E4 /* FSTargetCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSTargetCallback.h; sourceTree = "<group>"; };
+		17D423B408AA7A5CEF1770C9 /* TranslatorGroup+manage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TranslatorGroup+manage.m"; sourceTree = "<group>"; };
 		17D423B50DFFA540C31E72FC /* FSConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSConverter.m; sourceTree = "<group>"; };
 		17D423DD97AB2009AC80EA88 /* A3CalculatorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorViewController.m; sourceTree = "<group>"; };
 		17D4240D8D9E585110DEC8A3 /* A3SettingsLunarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsLunarViewController.m; path = Settings/A3SettingsLunarViewController.m; sourceTree = "<group>"; };
@@ -998,6 +1008,7 @@
 		17D425DE3A3E4C299A8A0D06 /* MathParser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = MathParser.h; sourceTree = "<group>"; };
 		17D4261CD5E1463A7D7053FF /* FSWebLogin.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSWebLogin.xib; sourceTree = "<group>"; };
 		17D42632666AC2368C10B1BA /* A3CurrencyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyTableViewCell.h; path = Apps/Currency/A3CurrencyTableViewCell.h; sourceTree = "<group>"; };
+		17D42633E469F5EBD4479E1F /* TranslatorGroup+manage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TranslatorGroup+manage.h"; sourceTree = "<group>"; };
 		17D4263A1F905EB73EA573B2 /* A3SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SearchViewController.m; path = Apps/Currency/A3SearchViewController.m; sourceTree = "<group>"; };
 		17D42647DF41660948614893 /* A3PasscodeCommonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PasscodeCommonViewController.m; path = Passcode/A3PasscodeCommonViewController.m; sourceTree = "<group>"; };
 		17D426503D335516CC3EFD93 /* A3TranslatorFavoriteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorFavoriteCell.m; path = Translator/A3TranslatorFavoriteCell.m; sourceTree = "<group>"; };
@@ -1304,6 +1315,22 @@
 		681E121D1933640E0077DCFA /* DaysCounterCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterCalendar.m; sourceTree = "<group>"; };
 		681E121F1933640E0077DCFA /* DaysCounterEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaysCounterEvent.h; sourceTree = "<group>"; };
 		681E12201933640E0077DCFA /* DaysCounterEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterEvent.m; sourceTree = "<group>"; };
+		681E1222193440540077DCFA /* NSData-AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData-AES.h"; sourceTree = "<group>"; };
+		681E1223193440540077DCFA /* NSData-AES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData-AES.m"; sourceTree = "<group>"; };
+		681E122C193443F00077DCFA /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		681E122D193443F00077DCFA /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		681E122E193443F00077DCFA /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		681E1235193443F00077DCFA /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		681E1236193443F00077DCFA /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		681E1237193443F00077DCFA /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		681E1238193443F00077DCFA /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		681E1239193443F00077DCFA /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		681E123A193443F00077DCFA /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		681E1255193443F00077DCFA /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
+		681E1256193443F00077DCFA /* ZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZipArchive.m; sourceTree = "<group>"; };
+		681E1280193447D70077DCFA /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		681E1282193448230077DCFA /* AAAZip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAAZip.h; sourceTree = "<group>"; };
+		681E1283193448230077DCFA /* AAAZip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAAZip.m; sourceTree = "<group>"; };
 		682126841843902A009A7964 /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
 		682126851843902A009A7964 /* NSNumberExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNumberExtensions.m; sourceTree = "<group>"; };
 		68236CD4186A8D75006F442B /* A3PasscodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PasscodeViewController.h; path = Passcode/A3PasscodeViewController.h; sourceTree = "<group>"; };
@@ -2553,6 +2580,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				681E1281193447D70077DCFA /* libz.dylib in Frameworks */,
 				680D63A418D06B3F00938AD0 /* DropboxSDK.framework in Frameworks */,
 				68DBAB6D18C4C2B2003A67E5 /* MediaPlayer.framework in Frameworks */,
 				6831407F18C20C9700896819 /* AVFoundation.framework in Frameworks */,
@@ -3081,6 +3109,33 @@
 			name = MigrationV1V3;
 			sourceTree = "<group>";
 		};
+		681E1225193443F00077DCFA /* ZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				681E122A193443F00077DCFA /* minizip */,
+				681E1255193443F00077DCFA /* ZipArchive.h */,
+				681E1256193443F00077DCFA /* ZipArchive.m */,
+			);
+			name = ZipArchive;
+			path = External/ZipArchive;
+			sourceTree = "<group>";
+		};
+		681E122A193443F00077DCFA /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				681E122C193443F00077DCFA /* crypt.h */,
+				681E122D193443F00077DCFA /* ioapi.c */,
+				681E122E193443F00077DCFA /* ioapi.h */,
+				681E1235193443F00077DCFA /* mztools.c */,
+				681E1236193443F00077DCFA /* mztools.h */,
+				681E1237193443F00077DCFA /* unzip.c */,
+				681E1238193443F00077DCFA /* unzip.h */,
+				681E1239193443F00077DCFA /* zip.c */,
+				681E123A193443F00077DCFA /* zip.h */,
+			);
+			path = minizip;
+			sourceTree = "<group>";
+		};
 		68236CD3186A8D34006F442B /* Passcode */ = {
 			isa = PBXGroup;
 			children = (
@@ -3442,6 +3497,7 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				681E1280193447D70077DCFA /* libz.dylib */,
 				68DBAB6C18C4C2B2003A67E5 /* MediaPlayer.framework */,
 				6831407E18C20C9700896819 /* AVFoundation.framework */,
 				6825367E18A7C1B800EAFB84 /* libsqlite3.0.dylib */,
@@ -3586,6 +3642,10 @@
 		683B953D15EB233500575377 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				681E1282193448230077DCFA /* AAAZip.h */,
+				681E1283193448230077DCFA /* AAAZip.m */,
+				681E1222193440540077DCFA /* NSData-AES.h */,
+				681E1223193440540077DCFA /* NSData-AES.m */,
 				17D42D2BD7342C5A173486D2 /* A3CenterViewDelegate.h */,
 				6825367518A7BBE600EAFB84 /* A3DateHelper.h */,
 				6825367618A7BBE600EAFB84 /* A3DateHelper.m */,
@@ -3681,6 +3741,8 @@
 				17D421064EA823E51FA60A9B /* TranslatorHistory+manager.m */,
 				683308FD18C06D740082524E /* TranslatorHistory.h */,
 				683308FE18C06D740082524E /* TranslatorHistory.m */,
+				17D423B408AA7A5CEF1770C9 /* TranslatorGroup+manage.m */,
+				17D42633E469F5EBD4479E1F /* TranslatorGroup+manage.h */,
 			);
 			name = Model;
 			path = Translator/Model;
@@ -4628,6 +4690,7 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
+				681E1225193443F00077DCFA /* ZipArchive */,
 				689C9A261839CD7F007C97EE /* AFNetworking */,
 				683224B717CE1AB900973F34 /* DKLiveBlur */,
 				6890AB0B1786B800004FECE4 /* expecta */,
@@ -5670,6 +5733,7 @@
 				68D0732018210B5100D34870 /* A3RoundedSideButton.m in Sources */,
 				68D61BD817F53FB400EF4B5E /* DKLiveBlurView.m in Sources */,
 				687F928618F603F1006377B9 /* A3UnitConverterMoreTableViewController.m in Sources */,
+				681E1266193443F00077DCFA /* zip.c in Sources */,
 				680D639A18CFF9D400938AD0 /* Calculation.m in Sources */,
 				68E2A65D18D0B1FC00E834D9 /* A3PercentCalcHeaderView.m in Sources */,
 				68ADE14817D83D28009618A7 /* MMDrawerController.m in Sources */,
@@ -5726,6 +5790,7 @@
 				804A406118E070C500556029 /* A3DaysCounterEventListDateCell.m in Sources */,
 				6829687A18503C3300B70E13 /* NSString+MagicalDataImport.m in Sources */,
 				6829684218503B2100B70E13 /* MagicalRecord+Setup.m in Sources */,
+				681E1265193443F00077DCFA /* unzip.c in Sources */,
 				6829683C18503B2100B70E13 /* MagicalMigrationManager.m in Sources */,
 				68B6A35818CEDDD1004084EF /* JVFloatLabeledTextField.m in Sources */,
 				68F1C8A918D7F37D009FAE8A /* A3DaysCounterSlideshowOptionViewController.m in Sources */,
@@ -6084,6 +6149,7 @@
 				68521A4617E1FF2E00E08FB1 /* FXLabel.m in Sources */,
 				68F1C8CB18D7F37D009FAE8A /* A3LadyCalendarListViewController.m in Sources */,
 				685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */,
+				681E1264193443F00077DCFA /* mztools.c in Sources */,
 				68B6A34618CEC76D004084EF /* A3WalletCategoryViewController.m in Sources */,
 				6823F702186329DC00E6E90D /* A3CurrencyDataManager.m in Sources */,
 				687F928918F69C74006377B9 /* A3MoreTableViewCell.m in Sources */,
@@ -6207,6 +6273,7 @@
 				68F1C89418D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.m in Sources */,
 				6896DC971921D64F00FA98F3 /* ExpenseListItem+management.m in Sources */,
 				68143CFB18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.m in Sources */,
+				681E125D193443F00077DCFA /* ioapi.c in Sources */,
 				68B6A2D918CEC76D004084EF /* A3UnitConverterViewController.m in Sources */,
 				68E2A6D218D0B46500E834D9 /* TipCalcRecently.m in Sources */,
 				68B6A2B018CEC76D004084EF /* A3LoanCalcSelectModeViewController.m in Sources */,
@@ -6228,6 +6295,7 @@
 				68F1C8CD18D7F37D009FAE8A /* A3LadyCalendarModelManager.m in Sources */,
 				6829687618503C3300B70E13 /* NSObject+MagicalDataImport.m in Sources */,
 				17D42A39FA849C645CB674DD /* A3TranslatorFavoriteCell.m in Sources */,
+				681E1224193440540077DCFA /* NSData-AES.m in Sources */,
 				689C9A4D1839CD7F007C97EE /* AFNetworkReachabilityManager.m in Sources */,
 				68143D6D18E3ECB700569691 /* A3ImageCropperViewController.m in Sources */,
 				6852298018FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.m in Sources */,
@@ -6296,6 +6364,7 @@
 				17D42DC93704B5A21363A17F /* A3LadyCalendarDetailViewCell.m in Sources */,
 				17D427689D46EABBC180DD14 /* A3LadyCalendarDetailViewExpectedTitleCell.m in Sources */,
 				17D424B4BFD92CD7C21AC0A7 /* A3LoanCalcContentsTableViewController.m in Sources */,
+				681E1271193443F00077DCFA /* ZipArchive.m in Sources */,
 				17D425100E1C4BDFC5E6CF0C /* A3SettingsAddFavoritesViewController.m in Sources */,
 				17D42F9D1879F6925F0A7A02 /* A3SettingsChooseColorViewController.m in Sources */,
 				17D429BC8B8A263D0AB3AE4E /* A3SettingsDropboxSelectBackupViewController.m in Sources */,
@@ -6306,6 +6375,8 @@
 				17D42C95EAFF98306DD2CA3D /* A3SettingsRequireForViewController.m in Sources */,
 				17D423916758FF055E340EE7 /* A3SettingsBackupRestoreViewController.m in Sources */,
 				17D421DA97EB3D5480B0586D /* A3SettingsViewController.m in Sources */,
+				17D427D61B3EEB8761EDC0B1 /* TranslatorGroup+manage.m in Sources */,
+				681E1284193448230077DCFA /* AAAZip.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

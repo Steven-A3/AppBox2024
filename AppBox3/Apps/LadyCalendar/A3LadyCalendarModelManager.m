@@ -49,16 +49,8 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 
 - (void)prepare
 {
-    // 기본 계정을 한개 추가한다.
-    if( [self numberOfAccount] < 1 ){
-        [self addDefaultAccount];
-        
-        if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] == nil ){
-            [[NSUserDefaults standardUserDefaults] setObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-    }
-    
+	[self prepareAccount];
+
     // 기본 설정값을 저장한다.
     if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting] == nil ){
         NSMutableDictionary *item = [self createDefaultSetting];
@@ -75,6 +67,18 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
     [self savePredictItemBeforeNow];
     
     [self recalculateDates];
+}
+
+- (void)prepareAccount {
+	// 기본 계정을 한개 추가한다.
+	if( [self numberOfAccount] < 1 ){
+		[self addDefaultAccount];
+
+		if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] == nil ){
+			[[NSUserDefaults standardUserDefaults] setObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+		}
+	}
 }
 
 - (void)savePredictItemBeforeNow
