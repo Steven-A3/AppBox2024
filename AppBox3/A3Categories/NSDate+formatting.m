@@ -23,7 +23,6 @@
 //	dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"MMMM" withString:@"MMM"];
 //	[dateFormatter setDateFormat:dateFormat];
 	return [dateFormatter stringFromDate:self];
-
 }
 
 - (NSString *)a3FullCustomStyleString {
@@ -84,6 +83,14 @@
 	NSDateFormatter *dateFormatter = [NSDateFormatter new];
 	[dateFormatter setDateFormat:@"MM/dd/yy hh:mm aaa"];
 	return [dateFormatter stringFromDate:self];
+}
+
++ (BOOL)isFullStyleLocale {
+    NSString *locale = [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
+    if ( [locale isEqualToString:@"KR"] || [locale isEqualToString:@"JP"] || [locale isEqualToString:@"CN"] || [locale isEqualToString:@"TW"] || [locale isEqualToString:@"HK"] || [locale isEqualToString:@"MO"] || [locale isEqualToString:@"SG"] )
+        return YES;
+    
+    return NO;
 }
 
 @end

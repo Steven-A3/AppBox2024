@@ -563,7 +563,7 @@
     _minValue = 0.0;
     _minDate = _fromDate;
     
-    self.fromLabel.text = [A3DateCalcStateManager formattedStringDate:_fromDate];
+    self.fromLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate];
     [_fromLabel sizeToFit];
     
     self.fromValue = 0.0;
@@ -575,7 +575,7 @@
     _maxValue = CGRectGetWidth(self.sliderLineView.frame);
     _maxDate = toDate;
 
-    self.toLabel.text = [A3DateCalcStateManager formattedStringDate:_toDate];
+    self.toLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_toDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_toDate];
     [_toLabel sizeToFit];
     if (IS_IPAD && IS_LANDSCAPE) {
         self.toValue = 1024.0;
@@ -770,9 +770,9 @@
         _toDate = tDate;
 
         [self setResultBetweenDate:resultComp withAnimation:YES];
-        
-        _fromLabel.text = [A3DateCalcStateManager formattedStringDate:fDate];
-        _toLabel.text = [A3DateCalcStateManager formattedStringDate:tDate];
+
+        _fromLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:fDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:fDate];
+        _toLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:tDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:tDate];
         
         if ([_delegate respondsToSelector:@selector(dateCalcHeaderChangedFromDate:toDate:)]) {
             [_delegate dateCalcHeaderChangedFromDate:fDate toDate:tDate];
@@ -858,8 +858,8 @@
                              [self setupSliderThumbShadeByCalcType];
                          }
                          completion:^(BOOL finished) {
-                             _fromLabel.text = [A3DateCalcStateManager formattedStringDate:_fromDate];
-                             _toLabel.text = [A3DateCalcStateManager formattedStringDate:_toDate];
+                             _fromLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate];
+                             _toLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_toDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_toDate];
                              [self adjustFromToLabelPosition];
                          }];
     }
@@ -869,15 +869,16 @@
         [self setupResultLabelPositionForThumbView:_fromLagerThanTo==NO ? _toThumbView : _fromThumbView];
         self.resultLabel.arrowDirection = _fromLagerThanTo==NO ? ArrowDirection_To : ArrowDirection_From;
         [self setupSliderThumbShadeByCalcType];
-        _fromLabel.text = [A3DateCalcStateManager formattedStringDate:_fromDate];
-        _toLabel.text = [A3DateCalcStateManager formattedStringDate:_toDate];
+        
+        _fromLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate];
+        _toLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_toDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_toDate];
     }
 }
 
 - (NSDateComponents *)setResultAddDate:(NSDate *)resultDate withAnimation:(BOOL)animation
 {
     _calcType = CALC_TYPE_ADD;
-    [_resultLabel setResultText:[A3DateCalcStateManager formattedStringDate:resultDate]];
+    [_resultLabel setResultText:IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:resultDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:resultDate]];
     
     [A3DateCalcStateManager setCurrentDurationType:[A3DateCalcStateManager addSubDurationType]];
     NSDateComponents *comp = [[A3DateCalcStateManager currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay
@@ -899,7 +900,7 @@
                              [self setupResultLabelPositionForThumbView:_toThumbView];
                              [self setupSliderThumbShadeByCalcType];
                              
-                             _fromLabel.text = [A3DateCalcStateManager formattedStringDate:_fromDate];
+                             _fromLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate];
                              _toLabel.text = rDateString;
                              
                              if (comp.year==0 && comp.month==0 && comp.day==0) {
@@ -924,7 +925,7 @@
         [self setupResultLabelPositionForThumbView:_toThumbView];
         [self setupSliderThumbShadeByCalcType];
         
-        _fromLabel.text = [A3DateCalcStateManager formattedStringDate:_fromDate];
+        _fromLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate];
         _toLabel.text = rDateString;
         
         if (comp.year==0 && comp.month==0 && comp.day==0) {
@@ -946,8 +947,7 @@
 - (NSDateComponents *)setResultSubDate:(NSDate *)resultDate withAnimation:(BOOL)animation
 {
     _calcType = CALC_TYPE_SUB;
-    [_resultLabel setResultText:[A3DateCalcStateManager formattedStringDate:resultDate]];
-    
+    [_resultLabel setResultText:IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:resultDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:resultDate]];
     [A3DateCalcStateManager setCurrentDurationType:[A3DateCalcStateManager addSubDurationType]];
     NSDateComponents *comp = [[A3DateCalcStateManager currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay
                                                                          fromDate:_fromDate
@@ -970,7 +970,7 @@
                              
                              // Sub 모드는 from/to 반대
                              _fromLabel.text = rDateString;
-                             _toLabel.text = [A3DateCalcStateManager formattedStringDate:_fromDate];
+                             _toLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate];
                              [_fromLabel sizeToFit];
                              [_toLabel sizeToFit];
                              
@@ -997,7 +997,7 @@
         [self setupSliderThumbShadeByCalcType];
 
         _fromLabel.text = rDateString;
-        _toLabel.text = [A3DateCalcStateManager formattedStringDate:_fromDate];
+        _toLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate];
         [_fromLabel sizeToFit];
         [_toLabel sizeToFit];
         

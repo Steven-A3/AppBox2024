@@ -18,4 +18,5 @@
 
 // KJH - SalesCalc, ExpenseList
 - (NSString *)a3HistoryDateString;
++ (BOOL)isFullStyleLocale;
 @end

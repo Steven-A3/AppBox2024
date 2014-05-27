@@ -50,7 +50,8 @@ typedef NS_OPTIONS(NSInteger, ExcludeOptions) {
 +(NSInteger)dayCountToDate:(NSDate *)date;
 +(NSInteger)dayCountToDate:(NSDate *)date from:(NSDate *)from;
 
-+(NSString *)formattedStringDate:(NSDate *)date;
++(NSString *)fullStyleDateStringFromDate:(NSDate *)date;
++(NSString *)fullCustomStyleDateStringFromDate:(NSDate *)date;
 +(void)setCurrentDurationType:(DurationType)type;
 +(DurationType)currentDurationType;
 +(DurationType)addSubDurationType;

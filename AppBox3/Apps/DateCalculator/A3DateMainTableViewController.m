@@ -24,6 +24,7 @@
 #import "A3AppDelegate+appearance.h"
 #import "NSString+conversion.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "NSDate+formatting.h"
 
 #define kDefaultBackgroundColor [UIColor lightGrayColor]
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]
@@ -423,13 +424,13 @@ NSString *kCalculationString;
         
 		NSMutableString *txt = [NSMutableString new];
 		[txt appendString:@"<html><body>I'd like to share a calculation with you.<br/><br/>"];
-		[txt appendString:[self stringForShare]];
+		[txt appendString:[self stringForShareForActivityType:UIActivityTypeMail]];
 		[txt appendString:@"<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>"];
         
 		return txt;
 	}
 	else {
-        NSString *shareString = [self stringForShare];
+        NSString *shareString = [self stringForShareForActivityType:nil];
         shareString = [shareString stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
 		return shareString;
 	}
@@ -440,28 +441,34 @@ NSString *kCalculationString;
 	return @"Share Currency Converter Data";
 }
 
-- (NSString *)stringForShare {
+- (NSString *)stringForShareForActivityType:(NSString *)activityType {
     NSString *shareString;
     if (self.isAddSubMode) {
-        shareString = [self stringOfAddSubModeForShare];
+        shareString = [self stringOfAddSubModeForShareActivityType:activityType];
     }
     else {
-        shareString = [self stringOfBetweenModeForShare];
+        shareString = [self stringOfBetweenModeForShareActivityType:activityType];
     }
     return shareString;
 }
 
-- (NSString *)stringOfBetweenModeForShare {
+- (NSString *)stringOfBetweenModeForShareActivityType:(NSString *)activityType {
     
     NSMutableString *shareString = [[NSMutableString alloc] init];
-    
     /*  Between인 경우
      "Calculate duration between two dates.
      From and including: 시작날
      To, but not including: 끝날
      Result:  ? years ? months ? days" */
-    [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager formattedStringDate:_fromDate]]];
-    [shareString appendString:[NSString stringWithFormat:@"To: %@<br>", [A3DateCalcStateManager formattedStringDate:_toDate]]];
+    if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
+        [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
+        [shareString appendString:[NSString stringWithFormat:@"To: %@<br>", [A3DateCalcStateManager fullStyleDateStringFromDate:_toDate]]];
+    }
+    else {
+        [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
+        [shareString appendString:[NSString stringWithFormat:@"To: %@<br>", [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_toDate]]];
+    }
+
     if ([A3DateCalcStateManager excludeOptions] != ExcludeOptions_None) {
         [shareString appendString:[NSString stringWithFormat:@"Exclude: %@<br>", [A3DateCalcStateManager excludeOptionsString]]];
     }
@@ -504,7 +511,7 @@ NSString *kCalculationString;
     return shareString;
 }
 
-- (NSString *)stringOfAddSubModeForShare {
+- (NSString *)stringOfAddSubModeForShareActivityType:(NSString *)activityType {
     NSMutableString *shareString = [[NSMutableString alloc] init];
     
     /* Date Calculator
@@ -515,7 +522,13 @@ NSString *kCalculationString;
         NSDate *result = [[A3DateCalcStateManager currentCalendar] dateByAddingComponents:self.offsetComp
                                                                                    toDate:_fromDate
                                                                                   options:0];
-        [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager formattedStringDate:_fromDate]]];
+        
+        if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
+            [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
+        }
+        else {
+            [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
+        }
         
         NSMutableString *resultShareString = [[NSMutableString alloc] init];
         if (self.offsetComp.year!=0) {
@@ -544,7 +557,12 @@ NSString *kCalculationString;
             [shareString appendString:[NSString stringWithFormat:@"Add: %@<br>", resultShareString]];
         }
         
-        [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager formattedStringDate:result]]];
+        if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
+            [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager fullStyleDateStringFromDate:result]]];
+        }
+        else {
+            [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager fullCustomStyleDateStringFromDate:result]]];
+        }
     }
     else {
         NSDateComponents *compAdd = [NSDateComponents new];
@@ -555,7 +573,12 @@ NSString *kCalculationString;
         NSDate *result = [[A3DateCalcStateManager currentCalendar] dateByAddingComponents:compAdd
                                                                                    toDate:_fromDate
                                                                                   options:0];
-        [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager formattedStringDate:_fromDate]]];
+        if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
+            [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
+        }
+        else {
+            [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
+        }
         
         NSMutableString *resultShareString = [[NSMutableString alloc] init];
         if (self.offsetComp.year!=0) {
@@ -583,7 +606,12 @@ NSString *kCalculationString;
             [shareString appendString:[NSString stringWithFormat:@"Subtract: %@<br>", resultShareString]];
         }
         
-        [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager formattedStringDate:result]]];
+        if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
+            [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager fullStyleDateStringFromDate:result]]];
+        }
+        else {
+            [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager fullCustomStyleDateStringFromDate:result]]];
+        }
     }
     
     return shareString;
@@ -971,14 +999,14 @@ NSString *kCalculationString;
             }
             
             if (cell) {
-                cell.detailTextLabel.text = [A3DateCalcStateManager formattedStringDate:self.fromDate];
+                cell.detailTextLabel.text = [A3DateCalcStateManager fullStyleDateStringFromDate:self.fromDate];
                 cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
             }
         }
         else {
             self.toDate = date == nil ? [NSDate date] : date;
             if (cell) {
-                cell.detailTextLabel.text = [A3DateCalcStateManager formattedStringDate:self.toDate];
+                cell.detailTextLabel.text = [A3DateCalcStateManager fullStyleDateStringFromDate:self.toDate];
                 cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
             }
         }
@@ -1280,13 +1308,13 @@ NSString *kCalculationString;
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell.detailTextLabel.text = [A3DateCalcStateManager formattedStringDate:self.fromDateCursor];
+                    cell.detailTextLabel.text = [A3DateCalcStateManager fullStyleDateStringFromDate:self.fromDateCursor];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                     break;
                 }
                 case 1:
                 {
-                    cell.detailTextLabel.text = [A3DateCalcStateManager formattedStringDate:self.toDateCursor];
+                    cell.detailTextLabel.text = [A3DateCalcStateManager fullStyleDateStringFromDate:self.toDateCursor];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                     break;
                 }
