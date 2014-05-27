@@ -24,6 +24,8 @@
 #import "DaysCounterFavorite.h"
 #import "NSMutableArray+A3Sort.h"
 #import "DaysCounterEvent+management.h"
+#import "NSDate+formatting.h"
+#import "NSDateFormatter+A3Addition.h"
 
 @interface A3DaysCounterFavoriteListViewController () <FMMoveTableViewDelegate, FMMoveTableViewDataSource>
 
@@ -231,12 +233,18 @@
             daysLabel.text = @" ";
 
             if ( IS_IPAD ) {
+                NSDateFormatter *formatter = [NSDateFormatter new];
+                [formatter setDateStyle:NSDateFormatterFullStyle];
+                if ([favorite.event.isAllDay boolValue]) {
+                    [formatter setTimeStyle:NSDateFormatterShortStyle];
+                }
+                
                 UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
                 NSDate *repeatDate = [A3DaysCounterModelManager repeatDateOfCurrentNotNextWithRepeatOption:[favorite.event.repeatType integerValue]
                                                                                                  firstDate:[favorite.event.startDate solarDate]
                                                                                                   fromDate:[NSDate date]];
                 dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
-                                                       withFormat:[_sharedManager dateFormatForAddEditIsAllDays:[favorite.event.isAllDay boolValue]]];
+                                                       withFormat:[formatter dateFormat]];
                 
                 dateLabel.hidden = NO;
                 ((A3DaysCounterEventListNameCell *)cell).titleRightSpaceConst.constant = [dateLabel sizeThatFits:CGSizeMake(500, 30)].width + 5;
@@ -250,9 +258,15 @@
                                                                   isShortStyle:IS_IPHONE ? YES : NO
                                                              isStrictShortType:NO];
             if ( IS_IPAD ) {
+                NSDateFormatter *formatter = [NSDateFormatter new];
+                [formatter setDateStyle:NSDateFormatterFullStyle];
+                if ([favorite.event.isAllDay boolValue]) {
+                    [formatter setTimeStyle:NSDateFormatterShortStyle];
+                }
+                
                 UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
                 dateLabel.text = [A3DateHelper dateStringFromDate:favorite.event.effectiveStartDate
-                                                       withFormat:[_sharedManager dateFormatForAddEditIsAllDays:[favorite.event.isAllDay boolValue]]];
+                                                       withFormat:[formatter dateFormat]];
                 
                 dateLabel.hidden = NO;
                 ((A3DaysCounterEventListNameCell *)cell).titleRightSpaceConst.constant = [dateLabel sizeThatFits:CGSizeMake(500, 30)].width + 5;

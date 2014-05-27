@@ -573,9 +573,15 @@
         }
         else {
             if ( IS_IPAD ) {
+                NSDateFormatter *formatter = [NSDateFormatter new];
+                [formatter setDateStyle:NSDateFormatterFullStyle];
+                if (![item.isLunar boolValue] && ![item.isAllDay boolValue]) {
+                    [formatter setTimeStyle:NSDateFormatterShortStyle];
+                }
+                
                 UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
                 dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate
-                                                       withFormat:[_sharedManager dateFormatForAddEditIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
+                                                       withFormat:[formatter dateFormat]];
                 dateLabel.hidden = NO;
                 ((A3DaysCounterEventListNameCell *)cell).titleRightSpaceConst.constant = [dateLabel sizeThatFits:CGSizeMake(500, 30)].width + 5;
             }

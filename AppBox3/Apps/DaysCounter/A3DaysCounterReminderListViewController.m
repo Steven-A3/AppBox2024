@@ -22,6 +22,8 @@
 #import "DaysCounterReminder.h"
 #import "A3DateHelper.h"
 #import "NSDate+TimeAgo.h"
+#import "NSDate+formatting.h"
+#import "NSDateFormatter+A3Addition.h"
 #import "A3AppDelegate+appearance.h"
 
 @interface A3DaysCounterReminderListViewController ()
@@ -190,8 +192,19 @@
                                                                        repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO
                                                                        strict:[A3DaysCounterModelManager hasHourMinDurationOption:[item.durationOption integerValue]]];
         if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
+            NSDateFormatter *formatter = [NSDateFormatter new];
+            if (IS_IPAD && [NSDate isFullStyleLocale]) {
+                [formatter setDateStyle:NSDateFormatterFullStyle];
+                if (![item.isAllDay boolValue]) {
+                    [formatter setTimeStyle:NSDateFormatterShortStyle];
+                }
+            }
+            else {
+                [formatter setDateFormat:[item.isAllDay boolValue] ? [formatter customFullStyleFormat] : [formatter customFullWithTimeStyleFormat]];
+            }
+            
             cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:reminder.startDate
-                                                              withFormat:[_sharedManager dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+                                                              withFormat:[formatter dateFormat]];
         }
         else {
             if ([[NSDate date] compare:reminder.startDate] == NSOrderedDescending) {
@@ -200,8 +213,19 @@
             else {
                 // Reminder 의 startDate == EffectiveStartDate 이다.
                 // 양력/음력 모두 얄력기준 실제 이벤트 날짜가 startDate 로 정해진다.
+                NSDateFormatter *formatter = [NSDateFormatter new];
+                if (IS_IPAD && [NSDate isFullStyleLocale]) {
+                    [formatter setDateStyle:NSDateFormatterFullStyle];
+                    if (![item.isAllDay boolValue]) {
+                        [formatter setTimeStyle:NSDateFormatterShortStyle];
+                    }
+                }
+                else {
+                    [formatter setDateFormat:[item.isAllDay boolValue] ? [formatter customFullStyleFormat] : [formatter customFullWithTimeStyleFormat]];
+                }
+                
                 cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:reminder.startDate
-                                                                  withFormat:[_sharedManager dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+                                                                  withFormat:[formatter dateFormat]];
             }
         }
         unreadMarkView.hidden = [reminder.isUnread boolValue] ? NO : YES;
