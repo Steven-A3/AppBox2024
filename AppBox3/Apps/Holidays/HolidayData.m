@@ -8,6 +8,7 @@
 
 #import "HolidayData.h"
 #import "A3UIDevice.h"
+#import "A3AppDelegate.h"
 
 NSString *const A3HolidaysDoesNotNeedsShowDisclaimer = @"AHolidaysDoesNotNeedsShowDisclaimer";
 NSString *const A3HolidaysDoesNotNeedsShowAcknowledgement = @"A3HolidaysDoesNotNeedsShowAcknowledgement";
@@ -1024,8 +1025,7 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
 			[comps setMonth:lunMonth];
 			[comps setYear:lunYear];
 			
-			NSCalendar *gregorian = [[NSCalendar alloc]
-									 initWithCalendarIdentifier:NSGregorianCalendar];
+			NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 			result = [gregorian dateFromComponents:comps];
 			return result;
 		}	
@@ -1040,8 +1040,7 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
 			[comps setMonth:solMonth];
 			[comps setYear:solYear];
 			
-			NSCalendar *gregorian = [[NSCalendar alloc]
-									 initWithCalendarIdentifier:NSGregorianCalendar];
+			NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 			result = [gregorian dateFromComponents:comps];
 			return result;
 		}
@@ -1137,7 +1136,7 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
 
 + (NSDate *)koreaLunarDateWithGregorianDate:(NSDate *)date
 {
-	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];;
 
 	NSDateComponents *lunarComponents = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
 	NSDate *newDate = [self lunarCalcWithComponents:lunarComponents gregorianToLunar:YES leapMonth:NO korean:YES];
@@ -1149,7 +1148,7 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
  */
 + (NSDate *)lunarDateWithGregorianDate:(NSDate *)date
 {
-	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];;
 	
 	NSDateComponents *lunarComponents = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
 	// TODO: Lunar calendar usage for China or Korean
@@ -1159,8 +1158,7 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
 }
 
 + (NSDate *)justDateWithDate:(NSDate *)date {
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	NSDateComponents *components = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
 	NSDate *dateReturn = [gregorian dateFromComponents:components];
 	
@@ -1175,8 +1173,7 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
 }
 
 + (NSDate *)dateFrom:(NSDate *)from withOffset:(NSInteger)offset {
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
     NSDateComponents *sourceComponents = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit fromDate:from];
     sourceComponents.day += offset;
     sourceComponents.hour = 12;

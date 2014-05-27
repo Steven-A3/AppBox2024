@@ -180,6 +180,22 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
     else if (_loanData.calculationMode == A3LC_CalculationForTermOfYears) {
         NSInteger yearInt =  (int)round(loan.monthOfTerms.doubleValue/12.0);
         infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%ld years", (long)yearInt];
+        
+        NSString *unit = [LoanCalcString shortTitleOfFrequency:A3LC_FrequencyAnnually];
+        if (round([loan.monthOfTerms doubleValue]) < 12.0) {
+            NSInteger monthInt = roundl([loan.monthOfTerms doubleValue]);
+            infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"0 %@ %ld mo", unit, (long)monthInt];
+        }
+        else {
+            NSInteger yearInt = roundl([loan.monthOfTerms doubleValue]) / 12.0;
+            NSInteger monthInt = roundl([loan.monthOfTerms doubleValue]) - (12 * yearInt);
+            if (monthInt == 0) {
+                infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%ld %@", (long)yearInt, unit];
+            }
+            else {
+                infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%ld %@ %ld mo", (long)yearInt, unit, (long)monthInt];
+            }
+        }
     }
     else {
         infoCell.upSecondValueLB.text = [LoanCalcString valueTextForCalcItem:resultItem fromData:_loanData formatter:self.currencyFormatter];

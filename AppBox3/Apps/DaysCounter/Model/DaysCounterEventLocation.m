@@ -1,9 +1,9 @@
 //
 //  DaysCounterEventLocation.m
-//  A3TeamWork
+//  AppBox3
 //
-//  Created by coanyaa on 2013. 11. 5..
-//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 5/26/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "DaysCounterEventLocation.h"
@@ -12,15 +12,15 @@
 
 @implementation DaysCounterEventLocation
 
-@dynamic eventId;
-@dynamic latitude;
-@dynamic longitude;
 @dynamic address;
 @dynamic city;
-@dynamic state;
-@dynamic country;
-@dynamic locationName;
 @dynamic contact;
+@dynamic country;
+@dynamic eventId;
+@dynamic latitude;
+@dynamic locationName;
+@dynamic longitude;
+@dynamic state;
 @dynamic event;
 
 @end

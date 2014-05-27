@@ -1,8 +1,8 @@
 //
-//  DaysCounterDateModel.h
+//  DaysCounterDate.h
 //  AppBox3
 //
-//  Created by dotnetguy83 on 5/5/14.
+//  Created by A3 on 5/26/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -11,7 +11,7 @@
 
 @class DaysCounterEvent;
 
-@interface DaysCounterDateModel : NSManagedObject
+@interface DaysCounterDate : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * day;
 @property (nonatomic, retain) NSNumber * hour;

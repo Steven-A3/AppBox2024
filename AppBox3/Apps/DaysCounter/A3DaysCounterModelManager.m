@@ -14,7 +14,7 @@
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
 #import "DaysCounterReminder.h"
-#import "DaysCounterDateModel.h"
+#import "DaysCounterDate.h"
 #import "NYXImagesKit.h"
 #import "A3DateHelper.h"
 #import "A3UserDefaults.h"
@@ -24,6 +24,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "A3AppDelegate.h"
 #import "DaysCounterFavorite.h"
+#import "DaysCounterEvent+management.h"
 
 //#define DEFAULT_CALENDAR_COLOR      [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0]
 #define DEFAULT_CALENDAR_COLOR        [self.calendarColorArray[6] objectForKey:CalendarItem_Color]
@@ -31,70 +32,14 @@
 
 
 @interface A3DaysCounterModelManager ()
+
 @property (strong, nonatomic) NSMutableArray *calendarColorArray;
 
 @end
 
 @implementation A3DaysCounterModelManager
 
-//+ (A3DaysCounterModelManager*)sharedManager
-//{
-//    static A3DaysCounterModelManager* daysCounterModelManager;
-//    static dispatch_once_t onceToken;
-//    dispatch_once(&onceToken, ^{
-//        daysCounterModelManager = [[self alloc] init];
-//    });
-//
-//    return daysCounterModelManager;
-//}
-
-+ (UIImage*)circularScaleNCrop:(UIImage*)image rect:(CGRect)rect
-{
-    // This function returns a newImage, based on image, that has been:
-    // - scaled to fit in (CGRect) rect
-    // - and cropped within a circle of radius: rectWidth/2
-    
-    //Create the bitmap graphics context
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(rect.size.width, rect.size.height), NO, 0.0);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    //Get the width and heights
-    CGFloat imageWidth = image.size.width;
-    CGFloat imageHeight = image.size.height;
-    CGFloat rectWidth = rect.size.width;
-    CGFloat rectHeight = rect.size.height;
-    
-    //Calculate the scale factor
-    CGFloat scaleFactorX = rectWidth/imageWidth;
-    CGFloat scaleFactorY = rectHeight/imageHeight;
-    
-    //Calculate the centre of the circle
-    CGFloat imageCentreX = rectWidth/2;
-    CGFloat imageCentreY = rectHeight/2;
-    
-    // Create and CLIP to a CIRCULAR Path
-    // (This could be replaced with any closed path if you want a different shaped clip)
-    CGFloat radius = rectWidth/2;
-    CGContextBeginPath (context);
-    CGContextAddArc (context, imageCentreX, imageCentreY, radius, 0, 2*M_PI, 0);
-    CGContextClosePath (context);
-    CGContextClip (context);
-    
-    //Set the SCALE factor for the graphics context
-    //All future draw calls will be scaled by this factor
-    CGContextScaleCTM (context, scaleFactorX, scaleFactorY);
-    
-    // Draw the IMAGE
-    CGRect myRect = CGRectMake(0, 0, imageWidth, imageHeight);
-    [image drawInRect:myRect];
-    
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return newImage;
-}
-
-+ (UIImage*)strokCircleImageSize:(CGSize)size color:(UIColor*)color
++ (UIImage*)strokeCircleImageSize:(CGSize)size color:(UIColor*)color
 {
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(size.width, size.height), NO, 0.0);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -110,76 +55,11 @@
     return retImage;
 }
 
-+ (UIImage*)resizeImage:(UIImage*)image toSize:(CGSize)toSize isFill:(BOOL)isFill backgroundColor:(UIColor*)color
-{
-    UIGraphicsBeginImageContextWithOptions(toSize, NO, 0.0);
-    
-    
-    if ( isFill )
-        [image drawInRect:CGRectMake(0, 0, toSize.width,toSize.height)];
-    else {
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGFloat xRatio = toSize.width / image.size.width;
-        CGFloat yRatio = toSize.height / image.size.height;
-        CGFloat ratio = ( xRatio > yRatio ? yRatio : xRatio);
-        ratio = (ratio > 1.0 ? 1.0 : ratio);
-        CGSize newSize = CGSizeMake(image.size.width * ratio, image.size.height * ratio);
-        CGContextSetFillColorWithColor(context, [color CGColor]);
-        CGContextFillRect(context, CGRectMake(0, 0, toSize.width, toSize.height));
-        [image drawInRect:CGRectMake(toSize.width*0.5 - newSize.width*0.5, toSize.height*0.5 - newSize.height*0.5, newSize.width, newSize.height)];
-    }
-
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return newImage;
-}
-
-+ (NSString *)imagePath
-{
-    NSString *cacheFolder = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-    return [cacheFolder stringByAppendingPathComponent:@"DaysCounterPhoto"];
-}
-
-+ (NSString *)thumbnailPath
++ (NSString *)thumbnailDirectory
 {
     NSString *cacheFolder = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
     return [cacheFolder stringByAppendingPathComponent:@"DaysCounterPhotoThumbnail"];
 }
-
-+ (UIImage*)photoImageFromFilename:(NSString*)imageFilename
-{
-    if ( [imageFilename length] < 1 )
-        return nil;
-    
-    return [UIImage imageWithContentsOfFile:[[A3DaysCounterModelManager imagePath] stringByAppendingPathComponent:imageFilename]];
-}
-
-+ (UIImage*)photoThumbnailFromFilename:(NSString*)imageFilename
-{
-    if ( [imageFilename length] < 1 )
-        return nil;
-    
-    NSString *thumbnailFilename = [A3DaysCounterModelManager thumbnailFilenameFromFilename:imageFilename];
-    return [UIImage imageWithContentsOfFile:[[A3DaysCounterModelManager thumbnailPath] stringByAppendingPathComponent:thumbnailFilename]];
-}
-
-+ (NSString*)thumbnailFilenameFromFilename:(NSString*)imageFilename
-{
-    if ( [imageFilename length] < 1 )
-        return nil;
-    
-    return [[[imageFilename stringByDeletingPathExtension] stringByAppendingString:@".thumbnail"] stringByAppendingPathExtension:[imageFilename pathExtension]];
-}
-
-//- (NSManagedObjectContext*)managedObjectContext
-//{
-//    if ( managedContext == nil ) {
-//        managedContext = [[MagicalRecordStack defaultStack] context];
-//	}
-//    
-//    return managedContext;
-//}
 
 - (NSMutableDictionary *)dictionaryFromCalendarEntity:(DaysCounterCalendar*)item
 {
@@ -245,12 +125,8 @@
 
 - (void)prepare
 {
-    if ( ![[NSFileManager defaultManager] fileExistsAtPath:[A3DaysCounterModelManager imagePath]] ) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:[A3DaysCounterModelManager imagePath] withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-    
-    if ( ![[NSFileManager defaultManager] fileExistsAtPath:[A3DaysCounterModelManager thumbnailPath]] ) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:[A3DaysCounterModelManager thumbnailPath] withIntermediateDirectories:YES attributes:nil error:nil];
+    if ( ![[NSFileManager defaultManager] fileExistsAtPath:[A3DaysCounterModelManager thumbnailDirectory]] ) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:[A3DaysCounterModelManager thumbnailDirectory] withIntermediateDirectories:YES attributes:nil error:nil];
     }
 
     self.calendarColorArray = [NSMutableArray array];
@@ -347,15 +223,6 @@
     }
     
     return retStr;
-}
-
-- (NSString*)repeatEndDateStringFromDate:(id)date
-{
-    if ( date ) {
-        return [A3Formatter stringFromDate:date format:DaysCounterDefaultDateFormat];
-    }
-    
-    return @"Never";
 }
 
 - (NSString*)alertDateStringFromDate:(NSDate*)startDate alertDate:(id)date
@@ -539,33 +406,7 @@
     return venue;
 }
 
-- (id)eventItemByID:(NSString*)eventId
-{
-    DaysCounterEvent *item = [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"eventId == %@",eventId]];
-    return item;
-}
-
-- (BOOL)addEvent:(DaysCounterEvent *)eventModel image:(UIImage *)image
-{
-    NSAssert(!eventModel.eventId, @"eventModel.eventId error");
-    if ( !eventModel.eventId ) {
-        eventModel.eventId = [[NSUUID UUID] UUIDString];
-    }
-    
-    // 이미지 저장
-    NSString *imageFilename;
-    if ( image ) {
-        NSData *imageData = UIImagePNGRepresentation(image);
-        imageFilename = [NSString stringWithFormat:@"%@.png", eventModel.eventId];
-        [imageData writeToFile:[[A3DaysCounterModelManager imagePath] stringByAppendingPathComponent:imageFilename] atomically:YES];
-        
-        UIImage *thumbnail = [image scaleToFillSize:CGSizeMake(64.0, 64.0)];
-        imageData = UIImagePNGRepresentation(thumbnail);
-        [imageData writeToFile:[[A3DaysCounterModelManager thumbnailPath] stringByAppendingPathComponent:[A3DaysCounterModelManager thumbnailFilenameFromFilename:imageFilename]] atomically:YES];
-    }
-
-    eventModel.imageFilename = imageFilename;
-    
+- (BOOL)addEvent:(DaysCounterEvent *)eventModel {
     if ( !eventModel.alertDatetime ) {
         eventModel.alertDatetime = nil;
         eventModel.hasReminder = @(NO);
@@ -578,43 +419,14 @@
         eventModel.effectiveStartDate = [eventModel.startDate solarDate];
     }
     
-    eventModel.regDate = [NSDate date];
+    eventModel.modificationDate = [NSDate date];
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
     return YES;
 }
 
-- (void)removeExistsEventImageFile:(NSString*)imageFilename
-{
-    NSString *thumbnailPath = [[A3DaysCounterModelManager thumbnailPath] stringByAppendingPathComponent:[A3DaysCounterModelManager thumbnailFilenameFromFilename:imageFilename]];
-    NSString *imagePath = [[A3DaysCounterModelManager imagePath] stringByAppendingPathComponent:imageFilename];
-    if ( [[NSFileManager defaultManager] fileExistsAtPath:thumbnailPath] )
-        [[NSFileManager defaultManager] removeItemAtPath:thumbnailPath error:nil];
-    if ( [[NSFileManager defaultManager] fileExistsAtPath:imagePath] )
-        [[NSFileManager defaultManager] removeItemAtPath:imagePath error:nil];
-}
-
-- (BOOL)modifyEvent:(DaysCounterEvent*)eventItem image:(UIImage *)image
-{
-    NSString *imageFilename = @"";
-
-    if ( image ) {
-        // TODO 이상함
-        NSData *imageData = UIImagePNGRepresentation(image);
-        imageFilename = [NSString stringWithFormat:@"%@.png",eventItem.eventId];
-        [imageData writeToFile:[[A3DaysCounterModelManager imagePath] stringByAppendingPathComponent:imageFilename] atomically:YES];
-        
-        UIImage *thumbnail = [image scaleToFillSize:CGSizeMake(64.0, 64.0)];
-        imageData = UIImagePNGRepresentation(thumbnail);
-        [imageData writeToFile:[[A3DaysCounterModelManager thumbnailPath] stringByAppendingPathComponent:[A3DaysCounterModelManager thumbnailFilenameFromFilename:imageFilename]] atomically:YES];
-        eventItem.imageFilename = imageFilename;
-    }
-    else if ( [eventItem.imageFilename length] > 0 ) {
-        [self removeExistsEventImageFile:eventItem.imageFilename];
-        eventItem.imageFilename = nil;
-    }
-
+- (BOOL)modifyEvent:(DaysCounterEvent *)eventItem {
     if ( !eventItem.effectiveStartDate ) {
         eventItem.effectiveStartDate = [eventItem.startDate solarDate];
     }
@@ -629,6 +441,7 @@
         eventItem.alertDatetime = [A3DaysCounterModelManager effectiveAlertDateForEvent:eventItem];
         eventItem.hasReminder = ([eventItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventItem.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
     }
+	eventItem.modificationDate = [NSDate date];
     
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
@@ -637,8 +450,9 @@
 
 - (BOOL)removeEvent:(DaysCounterEvent *)eventItem
 {
-    // event store에 설정된 값도 삭제한다.
+    // event store 에 설정된 값도 삭제한다.
     [eventItem MR_deleteEntity];
+	[eventItem deletePhoto];
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
@@ -792,16 +606,16 @@
 
 - (NSInteger)numberOfEventContainedImage
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && imageFilename.length > 0", @(YES)]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == YES && photo != NULL"]];
 }
 
 - (NSDate*)dateOfLatestEvent
 {
-    DaysCounterEvent *event = [DaysCounterEvent MR_findFirstOrderedByAttribute:@"regDate" ascending:NO];
+    DaysCounterEvent *event = [DaysCounterEvent MR_findFirstOrderedByAttribute:@"modificationDate" ascending:NO];
     if ( event == nil )
         return nil;
     
-    return event.regDate;
+    return event.modificationDate;
 }
 
 - (DaysCounterCalendar*)defaultCalendar
@@ -830,7 +644,7 @@
 
 - (NSArray*)allEventsListContainedImage
 {
-    return [DaysCounterEvent MR_findAllSortedBy:@"effectiveStartDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && imageFilename.length > 0", @(YES)]];
+    return [DaysCounterEvent MR_findAllSortedBy:@"effectiveStartDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == YES && photo != NULL"]];
 }
 
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date
@@ -1229,15 +1043,9 @@
     }
     
     [daysLabel sizeToFit];
-    
-    if ( [item.imageFilename length] > 0 ) {
-		UIImage *image = [A3DaysCounterModelManager photoImageFromFilename:item.imageFilename];
-        bgImageView.image = image;
-		FNLOG(@"%f", bgImageView.contentScaleFactor);
-	}
-    else {
-        bgImageView.image = nil;
-    }
+
+	bgImageView.image = item.photo;
+	FNLOG(@"%f", bgImageView.contentScaleFactor);
 
     for (NSLayoutConstraint *layout in toView.constraints) {
         if ( layout.firstItem ==markLabel && layout.secondItem == daysLabel && layout.firstAttribute == NSLayoutAttributeLeading && layout.secondAttribute == NSLayoutAttributeTrailing ) {
@@ -1272,7 +1080,7 @@
 
 - (NSString*)dateFormatForAddEditIsAllDays:(BOOL)isAllDays
 {
-    NSString *retFormat = DaysCounterDefaultDateFormat;
+    NSString *retFormat;
     BOOL isLocaleKorea = [A3DateHelper isCurrentLocaleIsKorea];
     
     if ( IS_IPHONE ) {
@@ -1297,7 +1105,7 @@
 
 - (NSString*)dateFormatForPhotoWithIsAllDays:(BOOL)isAllDays
 {
-    NSString *retFormat = DaysCounterDefaultDateFormat;
+    NSString *retFormat;
     BOOL isLocaleKorea = [A3DateHelper isCurrentLocaleIsKorea];
     
     if ( IS_IPHONE ) {
@@ -1322,7 +1130,7 @@
 
 + (NSString*)dateFormatForDetailIsAllDays:(BOOL)isAllDays
 {
-    NSString *retFormat = DaysCounterDefaultDateFormat;
+    NSString *retFormat;
     BOOL isLocaleKorea = [A3DateHelper isCurrentLocaleIsKorea];
     
     if ( IS_IPHONE ) {
@@ -1444,7 +1252,7 @@
     if ([event.isLunar boolValue]) {
         NSDateComponents *solarComp;
         solarComp = [self nextSolarDateComponentsFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:event.startDate toLunar:YES]
-                                                              leapMonth:[event.useLeapMonth boolValue]
+                                                              leapMonth:[event.startDate.isLeapMonth boolValue]
                                                                fromDate:now];
         nextDate = [[NSCalendar currentCalendar] dateFromComponents:solarComp];
         FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [[event startDate] solarDate], nextDate);
@@ -1552,10 +1360,10 @@
 
         event.effectiveStartDate = [A3DaysCounterModelManager effectiveDateForEvent:event basisTime:now];    // 현재 기준 앞으로 발생할 실제 이벤트 시간을 얻는다.
         event.alertDatetime = [self effectiveAlertDateForEvent:event];                  // 이벤트 시간 기준, 실제 발생할 이벤트 얼럿 시간을 얻는다.
-        FNLOG(@"\n[%ld] EventID: %@, EventName: %@\nEffectiveStartDate: %@, \nAlertDatetime: %@", (long)idx, event.eventId, event.eventName, event.effectiveStartDate, event.alertDatetime);
+        FNLOG(@"\n[%ld] EventID: %@, EventName: %@\nEffectiveStartDate: %@, \nAlertDatetime: %@", (long)idx, event.uniqueID, event.eventName, event.effectiveStartDate, event.alertDatetime);
         
         if ([event.hasReminder isEqualToNumber:@(YES)] && [event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970]) {
-            DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event.eventId" withValue:[event eventId]];
+            DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event.uniqueID" withValue:[event uniqueID]];
             if (reminder) {
                 // Remind 이벤트가 이미 존재하는 경우,
                 if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
@@ -1585,7 +1393,7 @@
             notification.alertBody = [event eventName];
             notification.userInfo = @{
                                        A3LocalNotificationOwner : A3LocalNotificationFromDaysCounter,
-                                       A3LocalNotificationDataID : [event eventId]};
+                                       A3LocalNotificationDataID : [event uniqueID]};
 
             [[UIApplication sharedApplication] scheduleLocalNotification:notification];
             [localNotifications addObject:notification];
@@ -1695,9 +1503,9 @@
 #pragma mark - Manipulate DaysCounterDateModel Object
 + (void)setDateModelObjectForDateComponents:(NSDateComponents *)dateComponents withEventModel:(DaysCounterEvent *)eventModel endDate:(BOOL)isEndDate;
 {
-    DaysCounterDateModel *dateModel = isEndDate ? eventModel.endDate : eventModel.startDate;
+    DaysCounterDate *dateModel = isEndDate ? eventModel.endDate : eventModel.startDate;
     if (!dateModel) {
-        dateModel = [DaysCounterDateModel MR_createEntity];
+        dateModel = [DaysCounterDate MR_createEntity];
         if (isEndDate) {
             eventModel.endDate = dateModel;
         }
@@ -1711,7 +1519,8 @@
         dateModel.year = @(dateComponents.year);
         dateModel.month = @(dateComponents.month);
         dateModel.day = @(dateComponents.day);
-        if ([eventModel.useLeapMonth boolValue]) {
+
+        if ([dateModel.isLeapMonth boolValue]) {
             dateModel.isLeapMonth = @([NSDate isLunarLeapMonthAtDateComponents:dateComponents isKorean:YES]);
         }
         else {
@@ -1734,7 +1543,7 @@
     }
 }
 
-+ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDateModel *)dateObject toLunar:(BOOL)isLunar
++ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDate *)dateObject toLunar:(BOOL)isLunar
 {
     NSDateComponents * dateComp;
     if (isLunar) {
@@ -1758,9 +1567,10 @@
 
     return dateComp;
 }
+
 #pragma mark - Print Date String From DaysCounterDateModel Or SolarDate(Effective Date)
-+ (NSString *)dateStringFromDateModel:(DaysCounterDateModel *)dateModel isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth
-{
+
++ (NSString *)dateStringFromDateModel:(DaysCounterDate *)dateModel isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay {
     NSString *dateString;
     if (!isLunar) {
         dateString = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[dateModel solarDate] withFormat:[self dateFormatForDetailIsAllDays:isAllDay]]];
@@ -1779,12 +1589,6 @@
             dateFormat = [[dateFormat substringFromIndex:range.location] mutableCopy];
         }
         
-//        NSDateComponents *solarComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit fromDate:[dateModel solarDate]];
-//        if (solarComp.year == [dateModel.year integerValue]) {
-//            NSArray *dateFormats = [[dateFormat componentsSeparatedByString:@"M"] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT (SELF CONTAINS[c] %@)", @"y"]];
-//            dateFormat = [[dateFormats componentsJoinedByString:@""] mutableCopy];
-//        }
-
         if (IS_IPAD) {
             dateString = [NSString stringWithFormat:@"%@ (음력 %@)",
                           [A3DateHelper dateStringFromDate:[dateModel solarDate] withFormat:[self dateFormatForDetailIsAllDays:isAllDay]],
@@ -1831,7 +1635,7 @@
     return dateString;
 }
 
-+ (NSString *)dateStringOfLunarFromDateModel:(DaysCounterDateModel *)dateModel isLeapMonth:(BOOL)isLeapMonth
++ (NSString *)dateStringOfLunarFromDateModel:(DaysCounterDate *)dateModel isLeapMonth:(BOOL)isLeapMonth
 {
     NSString *dateString;
     NSDateFormatter *formatter = [NSDateFormatter new];

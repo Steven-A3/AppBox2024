@@ -163,6 +163,7 @@
     downPayment = self.downPayment ? self.downPayment.floatValue : 0;
     
 	repayment = (interestRateOfFrequency / (1 - pow(1 + interestRateOfFrequency, -termsInFrequency))) * (principal - downPayment);
+    repayment = round(repayment * 100) / 100;
     
 	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterminMonth = %f\ndownPayment = %f", principal, repayment, interestRateOfFrequency, termsInFrequency, downPayment);
     

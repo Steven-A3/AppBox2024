@@ -1,16 +1,16 @@
 //
-//  DaysCounterDateModel.m
+//  DaysCounterDate.m
 //  AppBox3
 //
-//  Created by dotnetguy83 on 5/5/14.
+//  Created by A3 on 5/26/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "DaysCounterDateModel.h"
+#import "DaysCounterDate.h"
 #import "DaysCounterEvent.h"
 
 
-@implementation DaysCounterDateModel
+@implementation DaysCounterDate
 
 @dynamic day;
 @dynamic hour;

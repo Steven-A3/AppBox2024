@@ -16,7 +16,7 @@
 #import "A3DaysCounterRepeatCustomCell.h"
 #import "A3AppDelegate+appearance.h"
 #import "DaysCounterEvent.h"
-#import "DaysCounterDateModel.h"
+#import "DaysCounterDate.h"
 
 @interface A3DaysCounterSetupAlertViewController () <A3KeyboardDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) NSArray *itemArray;
@@ -324,7 +324,7 @@
 		return;
 	}
     
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
 	NSDateComponents *dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:datePicker.date];
 	dateComp.second = 0;
 	_eventModel.alertDatetime = [calendar dateFromComponents:dateComp];

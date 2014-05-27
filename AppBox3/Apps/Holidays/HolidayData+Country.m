@@ -9,6 +9,7 @@
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 #import "A3UIDevice.h"
+#import "A3AppDelegate.h"
 
 NSString *const kHolidayCountriesForCurrentDevice = @"HolidayCountriesForCurrentDevice";
 NSString *const kHolidayCountryExcludedHolidays = @"kHolidayCountryExcludedHolidays";
@@ -651,7 +652,7 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 }
 
 + (NSInteger)thisYear {
-	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];;
 	NSDateComponents *components = [gregorian components:NSYearCalendarUnit fromDate:[NSDate date]];
 	return [components year];
 }
@@ -719,7 +720,7 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 
 - (NSDictionary *)firstUpcomingHolidaysForCountry:(NSString *)countryCode {
 	NSInteger thisYear;
-	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	NSDateComponents *components = [gregorian components:NSYearCalendarUnit fromDate:[NSDate date]];
 	thisYear = [components year];
 	NSMutableArray *holidaysThisYear = [self holidaysForCountry:countryCode year:thisYear fullSet:NO ];

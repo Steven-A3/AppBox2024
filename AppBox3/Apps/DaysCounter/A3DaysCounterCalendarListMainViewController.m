@@ -22,7 +22,7 @@
 #import "DaysCounterCalendar.h"
 #import "DaysCounterCalendar+Extension.h"
 #import "DaysCounterEvent.h"
-#import "DaysCounterDateModel.h"
+#import "DaysCounterDate.h"
 #import "A3DateHelper.h"
 #import "NSDate+LunarConverter.h"
 #import "A3AppDelegate+appearance.h"
@@ -72,6 +72,9 @@
             _headerView.frame = rect;
         }
         [self.tableView setTableHeaderView:_headerView];
+        self.numberOfCalendarLabel.font = [UIFont boldSystemFontOfSize:15];
+        self.numberOfEventsLabel.font = [UIFont boldSystemFontOfSize:15];
+        self.updateDateLabel.font = [UIFont boldSystemFontOfSize:15];
     }
     else {
         if (IS_RETINA) {
@@ -417,7 +420,7 @@
             if ([event.isLunar boolValue]) {
                 nextDate = [A3DaysCounterModelManager nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[event startDate]
                                                                                                                                                 toLunar:[event.isLunar boolValue]]
-                                                                                 leapMonth:[event.useLeapMonth boolValue]
+                                                                                 leapMonth:[event.startDate.isLeapMonth boolValue]
                                                                                   fromDate:today];
             }
             else {

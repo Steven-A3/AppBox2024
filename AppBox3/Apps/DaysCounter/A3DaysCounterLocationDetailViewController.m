@@ -263,7 +263,7 @@
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
     DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
-    locItem.eventId = _eventModel.eventId;
+    locItem.eventId = _eventModel.uniqueID;
     locItem.latitude = @(_locationItem.location.coordinate.latitude);
     locItem.longitude = @(_locationItem.location.coordinate.longitude);
     locItem.locationName = _locationItem.name;

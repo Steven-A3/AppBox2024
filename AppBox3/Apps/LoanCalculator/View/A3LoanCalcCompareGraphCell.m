@@ -198,13 +198,13 @@
 {
     [_percentA_meterViews enumerateObjectsUsingBlock:^(UIView *meterView, NSUInteger idx, BOOL *stop) {
        CGRect frame = meterView.frame;
-       frame.origin.x = ceilf(self.bg_A_Line.bounds.size.width / 5.0 * (idx + 1)) - 50.0;
+       frame.origin.x = ceilf(CGRectGetWidth(self.bounds) / 5.0 * (idx + 1)) - 50.0;
         meterView.frame = frame;
     }];
     
     [_percentB_meterViews enumerateObjectsUsingBlock:^(UIView *meterView, NSUInteger idx, BOOL *stop) {
         CGRect frame = meterView.frame;
-        frame.origin.x = ceilf(self.bg_A_Line.bounds.size.width / 5.0 * (idx + 1)) - 50.0;
+        frame.origin.x = ceilf(CGRectGetWidth(self.bounds) / 5.0 * (idx + 1)) - 50.0;
         meterView.frame = frame;
     }];
 }

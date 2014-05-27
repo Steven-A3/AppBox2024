@@ -142,13 +142,6 @@
     _resultLabel = [[A3DateCalcResultCursorView alloc] initWithFrame:CGRectZero ArrowDirection:ArrowDirection_From];
     _resultLabel.center = _sliderLineView.center;
     [self addSubview:_resultLabel];
-    
-//    _resultTextLabel = [[UILabel alloc] initWithFrame:_resultLabel.frame];
-//    _resultTextLabel.text = @"211";
-//    _resultTextLabel.textColor = COLOR_POSITIVE;
-//    _resultTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-//    _resultTextLabel.backgroundColor = [UIColor whiteColor];
-//    [self addSubview:_resultTextLabel];
 }
 
 -(void)layoutSubviews
@@ -165,16 +158,6 @@
         [self setupResultLabelPositionForThumbView:nil];
     }
 }
-
-//-(void)drawRect:(CGRect)rect {
-//    UIBezierPath * path = [UIBezierPath new];
-//    [path moveToPoint:CGPointMake(70, 40.5)];
-//    [path addLineToPoint:CGPointMake(130, 40.5)];
-//    [path closePath];
-//    [path setLineWidth:1.0];
-//    [COLOR_POSITIVE setStroke];
-//    [path stroke];
-//}
 
 - (void)setupGestureRecognizer
 {
@@ -685,24 +668,58 @@
             
         default:
         {
+            NSInteger durationFlagCount = 0;
+            if (durationType & DurationType_Year) {
+                durationFlagCount++;
+            }
+            if (durationType & DurationType_Month) {
+                durationFlagCount++;
+            }
+            if (durationType & DurationType_Week) {
+                durationFlagCount++;
+            }
+            if (durationType & DurationType_Day) {
+                durationFlagCount++;
+            }
+
             if (durationType & DurationType_Year) {
                 if (resultDate.year != 0) {
-                    [result addObject:[NSString stringWithFormat:@"%ldyear%@", labs((long)resultDate.year), labs((long)resultDate.year) > 1 ? @"s" : @""]];
+                    if (durationFlagCount >= 3) {
+                        [result addObject:[NSString stringWithFormat:@"%ldy", labs((long)resultDate.year)]];
+                    }
+                    else {
+                        [result addObject:[NSString stringWithFormat:@"%ldyear%@", labs((long)resultDate.year), labs((long)resultDate.year) > 1 ? @"s" : @""]];
+                    }
                 }
             }
             if (durationType & DurationType_Month) {
                 if (resultDate.month != 0) {
-                    [result addObject:[NSString stringWithFormat:@"%ldmonth%@", labs((long)resultDate.month), labs((long)resultDate.month) > 1 ? @"s" : @""]];
+                    if (durationFlagCount >= 3) {
+                        [result addObject:[NSString stringWithFormat:@"%ldm", labs((long)resultDate.month)]];
+                    }
+                    else {
+                        [result addObject:[NSString stringWithFormat:@"%ldmonth%@", labs((long)resultDate.month), labs((long)resultDate.month) > 1 ? @"s" : @""]];
+                    }
                 }
             }
             if (durationType & DurationType_Week) {
                 if (resultDate.week != 0) {
-                    [result addObject:[NSString stringWithFormat:@"%ldweek%@", labs((long)resultDate.week), labs((long)resultDate.week) > 1 ? @"s" : @""]];
+                    if (durationFlagCount >= 3) {
+                        [result addObject:[NSString stringWithFormat:@"%ldw", labs((long)resultDate.week)]];
+                    }
+                    else {
+                        [result addObject:[NSString stringWithFormat:@"%ldweek%@", labs((long)resultDate.week), labs((long)resultDate.week) > 1 ? @"s" : @""]];
+                    }
                 }
             }
             if (durationType & DurationType_Day) {
                 if (resultDate.day != 0) {
-                    [result addObject:[NSString stringWithFormat:@"%ldday%@", labs((long)resultDate.day), labs((long)resultDate.day) > 1 ? @"s" : @""]];
+                    if (durationFlagCount >= 3) {
+                        [result addObject:[NSString stringWithFormat:@"%ldd", labs((long)resultDate.day)]];
+                    }
+                    else {
+                        [result addObject:[NSString stringWithFormat:@"%ldday%@", labs((long)resultDate.day), labs((long)resultDate.day) > 1 ? @"s" : @""]];
+                    }
                 }
             }
             
@@ -874,20 +891,7 @@
         [self setupSliderThumbShadeByCalcType];
         _fromLabel.text = [A3DateCalcStateManager formattedStringDate:_fromDate];
         _toLabel.text = [A3DateCalcStateManager formattedStringDate:_toDate];
-        
-//        // 출력창 상태 변경.
-//        if ([_fromDate isEqualToDate:_toDate]) {
-//            _fromLabel.hidden = NO;
-//            _toLabel.hidden = NO;
-//            _resultLabel.hidden = NO;
-//        }
-//        else {
-//            _fromLabel.hidden = NO;
-//            _toLabel.hidden = NO;
-//            _resultLabel.hidden = NO;
-//        }
     }
-    
 }
 
 - (NSDateComponents *)setResultAddDate:(NSDate *)resultDate withAnimation:(BOOL)animation
