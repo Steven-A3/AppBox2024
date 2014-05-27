@@ -27,6 +27,8 @@
 #import "NSDate+LunarConverter.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIColor+A3Addition.h"
+#import "NSDateFormatter+A3Addition.h"
+#import "NSDate+formatting.h"
 
 @interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) NSArray *itemArray;
@@ -204,12 +206,18 @@
     NSDate *latestDate = [_sharedManager dateOfLatestEvent];
     _numberOfCalendarLabel.text = [NSString stringWithFormat:@"%ld", (long)[_sharedManager numberOfUserCalendarVisible]];
     _numberOfEventsLabel.text = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%ld", (long)eventNumber]];
-    _updateDateLabel.text = ( latestDate ? [A3DateHelper dateStringFromDate:latestDate withFormat:@"dd/MM/yy"] : @"-");
+    
     if (IS_IPAD) {
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        [formatter setDateStyle:NSDateFormatterMediumStyle];
         _headerEventLabel_iPad.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
+        _updateDateLabel.text = (latestDate ? [A3DateHelper dateStringFromDate:latestDate withFormat:[formatter dateFormat]] : @"-");
     }
     else {
         _headerEventLabel.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        [formatter setDateStyle:NSDateFormatterShortStyle];
+        _updateDateLabel.text = (latestDate ? [A3DateHelper dateStringFromDate:latestDate withFormat:[formatter dateFormat]] : @"-");
     }
 }
 
@@ -530,8 +538,23 @@
 - (NSString *)dateStringForEvent:(DaysCounterEvent *)event
 {
     NSString *result;
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    if ([event.isAllDay boolValue]) {
+        if ([NSDate isFullStyleLocale]) {
+            [formatter setDateStyle:NSDateFormatterFullStyle];
+        }
+        else {
+            [formatter setDateFormat:[formatter customFullStyleFormat]];
+        }
+    }
+    else {
+        [formatter setDateStyle:NSDateFormatterMediumStyle];
+        [formatter setTimeStyle:NSDateFormatterShortStyle];
+    }
+    
     result = [A3DateHelper dateStringFromDate:[event effectiveStartDate]
-                                   withFormat:[event.isAllDay boolValue] ? @"M/d/yy" : @"M/d/yy EEE hh:mm a"];
+                                   withFormat:[formatter dateFormat]];
+    
     return result;
 }
 
@@ -570,7 +593,6 @@
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell == nil) {
-        //NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterCalendarCell" owner:nil options:nil];
         switch (cellType) {
             case CalendarCellType_System:
                 cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterCalendarListMainSystemCell" owner:nil options:nil] lastObject];
