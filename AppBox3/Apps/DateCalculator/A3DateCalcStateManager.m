@@ -8,6 +8,7 @@
 
 #import "A3DateCalcStateManager.h"
 #import "NSDate+formatting.h"
+#import "NSDateFormatter+A3Addition.h"
 
 @implementation A3DateCalcStateManager
 
@@ -346,22 +347,7 @@ static DurationType g_currentDurationType;
         return @"Today  ";
     }
     
-    return IS_IPAD ? [date a3LongStyleString] : [date a3FullStyleString];
+    return IS_IPAD ? [date a3FullStyleString] : [date a3FullCustomStyleString];
 }
 
-+(NSString *)formattedShortStringDate:(NSDate *)date
-{
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *comp1 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
-    comp1.hour = 0;
-    comp1.minute = 0;
-    NSDate *today = [calendar dateFromComponents:comp1];
-    comp1 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:today];
-    NSDateComponents *comp2 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
-    if (comp1.year==comp2.year && comp1.month==comp2.month && comp1.day==comp2.day) {
-        return @"Today  ";
-    }
-    
-    return [date a3ShortStyleString];
-}
 @end

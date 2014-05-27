@@ -7,19 +7,36 @@
 //
 
 #import "NSDate+formatting.h"
+#import "NSDateFormatter+A3Addition.h"
 
 @implementation NSDate (formatting)
 
 - (NSString *)a3FullStyleString {
 	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+//    return [dateFormatter localizedLongStyleYearMonthFromDate:self];
+    
 	[dateFormatter setDateStyle:NSDateFormatterFullStyle];
-	NSString *dateFormat = [dateFormatter dateFormat];
-	if (![[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] isEqualToString:@"KR"]) {
-		dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"EEEE" withString:@"EEE"];
-	}
-	dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"MMMM" withString:@"MMM"];
-	[dateFormatter setDateFormat:dateFormat];
+//	NSString *dateFormat = [dateFormatter dateFormat];
+//	if (![[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] isEqualToString:@"KR"]) {
+//		dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"EEEE" withString:@"EEE"];
+//	}
+//	dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"MMMM" withString:@"MMM"];
+//	[dateFormatter setDateFormat:dateFormat];
 	return [dateFormatter stringFromDate:self];
+
+}
+
+- (NSString *)a3FullCustomStyleString {
+	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:[dateFormatter customFullStyleFormat]];
+    return [dateFormatter stringFromDate:self];
+}
+
+- (NSString *)a3FullStyleStringByRemovingYearComponent {
+	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateStyle:NSDateFormatterFullStyle];
+    [dateFormatter setDateFormat:[dateFormatter formatStringByRemovingYearComponent:[dateFormatter dateFormat]]];
+    return [dateFormatter stringFromDate:self];
 }
 
 - (NSString *)a3FullStyleWithTimeString {

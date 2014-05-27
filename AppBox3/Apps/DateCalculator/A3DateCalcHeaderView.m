@@ -669,17 +669,20 @@
         default:
         {
             NSInteger durationFlagCount = 0;
-            if (durationType & DurationType_Year) {
-                durationFlagCount++;
-            }
-            if (durationType & DurationType_Month) {
-                durationFlagCount++;
-            }
-            if (durationType & DurationType_Week) {
-                durationFlagCount++;
-            }
-            if (durationType & DurationType_Day) {
-                durationFlagCount++;
+
+            if (IS_IPHONE) {
+                if (durationType & DurationType_Year) {
+                    durationFlagCount++;
+                }
+                if (durationType & DurationType_Month) {
+                    durationFlagCount++;
+                }
+                if (durationType & DurationType_Week) {
+                    durationFlagCount++;
+                }
+                if (durationType & DurationType_Day) {
+                    durationFlagCount++;
+                }
             }
 
             if (durationType & DurationType_Year) {
@@ -747,13 +750,12 @@
     
     CGFloat offsetFrom = minDayCount + ((_fromValue-SLIDER_OFFSET) / (_maxValue-SLIDER_OFFSET)) * maxDayCount;
     CGFloat offsetTo = minDayCount + (_toValue / (_maxValue-SLIDER_OFFSET)) * maxDayCount;
-//    NSLog(@"offset From: %f = %ld + (%f / %f) * %ld", offsetFrom, (long)minDayCount, (_fromValue-SLIDER_OFFSET), _maxValue-SLIDER_OFFSET, (long)maxDayCount);
-//    NSLog(@"offset To: %f = %ld + (%f / %f) * %ld", offsetTo, (long)minDayCount, _toValue, _maxValue-SLIDER_OFFSET, (long)maxDayCount);
     NSDateComponents *fComp = [NSDateComponents new];
     NSDateComponents *tComp = [NSDateComponents new];
     if (_calcType == CALC_TYPE_SUB) {
         fComp.day = maxDayCount + abs(offsetFrom);
-    } else {
+    }
+    else {
         fComp.day = offsetFrom;
     }
 
@@ -766,27 +768,23 @@
         NSDateComponents *resultComp = [A3DateCalcStateManager dateComponentFromDate:fDate toDate:tDate];
         _fromDate = fDate;
         _toDate = tDate;
-//        NSLog(@"MinDate: %@, FromDate: %@", _minDate, _fromDate);
-//        NSLog(@"MaxDate: %@, ToDate: %@", _maxDate, _toDate);
 
         [self setResultBetweenDate:resultComp withAnimation:YES];
         
         _fromLabel.text = [A3DateCalcStateManager formattedStringDate:fDate];
         _toLabel.text = [A3DateCalcStateManager formattedStringDate:tDate];
         
-//        if ([_delegate respondsToSelector:@selector(dateCalcHeaderThumbPositionChangeOfFromDate:toDate:)]) {
-//            [_delegate dateCalcHeaderThumbPositionChangeOfFromDate:fDate toDate:tDate];
-//        }
         if ([_delegate respondsToSelector:@selector(dateCalcHeaderChangedFromDate:toDate:)]) {
             [_delegate dateCalcHeaderChangedFromDate:fDate toDate:tDate];
         }
-        
-    } else if (_calcType == CALC_TYPE_ADD) {
+    }
+    else if (_calcType == CALC_TYPE_ADD) {
         NSDateComponents *changedComp = [self setResultAddDate:tDate withAnimation:YES];
         if ([_delegate respondsToSelector:@selector(dateCalcHeaderThumbPositionChangeOfAddSubDateComponents:)]) {
             [_delegate dateCalcHeaderThumbPositionChangeOfAddSubDateComponents:changedComp];
         }
-    } else if (_calcType == CALC_TYPE_SUB) {
+    }
+    else if (_calcType == CALC_TYPE_SUB) {
         NSDateComponents *changedComp = [self setResultSubDate:fDate withAnimation:YES];
         if ([_delegate respondsToSelector:@selector(dateCalcHeaderThumbPositionChangeOfAddSubDateComponents:)]) {
             [_delegate dateCalcHeaderThumbPositionChangeOfAddSubDateComponents:changedComp];
@@ -796,7 +794,7 @@
 
 - (NSDateComponents *)daysBetweenDate:(NSDate*)fromDateTime andDate:(NSDate*)toDateTime
 {
-    if (fromDateTime==nil || toDateTime==nil) {
+    if (fromDateTime == nil || toDateTime == nil) {
         return 0;
     }
     
@@ -814,11 +812,14 @@
     
     if (durationType == DurationType_Month) {
         calUnit = NSMonthCalendarUnit | NSDayCalendarUnit;
-    } else if (durationType == DurationType_Week) {
+    }
+    else if (durationType == DurationType_Week) {
         calUnit = NSWeekdayCalendarUnit;
-    } else if (durationType == DurationType_Day) {
+    }
+    else if (durationType == DurationType_Day) {
         calUnit = NSDayCalendarUnit;
-    } else {
+    }
+    else {
         calUnit = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
     }
     NSDateComponents *result = [calendar components:calUnit
@@ -835,7 +836,8 @@
     
     if (_fromLagerThanTo==NO) {
         _resultLabel.isPositive = YES;
-    } else {
+    }
+    else {
         _resultLabel.isPositive = NO;
     }
 
@@ -854,36 +856,14 @@
                              [self setupResultLabelPositionForThumbView:_fromLagerThanTo==NO ? _toThumbView : _fromThumbView];
                              self.resultLabel.arrowDirection = _fromLagerThanTo==NO ? ArrowDirection_To : ArrowDirection_From;
                              [self setupSliderThumbShadeByCalcType];
-                             
-//                             // 출력창 상태 변경.
-//                             if ([_fromDate isEqualToDate:_toDate]) {
-//                                 _fromLabel.hidden = NO;
-//                                 _toLabel.hidden = NO;
-//                                 _resultLabel.hidden = NO;
-//                             }
-//                             else {
-//                                 _fromLabel.hidden = NO;
-//                                 _toLabel.hidden = NO;
-//                                 _resultLabel.hidden = NO;
-//                             }
                          }
                          completion:^(BOOL finished) {
                              _fromLabel.text = [A3DateCalcStateManager formattedStringDate:_fromDate];
                              _toLabel.text = [A3DateCalcStateManager formattedStringDate:_toDate];
                              [self adjustFromToLabelPosition];
-//                             // 출력창 상태 변경.
-//                             if ([_fromDate isEqualToDate:_toDate]) {
-//                                 _fromLabel.hidden = NO;
-//                                 _toLabel.hidden = NO;
-//                                 _resultLabel.hidden = NO;
-//                             }
-//                             else {
-//                                 _fromLabel.hidden = NO;
-//                                 _toLabel.hidden = NO;
-//                                 _resultLabel.hidden = NO;
-//                             }
                          }];
-    } else {
+    }
+    else {
         [self adjustFromToBetweenLineWidth];
         [self adjustFromToLabelPosition];
         [self setupResultLabelPositionForThumbView:_fromLagerThanTo==NO ? _toThumbView : _fromThumbView];
@@ -937,7 +917,8 @@
                                  [_delegate dateCalcHeaderAddSubResult:comp];
                              }
                          }];
-    } else {
+    }
+    else {
         [self adjustFromToBetweenLineWidth];
         [self adjustFromToLabelPosition];
         [self setupResultLabelPositionForThumbView:_toThumbView];
