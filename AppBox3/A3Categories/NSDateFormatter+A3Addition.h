@@ -16,4 +16,5 @@
 - (NSString *)formatStringByRemovingDayComponent:(NSString *)originalFormat;
 
 - (NSString *)customFullStyleFormat;
+- (NSString *)customFullWithTimeStyleFormat;
 @end

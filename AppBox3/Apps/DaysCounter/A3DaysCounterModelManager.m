@@ -1055,21 +1055,6 @@
     }
 }
 
-- (NSString*)stringForShareEvent:(DaysCounterEvent*)event
-{
-    NSString *retStr = event.eventName;
-    
-    retStr = [retStr stringByAppendingFormat:@"\nStart : %@%@",[A3DateHelper dateStringFromDate:[event.startDate solarDate] withFormat:@"EEEE, MMMM dd, yyyy"], ([event.isLunar boolValue] ? @"(lunar)" : @"")];
-    if ( event.endDate )
-        retStr = [retStr stringByAppendingFormat:@"\nEnd : %@%@",[A3DateHelper dateStringFromDate:[event.endDate solarDate] withFormat:@"EEEE, MMMM dd, yyyy"], ([event.isLunar boolValue] ? @"(lunar)" : @"")];
-    if ( [event.repeatType integerValue] != RepeatType_Never )
-        retStr = [retStr stringByAppendingFormat:@"\nRepeat : %@",[self repeatTypeStringFromValue:[event.repeatType integerValue]]];
-    if ( event.location )
-        retStr = [retStr stringByAppendingFormat:@"\nLocation : %@",event.location.locationName];
-    
-    return retStr;
-}
-
 - (BOOL)isSupportLunar
 {
     NSString *locale = [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
@@ -1108,6 +1093,37 @@
 {
     NSString *retFormat;
     BOOL isLocaleKorea = [A3DateHelper isCurrentLocaleIsKorea];
+    
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    
+    if (isAllDays) {
+        if (IS_IPAD) {
+            [formatter setDateStyle:NSDateFormatterFullStyle];
+            retFormat = [formatter dateFormat];
+        }
+        else {
+            if ([NSDate isFullStyleLocale]) {
+                [formatter setDateStyle:NSDateFormatterFullStyle];
+                retFormat = [formatter dateFormat];
+            }
+            else {
+                retFormat = [formatter customFullStyleFormat];
+            }
+        }
+    }
+    else {
+        if (IS_IPAD) {
+            [formatter setDateStyle:NSDateFormatterFullStyle];
+            [formatter setTimeStyle:NSDateFormatterShortStyle];
+            retFormat = [NSString stringWithFormat:@"%@", [formatter dateFormat]];
+        }
+        else {
+            [formatter setDateFormat:[formatter customFullStyleFormat]];
+            [formatter setTimeStyle:NSDateFormatterShortStyle];
+            retFormat = [NSString stringWithFormat:@"%@", [formatter dateFormat]];
+        }
+    }
+    
     
     if ( IS_IPHONE ) {
         if ( isLocaleKorea ) {
@@ -1162,7 +1178,7 @@
             retFormat = [NSString stringWithFormat:@"%@", [formatter dateFormat]];
         }
     }
-    
+
 //    if ( IS_IPHONE ) {
 //        if ( isLocaleKorea ) {
 //            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy년 MMMM d일 EEEE a h:mm");
@@ -1179,7 +1195,7 @@
 //            retFormat = ( isAllDays ? @"EEEE, MMMM d, yyyy" : @"EEEE, MMMM d, yyyy h:mm a");
 //        }
 //    }
-    
+
     return retFormat;
 }
 

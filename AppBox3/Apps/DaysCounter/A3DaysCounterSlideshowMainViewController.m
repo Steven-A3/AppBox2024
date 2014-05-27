@@ -30,6 +30,8 @@
 #import "DaysCounterDate.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+navigation.h"
+#import "NSDateFormatter+A3Addition.h"
+#import "NSDate+formatting.h"
 
 #define VISIBLE_INDEX_INTERVAL      2
 
@@ -750,10 +752,14 @@
         [txt appendFormat:@"%@<br/>", [eventItem eventName]];
         [txt appendFormat:@"%@ %@<br/>", daysString, untilSinceString];
         
-        //         Friday, April 11, 2014 (사용자가 입력한 날)
+        // Friday, April 11, 2014 (사용자가 입력한 날)
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        [formatter setDateStyle:NSDateFormatterFullStyle];
+        if (![eventItem.isAllDay boolValue]) {
+            [formatter setTimeStyle:NSDateFormatterShortStyle];
+        }
         [txt appendFormat:@"%@<br/>", [A3DateHelper dateStringFromDate:[eventItem effectiveStartDate]
-                                                            withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[eventItem.isAllDay boolValue]]] ];
-        
+                                                            withFormat:[formatter dateFormat]]];
 		[txt appendString:@"<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>"];
         
 		return txt;
@@ -776,8 +782,27 @@
         [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
         
         //         Friday, April 11, 2014 (사용자가 입력한 날)
+
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        
+        if ([NSDate isFullStyleLocale]) {
+            [formatter setDateStyle:NSDateFormatterFullStyle];
+            if (![eventItem.isAllDay boolValue]) {
+                [formatter setTimeStyle:NSDateFormatterShortStyle];
+            }
+        }
+        else {
+            if ([eventItem.isAllDay boolValue]) {
+                [formatter setDateFormat:[formatter customFullStyleFormat]];
+            }
+            else {
+                [formatter setDateFormat:[formatter customFullWithTimeStyleFormat]];
+            }
+        }
+        
+
         [txt appendFormat:@"%@\n", [A3DateHelper dateStringFromDate:[eventItem effectiveStartDate]
-                                                         withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[eventItem.isAllDay boolValue]]] ];
+                                                         withFormat:[formatter dateFormat]]];
         
 		return txt;
 	}

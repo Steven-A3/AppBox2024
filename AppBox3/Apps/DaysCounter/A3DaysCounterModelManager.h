@@ -72,7 +72,6 @@
 
 - (NSString*)stringForSlideshowTransitionType:(NSInteger)type;
 - (void)setupEventSummaryInfo:(DaysCounterEvent*)item toView:(UIView*)toView;
-- (NSString*)stringForShareEvent:(DaysCounterEvent*)event;
 
 - (BOOL)isSupportLunar;
 

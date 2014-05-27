@@ -21,6 +21,8 @@
 #import "DaysCounterEvent.h"
 #import "DaysCounterDate.h"
 #import "UIImage+imageWithColor.h"
+#import "NSDate+formatting.h"
+#import "NSDateFormatter+A3Addition.h"
 
 #define ActionSheet_DeleteAll           100
 #define ActionSheet_DeleteSelected      101
@@ -304,21 +306,6 @@
     else {
         [self.A3RootViewController presentRightSideViewController:viewCtrl];
     }
-
-//    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-//    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-//    if (IS_IPAD) {
-//        // 왼쪽 바운드 라인이 사라지는 버그 수정을 위하여 추가.
-//        UIView *leftLineView = [[UIView alloc] initWithFrame:CGRectMake(-(IS_RETINA ? 0.5 : 1), 0, (IS_RETINA ? 0.5 : 1), CGRectGetHeight(navCtrl.view.frame))];
-//        leftLineView.backgroundColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
-//        [navCtrl.view addSubview:leftLineView];
-//        [self presentViewController:navCtrl animated:YES completion:^{
-//            _modalVC = navCtrl;
-//        }];
-//    }
-//    else {
-//        [self presentViewController:navCtrl animated:YES completion:nil];
-//    }
 }
 
 - (IBAction)shareAction:(id)sender {
@@ -399,8 +386,13 @@
             [txt appendFormat:@"%@ %@<br/>", daysString, untilSinceString];
             
             //         Friday, April 11, 2014 (사용자가 입력한 날)
+            NSDateFormatter *formatter = [NSDateFormatter new];
+            [formatter setDateStyle:NSDateFormatterFullStyle];
+            if (![event.isAllDay boolValue]) {
+                [formatter setTimeStyle:NSDateFormatterShortStyle];
+            }
             [txt appendFormat:@"%@<br/><br/>", [A3DateHelper dateStringFromDate:[event effectiveStartDate]
-                                                                     withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[event.isAllDay boolValue]]] ];
+                                                                     withFormat:[formatter dateFormat]]];
         }
         
 
@@ -429,8 +421,24 @@
             [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
             
             //         Friday, April 11, 2014 (사용자가 입력한 날)
+            NSDateFormatter *formatter = [NSDateFormatter new];
+            if ([NSDate isFullStyleLocale]) {
+                [formatter setDateStyle:NSDateFormatterFullStyle];
+                if (![event.isAllDay boolValue]) {
+                    [formatter setTimeStyle:NSDateFormatterShortStyle];
+                }
+            }
+            else {
+                if ([event.isAllDay boolValue]) {
+                    [formatter setDateFormat:[formatter customFullStyleFormat]];
+                }
+                else {
+                    [formatter setDateFormat:[formatter customFullWithTimeStyleFormat]];
+                }
+            }
+            
             [txt appendFormat:@"%@\n\n", [A3DateHelper dateStringFromDate:[event effectiveStartDate]
-                                                             withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[event.isAllDay boolValue]]] ];
+                                                             withFormat:[formatter dateFormat]] ];
         }
 
         

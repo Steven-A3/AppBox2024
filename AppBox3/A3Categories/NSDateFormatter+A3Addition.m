@@ -107,4 +107,13 @@
 	return dateFormat;
 }
 
+- (NSString *)customFullWithTimeStyleFormat {
+	[self setDateStyle:NSDateFormatterFullStyle];
+	[self setTimeStyle:NSDateFormatterShortStyle];
+	NSMutableString *dateFormat = [self.dateFormat mutableCopy];
+	[dateFormat replaceOccurrencesOfString:@"EEEE" withString:@"E" options:0 range:NSMakeRange(0, [dateFormat length])];
+	[dateFormat replaceOccurrencesOfString:@"MMMM" withString:@"MMM" options:0 range:NSMakeRange(0, [dateFormat length])];
+	return dateFormat;
+}
+
 @end
