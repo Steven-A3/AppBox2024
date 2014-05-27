@@ -127,8 +127,7 @@ static const int MAX_ZOOM_FACTOR = 6;
         previewLayer.transform = CGAffineTransformMakeRotation(M_PI_2);
     }
     
-    if (bLosslessZoom == NO &&
-        effectiveScale <= 1) {
+    if (effectiveScale <= 1) {
         previewLayer.frame = screenBounds;
     }
 }

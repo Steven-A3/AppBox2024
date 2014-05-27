@@ -19,7 +19,7 @@
 #import "UIImage+JHExtension.h"
 #import "A3DateHelper.h"
 #import "DaysCounterEvent.h"
-#import "DaysCounterDateModel.h"
+#import "DaysCounterDate.h"
 #import "UIImage+imageWithColor.h"
 
 #define ActionSheet_DeleteAll           100
@@ -61,7 +61,7 @@
     self.toolbarItems = _bottomToolbar.items;
     [self.navigationController setToolbarHidden:NO];
     
-    self.checkNormalImage = [A3DaysCounterModelManager strokCircleImageSize:CGSizeMake(22.0, 22.0) color:[UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:204.0/255.0 alpha:1.0]];
+    self.checkNormalImage = [A3DaysCounterModelManager strokeCircleImageSize:CGSizeMake(22.0, 22.0) color:[UIColor colorWithRed:201.0 / 255.0 green:201.0 / 255.0 blue:204.0 / 255.0 alpha:1.0]];
     self.checkStatusDict = [NSMutableDictionary dictionary];
     self.selectedArray = [NSMutableArray array];
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 48, 0, 0)];
@@ -177,7 +177,7 @@
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     UIButton *checkButton = (UIButton*)[cell viewWithTag:11];
     textLabel.text = item.eventName;
-    checkButton.selected = [[_checkStatusDict objectForKey:item.eventId] boolValue];
+    checkButton.selected = [[_checkStatusDict objectForKey:item.uniqueID] boolValue];
     
     return cell;
 }
@@ -216,7 +216,7 @@
             
             for(NSInteger i=0; i < [_itemArray count]; i++){
                 DaysCounterEvent *item = [_itemArray objectAtIndex:i];
-                if( [[_checkStatusDict objectForKey:item.eventId] boolValue] ){
+                if( [[_checkStatusDict objectForKey:item.uniqueID] boolValue] ){
                     [removeItems addObject:item];
                     [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
                 }
@@ -271,7 +271,7 @@
     button.selected = !button.selected;
     
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
-    [_checkStatusDict setObject:[NSNumber numberWithBool:button.selected] forKey:item.eventId];
+	[_checkStatusDict setObject:[NSNumber numberWithBool:button.selected] forKey:item.uniqueID];
     if( button.selected )
         [_selectedArray addObject:item];
     else

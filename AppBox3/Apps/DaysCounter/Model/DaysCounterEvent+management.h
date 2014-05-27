@@ -11,4 +11,16 @@
 @interface DaysCounterEvent (management)
 
 - (void)toggleFavorite;
+
+- (UIImage *)thumbnailImageInTemporaryDirectory:(BOOL)temporary;
+
+- (void)saveThumbnailInTemporaryDirectory;
+
+- (void)copyThumbnailImageToTemporaryDirectory;
+
+- (void)moveThumbnailImageToCachesDirectory;
+
+- (void)deleteThumbnailImageInTemporary;
+
+- (void)deletePhoto;
 @end

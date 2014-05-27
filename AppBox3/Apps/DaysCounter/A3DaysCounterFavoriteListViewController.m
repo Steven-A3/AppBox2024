@@ -18,11 +18,12 @@
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "DaysCounterEvent.h"
-#import "DaysCounterDateModel.h"
+#import "DaysCounterDate.h"
 #import "A3DateHelper.h"
 #import "A3DaysCounterEventListNameCell.h"
 #import "DaysCounterFavorite.h"
 #import "NSMutableArray+A3Sort.h"
+#import "DaysCounterEvent+management.h"
 
 @interface A3DaysCounterFavoriteListViewController () <FMMoveTableViewDelegate, FMMoveTableViewDataSource>
 
@@ -184,12 +185,16 @@
     if ( [_itemArray count] > 0) {
         DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
         textLabel.text = favorite.event.eventName;
-        UIImage *image = [favorite.event.imageFilename length] > 0 ? [A3DaysCounterModelManager photoThumbnailFromFilename:favorite.event.imageFilename] : nil;
-        imageView.image =  image ? [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 32, 32)]  : nil;
+		if (favorite.event.photo) {
+			imageView.image = favorite.event.photo ? [favorite.event thumbnailImageInTemporaryDirectory:NO] : nil;
+			imageView.contentMode = UIViewContentModeScaleAspectFill;
+			imageView.layer.cornerRadius = imageView.bounds.size.width / 2.0;
+			imageView.layer.masksToBounds = YES;
+		}
         NSDate *today = [NSDate date];
 
 		A3DaysCounterEventListNameCell *eventListNameCell = (A3DaysCounterEventListNameCell *) cell;
-        if (image) {
+        if (imageView.image) {
             eventListNameCell.photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
             eventListNameCell.sinceLeadingConst.constant = IS_IPHONE ? 52 : 65;
             eventListNameCell.nameLeadingConst.constant = IS_IPHONE ? 52 : 65;

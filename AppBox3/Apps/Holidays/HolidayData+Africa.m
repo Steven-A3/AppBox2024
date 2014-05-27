@@ -7,6 +7,7 @@
 //
 
 #import "HolidayData+Africa.h"
+#import "A3AppDelegate.h"
 
 // Country code in http://www.iso.org/iso/country_codes/iso_3166_code_lists/country_names_and_code_elements
 
@@ -18,8 +19,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date;
@@ -103,8 +103,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date;
@@ -216,8 +215,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date;
@@ -296,8 +294,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date;
@@ -404,8 +401,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date;
@@ -524,8 +520,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date;
@@ -591,8 +586,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date;
@@ -686,8 +680,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date;
@@ -763,8 +756,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date;
@@ -855,8 +847,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date;
@@ -946,8 +937,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date, *originalDate;
@@ -1069,8 +1059,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date, *originalDate;
@@ -1188,8 +1177,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date;
@@ -1270,8 +1258,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date;
@@ -1353,8 +1340,7 @@
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
 	NSString *holidayName;
 	NSDate *date, *adjusted;

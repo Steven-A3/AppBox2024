@@ -13,26 +13,17 @@
 @class DaysCounterCalendar;
 @class DaysCounterEvent;
 @class DaysCounterEventLocation;
-@class DaysCounterDateModel;
-@interface A3DaysCounterModelManager : NSObject{
-//    NSManagedObjectContext *managedContext;
-}
+@class DaysCounterDate;
 
-//+ (A3DaysCounterModelManager*)sharedManager;
-+ (UIImage*)circularScaleNCrop:(UIImage*)image rect:(CGRect)rect;
-+ (UIImage*)strokCircleImageSize:(CGSize)size color:(UIColor*)color;
-+ (UIImage*)resizeImage:(UIImage*)image toSize:(CGSize)toSize isFill:(BOOL)isFill backgroundColor:(UIColor*)color;
-+ (NSString *)imagePath;
-+ (NSString *)thumbnailPath;
-+ (UIImage*)photoImageFromFilename:(NSString*)imageFilename;
-+ (UIImage*)photoThumbnailFromFilename:(NSString*)imageFilename;
-+ (NSString*)thumbnailFilenameFromFilename:(NSString*)imageFilename;
+@interface A3DaysCounterModelManager : NSObject
 
-//- (NSManagedObjectContext*)managedObjectContext;
++ (UIImage*)strokeCircleImageSize:(CGSize)size color:(UIColor*)color;
++ (NSString *)thumbnailDirectory;
+
 - (void)prepare;
 - (NSString*)repeatTypeStringFromValue:(NSInteger)repeatType;
 - (NSString*)repeatTypeStringForDetailValue:(NSInteger)repeatType;
-- (NSString*)repeatEndDateStringFromDate:(id)date;
+
 - (NSString*)alertDateStringFromDate:(NSDate*)startDate alertDate:(id)date;
 - (NSInteger)alertTypeIndexFromDate:(NSDate*)date alertDate:(id)alertDate;
 - (NSString*)alertStringForType:(NSInteger)alertType;
@@ -43,9 +34,9 @@
 - (FSVenue*)fsvenueFromEventModel:(DaysCounterEventLocation *)locationItem;
 - (FSVenue*)fsvenueFromEventLocationModel:(id)location;
 
-- (id)eventItemByID:(NSString*)eventId;
-- (BOOL)addEvent:(DaysCounterEvent *)eventModel image:(UIImage *)image;
-- (BOOL)modifyEvent:(DaysCounterEvent*)eventItem image:(UIImage *)image;
+- (BOOL)addEvent:(DaysCounterEvent *)eventModel;
+
+- (BOOL)modifyEvent:(DaysCounterEvent *)eventItem;
 - (BOOL)removeEvent:(DaysCounterEvent*)eventItem;
 
 - (NSMutableDictionary *)dictionaryFromCalendarEntity:(DaysCounterCalendar*)item;
@@ -111,10 +102,10 @@
 
 #pragma mark - Manipulate DaysCounterDateModel Object
 + (void)setDateModelObjectForDateComponents:(NSDateComponents *)dateComponents withEventModel:(DaysCounterEvent *)eventModel endDate:(BOOL)isEndDate;
-+ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDateModel *)dateObject toLunar:(BOOL)isLunar;
++ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDate *)dateObject toLunar:(BOOL)isLunar;
 
 #pragma mark - Print Date String From DaysCounterDateModel Or SolarDate(Effective Date)
-+ (NSString *)dateStringFromDateModel:(DaysCounterDateModel *)dateModel isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth;
++ (NSString *)dateStringFromDateModel:(DaysCounterDate *)dateModel isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay;
 + (NSString *)dateStringFromEffectiveDate:(NSDate *)date isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth;
-+ (NSString *)dateStringOfLunarFromDateModel:(DaysCounterDateModel *)dateModel isLeapMonth:(BOOL)isLeapMonth;
++ (NSString *)dateStringOfLunarFromDateModel:(DaysCounterDate *)dateModel isLeapMonth:(BOOL)isLeapMonth;
 @end

@@ -16,6 +16,8 @@
 - (NSString *)componentsSeparatedByKorean;
 - (NSString *)pathInLibraryDirectory;
 
+- (NSString *)pathInCachesDirectory;
+
 - (NSString *)stringByTrimmingSpaceCharacters;
 
 - (NSString *)stringGroupByFirstInitial;

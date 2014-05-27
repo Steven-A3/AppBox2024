@@ -15,7 +15,7 @@
 #import "DaysCounterCalendar.h"
 #import "DaysCounterCalendar+Extension.h"
 #import "DaysCounterEvent.h"
-#import "DaysCounterDateModel.h"
+#import "DaysCounterDate.h"
 #import "A3DateHelper.h"
 #import "A3DaysCounterEventListEditViewController.h"
 #import "A3DateHelper.h"
@@ -31,6 +31,7 @@
 #import "A3WalletSegmentedControl.h"
 #import "NSDate+LunarConverter.h"
 #import "A3AppDelegate+appearance.h"
+#import "DaysCounterEvent+management.h"
 
 @interface A3DaysCounterEventListViewController () <UINavigationControllerDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, A3DaysCounterEventDetailViewControllerDelegate>
 @property (strong, nonatomic) NSArray *itemArray;
@@ -507,7 +508,7 @@
         NSDate *startDate = item.effectiveStartDate;
 //        if ( [item.isLunar boolValue] ) {
 //            startDate = [[A3DaysCounterModelManager sharedManager] nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[item startDate] toLunar:[item.isLunar boolValue]]
-//                                                                                              leapMonth:[item.useLeapMonth boolValue]
+//                                                                                              leapMonth:[item.startDate.isLeapMonth boolValue]
 //                                                                                               fromDate:[NSDate date]];
 //        }
 //        else {
@@ -555,7 +556,7 @@
         markLabel.hidden = NO;
         
         // imageView
-        UIImage *image = ([item.imageFilename length] > 0) ? [A3DaysCounterModelManager photoThumbnailFromFilename:item.imageFilename] : nil;
+        UIImage *image = item.photo ? [item thumbnailImageInTemporaryDirectory:NO] : nil;
         [self showImageViewOfCell:cell withImage:image];
         imageView.hidden = NO;
         
@@ -705,7 +706,10 @@
 - (void)showImageViewOfCell:(UITableViewCell *)cell withImage:(UIImage *)image {
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
     if (image) {
-        imageView.image = [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 32.0, 32.0)];
+		imageView.contentMode = UIViewContentModeScaleAspectFill;
+		imageView.layer.cornerRadius = imageView.bounds.size.width / 2.0;
+		imageView.layer.masksToBounds = YES;
+        imageView.image = image;
         
         if ( _sortType == EventSortType_Name ) {
             ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
@@ -737,7 +741,7 @@
 #pragma mark - A3DaysCounterEventDetailViewControllerDelegate
 - (void)didChangedCalendarEventDetailViewController:(A3DaysCounterEventDetailViewController *)ctrl
 {
-    self.changedCalendarID = ctrl.eventItem.calendarId;
+    self.changedCalendarID = ctrl.eventItem.calendar.calendarId;
 }
 
 #pragma mark - UISearchDisplayDelegate

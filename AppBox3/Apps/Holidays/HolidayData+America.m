@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "HolidayData+America.h"
+#import "A3AppDelegate.h"
 
 /* 5760, 1999-2000
  * Saturday, September 7 - Rosh HaShanah*
@@ -97,8 +98,7 @@ static NSUInteger jewishTable[][14][2] = {
 		return holidays;
 	}
 	
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -169,8 +169,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	NSString *holidayName;
 	NSDate *date;
 	
@@ -239,8 +238,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	NSString *holidayName;
 	NSDate *date;
 	
@@ -367,8 +365,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	NSString *holidayName;
 	NSDate *date, *observance;
 	
@@ -536,8 +533,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -610,8 +606,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -694,9 +689,8 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
-	
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
+
 	NSString *holidayName;
 	NSDate *date;
 	
@@ -765,8 +759,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -878,8 +871,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -976,8 +968,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -1065,8 +1056,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -1153,8 +1143,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -1288,8 +1277,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -1358,8 +1346,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -1471,8 +1458,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -1594,8 +1580,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];[[A3AppDelegate instance] calendar];[[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -1669,8 +1654,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -1740,8 +1724,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -1832,8 +1815,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -1905,8 +1887,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -1990,8 +1971,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -2082,8 +2062,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -2206,8 +2185,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -2355,8 +2333,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -2430,8 +2407,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;
@@ -2559,8 +2535,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 	
 	NSString *holidayName;
 	NSDate *date;

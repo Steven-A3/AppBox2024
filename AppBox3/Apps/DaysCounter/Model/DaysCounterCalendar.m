@@ -2,7 +2,7 @@
 //  DaysCounterCalendar.m
 //  AppBox3
 //
-//  Created by dotnetguy83 on 5/13/14.
+//  Created by A3 on 5/26/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -13,13 +13,13 @@
 @implementation DaysCounterCalendar
 
 @dynamic calendarColor;
+@dynamic calendarColorID;
 @dynamic calendarId;
 @dynamic calendarName;
 @dynamic calendarType;
 @dynamic isDefault;
 @dynamic isShow;
 @dynamic order;
-@dynamic calendarColorID;
 @dynamic events;
 
 @end
