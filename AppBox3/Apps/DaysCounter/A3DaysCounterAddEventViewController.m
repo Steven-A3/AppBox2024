@@ -851,8 +851,7 @@
 - (void)endRepeatDateTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType title:(NSString *)title
 {
     cell.textLabel.text = title;
-    //cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatEndDateStringFromDate:_eventItem.repeatEndDate];
-    cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[_eventItem repeatEndDate] withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[_eventItem.isAllDay boolValue]]];
+    cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[_eventItem repeatEndDate] withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:YES]];
     cell.textLabel.textColor = [UIColor blackColor];
 }
 

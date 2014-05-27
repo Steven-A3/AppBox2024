@@ -20,6 +20,7 @@
 #import "A3UserDefaults.h"
 #import "A3DaysCounterSlideshowEventSummaryView.h"
 #import "NSDate+LunarConverter.h"
+#import "NSDate+formatting.h"
 #import "NSDateFormatter+LunarDate.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "A3AppDelegate.h"
@@ -1131,24 +1132,53 @@
 + (NSString*)dateFormatForDetailIsAllDays:(BOOL)isAllDays
 {
     NSString *retFormat;
-    BOOL isLocaleKorea = [A3DateHelper isCurrentLocaleIsKorea];
+//    BOOL isLocaleKorea = [A3DateHelper isCurrentLocaleIsKorea];
+    NSDateFormatter *formatter = [NSDateFormatter new];
     
-    if ( IS_IPHONE ) {
-        if ( isLocaleKorea ) {
-            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy년 MMMM d일 EEEE a h:mm");
+    if (isAllDays) {
+        if (IS_IPAD) {
+            [formatter setDateStyle:NSDateFormatterFullStyle];
+            retFormat = [formatter dateFormat];
         }
         else {
-            retFormat = ( isAllDays ? @"EEEE, MMM d, yyyy" : @"EEEE, MMM d, yyyy h:mm a");
+            if ([NSDate isFullStyleLocale]) {
+                [formatter setDateStyle:NSDateFormatterFullStyle];
+                retFormat = [formatter dateFormat];
+            }
+            else {
+                retFormat = [formatter customFullStyleFormat];
+            }
         }
     }
     else {
-        if ( isLocaleKorea ) {
-            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy년 MMMM d일 EEEE a h:mm");
+        if (IS_IPAD) {
+            [formatter setDateStyle:NSDateFormatterFullStyle];
+            [formatter setTimeStyle:NSDateFormatterShortStyle];
+            retFormat = [NSString stringWithFormat:@"%@", [formatter dateFormat]];
         }
         else {
-            retFormat = ( isAllDays ? @"EEEE, MMMM d, yyyy" : @"EEEE, MMMM d, yyyy h:mm a");
+            [formatter setDateStyle:NSDateFormatterMediumStyle];
+            [formatter setTimeStyle:NSDateFormatterShortStyle];
+            retFormat = [NSString stringWithFormat:@"%@", [formatter dateFormat]];
         }
     }
+    
+//    if ( IS_IPHONE ) {
+//        if ( isLocaleKorea ) {
+//            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy년 MMMM d일 EEEE a h:mm");
+//        }
+//        else {
+//            retFormat = ( isAllDays ? @"EEEE, MMM d, yyyy" : @"EEEE, MMM d, yyyy h:mm a");
+//        }
+//    }
+//    else {
+//        if ( isLocaleKorea ) {
+//            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy년 MMMM d일 EEEE a h:mm");
+//        }
+//        else {
+//            retFormat = ( isAllDays ? @"EEEE, MMMM d, yyyy" : @"EEEE, MMMM d, yyyy h:mm a");
+//        }
+//    }
     
     return retFormat;
 }
@@ -1572,10 +1602,7 @@
 
 + (NSString *)dateStringFromDateModel:(DaysCounterDate *)dateModel isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay {
     NSString *dateString;
-    if (!isLunar) {
-        dateString = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[dateModel solarDate] withFormat:[self dateFormatForDetailIsAllDays:isAllDay]]];
-    }
-    else {
+    if (isLunar) {
         NSDateFormatter *formatter = [NSDateFormatter new];
         [formatter setDateStyle:NSDateFormatterFullStyle];
         NSMutableString *dateFormat = [formatter.dateFormat mutableCopy];
@@ -1598,6 +1625,9 @@
             dateString = [NSString stringWithFormat:@"(음력 %@)",
                           [A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:isLunar] withFormat:dateFormat]];
         }
+    }
+    else {
+        dateString = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[dateModel solarDate] withFormat:[self dateFormatForDetailIsAllDays:isAllDay]]];
     }
     
     return dateString;
