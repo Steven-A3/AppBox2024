@@ -11,6 +11,7 @@
 #import "A3DateKeyboardViewController_iPhone.h"
 #import "A3DateKeyboardViewController_iPad.h"
 #import "NSDate+LunarConverter.h"
+#import "NSDate+formatting.h"
 #import "UIViewController+A3Addition.h"
 #import "A3AppDelegate+appearance.h"
 #import "A3UserDefaults.h"
@@ -22,7 +23,7 @@
 #import "UIColor+A3Addition.h"
 
 
-@interface A3LunarConverterViewController ()
+@interface A3LunarConverterViewController () <UIScrollViewDelegate, A3DateKeyboardDelegate, UITextFieldDelegate, UIPopoverControllerDelegate, UIActivityItemSource>
 
 @property (strong, nonatomic) A3DateKeyboardViewController *dateKeyboardVC;
 @property (strong, nonatomic) NSDateComponents *firstPageResultDateComponents;
@@ -63,7 +64,7 @@
 	// Do any additional setup after loading the view from its nib.
 
 	[self leftBarButtonAppsButton];
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareButtonAction)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareButtonAction:)];
 
 	self.title = @"Lunar Converter";
 	_pageControl.hidden = YES;
@@ -702,7 +703,7 @@
     BOOL isInputLeapMonth = ( _isLunarInput ? [NSDate isLunarLeapMonthAtDateComponents:self.inputDateComponents isKorean:[A3DateHelper isCurrentLocaleIsKorea]] : NO );
     BOOL isResultLeapMonth = ( _isLunarInput ? NO : [self isLeapMonthAtDateComponents:self.inputDateComponents gregorianToLunar:!_isLunarInput]);
     
-    if( self.inputDateComponents ){
+    if ( self.inputDateComponents ) {
 		[[NSUserDefaults standardUserDefaults] setDateComponents:self.inputDateComponents forKey:A3LunarConverterLastInputDateComponents];
         [[NSUserDefaults standardUserDefaults] setBool:_isLunarInput forKey:A3LunarConverterLastInputDateIsLunar];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -717,12 +718,12 @@
 		}
         
         // 두번째 페이지뷰를 만든다.
-        if( _isLunarInput && isInputLeapMonth ) {
+        if ( _isLunarInput && isInputLeapMonth ) {
             [self showSecondPage];
-            
             self.secondPageResultDateComponents = [NSDate lunarCalcWithComponents:self.inputDateComponents gregorianToLunar:NO leapMonth:YES korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
 			[self updatePageData:_secondPageView resultDate:self.secondPageResultDateComponents isInputLeapMonth:isInputLeapMonth isResultLeapMonth:NO];
-        } else {
+        }
+        else {
             [self hideSecondPage];
             [self moveToPage:0];
             self.secondPageResultDateComponents = nil;
@@ -767,23 +768,149 @@
     NSLog(@"%s",__FUNCTION__);
 }
 
-- (void)shareButtonAction
+- (void)shareButtonAction:(UIBarButtonItem *)sender
 {
 	[self enableControls:NO];
 	[self dateKeyboardDoneButtonPressed:nil];
-
-	NSDateComponents *outputComponents = (_pageControl.currentPage > 0 ? self.secondPageResultDateComponents : self.firstPageResultDateComponents);
-	[self.dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-
-	NSArray *activityItems = @[[NSString stringWithFormat:@"%@ Date: %@ converted to %@ date %@",(_isLunarInput ? @"Lunar" : @"Solar"),
-					[_dateFormatter stringFromDateComponents:_inputDateComponents],
-					(_isLunarInput ? @"Solar" : @"Lunar"),
-					[_dateFormatter stringFromDateComponents:outputComponents] ]];
     
-    self.popoverVC = [self presentActivityViewControllerWithActivityItems:activityItems fromBarButtonItem:self.navigationItem.rightBarButtonItem];
-    if( self.popoverVC )
+    self.popoverVC = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+    if (IS_IPAD) {
         self.popoverVC.delegate = self;
+    }
 }
+
+#pragma mark Share Activities releated
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
+{
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		return @"Lunar Converter using AppBox Pro";
+	}
+    
+	return @"";
+}
+
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
+{
+    NSDateComponents *outputComponents = (_pageControl.currentPage > 0 ? self.secondPageResultDateComponents : self.firstPageResultDateComponents);
+	[self.dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		NSMutableString *txt = [NSMutableString new];
+        
+        BOOL isInputLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:_inputDateComponents isKorean:[NSDate isFullStyleLocale]];
+        BOOL isOutputLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:outputComponents isKorean:[NSDate isFullStyleLocale]];
+        NSDateComponents *lunarMonthComponents;
+        if (isInputLeapMonth || isOutputLeapMonth) {
+            BOOL resultLeapMonth = NO;
+            lunarMonthComponents = [NSDate lunarCalcWithComponents:_isLunarInput ? outputComponents : _inputDateComponents
+                                                  gregorianToLunar:YES
+                                                         leapMonth:NO
+                                                            korean:[NSDate isFullStyleLocale]
+                                                   resultLeapMonth:&resultLeapMonth];
+            [txt appendString:@"<html><body>I'd like to share a conversion with you.<br/><br/>"];
+            
+            if (_isLunarInput) {
+                [txt appendFormat:@"%@ %@", @"Lunar", [_dateFormatter stringFromDateComponents:lunarMonthComponents]];
+                [txt appendFormat:@" = %@ %@", @"Solar", [_dateFormatter stringFromDateComponents:outputComponents]];
+            }
+            else {
+                [txt appendFormat:@"%@ %@", @"Solar", [_dateFormatter stringFromDateComponents:_inputDateComponents]];
+                [txt appendFormat:@" = %@ %@", @"Lunar", [_dateFormatter stringFromDateComponents:lunarMonthComponents]];
+            }
+        }
+        else {
+            [txt appendString:@"<html><body>I'd like to share a conversion with you.<br/><br/>"];
+            [txt appendFormat:@"%@ %@", _isLunarInput ? @"Lunar" : @"Solar", [_dateFormatter stringFromDateComponents:_inputDateComponents]];
+            [txt appendFormat:@" = %@ %@", _isLunarInput ? @"Solar" : @"Lunar", [_dateFormatter stringFromDateComponents:outputComponents]];
+        }
+    
+        
+        if (isInputLeapMonth || isOutputLeapMonth) {
+            BOOL resultLeapMonth = NO;
+            NSDateComponents *leapMonthComponents = [NSDate lunarCalcWithComponents:_isLunarInput ? outputComponents : _inputDateComponents
+                                                                   gregorianToLunar:YES
+                                                                          leapMonth:YES
+                                                                             korean:[NSDate isFullStyleLocale]
+                                                                    resultLeapMonth:&resultLeapMonth];
+            if (!resultLeapMonth) {
+                FNLOG(@"fail leap");
+            }
+            
+            
+            [txt appendFormat:@"<br>"];
+            [txt appendFormat:@"%@", _isLunarInput ? @"Lunar (Leap Month)" : @"Solar"];
+            [txt appendFormat:@" %@", [_dateFormatter stringFromDateComponents:isInputLeapMonth ? leapMonthComponents : _inputDateComponents]];
+            
+            
+            [txt appendFormat:@" = %@", _isLunarInput ? @"Solar" : @"Lunar (Leap Month)"];
+            [txt appendFormat:@" %@", [_dateFormatter stringFromDateComponents:isOutputLeapMonth ? leapMonthComponents : outputComponents]];
+        }
+
+		[txt appendString:@"<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>"];
+        
+		return txt;
+	}
+	else {
+        NSMutableString *txt = [NSMutableString new];
+        BOOL isInputLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:_inputDateComponents isKorean:[NSDate isFullStyleLocale]];
+        BOOL isOutputLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:outputComponents isKorean:[NSDate isFullStyleLocale]];
+        NSDateComponents *lunarMonthComponents;
+        if (isInputLeapMonth || isOutputLeapMonth) {
+            BOOL resultLeapMonth = NO;
+            lunarMonthComponents = [NSDate lunarCalcWithComponents:_isLunarInput ? outputComponents : _inputDateComponents
+                                                  gregorianToLunar:YES
+                                                         leapMonth:NO
+                                                            korean:[NSDate isFullStyleLocale]
+                                                   resultLeapMonth:&resultLeapMonth];
+            [txt appendString:@"<html><body>I'd like to share a conversion with you.<br/><br/>"];
+            
+            if (_isLunarInput) {
+                [txt appendFormat:@"%@ %@", @"Lunar", [_dateFormatter stringFromDateComponents:lunarMonthComponents]];
+                [txt appendFormat:@" = %@ %@", @"Solar", [_dateFormatter stringFromDateComponents:outputComponents]];
+            }
+            else {
+                [txt appendFormat:@"%@ %@", @"Solar", [_dateFormatter stringFromDateComponents:_inputDateComponents]];
+                [txt appendFormat:@" = %@ %@", @"Lunar", [_dateFormatter stringFromDateComponents:lunarMonthComponents]];
+            }
+        }
+        else {
+            [txt appendString:@"<html><body>I'd like to share a conversion with you.<br/><br/>"];
+            [txt appendFormat:@"%@ %@", _isLunarInput ? @"Lunar" : @"Solar", [_dateFormatter stringFromDateComponents:_inputDateComponents]];
+            [txt appendFormat:@" = %@ %@", _isLunarInput ? @"Solar" : @"Lunar", [_dateFormatter stringFromDateComponents:outputComponents]];
+        }
+        
+        
+        if (isInputLeapMonth || isOutputLeapMonth) {
+            BOOL resultLeapMonth = NO;
+            NSDateComponents *leapMonthComponents = [NSDate lunarCalcWithComponents:_isLunarInput ? outputComponents : _inputDateComponents
+                                                                   gregorianToLunar:YES
+                                                                          leapMonth:YES
+                                                                             korean:[NSDate isFullStyleLocale]
+                                                                    resultLeapMonth:&resultLeapMonth];
+            if (!resultLeapMonth) {
+                FNLOG(@"fail leap");
+            }
+            
+            
+            [txt appendFormat:@"<br>"];
+            [txt appendFormat:@"%@", _isLunarInput ? @"Lunar (Leap Month)" : @"Solar"];
+            [txt appendFormat:@" %@", [_dateFormatter stringFromDateComponents:isInputLeapMonth ? leapMonthComponents : _inputDateComponents]];
+            
+            
+            [txt appendFormat:@" = %@", _isLunarInput ? @"Solar" : @"Lunar (Leap Month)"];
+            [txt appendFormat:@" %@", [_dateFormatter stringFromDateComponents:isOutputLeapMonth ? leapMonthComponents : outputComponents]];
+        }
+        
+		return txt;
+	}
+}
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
+{
+	return @"Share Lunar Converter Data";
+}
+
+#pragma mark -
 
 - (IBAction)swapAction:(id)sender {
 	UIButton *button = (UIButton*)sender;
