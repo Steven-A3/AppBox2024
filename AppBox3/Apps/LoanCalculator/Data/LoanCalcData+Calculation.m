@@ -457,7 +457,6 @@
 - (NSString *)filePathOfCsvStringForMonthlyDataWithFileName:(NSString *)fileName {
     NSMutableArray *csvArray = [NSMutableArray new];
     NSDateFormatter *df = [NSDateFormatter new];
-    df.dateStyle = NSDateFormatterShortStyle;
     NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
     numberFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
     
@@ -471,15 +470,18 @@
         NSString *interest;
         NSString *balance;
         
-        if ((self.frequencyIndex == A3LC_FrequencyBiweekly) || (self.frequencyIndex == A3LC_FrequencyWeekly)) {
-            date = [df stringFromDate:data[@"Date"]];
-        }
-        else {
-			[df setDateStyle:NSDateFormatterMediumStyle];
-			NSString *dateFormat = [df formatStringByRemovingDayComponent:df.dateFormat];
-            [df setDateFormat:dateFormat];
-            date = [df stringFromDate:data[@"Date"]];
-        }
+//        if ((self.frequencyIndex == A3LC_FrequencyBiweekly) || (self.frequencyIndex == A3LC_FrequencyWeekly)) {
+//            date = [df stringFromDate:data[@"Date"]];
+//        }
+//        else {
+//			//[df setDateStyle:NSDateFormatterMediumStyle];
+//            [df setDateStyle:NSDateFormatterMediumStyle];
+//			NSString *dateFormat = [df formatStringByRemovingDayComponent:df.dateFormat];
+//            [df setDateFormat:dateFormat];
+//            date = [df stringFromDate:data[@"Date"]];
+//        }
+        
+        date = [df localizedLongStyleYearMonthFromDate:data[@"Date"]];
         
         if (IS_IPHONE) {
             interest = [[numberFormatter stringFromNumber:data[@"Interest"]] stringByReplacingOccurrencesOfString:[numberFormatter currencySymbol] withString:@""];

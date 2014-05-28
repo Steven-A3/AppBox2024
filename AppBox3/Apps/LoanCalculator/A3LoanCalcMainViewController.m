@@ -36,6 +36,8 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+navigation.h"
+#import "NSDate+formatting.h"
+#import "NSDateFormatter+A3Addition.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
@@ -603,6 +605,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)selectSegmentChanged:(UISegmentedControl*) segment
 {
     [self dismissDatePicker];
+    [self.firstResponder resignFirstResponder];
     
     switch (segment.selectedSegmentIndex) {
         case 0:
@@ -2908,10 +2911,18 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"None"
                                                                                     attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
         inputCell.textField.userInteractionEnabled = NO;
-        NSDateFormatter *df = [[NSDateFormatter alloc] init];
-        df.dateStyle = IS_IPAD ? NSDateFormatterFullStyle : NSDateFormatterMediumStyle;
-        inputCell.textField.text = [df stringFromDate:self.loanData.startDate];
         
+        
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        if (IS_IPAD || [NSDate isFullStyleLocale]) {
+            [df setDateStyle:NSDateFormatterFullStyle];
+        }
+        else {
+            [df setDateFormat:[df customFullStyleFormat]];
+        }
+        inputCell.textField.text = [df stringFromDate:self.loanData.startDate];
+
+
         if ([_advItems containsObject:self.dateInputItem]) {
             //            inputCell.textField.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
             inputCell.textField.textColor = [A3AppDelegate instance].themeColor;

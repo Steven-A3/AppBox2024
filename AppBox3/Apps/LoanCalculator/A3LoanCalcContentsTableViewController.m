@@ -149,7 +149,8 @@
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateStyle:NSDateFormatterLongStyle];
 		FNLOG(@"%@", formatter.dateFormat);
-		NSString *format = [formatter formatStringByRemovingYearComponent:formatter.dateFormat];
+		//NSString *format = [formatter formatStringByRemovingYearComponent:formatter.dateFormat];
+        NSString *format = [formatter formatStringByRemovingDayComponent:formatter.dateFormat];
 		[formatter setDateFormat:format];
         dateText = [formatter stringFromDate:oneTimeDate];
     }

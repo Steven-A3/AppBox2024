@@ -20,6 +20,8 @@
 #import "A3AppDelegate+appearance.h"
 #import "A3WalletNoteCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "NSDate+formatting.h"
+#import "NSDateFormatter+A3Addition.h"
 
 extern NSString *const A3WalletItemFieldNoteCellID;
 
@@ -211,12 +213,15 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             case PeriodCellType_StartDate:
             case PeriodCellType_EndDate:
             case PeriodCellType_Ovulation:
+            {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
                 cell.detailTextLabel.font = [UIFont systemFontOfSize:17.0];
                 cell.detailTextLabel.textColor = [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
                 break;
-            case PeriodCellType_CycleLength:{
+            case PeriodCellType_CycleLength:
+            {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 80.0, 44.0)];
@@ -230,7 +235,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
                 cell.accessoryView = textField;
             }
                 break;
-            case PeriodCellType_Notes:{
+            case PeriodCellType_Notes:
+            {
 				A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID forIndexPath:indexPath];
 				[noteCell setupTextView];
 
@@ -240,7 +246,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
                 cell = noteCell;
             }
                 break;
-            case PeriodCellType_DateInput:{
+            case PeriodCellType_DateInput:
+            {
                 NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3LadyCalendarAddAccountCell" owner:nil options:nil];
                 cell = [cellArray objectAtIndex:2];
                 UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
@@ -251,22 +258,45 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             }
                 break;
             case PeriodCellType_Delete:
+            {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
                 cell.textLabel.textColor = [UIColor colorWithRGBRed:255 green:59 blue:48 alpha:255];
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            }
                 break;
         }
     }
     
     switch (cellType) {
         case PeriodCellType_StartDate:
+        {
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
-            cell.detailTextLabel.text = [_dataManager stringFromDate:_periodItem.startDate];
+            NSDateFormatter *formatter = [NSDateFormatter new];
+            if (IS_IPAD || [NSDate isFullStyleLocale]) {
+                [formatter setDateStyle:NSDateFormatterFullStyle];
+            }
+            else {
+                [formatter setDateFormat:[formatter customFullStyleFormat]];
+            }
+
+            //cell.detailTextLabel.text = [_dataManager stringFromDate:_periodItem.startDate];
+            cell.detailTextLabel.text = [formatter stringFromDate:_periodItem.startDate];
             cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_StartDate] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
+        }
             break;
-        case PeriodCellType_EndDate:{
+        case PeriodCellType_EndDate:
+        {
+            NSDateFormatter *formatter = [NSDateFormatter new];
+            if (IS_IPAD || [NSDate isFullStyleLocale]) {
+                [formatter setDateStyle:NSDateFormatterFullStyle];
+            }
+            else {
+                [formatter setDateFormat:[formatter customFullStyleFormat]];
+            }
+            
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
-            cell.detailTextLabel.text = [_dataManager stringFromDate:_periodItem.endDate];
+            //cell.detailTextLabel.text = [_dataManager stringFromDate:_periodItem.endDate];
+            cell.detailTextLabel.text = [formatter stringFromDate:_periodItem.endDate];
             cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
 
             if( [_periodItem.endDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970] ){
@@ -277,32 +307,38 @@ extern NSString *const A3WalletItemFieldNoteCellID;
                 NSDictionary *attr = @{NSFontAttributeName: cell.detailTextLabel.font, NSStrikethroughStyleAttributeName : @(NSUnderlineStyleNone)};
                 cell.detailTextLabel.attributedText = [[NSAttributedString alloc] initWithString:cell.detailTextLabel.text attributes:attr];
             }
-			break;
 		}
-        case PeriodCellType_CycleLength:{
+			break;
+        case PeriodCellType_CycleLength:
+        {
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
             UITextField *textField = (UITextField*)cell.accessoryView;
             textField.text = [NSString stringWithFormat:@"%ld",[_periodItem.cycleLength longValue]];
-
-			break;
 		}
+			break;
         case PeriodCellType_Ovulation:
+        {
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
             cell.detailTextLabel.text = [_dataManager stringFromDate:_periodItem.ovulation];
             cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_Ovulation] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
+        }
             break;
             
-        case PeriodCellType_Notes:{
+        case PeriodCellType_Notes:
+        {
 			break;
 		}
-        case PeriodCellType_DateInput:{
+        case PeriodCellType_DateInput:
+        {
             UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
             datePicker.datePickerMode = UIDatePickerModeDate;
             datePicker.date = ([_periodItem valueForKey:self.inputItemKey] ? [_periodItem valueForKey:self.inputItemKey] : [A3DateHelper dateMake12PM:[NSDate date]]);
 			break;
 		}
         case PeriodCellType_Delete:
+        {
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
+        }
             break;
     }
     

@@ -21,6 +21,8 @@
 #import "UITableView+utility.h"
 #import "A3WalletNoteCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "NSDate+formatting.h"
+#import "NSDateFormatter+A3Addition.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -251,7 +253,16 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         cell.textLabel.text = [item objectForKey:ItemKey_Title];
         NSDate *birthDay = _accountItem.birthDay;
         if( birthDay ) {
-			cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:birthDay withFormat:(IS_IPHONE ? @"EEE, MMM d, yyyy" : @"EEEE, MMMM d, yyyy")];
+            NSDateFormatter *formatter = [NSDateFormatter new];
+            if ([NSDate isFullStyleLocale]) {
+                [formatter setDateStyle:NSDateFormatterFullStyle];
+            }
+            else {
+                [formatter setDateFormat:[formatter customFullStyleFormat]];
+            }
+            
+			//cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:birthDay withFormat:(IS_IPHONE ? @"EEE, MMM d, yyyy" : @"EEEE, MMMM d, yyyy")];
+            cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:birthDay withFormat:[formatter dateFormat]];
 		} else {
 			cell.detailTextLabel.text = @"Optional";
 		}
@@ -461,7 +472,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)resignAllAction
 {
-    for(NSInteger i=0; i < [_itemArray count]; i++){
+    for (NSInteger i=0; i < [_itemArray count]; i++) {
         NSDictionary *item = [_itemArray objectAtIndex:i];
         NSInteger cellType = [[item objectForKey:ItemKey_Type] integerValue];
         if( cellType == AccountCell_Name ){

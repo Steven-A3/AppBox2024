@@ -16,6 +16,9 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3LoanCalcMonthlyTableTitleView.h"
+#import "NSDate+formatting.h"
+#import "NSDateFormatter+A3Addition.h"
+
 
 @interface A3LoanCalcMonthlyDataViewController ()
 
@@ -298,9 +301,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
                         NSDate *pickDate = _loanData.extraPaymentOneTimeDate;
                         
                         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-                        [formatter setDateStyle:NSDateFormatterMediumStyle];
-                        [formatter setDateFormat:@"MMM, yyyy"];
-                        dateText = [formatter stringFromDate:pickDate];
+                        dateText = [formatter localizedLongStyleYearMonthFromDate:pickDate];
                     }
                     else {
                         dateText = @"None";
@@ -329,12 +330,13 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
     NSNumber *balance = paymentInfo[@"Balance"];
     NSDateFormatter *df = [NSDateFormatter new];
     df.dateStyle = NSDateFormatterShortStyle;
+    
     if ((_loanData.frequencyIndex == A3LC_FrequencyBiweekly) || (_loanData.frequencyIndex == A3LC_FrequencyWeekly)) {
         payInfoCell.dateLb.text = [df stringFromDate:date];
     }
     else {
-        [df setDateFormat:@"MMM yyyy"];
-        payInfoCell.dateLb.text = [df stringFromDate:date];
+//        [df setDateFormat:@"MMM yyyy"];
+        payInfoCell.dateLb.text = [df localizedLongStyleYearMonthFromDate:date];
     }
     
     if (IS_IPHONE) {
