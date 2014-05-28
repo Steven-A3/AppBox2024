@@ -362,7 +362,7 @@ enum SortingKind {
     WalletItem *recentItem = [WalletItem MR_findFirstOrderedByAttribute:@"modificationDate" ascending:NO];
     if (recentItem) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-		[formatter setDateStyle:NSDateFormatterShortStyle];
+		[formatter setDateStyle:IS_IPHONE ? NSDateFormatterShortStyle : NSDateFormatterMediumStyle];
         dateText = [formatter stringFromDate:recentItem.modificationDate];
     }
     
