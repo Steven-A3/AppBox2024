@@ -782,9 +782,8 @@
         [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
         
         //         Friday, April 11, 2014 (사용자가 입력한 날)
-
         NSDateFormatter *formatter = [NSDateFormatter new];
-        
+
         if ([NSDate isFullStyleLocale]) {
             [formatter setDateStyle:NSDateFormatterFullStyle];
             if (![eventItem.isAllDay boolValue]) {
@@ -799,7 +798,6 @@
                 [formatter setDateFormat:[formatter customFullWithTimeStyleFormat]];
             }
         }
-        
 
         [txt appendFormat:@"%@\n", [A3DateHelper dateStringFromDate:[eventItem effectiveStartDate]
                                                          withFormat:[formatter dateFormat]]];
