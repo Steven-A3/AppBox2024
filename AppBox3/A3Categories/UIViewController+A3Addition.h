@@ -66,4 +66,8 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 
 - (UIActionSheet *)actionSheetAskingImagePickupWithDelete:(BOOL)deleteEnable delegate:(id <UIActionSheetDelegate>)delegate;
 
+#pragma mark - Custom Date String Related
+- (NSString *)fullStyleDateStringFromDate:(NSDate *)date withShortTime:(BOOL)shortTime;
+- (NSString *)customFullStyleDateStringFromDate:(NSDate *)date withShortTime:(BOOL)shortTime;
+
 @end

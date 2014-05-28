@@ -13,6 +13,8 @@
 #import "UIViewController+A3Addition.h"
 #import "A3KeychainUtils.h"
 #import "UIViewController+NumberKeyboard.h"
+#import "NSDate+formatting.h"
+#import "NSDateFormatter+A3Addition.h"
 
 @implementation UIViewController (A3Addition)
 
@@ -549,6 +551,40 @@
         }
 	}
 	return actionSheet;
+}
+
+#pragma mark - Custom Date String Related
+- (NSString *)fullStyleDateStringFromDate:(NSDate *)date withShortTime:(BOOL)shortTime
+{
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    formatter.dateStyle = NSDateFormatterFullStyle;
+    if (shortTime) {
+        formatter.timeStyle = NSDateFormatterShortStyle;
+    }
+    
+    return [formatter stringFromDate:date];
+}
+
+- (NSString *)customFullStyleDateStringFromDate:(NSDate *)date withShortTime:(BOOL)shortTime
+{
+    NSDateFormatter *formatter = [NSDateFormatter new];
+
+    if ([NSDate isFullStyleLocale]) {
+        formatter.dateStyle = NSDateFormatterFullStyle;
+        if (shortTime) {
+            formatter.timeStyle = NSDateFormatterShortStyle;
+        }
+    }
+    else {
+        if (shortTime) {
+            formatter.dateFormat = [formatter customFullWithTimeStyleFormat];
+        }
+        else {
+            formatter.dateFormat = [formatter customFullStyleFormat];
+        }
+    }
+
+    return [formatter stringFromDate:date];
 }
 
 @end

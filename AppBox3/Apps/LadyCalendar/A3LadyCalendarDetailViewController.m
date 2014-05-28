@@ -21,6 +21,8 @@
 #import "NSDate+formatting.h"
 #import "A3WalletNoteCell.h"
 #import "UIViewController+A3Addition.h"
+#import "NSDate+formatting.h"
+#import "NSDateFormatter+A3Addition.h"
 
 extern NSString *A3TableViewCellDefaultCellID;
 NSString *const A3LadyCalendarDetailViewTitleCellID = @"A3LadyCalendarDetailViewTitleCellID";
@@ -32,6 +34,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 @property (strong, nonatomic) A3LadyCalendarModelManager *dataManager;
 @property (strong, nonatomic) NSArray *rowDataArray;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -65,6 +68,14 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	[self.tableView registerClass:[A3WalletNoteCell class] forCellReuseIdentifier:A3WalletItemFieldNoteCellID];
 
 	[self registerContentSizeCategoryDidChangeNotification];
+    
+    self.dateFormatter = [NSDateFormatter new];
+    if (IS_IPAD || [NSDate isFullStyleLocale]) {
+        [_dateFormatter setDateStyle:NSDateFormatterFullStyle];
+    }
+    else {
+        _dateFormatter.dateFormat = [_dateFormatter customFullStyleFormat];
+    }
 }
 
 - (void)removeObserver {
@@ -184,6 +195,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 {
 	NSDictionary *rowInfo = self.rowDataArray[(NSUInteger) indexPath.row];
 	LadyCalendarPeriod *period = _periodItems[ [rowInfo[ItemKey_Index] integerValue] ];
+    
 
 	UITableViewCell *returnCell;
 	switch ((A3LadyCalendarDetailCellType)[rowInfo[ItemKey_Type] integerValue]) {
@@ -191,7 +203,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			if (![period.isPredict boolValue]) {
 				A3LadyCalendarDetailViewTitleCell *titleCell = [tableView dequeueReusableCellWithIdentifier:A3LadyCalendarDetailViewTitleCellID forIndexPath:indexPath];
 				titleCell.titleLabel.text = rowInfo[ItemKey_Title];
-				titleCell.subTitleLabel.text = [NSString stringWithFormat:@"Updated %@", [period.modificationDate a3FullStyleString]];
+				titleCell.subTitleLabel.text = [NSString stringWithFormat:@"Updated %@", [_dateFormatter stringFromDate:period.modificationDate]];
 				[titleCell.editButton setHidden:isEditNavigationBar];
 				[titleCell.editButton addTarget:self action:@selector(editDetailItem:) forControlEvents:UIControlEventTouchUpInside];
 				titleCell.editButton.tag = indexPath.row;
@@ -211,7 +223,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		case DetailCellType_StartDate: {
 			A3LadyCalendarDetailViewCell *cell = [tableView dequeueReusableCellWithIdentifier:A3LadyCalendarDetailViewCellID forIndexPath:indexPath];
 			cell.titleLabel.text = rowInfo[ItemKey_Title];
-			cell.subTitleLabel.text = [period.startDate a3FullStyleString];
+			//cell.subTitleLabel.text = [period.startDate a3FullStyleString];
+            cell.subTitleLabel.text = [_dateFormatter stringFromDate:period.startDate];
 
 			returnCell = cell;
 			break;
@@ -219,7 +232,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		case DetailCellType_EndDate:{
 			A3LadyCalendarDetailViewCell *cell = [tableView dequeueReusableCellWithIdentifier:A3LadyCalendarDetailViewCellID forIndexPath:indexPath];
 			cell.titleLabel.text = rowInfo[ItemKey_Title];
-			cell.subTitleLabel.text = [period.endDate a3FullStyleString];
+//			cell.subTitleLabel.text = [period.endDate a3FullStyleString];
+            cell.subTitleLabel.text = [_dateFormatter stringFromDate:period.endDate];
 
 			returnCell = cell;
 			break;
@@ -250,8 +264,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:period.startDate];
 			NSDate *pregnantStartDate = [A3DateHelper dateByAddingDays:-4 fromDate:ovulationDate];
 			NSDate *pregnantEndDate = [A3DateHelper dateByAddingDays:5 fromDate:ovulationDate];
-
-			cell.subTitleLabel.text = [NSString stringWithFormat:@"%@ - %@", [pregnantStartDate a3FullStyleString], [pregnantEndDate a3FullStyleString]];
+            
+			//cell.subTitleLabel.text = [NSString stringWithFormat:@"%@ - %@", [pregnantStartDate a3FullStyleString], [pregnantEndDate a3FullStyleString]];
+            cell.subTitleLabel.text = [NSString stringWithFormat:@"%@ - %@", [_dateFormatter stringFromDate:pregnantStartDate], [_dateFormatter stringFromDate:pregnantEndDate]];
 
 			returnCell = cell;
 			break;
@@ -262,7 +277,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			cell.titleLabel.textColor = [UIColor colorWithRGBRed:238 green:230 blue:87 alpha:255];
 
 			NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:period.startDate];
-			cell.subTitleLabel.text = [ovulationDate a3FullStyleString];
+//			cell.subTitleLabel.text = [ovulationDate a3FullStyleString];
+            cell.subTitleLabel.text = [_dateFormatter stringFromDate:ovulationDate];
 
 			returnCell = cell;
 			break;
@@ -271,7 +287,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			A3LadyCalendarDetailViewCell *cell = [tableView dequeueReusableCellWithIdentifier:A3LadyCalendarDetailViewCellID forIndexPath:indexPath];
 			cell.titleLabel.text = rowInfo[ItemKey_Title];
 			cell.titleLabel.textColor = [UIColor colorWithRGBRed:252 green:96 blue:66 alpha:255];
-			cell.subTitleLabel.text = [NSString stringWithFormat:@"%@ - %@", [period.startDate a3FullStyleString], [period.endDate a3FullStyleString]];
+//			cell.subTitleLabel.text = [NSString stringWithFormat:@"%@ - %@", [period.startDate a3FullStyleString], [period.endDate a3FullStyleString]];
+            cell.subTitleLabel.text = [NSString stringWithFormat:@"%@ - %@", [_dateFormatter stringFromDate:period.startDate], [_dateFormatter stringFromDate:period.endDate]];
 
 			returnCell = cell;
 			break;

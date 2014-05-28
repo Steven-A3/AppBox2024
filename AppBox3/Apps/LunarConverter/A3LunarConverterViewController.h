@@ -10,6 +10,6 @@
 #import "A3DateKeyboardViewController.h"
 #import "SQLiteWrapper.h"
 
-@interface A3LunarConverterViewController : UIViewController<UIScrollViewDelegate,A3DateKeyboardDelegate,UITextFieldDelegate,UIPopoverControllerDelegate>
+@interface A3LunarConverterViewController : UIViewController<UIScrollViewDelegate, A3DateKeyboardDelegate, UITextFieldDelegate, UIPopoverControllerDelegate>
 
 @end
