@@ -10,7 +10,7 @@
 
 @implementation A3AppDelegate (mainMenu)
 
-NSString *const kA3ApplicationVersion = @"kA3ApplicationVersion";
+NSString *const kA3ApplicationLastRunVersion = @"kLastRunVersion";
 NSString *const kA3AppsMenuName = @"kA3AppsMenuName";
 NSString *const kA3AppsMenuCollapsed = @"kA3AppsMenuCollapsed";
 NSString *const kA3AppsMenuImageName = @"kA3AppsMenuImageName";

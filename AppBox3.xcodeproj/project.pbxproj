@@ -3707,6 +3707,7 @@
 				68B635BE17B504C100570B09 /* A3RootViewController_iPad.m */,
 				684E9EF4188A203B00FAA48E /* About */,
 				68F319F318D83D1F0003BE62 /* Launch */,
+				17D4299D03A949FAB9E57E4D /* Settings */,
 			);
 			path = MainView;
 			sourceTree = "<group>";
@@ -4332,7 +4333,6 @@
 				68B6A21A18CEC76C004084EF /* UILabel+BaseAlignment.m */,
 				68B6A21B18CEC76C004084EF /* UnitPriceStoryboard.storyboard */,
 				68B6A21C18CEC76C004084EF /* UnitPriceStoryboard_iPad.storyboard */,
-				17D4299D03A949FAB9E57E4D /* Settings */,
 			);
 			path = UnitPrice;
 			sourceTree = "<group>";

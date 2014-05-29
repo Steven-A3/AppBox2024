@@ -16,7 +16,7 @@
 @protocol A3PasscodeViewControllerProtocol;
 @class Reachability;
 
-extern NSString *const kA3ApplicationVersion;
+extern NSString *const kA3ApplicationLastRunVersion;
 extern NSString *const kA3AppsMenuName;
 extern NSString *const kA3AppsMenuCollapsed;
 extern NSString *const kA3AppsMenuImageName;
@@ -82,6 +82,8 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 @property (strong, nonatomic) NSCalendar *calendar;
 @property (strong, nonatomic) A3CacheStoreManager *cacheStoreManager;
 @property (strong, nonatomic) UIImageView *coverView;
+@property (assign, nonatomic) BOOL shouldMigrateV1Data;
+@property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 + (A3AppDelegate *)instance;
 

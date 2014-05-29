@@ -12,16 +12,15 @@
 #import "WalletData.h"
 #import "NSString+conversion.h"
 
-NSString *const A3WalletUUIDAllCategory = @"10f30f9f-ff9d-43d4-ac69-020f61e016e0";
-NSString *const A3WalletUUIDFavoriteCategory = @"9da24468-83c1-41e1-b355-4ab245c1feb5";
-NSString *const A3WalletUUIDPhotoCategory = @"d840a875-9c99-481e-a592-4059def7a248";
-NSString *const A3WalletUUIDVideoCategory = @"7fe1693f-76da-42fc-a0a7-1c2e7f6346d9";
-NSString *const A3WalletUUIDMemoCategory = @"2bd209c3-9cb5-4229-aa68-0e08bcb6c6f2";
+NSString *const A3WalletUUIDAllCategory = @"10F30F9F-FF9D-43D4-AC69-020F61E016E0";
+NSString *const A3WalletUUIDFavoriteCategory = @"9DA24468-83C1-41E1-B355-4AB245C1FEB5";
+NSString *const A3WalletUUIDPhotoCategory = @"D840A875-9C99-481E-A592-4059DEF7A248";
+NSString *const A3WalletUUIDVideoCategory = @"7FE1693F-76DA-42FC-A0A7-1C2E7F6346D9";
+NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F2";
 
 @implementation WalletCategory (initialize)
 
 - (void)initValues {
-	self.uniqueID = [[NSUUID UUID] UUIDString];
 	self.doNotShow = @NO;
 	self.modificationDate = [NSDate date];
 }
@@ -54,27 +53,21 @@ NSString *const A3WalletUUIDMemoCategory = @"2bd209c3-9cb5-4229-aa68-0e08bcb6c6f
     for (NSDictionary *preset in categoryPresets) {
         WalletCategory *category = [WalletCategory MR_createEntity];
 		[category initValues];
-		if ([preset[@"Name"] isEqualToString:@"Photos"]) {
-			category.uniqueID = A3WalletUUIDPhotoCategory;
-		} else if ([preset[@"Name"] isEqualToString:@"Video"]) {
-			category.uniqueID = A3WalletUUIDVideoCategory;
-		} else if ([preset[@"Name"] isEqualToString:@"Memo"]) {
-			category.uniqueID = A3WalletUUIDMemoCategory;
-		}
 
-        category.name = preset[@"Name"];
-        category.icon = preset[@"Icon"];
+		category.uniqueID = preset[@"uniqueID"];
+        category.name = preset[@"name"];
+        category.icon = preset[@"icon"];
 		category.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
 		NSArray *fieldPresets = preset[@"Fields"];
         NSUInteger fieldIdx = 1;
 		for (NSDictionary *fieldPreset in fieldPresets) {
             WalletField *field = [WalletField MR_createEntity];
-			field.uniqueID = [[NSUUID UUID] UUIDString];
-			field.name = fieldPreset[@"Name"];
+			field.uniqueID = fieldPreset[@"uniqueID"];
+			field.name = fieldPreset[@"name"];
             field.category = category;
-            field.type = fieldPreset[@"Type"];
-            field.style = fieldPreset[@"Style"];
+            field.type = fieldPreset[@"type"];
+            field.style = fieldPreset[@"style"];
 			field.order = [NSString orderStringWithOrder:fieldIdx++ * 1000000];
         }
     }
@@ -145,6 +138,32 @@ NSString *const A3WalletUUIDMemoCategory = @"2bd209c3-9cb5-4229-aa68-0e08bcb6c6f
 	} else {
 		self.order = [NSString orderStringWithOrder:1000000];
 	}
+}
+
++ (void)exportCategoryInfoAsPList {
+	NSArray *categories = [WalletCategory MR_findAllSortedBy:@"name" ascending:YES];
+	NSMutableArray *array = [NSMutableArray new];
+	for (WalletCategory *category in categories) {
+		NSMutableArray *fieldsArray = [NSMutableArray new];
+		NSArray *fields = [WalletField MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"category.uniqueID == %@", category.uniqueID]];
+		for (WalletField *field in fields) {
+			NSDictionary *fieldDictionary = @{
+					@"name" : field.name,
+					@"style" : field.style,
+					@"type" : field.type,
+					@"uniqueID" : field.uniqueID,
+			};
+			[fieldsArray addObject:fieldDictionary];
+		}
+		NSDictionary *categoryDictionary = @{
+				@"uniqueID" : category.uniqueID,
+				@"name" : category.name,
+				@"icon" : category.icon,
+				@"Fields" : fieldsArray
+		};
+		[array addObject:categoryDictionary];
+	}
+	[array writeToFile:[@"wallet_preset.plist" pathInLibraryDirectory] atomically:YES];
 }
 
 @end
