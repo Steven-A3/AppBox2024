@@ -517,7 +517,6 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     UITableViewCell *cell=nil;
 
     if (_items[indexPath.row] == self.amountItem) {
-        
         A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID1 forIndexPath:indexPath];
         inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
         inputCell.textField.font = [UIFont systemFontOfSize:17];
@@ -547,7 +546,6 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         cell = inputCell;
     }
     else if (_items[indexPath.row] == self.dateItem) {
-        
         A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID1 forIndexPath:indexPath];
         inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
         inputCell.textField.font = [UIFont systemFontOfSize:17];
@@ -564,29 +562,6 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         inputCell.textField.placeholder = @"None";
         
         if (_exPaymentType == A3LC_ExtraPaymentYearly) {
-//            if (_loanCalcData.extraPaymentYearlyDate) {
-//                
-//                NSDate *pickDate = _loanCalcData.extraPaymentYearlyDate;
-//                NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:pickDate];
-//                NSInteger month = [components month];
-//                
-//                NSDateFormatter *df = [[NSDateFormatter alloc] init];
-//                
-//                if (IS_IPAD) {
-//                    NSArray *months = [df monthSymbols];
-//                    NSString *monthText = months[month - 1];
-//                    inputCell.textField.text = monthText;
-//                }
-//                else {
-//                    NSArray *months = [df shortMonthSymbols];
-//                    NSString *monthText = months[month - 1];
-//                    inputCell.textField.text = monthText;
-//                }
-//            }
-//            else {
-//                inputCell.textField.text = @"";
-//            }
-            
             NSDate *pickDate = ![_loanCalcData extraPaymentYearlyDate] ? [NSDate date] : [_loanCalcData extraPaymentYearlyDate];
             NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:pickDate];
             NSInteger month = [components month];
@@ -603,30 +578,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
                 NSString *monthText = months[month - 1];
                 inputCell.textField.text = monthText;
             }
-            
         }
         else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
-//            if (_loanCalcData.extraPaymentOneTimeDate) {
-//                NSDate *pickDate = _loanCalcData.extraPaymentOneTimeDate;
-//                NSDateFormatter *df = [[NSDateFormatter alloc] init];
-//
-//                if (IS_IPAD) {
-//                    inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
-//                }
-//                else {
-//                    // 한국만 예외적으로 long스타일 적용
-//                    NSLocale *locale = [NSLocale currentLocale];
-//                    if ([locale.localeIdentifier isEqualToString:@"ko_KR"]) {
-//                        inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
-//                    }
-//                    else {
-//                        inputCell.textField.text = [df localizedMediumStyleYearMonthFromDate:pickDate];
-//                    }
-//                }
-//            }
-//            else {
-//                inputCell.textField.text = @"";
-//            }
             NSDate *pickDate = ![_loanCalcData extraPaymentOneTimeDate] ? [NSDate date] : [_loanCalcData extraPaymentOneTimeDate];
             NSDateFormatter *df = [[NSDateFormatter alloc] init];
             

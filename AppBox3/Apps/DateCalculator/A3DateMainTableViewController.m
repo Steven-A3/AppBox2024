@@ -999,14 +999,14 @@ NSString *kCalculationString;
             }
             
             if (cell) {
-                cell.detailTextLabel.text = [A3DateCalcStateManager fullStyleDateStringFromDate:self.fromDate];
+                cell.detailTextLabel.text = (IS_IPAD || [NSDate isFullStyleLocale]) ? [A3DateCalcStateManager fullStyleDateStringFromDate:self.fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:self.fromDate];
                 cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
             }
         }
         else {
             self.toDate = date == nil ? [NSDate date] : date;
             if (cell) {
-                cell.detailTextLabel.text = [A3DateCalcStateManager fullStyleDateStringFromDate:self.toDate];
+                cell.detailTextLabel.text = (IS_IPAD || [NSDate isFullStyleLocale]) ? [A3DateCalcStateManager fullStyleDateStringFromDate:self.toDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:self.toDate];
                 cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
             }
         }
@@ -1308,13 +1308,13 @@ NSString *kCalculationString;
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell.detailTextLabel.text = [A3DateCalcStateManager fullStyleDateStringFromDate:self.fromDateCursor];
+                    cell.detailTextLabel.text = (IS_IPAD || [NSDate isFullStyleLocale]) ? [A3DateCalcStateManager fullStyleDateStringFromDate:self.fromDateCursor] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:self.fromDateCursor];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                     break;
                 }
                 case 1:
                 {
-                    cell.detailTextLabel.text = [A3DateCalcStateManager fullStyleDateStringFromDate:self.toDateCursor];
+                    cell.detailTextLabel.text = (IS_IPAD || [NSDate isFullStyleLocale]) ? [A3DateCalcStateManager fullStyleDateStringFromDate:self.toDateCursor] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:self.toDateCursor];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                     break;
                 }

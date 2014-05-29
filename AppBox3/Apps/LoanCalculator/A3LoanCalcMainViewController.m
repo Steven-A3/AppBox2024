@@ -2905,13 +2905,14 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     if (_advItems[indexPath.row] == self.startDateItem) {
         A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
         inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        inputCell.textField.font = [UIFont systemFontOfSize:17];
         inputCell.titleLabel.text = _startDateItem[@"Title"];
+        
+        inputCell.textField.font = [UIFont systemFontOfSize:17];
         inputCell.textField.delegate = self;
         inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"None"
                                                                                     attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
         inputCell.textField.userInteractionEnabled = NO;
-        
+        inputCell.textField.hidden = YES;
         
         NSDateFormatter *df = [[NSDateFormatter alloc] init];
         if (IS_IPAD || [NSDate isFullStyleLocale]) {
@@ -2922,13 +2923,28 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         }
         inputCell.textField.text = [df stringFromDate:self.loanData.startDate];
 
-
         if ([_advItems containsObject:self.dateInputItem]) {
             //            inputCell.textField.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
             inputCell.textField.textColor = [A3AppDelegate instance].themeColor;
+            inputCell.detailLabel.textColor = [A3AppDelegate instance].themeColor;
         } else {
             inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+            inputCell.detailLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
         }
+        
+        inputCell.detailLabel.font = [UIFont systemFontOfSize:17];
+        inputCell.detailLabel.text = [df stringFromDate:self.loanData.startDate];
+        if ([inputCell.detailLabel.text length] == 0) {
+            inputCell.detailLabel.text = @"None";
+        }
+        [inputCell.detailLabel sizeToFit];
+        inputCell.detailLabel.center = inputCell.contentView.center;
+        CGRect frame = inputCell.detailLabel.frame;
+        frame.origin.x = inputCell.contentView.frame.size.width - (frame.size.width + 15);
+        inputCell.detailLabel.frame = frame;
+        inputCell.detailLabel.hidden = NO;
+
+        
         
         cell = inputCell;
     }

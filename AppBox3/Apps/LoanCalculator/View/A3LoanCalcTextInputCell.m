@@ -38,6 +38,7 @@
 
 	_textField.placeholder = nil;
 	_textField.attributedPlaceholder = nil;
+    _detailLabel.hidden = YES;
 }
 
 @end

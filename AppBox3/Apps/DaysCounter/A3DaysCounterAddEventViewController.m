@@ -36,6 +36,7 @@
 #import "UITableView+utility.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIImage+Resizing.h"
+#import "NSDateFormatter+A3Addition.h"
 
 
 #define ActionTag_Location      100
@@ -851,7 +852,15 @@
 - (void)endRepeatDateTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType title:(NSString *)title
 {
     cell.textLabel.text = title;
-    cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[_eventItem repeatEndDate] withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:YES]];
+    //cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[_eventItem repeatEndDate] withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:YES]];
+    if (IS_IPAD) {
+        cell.detailTextLabel.text = [self fullStyleDateStringFromDate:[_eventItem repeatEndDate] withShortTime:NO];
+    }
+    else {
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[_eventItem repeatEndDate] withFormat:[formatter customFullStyleFormat]];
+    }
+    
     cell.textLabel.textColor = [UIColor blackColor];
 }
 
