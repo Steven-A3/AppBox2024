@@ -33,6 +33,8 @@
 #import "WalletFieldItemImage.h"
 #import "WalletItem+initialize.h"
 #import "NSString+conversion.h"
+#import "NSDate+formatting.h"
+#import "NSDateFormatter+A3Addition.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <ImageIO/ImageIO.h>
@@ -1504,7 +1506,13 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 	if ([fieldItem.date isKindOfClass:[NSDate class]]) {
 		NSDateFormatter *df = [[NSDateFormatter alloc] init];
-		[df setDateStyle:NSDateFormatterFullStyle];
+        if (IS_IPAD || [NSDate isFullStyleLocale]) {
+            [df setDateStyle:NSDateFormatterFullStyle];
+        }
+        else {
+            df.dateFormat = [df customFullStyleFormat];
+        }
+		
 		inputCell.valueTextField.text = [df stringFromDate:fieldItem.date];
 	}
 	else {

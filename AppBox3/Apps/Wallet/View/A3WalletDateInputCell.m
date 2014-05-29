@@ -32,7 +32,11 @@
     
     CGRect frame = _datePicker.frame;
     frame.size.height = 216;
+    frame.size.width = 320;
     _datePicker.frame = frame;
+    CGPoint center = _datePicker.center;
+    center.x = self.center.x;
+    _datePicker.center = center;
 }
 
 @end
