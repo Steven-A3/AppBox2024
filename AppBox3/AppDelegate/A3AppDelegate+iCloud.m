@@ -85,8 +85,9 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 			
 			[managedObjectContext reset];
 		}];
-		
-		self.managedObjectContext = nil;
+
+		[self setManagedObjectContext:nil];
+		[self setPersistentStoreCoordinator:nil];
 		
 		[[MagicalRecordStack defaultStack] reset];
 
@@ -98,6 +99,7 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 					 isCloud:(BOOL)isCloudStore {
 
 	FNLOG();
+	[self setPersistentStoreCoordinator:coordinator];
 	
 	SQLiteMagicalRecordStack *magicalRecordStack = [SQLiteMagicalRecordStack new];
 	magicalRecordStack.coordinator = coordinator;

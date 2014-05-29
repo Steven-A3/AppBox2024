@@ -24,6 +24,8 @@ extern NSString *const A3WalletUUIDMemoCategory;
 
 - (void)assignOrder;
 
++ (void)exportCategoryInfoAsPList;
+
 + (WalletCategory *)allCategory;
 + (WalletCategory *)favoriteCategory;
 

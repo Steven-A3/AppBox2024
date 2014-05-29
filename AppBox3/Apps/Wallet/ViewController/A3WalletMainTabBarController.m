@@ -153,6 +153,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	if (nil == _categories) {
         if ([[WalletCategory MR_numberOfEntities] isEqualToNumber:@0 ]) {
             [WalletCategory resetWalletCategory];
+			[WalletCategory exportCategoryInfoAsPList];
         }
 		_categories = [NSMutableArray arrayWithArray:[WalletCategory MR_findAllSortedBy:@"order" ascending:YES]];
 	}

@@ -22,6 +22,7 @@
 #import "A3DaysCounterModelManager.h"
 
 #import "A3LadyCalendarDetailViewController.h"
+#import "NSString+conversion.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -57,8 +58,12 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 	A3ImageToDataTransformer *transformer = [[A3ImageToDataTransformer alloc] init];
 	[NSValueTransformer setValueTransformer:transformer forName:@"A3ImageToDataTransformer"];
 
-	_previousVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ApplicationVersion];
-	if (!_previousVersion) {
+	_previousVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
+	if (_previousVersion) {
+		if ([_previousVersion floatValue] < 3.0) {
+			_shouldMigrateV1Data = YES;
+		}
+	} else {
 		[A3KeychainUtils removePassword];
 	}
 
@@ -115,7 +120,7 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 
 	[self.window makeKeyAndVisible];
 
-	[[NSUserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:kA3ApplicationVersion];
+	[[NSUserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:kA3ApplicationLastRunVersion];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	return YES;
