@@ -572,23 +572,25 @@
     NSString *subStr = @"";
 
     retStr = typeStr;
-    if( isLunar ){
-        if( [leapMonthStr length] > 0 )
+    if ( isLunar ) {
+        if ( [leapMonthStr length] > 0 )
             retStr = [typeStr stringByAppendingFormat:@", %@",leapMonthStr];
 
         yearStr = [self yearNameForLunar:[dateComponents year]];
-        if( [yearStr length] > 0 ){
+        if ( [yearStr length] > 0 ) {
             retStr = [retStr stringByAppendingString:@","];
             subStr = [subStr stringByAppendingFormat:@" %@",yearStr];
         }
 
-        if( [A3DateHelper isCurrentLocaleIsKorea] ){
+        if ( [A3DateHelper isCurrentLocaleIsKorea] ) {
             monthStr = [self lunarMonthGanjiNameFromDateComponents:dateComponents isLeapMonth:isLeapMonth];
-            if( [monthStr length] > 0)
+            if ( [monthStr length] > 0) {
                 subStr = [subStr stringByAppendingFormat:@" %@",monthStr];
+            }
             dayStr = [self lunarDayGanjiNameFromDateComponents:dateComponents isLeapMonth:isLeapMonth];
-            if( [dayStr length] > 0)
+            if ( [dayStr length] > 0) {
                 subStr = [subStr stringByAppendingFormat:@" %@",dayStr];
+            }
         }
         retStr = [retStr stringByAppendingString:subStr];
     }
@@ -807,7 +809,7 @@
             [self.dateFormatter setDateFormat:[self.dateFormatter customFullStyleFormat]];
         }
         
-        [txt appendString:[[self shareString] stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"]];
+        [txt appendString:[[self shareString] stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"]];
     }
     
     return txt;
@@ -822,53 +824,69 @@
 {
     NSDateComponents *outputComponents = (_pageControl.currentPage > 0 ? self.secondPageResultDateComponents : self.firstPageResultDateComponents);
     NSMutableString *txt =[NSMutableString new];
-    
+
     BOOL isInputLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:_inputDateComponents isKorean:[NSDate isFullStyleLocale]];
     BOOL isOutputLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:outputComponents isKorean:[NSDate isFullStyleLocale]];
-    NSDateComponents *lunarMonthComponents;
-    
-    if (isInputLeapMonth || isOutputLeapMonth) {
+
+    if (_isLunarInput) {
         BOOL resultLeapMonth = NO;
-        
         // Lunar Month
-        lunarMonthComponents = [NSDate lunarCalcWithComponents:_isLunarInput ? outputComponents : _inputDateComponents
-                                              gregorianToLunar:YES
-                                                     leapMonth:NO
-                                                        korean:NO
-                                               resultLeapMonth:&resultLeapMonth];
+        NSDateComponents *solarFromLunarComp;
+        solarFromLunarComp = [NSDate lunarCalcWithComponents:_inputDateComponents
+                                            gregorianToLunar:NO
+                                                   leapMonth:NO
+                                                      korean:[NSDate isFullStyleLocale]
+                                             resultLeapMonth:&resultLeapMonth];
+        NSString *prefix = [self stringOfLunarPrefixForDateComponents:_inputDateComponents leapMonth:NO];
+        [txt appendFormat:@"Lunar(%@) %@", prefix, [_dateFormatter stringFromDateComponents:_inputDateComponents]];
+        [txt appendFormat:@" = Solar %@", [_dateFormatter stringFromDateComponents:solarFromLunarComp]];
         
-        if (_isLunarInput) {
-            [txt appendFormat:@"%@ %@", @"Lunar", [_dateFormatter stringFromDateComponents:lunarMonthComponents]];
-            [txt appendFormat:@" = %@ %@", @"Solar", [_dateFormatter stringFromDateComponents:outputComponents]];
+        if (isInputLeapMonth) {
+            NSDateComponents *solarFromLeapComp;
+            solarFromLeapComp = [NSDate lunarCalcWithComponents:_inputDateComponents
+                                               gregorianToLunar:NO
+                                                      leapMonth:YES
+                                                         korean:[NSDate isFullStyleLocale]
+                                                resultLeapMonth:&resultLeapMonth];
+            NSString *prefix = [self stringOfLunarPrefixForDateComponents:_inputDateComponents leapMonth:NO];
+            [txt appendString:@"<br/>"];
+            [txt appendFormat:@"Lunar(%@, Leap Month) %@", prefix, [_dateFormatter stringFromDateComponents:_inputDateComponents]];
+            [txt appendFormat:@" = Solar %@", [_dateFormatter stringFromDateComponents:solarFromLeapComp]];
         }
-        else {
-            [txt appendFormat:@"%@ %@", @"Solar", [_dateFormatter stringFromDateComponents:_inputDateComponents]];
-            [txt appendFormat:@" = %@ %@", @"Lunar", [_dateFormatter stringFromDateComponents:lunarMonthComponents]];
-        }
-
-
-        // Leap Month
-        NSDateComponents *leapMonthComponents = [NSDate lunarCalcWithComponents:_isLunarInput ? outputComponents : _inputDateComponents
-                                                               gregorianToLunar:YES
-                                                                      leapMonth:YES
-                                                                         korean:[NSDate isFullStyleLocale]
-                                                                resultLeapMonth:&resultLeapMonth];
-        if (!resultLeapMonth) {
-            FNLOG(@"fail leap");
-        }
-        [txt appendFormat:@"<br>"];
-        [txt appendFormat:@"%@", _isLunarInput ? @"Lunar (Leap Month)" : @"Solar"];
-        [txt appendFormat:@" %@", [_dateFormatter stringFromDateComponents:isInputLeapMonth ? leapMonthComponents : _inputDateComponents]];
-        [txt appendFormat:@" = %@", _isLunarInput ? @"Solar" : @"Lunar (Leap Month)"];
-        [txt appendFormat:@" %@", [_dateFormatter stringFromDateComponents:isOutputLeapMonth ? leapMonthComponents : outputComponents]];
     }
     else {
-        [txt appendString:@"<html><body>I'd like to share a conversion with you.<br/><br/>"];
-        [txt appendFormat:@"%@ %@", _isLunarInput ? @"Lunar" : @"Solar", [_dateFormatter stringFromDateComponents:_inputDateComponents]];
-        [txt appendFormat:@" = %@ %@", _isLunarInput ? @"Solar" : @"Lunar", [_dateFormatter stringFromDateComponents:outputComponents]];
+        [txt appendFormat:@"Solar %@", [_dateFormatter stringFromDateComponents:_inputDateComponents]];
+
+        if (isOutputLeapMonth) {
+            NSString *prefix = [self stringOfLunarPrefixForDateComponents:_inputDateComponents leapMonth:YES];
+            [txt appendFormat:@" = Lunar(%@, Leap Month) %@", prefix, [_dateFormatter stringFromDateComponents:outputComponents]];
+        }
+        else {
+            NSString *prefix = [self stringOfLunarPrefixForDateComponents:_inputDateComponents leapMonth:NO];
+            [txt appendFormat:@" = Lunar(%@) %@", prefix, [_dateFormatter stringFromDateComponents:outputComponents]];
+        }
     }
 
     return txt;
+}
+
+- (NSString *)stringOfLunarPrefixForDateComponents:(NSDateComponents *)dateComp leapMonth:(BOOL)isLeapMonth
+{
+    NSMutableArray *result = [NSMutableArray new];
+    NSString *yearStr = [self yearNameForLunar:[dateComp year]];
+    NSString *monthStr = [self lunarMonthGanjiNameFromDateComponents:dateComp isLeapMonth:isLeapMonth];
+    NSString *dayStr = [self lunarDayGanjiNameFromDateComponents:dateComp isLeapMonth:isLeapMonth];
+    if ([yearStr length] > 0) {
+        [result addObject:yearStr];
+    }
+    if ([monthStr length] > 0) {
+        [result addObject:monthStr];
+    }
+    if ([dayStr length] > 0) {
+        [result addObject:dayStr];
+    }
+    
+    return [result componentsJoinedByString:@" "];
 }
 
 #pragma mark -

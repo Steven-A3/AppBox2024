@@ -280,7 +280,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         _loanCalcData.extraPaymentYearlyDate = pickDate;
     }
     else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
-        
+//        sdf
         NSUInteger monthIdx = [pickerView selectedRowInComponent:0];
         NSString *month = _months[monthIdx];
         NSString *year = _years[[pickerView selectedRowInComponent:1]];
@@ -317,6 +317,9 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         return self.months.count;
     }
     else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
+        NSDateFormatter *dateFormatter = [NSDateFormatter new];
+        NSString *dateFormat = [dateFormatter formatStringByRemovingDayComponent:[dateFormatter dateFormat]];
+        
         if (component == 0) {
             return self.months.count;
         }
@@ -625,7 +628,6 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
                 }
             }
             [pickerCell.picker selectRow:yearIdx inComponent:1 animated:NO];
-            
         }
         else if (_exPaymentType == A3LC_ExtraPaymentYearly) {
             NSDate *pickDate = _loanCalcData.extraPaymentYearlyDate ? _loanCalcData.extraPaymentYearlyDate : [NSDate date];
