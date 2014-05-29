@@ -1578,8 +1578,14 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 	NSDateFormatter *df = [[NSDateFormatter alloc] init];
 	df.dateStyle = NSDateFormatterFullStyle;
+    
 	NSDate *date = _item.modificationDate ? _item.modificationDate : [NSDate date];
-	titleCell.timeLabel.text = [NSString stringWithFormat:@"Current %@", [df stringFromDate:date]];
+    if (IS_IPAD || [NSDate isFullStyleLocale]) {
+        titleCell.timeLabel.text = [NSString stringWithFormat:@"Current %@", [self fullStyleDateStringFromDate:date withShortTime:YES]];
+    }
+    else {
+        titleCell.timeLabel.text = [NSString stringWithFormat:@"Current %@", [self customFullStyleDateStringFromDate:date withShortTime:YES]];
+    }
 
 	return titleCell;
 }

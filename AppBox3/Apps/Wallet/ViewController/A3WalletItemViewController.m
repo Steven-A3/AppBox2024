@@ -32,6 +32,7 @@
 #import "A3WalletItemTitleCell.h"
 #import "WalletFieldItemImage.h"
 #import "WalletItem+initialize.h"
+#import "NSDate+formatting.h"
 
 
 @interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>
@@ -528,8 +529,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		[titleCell.favoriteButton addTarget:self action:@selector(favorButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
 		cell = titleCell;
-	} else
-    if (_fieldItems[indexPath.row] == self.noteItem) {
+	}
+    else if (_fieldItems[indexPath.row] == self.noteItem) {
         // note
         A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID forIndexPath:indexPath];
         [noteCell setupTextView];
@@ -594,9 +595,12 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
             
             dateCell.valueTextField.placeholder = fieldItem.field.name;
             if (fieldItem.date) {
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-				[dateFormatter setDateStyle:NSDateFormatterFullStyle];
-                dateCell.valueTextField.text = [dateFormatter stringFromDate:fieldItem.date];
+                if (IS_IPAD || [NSDate isFullStyleLocale]) {
+                    dateCell.valueTextField.text = [self fullStyleDateStringFromDate:fieldItem.date withShortTime:NO];
+                }
+                else {
+                    dateCell.valueTextField.text = [self customFullStyleDateStringFromDate:fieldItem.date withShortTime:NO];
+                }
             }
             else {
                 dateCell.valueTextField.text = @"";

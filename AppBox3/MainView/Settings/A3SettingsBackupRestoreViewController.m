@@ -12,6 +12,7 @@
 #import "A3SettingsDropboxSelectBackupViewController.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIViewController+A3Addition.h"
 #import <DropboxSDK/DropboxSDK.h>
 
 NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
@@ -213,10 +214,15 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 				return [file1.lastModifiedDate compare:file2.lastModifiedDate];
 			}];
 			DBMetadata *lastItem = [sortedArray lastObject];
-			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-			[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-			[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-			_backupInfoString = [NSString stringWithFormat:@"Last Backup: %@", [dateFormatter stringFromDate:lastItem.lastModifiedDate]];
+			
+            if (IS_IPAD) {
+                _backupInfoString = [NSString stringWithFormat:@"Last Backup: %@", [self fullStyleDateStringFromDate:lastItem.lastModifiedDate withShortTime:YES]];
+            }
+            else {
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+                _backupInfoString = [NSString stringWithFormat:@"Last Backup: %@", [dateFormatter stringFromDate:lastItem.lastModifiedDate]];
+            }
 		}
 
 		[self.tableView reloadData];
