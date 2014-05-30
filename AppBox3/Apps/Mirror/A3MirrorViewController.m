@@ -67,6 +67,7 @@ static const int MAX_ZOOM_FACTOR = 6;
 	CMTime      currentMaxDuration;
 	CMTime      currentMinDuration;
 	AVFrameRateRange *slowFrameRateRange;
+    CGPoint           centerxy;
 	FrameRateCalculator *frameCaculator;
 }
 
@@ -1059,6 +1060,13 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	{
 		[UIView setAnimationsEnabled:NO];
 	}
+    else {
+        if (bLosslessZoom == YES) {
+            centerxy.x = [self currentFilterView].center.y;
+            centerxy.y = [self currentFilterView].center.x;
+        }
+        
+    }
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -1069,6 +1077,29 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 		[UIView setAnimationDuration:0.75];
 		[UIView commitAnimations];
 	}
+    else
+    {
+        if (bLosslessZoom == YES) {
+            [self currentFilterView].center = centerxy;
+        }
+        /*
+        	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+        if (bMultipleView == YES) {
+            [self setViewRotation:_videoPreviewViewMonoFilter];
+            [self setViewRotation:_videoPreviewViewTonalFilter];
+            [self setViewRotation:_videoPreviewViewNoirFilter];
+            [self setViewRotation:_videoPreviewViewChromeFilter];
+            [self setViewRotation:_videoPreviewViewFadeFilter];
+            [self setViewRotation:_videoPreviewViewNoFilter];
+            [self setViewRotation:_videoPreviewViewProcessFilter];
+            [self setViewRotation:_videoPreviewViewInstantFilter];
+            [self setViewRotation:_videoPreviewViewTransferFilter];
+        }
+        else {
+            [self setFilterViewRotation:[self currentFilterView] withScreenBounds:screenBounds];
+        }
+         */
+    }
 }
 
 - (void)didReceiveMemoryWarning
