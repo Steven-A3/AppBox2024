@@ -304,11 +304,14 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 
 - (void) setViewRotation:(UIView *)view {
 
-
+    CGFloat scalefactor = 1.0;
+    if(bLosslessZoom == NO) {
+        scalefactor = effectiveScale;
+    }
 	if (bFlip) {
-		[view setTransform:CGAffineTransformConcat([self getTransform], CGAffineTransformMakeScale(-1.0*effectiveScale, effectiveScale))];
+		[view setTransform:CGAffineTransformConcat([self getTransform], CGAffineTransformMakeScale(-scalefactor, scalefactor))];
 	} else {
-		[view setTransform:CGAffineTransformConcat([self getTransform], CGAffineTransformMakeScale(effectiveScale, effectiveScale))];
+		[view setTransform:CGAffineTransformConcat([self getTransform], CGAffineTransformMakeScale(scalefactor, scalefactor))];
 	}
 
 }
