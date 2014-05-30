@@ -262,7 +262,10 @@
                                            context:nil];
     _toLabel.center = CGPointMake(_toThumbView.center.x, _toLabel.center.y);
     labelRect = _toLabel.frame;
-    labelRect.size.width = roundf( fontRect.size.width );
+    if (IS_IPHONE) {
+        labelRect.size.width = roundf( fontRect.size.width );
+    }
+    
     if (IS_IPHONE) {
         labelRect.origin.y = _sliderLineView.center.y + 9.0;
     } else {
@@ -270,8 +273,7 @@
     }
     
     if ((labelRect.origin.x+labelRect.size.width) > (CGRectGetWidth(self.bounds) - SLIDER_OFFSET_LABEL)) {
-        labelRect.origin.x = roundf( CGRectGetWidth(self.bounds) - labelRect.size.width - SLIDER_OFFSET_LABEL );
-        
+        labelRect.origin.x = roundf( CGRectGetWidth(self.bounds) - (labelRect.size.width + SLIDER_OFFSET_LABEL) );
     } else if (labelRect.origin.x < (_fromLabel.frame.origin.x + _fromLabel.frame.size.width + SLIDER_OFFSET_LABEL)) {
         labelRect.origin.x = roundf( _fromLabel.frame.origin.x + _fromLabel.frame.size.width + SLIDER_OFFSET_LABEL );
     }
@@ -864,14 +866,14 @@
                          }];
     }
     else {
+        _fromLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate];
+        _toLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_toDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_toDate];
+        
         [self adjustFromToBetweenLineWidth];
         [self adjustFromToLabelPosition];
         [self setupResultLabelPositionForThumbView:_fromLagerThanTo==NO ? _toThumbView : _fromThumbView];
         self.resultLabel.arrowDirection = _fromLagerThanTo==NO ? ArrowDirection_To : ArrowDirection_From;
         [self setupSliderThumbShadeByCalcType];
-        
-        _fromLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate];
-        _toLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_toDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_toDate];
     }
 }
 
