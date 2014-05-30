@@ -1628,6 +1628,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         markTailX = MIN(markTailX, self.view.bounds.size.width-15);
         CGRect rectRight = compareCell.right_A_Label.frame;
         rectRight.origin.x = MAX(markTailX - rectRight.size.width, compareCell.left_A_Label.frame.origin.x + compareCell.left_A_Label.frame.size.width + 15);
+        if ((rectRight.origin.x + rectRight.size.width) > (compareCell.frame.size.width - (IS_IPAD ? 28:15)) ) {
+            rectRight.origin.x = (compareCell.frame.size.width - (IS_IPAD ? 28:15)) - rectRight.size.width;
+        }
         compareCell.right_A_Label.frame = rectRight;
         NSLog(@"rightA : %@", NSStringFromCGRect(compareCell.right_A_Label.frame));
 
@@ -1636,6 +1639,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         rectLeft.origin.x = MAX(circleOriginX, IS_IPAD ? 28:15);
         if ((rectLeft.origin.x + rectLeft.size.width) > rectRight.origin.x) {
             rectLeft.origin.x -= (rectLeft.origin.x + rectLeft.size.width) - rectRight.origin.x;
+            if (rectLeft.origin.x < (IS_IPAD ? 28:15)) {
+                rectLeft.origin.x = IS_IPAD ? 28:15;
+                rectLeft.size.width = rectRight.origin.x - rectLeft.origin.x;
+            }
         }
         compareCell.left_A_Label.frame = rectLeft;
         NSLog(@"leftA : %@", NSStringFromCGRect(compareCell.left_A_Label.frame));
@@ -1732,6 +1739,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         rectLeft.origin.x = MAX(circleOriginX, IS_IPAD ? 28:15);
         if ((rectLeft.origin.x + rectLeft.size.width) > rectRight.origin.x) {
             rectLeft.origin.x -= (rectLeft.origin.x + rectLeft.size.width) - rectRight.origin.x;
+            if (rectLeft.origin.x < (IS_IPAD ? 28:15)) {
+                rectLeft.origin.x = IS_IPAD ? 28:15;
+                rectLeft.size.width = rectRight.origin.x - rectLeft.origin.x;
+            }
         }
         compareCell.left_B_Label.frame = rectLeft;
         
