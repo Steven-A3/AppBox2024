@@ -673,8 +673,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 		}
 
 		[graphCell.monthlyButton setTitle:[LoanCalcString titleOfFrequency:self.loanData.frequencyIndex] forState:UIControlStateNormal];
-        graphCell.monthlyButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
-        graphCell.totalButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+        graphCell.monthlyButton.titleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        graphCell.totalButton.titleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 
 		cell = graphCell;
 	}

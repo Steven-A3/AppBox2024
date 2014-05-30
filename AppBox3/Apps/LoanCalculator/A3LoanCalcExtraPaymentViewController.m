@@ -318,6 +318,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     }
     else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
         NSDateFormatter *dateFormatter = [NSDateFormatter new];
+        // TODO
         NSString *dateFormat = [dateFormatter formatStringByRemovingDayComponent:[dateFormatter dateFormat]];
         
         if (component == 0) {
