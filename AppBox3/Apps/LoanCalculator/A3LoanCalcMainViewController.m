@@ -2501,7 +2501,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     if (_isComparisonMode) {
         if (indexPath.section == 0) {
-            return (IS_IPHONE) ? 166 : 226;
+            return (IS_IPHONE) ? 165 : 225;
         }
         else {
             return (IS_IPHONE) ? 160 : 194;
@@ -2509,7 +2509,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
     else {
         if (indexPath.section == 0) {
-            return (IS_IPHONE) ? 134 : 193;
+            return (IS_IPHONE) ? 133 : 192;
         }
         else if (indexPath.section == 1) {
             if ([self.loanData calculated]) {
@@ -2744,6 +2744,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             [graphCell.totalButton addTarget:self action:@selector(totalButtonAction:) forControlEvents:UIControlEventTouchUpInside];
             [graphCell.infoButton addTarget:self action:@selector(infoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
             [graphCell adjustSubviewsFontSize];
+            [graphCell adjustSubviewsPosition];
             
             if ([self.loanData calculated]) {
                 [self displayGraphCell:graphCell];

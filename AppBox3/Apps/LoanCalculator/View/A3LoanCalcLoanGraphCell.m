@@ -169,6 +169,24 @@
     }
 }
 
+- (void)adjustSubviewsPosition
+{
+    if (IS_IPHONE) {
+        CGRect frame = _upLabel.frame;
+        frame.origin.y = 10.5;
+        _upLabel.frame = frame;
+        
+        frame = _lowLabel.frame;
+        frame.origin.y = 58;
+        _lowLabel.frame = frame;
+    }
+    else {
+        CGRect frame = _lowLabel.frame;
+        frame.origin.y = 91;
+        _lowLabel.frame = frame;
+    }
+}
+
 - (void)adjustMeterViewsPosition
 {
     [_percentA_meterViews enumerateObjectsUsingBlock:^(UIView *meterView, NSUInteger idx, BOOL *stop) {

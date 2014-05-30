@@ -22,4 +22,5 @@
 @property (strong, nonatomic) A3TripleCircleView *circleView;
 
 - (void)adjustSubviewsFontSize;
+- (void)adjustSubviewsPosition;
 @end
