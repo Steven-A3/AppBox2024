@@ -234,8 +234,23 @@
     // text info
     NSString *interestText = _totalMode ? @"Interest" : @"Avg.Interest";
     NSString *paymentText = _totalMode ? @"Total Amount" : @"Payment";
-    NSString *interestValue = _totalMode ? [self.loanFormatter stringFromNumber:[_loanData totalInterest]] : [self.loanFormatter stringFromNumber:[_loanData monthlyAverageInterest]];
-    NSString *paymentValue = _totalMode ? [self.loanFormatter stringFromNumber:[_loanData totalAmount]] : [self.loanFormatter stringFromNumber:_loanData.repayment];
+    
+    NSNumber *interestNumber = _totalMode ? [_loanData totalInterest] : [_loanData monthlyAverageInterest];
+    NSNumber *paymentNumber = _totalMode ? [_loanData totalAmount] : _loanData.repayment;
+    NSString *interestValue = [self.loanFormatter stringFromNumber:interestNumber];
+    NSString *paymentValue = [self.loanFormatter stringFromNumber:paymentNumber];
+
+    if (IS_IPHONE) {
+        if ([interestNumber doubleValue] > 0.0) {
+            interestValue = [interestValue stringByReplacingOccurrencesOfString:[self.loanFormatter currencySymbol] withString:@""];
+            interestValue = [interestValue stringByReplacingOccurrencesOfString:[self.loanFormatter currencyCode] withString:@""];
+        }
+        
+        if ([paymentNumber doubleValue] > 0.0) {
+            paymentValue = [paymentValue stringByReplacingOccurrencesOfString:[self.loanFormatter currencySymbol] withString:@""];
+            paymentValue = [paymentValue stringByReplacingOccurrencesOfString:[self.loanFormatter currencyCode] withString:@""];
+        }
+    }
 
     if (!_totalMode) {
         paymentValue = [NSString stringWithFormat:@"%@/%@", paymentValue, [LoanCalcString shortTitleOfFrequency:_loanData.frequencyIndex]];

@@ -223,16 +223,16 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
         
         NSString *principal = [self.currencyFormatter stringFromNumber:@(history.principal.doubleValue)];
         NSString *percent = [self.percentFormatter stringFromNumber:@(history.interestRate.floatValue)];
-        float months = history.term.floatValue;
+        float months = roundf(history.term.floatValue);
         int yearCount = months/12;
-        int monthCount = (int)(months - yearCount*12);
+        int monthCount = (int)(months - yearCount * 12);
         NSString *yearText = @"";
-        if (yearCount>0) {
-            yearText = [NSString stringWithFormat:@"%dyrs",yearCount];
+        if (yearCount > 0) {
+            yearText = [NSString stringWithFormat:@"%dyrs", yearCount];
         }
         NSString *monthText = @"";
-        if (monthCount>0) {
-            monthText = [NSString stringWithFormat:@"%dmos",monthCount];
+        if (monthCount > 0) {
+            monthText = [NSString stringWithFormat:@"%dmos", monthCount];
         }
         loanCell.lowLeftLb.text = [NSString stringWithFormat:@"%@ %@ %@%@", principal, percent, yearText, monthText];
         loanCell.lowLeftLb.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
@@ -389,19 +389,15 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 	UITableViewCell *cell=nil;
 
 	if (_isComparisonMode) {
-
 		A3LoanCalcComparisonHistoryCell *compareCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcComparisonHistoryCellID forIndexPath:indexPath];
-
 		LoanCalcComparisonHistory *comparisonHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
 		[self configureComparisonCell:compareCell withHistory:comparisonHistory];
 		cell = compareCell;
 	}
 	else {
 		A3LoanCalcLoanHistoryCell *loanCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanHistoryCellID forIndexPath:indexPath];
-
 		LoanCalcHistory *loanHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
 		[self configureLoanCell:loanCell withHistory:loanHistory];
-
 		cell = loanCell;
 	}
 

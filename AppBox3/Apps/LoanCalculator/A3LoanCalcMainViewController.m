@@ -1281,19 +1281,39 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
     // Result
     // Payments or etc
-    [body appendFormat:@"%@: ", [[LoanCalcString titleOfCalFor:loanData.calculationMode] uppercaseString]];
+    [body appendFormat:@"%@:", [[LoanCalcString titleOfCalFor:loanData.calculationMode] uppercaseString]];
     A3LoanCalcCalculationItem resultItem = [LoanCalcMode resltItemForCalcMode:loanData.calculationMode];
-    if (loanData.calculationMode == A3LC_CalculationForTermOfMonths) {
-        NSInteger monthInt =  (int)round(loanData.monthOfTerms.doubleValue);
-        [body appendString:[NSString stringWithFormat:@"%ld months", (long)monthInt]];
-    }
-    else if (loanData.calculationMode == A3LC_CalculationForTermOfYears) {
+    if (loanData.calculationMode == A3LC_CalculationForTermOfMonths || loanData.calculationMode == A3LC_CalculationForTermOfYears) {
         NSInteger yearInt =  (int)round(loanData.monthOfTerms.doubleValue/12.0);
-        [body appendString:[NSString stringWithFormat:@"%ld years", (long)yearInt]];
+        if (yearInt > 0) {
+            [body appendString:[NSString stringWithFormat:@" %ld year", (long)yearInt]];
+            if (yearInt > 1) {
+                [body appendString:@"s"];
+            }
+        }
+
+        NSInteger monthInt =  (int)round(loanData.monthOfTerms.doubleValue)  - (12 * yearInt);
+        if (monthInt > 0) {
+            [body appendString:[NSString stringWithFormat:@" %ld month", (long)monthInt]];
+            if (monthInt > 1) {
+                [body appendString:@"s"];
+            }
+        }
     }
     else {
         [body appendString:[LoanCalcString valueTextForCalcItem:resultItem fromData:loanData formatter:self.currencyFormatter]];
     }
+//    if (loanData.calculationMode == A3LC_CalculationForTermOfMonths) {
+//        NSInteger monthInt =  (int)round(loanData.monthOfTerms.doubleValue);
+//        [body appendString:[NSString stringWithFormat:@"%ld months", (long)monthInt]];
+//    }
+//    else if (loanData.calculationMode == A3LC_CalculationForTermOfYears) {
+//        NSInteger yearInt =  (int)round(loanData.monthOfTerms.doubleValue/12.0);
+//        [body appendString:[NSString stringWithFormat:@"%ld years", (long)yearInt]];
+//    }
+//    else {
+//        [body appendString:[LoanCalcString valueTextForCalcItem:resultItem fromData:loanData formatter:self.currencyFormatter]];
+//    }
     
     [body appendFormat:@"<br>Interest: %@ <br>", [self.loanFormatter stringFromNumber:[loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
     [body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[loanData totalAmount]]];
@@ -1594,8 +1614,26 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         compareCell.right_A_Label.layer.anchorPoint = CGPointMake(1, 1.0);
         
         // text
-        compareCell.left_A_Label.text = [self.loanFormatter stringFromNumber:[_loanDataA totalInterest]];
-        compareCell.right_A_Label.text = [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]];
+        NSString *totalInterestString;
+        NSString *totalAmountString;
+        totalInterestString = [self.loanFormatter stringFromNumber:[_loanDataA totalInterest]];
+        totalAmountString = [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]];
+
+        if (IS_IPHONE) {
+            if ([_loanDataA.totalInterest doubleValue] > 0.0) {
+                totalInterestString = [totalInterestString stringByReplacingOccurrencesOfString:[self.loanFormatter currencySymbol] withString:@""];
+                totalInterestString = [totalInterestString stringByReplacingOccurrencesOfString:[self.loanFormatter currencyCode] withString:@""];
+            }
+
+            if ([_loanDataA.totalAmount doubleValue] > 0.0) {
+                totalAmountString = [totalAmountString stringByReplacingOccurrencesOfString:[self.loanFormatter currencySymbol] withString:@""];
+                totalAmountString = [totalAmountString stringByReplacingOccurrencesOfString:[self.loanFormatter currencyCode] withString:@""];
+            }
+        }
+        
+        compareCell.left_A_Label.text = totalInterestString;
+        compareCell.right_A_Label.text = totalAmountString;
+        
         
         // value label position
         [compareCell.left_A_Label sizeToFit];
@@ -1695,8 +1733,24 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         compareCell.right_B_Label.layer.anchorPoint = CGPointMake(1, 1.0);
         
         // text
-        compareCell.left_B_Label.text = [self.loanFormatter stringFromNumber:[_loanDataB totalInterest]];
-        compareCell.right_B_Label.text = [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]];
+        NSString *totalInterestString;
+        NSString *totalAmountString;
+        totalInterestString = [self.loanFormatter stringFromNumber:[_loanDataB totalInterest]];
+        totalAmountString = [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]];
+        if (IS_IPHONE) {
+            if ([_loanDataB.totalInterest doubleValue] > 0.0) {
+                totalInterestString = [totalInterestString stringByReplacingOccurrencesOfString:[self.loanFormatter currencySymbol] withString:@""];
+                totalInterestString = [totalInterestString stringByReplacingOccurrencesOfString:[self.loanFormatter currencyCode] withString:@""];
+            }
+            
+            if ([_loanDataB.totalAmount doubleValue] > 0.0) {
+                totalAmountString = [totalAmountString stringByReplacingOccurrencesOfString:[self.loanFormatter currencySymbol] withString:@""];
+                totalAmountString = [totalAmountString stringByReplacingOccurrencesOfString:[self.loanFormatter currencyCode] withString:@""];
+            }
+        }
+        compareCell.left_B_Label.text = totalInterestString;
+        compareCell.right_B_Label.text = totalAmountString;
+        
         
         // value label position
         [compareCell.left_B_Label sizeToFit];
