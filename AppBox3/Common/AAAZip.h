@@ -14,11 +14,11 @@
 @protocol AAAZipDelegate <NSObject>
 
 @optional
--(void) ErrorMessage:(NSString*) msg;
--(BOOL) OverWriteOperation:(NSString*) file;
--(void) CompressProgress:(float)currentByte Total:(float)totalByte;
--(void) DecompressProgress:(float)currentBtye Total:(float)totalByte;
--(void) CompletedProcess:(BOOL)bResult;
+- (void)ErrorMessage:(NSString*) msg;
+- (BOOL)overWriteOperation:(NSString*) file;
+- (void)compressProgress:(float)currentByte total:(float)totalByte;
+- (void)decompressProgress:(float)currentBtye total:(float)totalByte;
+- (void)completedProcess:(BOOL)bResult;
 @end
 
 @interface AAAZip : NSObject {
@@ -42,8 +42,8 @@
 @property (nonatomic, retain) id<AAAZipDelegate> delegate;
 @property (retain, nonatomic) NSString *targetFile;
 
--(BOOL) CreateZipFileWithList:(NSString *) zipFile SoureList:(NSMutableArray *)fileList;
--(BOOL) UnzipFile:(NSString *)zipFile unzipFileto:(NSString *)path;
--(void) cancelOperation;
+- (BOOL)CreateZipFileWithList:(NSString *) zipFile SoureList:(NSMutableArray *)fileList;
+- (BOOL)UnzipFile:(NSString *)zipFile unzipFileto:(NSString *)path;
+- (void)cancelOperation;
 
 @end

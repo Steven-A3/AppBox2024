@@ -187,8 +187,8 @@
     if ( [_itemArray count] > 0) {
         DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
         textLabel.text = favorite.event.eventName;
-		if (favorite.event.photo) {
-			imageView.image = favorite.event.photo ? [favorite.event thumbnailImageInTemporaryDirectory:NO] : nil;
+		if ([favorite.event.hasPhoto boolValue]) {
+			imageView.image = [favorite.event thumbnailImageInOriginalDirectory:YES];
 			imageView.contentMode = UIViewContentModeScaleAspectFill;
 			imageView.layer.cornerRadius = imageView.bounds.size.width / 2.0;
 			imageView.layer.masksToBounds = YES;

@@ -19,14 +19,14 @@
 
 	if (isFavorite) {
 		// Add Favorite
-		TranslatorFavorite *favorite = [TranslatorFavorite MR_createEntity];
+		TranslatorFavorite *favorite = [TranslatorFavorite MR_createInContext:self.managedObjectContext];
 		self.favorite = favorite;
 
-		NSString *largest = [TranslatorFavorite MR_findLargestValueForAttribute:@"order"];
+		NSString *largest = [TranslatorFavorite MR_findLargestValueForAttribute:@"order" inContext:self.managedObjectContext];
 		NSString *nextLargest = [NSString orderStringWithOrder:[largest integerValue] + 1000000];
 		favorite.order = nextLargest;
 	} else {
-		[self.favorite MR_deleteEntity];
+		[self.favorite MR_deleteInContext:self.managedObjectContext];
 	}
 
 	[[self managedObjectContext] MR_saveToPersistentStoreAndWait];

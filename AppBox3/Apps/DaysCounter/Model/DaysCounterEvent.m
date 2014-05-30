@@ -28,6 +28,7 @@
 @dynamic isPeriod;
 @dynamic modificationDate;
 @dynamic notes;
+@dynamic hasPhoto;
 @dynamic photo;
 @dynamic repeatEndDate;
 @dynamic repeatType;

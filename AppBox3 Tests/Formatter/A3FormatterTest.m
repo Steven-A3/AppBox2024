@@ -208,15 +208,19 @@
 	[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:localeID]];
 	
 	NSDate *date = [NSDate date];
+	[dateFormatter setDateStyle:NSDateFormatterFullStyle];
 	[dateFormatter setTimeStyle:NSDateFormatterFullStyle];
 	[log appendFormat:@"%@\n", [dateFormatter stringFromDate:date]];
 
+	[dateFormatter setDateStyle:NSDateFormatterLongStyle];
 	[dateFormatter setTimeStyle:NSDateFormatterLongStyle];
 	[log appendFormat:@"%@\n", [dateFormatter stringFromDate:date]];
 
+	[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 	[dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
 	[log appendFormat:@"%@\n", [dateFormatter stringFromDate:date]];
 
+	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 	[log appendFormat:@"%@\n", [dateFormatter stringFromDate:date]];
 }

@@ -23,7 +23,7 @@
 }
 
 - (void)assignOrder {
-	WalletItem *item = [WalletItem MR_findFirstOrderedByAttribute:@"order" ascending:NO];
+	WalletItem *item = [WalletItem MR_findFirstOrderedByAttribute:@"order" ascending:NO inContext:self.managedObjectContext];
 	if (item) {
 		NSInteger latestOrder = [item.order integerValue];
 		self.order = [NSString orderStringWithOrder:latestOrder + 1000000];

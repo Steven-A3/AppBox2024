@@ -9,6 +9,23 @@
 #import "WalletData.h"
 #import <AVFoundation/AVFoundation.h>
 
+NSString *const WalletFieldTypeText			= @"Text";
+NSString *const WalletFieldTypeNumber		= @"Number";
+NSString *const WalletFieldTypePhone		= @"Phone";
+NSString *const WalletFieldTypeURL			= @"URL";
+NSString *const WalletFieldTypeEmail		= @"Email";
+NSString *const WalletFieldTypeDate			= @"Date";
+NSString *const WalletFieldTypeImage		= @"Image";
+NSString *const WalletFieldTypeVideo		= @"Video";
+
+NSString *const WalletFieldStyleNormal		= @"Normal";
+NSString *const WalletFieldStylePassword	= @"Password";
+NSString *const WalletFieldStyleAccount		= @"Account";
+NSString *const WalletFieldStyleHidden		= @"Hidden";
+
+NSString *const WalletCategoryTypePhoto		= @"Photos";
+NSString *const WalletCategoryTypeVideo		= @"Video";
+
 @implementation WalletData
 
 + (NSArray *)typeList

@@ -12,8 +12,6 @@
 #import "UIViewController+MMDrawerController.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
-#import "A3AppDelegate+iCloud.h"
-#import "A3DataMigrationManager.h"
 
 NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 
@@ -21,7 +19,6 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 
 @property (nonatomic, strong) UIStoryboard *launchStoryboard;
 @property (nonatomic, strong) A3LaunchSceneViewController *currentSceneViewController;
-@property (nonatomic, strong) A3DataMigrationManager *dataMigrationManager;
 
 @end
 
@@ -154,11 +151,6 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 
 		A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
 		[self.navigationController pushViewController:clockVC animated:NO];
-
-//		if ([[A3AppDelegate instance] shouldMigrateV1Data]) {
-//			_dataMigrationManager = [[A3DataMigrationManager alloc] initWithPersistentStoreCoordinator:[[A3AppDelegate instance] persistentStoreCoordinator]];
-//			[_dataMigrationManager migrateV1DataWithPassword:nil];
-//		}
 	} else {
 		[self dismissViewControllerAnimated:YES completion:NULL];
 	}

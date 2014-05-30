@@ -8,16 +8,17 @@
 
 #import "A3SettingsBackupRestoreViewController.h"
 #import "A3AppDelegate.h"
-#import "A3AppDelegate+iCloud.h"
 #import "A3SettingsDropboxSelectBackupViewController.h"
 #import "UIViewController+tableViewStandardDimension.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIViewController+A3Addition.h"
+#import "AAAZip.h"
+#import "NSString+conversion.h"
+#import "UIViewController+NumberKeyboard.h"
 #import <DropboxSDK/DropboxSDK.h>
 
 NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 
-@interface A3SettingsBackupRestoreViewController () <DBSessionDelegate, DBRestClientDelegate, A3SettingsDropboxSelectBackupDelegate>
+@interface A3SettingsBackupRestoreViewController () <DBSessionDelegate, DBRestClientDelegate, A3SettingsDropboxSelectBackupDelegate, AAAZipDelegate>
 
 @property (nonatomic, strong) DBRestClient *restClient;
 @property (nonatomic, strong) DBAccountInfo *dropboxAccountInfo;
@@ -30,6 +31,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 @implementation A3SettingsBackupRestoreViewController {
 	BOOL _dropboxLoginInProgress;
 	BOOL _selectBackupInProgress;
+	double _totalBytes;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -230,15 +232,35 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 }
 
 - (void)restClient:(DBRestClient *)client loadedFile:(NSString *)destPath {
-	[_HUD hide:YES];
-	_HUD = nil;
+	_HUD.labelText = @"Unarchiving";
+	AAAZip *zipArchive = [[AAAZip alloc] init];
+	zipArchive.delegate = self;
+	[zipArchive UnzipFile:destPath unzipFileto:[@"restore" pathInCachesDirectory]];
 }
 
 - (void)restClient:(DBRestClient *)client loadProgress:(CGFloat)progress forFile:(NSString *)destPath {
 	_HUD.progress = progress;
+	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(progress)];
 }
 
 - (void)restClient:(DBRestClient *)client loadFileFailedWithError:(NSError *)error {
+	[_HUD hide:YES];
+	_HUD = nil;
+}
+
+#pragma mark - AAAZip Delegate
+
+- (void)compressProgress:(float)currentByte total:(float)totalByte {
+	_HUD.progress = currentByte / totalByte;
+	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
+}
+
+- (void)decompressProgress:(float)currentByte total:(float)totalByte {
+	_HUD.progress = currentByte / totalByte;
+	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
+}
+
+- (void)completedProcess:(BOOL)bResult {
 	[_HUD hide:YES];
 	_HUD = nil;
 }
@@ -270,6 +292,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 		[fileManager removeItemAtPath:downloadFilePath error:nil];
 	}
 
+	_totalBytes = metadata.totalBytes;
 	[self.restClient loadFile:metadata.path intoPath:downloadFilePath];
 
 	self.HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];

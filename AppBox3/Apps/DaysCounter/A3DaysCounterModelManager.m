@@ -1042,7 +1042,7 @@
     
     [daysLabel sizeToFit];
 
-	bgImageView.image = item.photo;
+	bgImageView.image = [item photoInOriginalDirectory:YES];
 	FNLOG(@"%f", bgImageView.contentScaleFactor);
 
     for (NSLayoutConstraint *layout in toView.constraints) {

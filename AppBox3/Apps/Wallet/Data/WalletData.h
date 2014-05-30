@@ -8,26 +8,24 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const WalletFieldTypeText;
+extern NSString *const WalletFieldTypeNumber;
+extern NSString *const WalletFieldTypePhone;
+extern NSString *const WalletFieldTypeURL;
+extern NSString *const WalletFieldTypeEmail;
+extern NSString *const WalletFieldTypeDate;
+extern NSString *const WalletFieldTypeImage;
+extern NSString *const WalletFieldTypeVideo;
+
+extern NSString *const WalletFieldStyleNormal;
+extern NSString *const WalletFieldStylePassword;
+extern NSString *const WalletFieldStyleAccount;
+extern NSString *const WalletFieldStyleHidden;
+
+extern NSString *const WalletCategoryTypePhoto;
+extern NSString *const WalletCategoryTypeVideo;
+
 @interface WalletData : NSObject
-
-#define WalletFieldStyleNormal		@"Normal"
-#define WalletFieldStylePassword	@"Password"
-#define WalletFieldStyleAccount		@"Account"
-#define WalletFieldStyleHidden		@"Hidden"
-
-#define WalletFieldTypeText			@"Text"					//  Value
-#define WalletFieldTypeNumber		@"Number"
-#define WalletFieldTypePhone		@"Phone"
-#define WalletFieldTypeURL			@"URL"
-#define WalletFieldTypeEmail		@"Email"
-#define WalletFieldTypeDate			@"Date"
-#define WalletFieldTypeImage		@"Image"
-#define WalletFieldTypeVideo		@"Video"
-
-#define WalletCategoryTypePhoto		@"Photos"
-#define WalletCategoryTypeVideo		@"Video"
-
-#define kWalletImageFilePrefix		@"ABP_WALLET_PHOTO_IMAGE"
 
 + (NSArray *)typeList;
 + (NSDictionary *)styleList;

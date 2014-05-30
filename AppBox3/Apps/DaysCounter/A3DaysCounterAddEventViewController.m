@@ -83,7 +83,7 @@
         _isAdvancedCellOpen = [self hasAdvancedData];
         _isDurationInitialized = YES;
 
-		[_eventItem copyThumbnailImageToTemporaryDirectory];
+		[_eventItem copyImagesToTemporaryDirectory];
     }
     else {
 		_isAddingEvent = YES;
@@ -698,11 +698,11 @@
 - (void)photoTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType
 {
     UIButton *button = (UIButton*)[cell viewWithTag:11];
-	if (_eventItem.photo) {
+	if ([_eventItem.hasPhoto boolValue]) {
 		button.layer.cornerRadius = button.bounds.size.width / 2.0;
 		button.layer.masksToBounds = YES;
 		button.contentMode = UIViewContentModeScaleAspectFill;
-		[button setImage:[_eventItem thumbnailImageInTemporaryDirectory:YES] forState:UIControlStateNormal];
+		[button setImage:[_eventItem thumbnailImageInOriginalDirectory:NO] forState:UIControlStateNormal];
 	} else {
 		button.layer.masksToBounds = NO;
 		[button setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
@@ -1436,7 +1436,7 @@
     else {
         [_sharedManager modifyEvent:_eventItem];
     }
-	[_eventItem moveThumbnailImageToCachesDirectory];
+	[_eventItem moveImagesToOriginalDirectory];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
     
@@ -1479,7 +1479,7 @@
 {
     [self resignAllAction];
 
-	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:_eventItem.photo != nil delegate:self];
+	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_eventItem.hasPhoto boolValue] delegate:self];
 	actionSheet.tag = ActionTag_Photo;
 	[actionSheet showInView:self.view];
 }
@@ -2124,7 +2124,7 @@
 		if (buttonIndex == actionSheet.cancelButtonIndex) return;
 
 		if (buttonIndex == actionSheet.destructiveButtonIndex) {
-			_eventItem.photo = nil;
+			_eventItem.hasPhoto = @NO;
             [self.tableView reloadData];
 			return;
 		}
@@ -2292,9 +2292,9 @@
     if ( image == nil ) {
         image = [info objectForKey:UIImagePickerControllerOriginalImage];
     }
-    
-	_eventItem.photo = image;
-	[_eventItem saveThumbnailInTemporaryDirectory];
+
+	[_eventItem setPhoto:image inOriginalDirectory:NO];
+	[_eventItem saveThumbnailForImage:nil inOriginalDirectory:NO ];
 
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     if ( IS_IPHONE || picker.sourceType == UIImagePickerControllerSourceTypeCamera) {

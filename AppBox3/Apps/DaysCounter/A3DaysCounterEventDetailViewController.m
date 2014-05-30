@@ -346,7 +346,7 @@
 
 #pragma mark start of EventInfoCell
 
-- (void)updateEventInfoCell:(A3DaysCounterEventInfoCell *)cell withInfo:(DaysCounterEvent*)info
+- (void)updateEventInfoCell:(A3DaysCounterEventInfoCell *)cell withInfo:(DaysCounterEvent*)event
 {
     cell.favoriteStarImageView.image = [[UIImage imageNamed:@"star02_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     cell.favoriteStarImageView.tintColor = [A3AppDelegate instance].themeColor;
@@ -358,8 +358,8 @@
         cell.eventTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     }
     
-    if ( info.photo ) {
-        cell.eventPhotoImageView.image = info.photo ? [info thumbnailImageInTemporaryDirectory:NO] : nil;
+    if ([event.hasPhoto boolValue]) {
+        cell.eventPhotoImageView.image = [event thumbnailImageInOriginalDirectory:YES];
 		cell.eventPhotoImageView.layer.cornerRadius = cell.eventPhotoImageView.image.size.width / 2.0;
 		cell.eventPhotoImageView.layer.masksToBounds = YES;
 		cell.eventPhotoImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -370,9 +370,9 @@
         cell.titleLeftSpaceConst.constant = 0;
     }
 
-    cell.eventTitleLabel.text = info.eventName;
+    cell.eventTitleLabel.text = event.eventName;
     CGSize calculatedTitleSize = [cell.eventTitleLabel.text sizeWithAttributes:@{ NSFontAttributeName : cell.eventTitleLabel.font }];
-    CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - (info.favorite != nil ? 43 : 15) - (info.photo ? 73 : 0) - (IS_IPHONE ? 15 : 28);
+    CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - (event.favorite != nil ? 43 : 15) - ([event.hasPhoto boolValue] ? 73 : 0) - (IS_IPHONE ? 15 : 28);
 
     if (calculatedTitleSize.width > titleMaxWidth) {
         calculatedTitleSize = [cell.eventTitleLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
@@ -385,13 +385,13 @@
         cell.titleHeightConst.constant = calculatedTitleSize.height;
     }
 
-    cell.favoriteStarImageView.hidden = info.favorite == nil;
+    cell.favoriteStarImageView.hidden = event.favorite == nil;
     
-    if ( [info.repeatType integerValue] == RepeatType_Never ) {
-        [self updateEventInfoCellToNoRepeatEventInfo:info cell:cell];
+    if ( [event.repeatType integerValue] == RepeatType_Never ) {
+		[self updateEventInfoCellToNoRepeatEventInfo:event cell:cell];
     }
     else {
-        [self updateEventInfoCellToRepeatEventInfo:info cell:cell];
+		[self updateEventInfoCellToRepeatEventInfo:event cell:cell];
     }
 }
 
@@ -1476,7 +1476,7 @@ EXIT_FUCTION:
 
 			UIFont *titleFont = IS_IPHONE ? [UIFont boldSystemFontOfSize:17.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
 			CGSize calculatedTitleSize = [_eventItem.eventName sizeWithAttributes:@{ NSFontAttributeName : titleFont }];
-			CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - (_eventItem.favorite != nil ? 43 : 15) - (_eventItem.photo ? 73 : 0) - (IS_IPHONE ? 15 : 28);
+			CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - (_eventItem.favorite != nil ? 43 : 15) - ([_eventItem.hasPhoto boolValue] ? 73 : 0) - (IS_IPHONE ? 15 : 28);
 
 			if (calculatedTitleSize.width > titleMaxWidth) {
 ////                    UILabel *label = [[UILabel alloc] init];

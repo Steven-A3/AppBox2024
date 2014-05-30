@@ -14,6 +14,7 @@
 #import "SFKImage.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3DaysCounterModelManager.h"
+#import "A3DataMigrationManager.h"
 
 NSString *const A3UniqueIdentifier = @"uniqueIdentifier";
 NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
@@ -98,9 +99,8 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 - (void)ubiquityStoreManager:(UbiquityStoreManager *)manager didLoadStoreForCoordinator:(NSPersistentStoreCoordinator *)coordinator
 					 isCloud:(BOOL)isCloudStore {
 
-	FNLOG();
 	[self setPersistentStoreCoordinator:coordinator];
-	
+
 	SQLiteMagicalRecordStack *magicalRecordStack = [SQLiteMagicalRecordStack new];
 	magicalRecordStack.coordinator = coordinator;
 	magicalRecordStack.store = coordinator.persistentStores[0];
@@ -113,6 +113,14 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	[MagicalRecordStack setDefaultStack:magicalRecordStack];
 
 	self.coreDataReadyToUse = YES;
+
+//	dispatch_async(dispatch_get_main_queue(), ^{
+//		A3DataMigrationManager *_dataMigrationManager = [[A3DataMigrationManager alloc] initWithPersistentStoreCoordinator:coordinator];
+//		[_dataMigrationManager migrateV1DataWithPassword:nil];
+//		_dataMigrationManager = nil;
+//
+//		[self.managedObjectContext reset];
+//	});
 
 	if (isCloudStore) {
 		if (_needMigrateLocalDataToCloud) {

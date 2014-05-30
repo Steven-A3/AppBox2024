@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface A3DataMigrationManager : NSObject
-@property (nonatomic, strong) NSManagedObjectContext *migrationContext;
+
+@property (nonatomic, copy) NSString *migrationDirectory;
 
 - (instancetype)initWithPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)persistentStoreCoordinator;
-
 - (void)migrateV1DataWithPassword:(NSString *)password;
+
 @end

@@ -26,6 +26,7 @@
 @property (nonatomic, retain) NSDate * modificationDate;
 @property (nonatomic, retain) NSString * notes;
 @property (nonatomic, retain) UIImage *photo;
+@property (nonatomic, retain) NSNumber *hasPhoto;
 @property (nonatomic, retain) NSDate * repeatEndDate;
 @property (nonatomic, retain) NSNumber * repeatType;
 @property (nonatomic, retain) NSString * uniqueID;

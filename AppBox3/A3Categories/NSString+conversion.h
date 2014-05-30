@@ -15,8 +15,8 @@
 - (NSMutableString *)extendedSearchPatternForKoreanString;
 - (NSString *)componentsSeparatedByKorean;
 - (NSString *)pathInLibraryDirectory;
-
 - (NSString *)pathInCachesDirectory;
+- (NSString *)pathInTemporaryDirectory;
 
 - (NSString *)stringByTrimmingSpaceCharacters;
 

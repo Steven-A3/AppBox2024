@@ -192,6 +192,10 @@
 	return [[paths objectAtIndex:0] stringByAppendingPathComponent:self];
 }
 
+- (NSString *)pathInTemporaryDirectory {
+	return [NSTemporaryDirectory() stringByAppendingPathComponent:self];
+}
+
 - (NSString *)stringByTrimmingSpaceCharacters {
 	return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }

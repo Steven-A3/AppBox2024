@@ -12,6 +12,8 @@
 #import "UIImage+Resizing.h"
 #import "A3DaysCounterModelManager.h"
 
+NSString *const A3DaysCounterImageDirectory = @"DaysCounterImages";
+
 @implementation DaysCounterEvent (management)
 
 - (void)toggleFavorite {
@@ -25,62 +27,91 @@
 	}
 }
 
-- (UIImage *)thumbnailImageInTemporaryDirectory:(BOOL)temporary {
-	if (!self.photo) return nil;
-	return [UIImage imageWithContentsOfFile:[self thumbnailPathInTemporary:temporary]];
-}
-
-- (void)saveThumbnailInTemporaryDirectory {
-	NSString *thumbnailPathInTemporary = [self thumbnailPathInTemporary:YES];
-	CGSize size = CGSizeMake(64, 64);
-	UIImage *thumbnailImage = [self.photo scaleToCoverSize:size];
-	thumbnailImage = [thumbnailImage cropToSize:size usingMode:NYXCropModeCenter];
-	[UIImageJPEGRepresentation(thumbnailImage, 1.0) writeToFile:thumbnailPathInTemporary atomically:YES];
-}
-
-- (NSString *)thumbnailPathInTemporary:(BOOL)temporary {
-	NSString *directory;
-	if (temporary) {
-		directory = NSTemporaryDirectory();
+- (NSString *)photoPathInOriginalDirectory:(BOOL)inOriginalDirectory {
+	if (inOriginalDirectory) {
+		return [[NSString stringWithFormat:@"%@/%@", A3DaysCounterImageDirectory, self.uniqueID] pathInLibraryDirectory];
 	} else {
+		return [self.uniqueID pathInTemporaryDirectory];
+	}
+}
+
+- (UIImage *)photoInOriginalDirectory:(BOOL)inOriginalDirectory {
+	return [UIImage imageWithContentsOfFile:[self photoPathInOriginalDirectory:inOriginalDirectory]];
+}
+
+- (void)setPhoto:(UIImage *)image inOriginalDirectory:(BOOL)inOriginalDirectory {
+	[UIImageJPEGRepresentation(image, 1.0) writeToFile:[self photoPathInOriginalDirectory:inOriginalDirectory] atomically:YES];
+}
+
+- (UIImage *)thumbnailImageInOriginalDirectory:(BOOL)inOriginalDirectory {
+	if (![self.hasPhoto boolValue]) return nil;
+	return [UIImage imageWithContentsOfFile:[self thumbnailPathInOriginalDirectory:inOriginalDirectory]];
+}
+
+- (void)saveThumbnailForImage:(UIImage *)originalImage inOriginalDirectory:(BOOL)inOriginalDirectory {
+	NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:inOriginalDirectory];
+	CGSize size = CGSizeMake(64, 64);
+	UIImage *thumbnailImage = [originalImage scaleToCoverSize:size];
+	thumbnailImage = [thumbnailImage cropToSize:size usingMode:NYXCropModeCenter];
+	[UIImageJPEGRepresentation(thumbnailImage, 1.0) writeToFile:thumbnailPath atomically:YES];
+}
+
+- (NSString *)thumbnailPathInOriginalDirectory:(BOOL)inOriginalDirectory {
+	NSString *directory;
+	if (inOriginalDirectory) {
 		directory = [A3DaysCounterModelManager thumbnailDirectory];
+	} else {
+		directory = NSTemporaryDirectory();
 	}
 	NSString *imageThumbnail = [NSString stringWithFormat:@"%@-imageThumbnail", self.uniqueID];
 	return [directory stringByAppendingPathComponent:imageThumbnail];
 }
 
-- (void)copyThumbnailImageToTemporaryDirectory {
-	if (!self.photo) {
+- (void)copyImagesToTemporaryDirectory {
+	if (![self.hasPhoto boolValue]) {
 		return;
 	}
-	NSString *thumbnailPath = [self thumbnailPathInTemporary:NO];
-	NSString *thumbnailPathInTemp = [self thumbnailPathInTemporary:YES];
-	[[NSFileManager defaultManager] removeItemAtPath:thumbnailPathInTemp error:NULL];
-	[[NSFileManager defaultManager] copyItemAtPath:thumbnailPath toPath:thumbnailPathInTemp error:NULL];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+
+	NSString *photoPathInOriginalDirectory = [self photoPathInOriginalDirectory:YES];
+	NSString *photoPathInTemporaryDirectory = [self photoPathInOriginalDirectory:NO];
+	[fileManager removeItemAtPath:photoPathInTemporaryDirectory error:NULL];
+	[fileManager copyItemAtPath:photoPathInOriginalDirectory toPath:photoPathInTemporaryDirectory error:NULL];
+
+	NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:NO];
+	NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:YES];
+	[fileManager removeItemAtPath:thumbnailPathInTemp error:NULL];
+	[fileManager copyItemAtPath:thumbnailPath toPath:thumbnailPathInTemp error:NULL];
 }
 
-- (void)moveThumbnailImageToCachesDirectory {
-	if (!self.photo) {
+- (void)moveImagesToOriginalDirectory {
+	if (![self.hasPhoto boolValue]) {
 		[self deletePhoto];
 		return;
 	}
-	NSString *thumbnailPath = [self thumbnailPathInTemporary:NO];
-	NSString *thumbnailPathInTemp = [self thumbnailPathInTemporary:YES];
-	[[NSFileManager defaultManager] removeItemAtPath:thumbnailPath error:NULL];
-	[[NSFileManager defaultManager] moveItemAtPath:thumbnailPathInTemp toPath:thumbnailPath error:NULL];
-}
+	NSFileManager *fileManager = [NSFileManager defaultManager];
 
-- (void)deleteThumbnailImageInTemporary {
-	NSString *thumbnailPathInTemp = [self thumbnailPathInTemporary:YES];
-	[[NSFileManager defaultManager] removeItemAtPath:thumbnailPathInTemp error:NULL];
+	NSString *photoPathInOriginalDirectory = [self photoPathInOriginalDirectory:YES];
+	NSString *photoPathInTemporaryDirectory = [self photoPathInOriginalDirectory:NO];
+
+	[fileManager removeItemAtPath:photoPathInOriginalDirectory error:NULL];
+	[fileManager moveItemAtPath:photoPathInTemporaryDirectory toPath:photoPathInOriginalDirectory error:NULL];
+
+	NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:NO];
+	NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:YES];
+
+	[fileManager removeItemAtPath:thumbnailPath error:NULL];
+	[fileManager moveItemAtPath:thumbnailPathInTemp toPath:thumbnailPath error:NULL];
 }
 
 - (void)deletePhoto {
-	self.photo = nil;
-	NSString *thumbnailPath = [self thumbnailPathInTemporary:NO];
-	[[NSFileManager defaultManager] removeItemAtPath:thumbnailPath error:NULL];
+	self.hasPhoto = @NO;
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	[fileManager removeItemAtPath:[self photoPathInOriginalDirectory:YES] error:NULL];
+	[fileManager removeItemAtPath:[self photoPathInOriginalDirectory:NO] error:NULL];
 
-	[self deleteThumbnailImageInTemporary];
+	[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:YES] error:NULL];
+	[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:NO] error:NULL];
 }
 
 @end

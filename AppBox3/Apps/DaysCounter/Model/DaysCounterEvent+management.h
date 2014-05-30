@@ -12,13 +12,19 @@
 
 - (void)toggleFavorite;
 
-- (UIImage *)thumbnailImageInTemporaryDirectory:(BOOL)temporary;
+- (NSString *)photoPathInOriginalDirectory:(BOOL)inOriginalDirectory;
 
-- (void)saveThumbnailInTemporaryDirectory;
+- (UIImage *)photoInOriginalDirectory:(BOOL)inOriginalDirectory;
 
-- (void)copyThumbnailImageToTemporaryDirectory;
+- (void)setPhoto:(UIImage *)image inOriginalDirectory:(BOOL)inOriginalDirectory;
 
-- (void)moveThumbnailImageToCachesDirectory;
+- (UIImage *)thumbnailImageInOriginalDirectory:(BOOL)inOriginalDirectory;
+
+- (void)saveThumbnailForImage:(UIImage *)originalImage inOriginalDirectory:(BOOL)inOriginalDirectory;
+
+- (void)copyImagesToTemporaryDirectory;
+
+- (void)moveImagesToOriginalDirectory;
 
 - (void)deleteThumbnailImageInTemporary;
 

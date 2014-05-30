@@ -556,7 +556,7 @@
         markLabel.hidden = NO;
         
         // imageView
-        UIImage *image = item.photo ? [item thumbnailImageInTemporaryDirectory:NO] : nil;
+        UIImage *image = [item.hasPhoto boolValue] ? [item thumbnailImageInOriginalDirectory:YES] : nil;
         [self showImageViewOfCell:cell withImage:image];
         imageView.hidden = NO;
         

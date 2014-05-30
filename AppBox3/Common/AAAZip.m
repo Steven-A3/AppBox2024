@@ -309,8 +309,8 @@
 
 -(BOOL) OverWrite:(NSString*) file
 {
-	if( _delegate && [_delegate respondsToSelector:@selector(OverWriteOperation:)] )
-		return [_delegate OverWriteOperation:file];
+	if( _delegate && [_delegate respondsToSelector:@selector(overWriteOperation:)] )
+		return [_delegate overWriteOperation:file];
 	return YES;
 }
 
@@ -332,14 +332,14 @@
 #pragma mark  Added by SUN
 -(void)CompressProgress
 {
-    if( _delegate && [_delegate respondsToSelector:@selector(CompressProgress:Total:)])
-		[_delegate CompressProgress:currentByte Total:totalByte];
+    if( _delegate && [_delegate respondsToSelector:@selector(compressProgress:total:)])
+		[_delegate compressProgress:currentByte total:totalByte];
 }
 
 -(void) DecompressProgress
 {
-    if( _delegate && [_delegate respondsToSelector:@selector(DecompressProgress:Total:)])
-		[_delegate DecompressProgress:currentByte Total:totalByte];
+    if( _delegate && [_delegate respondsToSelector:@selector(decompressProgress:total:)])
+		[_delegate decompressProgress:currentByte total:totalByte];
 }
 
 -(void) CompletedProcessWithSuccess
@@ -347,9 +347,9 @@
 #ifdef TRACE_LOG
 	NSLog(@"%s", __FUNCTION__);
 #endif
-    if( _delegate && [_delegate respondsToSelector:@selector(CompletedProcess:)])
+    if( _delegate && [_delegate respondsToSelector:@selector(completedProcess:)])
     {
-		[_delegate CompletedProcess:TRUE];
+		[_delegate completedProcess:YES];
     }
 }
 
@@ -373,9 +373,9 @@
 		
 		return;
 	}
-    if( _delegate && [_delegate respondsToSelector:@selector(CompletedProcess:)])
+    if( _delegate && [_delegate respondsToSelector:@selector(completedProcess:)])
     {
-		[_delegate CompletedProcess:FALSE];
+		[_delegate completedProcess:FALSE];
     }
 }
 
