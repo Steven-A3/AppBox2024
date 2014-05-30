@@ -345,9 +345,17 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                         </textField>
+                                        <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RET-uw-eQo" userLabel="DetailLabel">
+                                            <rect key="frame" x="595" y="11" width="42" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="detailLabel" destination="RET-uw-eQo" id="5Eb-b0-BeJ"/>
                                     <outlet property="textField" destination="vZT-FI-RK3" id="qJb-Tn-Lpv"/>
                                     <outlet property="titleLabel" destination="XA0-MA-CbH" id="2oz-ax-XqU"/>
                                 </connections>
