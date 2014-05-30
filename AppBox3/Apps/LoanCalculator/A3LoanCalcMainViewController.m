@@ -803,11 +803,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     UILabel *adv = (UILabel *)[self.advancedTitleView viewWithTag:1234];
     UIView *bottomLine = [self.advancedTitleView viewWithTag:5678];
     if (self.loanData.showAdvanced) {
-        //adv.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
         adv.textColor = [A3AppDelegate instance].themeColor;
         bottomLine.hidden = YES;
     }
     else {
+        [_advItems removeObject:self.dateInputItem];
         adv.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
         bottomLine.hidden = NO;
     }
@@ -2974,7 +2974,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
         inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
         inputCell.titleLabel.text = _startDateItem[@"Title"];
-        
         inputCell.textField.font = [UIFont systemFontOfSize:17];
         inputCell.textField.delegate = self;
         inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"None"
