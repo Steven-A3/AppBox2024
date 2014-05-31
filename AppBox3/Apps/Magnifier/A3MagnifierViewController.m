@@ -462,6 +462,9 @@ static const int MAX_ZOOM_FACTOR = 6;
 	// Find out the current orientation and tell the still image output.
 	AVCaptureConnection *stillImageConnection = [stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
 	UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (IS_IPHONE) {
+        curDeviceOrientation = (UIInterfaceOrientation)[[UIDevice currentDevice] orientation];
+    }
 	AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation:curDeviceOrientation];
 	[stillImageConnection setVideoOrientation:avcaptureOrientation];
 	if (bLosslessZoom == NO) {

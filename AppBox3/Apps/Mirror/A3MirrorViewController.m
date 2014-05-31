@@ -1213,11 +1213,16 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 			{
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
 				CIImage *ciSaveImg = [[CIImage alloc] initWithData:imageData];
-				UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];;
+				UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+                if (IS_IPHONE) {
+                    orientation = (UIInterfaceOrientation)[[UIDevice currentDevice] orientation];
+                }
 
 
 				if (bFlip == YES) {
-					if(IS_LANDSCAPE) {
+					if(IS_LANDSCAPE||
+                       orientation == UIDeviceOrientationLandscapeRight||
+                       orientation == UIDeviceOrientationLandscapeLeft) {
 						CGAffineTransform f = CGAffineTransformMake(-1, 0, 0, 1, ciSaveImg.extent.size.width,0);
 						ciSaveImg = [ciSaveImg imageByApplyingTransform:f];
 					} else {
