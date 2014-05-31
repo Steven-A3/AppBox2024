@@ -694,7 +694,9 @@
             break;
     }
 }
+
 #pragma mark Cells
+
 - (void)photoTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType
 {
     UIButton *button = (UIButton*)[cell viewWithTag:11];
@@ -1743,6 +1745,7 @@
 }
 
 #pragma mark DatePicker
+
 - (void)dateChangeAction:(id)sender
 {
     [self resignAllAction];

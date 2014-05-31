@@ -302,11 +302,11 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     WalletFieldItem *fieldItem = _videoFieldItems[page];
 
 	if (fieldItem.video) {
-		CGFloat duration = [WalletData getDurationOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
+		CGFloat duration = [WalletData getDurationOfMovie:[fieldItem videoFilePathInOriginal:YES ]];
 		NSInteger dur = round(duration);
 		_metadataView.mediaSizeLabel.text = [NSString stringWithFormat:@"Duration Time %lds", (long)dur];
 
-		NSDate *createDate = [WalletData getCreateDateOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
+		NSDate *createDate = [WalletData getCreateDateOfMovie:[fieldItem videoFilePathInOriginal:YES ]];
 		if (createDate) {
 			_metadataView.takenDateLabel.text = [createDate timeAgo];
 		}
@@ -338,7 +338,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
             WalletFieldItem *videoFieldItem = _videoFieldItems[idx];
             UIImageView *photoImgView = [[UIImageView alloc] initWithFrame:CGRectMake(rectWidth* idx, 0, rectWidth, rectHeight)];
             photoImgView.contentMode = UIViewContentModeScaleAspectFill;
-            UIImage *photoImg = [UIImage imageWithContentsOfFile:[videoFieldItem videoThumbnailPathInTemporary:NO ]];
+            UIImage *photoImg = [UIImage imageWithContentsOfFile:[videoFieldItem videoThumbnailPathInOriginal:YES ]];
             photoImg = [photoImg imageByScalingProportionallyToMinimumSize:CGSizeMake(rectWidth*2, rectWidth*2)];
             photoImgView.image = photoImg;
             
@@ -379,7 +379,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 			photoImageView.layer.masksToBounds = YES;
 			photoImageView.contentMode = UIViewContentModeScaleAspectFill;
 			photoImageView.tag = idx;
-			UIImage *photoImg = [UIImage imageWithContentsOfFile:[photoFieldItem videoThumbnailPathInTemporary:NO]];
+			UIImage *photoImg = [UIImage imageWithContentsOfFile:[photoFieldItem videoThumbnailPathInOriginal:YES]];
 			photoImageView.image = photoImg;
 			photoImageView.userInteractionEnabled = YES;
 
@@ -460,7 +460,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     
     if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
         if (fieldItem.video) {
-			NSString *filePath = [fieldItem videoFilePathInTemporary:NO ];
+			NSString *filePath = [fieldItem videoFilePathInOriginal:YES ];
 			_moviePlayerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:filePath]];
 
 			// 재생후에 자동으로 닫히는 것 방지하고, 사용자가 닫을수있도록 함.
@@ -609,13 +609,13 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 				photoCell.valueTextField.text = @" ";
 				photoCell.photoButton.hidden = NO;
 
-				[self setImageToCell:photoCell imagePath:[fieldItem imageThumbnailPathInTemporary:NO ]];
+				[self setImageToCell:photoCell image:[fieldItem thumbnailImage]];
 				photoCell.photoButton.tag = indexPath.row;
 			} else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
 				photoCell.valueTextField.text = @" ";
 				photoCell.photoButton.hidden = NO;
 
-				[self setImageToCell:photoCell imagePath:[fieldItem videoThumbnailPathInTemporary:NO ]];
+				[self setImageToCell:photoCell image:[fieldItem thumbnailImage]];
 				photoCell.photoButton.tag = indexPath.row;
 			} else {
 				photoCell.valueTextField.text = @"None";
@@ -669,9 +669,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     return cell;
 }
 
-- (void)setImageToCell:(A3WalletItemPhotoFieldCell *)photoCell imagePath:(NSString *)path {
-	NSData *img = [NSData dataWithContentsOfFile:path];
-	UIImage *photo = [UIImage imageWithData:img];
+- (void)setImageToCell:(A3WalletItemPhotoFieldCell *)photoCell image:(UIImage *)photo {
 	photo = [photo imageByScalingProportionallyToSize:CGSizeMake(120, 120)];
 	[photoCell.photoButton setBackgroundImage:photo forState:UIControlStateNormal];
 	[photoCell.photoButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];

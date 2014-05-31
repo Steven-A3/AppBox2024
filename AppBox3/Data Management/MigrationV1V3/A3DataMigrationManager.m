@@ -32,6 +32,7 @@
 #import "DaysCounterCalendar.h"
 #import "DaysCounterFavorite.h"
 #import "DaysCounterEvent+management.h"
+#import "A3AppDelegate.h"
 
 NSString *const kKeyForDDayTitle 					= @"kKeyForDDayTitle";
 NSString *const kKeyForDDayDate						= @"kKeyForDDayDate";
@@ -108,28 +109,41 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 	[modelManager prepare];
 	[context reset];
 
-	DaysCounterCalendar *calendar = [DaysCounterCalendar MR_findFirstOrderedByAttribute:@"order" ascending:YES inContext:context];
+	DaysCounterCalendar *daysCounterCalendar = [DaysCounterCalendar MR_findFirstOrderedByAttribute:@"order" ascending:YES inContext:context];
 	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
 	for (NSDictionary *v1Item in V1DataArray) {
 		@autoreleasepool {
 			DaysCounterEvent *newEvent = [DaysCounterEvent MR_createInContext:context];
 			newEvent.uniqueID = [[NSUUID UUID] UUIDString];
-			newEvent.calendar = calendar;
+			newEvent.calendar = daysCounterCalendar;
 			newEvent.eventName = v1Item[kKeyForDDayTitle];
+			newEvent.isAllDay = @([v1Item[kKeyForDDayType] integerValue] == 0);
+			newEvent.durationOption = @(DurationOption_Day);
+
 			newEvent.startDate = [DaysCounterDate MR_createInContext:context];
 			newEvent.startDate.solarDate = v1Item[kKeyForDDayDate];
+			newEvent.effectiveStartDate = newEvent.startDate.solarDate;
+
+			NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:newEvent.startDate.solarDate];
+			newEvent.startDate.year = @(components.year);
+			newEvent.startDate.month = @(components.month);
+			newEvent.startDate.day = @(components.day);
+			newEvent.startDate.hour = @(components.hour);
+			newEvent.startDate.minute = @(components.minute);
 			NSDate *endDate = v1Item[kKeyForDDayEnds];
 			if (endDate) {
 				newEvent.endDate = [DaysCounterDate MR_createInContext:context];
 				newEvent.endDate.solarDate = endDate;
 			}
-			newEvent.isAllDay = @([v1Item[kKeyForDDayType] integerValue] == 1);
 			newEvent.repeatType = @([self repeatTypeForV1RepeatType:v1Item[kKeyForDDayRepeat]]);
 			NSString *filename = v1Item[kKeyForDDayImageFilename];
-			if ([filename length]) {
+			NSString *filePath = [self pathForFilename:filename];
+			if ([filename length] && [fileManager fileExistsAtPath:filePath] ) {
+				newEvent.hasPhoto = @YES;
 				NSString *photoPath = [newEvent photoPathInOriginalDirectory:YES];
 				[fileManager removeItemAtPath:photoPath error:NULL];
-				[fileManager moveItemAtPath:[self pathForFilename:filename] toPath:photoPath error:NULL];
+				[fileManager moveItemAtPath:filePath toPath:photoPath error:NULL];
 			}
 			newEvent.notes = v1Item[kKeyForDDayMemo];
 
@@ -267,6 +281,7 @@ NSString *const WalletFieldID				= @"WALLETFIELDID";		//	Key, string
 NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 
 - (BOOL)migrateWalletDataInContext:(NSManagedObjectContext *)context withPassword:(NSString *)password {
+	[WalletData createDirectories];
 	[WalletCategory resetWalletCategory];
 	[context reset];
 
@@ -297,6 +312,9 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 
 	NSArray *V1CategoryInfoArray = walletDictionary[KWalletTypeInfoArray];
 	FNLOG(@"%@", walletDictionary);
+
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+
 	for (NSDictionary *V1Category in V1CategoryInfoArray) {
 		@autoreleasepool {
 			NSString *V1CategoryID = V1Category[KWalletTypeID];
@@ -363,9 +381,12 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 								NSDictionary *V1FieldInfo = V1FieldInfoArray[fieldInfoIndex];
 								if ([V1FieldInfo[WalletFieldType] isEqualToString:WalletFieldTypeImage]) {
 									WalletFieldItemImage *itemImage = [WalletFieldItemImage MR_createInContext:context];
-
-									itemImage.image = [UIImage imageWithContentsOfFile:[self pathForFilename:valueDictionary[fieldID]]];
 									itemImage.fieldItem = V3FieldItem;
+
+									NSString *filePath = [V3FieldItem photoImagePathInOriginalDirectory:YES];
+									[fileManager removeItemAtPath:filePath error:NULL];
+									[fileManager moveItemAtPath:[self pathForFilename:valueDictionary[fieldID]] toPath:filePath error:NULL];
+
 								} else if ([V1FieldInfo[WalletFieldType] isEqualToString:WalletFieldTypeDate]) {
 									V3FieldItem.date = valueDictionary[fieldID];
 								} else {

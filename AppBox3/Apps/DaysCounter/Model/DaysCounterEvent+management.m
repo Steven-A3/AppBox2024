@@ -45,15 +45,25 @@ NSString *const A3DaysCounterImageDirectory = @"DaysCounterImages";
 
 - (UIImage *)thumbnailImageInOriginalDirectory:(BOOL)inOriginalDirectory {
 	if (![self.hasPhoto boolValue]) return nil;
+	NSString *filePath = [self thumbnailPathInOriginalDirectory:inOriginalDirectory];
+	if (inOriginalDirectory && ![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+		NSString *originalPath = [self photoPathInOriginalDirectory:YES];
+		if ([[NSFileManager defaultManager] fileExistsAtPath:originalPath]) {
+			UIImage *image = [UIImage imageWithContentsOfFile:originalPath];
+			return [self saveThumbnailForImage:image inOriginalDirectory:YES];
+		}
+	}
 	return [UIImage imageWithContentsOfFile:[self thumbnailPathInOriginalDirectory:inOriginalDirectory]];
 }
 
-- (void)saveThumbnailForImage:(UIImage *)originalImage inOriginalDirectory:(BOOL)inOriginalDirectory {
+- (UIImage *)saveThumbnailForImage:(UIImage *)originalImage inOriginalDirectory:(BOOL)inOriginalDirectory {
 	NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:inOriginalDirectory];
 	CGSize size = CGSizeMake(64, 64);
 	UIImage *thumbnailImage = [originalImage scaleToCoverSize:size];
 	thumbnailImage = [thumbnailImage cropToSize:size usingMode:NYXCropModeCenter];
 	[UIImageJPEGRepresentation(thumbnailImage, 1.0) writeToFile:thumbnailPath atomically:YES];
+
+	return thumbnailImage;
 }
 
 - (NSString *)thumbnailPathInOriginalDirectory:(BOOL)inOriginalDirectory {
@@ -78,8 +88,8 @@ NSString *const A3DaysCounterImageDirectory = @"DaysCounterImages";
 	[fileManager removeItemAtPath:photoPathInTemporaryDirectory error:NULL];
 	[fileManager copyItemAtPath:photoPathInOriginalDirectory toPath:photoPathInTemporaryDirectory error:NULL];
 
-	NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:NO];
-	NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:YES];
+	NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:YES];
+	NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:NO];
 	[fileManager removeItemAtPath:thumbnailPathInTemp error:NULL];
 	[fileManager copyItemAtPath:thumbnailPath toPath:thumbnailPathInTemp error:NULL];
 }
@@ -97,8 +107,8 @@ NSString *const A3DaysCounterImageDirectory = @"DaysCounterImages";
 	[fileManager removeItemAtPath:photoPathInOriginalDirectory error:NULL];
 	[fileManager moveItemAtPath:photoPathInTemporaryDirectory toPath:photoPathInOriginalDirectory error:NULL];
 
-	NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:NO];
-	NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:YES];
+	NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:YES];
+	NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:NO];
 
 	[fileManager removeItemAtPath:thumbnailPath error:NULL];
 	[fileManager moveItemAtPath:thumbnailPathInTemp toPath:thumbnailPath error:NULL];

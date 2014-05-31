@@ -35,4 +35,5 @@ extern NSString *const WalletCategoryTypeVideo;
 + (NSDate *)getCreateDateOfMovie:(NSString *)filePath;
 + (UIImage *)videoPreviewImageOfURL:(NSURL *)videoUrl;
 
++ (void)createDirectories;
 @end

@@ -245,8 +245,8 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		[videoCell resetThumbImages];
 		for (int i=0; i<showPhotoCount; i++) {
 			WalletFieldItem *fieldItem = photoPick[i];
-			UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem videoThumbnailPathInTemporary:NO ]];
-			float duration = [WalletData getDurationOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
+			UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem videoThumbnailPathInOriginal:YES ]];
+			float duration = [WalletData getDurationOfMovie:[fieldItem videoFilePathInOriginal:YES ]];
 			[videoCell addThumbImage:thumbImg withDuration:duration];
 		}
 
@@ -271,7 +271,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 
 		for (NSUInteger idx = 0; idx < showPhotoCount; idx++) {
 			WalletFieldItem *fieldItem = photoPick[idx];
-			UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem imageThumbnailPathInTemporary:NO ]];
+			UIImage *thumbImg = [fieldItem thumbnailImage];
 
 			[photoCell addThumbImage:thumbImg isVideo:NO ];
 		}
@@ -297,7 +297,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		[videoCell resetThumbImages];
 		for (NSUInteger idx =0; idx < showPhotoCount; idx++) {
 			WalletFieldItem *fieldItem = photoPick[idx];
-			UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem videoThumbnailPathInTemporary:NO ]];
+			UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem videoThumbnailPathInOriginal:YES ]];
 			[videoCell addThumbImage:thumbImg isVideo:YES ];
 		}
 

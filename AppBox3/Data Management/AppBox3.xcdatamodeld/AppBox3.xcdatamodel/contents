@@ -371,7 +371,6 @@
         <relationship name="walletItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletItem" inverseName="fieldItems" inverseEntity="WalletItem" syncable="YES"/>
     </entity>
     <entity name="WalletFieldItemImage" representedClassName="WalletFieldItemImage" syncable="YES">
-        <attribute name="image" attributeType="Transformable" valueTransformerName="A3ImageToDataTransformer" storedInTruthFile="YES" syncable="YES"/>
         <attribute name="metadata" optional="YES" attributeType="Binary" syncable="YES"/>
         <relationship name="fieldItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletFieldItem" inverseName="image" inverseEntity="WalletFieldItem" syncable="YES"/>
     </entity>
@@ -432,7 +431,7 @@
         <element name="WalletFavorite" positionX="-560" positionY="584" width="128" height="73"/>
         <element name="WalletField" positionX="-576" positionY="440" width="128" height="148"/>
         <element name="WalletFieldItem" positionX="-369" positionY="512" width="128" height="148"/>
-        <element name="WalletFieldItemImage" positionX="-594" positionY="-414" width="128" height="88"/>
+        <element name="WalletFieldItemImage" positionX="-594" positionY="-414" width="128" height="73"/>
         <element name="WalletFieldItemVideo" positionX="-605" positionY="-10" width="128" height="73"/>
         <element name="WalletItem" positionX="-585" positionY="677" width="128" height="165"/>
     </elements>

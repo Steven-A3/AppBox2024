@@ -203,7 +203,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 			if ([_fieldItems[i] isKindOfClass:[WalletFieldItem class]]) {
 				WalletFieldItem *fieldItem = _fieldItems[i];
 				if (fieldItem.image) {
-					MWPhoto *photo = [MWPhoto photoWithImage:fieldItem.image.image];
+					MWPhoto *photo = [MWPhoto photoWithImage:[fieldItem photoImageInOriginalDirectory:YES]];
 					[_albumPhotos addObject:photo];
 				}
 			}
@@ -224,7 +224,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	WalletFieldItem *fieldItem = _fieldItems[sender.tag];
 
 	if (fieldItem.video) {
-		MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:[fieldItem videoFilePathInTemporary:NO ]]];
+		MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:[fieldItem videoFilePathInOriginal:YES ]]];
 		[self presentViewController:pvc animated:YES completion:^{
 			[pvc.moviePlayer play];
 		}];

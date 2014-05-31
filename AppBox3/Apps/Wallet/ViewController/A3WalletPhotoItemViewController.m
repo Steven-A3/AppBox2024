@@ -239,7 +239,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         
         for (NSUInteger idx = 0; idx < self.photoFieldItems.count; idx++) {
             WalletFieldItem *fieldItem = _photoFieldItems[idx];
-            MWPhoto *photo = [MWPhoto photoWithImage:fieldItem.image.image];
+            MWPhoto *photo = [MWPhoto photoWithImage:[fieldItem photoImageInOriginalDirectory:YES]];
 			[_alBumPhotos addObject:photo];
         }
     }
@@ -408,7 +408,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
             UIImageView *photoImgView = [[UIImageView alloc] initWithFrame:CGRectMake(rectWidth* idx, 0, rectWidth, rectHeight)];
             photoImgView.contentMode = UIViewContentModeScaleAspectFill;
 
-			UIImage *photoImg = photoFieldItem.image.image;
+			UIImage *photoImg = [photoFieldItem photoImageInOriginalDirectory:YES];
 			photoImgView.image = [photoImg imageByScalingProportionallyToMinimumSize:CGSizeMake(rectWidth*2, rectWidth*2)];
 
             // photo cover

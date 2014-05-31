@@ -16,6 +16,7 @@
 #import "A3WalletCategoryInfoViewController.h"
 #import "A3WalletItemViewController.h"
 #import "WalletItem.h"
+#import "WalletData.h"
 
 // NSUserDefaults key values:
 NSString *kWallet_WhichTabPrefKey		= @"kWhichTab";     // which tab to select at launch
@@ -57,7 +58,9 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
             
             [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
         }
-        
+
+		[WalletData createDirectories];
+
         [self categories];
         
         [self setupTabBar];

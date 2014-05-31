@@ -8,13 +8,29 @@
 
 #import "WalletFieldItem.h"
 
+extern NSString *const A3WalletImageDirectory;
+extern NSString *const A3WalletVideoDirectory;
+extern NSString *const A3WalletImageThumbnailDirectory;
+extern NSString *const A3WalletVideoThumbnailDirectory;
+
 @interface WalletFieldItem (initialize)
 
-- (NSString *)imageThumbnailPathInTemporary:(BOOL)temporary;
+- (NSString *)photoImagePathInOriginalDirectory:(BOOL)inOriginalDirectory;
 
-- (NSString *)videoThumbnailPathInTemporary:(BOOL)temporary;
+- (UIImage *)photoImageInOriginalDirectory:(BOOL)inOriginalDirectory;
 
-- (NSString *)videoFilePathInTemporary:(BOOL)temporary;
+- (void)setPhotoImage:(UIImage *)image inOriginalDirectory:(BOOL)inOriginalDirectory;
+
+- (NSString *)photoImageThumbnailPathInOriginal:(BOOL)original;
+
+- (UIImage *)makePhotoImageThumbnailWithImage:(UIImage *)originalImage inOriginalDirectory:(BOOL)inOriginalDirectory;
+
+- (NSString *)videoThumbnailPathInOriginal:(BOOL)inOriginal;
+- (NSString *)videoFilePathInOriginal:(BOOL)inOriginal;
+
+- (UIImage *)makeVideoThumbnailWithImage:(UIImage *)originalImage inOriginalDirectory:(BOOL)inOriginalDirectory;
 
 - (UIImage *)thumbnailImage;
+
+- (void)extractMetadata;
 @end

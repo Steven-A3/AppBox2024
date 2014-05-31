@@ -114,13 +114,16 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 
 	self.coreDataReadyToUse = YES;
 
-//	dispatch_async(dispatch_get_main_queue(), ^{
-//		A3DataMigrationManager *_dataMigrationManager = [[A3DataMigrationManager alloc] initWithPersistentStoreCoordinator:coordinator];
-//		[_dataMigrationManager migrateV1DataWithPassword:nil];
-//		_dataMigrationManager = nil;
-//
-//		[self.managedObjectContext reset];
-//	});
+	if ([self shouldMigrateV1Data])
+	{
+		dispatch_async(dispatch_get_main_queue(), ^{
+			A3DataMigrationManager *_dataMigrationManager = [[A3DataMigrationManager alloc] initWithPersistentStoreCoordinator:coordinator];
+			[_dataMigrationManager migrateV1DataWithPassword:nil];
+			_dataMigrationManager = nil;
+
+			[self.managedObjectContext reset];
+		});
+	}
 
 	if (isCloudStore) {
 		if (_needMigrateLocalDataToCloud) {

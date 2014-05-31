@@ -2,7 +2,7 @@
 //  WalletFieldItem.h
 //  AppBox3
 //
-//  Created by A3 on 4/22/14.
+//  Created by A3 on 5/31/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -17,8 +17,8 @@
 @property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSString * value;
 @property (nonatomic, retain) WalletField *field;
-@property (nonatomic, retain) WalletItem *walletItem;
 @property (nonatomic, retain) WalletFieldItemImage *image;
 @property (nonatomic, retain) WalletFieldItemVideo *video;
+@property (nonatomic, retain) WalletItem *walletItem;
 
 @end

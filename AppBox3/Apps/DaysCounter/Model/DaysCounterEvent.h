@@ -2,7 +2,7 @@
 //  DaysCounterEvent.h
 //  AppBox3
 //
-//  Created by A3 on 5/26/14.
+//  Created by A3 on 5/30/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -25,8 +25,7 @@
 @property (nonatomic, retain) NSNumber * isPeriod;
 @property (nonatomic, retain) NSDate * modificationDate;
 @property (nonatomic, retain) NSString * notes;
-@property (nonatomic, retain) UIImage *photo;
-@property (nonatomic, retain) NSNumber *hasPhoto;
+@property (nonatomic, retain) NSNumber * hasPhoto;
 @property (nonatomic, retain) NSDate * repeatEndDate;
 @property (nonatomic, retain) NSNumber * repeatType;
 @property (nonatomic, retain) NSString * uniqueID;

@@ -26,6 +26,7 @@
 #import "A3AppDelegate.h"
 #import "DaysCounterFavorite.h"
 #import "DaysCounterEvent+management.h"
+#import "NSString+conversion.h"
 
 //#define DEFAULT_CALENDAR_COLOR      [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0]
 #define DEFAULT_CALENDAR_COLOR        [self.calendarColorArray[6] objectForKey:CalendarItem_Color]
@@ -127,8 +128,12 @@
 - (void)prepare
 {
     if ( ![[NSFileManager defaultManager] fileExistsAtPath:[A3DaysCounterModelManager thumbnailDirectory]] ) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:[A3DaysCounterModelManager thumbnailDirectory] withIntermediateDirectories:YES attributes:nil error:nil];
+        [[NSFileManager defaultManager] createDirectoryAtPath:[A3DaysCounterModelManager thumbnailDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
     }
+	NSString *imageDirectory = [A3DaysCounterImageDirectory pathInLibraryDirectory];
+	if (![[NSFileManager defaultManager] fileExistsAtPath:imageDirectory]) {
+		[[NSFileManager defaultManager] createDirectoryAtPath:imageDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
+	}
 
     self.calendarColorArray = [NSMutableArray array];
     [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0], CalendarItem_Name : @"Red" }];
@@ -607,7 +612,7 @@
 
 - (NSInteger)numberOfEventContainedImage
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == YES && photo != NULL"]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == YES && hasPhoto == YES"]];
 }
 
 - (NSDate*)dateOfLatestEvent
@@ -645,7 +650,7 @@
 
 - (NSArray*)allEventsListContainedImage
 {
-    return [DaysCounterEvent MR_findAllSortedBy:@"effectiveStartDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == YES && photo != NULL"]];
+    return [DaysCounterEvent MR_findAllSortedBy:@"effectiveStartDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == YES && hasPhoto == YES"]];
 }
 
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date

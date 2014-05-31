@@ -8,25 +8,18 @@
 
 #import "DaysCounterEvent.h"
 
+extern NSString *const A3DaysCounterImageDirectory;
+
 @interface DaysCounterEvent (management)
 
 - (void)toggleFavorite;
-
 - (NSString *)photoPathInOriginalDirectory:(BOOL)inOriginalDirectory;
-
 - (UIImage *)photoInOriginalDirectory:(BOOL)inOriginalDirectory;
-
 - (void)setPhoto:(UIImage *)image inOriginalDirectory:(BOOL)inOriginalDirectory;
-
 - (UIImage *)thumbnailImageInOriginalDirectory:(BOOL)inOriginalDirectory;
-
-- (void)saveThumbnailForImage:(UIImage *)originalImage inOriginalDirectory:(BOOL)inOriginalDirectory;
-
+- (UIImage *)saveThumbnailForImage:(UIImage *)originalImage inOriginalDirectory:(BOOL)inOriginalDirectory;
 - (void)copyImagesToTemporaryDirectory;
-
 - (void)moveImagesToOriginalDirectory;
-
-- (void)deleteThumbnailImageInTemporary;
-
 - (void)deletePhoto;
+
 @end

@@ -7,6 +7,8 @@
 //
 
 #import "WalletData.h"
+#import "WalletFieldItem+initialize.h"
+#import "NSString+conversion.h"
 #import <AVFoundation/AVFoundation.h>
 
 NSString *const WalletFieldTypeText			= @"Text";
@@ -91,6 +93,26 @@ NSString *const WalletCategoryTypeVideo		= @"Video";
     UIImage *FrameImage= [[UIImage alloc] initWithCGImage:refImg];
     
     return FrameImage;
+}
+
++ (void)createDirectories {
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+
+	NSString *imagePath = [A3WalletImageDirectory pathInLibraryDirectory];
+	if (![fileManager fileExistsAtPath:imagePath])
+		[fileManager createDirectoryAtPath:imagePath withIntermediateDirectories:YES attributes:nil error:NULL];
+
+	NSString *videoPath = [A3WalletVideoDirectory pathInLibraryDirectory];
+	if (![fileManager fileExistsAtPath:videoPath])
+		[fileManager createDirectoryAtPath:videoPath withIntermediateDirectories:YES attributes:nil error:NULL];
+
+	NSString *imageThumbnailDirectory = [A3WalletImageThumbnailDirectory pathInCachesDirectory];
+	if (![fileManager fileExistsAtPath:imageThumbnailDirectory])
+		[fileManager createDirectoryAtPath:imageThumbnailDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
+
+	NSString *videoThumbnailDirectory = [A3WalletVideoThumbnailDirectory pathInCachesDirectory];
+	if (![fileManager fileExistsAtPath:videoThumbnailDirectory])
+		[fileManager createDirectoryAtPath:videoThumbnailDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
 }
 
 @end

@@ -178,14 +178,14 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	for (WalletFieldItem *fieldItem in _item.fieldItems) {
 		if (fieldItem.image) {
-			NSString *thumbnailImagePath = [fieldItem imageThumbnailPathInTemporary:NO];
-			NSString *thumbnailImageInTemp = [fieldItem imageThumbnailPathInTemporary:YES];
+			NSString *thumbnailImagePath = [fieldItem photoImageThumbnailPathInOriginal:YES];
+			NSString *thumbnailImageInTemp = [fieldItem photoImageThumbnailPathInOriginal:NO];
 			[fileManager copyItemAtPath:thumbnailImagePath toPath:thumbnailImageInTemp error:NULL];
 			continue;
 		}
 		if (fieldItem.video) {
-			NSString *thumbnailImagePath = [fieldItem videoThumbnailPathInTemporary:NO];
-			NSString *thumbnailImageInTemp = [fieldItem videoThumbnailPathInTemporary:YES];
+			NSString *thumbnailImagePath = [fieldItem videoThumbnailPathInOriginal:YES];
+			NSString *thumbnailImageInTemp = [fieldItem videoThumbnailPathInOriginal:NO];
 			[fileManager copyItemAtPath:thumbnailImagePath toPath:thumbnailImageInTemp error:NULL];
 			continue;
 		}
@@ -195,29 +195,45 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (void)moveMediaFilesToNormalPath {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	for (WalletFieldItem *fieldItem in _item.fieldItems) {
-		if (fieldItem.image) {
-			NSString *thumbnailImageInTemp = [fieldItem imageThumbnailPathInTemporary:YES];
-			if (![fileManager fileExistsAtPath:thumbnailImageInTemp]) continue;
-
-			NSString *thumbnailImagePath = [fieldItem imageThumbnailPathInTemporary:NO];
-			[fileManager removeItemAtPath:thumbnailImagePath error:NULL];
-			[fileManager moveItemAtPath:thumbnailImageInTemp toPath:thumbnailImagePath error:NULL];
+		if (![fieldItem.field.type isEqualToString:WalletFieldTypeImage] && ![fieldItem.field.type isEqualToString:WalletFieldTypeVideo])
 			continue;
-		}
-		if (fieldItem.video) {
-			NSString *videoFilePathInTemp = [fieldItem videoFilePathInTemporary:YES];
 
-			if (![fileManager fileExistsAtPath:videoFilePathInTemp]) continue;
+		if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
+			NSString *photoImagePathInOriginalDirectory = [fieldItem photoImagePathInOriginalDirectory:YES];
+			NSString *photoImagePathInTempDirectory = [fieldItem photoImagePathInOriginalDirectory:NO];
+			NSString *thumbnailImagePath = [fieldItem photoImageThumbnailPathInOriginal:YES];
+			NSString *thumbnailImageInTemp = [fieldItem photoImageThumbnailPathInOriginal:NO];
+			if (fieldItem.image) {
+				[fileManager removeItemAtPath:photoImagePathInOriginalDirectory error:NULL];
+				[fileManager moveItemAtPath:photoImagePathInTempDirectory toPath:photoImagePathInOriginalDirectory error:NULL];
 
-			NSString *thumbnailImagePath = [fieldItem videoThumbnailPathInTemporary:NO];
-			NSString *thumbnailImageInTemp = [fieldItem videoThumbnailPathInTemporary:YES];
-			[fileManager removeItemAtPath:thumbnailImagePath error:NULL];
-			[fileManager moveItemAtPath:thumbnailImageInTemp toPath:thumbnailImagePath error:NULL];
+				[fileManager removeItemAtPath:thumbnailImagePath error:NULL];
+				[fileManager moveItemAtPath:thumbnailImageInTemp toPath:thumbnailImagePath error:NULL];
+			} else {
+				[fileManager removeItemAtPath:photoImagePathInOriginalDirectory error:NULL];
+				[fileManager removeItemAtPath:photoImagePathInTempDirectory error:NULL];
 
-			NSString *videoFilePath = [fieldItem videoFilePathInTemporary:NO];
-			[fileManager removeItemAtPath:videoFilePath error:NULL];
-			[fileManager moveItemAtPath:videoFilePathInTemp toPath:videoFilePath error:NULL];
-			continue;
+				[fileManager removeItemAtPath:thumbnailImagePath error:NULL];
+				[fileManager removeItemAtPath:thumbnailImageInTemp error:NULL];
+			}
+		} else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+			NSString *videoFilePath = [fieldItem videoFilePathInOriginal:YES];
+			NSString *videoFilePathInTemp = [fieldItem videoFilePathInOriginal:NO];
+			NSString *thumbnailImagePath = [fieldItem videoThumbnailPathInOriginal:YES];
+			NSString *thumbnailImageInTemp = [fieldItem videoThumbnailPathInOriginal:NO];
+			if (fieldItem.video) {
+				[fileManager removeItemAtPath:videoFilePath error:NULL];
+				[fileManager moveItemAtPath:videoFilePathInTemp toPath:videoFilePath error:NULL];
+
+				[fileManager removeItemAtPath:thumbnailImagePath error:NULL];
+				[fileManager moveItemAtPath:thumbnailImageInTemp toPath:thumbnailImagePath error:NULL];
+			} else {
+				[fileManager removeItemAtPath:videoFilePath error:NULL];
+				[fileManager removeItemAtPath:videoFilePathInTemp error:NULL];
+
+				[fileManager removeItemAtPath:thumbnailImagePath error:NULL];
+				[fileManager removeItemAtPath:thumbnailImageInTemp error:NULL];
+			}
 		}
 	}
 }
@@ -226,14 +242,14 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	for (WalletFieldItem *fieldItem in _item.fieldItems) {
 		if (fieldItem.image) {
-			NSString *thumbnailImagePathInTemp = [fieldItem imageThumbnailPathInTemporary:YES];
+			NSString *thumbnailImagePathInTemp = [fieldItem photoImageThumbnailPathInOriginal:NO];
 			[fileManager removeItemAtPath:thumbnailImagePathInTemp error:NULL];
 			continue;
 		}
 		if (fieldItem.video) {
-			NSString *thumbnailImagePathInTemp = [fieldItem videoThumbnailPathInTemporary:YES];
+			NSString *thumbnailImagePathInTemp = [fieldItem videoThumbnailPathInOriginal:NO];
 			[fileManager removeItemAtPath:thumbnailImagePathInTemp error:NULL];
-			NSString *videoFilePathInTemp = [fieldItem videoFilePathInTemporary:YES];
+			NSString *videoFilePathInTemp = [fieldItem videoFilePathInOriginal:NO];
 			[fileManager removeItemAtPath:videoFilePathInTemp error:NULL];
 		}
 	}
@@ -463,9 +479,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	if ([self.sectionItems[_currentIndexPath.row] isKindOfClass:[WalletFieldItem class]]) {
 		WalletFieldItem *fieldItem = _sectionItems[_currentIndexPath.row];
 		if (fieldItem.image) {
-			[[NSFileManager defaultManager] removeItemAtPath:[fieldItem imageThumbnailPathInTemporary:YES] error:NULL];
+			[[NSFileManager defaultManager] removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO] error:NULL];
 		} else {
-			[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoThumbnailPathInTemporary:YES] error:NULL];
+			[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO] error:NULL];
 		}
 		[fieldItem MR_deleteEntity];
 
@@ -475,12 +491,12 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		WalletFieldItem *fieldItem = [self fieldItemForIndexPath:_currentIndexPath create:NO];
 		if (fieldItem) {
 			if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
-				[[NSFileManager defaultManager] removeItemAtPath:[fieldItem imageThumbnailPathInTemporary:YES ] error:NULL];
+				[[NSFileManager defaultManager] removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO ] error:NULL];
 				[fieldItem.image MR_deleteEntity];
 				fieldItem.image = nil;
 			} else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-				[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoFilePathInTemporary:YES ] error:NULL];
-				[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoThumbnailPathInTemporary:YES ] error:NULL];
+				[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoFilePathInOriginal:NO ] error:NULL];
+				[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO ] error:NULL];
 				[fieldItem.video MR_deleteEntity];
 				fieldItem.video = nil;
 			}
@@ -762,16 +778,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     CFRelease(source);
 }
 
-- (void)saveImage:(UIImage *)image withFilePath:(NSString *)imagePath
-{
-    NSError *error;
-	[[NSFileManager defaultManager] removeItemAtPath:imagePath error:NULL];
-    [UIImageJPEGRepresentation(image, 1.0) writeToFile:imagePath options:NSAtomicWrite error:&error];
-    if (error) {
-        FNLOG(@"%@", [error description]);
-    }
-}
-
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)imageEditInfo {
 	if (IS_IPAD && self.popOverController) {
 		[self.popOverController dismissPopoverAnimated:YES];
@@ -789,14 +795,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			_currentFieldItem.video = [WalletFieldItemVideo MR_createEntity];
 		}
 		_currentFieldItem.video.extension = movieURL.pathExtension;
-		NSURL *destinationMovieURL = [NSURL fileURLWithPath:[_currentFieldItem videoFilePathInTemporary:YES ]];
+		NSURL *destinationMovieURL = [NSURL fileURLWithPath:[_currentFieldItem videoFilePathInOriginal:NO ]];
 		[[NSFileManager defaultManager] moveItemAtURL:movieURL toURL:destinationMovieURL error:NULL];
 
 		UIImage *originalImage = [WalletData videoPreviewImageOfURL:destinationMovieURL];
-		CGSize boundsSize = CGSizeMake(160, 160);
-		UIImage *thumbImage = [originalImage imageByScalingProportionallyToMinimumSize:boundsSize];
-		[self saveImage:thumbImage withFilePath:[_currentFieldItem videoThumbnailPathInTemporary:YES ]];
-
+		[_currentFieldItem makeVideoThumbnailWithImage:originalImage inOriginalDirectory:NO];
 	}
 	else {
 		FNLOG(@"%@", imageEditInfo);
@@ -808,11 +811,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		if (!_currentFieldItem.image) {
 			_currentFieldItem.image = [WalletFieldItemImage MR_createEntity];
 		}
-		_currentFieldItem.image.image = originalImage;
-		CGSize boundsSize = CGSizeMake(160, 160);
-		UIImage *thumbImage = [originalImage imageByScalingProportionallyToMinimumSize:boundsSize];
-		NSString *thumbFilePath = [_currentFieldItem imageThumbnailPathInTemporary:YES ];
-		[self saveImage:thumbImage withFilePath:thumbFilePath];
+		[_currentFieldItem setPhotoImage:originalImage inOriginalDirectory:NO];
+		[_currentFieldItem makePhotoImageThumbnailWithImage:originalImage inOriginalDirectory:NO];
 
 		NSURL *referenceURL = [imageEditInfo objectForKey:UIImagePickerControllerReferenceURL];
 		if (referenceURL) {
@@ -1431,7 +1431,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		photoCell.valueTextField.text = @" ";
 		photoCell.photoButton.hidden = NO;
 
-		NSString *thumbFilePath = [fieldItem videoThumbnailPathInTemporary:YES ];
+		NSString *thumbFilePath = [fieldItem videoThumbnailPathInOriginal:NO ];
 		NSData *img = [NSData dataWithContentsOfFile:thumbFilePath];
 		UIImage *photo = [UIImage imageWithData:img];
 		photo = [photo imageByScalingProportionallyToSize:CGSizeMake(120, 120)];
@@ -1468,7 +1468,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		photoCell.valueTextField.text = @" ";
 		photoCell.photoButton.hidden = NO;
 
-		NSString *thumbFilePath = [fieldItem imageThumbnailPathInTemporary:YES ];
+		NSString *thumbFilePath = [fieldItem photoImageThumbnailPathInOriginal:NO ];
 		NSData *img = [NSData dataWithContentsOfFile:thumbFilePath];
 		UIImage *photo = [UIImage imageWithData:img];
 		photo = [photo imageByScalingProportionallyToSize:CGSizeMake(120, 120)];
