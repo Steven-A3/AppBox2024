@@ -32,5 +32,4 @@ extern NSString *const A3WalletVideoThumbnailDirectory;
 
 - (UIImage *)thumbnailImage;
 
-- (void)extractMetadata;
 @end

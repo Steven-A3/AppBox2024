@@ -132,21 +132,4 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 	return nil;
 }
 
-- (void)extractMetadata {
-	NSString *imageFilePath = [self photoImagePathInOriginalDirectory:YES];
-	NSURL *myURL = [NSURL fileURLWithPath:imageFilePath];
-	CGImageSourceRef mySourceRef = CGImageSourceCreateWithURL((__bridge CFURLRef)myURL, NULL);
-	NSDictionary *myMetadata = (__bridge NSDictionary *) CGImageSourceCopyPropertiesAtIndex(mySourceRef, 0, NULL);
-	NSDictionary *exifDic = [myMetadata objectForKey:(NSString *)kCGImagePropertyExifDictionary];
-	NSDictionary *tiffDic = [myMetadata objectForKey:(NSString *)kCGImagePropertyTIFFDictionary];
-	NSLog(@"exifDic properties: %@", myMetadata); //all data
-	NSLog(@"%@", exifDic);
-	NSLog(@"Camera %@",[tiffDic objectForKey:(NSString *)kCGImagePropertyTIFFModel]);
-	NSLog(@"Focal Length %@mm",[exifDic objectForKey:(NSString *)kCGImagePropertyExifFocalLength]);
-	NSLog(@"Aperture f/%@",[exifDic objectForKey:(NSString *)kCGImagePropertyExifFNumber]);
-	NSNumber *ExifISOSpeed  = [[exifDic objectForKey:(NSString*)kCGImagePropertyExifISOSpeedRatings] objectAtIndex:0];
-	NSLog(@"ISO %i",[ExifISOSpeed integerValue]);
-	NSLog(@"Taken %@",[exifDic objectForKey:(NSString*)kCGImagePropertyExifDateTimeDigitized]);
-}
-
 @end
