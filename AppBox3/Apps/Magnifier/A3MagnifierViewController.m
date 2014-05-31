@@ -37,7 +37,8 @@ static const int MAX_ZOOM_FACTOR = 6;
     BOOL                        bLightOn;
     BOOL                        bLosslessZoom;
     CGFloat                     beginGestureScale;
-        FrameRateCalculator *frameCaculator;
+    CGPoint                     centerxy;
+    FrameRateCalculator *frameCaculator;
 }
 
 @property (nonatomic, strong) ALAssetsLibrary *assetLibrary;
@@ -127,9 +128,11 @@ static const int MAX_ZOOM_FACTOR = 6;
         previewLayer.transform = CGAffineTransformMakeRotation(M_PI_2);
     }
     
+
     if (effectiveScale <= 1) {
         previewLayer.frame = screenBounds;
     }
+
 }
 
 - (void)viewWillLayoutSubviews {
@@ -829,6 +832,10 @@ static const int MAX_ZOOM_FACTOR = 6;
     {
         [UIView setAnimationsEnabled:NO];
     }
+    if (bLosslessZoom == YES) {
+        centerxy.x = previewLayer.center.y;
+        centerxy.y = previewLayer.center.x;
+    }
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -839,6 +846,14 @@ static const int MAX_ZOOM_FACTOR = 6;
         [UIView setAnimationDuration:0.75];
         [UIView commitAnimations];
     }
+    if (bLosslessZoom == YES) {
+        previewLayer.center = centerxy;
+    }
+    
+    CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+    [self setPreviewRotation:screenBounds];
+    
+
 }
 #pragma mark - set image icon
 - (void) setImageOnCameraRollButton:(UIImage *)image {
