@@ -502,16 +502,14 @@ static const int MAX_ZOOM_FACTOR = 6;
 														  } else {
 															  t = CGAffineTransformMakeRotation(0);
 														  }
-
-														  CGImageRef cgimgRef = [_ciContext createCGImage:ciSaveImg fromRect:[ciSaveImg extent]];
-
-
-														  ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-														  [library writeImageToSavedPhotosAlbum:cgimgRef metadata:[ciSaveImg properties]/*CFBridgingRelease(attachments)*/ completionBlock:^(NSURL *assetURL, NSError *error) {
+                                                          
+                                                          ciSaveImg = [ciSaveImg imageByApplyingTransform:t];
+                                                          CGImageRef cgimg = [_ciContext createCGImage:ciSaveImg fromRect:[ciSaveImg extent]];
+                                                          [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:cgimg metadata:[ciimg properties] completionBlock:^(NSURL *assetURL, NSError *error) {
 															  if (error) {
 																  [self displayErrorOnMainQueue:error withMessage:@"Save to camera roll failed"];
 															  } else {
-																  [self setImageOnCameraRollButton:[UIImage imageWithCIImage:[ciSaveImg imageByApplyingTransform:t]]];
+																  [self setImageOnCameraRollButton:[UIImage imageWithCGImage:cgimg]];
 															  }
 														  }];
 
