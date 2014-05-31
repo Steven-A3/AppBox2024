@@ -1084,9 +1084,10 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     {
         if (bLosslessZoom == YES) {
             [self currentFilterView].center = centerxy;
+            
         }
-        /*
-        	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+        
+        CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
         if (bMultipleView == YES) {
             [self setViewRotation:_videoPreviewViewMonoFilter];
             [self setViewRotation:_videoPreviewViewTonalFilter];
@@ -1101,7 +1102,6 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
         else {
             [self setFilterViewRotation:[self currentFilterView] withScreenBounds:screenBounds];
         }
-         */
     }
 }
 

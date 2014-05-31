@@ -832,9 +832,10 @@ static const int MAX_ZOOM_FACTOR = 6;
     {
         [UIView setAnimationsEnabled:NO];
     }
-
-    centerxy.x = previewLayer.center.y;
-    centerxy.y = previewLayer.center.x;
+    if (bLosslessZoom == YES) {
+        centerxy.x = previewLayer.center.y;
+        centerxy.y = previewLayer.center.x;
+    }
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -845,7 +846,13 @@ static const int MAX_ZOOM_FACTOR = 6;
         [UIView setAnimationDuration:0.75];
         [UIView commitAnimations];
     }
-    previewLayer.center = centerxy;
+    if (bLosslessZoom == YES) {
+        previewLayer.center = centerxy;
+    }
+    
+    CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+    [self setPreviewRotation:screenBounds];
+    
 
 }
 #pragma mark - set image icon
