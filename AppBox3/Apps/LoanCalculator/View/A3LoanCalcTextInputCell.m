@@ -26,6 +26,15 @@
     // Configure the view for the selected state
 }
 
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    CGRect frame = _detailLabel.frame;
+    frame.origin.x = CGRectGetWidth(self.contentView.frame) - (frame.size.width + 15);
+    _detailLabel.frame = frame;
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
