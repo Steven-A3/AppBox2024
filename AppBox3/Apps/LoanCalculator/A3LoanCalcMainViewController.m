@@ -399,7 +399,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         // KJH
         UIBarButtonItem *composeItem = self.navigationItem.rightBarButtonItems[2];
         if (_isComparisonMode) {
-            composeItem.enabled = [_loanDataA calculated] && [_loanDataB calculated]  ? YES : NO;
+            composeItem.enabled = [_loanDataA calculated] && [_loanDataB calculated] ? YES : NO;
         }
         else {
             composeItem.enabled = [self.loanData calculated] ? YES : NO;
@@ -1179,16 +1179,16 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:@"<html><body>I'd like to share a calculation with you.<br/><br/>"];
+		[txt appendString:@"<html><body>I'd like to share a calculation with you.<br><br>"];
 		[txt appendString:[self shareStringForMail]];
-		[txt appendString:@"<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>"];
+		[txt appendString:@"<br><br>You can calculator more in the AppBox Pro.<br><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>"];
 		// AppBoxPro_amortization_loanA.csv
 		// AppBoxPro_amortization_loanb.csv
 		return txt;
 	}
 	else {
         NSString *shareString = [self shareStringForEtc];
-        shareString = [shareString stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
+        shareString = [shareString stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
 		return shareString;
 	}
 }
@@ -1276,7 +1276,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [body appendFormat:@"%@:", [[LoanCalcString titleOfCalFor:loanData.calculationMode] uppercaseString]];
     A3LoanCalcCalculationItem resultItem = [LoanCalcMode resltItemForCalcMode:loanData.calculationMode];
     if (loanData.calculationMode == A3LC_CalculationForTermOfMonths || loanData.calculationMode == A3LC_CalculationForTermOfYears) {
-        NSInteger yearInt =  (int)round(loanData.monthOfTerms.doubleValue/12.0);
+        NSInteger yearInt =  (int)loanData.monthOfTerms.doubleValue/12.0;
         if (yearInt > 0) {
             [body appendString:[NSString stringWithFormat:@" %ld year", (long)yearInt]];
             if (yearInt > 1) {
