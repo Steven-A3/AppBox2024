@@ -269,15 +269,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    /*
-    if (isFirstViewLoad) {
-        NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
-        [self.tableView reloadRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
-        isFirstViewLoad = NO;
-    }
-     */
-    
+
     [self refreshRightBarItems];
     [self.tableView reloadData];
 }
@@ -1196,7 +1188,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	}
 	else {
         NSString *shareString = [self shareStringForEtc];
-        shareString = [shareString stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
+        shareString = [shareString stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
 		return shareString;
 	}
 }
@@ -1608,6 +1600,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)displayCompareCell:(A3LoanCalcCompareGraphCell *)compareCell
 {
+    NSNumberFormatter *nonSymobolCurrencyFormatter = [NSNumberFormatter new];
+    [nonSymobolCurrencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [nonSymobolCurrencyFormatter setCurrencyCode:[self.loanFormatter currencyCode]];
+    [nonSymobolCurrencyFormatter setCurrencySymbol:@""];
+    
     if ([_loanDataA calculated]) {
         
         compareCell.left_A_Label.layer.anchorPoint = CGPointMake(0, 1.0);
@@ -1616,18 +1613,20 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         // text
         NSString *totalInterestString;
         NSString *totalAmountString;
-        totalInterestString = [self.loanFormatter stringFromNumber:[_loanDataA totalInterest]];
-        totalAmountString = [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]];
 
         if (IS_IPHONE) {
             if ([_loanDataA.totalInterest doubleValue] > 0.0) {
-                totalInterestString = [totalInterestString stringByReplacingOccurrencesOfString:[self.loanFormatter currencySymbol] withString:@""];
-                totalInterestString = [totalInterestString stringByReplacingOccurrencesOfString:[self.loanFormatter currencyCode] withString:@""];
+                totalInterestString = [nonSymobolCurrencyFormatter stringFromNumber:[_loanDataA totalInterest]];
+            }
+            else {
+                totalInterestString = [self.loanFormatter stringFromNumber:[_loanDataA totalInterest]];
             }
 
             if ([_loanDataA.totalAmount doubleValue] > 0.0) {
-                totalAmountString = [totalAmountString stringByReplacingOccurrencesOfString:[self.loanFormatter currencySymbol] withString:@""];
-                totalAmountString = [totalAmountString stringByReplacingOccurrencesOfString:[self.loanFormatter currencyCode] withString:@""];
+                totalAmountString = [nonSymobolCurrencyFormatter stringFromNumber:[_loanDataA totalAmount]];
+            }
+            else {
+                totalAmountString = [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]];
             }
         }
         
@@ -1735,17 +1734,19 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         // text
         NSString *totalInterestString;
         NSString *totalAmountString;
-        totalInterestString = [self.loanFormatter stringFromNumber:[_loanDataB totalInterest]];
-        totalAmountString = [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]];
         if (IS_IPHONE) {
             if ([_loanDataB.totalInterest doubleValue] > 0.0) {
-                totalInterestString = [totalInterestString stringByReplacingOccurrencesOfString:[self.loanFormatter currencySymbol] withString:@""];
-                totalInterestString = [totalInterestString stringByReplacingOccurrencesOfString:[self.loanFormatter currencyCode] withString:@""];
+                totalInterestString = [nonSymobolCurrencyFormatter stringFromNumber:[_loanDataB totalInterest]];
+            }
+            else {
+                totalInterestString = [self.loanFormatter stringFromNumber:[_loanDataB totalInterest]];
             }
             
             if ([_loanDataB.totalAmount doubleValue] > 0.0) {
-                totalAmountString = [totalAmountString stringByReplacingOccurrencesOfString:[self.loanFormatter currencySymbol] withString:@""];
-                totalAmountString = [totalAmountString stringByReplacingOccurrencesOfString:[self.loanFormatter currencyCode] withString:@""];
+                totalAmountString = [nonSymobolCurrencyFormatter stringFromNumber:[_loanDataB totalAmount]];
+            }
+            else {
+                totalAmountString = [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]];
             }
         }
         compareCell.left_B_Label.text = totalInterestString;
