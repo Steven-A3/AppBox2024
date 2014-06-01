@@ -2654,6 +2654,13 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    if (_isComparisonMode && section == 2) {
+        return 38;
+    }
+    else if (!_isComparisonMode && section == (self.loanData.showExtraPayment ? 4 : 3)) {
+        return (self.loanData.showAdvanced) ? 38 : (IS_RETINA ? 39.5 : 38);
+    }
+
     return 1;
 }
 
