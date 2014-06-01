@@ -7,6 +7,8 @@
 //
 
 #import "A3LoanCalcMonthlyDataViewController.h"
+#import "UIViewController+NumberKeyboard.h"
+#import "UIViewController+LoanCalcAddtion.h"
 #import "A3LoanCalcLoanInfo3Cell.h"
 #import "A3LoanCalcPaymentInfoCell.h"
 #import "LoanCalcData.h"
@@ -14,7 +16,6 @@
 #import "LoanCalcString.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3AppDelegate.h"
-#import "UIViewController+NumberKeyboard.h"
 #import "A3LoanCalcMonthlyTableTitleView.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
@@ -69,6 +70,14 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
     self.navigationItem.title = title;
     
     [self registerContentSizeCategoryDidChangeNotification];
+    [self reloadCurrencyCode];
+}
+
+- (void)reloadCurrencyCode {
+	NSString *customCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
+	if ([customCurrencyCode length]) {
+		[self.currencyFormatter setCurrencyCode:customCurrencyCode];
+	}
 }
 
 - (void)removeObserver {
