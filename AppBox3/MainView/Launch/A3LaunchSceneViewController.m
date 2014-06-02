@@ -13,9 +13,7 @@
 @interface A3LaunchSceneViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-@property (weak, nonatomic) IBOutlet UIButton *singleButton;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
-@property (weak, nonatomic) IBOutlet UIButton *leftButton;
 @property (strong, nonatomic) MASConstraint *topOffsetConstraint, *leftOffsetConstraint;
 
 @end
@@ -173,6 +171,18 @@
 
 	FNLOGRECT(self.view.frame);
 	FNLOGRECT(self.imageView.frame);
+}
+
+- (void)hideButtons {
+	[self.singleButton setHidden:YES];
+	[self.leftButton setHidden:YES];
+	[self.rightButton setHidden:YES];
+}
+
+- (void)showButtons {
+	[self.singleButton setHidden:NO];
+	[self.leftButton setHidden:NO];
+	[self.rightButton setHidden:NO];
 }
 
 /*

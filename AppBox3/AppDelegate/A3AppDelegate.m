@@ -66,11 +66,12 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 	} else {
 		[A3KeychainUtils removePassword];
 	}
+	// TODO: 아래 한줄은 테스트 종료 후에는 반드시 삭제
+//	_shouldMigrateV1Data = YES;
 
 	self.reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
 	[self.reachability startNotifier];
 
-	// Override point for customization after application launch.
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	[fileManager setupCacheStoreFile];
 	[self setupCloud];

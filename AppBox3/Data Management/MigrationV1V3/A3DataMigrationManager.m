@@ -7,7 +7,6 @@
 //
 
 #import "A3DataMigrationManager.h"
-#import "NSString+conversion.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterDate.h"
 #import "A3DaysCounterDefine.h"
@@ -30,7 +29,6 @@
 #import "WalletItem+initialize.h"
 #import "A3DaysCounterModelManager.h"
 #import "DaysCounterCalendar.h"
-#import "DaysCounterFavorite.h"
 #import "DaysCounterEvent+management.h"
 #import "A3AppDelegate.h"
 
@@ -78,11 +76,18 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 	[self migrateLadyCalendarInContext:_context];
 	[self migrateTranslatorHistoryInContext:_context];
 	[self migrateWalletDataInContext:_context withPassword:password];
+
+	// Reload main context after V1 data migration.
+	[[[A3AppDelegate instance] managedObjectContext] reset];
+
+	if ([_delegate respondsToSelector:@selector(migrationManager:didFinishMigration:)]) {
+		[_delegate migrationManager:self didFinishMigration:YES];
+	}
 }
 
 - (NSString *)migrationDirectory {
 	if (!_migrationDirectory) {
-		_migrationDirectory = [@"restore" pathInCachesDirectory];
+		_migrationDirectory = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
 	}
 	return _migrationDirectory;
 }
@@ -280,30 +285,42 @@ NSString *const WalletFieldStyle			= @"WALLETFIELDSTYLE";		//  Key, string
 NSString *const WalletFieldID				= @"WALLETFIELDID";		//	Key, string
 NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 
+- (BOOL)walletDataFileExists {
+	return [[NSFileManager defaultManager] fileExistsAtPath:[self walletDataFilePath]];
+}
+
+- (NSDictionary *)walletDataWithPassword:(NSString *)password {
+	NSData *walletData = [[NSData alloc] initWithContentsOfFile:[self walletDataFilePath]];
+	if (!walletData) {
+		return nil;
+	}
+	walletData = [walletData AESDecryptWithPassphrase:[password length] ? password : DEFAULT_SECURITY_KEY];
+	if (!walletData) {
+		FNLOG(@"Failed to decrypt data file.");
+		return nil;
+	}
+	NSError *error;
+	NSDictionary *dictionary = [NSPropertyListSerialization propertyListWithData:walletData options:NSPropertyListImmutable format:NULL error:&error];
+	if (error) {
+		FNLOG(@"Failed to parse the property file.");
+		FNLOG(@"%@\n%@", error.localizedDescription, error.localizedFailureReason);
+		return nil;
+	}
+	return dictionary;
+}
+
 - (BOOL)migrateWalletDataInContext:(NSManagedObjectContext *)context withPassword:(NSString *)password {
 	[WalletData createDirectories];
 	[WalletCategory resetWalletCategory];
 	[context reset];
 
-	if (![[NSFileManager defaultManager] fileExistsAtPath:[self walletDataFilePath]]) {
+	if (![self walletDataFileExists]) {
 		FNLOG(@"Wallet Data File does not exist. Nothing to migrate.");
 		return YES;
 	}
-	NSData *walletData = [[NSData alloc] initWithContentsOfFile:[self walletDataFilePath]];
-	if (!walletData) {
-		return NO;
-	}
-	walletData = [walletData AESDecryptWithPassphrase:[password length] ? password : DEFAULT_SECURITY_KEY];
-	if (!walletData) {
-		// Failed to decrypt data file.
-		FNLOG(@"Failed to decrypt data file.");
-		return NO;
-	}
-	NSError *error;
-	NSDictionary *walletDictionary = [NSPropertyListSerialization propertyListWithData:walletData options:NSPropertyListImmutable format:NULL error:&error];
-	if (error) {
-		FNLOG(@"Failed to parse the property file.");
-		FNLOG(@"%@\n%@", error.localizedDescription, error.localizedFailureReason);
+	NSDictionary *walletDictionary = [self walletDataWithPassword:password];
+	if (!walletDictionary) {
+		FNLOG(@"Failed to read wallet data file.");
 		return NO;
 	}
 
@@ -311,7 +328,6 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 	NSMutableDictionary *allFieldMap = [[self fieldMap] mutableCopy];
 
 	NSArray *V1CategoryInfoArray = walletDictionary[KWalletTypeInfoArray];
-	FNLOG(@"%@", walletDictionary);
 
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 
@@ -543,7 +559,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 }
 
 - (void)askWalletPassword {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Encryption Key for Wallet" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Encryption Key for Wallet" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
 	alertView.alertViewStyle = UIAlertViewStyleSecureTextInput;
 	alertView.delegate = self;
 	[alertView show];
@@ -552,7 +568,11 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex != alertView.cancelButtonIndex) {
 		NSString *password = [[alertView textFieldAtIndex:0] text];
-		[self migrateWalletDataInContext:_context withPassword:password];
+		if ([self walletDataWithPassword:password]) {
+			[self migrateV1DataWithPassword:password];
+		} else {
+			[self askWalletPassword];
+		}
 	}
 }
 
