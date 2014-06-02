@@ -387,6 +387,7 @@ enum SortingKind {
     topView.cateLabel.numberOfLines = numOfLines;
     topView.itemsLabel.numberOfLines = numOfLines;
     topView.updatedLabel.numberOfLines = numOfLines;
+    topView.updatedLabel.font = [UIFont boldSystemFontOfSize:15];
 }
 
 - (void)refreshItems

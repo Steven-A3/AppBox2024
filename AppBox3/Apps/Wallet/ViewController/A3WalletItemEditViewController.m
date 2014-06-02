@@ -711,7 +711,13 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	}
 
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateStyle:NSDateFormatterFullStyle];
+    if (IS_IPHONE) {
+        dateFormatter.dateFormat = [dateFormatter customFullStyleFormat];
+    }
+    else {
+        [dateFormatter setDateStyle:NSDateFormatterFullStyle];
+    }
+
 	for (WalletFieldItem *remainItem in originalFieldItems) {
 		if ([remainItem.field.type isEqualToString:WalletFieldTypeDate] && remainItem.date) {
 			[moveToNoteString appendFormat:@"%@ : %@\n", remainItem.field.name, [dateFormatter stringFromDate:remainItem.date]];
@@ -797,6 +803,21 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		_currentFieldItem.video.extension = movieURL.pathExtension;
 		NSURL *destinationMovieURL = [NSURL fileURLWithPath:[_currentFieldItem videoFilePathInOriginal:NO ]];
 		[[NSFileManager defaultManager] moveItemAtURL:movieURL toURL:destinationMovieURL error:NULL];
+        
+        NSURL *referenceURL = [imageEditInfo objectForKey:UIImagePickerControllerReferenceURL];
+		if (referenceURL) {
+			ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+			[library assetForURL:referenceURL resultBlock:^(ALAsset *asset) {
+				ALAssetRepresentation *rep = [asset defaultRepresentation];
+				_imageMetadata = rep.metadata;
+				[self saveMetadata:_imageMetadata addLocation:NO];
+			} failureBlock:^(NSError *error) {
+				// error handling
+			}];
+		} else {
+			_imageMetadata = [imageEditInfo objectForKey:UIImagePickerControllerMediaMetadata];
+			[self saveMetadata:_imageMetadata addLocation:YES];
+		}
 
 		UIImage *originalImage = [WalletData videoPreviewImageOfURL:destinationMovieURL];
 		[_currentFieldItem makeVideoThumbnailWithImage:originalImage inOriginalDirectory:NO];
