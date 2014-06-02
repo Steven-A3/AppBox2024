@@ -193,7 +193,7 @@
                                                                        strict:[A3DaysCounterModelManager hasHourMinDurationOption:[item.durationOption integerValue]]];
         if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
             NSDateFormatter *formatter = [NSDateFormatter new];
-            if (IS_IPAD && [NSDate isFullStyleLocale]) {
+            if (IS_IPAD || [NSDate isFullStyleLocale]) {
                 [formatter setDateStyle:NSDateFormatterFullStyle];
                 if (![item.isAllDay boolValue]) {
                     [formatter setTimeStyle:NSDateFormatterShortStyle];
@@ -214,7 +214,7 @@
                 // Reminder 의 startDate == EffectiveStartDate 이다.
                 // 양력/음력 모두 얄력기준 실제 이벤트 날짜가 startDate 로 정해진다.
                 NSDateFormatter *formatter = [NSDateFormatter new];
-                if (IS_IPAD && [NSDate isFullStyleLocale]) {
+                if (IS_IPAD || [NSDate isFullStyleLocale]) {
                     [formatter setDateStyle:NSDateFormatterFullStyle];
                     if (![item.isAllDay boolValue]) {
                         [formatter setTimeStyle:NSDateFormatterShortStyle];

@@ -470,19 +470,9 @@
         NSString *interest;
         NSString *balance;
         
-//        if ((self.frequencyIndex == A3LC_FrequencyBiweekly) || (self.frequencyIndex == A3LC_FrequencyWeekly)) {
-//            date = [df stringFromDate:data[@"Date"]];
-//        }
-//        else {
-//			//[df setDateStyle:NSDateFormatterMediumStyle];
-//            [df setDateStyle:NSDateFormatterMediumStyle];
-//			NSString *dateFormat = [df formatStringByRemovingDayComponent:df.dateFormat];
-//            [df setDateFormat:dateFormat];
-//            date = [df stringFromDate:data[@"Date"]];
-//        }
-        
-        date = [df localizedLongStyleYearMonthFromDate:data[@"Date"]];
-        
+        df.dateFormat = [df customFullStyleFormat];
+        date = [df stringFromDate:data[@"Date"]];
+
         if (IS_IPHONE) {
             interest = [[numberFormatter stringFromNumber:data[@"Interest"]] stringByReplacingOccurrencesOfString:[numberFormatter currencySymbol] withString:@""];
             payment = [[numberFormatter stringFromNumber:data[@"Payment"]] stringByReplacingOccurrencesOfString:[numberFormatter currencySymbol] withString:@""];

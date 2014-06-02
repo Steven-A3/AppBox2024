@@ -338,15 +338,19 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
     NSNumber *interest = paymentInfo[@"Interest"];
     NSNumber *balance = paymentInfo[@"Balance"];
     NSDateFormatter *df = [NSDateFormatter new];
-    df.dateStyle = NSDateFormatterShortStyle;
+//    df.dateStyle = NSDateFormatterShortStyle;
     
-    if ((_loanData.frequencyIndex == A3LC_FrequencyBiweekly) || (_loanData.frequencyIndex == A3LC_FrequencyWeekly)) {
-        payInfoCell.dateLb.text = [df stringFromDate:date];
-    }
-    else {
-//        [df setDateFormat:@"MMM yyyy"];
-        payInfoCell.dateLb.text = [df localizedLongStyleYearMonthFromDate:date];
-    }
+//    if ((_loanData.frequencyIndex == A3LC_FrequencyBiweekly) || (_loanData.frequencyIndex == A3LC_FrequencyWeekly)) {
+//        payInfoCell.dateLb.text = [df stringFromDate:date];
+//    }
+//    else {
+////        [df setDateFormat:@"MMM yyyy"];
+////        payInfoCell.dateLb.text = [df localizedLongStyleYearMonthFromDate:date];
+//        df.dateFormat = [df customFullStyleFormat];
+//        payInfoCell.dateLb.text = [df stringFromDate:date];
+//    }
+    df.dateFormat = [df customFullStyleFormat];
+    payInfoCell.dateLb.text = [df stringFromDate:date];
     
     if (IS_IPHONE) {
         self.currencyFormatter.currencySymbol = @"";

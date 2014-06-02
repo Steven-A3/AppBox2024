@@ -58,18 +58,9 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
     if (_exPaymentType == A3LC_ExtraPaymentYearly) {
         self.navigationItem.title = @"Yearly";
-        
-//        if (_loanCalcData.extraPaymentYearlyDate == nil) {
-//            _loanCalcData.extraPaymentYearlyDate = [NSDate date];
-//        }
-        
     }
     else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
         self.navigationItem.title = @"One-Time";
-        
-//        if (_loanCalcData.extraPaymentOneTimeDate == nil) {
-//            _loanCalcData.extraPaymentOneTimeDate = [NSDate date];
-//        }
     }
     
     self.tableView.separatorColor = [self tableViewSeparatorColor];
@@ -130,7 +121,9 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 {
     if (!_months) {
         NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-        
+        if (IS_IPAD) {
+            [formatter setDateStyle:NSDateFormatterFullStyle];
+        }
         _months = [[NSMutableArray alloc] initWithArray:formatter.monthSymbols];
     }
     
@@ -571,17 +564,20 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
             NSInteger month = [components month];
             
             NSDateFormatter *df = [[NSDateFormatter alloc] init];
-            
-            if (IS_IPAD) {
-                NSArray *months = [df monthSymbols];
-                NSString *monthText = months[month - 1];
-                inputCell.textField.text = monthText;
-            }
-            else {
-                NSArray *months = [df shortMonthSymbols];
-                NSString *monthText = months[month - 1];
-                inputCell.textField.text = monthText;
-            }
+            [df setDateStyle:NSDateFormatterFullStyle];
+//            if (IS_IPAD) {
+//                NSArray *months = [df monthSymbols];
+//                NSString *monthText = months[month - 1];
+//                inputCell.textField.text = monthText;
+//            }
+//            else {
+//                NSArray *months = [df shortMonthSymbols];
+//                NSString *monthText = months[month - 1];
+//                inputCell.textField.text = monthText;
+//            }
+            NSArray *months = [df monthSymbols];
+            NSString *monthText = months[month - 1];
+            inputCell.textField.text = monthText;
         }
         else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
             NSDate *pickDate = ![_loanCalcData extraPaymentOneTimeDate] ? [NSDate date] : [_loanCalcData extraPaymentOneTimeDate];

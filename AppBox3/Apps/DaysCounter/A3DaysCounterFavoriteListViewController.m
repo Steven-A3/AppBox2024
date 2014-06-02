@@ -193,8 +193,8 @@
 			imageView.layer.cornerRadius = imageView.bounds.size.width / 2.0;
 			imageView.layer.masksToBounds = YES;
 		}
+        
         NSDate *today = [NSDate date];
-
 		A3DaysCounterEventListNameCell *eventListNameCell = (A3DaysCounterEventListNameCell *) cell;
         if (imageView.image) {
             eventListNameCell.photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
@@ -207,7 +207,6 @@
             eventListNameCell.nameLeadingConst.constant = IS_IPHONE ? 15 : 28;
             eventListNameCell.photoWidthConst.constant = 0;
         }
-        
         
         // markLabel until/since
         markLabel.text = [A3DateHelper untilSinceStringByFromDate:today
@@ -235,7 +234,7 @@
             if ( IS_IPAD ) {
                 NSDateFormatter *formatter = [NSDateFormatter new];
                 [formatter setDateStyle:NSDateFormatterFullStyle];
-                if ([favorite.event.isAllDay boolValue]) {
+                if (![favorite.event.isAllDay boolValue]) {
                     [formatter setTimeStyle:NSDateFormatterShortStyle];
                 }
                 
@@ -260,7 +259,7 @@
             if ( IS_IPAD ) {
                 NSDateFormatter *formatter = [NSDateFormatter new];
                 [formatter setDateStyle:NSDateFormatterFullStyle];
-                if ([favorite.event.isAllDay boolValue]) {
+                if (![favorite.event.isAllDay boolValue]) {
                     [formatter setTimeStyle:NSDateFormatterShortStyle];
                 }
                 

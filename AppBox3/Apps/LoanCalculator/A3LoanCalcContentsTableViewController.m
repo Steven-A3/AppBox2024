@@ -118,9 +118,9 @@
 
     if (yearlyDate) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateStyle:NSDateFormatterMediumStyle];
-        [formatter setDateFormat:@"MMM"];
-        dateText = [formatter stringFromDate:yearlyDate];
+        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSMonthCalendarUnit fromDate:yearlyDate];
+        NSString *month = IS_IPHONE ? [[formatter shortMonthSymbols] objectAtIndex:dateComp.month - 1] : [[formatter monthSymbols] objectAtIndex:dateComp.month - 1];
+        dateText = month;
     }
     else {
         dateText = @"None";
@@ -147,9 +147,7 @@
 	}
     if (oneTimeDate) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateStyle:NSDateFormatterLongStyle];
-		FNLOG(@"%@", formatter.dateFormat);
-		//NSString *format = [formatter formatStringByRemovingYearComponent:formatter.dateFormat];
+        [formatter setDateStyle:IS_IPHONE ? NSDateFormatterMediumStyle : NSDateFormatterLongStyle];
         NSString *format = [formatter formatStringByRemovingDayComponent:formatter.dateFormat];
 		[formatter setDateFormat:format];
         dateText = [formatter stringFromDate:oneTimeDate];

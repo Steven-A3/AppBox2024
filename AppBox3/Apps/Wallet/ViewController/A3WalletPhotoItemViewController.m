@@ -27,6 +27,7 @@
 #import "WalletFieldItem+initialize.h"
 #import "WalletFieldItemImage.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "NSDateFormatter+A3Addition.h"
 
 @interface A3WalletPhotoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, MWPhotoBrowserDelegate>
 
@@ -286,7 +287,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 - (A3WalletPhotoItemTitleView *)metadataView
 {
     if (!_metadataView) {
-        NSString *nibName = IS_IPAD ? @"A3WalletPhotoItemTitleView_iPad":@"A3WalletPhotoItemTitleView";
+        NSString *nibName = IS_IPAD ? @"A3WalletPhotoItemTitleView_iPad" : @"A3WalletPhotoItemTitleView";
         _metadataView = [[[NSBundle mainBundle] loadNibNamed:nibName owner:Nil options:nil] lastObject];
 		[_metadataView.favoriteButton addTarget:self action:@selector(favoriteButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 		_metadataView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 148);
@@ -377,8 +378,14 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
             _metadataView.takenDateLabel.hidden = NO;
             
 			[df setLocale:[NSLocale currentLocale]];
-			[df setDateStyle:NSDateFormatterFullStyle];
-			[df setTimeStyle:NSDateFormatterShortStyle];
+            if (IS_IPAD) {
+                [df setDateStyle:NSDateFormatterFullStyle];
+                [df setTimeStyle:NSDateFormatterShortStyle];
+            }
+            else {
+                df.dateFormat = [df customFullWithTimeStyleFormat];
+            }
+
             _metadataView.takenDateLabel.text = [df stringFromDate:orgDate];
         }
         else {
@@ -653,8 +660,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 		cell = metadataCell;
 
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	} else
-    if (_normalFieldItems[indexPath.row] == self.noteItem) {
+	} else if (_normalFieldItems[indexPath.row] == self.noteItem) {
 		A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID1 forIndexPath:indexPath];
         [noteCell setupTextView];
         noteCell.textView.editable = NO;
@@ -716,7 +722,6 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
                                [mapCell.mapView addAnnotation:annotation];
                                [mapCell.mapView selectAnnotation:annotation animated:YES];
                            }
-                           
                        }];
         
         cell = mapCell;
@@ -758,7 +763,6 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
             
             dateCell.valueTextField.placeholder = fieldItem.field.name;
             if (fieldItem.date) {
-                
                 NSDateFormatter *df = [[NSDateFormatter alloc] init];
                 [df setDateStyle:NSDateFormatterMediumStyle];
                 dateCell.valueTextField.text = [df stringFromDate:fieldItem.date];

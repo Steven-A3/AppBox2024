@@ -580,9 +580,8 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 		cell = metadataCell;
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	} else
-    if (_normalFieldItems[indexPath.row] == self.noteItem) {
-        
+	}
+    else if (_normalFieldItems[indexPath.row] == self.noteItem) {
         // note
         A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID2 forIndexPath:indexPath];
         [noteCell setupTextView];

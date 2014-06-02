@@ -427,12 +427,12 @@
         <element name="UnitPriceHistoryItem" positionX="-371" positionY="209" width="128" height="178"/>
         <element name="UnitPriceInfo" positionX="-47" positionY="396" width="128" height="163"/>
         <element name="UnitType" positionX="412" positionY="162" width="128" height="88"/>
-        <element name="WalletCategory" positionX="-740" positionY="440" width="128" height="165"/>
-        <element name="WalletFavorite" positionX="-560" positionY="584" width="128" height="73"/>
-        <element name="WalletField" positionX="-576" positionY="440" width="128" height="148"/>
-        <element name="WalletFieldItem" positionX="-369" positionY="512" width="128" height="148"/>
-        <element name="WalletFieldItemImage" positionX="-594" positionY="-414" width="128" height="73"/>
-        <element name="WalletFieldItemVideo" positionX="-605" positionY="-10" width="128" height="73"/>
-        <element name="WalletItem" positionX="-585" positionY="677" width="128" height="165"/>
+        <element name="WalletCategory" positionX="-918" positionY="531" width="128" height="165"/>
+        <element name="WalletFavorite" positionX="-335" positionY="764" width="128" height="73"/>
+        <element name="WalletField" positionX="-702" positionY="440" width="128" height="148"/>
+        <element name="WalletFieldItem" positionX="-506" positionY="558" width="128" height="148"/>
+        <element name="WalletFieldItemImage" positionX="-335" positionY="531" width="128" height="73"/>
+        <element name="WalletFieldItemVideo" positionX="-335" positionY="666" width="128" height="73"/>
+        <element name="WalletItem" positionX="-702" positionY="636" width="128" height="165"/>
     </elements>
 </model>
