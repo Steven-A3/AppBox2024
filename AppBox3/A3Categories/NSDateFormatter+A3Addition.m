@@ -66,6 +66,7 @@
 	for (NSString *yearComponent in replaceArray) {
 		NSRange range = [originalFormat rangeOfString:yearComponent];
 		if (range.location != NSNotFound) {
+            // Medium Type 의 경우, 오동작을 방지하기 위하여 추가.
             NSRange extraCheckRange = [originalFormat rangeOfString:@"d" options:NSCaseInsensitiveSearch range:NSMakeRange(0, range.location)];
             if (extraCheckRange.location != NSNotFound) {
                 continue;
