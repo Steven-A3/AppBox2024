@@ -11,10 +11,12 @@
 #import "MBProgressHUD.h"
 #import "A3PasscodeViewControllerProtocol.h"
 #import "A3CacheStoreManager.h"
+#import "A3DataMigrationManager.h"
 
 @class MMDrawerController;
 @protocol A3PasscodeViewControllerProtocol;
 @class Reachability;
+@class A3DataMigrationManager;
 
 extern NSString *const kA3ApplicationLastRunVersion;
 extern NSString *const kA3AppsMenuName;
@@ -84,6 +86,7 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 @property (strong, nonatomic) UIImageView *coverView;
 @property (assign, nonatomic) BOOL shouldMigrateV1Data;
 @property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (strong, nonatomic) A3DataMigrationManager *migrationManager;
 
 + (A3AppDelegate *)instance;
 

@@ -18,4 +18,6 @@
 + (double)passcodeTime;
 
 + (NSString *)passcodeTimeString;
+
++ (void)migrateV1Passcode;
 @end

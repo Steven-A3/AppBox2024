@@ -18,7 +18,7 @@
 	self.type = @"Text";
 	self.style = @"Normal";
 
-	WalletField *field = [WalletField MR_findFirstOrderedByAttribute:@"order" ascending:NO];
+	WalletField *field = [WalletField MR_findFirstOrderedByAttribute:@"order" ascending:NO inContext:self.managedObjectContext];
 	if (field) {
 		NSInteger latestOrder = [field.order integerValue];
 		self.order = [NSString orderStringWithOrder:latestOrder + 1000000];

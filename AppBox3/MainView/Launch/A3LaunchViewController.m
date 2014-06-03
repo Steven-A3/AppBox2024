@@ -16,12 +16,11 @@
 
 NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 
-@interface A3LaunchViewController () <UIViewControllerTransitioningDelegate, A3DataMigrationManagerDelegate>
+@interface A3LaunchViewController () <UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, strong) UIStoryboard *launchStoryboard;
 @property (nonatomic, strong) A3LaunchSceneViewController *currentSceneViewController;
-@property (nonatomic, strong) A3DataMigrationManager *migrationManager;
-@property (nonatomic, strong) id coreDataReadyObserver;
+@property (nonatomic, strong) id migrationFinishObserver;
 
 @end
 
@@ -97,39 +96,29 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 			[[NSUserDefaults standardUserDefaults] synchronize];
 
 			if ([[A3AppDelegate instance] shouldMigrateV1Data]) {
-				if ([[A3AppDelegate instance] coreDataReadyToUse]) {
-					FNLOG(@"Core Data Already Ready!");
-					[self migrateV1Data];
-				} else {
-					[_currentSceneViewController hideButtons];
-					_coreDataReadyObserver =
-							[[NSNotificationCenter defaultCenter] addObserverForName:A3NotificationCoreDataReady object:nil queue:nil usingBlock:^(NSNotification *notification) {
-								FNLOG(@"Received Core Data Ready Notification");
-								[self migrateV1Data];
-								[[NSNotificationCenter defaultCenter] removeObserver:_coreDataReadyObserver];
-								_coreDataReadyObserver = nil;
-							}];
-				}
+				[_currentSceneViewController hideButtons];
+				_migrationFinishObserver = [[NSNotificationCenter defaultCenter] addObserverForName:A3NotificationDataMigrationFinished object:nil queue:nil usingBlock:^(NSNotification *note) {
+					[_currentSceneViewController showButtons];
+					[[NSNotificationCenter defaultCenter] removeObserver:_migrationFinishObserver];
+					_migrationFinishObserver = nil;
+				}];
+				[self checkMigrationFinished];
 			}
 		}
 	}
 }
 
-- (void)migrateV1Data {
-	A3DataMigrationManager *migrationManager = [[A3DataMigrationManager alloc] initWithPersistentStoreCoordinator:[[A3AppDelegate instance] persistentStoreCoordinator]];
-	if ([migrationManager walletDataFileExists] && ![migrationManager walletDataWithPassword:nil]) {
-		_migrationManager = migrationManager;
-		_migrationManager.delegate = self;
-		[migrationManager askWalletPassword];
+- (void)checkMigrationFinished {
+	FNLOG();
+	if ([[A3AppDelegate instance] shouldMigrateV1Data]) {
+		double delayInSeconds = 1.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[self checkMigrationFinished];
+		});
 	} else {
-		[migrationManager migrateV1DataWithPassword:nil];
 		[_currentSceneViewController showButtons];
 	}
-}
-
-- (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {
-	[_currentSceneViewController showButtons];
-	_migrationManager = nil;
 }
 
 - (void)useICloudButtonPressedInViewController:(UIViewController *)viewController {

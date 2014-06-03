@@ -16,13 +16,11 @@
 #import "A3KeychainUtils.h"
 #import "A3LaunchViewController.h"
 #import "A3MainViewController.h"
-#import "A3ImageToDataTransformer.h"
 #import "DaysCounterEvent.h"
 #import "A3DaysCounterEventDetailViewController.h"
 #import "A3DaysCounterModelManager.h"
 
 #import "A3LadyCalendarDetailViewController.h"
-#import "NSString+conversion.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -32,7 +30,7 @@ NSString *const A3LocalNotificationDataID = @"A3LocalNotificationDataID";
 NSString *const A3LocalNotificationFromLadyCalendar = @"Lady Calendar";
 NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 
-@interface A3AppDelegate () <UIAlertViewDelegate>
+@interface A3AppDelegate () <UIAlertViewDelegate, A3DataMigrationManagerDelegate>
 
 @property (nonatomic, strong) NSString *previousVersion;
 @property (nonatomic, strong) NSDictionary *localNotificationUserInfo;
@@ -55,13 +53,11 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 		_localNotificationUserInfo = localNotification.userInfo;
     }
     
-	A3ImageToDataTransformer *transformer = [[A3ImageToDataTransformer alloc] init];
-	[NSValueTransformer setValueTransformer:transformer forName:@"A3ImageToDataTransformer"];
-
 	_previousVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
 	if (_previousVersion) {
 		if ([_previousVersion floatValue] < 3.0) {
 			_shouldMigrateV1Data = YES;
+			[A3KeychainUtils migrateV1Passcode];
 		}
 	} else {
 		[A3KeychainUtils removePassword];
@@ -203,8 +199,24 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCoreDataReady object:nil];
 
 	dispatch_async(dispatch_get_main_queue(), ^{
+		if (self.shouldMigrateV1Data) {
+			A3DataMigrationManager *migrationManager = [[A3DataMigrationManager alloc] initWithPersistentStoreCoordinator:[[A3AppDelegate instance] persistentStoreCoordinator]];
+			if ([migrationManager walletDataFileExists] && ![migrationManager walletDataWithPassword:nil]) {
+				self.migrationManager = migrationManager;
+				self.migrationManager.delegate = self;
+				[migrationManager askWalletPassword];
+			} else {
+				[migrationManager migrateV1DataWithPassword:nil];
+				self.shouldMigrateV1Data = NO;
+			}
+		}
 		[self showReceivedLocalNotifications];
 	});
+}
+
+- (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {
+	self.shouldMigrateV1Data = NO;
+	self.migrationManager = nil;
 }
 
 #pragma mark Notification

@@ -8,6 +8,7 @@
 
 #import "A3KeychainUtils.h"
 #import "A3AppDelegate+passcode.h"
+#import "NSData-AES.h"
 #import <Security/Security.h>
 
 static NSString *kA3KeychainServiceName = @"A3PasscodeService";
@@ -105,6 +106,29 @@ static NSString *kA3KeychainAccountName = @"A3AppBox3Passcode";
 		string = [NSString localizedStringWithFormat:NSLocalizedStringFromTable(@"After %ld minutes", @"StringsDict", @"Require Passcode after n minutes"), (long)passcodeTime / 60];
 	}
 	return string;
+}
+
+#pragma mark - Migration from V1
+
+NSString *const kUserEnabledPasscode				= @"kUserEnabledPasscode";
+NSString *const kUserSavedPasscode					= @"kUserSavedPasscode";
+NSString *const kUserSavedPasscodeHint				= @"kUserSavedPasscodHint";
+NSString *const USERPASSCODEDECRYPTKEY				= @"d54?qjS8QD[.,UasG2R7FhS8?uk-D9+L";
+
++ (void)migrateV1Passcode {
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:kUserEnabledPasscode]) {
+		NSData *encryptedPasswordData = [[NSUserDefaults standardUserDefaults] objectForKey:kUserSavedPasscode];
+		NSString *decryptedPasscode = [[NSString alloc] initWithData:[encryptedPasswordData AESDecryptWithPassphrase:USERPASSCODEDECRYPTKEY] encoding:NSUTF8StringEncoding];
+		if ([decryptedPasscode length]) {
+			NSData *encryptedHintData = [[NSUserDefaults standardUserDefaults] objectForKey:kUserSavedPasscodeHint];
+			NSString *decryptedHint = [[NSString alloc] initWithData:[encryptedHintData AESDecryptWithPassphrase:USERPASSCODEDECRYPTKEY] encoding:NSUTF8StringEncoding];
+
+			[A3KeychainUtils storePassword:decryptedPasscode hint:decryptedHint];
+		}
+	}
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserEnabledPasscode];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserSavedPasscode];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserSavedPasscodeHint];
 }
 
 @end

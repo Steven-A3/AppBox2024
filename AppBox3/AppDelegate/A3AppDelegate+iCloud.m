@@ -12,6 +12,7 @@
 #import "SFKImage.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3DaysCounterModelManager.h"
+#import "A3DataMigrationManager.h"
 
 NSString *const A3UniqueIdentifier = @"uniqueIdentifier";
 NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";

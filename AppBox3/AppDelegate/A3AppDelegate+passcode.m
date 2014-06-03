@@ -14,12 +14,12 @@
 #import "UIViewController+MMDrawerController.h"
 
 NSString *const kUserDefaultTimerStart = @"AppBoxPasscodeTimerStart";
-NSString *const kUserDefaultsKeyForPasscodeTimerDuration = @"passcodeTimerDuration";
-NSString *const kUserDefaultsKeyForUseSimplePasscode = @"passcodeUseSimplePasscode";
-NSString *const kUserDefaultsKeyForAskPasscodeForStarting = @"passcodeAskPasscodeForStarting";
-NSString *const kUserDefaultsKeyForAskPasscodeForSettings = @"passcodeAskPasscodeForSettings";
-NSString *const kUserDefaultsKeyForAskPasscodeForDaysCounter = @"passcodAskPasscodeForDaysCounter";
-NSString *const kUserDefaultsKeyForAskPasscodeForLadyCalendar = @"passcodeAskPasscodeForLadyCalendar";
+NSString *const kUserDefaultsKeyForPasscodeTimerDuration = @"kUserRequirePasscodeAfterMinutes";
+NSString *const kUserDefaultsKeyForUseSimplePasscode = @"kUserUseSimplePasscode";
+NSString *const kUserDefaultsKeyForAskPasscodeForStarting = @"kUserRequirePasscodeAppBoxPro";
+NSString *const kUserDefaultsKeyForAskPasscodeForSettings = @"kUserRequirePasscodeSettiings";
+NSString *const kUserDefaultsKeyForAskPasscodeForDaysCounter = @"kUserRequirePasscodeDaysUntil";
+NSString *const kUserDefaultsKeyForAskPasscodeForLadyCalendar = @"kUserRequirePasscodePCalendar";
 NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeForWallet";
 
 @implementation A3AppDelegate (passcode)

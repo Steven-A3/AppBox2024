@@ -31,6 +31,9 @@
 #import "DaysCounterCalendar.h"
 #import "DaysCounterEvent+management.h"
 #import "A3AppDelegate.h"
+#import "NSString+conversion.h"
+
+NSString *const A3NotificationDataMigrationFinished = @"A3NotificationDataMigrationFinished";
 
 NSString *const kKeyForDDayTitle 					= @"kKeyForDDayTitle";
 NSString *const kKeyForDDayDate						= @"kKeyForDDayDate";
@@ -83,6 +86,7 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 	if ([_delegate respondsToSelector:@selector(migrationManager:didFinishMigration:)]) {
 		[_delegate migrationManager:self didFinishMigration:YES];
 	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationDataMigrationFinished object:nil];
 }
 
 - (NSString *)migrationDirectory {
@@ -323,6 +327,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 		FNLOG(@"Failed to read wallet data file.");
 		return NO;
 	}
+	FNLOG(@"%@", walletDictionary);
 
 	NSMutableDictionary *categoryMap = [[self categoryMap] mutableCopy];
 	NSMutableDictionary *allFieldMap = [[self fieldMap] mutableCopy];
@@ -337,16 +342,37 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 			NSArray *V1FieldItemsArray = walletDictionary[V1CategoryID];
 			if (!V1FieldItemsArray) continue;
 
-			NSString *V3CategoryID = categoryMap[V1CategoryID];
-			if (!V3CategoryID) {
-				// TODO: CategoryID does not Exist? User made new category
-				// 카테고리를 추가해야 한다.
-			}
-			WalletCategory *category = [WalletCategory MR_findFirstByAttribute:@"uniqueID" withValue:V3CategoryID inContext:context];
-			category.name = V1Category[KWalletTypeName];
-			NSArray *V1FieldInfoArray = V1Category[KWalletFieldInfoArray];
-
 			NSMutableDictionary *fieldMap = [allFieldMap[V1CategoryID] mutableCopy];
+
+			NSString *V3CategoryID = categoryMap[V1CategoryID];
+			WalletCategory *category;
+			if (!V3CategoryID) {
+				fieldMap = [NSMutableDictionary new];
+				category = [WalletCategory MR_createInContext:context];
+				category.uniqueID = [[NSUUID UUID] UUIDString];
+				category.name = [V1Category[KWalletTypeName] stringByTrimmingSpaceCharacters];
+				category.icon = @"wallet_folder";
+				category.modificationDate = [NSDate date];
+
+				[categoryMap setObject:category.uniqueID forKey:V1CategoryID];
+
+				NSArray *fieldInfoArray = V1Category[KWalletFieldInfoArray];
+				for (NSDictionary *fieldInfo in fieldInfoArray) {
+					WalletField *newField = [WalletField MR_createInContext:context];
+					newField.category = category;
+					[newField initValues];
+					newField.name = fieldInfo[WalletFieldName];
+					newField.type = fieldInfo[WalletFieldType];
+					newField.style = fieldInfo[WalletFieldStyle];
+
+					[fieldMap setObject:newField.uniqueID forKey:fieldInfo[WalletFieldID]];
+				}
+				[allFieldMap setObject:fieldMap forKey:V1CategoryID];
+			} else {
+				category = [WalletCategory MR_findFirstByAttribute:@"uniqueID" withValue:V3CategoryID inContext:context];
+				category.name = V1Category[KWalletTypeName];
+			}
+			NSArray *V1FieldInfoArray = V1Category[KWalletFieldInfoArray];
 
 			// Copy fields name from V1
 			for (NSDictionary *V1FieldInfo in V1FieldInfoArray) {
@@ -386,9 +412,29 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 
 								NSString *V3FieldID = fieldMap[fieldID];
 								if (!V3FieldID) {
-									// TODO: fieldInfo does not exist.
-									// Field 정보를 추가 해야 한다.
+									NSArray *fieldInfoArray = V1Category[KWalletFieldInfoArray];
+									NSInteger fieldIndex = [fieldInfoArray indexOfObjectPassingTest:^BOOL(NSDictionary *fieldInfo, NSUInteger idx, BOOL *stop) {
+										return [fieldInfo[WalletFieldID] isEqualToString:fieldID];
+									}];
+									if (fieldIndex != NSNotFound) {
+										NSDictionary *V1FieldInfo = fieldInfoArray[fieldIndex];
+										WalletField *newField = [WalletField MR_createInContext:context];
+										newField.category = category;
+										[newField initValues];
 
+										newField.name = V1FieldInfo[WalletFieldName];
+										newField.type = V1FieldInfo[WalletFieldType];
+										newField.style = V1FieldInfo[WalletFieldStyle];
+
+										V3FieldItem.field = newField;
+									} else {
+										// 만약 value는 있는데 해당하는 field정보가 없다면 값을 Note에 추가를 해준다.
+										if ([newItem.note length]) {
+											newItem.note = [NSString stringWithFormat:@"%@\n%@", newItem.note, valueDictionary[fieldID]];
+										} else {
+											newItem.note = valueDictionary[fieldID];
+										}
+									}
 								} else {
 									WalletField *V3Field = [WalletField MR_findFirstByAttribute:@"uniqueID" withValue:V3FieldID inContext:context];
 									V3FieldItem.field = V3Field;
@@ -418,6 +464,22 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 			}
 		}
 	}
+	// Sort category by name except all and favorite.
+	NSArray *categories = [WalletCategory MR_findAllSortedBy:@"name" ascending:YES];
+	NSInteger index = 3000000;
+	for (WalletCategory *category in categories) {
+		if ([category.uniqueID isEqualToString:A3WalletUUIDFavoriteCategory]) {
+			category.order = [NSString orderStringWithOrder:1000000];
+			continue;
+		} else if ([category.uniqueID isEqualToString:A3WalletUUIDAllCategory]) {
+			category.order = [NSString orderStringWithOrder:2000000];
+			continue;
+		}
+		category.order = [NSString orderStringWithOrder:index];
+		index += 1000000;
+	}
+	[context MR_saveToPersistentStoreAndWait];
+
 	return YES;
 }
 
