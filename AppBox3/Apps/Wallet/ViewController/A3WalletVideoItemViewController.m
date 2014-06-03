@@ -15,6 +15,7 @@
 #import "A3WalletNoteCell.h"
 #import "WalletData.h"
 #import "WalletItem.h"
+#import "walletfielditemvideo.h"
 #import "WalletItem+initialize.h"
 #import "WalletItem+Favorite.h"
 #import "WalletField.h"
@@ -24,6 +25,7 @@
 #import "UIImage+Extension2.h"
 #import "WalletFieldItem+initialize.h"
 #import "A3WalletPhotoItemTitleView.h"
+#import "NSDateFormatter+A3Addition.h"
 
 @interface A3WalletVideoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -306,12 +308,21 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 		NSInteger dur = round(duration);
 		_metadataView.mediaSizeLabel.text = [NSString stringWithFormat:@"Duration Time %lds", (long)dur];
 
+        // Media CreationDate
+        NSDateFormatter *dateFormatter = [NSDateFormatter new];
+        if (IS_IPAD) {
+            dateFormatter.dateStyle = NSDateFormatterFullStyle;
+            dateFormatter.timeStyle = NSDateFormatterShortStyle;
+        }
+        else {
+            dateFormatter.dateFormat = [dateFormatter customFullWithTimeStyleFormat];
+        }
 		NSDate *createDate = [WalletData getCreateDateOfMovie:[fieldItem videoFilePathInOriginal:YES ]];
 		if (createDate) {
-			_metadataView.takenDateLabel.text = [createDate timeAgo];
+			_metadataView.takenDateLabel.text = [dateFormatter stringFromDate:createDate];
 		}
 		else {
-			_metadataView.takenDateLabel.text = @"";
+            _metadataView.takenDateLabel.text = [dateFormatter stringFromDate:fieldItem.video.creationDate];
 		}
 	} else {
 		_metadataView.mediaSizeLabel.text = @"";
