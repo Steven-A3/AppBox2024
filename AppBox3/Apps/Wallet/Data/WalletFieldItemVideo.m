@@ -2,7 +2,7 @@
 //  WalletFieldItemVideo.m
 //  AppBox3
 //
-//  Created by A3 on 5/31/14.
+//  Created by dotnetguy83 on 6/3/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -13,6 +13,7 @@
 @implementation WalletFieldItemVideo
 
 @dynamic extension;
+@dynamic creationDate;
 @dynamic fieldItem;
 
 @end

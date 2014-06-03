@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D65" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Calculation" representedClassName="Calculation" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="expression" optional="YES" attributeType="String" syncable="YES"/>
@@ -375,6 +375,7 @@
         <relationship name="fieldItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletFieldItem" inverseName="image" inverseEntity="WalletFieldItem" syncable="YES"/>
     </entity>
     <entity name="WalletFieldItemVideo" representedClassName="WalletFieldItemVideo" syncable="YES">
+        <attribute name="creationDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="extension" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="fieldItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletFieldItem" inverseName="video" inverseEntity="WalletFieldItem" syncable="YES"/>
     </entity>
@@ -432,7 +433,7 @@
         <element name="WalletField" positionX="-702" positionY="440" width="128" height="148"/>
         <element name="WalletFieldItem" positionX="-506" positionY="558" width="128" height="148"/>
         <element name="WalletFieldItemImage" positionX="-335" positionY="531" width="128" height="73"/>
-        <element name="WalletFieldItemVideo" positionX="-335" positionY="666" width="128" height="73"/>
+        <element name="WalletFieldItemVideo" positionX="-335" positionY="666" width="128" height="88"/>
         <element name="WalletItem" positionX="-702" positionY="636" width="128" height="165"/>
     </elements>
 </model>

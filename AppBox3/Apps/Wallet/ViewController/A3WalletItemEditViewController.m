@@ -797,26 +797,28 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
 		//get the videoURL
 		NSURL *movieURL = imageEditInfo[UIImagePickerControllerMediaURL];
+        
 		if (!_currentFieldItem.video) {
 			_currentFieldItem.video = [WalletFieldItemVideo MR_createEntity];
 		}
 		_currentFieldItem.video.extension = movieURL.pathExtension;
 		NSURL *destinationMovieURL = [NSURL fileURLWithPath:[_currentFieldItem videoFilePathInOriginal:NO ]];
 		[[NSFileManager defaultManager] moveItemAtURL:movieURL toURL:destinationMovieURL error:NULL];
-        
-        NSURL *referenceURL = [imageEditInfo objectForKey:UIImagePickerControllerReferenceURL];
-		if (referenceURL) {
+
+        NSURL *assetURL = imageEditInfo[UIImagePickerControllerReferenceURL];
+		if (assetURL) {
 			ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-			[library assetForURL:referenceURL resultBlock:^(ALAsset *asset) {
-				ALAssetRepresentation *rep = [asset defaultRepresentation];
-				_imageMetadata = rep.metadata;
-				[self saveMetadata:_imageMetadata addLocation:NO];
+			[library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+                NSDate *mediaCreationDate = [asset valueForProperty:ALAssetPropertyDate];
+                _currentFieldItem.video.creationDate = mediaCreationDate;
 			} failureBlock:^(NSError *error) {
 				// error handling
 			}];
 		} else {
-			_imageMetadata = [imageEditInfo objectForKey:UIImagePickerControllerMediaMetadata];
-			[self saveMetadata:_imageMetadata addLocation:YES];
+            NSError *error = [NSError new];
+            NSDictionary *itemAttribute = [[NSFileManager defaultManager] attributesOfItemAtPath:[destinationMovieURL path] error:&error];
+            NSDate *mediaCreationDate = [itemAttribute objectForKey:NSFileCreationDate];
+            _currentFieldItem.video.creationDate = mediaCreationDate;
 		}
 
 		UIImage *originalImage = [WalletData videoPreviewImageOfURL:destinationMovieURL];

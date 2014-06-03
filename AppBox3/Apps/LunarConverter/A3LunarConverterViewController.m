@@ -825,8 +825,8 @@
     NSDateComponents *outputComponents = (_pageControl.currentPage > 0 ? self.secondPageResultDateComponents : self.firstPageResultDateComponents);
     NSMutableString *txt =[NSMutableString new];
 
-    BOOL isInputLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:_inputDateComponents isKorean:[NSDate isFullStyleLocale]];
-    BOOL isOutputLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:outputComponents isKorean:[NSDate isFullStyleLocale]];
+    BOOL isInputLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:_inputDateComponents isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+    BOOL isOutputLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:outputComponents isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
 
     if (_isLunarInput) {
         BOOL resultLeapMonth = NO;
@@ -835,7 +835,7 @@
         solarFromLunarComp = [NSDate lunarCalcWithComponents:_inputDateComponents
                                             gregorianToLunar:NO
                                                    leapMonth:NO
-                                                      korean:[NSDate isFullStyleLocale]
+                                                      korean:[A3DateHelper isCurrentLocaleIsKorea]
                                              resultLeapMonth:&resultLeapMonth];
         NSString *prefix = [self stringOfLunarPrefixForDateComponents:_inputDateComponents leapMonth:NO];
         [txt appendFormat:@"Lunar(%@) %@", prefix, [_dateFormatter stringFromDateComponents:_inputDateComponents]];
@@ -846,7 +846,7 @@
             solarFromLeapComp = [NSDate lunarCalcWithComponents:_inputDateComponents
                                                gregorianToLunar:NO
                                                       leapMonth:YES
-                                                         korean:[NSDate isFullStyleLocale]
+                                                         korean:[A3DateHelper isCurrentLocaleIsKorea]
                                                 resultLeapMonth:&resultLeapMonth];
             NSString *prefix = [self stringOfLunarPrefixForDateComponents:_inputDateComponents leapMonth:NO];
             [txt appendString:@"<br/>"];
