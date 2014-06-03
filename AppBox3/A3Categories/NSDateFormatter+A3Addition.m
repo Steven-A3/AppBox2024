@@ -66,6 +66,11 @@
 	for (NSString *yearComponent in replaceArray) {
 		NSRange range = [originalFormat rangeOfString:yearComponent];
 		if (range.location != NSNotFound) {
+            NSRange extraCheckRange = [originalFormat rangeOfString:@"d" options:NSCaseInsensitiveSearch range:NSMakeRange(0, range.location)];
+            if (extraCheckRange.location != NSNotFound) {
+                continue;
+            }
+
 			return [originalFormat stringByReplacingOccurrencesOfString:yearComponent withString:@""];
 		}
 	}

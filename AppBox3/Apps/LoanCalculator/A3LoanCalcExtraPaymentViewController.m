@@ -37,6 +37,9 @@
 @property (nonatomic, strong) NSMutableDictionary *dateInputItem;
 @property (nonatomic, weak) UITextField *calculatortTargetTextField;
 
+@property (nonatomic, strong) NSArray *pickerDataSource_0;
+@property (nonatomic, strong) NSArray *pickerDataSource_1;
+
 @end
 
 @implementation A3LoanCalcExtraPaymentViewController
@@ -62,6 +65,9 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
         self.navigationItem.title = @"One-Time";
     }
+    
+
+    [self configureDatePickerDataSource];
     
     self.tableView.separatorColor = [self tableViewSeparatorColor];
     
@@ -99,6 +105,22 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         if (_delegate && [_delegate respondsToSelector:@selector(didChangedLoanCalcExtraPayment:)]) {
             [_delegate didChangedLoanCalcExtraPayment:_loanCalcData];
         }
+    }
+}
+
+- (void)configureDatePickerDataSource {
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateStyle:NSDateFormatterLongStyle];
+    NSString *dateFormat = [dateFormatter formatStringByRemovingDayComponent:[dateFormatter dateFormat]];
+    NSRange monthRange = [dateFormat rangeOfString:@"m" options:NSCaseInsensitiveSearch];
+    NSRange yearRange = [dateFormat rangeOfString:@"y" options:NSCaseInsensitiveSearch];
+    if (monthRange.location < yearRange.location) {
+        _pickerDataSource_0 = self.months;
+        _pickerDataSource_1 = self.years;
+    }
+    else {
+        _pickerDataSource_0 = self.years;
+        _pickerDataSource_1 = self.months;
     }
 }
 
@@ -273,17 +295,38 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         _loanCalcData.extraPaymentYearlyDate = pickDate;
     }
     else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
-//        sdf
-        NSUInteger monthIdx = [pickerView selectedRowInComponent:0];
-        NSString *month = _months[monthIdx];
-        NSString *year = _years[[pickerView selectedRowInComponent:1]];
-        _dateTextField.text = [NSString stringWithFormat:@"%@, %@", month, year];
+        NSString *month;
+        NSString *year;
+        
+        if ([_pickerDataSource_0 count] == 12) {
+            month = _pickerDataSource_0[[pickerView selectedRowInComponent:0]];
+            year = _pickerDataSource_1[[pickerView selectedRowInComponent:1]];
+        }
+        else {
+            year = _pickerDataSource_0[[pickerView selectedRowInComponent:0]];
+            month = _pickerDataSource_1[[pickerView selectedRowInComponent:1]];
+        }
         
         NSDateFormatter *df = [[NSDateFormatter alloc] init];
         df.dateStyle = NSDateFormatterFullStyle;
         df.dateFormat = @"MMMM, yyyy";
-        NSDate *pickDate = [df dateFromString:_dateTextField.text];
+        NSDate *pickDate = [df dateFromString:[NSString stringWithFormat:@"%@, %@", month, year]];
         _loanCalcData.extraPaymentOneTimeDate = pickDate;
+        
+        _dateTextField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
+//        if (IS_IPAD) {
+//            _dateTextField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
+//        }
+//        else {
+//            // 한국만 예외적으로 long스타일 적용
+//            NSLocale *locale = [NSLocale currentLocale];
+//            if ([locale.localeIdentifier isEqualToString:@"ko_KR"]) {
+//                _dateTextField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
+//            }
+//            else {
+//                _dateTextField.text = [df localizedMediumStyleYearMonthFromDate:pickDate];
+//            }
+//        }
     }
     
     if (IS_IPAD && _delegate && [_delegate respondsToSelector:@selector(didChangedLoanCalcExtraPayment:)]) {
@@ -307,18 +350,14 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 - (NSInteger)pickerView:(UIPickerView *)thePickerView numberOfRowsInComponent:(NSInteger)component
 {
     if (_exPaymentType == A3LC_ExtraPaymentYearly) {
-        return self.months.count;
+        return [_pickerDataSource_0 count];
     }
     else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
-        NSDateFormatter *dateFormatter = [NSDateFormatter new];
-        // TODO
-        NSString *dateFormat = [dateFormatter formatStringByRemovingDayComponent:[dateFormatter dateFormat]];
-        
         if (component == 0) {
-            return self.months.count;
+            return [_pickerDataSource_0 count];
         }
         else if (component == 1) {
-            return self.years.count;
+            return [_pickerDataSource_1 count];
         }
     }
     return 0;
@@ -331,10 +370,10 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     }
     else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
         if (component == 0) {
-            return self.months[row];
+            return _pickerDataSource_0[row];
         }
         else if (component == 1) {
-            return self.years[row];
+            return _pickerDataSource_1[row];
         }
     }
     return nil;
@@ -448,7 +487,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         
         // toggle
         if ([_items containsObject:self.dateInputItem]) {
-            [_items removeObject:self.dateInputItem];
+            [_items removeObject:self.dateInputItem];   
             
             [tableView beginUpdates];
             
@@ -583,19 +622,20 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
             NSDate *pickDate = ![_loanCalcData extraPaymentOneTimeDate] ? [NSDate date] : [_loanCalcData extraPaymentOneTimeDate];
             NSDateFormatter *df = [[NSDateFormatter alloc] init];
             
-            if (IS_IPAD) {
-                inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
-            }
-            else {
-                // 한국만 예외적으로 long스타일 적용
-                NSLocale *locale = [NSLocale currentLocale];
-                if ([locale.localeIdentifier isEqualToString:@"ko_KR"]) {
-                    inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
-                }
-                else {
-                    inputCell.textField.text = [df localizedMediumStyleYearMonthFromDate:pickDate];
-                }
-            }
+            inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
+//            if (IS_IPAD) {
+//                inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
+//            }
+//            else {
+//                // 한국만 예외적으로 long스타일 적용
+//                NSLocale *locale = [NSLocale currentLocale];
+//                if ([locale.localeIdentifier isEqualToString:@"ko_KR"]) {
+//                    inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
+//                }
+//                else {
+//                    inputCell.textField.text = [df localizedMediumStyleYearMonthFromDate:pickDate];
+//                }
+//            }
         }
         cell = inputCell;
     }
@@ -613,18 +653,34 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
             NSUInteger month = [components month];
             NSUInteger year = [components year];
             
-            [pickerCell.picker selectRow:month-1 inComponent:0 animated:NO];
-            NSUInteger yearIdx = 0;
-            for (int i=0; i<_years.count; i++) {
-                NSString *yearString = _years[i];
-                NSUInteger tmp = yearString.integerValue;
-                
-                if (tmp == year) {
-                    yearIdx = i;
-                    break;
+            if ([_pickerDataSource_0 count] == 12) {
+                [pickerCell.picker selectRow:month-1 inComponent:0 animated:NO];
+                NSUInteger yearIdx = 0;
+                for (int i=0; i<_years.count; i++) {
+                    NSString *yearString = _years[i];
+                    NSUInteger tmp = yearString.integerValue;
+                    
+                    if (tmp == year) {
+                        yearIdx = i;
+                        break;
+                    }
                 }
+                [pickerCell.picker selectRow:yearIdx inComponent:1 animated:NO];
             }
-            [pickerCell.picker selectRow:yearIdx inComponent:1 animated:NO];
+            else {
+                [pickerCell.picker selectRow:month-1 inComponent:1 animated:NO];
+                NSUInteger yearIdx = 0;
+                for (int i=0; i<_years.count; i++) {
+                    NSString *yearString = _years[i];
+                    NSUInteger tmp = yearString.integerValue;
+                    
+                    if (tmp == year) {
+                        yearIdx = i;
+                        break;
+                    }
+                }
+                [pickerCell.picker selectRow:yearIdx inComponent:0 animated:NO];
+            }
         }
         else if (_exPaymentType == A3LC_ExtraPaymentYearly) {
             NSDate *pickDate = _loanCalcData.extraPaymentYearlyDate ? _loanCalcData.extraPaymentYearlyDate : [NSDate date];

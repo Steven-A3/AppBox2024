@@ -21,7 +21,6 @@
 #import "DaysCounterEvent.h"
 #import "DaysCounterReminder.h"
 #import "A3DateHelper.h"
-#import "NSDate+TimeAgo.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "A3AppDelegate+appearance.h"
@@ -207,26 +206,21 @@
                                                               withFormat:[formatter dateFormat]];
         }
         else {
-            if ([[NSDate date] compare:reminder.startDate] == NSOrderedDescending) {
-                cell.detailTextLabel.text = [reminder.startDate timeAgo];
+            // Reminder 의 startDate == EffectiveStartDate 이다.
+            // 양력/음력 모두 얄력기준 실제 이벤트 날짜가 startDate 로 정해진다.
+            NSDateFormatter *formatter = [NSDateFormatter new];
+            if (IS_IPAD || [NSDate isFullStyleLocale]) {
+                [formatter setDateStyle:NSDateFormatterFullStyle];
+                if (![item.isAllDay boolValue]) {
+                    [formatter setTimeStyle:NSDateFormatterShortStyle];
+                }
             }
             else {
-                // Reminder 의 startDate == EffectiveStartDate 이다.
-                // 양력/음력 모두 얄력기준 실제 이벤트 날짜가 startDate 로 정해진다.
-                NSDateFormatter *formatter = [NSDateFormatter new];
-                if (IS_IPAD || [NSDate isFullStyleLocale]) {
-                    [formatter setDateStyle:NSDateFormatterFullStyle];
-                    if (![item.isAllDay boolValue]) {
-                        [formatter setTimeStyle:NSDateFormatterShortStyle];
-                    }
-                }
-                else {
-                    [formatter setDateFormat:[item.isAllDay boolValue] ? [formatter customFullStyleFormat] : [formatter customFullWithTimeStyleFormat]];
-                }
-                
-                cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:reminder.startDate
-                                                                  withFormat:[formatter dateFormat]];
+                [formatter setDateFormat:[item.isAllDay boolValue] ? [formatter customFullStyleFormat] : [formatter customFullWithTimeStyleFormat]];
             }
+            
+            cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:reminder.startDate
+                                                              withFormat:[formatter dateFormat]];
         }
         unreadMarkView.hidden = [reminder.isUnread boolValue] ? NO : YES;
         

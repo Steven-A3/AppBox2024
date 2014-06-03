@@ -769,7 +769,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 2) {
+    if (section == ([LoanCalcPreference new].showExtraPayment == YES ? 2 : 1)) {
         return 38;
     }
     

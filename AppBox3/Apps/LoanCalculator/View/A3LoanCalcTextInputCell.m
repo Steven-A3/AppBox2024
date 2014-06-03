@@ -46,6 +46,7 @@
 	[self.textField setUserInteractionEnabled:YES];
 
 	_textField.placeholder = nil;
+    _textField.hidden = NO;
 	_textField.attributedPlaceholder = nil;
     _detailLabel.hidden = YES;
 }
