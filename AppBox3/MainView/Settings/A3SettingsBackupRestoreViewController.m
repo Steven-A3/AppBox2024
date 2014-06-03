@@ -223,6 +223,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
             else {
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                 [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+                [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
                 _backupInfoString = [NSString stringWithFormat:@"Last Backup: %@", [dateFormatter stringFromDate:lastItem.lastModifiedDate]];
             }
 		}
