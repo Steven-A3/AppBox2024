@@ -13,6 +13,7 @@
 #import "A3WalletItemFieldCell.h"
 #import "A3WalletItemPhotoFieldCell.h"
 #import "A3WalletNoteCell.h"
+#import "NSDate+formatting.h"
 #import "WalletData.h"
 #import "WalletItem.h"
 #import "walletfielditemvideo.h"
@@ -310,7 +311,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
         // Media CreationDate
         NSDateFormatter *dateFormatter = [NSDateFormatter new];
-        if (IS_IPAD) {
+        if (IS_IPAD || [NSDate isFullStyleLocale]) {
             dateFormatter.dateStyle = NSDateFormatterFullStyle;
             dateFormatter.timeStyle = NSDateFormatterShortStyle;
         }
