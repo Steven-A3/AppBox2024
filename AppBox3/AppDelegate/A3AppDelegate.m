@@ -46,8 +46,6 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataReady) name:A3NotificationCoreDataReady object:nil];
-
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (localNotification) {
 		_localNotificationUserInfo = localNotification.userInfo;
@@ -63,7 +61,7 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 		[A3KeychainUtils removePassword];
 	}
 	// TODO: 아래 한줄은 테스트 종료 후에는 반드시 삭제
-//	_shouldMigrateV1Data = YES;
+	_shouldMigrateV1Data = YES;
 
 	self.reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
 	[self.reachability startNotifier];
@@ -196,21 +194,24 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 }
 
 - (void)coreDataReady {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCoreDataReady object:nil];
-
-	dispatch_async(dispatch_get_main_queue(), ^{
-		if (self.shouldMigrateV1Data) {
-			A3DataMigrationManager *migrationManager = [[A3DataMigrationManager alloc] initWithPersistentStoreCoordinator:[[A3AppDelegate instance] persistentStoreCoordinator]];
-			if ([migrationManager walletDataFileExists] && ![migrationManager walletDataWithPassword:nil]) {
-				self.migrationManager = migrationManager;
-				self.migrationManager.delegate = self;
-				[migrationManager askWalletPassword];
-			} else {
-				[migrationManager migrateV1DataWithPassword:nil];
-				self.shouldMigrateV1Data = NO;
+	FNLOG();
+	double delayInSeconds = 0.01;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (self.shouldMigrateV1Data) {
+				A3DataMigrationManager *migrationManager = [[A3DataMigrationManager alloc] initWithPersistentStoreCoordinator:[[A3AppDelegate instance] persistentStoreCoordinator]];
+				if ([migrationManager walletDataFileExists] && ![migrationManager walletDataWithPassword:nil]) {
+					self.migrationManager = migrationManager;
+					self.migrationManager.delegate = self;
+					[migrationManager askWalletPassword];
+				} else {
+					[migrationManager migrateV1DataWithPassword:nil];
+					self.shouldMigrateV1Data = NO;
+				}
 			}
-		}
-		[self showReceivedLocalNotifications];
+			[self showReceivedLocalNotifications];
+		});
 	});
 }
 

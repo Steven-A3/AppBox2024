@@ -94,11 +94,11 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	}
 }
 
-- (void)ubiquityStoreManager:(UbiquityStoreManager *)manager didLoadStoreForCoordinator:(NSPersistentStoreCoordinator *)coordinator
-					 isCloud:(BOOL)isCloudStore {
+- (void)resetCoreDataStack {
+	[self setupMagicalRecordStackWithCoordinator:self.persistentStoreCoordinator];
+}
 
-	[self setPersistentStoreCoordinator:coordinator];
-
+- (void)setupMagicalRecordStackWithCoordinator:(NSPersistentStoreCoordinator *)coordinator {
 	SQLiteMagicalRecordStack *magicalRecordStack = [SQLiteMagicalRecordStack new];
 	magicalRecordStack.coordinator = coordinator;
 	magicalRecordStack.store = coordinator.persistentStores[0];
@@ -109,6 +109,13 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	magicalRecordStack.context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 
 	[MagicalRecordStack setDefaultStack:magicalRecordStack];
+}
+
+- (void)ubiquityStoreManager:(UbiquityStoreManager *)manager didLoadStoreForCoordinator:(NSPersistentStoreCoordinator *)coordinator
+					 isCloud:(BOOL)isCloudStore {
+
+	[self setPersistentStoreCoordinator:coordinator];
+	[self setupMagicalRecordStackWithCoordinator:coordinator];
 
 	self.coreDataReadyToUse = YES;
 
@@ -125,9 +132,8 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 		[A3LadyCalendarModelManager setupLocalNotification];
 	}
 
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCoreDataReady object:nil];
-	});
+	[self coreDataReady];
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCoreDataReady object:nil];
 
 	if (self.hud) {
 		__typeof(self) __weak weakSelf = self;

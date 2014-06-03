@@ -18,7 +18,7 @@ extern NSString *const A3WalletUUIDMemoCategory;
 
 - (void)initValues;
 
-+ (void)resetWalletCategory;
++ (void)resetWalletCategoriesInContext:(NSManagedObjectContext *)context;
 + (NSArray *)iconList;
 - (NSArray *)fieldsArray;
 

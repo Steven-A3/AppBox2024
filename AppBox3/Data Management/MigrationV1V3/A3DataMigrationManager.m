@@ -53,8 +53,9 @@ NSString *const kKeyForDDayImageFilename			= @"kKeyForDDayImageFilename";
 NSString *const kKeyForDDayMemo						= @"kKeyForDDayMemo";
 NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 
-@interface A3DataMigrationManager ()
+@interface A3DataMigrationManager () <UITextFieldDelegate, UIAlertViewDelegate>
 @property (nonatomic, strong) NSManagedObjectContext *context;
+@property (nonatomic, strong) UIAlertView *passwordAlertView;
 @end
 
 @implementation A3DataMigrationManager
@@ -80,8 +81,7 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 	[self migrateTranslatorHistoryInContext:_context];
 	[self migrateWalletDataInContext:_context withPassword:password];
 
-	// Reload main context after V1 data migration.
-	[[[A3AppDelegate instance] managedObjectContext] reset];
+	[[A3AppDelegate instance] resetCoreDataStack];
 
 	if ([_delegate respondsToSelector:@selector(migrationManager:didFinishMigration:)]) {
 		[_delegate migrationManager:self didFinishMigration:YES];
@@ -315,8 +315,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 
 - (BOOL)migrateWalletDataInContext:(NSManagedObjectContext *)context withPassword:(NSString *)password {
 	[WalletData createDirectories];
-	[WalletCategory resetWalletCategory];
-	[context reset];
+	[WalletCategory resetWalletCategoriesInContext:context ];
 
 	if (![self walletDataFileExists]) {
 		FNLOG(@"Wallet Data File does not exist. Nothing to migrate.");
@@ -350,6 +349,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 				fieldMap = [NSMutableDictionary new];
 				category = [WalletCategory MR_createInContext:context];
 				category.uniqueID = [[NSUUID UUID] UUIDString];
+				category.doNotShow = @NO;
 				category.name = [V1Category[KWalletTypeName] stringByTrimmingSpaceCharacters];
 				category.icon = @"wallet_folder";
 				category.modificationDate = [NSDate date];
@@ -465,7 +465,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 		}
 	}
 	// Sort category by name except all and favorite.
-	NSArray *categories = [WalletCategory MR_findAllSortedBy:@"name" ascending:YES];
+	NSArray *categories = [WalletCategory MR_findAllSortedBy:@"name" ascending:YES inContext:context];
 	NSInteger index = 3000000;
 	for (WalletCategory *category in categories) {
 		if ([category.uniqueID isEqualToString:A3WalletUUIDFavoriteCategory]) {
@@ -621,20 +621,30 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 }
 
 - (void)askWalletPassword {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Encryption Key for Wallet" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-	alertView.alertViewStyle = UIAlertViewStyleSecureTextInput;
-	alertView.delegate = self;
-	[alertView show];
+	FNLOG();
+	_passwordAlertView = [[UIAlertView alloc] initWithTitle:@"Encryption Key for Wallet" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+	_passwordAlertView.alertViewStyle = UIAlertViewStyleSecureTextInput;
+	_passwordAlertView.delegate = self;
+	[_passwordAlertView show];
+}
+
+- (void)willPresentAlertView:(UIAlertView *)alertView {
+	UITextField *textField = [alertView textFieldAtIndex:0];
+	textField.delegate = self;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	[self.passwordAlertView dismissWithClickedButtonIndex:0 animated:YES];
+	[self alertView:_passwordAlertView clickedButtonAtIndex:0];
+	return YES;
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex != alertView.cancelButtonIndex) {
-		NSString *password = [[alertView textFieldAtIndex:0] text];
-		if ([self walletDataWithPassword:password]) {
-			[self migrateV1DataWithPassword:password];
-		} else {
-			[self askWalletPassword];
-		}
+	NSString *password = [[alertView textFieldAtIndex:0] text];
+	if ([self walletDataWithPassword:password]) {
+		[self migrateV1DataWithPassword:password];
+	} else {
+		[self askWalletPassword];
 	}
 }
 

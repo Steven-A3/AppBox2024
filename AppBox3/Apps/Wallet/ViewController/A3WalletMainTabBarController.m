@@ -154,11 +154,11 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 
 - (NSMutableArray *)categories {
 	if (nil == _categories) {
-        if ([[WalletCategory MR_numberOfEntities] isEqualToNumber:@0 ]) {
-            [WalletCategory resetWalletCategory];
+        if ([WalletCategory MR_countOfEntities] == 0) {
+            [WalletCategory resetWalletCategoriesInContext:[[MagicalRecordStack defaultStack] context] ];
 			[WalletCategory exportCategoryInfoAsPList];
         }
-		_categories = [NSMutableArray arrayWithArray:[WalletCategory MR_findAllSortedBy:@"order" ascending:YES]];
+		_categories = [NSMutableArray arrayWithArray:[WalletCategory MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"doNotShow == NO"]]];
 	}
 	return _categories;
 }

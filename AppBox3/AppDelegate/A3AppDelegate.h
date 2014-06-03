@@ -90,6 +90,8 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 
 + (A3AppDelegate *)instance;
 
+- (void)coreDataReady;
+
 - (void)showReceivedLocalNotifications;
 
 - (UINavigationController *)navigationController;

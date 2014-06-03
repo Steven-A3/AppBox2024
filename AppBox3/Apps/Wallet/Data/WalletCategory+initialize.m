@@ -25,10 +25,9 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	self.modificationDate = [NSDate date];
 }
 
-+ (void)resetWalletCategory
-{
-    if ([[WalletCategory MR_numberOfEntities] integerValue] > 0) {
-		[WalletCategory MR_truncateAll];
++ (void)resetWalletCategoriesInContext:(NSManagedObjectContext *)context {
+    if ([WalletCategory MR_countOfEntitiesWithContext:context] > 0) {
+		[WalletCategory MR_truncateAllInContext:context];
 	}
     
     // unit type set : make and set to core data
@@ -36,14 +35,14 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	NSUInteger categoryIdx = 1;
 
     // create all, favorite category
-    WalletCategory *favoriteCategory = [WalletCategory MR_createEntity];
+    WalletCategory *favoriteCategory = [WalletCategory MR_createInContext:context];
 	[favoriteCategory initValues];
 	favoriteCategory.name = @"Favorite";
     favoriteCategory.icon = @"star01";
 	favoriteCategory.uniqueID = A3WalletUUIDFavoriteCategory;
 	favoriteCategory.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
-    WalletCategory *allCategory = [WalletCategory MR_createEntity];
+    WalletCategory *allCategory = [WalletCategory MR_createInContext:context];
 	[allCategory initValues];
 	allCategory.name = @"All";
     allCategory.icon = @"wallet_folder";
@@ -51,7 +50,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	allCategory.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
     for (NSDictionary *preset in categoryPresets) {
-        WalletCategory *category = [WalletCategory MR_createEntity];
+        WalletCategory *category = [WalletCategory MR_createInContext:context];
 		[category initValues];
 
 		category.uniqueID = preset[@"uniqueID"];
@@ -62,7 +61,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 		NSArray *fieldPresets = preset[@"Fields"];
         NSUInteger fieldIdx = 1;
 		for (NSDictionary *fieldPreset in fieldPresets) {
-            WalletField *field = [WalletField MR_createEntity];
+            WalletField *field = [WalletField MR_createInContext:context];
 			field.uniqueID = fieldPreset[@"uniqueID"];
 			field.name = fieldPreset[@"name"];
             field.category = category;
@@ -72,7 +71,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
         }
     }
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[context MR_saveToPersistentStoreAndWait];
 }
 
 - (NSArray *)fieldsArray

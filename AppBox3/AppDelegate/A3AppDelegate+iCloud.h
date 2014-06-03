@@ -16,4 +16,5 @@ extern NSString *const A3NotificationCoreDataReady;
 - (void)setupCloud;
 - (void)setCloudEnabled:(BOOL)enable;
 
+- (void)resetCoreDataStack;
 @end
