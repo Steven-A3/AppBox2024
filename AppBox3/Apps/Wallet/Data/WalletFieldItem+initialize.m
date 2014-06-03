@@ -53,15 +53,12 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 }
 
 - (NSString *)photoImageThumbnailPathInOriginal:(BOOL)original {
-	NSString *directory;
+	NSString *path = [NSString stringWithFormat:@"%@/%@-imageThumbnail", A3WalletImageThumbnailDirectory, self.uniqueID];
 	if (original) {
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-		directory = [paths objectAtIndex:0];
+		return [path pathInCachesDirectory];
 	} else {
-		directory = NSTemporaryDirectory();
+		return [self.uniqueID pathInTemporaryDirectory];
 	}
-	NSString *imageThumbnail = [NSString stringWithFormat:@"%@-imageThumbnail", self.uniqueID];
-	return [directory stringByAppendingPathComponent:imageThumbnail];
 }
 
 - (UIImage *)makePhotoImageThumbnailWithImage:(UIImage *)originalImage inOriginalDirectory:(BOOL)inOriginalDirectory {
@@ -81,30 +78,21 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 }
 
 - (NSString *)videoThumbnailPathInOriginal:(BOOL)inOriginal {
-	NSString *directory;
+	NSString *path = [NSString stringWithFormat:@"%@/%@-videoThumbnail", A3WalletVideoThumbnailDirectory, self.uniqueID];
 	if (inOriginal) {
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-		directory = [paths objectAtIndex:0];
+		return [path pathInCachesDirectory];
 	} else {
-		directory = NSTemporaryDirectory();
+		return [self.uniqueID pathInTemporaryDirectory];
 	}
-	NSString *imageThumbnail = [NSString stringWithFormat:@"%@-videoThumbnail", self.uniqueID];
-	return [directory stringByAppendingPathComponent:imageThumbnail];
 }
 
 - (NSString *)videoFilePathInOriginal:(BOOL)inOriginal {
-	if (!self.video) return nil;
-
-	NSString *directory;
+	NSString *path = [NSString stringWithFormat:@"%@/%@-video", A3WalletVideoDirectory, self.uniqueID];
 	if (inOriginal) {
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-		directory = [paths objectAtIndex:0];
+		return [path pathInLibraryDirectory];
 	} else {
-		directory = NSTemporaryDirectory();
+		return [self.uniqueID pathInTemporaryDirectory];
 	}
-	NSString *filename = [NSString stringWithFormat:@"%@-video", self.uniqueID];
-	filename = [filename stringByAppendingPathExtension:self.video.extension];
-	return [directory stringByAppendingPathComponent:filename];
 }
 
 - (UIImage *)makeThumbnailWithImage:(UIImage *)originalImage path:(NSString *)path {

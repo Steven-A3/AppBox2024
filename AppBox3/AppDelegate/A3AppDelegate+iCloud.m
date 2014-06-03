@@ -9,12 +9,9 @@
 #import "A3AppDelegate+iCloud.h"
 #import "A3CurrencyDataManager.h"
 #import "CurrencyFavorite.h"
-#import "A3UIDevice.h"
-#import "MMDrawerController.h"
 #import "SFKImage.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3DaysCounterModelManager.h"
-#import "A3DataMigrationManager.h"
 
 NSString *const A3UniqueIdentifier = @"uniqueIdentifier";
 NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
@@ -114,17 +111,6 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 
 	self.coreDataReadyToUse = YES;
 
-	if ([self shouldMigrateV1Data])
-	{
-		dispatch_async(dispatch_get_main_queue(), ^{
-			A3DataMigrationManager *_dataMigrationManager = [[A3DataMigrationManager alloc] initWithPersistentStoreCoordinator:coordinator];
-			[_dataMigrationManager migrateV1DataWithPassword:nil];
-			_dataMigrationManager = nil;
-
-			[self.managedObjectContext reset];
-		});
-	}
-
 	if (isCloudStore) {
 		if (_needMigrateLocalDataToCloud) {
 			// Cloud data exist and we need to migrate.
@@ -138,7 +124,9 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 		[A3LadyCalendarModelManager setupLocalNotification];
 	}
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCoreDataReady object:nil];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCoreDataReady object:nil];
+	});
 
 	if (self.hud) {
 		__typeof(self) __weak weakSelf = self;
@@ -164,15 +152,6 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 			});
 		});
 	}
-
-//	double delayInSeconds = 30;
-//	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-//	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//		if ([CurrencyFavorite MR_countOfEntities] == 0) {
-//			[weakSelf.ubiquityStoreManager deleteCloudStoreLocalOnly:YES];
-//		}
-//	});
-//
 }
 
 - (void)ubiquityStoreManager:(UbiquityStoreManager *)manager failedLoadingStoreWithCause:(UbiquityStoreErrorCause)cause context:(id)context

@@ -12,19 +12,22 @@
 #import "UIViewController+MMDrawerController.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
+#import "A3DataMigrationManager.h"
 
 NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 
-@interface A3LaunchViewController () <UIViewControllerTransitioningDelegate>
+@interface A3LaunchViewController () <UIViewControllerTransitioningDelegate, A3DataMigrationManagerDelegate>
 
 @property (nonatomic, strong) UIStoryboard *launchStoryboard;
 @property (nonatomic, strong) A3LaunchSceneViewController *currentSceneViewController;
+@property (nonatomic, strong) A3DataMigrationManager *migrationManager;
+@property (nonatomic, strong) id coreDataReadyObserver;
 
 @end
 
 @implementation A3LaunchViewController {
-	NSUInteger sceneNumber;
-	BOOL		cloudButtonUsed;
+	NSUInteger _sceneNumber;
+	BOOL _cloudButtonUsed;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -45,11 +48,11 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		return;
 	}
 	
-	sceneNumber = 0;
+	_sceneNumber = 0;
 
 	_launchStoryboard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Launch_iPhone" : @"Launch_iPad" bundle:nil];
 	_currentSceneViewController = [_launchStoryboard instantiateViewControllerWithIdentifier:@"LaunchScene0"];
-	_currentSceneViewController.sceneNumber = sceneNumber;
+	_currentSceneViewController.sceneNumber = _sceneNumber;
 	_currentSceneViewController.delegate = self;
 	[self.view addSubview:_currentSceneViewController.view];
 	[self addChildViewController:_currentSceneViewController];
@@ -92,13 +95,46 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 			
 			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowWhatsNew_3_0];
 			[[NSUserDefaults standardUserDefaults] synchronize];
+
+			if ([[A3AppDelegate instance] shouldMigrateV1Data]) {
+				if ([[A3AppDelegate instance] coreDataReadyToUse]) {
+					FNLOG(@"Core Data Already Ready!");
+					[self migrateV1Data];
+				} else {
+					[_currentSceneViewController hideButtons];
+					_coreDataReadyObserver =
+							[[NSNotificationCenter defaultCenter] addObserverForName:A3NotificationCoreDataReady object:nil queue:nil usingBlock:^(NSNotification *notification) {
+								FNLOG(@"Received Core Data Ready Notification");
+								[self migrateV1Data];
+								[[NSNotificationCenter defaultCenter] removeObserver:_coreDataReadyObserver];
+								_coreDataReadyObserver = nil;
+							}];
+				}
+			}
 		}
 	}
 }
 
+- (void)migrateV1Data {
+	A3DataMigrationManager *migrationManager = [[A3DataMigrationManager alloc] initWithPersistentStoreCoordinator:[[A3AppDelegate instance] persistentStoreCoordinator]];
+	if ([migrationManager walletDataFileExists] && ![migrationManager walletDataWithPassword:nil]) {
+		_migrationManager = migrationManager;
+		_migrationManager.delegate = self;
+		[migrationManager askWalletPassword];
+	} else {
+		[migrationManager migrateV1DataWithPassword:nil];
+		[_currentSceneViewController showButtons];
+	}
+}
+
+- (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {
+	[_currentSceneViewController showButtons];
+	_migrationManager = nil;
+}
+
 - (void)useICloudButtonPressedInViewController:(UIViewController *)viewController {
-	if (!cloudButtonUsed) {
-		cloudButtonUsed = YES;
+	if (!_cloudButtonUsed) {
+		_cloudButtonUsed = YES;
 		[_currentSceneViewController.rightButton setTitle:@"Continue" forState:UIControlStateNormal];
 
 		if (![[A3AppDelegate instance].ubiquityStoreManager cloudAvailable]) {
@@ -112,9 +148,9 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 }
 
 - (void)continueButtonPressedInViewController:(UIViewController *)viewController {
-	sceneNumber++;
-	A3LaunchSceneViewController *nextSceneViewController = [_launchStoryboard instantiateViewControllerWithIdentifier:[NSString stringWithFormat:@"LaunchScene%ld", (long) sceneNumber]];
-	nextSceneViewController.sceneNumber = sceneNumber;
+	_sceneNumber++;
+	A3LaunchSceneViewController *nextSceneViewController = [_launchStoryboard instantiateViewControllerWithIdentifier:[NSString stringWithFormat:@"LaunchScene%ld", (long) _sceneNumber]];
+	nextSceneViewController.sceneNumber = _sceneNumber;
 	nextSceneViewController.delegate = self;
 	nextSceneViewController.showAsWhatsNew = _showAsWhatsNew;
 
