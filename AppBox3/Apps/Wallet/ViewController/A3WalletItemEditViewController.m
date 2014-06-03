@@ -711,11 +711,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	}
 
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    if (IS_IPHONE) {
-        dateFormatter.dateFormat = [dateFormatter customFullStyleFormat];
+    if (IS_IPAD || [NSDate isFullStyleLocale]) {
+        [dateFormatter setDateStyle:NSDateFormatterFullStyle];
     }
     else {
-        [dateFormatter setDateStyle:NSDateFormatterFullStyle];
+        dateFormatter.dateFormat = [dateFormatter customFullStyleFormat];
     }
 
 	for (WalletFieldItem *remainItem in originalFieldItems) {

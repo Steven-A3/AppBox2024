@@ -304,7 +304,7 @@ enum SortingKind {
     
     // attributes
     UIFont *titleFont = (IS_IPAD) ? [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2] : [UIFont systemFontOfSize:11];
-    UIFont *numberFont = (IS_IPAD) ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] : [UIFont boldSystemFontOfSize:17];
+    UIFont *numberFont = (IS_IPAD) ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] : [UIFont boldSystemFontOfSize:15];
     
     NSDictionary *textAttributes = @{
                                      NSFontAttributeName : titleFont,
@@ -387,7 +387,6 @@ enum SortingKind {
     topView.cateLabel.numberOfLines = numOfLines;
     topView.itemsLabel.numberOfLines = numOfLines;
     topView.updatedLabel.numberOfLines = numOfLines;
-    topView.updatedLabel.font = [UIFont boldSystemFontOfSize:15];
 }
 
 - (void)refreshItems

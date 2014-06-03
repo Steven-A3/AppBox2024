@@ -470,8 +470,9 @@
         NSString *interest;
         NSString *balance;
         
-        df.dateFormat = [df customFullStyleFormat];
-        date = [df stringFromDate:data[@"Date"]];
+//        df.dateFormat = [df customFullStyleFormat];
+//        date = [df stringFromDate:data[@"Date"]];
+        date = [df localizedLongStyleYearMonthFromDate:data[@"Date"]];
 
         if (IS_IPHONE) {
             interest = [[numberFormatter stringFromNumber:data[@"Interest"]] stringByReplacingOccurrencesOfString:[numberFormatter currencySymbol] withString:@""];

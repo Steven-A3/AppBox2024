@@ -1295,17 +1295,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     else {
         [body appendString:[LoanCalcString valueTextForCalcItem:resultItem fromData:loanData formatter:self.currencyFormatter]];
     }
-//    if (loanData.calculationMode == A3LC_CalculationForTermOfMonths) {
-//        NSInteger monthInt =  (int)round(loanData.monthOfTerms.doubleValue);
-//        [body appendString:[NSString stringWithFormat:@"%ld months", (long)monthInt]];
-//    }
-//    else if (loanData.calculationMode == A3LC_CalculationForTermOfYears) {
-//        NSInteger yearInt =  (int)round(loanData.monthOfTerms.doubleValue/12.0);
-//        [body appendString:[NSString stringWithFormat:@"%ld years", (long)yearInt]];
-//    }
-//    else {
-//        [body appendString:[LoanCalcString valueTextForCalcItem:resultItem fromData:loanData formatter:self.currencyFormatter]];
-//    }
     
     [body appendFormat:@"<br>Interest: %@ <br>", [self.loanFormatter stringFromNumber:[loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
     [body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[loanData totalAmount]]];
