@@ -338,9 +338,16 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
     NSNumber *interest = paymentInfo[@"Interest"];
     NSNumber *balance = paymentInfo[@"Balance"];
     NSDateFormatter *df = [NSDateFormatter new];
-    df.dateStyle = NSDateFormatterLongStyle;
-    df.dateFormat = [df formatStringByRemovingDayComponent:[df dateFormat]];
-    payInfoCell.dateLb.text = [df stringFromDate:date];
+    //df.dateStyle = NSDateFormatterLongStyle;
+    
+//    df.dateStyle = NSDateFormatterMediumStyle;
+//    df.dateFormat = [df formatStringByRemovingDayComponent:[df dateFormat]];
+//    payInfoCell.dateLb.text = [df stringFromDate:date];
+
+    payInfoCell.dateLb.text = [df localizedMediumStyleYearMonthFromDate:date];
+    
+//    df.dateFormat = [df formatStringByRemovingDayComponent:[df customFullStyleFormat]];
+//    payInfoCell.dateLb.text = [df stringFromDate:date];
     
     if (IS_IPHONE) {
         self.currencyFormatter.currencySymbol = @"";

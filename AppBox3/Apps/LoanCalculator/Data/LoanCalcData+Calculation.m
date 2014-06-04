@@ -457,8 +457,8 @@
 - (NSString *)filePathOfCsvStringForMonthlyDataWithFileName:(NSString *)fileName {
     NSMutableArray *csvArray = [NSMutableArray new];
     NSDateFormatter *df = [NSDateFormatter new];
-    df.dateStyle = NSDateFormatterLongStyle;
-    df.dateFormat = [df formatStringByRemovingDayComponent:[df dateFormat]];
+//    df.dateStyle = NSDateFormatterLongStyle;
+//    df.dateFormat = [df formatStringByRemovingDayComponent:[df dateFormat]];
     NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
     numberFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
     
@@ -472,8 +472,8 @@
         NSString *interest;
         NSString *balance;
         
-        date = [df stringFromDate:data[@"Date"]];
-        
+//        date = [df stringFromDate:data[@"Date"]];
+        date = [df localizedMediumStyleYearMonthFromDate:data[@"Date"]];
 
         if (IS_IPHONE) {
             interest = [[numberFormatter stringFromNumber:data[@"Interest"]] stringByReplacingOccurrencesOfString:[numberFormatter currencySymbol] withString:@""];
