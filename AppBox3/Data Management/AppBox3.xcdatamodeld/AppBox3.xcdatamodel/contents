@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D65" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Calculation" representedClassName="Calculation" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="expression" optional="YES" attributeType="String" syncable="YES"/>
@@ -396,10 +396,10 @@
         <element name="CurrencyHistoryItem" positionX="54" positionY="-621" width="128" height="105"/>
         <element name="CurrencyRateItem" positionX="54" positionY="-504" width="128" height="135"/>
         <element name="DaysCounterCalendar" positionX="-414" positionY="-837" width="128" height="178"/>
-        <element name="DaysCounterDate" positionX="-407" positionY="-610" width="128" height="178"/>
-        <element name="DaysCounterEvent" positionX="-236" positionY="-837" width="128" height="375"/>
+        <element name="DaysCounterDate" positionX="-578" positionY="-646" width="128" height="178"/>
+        <element name="DaysCounterEvent" positionX="-236" positionY="-837" width="128" height="373"/>
         <element name="DaysCounterEventLocation" positionX="-81" positionY="-801" width="162" height="193"/>
-        <element name="DaysCounterFavorite" positionX="-576" positionY="-684" width="128" height="73"/>
+        <element name="DaysCounterFavorite" positionX="-432" positionY="-640" width="128" height="73"/>
         <element name="DaysCounterReminder" positionX="-83" positionY="-523" width="128" height="120"/>
         <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="238"/>
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="178"/>

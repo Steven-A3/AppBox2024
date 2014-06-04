@@ -418,7 +418,9 @@
         eventModel.hasReminder = @(NO);
     }
     else {
-        eventModel.hasReminder = ([eventModel.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventModel.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
+//        eventModel.hasReminder = ([eventModel.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventModel.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
+//        eventModel.hasReminder = ([eventModel.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventModel.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
+        eventModel.hasReminder = @(YES);
     }
 
     if (!eventModel.effectiveStartDate) {
@@ -1393,6 +1395,7 @@
             DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event.uniqueID" withValue:[event uniqueID]];
             if (!reminder) {
                 reminder = [DaysCounterReminder MR_createEntity];
+                reminder.event = event;
                 reminder.isOn = @(NO);
                 reminder.isUnread = @(YES);
                 reminder.startDate = event.effectiveStartDate;
