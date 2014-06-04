@@ -90,7 +90,7 @@
         self.title = @"Add Event";
         _isAdvancedCellOpen = NO;
         _eventItem = [DaysCounterEvent MR_createEntity];
-		_eventItem.uniqueID = [[NSUUID UUID] UUIDString];
+//		_eventItem.uniqueID = [[NSUUID UUID] UUIDString];
         [A3DaysCounterModelManager setDateModelObjectForDateComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:NO];
         [A3DaysCounterModelManager setDateModelObjectForDateComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:YES];
 
@@ -1300,7 +1300,12 @@
 #pragma mark etc
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [_sectionTitleArray count] + (_eventItem.uniqueID ? 1 : 0);
+//    return [_sectionTitleArray count] + (_eventItem.uniqueID ? 1 : 0);
+    if (_eventItem.uniqueID) {
+        return [_sectionTitleArray count] + 1;
+    }
+
+    return [_sectionTitleArray count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -1433,6 +1438,14 @@
 
 
     if ( _isAddingEvent ) {
+        if (!_eventItem.uniqueID) {
+            _eventItem.uniqueID = [[NSUUID UUID] UUIDString];
+        }
+        
+        if (_eventItem.location) {
+            _eventItem.location.eventId = _eventItem.uniqueID;
+        }
+        
         [_sharedManager addEvent:_eventItem];
     }
     else {

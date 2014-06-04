@@ -447,6 +447,14 @@
         eventItem.alertDatetime = [A3DaysCounterModelManager effectiveAlertDateForEvent:eventItem];
         eventItem.hasReminder = ([eventItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventItem.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
     }
+    
+    if ([eventItem.hasReminder boolValue] && eventItem.reminder) {
+        eventItem.reminder.isUnread = @(YES);
+        eventItem.reminder.isOn = @(NO);
+        eventItem.reminder.startDate = eventItem.effectiveStartDate;
+        eventItem.reminder.alertDate = eventItem.alertDatetime;
+    }
+    
 	eventItem.modificationDate = [NSDate date];
     
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
@@ -1378,29 +1386,73 @@
         event.alertDatetime = [self effectiveAlertDateForEvent:event];                  // 이벤트 시간 기준, 실제 발생할 이벤트 얼럿 시간을 얻는다.
         FNLOG(@"\n[%ld] EventID: %@, EventName: %@\nEffectiveStartDate: %@, \nAlertDatetime: %@", (long)idx, event.uniqueID, event.eventName, event.effectiveStartDate, event.alertDatetime);
         
-        if ([event.hasReminder isEqualToNumber:@(YES)] && [event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970]) {
+        
+        
+        // 리마인더 이벤트 리스트 관리.
+        if ([event.hasReminder isEqualToNumber:@(YES)]) {
             DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event.uniqueID" withValue:[event uniqueID]];
-            if (reminder) {
-                // Remind 이벤트가 이미 존재하는 경우,
-                if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
-                    // event 의 갱신된 시간기준으로 reminder 시간 갱신.
-                    reminder.isOn = @(YES);
-                    reminder.isUnread = @(YES);
-                }
-                // event 의 갱신된 시간기준으로 reminder 시간 갱신.
+            if (!reminder) {
+                reminder = [DaysCounterReminder MR_createEntity];
+                reminder.isOn = @(NO);
+                reminder.isUnread = @(YES);
                 reminder.startDate = event.effectiveStartDate;
                 reminder.alertDate = event.alertDatetime;
             }
-            else {
-                // Remind 이벤트가 없는 경우, 추가.
-                reminder = [DaysCounterReminder MR_createEntity];
-                reminder.isOn = @(YES);
-                reminder.isUnread = @(YES);
-                reminder.startDate = event.effectiveStartDate;      // 실제 이벤트 발생일.
-                reminder.alertDate = event.alertDatetime;           // 실제 이벤트 얼럿 발생시간. 이 시간이 지나면, Reminder 리스트에 보여지게 된다.
-                reminder.event = event;                             // 릴레이션.
+            
+            // 읽은 이벤트에 한하여 리마인더의 시간을 변경함. 그래야 ago 출력이 가능. (ago 출력을 위하여, Reminder 이벤트/알람 시간을 별도로 관리.
+            if ([reminder.isUnread boolValue] == NO && [reminder.startDate timeIntervalSince1970] < [now timeIntervalSince1970]) {          // 읽음 && 리마인더의 이벤트 당일을 경과.
+                reminder.startDate = event.effectiveStartDate;      // 시간갱신
+                reminder.alertDate = event.alertDatetime;           // 시간갱신, 이벤트 알림시간은 now 보다 미래가 됨.
+                reminder.isOn = @(NO);                              // 리마인더리스트에서 숨김.
+                reminder.isUnread = @(YES);                         // 안 읽음 상태
+            }
+            else if ([reminder.isUnread boolValue] == YES && [event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970]) {   // 읽지 않음 && 이벤트의 알림 날짜를 경과 (이벤트 알림 날짜는 항상 갱신됨)
+                reminder.startDate = event.effectiveStartDate;      // 시간갱신
+                reminder.alertDate = event.alertDatetime;           // 시간갱신, 이벤트 알림시간은 now 보다 미래가 됨.
+                reminder.isOn = @(YES);                              // 리마인더리스트에서 출력.
+            }
+            else if ([reminder.isUnread boolValue] == YES && [event.alertDatetime timeIntervalSince1970] > [now timeIntervalSince1970]) {   // 읽지 않음 && 이벤트의 알림 날짜에 도달하기 전.
+                reminder.startDate = event.effectiveStartDate;      // 시간갱신
+                reminder.alertDate = event.alertDatetime;           // 시간갱신, 이벤트 알림시간은 now 보다 미래가 됨.
+                reminder.isOn = @(NO);                              // 리마인더리스트에서 숨김.
+            }
+
+            // 이벤트 알림시간을 경과
+            if ([event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970]) {
+                reminder.isOn = @(YES);     // 리마인더리스트에 출력.
             }
         }
+        else {
+            DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event.uniqueID" withValue:[event uniqueID]];
+            if (reminder) {
+                [reminder MR_deleteEntity];
+            }
+        }
+        
+        
+//        if ([event.hasReminder isEqualToNumber:@(YES)] && [event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970]) {
+//            DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event.uniqueID" withValue:[event uniqueID]];
+//            if (reminder) {
+//                // Remind 이벤트가 이미 존재하는 경우,
+//                if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
+//                    // event 의 갱신된 시간기준으로 reminder 시간 갱신.
+//                    reminder.isOn = @(YES);
+//                    reminder.isUnread = @(YES);
+//                }
+//                // event 의 갱신된 시간기준으로 reminder 시간 갱신.
+//                reminder.startDate = event.effectiveStartDate;
+//                reminder.alertDate = event.alertDatetime;
+//            }
+//            else {
+//                // Remind 이벤트가 없는 경우, 추가.
+//                reminder = [DaysCounterReminder MR_createEntity];
+//                reminder.isOn = @(YES);
+//                reminder.isUnread = @(YES);
+//                reminder.startDate = event.effectiveStartDate;      // 실제 이벤트 발생일.
+//                reminder.alertDate = event.alertDatetime;           // 실제 이벤트 얼럿 발생시간. 이 시간이 지나면, Reminder 리스트에 보여지게 된다.
+//                reminder.event = event;                             // 릴레이션.
+//            }
+//        }
         
         if ([event.alertDatetime timeIntervalSince1970] > [now timeIntervalSince1970]) {
             // 현재 이후의 시간에 대하여 등록.
