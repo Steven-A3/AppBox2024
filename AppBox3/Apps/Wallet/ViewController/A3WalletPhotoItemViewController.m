@@ -28,6 +28,7 @@
 #import "WalletFieldItemImage.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "NSDate+Formatting.h"
 
 @interface A3WalletPhotoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, MWPhotoBrowserDelegate>
 
@@ -378,7 +379,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
             _metadataView.takenDateLabel.hidden = NO;
             
 			[df setLocale:[NSLocale currentLocale]];
-            if (IS_IPAD) {
+            if (IS_IPAD || [NSDate isFullStyleLocale]) {
                 [df setDateStyle:NSDateFormatterFullStyle];
                 [df setTimeStyle:NSDateFormatterShortStyle];
             }
