@@ -20,11 +20,13 @@
 #import "A3AppDelegate.h"
 #import "UIColor+A3Addition.h"
 #import "UIViewController+navigation.h"
+#import "A3InstructionViewController.h"
 
-@interface A3BatteryStatusMainViewController ()
+@interface A3BatteryStatusMainViewController () <A3InstructionViewControllerDelegate>
 @property (nonatomic, strong) A3BatteryStatusSettingViewController *settingsViewController;
 @property (nonatomic, strong) A3BatteryStatusListPageSectionView *sectionHeaderView;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
 @implementation A3BatteryStatusMainViewController
@@ -68,6 +70,8 @@
     }
     
     [self setupTopWhitePaddingView];
+    [self setupInstructionView];
+        
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
@@ -100,6 +104,15 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceBatteryLevelDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceBatteryStateDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3BatteryStatusThemeColorChanged object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+	[self refreshHeaderView];
+    [self reloadTableViewDataSource];
+    [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -154,13 +167,27 @@
     [self.tableView addSubview:_topWhitePaddingView];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+#pragma mark Instruction Related
+- (void)setupInstructionView
 {
-    [super viewWillAppear:animated];
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:StoryBoardID_BatteryStatus]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
 
-	[self refreshHeaderView];
-    [self reloadTableViewDataSource];
-    [self.tableView reloadData];
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"BatteryStatus"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
 }
 
 #pragma mark -

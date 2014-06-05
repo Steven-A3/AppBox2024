@@ -77,6 +77,7 @@
 		574B6102193F6A0F0043FC34 /* Instruction_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 574B6101193F6A0F0043FC34 /* Instruction_iPad.storyboard */; };
 		577318F618E150F900565159 /* A3DaysCounterEventListSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */; };
 		57874C35190684AF00491485 /* A3DaysCounterLocationDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 57874C34190684AF00491485 /* A3DaysCounterLocationDetailCell.m */; };
+		57888EC21940667000306028 /* A3InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57888EC11940667000306028 /* A3InstructionViewController.m */; };
 		579B81AC18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 579B81AB18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib */; };
 		57D31ACE18E95C120081A810 /* A3DaysCounterEventInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */; };
 		6801AB2417490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6801AB2317490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib */; };
@@ -1094,6 +1095,8 @@
 		577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventListSectionHeader.m; sourceTree = "<group>"; };
 		57874C33190684AF00491485 /* A3DaysCounterLocationDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterLocationDetailCell.h; sourceTree = "<group>"; };
 		57874C34190684AF00491485 /* A3DaysCounterLocationDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterLocationDetailCell.m; sourceTree = "<group>"; };
+		57888EC01940667000306028 /* A3InstructionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3InstructionViewController.h; path = Instruction/A3InstructionViewController.h; sourceTree = "<group>"; };
+		57888EC11940667000306028 /* A3InstructionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3InstructionViewController.m; path = Instruction/A3InstructionViewController.m; sourceTree = "<group>"; };
 		579B81AB18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterEventListEditCell.xib; sourceTree = "<group>"; };
 		57D31ACC18E95C120081A810 /* A3DaysCounterEventInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterEventInfoCell.h; sourceTree = "<group>"; };
 		57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventInfoCell.m; sourceTree = "<group>"; };
@@ -2803,6 +2806,8 @@
 			children = (
 				574B60FF193F69EF0043FC34 /* Instruction_iPhone.storyboard */,
 				574B6101193F6A0F0043FC34 /* Instruction_iPad.storyboard */,
+				57888EC01940667000306028 /* A3InstructionViewController.h */,
+				57888EC11940667000306028 /* A3InstructionViewController.m */,
 			);
 			name = Instruction;
 			sourceTree = "<group>";
@@ -5942,6 +5947,7 @@
 				68B6A45F18CEE781004084EF /* SDWebImageDownloader.m in Sources */,
 				689C9A551839CD7F007C97EE /* UIAlertView+AFNetworking.m in Sources */,
 				6829686E18503C3300B70E13 /* MagicalImportFunctions.m in Sources */,
+				57888EC21940667000306028 /* A3InstructionViewController.m in Sources */,
 				68B6A2AC18CEC76D004084EF /* A3LoanCalcLoanDetailViewController.m in Sources */,
 				68F1C8F718D7FA41009FAE8A /* MPFlipTransition.m in Sources */,
 				680886D41891751B0093FD97 /* A3ClockDataManager.m in Sources */,

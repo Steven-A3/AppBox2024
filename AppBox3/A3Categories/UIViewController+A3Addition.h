@@ -70,4 +70,7 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (NSString *)fullStyleDateStringFromDate:(NSDate *)date withShortTime:(BOOL)shortTime;
 - (NSString *)customFullStyleDateStringFromDate:(NSDate *)date withShortTime:(BOOL)shortTime;
 
+#pragma mark - Instruction
+- (void)setupTwoFingerDoubleTapGestureToShowInstruction;
+
 @end
