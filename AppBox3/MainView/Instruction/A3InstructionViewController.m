@@ -11,7 +11,7 @@
 #import "UIImage+imageWithColor.h"
 
 NSString *const StoryBoardID_BatteryStatus = @"BatteryStatus";
-
+NSString *const StoryBoardID_Calcualtor = @"Calcualtor";
 @interface A3InstructionViewController () <UIAlertViewDelegate>
 
 @end

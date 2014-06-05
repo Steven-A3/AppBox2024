@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--Instruction View Controller-->
+        <!--Calcualtor Instruction View Controller-->
         <scene sceneID="x2l-Z2-6FY">
             <objects>
-                <viewController storyboardIdentifier="BatteryStatus" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ysT-2a-nae" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Calcualtor" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ysT-2a-nae" userLabel="Calcualtor Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rkS-g2-XdD"/>
                         <viewControllerLayoutGuide type="bottom" id="N3F-7G-ehx"/>
@@ -21,8 +21,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="NMQ-xY-zn5">
-                                <rect key="frame" x="240" y="32" width="42" height="42"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_down" translatesAutoresizingMaskIntoConstraints="NO" id="NMQ-xY-zn5">
+                                <rect key="frame" x="139" y="506" width="42" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -31,18 +31,18 @@
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="0q1-C7-F7b">
-                                <rect key="frame" x="292" y="32" width="14" height="14"/>
+                                <rect key="frame" x="181" y="506" width="14" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="14" id="Dzr-oG-jgd"/>
                                     <constraint firstAttribute="height" constant="14" id="UaF-P4-UJ8"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="230" translatesAutoresizingMaskIntoConstraints="NO" id="sxx-vG-Pll">
-                                <rect key="frame" x="0.0" y="32" width="230" height="40"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="sxx-vG-Pll">
+                                <rect key="frame" x="0.0" y="456" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">tap to change 
-color and more</string>
+                                <string key="text">swipe left or right to change
+keypad for basic/scientific</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -51,17 +51,17 @@ color and more</string>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="NMQ-xY-zn5" firstAttribute="leading" secondItem="sxx-vG-Pll" secondAttribute="trailing" constant="10" id="4Bq-55-G6W"/>
+                            <constraint firstItem="NMQ-xY-zn5" firstAttribute="top" secondItem="0q1-C7-F7b" secondAttribute="top" id="3nC-R5-GG5"/>
                             <constraint firstItem="Tcm-zc-xSO" firstAttribute="top" secondItem="Wd6-dN-vyO" secondAttribute="top" id="Arf-g3-grb"/>
+                            <constraint firstItem="0q1-C7-F7b" firstAttribute="leading" secondItem="NMQ-xY-zn5" secondAttribute="trailing" id="EyT-PK-jcs"/>
                             <constraint firstItem="Tcm-zc-xSO" firstAttribute="leading" secondItem="Wd6-dN-vyO" secondAttribute="leading" id="IUy-Dl-Ny6"/>
+                            <constraint firstAttribute="centerX" secondItem="NMQ-xY-zn5" secondAttribute="centerX" id="IpA-hy-gTT"/>
                             <constraint firstAttribute="bottom" secondItem="Tcm-zc-xSO" secondAttribute="bottom" id="KSj-lS-z1R"/>
-                            <constraint firstAttribute="trailing" secondItem="0q1-C7-F7b" secondAttribute="trailing" constant="14" id="dAm-2y-Frk"/>
+                            <constraint firstAttribute="bottom" secondItem="NMQ-xY-zn5" secondAttribute="bottom" constant="20" id="S0F-dd-8OZ"/>
                             <constraint firstItem="sxx-vG-Pll" firstAttribute="leading" secondItem="Wd6-dN-vyO" secondAttribute="leading" id="eaL-x2-huF"/>
-                            <constraint firstItem="NMQ-xY-zn5" firstAttribute="top" secondItem="sxx-vG-Pll" secondAttribute="top" id="fT0-Tw-K13"/>
-                            <constraint firstItem="0q1-C7-F7b" firstAttribute="top" secondItem="rkS-g2-XdD" secondAttribute="bottom" constant="12" id="lCn-sQ-4zp"/>
-                            <constraint firstItem="NMQ-xY-zn5" firstAttribute="top" secondItem="0q1-C7-F7b" secondAttribute="top" id="qT4-nv-HyG"/>
+                            <constraint firstAttribute="trailing" secondItem="sxx-vG-Pll" secondAttribute="trailing" id="ot6-dk-ELl"/>
+                            <constraint firstItem="NMQ-xY-zn5" firstAttribute="top" secondItem="sxx-vG-Pll" secondAttribute="bottom" constant="10" id="rQX-8O-OsX"/>
                             <constraint firstAttribute="trailing" secondItem="Tcm-zc-xSO" secondAttribute="trailing" id="xOz-Xe-QSw"/>
-                            <constraint firstItem="0q1-C7-F7b" firstAttribute="leading" secondItem="NMQ-xY-zn5" secondAttribute="trailing" constant="10" id="zcf-nz-mah"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="Qdp-fp-srh" appends="YES" id="Odr-VR-55F"/>
@@ -79,11 +79,89 @@ color and more</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="496" y="-220"/>
+            <point key="canvasLocation" x="24" y="-433"/>
+        </scene>
+        <!--BatteryStatus Instruction View Controller-->
+        <scene sceneID="jfM-vE-cmI">
+            <objects>
+                <viewController storyboardIdentifier="BatteryStatus" useStoryboardIdentifierAsRestorationIdentifier="YES" id="khZ-WU-b1r" userLabel="BatteryStatus Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6ET-DL-QRc"/>
+                        <viewControllerLayoutGuide type="bottom" id="Nhf-q9-Iow"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Xkh-1s-pQ6">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HkA-jk-juy">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="7E9-sD-GeY">
+                                <rect key="frame" x="240" y="32" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="HIp-F3-d7v"/>
+                                    <constraint firstAttribute="width" constant="42" id="XZS-n5-otG"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="SGE-Qu-e10">
+                                <rect key="frame" x="292" y="32" width="14" height="14"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="14" id="Sof-p1-SDH"/>
+                                    <constraint firstAttribute="width" constant="14" id="w8W-u8-7cH"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="230" translatesAutoresizingMaskIntoConstraints="NO" id="EHY-52-AW9">
+                                <rect key="frame" x="0.0" y="32" width="230" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">tap to change 
+color and more</string>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="7E9-sD-GeY" firstAttribute="leading" secondItem="EHY-52-AW9" secondAttribute="trailing" constant="10" id="4It-2Z-VrT"/>
+                            <constraint firstItem="SGE-Qu-e10" firstAttribute="leading" secondItem="7E9-sD-GeY" secondAttribute="trailing" constant="10" id="E3C-yh-Qi0"/>
+                            <constraint firstAttribute="bottom" secondItem="HkA-jk-juy" secondAttribute="bottom" id="Skq-Ct-S2z"/>
+                            <constraint firstAttribute="trailing" secondItem="HkA-jk-juy" secondAttribute="trailing" id="Uoj-MJ-aFO"/>
+                            <constraint firstItem="HkA-jk-juy" firstAttribute="leading" secondItem="Xkh-1s-pQ6" secondAttribute="leading" id="V0B-FT-dEf"/>
+                            <constraint firstItem="HkA-jk-juy" firstAttribute="top" secondItem="Xkh-1s-pQ6" secondAttribute="top" id="cNO-GQ-zhi"/>
+                            <constraint firstItem="EHY-52-AW9" firstAttribute="leading" secondItem="Xkh-1s-pQ6" secondAttribute="leading" id="gKr-mA-OC1"/>
+                            <constraint firstItem="7E9-sD-GeY" firstAttribute="top" secondItem="EHY-52-AW9" secondAttribute="top" id="tmW-dM-PGC"/>
+                            <constraint firstItem="SGE-Qu-e10" firstAttribute="top" secondItem="6ET-DL-QRc" secondAttribute="bottom" constant="12" id="tuU-Ua-HC2"/>
+                            <constraint firstAttribute="trailing" secondItem="SGE-Qu-e10" secondAttribute="trailing" constant="14" id="uKk-So-RLY"/>
+                            <constraint firstItem="7E9-sD-GeY" firstAttribute="top" secondItem="SGE-Qu-e10" secondAttribute="top" id="xfA-6F-e5W"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="mmB-hA-r4n" appends="YES" id="iQT-AV-fb8"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="7E9-sD-GeY" id="JNJ-U9-pFT"/>
+                        <outletCollection property="childImageViews" destination="SGE-Qu-e10" id="CLq-ZM-usi"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Rm-VS-aSS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="mmB-hA-r4n">
+                    <connections>
+                        <action selector="viewTapped:" destination="khZ-WU-b1r" id="T5O-g6-jde"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="384" y="-433"/>
         </scene>
     </scenes>
     <resources>
         <image name="delete03" width="14" height="14"/>
+        <image name="finger_down" width="42" height="42"/>
         <image name="finger_right" width="42" height="42"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 extern NSString *const StoryBoardID_BatteryStatus;
+extern NSString *const StoryBoardID_Calcualtor;
 
 @protocol A3InstructionViewControllerDelegate <NSObject>
 @required
