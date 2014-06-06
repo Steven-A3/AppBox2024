@@ -378,7 +378,7 @@ keypad for basic/scientific</string>
         <!--CurrencyConverter Instruction View Controller-->
         <scene sceneID="0N1-L5-9or">
             <objects>
-                <viewController storyboardIdentifier="Clock2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ssq-J7-nUc" userLabel="CurrencyConverter Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CurrencyConverter" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ssq-J7-nUc" userLabel="CurrencyConverter Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="39L-fg-duX"/>
                         <viewControllerLayoutGuide type="bottom" id="uCp-D9-AIH"/>
@@ -520,7 +520,7 @@ then tap options</string>
         <!--DaysCounter_1 Instruction View Controller-->
         <scene sceneID="8aK-me-Hpr">
             <objects>
-                <viewController storyboardIdentifier="Clock2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="dM2-Go-rZa" userLabel="DaysCounter_1 Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DaysCounter_1" useStoryboardIdentifierAsRestorationIdentifier="YES" id="dM2-Go-rZa" userLabel="DaysCounter_1 Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0wh-dV-rJy"/>
                         <viewControllerLayoutGuide type="bottom" id="ZQt-ig-GlO"/>
@@ -639,7 +639,7 @@ then tap Delete</string>
         <!--DaysCounter_2 Instruction View Controller-->
         <scene sceneID="eoJ-IZ-Xql">
             <objects>
-                <viewController storyboardIdentifier="Clock2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4MK-Mz-x3p" userLabel="DaysCounter_2 Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DaysCounter_2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4MK-Mz-x3p" userLabel="DaysCounter_2 Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TYE-4Z-dRk"/>
                         <viewControllerLayoutGuide type="bottom" id="d34-Za-gHW"/>
@@ -736,7 +736,7 @@ prev/next events</string>
         <!--DaysCounter_3 Instruction View Controller-->
         <scene sceneID="kGY-hA-Glf">
             <objects>
-                <viewController storyboardIdentifier="Clock2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JnG-Hj-UR1" userLabel="DaysCounter_3 Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DaysCounter_3" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JnG-Hj-UR1" userLabel="DaysCounter_3 Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="lKk-bg-33f"/>
                         <viewControllerLayoutGuide type="bottom" id="Npb-Ao-czp"/>
@@ -750,8 +750,8 @@ prev/next events</string>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="XWc-yO-6so">
-                                <rect key="frame" x="50" y="76" width="42" height="42"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="XWc-yO-6so">
+                                <rect key="frame" x="261" y="76" width="42" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -759,8 +759,8 @@ prev/next events</string>
                                     <constraint firstAttribute="height" constant="42" id="SlI-m5-bg6"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="DGY-Qa-nOV">
-                                <rect key="frame" x="242" y="207" width="42" height="42"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="DGY-Qa-nOV">
+                                <rect key="frame" x="139" y="207" width="42" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -769,22 +769,24 @@ prev/next events</string>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="93e-Mv-Dn4">
-                                <rect key="frame" x="284" y="207" width="14" height="14"/>
+                                <rect key="frame" x="181" y="207" width="14" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="14" id="2PD-m5-IQ1"/>
                                     <constraint firstAttribute="height" constant="14" id="Gud-2x-qsA"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="change color and order" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="177" translatesAutoresizingMaskIntoConstraints="NO" id="7qV-NL-Ajb">
-                                <rect key="frame" x="102" y="87" width="177" height="20"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="251" translatesAutoresizingMaskIntoConstraints="NO" id="7qV-NL-Ajb">
+                                <rect key="frame" x="0.0" y="77" width="251" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">slide the event to the left,
+then tap Delete</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="232" translatesAutoresizingMaskIntoConstraints="NO" id="g74-h9-vmQ" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="0.0" y="208" width="232" height="40"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="g74-h9-vmQ" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="0.0" y="259" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <string key="text">swipe left or right to see
 prev/next events</string>
@@ -797,20 +799,21 @@ prev/next events</string>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="zRN-X0-Yq3" secondAttribute="trailing" id="2bp-sV-WHk"/>
+                            <constraint firstAttribute="trailing" secondItem="g74-h9-vmQ" secondAttribute="trailing" id="2gL-V2-hf8"/>
                             <constraint firstItem="XWc-yO-6so" firstAttribute="top" secondItem="1rt-wf-O4Q" secondAttribute="top" constant="76" id="57B-n0-7fP"/>
+                            <constraint firstAttribute="centerX" secondItem="DGY-Qa-nOV" secondAttribute="centerX" id="91i-8Z-vbz"/>
+                            <constraint firstItem="XWc-yO-6so" firstAttribute="leading" secondItem="7qV-NL-Ajb" secondAttribute="trailing" constant="10" id="Dsh-HT-enT"/>
+                            <constraint firstItem="7qV-NL-Ajb" firstAttribute="leading" secondItem="1rt-wf-O4Q" secondAttribute="leading" id="GHB-Z1-hmt"/>
                             <constraint firstItem="zRN-X0-Yq3" firstAttribute="top" secondItem="1rt-wf-O4Q" secondAttribute="top" id="HH8-uO-ABd"/>
                             <constraint firstItem="93e-Mv-Dn4" firstAttribute="leading" secondItem="DGY-Qa-nOV" secondAttribute="trailing" id="HOO-ZM-y1E"/>
-                            <constraint firstItem="DGY-Qa-nOV" firstAttribute="leading" secondItem="g74-h9-vmQ" secondAttribute="trailing" constant="10" id="KCd-lX-CnI"/>
                             <constraint firstAttribute="bottom" secondItem="zRN-X0-Yq3" secondAttribute="bottom" id="L86-Kh-fz8"/>
+                            <constraint firstItem="g74-h9-vmQ" firstAttribute="top" secondItem="DGY-Qa-nOV" secondAttribute="bottom" constant="10" id="NHe-rl-gNd"/>
                             <constraint firstItem="zRN-X0-Yq3" firstAttribute="leading" secondItem="1rt-wf-O4Q" secondAttribute="leading" id="NSh-ZZ-deg"/>
-                            <constraint firstAttribute="trailing" secondItem="DGY-Qa-nOV" secondAttribute="trailing" constant="36" id="RTd-F6-Hpo"/>
                             <constraint firstItem="DGY-Qa-nOV" firstAttribute="top" secondItem="1rt-wf-O4Q" secondAttribute="top" constant="207" id="RXs-9B-2NZ"/>
-                            <constraint firstItem="XWc-yO-6so" firstAttribute="leading" secondItem="1rt-wf-O4Q" secondAttribute="leading" constant="50" id="aeE-Rq-Qmi"/>
                             <constraint firstItem="XWc-yO-6so" firstAttribute="centerY" secondItem="7qV-NL-Ajb" secondAttribute="centerY" id="eTU-ux-nqU"/>
                             <constraint firstItem="g74-h9-vmQ" firstAttribute="leading" secondItem="1rt-wf-O4Q" secondAttribute="leading" id="gfc-m8-Ine"/>
                             <constraint firstItem="93e-Mv-Dn4" firstAttribute="top" secondItem="DGY-Qa-nOV" secondAttribute="top" id="i2J-I3-Oxm"/>
-                            <constraint firstItem="XWc-yO-6so" firstAttribute="trailing" secondItem="7qV-NL-Ajb" secondAttribute="leading" constant="-10" id="oWY-jO-7md"/>
-                            <constraint firstItem="g74-h9-vmQ" firstAttribute="centerY" secondItem="DGY-Qa-nOV" secondAttribute="centerY" id="zBH-hv-IMM"/>
+                            <constraint firstAttribute="trailing" secondItem="XWc-yO-6so" secondAttribute="trailing" constant="17" id="nB5-bj-PIj"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="Nca-V4-wW1" appends="YES" id="6Rw-pS-mVu"/>
