@@ -79,7 +79,7 @@ color and more</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="496" y="-220"/>
+            <point key="canvasLocation" x="922" y="-433"/>
         </scene>
         <!--Calcualtor Instruction View Controller-->
         <scene sceneID="9fW-FS-i76">
@@ -156,7 +156,7 @@ keypad for basic/scientific</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="24" y="-433"/>
+            <point key="canvasLocation" x="12" y="-433"/>
         </scene>
     </scenes>
     <resources>
