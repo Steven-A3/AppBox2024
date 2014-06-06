@@ -14,6 +14,7 @@
 #import "AAAZip.h"
 #import "NSString+conversion.h"
 #import "UIViewController+NumberKeyboard.h"
+#import "A3BackupRestoreManager.h"
 #import <DropboxSDK/DropboxSDK.h>
 
 NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
@@ -25,6 +26,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 @property (nonatomic, strong) DBMetadata *dropboxMetadata;
 @property (nonatomic, strong) MBProgressHUD *HUD;
 @property (nonatomic, strong) NSString *backupInfoString;
+@property (nonatomic, strong) A3BackupRestoreManager *backupRestoreManager;
 
 @end
 
@@ -157,8 +159,10 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 					_selectBackupInProgress = YES;
 					[self.restClient loadMetadata:kDropboxDir];
 					break;
-				case 1:
+				case 1: {
+					[self.backupRestoreManager backupData];
 					break;
+				}
 			}
 			break;
 		case 2:
@@ -166,6 +170,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 			[self.navigationController popViewControllerAnimated:YES];
 			break;
 	}
+	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Dropbox Client
@@ -307,6 +312,16 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 
 	[_HUD show:YES];
 
+}
+
+#pragma mark - Backup Restore Manager
+
+- (A3BackupRestoreManager *)backupRestoreManager {
+	if (!_backupRestoreManager) {
+		_backupRestoreManager = [A3BackupRestoreManager new];
+		_backupRestoreManager.hostingView = self.navigationController.view;
+	}
+	return _backupRestoreManager;
 }
 
 @end

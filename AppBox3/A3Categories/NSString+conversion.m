@@ -8,6 +8,7 @@
 
 #import "NSString+conversion.h"
 #import "common.h"
+#import "A3AppDelegate.h"
 
 @implementation NSString (conversion)
 
@@ -180,6 +181,11 @@
 		}
 	}
 	return result;
+}
+
+- (NSString *)pathInDocumentDirectory {
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	return [[paths objectAtIndex:0] stringByAppendingPathComponent:self];
 }
 
 - (NSString *)pathInLibraryDirectory {
