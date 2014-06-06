@@ -278,10 +278,10 @@ keypad for basic/scientific</string>
             </objects>
             <point key="canvasLocation" x="724" y="-433"/>
         </scene>
-        <!--Clock2 Instruction View Controller-->
+        <!--ExpenseList Instruction View Controller-->
         <scene sceneID="xoN-Cs-tBk">
             <objects>
-                <viewController storyboardIdentifier="Clock2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="eTl-cR-Sto" userLabel="Clock2 Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ExpenseList" useStoryboardIdentifierAsRestorationIdentifier="YES" id="eTl-cR-Sto" userLabel="ExpenseList Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tDt-Ql-btQ"/>
                         <viewControllerLayoutGuide type="bottom" id="ebW-GO-RC8"/>
@@ -295,7 +295,7 @@ keypad for basic/scientific</string>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="PxO-xt-eN7">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="PxO-xt-eN7">
                                 <rect key="frame" x="241" y="32" width="42" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -304,8 +304,26 @@ keypad for basic/scientific</string>
                                     <constraint firstAttribute="height" constant="42" id="V8n-1k-rnE"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_down" translatesAutoresizingMaskIntoConstraints="NO" id="QSq-Bz-Ppf">
-                                <rect key="frame" x="250" y="512" width="42" height="42"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="d8D-UW-O72">
+                                <rect key="frame" x="268" y="151" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="LL6-jz-BxR"/>
+                                    <constraint firstAttribute="height" constant="42" id="VLJ-UF-MzY"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="fOb-uW-XaZ">
+                                <rect key="frame" x="139" y="279" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="b1h-Hx-sP7"/>
+                                    <constraint firstAttribute="width" constant="42" id="rDG-jT-qiC"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="QSq-Bz-Ppf">
+                                <rect key="frame" x="241" y="412" width="42" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -314,23 +332,41 @@ keypad for basic/scientific</string>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="1GA-EC-PDP">
-                                <rect key="frame" x="292" y="512" width="14" height="14"/>
+                                <rect key="frame" x="283" y="412" width="14" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="14" id="daN-xA-vAW"/>
                                     <constraint firstAttribute="height" constant="14" id="dvw-4Q-y0V"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to change option" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="231" translatesAutoresizingMaskIntoConstraints="NO" id="mYi-2r-6n3">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to add a new list" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="231" translatesAutoresizingMaskIntoConstraints="NO" id="mYi-2r-6n3">
                                 <rect key="frame" x="0.0" y="32" width="231" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to change color" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="292" translatesAutoresizingMaskIntoConstraints="NO" id="9Oc-Jc-FLn" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="0.0" y="482" width="292" height="20"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to add or edit budget" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="258" translatesAutoresizingMaskIntoConstraints="NO" id="f7p-pa-V3C">
+                                <rect key="frame" x="0.0" y="162" width="258" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="RQJ-Od-NDI">
+                                <rect key="frame" x="0.0" y="331" width="320" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">touch and hold a item,
+then drag it up or down</string>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="231" translatesAutoresizingMaskIntoConstraints="NO" id="9Oc-Jc-FLn" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="0.0" y="413" width="231" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">slide the item to the left,
+then tap Delete</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -339,23 +375,33 @@ keypad for basic/scientific</string>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="RQJ-Od-NDI" firstAttribute="top" secondItem="fOb-uW-XaZ" secondAttribute="bottom" constant="10" id="1gu-jt-obv"/>
+                            <constraint firstItem="RQJ-Od-NDI" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" id="2DP-mv-0z1"/>
+                            <constraint firstItem="fOb-uW-XaZ" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="top" constant="279" id="3m8-6U-Ynu"/>
+                            <constraint firstItem="d8D-UW-O72" firstAttribute="leading" secondItem="f7p-pa-V3C" secondAttribute="trailing" constant="10" id="5ee-bK-g1L"/>
+                            <constraint firstItem="QSq-Bz-Ppf" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="top" constant="412" id="5pr-8R-2Fq"/>
+                            <constraint firstItem="d8D-UW-O72" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="top" constant="151" id="An8-JA-4Cl"/>
                             <constraint firstItem="PxO-xt-eN7" firstAttribute="centerY" secondItem="mYi-2r-6n3" secondAttribute="centerY" id="BJI-XR-Sik"/>
                             <constraint firstItem="1GA-EC-PDP" firstAttribute="leading" secondItem="QSq-Bz-Ppf" secondAttribute="trailing" id="FiA-cn-3Ja"/>
                             <constraint firstItem="QSq-Bz-Ppf" firstAttribute="top" secondItem="1GA-EC-PDP" secondAttribute="top" id="IEm-Tp-Jam"/>
                             <constraint firstAttribute="bottom" secondItem="kwK-Om-eS2" secondAttribute="bottom" id="Ju6-AU-waA"/>
-                            <constraint firstItem="QSq-Bz-Ppf" firstAttribute="top" secondItem="9Oc-Jc-FLn" secondAttribute="bottom" constant="10" id="S0y-FL-x2I"/>
+                            <constraint firstItem="d8D-UW-O72" firstAttribute="centerY" secondItem="f7p-pa-V3C" secondAttribute="centerY" id="Kmn-fY-f2Z"/>
                             <constraint firstItem="PxO-xt-eN7" firstAttribute="leading" secondItem="mYi-2r-6n3" secondAttribute="trailing" constant="10" id="UhC-Vg-wbB"/>
                             <constraint firstAttribute="trailing" secondItem="PxO-xt-eN7" secondAttribute="trailing" constant="37" id="Wme-Td-YeA"/>
                             <constraint firstItem="kwK-Om-eS2" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" id="WoW-l7-eI9"/>
+                            <constraint firstAttribute="centerX" secondItem="fOb-uW-XaZ" secondAttribute="centerX" id="Z9E-93-VLC"/>
                             <constraint firstItem="9Oc-Jc-FLn" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" id="Zcp-Ta-rwT"/>
-                            <constraint firstAttribute="bottom" secondItem="QSq-Bz-Ppf" secondAttribute="bottom" constant="14" id="aYd-1A-ZHh"/>
                             <constraint firstItem="kwK-Om-eS2" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="top" id="atf-8W-jSL"/>
+                            <constraint firstItem="9Oc-Jc-FLn" firstAttribute="centerY" secondItem="QSq-Bz-Ppf" secondAttribute="centerY" id="fJF-8o-eSa"/>
                             <constraint firstItem="PxO-xt-eN7" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="top" constant="32" id="fsS-BN-oGH"/>
-                            <constraint firstAttribute="trailing" secondItem="QSq-Bz-Ppf" secondAttribute="trailing" constant="28" id="kR9-rZ-Bfg"/>
+                            <constraint firstAttribute="trailing" secondItem="QSq-Bz-Ppf" secondAttribute="trailing" constant="37" id="kR9-rZ-Bfg"/>
+                            <constraint firstAttribute="trailing" secondItem="RQJ-Od-NDI" secondAttribute="trailing" id="lKF-iB-mS9"/>
                             <constraint firstAttribute="trailing" secondItem="kwK-Om-eS2" secondAttribute="trailing" id="m3f-67-QP0"/>
                             <constraint firstItem="PxO-xt-eN7" firstAttribute="top" secondItem="mYi-2r-6n3" secondAttribute="top" id="mHK-L9-EKv"/>
+                            <constraint firstAttribute="trailing" secondItem="d8D-UW-O72" secondAttribute="trailing" constant="10" id="p5a-Kk-epV"/>
                             <constraint firstItem="mYi-2r-6n3" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" id="xVF-Nc-Yuz"/>
-                            <constraint firstItem="9Oc-Jc-FLn" firstAttribute="trailing" secondItem="QSq-Bz-Ppf" secondAttribute="trailing" id="yb8-xv-g7e"/>
+                            <constraint firstItem="f7p-pa-V3C" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" id="yO4-5B-qPJ"/>
+                            <constraint firstItem="9Oc-Jc-FLn" firstAttribute="trailing" secondItem="QSq-Bz-Ppf" secondAttribute="leading" constant="-10" id="yb8-xv-g7e"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="Ks1-VP-dlD" appends="YES" id="msI-Db-TIs"/>
@@ -370,6 +416,103 @@ keypad for basic/scientific</string>
                 <tapGestureRecognizer id="Ks1-VP-dlD">
                     <connections>
                         <action selector="viewTapped:" destination="eTl-cR-Sto" id="aJK-Ls-HZR"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="24" y="-433"/>
+        </scene>
+        <!--Clock2 Instruction View Controller-->
+        <scene sceneID="xdw-XG-97Q">
+            <objects>
+                <viewController storyboardIdentifier="Clock2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zuF-b1-MOH" userLabel="Clock2 Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vOl-Lq-CD3"/>
+                        <viewControllerLayoutGuide type="bottom" id="tjc-MU-oEU"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="SSJ-nS-OBd">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3O3-MW-PM0">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="cR3-VQ-03J">
+                                <rect key="frame" x="241" y="32" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="KSu-tQ-5TN"/>
+                                    <constraint firstAttribute="height" constant="42" id="b3j-HE-aYs"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_down" translatesAutoresizingMaskIntoConstraints="NO" id="xl8-in-RcZ">
+                                <rect key="frame" x="250" y="512" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="57e-fE-xrH"/>
+                                    <constraint firstAttribute="width" constant="42" id="J6g-m6-3N5"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="gsy-pY-fd2">
+                                <rect key="frame" x="292" y="512" width="14" height="14"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="14" id="blJ-ye-Agh"/>
+                                    <constraint firstAttribute="height" constant="14" id="wk5-Ty-1yd"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to change option" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="231" translatesAutoresizingMaskIntoConstraints="NO" id="t5T-1i-yhB">
+                                <rect key="frame" x="0.0" y="32" width="231" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to change color" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="292" translatesAutoresizingMaskIntoConstraints="NO" id="g69-at-Gdn" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="0.0" y="482" width="292" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="g69-at-Gdn" firstAttribute="leading" secondItem="SSJ-nS-OBd" secondAttribute="leading" id="2R4-iy-tt8"/>
+                            <constraint firstItem="cR3-VQ-03J" firstAttribute="top" secondItem="SSJ-nS-OBd" secondAttribute="top" constant="32" id="4pZ-Ko-KDF"/>
+                            <constraint firstAttribute="trailing" secondItem="xl8-in-RcZ" secondAttribute="trailing" constant="28" id="5rS-Gs-zkD"/>
+                            <constraint firstItem="cR3-VQ-03J" firstAttribute="centerY" secondItem="t5T-1i-yhB" secondAttribute="centerY" id="AOz-ql-aCk"/>
+                            <constraint firstItem="t5T-1i-yhB" firstAttribute="leading" secondItem="SSJ-nS-OBd" secondAttribute="leading" id="GKH-zJ-9qn"/>
+                            <constraint firstAttribute="bottom" secondItem="3O3-MW-PM0" secondAttribute="bottom" id="LBb-VJ-bIW"/>
+                            <constraint firstItem="gsy-pY-fd2" firstAttribute="leading" secondItem="xl8-in-RcZ" secondAttribute="trailing" id="Ns0-tI-lby"/>
+                            <constraint firstItem="cR3-VQ-03J" firstAttribute="leading" secondItem="t5T-1i-yhB" secondAttribute="trailing" constant="10" id="PRO-hO-WXD"/>
+                            <constraint firstAttribute="bottom" secondItem="xl8-in-RcZ" secondAttribute="bottom" constant="14" id="PkG-Er-oq3"/>
+                            <constraint firstItem="xl8-in-RcZ" firstAttribute="top" secondItem="g69-at-Gdn" secondAttribute="bottom" constant="10" id="VuG-Su-EcJ"/>
+                            <constraint firstAttribute="trailing" secondItem="cR3-VQ-03J" secondAttribute="trailing" constant="37" id="ZVJ-RX-mta"/>
+                            <constraint firstItem="cR3-VQ-03J" firstAttribute="top" secondItem="t5T-1i-yhB" secondAttribute="top" id="awo-41-v3V"/>
+                            <constraint firstItem="3O3-MW-PM0" firstAttribute="leading" secondItem="SSJ-nS-OBd" secondAttribute="leading" id="cpz-Ky-ihy"/>
+                            <constraint firstItem="g69-at-Gdn" firstAttribute="trailing" secondItem="xl8-in-RcZ" secondAttribute="trailing" id="je0-t8-O0I"/>
+                            <constraint firstItem="xl8-in-RcZ" firstAttribute="top" secondItem="gsy-pY-fd2" secondAttribute="top" id="ojJ-f2-d64"/>
+                            <constraint firstAttribute="trailing" secondItem="3O3-MW-PM0" secondAttribute="trailing" id="slM-7Z-SWz"/>
+                            <constraint firstItem="3O3-MW-PM0" firstAttribute="top" secondItem="SSJ-nS-OBd" secondAttribute="top" id="v7S-wU-Nc5"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="jTh-kF-PDR" appends="YES" id="Quo-CX-OOb"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="cR3-VQ-03J" id="OAQ-rT-MG0"/>
+                        <outletCollection property="childImageViews" destination="gsy-pY-fd2" id="sUR-Hg-nrd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MYP-MV-bHD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="jTh-kF-PDR">
+                    <connections>
+                        <action selector="viewTapped:" destination="zuF-b1-MOH" id="YGu-Wg-wsU"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
