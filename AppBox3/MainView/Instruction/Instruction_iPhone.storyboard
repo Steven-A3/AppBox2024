@@ -517,6 +517,319 @@ then tap options</string>
             </objects>
             <point key="canvasLocation" x="-335" y="275"/>
         </scene>
+        <!--DaysCounter_1 Instruction View Controller-->
+        <scene sceneID="8aK-me-Hpr">
+            <objects>
+                <viewController storyboardIdentifier="Clock2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="dM2-Go-rZa" userLabel="DaysCounter_1 Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0wh-dV-rJy"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZQt-ig-GlO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="naR-7Q-eRX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6xW-yR-vZJ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="Mez-kf-gJI">
+                                <rect key="frame" x="241" y="92" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="IXw-Pt-JJx"/>
+                                    <constraint firstAttribute="height" constant="42" id="VcZ-CR-roY"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="uuv-Tb-Oej">
+                                <rect key="frame" x="261" y="233" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="6l9-N1-fAI"/>
+                                    <constraint firstAttribute="width" constant="42" id="GQ2-ed-kRq"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_down" translatesAutoresizingMaskIntoConstraints="NO" id="cEZ-6S-HPg">
+                                <rect key="frame" x="139" y="431" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="Nne-XQ-dRY"/>
+                                    <constraint firstAttribute="width" constant="42" id="rfG-Ug-FKw"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="p7z-Xt-zJ7">
+                                <rect key="frame" x="181" y="431" width="14" height="14"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="14" id="ekJ-LT-ceL"/>
+                                    <constraint firstAttribute="width" constant="14" id="fK7-bb-iOz"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="change color and order" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="231" translatesAutoresizingMaskIntoConstraints="NO" id="j7s-5h-AsK">
+                                <rect key="frame" x="0.0" y="103" width="231" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="251" translatesAutoresizingMaskIntoConstraints="NO" id="afl-C5-OsY" userLabel="Label - slide the currency to the left, then tap options">
+                                <rect key="frame" x="0.0" y="228" width="251" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">slide the calendar to the left,
+then tap Delete</string>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to add a event" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="M89-TC-emC" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="0.0" y="401" width="320" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="uuv-Tb-Oej" firstAttribute="top" secondItem="naR-7Q-eRX" secondAttribute="top" constant="233" id="7fX-jQ-B35"/>
+                            <constraint firstItem="6xW-yR-vZJ" firstAttribute="leading" secondItem="naR-7Q-eRX" secondAttribute="leading" id="B1P-mf-a9z"/>
+                            <constraint firstAttribute="centerX" secondItem="cEZ-6S-HPg" secondAttribute="centerX" id="BKc-Xx-w92"/>
+                            <constraint firstItem="M89-TC-emC" firstAttribute="leading" secondItem="naR-7Q-eRX" secondAttribute="leading" id="FNn-5e-f2r"/>
+                            <constraint firstItem="j7s-5h-AsK" firstAttribute="leading" secondItem="naR-7Q-eRX" secondAttribute="leading" id="Lm9-QS-4xV"/>
+                            <constraint firstItem="p7z-Xt-zJ7" firstAttribute="top" secondItem="cEZ-6S-HPg" secondAttribute="top" id="VWG-QC-XcJ"/>
+                            <constraint firstItem="Mez-kf-gJI" firstAttribute="top" secondItem="naR-7Q-eRX" secondAttribute="top" constant="92" id="Wp5-SS-gR1"/>
+                            <constraint firstAttribute="trailing" secondItem="Mez-kf-gJI" secondAttribute="trailing" constant="37" id="YU1-gb-Vab"/>
+                            <constraint firstAttribute="trailing" secondItem="uuv-Tb-Oej" secondAttribute="trailing" constant="17" id="cmS-6y-I9K"/>
+                            <constraint firstAttribute="trailing" secondItem="6xW-yR-vZJ" secondAttribute="trailing" id="gZ9-Gv-Kx7"/>
+                            <constraint firstItem="Mez-kf-gJI" firstAttribute="centerY" secondItem="j7s-5h-AsK" secondAttribute="centerY" id="hCA-PL-YuV"/>
+                            <constraint firstItem="Mez-kf-gJI" firstAttribute="leading" secondItem="j7s-5h-AsK" secondAttribute="trailing" constant="10" id="m4p-MQ-xEj"/>
+                            <constraint firstItem="M89-TC-emC" firstAttribute="bottom" secondItem="cEZ-6S-HPg" secondAttribute="top" constant="-10" id="mQF-h8-lWa"/>
+                            <constraint firstAttribute="bottom" secondItem="cEZ-6S-HPg" secondAttribute="bottom" constant="95" id="mbF-iA-trD"/>
+                            <constraint firstItem="uuv-Tb-Oej" firstAttribute="leading" secondItem="afl-C5-OsY" secondAttribute="trailing" constant="10" id="nip-or-5TY"/>
+                            <constraint firstItem="p7z-Xt-zJ7" firstAttribute="leading" secondItem="cEZ-6S-HPg" secondAttribute="trailing" id="pmF-cb-Wgl"/>
+                            <constraint firstAttribute="trailing" secondItem="M89-TC-emC" secondAttribute="trailing" id="qCI-uh-VSV"/>
+                            <constraint firstItem="afl-C5-OsY" firstAttribute="leading" secondItem="naR-7Q-eRX" secondAttribute="leading" id="sjr-Pq-7zW"/>
+                            <constraint firstAttribute="bottom" secondItem="6xW-yR-vZJ" secondAttribute="bottom" id="tqd-yl-NmI"/>
+                            <constraint firstItem="6xW-yR-vZJ" firstAttribute="top" secondItem="naR-7Q-eRX" secondAttribute="top" id="xea-iS-8Wz"/>
+                            <constraint firstItem="uuv-Tb-Oej" firstAttribute="top" secondItem="afl-C5-OsY" secondAttribute="top" constant="5" id="zm9-rv-i2r"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="pkA-f3-mLI" appends="YES" id="vR8-3V-DZa"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="Mez-kf-gJI" id="SNh-qJ-gE2"/>
+                        <outletCollection property="childImageViews" destination="p7z-Xt-zJ7" id="bNi-Pl-iG3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ubv-vb-Api" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="pkA-f3-mLI">
+                    <connections>
+                        <action selector="viewTapped:" destination="dM2-Go-rZa" id="7bz-oD-mlR"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-335" y="275"/>
+        </scene>
+        <!--DaysCounter_2 Instruction View Controller-->
+        <scene sceneID="eoJ-IZ-Xql">
+            <objects>
+                <viewController storyboardIdentifier="Clock2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4MK-Mz-x3p" userLabel="DaysCounter_2 Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TYE-4Z-dRk"/>
+                        <viewControllerLayoutGuide type="bottom" id="d34-Za-gHW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="dKN-6d-SOe">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9b3-Pq-w3B">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="yL6-t8-Rsz">
+                                <rect key="frame" x="50" y="76" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="2G3-RL-oJb"/>
+                                    <constraint firstAttribute="width" constant="42" id="LJe-DG-b8G"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="Tub-Vc-yVU">
+                                <rect key="frame" x="242" y="207" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="cHg-CS-zRu"/>
+                                    <constraint firstAttribute="height" constant="42" id="nRb-ba-sxZ"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="Adg-z8-lei">
+                                <rect key="frame" x="284" y="207" width="14" height="14"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="14" id="bvU-Q9-iOY"/>
+                                    <constraint firstAttribute="height" constant="14" id="xyR-JO-qqv"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="change color and order" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="177" translatesAutoresizingMaskIntoConstraints="NO" id="5vX-h0-0KZ">
+                                <rect key="frame" x="102" y="87" width="177" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="232" translatesAutoresizingMaskIntoConstraints="NO" id="yXR-Yi-555" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="0.0" y="208" width="232" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">swipe left or right to see
+prev/next events</string>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="yXR-Yi-555" firstAttribute="centerY" secondItem="Tub-Vc-yVU" secondAttribute="centerY" id="3jD-dl-qve"/>
+                            <constraint firstItem="yL6-t8-Rsz" firstAttribute="centerY" secondItem="5vX-h0-0KZ" secondAttribute="centerY" id="6dI-Vm-xUZ"/>
+                            <constraint firstItem="yXR-Yi-555" firstAttribute="leading" secondItem="dKN-6d-SOe" secondAttribute="leading" id="CCz-St-BGc"/>
+                            <constraint firstItem="Tub-Vc-yVU" firstAttribute="leading" secondItem="yXR-Yi-555" secondAttribute="trailing" constant="10" id="Ep2-f2-eiZ"/>
+                            <constraint firstAttribute="trailing" secondItem="Tub-Vc-yVU" secondAttribute="trailing" constant="36" id="N3c-9p-8ql"/>
+                            <constraint firstItem="9b3-Pq-w3B" firstAttribute="leading" secondItem="dKN-6d-SOe" secondAttribute="leading" id="TFg-n5-gZh"/>
+                            <constraint firstItem="Adg-z8-lei" firstAttribute="top" secondItem="Tub-Vc-yVU" secondAttribute="top" id="UPB-2a-ScL"/>
+                            <constraint firstItem="yL6-t8-Rsz" firstAttribute="leading" secondItem="dKN-6d-SOe" secondAttribute="leading" constant="50" id="Yje-aU-wLZ"/>
+                            <constraint firstItem="Tub-Vc-yVU" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="top" constant="207" id="ZlN-NI-PPf"/>
+                            <constraint firstAttribute="trailing" secondItem="9b3-Pq-w3B" secondAttribute="trailing" id="dan-QV-ZEP"/>
+                            <constraint firstItem="9b3-Pq-w3B" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="top" id="eZ8-4E-8Dv"/>
+                            <constraint firstItem="yL6-t8-Rsz" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="top" constant="76" id="pWi-8t-deg"/>
+                            <constraint firstAttribute="bottom" secondItem="9b3-Pq-w3B" secondAttribute="bottom" id="tqQ-Ho-QqD"/>
+                            <constraint firstItem="yL6-t8-Rsz" firstAttribute="trailing" secondItem="5vX-h0-0KZ" secondAttribute="leading" constant="-10" id="tuA-l0-B4N"/>
+                            <constraint firstItem="Adg-z8-lei" firstAttribute="leading" secondItem="Tub-Vc-yVU" secondAttribute="trailing" id="zgv-0Q-9gx"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="O6F-Ln-Hwi" appends="YES" id="rQz-Q0-3JC"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="yL6-t8-Rsz" id="Xxh-qv-wRj"/>
+                        <outletCollection property="childImageViews" destination="Adg-z8-lei" id="fax-Ua-MUz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9Xv-fG-cTv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="O6F-Ln-Hwi">
+                    <connections>
+                        <action selector="viewTapped:" destination="4MK-Mz-x3p" id="7BV-Ca-gUG"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="205" y="268"/>
+        </scene>
+        <!--DaysCounter_3 Instruction View Controller-->
+        <scene sceneID="kGY-hA-Glf">
+            <objects>
+                <viewController storyboardIdentifier="Clock2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JnG-Hj-UR1" userLabel="DaysCounter_3 Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lKk-bg-33f"/>
+                        <viewControllerLayoutGuide type="bottom" id="Npb-Ao-czp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="1rt-wf-O4Q">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zRN-X0-Yq3">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="XWc-yO-6so">
+                                <rect key="frame" x="50" y="76" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="LIC-0b-cvd"/>
+                                    <constraint firstAttribute="height" constant="42" id="SlI-m5-bg6"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="DGY-Qa-nOV">
+                                <rect key="frame" x="242" y="207" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="Zx0-IO-smF"/>
+                                    <constraint firstAttribute="width" constant="42" id="ecp-wm-yEm"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="93e-Mv-Dn4">
+                                <rect key="frame" x="284" y="207" width="14" height="14"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="14" id="2PD-m5-IQ1"/>
+                                    <constraint firstAttribute="height" constant="14" id="Gud-2x-qsA"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="change color and order" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="177" translatesAutoresizingMaskIntoConstraints="NO" id="7qV-NL-Ajb">
+                                <rect key="frame" x="102" y="87" width="177" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="232" translatesAutoresizingMaskIntoConstraints="NO" id="g74-h9-vmQ" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="0.0" y="208" width="232" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">swipe left or right to see
+prev/next events</string>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="zRN-X0-Yq3" secondAttribute="trailing" id="2bp-sV-WHk"/>
+                            <constraint firstItem="XWc-yO-6so" firstAttribute="top" secondItem="1rt-wf-O4Q" secondAttribute="top" constant="76" id="57B-n0-7fP"/>
+                            <constraint firstItem="zRN-X0-Yq3" firstAttribute="top" secondItem="1rt-wf-O4Q" secondAttribute="top" id="HH8-uO-ABd"/>
+                            <constraint firstItem="93e-Mv-Dn4" firstAttribute="leading" secondItem="DGY-Qa-nOV" secondAttribute="trailing" id="HOO-ZM-y1E"/>
+                            <constraint firstItem="DGY-Qa-nOV" firstAttribute="leading" secondItem="g74-h9-vmQ" secondAttribute="trailing" constant="10" id="KCd-lX-CnI"/>
+                            <constraint firstAttribute="bottom" secondItem="zRN-X0-Yq3" secondAttribute="bottom" id="L86-Kh-fz8"/>
+                            <constraint firstItem="zRN-X0-Yq3" firstAttribute="leading" secondItem="1rt-wf-O4Q" secondAttribute="leading" id="NSh-ZZ-deg"/>
+                            <constraint firstAttribute="trailing" secondItem="DGY-Qa-nOV" secondAttribute="trailing" constant="36" id="RTd-F6-Hpo"/>
+                            <constraint firstItem="DGY-Qa-nOV" firstAttribute="top" secondItem="1rt-wf-O4Q" secondAttribute="top" constant="207" id="RXs-9B-2NZ"/>
+                            <constraint firstItem="XWc-yO-6so" firstAttribute="leading" secondItem="1rt-wf-O4Q" secondAttribute="leading" constant="50" id="aeE-Rq-Qmi"/>
+                            <constraint firstItem="XWc-yO-6so" firstAttribute="centerY" secondItem="7qV-NL-Ajb" secondAttribute="centerY" id="eTU-ux-nqU"/>
+                            <constraint firstItem="g74-h9-vmQ" firstAttribute="leading" secondItem="1rt-wf-O4Q" secondAttribute="leading" id="gfc-m8-Ine"/>
+                            <constraint firstItem="93e-Mv-Dn4" firstAttribute="top" secondItem="DGY-Qa-nOV" secondAttribute="top" id="i2J-I3-Oxm"/>
+                            <constraint firstItem="XWc-yO-6so" firstAttribute="trailing" secondItem="7qV-NL-Ajb" secondAttribute="leading" constant="-10" id="oWY-jO-7md"/>
+                            <constraint firstItem="g74-h9-vmQ" firstAttribute="centerY" secondItem="DGY-Qa-nOV" secondAttribute="centerY" id="zBH-hv-IMM"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Nca-V4-wW1" appends="YES" id="6Rw-pS-mVu"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="XWc-yO-6so" id="5Ru-h5-4SK"/>
+                        <outletCollection property="childImageViews" destination="93e-Mv-Dn4" id="jqG-lo-OAq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FPN-nI-M1T" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Nca-V4-wW1">
+                    <connections>
+                        <action selector="viewTapped:" destination="JnG-Hj-UR1" id="Up4-ub-l3F"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="621" y="268"/>
+        </scene>
     </scenes>
     <resources>
         <image name="delete03" width="14" height="14"/>
