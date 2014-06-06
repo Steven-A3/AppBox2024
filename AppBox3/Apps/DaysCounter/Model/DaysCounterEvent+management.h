@@ -9,6 +9,7 @@
 #import "DaysCounterEvent.h"
 
 extern NSString *const A3DaysCounterImageDirectory;
+extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 @interface DaysCounterEvent (management)
 

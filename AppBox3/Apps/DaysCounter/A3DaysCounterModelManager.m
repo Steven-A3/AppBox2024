@@ -32,6 +32,7 @@
 #define DEFAULT_CALENDAR_COLOR        [self.calendarColorArray[6] objectForKey:CalendarItem_Color]
 #define DEFAULT_CALENDAR_COLORID        [self.calendarColorArray[6] objectForKey:CalendarItem_Name]
 
+extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 @interface A3DaysCounterModelManager ()
 
@@ -60,7 +61,7 @@
 + (NSString *)thumbnailDirectory
 {
     NSString *cacheFolder = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-    return [cacheFolder stringByAppendingPathComponent:@"DaysCounterPhotoThumbnail"];
+    return [cacheFolder stringByAppendingPathComponent:A3DaysCounterImageThumbnailDirectory];
 }
 
 - (NSMutableDictionary *)dictionaryFromCalendarEntity:(DaysCounterCalendar*)item

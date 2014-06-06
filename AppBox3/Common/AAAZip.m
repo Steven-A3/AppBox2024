@@ -8,18 +8,27 @@
 
 #import "AAAZip.h"
 
-@interface AAAZip (Private)
+@interface AAAZip ()
 
--(void) OutputErrorMessage:(NSString*) msg;
--(BOOL) OverWrite:(NSString*) file;
--(NSDate*) Date1980;
 @end
 
-@implementation AAAZip
-@synthesize delegate = _delegate;
-@synthesize targetFile;
+@implementation AAAZip {
+	zipFile		_zipFile;
+	unzFile		_unzFile;
 
--(id) init
+	NSString*   _password;
+	id			_delegate;
+	NSThread*   _thread;
+
+	float       currentByte;
+	float       totalByte;
+
+	BOOL		unzipWithPassword;
+	NSString*	zipFilename;
+	NSString*	zipFilepath;
+}
+
+- (id)init
 {
 	if((self=[super init]))
 	{
@@ -28,7 +37,7 @@
 	return self;
 }
 
--(BOOL) CloseZipFile2
+- (BOOL)closeZipFile2
 {
 	_password = nil;
 	if( _zipFile==NULL )
@@ -38,12 +47,12 @@
 	return ret;
 }
 
--(void) dealloc
+- (void)dealloc
 {
-	[self CloseZipFile2];
+	[self closeZipFile2];
 }
 
--(BOOL) CreateZipFile2:(NSString*) zipFile
+- (BOOL)createZipFile2:(NSString*) zipFile
 {
 	_zipFile = zipOpen( (const char*)[zipFile UTF8String], 0 );
 	if( !_zipFile ) 
@@ -51,13 +60,13 @@
 	return YES;
 }
 
--(BOOL) CreateZipFile2:(NSString*) zipFile Password:(NSString*) password
+- (BOOL)createZipFile2:(NSString *)zipFile Password:(NSString*) password
 {
 	_password = password;
-	return [self CreateZipFile2:zipFile];
+	return [self createZipFile2:zipFile];
 }
 
--(BOOL) addFileToZip:(NSString*) file newname:(NSString*) newname;
+- (BOOL)addFileToZip:(NSString*) file newname:(NSString*) newname;
 {
 	if( !_zipFile )
 		return NO;
@@ -77,7 +86,6 @@
 		if( fileDate )
 		{
 			// some application does use dosDate, but tmz_date instead
-            //	zipInfo.dosDate = [fileDate timeIntervalSinceDate:[self Date1980] ];
 			NSCalendar* currCalendar = [NSCalendar currentCalendar];
 			NSCalendarUnit flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit |
             NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit ;
@@ -146,152 +154,24 @@
 	return YES;
 }
 
--(BOOL) UnzipOpenFile:(NSString*) zipFile
+- (BOOL)unzipOpenFile:(NSString*) zipFile
 {
 	_unzFile = unzOpen( (const char*)[zipFile UTF8String] );
 	if( _unzFile )
 	{
 		unz_global_info  globalInfo = {0};
-		if( unzGetGlobalInfo(_unzFile, &globalInfo )==UNZ_OK )
-		{
-#ifdef TRACE_LOG
-            //			NSLog(@"%d entries in the zip file", globalInfo.number_entry);
-#endif
-		}
+		unzGetGlobalInfo(_unzFile, &globalInfo );
 	}
-	return _unzFile!=NULL;
+	return _unzFile != NULL;
 }
 
--(BOOL) UnzipOpenFile:(NSString*) zipFile Password:(NSString*) password
+- (BOOL)unzipOpenFile:(NSString *)zipFile Password:(NSString*) password
 {
 	_password = password;
-	return [self UnzipOpenFile:zipFile];
+	return [self unzipOpenFile:zipFile];
 }
 
-#if 0
--(BOOL) UnzipFileTo:(NSString*) path overWrite:(BOOL) overwrite
-{
-	BOOL success = YES;
-	int ret = unzGoToFirstFile( _unzFile );
-	unsigned char		buffer[4096] = {0};
-	NSFileManager* fman = [NSFileManager defaultManager];
-	if( ret!=UNZ_OK )
-	{
-		[self OutputErrorMessage:@"Failed"];
-	}
-	
-	do{
-		if( [_password length]==0 )
-			ret = unzOpenCurrentFile( _unzFile );
-		else
-			ret = unzOpenCurrentFilePassword( _unzFile, [_password cStringUsingEncoding:NSASCIIStringEncoding] );
-		if( ret!=UNZ_OK )
-		{
-			[self OutputErrorMessage:@"Error occurs"];
-			success = NO;
-			break;
-		}
-		// reading data and write to file
-		int read ;
-		unz_file_info	fileInfo ={0};
-		ret = unzGetCurrentFileInfo(_unzFile, &fileInfo, NULL, 0, NULL, 0, NULL, 0);
-		if( ret!=UNZ_OK )
-		{
-			[self OutputErrorMessage:@"Error occurs while getting file info"];
-			success = NO;
-			unzCloseCurrentFile( _unzFile );
-			break;
-		}
-		char* filename = (char*) malloc( fileInfo.size_filename +1 );
-		unzGetCurrentFileInfo(_unzFile, &fileInfo, filename, fileInfo.size_filename + 1, NULL, 0, NULL, 0);
-		filename[fileInfo.size_filename] = '\0';
-		
-		// check if it contains directory
-		NSString * strPath = [NSString stringWithCString:filename encoding:NSUTF8StringEncoding];
-		BOOL isDirectory = NO;
-		if( filename[fileInfo.size_filename-1]=='/' || filename[fileInfo.size_filename-1]=='\\')
-			isDirectory = YES;
-		free( filename );
-		if( [strPath rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"/\\"]].location!=NSNotFound )
-		{// contains a path
-			strPath = [strPath stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
-		}
-		NSString* fullPath = [path stringByAppendingPathComponent:strPath];
-		
-		if( isDirectory )
-			[fman createDirectoryAtPath:fullPath withIntermediateDirectories:YES attributes:nil error:nil];
-		else
-			[fman createDirectoryAtPath:[fullPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:nil];
-		if( [fman fileExistsAtPath:fullPath] && !isDirectory && !overwrite )
-		{
-			if( ![self OverWrite:fullPath] )
-			{
-				unzCloseCurrentFile( _unzFile );
-				ret = unzGoToNextFile( _unzFile );
-				continue;
-			}
-		}
-		FILE* fp = fopen( (const char*)[fullPath UTF8String], "wb");
-		while( fp )
-		{
-			read=unzReadCurrentFile(_unzFile, buffer, 4096);
-			if( read > 0 )
-			{
-				fwrite(buffer, read, 1, fp );
-			}
-			else if( read<0 )
-			{
-				[self OutputErrorMessage:@"Failed to reading zip file"];
-				break;
-			}
-			else 
-				break;				
-		}
-		if( fp )
-		{
-			fclose( fp );
-			// set the orignal datetime property
-			NSDate* orgDate = nil;
-			
-			//{{ thanks to brad.eaton for the solution
-			NSDateComponents *dc = [[NSDateComponents alloc] init];
-			
-			dc.second = fileInfo.tmu_date.tm_sec;
-			dc.minute = fileInfo.tmu_date.tm_min;
-			dc.hour = fileInfo.tmu_date.tm_hour;
-			dc.day = fileInfo.tmu_date.tm_mday;
-			dc.month = fileInfo.tmu_date.tm_mon+1;
-			dc.year = fileInfo.tmu_date.tm_year;
-			
-			NSCalendar *gregorian = [[NSCalendar alloc] 
-									 initWithCalendarIdentifier:NSGregorianCalendar];
-			
-			orgDate = [gregorian dateFromComponents:dc] ;
-			[dc release];
-			[gregorian release];
-			//}}
-			
-			
-			NSDictionary* attr = [NSDictionary dictionaryWithObject:orgDate forKey:NSFileModificationDate]; //[[NSFileManager defaultManager] fileAttributesAtPath:fullPath traverseLink:YES];
-			if( attr )
-			{
-				//		[attr  setValue:orgDate forKey:NSFileCreationDate];
-				if( ![[NSFileManager defaultManager] setAttributes:attr ofItemAtPath:fullPath error:nil] )
-				{
-					// cann't set attributes 
-					NSLog(@"Failed to set attributes");
-				}
-				
-			}
-		}
-		unzCloseCurrentFile( _unzFile );
-		ret = unzGoToNextFile( _unzFile );
-	}while( ret==UNZ_OK && UNZ_OK!=UNZ_END_OF_LIST_OF_FILE );
-	return success;
-}
-#endif
-
--(BOOL) UnzipCloseFile
+- (BOOL)unzipCloseFile
 {
 	_password = nil;
 	if( _unzFile )
@@ -301,86 +181,79 @@
 
 #pragma mark wrapper for delegate
 
--(void) OutputErrorMessage:(NSString*) msg
+- (void)outputErrorMessage:(NSString*) msg
 {
-	if( _delegate && [_delegate respondsToSelector:@selector(ErrorMessage:)] )
-		[_delegate ErrorMessage:msg];
+	if( _delegate && [_delegate respondsToSelector:@selector(errorMessage:)] )
+		[_delegate errorMessage:msg];
 }
 
--(BOOL) OverWrite:(NSString*) file
+- (BOOL)overWrite:(NSString*) file
 {
 	if( _delegate && [_delegate respondsToSelector:@selector(overWriteOperation:)] )
 		return [_delegate overWriteOperation:file];
 	return YES;
 }
 
-#pragma mark get NSDate object for 1980-01-01
+#pragma mark - Notify progress
 
--(NSDate*) Date1980
-{
-	NSDateComponents *comps = [[NSDateComponents alloc] init];
-	[comps setDay:1];
-	[comps setMonth:1];
-	[comps setYear:1980];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDate *date = [gregorian dateFromComponents:comps];
-	
-	return date;
-}
-
-#pragma mark  Added by SUN
--(void)CompressProgress
+- (void)compressProgress
 {
     if( _delegate && [_delegate respondsToSelector:@selector(compressProgress:total:)])
 		[_delegate compressProgress:currentByte total:totalByte];
 }
 
--(void) DecompressProgress
+- (void)decompressProgress
 {
     if( _delegate && [_delegate respondsToSelector:@selector(decompressProgress:total:)])
 		[_delegate decompressProgress:currentByte total:totalByte];
 }
 
--(void) CompletedProcessWithSuccess
+- (void)completedZipProcessWithSuccess
 {
-#ifdef TRACE_LOG
-	NSLog(@"%s", __FUNCTION__);
-#endif
-    if( _delegate && [_delegate respondsToSelector:@selector(completedProcess:)])
+    if( _delegate && [_delegate respondsToSelector:@selector(completedZipProcess:)])
     {
-		[_delegate completedProcess:YES];
+		[_delegate completedZipProcess:YES];
     }
 }
 
--(void) CompletedProcessWithFail
+- (void)completedUnzipProcessWithSuccess
 {
-#ifdef TRACE_LOG
-	NSLog(@"%s", __FUNCTION__);
-#endif
+    if( _delegate && [_delegate respondsToSelector:@selector(completedUnzipProcess:)])
+    {
+		[_delegate completedUnzipProcess:YES];
+    }
+}
+
+- (void)completedZipProcessWithFail
+{
+    if( _delegate && [_delegate respondsToSelector:@selector(completedZipProcess:)])
+    {
+		[_delegate completedZipProcess:FALSE];
+    }
+}
+
+- (void)completedUnzipProcessWithFail {
 	if (unzipWithPassword) {
 		// Try to uncompress without password.
 		unzipWithPassword = NO;
 		_password = nil;
 		NSDictionary *argumentList = [[NSDictionary alloc] initWithObjectsAndKeys:zipFilename,@"kZipFile", zipFilepath, @"kTargetDir", nil];
-		
-		[self setTargetFile:zipFilename];
+
 		_thread = [[NSThread alloc] initWithTarget:self selector:@selector(decompressFile:) object:argumentList];
 		if(_thread != nil)
 		{
 			[_thread start];
 		}
-		
+
 		return;
 	}
-    if( _delegate && [_delegate respondsToSelector:@selector(completedProcess:)])
-    {
-		[_delegate completedProcess:FALSE];
-    }
+	if( _delegate && [_delegate respondsToSelector:@selector(completedUnzipProcess:)])
+	{
+		[_delegate completedUnzipProcess:FALSE];
+	}
 }
 
-
--(float) getTotalBytes:(NSArray *) filelist
+- (float)getTotalBytes:(NSArray *) filelist
 {
     float           total = 0;
     NSNumber        *fsize = nil;
@@ -409,7 +282,7 @@
 
 #define DEFAULT_SECURITY_KEY		@"d54?qjS8QD[.,UasG2R7FhS8?uk-D9+L"
 
--(void) compressWithList:(id)object {
+- (void)compressWithList:(id)object {
     BOOL              bResult = TRUE;
     
     NSDictionary    *argumentList = object;
@@ -421,7 +294,7 @@
     currentByte     = 0;
     
     if(totalByte > 0) {
-        if ([self CreateZipFile2:target Password:DEFAULT_SECURITY_KEY])
+        if ([self createZipFile2:target Password:DEFAULT_SECURITY_KEY])
         {
             NSDictionary   *aFileInfo = nil;
             NSString       *filePath = nil;
@@ -433,18 +306,16 @@
                 // check if thread is cancelled.
                 if([[NSThread currentThread] isCancelled])
                 {
-#ifdef TRACE_LOG
-                    NSLog(@"Thread is cancelled");
-#endif
-                    [self CloseZipFile2];
-                    [self performSelectorOnMainThread:@selector(CompletedProcessWithFail) withObject:nil waitUntilDone:NO];
+					FNLOG(@"Thread is cancelled");
+					[self closeZipFile2];
+					[self performSelectorOnMainThread:@selector(completedZipProcessWithFail) withObject:nil waitUntilDone:NO];
                     return;
                 }
                 
                 // compress file
                 if([self addFileToZip:filePath newname:newPath]) {
                     currentByte += [[[[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil] objectForKey:NSFileSize] floatValue];
-                    [self performSelectorOnMainThread:@selector(CompressProgress) withObject:nil waitUntilDone:NO];
+					[self performSelectorOnMainThread:@selector(compressProgress) withObject:nil waitUntilDone:NO];
                 } else {
                     bResult = FALSE;
                     break;
@@ -461,20 +332,18 @@
     }
     
     sleep(1);
-    [self CloseZipFile2];
+	[self closeZipFile2];
     if(bResult) {
-        [self performSelectorOnMainThread:@selector(CompletedProcessWithSuccess) withObject:nil waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector(completedZipProcessWithSuccess) withObject:nil waitUntilDone:NO];
     } else {
-        [self performSelectorOnMainThread:@selector(CompletedProcessWithFail) withObject:nil waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector(completedZipProcessWithFail) withObject:nil waitUntilDone:NO];
     }
     return;
 }
 
--(BOOL) CreateZipFileWithList:(NSString *)zipFile SoureList:(NSMutableArray *)fileList {
+- (BOOL)createZipFile:(NSString *)zipFile withArray:(NSMutableArray *)fileList {
     BOOL            bResult = FALSE;
-    NSArray         *afileList = [fileList copy];
-    NSDictionary    *argumentList = [[NSDictionary alloc] initWithObjectsAndKeys:zipFile,@"kZipFile", afileList, @"kFileList", nil];
-
+    NSDictionary    *argumentList = @{@"kZipFile" : zipFile, @"kFileList" : fileList};
 
     _thread = [[NSThread alloc] initWithTarget:self selector:@selector(compressWithList:) object:argumentList];
     if(_thread != nil)
@@ -486,7 +355,7 @@
     return bResult;
 }
 
--(BOOL) decompressFile:(id)object {
+- (BOOL)decompressFile:(id)object {
     NSDictionary        *argumentList = object;
     BOOL                success = YES;
     
@@ -504,18 +373,15 @@
         
         if( ret!=UNZ_OK )
         {
-            [self OutputErrorMessage:@"Failed"];
+			[self outputErrorMessage:@"Failed"];
         }
         
         do{
             if([[NSThread currentThread] isCancelled])
             {
-#ifdef TRACE_LOG
-                NSLog(@"Thread is cancelled");
-#endif
-                [self UnzipCloseFile];
-                //[self CompletedProcess:FALSE];
-                [self performSelectorOnMainThread:@selector(CompletedProcessWithFail) withObject:nil waitUntilDone:NO];
+                FNLOG(@"Thread is cancelled");
+				[self unzipCloseFile];
+				[self performSelectorOnMainThread:@selector(completedUnzipProcessWithFail) withObject:nil waitUntilDone:NO];
                 return FALSE;
             }
             
@@ -529,7 +395,7 @@
 			}
             if( ret!=UNZ_OK )
             {
-                [self OutputErrorMessage:@"Error occurs"];
+				[self outputErrorMessage:@"Error occurs"];
                 success = NO;
                 break;
             }
@@ -539,7 +405,7 @@
             ret = unzGetCurrentFileInfo(_unzFile, &fileInfo, NULL, 0, NULL, 0, NULL, 0);
             if( ret!=UNZ_OK )
             {
-                [self OutputErrorMessage:@"Error occurs while getting file info"];
+				[self outputErrorMessage:@"Error occurs while getting file info"];
                 success = NO;
                 unzCloseCurrentFile( _unzFile );
                 break;
@@ -575,7 +441,7 @@
                 }
                 else if( read<0 )
                 {
-                    [self OutputErrorMessage:@"Failed to reading zip file"];
+					[self outputErrorMessage:@"Failed to reading zip file"];
 					
 					if (fp) {
 						fclose(fp);
@@ -623,31 +489,28 @@
             unzCloseCurrentFile( _unzFile );
             ret = unzGoToNextFile( _unzFile );
         }while( ret==UNZ_OK && UNZ_OK!=UNZ_END_OF_LIST_OF_FILE );
-        [self UnzipCloseFile];
+		[self unzipCloseFile];
     } else {
         success = NO;
     }
 
 finalize:
-    if(success == YES) {
-        //[self CompletedProcess:TRUE];
-        [self performSelectorOnMainThread:@selector(CompletedProcessWithSuccess) withObject:nil waitUntilDone:NO];
+    if(success) {
+		[self performSelectorOnMainThread:@selector(completedUnzipProcessWithSuccess) withObject:nil waitUntilDone:NO];
     } else {
-        //[self CompletedProcess:FALSE];
-        [self performSelectorOnMainThread:@selector(CompletedProcessWithFail) withObject:nil waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector(completedUnzipProcessWithFail) withObject:nil waitUntilDone:NO];
     }
     
 	return success;
 }
 
--(BOOL) UnzipFile:(NSString *)zipFile unzipFileto:(NSString *)path {
+- (BOOL)unzipFile:(NSString *)zipFile unzipFileto:(NSString *)path {
     BOOL    bResult = FALSE;
 	unzipWithPassword = YES;
 	zipFilename = [zipFile copy];
 	zipFilepath = [path copy];
     NSDictionary *argumentList = [[NSDictionary alloc] initWithObjectsAndKeys:zipFile,@"kZipFile", path, @"kTargetDir", DEFAULT_SECURITY_KEY, @"kPassword", nil];
     
-    [self setTargetFile:zipFile];
     _thread = [[NSThread alloc] initWithTarget:self selector:@selector(decompressFile:) object:argumentList];
     if(_thread != nil)
     {
@@ -658,10 +521,11 @@ finalize:
     return bResult;
 }
 
--(void) cancelOperation {
+- (void)cancelOperation {
     if(_thread != nil) {
         [_thread cancel];
     }
 }
+
 @end
 

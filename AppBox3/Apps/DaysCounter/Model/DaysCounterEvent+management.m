@@ -13,6 +13,7 @@
 #import "A3DaysCounterModelManager.h"
 
 NSString *const A3DaysCounterImageDirectory = @"DaysCounterImages";
+NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbnail";
 
 @implementation DaysCounterEvent (management)
 
