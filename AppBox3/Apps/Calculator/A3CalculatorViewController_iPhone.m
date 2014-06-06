@@ -19,8 +19,9 @@
 #import "A3KeyboardView.h"
 #import "NSAttributedString+Append.h"
 #import "UIViewController+navigation.h"
+#import "A3InstructionViewController.h"
 
-@interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate,MBProgressHUDDelegate, A3CalcMessagShowDelegate, UITextFieldDelegate>
+@interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate,MBProgressHUDDelegate, A3CalcMessagShowDelegate, A3InstructionViewControllerDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) HTCopyableLabel *expressionLabel;
 @property (nonatomic, strong) UILabel *degreeandradianLabel;
@@ -43,7 +44,7 @@
 @property (nonatomic, strong) A3KeyboardView *inputViewForPlayInputClick;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 //@property (nonatomic, strong) A3Expression *expression;
-
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
 @implementation A3CalculatorViewController_iPhone {
@@ -104,7 +105,11 @@
 	[self.view addSubview:_textFieldForPlayInputClick];
 
 	[_textFieldForPlayInputClick becomeFirstResponder];
-     
+    
+    if (IS_IPHONE) {
+        [self setupInstructionView];
+        [self setupTwoFingerDoubleTapGestureToShowInstruction];
+    }
 }
 
 - (void)didMoveToParentViewController:(UIViewController *)parent {
@@ -415,6 +420,31 @@
     
     [self checkRightButtonDisable];
 }
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:StoryBoardID_Calcualtor]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Calcualtor"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
+}
+
+
 
 #pragma mark - UIScrollViewDelegate
 

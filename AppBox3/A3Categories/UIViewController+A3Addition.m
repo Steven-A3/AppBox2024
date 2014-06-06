@@ -587,4 +587,17 @@
     return [formatter stringFromDate:date];
 }
 
+#pragma mark - Instruction
+- (void)setupTwoFingerDoubleTapGestureToShowInstruction
+{
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
+    [gesture setNumberOfTouchesRequired:2];
+    [gesture setNumberOfTapsRequired:2];
+    [self.view addGestureRecognizer:gesture];
+}
+
+- (void)showInstructionView {
+    
+}
+
 @end
