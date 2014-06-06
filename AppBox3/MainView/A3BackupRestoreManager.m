@@ -15,6 +15,7 @@
 #import "WalletFieldItemImage.h"
 #import "WalletFieldItem+initialize.h"
 #import "AAAZip.h"
+#import "A3UserDefaults.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -22,6 +23,7 @@ NSString *const A3BackupFileVersionKey = @"ApplicationVersion";
 NSString *const A3BackupFileDateKey = @"BackupDate";
 NSString *const A3BackupFileOSVersionKey = @"OSVersion";
 NSString *const A3BackupFileSystemModelKey = @"Model";
+NSString *const A3BackupFileUserDefaultsKey = @"UserDefaults";
 NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 extern NSString *const USMCloudContentName;
@@ -90,7 +92,7 @@ extern NSString *const USMCloudContentName;
 
 	NSString *path;
 	[fileList addObject:@{A3ZipFilename : _backupCoreDataStorePath, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", USMCloudContentName, @".sqlite"]}];
-	[_deleteFilesAfterZip addObject:path];
+	[_deleteFilesAfterZip addObject:_backupCoreDataStorePath];
 
 	path = [NSString stringWithFormat:@"%@%@", _backupCoreDataStorePath, @"-shm"];
 	[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", USMCloudContentName, @".sqlite-shm"]}];
@@ -127,11 +129,23 @@ extern NSString *const USMCloudContentName;
 			}];
 	}
 
+	NSMutableDictionary *userDefaults = [NSMutableDictionary new];
+	// LadyCalendar Specific
+	id currentAccountID = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID];
+	if (currentAccountID) {
+		[userDefaults setObject:currentAccountID forKey:A3LadyCalendarCurrentAccountID];
+	}
+	id lastViewMonth = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarLastViewMonth];
+	if (lastViewMonth) {
+		[userDefaults setObject:lastViewMonth forKey:A3LadyCalendarLastViewMonth];
+	}
+
 	NSDictionary *backupInfoDictionary = @{
 			A3BackupFileVersionKey : [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
 			A3BackupFileDateKey : [NSDate date],
 			A3BackupFileOSVersionKey : [[UIDevice currentDevice] systemVersion],
-			A3BackupFileSystemModelKey : [A3UIDevice platform]
+			A3BackupFileSystemModelKey : [A3UIDevice platform],
+			A3BackupFileUserDefaultsKey : userDefaults
 	};
 
 	[backupInfoDictionary writeToFile:[A3BackupInfoFilename pathInDocumentDirectory] atomically:YES];
@@ -270,12 +284,30 @@ extern NSString *const USMCloudContentName;
 		[self moveComponent:[NSString stringWithFormat:@"%@%@", USMCloudContentName, @".sqlite-wal"] fromURL:sourceBaseURL toURL:targetBaseURL];
 		[self moveComponent:[NSString stringWithFormat:@"%@%@", USMCloudContentName, @".sqlite-shm"] fromURL:sourceBaseURL toURL:targetBaseURL];
 
+		targetBaseURL = [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0]];
+
+		[fileManager createDirectoryAtURL:[targetBaseURL URLByAppendingPathComponent:A3DaysCounterImageDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
+		[fileManager createDirectoryAtURL:[targetBaseURL URLByAppendingPathComponent:A3WalletImageDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
+		[fileManager createDirectoryAtURL:[targetBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
+
 		[self moveFilesFromURL:[sourceBaseURL URLByAppendingPathComponent:A3DaysCounterImageDirectory]
 						 toURL:[targetBaseURL URLByAppendingPathComponent:A3DaysCounterImageDirectory]];
 		[self moveFilesFromURL:[sourceBaseURL URLByAppendingPathComponent:A3WalletImageDirectory]
 						 toURL:[targetBaseURL URLByAppendingPathComponent:A3WalletImageDirectory]];
 		[self moveFilesFromURL:[sourceBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory]
 						 toURL:[targetBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory]];
+
+		NSDictionary *backupInfo = [[NSDictionary alloc] initWithContentsOfFile:backupInfoFilePath];
+		NSDictionary *userDefaults = backupInfo[A3BackupFileUserDefaultsKey];
+		NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+		for (NSString *key in userDefaults.allKeys) {
+			[standardUserDefaults setObject:userDefaults[key] forKey:key];
+		}
+		[standardUserDefaults synchronize];
+
+		if ([_delegate respondsToSelector:@selector(backupRestoreManager:restoreCompleteWithSuccess:)]) {
+			[_delegate backupRestoreManager:self restoreCompleteWithSuccess:YES];
+		}
 	} else {
 		[self extractV1DataFilesAt:backupFilePath];
 
