@@ -257,6 +257,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 
 - (void)restClient:(DBRestClient *)client loadProgress:(CGFloat)progress forFile:(NSString *)destPath {
 	_HUD.progress = progress;
+	[self.percentFormatter setMaximumFractionDigits:0];
 	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(progress)];
 }
 
@@ -269,6 +270,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 
 - (void)decompressProgress:(float)currentByte total:(float)totalByte {
 	_HUD.progress = currentByte / totalByte;
+	[self.percentFormatter setMaximumFractionDigits:0];
 	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
 }
 

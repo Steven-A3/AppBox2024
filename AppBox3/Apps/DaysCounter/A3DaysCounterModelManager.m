@@ -79,19 +79,44 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return dict;
 }
 
-- (void)checkAndAddSystemCalendarItems
-{
-    NSArray *array = @[[NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: SystemCalendarID_All,CalendarItem_Name : @"All",CalendarItem_Color : [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0],CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_System],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}],[NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: SystemCalendarID_Upcoming,CalendarItem_Name : @"Upcoming",CalendarItem_Color : [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0],CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_System],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}],[NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: SystemCalendarID_Past,CalendarItem_Name : @"Past",CalendarItem_Color : [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0],CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_System],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}]];
+- (void)checkAndAddSystemCalendarItemsInContext:(NSManagedObjectContext *)context {
+    NSArray *array = @[
+			[NSMutableDictionary dictionaryWithDictionary:
+			@{
+					CalendarItem_ID: SystemCalendarID_All,
+					CalendarItem_Name : @"All",
+					CalendarItem_Color : [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0],
+					CalendarItem_IsShow : @YES,
+					CalendarItem_Type : @(CalendarCellType_System),
+					CalendarItem_IsDefault : @YES
+			}],
+			[NSMutableDictionary dictionaryWithDictionary:
+					@{
+							CalendarItem_ID: SystemCalendarID_Upcoming,
+							CalendarItem_Name : @"Upcoming",
+							CalendarItem_Color : [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0],
+							CalendarItem_IsShow : @YES,
+							CalendarItem_Type : @(CalendarCellType_System),
+							CalendarItem_IsDefault : @YES
+					}],
+			[NSMutableDictionary dictionaryWithDictionary:
+					@{CalendarItem_ID: SystemCalendarID_Past,
+							CalendarItem_Name : @"Past",
+							CalendarItem_Color : [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0],
+							CalendarItem_IsShow : @YES,
+							CalendarItem_Type : @(CalendarCellType_System),
+							CalendarItem_IsDefault : @YES
+					}]
+	];
     
     for (NSDictionary *item in array) {
-        [self addCalendarItem:item colorID:nil];
+        [self addCalendarItem:item colorID:nil inContext:context ];
     }
     
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[context MR_saveToPersistentStoreAndWait];
 }
 
-- (void)addDefaultUserCalendarItems
-{
+- (void)addDefaultUserCalendarItemsInContext:(NSManagedObjectContext *)context {
     NSMutableArray *array = [NSMutableArray arrayWithArray:@[
                                                              [NSMutableDictionary dictionaryWithDictionary:@{ CalendarItem_ID:@"1", CalendarItem_Name : @"Anniversary",
                                                                                                               CalendarItem_Color : [self.calendarColorArray[0] objectForKey:CalendarItem_Color],
@@ -118,16 +143,15 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         [addItem setObject:[item objectForKey:CalendarItem_Color] forKey:CalendarItem_Color];
         [addItem setObject:[item objectForKey:CalendarItem_IsShow] forKey:CalendarItem_IsShow];
         [addItem setObject:[item objectForKey:CalendarItem_IsDefault] forKey:CalendarItem_IsDefault];
-        [self addCalendarItem:addItem colorID:[self.calendarColorArray[idx] objectForKey:CalendarItem_Name]];
+        [self addCalendarItem:addItem colorID:[self.calendarColorArray[idx] objectForKey:CalendarItem_Name] inContext:context ];
         idx++;
     }
     
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    [context MR_saveToPersistentStoreAndWait];
 }
 
 
-- (void)prepare
-{
+- (void)prepareInContext:(NSManagedObjectContext *)context {
     if ( ![[NSFileManager defaultManager] fileExistsAtPath:[A3DaysCounterModelManager thumbnailDirectory]] ) {
         [[NSFileManager defaultManager] createDirectoryAtPath:[A3DaysCounterModelManager thumbnailDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
     }
@@ -147,12 +171,12 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:162.0/255.0 green:132.0/255.0 blue:94.0/255.0 alpha:1.0], CalendarItem_Name : @"Brown" }];
     [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0], CalendarItem_Name : @"Gray" }];
     
-    NSUInteger count = [DaysCounterCalendar MR_countOfEntities];
-    
-    if ( count == 0 ) {
-        [self addDefaultUserCalendarItems];
+    NSUInteger count = [DaysCounterCalendar MR_countOfEntitiesWithContext:context];
+
+	if ( count == 0 ) {
+        [self addDefaultUserCalendarItemsInContext:context ];
     }
-    [self checkAndAddSystemCalendarItems];
+    [self checkAndAddSystemCalendarItemsInContext:context ];
     
     // slideshow option create
     NSDictionary *opt = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterSlideshowOption];
@@ -512,14 +536,13 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return item;
 }
 
-- (id)calendarItemByID:(NSString*)calendarId
-{
-    return [DaysCounterCalendar MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarId == %@",calendarId]];
+- (id)calendarItemByID:(NSString *)calendarId inContext:(NSManagedObjectContext *)context {
+    return [DaysCounterCalendar MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarId == %@",calendarId] inContext:context];
 }
 
 - (BOOL)removeCalendarItem:(NSMutableDictionary*)item
 {
-    DaysCounterCalendar *removeItem = [self calendarItemByID:[item objectForKey:CalendarItem_ID]];
+    DaysCounterCalendar *removeItem = [self calendarItemByID:[item objectForKey:CalendarItem_ID] inContext:[[MagicalRecordStack defaultStack] context] ];
     
     if ( removeItem == nil )
         return NO;
@@ -537,7 +560,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (BOOL)removeCalendarItemWithID:(NSString*)calendarID
 {
-    DaysCounterCalendar *removeItem = [self calendarItemByID:calendarID];
+    DaysCounterCalendar *removeItem = [self calendarItemByID:calendarID inContext:[[MagicalRecordStack defaultStack] context] ];
     
     if ( removeItem == nil )
         return NO;
@@ -555,14 +578,13 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return retValue;
 }
 
-- (DaysCounterCalendar *)addCalendarItem:(NSDictionary*)item colorID:(NSString *)colorID
-{
-    if ( [self calendarItemByID:[item objectForKey:CalendarItem_ID]] )
-        return NO;
+- (DaysCounterCalendar *)addCalendarItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context {
+    if ([self calendarItemByID:[item objectForKey:CalendarItem_ID] inContext:context] )
+        return nil;
     
-    NSUInteger numberOfItems = [DaysCounterCalendar MR_countOfEntities];
+    NSUInteger numberOfItems = [DaysCounterCalendar MR_countOfEntitiesWithContext:context];
     // save to core data storage
-    DaysCounterCalendar *calendar = [DaysCounterCalendar MR_createEntity];
+    DaysCounterCalendar *calendar = [DaysCounterCalendar MR_createInContext:context];
     calendar.calendarId = [item objectForKey:CalendarItem_ID];
     calendar.calendarName = [item objectForKey:CalendarItem_Name];
     calendar.calendarColor = [NSKeyedArchiver archivedDataWithRootObject:[item objectForKey:CalendarItem_Color]];
@@ -572,7 +594,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     calendar.isDefault = [item objectForKey:CalendarItem_IsDefault];
     calendar.calendarColorID = colorID;
     
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    [context MR_saveToPersistentStoreAndWait];
     
     return calendar;
 }
@@ -580,7 +602,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (BOOL)updateCalendarItem:(NSMutableDictionary*)item colorID:(NSString *)colorID
 {
-    DaysCounterCalendar *existsCalendar = [self calendarItemByID:[item objectForKey:CalendarItem_ID]];
+    DaysCounterCalendar *existsCalendar = [self calendarItemByID:[item objectForKey:CalendarItem_ID] inContext:[[MagicalRecordStack defaultStack] context]];
 
     if (existsCalendar == nil )
         return NO;

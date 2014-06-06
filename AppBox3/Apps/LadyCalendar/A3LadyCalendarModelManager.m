@@ -35,9 +35,8 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
     [alertView show];
 }
 
-- (void)addDefaultAccount
-{
-    [self addAccount:@{AccountItem_ID : DefaultAccountID, AccountItem_Name : DefaultAccountName}];
+- (void)addDefaultAccountInContext:(NSManagedObjectContext *)context {
+    [self addAccount:@{AccountItem_ID : DefaultAccountID, AccountItem_Name : DefaultAccountName} inContext:context ];
 }
 
 - (NSDateFormatter *)dateFormatter {
@@ -49,7 +48,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 
 - (void)prepare
 {
-	[self prepareAccount];
+	[self prepareAccountInContext:[[MagicalRecordStack defaultStack] context] ];
 
     // 기본 설정값을 저장한다.
     if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting] == nil ){
@@ -69,10 +68,10 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
     [self recalculateDates];
 }
 
-- (void)prepareAccount {
+- (void)prepareAccountInContext:(NSManagedObjectContext *)context {
 	// 기본 계정을 한개 추가한다.
-	if( [self numberOfAccount] < 1 ){
-		[self addDefaultAccount];
+	if( [self numberOfAccountInContext:context ] < 1 ){
+		[self addDefaultAccountInContext:context ];
 
 		if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] == nil ){
 			[[NSUserDefaults standardUserDefaults] setObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID];
@@ -117,31 +116,28 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 }
 
 #pragma mark - account
-- (NSInteger)numberOfAccount
-{
-    return [LadyCalendarAccount MR_countOfEntities];
+- (NSInteger)numberOfAccountInContext:(NSManagedObjectContext *)context {
+    return [LadyCalendarAccount MR_countOfEntitiesWithContext:context];
 }
 
-- (LadyCalendarAccount*)accountForID:(NSString*)accountID
-{
-    return [LadyCalendarAccount MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@",accountID]];
+- (LadyCalendarAccount *)accountForID:(NSString *)accountID inContext:(NSManagedObjectContext *)context {
+    return [LadyCalendarAccount MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@",accountID] inContext:context];
 }
 
-- (BOOL)addAccount:(NSDictionary*)item
-{
-    LadyCalendarAccount *account = [self accountForID:[item objectForKey:AccountItem_ID]];
+- (BOOL)addAccount:(NSDictionary *)item inContext:(NSManagedObjectContext *)context {
+    LadyCalendarAccount *account = [self accountForID:[item objectForKey:AccountItem_ID] inContext:context ];
     if( account )
         return NO;
     
-    account = [LadyCalendarAccount MR_createEntity];
+    account = [LadyCalendarAccount MR_createInContext:context];
     account.uniqueID = [item objectForKey:AccountItem_ID];
     account.name = [item objectForKey:AccountItem_Name];
     account.notes = [item objectForKey:AccountItem_Notes];
     account.birthDay = [item objectForKey:AccountItem_Birthday];
-    account.order = [NSNumber numberWithInteger:[self numberOfAccount]+1];
+    account.order = [NSNumber numberWithInteger:[self numberOfAccountInContext:context ] +1];
     account.modificationDate = [NSDate date];
     
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    [context MR_saveToPersistentStoreAndWait];
     
     return YES;
 }

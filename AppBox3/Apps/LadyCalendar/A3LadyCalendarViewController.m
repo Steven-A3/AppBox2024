@@ -188,7 +188,7 @@
 {
 	[super viewWillAppear:animated];
 
-	if( [self.dataManager numberOfAccount] == 1 && [[[self.dataManager currentAccount] name] isEqualToString:DefaultAccountName] ){
+	if( [self.dataManager numberOfAccountInContext:[[MagicalRecordStack defaultStack] context] ] == 1 && [[[self.dataManager currentAccount] name] isEqualToString:DefaultAccountName] ){
 		self.navigationItem.title = @"Lady Calendar";
 	}
 	else{

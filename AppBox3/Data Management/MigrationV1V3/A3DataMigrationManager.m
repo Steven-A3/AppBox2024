@@ -81,8 +81,6 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 	[self migrateTranslatorHistoryInContext:_context];
 	[self migrateWalletDataInContext:_context withPassword:password];
 
-	[[A3AppDelegate instance] resetCoreDataStack];
-
 	[self deleteV1DataFiles];
 
 	if ([_delegate respondsToSelector:@selector(migrationManager:didFinishMigration:)]) {
@@ -157,8 +155,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 	}
 
 	A3DaysCounterModelManager *modelManager = [A3DaysCounterModelManager new];
-	[modelManager prepare];
-	[context reset];
+	[modelManager prepareInContext:context];
 
 	DaysCounterCalendar *daysCounterCalendar = [DaysCounterCalendar MR_findFirstOrderedByAttribute:@"order" ascending:YES inContext:context];
 	NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -238,7 +235,7 @@ NSString *const kMyGirlsDayHistoryTypeInput				= @"input";
 
 	// Create Default account and get account
 	A3LadyCalendarModelManager *dataManager = [A3LadyCalendarModelManager new];
-	[dataManager prepareAccount];
+	[dataManager prepareAccountInContext:context ];
 
 	NSString *accountID = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID];
 	LadyCalendarAccount *account = [LadyCalendarAccount MR_findFirstByAttribute:@"uniqueID" withValue:accountID inContext:context];
@@ -670,16 +667,15 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 	[_passwordAlertView show];
 }
 
-- (void)willPresentAlertView:(UIAlertView *)alertView {
-	UITextField *textField = [alertView textFieldAtIndex:0];
-	textField.delegate = self;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	[self.passwordAlertView dismissWithClickedButtonIndex:0 animated:YES];
-	[self alertView:_passwordAlertView clickedButtonAtIndex:0];
-	return YES;
-}
+//- (void)willPresentAlertView:(UIAlertView *)alertView {
+//	UITextField *textField = [alertView textFieldAtIndex:0];
+//}
+//
+//- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+//	[self.passwordAlertView dismissWithClickedButtonIndex:0 animated:YES];
+//	[self alertView:_passwordAlertView clickedButtonAtIndex:0];
+//	return YES;
+//}
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSString *password = [[alertView textFieldAtIndex:0] text];
