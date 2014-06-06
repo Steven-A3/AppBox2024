@@ -17,7 +17,7 @@
 - (void)ErrorMessage:(NSString*) msg;
 - (BOOL)overWriteOperation:(NSString*) file;
 - (void)compressProgress:(float)currentByte total:(float)totalByte;
-- (void)decompressProgress:(float)currentBtye total:(float)totalByte;
+- (void)decompressProgress:(float)currentByte total:(float)totalByte;
 - (void)completedProcess:(BOOL)bResult;
 @end
 

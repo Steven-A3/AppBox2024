@@ -69,6 +69,7 @@
 		17D42E0B81E96493926E8C02 /* A3BarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422F17E6A37A2E93CD352 /* A3BarButton.m */; };
 		17D42E23FC78EEE74D1E160D /* A3TranslatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4290B326C03E3DAF080A7 /* A3TranslatorViewController.m */; };
 		17D42E4EE3830FB7CC709BC8 /* FSOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42A98847F44914C3F8F2B /* FSOAuth.m */; };
+		17D42E9D7756E743947E5964 /* A3BackupRestoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4252487F63A66936B54FC /* A3BackupRestoreManager.m */; };
 		17D42F37E672CCF7D71978C9 /* NSManagedObject+Clone.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DA2DACEFCA29645708D /* NSManagedObject+Clone.m */; };
 		17D42F9D1879F6925F0A7A02 /* A3SettingsChooseColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4228D8D938C6FD778BB35 /* A3SettingsChooseColorViewController.m */; };
 		17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEFB63D5877A0449693 /* A3TranslatorCircleView.m */; };
@@ -969,6 +970,7 @@
 		17D4212AA5D840ED553C3647 /* UITableViewCell+accessory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+accessory.m"; sourceTree = "<group>"; };
 		17D421646BB7D9177954617B /* A3LadyCalendarDetailViewTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LadyCalendarDetailViewTitleCell.h; sourceTree = "<group>"; };
 		17D421A21CDA99AB58E8DDAD /* A3TranslatorCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorCircleView.h; path = Translator/A3TranslatorCircleView.h; sourceTree = "<group>"; };
+		17D421EA50E505169E8AFD88 /* A3BackupRestoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BackupRestoreManager.h; sourceTree = "<group>"; };
 		17D421EBC1891737E21BB3BE /* FSWebLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSWebLogin.m; sourceTree = "<group>"; };
 		17D421FB49C681FC776EFDF4 /* A3CurrencyTVDataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyTVDataCell.m; path = Apps/Currency/A3CurrencyTVDataCell.m; sourceTree = "<group>"; };
 		17D421FC9C9766E0ECC64AFA /* A3BlackBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BlackBarButton.h; sourceTree = "<group>"; };
@@ -1000,6 +1002,7 @@
 		17D42505EF075896601D91B4 /* A3TranslatorLanguageTVDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorLanguageTVDelegate.m; path = Translator/A3TranslatorLanguageTVDelegate.m; sourceTree = "<group>"; };
 		17D4251390502424974F5E59 /* FSTargetCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSTargetCallback.m; sourceTree = "<group>"; };
 		17D42516142E89CE1E21A7E2 /* A3StandardLeft15Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3StandardLeft15Cell.m; sourceTree = "<group>"; };
+		17D4252487F63A66936B54FC /* A3BackupRestoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BackupRestoreManager.m; sourceTree = "<group>"; };
 		17D425363271B74082FD8477 /* A3LanguagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LanguagePickerController.m; path = Translator/A3LanguagePickerController.m; sourceTree = "<group>"; };
 		17D42540FDF81A08CF1E081E /* A3MainMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3MainMenuTableViewController.h; sourceTree = "<group>"; };
 		17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+A3Addition.m"; sourceTree = "<group>"; };
@@ -2769,6 +2772,8 @@
 				17D42AADDEA67C2204FB400B /* A3SettingsBackupRestoreViewController.m */,
 				17D42020AA362D23330F9A40 /* A3SettingsViewController.h */,
 				17D42E0A671D2A779483EA05 /* A3SettingsViewController.m */,
+				17D421EA50E505169E8AFD88 /* A3BackupRestoreManager.h */,
+				17D4252487F63A66936B54FC /* A3BackupRestoreManager.m */,
 			);
 			name = Settings;
 			path = AppBox3/MainView;
@@ -6363,6 +6368,7 @@
 				17D421DA97EB3D5480B0586D /* A3SettingsViewController.m in Sources */,
 				17D427D61B3EEB8761EDC0B1 /* TranslatorGroup+manage.m in Sources */,
 				681E1284193448230077DCFA /* AAAZip.m in Sources */,
+				17D42E9D7756E743947E5964 /* A3BackupRestoreManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

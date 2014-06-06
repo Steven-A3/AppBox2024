@@ -227,7 +227,7 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	return isCloudStore;
 }
 
-#pragma mark - Migrate Local Data and remvoe duplication
+#pragma mark - Migrate Local Data and remove duplication
 
 - (void)migrateLocalDataToCloudContext:(NSManagedObjectContext *)cloudContext {
 	NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:nil];

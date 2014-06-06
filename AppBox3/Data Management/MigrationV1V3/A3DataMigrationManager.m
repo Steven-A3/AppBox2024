@@ -83,10 +83,52 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 
 	[[A3AppDelegate instance] resetCoreDataStack];
 
+	[self deleteV1DataFiles];
+
 	if ([_delegate respondsToSelector:@selector(migrationManager:didFinishMigration:)]) {
 		[_delegate migrationManager:self didFinishMigration:YES];
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationDataMigrationFinished object:nil];
+}
+
+NSString *const V1AlarmsDataFilename = @"alarms.db";
+NSString *const V1CurrencyCodesDBFilename = @"currencyCodesData.db";
+NSString *const V1UnitConverterDataFilename = @"unitConverterData.db";
+NSString *const V1UnitConverterFavoriteDataFilename = @"unitConverterFavoriteData.db";
+NSString *const V1DashboardSettingsFilename = @"dashboardSettings.db";
+NSString *const V1DaysUntilDataFilename = @"DDayData.db";
+NSString *const V1HolidayNationsDataFilename = @"holidayNations.db";
+NSString *const V1PCalendarDataFilename = @"myGirlsDayData.db";
+NSString *const V1MainMenuDataFilename = @"toolsconf.db";
+NSString *const V1TranslatorFavoritesFilename = @"translatorFavorites.db";
+NSString *const V1UnitFavoritesDataFilename = @"unitFavorites.db";
+NSString *const V1WalletDataFilename = @"wallet.db";
+NSString *const V1DashboardBackgroundFilename = @"dashboardBackground.png";
+NSString *const V1WalletImageFilePrefix = @"ABP_WALLET_PHOTO_IMAGE";
+NSString *const V1DaysUntilImageFilePrefix = @"ddayimage";
+NSString *const V1AlarmDirectoryName = @"Alarm";
+NSString *const V1AlarmMP3DirectoryName = @"mp3";
+
+- (void)deleteV1DataFiles {
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSArray *deleteCandidates = @[
+			V1AlarmsDataFilename, V1CurrencyCodesDBFilename, V1UnitConverterDataFilename, V1UnitConverterFavoriteDataFilename,
+			V1UnitFavoritesDataFilename, V1DashboardSettingsFilename, V1DashboardBackgroundFilename, V1DaysUntilDataFilename,
+			V1HolidayNationsDataFilename, V1PCalendarDataFilename, V1MainMenuDataFilename, V1TranslatorFavoritesFilename,
+			V1WalletDataFilename, V1AlarmDirectoryName, V1AlarmMP3DirectoryName
+	];
+	for (NSString *dataFilename in deleteCandidates) {
+		[fileManager removeItemAtPath:[self pathForFilename:dataFilename] error:NULL];
+	}
+
+	NSArray *fileList = [fileManager contentsOfDirectoryAtPath:self.migrationDirectory error:NULL];
+	for (NSString *filename in fileList) {
+		if ([filename hasPrefix:V1DaysUntilImageFilePrefix]) {
+			[fileManager removeItemAtPath:[self pathForFilename:filename] error:NULL];
+		} else if ([filename hasPrefix:V1WalletImageFilePrefix]) {
+			[fileManager removeItemAtPath:[self pathForFilename:filename] error:NULL];
+		}
+	}
 }
 
 - (NSString *)migrationDirectory {

@@ -395,9 +395,7 @@
         fileattrib = [[NSFileManager defaultManager] attributesOfItemAtPath:aFilePath error:&error];
         if(error)
         {
-#ifdef  TRACE_LOG
-            NSLog(@"getTotalBytes error %@", aFilePath);
-#endif        
+            FNLOG(@"getTotalBytes error %@, %@", aFilePath, error.localizedDescription );
         }
         else
         {

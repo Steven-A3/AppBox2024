@@ -14,6 +14,9 @@
 + (NSString *)orderStringWithOrder:(NSInteger)order;
 - (NSMutableString *)extendedSearchPatternForKoreanString;
 - (NSString *)componentsSeparatedByKorean;
+
+- (NSString *)pathInDocumentDirectory;
+
 - (NSString *)pathInLibraryDirectory;
 - (NSString *)pathInCachesDirectory;
 - (NSString *)pathInTemporaryDirectory;

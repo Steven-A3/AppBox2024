@@ -61,7 +61,7 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 		[A3KeychainUtils removePassword];
 	}
 	// TODO: 아래 한줄은 테스트 종료 후에는 반드시 삭제
-	_shouldMigrateV1Data = YES;
+//	_shouldMigrateV1Data = YES;
 
 	self.reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
 	[self.reachability startNotifier];
