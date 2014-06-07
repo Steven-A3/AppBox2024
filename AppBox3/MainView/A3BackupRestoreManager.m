@@ -106,7 +106,7 @@ extern NSString *const USMCloudContentName;
 	for (DaysCounterEvent *event in daysCounterEvents) {
 		[fileList addObject:
 			@{
-				A3ZipFilename : [event photoPathInOriginalDirectory:YES],
+				A3ZipFilename : [[event photoURLInOriginalDirectory:YES] path],
 				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@", A3DaysCounterImageDirectory, event.uniqueID]
 			}];
 	}

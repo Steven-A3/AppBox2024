@@ -13,6 +13,9 @@
 #import "A3LadyCalendarModelManager.h"
 #import "A3DaysCounterModelManager.h"
 #import "A3DataMigrationManager.h"
+#import "DaysCounterEvent+management.h"
+#import "NSString+conversion.h"
+#import "WalletFieldItem+initialize.h"
 
 NSString *const A3UniqueIdentifier = @"uniqueIdentifier";
 NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
@@ -44,6 +47,7 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	_needMigrateLocalDataToCloud = YES;
 
 	[self.ubiquityStoreManager setCloudEnabled:enable];
+	[self enableCloudForFiles:enable];
 
 	UIView *targetViewForHud = [[self visibleViewController] view];
 	self.hud = [MBProgressHUD showHUDAddedTo:targetViewForHud animated:YES];
@@ -465,6 +469,91 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	[A3LadyCalendarModelManager setupLocalNotification];
 
 	NSLog(@"%s - EXIT", __PRETTY_FUNCTION__);
+}
+
+#pragma mark - Image and Video files
+
+- (void)enableCloudForFiles:(BOOL)enable {
+	if (enable) {
+		[self moveFilesToCloud];
+	} else {
+		[self moveFilesFromCloud];
+	}
+}
+
+- (void)moveFilesToCloud {
+	[self moveFilesToCloudInDirectory:A3DaysCounterImageDirectory];
+	[self moveFilesToCloudInDirectory:A3WalletImageDirectory];
+	[self moveFilesToCloudInDirectory:A3WalletVideoDirectory];
+}
+
+- (void)moveFilesToCloudInDirectory:(NSString *)directory {
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+		NSFileManager *fileManager = [[NSFileManager alloc] init];
+		NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+		NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
+		NSURL *directoryURL = [ubiquityContainerURL URLByAppendingPathComponent:directory];
+		NSError *error;
+		if (![fileManager isUbiquitousItemAtURL:directoryURL]) {
+			[fileCoordinator coordinateWritingItemAtURL:directoryURL
+												options:NSFileCoordinatorWritingForReplacing
+												  error:&error
+											 byAccessor:^(NSURL *newURL) {
+												 [fileManager createDirectoryAtURL:newURL withIntermediateDirectories:YES attributes:nil error:NULL];
+											 }];
+		}
+
+		NSArray *files = [fileManager contentsOfDirectoryAtPath:[directory pathInLibraryDirectory] error:NULL];
+		FNLOG(@"%@", files);
+		for (NSString *filename in files) {
+			NSString *filePath = [directory stringByAppendingPathComponent:filename];
+			NSURL *localURL = [NSURL fileURLWithPath:[filePath pathInLibraryDirectory] ];
+			NSURL *cloudURL = [ubiquityContainerURL URLByAppendingPathComponent:filePath];
+
+			FNLOG(@"%@, %@", localURL, cloudURL);
+			[fileManager setUbiquitous:YES
+							 itemAtURL:localURL
+						destinationURL:cloudURL
+								 error:&error];
+			if (error) {
+				FNLOG(@"%@, %@", error.localizedDescription, error.localizedFailureReason);
+			}
+		}
+	});
+}
+
+- (void)moveFilesFromCloud {
+	[self moveFilesFromCloudInDirectory:A3DaysCounterImageDirectory];
+	[self moveFilesFromCloudInDirectory:A3WalletImageDirectory];
+	[self moveFilesFromCloudInDirectory:A3WalletVideoDirectory];
+}
+
+- (void)moveFilesFromCloudInDirectory:(NSString *)directory {
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+		NSFileManager *fileManager = [[NSFileManager alloc] init];
+		NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
+
+		NSArray *files = [fileManager contentsOfDirectoryAtURL:[ubiquityContainerURL URLByAppendingPathComponent:directory]
+									includingPropertiesForKeys:nil
+													   options:0
+														 error:NULL];
+
+		for (NSURL *cloudURL in files) {
+			NSString *filename = [cloudURL lastPathComponent];
+
+			NSURL *localURL = [NSURL fileURLWithPath:[[directory stringByAppendingPathComponent:filename] pathInLibraryDirectory] ];
+			NSError *error;
+			[fileManager setUbiquitous:NO
+							 itemAtURL:cloudURL
+						destinationURL:localURL
+								 error:&error];
+			if (error) {
+				FNLOG(@"%@, %@", error.localizedDescription, error.localizedFailureReason);
+			} else {
+				FNLOG(@"File moved back to local store: %@, %@", cloudURL, localURL);
+			}
+		}
+	});
 }
 
 @end

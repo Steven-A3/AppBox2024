@@ -14,7 +14,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 @interface DaysCounterEvent (management)
 
 - (void)toggleFavorite;
-- (NSString *)photoPathInOriginalDirectory:(BOOL)inOriginalDirectory;
+- (NSURL *)photoURLInOriginalDirectory:(BOOL)inOriginalDirectory;
 - (UIImage *)photoInOriginalDirectory:(BOOL)inOriginalDirectory;
 - (void)setPhoto:(UIImage *)image inOriginalDirectory:(BOOL)inOriginalDirectory;
 - (UIImage *)thumbnailImageInOriginalDirectory:(BOOL)inOriginalDirectory;

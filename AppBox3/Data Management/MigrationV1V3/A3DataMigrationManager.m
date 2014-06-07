@@ -189,9 +189,10 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 			NSString *filePath = [self pathForFilename:filename];
 			if ([filename length] && [fileManager fileExistsAtPath:filePath] ) {
 				newEvent.hasPhoto = @YES;
-				NSString *photoPath = [newEvent photoPathInOriginalDirectory:YES];
-				[fileManager removeItemAtPath:photoPath error:NULL];
-				[fileManager moveItemAtPath:filePath toPath:photoPath error:NULL];
+
+				NSURL *photoURL = [newEvent photoURLInOriginalDirectory:YES];
+				[fileManager removeItemAtURL:photoURL error:NULL];		// If file exist at toURL, moveItem will fail.
+				[fileManager moveItemAtURL:[NSURL fileURLWithPath:filePath] toURL:photoURL error:NULL];
 			}
 			newEvent.notes = v1Item[kKeyForDDayMemo];
 
