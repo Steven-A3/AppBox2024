@@ -19,7 +19,7 @@
 
 NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 
-@interface A3SettingsBackupRestoreViewController () <DBSessionDelegate, DBRestClientDelegate, A3SettingsDropboxSelectBackupDelegate, AAAZipDelegate>
+@interface A3SettingsBackupRestoreViewController () <DBSessionDelegate, DBRestClientDelegate, A3SettingsDropboxSelectBackupDelegate, AAAZipDelegate, A3BackupRestoreManagerDelegate>
 
 @property (nonatomic, strong) DBRestClient *restClient;
 @property (nonatomic, strong) DBAccountInfo *dropboxAccountInfo;
@@ -34,6 +34,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 	BOOL _dropboxLoginInProgress;
 	BOOL _selectBackupInProgress;
 	double _totalBytes;
+	BOOL _restoreInProgress;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -156,8 +157,17 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 		case 1:
 			switch (indexPath.row) {
 				case 0:
-					_selectBackupInProgress = YES;
-					[self.restClient loadMetadata:kDropboxDir];
+					if ([[[A3AppDelegate instance] ubiquityStoreManager] cloudEnabled]) {
+						UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info"
+																			message:@"Please turn iCloud sync off."
+																		   delegate:nil
+																  cancelButtonTitle:@"OK"
+																  otherButtonTitles:nil];
+						[alertView show];
+					} else {
+						_selectBackupInProgress = YES;
+						[self.restClient loadMetadata:kDropboxDir];
+					}
 					break;
 				case 1: {
 					[self.backupRestoreManager backupData];
@@ -238,14 +248,16 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 }
 
 - (void)restClient:(DBRestClient *)client loadedFile:(NSString *)destPath {
+	_restoreInProgress = YES;
 	_HUD.labelText = @"Unarchiving";
 	AAAZip *zipArchive = [[AAAZip alloc] init];
 	zipArchive.delegate = self;
-	[zipArchive UnzipFile:destPath unzipFileto:[@"restore" pathInCachesDirectory]];
+	[zipArchive unzipFile:destPath unzipFileto:[@"restore" pathInCachesDirectory]];
 }
 
 - (void)restClient:(DBRestClient *)client loadProgress:(CGFloat)progress forFile:(NSString *)destPath {
 	_HUD.progress = progress;
+	[self.percentFormatter setMaximumFractionDigits:0];
 	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(progress)];
 }
 
@@ -256,19 +268,30 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 
 #pragma mark - AAAZip Delegate
 
-- (void)compressProgress:(float)currentByte total:(float)totalByte {
-	_HUD.progress = currentByte / totalByte;
-	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
-}
-
 - (void)decompressProgress:(float)currentByte total:(float)totalByte {
 	_HUD.progress = currentByte / totalByte;
+	[self.percentFormatter setMaximumFractionDigits:0];
 	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
 }
 
-- (void)completedProcess:(BOOL)bResult {
+- (void)completedUnzipProcess:(BOOL)bResult{
 	[_HUD hide:YES];
 	_HUD = nil;
+	if (_restoreInProgress) {
+		_restoreInProgress = NO;
+
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		appDelegate.ubiquityStoreManager = nil;
+
+		NSURL *applicationSupportURL = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory
+																			   inDomains:NSUserDomainMask] lastObject];
+		self.backupRestoreManager.delegate = self;
+		[self.backupRestoreManager restoreDataAt:[@"restore" pathInCachesDirectory] toURL:[applicationSupportURL URLByAppendingPathComponent:@"UbiquityStore.sqlite"]];
+	}
+}
+
+- (void)backupRestoreManager:(A3BackupRestoreManager *)manager restoreCompleteWithSuccess:(BOOL)success {
+	[[A3AppDelegate instance] setupCloud];
 }
 
 #pragma mark - segue

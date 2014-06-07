@@ -125,7 +125,7 @@
     [self.navigationController setToolbarHidden:NO];
 
     if ( [self.changedCalendarID length] > 0 && ![self.changedCalendarID isEqualToString:_calendarItem.calendarId] ) {
-        self.calendarItem = [_sharedManager calendarItemByID:self.changedCalendarID];
+        self.calendarItem = [_sharedManager calendarItemByID:self.changedCalendarID inContext:[[MagicalRecordStack defaultStack] context] ];
         self.changedCalendarID = nil;
         if ( self.calendarItem ) {
             self.title = [NSString stringWithFormat:@"%@%@",_calendarItem.calendarName, [_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : @" Events"];

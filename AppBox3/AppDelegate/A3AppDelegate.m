@@ -208,6 +208,7 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 				} else {
 					[migrationManager migrateV1DataWithPassword:nil];
 					self.shouldMigrateV1Data = NO;
+					[self resetCoreDataStack];
 				}
 			}
 			[self showReceivedLocalNotifications];
@@ -216,6 +217,7 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 }
 
 - (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {
+	[self resetCoreDataStack];
 	self.shouldMigrateV1Data = NO;
 	self.migrationManager = nil;
 }
@@ -291,7 +293,7 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 	viewController.isModal = YES;
 	viewController.eventItem = eventItem;
     A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
-    [sharedManager prepare];
+    [sharedManager prepareInContext:[[MagicalRecordStack defaultStack] context] ];
     viewController.sharedManager = sharedManager;
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];

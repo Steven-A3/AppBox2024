@@ -11,8 +11,10 @@
 #import "NSString+conversion.h"
 #import "UIImage+Resizing.h"
 #import "A3DaysCounterModelManager.h"
+#import "A3AppDelegate.h"
 
 NSString *const A3DaysCounterImageDirectory = @"DaysCounterImages";
+NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbnail";
 
 @implementation DaysCounterEvent (management)
 
@@ -27,31 +29,36 @@ NSString *const A3DaysCounterImageDirectory = @"DaysCounterImages";
 	}
 }
 
-- (NSString *)photoPathInOriginalDirectory:(BOOL)inOriginalDirectory {
+- (NSURL *)photoURLInOriginalDirectory:(BOOL)inOriginalDirectory {
 	if (inOriginalDirectory) {
-		return [[NSString stringWithFormat:@"%@/%@", A3DaysCounterImageDirectory, self.uniqueID] pathInLibraryDirectory];
+		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+			NSURL *ubiquityContainerURL = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+			NSString *filePath = [A3DaysCounterImageDirectory stringByAppendingPathComponent:self.uniqueID];
+			return [ubiquityContainerURL URLByAppendingPathComponent:filePath];
+		} else {
+			NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:self.uniqueID] pathInLibraryDirectory];
+			return [NSURL fileURLWithPath:path];
+		}
 	} else {
-		return [self.uniqueID pathInTemporaryDirectory];
+		return [NSURL fileURLWithPath:[self.uniqueID pathInTemporaryDirectory] ];
 	}
 }
 
 - (UIImage *)photoInOriginalDirectory:(BOOL)inOriginalDirectory {
-	return [UIImage imageWithContentsOfFile:[self photoPathInOriginalDirectory:inOriginalDirectory]];
+	NSData *data = [[NSData alloc] initWithContentsOfURL:[self photoURLInOriginalDirectory:inOriginalDirectory]];
+	return [UIImage imageWithData:data];
 }
 
 - (void)setPhoto:(UIImage *)image inOriginalDirectory:(BOOL)inOriginalDirectory {
-	[UIImageJPEGRepresentation(image, 1.0) writeToFile:[self photoPathInOriginalDirectory:inOriginalDirectory] atomically:YES];
+	[UIImageJPEGRepresentation(image, 1.0) writeToURL:[self photoURLInOriginalDirectory:inOriginalDirectory] atomically:YES];
 }
 
 - (UIImage *)thumbnailImageInOriginalDirectory:(BOOL)inOriginalDirectory {
 	if (![self.hasPhoto boolValue]) return nil;
 	NSString *filePath = [self thumbnailPathInOriginalDirectory:inOriginalDirectory];
 	if (inOriginalDirectory && ![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-		NSString *originalPath = [self photoPathInOriginalDirectory:YES];
-		if ([[NSFileManager defaultManager] fileExistsAtPath:originalPath]) {
-			UIImage *image = [UIImage imageWithContentsOfFile:originalPath];
-			return [self saveThumbnailForImage:image inOriginalDirectory:YES];
-		}
+		UIImage *image = [self photoInOriginalDirectory:YES];
+		return [self saveThumbnailForImage:image inOriginalDirectory:YES];
 	}
 	return [UIImage imageWithContentsOfFile:[self thumbnailPathInOriginalDirectory:inOriginalDirectory]];
 }
@@ -81,17 +88,26 @@ NSString *const A3DaysCounterImageDirectory = @"DaysCounterImages";
 	if (![self.hasPhoto boolValue]) {
 		return;
 	}
-	NSFileManager *fileManager = [NSFileManager defaultManager];
 
-	NSString *photoPathInOriginalDirectory = [self photoPathInOriginalDirectory:YES];
-	NSString *photoPathInTemporaryDirectory = [self photoPathInOriginalDirectory:NO];
-	[fileManager removeItemAtPath:photoPathInTemporaryDirectory error:NULL];
-	[fileManager copyItemAtPath:photoPathInOriginalDirectory toPath:photoPathInTemporaryDirectory error:NULL];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+		NSURL *photoURLInOriginalDirectory = [self photoURLInOriginalDirectory:YES];
+		NSURL *photoURLInTemporaryDirectory = [self photoURLInOriginalDirectory:NO];
 
-	NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:YES];
-	NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:NO];
-	[fileManager removeItemAtPath:thumbnailPathInTemp error:NULL];
-	[fileManager copyItemAtPath:thumbnailPath toPath:thumbnailPathInTemp error:NULL];
+		NSFileManager *fileManager = [[NSFileManager alloc] init];
+		NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+		NSError *error;
+		[fileCoordinator coordinateReadingItemAtURL:photoURLInOriginalDirectory
+											options:NSFileCoordinatorReadingWithoutChanges
+								   writingItemAtURL:photoURLInTemporaryDirectory
+											options:NSFileCoordinatorWritingForReplacing
+											  error:&error byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
+			[fileManager copyItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
+		}];
+		NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:YES];
+		NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:NO];
+		[fileManager removeItemAtPath:thumbnailPathInTemp error:NULL];
+		[fileManager copyItemAtPath:thumbnailPath toPath:thumbnailPathInTemp error:NULL];
+	});
 }
 
 - (void)moveImagesToOriginalDirectory {
@@ -99,29 +115,54 @@ NSString *const A3DaysCounterImageDirectory = @"DaysCounterImages";
 		[self deletePhoto];
 		return;
 	}
-	NSFileManager *fileManager = [NSFileManager defaultManager];
 
-	NSString *photoPathInOriginalDirectory = [self photoPathInOriginalDirectory:YES];
-	NSString *photoPathInTemporaryDirectory = [self photoPathInOriginalDirectory:NO];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+		NSURL *photoURLInOriginalDirectory = [self photoURLInOriginalDirectory:YES];
+		NSURL *photoURLInTemporaryDirectory = [self photoURLInOriginalDirectory:NO];
 
-	[fileManager removeItemAtPath:photoPathInOriginalDirectory error:NULL];
-	[fileManager moveItemAtPath:photoPathInTemporaryDirectory toPath:photoPathInOriginalDirectory error:NULL];
+		NSFileManager *fileManager = [[NSFileManager alloc] init];
 
-	NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:YES];
-	NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:NO];
+		NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+		NSError *error;
+		[fileCoordinator coordinateReadingItemAtURL:photoURLInTemporaryDirectory
+											options:NSFileCoordinatorReadingWithoutChanges
+								   writingItemAtURL:photoURLInOriginalDirectory
+											options:NSFileCoordinatorWritingForReplacing
+											  error:&error
+										 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
+											 [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:NULL];
+										 }];
+		if (error) {
+			FNLOG(@"%@", error.localizedDescription);
+		}
+		NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:YES];
+		NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:NO];
 
-	[fileManager removeItemAtPath:thumbnailPath error:NULL];
-	[fileManager moveItemAtPath:thumbnailPathInTemp toPath:thumbnailPath error:NULL];
+		[fileManager removeItemAtPath:thumbnailPath error:NULL];
+		[fileManager moveItemAtPath:thumbnailPathInTemp toPath:thumbnailPath error:NULL];
+	});
+
 }
 
 - (void)deletePhoto {
 	self.hasPhoto = @NO;
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	[fileManager removeItemAtPath:[self photoPathInOriginalDirectory:YES] error:NULL];
-	[fileManager removeItemAtPath:[self photoPathInOriginalDirectory:NO] error:NULL];
 
-	[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:YES] error:NULL];
-	[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:NO] error:NULL];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+		NSFileManager *fileManager = [[NSFileManager alloc] init];
+		NSURL *photoURL = [self photoURLInOriginalDirectory:YES];
+		NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+		NSError *error;
+		[fileCoordinator coordinateWritingItemAtURL:photoURL
+											options:NSFileCoordinatorWritingForDeleting
+											  error:&error
+										 byAccessor:^(NSURL *newURL) {
+											 [fileManager removeItemAtURL:newURL error:NULL];
+										 }];
+		[fileManager removeItemAtURL:[self photoURLInOriginalDirectory:NO] error:NULL];
+
+		[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:YES] error:NULL];
+		[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:NO] error:NULL];
+	});
 }
 
 @end

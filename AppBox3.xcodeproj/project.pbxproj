@@ -198,7 +198,6 @@
 		681E1264193443F00077DCFA /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 681E1235193443F00077DCFA /* mztools.c */; };
 		681E1265193443F00077DCFA /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 681E1237193443F00077DCFA /* unzip.c */; };
 		681E1266193443F00077DCFA /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 681E1239193443F00077DCFA /* zip.c */; };
-		681E1271193443F00077DCFA /* ZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E1256193443F00077DCFA /* ZipArchive.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		681E1281193447D70077DCFA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 681E1280193447D70077DCFA /* libz.dylib */; };
 		681E1284193448230077DCFA /* AAAZip.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E1283193448230077DCFA /* AAAZip.m */; };
 		682126861843902A009A7964 /* NSNumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 682126851843902A009A7964 /* NSNumberExtensions.m */; };
@@ -1311,8 +1310,6 @@
 		681E1238193443F00077DCFA /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
 		681E1239193443F00077DCFA /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
 		681E123A193443F00077DCFA /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
-		681E1255193443F00077DCFA /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
-		681E1256193443F00077DCFA /* ZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZipArchive.m; sourceTree = "<group>"; };
 		681E1280193447D70077DCFA /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		681E1282193448230077DCFA /* AAAZip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAAZip.h; sourceTree = "<group>"; };
 		681E1283193448230077DCFA /* AAAZip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAAZip.m; sourceTree = "<group>"; };
@@ -3133,8 +3130,6 @@
 			isa = PBXGroup;
 			children = (
 				681E122A193443F00077DCFA /* minizip */,
-				681E1255193443F00077DCFA /* ZipArchive.h */,
-				681E1256193443F00077DCFA /* ZipArchive.m */,
 			);
 			name = ZipArchive;
 			path = External/ZipArchive;
@@ -6377,7 +6372,6 @@
 				17D42DC93704B5A21363A17F /* A3LadyCalendarDetailViewCell.m in Sources */,
 				17D427689D46EABBC180DD14 /* A3LadyCalendarDetailViewExpectedTitleCell.m in Sources */,
 				17D424B4BFD92CD7C21AC0A7 /* A3LoanCalcContentsTableViewController.m in Sources */,
-				681E1271193443F00077DCFA /* ZipArchive.m in Sources */,
 				17D425100E1C4BDFC5E6CF0C /* A3SettingsAddFavoritesViewController.m in Sources */,
 				17D42F9D1879F6925F0A7A02 /* A3SettingsChooseColorViewController.m in Sources */,
 				17D429BC8B8A263D0AB3AE4E /* A3SettingsDropboxSelectBackupViewController.m in Sources */,

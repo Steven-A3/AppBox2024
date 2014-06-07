@@ -90,7 +90,13 @@
         self.title = @"Add Event";
         _isAdvancedCellOpen = NO;
         _eventItem = [DaysCounterEvent MR_createEntity];
-//		_eventItem.uniqueID = [[NSUUID UUID] UUIDString];
+
+		// 사진 저장 및 기타 연관 정보 저장을 위해서
+		// uniqueID가 필요합니다. 만약 추가인지 수정인지를 구분해야 한다면
+		// _isAddingEvent 로 구분을 합니다.
+		// 기존에 uniqueID로 구분하던 코드는 모두 _isAddingEvent 로 비교하도록 수정하였습니다.
+		_eventItem.uniqueID = [[NSUUID UUID] UUIDString];
+
         [A3DaysCounterModelManager setDateModelObjectForDateComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:NO];
         [A3DaysCounterModelManager setDateModelObjectForDateComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:YES];
 
@@ -108,7 +114,7 @@
             }
         }
         else {
-            DaysCounterCalendar *anniversaryCalendar = [_sharedManager calendarItemByID:@"1"];
+            DaysCounterCalendar *anniversaryCalendar = [_sharedManager calendarItemByID:@"1" inContext:[[MagicalRecordStack defaultStack] context] ];
             if (!anniversaryCalendar) {
                 anniversaryCalendar = [[[_sharedManager allUserCalendarList] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isShow == %@", @(YES)]] firstObject];
             }
@@ -1301,7 +1307,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 //    return [_sectionTitleArray count] + (_eventItem.uniqueID ? 1 : 0);
-    if (_eventItem.uniqueID) {
+    if (_isAddingEvent) {
         return [_sectionTitleArray count] + 1;
     }
 
@@ -1320,7 +1326,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if ( section == 2 ) {
-        if (_eventItem.uniqueID) {
+        if (_isAddingEvent) {
             return IS_RETINA ? 35.5 : 35;
         }
         else {
@@ -1339,10 +1345,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (_eventItem.uniqueID && section == [_sectionTitleArray count]) {
+    if (_isAddingEvent && section == [_sectionTitleArray count]) {
         return 38.0;
     }
-    else if (!_eventItem.uniqueID && section == [_sectionTitleArray count] - 1) {
+    else if (!_isAddingEvent && section == [_sectionTitleArray count] - 1) {
         return 38.0;
     }
     
@@ -1419,7 +1425,7 @@
     if ( [_eventItem.isLunar boolValue]) {
         BOOL isLunarStartDate = [NSDate isLunarDate:[_eventItem.startDate solarDate] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
         if (!isLunarStartDate) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"startDate is not a Lunar Date", @"startDate is not a Lunar Date") delegate:nil cancelButtonTitle:@"OK"
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Start date is not lunar date", @"Message in adding event.") delegate:nil cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil, nil];
             [alert show];
             return;
@@ -1428,7 +1434,7 @@
         if ( [_eventItem.isPeriod boolValue] ) {
             BOOL isLunarEndDate = [NSDate isLunarDate:[_eventItem.endDate solarDate] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
             if (!isLunarEndDate) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"endDate is not a Lunar Date", @"endDate is not a Lunar Date") delegate:nil cancelButtonTitle:@"OK"
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"End date is not lunar date", @"Message in adding event.") delegate:nil cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil, nil] ;
                 [alert show];
                 return;
@@ -1436,12 +1442,7 @@
         }
     }
 
-
     if ( _isAddingEvent ) {
-        if (!_eventItem.uniqueID) {
-            _eventItem.uniqueID = [[NSUUID UUID] UUIDString];
-        }
-        
         if (_eventItem.location) {
             _eventItem.location.eventId = _eventItem.uniqueID;
         }

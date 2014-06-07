@@ -20,7 +20,7 @@
 + (UIImage*)strokeCircleImageSize:(CGSize)size color:(UIColor*)color;
 + (NSString *)thumbnailDirectory;
 
-- (void)prepare;
+- (void)prepareInContext:(NSManagedObjectContext *)context;
 - (NSString*)repeatTypeStringFromValue:(NSInteger)repeatType;
 - (NSString*)repeatTypeStringForDetailValue:(NSInteger)repeatType;
 
@@ -44,10 +44,12 @@
 - (NSMutableArray*)allCalendarList;
 - (NSMutableArray*)allUserCalendarList;
 - (NSMutableDictionary *)itemForNewUserCalendar;
-- (id)calendarItemByID:(NSString*)calendarId;
+
+- (id)calendarItemByID:(NSString *)calendarId inContext:(NSManagedObjectContext *)context;
 - (BOOL)removeCalendarItem:(NSMutableDictionary*)item;
 - (BOOL)removeCalendarItemWithID:(NSString*)calendarID;
-- (DaysCounterCalendar *)addCalendarItem:(NSDictionary*)item colorID:(NSString *)colorID;
+
+- (DaysCounterCalendar *)addCalendarItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context;
 - (BOOL)updateCalendarItem:(NSMutableDictionary*)item colorID:(NSString *)colorID;
 - (NSInteger)numberOfAllEvents;
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date;
