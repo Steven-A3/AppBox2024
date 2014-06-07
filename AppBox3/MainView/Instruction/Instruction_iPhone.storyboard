@@ -1414,9 +1414,11 @@ then drag it up or down</string>
                                     <constraint firstAttribute="height" constant="14" id="vYG-Yz-ggD"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to view list of periods" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="BOF-lT-L6x" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="0.0" y="167" width="320" height="20"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="BOF-lT-L6x" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="0.0" y="167" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">tap the screen to display
+the controls</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -1449,6 +1451,82 @@ then drag it up or down</string>
                 <tapGestureRecognizer id="wca-Jk-8Su">
                     <connections>
                         <action selector="viewTapped:" destination="fG5-Kg-JJc" id="K9u-B8-yw4"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="24" y="-433"/>
+        </scene>
+        <!--Mirror Instruction View Controller-->
+        <scene sceneID="Nve-VB-CmF">
+            <objects>
+                <viewController storyboardIdentifier="Mirror" useStoryboardIdentifierAsRestorationIdentifier="YES" id="SXz-Dr-CYu" userLabel="Mirror Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="MXT-rK-fVX"/>
+                        <viewControllerLayoutGuide type="bottom" id="Bwp-nx-ohn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jJb-mI-9yk">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8vQ-4u-4Gf">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="yHE-dj-Eqt">
+                                <rect key="frame" x="139" y="115" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="SBS-rb-VLx"/>
+                                    <constraint firstAttribute="height" constant="42" id="ust-Y0-ajm"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="RQO-Dj-ecx">
+                                <rect key="frame" x="186" y="120" width="14" height="14"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="14" id="na1-ME-6ky"/>
+                                    <constraint firstAttribute="width" constant="14" id="owL-ck-VKV"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="k0p-RN-RCK" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="0.0" y="167" width="320" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">tap the screen to display
+the controls</string>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="RQO-Dj-ecx" firstAttribute="leading" secondItem="yHE-dj-Eqt" secondAttribute="trailing" constant="5" id="0fg-2P-LU3"/>
+                            <constraint firstItem="8vQ-4u-4Gf" firstAttribute="leading" secondItem="jJb-mI-9yk" secondAttribute="leading" id="1zJ-Lw-TWY"/>
+                            <constraint firstAttribute="centerX" secondItem="yHE-dj-Eqt" secondAttribute="centerX" id="N7N-ep-vb6"/>
+                            <constraint firstAttribute="trailing" secondItem="8vQ-4u-4Gf" secondAttribute="trailing" id="O8K-81-DPh"/>
+                            <constraint firstItem="yHE-dj-Eqt" firstAttribute="top" secondItem="jJb-mI-9yk" secondAttribute="top" constant="115" id="X4w-dQ-7qA"/>
+                            <constraint firstItem="yHE-dj-Eqt" firstAttribute="top" secondItem="RQO-Dj-ecx" secondAttribute="top" constant="-5" id="bVv-25-r8g"/>
+                            <constraint firstItem="k0p-RN-RCK" firstAttribute="leading" secondItem="jJb-mI-9yk" secondAttribute="leading" id="bgt-fZ-uha"/>
+                            <constraint firstAttribute="bottom" secondItem="8vQ-4u-4Gf" secondAttribute="bottom" id="hKA-XA-86N"/>
+                            <constraint firstAttribute="trailing" secondItem="k0p-RN-RCK" secondAttribute="trailing" id="kmx-oj-B4n"/>
+                            <constraint firstItem="8vQ-4u-4Gf" firstAttribute="top" secondItem="jJb-mI-9yk" secondAttribute="top" id="so2-M5-xSQ"/>
+                            <constraint firstItem="k0p-RN-RCK" firstAttribute="top" secondItem="yHE-dj-Eqt" secondAttribute="bottom" constant="10" id="t1m-3t-Dud"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="HjC-d3-CNh" appends="YES" id="E1H-CM-fU3"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="RQO-Dj-ecx" id="FdG-8E-ntY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lLU-d0-9Ks" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="HjC-d3-CNh">
+                    <connections>
+                        <action selector="viewTapped:" destination="SXz-Dr-CYu" id="eXE-nG-mkL"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
