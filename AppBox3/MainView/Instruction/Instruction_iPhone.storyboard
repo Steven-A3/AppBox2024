@@ -1380,6 +1380,80 @@ then drag it up or down</string>
             </objects>
             <point key="canvasLocation" x="24" y="-433"/>
         </scene>
+        <!--Magnifier Instruction View Controller-->
+        <scene sceneID="Q5E-Kk-nGQ">
+            <objects>
+                <viewController storyboardIdentifier="Magnifier" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fG5-Kg-JJc" userLabel="Magnifier Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="E95-e2-YSv"/>
+                        <viewControllerLayoutGuide type="bottom" id="hVp-CH-x9w"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="MRm-p5-tZc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ijC-BQ-1yx">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="51h-tn-90N">
+                                <rect key="frame" x="139" y="115" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="G7E-Rd-r1e"/>
+                                    <constraint firstAttribute="width" constant="42" id="puS-1Y-kWR"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="uPL-io-99J">
+                                <rect key="frame" x="186" y="120" width="14" height="14"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="14" id="fs5-p5-S4a"/>
+                                    <constraint firstAttribute="height" constant="14" id="vYG-Yz-ggD"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to view list of periods" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="BOF-lT-L6x" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="0.0" y="167" width="320" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="51h-tn-90N" firstAttribute="top" secondItem="uPL-io-99J" secondAttribute="top" constant="-5" id="18t-FC-NCZ"/>
+                            <constraint firstItem="uPL-io-99J" firstAttribute="leading" secondItem="51h-tn-90N" secondAttribute="trailing" constant="5" id="E2w-tB-GMW"/>
+                            <constraint firstAttribute="trailing" secondItem="BOF-lT-L6x" secondAttribute="trailing" id="H8p-qA-iki"/>
+                            <constraint firstAttribute="trailing" secondItem="ijC-BQ-1yx" secondAttribute="trailing" id="RHc-yY-hfI"/>
+                            <constraint firstItem="BOF-lT-L6x" firstAttribute="top" secondItem="51h-tn-90N" secondAttribute="bottom" constant="10" id="bJb-R2-J5p"/>
+                            <constraint firstItem="ijC-BQ-1yx" firstAttribute="top" secondItem="MRm-p5-tZc" secondAttribute="top" id="fIC-0K-Nr5"/>
+                            <constraint firstItem="ijC-BQ-1yx" firstAttribute="leading" secondItem="MRm-p5-tZc" secondAttribute="leading" id="jbV-mH-TFG"/>
+                            <constraint firstAttribute="bottom" secondItem="ijC-BQ-1yx" secondAttribute="bottom" id="nB7-QK-tAc"/>
+                            <constraint firstAttribute="centerX" secondItem="51h-tn-90N" secondAttribute="centerX" id="pEw-bX-tJO"/>
+                            <constraint firstItem="51h-tn-90N" firstAttribute="top" secondItem="MRm-p5-tZc" secondAttribute="top" constant="115" id="qr4-TG-M7U"/>
+                            <constraint firstItem="BOF-lT-L6x" firstAttribute="leading" secondItem="MRm-p5-tZc" secondAttribute="leading" id="xzI-Uj-Knj"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="wca-Jk-8Su" appends="YES" id="yTQ-GH-tfI"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="uPL-io-99J" id="jjr-1c-pme"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Jb-nu-BXx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="wca-Jk-8Su">
+                    <connections>
+                        <action selector="viewTapped:" destination="fG5-Kg-JJc" id="K9u-B8-yw4"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="24" y="-433"/>
+        </scene>
     </scenes>
     <resources>
         <image name="delete03" width="14" height="14"/>
