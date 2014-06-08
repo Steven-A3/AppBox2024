@@ -87,6 +87,7 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 @property (assign, nonatomic) BOOL shouldMigrateV1Data;
 @property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (strong, nonatomic) A3DataMigrationManager *migrationManager;
+@property (nonatomic, strong) NSMetadataQuery *metadataQuery;
 
 + (A3AppDelegate *)instance;
 

@@ -39,7 +39,6 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 - (void)setupCloud {
 
 	self.ubiquityStoreManager = [[UbiquityStoreManager alloc] initWithDelegate:self];
-
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:USMStoreDidImportChangesNotification object:nil];
 }
 
@@ -124,6 +123,9 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	self.coreDataReadyToUse = YES;
 
 	if (isCloudStore) {
+		[self startCloudFileQuery];
+		[self startDownloadAllFiles];
+
 		if (_needMigrateLocalDataToCloud) {
 			// Cloud data exist and we need to migrate.
 			// Delete seeding data before migrate because cloud already has seed data such as CurrencyFavorite
@@ -476,8 +478,10 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 - (void)enableCloudForFiles:(BOOL)enable {
 	if (enable) {
 		[self moveFilesToCloud];
+		[self startCloudFileQuery];
 	} else {
 		[self moveFilesFromCloud];
+		[self stopCloudFileQuery];
 	}
 }
 
@@ -554,6 +558,54 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 			}
 		}
 	});
+}
+
+#pragma mark - NSMetadataQuery
+
+- (void)startCloudFileQuery {
+	FNLOG();
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudFileChanged) name:NSMetadataQueryDidUpdateNotification object:self.metadataQuery];
+
+	[self.metadataQuery startQuery];
+}
+
+- (void)cloudFileChanged {
+	FNLOG();
+	[self.metadataQuery disableUpdates];
+
+	for (NSMetadataItem *metaData in [self.metadataQuery results]) {
+		FNLOG(@"%@", [metaData valueForAttribute:NSMetadataItemFSNameKey]);
+		if (![[metaData valueForAttribute:NSMetadataUbiquitousItemDownloadingStatusKey] isEqualToString:NSMetadataUbiquitousItemDownloadingStatusDownloaded]) {
+			NSURL *fileURL = [metaData valueForKey:NSMetadataItemURLKey];
+			[[NSFileManager defaultManager] startDownloadingUbiquitousItemAtURL:fileURL error:NULL];
+		}
+	}
+
+	[self.metadataQuery enableUpdates];
+}
+
+- (void)stopCloudFileQuery {
+	if (self.metadataQuery) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:NSMetadataQueryDidUpdateNotification object:self.metadataQuery];
+		[self.metadataQuery stopQuery];
+		self.metadataQuery = nil;
+	}
+}
+
+- (void)startDownloadAllFiles {
+	FNLOG();
+	[self startDownloadInDirectory:A3DaysCounterImageDirectory];
+	[self startDownloadInDirectory:A3WalletImageDirectory];
+	[self startDownloadInDirectory:A3WalletVideoDirectory];
+}
+
+- (void)startDownloadInDirectory:(NSString *)directory {
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
+	NSArray *files = [fileManager contentsOfDirectoryAtURL:[ubiquityContainerURL URLByAppendingPathComponent:directory] includingPropertiesForKeys:nil options:0 error:NULL];
+	for (NSURL *fileURL in files) {
+		[fileManager startDownloadingUbiquitousItemAtURL:fileURL error:NULL];
+	}
 }
 
 @end

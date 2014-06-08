@@ -364,4 +364,13 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 	return _cacheStoreManager;
 }
 
+- (NSMetadataQuery *)metadataQuery {
+	if (!_metadataQuery) {
+		_metadataQuery = [[NSMetadataQuery alloc] init];
+		_metadataQuery.searchScopes = @[NSMetadataQueryUbiquitousDataScope];
+		_metadataQuery.predicate = [NSPredicate predicateWithFormat:@"%K like %@", NSMetadataItemFSNameKey, @"*"];
+	}
+	return _metadataQuery;
+}
+
 @end
