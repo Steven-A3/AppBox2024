@@ -305,7 +305,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     WalletFieldItem *fieldItem = _videoFieldItems[page];
 
 	if (fieldItem.video) {
-		CGFloat duration = [WalletData getDurationOfMovie:[fieldItem videoFilePathInOriginal:YES ]];
+		CGFloat duration = [WalletData getDurationOfMovie:[fieldItem videoFileURLInOriginal:YES ]];
 		NSInteger dur = round(duration);
 		_metadataView.mediaSizeLabel.text = [NSString stringWithFormat:@"Duration Time %lds", (long)dur];
 
@@ -318,7 +318,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         else {
             dateFormatter.dateFormat = [dateFormatter customFullWithTimeStyleFormat];
         }
-		NSDate *createDate = [WalletData getCreateDateOfMovie:[fieldItem videoFilePathInOriginal:YES ]];
+		NSDate *createDate = [WalletData getCreateDateOfMovie:[fieldItem videoFileURLInOriginal:YES ]];
 		if (createDate) {
 			_metadataView.takenDateLabel.text = [dateFormatter stringFromDate:createDate];
 		}
@@ -472,8 +472,8 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     
     if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
         if (fieldItem.video) {
-			NSString *filePath = [fieldItem videoFilePathInOriginal:YES ];
-			_moviePlayerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:filePath]];
+			NSURL *fileURL = [fieldItem videoFileURLInOriginal:YES ];
+			_moviePlayerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:fileURL];
 
 			// 재생후에 자동으로 닫히는 것 방지하고, 사용자가 닫을수있도록 함.
 			[[NSNotificationCenter defaultCenter] removeObserver:_moviePlayerViewController name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayerViewController.moviePlayer];

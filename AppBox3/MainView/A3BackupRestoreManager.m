@@ -115,7 +115,7 @@ extern NSString *const USMCloudContentName;
 	for (WalletFieldItem *item in walletImages) {
 		[fileList addObject:
 			@{
-				A3ZipFilename : [item photoImagePathInOriginalDirectory:YES],
+				A3ZipFilename : [[item photoImageURLInOriginalDirectory:YES] path],
 				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@", A3WalletImageDirectory, item.uniqueID]
 			}];
 	}
@@ -124,7 +124,7 @@ extern NSString *const USMCloudContentName;
 	for (WalletFieldItem *video in walletVideos) {
 		[fileList addObject:
 			@{
-				A3ZipFilename : [video videoFilePathInOriginal:YES],
+				A3ZipFilename : [[video videoFileURLInOriginal:YES] path],
 				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@", A3WalletVideoDirectory, video.uniqueID]
 			}];
 	}

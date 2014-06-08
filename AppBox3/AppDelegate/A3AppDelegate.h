@@ -58,6 +58,8 @@ extern NSString *const A3LocalNotificationDataID;
 extern NSString *const A3LocalNotificationFromLadyCalendar;
 extern NSString *const A3LocalNotificationFromDaysCounter;
 
+extern NSString *const A3CloudSeedDataCreated;		// BOOL, Key Value Store
+
 @protocol A3ViewControllerProtocol <NSObject>
 - (NSUInteger)a3SupportedInterfaceOrientations;
 @end

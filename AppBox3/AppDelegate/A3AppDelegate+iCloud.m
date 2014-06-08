@@ -16,6 +16,8 @@
 #import "DaysCounterEvent+management.h"
 #import "NSString+conversion.h"
 #import "WalletFieldItem+initialize.h"
+#import "WalletCategory.h"
+#import "WalletCategory+initialize.h"
 
 NSString *const A3UniqueIdentifier = @"uniqueIdentifier";
 NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
@@ -134,6 +136,10 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 		}
 	} else {
 		[A3CurrencyDataManager setupFavorites];
+		if ([WalletCategory MR_countOfEntities] == 0) {
+			[WalletCategory resetWalletCategoriesInContext:[[MagicalRecordStack defaultStack] context] ];
+		}
+
 		[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 		[A3LadyCalendarModelManager setupLocalNotification];
 	}

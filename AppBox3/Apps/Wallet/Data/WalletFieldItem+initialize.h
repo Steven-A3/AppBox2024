@@ -15,21 +15,14 @@ extern NSString *const A3WalletVideoThumbnailDirectory;
 
 @interface WalletFieldItem (initialize)
 
-- (NSString *)photoImagePathInOriginalDirectory:(BOOL)inOriginalDirectory;
-
+- (NSURL *)photoImageURLInOriginalDirectory:(BOOL)inOriginalDirectory;
 - (UIImage *)photoImageInOriginalDirectory:(BOOL)inOriginalDirectory;
-
 - (void)setPhotoImage:(UIImage *)image inOriginalDirectory:(BOOL)inOriginalDirectory;
-
 - (NSString *)photoImageThumbnailPathInOriginal:(BOOL)original;
-
 - (UIImage *)makePhotoImageThumbnailWithImage:(UIImage *)originalImage inOriginalDirectory:(BOOL)inOriginalDirectory;
-
 - (NSString *)videoThumbnailPathInOriginal:(BOOL)inOriginal;
-- (NSString *)videoFilePathInOriginal:(BOOL)inOriginal;
-
+- (NSURL *)videoFileURLInOriginal:(BOOL)inOriginal;
 - (UIImage *)makeVideoThumbnailWithImage:(UIImage *)originalImage inOriginalDirectory:(BOOL)inOriginalDirectory;
-
 - (UIImage *)thumbnailImage;
 
 @end
