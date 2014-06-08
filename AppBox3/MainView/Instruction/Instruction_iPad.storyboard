@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C4c-rj-VAM">
+                            <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C4c-rj-VAM">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1805,7 +1805,6 @@ different clock styles</string>
                             <constraint firstItem="mZN-Ao-21g" firstAttribute="leading" secondItem="wZg-tF-q8s" secondAttribute="leading" constant="50" id="A4J-8M-9f0"/>
                             <constraint firstItem="mZN-Ao-21g" firstAttribute="top" secondItem="wZg-tF-q8s" secondAttribute="top" constant="75" id="Hzb-c7-NGS"/>
                             <constraint firstItem="0ks-Wf-Yju" firstAttribute="leading" secondItem="wZg-tF-q8s" secondAttribute="leading" id="JVa-rE-mVy"/>
-                            <constraint firstAttribute="centerX" secondItem="s1Z-qu-pXd" secondAttribute="centerX" id="N4i-1k-l7W"/>
                             <constraint firstAttribute="trailing" secondItem="PNJ-zS-8fw" secondAttribute="trailing" id="Qey-VU-nmD"/>
                             <constraint firstItem="PNJ-zS-8fw" firstAttribute="top" secondItem="mZN-Ao-21g" secondAttribute="top" id="RHs-2A-vij"/>
                             <constraint firstAttribute="bottom" secondItem="Jp0-U5-7vV" secondAttribute="bottom" id="THS-Qz-fCl"/>
@@ -1813,6 +1812,7 @@ different clock styles</string>
                             <constraint firstItem="6rS-5S-grs" firstAttribute="top" secondItem="s1Z-qu-pXd" secondAttribute="bottom" constant="10" id="VyS-4h-jh1"/>
                             <constraint firstAttribute="trailing" secondItem="TKh-px-FyI" secondAttribute="trailing" constant="36" id="XJ1-lY-x0Y"/>
                             <constraint firstItem="z2u-hy-Xrw" firstAttribute="top" secondItem="s1Z-qu-pXd" secondAttribute="top" id="Xzm-qZ-0yp"/>
+                            <constraint firstAttribute="trailing" secondItem="s1Z-qu-pXd" secondAttribute="trailing" constant="363" id="bja-Te-02T"/>
                             <constraint firstItem="PNJ-zS-8fw" firstAttribute="leading" secondItem="mZN-Ao-21g" secondAttribute="trailing" constant="10" id="cCk-cO-XT4"/>
                             <constraint firstItem="TKh-px-FyI" firstAttribute="top" secondItem="0ks-Wf-Yju" secondAttribute="top" id="cup-2A-OuW"/>
                             <constraint firstItem="TKh-px-FyI" firstAttribute="top" secondItem="wZg-tF-q8s" secondAttribute="top" constant="265" id="e5h-Ja-oAj"/>
@@ -1828,6 +1828,8 @@ different clock styles</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="mZN-Ao-21g" id="bmq-7I-SL1"/>
                         <outletCollection property="childImageViews" destination="z2u-hy-Xrw" id="MNL-r1-Ojg"/>
+                        <outletCollection property="childImageViews" destination="TKh-px-FyI" id="KbK-6w-ZbK"/>
+                        <outletCollection property="childImageViews" destination="s1Z-qu-pXd" id="rHr-Up-LFM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tdm-87-5lp" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -432,6 +432,10 @@
 
 - (void)showInstructionView
 {
+    if (IS_LANDSCAPE) {
+        return;
+    }
+    
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Calcualtor"];
     self.instructionViewController.delegate = self;

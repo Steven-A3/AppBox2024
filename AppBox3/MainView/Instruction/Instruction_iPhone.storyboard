@@ -113,6 +113,8 @@ different clock styles</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="NMQ-xY-zn5" id="53o-hS-e5E"/>
                         <outletCollection property="childImageViews" destination="0q1-C7-F7b" id="dQ5-oj-S2b"/>
+                        <outletCollection property="childImageViews" destination="Nw8-e0-0Uz" id="Yfa-8f-dze"/>
+                        <outletCollection property="childImageViews" destination="2E0-oc-3KW" id="B4u-Sh-sCI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BLq-u0-bsE" userLabel="First Responder" sceneMemberID="firstResponder"/>

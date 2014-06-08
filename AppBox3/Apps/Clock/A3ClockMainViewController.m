@@ -20,10 +20,11 @@
 #import "UIViewController+MMDrawerController.h"
 #import "UIViewController+navigation.h"
 #import "A3ChooseColorView.h"
+#import "A3InstructionViewController.h"
 
 #define kCntPage 4.0
 
-@interface A3ClockMainViewController () <A3ClockDataManagerDelegate, A3ChooseColorDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate>
+@interface A3ClockMainViewController () <A3ClockDataManagerDelegate, A3ChooseColorDelegate, A3InstructionViewControllerDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIButton *clockAppsButton;
@@ -42,6 +43,7 @@
 @property (nonatomic, strong) MASConstraint *appsButtonTop;
 @property (nonatomic, strong) NSTimer *buttonsTimer;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 
 @end
 
@@ -89,8 +91,8 @@
 		}
 	}];
 	[self determineStatusBarStyle];
-
 	[self addChooseColorButton];
+    [self setupInstructionView];
 
 	_currentClockViewController = _clockWaveViewController;
 
@@ -342,8 +344,16 @@
 	_chooseColorButton.hidden = !show;
 	if (show) {
 		_yahooButton.hidden = YES;
+        
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock2"]) {
+            [self showInstructionView];
+        }
 	} else {
 		_yahooButton.hidden = _clockDataManager.clockInfo.currentWeather == nil;
+        
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock1"]) {
+            [self showInstructionView];
+        }
 	}
 
 	if (!(show && IS_IPHONE && IS_LANDSCAPE)) {
@@ -366,6 +376,35 @@
 
 - (BOOL)prefersStatusBarHidden {
     return self.navigationController.navigationBarHidden;
+}
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock1"]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    if (_instructionViewController) {
+        return;
+    }
+    
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:_chooseColorButton.isHidden ? @"Clock1" : @"Clock2"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
 }
 
 #pragma mark - A3ChooseColorDelegate
