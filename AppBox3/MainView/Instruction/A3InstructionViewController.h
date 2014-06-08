@@ -22,4 +22,7 @@ extern NSString *const StoryBoardID_Calcualtor;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *childImageViews;
 - (IBAction)viewTapped:(UITapGestureRecognizer *)sender;
 
+#pragma mark - Clock1 Constraints
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *clock1_finger2RightConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *clock1_finger3RightConst;
 @end

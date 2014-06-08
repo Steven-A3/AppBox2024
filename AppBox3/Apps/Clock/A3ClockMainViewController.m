@@ -399,12 +399,42 @@
     [self.navigationController.view addSubview:self.instructionViewController.view];
     self.instructionViewController.view.frame = self.navigationController.view.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+ 
+    [self adjustInstructionFingerPositionForPortrait:IS_PORTRAIT];
 }
 
 - (void)dismissInstructionViewController:(UIView *)view
 {
     [self.instructionViewController.view removeFromSuperview];
     self.instructionViewController = nil;
+}
+
+- (void)adjustInstructionFingerPositionForPortrait:(BOOL)isPortrait
+{
+    if (IS_IPHONE) {
+        if (_chooseColorButton.isHidden && _instructionViewController) {
+            if (isPortrait) {
+                _instructionViewController.clock1_finger2RightConst.constant = 200;
+                _instructionViewController.clock1_finger3RightConst.constant = 100;
+            }
+            else {
+                _instructionViewController.clock1_finger2RightConst.constant = 36;
+                _instructionViewController.clock1_finger3RightConst.constant = 363;
+            }
+        }
+    }
+    else {
+        if (_chooseColorButton.isHidden && _instructionViewController) {
+            if (isPortrait) {
+                _instructionViewController.clock1_finger2RightConst.constant = 125;
+                _instructionViewController.clock1_finger3RightConst.constant = 358;
+            }
+            else {
+                _instructionViewController.clock1_finger2RightConst.constant = 315;
+                _instructionViewController.clock1_finger3RightConst.constant = 195;
+            }
+        }
+    }
 }
 
 #pragma mark - A3ChooseColorDelegate
@@ -626,7 +656,13 @@
 		[self.mm_drawerController closeDrawerAnimated:MMDrawerSideLeft completion:NULL];
 		[self showMenus:NO];
 	}
+    
 	[self layoutSubviews];
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self adjustInstructionFingerPositionForPortrait:UIInterfaceOrientationIsPortrait(toInterfaceOrientation)];
 }
 
 - (void)layoutSubviews {

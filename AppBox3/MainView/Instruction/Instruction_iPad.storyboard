@@ -1746,7 +1746,7 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="TKh-px-FyI">
-                                <rect key="frame" x="690" y="265" width="42" height="42"/>
+                                <rect key="frame" x="726" y="265" width="42" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1755,7 +1755,7 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="s1Z-qu-pXd">
-                                <rect key="frame" x="363" y="920" width="42" height="42"/>
+                                <rect key="frame" x="726" y="920" width="42" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1764,7 +1764,7 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="z2u-hy-Xrw">
-                                <rect key="frame" x="405" y="920" width="14" height="14"/>
+                                <rect key="frame" x="768" y="920" width="14" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="iuQ-aq-w90"/>
@@ -1780,8 +1780,8 @@ the controls</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="680" translatesAutoresizingMaskIntoConstraints="NO" id="0ks-Wf-Yju">
-                                <rect key="frame" x="0.0" y="265" width="680" height="40"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="716" translatesAutoresizingMaskIntoConstraints="NO" id="0ks-Wf-Yju">
+                                <rect key="frame" x="0.0" y="265" width="716" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <string key="text">swipe left or right to see
 different clock styles</string>
@@ -1790,7 +1790,7 @@ different clock styles</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to view larger" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="137" translatesAutoresizingMaskIntoConstraints="NO" id="6rS-5S-grs">
-                                <rect key="frame" x="316" y="972" width="137" height="20"/>
+                                <rect key="frame" x="579" y="972" width="137" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1805,18 +1805,18 @@ different clock styles</string>
                             <constraint firstItem="mZN-Ao-21g" firstAttribute="leading" secondItem="wZg-tF-q8s" secondAttribute="leading" constant="50" id="A4J-8M-9f0"/>
                             <constraint firstItem="mZN-Ao-21g" firstAttribute="top" secondItem="wZg-tF-q8s" secondAttribute="top" constant="75" id="Hzb-c7-NGS"/>
                             <constraint firstItem="0ks-Wf-Yju" firstAttribute="leading" secondItem="wZg-tF-q8s" secondAttribute="leading" id="JVa-rE-mVy"/>
+                            <constraint firstItem="s1Z-qu-pXd" firstAttribute="leading" secondItem="6rS-5S-grs" secondAttribute="trailing" constant="10" id="NTO-yV-sny"/>
                             <constraint firstAttribute="trailing" secondItem="PNJ-zS-8fw" secondAttribute="trailing" id="Qey-VU-nmD"/>
                             <constraint firstItem="PNJ-zS-8fw" firstAttribute="top" secondItem="mZN-Ao-21g" secondAttribute="top" id="RHs-2A-vij"/>
                             <constraint firstAttribute="bottom" secondItem="Jp0-U5-7vV" secondAttribute="bottom" id="THS-Qz-fCl"/>
                             <constraint firstItem="Jp0-U5-7vV" firstAttribute="top" secondItem="wZg-tF-q8s" secondAttribute="top" id="Vo7-cU-Wwm"/>
                             <constraint firstItem="6rS-5S-grs" firstAttribute="top" secondItem="s1Z-qu-pXd" secondAttribute="bottom" constant="10" id="VyS-4h-jh1"/>
-                            <constraint firstAttribute="trailing" secondItem="TKh-px-FyI" secondAttribute="trailing" constant="36" id="XJ1-lY-x0Y"/>
+                            <constraint firstAttribute="trailing" secondItem="TKh-px-FyI" secondAttribute="trailing" id="XJ1-lY-x0Y"/>
                             <constraint firstItem="z2u-hy-Xrw" firstAttribute="top" secondItem="s1Z-qu-pXd" secondAttribute="top" id="Xzm-qZ-0yp"/>
-                            <constraint firstAttribute="trailing" secondItem="s1Z-qu-pXd" secondAttribute="trailing" constant="363" id="bja-Te-02T"/>
+                            <constraint firstAttribute="trailing" secondItem="s1Z-qu-pXd" secondAttribute="trailing" id="bja-Te-02T"/>
                             <constraint firstItem="PNJ-zS-8fw" firstAttribute="leading" secondItem="mZN-Ao-21g" secondAttribute="trailing" constant="10" id="cCk-cO-XT4"/>
                             <constraint firstItem="TKh-px-FyI" firstAttribute="top" secondItem="0ks-Wf-Yju" secondAttribute="top" id="cup-2A-OuW"/>
                             <constraint firstItem="TKh-px-FyI" firstAttribute="top" secondItem="wZg-tF-q8s" secondAttribute="top" constant="265" id="e5h-Ja-oAj"/>
-                            <constraint firstAttribute="centerX" secondItem="6rS-5S-grs" secondAttribute="centerX" id="ouh-nQ-txb"/>
                             <constraint firstAttribute="bottom" secondItem="s1Z-qu-pXd" secondAttribute="bottom" constant="62" id="vGR-6B-j18"/>
                             <constraint firstAttribute="trailing" secondItem="Jp0-U5-7vV" secondAttribute="trailing" id="xMJ-Yp-xiH"/>
                             <constraint firstItem="z2u-hy-Xrw" firstAttribute="leading" secondItem="s1Z-qu-pXd" secondAttribute="trailing" id="xPH-x2-Of9"/>
@@ -1826,6 +1826,8 @@ different clock styles</string>
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="clock1_finger2RightConst" destination="XJ1-lY-x0Y" id="W3p-MF-JyJ"/>
+                        <outlet property="clock1_finger3RightConst" destination="bja-Te-02T" id="wia-mj-1pp"/>
                         <outletCollection property="childImageViews" destination="mZN-Ao-21g" id="bmq-7I-SL1"/>
                         <outletCollection property="childImageViews" destination="z2u-hy-Xrw" id="MNL-r1-Ojg"/>
                         <outletCollection property="childImageViews" destination="TKh-px-FyI" id="KbK-6w-ZbK"/>
@@ -1927,6 +1929,7 @@ different clock styles</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="7jh-Wm-jLA" id="1qv-XI-kod"/>
                         <outletCollection property="childImageViews" destination="jId-PC-cdt" id="YnC-wi-w5j"/>
+                        <outletCollection property="childImageViews" destination="XCS-pw-tVy" id="77N-nQ-a6B"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O6T-0A-Dct" userLabel="First Responder" sceneMemberID="firstResponder"/>
