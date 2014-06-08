@@ -653,6 +653,9 @@ then tap options</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="0Hk-19-LXE" id="Fjw-l5-Nf3"/>
                         <outletCollection property="childImageViews" destination="dMm-lL-O9p" id="8dX-Ee-IbK"/>
+                        <outletCollection property="childImageViews" destination="4vp-4T-yE8" id="S5B-In-VEy"/>
+                        <outletCollection property="childImageViews" destination="3eg-qq-Bz6" id="PEL-10-btl"/>
+                        <outletCollection property="childImageViews" destination="tiv-Sl-w35" id="SD4-Ay-srz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BDh-s2-VwR" userLabel="First Responder" sceneMemberID="firstResponder"/>

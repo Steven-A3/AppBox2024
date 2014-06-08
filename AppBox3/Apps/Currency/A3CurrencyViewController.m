@@ -33,6 +33,7 @@
 #import "UIColor+A3Addition.h"
 #import "UIViewController+navigation.h"
 #import "A3CalculatorViewController.h"
+#import "A3InstructionViewController.h"
 
 NSString *const A3CurrencyLastInputValue = @"A3CurrencyLastInputValue";
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
@@ -40,7 +41,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 
 @interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate,
 		A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate,
-		UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource, A3CalculatorViewControllerDelegate>
+		UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource, A3CalculatorViewControllerDelegate, A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *equalItem;
@@ -59,6 +60,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 @property (nonatomic, strong) A3CurrencyHistoryViewController *historyViewController;
 @property (nonatomic, strong) A3CurrencySettingsViewController *settingsViewController;
 @property (nonatomic, strong) A3CurrencySelectViewController *currencySelectViewController;
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 
 @end
 
@@ -135,6 +137,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataChanged:) name:NSManagedObjectContextObjectsDidChangeNotification object:[[MagicalRecordStack defaultStack] context]];
 	[self registerContentSizeCategoryDidChangeNotification];
+    [self setupInstructionView];
 }
 
 - (void)removeObserver {
@@ -533,6 +536,31 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
 	[self setRefreshControlTitle];
+}
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"CurrencyConverter"]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"CurrencyConverter"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
 }
 
 #pragma mark - Data Management

@@ -289,6 +289,9 @@ then tap options</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="YYZ-hi-TN9" id="ycX-er-V6I"/>
                         <outletCollection property="childImageViews" destination="DAc-ia-g5W" id="tor-Q1-7Uz"/>
+                        <outletCollection property="childImageViews" destination="KzF-JD-veQ" id="pf0-tg-P9e"/>
+                        <outletCollection property="childImageViews" destination="VWe-qW-qJy" id="Y71-6D-Vqe"/>
+                        <outletCollection property="childImageViews" destination="2fa-Se-TGe" id="jYU-ep-6CH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UnK-Br-nQt" userLabel="First Responder" sceneMemberID="firstResponder"/>
