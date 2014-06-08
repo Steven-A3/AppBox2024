@@ -29,6 +29,7 @@
 #import "A3TableViewInputElement.h"
 #import "UITableView+utility.h"
 #import "A3AppDelegate+appearance.h"
+#import "A3InstructionViewController.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -37,7 +38,7 @@ NSString *const A3ExpenseListCurrentBudgetID = @"A3ExpenseListCurrentBudgetID";
 NSString *const A3ExpenseListCurrencyCode = @"A3ExpenseListCurrencyCode";
 NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationExpenseListCurrencyCodeChanged";
 
-@interface A3ExpenseListMainViewController () <ATSDragToReorderTableViewControllerDelegate, UIPopoverControllerDelegate, A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate, A3ExpenseListHistoryDelegate, A3CalculatorViewControllerDelegate>
+@interface A3ExpenseListMainViewController () <ATSDragToReorderTableViewControllerDelegate, UIPopoverControllerDelegate, A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate, A3ExpenseListHistoryDelegate, A3CalculatorViewControllerDelegate, A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) A3ExpenseListHeaderView *headerView;
 @property (nonatomic, strong) UIView *sep1View;
@@ -57,7 +58,7 @@ NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationE
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) UITextField *calculatorTargetTextField;
 @property (nonatomic, strong) A3ExpenseListItemCell *calculatorTargetCell;
-
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
 @implementation A3ExpenseListMainViewController
@@ -117,7 +118,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     [self setupTopWhitePaddingView];
     [self expandContentSizeForAddItem];
     [self moveToAddBudgetIfBudgetNotExistWithDelay:1.0];
-
+    [self setupInstructionView];
+    
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeChanged:) name:A3NotificationExpenseListCurrencyCodeChanged object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 
@@ -374,6 +376,31 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}
 	return currencyCode;
+}
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"ExpenseList"]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"ExpenseList"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
 }
 
 #pragma mark - UINavigationController Delegate

@@ -28,12 +28,12 @@
 #import "FMMoveTableView.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UIColor+A3Addition.h"
+#import "A3InstructionViewController.h"
 
-
-@interface A3WalletFavoritesViewController ()
+@interface A3WalletFavoritesViewController () <A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) FMMoveTableView *tableView;
-
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
 @implementation A3WalletFavoritesViewController
@@ -51,6 +51,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
+    [self setupInstructionView];
 }
 
 - (void)removeObserver {
@@ -141,6 +142,31 @@
     }
     
     return super.items;
+}
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Wallet_4"]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_4"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
 }
 
 #pragma mark - Table view data source

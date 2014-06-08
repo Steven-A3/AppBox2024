@@ -21,14 +21,15 @@
 #import "TranslatorFavorite.h"
 #import "NSMutableArray+A3Sort.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3InstructionViewController.h"
 
-@interface A3TranslatorViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate>
+@interface A3TranslatorViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate, A3InstructionViewControllerDelegate>
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) FMMoveTableView *tableView;
 @property (nonatomic, strong) UIButton *addButton;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) A3TranslatorFavoriteDataSource *favoriteDataSource;
-
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
 @implementation A3TranslatorViewController
@@ -61,6 +62,7 @@
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
+    [self setupInstructionView];
 }
 
 - (void)removeObserver {
@@ -125,6 +127,31 @@
 	if (IS_IPAD) {
 		[self enableControls:!self.A3RootViewController.showLeftView];
 	}
+}
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Translator"]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Translator"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
 }
 
 #pragma mark - Setup Subview

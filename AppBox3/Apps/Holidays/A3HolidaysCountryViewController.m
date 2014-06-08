@@ -16,11 +16,15 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "NSMutableArray+MoveObject.h"
+#import "A3InstructionViewController.h"
+#import "UIViewController+A3Addition.h"
 
-@interface A3HolidaysCountryViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3SearchViewControllerDelegate>
+
+@interface A3HolidaysCountryViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3SearchViewControllerDelegate, A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *userSelectedCountries;
 @property (nonatomic, strong) FMMoveTableView *tableView;
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 
 @end
 
@@ -60,6 +64,7 @@ extern NSString *const A3CurrencyActionCellID;
 	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyActionCellID];
 
 	[self registerContentSizeCategoryDidChangeNotification];
+    [self setupInstructionView];
 }
 
 - (void)removeObserver {
@@ -96,6 +101,31 @@ extern NSString *const A3CurrencyActionCellID;
 {
 	[super didReceiveMemoryWarning];
 	// Dispose of any resources that can be recreated.
+}
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Holidays_2"]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Holidays_2"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
 }
 
 #pragma mark - Data

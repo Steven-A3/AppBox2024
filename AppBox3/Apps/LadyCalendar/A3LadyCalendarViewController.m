@@ -25,8 +25,9 @@
 #import "A3LadyCalendarAccountListViewController.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "A3InstructionViewController.h"
 
-@interface A3LadyCalendarViewController ()
+@interface A3LadyCalendarViewController () <A3InstructionViewControllerDelegate>
 
 @property (strong, nonatomic) A3LadyCalendarModelManager *dataManager;
 @property (strong, nonatomic) UIView *headerView;
@@ -40,6 +41,7 @@
 @property (strong, nonatomic) UIView *moreMenuView;
 @property (strong, nonatomic) NSIndexPath *currentIndexPath;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 
 @end
 
@@ -100,6 +102,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
+    [self setupInstructionView];
 }
 
 - (void)removeObserver {
@@ -349,6 +352,32 @@
 		}];
     }
 }
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"LadyCalendar"]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"LadyCalendar"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
+}
+
 
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView

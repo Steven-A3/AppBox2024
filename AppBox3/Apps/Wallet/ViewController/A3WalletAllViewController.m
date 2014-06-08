@@ -28,11 +28,11 @@
 #import "NSString+WalletStyle.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIColor+A3Addition.h"
-
+#import "A3InstructionViewController.h"
 
 #define TopHeaderHeight 96
 
-@interface A3WalletAllViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
+@interface A3WalletAllViewController () <UISearchBarDelegate, UISearchDisplayDelegate, A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) UIBarButtonItem *searchItem;
 @property (nonatomic, strong) NSMutableDictionary *topItem;
@@ -46,7 +46,7 @@
 @property (nonatomic, strong) NSArray *filteredResults;
 @property (nonatomic, weak) UISegmentedControl *segmentedControlRef;
 @property (nonatomic, weak) A3WalletAllTopView *topViewRef;
-
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
 @implementation A3WalletAllViewController {
@@ -77,6 +77,7 @@ enum SortingKind {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
+    [self setupInstructionView];
 }
 
 - (void)removeObserver {
@@ -493,6 +494,31 @@ enum SortingKind {
 
 	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
 	[self presentViewController:nav animated:YES completion:NULL];
+}
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Wallet_1"]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_1"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
 }
 
 #pragma mark - Search relative

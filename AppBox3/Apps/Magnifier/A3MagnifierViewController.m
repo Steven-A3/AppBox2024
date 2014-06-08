@@ -16,11 +16,13 @@
 #import <AssertMacros.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "FrameRateCalculator.h"
+#import "A3InstructionViewController.h"
 
 static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCaptureStillImageIsCapturingStillImageContext";
 static const int MAX_ZOOM_FACTOR = 6;
 
-@interface A3MagnifierViewController () {
+@interface A3MagnifierViewController () <A3InstructionViewControllerDelegate>
+{
     UIButton                    *lastimageButton;
     GLKView                     *previewLayer;
     CIContext                   *_ciContext;
@@ -45,6 +47,7 @@ static const int MAX_ZOOM_FACTOR = 6;
 @property (nonatomic, strong) ALAssetsGroup *assetrollGroup;
 @property (nonatomic, strong) AVCaptureDevice *device;
 @property (nonatomic, strong) UIView *statusBarBackground;
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 
 @end
 
@@ -98,6 +101,7 @@ static const int MAX_ZOOM_FACTOR = 6;
     bInvertedColor = NO;
     bLightOn = NO;
     self.flashbrightslider.value = 0.5;
+    [self setupInstructionView];
 }
 
 - (BOOL)usesFullScreenInLandscape {
@@ -547,6 +551,31 @@ static const int MAX_ZOOM_FACTOR = 6;
             [_device setTorchModeOnWithLevel:flashslider.value error:nil];
         }
     }
+}
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Magnifier"]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Magnifier"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
 }
 
 #pragma mark - AVCapture Setup

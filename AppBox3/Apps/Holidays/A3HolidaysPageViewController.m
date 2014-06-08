@@ -26,10 +26,11 @@
 #import "NSUserDefaults+A3Addition.h"
 #import "NSDateFormatter+LunarDate.h"
 #import "A3HolidaysFlickrDownloadManager.h"
+#import "A3InstructionViewController.h"
 
 @interface A3HolidaysPageViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource,
 		A3HolidaysEditViewControllerDelegate, FXPageControlDelegate, A3HolidaysCountryViewControllerDelegate,
-		A3HolidaysPageViewControllerProtocol, CLLocationManagerDelegate, A3CenterViewDelegate, UIAlertViewDelegate>
+		A3HolidaysPageViewControllerProtocol, CLLocationManagerDelegate, A3CenterViewDelegate, UIAlertViewDelegate, A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *countries;
 @property (nonatomic, strong) FXPageControl *pageControl;
@@ -44,7 +45,7 @@
 @property (atomic, strong) NSMutableDictionary *viewControllerCache;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSString *dateFormat;
-
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
 @implementation A3HolidaysPageViewController
@@ -93,6 +94,7 @@
 
 	[self.view layoutIfNeeded];
 	[self registerContentSizeCategoryDidChangeNotification];
+    [self setupInstructionView];
 }
 
 - (void)removeObserver {
@@ -178,6 +180,32 @@
 
 	[self.currentContentViewController updateTableHeaderView];
 }
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Holidays_1"]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Holidays_1"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
+}
+
 
 #pragma mark - Find location and udpate country list
 

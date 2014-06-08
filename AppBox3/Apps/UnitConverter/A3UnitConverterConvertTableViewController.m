@@ -33,12 +33,13 @@
 #import "UIColor+A3Addition.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+navigation.h"
+#import "A3InstructionViewController.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
 @interface A3UnitConverterConvertTableViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate,
 		A3UnitSelectViewControllerDelegate, A3UnitConverterFavoriteEditDelegate, A3UnitConverterMenuDelegate,
-		UIPopoverControllerDelegate, UIActivityItemSource, FMMoveTableViewDelegate, FMMoveTableViewDataSource>
+		UIPopoverControllerDelegate, UIActivityItemSource, FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) FMMoveTableView *fmMoveTableView;
 @property (nonatomic, strong) NSMutableSet *swipedCells;
@@ -55,7 +56,7 @@
 @property (nonatomic, strong) NSNumber *unitValue;
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
 @property (strong, nonatomic) UINavigationController *modalNavigationController;
-
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
 @implementation A3UnitConverterConvertTableViewController {
@@ -143,6 +144,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewWillHide:) name:A3NotificationRightSideViewWillDismiss object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
+    [self setupInstructionView];
 }
 
 - (void)removeObserver {
@@ -512,6 +514,31 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     for (UIBarButtonItem *barItem in self.navigationItem.rightBarButtonItems) {
         barItem.enabled = onoff;
     }
+}
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"UnitConverter"]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"UnitConverter"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
 }
 
 #pragma mark - Action

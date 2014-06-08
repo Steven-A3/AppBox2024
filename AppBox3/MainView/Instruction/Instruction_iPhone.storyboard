@@ -414,6 +414,9 @@ more holidays</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="PxO-xt-eN7" id="BEc-sv-meq"/>
                         <outletCollection property="childImageViews" destination="1GA-EC-PDP" id="qXE-jX-Xbx"/>
+                        <outletCollection property="childImageViews" destination="d8D-UW-O72" id="dR2-VS-vDy"/>
+                        <outletCollection property="childImageViews" destination="fOb-uW-XaZ" id="5eK-O1-TLR"/>
+                        <outletCollection property="childImageViews" destination="QSq-Bz-Ppf" id="3hJ-dB-l9H"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="chu-j9-ksc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1014,6 +1017,8 @@ then drag it up or down</string>
                     </view>
                     <connections>
                         <outletCollection property="childImageViews" destination="vo4-7J-uU8" id="zzW-3O-tmd"/>
+                        <outletCollection property="childImageViews" destination="hZ0-8j-Qjm" id="igZ-Ih-Jfg"/>
+                        <outletCollection property="childImageViews" destination="cDA-UI-abJ" id="6vs-3X-nn8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ssv-JV-wzs" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1131,6 +1136,11 @@ then drag it up or down</string>
                             <outletCollection property="gestureRecognizers" destination="d5T-8s-nqv" appends="YES" id="Bu9-3G-ls0"/>
                         </connections>
                     </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="2Qv-uJ-bDn" id="mhP-TG-6wP"/>
+                        <outletCollection property="childImageViews" destination="YDr-cP-huy" id="YrC-4Z-EJF"/>
+                        <outletCollection property="childImageViews" destination="6iN-1o-f26" id="AWa-4W-11r"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S7H-N4-dFE" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="d5T-8s-nqv">
@@ -1249,6 +1259,11 @@ then drag it up or down</string>
                             <outletCollection property="gestureRecognizers" destination="7XT-Hj-Rxk" appends="YES" id="dK6-qN-eaP"/>
                         </connections>
                     </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="UFc-4O-EbR" id="cgc-Ch-4K8"/>
+                        <outletCollection property="childImageViews" destination="CJz-2K-52H" id="ByV-XW-YLQ"/>
+                        <outletCollection property="childImageViews" destination="wjt-Kq-a4W" id="mal-wS-Llz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vr7-5y-feP" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="7XT-Hj-Rxk">
@@ -1668,6 +1683,7 @@ then drag it up or down</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="r3l-6O-Uzp" id="qaI-i7-r7n"/>
                         <outletCollection property="childImageViews" destination="ue3-0I-qib" id="2bK-R8-dB5"/>
+                        <outletCollection property="childImageViews" destination="yLq-EI-3vy" id="6au-hp-LPp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oM7-r4-UtZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1811,6 +1827,9 @@ then tap Delete</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="XSW-3J-Xgf" id="puY-yf-ubh"/>
                         <outletCollection property="childImageViews" destination="tzz-zS-7rf" id="N5U-WN-ECP"/>
+                        <outletCollection property="childImageViews" destination="rEC-MK-OMc" id="VRu-0N-rkh"/>
+                        <outletCollection property="childImageViews" destination="8pP-NA-IQY" id="HLi-U3-NKI"/>
+                        <outletCollection property="childImageViews" destination="yvc-2S-7eq" id="VsQ-ma-zVi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dYb-dn-7Qd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1933,6 +1952,8 @@ then drag it up or down</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="xdE-si-SAi" id="P7Z-Ms-Jal"/>
                         <outletCollection property="childImageViews" destination="zc4-ox-WX3" id="g6I-cM-lHS"/>
+                        <outletCollection property="childImageViews" destination="8Bb-Xt-gYd" id="tUH-1L-TnI"/>
+                        <outletCollection property="childImageViews" destination="1Kc-AQ-kzZ" id="ch5-xM-xuy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rjs-1v-vhA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2070,6 +2091,10 @@ then drag it up or down</string>
                     </view>
                     <connections>
                         <outletCollection property="childImageViews" destination="RUR-9p-HGC" id="1fm-8U-ohd"/>
+                        <outletCollection property="childImageViews" destination="YcB-fl-yv1" id="UHZ-to-q4M"/>
+                        <outletCollection property="childImageViews" destination="R5z-eZ-0ii" id="ekJ-xg-bPs"/>
+                        <outletCollection property="childImageViews" destination="r9Y-2d-qlN" id="efF-uo-PFR"/>
+                        <outletCollection property="childImageViews" destination="Z6w-KA-rfd" id="t56-g8-7bZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XF9-Xq-rLF" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -20,14 +20,16 @@
 #import "A3WalletCategoryEditViewController.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIColor+A3Addition.h"
+#import "A3InstructionViewController.h"
+
 
 NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 
-@interface A3WalletMoreTableViewController ()
+@interface A3WalletMoreTableViewController () <A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *categories;
 @property (nonatomic, strong) NSArray *sections;
-
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
 @implementation A3WalletMoreTableViewController {
@@ -52,6 +54,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	if (_isEditing) {
 		[self leftBarButtonAddButton];
 		[self rightBarButtonDoneButton];
+        [self setupInstructionView];
 	} else {
 		[self leftBarButtonAppsButton];
 		[self rightBarButtonEditButton];
@@ -172,6 +175,32 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Wallet_3"]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_3"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
+}
+
 
 #pragma mark - Prepare Data
 

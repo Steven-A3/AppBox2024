@@ -11,9 +11,12 @@
 #import "UIViewController+MMDrawerController.h"
 #import "A3AppDelegate.h"
 #import "FrameRateCalculator.h"
+#import "A3InstructionViewController.h"
+
 static const int MAX_ZOOM_FACTOR = 6;
 
-@interface A3MirrorViewController() {
+@interface A3MirrorViewController() <A3InstructionViewControllerDelegate>
+{
 	GLKView *_videoPreviewViewNoFilter;     // OPEN GL ES Aware-View
 	GLKView *_videoPreviewViewMonoFilter;
 	GLKView *_videoPreviewViewTonalFilter;
@@ -74,6 +77,7 @@ static const int MAX_ZOOM_FACTOR = 6;
 @property (nonatomic, strong) ALAssetsLibrary *assetLibrary;
 @property (nonatomic, strong) ALAssetsGroup *assetrollGroup;
 @property (nonatomic, strong) UIView *statusBarBackground;
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 
 @end
 
@@ -204,7 +208,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	lastimageButton.layer.masksToBounds = YES;
 	[self.bottomBar.items[0] setCustomView:lastimageButton];
 	[self loadFirstPhoto];
-
+    [self setupInstructionView];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -596,6 +600,32 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	}
 	FNLOG(@"minum = %f maximum = %f current = %f", self.zoomSlider.minimumValue, self.zoomSlider.maximumValue, self.zoomSlider.value);
 }
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Mirror"]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Mirror"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
+}
+
 
 #pragma GLKViewDelegate
 - (void) glkView:(GLKView *)view drawInRect:(CGRect)rect {
