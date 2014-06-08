@@ -32,10 +32,12 @@
 #import "UIViewController+navigation.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "NSDate+formatting.h"
+#import "A3InstructionViewController.h"
+
 
 #define VISIBLE_INDEX_INTERVAL      2
 
-@interface A3DaysCounterSlideShowMainViewController () <A3DaysCounterEventDetailViewControllerDelegate, UIActivityItemSource>
+@interface A3DaysCounterSlideShowMainViewController () <A3DaysCounterEventDetailViewControllerDelegate, A3InstructionViewControllerDelegate, UIActivityItemSource>
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (strong, nonatomic) NSArray *eventsArray;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -48,7 +50,7 @@
 @property (assign, nonatomic) BOOL isFirstViewLoad;
 @property (strong, nonatomic) NSString *prevShownEventID;
 @property (strong, nonatomic) UINavigationController *modalNavigationController;
-
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
 @implementation A3DaysCounterSlideShowMainViewController
@@ -91,6 +93,7 @@
     
     currentIndex = 0;
     [self makeBackButtonEmptyArrow];
+    [self setupInstructionView];
 
 	UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
@@ -512,6 +515,31 @@
 {
     [self.timer invalidate];
     self.timer = nil;
+}
+
+#pragma mark Instruction Related
+- (void)setupInstructionView
+{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"DaysCounter_2"]) {
+        [self showInstructionView];
+    }
+    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)showInstructionView
+{
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"DaysCounter_2"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
 }
 
 #pragma mark - UIPopoverControllerDelegate

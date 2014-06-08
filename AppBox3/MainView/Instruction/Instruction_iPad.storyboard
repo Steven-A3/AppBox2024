@@ -1250,6 +1250,7 @@ prev/next events</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="afb-rO-Gpz" id="sc1-ON-qaX"/>
                         <outletCollection property="childImageViews" destination="ayj-Ec-36o" id="zfk-0C-VQ7"/>
+                        <outletCollection property="childImageViews" destination="vJg-eA-9oG" id="g74-VA-ZXR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bD8-PS-ece" userLabel="First Responder" sceneMemberID="firstResponder"/>

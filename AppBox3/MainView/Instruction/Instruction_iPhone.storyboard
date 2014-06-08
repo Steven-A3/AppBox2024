@@ -1277,7 +1277,7 @@ then drag it up or down</string>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="Mez-kf-gJI">
-                                <rect key="frame" x="241" y="92" width="42" height="42"/>
+                                <rect key="frame" x="241" y="22" width="42" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1312,7 +1312,7 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="change color and order" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="231" translatesAutoresizingMaskIntoConstraints="NO" id="j7s-5h-AsK">
-                                <rect key="frame" x="0.0" y="103" width="231" height="20"/>
+                                <rect key="frame" x="0.0" y="33" width="231" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1344,7 +1344,7 @@ then tap Delete</string>
                             <constraint firstItem="M89-TC-emC" firstAttribute="leading" secondItem="naR-7Q-eRX" secondAttribute="leading" id="FNn-5e-f2r"/>
                             <constraint firstItem="j7s-5h-AsK" firstAttribute="leading" secondItem="naR-7Q-eRX" secondAttribute="leading" id="Lm9-QS-4xV"/>
                             <constraint firstItem="p7z-Xt-zJ7" firstAttribute="top" secondItem="cEZ-6S-HPg" secondAttribute="top" id="VWG-QC-XcJ"/>
-                            <constraint firstItem="Mez-kf-gJI" firstAttribute="top" secondItem="naR-7Q-eRX" secondAttribute="top" constant="92" id="Wp5-SS-gR1"/>
+                            <constraint firstItem="Mez-kf-gJI" firstAttribute="top" secondItem="naR-7Q-eRX" secondAttribute="top" constant="22" id="Wp5-SS-gR1"/>
                             <constraint firstAttribute="trailing" secondItem="Mez-kf-gJI" secondAttribute="trailing" constant="37" id="YU1-gb-Vab"/>
                             <constraint firstAttribute="trailing" secondItem="uuv-Tb-Oej" secondAttribute="trailing" constant="17" id="cmS-6y-I9K"/>
                             <constraint firstAttribute="trailing" secondItem="6xW-yR-vZJ" secondAttribute="trailing" id="gZ9-Gv-Kx7"/>
@@ -1367,6 +1367,8 @@ then tap Delete</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="Mez-kf-gJI" id="SNh-qJ-gE2"/>
                         <outletCollection property="childImageViews" destination="p7z-Xt-zJ7" id="bNi-Pl-iG3"/>
+                        <outletCollection property="childImageViews" destination="uuv-Tb-Oej" id="r3O-a5-Px2"/>
+                        <outletCollection property="childImageViews" destination="cEZ-6S-HPg" id="CxG-Of-o2K"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ubv-vb-Api" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1464,6 +1466,7 @@ prev/next events</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="yL6-t8-Rsz" id="Xxh-qv-wRj"/>
                         <outletCollection property="childImageViews" destination="Adg-z8-lei" id="fax-Ua-MUz"/>
+                        <outletCollection property="childImageViews" destination="Tub-Vc-yVU" id="CC7-ZJ-Ev2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Xv-fG-cTv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1564,6 +1567,7 @@ prev/next events</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="XWc-yO-6so" id="5Ru-h5-4SK"/>
                         <outletCollection property="childImageViews" destination="93e-Mv-Dn4" id="jqG-lo-OAq"/>
+                        <outletCollection property="childImageViews" destination="DGY-Qa-nOV" id="HvH-Q3-wlY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FPN-nI-M1T" userLabel="First Responder" sceneMemberID="firstResponder"/>
