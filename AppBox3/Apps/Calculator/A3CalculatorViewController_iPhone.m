@@ -383,7 +383,12 @@
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
         _inputViewForPlayInputClick.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
         self.calculator.isLandScape = NO;
-    } else {
+    }
+    else {
+        if (_instructionViewController) {
+            [self dismissInstructionViewController:nil];
+        }
+        
         CGRect frame = _keyboardView.frame;
         frame.origin.x = 0.0;
         frame.size.width = screenBounds.size.width;
