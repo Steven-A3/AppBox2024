@@ -231,6 +231,9 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 			UIBarButtonItem *share = [_arrMenuButtons objectAtIndex:1];
 			share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
 		}
+        else {
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+        }
 	}
 	else {
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
