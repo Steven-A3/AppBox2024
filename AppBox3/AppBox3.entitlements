@@ -10,7 +10,7 @@
 	<string>$(TeamIdentifierPrefix)$(CFBundleIdentifier)</string>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)com.allaboutapps.appbox3</string>
+		<string>$(AppIdentifierPrefix)com.allaboutapps.appbox</string>
 	</array>
 </dict>
 </plist>
