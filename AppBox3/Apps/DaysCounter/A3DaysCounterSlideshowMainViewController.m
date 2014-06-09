@@ -93,7 +93,6 @@
     
     currentIndex = 0;
     [self makeBackButtonEmptyArrow];
-    [self setupInstructionView];
 
 	UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
@@ -116,6 +115,11 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
+    
+    self.eventsArray = [_sharedManager allEventsListContainedImage];
+    if ([_eventsArray count] > 0) {
+        [self setupInstructionView];
+    }
 }
 
 - (void)removeObserver {
@@ -185,6 +189,7 @@
     self.isRotating = NO;
     self.navigationController.delegate = self;
     self.eventsArray = [_sharedManager allEventsListContainedImage];
+    
     NSDate *now = [NSDate date];
     
     // Start Timer 화면 갱신.

@@ -539,7 +539,13 @@ static const int MAX_ZOOM_FACTOR = 6;
     
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
     nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:nc animated:YES completion:nil];
+    [self presentViewController:nc animated:YES completion:^{
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"MagnifierFirstLoadCameraRoll"]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alertView show];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"MagnifierFirstLoadCameraRoll"];
+        }
+    }];
 }
 
 - (IBAction)flashbrightslider:(id)sender {
