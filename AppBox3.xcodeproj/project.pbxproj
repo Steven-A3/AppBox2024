@@ -74,8 +74,6 @@
 		17D42F9D1879F6925F0A7A02 /* A3SettingsChooseColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4228D8D938C6FD778BB35 /* A3SettingsChooseColorViewController.m */; };
 		17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEFB63D5877A0449693 /* A3TranslatorCircleView.m */; };
 		3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */; };
-		574B6100193F69EF0043FC34 /* Instruction_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 574B60FF193F69EF0043FC34 /* Instruction_iPhone.storyboard */; };
-		574B6102193F6A0F0043FC34 /* Instruction_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 574B6101193F6A0F0043FC34 /* Instruction_iPad.storyboard */; };
 		577318F618E150F900565159 /* A3DaysCounterEventListSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */; };
 		57874C35190684AF00491485 /* A3DaysCounterLocationDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 57874C34190684AF00491485 /* A3DaysCounterLocationDetailCell.m */; };
 		57888EC21940667000306028 /* A3InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57888EC11940667000306028 /* A3InstructionViewController.m */; };
@@ -354,7 +352,6 @@
 		682EA2D815EB10B000BD6AD4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
 		682EA2DA15EB10B000BD6AD4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D915EB10B000BD6AD4 /* CoreGraphics.framework */; };
 		682EA2DC15EB10B000BD6AD4 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2DB15EB10B000BD6AD4 /* CoreData.framework */; };
-		682EA2E215EB10B000BD6AD4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 682EA2E015EB10B000BD6AD4 /* InfoPlist.strings */; };
 		682EA2E415EB10B000BD6AD4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 682EA2E315EB10B000BD6AD4 /* main.m */; };
 		6830C7871851A26E0075010F /* NSUserDefaults+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6830C7861851A26E0075010F /* NSUserDefaults+A3Addition.m */; };
 		6831407F18C20C9700896819 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6831407E18C20C9700896819 /* AVFoundation.framework */; };
@@ -793,6 +790,8 @@
 		68E2A6C818D0B41E00E834D9 /* ExpenseListCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6C718D0B41E00E834D9 /* ExpenseListCategories.m */; };
 		68E2A6D218D0B46500E834D9 /* TipCalcRecently.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6D118D0B46500E834D9 /* TipCalcRecently.m */; };
 		68E2A6D518D0B46500E834D9 /* TipCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A6D418D0B46500E834D9 /* TipCalcHistory.m */; };
+		68E50B1F1945E18800FAD986 /* Instruction_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E50B211945E18800FAD986 /* Instruction_iPhone.storyboard */; };
+		68E50B241945E1E600FAD986 /* Instruction_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E50B261945E1E600FAD986 /* Instruction_iPad.storyboard */; };
 		68E6D12018A48C0F00109183 /* A3FormatterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6D11F18A48C0F00109183 /* A3FormatterTest.m */; };
 		68E6F34D17B25F5F00F10ED9 /* A3CurrencyChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F34B17B25F5F00F10ED9 /* A3CurrencyChartViewController.m */; };
 		68E6F35217B2722000F10ED9 /* NSUserDefaults+A3Defaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F35117B2722000F10ED9 /* NSUserDefaults+A3Defaults.m */; };
@@ -1091,8 +1090,6 @@
 		17D42FEEE5D02AC4D6E1CB7A /* A3TranslatorMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorMessageViewController.m; path = Translator/A3TranslatorMessageViewController.m; sourceTree = "<group>"; };
 		3E21D15318FB1BF100B88D62 /* FrameRateCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameRateCalculator.h; sourceTree = "<group>"; };
 		3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrameRateCalculator.m; sourceTree = "<group>"; };
-		574B60FF193F69EF0043FC34 /* Instruction_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Instruction_iPhone.storyboard; path = Instruction/Instruction_iPhone.storyboard; sourceTree = "<group>"; };
-		574B6101193F6A0F0043FC34 /* Instruction_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Instruction_iPad.storyboard; path = Instruction/Instruction_iPad.storyboard; sourceTree = "<group>"; };
 		577318F418E150F900565159 /* A3DaysCounterEventListSectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterEventListSectionHeader.h; sourceTree = "<group>"; };
 		577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventListSectionHeader.m; sourceTree = "<group>"; };
 		57874C33190684AF00491485 /* A3DaysCounterLocationDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterLocationDetailCell.h; sourceTree = "<group>"; };
@@ -1494,8 +1491,6 @@
 		682EA2D715EB10B000BD6AD4 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		682EA2D915EB10B000BD6AD4 /* CoreGraphics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		682EA2DB15EB10B000BD6AD4 /* CoreData.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		682EA2DF15EB10B000BD6AD4 /* AppBox3-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppBox3-Info.plist"; sourceTree = "<group>"; };
-		682EA2E115EB10B000BD6AD4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		682EA2E315EB10B000BD6AD4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = main.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		682EA2E515EB10B000BD6AD4 /* AppBox3-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "AppBox3-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6830C77818517D2D0075010F /* AppBox3.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = AppBox3.entitlements; sourceTree = "<group>"; };
@@ -2328,6 +2323,11 @@
 		68E2A6D118D0B46500E834D9 /* TipCalcRecently.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TipCalcRecently.m; path = Data/TipCalcRecently.m; sourceTree = "<group>"; };
 		68E2A6D318D0B46500E834D9 /* TipCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TipCalcHistory.h; path = Data/TipCalcHistory.h; sourceTree = "<group>"; };
 		68E2A6D418D0B46500E834D9 /* TipCalcHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TipCalcHistory.m; path = Data/TipCalcHistory.m; sourceTree = "<group>"; };
+		68E50B201945E18800FAD986 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Instruction_iPhone.storyboard; sourceTree = "<group>"; };
+		68E50B231945E1C000FAD986 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPhone.strings; sourceTree = "<group>"; };
+		68E50B251945E1E600FAD986 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Instruction_iPad.storyboard; sourceTree = "<group>"; };
+		68E50B281945E1EC00FAD986 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPad.strings; sourceTree = "<group>"; };
+		68E50B2C1945E67B00FAD986 /* AppBox3-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppBox3-Info.plist"; sourceTree = "<group>"; };
 		68E6D11F18A48C0F00109183 /* A3FormatterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3FormatterTest.m; path = Formatter/A3FormatterTest.m; sourceTree = "<group>"; };
 		68E6F34A17B25F5F00F10ED9 /* A3CurrencyChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyChartViewController.h; path = Apps/Currency/A3CurrencyChartViewController.h; sourceTree = "<group>"; };
 		68E6F34B17B25F5F00F10ED9 /* A3CurrencyChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyChartViewController.m; path = Apps/Currency/A3CurrencyChartViewController.m; sourceTree = "<group>"; };
@@ -2806,8 +2806,8 @@
 		574B60FE193F69980043FC34 /* Instruction */ = {
 			isa = PBXGroup;
 			children = (
-				574B60FF193F69EF0043FC34 /* Instruction_iPhone.storyboard */,
-				574B6101193F6A0F0043FC34 /* Instruction_iPad.storyboard */,
+				68E50B211945E18800FAD986 /* Instruction_iPhone.storyboard */,
+				68E50B261945E1E600FAD986 /* Instruction_iPad.storyboard */,
 				57888EC01940667000306028 /* A3InstructionViewController.h */,
 				57888EC11940667000306028 /* A3InstructionViewController.m */,
 			);
@@ -3566,9 +3566,8 @@
 		682EA2DE15EB10B000BD6AD4 /* {Supporting Files} */ = {
 			isa = PBXGroup;
 			children = (
+				68E50B2C1945E67B00FAD986 /* AppBox3-Info.plist */,
 				6830C77818517D2D0075010F /* AppBox3.entitlements */,
-				682EA2DF15EB10B000BD6AD4 /* AppBox3-Info.plist */,
-				682EA2E015EB10B000BD6AD4 /* InfoPlist.strings */,
 				682EA2E315EB10B000BD6AD4 /* main.m */,
 				682EA2E515EB10B000BD6AD4 /* AppBox3-Prefix.pch */,
 			);
@@ -5480,7 +5479,6 @@
 			files = (
 				8076BCB118FA8CA400613E70 /* A3DaysCounterEventListDateCell.xib in Resources */,
 				68143D0318E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.xib in Resources */,
-				682EA2E215EB10B000BD6AD4 /* InfoPlist.strings in Resources */,
 				68B6A2F318CEC76D004084EF /* A3UnitPriceInputView_iPad.xib in Resources */,
 				8076BCAF18FA8C8E00613E70 /* A3DaysCounterEventListNameCell.xib in Resources */,
 				68F1C87718D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.xib in Resources */,
@@ -5567,7 +5565,7 @@
 				68B6A32318CEC76D004084EF /* A3WalletCateInfoFieldCell.xib in Resources */,
 				682E07DF17191D65007112B9 /* A3ActionMenuViewController_iPhone.xib in Resources */,
 				68F1C8D718D7F37D009FAE8A /* CalendarCell.xib in Resources */,
-				574B6102193F6A0F0043FC34 /* Instruction_iPad.storyboard in Resources */,
+				68E50B241945E1E600FAD986 /* Instruction_iPad.storyboard in Resources */,
 				68143CF818E3EC1F00569691 /* Digit.ttf in Resources */,
 				68F1C8D618D7F37D009FAE8A /* A3LadyCalendarViewController.xib in Resources */,
 				6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */,
@@ -5578,7 +5576,7 @@
 				68B6A2FD18CEC76D004084EF /* A3UnitPriceSliderView.xib in Resources */,
 				684E944217C22E760081A8B5 /* Images.xcassets in Resources */,
 				68F1C8CE18D7F37D009FAE8A /* A3LadyCalendarSettingCell.xib in Resources */,
-				574B6100193F69EF0043FC34 /* Instruction_iPhone.storyboard in Resources */,
+				68E50B1F1945E18800FAD986 /* Instruction_iPhone.storyboard in Resources */,
 				68143D0918E3EC1F00569691 /* A3NumberKeyboardViewController_iPhone.xib in Resources */,
 				68143D0118E3EC1F00569691 /* A3NumberKeyboardSimplePrevNextVC_iPhone.xib in Resources */,
 				684D92F118BC1FBC005016F7 /* A3DateCalcAddSubCell2.xib in Resources */,
@@ -6455,14 +6453,6 @@
 			name = Main_iPad.storyboard;
 			sourceTree = "<group>";
 		};
-		682EA2E015EB10B000BD6AD4 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				682EA2E115EB10B000BD6AD4 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		686BC1D51846343100FA5C94 /* A3CurrencySettings.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -6496,6 +6486,26 @@
 				68DAF6F016BFE3B000775372 /* en */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		68E50B211945E18800FAD986 /* Instruction_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				68E50B201945E18800FAD986 /* Base */,
+				68E50B231945E1C000FAD986 /* en */,
+			);
+			name = Instruction_iPhone.storyboard;
+			path = Instruction;
+			sourceTree = "<group>";
+		};
+		68E50B261945E1E600FAD986 /* Instruction_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				68E50B251945E1E600FAD986 /* Base */,
+				68E50B281945E1EC00FAD986 /* en */,
+			);
+			name = Instruction_iPad.storyboard;
+			path = Instruction;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
