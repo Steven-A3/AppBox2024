@@ -144,29 +144,31 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 			[self migrateLocalDataToCloudContext:self.managedObjectContext];
 		}
 	} else {
-		[A3CurrencyDataManager setupFavorites];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[A3CurrencyDataManager setupFavorites];
 
-		A3DaysCounterModelManager *modelManager = [A3DaysCounterModelManager new];
-		[modelManager prepareInContext:self.managedObjectContext];
+			A3DaysCounterModelManager *modelManager = [A3DaysCounterModelManager new];
+			[modelManager prepareInContext:self.managedObjectContext];
 
-		A3LadyCalendarModelManager *dataManager = [A3LadyCalendarModelManager new];
-		[dataManager prepareAccountInContext:self.managedObjectContext ];
-		if ([WalletCategory MR_countOfEntities] == 0) {
-			[WalletCategory resetWalletCategoriesInContext:self.managedObjectContext ];
-		}
+			A3LadyCalendarModelManager *dataManager = [A3LadyCalendarModelManager new];
+			[dataManager prepareAccountInContext:self.managedObjectContext ];
+			if ([WalletCategory MR_countOfEntities] == 0) {
+				[WalletCategory resetWalletCategoriesInContext:self.managedObjectContext ];
+			}
 
-		if ([UnitConvertItem MR_countOfEntities] == 0) {
-			[UnitConvertItem reset];
-		}
-		if ([UnitFavorite MR_countOfEntities] == 0) {
-			[UnitFavorite reset];
-		}
-		if (![UnitType MR_countOfEntities]) {
-			[UnitType resetUnitTypeLists];
-		}
-		if ([UnitPriceFavorite MR_countOfEntities] == 0) {
-			[UnitPriceFavorite reset];
-		}
+			if ([UnitConvertItem MR_countOfEntities] == 0) {
+				[UnitConvertItem reset];
+			}
+			if ([UnitFavorite MR_countOfEntities] == 0) {
+				[UnitFavorite reset];
+			}
+			if (![UnitType MR_countOfEntities]) {
+				[UnitType resetUnitTypeLists];
+			}
+			if ([UnitPriceFavorite MR_countOfEntities] == 0) {
+				[UnitPriceFavorite reset];
+			}
+		});
 	}
 
 	[self coreDataReady];

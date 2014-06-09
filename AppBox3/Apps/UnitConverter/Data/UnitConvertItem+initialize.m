@@ -20,7 +20,7 @@
 
 + (void)reset {
     
-    FNLOG(@"here");
+    FNLOG();
     
 	[UnitConvertItem MR_truncateAll];
     
