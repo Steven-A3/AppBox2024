@@ -291,6 +291,13 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 }
 
 - (void)backupRestoreManager:(A3BackupRestoreManager *)manager restoreCompleteWithSuccess:(BOOL)success {
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info"
+														message:@"Your data has been restored successfully."
+													   delegate:nil
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
+	[alertView show];
+
 	[[A3AppDelegate instance] setupCloud];
 }
 

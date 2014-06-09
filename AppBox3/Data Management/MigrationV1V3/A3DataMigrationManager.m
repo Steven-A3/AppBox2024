@@ -183,6 +183,13 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 			if (endDate) {
 				newEvent.endDate = [DaysCounterDate MR_createInContext:context];
 				newEvent.endDate.solarDate = endDate;
+
+				components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:endDate];
+				newEvent.endDate.year = @(components.year);
+				newEvent.endDate.month = @(components.month);
+				newEvent.endDate.day = @(components.day);
+				newEvent.endDate.hour = @(components.hour);
+				newEvent.endDate.minute = @(components.minute);
 			}
 			newEvent.repeatType = @([self repeatTypeForV1RepeatType:v1Item[kKeyForDDayRepeat]]);
 			NSString *filename = v1Item[kKeyForDDayImageFilename];
@@ -195,6 +202,8 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 				[fileManager moveItemAtURL:[NSURL fileURLWithPath:filePath] toURL:photoURL error:NULL];
 			}
 			newEvent.notes = v1Item[kKeyForDDayMemo];
+
+			newEvent.effectiveStartDate = [A3DaysCounterModelManager effectiveDateForEvent:newEvent basisTime:[NSDate date]];
 
 			[context MR_saveToPersistentStoreAndWait];
 		}
