@@ -100,9 +100,15 @@
     [self.view layoutIfNeeded];
 
 	[self registerContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:USMStoreDidImportChangesNotification object:nil];
+}
+
+- (void)cloudDidImportChanges:(NSNotification *)notification {
+	[self loadEventData];
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:USMStoreDidImportChangesNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
@@ -131,8 +137,8 @@
             self.title = [NSString stringWithFormat:@"%@%@",_calendarItem.calendarName, [_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : @" Events"];
         }
     }
-    
-    [self loadEventDatas];
+
+	[self loadEventData];
 }
 
 -(void)viewWillLayoutSubviews {
@@ -224,7 +230,7 @@
     return [NSMutableArray arrayWithObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableArray arrayWithArray:array],EventKey_Items, nil]];
 }
 
-- (void)loadEventDatas
+- (void)loadEventData
 {
     if ( [_calendarItem.calendarType integerValue] == CalendarCellType_User) {
         self.sourceArray = [_calendarItem.events array];
@@ -646,7 +652,7 @@
         }
         
         [_sharedManager removeEvent:item];
-        [self loadEventDatas];
+		[self loadEventData];
     }
 }
 
@@ -842,8 +848,8 @@
     }
     
     _sortType = segCtrl.selectedSegmentIndex;
-    
-    [self loadEventDatas];
+
+	[self loadEventData];
     [self setupSegmentSortArrow];
 }
 

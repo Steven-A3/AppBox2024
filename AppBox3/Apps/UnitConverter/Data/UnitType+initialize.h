@@ -12,6 +12,6 @@
 
 + (void)resetUnitTypeLists;
 - (NSString *)flagImageName;
-- (NSString *)selectedFlagImagName;
+- (NSString *)selectedFlagImageName;
 
 @end

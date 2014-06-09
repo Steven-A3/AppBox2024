@@ -63,7 +63,7 @@
     return dic[self.unitTypeName];
 }
 
-- (NSString *)selectedFlagImagName
+- (NSString *)selectedFlagImageName
 {
     
     NSMutableArray *keys = [NSMutableArray array];

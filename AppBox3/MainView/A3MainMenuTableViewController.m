@@ -326,7 +326,6 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 	if ([menuElement.title isEqualToString:@"Days Counter"]) {
         A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
-        [sharedManager prepareInContext:[[MagicalRecordStack defaultStack]context] ];
 
         NSInteger lastOpenedMainIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"DaysCounterLastOpenedMainIndex"];
         switch (lastOpenedMainIndex) {

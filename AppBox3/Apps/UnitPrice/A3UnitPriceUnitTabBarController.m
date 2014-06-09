@@ -171,10 +171,6 @@
     if (!_unitTypes) {
         _unitTypes = [[NSMutableArray alloc] init];
         
-        if ([[UnitType MR_numberOfEntities] isEqualToNumber:@0 ]) {
-            [UnitType resetUnitTypeLists];
-        }
-        
         NSArray *names = @[@"Area", @"Length", @"Volume", @"Weight"];
         for (int i=0; i<names.count; i++) {
             UnitType *unitType = [UnitType MR_findFirstByAttribute:@"unitTypeName" withValue:names[i]];
@@ -191,10 +187,6 @@
 	A3UnitPriceSelectViewController *viewController = [[A3UnitPriceSelectViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = tossedDelegate;
 	viewController.shouldPopViewController = YES;
-    
-    if ([[UnitPriceFavorite MR_numberOfEntities] isEqualToNumber:@0 ]) {
-        [UnitPriceFavorite reset];
-    }
     
     viewController.unitType = uType;
     viewController.favorites = [NSMutableArray arrayWithArray:[UnitPriceFavorite MR_findByAttribute:@"item.type" withValue:uType andOrderBy:@"order" ascending:YES]];

@@ -105,9 +105,6 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
 
 - (NSMutableArray *)unitTypes {
 	if (nil == _unitTypes) {
-        if (![UnitType MR_countOfEntities]) {
-            [UnitType resetUnitTypeLists];
-        }
 		_unitTypes = [NSMutableArray arrayWithArray:[UnitType MR_findAllSortedBy:@"order" ascending:YES]];
 	}
 	return _unitTypes;
@@ -151,7 +148,7 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:converterViewController];
         navigationController.tabBarItem.image = [UIImage imageNamed:unitType.flagImageName];
-        navigationController.tabBarItem.selectedImage = [UIImage imageNamed:unitType.selectedFlagImagName];
+        navigationController.tabBarItem.selectedImage = [UIImage imageNamed:unitType.selectedFlagImageName];
         
         NSArray *unitNameArray = [unitType.unitTypeName componentsSeparatedByString:@" "];
         if (unitNameArray.count > 1) {

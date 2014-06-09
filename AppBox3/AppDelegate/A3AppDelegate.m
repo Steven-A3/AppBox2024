@@ -21,6 +21,9 @@
 #import "A3DaysCounterModelManager.h"
 
 #import "A3LadyCalendarDetailViewController.h"
+#import "DaysCounterEvent+management.h"
+#import "NSString+conversion.h"
+#import "WalletData.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -48,6 +51,8 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	[self prepareDirectories];
+
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (localNotification) {
 		_localNotificationUserInfo = localNotification.userInfo;
@@ -373,6 +378,19 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 		_metadataQuery.predicate = [NSPredicate predicateWithFormat:@"%K like %@", NSMetadataItemFSNameKey, @"*"];
 	}
 	return _metadataQuery;
+}
+
+#pragma mark - Prepare subdirectories
+
+- (void)prepareDirectories {
+	if ( ![[NSFileManager defaultManager] fileExistsAtPath:[A3DaysCounterModelManager thumbnailDirectory]] ) {
+		[[NSFileManager defaultManager] createDirectoryAtPath:[A3DaysCounterModelManager thumbnailDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
+	}
+	NSString *imageDirectory = [A3DaysCounterImageDirectory pathInLibraryDirectory];
+	if (![[NSFileManager defaultManager] fileExistsAtPath:imageDirectory]) {
+		[[NSFileManager defaultManager] createDirectoryAtPath:imageDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
+	}
+	[WalletData createDirectories];
 }
 
 @end

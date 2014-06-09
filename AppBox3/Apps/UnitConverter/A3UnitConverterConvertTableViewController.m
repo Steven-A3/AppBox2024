@@ -361,17 +361,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (NSMutableArray *)convertItems {
 	if (nil == _convertItems) {
-        
-        // UnitFavorite 초기화
-        if ([[UnitFavorite MR_numberOfEntities] isEqualToNumber:@0 ]) {
-            [UnitFavorite reset];
-        }
-        
-        // UnitConvertItem 초기화
-        if ([[UnitConvertItem MR_numberOfEntities] isEqualToNumber:@0 ]) {
-            [UnitConvertItem reset];
-        }
-        
         _convertItems = [NSMutableArray arrayWithArray:[UnitConvertItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"item.type==%@", _unitType]]];
         
 		[self addEqualAndPlus];

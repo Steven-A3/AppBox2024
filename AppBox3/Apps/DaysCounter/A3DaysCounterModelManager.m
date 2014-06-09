@@ -150,16 +150,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     [context MR_saveToPersistentStoreAndWait];
 }
 
-
 - (void)prepareInContext:(NSManagedObjectContext *)context {
-    if ( ![[NSFileManager defaultManager] fileExistsAtPath:[A3DaysCounterModelManager thumbnailDirectory]] ) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:[A3DaysCounterModelManager thumbnailDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
-    }
-	NSString *imageDirectory = [A3DaysCounterImageDirectory pathInLibraryDirectory];
-	if (![[NSFileManager defaultManager] fileExistsAtPath:imageDirectory]) {
-		[[NSFileManager defaultManager] createDirectoryAtPath:imageDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
-	}
-
     self.calendarColorArray = [NSMutableArray array];
     [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0], CalendarItem_Name : @"Red" }];
     [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:149.0/255.0 blue:0 alpha:1.0], CalendarItem_Name : @"Orange" }];

@@ -18,6 +18,13 @@
 #import "WalletFieldItem+initialize.h"
 #import "WalletCategory.h"
 #import "WalletCategory+initialize.h"
+#import "UnitConvertItem.h"
+#import "UnitConvertItem+initialize.h"
+#import "UnitFavorite.h"
+#import "UnitFavorite+initialize.h"
+#import "UnitItem+initialize.h"
+#import "UnitType+initialize.h"
+#import "UnitPriceFavorite+initialize.h"
 
 NSString *const A3UniqueIdentifier = @"uniqueIdentifier";
 NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
@@ -69,6 +76,8 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 
 	FNLOG(@"\n-----------------------------------------\n%@\n%@\n%@\n-----------------------------------------", insertedObjects, updatedObjects, deletedObjects);
 #endif
+	[self startDownloadAllFiles];
+
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3iCloudLastDBImportKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -136,15 +145,35 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 		}
 	} else {
 		[A3CurrencyDataManager setupFavorites];
+
+		A3DaysCounterModelManager *modelManager = [A3DaysCounterModelManager new];
+		[modelManager prepareInContext:self.managedObjectContext];
+
+		A3LadyCalendarModelManager *dataManager = [A3LadyCalendarModelManager new];
+		[dataManager prepareAccountInContext:self.managedObjectContext ];
 		if ([WalletCategory MR_countOfEntities] == 0) {
-			[WalletCategory resetWalletCategoriesInContext:[[MagicalRecordStack defaultStack] context] ];
+			[WalletCategory resetWalletCategoriesInContext:self.managedObjectContext ];
 		}
 
-		[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
-		[A3LadyCalendarModelManager setupLocalNotification];
+		if ([UnitConvertItem MR_countOfEntities] == 0) {
+			[UnitConvertItem reset];
+		}
+		if ([UnitFavorite MR_countOfEntities] == 0) {
+			[UnitFavorite reset];
+		}
+		if (![UnitType MR_countOfEntities]) {
+			[UnitType resetUnitTypeLists];
+		}
+		if ([UnitPriceFavorite MR_countOfEntities] == 0) {
+			[UnitPriceFavorite reset];
+		}
 	}
 
 	[self coreDataReady];
+
+	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
+	[A3LadyCalendarModelManager setupLocalNotification];
+
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCoreDataReady object:nil];
 
 	if (self.hud) {
