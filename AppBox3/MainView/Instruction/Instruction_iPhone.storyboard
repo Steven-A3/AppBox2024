@@ -780,6 +780,8 @@ then drag it up or down</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="VEA-FH-9Qn" id="PN5-Yx-58V"/>
                         <outletCollection property="childImageViews" destination="frS-OQ-6ny" id="77d-LG-Vze"/>
+                        <outletCollection property="childImageViews" destination="VxI-zM-zGx" id="cad-Ay-tir"/>
+                        <outletCollection property="childImageViews" destination="qDe-l7-ype" id="8lA-hI-yAG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hpn-oH-6xT" userLabel="First Responder" sceneMemberID="firstResponder"/>

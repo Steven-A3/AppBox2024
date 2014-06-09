@@ -1393,6 +1393,8 @@ then drag it up or down</string>
                     <connections>
                         <outletCollection property="childImageViews" destination="9mK-Cz-WKT" id="dPd-ch-SUE"/>
                         <outletCollection property="childImageViews" destination="mfY-2U-XBc" id="xGq-PW-wAJ"/>
+                        <outletCollection property="childImageViews" destination="xVy-13-Bub" id="xYL-hu-Kqb"/>
+                        <outletCollection property="childImageViews" destination="deB-M6-4MF" id="n1B-TC-zqw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jvQ-bk-lmz" userLabel="First Responder" sceneMemberID="firstResponder"/>
