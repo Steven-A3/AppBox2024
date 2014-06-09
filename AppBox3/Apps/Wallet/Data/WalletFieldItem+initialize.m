@@ -79,11 +79,12 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 }
 
 - (NSString *)photoImageThumbnailPathInOriginal:(BOOL)original {
-	NSString *path = [NSString stringWithFormat:@"%@/%@-imageThumbnail", A3WalletImageThumbnailDirectory, self.uniqueID];
+	NSString *filename = [NSString stringWithFormat:@"%@-imageThumbnail", self.uniqueID];
 	if (original) {
+		NSString *path = [A3WalletImageThumbnailDirectory stringByAppendingPathComponent:filename];
 		return [path pathInCachesDirectory];
 	} else {
-		return [self.uniqueID pathInTemporaryDirectory];
+		return [filename pathInTemporaryDirectory];
 	}
 }
 
@@ -104,11 +105,12 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 }
 
 - (NSString *)videoThumbnailPathInOriginal:(BOOL)inOriginal {
-	NSString *path = [NSString stringWithFormat:@"%@/%@-videoThumbnail", A3WalletVideoThumbnailDirectory, self.uniqueID];
+	NSString *filename = [NSString stringWithFormat:@"%@-videoThumbnail", self.uniqueID];
 	if (inOriginal) {
+		NSString *path = [A3WalletVideoThumbnailDirectory stringByAppendingPathComponent:filename];
 		return [path pathInCachesDirectory];
 	} else {
-		return [self.uniqueID pathInTemporaryDirectory];
+		return [filename pathInTemporaryDirectory];
 	}
 }
 
@@ -118,7 +120,7 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 		NSURL *baseURL = [[self baseURL] URLByAppendingPathComponent:A3WalletVideoDirectory];
 		return [baseURL URLByAppendingPathComponent:filename];
 	} else {
-		return [NSURL fileURLWithPath:[self.uniqueID pathInTemporaryDirectory]];
+		return [NSURL fileURLWithPath:[filename pathInTemporaryDirectory]];
 	}
 }
 
