@@ -13,6 +13,7 @@
 
 + (void)resetUnitTypeLists
 {
+	FNLOG();
     if ([[UnitType MR_numberOfEntities] integerValue] > 0) {
 		[UnitType MR_truncateAll];
 	}

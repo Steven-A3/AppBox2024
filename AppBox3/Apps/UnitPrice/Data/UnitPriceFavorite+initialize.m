@@ -19,7 +19,7 @@
 
 + (void)reset {
     
-    FNLOG(@"here");
+    FNLOG();
     
 	[UnitPriceFavorite MR_truncateAll];
     
