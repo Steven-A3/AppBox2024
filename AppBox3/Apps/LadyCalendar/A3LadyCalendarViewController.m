@@ -84,9 +84,7 @@
 	self.toolbarItems = _bottomToolbar.items;
 
 	[self makeBackButtonEmptyArrow];
-
 	[self.dataManager prepare];
-
 	[self.dataManager currentAccount];
 	[self setupCalendarRange];
 	numberOfMonthInPage = 1;
@@ -369,6 +367,10 @@
     self.instructionViewController.delegate = self;
     [self.navigationController.view addSubview:self.instructionViewController.view];
     self.instructionViewController.view.frame = self.navigationController.view.frame;
+    
+//    [self.tabBarController.view addSubview:self.instructionViewController.view];
+//    self.instructionViewController.view.frame = self.tabBarController.view.frame;
+    
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
 }
 

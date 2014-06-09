@@ -853,6 +853,7 @@ the controls</string>
                     </view>
                     <connections>
                         <outletCollection property="childImageViews" destination="Epk-4M-sdk" id="5JF-0W-rV7"/>
+                        <outletCollection property="childImageViews" destination="0jV-zt-hhB" id="RC7-kk-aUQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5s-ky-BW8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1074,6 +1075,7 @@ the controls</string>
                     </view>
                     <connections>
                         <outletCollection property="childImageViews" destination="6rS-47-QS5" id="PU7-H6-Zyn"/>
+                        <outletCollection property="childImageViews" destination="gva-jV-L5J" id="PJA-WT-bHG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Ww-oH-dXq" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -2181,6 +2181,7 @@ the controls</string>
                     </view>
                     <connections>
                         <outletCollection property="childImageViews" destination="uPL-io-99J" id="jjr-1c-pme"/>
+                        <outletCollection property="childImageViews" destination="51h-tn-90N" id="T7y-6s-HHN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Jb-nu-BXx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2257,6 +2258,7 @@ the controls</string>
                     </view>
                     <connections>
                         <outletCollection property="childImageViews" destination="RQO-Dj-ecx" id="FdG-8E-ntY"/>
+                        <outletCollection property="childImageViews" destination="yHE-dj-Eqt" id="JTq-Jn-bnd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lLU-d0-9Ks" userLabel="First Responder" sceneMemberID="firstResponder"/>
