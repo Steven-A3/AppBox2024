@@ -1228,13 +1228,39 @@ to view</string>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="213" translatesAutoresizingMaskIntoConstraints="NO" id="ls1-5i-Gos" userLabel="Label - swipe left or right to change keypad for basic/scientific">
                                 <rect key="frame" x="0.0" y="415" width="213" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">touch and hold  ⌯
+                                <string key="text">touch and hold  -
 to the right of an item,
 then drag it up or down</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="clV-Vc-4ou">
+                                <rect key="frame" x="203" y="421" width="10" height="10"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2jn-ve-oeC">
+                                        <rect key="frame" x="0.0" y="0.0" width="10" height="2"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UKK-Fk-C6Z">
+                                        <rect key="frame" x="0.0" y="4" width="10" height="2"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E2D-Jg-Ee5">
+                                        <rect key="frame" x="0.0" y="8" width="10" height="2"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="7mB-Po-c2C"/>
+                                    <constraint firstAttribute="width" constant="10" id="ohQ-Ek-MiI"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -1250,7 +1276,9 @@ then drag it up or down</string>
                             <constraint firstItem="wjt-Kq-a4W" firstAttribute="centerY" secondItem="0gd-1F-IlN" secondAttribute="centerY" id="VUE-MY-kMp"/>
                             <constraint firstAttribute="bottom" secondItem="Zh0-F5-Jm8" secondAttribute="bottom" id="dzQ-qI-2dP"/>
                             <constraint firstItem="Zh0-F5-Jm8" firstAttribute="top" secondItem="gkS-8h-tzO" secondAttribute="top" id="iV3-97-rf2"/>
+                            <constraint firstItem="ls1-5i-Gos" firstAttribute="trailing" secondItem="clV-Vc-4ou" secondAttribute="trailing" id="iZp-so-kXl"/>
                             <constraint firstItem="UFc-4O-EbR" firstAttribute="leading" secondItem="ls1-5i-Gos" secondAttribute="trailing" constant="10" id="mGH-FG-JG1"/>
+                            <constraint firstItem="ls1-5i-Gos" firstAttribute="top" secondItem="clV-Vc-4ou" secondAttribute="top" constant="-6" id="ngz-6T-FJW"/>
                             <constraint firstItem="CJz-2K-52H" firstAttribute="trailing" secondItem="rHi-Jq-5Rp" secondAttribute="leading" constant="-10" id="oyB-jD-cWS"/>
                             <constraint firstItem="CJz-2K-52H" firstAttribute="centerY" secondItem="rHi-Jq-5Rp" secondAttribute="centerY" id="r9u-Cc-KQg"/>
                             <constraint firstItem="AE6-fy-46s" firstAttribute="leading" secondItem="UFc-4O-EbR" secondAttribute="trailing" constant="5" id="tGj-XJ-ItE"/>
