@@ -58,6 +58,8 @@ extern NSString *const A3LocalNotificationDataID;
 extern NSString *const A3LocalNotificationFromLadyCalendar;
 extern NSString *const A3LocalNotificationFromDaysCounter;
 
+extern NSString *const A3CloudSeedDataCreated;		// BOOL, Key Value Store
+
 @protocol A3ViewControllerProtocol <NSObject>
 - (NSUInteger)a3SupportedInterfaceOrientations;
 @end
@@ -87,6 +89,7 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 @property (assign, nonatomic) BOOL shouldMigrateV1Data;
 @property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (strong, nonatomic) A3DataMigrationManager *migrationManager;
+@property (nonatomic, strong) NSMetadataQuery *metadataQuery;
 
 + (A3AppDelegate *)instance;
 

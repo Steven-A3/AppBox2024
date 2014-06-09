@@ -224,7 +224,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	WalletFieldItem *fieldItem = _fieldItems[sender.tag];
 
 	if (fieldItem.video) {
-		MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:[fieldItem videoFilePathInOriginal:YES ]]];
+		MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[fieldItem videoFileURLInOriginal:YES] ];
 		[self presentViewController:pvc animated:YES completion:^{
 			[pvc.moviePlayer play];
 		}];

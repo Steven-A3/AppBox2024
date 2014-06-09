@@ -30,6 +30,8 @@ NSString *const A3LocalNotificationDataID = @"A3LocalNotificationDataID";
 NSString *const A3LocalNotificationFromLadyCalendar = @"Lady Calendar";
 NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 
+NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
+
 @interface A3AppDelegate () <UIAlertViewDelegate, A3DataMigrationManagerDelegate>
 
 @property (nonatomic, strong) NSString *previousVersion;
@@ -362,6 +364,15 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 		_cacheStoreManager = [A3CacheStoreManager new];
 	}
 	return _cacheStoreManager;
+}
+
+- (NSMetadataQuery *)metadataQuery {
+	if (!_metadataQuery) {
+		_metadataQuery = [[NSMetadataQuery alloc] init];
+		_metadataQuery.searchScopes = @[NSMetadataQueryUbiquitousDataScope];
+		_metadataQuery.predicate = [NSPredicate predicateWithFormat:@"%K like %@", NSMetadataItemFSNameKey, @"*"];
+	}
+	return _metadataQuery;
 }
 
 @end

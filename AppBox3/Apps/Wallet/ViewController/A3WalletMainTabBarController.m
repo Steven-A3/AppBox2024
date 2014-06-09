@@ -17,6 +17,7 @@
 #import "A3WalletItemViewController.h"
 #import "WalletItem.h"
 #import "WalletData.h"
+#import "A3AppDelegate.h"
 
 // NSUserDefaults key values:
 NSString *kWallet_WhichTabPrefKey		= @"kWhichTab";     // which tab to select at launch
@@ -154,10 +155,6 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 
 - (NSMutableArray *)categories {
 	if (nil == _categories) {
-        if ([WalletCategory MR_countOfEntities] == 0) {
-            [WalletCategory resetWalletCategoriesInContext:[[MagicalRecordStack defaultStack] context] ];
-			[WalletCategory exportCategoryInfoAsPList];
-        }
 		_categories = [NSMutableArray arrayWithArray:[WalletCategory MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"doNotShow == NO"]]];
 	}
 	return _categories;

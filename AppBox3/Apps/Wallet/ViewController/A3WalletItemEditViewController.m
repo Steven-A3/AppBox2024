@@ -199,37 +199,78 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			continue;
 
 		if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
-			NSString *photoImagePathInOriginalDirectory = [fieldItem photoImagePathInOriginalDirectory:YES];
-			NSString *photoImagePathInTempDirectory = [fieldItem photoImagePathInOriginalDirectory:NO];
+			NSURL *photoImageURLInOriginalDirectory = [fieldItem photoImageURLInOriginalDirectory:YES];
+			NSURL *photoImageURLInTempDirectory = [fieldItem photoImageURLInOriginalDirectory:NO];
 			NSString *thumbnailImagePath = [fieldItem photoImageThumbnailPathInOriginal:YES];
 			NSString *thumbnailImageInTemp = [fieldItem photoImageThumbnailPathInOriginal:NO];
 			if (fieldItem.image) {
-				[fileManager removeItemAtPath:photoImagePathInOriginalDirectory error:NULL];
-				[fileManager moveItemAtPath:photoImagePathInTempDirectory toPath:photoImagePathInOriginalDirectory error:NULL];
-
+				NSError *error;
+				NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+				[coordinator coordinateWritingItemAtURL:photoImageURLInOriginalDirectory
+												options:NSFileCoordinatorWritingForDeleting
+												  error:&error
+											 byAccessor:^(NSURL *newURL) {
+												 [fileManager removeItemAtURL:newURL error:NULL];
+											 }];
+				[coordinator coordinateReadingItemAtURL:photoImageURLInTempDirectory
+												options:NSFileCoordinatorReadingWithoutChanges
+									   writingItemAtURL:photoImageURLInOriginalDirectory
+												options:NSFileCoordinatorWritingForReplacing
+												  error:&error
+											 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
+												 [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
+											 }];
 				[fileManager removeItemAtPath:thumbnailImagePath error:NULL];
 				[fileManager moveItemAtPath:thumbnailImageInTemp toPath:thumbnailImagePath error:NULL];
 			} else {
-				[fileManager removeItemAtPath:photoImagePathInOriginalDirectory error:NULL];
-				[fileManager removeItemAtPath:photoImagePathInTempDirectory error:NULL];
+				NSError *error;
+				NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+				[coordinator coordinateWritingItemAtURL:photoImageURLInOriginalDirectory
+												options:NSFileCoordinatorWritingForDeleting
+												  error:&error
+											 byAccessor:^(NSURL *newURL) {
+												 [fileManager removeItemAtURL:newURL error:NULL];
+											 }];
+				[fileManager removeItemAtURL:photoImageURLInTempDirectory error:NULL];
 
 				[fileManager removeItemAtPath:thumbnailImagePath error:NULL];
 				[fileManager removeItemAtPath:thumbnailImageInTemp error:NULL];
 			}
 		} else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-			NSString *videoFilePath = [fieldItem videoFilePathInOriginal:YES];
-			NSString *videoFilePathInTemp = [fieldItem videoFilePathInOriginal:NO];
+			NSURL *videoFileURL = [fieldItem videoFileURLInOriginal:YES];
+			NSURL *videoFileURLInTemp = [fieldItem videoFileURLInOriginal:NO];
 			NSString *thumbnailImagePath = [fieldItem videoThumbnailPathInOriginal:YES];
 			NSString *thumbnailImageInTemp = [fieldItem videoThumbnailPathInOriginal:NO];
 			if (fieldItem.video) {
-				[fileManager removeItemAtPath:videoFilePath error:NULL];
-				[fileManager moveItemAtPath:videoFilePathInTemp toPath:videoFilePath error:NULL];
+				NSError *error;
+				NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+				[coordinator coordinateWritingItemAtURL:videoFileURL
+												options:NSFileCoordinatorWritingForDeleting
+												  error:&error
+											 byAccessor:^(NSURL *newURL) {
+												 [fileManager removeItemAtURL:newURL error:NULL];
+											 }];
+				[coordinator coordinateReadingItemAtURL:videoFileURLInTemp
+												options:NSFileCoordinatorReadingWithoutChanges
+									   writingItemAtURL:videoFileURL
+												options:NSFileCoordinatorWritingForReplacing
+												  error:&error
+											 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
+												 [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
+											 }];
 
 				[fileManager removeItemAtPath:thumbnailImagePath error:NULL];
 				[fileManager moveItemAtPath:thumbnailImageInTemp toPath:thumbnailImagePath error:NULL];
 			} else {
-				[fileManager removeItemAtPath:videoFilePath error:NULL];
-				[fileManager removeItemAtPath:videoFilePathInTemp error:NULL];
+				NSError *error;
+				NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+				[coordinator coordinateWritingItemAtURL:videoFileURL
+												options:NSFileCoordinatorWritingForDeleting
+												  error:&error
+											 byAccessor:^(NSURL *newURL) {
+												 [fileManager removeItemAtURL:newURL error:NULL];
+											 }];
+				[fileManager removeItemAtURL:videoFileURLInTemp error:NULL];
 
 				[fileManager removeItemAtPath:thumbnailImagePath error:NULL];
 				[fileManager removeItemAtPath:thumbnailImageInTemp error:NULL];
@@ -249,8 +290,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		if (fieldItem.video) {
 			NSString *thumbnailImagePathInTemp = [fieldItem videoThumbnailPathInOriginal:NO];
 			[fileManager removeItemAtPath:thumbnailImagePathInTemp error:NULL];
-			NSString *videoFilePathInTemp = [fieldItem videoFilePathInOriginal:NO];
-			[fileManager removeItemAtPath:videoFilePathInTemp error:NULL];
+			NSURL *videoFilePathInTemp = [fieldItem videoFileURLInOriginal:NO];
+			[fileManager removeItemAtURL:videoFilePathInTemp error:NULL];
 		}
 	}
 }
@@ -495,7 +536,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 				[fieldItem.image MR_deleteEntity];
 				fieldItem.image = nil;
 			} else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-				[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoFilePathInOriginal:NO ] error:NULL];
+				[[NSFileManager defaultManager] removeItemAtURL:[fieldItem videoFileURLInOriginal:NO ] error:NULL];
 				[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO ] error:NULL];
 				[fieldItem.video MR_deleteEntity];
 				fieldItem.video = nil;
@@ -802,7 +843,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			_currentFieldItem.video = [WalletFieldItemVideo MR_createEntity];
 		}
 		_currentFieldItem.video.extension = movieURL.pathExtension;
-		NSURL *destinationMovieURL = [NSURL fileURLWithPath:[_currentFieldItem videoFilePathInOriginal:NO ]];
+		NSURL *destinationMovieURL = [_currentFieldItem videoFileURLInOriginal:NO ];
 		[[NSFileManager defaultManager] moveItemAtURL:movieURL toURL:destinationMovieURL error:NULL];
 
         NSURL *assetURL = imageEditInfo[UIImagePickerControllerReferenceURL];

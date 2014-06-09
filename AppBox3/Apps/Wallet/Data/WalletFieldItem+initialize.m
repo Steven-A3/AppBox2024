@@ -6,13 +6,13 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <ImageIO/ImageIO.h>
 #import "WalletFieldItem+initialize.h"
 #import "WalletField+initialize.h"
 #import "WalletData.h"
 #import "WalletFieldItemVideo.h"
 #import "NSString+conversion.h"
 #import "UIImage+Resizing.h"
+#import "A3AppDelegate.h"
 
 NSString *const A3WalletImageDirectory = @"WalletImages";		// in Library Directory
 NSString *const A3WalletVideoDirectory = @"WalletVideos";		// in Library Directory
@@ -26,30 +26,56 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 		FNLOG();
 		NSFileManager *fileManager = [NSFileManager defaultManager];
 		if ([self.field.type isEqualToString:WalletFieldTypeImage]) {
+			NSError *error;
+			NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+			[coordinator coordinateWritingItemAtURL:[self photoImageURLInOriginalDirectory:YES]
+											options:NSFileCoordinatorWritingForDeleting
+											  error:&error
+										 byAccessor:^(NSURL *newURL) {
+											 [fileManager removeItemAtURL:newURL error:NULL];
+										 }];
 			[fileManager removeItemAtPath:[self photoImageThumbnailPathInOriginal:YES] error:NULL];
 			return;
 		}
 		if ([self.field.type isEqualToString:WalletFieldTypeVideo] && self.video)  {
-			[fileManager removeItemAtPath:[self videoFilePathInOriginal:YES] error:NULL];
+			NSError *error;
+			NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+			[coordinator coordinateWritingItemAtURL:[self videoFileURLInOriginal:YES]
+											options:NSFileCoordinatorWritingForDeleting
+											  error:&error
+										 byAccessor:^(NSURL *newURL) {
+											 [fileManager removeItemAtURL:newURL error:NULL];
+										 }];
 			[fileManager removeItemAtPath:[self videoThumbnailPathInOriginal:YES] error:NULL];
 		}
 	}
 }
 
-- (NSString *)photoImagePathInOriginalDirectory:(BOOL)inOriginalDirectory {
-	if (inOriginalDirectory) {
-		return [[NSString stringWithFormat:@"%@/%@", A3WalletImageDirectory, self.uniqueID] pathInLibraryDirectory];
+- (NSURL *)baseURL {
+	if ([[[A3AppDelegate instance] ubiquityStoreManager] cloudEnabled]) {
+		return [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
 	} else {
-		return [self.uniqueID pathInTemporaryDirectory];
+		return [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0]];
+	}
+}
+
+- (NSURL *)photoImageURLInOriginalDirectory:(BOOL)inOriginalDirectory {
+	if (inOriginalDirectory) {
+		NSURL *baseURL;
+		baseURL = [[self baseURL] URLByAppendingPathComponent:A3WalletImageDirectory];
+		return [baseURL URLByAppendingPathComponent:self.uniqueID];
+	} else {
+		return [NSURL fileURLWithPath:[self.uniqueID pathInTemporaryDirectory]];
 	}
 }
 
 - (UIImage *)photoImageInOriginalDirectory:(BOOL)inOriginalDirectory {
-	return [UIImage imageWithContentsOfFile:[self photoImagePathInOriginalDirectory:inOriginalDirectory ]];
+	NSData *data = [[NSData alloc] initWithContentsOfURL:[self photoImageURLInOriginalDirectory:inOriginalDirectory]];
+	return [UIImage imageWithData:data];
 }
 
 - (void)setPhotoImage:(UIImage *)image inOriginalDirectory:(BOOL)inOriginalDirectory {
-	[UIImageJPEGRepresentation(image, 1.0) writeToFile:[self photoImagePathInOriginalDirectory:inOriginalDirectory ] atomically:YES];
+	[UIImageJPEGRepresentation(image, 1.0) writeToURL:[self photoImageURLInOriginalDirectory:inOriginalDirectory] atomically:YES];
 }
 
 - (NSString *)photoImageThumbnailPathInOriginal:(BOOL)original {
@@ -86,12 +112,13 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 	}
 }
 
-- (NSString *)videoFilePathInOriginal:(BOOL)inOriginal {
-	NSString *path = [NSString stringWithFormat:@"%@/%@-video", A3WalletVideoDirectory, self.uniqueID];
+- (NSURL *)videoFileURLInOriginal:(BOOL)inOriginal {
+	NSString *filename = [NSString stringWithFormat:@"%@-video", self.uniqueID];
 	if (inOriginal) {
-		return [path pathInLibraryDirectory];
+		NSURL *baseURL = [[self baseURL] URLByAppendingPathComponent:A3WalletVideoDirectory];
+		return [baseURL URLByAppendingPathComponent:filename];
 	} else {
-		return [self.uniqueID pathInTemporaryDirectory];
+		return [NSURL fileURLWithPath:[self.uniqueID pathInTemporaryDirectory]];
 	}
 }
 

@@ -58,18 +58,18 @@ NSString *const WalletCategoryTypeVideo		= @"Video";
     return [[NSArray alloc] initWithContentsOfFile:filePath];
 }
 
-+ (float)getDurationOfMovie:(NSString *)filePath
++ (float)getDurationOfMovie:(NSURL *)fileURL
 {
-    AVURLAsset* audioAsset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:filePath] options:nil];
+    AVURLAsset* audioAsset = [AVURLAsset URLAssetWithURL:fileURL options:nil];
     CMTime duration = audioAsset.duration;
     float durationSeconds = CMTimeGetSeconds(duration);
     
     return durationSeconds;
 }
 
-+ (NSDate *)getCreateDateOfMovie:(NSString *)filePath
++ (NSDate *)getCreateDateOfMovie:(NSURL *)fileURL
 {
-    AVURLAsset* audioAsset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:filePath] options:nil];
+    AVURLAsset* audioAsset = [AVURLAsset URLAssetWithURL:fileURL options:nil];
     NSArray *metas = audioAsset.commonMetadata;
     
     for (AVMetadataItem *metaItem in metas) {

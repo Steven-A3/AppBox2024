@@ -206,9 +206,6 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 
 - (NSMutableArray *)categories {
 	if (nil == _categories) {
-		if ([WalletCategory MR_countOfEntities] == 0) {
-			[WalletCategory resetWalletCategoriesInContext:[[MagicalRecordStack defaultStack] context] ];
-		}
 		if (_isEditing) {
 			_categories = [NSMutableArray arrayWithArray:[WalletCategory MR_findAllSortedBy:@"order" ascending:YES]];
 		} else {

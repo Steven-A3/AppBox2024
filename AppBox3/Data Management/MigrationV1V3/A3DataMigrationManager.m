@@ -485,9 +485,9 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 									WalletFieldItemImage *itemImage = [WalletFieldItemImage MR_createInContext:context];
 									itemImage.fieldItem = V3FieldItem;
 
-									NSString *filePath = [V3FieldItem photoImagePathInOriginalDirectory:YES];
-									[fileManager removeItemAtPath:filePath error:NULL];
-									[fileManager moveItemAtPath:[self pathForFilename:valueDictionary[fieldID]] toPath:filePath error:NULL];
+									NSURL *fileURL = [V3FieldItem photoImageURLInOriginalDirectory:YES];
+									[fileManager removeItemAtURL:fileURL error:NULL];
+									[fileManager moveItemAtURL:[NSURL fileURLWithPath:[self pathForFilename:valueDictionary[fieldID]]] toURL:fileURL error:NULL];
 
 								} else if ([V1FieldInfo[WalletFieldType] isEqualToString:WalletFieldTypeDate]) {
 									V3FieldItem.date = valueDictionary[fieldID];

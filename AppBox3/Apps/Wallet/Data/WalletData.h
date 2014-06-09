@@ -31,8 +31,8 @@ extern NSString *const WalletCategoryTypeVideo;
 + (NSDictionary *)styleList;
 + (NSArray *)categoryPresetData;
 
-+ (float)getDurationOfMovie:(NSString *)filePath;
-+ (NSDate *)getCreateDateOfMovie:(NSString *)filePath;
++ (float)getDurationOfMovie:(NSURL *)fileURL;
++ (NSDate *)getCreateDateOfMovie:(NSURL *)fileURL;
 + (UIImage *)videoPreviewImageOfURL:(NSURL *)videoUrl;
 
 + (void)createDirectories;
