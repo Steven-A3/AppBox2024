@@ -530,8 +530,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"UnitConverter"];
     self.instructionViewController.delegate = self;
-    [self.navigationController.view addSubview:self.instructionViewController.view];
-    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    [self.tabBarController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.tabBarController.view.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
 }
 
