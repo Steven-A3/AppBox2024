@@ -17,18 +17,13 @@
 #import "ExpenseListBudget.h"
 #import "ExpenseListItem.h"
 #import "A3DefaultColorDefines.h"
-#import "A3AppDelegate.h"
 #import "ExpenseListHistory.h"
 #import "NSString+conversion.h"
 #import "ExpenseListItem+management.h"
-#import "FMMoveTableView.h"
 #import "NSMutableArray+A3Sort.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "UIViewController+navigation.h"
 #import "A3CalculatorViewController.h"
-#import "A3TableViewInputElement.h"
 #import "UITableView+utility.h"
-#import "A3AppDelegate+appearance.h"
 #import "A3InstructionViewController.h"
 
 #define kDefaultItemCount_iPhone    9

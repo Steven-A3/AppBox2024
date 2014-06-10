@@ -12,7 +12,7 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 @interface A3LoanCalcSettingViewController ()
 

@@ -13,7 +13,6 @@
 #import "UIViewController+MMDrawerController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+LoanCalcAddtion.h"
-#import "UIViewController+navigation.h"
 #import "A3LoanCalcLoanDetailViewController.h"
 #import "A3LoanCalcSettingViewController.h"
 #import "A3LoanCalcSelectModeViewController.h"
@@ -32,10 +31,8 @@
 #import "LoanCalcHistory.h"
 #import "LoanCalcComparisonHistory.h"
 #import "A3NumberKeyboardViewController.h"
-#import "A3AppDelegate.h"
 #import "SFKImage.h"
 #import "UITableView+utility.h"
-#import "A3AppDelegate+appearance.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
 

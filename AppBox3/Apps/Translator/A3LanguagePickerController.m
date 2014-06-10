@@ -8,13 +8,11 @@
 
 #import "A3LanguagePickerController.h"
 #import "A3TranslatorLanguage.h"
-#import "A3UIDevice.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3StandardLeft15Cell.h"
 #import "UIColor+A3Addition.h"
-#import "UIViewController+navigation.h"
 
 @interface A3LanguagePickerController () <UISearchBarDelegate>
 

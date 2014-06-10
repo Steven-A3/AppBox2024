@@ -9,18 +9,12 @@
 #import "A3PercentCalcMainViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "common.h"
 #import "A3PercentCalcHeaderView.h"
-#import "A3PercentCalcData.h"
-#import "A3PercentCalculator.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3PercentCalcHistoryViewController.h"
 #import "PercentCalcHistory.h"
-#import "A3DefaultColorDefines.h"
 #import "A3JHTableViewEntryCell.h"
-#import "NSNumberFormatter+Extention.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "UIViewController+navigation.h"
 
 
 @interface A3PercentCalcMainViewController () <UITextFieldDelegate, A3PercentCalcHistoryDelegate>

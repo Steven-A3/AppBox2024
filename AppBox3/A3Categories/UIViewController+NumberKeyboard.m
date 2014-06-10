@@ -8,7 +8,6 @@
 
 #import <objc/runtime.h>
 #import "UIViewController+NumberKeyboard.h"
-#import "A3UIDevice.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3DateKeyboardViewController.h"
 #import "A3NumberKeyboardViewController_iPad.h"
@@ -19,10 +18,10 @@
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 #import "A3PasscodeKeyboard_iPad.h"
 #import "A3CurrencySelectViewController.h"
-#import "UIViewController+navigation.h"
 #import "A3CalculatorViewController.h"
 #import "A3CalculatorViewController_iPhone.h"
 #import "A3CalculatorViewController_iPad.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 NSString *const A3NotificationCurrencyButtonPressed = @"A3NotificationCurrencyButtonPressed";
 NSString *const A3NotificationCalculatorButtonPressed = @"A3NotificationCalculatorButtonPressed";

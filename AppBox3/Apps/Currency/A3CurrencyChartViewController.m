@@ -8,23 +8,18 @@
 
 #import "A3CurrencyChartViewController.h"
 #import "A3CurrencyTVDataCell.h"
-#import "common.h"
 #import "UIImageView+AFNetworking.h"
 #import "A3CurrencyViewController.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3CurrencySelectViewController.h"
-#import "A3UIDevice.h"
 #import "NSString+conversion.h"
 #import "UIView+Screenshot.h"
 #import "Reachability.h"
 #import "UIViewController+A3Addition.h"
-#import "CurrencyFavorite.h"
 #import "A3CurrencyDataManager.h"
-#import "A3CacheStoreManager.h"
-#import "A3CacheStoreManager.h"
 #import "CurrencyRateItem.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, A3SearchViewControllerDelegate>
 

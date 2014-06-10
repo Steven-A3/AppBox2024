@@ -153,7 +153,7 @@
 }
 
 - (void)leftBarButtonAppsButton {
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Apps", @"Apps") style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
@@ -495,7 +495,7 @@
 }
 
 - (void)alertInternetConnectionIsNotAvailable {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info" message:@"Internet Connection is not available." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Internet Connection is not available.", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[alertView show];
 }
 
@@ -504,56 +504,49 @@
 
 }
 - (void)alertCloudNotEnabled {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"iCloud" message:@"Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"iCloud", @"iCloud")
+														message:NSLocalizedString(@"iCloud_goto_settings", @"Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.")
+													   delegate:self
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
 	[alertView show];
 }
 
 - (UIActionSheet *)actionSheetAskingImagePickupWithDelete:(BOOL)deleteEnable delegate:(id <UIActionSheetDelegate>)delegate {
 	UIActionSheet *actionSheet;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        if (deleteEnable) {
-			actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-													  delegate:delegate
-											 cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
-										destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete Photo", @"common", nil)
-											 otherButtonTitles:NSLocalizedStringFromTable(@"Take Photo", @"common", nil),
-															   NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
-															   NSLocalizedStringFromTable(@"Choose and Resize", @"common", nil), nil];
-        }
-        else {
-			actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-													  delegate:delegate
-											 cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
-										destructiveButtonTitle:nil
-											 otherButtonTitles:NSLocalizedStringFromTable(@"Take Photo", @"common", nil),
-															   NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
-															   NSLocalizedStringFromTable(@"Choose and Resize", @"common", nil), nil];
-        }
+		actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+												  delegate:delegate
+										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+									destructiveButtonTitle:deleteEnable ? NSLocalizedString(@"Delete Photo", nil) : nil
+										 otherButtonTitles:NSLocalizedString(@"Take Photo", nil),
+														   NSLocalizedString(@"Choose Existing", nil),
+														   NSLocalizedString(@"Choose and Resize", nil), nil];
 
 	} else {
         if (deleteEnable) {
 			actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 													  delegate:delegate
-											 cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
-										destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete Photo", @"common", nil)
+											 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+										destructiveButtonTitle:NSLocalizedString(@"Delete Photo", nil)
 											 otherButtonTitles:
-													 NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
-													 NSLocalizedStringFromTable(@"Choose and Resize", @"common", nil), nil];
+													 NSLocalizedString(@"Choose Existing", nil),
+													 NSLocalizedString(@"Choose and Resize", nil), nil];
         }
         else {
 			actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 													  delegate:delegate
-											 cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
+											 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 										destructiveButtonTitle:nil
-											 otherButtonTitles:
-													 NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
-													 NSLocalizedStringFromTable(@"Choose and Resize", @"common", nil), nil];
+											 otherButtonTitles:NSLocalizedString(@"Choose Existing", nil),
+															   NSLocalizedString(@"Choose and Resize", nil), nil];
         }
 	}
 	return actionSheet;
 }
 
 #pragma mark - Custom Date String Related
+
 - (NSString *)fullStyleDateStringFromDate:(NSDate *)date withShortTime:(BOOL)shortTime
 {
     NSDateFormatter *formatter = [NSDateFormatter new];
@@ -588,6 +581,7 @@
 }
 
 #pragma mark - Instruction
+
 - (void)setupTwoFingerDoubleTapGestureToShowInstruction
 {
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];

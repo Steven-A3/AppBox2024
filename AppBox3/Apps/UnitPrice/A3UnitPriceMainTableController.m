@@ -23,7 +23,6 @@
 #import "UIViewController+A3Addition.h"
 #import "UILabel+BaseAlignment.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "UIViewController+navigation.h"
 
 NSString *const A3UnitPriceCurrencyCode = @"A3UnitPriceCurrencyCode";
 NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUnitPriceCurrencyCodeChanged";

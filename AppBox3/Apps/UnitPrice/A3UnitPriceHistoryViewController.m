@@ -14,7 +14,7 @@
 #import "UnitItem.h"
 #import "UnitPriceHistoryItem.h"
 #import "A3UnitPriceHistoryCell.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 @interface A3UnitPriceHistoryViewController () <UIActionSheetDelegate>
 

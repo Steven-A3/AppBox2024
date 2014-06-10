@@ -29,11 +29,9 @@
 #import "A3SearchViewController.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "UIViewController+navigation.h"
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
 #import "UITableView+utility.h"
-#import "A3AppDelegate+appearance.h"
 
 enum A3ExpenseListAddBudgetCellType {
     AddBudgetCellID_Budget = 100,

@@ -7,12 +7,8 @@
 //
 
 #import "A3TranslatorMessageViewController.h"
-#import "A3UIDevice.h"
 #import "TranslatorHistory.h"
-#import "NSManagedObject+MagicalRecord.h"
-#import "NSManagedObject+MagicalFinders.h"
 #import "A3TranslatorMessageCell.h"
-#import "common.h"
 #import "AFHTTPRequestOperation.h"
 #import "A3TranslatorLanguageTVDelegate.h"
 #import "A3TranslatorLanguage.h"
@@ -22,12 +18,10 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "TranslatorGroup.h"
-#import "NSString+conversion.h"
 #import "TranslatorHistory+manager.h"
 #import "UIViewController+tableViewStandardDimension.h"
-#import "A3AppDelegate+appearance.h"
-#import "UIViewController+navigation.h"
 #import "TranslatorGroup+manage.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 

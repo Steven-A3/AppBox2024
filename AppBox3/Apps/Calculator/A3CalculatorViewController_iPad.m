@@ -9,22 +9,17 @@
 #import "A3CalculatorViewController_iPad.h"
 #import "UIViewController+A3Addition.h"
 #import "HTCopyableLabel.h"
-#import "common.h"
-#import "UIViewController+A3Addition.h"
 #import "A3CalculatorButtonsInBasicViewController_iPad.h"
 #import "A3CalculatorButtonsInScientificViewController_iPad.h"
-#import "A3CalculatorButtonsViewController_iPad.h"
 #import "A3Calculator.h"
 #import "Calculation.h"
 #import "A3ExpressionComponent.h"
 #import "A3CalculatorHistoryViewController.h"
 #import "UILabel+Boldify.h"
-#import "MBProgressHUD.h"
 #import "A3KeyboardView.h"
 #import "NSAttributedString+Append.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "UIViewController+navigation.h"
 
 
 @interface A3CalculatorViewController_iPad ()<A3CalcKeyboardViewIPadDelegate, UIPopoverControllerDelegate, MBProgressHUDDelegate, A3CalcMessagShowDelegate, UITextFieldDelegate>

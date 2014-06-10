@@ -17,7 +17,7 @@
 #import "A3UnitConverterTVActionCell.h"
 #import "A3UnitConverterAddViewController.h"
 #import "NSMutableArray+A3Sort.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 
 @interface A3UnitConverterSelectViewController () <UISearchDisplayDelegate, A3UnitConverterAddViewControllerDelegate>

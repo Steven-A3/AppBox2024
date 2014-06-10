@@ -8,12 +8,11 @@
 
 #import "A3TipCalcHistoryViewController.h"
 #import "A3TipCalcDataManager.h"
-#import "TipCalcRecently.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3TipCalcHistoryCell.h"
 #import "A3DefaultColorDefines.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 

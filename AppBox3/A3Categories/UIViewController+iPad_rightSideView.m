@@ -15,6 +15,7 @@
 NSString *const A3NotificationRightSideViewWillDismiss = @"A3NotificationRightSideViewWillDismiss";
 NSString *const A3NotificationRightSideViewDidDismiss = @"A3NotificationRightSideViewDidDismiss";
 NSString *const A3NotificationRightSideViewDidAppear = @"A3NotificationRightSideViewDidAppear";
+NSString *const A3NotificationChildViewControllerDidDismiss = @"A3NotificationChildViewControllerDidDismiss";
 
 @implementation UIViewController (iPad_rightSideView)
 

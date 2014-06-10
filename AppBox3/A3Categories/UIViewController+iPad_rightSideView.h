@@ -11,6 +11,7 @@
 extern NSString *const A3NotificationRightSideViewWillDismiss;
 extern NSString *const A3NotificationRightSideViewDidDismiss;
 extern NSString *const A3NotificationRightSideViewDidAppear;
+extern NSString *const A3NotificationChildViewControllerDidDismiss;
 
 @interface UIViewController (iPad_rightSideView)
 

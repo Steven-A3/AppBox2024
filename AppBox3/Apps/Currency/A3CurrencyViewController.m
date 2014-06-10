@@ -28,10 +28,8 @@
 #import "A3CurrencyDataManager.h"
 #import "CurrencyRateItem.h"
 #import "NSDate+TimeAgo.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIColor+A3Addition.h"
-#import "UIViewController+navigation.h"
 #import "A3CalculatorViewController.h"
 #import "A3InstructionViewController.h"
 

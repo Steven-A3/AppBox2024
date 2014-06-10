@@ -18,9 +18,9 @@
 #import "A3ClockInfo.h"
 #import "NSUserDefaults+A3Defaults.h"
 #import "UIViewController+MMDrawerController.h"
-#import "UIViewController+navigation.h"
 #import "A3ChooseColorView.h"
 #import "A3InstructionViewController.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 #define kCntPage 4.0
 

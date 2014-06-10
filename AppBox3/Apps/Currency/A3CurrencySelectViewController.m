@@ -13,7 +13,6 @@
 #import "CurrencyRateItem.h"
 #import "A3CurrencyDataManager.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+navigation.h"
 
 NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCodeSelected";
 

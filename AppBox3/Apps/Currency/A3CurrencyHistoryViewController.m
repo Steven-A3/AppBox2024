@@ -9,15 +9,12 @@
 #import "A3CurrencyHistoryViewController.h"
 #import "A3CurrencyHistory2RowCell.h"
 #import "CurrencyHistory.h"
-#import "NSManagedObject+MagicalFinders.h"
 #import "A3CurrencyHistory3RowCell.h"
 #import "CurrencyHistoryItem.h"
-#import "NSManagedObject+MagicalRecord.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "NSDate+TimeAgo.h"
-#import "A3UIDevice.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 @interface A3CurrencyHistoryViewController () <UIActionSheetDelegate>
 

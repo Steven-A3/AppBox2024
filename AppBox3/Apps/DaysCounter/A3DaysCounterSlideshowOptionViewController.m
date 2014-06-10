@@ -15,9 +15,7 @@
 #import "A3DaysCounterSlideshowTransitionSelectViewController.h"
 #import "A3DaysCounterSlideshowTimeSelectViewController.h"
 #import "A3DaysCounterSlideshowViewController.h"
-#import "A3AppDelegate.h"
-#import "A3DaysCounterCalendarListMainViewController.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 @interface A3DaysCounterSlideshowOptionViewController ()
 @property (strong, nonatomic) NSArray *sectionArray;

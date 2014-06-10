@@ -13,7 +13,7 @@
 #import "A3SalesCalcData.h"
 #import "A3SalesCalcHistoryCell.h"
 #import "A3DefaultColorDefines.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 NSString *const A3SalesCalcHistoryCellID = @"cell1";
 

@@ -52,8 +52,6 @@
 "Remaining Time" = "Remaining Time";
 
 "Battery Status" = "Battery Status";
-
-
 "Calculator" = "Calculator";
 "Date Calculator" = "Date Calculator";
 "Loan Calculator" = "Loan Calculator";
@@ -74,3 +72,16 @@
 "Mirror" = "Mirror";
 "Magnifier" = "Magnifier";
 "Favorites" = "Favorites";
+
+"Last %ld" = "Last %ld";
+
+"Apps" = "Apps";
+"iCloud_goto_settings" = "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.";
+
+"Info" = "Info";
+"Internet Connection is not available." = "Internet Connection is not available.";
+"Cancel" = "Cancel";
+"Delete Photo" = "Delete Photo";
+"Take Photo" = "Take Photo";
+"Choose Existing" = "Choose Existing";
+"Choose and Resize" = "Choose and Resize";

@@ -178,5 +178,27 @@
 			<string>%ld days before</string>
 		</dict>
 	</dict>
+	<key>%ld days left</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_days@</string>
+		<key>num_days</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>Today</string>
+			<key>one</key>
+			<string>Tomorrow</string>
+			<key>few</key>
+			<string>The day after tomorrow</string>
+			<key>many</key>
+			<string>%ld days left</string>
+			<key>other</key>
+			<string>%ld days left</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

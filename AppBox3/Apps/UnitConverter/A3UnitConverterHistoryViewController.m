@@ -18,7 +18,7 @@
 #import "A3UnitConverterHistory3RowCell.h"
 #import "TemperatureConveter.h"
 #import "A3UnitConverterHistoryViewController.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 @interface A3UnitConverterHistoryViewController () <UIActionSheetDelegate>
 {

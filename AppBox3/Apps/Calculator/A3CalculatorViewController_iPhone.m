@@ -15,11 +15,10 @@
 #import "A3Calculator.h"
 #import "Calculation.h"
 #import "A3CalculatorHistoryViewController.h"
-#import "MBProgressHUD.h"
 #import "A3KeyboardView.h"
 #import "NSAttributedString+Append.h"
-#import "UIViewController+navigation.h"
 #import "A3InstructionViewController.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 @interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate,MBProgressHUDDelegate, A3CalcMessagShowDelegate, A3InstructionViewControllerDelegate, UITextFieldDelegate>
 

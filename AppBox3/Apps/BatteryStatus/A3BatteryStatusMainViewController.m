@@ -14,13 +14,9 @@
 #import "A3BatterStatusBatteryPanelView.h"
 #import "A3BatteryStatusListPageSectionView.h"
 #import "A3BatteryStatusSettingViewController.h"
-#import "A3BasicWebViewController.h"
 #import "A3DefaultColorDefines.h"
-#import "A3RootViewController_iPad.h"
-#import "A3AppDelegate.h"
-#import "UIColor+A3Addition.h"
-#import "UIViewController+navigation.h"
 #import "A3InstructionViewController.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 @interface A3BatteryStatusMainViewController () <A3InstructionViewControllerDelegate>
 @property (nonatomic, strong) A3BatteryStatusSettingViewController *settingsViewController;

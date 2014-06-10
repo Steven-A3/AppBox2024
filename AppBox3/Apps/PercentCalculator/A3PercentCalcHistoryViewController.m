@@ -16,7 +16,7 @@
 #import "PercentCalcHistory.h"
 #import "A3DefaultColorDefines.h"
 #import "NSDate+TimeAgo.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 NSString *const A3PercentCalcHistoryCellID = @"cell1";
 NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";

@@ -16,7 +16,7 @@
 #import "ExpenseListHistory.h"
 #import "ExpenseListItem.h"
 #import "ExpenseListBudgetLocation.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 static NSString *CellIdentifier = @"Cell";
 

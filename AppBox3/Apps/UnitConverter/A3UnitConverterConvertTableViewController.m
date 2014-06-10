@@ -23,7 +23,6 @@
 #import "UnitItem.h"
 #import "UnitFavorite+initialize.h"
 #import "UnitConvertItem.h"
-#import "UnitConvertItem+initialize.h"
 #import "UnitHistory.h"
 #import "UnitHistoryItem.h"
 #import "TemperatureConveter.h"
@@ -31,8 +30,6 @@
 #import "UITableView+utility.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIColor+A3Addition.h"
-#import "A3AppDelegate+appearance.h"
-#import "UIViewController+navigation.h"
 #import "A3InstructionViewController.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)

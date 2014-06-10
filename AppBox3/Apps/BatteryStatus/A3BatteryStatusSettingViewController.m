@@ -13,10 +13,8 @@
 #import "A3BatterStatusChooseColorViewController.h"
 #import "A3BasicWebViewController.h"
 #import "Reachability.h"
-#import "A3AppDelegate.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 @interface A3BatteryStatusSettingViewController ()
 @end

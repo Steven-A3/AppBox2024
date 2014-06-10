@@ -523,7 +523,6 @@
 		68ADE14917D83D28009618A7 /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14417D83D28009618A7 /* MMDrawerVisualState.m */; };
 		68ADE14A17D83D28009618A7 /* UIViewController+MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14617D83D28009618A7 /* UIViewController+MMDrawerController.m */; };
 		68AF607D162BCCEE00E98002 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AF607C162BCCEE00E98002 /* CoreLocation.framework */; };
-		68B21A2E177AEAAA006FCC5F /* UIViewController+navigation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B21A2D177AEAAA006FCC5F /* UIViewController+navigation.m */; };
 		68B635BF17B504C100570B09 /* A3RootViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B635BE17B504C100570B09 /* A3RootViewController_iPad.m */; };
 		68B6A18B17CC398A008E0296 /* indian.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A18A17CC398A008E0296 /* indian.plist */; };
 		68B6A18C17CC398A008E0296 /* indian.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A18A17CC398A008E0296 /* indian.plist */; };
@@ -1827,8 +1826,6 @@
 		68ADE14517D83D28009618A7 /* UIViewController+MMDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+MMDrawerController.h"; path = "MMDrawerController/UIViewController+MMDrawerController.h"; sourceTree = "<group>"; };
 		68ADE14617D83D28009618A7 /* UIViewController+MMDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+MMDrawerController.m"; path = "MMDrawerController/UIViewController+MMDrawerController.m"; sourceTree = "<group>"; };
 		68AF607C162BCCEE00E98002 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		68B21A2C177AEAAA006FCC5F /* UIViewController+navigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+navigation.h"; sourceTree = "<group>"; };
-		68B21A2D177AEAAA006FCC5F /* UIViewController+navigation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+navigation.m"; sourceTree = "<group>"; };
 		68B635BD17B504C100570B09 /* A3RootViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3RootViewController_iPad.h; sourceTree = "<group>"; };
 		68B635BE17B504C100570B09 /* A3RootViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3RootViewController_iPad.m; sourceTree = "<group>"; };
 		68B6A16A18CEC76C004084EF /* A3LoanCalcExtraPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LoanCalcExtraPaymentViewController.h; sourceTree = "<group>"; };
@@ -2713,8 +2710,6 @@
 				6818E035179D3EE30061A70B /* UITableViewController+swipeMenu.m */,
 				17D42BFE6234E14E8D9A2970 /* UIViewController+A3Addition.h */,
 				17D42C97A50D5039256BA161 /* UIViewController+A3Addition.m */,
-				68B21A2C177AEAAA006FCC5F /* UIViewController+navigation.h */,
-				68B21A2D177AEAAA006FCC5F /* UIViewController+navigation.m */,
 				17D428002E7CC2380AB2E2DA /* UIViewController+NumberKeyboard.m */,
 				17D42F1A9B3BDE588908AA93 /* UIViewController+NumberKeyboard.h */,
 				68F163AB18E91537007B425B /* UITableView+utility.h */,
@@ -5906,7 +5901,6 @@
 				68143D5218E3EC7C00569691 /* A3JHTableViewElement.m in Sources */,
 				68143D1018E3EC1F00569691 /* A3KeyboardButton_iPhone.m in Sources */,
 				68B6A33718CEC76D004084EF /* A3WalletMapCell.m in Sources */,
-				68B21A2E177AEAAA006FCC5F /* UIViewController+navigation.m in Sources */,
 				68B6A46618CEE781004084EF /* UIImage+WebP.m in Sources */,
 				680886E11891751B0093FD97 /* A3ClockWaveCircleView.m in Sources */,
 				6825367A18A7BBF600EAFB84 /* NSDate+LunarConverter.m in Sources */,
