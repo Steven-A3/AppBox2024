@@ -59,13 +59,19 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 @property (nonatomic, strong) A3CurrencySettingsViewController *settingsViewController;
 @property (nonatomic, strong) A3CurrencySelectViewController *currencySelectViewController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (nonatomic, strong) UITapGestureRecognizer *instructionTwoFingerGesture;
 
+// for Double Tap Instruction
+@property (nonatomic, assign) NSInteger tapCount;
+@property (nonatomic, strong) void (^delayedSelectEventBlock) (NSIndexPath *rowIndexPath);
+@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
+@property (nonatomic, strong) NSTimer *selectRowTimer;
+@property (nonatomic, assign) NSUInteger selectedRow;
+@property (nonatomic, assign) BOOL isAddingCurrency;
 @end
 
 @implementation A3CurrencyViewController {
     BOOL 		_draggingFirstRow;
-	NSUInteger 	_selectedRow;
-	BOOL		_isAddingCurrency;
 	BOOL		_isShowMoreMenu;
 	BOOL		_isUpdating;
 	BOOL		_currentValueIsNotFromUser;
@@ -135,7 +141,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataChanged:) name:NSManagedObjectContextObjectsDidChangeNotification object:[[MagicalRecordStack defaultStack] context]];
 	[self registerContentSizeCategoryDidChangeNotification];
-    [self setupInstructionView];
 }
 
 - (void)removeObserver {
@@ -193,7 +198,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	UIView *superview = self.view.superview;
 	[superview addSubview:self.plusButton];
-
+    [self setupInstructionView];
+    
 	if ([self isMovingToParentViewController]) {
 		[self.plusButton makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(superview.centerX);
@@ -542,11 +548,41 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"CurrencyConverter"]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+    
+//    UIView *coverView = [UIView new];
+//    coverView.userInteractionEnabled = NO;
+//    coverView.backgroundColor = [UIColor clearColor];
+//    coverView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+////    [self.view addSubview:coverView];
+////    coverView.frame = self.view.frame;
+//    
+////    [self.navigationController.view addSubview:coverView];
+////    coverView.frame = self.navigationController.view.frame;
+//    
+//    [self.view.superview addSubview:coverView];
+//    coverView.frame = self.view.superview.frame;
+    
+    if (!_instructionTwoFingerGesture) {
+        _instructionTwoFingerGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
+        [_instructionTwoFingerGesture setNumberOfTouchesRequired:2];
+        [_instructionTwoFingerGesture setNumberOfTapsRequired:2];
+        [self.view.superview addGestureRecognizer:_instructionTwoFingerGesture];
+    }
+//    UITapGestureRecognizer *instructionTwoFingerGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
+//    [instructionTwoFingerGesture setNumberOfTouchesRequired:2];
+//    [instructionTwoFingerGesture setNumberOfTapsRequired:2];
+////    [self.tableView addGestureRecognizer:gesture];
+//    [self.view.superview addGestureRecognizer:instructionTwoFingerGesture];
+    
+//    [coverView addGestureRecognizer:gesture];
+//    [self setupTwoFingerDoubleTapGestureToShowInstruction];
 }
 
 - (void)showInstructionView
 {
+    [_selectRowTimer invalidate];
+    _selectRowTimer = nil;
+    
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"CurrencyConverter"];
     self.instructionViewController.delegate = self;
@@ -777,6 +813,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.selectedIndexPath = [indexPath copy];
+    
 	if (self.firstResponder) {
 		[self.firstResponder resignFirstResponder];
 		[self setFirstResponder:nil];
@@ -792,24 +830,47 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	[self clearEverything];
 
-	id object = self.favorites[indexPath.row];
-	if (object != _equalItem) {
-		_selectedRow = indexPath.row;
-		_isAddingCurrency = NO;
+    __weak A3CurrencyViewController *weakSelf = self;
+    if (_tapCount == 0) {
+        NSLog(@"_tapCount == 0");
+        if (!self.delayedSelectEventBlock) {
+            self.delayedSelectEventBlock = ^(NSIndexPath *rowIndexPath) {
+                id object = weakSelf.favorites[indexPath.row];
+                if (object != weakSelf.equalItem) {
+                    weakSelf.selectedRow = indexPath.row;
+                    weakSelf.isAddingCurrency = NO;
+                    
+                    [weakSelf enableControls:NO];
+                    
+                    weakSelf.currencySelectViewController = [weakSelf currencySelectViewControllerWithSelectedCurrency:weakSelf.selectedRow];
+                    if (IS_IPHONE) {
+                        weakSelf.currencySelectViewController.shouldPopViewController = YES;
+                        [weakSelf.navigationController pushViewController:weakSelf.currencySelectViewController animated:YES];
+                        [[NSNotificationCenter defaultCenter] addObserver:weakSelf selector:@selector(currencySelectViewDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:weakSelf.currencySelectViewController];
+                    } else {
+                        [weakSelf.A3RootViewController presentRightSideViewController:weakSelf.currencySelectViewController];
+                    }
+                } else {
+                    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                }
+            };
+        }
+        
+        self.selectRowTimer = [NSTimer scheduledTimerWithTimeInterval:0.15 target:self selector:@selector(delayedSelectRowEvent) userInfo:nil repeats:NO];
+        _tapCount = 1;
+    }
+    else if (_tapCount == 1) {
+        NSLog(@"_tapCount == 1");
+        [self.selectRowTimer invalidate];
+        self.selectRowTimer = nil;
+        _tapCount = 0;
+    }
+}
 
-		[self enableControls:NO];
-
-		_currencySelectViewController = [self currencySelectViewControllerWithSelectedCurrency:_selectedRow];
-		if (IS_IPHONE) {
-			_currencySelectViewController.shouldPopViewController = YES;
-			[self.navigationController pushViewController:_currencySelectViewController animated:YES];
-			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectViewDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_currencySelectViewController];
-		} else {
-			[self.A3RootViewController presentRightSideViewController:_currencySelectViewController];
-		}
-	} else {
-		[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	}
+- (void)delayedSelectRowEvent
+{
+    _tapCount = 0;
+    self.delayedSelectEventBlock(_selectedIndexPath);
 }
 
 - (void)currencySelectViewDidDismiss {
