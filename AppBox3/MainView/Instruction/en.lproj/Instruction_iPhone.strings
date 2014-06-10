@@ -60,7 +60,7 @@
 "U1j-Mc-LaR.text" = "Tap to add or edit budget";
 
 /* Class = "IBUILabel"; text = "pull down to update"; ObjectID = "UOR-Dm-haV"; */
-"UOR-Dm-haV.text" = "pull down to update";
+"UOR-Dm-haV.text" = "Pull down to update";
 
 /* Class = "IBUILabel"; text = "touch and hold a item,\nthen drag it up or down"; ObjectID = "UvH-ng-N3W"; */
 "UvH-ng-N3W.text" = "Touch and hold a item,\nthen drag it up or down";
@@ -102,7 +102,7 @@
 "ls1-5i-Gos.text" = "Touch and hold  -\nto the right of an item,\nthen drag it up or down";
 
 /* Class = "IBUILabel"; text = "tap to see more info"; ObjectID = "m1h-st-ypH"; */
-"m1h-st-ypH.text" = "tap to see more info";
+"m1h-st-ypH.text" = "Tap to see more info";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "mYi-2r-6n3"; */
 "mYi-2r-6n3.text" = "Tap the screen to display\nthe controls";
@@ -144,7 +144,7 @@
 "tkT-KJ-PpW.text" = "Slide the item to the left,\nthen tap Delete";
 
 /* Class = "IBUILabel"; text = "tap to add a language"; ObjectID = "uKD-0y-9Xq"; */
-"uKD-0y-9Xq.text" = "tap to add a language";
+"uKD-0y-9Xq.text" = "Tap to add a language";
 
 /* Class = "IBUILabel"; text = "tap to see more categories"; ObjectID = "uz1-Ap-8Ft"; */
 "uz1-Ap-8Ft.text" = "Tap to see more categories";

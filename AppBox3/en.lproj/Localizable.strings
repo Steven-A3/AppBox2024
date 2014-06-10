@@ -45,3 +45,10 @@
 "SECURITY_INFO" = "Apple uses a technology called Data Protection. It encrypts your data with secure 256-bit key and hardware AES Engine. By setting up a device passcode, you automatically enables Data Protection.\nThe passcode is \"tangled\" with the device's UID, so brute-force attempts must be performed on the device under attack. A large iteration count is used to make each attempt slower. The iteration count is calibrated so that one attempt takes approximately 80 milliseconds. This means it would take more than 5½ years to try all combinations of a six-character alphanumeric passcode with lowercase letters and numbers, or 2½ years for a nine-digit passcode with numbers only.";
 
 "microphone access denied" = "AppBox Pro dose not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro";
+
+"Theme Color" = "Theme Color";
+
+"About" = "About";
+"Remaining Time" = "Remaining Time";
+
+"Battery Status" = "Battery Status";

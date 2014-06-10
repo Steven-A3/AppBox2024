@@ -59,7 +59,7 @@
     
     [UIDevice currentDevice].batteryMonitoringEnabled = YES;
 
-    self.title = @"Battery Status";
+    self.title = NSLocalizedString(@"Battery Status", @"Battery Status main view controller title.");
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
     self.tableView.tableFooterView = nil;

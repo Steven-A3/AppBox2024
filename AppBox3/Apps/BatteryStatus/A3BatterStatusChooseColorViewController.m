@@ -7,7 +7,6 @@
 //
 
 #import "A3BatterStatusChooseColorViewController.h"
-#import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3BatterStatusChooseColorCell.h"
 
@@ -30,7 +29,7 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Theme Color";
+    self.title = NSLocalizedString(@"Theme Color", @"Theme Color");
     self.tableView.showsVerticalScrollIndicator = NO;
 }
 

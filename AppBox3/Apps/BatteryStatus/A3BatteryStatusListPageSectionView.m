@@ -30,7 +30,7 @@
 
 -(void)initializeSubviews
 {
-    _tableSegmentButton = [[UISegmentedControl alloc] initWithItems:@[@"About", @"Remaining Time"]];
+    _tableSegmentButton = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"About", @"Battery Life Title Segmented Control title"), NSLocalizedString(@"Remaining Time", @"Remaining Time")]];
     _tableSegmentButton.backgroundColor = [UIColor whiteColor];
 //    _tableSegmentButton.layer.cornerRadius = 5;
     CAShapeLayer* mask = [[CAShapeLayer alloc] init];

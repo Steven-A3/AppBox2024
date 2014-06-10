@@ -215,7 +215,7 @@
     gaugePath.lineWidth = 1.0;
     CGFloat gauge = width / 100.0 * _remainingPercent;
     CGFloat leftCornerPoint = kCornerPoint;
-    CGFloat rightCornerPoint = kCornerPoint;
+    CGFloat rightCornerPoint;
     
     if (gauge < leftCornerPoint) {
         // 수정필요;;
