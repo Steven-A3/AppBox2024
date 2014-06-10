@@ -134,7 +134,6 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	self.coreDataReadyToUse = YES;
 
 	if (isCloudStore) {
-		[self startCloudFileQuery];
 		[self startDownloadAllFiles];
 
 		if (_needMigrateLocalDataToCloud) {
@@ -515,10 +514,8 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 - (void)enableCloudForFiles:(BOOL)enable {
 	if (enable) {
 		[self moveFilesToCloud];
-		[self startCloudFileQuery];
 	} else {
 		[self moveFilesFromCloud];
-		[self stopCloudFileQuery];
 	}
 }
 

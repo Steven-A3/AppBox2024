@@ -264,4 +264,12 @@
 	NSLog(@"%@", diffComponents);
 }
 
+- (void)testPluralFormatting {
+	NSString *resultString1 = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours, %ld minutes", @"StringsDict", @"Battery Status"), 0, 0];
+	NSString *resultString2 = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours, %ld minutes", @"StringsDict", @"Battery Status"), 1, 1];
+	NSString *resultString3 = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours, %ld minutes", @"StringsDict", @"Battery Status"), 2, 2];
+	
+	NSLog(@"%@, %@, %@", resultString1, resultString2, resultString3);
+}
+
 @end

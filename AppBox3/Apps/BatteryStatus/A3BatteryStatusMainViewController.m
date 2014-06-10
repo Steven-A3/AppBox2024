@@ -383,7 +383,7 @@ static NSString *CellIdentifier = @"Cell";
     } else {
         NSInteger maxTime = [[rowData objectForKey:@"value"] integerValue];
         NSInteger remainingMinute = (maxTime*60) * [[UIDevice currentDevice] batteryLevel];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld hours, %ld Minutes", labs(remainingMinute/60), labs(remainingMinute%60)];
+        cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours, %ld minutes", @"StringsDict", @"Battery Status"), labs(remainingMinute / 60), labs(remainingMinute % 60)];
     }
     
     return cell;

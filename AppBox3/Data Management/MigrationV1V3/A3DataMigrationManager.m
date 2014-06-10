@@ -181,6 +181,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 			newEvent.startDate.minute = @(components.minute);
 			NSDate *endDate = v1Item[kKeyForDDayEnds];
 			if (endDate) {
+				newEvent.isPeriod = @YES;
 				newEvent.endDate = [DaysCounterDate MR_createInContext:context];
 				newEvent.endDate.solarDate = endDate;
 
