@@ -289,8 +289,9 @@
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"DaysCounter_1"];
     self.instructionViewController.delegate = self;
-    [self.navigationController.view addSubview:self.instructionViewController.view];
+    [self.navigationController.view.superview addSubview:self.instructionViewController.view];
     self.instructionViewController.view.frame = self.navigationController.view.frame;
+    
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
 }
 

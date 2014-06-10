@@ -191,7 +191,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_3"];
     self.instructionViewController.delegate = self;
     [self.navigationController.view addSubview:self.instructionViewController.view];
-    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.frame = self.view.superview.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
 }
 
@@ -200,7 +200,6 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
     [self.instructionViewController.view removeFromSuperview];
     self.instructionViewController = nil;
 }
-
 
 #pragma mark - Prepare Data
 

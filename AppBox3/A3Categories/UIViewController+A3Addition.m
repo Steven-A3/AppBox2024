@@ -587,6 +587,7 @@
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
     [gesture setNumberOfTouchesRequired:2];
     [gesture setNumberOfTapsRequired:2];
+    [gesture setDelaysTouchesBegan:YES];
     [self.view addGestureRecognizer:gesture];
 }
 
