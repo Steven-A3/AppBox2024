@@ -28,6 +28,7 @@
 #import "A3DaysCounterCalendarListMainViewController.h"
 #import "A3DaysCounterReminderListViewController.h"
 #import "A3DaysCounterFavoriteListViewController.h"
+#import "A3ClockMainViewController.h"
 
 @protocol JNJProgressButtonExtension <NSObject>
 - (void)startProgress;
@@ -244,6 +245,9 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			element.onSelected = ^(A3TableViewElement *elementObject) {
 				A3TableViewMenuElement *menuElement = (A3TableViewMenuElement *) elementObject;
 				UIViewController *targetViewController= [self getViewControllerForElement:menuElement];
+                if ([targetViewController isKindOfClass:[A3ClockMainViewController class]]) {
+                    [((A3ClockMainViewController *)targetViewController) setupInstructionView];
+                }
 
 				BOOL proceedPasscodeCheck = NO;
 				// Check active view controller

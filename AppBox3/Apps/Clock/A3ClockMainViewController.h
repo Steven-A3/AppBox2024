@@ -10,5 +10,5 @@
 #import "A3CenterViewDelegate.h"
 
 @interface A3ClockMainViewController : UIViewController <A3CenterViewDelegate>
-
+- (void)setupInstructionView;
 @end

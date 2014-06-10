@@ -44,7 +44,8 @@
 @property (nonatomic, strong) NSTimer *buttonsTimer;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
-
+@property (nonatomic, strong) UITapGestureRecognizer *instructionTwoFingerTapGesture;
+@property (nonatomic, assign) BOOL useInstruction;
 @end
 
 @implementation A3ClockMainViewController
@@ -92,7 +93,7 @@
 	}];
 	[self determineStatusBarStyle];
 	[self addChooseColorButton];
-    [self setupInstructionView];
+//    [self setupInstructionView];
 
 	_currentClockViewController = _clockWaveViewController;
 
@@ -134,6 +135,7 @@
 }
 
 - (void)drawerStateChanged {
+    [self setupInstructionView];
 	[self.scrollView setScrollEnabled:self.mm_drawerController.openSide == MMDrawerSideNone];
 }
 
@@ -344,18 +346,24 @@
 	_chooseColorButton.hidden = !show;
 	if (show) {
 		_yahooButton.hidden = YES;
-        
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock2"]) {
-            [self showInstructionView];
-        }
-	} else {
+	}
+    else {
 		_yahooButton.hidden = _clockDataManager.clockInfo.currentWeather == nil;
-        
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock1"]) {
-            [self showInstructionView];
-        }
 	}
 
+    if (_useInstruction) {
+        if (show) {
+            if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock2"]) {
+                [self showInstructionView];
+            }
+        }
+        else {
+            if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock1"]) {
+                [self showInstructionView];
+            }
+        }
+    }
+    
 	if (!(show && IS_IPHONE && IS_LANDSCAPE)) {
 		if (self.mm_drawerController.openSide != MMDrawerSideLeft) {
 			[[UIApplication sharedApplication] setStatusBarHidden:!show withAnimation:UIStatusBarAnimationNone];
@@ -381,15 +389,26 @@
 #pragma mark Instruction Related
 - (void)setupInstructionView
 {
+    _useInstruction = YES;
+    
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock1"]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+
+    if (!_instructionTwoFingerTapGesture) {
+        _instructionTwoFingerTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
+        [_instructionTwoFingerTapGesture setNumberOfTouchesRequired:2];
+        [_instructionTwoFingerTapGesture setNumberOfTapsRequired:2];
+        [self.view addGestureRecognizer:_instructionTwoFingerTapGesture];
+    }
 }
 
 - (void)showInstructionView
 {
     if (_instructionViewController) {
+        return;
+    }
+    if (IS_IPHONE && IS_LANDSCAPE) {
         return;
     }
     
@@ -411,6 +430,11 @@
 
 - (void)adjustInstructionFingerPositionForPortrait:(BOOL)isPortrait
 {
+    if (IS_IPHONE && !isPortrait && _instructionViewController) {
+        [self dismissInstructionViewController:nil];
+        return;
+    }
+    
     if (IS_IPHONE) {
         if (_chooseColorButton.isHidden && _instructionViewController) {
             if (isPortrait) {
