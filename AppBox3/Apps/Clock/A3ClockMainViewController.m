@@ -326,6 +326,9 @@
 
 - (void)mainMenuDidHide {
 	[self showMenus:NO];
+    if (IS_IPAD) {
+        [self setupInstructionView];
+    }
 }
 
 - (void)onTapMainView {

@@ -454,13 +454,13 @@ more holidays</string>
                                     <constraint firstAttribute="height" constant="42" id="b3j-HE-aYs"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_down" translatesAutoresizingMaskIntoConstraints="NO" id="xl8-in-RcZ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_down" translatesAutoresizingMaskIntoConstraints="NO" id="M8N-Gv-yfO">
                                 <rect key="frame" x="250" y="512" width="42" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="42" id="57e-fE-xrH"/>
-                                    <constraint firstAttribute="width" constant="42" id="J6g-m6-3N5"/>
+                                    <constraint firstAttribute="width" constant="42" id="ciy-Qb-KqJ"/>
+                                    <constraint firstAttribute="height" constant="42" id="mks-iC-DkR"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="gsy-pY-fd2">
@@ -491,19 +491,19 @@ more holidays</string>
                         <constraints>
                             <constraint firstItem="g69-at-Gdn" firstAttribute="leading" secondItem="SSJ-nS-OBd" secondAttribute="leading" id="2R4-iy-tt8"/>
                             <constraint firstItem="cR3-VQ-03J" firstAttribute="top" secondItem="SSJ-nS-OBd" secondAttribute="top" constant="32" id="4pZ-Ko-KDF"/>
-                            <constraint firstAttribute="trailing" secondItem="xl8-in-RcZ" secondAttribute="trailing" constant="28" id="5rS-Gs-zkD"/>
+                            <constraint firstItem="M8N-Gv-yfO" firstAttribute="top" secondItem="g69-at-Gdn" secondAttribute="bottom" constant="10" id="6QO-3G-qX7"/>
+                            <constraint firstItem="gsy-pY-fd2" firstAttribute="top" secondItem="M8N-Gv-yfO" secondAttribute="top" id="9XS-hX-6XE"/>
                             <constraint firstItem="cR3-VQ-03J" firstAttribute="centerY" secondItem="t5T-1i-yhB" secondAttribute="centerY" id="AOz-ql-aCk"/>
                             <constraint firstItem="t5T-1i-yhB" firstAttribute="leading" secondItem="SSJ-nS-OBd" secondAttribute="leading" id="GKH-zJ-9qn"/>
                             <constraint firstAttribute="bottom" secondItem="3O3-MW-PM0" secondAttribute="bottom" id="LBb-VJ-bIW"/>
-                            <constraint firstItem="gsy-pY-fd2" firstAttribute="leading" secondItem="xl8-in-RcZ" secondAttribute="trailing" id="Ns0-tI-lby"/>
                             <constraint firstItem="cR3-VQ-03J" firstAttribute="leading" secondItem="t5T-1i-yhB" secondAttribute="trailing" constant="10" id="PRO-hO-WXD"/>
-                            <constraint firstAttribute="bottom" secondItem="xl8-in-RcZ" secondAttribute="bottom" constant="14" id="PkG-Er-oq3"/>
-                            <constraint firstItem="xl8-in-RcZ" firstAttribute="top" secondItem="g69-at-Gdn" secondAttribute="bottom" constant="10" id="VuG-Su-EcJ"/>
                             <constraint firstAttribute="trailing" secondItem="cR3-VQ-03J" secondAttribute="trailing" constant="37" id="ZVJ-RX-mta"/>
                             <constraint firstItem="cR3-VQ-03J" firstAttribute="top" secondItem="t5T-1i-yhB" secondAttribute="top" id="awo-41-v3V"/>
                             <constraint firstItem="3O3-MW-PM0" firstAttribute="leading" secondItem="SSJ-nS-OBd" secondAttribute="leading" id="cpz-Ky-ihy"/>
-                            <constraint firstItem="g69-at-Gdn" firstAttribute="trailing" secondItem="xl8-in-RcZ" secondAttribute="trailing" id="je0-t8-O0I"/>
-                            <constraint firstItem="xl8-in-RcZ" firstAttribute="top" secondItem="gsy-pY-fd2" secondAttribute="top" id="ojJ-f2-d64"/>
+                            <constraint firstItem="gsy-pY-fd2" firstAttribute="leading" secondItem="M8N-Gv-yfO" secondAttribute="trailing" id="cxz-Hf-42F"/>
+                            <constraint firstAttribute="trailing" secondItem="M8N-Gv-yfO" secondAttribute="trailing" constant="28" id="nq5-0Y-wnM"/>
+                            <constraint firstAttribute="bottom" secondItem="M8N-Gv-yfO" secondAttribute="bottom" constant="14" id="pGs-ll-ajS"/>
+                            <constraint firstItem="M8N-Gv-yfO" firstAttribute="trailing" secondItem="g69-at-Gdn" secondAttribute="trailing" id="pPT-wp-vbt"/>
                             <constraint firstAttribute="trailing" secondItem="3O3-MW-PM0" secondAttribute="trailing" id="slM-7Z-SWz"/>
                             <constraint firstItem="3O3-MW-PM0" firstAttribute="top" secondItem="SSJ-nS-OBd" secondAttribute="top" id="v7S-wU-Nc5"/>
                         </constraints>
@@ -513,8 +513,8 @@ more holidays</string>
                     </view>
                     <connections>
                         <outletCollection property="childImageViews" destination="cR3-VQ-03J" id="1Rm-us-81a"/>
-                        <outletCollection property="childImageViews" destination="xl8-in-RcZ" id="JpH-4g-nui"/>
                         <outletCollection property="childImageViews" destination="gsy-pY-fd2" id="Gme-Mv-6Ad"/>
+                        <outletCollection property="childImageViews" destination="M8N-Gv-yfO" id="jhB-YJ-Vy7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MYP-MV-bHD" userLabel="First Responder" sceneMemberID="firstResponder"/>
