@@ -856,7 +856,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
             };
         }
         
-        self.selectRowTimer = [NSTimer scheduledTimerWithTimeInterval:0.15 target:self selector:@selector(delayedSelectRowEvent) userInfo:nil repeats:NO];
+        self.selectRowTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(delayedSelectRowEvent) userInfo:nil repeats:NO];
         _tapCount = 1;
     }
     else if (_tapCount == 1) {
