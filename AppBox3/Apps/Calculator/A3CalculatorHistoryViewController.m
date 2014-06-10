@@ -13,7 +13,7 @@
 #import "UIViewController+A3Addition.h"
 #import "Calculation.h"
 
-NSString *const A3CalculatorHisotryRowCellID = @"CcellRow";
+NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 
 @interface A3CalculatorHistoryViewController () <UIActionSheetDelegate>
 @property (nonatomic, strong)	NSFetchedResultsController *fetchedResultsController;
@@ -35,13 +35,13 @@ NSString *const A3CalculatorHisotryRowCellID = @"CcellRow";
 {
     [super viewDidLoad];
     
-	self.title = @"History";
+	self.title = NSLocalizedString(@"History", @"History");
 
 	if (IS_IPHONE) {
 		[self rightBarButtonDoneButton];
 	}
     
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear") style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
     
 	self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor  = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
@@ -61,7 +61,7 @@ NSString *const A3CalculatorHisotryRowCellID = @"CcellRow";
     
 	self.tableView.tableFooterView = footerView;
     */
-	[self.tableView registerClass:[A3CalculatorHistoryCell class] forCellReuseIdentifier:A3CalculatorHisotryRowCellID];
+	[self.tableView registerClass:[A3CalculatorHistoryCell class] forCellReuseIdentifier:A3CalculatorHistoryRowCellID];
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
@@ -85,8 +85,8 @@ NSString *const A3CalculatorHisotryRowCellID = @"CcellRow";
 - (void)clearButtonAction:(id)button {
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 															 delegate:self
-													cancelButtonTitle:@"Cancel"
-											   destructiveButtonTitle:@"Clear History"
+													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+											   destructiveButtonTitle:NSLocalizedString(@"Clear History", @"Clear History")
 													otherButtonTitles:nil];
 	[actionSheet showInView:self.view];
 }
@@ -148,9 +148,9 @@ NSString *const A3CalculatorHisotryRowCellID = @"CcellRow";
 	//NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
 	//[nf setNumberStyle:NSNumberFormatterDecimalStyle];
     
-	A3CalculatorHistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:A3CalculatorHisotryRowCellID forIndexPath:indexPath];
+	A3CalculatorHistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:A3CalculatorHistoryRowCellID forIndexPath:indexPath];
 	if (!cell) {
-		cell = [[A3CalculatorHistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3CalculatorHisotryRowCellID];
+		cell = [[A3CalculatorHistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3CalculatorHistoryRowCellID];
 	}
     
     

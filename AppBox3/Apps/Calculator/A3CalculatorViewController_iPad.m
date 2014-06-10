@@ -60,7 +60,7 @@
 {
     [super viewDidLoad];
 
-	self.title = @"Calculator";
+	self.title = NSLocalizedString(@"Calculator", @"Calculator");
 
     // Do any additional setup after loading the view from its nib.
 	if (!_modalPresentingParentViewController) {
@@ -204,7 +204,7 @@
         make.top.equalTo(@95);
     }];
     
-    UITapGestureRecognizer *basicscientificTapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(basicscientifictapAction)];
+    UITapGestureRecognizer *basicscientificTapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(basicScientificTapAction)];
     [_basicandscientificLabel addGestureRecognizer:basicscientificTapped];
     
     
@@ -217,7 +217,7 @@
     [self checkRightButtonDisable];
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"CalculatorMode"]){
         if([[[NSUserDefaults standardUserDefaults] objectForKey:@"CalculatorMode"] isEqualToString:@"scientifc"]) {
-            [self setupScientifcKeyPad];
+			[self setupScientificKeyPad];
             [self changeCalculatorKindString];
         } else {
             [self setupBasicKeyPad];
@@ -243,7 +243,7 @@
     _calculatorkeypad.view.clipsToBounds = YES;
 }
      
-- (void)setupScientifcKeyPad {
+- (void)setupScientificKeyPad {
     scientific  = YES;
     
     _calculatorkeypad  = [[A3CalculatorButtonsInScientificViewController_iPad alloc] initWithNibName:@"A3CalculatorButtonsInScientificViewController_iPad" bundle:nil];
@@ -256,7 +256,7 @@
 }
 
 
--(void) basicscientifictapAction {
+- (void)basicScientificTapAction {
     
     [_calculatorkeypad.view removeFromSuperview];
     [_calculatorkeypad removeFromParentViewController];
@@ -266,7 +266,7 @@
     if (scientific == NO)
     {
         scientific = YES;
-        [self setupScientifcKeyPad];
+		[self setupScientificKeyPad];
     }
     else
     {

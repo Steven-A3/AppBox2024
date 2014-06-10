@@ -85,3 +85,36 @@
 "Take Photo" = "Take Photo";
 "Choose Existing" = "Choose Existing";
 "Choose and Resize" = "Choose and Resize";
+
+"Enabling iCloud" = "Enabling iCloud";
+"Disableing iCloud" = "Disableing iCloud";
+
+"iCloud Enabled" = "iCloud Enabled";
+"Syncing in backgorund" = "Syncing in backgorund";
+"iCloud Disabled" = "iCloud Disabled";
+"Local Store Problem" = "Local Store Problem";
+"Your datastore got corrupted and needs to be recreated." = "Your datastore got corrupted and needs to be recreated.";
+"Recreate" = "Recreate";
+
+"Converter" = "Converter";
+"Productivity" = "Productivity";
+"Reference" = "Reference";
+"Utility" = "Utility";
+"OK" = "OK";
+"Details" = "Details";
+"Device" = "Device";
+"Version" = "Version";
+"Chips" = "Chips";
+"CPU" = "CPU";
+"GPU" = "GPU";
+"Memory" = "Memory";
+"Capacity" = "Capacity";
+
+"How to Maximize Power Use" = "How to Maximize Power Use";
+"More Information about Batteries" = "More Information about Batteries";
+
+"Enter The Number!" = "Enter The Number!";
+
+"History" = "History";
+"Clear" = "Clear";
+"Clear History" = "Clear History";

@@ -49,7 +49,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 			 @{
 				 kA3AppsMenuExpandable : @YES,
 				 kA3AppsMenuCollapsed : @YES,
-				 kA3AppsMenuName : @"Converter",
+				 kA3AppsMenuName : NSLocalizedString(@"Converter", @"Converter"),
 				 kA3AppsExpandableChildren : @[
 						 @{kA3AppsMenuName : NSLocalizedString(@"Currency Converter", @"Currency Converter"), kA3AppsClassName_iPhone : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
 						 @{kA3AppsMenuName : NSLocalizedString(@"Lunar Converter", @"Lunar Converter"), kA3AppsClassName_iPhone : @"A3LunarConverterViewController", kA3AppsNibName_iPhone : @"A3LunarConverterViewController", kA3AppsMenuImageName : @"LunarConverter"},
@@ -60,7 +60,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 			 @{
 				 kA3AppsMenuExpandable : @YES,
 				 kA3AppsMenuCollapsed : @YES,
-				 kA3AppsMenuName : @"Productivity",
+				 kA3AppsMenuName : NSLocalizedString(@"Productivity", @"Productivity"),
 				 kA3AppsExpandableChildren : @[
 						 @{kA3AppsMenuName : NSLocalizedString(@"Days Counter", @"Days Counter"), kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"DaysCounter", kA3AppsMenuNeedSecurityCheck : @YES},
 						 @{kA3AppsMenuName : NSLocalizedString(@"Lady Calendar", @"Lady Calendar"), kA3AppsClassName_iPhone : @"A3LadyCalendarViewController", kA3AppsNibName_iPhone:@"A3LadyCalendarViewController", kA3AppsMenuImageName : @"LadyCalendar", kA3AppsMenuNeedSecurityCheck : @YES},
@@ -71,7 +71,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 			 @{
 				 kA3AppsMenuExpandable : @YES,
 				 kA3AppsMenuCollapsed : @YES,
-				 kA3AppsMenuName : @"Reference",
+				 kA3AppsMenuName : NSLocalizedString(@"Reference", @"Reference"),
 				 kA3AppsExpandableChildren : @[
 						 @{kA3AppsMenuName : NSLocalizedString(@"Holidays", @"Holidays"), kA3AppsClassName_iPhone : @"A3HolidaysPageViewController", kA3AppsMenuImageName : @"Holidays"},
 						 ]
@@ -79,7 +79,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 			 @{
 				 kA3AppsMenuExpandable : @YES,
 				 kA3AppsMenuCollapsed : @YES,
-				 kA3AppsMenuName : @"Utility",
+				 kA3AppsMenuName : NSLocalizedString(@"Utility", @"Utility"),
 				 kA3AppsExpandableChildren : @[
 						 @{kA3AppsMenuName : NSLocalizedString(@"Clock", @"Clock"), kA3AppsClassName_iPhone : @"A3ClockMainViewController", kA3AppsMenuImageName : @"Clock"},
 						 @{kA3AppsMenuName : NSLocalizedString(@"Battery Status", @"Battery Status"), kA3AppsClassName_iPhone : @"A3BatteryStatusMainViewController", kA3AppsMenuImageName : @"BatteryStatus"},

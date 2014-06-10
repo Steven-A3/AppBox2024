@@ -59,7 +59,7 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 
 	UIView *targetViewForHud = [[self visibleViewController] view];
 	self.hud = [MBProgressHUD showHUDAddedTo:targetViewForHud animated:YES];
-	self.hud.labelText = enable ? @"Enabling iCloud" : @"Disableing iCloud";
+	self.hud.labelText = enable ? NSLocalizedString(@"Enabling iCloud", @"Enabling iCloud") : NSLocalizedString(@"Disableing iCloud", @"Disableing iCloud");
 	self.hud.minShowTime = 2;
 	self.hud.removeFromSuperViewOnHide = YES;
 	__typeof(self) __weak weakSelf = self;
@@ -188,10 +188,10 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 			weakSelf.hud.mode = MBProgressHUDModeCustomView;
 			weakSelf.hud.customView = imageView;
 			if (isCloudStore) {
-				weakSelf.hud.labelText = @"iCloud Enabled";
-				weakSelf.hud.detailsLabelText = @"Synging in backgorund";
+				weakSelf.hud.labelText = NSLocalizedString(@"iCloud Enabled", @"iCloud Enabled");
+				weakSelf.hud.detailsLabelText = NSLocalizedString(@"Syncing in backgorund", @"Syncing in backgorund");
 			} else {
-				weakSelf.hud.labelText = @"iCloud Disabled";
+				weakSelf.hud.labelText = NSLocalizedString(@"iCloud Disabled", @"iCloud Disabled");
 			}
 
 			double delayInSeconds = 2.0;
@@ -209,10 +209,10 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	dispatch_async( dispatch_get_main_queue(), ^{
 
 		if (!wasCloudStore && ![_handleLocalStoreAlert isVisible]) {
-			_handleLocalStoreAlert = [[UIAlertView alloc] initWithTitle:@"Local Store Problem"
-															   message:@"Your datastore got corrupted and needs to be recreated."
-															  delegate:self
-													 cancelButtonTitle:nil otherButtonTitles:@"Recreate", nil];
+			_handleLocalStoreAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Local Store Problem", @"Local Store Problem")
+																message:NSLocalizedString(@"Your datastore got corrupted and needs to be recreated.", @"Your datastore got corrupted and needs to be recreated.")
+															   delegate:self
+													  cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Recreate", @"Recreate"), nil];
 			[_handleLocalStoreAlert show];
 		}
 	} );

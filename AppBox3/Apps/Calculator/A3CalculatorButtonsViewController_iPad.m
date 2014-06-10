@@ -10,12 +10,15 @@
 #import "A3Calculator.h"
 #import "A3ExpressionComponent.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
+
+NSString *const kA3CalcButtonTitleiPad = @"kA3CalcButtonTitle_iPad";
+NSString *const kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
+
 @interface A3CalculatorButtonsViewController_iPad ()
 
 @end
 
-@implementation A3CalculatorButtonsViewController_iPad {
-}
+@implementation A3CalculatorButtonsViewController_iPad
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -45,8 +48,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-NSString *kA3CalcButtonTitleiPad = @"kA3CalcButtonTitle_iPad";
-NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
 - (NSArray *)buttonTitlesLevel1 {
 	return @[
              @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_01_1"], kA3CalcButtonIDiPad:@1},

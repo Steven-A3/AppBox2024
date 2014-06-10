@@ -16,6 +16,10 @@
 #import "UIImage+imageWithColor.h"
 #import "UIViewController+iPad_rightSideView.h"
 
+NSString *const A3BatteryIndexKey = @"index";
+NSString *const A3BatteryCheckedKey = @"checked";
+NSString *const A3BatteryTitleKey = @"title";
+
 @interface A3BatteryStatusSettingViewController ()
 @end
 
@@ -48,7 +52,7 @@
 		[self rightBarButtonDoneButton];
 	}
 
-    self.title = @"Settings";
+    self.title = NSLocalizedString(@"Settings", @"Settings");
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
@@ -61,7 +65,7 @@
         _adjustedIndex = [NSMutableArray arrayWithCapacity:_tableDataSourceArray.count];
 
         for (int i=0; i<_tableDataSourceArray.count; i++) {
-            [_adjustedIndex addObject:@{ @"index" : @(i), @"checked" : @1 }];
+            [_adjustedIndex addObject:@{ A3BatteryIndexKey : @(i), A3BatteryCheckedKey : @1 }];
         }
     }
     
@@ -159,7 +163,7 @@
 			}];
         }
 
-        cell.textLabel.text = @"Theme Color";
+        cell.textLabel.text = NSLocalizedString(@"Theme Color", @"Theme Color");
         UIView *themeColorView = [cell.contentView viewWithTag:121];
         themeColorView.backgroundColor = [[A3BatteryStatusManager themeColorArray] objectAtIndex:[A3BatteryStatusManager chosenThemeIndex]];
         return cell;
@@ -172,11 +176,11 @@
         }
         
         NSDictionary *adjustedRow = [_adjustedIndex objectAtIndex:indexPath.row];
-        NSNumber * index = [adjustedRow objectForKey:@"index"];
-        NSNumber * checked = [adjustedRow objectForKey:@"checked"];
+        NSNumber * index = [adjustedRow objectForKey:A3BatteryIndexKey];
+        NSNumber * checked = [adjustedRow objectForKey:A3BatteryCheckedKey];
         
         NSDictionary *rowData = [_tableDataSourceArray objectAtIndex:index.integerValue];
-        cell.textLabel.text = [rowData objectForKey:@"title"];
+        cell.textLabel.text = [rowData objectForKey:A3BatteryTitleKey];
         cell.imageView.image = checked.integerValue == 1 ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] : _blankImage;
         return cell;
     }
@@ -195,7 +199,7 @@
             }];
         }
         
-        cell.textLabel.text = @"How to Maximize Power Use";
+        cell.textLabel.text = NSLocalizedString(@"How to Maximize Power Use", @"How to Maximize Power Use");
         return cell;
     }
     else {
@@ -212,7 +216,7 @@
             }];
         }
         
-        cell.textLabel.text = @"More Information about Batteries";
+        cell.textLabel.text = NSLocalizedString(@"More Information about Batteries", @"More Information about Batteries");
         return cell;
     }
 }
@@ -226,14 +230,14 @@
         
     } else if (indexPath.section == 1) {
         NSDictionary * row = _adjustedIndex[indexPath.row];
-        NSNumber * index = [row objectForKey:@"index"];
-        NSNumber * checked = [row objectForKey:@"checked"];
+        NSNumber * index = [row objectForKey:A3BatteryIndexKey];
+        NSNumber * checked = [row objectForKey:A3BatteryCheckedKey];
 
         [_adjustedIndex removeObjectAtIndex:indexPath.row];
         if ([checked isEqualToNumber:@0]) {
-            [_adjustedIndex insertObject:@{ @"index" : index, @"checked" : @1 } atIndex:indexPath.row];
+            [_adjustedIndex insertObject:@{ A3BatteryIndexKey : index, A3BatteryCheckedKey : @1 } atIndex:indexPath.row];
         } else {
-            [_adjustedIndex insertObject:@{ @"index" : index, @"checked" : @0 } atIndex:indexPath.row];
+            [_adjustedIndex insertObject:@{ A3BatteryIndexKey : index, A3BatteryCheckedKey : @0 } atIndex:indexPath.row];
         }
 
         //[tableView reloadData];
@@ -255,12 +259,7 @@
 
 - (void)presentWebViewControllerURL:(NSURL *)url {
 	if (![[A3AppDelegate instance].reachability isReachable]) {
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
-														message:@"Internet Connection is not avaiable"
-													   delegate:self
-											  cancelButtonTitle:@"OK"
-											  otherButtonTitles:nil, nil];
-		[alert show];
+		[self alertInternetConnectionIsNotAvailable];
 		return;
 	}
 	A3BasicWebViewController *viewController = [[A3BasicWebViewController alloc] init];

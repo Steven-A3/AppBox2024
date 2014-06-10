@@ -115,30 +115,30 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
     NSString *Memory = [currentDeviceInfo objectForKey:@"Memory"];
 
     // Device.
-    [array addObject:@{@"title" : @"Device", @"value" : modelName}];
+    [array addObject:@{@"title" : NSLocalizedString(@"Device", @"Device"), @"value" : modelName}];
     // Version.
-    [array addObject:@{@"title" : @"Version", @"value" : [NSString stringWithFormat:@"%@ %@",
+    [array addObject:@{@"title" : NSLocalizedString(@"Version", @"Version"), @"value" : [NSString stringWithFormat:@"%@ %@",
                                                           [[UIDevice currentDevice] systemName],
                                                           [[UIDevice currentDevice] systemVersion]]}];
     // Chips.
     if (Chips) {
-        [array addObject:@{@"title" : @"Chips", @"value" : Chips}];
+        [array addObject:@{@"title" : NSLocalizedString(@"Chips", @"Chips"), @"value" : Chips}];
     }
     // CPU.
     if (CPU) {
-        [array addObject:@{@"title" : @"CPU", @"value" : CPU}];
+        [array addObject:@{@"title" : NSLocalizedString(@"CPU", @"CPU"), @"value" : CPU}];
     }
     // GPU.
     if (GPU) {
-        [array addObject:@{@"title" : @"GPU", @"value" : GPU}];
+        [array addObject:@{@"title" : NSLocalizedString(@"GPU", @"GPU"), @"value" : GPU}];
     }
     // Memory.
     if (Memory) {
-        [array addObject:@{@"title" : @"Memory", @"value" : Memory}];
+        [array addObject:@{@"title" : NSLocalizedString(@"Memory", @"Memory"), @"value" : Memory}];
     }
     // Storage.
     NSString * storage = [A3UIDevice capacity];
-    [array addObject:@{@"title" : @"Capacity", @"value" : storage}];
+    [array addObject:@{@"title" : NSLocalizedString(@"Capacity", @"Capacity"), @"value" : storage}];
     
     return array;
 }
@@ -265,24 +265,23 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
 
 +(NSURL *)moreInformationAboutBatteries
 {
-    //NSString *countryCode = [[NSLocale preferredLanguages] objectForKey:NSLocaleLanguageCode];
-    NSString *countryCode = [[NSLocale preferredLanguages] objectAtIndex:0];
+    NSString *languageCode = [[NSLocale preferredLanguages] objectAtIndex:0];
     NSString *urlString;
-    if ([countryCode isEqualToString:@"zh-Hans"] || [countryCode isEqualToString:@"zh-Hant"]) {
+    if ([languageCode isEqualToString:@"zh-Hans"] || [languageCode isEqualToString:@"zh-Hant"]) {
         urlString = @"http://www.apple.com/cn/batteries/";
-    } else if ([countryCode isEqualToString:@"fr"]) {
+    } else if ([languageCode isEqualToString:@"fr"]) {
         urlString = @"http://www.apple.com/fr/batteries/";
-    } else if ([countryCode isEqualToString:@"de"]) {
+    } else if ([languageCode isEqualToString:@"de"]) {
         urlString = @"http://www.apple.com/de/batteries/";
-    } else if ([countryCode isEqualToString:@"it"]) {
+    } else if ([languageCode isEqualToString:@"it"]) {
         urlString = @"http://www.apple.com/it/batteries/";
-    } else if ([countryCode isEqualToString:@"ja"]) {
+    } else if ([languageCode isEqualToString:@"ja"]) {
         urlString = @"http://www.apple.com/jp/batteries/";
-    } else if ([countryCode isEqualToString:@"ko"]) {
+    } else if ([languageCode isEqualToString:@"ko"]) {
         urlString = @"http://www.apple.com/kr/batteries/";
-    } else if ([countryCode isEqualToString:@"pl"]) {
+    } else if ([languageCode isEqualToString:@"pl"]) {
         urlString = @"http://www.apple.com/pl/batteries/";
-    } else if ([countryCode isEqualToString:@"es"]) {
+    } else if ([languageCode isEqualToString:@"es"]) {
         urlString = @"http://www.apple.com/es/batteries/";
     } else {
         urlString = @"http://www.apple.com/batteries/";

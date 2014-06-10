@@ -183,7 +183,7 @@ typedef CMathParser<char, double> MathParser;
     }
 }
 
--(void)checkLastCharactorRemovNeededed:(NSUInteger) key {
+-(void)checkLastCharacterRemoveNeeded:(NSUInteger) key {
     if ([self checkIfexpressionisnull] == NO) {
         if (key != A3E_CALCULATE) {
             NSString* lastChar = [mathexpression substringFromIndex:[mathexpression length] -1];
@@ -198,11 +198,12 @@ typedef CMathParser<char, double> MathParser;
 }
 
 #pragma mark KeyboardButton handler
+
 - (void)preHandlerForCalculation:(NSUInteger) key {
     if(numberMode == YES) {
         if(!(A3E_0 <= key && key < A3E_NUMBERS_END) &&
            key != A3E_BACKSPACE)  {
-            [self ShowMessage:@"Enter The Number!"];
+			[self ShowMessage:NSLocalizedString(@"Enter The Number!", @"Enter The Number!")];
             return;
         } else {
             numberMode = NO;
@@ -218,8 +219,8 @@ typedef CMathParser<char, double> MathParser;
             EEMode = NO;
         }
     }
-    
-    [self checkLastCharactorRemovNeededed:key];
+
+	[self checkLastCharacterRemoveNeeded:key];
 }
 
 - (void)keyboardButtonPressed:(NSUInteger)key {

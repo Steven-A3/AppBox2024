@@ -241,8 +241,8 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:notificationOwner
 													message:notification.alertBody
 												   delegate:self
-										  cancelButtonTitle:@"OK"
-										  otherButtonTitles:@"Details", nil];
+										  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+										  otherButtonTitles:NSLocalizedString(@"Details", @"Details"), nil];
     if ([notificationOwner isEqualToString:A3LocalNotificationFromDaysCounter]) {
         alert.tag = 11;
     } else if ([notificationOwner isEqualToString:A3LocalNotificationFromLadyCalendar]) {
