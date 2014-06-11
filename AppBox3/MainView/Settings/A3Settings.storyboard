@@ -14,7 +14,7 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <color key="separatorColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="0.75" colorSpace="calibratedRGB"/>
                         <sections>
-                            <tableViewSection footerTitle="Sync or Backup of History items of every apps, Days Counter events, Expense Lists, Lady Calendar events and Wallet items.  " id="1dJ-y3-yh7">
+                            <tableViewSection footerTitle="Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.  " id="1dJ-y3-yh7">
                                 <cells>
                                     <tableViewCell tag="1100" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="7Pd-or-AM2" style="IBUITableViewCellStyleDefault" id="ak5-L0-e7f" customClass="A3StandardTableViewCell">
                                         <rect key="frame" x="0.0" y="35" width="320" height="44"/>

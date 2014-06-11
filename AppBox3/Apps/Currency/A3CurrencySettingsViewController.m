@@ -113,7 +113,7 @@ NSString *const CellIdentifier = @"Cell";
 }
 
 - (void)setAsShowFlagCell:(UITableViewCell *)cell {
-	cell.textLabel.text = NSLocalizedString(@"Show Natiional Flag", @"Show Natiional Flag");
+	cell.textLabel.text = NSLocalizedString(@"Show National Flag", @"Show National Flag");
 	cell.accessoryView = self.showFlagSwitch;
 }
 

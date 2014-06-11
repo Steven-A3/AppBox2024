@@ -28,7 +28,7 @@
 - (NSInteger)alertTypeIndexFromDate:(NSDate*)date alertDate:(id)alertDate;
 - (NSString*)alertStringForType:(NSInteger)alertType;
 - (NSString*)durationOptionStringFromValue:(NSInteger)value;
-- (NSString*)titleForCellType:(NSInteger)cellType;
+
 - (NSString*)addressFromVenue:(FSVenue*)venue isDetail:(BOOL)isDetail;
 - (NSString*)addressFromPlacemark:(CLPlacemark*)placemark;
 - (FSVenue*)fsvenueFromEventModel:(DaysCounterEventLocation *)locationItem;

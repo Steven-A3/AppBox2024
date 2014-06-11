@@ -37,7 +37,7 @@
 
 "Lunar Calendar" = "Lunar Calendar";
 
-"tellafriend" = "A friend wanted to let you know that the Calculator, Date Calculator, Loan Calculator, Percent Calculator, Sales Calculator, Tip Calculator, Unit Price, Currency Conveter, Lunar Converter, Translator, Unit Converter, Days Counter, Expense List, Lady Calendar, Wallet, Holidays, Battery Status, Clock, Magnifier and Mirror you've come to expect from AppBox Pro™ is now available for your iPhone, iPad and iPod Touch. Click below to download AppBox Pro™ from the iTunes App Store.\r\n\r\nhttps://itunes.apple.com/app/id318404385";
+"tellafriend" = "A friend wanted to let you know that the Calculator, Date Calculator, Loan Calculator, Percent Calculator, Sales Calculator, Tip Calculator, Unit Price, Currency Converter, Lunar Converter, Translator, Unit Converter, Days Counter, Expense List, Lady Calendar, Wallet, Holidays, Battery Status, Clock, Magnifier and Mirror you've come to expect from AppBox Pro™ is now available for your iPhone, iPad and iPod Touch. Click below to download AppBox Pro™ from the iTunes App Store.\r\n\r\nhttps://itunes.apple.com/app/id318404385";
 
 "DISCLAIMER_MESSAGE" = "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case.";
 "HOLIDAYS_ACKNOWLEDGEMENT" = "A Photo behind the Holidays in the AppBox Pro is collected from Flickr that reflect the beauty and magnificence of differnet locations around the world. Flickr screen name and a link to the photo are shown on the screen. Authors get any and all rights over photo. ALLABOUTAPPS Inc. don't own any photo. If you want to paricipate this, send us email. You will not receive financial compensation for use of your photos, however will bring a whole new audience to your photostream. Thanks to authors to share.";
@@ -152,7 +152,7 @@
 
 "%@ to %@ = %.4f" = "%@ to %@ = %.4f";
 "Auto Update" = "Auto Update";
-"Show Natiional Flag" = "Show Natiional Flag";
+"Show National Flag" = "Show National Flag";
 "Use Cellular Data" = "Use Cellular Data";
 "Swap" = "Swap";
 "Chart" = "Chart";
@@ -311,3 +311,63 @@
 " Events" = " Events";
 
 "Reminder" = "Reminder";
+
+"All" = "All";
+"Upcoming" = "Upcoming";
+"Past" = "Past";
+"Anniversary" = "Anniversary";
+
+"Appointment" = "Appointment";
+"Birthday" = "Birthday";
+"Journey" = "Journey";
+"Holiday" = "Holiday";
+"Work" = "Work";
+
+"Never" = "Never";
+"Every Day" = "Every Day";
+"Every Week" = "Every Week";
+"Every 2Week" = "Every 2Week";
+"Every Month" = "Every Month";
+"Every Year" = "Every Year";
+"Daily" = "Daily";
+"Weekly" = "Weekly";
+"Bi-Weekly" = "Bi-weekly";
+"Monthly" = "Monthly";
+"Yearly" = "Yearly";
+
+
+"At time of event" = "At time of event";
+"5 minutes before" = "5 minutes before";
+"15 minutes before" = "15 minutes before";
+"30 minutes before" = "30 minutes before";
+"1 hour before" = "1 hour before";
+"2 hours before" = "2 hours before";
+"1 day before" = "1 day before";
+"2 days before" = "2 days before";
+"1 week before" = "1 week before";
+
+"DaysCounterDuration_year_abbreviation" = "y";
+"DaysCounterDuration_month_abbreviation" = "m";
+"DaysCounterDuration_week_abbreviation" = "w";
+"DaysCounterDuration_day_abbreviation" = "d";
+"DaysCounterDuration_hour_abbreviation" = "hr";
+"Hours" = "Hours";
+"DaysCounterDuration_minute_abbreviation" = "min";
+"Minutes" = "Minutes";
+
+"%ld y" = "%ld y";
+"%ld m" = "%ld m";
+"%ld w" = "%ld w";
+"%ld d" = "%ld d";
+"%ld hr" = "%ld hr";
+"%ld min" = "%ld min";
+"Cube" = "Cube";
+"Dissolve" = "Dissolve";
+"Origami" = "Origami";
+"Ripple" = "Ripple";
+"Wipe" = "Wipe";
+
+" Today " = " Today ";
+" Now " = " Now ";
+"Days\nUntil" = "Days\nUntil";
+"Days\nSince" = "Days\nSince";

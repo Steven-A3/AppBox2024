@@ -1,15 +1,15 @@
 //
-//  TemperatureConveter.m
+//  TemperatureConverter.m
 //  A3TeamWork
 //
 //  Created by kihyunkim on 2013. 10. 28..
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "TemperatureConveter.h"
+#import "TemperatureConverter.h"
 #import "TemperatureConvertDef.h"
 
-@implementation TemperatureConveter
+@implementation TemperatureConverter
 
 /*
  "°C",

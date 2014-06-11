@@ -1,5 +1,5 @@
 //
-//  TemperatureConveter.h
+//  TemperatureConverter.h
 //  A3TeamWork
 //
 //  Created by kihyunkim on 2013. 10. 28..
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TemperatureConveter : NSObject
+@interface TemperatureConverter : NSObject
 
 + (float)convertToCelsiusFromUnit:(NSString *)unitName andTemperature:(float)value;
 + (float)convertCelsius:(float)value toUnit:(NSString *)unitName;

@@ -46,6 +46,24 @@
 			<string>%ld hours</string>
 		</dict>
 	</dict>
+	<key>%ld hrs</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_hrs@</string>
+		<key>num_hrs</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 hr</string>
+			<key>one</key>
+			<string>1 hr</string>
+			<key>other</key>
+			<string>%ld hrs</string>
+		</dict>
+	</dict>
 	<key>%ld minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -66,6 +84,24 @@
 			<string>%ld minutes</string>
 			<key>other</key>
 			<string>%ld minutes</string>
+		</dict>
+	</dict>
+	<key>%ld mins</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_mins@</string>
+		<key>num_mins</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 min</string>
+			<key>one</key>
+			<string>1 min</string>
+			<key>other</key>
+			<string>%ld mins</string>
 		</dict>
 	</dict>
 	<key>After %ld hours</key>
