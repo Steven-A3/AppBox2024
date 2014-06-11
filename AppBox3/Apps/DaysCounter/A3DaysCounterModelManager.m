@@ -1212,20 +1212,25 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (DaysCounterEvent *)closestEventObjectOfCalendar:(DaysCounterCalendar *)calendar
 {
-    NSSortDescriptor *event = [[NSSortDescriptor alloc] initWithKey:@"effectiveStartDate" ascending:YES];
-    NSArray *sortedArray = [calendar.events sortedArrayUsingDescriptors:@[event]];
-    NSDate *now = [NSDate date];
-    __block NSInteger closestIndex;
-    [sortedArray enumerateObjectsUsingBlock:^(DaysCounterEvent * event, NSUInteger idx, BOOL *stop) {
-        if ([event.effectiveStartDate timeIntervalSince1970] >= [now timeIntervalSince1970]) {
-            closestIndex = (idx == 0) ? 0 : (idx - 1);
-            *stop = YES;
-            return;
-        }
-        closestIndex = idx;
-    }];
-    
-    return [sortedArray objectAtIndex:closestIndex];
+    NSDateComponents *nowComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
+    nowComp.hour = 0;
+    nowComp.minute = 0;
+    nowComp.second = 0;
+    NSDate *today = [[NSCalendar currentCalendar] dateFromComponents:nowComp];
+
+    // return today or closest until
+    NSOrderedSet *untilOrderedSet = [calendar.events filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate >= %@", today]];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"effectiveStartDate" ascending:YES];
+    NSArray *sortedArray = [untilOrderedSet sortedArrayUsingDescriptors:@[sortDescriptor]];
+    if ([sortedArray count] > 0) {
+        return [sortedArray firstObject];
+    }
+
+    // return closest since
+    NSOrderedSet *sinceOrderedSet = [calendar.events filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate < %@", today]];
+    sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"effectiveStartDate" ascending:NO];
+    sortedArray = [sinceOrderedSet sortedArrayUsingDescriptors:@[sortDescriptor]];
+    return [sortedArray firstObject];
 }
 
 - (void)renewEffectiveStartDates:(DaysCounterCalendar *)calendar
