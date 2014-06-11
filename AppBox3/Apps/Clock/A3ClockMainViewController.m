@@ -161,7 +161,7 @@
 - (UIButton *)clockAppsButton {
 	if (!_clockAppsButton) {
 		_clockAppsButton = [UIButton buttonWithType:UIButtonTypeSystem];
-		[_clockAppsButton setTitle:@"Apps" forState:UIControlStateNormal];
+		[_clockAppsButton setTitle:NSLocalizedString(@"Apps", @"Apps") forState:UIControlStateNormal];
 		_clockAppsButton.titleLabel.font = [UIFont systemFontOfSize:17];
 		[_clockAppsButton sizeToFit];
 		[_clockAppsButton addTarget:self action:@selector(appsButtonAction:) forControlEvents:UIControlEventTouchUpInside];

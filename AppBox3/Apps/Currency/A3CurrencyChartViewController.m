@@ -319,7 +319,7 @@
 	} else {
 		cell.valueField.delegate = self;
 		cell.valueField.text = self.targetValueString;
-		cell.rateLabel.text = [NSString stringWithFormat:@"%@, Rate = %0.4f", self.targetItem.currencySymbol, self.conversionRate];
+		cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, Rate = %0.4f", @"%@, Rate = %0.4f"), self.targetItem.currencySymbol, self.conversionRate];
 		cell.codeLabel.text = _targetItem.currencyCode;
 		_targetTextField = cell.valueField;
 	}
@@ -505,7 +505,7 @@
 	label.textAlignment = NSTextAlignmentCenter;
 	label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
 	label.textColor = [UIColor colorWithRed:172.0 / 255.0 green:172.0 / 255.0 blue:172.0 / 255.0 alpha:1.0];
-	label.text = @"Internet connection is not available.";
+	label.text = NSLocalizedString(@"Internet connection is not available.", @"Internet connection is not available.");
 	label.layer.borderWidth = IS_RETINA ? 0.25 : 0.5;
 	label.layer.borderColor = [UIColor colorWithWhite:0.0 alpha:0.2].CGColor;
 	label.opaque = NO;

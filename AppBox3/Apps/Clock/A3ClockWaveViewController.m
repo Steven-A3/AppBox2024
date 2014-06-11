@@ -587,7 +587,7 @@
 	self.temperatureCircle.delegate = self;
 	self.temperatureCircle.isShowWave = YES;
 	self.temperatureCircle.fillPercent = 1.0;
-	self.temperatureCircle.textLabel.text = @"Weather";
+	self.temperatureCircle.textLabel.text = NSLocalizedString(@"Weather", @"Weather");
 	[self.view addSubview:self.temperatureCircle];
 
 	self.temperatureBottomLabel = [[UILabel alloc] init];

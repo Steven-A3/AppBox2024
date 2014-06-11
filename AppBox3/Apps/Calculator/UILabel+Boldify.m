@@ -27,4 +27,5 @@
     NSRange range = [self.text rangeOfString:substring];
     [self boldRange:range];
 }
+
 @end

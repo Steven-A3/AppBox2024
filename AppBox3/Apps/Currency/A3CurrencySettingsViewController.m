@@ -91,7 +91,7 @@ NSString *const CellIdentifier = @"Cell";
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
 		case 0:
-			cell.textLabel.text = @"Auto Update";
+			cell.textLabel.text = NSLocalizedString(@"Auto Update", @"Auto Update");
 			cell.accessoryView = self.autoUpdateSwitch;
 			break;
 		case 1:
@@ -113,12 +113,12 @@ NSString *const CellIdentifier = @"Cell";
 }
 
 - (void)setAsShowFlagCell:(UITableViewCell *)cell {
-	cell.textLabel.text = @"Show Natiional Flag";
+	cell.textLabel.text = NSLocalizedString(@"Show Natiional Flag", @"Show Natiional Flag");
 	cell.accessoryView = self.showFlagSwitch;
 }
 
 - (void)setAsCellularCell:(UITableViewCell *)cell {
-	cell.textLabel.text = @"Use Cellular Data";
+	cell.textLabel.text = NSLocalizedString(@"Use Cellular Data", @"Use Cellular Data");
 	cell.accessoryView = self.useCellularDataSwitch;
 }
 

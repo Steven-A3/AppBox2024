@@ -48,13 +48,28 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 		[self rightBarButtonDoneButton];
 	}
     
-    self.title = @"Setting";
+    self.title = NSLocalizedString(@"Setting", @"Setting");
     
-    _sections = @[@"TIME", @"DATE", @"WEATHER"];
+    _sections = @[
+			NSLocalizedString(@"TIME", @"TIME"),
+			NSLocalizedString(@"DATE", @"DATE"),
+			NSLocalizedString(@"WEATHER", @"WEATHER")
+	];
     
-    _timeSection = @[@"The time with seconds", @"Flash the time separators", @"Use a 24-hour clock", @"Show AM/PM"];
-    _dateSection = @[@"Show the day of the week", @"Show date"];
-    _weatherSection = @[@"Show Weather", @""];
+    _timeSection = @[
+			NSLocalizedString(@"The time with seconds", @"The time with seconds"),
+			NSLocalizedString(@"Flash the time separators", @"Flash the time separators"),
+			NSLocalizedString(@"Use a 24-hour clock", @"Use a 24-hour clock"),
+			NSLocalizedString(@"Show AM/PM", @"Show AM/PM")
+	];
+    _dateSection = @[
+			NSLocalizedString(@"Show the day of the week", @"Show the day of the week"),
+			NSLocalizedString(@"Show date", @"Show date")
+	];
+    _weatherSection = @[
+			NSLocalizedString(@"Show Weather", @"Show Weather"),
+			@""
+	];
 
 	[self.view setBackgroundColor:[UIColor whiteColor]];
 
@@ -135,7 +150,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 	UITableViewCell *cell = nil;
 
 	if (indexPath.section == 2 && indexPath.row == 1) {
-		static NSString *CellWithSegmentedControl = @"A3	ClockSettingsWithSegmentedControl";
+		static NSString *CellWithSegmentedControl = @"A3ClockSettingsWithSegmentedControl";
 
 		cell = [tableView dequeueReusableCellWithIdentifier:CellWithSegmentedControl];
 		if (cell == nil) {

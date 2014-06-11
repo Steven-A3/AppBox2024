@@ -78,7 +78,7 @@
     [super viewDidLoad];
 
     self.automaticallyAdjustsScrollViewInsets = NO;
-	self.title = @"Calculator"; // TODO localization
+	self.title = NSLocalizedString(@"Calculator", @"Calculator");
 
 	if (!_modalPresentingParentViewController) {
 		[self leftBarButtonAppsButton];
@@ -190,7 +190,7 @@
     return [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:screenBounds.size.height == 320 ? 44 : screenBounds.size.height == 480 ? 62: 84];
 }
 
-- (id) getResultLabelHight:(CGRect) screenBounds {
+- (id)getResultLabelHeight:(CGRect) screenBounds {
     return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? @60 : @83):@44;
 }
 
@@ -199,7 +199,7 @@
     return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -15.5:-15.5):-8.0;
 }
 */
--(id) getSVHeight:(CGRect) screenBounds {
+- (id)getSVHeight:(CGRect) screenBounds {
     return screenBounds.size.height == 320? @240: @324;
 }
 
@@ -527,7 +527,7 @@
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
     if ([activityType isEqualToString:UIActivityTypeMail]) {
-        return @"Calculator using AppBox Pro";
+        return NSLocalizedString(@"Calculator using AppBox Pro", @"Calculator using AppBox Pro");
     }
     return @"";
 }
@@ -535,7 +535,7 @@
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
 {
     if ([activityType isEqualToString:UIActivityTypeMail]) {
-        NSAttributedString *shareString = [[NSAttributedString alloc] initWithString:@"I'd like to share a calculation with you.\n\n"];
+        NSAttributedString *shareString = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"I'd like to share a calculation with you.\n\n", @"I'd like to share a calculation with you.\n\n")];
         NSMutableAttributedString *expression = [[NSMutableAttributedString alloc] initWithAttributedString:[self.calculator getMathAttributedExpression]];
         if ([expression length] >= 3) {
             NSRange range;
@@ -551,7 +551,7 @@
             shareString = [shareString appendWith:[expression appendWithString:[self.calculator getResultString]]];
             
         }
-        shareString = [shareString appendWithString:@"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385"];
+        shareString = [shareString appendWithString:NSLocalizedString(@"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385", @"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385")];
         return shareString;
     } else {
         return [self.calculator getResultString];
@@ -563,7 +563,7 @@
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-    return @"Calculator";
+    return NSLocalizedString(@"Calculator", @"Calculator");
 }
 
 

@@ -118,3 +118,43 @@
 "History" = "History";
 "Clear" = "Clear";
 "Clear History" = "Clear History";
+
+"Basic / Scientific" = "Basic / Scientific";
+"Scientific" = "Scientific";
+"Basic" = "Basic";
+"Calculator using AppBox Pro" = "Calculator using AppBox Pro";
+"I'd like to share a calculation with you.\n\n" = "I'd like to share a calculation with you.\n\n";
+
+"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385" = "\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385";
+"CHOOSE COLOR" = "CHOOSE COLOR";
+
+"Humidity" = "Humidity";
+"High" = "High";
+"Low" = "Low";
+
+"Setting" = "Setting";
+"TIME" = "TIME";
+"DATE" = "DATE";
+"WEATHER" = "WEATHER";
+"The time with seconds" = "The time with seconds";
+"Flash the time separators" = "Flash the time separators";
+"Use a 24-hour clock" = "Use a 24-hour clock";
+"Show AM/PM" = "Show AM/PM";
+"Show the day of the week" = "Show the day of the week";
+"Show date" = "Show date";
+"Show Weather" = "Show Weather";
+
+"Weather" = "Weather";
+
+"%@, Rate = %0.4f" = "%@, Rate = %0.4f";
+"Internet connection is not available." = "Internet connection is not available.";
+"Each history keeps max 4 currencies." = "Each history keeps max 4 currencies.";
+
+"%@ to %@ = %.4f" = "%@ to %@ = %.4f";
+"Auto Update" = "Auto Update";
+"Show Natiional Flag" = "Show Natiional Flag";
+"Use Cellular Data" = "Use Cellular Data";
+"Swap" = "Swap";
+"Chart" = "Chart";
+"Share" = "Share";
+"Delete" = "Delete";

@@ -41,20 +41,20 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 {
     [super viewDidLoad];
 
-	self.title = @"History";
+	self.title = NSLocalizedString(@"History", @"History");
 
 	if (IS_IPHONE) {
 		[self rightBarButtonDoneButton];
 	}
 
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear") style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
 
 	self.tableView.showsVerticalScrollIndicator = NO;
 
 	UILabel *notice = [[UILabel alloc] init];
 	notice.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 	notice.textColor = [UIColor blackColor];
-	notice.text = @"Each history keeps max 4 currencies.";
+	notice.text = NSLocalizedString(@"Each history keeps max 4 currencies.", @"Each history keeps max 4 currencies.");
 	notice.textAlignment = NSTextAlignmentCenter;
 
 	CGRect frame = CGRectMake(0.0, 0.0, 320.0, 40.0);
@@ -102,8 +102,8 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 - (void)clearButtonAction:(id)button {
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 															 delegate:self
-													cancelButtonTitle:@"Cancel"
-											   destructiveButtonTitle:@"Clear History"
+													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+											   destructiveButtonTitle:NSLocalizedString(@"Clear History", @"Clear History")
 													otherButtonTitles:nil];
 	[actionSheet showInView:self.view];
 }
@@ -185,7 +185,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 		[nf setCurrencyCode:item.currencyCode];
 
 		((UILabel *) cell.leftLabels[index]).text = [nf stringFromNumber:@(currencyHistory.value.floatValue * rate)];
-		((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:@"%@ to %@ = %.4f", currencyHistory.currencyCode, item.currencyCode, rate];
+		((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@ = %.4f", @"%@ to %@ = %.4f"), currencyHistory.currencyCode, item.currencyCode, rate];
 	}
 
     return cell;

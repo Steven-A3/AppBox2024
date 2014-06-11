@@ -21,6 +21,9 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+iPad_rightSideView.h"
 
+NSString *const A3CalculatorMode = @"A3CalculatorMode";
+NSString *const A3CalculatorModeBasic = @"basic";
+NSString *const A3CalculatorModeScientific = @"scientific";
 
 @interface A3CalculatorViewController_iPad ()<A3CalcKeyboardViewIPadDelegate, UIPopoverControllerDelegate, MBProgressHUDDelegate, A3CalcMessagShowDelegate, UITextFieldDelegate>
 @property (nonatomic, strong) HTCopyableLabel *expressionLabel;
@@ -215,8 +218,8 @@
     [self.view layoutIfNeeded];
 
     [self checkRightButtonDisable];
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"CalculatorMode"]){
-        if([[[NSUserDefaults standardUserDefaults] objectForKey:@"CalculatorMode"] isEqualToString:@"scientifc"]) {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorMode]){
+        if([[[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorMode] isEqualToString:A3CalculatorModeScientific]) {
 			[self setupScientificKeyPad];
             [self changeCalculatorKindString];
         } else {
@@ -275,7 +278,7 @@
         
     }
     
-    [[NSUserDefaults standardUserDefaults] setValue:scientific == YES ? @"scientifc":@"basic" forKey:@"CalculatorMode"];
+    [[NSUserDefaults standardUserDefaults] setValue:scientific == YES ? A3CalculatorModeScientific : A3CalculatorModeBasic forKey:A3CalculatorMode];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self changeCalculatorKindString];
     
@@ -336,15 +339,14 @@
 }
 
 -(void) changeCalculatorKindString {
-    _basicandscientificLabel.text = @"Basic / Scientific";
+    _basicandscientificLabel.text = NSLocalizedString(@"Basic / Scientific", @"Basic / Scientific");
     if(scientific == YES)
     {
-        [_basicandscientificLabel boldSubstring:@"Scientific"];
+		[_basicandscientificLabel boldSubstring:NSLocalizedString(@"Scientific", @"Scientific")];
     }
     else
     {
-        [_basicandscientificLabel boldSubstring:@"Basic"];
-        
+		[_basicandscientificLabel boldSubstring:NSLocalizedString(@"Basic", @"Basic")];
     }
     
 }
@@ -424,7 +426,7 @@
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
     if ([activityType isEqualToString:UIActivityTypeMail]) {
-        return @"Calculator using AppBox Pro";
+        return NSLocalizedString(@"Calculator using AppBox Pro", @"Calculator using AppBox Pro");
     }
     return @"";
 }
@@ -433,7 +435,7 @@
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
 {
     if ([activityType isEqualToString:UIActivityTypeMail]) {
-        NSAttributedString *shareString = [[NSAttributedString alloc] initWithString:@"I'd like to share a calculation with you.\n\n"];
+        NSAttributedString *shareString = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"I'd like to share a calculation with you.\n\n", @"I'd like to share a calculation with you.\n\n")];
         NSMutableAttributedString *expression = [[NSMutableAttributedString alloc] initWithAttributedString:[self.calculator getMathAttributedExpression]];
         if ([expression length] >= 3) {
             NSRange range;
@@ -449,7 +451,7 @@
             shareString = [shareString appendWith:[expression appendWithString:[self.calculator getResultString]]];
             
         }
-        shareString = [shareString appendWithString:@"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385"];
+        shareString = [shareString appendWithString:NSLocalizedString(@"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385", @"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385")];
         return shareString;
     } else {
         return [self.calculator getResultString];
@@ -461,7 +463,7 @@
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-    return @"Calculator";
+    return NSLocalizedString(@"Calculator", @"Calculator");
 }
 
 #pragma mark -
@@ -523,7 +525,6 @@
 			return;
 		}
 	}
-
 
 	Calculation *calculation = [Calculation MR_createEntity];
 	NSDate *keyDate = [NSDate date];

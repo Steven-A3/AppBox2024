@@ -116,21 +116,21 @@
 	[self.view addSubview:_weatherTemperatureLow];
 
 	_weatherHumidityTitle = [[UILabel alloc] init];
-	_weatherHumidityTitle.text = @"Humidity";
+	_weatherHumidityTitle.text = NSLocalizedString(@"Humidity", @"Humidity");
 	_weatherHumidityTitle.textAlignment = NSTextAlignmentLeft;
 	[_weatherHumidityTitle setFont:[UIFont systemFontOfSize:IS_IPHONE ? 12 : 15]];
 	[_weatherHumidityTitle setTextColor:kColorClockFlipLabel];
 	[self.view addSubview:_weatherHumidityTitle];
 
 	_weatherTemperatureHighTitle = [[UILabel alloc] init];
-	_weatherTemperatureHighTitle.text = @"High";
+	_weatherTemperatureHighTitle.text = NSLocalizedString(@"High", @"High");
 	_weatherTemperatureHighTitle.textAlignment = NSTextAlignmentLeft;
 	[_weatherTemperatureHighTitle setFont:[UIFont systemFontOfSize:IS_IPHONE ? 12 : 15]];
 	[_weatherTemperatureHighTitle setTextColor:kColorClockFlipLabel];
 	[self.view addSubview:_weatherTemperatureHighTitle];
 
 	_weatherTemperatureLowTitle = [[UILabel alloc] init];
-	_weatherTemperatureLowTitle.text = @"Low";
+	_weatherTemperatureLowTitle.text = NSLocalizedString(@"Low", @"Low");
 	_weatherTemperatureLowTitle.textAlignment = NSTextAlignmentLeft;
 	[_weatherTemperatureLowTitle setFont:[UIFont systemFontOfSize:IS_IPHONE ? 12 : 15]];
 	[_weatherTemperatureLowTitle setTextColor:kColorClockFlipLabel];
