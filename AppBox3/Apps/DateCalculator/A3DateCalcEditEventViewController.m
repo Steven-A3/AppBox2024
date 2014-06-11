@@ -35,7 +35,7 @@
 {
     [super viewDidLoad];
     
-    self.title = @"Edit Event";
+    self.title = NSLocalizedString(@"Edit Event", @"Edit Event");
     
     if (IS_IPAD) {
         [self rightBarButtonDoneButton];
@@ -198,7 +198,7 @@
     NSMutableArray *sectionTitles = [NSMutableArray array];
     [sectionTitles addObject:[[A3DateCalcTableRowData alloc] initSeparatorWithText:@"" Height:36 AccessoryType:Accessory_None]];
     [sectionTitles addObject:[[A3DateCalcTableRowData alloc] initSeparatorWithText:@"" Height:36 AccessoryType:Accessory_None]];
-    [sectionTitles addObject:[[A3DateCalcTableRowData alloc] initSeparatorWithText:@"ADVANCED" Height:56 AccessoryType:Accessory_ArrowDown]];
+    [sectionTitles addObject:[[A3DateCalcTableRowData alloc] initSeparatorWithText:NSLocalizedString(@"ADVANCED", @"ADVANCED") Height:56 AccessoryType:Accessory_ArrowDown]];
     self.sectionTitles = sectionTitles;
     
     

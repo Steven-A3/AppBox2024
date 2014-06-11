@@ -158,3 +158,38 @@
 "Chart" = "Chart";
 "Share" = "Share";
 "Delete" = "Delete";
+
+"Updating" = "Updating";
+"Updated %@" = "Updated %@";
+"%@Rate = %0.4f" = "%@Rate = %0.4f";
+"Rate = %0.4f" = "Rate = %0.4f";
+
+"%@ equals %@ with rate %0.4f" = "%@ equals %@ with rate %0.4f";
+"Currency Converter in the AppBox Pro" = "Currency Converter in the AppBox Pro";
+"<html><body>I'd like to share a currency conversion with you.<br/><br/>" = "<html><body>I'd like to share a currency conversion with you.<br/><br/>";
+"share_HTML_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
+"Share Currency Converter Data" = "Share Currency Converter Data";
+
+/* Data Calc duration */
+"Year" = "Year";
+"Month" = "Month";
+"Week" = "Week";
+"Day" = "Day";
+"Duration" = "Duration";
+"Edit Event" = "Edit Event";
+"ADVANCED" = "ADVANCED";
+
+"Saturday" = "Saturday";
+"Sunday" = "Sunday";
+"%ld year%@" = "%ld year%@";
+
+"%ld month" = "%ld month";
+"%ld days" = "%ld days";
+
+"%ldy" = "%ldy";
+"%ldm" = "%ldm";
+"%ldw" = "%ldw";
+"%ldd" = "%ldd";
+"%ld weeks" = "%ld weeks";
+
+"0 day" = "0 day";
