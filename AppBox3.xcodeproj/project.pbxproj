@@ -1955,7 +1955,6 @@
 		68B6A1FA18CEC76C004084EF /* A3UnitPriceInputView_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3UnitPriceInputView_iPad.xib; sourceTree = "<group>"; };
 		68B6A1FB18CEC76C004084EF /* A3UnitPriceMainTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitPriceMainTableController.h; sourceTree = "<group>"; };
 		68B6A1FC18CEC76C004084EF /* A3UnitPriceMainTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitPriceMainTableController.m; sourceTree = "<group>"; };
-		68B6A1FD18CEC76C004084EF /* A3UnitPriceMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitPriceMainViewController.h; sourceTree = "<group>"; };
 		68B6A20318CEC76C004084EF /* A3UnitPriceNoteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitPriceNoteCell.h; sourceTree = "<group>"; };
 		68B6A20418CEC76C004084EF /* A3UnitPriceNoteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitPriceNoteCell.m; sourceTree = "<group>"; };
 		68B6A20518CEC76C004084EF /* A3UnitPriceSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitPriceSelectViewController.h; sourceTree = "<group>"; };
@@ -4318,7 +4317,6 @@
 				68B6A1FA18CEC76C004084EF /* A3UnitPriceInputView_iPad.xib */,
 				68B6A1FB18CEC76C004084EF /* A3UnitPriceMainTableController.h */,
 				68B6A1FC18CEC76C004084EF /* A3UnitPriceMainTableController.m */,
-				68B6A1FD18CEC76C004084EF /* A3UnitPriceMainViewController.h */,
 				68B6A20318CEC76C004084EF /* A3UnitPriceNoteCell.h */,
 				68B6A20418CEC76C004084EF /* A3UnitPriceNoteCell.m */,
 				68B6A20518CEC76C004084EF /* A3UnitPriceSelectViewController.h */,
