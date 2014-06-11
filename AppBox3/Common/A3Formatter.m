@@ -59,17 +59,6 @@
 }
 
 // 오영택 add
-+ (NSString *)stringFromDate:(NSDate*)date format:(NSString*)format
-{
-    if( nil == date ){
-        return @"";
-    }
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateFormat:format];
-    
-    return [dateFormatter stringFromDate:date];
-}
-
 + (NSString *)customFullStyleStringFromDate:(NSDate *)date {
 	NSDateFormatter *df = [NSDateFormatter new];
 	[df setDateStyle:NSDateFormatterFullStyle];

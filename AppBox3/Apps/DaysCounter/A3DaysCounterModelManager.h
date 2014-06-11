@@ -76,8 +76,6 @@
 - (void)setupEventSummaryInfo:(DaysCounterEvent*)item toView:(UIView*)toView;
 
 - (BOOL)isSupportLunar;
-
-- (NSString*)dateFormatForAddEditIsAllDays:(BOOL)isAllDays;
 + (NSString*)dateFormatForDetailIsAllDays:(BOOL)isAllDays;
 - (NSString*)dateFormatForPhotoWithIsAllDays:(BOOL)isAllDays;
 

@@ -756,7 +756,6 @@
         titleLabel.text = NSLocalizedString(@"Date", @"Date");
     }
     
-    //lunarImageView.hidden = ![_eventItem.isLunar boolValue];
     lunarImageView.hidden = YES;
     NSDate *keyDate = itemType == EventCellType_StartDate ? [_eventItem.startDate solarDate] : [_eventItem.endDate solarDate];
     if ( keyDate ) {
@@ -767,10 +766,6 @@
         else {
             dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:itemType == EventCellType_StartDate ? _eventItem.startDate : _eventItem.endDate isLunar:NO isAllDay:[_eventItem.isAllDay boolValue]];
         }
-    }
-    else {
-        dateLabel.text = [A3Formatter stringFromDate:[NSDate date]
-                                              format:[_sharedManager dateFormatForAddEditIsAllDays:[_eventItem.isLunar boolValue] ? YES : [_eventItem.isAllDay boolValue]]];
     }
     
     NSInteger inputType;

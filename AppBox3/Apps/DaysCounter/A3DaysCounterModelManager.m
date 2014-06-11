@@ -1090,31 +1090,6 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return NO;
 }
 
-- (NSString*)dateFormatForAddEditIsAllDays:(BOOL)isAllDays
-{
-    NSString *retFormat;
-    BOOL isLocaleKorea = [A3DateHelper isCurrentLocaleIsKorea];
-    
-    if ( IS_IPHONE ) {
-        if ( isLocaleKorea ) {
-            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy. MM. d EEEE a h:mm");
-        }
-        else {
-            retFormat = ( isAllDays ? @"EEE, MMM d, yyyy" : @"EEE, MMM d, yyyy h:mm a");
-        }
-    }
-    else {
-        if ( isLocaleKorea ) {
-            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy년 MMMM d일 EEEE a h:mm");
-        }
-        else {
-            retFormat = ( isAllDays ? @"EEEE, MMMM d, yyyy" : @"EEEE, MMMM d, yyyy h:mm a");
-        }
-    }
-    
-    return retFormat;
-}
-
 - (NSString*)dateFormatForPhotoWithIsAllDays:(BOOL)isAllDays
 {
     NSString *retFormat;
