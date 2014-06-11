@@ -561,7 +561,7 @@
 		68B6A2D718CEC76D004084EF /* A3UnitConverterTVEqualCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1C418CEC76C004084EF /* A3UnitConverterTVEqualCell.m */; };
 		68B6A2D818CEC76D004084EF /* A3UnitConverterTVEqualCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A1C518CEC76C004084EF /* A3UnitConverterTVEqualCell.xib */; };
 		68B6A2D918CEC76D004084EF /* A3UnitConverterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1C718CEC76C004084EF /* A3UnitConverterViewController.m */; };
-		68B6A2DA18CEC76D004084EF /* TemperatureConveter.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1CB18CEC76C004084EF /* TemperatureConveter.m */; };
+		68B6A2DA18CEC76D004084EF /* TemperatureConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1CB18CEC76C004084EF /* TemperatureConverter.m */; };
 		68B6A2DB18CEC76D004084EF /* UnitCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1CD18CEC76C004084EF /* UnitCommon.m */; };
 		68B6A2DC18CEC76D004084EF /* UnitConvertItem+initialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1CF18CEC76C004084EF /* UnitConvertItem+initialize.m */; };
 		68B6A2DE18CEC76D004084EF /* UnitFavorite+initialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1D318CEC76C004084EF /* UnitFavorite+initialize.m */; };
@@ -1896,8 +1896,8 @@
 		68B6A1C618CEC76C004084EF /* A3UnitConverterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitConverterViewController.h; sourceTree = "<group>"; };
 		68B6A1C718CEC76C004084EF /* A3UnitConverterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitConverterViewController.m; sourceTree = "<group>"; };
 		68B6A1C918CEC76C004084EF /* TemperatureConvertDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemperatureConvertDef.h; sourceTree = "<group>"; };
-		68B6A1CA18CEC76C004084EF /* TemperatureConveter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemperatureConveter.h; sourceTree = "<group>"; };
-		68B6A1CB18CEC76C004084EF /* TemperatureConveter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemperatureConveter.m; sourceTree = "<group>"; };
+		68B6A1CA18CEC76C004084EF /* TemperatureConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemperatureConverter.h; sourceTree = "<group>"; };
+		68B6A1CB18CEC76C004084EF /* TemperatureConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemperatureConverter.m; sourceTree = "<group>"; };
 		68B6A1CC18CEC76C004084EF /* UnitCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitCommon.h; sourceTree = "<group>"; };
 		68B6A1CD18CEC76C004084EF /* UnitCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitCommon.m; sourceTree = "<group>"; };
 		68B6A1CE18CEC76C004084EF /* UnitConvertItem+initialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UnitConvertItem+initialize.h"; sourceTree = "<group>"; };
@@ -4275,8 +4275,8 @@
 				68B6A4A318CF335D004084EF /* UnitConvertItem.h */,
 				68B6A4A418CF335D004084EF /* UnitConvertItem.m */,
 				68B6A1C918CEC76C004084EF /* TemperatureConvertDef.h */,
-				68B6A1CA18CEC76C004084EF /* TemperatureConveter.h */,
-				68B6A1CB18CEC76C004084EF /* TemperatureConveter.m */,
+				68B6A1CA18CEC76C004084EF /* TemperatureConverter.h */,
+				68B6A1CB18CEC76C004084EF /* TemperatureConverter.m */,
 				68B6A1CC18CEC76C004084EF /* UnitCommon.h */,
 				68B6A1CD18CEC76C004084EF /* UnitCommon.m */,
 				68B6A1CE18CEC76C004084EF /* UnitConvertItem+initialize.h */,
@@ -6029,7 +6029,7 @@
 				6896DC9A1921FD2700FA98F3 /* ExpenseListItem.m in Sources */,
 				68E6F35217B2722000F10ED9 /* NSUserDefaults+A3Defaults.m in Sources */,
 				80A49634192DB46E004B7ECB /* LoanCalcComparisonHistory.m in Sources */,
-				68B6A2DA18CEC76D004084EF /* TemperatureConveter.m in Sources */,
+				68B6A2DA18CEC76D004084EF /* TemperatureConverter.m in Sources */,
 				68B6A2F918CEC76D004084EF /* A3UnitPriceNoteCell.m in Sources */,
 				68B6A2DB18CEC76D004084EF /* UnitCommon.m in Sources */,
 				6866956618839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m in Sources */,

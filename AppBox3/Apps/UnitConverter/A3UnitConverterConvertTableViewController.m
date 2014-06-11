@@ -25,7 +25,7 @@
 #import "UnitConvertItem.h"
 #import "UnitHistory.h"
 #import "UnitHistoryItem.h"
-#import "TemperatureConveter.h"
+#import "TemperatureConverter.h"
 #import "FMMoveTableView.h"
 #import "UITableView+utility.h"
 #import "UIViewController+iPad_rightSideView.h"
@@ -542,8 +542,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			float rate = first.item.conversionRate.floatValue / item.item.conversionRate.floatValue;
 
 			if (_isTemperatureMode) {
-				float celsiusValue = [TemperatureConveter convertToCelsiusFromUnit:first.item.unitName andTemperature:self.unitValue.floatValue];
-				float targetValue = [TemperatureConveter convertCelsius:celsiusValue toUnit:item.item.unitName];
+				float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:first.item.unitName andTemperature:self.unitValue.floatValue];
+				float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:item.item.unitName];
 				convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
 			}
 			else {
@@ -584,8 +584,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	float rate = first.item.conversionRate.floatValue / item.item.conversionRate.floatValue;
 
 	if (_isTemperatureMode) {
-		float celsiusValue = [TemperatureConveter convertToCelsiusFromUnit:first.item.unitName andTemperature:self.unitValue.floatValue];
-		float targetValue = [TemperatureConveter convertCelsius:celsiusValue toUnit:item.item.unitName];
+		float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:first.item.unitName andTemperature:self.unitValue.floatValue];
+		float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:item.item.unitName];
 		convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
 	}
 	else {
@@ -785,8 +785,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		if (_isTemperatureMode) {
 			// 먼저 입력된 값을 섭씨기준의 온도로 변환한다.
 			// 섭씨온도를 해당 unit값으로 변환한다
-			float celsiusValue = [TemperatureConveter convertToCelsiusFromUnit:convertItemZero.item.unitName andTemperature:value.floatValue];
-			value = @([TemperatureConveter convertCelsius:celsiusValue toUnit:convertItem.item.unitName]);
+			float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:convertItemZero.item.unitName andTemperature:value.floatValue];
+			value = @([TemperatureConverter convertCelsius:celsiusValue toUnit:convertItem.item.unitName]);
 
 		}
 		else {
@@ -798,7 +798,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		dataCell.codeLabel.text = convertItem.item.unitName;
 		// 온도 모드에서는 rate값에 일정 비율이 없으므로 표시하지 않는다.
 		if (_isTemperatureMode) {
-			dataCell.rateLabel.text = [TemperatureConveter rateStringFromTemperUnit:convertItemZero.item.unitName toTemperUnit:convertItem.item.unitName];
+			dataCell.rateLabel.text = [TemperatureConverter rateStringFromTemperUnit:convertItemZero.item.unitName toTemperUnit:convertItem.item.unitName];
 		}
 		else {
 			dataCell.rateLabel.text = [NSString stringWithFormat:@"%@, rate = %@", convertItem.item.unitShortName, [self.decimalFormatter stringFromNumber:@(conversionRate)]];
@@ -1263,8 +1263,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			if (_isTemperatureMode) {
 				// 먼저 입력된 값을 섭씨기준의 온도로 변환한다.
 				// 섭씨온도를 해당 unit값으로 변환한다
-				float celsiusValue = [TemperatureConveter convertToCelsiusFromUnit:sourceUnit.item.unitName andTemperature:fromValue];
-				float targetValue = [TemperatureConveter convertCelsius:celsiusValue toUnit:targetUnit.item.unitName];
+				float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:sourceUnit.item.unitName andTemperature:fromValue];
+				float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnit.item.unitName];
 				targetTextField.text = [self.decimalFormatter stringFromNumber:@(targetValue)];
 			}
 			else {

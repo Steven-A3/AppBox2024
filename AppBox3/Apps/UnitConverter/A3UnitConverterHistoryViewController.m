@@ -16,7 +16,7 @@
 #import "UnitConvertItem.h"
 #import "A3UnitConverterHistoryCell.h"
 #import "A3UnitConverterHistory3RowCell.h"
-#import "TemperatureConveter.h"
+#import "TemperatureConverter.h"
 #import "A3UnitConverterHistoryViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
 
@@ -194,8 +194,8 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
     ((UILabel *) cell.rightLabels[0]).textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
     
     /*
-     float celsiusValue = [TemperatureConveter convertToCelsiusFromUnit:sourceUnit.item.unitName andTemperature:fromValue];
-     float targetValue = [TemperatureConveter convertCelsius:celsiusValue toUnit:targetUnit.item.unitName];
+     float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:sourceUnit.item.unitName andTemperature:fromValue];
+     float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnit.item.unitName];
      targetTextField.text = [self.decimalFormatter stringFromNumber:@(targetValue)];
      */
     
@@ -212,8 +212,8 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
         BOOL _isTemperatureMode = [unitHistory.source.type.unitTypeName isEqualToString:@"Temperature"];
         
         if (_isTemperatureMode) {
-            float celsiusValue = [TemperatureConveter convertToCelsiusFromUnit:unitHistory.source.unitName andTemperature:unitHistory.value.floatValue];
-            float targetValue = [TemperatureConveter convertCelsius:celsiusValue toUnit:item.unit.unitName];
+            float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:unitHistory.source.unitName andTemperature:unitHistory.value.floatValue];
+            float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:item.unit.unitName];
             ((UILabel *) cell.leftLabels[index]).text = [self.decimalFormatter stringFromNumber:@(targetValue)];
         }
         else {
@@ -222,7 +222,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
         
         // a to b = 40.469 표시 (right label)
         if (_isTemperatureMode) {
-            ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:@"%@ to %@", unitHistory.source.unitShortName, [TemperatureConveter rateStringFromTemperUnit:unitHistory.source.unitName toTemperUnit:item.unit.unitName]];
+            ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:@"%@ to %@", unitHistory.source.unitShortName, [TemperatureConverter rateStringFromTemperUnit:unitHistory.source.unitName toTemperUnit:item.unit.unitName]];
         }
         else {
             float convesionRate = unitHistory.source.conversionRate.floatValue / item.unit.conversionRate.floatValue;

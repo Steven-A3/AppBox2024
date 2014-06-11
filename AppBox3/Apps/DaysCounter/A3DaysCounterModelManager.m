@@ -84,7 +84,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 			[NSMutableDictionary dictionaryWithDictionary:
 			@{
 					CalendarItem_ID: SystemCalendarID_All,
-					CalendarItem_Name : @"All",
+					CalendarItem_Name : NSLocalizedString(@"All", @"All"),
 					CalendarItem_Color : [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0],
 					CalendarItem_IsShow : @YES,
 					CalendarItem_Type : @(CalendarCellType_System),
@@ -93,7 +93,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 			[NSMutableDictionary dictionaryWithDictionary:
 					@{
 							CalendarItem_ID: SystemCalendarID_Upcoming,
-							CalendarItem_Name : @"Upcoming",
+							CalendarItem_Name : NSLocalizedString(@"Upcoming", @"Upcoming"),
 							CalendarItem_Color : [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0],
 							CalendarItem_IsShow : @YES,
 							CalendarItem_Type : @(CalendarCellType_System),
@@ -101,7 +101,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 					}],
 			[NSMutableDictionary dictionaryWithDictionary:
 					@{CalendarItem_ID: SystemCalendarID_Past,
-							CalendarItem_Name : @"Past",
+							CalendarItem_Name : NSLocalizedString(@"Past", @"Past"),
 							CalendarItem_Color : [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0],
 							CalendarItem_IsShow : @YES,
 							CalendarItem_Type : @(CalendarCellType_System),
@@ -118,22 +118,22 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (void)addDefaultUserCalendarItemsInContext:(NSManagedObjectContext *)context {
     NSMutableArray *array = [NSMutableArray arrayWithArray:@[
-                                                             [NSMutableDictionary dictionaryWithDictionary:@{ CalendarItem_ID:@"1", CalendarItem_Name : @"Anniversary",
+                                                             [NSMutableDictionary dictionaryWithDictionary:@{ CalendarItem_ID:@"1", CalendarItem_Name : NSLocalizedString(@"Anniversary", @"Anniversary"),
                                                                                                               CalendarItem_Color : [self.calendarColorArray[0] objectForKey:CalendarItem_Color],
                                                                                                               CalendarItem_IsShow : [NSNumber numberWithBool:YES], CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User], CalendarItem_IsDefault : [NSNumber numberWithBool:YES]}],
-                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"2",CalendarItem_Name : @"Appointment",
+                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"2",CalendarItem_Name : NSLocalizedString(@"Appointment", @"Appointment"),
                                                                                                              CalendarItem_Color : [self.calendarColorArray[1] objectForKey:CalendarItem_Color],
                                                                                                              CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}],
-                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"3",CalendarItem_Name : @"Birthday",
+                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"3",CalendarItem_Name : NSLocalizedString(@"Birthday", @"Birthday"),
                                                                                                              CalendarItem_Color : [self.calendarColorArray[2] objectForKey:CalendarItem_Color],
                                                                                                              CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}],
-                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"4",CalendarItem_Name : @"Journey",
+                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"4",CalendarItem_Name : NSLocalizedString(@"Journey", @"Journey"),
                                                                                                              CalendarItem_Color : [self.calendarColorArray[3] objectForKey:CalendarItem_Color],
                                                                                                              CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}],
-                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"5",CalendarItem_Name : @"Holiday",
+                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"5",CalendarItem_Name : NSLocalizedString(@"Holiday", @"Holiday"),
                                                                                                              CalendarItem_Color : [self.calendarColorArray[4] objectForKey:CalendarItem_Color],
                                                                                                              CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}],
-                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"6",CalendarItem_Name : @"Work",
+                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"6",CalendarItem_Name : NSLocalizedString(@"Work", @"Work"),
                                                                                                              CalendarItem_Color : [self.calendarColorArray[5] objectForKey:CalendarItem_Color],
                                                                                                              CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}]]];
     int idx = 0;
@@ -185,30 +185,30 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSString*)repeatTypeStringFromValue:(NSInteger)repeatType
 {
-    NSString *retStr = @"";
+    NSString *retStr;
     
     switch (repeatType) {
         case 0:
-            retStr = @"Never";
+            retStr = NSLocalizedString(@"Never", @"Never");
             break;
         case -1:
-            retStr = @"Every Day";
+            retStr = NSLocalizedString(@"Every Day", @"Every Day");
             break;
         case -2:
-            retStr = @"Every Week";
+            retStr = NSLocalizedString(@"Every Week", @"Every Week");
             break;
         case -3:
-            retStr = @"Every 2Week";
+            retStr = NSLocalizedString(@"Every 2Week", @"Every 2Week");
             break;
         case -4:
-            retStr = @"Every Month";
+            retStr = NSLocalizedString(@"Every Month", @"Every Month");
             break;
         case -5:
-            retStr = @"Every Year";
+            retStr = NSLocalizedString(@"Every Year", @"Every Year");
             break;
             
         default:
-            retStr = [NSString stringWithFormat:@"%ld days", (long)repeatType];
+            retStr = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), (long)repeatType];
             break;
     }
     
@@ -217,30 +217,30 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSString*)repeatTypeStringForDetailValue:(NSInteger)repeatType
 {
-    NSString *retStr = @"";
+    NSString *retStr;
     
     switch (repeatType) {
         case 0:
-            retStr = @"never";
+            retStr = NSLocalizedString(@"Never", nil);
             break;
         case -1:
-            retStr = @"daily";
+            retStr = NSLocalizedString(@"Daily", nil);
             break;
         case -2:
-            retStr = @"weekly";
+            retStr = NSLocalizedString(@"Weekly", nil);
             break;
         case -3:
-            retStr = @"2 week";
+            retStr = NSLocalizedString(@"Bi-Weekly", nil);
             break;
         case -4:
-            retStr = @"monthly";
+            retStr = NSLocalizedString(@"Monthly", nil);
             break;
         case -5:
-            retStr = @"yearly";
+            retStr = NSLocalizedString(@"Yearly", nil);
             break;
             
         default:
-            retStr = [NSString stringWithFormat:@"%ld days", (long)repeatType];
+            retStr = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), (long)repeatType];
             break;
     }
     
@@ -253,7 +253,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     if (alertType == AlertType_Custom) {
         //return [A3Formatter stringFromDate:date format:DaysCounterDefaultDateFormat];
         NSDateComponents *comp = [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:date toDate:startDate options:0];
-        return [NSString stringWithFormat:@"%ld %@", (long)comp.day, comp.day > 1 ? @"days before" : @"day before"];
+        return [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days before", @"StringsDict", nil), (long)comp.day];
     }
     
     return [self alertStringForType:alertType];
@@ -261,7 +261,17 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSString*)alertStringForType:(NSInteger)alertType
 {
-    NSArray *array = @[@"None",@"At time of event",@"5 minutes before",@"15 minutes before",@"30 minutes before",@"1 hour before",@"2 hours before",@"1 day before",@"2 days before",@"1 week before"];
+    NSArray *array = @[
+			NSLocalizedString(@"None", @"None"),
+			NSLocalizedString(@"At time of event", @"At time of event"),
+			NSLocalizedString(@"5 minutes before", @"5 minutes before"),
+			NSLocalizedString(@"15 minutes before", @"15 minutes before"),
+			NSLocalizedString(@"30 minutes before", @"30 minutes before"),
+			NSLocalizedString(@"1 hour before", @"1 hour before"),
+			NSLocalizedString(@"2 hours before", @"2 hours before"),
+			NSLocalizedString(@"1 day before", @"1 day before"),
+			NSLocalizedString(@"2 days before", @"2 days before"),
+			NSLocalizedString(@"1 week before", @"1 week before")];
     
     if ( alertType < 0 || alertType >= AlertType_Custom )
         return @"";
@@ -334,38 +344,29 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         isShortType = YES;
     }
     
-    NSString *retStr = @"";
+    NSString *retStr;
     NSMutableArray *resultOptionStrings = [NSMutableArray new];
     if ( option & DurationOption_Year ) {
-        [resultOptionStrings addObject: isShortType ? @"y" : @"Years"];
+		[resultOptionStrings addObject:isShortType ? NSLocalizedString(@"DaysCounterDuration_year_abbreviation", @"y") : NSLocalizedString(@"Years", @"Years")];
     }
     if ( option & DurationOption_Month ) {
-        [resultOptionStrings addObject: isShortType ? @"m" : @"Months"];
+		[resultOptionStrings addObject:isShortType ? NSLocalizedString(@"DaysCounterDuration_month_abbreviation", @"m") : NSLocalizedString(@"Months", @"Months")];
     }
     if ( option & DurationOption_Week ) {
-        [resultOptionStrings addObject: isShortType ? @"w" : @"Weeks"];
+		[resultOptionStrings addObject:isShortType ? NSLocalizedString(@"DaysCounterDuration_week_abbreviation", @"w") : NSLocalizedString(@"Weeks", @"Weeks")];
     }
     if ( option & DurationOption_Day ) {
-        [resultOptionStrings addObject: isShortType ? @"d" : @"Days"];
+		[resultOptionStrings addObject:isShortType ? NSLocalizedString(@"DaysCounterDuration_day_abbreviation", @"d") : NSLocalizedString(@"Days", @"Days")];
     }
     if ( option & DurationOption_Hour ) {
-        [resultOptionStrings addObject: isShortType ? @"hr" : @"Hours"];
+		[resultOptionStrings addObject:isShortType ? NSLocalizedString(@"DaysCounterDuration_hour_abbreviation", @"hr") : NSLocalizedString(@"Hours", @"Hours")];
     }
     if ( option & DurationOption_Minutes ) {
-        [resultOptionStrings addObject: isShortType ? @"min" : @"Minutes"];
+		[resultOptionStrings addObject:isShortType ? NSLocalizedString(@"DaysCounterDuration_minute_abbreviation", @"min") : NSLocalizedString(@"Minutes", @"Minutes")];
     }
     retStr = [resultOptionStrings componentsJoinedByString:@" "];
     
     return retStr;
-}
-
-- (NSString*)titleForCellType:(NSInteger)cellType
-{
-    NSArray *array = @[@"Title",@"Photo",@"Lunar",@"All-day",@"Starts-Ends",@"Starts",@"Ends",@"Repeat",@"End Repeat",@"Alert",@"Calendar",@"Duration Option",@"Location",@"Notes",@"Date Input"];
-    if ( cellType < 0 || cellType >= [array count] )
-        return @"";
-    
-    return [array objectAtIndex:cellType];
 }
 
 - (NSString*)addressFromVenue:(FSVenue*)venue isDetail:(BOOL)isDetail
@@ -930,51 +931,49 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     
     if (!isShortStyle) {
         if ( option & DurationOption_Year && [diffComponent year] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:@"%ld year%@", (long)labs([diffComponent year]), (labs([diffComponent year]) > 1 ? @"s" : @"")]];
+            [resultArray addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), labs([diffComponent year]) ] ];
         }
         if ( option & DurationOption_Month && [diffComponent month] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:@"%ld month%@", (long)labs([diffComponent month]), (labs([diffComponent month]) > 1 ? @"s" : @"")]];
+            [resultArray addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld months", @"StringsDict", nil), labs([diffComponent month]) ] ];
         }
         if ( option & DurationOption_Week && [diffComponent week] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:@"%ld week%@", (long)labs([diffComponent week]), (labs([diffComponent week]) > 1 ? @"s" : @"")]];
+            [resultArray addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld weeks", @"StringsDict", nil), labs([diffComponent week]) ] ];
         }
         if (option & DurationOption_Day && [diffComponent day] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:@"%ld day%@", (long)labs([diffComponent day]), (labs([diffComponent day]) > 1 ? @"s" : @"")]];
+            [resultArray addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), labs([diffComponent day]) ] ];
         }
         
         if (!isAllDay) {
             if (option & DurationOption_Hour && [diffComponent hour] != 0) {
-                [resultArray addObject:[NSString stringWithFormat: isStrictShortType ? @"%ld hr%@" : @"%ld hour%@",
-                                        (long)labs([diffComponent hour]),
-                                        (labs([diffComponent hour]) > 1 ? @"s" : @"")]];
+                [resultArray addObject:[NSString stringWithFormat: isStrictShortType ? NSLocalizedStringFromTable(@"%ld hrs", @"StringsDict", nil) : NSLocalizedStringFromTable(@"%ld hours", @"StringsDict", nil),
+                                        labs([diffComponent hour]) ] ];
             }
             if (option & DurationOption_Minutes && [diffComponent minute] != 0) {
-                [resultArray addObject:[NSString stringWithFormat: isStrictShortType ? @"%ld min%@" : @"%ld minute%@",
-                                        (long)labs([diffComponent minute]),
-                                        (labs([diffComponent minute]) > 1 ? @"s" : @"")]];
+                [resultArray addObject:[NSString stringWithFormat: isStrictShortType ? NSLocalizedStringFromTable(@"%ld mins", @"StringsDict", nil) : NSLocalizedStringFromTable(@"%ld minutes", @"StringsDict", nil),
+                                        labs([diffComponent minute])]];
             }
         }
     }
     else {
         if ( option & DurationOption_Year && [diffComponent year] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:@"%ld y", (long)labs([diffComponent year])]];
+            [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld y", @"%ld y"), labs([diffComponent year])]];
         }
         if ( option & DurationOption_Month && [diffComponent month] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:@"%ld m", (long)labs([diffComponent month])]];
+            [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld m", @"%ld m"), labs([diffComponent month])]];
         }
         if ( option & DurationOption_Week && [diffComponent week] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:@"%ld w", (long)labs([diffComponent week])]];
+            [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld w", @"%ld w"), labs([diffComponent week])]];
         }
         if (option & DurationOption_Day && [diffComponent day] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:@"%ld d", (long)labs([diffComponent day])]];
+            [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld d", @"%ld d"), labs([diffComponent day])]];
         }
         
         if (!isAllDay) {
             if (option & DurationOption_Hour && [diffComponent hour] != 0) {
-                [resultArray addObject:[NSString stringWithFormat:@"%ld hr", (long)labs([diffComponent hour])]];
+                [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld hr", @"%ld hr"), (long) labs([diffComponent hour])]];
             }
             if (option & DurationOption_Minutes && [diffComponent minute] != 0) {
-                [resultArray addObject:[NSString stringWithFormat:@"%ld min", (long)labs([diffComponent minute])]];
+                [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld min", @"%ld min"), (long) labs([diffComponent minute])]];
             }
         }
     }
@@ -989,7 +988,13 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSString*)stringForSlideshowTransitionType:(NSInteger)type
 {
-    NSArray *names = @[@"Cube",@"Dissolve",@"Origami",@"Ripple",@"Wipe"];
+    NSArray *names = @[
+			NSLocalizedString(@"Cube", @"Cube"),
+			NSLocalizedString(@"Dissolve", @"Dissolve"),
+			NSLocalizedString(@"Origami", @"Origami"),
+			NSLocalizedString(@"Ripple", @"Ripple"),
+			NSLocalizedString(@"Wipe", @"Wipe")
+	];
     if ( type < 0 || type > TransitionType_Wipe )
         return @"";
     
@@ -1032,14 +1037,14 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
                                                              allDayOption:[item.isAllDay boolValue]
                                                                    repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO
                                                                    strict:NO];
-    
-    if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"now"]) {
+
+    if ([untilSinceString isEqualToString:NSLocalizedString(@"today", @"today")] || [untilSinceString isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
         NSDate *repeatDate = [A3DaysCounterModelManager repeatDateOfCurrentNotNextWithRepeatOption:[item.repeatType integerValue]
                                                                                          firstDate:[item.startDate solarDate]
                                                                                           fromDate:[NSDate date]];
         dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
                                                withFormat:[self dateFormatForPhotoWithIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
-        daysLabel.text = [untilSinceString isEqualToString:@"today"] ? @" Today " : @" Now ";
+        daysLabel.text = [untilSinceString isEqualToString:NSLocalizedString(@"today", @"today")] ? NSLocalizedString(@" Today ", @" Today ") : NSLocalizedString(@" Now ", @" Now ");
         markLabel.text = @"";
         daysLabel.font = IS_IPHONE ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0] : [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
     }
@@ -1048,14 +1053,14 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
                                                withFormat:[self dateFormatForPhotoWithIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.effectiveStartDate isAllDay:YES];
         if ( diffDays > 0 ) {
-            markLabel.text = @"Days\nUntil";
+            markLabel.text = NSLocalizedString(@"Days\nUntil", @"Days\nUntil");
         }
         else if ( diffDays < 0 ) {
-            markLabel.text = @"Days\nSince";
+            markLabel.text = NSLocalizedString(@"Days\nSince", @"Days\nSince");
         }
-        
+
         daysLabel.text = [NSString stringWithFormat:@"%ld", labs(diffDays)];
-        
+
         if ( IS_IPHONE ) {
             if ( labs(diffDays) > 9999 ) {
                 daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:84.0];
@@ -1652,13 +1657,13 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         }
         
         if (IS_IPAD) {
-            dateString = [NSString stringWithFormat:@"%@ (음력 %@)",
-                          [A3DateHelper dateStringFromDate:[dateModel solarDate] withFormat:[self dateFormatForDetailIsAllDays:isAllDay]],
-                          [A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:isLunar] withFormat:dateFormat]];
+            dateString = [NSString stringWithFormat:NSLocalizedString(@"%@ (음력 %@)", @"%@ (음력 %@)"),
+													[A3DateHelper dateStringFromDate:[dateModel solarDate] withFormat:[self dateFormatForDetailIsAllDays:isAllDay]],
+													[A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:isLunar] withFormat:dateFormat]];
         }
         else {
-            dateString = [NSString stringWithFormat:@"(음력 %@)",
-                          [A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:isLunar] withFormat:dateFormat]];
+            dateString = [NSString stringWithFormat:NSLocalizedString(@"(음력 %@)", @"(음력 %@)"),
+													[A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:isLunar] withFormat:dateFormat]];
         }
     }
     else {
@@ -1709,8 +1714,9 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     [dateFormat replaceOccurrencesOfString:@"EEEE" withString:@"" options:0 range:NSMakeRange(0, [dateFormat length])];
     [dateFormat replaceOccurrencesOfString:@"MMMM" withString:@"MMM" options:0 range:NSMakeRange(0, [dateFormat length])];
     
-    dateString = [NSString stringWithFormat:@"음력 %@",
-                  [A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:YES] withFormat:dateFormat]];
+    dateString = [NSString stringWithFormat:NSLocalizedString(@"음력 %@", @"음력 %@"),
+											[A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:YES] withFormat:dateFormat]];
     return dateString;
 }
+
 @end
