@@ -45,7 +45,7 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Location";
+    self.title = NSLocalizedString(@"Location", @"Location");
     
     if (self.isEditMode) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
@@ -177,13 +177,13 @@
             UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
             
             if ( indexPath.row == 0 ) {
-                textLabel.text = @"Phone";
+                textLabel.text = NSLocalizedString(@"Phone", @"Phone");
                 detailTextLabel.text = _locationItem.contact;
                 //cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
                 cell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
             }
             else {
-                textLabel.text = @"Address";
+                textLabel.text = NSLocalizedString(@"Address", @"Address");
                 detailTextLabel.text = _addressStr;
                 cell.separatorInset = UIEdgeInsetsMake(0, CGRectGetWidth(cell.contentView.frame), 0, 0);
             }
@@ -193,7 +193,7 @@
         case 1:
         {
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            cell.textLabel.text = @"Delete Location";
+            cell.textLabel.text = NSLocalizedString(@"Delete Location", @"Delete Location");
             cell.textLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
             cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, CGRectGetWidth(cell.contentView.frame));
         }

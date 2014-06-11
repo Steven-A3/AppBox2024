@@ -45,9 +45,9 @@
     if ( IS_IPAD ) {
         self.originalValue = self.eventModel.repeatEndDate;
     }
-    self.title = @"End Repeat";
+    self.title = NSLocalizedString(@"End Repeat", @"End Repeat");
     
-    self.itemArray = @[@"Never",@"Custom"];
+    self.itemArray = @[NSLocalizedString(@"Never", @"Never"), NSLocalizedString(@"Custom", @"Custom")];
 }
 
 - (void)didReceiveMemoryWarning
@@ -233,7 +233,7 @@
 
 - (void)showDatePicker:(NSDate *)date
 {
-    self.itemArray = @[@"Never", @"Custom", @"DatePicker"];
+    self.itemArray = @[NSLocalizedString(@"Never", @"Never"), NSLocalizedString(@"Custom", @"Custom"), @"DatePicker"];
     
     [CATransaction begin];
     [CATransaction setCompletionBlock:^{
@@ -247,7 +247,7 @@
 
 - (void)hideDatePicker
 {
-    self.itemArray = @[@"Never", @"Custom"];
+    self.itemArray = @[NSLocalizedString(@"Never", @"Never"), NSLocalizedString(@"Custom", @"Custom")];
     
     [self.tableView beginUpdates];
     [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationMiddle];
@@ -255,6 +255,7 @@
 }
 
 #pragma mark - action method
+
 - (void)cancelAction:(id)sender
 {
     self.eventModel.repeatEndDate = self.originalValue;

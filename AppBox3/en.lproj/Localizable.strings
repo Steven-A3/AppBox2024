@@ -376,3 +376,108 @@
 "음력 %@" = "음력 %@";
 
 "(음력 %@)" = "(음력 %@)";
+
+"Change Location" = "Change Location";
+"Current Location" = "Current Location";
+"Searching" = "Searching";
+"No Results Found" = "No Results Found";
+"Custom" = "Custom";
+"day(s) before" = "day(s) before";
+"Please enter your dates in the future." = "Please enter your dates in the future.";
+"Days Before" = "Days Before";
+"Time" = "Time";
+"Duration Options" = "Duration Options";
+
+"2 years" = "2 years";
+"3 months" = "3 months";
+"4 weeks" = "4 weeks";
+"15 days" = "15 days";
+"4 hours" = "4 hours";
+"30 minutes" = "30 minutes";
+"13 seconds" = "13 seconds";
+
+"장소 검색 실패" = "장소 검색 실패";
+
+"Loading locations...." = "Loading locations....";
+
+"Add this place?" = "Add this place?";
+"We Couldn't find that" = "We Couldn't find that";
+
+"Create %@" = "Create %@";
+
+"현재 위치에 대한 정보를 가져올 수 없습니다." = "현재 위치에 대한 정보를 가져올 수 없습니다.";
+
+"확인" = "확인";
+
+"Every 2 Weeks" = "Every 2 Weeks";
+"Undo" = "Undo";
+"Redo" = "Redo";
+"Prev" = "Prev";
+"Next" = "Next";
+"Add Budget" = "Add Budget";
+"Edit Budget" = "Edit Budget";
+"Budget" = "Budget";
+"Categories" = "Categories";
+"Payment Type" = "Payment Type";
+
+"Food" = "Food";
+"Personal" = "Personal";
+"Pets" = "Pets";
+"School" = "School";
+"Service" = "Service";
+"Shopping" = "Shopping";
+"Transportation" = "Transportation";
+"Travel" = "Travel";
+"Utilies" = "Utilies";
+"Uncategorized" = "Uncategorized";
+
+/* Expense List */
+"Cash" = "Cash";
+"Check" = "Check";
+"Credit" = "Credit";
+"Debit Card" = "Debit Card";
+"Gift Card" = "Gift Card";
+
+"ITEM" = "ITEM";
+"PRICE" = "PRICE";
+"QTY" = "QTY";
+"SUBTOTAL" = "SUBTOTAL";
+"QUANTITY" = "QUANTITY";
+
+" over of " = " over of ";
+" left of " = " left of ";
+
+"Done" = "Done";
+"Add Holidays to \"Days Conter\" app" = "Add Holidays to \"Days Conter\" app";
+
+/* Public Holiday */
+"Public" = "Public";
+"Holiday_Public_holiday_abbreviation" = "P";
+
+"Search" = "Search";
+"Select Country" = "Select Country";
+"To add a new country, remove one first." = "To add a new country, remove one first.";
+
+"Acknowledgement" = "Acknowledgement";
+"Upcoming %lu" = "Upcoming %lu";
+"Past %lu" = "Past %lu";
+"Upcoming %ld" = "Upcoming %ld";
+"Past %ld" = "Past %ld";
+"Holidays for year %lu is not available." = "Holidays for year %lu is not available.";
+"Discalimer" = "Discalimer";
+"I Agree" = "I Agree";
+"on flickr" = "on flickr";
+" by %@" = " by %@";
+
+"Edit" = "Edit";
+"Average" = "Average";
+"Avg." = "Avg.";
+"Edit Accounts" = "Edit Accounts";
+"Edit Account" = "Edit Account";
+"Add Account" = "Add Account";
+"Name" = "Name";
+"Delete Account" = "Delete Account";
+"Optional" = "Optional";
+"Cannot remove current account." = "Cannot remove current account.";
+" Same name already exists. " = " Same name already exists. ";
+"User%02ld" = "User%02ld";

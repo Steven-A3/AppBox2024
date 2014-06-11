@@ -129,9 +129,11 @@
     
     NSArray *strings;
     if (aBudget.usedAmount.floatValue > aBudget.totalAmount.floatValue) {
-        strings = @[[nFormatter stringFromNumber: @(aBudget.usedAmount.floatValue - aBudget.totalAmount.floatValue) ],
-                    @" over of ",
-                    [nFormatter stringFromNumber: aBudget.totalAmount]];
+		strings = @[
+				[nFormatter stringFromNumber: @(aBudget.usedAmount.floatValue - aBudget.totalAmount.floatValue) ],
+				NSLocalizedString(@" over of ", @" over of "),
+				[nFormatter stringFromNumber: aBudget.totalAmount]
+		];
         
         _resultAmountLabel.text = [strings componentsJoinedByString:@""];
         
@@ -142,9 +144,10 @@
 
         _resultAmountLabel.attributedText = savedPriceAttribute;
     } else {
-        strings = @[[nFormatter stringFromNumber: @(aBudget.totalAmount.floatValue - aBudget.usedAmount.floatValue) ],
-                    @" left of ",
-                    [nFormatter stringFromNumber: aBudget.totalAmount]];
+        strings = @[
+				[nFormatter stringFromNumber: @(aBudget.totalAmount.floatValue - aBudget.usedAmount.floatValue) ],
+				NSLocalizedString(@" left of ", @" left of "),
+				[nFormatter stringFromNumber: aBudget.totalAmount]];
         
         _resultAmountLabel.text = [strings componentsJoinedByString:@""];
         

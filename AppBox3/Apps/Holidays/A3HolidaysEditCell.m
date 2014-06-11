@@ -42,7 +42,7 @@
 		_publicLabel.textAlignment = NSTextAlignmentCenter;
 		_publicLabel.textColor = [UIColor colorWithRed:142.0 / 255.0 green:142.0 / 255.0 blue:147.0 / 255.0 alpha:1.0];
 		_publicLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:11] : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-		_publicLabel.text = IS_IPHONE ? @"P" : @"Public";
+		_publicLabel.text = IS_IPHONE ? NSLocalizedString(@"Holiday_Public_holiday_abbreviation", @"P") : NSLocalizedString(@"Public", @"Public");
 		[self addSubview:_publicLabel];
 
 		CGSize size = [_publicLabel.text sizeWithAttributes:@{NSFontAttributeName : _publicLabel.font}];

@@ -62,15 +62,15 @@
     _subTotalLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     
     if (IS_IPHONE) {
-        _itemLabel.text = @"ITEM";
-        _priceLabel.text = @"PRICE";
-        _qtyLabel.text = @"QTY";
-        _subTotalLabel.text = @"SUBTOTAL";
+        _itemLabel.text = NSLocalizedString(@"ITEM", @"ITEM");
+        _priceLabel.text = NSLocalizedString(@"PRICE", @"PRICE");
+        _qtyLabel.text = NSLocalizedString(@"QTY", @"QTY");
+        _subTotalLabel.text = NSLocalizedString(@"SUBTOTAL", @"SUBTOTAL");
     } else {
-        _itemLabel.text = @"ITEM";
-        _priceLabel.text = @"PRICE";
-        _qtyLabel.text = @"QUANTITY";
-        _subTotalLabel.text = @"SUBTOTAL";
+        _itemLabel.text = NSLocalizedString(@"ITEM", @"ITEM");
+        _priceLabel.text = NSLocalizedString(@"PRICE", @"PRICE");
+        _qtyLabel.text = NSLocalizedString(@"QUANTITY", @"QUANTITY");
+        _subTotalLabel.text = NSLocalizedString(@"SUBTOTAL", @"SUBTOTAL");
     }
     
     _itemLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];

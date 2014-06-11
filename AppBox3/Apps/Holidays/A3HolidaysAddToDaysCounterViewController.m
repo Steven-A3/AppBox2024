@@ -43,13 +43,13 @@ static NSString *CellIdentifier = @"Cell";
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
-	self.navigationItem.prompt = @"Add Holidays to \"Days Conter\" app";
+	self.navigationItem.prompt = NSLocalizedString(@"Add Holidays to \"Days Conter\" app", @"Add Holidays to \"Days Conter\" app");
 	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonAction:)];
 	self.navigationItem.leftBarButtonItem = cancelButton;
 	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonAction:)];
 	self.navigationItem.rightBarButtonItem = doneButton;
 
-	self.title = @"Holidays";
+	self.title = NSLocalizedString(@"Holidays", @"Holidays");
 
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;

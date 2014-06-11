@@ -157,7 +157,11 @@
 
 - (void)alertDisclaimer {
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:A3HolidaysDoesNotNeedsShowDisclaimer]) {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Discalimer" message:NSLocalizedString(@"DISCLAIMER_MESSAGE", @"DISCLAIMER_MESSAGE") delegate:self cancelButtonTitle:@"I Agree" otherButtonTitles:nil];
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Discalimer", @"Discalimer")
+															message:NSLocalizedString(@"DISCLAIMER_MESSAGE", @"DISCLAIMER_MESSAGE")
+														   delegate:self
+												  cancelButtonTitle:NSLocalizedString(@"I Agree", @"I Agree")
+												  otherButtonTitles:nil];
 		alertView.tag = 82093;
 		[alertView show];
 	}
@@ -539,7 +543,7 @@
 		_photoLabel2 = [UILabel new];
 		_photoLabel2.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11];
 		_photoLabel2.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
-		_photoLabel2.text = @"on flickr";
+		_photoLabel2.text = NSLocalizedString(@"on flickr", @"on flickr");
 		_photoLabel2.userInteractionEnabled = YES;
 		[_footerView addSubview:_photoLabel2];
 
@@ -620,13 +624,13 @@ extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 		} else {
 			licenseString = [[NSMutableAttributedString alloc] initWithString:@"©" attributes:@{NSFontAttributeName:[UIFont fontWithName:@".HelveticaNeueInterface-M3" size:12],NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
 		}
-		NSAttributedString *text = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" by %@", owner] attributes:@{NSFontAttributeName:[UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11], NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
+		NSAttributedString *text = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@" by %@", @" by %@"), owner] attributes:@{NSFontAttributeName:[UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11], NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
 		[licenseString appendAttributedString:text];
 
 		[self.photoLabel1 setHidden:NO];
 		[self.photoLabel2 setHidden:NO];
 		self.photoLabel1.attributedText = licenseString;
-		self.photoLabel2.text = @"on flickr";
+		self.photoLabel2.text = NSLocalizedString(@"on flickr", @"on flickr");
 	} else {
 		[self.photoLabel1 setHidden:YES];
 		[self.photoLabel2 setHidden:YES];

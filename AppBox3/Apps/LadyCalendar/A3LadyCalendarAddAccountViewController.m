@@ -43,12 +43,25 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 {
 	[super viewDidLoad];
 
-	self.title = (_isEditMode ? @"Edit Account" : @"Add Account");
+	self.title = (_isEditMode ? NSLocalizedString(@"Edit Account", @"Edit Account") : NSLocalizedString(@"Add Account", @"Add Account"));
 
 	[self leftBarButtonCancelButton];
 	[self rightBarButtonDoneButton];
 
-	self.itemArray = [NSMutableArray arrayWithArray:@[@{ ItemKey_Title : @"Name", ItemKey_Type : @( AccountCell_Name )},@{ ItemKey_Title : @"Birthday", ItemKey_Type : @( AccountCell_Birthday )},@{ ItemKey_Title : @"Notes", ItemKey_Type : @( AccountCell_Notes )}]];
+	self.itemArray = [NSMutableArray arrayWithArray:@[
+			@{
+					ItemKey_Title : NSLocalizedString(@"Name", @"Name"),
+					ItemKey_Type : @( AccountCell_Name )
+			},
+			@{
+					ItemKey_Title : NSLocalizedString(@"Birthday", @"Birthday"),
+					ItemKey_Type : @( AccountCell_Birthday )
+			},
+			@{
+					ItemKey_Title : NSLocalizedString(@"Notes", @"Notes"),
+					ItemKey_Type : @( AccountCell_Notes )
+			}
+	]];
 	if( !_isEditMode ) {
 		_accountItem = [LadyCalendarAccount MR_createEntity];
 		_accountItem.uniqueID = [[NSUUID UUID] UUIDString];
@@ -197,7 +210,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             cell.textLabel.textColor = [UIColor colorWithRed:1.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
         }
-        cell.textLabel.text = @"Delete Account";
+        cell.textLabel.text = NSLocalizedString(@"Delete Account", @"Delete Account");
         
         return cell;
     }
@@ -264,7 +277,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			//cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:birthDay withFormat:(IS_IPHONE ? @"EEE, MMM d, yyyy" : @"EEEE, MMMM d, yyyy")];
             cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:birthDay withFormat:[formatter dateFormat]];
 		} else {
-			cell.detailTextLabel.text = @"Optional";
+			cell.detailTextLabel.text = NSLocalizedString(@"Optional", @"Optional");
 		}
         if( [self.itemArray count] > 3 )
 			cell.detailTextLabel.textColor = [[A3AppDelegate instance] themeColor];
@@ -355,10 +368,14 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         cell.selected = NO;
         
         if([[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] isEqualToString:_accountItem.uniqueID]){
-            [A3LadyCalendarModelManager alertMessage:@"Cannot remove current account" title:nil];
+			[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"Cannot remove current account.", @"Cannot remove current account.") title:nil];
             return;
         }
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Account" otherButtonTitles:nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+																 delegate:self
+														cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+												   destructiveButtonTitle:NSLocalizedString(@"Delete Account", @"Delete Account")
+														otherButtonTitles:nil];
         [actionSheet showInView:self.view];
     }
 }
@@ -432,7 +449,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		_alertHUD.mode = MBProgressHUDModeText;
 		_alertHUD.margin = 2.0;
 		_alertHUD.cornerRadius = 10.0;
-		_alertHUD.labelText = @" Same name already exists. ";
+		_alertHUD.labelText = NSLocalizedString(@" Same name already exists. ", @" Same name already exists. ");
 		_alertHUD.labelFont = [UIFont fontWithName:@"Avenir-Light" size:14.0];
 		_alertHUD.labelColor = [UIColor whiteColor];
 		_alertHUD.color = [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f];
@@ -505,7 +522,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
     if( ![_accountItem.name length] ){
         NSInteger totalUser = [LadyCalendarAccount MR_countOfEntities];
-		_accountItem.name = [NSString stringWithFormat:@"User%02ld", (long)totalUser+1];
+		_accountItem.name = [NSString stringWithFormat:NSLocalizedString(@"User%02ld", @"User%02ld"), (long) totalUser + 1];
     }
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 

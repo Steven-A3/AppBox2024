@@ -59,7 +59,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"Location";
+    self.title = NSLocalizedString(@"Location", @"Location");
     self.navigationItem.titleView = self.searchBarBaseView;
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
     [self makeBackButtonEmptyArrow];
@@ -240,7 +240,7 @@
     [_infoTableView reloadData];
 
 	self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-	self.progressHud.labelText = @"Searching";
+	self.progressHud.labelText = NSLocalizedString(@"Searching", @"Searching");
 	self.progressHud.minShowTime = 2;
 	self.progressHud.removeFromSuperViewOnHide = YES;
 	__typeof(self) __weak weakSelf = self;
@@ -302,7 +302,11 @@
                                           }];
                                       }
                                       else {
-                                          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"장소 검색 실패" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+																						  message:NSLocalizedString(@"장소 검색 실패", @"장소 검색 실패")
+																						 delegate:nil
+																				cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+																				otherButtonTitles:nil];
                                           [alert show];
                                           FNLOG(@"장소 검색 실패.");
                                       }
@@ -366,7 +370,7 @@
     [searchBar resignFirstResponder];
     
 	self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-	self.progressHud.labelText = @"Searching";
+	self.progressHud.labelText = NSLocalizedString(@"Searching", @"Searching");
 	self.progressHud.minShowTime = 2;
 	self.progressHud.removeFromSuperViewOnHide = YES;
 	__typeof(self) __weak weakSelf = self;
@@ -452,7 +456,7 @@
 - (UITableViewCell *)cellOfInfoTableView:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
     if ( [self.nearbyVenues count] < 1 ) {
-        cell.textLabel.text = (isLoading ? @"Loading locations...." : @"");
+        cell.textLabel.text = (isLoading ? NSLocalizedString(@"Loading locations....", @"Loading locations....") : @"");
         cell.detailTextLabel.text = @"";
         cell.textLabel.textColor = [UIColor blackColor];
         cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
@@ -481,15 +485,15 @@
 - (UITableViewCell *)cellOfSearchResultTableView:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
     if ( [self.nearbyVenuesOfSearchResults count] == 0 ) {
-        cell.textLabel.text = (isLoading ? @"Loading locations...." : @"Add this place");
+        cell.textLabel.text = (isLoading ? NSLocalizedString(@"Loading locations....", @"Loading locations....") : @"Add this place");
         cell.detailTextLabel.text = @"";
         cell.textLabel.textColor = isLoading ? [UIColor blackColor] : [A3AppDelegate instance].themeColor;
     }
     else if (indexPath.row >= [self.nearbyVenuesOfSearchResults count]) {
         cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
         cell.detailTextLabel.font = [UIFont systemFontOfSize:14.0];
-        cell.textLabel.text = @"Add this place?";
-        cell.detailTextLabel.text = @"We Couldn't find that";
+        cell.textLabel.text = NSLocalizedString(@"Add this place?", @"Add this place?");
+        cell.detailTextLabel.text = NSLocalizedString(@"We Couldn't find that", @"We Couldn't find that");
         cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
         cell.detailTextLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
     }
@@ -528,7 +532,7 @@
         cell.textLabel.text = [[_sharedManager addressFromPlacemark:self.changedPlace] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     }
     else {
-        cell.textLabel.text = @"Current Location";
+        cell.textLabel.text = NSLocalizedString(@"Current Location", @"Current Location");
     }
     
     return cell;
@@ -569,7 +573,11 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
         // 이 위치를 추가하는 화면으로 이동
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"Create %@",self.searchText], nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+																 delegate:self
+														cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+												   destructiveButtonTitle:nil
+														otherButtonTitles:[NSString stringWithFormat:NSLocalizedString(@"Create %@", @"Create %@"), self.searchText], nil];
         [actionSheet showInView:self.view];
     }
     else {
@@ -646,7 +654,11 @@
         [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
             if ( error == nil ) {
                 if ( [placemarks count] < 1 ) {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"현재 위치에 대한 정보를 가져올 수 없습니다." delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil];
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																		message:NSLocalizedString(@"현재 위치에 대한 정보를 가져올 수 없습니다.", @"현재 위치에 대한 정보를 가져올 수 없습니다.")
+																	   delegate:nil
+															  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+															  otherButtonTitles:nil];
                     [alertView show];
                     return;
                     
@@ -685,7 +697,7 @@
     FNLOG(@"location updated");
 
 	self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-	self.progressHud.labelText = @"Searching";
+	self.progressHud.labelText = NSLocalizedString(@"Searching", @"Searching");
 	self.progressHud.minShowTime = 2;
 	self.progressHud.removeFromSuperViewOnHide = YES;
 	__typeof(self) __weak weakSelf = self;

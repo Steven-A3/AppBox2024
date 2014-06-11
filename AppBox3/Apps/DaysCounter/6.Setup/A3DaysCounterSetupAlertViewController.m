@@ -69,20 +69,20 @@
 {
 	[super viewDidLoad];
 
-	self.title = @"Alert";
+	self.title = NSLocalizedString(@"Alert", @"Alert");
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     
-	self.itemArray = @[@{EventRowTitle : @"None", EventRowType : @(AlertType_None)},
-			@{EventRowTitle : @"At time of event", EventRowType : @(AlertType_AtTimeOfEvent)},
-			@{EventRowTitle : @"5 minutes before", EventRowType : @(AlertType_5MinutesBefore)},
-			@{EventRowTitle : @"15 minutes before", EventRowType : @(AlertType_15MinutesBefore)},
-			@{EventRowTitle : @"30 minutes before", EventRowType : @(AlertType_30MinutesBefore)},
-			@{EventRowTitle : @"1 hour before", EventRowType : @(AlertType_1HourBefore)},
-			@{EventRowTitle : @"2 hours before", EventRowType : @(AlertType_2HoursBefore)},
-			@{EventRowTitle : @"1 day before", EventRowType : @(AlertType_1DayBefore)},
-			@{EventRowTitle : @"2 days before", EventRowType : @(AlertType_2DaysBefore)},
-			@{EventRowTitle : @"1 week before", EventRowType : @(AlertType_1WeekBefore)},
-			@{EventRowTitle : @"Custom", EventRowType : @(AlertType_Custom)}];
+	self.itemArray = @[@{EventRowTitle : NSLocalizedString(@"None", @"None"), EventRowType : @(AlertType_None)},
+			@{EventRowTitle : NSLocalizedString(@"At time of event", @"At time of event"), EventRowType : @(AlertType_AtTimeOfEvent)},
+			@{EventRowTitle : NSLocalizedString(@"5 minutes before", @"5 minutes before"), EventRowType : @(AlertType_5MinutesBefore)},
+			@{EventRowTitle : NSLocalizedString(@"15 minutes before", @"15 minutes before"), EventRowType : @(AlertType_15MinutesBefore)},
+			@{EventRowTitle : NSLocalizedString(@"30 minutes before", @"30 minutes before"), EventRowType : @(AlertType_30MinutesBefore)},
+			@{EventRowTitle : NSLocalizedString(@"1 hour before", @"1 hour before"), EventRowType : @(AlertType_1HourBefore)},
+			@{EventRowTitle : NSLocalizedString(@"2 hours before", @"2 hours before"), EventRowType : @(AlertType_2HoursBefore)},
+			@{EventRowTitle : NSLocalizedString(@"1 day before", @"1 day before"), EventRowType : @(AlertType_1DayBefore)},
+			@{EventRowTitle : NSLocalizedString(@"2 days before", @"2 days before"), EventRowType : @(AlertType_2DaysBefore)},
+			@{EventRowTitle : NSLocalizedString(@"1 week before", @"1 week before"), EventRowType : @(AlertType_1WeekBefore)},
+			@{EventRowTitle : NSLocalizedString(@"Custom", @"Custom"), EventRowType : @(AlertType_Custom)}];
 
 	self.originalValue = _eventModel.alertDatetime;
 	self.numberKeyboardVC = [self simpleNumberKeyboard];
@@ -148,7 +148,7 @@
 			UITextField *textField = (UITextField*)[cell viewWithTag:12];
 			textField.delegate = self;
 			UILabel *detailLabel = (UILabel*)[cell viewWithTag:11];
-			detailLabel.text = @"day(s) before";
+			detailLabel.text = NSLocalizedString(@"day(s) before", @"day(s) before");
 			((A3DaysCounterRepeatCustomCell *)cell).daysLabelWidthConst.constant = 100;
 			((A3DaysCounterRepeatCustomCell *)cell).checkImageView.image = [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 			[((A3DaysCounterRepeatCustomCell *)cell).checkImageView setTintColor:[A3AppDelegate instance].themeColor];
@@ -319,7 +319,11 @@
 	NSDate *today = [NSDate date];
     
 	if ( [today timeIntervalSince1970] > [startDate timeIntervalSince1970] && [datePicker.date timeIntervalSince1970] < [today timeIntervalSince1970] ) {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Please enter your dates in the future." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+															message:NSLocalizedString(@"Please enter your dates in the future.", @"Please enter your dates in the future.")
+														   delegate:nil
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												  otherButtonTitles:nil];
 		[alertView show];
 		return;
 	}

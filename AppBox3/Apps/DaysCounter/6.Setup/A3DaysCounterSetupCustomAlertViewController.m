@@ -43,9 +43,9 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Custom";
-    self.tableRowArray = [NSMutableArray arrayWithArray:@[@{EventRowTitle : @"Days Before", EventRowType: @(CustomAlertCell_DaysBefore)},
-                                                          @{EventRowTitle : @"Time", EventRowType : @(CustomAlertCell_Time)}]];
+    self.title = NSLocalizedString(@"Custom", @"Custom");
+    self.tableRowArray = [NSMutableArray arrayWithArray:@[@{EventRowTitle : NSLocalizedString(@"Days Before", @"Days Before"), EventRowType: @(CustomAlertCell_DaysBefore)},
+                                                          @{EventRowTitle : NSLocalizedString(@"Time", @"Time"), EventRowType : @(CustomAlertCell_Time)}]];
     self.keyboardVC = [self simpleNumberKeyboard];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     

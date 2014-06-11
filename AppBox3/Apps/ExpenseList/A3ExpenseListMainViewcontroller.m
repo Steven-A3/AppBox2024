@@ -76,7 +76,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     [self makeBackButtonEmptyArrow];
 	[self leftBarButtonAppsButton];
 
-    self.title = @"Expense List";
+    self.title = NSLocalizedString(@"Expense List", @"Expense List");
 
 	self.dragDelegate = self;
 
@@ -496,7 +496,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	FNLOG(@"%ld", (long)indexPath.row);
     
     if (indexPath) {
-        NSLog(@"%@", NSStringFromCGPoint(tapLocation));
+        FNLOG(@"%@", NSStringFromCGPoint(tapLocation));
         
         A3ExpenseListItemCell *aCell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:indexPath];
         
@@ -610,7 +610,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		return;
 	}
 
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done")
 																			  style:UIBarButtonItemStylePlain
 																			 target:self
 																			 action:@selector(doneButtonAction:)];
@@ -844,8 +844,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 {
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
-    NSLog(@"History count : %ld", (long)[[ExpenseListHistory MR_findAll] count]);
-    NSLog(@"Budget count : %ld", (long)[[ExpenseListBudget MR_findAll] count]);
+    FNLOG(@"History count : %ld", (long)[ExpenseListHistory MR_countOfEntities]);
+    FNLOG(@"Budget count : %ld", (long)[ExpenseListBudget MR_countOfEntities]);
 }
 
 - (void)saveCurrentBudgetToHistory
@@ -867,8 +867,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
-    NSLog(@"History count : %ld", (long)[[ExpenseListHistory MR_findAll] count]);
-    NSLog(@"Budget count : %ld", (long)[[ExpenseListBudget MR_findAll] count]);
+    FNLOG(@"History count : %ld", (long)[ExpenseListHistory MR_countOfEntities]);
+    FNLOG(@"Budget count : %ld", (long)[ExpenseListBudget MR_countOfEntities]);
 }
 
 #pragma mark - misc

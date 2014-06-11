@@ -73,6 +73,7 @@ enum A3ExpenseListAddBudgetCellType {
     CGFloat _tableYOffset, _oldTableOffset;
     BOOL _showDatePicker;
     BOOL _isCategoryModified;
+	BOOL _isAddBudget;
 }
 
 #pragma mark -
@@ -106,18 +107,20 @@ enum A3ExpenseListAddBudgetCellType {
     [super viewDidLoad];
 
     if (_currentBudget == nil || _currentBudget.category == nil) {
-        self.title = @"Add Budget";
+		_isAddBudget = YES;
+        self.title = NSLocalizedString(@"Add Budget", @"Add Budget");
         [self rightBarButtonDoneButton];
         self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     else {
-        self.title = @"Edit Budget";
+		_isAddBudget = NO;
+        self.title = NSLocalizedString(@"Edit Budget", @"Edit Budget");
         [self rightBarButtonDoneButton];
         _isCategoryModified = YES;
     }
 
     [self makeBackButtonEmptyArrow];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self
                                                                             action:@selector(cancelButtonAction)];
@@ -326,7 +329,7 @@ enum A3ExpenseListAddBudgetCellType {
         NSMutableArray *elements = [NSMutableArray new];
         A3TableViewInputElement *budget = [A3TableViewInputElement new];
         budget.inputType = A3TableViewEntryTypeCurrency;
-        budget.title = @"Budget";
+        budget.title = NSLocalizedString(@"Budget", @"Budget");
         budget.valueType = A3TableViewValueTypeCurrency;
         budget.onEditingBegin = [self cellTextInputBeginBlock];
         budget.onEditingValueChanged = [self cellTextInputChangedBlock];
@@ -337,7 +340,7 @@ enum A3ExpenseListAddBudgetCellType {
         [elements addObject:budget];
         
         A3JHTableViewSelectElement *category =[A3JHTableViewSelectElement new];
-        category.title = @"Categories";
+        category.title = NSLocalizedString(@"Categories", @"Categories");
         
         NSArray *dataArray = [self getCategoryEntities];
         NSMutableArray *names = [NSMutableArray new];
@@ -351,7 +354,7 @@ enum A3ExpenseListAddBudgetCellType {
         [elements addObject:category];
         
         A3JHTableViewSelectElement *paymentType =[A3JHTableViewSelectElement new];
-        paymentType.title = @"Payment Type";
+        paymentType.title = NSLocalizedString(@"Payment Type", @"Payment Type");
         paymentType.items = [self getPaymentArray];
         paymentType.selectedIndex = 0;
         paymentType.identifier = AddBudgetCellID_PaymentType;
@@ -393,7 +396,7 @@ enum A3ExpenseListAddBudgetCellType {
 - (A3JHTableViewExpandableElement *)advancedElement {
     if (!_advancedElement) {
         _advancedElement = [A3JHTableViewExpandableElement new];
-        _advancedElement.title = @"ADVANCED";
+        _advancedElement.title = NSLocalizedString(@"ADVANCED", @"ADVANCED");
         _advancedElement.onExpandCompletion = [self cellExpandedBlock];
         _advancedElement.collapsed = (_currentBudget.title.length>0 || _currentBudget.date || _currentBudget.notes.length>0) ? NO : YES;
     }
@@ -414,12 +417,12 @@ enum A3ExpenseListAddBudgetCellType {
         _currentBudget.title = [_currentBudget.title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         title.value = _currentBudget.title;
         //title.placeholder = (_currentBudget == nil || _currentBudget.title.length == 0) ? @"Title" : _currentBudget.title;
-        title.placeholder = @"Title";
+        title.placeholder = NSLocalizedString(@"Title", @"Title");
         title.identifier = AddBudgetCellID_Title;
         
         // Date Print Cell
         A3JHTableViewDateEntryElement *date = [A3JHTableViewDateEntryElement new];
-        date.title = @"Date";
+        date.title = NSLocalizedString(@"Date", @"Date");
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         if (IS_IPAD) {
             [formatter setDateStyle:NSDateFormatterFullStyle];
@@ -554,9 +557,8 @@ static NSString *CellIdentifier = @"Cell";
     if (!aCell) {
         return;
     }
-    if (![self.title isEqualToString:@"Add Budget"]) {
+    if (!_isAddBudget) {
         return;
-        
     }
     
     [aCell.textField becomeFirstResponder];

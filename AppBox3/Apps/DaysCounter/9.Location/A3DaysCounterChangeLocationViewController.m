@@ -42,12 +42,12 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.navigationItem.title = @"Change Location";
+    self.navigationItem.title = NSLocalizedString(@"Change Location", @"Change Location");
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
     self.tableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
     self.tableView.contentInset = UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height + 20, 0, 0, 0);
-    self.tableDataSource = @[@"Current Location"];
+    self.tableDataSource = @[NSLocalizedString(@"Current Location", @"Current Location")];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -92,7 +92,7 @@
     }
     
     if ( indexPath.row == 0 ) {
-        cell.textLabel.text = @"Current Location";
+        cell.textLabel.text = NSLocalizedString(@"Current Location", @"Current Location");
         cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
     }
     else {
@@ -124,7 +124,7 @@
     
     
 	self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-	self.progressHud.labelText = @"Searching";
+	self.progressHud.labelText = NSLocalizedString(@"Searching", @"Searching");
 	self.progressHud.minShowTime = 2;
 	self.progressHud.removeFromSuperViewOnHide = YES;
 	__typeof(self) __weak weakSelf = self;
@@ -136,16 +136,16 @@
     [geocoder geocodeAddressString:searchText completionHandler:^(NSArray *placemarks, NSError *error) {
         if (!placemarks || [error code] == kCLErrorGeocodeFoundNoResult) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
-                                                                message:@"No Results Found"
+                                                                message:NSLocalizedString(@"No Results Found", @"No Results Found")
                                                                delegate:nil
-                                                      cancelButtonTitle:@"OK"
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                       otherButtonTitles:nil, nil];
             [alertView show];
             return;
         }
 
         NSMutableArray *resultArray = [NSMutableArray new];
-        [resultArray addObject:@"Current Location"];
+		[resultArray addObject:NSLocalizedString(@"Current Location", @"Current Location")];
         for (CLPlacemark *placemark in placemarks) {
             NSLog(@"%s %@/%@",__FUNCTION__,placemark.name,placemark.addressDictionary);
             [resultArray addObject:placemark];

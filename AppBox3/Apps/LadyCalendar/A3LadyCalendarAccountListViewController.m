@@ -40,7 +40,7 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Edit Accounts";
+    self.title = NSLocalizedString(@"Edit Accounts", @"Edit Accounts");
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addAction:)];
 	if (IS_IPHONE) {
 		[self rightBarButtonDoneButton];

@@ -119,12 +119,12 @@
     UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
     
     if ( indexPath.row == 0 ) {
-        textLabel.text = @"Phone";
+        textLabel.text = NSLocalizedString(@"Phone", @"Phone");
         detailTextLabel.text = _locationItem.contact;
         cell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     }
     else {
-        textLabel.text = @"Address";
+        textLabel.text = NSLocalizedString(@"Address", @"Address");
         detailTextLabel.text = _addressStr;
         cell.separatorInset = UIEdgeInsetsMake(0, CGRectGetWidth(cell.contentView.frame), 0, 0);
     }

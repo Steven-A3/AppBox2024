@@ -1,4 +1,4 @@
-	//
+//
 //  A3ExpenseListHeaderView.m
 //  A3TeamWork
 //
@@ -313,12 +313,12 @@
 
     if (!budget || budget.category == nil) {
         [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber: usedAmount]];
-        [resultBudgetStringArray addObject:[totalAmount compare:usedAmount] == NSOrderedAscending ? @" over of " : @" left of "];
+		[resultBudgetStringArray addObject:[totalAmount compare:usedAmount] == NSOrderedAscending ? NSLocalizedString(@" over of ", @" over of ") : NSLocalizedString(@" left of ", @" left of ")];
         [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber:totalAmount]];
     }
     else {
         [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber: @(fabs(remainAmount.floatValue)) ]];
-        [resultBudgetStringArray addObject:remainAmount.floatValue >= 0.0 ? @" left of " : @" over of " ];
+		[resultBudgetStringArray addObject:remainAmount.floatValue >= 0.0 ? NSLocalizedString(@" left of ", @" left of ") : NSLocalizedString(@" over of ", @" over of ") ];
         [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber:totalAmount]];
     }
 

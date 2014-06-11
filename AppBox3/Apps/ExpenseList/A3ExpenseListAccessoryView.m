@@ -40,21 +40,21 @@
 - (void)initializeSubviews
 {
     _toolBar = [[UIToolbar alloc] initWithFrame:self.frame];
-    _undoButton = [[UIBarButtonItem alloc] initWithTitle:@"Undo"
+    _undoButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Undo", @"Undo")
                                                    style:UIBarButtonItemStylePlain
                                                   target:self
                                                   action:@selector(undoButtonTouchUp:)];
-    _redoButton = [[UIBarButtonItem alloc] initWithTitle:@"Redo"
+    _redoButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Redo", @"Redo")
                                                    style:UIBarButtonItemStylePlain
                                                   target:self
                                                   action:@selector(redoButtonTouchUp:)];
-    _clearButton = [[UIBarButtonItem alloc] initWithTitle:@"Clear"
+    _clearButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear")
                                                     style:UIBarButtonItemStylePlain
                                                    target:self
                                                    action:@selector(clearButtonTouchUp:)];
 
-	_prevButton = [[UIBarButtonItem alloc] initWithTitle:@"Prev" style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonTouchUp:)];
-	_nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonAction:)];
+	_prevButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Prev", @"Prev") style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonTouchUp:)];
+	_nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"Next") style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonAction:)];
     
     _undoButton.tintColor = [A3AppDelegate instance].themeColor;
     _redoButton.tintColor = [A3AppDelegate instance].themeColor;

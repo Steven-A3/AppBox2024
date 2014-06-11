@@ -33,7 +33,6 @@
 }
 
 static NSString *const HolidayCellIdentifier = @"HolidayCountryViewCell";
-
 extern NSString *const A3CurrencyActionCellID;
 
 - (void)viewDidLoad
@@ -185,12 +184,20 @@ extern NSString *const A3CurrencyActionCellID;
 
 - (void)plusButtonAction {
 	if ([self.userSelectedCountries count] >= 10) {
-		NSString *msg = @"To add a new country, remove one first.";
+		NSString *msg = NSLocalizedString(@"To add a new country, remove one first.", @"To add a new country, remove one first.");
 		if (IS_IPHONE) {
-			UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:msg delegate:nil cancelButtonTitle:@"OK" destructiveButtonTitle:nil	otherButtonTitles:nil];
+			UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:msg
+															   delegate:nil
+													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												 destructiveButtonTitle:nil
+													  otherButtonTitles:nil];
 			[sheet showInView:self.view];
 		} else {
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+															message:msg
+														   delegate:nil
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												  otherButtonTitles:nil];
 			[alert show];
 		}
 		return;

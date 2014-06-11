@@ -135,7 +135,11 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		if (![[NSUserDefaults standardUserDefaults] boolForKey:A3HolidaysDoesNotNeedsShowAcknowledgement]) {
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Acknowledgement" message:NSLocalizedString(@"HOLIDAYS_ACKNOWLEDGEMENT", @"HOLIDAYS_ACKNOWLEDGEMENT") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Acknowledgement", @"Acknowledgement")
+															message:NSLocalizedString(@"HOLIDAYS_ACKNOWLEDGEMENT", @"HOLIDAYS_ACKNOWLEDGEMENT")
+														   delegate:self
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												  otherButtonTitles:nil];
 			alert.tag = 894234;
 			[alert show];
 		}
@@ -471,8 +475,8 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 		A3FSegmentedControl *segmentedControl = (A3FSegmentedControl *) [headerView viewWithTag:HolidaysHeaderViewSegmentedControl];
 		segmentedControl.items = @[
-				[NSString stringWithFormat:@"Upcoming %lu", (unsigned long)([holidaysInPage count] - myPosition)],
-				[NSString stringWithFormat:@"Past %lu", (unsigned long)myPosition]
+				[NSString stringWithFormat:NSLocalizedString(@"Upcoming %lu", @"Upcoming %lu"), (unsigned long) ([holidaysInPage count] - myPosition)],
+				[NSString stringWithFormat:NSLocalizedString(@"Past %lu", @"Past %lu"), (unsigned long) myPosition]
 		];
 		FNLOG(@"%lu + %lu = %lu : %lu", (unsigned long)([holidaysInPage count] - myPosition), (unsigned long)myPosition, (unsigned long)(myPosition + [holidaysInPage count] - myPosition + 1), (unsigned long)[holidaysInPage count]);
 	}
@@ -511,8 +515,8 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		[segmentedControl setSelectedSegmentIndex:1];
 	}
 	segmentedControl.items = @[
-			[NSString stringWithFormat:@"Upcoming %ld", (long)upcoming],
-			[NSString stringWithFormat:@"Past %ld", (long)past]
+			[NSString stringWithFormat:NSLocalizedString(@"Upcoming %ld", @"Upcoming %ld"), (long) upcoming],
+			[NSString stringWithFormat:NSLocalizedString(@"Past %ld", @"Past %ld"), (long) past]
 	];
 	self.tableView.tableFooterView = [self tableFooterView];
 	[self.tableView reloadData];
@@ -533,7 +537,11 @@ static NSString *const CellIdentifier = @"holidaysCell";
 }
 
 - (void)alertNotAvailableYear:(NSUInteger)year {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"Holidays for year %lu is not available.", (unsigned long)year] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+														message:[NSString stringWithFormat:NSLocalizedString(@"Holidays for year %lu is not available.", @"Holidays for year %lu is not available."), (unsigned long) year]
+													   delegate:nil
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+											  otherButtonTitles:nil];
 	[alertView show];
 }
 
@@ -649,7 +657,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		}
 		[holidayCell setCellType:cellType];
 
-		holidayCell.titleLabel.text = cellData[kHolidayName];
+		holidayCell.titleLabel.text = NSLocalizedStringFromTable(cellData[kHolidayName], @"Holidays", nil);
 		holidayCell.dateLabel.text = [self.pageViewController stringFromDate: cellData[kHolidayDate] ];
 
 		if (showLunar) {

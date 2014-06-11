@@ -41,15 +41,15 @@
     if ( IS_IPAD ) {
         self.originalValue = _eventModel.durationOption;
     }
-    self.title = @"Duration Options";
+    self.title = NSLocalizedString(@"Duration Options", @"Duration Options");
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     self.itemArray = @[
-                       @{EventRowTitle : @"Years",EventRowType : @(DurationOption_Year)},
-                       @{EventRowTitle : @"Months",EventRowType : @(DurationOption_Month)},
-                       @{EventRowTitle : @"Weeks",EventRowType : @(DurationOption_Week)},
-                       @{EventRowTitle : @"Days",EventRowType : @(DurationOption_Day)},
-                       @{EventRowTitle : @"Hours",EventRowType : @(DurationOption_Hour)},
-                       @{EventRowTitle : @"Minutes",EventRowType : @(DurationOption_Minutes)}];
+                       @{EventRowTitle : NSLocalizedString(@"Years", @"Years"),EventRowType : @(DurationOption_Year)},
+                       @{EventRowTitle : NSLocalizedString(@"Months", @"Months"),EventRowType : @(DurationOption_Month)},
+                       @{EventRowTitle : NSLocalizedString(@"Weeks", @"Weeks"),EventRowType : @(DurationOption_Week)},
+                       @{EventRowTitle : NSLocalizedString(@"Days", @"Days"),EventRowType : @(DurationOption_Day)},
+                       @{EventRowTitle : NSLocalizedString(@"Hours", @"Hours"),EventRowType : @(DurationOption_Hour)},
+                       @{EventRowTitle : NSLocalizedString(@"Minutes", @"Minutes"),EventRowType : @(DurationOption_Minutes)}];
 
     self.selectedOptionFlag = [_eventModel.durationOption integerValue];
     
@@ -82,7 +82,15 @@
 - (NSString*)exampleString
 {
     NSString *retStr = @"";
-    NSArray *valueArray = @[@"2 years", @"3 months", @"4 weeks",@"15 days" ,@"4 hours", @"30 minutes",@"13 seconds"];
+    NSArray *valueArray = @[
+			NSLocalizedString(@"2 years", @"2 years"),
+			NSLocalizedString(@"3 months", @"3 months"),
+			NSLocalizedString(@"4 weeks", @"4 weeks"),
+			NSLocalizedString(@"15 days", @"15 days"),
+			NSLocalizedString(@"4 hours", @"4 hours"),
+			NSLocalizedString(@"30 minutes", @"30 minutes"),
+			NSLocalizedString(@"13 seconds", @"13 seconds")
+	];
     NSArray *optionArray = @[@(DurationOption_Year), @(DurationOption_Month), @(DurationOption_Week), @(DurationOption_Day), @(DurationOption_Hour), @(DurationOption_Minutes), @(DurationOption_Seconds)];
     
     NSInteger optionValue = [_eventModel.durationOption integerValue];
@@ -180,8 +188,10 @@
     optionValue ^= flag;
     if ( optionValue == 0 ) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:@"To show results, need one option."
-                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                                                            message:NSLocalizedString(@"To show results, need one option.", @"To show results, need one option.")
+                                                           delegate:nil
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												  otherButtonTitles: nil];
         [alertView show];
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
         return;

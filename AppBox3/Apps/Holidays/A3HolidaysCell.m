@@ -116,7 +116,7 @@
 			_publicLabel.textAlignment = NSTextAlignmentCenter;
 			_publicLabel.textColor = [UIColor whiteColor];
 			_publicLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 11 : 13];
-			_publicLabel.text = @"Public";
+			_publicLabel.text = NSLocalizedString(@"Public", @"Public");
 			[self addSubview:_publicLabel];
 
 			CGSize size = [_publicLabel.text sizeWithAttributes:@{NSFontAttributeName : _publicLabel.font}];

@@ -42,7 +42,7 @@
     if( IS_IPAD ){
         self.originalValue = self.eventModel.calendar;
     }
-    self.title = @"Calendar";
+    self.title = NSLocalizedString(@"Calendar", @"Calendar");
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     
     self.itemArray = [_sharedManager allUserCalendarList];

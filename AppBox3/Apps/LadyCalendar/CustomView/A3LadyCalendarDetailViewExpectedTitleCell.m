@@ -24,7 +24,7 @@
 		}];
 
 		_editButton = [UIButton buttonWithType:UIButtonTypeSystem];
-		[_editButton setTitle:@"Edit" forState:UIControlStateNormal];
+		[_editButton setTitle:NSLocalizedString(@"Edit", @"Edit") forState:UIControlStateNormal];
 		[self addSubview:_editButton];
 
 		[_editButton makeConstraints:^(MASConstraintMaker *make) {

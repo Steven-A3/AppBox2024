@@ -138,7 +138,7 @@
 	UIFont *font = IS_IPHONE ? [UIFont systemFontOfSize:15] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     NSDictionary *attribute = @{NSFontAttributeName : font, NSForegroundColorAttributeName : _averageColor};
     
-    NSString *labelStr = [NSString stringWithFormat:@"%@ %g",(IS_IPAD ? @"Average" : @"Avg."),roundf((valueTotal.y /( [_valueArray count] > 0 ? [_valueArray count] : 1))*100.0)*0.01];
+    NSString *labelStr = [NSString stringWithFormat:@"%@ %g",(IS_IPAD ? NSLocalizedString(@"Average", @"Average") : NSLocalizedString(@"Avg.", @"Avg.")),roundf((valueTotal.y /( [_valueArray count] > 0 ? [_valueArray count] : 1))*100.0)*0.01];
     CGRect bounds = [labelStr boundingRectWithSize:CGSizeMake(xAxisLineRect.size.width,26.0) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine attributes:attribute context:nil];
     
     CGSize markSize = CGSizeMake(bounds.size.width+24.0, 26.0);

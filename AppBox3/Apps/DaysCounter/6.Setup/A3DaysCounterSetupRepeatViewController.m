@@ -63,13 +63,20 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Repeat";
+    self.title = NSLocalizedString(@"Repeat", @"Repeat");
     
     if ([_eventModel.isLunar boolValue]) {
-        self.itemArray = @[@"Never", @"Every Year"];
+        self.itemArray = @[NSLocalizedString(@"Never", @"Never"), NSLocalizedString(@"Every Year", @"Every Year")];
     }
     else {
-        self.itemArray = @[@"Never", @"Every Day", @"Every Week", @"Every 2 Weeks", @"Every Month", @"Every Year", @"Custom"];
+        self.itemArray = @[
+				NSLocalizedString(@"Never", @"Never"),
+				NSLocalizedString(@"Every Day", @"Every Day"),
+				NSLocalizedString(@"Every Week", @"Every Week"),
+				NSLocalizedString(@"Every 2 Weeks", @"Every 2 Weeks"),
+				NSLocalizedString(@"Every Month", @"Every Month"),
+				NSLocalizedString(@"Every Year", @"Every Year"),
+				NSLocalizedString(@"Custom", @"Custom")];
     }
     self.numberKeyboardVC = [self simpleNumberKeyboard];
     self.originalValue = _eventModel.repeatType;

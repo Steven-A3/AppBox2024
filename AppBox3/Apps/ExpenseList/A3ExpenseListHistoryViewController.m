@@ -39,9 +39,9 @@ static NSString *CellIdentifier = @"Cell";
 {
     [super viewDidLoad];
 
-    self.title = @"History";
+    self.title = NSLocalizedString(@"History", @"History");
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear") style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction)];
 	if (IS_IPHONE) {
 		[self rightBarButtonDoneButton];
 	}
@@ -83,8 +83,8 @@ static NSString *CellIdentifier = @"Cell";
 {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
-                                                    cancelButtonTitle:@"Cancel"
-                                               destructiveButtonTitle:@"Clear History"
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:NSLocalizedString(@"Clear History", @"Clear History")
                                                     otherButtonTitles:nil];
     [actionSheet showInView:self.view];
 }
@@ -104,10 +104,10 @@ static NSString *CellIdentifier = @"Cell";
         [ExpenseListBudget MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetId != %@", currentBudgetId]];
         [ExpenseListHistory MR_truncateAll];
         
-        NSLog(@"History : %ld", (long)[[ExpenseListHistory MR_findAll] count]);
-        NSLog(@"Budget : %ld", (long)[[ExpenseListBudget MR_findAll] count]);
-        NSLog(@"Items : %ld", (long)[[ExpenseListItem MR_findAll] count]);
-        NSLog(@"Location : %ld", (long)[[ExpenseListBudgetLocation MR_findAll] count]);
+        FNLOG(@"History : %ld", (long)[[ExpenseListHistory MR_findAll] count]);
+        FNLOG(@"Budget : %ld", (long)[[ExpenseListBudget MR_findAll] count]);
+        FNLOG(@"Items : %ld", (long)[[ExpenseListItem MR_findAll] count]);
+        FNLOG(@"Location : %ld", (long)[[ExpenseListBudgetLocation MR_findAll] count]);
 
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         _fetchedResultsController = nil;
@@ -203,10 +203,10 @@ static NSString *CellIdentifier = @"Cell";
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
-        NSLog(@"History : %ld", (long)[[ExpenseListHistory MR_findAll] count]);
-        NSLog(@"Budget : %ld", (long)[[ExpenseListBudget MR_findAll] count]);
-        NSLog(@"Items : %ld", (long)[[ExpenseListItem MR_findAll] count]);
-        NSLog(@"Location : %ld", (long)[[ExpenseListBudgetLocation MR_findAll] count]);
+        FNLOG(@"History : %ld", (long)[[ExpenseListHistory MR_findAll] count]);
+        FNLOG(@"Budget : %ld", (long)[[ExpenseListBudget MR_findAll] count]);
+        FNLOG(@"Items : %ld", (long)[[ExpenseListItem MR_findAll] count]);
+        FNLOG(@"Location : %ld", (long)[[ExpenseListBudgetLocation MR_findAll] count]);
     }
 }
 
