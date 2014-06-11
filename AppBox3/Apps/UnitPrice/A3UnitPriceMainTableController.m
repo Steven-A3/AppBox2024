@@ -495,7 +495,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             }
             
             cell.upSliderView.progressBarHidden = NO;
-            [cell.upSliderView setLayoutWithAnimated];
+//            [cell.upSliderView setLayoutWithAnimated];
         }
         else if (unitPrice1 == 0) {
             if (self.price1.unit) {
@@ -507,7 +507,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             }
             
             cell.upSliderView.progressBarHidden = YES;
-            [cell.upSliderView setLayoutWithNoAnimated];
+//            [cell.upSliderView setLayoutWithNoAnimated];
         }
         else {
             if (self.price1.unit) {
@@ -605,7 +605,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             }
             
             cell.downSliderView.progressBarHidden = NO;
-            [cell.downSliderView setLayoutWithAnimated];
+//            [cell.downSliderView setLayoutWithAnimated];
         }
         else if (unitPrice2 == 0) {
             if (self.price2.unit) {
@@ -617,7 +617,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             }
             
             cell.downSliderView.progressBarHidden = YES;
-            [cell.downSliderView setLayoutWithNoAnimated];
+//            [cell.downSliderView setLayoutWithNoAnimated];
             
         }
         else {
@@ -646,6 +646,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     double maxPrice = MAX(unitPrice1, unitPrice2);
     cell.upSliderView.maxValue = maxPrice;
     cell.downSliderView.maxValue = maxPrice;
+    [cell.upSliderView setLayoutWithAnimated];
+    [cell.downSliderView setLayoutWithAnimated];
     
     if (IS_IPAD) {
         CGRect rect = cell.upSliderView.frame;
