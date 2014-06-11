@@ -50,7 +50,7 @@
 {
     [super viewDidLoad];
 
-    self.title = (_isEditMode ? @"Edit Calendar" : @"Add Calendar");
+    self.title = (_isEditMode ? NSLocalizedString(@"Edit Calendar", @"Edit Calendar") : NSLocalizedString(@"Add Calendar", @"Add Calendar"));
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     [self rightBarButtonDoneButton];
@@ -142,7 +142,7 @@
 {
     NSString *title = @"";
     if ( section == 1 )
-        title = @"COLOR";
+        title = NSLocalizedString(@"COLOR", @"COLOR");
     return title;
 }
 
@@ -178,7 +178,7 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             if ( indexPath.section == 0 ) {
                 UITextField *textField = [UITextField new];
-                textField.placeholder = @"Calendar Name";
+                textField.placeholder = NSLocalizedString(@"Calendar Name", @"Calendar Name");
                 textField.clearButtonMode = UITextFieldViewModeWhileEditing;
                 textField.delegate = self;
                 textField.tag = 10;
@@ -226,7 +226,7 @@
         }
         
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.textLabel.text = @"Delete Calendar";
+        cell.textLabel.text = NSLocalizedString(@"Delete Calendar", @"Delete Calendar");
         cell.textLabel.textColor = [UIColor colorWithRed:1.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0];
     }
     
@@ -265,7 +265,7 @@
         calendarNameCell.imageView.tintColor = [_calendarItem objectForKey:CalendarItem_Color];
     }
     else if ( indexPath.section == 2) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Calendar" otherButtonTitles:nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") otherButtonTitles:nil];
         [actionSheet showInView:self.view];
     }
 }
@@ -326,7 +326,7 @@
     [self resignAllAction];
     // 모델 업데이트 하고
     if ( [[_calendarItem objectForKey:CalendarItem_Name] length] < 1 ) {
-        [_calendarItem setObject:@"Untitled" forKey:CalendarItem_Name];
+		[_calendarItem setObject:NSLocalizedString(@"Untitled", @"Untitled") forKey:CalendarItem_Name];
     }
     
     if ( !_isEditMode ) {

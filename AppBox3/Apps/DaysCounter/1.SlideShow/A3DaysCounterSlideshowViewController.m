@@ -49,7 +49,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"Slide Show";
+    self.title = NSLocalizedString(@"Slide Show", @"Slide Show");
     currentIndex = 0;
     
     if( self.optionDict == nil )

@@ -16,6 +16,7 @@
 #import "DaysCounterCalendar.h"
 #import "DaysCounterCalendar+Extension.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIImage+imageWithColor.h"
 
 @interface A3DaysCounterEditCalendarListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -39,7 +40,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"Edit Calendars";
+    self.title = NSLocalizedString(@"Edit Calendars", @"Edit Calendars");
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addCalendarAction:)];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     if (IS_IPHONE) {
@@ -100,10 +101,8 @@
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterCalendarListMainEditCell" owner:nil options:nil] lastObject];
         UIButton *checkButton = (UIButton*)[cell viewWithTag:10];
-        [SFKImage setDefaultFont:[UIFont fontWithName:@"LigatureSymbols" size:18.0]];
-        [SFKImage setDefaultColor:[A3AppDelegate instance].themeColor];
-        UIImage *image = [SFKImage imageNamed:@"check"];
-        [checkButton setImage:image forState:UIControlStateSelected];
+        UIImage *image = [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[[A3AppDelegate instance] themeColor]];
+		[checkButton setImage:image forState:UIControlStateSelected];
         [checkButton setImage:nil forState:UIControlStateNormal];
         [checkButton addTarget:self action:@selector(checkAction:) forControlEvents:UIControlEventTouchUpInside];
         UIImageView *imageView = (UIImageView*)[cell viewWithTag:11];

@@ -79,7 +79,7 @@
     
     if (_eventItem) {
 		_isAddingEvent = NO;
-        self.title = @"Edit Event";
+        self.title = NSLocalizedString(@"Edit Event", @"Edit Event");
         _isAdvancedCellOpen = [self hasAdvancedData];
         _isDurationInitialized = YES;
 
@@ -87,7 +87,7 @@
     }
     else {
 		_isAddingEvent = YES;
-        self.title = @"Add Event";
+        self.title = NSLocalizedString(@"Add Event", @"Add Event");
         _isAdvancedCellOpen = NO;
         _eventItem = [DaysCounterEvent MR_createEntity];
 
@@ -128,8 +128,8 @@
     }
 
     [self makeBackButtonEmptyArrow];
-    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelAction:)];
+
+	[self leftBarButtonCancelButton];
     [self rightBarButtonDoneButton];
     
     if ( _eventItem ) {
@@ -140,28 +140,28 @@
             self.sectionTitleArray = [NSMutableArray arrayWithObjects:
                                       // section 0
                                       @{AddEventSectionName : @"", AddEventItems : [NSMutableArray arrayWithObjects:
-                                                                                    @{EventRowTitle : @"Title", EventRowType : @(EventCellType_Title)},
-                                                                                    @{EventRowTitle : @"Photo", EventRowType : @(EventCellType_Photo)}, nil]},
+                                                                                    @{EventRowTitle : NSLocalizedString(@"Title", @"Title"), EventRowType : @(EventCellType_Title)},
+                                                                                    @{EventRowTitle : NSLocalizedString(@"Photo", @"Photo"), EventRowType : @(EventCellType_Photo)}, nil]},
                                       // section 1
                                       @{AddEventSectionName : @"",AddEventItems : [NSMutableArray arrayWithObjects:
-                                                                                   @{EventRowTitle : @"Lunar", EventRowType : @(EventCellType_IsLunar)},
+                                                                                   @{EventRowTitle : NSLocalizedString(@"Lunar", @"Lunar"), EventRowType : @(EventCellType_IsLunar)},
 //                                                                                   @{EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)},
-                                                                                   @{EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)},
-                                                                                   @{EventRowTitle : @"Starts", EventRowType : @(EventCellType_StartDate)},
-                                                                                   @{EventRowTitle : @"ADVANCED", EventRowType : @(EventCellType_Advanced)}, nil]}, nil];
+                                                                                   @{EventRowTitle : NSLocalizedString(@"Starts-Ends", @"Starts-Ends"), EventRowType : @(EventCellType_IsPeriod)},
+                                                                                   @{EventRowTitle : NSLocalizedString(@"Starts", @"Starts"), EventRowType : @(EventCellType_StartDate)},
+                                                                                   @{EventRowTitle : NSLocalizedString(@"ADVANCED", @"ADVANCED"), EventRowType : @(EventCellType_Advanced)}, nil]}, nil];
         }
         else {
             self.sectionTitleArray = [NSMutableArray arrayWithObjects:
                                       // section 0
                                       @{AddEventSectionName : @"", AddEventItems : [NSMutableArray arrayWithObjects:
-                                                                                    @{EventRowTitle : @"Title", EventRowType : @(EventCellType_Title)},
-                                                                                    @{EventRowTitle : @"Photo", EventRowType : @(EventCellType_Photo)}, nil]},
+                                                                                    @{EventRowTitle : NSLocalizedString(@"Title", @"Title"), EventRowType : @(EventCellType_Title)},
+                                                                                    @{EventRowTitle : NSLocalizedString(@"Photo", @"Photo"), EventRowType : @(EventCellType_Photo)}, nil]},
                                       // section 1
                                       @{AddEventSectionName : @"",AddEventItems : [NSMutableArray arrayWithObjects:
-                                                                                   @{EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)},
-                                                                                   @{EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)},
-                                                                                   @{EventRowTitle : @"Starts", EventRowType : @(EventCellType_StartDate)},
-                                                                                   @{EventRowTitle : @"ADVANCED", EventRowType : @(EventCellType_Advanced)}, nil]}, nil];
+                                                                                   @{EventRowTitle : NSLocalizedString(@"All-day", @"All-day"), EventRowType : @(EventCellType_IsAllDay)},
+                                                                                   @{EventRowTitle : NSLocalizedString(@"Starts-Ends", @"Starts-Ends"), EventRowType : @(EventCellType_IsPeriod)},
+                                                                                   @{EventRowTitle : NSLocalizedString(@"Starts", @"Starts"), EventRowType : @(EventCellType_StartDate)},
+                                                                                   @{EventRowTitle : NSLocalizedString(@"ADVANCED", @"ADVANCED"), EventRowType : @(EventCellType_Advanced)}, nil]}, nil];
         }
     }
         
@@ -270,7 +270,7 @@
     
     NSString *alertString = [_sharedManager alertDateStringFromDate:[_eventItem.startDate solarDate]
                                                           alertDate:[_eventItem alertDatetime]];
-    if (alertString && ![alertString isEqualToString:@"None"]) {
+    if (alertString && ![alertString isEqualToString:NSLocalizedString(@"None", @"None")]) {
         return YES;
     }
     
@@ -308,9 +308,8 @@
     if (!aCell) {
         return;
     }
-    if (![self.title isEqualToString:@"Add Event"]) {
+    if (!_isAddingEvent) {
         return;
-        
     }
     
     UITextField *textField = (UITextField*)[aCell viewWithTag:10];
@@ -321,7 +320,7 @@
 
 - (void)alertMessage:(NSString*)message
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
     [alertView show];
 }
 
@@ -400,48 +399,48 @@
     NSMutableArray *section1_Items = [NSMutableArray array];
     
     if ([_sharedManager isSupportLunar]) {
-        [section1_Items addObject:@{ EventRowTitle : @"Lunar", EventRowType : @(EventCellType_IsLunar)}];
+        [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"Lunar", @"Lunar"), EventRowType : @(EventCellType_IsLunar)}];
         if ([info.isLunar boolValue]) {
-            [section1_Items addObject:@{ EventRowTitle : @"Leap Month", EventRowType : @(EventCellType_IsLeapMonth)}];
+            [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"Leap Month", @"Leap Month"), EventRowType : @(EventCellType_IsLeapMonth)}];
         }
         else {
-            [section1_Items addObject:@{ EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)}];
+            [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"All-day", @"All-day"), EventRowType : @(EventCellType_IsAllDay)}];
         }
     }
     else {
-        [section1_Items addObject:@{ EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)}];
+        [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"All-day", @"All-day"), EventRowType : @(EventCellType_IsAllDay)}];
         _eventItem.isLunar = @(NO);
     }
     
     if (![info.isLunar boolValue]) {
-        [section1_Items addObject:@{ EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)}];
+        [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"Starts-Ends", @"Starts-Ends"), EventRowType : @(EventCellType_IsPeriod)}];
     }
     
-    [section1_Items addObject:@{ EventRowTitle : @"Starts", EventRowType : @(EventCellType_StartDate)}];
+    [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"Starts", @"Starts"), EventRowType : @(EventCellType_StartDate)}];
     
     if ( [info.isPeriod boolValue] ) {
-        [section1_Items addObject:@{ EventRowTitle : @"Ends", EventRowType : @(EventCellType_EndDate) }];
+        [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"Ends", @"Ends"), EventRowType : @(EventCellType_EndDate) }];
     }
     
-    [section1_Items addObject:@{ EventRowTitle : @"ADVANCED", EventRowType : @(EventCellType_Advanced)}];
+    [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"ADVANCED", @"ADVANCED"), EventRowType : @(EventCellType_Advanced)}];
     if (_isAdvancedCellOpen) {
-        [section1_Items addObject:@{ EventRowTitle : @"Repeat", EventRowType : @(EventCellType_RepeatType)}];
+        [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"Repeat", @"Repeat"), EventRowType : @(EventCellType_RepeatType)}];
         if ( [info.repeatType integerValue] != RepeatType_Never ) {
-            [section1_Items addObject:@{ EventRowTitle : @"End Repeat", EventRowType : @(EventCellType_EndRepeatDate)}];
+            [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"End Repeat", @"End Repeat"), EventRowType : @(EventCellType_EndRepeatDate)}];
         }
-        [section1_Items addObject:@{ EventRowTitle : @"Alert", EventRowType : @(EventCellType_Alert)}];
-        [section1_Items addObject:@{ EventRowTitle : @"Calendar", EventRowType : @(EventCellType_Calendar)}];
-        [section1_Items addObject:@{ EventRowTitle : @"Duration Option", EventRowType : @(EventCellType_DurationOption)}];
-        [section1_Items addObject:@{ EventRowTitle : @"Location", EventRowType : @(EventCellType_Location)}];
-        [section1_Items addObject:@{ EventRowTitle : @"Notes", EventRowType : @(EventCellType_Notes)}];
+        [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"Alert", @"Alert"), EventRowType : @(EventCellType_Alert)}];
+        [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"Calendar", @"Calendar"), EventRowType : @(EventCellType_Calendar)}];
+        [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"Duration Option", @"Duration Option"), EventRowType : @(EventCellType_DurationOption)}];
+        [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"Location", @"Location"), EventRowType : @(EventCellType_Location)}];
+        [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"Notes", @"Notes"), EventRowType : @(EventCellType_Notes)}];
     }
     
     self.sectionTitleArray = [NSMutableArray arrayWithObjects:
                               // section 0
                               @{AddEventSectionName : @"",
-                                AddEventItems : [NSMutableArray arrayWithObjects:@{EventRowTitle : @"Title",
+                                AddEventItems : [NSMutableArray arrayWithObjects:@{EventRowTitle : NSLocalizedString(@"Title", @"Title"),
                                                                                    EventRowType : @(EventCellType_Title)},
-                                                 @{EventRowTitle : @"Photo",
+                                                 @{EventRowTitle : NSLocalizedString(@"Photo", @"Photo"),
                                                    EventRowType : @(EventCellType_Photo)}, nil]},
                               // section 1
                               @{AddEventSectionName : @"", AddEventItems : section1_Items}, nil];
@@ -481,7 +480,7 @@
     
     if ( _eventItem && indexPath.section == [_sectionTitleArray count] ) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        cell.textLabel.text = @"Delete Event";
+        cell.textLabel.text = NSLocalizedString(@"Delete Event", @"Delete Event");
         cell.textLabel.textColor = [UIColor colorWithRed:1.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0];
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.textLabel.font = [UIFont systemFontOfSize:17];
@@ -751,10 +750,10 @@
     dateTextField.delegate = self;
     
     if ( [_eventItem.isPeriod boolValue] ) {
-        titleLabel.text = itemType == EventCellType_StartDate ? @"Starts" : @"Ends";
+        titleLabel.text = itemType == EventCellType_StartDate ? NSLocalizedString(@"Starts", @"Starts") : NSLocalizedString(@"Ends", @"Ends");
     }
     else {
-        titleLabel.text = @"Date";
+        titleLabel.text = NSLocalizedString(@"Date", @"Date");
     }
     
     //lunarImageView.hidden = ![_eventItem.isLunar boolValue];
@@ -920,7 +919,7 @@
         textLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
     }
     else {
-        textLabel.text = @"Location";
+        textLabel.text = NSLocalizedString(@"Location", @"Location");
         textLabel.textColor = [UIColor colorWithRed:199/255.0 green:199/255.0 blue:205/255.0 alpha:1.0];
     }
     
@@ -1159,7 +1158,7 @@
             }];
             
             // EndRepeat Row 추가 & Reload
-            [section1_items insertObject:@{ EventRowTitle : @"End Repeat", EventRowType : @(EventCellType_EndRepeatDate)} atIndex:repeatTypeRowIndex + 1];
+            [section1_items insertObject:@{ EventRowTitle : NSLocalizedString(@"End Repeat", @"End Repeat"), EventRowType : @(EventCellType_EndRepeatDate)} atIndex:repeatTypeRowIndex + 1];
             NSMutableArray *indexPathsToReload = [NSMutableArray new];
             for (NSInteger row = repeatTypeRowIndex + 2; row < [section1_items count]; row++) {
                 [indexPathsToReload addObject:[NSIndexPath indexPathForRow:row inSection:AddSection_Section_1]];
@@ -1294,10 +1293,10 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:@"Cancel"
-                                               destructiveButtonTitle:_eventItem.location ? @"Delete Location" : nil
-                                                    otherButtonTitles:@"Use My Location", @"Search Location", nil];
+															 delegate:self
+													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+											   destructiveButtonTitle:_eventItem.location ? NSLocalizedString(@"Delete Location", @"Delete Location") : nil
+													otherButtonTitles:NSLocalizedString(@"Use My Location", @"Use My Location"), NSLocalizedString(@"Search Location", @"Search Location"), nil];
     actionSheet.tag = ActionTag_Location;
     [actionSheet showInView:self.view];
     [self closeDatePickerCell];
@@ -1400,10 +1399,10 @@
     // 디비추가 처리
     // 입력값이 있어야 하는것들에 대한 체크
     if ( [_eventItem.eventName length] < 1 ) {
-        _eventItem.eventName = @"Untitled";
+        _eventItem.eventName = NSLocalizedString(@"Untitled", @"Untitled");
     }
     if ( [_eventItem.isPeriod boolValue] && !_eventItem.endDate ) {
-        [self alertMessage:@"Please enter the end date."];
+		[self alertMessage:NSLocalizedString(@"Please enter the end date.", @"Please enter the end date.")];
         return;
     }
     
@@ -1413,9 +1412,9 @@
         
         if ( [endDate timeIntervalSince1970] < [startDate timeIntervalSince1970]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                message:@"Cannot Save Event\nThe start date must be before the end date."
+                                                                message:NSLocalizedString(@"Cannot Save Event\nThe start date must be before the end date.", @"Cannot Save Event\nThe start date must be before the end date.")
                                                                delegate:nil
-                                                      cancelButtonTitle:@"OK"
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                       otherButtonTitles:nil];
             [alertView show];
             return;
@@ -1425,7 +1424,7 @@
     if ( [_eventItem.isLunar boolValue]) {
         BOOL isLunarStartDate = [NSDate isLunarDate:[_eventItem.startDate solarDate] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
         if (!isLunarStartDate) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Start date is not lunar date", @"Message in adding event.") delegate:nil cancelButtonTitle:@"OK"
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Start date is not lunar date", @"Message in adding event.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                   otherButtonTitles:nil, nil];
             [alert show];
             return;
@@ -1434,7 +1433,7 @@
         if ( [_eventItem.isPeriod boolValue] ) {
             BOOL isLunarEndDate = [NSDate isLunarDate:[_eventItem.endDate solarDate] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
             if (!isLunarEndDate) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"End date is not lunar date", @"Message in adding event.") delegate:nil cancelButtonTitle:@"OK"
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"End date is not lunar date", @"Message in adding event.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                       otherButtonTitles:nil, nil] ;
                 [alert show];
                 return;
@@ -1465,7 +1464,7 @@
 	[self removeObserver];
 }
 
-- (void)cancelAction:(UIBarButtonItem *)button
+- (void)cancelButtonAction:(UIBarButtonItem *)button
 {
     [self resignAllAction];
 
@@ -1597,7 +1596,7 @@
         
 
         NSInteger leapMonthRowIndex = [self indexOfRowForItemType:EventCellType_IsAllDay atSectionArray:sectionRow_items];
-        [sectionRow_items replaceObjectAtIndex:leapMonthRowIndex withObject:@{EventRowTitle : @"Leap Month", EventRowType : @(EventCellType_IsLeapMonth)}];
+        [sectionRow_items replaceObjectAtIndex:leapMonthRowIndex withObject:@{EventRowTitle : NSLocalizedString(@"Leap Month", @"Leap Month"), EventRowType : @(EventCellType_IsLeapMonth)}];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:leapMonthRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
         
         [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.startDate toLunar:YES]
@@ -1612,9 +1611,9 @@
     else {
         // Reload All-Day
         NSInteger reloadRowIndex = [self indexOfRowForItemType:EventCellType_IsLeapMonth atSectionArray:sectionRow_items];
-        [sectionRow_items replaceObjectAtIndex:reloadRowIndex withObject:@{ EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay) }];
+        [sectionRow_items replaceObjectAtIndex:reloadRowIndex withObject:@{ EventRowTitle : NSLocalizedString(@"All-day", @"All-day"), EventRowType : @(EventCellType_IsAllDay) }];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:reloadRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-        [sectionRow_items insertObject:@{EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)} atIndex:(reloadRowIndex + 1)];
+        [sectionRow_items insertObject:@{EventRowTitle : NSLocalizedString(@"Starts-Ends", @"Starts-Ends"), EventRowType : @(EventCellType_IsPeriod)} atIndex:(reloadRowIndex + 1)];
         [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(reloadRowIndex + 1) inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
         
         // Reload StartDate
@@ -1712,7 +1711,7 @@
                 datePickerRow = 1;
             }
             
-            [sectionRow_items insertObject:@{EventRowTitle : @"Ends", EventRowType : @(EventCellType_EndDate)} atIndex:startDateRowIndex + 1 + datePickerRow];
+            [sectionRow_items insertObject:@{EventRowTitle : NSLocalizedString(@"Ends", @"Ends"), EventRowType : @(EventCellType_EndDate)} atIndex:startDateRowIndex + 1 + datePickerRow];
             [self.tableView beginUpdates];
             [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:startDateRowIndex + 1 + datePickerRow inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationTop];
             if (datePickerRow) {
@@ -1798,7 +1797,7 @@
         [self leapMonthCellEnable:[NSDate isLunarLeapMonthAtDateComponents:dateComp isKorean:YES]];
 
         if (!isLunarDate) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"It's not a Lunar Date", @"It's not a Lunar Date") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] ;
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"It's not a Lunar Date", @"It's not a Lunar Date") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil] ;
             [alert show];
             if ([self.inputDateKey isEqualToString:EventItem_StartDate]) {
                 datePicker.date = [_eventItem.startDate solarDate];
@@ -1946,15 +1945,15 @@
     }
     else {
         NSMutableArray *advancedRows = [NSMutableArray new];
-        [advancedRows addObject:@{ EventRowTitle : @"Repeat", EventRowType : @(EventCellType_RepeatType)}];
+        [advancedRows addObject:@{ EventRowTitle : NSLocalizedString(@"Repeat", @"Repeat"), EventRowType : @(EventCellType_RepeatType)}];
         if ( [_eventItem.repeatType integerValue] != 0 ) {
-            [advancedRows addObject:@{ EventRowTitle : @"End Repeat", EventRowType : @(EventCellType_EndRepeatDate)}];
+            [advancedRows addObject:@{ EventRowTitle : NSLocalizedString(@"End Repeat", @"End Repeat"), EventRowType : @(EventCellType_EndRepeatDate)}];
         }
-        [advancedRows addObject:@{ EventRowTitle : @"Alert", EventRowType : @(EventCellType_Alert)}];
-        [advancedRows addObject:@{ EventRowTitle : @"Calendar", EventRowType : @(EventCellType_Calendar)}];
-        [advancedRows addObject:@{ EventRowTitle : @"Duration Option", EventRowType : @(EventCellType_DurationOption)}];
-        [advancedRows addObject:@{ EventRowTitle : @"Location", EventRowType : @(EventCellType_Location)}];
-        [advancedRows addObject:@{ EventRowTitle : @"Notes", EventRowType : @(EventCellType_Notes)}];
+        [advancedRows addObject:@{ EventRowTitle : NSLocalizedString(@"Alert", @"Alert"), EventRowType : @(EventCellType_Alert)}];
+        [advancedRows addObject:@{ EventRowTitle : NSLocalizedString(@"Calendar", @"Calendar"), EventRowType : @(EventCellType_Calendar)}];
+        [advancedRows addObject:@{ EventRowTitle : NSLocalizedString(@"Duration Option", @"Duration Option"), EventRowType : @(EventCellType_DurationOption)}];
+        [advancedRows addObject:@{ EventRowTitle : NSLocalizedString(@"Location", @"Location"), EventRowType : @(EventCellType_Location)}];
+        [advancedRows addObject:@{ EventRowTitle : NSLocalizedString(@"Notes", @"Notes"), EventRowType : @(EventCellType_Notes)}];
         
         expandableCell.titleLabel.textColor = [A3AppDelegate instance].themeColor;
         NSMutableArray *indexPathsToAdd = [NSMutableArray array];
@@ -2202,12 +2201,7 @@
         }
         else if ( buttonIndex == (actionSheet.firstOtherButtonIndex + 1)) {
             if (![[A3AppDelegate instance].reachability isReachable]) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                    message:@"Internet Connection is not avaiable."
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"OK"
-                                                          otherButtonTitles:nil];
-                [alertView show];
+				[self alertInternetConnectionIsNotAvailable];
                 return;
             }
             
@@ -2226,7 +2220,7 @@
 }
 
 - (IBAction)deleteEventAction:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Event" otherButtonTitles: nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event") otherButtonTitles:nil];
     actionSheet.tag = ActionTag_DeleteEvent;
     [actionSheet showInView:self.view];
 }
@@ -2242,9 +2236,9 @@
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
     [manager stopUpdatingLocation];
-    
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Internet Connection is not avaiable." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alertView show];
+
+	[self alertInternetConnectionIsNotAvailable];
+
     self.locationManager = nil;
 }
 
@@ -2256,14 +2250,17 @@
     CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
     [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
         if ([error code] == kCLErrorNetwork) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Internet Connection is not avaiable." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertView show];
+			[self alertInternetConnectionIsNotAvailable];
             return;
         }
         
         if ( error == nil ) {
             if ( [placemarks count] < 1 ) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Can not find current location information" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+																	message:NSLocalizedString(@"Can not find current location information", @"Can not find current location information")
+																   delegate:nil
+														  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+														  otherButtonTitles:nil];
                 [alertView show];
                 return;
             }

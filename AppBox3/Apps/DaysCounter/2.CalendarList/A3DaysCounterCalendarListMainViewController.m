@@ -57,7 +57,7 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = @"Days Counter";
+    self.navigationItem.title = NSLocalizedString(@"Days Counter", @"Days Counter");
 
     [self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
@@ -212,11 +212,11 @@
     if (IS_IPAD) {
         NSDateFormatter *formatter = [NSDateFormatter new];
         [formatter setDateStyle:NSDateFormatterMediumStyle];
-        _headerEventLabel_iPad.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
+        _headerEventLabel_iPad.text = (eventNumber > 0 ? NSLocalizedString(@"EVENTS", @"EVENTS") : NSLocalizedString(@"EVENT", @"EVENT"));
         _updateDateLabel.text = (latestDate ? [A3DateHelper dateStringFromDate:latestDate withFormat:[formatter dateFormat]] : @"-");
     }
     else {
-        _headerEventLabel.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
+        _headerEventLabel.text = (eventNumber > 0 ? NSLocalizedString(@"EVENTS", @"EVENTS") : NSLocalizedString(@"EVENT", @"EVENT"));
         NSDateFormatter *formatter = [NSDateFormatter new];
         [formatter setDateStyle:NSDateFormatterShortStyle];
         _updateDateLabel.text = (latestDate ? [A3DateHelper dateStringFromDate:latestDate withFormat:[formatter dateFormat]] : @"-");
@@ -446,8 +446,8 @@
                                                              allDayOption:[event.isAllDay boolValue]
                                                                    repeat:[event.repeatType integerValue] != RepeatType_Never ? YES : NO
                                                                    strict:NO];
-    
-    if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
+
+    if ([untilSinceString isEqualToString:NSLocalizedString(@"today", @"today")] || [untilSinceString isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
         result = untilSinceString;
     }
     else {
@@ -471,12 +471,12 @@
                                                            allDayOption:[event.isAllDay boolValue]
                                                                  repeat:YES
                                                                  strict:NO];
-            
+
             BOOL isAllDay = [event.isAllDay boolValue];
             if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.startDate.solarDate timeIntervalSince1970]) > 86400)) {
                 isAllDay = YES;
             }
-            
+
             result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
                                                                                                    fromDate:today
                                                                                                      toDate:nextDate
@@ -532,7 +532,7 @@
                                                                                                isShortStyle:isAllDay? NO : YES //![event.isAllDay boolValue]
                                                                                           isStrictShortType:YES]
                       , untilSinceString];
-            
+
 //            if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]) < 86400)) {
 //                NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:event.effectiveStartDate isAllDay:YES];
 //                if (diffDays == 1) {
@@ -788,8 +788,7 @@
         NSLog(@"asdf2");
         return NO;
     }
-    
-    
+
     return ([item.calendarType integerValue] == CalendarCellType_User);
 }
 

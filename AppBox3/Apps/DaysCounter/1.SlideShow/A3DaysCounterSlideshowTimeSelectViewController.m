@@ -31,7 +31,7 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Play Each Slide For";
+    self.title = NSLocalizedString(@"Play Each Slide For", @"Play Each Slide For");
     [self makeBackButtonEmptyArrow];
     self.itemArray = @[@(2),@(3),@(5),@(10),@(20)];
 }
@@ -80,7 +80,7 @@
     }
     
     NSInteger seconds = [[_itemArray objectAtIndex:indexPath.row] integerValue];
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld Seconds",(long)seconds];
+    cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld seconds", @"StringsDict", nil), (long)seconds];
     cell.accessoryType = (seconds == [[_optionDict objectForKey:OptionKey_Showtime] integerValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
     
     return cell;

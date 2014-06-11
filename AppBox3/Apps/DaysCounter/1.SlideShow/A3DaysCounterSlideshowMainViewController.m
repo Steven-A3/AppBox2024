@@ -50,7 +50,6 @@
 
 @implementation A3DaysCounterSlideShowMainViewController
 
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -438,10 +437,10 @@
 - (void)updateNavigationTitle
 {
     if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
-        self.navigationItem.title = @"Days Counter";
+        self.navigationItem.title = NSLocalizedString(@"Days Counter", @"Days Counter");
     }
     else {
-        self.navigationItem.title = [NSString stringWithFormat:@"%ld of %ld", (long)currentIndex+1, (long)[_eventsArray count]];
+        self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"%ld of %ld", @"%ld of %ld"), (long) currentIndex + 1, (long) [_eventsArray count]];
     }
 }
 
@@ -507,7 +506,7 @@
 
 - (void)timerFireMethod:(NSTimer *)timer
 {
-    FNLOG(@"");
+    FNLOG();
     [_collectionView reloadData];
 }
 
@@ -518,6 +517,7 @@
 }
 
 #pragma mark Instruction Related
+
 - (void)setupInstructionView
 {
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"DaysCounter_2"]) {
@@ -551,8 +551,9 @@
 }
 
 #pragma mark - A3DaysCounterEventDetailViewControllerDelegate
+
 - (void)didChangedCalendarEventDetailViewController:(A3DaysCounterEventDetailViewController *)ctrl {
-    NSLog(@"sdf");
+	FNLOG();
 }
 
 #pragma mark - action method
@@ -720,29 +721,30 @@
     FNLOG(@"collectionView: %@", collectionView);
 }
 
-#pragma mark UIScrollerView
+#pragma mark UIScrollView
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     for (UICollectionViewCell *cell in [self.collectionView visibleCells]) {
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
         currentIndex = indexPath.row;
-        NSLog(@"%@",indexPath);
     }
     
     if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
-        self.navigationItem.title = @"Days Counter";
+        self.navigationItem.title = NSLocalizedString(@"Days Counter", @"Days Counter");
     }
     else {
-        self.navigationItem.title = [NSString stringWithFormat:@"%ld of %ld", (long)currentIndex + 1, (long)[_eventsArray count]];
+        self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"%ld of %ld", @"%ld of %ld"), (long) currentIndex + 1, (long) [_eventsArray count]];
     }
 }
 
 #pragma mark - UIActivityItemSource
+
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
     DaysCounterEvent *eventItem = [_eventsArray objectAtIndex:currentIndex];
     
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-        return [NSString stringWithFormat:@"%@ using AppBox Pro", eventItem.eventName];
+        return [NSString stringWithFormat:NSLocalizedString(@"%@ using AppBox Pro", @"%@ using AppBox Pro"), eventItem.eventName];
 	}
     
 	return eventItem.eventName;
@@ -750,7 +752,7 @@
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-	return @"Share Days Counter Data";
+	return NSLocalizedString(@"Share Days Counter Data", @"Share Days Counter Data");
 }
 
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
@@ -763,7 +765,7 @@
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
         
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:@"<html><body>I'd like to share a event with you.<br/><br/>"];
+		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a event with you.<br/><br/>", @"<html><body>I'd like to share a event with you.<br/><br/>")];
         
         // 7 days until (계산된 날짜)
         NSString *daysString = [A3DaysCounterModelManager stringOfDurationOption:[eventItem.durationOption integerValue]
@@ -788,7 +790,7 @@
         }
         [txt appendFormat:@"%@<br/>", [A3DateHelper dateStringFromDate:[eventItem effectiveStartDate]
                                                             withFormat:[formatter dateFormat]]];
-		[txt appendString:@"<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>"];
+		[txt appendString:NSLocalizedString(@"dayscounter_share_html_body", nil)];
         
 		return txt;
 	}

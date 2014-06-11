@@ -66,17 +66,17 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Slideshow Options";
+    self.title = NSLocalizedString(@"Slideshow Options", @"Slideshow Options");
     if ( IS_IPHONE )
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     [self makeBackButtonEmptyArrow];
     
     self.sectionArray = @[
-                          @{EventRowTitle : @"", EventKey_Items : @[@{EventRowTitle : @"Transitions", EventRowType : @(SlideshowOptionType_Transition)}]},
-                          @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : @"Play Each Slide For",EventRowType : @(SlideshowOptionType_Showtime)}]},
-                          @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : @"Repeat",EventRowType : @(SlideshowOptionType_Repeat)},
-                                                                   @{EventRowTitle : @"Shuffle",EventRowType : @(SlideshowOptionType_Shuffle)}]},
-                          @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : @"Start Slideshow",EventRowType : @(SlideshowOptionType_Startshow)}]}];
+                          @{EventRowTitle : @"", EventKey_Items : @[@{EventRowTitle : NSLocalizedString(@"Transitions", @"Transitions"), EventRowType : @(SlideshowOptionType_Transition)}]},
+                          @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : NSLocalizedString(@"Play Each Slide For", @"Play Each Slide For"),EventRowType : @(SlideshowOptionType_Showtime)}]},
+                          @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : NSLocalizedString(@"Repeat", @"Repeat"),EventRowType : @(SlideshowOptionType_Repeat)},
+                                                                   @{EventRowTitle : NSLocalizedString(@"Shuffle", @"Shuffle"),EventRowType : @(SlideshowOptionType_Shuffle)}]},
+                          @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : NSLocalizedString(@"Start Slideshow", @"Start Slideshow"),EventRowType : @(SlideshowOptionType_Startshow)}]}];
     
     NSDictionary *opt = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterSlideshowOption];
     self.optionDict = [NSMutableDictionary dictionaryWithDictionary:opt];
@@ -178,7 +178,7 @@
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         case SlideshowOptionType_Showtime:
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld Seconds", (long)[[_optionDict objectForKey:OptionKey_Showtime] integerValue]];
+            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld seconds", @"StringsDict", nil), (long)[[_optionDict objectForKey:OptionKey_Showtime] integerValue]];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         
@@ -242,7 +242,7 @@
     }
     else if ( cellType == SlideshowOptionType_Startshow ) {
         if ( [_sharedManager numberOfAllEvents] < 1 ) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"There is no events" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"There is no events.", @"There is no events.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
             [alertView show];
             return;
         }

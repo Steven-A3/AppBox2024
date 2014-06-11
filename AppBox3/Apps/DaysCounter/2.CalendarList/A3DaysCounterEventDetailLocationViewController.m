@@ -41,7 +41,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"Location";
+    self.title = NSLocalizedString(@"Location", @"Location");
     [self makeBackButtonEmptyArrow];
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
     self.locationItem = [_sharedManager fsvenueFromEventLocationModel:_location];
@@ -125,12 +125,12 @@
     cell.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:0.95];
     
     if ( indexPath.row == 0 ) {
-        textLabel.text = @"Phone";
+        textLabel.text = NSLocalizedString(@"Phone", @"Phone");
         detailTextLabel.text = _locationItem.contact;
         cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
     }
     else {
-        textLabel.text = @"Address";
+        textLabel.text = NSLocalizedString(@"Address", @"Address");
         detailTextLabel.text = _addressStr;
         cell.separatorInset = UIEdgeInsetsMake(0, CGRectGetWidth(self.tableView.frame), 0, 0);
     }

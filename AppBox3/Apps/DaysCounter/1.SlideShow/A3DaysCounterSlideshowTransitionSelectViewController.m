@@ -31,7 +31,7 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Transitions";
+    self.title = NSLocalizedString(@"Transitions", @"Transitions");
     [self makeBackButtonEmptyArrow];
     self.itemArray = @[@(TransitionType_Cube),@(TransitionType_Dissolve),@(TransitionType_Origami),@(TransitionType_Ripple),@(TransitionType_Wipe)];
 }

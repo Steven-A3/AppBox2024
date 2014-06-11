@@ -40,7 +40,7 @@
 
 - (NSString*)activityTitle
 {
-    return @"Slideshow";
+    return NSLocalizedString(@"Slideshow", @"Slideshow");
 }
 
 - (NSString *)activityType
@@ -50,29 +50,30 @@
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems
 {
-    NSLog(@"%s",__FUNCTION__);
+    FNLOG();
     return YES;
 }
 
 - (void)prepareWithActivityItems:(NSArray *)activityItems
 {
-    NSLog(@"%s",__FUNCTION__);
+    FNLOG();
 }
 
 - (void)performActivity
 {
-    NSLog(@"%s ",__FUNCTION__);
+    FNLOG();
 }
 
 - (void)activityDidFinish:(BOOL)completed
 {
-    NSLog(@"%s",__FUNCTION__);
     [super activityDidFinish:completed];
+	FNLOG();
 }
 
 - (UIViewController*)activityViewController
 {
-    NSLog(@"%s",__FUNCTION__);
+    FNLOG();
+
     if( IS_IPHONE ){
         A3DaysCounterSlideshowOptionViewController *viewCtrl = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:@"A3DaysCounterSlideshowOptionViewController" bundle:nil];
         viewCtrl.activity = self;

@@ -84,7 +84,7 @@ NSString *kCalculationString;
 {
     [super viewDidLoad];
     
-    self.title = @"Date Calculator";
+    self.title = NSLocalizedString(@"Date Calculator", @"Date Calculator");
     [self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
 
@@ -412,7 +412,7 @@ NSString *kCalculationString;
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		return @"Date Calculator using AppBox Pro";
+		return NSLocalizedString(@"Date Calculator using AppBox Pro", @"Date Calculator using AppBox Pro");
 	}
     
 	return @"";
@@ -423,9 +423,9 @@ NSString *kCalculationString;
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
         
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:@"<html><body>I'd like to share a calculation with you.<br/><br/>"];
+		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a calculation with you.<br/><br/>", @"<html><body>I'd like to share a calculation with you.<br/><br/>")];
 		[txt appendString:[self stringForShareForActivityType:UIActivityTypeMail]];
-		[txt appendString:@"<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>"];
+		[txt appendString:NSLocalizedString(@"datecalc_share_body", nil)];
         
 		return txt;
 	}
@@ -438,7 +438,7 @@ NSString *kCalculationString;
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-	return @"Share Currency Converter Data";
+	return NSLocalizedString(@"Share Currency Converter Data", nil);
 }
 
 - (NSString *)stringForShareForActivityType:(NSString *)activityType {
@@ -461,16 +461,16 @@ NSString *kCalculationString;
      To, but not including: 끝날
      Result:  ? years ? months ? days" */
     if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
-        [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
-        [shareString appendString:[NSString stringWithFormat:@"To: %@<br>", [A3DateCalcStateManager fullStyleDateStringFromDate:_toDate]]];
+        [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"From: %@<br>", nil), [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
+        [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"To: %@<br>", nil), [A3DateCalcStateManager fullStyleDateStringFromDate:_toDate]]];
     }
     else {
-        [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
-        [shareString appendString:[NSString stringWithFormat:@"To: %@<br>", [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_toDate]]];
+        [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"From: %@<br>", nil), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
+        [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"To: %@<br>", nil), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_toDate]]];
     }
 
     if ([A3DateCalcStateManager excludeOptions] != ExcludeOptions_None) {
-        [shareString appendString:[NSString stringWithFormat:@"Exclude: %@<br>", [A3DateCalcStateManager excludeOptionsString]]];
+        [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Exclude: %@<br>", nil), [A3DateCalcStateManager excludeOptionsString]]];
     }
     
     NSDateComponents *intervalComp = [A3DateCalcStateManager dateComponentFromDate:_fromDate toDate:_toDate];
@@ -478,34 +478,26 @@ NSString *kCalculationString;
     NSMutableString *intervals = [[NSMutableString alloc] init];
     
     if ( (durationType & DurationType_Year) && intervalComp.year!=0 ) {
-        [intervals appendString:[NSString stringWithFormat:@" %ld year", labs((long)intervalComp.year)]];
-        if (labs([intervalComp year]) > 1) {
-            [intervals appendString:@"s"];
-        }
+		[intervals appendString:@" "];
+        [intervals appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), labs((long) intervalComp.year)]];
     }
     
     if ( (durationType & DurationType_Month) && intervalComp.month!=0 ) {
-        [intervals appendString:[NSString stringWithFormat:@" %ld month", labs((long)intervalComp.month)]];
-        if (labs([intervalComp month]) > 1) {
-            [intervals appendString:@"s"];
-        }
+		[intervals appendString:@" "];
+        [intervals appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld months", @"StringsDict", nil), labs((long)intervalComp.month)]];
     }
     
     if ( (durationType & DurationType_Week) && intervalComp.week!=0 ) {
-        [intervals appendString:[NSString stringWithFormat:@" %ld week", labs((long)intervalComp.week)]];
-        if (labs([intervalComp week]) > 1) {
-            [intervals appendString:@"s"];
-        }
+		[intervals appendString:@" "];
+        [intervals appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld weeks", @"StringsDict", nil), labs((long)intervalComp.week)]];
     }
     
     if ( (durationType & DurationType_Day) && intervalComp.day!=0 ) {
-        [intervals appendString:[NSString stringWithFormat:@" %ld day", labs((long)intervalComp.day)]];
-        if (labs([intervalComp day]) > 1) {
-            [intervals appendString:@"s"];
-        }
+		[intervals appendString:@" "];
+        [intervals appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), labs((long)intervalComp.day)]];
     }
     
-    [shareString appendString:[NSString stringWithFormat:@"Result: %@", intervals]];
+    [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Result: %@", @"Result: %@"), intervals]];
     
     
     return shareString;
@@ -524,44 +516,38 @@ NSString *kCalculationString;
                                                                                   options:0];
         
         if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
-            [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
+            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"From: %@<br>", @"From: %@<br>"), [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
         }
         else {
-            [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
+            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"From: %@<br>", @"From: %@<br>"), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
         }
         
         NSMutableString *resultShareString = [[NSMutableString alloc] init];
         if (self.offsetComp.year!=0) {
-            [resultShareString appendString:[NSString stringWithFormat:@" %ld year", labs((long)self.offsetComp.year)]];
-            if (labs([self.offsetComp year]) > 1) {
-                [resultShareString appendString:@"s"];
-            }
+			[resultShareString appendString:@" "];
+            [resultShareString appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), labs((long)self.offsetComp.year)]];
         }
         if (self.offsetComp.month!=0) {
-            [resultShareString appendString:[NSString stringWithFormat:@" %ld month", labs((long)self.offsetComp.month)]];
-            if (labs([self.offsetComp month]) > 1) {
-                [resultShareString appendString:@"s"];
-            }
+			[resultShareString appendString:@" "];
+            [resultShareString appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld months", @"StringsDict", nil), labs((long)self.offsetComp.month)]];
         }
         if (self.offsetComp.day!=0) {
-            [resultShareString appendString:[NSString stringWithFormat:@" %ld day", labs((long)self.offsetComp.day)]];
-            if (labs([self.offsetComp day]) > 1) {
-                [resultShareString appendString:@"s"];
-            }
+			[resultShareString appendString:@" "];
+            [resultShareString appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), labs((long)self.offsetComp.day)]];
         }
         
         if (resultShareString.length <= 0) {
-            [shareString appendString:[NSString stringWithFormat:@"Add: 0 day<br>"]];
+            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Add: 0 day<br>", nil)]];
         }
         else {
-            [shareString appendString:[NSString stringWithFormat:@"Add: %@<br>", resultShareString]];
+            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Add: %@<br>", nil), resultShareString]];
         }
         
         if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
-            [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager fullStyleDateStringFromDate:result]]];
+            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Result: %@", nil), [A3DateCalcStateManager fullStyleDateStringFromDate:result]]];
         }
         else {
-            [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager fullCustomStyleDateStringFromDate:result]]];
+            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Result: %@", nil), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:result]]];
         }
     }
     else {
@@ -574,43 +560,37 @@ NSString *kCalculationString;
                                                                                    toDate:_fromDate
                                                                                   options:0];
         if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
-            [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
+            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"From: %@<br>", nil), [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
         }
         else {
-            [shareString appendString:[NSString stringWithFormat:@"From: %@<br>", [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
+            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"From: %@<br>", nil), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
         }
         
         NSMutableString *resultShareString = [[NSMutableString alloc] init];
         if (self.offsetComp.year!=0) {
-            [resultShareString appendString:[NSString stringWithFormat:@" %ld year", labs((long)self.offsetComp.year)]];
-            if (labs([self.offsetComp year]) > 1) {
-                [resultShareString appendString:@"s"];
-            }
+			[resultShareString appendString:@" "];
+            [resultShareString appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), labs((long)self.offsetComp.year)]];
         }
         if (self.offsetComp.month!=0) {
-            [resultShareString appendString:[NSString stringWithFormat:@" %ld month", labs((long)self.offsetComp.month)]];
-            if (labs([self.offsetComp month]) > 1) {
-                [resultShareString appendString:@"s"];
-            }
+			[resultShareString appendString:@" "];
+            [resultShareString appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld months", @"StringsDict", nil), labs((long)self.offsetComp.month)]];
         }
         if (self.offsetComp.day!=0) {
-            [resultShareString appendString:[NSString stringWithFormat:@" %ld day", labs((long)self.offsetComp.day)]];
-            if (labs([self.offsetComp day]) > 1) {
-                [resultShareString appendString:@"s"];
-            }
+			[resultShareString appendString:@" "];
+            [resultShareString appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), labs((long)self.offsetComp.day)]];
         }
         
         if (resultShareString.length <= 0) {
-            [shareString appendString:[NSString stringWithFormat:@"Subtract: 0 day<br>"]];
+            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Subtract: 0 day<br>", nil)]];
         } else {
-            [shareString appendString:[NSString stringWithFormat:@"Subtract: %@<br>", resultShareString]];
+            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Subtract: %@<br>", nil), resultShareString]];
         }
         
         if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
-            [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager fullStyleDateStringFromDate:result]]];
+            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Result: %@", nil), [A3DateCalcStateManager fullStyleDateStringFromDate:result]]];
         }
         else {
-            [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager fullCustomStyleDateStringFromDate:result]]];
+            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Result: %@", nil), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:result]]];
         }
     }
     
@@ -619,12 +599,9 @@ NSString *kCalculationString;
 
 #pragma mark - More Menu Actions
 
-- (void)moreButtonAction:(UIButton *)button
+- (void)moreButtonAction:(id)button
 {
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-																			  style:UIBarButtonItemStylePlain
-																			 target:self
-																			 action:@selector(doneButtonAction:)];
+	[self rightBarButtonDoneButton];
 
 	UIButton *add = [UIButton buttonWithType:UIButtonTypeSystem];
 	[add setImage:[UIImage imageNamed:@"addToDaysCounter"] forState:UIControlStateNormal];
@@ -1367,18 +1344,18 @@ NSString *kCalculationString;
         if (self.isAddSubMode) {
             self.sectionTitles = @[kCalculationString, @"", @"", @""];
             self.sections = @[
-                              @[@"Between two dates", @"Add or Subtract days"],
-                              @[@"From"],
+                              @[NSLocalizedString(@"Between two dates", nil), NSLocalizedString(@"Add or Subtract days", nil)],
+                              @[NSLocalizedString(@"From", nil)],
                               @[@"AddSubCell1"],
                               @[@"AddSubCell2"]
                               ];
         } else {
             self.sectionTitles = @[kCalculationString, @"", @"", @""];
             self.sections = @[
-                              @[@"Between two dates", @"Add or Subtract days"],
-                              @[@"From", @"To"],
-                              @[@"Exclude"],
-                              @[@"Duration"]
+                              @[NSLocalizedString(@"Between two dates", nil), NSLocalizedString(@"Add or Subtract days", nil)],
+                              @[NSLocalizedString(@"From", nil), NSLocalizedString(@"To", nil)],
+                              @[NSLocalizedString(@"Exclude", nil)],
+                              @[NSLocalizedString(@"Duration", nil)]
                               ];
         }
         
@@ -1395,8 +1372,8 @@ NSString *kCalculationString;
             
             self.sectionTitles = @[kCalculationString, @""];
             self.sections = @[
-                              @[@"Between two dates", @"Add or Subtract days"],
-                              @[@"From"],
+                              @[NSLocalizedString(@"Between two dates", nil), NSLocalizedString(@"Add or Subtract days", nil)],
+                              @[NSLocalizedString(@"From", nil)],
                               @[@"AddSubCell1"],
                               @[@"AddSubCell2"]
                               ];
@@ -1437,8 +1414,8 @@ NSString *kCalculationString;
             self.tableView.allowsSelection = NO;
             self.sectionTitles = @[kCalculationString, @""];
             self.sections = @[
-                              @[@"Between two dates", @"Add or Subtract days"],
-                              @[@"From", @"To"]
+                              @[NSLocalizedString(@"Between two dates", nil), NSLocalizedString(@"Add or Subtract days", nil)],
+                              @[NSLocalizedString(@"From", nil), NSLocalizedString(@"To", @"To")]
                               ];
             
             [CATransaction begin];
@@ -1447,10 +1424,10 @@ NSString *kCalculationString;
                 
                 self.sectionTitles = @[kCalculationString, @"", @"", @""];
                 self.sections = @[
-                                  @[@"Between two dates", @"Add or Subtract days"],
-                                  @[@"From", @"To"],
-                                  @[@"Exclude"],
-                                  @[@"Duration"]
+                                  @[NSLocalizedString(@"Between two dates", @"Between two dates"), NSLocalizedString(@"Add or Subtract days", @"Add or Subtract days")],
+                                  @[NSLocalizedString(@"From", @"From"), NSLocalizedString(@"To", @"To")],
+                                  @[NSLocalizedString(@"Exclude", @"Exclude")],
+                                  @[NSLocalizedString(@"Duration", @"Duration")]
                                   ];
                 // 2
                 [self.tableView beginUpdates];

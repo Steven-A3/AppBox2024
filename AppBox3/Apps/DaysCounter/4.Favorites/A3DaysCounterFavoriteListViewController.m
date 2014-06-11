@@ -53,7 +53,7 @@
 {
     [super viewDidLoad];
     
-    self.title = @"Favorites";
+    self.title = NSLocalizedString(@"Favorites", @"Favorites");
     //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
     self.toolbarItems = _bottomToolbar.items;
@@ -245,7 +245,7 @@
                                                            repeat:[favorite.event.repeatType integerValue] != RepeatType_Never ? YES : NO
                                                            strict:[A3DaysCounterModelManager hasHourMinDurationOption:[favorite.event.durationOption integerValue]]];
         
-        if ([markLabel.text isEqualToString:@"since"]) {
+        if ([markLabel.text isEqualToString:NSLocalizedString(@"since", @"since")]) {
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         }
         else {
@@ -258,7 +258,7 @@
         markLabel.layer.borderColor = markLabel.textColor.CGColor;
 
         // daysLabel
-        if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
+        if ([markLabel.text isEqualToString:NSLocalizedString(@"today", @"today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
             daysLabel.text = @" ";
 
             if ( IS_IPAD ) {
