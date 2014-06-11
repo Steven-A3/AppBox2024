@@ -1306,7 +1306,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 //    return [_sectionTitleArray count] + (_eventItem.uniqueID ? 1 : 0);
-    if (_isAddingEvent) {
+    if (!_isAddingEvent) {
         return [_sectionTitleArray count] + 1;
     }
 
