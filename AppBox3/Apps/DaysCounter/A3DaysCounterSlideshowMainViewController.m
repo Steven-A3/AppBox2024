@@ -268,9 +268,14 @@
         self.isFirstViewLoad = NO;
         __block NSInteger indexOfTodayPhoto = -1;
         
-        NSDate *now = [NSDate date];
+        NSDateComponents *nowComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
+        nowComp.hour = 0;
+        nowComp.minute = 0;
+        nowComp.second = 0;
+        NSDate *today = [[NSCalendar currentCalendar] dateFromComponents:nowComp];
+        
         [self.eventsArray enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
-            if ([event.effectiveStartDate timeIntervalSince1970] >= [now timeIntervalSince1970]) {
+            if ([event.effectiveStartDate timeIntervalSince1970] >= [today timeIntervalSince1970]) {
                 indexOfTodayPhoto = idx;
                 *stop = YES;
                 return;

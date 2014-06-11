@@ -1207,10 +1207,14 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (DaysCounterEvent *)closestEventObjectOfCalendar:(DaysCounterCalendar *)calendar
 {
-    
-    NSDate *now = [NSDate date];
+    NSDateComponents *nowComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
+    nowComp.hour = 0;
+    nowComp.minute = 0;
+    nowComp.second = 0;
+    NSDate *today = [[NSCalendar currentCalendar] dateFromComponents:nowComp];
+
     // return today or closest until
-    NSOrderedSet *untilOrderedSet = [calendar.events filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate >= %@", now]];
+    NSOrderedSet *untilOrderedSet = [calendar.events filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate >= %@", today]];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"effectiveStartDate" ascending:YES];
     NSArray *sortedArray = [untilOrderedSet sortedArrayUsingDescriptors:@[sortDescriptor]];
     if ([sortedArray count] > 0) {
@@ -1218,7 +1222,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     }
 
     // return closest since
-    NSOrderedSet *sinceOrderedSet = [calendar.events filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate < %@", now]];
+    NSOrderedSet *sinceOrderedSet = [calendar.events filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate < %@", today]];
     sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"effectiveStartDate" ascending:NO];
     sortedArray = [sinceOrderedSet sortedArrayUsingDescriptors:@[sortDescriptor]];
     return [sortedArray firstObject];
