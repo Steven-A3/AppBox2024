@@ -38,14 +38,21 @@ static NSString *CellIdentifier = @"Cell";
 {
     [super viewDidLoad];
 
-    self.title = @"Duration";
+    self.title = NSLocalizedString(@"Duration", @"Duration");
     
     if (IS_IPHONE) {
         [self makeBackButtonEmptyArrow];
     }
     
     _sectionTitles = @[@""];
-    _sections = @[@[@"Year", @"Month", @"Week", @"Day"]];
+    _sections = @[
+			@[
+					NSLocalizedString(@"Year", @"Year"),
+					NSLocalizedString(@"Month", @"Month"),
+					NSLocalizedString(@"Week", @"Week"),
+					NSLocalizedString(@"Day", @"Day")
+	]
+	];
     
 	[self.tableView registerClass:[A3DateCalcTableviewCell class] forCellReuseIdentifier:CellIdentifier];
 	[self.tableView setShowsHorizontalScrollIndicator:NO];

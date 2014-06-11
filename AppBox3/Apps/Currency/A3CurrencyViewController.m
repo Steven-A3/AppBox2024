@@ -423,8 +423,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	if (![[A3AppDelegate instance].reachability isReachable]) {
 		[self.refreshControl endRefreshing];
 
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Cannot Update Currency Rates" message:@"Internet Connection is not available." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[alertView show];
+		[self alertInternetConnectionIsNotAvailable];
 		return;
 	}
 	if (self.firstResponder) {
@@ -434,7 +433,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	if (_isUpdating) {
 		return;
 	}
-	NSAttributedString *updating = [[NSAttributedString alloc] initWithString:@"Updating" attributes:[self refreshControlTitleAttribute]];
+	NSAttributedString *updating = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Updating", @"Updating") attributes:[self refreshControlTitleAttribute]];
 	self.refreshControl.attributedTitle = updating;
 	[self updateCurrencyRates];
 }
@@ -516,7 +515,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 - (void)setRefreshControlTitle {
 	NSDate *updateDate = [[NSUserDefaults standardUserDefaults] objectForKey:A3CurrencyUpdateDate];
 	if (updateDate) {
-		NSString *updateTitle = [NSString stringWithFormat:@"Updated %@", [updateDate timeAgo]];
+		NSString *updateTitle = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [updateDate timeAgo]];
 
 		NSMutableAttributedString *updateString = [[NSMutableAttributedString alloc] initWithString:updateTitle
 																						 attributes:[self refreshControlTitleAttribute]];
@@ -537,6 +536,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 #pragma mark Instruction Related
+
 - (void)setupInstructionView
 {
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"CurrencyConverter"]) {
@@ -673,9 +673,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 			} else {
 				symbol = @"";
 			}
-			dataCell.rateLabel.text = [NSString stringWithFormat:@"%@Rate = %0.4f", symbol, rate];
+			dataCell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@Rate = %0.4f", @"%@Rate = %0.4f"), symbol, rate];
 		} else {
-			dataCell.rateLabel.text = [NSString stringWithFormat:@"Rate = %0.4f", rate];
+			dataCell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Rate = %0.4f", @"Rate = %0.4f"), rate];
 		}
 		dataCell.valueField.textColor = [UIColor blackColor];
 		[dataCell.valueField setEnabled:NO];
@@ -1268,10 +1268,10 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 - (NSString *)stringForSource:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx {
 	CurrencyFavorite *source = self.favorites[sourceIdx], *target = self.favorites[targetIdx];
 	float rate = [self rateForSource:source target:target];
-	return [NSString stringWithFormat:@"%@ equals %@ with rate %0.4f",
-														[self stringFromNumber:self.lastInputValue withCurrencyCode:source.currencyCode],
-														[self stringFromNumber:@(self.lastInputValue.floatValue * rate) withCurrencyCode:target.currencyCode],
-														rate];
+	return [NSString stringWithFormat:NSLocalizedString(@"%@ equals %@ with rate %0.4f", @"%@ equals %@ with rate %0.4f"),
+									  [self stringFromNumber:self.lastInputValue withCurrencyCode:source.currencyCode],
+									  [self stringFromNumber:@(self.lastInputValue.floatValue * rate) withCurrencyCode:target.currencyCode],
+									  rate];
 }
 
 - (void)shareAll:(id)sender {
@@ -1306,7 +1306,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		return @"Currency Converter in the AppBox Pro";
+		return NSLocalizedString(@"Currency Converter in the AppBox Pro", nil);
 	}
 
 	return @"";
@@ -1317,11 +1317,11 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:@"<html><body>I'd like to share a currency conversion with you.<br/><br/>"];
+		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a currency conversion with you.<br/><br/>", nil)];
 
 		[txt appendString:[self stringForShare]];
 
-		[txt appendString:@"<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>"];
+		[txt appendString:NSLocalizedString(@"share_HTML_body", nil)];
 
 		return txt;
 	}
@@ -1332,7 +1332,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-	return @"Share Currency Converter Data";
+	return NSLocalizedString(@"Share Currency Converter Data", @"Share Currency Converter Data");
 }
 
 - (NSString *)stringForShare {
