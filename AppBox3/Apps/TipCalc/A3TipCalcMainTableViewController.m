@@ -1141,7 +1141,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		NSMutableString *txt = [NSMutableString new];
 		[txt appendString:@"<html><body>I'd like to share a calculation with you.<br/><br/>"];
 		[txt appendString:[self.dataManager sharedDataIsMail:YES]];
-		[txt appendString:@"<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>"];
+		[txt appendString:@"datecalc_share_body"];
         
 		return txt;
 	}

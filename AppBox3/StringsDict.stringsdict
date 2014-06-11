@@ -228,5 +228,41 @@
 			<string>%ld days</string>
 		</dict>
 	</dict>
+	<key>%ld seconds</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_seconds@</string>
+		<key>num_seconds</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 second</string>
+			<key>one</key>
+			<string>1 second</string>
+			<key>other</key>
+			<string>%ld seconds</string>
+		</dict>
+	</dict>
+	<key>%ld Events</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_events@</string>
+		<key>num_events</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>No Event</string>
+			<key>one</key>
+			<string>1 Event</string>
+			<key>other</key>
+			<string>%ld Events</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

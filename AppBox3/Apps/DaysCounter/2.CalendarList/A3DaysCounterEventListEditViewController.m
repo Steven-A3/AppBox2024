@@ -59,7 +59,7 @@
 
     self.title = _calendarItem.calendarName;
     [self rightBarButtonDoneButton];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Delete All" style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllAction:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Delete All", @"Delete All") style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllAction:)];
     self.toolbarItems = _bottomToolbar.items;
     [self.navigationController setToolbarHidden:NO];
     
@@ -258,7 +258,7 @@
 
 - (void)deleteAllAction:(id)sender
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete All" otherButtonTitles: nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete All", @"Delete All") otherButtonTitles:nil];
     actionSheet.tag = ActionSheet_DeleteAll;
     [actionSheet showInView:self.view];
 }
@@ -281,14 +281,14 @@
 }
 
 - (IBAction)removeAction:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Events" otherButtonTitles: nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Events", @"Delete Events") otherButtonTitles:nil];
     actionSheet.tag = ActionSheet_DeleteSelected;
     [actionSheet showInView:self.view];
 }
 
 - (IBAction)changeCalendarAction:(id)sender {
     if( [_selectedArray count] < 1 ){
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Please select events" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Please select events.", @"Please select events.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
         [alertView show];
         return;
     }
@@ -310,7 +310,7 @@
 
 - (IBAction)shareAction:(id)sender {
     if( [_selectedArray count] < 1 ){
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Please select events" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Please select events.", @"Please select events.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
         [alertView show];
         return;
     }
@@ -351,7 +351,7 @@
     DaysCounterEvent *eventItem = [sortedArray firstObject];
     
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-        return [NSString stringWithFormat:@"%@ using AppBox Pro", eventItem.eventName];
+        return [NSString stringWithFormat:NSLocalizedString(@"%@ using AppBox Pro", @"%@ using AppBox Pro"), eventItem.eventName];
 	}
     
 	return eventItem.eventName;
@@ -359,14 +359,14 @@
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-	return @"Share Days Counter Data";
+	return NSLocalizedString(@"Share Days Counter Data", @"Share Days Counter Data");
 }
 
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:@"<html><body>I'd like to share a days count with you.<br/><br/>"];
+		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a days count with you.<br/><br/>", @"<html><body>I'd like to share a days count with you.<br/><br/>")];
 
         for (DaysCounterEvent *event in _selectedArray) {
             // 7 days until (계산된 날짜)
@@ -394,10 +394,9 @@
             [txt appendFormat:@"%@<br/><br/>", [A3DateHelper dateStringFromDate:[event effectiveStartDate]
                                                                      withFormat:[formatter dateFormat]]];
         }
-        
 
-        
-		[txt appendString:@"<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>"];
+
+		[txt appendString:NSLocalizedString(@"daysCounter_share_HTML_body", nil)];
         
 		return txt;
 	}

@@ -36,13 +36,13 @@
 {
     [super viewDidLoad];
 
-    self.title = [NSString stringWithFormat:@"%ld Event%@", (long)[_eventArray count], ([_eventArray count] > 1 ? @"s" : @"")];
+    self.title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld Events", @"StringsDict", nil), (long)[_eventArray count]];
     if (IS_IPHONE) {
         [self rightBarButtonDoneButton];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     }
     
-    self.navigationController.navigationBar.topItem.prompt = @"Move these events to a new calendar.";
+    self.navigationController.navigationBar.topItem.prompt = NSLocalizedString(@"Move these events to a new calendar.", @"Move these events to a new calendar.");
     
     NSMutableArray *array = [_sharedManager allUserCalendarList];
     self.itemArray = [array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarId != %@",_currentCalendar.calendarId]];
@@ -114,7 +114,7 @@
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
     if( self.selectedIndexPath == nil ){
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Please select calendar" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Please select calendar.", @"Please select calendar.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
         [alertView show];
         return;
     }

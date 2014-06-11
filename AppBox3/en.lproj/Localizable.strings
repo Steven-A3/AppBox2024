@@ -193,3 +193,121 @@
 "%ld weeks" = "%ld weeks";
 
 "0 day" = "0 day";
+
+"DateCalculator" = "DateCalculator";
+
+"To show results, need one option." = "To show results, need one option.";
+"Years" = "Years";
+"Months" = "Months";
+"Weeks" = "Weeks";
+"Days" = "Days";
+"Weekends" = "Weekends";
+"Sat" = "Sat";
+"Sun" = "Sun";
+"Public Holidays" = "Public Holidays";
+"Today  " = "Today  ";
+
+"Date Calculator using AppBox Pro" = "Date Calculator using AppBox Pro";
+"<html><body>I'd like to share a calculation with you.<br/><br/>" = "<html><body>I'd like to share a calculation with you.<br/><br/>";
+"datecalc_share_body" = "<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
+"From: %@<br>" = "From: %@<br>";
+"To: %@<br>" = "To: %@<br>";
+"Exclude: %@<br>" = "Exclude: %@<br>";
+
+"%ld years" = "%ld years";
+"Result: %@" = "Result: %@";
+"Add: 0 day<br>" = "Add: 0 day<br>";
+"Add: %@<br>" = "Add: %@<br>";
+"Subtract: 0 day<br>" = "Subtract: 0 day<br>";
+"Subtract: %@<br>" = "Subtract: %@<br>";
+"Between two dates" = "Between two dates";
+"Add or Subtract days" = "Add or Subtract days";
+"From" = "From";
+"To" = "To";
+"Exclude" = "Exclude";
+
+"%ld of %ld" = "%ld of %ld";
+"%@ using AppBox Pro" = "%@ using AppBox Pro";
+"Share Days Counter Data" = "Share Days Counter Data";
+"<html><body>I'd like to share a event with you.<br/><br/>" = "<html><body>I'd like to share a event with you.<br/><br/>";
+"dayscounter_share_html_body" = "<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
+"Slideshow Options" = "Slideshow Options";
+"Transitions" = "Transitions";
+"Play Each Slide For" = "Play Each Slide For";
+"Repeat" = "Repeat";
+"Shuffle" = "Shuffle";
+"Start Slideshow" = "Start Slideshow";
+"There is no events." = "There is no events.";
+
+"Slide Show" = "Slide Show";
+"Slideshow" = "Slideshow";
+"Edit Calendar" = "Edit Calendar";
+"Add Calendar" = "Add Calendar";
+"COLOR" = "COLOR";
+"Calendar Name" = "Calendar Name";
+"Delete Calendar" = "Delete Calendar";
+"Untitled" = "Untitled";
+
+"Add Event" = "Add Event";
+"Title" = "Title";
+"Photo" = "Photo";
+"Lunar" = "Lunar";
+"Starts-Ends" = "Starts-Ends";
+"Starts" = "Starts";
+"All-day" = "All-day";
+
+"Leap Month" = "Leap Month";
+"Ends" = "Ends";
+"End Repeat" = "End Repeat";
+"Alert" = "Alert";
+"Calendar" = "Calendar";
+"Duration Option" = "Duration Option";
+"Location" = "Location";
+"Delete Event" = "Delete Event";
+"Date" = "Date";
+"Delete Location" = "Delete Location";
+"Use My Location" = "Use My Location";
+"Search Location" = "Search Location";
+"Please enter the end date." = "Please enter the end date.";
+"Cannot Save Event\nThe start date must be before the end date." = "Cannot Save Event\nThe start date must be before the end date.";
+"Start date is not lunar date" = "Start date is not lunar date";
+"End date is not lunar date" = "End date is not lunar date";
+"It's not a Lunar Date" = "It's not a Lunar Date";
+
+
+"Can not find current location information" = "Can not find current location information";
+
+"EVENTS" = "EVENTS";
+"EVENT" = "EVENT";
+
+"today" = "today";
+"Now" = "Now";
+
+"Edit Calendars" = "Edit Calendars";
+
+"Move these events to a new calendar." = "Move these events to a new calendar.";
+"Please select calendar." = "Please select calendar.";
+"Phone" = "Phone";
+"Address" = "Address";
+"Event Details" = "Event Details";
+
+"Share Event" = "Share Event";
+"No location" = "No location";
+"Remove from Favorites" = "Remove from Favorites";
+"Add to Favorites" = "Add to Favorites";
+"from %@" = "from %@";
+"to %@" = "to %@";
+"repeats %@" = "repeats %@";
+"since" = "since";
+"first date" = "first date";
+"<html><body>I'd like to share a days count with you.<br/><br/>" = "<html><body>I'd like to share a days count with you.<br/><br/>";
+"daysCounter_share_HTML_body" = "<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
+
+"Delete All" = "Delete All";
+"Delete Events" = "Delete Events";
+"Please select events." = "Please select events.";
+"daysCounter_share_HTML_body" = "<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
+
+" Events" = " Events";
+
+"Reminder" = "Reminder";

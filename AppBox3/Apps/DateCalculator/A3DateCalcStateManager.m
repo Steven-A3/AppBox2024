@@ -19,15 +19,15 @@ static DurationType g_currentDurationType;
 {
 //    DurationType result = DurationType_Year;
     DurationType result = DurationType_Day;
-    DurationType oldOptions = [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
+    DurationType oldOptions = (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
     
     if (oldOptions == options) {
         // 선택 항목이 마지막 하나 남은 경우.
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DateCalculator", @"DateCalculator")
-                                                            message:NSLocalizedString(@"To show results, need one option.", @"To show results, need one option.")
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DateCalculator", nil)
+                                                            message:NSLocalizedString(@"To show results, need one option.", nil)
                                                            delegate:self
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                  otherButtonTitles:nil, nil];
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                                  otherButtonTitles:nil];
         [alertView show];
         return;
     }
@@ -55,13 +55,13 @@ static DurationType g_currentDurationType;
 
 +(DurationType)durationType
 {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
+    return (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
 }
 
 +(NSCalendarUnit)calendarUnitByDurationType
 {
     NSCalendarUnit calUnit = 0;
-    DurationType durationType = [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
+    DurationType durationType = (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
  
     if (durationType & DurationType_Year) {
         calUnit |= NSYearCalendarUnit;
@@ -81,7 +81,7 @@ static DurationType g_currentDurationType;
 
 +(NSString *)durationTypeString
 {
-    DurationType type = [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
+    DurationType type = (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
     
     NSMutableArray *result = [[NSMutableArray alloc] init];
     if (type & DurationType_None || type & DurationType_Year) {
@@ -116,7 +116,7 @@ static DurationType g_currentDurationType;
 +(void)setExcludeOptions:(ExcludeOptions)options
 {
     ExcludeOptions result = ExcludeOptions_None;
-    ExcludeOptions oldOptions = [[NSUserDefaults standardUserDefaults] integerForKey:@"excludeOptions"];
+    ExcludeOptions oldOptions = (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:@"excludeOptions"];
     
     if (oldOptions == options) {
         return;
@@ -139,12 +139,12 @@ static DurationType g_currentDurationType;
 
 +(ExcludeOptions)excludeOptions
 {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:@"excludeOptions"];
+    return (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:@"excludeOptions"];
 }
 
 +(NSString *)excludeOptionsString
 {
-    ExcludeOptions options = [[NSUserDefaults standardUserDefaults] integerForKey:@"excludeOptions"];
+    ExcludeOptions options = (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:@"excludeOptions"];
     if (ExcludeOptions_None == options) {
         return NSLocalizedString(@"None", @"None");
     }
@@ -170,6 +170,7 @@ static DurationType g_currentDurationType;
 }
 
 #pragma mark - DateCalculation
+
 +(NSCalendar *)currentCalendar
 {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -344,7 +345,7 @@ static DurationType g_currentDurationType;
     comp1 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:today];
     NSDateComponents *comp2 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
     if (comp1.year==comp2.year && comp1.month==comp2.month && comp1.day==comp2.day) {
-        return @"Today  ";
+        return NSLocalizedString(@"Today  ", @"Today  ");
     }
     
     return [date a3FullStyleString];
@@ -360,7 +361,7 @@ static DurationType g_currentDurationType;
     comp1 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:today];
     NSDateComponents *comp2 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
     if (comp1.year==comp2.year && comp1.month==comp2.month && comp1.day==comp2.day) {
-        return @"Today  ";
+        return NSLocalizedString(@"Today  ", @"Today  ");
     }
     
     return [date a3FullCustomStyleString];

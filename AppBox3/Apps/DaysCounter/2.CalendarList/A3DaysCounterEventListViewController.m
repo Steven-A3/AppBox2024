@@ -59,7 +59,7 @@
 {
     [super viewDidLoad];
 
-    self.title = [NSString stringWithFormat:@"%@%@",_calendarItem.calendarName,([_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : @" Events")];
+    self.title = [NSString stringWithFormat:@"%@%@",_calendarItem.calendarName,([_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : NSLocalizedString(@" Events", @" Events"))];
     UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchAction:)];
     UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.rightBarButtonItems = @[edit, search];
@@ -134,7 +134,7 @@
         self.calendarItem = [_sharedManager calendarItemByID:self.changedCalendarID inContext:[[MagicalRecordStack defaultStack] context] ];
         self.changedCalendarID = nil;
         if ( self.calendarItem ) {
-            self.title = [NSString stringWithFormat:@"%@%@",_calendarItem.calendarName, [_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : @" Events"];
+            self.title = [NSString stringWithFormat:@"%@%@", _calendarItem.calendarName, [_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : NSLocalizedString(@" Events", @" Events")];
         }
     }
 
@@ -535,7 +535,7 @@
                                                            repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO
                                                            strict:[A3DaysCounterModelManager hasHourMinDurationOption:[item.durationOption integerValue]]];
         ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 42;
-        if ([markLabel.text isEqualToString:@"since"]) {
+        if ([markLabel.text isEqualToString:NSLocalizedString(@"since", @"since")]) {
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         }
         else {
@@ -543,7 +543,7 @@
         }
         
         // daysLabel
-        if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
+        if ([markLabel.text isEqualToString:NSLocalizedString(@"today", @"today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
             daysLabel.text = @" ";
         }
         else {
@@ -711,7 +711,7 @@
     }
 
     daysGap = labs(daysGap);
-    result = [NSString stringWithFormat:@"%ld day%@", (long)daysGap, daysGap > 1 ? @"s" : @""];
+    result = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), (long)daysGap];
     return result;
 }
 

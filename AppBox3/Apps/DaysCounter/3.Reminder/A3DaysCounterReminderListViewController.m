@@ -48,7 +48,7 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Reminder";
+    self.title = NSLocalizedString(@"Reminder", @"Reminder");
     self.toolbarItems = _bottomToolbar.items;
     [self.navigationController setToolbarHidden:NO];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 30 : 56, 0, 0);
@@ -190,7 +190,7 @@
                                                                  allDayOption:[item.isAllDay boolValue]
                                                                        repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO
                                                                        strict:[A3DaysCounterModelManager hasHourMinDurationOption:[item.durationOption integerValue]]];
-        if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
+        if ([untilSinceString isEqualToString:NSLocalizedString(@"today", @"today")] || [untilSinceString isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
             NSDateFormatter *formatter = [NSDateFormatter new];
             if (IS_IPAD || [NSDate isFullStyleLocale]) {
                 [formatter setDateStyle:NSDateFormatterFullStyle];
@@ -201,7 +201,7 @@
             else {
                 [formatter setDateFormat:[item.isAllDay boolValue] ? [formatter customFullStyleFormat] : [formatter customFullWithTimeStyleFormat]];
             }
-            
+
             cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:reminder.startDate
                                                               withFormat:[formatter dateFormat]];
         }
@@ -218,7 +218,7 @@
             else {
                 [formatter setDateFormat:[item.isAllDay boolValue] ? [formatter customFullStyleFormat] : [formatter customFullWithTimeStyleFormat]];
             }
-            
+
             cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:reminder.startDate
                                                               withFormat:[formatter dateFormat]];
         }
