@@ -54,12 +54,13 @@
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     [self rightBarButtonDoneButton];
+    
+    self.colorArray = [_sharedManager calendarColorList];
+    
     if ( !_isEditMode ) {
         self.calendarItem = [_sharedManager itemForNewUserCalendar];
         _colorID = [self.calendarItem objectForKey:CalendarItem_ColorID];
     }
-    
-    self.colorArray = [_sharedManager calendarColorList];
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willDismissRightSideView) name:A3NotificationRightSideViewWillDismiss object:nil];

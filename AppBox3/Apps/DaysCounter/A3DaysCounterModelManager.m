@@ -28,10 +28,6 @@
 #import "DaysCounterEvent+management.h"
 #import "NSString+conversion.h"
 
-//#define DEFAULT_CALENDAR_COLOR      [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0]
-#define DEFAULT_CALENDAR_COLOR        [self.calendarColorArray[6] objectForKey:CalendarItem_Color]
-#define DEFAULT_CALENDAR_COLORID        [self.calendarColorArray[6] objectForKey:CalendarItem_Name]
-
 extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 @interface A3DaysCounterModelManager ()
@@ -151,17 +147,6 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 }
 
 - (void)prepareInContext:(NSManagedObjectContext *)context {
-    self.calendarColorArray = [NSMutableArray array];
-    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0], CalendarItem_Name : @"Red" }];
-    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:149.0/255.0 blue:0 alpha:1.0], CalendarItem_Name : @"Orange" }];
-    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:204.0/255.0 blue:0 alpha:1.0], CalendarItem_Name : @"Yellow" }];
-    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:99.0/255.0 green:218.0/255.0 blue:56.0/255.0 alpha:1.0], CalendarItem_Name : @"Green" }];
-    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:27.0/255.0 green:173.0/255.0 blue:248.0/255.0 alpha:1.0], CalendarItem_Name : @"Blue" }];
-    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:88.0/255.0 green:86.0/255.0 blue:214.0/255.0 alpha:1.0], CalendarItem_Name : @"Violet" }];
-    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:204.0/255.0 green:115.0/255.0 blue:225.0/255.0 alpha:1.0], CalendarItem_Name : @"Purple" }];
-    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:162.0/255.0 green:132.0/255.0 blue:94.0/255.0 alpha:1.0], CalendarItem_Name : @"Brown" }];
-    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0], CalendarItem_Name : @"Gray" }];
-    
     NSUInteger count = [DaysCounterCalendar MR_countOfEntitiesWithContext:context];
 
 	if ( count == 0 ) {
@@ -435,8 +420,6 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         eventModel.hasReminder = @(NO);
     }
     else {
-//        eventModel.hasReminder = ([eventModel.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventModel.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
-//        eventModel.hasReminder = ([eventModel.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventModel.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
         eventModel.hasReminder = @(YES);
     }
 
@@ -521,8 +504,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     [item setObject:@"" forKey:CalendarItem_Name];
     [item setObject:@(YES) forKey:CalendarItem_IsShow];
     [item setObject:@(CalendarCellType_User) forKey:CalendarItem_Type];
-    [item setObject:DEFAULT_CALENDAR_COLOR forKey:CalendarItem_Color];
-    [item setObject:DEFAULT_CALENDAR_COLORID forKey:CalendarItem_ColorID];
+    [item setObject:[self.calendarColorArray[6] objectForKey:CalendarItem_Color] forKey:CalendarItem_Color];
+    [item setObject:[self.calendarColorArray[6] objectForKey:CalendarItem_Name] forKey:CalendarItem_ColorID];
     [item setObject:[NSNumber numberWithInteger:0] forKey:CalendarItem_NumberOfEvents];
     
     return item;
@@ -611,7 +594,25 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSArray*)calendarColorList
 {
-    return [NSArray arrayWithArray:_calendarColorArray];
+    return [NSArray arrayWithArray:[self calendarColorArray]];
+}
+
+- (NSMutableArray *)calendarColorArray
+{
+    if (!_calendarColorArray) {
+        _calendarColorArray = [NSMutableArray array];
+        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0], CalendarItem_Name : @"Red" }];
+        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:149.0/255.0 blue:0 alpha:1.0], CalendarItem_Name : @"Orange" }];
+        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:204.0/255.0 blue:0 alpha:1.0], CalendarItem_Name : @"Yellow" }];
+        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:99.0/255.0 green:218.0/255.0 blue:56.0/255.0 alpha:1.0], CalendarItem_Name : @"Green" }];
+        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:27.0/255.0 green:173.0/255.0 blue:248.0/255.0 alpha:1.0], CalendarItem_Name : @"Blue" }];
+        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:88.0/255.0 green:86.0/255.0 blue:214.0/255.0 alpha:1.0], CalendarItem_Name : @"Violet" }];
+        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:204.0/255.0 green:115.0/255.0 blue:225.0/255.0 alpha:1.0], CalendarItem_Name : @"Purple" }];
+        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:162.0/255.0 green:132.0/255.0 blue:94.0/255.0 alpha:1.0], CalendarItem_Name : @"Brown" }];
+        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0], CalendarItem_Name : @"Gray" }];
+    }
+    
+    return _calendarColorArray;
 }
 
 - (NSInteger)numberOfAllEvents
@@ -621,7 +622,6 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date
 {
-//    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@))", @(YES), date, date, @(RepeatType_Never), [NSNull null]]];
     return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == nil))", @(YES), date, date, @(RepeatType_Never)]];
 }
 
@@ -1431,31 +1431,6 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             }
         }
         
-        
-//        if ([event.hasReminder isEqualToNumber:@(YES)] && [event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970]) {
-//            DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event.uniqueID" withValue:[event uniqueID]];
-//            if (reminder) {
-//                // Remind 이벤트가 이미 존재하는 경우,
-//                if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
-//                    // event 의 갱신된 시간기준으로 reminder 시간 갱신.
-//                    reminder.isOn = @(YES);
-//                    reminder.isUnread = @(YES);
-//                }
-//                // event 의 갱신된 시간기준으로 reminder 시간 갱신.
-//                reminder.startDate = event.effectiveStartDate;
-//                reminder.alertDate = event.alertDatetime;
-//            }
-//            else {
-//                // Remind 이벤트가 없는 경우, 추가.
-//                reminder = [DaysCounterReminder MR_createEntity];
-//                reminder.isOn = @(YES);
-//                reminder.isUnread = @(YES);
-//                reminder.startDate = event.effectiveStartDate;      // 실제 이벤트 발생일.
-//                reminder.alertDate = event.alertDatetime;           // 실제 이벤트 얼럿 발생시간. 이 시간이 지나면, Reminder 리스트에 보여지게 된다.
-//                reminder.event = event;                             // 릴레이션.
-//            }
-//        }
-        
         if ([event.alertDatetime timeIntervalSince1970] > [now timeIntervalSince1970]) {
             // 현재 이후의 시간에 대하여 등록.
             UILocalNotification *notification = [UILocalNotification new];
@@ -1680,24 +1655,6 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         dateString = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:date withFormat:[self dateFormatForDetailIsAllDays:isAllDay]]];
     }
     else {
-//        BOOL isResultLeapMonth;
-//        NSDateFormatter *formatter = [NSDateFormatter new];
-//        [formatter setDateStyle:NSDateFormatterFullStyle];
-//        NSMutableString *dateFormat = [formatter.dateFormat mutableCopy];
-//        [dateFormat replaceOccurrencesOfString:@"EEEE" withString:@"" options:0 range:NSMakeRange(0, [dateFormat length])];
-//        [dateFormat replaceOccurrencesOfString:@"MMMM" withString:@"MMM" options:0 range:NSMakeRange(0, [dateFormat length])];
-//        
-//        NSDateComponents *lunarComp = [NSDate lunarCalcWithComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date] gregorianToLunar:YES leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
-//        
-//        NSDateComponents *solarComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit fromDate:date];
-//        if (solarComp.year == lunarComp.year) {
-//            NSArray *dateFormats = [[dateFormat componentsSeparatedByString:@" "] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT (SELF CONTAINS[c] %@)", @"y"]];
-//            dateFormat = [[dateFormats componentsJoinedByString:@" "] mutableCopy];
-//        }
-//        
-//        dateString = [NSString stringWithFormat:@"%@ (음력 %@)",
-//                      [A3DateHelper dateStringFromDate:date withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:YES]],
-//                      [A3DateHelper dateStringFromDateComponents:lunarComp withFormat:dateFormat]];
         dateString = [NSString stringWithFormat:@"%@",
                       [A3DateHelper dateStringFromDate:date withFormat:[self dateFormatForDetailIsAllDays:YES]]];
     }
