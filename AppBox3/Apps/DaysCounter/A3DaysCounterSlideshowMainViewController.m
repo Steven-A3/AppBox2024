@@ -271,7 +271,7 @@
         NSDate *now = [NSDate date];
         [self.eventsArray enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
             if ([event.effectiveStartDate timeIntervalSince1970] >= [now timeIntervalSince1970]) {
-                indexOfTodayPhoto = (idx == 0) ? 0 : (idx - 1);
+                indexOfTodayPhoto = idx;
                 *stop = YES;
                 return;
             }
