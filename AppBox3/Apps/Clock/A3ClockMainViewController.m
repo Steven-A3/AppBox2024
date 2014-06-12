@@ -93,7 +93,6 @@
 	}];
 	[self determineStatusBarStyle];
 	[self addChooseColorButton];
-//    [self setupInstructionView];
 
 	_currentClockViewController = _clockWaveViewController;
 
@@ -105,6 +104,10 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawerStateChanged) name:A3DrawerStateChanged object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3NotificationClockSettingsChanged object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self performSelector:@selector(appsButtonAction:) withObject:nil afterDelay:0.2];
+    });
 }
 
 - (void)removeObserver {
