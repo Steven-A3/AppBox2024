@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ysT-2a-nae">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ysT-2a-nae">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -1176,7 +1176,7 @@ then drag it up or down</string>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_left" translatesAutoresizingMaskIntoConstraints="NO" id="wjt-Kq-a4W">
-                                <rect key="frame" x="42" y="28" width="42" height="42"/>
+                                <rect key="frame" x="42" y="20" width="42" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1185,7 +1185,7 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_left" translatesAutoresizingMaskIntoConstraints="NO" id="CJz-2K-52H">
-                                <rect key="frame" x="50" y="290" width="42" height="42"/>
+                                <rect key="frame" x="50" y="288" width="42" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1194,7 +1194,7 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="UFc-4O-EbR">
-                                <rect key="frame" x="223" y="424" width="42" height="42"/>
+                                <rect key="frame" x="223" y="417" width="42" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1203,7 +1203,7 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="AE6-fy-46s">
-                                <rect key="frame" x="270" y="424" width="14" height="14"/>
+                                <rect key="frame" x="270" y="417" width="14" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="Fsg-qx-Lg3"/>
@@ -1211,14 +1211,14 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to add a category" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="226" translatesAutoresizingMaskIntoConstraints="NO" id="0gd-1F-IlN" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="94" y="39" width="226" height="20"/>
+                                <rect key="frame" x="94" y="31" width="226" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="rHi-Jq-5Rp" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="102" y="291" width="218" height="40"/>
+                                <rect key="frame" x="102" y="289" width="218" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <string key="text">select which categories
 to view</string>
@@ -1227,7 +1227,7 @@ to view</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="213" translatesAutoresizingMaskIntoConstraints="NO" id="ls1-5i-Gos" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="0.0" y="415" width="213" height="60"/>
+                                <rect key="frame" x="0.0" y="408" width="213" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <string key="text">touch and hold  -
 to the right of an item,
@@ -1237,7 +1237,7 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="clV-Vc-4ou">
-                                <rect key="frame" x="203" y="421" width="10" height="10"/>
+                                <rect key="frame" x="203" y="414" width="10" height="10"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2jn-ve-oeC">
@@ -1272,7 +1272,7 @@ then drag it up or down</string>
                             <constraint firstAttribute="trailing" secondItem="Zh0-F5-Jm8" secondAttribute="trailing" id="4J5-Gv-apJ"/>
                             <constraint firstAttribute="trailing" secondItem="0gd-1F-IlN" secondAttribute="trailing" id="6RB-Ko-P1G"/>
                             <constraint firstItem="UFc-4O-EbR" firstAttribute="centerY" secondItem="ls1-5i-Gos" secondAttribute="centerY" id="EoH-3I-7Zb"/>
-                            <constraint firstItem="wjt-Kq-a4W" firstAttribute="top" secondItem="gkS-8h-tzO" secondAttribute="top" constant="28" id="Szj-1t-VZu"/>
+                            <constraint firstItem="wjt-Kq-a4W" firstAttribute="top" secondItem="gkS-8h-tzO" secondAttribute="top" constant="20" id="Szj-1t-VZu"/>
                             <constraint firstItem="CJz-2K-52H" firstAttribute="leading" secondItem="gkS-8h-tzO" secondAttribute="leading" constant="50" id="TMI-uf-kbC"/>
                             <constraint firstItem="wjt-Kq-a4W" firstAttribute="centerY" secondItem="0gd-1F-IlN" secondAttribute="centerY" id="VUE-MY-kMp"/>
                             <constraint firstAttribute="bottom" secondItem="Zh0-F5-Jm8" secondAttribute="bottom" id="dzQ-qI-2dP"/>
@@ -1284,10 +1284,10 @@ then drag it up or down</string>
                             <constraint firstItem="CJz-2K-52H" firstAttribute="centerY" secondItem="rHi-Jq-5Rp" secondAttribute="centerY" id="r9u-Cc-KQg"/>
                             <constraint firstItem="AE6-fy-46s" firstAttribute="leading" secondItem="UFc-4O-EbR" secondAttribute="trailing" constant="5" id="tGj-XJ-ItE"/>
                             <constraint firstItem="wjt-Kq-a4W" firstAttribute="leading" secondItem="gkS-8h-tzO" secondAttribute="leading" constant="42" id="twX-3N-Cfr"/>
-                            <constraint firstItem="48R-jm-Hbu" firstAttribute="top" secondItem="UFc-4O-EbR" secondAttribute="bottom" constant="102" id="uVg-Va-0WT"/>
+                            <constraint firstItem="48R-jm-Hbu" firstAttribute="top" secondItem="UFc-4O-EbR" secondAttribute="bottom" constant="109" id="uVg-Va-0WT"/>
                             <constraint firstAttribute="trailing" secondItem="rHi-Jq-5Rp" secondAttribute="trailing" id="uYw-e7-65k"/>
                             <constraint firstItem="Zh0-F5-Jm8" firstAttribute="leading" secondItem="gkS-8h-tzO" secondAttribute="leading" id="yU5-V3-Hwh"/>
-                            <constraint firstAttribute="bottom" secondItem="CJz-2K-52H" secondAttribute="bottom" constant="236" id="zM3-Vt-mfa"/>
+                            <constraint firstAttribute="bottom" secondItem="CJz-2K-52H" secondAttribute="bottom" constant="238" id="zM3-Vt-mfa"/>
                             <constraint firstItem="UFc-4O-EbR" firstAttribute="top" secondItem="AE6-fy-46s" secondAttribute="top" id="zQU-se-01N"/>
                         </constraints>
                         <connections>
