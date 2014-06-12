@@ -78,7 +78,7 @@
 
 	NSRange range = [originalFormat rangeOfString:@" d,"];
 	if (range.location != NSNotFound) {
-		return [originalFormat stringByReplacingOccurrencesOfString:@" d," withString:@","];
+		return [originalFormat stringByReplacingOccurrencesOfString:@" d," withString:@""];
 	}
 	range = [originalFormat rangeOfString:@"'Ngày' dd 'tháng' M"];
 	if (range.location != NSNotFound) {

@@ -463,8 +463,8 @@
     numberFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
     
     NSArray *paymentDataList = [self paymentList];
-    
-    [csvArray addObject:[NSString stringWithFormat:@"Date, Principal, Payment, Interest, Balance"]];
+
+	[csvArray addObject:NSLocalizedString(@"Date, Principal, Payment, Interest, Balance", @"Date, Principal, Payment, Interest, Balance")];
     [paymentDataList enumerateObjectsUsingBlock:^(NSDictionary *data, NSUInteger idx, BOOL *stop) {
         NSString *date;
         NSString *principal;
@@ -472,7 +472,6 @@
         NSString *interest;
         NSString *balance;
         
-//        date = [df stringFromDate:data[@"Date"]];
         date = [df localizedMediumStyleYearMonthFromDate:data[@"Date"]];
 
         if (IS_IPHONE) {
@@ -517,7 +516,7 @@
 
 - (NSArray *)paymentList
 {
-    NSMutableArray * paymentList = [NSMutableArray new];
+    NSMutableArray * paymentList;
     paymentList = [[NSMutableArray alloc] init];
     
     // date, payment, principal, interest, balance
@@ -555,6 +554,5 @@
     
     return paymentList;
 }
-
 
 @end

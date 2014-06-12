@@ -123,7 +123,7 @@
         dateText = month;
     }
     else {
-        dateText = @"None";
+        dateText = NSLocalizedString(@"None", @"None");
     }
 
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", currencyText, dateText];
@@ -153,7 +153,7 @@
         dateText = [formatter stringFromDate:oneTimeDate];
     }
     else {
-        dateText = @"None";
+        dateText = NSLocalizedString(@"None", @"None");
     }
 
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", currencyText, dateText];
@@ -230,8 +230,8 @@
     [UIView commitAnimations];
 
     // text info
-    NSString *interestText = _totalMode ? @"Interest" : @"Avg.Interest";
-    NSString *paymentText = _totalMode ? @"Total Amount" : @"Payment";
+    NSString *interestText = _totalMode ? NSLocalizedString(@"Interest", @"Interest") : NSLocalizedString(@"Avg.Interest", @"Avg.Interest");
+    NSString *paymentText = _totalMode ? NSLocalizedString(@"Total Amount", @"Total Amount") : NSLocalizedString(@"Payment", @"Payment");
     
     NSNumber *interestNumber = _totalMode ? [_loanData totalInterest] : [_loanData monthlyAverageInterest];
     NSNumber *paymentNumber = _totalMode ? [_loanData totalAmount] : _loanData.repayment;
@@ -317,8 +317,8 @@
         graphCell.lowLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     });
 
-    NSString *interestText = _totalMode ? @"Interest" : (IS_IPAD ? @"Average Interest":@"Avg.Interest");
-    NSString *paymentText = _totalMode ? @"Total Amount" : @"Payment";
+    NSString *interestText = _totalMode ? NSLocalizedString(@"Interest", @"Interest") : (IS_IPAD ? NSLocalizedString(@"Average Interest", @"Average Interest") : NSLocalizedString(@"Avg.Interest", @"Avg.Interest"));
+    NSString *paymentText = _totalMode ? NSLocalizedString(@"Total Amount", @"Total Amount") : NSLocalizedString(@"Payment", @"Payment");
 
     NSDictionary *textAttributes1 = @{
                                       NSFontAttributeName : IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] : [UIFont systemFontOfSize:15.0],

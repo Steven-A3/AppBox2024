@@ -1,18 +1,25 @@
 //
-//  UITableViewController+swipeMenu.m
+//  A3FMMoveTableViewController.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 7/22/13.
-//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 6/12/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <objc/runtime.h>
-#import "UITableViewController+swipeMenu.h"
+#import "A3FMMoveTableViewController.h"
 
-static char const *const KEY_A3TVC_SWIPED_CELLS	= "key_a3tvc_swiped_cells";
 const CGFloat kVisibleWidth = 100.0;
 
-@implementation UITableViewController (swipeMenu)
+@implementation A3FMMoveTableViewController
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+
+	self.tableView = [[FMMoveTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	[self.view addSubview:self.tableView];
+
+}
 
 // Setup a left and right swipe recognizer.
 -(void)setupSwipeRecognizers
@@ -31,7 +38,7 @@ const CGFloat kVisibleWidth = 100.0;
 // Called when a swipe is performed.
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer
 {
-    FNLOG();
+	FNLOG();
 	bool doneSwiping = recognizer && (recognizer.state == UIGestureRecognizerStateEnded);
 
 	if (doneSwiping)
@@ -39,7 +46,7 @@ const CGFloat kVisibleWidth = 100.0;
 		// find the swiped cell
 		CGPoint location = [recognizer locationInView:self.tableView];
 		NSIndexPath* indexPath = [self.tableView indexPathForRowAtPoint:location];
-		UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) [self.tableView cellForRowAtIndexPath:indexPath];
+		UITableViewCell<A3FMMoveTableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3FMMoveTableViewSwipeCellDelegate> *) [self.tableView cellForRowAtIndexPath:indexPath];
 
 		BOOL shouldShowMenu = NO;
 		if ([swipedCell respondsToSelector:@selector(cellShouldShowMenu)]) {
@@ -69,7 +76,7 @@ const CGFloat kVisibleWidth = 100.0;
 {
 	if ([cells count]>0)
 	{
-		for (UITableViewCell<A3TableViewSwipeCellDelegate>* cell in  cells)
+		for (UITableViewCell<A3FMMoveTableViewSwipeCellDelegate>* cell in  cells)
 		{
 			// shift the cell left and remove its menu view
 			CGRect newFrame;
@@ -98,7 +105,7 @@ const CGFloat kVisibleWidth = 100.0;
 
 
 // Animates the cells to the left offset with kVisibleWidth
--(void)shiftLeft:(UITableViewCell<A3TableViewSwipeCellDelegate> *)cell {
+-(void)shiftLeft:(UITableViewCell<A3FMMoveTableViewSwipeCellDelegate> *)cell {
 	FNLOG();
 
 	bool cellAlreadySwiped = [self.swipedCells containsObject:cell];
@@ -122,7 +129,6 @@ const CGFloat kVisibleWidth = 100.0;
 	}
 }
 
-
 #pragma mark - UIScrollViewDelegate
 
 // un-swipe everything when the user scrolls
@@ -131,20 +137,8 @@ const CGFloat kVisibleWidth = 100.0;
 }
 
 - (void)unSwipeAll {
-    FNLOG();
+	FNLOG();
 	[self shiftRight:self.swipedCells];
-}
-
-#pragma mark - required variables
-
-- (NSMutableSet *)swipedCells {
-	NSMutableSet *swipedCells;
-	swipedCells = objc_getAssociatedObject(self, KEY_A3TVC_SWIPED_CELLS);
-	return swipedCells;
-}
-
-- (void)setSwipedCells:(NSMutableSet *)swipedCells {
-	objc_setAssociatedObject(self, KEY_A3TVC_SWIPED_CELLS, swipedCells, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

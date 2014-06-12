@@ -60,10 +60,10 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     [super viewDidLoad];
 
     if (_exPaymentType == A3LC_ExtraPaymentYearly) {
-        self.navigationItem.title = @"Yearly";
+        self.navigationItem.title = NSLocalizedString(@"Yearly", @"Yearly");
     }
     else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
-        self.navigationItem.title = @"One-Time";
+        self.navigationItem.title = NSLocalizedString(@"One-Time", @"One-Time");
     }
     
 
@@ -314,19 +314,6 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         _loanCalcData.extraPaymentOneTimeDate = pickDate;
         
         _dateTextField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
-//        if (IS_IPAD) {
-//            _dateTextField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
-//        }
-//        else {
-//            // 한국만 예외적으로 long스타일 적용
-//            NSLocale *locale = [NSLocale currentLocale];
-//            if ([locale.localeIdentifier isEqualToString:@"ko_KR"]) {
-//                _dateTextField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
-//            }
-//            else {
-//                _dateTextField.text = [df localizedMediumStyleYearMonthFromDate:pickDate];
-//            }
-//        }
     }
     
     if (IS_IPAD && _delegate && [_delegate respondsToSelector:@selector(didChangedLoanCalcExtraPayment:)]) {
@@ -558,7 +545,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         inputCell.textField.font = [UIFont systemFontOfSize:17];
         inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
         
-        inputCell.titleLabel.text = @"Amounts";
+        inputCell.titleLabel.text = NSLocalizedString(@"Amounts", @"Amounts");
         inputCell.textField.delegate = self;
         inputCell.textField.enabled = YES;
         inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[self.loanFormatter stringFromNumber:@(0)]
@@ -593,9 +580,9 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
             inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
         }
         
-        inputCell.titleLabel.text = @"Date";
+        inputCell.titleLabel.text = NSLocalizedString(@"Date", @"Date");
         inputCell.textField.enabled = NO;
-        inputCell.textField.placeholder = @"None";
+        inputCell.textField.placeholder = NSLocalizedString(@"None", @"None");
         
         if (_exPaymentType == A3LC_ExtraPaymentYearly) {
             NSDate *pickDate = ![_loanCalcData extraPaymentYearlyDate] ? [NSDate date] : [_loanCalcData extraPaymentYearlyDate];
@@ -623,19 +610,6 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
             NSDateFormatter *df = [[NSDateFormatter alloc] init];
             
             inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
-//            if (IS_IPAD) {
-//                inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
-//            }
-//            else {
-//                // 한국만 예외적으로 long스타일 적용
-//                NSLocale *locale = [NSLocale currentLocale];
-//                if ([locale.localeIdentifier isEqualToString:@"ko_KR"]) {
-//                    inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
-//                }
-//                else {
-//                    inputCell.textField.text = [df localizedMediumStyleYearMonthFromDate:pickDate];
-//                }
-//            }
         }
         cell = inputCell;
     }

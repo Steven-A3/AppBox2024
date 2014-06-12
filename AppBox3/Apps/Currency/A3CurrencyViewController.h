@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ATSDragToReorderTableViewController.h"
+#import "A3FMMoveTableViewController.h"
 
 extern NSString *const A3CurrencyDataCellID;
 extern NSString *const A3CurrencySettingsChangedNotification;
 
-@interface A3CurrencyViewController : ATSDragToReorderTableViewController
+@interface A3CurrencyViewController : A3FMMoveTableViewController
 
 @end

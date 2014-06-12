@@ -25,3 +25,6 @@
 
 "%ld mins" = "%ld mins";
 "%ld minutes" = "%ld minutes";
+
+"%ld yrs" = "%ld yrs";
+"%ld mos" = "%ld mos";

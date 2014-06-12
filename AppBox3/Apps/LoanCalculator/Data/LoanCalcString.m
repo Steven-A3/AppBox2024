@@ -9,30 +9,49 @@
 #import "LoanCalcString.h"
 #import "LoanCalcData.h"
 
+NSString *const A3LC_ModeTitle_DownPayment  = @"Down Payment";
+NSString *const A3LC_ModeTitle_Repayment    = @"Payment";
+NSString *const A3LC_ModeTitle_Principal    = @"Principal";
+NSString *const A3LC_ModeTitle_TermOfYears  = @"Term(years)";
+NSString *const A3LC_ModeTitle_TermOfMonths = @"Term(months)";
+
+NSString *const A3LC_ItemTitle_Principal        = @"Principal";
+NSString *const A3LC_ItemTitle_DownPayment      = @"Down Payment";
+NSString *const A3LC_ItemTitle_Term             = @"Term";
+NSString *const A3LC_ItemTitle_InterestRate     = @"Interest Rate";
+NSString *const A3LC_ItemTitle_Repayment        = @"Payment";
+NSString *const A3LC_ItemTitle_Frequency        = @"Frequency";
+
+NSString *const A3LC_FrequencyTitle_Weekly      = @"Weekly";
+NSString *const A3LC_FrequencyTitle_Biweekly    = @"Biweekly";
+NSString *const A3LC_FrequencyTitle_Monthly     = @"Monthly";
+NSString *const A3LC_FrequencyTitle_Bimonthly   = @"Bimonthly";
+NSString *const A3LC_FrequencyTitle_Quarterly = @"Quarterly";
+NSString *const A3LC_FrequencyTitle_SemiAnnually = @"Semiannually";
+NSString *const A3LC_FrequencyTitle_Annually = @"Annually";
+
+NSString *const A3LC_ExtraPaymentTitle_Monthly  = @"Monthly";
+NSString *const A3LC_ExtraPaymentTitle_Yearly   = @"Yearly";
+NSString *const A3LC_ExtraPaymentTitle_Onetime  = @"One-Time";
+
 @implementation LoanCalcString
 
 + (NSString *)titleOfCalFor:(A3LoanCalcCalculationMode)mode
 {
     switch (mode) {
         case A3LC_CalculationForDownPayment:
-            return A3LC_ModeTitle_DownPayment;
-            break;
+            return NSLocalizedString(A3LC_ModeTitle_DownPayment, nil);
         case A3LC_CalculationForRepayment:
-            return A3LC_ModeTitle_Repayment;
-            break;
+            return NSLocalizedString(A3LC_ModeTitle_Repayment, nil);
         case A3LC_CalculationForPrincipal:
-            return A3LC_ModeTitle_Principal;
-            break;
+            return NSLocalizedString(A3LC_ModeTitle_Principal, nil);
         case A3LC_CalculationForTermOfMonths:
-            return A3LC_ModeTitle_TermOfMonths;
-            break;
+            return NSLocalizedString(A3LC_ModeTitle_TermOfMonths, nil);
         case A3LC_CalculationForTermOfYears:
-            return A3LC_ModeTitle_TermOfYears;
-            break;
-            
+            return NSLocalizedString(A3LC_ModeTitle_TermOfYears, nil);
+
         default:
             return @"";
-            break;
     }
 }
 
@@ -40,27 +59,20 @@
 {
     switch (item) {
         case A3LC_CalculationItemPrincipal:
-            return A3LC_ItemTitle_Principal;
-            break;
+            return NSLocalizedString(A3LC_ItemTitle_Principal, nil);
         case A3LC_CalculationItemDownPayment:
-            return A3LC_ItemTitle_DownPayment;
-            break;
+            return NSLocalizedString(A3LC_ItemTitle_DownPayment, nil);
         case A3LC_CalculationItemTerm:
-            return A3LC_ItemTitle_Term;
-            break;
+            return NSLocalizedString(A3LC_ItemTitle_Term, nil);
         case A3LC_CalculationItemInterestRate:
-            return A3LC_ItemTitle_InterestRate;
-            break;
+            return NSLocalizedString(A3LC_ItemTitle_InterestRate, nil);
         case A3LC_CalculationItemRepayment:
-            return A3LC_ItemTitle_Repayment;
-            break;
+            return NSLocalizedString(A3LC_ItemTitle_Repayment, nil);
         case A3LC_CalculationItemFrequency:
-            return A3LC_ItemTitle_Frequency;
-            break;
-            
+            return NSLocalizedString(A3LC_ItemTitle_Frequency, nil);
+
         default:
             return @"";
-            break;
     }
 }
 
@@ -68,30 +80,22 @@
 {
     switch (type) {
         case A3LC_FrequencyWeekly:
-            return A3LC_FrequencyTitle_Weekly;
-            break;
+            return NSLocalizedString(A3LC_FrequencyTitle_Weekly, nil);
         case A3LC_FrequencyBiweekly:
-            return A3LC_FrequencyTitle_Biweekly;
-            break;
+            return NSLocalizedString(A3LC_FrequencyTitle_Biweekly, nil);
         case A3LC_FrequencyMonthly:
-            return A3LC_FrequencyTitle_Monthly;
-            break;
+            return NSLocalizedString(A3LC_FrequencyTitle_Monthly, nil);
         case A3LC_FrequencyBimonthly:
-            return A3LC_FrequencyTitle_Bimonthly;
-            break;
+            return NSLocalizedString(A3LC_FrequencyTitle_Bimonthly, nil);
         case A3LC_FrequencyQuarterly:
-            return A3LC_FrequencyTitle_Quaterly;
-            break;
+            return NSLocalizedString(A3LC_FrequencyTitle_Quarterly, nil);
         case A3LC_FrequencySemiannualy:
-            return A3LC_FrequencyTitle_Semiannualy;
-            break;
+            return NSLocalizedString(A3LC_FrequencyTitle_SemiAnnually, nil);
         case A3LC_FrequencyAnnually:
-            return A3LC_FrequencyTitle_Annualy;
-            break;
-            
+            return NSLocalizedString(A3LC_FrequencyTitle_Annually, nil);
+
         default:
             return @"";
-            break;
     }
 }
 
@@ -99,30 +103,22 @@
 {
     switch (type) {
         case A3LC_FrequencyWeekly:
-            return @"wk";
-            break;
+            return NSLocalizedString(@"Loan Calc Frequency short string weekly", @"wk");
         case A3LC_FrequencyBiweekly:
-            return @"biwk";
-            break;
+            return NSLocalizedString(@"Loan Calc Frequency short string biweekly", @"biwk");
         case A3LC_FrequencyMonthly:
-            return @"mo";
-            break;
+            return NSLocalizedString(@"Loan Calc Frequency short string monthly", @"mo");
         case A3LC_FrequencyBimonthly:
-            return @"bimo";
-            break;
+            return NSLocalizedString(@"Loan Calc Frequency short string bi montly", @"bimo");
         case A3LC_FrequencyQuarterly:
-            return @"qt";
-            break;
+            return NSLocalizedString(@"Loan Calc Frequency short string quarterly", @"qt");
         case A3LC_FrequencySemiannualy:
-            return @"semian";
-            break;
+            return NSLocalizedString(@"Loan Calc Frequency short string semi annually", @"semian");
         case A3LC_FrequencyAnnually:
-            return @"an";
-            break;
-            
+            return NSLocalizedString(@"Loan Calc Frequency short string annually", @"an");
+
         default:
             return @"";
-            break;
     }
 }
 
@@ -130,18 +126,14 @@
 {
     switch (type) {
         case A3LC_ExtraPaymentMonthly:
-            return A3LC_ExtraPaymentTitle_Monthly;
-            break;
+            return NSLocalizedString(A3LC_ExtraPaymentTitle_Monthly, nil);
         case A3LC_ExtraPaymentYearly:
-            return A3LC_ExtraPaymentTitle_Yearly;
-            break;
+            return NSLocalizedString(A3LC_ExtraPaymentTitle_Yearly, nil);
         case A3LC_ExtraPaymentOnetime:
-            return A3LC_ExtraPaymentTitle_Onetime;
-            break;
-            
+            return NSLocalizedString(A3LC_ExtraPaymentTitle_Onetime, nil);
+
         default:
             return @"";
-            break;
     }
 }
 

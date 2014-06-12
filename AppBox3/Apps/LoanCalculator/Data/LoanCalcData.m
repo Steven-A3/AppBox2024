@@ -23,7 +23,7 @@ NSString *const A3LoanCalcCurrencyCodeChanged = @"A3LoanCalcCurrencyCodeChanged"
 		_showsTermInMonths  = [aDecoder decodeObjectForKey:@"showsTermInMonths"];
         _annualInterestRate = [aDecoder decodeObjectForKey:@"annualInterestRate"];
 		_showsInterestInYearly = [aDecoder decodeObjectForKey:@"showsInterestInYearly"];
-		_frequencyIndex = [aDecoder decodeIntegerForKey:@"frequencyIndex"];
+		_frequencyIndex = (A3LoanCalcFrequencyType) [aDecoder decodeIntegerForKey:@"frequencyIndex"];
         _calculationDate = [aDecoder decodeObjectForKey:@"calculationDate"];
         
         // advanced
@@ -38,7 +38,7 @@ NSString *const A3LoanCalcCurrencyCodeChanged = @"A3LoanCalcCurrencyCodeChanged"
         _extraPaymentOneTimeDate = [aDecoder decodeObjectForKey:@"extraPaymentOneTimeDate"];
         
         // setting
-        _calculationMode = [aDecoder decodeIntegerForKey:@"calculationMode"];
+        _calculationMode = (A3LoanCalcCalculationMode) [aDecoder decodeIntegerForKey:@"calculationMode"];
         _showAdvanced = [aDecoder decodeBoolForKey:@"showAdvanced"];
         _showDownPayment = [aDecoder decodeBoolForKey:@"showDownPayment"];
         _showExtraPayment = [aDecoder decodeBoolForKey:@"showExtraPayment"];
@@ -90,10 +90,11 @@ NSString *const A3LoanCalcCurrencyCodeChanged = @"A3LoanCalcCurrencyCodeChanged"
 	[formatter setNumberStyle:NSNumberFormatterPercentStyle];
 	[formatter setMaximumFractionDigits:3];
 	if ([self.showsInterestInYearly boolValue]) {
-		resultString = [NSString stringWithFormat:@"Annual %@", [formatter stringFromNumber:_annualInterestRate ? _annualInterestRate : @0]];
+		resultString = [NSString stringWithFormat:NSLocalizedString(@"Annual %@", @"Annual %@"), [formatter stringFromNumber:_annualInterestRate ? _annualInterestRate : @0]];
 	} else {
-		resultString = [NSString stringWithFormat:@"Monthly %@", [formatter stringFromNumber:@([_annualInterestRate doubleValue] / 12.0)]];
+		resultString = [NSString stringWithFormat:NSLocalizedString(@"Monthly %@", @"Monthly %@"), [formatter stringFromNumber:@([_annualInterestRate doubleValue] / 12.0)]];
 	}
 	return resultString;
 }
+
 @end

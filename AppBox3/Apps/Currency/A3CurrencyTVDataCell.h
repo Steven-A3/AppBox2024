@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "UITableViewController+swipeMenu.h"
+#import "A3FMMoveTableViewController.h"
 
 @protocol A3CurrencyMenuDelegate <NSObject>
 - (void)menuAdded;
@@ -16,7 +16,7 @@
 - (void)deleteActionForCell:(UITableViewCell *)cell;
 @end
 
-@interface A3CurrencyTVDataCell : UITableViewCell <A3TableViewSwipeCellDelegate>
+@interface A3CurrencyTVDataCell : UITableViewCell <A3FMMoveTableViewSwipeCellDelegate>
 
 @property (nonatomic, strong) UITextField *valueField;
 @property (nonatomic, strong) UILabel *codeLabel;

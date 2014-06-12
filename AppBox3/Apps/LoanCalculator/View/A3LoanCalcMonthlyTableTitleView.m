@@ -53,11 +53,11 @@
         interestLB.textAlignment = NSTextAlignmentCenter;
         balanceLB.textAlignment = NSTextAlignmentCenter;
         
-        dateLB.text = @"DATE";
-        paymentLB.text = @"PAYMENT";
-        principalLB.text = @"PRINCIPAL";
-        interestLB.text = @"INTEREST";
-        balanceLB.text = @"BALANCE";
+        dateLB.text = NSLocalizedString(@"DATE", @"DATE");
+        paymentLB.text = NSLocalizedString(@"PAYMENT", @"PAYMENT");
+        principalLB.text = NSLocalizedString(@"PRINCIPAL", @"PRINCIPAL");
+        interestLB.text = NSLocalizedString(@"INTEREST", @"INTEREST");
+        balanceLB.text = NSLocalizedString(@"BALANCE", @"BALANCE");
 
         /*
         dateLB.backgroundColor = [UIColor redColor];

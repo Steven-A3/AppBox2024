@@ -93,7 +93,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 
 - (UISegmentedControl *)selectSegment
 {
-    UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[@"Loan", @"Comparison"]];
+    UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"Loan", @"Loan"), NSLocalizedString(@"Comparison", @"Comparison")]];
     
     [segment setWidth:85 forSegmentAtIndex:0];
     [segment setWidth:85 forSegmentAtIndex:1];
@@ -145,8 +145,8 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 - (void)clearButtonAction:(id)button {
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 															 delegate:self
-													cancelButtonTitle:@"Cancel"
-											   destructiveButtonTitle:@"Clear History"
+													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+											   destructiveButtonTitle:NSLocalizedString(@"Clear History", @"Clear History")
 													otherButtonTitles:nil];
 	[actionSheet showInView:self.view];
 }
@@ -166,7 +166,10 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 			self.navigationItem.leftBarButtonItem = nil;
 		}
         else {
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear")
+																					 style:UIBarButtonItemStylePlain
+																					target:self
+																					action:@selector(clearButtonAction:)];
         }
 	}
 	return _fetchedResultsController;
@@ -228,11 +231,11 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
         int monthCount = (int)(months - yearCount * 12);
         NSString *yearText = @"";
         if (yearCount > 0) {
-            yearText = [NSString stringWithFormat:@"%dyrs", yearCount];
+            yearText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld yrs", @"StringsDict", nil), (long)yearCount];
         }
         NSString *monthText = @"";
         if (monthCount > 0) {
-            monthText = [NSString stringWithFormat:@"%dmos", monthCount];
+            monthText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), (long)monthCount];
         }
         loanCell.lowLeftLb.text = [NSString stringWithFormat:@"%@ %@ %@%@", principal, percent, yearText, monthText];
         loanCell.lowLeftLb.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
@@ -303,7 +306,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
                                           };
         NSMutableAttributedString *upAttrString = [[NSMutableAttributedString alloc] init];
         NSMutableAttributedString *upText1 = [[NSMutableAttributedString alloc] initWithString:[self.currencyFormatter stringFromNumber:@(history.totalInterestA.floatValue)] attributes:textAttributes1];
-        NSMutableAttributedString *midText = [[NSMutableAttributedString alloc] initWithString:@" of " attributes:textAttributes2];
+        NSMutableAttributedString *midText = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@" of ", @" of ") attributes:textAttributes2];
         NSMutableAttributedString *upText2 = [[NSMutableAttributedString alloc] initWithString:[self.currencyFormatter stringFromNumber:@(history.totalAmountA.floatValue)] attributes:textAttributes2];
         [upAttrString appendAttributedString:upText1];
         [upAttrString appendAttributedString:midText];

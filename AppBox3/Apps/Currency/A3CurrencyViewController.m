@@ -37,8 +37,8 @@ NSString *const A3CurrencyLastInputValue = @"A3CurrencyLastInputValue";
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
 NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 
-@interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate,
-		A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate,
+@interface A3CurrencyViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate,
+		UITextFieldDelegate, A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate,
 		UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource, A3CalculatorViewControllerDelegate, A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *favorites;
@@ -59,6 +59,8 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 @property (nonatomic, strong) A3CurrencySettingsViewController *settingsViewController;
 @property (nonatomic, strong) A3CurrencySelectViewController *currencySelectViewController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) UITableViewController *tableViewController;
 
 @end
 
@@ -77,24 +79,22 @@ NSString *const A3CurrencyDataCellID = @"A3CurrencyDataCell";
 NSString *const A3CurrencyActionCellID = @"A3CurrencyActionCell";
 NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-	self = [super initWithNibName:nil bundle:nil];
-	if (self) {
-
-	}
-
-	return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
+	self.tableView.dataSource = self;
+	self.tableView.delegate = self;
+
 	self.title = NSLocalizedString(@"Currency Converter", nil);
-	self.dragDelegate = self;
 
 	self.refreshControl = [UIRefreshControl new];
 	[self.refreshControl addTarget:self action:@selector(refreshControlValueChanged) forControlEvents:UIControlEventValueChanged];
+
+	self.tableViewController = [[UITableViewController alloc] initWithStyle:self.tableView.style];
+	self.tableViewController.tableView = self.tableView;
+	self.tableViewController.refreshControl = self.refreshControl;
+	[self addChildViewController:self.tableViewController];
 
 	[self setupSwipeRecognizers];
 
@@ -467,8 +467,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
-	if (self.isDraggingCell) return;
-
 	NSMutableArray *visibleRows = [[self.tableView indexPathsForVisibleRows] mutableCopy];
 	NSUInteger firstRowIdx = [visibleRows indexOfObjectPassingTest:^BOOL(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
 		return obj.row == 0;
@@ -711,23 +709,23 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	FNLOG(@"from: %ld, to: %ld", (long)fromIndexPath.row, (long)toIndexPath.row);
 }
 
-#pragma mark - ATSDragToReorderTableViewControllerDraggableIndicators
-
-- (UITableViewCell *)cellIdenticalToCellAtIndexPath:(NSIndexPath *)indexPath forDragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController {
-	FNLOG();
-	UITableViewCell *cell = nil;
-	if ([self.favorites objectAtIndex:indexPath.row] == self.equalItem) {
-		A3CurrencyTVEqualCell *equalCell = [[A3CurrencyTVEqualCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-
-		cell = equalCell;
-	} else if ([[self.favorites objectAtIndex:indexPath.row] isKindOfClass:[CurrencyFavorite class]]) {
-		A3CurrencyTVDataCell *dataCell = [[A3CurrencyTVDataCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-
-		[self configureDataCell:dataCell atIndexPath:indexPath];
-		cell = dataCell;
-	}
-	return cell;
-}
+//#pragma mark - ATSDragToReorderTableViewControllerDraggableIndicators
+//
+//- (UITableViewCell *)cellIdenticalToCellAtIndexPath:(NSIndexPath *)indexPath forDragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController {
+//	FNLOG();
+//	UITableViewCell *cell = nil;
+//	if ([self.favorites objectAtIndex:indexPath.row] == self.equalItem) {
+//		A3CurrencyTVEqualCell *equalCell = [[A3CurrencyTVEqualCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+//
+//		cell = equalCell;
+//	} else if ([[self.favorites objectAtIndex:indexPath.row] isKindOfClass:[CurrencyFavorite class]]) {
+//		A3CurrencyTVDataCell *dataCell = [[A3CurrencyTVDataCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+//
+//		[self configureDataCell:dataCell atIndexPath:indexPath];
+//		cell = dataCell;
+//	}
+//	return cell;
+//}
 
 #pragma mark -- A3SearchViewDelegate / A3CurrencySelectViewController delegate
 
@@ -863,6 +861,37 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	return viewController;
 }
 
+#pragma mark - FMMoveTableView
+
+- (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+	[self.favorites moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		NSInteger equalIndex;
+		equalIndex = [self.favorites indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+			return [obj isEqual:self.equalItem];
+		}];
+
+		if (equalIndex != 1) {
+			[self.favorites moveItemInSortedArrayFromIndex:equalIndex toIndex:1];
+			[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:equalIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+			if (equalIndex == 0) {
+				[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]  withRowAnimation:UITableViewRowAnimationNone];
+			}
+			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		}
+
+		if (fromIndexPath.row == 0 || toIndexPath.row == 0) {
+			double delayInSeconds = 0.3;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[self.tableView reloadData];
+			});
+		}
+	});
+}
+
 #pragma mark -- UITextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
@@ -903,7 +932,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		if (![swipped count]) {
 			CGPoint center = [textField convertPoint:textField.center toView:nil];
 			NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[self.view convertPoint:center fromView:nil]];
-			UITableViewCell <A3TableViewSwipeCellDelegate> *cell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) [self.tableView cellForRowAtIndexPath:indexPath];
+			UITableViewCell <A3FMMoveTableViewSwipeCellDelegate> *cell = (UITableViewCell <A3FMMoveTableViewSwipeCellDelegate> *) [self.tableView cellForRowAtIndexPath:indexPath];
 
 			if (cell) {
 				[self shiftLeft:cell];
@@ -1034,15 +1063,15 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 #pragma mark --- Drag and Reorder
 
-- (void)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController didBeginDraggingAtRow:(NSIndexPath *)dragRow {
-	[self unSwipeAll];
-    _draggingFirstRow = (dragRow.row == 0);
-	FNLOG();
-}
-
-- (void)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController willEndDraggingToRow:(NSIndexPath *)destinationIndexPath {
-	FNLOG();
-}
+//- (void)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController didBeginDraggingAtRow:(NSIndexPath *)dragRow {
+//	[self unSwipeAll];
+//    _draggingFirstRow = (dragRow.row == 0);
+//	FNLOG();
+//}
+//
+//- (void)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController willEndDraggingToRow:(NSIndexPath *)destinationIndexPath {
+//	FNLOG();
+//}
 
 - (NSInteger)indexOfObject:(NSDictionary *) target {
 	NSInteger idx = 0;
@@ -1059,35 +1088,35 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	return NSNotFound;
 }
 
-- (void)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController didEndDraggingToRow:(NSIndexPath *)destinationIndexPath {
-	NSInteger equalIndex;
-
-	equalIndex = [self indexOfObject:self.equalItem];
-
-	if (equalIndex != 1) {
-		FNLOG(@"equal index %ld is not 1.", (long)equalIndex);
-		[self.favorites moveItemInSortedArrayFromIndex:equalIndex toIndex:1];
-		[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:equalIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-		if (equalIndex == 0) {
-			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]  withRowAnimation:UITableViewRowAnimationNone];
-		}
-	}
-
-	if ((_draggingFirstRow && (destinationIndexPath.row != 0)) || (destinationIndexPath.row == 0)) {
-		double delayInSeconds = 0.3;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[self.tableView reloadData];
-		});
-	}
-
-	[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
-
-#ifdef DEBUG
-	[self logFavorites];
-	FNLOG(@"%@", _textFields);
-#endif
-}
+//- (void)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController didEndDraggingToRow:(NSIndexPath *)destinationIndexPath {
+//	NSInteger equalIndex;
+//
+//	equalIndex = [self indexOfObject:self.equalItem];
+//
+//	if (equalIndex != 1) {
+//		FNLOG(@"equal index %ld is not 1.", (long)equalIndex);
+//		[self.favorites moveItemInSortedArrayFromIndex:equalIndex toIndex:1];
+//		[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:equalIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+//		if (equalIndex == 0) {
+//			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]  withRowAnimation:UITableViewRowAnimationNone];
+//		}
+//	}
+//
+//	if ((_draggingFirstRow && (destinationIndexPath.row != 0)) || (destinationIndexPath.row == 0)) {
+//		double delayInSeconds = 0.3;
+//		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//			[self.tableView reloadData];
+//		});
+//	}
+//
+//	[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
+//
+//#ifdef DEBUG
+//	[self logFavorites];
+//	FNLOG(@"%@", _textFields);
+//#endif
+//}
 
 #ifdef	DEBUG
 - (void)logFavorites {
@@ -1105,9 +1134,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 #endif
 
-- (BOOL)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController shouldHideDraggableIndicatorForDraggingToRow:(NSIndexPath *)destinationIndexPath {
-	return NO;
-}
+//- (BOOL)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController shouldHideDraggableIndicatorForDraggingToRow:(NSIndexPath *)destinationIndexPath {
+//	return NO;
+//}
 
 #pragma mark - A3CurrencyMenuDelegate
 - (void)menuAdded {
@@ -1117,7 +1146,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 - (void)swapActionForCell:(UITableViewCell *)cell {
 	[self unSwipeAll];
 
-	UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) cell;
+	UITableViewCell<A3FMMoveTableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3FMMoveTableViewSwipeCellDelegate> *) cell;
 	[swipedCell removeMenuView];
 
 	NSIndexPath *sourceIndexPath = [self.tableView indexPathForCell:cell];
@@ -1229,7 +1258,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 - (void)deleteActionForCell:(UITableViewCell *)cell {
 	[self unSwipeAll];
 
-	UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) cell;
+	UITableViewCell<A3FMMoveTableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3FMMoveTableViewSwipeCellDelegate> *) cell;
 	[swipedCell removeMenuView];
 
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];

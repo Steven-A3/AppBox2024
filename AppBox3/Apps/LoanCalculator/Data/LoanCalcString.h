@@ -9,36 +9,33 @@
 #import <Foundation/Foundation.h>
 #import "LoanCalcMode.h"
 
-// calculation for
-#define A3LC_ModeTitle_DownPayment  @"Down Payment";
-#define A3LC_ModeTitle_Repayment    @"Payment";
-#define A3LC_ModeTitle_Principal    @"Principal";
-#define A3LC_ModeTitle_TermOfYears  @"Term(years)";
-#define A3LC_ModeTitle_TermOfMonths @"Term(months)";
-
-// calculation item
-#define A3LC_ItemTitle_Principal        @"Principal";
-#define A3LC_ItemTitle_DownPayment      @"Down Payment";
-#define A3LC_ItemTitle_Term             @"Term";
-#define A3LC_ItemTitle_InterestRate     @"Interest Rate";
-#define A3LC_ItemTitle_Repayment        @"Payment";
-#define A3LC_ItemTitle_Frequency        @"Frequency";
-
-// frequency type
-#define A3LC_FrequencyTitle_Weekly      @"Weekly";
-#define A3LC_FrequencyTitle_Biweekly    @"Biweekly";
-#define A3LC_FrequencyTitle_Monthly     @"Monthly";
-#define A3LC_FrequencyTitle_Bimonthly   @"Bimonthly";
-#define A3LC_FrequencyTitle_Quaterly    @"Quarterly";
-#define A3LC_FrequencyTitle_Semiannualy @"Semiannually";
-#define A3LC_FrequencyTitle_Annualy     @"Annually";
-
-// extraPayment type
-#define A3LC_ExtraPaymentTitle_Monthly  @"Monthly";
-#define A3LC_ExtraPaymentTitle_Yearly   @"Yearly";
-#define A3LC_ExtraPaymentTitle_Onetime  @"One-Time";
+//extern NSString *const A3LC_ModeTitle_DownPayment;
+//extern NSString *const A3LC_ModeTitle_Repayment;
+//extern NSString *const A3LC_ModeTitle_Principal;
+//extern NSString *const A3LC_ModeTitle_TermOfYears;
+//extern NSString *const A3LC_ModeTitle_TermOfMonths;
+//
+//extern NSString *const A3LC_ItemTitle_Principal;
+//extern NSString *const A3LC_ItemTitle_DownPayment;
+//extern NSString *const A3LC_ItemTitle_Term;
+//extern NSString *const A3LC_ItemTitle_InterestRate;
+//extern NSString *const A3LC_ItemTitle_Repayment;
+//extern NSString *const A3LC_ItemTitle_Frequency;
+//
+//extern NSString *const A3LC_FrequencyTitle_Weekly;
+//extern NSString *const A3LC_FrequencyTitle_Biweekly;
+//extern NSString *const A3LC_FrequencyTitle_Monthly;
+//extern NSString *const A3LC_FrequencyTitle_Bimonthly;
+//extern NSString *const A3LC_FrequencyTitle_Quarterly;
+//extern NSString *const A3LC_FrequencyTitle_SemiAnnually;
+//extern NSString *const A3LC_FrequencyTitle_Annually;
+//
+//extern NSString *const A3LC_ExtraPaymentTitle_Monthly;
+//extern NSString *const A3LC_ExtraPaymentTitle_Yearly;
+//extern NSString *const A3LC_ExtraPaymentTitle_Onetime;
 
 @class LoanCalcData;
+
 @interface LoanCalcString : NSObject
 
 + (NSString *)titleOfCalFor:(A3LoanCalcCalculationMode)mode;
@@ -47,4 +44,5 @@
 + (NSString *)titleOfExtraPayment:(A3LoanCalcExtraPaymentType)type;
 + (NSString *)shortTitleOfFrequency:(A3LoanCalcFrequencyType)type;
 + (NSString *)valueTextForCalcItem:(A3LoanCalcCalculationItem)calcItem fromData:(LoanCalcData *)loan formatter:(NSNumberFormatter *)currencyFormatter;
+
 @end

@@ -518,3 +518,39 @@
 "Auto Record" = "Auto Record";
 "Notify about estimated next starting date." = "Notify about estimated next starting date.";
 "FORECASTING %@ PERIODS" = "FORECASTING %@ PERIODS";
+
+"Date, Principal, Payment, Interest, Balance" = "Date, Principal, Payment, Interest, Balance";
+"Annual %@" = "Annual %@";
+"Monthly %@" = "Monthly %@";
+
+"Down Payment" = "Down Payment";
+"Payment" = "Payment";
+"Term(years)" = "Term(years)";
+"Term(months)" = "Term(months)";
+"Biweekly" = "Biweekly";
+"Bimonthly" = "Bimonthly";
+"Quarterly" = "Quarterly";
+"Semiannually" = "Semiannually";
+"Annually" = "Annually";
+
+"Loan Calc Frequency short string weekly" = "wk";
+"Loan Calc Frequency short string biweekly" = "biwk";
+"Loan Calc Frequency short string monthly" = "mo";
+"Loan Calc Frequency short string bi montly" = "bimo";
+"Loan Calc Frequency short string quarterly" = "qt";
+"Loan Calc Frequency short string semi annually" = "semian";
+"Loan Calc Frequency short string annually" = "an";
+
+"PAYMENT" = "PAYMENT";
+"PRINCIPAL" = "PRINCIPAL";
+"INTEREST" = "INTEREST";
+"BALANCE" = "BALANCE";
+"Interest" = "Interest";
+"Avg.Interest" = "Avg.Interest";
+"Total Amount" = "Total Amount";
+"Average Interest" = "Average Interest";
+"Amounts" = "Amounts";
+"Loan" = "Loan";
+"Comparison" = "Comparison";
+" of " = " of ";
+"0 years" = "0 years";

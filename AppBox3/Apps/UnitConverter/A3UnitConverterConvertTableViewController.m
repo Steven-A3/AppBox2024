@@ -1316,7 +1316,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (void)swapActionForCell:(UITableViewCell *)cell {
 	[self unSwipeAll];
 
-	UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) cell;
+	UITableViewCell<A3FMMoveTableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3FMMoveTableViewSwipeCellDelegate> *) cell;
 	[swipedCell removeMenuView];
 
 	NSIndexPath *sourceIndexPath = [_fmMoveTableView indexPathForCell:cell];
@@ -1343,7 +1343,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 {
 	[self unSwipeAll];
 
-	UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) cell;
+	UITableViewCell<A3FMMoveTableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3FMMoveTableViewSwipeCellDelegate> *) cell;
 	[swipedCell removeMenuView];
 
 	if ([_convertItems count] < 4) {
@@ -1587,7 +1587,7 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 		// find the swiped cell
 		CGPoint location = [recognizer locationInView:_fmMoveTableView];
 		NSIndexPath* indexPath = [_fmMoveTableView indexPathForRowAtPoint:location];
-		UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) [_fmMoveTableView cellForRowAtIndexPath:indexPath];
+		UITableViewCell<A3FMMoveTableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3FMMoveTableViewSwipeCellDelegate> *) [_fmMoveTableView cellForRowAtIndexPath:indexPath];
 
 		BOOL shouldShowMenu = NO;
 		if ([swipedCell respondsToSelector:@selector(cellShouldShowMenu)]) {
@@ -1617,7 +1617,7 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 {
 	if ([cells count]>0)
 	{
-		for (UITableViewCell<A3TableViewSwipeCellDelegate>* cell in  cells)
+		for (UITableViewCell<A3FMMoveTableViewSwipeCellDelegate>* cell in  cells)
 		{
 			// shift the cell left and remove its menu view
 			CGRect newFrame;
@@ -1646,7 +1646,7 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 
 
 // Animates the cells to the left offset with kUnitCellVisibleWidth
--(void)shiftLeft:(UITableViewCell<A3TableViewSwipeCellDelegate> *)cell {
+-(void)shiftLeft:(UITableViewCell<A3FMMoveTableViewSwipeCellDelegate> *)cell {
 	FNLOG();
 
 	bool cellAlreadySwiped = [self.swipedCells containsObject:cell];

@@ -26,6 +26,7 @@
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3InstructionViewController.h"
+#import "NSDateFormatter+A3Addition.h"
 
 @interface A3LadyCalendarViewController () <A3InstructionViewControllerDelegate>
 
@@ -56,7 +57,7 @@
 {
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
-	self.title = @"Lady Calendar";
+	self.title = NSLocalizedString(@"Lady Calendar", @"Lady Calendar");
 
 	[self leftBarButtonAppsButton];
 
@@ -190,7 +191,7 @@
 	[super viewWillAppear:animated];
 
 	if( [self.dataManager numberOfAccountInContext:[[MagicalRecordStack defaultStack] context] ] == 1 && [[[self.dataManager currentAccount] name] isEqualToString:DefaultAccountName] ){
-		self.navigationItem.title = @"Lady Calendar";
+		self.navigationItem.title = NSLocalizedString(@"Lady Calendar", @"Lady Calendar");
 	}
 	else{
 		self.navigationItem.title = [[self.dataManager currentAccount] name];
@@ -297,7 +298,13 @@
 {
 	[self calculateCurrentMonthWithScrollView:_collectionView];
 	FNLOG(@"%@", _currentMonth);
-    self.currentMonthLabel.text = [A3DateHelper dateStringFromDate:_currentMonth withFormat:([A3DateHelper isCurrentLocaleIsKorea] ? @"yyyy년 MMMM" : @"MMMM yyyy")];
+
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateStyle:NSDateFormatterLongStyle];
+	NSString *dateFormat = [dateFormatter formatStringByRemovingDayComponent:dateFormatter.dateFormat];
+	[dateFormatter setDateFormat:dateFormat];
+	self.currentMonthLabel.text = [dateFormatter stringFromDate:_currentMonth];
+
     NSDate *todayMonth = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
 
     if( [self.currentMonth isEqualToDate:todayMonth] )

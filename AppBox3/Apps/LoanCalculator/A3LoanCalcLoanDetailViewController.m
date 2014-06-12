@@ -146,13 +146,13 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 -(void)willMoveToParentViewController:(UIViewController *)parent {
 	[super willMoveToParentViewController:parent];
 
-    NSLog(@"This VC has has been pushed popped OR covered");
+    FNLOG(@"This VC has has been pushed popped OR covered");
     
     if (parent) {
-        NSLog(@"LoanCalc Detail -> pushed");
+        FNLOG(@"LoanCalc Detail -> pushed");
     }
     else {
-        NSLog(@"LoanCalc Detail -> pushed");
+        FNLOG(@"LoanCalc Detail -> pushed");
         
         if (_isLoanCalcEdited) {
             
@@ -204,7 +204,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
         }
         case A3LC_CalculationItemInterestRate:
         {
-            placeHolderText = [NSString stringWithFormat:@"Annual %@", [self.percentFormatter stringFromNumber:@(0)]];
+            placeHolderText = [NSString stringWithFormat:NSLocalizedString(@"Annual %@", @"Annual %@"), [self.percentFormatter stringFromNumber:@(0)]];
             textFieldText = [self.loanData interestRateString];
             break;
         }
@@ -222,9 +222,9 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
         }
         case A3LC_CalculationItemTerm:
         {
-            placeHolderText = @"0 years";
+            placeHolderText = NSLocalizedString(@"0 years", @"0 years");
             int yearInt =  (int)round(self.loanData.monthOfTerms.doubleValue/12.0);
-            textFieldText = [NSString stringWithFormat:@"%d years", yearInt];
+            textFieldText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), (long)yearInt];
             break;
         }
         default:
@@ -361,7 +361,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	textField.placeholder = @"";
 
 	self.currentIndexPath = [self.tableView indexPathForCellSubview:textField];
-	NSLog(@"End IP : %ld - %ld", (long)self.currentIndexPath.section, (long)self.currentIndexPath.row);
+	FNLOG(@"End IP : %ld - %ld", (long)self.currentIndexPath.section, (long)self.currentIndexPath.row);
 
 	A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
 	textField.inputView = [keyboardVC view];
@@ -421,18 +421,16 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	keyboardVC.delegate = self;
 	self.numberKeyboardViewController = keyboardVC;
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 	[self addNumberKeyboardNotificationObservers];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
 	[self removeNumberKeyboardNotificationObservers];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
     NSIndexPath *endIndexPath = self.currentIndexPath;
     
-    NSLog(@"End IP : %ld - %ld", (long)endIndexPath.section, (long)endIndexPath.row);
+    FNLOG(@"End IP : %ld - %ld", (long)endIndexPath.section, (long)endIndexPath.row);
 
 	[self setFirstResponder:nil];
 
@@ -525,51 +523,6 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	self.scrollToIndexPath = [self.tableView indexPathForCellSubview:textField];
     return YES;
 }
-
-- (void)textChanged:(NSNotification *)noti
-{
-	UITextField *textField = noti.object;
-    NSString *testText = textField.text;
-    
-    if ([testText rangeOfString:@"."].location == NSNotFound) {
-        return;
-    }
-    else {
-        NSArray *textDivs = [testText componentsSeparatedByString:@"."];
-        NSString *intString = textDivs[0];
-        NSString *floatString = textDivs[1];
-        
-        if (floatString.length > 3) {
-            floatString = [floatString substringWithRange:NSMakeRange(0, 3)];
-        }
-        
-        NSString *reText = [NSString stringWithFormat:@"%@.%@", intString, floatString];
-        textField.text = reText;
-    }
-}
-
-/*
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    NSString *toBe = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    
-    if ([toBe rangeOfString:@"."].location == NSNotFound) {
-        return YES;
-    }
-    else {
-        NSArray *textDivs = [toBe componentsSeparatedByString:@"."];
-        NSString *intString = textDivs[0];
-        NSString *floatString = textDivs[1];
-        
-        if (floatString.length > 3) {
-            return NO;
-        }
-        else {
-            return YES;
-        }
-    }
-}
- */
 
 #pragma mark - ScrollView Delegate
 

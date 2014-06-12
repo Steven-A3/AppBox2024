@@ -166,6 +166,24 @@
 			<string>%ld months</string>
 		</dict>
 	</dict>
+	<key>%ld mos</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_mos@</string>
+		<key>num_mos</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 mon</string>
+			<key>one</key>
+			<string>1 mon</string>
+			<key>other</key>
+			<string>%ld mos</string>
+		</dict>
+	</dict>
 	<key>%ld years</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -182,6 +200,24 @@
 			<string>1 year</string>
 			<key>other</key>
 			<string>%ld years</string>
+		</dict>
+	</dict>
+	<key>%ld yrs</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_yrs@</string>
+		<key>num_yrs</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 yr</string>
+			<key>one</key>
+			<string>1 yr</string>
+			<key>other</key>
+			<string>%ld yrs</string>
 		</dict>
 	</dict>
 	<key>%ld days before</key>

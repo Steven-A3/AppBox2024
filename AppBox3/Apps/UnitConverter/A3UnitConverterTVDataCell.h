@@ -6,7 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "UITableViewController+swipeMenu.h"
+#import "A3FMMoveTableViewController.h"
 
 typedef NS_ENUM(NSInteger, UnitInputType) {
     UnitInput_Normal = 0,
@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, UnitInputType) {
 - (void)deleteActionForCell:(UITableViewCell *)cell;
 @end
 
-@interface A3UnitConverterTVDataCell : UITableViewCell <A3TableViewSwipeCellDelegate>
+@interface A3UnitConverterTVDataCell : UITableViewCell <A3FMMoveTableViewSwipeCellDelegate>
 
 @property (nonatomic, assign) UnitInputType inputType;
 @property (nonatomic, strong) UITextField *valueField;
