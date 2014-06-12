@@ -628,7 +628,7 @@ then tap Delete</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to view list of periods" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="678" translatesAutoresizingMaskIntoConstraints="NO" id="k1V-zB-30E" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to view list of periods" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="678" translatesAutoresizingMaskIntoConstraints="NO" id="k1V-zB-30E" userLabel="Label - swipe left or right to change keypad for basic/scientific">
                                 <rect key="frame" x="0.0" y="983" width="678" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1320,17 +1320,8 @@ prev/next events</string>
                                     <constraint firstAttribute="height" constant="42" id="aZt-wu-Itk"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_down" translatesAutoresizingMaskIntoConstraints="NO" id="deB-M6-4MF">
-                                <rect key="frame" x="363" y="932" width="42" height="42"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="42" id="aQl-ce-2MZ"/>
-                                    <constraint firstAttribute="height" constant="42" id="c9e-9m-JI3"/>
-                                </constraints>
-                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="mfY-2U-XBc">
-                                <rect key="frame" x="405" y="932" width="14" height="14"/>
+                                <rect key="frame" x="405" y="229" width="14" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="14" id="L0B-g3-KHj"/>
@@ -1355,31 +1346,19 @@ then drag it up or down</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to add a language" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="768" translatesAutoresizingMaskIntoConstraints="NO" id="c8a-8T-6sG" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="0.0" y="902" width="768" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="c8a-8T-6sG" firstAttribute="leading" secondItem="Dj4-u7-OyS" secondAttribute="leading" id="2O4-nn-pq7"/>
                             <constraint firstAttribute="trailing" secondItem="9mK-Cz-WKT" secondAttribute="trailing" constant="17" id="8rs-If-3kg"/>
                             <constraint firstItem="9mK-Cz-WKT" firstAttribute="top" secondItem="Dj4-u7-OyS" secondAttribute="top" constant="119" id="E1s-ds-UZO"/>
-                            <constraint firstItem="c8a-8T-6sG" firstAttribute="bottom" secondItem="deB-M6-4MF" secondAttribute="top" constant="-10" id="HWd-Ti-8Sk"/>
                             <constraint firstItem="gFS-Gm-R76" firstAttribute="leading" secondItem="Dj4-u7-OyS" secondAttribute="leading" id="IOl-9y-7xK"/>
                             <constraint firstItem="9mK-Cz-WKT" firstAttribute="centerY" secondItem="gFS-Gm-R76" secondAttribute="centerY" id="Klp-sL-DI3"/>
                             <constraint firstAttribute="bottom" secondItem="kR4-UJ-mP9" secondAttribute="bottom" id="Q4d-Wi-Y5v"/>
-                            <constraint firstItem="mfY-2U-XBc" firstAttribute="leading" secondItem="deB-M6-4MF" secondAttribute="trailing" id="UHq-yj-Sby"/>
-                            <constraint firstItem="mfY-2U-XBc" firstAttribute="top" secondItem="deB-M6-4MF" secondAttribute="top" id="WC5-9b-wo4"/>
-                            <constraint firstAttribute="trailing" secondItem="c8a-8T-6sG" secondAttribute="trailing" id="ZYa-Tl-wIB"/>
+                            <constraint firstItem="mfY-2U-XBc" firstAttribute="leading" secondItem="xVy-13-Bub" secondAttribute="trailing" id="WeJ-YX-Ha1"/>
                             <constraint firstItem="xVy-13-Bub" firstAttribute="top" secondItem="Dj4-u7-OyS" secondAttribute="top" constant="229" id="bD4-2c-gWF"/>
                             <constraint firstItem="kR4-UJ-mP9" firstAttribute="top" secondItem="Dj4-u7-OyS" secondAttribute="top" id="cF3-Fl-KYS"/>
-                            <constraint firstAttribute="bottom" secondItem="deB-M6-4MF" secondAttribute="bottom" constant="50" id="dkq-EL-aaK"/>
-                            <constraint firstAttribute="centerX" secondItem="deB-M6-4MF" secondAttribute="centerX" id="g9h-Dr-ypG"/>
+                            <constraint firstItem="mfY-2U-XBc" firstAttribute="top" secondItem="xVy-13-Bub" secondAttribute="top" id="jQY-D2-LyA"/>
                             <constraint firstAttribute="centerX" secondItem="xVy-13-Bub" secondAttribute="centerX" id="lgf-DT-vCe"/>
                             <constraint firstItem="Vz2-2z-yFf" firstAttribute="leading" secondItem="Dj4-u7-OyS" secondAttribute="leading" id="mrn-UR-JFA"/>
                             <constraint firstItem="9mK-Cz-WKT" firstAttribute="leading" secondItem="gFS-Gm-R76" secondAttribute="trailing" constant="10" id="pqR-nM-a6F"/>
@@ -1396,7 +1375,6 @@ then drag it up or down</string>
                         <outletCollection property="childImageViews" destination="9mK-Cz-WKT" id="dPd-ch-SUE"/>
                         <outletCollection property="childImageViews" destination="mfY-2U-XBc" id="xGq-PW-wAJ"/>
                         <outletCollection property="childImageViews" destination="xVy-13-Bub" id="xYL-hu-Kqb"/>
-                        <outletCollection property="childImageViews" destination="deB-M6-4MF" id="n1B-TC-zqw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jvQ-bk-lmz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1843,9 +1821,12 @@ different clock styles</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to view larger" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="137" translatesAutoresizingMaskIntoConstraints="NO" id="6rS-5S-grs">
-                                <rect key="frame" x="579" y="972" width="137" height="20"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to view larger" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="250" translatesAutoresizingMaskIntoConstraints="NO" id="6rS-5S-grs">
+                                <rect key="frame" x="622" y="972" width="250" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="1b1-K4-431"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -1854,12 +1835,12 @@ different clock styles</string>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="6rS-5S-grs" firstAttribute="centerX" secondItem="s1Z-qu-pXd" secondAttribute="centerX" id="10W-Mh-vZA"/>
                             <constraint firstItem="Jp0-U5-7vV" firstAttribute="leading" secondItem="wZg-tF-q8s" secondAttribute="leading" id="4g5-AT-tM3"/>
                             <constraint firstItem="TKh-px-FyI" firstAttribute="leading" secondItem="0ks-Wf-Yju" secondAttribute="trailing" constant="10" id="4sQ-cK-SML"/>
                             <constraint firstItem="mZN-Ao-21g" firstAttribute="leading" secondItem="wZg-tF-q8s" secondAttribute="leading" constant="50" id="A4J-8M-9f0"/>
                             <constraint firstItem="mZN-Ao-21g" firstAttribute="top" secondItem="wZg-tF-q8s" secondAttribute="top" constant="75" id="Hzb-c7-NGS"/>
                             <constraint firstItem="0ks-Wf-Yju" firstAttribute="leading" secondItem="wZg-tF-q8s" secondAttribute="leading" id="JVa-rE-mVy"/>
-                            <constraint firstItem="s1Z-qu-pXd" firstAttribute="leading" secondItem="6rS-5S-grs" secondAttribute="trailing" constant="10" id="NTO-yV-sny"/>
                             <constraint firstAttribute="trailing" secondItem="PNJ-zS-8fw" secondAttribute="trailing" id="Qey-VU-nmD"/>
                             <constraint firstItem="PNJ-zS-8fw" firstAttribute="top" secondItem="mZN-Ao-21g" secondAttribute="top" id="RHs-2A-vij"/>
                             <constraint firstAttribute="bottom" secondItem="Jp0-U5-7vV" secondAttribute="bottom" id="THS-Qz-fCl"/>
