@@ -15,6 +15,7 @@
 #import "LadyCalendarPeriod.h"
 #import "A3LineChartView.h"
 #import "UIColor+A3Addition.h"
+#import "NSDateFormatter+A3Addition.h"
 
 @interface A3LadyCalendarChartViewController ()
 
@@ -138,6 +139,9 @@
 	minMenstrualPeriod = -1;
 	maxMenstrualPeriod = -1;
 
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    
 	for(NSInteger i=0; i < [array count]; i++){
 		LadyCalendarPeriod *period = [array objectAtIndex:i];
 		LadyCalendarPeriod *nextPeriod = ( i+1 < [array count] ? [array objectAtIndex:i+1] : nil);
@@ -157,7 +161,7 @@
 		[cycleArray addObject:[NSValue valueWithCGPoint:CGPointMake(i, diffDays)]];
 		minCycleLength = ( minCycleLength == 0 ? diffDays : MIN(minCycleLength,diffDays));
 		maxCycleLength = ( maxCycleLength == 0 ? diffDays : MAX(maxCycleLength, diffDays));
-		[_menstrualXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:@"MMM dd"]];
+		[_menstrualXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:[dateFormatter formatStringByRemovingYearComponent:[dateFormatter dateFormat]]]];
 	}
 
 	for(NSInteger i = minCycleLength; i <= maxCycleLength; i++)

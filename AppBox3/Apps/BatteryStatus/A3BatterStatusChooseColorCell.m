@@ -116,7 +116,7 @@
             //[self didSelectColorView:aView];
             aView.backgroundColor = [UIColor whiteColor];
             aView.layer.borderColor = [[_colorArray objectAtIndex:_selectedIndex] CGColor];
-            aView.layer.borderWidth = 2.0;
+            aView.layer.borderWidth = 1.0;
             
             _selectMarkImageView.center = CGPointMake(aView.center.x, aView.center.y + 20.0);
         }
@@ -131,7 +131,7 @@
 
     selectedButton.backgroundColor = [UIColor whiteColor];
     selectedButton.layer.borderColor = [[_colorArray objectAtIndex:selectedButton.tag] CGColor];
-    selectedButton.layer.borderWidth = 2.0;
+    selectedButton.layer.borderWidth = 1.0;
     
     _selectMarkImageView.center = CGPointMake(selectedButton.center.x, selectedButton.center.y + 10.0);
     

@@ -155,7 +155,7 @@
 @property (assign, getter=isReorderingEnabled) BOOL reorderingEnabled;
 
 - (BOOL)isDraggingCell;
-
+@property (strong, nonatomic) UIGestureRecognizer *reservedTapGestureRecognizer;    // delaysTouchesBegan = YES 타입의 탭 제스처 추가시 할당.
 @property (weak) NSObject <ATSDragToReorderTableViewControllerDelegate> *dragDelegate; // nil by default
 @property (weak) NSObject <ATSDragToReorderTableViewControllerDraggableIndicators> *indicatorDelegate; // self by default
 
