@@ -225,7 +225,6 @@
 
 - (void)reloadTableView
 {
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     self.itemArray = [_sharedManager visibleCalendarList];
     [self setupHeaderInfo];
     [self.tableView reloadData];
