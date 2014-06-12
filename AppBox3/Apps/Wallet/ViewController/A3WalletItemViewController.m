@@ -19,7 +19,6 @@
 #import "WalletItem+Favorite.h"
 #import "WalletFieldItem.h"
 #import "WalletCategory.h"
-#import "NSDate+TimeAgo.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "MWPhotoBrowser.h"
@@ -523,7 +522,13 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		titleCell.titleTextField.text = [_item.name length] ? _item.name : @"New Item";
 		titleCell.titleTextField.delegate = self;
 		titleCell.favoriteButton.selected = self.item.favorite != nil;
-		titleCell.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
+        
+        NSDateFormatter *dateFormatter = [NSDateFormatter new];
+        dateFormatter.dateStyle = NSDateFormatterFullStyle;
+        dateFormatter.timeStyle = NSDateFormatterMediumStyle;
+        dateFormatter.doesRelativeDateFormatting = YES;
+		titleCell.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [dateFormatter stringFromDate:_item.modificationDate]];
+        
 		// To prevent adding multiple times
 		[titleCell.favoriteButton removeTarget:self action:@selector(favorButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 		[titleCell.favoriteButton addTarget:self action:@selector(favorButtonAction:) forControlEvents:UIControlEventTouchUpInside];
