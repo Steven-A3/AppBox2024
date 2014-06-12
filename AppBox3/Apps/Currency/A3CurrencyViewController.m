@@ -546,7 +546,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
     [gesture setNumberOfTapsRequired:2];
     [gesture setDelaysTouchesBegan:YES];
     [self.view addGestureRecognizer:gesture];
-    self.reservedGestureRecognizer = gesture;
+//    self.reservedGestureRecognizer = gesture;
 }
 
 - (void)showInstructionView

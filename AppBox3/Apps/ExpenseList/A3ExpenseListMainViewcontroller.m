@@ -385,7 +385,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     [gesture setNumberOfTapsRequired:2];
     [gesture setDelaysTouchesBegan:YES];
     [self.view addGestureRecognizer:gesture];
-    self.reservedGestureRecognizer = gesture;
+    self.reservedTapGestureRecognizer = gesture;
 }
 
 - (void)showInstructionView
