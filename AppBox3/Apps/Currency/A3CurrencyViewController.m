@@ -542,7 +542,13 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"CurrencyConverter"]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+//    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
+    [gesture setNumberOfTouchesRequired:2];
+    [gesture setNumberOfTapsRequired:2];
+    [gesture setDelaysTouchesBegan:YES];
+    [self.view addGestureRecognizer:gesture];
+    self.reservedGestureRecognizer = gesture;
 }
 
 - (void)showInstructionView

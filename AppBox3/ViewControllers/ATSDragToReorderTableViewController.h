@@ -155,7 +155,7 @@
 @property (assign, getter=isReorderingEnabled) BOOL reorderingEnabled;
 
 - (BOOL)isDraggingCell;
-
+@property (strong, nonatomic) UIGestureRecognizer *reservedGestureRecognizer;
 @property (weak) NSObject <ATSDragToReorderTableViewControllerDelegate> *dragDelegate; // nil by default
 @property (weak) NSObject <ATSDragToReorderTableViewControllerDraggableIndicators> *indicatorDelegate; // self by default
 

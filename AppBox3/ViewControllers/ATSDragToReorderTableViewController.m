@@ -318,6 +318,7 @@ typedef enum {
  *	Defaults to NO, needs to be YES for press and drag to be one continuous action.
  */
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    FNLOG(@"\ngestureRecognizer: %@\ndragGestureRecognizer : %@\notherGestureRecognizer: %@\n", gestureRecognizer, dragGestureRecognizer, otherGestureRecognizer);
 	return (gestureRecognizer == dragGestureRecognizer || otherGestureRecognizer == dragGestureRecognizer);
 }
 
@@ -326,6 +327,8 @@ typedef enum {
  *	Insure that only one touch and only the same touch reaches both gesture recognizers.
  */
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    FNLOG(@"\ngestureRecognizer: %@\nlongPressGestureRecognizer : %@\n", gestureRecognizer, longPressGestureRecognizer);
+    
 	if( gestureRecognizer == longPressGestureRecognizer || gestureRecognizer == dragGestureRecognizer ) {
 		static UITouch *longPressTouch = nil;
 		
@@ -409,9 +412,15 @@ typedef enum {
 	/*
 	 *	For some other reason the cell isn't highlighed
 	 */
-	UITableViewCell *highlightedCell = [self.tableView cellForRowAtIndexPath:indexPathOfRow];
-	if ( ![highlightedCell isHighlighted] )
-		return;
+    
+    // KJH
+    // Tap Gesture 가 있는 경우, highlight 가 늦게 발동되어 롱터치 메소트가 반환되어서 방어코드를 추가하였습니다.
+    // Tap Gesture 의 delaysTouchesBegan = YES 에 의하여, 테이블뷰의 highlight 가 안 된 것이라고 생각됩니다.
+    if (!_reservedGestureRecognizer) {
+        UITableViewCell *highlightedCell = [self.tableView cellForRowAtIndexPath:indexPathOfRow];
+        if ( ![highlightedCell isHighlighted] )
+            return;
+    }
 
 	/*
 	 *	Check to see if the tableView's data source will let us move this cell.

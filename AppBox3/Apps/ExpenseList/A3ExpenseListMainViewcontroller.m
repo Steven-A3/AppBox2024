@@ -379,7 +379,13 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"ExpenseList"]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+//    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
+    [gesture setNumberOfTouchesRequired:2];
+    [gesture setNumberOfTapsRequired:2];
+    [gesture setDelaysTouchesBegan:YES];
+    [self.view addGestureRecognizer:gesture];
+    self.reservedGestureRecognizer = gesture;
 }
 
 - (void)showInstructionView
