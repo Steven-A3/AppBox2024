@@ -32,6 +32,7 @@
 NSString *const A3ExpenseListCurrentBudgetID = @"A3ExpenseListCurrentBudgetID";
 NSString *const A3ExpenseListCurrencyCode = @"A3ExpenseListCurrencyCode";
 NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationExpenseListCurrencyCodeChanged";
+NSString *const A3ExpenseListIsAddBudgetCanceledByUser = @"A3ExpenseListIsAddBudgetCanceledByUser";
 
 @interface A3ExpenseListMainViewController () <ATSDragToReorderTableViewControllerDelegate, UIPopoverControllerDelegate, A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate, A3ExpenseListHistoryDelegate, A3CalculatorViewControllerDelegate, A3InstructionViewControllerDelegate>
 
@@ -535,6 +536,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
     // 현재 상태 저장.
     [self saveCurrentBudgetToHistory];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3ExpenseListIsAddBudgetCanceledByUser];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
     // 초기화.
     _currentBudget = nil;
@@ -887,12 +890,10 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
         return;
     }
     
-    // 입력된 아이템이 있을 경우, 이동하지 않는다.
-//    for (ExpenseListItem *item in _tableDataSourceArray) {
-//        if (item.itemDate) {
-//            return;
-//        }
-//    }
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:A3ExpenseListIsAddBudgetCanceledByUser]) {
+        return;
+    }
+    
     // 버젯이 없는 경우 이동한다.
     if (!_currentBudget || _currentBudget.category==nil) {
         [self performSelector:@selector(moveToAddBudgetViewController) withObject:nil afterDelay:delay];

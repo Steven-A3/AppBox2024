@@ -247,6 +247,8 @@ enum A3ExpenseListAddBudgetCellType {
 	else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3ExpenseListIsAddBudgetCanceledByUser];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 	[self removeObserver];
 }
 

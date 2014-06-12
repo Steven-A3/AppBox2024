@@ -54,7 +54,6 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	if (_isEditing) {
 		[self leftBarButtonAddButton];
 		[self rightBarButtonDoneButton];
-        [self setupInstructionView];
 	} else {
 		[self leftBarButtonAppsButton];
 		[self rightBarButtonEditButton];
@@ -126,6 +125,11 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 			[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 		}
 	}
+    
+    if (_isEditing) {
+        [self setupInstructionView];
+        self.tableView.editing = YES;
+    }
 }
 
 - (void)managedObjectContextDidSave:(NSNotification *)notification {
@@ -261,7 +265,10 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (self.isEditing) {
-		if (section == 0) return @"Categories on the bar";
+		if (section == 0) {
+            return @"Categories on the bar";
+        }
+        
 		return @"Categories in more";
 	}
 	return nil;
