@@ -1,4 +1,4 @@
- //
+//
 //  A3LadyCalendarChartViewController.m
 //  A3TeamWork
 //
@@ -57,7 +57,9 @@
     _segmentLeftConst.constant = (IS_IPHONE ? 15.0 : 28.0);
     _segmentRightConst.constant = (IS_IPHONE ? 15.0 : 28.0);
     _separatorHeightConst.constant = 1.0 / [[UIScreen mainScreen] scale];
-    NSArray *titleArray = @[(IS_IPHONE ? @"6 Mos" : @"6 Months"),(IS_IPHONE ? @"9 Mos" : @"9 Months"),@"1 Year",@"2 Years"];
+    NSArray *titleArray = @[
+			(IS_IPHONE ? NSLocalizedString(@"6 Mos", @"6 Mos") : NSLocalizedString(@"6 Months", @"6 Months")),
+			(IS_IPHONE ? NSLocalizedString(@"9 Mos", @"9 Mos") : NSLocalizedString(@"9 Months", @"9 Months")), NSLocalizedString(@"1 Year", @"1 Year"), NSLocalizedString(@"2 Years", @"2 Years")];
     xLabelDisplayInterval = 1;
     for(NSInteger i=0; i < [_periodSegmentCtrl numberOfSegments];i++){
         [_periodSegmentCtrl setTitle:[titleArray objectAtIndex:i] forSegmentAtIndex:i];
@@ -219,7 +221,7 @@
     A3LineChartView *chartView = (A3LineChartView*)[cell viewWithTag:11];
     
     if( indexPath.row == 0 ){
-        textLabel.text = @"CYCLE LENGTH";
+        textLabel.text = NSLocalizedString(@"CYCLE LENGTH", @"CYCLE LENGTH");
         chartView.averageColor = [UIColor colorWithRGBRed:76 green:217 blue:100 alpha:255];
         chartView.xLabelItems = _cycleXLabelArray;
         chartView.yLabelItems = _cycleYLabelArray;
@@ -233,7 +235,7 @@
         chartView.valueArray = _cycleLengthArray;
     }
     else if( indexPath.row == 1 ){
-        textLabel.text = @"MENSTRUAL PERIOD";
+        textLabel.text = NSLocalizedString(@"MENSTRUAL PERIOD", @"MENSTRUAL PERIOD");
         chartView.averageColor = [UIColor colorWithRGBRed:255 green:45 blue:85 alpha:255];
         chartView.xLabelItems = _menstrualXLabelArray;
         chartView.yLabelItems = _menstrualYLabelArray;
@@ -258,12 +260,14 @@
 }
 
 #pragma mark - UITableViewDelegate
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
 }
 
 #pragma mark - action method
+
 - (IBAction)periodChangedAction:(id)sender {
     NSInteger periodMonth = [self monthsFromCurrentSegment];
     if( IS_IPAD ){

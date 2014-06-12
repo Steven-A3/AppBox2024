@@ -481,3 +481,40 @@
 "Cannot remove current account." = "Cannot remove current account.";
 " Same name already exists. " = " Same name already exists. ";
 "User%02ld" = "User%02ld";
+
+"Edit Period" = "Edit Period";
+"Add Period" = "Add Period";
+"End Date" = "End Date";
+"Cycle Length" = "Cycle Length";
+"Delete Period" = "Delete Period";
+"Please input end date." = "Please input end date.";
+"Cannot Save Period.\nThe start date must be before the end date." = "Cannot Save Period.\nThe start date must be before the end date.";
+"The new date you entered overlaps with previous dates." = "The new date you entered overlaps with previous dates.";
+"6 Mos" = "6 Mos";
+"6 Months" = "6 Months";
+"9 Mos" = "9 Mos";
+"9 Months" = "9 Months";
+"1 Year" = "1 Year";
+"2 Years" = "2 Years";
+"CYCLE LENGTH" = "CYCLE LENGTH";
+"MENSTRUAL PERIOD" = "MENSTRUAL PERIOD";
+"Expected Period(+/-2 days)" = "Expected Period(+/-2 days)";
+"Increased Probability of Pregnancy" = "Increased Probability of Pregnancy";
+"Ovulation - Highest Probability" = "Ovulation - Highest Probability";
+"Menstrual Period" = "Menstrual Period";
+"Periods" = "Periods";
+"On day(9 AM)" = "On day(9 AM)";
+"1 day before(9 AM)" = "1 day before(9 AM)";
+"2 days before(9 AM)" = "2 days before(9 AM)";
+"Your period is coming." = "Your period is coming.";
+"FORECASTING PERIODS" = "FORECASTING PERIODS";
+
+"CALCULATE CYCLE LENGTH" = "CALCULATE CYCLE LENGTH";
+"Same Before Cycle" = "Same Before Cycle";
+"Average Before Two Cycle" = "Average Before Two Cycle";
+
+"Average All Cycle" = "Average All Cycle";
+"Automatically save period after estimated starting date." = "Automatically save period after estimated starting date.";
+"Auto Record" = "Auto Record";
+"Notify about estimated next starting date." = "Notify about estimated next starting date.";
+"FORECASTING %@ PERIODS" = "FORECASTING %@ PERIODS";
