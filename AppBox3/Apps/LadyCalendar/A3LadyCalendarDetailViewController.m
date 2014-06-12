@@ -49,7 +49,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	self.title = @"";
 
 	if (_isFromNotification) {
-		self.title = @"Lady Calendar";
+		self.title = NSLocalizedString(@"Lady Calendar", @"Lady Calendar");
 		[self rightBarButtonDoneButton];
 	}
 	if (_periodID) {
@@ -161,19 +161,19 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (NSArray *)rowDataForItemIsPredict:(BOOL)isPredict startDate:(NSDate *)startDate notes:(NSString *)notes index:(NSUInteger)index {
 	NSMutableArray *retArray = [NSMutableArray array];
-	if( isPredict ){
-		[retArray addObject:@{ItemKey_Title : @"Expected Period(+/-2 days)",ItemKey_Type : @(DetailCellType_Title), ItemKey_Index : @(index)}];
-		[retArray addObject:@{ItemKey_Title : @"Increased Probability of Pregnancy", ItemKey_Type : @(DetailCellType_Pregnancy), ItemKey_Index : @(index)}];
-		[retArray addObject:@{ItemKey_Title : @"Ovulation - Highest Probability",ItemKey_Type : @(DetailCellType_Ovulation), ItemKey_Index : @(index)}];
-		[retArray addObject:@{ItemKey_Title : @"Menstrual Period",ItemKey_Type : @(DetailCellType_MenstrualPeriod), ItemKey_Index : @(index)}];
-	}
-	else{
-		[retArray addObject:@{ItemKey_Title : @"Menstrual Period", ItemKey_Type : @(DetailCellType_Title), ItemKey_Index : @(index)}];
-		[retArray addObject:@{ItemKey_Title : @"Start Date", ItemKey_Type: @(DetailCellType_StartDate), ItemKey_Index : @(index)}];
-		[retArray addObject:@{ItemKey_Title : @"End Date",ItemKey_Type : @(DetailCellType_EndDate), ItemKey_Index : @(index)}];
-		[retArray addObject:@{ItemKey_Title : @"Cycle Length",ItemKey_Type : @(DetailCellType_CycleLength), ItemKey_Index : @(index), ItemKey_RowHeight:(![notes length] ? @75 : @74)}];
-		if( [notes length] > 0)
-			[retArray addObject:@{ItemKey_Title : @"Notes",ItemKey_Type : @(DetailCellType_Notes), ItemKey_Index : @(index)}];
+	if( isPredict ) {
+		[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"Expected Period(+/-2 days)", @"Expected Period(+/-2 days)"), ItemKey_Type : @(DetailCellType_Title), ItemKey_Index : @(index)}];
+		[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"Increased Probability of Pregnancy", @"Increased Probability of Pregnancy"), ItemKey_Type : @(DetailCellType_Pregnancy), ItemKey_Index : @(index)}];
+		[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"Ovulation - Highest Probability", @"Ovulation - Highest Probability"), ItemKey_Type : @(DetailCellType_Ovulation), ItemKey_Index : @(index)}];
+		[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"Menstrual Period", @"Menstrual Period"), ItemKey_Type : @(DetailCellType_MenstrualPeriod), ItemKey_Index : @(index)}];
+	} else {
+		[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"Menstrual Period", @"Menstrual Period"), ItemKey_Type : @(DetailCellType_Title), ItemKey_Index : @(index)}];
+		[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"Start Date", @"Start Date"), ItemKey_Type: @(DetailCellType_StartDate), ItemKey_Index : @(index)}];
+		[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"End Date", @"End Date"), ItemKey_Type : @(DetailCellType_EndDate), ItemKey_Index : @(index)}];
+		[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"Cycle Length", @"Cycle Length"), ItemKey_Type : @(DetailCellType_CycleLength), ItemKey_Index : @(index), ItemKey_RowHeight:(![notes length] ? @75 : @74)}];
+		if( [notes length] > 0) {
+			[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"Notes", @"Notes"),ItemKey_Type : @(DetailCellType_Notes), ItemKey_Index : @(index)}];
+		}
 	}
 
 	return retArray;
@@ -203,7 +203,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			if (![period.isPredict boolValue]) {
 				A3LadyCalendarDetailViewTitleCell *titleCell = [tableView dequeueReusableCellWithIdentifier:A3LadyCalendarDetailViewTitleCellID forIndexPath:indexPath];
 				titleCell.titleLabel.text = rowInfo[ItemKey_Title];
-				titleCell.subTitleLabel.text = [NSString stringWithFormat:@"Updated %@", [_dateFormatter stringFromDate:period.modificationDate]];
+				titleCell.subTitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [_dateFormatter stringFromDate:period.modificationDate]];
 				[titleCell.editButton setHidden:isEditNavigationBar];
 				[titleCell.editButton addTarget:self action:@selector(editDetailItem:) forControlEvents:UIControlEventTouchUpInside];
 				titleCell.editButton.tag = indexPath.row;
@@ -315,7 +315,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	LadyCalendarPeriod *period = _periodItems[[rowInfo[ItemKey_Index] integerValue]];
     if( cellType == DetailCellType_Notes ){
         NSString *str = ( [period.notes length] > 0 ? period.notes : @"" );
-        CGRect strBounds = [str boundingRectWithSize:CGSizeMake(tableView.frame.size.width - (IS_IPHONE ? 20.0 : 43.0), CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]} context:nil];
+        CGRect strBounds = [str boundingRectWithSize:CGSizeMake(tableView.frame.size.width - (IS_IPHONE ? 20.0 : 43.0), CGFLOAT_MAX)
+											 options:NSStringDrawingUsesLineFragmentOrigin
+										  attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]}
+											 context:nil];
         retHeight = MAX((strBounds.size.height + 31.0), 74.0);
     } else if (cellType == DetailCellType_Title && [period.isPredict boolValue]) {
 		retHeight = 44.0;

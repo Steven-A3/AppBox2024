@@ -44,14 +44,40 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 {
 	[super viewDidLoad];
 
-	self.title = (_isEditMode ? @"Edit Period" : @"Add Period");
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
+	self.title = (_isEditMode ? NSLocalizedString(@"Edit Period", @"Edit Period") : NSLocalizedString(@"Add Period", @"Add Period"));
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+																						  target:self
+																						  action:@selector(cancelAction:)];
 	[self rightBarButtonDoneButton];
 
-	self.sectionsArray = [NSMutableArray arrayWithArray:@[@{ItemKey_Items : [NSMutableArray arrayWithArray:@[@{ItemKey_Title : @"Start Date",ItemKey_Type : @(PeriodCellType_StartDate)},@{ItemKey_Title : @"End Date",ItemKey_Type : @(PeriodCellType_EndDate)}]]},@{ItemKey_Items : [NSMutableArray arrayWithArray:@[@{ItemKey_Title : @"Cycle Length",ItemKey_Type : @(PeriodCellType_CycleLength)}]]},/*@{ItemKey_Items : [NSMutableArray arrayWithArray:@[@{ItemKey_Title : @"Ovulation",ItemKey_Type : @(PeriodCellType_Ovulation)}]]},*/@{ItemKey_Items : [NSMutableArray arrayWithArray:@[@{ItemKey_Title : @"Notes",ItemKey_Type : @(PeriodCellType_Notes)}]]} ]];
+	self.sectionsArray = [NSMutableArray arrayWithArray:@[
+			@{ItemKey_Items : [NSMutableArray arrayWithArray:@[
+					@{
+							ItemKey_Title : NSLocalizedString(@"Start Date", @"Start Date"),
+							ItemKey_Type : @(PeriodCellType_StartDate)
+					},
+					@{
+							ItemKey_Title : NSLocalizedString(@"End Date", @"End Date"),
+							ItemKey_Type : @(PeriodCellType_EndDate)
+					}]]},
+			@{ItemKey_Items : [NSMutableArray arrayWithArray:@[
+					@{
+							ItemKey_Title : NSLocalizedString(@"Cycle Length", @"Cycle Length"),
+							ItemKey_Type : @(PeriodCellType_CycleLength)
+					}]]},
+					/*@{ItemKey_Items : [NSMutableArray arrayWithArray:@[@{ItemKey_Title : @"Ovulation",ItemKey_Type : @(PeriodCellType_Ovulation)}]]},*/
+			@{ItemKey_Items : [NSMutableArray arrayWithArray:@[
+					@{
+							ItemKey_Title : NSLocalizedString(@"Notes", @"Notes"),
+							ItemKey_Type : @(PeriodCellType_Notes)
+					}]]} ]];
 
 	if( _isEditMode /*&& ![_periodItem.isPredict boolValue]*/ ) {
-		[self.sectionsArray addObject:@{ItemKey_Items : [NSMutableArray arrayWithArray:@[@{ItemKey_Title : @"Delete Period", ItemKey_Type : @(PeriodCellType_Delete)}]]}];
+		[self.sectionsArray addObject:@{ItemKey_Items : [NSMutableArray arrayWithArray:@[
+				@{
+						ItemKey_Title : NSLocalizedString(@"Delete Period", @"Delete Period"),
+						ItemKey_Type : @(PeriodCellType_Delete)
+				}]]}];
 	} else {
 		_periodItem = [LadyCalendarPeriod MR_createEntity];
 		_periodItem.uniqueID = [[NSUUID UUID] UUIDString];
@@ -62,10 +88,11 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		_periodItem.account = _dataManager.currentAccount;
 	}
 
-	if( _isEditMode ){
+	if ( _isEditMode ) {
 		self.prevPeriod = [_dataManager previousPeriodFromDate:_periodItem.startDate];
 	}
-	else{
+	else
+	{
 		NSInteger ovulationDays = [[NSUserDefaults standardUserDefaults] integerForKey:A3LadyCalendarOvulationDays];
 		_periodItem.ovulation = [A3DateHelper dateByAddingDays:ovulationDays fromDate:_periodItem.startDate];
 		self.prevPeriod = nil;
@@ -204,7 +231,14 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     NSArray *items = [[_sectionsArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
     NSDictionary *item = [items objectAtIndex:indexPath.row];
     NSInteger cellType = [[item objectForKey:ItemKey_Type] integerValue];
-    NSArray *cellIDs = @[@"value1Cell",@"value1Cell",@"defaultCell",@"value1Cell",@"inputNotesCell",@"dateInputCell",@"deleteCell"];
+    NSArray *cellIDs = @[
+			@"value1Cell",
+			@"value1Cell",
+			@"defaultCell",
+			@"value1Cell",
+			@"inputNotesCell",
+			@"dateInputCell",
+			@"deleteCell"];
     NSString *cellID = [cellIDs objectAtIndex:cellType];
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
@@ -435,7 +469,11 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             break;
         case PeriodCellType_Delete:{
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Period" otherButtonTitles: nil];
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+																	 delegate:self
+															cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+													   destructiveButtonTitle:NSLocalizedString(@"Delete Period", @"Delete Period")
+															otherButtonTitles:nil];
             [actionSheet showInView:self.view];
         }
             break;
@@ -443,6 +481,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 }
 
 #pragma mark - UIActionSheetDelegate
+
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if( buttonIndex == actionSheet.destructiveButtonIndex ){
@@ -456,12 +495,14 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 }
 
 #pragma mark - UIScrollViewDelegate
+
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self resignAllAction];
 }
 
 #pragma mark - UITextViewDelegate
+
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     [self closeDateInputCell];
@@ -474,6 +515,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 }
 
 #pragma mark - UITextFieldDelegate
+
 - (void)textFieldDidChange:(NSNotification*)noti
 {
     UITextField *textField = noti.object;
@@ -571,15 +613,15 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	_periodItem.periodEnds = [[A3AppDelegate instance].calendar dateByAddingComponents:cycleLengthComponents toDate:_periodItem.startDate options:0];
 
 	if( _periodItem.endDate == nil){
-        [A3LadyCalendarModelManager alertMessage:@"Please input end date." title:nil];
+		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"Please input end date.", @"Please input end date.") title:nil];
         return;
     }
-    else if( [_periodItem.endDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970] ){
-        [A3LadyCalendarModelManager alertMessage:@"Cannot Save Period.\nThe start date must be before the end date." title:nil];
+    else if ( [_periodItem.endDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970] ){
+		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"Cannot Save Period.\nThe start date must be before the end date.", @"Cannot Save Period.\nThe start date must be before the end date.") title:nil];
         return;
     }
-    else if([_dataManager isOverlapStartDate:_periodItem.startDate endDate:_periodItem.endDate accountID:_dataManager.currentAccount.uniqueID periodID:_periodItem.uniqueID] ){
-        [A3LadyCalendarModelManager alertMessage:@"The new date you entered overlaps with previous dates." title:nil];
+    else if ( [_dataManager isOverlapStartDate:_periodItem.startDate endDate:_periodItem.endDate accountID:_dataManager.currentAccount.uniqueID periodID:_periodItem.uniqueID] ){
+		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"The new date you entered overlaps with previous dates.", @"The new date you entered overlaps with previous dates.") title:nil];
         return;
     }
     if( _prevPeriod ){

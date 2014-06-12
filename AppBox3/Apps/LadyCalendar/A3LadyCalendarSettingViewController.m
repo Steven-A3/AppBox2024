@@ -44,10 +44,60 @@
         [self rightBarButtonDoneButton];
     [self makeBackButtonEmptyArrow];
     
-    self.itemArray = @[@{ItemKey_Title : @"FORECASTING PERIODS",ItemKey_Description : @"",ItemKey_Items : @[@{ItemKey_Title : @"",ItemKey_Type : @(SettingCell_Periods)}]},
-                       @{ItemKey_Title : @"CALCULATE CYCLE LENGTH", ItemKey_Description : @"", ItemKey_Items : @[@{ItemKey_Title : @"Same Before Cycle",ItemKey_Type : @(SettingCell_CycleLength)},@{ItemKey_Title : @"Average Before Two Cycle",ItemKey_Type : @(SettingCell_CycleLength)},@{ItemKey_Title : @"Average All Cycle",ItemKey_Type : @(SettingCell_CycleLength)}]},
-                       @{ItemKey_Title : @"",ItemKey_Description : @"Automatically save period after estimated starting date.", ItemKey_Items : @[@{ItemKey_Title : @"Auto Record",ItemKey_Type : @(SettingCell_AutoRecord)}]},
-                       @{ItemKey_Title  : @"",ItemKey_Description : @"Notify about estimated next starting date.",ItemKey_Items : @[@{ItemKey_Title: @"Alert",ItemKey_Type : @(SettingCell_Alert)}]}];
+    self.itemArray = @[
+			@{
+					ItemKey_Title : NSLocalizedString(@"FORECASTING PERIODS", @"FORECASTING PERIODS"),
+					ItemKey_Description : @"",
+					ItemKey_Items :
+					@[
+							@{
+									ItemKey_Title : @"",
+									ItemKey_Type : @(SettingCell_Periods)
+							}
+					]
+			},
+			@{
+					ItemKey_Title : NSLocalizedString(@"CALCULATE CYCLE LENGTH", @"CALCULATE CYCLE LENGTH"),
+					ItemKey_Description : @"",
+					ItemKey_Items :
+					@[
+							@{
+									ItemKey_Title : NSLocalizedString(@"Same Before Cycle", @"Same Before Cycle"),
+									ItemKey_Type : @(SettingCell_CycleLength)
+							},
+							@{
+									ItemKey_Title : NSLocalizedString(@"Average Before Two Cycle", @"Average Before Two Cycle"),
+									ItemKey_Type : @(SettingCell_CycleLength)
+							},
+							@{
+									ItemKey_Title : NSLocalizedString(@"Average All Cycle", @"Average All Cycle"),
+									ItemKey_Type : @(SettingCell_CycleLength)
+							}
+					]
+			},
+                       @{
+							   ItemKey_Title : @"",
+							   ItemKey_Description : NSLocalizedString(@"Automatically save period after estimated starting date.", @"Automatically save period after estimated starting date."),
+							   ItemKey_Items :
+							   @[
+									   @{
+											   ItemKey_Title : NSLocalizedString(@"Auto Record", @"Auto Record"),
+											   ItemKey_Type : @(SettingCell_AutoRecord)
+									   }
+							   ]
+					   },
+                       @{
+							   ItemKey_Title  : @"",
+							   ItemKey_Description : NSLocalizedString(@"Notify about estimated next starting date.", @"Notify about estimated next starting date."),
+							   ItemKey_Items :
+							   @[
+									   @{
+											   ItemKey_Title: NSLocalizedString(@"Alert", @"Alert"),
+											   ItemKey_Type : @(SettingCell_Alert)
+									   }
+							   ]
+					   }
+	];
     self.settingDict = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting]];
     if( self.settingDict == nil )
         self.settingDict = [_dataManager createDefaultSetting];
@@ -126,7 +176,7 @@
     if( section == 0 ){
         NSInteger period = [[_settingDict objectForKey:SettingItem_ForeCastingPeriods] integerValue];
         NSString *periodStr = [NSString stringWithFormat:@"%ld", (long)period];
-        NSString *text = [NSString stringWithFormat:@"FORECASTING %@ PERIODS",periodStr];
+        NSString *text = [NSString stringWithFormat:NSLocalizedString(@"FORECASTING %@ PERIODS", @"FORECASTING %@ PERIODS"), periodStr];
         NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:text];
         [attrStr setAttributes:@{NSForegroundColorAttributeName: [[A3AppDelegate instance] themeColor]} range:NSMakeRange(12, [periodStr length])];
         label.attributedText = attrStr;
@@ -236,7 +286,8 @@
         NSDictionary *item = [items objectAtIndex:indexPath.row];
         
         if( [[item objectForKey:ItemKey_Type] integerValue] == SettingCell_Alert ){
-            A3LadyCalendarSetupAlertViewController *viewCtrl = [[A3LadyCalendarSetupAlertViewController alloc] initWithNibName:@"A3LadyCalendarSetupAlertViewController" bundle:nil];
+            A3LadyCalendarSetupAlertViewController *viewCtrl = [[A3LadyCalendarSetupAlertViewController alloc]
+					initWithNibName:@"A3LadyCalendarSetupAlertViewController" bundle:nil];
 			viewCtrl.dataManager = _dataManager;
             viewCtrl.settingDict = self.settingDict;
             [self.navigationController pushViewController:viewCtrl animated:YES];

@@ -33,7 +33,7 @@
 {
 	[super viewDidLoad];
 
-	self.title = @"Periods";
+	self.title = NSLocalizedString(@"Periods", @"Periods");
 	[self rightBarButtonDoneButton];
 	[self makeBackButtonEmptyArrow];
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);

@@ -90,7 +90,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 {
     [super viewDidLoad];
 
-	self.title = NSLocalizedString(@"Currency", @"Currency");
+	self.title = NSLocalizedString(@"Currency Converter", nil);
 	self.dragDelegate = self;
 
 	self.refreshControl = [UIRefreshControl new];

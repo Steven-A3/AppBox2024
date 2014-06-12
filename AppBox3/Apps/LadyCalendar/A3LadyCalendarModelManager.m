@@ -31,7 +31,11 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 
 + (void)alertMessage:(NSString*)message title:(NSString*)title
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+														message:message
+													   delegate:nil
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+											  otherButtonTitles:nil];
     [alertView show];
 }
 
@@ -268,7 +272,13 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 - (NSString*)stringForAlertType:(NSInteger)alertType
 {
     NSInteger index = ABS(alertType);
-    NSArray *strings = @[@"None",@"On day(9 AM)", @"1 day before(9 AM)", @"2 days before(9 AM)", @"1 week before", @"Custom"];
+    NSArray *strings = @[
+			NSLocalizedString(@"None", @"None"),
+			NSLocalizedString(@"On day(9 AM)", @"On day(9 AM)"),
+			NSLocalizedString(@"1 day before(9 AM)", @"1 day before(9 AM)"),
+			NSLocalizedString(@"2 days before(9 AM)", @"2 days before(9 AM)"),
+			NSLocalizedString(@"1 week before", @"1 week before"),
+			NSLocalizedString(@"Custom", @"Custom")];
     if( index < 0 || index >= [strings count] )
         return @"";
     
@@ -457,7 +467,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 
 		if ([fireDate isEarlierThanDate:today]) continue;
 
-		NSString *alertBody =  @"Your period is coming.";
+		NSString *alertBody = NSLocalizedString(@"Your period is coming.", @"Your period is coming.");
 		UILocalNotification *notification = [UILocalNotification new];
 		notification.fireDate = fireDate;
 		notification.alertBody = alertBody;
