@@ -245,9 +245,6 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			element.onSelected = ^(A3TableViewElement *elementObject) {
 				A3TableViewMenuElement *menuElement = (A3TableViewMenuElement *) elementObject;
 				UIViewController *targetViewController= [self getViewControllerForElement:menuElement];
-                if ([targetViewController isKindOfClass:[A3ClockMainViewController class]]) {
-                    [((A3ClockMainViewController *)targetViewController) setupInstructionView];
-                }
 
 				BOOL proceedPasscodeCheck = NO;
 				// Check active view controller
@@ -279,7 +276,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 							}];
 						}
 					}
-				} else {
+				}
+                else {
 					if (IS_IPHONE) {
 						[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
 							[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
@@ -288,7 +286,10 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 						[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 					}
 				}
-
+                
+                if ([targetViewController isKindOfClass:[A3ClockMainViewController class]]) {
+                    [((A3ClockMainViewController *)targetViewController) setupInstructionView];
+                }
 			};
 			[elementsArray addObject:element];
 		}
