@@ -373,7 +373,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	return currencyCode;
 }
 
-#pragma mark Instruction Related
+#pragma mark Instructiown Related
 - (void)setupInstructionView
 {
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"ExpenseList"]) {

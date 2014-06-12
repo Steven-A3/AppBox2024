@@ -560,7 +560,6 @@
 		68B6A2D618CEC76D004084EF /* A3UnitConverterTVDataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1C218CEC76C004084EF /* A3UnitConverterTVDataCell.m */; };
 		68B6A2D718CEC76D004084EF /* A3UnitConverterTVEqualCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1C418CEC76C004084EF /* A3UnitConverterTVEqualCell.m */; };
 		68B6A2D818CEC76D004084EF /* A3UnitConverterTVEqualCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A1C518CEC76C004084EF /* A3UnitConverterTVEqualCell.xib */; };
-		68B6A2D918CEC76D004084EF /* A3UnitConverterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1C718CEC76C004084EF /* A3UnitConverterViewController.m */; };
 		68B6A2DA18CEC76D004084EF /* TemperatureConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1CB18CEC76C004084EF /* TemperatureConverter.m */; };
 		68B6A2DB18CEC76D004084EF /* UnitCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1CD18CEC76C004084EF /* UnitCommon.m */; };
 		68B6A2DC18CEC76D004084EF /* UnitConvertItem+initialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1CF18CEC76C004084EF /* UnitConvertItem+initialize.m */; };
@@ -1893,8 +1892,6 @@
 		68B6A1C318CEC76C004084EF /* A3UnitConverterTVEqualCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitConverterTVEqualCell.h; sourceTree = "<group>"; };
 		68B6A1C418CEC76C004084EF /* A3UnitConverterTVEqualCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitConverterTVEqualCell.m; sourceTree = "<group>"; };
 		68B6A1C518CEC76C004084EF /* A3UnitConverterTVEqualCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3UnitConverterTVEqualCell.xib; sourceTree = "<group>"; };
-		68B6A1C618CEC76C004084EF /* A3UnitConverterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitConverterViewController.h; sourceTree = "<group>"; };
-		68B6A1C718CEC76C004084EF /* A3UnitConverterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitConverterViewController.m; sourceTree = "<group>"; };
 		68B6A1C918CEC76C004084EF /* TemperatureConvertDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemperatureConvertDef.h; sourceTree = "<group>"; };
 		68B6A1CA18CEC76C004084EF /* TemperatureConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemperatureConverter.h; sourceTree = "<group>"; };
 		68B6A1CB18CEC76C004084EF /* TemperatureConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemperatureConverter.m; sourceTree = "<group>"; };
@@ -4247,8 +4244,6 @@
 				68B6A1C318CEC76C004084EF /* A3UnitConverterTVEqualCell.h */,
 				68B6A1C418CEC76C004084EF /* A3UnitConverterTVEqualCell.m */,
 				68B6A1C518CEC76C004084EF /* A3UnitConverterTVEqualCell.xib */,
-				68B6A1C618CEC76C004084EF /* A3UnitConverterViewController.h */,
-				68B6A1C718CEC76C004084EF /* A3UnitConverterViewController.m */,
 				68B6A1C818CEC76C004084EF /* Data */,
 				68B6A1E218CEC76C004084EF /* UIViewController+UnitConverter.h */,
 				68B6A1E318CEC76C004084EF /* UIViewController+UnitConverter.m */,
@@ -6267,7 +6262,6 @@
 				6896DC971921D64F00FA98F3 /* ExpenseListItem+management.m in Sources */,
 				68143CFB18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.m in Sources */,
 				681E125D193443F00077DCFA /* ioapi.c in Sources */,
-				68B6A2D918CEC76D004084EF /* A3UnitConverterViewController.m in Sources */,
 				68E2A6D218D0B46500E834D9 /* TipCalcRecently.m in Sources */,
 				68B6A2B018CEC76D004084EF /* A3LoanCalcSelectModeViewController.m in Sources */,
 				17D42C81893E3C1784CE162E /* A3TranslatorMessageViewController.m in Sources */,

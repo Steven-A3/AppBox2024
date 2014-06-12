@@ -63,16 +63,21 @@
     CGContextSetTextDrawingMode(context, kCGTextFill);
     
     NSDictionary *attr = @{NSForegroundColorAttributeName : _xLabelColor,NSFontAttributeName : _xAxisFont};
-    for(NSInteger i=0; i < [_xLabelItems count]; i++){
-        if( i > 0 && (i+1) < [_xLabelItems count] ){
-            CGPoint ptLine[] = {CGPointMake(xAxisLineRect.origin.x + (i* xAxisSeparatorInterval), xAxisLineRect.origin.y + xAxisLineRect.size.height),CGPointMake(xAxisLineRect.origin.x + (i* xAxisSeparatorInterval), xAxisLineRect.origin.y + xAxisLineRect.size.height+ xAxisSeparatorHeight)};
+    for (NSInteger idx = 0; idx < [_xLabelItems count]; idx++){
+        if ( idx > 0 && (idx + 1) < [_xLabelItems count] ){
+            CGPoint ptLine[] = {CGPointMake(xAxisLineRect.origin.x + (idx * xAxisSeparatorInterval), xAxisLineRect.origin.y + xAxisLineRect.size.height),CGPointMake(xAxisLineRect.origin.x + (idx * xAxisSeparatorInterval), xAxisLineRect.origin.y + xAxisLineRect.size.height+ xAxisSeparatorHeight)};
             CGContextStrokeLineSegments(context, ptLine, 2);
         }
         
-        if( _showXLabel && !(i % _xLabelDisplayInterval)){
-            NSString *str = [_xLabelItems objectAtIndex:i];
+        if ( _showXLabel && !(idx % _xLabelDisplayInterval)){
+            NSString *str = [_xLabelItems objectAtIndex:idx];
             CGSize strSize = [str sizeWithAttributes:attr];
-            [str drawAtPoint:CGPointMake(xAxisLineRect.origin.x + (i* xAxisSeparatorInterval) - strSize.width*0.5, xAxisLineRect.origin.y + xAxisLineRect.size.height+ xAxisSeparatorHeight) withAttributes:attr];
+            if ((xAxisLineRect.origin.x + (idx * xAxisSeparatorInterval) - strSize.width * 0.5) + strSize.width > self.bounds.size.width) {
+                [str drawAtPoint:CGPointMake(self.bounds.size.width - strSize.width, xAxisLineRect.origin.y + xAxisLineRect.size.height +  xAxisSeparatorHeight) withAttributes:attr];
+            }
+            else {
+                [str drawAtPoint:CGPointMake(xAxisLineRect.origin.x + (idx * xAxisSeparatorInterval) - strSize.width * 0.5, xAxisLineRect.origin.y + xAxisLineRect.size.height +  xAxisSeparatorHeight) withAttributes:attr];
+            }
         }
     }
 }
@@ -128,7 +133,6 @@
     CGContextMoveToPoint(context, xAxisLineRect.origin.x, averageLineYPos );
     CGContextAddLineToPoint(context, xAxisLineRect.origin.x+xAxisLineRect.size.width, averageLineYPos);
     CGContextStrokePath(context);
-    
 }
 
 - (void)drawAverageValueWithContext:(CGContextRef)context
