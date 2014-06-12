@@ -416,7 +416,7 @@ typedef enum {
     // KJH
     // Tap Gesture 가 있는 경우, highlight 가 늦게 발동되어 롱터치 메소트가 반환되어서 방어코드를 추가하였습니다.
     // Tap Gesture 의 delaysTouchesBegan = YES 에 의하여, 테이블뷰의 highlight 가 안 된 것이라고 생각됩니다.
-    if (!_reservedGestureRecognizer) {
+    if (!_reservedTapGestureRecognizer) {
         UITableViewCell *highlightedCell = [self.tableView cellForRowAtIndexPath:indexPathOfRow];
         if ( ![highlightedCell isHighlighted] )
             return;
