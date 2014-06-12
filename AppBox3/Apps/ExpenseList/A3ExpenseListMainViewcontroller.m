@@ -401,6 +401,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 - (void)dismissInstructionViewController:(UIView *)view
 {
     [self.instructionViewController.view removeFromSuperview];
+    if ([self.instructionViewController isFirstInstruction]) {
+        [self moveToAddBudgetIfBudgetNotExistWithDelay:1.0];
+    }
     self.instructionViewController = nil;
 }
 
@@ -880,6 +883,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 #pragma mark - misc
 
 - (void)moveToAddBudgetIfBudgetNotExistWithDelay:(CGFloat)delay {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"ExpenseList"]) {
+        return;
+    }
     
     // 입력된 아이템이 있을 경우, 이동하지 않는다.
 //    for (ExpenseListItem *item in _tableDataSourceArray) {

@@ -36,6 +36,7 @@ NSString *const StoryBoardID_Calcualtor = @"Calcualtor";
 //    backgroundLayer.backgroundColor = [[UIColor blackColor] CGColor];
 //    backgroundLayer.opacity = 0.7;
 //    [self.view.layer addSublayer:backgroundLayer];
+    _isFirstInstruction = ![[NSUserDefaults standardUserDefaults] boolForKey:self.restorationIdentifier];
     
     [self.childImageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop) {
         imageView.image = [imageView.image tintedImageWithColor:[A3AppDelegate instance].themeColor];
