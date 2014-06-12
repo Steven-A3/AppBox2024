@@ -9,7 +9,7 @@
 #import "UIViewController+LoanCalcAddtion.h"
 #import <objc/runtime.h>
 
-static char const *const key_loanFormatter					= "key_loanFormatter";
+static char const *const key_loanFormatter	= "key_loanFormatter";
 NSString *const A3LoanCalcCustomCurrencyCode = @"LoanCustomCurrencyCode";
 
 @implementation UIViewController (LoanCalcAddtion)

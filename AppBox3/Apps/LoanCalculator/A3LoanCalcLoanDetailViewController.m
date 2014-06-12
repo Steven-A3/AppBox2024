@@ -222,7 +222,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
         }
         case A3LC_CalculationItemTerm:
         {
-            placeHolderText = NSLocalizedString(@"0 years", @"0 years");
+            placeHolderText = NSLocalizedString(@"0 year", nil);
             int yearInt =  (int)round(self.loanData.monthOfTerms.doubleValue/12.0);
             textFieldText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), (long)yearInt];
             break;

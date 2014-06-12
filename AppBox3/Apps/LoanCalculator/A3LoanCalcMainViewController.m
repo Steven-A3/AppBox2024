@@ -46,6 +46,11 @@ NSString *const A3LoanCalcLoanNoteCellID = @"A3WalletNoteCell";
 NSString *const A3LoanCalcCompareGraphCellID = @"A3LoanCalcCompareGraphCell";
 NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
+NSString *const A3LoanCalcLoanDataKey = @"A3LoanCalcLoanData";
+NSString *const A3LoanCalcLoanDataKey_A = @"A3LoanCalcLoanData_A";
+NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
+
+
 @interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate, LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate, UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate, UIActivityItemSource>
 
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -372,7 +377,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)refreshRightBarItems {
     if (IS_IPAD) {
         // 히스토리가 존재하는지 체크
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith = nil"];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith == nil"];
         LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"created" ascending:NO];
         LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"calculateDate" ascending:NO];
         
@@ -415,8 +420,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (LoanCalcData *)loanData {
 	if (!super.loanData) {
-		if ([[NSUserDefaults standardUserDefaults] objectForKey:@"LoanCalcLoanData"]) {
-			NSData *loanData = [[NSUserDefaults standardUserDefaults] objectForKey:@"LoanCalcLoanData"];
+		if ([[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcLoanDataKey]) {
+			NSData *loanData = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcLoanDataKey];
 			super.loanData = [NSKeyedUnarchiver unarchiveObjectWithData:loanData];
 		}
 		else {
@@ -432,8 +437,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     if (!_loanDataA) {
         
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"LoanCalcLoanDataA"]) {
-            NSData *loanData = [[NSUserDefaults standardUserDefaults] objectForKey:@"LoanCalcLoanDataA"];
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcLoanDataKey_A]) {
+            NSData *loanData = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcLoanDataKey_A];
             _loanDataA = [NSKeyedUnarchiver unarchiveObjectWithData:loanData];
         }
         else {
@@ -449,8 +454,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     if (!_loanDataB) {
         
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"LoanCalcLoanDataB"]) {
-            NSData *loanData = [[NSUserDefaults standardUserDefaults] objectForKey:@"LoanCalcLoanDataB"];
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcLoanDataKey_B]) {
+            NSData *loanData = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcLoanDataKey_B];
             _loanDataB = [NSKeyedUnarchiver unarchiveObjectWithData:loanData];
         }
         else {
@@ -490,7 +495,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (NSDictionary *)startDateItem
 {
     if (!_startDateItem) {
-        _startDateItem = @{@"Title": @"Start Date"};
+        _startDateItem = @{@"Title": NSLocalizedString(@"Start Date", @"Start Date")};
     }
     
     return _startDateItem;
@@ -499,7 +504,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (NSDictionary *)noteItem
 {
     if (!_noteItem) {
-        _noteItem = @{@"Title": @"Notes"};
+        _noteItem = @{@"Title": NSLocalizedString(@"Notes", @"Notes")};
     }
     
     return _noteItem;
@@ -550,7 +555,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         [_advancedTitleView addSubview:button];
 
         UILabel *adv = [[UILabel alloc] initWithFrame:CGRectMake(IS_IPAD ? 28:15, 18.5, 100, 35)];
-        adv.text = @"ADVANCED";
+        adv.text = NSLocalizedString(@"ADVANCED", @"ADVANCED");
         adv.tag = 1234;
         
         UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, 55, self.view.bounds.size.width, IS_RETINA ? 0.5:1)];
@@ -579,7 +584,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (UISegmentedControl *)selectSegment
 {
     if (!_selectSegment) {
-        _selectSegment = [[UISegmentedControl alloc] initWithItems:@[@"Loan", @"Comparison"]];
+        _selectSegment = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"Loan", @"Loan"), NSLocalizedString(@"Comparison", @"Comparison")]];
         
         [_selectSegment setWidth:IS_IPAD ? 150:85 forSegmentAtIndex:0];
         [_selectSegment setWidth:IS_IPAD ? 150:85 forSegmentAtIndex:1];
@@ -666,7 +671,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	}
 
 	// 히스토리가 존재하는지 체크
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith = nil"];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith == nil"];
 	LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"created" ascending:NO];
 	LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"calculateDate" ascending:NO];
 
@@ -1111,7 +1116,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 NSString *unit = [LoanCalcString shortTitleOfFrequency:A3LC_FrequencyAnnually];
                 if (round([data.monthOfTerms doubleValue]) < 12.0) {
                     NSInteger monthInt = roundl([data.monthOfTerms doubleValue]);
-                    NSString *result = [NSString stringWithFormat:@"0 %@ %ld mo", unit, (long)monthInt];
+                    NSString *result = [NSString stringWithFormat:NSLocalizedString(@"0 %@ %ld mo", @"0 %@ %ld mo"), unit, (long) monthInt];
                     return result;
                 }
                 else {
@@ -1122,7 +1127,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                         result = [NSString stringWithFormat:@"%ld %@", (long)yearInt, unit];
                     }
                     else {
-                        result = [NSString stringWithFormat:@"%ld %@ %ld mo", (long)yearInt, unit, (long)monthInt];
+                        result = [NSString stringWithFormat:NSLocalizedString(@"%ld %@ %ld mo", @"%ld %@ %ld mo"), (long) yearInt, unit, (long) monthInt];
                     }
                     return result;
                 }
@@ -1166,7 +1171,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		return @"Loan Calculator using AppBox Pro";
+		return NSLocalizedString(@"Loan Calculator using AppBox Pro", @"Loan Calculator using AppBox Pro");
 	}
     
 	return @"";
@@ -1176,9 +1181,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:@"<html><body>I'd like to share a calculation with you.<br><br>"];
+		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a calculation with you.<br><br>", @"<html><body>I'd like to share a calculation with you.<br><br>")];
 		[txt appendString:[self shareStringForMail]];
-		[txt appendString:@"<br><br>You can calculator more in the AppBox Pro.<br><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>"];
+		[txt appendString:NSLocalizedString(@"LoanCalc_Share_HTML_BODY", nil)];
 		// AppBoxPro_amortization_loanA.csv
 		// AppBoxPro_amortization_loanb.csv
 		return txt;
@@ -1217,7 +1222,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-	return @"Share Loan Calculator Data";
+	return NSLocalizedString(@"Share Loan Calculator Data", @"Share Loan Calculator Data");
 }
 
 - (NSString *)shareStringForMail
@@ -1226,11 +1231,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     
 	if (_isComparisonMode) {
 		// * Loan A
-		[body appendFormat:@"** Loan A <br>"];
+		[body appendFormat:NSLocalizedString(@"** Loan A <br>", @"** Loan A <br>")];
         [body appendString:[self shareStringForLoanCalcData:_loanDataA isShortType:NO]];
         
 		// * Loan B
-		[body appendFormat:@"<br>** Loan B <br>"];
+		[body appendFormat:NSLocalizedString(@"<br>** Loan B <br>", @"<br>** Loan B <br>")];
         [body appendString:[self shareStringForLoanCalcData:_loanDataB isShortType:NO]];
 	}
 	else {
@@ -1247,11 +1252,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     
 	if (_isComparisonMode) {
 		// * Loan A
-		[body appendFormat:@"** Loan A <br>"];
+		[body appendFormat:NSLocalizedString(@"** Loan A <br>", @"** Loan A <br>")];
         [body appendString:[self shareStringForLoanCalcData:_loanDataA isShortType:YES]];
         
 		// * Loan B
-		[body appendFormat:@"<br>** Loan B <br>"];
+		[body appendFormat:NSLocalizedString(@"<br>** Loan B <br>", @"<br>** Loan B <br>")];
         [body appendString:[self shareStringForLoanCalcData:_loanDataB isShortType:YES]];
 	}
 	else {
@@ -1266,7 +1271,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     NSMutableString *body = [NSMutableString new];
     if (!isShortType) {
-        [body appendString:@"*Calculation<br>"];
+		[body appendString:NSLocalizedString(@"*Calculation<br>", @"*Calculation<br>")];
     }
     // Result
     // Payments or etc
@@ -1275,33 +1280,29 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     if (loanData.calculationMode == A3LC_CalculationForTermOfMonths || loanData.calculationMode == A3LC_CalculationForTermOfYears) {
         NSInteger yearInt =  (int)loanData.monthOfTerms.doubleValue/12.0;
         if (yearInt > 0) {
-            [body appendString:[NSString stringWithFormat:@" %ld year", (long)yearInt]];
-            if (yearInt > 1) {
-                [body appendString:@"s"];
-            }
+			[body appendString:@" "];
+            [body appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), (long)yearInt]];
         }
 
         NSInteger monthInt =  (int)round(loanData.monthOfTerms.doubleValue)  - (12 * yearInt);
         if (monthInt > 0) {
-            [body appendString:[NSString stringWithFormat:@" %ld month", (long)monthInt]];
-            if (monthInt > 1) {
-                [body appendString:@"s"];
-            }
+			[body appendString:@" "];
+            [body appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld months", @"StringsDict", nil), (long)monthInt]];
         }
     }
     else {
         [body appendString:[LoanCalcString valueTextForCalcItem:resultItem fromData:loanData formatter:self.currencyFormatter]];
     }
-    
-    [body appendFormat:@"<br>Interest: %@ <br>", [self.loanFormatter stringFromNumber:[loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
-    [body appendFormat:@"Total Amount: %@ <br>", [self.loanFormatter stringFromNumber:[loanData totalAmount]]];
+
+	[body appendFormat:NSLocalizedString(@"<br>Interest: %@ <br>", @"<br>Interest: %@ <br>"), [self.loanFormatter stringFromNumber:[loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
+	[body appendFormat:NSLocalizedString(@"Total Amount: %@ <br>", @"Total Amount: %@ <br>"), [self.loanFormatter stringFromNumber:[loanData totalAmount]]];
     
     if (isShortType) {
         return body;
     }
     
     // Inputs
-    [body appendString:@"<br>*Input<br>"];
+	[body appendString:NSLocalizedString(@"<br>*Input<br>", @"<br>*Input<br>")];
     BOOL downPaymentEnable = (loanData.showDownPayment && (loanData.downPayment.doubleValue >0)) ? YES:NO;
     NSArray *inputCalcItems = [LoanCalcMode calculateItemForMode:loanData.calculationMode withDownPaymentEnabled:downPaymentEnable];
     [inputCalcItems enumerateObjectsUsingBlock:^(NSNumber *itemID, NSUInteger idx, BOOL *stop) {
@@ -1312,15 +1313,15 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     
     if (loanData.extraPaymentMonthly && [loanData.extraPaymentMonthly floatValue] > 0.0) {
         // Extra Payment(monthly): (값이 있는 경우)
-        [body appendFormat:@"Extra Payment(monthly): %@ <br>", [self.loanFormatter stringFromNumber:loanData.extraPaymentMonthly]];
+		[body appendFormat:NSLocalizedString(@"Extra Payment(monthly): %@ <br>", @"Extra Payment(monthly): %@ <br>"), [self.loanFormatter stringFromNumber:loanData.extraPaymentMonthly]];
     }
     if (loanData.extraPaymentYearly && [loanData.extraPaymentYearly floatValue] > 0.0) {
         // Extra Payment(yearly): (값이 있는 경우)
-        [body appendFormat:@"Extra Payment(yearly): %@ <br>", [self.loanFormatter stringFromNumber:loanData.extraPaymentYearly]];
+		[body appendFormat:NSLocalizedString(@"Extra Payment(yearly): %@ <br>", @"Extra Payment(yearly): %@ <br>"), [self.loanFormatter stringFromNumber:loanData.extraPaymentYearly]];
     }
     if (loanData.extraPaymentOneTime && [loanData.extraPaymentOneTime floatValue] > 0.0) {
         // Extra Payment(one-time): (값이 있는 경우)
-        [body appendFormat:@"Extra Payment(one-time): %@ <br>", [self.loanFormatter stringFromNumber:loanData.extraPaymentOneTime]];
+		[body appendFormat:NSLocalizedString(@"Extra Payment(one-time): %@ <br>", @"Extra Payment(one-time): %@ <br>"), [self.loanFormatter stringFromNumber:loanData.extraPaymentOneTime]];
     }
     
     return body;
@@ -1406,7 +1407,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)putLoanHistory
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith = nil"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith == nil"];
     LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"created" ascending:NO];
     
     BOOL shouldSave = NO;
@@ -1425,59 +1426,42 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 #pragma mark - Save previous user input
 
-- (NSDictionary *)dictionFromLoanData:(LoanCalcData *)loanData
-{
-//    NSDictionary *dic =
-//    @{@"Pricipal": loanData.principal,
-//      @"DownPayment": loanData.downPayment,
-//      @"Repayment": loanData.repayment,
-//      @"MonthOfTerms": loanData.monthOfTerms,
-//      @"AnnualInterest": loanData.annualInterestRate,
-//      @"FrequencyIndex": @(loanData.frequencyIndex),
-//      @"DownPayment": loanData.downPayment,
-//      @"DownPayment": loanData.downPayment,
-//      @"DownPayment": loanData.downPayment,
-//      @"DownPayment": loanData.downPayment,
-//    
-    return nil;
-}
-
 - (void)saveLoanData
 {
     NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:self.loanData];
-    [[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:@"LoanCalcLoanData"];
+    [[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:A3LoanCalcLoanDataKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)saveLoanDataA
 {
     NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:_loanDataA];
-    [[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:@"LoanCalcLoanDataA"];
+    [[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:A3LoanCalcLoanDataKey_A];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)saveLoanDataB
 {
     NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:_loanDataB];
-    [[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:@"LoanCalcLoanDataB"];
+    [[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:A3LoanCalcLoanDataKey_B];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)deleteLoanData
 {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"LoanCalcLoanData"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:A3LoanCalcLoanDataKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)deleteLoanDataA
 {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"LoanCalcLoanDataA"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:A3LoanCalcLoanDataKey_A];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)deleteLoanDataB
 {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"LoanCalcLoanDataB"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:A3LoanCalcLoanDataKey_B];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -1565,7 +1549,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     infoCell.paymentLabel.text = [NSString stringWithFormat:@"%@/%@", [self.loanFormatter stringFromNumber:@(0)], [LoanCalcString shortTitleOfFrequency:A3LC_FrequencyMonthly]];
     infoCell.frequencyLabel.text = [LoanCalcString titleOfFrequency:A3LC_FrequencyMonthly];
     infoCell.interestLabel.text = [self.percentFormatter stringFromNumber:@(0)];
-    infoCell.termLabel.text = @"0 years";
+    infoCell.termLabel.text = NSLocalizedString(@"0 year", @"0 year");
     infoCell.principalLabel.text = [self.loanFormatter stringFromNumber:@(0)];
 }
 
@@ -1644,8 +1628,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         center.x = self.view.bounds.size.width - compareCell.markA_Label.frame.size.width / 2;
         compareCell.markA_Label.center = center;
         
-        NSLog(@"markA : %@", NSStringFromCGRect(compareCell.markA_Label.frame));
-        NSLog(@"redLine : %@", NSStringFromCGRect(compareCell.red_A_Line.frame));
+        FNLOG(@"markA : %@", NSStringFromCGRect(compareCell.markA_Label.frame));
+        FNLOG(@"redLine : %@", NSStringFromCGRect(compareCell.red_A_Line.frame));
         
         float markTailX = compareCell.markA_Label.frame.origin.x + compareCell.markA_Label.frame.size.width;
         markTailX = MIN(markTailX, self.view.bounds.size.width-15);
@@ -1655,7 +1639,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             rectRight.origin.x = (compareCell.frame.size.width - (IS_IPAD ? 28:15)) - rectRight.size.width;
         }
         compareCell.right_A_Label.frame = rectRight;
-        NSLog(@"rightA : %@", NSStringFromCGRect(compareCell.right_A_Label.frame));
+        FNLOG(@"rightA : %@", NSStringFromCGRect(compareCell.right_A_Label.frame));
 
         float circleOriginX = compareCell.circleA_View.frame.origin.x;
         CGRect rectLeft = compareCell.left_A_Label.frame;
@@ -1668,7 +1652,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             }
         }
         compareCell.left_A_Label.frame = rectLeft;
-        NSLog(@"leftA : %@", NSStringFromCGRect(compareCell.left_A_Label.frame));
+        FNLOG(@"leftA : %@", NSStringFromCGRect(compareCell.left_A_Label.frame));
         
         // from bottom to label bottom : 115/90
         float gap = IS_IPAD ? 115 : 90;
@@ -1706,8 +1690,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         
         [UIView commitAnimations];
         
-        NSLog(@"leftA : %@", NSStringFromCGRect(compareCell.left_A_Label.frame));
-        NSLog(@"rightA : %@", NSStringFromCGRect(compareCell.right_A_Label.frame));
+        FNLOG(@"leftA : %@", NSStringFromCGRect(compareCell.left_A_Label.frame));
+        FNLOG(@"rightA : %@", NSStringFromCGRect(compareCell.right_A_Label.frame));
     }
     else {
         [self makeClearGraphLoanA:compareCell];
@@ -2173,7 +2157,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	[self setFirstResponder:nil];
 
 	NSIndexPath *endIP = self.currentIndexPath;
-	NSLog(@"End IP : %ld - %ld", (long) endIP.section, (long) endIP.row);
+	FNLOG(@"End IP : %ld - %ld", (long) endIP.section, (long) endIP.row);
 
 	NSNumberFormatter *formatter = [NSNumberFormatter new];
 	[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -2424,11 +2408,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
             A3LoanCalcLoanDetailViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcLoanDetailViewController"];
             if (indexPath.section == 1) {
-                viewController.navigationItem.title = @"Loan A";
+                viewController.navigationItem.title = NSLocalizedString(@"Loan A", @"Loan A");
                 viewController.loanData = self.loanDataA;
             }
             else {
-                viewController.navigationItem.title = @"Loan B";
+                viewController.navigationItem.title = NSLocalizedString(@"Loan B", @"Loan B");
                 viewController.loanData = self.loanDataB;
             }
             viewController.delegate = self;
@@ -2672,7 +2656,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
     else {
         if (section == 3) {
-            return [self.loanData showExtraPayment] ? @"EXTRA PAYMENTS" : nil;
+            return [self.loanData showExtraPayment] ? NSLocalizedString(@"EXTRA PAYMENTS", @"EXTRA PAYMENTS") : nil;
         }
     }
     
@@ -2970,7 +2954,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         inputCell.titleLabel.text = _startDateItem[@"Title"];
         inputCell.textField.font = [UIFont systemFontOfSize:17];
         inputCell.textField.delegate = self;
-        inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"None"
+        inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"None", @"None")
                                                                                     attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
         inputCell.textField.userInteractionEnabled = NO;
         inputCell.textField.hidden = YES;
@@ -2996,7 +2980,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         inputCell.detailLabel.font = [UIFont systemFontOfSize:17];
         inputCell.detailLabel.text = [df stringFromDate:self.loanData.startDate];
         if ([inputCell.detailLabel.text length] == 0) {
-            inputCell.detailLabel.text = @"None";
+            inputCell.detailLabel.text = NSLocalizedString(@"None", @"None");
         }
         [inputCell.detailLabel sizeToFit];
         inputCell.detailLabel.center = inputCell.contentView.center;
@@ -3045,7 +3029,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         }
         case A3LC_CalculationItemInterestRate:
         {
-            placeHolderText = [NSString stringWithFormat:@"Annual %@", [self.percentFormatter stringFromNumber:@(0)]];
+            placeHolderText = [NSString stringWithFormat:NSLocalizedString(@"Annual %@", @"Annual %@"), [self.percentFormatter stringFromNumber:@(0)]];
             textFieldText = [self.loanData interestRateString];
             break;
         }
@@ -3062,7 +3046,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         }
         case A3LC_CalculationItemTerm:
         {
-            placeHolderText = @"years or months";
+            placeHolderText = NSLocalizedString(@"years or months", @"years or months");
             textFieldText = [self.loanData termValueString];
 			break;
         }

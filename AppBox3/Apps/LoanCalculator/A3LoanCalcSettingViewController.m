@@ -46,7 +46,7 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    self.navigationItem.title = @"Settings";
+    self.navigationItem.title = NSLocalizedString(@"Settings", @"Settings");
     
     self.tableView.separatorColor = [self tableViewSeparatorColor];
     self.tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0);
@@ -162,7 +162,7 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 	if (indexPath.section == 0) {
 		A3LoanCalcSettingSwitchCell *switchCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSettingSwitchCellID forIndexPath:indexPath];
 		switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
-		switchCell.titleLabel.text = @"Down Payment";
+		switchCell.titleLabel.text = NSLocalizedString(@"Down Payment", @"Down Payment");
 		switchCell.onoffSwitch.on = self.preference.showDownPayment;
 		[switchCell.onoffSwitch addTarget:self action:@selector(downPaymentSwitchAction:) forControlEvents:UIControlEventValueChanged];
 
@@ -171,7 +171,7 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 	else if (indexPath.section == 1) {
 		A3LoanCalcSettingSwitchCell *switchCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSettingSwitchCellID forIndexPath:indexPath];
 		switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
-		switchCell.titleLabel.text = @"Extra Payment";
+		switchCell.titleLabel.text = NSLocalizedString(@"Extra Payment", @"Extra Payment");
 		switchCell.onoffSwitch.on = self.preference.showExtraPayment;
 		[switchCell.onoffSwitch addTarget:self action:@selector(extraPaymentSwitchAction:) forControlEvents:UIControlEventValueChanged];
 

@@ -66,7 +66,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
     line.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.tableView addSubview:line];
     
-    NSString *title = [[LoanCalcString titleOfFrequency:_loanData.frequencyIndex] stringByAppendingString:@" Data"];
+    NSString *title = [[LoanCalcString titleOfFrequency:_loanData.frequencyIndex] stringByAppendingString:NSLocalizedString(@" Data", @" Data")];
     self.navigationItem.title = title;
     
     [self registerContentSizeCategoryDidChangeNotification];
@@ -187,16 +187,16 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
     A3LoanCalcCalculationItem resultItem = [LoanCalcMode resltItemForCalcMode:_loanData.calculationMode];
     if (_loanData.calculationMode == A3LC_CalculationForTermOfMonths) {
         NSInteger monthInt =  (int)round(loan.monthOfTerms.doubleValue);
-        infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%ld months", (long)monthInt];
+        infoCell.upSecondValueLB.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld months", @"StringsDict", nil), (long)monthInt];
     }
     else if (_loanData.calculationMode == A3LC_CalculationForTermOfYears) {
         NSInteger yearInt =  (int)round(loan.monthOfTerms.doubleValue/12.0);
-        infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%ld years", (long)yearInt];
+        infoCell.upSecondValueLB.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), (long)yearInt];
         
         NSString *unit = [LoanCalcString shortTitleOfFrequency:A3LC_FrequencyAnnually];
         if (round([loan.monthOfTerms doubleValue]) < 12.0) {
             NSInteger monthInt = roundl([loan.monthOfTerms doubleValue]);
-            infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"0 %@ %ld mo", unit, (long)monthInt];
+            infoCell.upSecondValueLB.text = [NSString stringWithFormat:NSLocalizedString(@"0 %@ %ld mo", @"0 %@ %ld mo"), unit, (long) monthInt];
         }
         else {
             NSInteger yearInt = roundl([loan.monthOfTerms doubleValue]) / 12.0;
@@ -205,7 +205,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
                 infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%ld %@", (long)yearInt, unit];
             }
             else {
-                infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%ld %@ %ld mo", (long)yearInt, unit, (long)monthInt];
+                infoCell.upSecondValueLB.text = [NSString stringWithFormat:NSLocalizedString(@"%ld %@ %ld mo", @"%ld %@ %ld mo"), (long) yearInt, unit, (long) monthInt];
             }
         }
     }
@@ -257,7 +257,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
             switch (extraType) {
                 case A3LC_ExtraPaymentMonthly:
                 {
-                    titleLB.text = IS_IPAD ? @"Extra Payments(Monthly)" : @"Extra(Monthly)";
+                    titleLB.text = IS_IPAD ? NSLocalizedString(@"Extra Payments(Monthly)", @"Extra Payments(Monthly)") : NSLocalizedString(@"Extra(Monthly)", @"Extra(Monthly)");
                     titleLB.text = [titleLB.text uppercaseString];
                     [titleLB sizeToFit];
                     valueLB.text = [self.currencyFormatter stringFromNumber:_loanData.extraPaymentMonthly];
@@ -265,19 +265,19 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
                 }
                 case A3LC_ExtraPaymentYearly:
                 {
-                    titleLB.text = IS_IPAD ? @"Extra Payments(Yearly)":@"Extra(Yearly)";
+                    titleLB.text = IS_IPAD ? NSLocalizedString(@"Extra Payments(Yearly)", @"Extra Payments(Yearly)") : NSLocalizedString(@"Extra(Yearly)", @"Extra(Yearly)");
                     titleLB.text = [titleLB.text uppercaseString];
                     [titleLB sizeToFit];
 
-                    NSString *currencyText = @"";
+                    NSString *currencyText;
                     if (_loanData.extraPaymentYearly) {
                         currencyText = [self.currencyFormatter stringFromNumber:_loanData.extraPaymentYearly];
                     }
                     else {
                         currencyText = [self.currencyFormatter stringFromNumber:@(0)];
                     }
-                    NSString *dateText = @"";
-                    
+
+                    NSString *dateText;
                     if (_loanData.extraPaymentYearlyDate) {
                         NSDate *pickDate = _loanData.extraPaymentYearlyDate;
                         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -286,7 +286,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
                         dateText = [formatter stringFromDate:pickDate];
                     }
                     else {
-                        dateText = @"None";
+                        dateText = NSLocalizedString(@"None", @"None");
                     }
                     
                     valueLB.text = [NSString stringWithFormat:@"%@ %@", currencyText, dateText];
@@ -294,18 +294,18 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
                 }
                 case A3LC_ExtraPaymentOnetime:
                 {
-                    titleLB.text = IS_IPAD ? @"Extra Payments(One-time)":@"Extra(One-time)";
+                    titleLB.text = IS_IPAD ? NSLocalizedString(@"Extra Payments(One-time)", @"Extra Payments(One-time)") : NSLocalizedString(@"Extra(One-time)", @"Extra(One-time)");
                     titleLB.text = [titleLB.text uppercaseString];
                     [titleLB sizeToFit];
 
-                    NSString *currencyText = @"";
+                    NSString *currencyText;
                     if (_loanData.extraPaymentOneTime) {
                         currencyText = [self.currencyFormatter stringFromNumber:_loanData.extraPaymentOneTime];
                     }
                     else {
                         currencyText = [self.currencyFormatter stringFromNumber:@(0)];
                     }
-                    NSString *dateText = @"";
+                    NSString *dateText;
                     if (_loanData.extraPaymentOneTimeDate) {
                         NSDate *pickDate = _loanData.extraPaymentOneTimeDate;
                         
@@ -313,7 +313,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
                         dateText = [formatter localizedLongStyleYearMonthFromDate:pickDate];
                     }
                     else {
-                        dateText = @"None";
+                        dateText = NSLocalizedString(@"None", @"None");
                     }
                     
                     valueLB.text = [NSString stringWithFormat:@"%@ %@", currencyText, dateText];
@@ -489,56 +489,5 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
     
     return nil;
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 @end

@@ -553,4 +553,36 @@
 "Loan" = "Loan";
 "Comparison" = "Comparison";
 " of " = " of ";
-"0 years" = "0 years";
+
+"0 %@ %ld mo" = "0 %@ %ld mo";
+"%ld %@ %ld mo" = "%ld %@ %ld mo";
+"Loan Calculator using AppBox Pro" = "Loan Calculator using AppBox Pro";
+"<html><body>I'd like to share a calculation with you.<br><br>" = "<html><body>I'd like to share a calculation with you.<br><br>";
+"LoanCalc_Share_HTML_BODY" = "<br><br>You can calculator more in the AppBox Pro.<br><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
+"Share Loan Calculator Data" = "Share Loan Calculator Data";
+"** Loan A <br>" = "** Loan A <br>";
+"<br>** Loan B <br>" = "<br>** Loan B <br>";
+"*Calculation<br>" = "*Calculation<br>";
+"<br>Interest: %@ <br>" = "<br>Interest: %@ <br>";
+"Total Amount: %@ <br>" = "Total Amount: %@ <br>";
+"<br>*Input<br>" = "<br>*Input<br>";
+"Extra Payment(monthly): %@ <br>" = "Extra Payment(monthly): %@ <br>";
+"Extra Payment(yearly): %@ <br>" = "Extra Payment(yearly): %@ <br>";
+"Extra Payment(one-time): %@ <br>" = "Extra Payment(one-time): %@ <br>";
+
+"0 year" = "0 year";
+
+"Loan A" = "Loan A";
+"Loan B" = "Loan B";
+"EXTRA PAYMENTS" = "EXTRA PAYMENTS";
+"years or months" = "years or months";
+" Data" = " Data";
+
+"Extra Payments(Monthly)" = "Extra Payments(Monthly)";
+"Extra(Monthly)" = "Extra(Monthly)";
+"Extra Payments(Yearly)" = "Extra Payments(Yearly)";
+"Extra(Yearly)" = "Extra(Yearly)";
+"Extra Payments(One-time)" = "Extra Payments(One-time)";
+"Extra(One-time)" = "Extra(One-time)";
+"Calculation" = "Calculation";
+"Extra Payment" = "Extra Payment";
