@@ -95,13 +95,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSIndexPath *prevIndexPath = nil;
-    if( self.selectedIndexPath ){
+    if ( self.selectedIndexPath ) {
         prevIndexPath = [NSIndexPath indexPathForRow:_selectedIndexPath.row inSection:_selectedIndexPath.section];
     }
     self.selectedIndexPath = indexPath;
     [tableView beginUpdates];
-    if( prevIndexPath && (prevIndexPath.row != indexPath.row ) )
+    if ( prevIndexPath && (prevIndexPath.row != indexPath.row ) ) {
         [tableView reloadRowsAtIndexPaths:@[prevIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [tableView endUpdates];
     
@@ -118,12 +119,18 @@
         [alertView show];
         return;
     }
+    
     DaysCounterCalendar *targetCalendar = [_itemArray objectAtIndex:self.selectedIndexPath.row];
     NSManagedObjectContext *context = [_currentCalendar managedObjectContext];
     for(DaysCounterEvent *event in _eventArray){
         event.calendar = targetCalendar;
     }
     [context MR_saveToPersistentStoreAndWait];
+    
+    if (_doneActionCompletionBlock) {
+        _doneActionCompletionBlock();
+    }
+    
     [self cancelAction:nil];
 }
 

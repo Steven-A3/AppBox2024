@@ -297,6 +297,9 @@
     viewCtrl.currentCalendar = _calendarItem;
     viewCtrl.eventArray = _selectedArray;
     viewCtrl.sharedManager = _sharedManager;
+    viewCtrl.doneActionCompletionBlock = ^{
+        [_selectedArray removeAllObjects];
+    };
 
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];

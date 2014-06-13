@@ -14,4 +14,5 @@
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) NSArray *eventArray;
 @property (strong, nonatomic) DaysCounterCalendar *currentCalendar;
+@property (strong, nonatomic) void (^doneActionCompletionBlock)(void);
 @end
