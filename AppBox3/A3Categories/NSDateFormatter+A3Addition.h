@@ -13,6 +13,7 @@
 - (NSString *)localizedLongStyleYearMonthFromDate:(NSDate *)date;
 - (NSString *)localizedMediumStyleYearMonthFromDate:(NSDate *)date;
 - (NSString *)formatStringByRemovingYearComponent:(NSString *)originalFormat;
+- (NSString *)formatStringByRemovingMediumYearComponent:(NSString *)originalFormat;
 - (NSString *)formatStringByRemovingDayComponent:(NSString *)originalFormat;
 
 - (NSString *)customFullStyleFormat;

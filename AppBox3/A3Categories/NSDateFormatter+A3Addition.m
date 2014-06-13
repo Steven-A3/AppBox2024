@@ -35,10 +35,10 @@
 
 - (NSString *)formatStringByRemovingYearComponent:(NSString *)originalFormat {
 	NSArray *replaceArray = @[
-			@"y 'm'. ", @"'de' y", @"y 'оны' ", @" y 'г'.", @" y 'ж'.", @" 'di' y", @"y년 ", @" y 'р'.",
-			@"G y د ", @" G y", @" y G", @"y年", @"སྤྱི་ལོ་y ", @"y թ., ", @" 'lia' y", @" 'năm' y",
-			@"y. 'gada' ", @"G y د ", @"G y "
-	];
+                              @"y 'm'. ", @"'de' y", @"y 'оны' ", @" y 'г'.", @" y 'ж'.", @" 'di' y", @"y년 ", @" y 'р'.",
+                              @"G y د ", @" G y", @" y G", @"y年", @"སྤྱི་ལོ་y ", @"y թ., ", @" 'lia' y", @" 'năm' y",
+                              @"y. 'gada' ", @"G y د ", @"G y ", @".y", @"y/"
+                              ];
 
 	for (NSString *yearComponent in replaceArray) {
 		NSRange range = [originalFormat rangeOfString:yearComponent];
@@ -52,6 +52,26 @@
 		return [originalFormat stringByReplacingOccurrencesOfString:@"MMMM y," withString:@"MMMM,"];
 	}
 
+	return [self formatStringByRemovingComponent:@"y" formFormat:originalFormat];
+}
+
+- (NSString *)formatStringByRemovingMediumYearComponent:(NSString *)originalFormat {
+	NSArray *replaceArray = @[ @"-y", @"/y", @",y", @" 'de' y", @" y G", @" y", @", y", @"y/", @"G y ", @".y",
+                               @", y թ.", @"y年", @" y 'г'.", @"y-", @"y ལོ་འི་", @" 'di' y", @"y. ", @"y.", @"/yyyy", @"y ",
+                               @"y, ", @"སྤྱི་ལོ་y ", @"y. 'gada' "];
+    
+	for (NSString *yearComponent in replaceArray) {
+		NSRange range = [originalFormat rangeOfString:yearComponent];
+		if (range.location != NSNotFound) {
+			return [originalFormat stringByReplacingOccurrencesOfString:yearComponent withString:@""];
+		}
+	}
+    
+	NSRange range = [originalFormat rangeOfString:@"MMMM y,"];
+	if (range.location != NSNotFound) {
+		return [originalFormat stringByReplacingOccurrencesOfString:@"MMMM y," withString:@"MMMM,"];
+	}
+    
 	return [self formatStringByRemovingComponent:@"y" formFormat:originalFormat];
 }
 

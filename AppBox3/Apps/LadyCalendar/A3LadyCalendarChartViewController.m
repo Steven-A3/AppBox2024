@@ -141,6 +141,7 @@
 
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
     dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    NSString *dateFormat = [dateFormatter formatStringByRemovingMediumYearComponent:[dateFormatter dateFormat]];
     
 	for(NSInteger i=0; i < [array count]; i++){
 		LadyCalendarPeriod *period = [array objectAtIndex:i];
@@ -149,7 +150,7 @@
 		[periodArray addObject:[NSValue valueWithCGPoint:CGPointMake(i, mensPeriod)]];
 		minMenstrualPeriod = ( minMenstrualPeriod < 0 ? mensPeriod : MIN(minMenstrualPeriod, mensPeriod) );
 		maxMenstrualPeriod = (maxMenstrualPeriod < 0 ? mensPeriod : MAX(maxMenstrualPeriod,mensPeriod));
-		[_cycleXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:@"MMM dd"]];
+		[_cycleXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:dateFormat]];
 
 		NSInteger diffDays = 0;
 		if( nextPeriod == nil ){
@@ -161,7 +162,8 @@
 		[cycleArray addObject:[NSValue valueWithCGPoint:CGPointMake(i, diffDays)]];
 		minCycleLength = ( minCycleLength == 0 ? diffDays : MIN(minCycleLength,diffDays));
 		maxCycleLength = ( maxCycleLength == 0 ? diffDays : MAX(maxCycleLength, diffDays));
-		[_menstrualXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:[dateFormatter formatStringByRemovingYearComponent:[dateFormatter dateFormat]]]];
+
+		[_menstrualXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:dateFormat]];
 	}
 
 	for(NSInteger i = minCycleLength; i <= maxCycleLength; i++)
