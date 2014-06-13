@@ -778,8 +778,8 @@ static NSString *CellIdentifier = @"Cell";
                 weakSelf.firstResponder = nil;
             }
 			[weakSelf removeNumberKeyboardNotificationObservers];
-            
-            if (textField.text && textField.text.length != 0) {
+        
+            if (textField.text && textField.text.length != 0 && [element inputType] != A3TableViewEntryTypeText) {
 				NSNumber *number = [weakSelf.decimalFormatter numberFromString:textField.text];
 				element.value = [number stringValue];
             }
