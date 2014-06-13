@@ -902,14 +902,14 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
 
 -(void)scrollToTopOfTableView {
     if (IS_LANDSCAPE) {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.35];
         self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
         [UIView commitAnimations];
     } else {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.35];
@@ -1261,7 +1261,7 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
 //    NSNumber *animationCurve = [aNoti.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey];    // 7
 //    NSNumber *animationDuration = [aNoti.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey];  // 0.25
 //    
-//    [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+//    [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
 //    [UIView setAnimationBeginsFromCurrentState:YES];
 //    [UIView setAnimationCurve:[animationCurve intValue]];
 //    [UIView setAnimationDuration:[animationDuration doubleValue]];
@@ -1279,7 +1279,7 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
 //    NSNumber *animationCurve = [aNoti.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey];
 //    NSNumber *animationDuration = [aNoti.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey];
 //    
-//    [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+//    [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
 //    [UIView setAnimationBeginsFromCurrentState:YES];
 //    [UIView setAnimationCurve:[animationCurve intValue]];
 //    [UIView setAnimationDuration:[animationDuration doubleValue]];

@@ -8,11 +8,8 @@
 
 #import "A3TipCalcHeaderView.h"
 #import "A3TipCalcDataManager.h"
-#import "UIViewController+NumberKeyboard.h"
-#import "NSUserDefaults+A3Defaults.h"
 #import "A3RoundedSideButton.h"
 #import "A3OverlappedCircleView.h"
-#import "A3DefaultColorDefines.h"
 #import "UIImage+JHExtension.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
@@ -83,9 +80,9 @@
 	[self addSubview:_beforeSplitButton];
 	[self addSubview:_perPersonButton];
 	[self addSubview:_detailInfoButton];
-	[_beforeSplitButton setTitle:@"Before Split" forState:UIControlStateNormal];
+	[_beforeSplitButton setTitle:NSLocalizedString(@"Before Split", @"Before Split") forState:UIControlStateNormal];
 	[_beforeSplitButton setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
-	[_perPersonButton setTitle:@"Per Person" forState:UIControlStateNormal];
+	[_perPersonButton setTitle:NSLocalizedString(@"Per Person", @"Per Person") forState:UIControlStateNormal];
 	[_perPersonButton setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
     _detailInfoButton.frame = CGRectMake(0.0, 0.0, 44.0, 44.0);
     [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
@@ -256,7 +253,7 @@
     }
     
     NSString *tip = [self.dataManager currencyStringFromDouble:dTip];
-    NSArray * strings = @[tip, @"  Tip"];
+    NSArray * strings = @[tip, NSLocalizedString(@"  Tip", @"  Tip")];
     _tipLabel.text = [strings componentsJoinedByString:@""];
     NSMutableAttributedString *tipAttributeText = [[NSMutableAttributedString alloc] initWithAttributedString:_tipLabel.attributedText];
     [tipAttributeText addAttribute: NSFontAttributeName
@@ -283,18 +280,18 @@
             if ([self.dataManager tipSplitOption] == TipSplitOption_PerPerson) {
                 dTotal = [[self.dataManager totalPerPersonWithTax] doubleValue];
                 NSString *total = [self.dataManager currencyStringFromDouble:dTotal];
-                strings = @[total, @" Total Per Person"];
+                strings = @[total, NSLocalizedString(@" Total Per Person", @" Total Per Person")];
             }
             else {
                 dTotal = [[self.dataManager totalBeforeSplitWithTax] doubleValue];
                 NSString *total = [self.dataManager currencyStringFromDouble:dTotal];
-                strings = @[total, @" Total Before Split"];
+                strings = @[total, NSLocalizedString(@" Total Before Split", @" Total Before Split")];
             }
         }
         else {
             dTotal = [[self.dataManager totalBeforeSplitWithTax] doubleValue];
             NSString *total = [self.dataManager currencyStringFromDouble:dTotal];
-            strings = @[total, @" Total"];
+            strings = @[total, NSLocalizedString(@" Total", @" Total")];
         }
     }
 
@@ -341,7 +338,7 @@
 
 - (void)setResult:(TipCalcRecently *)result withAnimation:(BOOL)animate {
     if (animate) {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.25];

@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "A3TipCalcCircle.h"
 
 @class A3RoundedSideButton;
 @class TipCalcRecently;

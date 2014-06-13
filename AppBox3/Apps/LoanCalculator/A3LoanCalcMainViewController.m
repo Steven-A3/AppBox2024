@@ -2665,7 +2665,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 
 -(void)scrollToTopOfTableView {
     if (IS_LANDSCAPE) {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.35];
@@ -2678,7 +2678,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
         [UIView commitAnimations];
     }
     else {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.35];

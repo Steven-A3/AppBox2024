@@ -168,7 +168,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [self makeBackButtonEmptyArrow];
     [self leftBarButtonAppsButton];
     [self rightBarButtons];
-    self.title = @"Tip Calculator";
+    self.title = NSLocalizedString(@"Tip Calculator", @"Tip Calculator");
     
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;
@@ -359,26 +359,26 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         values = [NSMutableArray new];
         [values addObject:[formatter stringFromNumber:[self.dataManager costBeforeTax]]];
         [values addObject:[formatter stringFromNumber:[self.dataManager taxValue]]];
-        [titles addObject:@[@"Costs", @"Tax"]];
+        [titles addObject:@[NSLocalizedString(@"Costs", @"Costs"), NSLocalizedString(@"Tax", @"Tax")]];
         [details addObject:values];
         
         values = [NSMutableArray new];
         [values addObject:[formatter stringFromNumber:[self.dataManager subtotal]]];
         [values addObject:[formatter stringFromNumber:[self.dataManager tipValueWithRounding:YES]]];
-        [titles addObject:@[@"Subtotal", @"Tip"]];
+        [titles addObject:@[NSLocalizedString(@"Subtotal", @"Subtotal"), NSLocalizedString(@"Tip", @"Tip")]];
         [details addObject:values];
     }
     else if ([self.dataManager tipSplitOption] == TipSplitOption_PerPerson) {
         values = [NSMutableArray new];
         [values addObject:[formatter stringFromNumber:[self.dataManager costBeforeTaxWithSplit]]];
         [values addObject:[formatter stringFromNumber:[self.dataManager taxValueWithSplit]]];
-        [titles addObject:@[@"Costs", @"Tax"]];
+        [titles addObject:@[NSLocalizedString(@"Costs", @"Costs"), NSLocalizedString(@"Tax", @"Tax")]];
         [details addObject:values];
         
         values = [NSMutableArray new];
         [values addObject:[formatter stringFromNumber:[self.dataManager subtotalWithSplit]]];
         [values addObject:[formatter stringFromNumber:[self.dataManager tipValueWithSplitWithRounding:YES]]];
-        [titles addObject:@[@"Subtotal", @"Tip"]];
+        [titles addObject:@[NSLocalizedString(@"Subtotal", @"Subtotal"), NSLocalizedString(@"Tip", @"Tip")]];
         [details addObject:values];
     }
     [popoverTableView setSectionArrayForTitles:titles withDetails:details];
@@ -437,13 +437,13 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     NSMutableArray *sections = [NSMutableArray new];
     // Section 0
     if ([self.dataManager isTaxOptionOn]) {
-        [sections addObject:@"KNOWN VALUE"];
+		[sections addObject:NSLocalizedString(@"KNOWN VALUE", @"KNOWN VALUE")];
     }
     // Section 1
     [sections addObject:@""];
     // Section 2
     if ([self.dataManager isRoundingOptionOn]) {
-        [sections addObject:@"ROUNDING METHOD"];
+		[sections addObject:NSLocalizedString(@"ROUNDING METHOD", @"ROUNDING METHOD")];
     }
     
     self.tableSectionTitles = sections;
@@ -471,12 +471,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         case 0:     // KNOWN VALUE
         {
             A3TableViewCheckMarkElement *subtotal = [A3TableViewCheckMarkElement new];
-            subtotal.title = @"Costs After Tax";
+            subtotal.title = NSLocalizedString(@"Costs After Tax", @"Costs After Tax");
             subtotal.identifier = RowElementID_SubTotal;
             subtotal.checked = [self.dataManager knownValue] == TCKnownValue_Subtotal ? YES : NO;
             
             A3TableViewCheckMarkElement *costsBeforeTax = [A3TableViewCheckMarkElement new];
-            costsBeforeTax.title = @"Costs Before Tax";
+            costsBeforeTax.title = NSLocalizedString(@"Costs Before Tax", @"Costs Before Tax");
             costsBeforeTax.identifier = RowElementID_CostsBeforeTax;
             costsBeforeTax.checked = [self.dataManager knownValue] == TCKnownValue_CostsBeforeTax ? YES : NO;
             
@@ -490,10 +490,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             A3TableViewInputElement *costs = [A3TableViewInputElement new];
 			costs.delegate = self;
             if ([self.dataManager.tipCalcData.showTax boolValue]) {
-                costs.title = [self.dataManager knownValue] == TCKnownValue_Subtotal ? @"Costs After Tax" : @"Costs Before Tax";
+                costs.title = [self.dataManager knownValue] == TCKnownValue_Subtotal ? NSLocalizedString(@"Costs After Tax", @"Costs After Tax") : NSLocalizedString(@"Costs Before Tax", @"Costs Before Tax");
             }
             else {
-                costs.title = @"Cost";
+                costs.title = NSLocalizedString(@"Cost", @"Cost");
             }
             
             costs.value = [self.decimalFormatter stringFromNumber:[self.dataManager.tipCalcData costs]];
@@ -512,7 +512,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             if ([self.dataManager isTaxOptionOn]) {
                 A3TableViewInputElement *tax = [A3TableViewInputElement new];
 				tax.delegate = self;
-                tax.title = @"Tax";
+                tax.title = NSLocalizedString(@"Tax", @"Tax");
                 tax.value = [self.decimalFormatter stringFromNumber:[self.dataManager.tipCalcData tax]];
                 tax.inputType = A3TableViewEntryTypePercent;
                 tax.prevEnabled = YES;
@@ -530,7 +530,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
             A3TableViewInputElement *tip = [A3TableViewInputElement new];
 			tip.delegate = self;
-            tip.title = @"Tip";
+            tip.title = NSLocalizedString(@"Tip", @"Tip");
             tip.value = [self.decimalFormatter stringFromNumber:[self.dataManager.tipCalcData tip]];
             tip.inputType = A3TableViewEntryTypePercent;
             tip.prevEnabled = YES;
@@ -547,7 +547,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             if ([self.dataManager isSplitOptionOn]) {
                 A3TableViewInputElement *split = [A3TableViewInputElement new];
 				split.delegate = self;
-                split.title = @"Split";
+                split.title = NSLocalizedString(@"Split", @"Split");
                 split.value = [self.decimalFormatter stringFromNumber:[self.dataManager.tipCalcData split]];
                 split.inputType = A3TableViewEntryTypeInteger;
                 split.prevEnabled = YES;
@@ -567,14 +567,14 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         case 2:     //ROUNDING METHOD
         {
             A3JHTableViewSelectElement * value = [A3JHTableViewSelectElement new];
-            value.title = @"Value";
-            value.items = @[@"Tip", @"Total", @"Total Per Person", @"Tip Per Person"];
+            value.title = NSLocalizedString(@"Value", @"Value");
+            value.items = @[NSLocalizedString(@"Tip", @"Tip"), NSLocalizedString(@"Total", @"Total"), NSLocalizedString(@"Total Per Person", @"Total Per Person"), NSLocalizedString(@"Tip Per Person", @"Tip Per Person")];
             value.selectedIndex = [self.dataManager roundingMethodValue];
             value.identifier = RowElementID_Value;
             
             A3JHTableViewSelectElement * option = [A3JHTableViewSelectElement new];
-            option.title = @"Option";
-            option.items = @[@"Exact", @"Up", @"Down", @"Off"];
+            option.title = NSLocalizedString(@"Option", @"Option");
+            option.items = @[NSLocalizedString(@"Exact", @"Exact"), NSLocalizedString(@"Up", @"Up"), NSLocalizedString(@"Down", @"Down"), NSLocalizedString(@"Off", @"Off")];
             option.selectedIndex = [self.dataManager roundingMethodOption];
             option.identifier = RowElementID_Option;
             result = @[value, option];
@@ -696,14 +696,14 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 -(void)scrollToTopOfTableView {
     if (IS_LANDSCAPE) {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.35];
         self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
         [UIView commitAnimations];
     } else {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.35];

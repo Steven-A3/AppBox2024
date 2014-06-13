@@ -637,3 +637,38 @@
 "  Sale Price w/Tax" = "  Sale Price w/Tax";
 "  Sale Price" = "  Sale Price";
 " saved of " = " saved of ";
+
+"Sale Price with Tax" = "Sale Price with Tax";
+"Sale Price w/Tax" = "Sale Price w/Tax";
+"Discount" = "Discount";
+"Additional Off" = "Additional Off";
+"Tax" = "Tax";
+
+"KNOWN VALUE" = "KNOWN VALUE";
+
+"Total" = "Total";
+"Tip" = "Tip";
+
+"Total Per Person" = "Total Per Person";
+"Tip Per Person" = "Tip Per Person";
+"Input" = "Input";
+"Costs" = "Costs";
+"Costs After Tax" = "Costs After Tax";
+"Costs Before Tax" = "Costs Before Tax";
+"Split" = "Split";
+
+"Before Split" = "Before Split";
+"Per Person" = "Per Person";
+"  Tip" = "  Tip";
+" Total Per Person" = " Total Per Person";
+" Total Before Split" = " Total Before Split";
+" Total" = " Total";
+
+"Subtotal" = "Subtotal";
+"ROUNDING METHOD" = "ROUNDING METHOD";
+"Cost" = "Cost";
+"Value" = "Value";
+"Option" = "Option";
+"Exact" = "Exact";
+"Up" = "Up";
+"Down" = "Down";
