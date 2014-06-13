@@ -633,18 +633,18 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 	CLGeocoder* geocoder = [[CLGeocoder alloc] init];
 
 	[geocoder reverseGeocodeLocation: _locationManager.location completionHandler:^(NSArray *placemarks, NSError *error) {        
-        NSLog(@"ori------");
+        FNLOG(@"ori------");
         CLPlacemark *placemark = [placemarks objectAtIndex:0];
-        NSLog(@"%@", placemark.ISOcountryCode);// 1
-        NSLog(@"%@", placemark.country);
-        NSLog(@"%@", placemark.postalCode);
-        NSLog(@"%@", placemark.administrativeArea);//4
-        NSLog(@"%@", placemark.subAdministrativeArea);
-        NSLog(@"%@", placemark.locality);
-        NSLog(@"%@", placemark.subLocality);
-        NSLog(@"%@", placemark.thoroughfare);
-        NSLog(@"%@", placemark.subThoroughfare);
-        NSLog(@"--------");
+        FNLOG(@"%@", placemark.ISOcountryCode);// 1
+        FNLOG(@"%@", placemark.country);
+        FNLOG(@"%@", placemark.postalCode);
+        FNLOG(@"%@", placemark.administrativeArea);//4
+        FNLOG(@"%@", placemark.subAdministrativeArea);
+        FNLOG(@"%@", placemark.locality);
+        FNLOG(@"%@", placemark.subLocality);
+        FNLOG(@"%@", placemark.thoroughfare);
+        FNLOG(@"%@", placemark.subThoroughfare);
+        FNLOG(@"--------");
         
         NSNumber *knownTax = nil;
         if ([placemark.ISOcountryCode isEqualToString:@"US"] &&

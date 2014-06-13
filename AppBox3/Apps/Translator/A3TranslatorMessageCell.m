@@ -24,6 +24,8 @@
 #import "A3AppDelegate+appearance.h"
 #import <MediaPlayer/MediaPlayer.h>
 
+NSString *const A3TranslatorKayLanguage = @"language";
+
 @interface A3TranslatorMessageCell () <AVSpeechSynthesizerDelegate>
 
 @property (nonatomic, strong) UILabel *dateLabel;
@@ -98,7 +100,6 @@ static const CGFloat kTranslatorCellGapBetweenMessage = 15.0;
 	CGFloat height = 0;
 	if ([data.originalText length]) {
 		CGRect boundingRect = boundingRectWithText(data.originalText, bounds);
-//		FNLOGRECT(boundingRect);
 		height += boundingRect.size.height;
 		height += (kTranslatorCellMessageInsetTop + kTranslatorCellMessageInsetBottom);
 		height = MAX(height, 35);
@@ -112,7 +113,6 @@ static const CGFloat kTranslatorCellGapBetweenMessage = 15.0;
 		height += kTranslatorCellGapBetweenMessage;
 	}
 	height += kTranslatorCellTopPadding + kTranslatorCellBottomPadding;
-//	FNLOG(@"%f", height);
 	return height;
 }
 
@@ -125,20 +125,11 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
     CGSize fitSize = CTFramesetterSuggestFrameSizeWithConstraints(frameSetter, CFRangeMake(0, [attributedString length]), NULL, targetSize, NULL);
     CFRelease(frameSetter);
 
-//	FNLOG(@"%f, %f", fitSize.width, fitSize.height);
 	return CGRectMake(0.0, 0.0, fitSize.width, fitSize.height);
 }
 
 - (CGSize)intrinsicContentSize {
 	return CGSizeMake(self.bounds.size.width, [[self class] cellHeightWithData:_messageEntity bounds:self.bounds]);
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-	FNLOG(@"%@", self.selectedBackgroundView);
 }
 
 #pragma mark - SET MESSAGE ENTITY
@@ -159,7 +150,6 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		[self rightMessageView];
 		_rightMessageWidth.constant = boundingRect.size.width;
 		_rightMessageHeight.constant = MAX(boundingRect.size.height, 35);
-		FNLOG(@"rightMessageHeight = %f", _rightMessageHeight.constant);
 
 		_rightMessageLabel.text = _messageEntity.originalText;
 
@@ -441,7 +431,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 - (BOOL)speechAvailableForLanguage:(NSString *)language {
 	NSArray *voices = [AVSpeechSynthesisVoice speechVoices];
 	return [voices indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-		BOOL result = [[[obj valueForKeyPath:@"language"] substringToIndex:2] isEqualToString:language];
+		BOOL result = [[[obj valueForKeyPath:A3TranslatorKayLanguage] substringToIndex:2] isEqualToString:language];
 		if (result) *stop = YES;
 		return result;
 	}] != NSNotFound;
@@ -463,11 +453,11 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		return [self supportedVoiceLanguageForLanguage:language defaultCode:@"zh-CN" inArray:voices];
 	} else {
 		NSInteger idx = [voices indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-			BOOL result = [[[obj valueForKeyPath:@"language"] substringToIndex:2] isEqualToString:language];
+			BOOL result = [[[obj valueForKeyPath:A3TranslatorKayLanguage] substringToIndex:2] isEqualToString:language];
 			if (result) *stop = YES;
 			return result;
 		}];
-		if (idx != NSNotFound) return [voices[idx] valueForKeyPath:@"language"];
+		if (idx != NSNotFound) return [voices[idx] valueForKeyPath:A3TranslatorKayLanguage];
 	}
 	return nil;
 }
@@ -475,7 +465,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 - (NSString *)supportedVoiceLanguageForLanguage:(NSString *)language defaultCode:(NSString *)defaultCode inArray:(NSArray *)voices {
 	NSString *languageCode = [NSString stringWithFormat:@"en-%@", [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]];
 	NSInteger idx = [voices indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-		BOOL result = [[obj valueForKeyPath:@"language"] isEqualToString:languageCode];
+		BOOL result = [[obj valueForKeyPath:A3TranslatorKayLanguage] isEqualToString:languageCode];
 		if (result) *stop = YES;
 		return result;
 	}];
@@ -499,7 +489,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 	return [googleSpeeches member:language] != nil;
 }
 
-#define GOOGLE_LISTEN_URL	@"http://translate.google.com/translate_tts?ie=UTF-8&tl="
+static NSString *const GOOGLE_LISTEN_URL	= @"http://translate.google.com/translate_tts?ie=UTF-8&tl=";
 
 - (void)speakGoogleSpeechWithLanguage {
 	if (![[A3AppDelegate instance].reachability isReachable]) {
@@ -523,7 +513,6 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 }
 
 - (void)speakGoogleFinished {
-	FNLOG();
 	_googleSpeechPlayer = nil;
 	[self.speakButton setHidden:NO];
 }

@@ -267,7 +267,7 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *lastTouch = event.allTouches.allObjects.lastObject;
-    NSLog(@"lastTouch: %@", lastTouch);
+    FNLOG(@"lastTouch: %@", lastTouch);
     CGPoint point = [lastTouch locationInView:self.contentView];
     CGFloat sepWidth = self.contentView.frame.size.width / 3.0;
     if (point.x < sepWidth) {

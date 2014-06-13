@@ -40,7 +40,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 {
     [super viewDidLoad];
 
-	self.title = @"More";
+	self.title = NSLocalizedString(@"More", @"More");
 
 	if (_isEditing) {
 		[self rightBarButtonDoneButton];
@@ -158,8 +158,8 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (self.isEditing) {
-		if (section == 0) return @"Units on the bar";
-		return @"Units in more";
+		if (section == 0) return NSLocalizedString(@"Units on the bar", @"Units on the bar");
+		return NSLocalizedString(@"Units in more", @"Units in more");
 	}
 	return nil;
 }

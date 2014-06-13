@@ -36,7 +36,7 @@
     [super viewDidLoad];
 
     UnitItem *firstItem = _allData[0];
-    self.title = [NSString stringWithFormat:@"%@ Units", firstItem.type.unitTypeName];
+    self.title = [NSString stringWithFormat:NSLocalizedString(@"%@ Units", nil), firstItem.type.unitTypeName];
     
     [self rightBarButtonDoneButton];
     

@@ -54,7 +54,7 @@
         CGRect rect = self.frame;
         rect.size.height = 172.0;
         self.frame = rect;
-        NSLog(@"ori Y: %f", self.frame.origin.y);
+        FNLOG(@"ori Y: %f", self.frame.origin.y);
         
         rect = self.addModeButton.frame;
         rect.size.height = 50.0;
@@ -74,7 +74,7 @@
         CGRect rect = self.frame;
         rect.size.height = 204.0;
         self.frame = rect;
-        NSLog(@"ori Y: %f", self.frame.origin.y);
+        FNLOG(@"ori Y: %f", self.frame.origin.y);
         
         rect = self.addModeButton.frame;
         rect.origin.x = 0.0;

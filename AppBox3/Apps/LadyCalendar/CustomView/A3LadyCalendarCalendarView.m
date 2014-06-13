@@ -147,7 +147,7 @@
         yPos += _cellSize.height;
         xPos = 0.0;
         
-//        NSLog(@"%s yPos:%f, weeks:%d/%d,height:%f,%@",__FUNCTION__,yPos,y+1,numberOfWeeks,_cellSize.height,NSStringFromCGRect(self.frame));
+//        FNLOG(@"%s yPos:%f, weeks:%d/%d,height:%f,%@",__FUNCTION__,yPos,y+1,numberOfWeeks,_cellSize.height,NSStringFromCGRect(self.frame));
         CGContextSetShouldAntialias(context , NO);
         CGContextSetStrokeColorWithColor(context, [[UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0] CGColor]);
         CGContextMoveToPoint(context, xPos, yPos );
@@ -272,7 +272,7 @@
 			FNLOG(@"%ld %@", (long)i, NSStringFromCGRect(ldpModel.lineRect));
         }
     }
-//    NSLog(@"%s  %@/%@(%@/%ld,%ld-%ld) %ld/%ld, %ld/%ld (%ld) %@",__FUNCTION__,stDate,edDate,_dateMonth,(long)_month,(long)stDay,(long)edDay,(long)stWeek,(long)stWeekday,(long)edWeek,(long)edWeekday,(long)firstDayStartIndex,array);
+//    FNLOG(@"%s  %@/%@(%@/%ld,%ld-%ld) %ld/%ld, %ld/%ld (%ld) %@",__FUNCTION__,stDate,edDate,_dateMonth,(long)_month,(long)stDay,(long)edDay,(long)stWeek,(long)stWeekday,(long)edWeek,(long)edWeekday,(long)firstDayStartIndex,array);
 }
 
 - (void)addCircleAtDay:(NSDate *)date color:(UIColor *)circleColor isAlphaCircleShow:(BOOL)isAlphaCircleShow alignment:(NSTextAlignment)alignment toArray:(NSMutableArray*)array
@@ -300,7 +300,7 @@
         cdModel.circleRect = CGRectMake( (weekday+1)*_cellSize.width - _cellSize.width*0.5 - circleSize.width*0.5, (week+1)*_cellSize.height - (_isSmallCell ? 6.0 :(IS_IPHONE ? 22.0 : 25.0)) - lineHeight*0.5 - circleSize.height*0.5, circleSize.width, circleSize.height);
     }
     [array addObject:cdModel];
-//    NSLog(@"%s %@ %d/%d %@",__FUNCTION__,date,week,weekday,NSStringFromCGRect(cdModel.circleRect));
+//    FNLOG(@"%s %@ %d/%d %@",__FUNCTION__,date,week,weekday,NSStringFromCGRect(cdModel.circleRect));
 }
 
 - (void)reload

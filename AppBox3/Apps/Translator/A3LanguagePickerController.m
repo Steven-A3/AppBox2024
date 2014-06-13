@@ -43,7 +43,7 @@ static NSString *CellIdentifier = @"Cell";
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-	self.title = @"Select Language";
+	self.title = NSLocalizedString(@"Select Language", @"Select Language");
 	[self.tableView registerClass:[A3StandardLeft15Cell class] forCellReuseIdentifier:CellIdentifier];
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
 	[self.mySearchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];

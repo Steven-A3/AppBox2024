@@ -621,7 +621,7 @@ static NSUInteger Eid_al_adha[][2] = {
 		[newDC setYear:year];
 		dateReturn = [calendar dateFromComponents:newDC];
 	}
-	NSLog(@"%@", [dateReturn description]);
+	FNLOG(@"%@", [dateReturn description]);
 	return dateReturn;
 }
 

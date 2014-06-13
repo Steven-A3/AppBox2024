@@ -94,7 +94,7 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 		[managedObjectContext performBlockAndWait:^{
 			NSError *error = nil;
 			if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
-				NSLog(@"Unresolved error: %@\n%@", error, [error userInfo]);
+				FNLOG(@"Unresolved error: %@\n%@", error, [error userInfo]);
 			
 			[managedObjectContext reset];
 		}];
@@ -378,7 +378,7 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 		}
 	}
 
-	NSLog(@"uniqueIdentifiers with dupes: %@", uidWithDupes);
+	FNLOG(@"uniqueIdentifiers with dupes: %@", uidWithDupes);
 	if (![uidWithDupes count]) {
 		return;
 	}
@@ -419,9 +419,9 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 		if (0 == (i % batchSize)) {
 			//save the changes after each batch, this helps control memory pressure by turning previously examined objects back in to faults
 			if ([moc save:&error]) {
-				NSLog(@"Saved successfully after uniquing");
+				FNLOG(@"Saved successfully after uniquing");
 			} else {
-				NSLog(@"Error saving unique results: %@", error);
+				FNLOG(@"Error saving unique results: %@", error);
 			}
 		}
 
@@ -429,9 +429,9 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	}
 
 	if ([moc save:&error]) {
-		NSLog(@"Saved successfully after uniquing");
+		FNLOG(@"Saved successfully after uniquing");
 	} else {
-		NSLog(@"Error saving unique results: %@", error);
+		FNLOG(@"Error saving unique results: %@", error);
 	}
 }
 
@@ -444,7 +444,7 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 - (void) application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	// set the time of wake up to use for returning if we updated
 	self.wakeUpTime = [NSDate date];
-	NSLog(@"%s %@", __PRETTY_FUNCTION__, self.wakeUpTime);
+	FNLOG(@"%s %@", __PRETTY_FUNCTION__, self.wakeUpTime);
 		
 	// pass on the completion handler to another method with delay to allow any imports to occur
 	// the API Allows 30 seconds so I only delay for 28 seconds just to be safe
@@ -452,7 +452,7 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 }
 
 - (void) sendBGFetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-	NSLog(@"%s", __PRETTY_FUNCTION__);
+	FNLOG(@"%s", __PRETTY_FUNCTION__);
 	NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
 	
 	// get the time we were woke up to fetch
@@ -466,18 +466,18 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	
 	// compare the last import time against the wake up time to determine if we imported changes
 	if (([wakeUpCall compare:iCloudImport] == NSOrderedAscending)) {
-		//          NSLog(@"We have New Changes");
+		//          FNLOG(@"We have New Changes");
 		importedUpdates = YES;
 		completionHandler(UIBackgroundFetchResultNewData);
 	} else {
-		//          NSLog(@"We have NO New Changes");
+		//          FNLOG(@"We have NO New Changes");
 		completionHandler(UIBackgroundFetchResultNoData);
 	}
 	
 	// comment all the rest of this out for production builds
 	
 	// update the app icon badge & save results of fetch
-	NSLog(@"Saving Update Results");
+	FNLOG(@"Saving Update Results");
 	
 	// Saving the results into an array in user defaults for a tableview
 	// that is only visible in debug builds to show these results
@@ -506,7 +506,7 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 	[A3LadyCalendarModelManager setupLocalNotification];
 
-	NSLog(@"%s - EXIT", __PRETTY_FUNCTION__);
+	FNLOG(@"%s - EXIT", __PRETTY_FUNCTION__);
 }
 
 #pragma mark - Image and Video files

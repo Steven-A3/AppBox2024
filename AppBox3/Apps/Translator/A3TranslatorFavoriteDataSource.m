@@ -49,8 +49,8 @@
 
 	TranslatorFavorite *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
-	cell.textLabel.text = [NSString stringWithFormat:@"%@ to %@", [A3TranslatorLanguage localizedNameForCode:item.text.group.sourceLanguage],
-														  [A3TranslatorLanguage localizedNameForCode:item.text.group.targetLanguage]];
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"), [A3TranslatorLanguage localizedNameForCode:item.text.group.sourceLanguage],
+													 [A3TranslatorLanguage localizedNameForCode:item.text.group.targetLanguage]];
 	cell.detailTextLabel.text = item.text.originalText;
 	if (IS_IPAD) {
 		cell.dateLabel.text = [item.text.date timeAgo];
@@ -93,9 +93,7 @@
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	NSMutableArray *mutableArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
-	FNLOG(@"%@", mutableArray);
 	[mutableArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-	FNLOG(@"%@", mutableArray);
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 

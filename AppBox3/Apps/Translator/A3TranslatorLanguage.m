@@ -89,7 +89,7 @@ static NSString *const kTranslatorLocalizedName = @"localizedName";
 	}];
 	if (addDetectLanguage) {
 		A3TranslatorLanguage *detectLanguage = [A3TranslatorLanguage new];
-		detectLanguage.name = @"Detect Language";
+		detectLanguage.name = NSLocalizedString(@"Detect Language", @"Detect Language");
         detectLanguage.code = @"Detect";
 		[newArray insertObject:detectLanguage atIndex:0];
 	}
@@ -97,9 +97,9 @@ static NSString *const kTranslatorLocalizedName = @"localizedName";
 }
 
 + (NSString *)localizedNameForCode:(NSString *)code {
-    if ([code isEqualToString:@"Detect"]) return @"Detect Language";
-	if ([code isEqualToString:@"zh-Hans"]) return @"Simplified Chinese";
-	if ([code isEqualToString:@"zh-Hant"]) return @"Traditional Chinese";
+    if ([code isEqualToString:@"Detect"]) return NSLocalizedString(@"Detect Language", @"Detect Language");
+	if ([code isEqualToString:@"zh-Hans"]) return NSLocalizedString(@"Simplified Chinese", @"Simplified Chinese");
+	if ([code isEqualToString:@"zh-Hant"]) return NSLocalizedString(@"Traditional Chinese", @"Traditional Chinese");
 	NSString *result = [[NSLocale currentLocale] displayNameForKey:NSLocaleLanguageCode value:code];
 	if (result == nil) {
 		result = @"";

@@ -950,7 +950,7 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
 }
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    //NSLog(@"scrollViewDidEndDragging: %@, decelerate: %d", NSStringFromUIEdgeInsets(scrollView.contentInset), decelerate);
+    //FNLOG(@"scrollViewDidEndDragging: %@, decelerate: %d", NSStringFromUIEdgeInsets(scrollView.contentInset), decelerate);
     FNLOG(@"scrollViewDidEndDragging: %@, decelerate: %d", NSStringFromCGPoint(scrollView.contentOffset), decelerate);
 }
 

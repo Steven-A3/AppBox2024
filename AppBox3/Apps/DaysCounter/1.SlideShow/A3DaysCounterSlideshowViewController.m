@@ -215,7 +215,7 @@
     self.currentView.clipsToBounds = YES;
     self.nextView.frame = self.view.bounds;
     
-    NSLog(@"%s %@ / %@ / %@",__FUNCTION__,NSStringFromCGRect(self.view.bounds),NSStringFromCGRect(_nextView.frame),NSStringFromCGRect(_currentView.frame));
+    FNLOG(@"%s %@ / %@ / %@",__FUNCTION__,NSStringFromCGRect(self.view.bounds),NSStringFromCGRect(_nextView.frame),NSStringFromCGRect(_currentView.frame));
     
     [self insertView:self.nextView belowView:self.currentView];
     
@@ -309,7 +309,7 @@
     
     addView.translatesAutoresizingMaskIntoConstraints = NO;
     addView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    //    NSLog(@"%s %@ / %@",__FUNCTION__,NSStringFromCGRect(addView.frame),NSStringFromCGRect(self.view.bounds));
+    //    FNLOG(@"%s %@ / %@",__FUNCTION__,NSStringFromCGRect(addView.frame),NSStringFromCGRect(self.view.bounds));
     [self.view addSubview:addView];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:addView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
@@ -328,7 +328,7 @@
     addView.translatesAutoresizingMaskIntoConstraints = NO;
     addView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     
-    NSLog(@"%s %@ / %@ / %@",__FUNCTION__,NSStringFromCGRect(addView.frame),NSStringFromCGRect(self.view.bounds),NSStringFromCGRect(self.view.frame));
+    FNLOG(@"%s %@ / %@ / %@",__FUNCTION__,NSStringFromCGRect(addView.frame),NSStringFromCGRect(self.view.bounds),NSStringFromCGRect(self.view.frame));
     
     [self.view insertSubview:addView belowSubview:targetView];
     

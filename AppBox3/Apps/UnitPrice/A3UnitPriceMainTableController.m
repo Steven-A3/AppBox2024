@@ -279,7 +279,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (void)historyViewController:(UIViewController *)viewController selectHistory:(UnitPriceHistory *)history
 {
     if (history) {
-        NSLog(@"Selected History\n%@", [history description]);
+        FNLOG(@"Selected History\n%@", [history description]);
 		for (UnitPriceHistoryItem *item in history.unitPrices) {
 			if ([item.orderInComparison isEqualToString:@"A"]) {
 				_price1.price = item.price;
@@ -420,7 +420,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 - (void)clearCalculation
 {
-    NSLog(@"clearCalculation");
+    FNLOG(@"clearCalculation");
     
     price1UnitPrice = 0;
     price2UnitPrice = 0;

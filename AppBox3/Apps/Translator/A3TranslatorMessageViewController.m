@@ -22,8 +22,10 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "TranslatorGroup+manage.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "NSString+conversion.h"
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
+static NSString *const A3AnimationKeyOpacity = @"opacity";
 
 @interface A3TranslatorMessageViewController () <UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, A3TranslatorMessageCellDelegate, UIKeyInput, A3TranslatorLanguageTVDelegateDelegate, A3SearchViewControllerDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate>
 
@@ -96,7 +98,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		[self setTitleWithSelectedLanguage];
 		[self setupMessageTableView];
 	} else {
-		self.title = @"New Translator";
+		self.title = NSLocalizedString(@"New Translator", @"New Translator");
 
 		_languages = [A3TranslatorLanguage findAllWithDetectLanguage:YES ];
         
@@ -151,7 +153,6 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 - (void)willMoveToParentViewController:(UIViewController *)parent {
 	[super willMoveToParentViewController:parent];
 
-	FNLOG(@"%@", parent);
 	if (!parent) {
 		[_sourceLanguageSelectTextField resignFirstResponder];
 		[_targetLanguageSelectTextField resignFirstResponder];
@@ -197,7 +198,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 }
 
 - (void)setTitleWithSelectedLanguage {
-	self.title = [NSString stringWithFormat:@"%@ to %@",
+	self.title = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"),
 											[A3TranslatorLanguage localizedNameForCode:_originalTextLanguage],
 											[A3TranslatorLanguage localizedNameForCode:_translatedTextLanguage]];
 }
@@ -294,7 +295,11 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 }
 
 - (void)deleteAllAction:(UIBarButtonItem *)barButtonItem {
-	UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete All" otherButtonTitles:nil];
+	UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil
+															  delegate:self
+													 cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+												destructiveButtonTitle:NSLocalizedString(@"Delete All", @"Delete All")
+													 otherButtonTitles:nil];
 	askDeleteAll.tag = 192874;
 	[askDeleteAll showInView:self.view];
 }
@@ -329,10 +334,10 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	}];
 
 	_sourceLanguageSelectTextField = [self textFieldForLanguageSelect];
-	_sourceLanguageSelectTextField.text = @"Detect Language";
+	_sourceLanguageSelectTextField.text = NSLocalizedString(@"Detect Language", @"Detect Language");
     _originalTextLanguage = kTranslatorDetectLanguageCode;
 	UILabel *sourceLanguageLeftLabel = [self leftLabel];
-	sourceLanguageLeftLabel.text = @"From: ";
+	sourceLanguageLeftLabel.text = NSLocalizedString(@"From: ", @"From: ");
 	[sourceLanguageLeftLabel sizeToFit];
 	_sourceLanguageSelectTextField.leftView = sourceLanguageLeftLabel;
 
@@ -360,7 +365,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 
 	_targetLanguageSelectTextField = [self textFieldForLanguageSelect];
 	UILabel *targetLanguageLeftLabel = [self leftLabel];
-	targetLanguageLeftLabel.text = @"To: ";
+	targetLanguageLeftLabel.text = NSLocalizedString(@"To: ", @"To: ");
 	[targetLanguageLeftLabel sizeToFit];
 	_targetLanguageSelectTextField.leftView = targetLanguageLeftLabel;
 	[contentsView addSubview:_targetLanguageSelectTextField];
@@ -568,7 +573,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[_searchResultsTableView reloadData];
 	[_searchResultsTableView setHidden:![_searchResultsDelegate.languages count]];
 
-	NSString *enteredText = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
+	NSString *enteredText = [textField.text stringByTrimmingSpaceCharacters];
 	A3TranslatorLanguage *match = [A3TranslatorLanguage findLanguageInArray:_languages searchString:enteredText];
 	if (textField == _sourceLanguageSelectTextField) {
 		if (match) {
@@ -670,7 +675,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 			messageLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
 		}
 		messageLabel.textAlignment = NSTextAlignmentCenter;
-		messageLabel.text = @"Please change \"From\" or \"To\" language.";
+		messageLabel.text = NSLocalizedString(@"Please change \"From\" or \"To\" language.", @"Please change \"From\" or \"To\" language.");
 		[messageLabel sizeToFit];
 		[_sameLanguagePrompter addSubview:messageLabel];
 
@@ -678,7 +683,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 			make.edges.equalTo(_networkPrompter);
 		}];
 
-		[[messageLabel layer] addAnimation:[self blinkAnimation] forKey:@"opacity"];
+		[[messageLabel layer] addAnimation:[self blinkAnimation] forKey:A3AnimationKeyOpacity];
 
 		[self.view layoutIfNeeded];
 	}
@@ -736,7 +741,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	}];
 
 	_translateButton = [UIButton buttonWithType:UIButtonTypeSystem];
-	[_translateButton setTitle:@"Translate" forState:UIControlStateNormal];
+	[_translateButton setTitle:NSLocalizedString(@"Translate", @"Translate") forState:UIControlStateNormal];
 	_translateButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0];
 	[_translateButton setTitleColor:[[A3AppDelegate instance] themeColor] forState:UIControlStateNormal];
 	[_translateButton setTitleColor:[UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0] forState:UIControlStateDisabled];
@@ -782,7 +787,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 			messageLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
 		}
         messageLabel.textAlignment = NSTextAlignmentCenter;
-		messageLabel.text = @"Internet connection is not available.";
+		messageLabel.text = NSLocalizedString(@"Internet connection is not available.", @"Internet connection is not available.");
 		[messageLabel sizeToFit];
 		[_networkPrompter addSubview:messageLabel];
 
@@ -790,7 +795,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 			make.edges.equalTo(_networkPrompter);
 		}];
 
-		[[messageLabel layer] addAnimation:[self blinkAnimation] forKey:@"opacity"];
+		[[messageLabel layer] addAnimation:[self blinkAnimation] forKey:A3AnimationKeyOpacity];
 
         [self.view layoutIfNeeded];
 	}
@@ -798,7 +803,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 }
 
 - (CABasicAnimation *)blinkAnimation {
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:A3AnimationKeyOpacity];
     [animation setFromValue:[NSNumber numberWithFloat:1.0]];
     [animation setToValue:[NSNumber numberWithFloat:0.2]];
     [animation setDuration:1.0f];
@@ -1407,7 +1412,10 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 - (void)setupBarButtons {
 	if (self.messageTableView.isEditing) {
 		if ([self.messages count]) {
-			self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Delete All" style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllAction:)];
+			self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Delete All", @"Delete All")
+																					 style:UIBarButtonItemStylePlain
+																					target:self
+																					action:@selector(deleteAllAction:)];
 		} else {
 			self.navigationItem.leftBarButtonItem = nil;
 			self.navigationItem.hidesBackButton = YES;

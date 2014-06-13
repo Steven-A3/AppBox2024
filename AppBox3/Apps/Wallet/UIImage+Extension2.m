@@ -76,7 +76,7 @@
     newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    if(newImage == nil) NSLog(@"could not scale image");
+    if(newImage == nil) FNLOG(@"could not scale image");
     
     
     return newImage ;
@@ -138,7 +138,7 @@
     newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    if(newImage == nil) NSLog(@"could not scale image");
+    if(newImage == nil) FNLOG(@"could not scale image");
     
     
     return newImage ;
@@ -177,7 +177,7 @@
     newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    if(newImage == nil) NSLog(@"could not scale image");
+    if(newImage == nil) FNLOG(@"could not scale image");
     
     
     return newImage ;
@@ -245,8 +245,8 @@
 {
     CGSize size = self.size;
     CGRect rect = CGRectMake(0.0f, 0.0f, size.width, size.height);
-//    NSLog(@"%@", [NSString stringWithFormat:@"width: %g",image.size.width]);
-//    NSLog(@"%@", [NSString stringWithFormat:@"height: %g",image.size.height]);
+//    FNLOG(@"%@", [NSString stringWithFormat:@"width: %g",image.size.width]);
+//    FNLOG(@"%@", [NSString stringWithFormat:@"height: %g",image.size.height]);
 
     // Create a mono/gray color space
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();

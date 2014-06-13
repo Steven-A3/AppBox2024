@@ -67,7 +67,7 @@
     UIImage *thumbImage = self.currentThumbImage;
     CGFloat distance = rect.size.width / (self.maximumValue - self.minimumValue);
     
-//    NSLog(@"%s %@ / %@ / %f",__FUNCTION__,NSStringFromCGRect(bounds),NSStringFromCGRect(rect),value);
+//    FNLOG(@"%s %@ / %@ / %f",__FUNCTION__,NSStringFromCGRect(bounds),NSStringFromCGRect(rect),value);
     return CGRectMake( rect.origin.x + ((value-self.minimumValue) * distance) - thumbImage.size.width * 0.5 , rect.origin.y + rect.size.height*0.5 - thumbImage.size.height*0.5, thumbImage.size.width, thumbImage.size.height);
 }
 

@@ -805,11 +805,11 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 //}
 
 //- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser actionButtonPressedForPhotoAtIndex:(NSUInteger)index {
-//    NSLog(@"ACTION!");
+//    FNLOG(@"ACTION!");
 //}
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
-    //  NSLog(@"Did start viewing photo at index %lu", (unsigned long)index);
+    //  FNLOG(@"Did start viewing photo at index %lu", (unsigned long)index);
 }
 
 #pragma mark - Load Assets

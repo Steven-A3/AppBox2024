@@ -614,7 +614,7 @@
     // 포스퀘어에 해당 지점을 등록하고,
     [Foursquare2 venueAddWithName:self.searchText address:[addressDict objectForKey:(NSString*)kABPersonAddressStreetKey] crossStreet:nil city:[addressDict objectForKey:(NSString*)kABPersonAddressCityKey] state:[addressDict objectForKey:(NSString*)kABPersonAddressStateKey] zip:nil phone:nil twitter:nil description:nil latitude:@(_mapView.userLocation.coordinate.latitude) longitude:@(_mapView.userLocation.coordinate.longitude) primaryCategoryId:nil callback:^(BOOL success, id result) {
         // 등록화면으로 이동
-        //        NSLog(@"%s %@",__FUNCTION__,result);
+        //        FNLOG(@"%s %@",__FUNCTION__,result);
         if ( success ) {
             FSVenue *venue = [[FSVenue alloc] init];
             venue.name = self.searchText;

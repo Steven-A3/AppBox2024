@@ -643,7 +643,7 @@
         }
         
     } else if (_calcType == CALC_TYPE_ADD) {
-        NSLog(@"_calcType == CALC_TYPE_ADD 결과출력.");
+        FNLOG(@"_calcType == CALC_TYPE_ADD 결과출력.");
     }
 }
 

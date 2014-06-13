@@ -464,7 +464,7 @@
 - (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromSubView:(UIView *)subView {
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
     [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-        NSLog(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+        FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
     }];
     
     [activityController setValue:@"My Subject Text" forKey:@"subject"];

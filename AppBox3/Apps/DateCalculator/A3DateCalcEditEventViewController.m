@@ -73,7 +73,7 @@
 
 - (void)switchButtonAction:(id)sender
 {
-    NSLog(@"%@", sender);
+    FNLOG(@"%@", sender);
 }
 
 - (void)accessoryButtonTouchUp:(id)sender

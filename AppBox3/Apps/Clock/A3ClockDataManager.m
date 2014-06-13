@@ -401,7 +401,7 @@
 			[log appendString:[NSString stringWithFormat:@"%@\n", _weatherForecast]];
 			[log appendString:[NSString stringWithFormat:@"%@\n", _weatherCurrentCondition]];
 			[log appendString:[NSString stringWithFormat:@"%@\n", self.clockInfo.weatherAtmosphere]];
-			NSLog(@"%@", log);
+			FNLOG(@"%@", log);
 #endif
 
 			self.clockInfo.currentWeather.unit = [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;

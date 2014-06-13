@@ -1061,7 +1061,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
             NSDate *date2 = _loanDataA.calculationDate;
             
             if ([date1 compare:date2] == NSOrderedDescending) {
-                NSLog(@"date1 is later than date2");
+                FNLOG(@"date1 is later than date2");
                 _isComparisonMode = NO;
                 [self selectSegment].selectedSegmentIndex = 0;
             }

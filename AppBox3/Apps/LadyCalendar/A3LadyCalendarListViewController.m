@@ -212,7 +212,7 @@
     A3ColoredCircleView *circleView = (A3ColoredCircleView*)[cell viewWithTag:12];
 
     if( item ){
-        NSLog(@"%s %ld/%ld %@",__FUNCTION__, (long)indexPath.section, (long)indexPath.row,item);
+        FNLOG(@"%s %ld/%ld %@",__FUNCTION__, (long)indexPath.section, (long)indexPath.row,item);
         circleView.hidden = NO;
         textLabel.text = (IS_IPHONE ? [_dataManager stringFromDateOmittingYear:item.startDate] : [NSString stringWithFormat:@"%@ - %@", [_dataManager stringFromDateOmittingYear:item.startDate], [_dataManager stringFromDateOmittingYear:item.endDate]]);
 //        LadyCalendarPeriod *prevPeriod = [self previousPeriodFromIndexPath:indexPath];

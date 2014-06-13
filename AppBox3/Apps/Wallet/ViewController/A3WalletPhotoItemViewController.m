@@ -708,7 +708,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
                        completionHandler:^(NSArray *placemarks, NSError *error) {
                            
                            if (error) {
-                               NSLog(@"Geocode failed with error: %@", error);
+                               FNLOG(@"Geocode failed with error: %@", error);
                                return;
                            }
                            

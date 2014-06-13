@@ -780,7 +780,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 - (void)expandContentSizeForAddItem
 {
     UIEdgeInsets contentInset = self.tableView.contentInset;
-    NSLog(@"bottom : %f", contentInset.bottom);
+    FNLOG(@"bottom : %f", contentInset.bottom);
     contentInset.bottom = contentInset.bottom + 44.0;
     self.tableView.contentInset = contentInset;
 }

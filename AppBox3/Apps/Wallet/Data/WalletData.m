@@ -88,7 +88,7 @@ NSString *const WalletCategoryTypeVideo		= @"Video";
     NSError *error = NULL;
     CMTime time = CMTimeMake(1, 65);
     CGImageRef refImg = [generateImg copyCGImageAtTime:time actualTime:NULL error:&error];
-    NSLog(@"error==%@, Refimage==%@", error, refImg);
+    FNLOG(@"error==%@, Refimage==%@", error, refImg);
     
     UIImage *FrameImage= [[UIImage alloc] initWithCGImage:refImg];
     
