@@ -1285,10 +1285,10 @@ prev/next events</string>
             </objects>
             <point key="canvasLocation" x="4265" y="727"/>
         </scene>
-        <!--Translator Instruction View Controller-->
+        <!--Translator_fav Instruction View Controller-->
         <scene sceneID="1jB-ot-4RL">
             <objects>
-                <viewController storyboardIdentifier="Translator" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PtN-uy-WRH" userLabel="Translator Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Translator_fav" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PtN-uy-WRH" userLabel="Translator_fav Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="M1g-cE-8Oo"/>
                         <viewControllerLayoutGuide type="bottom" id="vyO-q4-DC7"/>
@@ -2269,6 +2269,129 @@ more holidays</string>
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1741" y="2986"/>
+        </scene>
+        <!--Translator Instruction View Controller-->
+        <scene sceneID="1hD-D6-IjY">
+            <objects>
+                <viewController storyboardIdentifier="Translator" useStoryboardIdentifierAsRestorationIdentifier="YES" id="dip-Xz-Mno" userLabel="Translator Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fFj-E3-d6R"/>
+                        <viewControllerLayoutGuide type="bottom" id="BRT-YJ-9a2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YDc-Cg-xGv">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="udR-mO-fnZ">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="uZk-Ey-lHf">
+                                <rect key="frame" x="709" y="119" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="bAZ-Ny-Gky"/>
+                                    <constraint firstAttribute="width" constant="42" id="fVA-Zp-anu"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="G47-fm-PRa">
+                                <rect key="frame" x="363" y="229" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="K0u-bU-Qkq"/>
+                                    <constraint firstAttribute="height" constant="42" id="jJz-fw-Rlq"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_down" translatesAutoresizingMaskIntoConstraints="NO" id="MjW-Ko-Sd2">
+                                <rect key="frame" x="363" y="932" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="SZd-8G-EjT"/>
+                                    <constraint firstAttribute="width" constant="42" id="unx-mz-2mf"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="SNR-T0-BaH">
+                                <rect key="frame" x="405" y="932" width="14" height="14"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="14" id="7uf-ln-fbH"/>
+                                    <constraint firstAttribute="height" constant="14" id="T1i-FO-KsO"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="699" translatesAutoresizingMaskIntoConstraints="NO" id="miJ-Sx-wfj">
+                                <rect key="frame" x="0.0" y="120" width="699" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">slide the language to the left,
+then tap Delete</string>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="768" translatesAutoresizingMaskIntoConstraints="NO" id="s0L-Sq-3OK">
+                                <rect key="frame" x="0.0" y="281" width="768" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">touch and hold a language,
+then drag it up or down</string>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to add a language" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="768" translatesAutoresizingMaskIntoConstraints="NO" id="DxY-hj-aOP">
+                                <rect key="frame" x="0.0" y="902" width="768" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="uZk-Ey-lHf" secondAttribute="trailing" constant="17" id="2ah-Cm-ZXN"/>
+                            <constraint firstItem="udR-mO-fnZ" firstAttribute="leading" secondItem="YDc-Cg-xGv" secondAttribute="leading" id="6Hp-G0-Chk"/>
+                            <constraint firstAttribute="centerX" secondItem="MjW-Ko-Sd2" secondAttribute="centerX" id="75c-aP-8We"/>
+                            <constraint firstAttribute="trailing" secondItem="s0L-Sq-3OK" secondAttribute="trailing" id="77j-KF-0UU"/>
+                            <constraint firstItem="uZk-Ey-lHf" firstAttribute="leading" secondItem="miJ-Sx-wfj" secondAttribute="trailing" constant="10" id="FQV-Zc-Yi6"/>
+                            <constraint firstItem="DxY-hj-aOP" firstAttribute="leading" secondItem="YDc-Cg-xGv" secondAttribute="leading" id="G35-Uz-vZb"/>
+                            <constraint firstItem="SNR-T0-BaH" firstAttribute="leading" secondItem="MjW-Ko-Sd2" secondAttribute="trailing" id="Qra-q6-Dk9"/>
+                            <constraint firstAttribute="trailing" secondItem="udR-mO-fnZ" secondAttribute="trailing" id="R8k-Qk-xoa"/>
+                            <constraint firstAttribute="trailing" secondItem="DxY-hj-aOP" secondAttribute="trailing" id="Rfz-XJ-Ly6"/>
+                            <constraint firstAttribute="bottom" secondItem="MjW-Ko-Sd2" secondAttribute="bottom" constant="50" id="T3o-ih-d8A"/>
+                            <constraint firstItem="uZk-Ey-lHf" firstAttribute="centerY" secondItem="miJ-Sx-wfj" secondAttribute="centerY" id="W85-mS-FOl"/>
+                            <constraint firstAttribute="bottom" secondItem="udR-mO-fnZ" secondAttribute="bottom" id="efM-Xz-2iO"/>
+                            <constraint firstItem="s0L-Sq-3OK" firstAttribute="leading" secondItem="YDc-Cg-xGv" secondAttribute="leading" id="fI0-hz-DQa"/>
+                            <constraint firstItem="udR-mO-fnZ" firstAttribute="top" secondItem="YDc-Cg-xGv" secondAttribute="top" id="guy-Z5-cRP"/>
+                            <constraint firstItem="uZk-Ey-lHf" firstAttribute="top" secondItem="YDc-Cg-xGv" secondAttribute="top" constant="119" id="jGY-Or-4Cd"/>
+                            <constraint firstItem="G47-fm-PRa" firstAttribute="top" secondItem="YDc-Cg-xGv" secondAttribute="top" constant="229" id="jdP-7m-fe8"/>
+                            <constraint firstItem="s0L-Sq-3OK" firstAttribute="top" secondItem="G47-fm-PRa" secondAttribute="bottom" constant="10" id="kfb-rL-WoC"/>
+                            <constraint firstItem="MjW-Ko-Sd2" firstAttribute="top" secondItem="DxY-hj-aOP" secondAttribute="bottom" constant="10" id="mHu-Qm-zVV"/>
+                            <constraint firstAttribute="centerX" secondItem="G47-fm-PRa" secondAttribute="centerX" id="n8S-J1-8Z7"/>
+                            <constraint firstItem="SNR-T0-BaH" firstAttribute="top" secondItem="MjW-Ko-Sd2" secondAttribute="top" id="sh6-nu-9wu"/>
+                            <constraint firstItem="miJ-Sx-wfj" firstAttribute="leading" secondItem="YDc-Cg-xGv" secondAttribute="leading" id="xud-Ig-Zoy"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="N8o-Nf-fvf" appends="YES" id="dyh-AT-eXv"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="uZk-Ey-lHf" id="hMR-67-kFS"/>
+                        <outletCollection property="childImageViews" destination="SNR-T0-BaH" id="dxL-b8-V3M"/>
+                        <outletCollection property="childImageViews" destination="G47-fm-PRa" id="E64-qY-LlT"/>
+                        <outletCollection property="childImageViews" destination="MjW-Ko-Sd2" id="aY2-QW-nqx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w5g-Q7-hyi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="N8o-Nf-fvf">
+                    <connections>
+                        <action selector="viewTapped:" destination="dip-Xz-Mno" id="hQJ-A9-hzu"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="3553" y="-433"/>
         </scene>
     </scenes>
     <resources>

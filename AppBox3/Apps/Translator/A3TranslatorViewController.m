@@ -140,6 +140,10 @@
 
 - (void)showInstructionView
 {
+    if (_segmentedControl.selectedSegmentIndex != 0) {
+        return;
+    }
+    
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Translator"];
     self.instructionViewController.delegate = self;
