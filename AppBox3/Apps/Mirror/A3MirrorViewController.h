@@ -12,11 +12,10 @@
 #import <GLKit/GLKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import <CoreImage/CoreImage.h>
-#import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "MWPhotoBrowser.h"
 
-enum A3MirrorFilterType {
+typedef NS_ENUM(NSUInteger, A3MirrorFilterType) {
     A3MirrorMonoFilter= 0,
     A3MirrorTonalFilter,
     A3MirrorNoirFilter,
@@ -27,6 +26,7 @@ enum A3MirrorFilterType {
     A3MirrorTransferFilter,
     A3MirrorInstantFilter,
 };
+
 @interface A3MirrorViewController : UIViewController <AVCaptureVideoDataOutputSampleBufferDelegate,MWPhotoBrowserDelegate, GLKViewDelegate, UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UIToolbar *topBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomBar;
@@ -43,10 +43,6 @@ enum A3MirrorFilterType {
 - (IBAction)loadCameraRoll:(id)sender;
 - (IBAction)ColorButton:(id)sender;
 
-
-
-
 @property (weak, nonatomic) IBOutlet UIView *viewOutlet;
-
 
 @end

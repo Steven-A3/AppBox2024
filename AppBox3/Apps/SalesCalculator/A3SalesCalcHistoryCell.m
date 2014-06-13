@@ -122,7 +122,7 @@
     
     NSArray *strings;
     strings = @[[nFormatter stringFromNumber:savedAmount],
-                @" saved of ",
+			NSLocalizedString(@" saved of ", @" saved of "),
                 [nFormatter stringFromNumber:originalPriceWithTax]];
     _resultPriceLabel.text = [strings componentsJoinedByString:@""];
     NSMutableAttributedString *savedPriceAttribute = [[NSMutableAttributedString alloc] initWithAttributedString:_resultPriceLabel.attributedText];

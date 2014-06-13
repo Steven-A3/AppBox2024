@@ -10,6 +10,18 @@
 #import "SalesCalcHistory.h"
 #import "A3SalesCalcPreferences.h"
 
+static NSString *const A3SalesCalcDataKeyHistoryDate = @"historyDate";
+static NSString *const A3SalesCalcDataKeyShownPriceType = @"shownPriceType";
+static NSString *const A3SalesCalcDataKeyPrice = @"price";
+static NSString *const A3SalesCalcDataKeyPriceType = @"priceType";
+static NSString *const A3SalesCalcDataKeyDiscount = @"discount";
+static NSString *const A3SalesCalcDataKeyDiscountType = @"discountType";
+static NSString *const A3SalesCalcDataKeyAdditionalOff = @"additionalOff";
+static NSString *const A3SalesCalcDataKeyAdditionalOffType = @"additionalOffType";
+static NSString *const A3SalesCalcDataKeyTax = @"tax";
+static NSString *const A3SalesCalcDataKeyTaxType = @"taxType";
+static NSString *const A3SalesCalcDataKeyNotes = @"notes";
+
 @implementation A3SalesCalcData
 
 -(id)init{
@@ -31,17 +43,17 @@
 {
     if (self = [super init])
     {
-        _historyDate = [aDecoder decodeObjectForKey:@"historyDate"];
-        _shownPriceType = [aDecoder decodeIntegerForKey:@"shownPriceType"];
-        _price = [aDecoder decodeObjectForKey:@"price"];
-        _priceType = [aDecoder decodeIntegerForKey:@"priceType"];
-        _discount = [aDecoder decodeObjectForKey:@"discount"];
-        _discountType = [aDecoder decodeIntegerForKey:@"_discountType"];
-        _additionalOff = [aDecoder decodeObjectForKey:@"additionalOff"];
-        _additionalOffType = [aDecoder decodeIntegerForKey:@"additionalOffType"];
-        _tax = [aDecoder decodeObjectForKey:@"tax"];
-        _taxType = [aDecoder decodeIntegerForKey:@"taxType"];
-        _notes = [aDecoder decodeObjectForKey:@"notes"];
+        _historyDate = [aDecoder decodeObjectForKey:A3SalesCalcDataKeyHistoryDate];
+        _shownPriceType = (A3SalesCalcShowPriceType) [aDecoder decodeIntegerForKey:A3SalesCalcDataKeyShownPriceType];
+        _price = [aDecoder decodeObjectForKey:A3SalesCalcDataKeyPrice];
+        _priceType = (A3TableElementValueType) [aDecoder decodeIntegerForKey:A3SalesCalcDataKeyPriceType];
+        _discount = [aDecoder decodeObjectForKey:A3SalesCalcDataKeyDiscount];
+        _discountType = (A3TableElementValueType) [aDecoder decodeIntegerForKey:A3SalesCalcDataKeyDiscountType];
+        _additionalOff = [aDecoder decodeObjectForKey:A3SalesCalcDataKeyAdditionalOff];
+        _additionalOffType = (A3TableElementValueType) [aDecoder decodeIntegerForKey:A3SalesCalcDataKeyAdditionalOffType];
+        _tax = [aDecoder decodeObjectForKey:A3SalesCalcDataKeyTax];
+        _taxType = (A3TableElementValueType) [aDecoder decodeIntegerForKey:A3SalesCalcDataKeyTaxType];
+        _notes = [aDecoder decodeObjectForKey:A3SalesCalcDataKeyNotes];
     }
     
     return self;
@@ -49,17 +61,17 @@
 
 -(void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:_historyDate forKey:@"historyDate"];
-    [aCoder encodeInteger:_shownPriceType forKey:@"shownPriceType"];
-    [aCoder encodeObject:_price forKey:@"price"];
-    [aCoder encodeInteger:_priceType forKey:@"priceType"];
-    [aCoder encodeObject:_discount forKey:@"discount"];
-    [aCoder encodeInteger:_discountType forKey:@"_discountType"];
-    [aCoder encodeObject:_additionalOff forKey:@"additionalOff"];
-    [aCoder encodeInteger:_additionalOffType forKey:@"additionalOffType"];
-    [aCoder encodeObject:_tax forKey:@"tax"];
-    [aCoder encodeInteger:_taxType forKey:@"taxType"];
-    [aCoder encodeObject:_notes forKey:@"notes"];
+    [aCoder encodeObject:_historyDate forKey:A3SalesCalcDataKeyHistoryDate];
+    [aCoder encodeInteger:_shownPriceType forKey:A3SalesCalcDataKeyShownPriceType];
+    [aCoder encodeObject:_price forKey:A3SalesCalcDataKeyPrice];
+    [aCoder encodeInteger:_priceType forKey:A3SalesCalcDataKeyPriceType];
+    [aCoder encodeObject:_discount forKey:A3SalesCalcDataKeyDiscount];
+    [aCoder encodeInteger:_discountType forKey:A3SalesCalcDataKeyDiscountType];
+    [aCoder encodeObject:_additionalOff forKey:A3SalesCalcDataKeyAdditionalOff];
+    [aCoder encodeInteger:_additionalOffType forKey:A3SalesCalcDataKeyAdditionalOffType];
+    [aCoder encodeObject:_tax forKey:A3SalesCalcDataKeyTax];
+    [aCoder encodeInteger:_taxType forKey:A3SalesCalcDataKeyTaxType];
+    [aCoder encodeObject:_notes forKey:A3SalesCalcDataKeyNotes];
 }
 
 -(BOOL)saveData {
@@ -132,15 +144,15 @@
     A3SalesCalcData *data = [A3SalesCalcData new];
     data.historyDate = history.historyDate;
     data.price = history.price;
-    data.priceType = history.priceType.integerValue;
+    data.priceType = (A3TableElementValueType) history.priceType.integerValue;
     data.discount = history.discount;
-    data.discountType = history.discountType.integerValue;
+    data.discountType = (A3TableElementValueType) history.discountType.integerValue;
     data.additionalOff = history.additionalOff;
-    data.additionalOffType = history.additionalOffType.integerValue;
+    data.additionalOffType = (A3TableElementValueType) history.additionalOffType.integerValue;
     data.tax = history.tax;
-    data.taxType = history.taxType.integerValue;
+    data.taxType = (A3TableElementValueType) history.taxType.integerValue;
     data.notes = history.notes;
-    data.shownPriceType = history.shownPriceType.unsignedIntegerValue;
+    data.shownPriceType = (A3SalesCalcShowPriceType) history.shownPriceType.unsignedIntegerValue;
 
     return data;
 }

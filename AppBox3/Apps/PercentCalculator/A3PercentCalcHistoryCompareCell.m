@@ -101,7 +101,7 @@
     _ALabel.backgroundColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
     _ALabel.textColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0];
     _ALabel.textAlignment = NSTextAlignmentCenter;
-    _ALabel.text = @"A";
+    _ALabel.text = NSLocalizedString(@"Percent_Calc_SliderMarkLabel_for_A", @"A");
     _BLabel.layer.cornerRadius = _BLabel.bounds.size.width / 2.0;
     _BLabel.layer.masksToBounds = YES;
     _BLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
@@ -109,18 +109,13 @@
     _BLabel.backgroundColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
     _BLabel.textColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0];
     _BLabel.textAlignment = NSTextAlignmentCenter;
-    _BLabel.text = @"B";
+    _BLabel.text = NSLocalizedString(@"Percent_Calc_SliderMarkLabel_for_B", @"B");
 
     _dateLabel.textColor = COLOR_HISTORYCELL_DATE;
     _factorALabel.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
     _factorBLabel.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
     
     _dateLabel.font = [UIFont systemFontOfSize:12];
-//    _factorALabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-//    _factorBLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-//    _factorALabel.adjustsFontSizeToFitWidth = YES;
-//    _factorBLabel.adjustsFontSizeToFitWidth = YES;
-    
 }
 
 @end

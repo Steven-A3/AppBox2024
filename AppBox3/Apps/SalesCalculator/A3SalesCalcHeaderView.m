@@ -347,11 +347,11 @@
         if (resultData.shownPriceType == ShowPriceType_Origin) {
             salePrice = [A3SalesCalcCalculator salePriceWithoutTaxForCalcData:resultData];
             salePriceTax = [A3SalesCalcCalculator salePriceTaxForCalcData:resultData];
-            strings = @[[_currencyFormatter stringFromNumber:@([salePrice doubleValue] + [salePriceTax doubleValue])], IS_IPAD ? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
+            strings = @[[_currencyFormatter stringFromNumber:@([salePrice doubleValue] + [salePriceTax doubleValue])], IS_IPAD ? NSLocalizedString(@"  Sale Price with Tax", @"  Sale Price with Tax") : NSLocalizedString(@"  Sale Price w/Tax", @"  Sale Price w/Tax")];
         }
         else if (resultData.shownPriceType == ShowPriceType_SalePriceWithTax) {
             salePrice = resultData.price;
-            strings = @[[_currencyFormatter stringFromNumber:@([salePrice doubleValue])], IS_IPAD? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
+            strings = @[[_currencyFormatter stringFromNumber:@([salePrice doubleValue])], IS_IPAD? NSLocalizedString(@"  Sale Price with Tax", @"  Sale Price with Tax") : NSLocalizedString(@"  Sale Price w/Tax", @"  Sale Price w/Tax")];
         }
         
         _detailInfoButton.hidden = NO;
@@ -366,15 +366,15 @@
         // 세금 없는 경우
         if (resultData.shownPriceType == ShowPriceType_Origin) {
             salePrice = [A3SalesCalcCalculator salePriceWithoutTaxForCalcData:resultData];
-            strings = @[[_currencyFormatter stringFromNumber:salePrice], @"  Sale Price"];
+            strings = @[[_currencyFormatter stringFromNumber:salePrice], NSLocalizedString(@"  Sale Price", @"  Sale Price")];
         }
         else if (resultData.shownPriceType == ShowPriceType_SalePriceWithTax) {
             salePrice = resultData.price;
             if (!resultData.tax || [resultData.tax isEqualToNumber:@0]) {
-                strings = @[[_currencyFormatter stringFromNumber:salePrice], @"  Sale Price"];
+                strings = @[[_currencyFormatter stringFromNumber:salePrice], NSLocalizedString(@"  Sale Price", @"  Sale Price")];
             }
             else {
-                strings = @[[_currencyFormatter stringFromNumber:salePrice], IS_IPAD? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
+                strings = @[[_currencyFormatter stringFromNumber:salePrice], IS_IPAD? NSLocalizedString(@"  Sale Price with Tax", @"  Sale Price with Tax") : NSLocalizedString(@"  Sale Price w/Tax", @"  Sale Price w/Tax")];
             }
         }
         
@@ -419,7 +419,7 @@
     originalPriceWithTax = [A3SalesCalcCalculator originalPriceWithTax:resultData];
     savedTotalAmount = [A3SalesCalcCalculator savedTotalAmountForCalcData:resultData];
 
-    strings = @[[_currencyFormatter stringFromNumber:savedTotalAmount], @" saved of ", [_currencyFormatter stringFromNumber:originalPriceWithTax]];
+    strings = @[[_currencyFormatter stringFromNumber:savedTotalAmount], NSLocalizedString(@" saved of ", @" saved of "), [_currencyFormatter stringFromNumber:originalPriceWithTax]];
     _savedPricePrintLabel.text = [strings componentsJoinedByString:@""];
     
     if (IS_IPHONE) {

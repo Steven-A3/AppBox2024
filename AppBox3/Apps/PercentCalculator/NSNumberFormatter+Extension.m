@@ -6,9 +6,10 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "NSNumberFormatter+Extention.h"
+#import "NSNumberFormatter+Extension.h"
 
-@implementation NSNumberFormatter (Extention)
+@implementation NSNumberFormatter (Extension)
+
 +(NSString *)exponentStringFromNumber:(NSNumber *)aNumber {
     NSNumberFormatter * formatter = [NSNumberFormatter new];
     

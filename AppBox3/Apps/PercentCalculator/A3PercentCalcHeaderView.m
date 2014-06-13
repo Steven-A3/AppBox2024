@@ -11,7 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "PercentCalcHistory.h"
 #import "A3DefaultColorDefines.h"
-#import "NSNumberFormatter+Extention.h"
+#import "NSNumberFormatter+Extension.h"
 
 #define kX1Tag  1
 #define kX2Tag  2
@@ -89,7 +89,7 @@
     _slider1AMarkLabel.layer.masksToBounds = YES;
     _slider1AMarkLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
     _slider1AMarkLabel.adjustsFontSizeToFitWidth = NO;
-    _slider1AMarkLabel.text = @"A";
+    _slider1AMarkLabel.text = NSLocalizedString(@"Percent_Calc_SliderMarkLabel_for_A", @"A");
     _slider1AMarkLabel.textColor = [UIColor whiteColor];
     _slider1AMarkLabel.textAlignment = NSTextAlignmentCenter;
     [_slider1AMarkLabel setBackgroundColor:[UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]];
@@ -100,7 +100,7 @@
     _slider2BMarkLabel.layer.masksToBounds = YES;
     _slider2BMarkLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
     _slider2BMarkLabel.adjustsFontSizeToFitWidth = NO;
-    _slider2BMarkLabel.text = @"B";
+    _slider2BMarkLabel.text = NSLocalizedString(@"Percent_Calc_SliderMarkLabel_for_B", @"B");
     _slider2BMarkLabel.textColor = [UIColor whiteColor];
     _slider2BMarkLabel.textAlignment = NSTextAlignmentCenter;
     [_slider2BMarkLabel setBackgroundColor:[UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]];
@@ -138,7 +138,7 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    NSLog(@"h0");
+    FNLOG(@"h0");
     _slider1AMarkLabel.hidden = YES;
     _slider2BMarkLabel.hidden = YES;
     if (IS_IPHONE) {
@@ -154,10 +154,10 @@
         [self adjustMeterViews];
     }
     
-    NSLog(@"headerView: %ld", (long)_calcType);
-    NSLog(@"h1");
+    FNLOG(@"headerView: %ld", (long)_calcType);
+    FNLOG(@"h1");
     [self setupLayoutForPercentCalcType:_calcType];
-    NSLog(@"h2");
+    FNLOG(@"h2");
     [self adjustOperatorsFontSize];
 
     [super layoutSubviews];
@@ -443,7 +443,6 @@
                         
                         break;
                     }
-                    
                     
                     aLabel.text = [NSString stringWithFormat:@"%@%%", [NSNumberFormatter exponentStringFromNumber:@(rNumber.doubleValue)]];
                     

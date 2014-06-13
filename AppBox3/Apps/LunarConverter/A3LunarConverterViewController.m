@@ -66,7 +66,7 @@
 	[self leftBarButtonAppsButton];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareButtonAction:)];
 
-	self.title = @"Lunar Converter";
+	self.title = NSLocalizedString(@"Lunar Converter", @"Lunar Converter");
 	_pageControl.hidden = YES;
 	[_pageControl makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
@@ -217,7 +217,7 @@
 	A3LunarConverterCellView *cellView = (A3LunarConverterCellView*)[pageView viewWithTag:100];
 	topCell = cellView;
 	cellView.dateLabel.textColor = [A3AppDelegate instance].themeColor;
-	cellView.descriptionLabel.text = @"Solar";
+	cellView.descriptionLabel.text = NSLocalizedString(@"Solar", @"Solar");
 
 	cellView = (A3LunarConverterCellView*)[pageView viewWithTag:101];
 	bottomCell = cellView;
@@ -230,7 +230,7 @@
 	[cellView setActionButton:addToDaysCounterButton];
 	[self.addToDaysCounterButtons addObject:addToDaysCounterButton];
 
-	cellView.descriptionLabel.text = @"Lunar";
+	cellView.descriptionLabel.text = NSLocalizedString(@"Lunar", @"Lunar");
 
 	middleCell = [pageView viewWithTag:102];
 
@@ -564,8 +564,8 @@
 - (NSAttributedString*)descriptionStringFromDateComponents:(NSDateComponents *)dateComponents isLunar:(BOOL)isLunar isLeapMonth:(BOOL)isLeapMonth
 {
     NSString *retStr = @"";
-    NSString *leapMonthStr = ( isLeapMonth ? @"Leap Month" : @"" );
-    NSString *typeStr = (isLunar ? @"Lunar" : @"Solar");
+    NSString *leapMonthStr = ( isLeapMonth ? NSLocalizedString(@"Leap Month", @"Leap Month") : @"" );
+    NSString *typeStr = (isLunar ? NSLocalizedString(@"Lunar", @"Lunar") : NSLocalizedString(@"Solar", @"Solar"));
     NSString *yearStr = @"";
     NSString *monthStr = @"";
     NSString *dayStr = @"";
@@ -639,7 +639,7 @@
     }
     else{
         cellView.dateLabel.text = @"";
-        cellView.descriptionLabel.text = (_isLunarInput ? @"Lunar" : @"Solar");
+        cellView.descriptionLabel.text = (_isLunarInput ? NSLocalizedString(@"Lunar", @"Lunar") : NSLocalizedString(@"Solar", @"Solar"));
     }
 
     cellView = (A3LunarConverterCellView*)[pageView viewWithTag:101];
@@ -653,17 +653,17 @@
     }
     else{
         if( [_inputDateComponents year] < 1900 || [_inputDateComponents year] > 2043)
-            cellView.dateLabel.text = @"1900년부터 2043년까지만 지원합니다.";
+            cellView.dateLabel.text = NSLocalizedString(@"1900년부터 2043년까지만 지원합니다.", @"1900년부터 2043년까지만 지원합니다.");
         if( _isLunarInput ){
             NSInteger monthDay = [NSDate lastMonthDayForLunarYear:[_inputDateComponents year] month:[_inputDateComponents month] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
             if( monthDay < 0 ){
-                cellView.dateLabel.text = @"1900년부터 2043년까지만 지원합니다.";
+                cellView.dateLabel.text = NSLocalizedString(@"1900년부터 2043년까지만 지원합니다.", @"1900년부터 2043년까지만 지원합니다.");
             }
             else if( [_inputDateComponents day] > monthDay ){
-                cellView.dateLabel.text = [NSString stringWithFormat:@"%ld년 %ld월은 %ld일까지만 있습니다.", (long)[_inputDateComponents year], (long)[_inputDateComponents month], (long)monthDay];
+                cellView.dateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%ld년 %ld월은 %ld일까지만 있습니다.", @"%ld년 %ld월은 %ld일까지만 있습니다."), (long) [_inputDateComponents year], (long) [_inputDateComponents month], (long) monthDay];
             }
         }
-        cellView.descriptionLabel.text = (_isLunarInput ? @"Solar" : @"Lunar");
+        cellView.descriptionLabel.text = (_isLunarInput ? NSLocalizedString(@"Solar", @"Solar") : NSLocalizedString(@"Lunar", @"Lunar"));
     }
 }
 
@@ -767,7 +767,7 @@
 #pragma mark - action method
 - (void)addToDaysCounterAction:(id)sender
 {
-    NSLog(@"%s",__FUNCTION__);
+    FNLOG();
 }
 
 - (void)shareButtonAction:(UIBarButtonItem *)sender
@@ -785,7 +785,7 @@
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		return @"Lunar Converter using AppBox Pro";
+		return NSLocalizedString(@"Lunar Converter using AppBox Pro", @"Lunar Converter using AppBox Pro");
 	}
     
 	return @"";
@@ -797,9 +797,9 @@
     
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
         [self.dateFormatter setDateStyle:NSDateFormatterFullStyle];
-        [txt appendString:@"<html><body>I'd like to share a conversion with you.<br/><br/>"];
+		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a conversion with you.<br/><br/>", @"<html><body>I'd like to share a conversion with you.<br/><br/>")];
         [txt appendString:[self shareString]];
-		[txt appendString:@"<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>"];
+		[txt appendString:NSLocalizedString(@"LunarConverter_share_text_html_body", nil)];
 	}
 	else {
         if ([NSDate isFullStyleLocale]) {
@@ -817,7 +817,7 @@
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-	return @"Share Lunar Converter Data";
+	return NSLocalizedString(@"Share Lunar Converter Data", @"Share Lunar Converter Data");
 }
 
 - (NSString *)shareString
@@ -838,8 +838,8 @@
                                                       korean:[A3DateHelper isCurrentLocaleIsKorea]
                                              resultLeapMonth:&resultLeapMonth];
         NSString *prefix = [self stringOfLunarPrefixForDateComponents:_inputDateComponents leapMonth:NO];
-        [txt appendFormat:@"Lunar(%@) %@", prefix, [_dateFormatter stringFromDateComponents:_inputDateComponents]];
-        [txt appendFormat:@" = Solar %@", [_dateFormatter stringFromDateComponents:solarFromLunarComp]];
+		[txt appendFormat:NSLocalizedString(@"Lunar(%@) %@", @"Lunar(%@) %@"), prefix, [_dateFormatter stringFromDateComponents:_inputDateComponents]];
+		[txt appendFormat:NSLocalizedString(@" = Solar %@", @" = Solar %@"), [_dateFormatter stringFromDateComponents:solarFromLunarComp]];
         
         if (isInputLeapMonth) {
             NSDateComponents *solarFromLeapComp;
@@ -850,20 +850,20 @@
                                                 resultLeapMonth:&resultLeapMonth];
             NSString *prefix = [self stringOfLunarPrefixForDateComponents:_inputDateComponents leapMonth:NO];
             [txt appendString:@"<br/>"];
-            [txt appendFormat:@"Lunar(%@, Leap Month) %@", prefix, [_dateFormatter stringFromDateComponents:_inputDateComponents]];
-            [txt appendFormat:@" = Solar %@", [_dateFormatter stringFromDateComponents:solarFromLeapComp]];
+			[txt appendFormat:NSLocalizedString(@"Lunar(%@, Leap Month) %@", @"Lunar(%@, Leap Month) %@"), prefix, [_dateFormatter stringFromDateComponents:_inputDateComponents]];
+			[txt appendFormat:NSLocalizedString(@" = Solar %@", @" = Solar %@"), [_dateFormatter stringFromDateComponents:solarFromLeapComp]];
         }
     }
     else {
-        [txt appendFormat:@"Solar %@", [_dateFormatter stringFromDateComponents:_inputDateComponents]];
+		[txt appendFormat:NSLocalizedString(@"Solar %@", @"Solar %@"), [_dateFormatter stringFromDateComponents:_inputDateComponents]];
 
         if (isOutputLeapMonth) {
             NSString *prefix = [self stringOfLunarPrefixForDateComponents:_inputDateComponents leapMonth:YES];
-            [txt appendFormat:@" = Lunar(%@, Leap Month) %@", prefix, [_dateFormatter stringFromDateComponents:outputComponents]];
+			[txt appendFormat:NSLocalizedString(@" = Lunar(%@, Leap Month) %@", @" = Lunar(%@, Leap Month) %@"), prefix, [_dateFormatter stringFromDateComponents:outputComponents]];
         }
         else {
             NSString *prefix = [self stringOfLunarPrefixForDateComponents:_inputDateComponents leapMonth:NO];
-            [txt appendFormat:@" = Lunar(%@) %@", prefix, [_dateFormatter stringFromDateComponents:outputComponents]];
+			[txt appendFormat:NSLocalizedString(@" = Lunar(%@) %@", @" = Lunar(%@) %@"), prefix, [_dateFormatter stringFromDateComponents:outputComponents]];
         }
     }
 

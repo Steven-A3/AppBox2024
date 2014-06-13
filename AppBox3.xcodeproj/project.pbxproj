@@ -746,7 +746,7 @@
 		68E2A66218D0B1FC00E834D9 /* A3PercentCalcMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A63D18D0B1FC00E834D9 /* A3PercentCalcMainViewController.m */; };
 		68E2A66318D0B1FC00E834D9 /* A3PercentCalcResultLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A63F18D0B1FC00E834D9 /* A3PercentCalcResultLabelView.m */; };
 		68E2A66418D0B1FC00E834D9 /* A3PercentCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A64118D0B1FC00E834D9 /* A3PercentCalculator.m */; };
-		68E2A66518D0B1FC00E834D9 /* NSNumberFormatter+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A64318D0B1FC00E834D9 /* NSNumberFormatter+Extention.m */; };
+		68E2A66518D0B1FC00E834D9 /* NSNumberFormatter+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A64318D0B1FC00E834D9 /* NSNumberFormatter+Extension.m */; };
 		68E2A66618D0B1FC00E834D9 /* PercentCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A64518D0B1FC00E834D9 /* PercentCalcHistory.m */; };
 		68E2A6A018D0B22800E834D9 /* A3SalesCalcCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A66918D0B22800E834D9 /* A3SalesCalcCalculator.m */; };
 		68E2A6A118D0B22800E834D9 /* A3SalesCalcData.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A66B18D0B22800E834D9 /* A3SalesCalcData.m */; };
@@ -2237,8 +2237,8 @@
 		68E2A63F18D0B1FC00E834D9 /* A3PercentCalcResultLabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3PercentCalcResultLabelView.m; sourceTree = "<group>"; };
 		68E2A64018D0B1FC00E834D9 /* A3PercentCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PercentCalculator.h; sourceTree = "<group>"; };
 		68E2A64118D0B1FC00E834D9 /* A3PercentCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3PercentCalculator.m; sourceTree = "<group>"; };
-		68E2A64218D0B1FC00E834D9 /* NSNumberFormatter+Extention.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+Extention.h"; sourceTree = "<group>"; };
-		68E2A64318D0B1FC00E834D9 /* NSNumberFormatter+Extention.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumberFormatter+Extention.m"; sourceTree = "<group>"; };
+		68E2A64218D0B1FC00E834D9 /* NSNumberFormatter+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+Extension.h"; sourceTree = "<group>"; };
+		68E2A64318D0B1FC00E834D9 /* NSNumberFormatter+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumberFormatter+Extension.m"; sourceTree = "<group>"; };
 		68E2A64418D0B1FC00E834D9 /* PercentCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PercentCalcHistory.h; sourceTree = "<group>"; };
 		68E2A64518D0B1FC00E834D9 /* PercentCalcHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PercentCalcHistory.m; sourceTree = "<group>"; };
 		68E2A66818D0B22800E834D9 /* A3SalesCalcCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SalesCalcCalculator.h; sourceTree = "<group>"; };
@@ -4799,8 +4799,8 @@
 				68E2A63F18D0B1FC00E834D9 /* A3PercentCalcResultLabelView.m */,
 				68E2A64018D0B1FC00E834D9 /* A3PercentCalculator.h */,
 				68E2A64118D0B1FC00E834D9 /* A3PercentCalculator.m */,
-				68E2A64218D0B1FC00E834D9 /* NSNumberFormatter+Extention.h */,
-				68E2A64318D0B1FC00E834D9 /* NSNumberFormatter+Extention.m */,
+				68E2A64218D0B1FC00E834D9 /* NSNumberFormatter+Extension.h */,
+				68E2A64318D0B1FC00E834D9 /* NSNumberFormatter+Extension.m */,
 				68E2A64418D0B1FC00E834D9 /* PercentCalcHistory.h */,
 				68E2A64518D0B1FC00E834D9 /* PercentCalcHistory.m */,
 			);
@@ -6205,7 +6205,7 @@
 				68B6A2E918CEC76D004084EF /* A3UnitPriceAddViewController.m in Sources */,
 				6831EBFB18619CC800BAF15B /* AppBox3.xcdatamodeld in Sources */,
 				6829685618503B2100B70E13 /* MagicalRecordStack.m in Sources */,
-				68E2A66518D0B1FC00E834D9 /* NSNumberFormatter+Extention.m in Sources */,
+				68E2A66518D0B1FC00E834D9 /* NSNumberFormatter+Extension.m in Sources */,
 				17D42AE1F680213C832FB44C /* A3CurrencyHistoryCell.m in Sources */,
 				680D639418CFF9D400938AD0 /* A3CalculatorButtonsViewController_iPad.m in Sources */,
 				17D421ED85AC76F0946457EA /* HolidayData+Country.m in Sources */,

@@ -63,7 +63,7 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Percent Calculator";
+    self.title = NSLocalizedString(@"Percent Calculator", @"Percent Calculator");
     
     [self leftBarButtonAppsButton];
     [self rightButtonHistoryButton];
@@ -164,7 +164,7 @@
 }
 
 -(void)contentSizeDidChange:(NSNotification *)notification {
-    NSLog(@"%@", notification);
+    FNLOG(@"%@", notification);
     [_headerView setNeedsLayout];
 }
 
@@ -193,11 +193,13 @@
     [self.tableView addSubview:_sectionBLabel];
 }
 
--(void)initHeaderView {
+static NSString *const A3PercentCalcSavedInputData = @"A3PercentCalcSavedInputData";
+
+- (void)initHeaderView {
     self.headerView = [[A3PercentCalcHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 157)];
     self.headerView.bottomLineView.backgroundColor = COLOR_TABLE_SEPARATOR;
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedInputData_PercentCalc"]) {
-        A3PercentCalcData *savedInputData = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"savedInputData_PercentCalc"]];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:A3PercentCalcSavedInputData]) {
+        A3PercentCalcData *savedInputData = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:A3PercentCalcSavedInputData]];
         
         if (savedInputData.dataType==PercentCalcType_5) {
             _factorX1 = savedInputData.values[ValueIdx_X1];
@@ -214,7 +216,7 @@
         self.headerView.calcType = self.calcType;
         self.headerView.factorValues.values = savedInputData.values;
         _formattedFactorValues = [savedInputData formattedStringValuesByCalcType];
-        NSLog(@"here???????");
+        FNLOG();
         self.headerView.factorValues = savedInputData;
         
     } else {
@@ -307,18 +309,20 @@
 
 #pragma mark -
 
+static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculationType";
+
 -(void)setCalcType:(PercentCalcType)calcType
 {
     if (self.headerView) {
         self.headerView.calcType = calcType;
     }
-    [[NSUserDefaults standardUserDefaults] setInteger:calcType forKey:@"calcType"];
+    [[NSUserDefaults standardUserDefaults] setInteger:calcType forKey:A3PercentCalcCalculationType];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 -(PercentCalcType)calcType
 {
-    PercentCalcType result = [[NSUserDefaults standardUserDefaults] integerForKey:@"calcType"];
+    PercentCalcType result = (PercentCalcType) [[NSUserDefaults standardUserDefaults] integerForKey:A3PercentCalcCalculationType];
     return result;
 }
 
@@ -469,7 +473,7 @@
     }
     
     
-    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:inputTextData] forKey:@"savedInputData_PercentCalc"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:inputTextData] forKey:A3PercentCalcSavedInputData];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -548,7 +552,7 @@
         
     }
     @catch (NSException *exception) {
-        NSLog(@"%@", exception);
+        FNLOG(@"%@", exception);
     }
     @finally {
     }
@@ -598,7 +602,7 @@
                 cell.leftSeparatorInset = 50.0;
             }
             _sectionALabel.hidden = NO;
-            _sectionALabel.text = @"A";
+            _sectionALabel.text = NSLocalizedString(@"A", @"A");
         }
         
     } else if (indexPath.row==1) {
@@ -625,9 +629,9 @@
     cell.accessoryType = UITableViewCellAccessoryNone;
     
     if (indexPath.row==0) {
-        NSLog(@"formattedFactorValues: %@", _formattedFactorValues);
+        FNLOG(@"formattedFactorValues: %@", _formattedFactorValues);
         if (_formattedFactorValues.count<4) {
-            NSLog(@"??");
+            FNLOG();
             return cell;
         }
         cell.textField.text = _formattedFactorValues[ValueIdx_X2];
@@ -653,7 +657,7 @@
                 cell.leftSeparatorInset = 50.0;
             }
             _sectionBLabel.hidden = NO;
-            _sectionBLabel.text = @"B";
+            _sectionBLabel.text = NSLocalizedString(@"B", @"B");
         }
     } else if (indexPath.row==1) {
         FNLOG(@"check");
@@ -823,16 +827,36 @@
         self.sectionTitles = @[@"", @"", @"", @""];
         self.sections = @[
                           @[],
-                          @[ @"X is Y% of What", @"What is X% of Y", @"X is What % of Y", @"% Change from X to Y", @"Compare % Change from X to Y" ],
-                          @[ @"X", @"Y" ],
-                          @[ @"X", @"Y" ]
+                          @[
+								  NSLocalizedString(@"X is Y% of What", @"X is Y% of What"),
+								  NSLocalizedString(@"What is X% of Y", @"What is X% of Y"),
+								  NSLocalizedString(@"X is What % of Y", @"X is What % of Y"),
+								  NSLocalizedString(@"% Change from X to Y", @"% Change from X to Y"),
+								  NSLocalizedString(@"Compare % Change from X to Y", @"Compare % Change from X to Y")],
+                          @[
+								  @"X",
+								  @"Y"
+						  ],
+                          @[
+								  @"X",
+								  @"Y"
+						  ]
                           ];
     } else {
         self.sectionTitles = @[@"", @"", @""];
         self.sections = @[
                           @[],
-                          @[ @"X is Y% of What", @"What is X% of Y", @"X is What % of Y", @"% Change from X to Y", @"Compare % Change from X to Y" ],
-                          @[ @"X", @"Y" ]
+                          @[
+								  NSLocalizedString(@"X is Y% of What", @"X is Y% of What"),
+								  NSLocalizedString(@"What is X% of Y", @"What is X% of Y"),
+								  NSLocalizedString(@"X is What % of Y", @"X is What % of Y"),
+								  NSLocalizedString(@"% Change from X to Y", @"% Change from X to Y"),
+								  NSLocalizedString(@"Compare % Change from X to Y", @"Compare % Change from X to Y")
+						  ],
+                          @[
+								  @"X",
+								  @"Y"
+						  ]
                           ];
     }
 }
@@ -927,7 +951,7 @@
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     //NSLog(@"scrollViewDidEndDragging: %@, decelerate: %d", NSStringFromUIEdgeInsets(scrollView.contentInset), decelerate);
-    NSLog(@"scrollViewDidEndDragging: %@, decelerate: %d", NSStringFromCGPoint(scrollView.contentOffset), decelerate);
+    FNLOG(@"scrollViewDidEndDragging: %@, decelerate: %d", NSStringFromCGPoint(scrollView.contentOffset), decelerate);
 }
 
 #pragma mark - UITextField Delegate
@@ -1119,7 +1143,7 @@
         factorData.dataType = self.calcType;
         factorData.values = @[_factorX1, _factorY1, _factorX2, _factorY2];
         _formattedFactorValues = [factorData formattedStringValuesByCalcType];
-        NSLog(@"here??????????");
+        FNLOG();
         self.headerView.factorValues = factorData;
         [self saveInputTextData:factorData calculated:YES];
         
@@ -1132,7 +1156,7 @@
         factorData.dataType = self.calcType;
         factorData.values = @[_factorX1, _factorY1];
         _formattedFactorValues = [factorData formattedStringValuesByCalcType];
-        NSLog(@"here????");
+        FNLOG();
         self.headerView.factorValues = factorData;
         [self saveInputTextData:factorData calculated:YES];
     }
@@ -1389,7 +1413,7 @@
         _factorY2 = [history.values objectAtIndex:ValueIdx_Y2];
     }
     
-    NSLog(@"here??????");
+    FNLOG();
     self.calcType = history.dataType;
     self.headerView.factorValues = history;
     

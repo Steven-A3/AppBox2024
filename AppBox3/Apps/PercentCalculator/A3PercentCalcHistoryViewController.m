@@ -44,9 +44,9 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
     [super viewDidLoad];
 
     
-    self.title = @"History";
+    self.title = NSLocalizedString(@"History", @"History");
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear") style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction)];
 
     if (IS_IPHONE) {
 		[self rightBarButtonDoneButton];
@@ -113,8 +113,8 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 {
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 															 delegate:self
-													cancelButtonTitle:@"Cancel"
-											   destructiveButtonTitle:@"Clear History"
+													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+											   destructiveButtonTitle:NSLocalizedString(@"Clear History", @"Clear History")
 													otherButtonTitles:nil];
 	[actionSheet showInView:self.view];
 }
@@ -164,7 +164,7 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
     A3PercentCalcData *historyData = [NSKeyedUnarchiver unarchiveObjectWithData:aData.historyItem];
     NSArray *results = [A3PercentCalculator percentCalculateFor:historyData];
     if (results==nil) {
-        NSLog(@"no");
+        FNLOG(@"no");
         A3PercentCalcHistoryCompareCell *cell = [tableView dequeueReusableCellWithIdentifier:A3PercentCalcHistoryCompareCellID forIndexPath:indexPath];
         return cell;
     }

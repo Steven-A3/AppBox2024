@@ -7,7 +7,7 @@
 //
 
 #import "A3PercentCalcData.h"
-#import "NSNumberFormatter+Extention.h"
+#import "NSNumberFormatter+Extension.h"
 
 @implementation A3PercentCalcData
 
@@ -32,8 +32,8 @@
 
 -(NSArray *)formattedStringValuesByCalcType
 {
-    NSLog(@"formattedStringValuesByCalcType");
-    NSLog(@"%@", _values);
+    FNLOG(@"formattedStringValuesByCalcType");
+    FNLOG(@"%@", _values);
     NSMutableArray *result = [[NSMutableArray alloc] init];
     NSNumber *x1 = _values[ValueIdx_X1];
     NSNumber *y1 = _values[ValueIdx_Y1];
@@ -67,7 +67,7 @@
             break;
         case PercentCalcType_5:      // Compare % Change from X to Y:
         {
-            NSLog(@"formattedStringValuesByCalcType PercentCalcType_5");
+            FNLOG(@"formattedStringValuesByCalcType PercentCalcType_5");
             NSString *sX1 = [NSNumberFormatter exponentStringFromNumber:x1];
             NSString *sY1 = [NSNumberFormatter exponentStringFromNumber:y1];
             NSString *sX2 = [NSNumberFormatter exponentStringFromNumber:_values[ValueIdx_X2]];
@@ -77,7 +77,7 @@
             [result addObject:sY1];
             [result addObject:sX2];
             [result addObject:sY2];
-            NSLog(@"formattedStringValuesByCalcType PercentCalcType_5 End");
+            FNLOG(@"formattedStringValuesByCalcType PercentCalcType_5 End");
         }
             break;
             
@@ -85,7 +85,7 @@
             break;
     }
     
-    NSLog(@"formattedStringValuesByCalcType return");
+    FNLOG(@"formattedStringValuesByCalcType return");
     return result;
 }
 

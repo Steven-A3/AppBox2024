@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSNumberFormatter (Extention)
+@interface NSNumberFormatter (Extension)
 +(NSString *)exponentStringFromNumber:(NSNumber *)aNumber;
 +(NSString *)currencyStringExceptedSymbolFromNumber:(NSNumber *)aNumber;
 @end

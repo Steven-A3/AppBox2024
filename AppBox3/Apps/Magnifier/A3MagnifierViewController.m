@@ -9,17 +9,14 @@
 #import "A3MagnifierViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+MMDrawerController.h"
-#import "A3AppDelegate.h"
-#import "common.h"
-#import <CoreImage/CoreImage.h>
-#import <ImageIO/ImageIO.h>
-#import <AssertMacros.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "FrameRateCalculator.h"
 #import "A3InstructionViewController.h"
 
 static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCaptureStillImageIsCapturingStillImageContext";
 static const int MAX_ZOOM_FACTOR = 6;
+
+NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll";
 
 @interface A3MagnifierViewController () <A3InstructionViewControllerDelegate>
 {
@@ -40,7 +37,7 @@ static const int MAX_ZOOM_FACTOR = 6;
     BOOL                        bLosslessZoom;
     CGFloat                     beginGestureScale;
     CGPoint                     centerxy;
-    FrameRateCalculator *frameCaculator;
+    FrameRateCalculator *frameCalculator;
 }
 
 @property (nonatomic, strong) ALAssetsLibrary *assetLibrary;
@@ -58,7 +55,7 @@ static const int MAX_ZOOM_FACTOR = 6;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        frameCaculator = [[FrameRateCalculator alloc] init];
+        frameCalculator = [[FrameRateCalculator alloc] init];
     }
     return self;
 }
@@ -416,7 +413,7 @@ static const int MAX_ZOOM_FACTOR = 6;
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@ (%d)", message, (int)[error code]]
 															message:[error localizedDescription]
 														   delegate:nil
-												  cancelButtonTitle:@"Dismiss"
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 												  otherButtonTitles:nil];
 		[alertView show];
 	});
@@ -481,7 +478,7 @@ static const int MAX_ZOOM_FACTOR = 6;
 	[stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection
 												  completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
 													  if (error) {
-														  [self displayErrorOnMainQueue:error withMessage:@"Take picture failed"];
+														  [self displayErrorOnMainQueue:error withMessage:NSLocalizedString(@"Take picture failed.", @"Take picture failed.")];
 													  }
 													  else {
 														  // trivial simple JPEG case
@@ -511,7 +508,7 @@ static const int MAX_ZOOM_FACTOR = 6;
                                                           CGImageRef cgimg = [_ciContext createCGImage:ciSaveImg fromRect:[ciSaveImg extent]];
                                                           [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:cgimg metadata:[ciimg properties] completionBlock:^(NSURL *assetURL, NSError *error) {
 															  if (error) {
-																  [self displayErrorOnMainQueue:error withMessage:@"Save to camera roll failed"];
+																  [self displayErrorOnMainQueue:error withMessage:NSLocalizedString(@"Save to camera roll failed.", @"Save to camera roll failed.")];
 															  } else {
 																  [self setImageOnCameraRollButton:[UIImage imageWithCGImage:cgimg]];
 															  }
@@ -540,10 +537,14 @@ static const int MAX_ZOOM_FACTOR = 6;
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
     nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:nc animated:YES completion:^{
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"MagnifierFirstLoadCameraRoll"]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:A3MagnifierFirstLoadCameraRoll]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+																message:NSLocalizedString(@"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.", @"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.")
+															   delegate:nil
+													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+													  otherButtonTitles:nil];
             [alertView show];
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"MagnifierFirstLoadCameraRoll"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3MagnifierFirstLoadCameraRoll];
         }
     }];
 }
@@ -684,7 +685,7 @@ static const int MAX_ZOOM_FACTOR = 6;
 	[session commitConfiguration];
 	effectiveScale = 1.0;
     
-    [frameCaculator reset];
+    [frameCalculator reset];
 	[session startRunning];
 }
 
@@ -723,8 +724,8 @@ static const int MAX_ZOOM_FACTOR = 6;
     ciimg = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:CFBridgingRelease(attachments)];
 
     CMTime timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
-    [frameCaculator calculateFramerateAtTimestamp:timestamp];
-    //FNLOG(@"%f fps",frameCaculator.frameRate);
+    [frameCalculator calculateFramerateAtTimestamp:timestamp];
+    //FNLOG(@"%f fps",frameCalculator.frameRate);
 
     CGRect sourceExtent = ciimg.extent;
     

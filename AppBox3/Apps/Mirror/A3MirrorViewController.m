@@ -9,7 +9,6 @@
 #import "A3MirrorViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+MMDrawerController.h"
-#import "A3AppDelegate.h"
 #import "FrameRateCalculator.h"
 #import "A3InstructionViewController.h"
 
@@ -501,7 +500,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	[_captureSession stopRunning];
 
 	dispatch_sync(_captureSessionQueue, ^{
-		NSLog(@"waiting for capture session to end");
+		FNLOG(@"waiting for capture session to end");
 	});
 
 	[_videoDevice unlockForConfiguration];
@@ -525,7 +524,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 
 	CMTime timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
 	[frameCaculator calculateFramerateAtTimestamp:timestamp];
-	//FNLOG(@"%f fps",frameCaculator.frameRate);
+	//FNLOG(@"%f fps",frameCalculator.frameRate);
 	/*
 	CGRect sourceExtent = ciimg.extent;
 
@@ -899,113 +898,45 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	[self.view sendSubviewToBack:_videoPreviewViewInstantFilter];
 }
 - (void)createFilterViews {
-	GLKViewDrawableDepthFormat format = GLKViewDrawableDepthFormat24;
-
-	_videoPreviewViewMonoFilter = [[GLKView alloc] initWithFrame:self.view.bounds context:_eaglContext];
-	_videoPreviewViewMonoFilter.drawableDepthFormat = format;
-	_videoPreviewViewMonoFilter.delegate = self;
-	_videoPreviewViewMonoFilter.userInteractionEnabled = YES;
-
-	_videoPreviewViewTonalFilter = [[GLKView alloc] initWithFrame:self.view.bounds context:_eaglContext];
-	_videoPreviewViewTonalFilter.drawableDepthFormat = format;
-	_videoPreviewViewTonalFilter.delegate = self;
-	_videoPreviewViewTonalFilter.userInteractionEnabled = YES;
-
-	_videoPreviewViewNoirFilter = [[GLKView alloc] initWithFrame:self.view.bounds context:_eaglContext];
-	_videoPreviewViewNoirFilter.drawableDepthFormat = format;
-	_videoPreviewViewNoirFilter.delegate = self;
-	_videoPreviewViewNoirFilter.userInteractionEnabled = YES;
-
-	_videoPreviewViewFadeFilter = [[GLKView alloc] initWithFrame:self.view.bounds context:_eaglContext];
-	_videoPreviewViewFadeFilter.drawableDepthFormat = format;
-	_videoPreviewViewFadeFilter.delegate = self;
-	_videoPreviewViewFadeFilter.userInteractionEnabled = YES;
-
-	_videoPreviewViewChromeFilter = [[GLKView alloc] initWithFrame:self.view.bounds context:_eaglContext];
-	_videoPreviewViewChromeFilter.drawableDepthFormat = format;
-	_videoPreviewViewChromeFilter.delegate = self;
-	_videoPreviewViewChromeFilter.userInteractionEnabled = YES;
-
-	_videoPreviewViewProcessFilter = [[GLKView alloc] initWithFrame:self.view.bounds context:_eaglContext];
-	_videoPreviewViewProcessFilter.drawableDepthFormat = format;
-	_videoPreviewViewProcessFilter.delegate = self;
-	_videoPreviewViewProcessFilter.userInteractionEnabled = YES;
-
-	_videoPreviewViewTransferFilter = [[GLKView alloc] initWithFrame:self.view.bounds context:_eaglContext];
-	_videoPreviewViewTransferFilter.drawableDepthFormat = format;
-	_videoPreviewViewTransferFilter.delegate = self;
-	_videoPreviewViewTransferFilter.userInteractionEnabled = YES;
-
-	_videoPreviewViewInstantFilter = [[GLKView alloc] initWithFrame:self.view.bounds context:_eaglContext];
-	_videoPreviewViewInstantFilter.drawableDepthFormat = format;
-	_videoPreviewViewInstantFilter.delegate = self;
-	_videoPreviewViewInstantFilter.userInteractionEnabled = YES;
+	_videoPreviewViewMonoFilter = [self filterView];
+	_videoPreviewViewTonalFilter = [self filterView];
+	_videoPreviewViewNoirFilter = [self filterView];
+	_videoPreviewViewFadeFilter = [self filterView];
+	_videoPreviewViewChromeFilter = [self filterView];
+	_videoPreviewViewProcessFilter = [self filterView];
+	_videoPreviewViewTransferFilter = [self filterView];
+	_videoPreviewViewInstantFilter = [self filterView];
 	[self addAllFilterViews];
-	monoLabel = [UILabel new];
-	monoLabel.textColor = [UIColor whiteColor];
-	monoLabel.backgroundColor = [UIColor clearColor];
-	monoLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
-	monoLabel.shadowColor = [UIColor blackColor];
-	monoLabel.text = @"Mono";
 
-
-	tonalLabel = [UILabel new];
-	tonalLabel.textColor = [UIColor whiteColor];
-	tonalLabel.backgroundColor = [UIColor clearColor];
-	tonalLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
-	tonalLabel.shadowColor = [UIColor blackColor];
-	tonalLabel.text = @"Tonal";
-
-	noirLabel = [UILabel new];
-	noirLabel.textColor = [UIColor whiteColor];
-	noirLabel.backgroundColor = [UIColor clearColor];
-	noirLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
-	noirLabel.shadowColor = [UIColor blackColor];
-	noirLabel.text = @"Noir";
-
-	fadeLabel = [UILabel new];
-	fadeLabel.textColor = [UIColor whiteColor];
-	fadeLabel.backgroundColor = [UIColor clearColor];
-	fadeLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
-	fadeLabel.shadowColor = [UIColor blackColor];
-	fadeLabel.text = @"Fade";
-
-	noneLabel = [UILabel new];
-	noneLabel.textColor = [UIColor whiteColor];
-	noneLabel.backgroundColor = [UIColor clearColor];
-	noneLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
-	noneLabel.shadowColor = [UIColor blackColor];
-	noneLabel.text = @"None";
-
-	chromeLabel = [UILabel new];
-	chromeLabel.textColor = [UIColor whiteColor];
-	chromeLabel.backgroundColor = [UIColor clearColor];
-	chromeLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
-	chromeLabel.shadowColor = [UIColor blackColor];
-	chromeLabel.text = @"Chrome";
-
-	processLabel = [UILabel new];
-	processLabel.textColor = [UIColor whiteColor];
-	processLabel.backgroundColor = [UIColor clearColor];
-	processLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
-	processLabel.shadowColor = [UIColor blackColor];
-	processLabel.text = @"Process";
-
-	transferLabel = [UILabel new];
-	transferLabel.textColor = [UIColor whiteColor];
-	transferLabel.backgroundColor = [UIColor clearColor];
-	transferLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
-	transferLabel.shadowColor = [UIColor blackColor];
-	transferLabel.text = @"Transfer";
-
-	instantLabel = [UILabel new];
-	instantLabel.textColor = [UIColor whiteColor];
-	instantLabel.backgroundColor = [UIColor clearColor];
-	instantLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
-	instantLabel.shadowColor = [UIColor blackColor];
-	instantLabel.text = @"Instant";
+	monoLabel = [self filterLabelWithText:NSLocalizedString(@"Mono", @"Mono")];
+	tonalLabel = [self filterLabelWithText:NSLocalizedString(@"Tonal", @"Tonal")];
+	noirLabel = [self filterLabelWithText:NSLocalizedString(@"Noir", @"Noir")];
+	fadeLabel = [self filterLabelWithText:NSLocalizedString(@"Fade", @"Fade")];
+	noneLabel = [self filterLabelWithText:NSLocalizedString(@"None", @"None")];
+	chromeLabel = [self filterLabelWithText:NSLocalizedString(@"Chrome", @"Chrome")];
+	processLabel = [self filterLabelWithText:NSLocalizedString(@"Process", @"Process")];
+	transferLabel = [self filterLabelWithText:NSLocalizedString(@"Transfer", @"Transfer")];
+	instantLabel = [self filterLabelWithText:NSLocalizedString(@"Instant", @"Instant")];
 }
 
+- (GLKView *)filterView {
+	GLKView *filterView = [[GLKView alloc] initWithFrame:self.view.bounds context:_eaglContext];
+	filterView.drawableDepthFormat = GLKViewDrawableDepthFormat24;;
+	filterView.delegate = self;
+	filterView.userInteractionEnabled = YES;
+
+	return filterView;
+}
+
+- (UILabel *)filterLabelWithText:(NSString *)text {
+	UILabel *label = [UILabel new];
+	label.textColor = [UIColor whiteColor];
+	label.backgroundColor = [UIColor clearColor];
+	label.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
+	label.shadowColor = [UIColor blackColor];
+	label.text = text;
+	return label;
+}
 
 - (GLKView *) currentFilterView {
 	switch (nFilterIndex) {
@@ -1477,13 +1408,20 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	browser.startOnGrid = NO;
 	[browser setCurrentPhotoIndex:0];
 
+	static NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
+
 	UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
 	nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	[self presentViewController:nc animated:YES completion:^{
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"MirrorFirstLoadCameraRoll"]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"The photos you take with Mirror are saved in your Camera Roll album in the Photos app" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:A3MirrorFirstLoadCameraRoll]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+																message:NSLocalizedString(@"The photos you take with Mirror are saved in your Camera Roll album in the Photos app.", nil)
+															   delegate:nil
+													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+													  otherButtonTitles:nil];
             [alertView show];
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"MirrorFirstLoadCameraRoll"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3MirrorFirstLoadCameraRoll];
+			[[NSUserDefaults standardUserDefaults] synchronize];
         }
     }];
 }
@@ -1533,11 +1471,11 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 //}
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser actionButtonPressedForPhotoAtIndex:(NSUInteger)index {
-    NSLog(@"ACTION!");
+    FNLOG(@"ACTION!");
 }
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
-    NSLog(@"Did start viewing photo at index %lu", (unsigned long)index);
+    FNLOG(@"Did start viewing photo at index %lu", (unsigned long)index);
 }
 
 #pragma mark - Load Assets
@@ -1587,7 +1525,9 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 }
 
 #pragma mark - set image icon
+
 - (void) setImageOnCameraRollButton:(UIImage *)image {
     [lastimageButton setBackgroundImage:[self cropImageWithSquare:image] forState:UIControlStateNormal];
 }
+
 @end

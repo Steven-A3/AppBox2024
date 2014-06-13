@@ -586,3 +586,54 @@
 "Extra(One-time)" = "Extra(One-time)";
 "Calculation" = "Calculation";
 "Extra Payment" = "Extra Payment";
+
+"Solar" = "Solar";
+"1900년부터 2043년까지만 지원합니다." = "1900년부터 2043년까지만 지원합니다.";
+"%ld년 %ld월은 %ld일까지만 있습니다." = "%ld년 %ld월은 %ld일까지만 있습니다.";
+"Lunar Converter using AppBox Pro" = "Lunar Converter using AppBox Pro";
+"<html><body>I'd like to share a conversion with you.<br/><br/>" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
+"LunarConverter_share_text_html_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
+"Share Lunar Converter Data" = "Share Lunar Converter Data";
+"Lunar(%@) %@" = "Lunar(%@) %@";
+" = Solar %@" = " = Solar %@";
+"Lunar(%@, Leap Month) %@" = "Lunar(%@, Leap Month) %@";
+"Solar %@" = "Solar %@";
+" = Lunar(%@, Leap Month) %@" = " = Lunar(%@, Leap Month) %@";
+" = Lunar(%@) %@" = " = Lunar(%@) %@";
+
+"Take picture failed." = "Take picture failed.";
+"Save to camera roll failed." = "Save to camera roll failed.";
+"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app." = "The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.";
+
+"Mono" = "Mono";
+
+"Tonal" = "Tonal";
+"Noir" = "Noir";
+"Fade" = "Fade";
+"Chrome" = "Chrome";
+"Process" = "Process";
+"Transfer" = "Transfer";
+"Instant" = "Instant";
+
+"The photos you take with Mirror are saved in your Camera Roll album in the Photos app." = "The photos you take with Mirror are saved in your Camera Roll album in the Photos app";
+"Percent_Calc_SliderMarkLabel_for_A" = "A";
+"Percent_Calc_SliderMarkLabel_for_B" = "B";
+
+"A" = "A";
+"B" = "B";
+"X is Y% of What" = "X is Y% of What";
+"What is X% of Y" = "What is X% of Y";
+"X is What % of Y" = "X is What % of Y";
+"% Change from X to Y" = "% Change from X to Y";
+"Compare % Change from X to Y" = "Compare % Change from X to Y";
+
+"Sale Price" = "Sale Price";
+"Sale Price Tax" = "Sale Price Tax";
+"Original Price" = "Original Price";
+"Original Price Tax" = "Original Price Tax";
+"Saved Amount" = "Saved Amount";
+"Saved Amount Tax" = "Saved Amount Tax";
+"  Sale Price with Tax" = "  Sale Price with Tax";
+"  Sale Price w/Tax" = "  Sale Price w/Tax";
+"  Sale Price" = "  Sale Price";
+" saved of " = " saved of ";

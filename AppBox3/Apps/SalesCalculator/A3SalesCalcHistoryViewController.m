@@ -36,9 +36,9 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title = @"History";
+    self.title = NSLocalizedString(@"History", @"History");
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear") style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction)];
     if (IS_IPHONE) {
 		[self rightBarButtonDoneButton];
 	}
@@ -77,7 +77,7 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 }
 
 -(void)contentSizeDidChange:(NSNotification *)notification {
-    NSLog(@"%@", notification);
+    FNLOG(@"%@", notification);
     [self.tableView reloadData];
 }
 
@@ -104,8 +104,8 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
-                                                    cancelButtonTitle:@"Cancel"
-                                               destructiveButtonTitle:@"Clear History"
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:NSLocalizedString(@"Clear History", @"Clear History")
                                                     otherButtonTitles:nil];
     [actionSheet showInView:self.view];
 }
@@ -154,7 +154,7 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 {
     SalesCalcHistory *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
     A3SalesCalcData *historyData = [A3SalesCalcData loadDataFromHistory:aData];
-    NSLog(@"%@", historyData);
+    FNLOG(@"%@", historyData);
     
     A3SalesCalcHistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:A3SalesCalcHistoryCellID forIndexPath:indexPath];
     [cell setSalesCalcData:historyData];

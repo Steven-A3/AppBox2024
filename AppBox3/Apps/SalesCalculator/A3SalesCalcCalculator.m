@@ -10,6 +10,15 @@
 #import "A3SalesCalcData.h"
 #import "A3TableViewInputElement.h"
 
+static NSString *const A3SalesCalcKeySalePrice = @"A3SalesCalcKeySalePrice";
+static NSString *const A3SalesCalcKeyOriginalPrice = @"A3SalesCalcKeyOriginalPrice";
+static NSString *const A3SalesCalcKeySavedAmount = @"A3SalesCalcKeySavedAmount";
+static NSString *const A3SalesCalcKeyShownPriceType = @"A3SalesCalcKeyShownPriceType";
+static NSString *const A3SalesCalcKeyTaxedOriginalPrice = @"A3SalesCalcKeyTaxedOriginalPrice";
+static NSString *const A3SalesCalcKeySalePriceTax = @"A3SalesCalcKeySalePriceTax";
+static NSString *const A3SalesCalcKeyOriginalPriceTax = @"A3SalesCalcKeyOriginalPriceTax";
+static NSString *const A3SalesCalcKeySavedAmountTax = @"A3SalesCalcKeySavedAmountTax";
+
 @implementation A3SalesCalcCalculator
 
 +(NSDictionary *)resultInfoForSalesCalcData:(A3SalesCalcData *)aData {
@@ -23,11 +32,11 @@
         result = [A3SalesCalcCalculator salesCalcDataForSalePrice:aData];
     }
 
-    NSLog(@"result : %@", result);
+    FNLOG(@"result : %@", result);
     return result;
 }
 
-+(NSDictionary *)salesCalcDataForOriginalPrice:(A3SalesCalcData *)aData
++ (NSDictionary *)salesCalcDataForOriginalPrice:(A3SalesCalcData *)aData
 {
     NSMutableDictionary *result = [[NSMutableDictionary alloc] init];
     double discountedPrice = 0.0;
@@ -77,22 +86,21 @@
         }
     }
     
-    [result setObject:@(discountedPrice) forKey:@"Sale Price"];
-    [result setObject:@(originalPrice) forKey:@"Original Price"];
-    [result setObject:@(taxedOriginalPrice - discountedPrice) forKey:@"Saved Amount"];
-    [result setObject:@(aData.shownPriceType) forKey:@"Shown Price Type"];
+    [result setObject:@(discountedPrice) forKey:A3SalesCalcKeySalePrice];
+    [result setObject:@(originalPrice) forKey:A3SalesCalcKeyOriginalPrice];
+    [result setObject:@(taxedOriginalPrice - discountedPrice) forKey:A3SalesCalcKeySavedAmount];
+    [result setObject:@(aData.shownPriceType) forKey:A3SalesCalcKeyShownPriceType];
     
     if (aData.tax && ![aData.tax isEqualToNumber:@0]) {
-        [result setObject:@(taxedOriginalPrice)  forKey:@"Taxed Original Price"];
+        [result setObject:@(taxedOriginalPrice)  forKey:A3SalesCalcKeyTaxedOriginalPrice];
         double salePriceTax = discountedPrice / 100.0 * aData.tax.doubleValue;
         double originalPriceTax = originalPrice / 100.0 * aData.tax.doubleValue;
-        [result setObject:@(salePriceTax) forKey:@"Sale Price Tax"];
-        [result setObject:@(originalPriceTax) forKey:@"Original Price Tax"];
-        [result setObject:@(originalPriceTax - salePriceTax) forKey:@"Saved Amount Tax"];
-        //[result setObject:@((aData.originalPrice.doubleValue - discountedPrice) / 100.0 * aData.tax.doubleValue) forKey:@"Saved Amount Tax"];
+        [result setObject:@(salePriceTax) forKey:A3SalesCalcKeySalePriceTax];
+        [result setObject:@(originalPriceTax) forKey:A3SalesCalcKeyOriginalPriceTax];
+        [result setObject:@(originalPriceTax - salePriceTax) forKey:A3SalesCalcKeySavedAmountTax];
     }
     
-    NSLog(@"result : %@", result);
+    FNLOG(@"result : %@", result);
     
     return result;
 }
@@ -176,22 +184,21 @@
 
     originalPrice = originalPrice * (100 / (100 + aData.tax.floatValue));   // 세금을 제외한 OriginalPrice
     
-    [result setObject:aData.price forKey:@"Sale Price"];                // 사용자로부터 입력받은 값이 이미 Sale 적용된 가격을 그대로 반영.
-    [result setObject:@(originalPrice) forKey:@"Original Price"];
-    [result setObject:@(taxedOriginalPrice - discountedPrice) forKey:@"Saved Amount"];
-    [result setObject:@(aData.shownPriceType) forKey:@"Shown Price Type"];
+    [result setObject:aData.price forKey:A3SalesCalcKeySalePrice];                // 사용자로부터 입력받은 값이 이미 Sale 적용된 가격을 그대로 반영.
+    [result setObject:@(originalPrice) forKey:A3SalesCalcKeyOriginalPrice];
+    [result setObject:@(taxedOriginalPrice - discountedPrice) forKey:A3SalesCalcKeySavedAmount];
+    [result setObject:@(aData.shownPriceType) forKey:A3SalesCalcKeyShownPriceType];
     
     if (aData.tax && [aData.tax isEqualToNumber:@0]==NO) {
-        [result setObject:@(taxedOriginalPrice)  forKey:@"Taxed Original Price"];
+        [result setObject:@(taxedOriginalPrice)  forKey:A3SalesCalcKeyTaxedOriginalPrice];
         double salePriceTax = aData.price.doubleValue / 100.0 * aData.tax.doubleValue;
         double originalPriceTax = originalPrice / 100.0 * aData.tax.doubleValue;
-        [result setObject:@(salePriceTax) forKey:@"Sale Price Tax"];
-        [result setObject:@(originalPriceTax) forKey:@"Original Price Tax"];
-        [result setObject:@(originalPriceTax - salePriceTax) forKey:@"Saved Amount Tax"];
-        //[result setObject:@((aData.originalPrice.doubleValue - discountedPrice) / 100.0 * aData.tax.doubleValue) forKey:@"Saved Amount Tax"];
+        [result setObject:@(salePriceTax) forKey:A3SalesCalcKeySalePriceTax];
+        [result setObject:@(originalPriceTax) forKey:A3SalesCalcKeyOriginalPriceTax];
+        [result setObject:@(originalPriceTax - salePriceTax) forKey:A3SalesCalcKeySavedAmountTax];
     }
     
-    NSLog(@"result : %@", result);
+    FNLOG(@"result : %@", result);
     
     return result;
 }

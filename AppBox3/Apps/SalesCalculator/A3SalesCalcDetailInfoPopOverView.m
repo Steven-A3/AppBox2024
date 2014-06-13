@@ -63,7 +63,7 @@
 }
 
 -(void)contentSizeDidChange:(NSNotification *)notification {
-    NSLog(@"%@", notification);
+    FNLOG(@"%@", notification);
     [self.tableView reloadData];
 }
 
@@ -117,16 +117,14 @@ static NSString *CellIdentifier = @"Cell";
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            [cell.textLabel setText:@"Sale Price"];
+			[cell.textLabel setText:NSLocalizedString(@"Sale Price", @"Sale Price")];
             
-//            NSNumber *salePrice = [_resultDic objectForKey:@"Sale Price"];
             NSNumber *salePrice = [A3SalesCalcCalculator salePriceWithoutTaxForCalcData:_resultData];
             cell.detailTextLabel.text = [formatter stringFromNumber:salePrice];
             cell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
         }
         else {
-            [cell.textLabel setText:@"Sale Price Tax"];
-//            NSNumber *salePriceTax = [_resultDic objectForKey:@"Sale Price Tax"];
+			[cell.textLabel setText:NSLocalizedString(@"Sale Price Tax", @"Sale Price Tax")];
             NSNumber *salePriceTax = [A3SalesCalcCalculator salePriceTaxForCalcData:_resultData];
             cell.detailTextLabel.text = [formatter stringFromNumber:salePriceTax];
             cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -138,15 +136,13 @@ static NSString *CellIdentifier = @"Cell";
     }
     else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
-            [cell.textLabel setText:@"Original Price"];
-//            NSNumber *originalPrice = [_resultDic objectForKey:@"Original Price"];
+			[cell.textLabel setText:NSLocalizedString(@"Original Price", @"Original Price")];
             NSNumber *originalPrice = [A3SalesCalcCalculator originalPriceBeforeTaxAndDiscountForCalcData:_resultData];
             cell.detailTextLabel.text = [formatter stringFromNumber:originalPrice];
             cell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
         }
         else {
-            [cell.textLabel setText:@"Original Price Tax"];
-            //cell.detailTextLabel.text = [formatter stringFromNumber:[_resultDic objectForKey:@"Original Price Tax"]];
+			[cell.textLabel setText:NSLocalizedString(@"Original Price Tax", @"Original Price Tax")];
             cell.detailTextLabel.text = [formatter stringFromNumber:[A3SalesCalcCalculator originalPriceTaxForCalcData:_resultData]];
             cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
         }
@@ -157,14 +153,12 @@ static NSString *CellIdentifier = @"Cell";
     }
     else if (indexPath.section == 4) {
         if (indexPath.row == 0) {
-            [cell.textLabel setText:@"Saved Amount"];
-//            cell.detailTextLabel.text = [formatter stringFromNumber:[_resultDic objectForKey:@"Saved Amount"]];
+			[cell.textLabel setText:NSLocalizedString(@"Saved Amount", @"Saved Amount")];
             cell.detailTextLabel.text = [formatter stringFromNumber:[A3SalesCalcCalculator savedAmountForCalcData:_resultData]];
             cell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
         }
         else {
-            [cell.textLabel setText:@"Saved Amount Tax"];
-//            cell.detailTextLabel.text = [formatter stringFromNumber:[_resultDic objectForKey:@"Saved Amount Tax"]];
+			[cell.textLabel setText:NSLocalizedString(@"Saved Amount Tax", @"Saved Amount Tax")];
             cell.detailTextLabel.text = [formatter stringFromNumber:[A3SalesCalcCalculator savedAmountTaxForCalcData:_resultData]];
             cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, cell.bounds.size.width);
         }
