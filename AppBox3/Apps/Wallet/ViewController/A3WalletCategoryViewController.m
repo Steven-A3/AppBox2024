@@ -333,7 +333,7 @@
 
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
 	[activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-		NSLog(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+		FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
 
 		[self editCancelAction:nil];
 	}];
@@ -410,7 +410,7 @@
 
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
 	[activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-		NSLog(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+		FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
 
 		[self editCancelAction:nil];
 	}];

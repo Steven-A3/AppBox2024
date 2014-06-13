@@ -832,7 +832,7 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     self.searchResultArray = [_sourceArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"eventName contains[cd] %@",searchText]];
-    NSLog(@"%s %@ : %ld",__FUNCTION__,searchText, (long)[_searchResultArray count]);
+    FNLOG(@"%s %@ : %ld",__FUNCTION__,searchText, (long)[_searchResultArray count]);
 }
 
 #pragma mark - action method

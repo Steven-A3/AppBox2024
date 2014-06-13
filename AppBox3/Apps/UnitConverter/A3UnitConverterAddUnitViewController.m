@@ -120,7 +120,7 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
 
 - (UISegmentedControl *)selectSegment
 {
-    UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[@"All Units", @"Favorites"]];
+    UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"All Units", @"All Units"), NSLocalizedString(@"Favorites", @"Favorites")]];
     
     segment.selectedSegmentIndex = 0;
     isFavoriteMode = NO;
@@ -196,8 +196,6 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
 }
 
 - (void)configurePlusCell:(A3UnitConverterTVActionCell *)actionCell {
-    //	actionCell.centerButton.titleLabel.font = [UIFont fontWithName:@"FontAwesome" size:25.0];
-    //	[actionCell.centerButton setTitleColor:nil forState:UIControlStateNormal];
 	[actionCell.centerButton addTarget:self action:@selector(addUnitAction) forControlEvents:UIControlEventTouchUpInside];
 }
 

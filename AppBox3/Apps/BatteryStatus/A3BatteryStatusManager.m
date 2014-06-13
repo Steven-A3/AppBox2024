@@ -98,13 +98,13 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
     NSDictionary *deviceInformation = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error];
     NSDictionary * devicesInfo = [deviceInformation objectForKey:@"devicesInfo"];
     if (!devicesInfo) {
-        NSLog(@"존재하는 device정보가 없습니다.");
+        FNLOG(@"존재하는 device정보가 없습니다.");
         return nil;
     }
     
     NSDictionary * currentDeviceInfo = [devicesInfo objectForKey:modelName];
     if (!currentDeviceInfo) {
-        NSLog(@"존재하는 currentDeviceInfo 정보가 없습니다.");
+        FNLOG(@"존재하는 currentDeviceInfo 정보가 없습니다.");
         return nil;
     }
     
@@ -157,7 +157,7 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
     NSDictionary * remainingTimeInfo = [deviceInformation objectForKey:@"remainingTimeInfo"];
     remainingTimeInfo = [remainingTimeInfo objectForKey:modelName];
     if (!remainingTimeInfo) {
-        NSLog(@"존재하는 device정보가 없습니다.");
+        FNLOG(@"존재하는 device정보가 없습니다.");
         return nil;
     }
 

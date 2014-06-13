@@ -272,8 +272,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
         self.navigationItem.hidesBackButton = NO;
 
-		UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
-		self.navigationItem.leftBarButtonItem = appsItem;
+		[self leftBarButtonAppsButton];
     } else {
         // 아님
         [self makeBackButtonEmptyArrow];
@@ -304,7 +303,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
+	[self rightBarButtonDoneButton];
 
 	_moreMenuButtons = @[self.shareButton, [self historyButton:NULL]];
 	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:_fmMoveTableView];
@@ -364,20 +363,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	}
 	return _convertItems;
 }
-
-/*
-- (NSMutableArray *)favorites {
-	if (nil == _favorites) {
-        if ([[UnitFavorite MR_numberOfEntities] isEqualToNumber:@0 ]) {
-            [UnitFavorite reset];
-        }
-        _favorites = [NSMutableArray arrayWithArray:[UnitFavorite MR_findByAttribute:@"type" withValue:_unitType andOrderBy:@"order" ascending:YES]];
-        
-		[self addEqualAndPlus];
-	}
-	return _favorites;
-}
- */
 
 - (void)addEqualAndPlus {
 	[_convertItems insertObjectToSortedArray:self.equalItem atIndex:1];
@@ -556,7 +541,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
 	[activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-		NSLog(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+		FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
 	}];
 	if (IS_IPHONE) {
 		[self presentViewController:activityController animated:YES completion:NULL];
@@ -617,7 +602,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
     if ([activityType isEqualToString:UIActivityTypeMail]) {
-        return @"Unit Converter in the AppBox Pro";
+        return NSLocalizedString(@"Unit Converter in the AppBox Pro", @"Unit Converter in the AppBox Pro");
     }
     
     return @"";
@@ -628,12 +613,12 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     if ([activityType isEqualToString:UIActivityTypeMail]) {
         
         NSMutableString *txt = [NSMutableString new];
-        [txt appendString:@"<html><body>I'd like to share a conversion with you.<br/><br/>"];
+		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a conversion with you.<br/><br/>", nil)];
         for (int i=0; i<_shareTextList.count; i++) {
             [txt appendString:_shareTextList[i]];
             [txt appendString:@"<br/>"];
         }
-        [txt appendString:@"<br/>You can convert more in the AppBox Pro.<br/><a href='https://itunes.apple.com/app/id318404385'>https://itunes.apple.com/app/id318404385</a></body></html>"];
+		[txt appendString:NSLocalizedString(@"unitConverter_share_html_body", nil)];
         
         return txt;
     }
@@ -643,7 +628,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
             [txt appendString:_shareTextList[i]];
             [txt appendString:@"\n"];
         }
-        [txt appendString:@"\nCheck out the AppBox Pro!"];
+		[txt appendString:NSLocalizedString(@"\nCheck out the AppBox Pro!", @"\nCheck out the AppBox Pro!")];
         
         return txt;
     }
@@ -651,7 +636,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-    return @"Share unit converting data";
+    return NSLocalizedString(@"Share unit converting data", @"Share unit converting data");
 }
 
 #pragma mark - Table view data source
@@ -801,7 +786,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			dataCell.rateLabel.text = [TemperatureConverter rateStringFromTemperUnit:convertItemZero.item.unitName toTemperUnit:convertItem.item.unitName];
 		}
 		else {
-			dataCell.rateLabel.text = [NSString stringWithFormat:@"%@, rate = %@", convertItem.item.unitShortName, [self.decimalFormatter stringFromNumber:@(conversionRate)]];
+			dataCell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, rate = %@", @"%@, rate = %@"), convertItem.item.unitShortName, [self.decimalFormatter stringFromNumber:@(conversionRate)]];
 		}
 	}
 
@@ -840,8 +825,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)configurePlusCell:(A3UnitConverterTVActionCell *)actionCell {
-    //	actionCell.centerButton.titleLabel.font = [UIFont fontWithName:@"FontAwesome" size:25.0];
-    //	[actionCell.centerButton setTitleColor:nil forState:UIControlStateNormal];
 	[actionCell.centerButton addTarget:self action:@selector(addUnitAction) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -936,8 +919,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 				float feet = [[self.decimalFormatter numberFromString:cell.valueField.text] floatValue];
 				float inch = [[self.decimalFormatter numberFromString:cell.value2Field.text] floatValue];
 				fromValue = feet + inch/kInchesPerFeet;
-				NSLog(@"Feet : %f / Inch : %f", feet, inch);
-				NSLog(@"Calculated : %f", fromValue);
+				FNLOG(@"Feet : %f / Inch : %f", feet, inch);
+				FNLOG(@"Calculated : %f", fromValue);
 			}
 			else {
 				fromValue = 1;
@@ -977,7 +960,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		if (selectedItem) {
 
 			// 존재 유무 체크
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item==%@", selectedItem];
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item == %@", selectedItem];
 			NSArray *items = [_convertItems filteredArrayUsingPredicate:predicate];
 			if (items.count > 0) {
 				// 이미 존재하는 unitItem임
@@ -1004,7 +987,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		// 선택된 unitItem이 이미 convertItems에 추가된 unit이면, swap을 한다.
 		if (selectedItem) {
 
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item==%@", selectedItem];
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item == %@", selectedItem];
 			NSArray *filtered = [_convertItems filteredArrayUsingPredicate:predicate];
 			if (filtered.count > 0) {
 				if (_selectedRow == 0) {
@@ -1234,8 +1217,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		float feet = [[self.decimalFormatter numberFromString:cell.valueField.text] floatValue];
 		float inch = [[self.decimalFormatter numberFromString:cell.value2Field.text] floatValue];
 		fromValue = feet + inch/kInchesPerFeet;
-		NSLog(@"Feet : %f / Inch : %f", feet, inch);
-		NSLog(@"Calculated : %f", fromValue);
+		FNLOG(@"Feet : %f / Inch : %f", feet, inch);
+		FNLOG(@"Calculated : %f", fromValue);
 	}
 	else {
 		fromValue = 1;
@@ -1348,9 +1331,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 	if ([_convertItems count] < 4) {
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-														message:@"To convert values, need two units."
+														message:NSLocalizedString(@"To convert values, need two units.", @"To convert values, need two units.")
 													   delegate:nil
-											  cancelButtonTitle:@"OK"
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 											  otherButtonTitles:nil];
 		[alert show];
 		return;
@@ -1476,8 +1459,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	UIToolbar *keyboardAccessoryToolbar = [UIToolbar new];
 	[keyboardAccessoryToolbar sizeToFit];
 	UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	UIBarButtonItem *prevButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Prev" style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonPressed)];
-	UIBarButtonItem *nextButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed)];
+	UIBarButtonItem *prevButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Prev", @"Prev") style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonPressed)];
+	UIBarButtonItem *nextButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"Next") style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed)];
 	[prevButtonItem setEnabled:[self isPreviousEntryExists]];
 	[nextButtonItem setEnabled:[self isNextEntryExists]];
 	keyboardAccessoryToolbar.items = @[flexibleSpace, prevButtonItem, nextButtonItem];

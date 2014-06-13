@@ -515,7 +515,7 @@
                 isAllDay = YES;
             }
 //            //if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.startDate.solarDate timeIntervalSince1970]) < 86400)) {
-//            NSLog(@"%lld", llabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]));
+//            FNLOG(@"%lld", llabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]));
 //            if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]) < 86400)) {
 //                NSDateComponents *todayComp = [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:today];
 //                NSDateComponents *efftvComp = [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:[event effectiveStartDate]];
@@ -779,12 +779,12 @@
     
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
     if (!item) {
-        NSLog(@"asdf");
+        FNLOG(@"asdf");
         return NO;
     }
     
     if (!item.calendarType || [item.calendarType isKindOfClass:[NSNull class]]) {
-        NSLog(@"asdf2");
+        FNLOG(@"asdf2");
         return NO;
     }
 

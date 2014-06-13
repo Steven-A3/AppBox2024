@@ -46,12 +46,12 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 {
     [super viewDidLoad];
 
-    self.title = @"History";
+    self.title = NSLocalizedString(@"History", @"History");
 
 	if (IS_IPHONE) {
 		[self rightBarButtonDoneButton];
 	}
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear") style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
 
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.separatorColor = [self tableViewSeparatorColor];
@@ -91,7 +91,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 	UILabel *notice = [[UILabel alloc] init];
 	notice.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 	notice.textColor = [UIColor blackColor];
-	notice.text = @"Each history keeps max 4 units.";
+	notice.text = NSLocalizedString(@"Each history keeps max 4 units.", @"Each history keeps max 4 units.");
 	notice.textAlignment = NSTextAlignmentCenter;
 
 	CGRect frame = CGRectMake(0.0, 0.0, 320.0, 40.0);
@@ -118,8 +118,8 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 - (void)clearButtonAction:(id)button {
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 															 delegate:self
-													cancelButtonTitle:@"Cancel"
-											   destructiveButtonTitle:@"Clear History"
+													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+											   destructiveButtonTitle:NSLocalizedString(@"Clear History", @"Clear History")
 													otherButtonTitles:nil];
 	[actionSheet showInView:self.view];
 }
@@ -222,11 +222,11 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
         
         // a to b = 40.469 표시 (right label)
         if (_isTemperatureMode) {
-            ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:@"%@ to %@", unitHistory.source.unitShortName, [TemperatureConverter rateStringFromTemperUnit:unitHistory.source.unitName toTemperUnit:item.unit.unitName]];
+            ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"), unitHistory.source.unitShortName, [TemperatureConverter rateStringFromTemperUnit:unitHistory.source.unitName toTemperUnit:item.unit.unitName]];
         }
         else {
-            float convesionRate = unitHistory.source.conversionRate.floatValue / item.unit.conversionRate.floatValue;
-            ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:@"%@ to %@ = %@", unitHistory.source.unitShortName, item.unit.unitShortName, [self.decimalFormatter stringFromNumber:@(convesionRate)]];
+            float conversionRate = unitHistory.source.conversionRate.floatValue / item.unit.conversionRate.floatValue;
+            ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@ = %@", @"%@ to %@ = %@"), unitHistory.source.unitShortName, item.unit.unitShortName, [self.decimalFormatter stringFromNumber:@(conversionRate)]];
         }
 	}
     
@@ -259,56 +259,5 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 @end

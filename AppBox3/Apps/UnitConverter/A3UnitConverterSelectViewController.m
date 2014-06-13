@@ -40,12 +40,6 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     self.view.backgroundColor = [UIColor whiteColor];
     
 	self.tableView = [UITableView new];
@@ -55,10 +49,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
     _tableView.rowHeight = 44.0;
 	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	_tableView.showsVerticalScrollIndicator = NO;
-    
-//    float heightGap = IS_RETINA ? kSearchBarHeight+3.5:kSearchBarHeight+3.0;
-//    _tableView.frame = CGRectMake(0, heightGap, self.view.bounds.size.width, self.view.bounds.size.height-heightGap);
-    
+
     _tableView.separatorColor = [self tableViewSeparatorColor];
 	[self.view addSubview:_tableView];
     
@@ -104,7 +95,6 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 - (void)didMoveToParentViewController:(UIViewController *)parent {
 	[super didMoveToParentViewController:parent];
 
-	FNLOG(@"%@", parent);
 	if (!parent) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
 	}
@@ -119,7 +109,10 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 - (UIBarButtonItem *)cancelItem
 {
     if (!_cancelItem) {
-        _cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
+        _cancelItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+													   style:UIBarButtonItemStylePlain
+													  target:self
+													  action:@selector(cancelButtonAction:)];
     }
     
     return _cancelItem;
@@ -162,7 +155,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 
 - (UISegmentedControl *)selectSegment
 {
-    UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[@"All Units", @"Favorites"]];
+    UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"All Units", @"All Units"), NSLocalizedString(@"Favorites", @"Favorites")]];
     
     [segment setWidth:85 forSegmentAtIndex:0];
     [segment setWidth:85 forSegmentAtIndex:1];
@@ -395,7 +388,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 
 - (void)willDismissAddViewController
 {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    FNLOG(@"%s", __PRETTY_FUNCTION__);
 
 }
 
@@ -643,7 +636,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 
 // called when cancel button pressed
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    NSLog(@"canceled");
+    FNLOG(@"canceled");
     
     self.tableView.hidden = NO;
 }

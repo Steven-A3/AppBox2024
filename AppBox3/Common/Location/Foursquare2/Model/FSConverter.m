@@ -15,7 +15,7 @@
 -(NSArray*)convertToObjects:(NSArray*)venues{
     NSMutableArray *objects = [NSMutableArray arrayWithCapacity:[venues count]];
     for (NSDictionary *v  in venues) {
-		NSLog(@"%@", v);
+		FNLOG(@"%@", v);
         FSVenue *ann = [[FSVenue alloc]init];
         ann.name = v[@"name"];
         ann.venueId = v[@"id"];
@@ -24,7 +24,7 @@
 		ann.location.state = v[@"location"][@"state"];
 		ann.location.postalCode = v[@"location"][@"postalCode"];
         ann.contact = v[@"contact"][@"formattedPhone"];
-		NSLog(@"%@", ann.contact);
+		FNLOG(@"%@", ann.contact);
 
         ann.location.address = v[@"location"][@"address"];
         ann.location.distance = v[@"location"][@"distance"];

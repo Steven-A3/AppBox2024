@@ -163,7 +163,7 @@
 		}
 	}
 
-	NSLog(@"%@", extendedSearchPattern);
+	FNLOG(@"%@", extendedSearchPattern);
 
 	return extendedSearchPattern;
 

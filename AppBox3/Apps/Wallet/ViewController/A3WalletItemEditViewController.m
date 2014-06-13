@@ -800,7 +800,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
     
     if(!destination) {
-        NSLog(@"***Could not create image destination ***");
+        FNLOG(@"***Could not create image destination ***");
     }
     
     //add the image contained in the image source to the destination, overidding the old metadata with our modified metadata
@@ -812,7 +812,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     success = CGImageDestinationFinalize(destination);
     
     if(!success) {
-        NSLog(@"***Could not create data from image destination ***");
+        FNLOG(@"***Could not create data from image destination ***");
     }
     
     //now we have the data ready to go, so do whatever you want with it

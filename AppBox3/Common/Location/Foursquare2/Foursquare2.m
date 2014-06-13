@@ -1326,7 +1326,7 @@ static NSMutableDictionary *attributes;
 	NSString *url = [NSString stringWithFormat:
                      @"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",
                      key,callbackURL];
-    NSLog(@"%s %@",__FUNCTION__,url);
+    FNLOG(@"%s %@",__FUNCTION__,url);
 	FSWebLogin *loginCon = [[FSWebLogin alloc] initWithUrl:url];
 	loginCon.delegate = self;
 	loginCon.selector = @selector(done:);

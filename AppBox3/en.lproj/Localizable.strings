@@ -672,3 +672,39 @@
 "Exact" = "Exact";
 "Up" = "Up";
 "Down" = "Down";
+
+"tipcalc_share_body" = "<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
+
+"Tip Calculator using AppBox Pro" = "Tip Calculator using AppBox Pro";
+
+"Rounding Method" = "Rounding Method";
+"Select Language" = "Select Language";
+"%@ to %@" = "%@ to %@";
+"Detect Language" = "Detect Language";
+"Simplified Chinese" = "Simplified Chinese";
+"Traditional Chinese" = "Traditional Chinese";
+
+"New Translator" = "New Translator";
+"From: " = "From: ";
+"To: " = "To: ";
+"Please change \"From\" or \"To\" language." = "Please change \"From\" or \"To\" language.";
+"Translate" = "Translate";
+
+"All Units" = "All Units";
+"%@ Units" = "%@ Units";
+
+"Unit Converter in the AppBox Pro" = "Unit Converter in the AppBox Pro";
+"unitConverter_share_html_body" = "<br/>You can convert more in the AppBox Pro.<br/><a href='https://itunes.apple.com/app/id318404385'>https://itunes.apple.com/app/id318404385</a></body></html>";
+"\nCheck out the AppBox Pro!" = "\nCheck out the AppBox Pro!";
+"Share unit converting data" = "Share unit converting data";
+"%@, rate = %@" = "%@, rate = %@";
+
+"To convert values, need two units." = "To convert values, need two units.";
+
+"Each history keeps max 4 units." = "Each history keeps max 4 units.";
+
+"%@ to %@ = %@" = "%@ to %@ = %@";
+
+"More" = "More";
+"Units on the bar" = "Units on the bar";
+"Units in more" = "Units in more";

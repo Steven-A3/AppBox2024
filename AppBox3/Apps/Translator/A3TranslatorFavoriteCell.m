@@ -7,7 +7,6 @@
 //
 
 #import "A3TranslatorFavoriteCell.h"
-#import "A3UIDevice.h"
 #import "UIViewController+tableViewStandardDimension.h"
 
 @implementation A3TranslatorFavoriteCell

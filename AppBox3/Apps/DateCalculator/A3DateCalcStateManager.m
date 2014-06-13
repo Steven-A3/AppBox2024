@@ -300,8 +300,8 @@ static DurationType g_currentDurationType;
 
     resultDate = [calendar dateByAddingComponents:daysComp toDate:fromDate options:0];
     //resultComp = [calendar components:calUnit fromDate:fromDate toDate:toDate options:0];
-    NSLog(@"fromDate: %@, toDate: %@ \nresultDate: %@", fromDate, toDate, resultDate);
-    NSLog(@"betweenDays: %ld", (long)daysComp.day);
+    FNLOG(@"fromDate: %@, toDate: %@ \nresultDate: %@", fromDate, toDate, resultDate);
+    FNLOG(@"betweenDays: %ld", (long)daysComp.day);
     NSDateComponents *resultComp = [calendar components:calUnit fromDate:fromDate toDate:resultDate options:0];
     
     // 기간이 충분치 않아, durationType 에 맞게 표현할 수 없는 경우.
@@ -311,11 +311,11 @@ static DurationType g_currentDurationType;
         g_currentDurationType = DurationType_Year | DurationType_Month | DurationType_Day;
         resultDate = [calendar dateByAddingComponents:daysComp toDate:fromDate options:0];
         resultComp = [calendar components:calUnit fromDate:fromDate toDate:resultDate options:0];
-        NSLog(@"resultComp 2: %@", resultComp);
+        FNLOG(@"resultComp 2: %@", resultComp);
         return resultComp;
     }
     
-    NSLog(@"resultComp 1: %@", resultComp);
+    FNLOG(@"resultComp 1: %@", resultComp);
 
     return resultComp;
 }

@@ -147,7 +147,7 @@
         NSMutableArray *resultArray = [NSMutableArray new];
 		[resultArray addObject:NSLocalizedString(@"Current Location", @"Current Location")];
         for (CLPlacemark *placemark in placemarks) {
-            NSLog(@"%s %@/%@",__FUNCTION__,placemark.name,placemark.addressDictionary);
+            FNLOG(@"%s %@/%@",__FUNCTION__,placemark.name,placemark.addressDictionary);
             [resultArray addObject:placemark];
         }
         

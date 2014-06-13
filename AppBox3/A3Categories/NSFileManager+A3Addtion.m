@@ -49,8 +49,8 @@ static NSString *const A3CacheStoreFilename = @"AppBoxCacheStore.sqlite";
 			[self copyItemAtPath:WALPath toPath:targetPath error:&error];
 		}
 		@catch (id exception) {
-			NSLog(@"FAILD to COPY %@ from Bundle to Cache Directory.", A3CacheStoreFilename);
-			NSLog(@"%@", [(id<NSObject>)exception description]);
+			FNLOG(@"FAILD to COPY %@ from Bundle to Cache Directory.", A3CacheStoreFilename);
+			FNLOG(@"%@", [(id<NSObject>)exception description]);
 		}
 	}
 }

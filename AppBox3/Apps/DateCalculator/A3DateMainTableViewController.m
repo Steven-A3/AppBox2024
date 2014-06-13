@@ -705,8 +705,8 @@ NSString *kCalculationString;
 
 - (void)dateCalcHeaderChangedFromDate:(NSDate *)fDate toDate:(NSDate *)tDate
 {
-    NSLog(@"fDate: %@", fDate);
-    NSLog(@"tDate: %@", tDate);
+    FNLOG(@"fDate: %@", fDate);
+    FNLOG(@"tDate: %@", tDate);
     
     if ([self.fromDate compare:self.toDate] == NSOrderedDescending) {   // from > to, 큰 값이 오른쪽(to)에 위치한다.
         self.fromDateCursor = tDate;
@@ -811,7 +811,7 @@ NSString *kCalculationString;
 
 -(void)dateCalcHeaderThumbPositionChangeOfFromDate:(NSDate *)fDate toDate:(NSDate *)toDate
 {
-    NSLog(@"f: %@, t: %@", fDate, toDate);
+    FNLOG(@"f: %@, t: %@", fDate, toDate);
 //    UITableViewCell *fromCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
 //    UITableViewCell *toCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
 
@@ -820,7 +820,7 @@ NSString *kCalculationString;
 
 -(void)dateCalcHeaderThumbPositionChangeOfAddSubDateComponents:(NSDateComponents *)dateComp
 {
-    NSLog(@"%@", dateComp);
+    FNLOG(@"%@", dateComp);
 }
 
 #pragma mark - UITextField Related
@@ -928,7 +928,7 @@ NSString *kCalculationString;
         [footerCell saveInputedTextField:textField];
 	}
     else {
-        NSLog(@"from/to: %@", notification);
+        FNLOG(@"from/to: %@", notification);
 	}
 }
 

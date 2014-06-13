@@ -279,7 +279,7 @@
             alertDate = _eventModel.alertDatetime;
         }
         if (!alertDate) {
-            NSLog(@"alertTime이 없던 상황.");
+            FNLOG(@"alertTime이 없던 상황.");
         }
         
         NSDate *startDate = _eventModel.effectiveStartDate;

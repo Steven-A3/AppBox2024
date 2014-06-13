@@ -481,7 +481,7 @@
                     if( ![[NSFileManager defaultManager] setAttributes:attr ofItemAtPath:fullPath error:nil] )
                     {
                         // cann't set attributes 
-                        NSLog(@"Failed to set attributes");
+                        FNLOG(@"Failed to set attributes");
                     }
                     
                 }

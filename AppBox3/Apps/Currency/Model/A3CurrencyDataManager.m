@@ -32,7 +32,7 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 			NSArray *knownNames = @[@"Copper Highgrade", @"Zambian kwacha", @"Offshore Renminbi", @"Special Drawing Rights", @"Unidad de Fomento"];
 			name = [knownNames objectAtIndex:index];
 		} else {
-			NSLog(@"Failed to name resolution.");
+			FNLOG(@"Failed to name resolution.");
 		}
 	}
 	return name;
@@ -83,7 +83,7 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 
 + (BOOL)yahooNetworkAvailable {
 	if (![[Reachability reachabilityWithHostname:@"finance.yahoo.com"] isReachable]) {
-		NSLog(@"Faild to download Yahoo currency rates, reason: Network is not available.");
+		FNLOG(@"Faild to download Yahoo currency rates, reason: Network is not available.");
 		return NO;
 	}
 	return YES;

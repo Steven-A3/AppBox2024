@@ -31,7 +31,7 @@
     
 	cell.textLabel.text = self.title;
 	cell.textLabel.textColor = [UIColor blackColor];
-    NSLog(@"%@", cell.datePicker);
+    FNLOG(@"%@", cell.datePicker);
     
 	return cell;
 }

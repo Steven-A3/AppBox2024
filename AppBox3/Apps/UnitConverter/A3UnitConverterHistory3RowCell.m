@@ -22,8 +22,8 @@
 
 - (void)setNumberOfLines:(NSNumber *)numberOfLines {
 	_numberOfLines = numberOfLines;
-    
-	[self removeAllLables];
+
+	[self removeAllLabels];
     
 	NSMutableArray *mLeftLabels = [[NSMutableArray alloc] initWithCapacity:_numberOfLines.integerValue];
 	NSMutableArray *mRightLabels = [[NSMutableArray alloc] initWithCapacity:_numberOfLines.integerValue];
@@ -56,7 +56,7 @@
     // Configure the view for the selected state
 }
 
-- (void)removeAllLables {
+- (void)removeAllLabels {
 	[self.contentView removeConstraints:[self.contentView constraints]];
     
 	for (UILabel *label in _leftLabels) {
@@ -71,8 +71,8 @@
 
 - (void)prepareForReuse {
 	[super prepareForReuse];
-    
-	[self removeAllLables];
+
+	[self removeAllLabels];
 }
 
 - (void)useDynamicType {

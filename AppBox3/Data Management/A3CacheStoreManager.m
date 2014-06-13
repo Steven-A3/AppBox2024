@@ -38,7 +38,7 @@
 			[_context setPersistentStoreCoordinator:_persistentStoreCoordinator];
 		}
 		@catch (id exception) {
-			NSLog(@"%@", [(id<NSObject>)exception description]);
+			FNLOG(@"%@", [(id<NSObject>)exception description]);
 		}
 	}
 
@@ -48,7 +48,7 @@
 - (void)save {
 	NSError *error;
 	if ([_context hasChanges] && ![_context save:&error]) {
-		NSLog(@"%s, %@", __PRETTY_FUNCTION__, [error localizedDescription]);
+		FNLOG(@"%s, %@", __PRETTY_FUNCTION__, [error localizedDescription]);
 	}
 }
 

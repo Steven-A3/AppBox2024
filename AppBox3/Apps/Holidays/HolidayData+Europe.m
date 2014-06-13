@@ -1110,7 +1110,7 @@
 		NSDateComponents *dc = [gregorian components:NSWeekdayCalendarUnit fromDate:date];
 		NSDateComponents *addDC = [[NSDateComponents alloc] init];
 #ifdef TRACE_LOG
-		NSLog(@"%d", [dc weekday]);
+		FNLOG(@"%d", [dc weekday]);
 #endif	
 		[addDC setDay:-3*7 - ([dc weekday] == 1?8:[dc weekday]) + 1];
 		NSDate *targetDate = [gregorian dateByAddingComponents:addDC toDate:date options:0];

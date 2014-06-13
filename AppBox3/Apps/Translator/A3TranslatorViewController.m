@@ -39,7 +39,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
 		// Custom initialization
-		self.title = @"Translator";
+		self.title = NSLocalizedString(@"Translator", @"Translator");
 	}
     return self;
 }
@@ -164,7 +164,7 @@
 	FNLOGRECT(self.view.frame);
 	FNLOGRECT(self.navigationController.view.frame);
 
-	_segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"All", @"Favorites"]];
+	_segmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"All", @"All"), NSLocalizedString(@"Favorites", @"Favorites")]];
 	_segmentedControl.selectedSegmentIndex = 0;
 	[_segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview:_segmentedControl];
@@ -304,7 +304,7 @@
 		iPad_cell.dateLabel.text = [[group.texts valueForKeyPath:@"@max.date"] timeAgo];
 	}
 
-	cell.textLabel.text = [NSString stringWithFormat:@"%@ to %@",
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"),
 													 [A3TranslatorLanguage localizedNameForCode:group.sourceLanguage],
 													 [A3TranslatorLanguage localizedNameForCode:group.targetLanguage]];
 

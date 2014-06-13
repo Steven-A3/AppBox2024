@@ -94,11 +94,11 @@
 //    entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData];
 //    [[NSManagedObjectContext MR_contextForCurrentThread] MR_saveToPersistentStoreAndWait];
 //    NSArray *entityList = [PercentCalcHistory MR_findAll];
-//    NSLog(@"%@", entityList);
+//    FNLOG(@"%@", entityList);
 //    [entityList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 //        PercentCalcHistory *row = (PercentCalcHistory *)obj;
 //        A3PercentCalcData *rowData = [NSKeyedUnarchiver unarchiveObjectWithData:row.historyItem];
-//        NSLog(@"values: %@", rowData.values);
+//        FNLOG(@"values: %@", rowData.values);
 //    }];
     
     return resultArray;

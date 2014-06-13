@@ -189,7 +189,7 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
     FNLOG();
 	if ([[DBSession sharedSession] handleOpenURL:url]) {
 		if ([[DBSession sharedSession] isLinked]) {
-			NSLog(@"App linked successfully!");
+			FNLOG(@"App linked successfully!");
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3DropboxLoginWithSuccess object:nil];
 		} else {
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3DropboxLoginFailed object:nil];
