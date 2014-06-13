@@ -27,29 +27,37 @@ NSString *const WalletFieldStyleHidden		= @"Hidden";
 
 NSString *const WalletCategoryTypePhoto		= @"Photos";
 NSString *const WalletCategoryTypeVideo		= @"Video";
+NSString *const WalletFieldNativeType 		= @"NativeType";
+NSString *const WalletFieldNativeTypeText	= @"Text";
+NSString *const WalletFieldNativeTypeImage	= @"Image";
+NSString *const WalletFieldNativeTypeVideo	= @"Video";
+NSString *const WalletFieldTypeID			= @"Name";
 
 @implementation WalletData
 
 + (NSArray *)typeList
 {
-    return @[@{@"Name": @"Text", @"Type" : @"Character"},
-             @{@"Name": @"Number", @"Type" : @"Character"},
-             @{@"Name": @"Phone", @"Type" : @"Character"},
-             @{@"Name": @"URL", @"Type" : @"Character"},
-             @{@"Name": @"Email", @"Type" : @"Character"},
-             @{@"Name": @"Date", @"Type" : @"Character"},
-             @{@"Name": @"Image", @"Type" : @"Image"},
-             @{@"Name": @"Video", @"Type" : @"Video"}];
+    return @[@{WalletFieldTypeID : WalletFieldTypeText, WalletFieldNativeType : WalletFieldNativeTypeText},
+             @{WalletFieldTypeID : WalletFieldTypeNumber, WalletFieldNativeType : WalletFieldNativeTypeText},
+             @{WalletFieldTypeID : WalletFieldTypePhone, WalletFieldNativeType : WalletFieldNativeTypeText},
+             @{WalletFieldTypeID : WalletFieldTypeURL, WalletFieldNativeType : WalletFieldNativeTypeText},
+             @{WalletFieldTypeID : WalletFieldTypeEmail, WalletFieldNativeType : WalletFieldNativeTypeText},
+             @{WalletFieldTypeID : WalletFieldTypeDate, WalletFieldNativeType : WalletFieldNativeTypeText},
+             @{WalletFieldTypeID : WalletFieldTypeImage, WalletFieldNativeType : WalletFieldNativeTypeImage},
+             @{WalletFieldTypeID : WalletFieldTypeVideo, WalletFieldNativeType : WalletFieldNativeTypeVideo}];
 }
 
 + (NSDictionary *)styleList
 {
-    return @{@"Character": @[@"Normal",
-                             @"Password",
-                             @"Account",
-                             @"Hidden"],
-             @"Image" : @[],
-             @"Video" : @[]};
+    return @{
+			WalletFieldNativeTypeText : @[
+					WalletFieldStyleNormal,
+					WalletFieldStylePassword,
+					WalletFieldStyleAccount,
+					WalletFieldStyleHidden
+			],
+			WalletFieldNativeTypeImage : @[],
+			WalletFieldNativeTypeVideo : @[]};
 }
 
 + (NSArray *)categoryPresetData

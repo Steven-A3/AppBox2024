@@ -68,7 +68,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 	// Do any additional setup after loading the view.
     
     self.view.backgroundColor = [UIColor whiteColor];
-	self.title = @"Detail";
+	self.title = NSLocalizedString(@"Detail", @"Detail");
 
     [self initializeViews];
     
@@ -113,7 +113,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (void)initializeViews
 {
-    UIBarButtonItem *editItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
+    UIBarButtonItem *editItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"Edit") style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
     self.navigationItem.rightBarButtonItem = editItem;
     
     CGFloat tbvHeight = self.view.bounds.size.height - 44 - 64;
@@ -196,14 +196,14 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (NSMutableDictionary *)photoItem {
 	if (!_photoItem) {
-		_photoItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Photo", @"order":@""}];
+		_photoItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title" : NSLocalizedString(@"Photo", @"Photo"), @"order" : @""}];
 	}
 	return _photoItem;
 }
 
 - (NSMutableDictionary *)metadataItem {
 	if (!_metadataItem) {
-		_metadataItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"metadata", @"order":@""}];
+		_metadataItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title" : @"metadata", @"order" : @""}];
 	}
 	return _metadataItem;
 }
@@ -211,7 +211,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 - (NSMutableDictionary *)noteItem
 {
     if (!_noteItem) {
-        _noteItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Note", @"order":@""}];
+        _noteItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title" : NSLocalizedString(@"Note", @"Note"), @"order" : @""}];
     }
     
     return _noteItem;
@@ -289,14 +289,14 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 }
 
 - (void)updateMetadataViewWithPage:(NSInteger)page {
-	self.metadataView.titleTextField.text = [_item.name length] ? _item.name : @"New Item";
+	self.metadataView.titleTextField.text = [_item.name length] ? _item.name : NSLocalizedString(@"New Item", @"New Item");
 	CGSize textSize = [_metadataView.titleTextField.text sizeWithAttributes:@{NSFontAttributeName: _metadataView.titleTextField.font}];
 	CGRect frame = _metadataView.titleTextField.frame;
 	frame.size.width = MIN(self.view.bounds.size.width- 30, textSize.width + 50);
 	_metadataView.titleTextField.frame = frame;
 
 	_metadataView.favoriteButton.selected = _item.favorite != nil;
-	_metadataView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
+	_metadataView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [_item.modificationDate timeAgo]];
 
     if (self.videoFieldItems.count <= page) {
         return;
@@ -307,7 +307,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 	if (fieldItem.video) {
 		CGFloat duration = [WalletData getDurationOfMovie:[fieldItem videoFileURLInOriginal:YES ]];
 		NSInteger dur = round(duration);
-		_metadataView.mediaSizeLabel.text = [NSString stringWithFormat:@"Duration Time %lds", (long)dur];
+		_metadataView.mediaSizeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Duration Time %lds", @"Duration Time %lds"), (long) dur];
 
         // Media CreationDate
         NSDateFormatter *dateFormatter = [NSDateFormatter new];
@@ -629,7 +629,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 				[self setImageToCell:photoCell image:[fieldItem thumbnailImage]];
 				photoCell.photoButton.tag = indexPath.row;
 			} else {
-				photoCell.valueTextField.text = @"None";
+				photoCell.valueTextField.text = NSLocalizedString(@"None", @"None");
 				photoCell.photoButton.hidden = YES;
 			}
 

@@ -244,7 +244,7 @@ https://github.com/andrealufino/ALSystemUtilities/blob/develop/ALSystemUtilities
 		if (!deviceInput) {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				NSString *message = [NSString stringWithFormat:NSLocalizedString(@"microphone access denied", @"microphone access denied"), [[UIDevice currentDevice] model ] ];
-				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Alert" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Alert", @"Alert") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
 				[alertView show];
 			});
 		}

@@ -95,14 +95,14 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     [super viewDidLoad];
 
 	if (_isAddNewItem) {
-		self.navigationItem.title = @"Add Item";
+		self.navigationItem.title = NSLocalizedString(@"Add Item", @"Add Item");
 
 		_item = [WalletItem MR_createEntity];
 		_item.uniqueID = [[NSUUID UUID] UUIDString];
 		[_item assignOrder];
 		_item.category = _walletCategory;
 	} else {
-		self.navigationItem.title = @"Edit Item";
+		self.navigationItem.title = NSLocalizedString(@"Edit Item", @"Edit Item");
 
 		_walletCategory = _item.category;
 
@@ -118,7 +118,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     [self rightBarButtonDoneButton];
 	self.navigationItem.rightBarButtonItem.enabled = NO;
 
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
+	[self leftBarButtonCancelButton];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPAD)?28:15, 0, 0);
@@ -354,7 +354,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (NSMutableDictionary *)noteItem
 {
     if (!_noteItem) {
-        _noteItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Note", @"order":@""}];
+        _noteItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title": NSLocalizedString(@"Note", @"Note"), @"order":@""}];
     }
     
     return _noteItem;
@@ -363,7 +363,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (NSMutableDictionary *)deleteItem
 {
     if (!_deleteItem) {
-        _deleteItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Delete", @"order":@""}];
+        _deleteItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title": NSLocalizedString(@"Delete", @"Delete"), @"order":@""}];
     }
     
     return _deleteItem;
@@ -550,8 +550,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (void)askDeleteImage {
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 															 delegate:self
-													cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
-											   destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete Photo", @"common", nil)
+													cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+											   destructiveButtonTitle:NSLocalizedString(@"Delete Photo", nil)
 													otherButtonTitles:nil];
 	actionSheet.tag = 1;
 	[actionSheet showInView:self.view];
@@ -560,8 +560,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (void)askDeleteVideo {
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 															 delegate:self
-													cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
-											   destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete Video", @"common", nil)
+													cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+											   destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
 													otherButtonTitles:nil];
 	actionSheet.tag = 1;
 	[actionSheet showInView:self.view];
@@ -570,25 +570,20 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (void)askVideoPickupWithDelete:(BOOL)deleteEnable
 {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        
-		if (deleteEnable) {
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+
+		{
+            UIActionSheet *actionSheet = deleteEnable ? [[UIActionSheet alloc] initWithTitle:nil
                                                                      delegate:self
-                                                            cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
-                                                       destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete Video", @"common", nil)
-                                                            otherButtonTitles:NSLocalizedStringFromTable(@"Take Video", @"common", nil),
-                                          NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
-                                          nil];
-            actionSheet.tag = 2;
-            [actionSheet showInView:self.view];
-        }
-        else {
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                     delegate:self
-                                                            cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
-                                                       destructiveButtonTitle:nil
-                                                            otherButtonTitles:NSLocalizedStringFromTable(@"Take Video", @"common", nil),
-                                          NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
+                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                                       destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
+                                                            otherButtonTitles:NSLocalizedString(@"Take Video", nil),
+                                          NSLocalizedString(@"Choose Existing", nil), nil] :
+					[[UIActionSheet alloc] initWithTitle:nil
+												delegate:self
+									   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+								  destructiveButtonTitle:nil
+									   otherButtonTitles:NSLocalizedString(@"Take Video", nil),
+														 NSLocalizedString(@"Choose Existing", nil),
                                           nil];
             actionSheet.tag = 2;
             [actionSheet showInView:self.view];
@@ -597,10 +592,10 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		if (deleteEnable) {
             UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                      delegate:self
-                                                            cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
-                                                       destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete Video", @"common", nil)
+                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                                       destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
                                                             otherButtonTitles:
-                                          NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
+                                          NSLocalizedString(@"Choose Existing", nil),
                                           nil];
             actionSheet.tag = 2;
             [actionSheet showInView:self.view];
@@ -608,10 +603,10 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
         else {
             UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                      delegate:self
-                                                            cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
+                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                                        destructiveButtonTitle:nil
                                                             otherButtonTitles:
-                                          NSLocalizedStringFromTable(@"Choose Existing", @"common", nil),
+                                          NSLocalizedString(@"Choose Existing", nil),
                                           nil];
             actionSheet.tag = 2;
             [actionSheet showInView:self.view];
@@ -1022,46 +1017,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     }
 }
 
-- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
-{
-    if (actionSheet.tag == 1) {
-        for (UIView *subview in actionSheet.subviews) {
-            if ([subview isKindOfClass:[UIButton class]]) {
-                UIButton *button = (UIButton *)subview;
-                if ([[button titleForState:UIControlStateNormal] isEqualToString:NSLocalizedStringFromTable(@"Delete Photo", @"common", nil)]) {
-                    
-                    [button setTitleColor:[UIColor colorWithRed:255.0/255.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-                    
-                }
-            }
-        }
-    }
-    else if (actionSheet.tag == 2) {
-        for (UIView *subview in actionSheet.subviews) {
-            if ([subview isKindOfClass:[UIButton class]]) {
-                UIButton *button = (UIButton *)subview;
-                if ([[button titleForState:UIControlStateNormal] isEqualToString:NSLocalizedStringFromTable(@"Delete Video", @"common", nil)]) {
-                    
-                    [button setTitleColor:[UIColor colorWithRed:255.0/255.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-                    
-                }
-            }
-        }
-    }
-    else if (actionSheet.tag == 3) {
-        for (UIView *subview in actionSheet.subviews) {
-            if ([subview isKindOfClass:[UIButton class]]) {
-                UIButton *button = (UIButton *)subview;
-                if ([[button titleForState:UIControlStateNormal] isEqualToString:NSLocalizedStringFromTable(@"Delete Item", @"common", nil)]) {
-                    
-                    [button setTitleColor:[UIColor colorWithRed:255.0/255.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-                    
-                }
-            }
-        }
-    }
-}
-
 #pragma mark - CategorySelect delegate
 
 - (void)walletCategorySelected:(WalletCategory *) category
@@ -1316,8 +1271,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
         // delete category
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                  delegate:self
-                                                        cancelButtonTitle:@"Cancel"
-                                                   destructiveButtonTitle:@"Delete Item"
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                   destructiveButtonTitle:NSLocalizedString(@"Delete Item", @"Delete Item")
                                                         otherButtonTitles:nil];
         actionSheet.tag = 3;
         [actionSheet showInView:self.view];
@@ -1621,7 +1576,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	inputCell.valueTextField.font = [UIFont systemFontOfSize:17];
 	inputCell.valueTextField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
 	inputCell.valueTextField.enabled = NO;
-	inputCell.valueTextField.placeholder = @"Category";
+	inputCell.valueTextField.placeholder = NSLocalizedString(@"Category", @"Category");
 	inputCell.valueTextField.text = _item.category.name;
 	return inputCell;
 }
@@ -1632,7 +1587,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	titleCell.selectionStyle = UITableViewCellSelectionStyleNone;
 
 	titleCell.titleTextField.delegate = self;
-	titleCell.titleTextField.placeholder = @"Title";
+	titleCell.titleTextField.placeholder = NSLocalizedString(@"Title", @"Title");
 	titleCell.titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	[titleCell.favoriteButton addTarget:self action:@selector(favoriteButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -1645,10 +1600,10 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     
 	NSDate *date = _item.modificationDate ? _item.modificationDate : [NSDate date];
     if (IS_IPAD || [NSDate isFullStyleLocale]) {
-        titleCell.timeLabel.text = [NSString stringWithFormat:@"Current %@", [self fullStyleDateStringFromDate:date withShortTime:YES]];
+        titleCell.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Current %@", @"Current %@"), [self fullStyleDateStringFromDate:date withShortTime:YES]];
     }
     else {
-        titleCell.timeLabel.text = [NSString stringWithFormat:@"Current %@", [self customFullStyleDateStringFromDate:date withShortTime:YES]];
+        titleCell.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Current %@", @"Current %@"), [self customFullStyleDateStringFromDate:date withShortTime:YES]];
     }
 
 	return titleCell;

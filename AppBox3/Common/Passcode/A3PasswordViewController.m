@@ -72,7 +72,7 @@
 	_headerLabel = [UILabel new];
 	_headerLabel.font = [UIFont systemFontOfSize:17];
 	_headerLabel.textColor = [UIColor colorWithWhite:0.31f alpha:1.0f];
-	_headerLabel.text = @"Enter your passcode";
+	_headerLabel.text = NSLocalizedString(@"Enter your passcode", @"Enter your passcode");
 	_headerLabel.textAlignment = NSTextAlignmentCenter;
 	[self.view addSubview:_headerLabel];
 
@@ -87,7 +87,7 @@
 	_failedAttemptLabel = [UILabel new];
 	_failedAttemptLabel.font = [UIFont systemFontOfSize:17];
 	_failedAttemptLabel.textColor = [UIColor colorWithWhite:0.31f alpha:1.0f];
-	_failedAttemptLabel.text = @"Enter your passcode";
+	_failedAttemptLabel.text = NSLocalizedString(@"Enter your passcode", @"Enter your passcode");
 	_failedAttemptLabel.textAlignment = NSTextAlignmentCenter;
 	_failedAttemptLabel.hidden = YES;
 	_failedAttemptLabel.layer.cornerRadius = 22 * 0.5;
@@ -367,21 +367,21 @@
 	UITextField *textField;
 	switch (indexPath.row) {
 		case 0:
-			cell.textLabel.text = @"New Passcode";
+			cell.textLabel.text = NSLocalizedString(@"New Passcode", @"New Passcode");
 			if (!_aNewPasswordField) {
 				_aNewPasswordField = [self setupPasscodeField];
 			}
 			textField = _aNewPasswordField;
 			break;
 		case 1:
-			cell.textLabel.text = @"Confirm Passcode";
+			cell.textLabel.text = NSLocalizedString(@"Confirm Passcode", @"Confirm Passcode");
 			if (!_confirmPasswordField) {
 				_confirmPasswordField = [self setupPasscodeField];
 			}
 			textField = _confirmPasswordField;
 			break;
 		case 2:
-			cell.textLabel.text = @"Hint";
+			cell.textLabel.text = NSLocalizedString(@"Hint", @"Hint");
 			if (!_passwordHintField) {
 				_passwordHintField = [UITextField new];
 				_passwordHintField.keyboardType = UIKeyboardTypeDefault;
@@ -397,28 +397,28 @@
 	UITextField *textField;
 	switch (indexPath.row) {
 		case 0:
-			cell.textLabel.text = @"Old Passcode";
+			cell.textLabel.text = NSLocalizedString(@"Old Passcode", @"Old Passcode");
 			if (!_passwordField) {
 				_passwordField = [self setupPasscodeField];
 			}
 			textField = _passwordField;
 			break;
 		case 1:
-			cell.textLabel.text = @"New Passcode";
+			cell.textLabel.text = NSLocalizedString(@"New Passcode", @"New Passcode");
 			if (!_aNewPasswordField) {
 				_aNewPasswordField = [self setupPasscodeField];
 			}
 			textField = _aNewPasswordField;
 			break;
 		case 2:
-			cell.textLabel.text = @"Confirm Passcode";
+			cell.textLabel.text = NSLocalizedString(@"Confirm Passcode", @"Confirm Passcode");
 			if (!_confirmPasswordField) {
 				_confirmPasswordField = [self setupPasscodeField];
 			}
 			textField = _confirmPasswordField;
 			break;
 		case 3:
-			cell.textLabel.text = @"Hint";
+			cell.textLabel.text = NSLocalizedString(@"Hint", @"Hint");
 			if (!_passwordHintField) {
 				_passwordHintField = [UITextField new];
 				_passwordHintField.keyboardType = UIKeyboardTypeDefault;
@@ -497,7 +497,7 @@
 		}
 	} else if (_isUserEnablingPasscode) {
 		if (textField == _aNewPasswordField && ![_aNewPasswordField.text length]) {
-			[self setMessage:@"Please enter new passcode."];
+			[self setMessage:NSLocalizedString(@"Please enter new passcode.", @"Please enter new passcode.")];
 		} else {
 			_failedAttemptLabel.text = @"";
 			_failedAttemptLabel.hidden = YES;
@@ -537,7 +537,7 @@
 				return YES;
 			}
 			if (passcodeValid && ![_aNewPasswordField.text length] && ![_confirmPasswordField.text length]) {
-				[self setMessage:@"Please enter new passcode."];
+				[self setMessage:NSLocalizedString(@"Please enter new passcode.", @"Please enter new passcode.")];
 			}
 			return NO;
 		}
@@ -584,9 +584,9 @@
 		if (![_aNewPasswordField.text length] && ![_confirmPasswordField.text length]) {
 			return NO;
 		} else if (![_aNewPasswordField.text length]) {
-			[self setMessage:@"Please enter new passcode."];
+			[self setMessage:NSLocalizedString(@"Please enter new passcode.", @"Please enter new passcode.")];
 		} else if (![_confirmPasswordField.text length]) {
-			[self setMessage:@"Please enter confirm passcode."];
+			[self setMessage:NSLocalizedString(@"Please enter confirm passcode.", @"Please enter confirm passcode.")];
 		} else {
 			[self setMessage:NSLocalizedString(@"Passcodes did not match. Try again.", @"")];
 		}
@@ -601,9 +601,9 @@
 		return YES;
 	}
 	if ([_passwordField.text length]) {
-		[self setMessage:@"Passcode did not match."];
+		[self setMessage:NSLocalizedString(@"Passcode did not match.", @"Passcode did not match.")];
 	} else {
-		[self setMessage:@"Please enter passcode."];
+		[self setMessage:NSLocalizedString(@"Please enter passcode.", @"Please enter passcode.")];
 	}
 	return NO;
 }

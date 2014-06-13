@@ -23,6 +23,7 @@
 #import "A3WalletItemEditViewController.h"
 #import "UIColor+A3Addition.h"
 #import "A3InstructionViewController.h"
+#import "WalletCategory+initialize.h"
 
 @interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate>
 @property (nonatomic, strong) UIView *footerView;
@@ -143,7 +144,7 @@
     if (!super.items) {
 		FNLOG();
 		NSMutableArray *items;
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category==%@", self.category];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category == %@", self.category];
         items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
 		[super setItems:items];
     }
@@ -244,8 +245,8 @@
     if (self.items.count > 0) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                  delegate:self
-                                                        cancelButtonTitle:@"Cancel"
-                                                   destructiveButtonTitle:@"Delete All"
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                   destructiveButtonTitle:NSLocalizedString(@"Delete All", @"Delete All")
                                                         otherButtonTitles:nil];
         actionSheet.tag = 1111;
         [actionSheet showInView:self.view];
@@ -264,8 +265,8 @@
 
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                  delegate:self
-                                                        cancelButtonTitle:@"Cancel"
-                                                   destructiveButtonTitle:@"Delete Items"
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                   destructiveButtonTitle:NSLocalizedString(@"Delete Items", @"Delete Items")
                                                         otherButtonTitles:nil];
         actionSheet.tag = 2222;
         [actionSheet showInView:self.view];
@@ -288,15 +289,15 @@
 			WalletItem *item = self.items[ip.row];
 			NSString *convertInfoText = @"";
 
-			if ([self.category.name isEqualToString:WalletCategoryTypePhoto]) {
+			if ([self.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory]) {
 				NSString *itemName = item.name;
-				NSString *firstFieldItemValue = @"Photo";
+				NSString *firstFieldItemValue = NSLocalizedString(@"Photo", @"Photo");
 
 				convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
 			}
-			else if ([self.category.name isEqualToString:WalletCategoryTypeVideo]) {
+			else if ([self.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
 				NSString *itemName = item.name;
-				NSString *firstFieldItemValue = @"Video";
+				NSString *firstFieldItemValue = NSLocalizedString(@"Video", @"Video");
 
 				convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
 			}
@@ -365,13 +366,13 @@
 			WalletItem *item = self.items[index];
 			NSString *convertInfoText = @"";
 
-			if ([self.category.name isEqualToString:WalletCategoryTypePhoto]) {
+			if ([self.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory]) {
 				NSString *itemName = item.name;
-				NSString *firstFieldItemValue = @"Photo";
+				NSString *firstFieldItemValue = NSLocalizedString(@"Photo", @"Photo");
 
 				convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
 			}
-			else if ([self.category.name isEqualToString:WalletCategoryTypeVideo]) {
+			else if ([self.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
 				NSString *itemName = item.name;
 				NSString *firstFieldItemValue = @"Video";
 
@@ -498,12 +499,12 @@
     if ([activityType isEqualToString:UIActivityTypeMail]) {
 
         NSMutableString *txt = [NSMutableString new];
-        [txt appendString:@"<html><body>I'd like to share a wallet with you.<br/><br/>"];
+		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a wallet with you.<br/><br/>", nil)];
         for (int i=0; i<_shareTextList.count; i++) {
             [txt appendString:_shareTextList[i]];
             [txt appendString:@"<br/>"];
         }
-        [txt appendString:@"<br/>You can wallet more in the AppBox Pro.<br/><a href='https://itunes.apple.com/app/id318404385'>https://itunes.apple.com/app/id318404385</a></body></html>"];
+		[txt appendString:NSLocalizedString(@"share_wallet_html_body", nil)];
 
         return txt;
     }
@@ -513,7 +514,7 @@
             [txt appendString:_shareTextList[i]];
             [txt appendString:@"\n"];
         }
-        [txt appendString:@"\nCheck out the AppBox Pro!"];
+		[txt appendString:NSLocalizedString(@"\nCheck out the AppBox Pro!", @"\nCheck out the AppBox Pro!")];
 
         return txt;
     }
@@ -521,7 +522,7 @@
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-    return @"Share unit converting data";
+    return NSLocalizedString(@"Share unit converting data", @"Share unit converting data");
 }
 
 #pragma mark - ActionSheet delegate

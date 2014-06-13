@@ -72,9 +72,9 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 {
     [super viewDidLoad];
 
-	self.title = @"Details";
+	self.title = NSLocalizedString(@"Details", @"Details");
 
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"Edit") style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPAD)?28:15, 0, 0);
@@ -162,7 +162,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 - (NSMutableDictionary *)titleItem
 {
 	if (!_titleItem) {
-		_titleItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Title", @"order":@""}];
+		_titleItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title" : NSLocalizedString(@"Title", @"Title"), @"order":@""}];
 	}
     
 	return _titleItem;
@@ -171,7 +171,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 - (NSMutableDictionary *)noteItem
 {
 	if (!_noteItem) {
-		_noteItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Note", @"order":@""}];
+		_noteItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title" : NSLocalizedString(@"Note", @"Note"), @"order":@""}];
 	}
 
 	return _noteItem;
@@ -180,7 +180,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 - (NSMutableDictionary *)categoryItem
 {
 	if (!_categoryItem) {
-		_categoryItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Category", @"order":@""}];
+		_categoryItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title" : NSLocalizedString(@"Category", @"Category"), @"order":@""}];
 	}
     
 	return _categoryItem;
@@ -520,7 +520,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 	if (_fieldItems[indexPath.row] == self.titleItem) {
 		A3WalletItemTitleCell *titleCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemTitleCellID forIndexPath:indexPath];
-		titleCell.titleTextField.text = [_item.name length] ? _item.name : @"New Item";
+		titleCell.titleTextField.text = [_item.name length] ? _item.name : NSLocalizedString(@"New Item", @"New Item");
 		titleCell.titleTextField.delegate = self;
 		titleCell.favoriteButton.selected = self.item.favorite != nil;
         
@@ -534,7 +534,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
         }
         
         dateFormatter.doesRelativeDateFormatting = YES;
-		titleCell.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [dateFormatter stringFromDate:_item.modificationDate]];
+		titleCell.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [dateFormatter stringFromDate:_item.modificationDate]];
         
 		// To prevent adding multiple times
 		[titleCell.favoriteButton removeTarget:self action:@selector(favorButtonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -561,7 +561,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
         textCell.valueTextField.floatingLabelFont = [UIFont systemFontOfSize:14];
         textCell.valueTextField.font = [UIFont systemFontOfSize:17];
         textCell.valueTextField.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-        textCell.valueTextField.placeholder = @"Category";
+        textCell.valueTextField.placeholder = NSLocalizedString(@"Category", @"Category");
         textCell.valueTextField.text = _item.category.name;
         
         cell = textCell;

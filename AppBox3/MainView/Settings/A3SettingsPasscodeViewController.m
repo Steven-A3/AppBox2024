@@ -102,7 +102,7 @@
 	BOOL passcodeEnabled = [self passcodeEnabled];
 	switch (row) {
 		case 0:
-			cell.textLabel.text =  passcodeEnabled ? @"Turn Passcode Off" : @"Turn Passcode On";
+			cell.textLabel.text =  passcodeEnabled ? NSLocalizedString(@"Turn Passcode Off", @"Turn Passcode Off") : NSLocalizedString(@"Turn Passcode On", @"Turn Passcode On");
 			cell.textLabel.textColor = [self.view tintColor];
 			break;
 		case 1:
@@ -234,11 +234,11 @@
 }
 
 - (void)alertSecurityInfo {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Information"
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
 														message:NSLocalizedString(@"SECURITY_INFO", nil)
 													   delegate:self
-											  cancelButtonTitle:@"OK"
-											  otherButtonTitles:@"How To Enable Data Protection", @"Learn about iOS Security", nil];
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+											  otherButtonTitles:NSLocalizedString(@"How To Enable Data Protection", @"How To Enable Data Protection"), @"Learn about iOS Security", nil];
 	[alertView show];
 }
 

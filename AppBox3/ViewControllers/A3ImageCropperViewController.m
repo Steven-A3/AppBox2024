@@ -87,7 +87,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-	self.title = @"Move and Scale";
+	self.title = NSLocalizedString(@"Move and Scale", @"Move and Scale");
 
 	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 

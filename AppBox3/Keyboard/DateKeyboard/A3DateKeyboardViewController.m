@@ -67,7 +67,7 @@
 	[CATransaction setValue:[NSNumber numberWithBool:YES] forKey:kCATransactionDisableActions];
 
 	[_Nov_Button setHidden:YES];
-	[_today_Dec_Button setTitle:@"Today" forState:UIControlStateNormal];
+	[_today_Dec_Button setTitle:NSLocalizedString(@"Today", @"Today") forState:UIControlStateNormal];
 	_today_Dec_Button.titleLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 18 : IS_LANDSCAPE ? 25 : 18];
 
 	CGRect frame = _num0_Oct_Button.frame;

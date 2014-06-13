@@ -64,7 +64,7 @@ enum SortingKind {
 
     self.navigationItem.rightBarButtonItem = self.searchItem;
     
-	self.navigationItem.title = @"All Items";
+	self.navigationItem.title = NSLocalizedString(@"All Items", @"All Items");
 	self.showCategoryInDetailViewController = YES;
 
     self.sortingMode = kSortingDate;
@@ -147,16 +147,13 @@ enum SortingKind {
                 self.navigationItem.leftBarButtonItem = nil;
             }
             else {
-                UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
-                self.navigationItem.leftBarButtonItem = appsItem;
+				[self leftBarButtonAppsButton];
             }
         }
         else {
-            UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
-            self.navigationItem.leftBarButtonItem = appsItem;
+			[self leftBarButtonAppsButton];
         }
     } else {
-        // 아님
         [self makeBackButtonEmptyArrow];
         self.navigationItem.hidesBackButton = YES;
         
@@ -318,7 +315,7 @@ enum SortingKind {
 
     NSUInteger cateCount = [WalletCategory MR_countOfEntities];
     
-    NSAttributedString *nameText = [[NSAttributedString alloc] initWithString:(cateCount > 1) ? @"CATEGORIES" : @"CATEGORY"
+    NSAttributedString *nameText = [[NSAttributedString alloc] initWithString:(cateCount > 1) ? NSLocalizedString(@"CATEGORIES", @"CATEGORIES") : NSLocalizedString(@"CATEGORY", @"CATEGORY")
                                                                    attributes:textAttributes];
     NSAttributedString *countText = [[NSAttributedString alloc] initWithString:@(cateCount).stringValue
                                                                   attributes:valueAttributes];
@@ -340,7 +337,7 @@ enum SortingKind {
 		itemCount = 0;
 	}
     
-    nameText = [[NSAttributedString alloc] initWithString:(itemCount > 1) ? @"ITEMS" : @"ITEM"
+    nameText = [[NSAttributedString alloc] initWithString:(itemCount > 1) ? NSLocalizedString(@"ITEMS", @"ITEMS") : NSLocalizedString(@"ITEM", @"ITEM")
                                                                    attributes:textAttributes];
     countText = [[NSAttributedString alloc] initWithString:@(itemCount).stringValue
                                                                     attributes:valueAttributes];
@@ -367,7 +364,7 @@ enum SortingKind {
         dateText = [formatter stringFromDate:recentItem.modificationDate];
     }
     
-    nameText = [[NSAttributedString alloc] initWithString:@"UPDATED"
+    nameText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"UPDATED", @"UPDATED")
                                                attributes:textAttributes];
     countText = [[NSAttributedString alloc] initWithString:dateText
                                                 attributes:valueAttributes];
@@ -692,8 +689,8 @@ enum SortingKind {
 		if (![topCell.topView.subviews containsObject:self.sortArrowImgView]) {
 			[topCell.topView addSubview:self.sortArrowImgView];
 		}
-		[topCell.topView.sortingSegment setTitle:@"Date" forSegmentAtIndex:0];
-		[topCell.topView.sortingSegment setTitle:@"Name" forSegmentAtIndex:1];
+		[topCell.topView.sortingSegment setTitle:NSLocalizedString(@"Date", @"Date") forSegmentAtIndex:0];
+		[topCell.topView.sortingSegment setTitle:NSLocalizedString(@"Name", @"Name") forSegmentAtIndex:1];
 
 		UIFont *segFont = [UIFont systemFontOfSize:13];
 		NSDictionary *segTextAttributes = @{

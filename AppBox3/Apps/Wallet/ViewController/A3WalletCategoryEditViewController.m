@@ -63,13 +63,13 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     [super viewDidLoad];
 
 	if (_isAddingCategory) {
-		self.navigationItem.title = @"Add Category";
+		self.navigationItem.title = NSLocalizedString(@"Add Category", @"Add Category");
 		_category = [WalletCategory MR_createEntity];
 		[_category initValues];
 		[_category assignOrder];
 		_category.icon = [WalletCategory iconList][0];
 	} else {
-		self.navigationItem.title = @"Edit Category";
+		self.navigationItem.title = NSLocalizedString(@"Edit Category", @"Edit Category");
 	}
 	self.originalCategoryName = _category.name;
     
@@ -77,8 +77,8 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     [self rightBarButtonDoneButton];
 	self.navigationItem.rightBarButtonItem.enabled = NO;
 
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
-    
+	[self leftBarButtonCancelButton];
+
     [self.tableView registerClass:[A3WalletCategoryEditAddNewFieldCell class] forCellReuseIdentifier:A3WalletCateEditPlusCellID];
     
     self.tableView.separatorColor = A3UITableViewSeparatorColor;
@@ -170,10 +170,10 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 
     // 입력값 유효성 체크
     if (_category.name.length == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@""
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                        message:NSLocalizedString(@"Enter catergory name", @"Enter catergory name")
                                                        delegate:nil
-                                              cancelButtonTitle:@"Enter catergory name"
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                               otherButtonTitles:nil];
         [alert show];
         return;
@@ -465,7 +465,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 
 			titleCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			titleCell.textField.text = _category.name;
-			titleCell.textField.placeholder = @"Category Name";
+			titleCell.textField.placeholder = NSLocalizedString(@"Category Name", @"Category Name");
 			titleCell.textField.delegate = self;
 			titleCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
 			titleCell.textField.font = [UIFont systemFontOfSize:17.0];
@@ -489,7 +489,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 	else if (indexPath.section == 1) {
 		if (_fields[indexPath.row] == _plusItem) {
 			cell = [tableView dequeueReusableCellWithIdentifier:A3WalletCateEditPlusCellID forIndexPath:indexPath];
-			cell.textLabel.text = @"add new field";
+			cell.textLabel.text = NSLocalizedString(@"add new field", @"add new field");
 			cell.textLabel.font = [UIFont systemFontOfSize:17.0];
 		}
 		else if ([_fields[indexPath.row] isKindOfClass:[WalletField class]]) {
@@ -630,8 +630,8 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     else if (indexPath.section == 2) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                  delegate:self
-                                                        cancelButtonTitle:@"Cancel"
-                                                   destructiveButtonTitle:@"Delete Category"
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                   destructiveButtonTitle:NSLocalizedString(@"Delete Category", @"Delete Category")
                                                         otherButtonTitles:nil];
         [actionSheet showInView:self.view];
         
@@ -649,20 +649,6 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
         
         [[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryDeleted object:nil];
 	}
-}
-
-- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
-{
-    for (UIView *subview in actionSheet.subviews) {
-        if ([subview isKindOfClass:[UIButton class]]) {
-            UIButton *button = (UIButton *)subview;
-            if ([[button titleForState:UIControlStateNormal] isEqualToString:@"Delete Category"]) {
-                
-                [button setTitleColor:[UIColor colorWithRed:255.0/255.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-                
-            }
-        }
-    }
 }
 
 @end

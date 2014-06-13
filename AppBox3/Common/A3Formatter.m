@@ -37,15 +37,6 @@
 	return [dateFormatter stringFromDate:date];
 }
 
-+ (NSString *)fullStyleYearMonthStringFromDate:(NSDate *)date {
-	if (nil == date) {
-		return @"";
-	}
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateFormat:@"MMMM, y"];
-	return [dateFormatter stringFromDate:date];
-}
-
 + (NSString *)stringWithCurrencyFormatFromNumber:(NSNumber *)number {
 	NSNumberFormatter *currencyFormatter = [[NSNumberFormatter alloc] init];
 	[currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];

@@ -43,7 +43,7 @@
 	// Do any additional setup after loading the view.
     //[self makeBackButtonEmptyArrow];
     [self makeBackButtonEmptyArrow];
-    self.title = @"Information";
+    self.title = NSLocalizedString(@"Information", @"Information");
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareAction)];
 
 	if (IS_IPAD || _showDoneButton) {

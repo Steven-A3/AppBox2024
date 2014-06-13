@@ -124,7 +124,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 - (void)useICloudButtonPressedInViewController:(UIViewController *)viewController {
 	if (!_cloudButtonUsed) {
 		_cloudButtonUsed = YES;
-		[_currentSceneViewController.rightButton setTitle:@"Continue" forState:UIControlStateNormal];
+		[_currentSceneViewController.rightButton setTitle:NSLocalizedString(@"Continue", @"Continue") forState:UIControlStateNormal];
 
 		if (![[A3AppDelegate instance].ubiquityStoreManager cloudAvailable]) {
 			[self alertCloudNotEnabled];

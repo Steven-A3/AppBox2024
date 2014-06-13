@@ -44,9 +44,9 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = @"Category Info";
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
+    self.navigationItem.title = NSLocalizedString(@"Category Info", @"Category Info");
+
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"Edit") style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
 
 	NSString *nibName = IS_IPAD ? @"A3WalletCateInfoFieldCell_iPad" : @"A3WalletCateInfoFieldCell";
     [self.tableView registerNib:[UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3WalletCateInfoFieldCellID];
@@ -99,7 +99,7 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
 		[self setupHeaderViewFont];
         _headerView.nameLabel.text = _category.name;
         _headerView.icon.image = [UIImage imageNamed:_category.icon];
-        _headerView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_category.modificationDate timeAgo]];
+        _headerView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [_category.modificationDate timeAgo]];
     }
     
     return _headerView;
@@ -204,8 +204,7 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     else {
         cell.typeLabel.text = [NSString stringWithFormat:@"%@, %@", field.type, field.style];
     }
-    
-    
+
     return cell;
 }
 

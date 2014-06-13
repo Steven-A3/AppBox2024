@@ -208,7 +208,7 @@
 	}
 
 	if (_useDotAsClearButton) {
-		[self.dotButton setTitle:IS_IPHONE ? @"C" : @"Clear" forState:UIControlStateNormal];
+		[self.dotButton setTitle:IS_IPHONE ? @"C" : NSLocalizedString(@"Clear", @"Clear") forState:UIControlStateNormal];
 		self.dotButton.titleLabel.font = [UIFont systemFontOfSize:IS_LANDSCAPE ? 25 : 18];
 	} else {
 		switch (_keyboardType) {
@@ -264,14 +264,14 @@
 		available = [self.delegate isNextEntryExists];
 	}
 
-	[_nextButton setTitle:available ? @"Next" : nil forState:UIControlStateNormal];
+	[_nextButton setTitle:available ? NSLocalizedString(@"Next", @"Next") : nil forState:UIControlStateNormal];
 	[_nextButton setEnabled:available];
 
 	available = NO;
 	if ([self.delegate respondsToSelector:@selector(isPreviousEntryExists)]) {
 		available = [self.delegate isPreviousEntryExists];
 	}
-	[_prevButton setTitle:available ? @"Prev" : nil forState:UIControlStateNormal];
+	[_prevButton setTitle:available ? NSLocalizedString(@"Prev", @"Prev") : nil forState:UIControlStateNormal];
 	[_prevButton setEnabled:available];
 
 	[self setupLocale];
@@ -309,7 +309,7 @@
 			break;
 		}
 		case A3NumberKeyboardTypeMonthYear: {
-			[self fillBigButtonTitleWith:@"Years" bigButton2Title:@"Months"];
+			[self fillBigButtonTitleWith:NSLocalizedString(@"Years", @"Years") bigButton2Title:@"Months"];
 			bigButton1.selected = YES;
 			if (IS_IPHONE) {
 				[self.bigButton1.titleLabel setFont:[UIFont systemFontOfSize:18.0]];

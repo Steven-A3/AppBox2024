@@ -76,8 +76,8 @@
 	}
 
 	if (_showAsWhatsNew) {
-		[self.leftButton setTitle:@"Close" forState:UIControlStateNormal];
-		[self.rightButton setTitle:@"Continue" forState:UIControlStateNormal];
+		[self.leftButton setTitle:NSLocalizedString(@"Close", @"Close") forState:UIControlStateNormal];
+		[self.rightButton setTitle:NSLocalizedString(@"Continue", @"Continue") forState:UIControlStateNormal];
 		FNLOG(@"%ld", (long)_sceneNumber);
 	}
 }

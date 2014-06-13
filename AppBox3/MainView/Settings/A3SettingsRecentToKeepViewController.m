@@ -100,8 +100,8 @@
 - (void)askClearUsedItems {
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 															 delegate:self
-													cancelButtonTitle:@"Cancel"
-											   destructiveButtonTitle:@"Clear Recent"
+													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+											   destructiveButtonTitle:NSLocalizedString(@"Clear Recent", @"Clear Recent")
 													otherButtonTitles:nil];
 	[actionSheet showInView:self.view];
 }

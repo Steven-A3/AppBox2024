@@ -158,10 +158,10 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 			switch (indexPath.row) {
 				case 0:
 					if ([[[A3AppDelegate instance] ubiquityStoreManager] cloudEnabled]) {
-						UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info"
-																			message:@"Please turn iCloud sync off."
+						UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+																			message:NSLocalizedString(@"Please turn iCloud sync off.", @"Please turn iCloud sync off.")
 																		   delegate:nil
-																  cancelButtonTitle:@"OK"
+																  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 																  otherButtonTitles:nil];
 						[alertView show];
 					} else {
@@ -211,7 +211,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 	self.dropboxMetadata = metadata;
 	if (_selectBackupInProgress) {
 		if (![metadata.contents count]) {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Dropbox" message:@"You have no backup files stored in Dropbox." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Dropbox", @"Dropbox") message:NSLocalizedString(@"You have no backup files stored in Dropbox.", @"You have no backup files stored in Dropbox.") delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
 			[alertView show];
 		} else {
 			[self performSegueWithIdentifier:@"dropboxSelectBackup" sender:nil];
@@ -233,13 +233,13 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 			DBMetadata *lastItem = [sortedArray lastObject];
 			
             if (IS_IPAD) {
-                _backupInfoString = [NSString stringWithFormat:@"Last Backup: %@", [self fullStyleDateStringFromDate:lastItem.lastModifiedDate withShortTime:YES]];
+                _backupInfoString = [NSString stringWithFormat:NSLocalizedString(@"Last Backup: %@", @"Last Backup: %@"), [self fullStyleDateStringFromDate:lastItem.lastModifiedDate withShortTime:YES]];
             }
             else {
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                 [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
                 [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-                _backupInfoString = [NSString stringWithFormat:@"Last Backup: %@", [dateFormatter stringFromDate:lastItem.lastModifiedDate]];
+                _backupInfoString = [NSString stringWithFormat:NSLocalizedString(@"Last Backup: %@", @"Last Backup: %@"), [dateFormatter stringFromDate:lastItem.lastModifiedDate]];
             }
 		}
 
@@ -249,7 +249,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 
 - (void)restClient:(DBRestClient *)client loadedFile:(NSString *)destPath {
 	_restoreInProgress = YES;
-	_HUD.labelText = @"Unarchiving";
+	_HUD.labelText = NSLocalizedString(@"Unarchiving", @"Unarchiving");
 	AAAZip *zipArchive = [[AAAZip alloc] init];
 	zipArchive.delegate = self;
 	[zipArchive unzipFile:destPath unzipFileto:[@"restore" pathInCachesDirectory]];
@@ -291,10 +291,10 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 }
 
 - (void)backupRestoreManager:(A3BackupRestoreManager *)manager restoreCompleteWithSuccess:(BOOL)success {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info"
-														message:@"Your data has been restored successfully."
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+														message:NSLocalizedString(@"Your data has been restored successfully.", @"Your data has been restored successfully.")
 													   delegate:nil
-											  cancelButtonTitle:@"OK"
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 											  otherButtonTitles:nil];
 	[alertView show];
 
@@ -338,7 +338,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 	_HUD.mode = MBProgressHUDModeDeterminate;
 	_HUD.removeFromSuperViewOnHide = YES;
 
-	_HUD.labelText = @"Downloading";
+	_HUD.labelText = NSLocalizedString(@"Downloading", @"Downloading");
 
 	[_HUD show:YES];
 

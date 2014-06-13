@@ -49,7 +49,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 {
     [super viewDidLoad];
 
-	self.title = @"More";
+	self.title = NSLocalizedString(@"More", @"More");
 
 	if (_isEditing) {
 		[self leftBarButtonAddButton];

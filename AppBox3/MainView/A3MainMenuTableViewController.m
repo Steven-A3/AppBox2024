@@ -200,8 +200,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 - (id)bottomSection {
 	NSArray *bottomSection = @[
-			@{kA3AppsMenuName : @"Settings", kA3AppsStoryboard_iPhone : @"A3Settings", kA3AppsStoryboard_iPad:@"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
-			@{kA3AppsMenuName : @"About", kA3AppsStoryboard_iPhone : @"about", kA3AppsStoryboard_iPad:@"about", kA3AppsDoNotKeepAsRecent:@YES},
+			@{kA3AppsMenuName : NSLocalizedString(@"Settings", @"Settings"), kA3AppsStoryboard_iPhone : @"A3Settings", kA3AppsStoryboard_iPad:@"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
+			@{kA3AppsMenuName : NSLocalizedString(@"About", @"About"), kA3AppsStoryboard_iPhone : @"about", kA3AppsStoryboard_iPad:@"about", kA3AppsDoNotKeepAsRecent:@YES},
 //			@{kA3AppsMenuName : @"Help", kA3AppsClassName_iPhone : @"A3HelpViewController", kA3AppsDoNotKeepAsRecent:@YES},
 	];
 
@@ -329,7 +329,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 - (UIViewController *)getViewControllerForElement:(A3TableViewMenuElement *)menuElement {
 	UIViewController *targetViewController;
 
-	if ([menuElement.title isEqualToString:@"Days Counter"]) {
+	if ([menuElement.title isEqualToString:NSLocalizedString(@"Days Counter", @"Days Counter")]) {
         A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
 
         NSInteger lastOpenedMainIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"DaysCounterLastOpenedMainIndex"];
@@ -527,7 +527,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	NSMutableDictionary *recentlyUsed = [[userDefaults objectForKey:kA3MainMenuRecentlyUsed] mutableCopy];
 	if (!recentlyUsed) {
 		recentlyUsed = [NSMutableDictionary new];
-		recentlyUsed[kA3AppsMenuName] = @"Recent";
+		recentlyUsed[kA3AppsMenuName] = NSLocalizedString(@"Recent", @"Recent");
 		recentlyUsed[kA3AppsMenuCollapsed] = @NO;
 		recentlyUsed[kA3AppsMenuExpandable] = @YES;
 	}

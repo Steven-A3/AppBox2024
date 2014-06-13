@@ -45,7 +45,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = _isAddMode ? @"Add Field" : @"Edit Field";
+    self.navigationItem.title = _isAddMode ? NSLocalizedString(@"Add Field", @"Add Field") : NSLocalizedString(@"Edit Field", @"Edit Field");
 	if (!_isAddMode) {
 		self.originalFieldName = _field.name;
 	}
@@ -252,7 +252,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 		_alertHUD.mode = MBProgressHUDModeText;
 		_alertHUD.margin = 2.0;
 		_alertHUD.cornerRadius = 10.0;
-		_alertHUD.labelText = @" Field name already exists. ";
+		_alertHUD.labelText = NSLocalizedString(@" Field name already exists. ", @" Field name already exists. ");
 		_alertHUD.labelFont = [UIFont fontWithName:@"Avenir-Light" size:14.0];
 		_alertHUD.labelColor = [UIColor whiteColor];
 		_alertHUD.color = [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f];
@@ -348,7 +348,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 		titleCell.textField.font = [UIFont systemFontOfSize:17];
 		titleCell.textField.text = _field.name;
 		titleCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-		titleCell.textField.placeholder = @"Field Name";
+		titleCell.textField.placeholder = NSLocalizedString(@"Field Name", @"Field Name");
 		titleCell.textField.delegate = self;
 
 		cell = titleCell;
@@ -363,7 +363,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 			cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
 		}
 
-		cell.textLabel.text = @"Type";
+		cell.textLabel.text = NSLocalizedString(@"Type", @"Type");
 		cell.detailTextLabel.text = _field.type;
 	}
 	else if (indexPath.section == 2) {
@@ -376,7 +376,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 			cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
 		}
 
-		cell.textLabel.text = @"Style";
+		cell.textLabel.text = NSLocalizedString(@"Style", @"Style");
 		cell.detailTextLabel.text = _field.style;
 	}
 

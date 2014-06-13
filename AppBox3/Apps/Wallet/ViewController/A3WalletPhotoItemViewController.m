@@ -71,7 +71,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-	self.title = @"Detail";
+	self.title = NSLocalizedString(@"Detail", @"Detail");
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self initializeViews];
@@ -115,7 +115,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 - (void)initializeViews
 {
 	FNLOG();
-    UIBarButtonItem *editItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
+    UIBarButtonItem *editItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"Edit") style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
     self.navigationItem.rightBarButtonItem = editItem;
     
 	CGFloat tbvHeight = self.view.bounds.size.height - 44;
@@ -204,7 +204,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 - (NSMutableDictionary *)photoItem {
 	if (!_photoItem) {
-		_photoItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Photo", @"order":@""}];
+		_photoItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title" : NSLocalizedString(@"Photo", @"Photo"), @"order":@""}];
 	}
 	return _photoItem;
 }
@@ -219,7 +219,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 - (NSMutableDictionary *)noteItem
 {
     if (!_noteItem) {
-        _noteItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Note", @"order":@""}];
+        _noteItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title" : NSLocalizedString(@"Note", @"Note"), @"order":@""}];
     }
     
     return _noteItem;
@@ -228,7 +228,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 - (NSMutableDictionary *)mapItem
 {
     if (!_mapItem) {
-        _mapItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Map", @"order":@""}];
+        _mapItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title" : NSLocalizedString(@"Map", @"Map"), @"order":@""}];
     }
     
     return _mapItem;
@@ -320,9 +320,9 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 - (void)updateMetadataViewWithPage:(NSUInteger)page {
 	FNLOG(@"%ld", (long)page);
-	self.metadataView.titleTextField.text = [_item.name length] ?  _item.name : @"New Item";
+	self.metadataView.titleTextField.text = [_item.name length] ?  _item.name : NSLocalizedString(@"New Item", @"New Item");
 	_metadataView.favoriteButton.selected = self.item.favorite != nil;
-	_metadataView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
+	_metadataView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [_item.modificationDate timeAgo]];
 
     if (self.photoFieldItems.count <= page) {
         return;

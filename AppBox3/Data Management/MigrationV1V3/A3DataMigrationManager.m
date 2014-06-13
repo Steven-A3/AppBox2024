@@ -671,22 +671,11 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 }
 
 - (void)askWalletPassword {
-	FNLOG();
 	_passwordAlertView = [[UIAlertView alloc] initWithTitle:@"Encryption Key for Wallet" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
 	_passwordAlertView.alertViewStyle = UIAlertViewStyleSecureTextInput;
 	_passwordAlertView.delegate = self;
 	[_passwordAlertView show];
 }
-
-//- (void)willPresentAlertView:(UIAlertView *)alertView {
-//	UITextField *textField = [alertView textFieldAtIndex:0];
-//}
-//
-//- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-//	[self.passwordAlertView dismissWithClickedButtonIndex:0 animated:YES];
-//	[self alertView:_passwordAlertView clickedButtonAtIndex:0];
-//	return YES;
-//}
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSString *password = [[alertView textFieldAtIndex:0] text];

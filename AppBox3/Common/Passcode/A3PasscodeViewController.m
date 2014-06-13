@@ -107,7 +107,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 	// It is also used to display the "Passcodes did not match" error message if the user fails to confirm the passcode.
 	_failedAttemptLabel = [[UILabel alloc] initWithFrame: CGRectZero];
-	_failedAttemptLabel.text = @"1 Passcode Failed Attempt";
+	_failedAttemptLabel.text = NSLocalizedString(@"1 Passcode Failed Attempt", @"1 Passcode Failed Attempt");
 	_failedAttemptLabel.backgroundColor	= kFailedAttemptLabelBackgroundColor;
 	_failedAttemptLabel.hidden = YES;
 	_failedAttemptLabel.textColor = kFailedAttemptLabelTextColor;

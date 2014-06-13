@@ -6,8 +6,6 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 extern NSString *const WalletFieldTypeText;
 extern NSString *const WalletFieldTypeNumber;
 extern NSString *const WalletFieldTypePhone;
@@ -24,6 +22,11 @@ extern NSString *const WalletFieldStyleHidden;
 
 extern NSString *const WalletCategoryTypePhoto;
 extern NSString *const WalletCategoryTypeVideo;
+extern NSString *const WalletFieldNativeType;
+extern NSString *const WalletFieldNativeTypeText;
+extern NSString *const WalletFieldNativeTypeImage;
+extern NSString *const WalletFieldNativeTypeVideo;
+extern NSString *const WalletFieldTypeID;
 
 @interface WalletData : NSObject
 

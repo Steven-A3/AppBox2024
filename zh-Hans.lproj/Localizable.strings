@@ -727,3 +727,98 @@
 "Weight" = "Weight";
 
 "Favorite" = "Favorite";
+
+"Field Type" = "Field Type";
+"All Items" = "All Items";
+"CATEGORIES" = "CATEGORIES";
+"CATEGORY" = "CATEGORY";
+"ITEMS" = "ITEMS";
+"UPDATED" = "UPDATED";
+"Add Category" = "Add Category";
+"Edit Category" = "Edit Category";
+"Enter catergory name" = "Enter catergory name";
+"Category Name" = "Category Name";
+"add new field" = "add new field";
+"Delete Category" = "Delete Category";
+
+"Category Info" = "Category Info";
+"Delete Items" = "Delete Items";
+
+"Video" = "Video";
+"<html><body>I'd like to share a wallet with you.<br/><br/>" = "<html><body>I'd like to share a wallet with you.<br/><br/>";
+"share_wallet_html_body" = "<br/>You can wallet more in the AppBox Pro.<br/><a href='https://itunes.apple.com/app/id318404385'>https://itunes.apple.com/app/id318404385</a></body></html>";
+"Add Field" = "Add Field";
+"Edit Field" = "Edit Field";
+" Field name already exists. " = " Field name already exists. ";
+"Field Name" = "Field Name";
+"Type" = "Type";
+"Style" = "Style";
+"Field Style" = "Field Style";
+"Edit Image" = "Edit Image";
+"Add Item" = "Add Item";
+"Edit Item" = "Edit Item";
+"Note" = "Note";
+"Delete Video" = "Delete Video";
+"Take Video" = "Take Video";
+"Delete Item" = "Delete Item";
+"Category" = "Category";
+"Current %@" = "Current %@";
+"New Item" = "New Item";
+"Detail" = "Detail";
+"Map" = "Map";
+"Duration Time %lds" = "Duration Time %lds";
+"1 Passcode Failed Attempt" = "1 Passcode Failed Attempt";
+"Enter your old passcode" = "Enter your old passcode";
+"Enter your passcode" = "Enter your passcode";
+"Passcode" = "Passcode";
+"Set Passcode" = "Set Passcode";
+"Change Passcode" = "Change Passcode";
+"Turn Off Passcode" = "Turn Off Passcode";
+"Re-enter your passcode" = "Re-enter your passcode";
+"Re-enter your new passcode" = "Re-enter your new passcode";
+"Enter your new passcode" = "Enter your new passcode";
+"Passcodes did not match. Try again." = "Passcodes did not match. Try again.";
+"%i Passcode Failed Attempts" = "%i Passcode Failed Attempts";
+"Enter Passcode" = "Enter Passcode";
+"New Passcode" = "New Passcode";
+"Confirm Passcode" = "Confirm Passcode";
+"Hint" = "Hint";
+"Old Passcode" = "Old Passcode";
+"%li Passcode Failed Attempts" = "%li Passcode Failed Attempts";
+"Please enter new passcode." = "Please enter new passcode.";
+"Please enter confirm passcode." = "Please enter confirm passcode.";
+"Passcode did not match." = "Passcode did not match.";
+"Please enter passcode." = "Please enter passcode.";
+"Open in Safari" = "Open in Safari";
+
+"Today" = "Today";
+
+"A friend has recommended AppBox Pro™ from the iTunes App Store" = "A friend has recommended AppBox Pro™ from the iTunes App Store";
+"AppBox Pro™ V%@ Contact Support" = "AppBox Pro™ V%@ Contact Support";
+"Close" = "Close";
+"Continue" = "Continue";
+"Compressing" = "Compressing";
+
+"Uploading" = "Uploading";
+"Backup file has been uploaded to Dropbox successfully." = "Backup file has been uploaded to Dropbox successfully.";
+"Error" = "Error";
+"Backup process failed to upload backup file to Dropbox." = "Backup process failed to upload backup file to Dropbox.";
+"Please turn iCloud sync off." = "Please turn iCloud sync off.";
+"Dropbox" = "Dropbox";
+"You have no backup files stored in Dropbox." = "You have no backup files stored in Dropbox.";
+"Last Backup: %@" = "Last Backup: %@";
+"Unarchiving" = "Unarchiving";
+"Your data has been restored successfully." = "Your data has been restored successfully.";
+"Downloading" = "Downloading";
+"Are you going to replace existing data with the backup data?" = "Are you going to replace existing data with the backup data?";
+"Replace" = "Replace";
+"Deleting" = "Deleting";
+"Unable to delete selected file. Please try it again." = "Unable to delete selected file. Please try it again.";
+
+"Turn Passcode Off" = "Turn Passcode Off";
+"Turn Passcode On" = "Turn Passcode On";
+"How To Enable Data Protection" = "How To Enable Data Protection";
+"Clear Recent" = "Clear Recent";
+"Recent" = "Recent";
+"Information" = "Information";
+"Move and Scale" = "Move and Scale";

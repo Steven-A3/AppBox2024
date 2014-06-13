@@ -123,18 +123,13 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
                 self.navigationItem.leftBarButtonItem = nil;
             }
             else {
-                UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
-                self.navigationItem.leftBarButtonItem = appsItem;
+				[self leftBarButtonAppsButton];
             }
         }
         else {
-            UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
-            self.navigationItem.leftBarButtonItem = appsItem;
+			[self leftBarButtonAppsButton];
         }
     } else {
-        // 아님
-//        self.navigationItem.hidesBackButton = YES;
-
 		[self leftBarButtonAppsButton];
     }
 }
@@ -324,7 +319,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 			dataCell.textLabel.text = item.name;
 		}
 		else {
-			dataCell.textLabel.text = @"New Item";
+			dataCell.textLabel.text = NSLocalizedString(@"New Item", @"New Item");
 		}
 
 		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];

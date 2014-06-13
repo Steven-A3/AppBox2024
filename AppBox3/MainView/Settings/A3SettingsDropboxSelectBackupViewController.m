@@ -129,7 +129,7 @@
 		_hud.removeFromSuperViewOnHide = YES;
 		[self.navigationController.view addSubview:_hud];
 
-		_hud.labelText = @"Deleting";
+		_hud.labelText = NSLocalizedString(@"Deleting", @"Deleting");
 		[_hud show:YES];
 	}
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
@@ -157,7 +157,11 @@ extern NSString *const kDropboxDir;
 	[_hud hide:YES];
 	_hud = nil;
 
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Dropbox" message:@"Unable to delete selected file. Please try it again." delegate:nil cancelButtonTitle:@"Dismies" otherButtonTitles:nil];
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Dropbox", @"Dropbox")
+														message:NSLocalizedString(@"Unable to delete selected file. Please try it again.", @"Unable to delete selected file. Please try it again.")
+													   delegate:nil
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+											  otherButtonTitles:nil];
 	[alertView show];
 }
 

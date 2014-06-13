@@ -42,7 +42,7 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = @"Favorites";
+    self.navigationItem.title = NSLocalizedString(@"Favorites", @"Favorites");
 	self.showCategoryInDetailViewController = YES;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextWillSaveNotification object:nil];

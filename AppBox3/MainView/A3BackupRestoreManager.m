@@ -155,7 +155,7 @@ extern NSString *const USMCloudContentName;
 	}];
 	[_deleteFilesAfterZip addObject:[A3BackupInfoFilename pathInDocumentDirectory]];
 
-	self.HUD.labelText = @"Compressing";
+	self.HUD.labelText = NSLocalizedString(@"Compressing", @"Compressing");
 	[_hostingView addSubview:self.HUD];
 	[self.HUD show:YES];
 
@@ -185,7 +185,7 @@ extern NSString *const USMCloudContentName;
 }
 
 - (void)completedZipProcess:(BOOL)bResult {
-	_HUD.labelText = @"Uploading";
+	_HUD.labelText = NSLocalizedString(@"Uploading", @"Uploading");
 	_HUD.detailsLabelText = @"";
 
 	[self.restClient uploadFile:[_backupFilePath lastPathComponent] toPath:kDropboxDir withParentRev:nil fromPath:_backupFilePath];
@@ -248,7 +248,7 @@ extern NSString *const USMCloudContentName;
 - (void)restClient:(DBRestClient *)client uploadedFile:(NSString *)destPath from:(NSString *)srcPath metadata:(DBMetadata *)metadata {
 	[_HUD hide:YES];
 	_HUD = nil;
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Info" message:@"Backup file has been uploaded to Dropbox successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Backup file has been uploaded to Dropbox successfully.", @"Backup file has been uploaded to Dropbox successfully.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[alert show];
 }
 
@@ -261,7 +261,7 @@ extern NSString *const USMCloudContentName;
 	[_HUD hide:YES];
 	_HUD = nil;
 
-	UIAlertView *alertFail = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Backup process failed to upload backup file to Dropbox." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	UIAlertView *alertFail = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Backup process failed to upload backup file to Dropbox.", @"Backup process failed to upload backup file to Dropbox.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[alertFail show];
 }
 

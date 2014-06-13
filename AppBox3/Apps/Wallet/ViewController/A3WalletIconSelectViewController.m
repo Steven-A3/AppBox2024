@@ -42,7 +42,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.navigationItem.title = @"Edit Image";
+    self.navigationItem.title = NSLocalizedString(@"Edit Image", @"Edit Image");
     
     if (IS_RETINA) {
         CGRect upLine = _upperLine.frame;
