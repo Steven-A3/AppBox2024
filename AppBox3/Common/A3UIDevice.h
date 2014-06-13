@@ -46,6 +46,8 @@
 
 #define	LANGUAGE_KOREAN	[[NSLocale preferredLanguages][0] isEqualToString:@"ko"]
 
+extern NSString *const A3AnimationIDKeyboardWillShow;
+
 @interface A3UIDevice : NSObject
 
 + (CGRect)screenBoundsAdjustedWithOrientation;

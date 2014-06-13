@@ -1530,14 +1530,14 @@ NSString *kCalculationString;
 
 -(void)scrollToTopOfTableView {
     if (IS_LANDSCAPE) {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.35];
         self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
         [UIView commitAnimations];
     } else {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.35];
@@ -1547,6 +1547,7 @@ NSString *kCalculationString;
 }
 
 #pragma mark - Option Views Delegate
+
 -(void)durationSettingChanged
 {
     [self setResultToHeaderViewWithAnimation:YES];

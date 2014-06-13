@@ -145,33 +145,41 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     NSMutableString* mstrOutput = [[NSMutableString alloc] init];
     
     if (isMail) {
-        [mstrOutput appendString:@"Calculation<br>"];
+		[mstrOutput appendString:NSLocalizedString(@"Calculation", @"Calculation")];
+		[mstrOutput appendString:@"<br>"];
     }
-    
-    [mstrOutput appendFormat:@"Total: %@<br>", [self currencyStringFromDouble:[[self totalBeforeSplitWithTax] doubleValue]]];
-    [mstrOutput appendFormat:@"Tip: %@<br>", [self currencyStringFromDouble:[[self tipValueWithRounding:self.roundingMethodValue == TCRoundingMethodValue_Tip ? YES : NO] doubleValue]]];
+
+	[mstrOutput appendString:NSLocalizedString(@"Total", nil)];
+	[mstrOutput appendFormat:@" : %@<br>", [self currencyStringFromDouble:[[self totalBeforeSplitWithTax] doubleValue]] ];
+	[mstrOutput appendString:NSLocalizedString(@"Tip", nil)];
+	[mstrOutput appendFormat:@" : %@<br>", [self currencyStringFromDouble:[[self tipValueWithRounding:self.roundingMethodValue == TCRoundingMethodValue_Tip ? YES : NO] doubleValue]]];
     if ([self isSplitOptionOn] && [self.tipCalcData.split integerValue] > 1) {
-        [mstrOutput appendFormat:@"Total Per Person: %@<br>", [self currencyStringFromDouble:[[self totalPerPersonWithTax] doubleValue]]];
-        [mstrOutput appendFormat:@"Tip Per Person: %@<br>", [self currencyStringFromDouble:[[self tipValueWithSplitWithRounding:self.roundingMethodValue == TCRoundingMethodValue_Tip ? YES : NO] doubleValue]]];
+		[mstrOutput appendString:NSLocalizedString(@"Total Per Person", @"Total Per Person")];
+		[mstrOutput appendFormat:@" : %@<br>", [self currencyStringFromDouble:[[self totalPerPersonWithTax] doubleValue]]];
+		[mstrOutput appendString:NSLocalizedString(@"Tip Per Person", @"Tip Per Person")];
+		[mstrOutput appendFormat:@" : %@<br>", [self currencyStringFromDouble:[[self tipValueWithSplitWithRounding:self.roundingMethodValue == TCRoundingMethodValue_Tip ? YES : NO] doubleValue]]];
     }
     
     if (!isMail) {
         return mstrOutput;
     }
-    
-    
-    [mstrOutput appendString:@"<br>Input<br>"];
-    
-    
+
+	[mstrOutput appendString:@"<br>"];
+	[mstrOutput appendString:NSLocalizedString(@"Input", @"Input")];
+	[mstrOutput appendString:@"<br>"];
+
     if (![self isTaxOptionOn]) {
-        [mstrOutput appendFormat:@"Costs : %@<br>", [self currencyStringFromDouble:[self.tipCalcData.costs doubleValue]]];
+		[mstrOutput appendString:NSLocalizedString(@"Costs", @"Costs")];
+        [mstrOutput appendFormat:@" : %@<br>", [self currencyStringFromDouble:[self.tipCalcData.costs doubleValue]]];
     }
     else {
         if([self.tipCalcData.knownValue intValue] == TCKnownValue_Subtotal) {
-            [mstrOutput appendFormat:@"Costs After Tax : %@<br>", [self currencyStringFromDouble:[self.tipCalcData.costs doubleValue]]];
+			[mstrOutput appendString:NSLocalizedString(@"Costs After Tax", @"Costs After Tax")];
+            [mstrOutput appendFormat:@" : %@<br>", [self currencyStringFromDouble:[self.tipCalcData.costs doubleValue]]];
         }
         else {
-            [mstrOutput appendFormat:@"Costs Before Tax : %@<br>", [self currencyStringFromDouble:[self.tipCalcData.costs doubleValue]]];
+			[mstrOutput appendString:NSLocalizedString(@"Costs Before Tax", @"Costs Before Tax")];
+            [mstrOutput appendFormat:@" : %@<br>", [self currencyStringFromDouble:[self.tipCalcData.costs doubleValue]]];
         }
     }
     
@@ -180,10 +188,12 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
             NSNumberFormatter *formatter = [NSNumberFormatter new];
             formatter.numberStyle = NSNumberFormatterPercentStyle;
             formatter.maximumFractionDigits = 3;
-            [mstrOutput appendFormat:@"Tax : %@<br>", [formatter stringFromNumber:@([self.tipCalcData.tax doubleValue] / 100.0)]];
+			[mstrOutput appendString:NSLocalizedString(@"Tax", @"Tax")];
+            [mstrOutput appendFormat:@" : %@<br>", [formatter stringFromNumber:@([self.tipCalcData.tax doubleValue] / 100.0)]];
         }
         else {
-            [mstrOutput appendFormat:@"Tax : %@<br>", [self.currencyFormatter stringFromNumber:self.tipCalcData.tax]];
+			[mstrOutput appendString:NSLocalizedString(@"Tax", @"Tax")];
+            [mstrOutput appendFormat:@" : %@<br>", [self.currencyFormatter stringFromNumber:self.tipCalcData.tax]];
         }
     }
     
@@ -191,14 +201,17 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
         NSNumberFormatter *formatter = [NSNumberFormatter new];
         formatter.numberStyle = NSNumberFormatterPercentStyle;
         formatter.maximumFractionDigits = 3;
-        [mstrOutput appendFormat:@"Tip : %@<br>", [formatter stringFromNumber:@([self.tipCalcData.tip doubleValue] / 100.0)]];
+		[mstrOutput appendString:NSLocalizedString(@"Tip", @"Tip")];
+        [mstrOutput appendFormat:@" : %@<br>", [formatter stringFromNumber:@([self.tipCalcData.tip doubleValue] / 100.0)]];
     }
     else {
-        [mstrOutput appendFormat:@"Tip : %@<br>", [self.currencyFormatter stringFromNumber:self.tipCalcData.tip]];
+		[mstrOutput appendString:NSLocalizedString(@"Tip", @"Tip")];
+        [mstrOutput appendFormat:@" : %@<br>", [self.currencyFormatter stringFromNumber:self.tipCalcData.tip]];
     }
     
     if ([self isSplitOptionOn] && [self.tipCalcData.split integerValue] > 1) {
-        [mstrOutput appendFormat:@"Split : %@<br>", self.tipCalcData.split];
+		[mstrOutput appendString:NSLocalizedString(@"Split", @"Split")];
+        [mstrOutput appendFormat:@" : %@<br>", self.tipCalcData.split];
     }
     
     return mstrOutput;

@@ -904,7 +904,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 -(void)scrollToTopOfTableView {
 //    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
     if (IS_LANDSCAPE) {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.35];
@@ -912,7 +912,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
         [UIView commitAnimations];
     }
     else {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.35];

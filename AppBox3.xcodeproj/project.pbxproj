@@ -762,7 +762,6 @@
 		68E2A6AB18D0B22800E834D9 /* SalesCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A67F18D0B22800E834D9 /* SalesCalcHistory.m */; };
 		68E2A6AC18D0B22800E834D9 /* UIImage+JHExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A68118D0B22800E834D9 /* UIImage+JHExtension.m */; };
 		68E2A6AE18D0B22800E834D9 /* A3PopoverTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A68618D0B22800E834D9 /* A3PopoverTableViewController.m */; };
-		68E2A6AF18D0B22800E834D9 /* A3TipCalcCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A68818D0B22800E834D9 /* A3TipCalcCircle.m */; };
 		68E2A6B018D0B22800E834D9 /* A3TipCalcDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A68A18D0B22800E834D9 /* A3TipCalcDataManager.m */; };
 		68E2A6B118D0B22800E834D9 /* A3TipCalcHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A68C18D0B22800E834D9 /* A3TipCalcHeaderView.m */; };
 		68E2A6B218D0B22800E834D9 /* A3TipCalcHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A68E18D0B22800E834D9 /* A3TipCalcHistoryCell.m */; };
@@ -2269,8 +2268,6 @@
 		68E2A68118D0B22800E834D9 /* UIImage+JHExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+JHExtension.m"; sourceTree = "<group>"; };
 		68E2A68518D0B22800E834D9 /* A3PopoverTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PopoverTableViewController.h; sourceTree = "<group>"; };
 		68E2A68618D0B22800E834D9 /* A3PopoverTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3PopoverTableViewController.m; sourceTree = "<group>"; };
-		68E2A68718D0B22800E834D9 /* A3TipCalcCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TipCalcCircle.h; sourceTree = "<group>"; };
-		68E2A68818D0B22800E834D9 /* A3TipCalcCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TipCalcCircle.m; sourceTree = "<group>"; };
 		68E2A68918D0B22800E834D9 /* A3TipCalcDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TipCalcDataManager.h; sourceTree = "<group>"; };
 		68E2A68A18D0B22800E834D9 /* A3TipCalcDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TipCalcDataManager.m; sourceTree = "<group>"; };
 		68E2A68B18D0B22800E834D9 /* A3TipCalcHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TipCalcHeaderView.h; sourceTree = "<group>"; };
@@ -4846,8 +4843,6 @@
 				68E2A6CC18D0B44A00E834D9 /* Data */,
 				68E2A68518D0B22800E834D9 /* A3PopoverTableViewController.h */,
 				68E2A68618D0B22800E834D9 /* A3PopoverTableViewController.m */,
-				68E2A68718D0B22800E834D9 /* A3TipCalcCircle.h */,
-				68E2A68818D0B22800E834D9 /* A3TipCalcCircle.m */,
 				68E2A68918D0B22800E834D9 /* A3TipCalcDataManager.h */,
 				68E2A68A18D0B22800E834D9 /* A3TipCalcDataManager.m */,
 				68E2A68B18D0B22800E834D9 /* A3TipCalcHeaderView.h */,
@@ -5868,7 +5863,6 @@
 				68B6A30A18CEC76D004084EF /* WalletData.m in Sources */,
 				6825365318A7AA4C00EAFB84 /* MASViewAttribute.m in Sources */,
 				6872DD3217B3D56600C1BF44 /* NSDate+TimeAgo.m in Sources */,
-				68E2A6AF18D0B22800E834D9 /* A3TipCalcCircle.m in Sources */,
 				687FF89A17D1931100130ABC /* A3HolidaysCountrySearchViewController.m in Sources */,
 				68F967BF1818D74300D64A0A /* NSArray+validation.m in Sources */,
 				68E2A64618D0B1FC00E834D9 /* A3ExpenseListAccessoryView.m in Sources */,

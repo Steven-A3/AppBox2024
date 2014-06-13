@@ -107,7 +107,7 @@
         dTotal = [[dataManager totalBeforeSplitWithTax] doubleValue];
     }
     NSString *total = [dataManager currencyStringFromDouble:dTotal];
-    NSArray *strings = @[tip, @" of ", total];
+    NSArray *strings = @[tip, NSLocalizedString(@" of ", @" of "), total];
     
     _dateLabel.text = [aHistory.dateTime timeAgo];
     _resultLabel.text = [strings componentsJoinedByString:@""];

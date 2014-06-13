@@ -16,6 +16,8 @@
 #import <sys/sysctl.h>
 #import <AVFoundation/AVFoundation.h>
 
+NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow";
+
 @implementation A3UIDevice
 
 + (CGRect)screenBoundsAdjustedWithOrientation {

@@ -42,7 +42,9 @@ enum A3TableElementCellType {
 
 NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 
-@interface A3SalesCalcMainViewController () <CLLocationManagerDelegate, UIPopoverControllerDelegate, A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, A3TableViewInputElementDelegate, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
+@interface A3SalesCalcMainViewController () <CLLocationManagerDelegate, UIPopoverControllerDelegate,
+		A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, A3TableViewInputElementDelegate,
+		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *root;
 @property (nonatomic, strong) A3SalesCalcPreferences *preferences;
@@ -55,7 +57,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 @property (nonatomic, strong) A3SalesCalcHeaderView *headerView;
 @property (nonatomic, strong) UIPopoverController *localPopoverController;
 
-@property (nonatomic, strong) CLLocationManager * lm;
+@property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) A3TableViewInputElement *taxElement;
 @property (nonatomic, strong) A3TableViewInputElement *price;
 @property (nonatomic, strong) A3TextViewElement *notes;
@@ -76,11 +78,11 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 	self = [super initWithStyle:UITableViewStyleGrouped];
 	if (self) {
         // Custom initialization
-        self.title = @"Sales Calculator";
+        self.title = NSLocalizedString(@"Sales Calculator", @"Sales Calculator");
         [self configureTableData];
         
-        _lm = [[CLLocationManager alloc] init];
-        _lm.delegate = self;
+        _locationManager = [[CLLocationManager alloc] init];
+        _locationManager.delegate = self;
         _locationTax = @0.0;
         [self getReverseGeocode];
 	}
@@ -225,8 +227,10 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 }
 
+static NSString *const A3SalesCalcSavedInputDataKey = @"A3SalesCalcSavedInputDataKey";
+
 -(void)saveInputTextData:(A3SalesCalcData *)inputTextData {
-    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:inputTextData] forKey:@"savedInputData_SalesCalc"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:inputTextData] forKey:A3SalesCalcSavedInputDataKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -317,7 +321,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 - (A3SalesCalcPreferences *)preferences {
 	if (!_preferences) {
 		_preferences = [A3SalesCalcPreferences new];
-        NSData * saveData = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedInputData_SalesCalc"];
+        NSData * saveData = [[NSUserDefaults standardUserDefaults] objectForKey:A3SalesCalcSavedInputDataKey];
         if (saveData) {
             A3SalesCalcData * calcData = (A3SalesCalcData * )[NSKeyedUnarchiver unarchiveObjectWithData:saveData];
             _preferences.calcData = calcData;
@@ -407,19 +411,19 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 //        [self adjustElementValue];
 }
 
--(id)knownValueTypeElements
+- (id)knownValueTypeElements
 {
     NSMutableArray *elements = [NSMutableArray new];
     
     A3TableViewCheckMarkElement *originPrice = [A3TableViewCheckMarkElement new];
-    originPrice.title = @"Original Price";
+    originPrice.title = NSLocalizedString(@"Original Price", @"Original Price");
     originPrice.identifier = 0;
     originPrice.checked = _preferences.calcData.shownPriceType == ShowPriceType_Origin;
     [elements addObject:originPrice];
     
     A3TableViewCheckMarkElement *salePrice = [A3TableViewCheckMarkElement new];
     //salePrice.title = @"Sale Price";
-    salePrice.title = IS_IPAD? @"Sale Price with Tax" : @"Sale Price w/Tax";
+    salePrice.title = IS_IPAD? NSLocalizedString(@"Sale Price with Tax", @"Sale Price with Tax") : NSLocalizedString(@"Sale Price w/Tax", @"Sale Price w/Tax");
     salePrice.identifier = 0;
     salePrice.checked = _preferences.calcData.shownPriceType == ShowPriceType_SalePriceWithTax;
     [elements addObject:salePrice];
@@ -427,14 +431,22 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     return elements;
 }
 
--(id)valueAndPriceElementsFor:(A3SalesCalcData *)aData
+- (NSString *)originalPriceTitle {
+	return _preferences.calcData.shownPriceType == ShowPriceType_Origin ?
+			NSLocalizedString(@"Original Price", @"Original Price") :
+			(IS_IPAD ?
+					NSLocalizedString(@"Sale Price with Tax", @"Sale Price with Tax") :
+					NSLocalizedString(@"Sale Price w/Tax", @"Sale Price w/Tax"));
+}
+
+- (id)valueAndPriceElementsFor:(A3SalesCalcData *)aData
 {
     NSMutableArray *elements = [NSMutableArray new];
 
     if (!_price) {
         _price = [A3TableViewInputElement new];
     }
-    _price.title = _preferences.calcData.shownPriceType == ShowPriceType_Origin ? @"Original Price" : (IS_IPAD ? @"Sale Price with Tax" : @"Sale Price w/Tax");
+    _price.title = [self originalPriceTitle];
     _price.inputType = A3TableViewEntryTypeCurrency;
 	_price.valueType = _preferences.calcData.priceType;
     _price.prevEnabled = NO;
@@ -458,7 +470,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     }
     
     A3TableViewInputElement *discount = [A3TableViewInputElement new];
-    discount.title = @"Discount";
+    discount.title = NSLocalizedString(@"Discount", @"Discount");
     discount.inputType = A3TableViewEntryTypePercent;
 	discount.valueType = self.preferences.calcData.discountType;
     discount.prevEnabled = YES;
@@ -486,8 +498,8 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     NSMutableArray *elements = [NSMutableArray new];
     
     A3TableViewInputElement *additional = [A3TableViewInputElement new];
-    additional.title = @"Additional Off";
-    additional.placeholder = @"Optional";
+    additional.title = NSLocalizedString(@"Additional Off", @"Additional Off");
+    additional.placeholder = NSLocalizedString(@"Optional", @"Optional");
     additional.inputType = A3TableViewEntryTypePercent;
 	additional.valueType = self.preferences.calcData.additionalOffType;
     additional.prevEnabled = YES;
@@ -508,8 +520,8 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     }
     
     A3TableViewInputElement *tax = [A3TableViewInputElement new];
-    tax.title = @"Tax";
-    tax.placeholder = @"Optional";
+    tax.title = NSLocalizedString(@"Tax", @"Tax");
+    tax.placeholder = NSLocalizedString(@"Optional", @"Optional");
     tax.inputType = A3TableViewEntryTypePercent;
 	tax.valueType = self.preferences.calcData.taxType;
     tax.prevEnabled = YES;
@@ -604,7 +616,6 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
                 case A3TableElementCellType_Tax:
                 {
                     if (textField.text && textField.text.length!=0) {
-                        //element.value = (!inputNumber || [inputNumber isEqualToNumber:@0]) ? @"" : [inputNumber stringValue];
                         element.value = (!inputNumber || [inputNumber isEqualToNumber:@0]) ? @"" : [weakSelf.decimalFormatter stringFromNumber:inputNumber];
                     }
                     else if ([textField.text length] == 0 && [element.value length] > 0) {
@@ -634,17 +645,17 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
             else if (element.identifier == A3TableElementCellType_Additional) {
                 [weakSelf.preferences.calcData setAdditionalOff:inputNumber];
                 [weakSelf.preferences.calcData setAdditionalOffType:element.valueType];
-				textField.placeholder = @"Optional";
+				textField.placeholder = NSLocalizedString(@"Optional", @"Optional");
             }
             else if (element.identifier == A3TableElementCellType_Tax) {
                 [weakSelf.preferences.calcData setTax:inputNumber];
                 [weakSelf.preferences.calcData setTaxType:element.valueType];
-				textField.placeholder = @"Optional";
+				textField.placeholder = NSLocalizedString(@"Optional", @"Optional");
             }
             else if (element.identifier == A3TableElementCellType_Note) {
                 [weakSelf.preferences.calcData setNotes:element.value];
                 if ([inputString length] == 0) {
-                    textField.placeholder = @"Notes";
+                    textField.placeholder = NSLocalizedString(@"Notes", @"Notes");
                 }
                 else {
                     textField.placeholder = inputString;
@@ -844,7 +855,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
         {
             if (!element.value || (element && ([element.value length] == 0 || [element.value isEqualToString:@"0"]))) {
                 ((A3JHTableViewEntryCell *)cell).textField.text = @"";
-                ((A3JHTableViewEntryCell *)cell).textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Optional"
+                ((A3JHTableViewEntryCell *)cell).textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Optional", @"Optional")
                                                                                                                    attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17]} ];
             }
             else {
@@ -862,7 +873,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
             if ([_preferences.calcData shownPriceType] == ShowPriceType_Origin) {
                 if (!element.value || (element && ([element.value length] == 0 || [element.value isEqualToString:@"0"]))) {
                     ((A3JHTableViewEntryCell *)cell).textField.text = @"";
-                    ((A3JHTableViewEntryCell *)cell).textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Optional"
+                    ((A3JHTableViewEntryCell *)cell).textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Optional", @"Optional")
                                                                                                                        attributes:@{ //NSForegroundColorAttributeName : [UIColor redColor],
                                                                                                                                     NSFontAttributeName : [UIFont systemFontOfSize:17] } ];
                 }
@@ -897,7 +908,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
         [_headerView setResultData:self.preferences.calcData withAnimation:YES];
         [_headerView setNeedsLayout];
         
-        _price.title = _preferences.calcData.shownPriceType == ShowPriceType_Origin ? @"Original Price" : (IS_IPAD ? @"Sale Price with Tax" :    @"Sale Price w/Tax");
+        _price.title = [self originalPriceTitle];
         A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
         cell.textLabel.text = _price.title;
         
@@ -932,7 +943,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section==0) {
-        return @"KNOWN VALUE";
+        return NSLocalizedString(@"KNOWN VALUE", @"KNOWN VALUE");
     }
     
     return nil;
@@ -940,14 +951,14 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 
 -(void)scrollToTopOfTableView {
     if (IS_LANDSCAPE) {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.35];
         self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
         [UIView commitAnimations];
     } else {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.35];
@@ -1107,24 +1118,24 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 //bool kIsFirstTipCalcGeocodeTemp = YES; // temp
 - (void)getReverseGeocode
 {
-    if(_lm == nil)
+    if(_locationManager == nil)
         return;
     
 	//if (!self.delegate) return;
     
-	_lm.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
-    [_lm startUpdatingLocation];
+	_locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
+    [_locationManager startUpdatingLocation];
 }
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-	if (!_lm)
+	if (!_locationManager)
         return;
 
 	[manager stopUpdatingLocation];
 
 	CLGeocoder* geocoder = [[CLGeocoder alloc] init];
 
-	[geocoder reverseGeocodeLocation: _lm.location completionHandler:^(NSArray *placemarks, NSError *error) {
+	[geocoder reverseGeocodeLocation: _locationManager.location completionHandler:^(NSArray *placemarks, NSError *error) {
 
 		NSLog(@"ori------");
 		CLPlacemark *placemark = [placemarks objectAtIndex:0];
@@ -1150,8 +1161,8 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 			}   
 		}
 
-		_lm.delegate = nil;
-		_lm = nil;
+		_locationManager.delegate = nil;
+		_locationManager = nil;
 	}];
 }
 

@@ -30,9 +30,9 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title = @"History";
+    self.title = NSLocalizedString(@"History", @"History");
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear") style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction)];
     if (IS_IPHONE) {
 		[self rightBarButtonDoneButton];
 	}
@@ -97,8 +97,8 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
-                                                    cancelButtonTitle:@"Cancel"
-                                               destructiveButtonTitle:@"Clear History"
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:NSLocalizedString(@"Clear History", @"Clear History")
                                                     otherButtonTitles:nil];
     [actionSheet showInView:self.view];
 }
@@ -145,9 +145,7 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TipCalcHistory *aHistory = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//    TipCalcRecently *aData = aHistory.rRecently;
-//    NSLog(@"%@", aData);
-    
+
     A3TipCalcHistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:A3TipCalcHistoryCellID forIndexPath:indexPath];
     [cell setHistoryData:aHistory];
 
