@@ -104,7 +104,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 - (UIBarButtonItem *)cancelItem
 {
     if (!_cancelItem) {
-        _cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
+        _cancelItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
     }
     
     return _cancelItem;
@@ -189,7 +189,6 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
         }
         else {
             self.tabBarController.navigationItem.leftBarButtonItem = nil;
-//            self.tabBarController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         }
     }
     
@@ -210,9 +209,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 }
 
 - (void)configureNoneCell:(UITableViewCell *)cell {
-    //	actionCell.centerButton.titleLabel.font = [UIFont fontWithName:@"FontAwesome" size:25.0];
-    //	[actionCell.centerButton setTitleColor:nil forState:UIControlStateNormal];
-	cell.textLabel.text = @"None";
+	cell.textLabel.text = NSLocalizedString(@"None", @"None");
     if (!_selectedUnit) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         cell.textLabel.textColor = [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
@@ -273,7 +270,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     viewController.shouldPopViewController = YES;
     
     NSArray *items = [UnitItem MR_findByAttribute:@"type" withValue:self.unitType andOrderBy:@"unitName" ascending:YES];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.unitName!=%@", @"feet inches"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitName != %@", @"feet inches"];
     viewController.allData = [NSMutableArray arrayWithArray:[items filteredArrayUsingPredicate:predicate]];
     
     return viewController;

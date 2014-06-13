@@ -126,7 +126,7 @@
 
 - (UISegmentedControl *)selectSegment
 {
-    UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[@"All Units", @"Favorites"]];
+    UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"All Units", @"All Units"), NSLocalizedString(@"Favorites", @"Favorites")]];
     [segment setWidth:85 forSegmentAtIndex:0];
     [segment setWidth:85 forSegmentAtIndex:1];
     [segment setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:13.0]
@@ -171,8 +171,8 @@
     if (!_unitTypes) {
         _unitTypes = [[NSMutableArray alloc] init];
         
-        NSArray *names = @[@"Area", @"Length", @"Volume", @"Weight"];
-        for (int i=0; i<names.count; i++) {
+        NSArray *names = @[NSLocalizedString(@"Area", @"Area"), NSLocalizedString(@"Length", @"Length"), NSLocalizedString(@"Volume", @"Volume"), NSLocalizedString(@"Weight", @"Weight")];
+        for (int i = 0; i < names.count; i++) {
             UnitType *unitType = [UnitType MR_findFirstByAttribute:@"unitTypeName" withValue:names[i]];
             if (unitType) {
                 [_unitTypes addObject:unitType];
@@ -192,7 +192,7 @@
     viewController.favorites = [NSMutableArray arrayWithArray:[UnitPriceFavorite MR_findByAttribute:@"item.type" withValue:uType andOrderBy:@"order" ascending:YES]];
     viewController.selectedUnit = _price.unit;
     NSArray *items = [UnitItem MR_findByAttribute:@"type" withValue:uType andOrderBy:@"unitName" ascending:YES];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.unitName!=%@", @"feet inches"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitName != %@", @"feet inches"];
     viewController.allData = [NSMutableArray arrayWithArray:[items filteredArrayUsingPredicate:predicate]];
     
 	return viewController;
