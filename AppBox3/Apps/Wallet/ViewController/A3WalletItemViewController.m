@@ -32,6 +32,7 @@
 #import "WalletFieldItemImage.h"
 #import "WalletItem+initialize.h"
 #import "NSDate+formatting.h"
+#import "NSDateFormatter+A3Addition.h"
 
 
 @interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>
@@ -524,8 +525,14 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		titleCell.favoriteButton.selected = self.item.favorite != nil;
         
         NSDateFormatter *dateFormatter = [NSDateFormatter new];
-        dateFormatter.dateStyle = NSDateFormatterFullStyle;
-        dateFormatter.timeStyle = NSDateFormatterMediumStyle;
+        if (IS_IPAD || [NSDate isFullStyleLocale]) {
+            dateFormatter.dateStyle = NSDateFormatterFullStyle;
+            dateFormatter.timeStyle = NSDateFormatterShortStyle;
+        }
+        else {
+            [dateFormatter customFullWithTimeStyleFormat];
+        }
+        
         dateFormatter.doesRelativeDateFormatting = YES;
 		titleCell.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [dateFormatter stringFromDate:_item.modificationDate]];
         

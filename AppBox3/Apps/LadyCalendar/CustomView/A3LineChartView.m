@@ -75,6 +75,9 @@
             if ((xAxisLineRect.origin.x + (idx * xAxisSeparatorInterval) - strSize.width * 0.5) + strSize.width > self.bounds.size.width) {
                 [str drawAtPoint:CGPointMake(self.bounds.size.width - strSize.width, xAxisLineRect.origin.y + xAxisLineRect.size.height +  xAxisSeparatorHeight) withAttributes:attr];
             }
+            else if ((xAxisLineRect.origin.x + (idx * xAxisSeparatorInterval) - strSize.width * 0.5) + strSize.width < self.bounds.origin.x) {
+                [str drawAtPoint:CGPointMake(self.bounds.size.width - strSize.width, xAxisLineRect.origin.y + xAxisLineRect.size.height +  xAxisSeparatorHeight) withAttributes:attr];
+            }
             else {
                 [str drawAtPoint:CGPointMake(xAxisLineRect.origin.x + (idx * xAxisSeparatorInterval) - strSize.width * 0.5, xAxisLineRect.origin.y + xAxisLineRect.size.height +  xAxisSeparatorHeight) withAttributes:attr];
             }
