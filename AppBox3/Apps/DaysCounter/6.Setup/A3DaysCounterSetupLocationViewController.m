@@ -753,7 +753,7 @@
             DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
             locItem.eventId = _eventModel.uniqueID;
             locItem.latitude = @(locationItem.location.coordinate.latitude);
-            locItem.latitude = @(locationItem.location.coordinate.longitude);
+            locItem.longitude = @(locationItem.location.coordinate.longitude);
             locItem.locationName = locationItem.name;
             locItem.country = ([locationItem.location.country length] > 0 ? locationItem.location.country : @"");
             locItem.state = ([locationItem.location.state length] > 0 ? locationItem.location.state : @"");

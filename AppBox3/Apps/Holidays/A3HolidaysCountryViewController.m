@@ -117,7 +117,7 @@ extern NSString *const A3CurrencyActionCellID;
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Holidays_2"];
     self.instructionViewController.delegate = self;
     [self.navigationController.view addSubview:self.instructionViewController.view];
-    self.instructionViewController.view.frame = [self.view frame];
+    self.instructionViewController.view.frame = [self.navigationController.view frame];
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
 }
 
