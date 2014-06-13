@@ -37,7 +37,7 @@
     [super viewDidLoad];
     
     UnitItem *firstItem = _allData[0];
-    self.title = [NSString stringWithFormat:@"%@ Units", firstItem.type.unitTypeName];
+    self.title = [NSString stringWithFormat:NSLocalizedString(@"%@ Units", @"%@ Units"), firstItem.type.unitTypeName];
     
     self.tableView.rowHeight = 44.0;
 	self.tableView.showsVerticalScrollIndicator = NO;

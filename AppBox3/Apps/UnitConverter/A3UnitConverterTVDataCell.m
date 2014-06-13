@@ -399,7 +399,7 @@
 	frame.size.width = [self menuWidth:showDelete];
 	_menuView = [[UIView alloc] initWithFrame:frame];
     
-	NSArray *menuTitles = @[@"Swap", @"Share", @"Delete"];
+	NSArray *menuTitles = @[NSLocalizedString(@"Swap", @"Swap"), NSLocalizedString(@"Share", @"Share"), NSLocalizedString(@"Delete", @"Delete")];
     
 	[menuTitles enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL *stop) {
 		if (!showDelete && idx == 2) return;

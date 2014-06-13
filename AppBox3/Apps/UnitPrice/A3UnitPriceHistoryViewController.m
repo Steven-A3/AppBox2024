@@ -39,33 +39,20 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 {
     [super viewDidLoad];
     
-    self.title = @"History";
+    self.title = NSLocalizedString(@"History", @"History");
     
 	if (IS_IPHONE) {
 		[self rightBarButtonDoneButton];
 	}
     
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear")
+																			 style:UIBarButtonItemStylePlain
+																			target:self
+																			action:@selector(clearButtonAction:)];
     
 	self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
-    
-    /*
-	UILabel *notice = [[UILabel alloc] init];
-	notice.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-	notice.textColor = [UIColor blackColor];
-	notice.text = @"Each history keeps max 4 units.";
-	notice.textAlignment = NSTextAlignmentCenter;
-    
-	CGRect frame = CGRectMake(0.0, 0.0, 320.0, 40.0);
-	UIView *footerView = [[UIView alloc] initWithFrame:frame];
-    footerView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.1];
-	notice.frame = footerView.bounds;
-	[footerView addSubview:notice];
-    
-	self.tableView.tableFooterView = footerView;
-     */
-    
+
     [self.tableView registerNib:[UINib nibWithNibName:@"A3UnitPriceHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitPriceHistoryCellID];
 	[self registerContentSizeCategoryDidChangeNotification];
 }
@@ -86,7 +73,6 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 - (void)didMoveToParentViewController:(UIViewController *)parent {
 	[super didMoveToParentViewController:parent];
 
-	FNLOG(@"%@", parent);
 	if (!parent) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
 	}
@@ -111,8 +97,8 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 - (void)clearButtonAction:(id)button {
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 															 delegate:self
-													cancelButtonTitle:@"Cancel"
-											   destructiveButtonTitle:@"Clear History"
+													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+											   destructiveButtonTitle:NSLocalizedString(@"Clear History", @"Clear History")
 													otherButtonTitles:nil];
 	[actionSheet showInView:self.view];
 }

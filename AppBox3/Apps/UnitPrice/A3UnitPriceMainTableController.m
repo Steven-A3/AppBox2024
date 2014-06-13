@@ -60,7 +60,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = @"Unit Price";
+    self.navigationItem.title = NSLocalizedString(@"Unit Price", @"Unit Price");
     
     [self makeBackButtonEmptyArrow];
     [self leftBarButtonAppsButton];
@@ -467,7 +467,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     //double maxPrice = MAX(self.price1.price.doubleValue, self.price2.price.doubleValue);
     
     priceTxt1 = [self.currencyFormatter stringFromNumber:@(self.price1.price.doubleValue)];
-    unitShortName1 = self.price1.unit ? self.price1.unit.unitShortName : @"None";
+    unitShortName1 = self.price1.unit ? self.price1.unit.unitShortName : NSLocalizedString(@"None", @"None");
 
     double priceValue1 = self.price1.price.doubleValue;
     NSInteger sizeValue1 = (self.price1.size.integerValue <= 0) ? 1 : self.price1.size.integerValue;
@@ -539,7 +539,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     NSString *priceTxt2;
 
     priceTxt2 = [self.currencyFormatter stringFromNumber:@(self.price2.price.doubleValue)];
-    unitShortName2 = self.price2.unit ? self.price2.unit.unitShortName : @"None";
+    unitShortName2 = self.price2.unit ? self.price2.unit.unitShortName : NSLocalizedString(@"None", @"None");
 
     float priceValue2 = self.price2.price.floatValue;
     NSInteger sizeValue2 = (self.price2.size.integerValue <= 0) ? 1:self.price2.size.integerValue;
@@ -682,13 +682,13 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     if (price1UnitPrice>0 && price2UnitPrice>0) {
         
         if (price1UnitPrice < price2UnitPrice) {
-            self.resultLB.text = [NSString stringWithFormat:@"The best unit price is A at %@", unitPriceTxt1];
+            self.resultLB.text = [NSString stringWithFormat:NSLocalizedString(@"The best unit price is A at %@", @"The best unit price is A at %@"), unitPriceTxt1];
         }
         else if (price1UnitPrice > price2UnitPrice) {
-            self.resultLB.text = [NSString stringWithFormat:@"The best unit price is B at %@", unitPriceTxt2];
+            self.resultLB.text = [NSString stringWithFormat:NSLocalizedString(@"The best unit price is B at %@", @"The best unit price is B at %@"), unitPriceTxt2];
         }
         else {
-            self.resultLB.text = [NSString stringWithFormat:@"The unit price is same at %@", unitPriceTxt1];
+            self.resultLB.text = [NSString stringWithFormat:NSLocalizedString(@"The unit price is same at %@", @"The unit price is same at %@"), unitPriceTxt1];
         }
     }
     else {
@@ -718,8 +718,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	UnitPriceInfo *priceInfo = self.price1;
     
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
-    unitShortName = priceInfo.unit ? priceInfo.unit.unitShortName : @"None";
-    unitName = priceInfo.unit ? priceInfo.unit.unitName : @"None";
+    unitShortName = priceInfo.unit ? priceInfo.unit.unitShortName : NSLocalizedString(@"None", @"None");
+    unitName = priceInfo.unit ? priceInfo.unit.unitName : NSLocalizedString(@"None", @"None");
     sizeTxt = priceInfo.size.doubleValue != 0.0 ? [decimalFormatter stringFromNumber:priceInfo.size] : @"-";
     
     double priceValue = priceInfo.price.doubleValue;
@@ -799,9 +799,9 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     UnitPriceInfo *priceInfo = self.price2;
     
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
-    price1UnitShortName = _price1.unit ? _price1.unit.unitShortName : @"None";
-    unitShortName = priceInfo.unit ? priceInfo.unit.unitShortName : @"None";
-    unitName = priceInfo.unit ? priceInfo.unit.unitName : @"None";
+    price1UnitShortName = _price1.unit ? _price1.unit.unitShortName : NSLocalizedString(@"None", @"None");
+    unitShortName = priceInfo.unit ? priceInfo.unit.unitShortName : NSLocalizedString(@"None", @"None");
+    unitName = priceInfo.unit ? priceInfo.unit.unitName : NSLocalizedString(@"None", @"None");
     sizeTxt = priceInfo.size.doubleValue != 0.0 ? [decimalFormatter stringFromNumber:priceInfo.size] : @"-";
     
     double priceValue = priceInfo.price.floatValue;

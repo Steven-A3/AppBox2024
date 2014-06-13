@@ -37,14 +37,14 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
     // create all, favorite category
     WalletCategory *favoriteCategory = [WalletCategory MR_createInContext:context];
 	[favoriteCategory initValues];
-	favoriteCategory.name = @"Favorite";
+	favoriteCategory.name = NSLocalizedString(@"Favorite", @"Favorite");
     favoriteCategory.icon = @"star01";
 	favoriteCategory.uniqueID = A3WalletUUIDFavoriteCategory;
 	favoriteCategory.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
     WalletCategory *allCategory = [WalletCategory MR_createInContext:context];
 	[allCategory initValues];
-	allCategory.name = @"All";
+	allCategory.name = NSLocalizedString(@"All", @"All");
     allCategory.icon = @"wallet_folder";
 	allCategory.uniqueID = A3WalletUUIDAllCategory;
 	allCategory.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
@@ -54,7 +54,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 		[category initValues];
 
 		category.uniqueID = preset[@"uniqueID"];
-        category.name = preset[@"name"];
+        category.name = NSLocalizedString(preset[@"name"], nil);
         category.icon = preset[@"icon"];
 		category.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
@@ -63,7 +63,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 		for (NSDictionary *fieldPreset in fieldPresets) {
             WalletField *field = [WalletField MR_createInContext:context];
 			field.uniqueID = fieldPreset[@"uniqueID"];
-			field.name = fieldPreset[@"name"];
+			field.name = NSLocalizedString(fieldPreset[@"name"], nil);
             field.category = category;
             field.type = fieldPreset[@"type"];
             field.style = fieldPreset[@"style"];

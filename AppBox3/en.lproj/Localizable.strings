@@ -708,3 +708,22 @@
 "More" = "More";
 "Units on the bar" = "Units on the bar";
 "Units in more" = "Units in more";
+
+"Price A" = "Price A";
+"Price B" = "Price B";
+"Price" = "Price";
+"Unit" = "Unit";
+"Size" = "Size";
+"Quantity" = "Quantity";
+"Discountpo" = "Discountpo";
+
+"The best unit price is A at %@" = "The best unit price is A at %@";
+"The best unit price is B at %@" = "The best unit price is B at %@";
+"The unit price is same at %@" = "The unit price is same at %@";
+
+"Area" = "Area";
+"Length" = "Length";
+"Volume" = "Volume";
+"Weight" = "Weight";
+
+"Favorite" = "Favorite";

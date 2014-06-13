@@ -89,7 +89,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     self.tableView.separatorColor = [self tableViewSeparatorColor];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;     // KJH
     
-    self.title = _isPriceA ? @"Price A":@"Price B";
+    self.title = _isPriceA ? NSLocalizedString(@"Price A", @"Price A") : NSLocalizedString(@"Price B", @"Price B");
     self.currencyFormatter.maximumFractionDigits = 2;
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 1, self.view.bounds.size.width, IS_RETINA ? 0.5:1.0)];
@@ -182,7 +182,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (NSMutableDictionary *)priceItem
 {
     if (!_priceItem) {
-        _priceItem = [[NSMutableDictionary alloc] initWithDictionary:@{@"Name": @"Price"}];
+        _priceItem = [[NSMutableDictionary alloc] initWithDictionary:@{@"Name": NSLocalizedString(@"Price", @"Price")}];
     }
     return _priceItem;
 }
@@ -190,7 +190,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (NSMutableDictionary *)unitItem
 {
     if (!_unitItem) {
-        _unitItem = [[NSMutableDictionary alloc] initWithDictionary:@{@"Name": @"Unit"}];
+        _unitItem = [[NSMutableDictionary alloc] initWithDictionary:@{@"Name": NSLocalizedString(@"Unit", @"Unit")}];
     }
     return _unitItem;
 }
@@ -198,7 +198,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (NSMutableDictionary *)sizeItem
 {
     if (!_sizeItem) {
-        _sizeItem = [[NSMutableDictionary alloc] initWithDictionary:@{@"Name": @"Size"}];
+        _sizeItem = [[NSMutableDictionary alloc] initWithDictionary:@{@"Name": NSLocalizedString(@"Size", @"Size")}];
     }
     return _sizeItem;
 }
@@ -206,7 +206,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (NSMutableDictionary *)quantityItem
 {
     if (!_quantityItem) {
-        _quantityItem = [[NSMutableDictionary alloc] initWithDictionary:@{@"Name": @"Quantity"}];
+        _quantityItem = [[NSMutableDictionary alloc] initWithDictionary:@{@"Name": NSLocalizedString(@"Quantity", @"Quantity")}];
     }
     return _quantityItem;
 }
@@ -214,7 +214,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (NSMutableDictionary *)discountItem
 {
     if (!_discountItem) {
-        _discountItem = [[NSMutableDictionary alloc] initWithDictionary:@{@"Name": @"Discountpo"}];
+        _discountItem = [[NSMutableDictionary alloc] initWithDictionary:@{@"Name": NSLocalizedString(@"Discountpo", @"Discountpo")}];
     }
     return _discountItem;
 }
@@ -245,8 +245,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     UnitPriceInfo *priceInfo = self.price;
     
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
-    unitShortName = priceInfo.unit ? priceInfo.unit.unitShortName : @"None";
-    unitName = priceInfo.unit ? priceInfo.unit.unitName : @"None";
+    unitShortName = priceInfo.unit ? priceInfo.unit.unitShortName : NSLocalizedString(@"None", @"None");
+    unitName = priceInfo.unit ? priceInfo.unit.unitName : NSLocalizedString(@"None", @"None");
     
     double priceValue = priceInfo.price.doubleValue;
     NSInteger sizeValue = (priceInfo.size.integerValue <= 0) ? 1:priceInfo.size.integerValue;
@@ -335,7 +335,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (void)configureInputCell:(A3UnitPriceInputCell *)inputCell withIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *priceTxt = @"";
+    NSString *priceTxt;
     
     UnitPriceInfo *priceInfo = self.price;
     
@@ -356,21 +356,21 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     }
 
     if ([self.items objectAtIndex:indexPath.row] == self.priceItem) {
-        inputCell.titleLB.text = @"Price";
+        inputCell.titleLB.text = NSLocalizedString(@"Price", @"Price");
         inputCell.textField.text = priceTxt;
     }
     else if ([self.items objectAtIndex:indexPath.row] == self.sizeItem) {
-        inputCell.titleLB.text = @"Size";
-        inputCell.textField.placeholder = @"Optional";
+        inputCell.titleLB.text = NSLocalizedString(@"Size", @"Size");
+        inputCell.textField.placeholder = NSLocalizedString(@"Optional", @"Optional");
         inputCell.textField.text = priceInfo.size.doubleValue != 0.0 ? [self.decimalFormatter stringFromNumber:priceInfo.size] : @"";
     }
     else if ([self.items objectAtIndex:indexPath.row] == self.quantityItem) {
-        inputCell.titleLB.text = @"Quantity";
+        inputCell.titleLB.text = NSLocalizedString(@"Quantity", @"Quantity");
         inputCell.textField.text = priceInfo.quantity ? [self.decimalFormatter stringFromNumber:priceInfo.quantity]:[self.decimalFormatter stringFromNumber:@0];
     }
     else if ([self.items objectAtIndex:indexPath.row] == self.discountItem) {
-        inputCell.titleLB.text = @"Discount";
-        inputCell.textField.placeholder = @"Optional";
+        inputCell.titleLB.text = NSLocalizedString(@"Discount", @"Discount");
+        inputCell.textField.placeholder = NSLocalizedString(@"Optional", @"Optional");
         inputCell.textField.text = discountText;
     }
 }
@@ -757,8 +757,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 			actionCell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
 			actionCell.textLabel.font = [UIFont systemFontOfSize:17];
 			actionCell.detailTextLabel.font = [UIFont systemFontOfSize:17];
-			actionCell.textLabel.text = @"Unit";
-			NSString *unitName = self.price.unit ? self.price.unit.unitName : @"None";
+			actionCell.textLabel.text = NSLocalizedString(@"Unit", @"Unit");
+			NSString *unitName = self.price.unit ? self.price.unit.unitName : NSLocalizedString(@"None", @"None");
 			actionCell.detailTextLabel.text = unitName;
 
 			cell = actionCell;
