@@ -5,234 +5,220 @@
  * Time: 9:34 PM
  */
 
-"Select Currency" = "Select Currency";
-"Loan Calc" = "Loan Calc";
-"Principal" = "Principal";
-"Term" = "Term";
-"Interest Rate" = "Interest Rate";
-"Frequency" = "Frequency";
-"Start Date" = "Start Date";
-"Notes" = "Notes";
-"Monthly" = "Monthly";
-"Yearly" = "Yearly";
-"One-Time" = "One-Time";
-"Currency" = "Currency";
+"Select Currency" = "통화 선택";
+"Principal" = "원금";
+"Term" = "기간";
+"Interest Rate" = "이자율";
+"Frequency" = "상환주기";
+"Start Date" = "상환 시작일";
+"Notes" = "메모";
+"Monthly" = "월단위";
+"Yearly" = "년단위";
+"One-Time" = "일시부분상환";
+"Currency" = "통화";
 
 "iCloud" = "iCloud";
-"None" = "None";
+"None" = "없음";
 
-"On" = "On";
-"Off" = "Off";
+"Most Recent" = "마지막으로 사용한 앱";
 
-"Most Recent" = "Most Recent";
-"Last %d" = "Last %d";
+"Korean" = "한국음력";
+"Chinese" = "중국음력";
 
-"Korean" = "Korean";
-"Chinese" = "Chinese";
+"Settings" = "설정";
+"Sync" = "동기화";
 
-"Settings" = "Settings";
-"Sync" = "Sync";
+"Passcode Lock" = "암호설정";
 
-"Passcode Lock" = "Passcode Lock";
+"Lunar Calendar" = "음력 달력";
 
-"Lunar Calendar" = "Lunar Calendar";
+"tellafriend" = "iPhone/iPad/iPod Touch의 유용한 사용을 위해 계산기, 날짜계산, 대출계산, 퍼센트계산, 할인율계산, 팁계산, 단가비교, 환율변환, 양음력변환, 번역, 단위 변환, 기념일관리, 지출기록, 자연주기, 전자지갑, 휴일/기념일, 배터리, 시계, 돋보기, 거울 등의 응용프로그램이 모두 포함된 AppBox Pro™를 추천합니다.\\r\\n\\r\\n지금 바로 아래의 주소에서 AppBox Pro™를 다운받으세요.\\r\\n\\r\\nhttps://itunes.apple.com/app/id318404385";
 
-"tellafriend" = "A friend wanted to let you know that the Calculator, Date Calculator, Loan Calculator, Percent Calculator, Sales Calculator, Tip Calculator, Unit Price, Currency Converter, Lunar Converter, Translator, Unit Converter, Days Counter, Expense List, Lady Calendar, Wallet, Holidays, Battery Status, Clock, Magnifier and Mirror you've come to expect from AppBox Pro™ is now available for your iPhone, iPad and iPod Touch. Click below to download AppBox Pro™ from the iTunes App Store.\r\n\r\nhttps://itunes.apple.com/app/id318404385";
+"DISCLAIMER_MESSAGE" = "본 앱에서 제공되는 정보는 작성 시점을 기준으로 최대한 정확한 정보가 되도록 최선을 다하고 있습니다. 그러나, 전세계 지역별 휴일 및 기념일은 예고 없이 변경되고 있어 실제 휴일 정보에서 차이가 발생할 수 있습니다. 여기에서 제공되는 정보는 단순 참고용으로 제공되는 것으로, 이 정보의 제공으로 인한 어떠한 종류의 책임도 지지 않음을 알려드립니다. 단순 참고용 이상의 정보가 필요한 경우에는 해당 국가의 책임있는 기관의 정보를 제공받으시기 바랍니다.";
+"HOLIDAYS_ACKNOWLEDGEMENT" = "본 앱의 휴일 정보 화면 배경으로 제공되는 사진은 Flickr에서 수집된 사진으로 각 지역의 아름다운 모습을 표현하기 위해서 사용되었습니다. 각 사진은 Flickr계정과 사진의 링크를 표시하고 있습니다. 사진의 저작권은 모두 해당 소유자에게 있습니다. 당사는 어떠한 사진도 소유하고 있지 않습니다. 만약 소유하고 계신 사잔이 이 앱에서 보여지기를 원하시는 경우에는 저희에게 메일을 보내주시기 바랍니다. 보내주신 정보에 대해서는 어떠한 금전적 보상은 하지 않으나 이 앱을 통해서 소유하신 사진을 앱의 사용자에게 공유하는 계기가 될 것 입니다.";
 
-"DISCLAIMER_MESSAGE" = "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case.";
-"HOLIDAYS_ACKNOWLEDGEMENT" = "A Photo behind the Holidays in the AppBox Pro is collected from Flickr that reflect the beauty and magnificence of differnet locations around the world. Flickr screen name and a link to the photo are shown on the screen. Authors get any and all rights over photo. ALLABOUTAPPS Inc. don't own any photo. If you want to paricipate this, send us email. You will not receive financial compensation for use of your photos, however will bring a whole new audience to your photostream. Thanks to authors to share.";
+"SECURITY_INFO" = "Apple은 고유의 데이터 보호 방법을 사용하여 정보를 보호하고 있습니다. 자체적으로 최고 수준의 256비트 AES 기술을 이용하여 저장된 데이터를 암호화할 수 있습니다. 보유하신 장치의 설정에서 암호잠금 설정을 하는 것만으로 저장되는 데이터를 지정하신 암호와 장치만의 고유 아이디를 특수한 방법으로 조합하여 매우 보안이 높은 방법으로 암호화하여 할 수 있습니다.";
 
-"SECURITY_INFO" = "Apple uses a technology called Data Protection. It encrypts your data with secure 256-bit key and hardware AES Engine. By setting up a device passcode, you automatically enables Data Protection.\nThe passcode is \"tangled\" with the device's UID, so brute-force attempts must be performed on the device under attack. A large iteration count is used to make each attempt slower. The iteration count is calibrated so that one attempt takes approximately 80 milliseconds. This means it would take more than 5½ years to try all combinations of a six-character alphanumeric passcode with lowercase letters and numbers, or 2½ years for a nine-digit passcode with numbers only.";
+"microphone access denied" = "AppBox Pro가 장치의 마이크에 접근하는 것이 제한되어 있습니다.\n소리를 함께 녹화하시려면 보유하신 %@의 설정 > 개인 정보 보호 > 마이크 > AppBox Pro를 선택하여 설정을 변경하여 주세요.";
 
-"microphone access denied" = "AppBox Pro dose not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro";
+"Theme Color" = "테마 색 설정";
 
-"Theme Color" = "Theme Color";
+"About" = "정보";
+"Remaining Time" = "잔여시간";
 
-"About" = "About";
-"Remaining Time" = "Remaining Time";
+"Battery Status" = "배터리";
+"Calculator" = "계산기";
+"Date Calculator" = "날짜 계산";
+"Loan Calculator" = "대출 계산";
+"Sales Calculator" = "할인율 계산";
+"Tip Calculator" = "팁 계산기";
+"Unit Price" = "단가 비교";
+"Percent Calculator" = "비율 계산";
+"Currency Converter" = "환율 변환";
+"Lunar Converter" = "양력/음력 변환";
+"Translator" = "번역";
+"Unit Converter" = "단위 변환";
+"Days Counter" = "이벤트 캘린더";
+"Lady Calendar" = "레이디 달력";
+"Wallet" = "전자지갑";
+"Expense List" = "지출 관리";
+"Holidays" = "세계휴일/기념일";
+"Clock" = "시계";
+"Mirror" = "거울";
+"Magnifier" = "돋보기";
+"Favorites" = "자주사용하는 앱";
 
-"Battery Status" = "Battery Status";
-"Calculator" = "Calculator";
-"Date Calculator" = "Date Calculator";
-"Loan Calculator" = "Loan Calculator";
-"Sales Calculator" = "Sales Calculator";
-"Tip Calculator" = "Tip Calculator";
-"Unit Price" = "Unit Price";
-"Percent Calculator" = "Percent Calculator";
-"Currency Converter" = "Currency Converter";
-"Lunar Converter" = "Lunar Converter";
-"Translator" = "Translator";
-"Unit Converter" = "Unit Converter";
-"Days Counter" = "Days Counter";
-"Lady Calendar" = "Lady Calendar";
-"Wallet" = "Wallet";
-"Expense List" = "Expense List";
-"Holidays" = "Holidays";
-"Clock" = "Clock";
-"Mirror" = "Mirror";
-"Magnifier" = "Magnifier";
-"Favorites" = "Favorites";
-
-"Last %ld" = "Last %ld";
+"Last %ld" = "최근 %ld 개";
 
 "Apps" = "Apps";
-"iCloud_goto_settings" = "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.";
+"iCloud_goto_settings" = "iCloud 동기화 기능을 사용하시려면 장치의 설정을 열어서 iCloud 도큐멘트 및 데이터를 저장하도록 설정하여 주세요.";
 
-"Info" = "Info";
-"Internet Connection is not available." = "Internet Connection is not available.";
-"Cancel" = "Cancel";
-"Delete Photo" = "Delete Photo";
-"Take Photo" = "Take Photo";
-"Choose Existing" = "Choose Existing";
-"Choose and Resize" = "Choose and Resize";
+"Info" = "정보";
+"Internet Connection is not available." = "인터넷에 연결 할 수 없습니다.";
+"Cancel" = "취소";
+"Delete Photo" = "사진을 지움";
+"Take Photo" = "사진 촬영";
+"Choose Existing" = "저장된 사진중에서 고르기";
+"Choose and Resize" = "고른 후 크기 조정하기";
 
-"Enabling iCloud" = "Enabling iCloud";
-"Disableing iCloud" = "Disableing iCloud";
+"Enabling iCloud" = "iCloud를 동기화를 켜는 중";
+"Disableing iCloud" = "iCloud를 끄는 중";
 
-"iCloud Enabled" = "iCloud Enabled";
-"Syncing in backgorund" = "Syncing in backgorund";
-"iCloud Disabled" = "iCloud Disabled";
-"Local Store Problem" = "Local Store Problem";
-"Your datastore got corrupted and needs to be recreated." = "Your datastore got corrupted and needs to be recreated.";
-"Recreate" = "Recreate";
+"iCloud Enabled" = "iCloud 동기화가 켜졌습니다.";
+"Syncing in backgorund" = "동기화는 백그라운드로 진행됩니다.";
+"iCloud Disabled" = "iCloud 동기화가 꺼졌습니다.";
+"Local Store Problem" = "데이터에 손상";
+"Your datastore got corrupted and needs to be recreated." = "저장된 데이터에 손상이 발생하여 데이터를 초기화해야 합니다.";
+"Recreate" = "초기화";
 
-"Converter" = "Converter";
-"Productivity" = "Productivity";
-"Reference" = "Reference";
-"Utility" = "Utility";
-"OK" = "OK";
-"Details" = "Details";
-"Device" = "Device";
-"Version" = "Version";
-"Chips" = "Chips";
+"Converter" = "변환";
+"Productivity" = "생산성";
+"Reference" = "참고";
+"Utility" = "유틸리티";
+"OK" = "확인";
+"Details" = "상세정보";
+"Device" = "장치명";
+"Version" = "버전";
+"Chips" = "칩셋";
 "CPU" = "CPU";
 "GPU" = "GPU";
-"Memory" = "Memory";
-"Capacity" = "Capacity";
+"Memory" = "메모리";
+"Capacity" = "용량";
 
-"How to Maximize Power Use" = "How to Maximize Power Use";
-"More Information about Batteries" = "More Information about Batteries";
+"How to Maximize Power Use" = "배터리 절약하는 법";
+"More Information about Batteries" = "배터리에 대한 더 자세한 정보";
 
-"Enter The Number!" = "Enter The Number!";
+"Enter The Number!" = "숫자를 입력해주세요.";
 
-"History" = "History";
-"Clear" = "Clear";
-"Clear History" = "Clear History";
+"History" = "이력";
+"Clear" = "지우기";
+"Clear History" = "이력 초기화";
 
-"Basic / Scientific" = "Basic / Scientific";
-"Scientific" = "Scientific";
-"Basic" = "Basic";
-"Calculator using AppBox Pro" = "Calculator using AppBox Pro";
-"I'd like to share a calculation with you.\n\n" = "I'd like to share a calculation with you.\n\n";
+"Basic / Scientific" = "기본 / 공학용";
+"Scientific" = "공학용";
+"Basic" = "기본";
+"Calculator using AppBox Pro" = "AppBox Pro의 계산기";
+"I'd like to share a calculation with you.\n\n" = "계산 결과를 공유합니다.\n\n";
 
-"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385" = "\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385";
-"CHOOSE COLOR" = "CHOOSE COLOR";
+"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385" = "\n\nAppBox Pro로 더 많은 계산을 하세요.\nhttps://itunes.apple.com/app/id318404385";
+"CHOOSE COLOR" = "색상 선택";
 
-"Humidity" = "Humidity";
-"High" = "High";
-"Low" = "Low";
+"Humidity" = "습도";
+"High" = "높음";
+"Low" = "낮음";
 
-"Setting" = "Setting";
-"TIME" = "TIME";
-"DATE" = "DATE";
-"WEATHER" = "WEATHER";
-"The time with seconds" = "The time with seconds";
-"Flash the time separators" = "Flash the time separators";
-"Use a 24-hour clock" = "Use a 24-hour clock";
-"Show AM/PM" = "Show AM/PM";
-"Show the day of the week" = "Show the day of the week";
-"Show date" = "Show date";
-"Show Weather" = "Show Weather";
+"Setting" = "설정";
+"TIME" = "시간";
+"DATE" = "날짜";
+"WEATHER" = "날씨";
+"The time with seconds" = "초를 표시";
+"Flash the time separators" = "구분자를 깜박이기";
+"Use a 24-hour clock" = "24시간 사용";
+"Show AM/PM" = "오전/오후 표시하기";
+"Show the day of the week" = "요일 표시하기";
+"Show date" = "날짜 표시하기";
+"Show Weather" = "날씨 표시하기";
 
-"Weather" = "Weather";
+"Weather" = "날씨";
 
-"%@, Rate = %0.4f" = "%@, Rate = %0.4f";
-"Internet connection is not available." = "Internet connection is not available.";
-"Each history keeps max 4 currencies." = "Each history keeps max 4 currencies.";
+"%@, Rate = %0.4f" = "%@, 환율 = %0.4f";
+"Each history keeps max 4 currencies." = "각각의 이력은 최대 4개까지의 환율정보를 저장합니다.";
 
-"%@ to %@ = %.4f" = "%@ to %@ = %.4f";
-"Auto Update" = "Auto Update";
-"Show National Flag" = "Show National Flag";
-"Use Cellular Data" = "Use Cellular Data";
-"Swap" = "Swap";
-"Chart" = "Chart";
-"Share" = "Share";
-"Delete" = "Delete";
+"%@ to %@ = %.4f" = "%@/%@ = %.4f";
+"Auto Update" = "자동 환율 갱신";
+"Show National Flag" = "국기 표시하기";
+"Use Cellular Data" = "셀룰러 데이터 사용";
+"Swap" = "맞교환";
+"Chart" = "그래프";
+"Share" = "공유";
+"Delete" = "삭제";
 
-"Updating" = "Updating";
-"Updated %@" = "Updated %@";
-"%@Rate = %0.4f" = "%@Rate = %0.4f";
-"Rate = %0.4f" = "Rate = %0.4f";
+"Updating" = "업데이트 중";
+"Updated %@" = "최종 업데이트 %@";
+"%@Rate = %0.4f" = "%@환율 = %0.4f";
+"Rate = %0.4f" = "환율 = %0.4f";
 
-"%@ equals %@ with rate %0.4f" = "%@ equals %@ with rate %0.4f";
-"Currency Converter in the AppBox Pro" = "Currency Converter in the AppBox Pro";
-"<html><body>I'd like to share a currency conversion with you.<br/><br/>" = "<html><body>I'd like to share a currency conversion with you.<br/><br/>";
-"share_HTML_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
-"Share Currency Converter Data" = "Share Currency Converter Data";
+"%@ equals %@ with rate %0.4f" = "%@/%@ = %0.4f";
+"Currency Converter in the AppBox Pro" = "AppBox Pro의 환율 변환기";
+"<html><body>I'd like to share a currency conversion with you.<br/><br/>" = "<html><body>환율 변환 결과를 공유합니다.<br/><br/>";
+"share_HTML_body" = "<br/><br/>AppBox Pro에서 더 많은 환율 변환을 해보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>App Store에서 앱 다운로드하기</a></body></html>";
+"Share Currency Converter Data" = "환율 변환 정보 공유하기";
 
 /* Data Calc duration */
-"Year" = "Year";
-"Month" = "Month";
-"Week" = "Week";
-"Day" = "Day";
-"Duration" = "Duration";
-"Edit Event" = "Edit Event";
-"ADVANCED" = "ADVANCED";
+"Year" = "년";
+"Month" = "월";
+"Week" = "주";
+"Day" = "일";
+"Duration" = "기간";
+"Edit Event" = "이벤트 수정";
+"ADVANCED" = "상세정보";
 
-"Saturday" = "Saturday";
-"Sunday" = "Sunday";
-"%ld year%@" = "%ld year%@";
+"Saturday" = "토요일";
+"Sunday" = "일요일";
 
-"%ld month" = "%ld month";
-"%ld days" = "%ld days";
+"%ldy" = "%ld년";
+"%ldm" = "%ld월";
+"%ldw" = "%ld주";
+"%ldd" = "%ld일";
 
-"%ldy" = "%ldy";
-"%ldm" = "%ldm";
-"%ldw" = "%ldw";
-"%ldd" = "%ldd";
-"%ld weeks" = "%ld weeks";
+"0 day" = "0 일";
 
-"0 day" = "0 day";
+"To show results, need one option." = "결과를 표시하기 위해서는 하나 이상을 선택해야 합니다.";
+"Years" = "년";
+"Months" = "개월";
+"Weeks" = "주";
+"Days" = "일";
+"Weekends" = "주말";
+"Sat" = "토";
+"Sun" = "일";
+"Public Holidays" = "공휴일";
+"Today  " = "오늘  ";
 
-"DateCalculator" = "DateCalculator";
+"Date Calculator using AppBox Pro" = "AppBox Pro의 날짜 계산기";
+"<html><body>I'd like to share a calculation with you.<br/><br/>" = "<html><body>계산결과를 공유합니다.<br/><br/>";
+"datecalc_share_body" = "<br/><br/>AppBox Pro로 더 많은 계산을 해보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
+"From: %@<br>" = "시작: %@<br>";
+"To: %@<br>" = "종료: %@<br>";
+"Exclude: %@<br>" = "제외기간: %@<br>";
 
-"To show results, need one option." = "To show results, need one option.";
-"Years" = "Years";
-"Months" = "Months";
-"Weeks" = "Weeks";
-"Days" = "Days";
-"Weekends" = "Weekends";
-"Sat" = "Sat";
-"Sun" = "Sun";
-"Public Holidays" = "Public Holidays";
-"Today  " = "Today  ";
+"Result: %@" = "결과: %@";
+"Add: 0 day<br>" = "더하기: 0 day<br>";
+"Add: %@<br>" = "더하기: %@<br>";
+"Subtract: 0 day<br>" = "빼기: 0 day<br>";
+"Subtract: %@<br>" = "제목: %@<br>";
+"Between two dates" = "두 날짜 사이의 기간";
+"Add or Subtract days" = "날짜에 더하거나 빼기";
+"From" = "시작일";
+"To" = "종료일";
+"Exclude" = "제외하기";
 
-"Date Calculator using AppBox Pro" = "Date Calculator using AppBox Pro";
-"<html><body>I'd like to share a calculation with you.<br/><br/>" = "<html><body>I'd like to share a calculation with you.<br/><br/>";
-"datecalc_share_body" = "<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
-"From: %@<br>" = "From: %@<br>";
-"To: %@<br>" = "To: %@<br>";
-"Exclude: %@<br>" = "Exclude: %@<br>";
-
-"%ld years" = "%ld years";
-"Result: %@" = "Result: %@";
-"Add: 0 day<br>" = "Add: 0 day<br>";
-"Add: %@<br>" = "Add: %@<br>";
-"Subtract: 0 day<br>" = "Subtract: 0 day<br>";
-"Subtract: %@<br>" = "Subtract: %@<br>";
-"Between two dates" = "Between two dates";
-"Add or Subtract days" = "Add or Subtract days";
-"From" = "From";
-"To" = "To";
-"Exclude" = "Exclude";
-
-"%ld of %ld" = "%ld of %ld";
-"%@ using AppBox Pro" = "%@ using AppBox Pro";
-"Share Days Counter Data" = "Share Days Counter Data";
-"<html><body>I'd like to share a event with you.<br/><br/>" = "<html><body>I'd like to share a event with you.<br/><br/>";
-"dayscounter_share_html_body" = "<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
-"Slideshow Options" = "Slideshow Options";
-"Transitions" = "Transitions";
+"%ld of %ld" = "%ld의 %ld";
+"%@ using AppBox Pro" = "%@ AppBox Pro 사용";
+"Share Days Counter Data" = "이벤트 캘린더 공유";
+"<html><body>I'd like to share a event with you.<br/><br/>" = "<html><body>나의 이벤트를 공유합니다.<br/><br/>";
+"dayscounter_share_html_body" = "<br/>AppBox Pro로 이벤트롤 관리합니다.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
+"Slideshow Options" = "슬라이드쇼 설정";
+"Transitions" = "화면전환";
 "Play Each Slide For" = "Play Each Slide For";
 "Repeat" = "Repeat";
 "Shuffle" = "Shuffle";

@@ -329,7 +329,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 - (UIViewController *)getViewControllerForElement:(A3TableViewMenuElement *)menuElement {
 	UIViewController *targetViewController;
 
-	if ([menuElement.title isEqualToString:NSLocalizedString(@"Days Counter", @"Days Counter")]) {
+	if ([menuElement.imageName isEqualToString:@"DaysCounter"]) {
         A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
 
         NSInteger lastOpenedMainIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"DaysCounterLastOpenedMainIndex"];

@@ -1336,16 +1336,18 @@
     return 0.01;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    if (_isAddingEvent && section == [_sectionTitleArray count]) {
-        return 38.0;
-    }
-    else if (!_isAddingEvent && section == [_sectionTitleArray count] - 1) {
-        return 38.0;
-    }
-    
-    return 0.01;
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	if (_isAddingEvent) {
+		if (section >= [_sectionTitleArray count] - 1) {
+			return 38.0;
+		}
+	} else {
+		if (section >= [_sectionTitleArray count]) {
+			return 38.0;
+		}
+	}
+
+	return 0.01;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

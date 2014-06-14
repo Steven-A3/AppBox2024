@@ -6,7 +6,6 @@
  */
 
 "Select Currency" = "Select Currency";
-"Loan Calc" = "Loan Calc";
 "Principal" = "Principal";
 "Term" = "Term";
 "Interest Rate" = "Interest Rate";
@@ -21,11 +20,7 @@
 "iCloud" = "iCloud";
 "None" = "None";
 
-"On" = "On";
-"Off" = "Off";
-
 "Most Recent" = "Most Recent";
-"Last %d" = "Last %d";
 
 "Korean" = "Korean";
 "Chinese" = "Chinese";
@@ -147,7 +142,6 @@
 "Weather" = "Weather";
 
 "%@, Rate = %0.4f" = "%@, Rate = %0.4f";
-"Internet connection is not available." = "Internet connection is not available.";
 "Each history keeps max 4 currencies." = "Each history keeps max 4 currencies.";
 
 "%@ to %@ = %.4f" = "%@ to %@ = %.4f";
@@ -181,20 +175,13 @@
 
 "Saturday" = "Saturday";
 "Sunday" = "Sunday";
-"%ld year%@" = "%ld year%@";
-
-"%ld month" = "%ld month";
-"%ld days" = "%ld days";
 
 "%ldy" = "%ldy";
 "%ldm" = "%ldm";
 "%ldw" = "%ldw";
 "%ldd" = "%ldd";
-"%ld weeks" = "%ld weeks";
 
 "0 day" = "0 day";
-
-"DateCalculator" = "DateCalculator";
 
 "To show results, need one option." = "To show results, need one option.";
 "Years" = "Years";
@@ -214,7 +201,6 @@
 "To: %@<br>" = "To: %@<br>";
 "Exclude: %@<br>" = "Exclude: %@<br>";
 
-"%ld years" = "%ld years";
 "Result: %@" = "Result: %@";
 "Add: 0 day<br>" = "Add: 0 day<br>";
 "Add: %@<br>" = "Add: %@<br>";
