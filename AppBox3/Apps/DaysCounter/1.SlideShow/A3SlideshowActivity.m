@@ -75,7 +75,7 @@
     FNLOG();
 
     if( IS_IPHONE ){
-        A3DaysCounterSlideshowOptionViewController *viewCtrl = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:@"A3DaysCounterSlideshowOptionViewController" bundle:nil];
+        A3DaysCounterSlideshowOptionViewController *viewCtrl = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:nil bundle:nil];
         viewCtrl.activity = self;
         viewCtrl.sharedManager = _sharedManager;
         viewCtrl.completionBlock = _completionBlock;

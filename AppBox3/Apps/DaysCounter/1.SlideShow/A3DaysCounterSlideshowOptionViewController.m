@@ -229,13 +229,13 @@
 {
     NSInteger cellType = [self cellTypeAtIndexPath:indexPath];
     if ( cellType == SlideshowOptionType_Transition ) {
-        A3DaysCounterSlideshowTransitionSelectViewController *viewCtrl = [[A3DaysCounterSlideshowTransitionSelectViewController alloc] initWithNibName:@"A3DaysCounterSlideshowTransitionSelectViewController" bundle:nil];
+        A3DaysCounterSlideshowTransitionSelectViewController *viewCtrl = [[A3DaysCounterSlideshowTransitionSelectViewController alloc] initWithNibName:nil bundle:nil];
         viewCtrl.optionDict = self.optionDict;
         viewCtrl.sharedManager = _sharedManager;
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
     else if ( cellType == SlideshowOptionType_Showtime ) {
-        A3DaysCounterSlideshowTimeSelectViewController *viewCtrl = [[A3DaysCounterSlideshowTimeSelectViewController alloc] initWithNibName:@"A3DaysCounterSlideshowTimeSelectViewController" bundle:nil];
+        A3DaysCounterSlideshowTimeSelectViewController *viewCtrl = [[A3DaysCounterSlideshowTimeSelectViewController alloc] initWithNibName:nil bundle:nil];
         viewCtrl.optionDict = self.optionDict;
         viewCtrl.sharedManager = _sharedManager;
         [self.navigationController pushViewController:viewCtrl animated:YES];
@@ -259,7 +259,7 @@
         else {
             [self.A3RootViewController dismissRightSideViewController];
 
-            A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
+            A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:nil bundle:nil];
             viewCtrl.optionDict = self.optionDict;
             viewCtrl.sharedManager = _sharedManager;
             viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

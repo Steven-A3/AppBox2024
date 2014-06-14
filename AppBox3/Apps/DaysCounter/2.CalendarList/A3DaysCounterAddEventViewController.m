@@ -1089,7 +1089,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-    A3DaysCounterSetupRepeatViewController *nextVC = [[A3DaysCounterSetupRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupRepeatViewController" bundle:nil];
+    A3DaysCounterSetupRepeatViewController *nextVC = [[A3DaysCounterSetupRepeatViewController alloc] initWithNibName:nil bundle:nil];
     nextVC.eventModel = _eventItem;
     nextVC.sharedManager = _sharedManager;
     nextVC.dismissCompletionBlock = ^{
@@ -1226,7 +1226,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    A3DaysCounterSetupCalendarViewController *nextVC = [[A3DaysCounterSetupCalendarViewController alloc] initWithNibName:@"A3DaysCounterSetupCalendarViewController" bundle:nil];
+    A3DaysCounterSetupCalendarViewController *nextVC = [[A3DaysCounterSetupCalendarViewController alloc] initWithNibName:nil bundle:nil];
     nextVC.eventModel = self.eventItem;
     nextVC.sharedManager = _sharedManager;
     nextVC.dismissCompletionBlock = ^{

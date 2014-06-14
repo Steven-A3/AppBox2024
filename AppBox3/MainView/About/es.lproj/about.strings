@@ -1,0 +1,63 @@
+
+/* Class = "IBUILabel"; text = "@appbox_pro"; ObjectID = "0Ql-Zd-0gc"; */
+"0Ql-Zd-0gc.text" = "@appbox_pro";
+
+/* Class = "IBUILabel"; text = "Write a Review"; ObjectID = "1q8-UP-67U"; */
+"1q8-UP-67U.text" = "Write a Review";
+
+/* Class = "IBUILabel"; text = "Website"; ObjectID = "5OA-em-QL5"; */
+"5OA-em-QL5.text" = "Website";
+
+/* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "6ib-TK-JMG"; */
+"6ib-TK-JMG.headerTitle" = " ";
+
+/* Class = "IBUILabel"; text = "Disclaimer"; ObjectID = "9Z8-Bh-Lsm"; */
+"9Z8-Bh-Lsm.text" = "Disclaimer";
+
+/* Class = "IBUILabel"; text = "Tell a Friend by email"; ObjectID = "CKx-jh-s85"; */
+"CKx-jh-s85.text" = "Tell a Friend by email";
+
+/* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "Fc3-n4-rxm"; */
+"Fc3-n4-rxm.headerTitle" = " ";
+
+/* Class = "IBUILabel"; text = "appbox_pro"; ObjectID = "I2i-W8-CGf"; */
+"I2i-W8-CGf.text" = "appbox_pro";
+
+/* Class = "IBUILabel"; text = "Twitter"; ObjectID = "KTG-Xd-Ija"; */
+"KTG-Xd-Ija.text" = "Twitter";
+
+/* Class = "IBUILabel"; text = "www.allaboutapps.net"; ObjectID = "Nce-mm-wa5"; */
+"Nce-mm-wa5.text" = "www.allaboutapps.net";
+
+/* Class = "IBUILabel"; text = "Facebook"; ObjectID = "R44-Fm-Kr5"; */
+"R44-Fm-Kr5.text" = "Facebook";
+
+/* Class = "IBUITableViewSection"; footerTitle = "Copyright © 2009-2014 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
+"Spr-CR-vU4.footerTitle" = "Copyright © 2009-2014 ALLABOUTAPPS Inc. All rights reserved.";
+
+/* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "Spr-CR-vU4"; */
+"Spr-CR-vU4.headerTitle" = " ";
+
+/* Class = "IBUILabel"; text = "Acknowledgement"; ObjectID = "Y4I-oe-yba"; */
+"Y4I-oe-yba.text" = "Acknowledgement";
+
+/* Class = "IBUILabel"; text = "Contact Support"; ObjectID = "YRa-HJ-6kz"; */
+"YRa-HJ-6kz.text" = "Contact Support";
+
+/* Class = "IBUILabel"; text = "3.0.0"; ObjectID = "cFb-Qr-7IF"; */
+"cFb-Qr-7IF.text" = "3.0.0";
+
+/* Class = "IBUILabel"; text = "What's New"; ObjectID = "jzI-Kv-pA8"; */
+"jzI-Kv-pA8.text" = "What's New";
+
+/* Class = "IBUILabel"; text = "Other Apps"; ObjectID = "qGh-tu-1aG"; */
+"qGh-tu-1aG.text" = "Other Apps";
+
+/* Class = "IBUILabel"; text = "Version"; ObjectID = "rPK-fC-u92"; */
+"rPK-fC-u92.text" = "Version";
+
+/* Class = "IBUINavigationItem"; title = "About"; ObjectID = "vLL-sw-MLM"; */
+"vLL-sw-MLM.title" = "About";
+
+/* Class = "IBUILabel"; text = "Tell a Friend by message"; ObjectID = "ygM-lV-AEG"; */
+"ygM-lV-AEG.text" = "Tell a Friend by message";

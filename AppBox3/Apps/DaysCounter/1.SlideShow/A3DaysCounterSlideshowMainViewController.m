@@ -583,7 +583,7 @@
     DaysCounterEvent *item = [_eventsArray objectAtIndex:currentIndex];
     _prevShownEventID = item.uniqueID;
     
-    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
+    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:nil bundle:nil];
     viewCtrl.eventItem = item;
     viewCtrl.sharedManager = _sharedManager;
     viewCtrl.delegate = self;
@@ -597,7 +597,7 @@
 }
 
 - (IBAction)addEventAction:(id)sender {
-    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
+    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:nil bundle:nil];
     viewCtrl.landscapeFullScreen = YES;
     viewCtrl.sharedManager = _sharedManager;
     if ( IS_IPHONE ) {
@@ -629,7 +629,7 @@
     slideActivity.completionBlock = ^(NSDictionary *userInfo, UIActivity *activity) {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
             [activity activityDidFinish:YES];
-            A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
+            A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:nil bundle:nil];
             viewCtrl.optionDict = userInfo;
             viewCtrl.sharedManager = _sharedManager;
             viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -654,7 +654,7 @@
                          permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         activityController.completionHandler = ^(NSString* activityType, BOOL completed) {
             if ( completed && [activityType isEqualToString:@"Slideshow"] ) {
-                A3DaysCounterSlideshowOptionViewController *viewController = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:@"A3DaysCounterSlideshowOptionViewController" bundle:nil];
+                A3DaysCounterSlideshowOptionViewController *viewController = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:nil bundle:nil];
                 viewController.sharedManager = _sharedManager;
 
 				if (IS_IPHONE) {

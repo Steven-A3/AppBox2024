@@ -192,7 +192,7 @@
 //    if ( [item.calendarType integerValue] == CalendarCellType_System )
 //        return;
 //    
-//    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:@"A3DaysCounterAddAndEditCalendarViewController" bundle:nil];
+//    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:nil bundle:nil];
 //    viewCtrl.isEditMode = YES;
 //    viewCtrl.calendarItem = [[A3DaysCounterModelManager sharedManager] dictionaryFromCalendarEntity:item];
 //    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
@@ -251,7 +251,7 @@
 
 - (void)addCalendarAction:(id)sender
 {
-    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:@"A3DaysCounterAddAndEditCalendarViewController" bundle:nil];
+    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:nil bundle:nil];
     viewCtrl.isEditMode = NO;
     viewCtrl.calendarItem = nil;
     viewCtrl.sharedManager = _sharedManager;
@@ -279,7 +279,7 @@
     if ( [item.calendarType integerValue] == CalendarCellType_System )
         return;
     
-    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:@"A3DaysCounterAddAndEditCalendarViewController" bundle:nil];
+    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:nil bundle:nil];
     viewCtrl.isEditMode = YES;
     viewCtrl.calendarItem = [_sharedManager dictionaryFromCalendarEntity:item];
     viewCtrl.sharedManager = _sharedManager;

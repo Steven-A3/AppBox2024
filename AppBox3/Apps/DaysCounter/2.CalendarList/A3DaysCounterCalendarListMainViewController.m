@@ -308,7 +308,7 @@
 }
 
 - (IBAction)addEventAction:(id)sender {
-    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
+    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:nil bundle:nil];
     viewCtrl.landscapeFullScreen = NO;
     viewCtrl.sharedManager = _sharedManager;
     
@@ -343,7 +343,7 @@
 }
 
 - (IBAction)editAction:(id)sender {
-    A3DaysCounterEditCalendarListViewController *viewCtrl = [[A3DaysCounterEditCalendarListViewController alloc] initWithNibName:@"A3DaysCounterEditCalendarListViewController" bundle:nil];
+    A3DaysCounterEditCalendarListViewController *viewCtrl = [[A3DaysCounterEditCalendarListViewController alloc] initWithNibName:nil bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
     
     if ( IS_IPHONE ) {
@@ -357,7 +357,7 @@
 }
 
 - (IBAction)addCalendarAction:(id)sender {
-    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:@"A3DaysCounterAddAndEditCalendarViewController" bundle:nil];
+    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:nil bundle:nil];
     viewCtrl.isEditMode = NO;
     viewCtrl.calendarItem = nil;
     viewCtrl.sharedManager = _sharedManager;

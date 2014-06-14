@@ -633,7 +633,7 @@
         return;
     }
     
-    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
+    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:nil bundle:nil];
     viewCtrl.eventItem = item;
     viewCtrl.sharedManager = _sharedManager;
     viewCtrl.delegate = self;
@@ -907,7 +907,7 @@
 }
 
 - (IBAction)addEventAction:(id)sender {
-    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
+    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:nil bundle:nil];
     viewCtrl.calendarId = _calendarItem.calendarId;
     viewCtrl.sharedManager = _sharedManager;
     if ([_calendarItem.calendarType integerValue] == CalendarCellType_System) {

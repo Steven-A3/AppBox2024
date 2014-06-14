@@ -38,10 +38,10 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 				 kA3AppsMenuName : NSLocalizedString(@"Calculator", @"Main menu group name"),
 				 kA3AppsExpandableChildren :	@[
 						 @{kA3AppsMenuName : NSLocalizedString(@"Date Calculator", @"Main menu group name"), kA3AppsClassName_iPhone : @"A3DateMainTableViewController", kA3AppsMenuImageName : @"DateCalculator"},
-						 @{kA3AppsMenuName : NSLocalizedString(@"Loan Calculator", @"Loan Calculator"), kA3AppsStoryboard_iPhone:@"LoanCalculatorPhoneStoryBoard", kA3AppsStoryboard_iPad:@"LoanCalculatorPadStoryBoard",kA3AppsMenuImageName : @"LoanCalculator"},
+						 @{kA3AppsMenuName : NSLocalizedString(@"Loan Calculator", @"Loan Calculator"), kA3AppsStoryboard_iPhone:@"LoanCalculatorPhoneStoryBoard", kA3AppsStoryboard_iPad:@"LoanCalculatorPhoneStoryBoard",kA3AppsMenuImageName : @"LoanCalculator"},
 						 @{kA3AppsMenuName : NSLocalizedString(@"Sales Calculator", @"Sales Calculator"), kA3AppsClassName_iPhone : @"A3SalesCalcMainViewController", kA3AppsMenuImageName : @"SalesCalculator"},
 						 @{kA3AppsMenuName : NSLocalizedString(@"Tip Calculator", @"Tip Calculator"), kA3AppsClassName_iPhone : @"A3TipCalcMainTableViewController", kA3AppsMenuImageName : @"TipCalculator"},
-						 @{kA3AppsMenuName : NSLocalizedString(@"Unit Price", @"Unit Price"), kA3AppsStoryboard_iPhone:@"UnitPriceStoryboard", kA3AppsStoryboard_iPad:@"UnitPriceStoryboard_iPad", kA3AppsMenuImageName : @"UnitPrice"},
+						 @{kA3AppsMenuName : NSLocalizedString(@"Unit Price", @"Unit Price"), kA3AppsStoryboard_iPhone:@"UnitPriceStoryboard", kA3AppsStoryboard_iPad:@"UnitPriceStoryboard", kA3AppsMenuImageName : @"UnitPrice"},
 						 @{kA3AppsMenuName : NSLocalizedString(@"Calculator", @"Calculator"), kA3AppsClassName_iPhone : @"A3CalculatorViewController_iPhone", kA3AppsClassName_iPad:@"A3CalculatorViewController_iPad",  kA3AppsMenuImageName : @"Calculator"},
 						 @{kA3AppsMenuName : NSLocalizedString(@"Percent Calculator", @"Percent Calculator"), kA3AppsClassName_iPhone : @"A3PercentCalcMainViewController", kA3AppsMenuImageName : @"PercentCalculator"}
 						 ]

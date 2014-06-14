@@ -62,7 +62,7 @@
 
 - (void)infoButtonAction:(UIButton *)button
 {
-	UIStoryboard *storyboard = (IS_IPHONE) ? [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil] : [UIStoryboard storyboardWithName:@"LoanCalculatorPadStoryBoard" bundle:nil];
+	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
 	A3LoanCalcMonthlyDataViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"A3LoanCalcMonthlyDataViewController"];
 	viewController.loanData = _loanData;
 	[self.navigationController pushViewController:viewController animated:YES];

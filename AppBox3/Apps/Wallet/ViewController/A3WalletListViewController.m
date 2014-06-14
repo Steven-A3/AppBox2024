@@ -356,7 +356,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath withItem:(WalletItem *)item {
 	if ([item.category.name isEqualToString:WalletCategoryTypePhoto]) {
-		NSString *boardName = IS_IPAD ? @"WalletPadStoryBoard" : @"WalletPhoneStoryBoard";
+		NSString *boardName = @"WalletPhoneStoryBoard";
 		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
 		A3WalletPhotoItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletPhotoItemViewController"];
 		viewController.hidesBottomBarWhenPushed = YES;
@@ -364,7 +364,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		[self.navigationController pushViewController:viewController animated:YES];
 	}
 	else if ([item.category.name isEqualToString:WalletCategoryTypeVideo]) {
-		NSString *boardName = IS_IPAD ? @"WalletPadStoryBoard" : @"WalletPhoneStoryBoard";
+		NSString *boardName = @"WalletPhoneStoryBoard";
 		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
 		A3WalletVideoItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletVideoItemViewController"];
 		viewController.hidesBottomBarWhenPushed = YES;

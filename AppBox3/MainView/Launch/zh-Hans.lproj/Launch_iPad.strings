@@ -1,0 +1,132 @@
+
+/* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "2Pn-I6-0xR"; */
+"2Pn-I6-0xR.text" = "Days Counter";
+
+/* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "2eu-dh-CwY"; */
+"2eu-dh-CwY.normalTitle" = "Use AppBox Pro";
+
+/* Class = "IBUILabel"; text = "well designed for both iPhone and iPad"; ObjectID = "3ye-4w-mZR"; */
+"3ye-4w-mZR.text" = "well designed for both iPhone and iPad";
+
+/* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "4vD-c0-4t2"; */
+"4vD-c0-4t2.normalTitle" = "Use AppBox Pro";
+
+/* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7if-xU-XZH"; */
+"7if-xU-XZH.text" = "Basic/Scientific Calculator";
+
+/* Class = "IBUILabel"; text = "Unit Conveter"; ObjectID = "85l-L8-ozk"; */
+"85l-L8-ozk.text" = "Unit Conveter";
+
+/* Class = "IBUIButton"; normalTitle = "Later"; ObjectID = "8Fx-P1-Pjr"; */
+"8Fx-P1-Pjr.normalTitle" = "Later";
+
+/* Class = "IBUILabel"; text = "Sales Calculator"; ObjectID = "8gx-TA-Y32"; */
+"8gx-TA-Y32.text" = "Sales Calculator";
+
+/* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Cyd-xI-Wjv"; */
+"Cyd-xI-Wjv.normalTitle" = "Continue";
+
+/* Class = "IBUILabel"; text = "Lunar Converter"; ObjectID = "DKJ-oV-07R"; */
+"DKJ-oV-07R.text" = "Lunar Converter";
+
+/* Class = "IBUILabel"; text = "easy, faster and more focused, 64Bit and much more"; ObjectID = "Dxm-da-st4"; */
+"Dxm-da-st4.text" = "easy, faster and more focused, 64Bit and much more";
+
+/* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "EVR-ah-KPZ"; */
+"EVR-ah-KPZ.normalTitle" = "Continue";
+
+/* Class = "IBUIButton"; normalTitle = "Use iCloud"; ObjectID = "Eha-Jd-EEF"; */
+"Eha-Jd-EEF.normalTitle" = "Use iCloud";
+
+/* Class = "IBUILabel"; text = "Productivity"; ObjectID = "FZq-hj-leX"; */
+"FZq-hj-leX.text" = "Productivity";
+
+/* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "MQq-Fj-ljR"; */
+"MQq-Fj-ljR.text" = "Unit Price";
+
+/* Class = "IBUILabel"; text = "Clock"; ObjectID = "Pqo-MO-BYd"; */
+"Pqo-MO-BYd.text" = "Clock";
+
+/* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "QVX-vI-Tzn"; */
+"QVX-vI-Tzn.normalTitle" = "Continue";
+
+/* Class = "IBUILabel"; text = "Holidays"; ObjectID = "TDf-63-7ce"; */
+"TDf-63-7ce.text" = "Holidays";
+
+/* Class = "IBUILabel"; text = "Currency Converter"; ObjectID = "TX8-le-6Df"; */
+"TX8-le-6Df.text" = "Currency Converter";
+
+/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "VV8-za-92e"; */
+"VV8-za-92e.text" = "Magnifier";
+
+/* Class = "IBUILabel"; text = "Improvements and Optimizations"; ObjectID = "X9q-e5-Qlr"; */
+"X9q-e5-Qlr.text" = "Improvements and Optimizations";
+
+/* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Z9P-lk-CAW"; */
+"Z9P-lk-CAW.normalTitle" = "Continue";
+
+/* Class = "IBUILabel"; text = "Battery Status"; ObjectID = "Zic-Ru-M9D"; */
+"Zic-Ru-M9D.text" = "Battery Status";
+
+/* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "abQ-r0-gCo"; */
+"abQ-r0-gCo.normalTitle" = "Continue";
+
+/* Class = "IBUILabel"; text = "Wallet"; ObjectID = "bKr-UI-1QI"; */
+"bKr-UI-1QI.text" = "Wallet";
+
+/* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "bqT-N1-DoK"; */
+"bqT-N1-DoK.normalTitle" = "Use AppBox Pro";
+
+/* Class = "IBUILabel"; text = "Calculator"; ObjectID = "bwe-yZ-jRu"; */
+"bwe-yZ-jRu.text" = "Calculator";
+
+/* Class = "IBUILabel"; text = "Mirror"; ObjectID = "cFb-hc-ow3"; */
+"cFb-hc-ow3.text" = "Mirror";
+
+/* Class = "IBUILabel"; text = "Translator"; ObjectID = "e4s-HD-NMM"; */
+"e4s-HD-NMM.text" = "Translator";
+
+/* Class = "IBUILabel"; text = "Utility"; ObjectID = "fFN-V5-j3K"; */
+"fFN-V5-j3K.text" = "Utility";
+
+/* Class = "IBUILabel"; text = "Tip Calculator"; ObjectID = "g3L-3p-AJp"; */
+"g3L-3p-AJp.text" = "Tip Calculator";
+
+/* Class = "IBUILabel"; text = "Date Calculator"; ObjectID = "gfY-Dc-cGm"; */
+"gfY-Dc-cGm.text" = "Date Calculator";
+
+/* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "k5O-Qu-0Jo"; */
+"k5O-Qu-0Jo.normalTitle" = "Use AppBox Pro";
+
+/* Class = "IBUILabel"; text = "What's New"; ObjectID = "k96-nV-XIl"; */
+"k96-nV-XIl.text" = "What's New";
+
+/* Class = "IBUILabel"; text = "keep your data up to date on all your devices"; ObjectID = "mal-lH-ucN"; */
+"mal-lH-ucN.text" = "keep your data up to date on all your devices";
+
+/* Class = "IBUILabel"; text = "Lady Calendar"; ObjectID = "noh-Kb-lie"; */
+"noh-Kb-lie.text" = "Lady Calendar";
+
+/* Class = "IBUILabel"; text = "Expense List"; ObjectID = "oCV-n4-Pex"; */
+"oCV-n4-Pex.text" = "Expense List";
+
+/* Class = "IBUILabel"; text = "Percent Calculator"; ObjectID = "qbo-OG-u9j"; */
+"qbo-OG-u9j.text" = "Percent Calculator";
+
+/* Class = "IBUILabel"; text = "Converter"; ObjectID = "rfG-z0-3e0"; */
+"rfG-z0-3e0.text" = "Converter";
+
+/* Class = "IBUILabel"; text = "Loan Calculator"; ObjectID = "vEW-JN-pPp"; */
+"vEW-JN-pPp.text" = "Loan Calculator";
+
+/* Class = "IBUILabel"; text = "Reference"; ObjectID = "vJ2-Dp-SnT"; */
+"vJ2-Dp-SnT.text" = "Reference";
+
+/* Class = "IBUILabel"; text = "New Look"; ObjectID = "wUS-T4-5Qp"; */
+"wUS-T4-5Qp.text" = "New Look";
+
+/* Class = "IBUILabel"; text = "iCloud Sync"; ObjectID = "xFS-er-fHt"; */
+"xFS-er-fHt.text" = "iCloud Sync";
+
+/* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "zB9-QC-DdP"; */
+"zB9-QC-DdP.normalTitle" = "Use AppBox Pro";

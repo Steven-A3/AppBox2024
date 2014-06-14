@@ -1,0 +1,99 @@
+
+/* Class = "IBUILabel"; text = "A"; ObjectID = "1Ai-Qw-RIL"; */
+"1Ai-Qw-RIL.text" = "A";
+
+/* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "3QQ-oH-SON"; */
+"3QQ-oH-SON.text" = "Unit Price";
+
+/* Class = "IBUILabel"; text = "Detail"; ObjectID = "3aA-cm-fyw"; */
+"3aA-cm-fyw.text" = "Detail";
+
+/* Class = "IBUILabel"; text = "PRICE"; ObjectID = "9Ap-su-P5I"; */
+"9Ap-su-P5I.text" = "PRICE";
+
+/* Class = "IBUILabel"; text = "SIZE"; ObjectID = "BPT-UJ-7S3"; */
+"BPT-UJ-7S3.text" = "SIZE";
+
+/* Class = "IBUILabel"; text = "UNIT PRICE"; ObjectID = "Bhe-Qi-2t8"; */
+"Bhe-Qi-2t8.text" = "UNIT PRICE";
+
+/* Class = "IBUITextField"; text = "$3.68"; ObjectID = "CKZ-qX-8Xv"; */
+"CKZ-qX-8Xv.text" = "$3.68";
+
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "Dvl-RR-f8f"; */
+"Dvl-RR-f8f.text" = "Title";
+
+/* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "HZl-1i-kxx"; */
+"HZl-1i-kxx.text" = "Unit Price";
+
+/* Class = "IBUILabel"; text = "Price"; ObjectID = "IrO-mP-z4f"; */
+"IrO-mP-z4f.text" = "Price";
+
+/* Class = "IBUILabel"; text = "Price"; ObjectID = "K2T-4d-C4T"; */
+"K2T-4d-C4T.text" = "Price";
+
+/* Class = "IBUILabel"; text = "Price"; ObjectID = "K71-GW-WeQ"; */
+"K71-GW-WeQ.text" = "Price";
+
+/* Class = "IBUILabel"; text = "Price"; ObjectID = "KK6-Rg-T31"; */
+"KK6-Rg-T31.text" = "Price";
+
+/* Class = "IBUILabel"; text = "Price"; ObjectID = "NVS-Ic-0JV"; */
+"NVS-Ic-0JV.text" = "Price";
+
+/* Class = "IBUILabel"; text = "DISCOUNT"; ObjectID = "OM6-mj-4ut"; */
+"OM6-mj-4ut.text" = "DISCOUNT";
+
+/* Class = "IBUILabel"; text = "OZ"; ObjectID = "Qzo-tq-ubn"; */
+"Qzo-tq-ubn.text" = "OZ";
+
+/* Class = "IBUILabel"; text = "$3.68"; ObjectID = "Tt4-7C-yCL"; */
+"Tt4-7C-yCL.text" = "$3.68";
+
+/* Class = "IBUILabel"; text = "18"; ObjectID = "UMu-NO-7wn"; */
+"UMu-NO-7wn.text" = "18";
+
+/* Class = "IBUITextView"; text = "The text displayed in the text view"; ObjectID = "VLP-qG-pnH"; */
+"VLP-qG-pnH.text" = "The text displayed in the text view";
+
+/* Class = "IBUIButton"; normalTitle = "$0.2044/oz"; ObjectID = "YrK-VR-57F"; */
+"YrK-VR-57F.normalTitle" = "$0.2044/oz";
+
+/* Class = "IBUILabel"; text = "QUANTITY"; ObjectID = "bkl-yt-zLw"; */
+"bkl-yt-zLw.text" = "QUANTITY";
+
+/* Class = "IBUILabel"; text = "Price"; ObjectID = "dYT-8q-Tl3"; */
+"dYT-8q-Tl3.text" = "Price";
+
+/* Class = "IBUILabel"; text = "A"; ObjectID = "ekm-Sm-L4O"; */
+"ekm-Sm-L4O.text" = "A";
+
+/* Class = "IBUILabel"; text = "0"; ObjectID = "fiB-On-KTK"; */
+"fiB-On-KTK.text" = "0";
+
+/* Class = "IBUILabel"; text = "Price"; ObjectID = "gDz-nx-sHF"; */
+"gDz-nx-sHF.text" = "Price";
+
+/* Class = "IBUILabel"; text = "A"; ObjectID = "gSo-J0-fms"; */
+"gSo-J0-fms.text" = "A";
+
+/* Class = "IBUILabel"; text = "UNIT"; ObjectID = "hBe-Sn-IPk"; */
+"hBe-Sn-IPk.text" = "UNIT";
+
+/* Class = "IBUILabel"; text = "A"; ObjectID = "jgx-Ga-8lz"; */
+"jgx-Ga-8lz.text" = "A";
+
+/* Class = "IBUILabel"; text = "1"; ObjectID = "kOu-4I-urh"; */
+"kOu-4I-urh.text" = "1";
+
+/* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "sUp-O5-OKQ"; */
+"sUp-O5-OKQ.text" = "Unit Price";
+
+/* Class = "IBUILabel"; text = "Price"; ObjectID = "wfG-C6-KIn"; */
+"wfG-C6-KIn.text" = "Price";
+
+/* Class = "IBUILabel"; text = "Price"; ObjectID = "x2q-C5-dBv"; */
+"x2q-C5-dBv.text" = "Price";
+
+/* Class = "IBUILabel"; text = "Price"; ObjectID = "zIy-r8-EjI"; */
+"zIy-r8-EjI.text" = "Price";

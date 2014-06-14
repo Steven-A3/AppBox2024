@@ -286,8 +286,7 @@
         NSDictionary *item = [items objectAtIndex:indexPath.row];
         
         if( [[item objectForKey:ItemKey_Type] integerValue] == SettingCell_Alert ){
-            A3LadyCalendarSetupAlertViewController *viewCtrl = [[A3LadyCalendarSetupAlertViewController alloc]
-					initWithNibName:@"A3LadyCalendarSetupAlertViewController" bundle:nil];
+            A3LadyCalendarSetupAlertViewController *viewCtrl = [[A3LadyCalendarSetupAlertViewController alloc] initWithNibName:nil bundle:nil];
 			viewCtrl.dataManager = _dataManager;
             viewCtrl.settingDict = self.settingDict;
             [self.navigationController pushViewController:viewCtrl animated:YES];

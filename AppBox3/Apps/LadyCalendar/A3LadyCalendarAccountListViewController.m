@@ -166,7 +166,7 @@
 
 - (void)editButtonAction:(UIButton *)button {
 	LadyCalendarAccount *item = [_itemArray objectAtIndex:button.tag];
-	A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] initWithNibName:@"A3LadyCalendarAddAccountViewController" bundle:nil];
+	A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] initWithNibName:nil bundle:nil];
 	viewCtrl.dataManager = _dataManager;
 	viewCtrl.isEditMode = YES;
 	viewCtrl.accountItem = item;
@@ -184,7 +184,7 @@
 
 - (void)addAction:(id)sender
 {
-    A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] initWithNibName:@"A3LadyCalendarAddAccountViewController" bundle:nil];
+    A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] initWithNibName:nil bundle:nil];
 	viewCtrl.dataManager = _dataManager;
     A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
