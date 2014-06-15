@@ -361,6 +361,9 @@
 		6840074C1939A34A00E12F60 /* WalletField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6840074B1939A34A00E12F60 /* WalletField.m */; };
 		6840074F1939A34A00E12F60 /* WalletFieldItemImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6840074E1939A34A00E12F60 /* WalletFieldItemImage.m */; };
 		6846099F194E10A700FD5F53 /* UnitPriceStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 684609A1194E10A700FD5F53 /* UnitPriceStoryboard_iPad.storyboard */; };
+		684609B6194E155500FD5F53 /* holidays.strings in Resources */ = {isa = PBXBuildFile; fileRef = 684609B4194E155500FD5F53 /* holidays.strings */; };
+		684609C4194E161C00FD5F53 /* unit.strings in Resources */ = {isa = PBXBuildFile; fileRef = 684609C0194E161C00FD5F53 /* unit.strings */; };
+		684609C5194E161C00FD5F53 /* unitShort.strings in Resources */ = {isa = PBXBuildFile; fileRef = 684609C2194E161C00FD5F53 /* unitShort.strings */; };
 		68476949177D309800EBE7CF /* WeatherIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68476948177D309800EBE7CF /* WeatherIcons.xcassets */; };
 		6848FB8D17A39C1100EBDBED /* NSMutableArray+A3Sort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6848FB8C17A39C1100EBDBED /* NSMutableArray+A3Sort.m */; };
 		684A71BB1852E0100004A9FE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BA1852E0100004A9FE /* Security.framework */; };
@@ -1484,6 +1487,36 @@
 		684609AF194E10BD00FD5F53 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/UnitPriceStoryboard_iPad.strings; sourceTree = "<group>"; };
 		684609B1194E10BE00FD5F53 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/UnitPriceStoryboard_iPad.strings; sourceTree = "<group>"; };
 		684609B3194E10C000FD5F53 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/UnitPriceStoryboard_iPad.strings; sourceTree = "<group>"; };
+		684609B5194E155500FD5F53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = AppBox3/Base.lproj/holidays.strings; sourceTree = "<group>"; };
+		684609B7194E155F00FD5F53 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = AppBox3/en.lproj/holidays.strings; sourceTree = "<group>"; };
+		684609B8194E156200FD5F53 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = AppBox3/ko.lproj/holidays.strings; sourceTree = "<group>"; };
+		684609B9194E156400FD5F53 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "AppBox3/zh-Hans.lproj/holidays.strings"; sourceTree = "<group>"; };
+		684609BA194E156800FD5F53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = AppBox3/de.lproj/holidays.strings; sourceTree = "<group>"; };
+		684609BB194E156B00FD5F53 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = AppBox3/ja.lproj/holidays.strings; sourceTree = "<group>"; };
+		684609BC194E156D00FD5F53 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = AppBox3/it.lproj/holidays.strings; sourceTree = "<group>"; };
+		684609BD194E156F00FD5F53 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = AppBox3/fr.lproj/holidays.strings; sourceTree = "<group>"; };
+		684609BE194E157200FD5F53 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = AppBox3/pl.lproj/holidays.strings; sourceTree = "<group>"; };
+		684609BF194E157400FD5F53 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = AppBox3/es.lproj/holidays.strings; sourceTree = "<group>"; };
+		684609C1194E161C00FD5F53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = AppBox3/Base.lproj/unit.strings; sourceTree = "<group>"; };
+		684609C3194E161C00FD5F53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = AppBox3/Base.lproj/unitShort.strings; sourceTree = "<group>"; };
+		684609C6194E162600FD5F53 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = AppBox3/en.lproj/unit.strings; sourceTree = "<group>"; };
+		684609C7194E162A00FD5F53 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = AppBox3/ko.lproj/unit.strings; sourceTree = "<group>"; };
+		684609C8194E162D00FD5F53 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "AppBox3/zh-Hans.lproj/unit.strings"; sourceTree = "<group>"; };
+		684609C9194E163700FD5F53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = AppBox3/de.lproj/unit.strings; sourceTree = "<group>"; };
+		684609CA194E163800FD5F53 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = AppBox3/ja.lproj/unit.strings; sourceTree = "<group>"; };
+		684609CB194E163900FD5F53 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = AppBox3/it.lproj/unit.strings; sourceTree = "<group>"; };
+		684609CC194E163A00FD5F53 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = AppBox3/fr.lproj/unit.strings; sourceTree = "<group>"; };
+		684609CD194E163B00FD5F53 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = AppBox3/pl.lproj/unit.strings; sourceTree = "<group>"; };
+		684609CE194E163C00FD5F53 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = AppBox3/es.lproj/unit.strings; sourceTree = "<group>"; };
+		684609CF194E164800FD5F53 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = AppBox3/en.lproj/unitShort.strings; sourceTree = "<group>"; };
+		684609D0194E164900FD5F53 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = AppBox3/ko.lproj/unitShort.strings; sourceTree = "<group>"; };
+		684609D1194E164A00FD5F53 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "AppBox3/zh-Hans.lproj/unitShort.strings"; sourceTree = "<group>"; };
+		684609D2194E164C00FD5F53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = AppBox3/de.lproj/unitShort.strings; sourceTree = "<group>"; };
+		684609D3194E164D00FD5F53 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = AppBox3/ja.lproj/unitShort.strings; sourceTree = "<group>"; };
+		684609D4194E164E00FD5F53 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = AppBox3/it.lproj/unitShort.strings; sourceTree = "<group>"; };
+		684609D5194E164F00FD5F53 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = AppBox3/fr.lproj/unitShort.strings; sourceTree = "<group>"; };
+		684609D6194E165100FD5F53 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = AppBox3/pl.lproj/unitShort.strings; sourceTree = "<group>"; };
+		684609D7194E165200FD5F53 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = AppBox3/es.lproj/unitShort.strings; sourceTree = "<group>"; };
 		68476948177D309800EBE7CF /* WeatherIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = WeatherIcons.xcassets; path = "AppBox3/Asset Catalogs/WeatherIcons.xcassets"; sourceTree = "<group>"; };
 		6848FB8B17A39C1100EBDBED /* NSMutableArray+A3Sort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+A3Sort.h"; sourceTree = "<group>"; };
 		6848FB8C17A39C1100EBDBED /* NSMutableArray+A3Sort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+A3Sort.m"; sourceTree = "<group>"; };
@@ -3635,6 +3668,9 @@
 		683B94BE15EB230000575377 /* {Resources} */ = {
 			isa = PBXGroup;
 			children = (
+				684609C0194E161C00FD5F53 /* unit.strings */,
+				684609C2194E161C00FD5F53 /* unitShort.strings */,
+				684609B4194E155500FD5F53 /* holidays.strings */,
 				68143CC418E3EC1F00569691 /* Fonts */,
 				68F15070194B215B00159EAD /* StringsDict.strings */,
 				68F1507D194B216D00159EAD /* StringsDict.stringsdict */,
@@ -5520,6 +5556,7 @@
 				68143CFC18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.xib in Resources */,
 				68DAF6F116BFE3B000775372 /* Localizable.strings in Resources */,
 				68F14FD619485E8500159EAD /* A3DaysCounterAddEventDefaultCell.xib in Resources */,
+				684609C5194E161C00FD5F53 /* unitShort.strings in Resources */,
 				68143CF918E3EC1F00569691 /* REGISTER.TTF in Resources */,
 				68F150E6194C262500159EAD /* Launch_iPhone.storyboard in Resources */,
 				68F14FF319485E8500159EAD /* A3DaysCounterSetupCalendarCell.xib in Resources */,
@@ -5579,6 +5616,7 @@
 				68F1C8D818D7F37D009FAE8A /* CalendarViewCell.xib in Resources */,
 				68F14FAF19485E8500159EAD /* A3DaysCounterSlideShowMainViewController.xib in Resources */,
 				68F1506D194B215B00159EAD /* StringsDict.strings in Resources */,
+				684609B6194E155500FD5F53 /* holidays.strings in Resources */,
 				68F14FE419485E8500159EAD /* A3DaysCounterEventListCell.xib in Resources */,
 				680D638F18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.xib in Resources */,
 				68961FE218B311D100C89F16 /* Mirror.xcassets in Resources */,
@@ -5588,6 +5626,7 @@
 				68F14FD419485E8500159EAD /* A3DaysCounterAddEventDateCell.xib in Resources */,
 				6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */,
 				68F1C8C518D7F37D009FAE8A /* A3LadyCalendarChartCell.xib in Resources */,
+				684609C4194E161C00FD5F53 /* unit.strings in Resources */,
 				6825367118A7B89F00EAFB84 /* A3LunarConverterViewController.xib in Resources */,
 				680D63A018CFF9D400938AD0 /* A3MirrorViewController.xib in Resources */,
 				68F14FC919485E8500159EAD /* A3DaysCounterEventListEditViewController.xib in Resources */,
@@ -6392,6 +6431,57 @@
 				684609B3194E10C000FD5F53 /* es */,
 			);
 			name = UnitPriceStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		684609B4194E155500FD5F53 /* holidays.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				684609B5194E155500FD5F53 /* Base */,
+				684609B7194E155F00FD5F53 /* en */,
+				684609B8194E156200FD5F53 /* ko */,
+				684609B9194E156400FD5F53 /* zh-Hans */,
+				684609BA194E156800FD5F53 /* de */,
+				684609BB194E156B00FD5F53 /* ja */,
+				684609BC194E156D00FD5F53 /* it */,
+				684609BD194E156F00FD5F53 /* fr */,
+				684609BE194E157200FD5F53 /* pl */,
+				684609BF194E157400FD5F53 /* es */,
+			);
+			name = holidays.strings;
+			sourceTree = "<group>";
+		};
+		684609C0194E161C00FD5F53 /* unit.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				684609C1194E161C00FD5F53 /* Base */,
+				684609C6194E162600FD5F53 /* en */,
+				684609C7194E162A00FD5F53 /* ko */,
+				684609C8194E162D00FD5F53 /* zh-Hans */,
+				684609C9194E163700FD5F53 /* de */,
+				684609CA194E163800FD5F53 /* ja */,
+				684609CB194E163900FD5F53 /* it */,
+				684609CC194E163A00FD5F53 /* fr */,
+				684609CD194E163B00FD5F53 /* pl */,
+				684609CE194E163C00FD5F53 /* es */,
+			);
+			name = unit.strings;
+			sourceTree = "<group>";
+		};
+		684609C2194E161C00FD5F53 /* unitShort.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				684609C3194E161C00FD5F53 /* Base */,
+				684609CF194E164800FD5F53 /* en */,
+				684609D0194E164900FD5F53 /* ko */,
+				684609D1194E164A00FD5F53 /* zh-Hans */,
+				684609D2194E164C00FD5F53 /* de */,
+				684609D3194E164D00FD5F53 /* ja */,
+				684609D4194E164E00FD5F53 /* it */,
+				684609D5194E164F00FD5F53 /* fr */,
+				684609D6194E165100FD5F53 /* pl */,
+				684609D7194E165200FD5F53 /* es */,
+			);
+			name = unitShort.strings;
 			sourceTree = "<group>";
 		};
 		686BC1D51846343100FA5C94 /* A3CurrencySettings.storyboard */ = {
