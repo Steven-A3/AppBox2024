@@ -161,7 +161,7 @@
 "%@ equals %@ with rate %0.4f" = "%@ equals %@ with rate %0.4f";
 "Currency Converter in the AppBox Pro" = "Currency Converter in the AppBox Pro";
 "<html><body>I'd like to share a currency conversion with you.<br/><br/>" = "<html><body>I'd like to share a currency conversion with you.<br/><br/>";
-"share_HTML_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
+"currency_share_HTML_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Share Currency Converter Data" = "Share Currency Converter Data";
 
 /* Data Calc duration */
@@ -216,7 +216,6 @@
 "%@ using AppBox Pro" = "%@ using AppBox Pro";
 "Share Days Counter Data" = "Share Days Counter Data";
 "<html><body>I'd like to share a event with you.<br/><br/>" = "<html><body>I'd like to share a event with you.<br/><br/>";
-"dayscounter_share_html_body" = "<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Slideshow Options" = "Slideshow Options";
 "Transitions" = "Transitions";
 "Play Each Slide For" = "Play Each Slide For";
@@ -695,7 +694,7 @@
 "Unit" = "Unit";
 "Size" = "Size";
 "Quantity" = "Quantity";
-"Discountpo" = "Discountpo";
+"Discount" = "Discountpo";
 
 "The best unit price is A at %@" = "The best unit price is A at %@";
 "The best unit price is B at %@" = "The best unit price is B at %@";
@@ -724,7 +723,7 @@
 
 "Video" = "Video";
 "<html><body>I'd like to share a wallet with you.<br/><br/>" = "<html><body>I'd like to share a wallet with you.<br/><br/>";
-"share_wallet_html_body" = "<br/>You can wallet more in the AppBox Pro.<br/><a href='https://itunes.apple.com/app/id318404385'>https://itunes.apple.com/app/id318404385</a></body></html>";
+"wallet_share_html_body" = "<br/>You can wallet more in the AppBox Pro.<br/><a href='https://itunes.apple.com/app/id318404385'>https://itunes.apple.com/app/id318404385</a></body></html>";
 "Add Field" = "Add Field";
 "Edit Field" = "Edit Field";
 " Field name already exists. " = " Field name already exists. ";

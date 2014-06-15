@@ -1,132 +1,136 @@
 
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "2Pn-I6-0xR"; */
-"2Pn-I6-0xR.text" = "Days Counter";
+"2Pn-I6-0xR.text" = "이벤트 캘린더";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "2eu-dh-CwY"; */
-"2eu-dh-CwY.normalTitle" = "Use AppBox Pro";
+"2eu-dh-CwY.normalTitle" = "AppBox Pro 시작";
 
 /* Class = "IBUILabel"; text = "well designed for both iPhone and iPad"; ObjectID = "3ye-4w-mZR"; */
-"3ye-4w-mZR.text" = "well designed for both iPhone and iPad";
+"3ye-4w-mZR.text" = "아이폰과 아이패드를 위한 최고의 디자인";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "4vD-c0-4t2"; */
-"4vD-c0-4t2.normalTitle" = "Use AppBox Pro";
+"4vD-c0-4t2.normalTitle" = "AppBox Pro 시작";
 
 /* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7if-xU-XZH"; */
-"7if-xU-XZH.text" = "Basic/Scientific Calculator";
+"7if-xU-XZH.text" = "일반/공학용 계산기";
 
 /* Class = "IBUILabel"; text = "Unit Conveter"; ObjectID = "85l-L8-ozk"; */
-"85l-L8-ozk.text" = "Unit Conveter";
+"85l-L8-ozk.text" = "단위 변환";
 
 /* Class = "IBUIButton"; normalTitle = "Later"; ObjectID = "8Fx-P1-Pjr"; */
-"8Fx-P1-Pjr.normalTitle" = "Later";
+"8Fx-P1-Pjr.normalTitle" = "나중에";
 
 /* Class = "IBUILabel"; text = "Sales Calculator"; ObjectID = "8gx-TA-Y32"; */
-"8gx-TA-Y32.text" = "Sales Calculator";
+"8gx-TA-Y32.text" = "할인금액 계산";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Cyd-xI-Wjv"; */
-"Cyd-xI-Wjv.normalTitle" = "Continue";
+"Cyd-xI-Wjv.normalTitle" = "계속";
 
 /* Class = "IBUILabel"; text = "Lunar Converter"; ObjectID = "DKJ-oV-07R"; */
-"DKJ-oV-07R.text" = "Lunar Converter";
+"DKJ-oV-07R.text" = "음력 변환";
 
-/* Class = "IBUILabel"; text = "easy, faster and more focused, 64Bit and much more"; ObjectID = "Dxm-da-st4"; */
-"Dxm-da-st4.text" = "easy, faster and more focused, 64Bit and much more";
+/* Class = "IBUILabel"; text = "easy, faster and more focused,
+64Bit and much more"; ObjectID = "Dxm-da-st4"; */
+"Dxm-da-st4.text" = "쉽고, 빠르며, 보다 기본에 충실하고
+64비트 지원을 포함하여 엄청난 변화";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "EVR-ah-KPZ"; */
-"EVR-ah-KPZ.normalTitle" = "Continue";
+"EVR-ah-KPZ.normalTitle" = "계속";
 
 /* Class = "IBUIButton"; normalTitle = "Use iCloud"; ObjectID = "Eha-Jd-EEF"; */
-"Eha-Jd-EEF.normalTitle" = "Use iCloud";
+"Eha-Jd-EEF.normalTitle" = "iCloud 사용";
 
 /* Class = "IBUILabel"; text = "Productivity"; ObjectID = "FZq-hj-leX"; */
-"FZq-hj-leX.text" = "Productivity";
+"FZq-hj-leX.text" = "생산성";
 
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "MQq-Fj-ljR"; */
-"MQq-Fj-ljR.text" = "Unit Price";
+"MQq-Fj-ljR.text" = "단가 계산";
 
 /* Class = "IBUILabel"; text = "Clock"; ObjectID = "Pqo-MO-BYd"; */
-"Pqo-MO-BYd.text" = "Clock";
+"Pqo-MO-BYd.text" = "시계";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "QVX-vI-Tzn"; */
-"QVX-vI-Tzn.normalTitle" = "Continue";
+"QVX-vI-Tzn.normalTitle" = "계속";
 
 /* Class = "IBUILabel"; text = "Holidays"; ObjectID = "TDf-63-7ce"; */
-"TDf-63-7ce.text" = "Holidays";
+"TDf-63-7ce.text" = "휴일정보";
 
 /* Class = "IBUILabel"; text = "Currency Converter"; ObjectID = "TX8-le-6Df"; */
-"TX8-le-6Df.text" = "Currency Converter";
+"TX8-le-6Df.text" = "환율 변환";
 
 /* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "VV8-za-92e"; */
-"VV8-za-92e.text" = "Magnifier";
+"VV8-za-92e.text" = "돋보기";
 
 /* Class = "IBUILabel"; text = "Improvements and Optimizations"; ObjectID = "X9q-e5-Qlr"; */
-"X9q-e5-Qlr.text" = "Improvements and Optimizations";
+"X9q-e5-Qlr.text" = "수많은 개선사항과 최적화";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Z9P-lk-CAW"; */
-"Z9P-lk-CAW.normalTitle" = "Continue";
+"Z9P-lk-CAW.normalTitle" = "계속";
 
 /* Class = "IBUILabel"; text = "Battery Status"; ObjectID = "Zic-Ru-M9D"; */
-"Zic-Ru-M9D.text" = "Battery Status";
+"Zic-Ru-M9D.text" = "배터리 상태";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "abQ-r0-gCo"; */
-"abQ-r0-gCo.normalTitle" = "Continue";
+"abQ-r0-gCo.normalTitle" = "계속";
 
 /* Class = "IBUILabel"; text = "Wallet"; ObjectID = "bKr-UI-1QI"; */
-"bKr-UI-1QI.text" = "Wallet";
+"bKr-UI-1QI.text" = "전자지갑";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "bqT-N1-DoK"; */
-"bqT-N1-DoK.normalTitle" = "Use AppBox Pro";
+"bqT-N1-DoK.normalTitle" = "AppBox Pro 시작";
 
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "bwe-yZ-jRu"; */
-"bwe-yZ-jRu.text" = "Calculator";
+"bwe-yZ-jRu.text" = "계산기";
 
 /* Class = "IBUILabel"; text = "Mirror"; ObjectID = "cFb-hc-ow3"; */
-"cFb-hc-ow3.text" = "Mirror";
+"cFb-hc-ow3.text" = "거울";
 
 /* Class = "IBUILabel"; text = "Translator"; ObjectID = "e4s-HD-NMM"; */
-"e4s-HD-NMM.text" = "Translator";
+"e4s-HD-NMM.text" = "번역";
 
 /* Class = "IBUILabel"; text = "Utility"; ObjectID = "fFN-V5-j3K"; */
-"fFN-V5-j3K.text" = "Utility";
+"fFN-V5-j3K.text" = "유틸리티";
 
 /* Class = "IBUILabel"; text = "Tip Calculator"; ObjectID = "g3L-3p-AJp"; */
-"g3L-3p-AJp.text" = "Tip Calculator";
+"g3L-3p-AJp.text" = "팁 계산";
 
 /* Class = "IBUILabel"; text = "Date Calculator"; ObjectID = "gfY-Dc-cGm"; */
-"gfY-Dc-cGm.text" = "Date Calculator";
+"gfY-Dc-cGm.text" = "날짜 계산";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "k5O-Qu-0Jo"; */
-"k5O-Qu-0Jo.normalTitle" = "Use AppBox Pro";
+"k5O-Qu-0Jo.normalTitle" = "AppBox Pro 시작";
 
 /* Class = "IBUILabel"; text = "What's New"; ObjectID = "k96-nV-XIl"; */
-"k96-nV-XIl.text" = "What's New";
+"k96-nV-XIl.text" = "새로운 점";
 
-/* Class = "IBUILabel"; text = "keep your data up to date on all your devices"; ObjectID = "mal-lH-ucN"; */
-"mal-lH-ucN.text" = "keep your data up to date on all your devices";
+/* Class = "IBUILabel"; text = "keep your data up to date
+on all your devices"; ObjectID = "mal-lH-ucN"; */
+"mal-lH-ucN.text" = "소유한 모든 장비에서
+정보를 모두 동기화";
 
 /* Class = "IBUILabel"; text = "Lady Calendar"; ObjectID = "noh-Kb-lie"; */
-"noh-Kb-lie.text" = "Lady Calendar";
+"noh-Kb-lie.text" = "레이디 캘린더";
 
 /* Class = "IBUILabel"; text = "Expense List"; ObjectID = "oCV-n4-Pex"; */
-"oCV-n4-Pex.text" = "Expense List";
+"oCV-n4-Pex.text" = "지출 관리";
 
 /* Class = "IBUILabel"; text = "Percent Calculator"; ObjectID = "qbo-OG-u9j"; */
-"qbo-OG-u9j.text" = "Percent Calculator";
+"qbo-OG-u9j.text" = "퍼센트 계산";
 
 /* Class = "IBUILabel"; text = "Converter"; ObjectID = "rfG-z0-3e0"; */
-"rfG-z0-3e0.text" = "Converter";
+"rfG-z0-3e0.text" = "각종 변환";
 
 /* Class = "IBUILabel"; text = "Loan Calculator"; ObjectID = "vEW-JN-pPp"; */
-"vEW-JN-pPp.text" = "Loan Calculator";
+"vEW-JN-pPp.text" = "대출 계산";
 
 /* Class = "IBUILabel"; text = "Reference"; ObjectID = "vJ2-Dp-SnT"; */
-"vJ2-Dp-SnT.text" = "Reference";
+"vJ2-Dp-SnT.text" = "참조";
 
 /* Class = "IBUILabel"; text = "New Look"; ObjectID = "wUS-T4-5Qp"; */
-"wUS-T4-5Qp.text" = "New Look";
+"wUS-T4-5Qp.text" = "새로운 느낌";
 
 /* Class = "IBUILabel"; text = "iCloud Sync"; ObjectID = "xFS-er-fHt"; */
-"xFS-er-fHt.text" = "iCloud Sync";
+"xFS-er-fHt.text" = "iCloud 동기화";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "zB9-QC-DdP"; */
-"zB9-QC-DdP.normalTitle" = "Use AppBox Pro";
+"zB9-QC-DdP.normalTitle" = "AppBox Pro 시작";

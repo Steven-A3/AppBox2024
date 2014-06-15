@@ -795,7 +795,7 @@
         }
         [txt appendFormat:@"%@<br/>", [A3DateHelper dateStringFromDate:[eventItem effectiveStartDate]
                                                             withFormat:[formatter dateFormat]]];
-		[txt appendString:NSLocalizedString(@"dayscounter_share_html_body", nil)];
+		[txt appendString:NSLocalizedString(@"dayscounter_share_HTML_body", nil)];
         
 		return txt;
 	}

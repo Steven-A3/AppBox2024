@@ -360,6 +360,7 @@
 		684007491939A34A00E12F60 /* WalletFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 684007481939A34A00E12F60 /* WalletFavorite.m */; };
 		6840074C1939A34A00E12F60 /* WalletField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6840074B1939A34A00E12F60 /* WalletField.m */; };
 		6840074F1939A34A00E12F60 /* WalletFieldItemImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6840074E1939A34A00E12F60 /* WalletFieldItemImage.m */; };
+		6846099E194E0FB700FD5F53 /* UnitPriceStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6846099D194E0FB700FD5F53 /* UnitPriceStoryboard_iPad.storyboard */; };
 		68476949177D309800EBE7CF /* WeatherIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68476948177D309800EBE7CF /* WeatherIcons.xcassets */; };
 		6848FB8D17A39C1100EBDBED /* NSMutableArray+A3Sort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6848FB8C17A39C1100EBDBED /* NSMutableArray+A3Sort.m */; };
 		684A71BB1852E0100004A9FE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BA1852E0100004A9FE /* Security.framework */; };
@@ -1473,6 +1474,7 @@
 		6840074B1939A34A00E12F60 /* WalletField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletField.m; sourceTree = "<group>"; };
 		6840074D1939A34A00E12F60 /* WalletFieldItemImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletFieldItemImage.h; sourceTree = "<group>"; };
 		6840074E1939A34A00E12F60 /* WalletFieldItemImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletFieldItemImage.m; sourceTree = "<group>"; };
+		6846099D194E0FB700FD5F53 /* UnitPriceStoryboard_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UnitPriceStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		68476948177D309800EBE7CF /* WeatherIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = WeatherIcons.xcassets; path = "AppBox3/Asset Catalogs/WeatherIcons.xcassets"; sourceTree = "<group>"; };
 		6848FB8B17A39C1100EBDBED /* NSMutableArray+A3Sort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+A3Sort.h"; sourceTree = "<group>"; };
 		6848FB8C17A39C1100EBDBED /* NSMutableArray+A3Sort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+A3Sort.m"; sourceTree = "<group>"; };
@@ -4343,6 +4345,7 @@
 				68B6A21918CEC76C004084EF /* UILabel+BaseAlignment.h */,
 				68B6A21A18CEC76C004084EF /* UILabel+BaseAlignment.m */,
 				68F15112194C281A00159EAD /* UnitPriceStoryboard.storyboard */,
+				6846099D194E0FB700FD5F53 /* UnitPriceStoryboard_iPad.storyboard */,
 			);
 			path = UnitPrice;
 			sourceTree = "<group>";
@@ -5550,6 +5553,7 @@
 				68143CFE18E3EC1F00569691 /* A3DateKeyboardViewController_iPhone.xib in Resources */,
 				68B6A18B17CC398A008E0296 /* indian.plist in Resources */,
 				68F150CA194C21E300159EAD /* about.storyboard in Resources */,
+				6846099E194E0FB700FD5F53 /* UnitPriceStoryboard_iPad.storyboard in Resources */,
 				68F14FF919485E8500159EAD /* A3DaysCounterSetupDurationViewController.xib in Resources */,
 				6872DD3317B3D56600C1BF44 /* NSDateTimeAgo.bundle in Resources */,
 				68F14FFD19485E8500159EAD /* A3DaysCounterSetupLocationViewController.xib in Resources */,

@@ -1356,7 +1356,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 		[txt appendString:[self stringForShare]];
 
-		[txt appendString:NSLocalizedString(@"share_HTML_body", nil)];
+		[txt appendString:NSLocalizedString(@"currency_share_HTML_body", nil)];
 
 		return txt;
 	}

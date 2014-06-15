@@ -186,6 +186,8 @@ typedef CMathParser<char, double> MathParser;
 -(void)checkLastCharacterRemoveNeeded:(NSUInteger) key {
     if ([self checkIfexpressionisnull] == NO) {
         if (key != A3E_CALCULATE) {
+			if (![mathexpression length]) return;
+
             NSString* lastChar = [mathexpression substringFromIndex:[mathexpression length] -1];
             NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"="]];
             if(range.location != NSNotFound) {

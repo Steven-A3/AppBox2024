@@ -344,7 +344,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 {
     if (inputView.tag == 1) {
 
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UnitPriceStoryboard" bundle:nil];
+		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:IS_IPAD ? @"UnitPriceStoryboard_iPad" : @"UnitPriceStoryboard" bundle:nil];
         A3UnitPriceDetailTableController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"A3UnitPriceDetailTableController"];
         viewController.delegate = self;
         viewController.isPriceA = YES;
@@ -352,8 +352,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         [self.navigationController pushViewController:viewController animated:YES];
     }
     else if (inputView.tag == 2) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UnitPriceStoryboard" bundle:nil];
+
+		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:IS_IPAD ? @"UnitPriceStoryboard_iPad" : @"UnitPriceStoryboard" bundle:nil];
         A3UnitPriceDetailTableController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"A3UnitPriceDetailTableController"];
         viewController.delegate = self;
         viewController.isPriceA = NO;

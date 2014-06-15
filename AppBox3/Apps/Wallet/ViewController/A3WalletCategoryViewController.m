@@ -504,7 +504,7 @@
             [txt appendString:_shareTextList[i]];
             [txt appendString:@"<br/>"];
         }
-		[txt appendString:NSLocalizedString(@"share_wallet_html_body", nil)];
+		[txt appendString:NSLocalizedString(@"wallet_share_html_body", nil)];
 
         return txt;
     }
