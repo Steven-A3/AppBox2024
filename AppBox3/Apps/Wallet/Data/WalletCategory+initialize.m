@@ -37,7 +37,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
     // create all, favorite category
     WalletCategory *favoriteCategory = [WalletCategory MR_createInContext:context];
 	[favoriteCategory initValues];
-	favoriteCategory.name = NSLocalizedString(@"Favorite", @"Favorite");
+	favoriteCategory.name = NSLocalizedString(@"Favorites", nil);
     favoriteCategory.icon = @"star01";
 	favoriteCategory.uniqueID = A3WalletUUIDFavoriteCategory;
 	favoriteCategory.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];

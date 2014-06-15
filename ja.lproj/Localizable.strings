@@ -260,7 +260,6 @@
 "End date is not lunar date" = "End date is not lunar date";
 "It's not a Lunar Date" = "It's not a Lunar Date";
 
-
 "Can not find current location information" = "Can not find current location information";
 
 "EVENTS" = "EVENTS";
@@ -292,7 +291,6 @@
 "Delete All" = "Delete All";
 "Delete Events" = "Delete Events";
 "Please select events." = "Please select events.";
-"daysCounter_share_HTML_body" = "<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 
 " Events" = " Events";
 
@@ -302,7 +300,6 @@
 "Upcoming" = "Upcoming";
 "Past" = "Past";
 "Anniversary" = "Anniversary";
-
 "Appointment" = "Appointment";
 "Birthday" = "Birthday";
 "Journey" = "Journey";
@@ -320,7 +317,6 @@
 "Bi-Weekly" = "Bi-weekly";
 "Monthly" = "Monthly";
 "Yearly" = "Yearly";
-
 
 "At time of event" = "At time of event";
 "5 minutes before" = "5 minutes before";
@@ -498,7 +494,6 @@
 "CALCULATE CYCLE LENGTH" = "CALCULATE CYCLE LENGTH";
 "Same Before Cycle" = "Same Before Cycle";
 "Average Before Two Cycle" = "Average Before Two Cycle";
-
 "Average All Cycle" = "Average All Cycle";
 "Automatically save period after estimated starting date." = "Automatically save period after estimated starting date.";
 "Auto Record" = "Auto Record";
@@ -592,7 +587,6 @@
 "The photos you take with Magnifier are saved in your Camera Roll album in the Photos app." = "The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.";
 
 "Mono" = "Mono";
-
 "Tonal" = "Tonal";
 "Noir" = "Noir";
 "Fade" = "Fade";
@@ -711,8 +705,6 @@
 "Length" = "Length";
 "Volume" = "Volume";
 "Weight" = "Weight";
-
-"Favorite" = "Favorite";
 
 "Field Type" = "Field Type";
 "All Items" = "All Items";
