@@ -467,7 +467,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		NSArray *holidaysInPage = self.holidays;
 		NSDictionary *upcomingHoliday = holidaysInPage[myPosition];
 		UILabel *nameLabel = (UILabel *)[headerView viewWithTag:HolidaysHeaderViewNameLabel];
-		nameLabel.text = NSLocalizedStringFromTable(upcomingHoliday[kHolidayName], @"holidays", nil);
+		nameLabel.text = upcomingHoliday[kHolidayName];
 		FNLOG(@"%@", nameLabel.text);
 
 		UILabel *daysLeftLabel = (UILabel *)[headerView viewWithTag:HolidaysHeaderViewDaysLeftLabel];
@@ -657,7 +657,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		}
 		[holidayCell setCellType:cellType];
 
-		holidayCell.titleLabel.text = NSLocalizedStringFromTable(cellData[kHolidayName], @"holidays", nil);
+		holidayCell.titleLabel.text = cellData[kHolidayName];
 		holidayCell.dateLabel.text = [self.pageViewController stringFromDate: cellData[kHolidayDate] ];
 
 		if (showLunar) {
