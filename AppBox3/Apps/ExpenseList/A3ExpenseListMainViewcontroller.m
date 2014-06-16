@@ -120,7 +120,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     [self setupInstructionView];
     
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeChanged:) name:A3NotificationExpenseListCurrencyCodeChanged object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
@@ -609,6 +608,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 - (void)moveToAddBudgetViewController {
     [self clearEverything];
+    [self removeNumberKeyboardNotificationObservers];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
     _isAutoMovingAddBudgetView = NO;
     
     A3ExpenseListAddBudgetViewController *viewController = [[A3ExpenseListAddBudgetViewController alloc] initWithStyle:UITableViewStyleGrouped
@@ -620,8 +621,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
         [self presentViewController:navCtrl animated:YES completion:^{
             [viewController showKeyboard];
         }];
-        
-    } else {
+    }
+    else {
 		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
         [rootViewController presentCenterViewController:[[A3NavigationController alloc] initWithRootViewController:viewController] fromViewController:self withCompletion:^{
             [viewController showKeyboard];
@@ -1202,6 +1203,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     
     _selectedItem = item;
 	[self addNumberKeyboardNotificationObservers];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
 - (void)textFieldDidChange:(NSNotification *)notification
@@ -1219,13 +1221,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	}
 	else if (textField == aCell.priceTextField) {
 		item.price = @([textField.text floatValueEx]);
-		//textField.text = [self.priceNumberFormatter stringFromNumber:item.price];
 	}
 	else if (textField == aCell.qtyTextField) {
 		[self.decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-//		if (![textField.text length]) {
-//			textField.text = [self.decimalFormatter stringFromNumber:@0];
-//		}
 		item.qty = [self.decimalFormatter numberFromString:textField.text];
 	}
     
@@ -1267,6 +1265,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 -(void)itemCellTextFieldFinished:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 	[self removeNumberKeyboardNotificationObservers];
     textField.userInteractionEnabled = NO;
     
