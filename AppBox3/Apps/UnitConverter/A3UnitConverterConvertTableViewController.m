@@ -761,8 +761,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			value = @(1);
 		}
 
-		dataCell.codeLabel.text = convertItem.item.unitShortName;
-		dataCell.rateLabel.text = convertItem.item.unitName;
+		dataCell.codeLabel.text = NSLocalizedStringFromTable(convertItem.item.unitShortName, @"unitShort", nil);
+		dataCell.rateLabel.text = NSLocalizedStringFromTable(convertItem.item.unitName, @"unit", nil);
 
 	} else {
 
