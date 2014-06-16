@@ -29,7 +29,6 @@
 @property (nonatomic, weak) IBOutlet UIButton *num9Button;
 @property (nonatomic, weak) IBOutlet UIButton *num0Button;
 @property (nonatomic, weak) IBOutlet UIButton *clearButton;
-@property (nonatomic, weak) IBOutlet UIButton *doneButton;
 @property (nonatomic, weak) IBOutlet UIButton *calculatorButton;
 
 @end

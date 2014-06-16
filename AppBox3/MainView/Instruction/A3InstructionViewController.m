@@ -67,7 +67,11 @@ NSString *const StoryBoardID_Calcualtor = @"Calcualtor";
         [self disposeInstructionView];
     }
     else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"To see instrustion again, double-tap with two fingers." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+															message:NSLocalizedString(@"To see instrustion again, double-tap with two fingers.", @"To see instrustion again, double-tap with two fingers.")
+														   delegate:self
+												  cancelButtonTitle:@"OK"
+												  otherButtonTitles:nil, nil];
         [alertView show];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:self.restorationIdentifier];
     }

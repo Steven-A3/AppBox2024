@@ -29,7 +29,6 @@
 #define kDefaultBackgroundColor [UIColor lightGrayColor]
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]
 #define kSelectedButtonColor    [A3AppDelegate instance].themeColor
-NSString *kCalculationString;
 
 @interface A3DateMainTableViewController () <UITextFieldDelegate, UIPopoverControllerDelegate, A3DateKeyboardDelegate, A3DateCalcExcludeDelegate, A3DateCalcDurationDelegate, A3DateCalcHeaderViewDelegate, A3DateCalcEditEventDelegate, UIActivityItemSource>
 
@@ -64,6 +63,7 @@ NSString *kCalculationString;
     CGFloat _tableYOffset;
     CGFloat _oldTableOffset;
     A3NumberKeyboardViewController *_simpleNormalNumberKeyboard;
+	NSString *kCalculationString;
 }
 
 @synthesize fromDate = _fromDate;
@@ -85,6 +85,8 @@ NSString *kCalculationString;
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Date Calculator", @"Date Calculator");
+	kCalculationString = NSLocalizedString(@"CALCULATION", @"CALCULATION");
+
     [self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
 
@@ -166,7 +168,6 @@ NSString *kCalculationString;
     self.headerView = [[A3DateCalcHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), IS_IPHONE ? 104 : 158)];
     self.headerView.delegate = self;
     self.headerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin;
-    kCalculationString = @"CALCULATION";
     self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15.0 : 28.0, 0, 0);
     if (IS_IPAD) {
         self.navigationItem.hidesBackButton = YES;
