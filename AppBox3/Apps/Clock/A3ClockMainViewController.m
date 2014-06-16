@@ -160,7 +160,12 @@
 	[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
 
 	if ([self isMovingToParentViewController]) {
-		[self showMenus:YES];
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock1"] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock2"]) {
+            [self showMenus:NO];
+        }
+        else {
+            [self showMenus:YES];
+        }
 	}
 }
 
