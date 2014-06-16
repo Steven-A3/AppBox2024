@@ -530,7 +530,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
             dateFormatter.timeStyle = NSDateFormatterShortStyle;
         }
         else {
-            [dateFormatter customFullWithTimeStyleFormat];
+            dateFormatter.dateFormat = [dateFormatter customFullWithTimeStyleFormat];
         }
         
         dateFormatter.doesRelativeDateFormatting = YES;
