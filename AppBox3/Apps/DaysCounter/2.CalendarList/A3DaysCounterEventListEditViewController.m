@@ -293,7 +293,7 @@
         return;
     }
 
-    A3DaysCounterEventChangeCalendarViewController *viewCtrl = [[A3DaysCounterEventChangeCalendarViewController alloc] initWithNibName:nil bundle:nil];
+    A3DaysCounterEventChangeCalendarViewController *viewCtrl = [[A3DaysCounterEventChangeCalendarViewController alloc] init];
     viewCtrl.currentCalendar = _calendarItem;
     viewCtrl.eventArray = _selectedArray;
     viewCtrl.sharedManager = _sharedManager;

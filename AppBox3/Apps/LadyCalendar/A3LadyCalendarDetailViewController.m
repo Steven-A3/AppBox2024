@@ -42,6 +42,15 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	BOOL isEditNavigationBar;
 }
 
+- (id)init {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	if (self) {
+
+	}
+
+	return self;
+}
+
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
@@ -344,7 +353,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)editAction:(id)sender
 {
-    A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] initWithNibName:nil bundle:nil];
+    A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] init];
 	viewCtrl.dataManager = self.dataManager;
     viewCtrl.isEditMode = YES;
     viewCtrl.periodItem = [_periodItems objectAtIndex:0];
@@ -359,7 +368,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     
     LadyCalendarPeriod *item = _periodItems[(NSUInteger) [rowInfo[ItemKey_Index] integerValue]];
 
-	A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] initWithNibName:nil bundle:nil];
+	A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] init];
 	viewCtrl.dataManager = self.dataManager;
     viewCtrl.isEditMode = YES;
     viewCtrl.periodItem = item;

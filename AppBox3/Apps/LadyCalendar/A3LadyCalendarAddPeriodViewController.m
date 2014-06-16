@@ -40,6 +40,15 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 @implementation A3LadyCalendarAddPeriodViewController
 
+- (id)init {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	if (self) {
+
+	}
+
+	return self;
+}
+
 - (void)viewDidLoad
 {
 	[super viewDidLoad];

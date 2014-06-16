@@ -296,7 +296,7 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 	FNLOG(@"%@", _localNotificationUserInfo[A3LocalNotificationDataID]);
 
 	DaysCounterEvent *eventItem = [DaysCounterEvent MR_findFirstByAttribute:@"uniqueID" withValue:_localNotificationUserInfo[A3LocalNotificationDataID]];
-	A3DaysCounterEventDetailViewController *viewController = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:nil bundle:[NSBundle mainBundle]];
+	A3DaysCounterEventDetailViewController *viewController = [[A3DaysCounterEventDetailViewController alloc] init];
 	viewController.isModal = YES;
 	viewController.eventItem = eventItem;
     A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
@@ -308,7 +308,7 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 }
 
 - (void)showLadyCalendarDetailView {
-	A3LadyCalendarDetailViewController *viewController = [[A3LadyCalendarDetailViewController alloc] initWithNibName:nil bundle:nil];
+	A3LadyCalendarDetailViewController *viewController = [[A3LadyCalendarDetailViewController alloc] init];
 	viewController.isFromNotification = YES;
 	viewController.periodID = _localNotificationUserInfo[A3LocalNotificationDataID];
 

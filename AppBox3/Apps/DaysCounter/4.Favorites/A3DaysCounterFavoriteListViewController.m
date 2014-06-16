@@ -342,7 +342,7 @@
     }
     DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
     
-    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:nil bundle:nil];
+    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] init];
     viewCtrl.eventItem = favorite.event;
     viewCtrl.sharedManager = _sharedManager;
     [self.navigationController pushViewController:viewCtrl animated:YES];

@@ -266,7 +266,7 @@
     
     self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager reminderList]];
 
-    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:nil bundle:nil];
+    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] init];
     viewCtrl.eventItem = item;
     viewCtrl.sharedManager = _sharedManager;
     [self.navigationController pushViewController:viewCtrl animated:YES];

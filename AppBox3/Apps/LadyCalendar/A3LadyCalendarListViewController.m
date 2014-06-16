@@ -304,7 +304,7 @@
     
     NSString *monthStr = [A3DateHelper dateStringFromDate:item.startDate withFormat:@"MMMM"];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:monthStr style:UIBarButtonItemStylePlain target:nil action:nil];
-    A3LadyCalendarDetailViewController *viewCtrl = [[A3LadyCalendarDetailViewController alloc] initWithNibName:nil bundle:nil];
+    A3LadyCalendarDetailViewController *viewCtrl = [[A3LadyCalendarDetailViewController alloc] init];
     viewCtrl.month = item.startDate;
     viewCtrl.periodItems = [self sameMonthItemFromIndexPath:indexPath];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:monthStr style:UIBarButtonItemStyleBordered target:nil action:nil];
@@ -314,7 +314,7 @@
 #pragma mark - action method
 - (IBAction)addPeriodAction:(id)sender
 {
-    A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] initWithNibName:nil bundle:nil];
+    A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;

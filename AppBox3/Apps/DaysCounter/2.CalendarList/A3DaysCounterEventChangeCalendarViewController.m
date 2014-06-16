@@ -23,13 +23,13 @@
 
 @implementation A3DaysCounterEventChangeCalendarViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+- (id)init {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	if (self) {
+
+	}
+
+	return self;
 }
 
 - (void)viewDidLoad

@@ -489,7 +489,7 @@
     if( [periods count] < 1 )
         return;
     LadyCalendarPeriod *period = [periods objectAtIndex:0];
-    A3LadyCalendarDetailViewController *viewController = [[A3LadyCalendarDetailViewController alloc] initWithNibName:nil bundle:nil];
+    A3LadyCalendarDetailViewController *viewController = [[A3LadyCalendarDetailViewController alloc] init];
     viewController.month = period.startDate;
     viewController.periodItems = [NSMutableArray arrayWithArray:periods];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[A3DateHelper dateStringFromDate:calendarView.dateMonth withFormat:@"MMMM"] style:UIBarButtonItemStyleBordered target:nil action:nil];
@@ -589,7 +589,7 @@
 - (IBAction)moveToAccountAction:(id)sender {
     if( IS_IPHONE )
         [self doneButtonAction:nil];
-    A3LadyCalendarAccountListViewController *viewCtrl = [[A3LadyCalendarAccountListViewController alloc] initWithNibName:nil bundle:nil];
+    A3LadyCalendarAccountListViewController *viewCtrl = [[A3LadyCalendarAccountListViewController alloc] init];
 	viewCtrl.dataManager = self.dataManager;
     if( IS_IPHONE ){
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
@@ -603,7 +603,7 @@
 - (IBAction)settingAction:(id)sender {
     if( IS_IPHONE )
         [self doneButtonAction:nil];
-	A3LadyCalendarSettingViewController *viewCtrl = [[A3LadyCalendarSettingViewController alloc] initWithNibName:nil bundle:nil];
+	A3LadyCalendarSettingViewController *viewCtrl = [[A3LadyCalendarSettingViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;
     if( IS_IPHONE ){
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
@@ -615,7 +615,7 @@
 }
 
 - (IBAction)addPeriodAction:(id)sender {
-    A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] initWithNibName:nil bundle:nil];
+    A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] init];
 	viewCtrl.dataManager = self.dataManager;
     viewCtrl.isEditMode = NO;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];

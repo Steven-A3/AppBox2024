@@ -583,7 +583,7 @@
     DaysCounterEvent *item = [_eventsArray objectAtIndex:currentIndex];
     _prevShownEventID = item.uniqueID;
     
-    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:nil bundle:nil];
+    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] init];
     viewCtrl.eventItem = item;
     viewCtrl.sharedManager = _sharedManager;
     viewCtrl.delegate = self;
@@ -654,7 +654,7 @@
                          permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         activityController.completionHandler = ^(NSString* activityType, BOOL completed) {
             if ( completed && [activityType isEqualToString:@"Slideshow"] ) {
-                A3DaysCounterSlideshowOptionViewController *viewController = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:nil bundle:nil];
+                A3DaysCounterSlideshowOptionViewController *viewController = [[A3DaysCounterSlideshowOptionViewController alloc] init];
                 viewController.sharedManager = _sharedManager;
 
 				if (IS_IPHONE) {

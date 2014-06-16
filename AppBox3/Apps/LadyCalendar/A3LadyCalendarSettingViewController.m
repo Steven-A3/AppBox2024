@@ -26,13 +26,13 @@
 
 @implementation A3LadyCalendarSettingViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+- (id)init {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	if (self) {
+
+	}
+
+	return self;
 }
 
 - (void)viewDidLoad
@@ -286,7 +286,7 @@
         NSDictionary *item = [items objectAtIndex:indexPath.row];
         
         if( [[item objectForKey:ItemKey_Type] integerValue] == SettingCell_Alert ){
-            A3LadyCalendarSetupAlertViewController *viewCtrl = [[A3LadyCalendarSetupAlertViewController alloc] initWithNibName:nil bundle:nil];
+            A3LadyCalendarSetupAlertViewController *viewCtrl = [[A3LadyCalendarSetupAlertViewController alloc] init];
 			viewCtrl.dataManager = _dataManager;
             viewCtrl.settingDict = self.settingDict;
             [self.navigationController pushViewController:viewCtrl animated:YES];

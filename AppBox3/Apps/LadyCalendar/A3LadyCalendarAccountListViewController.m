@@ -27,13 +27,13 @@
 
 @implementation A3LadyCalendarAccountListViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+- (id)init {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	if (self) {
+
+	}
+
+	return self;
 }
 
 - (void)viewDidLoad
@@ -166,7 +166,7 @@
 
 - (void)editButtonAction:(UIButton *)button {
 	LadyCalendarAccount *item = [_itemArray objectAtIndex:button.tag];
-	A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] initWithNibName:nil bundle:nil];
+	A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;
 	viewCtrl.isEditMode = YES;
 	viewCtrl.accountItem = item;
@@ -184,7 +184,7 @@
 
 - (void)addAction:(id)sender
 {
-    A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] initWithNibName:nil bundle:nil];
+    A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;
     A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;

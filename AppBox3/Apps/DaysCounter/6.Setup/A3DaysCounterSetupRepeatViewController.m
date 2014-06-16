@@ -29,6 +29,15 @@
 
 @implementation A3DaysCounterSetupRepeatViewController
 
+- (id)init {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	if (self) {
+
+	}
+
+	return self;
+}
+
 - (void)showNumberKeyboard
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]];

@@ -24,6 +24,16 @@
 
 @implementation A3DaysCounterAddAndEditCalendarViewController
 
+- (id)init {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	if (self) {
+
+	}
+
+	return self;
+}
+
+
 - (NSInteger)indexOfCurrentColor:(UIColor*)color
 {
     NSInteger retIndex = NSNotFound;
@@ -35,15 +45,6 @@
         }
     }
     return retIndex;
-}
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
 }
 
 - (void)viewDidLoad

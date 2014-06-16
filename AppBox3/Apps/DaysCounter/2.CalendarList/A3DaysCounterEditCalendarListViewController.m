@@ -28,13 +28,13 @@
 
 @implementation A3DaysCounterEditCalendarListViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+- (id)init {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	if (self) {
+
+	}
+
+	return self;
 }
 
 - (void)viewDidLoad
@@ -251,7 +251,7 @@
 
 - (void)addCalendarAction:(id)sender
 {
-    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:nil bundle:nil];
+    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] init];
     viewCtrl.isEditMode = NO;
     viewCtrl.calendarItem = nil;
     viewCtrl.sharedManager = _sharedManager;
@@ -279,7 +279,7 @@
     if ( [item.calendarType integerValue] == CalendarCellType_System )
         return;
     
-    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:nil bundle:nil];
+    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] init];
     viewCtrl.isEditMode = YES;
     viewCtrl.calendarItem = [_sharedManager dictionaryFromCalendarEntity:item];
     viewCtrl.sharedManager = _sharedManager;

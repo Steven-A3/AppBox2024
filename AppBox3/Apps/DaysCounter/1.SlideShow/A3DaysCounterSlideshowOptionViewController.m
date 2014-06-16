@@ -33,6 +33,16 @@
 
 @implementation A3DaysCounterSlideshowOptionViewController
 
+- (id)init {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	if (self) {
+
+	}
+
+	return self;
+}
+
+
 - (void)saveCurrentOption
 {
     [[NSUserDefaults standardUserDefaults] setObject:_optionDict forKey:A3DaysCounterSlideshowOption];
@@ -235,7 +245,7 @@
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
     else if ( cellType == SlideshowOptionType_Showtime ) {
-        A3DaysCounterSlideshowTimeSelectViewController *viewCtrl = [[A3DaysCounterSlideshowTimeSelectViewController alloc] initWithNibName:nil bundle:nil];
+        A3DaysCounterSlideshowTimeSelectViewController *viewCtrl = [[A3DaysCounterSlideshowTimeSelectViewController alloc] init];
         viewCtrl.optionDict = self.optionDict;
         viewCtrl.sharedManager = _sharedManager;
         [self.navigationController pushViewController:viewCtrl animated:YES];

@@ -39,6 +39,15 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	BOOL _sameNameExists;
 }
 
+- (id)init {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	if (self) {
+
+	}
+
+	return self;
+}
+
 - (void)viewDidLoad
 {
 	[super viewDidLoad];

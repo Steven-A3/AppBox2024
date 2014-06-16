@@ -94,7 +94,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			cell.accessoryView = _iCloudSwitch;
 			break;
 		case A3SettingsRowPasscodeLock:
-			cell.detailTextLabel.text = [[A3KeychainUtils getPassword] length] ? [A3KeychainUtils passcodeTimeString] : NSLocalizedString(@"Off", nil);
+			cell.detailTextLabel.text = [[A3KeychainUtils getPassword] length] ? [A3KeychainUtils passcodeTimeString] : NSLocalizedString(@"Passcode_Off", nil);
 			break;
 		case A3SettingsRowWalletSecurity:
 			break;
