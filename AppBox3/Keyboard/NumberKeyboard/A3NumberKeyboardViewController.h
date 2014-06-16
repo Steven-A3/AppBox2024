@@ -29,6 +29,7 @@ typedef NS_ENUM(NSUInteger, A3NumberKeyboardSimpleLayout) {
 @property (nonatomic, weak) IBOutlet UIButton *clearButton;
 @property (nonatomic, weak) IBOutlet UIButton *fractionButton;
 @property (nonatomic, weak) IBOutlet UIButton *plusMinusButton;
+@property (nonatomic, weak) IBOutlet UIButton *doneButton;
 
 @property (nonatomic, strong) NSNumber *simpleKeyboardLayout;
 @property (nonatomic, assign) BOOL useDotAsClearButton;

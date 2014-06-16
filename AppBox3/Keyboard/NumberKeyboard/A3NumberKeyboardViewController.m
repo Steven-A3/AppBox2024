@@ -38,6 +38,8 @@
 	// Do any additional setup after loading the view.
 
 	[self setupLocale];
+
+	[self.doneButton setTitle:NSLocalizedString(@"DoneButton", nil) forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning

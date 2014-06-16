@@ -119,9 +119,7 @@
 		68143CF918E3EC1F00569691 /* REGISTER.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC718E3EC1F00569691 /* REGISTER.TTF */; };
 		68143CFA18E3EC1F00569691 /* A3DateKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143CCB18E3EC1F00569691 /* A3DateKeyboardViewController.m */; };
 		68143CFB18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143CCD18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.m */; };
-		68143CFC18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68143CCE18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.xib */; };
 		68143CFD18E3EC1F00569691 /* A3DateKeyboardViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143CD018E3EC1F00569691 /* A3DateKeyboardViewController_iPhone.m */; };
-		68143CFE18E3EC1F00569691 /* A3DateKeyboardViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68143CD118E3EC1F00569691 /* A3DateKeyboardViewController_iPhone.xib */; };
 		68143D0118E3EC1F00569691 /* A3NumberKeyboardSimplePrevNextVC_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68143CD718E3EC1F00569691 /* A3NumberKeyboardSimplePrevNextVC_iPhone.xib */; };
 		68143D0218E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143CD918E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.m */; };
 		68143D0318E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68143CDA18E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.xib */; };
@@ -180,6 +178,8 @@
 		6819A86F18A6092B00E63C8B /* NSDateFormatter+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */; };
 		6819C7B2188A4D64007E0E1B /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684E9F0D188A4BB100FAA48E /* Social.framework */; };
 		681C511F194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 681C5121194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard */; };
+		681C5134194EC48E00CB653A /* A3DateKeyboardViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 681C5136194EC48E00CB653A /* A3DateKeyboardViewController_iPad.xib */; };
+		681C5149194EC4CE00CB653A /* A3DateKeyboardViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 681C514B194EC4CE00CB653A /* A3DateKeyboardViewController_iPhone.xib */; };
 		681E11FD1932E2250077DCFA /* A3DataMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E11FC1932E2250077DCFA /* A3DataMigrationManager.m */; };
 		681E1224193440540077DCFA /* NSData-AES.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E1223193440540077DCFA /* NSData-AES.m */; };
 		681E125D193443F00077DCFA /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 681E122D193443F00077DCFA /* ioapi.c */; };
@@ -1141,10 +1141,8 @@
 		68143CCB18E3EC1F00569691 /* A3DateKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateKeyboardViewController.m; sourceTree = "<group>"; };
 		68143CCC18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateKeyboardViewController_iPad.h; sourceTree = "<group>"; };
 		68143CCD18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateKeyboardViewController_iPad.m; sourceTree = "<group>"; };
-		68143CCE18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DateKeyboardViewController_iPad.xib; sourceTree = "<group>"; };
 		68143CCF18E3EC1F00569691 /* A3DateKeyboardViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateKeyboardViewController_iPhone.h; sourceTree = "<group>"; };
 		68143CD018E3EC1F00569691 /* A3DateKeyboardViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateKeyboardViewController_iPhone.m; sourceTree = "<group>"; };
-		68143CD118E3EC1F00569691 /* A3DateKeyboardViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DateKeyboardViewController_iPhone.xib; sourceTree = "<group>"; };
 		68143CD718E3EC1F00569691 /* A3NumberKeyboardSimplePrevNextVC_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimplePrevNextVC_iPhone.xib; sourceTree = "<group>"; };
 		68143CD818E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NumberKeyboardSimpleVC_iPad.h; sourceTree = "<group>"; };
 		68143CD918E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NumberKeyboardSimpleVC_iPad.m; sourceTree = "<group>"; };
@@ -1253,6 +1251,26 @@
 		681C512F194EB58B00CB653A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LoanCalculatorPadStoryBoard.strings; sourceTree = "<group>"; };
 		681C5131194EB58C00CB653A /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/LoanCalculatorPadStoryBoard.strings; sourceTree = "<group>"; };
 		681C5133194EB58F00CB653A /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LoanCalculatorPadStoryBoard.strings; sourceTree = "<group>"; };
+		681C5135194EC48E00CB653A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/A3DateKeyboardViewController_iPad.xib; sourceTree = "<group>"; };
+		681C5138194EC49C00CB653A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3DateKeyboardViewController_iPad.strings; sourceTree = "<group>"; };
+		681C513A194EC49D00CB653A /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/A3DateKeyboardViewController_iPad.strings; sourceTree = "<group>"; };
+		681C513C194EC49E00CB653A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/A3DateKeyboardViewController_iPad.strings"; sourceTree = "<group>"; };
+		681C513E194EC49F00CB653A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/A3DateKeyboardViewController_iPad.strings; sourceTree = "<group>"; };
+		681C5140194EC4A000CB653A /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/A3DateKeyboardViewController_iPad.strings; sourceTree = "<group>"; };
+		681C5142194EC4A100CB653A /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/A3DateKeyboardViewController_iPad.strings; sourceTree = "<group>"; };
+		681C5144194EC4A300CB653A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/A3DateKeyboardViewController_iPad.strings; sourceTree = "<group>"; };
+		681C5146194EC4A400CB653A /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/A3DateKeyboardViewController_iPad.strings; sourceTree = "<group>"; };
+		681C5148194EC4A500CB653A /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/A3DateKeyboardViewController_iPad.strings; sourceTree = "<group>"; };
+		681C514A194EC4CE00CB653A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/A3DateKeyboardViewController_iPhone.xib; sourceTree = "<group>"; };
+		681C514D194EC4E900CB653A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3DateKeyboardViewController_iPhone.strings; sourceTree = "<group>"; };
+		681C514F194EC4EA00CB653A /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/A3DateKeyboardViewController_iPhone.strings; sourceTree = "<group>"; };
+		681C5151194EC4EB00CB653A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/A3DateKeyboardViewController_iPhone.strings"; sourceTree = "<group>"; };
+		681C5153194EC4EC00CB653A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/A3DateKeyboardViewController_iPhone.strings; sourceTree = "<group>"; };
+		681C5155194EC4ED00CB653A /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/A3DateKeyboardViewController_iPhone.strings; sourceTree = "<group>"; };
+		681C5157194EC4F200CB653A /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/A3DateKeyboardViewController_iPhone.strings; sourceTree = "<group>"; };
+		681C5159194EC4F300CB653A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/A3DateKeyboardViewController_iPhone.strings; sourceTree = "<group>"; };
+		681C515B194EC4F300CB653A /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/A3DateKeyboardViewController_iPhone.strings; sourceTree = "<group>"; };
+		681C515D194EC4F400CB653A /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/A3DateKeyboardViewController_iPhone.strings; sourceTree = "<group>"; };
 		681E11FB1932E2250077DCFA /* A3DataMigrationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3DataMigrationManager.h; path = MigrationV1V3/A3DataMigrationManager.h; sourceTree = "<group>"; };
 		681E11FC1932E2250077DCFA /* A3DataMigrationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3DataMigrationManager.m; path = MigrationV1V3/A3DataMigrationManager.m; sourceTree = "<group>"; };
 		681E1222193440540077DCFA /* NSData-AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData-AES.h"; sourceTree = "<group>"; };
@@ -3045,10 +3063,10 @@
 				68143CCB18E3EC1F00569691 /* A3DateKeyboardViewController.m */,
 				68143CCC18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.h */,
 				68143CCD18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.m */,
-				68143CCE18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.xib */,
+				681C5136194EC48E00CB653A /* A3DateKeyboardViewController_iPad.xib */,
 				68143CCF18E3EC1F00569691 /* A3DateKeyboardViewController_iPhone.h */,
 				68143CD018E3EC1F00569691 /* A3DateKeyboardViewController_iPhone.m */,
-				68143CD118E3EC1F00569691 /* A3DateKeyboardViewController_iPhone.xib */,
+				681C514B194EC4CE00CB653A /* A3DateKeyboardViewController_iPhone.xib */,
 			);
 			path = DateKeyboard;
 			sourceTree = "<group>";
@@ -5565,7 +5583,7 @@
 				68F1C8CA18D7F37D009FAE8A /* A3LadyCalendarListCell.xib in Resources */,
 				68B6A2D518CEC76D004084EF /* A3UnitConverterTVActionCell.xib in Resources */,
 				68F14FAD19485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.xib in Resources */,
-				68143CFC18E3EC1F00569691 /* A3DateKeyboardViewController_iPad.xib in Resources */,
+				681C5134194EC48E00CB653A /* A3DateKeyboardViewController_iPad.xib in Resources */,
 				68DAF6F116BFE3B000775372 /* Localizable.strings in Resources */,
 				68F14FD619485E8500159EAD /* A3DaysCounterAddEventDefaultCell.xib in Resources */,
 				684609C5194E161C00FD5F53 /* unitShort.strings in Resources */,
@@ -5608,7 +5626,7 @@
 				68F14FDF19485E8500159EAD /* A3DaysCounterCalendarCell.xib in Resources */,
 				68F14FC719485E8500159EAD /* A3DaysCounterEventDetailViewController_iPad.xib in Resources */,
 				68F14FCF19485E8500159EAD /* A3DaysCounterFavoriteListViewController.xib in Resources */,
-				68143CFE18E3EC1F00569691 /* A3DateKeyboardViewController_iPhone.xib in Resources */,
+				681C5149194EC4CE00CB653A /* A3DateKeyboardViewController_iPhone.xib in Resources */,
 				68B6A18B17CC398A008E0296 /* indian.plist in Resources */,
 				68F150CA194C21E300159EAD /* about.storyboard in Resources */,
 				6846099F194E10A700FD5F53 /* UnitPriceStoryboard_iPad.storyboard in Resources */,
@@ -6444,6 +6462,40 @@
 				681C5133194EB58F00CB653A /* es */,
 			);
 			name = LoanCalculatorPadStoryBoard.storyboard;
+			sourceTree = "<group>";
+		};
+		681C5136194EC48E00CB653A /* A3DateKeyboardViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				681C5135194EC48E00CB653A /* Base */,
+				681C5138194EC49C00CB653A /* en */,
+				681C513A194EC49D00CB653A /* ko */,
+				681C513C194EC49E00CB653A /* zh-Hans */,
+				681C513E194EC49F00CB653A /* de */,
+				681C5140194EC4A000CB653A /* ja */,
+				681C5142194EC4A100CB653A /* it */,
+				681C5144194EC4A300CB653A /* fr */,
+				681C5146194EC4A400CB653A /* pl */,
+				681C5148194EC4A500CB653A /* es */,
+			);
+			name = A3DateKeyboardViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+		681C514B194EC4CE00CB653A /* A3DateKeyboardViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				681C514A194EC4CE00CB653A /* Base */,
+				681C514D194EC4E900CB653A /* en */,
+				681C514F194EC4EA00CB653A /* ko */,
+				681C5151194EC4EB00CB653A /* zh-Hans */,
+				681C5153194EC4EC00CB653A /* de */,
+				681C5155194EC4ED00CB653A /* ja */,
+				681C5157194EC4F200CB653A /* it */,
+				681C5159194EC4F300CB653A /* fr */,
+				681C515B194EC4F300CB653A /* pl */,
+				681C515D194EC4F400CB653A /* es */,
+			);
+			name = A3DateKeyboardViewController_iPhone.xib;
 			sourceTree = "<group>";
 		};
 		684609A1194E10A700FD5F53 /* UnitPriceStoryboard_iPad.storyboard */ = {

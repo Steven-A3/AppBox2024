@@ -35,6 +35,11 @@
     // Do any additional setup after loading the view from its nib.
 
 	[self changeInputToYear];
+
+	[self.yearButton setTitle:NSLocalizedString(@"Year", nil) forState:UIControlStateNormal];
+	[self.monthButton setTitle:NSLocalizedString(@"Month", nil) forState:UIControlStateNormal];
+	[self.dayButton setTitle:NSLocalizedString(@"Day", nil) forState:UIControlStateNormal];
+	[self.doneButton setTitle:NSLocalizedString(@"DoneButton", nil) forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
