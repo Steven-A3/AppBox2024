@@ -48,7 +48,6 @@ NSString *const A3ExpenseListIsAddBudgetCanceledByUser = @"A3ExpenseListIsAddBud
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, strong) A3ExpenseListColumnSectionView *columnSectionView;
 @property (nonatomic, strong) NSMutableArray *tableDataSourceArray;
-@property (nonatomic, strong) NSNumberFormatter *priceNumberFormatter;
 @property (nonatomic, strong) UIButton *addItemButton;
 @property (nonatomic, strong) UIView *topWhitePaddingView;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
@@ -226,8 +225,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (void)currencyCodeChanged:(NSNotification *)notification {
-	_priceNumberFormatter = nil;
-	[self setCurrencyFormatter:nil];
+//	_priceNumberFormatter = nil;
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListCurrencyCode];
+	[self.currencyFormatter setCurrencyCode:currencyCode];
 
 	_headerView.currencyFormatter = self.currencyFormatter;
 	[self reloadBudgetDataWithAnimation:NO];
@@ -358,21 +358,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	}
 }
 
-- (NSNumberFormatter *)priceNumberFormatter
-{
-    if (!_priceNumberFormatter) {
-        _priceNumberFormatter = [NSNumberFormatter new];
-        [_priceNumberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-        [_priceNumberFormatter setMaximumFractionDigits:2];
-		[_priceNumberFormatter setCurrencyCode:self.defaultCurrencyCode];
-        if (IS_IPHONE) {
-            _priceNumberFormatter.currencySymbol = @"";
-        }
-    }
-    
-    return _priceNumberFormatter;
-}
-
 - (NSString *)defaultCurrencyCode {
 	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListCurrencyCode];
 	if (!currencyCode) {
@@ -387,7 +372,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"ExpenseList"]) {
         [self showInstructionView];
     }
-//    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+    
     if (!self.reservedTapGestureRecognizer) {
         self.reservedTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
         self.reservedTapGestureRecognizer.numberOfTouchesRequired = 2;
@@ -476,9 +461,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
             [cell.nameTextField becomeFirstResponder];
         }
     }];
-//    [self.tableView beginUpdates];
-//    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_tableDataSourceArray.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-//    [self.tableView endUpdates];
     [CATransaction commit];
 }
 
@@ -674,24 +656,14 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     //if ( _selectedItem != item && (item.itemName.length==0 && [item.price isEqualToNumber:@0] && [item.qty isEqualToNumber:@1]) ) {
     if ( item.itemName.length==0 && (!item.price || [item.price isEqualToNumber:@0]) && (!item.qty || [item.qty isEqualToNumber:@1]) ) {
         // 입력 포커스 후, 아무 입력도 없었던 경우.
-//        item.itemDate = nil;
-//        item.itemName = nil;
-//        item.price = nil;
-//        item.qty = nil;
-//        aCell.nameTextField.text = @"";
-//        aCell.priceTextField.text = @"";
-//        aCell.qtyTextField.text = @"";
-//        aCell.subTotalLabel.text = @"";
-//        aCell.priceTextField.placeholder = @"";
-//        aCell.qtyTextField.placeholder = @"";
         item.itemDate = [NSDate date];
         item.itemName = @"";
         item.price = @0;
         item.qty = @1;
         aCell.nameTextField.text = @"";
-        aCell.priceTextField.text = [self.priceNumberFormatter stringFromNumber:@0];
+        aCell.priceTextField.text = [self.currencyFormatter stringFromNumber:@0];
         aCell.qtyTextField.text = @"1";
-        aCell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:@0];
+        aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@0];
         aCell.priceTextField.placeholder = @"";
         aCell.qtyTextField.placeholder = @"";
     }
@@ -699,7 +671,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
         // 입력 포커스 후
         // price * qty 계산
         item.subTotal = @(item.price.floatValue * item.qty.floatValue);
-        aCell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:item.subTotal];
+        aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:item.subTotal];
         
         
         // 자동 다음 행 추가.
@@ -736,11 +708,11 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
                 nextItem.qty = @1;
                 nextItem.subTotal = @0;
                 
-                nextCell.priceTextField.text = [self.priceNumberFormatter stringFromNumber:nextItem.price];
+                nextCell.priceTextField.text = [self.currencyFormatter stringFromNumber:nextItem.price];
                 NSNumberFormatter *formatter = [NSNumberFormatter new];
                 [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
                 nextCell.qtyTextField.text = [formatter stringFromNumber:nextItem.qty];
-                nextCell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:@(nextItem.price.floatValue * nextItem.qty.floatValue)];
+                nextCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@(nextItem.price.floatValue * nextItem.qty.floatValue)];
             }
         }
     }
@@ -783,9 +755,10 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 {
     CGRect rect = _addItemButton.frame;
     if (IS_IPHONE) {
-        rect.origin.x = 1.0;//self.view.frame.size.width/100.0 * (17.0/320.0*100);
-    } else {
-        rect.origin.x = 14;//self.view.frame.size.width/100.0 * (17.0/320.0*100);
+        rect.origin.x = 1.0;
+    }
+    else {
+        rect.origin.x = 14;
     }
     rect.origin.y = self.tableView.contentSize.height;
     rect.size.width = 44.0;
@@ -918,7 +891,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 -(void)scrollToTopOfTableView {
-//    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
     if (IS_LANDSCAPE) {
         [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
@@ -982,9 +954,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     
 	if ([item.hasData boolValue] || indexPath.row == 0) {    // kjh 추후에 변경하도록
 		cell.nameTextField.text = item.itemName;
-		cell.priceTextField.text = [self.priceNumberFormatter stringFromNumber:item.price];
+		cell.priceTextField.text = [self.currencyFormatter stringFromNumber:item.price];
 		cell.qtyTextField.text = item.qty.stringValue;
-		cell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:@(item.price.floatValue * item.qty.floatValue)];
+		cell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@(item.price.floatValue * item.qty.floatValue)];
 	} else {
 		cell.nameTextField.text = @"";
 		cell.priceTextField.text = @"";
@@ -1141,7 +1113,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     }
 
     // deepcopy 형태로 복원. 기존 히스토리를 건드리지 않기 위함.
-    //_currentBudget = aBudget;
     _currentBudget = [ExpenseListBudget MR_createEntity];
     _currentBudget.budgetId = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];
     _currentBudget.category = aBudget.category;
@@ -1196,9 +1167,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
         item.qty = @1;
         item.subTotal = @0;
         
-        aCell.priceTextField.text = [self.priceNumberFormatter stringFromNumber:item.price];
+        aCell.priceTextField.text = [self.currencyFormatter stringFromNumber:item.price];
         aCell.qtyTextField.text = item.qty.stringValue;
-        aCell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:@(item.price.floatValue * item.qty.floatValue)];
+        aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@(item.price.floatValue * item.qty.floatValue)];
     }
     
     _selectedItem = item;
@@ -1229,7 +1200,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     
     // price * qty 계산
     item.subTotal = @(item.price.floatValue * item.qty.floatValue);
-    aCell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:item.subTotal];
+    aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:item.subTotal];
     
     // 전체 항목 계산 & 화면(헤더뷰) 반영.
     [self calculateAndDisplayResultWithAnimation:YES];
@@ -1237,30 +1208,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 -(void)itemCellTextFieldChanged:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
 {
-//    NSIndexPath *index = [self.tableView indexPathForCell:aCell];
-//    ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:index.row];
-//    
-//	if (textField == aCell.nameTextField) {
-//		item.itemName = textField.text;
-//	}
-//	else if (textField == aCell.priceTextField) {
-//		item.price = @([textField.text floatValueEx]);
-//		textField.text = [self.priceNumberFormatter stringFromNumber:item.price];
-//	}
-//	else if (textField == aCell.qtyTextField) {
-//		[self.decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-//		if (![textField.text length]) {
-//			textField.text = [self.decimalFormatter stringFromNumber:@0];
-//		}
-//		item.qty = [self.decimalFormatter numberFromString:textField.text];
-//	}
-//    
-//    // price * qty 계산
-//    item.subTotal = @(item.price.floatValue * item.qty.floatValue);
-//    aCell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:item.subTotal];
-//    
-//    // 전체 항목 계산 & 화면(헤더뷰) 반영.
-//    [self calculateAndDisplayResultWithAnimation:YES];
+
 }
 
 -(void)itemCellTextFieldFinished:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
@@ -1276,8 +1224,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		item.itemName = textField.text;
 	}
 	else if (textField == aCell.priceTextField) {
-		item.price = @([textField.text floatValueEx]);
-		textField.text = [self.priceNumberFormatter stringFromNumber:item.price];
+		//item.price = @([textField.text floatValueEx]);
+        item.price = [self.decimalFormatter numberFromString:textField.text];
+		textField.text = [self.currencyFormatter stringFromNumber:item.price];
 	}
 	else if (textField == aCell.qtyTextField) {
 		[self.decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -1289,7 +1238,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
     // price * qty 계산
     item.subTotal = @(item.price.floatValue * item.qty.floatValue);
-    aCell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:item.subTotal];
+    aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:item.subTotal];
     
     // 전체 항목 계산 & 화면(헤더뷰) 반영.
     [self calculateAndDisplayResultWithAnimation:YES];
@@ -1417,7 +1366,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	UITextField *textField = (UITextField *) self.firstResponder;
     textField.text = @"";
     if (sender.priceTextField == keyInputDelegate) {
-        textField.placeholder = [self.priceNumberFormatter stringFromNumber:@0];
+        textField.placeholder = [self.currencyFormatter stringFromNumber:@0];
         aItem.price = @0;
     }
     else {
