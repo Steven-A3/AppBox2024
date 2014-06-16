@@ -1745,7 +1745,7 @@ EXIT_FUCTION:
 - (void)editAction:(id)sender
 {
     self.initialCalendarID = _eventItem.calendar.calendarId;
-    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:nil bundle:nil];
+    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
     viewCtrl.eventItem = _eventItem;
     viewCtrl.sharedManager = _sharedManager;
     

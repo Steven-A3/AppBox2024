@@ -51,9 +51,9 @@
 "Date Calculator" = "날짜 계산";
 "Loan Calculator" = "대출 계산";
 "Sales Calculator" = "할인율 계산";
-"Tip Calculator" = "팁 계산기";
+"Tip Calculator" = "팁 계산";
 "Unit Price" = "단가 비교";
-"Percent Calculator" = "비율 계산";
+"Percent Calculator" = "퍼센트 계산";
 "Currency Converter" = "환율 변환";
 "Lunar Converter" = "양력/음력 변환";
 "Translator" = "번역";
@@ -110,9 +110,9 @@
 
 "Enter The Number!" = "숫자를 입력해주세요.";
 
-"History" = "이력";
+"History" = "히스토리";
 "Clear" = "지우기";
-"Clear History" = "이력 초기화";
+"Clear History" = "히스토리 초기화";
 
 "Basic / Scientific" = "기본 / 공학용";
 "Scientific" = "공학용";
@@ -142,7 +142,7 @@
 "Weather" = "날씨";
 
 "%@, Rate = %0.4f" = "%@, 환율 = %0.4f";
-"Each history keeps max 4 currencies." = "각각의 이력은 최대 4개까지의 환율정보를 저장합니다.";
+"Each history keeps max 4 currencies." = "각각의 히스토리는 최대 4개까지의 환율정보를 저장합니다.";
 
 "%@ to %@ = %.4f" = "%@/%@ = %.4f";
 "Auto Update" = "자동 환율 갱신";
@@ -233,7 +233,7 @@
 "Delete Calendar" = "캘린더 지우기";
 "Untitled" = "제목없음";
 
-"Add Event" = "이번트 추가";
+"Add Event" = "이벤트 추가";
 "Title" = "제목";
 "Photo" = "사진";
 "Lunar" = "음력";
@@ -301,7 +301,7 @@
 "Anniversary" = "기념일";
 "Appointment" = "약속";
 "Birthday" = "생일";
-"Journey" = "여정";
+"Journey" = "여행";
 "Holiday" = "공휴일";
 "Work" = "업무";
 
@@ -600,11 +600,11 @@
 
 "A" = "A";
 "B" = "B";
-"X is Y% of What" = "X는 얼마의 Y%";
-"What is X% of Y" = "Y의 X%는 얼마";
-"X is What % of Y" = "X는 Y의 몇 %";
-"% Change from X to Y" = "X에서 Y로의 비율 변화";
-"Compare % Change from X to Y" = "두 비율 변화의 비교";
+"X is Y% of What" = "X는 얼마의 Y 퍼센트";
+"What is X% of Y" = "Y의 X퍼센트는 얼마";
+"X is What % of Y" = "X는 Y의 몇 퍼센트";
+"% Change from X to Y" = "X에서 Y로의 퍼센트 변화";
+"Compare % Change from X to Y" = "두 퍼센트 변화의 비교";
 
 "Sale Price" = "할인 금액";
 "Sale Price Tax" = "할인 세액";
@@ -654,7 +654,7 @@
 
 "tipcalc_share_body" = "<br/><br/>AppBox Pro로 팁 계산을 쉽게 할 수 있어요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 
-"Tip Calculator using AppBox Pro" = "AppBox Pro의 팁 계산기";
+"Tip Calculator using AppBox Pro" = "AppBox Pro의 팁 계산기능";
 
 "Rounding Method" = "반올림 방법";
 "Select Language" = "언어 선택";
@@ -680,7 +680,7 @@
 
 "To convert values, need two units." = "단위 변환을 하려면 최소 두개의 단위가 필요합니다.";
 
-"Each history keeps max 4 units." = "각각의 이력은 최대 4개 단위의 변환값을 저장합니다.";
+"Each history keeps max 4 units." = "각각의 히스토리는 최대 4개 단위의 변환값을 저장합니다.";
 
 "%@ to %@ = %@" = "%@ 에서 %@ = %@";
 

@@ -2808,7 +2808,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
         {
             // calculation
             cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID forIndexPath:indexPath];
-            cell.textLabel.text = @"Calculation";
+            cell.textLabel.text = NSLocalizedString(@"Calculation", @"Calculation");
             if ([self.loanData calculated]) {
                 
                 NSDictionary *textAttributes1 = @{

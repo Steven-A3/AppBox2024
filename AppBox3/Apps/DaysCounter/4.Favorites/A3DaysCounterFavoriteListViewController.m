@@ -370,7 +370,7 @@
 }
 
 - (IBAction)addEventAction:(id)sender {
-    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:nil bundle:nil];
+    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
     viewCtrl.sharedManager = _sharedManager;
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];

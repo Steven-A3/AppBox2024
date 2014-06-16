@@ -308,7 +308,7 @@
 }
 
 - (IBAction)addEventAction:(id)sender {
-    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:nil bundle:nil];
+    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
     viewCtrl.landscapeFullScreen = NO;
     viewCtrl.sharedManager = _sharedManager;
     

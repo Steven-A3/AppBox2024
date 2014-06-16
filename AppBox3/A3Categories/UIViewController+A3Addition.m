@@ -396,7 +396,7 @@
 }
 
 - (void)rightBarButtonDoneButton {
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonAction:)];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {

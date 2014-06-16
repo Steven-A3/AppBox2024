@@ -318,7 +318,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
+	[self rightBarButtonDoneButton];
 
 	_moreMenuButtons = @[self.shareButton, [self historyButton:[CurrencyHistory class] ], self.settingsButton];
 	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];

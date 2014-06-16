@@ -907,7 +907,7 @@
 }
 
 - (IBAction)addEventAction:(id)sender {
-    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:nil bundle:nil];
+    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
     viewCtrl.calendarId = _calendarItem.calendarId;
     viewCtrl.sharedManager = _sharedManager;
     if ([_calendarItem.calendarType integerValue] == CalendarCellType_System) {

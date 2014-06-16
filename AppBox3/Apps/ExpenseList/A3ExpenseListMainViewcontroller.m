@@ -620,10 +620,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		return;
 	}
 
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done")
-																			  style:UIBarButtonItemStylePlain
-																			 target:self
-																			 action:@selector(doneButtonAction:)];
+	[self rightBarButtonDoneButton];
+	
 	_isShowMoreMenu = YES;
 	_moreMenuButtons = @[self.shareButton, self.addNewButton, [self historyButton:NULL]];
 	[self enableMoreMenuButtons];
