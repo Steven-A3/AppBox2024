@@ -189,11 +189,16 @@ enum A3ExpenseListAddBudgetCellType {
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
+    if (self.textViewResponder) {
+        [self.textViewResponder resignFirstResponder];
+    }
+    
 	if (IS_IPAD) {
 		[self.A3RootViewController dismissCenterViewController];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
+    
 
 	if ([_delegate respondsToSelector:@selector(setExpenseBudgetDataFor:)]) {
 		NSArray *section0 = [self section0_Array];
@@ -225,7 +230,9 @@ enum A3ExpenseListAddBudgetCellType {
 		A3JHTableViewDateEntryElement *date = elements[1];
         //		A3JHTableViewElement *location = elements[2];
         //		A3TableViewInputElement *notes = elements[3];
-		A3TableViewInputElement *notes = elements[2];
+		
+//        A3TableViewInputElement *notes = elements[2];
+        A3TextViewElement *notes = elements[2];
 
 		resultBudget.title = title.value;
         //		resultBudget.location = [location.value dataUsingEncoding:NSUTF8StringEncoding];
