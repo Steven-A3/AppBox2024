@@ -2404,7 +2404,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
             
         }
         else if (indexPath.section == 1 || indexPath.section == 2){
-            NSString *storyboardName = @"LoanCalculatorPhoneStoryBoard";
+            NSString *storyboardName = IS_IPAD ? @"LoanCalculatorPadStoryBoard" : @"LoanCalculatorPhoneStoryBoard";
             UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
             A3LoanCalcLoanDetailViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcLoanDetailViewController"];
             if (indexPath.section == 1) {
