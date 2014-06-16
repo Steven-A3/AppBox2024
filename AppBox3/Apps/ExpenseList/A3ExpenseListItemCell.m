@@ -288,10 +288,14 @@
 	_firstResponder = textField;
 	_textBeforeEditingTextField = textField.text;
 
-	if (_nameTextField != textField) {
+    if (_nameTextField != textField) {
         textField.placeholder = @"";
-		textField.text = @"";
-	}
+        textField.text = @"";
+        
+        if (_qtyTextField == textField) {
+            _qtyTextField.textAlignment = [_qtyTextField.text length] == 0 ? NSTextAlignmentRight : NSTextAlignmentCenter;
+        }
+    }
 
 	[self.keyboardAccessoryView undoRedoButtonStateChangeFor:textField];
 	[self showEraseButtonIfNeeded];
@@ -302,6 +306,10 @@
 {
     [self.keyboardAccessoryView undoRedoButtonStateChangeFor:textField];
     [self changeDirectionButtonStateFor:textField];
+    
+    if (_qtyTextField == textField && _qtyTextField.textAlignment != NSTextAlignmentCenter) {
+        _qtyTextField.textAlignment = NSTextAlignmentCenter;
+    }
 
 	NSMutableString *resultString = [textField.text mutableCopy];
 	[resultString replaceCharactersInRange:range withString:string];
