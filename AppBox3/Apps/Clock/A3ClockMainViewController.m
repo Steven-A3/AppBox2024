@@ -427,7 +427,7 @@
     }
     
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
-    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:_chooseColorButton.isHidden ? @"Clock1" : @"Clock2"];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:(_chooseColorButton.isHidden || !_chooseColorButton) ? @"Clock1" : @"Clock2"];
     self.instructionViewController.delegate = self;
     [self.navigationController.view addSubview:self.instructionViewController.view];
     self.instructionViewController.view.frame = self.navigationController.view.frame;

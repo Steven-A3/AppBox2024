@@ -31,11 +31,6 @@ NSString *const StoryBoardID_Calcualtor = @"Calcualtor";
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-//    CALayer *backgroundLayer = [CALayer layer];
-//    backgroundLayer.frame = self.view.bounds;
-//    backgroundLayer.backgroundColor = [[UIColor blackColor] CGColor];
-//    backgroundLayer.opacity = 0.7;
-//    [self.view.layer addSublayer:backgroundLayer];
     _isFirstInstruction = ![[NSUserDefaults standardUserDefaults] boolForKey:self.restorationIdentifier];
     
     [self.childImageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop) {
@@ -50,30 +45,26 @@ NSString *const StoryBoardID_Calcualtor = @"Calcualtor";
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 - (IBAction)viewTapped:(UITapGestureRecognizer *)sender {
     BOOL isShown = [[NSUserDefaults standardUserDefaults] boolForKey:self.restorationIdentifier];
     if (isShown) {
         [self disposeInstructionView];
     }
     else {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:self.restorationIdentifier];
+        
+        if ([self.restorationIdentifier isEqualToString:@"Clock1"] || [self.restorationIdentifier isEqualToString:@"Clock2"]) {
+            if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock1"] || ![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock2"]) {
+                return;
+            }
+        }
+        
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
 															message:NSLocalizedString(@"To see instrustion again, double-tap with two fingers.", @"To see instrustion again, double-tap with two fingers.")
 														   delegate:self
 												  cancelButtonTitle:@"OK"
 												  otherButtonTitles:nil, nil];
         [alertView show];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:self.restorationIdentifier];
     }
 }
 
