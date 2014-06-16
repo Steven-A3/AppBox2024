@@ -296,7 +296,7 @@
 "Reminder" = "미리 알림";
 
 "All" = "모두";
-"Upcoming" = "다가오는 이벤트";
+"Upcoming" = "예정 이벤트";
 "Past" = "지난 이벤트";
 "Anniversary" = "기념일";
 "Appointment" = "약속";
@@ -440,9 +440,9 @@
 "To add a new country, remove one first." = "새로운 국가를 추가하려면 먼저 기존 국가를 하나 지우세요.";
 
 "Acknowledgement" = "감사의 말";
-"Upcoming %lu" = "다가오는 일정 %lu";
+"Upcoming %lu" = "남은 일정 %lu";
 "Past %lu" = "지난 일정 %lu";
-"Upcoming %ld" = "다가오는 일정 %ld";
+"Upcoming %ld" = "남은 일정 %ld";
 "Past %ld" = "지난 일정 %ld";
 "Holidays for year %lu is not available." = "%lu 년도의 휴일/기념일 정보는 제공되지 않습니다.";
 "Discalimer" = "정보";
@@ -808,3 +808,5 @@
 "Off" = "반올림";
 
 "Passcode_Off" = "끄기";
+
+"P" = "공";
