@@ -25,7 +25,7 @@
 @property (nonatomic, strong) NSMutableArray *userSelectedCountries;
 @property (nonatomic, strong) FMMoveTableView *tableView;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
-
+@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @end
 
 @implementation A3HolidaysCountryViewController {
@@ -63,11 +63,15 @@ extern NSString *const A3CurrencyActionCellID;
 	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyActionCellID];
 
 	[self registerContentSizeCategoryDidChangeNotification];
-    [self setupInstructionView];
 }
 
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self setupInstructionView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -108,7 +112,14 @@ extern NSString *const A3CurrencyActionCellID;
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Holidays_2"]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+
+    if (!_tapGestureRecognizer) {
+        _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
+        [_tapGestureRecognizer setNumberOfTouchesRequired:2];
+        [_tapGestureRecognizer setNumberOfTapsRequired:2];
+        [_tapGestureRecognizer setDelaysTouchesBegan:YES];
+        [self.view addGestureRecognizer:_tapGestureRecognizer];
+    }
 }
 
 - (void)showInstructionView
@@ -117,7 +128,7 @@ extern NSString *const A3CurrencyActionCellID;
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Holidays_2"];
     self.instructionViewController.delegate = self;
     [self.navigationController.view addSubview:self.instructionViewController.view];
-    self.instructionViewController.view.frame = [self.navigationController.view frame];
+    self.instructionViewController.view.frame = [self.view frame];
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
 }
 

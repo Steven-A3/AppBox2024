@@ -53,6 +53,7 @@
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
 @property (strong, nonatomic) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @end
 
 @implementation A3UnitConverterConvertTableViewController {
@@ -140,7 +141,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewWillHide:) name:A3NotificationRightSideViewWillDismiss object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
-    [self setupInstructionView];
+//    [self setupInstructionView];
 }
 
 - (void)removeObserver {
@@ -234,6 +235,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			NSUInteger vcIdx = [tabBar.unitTypes indexOfObject:self.unitType];
 			[[NSUserDefaults standardUserDefaults] setUnitConverterCurrentUnitTap:vcIdx];
 		}
+        [self setupInstructionView];
 	}
 }
 
@@ -492,7 +494,21 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"UnitConverter"]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+////    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+//    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
+//    [gesture setNumberOfTouchesRequired:2];
+//    [gesture setNumberOfTapsRequired:2];
+//    [gesture setDelaysTouchesBegan:YES];
+////    [self.fmMoveTableView addGestureRecognizer:gesture];
+//    [self.view addGestureRecognizer:gesture];
+    
+    if (!_tapGestureRecognizer) {
+        _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
+        [_tapGestureRecognizer setNumberOfTouchesRequired:2];
+        [_tapGestureRecognizer setNumberOfTapsRequired:2];
+        [_tapGestureRecognizer setDelaysTouchesBegan:YES];
+        [self.view addGestureRecognizer:_tapGestureRecognizer];
+    }
 }
 
 - (void)showInstructionView

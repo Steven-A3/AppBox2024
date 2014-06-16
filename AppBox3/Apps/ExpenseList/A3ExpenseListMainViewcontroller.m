@@ -105,6 +105,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     [self.tableView registerClass:[A3ExpenseListItemCell class] forCellReuseIdentifier:ExpenseListMainCellIdentifier];
     // 테이블 뷰 탭 제스쳐.
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnTableView:)];
+    _tapGestureRecognizer.numberOfTouchesRequired = 1;
+    _tapGestureRecognizer.numberOfTapsRequired = 1;
+    _tapGestureRecognizer.delaysTouchesBegan = YES;
     [self.tableView addGestureRecognizer:_tapGestureRecognizer];
     
     _columnSectionView = [[A3ExpenseListColumnSectionView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 45.0)];
@@ -148,6 +151,11 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		FNLOG();
 		[self removeObserver];
 	}
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+//    [self setupInstructionView];
 }
 
 - (void)dealloc {
@@ -381,12 +389,13 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
         [self showInstructionView];
     }
 //    [self setupTwoFingerDoubleTapGestureToShowInstruction];
-    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
-    [gesture setNumberOfTouchesRequired:2];
-    [gesture setNumberOfTapsRequired:2];
-    [gesture setDelaysTouchesBegan:YES];
-    [self.view addGestureRecognizer:gesture];
-    self.reservedTapGestureRecognizer = gesture;
+    if (!self.reservedTapGestureRecognizer) {
+        self.reservedTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
+        self.reservedTapGestureRecognizer.numberOfTouchesRequired = 2;
+        self.reservedTapGestureRecognizer.numberOfTapsRequired = 2;
+        self.reservedTapGestureRecognizer.delaysTouchesBegan = YES;
+        [self.view addGestureRecognizer:self.reservedTapGestureRecognizer];
+    }
 }
 
 - (void)showInstructionView
@@ -464,6 +473,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     [CATransaction setCompletionBlock:^{
         if (focus) {
             A3ExpenseListItemCell *cell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:focusingRow inSection:0]];
+            cell.nameTextField.userInteractionEnabled = YES;
             [cell.nameTextField becomeFirstResponder];
         }
     }];
@@ -500,7 +510,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	_sharePopoverController = nil;
 }
 
-- (void) didTapOnTableView:(UIGestureRecognizer *)recognizer {
+- (void)didTapOnTableView:(UIGestureRecognizer *)recognizer {
     CGPoint tapLocation = [recognizer locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:tapLocation];
 	FNLOG(@"%ld", (long)indexPath.row);
@@ -511,10 +521,15 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
         A3ExpenseListItemCell *aCell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:indexPath];
         
         if (tapLocation.x < _sep1View.frame.origin.x) {
+            aCell.nameTextField.userInteractionEnabled = YES;
             [aCell.nameTextField becomeFirstResponder];
-        } else if ( tapLocation.x > _sep1View.frame.origin.x && tapLocation.x < _sep2View.frame.origin.x) {
+        }
+        else if ( tapLocation.x > _sep1View.frame.origin.x && tapLocation.x < _sep2View.frame.origin.x) {
+            aCell.priceTextField.userInteractionEnabled = YES;
             [aCell.priceTextField becomeFirstResponder];
-        } else if ( tapLocation.x > _sep2View.frame.origin.x && tapLocation.x < _sep3View.frame.origin.x) {
+        }
+        else if ( tapLocation.x > _sep2View.frame.origin.x && tapLocation.x < _sep3View.frame.origin.x) {
+            aCell.qtyTextField.userInteractionEnabled = YES;
             [aCell.qtyTextField becomeFirstResponder];
         }
     } else {
@@ -960,6 +975,10 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
 	cell.delegate = self;
 
+    cell.nameTextField.userInteractionEnabled = NO;
+    cell.priceTextField.userInteractionEnabled = NO;
+    cell.qtyTextField.userInteractionEnabled = NO;
+    
 	if ([item.hasData boolValue] || indexPath.row == 0) {    // kjh 추후에 변경하도록
 		cell.nameTextField.text = item.itemName;
 		cell.priceTextField.text = [self.priceNumberFormatter stringFromNumber:item.price];
@@ -1249,6 +1268,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 -(void)itemCellTextFieldFinished:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
 {
 	[self removeNumberKeyboardNotificationObservers];
+    textField.userInteractionEnabled = NO;
+    
     NSIndexPath *index = [self.tableView indexPathForCell:aCell];
     ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:index.row];
 
@@ -1370,6 +1391,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     indexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
     
     A3ExpenseListItemCell *cell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    cell.qtyTextField.userInteractionEnabled = YES;
     [cell.qtyTextField becomeFirstResponder];
 }
 
@@ -1382,6 +1404,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     } else {
         indexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
         A3ExpenseListItemCell *cell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.nameTextField.userInteractionEnabled = YES;
         [cell.nameTextField becomeFirstResponder];
     }
 }
