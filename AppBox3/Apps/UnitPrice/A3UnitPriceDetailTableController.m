@@ -246,7 +246,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
     unitShortName = priceInfo.unit ? priceInfo.unit.unitShortName : NSLocalizedString(@"None", @"None");
-    unitName = priceInfo.unit ? priceInfo.unit.unitName : NSLocalizedString(@"None", @"None");
+    unitName = priceInfo.unit ? NSLocalizedStringFromTable(priceInfo.unit.unitName, @"unit", nil) : NSLocalizedString(@"None", @"None");
     
     double priceValue = priceInfo.price.doubleValue;
     NSInteger sizeValue = (priceInfo.size.integerValue <= 0) ? 1:priceInfo.size.integerValue;

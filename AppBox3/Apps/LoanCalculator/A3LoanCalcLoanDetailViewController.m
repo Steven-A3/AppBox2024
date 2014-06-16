@@ -732,7 +732,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == 2) {
-        return [LoanCalcPreference new].showExtraPayment ? @"EXTRA PAYMENTS" : nil;
+        return [LoanCalcPreference new].showExtraPayment ? NSLocalizedString(@"EXTRA PAYMENTS", @"EXTRA PAYMENTS") : nil;
     }
     
     return nil;

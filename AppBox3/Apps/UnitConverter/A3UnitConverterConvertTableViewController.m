@@ -469,7 +469,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     viewController.hidesBottomBarWhenPushed = YES;
 	if (selectedIndex >= 0 && selectedIndex <= ([_convertItems count] - 1) ) {
 		UnitConvertItem *selectedItem = _convertItems[selectedIndex];
-		viewController.placeHolder = selectedItem.item.unitName;
+		viewController.placeHolder = NSLocalizedStringFromTable(selectedItem.item.unitName, @"unit", nil);
         
         // toss unit data
         viewController.selectedItem = selectedItem;
@@ -795,7 +795,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		}
 
 		// code 및 rate 정보 표시
-		dataCell.codeLabel.text = convertItem.item.unitName;
+		dataCell.codeLabel.text = NSLocalizedStringFromTable(convertItem.item.unitName, @"unit", nil);
 		// 온도 모드에서는 rate값에 일정 비율이 없으므로 표시하지 않는다.
 		if (_isTemperatureMode) {
 			dataCell.rateLabel.text = [TemperatureConverter rateStringFromTemperUnit:convertItemZero.item.unitName toTemperUnit:convertItem.item.unitName];

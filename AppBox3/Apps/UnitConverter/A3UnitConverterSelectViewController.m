@@ -444,7 +444,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 		}
 	}
 
-	cell.textLabel.text = data.unitName;
+	cell.textLabel.text = NSLocalizedStringFromTable(data.unitName, @"unit", nil);
 
 	if ([data.unitName isEqualToString:_selectedItem.item.unitName]) {
 		checkedItem = YES;

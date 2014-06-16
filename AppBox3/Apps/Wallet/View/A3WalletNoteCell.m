@@ -36,7 +36,7 @@
 	_textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
 	_textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
 
-	_textView.placeholder = @"Notes";
+	_textView.placeholder = NSLocalizedString(@"Notes", @"Notes");
 	_textView.font = [UIFont systemFontOfSize:17];
 
 	[_textView makeConstraints:^(MASConstraintMaker *make) {

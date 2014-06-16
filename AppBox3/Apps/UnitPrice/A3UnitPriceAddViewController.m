@@ -37,7 +37,7 @@
     [super viewDidLoad];
     
     UnitItem *firstItem = _allData[0];
-    self.title = [NSString stringWithFormat:NSLocalizedString(@"%@ Units", @"%@ Units"), firstItem.type.unitTypeName];
+    self.title = [NSString stringWithFormat:NSLocalizedString(@"%@ Units", @"%@ Units"), NSLocalizedStringFromTable(firstItem.type.unitTypeName, @"unit", nil)];
     
     self.tableView.rowHeight = 44.0;
 	self.tableView.showsVerticalScrollIndicator = NO;
@@ -189,7 +189,7 @@
     
     // Configure the cell...
     UnitItem *item = _allData[indexPath.row];
-    cell.textLabel.text = item.unitName;
+    cell.textLabel.text = NSLocalizedStringFromTable(item.unitName, @"unit", nil);
     
     UIButton *plusBtn = (UIButton *)cell.accessoryView;
     plusBtn.tag = indexPath.row;

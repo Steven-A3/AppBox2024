@@ -141,23 +141,24 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
 	NSUInteger numberOfItemsOnTapBar = IS_IPHONE ? 4 : 7;
     for (NSInteger idx = 0; idx < numberOfItemsOnTapBar; idx++) {
         UnitType *unitType = self.unitTypes[idx];
+		NSString *unitName = NSLocalizedStringFromTable(unitType.unitTypeName, @"unit", nil);
         
         A3UnitConverterConvertTableViewController *converterViewController = [[A3UnitConverterConvertTableViewController alloc] init];
         converterViewController.unitType = unitType;
-        converterViewController.title = unitType.unitTypeName;
+        converterViewController.title = unitName;
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:converterViewController];
         navigationController.tabBarItem.image = [UIImage imageNamed:unitType.flagImageName];
         navigationController.tabBarItem.selectedImage = [UIImage imageNamed:unitType.selectedFlagImageName];
         
-        NSArray *unitNameArray = [unitType.unitTypeName componentsSeparatedByString:@" "];
+        NSArray *unitNameArray = [unitName componentsSeparatedByString:@" "];
         if (unitNameArray.count > 1) {
             if (IS_IPHONE) {
                 navigationController.tabBarItem.title = unitNameArray[0];
             }
         }
         else {
-            navigationController.tabBarItem.title = unitType.unitTypeName;
+            navigationController.tabBarItem.title = unitName;
         }
 
 		[viewControllers addObject:navigationController];

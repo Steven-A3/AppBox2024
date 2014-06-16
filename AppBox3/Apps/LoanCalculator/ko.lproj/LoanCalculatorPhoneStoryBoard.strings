@@ -114,7 +114,7 @@
 "dia-aD-hhJ.text" = "$3.68";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "eK2-vu-V2i"; */
-"eK2-vu-V2i.text" = "PAYMENT";
+"eK2-vu-V2i.text" = "납입액";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "fi5-fr-eaq"; */
 "fi5-fr-eaq.text" = "Label";
@@ -132,10 +132,10 @@
 "ihV-sA-QKP.placeholder" = "TextHere";
 
 /* Class = "IBUILabel"; text = "Total Interest"; ObjectID = "lIW-t6-4Lw"; */
-"lIW-t6-4Lw.text" = "총이자";
+"lIW-t6-4Lw.text" = "이지 합계";
 
 /* Class = "IBUIButton"; normalTitle = "Total"; ObjectID = "ln5-ed-dwO"; */
-"ln5-ed-dwO.normalTitle" = "Total";
+"ln5-ed-dwO.normalTitle" = "합계";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "m6f-ua-y26"; */
 "m6f-ua-y26.text" = "Label";

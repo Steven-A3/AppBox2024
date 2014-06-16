@@ -183,7 +183,7 @@
     
     // Configure the cell...
     UnitItem *item = _allData[indexPath.row];
-    cell.textLabel.text = item.unitName;
+    cell.textLabel.text = NSLocalizedStringFromTable(item.unitName, @"unit", nil);
     
     UIButton *plusBtn = (UIButton *)cell.accessoryView;
     plusBtn.tag = indexPath.row;
