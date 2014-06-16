@@ -9,10 +9,10 @@
 "3bQ-KN-l5E.text" = "$4,749,470 Interest";
 
 /* Class = "IBUIButton"; normalTitle = "Total"; ObjectID = "3s5-4s-1CT"; */
-"3s5-4s-1CT.normalTitle" = "Total";
+"3s5-4s-1CT.normalTitle" = "합계";
 
 /* Class = "IBUILabel"; text = "Total Interest"; ObjectID = "42J-Av-wC6"; */
-"42J-Av-wC6.text" = "Total Interest";
+"42J-Av-wC6.text" = "이자 합계";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "4M7-1W-baH"; */
 "4M7-1W-baH.text" = "Label";
@@ -30,7 +30,7 @@
 "BgM-ze-Nt4.text" = "Label";
 
 /* Class = "IBUIButton"; normalTitle = "Monthly"; ObjectID = "EGD-V3-oEo"; */
-"EGD-V3-oEo.normalTitle" = "Monthly";
+"EGD-V3-oEo.normalTitle" = "매월";
 
 /* Class = "IBUILabel"; text = "OZ"; ObjectID = "EWp-Dv-mTP"; */
 "EWp-Dv-mTP.text" = "OZ";
@@ -39,28 +39,28 @@
 "FET-8b-cbE.text" = "Label";
 
 /* Class = "IBUILabel"; text = "TOTAL AMOUNT"; ObjectID = "HoT-uR-KnN"; */
-"HoT-uR-KnN.text" = "TOTAL AMOUNT";
+"HoT-uR-KnN.text" = "총합계";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "I6j-2t-Twp"; */
 "I6j-2t-Twp.text" = "Label";
 
 /* Class = "IBUILabel"; text = "FREQUENCY"; ObjectID = "IQd-UR-Egy"; */
-"IQd-UR-Egy.text" = "FREQUENCY";
+"IQd-UR-Egy.text" = "주기";
 
 /* Class = "IBUILabel"; text = "PRINCIPAL"; ObjectID = "Kjj-Yf-Cp0"; */
-"Kjj-Yf-Cp0.text" = "PRINCIPAL";
+"Kjj-Yf-Cp0.text" = "원금";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "Lay-j3-68g"; */
-"Lay-j3-68g.text" = "PAYMENT";
+"Lay-j3-68g.text" = "납입액";
 
 /* Class = "IBUILabel"; text = "Total Amount"; ObjectID = "O4w-GW-tyw"; */
-"O4w-GW-tyw.text" = "Total Amount";
+"O4w-GW-tyw.text" = "총합계";
 
 /* Class = "IBUILabel"; text = "$0.00/mo"; ObjectID = "PvE-ES-NPA"; */
 "PvE-ES-NPA.text" = "$0.00/mo";
 
 /* Class = "IBUILabel"; text = "TOTAL AMOUNT"; ObjectID = "PyM-Ux-VrQ"; */
-"PyM-Ux-VrQ.text" = "TOTAL AMOUNT";
+"PyM-Ux-VrQ.text" = "총합계";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "RET-uw-eQo"; */
 "RET-uw-eQo.text" = "Label";
@@ -72,7 +72,7 @@
 "V1G-OH-rO3.text" = "A";
 
 /* Class = "IBUILabel"; text = "INTEREST RATE"; ObjectID = "V4g-Ka-you"; */
-"V4g-Ka-you.text" = "INTEREST RATE";
+"V4g-Ka-you.text" = "이자율";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "XA0-MA-CbH"; */
 "XA0-MA-CbH.text" = "Label";
@@ -105,7 +105,7 @@
 "jVJ-Zr-wXJ.text" = "$4,749.70";
 
 /* Class = "IBUIButton"; normalTitle = "Monthly"; ObjectID = "kxb-Ku-lTX"; */
-"kxb-Ku-lTX.normalTitle" = "Monthly";
+"kxb-Ku-lTX.normalTitle" = "매월";
 
 /* Class = "IBUILabel"; text = "A"; ObjectID = "mSG-SM-GwN"; */
 "mSG-SM-GwN.text" = "A";
@@ -117,25 +117,25 @@
 "oMF-aa-Nt2.text" = "Label";
 
 /* Class = "IBUILabel"; text = "TERM"; ObjectID = "p8M-3c-orl"; */
-"p8M-3c-orl.text" = "TERM";
+"p8M-3c-orl.text" = "기간";
 
 /* Class = "IBUILabel"; text = "$34,749,470 Total Amount"; ObjectID = "pOT-dv-WMW"; */
 "pOT-dv-WMW.text" = "$34,749,470 Total Amount";
 
 /* Class = "IBUILabel"; text = "Detail"; ObjectID = "uhy-Vu-FhR"; */
-"uhy-Vu-FhR.text" = "Detail";
+"uhy-Vu-FhR.text" = "상세보기";
 
 /* Class = "IBUITextField"; placeholder = "TextHere"; ObjectID = "vZT-FI-RK3"; */
 "vZT-FI-RK3.placeholder" = "TextHere";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "vlc-Uw-6Wc"; */
-"vlc-Uw-6Wc.text" = "PAYMENT";
+"vlc-Uw-6Wc.text" = "납입액";
 
 /* Class = "IBUIButton"; normalTitle = "Total"; ObjectID = "wH7-0h-TSe"; */
-"wH7-0h-TSe.normalTitle" = "Total";
+"wH7-0h-TSe.normalTitle" = "합계";
 
 /* Class = "IBUILabel"; text = "Detail"; ObjectID = "wSw-jU-DIJ"; */
-"wSw-jU-DIJ.text" = "Detail";
+"wSw-jU-DIJ.text" = "상세보기";
 
 /* Class = "IBUILabel"; text = "$0.00/mo"; ObjectID = "x2B-T1-AEf"; */
 "x2B-T1-AEf.text" = "$0.00/mo";

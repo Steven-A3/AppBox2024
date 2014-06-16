@@ -371,7 +371,7 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
 			}
 		}
 
-		cell.textLabel.text = data.unitName;
+		cell.textLabel.text = NSLocalizedStringFromTable(data.unitName, @"unit", nil);
 
 		if (checkedItem) {
 			cell.accessoryType = UITableViewCellAccessoryCheckmark;

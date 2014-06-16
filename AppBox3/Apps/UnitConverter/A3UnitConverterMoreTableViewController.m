@@ -170,7 +170,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 
 	UnitType *unitType = self.sections[indexPath.section][indexPath.row];
 	cell.cellImageView.image = [UIImage imageNamed:unitType.flagImageName];
-	cell.cellTitleLabel.text = unitType.unitTypeName;
+	cell.cellTitleLabel.text = NSLocalizedStringFromTable(unitType.unitTypeName, @"unit", nil);
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.separatorInset = A3UITableViewSeparatorInset;
 
@@ -249,7 +249,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 	UnitType *unitType = self.sections[indexPath.section][indexPath.row];
 	A3UnitConverterConvertTableViewController *viewController = [[A3UnitConverterConvertTableViewController alloc] init];
 	viewController.unitType = unitType;
-	viewController.title = unitType.unitTypeName;
+	viewController.title = NSLocalizedStringFromTable(unitType.unitTypeName, @"unit", nil);
 	viewController.isFromMoreTableViewController = YES;
 
 	[self.navigationController pushViewController:viewController animated:YES];

@@ -426,7 +426,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 			}
 		}
 
-		cell.textLabel.text = data.unitName;
+		cell.textLabel.text = NSLocalizedStringFromTable(data.unitName, @"unit", nil);
 
 		if (_selectedUnit && ([[data objectID] isEqual:[_selectedUnit objectID]])) {
 			checkedItem = YES;
