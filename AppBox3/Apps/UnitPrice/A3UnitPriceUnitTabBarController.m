@@ -171,7 +171,7 @@
     if (!_unitTypes) {
         _unitTypes = [[NSMutableArray alloc] init];
         
-        NSArray *names = @[NSLocalizedString(@"Area", @"Area"), NSLocalizedString(@"Length", @"Length"), NSLocalizedString(@"Volume", @"Volume"), NSLocalizedString(@"Weight", @"Weight")];
+        NSArray *names = @[@"Area", @"Length", @"Volume", @"Weight"];
         for (int i = 0; i < names.count; i++) {
             UnitType *unitType = [UnitType MR_findFirstByAttribute:@"unitTypeName" withValue:names[i]];
             if (unitType) {

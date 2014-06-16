@@ -621,7 +621,7 @@
 "Sale Price w/Tax" = "할인 금액 + 세금";
 "Discount" = "할인";
 "Additional Off" = "추가할인";
-"Tax" = "세율";
+"Tax" = "세금";
 
 "KNOWN VALUE" = "알고 있는 금액";
 
@@ -636,11 +636,11 @@
 "Costs Before Tax" = "세금 제외 금액";
 "Split" = "더치페이";
 
-"Before Split" = "나누기 전";
-"Per Person" = "인당";
+"Before Split" = "총액";
+"Per Person" = "개인별";
 "  Tip" = "  팁";
 " Total Per Person" = " 개인별 총액";
-" Total Before Split" = " 총액";
+" Total Before Split" = " 전체 총액";
 " Total" = " 총액";
 
 "Subtotal" = "계";
