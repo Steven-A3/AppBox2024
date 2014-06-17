@@ -21,7 +21,7 @@
 	UILabel *publicString;
 	publicString = [UILabel new];
 	publicString.font = [UIFont systemFontOfSize:11];
-	publicString.text = IS_IPHONE ? @"P" : @"Public";
+	publicString.text = IS_IPHONE ? NSLocalizedString(@"P", @"P") : NSLocalizedString(@"Public", @"Public");
 	publicString.textColor = [UIColor whiteColor];
 	publicString.textAlignment = NSTextAlignmentCenter;
 	[borderView addSubview:publicString];

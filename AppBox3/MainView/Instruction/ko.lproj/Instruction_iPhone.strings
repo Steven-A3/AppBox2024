@@ -3,7 +3,7 @@
 "0gd-1F-IlN.text" = "탭하여 카테고리를 추가합니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a country,\nthen drag it up or down"; ObjectID = "0ze-pQ-4fo"; */
-"0ze-pQ-4fo.text" = "국가를 터치한 후 누르고 있으면 위 아래로 움직여서 순서를 바꿀 수 있습니다.";
+"0ze-pQ-4fo.text" = "국가를 터치한 후 누르고 있으면 위 아래로\n움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to add a new list"; ObjectID = "1dD-l5-TzF"; */
 "1dD-l5-TzF.text" = "탭하여 새로운 리스트를 만듭니다.";
@@ -12,7 +12,7 @@
 "2ma-Z4-hX7.text" = "통화를 왼쪽으로 밀면 추가 기능이 나옵니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a currency,\nthen drag it up or down"; ObjectID = "3r1-n4-BZx"; */
-"3r1-n4-BZx.text" = "통화를 터치한 후 누른 후 위 아래로 움직여서 순서를 바꿀 수 있습니다.";
+"3r1-n4-BZx.text" = "통화를 터치한 후 누른 후 위 아래로\n움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "swipe left or right to change\nkeypad for basic/scientific"; ObjectID = "4Y2-hA-ExK"; */
 "4Y2-hA-ExK.text" = "키패드를 왼쪽이나 오른쪽으로 밀어서\n기본 계산기나 공학용 키패드로 변경합니다.";
@@ -57,7 +57,7 @@
 "O49-bh-b9I.text" = "국가를 왼쪽으로 밀어서\n지울 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "pull up to see\nmore holidays"; ObjectID = "RQJ-Od-NDI"; */
-"RQJ-Od-NDI.text" = "위로 밀어 올리면\n더 많은 휴일 정보를 볼 수 있습니다.";
+"RQJ-Od-NDI.text" = "위로 밀어 올리면 더 많은\n휴일 정보를 볼 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to add or edit budget"; ObjectID = "U1j-Mc-LaR"; */
 "U1j-Mc-LaR.text" = "탭하여 예산을 추가하거나 수정합니다.";
@@ -84,7 +84,7 @@
 "cXb-sm-2AK.text" = "탭하여 자연주기를 추가합니다.";
 
 /* Class = "IBUILabel"; text = "swipe left or right to see\nholidays for another country"; ObjectID = "f7p-pa-V3C"; */
-"f7p-pa-V3C.text" = "화면을 왼쪽이나 오른쪽으로 밀어서\n다른 나라의 휴일 정보를 확인합니다.";
+"f7p-pa-V3C.text" = "화면을 왼쪽이나 오른쪽으로\n밀어서 다른 나라의 휴일 정보를\n확인합니다.";
 
 /* Class = "IBUILabel"; text = "slide the unit to the left,\nthen tap options"; ObjectID = "fgC-K0-IiZ"; */
 "fgC-K0-IiZ.text" = "단위를 왼쪽으로 밀어서\n추가 기능을 선택합니다.";
