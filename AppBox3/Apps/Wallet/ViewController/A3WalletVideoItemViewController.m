@@ -296,7 +296,16 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 	_metadataView.titleTextField.frame = frame;
 
 	_metadataView.favoriteButton.selected = _item.favorite != nil;
-	_metadataView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [_item.modificationDate timeAgo]];
+    
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    if (IS_IPAD || [NSDate isFullStyleLocale]) {
+        dateFormatter.dateStyle = NSDateFormatterFullStyle;
+        dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    }
+    else {
+        dateFormatter.dateFormat = [dateFormatter customFullWithTimeStyleFormat];
+    }
+	_metadataView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [dateFormatter stringFromDate:_item.modificationDate]];
 
     if (self.videoFieldItems.count <= page) {
         return;

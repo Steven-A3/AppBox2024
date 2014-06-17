@@ -322,7 +322,16 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 	FNLOG(@"%ld", (long)page);
 	self.metadataView.titleTextField.text = [_item.name length] ?  _item.name : NSLocalizedString(@"New Item", @"New Item");
 	_metadataView.favoriteButton.selected = self.item.favorite != nil;
-	_metadataView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [_item.modificationDate timeAgo]];
+    
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    if (IS_IPAD || [NSDate isFullStyleLocale]) {
+        dateFormatter.dateStyle = NSDateFormatterFullStyle;
+        dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    }
+    else {
+        dateFormatter.dateFormat = [dateFormatter customFullWithTimeStyleFormat];
+    }
+	_metadataView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [dateFormatter stringFromDate:_item.modificationDate]];
 
     if (self.photoFieldItems.count <= page) {
         return;
