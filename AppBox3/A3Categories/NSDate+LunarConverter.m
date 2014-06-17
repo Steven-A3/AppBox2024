@@ -605,17 +605,6 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
     return result;
 }
 
-+ (BOOL)isLunarDate:(NSDate *)date isKorean:(BOOL)isKorean
-{
-    NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
-    NSInteger lastMonthDay = [self lastMonthDayForLunarYear:dateComp.year month:dateComp.month isKorean:isKorean];
-    if (dateComp.day <= lastMonthDay) {
-        return YES;
-    }
-    
-    return NO;
-}
-
 + (BOOL)isLunarDateComponents:(NSDateComponents *)dateComp isKorean:(BOOL)isKorean
 {
     NSInteger lastMonthDay = [self lastMonthDayForLunarYear:dateComp.year month:dateComp.month isKorean:isKorean];
