@@ -150,7 +150,9 @@
 - (void)enableControls:(BOOL)enable {
 	if (!IS_IPAD) return;
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
-	[self.navigationItem.rightBarButtonItem setEnabled:enable];
+	[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
+        [barButtonItem setEnabled:NO];
+    }];
 	[self.sectionHeaderView.tableSegmentButton setTintColor:enable ? nil : SEGMENTED_CONTROL_DISABLED_TINT_COLOR2];
 	[self.sectionHeaderView.tableSegmentButton setEnabled:enable];
 }
