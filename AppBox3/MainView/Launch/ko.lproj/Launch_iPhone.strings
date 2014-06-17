@@ -64,7 +64,7 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 "c42-0X-ouA.text" = "지출 관리";
 
 /* Class = "IBUILabel"; text = "Currency Converter"; ObjectID = "eTo-UJ-qLJ"; */
-"eTo-UJ-qLJ.text" = "환율 변환";
+"eTo-UJ-qLJ.text" = "환율";
 
 /* Class = "IBUILabel"; text = "Battery Status"; ObjectID = "fVE-ef-mZ7"; */
 "fVE-ef-mZ7.text" = "배터리 상태";
