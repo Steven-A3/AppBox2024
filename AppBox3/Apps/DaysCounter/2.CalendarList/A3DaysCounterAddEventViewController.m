@@ -1418,7 +1418,8 @@
     }
     
     if ( [_eventItem.isLunar boolValue]) {
-        BOOL isLunarStartDate = [NSDate isLunarDate:[_eventItem.startDate solarDate] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+        NSDateComponents *startComp = [A3DaysCounterModelManager dateComponentsFromDateModelObject:[_eventItem startDate] toLunar:YES];
+        BOOL isLunarStartDate = [NSDate isLunarDateComponents:startComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
         if (!isLunarStartDate) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Start date is not lunar date", @"Message in adding event.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                   otherButtonTitles:nil, nil];
@@ -1427,7 +1428,8 @@
         }
         
         if ( [_eventItem.isPeriod boolValue] ) {
-            BOOL isLunarEndDate = [NSDate isLunarDate:[_eventItem.endDate solarDate] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+            NSDateComponents *startComp = [A3DaysCounterModelManager dateComponentsFromDateModelObject:[_eventItem endDate] toLunar:YES];
+            BOOL isLunarEndDate = [NSDate isLunarDateComponents:startComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
             if (!isLunarEndDate) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"End date is not lunar date", @"Message in adding event.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                       otherButtonTitles:nil, nil] ;
@@ -1551,7 +1553,6 @@
     if ([switchButton isOn]) {
         [self closeDatePickerCell];
 
-        
         [self.tableView beginUpdates];
         // 반복 종료 날짜 셀 제거.
         NSMutableArray *removalRows = [NSMutableArray new];
@@ -1565,6 +1566,7 @@
                 [removalRows addObject:@(endRepeatIndex)];
             }
         }
+
         // start/end on 버튼 셀 제거.
         NSInteger startEndToggleCellIndex = [self indexOfRowForItemType:EventCellType_IsPeriod atSectionArray:sectionRow_items];
         if (startEndToggleCellIndex != -1) {
@@ -1574,7 +1576,7 @@
         if (endDateCellIndex != -1) {
             [removalRows addObject:@(endDateCellIndex)];
         }
-        
+
         // cell & dataSource 제거.
         removalRows = [[removalRows sortedArrayUsingComparator:^NSComparisonResult(NSNumber *obj1, NSNumber *obj2) {
             return [obj2 compare:obj1];
@@ -1588,13 +1590,14 @@
             [sectionRow_items removeObjectAtIndex:[index integerValue]];
         }];
         [self.tableView endUpdates];
-        
-        
 
+        // * Lunar 입력 모드 설정.
+        // AllDay 스위치 -> LeapMonth 스위치로 변경.
         NSInteger leapMonthRowIndex = [self indexOfRowForItemType:EventCellType_IsAllDay atSectionArray:sectionRow_items];
         [sectionRow_items replaceObjectAtIndex:leapMonthRowIndex withObject:@{EventRowTitle : NSLocalizedString(@"Leap Month", @"Leap Month"), EventRowType : @(EventCellType_IsLeapMonth)}];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:leapMonthRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-        
+
+        // start/end Date 데이터 반영.
         [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.startDate toLunar:YES]
                                                         withEventModel:_eventItem
                                                                endDate:NO];
@@ -1602,6 +1605,18 @@
             [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.endDate toLunar:YES]
                                                             withEventModel:_eventItem
                                                                    endDate:YES];
+        }
+        
+        // Duration 옵션 -> All Day 옵션으로 수정.
+        NSInteger durationFlag = [_eventItem.durationOption integerValue];
+        durationFlag = durationFlag & ~(DurationOption_Hour|DurationOption_Minutes|DurationOption_Seconds);
+        if (durationFlag == 0) {
+            durationFlag = DurationOption_Day;
+        }
+        _eventItem.durationOption = @(durationFlag);
+        NSInteger durationRowIndex = [self indexOfRowForItemType:EventCellType_DurationOption atSectionArray:sectionRow_items];
+        if (durationRowIndex != -1) {
+            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:durationRowIndex inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
         }
     }
     else {
@@ -1789,7 +1804,7 @@
     
     // 음력 날짜 유효성 체크.
     if ([_eventItem.isLunar boolValue]) {
-        BOOL isLunarDate = [NSDate isLunarDate:[calendar dateFromComponents:dateComp] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+        BOOL isLunarDate = [NSDate isLunarDateComponents:dateComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
         [self leapMonthCellEnable:[NSDate isLunarLeapMonthAtDateComponents:dateComp isKorean:YES]];
 
         if (!isLunarDate) {

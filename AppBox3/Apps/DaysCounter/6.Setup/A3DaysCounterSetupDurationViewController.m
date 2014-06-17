@@ -145,7 +145,7 @@
 
     cell.textLabel.text = [item objectForKey:EventRowTitle];
     
-    if ([_eventModel.isAllDay boolValue] &&
+    if (([_eventModel.isAllDay boolValue] || [_eventModel.isLunar boolValue]) &&
         (itemRowType == DurationOption_Hour || itemRowType == DurationOption_Minutes || itemRowType == DurationOption_Seconds)) {
         cell.userInteractionEnabled = NO;
         cell.textLabel.textColor = [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
