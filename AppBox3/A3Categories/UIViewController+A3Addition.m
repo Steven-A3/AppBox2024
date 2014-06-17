@@ -383,6 +383,22 @@
 
 }
 
+- (UIButton *)instructionHelpButton {
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+	[button setImage:[UIImage imageNamed:@"help"] forState:UIControlStateNormal];
+	[button addTarget:self action:@selector(instructionHelpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+	return button;
+}
+
+- (UIBarButtonItem *)instructionHelpBarButton {
+	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"help"] style:UIBarButtonItemStylePlain target:self action:@selector(instructionHelpButtonAction:)];
+	return barButtonItem;
+}
+
+- (void)instructionHelpButtonAction:(id)sender {
+    [self showInstructionView];
+}
+
 - (UIButton *)composeButton {
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
 	[button setImage:[UIImage imageNamed:@"add07"] forState:UIControlStateNormal];

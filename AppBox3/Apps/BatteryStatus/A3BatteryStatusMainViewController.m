@@ -169,7 +169,6 @@
     if (![[NSUserDefaults standardUserDefaults] boolForKey:StoryBoardID_BatteryStatus]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
 }
 
 - (void)showInstructionView
@@ -229,7 +228,7 @@
     UIImage *image = [UIImage imageNamed:@"general"];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(generalButtonAction:)];
     
-    self.navigationItem.rightBarButtonItem = buttonItem;
+    self.navigationItem.rightBarButtonItems = @[buttonItem, [self instructionHelpBarButton]];
 }
 
 - (void)didReceiveMemoryWarning
