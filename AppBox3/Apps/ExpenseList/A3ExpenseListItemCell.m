@@ -382,7 +382,9 @@
 
 - (void)handleBigButton1 {
     if (_firstResponder == _priceTextField) {
-    } else if (_firstResponder == _qtyTextField) {
+        
+    }
+    else if (_firstResponder == _qtyTextField) {
         ((A3NumberKeyboardViewController *)_inputViewController).bigButton1.selected = NO;
         ((A3NumberKeyboardViewController *)_inputViewController).bigButton2.selected = NO;
     }
@@ -392,7 +394,8 @@
     if (_firstResponder == _priceTextField) {
         ((A3NumberKeyboardViewController *)_inputViewController).bigButton1.selected = YES;
         ((A3NumberKeyboardViewController *)_inputViewController).bigButton2.selected = NO;
-    } else if (_firstResponder == _qtyTextField) {
+    }
+    else if (_firstResponder == _qtyTextField) {
         ((A3NumberKeyboardViewController *)_inputViewController).bigButton1.selected = NO;
         ((A3NumberKeyboardViewController *)_inputViewController).bigButton2.selected = NO;
     }
@@ -452,8 +455,11 @@
 
 - (void)keyboardAccessoryPrevButtonTouchUp:(id)sender {
     if (_firstResponder == _qtyTextField) {
+        _priceTextField.userInteractionEnabled = YES;
         [_priceTextField becomeFirstResponder];
-    } else if (_firstResponder == _priceTextField) {
+    }
+    else if (_firstResponder == _priceTextField) {
+        _nameTextField.userInteractionEnabled = YES;
         [_nameTextField becomeFirstResponder];
     } else if (_firstResponder == _nameTextField) {
         [self moveUpRow];
@@ -462,10 +468,14 @@
 
 - (void)keyboardAccessoryNextButtonTouchUp:(id)sender {
 	if (_firstResponder == _nameTextField) {
+        _priceTextField.userInteractionEnabled = YES;
 		[_priceTextField becomeFirstResponder];
-	} else if (_firstResponder == _priceTextField) {
+	}
+    else if (_firstResponder == _priceTextField) {
+        _qtyTextField.userInteractionEnabled = YES;
 		[_qtyTextField becomeFirstResponder];
-	} else if (_firstResponder == _qtyTextField) {
+	}
+    else if (_firstResponder == _qtyTextField) {
 		[self moveDownRow];
 	}
 }

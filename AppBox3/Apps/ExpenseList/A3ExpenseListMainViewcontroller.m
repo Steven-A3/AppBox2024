@@ -1187,8 +1187,11 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 -(void)itemCellTextFieldFinished:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-	[self removeNumberKeyboardNotificationObservers];
+    if (textField == self.firstResponder) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+        [self removeNumberKeyboardNotificationObservers];
+    }
+
     textField.userInteractionEnabled = NO;
     
     NSIndexPath *index = [self.tableView indexPathForCell:aCell];
