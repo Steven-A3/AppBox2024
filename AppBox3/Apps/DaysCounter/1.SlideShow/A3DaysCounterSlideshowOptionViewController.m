@@ -16,6 +16,7 @@
 #import "A3DaysCounterSlideshowTimeSelectViewController.h"
 #import "A3DaysCounterSlideshowViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterSlideshowOptionViewController ()
 @property (strong, nonatomic) NSArray *sectionArray;
@@ -63,15 +64,6 @@
     return [[item objectForKey:EventRowType] integerValue];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -80,7 +72,11 @@
     if ( IS_IPHONE )
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     [self makeBackButtonEmptyArrow];
-    
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
     self.sectionArray = @[
                           @{EventRowTitle : @"", EventKey_Items : @[@{EventRowTitle : NSLocalizedString(@"Transitions", @"Transitions"), EventRowType : @(SlideshowOptionType_Transition)}]},
                           @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : NSLocalizedString(@"Play Each Slide For", @"Play Each Slide For"),EventRowType : @(SlideshowOptionType_Showtime)}]},
@@ -239,7 +235,7 @@
 {
     NSInteger cellType = [self cellTypeAtIndexPath:indexPath];
     if ( cellType == SlideshowOptionType_Transition ) {
-        A3DaysCounterSlideshowTransitionSelectViewController *viewCtrl = [[A3DaysCounterSlideshowTransitionSelectViewController alloc] initWithNibName:nil bundle:nil];
+        A3DaysCounterSlideshowTransitionSelectViewController *viewCtrl = [[A3DaysCounterSlideshowTransitionSelectViewController alloc] init];
         viewCtrl.optionDict = self.optionDict;
         viewCtrl.sharedManager = _sharedManager;
         [self.navigationController pushViewController:viewCtrl animated:YES];

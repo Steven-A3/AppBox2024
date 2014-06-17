@@ -17,6 +17,7 @@
 #import "A3AppDelegate+appearance.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterDate.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterSetupAlertViewController () <A3KeyboardDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) NSArray *itemArray;
@@ -28,6 +29,16 @@
 @end
 
 @implementation A3DaysCounterSetupAlertViewController
+
+- (id)init {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	if (self) {
+
+	}
+
+	return self;
+}
+
 
 - (void)showDatePicker
 {
@@ -56,22 +67,16 @@
 	return diffDate;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-	self = [super initWithStyle:style];
-	if (self) {
-
-	}
-	return self;
-}
-
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
 
 	self.title = NSLocalizedString(@"Alert", @"Alert");
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
-    
+
 	self.itemArray = @[@{EventRowTitle : NSLocalizedString(@"None", @"None"), EventRowType : @(AlertType_None)},
 			@{EventRowTitle : NSLocalizedString(@"At time of event", @"At time of event"), EventRowType : @(AlertType_AtTimeOfEvent)},
 			@{EventRowTitle : NSLocalizedString(@"5 minutes before", @"5 minutes before"), EventRowType : @(AlertType_5MinutesBefore)},

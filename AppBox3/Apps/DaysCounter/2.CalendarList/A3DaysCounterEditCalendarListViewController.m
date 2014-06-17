@@ -17,6 +17,7 @@
 #import "DaysCounterCalendar+Extension.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterEditCalendarListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -40,7 +41,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     self.title = NSLocalizedString(@"Edit Calendars", @"Edit Calendars");
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addCalendarAction:)];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     if (IS_IPHONE) {

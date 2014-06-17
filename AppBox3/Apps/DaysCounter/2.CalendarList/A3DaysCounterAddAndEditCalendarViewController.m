@@ -13,6 +13,7 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "DaysCounterCalendar.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterAddAndEditCalendarViewController ()
 @property (strong, nonatomic) NSArray *colorArray;
@@ -52,6 +53,10 @@
     [super viewDidLoad];
 
     self.title = (_isEditMode ? NSLocalizedString(@"Edit Calendar", @"Edit Calendar") : NSLocalizedString(@"Add Calendar", @"Add Calendar"));
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     [self rightBarButtonDoneButton];

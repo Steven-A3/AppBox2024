@@ -54,6 +54,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 	self.title = (_isEditMode ? NSLocalizedString(@"Edit Account", @"Edit Account") : NSLocalizedString(@"Add Account", @"Add Account"));
 
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
 	[self leftBarButtonCancelButton];
 	[self rightBarButtonDoneButton];
 

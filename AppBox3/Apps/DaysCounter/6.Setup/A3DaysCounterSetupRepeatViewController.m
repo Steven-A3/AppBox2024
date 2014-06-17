@@ -17,6 +17,7 @@
 #import "A3DaysCounterRepeatCustomCell.h"
 #import "A3AppDelegate+appearance.h"
 #import "DaysCounterEvent.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterSetupRepeatViewController ()
 
@@ -59,21 +60,16 @@
     [textField resignFirstResponder];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Repeat", @"Repeat");
-    
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
     if ([_eventModel.isLunar boolValue]) {
         self.itemArray = @[NSLocalizedString(@"Never", @"Never"), NSLocalizedString(@"Every Year", @"Every Year")];
     }

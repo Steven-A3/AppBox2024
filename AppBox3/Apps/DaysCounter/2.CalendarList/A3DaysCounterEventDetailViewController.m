@@ -28,6 +28,7 @@
 #import "DaysCounterEvent+management.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterEventDetailViewController () <UIAlertViewDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate, UIActivityItemSource>
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -54,7 +55,12 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Event Details", @"Event Details");
-    if (_isModal) {
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
+	if (_isModal) {
         [self removeBackAndEditButton];
     }
     else {

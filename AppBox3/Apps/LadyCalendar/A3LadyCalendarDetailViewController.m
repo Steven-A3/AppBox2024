@@ -23,6 +23,7 @@
 #import "UIViewController+A3Addition.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 extern NSString *A3TableViewCellDefaultCellID;
 NSString *const A3LadyCalendarDetailViewTitleCellID = @"A3LadyCalendarDetailViewTitleCellID";
@@ -56,6 +57,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	[super viewDidLoad];
 
 	self.title = @"";
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
 	if (_isFromNotification) {
 		self.title = NSLocalizedString(@"Lady Calendar", @"Lady Calendar");

@@ -11,6 +11,7 @@
 #import "A3DaysCounterModelManager.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterSlideshowTimeSelectViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -32,7 +33,12 @@
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Play Each Slide For", @"Play Each Slide For");
-    [self makeBackButtonEmptyArrow];
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
+	[self makeBackButtonEmptyArrow];
     self.itemArray = @[@(2),@(3),@(5),@(10),@(20)];
 }
 
