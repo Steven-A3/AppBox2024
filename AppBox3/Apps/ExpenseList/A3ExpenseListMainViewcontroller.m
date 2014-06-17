@@ -291,6 +291,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     if (!_headerView) {
         _headerView = [[A3ExpenseListHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, IS_IPAD? (IS_RETINA? 157.5 : 157.0) : (IS_RETINA? 103.5 : 103) )];
 		_headerView.currencyFormatter = self.currencyFormatter;
+        _headerView.decimalFormatter = self.decimalFormatter;
         [_headerView.detailInfoButton addTarget:self action:@selector(detailInfoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     
@@ -299,32 +300,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 - (void)makeRightBarButtons
 {
-//    if (IS_IPHONE) {
-//        [self rightButtonMoreButton];
-//        self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
-//    }
-//    else {
-//        self.navigationItem.hidesBackButton = YES;
-//        self.tableView.separatorInset = UIEdgeInsetsMake(0, 28.0, 0, 0);
-//        
-//        UIBarButtonItem *add = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add06"]
-//                                                                style:UIBarButtonItemStylePlain
-//                                                               target:self
-//                                                               action:@selector(addNewButtonAction:)];
-//		add.tag = A3RightBarButtonTagComposeButton;
-//        UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"]
-//                                                                    style:UIBarButtonItemStylePlain
-//                                                                   target:self
-//                                                                   action:@selector(historyButtonAction:)];
-//		history.tag = A3RightBarButtonTagHistoryButton;
-//        UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"]
-//                                                                  style:UIBarButtonItemStylePlain
-//                                                                 target:self
-//                                                                  action:@selector(shareButtonAction:)];
-//		share.tag = A3RightBarButtonTagShareButton;
-//        
-//        self.navigationItem.rightBarButtonItems = @[history, add, share];
-//    }
     UIBarButtonItem *add = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add06"]
                                                             style:UIBarButtonItemStylePlain
                                                            target:self
@@ -1122,6 +1097,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     _currentBudget.totalAmount = aBudget.totalAmount;
     _currentBudget.updateDate = [NSDate date];
     _currentBudget.usedAmount = aBudget.usedAmount;
+
     for (ExpenseListItem *item in aBudget.expenseItems) {
         ExpenseListItem *temp = [ExpenseListItem MR_createEntity];
         temp.itemDate = item.itemDate;

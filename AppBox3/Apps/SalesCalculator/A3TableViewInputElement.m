@@ -280,6 +280,7 @@
 			} else {
 				//textField.text = [self.currencyFormatter stringFromNumber:@([self.value doubleValue])];
                 textField.text = [self.currencyFormatter stringFromNumber:[self.decimalFormatter numberFromString:[self value]]];
+                //textField.text = [self.currencyFormatter stringFromNumber:@([self.value floatValue])];
 			}
 			break;
 		}
@@ -502,6 +503,7 @@
 	if (!_decimalFormatter) {
 		_decimalFormatter = [NSNumberFormatter new];
 		[_decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        [_decimalFormatter setMaximumFractionDigits:3];
 	}
 	return _decimalFormatter;
 }

@@ -290,8 +290,7 @@
     NSMutableArray *usedBudgetStringArray = [[NSMutableArray alloc] init];
     [usedBudgetStringArray addObject:[self.currencyFormatter stringFromNumber:usedAmount]];
     [usedBudgetStringArray addObject:@"  "];
-    [usedBudgetStringArray addObject: (!budget || budget.category == nil || resultAmount == nil) ? @" " : [NSString stringWithFormat:@"%@%%", @(resultAmount.floatValue)]];
-    //[usedBudgetStringArray addObject:[NSString stringWithFormat:@"%@%%", @(resultAmount.floatValue)]];
+    [usedBudgetStringArray addObject: (!budget || budget.category == nil || resultAmount == nil) ? @" " : [NSString stringWithFormat:@"%@%%", [self.decimalFormatter stringFromNumber:resultAmount]]];
     
     _usedAmountLabel.text = [usedBudgetStringArray componentsJoinedByString:@""];
     
@@ -312,7 +311,7 @@
     NSMutableArray *resultBudgetStringArray = [[NSMutableArray alloc] init];
 
     if (!budget || budget.category == nil) {
-        [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber: usedAmount]];
+        [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber:usedAmount]];
 		[resultBudgetStringArray addObject:[totalAmount compare:usedAmount] == NSOrderedAscending ? NSLocalizedString(@" over of ", @" over of ") : NSLocalizedString(@" left of ", @" left of ")];
         [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber:totalAmount]];
     }

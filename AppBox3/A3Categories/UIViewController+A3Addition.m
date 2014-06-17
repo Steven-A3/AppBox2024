@@ -433,34 +433,6 @@
 	return nil;
 }
 
-// kjh
-- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items subject:(NSString *)subject fromBarButtonItem:(UIBarButtonItem *)barButtonItem {
-	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
-    [activityController setValue:subject forKey:@"subject"]; // is it documented? http://stackoverflow.com/questions/12623260/how-do-i-set-recipients-for-uiactivityviewcontroller-in-ios-6
-
-	if (IS_IPHONE) {
-		[self presentViewController:activityController animated:YES completion:NULL];
-	} else {
-		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
-		[popoverController presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		return popoverController;
-	}
-	return nil;
-}
-
-- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items activities:(id)activities excludedType:(NSArray *)excludedActivityTypes fromBarButtonItem:(UIBarButtonItem *)barButtonItem {
-	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:activities];
-    activityController.excludedActivityTypes = excludedActivityTypes;
-	if (IS_IPHONE) {
-		[self presentViewController:activityController animated:YES completion:NULL];
-	} else {
-		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
-		[popoverController presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		return popoverController;
-	}
-	return nil;
-}
-
 - (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromSubView:(UIView *)subView {
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
     [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {

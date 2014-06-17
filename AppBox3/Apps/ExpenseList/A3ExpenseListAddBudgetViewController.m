@@ -217,7 +217,7 @@ enum A3ExpenseListAddBudgetCellType {
 		A3JHTableViewSelectElement *category = section0[1];
 		A3JHTableViewSelectElement *payment = section0[2];
 
-		NSNumber *totalBudget = @([((NSString *)budget.value) floatValue]);
+		NSNumber *totalBudget = [self.decimalFormatter numberFromString:[budget value]];
 		NSString *categoryName = [self getCategoryNameForIndex:category.selectedIndex];
 		NSString *paymentName = [self getPaymentNameForIndex:payment.selectedIndex];
 
@@ -469,8 +469,7 @@ enum A3ExpenseListAddBudgetCellType {
                 self.navigationItem.rightBarButtonItem.enabled = NO;
             }
         };
-        
-        //        _expandableCellElements = @[title, date, location, notes];
+
         _expandableCellElements = @[title, date, notes];
     }
     
@@ -788,9 +787,9 @@ static NSString *CellIdentifier = @"Cell";
         
             if (textField.text && textField.text.length != 0 && [element inputType] != A3TableViewEntryTypeText) {
 				NSNumber *number = [weakSelf.decimalFormatter numberFromString:textField.text];
-				element.value = [number stringValue];
+                element.value = [weakSelf.decimalFormatter stringFromNumber:number];
             }
-            
+
             weakSelf.navigationItem.rightBarButtonItem.enabled = [weakSelf isBudgetModified] ? YES : NO;
         };
     }

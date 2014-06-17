@@ -12,9 +12,8 @@
 @interface A3ExpenseListHeaderView : UIView
 
 @property (nonatomic, strong) UIButton *detailInfoButton;
-
 @property (nonatomic, weak) NSNumberFormatter *currencyFormatter;
+@property (nonatomic, weak) NSNumberFormatter *decimalFormatter;
 
-//-(void)setResult:(ExpenseListBudget *)budget;
 -(void)setResult:(ExpenseListBudget *)budget withAnimation:(BOOL)animation;
 @end
