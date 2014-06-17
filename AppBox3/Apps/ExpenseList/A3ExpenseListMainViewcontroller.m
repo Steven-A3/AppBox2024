@@ -1198,8 +1198,10 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		item.itemName = textField.text;
 	}
 	else if (textField == aCell.priceTextField) {
-		//item.price = @([textField.text floatValueEx]);
         item.price = [self.decimalFormatter numberFromString:textField.text];
+        if (![item price]) {
+            item.price = [self.decimalFormatter numberFromString:[textField.text stringByReplacingOccurrencesOfString:[self.currencyFormatter currencySymbol] withString:@""]];
+        }
 		textField.text = [self.currencyFormatter stringFromNumber:item.price];
 	}
 	else if (textField == aCell.qtyTextField) {

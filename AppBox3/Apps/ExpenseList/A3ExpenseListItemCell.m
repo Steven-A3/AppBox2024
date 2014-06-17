@@ -324,6 +324,10 @@
 		textField.text = _textBeforeEditingTextField;
 	}
     
+    if (_qtyTextField == textField) {
+        _qtyTextField.textAlignment = [_qtyTextField.text length] == 0 ? NSTextAlignmentRight : NSTextAlignmentCenter;
+    }
+    
 	if ([_delegate respondsToSelector:@selector(itemCellTextFieldFinished:textField:)]) {
 		[_delegate itemCellTextFieldFinished:self textField:textField];
 	}
@@ -333,7 +337,6 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    //[self doneButtonTouchUp:textField];
 	[textField resignFirstResponder];
 
     return YES;
