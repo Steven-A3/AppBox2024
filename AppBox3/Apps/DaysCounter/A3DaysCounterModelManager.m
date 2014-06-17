@@ -1468,7 +1468,9 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     lunarComponents.year = fromComp.year;
     NSDateComponents *startComp = [NSDate lunarCalcWithComponents:lunarComponents gregorianToLunar:NO leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
     NSDateComponents *resultComp;
-    if (fromComp.year == startComp.year && startComp.month >= fromComp.month && startComp.day > fromComp.day) {
+    if (fromComp.year == startComp.year &&
+        (startComp.month > fromComp.month ||
+        (startComp.month == fromComp.month && startComp.day > fromComp.day)) ) {
         resultComp = [self dateComponentsOfRepeatForLunarDateComponent:lunarComponents aboutNextTime:NO leapMonth:isLeapMonth fromDate:fromDate repeatType:RepeatType_EveryYear];
     }
     else {

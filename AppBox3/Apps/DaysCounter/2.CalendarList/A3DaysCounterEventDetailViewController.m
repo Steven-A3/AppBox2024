@@ -455,22 +455,12 @@
 
 - (void)updateEventInfoCellToRepeatEventInfo:(DaysCounterEvent*)info cell:(A3DaysCounterEventInfoCell *)cell
 {
-    BOOL isLunar = [info.isLunar boolValue];
-    NSDate *startDate = [info.startDate solarDate];
-    
-    if ( isLunar ) {
-        BOOL isLeapMonth = NO;
-        if ([info.startDate.isLeapMonth boolValue]) {
-            isLeapMonth = [NSDate isLunarLeapMonthDate:startDate isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-        }
-        
-        BOOL isResultLeapMonth = NO;
-        startDate = [NSDate dateOfSolarFromLunarDate:startDate leapMonth:isLeapMonth korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-    }
-    
     [self adjustLayoutForEventInfoCell:cell eventInfo:info];
     [self updateTitleCellCurrentPart:cell withEventInfo:info];  // Set Data (until or since or today/now)
+ 
 
+    BOOL isLunar = [info.isLunar boolValue];
+    NSDate *startDate = [info.startDate solarDate];
     BOOL hasSince;
     if ([_eventItem.isAllDay boolValue]) {
         hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:startDate isAllDay:[info.isAllDay boolValue]] < 0 ? YES : NO;
@@ -478,6 +468,22 @@
     else {
         hasSince = [[NSDate date] timeIntervalSince1970] > [startDate timeIntervalSince1970] ? YES : NO;
     }
+    
+    if ( isLunar ) {
+        NSDateComponents *startDateCompLunar = [A3DaysCounterModelManager dateComponentsFromDateModelObject:[info startDate] toLunar:YES];
+        
+        BOOL isLeapMonth = NO;
+        if ([info.startDate.isLeapMonth boolValue]) {
+            isLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:startDateCompLunar isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+        }
+        
+        NSDateComponents *startDateComp = [A3DaysCounterModelManager nextSolarDateComponentsFromLunarDateComponents:startDateCompLunar
+                                                                                                          leapMonth:isLeapMonth
+                                                                                                           fromDate:[NSDate date]];
+        startDate = [[NSCalendar currentCalendar] dateFromComponents:startDateComp];
+    }
+    
+    
     if (hasSince) {
         [self updateTitleCellSincePart:cell withEventInfo:info];
     }
