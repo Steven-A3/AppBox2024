@@ -18,6 +18,8 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
 #import "A3WalletMainTabBarController.h"
+#import "NSDateFormatter+A3Addition.h"
+#import "NSDate+formatting.h"
 
 NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
 
@@ -99,7 +101,17 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
 		[self setupHeaderViewFont];
         _headerView.nameLabel.text = _category.name;
         _headerView.icon.image = [UIImage imageNamed:_category.icon];
-        _headerView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [_category.modificationDate timeAgo]];
+        
+        NSDateFormatter *dateFormatter = [NSDateFormatter new];
+        if (IS_IPAD || [NSDate isFullStyleLocale]) {
+            dateFormatter.dateStyle = NSDateFormatterFullStyle;
+            dateFormatter.timeStyle = NSDateFormatterShortStyle;
+        }
+        else {
+            dateFormatter.dateFormat = [dateFormatter customFullWithTimeStyleFormat];
+        }
+        
+        _headerView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [dateFormatter stringFromDate:_category.modificationDate]];
     }
     
     return _headerView;
