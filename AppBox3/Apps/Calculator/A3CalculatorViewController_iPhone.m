@@ -53,6 +53,10 @@
     UIBarButtonItem *share;
     UIBarButtonItem *history;
     UIBarButtonItem *help;
+
+    UIButton *shareButton;
+    UIButton *historyButton;
+    UIButton *helpButton;
 }
 
 
@@ -407,8 +411,6 @@
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
         _inputViewForPlayInputClick.backgroundColor = [UIColor colorWithRed:252.0 / 255.0 green:252.0 / 255.0 blue:253.0 / 255.0 alpha:1.0];
         self.calculator.isLandScape = YES;
-        
-        
     }
     self.evaluatedResultLabel.font = [self getResultLabelFont:screenBounds];
     self.svbottomconstraint.offset([self getSVbottomOffSet:screenBounds]);
@@ -507,13 +509,23 @@
 - (void)moreButtonAction:(UIBarButtonItem *)button {
 	[self rightBarButtonDoneButton];
 
-    _moreMenuButtons = @[[self instructionHelpButton], [self shareButton], [self historyButton:nil]];
+    shareButton = [self shareButton];
+    historyButton = [self historyButton:nil];
+    helpButton = [self instructionHelpButton];
+    _moreMenuButtons = @[helpButton, shareButton, historyButton];
 	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:nil];
 	_isShowMoreMenu = YES;
+    
+    [self checkRightButtonDisable];
 }
 
 - (void)doneButtonAction:(id)button {
-	[self dismissMoreMenu];
+    if (!_modalPresentingParentViewController) {
+        [self dismissMoreMenu];
+    }
+    else {
+        [super doneButtonAction:button];
+    }
 }
 
 - (void)dismissMoreMenu {
@@ -544,14 +556,18 @@
 - (void) checkRightButtonDisable {
     if ([self isCalculationHistoryEmpty]) {
         history.enabled = NO;
+        historyButton.enabled = NO;
     } else {
         history.enabled = YES;
+        historyButton.enabled = YES;
     }
     
     if([self.expressionLabel.text length] > 0) {
         share.enabled = YES;
+        shareButton.enabled = YES;
     } else {
         share.enabled = NO;
+        shareButton.enabled = NO;
     }
 }
 
