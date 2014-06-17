@@ -147,22 +147,20 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 - (void)deletePhoto {
 	self.hasPhoto = @NO;
 
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-		NSFileManager *fileManager = [[NSFileManager alloc] init];
-		NSURL *photoURL = [self photoURLInOriginalDirectory:YES];
-		NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-		NSError *error;
-		[fileCoordinator coordinateWritingItemAtURL:photoURL
-											options:NSFileCoordinatorWritingForDeleting
-											  error:&error
-										 byAccessor:^(NSURL *newURL) {
-											 [fileManager removeItemAtURL:newURL error:NULL];
-										 }];
-		[fileManager removeItemAtURL:[self photoURLInOriginalDirectory:NO] error:NULL];
-
-		[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:YES] error:NULL];
-		[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:NO] error:NULL];
-	});
+	NSFileManager *fileManager = [[NSFileManager alloc] init];
+	NSURL *photoURL = [self photoURLInOriginalDirectory:YES];
+	NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+	NSError *error;
+	[fileCoordinator coordinateWritingItemAtURL:photoURL
+										options:NSFileCoordinatorWritingForDeleting
+										  error:&error
+									 byAccessor:^(NSURL *newURL) {
+										 [fileManager removeItemAtURL:newURL error:NULL];
+									 }];
+	[fileManager removeItemAtURL:[self photoURLInOriginalDirectory:NO] error:NULL];
+	
+	[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:YES] error:NULL];
+	[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:NO] error:NULL];
 }
 
 @end
