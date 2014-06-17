@@ -47,25 +47,11 @@ NSString *const StoryBoardID_Calcualtor = @"Calcualtor";
 
 - (IBAction)viewTapped:(UITapGestureRecognizer *)sender {
     BOOL isShown = [[NSUserDefaults standardUserDefaults] boolForKey:self.restorationIdentifier];
-    if (isShown) {
-        [self disposeInstructionView];
-    }
-    else {
+    if (!isShown) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:self.restorationIdentifier];
-        
-//        if ([self.restorationIdentifier isEqualToString:@"Clock1"] || [self.restorationIdentifier isEqualToString:@"Clock2"]) {
-//            if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock1"] || ![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock2"]) {
-//                return;
-//            }
-//        }
-//        
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-//															message:NSLocalizedString(@"To see instrustion again, double-tap with two fingers.", @"To see instrustion again, double-tap with two fingers.")
-//														   delegate:self
-//												  cancelButtonTitle:@"OK"
-//												  otherButtonTitles:nil, nil];
-//        [alertView show];
     }
+    
+    [self disposeInstructionView];
 }
 
 - (void)disposeInstructionView

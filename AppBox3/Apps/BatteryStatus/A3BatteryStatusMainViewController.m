@@ -175,6 +175,10 @@
 
 - (void)showInstructionView
 {
+    if (_instructionViewController) {
+        return;
+    }
+    
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"BatteryStatus"];
     self.instructionViewController.delegate = self;
