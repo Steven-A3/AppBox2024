@@ -310,7 +310,6 @@
 
 	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(moreMenuDismissAction:)];
 	[self.view addGestureRecognizer:gestureRecognizer];
-
 	[self.navigationItem.leftBarButtonItem setEnabled:NO];
 
 	return clippingView;
@@ -318,6 +317,7 @@
 
 - (void)dismissMoreMenuView:(UIView *)moreMenuView scrollView:(UIScrollView *)scrollView {
 	UIView *menuView = moreMenuView.subviews[0];
+    
 	[UIView animateWithDuration:0.3 animations:^{
 		CGRect frame = menuView.frame;
 		frame = CGRectOffset(frame, 0.0, -44.0);
@@ -327,10 +327,10 @@
 			UIEdgeInsets insets = scrollView.contentInset;
 			insets.top -= moreMenuView.frame.size.height;
 			scrollView.contentInset = insets;
-		} else {
+		} /*else {  KJH
 			frame = CGRectOffset(self.view.frame, 0.0, moreMenuView.frame.size.height);
 			self.view.frame = frame;
-		}
+		}*/
 	} completion:^(BOOL finished) {
 		[moreMenuView removeFromSuperview];
 		[self.navigationItem.leftBarButtonItem setEnabled:YES];

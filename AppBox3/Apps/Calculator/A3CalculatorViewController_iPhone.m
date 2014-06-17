@@ -47,11 +47,12 @@
 @end
 
 @implementation A3CalculatorViewController_iPhone {
-    //BOOL _isShowMoreMenu;
+    BOOL _isShowMoreMenu;
     BOOL radian;
     UITapGestureRecognizer *navGestureRecognizer;
     UIBarButtonItem *share;
     UIBarButtonItem *history;
+    UIBarButtonItem *help;
 }
 
 
@@ -107,7 +108,7 @@
     
     if (IS_IPHONE) {
         [self setupInstructionView];
-        [self setupTwoFingerDoubleTapGestureToShowInstruction];
+//        [self setupTwoFingerDoubleTapGestureToShowInstruction];
     }
 }
 
@@ -436,6 +437,8 @@
 
 - (void)showInstructionView
 {
+    [self dismissMoreMenu];
+    
     if (IS_LANDSCAPE) {
         return;
     }
@@ -489,12 +492,44 @@
 #pragma mark - Right Button more
 
 - (void) rightBarButtons {
-	share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
-	history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
-	//UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-	//space.width = 4.0;
-	self.navigationItem.rightBarButtonItems = @[history, share];
-	[self checkRightButtonDisable];
+    if (IS_IPHONE) {
+        [self rightButtonMoreButton];
+    }
+    else {
+        share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+        history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
+        help = [self instructionHelpBarButton];
+        self.navigationItem.rightBarButtonItems = @[history, share, help];
+        [self checkRightButtonDisable];
+    }
+}
+
+- (void)moreButtonAction:(UIBarButtonItem *)button {
+	[self rightBarButtonDoneButton];
+
+    _moreMenuButtons = @[[self instructionHelpButton], [self shareButton], [self historyButton:nil]];
+	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:nil];
+	_isShowMoreMenu = YES;
+}
+
+- (void)doneButtonAction:(id)button {
+	[self dismissMoreMenu];
+}
+
+- (void)dismissMoreMenu {
+	if ( !_isShowMoreMenu || IS_IPAD ) return;
+    
+	[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
+}
+
+- (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
+	if (!_isShowMoreMenu) return;
+    
+	_isShowMoreMenu = NO;
+    
+	[self rightButtonMoreButton];
+	[self dismissMoreMenuView:_moreMenuView scrollView:nil];
+	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 
 - (BOOL) isCalculationHistoryEmpty {
@@ -568,11 +603,14 @@
 
 
 - (void)shareButtonAction:(id)sender {
+    [self dismissMoreMenu];
 	[self shareAll:sender];
 }
 
 #pragma mark - History
 - (void)historyButtonAction:(UIButton *)button {
+    [self dismissMoreMenu];
+    
 	A3CalculatorHistoryViewController *viewController = [[A3CalculatorHistoryViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.calculator = self.calculator;
 
