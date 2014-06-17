@@ -17,6 +17,7 @@
 #import "A3DateHelper.h"
 #import "A3UserDefaults.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3LadyCalendarAccountListViewController ()
 
@@ -41,6 +42,11 @@
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Edit Accounts", @"Edit Accounts");
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addAction:)];
 	if (IS_IPHONE) {
 		[self rightBarButtonDoneButton];

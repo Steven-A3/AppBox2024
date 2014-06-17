@@ -16,6 +16,7 @@
 #import "A3DaysCounterSetupCalendarCell.h"
 #import "SFKImage.h"
 #import "DaysCounterEvent.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterSetupCalendarViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -38,6 +39,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
     if( IS_IPAD ){
         self.originalValue = self.eventModel.calendar;

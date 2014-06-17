@@ -71,7 +71,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
     self.cellIDArray = @[@"titleCell", @"photoCell", @"switchCell", @"switchCell", @"switchCell",       // 0 ~ 4
                          @"dateCell", @"dateCell", @"value1Cell", @"value1Cell", @"value1Cell",         // 5 ~ 9
                          @"calendarCell", @"value1Cell", @"value1Cell", @"notesCell", @"dateInputCell", // 10 ~ 14

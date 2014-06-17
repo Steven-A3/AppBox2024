@@ -16,6 +16,7 @@
 #import "A3LadyCalendarSetupAlertViewController.h"
 #import "A3DateHelper.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3LadyCalendarSettingViewController ()
 
@@ -40,6 +41,11 @@
     [super viewDidLoad];
 
     self.title = @"Settings";
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
     if( IS_IPHONE )
         [self rightBarButtonDoneButton];
     [self makeBackButtonEmptyArrow];

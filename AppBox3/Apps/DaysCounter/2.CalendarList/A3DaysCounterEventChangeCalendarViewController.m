@@ -13,6 +13,7 @@
 #import "DaysCounterCalendar.h"
 #import "DaysCounterCalendar+Extension.h"
 #import "DaysCounterEvent.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterEventChangeCalendarViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -37,6 +38,11 @@
     [super viewDidLoad];
 
     self.title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld Events", @"StringsDict", nil), (long)[_eventArray count]];
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
     if (IS_IPHONE) {
         [self rightBarButtonDoneButton];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];

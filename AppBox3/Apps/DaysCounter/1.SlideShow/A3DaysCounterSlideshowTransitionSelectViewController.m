@@ -11,6 +11,7 @@
 #import "A3DaysCounterModelManager.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterSlideshowTransitionSelectViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -18,13 +19,13 @@
 
 @implementation A3DaysCounterSlideshowTransitionSelectViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+- (id)init {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	if (self) {
+
+	}
+
+	return self;
 }
 
 - (void)viewDidLoad
@@ -32,6 +33,11 @@
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Transitions", @"Transitions");
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
     [self makeBackButtonEmptyArrow];
     self.itemArray = @[@(TransitionType_Cube),@(TransitionType_Dissolve),@(TransitionType_Origami),@(TransitionType_Ripple),@(TransitionType_Wipe)];
 }

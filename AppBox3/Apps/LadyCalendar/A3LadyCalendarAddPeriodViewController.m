@@ -36,6 +36,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (void)changeDateAction:(id)sender;
 - (void)reloadItemAtCellType:(NSInteger)cellType;
 - (void)closeDateInputCell;
+
 @end
 
 @implementation A3LadyCalendarAddPeriodViewController
@@ -54,6 +55,11 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	[super viewDidLoad];
 
 	self.title = (_isEditMode ? NSLocalizedString(@"Edit Period", @"Edit Period") : NSLocalizedString(@"Add Period", @"Add Period"));
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																						  target:self
 																						  action:@selector(cancelAction:)];
