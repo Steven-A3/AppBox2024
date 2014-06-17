@@ -54,7 +54,7 @@
 "Tip Calculator" = "팁 계산";
 "Unit Price" = "단가 비교";
 "Percent Calculator" = "퍼센트 계산";
-"Currency Converter" = "환율 변환";
+"Currency Converter" = "환율";
 "Lunar Converter" = "양력/음력 변환";
 "Translator" = "번역";
 "Unit Converter" = "단위 변환";
@@ -159,9 +159,9 @@
 "Rate = %0.4f" = "환율 = %0.4f";
 
 "%@ equals %@ with rate %0.4f" = "%@/%@ = %0.4f";
-"Currency Converter in the AppBox Pro" = "AppBox Pro의 환율 변환기";
-"<html><body>I'd like to share a currency conversion with you.<br/><br/>" = "<html><body>환율 변환 결과를 공유합니다.<br/><br/>";
-"currency_share_HTML_body" = "<br/><br/>AppBox Pro에서 더 많은 환율 변환을 해보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
+"Currency Converter in the AppBox Pro" = "AppBox Pro의 환율 변환";
+"<html><body>I'd like to share a currency conversion with you.<br/><br/>" = "<html><body>환율 계산 결과를 공유합니다.<br/><br/>";
+"currency_share_HTML_body" = "<br/><br/>AppBox Pro의 환율 정보를 활용해 보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 "Share Currency Converter Data" = "환율 변환 정보 공유하기";
 
 /* Data Calc duration */
