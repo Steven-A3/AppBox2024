@@ -35,8 +35,8 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	self.searchBar.placeholder = @"Search";
-	self.title = @"Select Currency";
+	self.searchBar.placeholder = NSLocalizedString(@"Search", @"Search");
+	self.title = NSLocalizedString(@"Select Currency", @"Select Currency");
 
 	[self registerContentSizeCategoryDidChangeNotification];
 }

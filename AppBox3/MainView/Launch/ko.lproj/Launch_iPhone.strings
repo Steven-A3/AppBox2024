@@ -27,7 +27,7 @@
 "CUC-uG-Jld.text" = "시계";
 
 /* Class = "IBUILabel"; text = "Holidays"; ObjectID = "Hg6-My-X9i"; */
-"Hg6-My-X9i.text" = "휴일정보";
+"Hg6-My-X9i.text" = "세계휴일/기념일";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Ixg-rR-GNM"; */
 "Ixg-rR-GNM.normalTitle" = "계속";
@@ -53,7 +53,7 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 "X9y-7J-ggo.text" = "새로운 느낌";
 
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "XOG-GS-v6Y"; */
-"XOG-GS-v6Y.text" = "단가 계산";
+"XOG-GS-v6Y.text" = "단가 비교";
 
 /* Class = "IBUILabel"; text = "easy, faster and more focused,
 64Bit and much more"; ObjectID = "ZZQ-VK-PjS"; */
@@ -67,7 +67,7 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 "eTo-UJ-qLJ.text" = "환율";
 
 /* Class = "IBUILabel"; text = "Battery Status"; ObjectID = "fVE-ef-mZ7"; */
-"fVE-ef-mZ7.text" = "배터리 상태";
+"fVE-ef-mZ7.text" = "배터리 정보";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "gJ6-AU-90c"; */
 "gJ6-AU-90c.normalTitle" = "AppBox Pro 시작";
@@ -85,7 +85,7 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 "hey-av-TTu.text" = "iCloud 동기화";
 
 /* Class = "IBUILabel"; text = "Lunar Converter"; ObjectID = "hit-L7-cuy"; */
-"hit-L7-cuy.text" = "음력 변환";
+"hit-L7-cuy.text" = "양력/음력 변환";
 
 /* Class = "IBUIButton"; normalTitle = "Use iCloud"; ObjectID = "jNp-9m-gWI"; */
 "jNp-9m-gWI.normalTitle" = "iCloud 사용";
@@ -112,10 +112,10 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 "ni3-pI-wdj.text" = "돋보기";
 
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "pMI-GK-toN"; */
-"pMI-GK-toN.text" = "계산기";
+"pMI-GK-toN.text" = "각종 계산";
 
 /* Class = "IBUILabel"; text = "Reference"; ObjectID = "pRj-wQ-ZtV"; */
-"pRj-wQ-ZtV.text" = "참조";
+"pRj-wQ-ZtV.text" = "레퍼런스";
 
 /* Class = "IBUILabel"; text = "Tip Calculator"; ObjectID = "pgE-6d-yU7"; */
 "pgE-6d-yU7.text" = "팁 계산";

@@ -39,7 +39,7 @@
 "970.normalTitle" = "일";
 
 /* Class = "IBUIButton"; normalTitle = "Return"; ObjectID = "1026"; */
-"1026.normalTitle" = "리턴";
+"1026.normalTitle" = "닫기";
 
 /* Class = "IBUIButton"; normalTitle = "Year"; ObjectID = "1035"; */
 "1035.normalTitle" = "년";

@@ -238,7 +238,7 @@
 														message:NSLocalizedString(@"SECURITY_INFO", nil)
 													   delegate:self
 											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-											  otherButtonTitles:NSLocalizedString(@"How To Enable Data Protection", @"How To Enable Data Protection"), @"Learn about iOS Security", nil];
+											  otherButtonTitles:NSLocalizedString(@"How To Enable Data Protection", @"How To Enable Data Protection"), NSLocalizedString(@"Learn about iOS Security", @"Learn about iOS Security"), nil];
 	[alertView show];
 }
 
@@ -266,7 +266,7 @@
 			NSURL *url = [NSURL URLWithString:urlString];
 			[[UIApplication sharedApplication] openURL:url];
 		} else if (buttonIndex == 2) {
-			NSURL *url = [NSURL URLWithString:@"http://www.apple.com/ipad/business/docs/iOS_Security_Oct12.pdf"];
+			NSURL *url = [NSURL URLWithString:@"https://www.apple.com/iphone/business/it/security.html"];
 			[[UIApplication sharedApplication] openURL:url];
 		}
 	}

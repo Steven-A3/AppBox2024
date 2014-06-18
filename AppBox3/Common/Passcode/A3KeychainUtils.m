@@ -99,7 +99,7 @@ static NSString *kA3KeychainAccountName = @"A3AppBox3Passcode";
 	double passcodeTime = [A3KeychainUtils passcodeTime];
 	NSString *string;
 	if (passcodeTime == 0.0) {
-		string = @"Immediately";
+		string = NSLocalizedString(@"Immediately", @"Immediately");
 	} else if (passcodeTime / 60 > 60) {
 		string = [NSString localizedStringWithFormat:NSLocalizedStringFromTable(@"After %ld hours", @"StringsDict", @"Require Passcode after n hours"), (long)passcodeTime / 60 / 60 ];
 	} else {
