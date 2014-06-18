@@ -45,7 +45,6 @@
 @property (nonatomic, strong) NSTimer *buttonsTimer;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
-@property (nonatomic, strong) UITapGestureRecognizer *instructionTwoFingerTapGesture;
 @property (nonatomic, assign) BOOL useInstruction;
 @end
 
@@ -435,14 +434,6 @@
     
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock1"]) {
         [self showInstructionView];
-    }
-
-    if (!_instructionTwoFingerTapGesture) {
-        _instructionTwoFingerTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
-        [_instructionTwoFingerTapGesture setNumberOfTouchesRequired:2];
-        
-        [_instructionTwoFingerTapGesture setNumberOfTapsRequired:2];
-        [self.view addGestureRecognizer:_instructionTwoFingerTapGesture];
     }
 }
 
