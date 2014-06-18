@@ -62,11 +62,8 @@
     [self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
 
-//    UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchAction:)];
-//    UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
-//    self.navigationItem.rightBarButtonItems = @[edit, search];
     UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
-    self.navigationItem.rightBarButtonItems = @[edit];
+    self.navigationItem.rightBarButtonItems = @[edit, [self instructionHelpBarButton]];
     [self setToolbarItems:_bottomToolbar.items];
     
     if ( IS_IPHONE ) {
