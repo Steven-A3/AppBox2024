@@ -1853,7 +1853,7 @@ then drag it up or down</string>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="XSW-3J-Xgf">
-                                <rect key="frame" x="215" y="55" width="42" height="42"/>
+                                <rect key="frame" x="176" y="92" width="42" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1862,7 +1862,7 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="rEC-MK-OMc">
-                                <rect key="frame" x="268" y="151" width="42" height="42"/>
+                                <rect key="frame" x="268" y="190" width="42" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1896,15 +1896,15 @@ then drag it up or down</string>
                                     <constraint firstAttribute="width" constant="14" id="Oe7-fL-cm8"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to add a new list" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="205" translatesAutoresizingMaskIntoConstraints="NO" id="1dD-l5-TzF">
-                                <rect key="frame" x="0.0" y="55" width="205" height="42"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to add a new list" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="310" translatesAutoresizingMaskIntoConstraints="NO" id="1dD-l5-TzF">
+                                <rect key="frame" x="5" y="138" width="310" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to add or edit budget" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="258" translatesAutoresizingMaskIntoConstraints="NO" id="U1j-Mc-LaR">
-                                <rect key="frame" x="0.0" y="162" width="258" height="20"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tap to add or edit budget" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="253" translatesAutoresizingMaskIntoConstraints="NO" id="U1j-Mc-LaR">
+                                <rect key="frame" x="5" y="212" width="253" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1932,7 +1932,8 @@ then tap Delete</string>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="rEC-MK-OMc" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="top" constant="151" id="4Y5-2I-2Hh"/>
+                            <constraint firstItem="rEC-MK-OMc" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="top" constant="190" id="4Y5-2I-2Hh"/>
+                            <constraint firstItem="XSW-3J-Xgf" firstAttribute="bottom" secondItem="1dD-l5-TzF" secondAttribute="top" constant="-4" id="7eY-Mf-db1"/>
                             <constraint firstItem="UvH-ng-N3W" firstAttribute="leading" secondItem="Zlj-Dm-tA5" secondAttribute="leading" id="99E-ju-LeQ"/>
                             <constraint firstItem="8pP-NA-IQY" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="top" constant="279" id="A4A-JK-Lyp"/>
                             <constraint firstItem="yvc-2S-7eq" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="top" constant="412" id="AMr-C1-SlR"/>
@@ -1941,23 +1942,21 @@ then tap Delete</string>
                             <constraint firstAttribute="centerX" secondItem="8pP-NA-IQY" secondAttribute="centerX" id="Igw-pc-7af"/>
                             <constraint firstItem="UvH-ng-N3W" firstAttribute="top" secondItem="8pP-NA-IQY" secondAttribute="bottom" constant="10" id="OE0-Dv-QKt"/>
                             <constraint firstAttribute="bottom" secondItem="nr2-kr-PTg" secondAttribute="bottom" id="P7H-yR-tR7"/>
-                            <constraint firstItem="XSW-3J-Xgf" firstAttribute="leading" secondItem="1dD-l5-TzF" secondAttribute="trailing" constant="10" id="Sfc-C5-6Rm"/>
                             <constraint firstItem="qMW-Th-lrs" firstAttribute="trailing" secondItem="yvc-2S-7eq" secondAttribute="leading" constant="-10" id="Sjj-gp-yxE"/>
-                            <constraint firstItem="XSW-3J-Xgf" firstAttribute="top" secondItem="1dD-l5-TzF" secondAttribute="top" id="Vf0-L1-5iE"/>
-                            <constraint firstItem="XSW-3J-Xgf" firstAttribute="centerY" secondItem="1dD-l5-TzF" secondAttribute="centerY" id="XhF-vI-gW8"/>
+                            <constraint firstAttribute="trailing" secondItem="1dD-l5-TzF" secondAttribute="trailing" constant="5" id="VYi-KW-tJp"/>
                             <constraint firstAttribute="trailing" secondItem="yvc-2S-7eq" secondAttribute="trailing" constant="37" id="ZiH-oK-qtg"/>
-                            <constraint firstItem="1dD-l5-TzF" firstAttribute="leading" secondItem="Zlj-Dm-tA5" secondAttribute="leading" id="aZN-2M-EcT"/>
+                            <constraint firstItem="1dD-l5-TzF" firstAttribute="leading" secondItem="Zlj-Dm-tA5" secondAttribute="leading" constant="5" id="aZN-2M-EcT"/>
                             <constraint firstItem="qMW-Th-lrs" firstAttribute="leading" secondItem="Zlj-Dm-tA5" secondAttribute="leading" id="bkd-yo-Gp2"/>
-                            <constraint firstItem="XSW-3J-Xgf" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="top" constant="55" id="ds1-OM-09l"/>
+                            <constraint firstItem="XSW-3J-Xgf" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="top" constant="92" id="ds1-OM-09l"/>
                             <constraint firstAttribute="trailing" secondItem="UvH-ng-N3W" secondAttribute="trailing" id="gSK-Ea-aqD"/>
+                            <constraint firstItem="rEC-MK-OMc" firstAttribute="bottom" secondItem="U1j-Mc-LaR" secondAttribute="bottom" id="huq-ZG-ATS"/>
                             <constraint firstItem="yvc-2S-7eq" firstAttribute="top" secondItem="tzz-zS-7rf" secondAttribute="top" id="lG2-n8-Rh6"/>
-                            <constraint firstAttribute="trailing" secondItem="XSW-3J-Xgf" secondAttribute="trailing" constant="63" id="lJU-Gh-4p8"/>
+                            <constraint firstAttribute="trailing" secondItem="XSW-3J-Xgf" secondAttribute="trailing" constant="102" id="lJU-Gh-4p8"/>
                             <constraint firstItem="nr2-kr-PTg" firstAttribute="leading" secondItem="Zlj-Dm-tA5" secondAttribute="leading" id="piO-og-a0E"/>
                             <constraint firstItem="nr2-kr-PTg" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="top" id="pyh-aT-LvN"/>
-                            <constraint firstItem="rEC-MK-OMc" firstAttribute="centerY" secondItem="U1j-Mc-LaR" secondAttribute="centerY" id="qtn-75-995"/>
                             <constraint firstItem="qMW-Th-lrs" firstAttribute="centerY" secondItem="yvc-2S-7eq" secondAttribute="centerY" id="srE-Hh-9e5"/>
                             <constraint firstAttribute="trailing" secondItem="nr2-kr-PTg" secondAttribute="trailing" id="tNT-zu-g8N"/>
-                            <constraint firstItem="U1j-Mc-LaR" firstAttribute="leading" secondItem="Zlj-Dm-tA5" secondAttribute="leading" id="ujp-Gx-clb"/>
+                            <constraint firstItem="U1j-Mc-LaR" firstAttribute="leading" secondItem="Zlj-Dm-tA5" secondAttribute="leading" constant="5" id="ujp-Gx-clb"/>
                             <constraint firstItem="rEC-MK-OMc" firstAttribute="leading" secondItem="U1j-Mc-LaR" secondAttribute="trailing" constant="10" id="uuo-Rf-A61"/>
                         </constraints>
                         <connections>

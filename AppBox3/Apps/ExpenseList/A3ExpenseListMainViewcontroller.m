@@ -111,7 +111,12 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     
     _columnSectionView = [[A3ExpenseListColumnSectionView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 45.0)];
 
-    [self makeRightBarButtons];
+    if (IS_IPHONE) {
+        [self rightButtonMoreButton];
+    }
+    else {
+        [self makeRightBarButtons];
+    }
     [self reloadBudgetDataAndRemoveEmptyItem];
     [self setupTopWhitePaddingView];
     [self expandContentSizeForAddItem];
@@ -201,27 +206,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		}];
 	}
 	[_headerView.detailInfoButton setEnabled:enable];
-}
-
-- (void)enableMoreMenuButtons {
-	// AddNew
-	UIButton *button = [_moreMenuButtons objectAtIndex:1];
-	if (button) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budget.budgetId == %@ and hasData == YES", _currentBudget.budgetId];
-		button.enabled = [ExpenseListItem MR_countOfEntitiesWithPredicate:predicate] > 0;
-	}
-
-	// History
-	button = [_moreMenuButtons objectAtIndex:2];
-	if (button) {
-		button.enabled = [ExpenseListHistory MR_countOfEntities] > 0;
-	}
-
-	// Share
-	button = [_moreMenuButtons objectAtIndex:0];
-	if (button) {
-		button.enabled = _currentBudget.category != nil;
-	}
 }
 
 - (void)currencyCodeChanged:(NSNotification *)notification {
@@ -345,15 +329,10 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 - (void)setupInstructionView
 {
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"ExpenseList"]) {
+        if (IS_IPHONE) {
+            [self moreButtonAction:nil];
+        }
         [self showInstructionView];
-    }
-    
-    if (!self.reservedTapGestureRecognizer) {
-        self.reservedTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
-        self.reservedTapGestureRecognizer.numberOfTouchesRequired = 2;
-        self.reservedTapGestureRecognizer.numberOfTapsRequired = 2;
-        self.reservedTapGestureRecognizer.delaysTouchesBegan = YES;
-        [self.view addGestureRecognizer:self.reservedTapGestureRecognizer];
     }
 }
 
@@ -365,12 +344,18 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     [self.navigationController.view addSubview:self.instructionViewController.view];
     self.instructionViewController.view.frame = self.navigationController.view.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+    if (IS_IPHONE) {
+        CGPoint contentOffset = self.tableView.contentOffset;
+        contentOffset.y = -self.tableView.contentInset.top;
+        [self.tableView setContentOffset:contentOffset animated:YES];
+    }
 }
 
 - (void)dismissInstructionViewController:(UIView *)view
 {
     [self.instructionViewController.view removeFromSuperview];
     if ([self.instructionViewController isFirstInstruction]) {
+        [self dismissMoreMenu];
         [self moveToAddBudgetIfBudgetNotExistWithDelay:1.0];
     }
     self.instructionViewController = nil;
@@ -420,6 +405,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     item.price = @0;
     item.qty = @1;
 	item.order = [item makeOrderString];
+    item.hasData = @(YES);
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
@@ -449,14 +435,21 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 - (void)dismissMoreMenu {
 	if ( !_isShowMoreMenu || IS_IPAD ) return;
 
-	[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
-	_isShowMoreMenu = NO;
+    UITapGestureRecognizer *lastTapGesture = [[self. view gestureRecognizers] lastObject];
+    if (_tapGestureRecognizer != lastTapGesture) {
+        [self moreMenuDismissAction:lastTapGesture];
+        _isShowMoreMenu = NO;
+    }
 }
 
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
+	[self dismissMoreMenuView:_moreMenuView scrollView:nil];
 	[self.view removeGestureRecognizer:gestureRecognizer];
+    
+    UIEdgeInsets inset = self.tableView.contentInset;
+    inset.top = 64;
+    self.tableView.contentInset = inset;
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
@@ -598,8 +591,20 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	[self rightBarButtonDoneButton];
 	
 	_isShowMoreMenu = YES;
-	_moreMenuButtons = @[self.shareButton, self.addNewButton, [self historyButton:NULL]];
-	[self enableMoreMenuButtons];
+    UIButton *help = self.instructionHelpButton;
+    UIButton *share = self.shareButton;
+    UIButton *addNew = self.addNewButton;
+    UIButton *history = [self historyButton:NULL];
+    
+	_moreMenuButtons = @[help, share, addNew, history];
+	// AddNew
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budget.budgetId == %@ and hasData == YES", _currentBudget.budgetId];
+    addNew.enabled = [ExpenseListItem MR_countOfEntitiesWithPredicate:predicate] > 0;
+	// History
+    history.enabled = [ExpenseListHistory MR_countOfEntities] > 0;
+	// Share
+    share.enabled = _currentBudget.category != nil;
+
 	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
 }
 
