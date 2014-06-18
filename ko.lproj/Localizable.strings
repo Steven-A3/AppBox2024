@@ -32,12 +32,12 @@
 
 "Lunar Calendar" = "음력 달력";
 
-"tellafriend" = "iPhone/iPad/iPod Touch의 유용한 사용을 위해 계산기, 날짜계산, 대출계산, 퍼센트계산, 할인율계산, 팁계산, 단가비교, 환율변환, 양음력변환, 번역, 단위 변환, 기념일관리, 지출기록, 자연주기, 전자지갑, 휴일/기념일, 배터리, 시계, 돋보기, 거울 등의 응용프로그램이 모두 포함된 AppBox Pro™를 추천합니다.\\r\\n\\r\\n지금 바로 아래의 주소에서 AppBox Pro™를 다운받으세요.\\r\\n\\r\\nhttps://itunes.apple.com/app/id318404385";
+"tellafriend" = "iPhone/iPad/iPod Touch의 유용한 사용을 위해 일반/공학용 계산기, 날짜계산, 대출계산, 퍼센트계산, 할인금액계산, 팁계산, 단가비교, 환율변환, 양음력변환, 번역, 단위 변환, 이벤트 캘린더, 지출 관리, 자연주기, 전자지갑, 세계휴일/기념일, 배터리 정보, 시계, 돋보기, 거울 등의 응용프로그램이 모두 포함된 AppBox Pro™를 추천합니다.\\r\\n\\r\\n지금 바로 아래의 주소에서 AppBox Pro™를 다운받으세요.\\r\\n\\r\\nhttps://itunes.apple.com/app/id318404385";
 
 "DISCLAIMER_MESSAGE" = "본 앱에서 제공되는 정보는 작성 시점을 기준으로 최대한 정확한 정보가 되도록 최선을 다하고 있습니다. 그러나, 전세계 지역별 휴일 및 기념일은 예고 없이 변경되고 있어 실제 휴일 정보에서 차이가 발생할 수 있습니다. 여기에서 제공되는 정보는 단순 참고용으로 제공되는 것으로, 이 정보의 제공으로 인한 어떠한 종류의 책임도 지지 않음을 알려드립니다. 단순 참고용 이상의 정보가 필요한 경우에는 해당 국가의 책임있는 기관의 정보를 제공받으시기 바랍니다.";
 "HOLIDAYS_ACKNOWLEDGEMENT" = "본 앱의 휴일 정보 화면 배경으로 제공되는 사진은 Flickr에서 수집된 사진으로 각 지역의 아름다운 모습을 표현하기 위해서 사용되었습니다. 각 사진은 Flickr계정과 사진의 링크를 표시하고 있습니다. 사진의 저작권은 모두 해당 소유자에게 있습니다. 당사는 어떠한 사진도 소유하고 있지 않습니다. 만약 소유하고 계신 사진이 이 앱에서 보여지기를 원하시는 경우에는 저희에게 메일을 보내주시기 바랍니다. 보내주신 정보에 대해서는 어떠한 금전적 보상은 하지 않으나 이 앱을 통해서 소유하신 사진을 앱의 사용자에게 공유하는 계기가 될 것 입니다.";
 
-"SECURITY_INFO" = "Apple은 고유의 데이터 보호 방법을 사용하여 정보를 보호하고 있습니다. 자체적으로 최고 수준의 256비트 AES 기술을 이용하여 저장된 데이터를 암호화할 수 있습니다. 보유하신 장치의 설정에서 암호잠금 설정을 하는 것만으로 저장되는 데이터를 지정하신 암호와 장치만의 고유 아이디를 특수한 방법으로 조합하여 매우 보안이 높은 방법으로 암호화하여 할 수 있습니다.";
+"SECURITY_INFO" = "Apple은 고유의 데이터 보호 방법을 사용하여 정보를 보호하고 있습니다. 최고 수준의 256비트 AES 기술을 이용하여 저장된 데이터를 암호화할 수 있습니다. 본 앱이 아닌 장치의 설정에서 암호잠금 설정을 하시면 본 앱이 저장하는 데이터를 설정하신 암호와 장치별로 고유한 아이디를 특수한 방법으로 조합하여 암호화하여 저장할 수 있습니다.";
 
 "microphone access denied" = "AppBox Pro가 장치의 마이크에 접근하는 것이 제한되어 있습니다.\n소리를 함께 녹화하시려면 보유하신 %@의 설정 > 개인 정보 보호 > 마이크 > AppBox Pro를 선택하여 설정을 변경하여 주세요.";
 
@@ -46,11 +46,11 @@
 "About" = "정보";
 "Remaining Time" = "잔여시간";
 
-"Battery Status" = "배터리";
-"Calculator" = "계산기";
+"Battery Status" = "배터리 정보";
+"Calculator" = "일반/공학용 계산기";
 "Date Calculator" = "날짜 계산";
 "Loan Calculator" = "대출 계산";
-"Sales Calculator" = "할인율 계산";
+"Sales Calculator" = "할인금액 계산";
 "Tip Calculator" = "팁 계산";
 "Unit Price" = "단가 비교";
 "Percent Calculator" = "퍼센트 계산";
@@ -91,9 +91,9 @@
 "Your datastore got corrupted and needs to be recreated." = "저장된 데이터에 손상이 발생하여 데이터를 초기화해야 합니다.";
 "Recreate" = "초기화";
 
-"Converter" = "변환";
+"Converter" = "각종 변환";
 "Productivity" = "생산성";
-"Reference" = "참고";
+"Reference" = "레퍼런스";
 "Utility" = "유틸리티";
 "OK" = "확인";
 "Details" = "상세정보";
@@ -567,10 +567,10 @@
 "Solar" = "양력";
 "1900년부터 2043년까지만 지원합니다." = "1900년부터 2043년까지만 지원합니다.";
 "%ld년 %ld월은 %ld일까지만 있습니다." = "%ld년 %ld월은 %ld일까지만 있습니다.";
-"Lunar Converter using AppBox Pro" = "AppBox Pro의 음력 변환";
+"Lunar Converter using AppBox Pro" = "AppBox Pro의 양력/음력 변환";
 "<html><body>I'd like to share a conversion with you.<br/><br/>" = "<html><body>양력/음력 변환 결과를 공유합니다.<br/><br/>";
 "LunarConverter_share_text_html_body" = "<br/><br/>AppBox Pro로 양력/음력 변환을 해보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
-"Share Lunar Converter Data" = "음력 변환 결과를 공유";
+"Share Lunar Converter Data" = "양력/음력 변환 결과를 공유";
 "Lunar(%@) %@" = "음력(%@) %@";
 " = Solar %@" = " = 양력 %@";
 "Lunar(%@, Leap Month) %@" = "음력(%@, 윤달) %@";
@@ -791,7 +791,7 @@
 
 "Turn Passcode Off" = "암호 끄기";
 "Turn Passcode On" = "암호 켜기";
-"How To Enable Data Protection" = "데이터 보호는 어떻게";
+"How To Enable Data Protection" = "데이터 보호 활성화 하기";
 "Clear Recent" = "최근 사용 정보 지우기";
 "Recent" = "최근 사용 앱";
 "Information" = "정보";
@@ -804,7 +804,7 @@
 "DoneButton" = "닫기";
 "Off" = "반올림";
 
-"Passcode_Off" = "끄기";
+"Passcode_Off" = "끔";
 
 "P" = "공";
 
@@ -814,3 +814,9 @@
 "now" = "지금";
 
 "LoanCalc_Start Date" = "상환 시작일";
+
+"Immediately" = "즉시";
+
+"Learn about iOS Security" = "iOS 보안에 대해 자세히 알아보기";
+
+"CalculatorGroup" = "각종 계산";

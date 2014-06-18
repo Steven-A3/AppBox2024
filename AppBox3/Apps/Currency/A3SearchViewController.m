@@ -16,6 +16,11 @@
 @end
 
 @interface A3SearchViewController () <UISearchDisplayDelegate>
+
+@property (nonatomic) UILocalizedIndexedCollation *collation;
+@property (nonatomic, strong) NSArray *sectionTitles;
+@property (nonatomic, strong) NSArray *sectionIndexTitles;
+
 @end
 
 @implementation A3SearchViewController {
@@ -196,19 +201,28 @@
 		[sections addObject:object];
 	}
 
+	NSMutableArray *dataContainingSectionsArray = [NSMutableArray new];
+	NSMutableArray *sectionTitles = [NSMutableArray new];
+	NSMutableArray *sectionIndexTitles = [NSMutableArray new];
 	// Now that all the data's in place, each section array needs to be sorted.
 	for (index = 0; index < sectionTitlesCount; index++) {
 
 		NSMutableArray *dataArrayForSection = newSectionsArray[index];
 
-		// If the table view or its contents were editable, you would make a mutable copy here.
-		NSArray *sortedDataArrayForSection = [self.collation sortedArrayFromArray:dataArrayForSection collationStringSelector:NSSelectorFromString(@"displayName")];
-
-		// Replace the existing array with the sorted array.
-		newSectionsArray[index] = sortedDataArrayForSection;
+		if ([dataArrayForSection count]) {
+			// If the table view or its contents were editable, you would make a mutable copy here.
+			NSArray *sortedDataArrayForSection = [self.collation sortedArrayFromArray:dataArrayForSection collationStringSelector:NSSelectorFromString(@"displayName")];
+			[dataContainingSectionsArray addObject:sortedDataArrayForSection];
+			if (index) {
+				[sectionTitles addObject:[_collation sectionTitles][index - 1]];
+				[sectionIndexTitles addObject:[_collation sectionIndexTitles][index - 1]];
+			}
+		}
 	}
 
-	self.sectionsArray = newSectionsArray;
+	self.sectionsArray = dataContainingSectionsArray;
+	self.sectionTitles = sectionTitles;
+	self.sectionIndexTitles = sectionIndexTitles;
 }
 
 - (void)filterContentForSearchText:(NSString*)searchText
@@ -229,7 +243,7 @@
 	if (tableView == self.searchDisplayController.searchResultsTableView) {
 		return 1;
 	} else {
-		return [[self.collation sectionTitles] count];
+		return [self.sectionTitles count];
 	}
 }
 
@@ -245,20 +259,20 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (tableView == self.tableView) {
-		return [self.collation sectionTitles][section];
+		return self.sectionTitles[section];
 	}
 	return nil;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
 	if (tableView == self.tableView) {
-		return [self.collation sectionIndexTitles];
+		return self.sectionIndexTitles;
 	}
 	return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-	return [self.collation sectionForSectionIndexTitleAtIndex:index];
+	return index;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

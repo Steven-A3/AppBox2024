@@ -27,7 +27,7 @@
 "Cyd-xI-Wjv.normalTitle" = "계속";
 
 /* Class = "IBUILabel"; text = "Lunar Converter"; ObjectID = "DKJ-oV-07R"; */
-"DKJ-oV-07R.text" = "음력 변환";
+"DKJ-oV-07R.text" = "양력/음력 변환";
 
 /* Class = "IBUILabel"; text = "easy, faster and more focused,
 64Bit and much more"; ObjectID = "Dxm-da-st4"; */
@@ -44,7 +44,7 @@
 "FZq-hj-leX.text" = "생산성";
 
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "MQq-Fj-ljR"; */
-"MQq-Fj-ljR.text" = "단가 계산";
+"MQq-Fj-ljR.text" = "단가 비교";
 
 /* Class = "IBUILabel"; text = "Clock"; ObjectID = "Pqo-MO-BYd"; */
 "Pqo-MO-BYd.text" = "시계";
@@ -53,7 +53,7 @@
 "QVX-vI-Tzn.normalTitle" = "계속";
 
 /* Class = "IBUILabel"; text = "Holidays"; ObjectID = "TDf-63-7ce"; */
-"TDf-63-7ce.text" = "휴일정보";
+"TDf-63-7ce.text" = "세계휴일/기념일";
 
 /* Class = "IBUILabel"; text = "Currency Converter"; ObjectID = "TX8-le-6Df"; */
 "TX8-le-6Df.text" = "환율";
@@ -68,7 +68,7 @@
 "Z9P-lk-CAW.normalTitle" = "계속";
 
 /* Class = "IBUILabel"; text = "Battery Status"; ObjectID = "Zic-Ru-M9D"; */
-"Zic-Ru-M9D.text" = "배터리 상태";
+"Zic-Ru-M9D.text" = "배터리 정보";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "abQ-r0-gCo"; */
 "abQ-r0-gCo.normalTitle" = "계속";
@@ -80,7 +80,7 @@
 "bqT-N1-DoK.normalTitle" = "AppBox Pro 시작";
 
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "bwe-yZ-jRu"; */
-"bwe-yZ-jRu.text" = "계산기";
+"bwe-yZ-jRu.text" = "각종 계산";
 
 /* Class = "IBUILabel"; text = "Mirror"; ObjectID = "cFb-hc-ow3"; */
 "cFb-hc-ow3.text" = "거울";
@@ -124,7 +124,7 @@ on all your devices"; ObjectID = "mal-lH-ucN"; */
 "vEW-JN-pPp.text" = "대출 계산";
 
 /* Class = "IBUILabel"; text = "Reference"; ObjectID = "vJ2-Dp-SnT"; */
-"vJ2-Dp-SnT.text" = "참조";
+"vJ2-Dp-SnT.text" = "레퍼런스";
 
 /* Class = "IBUILabel"; text = "New Look"; ObjectID = "wUS-T4-5Qp"; */
 "wUS-T4-5Qp.text" = "새로운 느낌";

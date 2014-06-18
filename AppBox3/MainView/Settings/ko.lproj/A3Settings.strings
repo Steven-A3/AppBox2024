@@ -8,7 +8,7 @@
 /* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.
 
 "; ObjectID = "1dJ-y3-yh7"; */
-"1dJ-y3-yh7.footerTitle" = "동기화를 하거나 모든 앱의 이력, 이벤트 캘린더의 이벤트, 지출 목록, 레이디 캘린더 정보, 전자지갑 아이템들을 백업할 수 있습니다.
+"1dJ-y3-yh7.footerTitle" = "동기화를 하거나 모든 앱의 히스토리, 이벤트 캘린더의 이벤트, 지출 관리, 레이디 캘린더 정보, 전자지갑 아이템들을 백업할 수 있습니다.
 
 ";
 
@@ -61,7 +61,7 @@
 "Fvs-tZ-usV.text" = "암호 변경";
 
 /* Class = "IBUITableViewController"; title = "Passcode Lock"; ObjectID = "KML-Ub-d8M"; */
-"KML-Ub-d8M.title" = "암호 설정";
+"KML-Ub-d8M.title" = "암호 잠금";
 
 /* Class = "IBUITableViewSection"; footerTitle = "For Lunar Converter"; ObjectID = "LOI-Yd-hc0"; */
 "LOI-Yd-hc0.footerTitle" = "음력 변환용";
@@ -70,7 +70,7 @@
 "LZb-sk-84W.text" = "보안에 대한 추가 정보";
 
 /* Class = "IBUINavigationItem"; title = "Passcode Lock"; ObjectID = "Lbr-p8-awt"; */
-"Lbr-p8-awt.title" = "암호 설정";
+"Lbr-p8-awt.title" = "암호 잠금";
 
 /* Class = "IBUITableViewSection"; footerTitle = "Shorter times are more secure."; ObjectID = "MUh-Ac-pHs"; */
 "MUh-Ac-pHs.footerTitle" = "시간이 짧을수록 안전합니다.";
@@ -79,7 +79,7 @@
 "McJ-yq-SBi.text" = "4시간 후";
 
 /* Class = "IBUILabel"; text = "Off"; ObjectID = "Mzm-Rw-Yrb"; */
-"Mzm-Rw-Yrb.text" = "끄기";
+"Mzm-Rw-Yrb.text" = "끔";
 
 /* Class = "IBUILabel"; text = "Backup"; ObjectID = "NGG-P3-DCE"; */
 "NGG-P3-DCE.text" = "백업";
@@ -130,7 +130,7 @@
 "eGG-mK-Q2m.text" = "즉시";
 
 /* Class = "IBUILabel"; text = "Backup & Restore on Dropbox"; ObjectID = "ehr-w2-0vk"; */
-"ehr-w2-0vk.text" = "Dropbox에 백업 및 복원";
+"ehr-w2-0vk.text" = "Dropbox 백업 및 복원";
 
 /* Class = "IBUINavigationItem"; title = "Theme Color"; ObjectID = "eqe-ec-kWO"; */
 "eqe-ec-kWO.title" = "테마 색상";
@@ -151,7 +151,7 @@
 "hXr-2r-LdP.text" = "최근 2개";
 
 /* Class = "IBUILabel"; text = "Unlink from Dropbox"; ObjectID = "iav-1w-bex"; */
-"iav-1w-bex.text" = "Dropbox 연결 지우기";
+"iav-1w-bex.text" = "계정 삭제";
 
 /* Class = "IBUILabel"; text = "Favorites"; ObjectID = "m3s-eA-4WD"; */
 "m3s-eA-4WD.text" = "즐겨찾기";
@@ -163,10 +163,10 @@
 "oSP-yD-m2L.title" = "설정";
 
 /* Class = "IBUINavigationItem"; title = "Backup & Restore on Dropbox"; ObjectID = "oxS-sd-8U7"; */
-"oxS-sd-8U7.title" = "Dropbox에 백업 및 복원";
+"oxS-sd-8U7.title" = "Dropbox 백업 및 복원";
 
 /* Class = "IBUILabel"; text = "Passcode Lock"; ObjectID = "pjv-dt-D5o"; */
-"pjv-dt-D5o.text" = "암호 설정";
+"pjv-dt-D5o.text" = "암호 잠금";
 
 /* Class = "IBUINavigationItem"; title = "Require Passcode"; ObjectID = "qcD-FX-Y5d"; */
 "qcD-FX-Y5d.title" = "암호 확인";
@@ -178,7 +178,7 @@
 "sL2-cQ-mx7.text" = "설정";
 
 /* Class = "IBUILabel"; text = "After 1 hour"; ObjectID = "sks-IW-96W"; */
-"sks-IW-96W.text" = "한시간 후";
+"sks-IW-96W.text" = "1시간 후";
 
 /* Class = "IBUITableViewController"; title = "Recent To Keep"; ObjectID = "srb-MD-eSG"; */
 "srb-MD-eSG.title" = "최근 사용 메뉴 유지";

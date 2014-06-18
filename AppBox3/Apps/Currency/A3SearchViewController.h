@@ -27,7 +27,6 @@
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
 @property (nonatomic, strong) NSArray *filteredResults;
 @property (nonatomic) NSMutableArray *sectionsArray;
-@property (nonatomic) UILocalizedIndexedCollation *collation;
 
 // Sub class should implement this member
 @property (nonatomic, strong) NSMutableArray *allData;

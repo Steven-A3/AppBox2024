@@ -34,7 +34,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 			 @{
 				 kA3AppsMenuExpandable : @YES,
 				 kA3AppsMenuCollapsed : @YES,
-				 kA3AppsMenuName : @"Calculator",
+				 kA3AppsMenuName : @"CalculatorGroup",
 				 kA3AppsExpandableChildren :	@[
 						 @{kA3AppsMenuName : @"Date Calculator", kA3AppsClassName_iPhone : @"A3DateMainTableViewController", kA3AppsMenuImageName : @"DateCalculator"},
 						 @{kA3AppsMenuName : @"Loan Calculator", kA3AppsStoryboard_iPhone:@"LoanCalculatorPhoneStoryBoard", kA3AppsStoryboard_iPad:@"LoanCalculatorPadStoryBoard",kA3AppsMenuImageName : @"LoanCalculator"},
