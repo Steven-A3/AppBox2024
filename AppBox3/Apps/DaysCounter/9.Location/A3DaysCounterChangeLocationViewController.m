@@ -48,6 +48,7 @@
     self.tableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
     self.tableView.contentInset = UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height + 20, 0, 0, 0);
     self.tableDataSource = @[NSLocalizedString(@"Current Location", @"Current Location")];
+	[self.searchBar setPlaceholder:NSLocalizedString(@"Enter a address or city name", nil)];
 }
 
 -(void)viewWillAppear:(BOOL)animated

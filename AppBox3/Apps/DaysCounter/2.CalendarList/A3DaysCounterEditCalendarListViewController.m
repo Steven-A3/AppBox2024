@@ -147,12 +147,18 @@
     
     if ( [item.calendarType integerValue] == CalendarCellType_System ) {
         NSInteger numberOfEvents = 0;
-        if ( [item.calendarId isEqualToString:SystemCalendarID_All] )
+        if ( [item.calendarId isEqualToString:SystemCalendarID_All] ) {
             numberOfEvents = [_sharedManager numberOfAllEvents];
-        else if ( [item.calendarId isEqualToString:SystemCalendarID_Upcoming])
+			textLabel.text = NSLocalizedString(@"DaysCounter_ALL", nil);
+		}
+        else if ( [item.calendarId isEqualToString:SystemCalendarID_Upcoming]) {
             numberOfEvents = [_sharedManager numberOfUpcomingEventsWithDate:[NSDate date]];
-        else if ( [item.calendarId isEqualToString:SystemCalendarID_Past] )
+			textLabel.text = NSLocalizedString(@"Upcoming", nil);
+		}
+        else if ( [item.calendarId isEqualToString:SystemCalendarID_Past] ) {
             numberOfEvents = [_sharedManager numberOfPastEventsWithDate:[NSDate date]];
+			textLabel.text = NSLocalizedString(@"Past", nil);
+		}
         detailTextLabel.text = [NSString stringWithFormat:@"%ld", (long)numberOfEvents];
     }
     

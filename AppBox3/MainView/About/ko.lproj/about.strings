@@ -48,7 +48,7 @@
 "cFb-Qr-7IF.text" = "3.0.0";
 
 /* Class = "IBUILabel"; text = "What's New"; ObjectID = "jzI-Kv-pA8"; */
-"jzI-Kv-pA8.text" = "버전 정보";
+"jzI-Kv-pA8.text" = "새로운 기능";
 
 /* Class = "IBUILabel"; text = "Other Apps"; ObjectID = "qGh-tu-1aG"; */
 "qGh-tu-1aG.text" = "다른 앱 살펴보기";

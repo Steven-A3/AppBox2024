@@ -68,7 +68,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 	// Do any additional setup after loading the view.
     
     self.view.backgroundColor = [UIColor whiteColor];
-	self.title = NSLocalizedString(@"Detail", @"Detail");
+	self.title = NSLocalizedString(@"Details", @"Detail");
 
     [self initializeViews];
     

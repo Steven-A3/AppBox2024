@@ -475,8 +475,8 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 		A3FSegmentedControl *segmentedControl = (A3FSegmentedControl *) [headerView viewWithTag:HolidaysHeaderViewSegmentedControl];
 		segmentedControl.items = @[
-				[NSString stringWithFormat:NSLocalizedString(@"Upcoming %lu", @"Upcoming %lu"), (unsigned long) ([holidaysInPage count] - myPosition)],
-				[NSString stringWithFormat:NSLocalizedString(@"Past %lu", @"Past %lu"), (unsigned long) myPosition]
+				[NSString stringWithFormat:NSLocalizedString(@"Upcoming %ld", nil), (long) ([holidaysInPage count] - myPosition)],
+				[NSString stringWithFormat:NSLocalizedString(@"Past %ld", nil), (long) myPosition]
 		];
 		FNLOG(@"%lu + %lu = %lu : %lu", (unsigned long)([holidaysInPage count] - myPosition), (unsigned long)myPosition, (unsigned long)(myPosition + [holidaysInPage count] - myPosition + 1), (unsigned long)[holidaysInPage count]);
 	}

@@ -216,7 +216,7 @@
         }
         else if ( indexPath.section == 1 ) {
             NSDictionary *colorItem = [_colorArray objectAtIndex:indexPath.row];
-            cell.textLabel.text = [colorItem objectForKey:CalendarItem_Name];
+            cell.textLabel.text = NSLocalizedString([colorItem objectForKey:CalendarItem_Name], nil);
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             cell.imageView.tintColor = [colorItem objectForKey:CalendarItem_Color];
 

@@ -68,7 +68,6 @@
 
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
-	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
     if ([_eventModel.isLunar boolValue]) {
         self.itemArray = @[NSLocalizedString(@"Never", @"Never"), NSLocalizedString(@"Every Year", @"Every Year")];
@@ -168,6 +167,10 @@
     if (cell == nil) {
         if ( indexPath.row == ([_itemArray count] -1) ) {
             cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventRepeatCell" owner:nil options:nil] lastObject];
+			UILabel *textLabel = (UILabel *)[cell viewWithTag:10];
+			textLabel.text = NSLocalizedString(@"Custom", nil);
+			UILabel *daysLabel = (UILabel *)[cell viewWithTag:11];
+			daysLabel.text = NSLocalizedString(@"day(s)", nil);
             UITextField *textField = (UITextField*)[cell viewWithTag:12];
             textField.delegate = self;
             ((A3DaysCounterRepeatCustomCell *)cell).checkImageView.image = [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];

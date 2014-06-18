@@ -233,7 +233,7 @@
 			<key>one</key>
 			<string>내일</string>
 			<key>other</key>
-			<string>%ld 일 후</string>
+			<string>%ld일 남음</string>
 		</dict>
 	</dict>
 	<key>%ld weeks</key>

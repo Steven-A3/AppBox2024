@@ -99,7 +99,7 @@
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
         nav.tabBarItem.image = [UIImage imageNamed:unitType.flagImageName];
         nav.tabBarItem.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_on", unitType.flagImageName]];
-        nav.tabBarItem.title = unitType.unitTypeName;
+        nav.tabBarItem.title = NSLocalizedString(unitType.unitTypeName, nil);
         
         [nav.navigationBar setShadowImage:[UIImage new]];
         [nav.navigationBar setBackgroundImage:[UIImage new]

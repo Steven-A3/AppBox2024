@@ -74,7 +74,7 @@
 "iCloud_goto_settings" = "iCloud 동기화 기능을 사용하시려면 장치의 설정을 열어서 iCloud 도큐멘트 및 데이터를 저장하도록 설정하여 주세요.";
 
 "Info" = "정보";
-"Internet Connection is not available." = "인터넷에 연결 할 수 없습니다.";
+"Internet Connection is not available." = "사용 가능한 인터넷 연결이 없습니다.";
 "Cancel" = "취소";
 "Delete Photo" = "사진을 지움";
 "Take Photo" = "사진 촬영";
@@ -96,7 +96,6 @@
 "Reference" = "레퍼런스";
 "Utility" = "유틸리티";
 "OK" = "확인";
-"Details" = "상세정보";
 "Device" = "장치명";
 "Version" = "버전";
 "Chips" = "칩셋";
@@ -216,11 +215,11 @@
 "%@ using AppBox Pro" = "%@ AppBox Pro 사용";
 "Share Days Counter Data" = "이벤트 캘린더 공유";
 "<html><body>I'd like to share a event with you.<br/><br/>" = "<html><body>이벤트를 공유합니다.<br/><br/>";
-"Slideshow Options" = "슬라이드쇼 설정";
+"Slideshow Options" = "슬라이드쇼 옵션";
 "Transitions" = "화면전환";
-"Play Each Slide For" = "슬라이드 당 표시시간";
+"Play Each Slide For" = "슬라이드당 재생 시간";
 "Repeat" = "반복";
-"Shuffle" = "섞기";
+"Shuffle" = "임의재생";
 "Start Slideshow" = "슬라이드쇼 시작";
 "There is no events." = "등록된 이벤트가 없습니다.";
 
@@ -302,14 +301,14 @@
 "Appointment" = "약속";
 "Birthday" = "생일";
 "Journey" = "여행";
-"Holiday" = "공휴일";
+"Holiday" = "휴일";
 "Work" = "업무";
 
-"Never" = "반복없음";
+"Never" = "안함";
 "Every Day" = "매일";
 "Every Week" = "매주";
-"Every 2Week" = "매 격주";
-"Every Month" = "매월";
+"Every 2Week" = "2주마다";
+"Every Month" = "매달";
 "Every Year" = "매년";
 "Daily" = "매일";
 "Weekly" = "매주";
@@ -317,15 +316,15 @@
 "Monthly" = "매월";
 "Yearly" = "매년";
 
-"At time of event" = "해당 시간에";
-"5 minutes before" = "5 분 전";
-"15 minutes before" = "15 분 전";
-"30 minutes before" = "30 분 전";
-"1 hour before" = "한 시간 전";
-"2 hours before" = "두 시간 전";
-"1 day before" = "하루 전";
-"2 days before" = "이틀 전";
-"1 week before" = "일주일 전";
+"At time of event" = "이벤트 당시";
+"5 minutes before" = "5분 전";
+"15 minutes before" = "15분 전";
+"30 minutes before" = "30분 전";
+"1 hour before" = "1시간 전";
+"2 hours before" = "2시간 전";
+"1 day before" = "1일 전";
+"2 days before" = "2일 전";
+"1 week before" = "1주 전";
 
 "DaysCounterDuration_year_abbreviation" = "년";
 "DaysCounterDuration_month_abbreviation" = "월";
@@ -344,7 +343,7 @@
 "%ld min" = "%ld 분";
 "Cube" = "큐브";
 "Dissolve" = "디졸브";
-"Origami" = "오리가미";
+"Origami" = "종이접기";
 "Ripple" = "아래로 닦아내기";
 "Wipe" = "옆으로 닦아내기";
 
@@ -362,7 +361,7 @@
 "Current Location" = "현재 위치";
 "Searching" = "검색중";
 "No Results Found" = "결과가 없습니다.";
-"Custom" = "커스텀";
+"Custom" = "사용자화";
 "day(s) before" = "일 전";
 "Please enter your dates in the future." = "미래의 날짜를 선택해 주세요.";
 "Time" = "시간";
@@ -380,31 +379,31 @@
 
 "Loading locations...." = "위치 탐색 중";
 
-"Add this place?" = "현재 위치를 추가?";
-"We Couldn't find that" = "찾을 수 없습니다.";
+"Add this place?" = "장소 추가";
+"We Couldn't find that" = "검색 결과 없음";
 
 "Create %@" = "%@ 만들기";
 
 "현재 위치에 대한 정보를 가져올 수 없습니다." = "현재 위치에 대한 정보를 가져올 수 없습니다.";
 
 "Every 2 Weeks" = "매 격주";
-"Undo" = "되돌리기";
-"Redo" = "다시하기";
+"Undo" = "실행취소";
+"Redo" = "다시실행";
 "Prev" = "이전";
 "Next" = "다음";
 "Add Budget" = "예산 추가";
 "Edit Budget" = "예산 수정";
 "Budget" = "예산";
-"Categories" = "종류";
+"Categories" = "카테고리";
 "Payment Type" = "지불 방법";
 
-"Food" = "음식";
-"Personal" = "개인";
+"Food" = "식비";
+"Personal" = "개인항목";
 "Pets" = "애완동물";
-"School" = "학교";
+"School" = "교육";
 "Service" = "서비스";
 "Shopping" = "쇼핑";
-"Transportation" = "물류";
+"Transportation" = "교통";
 "Travel" = "여행";
 "Utilies" = "유틸리티";
 "Uncategorized" = "미정";
@@ -437,10 +436,8 @@
 "To add a new country, remove one first." = "새로운 국가를 추가하려면 먼저 기존 국가를 하나 지우세요.";
 
 "Acknowledgement" = "감사의 말";
-"Upcoming %lu" = "남은 일정 %lu";
-"Past %lu" = "지난 일정 %lu";
-"Upcoming %ld" = "남은 일정 %ld";
-"Past %ld" = "지난 일정 %ld";
+"Upcoming %ld" = "남은 휴일 %ld";
+"Past %ld" = "지난 휴일 %ld";
 "Holidays for year %lu is not available." = "%lu 년도의 휴일/기념일 정보는 제공되지 않습니다.";
 "Discalimer" = "정보";
 "I Agree" = "동의함";
@@ -738,7 +735,7 @@
 "Category" = "카테고리";
 "Current %@" = "현재 %@";
 "New Item" = "새로운 아이템";
-"Detail" = "상세정보";
+"Details" = "상세정보";
 "Map" = "지도";
 "Duration Time %lds" = "플레이 시간 %lds";
 "1 Passcode Failed Attempt" = "1회 암호를 틀렸습니다.";
@@ -814,15 +811,32 @@
 "now" = "지금";
 
 "LoanCalc_Start Date" = "상환 시작일";
-
 "Immediately" = "즉시";
-
 "Learn about iOS Security" = "iOS 보안에 대해 자세히 알아보기";
-
 "CalculatorGroup" = "각종 계산";
-
 "Translator_All" = "All";
 
 "Year(s)" = "년";
-"Month(s)" = "월";
+"Month(s)" = "개월";
 "Day(s)" = "일";
+
+"Red" = "빨간색";
+"Orange" = "귤색";
+"Yellow" = "노란색";
+"Green" = "초록색";
+"Blue" = "파란색";
+"Violet" = "보라색";
+"Purple" = "자주색";
+"Brown" = "갈색";
+"Gray" = "회색";
+
+"day(s)" = "일";
+
+"Enter a address or city name" = "주소 또는 도시 이름 입력";
+
+"This will reset all settings.\nNo data will be deleted." = "보기/가리기 설정을 초기화 합니다.";
+"Reset All" = "재설정";
+"Reset Show/Hide Settings" = "보기/가리기 재설정";
+"Wallpaper" = "배경화면";
+
+"Show Lunar Date" = "음력 날짜 보기";

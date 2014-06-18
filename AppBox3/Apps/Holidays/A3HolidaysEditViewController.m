@@ -124,7 +124,11 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)resetButtonAction:(UIBarButtonItem *)button {
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"This will rest all settigns.\nNo data will be deleted." delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Reset All" otherButtonTitles:nil];
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will reset all settings.\nNo data will be deleted.", nil)
+															 delegate:self
+													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+											   destructiveButtonTitle:NSLocalizedString(@"Reset All", @"Reset All")
+													otherButtonTitles:nil];
 	[actionSheet showInView:self.view];
 }
 
@@ -197,11 +201,11 @@ static NSString *CellIdentifier = @"Cell";
 		cell.textLabel.font = [UIFont systemFontOfSize:17];
 		switch (indexPath.section) {
 			case 1:
-				cell.textLabel.text = @"Reset Show/Hide Settings";
+				cell.textLabel.text = NSLocalizedString(@"Reset Show/Hide Settings", @"Reset Show/Hide Settings");
 				cell.textLabel.textColor = self.view.tintColor;
 				break;
 			case 2: {
-				cell.textLabel.text = @"Wallpaper";
+				cell.textLabel.text = NSLocalizedString(@"Wallpaper", @"Wallpaper");
 				if ([[A3HolidaysFlickrDownloadManager sharedInstance] hasUserSuppliedImageForCountry:_countryCode]) {
 					UIImageView *imageView = [[A3HolidaysFlickrDownloadManager sharedInstance] thumbnailOfUserSuppliedImageForCountryCode:_countryCode];
 					imageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -216,7 +220,7 @@ static NSString *CellIdentifier = @"Cell";
 				break;
 			}
 			case 3:{
-				cell.textLabel.text = @"Show Lunar Date";
+				cell.textLabel.text = NSLocalizedString(@"Show Lunar Date", @"Show Lunar Date");
 				UISwitch *switchControl = [self lunarSwitch];
 				[switchControl setOn:[HolidayData needToShowLunarDatesForCountryCode:_countryCode]];
 				cell.accessoryView = switchControl;

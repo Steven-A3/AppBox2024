@@ -96,7 +96,6 @@
 "Reference" = "Reference";
 "Utility" = "Utility";
 "OK" = "OK";
-"Details" = "Details";
 "Device" = "Device";
 "Version" = "Version";
 "Chips" = "Chips";
@@ -437,8 +436,6 @@
 "To add a new country, remove one first." = "To add a new country, remove one first.";
 
 "Acknowledgement" = "Acknowledgement";
-"Upcoming %lu" = "Upcoming %lu";
-"Past %lu" = "Past %lu";
 "Upcoming %ld" = "Upcoming %ld";
 "Past %ld" = "Past %ld";
 "Holidays for year %lu is not available." = "Holidays for year %lu is not available.";
@@ -738,7 +735,7 @@
 "Category" = "Category";
 "Current %@" = "Current %@";
 "New Item" = "New Item";
-"Detail" = "Detail";
+"Details" = "Detail";
 "Map" = "Map";
 "Duration Time %lds" = "Duration Time %lds";
 "1 Passcode Failed Attempt" = "1 Passcode Failed Attempt";
@@ -829,3 +826,25 @@
 "Year(s)" = "Year(s)";
 "Month(s)" = "Month(s)";
 "Day(s)" = "Day(s)";
+
+"Red" = "Red";
+"Orange" = "Orange";
+"Yellow" = "Yellow";
+
+"Green" = "Green";
+"Blue" = "Blue";
+"Violet" = "Violet";
+"Purple" = "Purple";
+"Brown" = "Brown";
+"Gray" = "Gray";
+
+"day(s)" = "day(s)";
+
+"Enter a address or city name" = "Enter a address or city name";
+
+"This will reset all settings.\nNo data will be deleted." = "This will reset all settings.\nNo data will be deleted.";
+"Reset All" = "Reset All";
+"Reset Show/Hide Settings" = "Reset Show/Hide Settings";
+"Wallpaper" = "Wallpaper";
+
+"Show Lunar Date" = "Show Lunar Date";
