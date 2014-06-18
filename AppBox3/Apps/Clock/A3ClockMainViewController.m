@@ -29,6 +29,7 @@
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIButton *clockAppsButton;
 @property (nonatomic, strong) UIButton *settingsButton;
+@property (nonatomic, strong) UIButton *helpButton;
 @property (nonatomic, strong) UIButton *yahooButton;
 @property (nonatomic, strong) UIPageControl *pageControl;
 @property (nonatomic, strong) A3ClockWaveViewController *clockWaveViewController;
@@ -76,6 +77,7 @@
 
 	[self clockAppsButton];
 	[self settingsButton];
+    [self helpButton];
 	[self yahooButton];
 
 	[self.view addSubview:self.pageControl];
@@ -151,6 +153,9 @@
 	if ([self isMovingToParentViewController]) {
 		[self layoutSubviews];
 		[self.clockDataManager startTimer];
+        if (self.instructionViewController) {
+            [self adjustInstructionFingerPositionForPortrait:IS_PORTRAIT];
+        }
 	}
 }
 
@@ -203,8 +208,30 @@
 			make.width.equalTo(@40);
 			make.height.equalTo(@40);
 		}];
+        
 	}
 	return _settingsButton;
+}
+
+- (UIButton *)helpButton {
+    if (!_helpButton) {
+        _helpButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        [_helpButton setImage:[UIImage imageNamed:@"help"] forState:UIControlStateNormal];
+        [_helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        _helpButton.tintColor = [UIColor whiteColor];
+        [_helpButton setHidden:YES];
+        [_helpButton sizeToFit];
+        [self.view addSubview:_helpButton];
+        
+        [_helpButton makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(self.view.right).with.offset(-68);
+			make.centerY.equalTo(_clockAppsButton.centerY);
+			make.width.equalTo(@40);
+			make.height.equalTo(@40);
+        }];
+    }
+    
+    return _helpButton;
 }
 
 - (UIButton *)yahooButton {
@@ -356,6 +383,7 @@
 	}
 	_clockAppsButton.hidden = !show || (IS_IPHONE && IS_LANDSCAPE);
 	_settingsButton.hidden = !show || (IS_IPHONE && IS_LANDSCAPE);
+    _helpButton.hidden = !show || (IS_IPHONE && IS_LANDSCAPE);
 	_pageControl.hidden = !show;
 	_chooseColorButton.hidden = !show;
 	if (show) {
@@ -412,6 +440,7 @@
     if (!_instructionTwoFingerTapGesture) {
         _instructionTwoFingerTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
         [_instructionTwoFingerTapGesture setNumberOfTouchesRequired:2];
+        
         [_instructionTwoFingerTapGesture setNumberOfTapsRequired:2];
         [self.view addGestureRecognizer:_instructionTwoFingerTapGesture];
     }
@@ -585,6 +614,14 @@
 	}
 }
 
+- (void)helpButtonAction:(id)aSende
+{
+    [self showMenus:NO];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Clock1"];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Clock2"];
+    [self showInstructionView];
+}
+
 - (void)settingsViewControllerDidDismiss {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
 	_modalNavigationController = nil;
@@ -679,6 +716,7 @@
 	}
 	_clockAppsButton.tintColor = tintColor;
 	_settingsButton.tintColor = tintColor;
+    _helpButton.tintColor = tintColor;
 	_pageControl.tintColor = tintColor;
 	_yahooButton.tintColor = tintColor;
 }
