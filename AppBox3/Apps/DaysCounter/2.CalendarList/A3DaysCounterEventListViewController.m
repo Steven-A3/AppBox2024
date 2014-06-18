@@ -79,7 +79,10 @@
         //self.headerViewTopConst.constant += 0.5;
     }
 
-    _segmentControlWidthConst.constant = ( IS_IPHONE ? 171 : 300.0);
+	[self.sortTypeSegmentCtrl setTitle:NSLocalizedString(@"Date", nil) forSegmentAtIndex:0];
+	[self.sortTypeSegmentCtrl setTitle:NSLocalizedString(@"Name", nil) forSegmentAtIndex:1];
+
+	_segmentControlWidthConst.constant = ( IS_IPHONE ? 171 : 300.0);
     
     [self.view addSubview:_addEventButton];
     _addEventButton.tintColor = [A3AppDelegate instance].themeColor;

@@ -104,7 +104,7 @@
     
     // Configure the cell...
 	NSDictionary *menu = self.favorites[indexPath.row];
-	cell.textLabel.text = menu[kA3AppsMenuName];
+	cell.textLabel.text = NSLocalizedString(menu[kA3AppsMenuName], nil);
     
     return cell;
 }

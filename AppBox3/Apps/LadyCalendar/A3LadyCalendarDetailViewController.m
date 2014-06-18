@@ -182,7 +182,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"Menstrual Period", @"Menstrual Period"), ItemKey_Type : @(DetailCellType_MenstrualPeriod), ItemKey_Index : @(index)}];
 	} else {
 		[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"Menstrual Period", @"Menstrual Period"), ItemKey_Type : @(DetailCellType_Title), ItemKey_Index : @(index)}];
-		[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"Start Date", @"Start Date"), ItemKey_Type: @(DetailCellType_StartDate), ItemKey_Index : @(index)}];
+		[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"LadyCalendar_Start Date", @"Start Date"), ItemKey_Type: @(DetailCellType_StartDate), ItemKey_Index : @(index)}];
 		[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"End Date", @"End Date"), ItemKey_Type : @(DetailCellType_EndDate), ItemKey_Index : @(index)}];
 		[retArray addObject:@{ItemKey_Title : NSLocalizedString(@"Cycle Length", @"Cycle Length"), ItemKey_Type : @(DetailCellType_CycleLength), ItemKey_Index : @(index), ItemKey_RowHeight:(![notes length] ? @75 : @74)}];
 		if( [notes length] > 0) {

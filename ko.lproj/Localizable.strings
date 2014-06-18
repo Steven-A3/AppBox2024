@@ -10,7 +10,7 @@
 "Term" = "기간";
 "Interest Rate" = "이자율";
 "Frequency" = "상환주기";
-"Start Date" = "상환 시작일";
+"LadyCalendar_Start Date" = "시작일";
 "Notes" = "메모";
 "Monthly" = "월단위";
 "Yearly" = "년단위";
@@ -169,7 +169,7 @@
 "Month" = "월";
 "Week" = "주";
 "Day" = "일";
-"Duration" = "기간";
+"Duration" = "기간 옵션";
 "Edit Event" = "이벤트 수정";
 "ADVANCED" = "상세정보";
 
@@ -185,7 +185,7 @@
 
 "To show results, need one option." = "결과를 표시하기 위해서는 하나 이상을 선택해야 합니다.";
 "Years" = "년";
-"Months" = "개월";
+"Months" = "월";
 "Weeks" = "주";
 "Days" = "일";
 "Weekends" = "주말";
@@ -246,7 +246,7 @@
 "End Repeat" = "반복 종료일";
 "Alert" = "알림";
 "Calendar" = "캘린더";
-"Duration Option" = "기간 표시 방법";
+"Duration Option" = "기간 옵션";
 "Location" = "위치";
 "Delete Event" = "이벤트 지우기";
 "Date" = "날짜";
@@ -282,7 +282,7 @@
 "from %@" = "%@에서";
 "to %@" = "%@까지";
 "repeats %@" = "반복 %@";
-"since" = "경과";
+"since" = "지남";
 "first date" = "최초날짜";
 "<html><body>I'd like to share a days count with you.<br/><br/>" = "<html><body>이벤트를 공유합니다.<br/><br/>";
 "daysCounter_share_HTML_body" = "<br/>AppBox Pro로 이벤트를 관리하세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
@@ -365,7 +365,6 @@
 "Custom" = "커스텀";
 "day(s) before" = "일 전";
 "Please enter your dates in the future." = "미래의 날짜를 선택해 주세요.";
-"Days Before" = "일 전";
 "Time" = "시간";
 "Duration Options" = "기간 표시 방법";
 
@@ -387,8 +386,6 @@
 "Create %@" = "%@ 만들기";
 
 "현재 위치에 대한 정보를 가져올 수 없습니다." = "현재 위치에 대한 정보를 가져올 수 없습니다.";
-
-"확인" = "확인";
 
 "Every 2 Weeks" = "매 격주";
 "Undo" = "되돌리기";
@@ -804,9 +801,16 @@
 
 "CALCULATION" = "계산";
 
-"DoneButton" = "리턴";
+"DoneButton" = "닫기";
 "Off" = "반올림";
 
 "Passcode_Off" = "끄기";
 
 "P" = "공";
+
+"DaysCounter_ALL" = "모든 이벤트";
+
+"until" = "남음";
+"now" = "지금";
+
+"LoanCalc_Start Date" = "상환 시작일";

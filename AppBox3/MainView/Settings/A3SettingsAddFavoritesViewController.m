@@ -88,7 +88,7 @@
 	if (!_allMenuItems) {
 		_allMenuItems = [[A3AppDelegate instance] allMenuItems];
 		_allMenuItems = [_allMenuItems sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-			return [obj1[kA3AppsMenuName] compare:obj2[kA3AppsMenuName]];
+			return [NSLocalizedString(obj1[kA3AppsMenuName], nil) compare:NSLocalizedString(obj2[kA3AppsMenuName], nil)];
 		}];
 	}
 	return _allMenuItems;
@@ -135,7 +135,7 @@
     
     // Configure the cell...
 	NSDictionary *menuItem = self.allMenuItems[indexPath.row];
-	cell.textLabel.text = menuItem[kA3AppsMenuName];
+	cell.textLabel.text = NSLocalizedString(menuItem[kA3AppsMenuName], nil);
 	cell.imageView.image = [UIImage imageNamed:menuItem[kA3AppsMenuImageName]];
 
 	BOOL isFavoriteItem = [self indexOfMenuInFavorites:menuItem] != NSNotFound;

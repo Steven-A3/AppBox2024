@@ -68,7 +68,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	self.sectionsArray = [NSMutableArray arrayWithArray:@[
 			@{ItemKey_Items : [NSMutableArray arrayWithArray:@[
 					@{
-							ItemKey_Title : NSLocalizedString(@"Start Date", @"Start Date"),
+							ItemKey_Title : NSLocalizedString(@"LadyCalendar_Start Date", @"Start Date"),
 							ItemKey_Type : @(PeriodCellType_StartDate)
 					},
 					@{

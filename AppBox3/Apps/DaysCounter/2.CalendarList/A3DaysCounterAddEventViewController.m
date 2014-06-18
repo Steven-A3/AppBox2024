@@ -509,6 +509,7 @@
                     UITextField *textField = (UITextField*)[cell viewWithTag:10];
                     UIButton *button = (UIButton*)[cell viewWithTag:11];
                     textField.delegate = self;
+					textField.placeholder = NSLocalizedString(@"Title", nil);
                     [button addTarget:self action:@selector(toggleFavorite:) forControlEvents:UIControlEventTouchUpInside];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 					break;
@@ -516,6 +517,8 @@
                 case EventCellType_Photo:
                 {
                     cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventPhotoCell" owner:nil options:nil] lastObject];
+					UILabel *label = (UILabel *)[cell viewWithTag:10];
+					label.text = NSLocalizedString(@"Photo", nil);
                     UIButton *button = (UIButton*)[cell viewWithTag:11];
                     [button addTarget:self action:@selector(photoAction:) forControlEvents:UIControlEventTouchUpInside];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -545,6 +548,8 @@
                 case EventCellType_Calendar:
                 {
                     cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCalendarCell" owner:nil options:nil] lastObject];
+					UILabel *label = (UILabel *)[cell viewWithTag:10];
+					label.text = NSLocalizedString(@"Calendar", nil);
                     UIImageView *imageView = (UIImageView*)[cell viewWithTag:11];
                     imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 					break;
@@ -568,7 +573,7 @@
 					A3JHTableViewExpandableHeaderCell *expandableCell = [[A3JHTableViewExpandableHeaderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 					expandableCell.expandButton.transform = CGAffineTransformRotate(CGAffineTransformIdentity, (CGFloat) DegreesToRadians(_isAdvancedCellOpen ? -179.9 : 0 ));
 					expandableCell.delegate = self;
-					expandableCell.titleLabel.text = @"ADVANCED";
+					expandableCell.titleLabel.text = NSLocalizedString(@"ADVANCED", @"ADVANCED");
 					cell = expandableCell;
 					break;
 				}

@@ -42,7 +42,7 @@ static NSString *CellIdentifier = @"Cell";
 {
     [super viewDidLoad];
     
-    self.title = @"Exclude";
+    self.title = NSLocalizedString(@"Exclude", @"Exclude");
 
 //    if (IS_IPAD) {
 //        [self rightBarButtonDoneButton];
