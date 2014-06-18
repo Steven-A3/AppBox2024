@@ -115,7 +115,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		self.historyBarButton.tag = A3RightBarButtonTagHistoryButton;
 		space.width = 24.0;
 
-		self.navigationItem.rightBarButtonItems = @[settings, space, self.historyBarButton, space, share];
+		self.navigationItem.rightBarButtonItems = @[settings, space, self.historyBarButton, space, share, space, [self instructionHelpBarButton]];
 	}
 
 	[self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
@@ -320,7 +320,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	[self rightBarButtonDoneButton];
 
-	_moreMenuButtons = @[self.shareButton, [self historyButton:[CurrencyHistory class] ], self.settingsButton];
+	_moreMenuButtons = @[[self instructionHelpButton], self.shareButton, [self historyButton:[CurrencyHistory class] ], self.settingsButton];
 	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
 	_isShowMoreMenu = YES;
 }
@@ -547,6 +547,11 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
     [gesture setDelaysTouchesBegan:YES];
     [self.view addGestureRecognizer:gesture];
 //    self.reservedTapGestureRecognizer = gesture;
+}
+
+- (void)instructionHelpButtonAction:(id)sender {
+    [self dismissMoreMenu];
+    [self showInstructionView];
 }
 
 - (void)showInstructionView
