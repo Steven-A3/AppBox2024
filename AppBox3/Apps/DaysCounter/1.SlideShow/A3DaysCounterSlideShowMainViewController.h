@@ -15,16 +15,14 @@
 @property (strong, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) IBOutlet UIToolbar *topToolbar;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
-@property (strong, nonatomic) IBOutlet UIView *naviRightButtonView;
 @property (strong, nonatomic) IBOutlet UIView *noPhotoView;
 @property (strong, nonatomic) IBOutlet UIButton *addEventButton;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (strong, nonatomic) IBOutlet UIView *naviRightButtonViewiPhone;
 
 - (IBAction)detailAction:(id)sender;
 - (IBAction)calendarViewAction:(id)sender;
 - (IBAction)addEventAction:(id)sender;
 - (IBAction)reminderAction:(id)sender;
 - (IBAction)favoriteAction:(id)sender;
-- (IBAction)shareOtherAction:(id)sender;
+- (void)shareOtherAction:(id)sender;
 @end

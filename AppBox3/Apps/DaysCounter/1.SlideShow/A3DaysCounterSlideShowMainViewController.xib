@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -9,8 +9,6 @@
                 <outlet property="addEventButton" destination="igt-f2-sch" id="eZ5-Nc-8pl"/>
                 <outlet property="bottomToolbar" destination="VFR-AQ-cZU" id="WB5-vy-tNH"/>
                 <outlet property="collectionView" destination="JYB-gf-7p7" id="W3R-Kj-CBA"/>
-                <outlet property="naviRightButtonView" destination="AhU-YX-WEH" id="lnH-mT-nHA"/>
-                <outlet property="naviRightButtonViewiPhone" destination="6gM-wX-IaP" id="ieM-2F-imV"/>
                 <outlet property="noPhotoView" destination="R5M-x6-qpJ" id="qIH-LS-Sum"/>
                 <outlet property="topToolbar" destination="ZvV-eG-XtD" id="aKz-Pq-j8l"/>
                 <outlet property="view" destination="1" id="3"/>
@@ -134,30 +132,6 @@
                 </barButtonItem>
             </items>
         </toolbar>
-        <view contentMode="scaleToFill" id="AhU-YX-WEH">
-            <rect key="frame" x="0.0" y="0.0" width="145" height="44"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <subviews>
-                <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ouw-SM-ZrO">
-                    <rect key="frame" x="90" y="0.0" width="35" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" image="share"/>
-                    <connections>
-                        <action selector="shareOtherAction:" destination="-1" eventType="touchUpInside" id="Mh7-LW-VBz"/>
-                    </connections>
-                </button>
-                <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7NL-WN-c0O">
-                    <rect key="frame" x="19" y="0.0" width="36" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" image="information"/>
-                    <connections>
-                        <action selector="detailAction:" destination="-1" eventType="touchUpInside" id="H1k-qr-Mg6"/>
-                    </connections>
-                </button>
-            </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-        </view>
         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="igt-f2-sch" userLabel="Button - add">
             <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -169,30 +143,6 @@
                 <action selector="addEventAction:" destination="-1" eventType="touchUpInside" id="LQx-9O-HeH"/>
             </connections>
         </button>
-        <view contentMode="scaleToFill" id="6gM-wX-IaP">
-            <rect key="frame" x="0.0" y="0.0" width="78" height="44"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <subviews>
-                <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oef-x9-dUm">
-                    <rect key="frame" x="-1" y="0.0" width="36" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" image="information"/>
-                    <connections>
-                        <action selector="detailAction:" destination="-1" eventType="touchUpInside" id="M6j-2T-FSP"/>
-                    </connections>
-                </button>
-                <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NeM-t5-bQP">
-                    <rect key="frame" x="43" y="0.0" width="35" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" image="share"/>
-                    <connections>
-                        <action selector="shareOtherAction:" destination="-1" eventType="touchUpInside" id="MF6-nw-6Kz"/>
-                    </connections>
-                </button>
-            </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-        </view>
     </objects>
     <resources>
         <image name="add01" width="25" height="25"/>

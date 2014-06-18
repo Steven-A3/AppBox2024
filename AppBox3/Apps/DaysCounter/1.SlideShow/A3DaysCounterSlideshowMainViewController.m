@@ -38,8 +38,8 @@
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (assign, nonatomic) BOOL isShowMoreMenu;
-@property (strong, nonatomic) UIButton *infoButton;
-@property (strong, nonatomic) UIButton *shareButton;
+@property (strong, nonatomic) UIBarButtonItem *infoButton;
+@property (strong, nonatomic) UIBarButtonItem *shareButton;
 @property (strong, nonatomic) NSTimer *timer;
 @property (assign, nonatomic) BOOL isRotating;
 @property (assign, nonatomic) BOOL isFirstViewLoad;
@@ -63,22 +63,17 @@
 {
     [super viewDidLoad];
 
-	UIView *rightButtonView = nil;
 	if ( IS_IPHONE ) {
 		[self leftBarButtonAppsButton];
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
-		rightButtonView = _naviRightButtonViewiPhone;
+        [self rightButtonMoreButton];
 	}
 	else {
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonView];
-		rightButtonView = _naviRightButtonView;
+        self.infoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"information"] style:UIBarButtonItemStylePlain target:self action:@selector(detailAction:)];
+        self.shareButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareOtherAction:)];
+        self.infoButton.tintColor = [A3AppDelegate instance].themeColor;
+        self.shareButton.tintColor = [A3AppDelegate instance].themeColor;
+        self.navigationItem.rightBarButtonItems = @[self.shareButton, self.infoButton, self.instructionHelpBarButton];
 	}
-	self.infoButton = (UIButton*)[rightButtonView viewWithTag:10];
-	self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];
-	self.infoButton.tintColor = [A3AppDelegate instance].themeColor;
-	self.shareButton.tintColor = [A3AppDelegate instance].themeColor;
-	[self.infoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
-	[self.shareButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"share"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
 
     [self.navigationController setToolbarHidden:YES];
     [self setToolbarItems:_bottomToolbar.items];
@@ -98,7 +93,7 @@
     self.navigationController.navigationBar.translucent = YES;
     [_collectionView registerNib:[UINib nibWithNibName:@"A3DaysCounterSlideshowEventSummaryView" bundle:nil] forCellWithReuseIdentifier:@"summaryCell"];
     
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleMenu:)];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPhotoViewScreen:)];
     tapGesture.delegate = self;
     [_collectionView addGestureRecognizer:tapGesture];
 
@@ -130,9 +125,6 @@
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
 		FNLOG();
 		[self removeObserver];
-	}
-	if ( _isShowMoreMenu ) {
-		[self hideTopToolbarAnimated:YES];
 	}
 
 	[self stopTimer];
@@ -204,7 +196,7 @@
     }
     else {
         if ( _isShowMoreMenu ) {
-            [self hideTopToolbarAnimated:NO];
+//            [self hideTopToolbarAnimated:NO];
         }
         self.navigationController.navigationBarHidden = NO;
         _noPhotoView.hidden = NO;
@@ -222,7 +214,7 @@
     }
     if ( self.A3RootViewController.showRightView ) {
         if ( self.navigationController.navigationBarHidden )
-            [self toggleMenu:nil];
+            [self tapPhotoViewScreen:nil];
     }
 
     [_collectionView reloadData];
@@ -314,22 +306,6 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-//    _isRotating = YES;
-//
-//    [_collectionView reloadData];
-//    UICollectionViewCell *cell = [_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]];
-//    if (cell) {
-//        [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
-//                                atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
-//                                        animated:NO];
-//    }
-//
-//    if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
-//        self.navigationItem.title = @"Days Counter";
-//    }
-//    else {
-//        self.navigationItem.title = [NSString stringWithFormat:@"%ld of %ld", (long)currentIndex + 1, (long)[_eventsArray count]];
-//    }
 }
 
 - (void)cleanUp {
@@ -340,105 +316,59 @@
 	self.shareButton = nil;
 }
 
-#pragma mark -
-
-- (void)presentMoreMenuView
-{
-    if ( self.moreMenuView == nil ) {
-        UIView *moreMenuView = [self moreMenuViewWithButtons:@[self.infoButton,self.shareButton]];
-        moreMenuView.backgroundColor = [UIColor clearColor];
-        
-        UIView *moreMenuBaseView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, moreMenuView.frame.size.width, moreMenuView.frame.size.height)];
-        moreMenuBaseView.backgroundColor = [UIColor clearColor];
-        moreMenuBaseView.clipsToBounds = YES;
-        self.moreMenuView = moreMenuBaseView;
-        
-        UIView *bgColorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, moreMenuBaseView.frame.size.width, moreMenuBaseView.frame.size.height-1.0)];
-        bgColorView.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
-        bgColorView.alpha = 0.864;
-        bgColorView.tag = 10;
-
-        [moreMenuBaseView addSubview:bgColorView];
-        moreMenuView.frame = CGRectMake(0, 0, moreMenuBaseView.frame.size.width, moreMenuBaseView.frame.size.height-1.0);
-        [moreMenuBaseView addSubview:moreMenuView];
-        
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, moreMenuBaseView.frame.size.width, 1.0)];
-        lineView.backgroundColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
-        [moreMenuBaseView addSubview:lineView];
-        
-        [_moreMenuView addConstraint:[NSLayoutConstraint constraintWithItem:moreMenuView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_moreMenuView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
-        [_moreMenuView addConstraint:[NSLayoutConstraint constraintWithItem:moreMenuView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_moreMenuView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
-        [_moreMenuView addConstraint:[NSLayoutConstraint constraintWithItem:moreMenuView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_moreMenuView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
-        [_moreMenuView addConstraint:[NSLayoutConstraint constraintWithItem:moreMenuView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_moreMenuView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
-        
-        [_moreMenuView addConstraint:[NSLayoutConstraint constraintWithItem:bgColorView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_moreMenuView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
-        [_moreMenuView addConstraint:[NSLayoutConstraint constraintWithItem:bgColorView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_moreMenuView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
-        [_moreMenuView addConstraint:[NSLayoutConstraint constraintWithItem:bgColorView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_moreMenuView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
-        [_moreMenuView addConstraint:[NSLayoutConstraint constraintWithItem:bgColorView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_moreMenuView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
-        
-        [_moreMenuView addConstraint:[NSLayoutConstraint constraintWithItem:lineView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_moreMenuView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
-        [_moreMenuView addConstraint:[NSLayoutConstraint constraintWithItem:lineView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_moreMenuView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
-        [_moreMenuView addConstraint:[NSLayoutConstraint constraintWithItem:lineView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_moreMenuView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
-        [_moreMenuView addConstraint:[NSLayoutConstraint constraintWithItem:lineView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1.0 constant:1.0]];
-    }
+- (void)moreButtonAction:(UIBarButtonItem *)button {
+	[self rightBarButtonDoneButton];
     
-	[self.navigationController.view insertSubview:_moreMenuView belowSubview:self.view];
+	UIButton *info = [UIButton buttonWithType:UIButtonTypeSystem];
+	[info setImage:[UIImage imageNamed:@"information"] forState:UIControlStateNormal];
+	[info addTarget:self action:@selector(detailAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    _moreMenuView.alpha = 0.0;
-    UIView *bgColorView = [_moreMenuView viewWithTag:10];
-    bgColorView.alpha = 0.0;
-    [UIView animateWithDuration:0.3 animations:^{
-		_moreMenuView.frame = CGRectMake(_moreMenuView.frame.origin.x, 20.0 + 44.0 - 1.0, _moreMenuView.frame.size.width, _moreMenuView.frame.size.height);
-        _moreMenuView.alpha = 1.0;
-        bgColorView.alpha = 0.864;
-	} completion:^(BOOL finished) {
-
-    }];
-}
-
-- (void)dismissMoreMenuView
-{
-    UIView *menuView = _moreMenuView;
+	UIButton *share = [UIButton buttonWithType:UIButtonTypeSystem];
+	[share setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
+	[share addTarget:self action:@selector(shareOtherAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIView *bgColorView = [menuView viewWithTag:10];
-	[UIView animateWithDuration:0.3 animations:^{
-		CGRect frame = menuView.frame;
-		frame = CGRectOffset(frame, 0.0, -44.0);
-		menuView.frame = frame;
-        menuView.alpha = 0.0;
-        bgColorView.alpha = 0.0;
-	} completion:^(BOOL finished) {
-		[_moreMenuView removeFromSuperview];
-	}];
-}
-
-- (void)showTopToolbarAnimated:(BOOL)animated
-{
+	UIButton *help = [self instructionHelpButton];
+    
+    info.tintColor = [A3AppDelegate instance].themeColor;
+    share.tintColor = [A3AppDelegate instance].themeColor;
+    help.tintColor = [A3AppDelegate instance].themeColor;
+    
+	_moreMenuButtons = @[help, info, share];
+    
     if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
-        _infoButton.enabled = NO;
-        _shareButton.enabled = NO;
+        info.enabled = NO;
+        share.enabled = NO;
     }
     else {
-        _infoButton.enabled = YES;
-        _shareButton.enabled = YES;
-    }
-    _moreMenuButtons = @[self.infoButton, self.shareButton];
-    [self presentMoreMenuView];
-    _isShowMoreMenu = YES;
-}
-
-- (void)hideTopToolbarAnimated:(BOOL)animated
-{
-    if (!_isShowMoreMenu) {
-        return;
+        info.enabled = YES;
+        share.enabled = YES;
     }
     
-    _isShowMoreMenu = NO;
-
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
-    [self dismissMoreMenuView];
+	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:nil];
+	_isShowMoreMenu = YES;
 }
 
+- (void)doneButtonAction:(id)button {
+	[self dismissMoreMenu];
+}
+
+- (void)dismissMoreMenu {
+	if ( !_isShowMoreMenu || IS_IPAD ) return;
+    
+	[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
+}
+
+- (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
+	if (!_isShowMoreMenu) return;
+    
+	_isShowMoreMenu = NO;
+    
+	[self rightButtonMoreButton];
+	[self dismissMoreMenuView:_moreMenuView scrollView:nil];
+	[self.view removeGestureRecognizer:gestureRecognizer];
+}
+
+#pragma mark -
 - (void)updateNavigationTitle
 {
     if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
@@ -475,7 +405,7 @@
     return self.navigationController.navigationBarHidden;
 }
 
-- (void)toggleMenu:(UITapGestureRecognizer*)gesture
+- (void)tapPhotoViewScreen:(UITapGestureRecognizer*)gesture
 {
     BOOL isHidden = self.navigationController.navigationBarHidden;
     [self.navigationController setNavigationBarHidden:!isHidden animated:YES];
@@ -483,10 +413,18 @@
     [self setNeedsStatusBarAppearanceUpdate];
 
     _addEventButton.hidden = !isHidden;
-    if ( !isHidden ) {
-        [self hideTopToolbarAnimated:YES];
-        if ( IS_IPHONE )
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
+    
+    [self rightBarButtonStateReload];
+}
+
+- (void)rightBarButtonStateReload {
+    if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
+        _infoButton.enabled = NO;
+        _shareButton.enabled = NO;
+    }
+    else {
+        _infoButton.enabled = YES;
+        _shareButton.enabled = YES;
     }
 }
 
@@ -528,11 +466,17 @@
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"DaysCounter_2"]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+}
+
+- (void)instructionHelpButtfonAction
+{
+    [self showInstructionView];
 }
 
 - (void)showInstructionView
 {
+    [self dismissMoreMenu];
+    
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"DaysCounter_2"];
     self.instructionViewController.delegate = self;
@@ -562,24 +506,12 @@
 }
 
 #pragma mark - action method
-- (void)moreButtonAction:(UIBarButtonItem *)button {
-    if ( ![_topToolbar isDescendantOfView:self.view] ) {
-        [self rightBarButtonDoneButton];
-        [self showTopToolbarAnimated:YES];
-    }
-}
-
-- (void)doneButtonAction:(UIBarButtonItem *)button
-{
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
-    [self hideTopToolbarAnimated:YES];
-}
-
 - (IBAction)detailAction:(id)sender {
+    [self dismissMoreMenu];
     if ( [_eventsArray count] < 1 ) {
         return;
     }
-    [self hideTopToolbarAnimated:NO];
+
     DaysCounterEvent *item = [_eventsArray objectAtIndex:currentIndex];
     _prevShownEventID = item.uniqueID;
     
@@ -622,8 +554,10 @@
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
-- (IBAction)shareOtherAction:(id)sender
+- (void)shareOtherAction:(id)sender
 {
+    [self dismissMoreMenu];
+    
     A3SlideshowActivity *slideActivity = [[A3SlideshowActivity alloc] init];
     slideActivity.sharedManager = _sharedManager;
     slideActivity.completionBlock = ^(NSDictionary *userInfo, UIActivity *activity) {
@@ -645,13 +579,11 @@
     else {
 		[self enableControls:NO];
 
-        UIButton *button = (UIButton*)sender;
+        UIBarButtonItem *button = (UIBarButtonItem *)sender;
 		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
         popoverController.delegate = self;
         self.popoverVC = popoverController;
-        [popoverController presentPopoverFromRect:[button convertRect:button.bounds toView:self.view]
-                                           inView:self.view
-                         permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [popoverController presentPopoverFromBarButtonItem:button permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         activityController.completionHandler = ^(NSString* activityType, BOOL completed) {
             if ( completed && [activityType isEqualToString:@"Slideshow"] ) {
                 A3DaysCounterSlideshowOptionViewController *viewController = [[A3DaysCounterSlideshowOptionViewController alloc] init];
@@ -709,16 +641,6 @@
     
     return cell;
 }
-
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-//{
-//	UICollectionViewFlowLayout *flowLayout = collectionViewLayout;
-//	FNLOG(@"%f, %f", flowLayout.itemSize.width, flowLayout.itemSize.height);
-//	FNLOG(@"%f, %f, %f, %f", flowLayout.sectionInset.top, flowLayout.sectionInset.left, flowLayout.sectionInset.right, flowLayout.sectionInset.bottom);
-//	FNLOG(@"%f, %f", flowLayout.minimumLineSpacing, flowLayout.minimumInteritemSpacing);
-//    FNLOG(@"%@", NSStringFromCGSize(CGSizeMake(self.view.frame.size.width, self.view.frame.size.height)));
-//    return CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
-//}
 
 #pragma mark UICollectionView Delegate
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
