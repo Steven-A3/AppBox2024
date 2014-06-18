@@ -206,6 +206,8 @@
         case EventCellType_Calendar:
         {
             cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCalendarInfoCell" owner:nil options:nil] lastObject];
+			UILabel *label = (UILabel *)[cell viewWithTag:10];
+			label.text = NSLocalizedString(@"Calendar", nil);
             UIImageView *imageView = (UIImageView*)[cell viewWithTag:11];
             imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;

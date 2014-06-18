@@ -10,7 +10,7 @@
 "Term" = "Term";
 "Interest Rate" = "Interest Rate";
 "Frequency" = "Frequency";
-"Start Date" = "Start Date";
+"LadyCalendar_Start Date" = "Start Date";
 "Notes" = "Notes";
 "Monthly" = "Monthly";
 "Yearly" = "Yearly";
@@ -365,7 +365,6 @@
 "Custom" = "Custom";
 "day(s) before" = "day(s) before";
 "Please enter your dates in the future." = "Please enter your dates in the future.";
-"Days Before" = "Days Before";
 "Time" = "Time";
 "Duration Options" = "Duration Options";
 
@@ -387,8 +386,6 @@
 "Create %@" = "Create %@";
 
 "현재 위치에 대한 정보를 가져올 수 없습니다." = "현재 위치에 대한 정보를 가져올 수 없습니다.";
-
-"확인" = "확인";
 
 "Every 2 Weeks" = "Every 2 Weeks";
 "Undo" = "Undo";
@@ -806,10 +803,17 @@
 
 "CALCULATION" = "CALCULATION";
 
-"DoneButton" = "DoneButton";
+"DoneButton" = "Return";
 
 "Off" = "Off";
 
 "Passcode_Off" = "Off";
 
 "P" = "P";
+
+"DaysCounter_ALL" = "ALL";
+
+"until" = "until";
+"now" = "now";
+
+"LoanCalc_Start Date" = "Start Date";

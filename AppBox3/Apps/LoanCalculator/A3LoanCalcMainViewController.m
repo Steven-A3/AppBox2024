@@ -495,7 +495,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 - (NSDictionary *)startDateItem
 {
     if (!_startDateItem) {
-        _startDateItem = @{@"Title": NSLocalizedString(@"Start Date", @"Start Date")};
+        _startDateItem = @{@"Title": NSLocalizedString(@"LoanCalc_Start Date", @"Start Date")};
     }
     
     return _startDateItem;
