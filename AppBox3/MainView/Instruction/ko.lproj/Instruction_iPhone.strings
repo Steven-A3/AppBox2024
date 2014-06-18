@@ -75,7 +75,7 @@
 "Wl0-Ir-Vwx.text" = "언어를 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to see chart/account/option"; ObjectID = "ZkW-mi-nXJ"; */
-"ZkW-mi-nXJ.text" = "탭 하여 그래프, 계정, 옵션을 볼 수 있습니다.";
+"ZkW-mi-nXJ.text" = "탭 하여 차트, 계정, 옵션을 볼 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "slide the calendar to the left,\nthen tap Delete"; ObjectID = "afl-C5-OsY"; */
 "afl-C5-OsY.text" = "캘린더를 왼쪽으로 밀어서\n지울 수 있습니다.";

@@ -386,9 +386,6 @@
 		684D92F218BC1FBC005016F7 /* A3DateCalcDurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92CF18BC1FBC005016F7 /* A3DateCalcDurationViewController.m */; };
 		684D92F318BC1FBC005016F7 /* A3DateCalcEditEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92D118BC1FBC005016F7 /* A3DateCalcEditEventViewController.m */; };
 		684D92F418BC1FBC005016F7 /* A3DateCalcExcludeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92D318BC1FBC005016F7 /* A3DateCalcExcludeViewController.m */; };
-		684D92F518BC1FBC005016F7 /* A3DateCalcFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92D518BC1FBC005016F7 /* A3DateCalcFooterView.m */; };
-		684D92F618BC1FBC005016F7 /* A3DateCalcFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 684D92D618BC1FBC005016F7 /* A3DateCalcFooterView.xib */; };
-		684D92F718BC1FBC005016F7 /* A3DateCalcFooterViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92D818BC1FBC005016F7 /* A3DateCalcFooterViewCell.m */; };
 		684D92F818BC1FBC005016F7 /* A3DateCalcHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92DA18BC1FBC005016F7 /* A3DateCalcHeaderView.m */; };
 		684D92FC18BC1FBC005016F7 /* A3DateCalcResultCursorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92E018BC1FBC005016F7 /* A3DateCalcResultCursorView.m */; };
 		684D92FD18BC1FBC005016F7 /* A3DateCalcStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92E218BC1FBC005016F7 /* A3DateCalcStateManager.m */; };
@@ -1581,11 +1578,6 @@
 		684D92D118BC1FBC005016F7 /* A3DateCalcEditEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcEditEventViewController.m; sourceTree = "<group>"; };
 		684D92D218BC1FBC005016F7 /* A3DateCalcExcludeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateCalcExcludeViewController.h; sourceTree = "<group>"; };
 		684D92D318BC1FBC005016F7 /* A3DateCalcExcludeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcExcludeViewController.m; sourceTree = "<group>"; };
-		684D92D418BC1FBC005016F7 /* A3DateCalcFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateCalcFooterView.h; sourceTree = "<group>"; };
-		684D92D518BC1FBC005016F7 /* A3DateCalcFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcFooterView.m; sourceTree = "<group>"; };
-		684D92D618BC1FBC005016F7 /* A3DateCalcFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DateCalcFooterView.xib; sourceTree = "<group>"; };
-		684D92D718BC1FBC005016F7 /* A3DateCalcFooterViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateCalcFooterViewCell.h; sourceTree = "<group>"; };
-		684D92D818BC1FBC005016F7 /* A3DateCalcFooterViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcFooterViewCell.m; sourceTree = "<group>"; };
 		684D92D918BC1FBC005016F7 /* A3DateCalcHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateCalcHeaderView.h; sourceTree = "<group>"; };
 		684D92DA18BC1FBC005016F7 /* A3DateCalcHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcHeaderView.m; sourceTree = "<group>"; };
 		684D92DF18BC1FBC005016F7 /* A3DateCalcResultCursorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateCalcResultCursorView.h; sourceTree = "<group>"; };
@@ -5383,11 +5375,6 @@
 				684D92C718BC1FBC005016F7 /* A3DateCalcAddSubButton.m */,
 				684D92E518BC1FBC005016F7 /* A3DateCalcTableviewCell.h */,
 				684D92E618BC1FBC005016F7 /* A3DateCalcTableviewCell.m */,
-				684D92D418BC1FBC005016F7 /* A3DateCalcFooterView.h */,
-				684D92D518BC1FBC005016F7 /* A3DateCalcFooterView.m */,
-				684D92D618BC1FBC005016F7 /* A3DateCalcFooterView.xib */,
-				684D92D718BC1FBC005016F7 /* A3DateCalcFooterViewCell.h */,
-				684D92D818BC1FBC005016F7 /* A3DateCalcFooterViewCell.m */,
 				684D92C818BC1FBC005016F7 /* A3DateCalcAddSubCell1.h */,
 				684D92C918BC1FBC005016F7 /* A3DateCalcAddSubCell1.m */,
 				684D92CA18BC1FBC005016F7 /* A3DateCalcAddSubCell1.xib */,
@@ -5641,7 +5628,6 @@
 				68F14FD219485E8500159EAD /* A3DaysCounterAddEventCalendarInfoCell.xib in Resources */,
 				68B6A33A18CEC76D004084EF /* A3WalletPhotoItemTitleView.xib in Resources */,
 				68143D0C18E3EC1F00569691 /* A3PasscodeKeyboard_iPhone.xib in Resources */,
-				684D92F618BC1FBC005016F7 /* A3DateCalcFooterView.xib in Resources */,
 				68B6A2F218CEC76D004084EF /* A3UnitPriceInputView.xib in Resources */,
 				68B6A33B18CEC76D004084EF /* A3WalletPhotoItemTitleView_iPad.xib in Resources */,
 				68F14FEE19485E8500159EAD /* A3DaysCounterLocationDetailCell.xib in Resources */,
@@ -5822,7 +5808,6 @@
 				6829682618503B2100B70E13 /* NSManagedObjectModel+MagicalRecord.m in Sources */,
 				68B9B16317D02B85003ACAD0 /* A3HolidaysCountryViewCell.m in Sources */,
 				68B6A2EC18CEC76D004084EF /* A3UnitPriceHistoryCell.m in Sources */,
-				684D92F518BC1FBC005016F7 /* A3DateCalcFooterView.m in Sources */,
 				68E6F37517B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m in Sources */,
 				68E2A66218D0B1FC00E834D9 /* A3PercentCalcMainViewController.m in Sources */,
 				68B6A2CD18CEC76D004084EF /* A3UnitConverterAddViewController.m in Sources */,
@@ -6129,7 +6114,6 @@
 				688257B817D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.m in Sources */,
 				68B6A2D618CEC76D004084EF /* A3UnitConverterTVDataCell.m in Sources */,
 				689C9A591839CD7F007C97EE /* UIWebView+AFNetworking.m in Sources */,
-				684D92F718BC1FBC005016F7 /* A3DateCalcFooterViewCell.m in Sources */,
 				682636561914F3D9002E72CA /* LadyCalendarAccount.m in Sources */,
 				68E2A6AA18D0B22800E834D9 /* A3TextViewElement.m in Sources */,
 				68B6A4A818CF335E004084EF /* UnitType.m in Sources */,

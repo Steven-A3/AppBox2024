@@ -164,7 +164,7 @@
 	FNLOGRECT(self.view.frame);
 	FNLOGRECT(self.navigationController.view.frame);
 
-	_segmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"All", @"All"), NSLocalizedString(@"Favorites", @"Favorites")]];
+	_segmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"Translator_All", @"All"), NSLocalizedString(@"Favorites", @"Favorites")]];
 	_segmentedControl.selectedSegmentIndex = 0;
 	[_segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview:_segmentedControl];

@@ -27,4 +27,5 @@
 -(void)saveInputedTextField:(UITextField *)textField;
 -(BOOL)hasEqualTextField:(UITextField *)textField;
 +(NSDateComponents *)dateComponentBySavedText;
+
 @end

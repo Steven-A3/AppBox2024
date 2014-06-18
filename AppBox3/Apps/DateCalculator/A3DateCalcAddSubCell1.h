@@ -6,9 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
-@class A3DateCalcAddSubButton;
+#import "A3DateCalcAddSubButton.h"
 
 @interface A3DateCalcAddSubCell1 : UITableViewCell
 

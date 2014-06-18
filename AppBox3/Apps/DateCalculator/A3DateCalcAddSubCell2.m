@@ -29,6 +29,12 @@
     return self;
 }
 
+- (void)awakeFromNib {
+	self.yearLabel.text = NSLocalizedString(@"Year(s)", nil);
+	self.monthLabel.text = NSLocalizedString(@"Month(s)", nil);
+	self.dayLabel.text = NSLocalizedString(@"Day(s)", nil);
+}
+
 -(void)layoutSubviews
 {
     [super layoutSubviews];

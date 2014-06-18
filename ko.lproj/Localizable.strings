@@ -148,8 +148,8 @@
 "Auto Update" = "자동 환율 갱신";
 "Show National Flag" = "국기 표시하기";
 "Use Cellular Data" = "셀룰러 데이터 사용";
-"Swap" = "맞교환";
-"Chart" = "그래프";
+"Swap" = "스왑";
+"Chart" = "차트";
 "Share" = "공유";
 "Delete" = "삭제";
 
@@ -820,3 +820,9 @@
 "Learn about iOS Security" = "iOS 보안에 대해 자세히 알아보기";
 
 "CalculatorGroup" = "각종 계산";
+
+"Translator_All" = "All";
+
+"Year(s)" = "년";
+"Month(s)" = "월";
+"Day(s)" = "일";

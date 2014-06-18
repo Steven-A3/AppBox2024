@@ -10,7 +10,6 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3DateCalcHeaderView.h"
-#import "A3DateCalcFooterView.h"
 #import "A3DateKeyboardViewController.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3NumberKeyboardViewController_iPhone.h"

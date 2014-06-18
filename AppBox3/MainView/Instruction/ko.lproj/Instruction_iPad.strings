@@ -39,10 +39,10 @@
 "JFG-2D-dxV.text" = "확인 할 카테고리를\n선택합니다.";
 
 /* Class = "IBUILabel"; text = "tap to see chart/account/option"; ObjectID = "Jc6-JH-cJx"; */
-"Jc6-JH-cJx.text" = "탭 하여 그래프, 계정, 옵션을 볼 수 있습니다.";
+"Jc6-JH-cJx.text" = "탭 하여 차트, 계정, 옵션을 볼 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "slide the currency to the left,\nthen tap options"; ObjectID = "KuK-sv-rbe"; */
-"KuK-sv-rbe.text" = "통화를 왼쪽으로 밀고\n추가 기능이 나옵니다.";
+"KuK-sv-rbe.text" = "통화를 왼쪽으로 밀면\n추가 기능이 나옵니다.";
 
 /* Class = "IBUILabel"; text = "add or delete countries"; ObjectID = "Kyq-vy-Xlr"; */
 "Kyq-vy-Xlr.text" = "국가를 추가하거나 제외합니다.";
