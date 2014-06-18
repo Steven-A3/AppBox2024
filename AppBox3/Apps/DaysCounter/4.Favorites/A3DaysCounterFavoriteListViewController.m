@@ -57,6 +57,7 @@
     //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
     self.toolbarItems = _bottomToolbar.items;
+    self.navigationItem.rightBarButtonItem = [self instructionHelpBarButton];
 
     [self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
@@ -138,8 +139,6 @@
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"DaysCounter_3"]) {
         [self showInstructionView];
     }
-    
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
 }
 
 - (void)showInstructionView

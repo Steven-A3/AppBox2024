@@ -277,7 +277,6 @@
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"DaysCounter_1"]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
 }
 
 - (void)showInstructionView
