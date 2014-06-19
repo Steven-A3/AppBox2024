@@ -99,7 +99,7 @@
 - (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	A3JHTableViewElement *element = [self elementForIndexPath:indexPath];
 	if ([element isKindOfClass:[A3JHTableViewExpandableElement class]]) {
-		return IS_RETINA ? 56 : 57;  // 111, 56
+		return IS_RETINA ? 55.5 : 56;  // 111, 56
         //return 56;
 	}
     else if ([element isKindOfClass:[A3TableViewDatePickerElement class]]) {  // KJH - 2013.11.28
