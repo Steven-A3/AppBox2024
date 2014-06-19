@@ -532,7 +532,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 - (UIView *)advancedTitleView
 {
     if (!_advancedTitleView) {
-        _advancedTitleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, IS_RETINA ? 55.5 : 56.0)];
+        _advancedTitleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, IS_RETINA ? 54.5 : 55.0)];
         _advancedTitleView.backgroundColor = [UIColor clearColor];
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -558,7 +558,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
         adv.text = NSLocalizedString(@"ADVANCED", @"ADVANCED");
         adv.tag = 1234;
         
-        UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, 55, self.view.bounds.size.width, IS_RETINA ? 0.5:1)];
+        UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, 54, self.view.bounds.size.width, IS_RETINA ? 0.5:1)];
         bottomLine.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         bottomLine.tag = 5678;
         bottomLine.backgroundColor = [self tableViewSeparatorColor];
@@ -2609,7 +2609,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 //            return self.loanData.showExtraPayment ? titleHeight - 1 : 1;
         }
         else if (section == 4) {
-            return self.loanData.showExtraPayment ? titleHeight-1:titleHeight-2;
+            return self.loanData.showExtraPayment ? titleHeight - 1 : titleHeight - 2;
         }
         return 1;
     }
