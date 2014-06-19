@@ -434,7 +434,6 @@
     if (![[NSUserDefaults standardUserDefaults] boolForKey:StoryBoardID_Calcualtor]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
 }
 
 - (void)showInstructionView

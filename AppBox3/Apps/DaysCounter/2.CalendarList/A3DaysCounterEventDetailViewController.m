@@ -415,8 +415,6 @@
     if ( daysGap <= 0 ) {
         isSince = YES;
     }
-//    NSString *dateText1 = @"";
-//    NSString *dateText2 = @"";
     
     BOOL isLunar = [info.isLunar boolValue];
     NSDate *startDate = [info.startDate solarDate];
@@ -431,7 +429,6 @@
                                                                       korean:[A3DateHelper isCurrentLocaleIsKorea]
                                                              resultLeapMonth:&isResultLeapMonth];
         NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
-        
         startDate = convertDate;
         
         if ( endDate ) {
@@ -446,16 +443,6 @@
         }
     }
     
-//    if ( [info.isPeriod boolValue] ) {
-//        dateText1 = [NSString stringWithFormat:@"from %@", [A3DateHelper dateStringFromDate:startDate
-//                                                                                 withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
-//        dateText2 = [NSString stringWithFormat:@"to %@", [A3DateHelper dateStringFromDate:endDate
-//                                                                               withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
-//    }
-//    else {
-//        dateText1 = [NSString stringWithFormat:@"from %@", [A3DateHelper dateStringFromDate:startDate
-//                                                                            withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
-//    }
 
     [self adjustLayoutForEventInfoCell:cell eventInfo:info];
     [self updateTitleCellCurrentPart:cell withEventInfo:info];
@@ -704,8 +691,9 @@
                 dateLabel4.text = @"";
             }
             else {
-                dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:NO isAllDay:[info.isAllDay boolValue]];
-//                dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:NO isAllDay:[info.isAllDay boolValue]];
+                
+                dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[info.startDate solarDate]
+                                                                                          withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
                 dateLabel2.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:YES isAllDay:[info.isAllDay boolValue]];
                 if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                     dateLabel3.text = [NSString stringWithFormat:NSLocalizedString(@"repeats %@", @"repeats %@"), [_sharedManager repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
@@ -858,6 +846,9 @@
                 }
                 else {
                     dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:NO isAllDay:[info.isAllDay boolValue]];
+                    dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[info.startDate solarDate]
+                                                                                              withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+                    
                     dateLabel2.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:YES isAllDay:[info.isAllDay boolValue]];
                     if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                         dateLabel3.text = [NSString stringWithFormat:NSLocalizedString(@"repeats %@", @"repeats %@"), [_sharedManager repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
