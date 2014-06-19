@@ -197,6 +197,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 				case A3RightBarButtonTagShareButton:
 					[barButtonItem setEnabled:_currentBudget.category != nil];
 					break;
+                default:
+                    [barButtonItem setEnabled:YES];
+                    break;
 			}
 		}];
 	} else {
@@ -295,7 +298,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
                                                                action:@selector(historyButtonAction:)];
     history.tag = A3RightBarButtonTagHistoryButton;
 
-    self.navigationItem.rightBarButtonItems = @[history, add];
+    self.navigationItem.rightBarButtonItems = @[history, add, [self instructionHelpBarButton]];
 }
 
 -(void)setCurrentBudgetId:(NSString *)currentBudgetId {
