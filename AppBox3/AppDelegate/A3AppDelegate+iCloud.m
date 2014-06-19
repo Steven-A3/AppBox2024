@@ -55,7 +55,19 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 - (void)setCloudEnabled:(BOOL)enable deleteCloud:(BOOL)deleteCloud {
 	_needMigrateLocalDataToCloud = YES;
 
-	[self.ubiquityStoreManager setCloudEnabled:enable];
+	if (enable) {
+		if (deleteCloud) {
+
+//			[self.ubiquityStoreManager setCloudEnabledAndOverwriteCloudWithLocalIfConfirmed:^(void (^)(BOOL) setConfirmationAnswer) {
+//
+//			}];
+		} else {
+			[self.ubiquityStoreManager setCloudEnabled:enable];
+		}
+	}
+	else {
+		[self.ubiquityStoreManager setCloudEnabled:enable];
+	}
 	[self enableCloudForFiles:enable];
 
 	UIView *targetViewForHud = [[self visibleViewController] view];
