@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -54,9 +54,14 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="F0u-2q-tLD"/>
-                        <barButtonItem image="m_horizon" id="yOV-d3-82x">
+                        <barButtonItem image="help" id="yOV-d3-82x">
                             <connections>
-                                <action selector="flipButton:" destination="-1" id="FeH-mE-DoH"/>
+                                <action selector="showInstructionView:" destination="-1" id="xpk-Bl-rAK"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem image="m_horizon" id="0ry-1f-lS4">
+                            <connections>
+                                <action selector="flipButton:" destination="-1" id="Z0v-u4-2Ei"/>
                             </connections>
                         </barButtonItem>
                     </items>
@@ -98,6 +103,7 @@
         <barButtonItem title="Item" id="rJ3-rz-yFq"/>
     </objects>
     <resources>
+        <image name="help" width="22" height="22"/>
         <image name="m_color" width="26" height="25"/>
         <image name="m_horizon" width="17" height="21"/>
         <image name="m_snap" width="60" height="60"/>

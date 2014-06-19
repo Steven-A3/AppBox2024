@@ -604,12 +604,11 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 - (void)setupInstructionView
 {
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Mirror"]) {
-        [self showInstructionView];
+        [self showInstructionView:nil];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
 }
 
-- (void)showInstructionView
+- (IBAction)showInstructionView:(id)sender
 {
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Mirror"];

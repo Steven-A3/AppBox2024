@@ -38,6 +38,7 @@ typedef NS_ENUM(NSUInteger, A3MirrorFilterType) {
 - (IBAction)zoomIng:(id)sender;
 - (IBAction)appsButton:(id)sender;
 - (IBAction)flipButton:(id)sender;
+- (IBAction)showInstructionView:(id)sender;
 - (IBAction)captureButton:(id)sender;
 
 - (IBAction)loadCameraRoll:(id)sender;
