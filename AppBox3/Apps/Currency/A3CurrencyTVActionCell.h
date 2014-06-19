@@ -11,5 +11,6 @@
 @interface A3CurrencyTVActionCell : UITableViewCell
 
 @property (nonatomic, weak) IBOutlet UIButton *centerButton;
+@property (weak, nonatomic) IBOutlet UIButton *rightHelpButton;
 
 @end

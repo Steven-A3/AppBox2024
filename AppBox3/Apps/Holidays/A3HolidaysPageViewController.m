@@ -191,7 +191,6 @@
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Holidays_1"]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
 }
 
 - (void)showInstructionView
@@ -345,8 +344,10 @@
 
 - (void)setupRightBarButtonItems {
 	UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonAction)];
-	self.navigationItem.rightBarButtonItem = editButton;
-	self.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
+    editButton.tintColor = [UIColor whiteColor];
+    UIBarButtonItem *helpButton = [self instructionHelpBarButton];
+    helpButton.tintColor = [UIColor whiteColor];
+    self.navigationItem.rightBarButtonItems = @[editButton, helpButton];
 }
 
 - (void)editButtonAction {

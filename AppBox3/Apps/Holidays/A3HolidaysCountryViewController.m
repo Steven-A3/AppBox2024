@@ -25,7 +25,6 @@
 @property (nonatomic, strong) NSMutableArray *userSelectedCountries;
 @property (nonatomic, strong) FMMoveTableView *tableView;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
-@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @end
 
 @implementation A3HolidaysCountryViewController {
@@ -112,14 +111,6 @@ extern NSString *const A3CurrencyActionCellID;
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Holidays_2"]) {
         [self showInstructionView];
     }
-
-    if (!_tapGestureRecognizer) {
-        _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
-        [_tapGestureRecognizer setNumberOfTouchesRequired:2];
-        [_tapGestureRecognizer setNumberOfTapsRequired:2];
-        [_tapGestureRecognizer setDelaysTouchesBegan:YES];
-        [self.view addGestureRecognizer:_tapGestureRecognizer];
-    }
 }
 
 - (void)showInstructionView
@@ -165,16 +156,20 @@ extern NSString *const A3CurrencyActionCellID;
 		A3CurrencyTVActionCell *plusCell = [tableView dequeueReusableCellWithIdentifier:A3CurrencyActionCellID forIndexPath:indexPath];
 
 		[plusCell.centerButton addTarget:self action:@selector(plusButtonAction) forControlEvents:UIControlEventTouchUpInside];
+		[plusCell.rightHelpButton addTarget:self action:@selector(showInstructionView) forControlEvents:UIControlEventTouchUpInside];
+        plusCell.rightHelpButton.hidden = NO;
 		plusCell.backgroundColor = [UIColor clearColor];
 		cell = plusCell;
-	} else {
+	}
+    else {
 		A3HolidaysCountryViewCell *normalCell = [tableView dequeueReusableCellWithIdentifier:HolidayCellIdentifier forIndexPath:indexPath];
 		normalCell.pageViewController = _pageViewController;
 
 		if ([tableView indexPathIsMovingIndexPath:indexPath])
 		{
 			[normalCell prepareForMove];
-		} else {
+		}
+        else {
 			// Configure the cell...
 			if ([tableView movingIndexPath]) {
 				indexPath = [tableView adaptedIndexPathForRowAtIndexPath:indexPath];

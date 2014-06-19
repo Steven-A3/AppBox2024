@@ -36,6 +36,14 @@
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);
 	}];
+    
+    [_rightHelpButton makeConstraints:^(MASConstraintMaker *make) {
+		make.trailing.equalTo(IS_IPHONE ? @-4 : @-17);
+		make.centerY.equalTo(self.contentView.centerY);
+		make.width.equalTo(@44);
+		make.height.equalTo(@44);
+    }];
+    _rightHelpButton.hidden = YES;
 }
 
 @end
