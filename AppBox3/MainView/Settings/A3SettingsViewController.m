@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	sA3SettingsRowLunarCalendar = 4200,
 };
 
-@interface A3SettingsViewController () <A3PasscodeViewControllerDelegate>
+@interface A3SettingsViewController () <A3PasscodeViewControllerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 @property (nonatomic, strong) UIButton *colorButton;
@@ -34,7 +34,9 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 @end
 
-@implementation A3SettingsViewController
+@implementation A3SettingsViewController {
+	NSInteger _downloadCloudButtonIndex;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -141,12 +143,27 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 }
 
 - (void)toggleCloud:(UISwitch *)switchControl {
-	if ([switchControl isOn] && ![[A3AppDelegate instance].ubiquityStoreManager cloudAvailable]) {
-		[self alertCloudNotEnabled];
-		[switchControl setOn:NO animated:YES];
-		return;
+	if ([switchControl isOn]) {
+		if (![[A3AppDelegate instance].ubiquityStoreManager cloudAvailable]) {
+			[self alertCloudNotEnabled];
+			[switchControl setOn:NO animated:YES];
+			return;
+		}
+
+		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
+		if ([keyValueStore boolForKey:A3CloudHasData]) {
+			// Ask user to delete iCloud or not
+			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"iCloud has your data."
+																	 delegate:self
+															cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+													   destructiveButtonTitle:NSLocalizedString(@"Delete iCloud", @"Delete iCloud")
+															otherButtonTitles:nil];
+			_downloadCloudButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Download iCloud Data", @"Download iCloud Data")];
+			[actionSheet showInView:self.view];
+			return;
+		}
 	}
-	[[A3AppDelegate instance] setCloudEnabled:switchControl.on];
+	[[A3AppDelegate instance] setCloudEnabled:switchControl.on deleteCloud:NO ];
 }
 
 - (void)themeColor {
@@ -157,6 +174,15 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	if (success) {
 		[self performSegueWithIdentifier:@"passcode" sender:nil];
 	}
+}
+
+#pragma mark - UIActionSheet Delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == actionSheet.cancelButtonIndex) return;
+	BOOL deleteCloud = buttonIndex == actionSheet.destructiveButtonIndex;
+
+	[[A3AppDelegate instance] setCloudEnabled:YES deleteCloud:deleteCloud ];
 }
 
 @end

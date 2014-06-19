@@ -130,7 +130,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 			[self alertCloudNotEnabled];
 			return;
 		}
-		[[A3AppDelegate instance] setCloudEnabled:YES];
+		[[A3AppDelegate instance] setCloudEnabled:YES deleteCloud:NO ];
 	} else {
 		[self continueButtonPressedInViewController:_currentSceneViewController];
 	}
