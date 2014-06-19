@@ -103,7 +103,7 @@
             [((UISwitch *)cell.accessoryView) setOn:[self.dataManager.tipCalcData.showSplit boolValue]];
             break;
         case 2:
-            cell.textLabel.text = NSLocalizedString(@"Rounding Method", @"Rounding Method");
+            cell.textLabel.text = NSLocalizedString(@"Rounding", @"Rounding");
             [((UISwitch *)cell.accessoryView) setOn:[self.dataManager.tipCalcData.showRounding boolValue]];
             break;
             

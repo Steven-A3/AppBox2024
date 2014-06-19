@@ -15,7 +15,7 @@
 
 - (void)keyValueStoreDidChangeExternally:(NSNotification *)notification {
 	FNLOG(@"keyValueStoreDidChangeExternally");
-	if (![self .ubiquityStoreManager cloudEnabled]) return;
+	if (![self.ubiquityStoreManager cloudEnabled]) return;
 
 	FNLOG(@"keyValueStoreDidChangeExternally, data download and merged.");
 

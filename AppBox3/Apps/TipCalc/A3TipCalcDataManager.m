@@ -169,16 +169,16 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 	[mstrOutput appendString:@"<br>"];
 
     if (![self isTaxOptionOn]) {
-		[mstrOutput appendString:NSLocalizedString(@"Costs", @"Costs")];
+		[mstrOutput appendString:NSLocalizedString(@"Amount", @"Amount")];
         [mstrOutput appendFormat:@" : %@<br>", [self currencyStringFromDouble:[self.tipCalcData.costs doubleValue]]];
     }
     else {
         if([self.tipCalcData.knownValue intValue] == TCKnownValue_Subtotal) {
-			[mstrOutput appendString:NSLocalizedString(@"Costs After Tax", @"Costs After Tax")];
+			[mstrOutput appendString:NSLocalizedString(@"Amount After Tax", @"Amount After Tax")];
             [mstrOutput appendFormat:@" : %@<br>", [self currencyStringFromDouble:[self.tipCalcData.costs doubleValue]]];
         }
         else {
-			[mstrOutput appendString:NSLocalizedString(@"Costs Before Tax", @"Costs Before Tax")];
+			[mstrOutput appendString:NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax")];
             [mstrOutput appendFormat:@" : %@<br>", [self currencyStringFromDouble:[self.tipCalcData.costs doubleValue]]];
         }
     }

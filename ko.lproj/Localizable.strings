@@ -159,7 +159,7 @@
 
 "%@ equals %@ with rate %0.4f" = "%@/%@ = %0.4f";
 "Currency Converter in the AppBox Pro" = "AppBox Pro의 환율 변환";
-"<html><body>I'd like to share a currency conversion with you.<br/><br/>" = "<html><body>환율 계산 결과를 공유합니다.<br/><br/>";
+"<html><body>I'd like to share a conversion with you.<br/><br/>" = "<html><body>환율 계산 결과를 공유합니다.<br/><br/>";
 "currency_share_HTML_body" = "<br/><br/>AppBox Pro의 환율 정보를 활용해 보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 "Share Currency Converter Data" = "환율 변환 정보 공유하기";
 
@@ -625,9 +625,9 @@
 "Total Per Person" = "개인별 총액";
 "Tip Per Person" = "개인 별 팁";
 "Input" = "입력";
-"Costs" = "비용";
-"Costs After Tax" = "세금이 포함된 금액";
-"Costs Before Tax" = "세금 제외 금액";
+"Amount" = "비용";
+"Amount After Tax" = "세금이 포함된 금액";
+"Amount Before Tax" = "세금 제외 금액";
 "Split" = "더치페이";
 
 "Before Split" = "총액";
@@ -638,19 +638,19 @@
 " Total" = " 총액";
 
 "Subtotal" = "계";
-"ROUNDING METHOD" = "반올림 방법";
+"ROUNDING" = "반올림 방법";
 "Cost" = "비용";
 "Value" = "값";
-"Option" = "선택사항";
+"Methods" = "방법";
 "Exact" = "정확하게";
 "Up" = "올림";
-"Down" = "내림";
+"Down" = "버림";
 
 "tipcalc_share_body" = "<br/><br/>AppBox Pro로 팁 계산을 쉽게 할 수 있어요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 
 "Tip Calculator using AppBox Pro" = "AppBox Pro의 팁 계산기능";
 
-"Rounding Method" = "반올림 방법";
+"Rounding" = "반올림";
 "Select Language" = "언어 선택";
 "%@ to %@" = "%@ / %@";
 "Detect Language" = "언어 감지";
@@ -666,7 +666,7 @@
 "All Units" = "모든 단위";
 "%@ Units" = "%@ 단위";
 
-"Unit Converter in the AppBox Pro" = "AppBox Pro의 단위 변환";
+"Unit Converter using the AppBox Pro" = "AppBox Pro의 단위 변환";
 "unitConverter_share_html_body" = "<br/><br/>AppBox Pro로 다양한 단위간 변환을 해보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 "\nCheck out the AppBox Pro!" = "\nAppBox Pro에서 작성!";
 "Share unit converting data" = "단위 변환 결과를 공유";
@@ -690,8 +690,8 @@
 "Quantity" = "수량";
 "Discount" = "할인";
 
-"The best unit price is A at %@" = "A의 단가가 %@ 만큼 더 저렴합니다.";
-"The best unit price is B at %@" = "B의 단가가 %@ 만큼 더 저렴합니다.";
+"The best unit price is A at %@" = "단가가 %@인 A가 더 저렴합니다.";
+"The best unit price is B at %@" = "단가가 %@인 B가 더 저렴합니다.";
 "The unit price is same at %@" = "두개의 단가는 %@로 똑 같습니다.";
 
 "Area" = "면적";
@@ -840,3 +840,11 @@
 "Wallpaper" = "배경화면";
 
 "Show Lunar Date" = "음력 날짜 보기";
+
+"Currency Converter using AppBox Pro" = "AppBox Pro의 환율 변환";
+
+"Translator using AppBox Pro" = "AppBox Pro의 번역기";
+
+"<html><body>I'd like to share a translation with you.<br/><br/>" = "<html><body>번역한 내용을 공유합니다.<br/><br/>";
+"translator_share_HTML_body" = "<br/><br/>AppBox Pro의 번역 기능을 활용해 보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
+"Share Translator Data" = "번역 결과를 공유";
