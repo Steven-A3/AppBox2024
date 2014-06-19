@@ -407,13 +407,17 @@
 
 - (void)tapPhotoViewScreen:(UITapGestureRecognizer*)gesture
 {
+    if (_isShowMoreMenu) {
+        [self dismissMoreMenu];
+        return;
+    }
+    
     BOOL isHidden = self.navigationController.navigationBarHidden;
     [self.navigationController setNavigationBarHidden:!isHidden animated:YES];
     [self.navigationController setToolbarHidden:!isHidden animated:YES];
     [self setNeedsStatusBarAppearanceUpdate];
 
     _addEventButton.hidden = !isHidden;
-    
     [self rightBarButtonStateReload];
 }
 

@@ -370,7 +370,7 @@ enum A3ExpenseListAddBudgetCellType {
         [elements addObject:paymentType];
         
         if (_currentBudget) {
-            budget.value = _currentBudget.totalAmount.stringValue;
+            budget.value = [self.decimalFormatter stringFromNumber:[_currentBudget totalAmount]];
             category.value = _currentBudget.category;
             paymentType.value = _currentBudget.paymentType;
             

@@ -106,7 +106,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnTableView:)];
     _tapGestureRecognizer.numberOfTouchesRequired = 1;
     _tapGestureRecognizer.numberOfTapsRequired = 1;
-    _tapGestureRecognizer.delaysTouchesBegan = YES;
     [self.tableView addGestureRecognizer:_tapGestureRecognizer];
     
     _columnSectionView = [[A3ExpenseListColumnSectionView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 45.0)];
@@ -198,6 +197,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 				case A3RightBarButtonTagShareButton:
 					[barButtonItem setEnabled:_currentBudget.category != nil];
 					break;
+                default:
+                    [barButtonItem setEnabled:YES];
+                    break;
 			}
 		}];
 	} else {
@@ -296,7 +298,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
                                                                action:@selector(historyButtonAction:)];
     history.tag = A3RightBarButtonTagHistoryButton;
 
-    self.navigationItem.rightBarButtonItems = @[history, add];
+    self.navigationItem.rightBarButtonItems = @[history, add, [self instructionHelpBarButton]];
 }
 
 -(void)setCurrentBudgetId:(NSString *)currentBudgetId {

@@ -1427,6 +1427,8 @@
     }
     
     if ( [_eventItem.isLunar boolValue]) {
+        _eventItem.isAllDay = @(YES);
+        
         NSDateComponents *startComp = [A3DaysCounterModelManager dateComponentsFromDateModelObject:[_eventItem startDate] toLunar:YES];
         BOOL isLunarStartDate = [NSDate isLunarDateComponents:startComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
         if (!isLunarStartDate) {
