@@ -106,7 +106,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnTableView:)];
     _tapGestureRecognizer.numberOfTouchesRequired = 1;
     _tapGestureRecognizer.numberOfTapsRequired = 1;
-    _tapGestureRecognizer.delaysTouchesBegan = YES;
     [self.tableView addGestureRecognizer:_tapGestureRecognizer];
     
     _columnSectionView = [[A3ExpenseListColumnSectionView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 45.0)];
