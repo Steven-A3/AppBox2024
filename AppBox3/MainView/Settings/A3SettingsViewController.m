@@ -182,7 +182,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	if (buttonIndex == actionSheet.cancelButtonIndex) return;
 	BOOL deleteCloud = buttonIndex == actionSheet.destructiveButtonIndex;
 
-	[[A3AppDelegate instance] setCloudEnabled:YES deleteCloud:deleteCloud ];
+	[[A3AppDelegate instance] setCloudEnabled:YES deleteCloud:NO ];
 }
 
 @end

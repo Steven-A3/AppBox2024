@@ -74,7 +74,6 @@
 "iCloud_goto_settings" = "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.";
 
 "Info" = "Info";
-"Internet Connection is not available." = "Internet Connection is not available.";
 "Cancel" = "Cancel";
 "Delete Photo" = "Delete Photo";
 "Take Photo" = "Take Photo";
@@ -666,7 +665,7 @@
 "All Units" = "All Units";
 "%@ Units" = "%@ Units";
 
-"Unit Converter using the AppBox Pro" = "Unit Converter using the AppBox Pro";
+"Unit Converter using AppBox Pro" = "Unit Converter using AppBox Pro";
 "unitConverter_share_html_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "\nCheck out the AppBox Pro!" = "\nCheck out the AppBox Pro!";
 "Share unit converting data" = "Share unit converting data";
@@ -735,7 +734,7 @@
 "Category" = "Category";
 "Current %@" = "Current %@";
 "New Item" = "New Item";
-"Details" = "Detail";
+"Details" = "Details";
 "Map" = "Map";
 "Duration Time %lds" = "Duration Time %lds";
 "1 Passcode Failed Attempt" = "1 Passcode Failed Attempt";
@@ -859,3 +858,5 @@
 
 "Delete iCloud" = "Delete iCloud";
 "Download iCloud Data" = "Download iCloud Data";
+
+"Internet connection is not available." = "Internet connection is not available.";

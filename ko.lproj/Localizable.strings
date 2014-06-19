@@ -74,7 +74,6 @@
 "iCloud_goto_settings" = "iCloud 동기화 기능을 사용하시려면 장치의 설정을 열어서 iCloud 도큐멘트 및 데이터를 저장하도록 설정하여 주세요.";
 
 "Info" = "정보";
-"Internet Connection is not available." = "사용 가능한 인터넷 연결이 없습니다.";
 "Cancel" = "취소";
 "Delete Photo" = "사진을 지움";
 "Take Photo" = "사진 촬영";
@@ -666,7 +665,7 @@
 "All Units" = "모든 단위";
 "%@ Units" = "%@ 단위";
 
-"Unit Converter using the AppBox Pro" = "AppBox Pro의 단위 변환";
+"Unit Converter using AppBox Pro" = "AppBox Pro의 단위 변환";
 "unitConverter_share_html_body" = "<br/><br/>AppBox Pro로 다양한 단위간 변환을 해보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 "\nCheck out the AppBox Pro!" = "\nAppBox Pro에서 작성!";
 "Share unit converting data" = "단위 변환 결과를 공유";
@@ -690,9 +689,9 @@
 "Quantity" = "수량";
 "Discount" = "할인";
 
-"The best unit price is A at %@" = "단가가 %@인 A가 더 저렴합니다.";
-"The best unit price is B at %@" = "단가가 %@인 B가 더 저렴합니다.";
-"The unit price is same at %@" = "두개의 단가는 %@로 똑 같습니다.";
+"The best unit price is A at %@" = "단가 %@인 A가 더 저렴합니다.";
+"The best unit price is B at %@" = "단가 %@인 B가 더 저렴합니다.";
+"The unit price is same at %@" = "두개의 단가는 %@로 똑같습니다.";
 
 "Area" = "면적";
 "Length" = "길이";
@@ -851,3 +850,5 @@
 
 "Delete iCloud" = "iCloud 데이터를 지움";
 "Download iCloud Data" = "iCloud 데이터 사용";
+
+"Internet connection is not available." = "사용 가능한 인터넷 연결이 없습니다.";

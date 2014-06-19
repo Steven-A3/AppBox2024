@@ -610,7 +610,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
     if ([activityType isEqualToString:UIActivityTypeMail]) {
-        return NSLocalizedString(@"Unit Converter using the AppBox Pro", @"Unit Converter using the AppBox Pro");
+        return NSLocalizedString(@"Unit Converter using AppBox Pro", @"Unit Converter using AppBox Pro");
     }
     
     return @"";
