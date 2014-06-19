@@ -301,6 +301,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     if (IS_IPAD || [NSDate isFullStyleLocale]) {
         dateFormatter.dateStyle = NSDateFormatterFullStyle;
         dateFormatter.timeStyle = NSDateFormatterShortStyle;
+        dateFormatter.doesRelativeDateFormatting = YES;
     }
     else {
         dateFormatter.dateFormat = [dateFormatter customFullWithTimeStyleFormat];

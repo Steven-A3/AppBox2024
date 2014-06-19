@@ -106,6 +106,7 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
         if (IS_IPAD || [NSDate isFullStyleLocale]) {
             dateFormatter.dateStyle = NSDateFormatterFullStyle;
             dateFormatter.timeStyle = NSDateFormatterShortStyle;
+            dateFormatter.doesRelativeDateFormatting = YES;
         }
         else {
             dateFormatter.dateFormat = [dateFormatter customFullWithTimeStyleFormat];

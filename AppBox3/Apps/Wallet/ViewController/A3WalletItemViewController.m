@@ -528,12 +528,12 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
         if (IS_IPAD || [NSDate isFullStyleLocale]) {
             dateFormatter.dateStyle = NSDateFormatterFullStyle;
             dateFormatter.timeStyle = NSDateFormatterShortStyle;
+            dateFormatter.doesRelativeDateFormatting = YES;
         }
         else {
             dateFormatter.dateFormat = [dateFormatter customFullWithTimeStyleFormat];
         }
         
-        dateFormatter.doesRelativeDateFormatting = YES;
 		titleCell.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [dateFormatter stringFromDate:_item.modificationDate]];
         
 		// To prevent adding multiple times
