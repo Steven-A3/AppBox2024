@@ -848,3 +848,6 @@
 "<html><body>I'd like to share a translation with you.<br/><br/>" = "<html><body>번역한 내용을 공유합니다.<br/><br/>";
 "translator_share_HTML_body" = "<br/><br/>AppBox Pro의 번역 기능을 활용해 보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 "Share Translator Data" = "번역 결과를 공유";
+
+"Delete iCloud" = "iCloud 데이터를 지움";
+"Download iCloud Data" = "iCloud 데이터 사용";

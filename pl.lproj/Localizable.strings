@@ -856,3 +856,6 @@
 "<html><body>I'd like to share a translation with you.<br/><br/>" = "<html><body>I'd like to share a translation with you.<br/><br/>";
 "translator_share_HTML_body" = "<br/><br/>You can translate more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Share Translator Data" = "Share Translator Data";
+
+"Delete iCloud" = "Delete iCloud";
+"Download iCloud Data" = "Download iCloud Data";

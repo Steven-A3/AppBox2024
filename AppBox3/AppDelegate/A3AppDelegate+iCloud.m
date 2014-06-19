@@ -29,6 +29,7 @@
 NSString *const A3UniqueIdentifier = @"uniqueIdentifier";
 NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
 NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
+NSString *const A3CloudHasData = @"A3CloudHasData";
 
 @protocol UbiquityStoreManagerInternal <NSObject>
 
@@ -51,7 +52,7 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:USMStoreDidImportChangesNotification object:nil];
 }
 
-- (void)setCloudEnabled:(BOOL)enable {
+- (void)setCloudEnabled:(BOOL)enable deleteCloud:(BOOL)deleteCloud {
 	_needMigrateLocalDataToCloud = YES;
 
 	[self.ubiquityStoreManager setCloudEnabled:enable];
@@ -134,6 +135,10 @@ NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 	self.coreDataReadyToUse = YES;
 
 	if (isCloudStore) {
+		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
+		[keyValueStore setBool:YES forKey:A3CloudHasData];
+		[keyValueStore synchronize];
+
 		[self startDownloadAllFiles];
 
 		if (_needMigrateLocalDataToCloud) {
