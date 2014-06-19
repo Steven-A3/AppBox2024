@@ -62,7 +62,7 @@ enum SortingKind {
 {
     [super viewDidLoad];
 
-    self.navigationItem.rightBarButtonItem = self.searchItem;
+    self.navigationItem.rightBarButtonItems = @[self.searchItem, [self instructionHelpBarButton]];
     
 	self.navigationItem.title = NSLocalizedString(@"All Items", @"All Items");
 	self.showCategoryInDetailViewController = YES;
@@ -499,7 +499,6 @@ enum SortingKind {
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Wallet_1"]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
 }
 
 - (void)showInstructionView

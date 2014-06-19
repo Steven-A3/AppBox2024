@@ -103,10 +103,6 @@
     
     // 페이지 들어올때마다 갱신한다.
     [self refreshItems];
-    
-    // edit 버튼 활성화 여부
-    BOOL editable = (self.items.count>0) ? YES:NO;
-    self.navigationItem.rightBarButtonItem.enabled = editable;
 }
 
 - (void)viewWillLayoutSubviews {
@@ -150,7 +146,7 @@
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Wallet_4"]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+    self.navigationItem.rightBarButtonItem = [self instructionHelpBarButton];
 }
 
 - (void)showInstructionView

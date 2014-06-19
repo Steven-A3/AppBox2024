@@ -53,8 +53,12 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 
 	if (_isEditing) {
 		[self leftBarButtonAddButton];
-		[self rightBarButtonDoneButton];
-	} else {
+//		[self rightBarButtonDoneButton];
+        UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonAction:)];
+        UIBarButtonItem *help = [self instructionHelpBarButton];
+        self.navigationItem.rightBarButtonItems = @[done, help];
+	}
+    else {
 		[self leftBarButtonAppsButton];
 		[self rightBarButtonEditButton];
 	}
@@ -186,7 +190,6 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Wallet_3"]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
 }
 
 - (void)showInstructionView
