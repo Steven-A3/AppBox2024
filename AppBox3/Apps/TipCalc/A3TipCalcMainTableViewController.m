@@ -355,7 +355,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         values = [NSMutableArray new];
         [values addObject:[formatter stringFromNumber:[self.dataManager costBeforeTax]]];
         [values addObject:[formatter stringFromNumber:[self.dataManager taxValue]]];
-        [titles addObject:@[NSLocalizedString(@"Costs", @"Costs"), NSLocalizedString(@"Tax", @"Tax")]];
+        [titles addObject:@[NSLocalizedString(@"Amount", @"Amount"), NSLocalizedString(@"Tax", @"Tax")]];
         [details addObject:values];
         
         values = [NSMutableArray new];
@@ -368,7 +368,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         values = [NSMutableArray new];
         [values addObject:[formatter stringFromNumber:[self.dataManager costBeforeTaxWithSplit]]];
         [values addObject:[formatter stringFromNumber:[self.dataManager taxValueWithSplit]]];
-        [titles addObject:@[NSLocalizedString(@"Costs", @"Costs"), NSLocalizedString(@"Tax", @"Tax")]];
+        [titles addObject:@[NSLocalizedString(@"Amount", @"Amount"), NSLocalizedString(@"Tax", @"Tax")]];
         [details addObject:values];
         
         values = [NSMutableArray new];
@@ -439,7 +439,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [sections addObject:@""];
     // Section 2
     if ([self.dataManager isRoundingOptionOn]) {
-		[sections addObject:NSLocalizedString(@"ROUNDING METHOD", @"ROUNDING METHOD")];
+		[sections addObject:NSLocalizedString(@"ROUNDING", @"ROUNDING")];
     }
     
     self.tableSectionTitles = sections;
@@ -467,12 +467,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         case 0:     // KNOWN VALUE
         {
             A3TableViewCheckMarkElement *subtotal = [A3TableViewCheckMarkElement new];
-            subtotal.title = NSLocalizedString(@"Costs After Tax", @"Costs After Tax");
+            subtotal.title = NSLocalizedString(@"Amount After Tax", @"Amount After Tax");
             subtotal.identifier = RowElementID_SubTotal;
             subtotal.checked = [self.dataManager knownValue] == TCKnownValue_Subtotal ? YES : NO;
             
             A3TableViewCheckMarkElement *costsBeforeTax = [A3TableViewCheckMarkElement new];
-            costsBeforeTax.title = NSLocalizedString(@"Costs Before Tax", @"Costs Before Tax");
+            costsBeforeTax.title = NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
             costsBeforeTax.identifier = RowElementID_CostsBeforeTax;
             costsBeforeTax.checked = [self.dataManager knownValue] == TCKnownValue_CostsBeforeTax ? YES : NO;
             
@@ -486,7 +486,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             A3TableViewInputElement *costs = [A3TableViewInputElement new];
 			costs.delegate = self;
             if ([self.dataManager.tipCalcData.showTax boolValue]) {
-                costs.title = [self.dataManager knownValue] == TCKnownValue_Subtotal ? NSLocalizedString(@"Costs After Tax", @"Costs After Tax") : NSLocalizedString(@"Costs Before Tax", @"Costs Before Tax");
+                costs.title = [self.dataManager knownValue] == TCKnownValue_Subtotal ? NSLocalizedString(@"Amount After Tax", @"Amount After Tax") : NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
             }
             else {
                 costs.title = NSLocalizedString(@"Cost", @"Cost");
@@ -569,7 +569,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             value.identifier = RowElementID_Value;
             
             A3JHTableViewSelectElement * option = [A3JHTableViewSelectElement new];
-            option.title = NSLocalizedString(@"Option", @"Option");
+            option.title = NSLocalizedString(@"Methods", @"Methods");
             option.items = @[NSLocalizedString(@"Exact", @"Exact"), NSLocalizedString(@"Up", @"Up"), NSLocalizedString(@"Down", @"Down"), NSLocalizedString(@"Off", @"Off")];
             option.selectedIndex = [self.dataManager roundingMethodOption];
             option.identifier = RowElementID_Option;
@@ -758,7 +758,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [self setBarButtonsEnable:YES];
     viewController.root.selectedIndex = index;
     
-    if ([viewController.root.title isEqualToString:NSLocalizedString(@"Option", @"Option")]) {
+    if ([viewController.root.title isEqualToString:NSLocalizedString(@"Methods", @"Methods")]) {
 		self.dataManager.roundingMethodOption = (TCRoundingMethodOption) index;
     }
     else {
@@ -907,7 +907,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             
 
             UITableViewCell *costs = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
-            costs.textLabel.text = [self.dataManager knownValue] == TCKnownValue_Subtotal ? NSLocalizedString(@"Costs After Tax", @"Costs After Tax") : NSLocalizedString(@"Costs Before Tax", @"Costs Before Tax");
+            costs.textLabel.text = [self.dataManager knownValue] == TCKnownValue_Subtotal ? NSLocalizedString(@"Amount After Tax", @"Amount After Tax") : NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
         }
             break;
 

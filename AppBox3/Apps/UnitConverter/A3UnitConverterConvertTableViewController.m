@@ -35,7 +35,8 @@
 
 @interface A3UnitConverterConvertTableViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate,
 		A3UnitSelectViewControllerDelegate, A3UnitConverterFavoriteEditDelegate, A3UnitConverterMenuDelegate,
-		UIPopoverControllerDelegate, UIActivityItemSource, FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate>
+		UIPopoverControllerDelegate, UIActivityItemSource, FMMoveTableViewDelegate, FMMoveTableViewDataSource,
+		A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) FMMoveTableView *fmMoveTableView;
 @property (nonatomic, strong) NSMutableSet *swipedCells;
@@ -609,7 +610,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
     if ([activityType isEqualToString:UIActivityTypeMail]) {
-        return NSLocalizedString(@"Unit Converter in the AppBox Pro", @"Unit Converter in the AppBox Pro");
+        return NSLocalizedString(@"Unit Converter using the AppBox Pro", @"Unit Converter using the AppBox Pro");
     }
     
     return @"";

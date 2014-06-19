@@ -27,7 +27,11 @@
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 static NSString *const A3AnimationKeyOpacity = @"opacity";
 
-@interface A3TranslatorMessageViewController () <UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, A3TranslatorMessageCellDelegate, UIKeyInput, A3TranslatorLanguageTVDelegateDelegate, A3SearchViewControllerDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate>
+@interface A3TranslatorMessageViewController ()
+		<UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource,
+		A3TranslatorMessageCellDelegate, UIKeyInput, A3TranslatorLanguageTVDelegateDelegate,
+		A3SearchViewControllerDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate,
+		UIActivityItemSource>
 
 // Language Select
 @property (nonatomic, strong) UIView *languageSelectView;
@@ -1313,24 +1317,66 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 									   animated:YES];
 }
 
+#pragma mark - Share action
+
 - (void)shareActionFromToolbar:(UIBarButtonItem *)barButtonItem {
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:barButtonItem];
+	_sharePopoverController.delegate = self;
+}
+
+- (NSString *)shareContentsAsHTML:(BOOL)asHTML {
 	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
 	NSMutableString *shareMessage = [NSMutableString new];
+	NSString *translatedLanguage = nil;
+	NSString *lineBreak = asHTML ? @"</br>" : @"\n";
 	for (NSIndexPath *indexPath in selectedIndexPaths) {
 		TranslatorHistory *item = _messages[indexPath.row];
-		NSString *translatedLanguage = [A3TranslatorLanguage localizedNameForCode:item.group.targetLanguage];
+		translatedLanguage = [A3TranslatorLanguage localizedNameForCode:item.group.targetLanguage];
 		if ([item.originalText length] && [item.translatedText length] && [translatedLanguage length]) {
-			[shareMessage appendString:[NSString stringWithFormat:@"\"%@\" is\n\"%@\"\nin %@", item.originalText, item.translatedText, translatedLanguage]];
+			[shareMessage appendString:[NSString stringWithFormat:@"\"%@\" is \"%@\"%@", item.originalText, item.translatedText, lineBreak]];
 		}
 	}
+	[shareMessage appendFormat:@"in %@", translatedLanguage];
+	return shareMessage;
+}
 
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[shareMessage] fromBarButtonItem:barButtonItem];
-	_sharePopoverController.delegate = self;
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
+{
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		return NSLocalizedString(@"Translator using AppBox Pro", nil);
+	}
+
+	return @"";
+}
+
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
+{
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+
+		NSMutableString *txt = [NSMutableString new];
+		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a translation with you.<br/><br/>", nil)];
+
+		[txt appendString:[self shareContentsAsHTML:YES ]];
+
+		[txt appendString:NSLocalizedString(@"translator_share_HTML_body", nil)];
+
+		return txt;
+	}
+	else {
+		return [self shareContentsAsHTML:NO ];
+	}
+}
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
+{
+	return NSLocalizedString(@"Share Translator Data", nil);
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
 	_sharePopoverController = nil;
 }
+
+#pragma mark - Favorite Action
 
 - (void)setFavoriteActionFromToolbar {
 	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];

@@ -1332,7 +1332,7 @@
             return IS_RETINA ? 35.5 : 35;
         }
         else {
-            return IS_RETINA ? 37.5 : 37;
+            return IS_RETINA ? 35.0 : 35;
         }
     }
     else if ( section == 1 ) {

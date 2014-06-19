@@ -159,7 +159,7 @@
 
 "%@ equals %@ with rate %0.4f" = "%@ equals %@ with rate %0.4f";
 "Currency Converter in the AppBox Pro" = "Currency Converter in the AppBox Pro";
-"<html><body>I'd like to share a currency conversion with you.<br/><br/>" = "<html><body>I'd like to share a currency conversion with you.<br/><br/>";
+"<html><body>I'd like to share a conversion with you.<br/><br/>" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
 "currency_share_HTML_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Share Currency Converter Data" = "Share Currency Converter Data";
 
@@ -625,9 +625,9 @@
 "Total Per Person" = "Total Per Person";
 "Tip Per Person" = "Tip Per Person";
 "Input" = "Input";
-"Costs" = "Costs";
-"Costs After Tax" = "Costs After Tax";
-"Costs Before Tax" = "Costs Before Tax";
+"Amount" = "Amount";
+"Amount After Tax" = "Amount After Tax";
+"Amount Before Tax" = "Amount Before Tax";
 "Split" = "Split";
 
 "Before Split" = "Before Split";
@@ -638,10 +638,10 @@
 " Total" = " Total";
 
 "Subtotal" = "Subtotal";
-"ROUNDING METHOD" = "ROUNDING METHOD";
+"ROUNDING" = "ROUNDING";
 "Cost" = "Cost";
 "Value" = "Value";
-"Option" = "Option";
+"Methods" = "Methods";
 "Exact" = "Exact";
 "Up" = "Up";
 "Down" = "Down";
@@ -650,7 +650,7 @@
 
 "Tip Calculator using AppBox Pro" = "Tip Calculator using AppBox Pro";
 
-"Rounding Method" = "Rounding Method";
+"Rounding" =  Rounding;
 "Select Language" = "Select Language";
 "%@ to %@" = "%@ to %@";
 "Detect Language" = "Detect Language";
@@ -666,8 +666,8 @@
 "All Units" = "All Units";
 "%@ Units" = "%@ Units";
 
-"Unit Converter in the AppBox Pro" = "Unit Converter in the AppBox Pro";
-"unitConverter_share_html_body" = "<br/>You can convert more in the AppBox Pro.<br/><a href='https://itunes.apple.com/app/id318404385'>https://itunes.apple.com/app/id318404385</a></body></html>";
+"Unit Converter using the AppBox Pro" = "Unit Converter using the AppBox Pro";
+"unitConverter_share_html_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "\nCheck out the AppBox Pro!" = "\nCheck out the AppBox Pro!";
 "Share unit converting data" = "Share unit converting data";
 "%@, rate = %@" = "%@, rate = %@";
@@ -717,7 +717,7 @@
 
 "Video" = "Video";
 "<html><body>I'd like to share a wallet with you.<br/><br/>" = "<html><body>I'd like to share a wallet with you.<br/><br/>";
-"wallet_share_html_body" = "<br/>You can wallet more in the AppBox Pro.<br/><a href='https://itunes.apple.com/app/id318404385'>https://itunes.apple.com/app/id318404385</a></body></html>";
+"wallet_share_html_body" = "<br/><br/>You can wallet more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Add Field" = "Add Field";
 "Edit Field" = "Edit Field";
 " Field name already exists. " = " Field name already exists. ";
@@ -848,3 +848,11 @@
 "Wallpaper" = "Wallpaper";
 
 "Show Lunar Date" = "Show Lunar Date";
+
+"Currency Converter using AppBox Pro" = "Currency Converter using AppBox Pro";
+
+"Translator using AppBox Pro" = "Translator using AppBox Pro";
+
+"<html><body>I'd like to share a translation with you.<br/><br/>" = "<html><body>I'd like to share a translation with you.<br/><br/>";
+"translator_share_HTML_body" = "<br/><br/>You can translate more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
+"Share Translator Data" = "Share Translator Data";

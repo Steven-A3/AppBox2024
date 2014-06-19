@@ -39,7 +39,8 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 
 @interface A3CurrencyViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate,
 		UITextFieldDelegate, A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate,
-		UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource, A3CalculatorViewControllerDelegate, A3InstructionViewControllerDelegate>
+		UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource, A3CalculatorViewControllerDelegate,
+		A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *equalItem;
@@ -1339,7 +1340,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		return NSLocalizedString(@"Currency Converter in the AppBox Pro", nil);
+		return NSLocalizedString(@"Currency Converter using AppBox Pro", nil);
 	}
 
 	return @"";
@@ -1350,7 +1351,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a currency conversion with you.<br/><br/>", nil)];
+		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a conversion with you.<br/><br/>", nil)];
 
 		[txt appendString:[self stringForShare]];
 
