@@ -1380,7 +1380,7 @@
 				return [UIViewController noteCellHeight];
 
             case EventCellType_Advanced:
-                retHeight = IS_RETINA ? 56.5 : 57.0;
+                retHeight = IS_RETINA ? 55.5 : 56.0;
                 break;
             default:
                 retHeight = 44.0;
