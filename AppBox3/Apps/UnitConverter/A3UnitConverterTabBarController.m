@@ -22,6 +22,8 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
 @interface A3UnitConverterTabBarController ()
 
 @property (nonatomic, strong) UINavigationController *myMoreNavigationController;
+@property (nonatomic, strong) NSArray *moreMenuButtons;
+@property (nonatomic, strong) UIView *moreMenuView;
 
 @end
 

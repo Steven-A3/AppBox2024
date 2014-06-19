@@ -54,7 +54,6 @@
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
 @property (strong, nonatomic) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
-@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @end
 
 @implementation A3UnitConverterConvertTableViewController {
@@ -103,17 +102,19 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 
 	if (IS_IPHONE) {
-		UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
-		UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
-
-		self.navigationItem.rightBarButtonItems = @[history, share];
+        [self rightButtonMoreButton];
+//		UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+//		UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
+//
+//		self.navigationItem.rightBarButtonItems = @[history, share];
 	} else {
 		UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
 		UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
 		UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 		space.width = 24.0;
+        UIBarButtonItem *help = [self instructionHelpBarButton];
 
-		self.navigationItem.rightBarButtonItems = @[history, space, share];
+		self.navigationItem.rightBarButtonItems = @[history, space, share, space, help];
 	}
 
 	[_fmMoveTableView registerClass:[A3UnitConverterTVDataCell class] forCellReuseIdentifier:A3UnitConverterDataCellID];
@@ -142,7 +143,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewWillHide:) name:A3NotificationRightSideViewWillDismiss object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
-//    [self setupInstructionView];
 }
 
 - (void)removeObserver {
@@ -307,7 +307,13 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 	[self rightBarButtonDoneButton];
 
-	_moreMenuButtons = @[self.shareButton, [self historyButton:NULL]];
+    UIButton *share = [self shareButton];
+    UIButton *history = [self historyButton:NULL];
+    UIButton *help = [self instructionHelpButton];
+    
+    history.enabled = [UnitHistory MR_countOfEntities] > 0 ? YES : NO;
+    
+	_moreMenuButtons = @[help, share, history];
 	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:_fmMoveTableView];
 	_isShowMoreMenu = YES;
 }
@@ -495,25 +501,11 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"UnitConverter"]) {
         [self showInstructionView];
     }
-////    [self setupTwoFingerDoubleTapGestureToShowInstruction];
-//    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
-//    [gesture setNumberOfTouchesRequired:2];
-//    [gesture setNumberOfTapsRequired:2];
-//    [gesture setDelaysTouchesBegan:YES];
-////    [self.fmMoveTableView addGestureRecognizer:gesture];
-//    [self.view addGestureRecognizer:gesture];
-    
-    if (!_tapGestureRecognizer) {
-        _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInstructionView)];
-        [_tapGestureRecognizer setNumberOfTouchesRequired:2];
-        [_tapGestureRecognizer setNumberOfTapsRequired:2];
-        [_tapGestureRecognizer setDelaysTouchesBegan:YES];
-        [self.view addGestureRecognizer:_tapGestureRecognizer];
-    }
 }
 
 - (void)showInstructionView
 {
+    [self dismissMoreMenu];
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"UnitConverter"];
     self.instructionViewController.delegate = self;
@@ -1075,6 +1067,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
 	if (!cell) return NO;
 	NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
+    [self dismissMoreMenu];
 
 	if(indexPath.row == 0) {
 		[self unSwipeAll];
