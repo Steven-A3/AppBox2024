@@ -610,6 +610,9 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 
 - (IBAction)showInstructionView:(id)sender
 {
+    BOOL toolBarHidden = self.topBar.hidden;
+    [self setToolBarsHidden:!toolBarHidden];
+    
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Mirror"];
     self.instructionViewController.delegate = self;
@@ -845,9 +848,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	else {
 		BOOL toolBarHidden = self.topBar.hidden;
 		[self setToolBarsHidden:!toolBarHidden];
-
 	}
-
 }
 
 - (void)setToolBarsHidden:(BOOL)hidden {

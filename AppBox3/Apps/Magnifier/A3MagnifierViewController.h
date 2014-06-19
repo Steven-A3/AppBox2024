@@ -19,6 +19,7 @@
 - (IBAction)snapButton:(id)sender;
 - (IBAction)loadCameraRoll:(id)sender;
 - (IBAction)flashbrightslider:(id)sender;
+- (IBAction)showInstructionView:(id)sender;
 @property (weak, nonatomic) IBOutlet UIToolbar *topToolBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *brightnessToolBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *magnifierToolBar;

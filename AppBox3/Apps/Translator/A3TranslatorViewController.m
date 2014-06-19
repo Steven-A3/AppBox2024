@@ -135,7 +135,7 @@
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Translator"]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
+    self.navigationItem.rightBarButtonItem = [self instructionHelpBarButton];
 }
 
 - (void)showInstructionView
@@ -224,6 +224,7 @@
 		[self.tableView reloadData];
 
 		[self.addButton setHidden:NO];
+        self.navigationItem.rightBarButtonItem = [self instructionHelpBarButton];
 	} else {
 		self.navigationItem.rightBarButtonItem = nil;
 

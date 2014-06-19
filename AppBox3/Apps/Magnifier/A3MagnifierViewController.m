@@ -564,12 +564,11 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 - (void)setupInstructionView
 {
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Magnifier"]) {
-        [self showInstructionView];
+        [self showInstructionView:nil];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
 }
 
-- (void)showInstructionView
+- (IBAction)showInstructionView:(id)sender
 {
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Magnifier"];

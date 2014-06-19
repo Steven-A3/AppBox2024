@@ -59,6 +59,7 @@
                                 <action selector="showInstructionView:" destination="-1" id="xpk-Bl-rAK"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem width="15" style="plain" systemItem="fixedSpace" id="ZBG-bl-uUr"/>
                         <barButtonItem image="m_horizon" id="0ry-1f-lS4">
                             <connections>
                                 <action selector="flipButton:" destination="-1" id="Z0v-u4-2Ei"/>
