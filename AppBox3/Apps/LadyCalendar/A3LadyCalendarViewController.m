@@ -79,8 +79,9 @@
 		[_settingButton setBackgroundColor:[UIColor clearColor]];
 		[_settingButton addTarget:self action:@selector(settingAction:) forControlEvents:UIControlEventTouchUpInside];
 	}
-	else{
-		self.navigationItem.rightBarButtonItems = @[_settingBarButton,_accountBarButton,_chartBarButton];
+	else {
+        _helpBarButton = [self instructionHelpBarButton];
+		self.navigationItem.rightBarButtonItems = @[_settingBarButton, _accountBarButton, _chartBarButton, _helpBarButton];
 	}
 	self.toolbarItems = _bottomToolbar.items;
 
@@ -163,6 +164,7 @@
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.addButton setEnabled:enable];
 	if (enable) {
+        [_helpBarButton setEnabled:YES];
 		[_chartBarButton setEnabled:[self.dataManager numberOfPeriodsWithAccountID:[[self.dataManager currentAccount] uniqueID] ] > 0];
 		[_accountBarButton setEnabled:YES];
 		[_settingBarButton setEnabled:YES];
@@ -364,7 +366,6 @@
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"LadyCalendar"]) {
         [self showInstructionView];
     }
-    [self setupTwoFingerDoubleTapGestureToShowInstruction];
 }
 
 - (void)showInstructionView
@@ -375,6 +376,7 @@
     [self.navigationController.view.superview addSubview:self.instructionViewController.view];
     self.instructionViewController.view.frame = self.navigationController.view.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+    [self doneButtonAction:nil];
 }
 
 - (void)dismissInstructionViewController:(UIView *)view
@@ -502,7 +504,8 @@
 	if (!_moreMenuView) {
 		_moreMenuView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
 		_moreMenuView.backgroundColor = [UIColor colorWithRed:247.0 / 255.0 green:247.0 / 255.0 blue:247.0 / 255.0 alpha:1.0];
-		[self addThreeButtons:@[_chartButton, _accountButton, _settingButton] toView:_moreMenuView];
+        UIButton *helpButton = [self instructionHelpButton];
+        [self addFourButtons:@[helpButton, _chartButton, _accountButton, _settingButton] toView:_moreMenuView];
 	}
 	return _moreMenuView;
 }

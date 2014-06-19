@@ -21,6 +21,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *addButton;
 @property (strong, nonatomic) IBOutlet UIImageView *topSeparatorView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSeparatorViewConst;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *helpBarButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *chartBarButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *accountBarButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *settingBarButton;
