@@ -95,6 +95,7 @@
 	[self.view layoutIfNeeded];
 	[self registerContentSizeCategoryDidChangeNotification];
     [self setupInstructionView];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 }
 
 - (void)removeObserver {
