@@ -67,7 +67,7 @@
                                 <action selector="showInstructionView:" destination="-1" id="1Of-3a-vXX"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem width="15" style="plain" systemItem="fixedSpace" id="YXd-SI-QT6"/>
+                        <barButtonItem width="24" style="plain" systemItem="fixedSpace" id="YXd-SI-QT6"/>
                         <barButtonItem image="m_invert" id="sw5-x9-OD7">
                             <connections>
                                 <action selector="invertButton:" destination="-1" id="R2R-8d-eJw"/>
