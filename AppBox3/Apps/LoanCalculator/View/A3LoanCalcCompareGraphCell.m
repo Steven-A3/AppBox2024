@@ -29,7 +29,7 @@
 {
     [super layoutSubviews];
     [self adjustMeterViewsPosition];
-    [self adjustABMarkPosition];
+//    [self adjustABMarkPosition];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -217,6 +217,21 @@
     point = [self.markB_Label center];
     point.x = CGRectGetWidth(self.bounds) - (CGRectGetWidth(self.markB_Label.frame) / 2);
     self.markB_Label.center = point;
+}
+
+- (void)adjustABMarkPositionForTotalAmountA:(NSNumber *)totalAmountA totalAmountB:(NSNumber *)totalAmountB
+{
+    CGFloat maxMarkPositionValue = CGRectGetWidth(self.bounds) - CGRectGetWidth(self.markA_Label.frame);
+    CGFloat lowerMarkPositionValue = maxMarkPositionValue * (MIN([totalAmountA doubleValue], [totalAmountB doubleValue]) / MAX([totalAmountA doubleValue], [totalAmountB doubleValue]));
+    
+    if ([totalAmountA isEqualToNumber:@0] || [totalAmountB isEqualToNumber:@0]) {
+        self.markA_Label.center = CGPointMake(maxMarkPositionValue, self.markA_Label.center.y);
+        self.markB_Label.center = CGPointMake(maxMarkPositionValue, self.markB_Label.center.y);
+        return;
+    }
+    
+    self.markA_Label.center = CGPointMake([totalAmountA doubleValue] > [totalAmountB doubleValue] ? maxMarkPositionValue : lowerMarkPositionValue, self.markA_Label.center.y);
+    self.markB_Label.center = CGPointMake([totalAmountB doubleValue] > [totalAmountA doubleValue] ? maxMarkPositionValue : lowerMarkPositionValue, self.markB_Label.center.y);
 }
 
 @end
