@@ -341,18 +341,26 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	_isShowMoreMenu = NO;
 
+	[self.view removeGestureRecognizer:gestureRecognizer];
 	[self rightButtonMoreButton];
 	[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
-	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 
-- (NSString *)stringFromNumber:(NSNumber *)value withCurrencyCode:(NSString *)currencyCode {
+- (NSString *)stringFromNumber:(NSNumber *)value withCurrencyCode:(NSString *)currencyCode isShare:(BOOL)isShare {
 	NSNumberFormatter *formatter = [NSNumberFormatter new];
 	[formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[formatter setCurrencyCode:currencyCode];
-	if (IS_IPHONE) {
-		[formatter setCurrencySymbol:@""];
-	}
+    
+    if (isShare) {
+        [formatter setPositiveSuffix:[NSString stringWithFormat:@" %@", [formatter positivePrefix]]];
+        [formatter setPositivePrefix:@""];
+    }
+    else {
+        if (IS_IPHONE) {
+            [formatter setCurrencySymbol:@""];
+        }
+    }
+    
 	NSString *string = [formatter stringFromNumber:value];
 	FNLOG(@"%@", string);
 	return [string stringByTrimmingSpaceCharacters];
@@ -688,7 +696,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	} else {
 		dataCell.flagImageView.image = nil;
 	}
-	dataCell.valueField.text = [self stringFromNumber:value withCurrencyCode:favorite.currencyCode];
+	dataCell.valueField.text = [self stringFromNumber:value withCurrencyCode:favorite.currencyCode isShare:NO];
 	dataCell.codeLabel.text = favorite.currencyCode;
 }
 
@@ -975,7 +983,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	} else {
 		CurrencyFavorite *currencyFavorite = self.favorites[0];
 		double value = [[self.decimalFormatter numberFromString:textField.text] doubleValue];
-		textField.text = [self stringFromNumber:@(value) withCurrencyCode:currencyFavorite.currencyCode];
+		textField.text = [self stringFromNumber:@(value) withCurrencyCode:currencyFavorite.currencyCode isShare:NO];
 		if (![textField.text isEqualToString:self.previousValue]) {
 			valueChanged = YES;
 		}
@@ -995,7 +1003,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	if ([textField isKindOfClass:[UITextField class]]) {
 		textField.text = @"";
 		CurrencyFavorite *currencyFavorite = self.favorites[0];
-		self.previousValue = [self stringFromNumber:@1 withCurrencyCode:currencyFavorite.currencyCode];
+		self.previousValue = [self stringFromNumber:@1 withCurrencyCode:currencyFavorite.currencyCode isShare:NO];
 	}
 }
 
@@ -1018,7 +1026,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
 	[numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
-	_calculatorTargetTextField.text = [self stringFromNumber:[numberFormatter numberFromString:value] withCurrencyCode:currencyFavorite.currencyCode];
+	_calculatorTargetTextField.text = [self stringFromNumber:[numberFormatter numberFromString:value] withCurrencyCode:currencyFavorite.currencyCode isShare:NO];
 
 	if (![_calculatorTargetTextField.text isEqualToString:self.previousValue]) {
 		valueChanged = YES;
@@ -1058,7 +1066,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		if (targetIndex != NSNotFound) {
 			CurrencyFavorite *targetCurrency = self.favorites[targetIndex];
 			float rate = [self rateForSource:sourceCurrency target:targetCurrency];
-			targetTextField.text = [self stringFromNumber:@(fromValue * rate) withCurrencyCode:targetCurrency.currencyCode];
+			targetTextField.text = [self stringFromNumber:@(fromValue * rate) withCurrencyCode:targetCurrency.currencyCode isShare:NO];
 		}
 	}
 }
@@ -1301,14 +1309,14 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	_sharePopoverController = nil;
 }
 
-- (NSString *)stringForSource:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx {
-	CurrencyFavorite *source = self.favorites[sourceIdx], *target = self.favorites[targetIdx];
-	float rate = [self rateForSource:source target:target];
-	return [NSString stringWithFormat:NSLocalizedString(@"%@ equals %@ with rate %0.4f", @"%@ equals %@ with rate %0.4f"),
-									  [self stringFromNumber:self.lastInputValue withCurrencyCode:source.currencyCode],
-									  [self stringFromNumber:@(self.lastInputValue.floatValue * rate) withCurrencyCode:target.currencyCode],
-									  rate];
-}
+//- (NSString *)stringForSource:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx {
+//	CurrencyFavorite *source = self.favorites[sourceIdx], *target = self.favorites[targetIdx];
+//	float rate = [self rateForSource:source target:target];
+//	return [NSString stringWithFormat:NSLocalizedString(@"%@ equals %@ with rate %0.4f", @"%@ equals %@ with rate %0.4f"),
+//									  [self stringFromNumber:self.lastInputValue withCurrencyCode:source.currencyCode isShare:NO],
+//									  [self stringFromNumber:@(self.lastInputValue.floatValue * rate) withCurrencyCode:target.currencyCode isShare:NO],
+//									  rate];
+//}
 
 - (void)shareAll:(id)sender {
 	_shareAll = YES;
@@ -1393,10 +1401,13 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 - (NSString *)stringForShareOfSource:(NSUInteger)sourceIdx target:(NSUInteger)targetIdx {
 	CurrencyFavorite *source = self.favorites[sourceIdx], *target = self.favorites[targetIdx];
 	float rate = [self rateForSource:source target:target];
-	return [NSString stringWithFormat:@"%@ %@ = %@<br/>",
-									  source.currencyCode,
-									  [self stringFromNumber:self.lastInputValue withCurrencyCode:source.currencyCode],
-									  [self stringFromNumber:@(self.lastInputValue.floatValue * rate) withCurrencyCode:target.currencyCode]];
+//	return [NSString stringWithFormat:@"%@ %@ = %@<br/>",
+//									  source.currencyCode,
+//									  [self stringFromNumber:self.lastInputValue withCurrencyCode:source.currencyCode],
+//									  [self stringFromNumber:@(self.lastInputValue.floatValue * rate) withCurrencyCode:target.currencyCode]];
+	return [NSString stringWithFormat:@"%@ = %@<br/>",
+            [self stringFromNumber:self.lastInputValue withCurrencyCode:source.currencyCode isShare:YES],
+            [self stringFromNumber:@(self.lastInputValue.floatValue * rate) withCurrencyCode:target.currencyCode isShare:YES]];
 }
 
 #pragma mark - History
