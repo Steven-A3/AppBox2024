@@ -310,7 +310,8 @@
 		cell.valueField.delegate = self;
 		cell.valueField.textColor = self.tableView.tintColor;
 
-		cell.rateLabel.text = self.sourceItem.currencySymbol;
+//		cell.rateLabel.text = self.sourceItem.currencySymbol;
+        cell.rateLabel.text =@"";
 		cell.codeLabel.text = self.sourceItem.currencyCode;
 		_sourceTextField = cell.valueField;
 
@@ -319,7 +320,8 @@
 	} else {
 		cell.valueField.delegate = self;
 		cell.valueField.text = self.targetValueString;
-		cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, Rate = %0.4f", @"%@, Rate = %0.4f"), self.targetItem.currencySymbol, self.conversionRate];
+//		cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, Rate = %0.4f", @"%@, Rate = %0.4f"), self.targetItem.currencySymbol, self.conversionRate];
+        cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Rate = %0.4f", @"Rate = %0.4f"), self.conversionRate];
 		cell.codeLabel.text = _targetItem.currencyCode;
 		_targetTextField = cell.valueField;
 	}
@@ -362,7 +364,8 @@
 
 	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self;
-	viewController.allowChooseFavorite = YES;
+	//viewController.allowChooseFavorite = YES;
+    viewController.allowChooseFavorite = NO;
 
 	if (IS_IPHONE) {
 		viewController.showCancelButton = YES;
