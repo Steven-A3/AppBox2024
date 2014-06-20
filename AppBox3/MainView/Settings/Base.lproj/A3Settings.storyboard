@@ -156,33 +156,6 @@
                                             <segue destination="RpU-td-Vej" kind="push" identifier="themeColor" id="hth-dH-ZeS"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="4200" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="5dO-Tl-dv6" detailTextLabel="ykM-lB-gLK" style="IBUITableViewCellStyleValue1" id="4Hv-yF-vuB" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="429" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Hv-yF-vuB" id="ynn-ak-lFl">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Lunar Calendar" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5dO-Tl-dv6">
-                                                    <rect key="frame" x="15" y="11" width="118" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ykM-lB-gLK">
-                                                    <rect key="frame" x="241" y="11" width="44" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="7oW-es-0Zb" kind="push" id="03i-Sa-YTs"/>
-                                        </connections>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -965,9 +938,9 @@
         <!--Settings Lunar View Controller - Lunar Calendar-->
         <scene sceneID="mcD-Z5-2cl">
             <objects>
-                <tableViewController title="Lunar Calendar" id="7oW-es-0Zb" customClass="A3SettingsLunarViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SettingsLunarViewController" title="Lunar Calendar" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7oW-es-0Zb" customClass="A3SettingsLunarViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="lEt-bu-MCq">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <color key="separatorColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="0.75" colorSpace="calibratedRGB"/>

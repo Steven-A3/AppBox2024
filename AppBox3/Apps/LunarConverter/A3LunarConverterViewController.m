@@ -21,6 +21,8 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIColor+A3Addition.h"
+#import "A3SettingsLunarViewController.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 
 @interface A3LunarConverterViewController () <UIScrollViewDelegate, A3DateKeyboardDelegate, UITextFieldDelegate, UIPopoverControllerDelegate, UIActivityItemSource>
@@ -64,7 +66,12 @@
 	// Do any additional setup after loading the view from its nib.
 
 	[self leftBarButtonAppsButton];
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareButtonAction:)];
+    
+    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareButtonAction:)];
+    shareButton.tag = A3RightBarButtonTagShareButton;
+	UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
+    settings.tag = A3RightBarButtonTagShareButton;
+    self.navigationItem.rightBarButtonItems = @[settings, shareButton];
 
 	self.title = NSLocalizedString(@"Lunar Converter", @"Lunar Converter");
 	_pageControl.hidden = YES;
@@ -119,6 +126,11 @@
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuBecameFirstResponder) name:A3MainMenuBecameFirstResponder object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+    if (IS_IPAD) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+    }
+    
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
@@ -126,6 +138,10 @@
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3MainMenuBecameFirstResponder object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidAppear object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -285,6 +301,26 @@
 		make.top.equalTo(bottomCell.bottom);
 		make.height.equalTo(@(lineWidth));
 	}];
+}
+
+- (void)rightSideViewDidAppear {
+	[self enableControls:NO];
+}
+
+- (void)rightSideViewWillDismiss {
+	[self enableControls:YES];
+}
+
+- (void)settingsButtonAction:(id)sender {
+    [self hideKeyboardAnimate:YES];
+    UIStoryboard *settingsStoryBoard = [UIStoryboard storyboardWithName:@"A3Settings" bundle:nil];
+    A3SettingsLunarViewController *settingsViewController = [settingsStoryBoard instantiateViewControllerWithIdentifier:@"SettingsLunarViewController"];
+    if (IS_IPHONE) {
+        [self.navigationController pushViewController:settingsViewController animated:YES];
+    } else {
+        [self enableControls:NO];
+        [self.A3RootViewController presentRightSideViewController:settingsViewController];
+    }
 }
 
 #pragma mark - Keyboard Layout
@@ -1010,6 +1046,19 @@
 	if (!IS_IPAD) return;
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.navigationItem.rightBarButtonItem setEnabled:enable];
+    [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
+        switch ([barButton tag]) {
+            case A3RightBarButtonTagShareButton:
+                barButton.enabled = enable;
+                break;
+            case A3RightBarButtonTagSettingsButton:
+                barButton.enabled = YES;
+                break;
+            default:
+                break;
+        }
+    }];
+
 	[self.addToDaysCounterButtons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
 		[button setEnabled:enable];
 	}];

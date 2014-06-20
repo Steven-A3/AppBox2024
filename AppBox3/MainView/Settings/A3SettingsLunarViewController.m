@@ -9,6 +9,7 @@
 #import "A3SettingsLunarViewController.h"
 #import "NSUserDefaults+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3SettingsLunarViewController ()
 
@@ -31,6 +32,10 @@
 
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
+    if (IS_IPHONE) {
+        [self makeBackButtonEmptyArrow];
+    }
 }
 
 - (void)didReceiveMemoryWarning
