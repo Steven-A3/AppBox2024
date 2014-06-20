@@ -32,8 +32,9 @@
 	}];
 
 	[_yahooButton addTarget:self action:@selector(yahooButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    _yahooButton.tintColor = [UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0];
 	[_yahooButton makeConstraints:^(MASConstraintMaker *make) {
-		make.right.equalTo(self.contentView.right).with.offset(-7);
+		make.right.equalTo(self.contentView.right).with.offset(-15);
 		make.bottom.equalTo(self.contentView.bottom).with.offset(7);
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);

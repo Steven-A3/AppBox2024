@@ -39,8 +39,10 @@
 }
 
 - (void)useDynamicType {
-	self.codeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-	self.rateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    if (IS_IPAD) {
+        self.codeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        self.rateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    }
 }
 
 - (CGSize)sizeThatFits:(CGSize)size {

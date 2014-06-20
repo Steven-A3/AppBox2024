@@ -901,6 +901,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 	_calculatorTargetTextField = textField;
+    [self dismissMoreMenu];
 
 	CurrencyFavorite *favorite = self.favorites[0];
 
