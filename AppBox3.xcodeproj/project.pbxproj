@@ -4184,6 +4184,8 @@
 			isa = PBXGroup;
 			children = (
 				6823F6F21863288D00E6E90D /* Model */,
+				6890AB301786BA08004FECE4 /* A3CurrencyViewController.h */,
+				6890AB311786BA08004FECE4 /* A3CurrencyViewController.m */,
 				68E6F34A17B25F5F00F10ED9 /* A3CurrencyChartViewController.h */,
 				68E6F34B17B25F5F00F10ED9 /* A3CurrencyChartViewController.m */,
 				686BC1DD184639CA00FA5C94 /* A3CurrencyChartViewController.xib */,
@@ -4207,8 +4209,6 @@
 				68D1AC9717977F960047D4BF /* A3CurrencyTVEqualCell.h */,
 				68D1AC9817977F960047D4BF /* A3CurrencyTVEqualCell.m */,
 				68D1AC9B17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib */,
-				6890AB301786BA08004FECE4 /* A3CurrencyViewController.h */,
-				6890AB311786BA08004FECE4 /* A3CurrencyViewController.m */,
 				17D422F078FF20AC13BDAE74 /* A3SearchViewController.h */,
 				17D4263A1F905EB73EA573B2 /* A3SearchViewController.m */,
 				6891D7FA183C5EDD0060B677 /* A3CurrencySettingsViewController.h */,

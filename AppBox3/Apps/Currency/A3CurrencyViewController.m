@@ -1361,7 +1361,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		return txt;
 	}
 	else {
-		return [self stringForSource:_shareSourceIndex targetIndex:_shareTargetIndex];
+        return [[self stringForShare] stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
 	}
 }
 
