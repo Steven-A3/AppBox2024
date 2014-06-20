@@ -1599,6 +1599,10 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
                 totalAmountString = [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]];
             }
         }
+        else {
+            totalInterestString = [self.loanFormatter stringFromNumber:[_loanDataA totalInterest]];
+            totalAmountString = [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]];
+        }
         
         compareCell.left_A_Label.text = totalInterestString;
         compareCell.right_A_Label.text = totalAmountString;
@@ -1718,6 +1722,10 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
             else {
                 totalAmountString = [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]];
             }
+        }
+        else {
+            totalInterestString = [self.loanFormatter stringFromNumber:[_loanDataB totalInterest]];
+            totalAmountString = [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]];
         }
         compareCell.left_B_Label.text = totalInterestString;
         compareCell.right_B_Label.text = totalAmountString;
