@@ -26,6 +26,8 @@
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 static NSString *const A3AnimationKeyOpacity = @"opacity";
+const NSInteger kTranslatorAlertViewType_ToolBarDelete = 1;
+const NSInteger kTranslatorAlertViewType_DeleteAll = 2;
 
 @interface A3TranslatorMessageViewController ()
 		<UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource,
@@ -312,6 +314,9 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	if (actionSheet.tag == 192874 && buttonIndex == actionSheet.destructiveButtonIndex) {
 		[self deleteAllMessages];
 	}
+    else if (actionSheet.tag == kTranslatorAlertViewType_ToolBarDelete && buttonIndex == actionSheet.destructiveButtonIndex) {
+        [self deleteSelectedMessageItems];
+    }
 }
 
 #pragma mark - Language Select View
@@ -1404,20 +1409,44 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 
 - (void)deleteActionFromToolbar {
 	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
+    if ([selectedIndexPaths count] == [_messages count]) {
+        UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil
+                                                                  delegate:self
+                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                    destructiveButtonTitle:NSLocalizedString(@"Delete All", @"Delete All")
+                                                         otherButtonTitles:nil];
+        askDeleteAll.tag = 192874;
+        [askDeleteAll showInView:self.view];
+    }
+    else {
+        UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil
+                                                                  delegate:self
+                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                    destructiveButtonTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld Delete Translaton", @"StringsDict", nil), [selectedIndexPaths count]]
+                                                         otherButtonTitles:nil];
+        askDeleteAll.tag = kTranslatorAlertViewType_ToolBarDelete;
+        
+        [askDeleteAll showInView:self.view];
+    }
+}
+
+- (void)deleteSelectedMessageItems
+{
+	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
 	for (NSIndexPath *indexPath in selectedIndexPaths) {
 		TranslatorHistory *itemToDelete = _messages[indexPath.row];
 		[itemToDelete MR_deleteEntity];
 	}
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-
+    
 	// Reload messages
 	_messages = nil;
 	[self messages];
-
+    
 	[_messageTableView deleteRowsAtIndexPaths:selectedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-
+    
 	[self setEnabledForAllToolbarButtons:NO];
-
+    
 	[self setupBarButtons];
 }
 
@@ -1448,11 +1477,16 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 
 	_messages = nil;
 	[self messages];
-
-	[self.messageTableView reloadData];
-
-	[self.messageTableView setEditing:NO];
-	[self setupBarButtons];
+    [self.messageTableView reloadData];
+    
+    if ([_messages count] == 0) {
+        [self editButtonAction];
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+    else {
+        [self.messageTableView setEditing:NO];
+        [self setupBarButtons];
+    }
 }
 
 - (void)setupBarButtons {

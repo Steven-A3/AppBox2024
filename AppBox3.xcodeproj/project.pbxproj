@@ -2735,6 +2735,8 @@
 			isa = PBXGroup;
 			children = (
 				683EB02B18BF8DE10044C2E1 /* Model */,
+				17D42C482B12F26E75712681 /* A3TranslatorViewController.h */,
+				17D4290B326C03E3DAF080A7 /* A3TranslatorViewController.m */,
 				17D4244AFCF614150C7BFB2F /* A3TranslatorLanguage.h */,
 				17D42302F11861C375A0D627 /* A3TranslatorLanguage.m */,
 				17D427DBB6EAAE740BD75F4B /* A3LanguagePickerController.h */,
@@ -2747,8 +2749,6 @@
 				17D4292480B4F2F878AD138E /* A3TranslatorMessageCell.m */,
 				17D42FE2C4AD09E611D37298 /* A3TranslatorMessageViewController.h */,
 				17D42FEEE5D02AC4D6E1CB7A /* A3TranslatorMessageViewController.m */,
-				17D42C482B12F26E75712681 /* A3TranslatorViewController.h */,
-				17D4290B326C03E3DAF080A7 /* A3TranslatorViewController.m */,
 				17D42087D0B7676D0335F572 /* A3TranslatorFavoriteDataSource.h */,
 				17D42DF75A3EA2B85378A368 /* A3TranslatorFavoriteDataSource.m */,
 				17D428A5D07C3D7181154ED3 /* A3TranslatorFavoriteCell.h */,
