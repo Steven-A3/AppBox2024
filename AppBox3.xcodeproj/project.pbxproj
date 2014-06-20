@@ -3322,15 +3322,15 @@
 		6825366618A7B89F00EAFB84 /* LunarConverter */ = {
 			isa = PBXGroup;
 			children = (
-				6825367B18A7BD4E00EAFB84 /* SQLiteWrapper.h */,
-				6825367C18A7BD4E00EAFB84 /* SQLiteWrapper.m */,
-				6825366718A7B89F00EAFB84 /* A3LunarConverterCellView.h */,
-				6825366818A7B89F00EAFB84 /* A3LunarConverterCellView.m */,
 				6825366918A7B89F00EAFB84 /* A3LunarConverterViewController.h */,
 				6825366A18A7B89F00EAFB84 /* A3LunarConverterViewController.m */,
 				6825366B18A7B89F00EAFB84 /* A3LunarConverterViewController.xib */,
-				6825366D18A7B89F00EAFB84 /* LunarConverter.sqlite */,
+				6825366718A7B89F00EAFB84 /* A3LunarConverterCellView.h */,
+				6825366818A7B89F00EAFB84 /* A3LunarConverterCellView.m */,
 				6825366E18A7B89F00EAFB84 /* LunarConverterCell.xib */,
+				6825367B18A7BD4E00EAFB84 /* SQLiteWrapper.h */,
+				6825367C18A7BD4E00EAFB84 /* SQLiteWrapper.m */,
+				6825366D18A7B89F00EAFB84 /* LunarConverter.sqlite */,
 			);
 			path = LunarConverter;
 			sourceTree = "<group>";

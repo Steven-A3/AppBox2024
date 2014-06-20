@@ -165,8 +165,9 @@
 	[super viewDidAppear:animated];
 
 	[self addDateKeyboard];
+    [self shrinkCellScrollView:animated];
 
-	if( _dbManager )
+	if ( _dbManager )
 		[_dbManager open];
 }
 
@@ -181,7 +182,7 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-	if( IS_IPAD ){
+	if ( IS_IPAD ){
 		[self layoutKeyboardToOrientation:toInterfaceOrientation];
 	}
 }
@@ -299,7 +300,7 @@
 	self.dateKeyboardVC.delegate = self;
 
 	UIView *superview;
-	if( IS_IPAD ){
+	if ( IS_IPAD ){
 		UIViewController *rootViewController = [[A3AppDelegate instance] rootViewController];
 		[rootViewController.view addSubview:self.dateKeyboardVC.view];
 
@@ -370,12 +371,64 @@
 	[_cellHeightConstraints removeAllObjects];
 }
 
+- (void)shrinkCellScrollView:(BOOL)animated
+{
+	// pageControl.top = 234.5 (iphone 35)
+	// pageControl.top = 315.0
+    
+    NSTimeInterval duration = (animated ? 0.3 : 0.0);
+    
+	if (IS_IPHONE35) {
+		[self uninstallCellHeightConstraints];
+        
+		[_pageControl makeConstraints:^(MASConstraintMaker *make) {
+			[self.cellHeightConstraints addObject:make.top.equalTo(@234.5)];
+		}];
+		for (UIView *pageView in @[_firstPageView, _secondPageView]) {
+			UIView *topCell = [pageView viewWithTag:100];
+			[topCell makeConstraints:^(MASConstraintMaker *make) {
+				[_cellHeightConstraints addObject:make.height.equalTo(@64)];
+			}];
+            
+			UIView *middleCell = [pageView viewWithTag:102];
+			[middleCell makeConstraints:^(MASConstraintMaker *make) {
+				[_cellHeightConstraints addObject:make.height.equalTo(@47.0)];
+			}];
+            
+			UIView *bottomCell = [pageView viewWithTag:101];
+			[bottomCell makeConstraints:^(MASConstraintMaker *make) {
+				[_cellHeightConstraints addObject:make.height.equalTo(@64.5)];
+			}];
+		}
+		if (_pageControl.currentPage != 0) duration = 0;
+	}
+    
+	[_keyboardTopConstraint uninstall];
+    
+	[self.dateKeyboardVC.view makeConstraints:^(MASConstraintMaker *make) {
+		_keyboardTopConstraint =  make.top.equalTo(self.dateKeyboardVC.view.superview.bottom).with.offset(-self.dateKeyboardVC.view.frame.size.height);
+	}];
+    
+	NSInteger currentPage = _pageControl.currentPage;
+	if (IS_IPHONE35 && _pageControl.currentPage != 0) {
+		[self.view layoutIfNeeded];
+		[self.dateKeyboardVC.view.superview layoutIfNeeded];
+		[_mainScrollView setContentOffset:CGPointMake(_mainScrollView.frame.size.width * currentPage, 0)];
+	} else {
+		[UIView animateWithDuration:(duration) animations:^{
+			[self.view layoutIfNeeded];
+			[self.dateKeyboardVC.view.superview layoutIfNeeded];
+			[_mainScrollView setContentOffset:CGPointMake(_mainScrollView.frame.size.width * currentPage, 0)];
+		}];
+	}
+}
+
 - (void)showKeyboardAnimated:(BOOL)animated
 {
 	self.dateKeyboardVC.isLunarDate = _isLunarInput;
 
 	UIView *superview;
-	if( IS_IPAD ){
+	if ( IS_IPAD ){
 		UIViewController *rootViewController = [[A3AppDelegate instance] rootViewController];
 		[rootViewController.view addSubview:self.dateKeyboardVC.view];
 
@@ -396,54 +449,7 @@
 
 	_isShowKeyboard = YES;
 
-	// pageControl.top = 234.5 (iphone 35)
-	// pageControl.top = 315.0
-
-	NSTimeInterval duration = (animated ? 0.3 : 0.0);
-
-	if (IS_IPHONE35) {
-		[self uninstallCellHeightConstraints];
-
-		[_pageControl makeConstraints:^(MASConstraintMaker *make) {
-			[self.cellHeightConstraints addObject:make.top.equalTo(@234.5)];
-		}];
-		for (UIView *pageView in @[_firstPageView, _secondPageView]) {
-			UIView *topCell = [pageView viewWithTag:100];
-			[topCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@64)];
-			}];
-
-			UIView *middleCell = [pageView viewWithTag:102];
-			[middleCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@47.0)];
-			}];
-
-			UIView *bottomCell = [pageView viewWithTag:101];
-			[bottomCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@64.5)];
-			}];
-		}
-		if (_pageControl.currentPage != 0) duration = 0;
-	}
-
-	[_keyboardTopConstraint uninstall];
-
-	[self.dateKeyboardVC.view makeConstraints:^(MASConstraintMaker *make) {
-		_keyboardTopConstraint =  make.top.equalTo(self.dateKeyboardVC.view.superview.bottom).with.offset(-self.dateKeyboardVC.view.frame.size.height);
-	}];
-
-	NSInteger currentPage = _pageControl.currentPage;
-	if (IS_IPHONE35 && _pageControl.currentPage != 0) {
-		[self.view layoutIfNeeded];
-		[self.dateKeyboardVC.view.superview layoutIfNeeded];
-		[_mainScrollView setContentOffset:CGPointMake(_mainScrollView.frame.size.width * currentPage, 0)];
-	} else {
-		[UIView animateWithDuration:(duration) animations:^{
-			[self.view layoutIfNeeded];
-			[self.dateKeyboardVC.view.superview layoutIfNeeded];
-			[_mainScrollView setContentOffset:CGPointMake(_mainScrollView.frame.size.width * currentPage, 0)];
-		}];
-	}
+    [self shrinkCellScrollView:animated];
 }
 
 - (void)hideKeyboardAnimate:(BOOL)animated
@@ -541,7 +547,7 @@
                                   @"甲辰",@"乙巳",@"丙午",@"丁未",@"戊申",@"己酉",@"庚戌",@"辛亥",@"壬子",@"癸丑",
                                   @"甲寅",@"乙卯",@"丙辰",@"丁巳",@"戊午",@"己未",@"庚申",@"辛酉",@"壬戌",@"癸亥"};
     NSInteger index = 0;
-    if( year < 1504 )
+    if ( year < 1504 )
         index = 60 - ((1504 - year) % 60);
     else
         index = (year-1504) % 60;
@@ -551,7 +557,7 @@
 
 - (BOOL)isLeapMonthAtDateComponents:(NSDateComponents *)dateComponents gregorianToLunar:(BOOL)gregorianToLunar
 {
-    if( dateComponents == nil )
+    if ( dateComponents == nil )
         return NO;
 
     BOOL resultLeapMonth = NO;
@@ -597,16 +603,16 @@
 
     NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:retStr];
     [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, [typeStr length])];
-    if( isLunar ){
+    if ( isLunar ){
         NSInteger startIndex = [typeStr length];
-        if( [leapMonthStr length] > 0 ){
+        if ( [leapMonthStr length] > 0 ){
 			NSRange range = NSMakeRange([typeStr length]+2, [leapMonthStr length]);
             [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0] range:range];
 			[attrStr addAttribute:NSFontAttributeName value:IS_IPHONE ? [UIFont systemFontOfSize:13] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] range:range];
             startIndex = startIndex + 2 + [leapMonthStr length];
         }
 
-        if( [yearStr length] > 0 || [monthStr length] > 0 || [dayStr length] > 0 ){
+        if ( [yearStr length] > 0 || [monthStr length] > 0 || [dayStr length] > 0 ){
 			NSRange range = NSMakeRange(startIndex+1, [subStr length]);
             [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:137.0/255.0 green:138.0/255.0 blue:136.0/255.0 alpha:1.0] range:range];
 			[attrStr addAttribute:NSFontAttributeName value:IS_IPHONE ? [UIFont systemFontOfSize:13] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] range:range];
@@ -630,8 +636,8 @@
     A3LunarConverterCellView *cellView = (A3LunarConverterCellView*)[pageView viewWithTag:100];
     cellView.hidden = NO;
     BOOL isLeapMonth = NO;
-    if(_inputDateComponents ){
-        if( _isLunarInput ){
+    if (_inputDateComponents ){
+        if ( _isLunarInput ){
             isLeapMonth = isInputLeapMonth;
         }
         cellView.dateLabel.text = [self stringFromDateComponents:_inputDateComponents];
@@ -644,22 +650,22 @@
 
     cellView = (A3LunarConverterCellView*)[pageView viewWithTag:101];
     cellView.hidden = NO;
-    if(resultDateComponents){
-        if( !_isLunarInput ){
+    if (resultDateComponents){
+        if ( !_isLunarInput ){
             isLeapMonth = isResultLeapMonth;
         }
         cellView.dateLabel.text = [self stringFromDateComponents:resultDateComponents];
         cellView.descriptionLabel.attributedText = [self descriptionStringFromDateComponents:resultDateComponents isLunar:!_isLunarInput isLeapMonth:isLeapMonth];
     }
     else{
-        if( [_inputDateComponents year] < 1900 || [_inputDateComponents year] > 2043)
+        if ( [_inputDateComponents year] < 1900 || [_inputDateComponents year] > 2043)
             cellView.dateLabel.text = NSLocalizedString(@"1900년부터 2043년까지만 지원합니다.", @"1900년부터 2043년까지만 지원합니다.");
-        if( _isLunarInput ){
+        if ( _isLunarInput ){
             NSInteger monthDay = [NSDate lastMonthDayForLunarYear:[_inputDateComponents year] month:[_inputDateComponents month] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-            if( monthDay < 0 ){
+            if ( monthDay < 0 ){
                 cellView.dateLabel.text = NSLocalizedString(@"1900년부터 2043년까지만 지원합니다.", @"1900년부터 2043년까지만 지원합니다.");
             }
-            else if( [_inputDateComponents day] > monthDay ){
+            else if ( [_inputDateComponents day] > monthDay ){
                 cellView.dateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%ld년 %ld월은 %ld일까지만 있습니다.", @"%ld년 %ld월은 %ld일까지만 있습니다."), (long) [_inputDateComponents year], (long) [_inputDateComponents month], (long) monthDay];
             }
         }
@@ -674,11 +680,11 @@
 
     NSString *query = [NSString stringWithFormat:@"select * from calendar_data WHERE cd_ly=%ld and cd_lm=%ld and cd_ld=%ld and %@", (long)[dateComponents year], (long)[dateComponents month], (long)[dateComponents day], (isLeapMonth ? @"cd_leap_month > 1" : @"cd_leap_month < 2")];
     NSArray *result = [_dbManager executeSql:query];
-    if( [result count] < 1 )
+    if ( [result count] < 1 )
         return @"";
 
     NSString *retStr = [[result objectAtIndex:0] objectForKey:@"cd_hdganjee"];
-    if( [retStr length] > 0 )
+    if ( [retStr length] > 0 )
         retStr = [retStr stringByAppendingString:@"日"];
     return retStr;
 }
@@ -691,11 +697,11 @@
     NSString *query = [NSString stringWithFormat:@"select * from calendar_data WHERE cd_ly=%ld and cd_lm=%ld and cd_ld=%ld and %@", (long)[dateComponents year], (long)[dateComponents month], (long)[dateComponents day],(isLeapMonth ? @"cd_leap_month > 1" : @"cd_leap_month < 2")];
 
     NSArray *result = [_dbManager executeSql:query];
-    if( [result count] < 1 )
+    if ( [result count] < 1 )
         return @"";
 
     NSString *retStr = [[result objectAtIndex:0] objectForKey:@"cd_hmganjee"];
-    if( [retStr length] > 0 )
+    if ( [retStr length] > 0 )
         retStr = [retStr stringByAppendingString:@"月"];
     return retStr;
 }
@@ -981,7 +987,7 @@
 }
 
 - (IBAction)handleTapGesture:(id)sender {
-    if( !_isShowKeyboard ){
+    if ( !_isShowKeyboard ){
         [self showKeyboardAnimated:YES];
     }
 }

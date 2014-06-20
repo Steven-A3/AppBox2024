@@ -36,7 +36,7 @@
 		[self.constraints addObject:make.baseline.equalTo(self.bottom).with.offset(isIPHONE35 ? -10 : -16)];
 	}];
 
-	if( _actionButton ){
+	if ( _actionButton ) {
 		[_actionButton makeConstraints:^(MASConstraintMaker *make) {
 			[self.constraints addObject:make.width.equalTo(@44)];
 			[self.constraints addObject:make.height.equalTo(@44)];
@@ -79,7 +79,7 @@
 	}
 	[_constraints removeAllObjects];
 
-    if( _dateLabel == nil ){
+    if ( _dateLabel == nil ) {
         _dateLabel = [UILabel new];
         _dateLabel.font = [UIFont systemFontOfSize:30.0];
         _dateLabel.adjustsFontSizeToFitWidth = YES;
@@ -90,14 +90,14 @@
         [self addSubview:_dateLabel];
     }
     
-    if( _descriptionLabel == nil ){
+    if ( _descriptionLabel == nil ) {
         _descriptionLabel = [UILabel new];
         _descriptionLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         _descriptionLabel.textAlignment = (IS_IPAD ? NSTextAlignmentRight : NSTextAlignmentLeft);
         [self addSubview:_descriptionLabel];
     }
     
-    if(IS_IPAD) {
+    if (IS_IPAD) {
         [self addPadLayoutConstraints];
     } else {
         [self addPhoneLayoutConstraints];
@@ -118,7 +118,7 @@
 	}
 	[_constraints removeAllObjects];
 
-    if( _actionButton ){
+    if ( _actionButton ) {
         [_actionButton removeFromSuperview];
         _actionButton = nil;
     }
