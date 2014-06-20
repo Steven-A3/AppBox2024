@@ -38,10 +38,6 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    self.navigationController.navigationBar.tintColor = [A3AppDelegate instance].themeColor;
-}
-
 - (UIImageView *)selectedMarkView {
 	if (!_selectedMarkView) {
 		_selectedMarkView = [UIImageView new];
@@ -136,6 +132,7 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 
 	[A3AppDelegate instance].window.tintColor = self.colorsArray[_selectedColorIndex];
 	self.selectedMarkView.tintColor = self.colorsArray[_selectedColorIndex];
+    self.navigationController.navigationBar.tintColor = self.selectedMarkView.tintColor;
 
 	[[NSUserDefaults standardUserDefaults] setObject:@(_selectedColorIndex) forKey:kA3ThemeColorIndex];
 	[[NSUserDefaults standardUserDefaults] synchronize];
