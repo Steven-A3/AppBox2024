@@ -102,6 +102,8 @@
     } else {
         [self addPhoneLayoutConstraints];
     }
+    
+    _actionButton.hidden = YES;
 }
 
 - (void)awakeFromNib
