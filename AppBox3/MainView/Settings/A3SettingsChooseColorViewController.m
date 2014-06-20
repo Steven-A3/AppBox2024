@@ -38,6 +38,10 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    self.navigationController.navigationBar.tintColor = [A3AppDelegate instance].themeColor;
+}
+
 - (UIImageView *)selectedMarkView {
 	if (!_selectedMarkView) {
 		_selectedMarkView = [UIImageView new];

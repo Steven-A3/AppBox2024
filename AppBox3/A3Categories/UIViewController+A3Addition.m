@@ -77,6 +77,7 @@
         [navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
         [navigationController.navigationBar setShadowImage:nil];
     }
+    navigationController.navigationBar.tintColor = [A3AppDelegate instance].themeColor;
 
 	NSArray *poppedVCs = [navigationController popToRootViewControllerAnimated:NO];
 	for (UIViewController<A3CenterViewDelegate> *vc in poppedVCs) {

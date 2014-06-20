@@ -594,18 +594,18 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	
 	_isShowMoreMenu = YES;
     UIButton *help = self.instructionHelpButton;
-    UIButton *share = self.shareButton;
+//    UIButton *share = self.shareButton;
     UIButton *addNew = self.addNewButton;
     UIButton *history = [self historyButton:NULL];
     
-	_moreMenuButtons = @[help, share, addNew, history];
+	_moreMenuButtons = @[help, /*share, */addNew, history];
 	// AddNew
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budget.budgetId == %@ and hasData == YES", _currentBudget.budgetId];
     addNew.enabled = [ExpenseListItem MR_countOfEntitiesWithPredicate:predicate] > 0;
 	// History
     history.enabled = [ExpenseListHistory MR_countOfEntities] > 0;
 	// Share
-    share.enabled = _currentBudget.category != nil;
+//    share.enabled = _currentBudget.category != nil;
 
 	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
 }
