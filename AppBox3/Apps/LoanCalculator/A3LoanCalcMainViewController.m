@@ -1629,7 +1629,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
         percentOfMarkA = totalFloat/maxAmount;
         
         CGPoint center = compareCell.markA_Label.center;
-        center.x = self.view.bounds.size.width - compareCell.markA_Label.frame.size.width / 2;
+        center.x = self.view.bounds.size.width - compareCell.markA_Label.frame.size.width;
         compareCell.markA_Label.center = center;
         
         FNLOG(@"markA : %@", NSStringFromCGRect(compareCell.markA_Label.frame));
@@ -1757,7 +1757,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
         //compareCell.markB_Label.layer.anchorPoint = CGPointMake(0.5, 0.5);
         CGPoint center = compareCell.markB_Label.center;
         //center.x = MIN(self.view.bounds.size.width * percentOfMarkB, self.view.bounds.size.width - compareCell.markB_Label.frame.size.width/2);
-        center.x = self.view.bounds.size.width - compareCell.markB_Label.frame.size.width / 4;
+        center.x = self.view.bounds.size.width - compareCell.markB_Label.frame.size.width;
         compareCell.markB_Label.center = center;
         
         float markTailX = compareCell.markB_Label.frame.origin.x + compareCell.markB_Label.frame.size.width;
@@ -1819,6 +1819,9 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     else {
         [self makeClearGraphLoanB:compareCell];
     }
+    
+    [compareCell adjustABMarkPositionForTotalAmountA:[_loanDataA calculated] ? [_loanDataA totalAmount] : @0
+                                        totalAmountB:[_loanDataB calculated] ? [_loanDataB totalAmount] : @0];
 }
 
 - (void)makeCompareCellClear:(A3LoanCalcCompareGraphCell *)compareCell
@@ -1867,13 +1870,11 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     newFrame.origin.y -= floor(compareCell.right_A_Label.font.descender);
     compareCell.right_A_Label.frame = newFrame;
     
-    compareCell.markA_Label.layer.anchorPoint = CGPointMake(1, 0.5);
-    
 //    lbCenter = compareCell.markA_Label.center;
 //    lbCenter.x = self.view.bounds.size.width-right_hori_margin;
 //    compareCell.markA_Label.center = lbCenter;
     lbCenter = compareCell.markA_Label.center;
-    lbCenter.x = self.view.bounds.size.width - compareCell.markA_Label.frame.size.width / 2;
+    lbCenter.x = self.view.bounds.size.width - compareCell.markA_Label.frame.size.width;
     compareCell.markA_Label.center = lbCenter;
 }
 
@@ -1917,13 +1918,12 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     newFrame.origin.y -= floor(compareCell.right_B_Label.font.descender);
     compareCell.right_B_Label.frame = newFrame;
     
-    compareCell.markB_Label.layer.anchorPoint = CGPointMake(1, 0.5);
     
 //    lbCenter = compareCell.markB_Label.center;
 //    lbCenter.x = self.view.bounds.size.width-right_hori_margin;
 //    compareCell.markB_Label.center = lbCenter;
     lbCenter = compareCell.markB_Label.center;
-    lbCenter.x = self.view.bounds.size.width - compareCell.markB_Label.frame.size.width / 2;
+    lbCenter.x = self.view.bounds.size.width - compareCell.markB_Label.frame.size.width;
     compareCell.markB_Label.center = lbCenter;
 }
 

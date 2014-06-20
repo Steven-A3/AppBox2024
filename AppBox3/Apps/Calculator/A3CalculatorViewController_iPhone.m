@@ -467,6 +467,7 @@
 - (void)keyboardButtonPressed:(NSUInteger)key {
 	[_textFieldForPlayInputClick becomeFirstResponder];
 	[[UIDevice currentDevice] playInputClick];
+    [self dismissMoreMenu];
 
 	NSString *expression;
     //FNLOG("text = %@ attributedText = %@", _expressionLabel.text, [_expressionLabel.attributedText string]);

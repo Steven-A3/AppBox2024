@@ -901,6 +901,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 	_calculatorTargetTextField = textField;
+    [self dismissMoreMenu];
 
 	CurrencyFavorite *favorite = self.favorites[0];
 
@@ -1360,7 +1361,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		return txt;
 	}
 	else {
-		return [self stringForSource:_shareSourceIndex targetIndex:_shareTargetIndex];
+        return [[self stringForShare] stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
 	}
 }
 

@@ -32,5 +32,6 @@
 @property (readwrite) float rightB_X;
 
 - (void)adjustSubviewsFontSize;
-
+- (void)adjustABMarkPosition;
+- (void)adjustABMarkPositionForTotalAmountA:(NSNumber *)totalAmountA totalAmountB:(NSNumber *)totalAmountB;
 @end

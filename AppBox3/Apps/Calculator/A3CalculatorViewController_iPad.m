@@ -156,10 +156,10 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
 			switch (barButtonItem.tag) {
 				case A3RightBarButtonTagShareButton:
-					[barButtonItem setEnabled:![self isCalculationHistoryEmpty]];
+					[barButtonItem setEnabled:[self.expressionLabel.text length] > 0];
 					break;
 				case A3RightBarButtonTagHistoryButton:
-					[barButtonItem setEnabled:[self.expressionLabel.text length] > 0];
+					[barButtonItem setEnabled:![self isCalculationHistoryEmpty]];
 					break;
 			}
 		}];

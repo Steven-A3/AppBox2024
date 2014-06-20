@@ -50,6 +50,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear") style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
 
 	self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
 
 	UILabel *notice = [[UILabel alloc] init];
 	notice.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
