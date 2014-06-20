@@ -175,7 +175,7 @@
 "Sunday" = "일요일";
 
 "%ldy" = "%ld년";
-"%ldm" = "%ld월";
+"%ldm" = "%ld개월";
 "%ldw" = "%ld주";
 "%ldd" = "%ld일";
 
@@ -293,9 +293,10 @@
 
 "Reminder" = "미리 알림";
 
-"All" = "모두";
-"Upcoming" = "예정 이벤트";
-"Past" = "지난 이벤트";
+"All" = "모든";
+"DaysCounter_All" = "모든 이벤트";
+"List_Upcoming" = "예정 이벤트";
+"List_Past" = "지난 이벤트";
 "Anniversary" = "기념일";
 "Appointment" = "약속";
 "Birthday" = "생일";
@@ -326,7 +327,7 @@
 "1 week before" = "1주 전";
 
 "DaysCounterDuration_year_abbreviation" = "년";
-"DaysCounterDuration_month_abbreviation" = "월";
+"DaysCounterDuration_month_abbreviation" = "개월";
 "DaysCounterDuration_week_abbreviation" = "주";
 "DaysCounterDuration_day_abbreviation" = "일";
 "DaysCounterDuration_hour_abbreviation" = "시간";
@@ -804,8 +805,6 @@
 
 "P" = "공";
 
-"DaysCounter_ALL" = "모든 이벤트";
-
 "until" = "남음";
 "now" = "지금";
 
@@ -854,3 +853,4 @@
 "Internet connection is not available." = "사용 가능한 인터넷 연결이 없습니다.";
 
 "How to setup iCloud?" = "iCloud 데이터를 다운로드 하고 사용하거나 혹은 iCloud 데이터를 지우고 새로 시작할 수 있습니다. 어떻게 할까요?";
+

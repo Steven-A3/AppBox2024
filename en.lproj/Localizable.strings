@@ -294,8 +294,8 @@
 "Reminder" = "Reminder";
 
 "All" = "All";
-"Upcoming" = "Upcoming";
-"Past" = "Past";
+"List_Upcoming" = "Upcoming";
+"List_Past" = "Past";
 "Anniversary" = "Anniversary";
 "Appointment" = "Appointment";
 "Birthday" = "Birthday";
@@ -807,7 +807,7 @@
 
 "P" = "P";
 
-"DaysCounter_ALL" = "ALL";
+"DaysCounter_All" = "All";
 
 "until" = "until";
 "now" = "now";

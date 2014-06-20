@@ -105,13 +105,6 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawerStateChanged) name:A3DrawerStateChanged object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3NotificationClockSettingsChanged object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self performSelector:@selector(appsButtonAction:) withObject:nil afterDelay:0.2];
-        });
-    });
 }
 
 - (void)removeObserver {
@@ -142,7 +135,6 @@
 }
 
 - (void)drawerStateChanged {
-    [self setupInstructionView];
 	[self.scrollView setScrollEnabled:self.mm_drawerController.openSide == MMDrawerSideNone];
 }
 
@@ -152,6 +144,7 @@
 	if ([self isMovingToParentViewController]) {
 		[self layoutSubviews];
 		[self.clockDataManager startTimer];
+		[self setupInstructionView];
         if (self.instructionViewController) {
             [self adjustInstructionFingerPositionForPortrait:IS_PORTRAIT];
         }

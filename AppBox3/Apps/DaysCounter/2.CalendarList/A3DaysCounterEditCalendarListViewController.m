@@ -153,11 +153,11 @@
 		}
         else if ( [item.calendarId isEqualToString:SystemCalendarID_Upcoming]) {
             numberOfEvents = [_sharedManager numberOfUpcomingEventsWithDate:[NSDate date]];
-			textLabel.text = NSLocalizedString(@"Upcoming", nil);
+			textLabel.text = NSLocalizedString(@"List_Upcoming", nil);
 		}
         else if ( [item.calendarId isEqualToString:SystemCalendarID_Past] ) {
             numberOfEvents = [_sharedManager numberOfPastEventsWithDate:[NSDate date]];
-			textLabel.text = NSLocalizedString(@"Past", nil);
+			textLabel.text = NSLocalizedString(@"List_Past", nil);
 		}
         detailTextLabel.text = [NSString stringWithFormat:@"%ld", (long)numberOfEvents];
     }

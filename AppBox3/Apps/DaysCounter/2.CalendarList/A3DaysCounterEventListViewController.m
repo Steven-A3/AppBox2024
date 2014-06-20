@@ -59,7 +59,11 @@
 {
     [super viewDidLoad];
 
-    self.title = [NSString stringWithFormat:@"%@%@",_calendarItem.calendarName,([_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : NSLocalizedString(@" Events", @" Events"))];
+	if ([_calendarItem.calendarType integerValue] == CalendarCellType_User) {
+		self.title = [NSString stringWithFormat:@"%@", _calendarItem.calendarName];
+	} else {
+		self.title = [_sharedManager localizedSystemCalendarNameForCalendarID:_calendarItem.calendarId];
+	}
     UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchAction:)];
     UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.rightBarButtonItems = @[edit, search];
