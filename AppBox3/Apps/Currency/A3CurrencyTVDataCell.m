@@ -89,7 +89,7 @@
 
 	[_codeLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.centerY.equalTo(self.centerY);
-		make.right.equalTo(self.contentView.right);
+		_rightMargin = make.right.equalTo(self.contentView.right);
 	}];
 
 	[_rateLabel makeConstraints:^(MASConstraintMaker *make) {

@@ -24,5 +24,6 @@
 @property (nonatomic, strong) UIImageView *flagImageView;
 @property (nonatomic, strong) UIView *separatorLineView;
 @property (nonatomic, weak) id<A3CurrencyMenuDelegate>	menuDelegate;
+@property (nonatomic, strong) MASConstraint *rightMargin;
 
 @end

@@ -848,7 +848,9 @@
 "translator_share_HTML_body" = "<br/><br/>AppBox Pro의 번역 기능을 활용해 보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 "Share Translator Data" = "번역 결과를 공유";
 
-"Delete iCloud" = "iCloud 데이터를 지움";
-"Download iCloud Data" = "iCloud 데이터 사용";
+"Delete iCloud and start over" = "iCloud 데이터를 지우고 새로 시작하기";
+"Download and use iCloud Data" = "iCloud 데이터 내려받아 사용";
 
 "Internet connection is not available." = "사용 가능한 인터넷 연결이 없습니다.";
+
+"How to setup iCloud?" = "iCloud 데이터를 다운로드 하고 사용하거나 혹은 iCloud 데이터를 지우고 새로 시작할 수 있습니다. 어떻게 할까요?";

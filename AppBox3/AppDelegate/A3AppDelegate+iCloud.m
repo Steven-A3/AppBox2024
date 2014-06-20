@@ -57,10 +57,11 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 	if (enable) {
 		if (deleteCloud) {
-
-//			[self.ubiquityStoreManager setCloudEnabledAndOverwriteCloudWithLocalIfConfirmed:^(void (^)(BOOL) setConfirmationAnswer) {
-//
-//			}];
+			[self deleteCloudFilesToResetCloud];
+			[self.ubiquityStoreManager setCloudEnabledAndOverwriteCloudWithLocalIfConfirmed:^(void (^confirmationAnswer)(BOOL)) {
+				confirmationAnswer(YES);
+				return;
+			}];
 		} else {
 			[self.ubiquityStoreManager setCloudEnabled:enable];
 		}
@@ -656,6 +657,23 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	NSArray *files = [fileManager contentsOfDirectoryAtURL:[ubiquityContainerURL URLByAppendingPathComponent:directory] includingPropertiesForKeys:nil options:0 error:NULL];
 	for (NSURL *fileURL in files) {
 		[fileManager startDownloadingUbiquitousItemAtURL:fileURL error:NULL];
+	}
+}
+
+- (void)deleteCloudFilesToResetCloud {
+	[self deleteCloudFilesToResetCloudInDirectory:A3DaysCounterImageDirectory];
+	[self deleteCloudFilesToResetCloudInDirectory:A3WalletImageDirectory];
+	[self deleteCloudFilesToResetCloudInDirectory:A3WalletVideoDirectory];
+}
+
+- (void)deleteCloudFilesToResetCloudInDirectory:(NSString *)directory {
+	// iCloud 데이터를 초기화 하는 경우에, 이미지 파일들도 함께 지워야 한다.
+	// DaysCounter image, Wallet 사진, 비디오 이미지를 함께 삭제한다.
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
+	NSArray *files = [fileManager contentsOfDirectoryAtURL:[ubiquityContainerURL URLByAppendingPathComponent:directory] includingPropertiesForKeys:nil options:0 error:NULL];
+	for (NSURL *fileURL in files) {
+		[fileManager removeItemAtURL:fileURL error:NULL];
 	}
 }
 

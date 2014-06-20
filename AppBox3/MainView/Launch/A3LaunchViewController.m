@@ -16,7 +16,7 @@
 
 NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 
-@interface A3LaunchViewController () <UIViewControllerTransitioningDelegate>
+@interface A3LaunchViewController () <UIViewControllerTransitioningDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) UIStoryboard *launchStoryboard;
 @property (nonatomic, strong) A3LaunchSceneViewController *currentSceneViewController;
@@ -130,11 +130,33 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 			[self alertCloudNotEnabled];
 			return;
 		}
+
+		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
+		if ([keyValueStore boolForKey:A3CloudHasData]) {
+			// Ask user to delete iCloud or not
+			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"How to setup iCloud?", @"iCloud has your data.")
+																	 delegate:self
+															cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+													   destructiveButtonTitle:NSLocalizedString(@"Delete iCloud and start over", @"Delete iCloud")
+															otherButtonTitles:NSLocalizedString(@"Download and use iCloud Data", @"Download iCloud Data"), nil];
+			[actionSheet showInView:self.view];
+			return;
+		}
 		[[A3AppDelegate instance] setCloudEnabled:YES deleteCloud:NO ];
 	} else {
 		[self continueButtonPressedInViewController:_currentSceneViewController];
 	}
 }
+
+#pragma mark - UIActionSheet Delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == actionSheet.cancelButtonIndex) return;
+	BOOL deleteCloud = buttonIndex == actionSheet.destructiveButtonIndex;
+
+	[[A3AppDelegate instance] setCloudEnabled:YES deleteCloud:deleteCloud ];
+}
+
 
 - (void)continueButtonPressedInViewController:(UIViewController *)viewController {
 	_sceneNumber++;

@@ -34,9 +34,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 @end
 
-@implementation A3SettingsViewController {
-	NSInteger _downloadCloudButtonIndex;
-}
+@implementation A3SettingsViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -153,12 +151,11 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
 		if ([keyValueStore boolForKey:A3CloudHasData]) {
 			// Ask user to delete iCloud or not
-			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"iCloud has your data."
+			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"How to setup iCloud?", nil)
 																	 delegate:self
 															cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-													   destructiveButtonTitle:NSLocalizedString(@"Delete iCloud", @"Delete iCloud")
-															otherButtonTitles:nil];
-			_downloadCloudButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Download iCloud Data", @"Download iCloud Data")];
+													   destructiveButtonTitle:NSLocalizedString(@"Delete iCloud and start over", nil)
+															otherButtonTitles:NSLocalizedString(@"Download and use iCloud Data", nil), nil];
 			[actionSheet showInView:self.view];
 			return;
 		}
@@ -182,7 +179,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	if (buttonIndex == actionSheet.cancelButtonIndex) return;
 	BOOL deleteCloud = buttonIndex == actionSheet.destructiveButtonIndex;
 
-	[[A3AppDelegate instance] setCloudEnabled:YES deleteCloud:NO ];
+	[[A3AppDelegate instance] setCloudEnabled:YES deleteCloud:deleteCloud ];
 }
 
 @end

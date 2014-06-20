@@ -306,6 +306,11 @@
 	if (!cell) {
 		cell = [[A3CurrencyTVDataCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3CurrencyDataCellID];
 	}
+	cell.accessoryType = UITableViewCellAccessoryNone;
+	cell.selectionStyle = UITableViewCellSelectionStyleNone;
+	cell.rightMargin.offset(-15);
+	[cell layoutIfNeeded];
+
 	if (indexPath.row == 0) {
 		cell.valueField.delegate = self;
 		cell.valueField.textColor = self.tableView.tintColor;
@@ -318,6 +323,7 @@
 		cell.valueField.text = [nf stringFromNumber:_sourceValue];
 	} else {
 		cell.valueField.delegate = self;
+		[cell.valueField setEnabled:NO];
 		cell.valueField.text = self.targetValueString;
 		cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, Rate = %0.4f", @"%@, Rate = %0.4f"), self.targetItem.currencySymbol, self.conversionRate];
 		cell.codeLabel.text = _targetItem.currencyCode;
@@ -358,6 +364,8 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	return;
+	/*
 	_selectionInSource = indexPath.row == 0;
 
 	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
@@ -375,6 +383,7 @@
 	}
 
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	*/
 }
 
 - (void)currencySelectViewControllerDidDismiss {
