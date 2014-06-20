@@ -1256,7 +1256,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[self unSwipeAll];
 
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-	NSInteger targetIdx = indexPath.row == 0 ? 2 : indexPath.row;
+	//NSInteger targetIdx = indexPath.row == 0 ? 2 : indexPath.row;
+    NSInteger targetIdx = indexPath.row;
 	NSAssert(self.favorites[indexPath.row] != _equalItem, @"Selected row must not the equal cell and/or plus cell");
 	[self shareActionForSourceIndex:0 targetIndex:targetIdx sender:sender ];
 }
@@ -1323,7 +1324,13 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 - (void)shareActionForSourceIndex:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx sender:(id)sender {
 	_shareSourceIndex = sourceIdx;
 	_shareTargetIndex = targetIdx;
-	_shareAll = NO;
+    if (_shareSourceIndex == 0 && _shareTargetIndex == 0) {
+        _shareAll = YES;
+    }
+    else {
+        _shareAll = NO;
+    }
+	
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
 	if (IS_IPHONE) {
 		[self presentViewController:activityController animated:YES completion:nil];
