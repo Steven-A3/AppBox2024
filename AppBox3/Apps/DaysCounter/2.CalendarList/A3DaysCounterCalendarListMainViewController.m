@@ -701,18 +701,16 @@
             
         case CalendarCellType_System:
         {
+			textLabel.text = [_sharedManager localizedSystemCalendarNameForCalendarID:calendarItem.calendarId];
             NSInteger numberOfEvents = 0;
             if ( [calendarItem.calendarId isEqualToString:SystemCalendarID_All] ) {
                 numberOfEvents = [_sharedManager numberOfAllEvents];
-				textLabel.text = NSLocalizedString(@"DaysCounter_ALL", nil);
             }
             else if ( [calendarItem.calendarId isEqualToString:SystemCalendarID_Upcoming]) {
                 numberOfEvents = [_sharedManager numberOfUpcomingEventsWithDate:[NSDate date]];
-				textLabel.text = NSLocalizedString(@"Upcoming", nil);
             }
             else if ( [calendarItem.calendarId isEqualToString:SystemCalendarID_Past] ) {
                 numberOfEvents = [_sharedManager numberOfPastEventsWithDate:[NSDate date]];
-				textLabel.text = NSLocalizedString(@"Past", nil);
             }
             
             countLabel.text = [NSString stringWithFormat:@"%ld", (long)numberOfEvents];

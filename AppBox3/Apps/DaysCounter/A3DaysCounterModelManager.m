@@ -1678,4 +1678,17 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return dateString;
 }
 
+- (NSString *)localizedSystemCalendarNameForCalendarID:(NSString *)calendarID {
+	if ( [calendarID isEqualToString:SystemCalendarID_All] ) {
+		return NSLocalizedString(@"DaysCounter_All", nil);
+	}
+	else if ( [calendarID isEqualToString:SystemCalendarID_Upcoming]) {
+		return NSLocalizedString(@"List_Upcoming", nil);
+	}
+	else if ( [calendarID isEqualToString:SystemCalendarID_Past] ) {
+		return NSLocalizedString(@"List_Past", nil);
+	}
+	return nil;
+}
+
 @end

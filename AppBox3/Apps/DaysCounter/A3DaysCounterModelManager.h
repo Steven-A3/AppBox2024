@@ -91,6 +91,8 @@
 - (void)recalculateEventDatesForEvent:(DaysCounterEvent *)event;
 
 #pragma mark - EventTime Management (AlertTime, EffectiveStartDate)
+- (NSString *)localizedSystemCalendarNameForCalendarID:(NSString *)calendarID;
+
 + (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event;
 + (void)reloadAlertDateListForLocalNotification;
 

@@ -33,6 +33,18 @@
 	self.yearLabel.text = NSLocalizedString(@"Year(s)", nil);
 	self.monthLabel.text = NSLocalizedString(@"Month(s)", nil);
 	self.dayLabel.text = NSLocalizedString(@"Day(s)", nil);
+
+	if (IS_IPHONE) {
+		[_yearLabel makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(self.left).with.offset(320 / 3 / 2);
+		}];
+		[_monthLabel makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(self.centerX);
+		}];
+		[_dayLabel makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(self.right).with.offset(- 320 / 3 / 2);
+		}];
+	}
 }
 
 -(void)layoutSubviews
@@ -129,6 +141,7 @@
         [_dayLabel setTextAlignment:NSTextAlignmentLeft];
     }
     else {
+
         CGFloat width = self.bounds.size.width;
         CGRect rect;
 //        rect = _yearTextField.frame;

@@ -15,7 +15,7 @@
 static DurationType g_currentDurationType;
 
 #pragma mark -
-+(void)setDurationType:(DurationType)options
++ (void)setDurationType:(DurationType)options
 {
 //    DurationType result = DurationType_Year;
     DurationType result = DurationType_Day;
@@ -53,12 +53,12 @@ static DurationType g_currentDurationType;
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-+(DurationType)durationType
++ (DurationType)durationType
 {
     return (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
 }
 
-+(NSCalendarUnit)calendarUnitByDurationType
++ (NSCalendarUnit)calendarUnitByDurationType
 {
     NSCalendarUnit calUnit = 0;
     DurationType durationType = (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
@@ -79,7 +79,7 @@ static DurationType g_currentDurationType;
     return calUnit;
 }
 
-+(NSString *)durationTypeString
++ (NSString *)durationTypeString
 {
     DurationType type = (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
     
@@ -100,20 +100,20 @@ static DurationType g_currentDurationType;
     return [result componentsJoinedByString:@", "];
 }
 
-+(void)setCurrentDurationType:(DurationType)type {
++ (void)setCurrentDurationType:(DurationType)type {
     g_currentDurationType = type;
 }
 
-+(DurationType)currentDurationType {
++ (DurationType)currentDurationType {
     return g_currentDurationType;
 }
 
-+(DurationType)addSubDurationType {
++ (DurationType)addSubDurationType {
     return DurationType_Year | DurationType_Month | DurationType_Day;
 }
 
 #pragma mark - 
-+(void)setExcludeOptions:(ExcludeOptions)options
++ (void)setExcludeOptions:(ExcludeOptions)options
 {
     ExcludeOptions result = ExcludeOptions_None;
     ExcludeOptions oldOptions = (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:@"excludeOptions"];
@@ -137,12 +137,12 @@ static DurationType g_currentDurationType;
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-+(ExcludeOptions)excludeOptions
++ (ExcludeOptions)excludeOptions
 {
     return (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:@"excludeOptions"];
 }
 
-+(NSString *)excludeOptionsString
++ (NSString *)excludeOptionsString
 {
     ExcludeOptions options = (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:@"excludeOptions"];
     if (ExcludeOptions_None == options) {
@@ -171,13 +171,13 @@ static DurationType g_currentDurationType;
 
 #pragma mark - DateCalculation
 
-+(NSCalendar *)currentCalendar
++ (NSCalendar *)currentCalendar
 {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     return calendar;
 }
 
-+(NSDateComponents *)dateComponentByAddingDay:(NSInteger)aDay toDate:(NSDate *)fromDate
++ (NSDateComponents *)dateComponentByAddingDay:(NSInteger)aDay toDate:(NSDate *)fromDate
 {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comp = [NSDateComponents new];
@@ -188,7 +188,7 @@ static DurationType g_currentDurationType;
     return [A3DateCalcStateManager dateComponentFromDate:fromDate toDate:toDate];
 }
 
-+(NSDateComponents *)dateComponentBySubtractingDay:(NSInteger)aDay toDate:(NSDate *)fromDate
++ (NSDateComponents *)dateComponentBySubtractingDay:(NSInteger)aDay toDate:(NSDate *)fromDate
 {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comp = [NSDateComponents new];
@@ -199,7 +199,7 @@ static DurationType g_currentDurationType;
     return [A3DateCalcStateManager dateComponentFromDate:toDate toDate:fromDate];
 }
 
-+(NSDate *)dateByAddingDay:(NSInteger)aDay toDate:(NSDate *)fromDate
++ (NSDate *)dateByAddingDay:(NSInteger)aDay toDate:(NSDate *)fromDate
 {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comp = [NSDateComponents new];
@@ -209,7 +209,7 @@ static DurationType g_currentDurationType;
     return toDate;
 }
 
-+(NSDate *)dateBySubtractingDay:(NSInteger)aDay toDate:(NSDate *)fromDate
++ (NSDate *)dateBySubtractingDay:(NSInteger)aDay toDate:(NSDate *)fromDate
 {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comp = [NSDateComponents new];
@@ -223,7 +223,7 @@ static DurationType g_currentDurationType;
  - 제외날짜, 기간 적용하여 날짜 계산.
 
  **/
-+(NSDateComponents *)dateComponentFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
++ (NSDateComponents *)dateComponentFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
     FNLOG(@"\nfromDate: %@ \ntoDate: %@", fromDate, toDate);
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -320,14 +320,14 @@ static DurationType g_currentDurationType;
     return resultComp;
 }
 
-+(NSInteger)dayCountToDate:(NSDate *)date
++ (NSInteger)dayCountToDate:(NSDate *)date
 {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *result = [calendar components:NSDayCalendarUnit fromDate:date];
     return result.day;
 }
 
-+(NSInteger)dayCountToDate:(NSDate *)date from:(NSDate *)from
++ (NSInteger)dayCountToDate:(NSDate *)date from:(NSDate *)from
 {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *result = [calendar components:NSDayCalendarUnit fromDate:from toDate:date options:0];
@@ -335,7 +335,7 @@ static DurationType g_currentDurationType;
 }
 
 
-+(NSString *)fullStyleDateStringFromDate:(NSDate *)date
++ (NSString *)fullStyleDateStringFromDate:(NSDate *)date
 {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comp1 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
@@ -351,7 +351,7 @@ static DurationType g_currentDurationType;
     return [date a3FullStyleString];
 }
 
-+(NSString *)fullCustomStyleDateStringFromDate:(NSDate *)date
++ (NSString *)fullCustomStyleDateStringFromDate:(NSDate *)date
 {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comp1 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
