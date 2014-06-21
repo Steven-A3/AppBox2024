@@ -403,7 +403,16 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 			[self.speechSynthesizer pauseSpeakingAtBoundary:AVSpeechBoundaryImmediate];
 			return;
 		}
-		AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:[self speechLanguageForLanguage:_messageEntity.group.targetLanguage]];
+
+        NSArray *languages = [A3TranslatorLanguage findAllWithDetectLanguage:NO];
+        __block NSString *targetLangauge = _messageEntity.group.targetLanguage;
+        [languages enumerateObjectsUsingBlock:^(A3TranslatorLanguage *languageItem, NSUInteger idx, BOOL *stop) {
+            if ([languageItem.code isEqualToString:targetLangauge]) {
+                *stop = YES;
+                targetLangauge = [languageItem googleCode];
+            }
+        }];
+		AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:[self speechLanguageForLanguage:targetLangauge]];
 		AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:_messageEntity.translatedText];
 		utterance.voice = voice;
 		[self.speechSynthesizer speakUtterance:utterance];
@@ -430,11 +439,26 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 
 - (BOOL)speechAvailableForLanguage:(NSString *)language {
 	NSArray *voices = [AVSpeechSynthesisVoice speechVoices];
-	return [voices indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+    NSUInteger resultIndex = [voices indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 		BOOL result = [[[obj valueForKeyPath:A3TranslatorKayLanguage] substringToIndex:2] isEqualToString:language];
 		if (result) *stop = YES;
 		return result;
-	}] != NSNotFound;
+	}];
+    
+    if (resultIndex != NSNotFound) {
+        return YES;
+    }
+    
+    NSArray *languages = [A3TranslatorLanguage findAllWithDetectLanguage:NO];
+    __block BOOL result = NO;
+    [languages enumerateObjectsUsingBlock:^(A3TranslatorLanguage *languageItem, NSUInteger idx, BOOL *stop) {
+        if ([languageItem.code isEqualToString:language]) {
+            *stop = YES;
+            result = YES;
+        }
+    }];
+
+    return result;
 }
 
 - (NSString *)speechLanguageForLanguage:(NSString *)language {
@@ -464,6 +488,9 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 
 - (NSString *)supportedVoiceLanguageForLanguage:(NSString *)language defaultCode:(NSString *)defaultCode inArray:(NSArray *)voices {
 	NSString *languageCode = [NSString stringWithFormat:@"en-%@", [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]];
+    if ([language isEqualToString:@"zh-CN"] || [language isEqualToString:@"zh-TW"]) {
+        languageCode = language;
+    }
 	NSInteger idx = [voices indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 		BOOL result = [[obj valueForKeyPath:A3TranslatorKayLanguage] isEqualToString:languageCode];
 		if (result) *stop = YES;
@@ -485,7 +512,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
  */
 - (BOOL)googleSpeechAvailableForLanguage:(NSString *)language {
 	if (![[A3AppDelegate instance].reachability isReachable]) return NO;
-	NSSet *googleSpeeches = [NSSet setWithArray:@[@"mk", @"hr", @"sr", @"ht", @"is", @"ca", @"sw", @"af", @"lv", @"vi", @"cy", @"sq", @"he", @"zh-Hans", @"zh-Hant", @"fil"]];
+	NSSet *googleSpeeches = [NSSet setWithArray:@[@"mk", @"hr", @"sr", @"ht", @"is", @"ca", @"sw", @"af", @"lv", @"vi", @"cy", @"sq"]];
 	return [googleSpeeches member:language] != nil;
 }
 
