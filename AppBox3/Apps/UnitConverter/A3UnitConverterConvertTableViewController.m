@@ -1110,9 +1110,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 	if(indexPath.row == 0) {
 		[self unSwipeAll];
-
 		return YES;
-	} else {
+	}
+    else {
 		// shifted 0 : shift self
 		// shifted 1 and it is me. unshift self
 		// shifted 1 and it is not me. unshift him and shift me.

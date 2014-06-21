@@ -631,7 +631,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	if ([self.favorites objectAtIndex:indexPath.row] == self.equalItem) {
 		A3CurrencyTVEqualCell *equalCell = [self reusableEqualCellForTableView:tableView];
-
 		cell = equalCell;
 	} else if ( [ [self.favorites objectAtIndex:indexPath.row] isKindOfClass:[CurrencyFavorite class] ] ) {
 		A3CurrencyTVDataCell *dataCell;

@@ -24,7 +24,7 @@
 		// Initialization code
         self.frame = CGRectMake(0.0, 0.0, 320.0, 84);
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
+        [self.contentView addSubview:self.touchCoverRectButton];
 		[self.contentView addSubview:self.valueField];
         [self.contentView addSubview:self.value2Field];
         [self.contentView addSubview:self.valueLabel];
@@ -158,6 +158,7 @@
     // reset constraints
 	[_valueFieldWidthConstraint uninstall];
 	[_value2FieldWidthConstraint uninstall];
+    
 
     [self removeConstraints:self.constraints];
     [self.contentView removeConstraints:self.contentView.constraints];
@@ -171,6 +172,13 @@
     else if (_inputType == UnitInput_FeetInch) {
         [self addFeetInchInputConstraints];
     }
+    
+    [self.touchCoverRectButton makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.contentView.left);
+        make.top.equalTo(self.contentView.top);
+        make.bottom.equalTo(self.contentView.bottom);
+        make.right.equalTo(self.rateLabel.left).with.offset(-20);
+    }];
 }
 
 - (void)updateMultiTextFieldModeConstraintsWithEditingTextField:(UITextField *)field {
@@ -363,6 +371,20 @@
 		_separatorLineView.translatesAutoresizingMaskIntoConstraints = NO;
 	}
 	return _separatorLineView;
+}
+
+- (UIButton *)touchCoverRectButton {
+    if (!_touchCoverRectButton) {
+        _touchCoverRectButton = [UIButton new];
+        _touchCoverRectButton.backgroundColor = [UIColor clearColor];
+        _touchCoverRectButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [_touchCoverRectButton addTarget:self action:@selector(touchCoverRectButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    return _touchCoverRectButton;
+}
+- (void)touchCoverRectButtonAction:(id)sender {
+    [_valueField becomeFirstResponder];
 }
 
 #pragma mark - label size
