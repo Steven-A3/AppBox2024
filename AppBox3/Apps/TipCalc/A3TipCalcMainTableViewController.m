@@ -242,6 +242,9 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 				case A3RightBarButtonTagSettingsButton:
 					barButton.enabled = YES;
 					break;
+                case A3RightBarButtonTagHelpButton:
+                    barButton.enabled = YES;
+                    break;
 			}
 		}];
 
