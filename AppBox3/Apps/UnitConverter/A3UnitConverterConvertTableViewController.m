@@ -103,16 +103,15 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 	if (IS_IPHONE) {
         [self rightButtonMoreButton];
-//		UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
-//		UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
-//
-//		self.navigationItem.rightBarButtonItems = @[history, share];
 	} else {
 		UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+        share.tag = A3RightBarButtonTagShareButton;
 		UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
+        history.tag = A3RightBarButtonTagHistoryButton;
 		UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 		space.width = 24.0;
         UIBarButtonItem *help = [self instructionHelpBarButton];
+        help.tag = A3RightBarButtonTagHelpButton;
 
 		self.navigationItem.rightBarButtonItems = @[history, space, share, space, help];
 	}
@@ -179,18 +178,36 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	if (!IS_IPAD) return;
 
 	UIColor *disabledColor = [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
-    UIBarButtonItem *shareItem = self.navigationItem.rightBarButtonItems[2];
-    UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[0];
+    [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
+        switch ([barButton tag]) {
+            case A3RightBarButtonTagShareButton:
+                barButton.enabled = enable;
+                break;
+                
+            case A3RightBarButtonTagHistoryButton:
+            {
+                if (enable) {
+                    barButton.enabled = [UnitHistory MR_countOfEntities] > 0;
+                } else {
+                    barButton.enabled = NO;
+                }
+            }
+                break;
+                
+            case A3RightBarButtonTagHelpButton:
+                barButton.enabled = YES;
+                break;
+                
+            default:
+                break;
+        }
+    }];
+
+    
 	[self.addButton setEnabled:enable];
 	self.tabBarController.tabBar.selectedImageTintColor = enable ? nil : disabledColor;
 	self.navigationItem.leftBarButtonItem.enabled = enable;
-	shareItem.enabled = enable;
 
-	if (enable) {
-        historyItem.enabled = [UnitHistory MR_countOfEntities] > 0;
-    } else {
-        historyItem.enabled = NO;
-    }
 	NSIndexPath *firstRowIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [self.fmMoveTableView cellForRowAtIndexPath:firstRowIndexPath];
 	cell.valueField.textColor = enable ? [[A3AppDelegate instance] themeColor] : disabledColor;
@@ -933,7 +950,10 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			else {
 				fromValue = 1;
 			}
-			[self putHistoryWithValue:@(fromValue)];
+            
+            if (fromValue != 1 || [UnitHistory MR_countOfEntities] != 0 ) {
+                [self putHistoryWithValue:@(fromValue)];
+            }
 		});
 	}
 }
