@@ -879,6 +879,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)configurePlusCell:(A3UnitConverterTVActionCell *)actionCell {
 	[actionCell.centerButton addTarget:self action:@selector(addUnitAction) forControlEvents:UIControlEventTouchUpInside];
+    actionCell.centerButton.tintColor = [A3AppDelegate instance].themeColor;
 }
 
 #pragma mark - UITableViewDelegate
