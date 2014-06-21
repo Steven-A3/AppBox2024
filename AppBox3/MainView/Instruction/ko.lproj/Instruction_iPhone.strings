@@ -113,7 +113,7 @@
 /* Class = "IBUILabel"; text = "tap anywhere to see more info"; ObjectID = "n3c-eW-iPb"; */
 "n3c-eW-iPb.text" = "화면을 탭하여 더 많은 정보를 볼 수 있습니다.";
 
-/* Class = "IBUILabel"; text = "tap plus button to add a country"; ObjectID = "nP5-9M-28L"; */
+/* Class = "IBUILabel"; text = "Tap the plus button to add a country"; ObjectID = "nP5-9M-28L"; */
 "nP5-9M-28L.text" = "더하기 버튼을 탭하여 국가를 추가합니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a item,\nthen drag it up or down"; ObjectID = "nPF-RG-8hQ"; */

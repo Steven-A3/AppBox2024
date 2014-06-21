@@ -485,7 +485,7 @@
 - (UITableViewCell *)cellOfSearchResultTableView:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
     if ( [self.nearbyVenuesOfSearchResults count] == 0 ) {
-        cell.textLabel.text = (isLoading ? NSLocalizedString(@"Loading locations....", @"Loading locations....") : @"Add this place");
+        cell.textLabel.text = (isLoading ? NSLocalizedString(@"Loading locations....", @"Loading locations....") : NSLocalizedString(@"Add this place", @"Add this place"));
         cell.detailTextLabel.text = @"";
         cell.textLabel.textColor = isLoading ? [UIColor blackColor] : [A3AppDelegate instance].themeColor;
     }

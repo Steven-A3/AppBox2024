@@ -150,6 +150,8 @@
 		if ((indexPath.row == ([_itemArray count] - 1))) {
 			cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventRepeatCell" owner:nil options:nil] lastObject];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+			UILabel *label = (UILabel *)[cell viewWithTag:10];
+			label.text = NSLocalizedString(@"Custom", nil);
 			UITextField *textField = (UITextField*)[cell viewWithTag:12];
 			textField.delegate = self;
 			UILabel *detailLabel = (UILabel*)[cell viewWithTag:11];

@@ -218,7 +218,7 @@
 			<string>%ld 일 전</string>
 		</dict>
 	</dict>
-	<key>%ld days left</key>
+	<key>%ld Days Left</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@num_days@</string>

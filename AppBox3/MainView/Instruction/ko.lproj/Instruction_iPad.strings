@@ -20,7 +20,7 @@
 /* Class = "IBUILabel"; text = "tap to add period"; ObjectID = "Cat-ab-onw"; */
 "Cat-ab-onw.text" = "탭하여 자연주기를 추가합니다.";
 
-/* Class = "IBUILabel"; text = "tap plus button to add a country"; ObjectID = "DU3-Gi-SHf"; */
+/* Class = "IBUILabel"; text = "Tap the plus button to add a country"; ObjectID = "DU3-Gi-SHf"; */
 "DU3-Gi-SHf.text" = "더하기 버튼을 탭하여 국가를 추가합니다.";
 
 /* Class = "IBUILabel"; text = "tap to add a language"; ObjectID = "DxY-hj-aOP"; */

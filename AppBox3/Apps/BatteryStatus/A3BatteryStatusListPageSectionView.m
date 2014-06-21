@@ -34,7 +34,7 @@
 	_tableSegmentButton.backgroundColor = [UIColor whiteColor];
 //    _tableSegmentButton.layer.cornerRadius = 5;
     CAShapeLayer* mask = [[CAShapeLayer alloc] init];
-    mask.frame = CGRectMake(0, 0, IS_IPHONE ? 170 : 300, _tableSegmentButton.bounds.size.height);
+    mask.frame = CGRectMake(0, 0, IS_IPHONE ? 224 : 300, _tableSegmentButton.bounds.size.height);
     mask.path = [[UIBezierPath bezierPathWithRoundedRect:mask.frame cornerRadius:4] CGPath];
     _tableSegmentButton.layer.mask = mask;
 

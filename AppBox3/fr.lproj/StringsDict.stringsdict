@@ -242,7 +242,7 @@
 			<string>%ld days before</string>
 		</dict>
 	</dict>
-	<key>%ld days left</key>
+	<key>%ld Days Left</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@num_days@</string>
@@ -259,9 +259,9 @@
 			<key>few</key>
 			<string>The day after tomorrow</string>
 			<key>many</key>
-			<string>%ld days left</string>
+			<string>%ld Days Left</string>
 			<key>other</key>
-			<string>%ld days left</string>
+			<string>%ld Days Left</string>
 		</dict>
 	</dict>
 	<key>%ld weeks</key>

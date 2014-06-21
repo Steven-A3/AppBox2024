@@ -1603,8 +1603,7 @@ EXIT_FUCTION:
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if ( section == 1 ) {
-        //return 35.0;
-        return IS_RETINA ? 35.5 : 35;
+        return 35.0;
     }
     
     return 0.01;

@@ -304,7 +304,7 @@
 "Holiday" = "휴일";
 "Work" = "업무";
 
-"Never" = "안함";
+"Never" = "안 함";
 "Every Day" = "매일";
 "Every Week" = "매주";
 "Every 2Week" = "2주마다";
@@ -312,7 +312,7 @@
 "Every Year" = "매년";
 "Daily" = "매일";
 "Weekly" = "매주";
-"Bi-Weekly" = "매격주";
+"Bi-Weekly" = "2주마다";
 "Monthly" = "매월";
 "Yearly" = "매년";
 
@@ -386,7 +386,7 @@
 
 "현재 위치에 대한 정보를 가져올 수 없습니다." = "현재 위치에 대한 정보를 가져올 수 없습니다.";
 
-"Every 2 Weeks" = "매 격주";
+"Every 2 Weeks" = "2주마다";
 "Undo" = "실행취소";
 "Redo" = "다시실행";
 "Prev" = "이전";
@@ -501,19 +501,19 @@
 "Payment" = "상환금";
 "Term(years)" = "대출기간(년)";
 "Term(months)" = "대출기간(월)";
-"Biweekly" = "격주";
-"Bimonthly" = "격월";
+"Biweekly" = "2주마다";
+"Bimonthly" = "2달마다";
 "Quarterly" = "분기상환";
 "Semiannually" = "반기상환";
 "Annually" = "년상환";
 
-"Loan Calc Frequency short string weekly" = "주";
-"Loan Calc Frequency short string biweekly" = "격주";
-"Loan Calc Frequency short string monthly" = "월";
-"Loan Calc Frequency short string bi montly" = "격월";
-"Loan Calc Frequency short string quarterly" = "분기";
-"Loan Calc Frequency short string semi annually" = "반기";
-"Loan Calc Frequency short string annually" = "년";
+"Loan Calc Frequency short string weekly" = "매주";
+"Loan Calc Frequency short string biweekly" = "2주마다";
+"Loan Calc Frequency short string monthly" = "매 월";
+"Loan Calc Frequency short string bi montly" = "2달에 한번";
+"Loan Calc Frequency short string quarterly" = "분기 마다";
+"Loan Calc Frequency short string semi annually" = "반기 마다";
+"Loan Calc Frequency short string annually" = "매 년";
 
 "PAYMENT" = "상환금";
 "PRINCIPAL" = "원금";
@@ -854,3 +854,4 @@
 
 "How to setup iCloud?" = "iCloud 데이터를 다운로드 하고 사용하거나 혹은 iCloud 데이터를 지우고 새로 시작할 수 있습니다. 어떻게 할까요?";
 
+"Add this place" = "장소 추가";
