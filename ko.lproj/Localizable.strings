@@ -41,7 +41,7 @@
 
 "microphone access denied" = "AppBox Pro가 장치의 마이크에 접근하는 것이 제한되어 있습니다.\n소리를 함께 녹화하시려면 보유하신 %@의 설정 > 개인 정보 보호 > 마이크 > AppBox Pro를 선택하여 설정을 변경하여 주세요.";
 
-"Theme Color" = "테마 색 설정";
+"Theme Color" = "테마 색상";
 
 "About" = "정보";
 "Remaining Time" = "잔여시간";
@@ -95,13 +95,13 @@
 "Reference" = "레퍼런스";
 "Utility" = "유틸리티";
 "OK" = "확인";
-"Device" = "장치명";
+"Device" = "모델";
 "Version" = "버전";
-"Chips" = "칩셋";
+"Chips" = "칩";
 "CPU" = "CPU";
 "GPU" = "GPU";
 "Memory" = "메모리";
-"Capacity" = "용량";
+"Capacity" = "전체공간";
 
 "How to Maximize Power Use" = "배터리 절약하는 법";
 "More Information about Batteries" = "배터리에 대한 더 자세한 정보";
@@ -163,7 +163,7 @@
 "Share Currency Converter Data" = "환율 변환 정보 공유하기";
 
 /* Data Calc duration */
-"Year" = "년";
+"Year" = "연";
 "Month" = "월";
 "Week" = "주";
 "Day" = "일";
@@ -182,7 +182,7 @@
 "0 day" = "0 일";
 
 "To show results, need one option." = "결과를 표시하기 위해서는 하나 이상을 선택해야 합니다.";
-"Years" = "년";
+"Years" = "연";
 "Months" = "월";
 "Weeks" = "주";
 "Days" = "일";
@@ -210,7 +210,7 @@
 "To" = "종료일";
 "Exclude" = "제외하기";
 
-"%ld of %ld" = "%ld의 %ld";
+"%ld of %ld" = "%ld / %ld";
 "%@ using AppBox Pro" = "%@ AppBox Pro 사용";
 "Share Days Counter Data" = "이벤트 캘린더 공유";
 "<html><body>I'd like to share a event with you.<br/><br/>" = "<html><body>이벤트를 공유합니다.<br/><br/>";
@@ -526,7 +526,7 @@
 "Amounts" = "금액";
 "Loan" = "대출";
 "Comparison" = "비교";
-" of " = " 의 ";
+" of " = " / ";
 
 "0 %@ %ld mo" = "0 %@ %ld 월";
 "%ld %@ %ld mo" = "%ld %@ %ld 월";
@@ -577,39 +577,39 @@
 
 "Take picture failed." = "사진 촬영이 실패했습니다.";
 "Save to camera roll failed." = "카메라 롤에 저장할 수 없습니다.";
-"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app." = "돋보기에서 촬영한 사진은 기본 포토 앱의 카메라 롤에 저장이 되었습니다.";
+"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app." = "돋보기로 촬영한 사진은 사진 App에 있는 카메라 롤에 저장됩니다.";
 
 "Mono" = "흑백";
 "Tonal" = "그레이";
 "Noir" = "느와르";
 "Fade" = "흐림";
 "Chrome" = "밝음";
-"Process" = "차가음";
+"Process" = "차가움";
 "Transfer" = "따뜻함";
 "Instant" = "즉석사진";
 
-"The photos you take with Mirror are saved in your Camera Roll album in the Photos app." = "거울에서 촬영한 사진은 기본 포토 앱의 카메라 롤에 저장이 되었습니다.";
+"The photos you take with Mirror are saved in your Camera Roll album in the Photos app." = "거울로 촬영한 사진은 사진 App에 있는 카메라 롤에 저장됩니다.";
 "Percent_Calc_SliderMarkLabel_for_A" = "A";
 "Percent_Calc_SliderMarkLabel_for_B" = "B";
 
 "A" = "A";
 "B" = "B";
-"X is Y% of What" = "X는 얼마의 Y 퍼센트";
-"What is X% of Y" = "Y의 X퍼센트는 얼마";
-"X is What % of Y" = "X는 Y의 몇 퍼센트";
-"% Change from X to Y" = "X에서 Y로의 퍼센트 변화";
-"Compare % Change from X to Y" = "두 퍼센트 변화의 비교";
+"X is Y% of What" = "얼마의 Y%는 X";
+"What is X% of Y" = "Y의 X%는 얼마";
+"X is What % of Y" = "Y의 X는 몇%";
+"% Change from X to Y" = "X가 Y로 변하면";
+"Compare % Change from X to Y" = "X가 Y로 변하는 %비교";
 
 "Sale Price" = "할인 가격";
 "Sale Price Tax" = "할인 가격 세금";
 "Original Price" = "표시 가격";
-"Original Price Tax" = "표시 가격 세액";
-"Saved Amount" = "할인된 가격";
-"Saved Amount Tax" = "할인된 세금";
+"Original Price Tax" = "표시 가격 세금";
+"Saved Amount" = "절약된 금액";
+"Saved Amount Tax" = "절약된 금액 세금";
 "  Sale Price with Tax" = "  할인 가격 + 세금";
 "  Sale Price w/Tax" = "  할인 가격 + 세금";
 "  Sale Price" = "  할인 가격";
-" saved of " = " 이 절약됨 ";
+" saved of " = " / ";
 
 "Sale Price with Tax" = "할인 가격 + 세금";
 "Sale Price w/Tax" = "할인 가격 + 세금";
@@ -620,26 +620,26 @@
 "KNOWN VALUE" = "알고 있는 금액";
 
 "Total" = "총액";
-"Tip" = "팁";
+"Tip" = "봉사료";
 
 "Total Per Person" = "개인별 총액";
-"Tip Per Person" = "개인 별 팁";
+"Tip Per Person" = "개인별 봉사료";
 "Input" = "입력";
 "Amount" = "비용";
-"Amount After Tax" = "세금이 포함된 금액";
+"Amount After Tax" = "세금 포함 금액";
 "Amount Before Tax" = "세금 제외 금액";
-"Split" = "더치페이";
+"Split" = "각자내기";
 
 "Before Split" = "총액";
 "Per Person" = "개인별";
-"  Tip" = "  팁";
+"  Tip" = "  봉사료";
 " Total Per Person" = " 개인별 총액";
 " Total Before Split" = " 전체 총액";
 " Total" = " 총액";
 
-"Subtotal" = "계";
-"ROUNDING" = "반올림 방법";
-"Cost" = "비용";
+"Subtotal" = "소계";
+"ROUNDING" = "반올림";
+"Cost" = "금액";
 "Value" = "값";
 "Methods" = "방법";
 "Exact" = "정확하게";
@@ -855,3 +855,23 @@
 "How to setup iCloud?" = "iCloud 데이터를 다운로드 하고 사용하거나 혹은 iCloud 데이터를 지우고 새로 시작할 수 있습니다. 어떻게 할까요?";
 
 "Add this place" = "장소 추가";
+
+"STATUS" = "상황";
+
+"Talk Time on 2G" = "2G에서 통화시간";
+"Talk Time on 3G" = "3G에서 통화시간";
+"Internet on 3G" = "3G에서 인터넷 사용";
+"Internet on LTE" = "LTE에서 인터넷 사용";
+"Internet on Wi-Fi" = "Wi-Fi에서 인터넷 사용";
+"Internet on Cellular" = "셀룰러에서 인터넷 사용";
+"Video playback" = "동영상 재생";
+"Audio playback" = "오디오 재생";
+"Standby" = "대기 시간";
+"FaceTime" = "페이스타임";
+"GPS" = "GPS";
+"Charging times" = "완전 충전 시간";
+"2D Game" = "2D Game";
+"3D Game" = "3D Game";
+"YouTube" = "YouTube";
+
+"None_Mirror" = "일반";

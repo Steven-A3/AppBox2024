@@ -161,21 +161,22 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
         return nil;
     }
 
-    NSArray * columns = @[@"Talk Time on 2G",
-                          @"Talk Time on 3G",
-                          @"Internet on 3G",
-                          @"Internet on LTE",
-                          @"Internet on Wi-Fi",
-                          @"Internet on Cellular",
-                          @"Video playback",
-                          @"Audio playback",
-                          @"Standby",
-                          @"FaceTime",
-                          @"GPS",
-                          @"Charging times",
-                          @"2D Game",
-                          @"3D Game",
-                          @"YouTube"];
+    NSArray * columns = @[
+			@"Talk Time on 2G",
+			@"Talk Time on 3G",
+			@"Internet on 3G",
+			@"Internet on LTE",
+			@"Internet on Wi-Fi",
+			@"Internet on Cellular",
+			@"Video playback",
+			@"Audio playback",
+			@"Standby",
+			@"FaceTime",
+			@"GPS",
+			@"Charging times",
+			@"2D Game",
+			@"3D Game",
+			@"YouTube"];
 
     for (NSString * aColumn in columns) {
         NSNumber * value = [remainingTimeInfo objectForKey:aColumn];

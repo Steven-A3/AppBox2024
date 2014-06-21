@@ -54,13 +54,13 @@
 "OPT-6P-KMg.text" = "탭하여 이벤트를 추가합니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "PNJ-zS-8fw"; */
-"PNJ-zS-8fw.text" = "화면을 탭하여\n기능을 표시합니다.";
+"PNJ-zS-8fw.text" = "화면을 탭하여\n버튼을 표시합니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "PQM-kM-5Cb"; */
-"PQM-kM-5Cb.text" = "화면을 탭하여\n기능을 표시합니다.";
+"PQM-kM-5Cb.text" = "화면을 탭하여\n버튼을 표시합니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "Pq5-RW-772"; */
-"Pq5-RW-772.text" = "화면을 탭하여\n기능을 표시합니다.";
+"Pq5-RW-772.text" = "화면을 탭하여\n버튼을 표시합니다.";
 
 /* Class = "IBUILabel"; text = "tap to add a category"; ObjectID = "S8J-iA-tvE"; */
 "S8J-iA-tvE.text" = "탭하여 카테고리를 추가합니다.";
@@ -96,7 +96,7 @@
 "bwk-H3-3rx.text" = "이벤트를 터치하고 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "c1e-KD-jLm"; */
-"c1e-KD-jLm.text" = "화면을 탭하여\n기능을 표시합니다.";
+"c1e-KD-jLm.text" = "화면을 탭하여\n버튼을 표시합니다.";
 
 /* Class = "IBUILabel"; text = "swipe left or right to see\nprev/next events"; ObjectID = "cd9-3W-dMs"; */
 "cd9-3W-dMs.text" = "왼쪽이나 오른쪽으로 밀어서\n이전/다음 이벤트를 봅니다.";
@@ -105,7 +105,7 @@
 "dP2-Qa-JvS.text" = "화면을 왼쪽이나 오른쪽으로 밀어서\n다른 나라의 휴일 정보를 확인합니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "dlc-w8-sH6"; */
-"dlc-w8-sH6.text" = "화면을 탭하여\n기능을 표시합니다.";
+"dlc-w8-sH6.text" = "화면을 탭하여\n버튼을 표시합니다.";
 
 /* Class = "IBUILabel"; text = "tap to add or edit budget"; ObjectID = "eJZ-Dc-ywX"; */
 "eJZ-Dc-ywX.text" = "탭하여 예산을 추가하거나 수정합니다.";

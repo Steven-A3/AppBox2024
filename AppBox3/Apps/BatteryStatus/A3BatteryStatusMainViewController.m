@@ -377,14 +377,22 @@ static NSString *CellIdentifier = @"Cell";
     
     // Configure the cell...
     NSDictionary *rowData = [_tableDataSourceArray objectAtIndex:indexPath.row];
-    cell.textLabel.text = [rowData objectForKey:@"title"];
+    cell.textLabel.text = NSLocalizedString([rowData objectForKey:@"title"], nil);
 
     if (_sectionHeaderView.tableSegmentButton.selectedSegmentIndex==0) {
         cell.detailTextLabel.text = [rowData objectForKey:@"value"];
     } else {
         NSInteger maxTime = [[rowData objectForKey:@"value"] integerValue];
         NSInteger remainingMinute = (maxTime*60) * [[UIDevice currentDevice] batteryLevel];
-        cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours, %ld minutes", @"StringsDict", @"Battery Status"), labs(remainingMinute / 60), labs(remainingMinute % 60)];
+		long hours = labs(remainingMinute / 60);
+		long minutes = labs(remainingMinute % 60);
+		if (hours != 0 && minutes != 0) {
+			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours, %ld minutes", @"StringsDict", @"Battery Status"), hours, minutes];
+		} else if (hours != 0) {
+			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours", @"StringsDict", nil), hours];
+		} else {
+			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld minutes", @"StringsDict", nil), minutes];
+		}
     }
     
     return cell;

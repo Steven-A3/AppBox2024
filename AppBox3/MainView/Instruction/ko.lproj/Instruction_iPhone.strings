@@ -21,7 +21,7 @@
 "55x-Hd-Yyy.text" = "탭하여 아이템을 추가합니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "5vX-h0-0KZ"; */
-"5vX-h0-0KZ.text" = "화면을 탭해서\n기능을 표시할 수 있습니다.";
+"5vX-h0-0KZ.text" = "화면을 탭하여\n버튼을 표시합니다.";
 
 /* Class = "IBUILabel"; text = "slide the event to the left,\nthen tap Delete"; ObjectID = "7qV-NL-Ajb"; */
 "7qV-NL-Ajb.text" = "이벤트를 왼쪽으로 밀어서,\n지울 수 있습니다.";
@@ -33,7 +33,7 @@
 "9Oc-Jc-FLn.text" = "국가를 추가하거나 제외합니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "BOF-lT-L6x"; */
-"BOF-lT-L6x.text" = "화면을 탭해서\n기능을 표시할 수 있습니다.";
+"BOF-lT-L6x.text" = "화면을 탭해서\n버튼을 표시합니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a unit,\nthen drag it up or down"; ObjectID = "DNP-PL-5me"; */
 "DNP-PL-5me.text" = "단위를 터치한 후 누르고 있으면\n위 아래로 움직여 순서를 바꿀 수 있습니다.";
@@ -99,7 +99,7 @@
 "j7s-5h-AsK.text" = "색상과 순서를 변경합니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "k0p-RN-RCK"; */
-"k0p-RN-RCK.text" = "화면을 탭하여\n기능을 표시합니다.";
+"k0p-RN-RCK.text" = "화면을 탭하여\n버튼을 표시합니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold  -\nto the right of an item,\nthen drag it up or down"; ObjectID = "ls1-5i-Gos"; */
 "ls1-5i-Gos.text" = "아이템의 오른쪽을\n터치하고 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
@@ -108,7 +108,7 @@
 "m1h-st-ypH.text" = "탭하여 더 많은 정보를 봅니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "mYi-2r-6n3"; */
-"mYi-2r-6n3.text" = "화면을 탭하여\n기능을 표시합니다.";
+"mYi-2r-6n3.text" = "화면을 탭하여\n버튼을 표시합니다.";
 
 /* Class = "IBUILabel"; text = "tap anywhere to see more info"; ObjectID = "n3c-eW-iPb"; */
 "n3c-eW-iPb.text" = "화면을 탭하여 더 많은 정보를 볼 수 있습니다.";
@@ -141,7 +141,7 @@
 "rqI-qD-Dqd.text" = "아이템을 터치하고 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "sxx-vG-Pll"; */
-"sxx-vG-Pll.text" = "화면을 탭하여\n기능을 표시합니다.";
+"sxx-vG-Pll.text" = "화면을 탭하여\n버튼을 표시합니다.";
 
 /* Class = "IBUILabel"; text = "tap to change option"; ObjectID = "t5T-1i-yhB"; */
 "t5T-1i-yhB.text" = "탭하여 설정을 변경합니다.";

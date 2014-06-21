@@ -13,11 +13,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>%1$ld 시간, %2$ld 분</string>
+			<string>%1$ld시간, %2$ld분</string>
 			<key>one</key>
-			<string>%1$ld 시간, %2$ld 분</string>
+			<string>%1$ld시간, %2$ld분</string>
 			<key>other</key>
-			<string>%1$ld 시간, %2$ld 분</string>
+			<string>%1$ld시간, %2$ld분</string>
 		</dict>
 	</dict>
 	<key>%ld hours</key>
@@ -31,11 +31,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>%ld 시간</string>
+			<string>%ld시간</string>
 			<key>one</key>
-			<string>%ld 시간</string>
+			<string>%ld시간</string>
 			<key>other</key>
-			<string>%ld 시간</string>
+			<string>%ld시간</string>
 		</dict>
 	</dict>
 	<key>%ld hrs</key>
@@ -49,11 +49,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>%ld 시간</string>
+			<string>%ld시간</string>
 			<key>one</key>
-			<string>%ld 시간</string>
+			<string>%ld시간</string>
 			<key>other</key>
-			<string>%ld 시간</string>
+			<string>%ld시간</string>
 		</dict>
 	</dict>
 	<key>%ld minutes</key>
@@ -67,11 +67,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>%ld 분</string>
+			<string>%ld분</string>
 			<key>one</key>
-			<string>%ld 분</string>
+			<string>%ld분</string>
 			<key>other</key>
-			<string>%ld 분</string>
+			<string>%ld분</string>
 		</dict>
 	</dict>
 	<key>%ld mins</key>
@@ -85,11 +85,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>%ld 분</string>
+			<string>%ld분</string>
 			<key>one</key>
-			<string>%ld 분</string>
+			<string>%ld분</string>
 			<key>other</key>
-			<string>%ld 분</string>
+			<string>%ld분</string>
 		</dict>
 	</dict>
 	<key>After %ld hours</key>
@@ -105,9 +105,9 @@
 			<key>zero</key>
 			<string>즉시</string>
 			<key>one</key>
-			<string>%ld 시간 후</string>
+			<string>%ld시간 후</string>
 			<key>other</key>
-			<string>%ld 시간 후</string>
+			<string>%ld시간 후</string>
 		</dict>
 	</dict>
 	<key>After %ld minutes</key>
@@ -123,9 +123,9 @@
 			<key>zero</key>
 			<string>즉시</string>
 			<key>one</key>
-			<string>%ld 분 후</string>
+			<string>%ld분 후</string>
 			<key>other</key>
-			<string>%ld 분 후</string>
+			<string>%ld분 후</string>
 		</dict>
 	</dict>
 	<key>%ld months</key>
@@ -157,11 +157,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>%ld 개월</string>
+			<string>%ld개월</string>
 			<key>one</key>
-			<string>%ld 개월</string>
+			<string>%ld개월</string>
 			<key>other</key>
-			<string>%ld 개월</string>
+			<string>%ld개월</string>
 		</dict>
 	</dict>
 	<key>%ld years</key>
@@ -175,11 +175,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>%ld 년</string>
+			<string>%ld년</string>
 			<key>one</key>
-			<string>%ld 년</string>
+			<string>%ld년</string>
 			<key>other</key>
-			<string>%ld 년</string>
+			<string>%ld년</string>
 		</dict>
 	</dict>
 	<key>%ld yrs</key>
@@ -193,11 +193,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>%ld 년</string>
+			<string>%ld년</string>
 			<key>one</key>
-			<string>%ld 년</string>
+			<string>%ld년</string>
 			<key>other</key>
-			<string>%ld 년</string>
+			<string>%ld년</string>
 		</dict>
 	</dict>
 	<key>%ld days before</key>
@@ -213,9 +213,9 @@
 			<key>zero</key>
 			<string>당일</string>
 			<key>one</key>
-			<string>%ld 일 전</string>
+			<string>%ld일 전</string>
 			<key>other</key>
-			<string>%ld 일 전</string>
+			<string>%ld일 전</string>
 		</dict>
 	</dict>
 	<key>%ld Days Left</key>
@@ -247,11 +247,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>%ld 주</string>
+			<string>%ld주</string>
 			<key>one</key>
-			<string>%ld 주</string>
+			<string>%ld주</string>
 			<key>other</key>
-			<string>%ld 주</string>
+			<string>%ld주</string>
 		</dict>
 	</dict>
 	<key>%ld days</key>
@@ -265,11 +265,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>%ld 일</string>
+			<string>%ld일</string>
 			<key>one</key>
-			<string>%ld 일</string>
+			<string>%ld일</string>
 			<key>other</key>
-			<string>%ld 일</string>
+			<string>%ld일</string>
 		</dict>
 	</dict>
 	<key>%ld seconds</key>
@@ -283,11 +283,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>%ld 초</string>
+			<string>%ld초</string>
 			<key>one</key>
-			<string>%ld 초</string>
+			<string>%ld초</string>
 			<key>other</key>
-			<string>%ld 초</string>
+			<string>%ld초</string>
 		</dict>
 	</dict>
 	<key>%ld Events</key>
@@ -303,9 +303,9 @@
 			<key>zero</key>
 			<string>이벤트 없음</string>
 			<key>one</key>
-			<string>%ld 개의 이벤트</string>
+			<string>%ld개의 이벤트</string>
 			<key>other</key>
-			<string>%ld 개의 이벤트</string>
+			<string>%ld개의 이벤트</string>
 		</dict>
 	</dict>
 </dict>
