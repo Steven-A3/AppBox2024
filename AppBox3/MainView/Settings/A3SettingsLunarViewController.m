@@ -36,6 +36,9 @@
     if (IS_IPHONE) {
         [self makeBackButtonEmptyArrow];
     }
+    else {
+        self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
+    }
 }
 
 - (void)didReceiveMemoryWarning

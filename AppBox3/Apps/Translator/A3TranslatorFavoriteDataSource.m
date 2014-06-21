@@ -55,7 +55,8 @@
 	if (IS_IPAD) {
 		cell.dateLabel.text = [item.text.date timeAgo];
 	} else {
-		cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+        cell.textLabel.font = [UIFont systemFontOfSize:15];
+		cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
 	}
 
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

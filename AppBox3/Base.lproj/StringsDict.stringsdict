@@ -336,5 +336,27 @@
 			<string>%ld Events</string>
 		</dict>
 	</dict>
+    <key>%ld Delete Translaton</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_delete_translaton@</string>
+		<key>num_delete_translaton</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>Delete Translaton</string>
+			<key>one</key>
+			<string>Delete Translaton</string>
+			<key>few</key>
+			<string>Delete Translatons</string>
+			<key>many</key>
+			<string>Delete Translatons</string>
+			<key>other</key>
+			<string>Delete Translatons</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

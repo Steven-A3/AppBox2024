@@ -15,7 +15,8 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 	A3RightBarButtonTagComposeButton = 1,
 	A3RightBarButtonTagShareButton,
 	A3RightBarButtonTagHistoryButton,
-	A3RightBarButtonTagSettingsButton
+	A3RightBarButtonTagSettingsButton,
+    A3RightBarButtonTagHelpButton,
 };
 
 @interface UIViewController (A3Addition)

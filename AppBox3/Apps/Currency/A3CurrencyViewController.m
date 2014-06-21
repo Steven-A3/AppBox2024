@@ -115,8 +115,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		self.historyBarButton = [self historyBarButton:[CurrencyHistory class]];
 		self.historyBarButton.tag = A3RightBarButtonTagHistoryButton;
 		space.width = 24.0;
-
-		self.navigationItem.rightBarButtonItems = @[settings, space, self.historyBarButton, space, share, space, [self instructionHelpBarButton]];
+        UIBarButtonItem *help = [self instructionHelpBarButton];
+        help.tag = A3RightBarButtonTagHelpButton;
+		self.navigationItem.rightBarButtonItems = @[settings, space, self.historyBarButton, space, share, space, help];
 	}
 
 	[self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
@@ -230,6 +231,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 						break;
 					case A3RightBarButtonTagShareButton:
 					case A3RightBarButtonTagSettingsButton:
+                    case A3RightBarButtonTagHelpButton:
 						[barButtonItem setEnabled:YES];
 						break;
 				}

@@ -51,12 +51,12 @@
 
 	self.view.backgroundColor = [UIColor whiteColor];
 	self.navigationItem.hidesBackButton = YES;
+    self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.showsHorizontalScrollIndicator = NO;
+    
 	[self makeBackButtonEmptyArrow];
-
 	[self leftBarButtonAppsButton];
-
 	[self setupSubviews];
-
 	[self registerContentSizeCategoryDidChangeNotification];
 
 	if (IS_IPAD) {
