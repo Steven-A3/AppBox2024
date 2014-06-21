@@ -50,7 +50,7 @@
     [_tableSegmentButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.centerX);
         make.centerY.equalTo(self.centerY);
-		make.width.equalTo(IS_IPHONE ? @170 : @300);
+		make.width.equalTo(IS_IPHONE ? @224 : @300);
     }];
     
     [_leftTextLabel makeConstraints:^(MASConstraintMaker *make) {

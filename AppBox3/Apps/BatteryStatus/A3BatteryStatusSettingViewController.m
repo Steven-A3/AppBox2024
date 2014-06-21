@@ -121,7 +121,7 @@ NSString *const A3BatteryTitleKey = @"title";
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section==1) {
-        return @"STATUS";
+        return NSLocalizedString(@"STATUS", @"STATUS");
     } else {
         return nil;
     }
@@ -180,7 +180,7 @@ NSString *const A3BatteryTitleKey = @"title";
         NSNumber * checked = [adjustedRow objectForKey:A3BatteryCheckedKey];
         
         NSDictionary *rowData = [_tableDataSourceArray objectAtIndex:index.integerValue];
-        cell.textLabel.text = [rowData objectForKey:A3BatteryTitleKey];
+        cell.textLabel.text = NSLocalizedString([rowData objectForKey:A3BatteryTitleKey], nil);
         cell.imageView.image = checked.integerValue == 1 ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] : _blankImage;
         return cell;
     }

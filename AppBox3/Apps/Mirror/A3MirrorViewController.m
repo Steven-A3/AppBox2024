@@ -912,7 +912,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	tonalLabel = [self filterLabelWithText:NSLocalizedString(@"Tonal", @"Tonal")];
 	noirLabel = [self filterLabelWithText:NSLocalizedString(@"Noir", @"Noir")];
 	fadeLabel = [self filterLabelWithText:NSLocalizedString(@"Fade", @"Fade")];
-	noneLabel = [self filterLabelWithText:NSLocalizedString(@"None", @"None")];
+	noneLabel = [self filterLabelWithText:NSLocalizedString(@"None_Mirror", nil)];
 	chromeLabel = [self filterLabelWithText:NSLocalizedString(@"Chrome", @"Chrome")];
 	processLabel = [self filterLabelWithText:NSLocalizedString(@"Process", @"Process")];
 	transferLabel = [self filterLabelWithText:NSLocalizedString(@"Transfer", @"Transfer")];
@@ -932,7 +932,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	UILabel *label = [UILabel new];
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor];
-	label.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
+	label.font = [UIFont fontWithName:@"Trebuchet MS" size: 12.0];
 	label.shadowColor = [UIColor blackColor];
 	label.text = text;
 	return label;
@@ -1347,47 +1347,47 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 
 						 [_videoPreviewViewMonoFilter addSubview:monoLabel];
 						 [monoLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.bottom.equalTo(_videoPreviewViewMonoFilter.top).with.offset(25);
+							 make.top.equalTo(_videoPreviewViewMonoFilter.top);
 							 make.right.equalTo(_videoPreviewViewMonoFilter.right);
 						 }];
 						 [_videoPreviewViewTonalFilter addSubview:tonalLabel];
 						 [tonalLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.bottom.equalTo(_videoPreviewViewTonalFilter.top).with.offset(25);
+							 make.top.equalTo(_videoPreviewViewTonalFilter.top);
 							 make.right.equalTo(_videoPreviewViewTonalFilter.right);
 						 }];
 						 [_videoPreviewViewNoirFilter addSubview:noirLabel];
 						 [noirLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.bottom.equalTo(_videoPreviewViewNoirFilter.top).with.offset(21);
+							 make.top.equalTo(_videoPreviewViewNoirFilter.top);
 							 make.right.equalTo(_videoPreviewViewNoirFilter.right);
 						 }];
 						 [_videoPreviewViewFadeFilter addSubview:fadeLabel];
 						 [fadeLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.bottom.equalTo(_videoPreviewViewFadeFilter.top).with.offset(24);
+							 make.top.equalTo(_videoPreviewViewFadeFilter.top);
 							 make.right.equalTo(_videoPreviewViewFadeFilter.right);
 						 }];
 						 [_videoPreviewViewNoFilter addSubview:noneLabel];
 						 [noneLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.bottom.equalTo(_videoPreviewViewNoFilter.top).with.offset(25);
+							 make.top.equalTo(_videoPreviewViewNoFilter.top);
 							 make.right.equalTo(_videoPreviewViewNoFilter.right);
 						 }];
 						 [_videoPreviewViewChromeFilter addSubview:chromeLabel];
 						 [chromeLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.bottom.equalTo(_videoPreviewViewChromeFilter.top).with.offset(35);
+							 make.top.equalTo(_videoPreviewViewChromeFilter.top);
 							 make.right.equalTo(_videoPreviewViewChromeFilter.right);
 						 }];
 						 [_videoPreviewViewProcessFilter addSubview:processLabel];
 						 [processLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.bottom.equalTo(_videoPreviewViewProcessFilter.top).with.offset(35);
+							 make.top.equalTo(_videoPreviewViewProcessFilter.top);
 							 make.right.equalTo(_videoPreviewViewProcessFilter.right);
 						 }];
 						 [_videoPreviewViewTransferFilter addSubview:transferLabel];
 						 [transferLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.bottom.equalTo(_videoPreviewViewTransferFilter.top).with.offset(37);
+							 make.top.equalTo(_videoPreviewViewTransferFilter.top);
 							 make.right.equalTo(_videoPreviewViewTransferFilter.right);
 						 }];
 						 [_videoPreviewViewInstantFilter addSubview:instantLabel];
 						 [instantLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.bottom.equalTo(_videoPreviewViewInstantFilter.top).with.offset(37);
+							 make.top.equalTo(_videoPreviewViewInstantFilter.top);
 							 make.right.equalTo(_videoPreviewViewInstantFilter.right);
 						 }];
 					 }];

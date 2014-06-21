@@ -864,3 +864,23 @@
 "How to setup iCloud?" = "You can download and use the iCloud data or delete iCloud data and start it over. How to setup iCloud?";
 
 "Add this place" = "Add this place";
+
+"STATUS" = "STATUS";
+
+"Talk Time on 2G" = "Talk Time on 2G";
+"Talk Time on 3G" = "Talk Time on 3G";
+"Internet on 3G" = "Internet on 3G";
+"Internet on LTE" = "Internet on LTE";
+"Internet on Wi-Fi" = "Internet on Wi-Fi";
+"Internet on Cellular" = "Internet on Cellular";
+"Video playback" = "Video playback";
+"Audio playback" = "Audio playback";
+"Standby" = "Standby";
+"FaceTime" = "FaceTime";
+"GPS" = "GPS";
+"Charging times" = "Charging times";
+"2D Game" = "2D Game";
+"3D Game" = "3D Game";
+"YouTube" = "YouTube";
+
+"None_Mirror" = "None_Mirror";
