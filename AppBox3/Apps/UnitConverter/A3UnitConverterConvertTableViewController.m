@@ -238,6 +238,12 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			self.navigationItem.titleView = titleLabel;
 		}
 	}
+    
+    A3UnitConverterTabBarController *tabBar = (A3UnitConverterTabBarController *)self.navigationController.tabBarController;
+    if ([tabBar.unitTypes containsObject:self.unitType]) {
+        NSUInteger vcIdx = [tabBar.unitTypes indexOfObject:self.unitType];
+        [[NSUserDefaults standardUserDefaults] setUnitConverterCurrentUnitTap:vcIdx];
+    }
 
 	[self showLeftNavigationItems];
 
@@ -251,11 +257,11 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[super viewDidAppear:animated];
 
 	if ([self isMovingToParentViewController]) {
-		A3UnitConverterTabBarController *tabBar = (A3UnitConverterTabBarController *)self.navigationController.tabBarController;
-		if ([tabBar.unitTypes containsObject:self.unitType]) {
-			NSUInteger vcIdx = [tabBar.unitTypes indexOfObject:self.unitType];
-			[[NSUserDefaults standardUserDefaults] setUnitConverterCurrentUnitTap:vcIdx];
-		}
+//		A3UnitConverterTabBarController *tabBar = (A3UnitConverterTabBarController *)self.navigationController.tabBarController;
+//		if ([tabBar.unitTypes containsObject:self.unitType]) {
+//			NSUInteger vcIdx = [tabBar.unitTypes indexOfObject:self.unitType];
+//			[[NSUserDefaults standardUserDefaults] setUnitConverterCurrentUnitTap:vcIdx];
+//		}
         [self setupInstructionView];
 	}
 }

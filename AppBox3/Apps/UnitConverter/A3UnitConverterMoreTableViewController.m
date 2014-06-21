@@ -15,6 +15,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3MoreTableViewCell.h"
 #import "A3UnitConverterTabBarController.h"
+#import "NSUserDefaults+A3Defaults.h"
 
 @interface A3UnitConverterMoreTableViewController ()
 
@@ -52,6 +53,18 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 	[self.tableView registerClass:[A3MoreTableViewCell class] forCellReuseIdentifier:A3UnitConverterMoreTableViewCellIdentifier];
 	[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 	self.tableView.showsVerticalScrollIndicator = NO;
+
+    NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterCurrentUnitTap];
+    if (vcIdx > [self.tabBarController.viewControllers count] - 2) {
+        UnitType *unitType = self.sections[0][vcIdx - [self.tabBarController.viewControllers count] + 1];
+        A3UnitConverterConvertTableViewController *viewController = [[A3UnitConverterConvertTableViewController alloc] init];
+        viewController.unitType = unitType;
+        viewController.title = NSLocalizedStringFromTable(unitType.unitTypeName, @"unit", nil);
+        viewController.isFromMoreTableViewController = YES;
+        
+        [self.navigationController pushViewController:viewController animated:YES];
+        return;
+    }
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 }
