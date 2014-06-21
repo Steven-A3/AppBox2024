@@ -485,7 +485,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
  */
 - (BOOL)googleSpeechAvailableForLanguage:(NSString *)language {
 	if (![[A3AppDelegate instance].reachability isReachable]) return NO;
-	NSSet *googleSpeeches = [NSSet setWithArray:@[@"mk", @"hr", @"sr", @"ht", @"is", @"ca", @"sw", @"af", @"lv", @"vi", @"cy", @"sq"]];
+	NSSet *googleSpeeches = [NSSet setWithArray:@[@"mk", @"hr", @"sr", @"ht", @"is", @"ca", @"sw", @"af", @"lv", @"vi", @"cy", @"sq", @"he", @"zh-Hans", @"zh-Hant", @"fil"]];
 	return [googleSpeeches member:language] != nil;
 }
 
