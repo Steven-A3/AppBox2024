@@ -157,6 +157,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		FNLOG();
 		[self clearEverything];
 		[self removeObserver];
+        if ([self.unitValue integerValue] != 1 || [UnitHistory MR_countOfEntities] != 0 ) {
+            [self putHistoryWithValue:self.unitValue];
+        }
 	}
 }
 
@@ -1033,7 +1036,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	else {
 		// 선택된 unitItem이 이미 convertItems에 추가된 unit이면, swap을 한다.
 		if (selectedItem) {
-
 			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item == %@", selectedItem];
 			NSArray *filtered = [_convertItems filteredArrayUsingPredicate:predicate];
 			if (filtered.count > 0) {

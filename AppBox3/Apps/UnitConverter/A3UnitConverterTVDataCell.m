@@ -127,7 +127,7 @@
         _valueLabel.hidden = YES;
         _value2Field.hidden = YES;
         _value2Label.hidden = YES;
-        _valueField.placeholder = @"0";
+        _valueField.placeholder = @"";
     }
     else if (_inputType == UnitInput_Fraction) {
         _valueField.hidden = NO;
@@ -148,8 +148,8 @@
         _value2Label.text = @"in";
         _valueLabel.textAlignment = NSTextAlignmentLeft;
         _value2Label.textAlignment = NSTextAlignmentLeft;
-        _valueField.placeholder = @"0";
-        _value2Field.placeholder = @"0";
+        _valueField.placeholder = @"";
+        _value2Field.placeholder = @"";
     }
 }
 
