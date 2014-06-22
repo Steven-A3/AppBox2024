@@ -279,7 +279,9 @@
             
             UnitConvertItem *convertItem = [UnitConvertItem MR_createEntity];
             convertItem.item = unitItem;
-			convertItem.order = [NSString stringWithFormat:@"0%lu00000000", (unsigned long)idxUnit];
+//			convertItem.order = [NSString stringWithFormat:@"0%lu00000000", (unsigned long)idxUnit];
+            convertItem.order = [NSString stringWithFormat:@"%lu", (unsigned long)idxUnit];
+            NSLog(@"%@", convertItem.order);
         }
     }
 

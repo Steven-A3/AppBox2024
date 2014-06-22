@@ -962,7 +962,7 @@
 
 	[topLabel makeConstraints:^(MASConstraintMaker *make) {
 		if (IS_IPAD) {
-			make.right.equalTo(bottomView.actionButton.left);
+            make.right.equalTo(bottomView.right).with.offset(-15);
 			make.centerY.equalTo(bottomView.centerY);
 		} else {
 			make.left.equalTo(bottomView.left).with.offset(15);
