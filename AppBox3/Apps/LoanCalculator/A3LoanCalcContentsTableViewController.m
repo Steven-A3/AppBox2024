@@ -230,7 +230,7 @@
     [UIView commitAnimations];
 
     // text info
-    NSString *interestText = _totalMode ? NSLocalizedString(@"Interest", @"Interest") : NSLocalizedString(@"Avg.Interest", @"Avg.Interest");
+    NSString *interestText = _totalMode ? NSLocalizedString(@"Total Interest", nil) : NSLocalizedString(@"Avg.Interest", @"Avg.Interest");
     NSString *paymentText = _totalMode ? NSLocalizedString(@"Total Amount", @"Total Amount") : NSLocalizedString(@"Payment", @"Payment");
     
     NSNumber *interestNumber = _totalMode ? [_loanData totalInterest] : [_loanData monthlyAverageInterest];

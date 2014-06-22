@@ -12,8 +12,6 @@
 "Frequency" = "Frequency";
 "LadyCalendar_Start Date" = "Start Date";
 "Notes" = "Notes";
-"Monthly" = "Monthly";
-"Yearly" = "Yearly";
 "One-Time" = "One-Time";
 "Currency" = "Currency";
 
@@ -158,7 +156,9 @@
 
 "%@ equals %@ with rate %0.4f" = "%@ equals %@ with rate %0.4f";
 "Currency Converter in the AppBox Pro" = "Currency Converter in the AppBox Pro";
-"<html><body>I'd like to share a conversion with you.<br/><br/>" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
+"share_currencyConverter_head" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
+"share_unitConverter_head" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
+"share_Lunar_head" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
 "currency_share_HTML_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Share Currency Converter Data" = "Share Currency Converter Data";
 
@@ -501,6 +501,7 @@
 "Term(years)" = "Term(years)";
 "Term(months)" = "Term(months)";
 "Biweekly" = "Biweekly";
+"LoanCalc_Monthly" = "Monthly";
 "Bimonthly" = "Bimonthly";
 "Quarterly" = "Quarterly";
 "Semiannually" = "Semiannually";
@@ -518,7 +519,7 @@
 "PRINCIPAL" = "PRINCIPAL";
 "INTEREST" = "INTEREST";
 "BALANCE" = "BALANCE";
-"Interest" = "Interest";
+"Total Interest" = "Total Interest";
 "Avg.Interest" = "Avg.Interest";
 "Total Amount" = "Total Amount";
 "Average Interest" = "Average Interest";
@@ -886,4 +887,14 @@
 "None_Mirror" = "None_Mirror";
 
 "CALENDARS" = "CALENDARS";
-"UPDATED" = "UPDATED";
+
+"Encryption Key for Wallet" = "Encryption Key for Wallet";
+"V1_Notice_for_Photo_Quality" = "Please know that the quality of photos saved in the Days Until with the previous version of the AppBox Pro may not good enough to use with the current version. We recommend you to re-add photos to your events.";
+"Notice" = "Notice";
+
+
+"LoanCalc_DATE" = "LoanCalc_DATE";
+
+"%/yr" = "%/yr";
+"%/mo" = "%/mo";
+

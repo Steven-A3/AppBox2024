@@ -17,7 +17,7 @@
 /* Class = "IBUILabel"; text = "swipe left or right to change\nkeypad for basic/scientific"; ObjectID = "4Y2-hA-ExK"; */
 "4Y2-hA-ExK.text" = "키패드를 왼쪽이나 오른쪽으로 밀어서\n기본 계산기나 공학용 키패드로 변경합니다.";
 
-/* Class = "IBUILabel"; text = "tap to add a item"; ObjectID = "55x-Hd-Yyy"; */
+/* Class = "IBUILabel"; text = "Tap to add an item"; ObjectID = "55x-Hd-Yyy"; */
 "55x-Hd-Yyy.text" = "탭하여 아이템을 추가합니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "5vX-h0-0KZ"; */
@@ -75,7 +75,7 @@
 "Wl0-Ir-Vwx.text" = "언어를 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to see chart/account/option"; ObjectID = "ZkW-mi-nXJ"; */
-"ZkW-mi-nXJ.text" = "탭 하여 차트, 계정, 옵션을 볼 수 있습니다.";
+"ZkW-mi-nXJ.text" = "탭하여 차트, 계정, 옵션을 볼 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "slide the calendar to the left,\nthen tap Delete"; ObjectID = "afl-C5-OsY"; */
 "afl-C5-OsY.text" = "캘린더를 왼쪽으로 밀어서\n지울 수 있습니다.";
@@ -101,8 +101,8 @@
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "k0p-RN-RCK"; */
 "k0p-RN-RCK.text" = "화면을 탭하여\n버튼을 표시합니다.";
 
-/* Class = "IBUILabel"; text = "touch and hold  -\nto the right of an item,\nthen drag it up or down"; ObjectID = "ls1-5i-Gos"; */
-"ls1-5i-Gos.text" = "아이템의 오른쪽을\n터치하고 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
+/* Class = "IBUILabel"; text = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down"; ObjectID = "ls1-5i-Gos"; */
+"ls1-5i-Gos.text" = "아이템의 오른쪽≡을\n터치하고 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to see more info"; ObjectID = "m1h-st-ypH"; */
 "m1h-st-ypH.text" = "탭하여 더 많은 정보를 봅니다.";
@@ -135,7 +135,7 @@
 "qRC-cW-j6h.text" = "언어를 왼쪽으로 밀면\n지울 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "select which categories\nto view"; ObjectID = "rHi-Jq-5Rp"; */
-"rHi-Jq-5Rp.text" = "확인 할 카테고리를\n선택합니다.";
+"rHi-Jq-5Rp.text" = "확인할 카테고리를\n선택합니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a item,\nthen drag it up or down"; ObjectID = "rqI-qD-Dqd"; */
 "rqI-qD-Dqd.text" = "아이템을 터치하고 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";

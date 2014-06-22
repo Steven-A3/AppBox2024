@@ -53,7 +53,7 @@
         interestLB.textAlignment = NSTextAlignmentCenter;
         balanceLB.textAlignment = NSTextAlignmentCenter;
         
-        dateLB.text = NSLocalizedString(@"DATE", @"DATE");
+        dateLB.text = NSLocalizedString(@"LoanCalc_DATE", @"DATE");
         paymentLB.text = NSLocalizedString(@"PAYMENT", @"PAYMENT");
         principalLB.text = NSLocalizedString(@"PRINCIPAL", @"PRINCIPAL");
         interestLB.text = NSLocalizedString(@"INTEREST", @"INTEREST");

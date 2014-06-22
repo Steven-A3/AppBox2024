@@ -58,7 +58,9 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 @property (nonatomic, strong) UIAlertView *passwordAlertView;
 @end
 
-@implementation A3DataMigrationManager
+@implementation A3DataMigrationManager {
+	BOOL _migrateV1WithDaysCounterPhoto;
+}
 
 - (instancetype)initWithPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)persistentStoreCoordinator {
 	self = [super init];
@@ -76,6 +78,8 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
  * \returns
  */
 - (void)migrateV1DataWithPassword:(NSString *)password {
+	_migrateV1WithDaysCounterPhoto = NO;
+
 	[self migrateDaysCounterInContext:_context];
 	[self migrateLadyCalendarInContext:_context];
 	[self migrateTranslatorHistoryInContext:_context];
@@ -87,6 +91,15 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 		[_delegate migrationManager:self didFinishMigration:YES];
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationDataMigrationFinished object:nil];
+
+	if (_migrateV1WithDaysCounterPhoto) {
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", nil)
+															message:NSLocalizedString(@"V1_Notice_for_Photo_Quality", nil)
+														   delegate:nil
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												  otherButtonTitles:nil];
+		[alertView show];
+	}
 }
 
 NSString *const V1AlarmsDataFilename = @"alarms.db";
@@ -196,6 +209,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 			NSString *filename = v1Item[kKeyForDDayImageFilename];
 			NSString *filePath = [self pathForFilename:filename];
 			if ([filename length] && [fileManager fileExistsAtPath:filePath] ) {
+				_migrateV1WithDaysCounterPhoto = YES;
 				newEvent.hasPhoto = @YES;
 
 				NSURL *photoURL = [newEvent photoURLInOriginalDirectory:YES];
@@ -671,7 +685,11 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 }
 
 - (void)askWalletPassword {
-	_passwordAlertView = [[UIAlertView alloc] initWithTitle:@"Encryption Key for Wallet" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+	_passwordAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Encryption Key for Wallet", @"Encryption Key for Wallet")
+													message:nil
+												   delegate:self
+										  cancelButtonTitle:nil
+										  otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
 	_passwordAlertView.alertViewStyle = UIAlertViewStyleSecureTextInput;
 	_passwordAlertView.delegate = self;
 	[_passwordAlertView show];

@@ -666,7 +666,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     if ([activityType isEqualToString:UIActivityTypeMail]) {
         
         NSMutableString *txt = [NSMutableString new];
-		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a conversion with you.<br/><br/>", nil)];
+		[txt appendString:NSLocalizedString(@"share_unitConverter_head", nil)];
         for (int i=0; i<_shareTextList.count; i++) {
             [txt appendString:_shareTextList[i]];
             [txt appendString:@"<br/>"];

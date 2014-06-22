@@ -6,15 +6,13 @@
  */
 
 "Select Currency" = "통화 선택";
-"Principal" = "원금";
-"Term" = "기간";
-"Interest Rate" = "이자율";
+"Principal" = "대출금액";
+"Term" = "대출기간";
+"Interest Rate" = "대출금리";
 "Frequency" = "상환주기";
 "LadyCalendar_Start Date" = "시작일";
 "Notes" = "메모";
-"Monthly" = "월단위";
-"Yearly" = "년단위";
-"One-Time" = "일시부분상환";
+"One-Time" = "1 회";
 "Currency" = "통화";
 
 "iCloud" = "iCloud";
@@ -158,7 +156,9 @@
 
 "%@ equals %@ with rate %0.4f" = "%@/%@ = %0.4f";
 "Currency Converter in the AppBox Pro" = "AppBox Pro의 환율 변환";
-"<html><body>I'd like to share a conversion with you.<br/><br/>" = "<html><body>환율 계산 결과를 공유합니다.<br/><br/>";
+"share_currencyConverter_head" = "<html><body>환율 계산 결과를 공유합니다.<br/><br/>";
+"share_unitConverter_head" = "<html><body>단위 변환 결과를 공유합니다.<br/><br/>";
+"share_Lunar_head" = "<html><body>양력/음력 변환 결과를 공유합니다.<br/><br/>";
 "currency_share_HTML_body" = "<br/><br/>AppBox Pro의 환율 정보를 활용해 보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 "Share Currency Converter Data" = "환율 변환 정보 공유하기";
 
@@ -311,8 +311,8 @@
 "Every Month" = "매달";
 "Every Year" = "매년";
 "Daily" = "매일";
-"Weekly" = "매주";
-"Bi-Weekly" = "2주마다";
+"Weekly" = "1주";
+"Bi-Weekly" = "2주";
 "Monthly" = "매월";
 "Yearly" = "매년";
 
@@ -493,36 +493,37 @@
 "Notify about estimated next starting date." = "다음 시작일을 알려줍니다.";
 "FORECASTING %@ PERIODS" = "미래 %@ 번의 예정일을 표시";
 
-"Date, Principal, Payment, Interest, Balance" = "일자, 원금, 상환금, 이자, 잔액";
+"Date, Principal, Payment, Interest, Balance" = "상환일, 납입원금, 상환금, 이자, 잔금";
 "Annual %@" = "연이율 %@";
 "Monthly %@" = "월이율 %@";
 
-"Down Payment" = "선 납입금";
+"Down Payment" = "계약금";
 "Payment" = "상환금";
 "Term(years)" = "대출기간(년)";
 "Term(months)" = "대출기간(월)";
-"Biweekly" = "2주마다";
-"Bimonthly" = "2달마다";
-"Quarterly" = "분기상환";
-"Semiannually" = "반기상환";
-"Annually" = "년상환";
+"Biweekly" = "2주";
+"LoanCalc_Monthly" = "1개월";
+"Bimonthly" = "2개월";
+"Quarterly" = "3개월";
+"Semiannually" = "6개월";
+"Annually" = "1년";
 
-"Loan Calc Frequency short string weekly" = "매주";
-"Loan Calc Frequency short string biweekly" = "2주마다";
-"Loan Calc Frequency short string monthly" = "매 월";
-"Loan Calc Frequency short string bi montly" = "2달에 한번";
-"Loan Calc Frequency short string quarterly" = "분기 마다";
-"Loan Calc Frequency short string semi annually" = "반기 마다";
-"Loan Calc Frequency short string annually" = "매 년";
+"Loan Calc Frequency short string weekly" = "1주";
+"Loan Calc Frequency short string biweekly" = "2주";
+"Loan Calc Frequency short string monthly" = "1개월";
+"Loan Calc Frequency short string bi montly" = "2개월";
+"Loan Calc Frequency short string quarterly" = "3개월";
+"Loan Calc Frequency short string semi annually" = "6개월";
+"Loan Calc Frequency short string annually" = "1년";
 
 "PAYMENT" = "상환금";
-"PRINCIPAL" = "원금";
-"INTEREST" = "이자";
-"BALANCE" = "잔액";
-"Interest" = "이자";
-"Avg.Interest" = "이자 평균";
+"PRINCIPAL" = "납입원금";
+"INTEREST" = "대출금리";
+"BALANCE" = "잔금";
+"Total Interest" = "총이자";
+"Avg.Interest" = "평균 이자";
 "Total Amount" = "총상환금";
-"Average Interest" = "이자 평균";
+"Average Interest" = "평균 이자";
 "Amounts" = "금액";
 "Loan" = "대출";
 "Comparison" = "비교";
@@ -537,29 +538,29 @@
 "** Loan A <br>" = "** 대출정보 A <br>";
 "<br>** Loan B <br>" = "<br>** 대출정보 B <br>";
 "*Calculation<br>" = "*계산항목<br>";
-"<br>Interest: %@ <br>" = "<br>이자: %@ <br>";
+"<br>Interest: %@ <br>" = "<br>대출금리: %@ <br>";
 "Total Amount: %@ <br>" = "총액: %@ <br>";
 "<br>*Input<br>" = "<br>*입력<br>";
-"Extra Payment(monthly): %@ <br>" = "별도 추가 상환(매월): %@ <br>";
-"Extra Payment(yearly): %@ <br>" = "별도 추가 상환(매년): %@ <br>";
-"Extra Payment(one-time): %@ <br>" = "별도 추가 상환(일회): %@ <br>";
+"Extra Payment(monthly): %@ <br>" = "중도상환(매월): %@ <br>";
+"Extra Payment(yearly): %@ <br>" = "중도상환(매년): %@ <br>";
+"Extra Payment(one-time): %@ <br>" = "중도상환(일회): %@ <br>";
 
 "0 year" = "0 년";
 
 "Loan A" = "대출정보 A";
 "Loan B" = "대출정보 B";
-"EXTRA PAYMENTS" = "별도 추가 상환";
+"EXTRA PAYMENTS" = "중도상환";
 "years or months" = "년 혹은 월";
 " Data" = " 데이터";
 
-"Extra Payments(Monthly)" = "별도 추가 상환(매월)";
-"Extra(Monthly)" = "별도추가상환(매월)";
-"Extra Payments(Yearly)" = "별도 추가 상환(매년)";
-"Extra(Yearly)" = "별도 추가 상환(매년)";
-"Extra Payments(One-time)" = "별도 추가 상환(일회)";
-"Extra(One-time)" = "별도 추가 상환(일회)";
+"Extra Payments(Monthly)" = "중도상환(매월)";
+"Extra(Monthly)" = "중도상환(매월)";
+"Extra Payments(Yearly)" = "중도상환(매년)";
+"Extra(Yearly)" = "중도상환(매년)";
+"Extra Payments(One-time)" = "중도상환(일회)";
+"Extra(One-time)" = "중도상환(일회)";
 "Calculation" = "계산항목";
-"Extra Payment" = "별도 추가 상환";
+"Extra Payment" = "중도상환";
 
 "Solar" = "양력";
 "1900년부터 2043년까지만 지원합니다." = "1900년부터 2043년까지만 지원합니다.";
@@ -808,7 +809,7 @@
 "until" = "남음";
 "now" = "지금";
 
-"LoanCalc_Start Date" = "상환 시작일";
+"LoanCalc_Start Date" = "대출 개시일";
 "Immediately" = "즉시";
 "Learn about iOS Security" = "iOS 보안에 대해 자세히 알아보기";
 "CalculatorGroup" = "각종 계산";
@@ -832,7 +833,7 @@
 
 "Enter a address or city name" = "주소 또는 도시 이름 입력";
 
-"This will reset all settings.\nNo data will be deleted." = "보기/가리기 설정을 초기화 합니다.";
+"This will reset all settings.\nNo data will be deleted." = "보기/가리기 설정을 초기화합니다.";
 "Reset All" = "재설정";
 "Reset Show/Hide Settings" = "보기/가리기 재설정";
 "Wallpaper" = "배경화면";
@@ -877,4 +878,13 @@
 "None_Mirror" = "일반";
 
 "CALENDARS" = "캘린더";
-"UPDATED" = "최종수정";
+
+"Encryption Key for Wallet" = "전자지갑 암호 키";
+"V1_Notice_for_Photo_Quality" = "기존 버전의 기념일에 추가된 사진의 경우 사진 품질이 현재 버전에서 사용하기에 충분하지 않은 경우가 있을 수 있습니다. 이런 경우에는 사진을 다시 추가해 보시기 바랍니다.";
+"Notice" = "정보";
+
+
+"LoanCalc_DATE" = "상환일";
+
+"%/yr" = "%/년";
+"%/mo" = "%/월";

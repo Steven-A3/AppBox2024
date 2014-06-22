@@ -17,8 +17,8 @@
 /* Class = "IBUILabel"; text = "Swipe left or right to change\nkeypad for basic/scientific"; ObjectID = "4Y2-hA-ExK"; */
 "4Y2-hA-ExK.text" = "Swipe left or right to change\nkeypad for basic/scientific";
 
-/* Class = "IBUILabel"; text = "Tap to add a item"; ObjectID = "55x-Hd-Yyy"; */
-"55x-Hd-Yyy.text" = "Tap to add a item";
+/* Class = "IBUILabel"; text = "Tap to add an item"; ObjectID = "55x-Hd-Yyy"; */
+"55x-Hd-Yyy.text" = "Tap to add an item";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "5vX-h0-0KZ"; */
 "5vX-h0-0KZ.text" = "Tap the screen to display\nthe controls";
@@ -101,8 +101,8 @@
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "k0p-RN-RCK"; */
 "k0p-RN-RCK.text" = "Tap the screen to display\nthe controls";
 
-/* Class = "IBUILabel"; text = "Touch and hold  -\nto the right of an item,\nthen drag it up or down"; ObjectID = "ls1-5i-Gos"; */
-"ls1-5i-Gos.text" = "Touch and hold  -\nto the right of an item,\nthen drag it up or down";
+/* Class = "IBUILabel"; text = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down"; ObjectID = "ls1-5i-Gos"; */
+"ls1-5i-Gos.text" = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down";
 
 /* Class = "IBUILabel"; text = "Tap to see more info"; ObjectID = "m1h-st-ypH"; */
 "m1h-st-ypH.text" = "Tap to see more info";

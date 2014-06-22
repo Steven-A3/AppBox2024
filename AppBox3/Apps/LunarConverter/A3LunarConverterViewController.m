@@ -839,7 +839,7 @@
     
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
         [self.dateFormatter setDateStyle:NSDateFormatterFullStyle];
-		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a conversion with you.<br/><br/>", @"<html><body>I'd like to share a conversion with you.<br/><br/>")];
+		[txt appendString:NSLocalizedString(@"share_Lunar_head", nil)];
         [txt appendString:[self shareString]];
 		[txt appendString:NSLocalizedString(@"LunarConverter_share_text_html_body", nil)];
 	}
