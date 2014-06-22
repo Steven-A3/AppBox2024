@@ -26,7 +26,8 @@
 	BOOL isIPHONE35 = IS_IPHONE35;
 	[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
 		[self.constraints addObject:make.left.equalTo(self.left).with.offset(15)];
-		[self.constraints addObject:make.right.equalTo(self.right).with.offset(_actionButton ? -(40) : -15)];
+		//[self.constraints addObject:make.right.equalTo(self.right).with.offset(_actionButton ? -(40) : -15)];
+        [self.constraints addObject:make.right.equalTo(self.right).with.offset(-15)];
 		[self.constraints addObject:make.baseline.equalTo(self.top).with.offset(isIPHONE35 ? 32 : 37)];
 	}];
 
@@ -63,11 +64,12 @@
 	}
 	[_descriptionLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.centerY.equalTo(self.centerY);
-		if (_actionButton) {
-			[self.constraints addObject:make.right.equalTo(_actionButton.left)];
-		} else {
-			[self.constraints addObject:make.right.equalTo(self.right).with.offset(-15)];
-		}
+//		if (_actionButton) {
+//			[self.constraints addObject:make.right.equalTo(_actionButton.left)];
+//		} else {
+//			[self.constraints addObject:make.right.equalTo(self.right).with.offset(-15)];
+//		}
+        [self.constraints addObject:make.right.equalTo(self.right).with.offset(-15)];
 	}];
 }
 
