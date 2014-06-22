@@ -74,7 +74,7 @@ const char *unitNames[][34] = {
         "mm²",					// 13
         "squares(of timber)",	// 14
         "rods²(or poles²)",		// 15
-        "yards²",				// 16
+        "Yards²",				// 16
         "townships",			// 17
         "pyung"					// 18
     },
@@ -234,13 +234,13 @@ const char *unitNames[][34] = {
     
     // Fuel Consumption, 7
     {
-        "gal(UK)/100miles",
-        "gal(US)/100miles",
-        "kilometer/liter",
-        "liters/100km",
-        "liters/meter",
-        "miles/gal(UK)",
-        "miles/gal(US)"
+        "gal(UK)/100miles",         // 0
+        "gal(US)/100miles",         // 1
+        "kilometer/liter",          // 2
+        "liters/100km",             // 3
+        "liters/meter",             // 4
+        "miles/gal(UK)",            // 5
+        "miles/gal(US)"             // 6
     },
     
     // Length, 32
@@ -373,11 +373,11 @@ const char *unitNames[][34] = {
     
     // Temperature, 5
     {
-        "°C",
-        "°F",
-        "Kelvin",
-        "Rankine",
-        "Réaumure"
+        "°C",       //      celsius
+        "°F",       //      fahrenheit
+        "kelvin",   //        "Kelvin",
+        "rankine",  //        "Rankine",
+        "réaumure"  //        "Réaumure"
     },
     
     // Time, 23
