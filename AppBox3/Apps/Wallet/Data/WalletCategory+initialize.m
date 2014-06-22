@@ -54,7 +54,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 		[category initValues];
 
 		category.uniqueID = preset[@"uniqueID"];
-        category.name = NSLocalizedString(preset[@"name"], nil);
+        category.name = NSLocalizedStringFromTable(preset[@"name"], @"WalletPreset", nil);
         category.icon = preset[@"icon"];
 		category.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
@@ -63,7 +63,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 		for (NSDictionary *fieldPreset in fieldPresets) {
             WalletField *field = [WalletField MR_createInContext:context];
 			field.uniqueID = fieldPreset[@"uniqueID"];
-			field.name = NSLocalizedString(fieldPreset[@"name"], nil);
+			field.name = NSLocalizedStringFromTable(fieldPreset[@"name"], @"WalletPreset",nil);
             field.category = category;
             field.type = fieldPreset[@"type"];
             field.style = fieldPreset[@"style"];
