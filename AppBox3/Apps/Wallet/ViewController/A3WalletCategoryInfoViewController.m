@@ -212,10 +212,10 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     // Configure the cell...
     cell.nameLabel.text = field.name;
     if ([field.type isEqualToString:WalletFieldTypeImage] || [field.type isEqualToString:WalletFieldTypeVideo]) {
-        cell.typeLabel.text = field.type;
+        cell.typeLabel.text = NSLocalizedString(field.type, nil);
     }
     else {
-        cell.typeLabel.text = [NSString stringWithFormat:@"%@, %@", field.type, field.style];
+        cell.typeLabel.text = [NSString stringWithFormat:@"%@, %@", NSLocalizedString(field.type, nil), NSLocalizedString(field.style, nil)];
     }
 
     return cell;

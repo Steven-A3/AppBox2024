@@ -114,7 +114,7 @@
     }
     // Configure the cell...
     NSDictionary *fieldType = _fieldTypes[indexPath.row];
-    cell.textLabel.text = fieldType[WalletFieldTypeID];
+    cell.textLabel.text = NSLocalizedString(fieldType[WalletFieldTypeID], nil);
     if ([fieldType[WalletFieldTypeID] isEqualToString:_selectedType]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {

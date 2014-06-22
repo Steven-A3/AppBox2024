@@ -141,7 +141,7 @@
 
     NSString *fieldStyle = _fieldStyles[indexPath.row];
 
-    NSAttributedString *styleString = [[NSAttributedString alloc] initWithString:fieldStyle
+    NSAttributedString *styleString = [[NSAttributedString alloc] initWithString:NSLocalizedString(fieldStyle, nil)
                                                                      attributes:[self styleStringAttributeWithColor:[UIColor blackColor]]];
     NSMutableAttributedString *cellString = [[NSMutableAttributedString alloc] init];
     if ([fieldStyle isEqualToString:WalletFieldStyleNormal]) {
@@ -150,7 +150,7 @@
 
     }
     else {
-        NSString *egText = [NSString stringWithFormat:@"  (e.g. %@)", [@"12341234" stringForStyle:fieldStyle]];
+        NSString *egText = [NSString stringWithFormat:NSLocalizedString(@"  (e.g. %@)", nil), [@"12341234" stringForStyle:fieldStyle]];
         NSAttributedString *egString = [[NSAttributedString alloc] initWithString:egText
                                                                        attributes:[self egStringAttributeWithColor:[UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0]]];
 

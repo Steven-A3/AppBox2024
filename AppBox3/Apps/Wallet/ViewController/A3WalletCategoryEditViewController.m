@@ -477,6 +477,8 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 		else if (indexPath.row == 1) {
 			A3WalletCateEditIconCell *iconCell;
 			iconCell = [tableView dequeueReusableCellWithIdentifier:A3WalletCateEditIconCellID forIndexPath:indexPath];
+			UILabel *label = (UILabel *)[iconCell viewWithTag:10];
+			label.text = NSLocalizedString(@"Icon", nil);
 
 			iconCell.iconImageView.image = [UIImage imageNamed:_category.icon];
 
@@ -485,6 +487,8 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 	}
 	else if (indexPath.section == 2) {
 		cell = [tableView dequeueReusableCellWithIdentifier:A3WalletCateEditDeleteCellID forIndexPath:indexPath];
+		UILabel *label = (UILabel *) [cell viewWithTag:10];
+		label.text = NSLocalizedString(@"Delete Category", nil);
 	}
 	else if (indexPath.section == 1) {
 		if (_fields[indexPath.row] == _plusItem) {
