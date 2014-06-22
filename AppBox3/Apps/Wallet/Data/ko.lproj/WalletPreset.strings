@@ -18,7 +18,7 @@
 "Dress Size" = "옷 사이즈";
 "Driver License" = "운전면허";
 "Email Address" = "Email 주소";
-"Email" = "Email";
+"Email" = "이메일";
 "Expiration" = "유효기간";
 "Expires" = "적성검사기간";
 "Family" = "가족사항 관리";
@@ -71,5 +71,23 @@
 "Web Accounts" = "웹 계정";
 
 
-"Routing Number" = "Routing Number";
+"Routing Number" = "송금 번호(Routing Number)";
 "Passport Number" = "Passport Number";
+"Accounts" = "계정";
+"Software" = "소프트웨어 라이센스";
+"Video" = "비디오";
+"Purchased Date" = "구매일";
+"Download Link" = "다운로드 링크";
+"License Key" = "라이센스 키";
+"Order Number" = "주문번호";
+"Unit Price" = "단가";
+"Version" = "버전";
+"Registered ID" = "등록번호";
+"Registered Email Address" = "등록한 이메일 주소";
+"Registered Password" = "등록한 암호";
+"Registered URL" = "등록 사이트 URL";
+"Merchant Name" = "유통사 이름";
+"Merchant Website" = "유통사 사이트";
+"Merchant Email Address" = "유통사 이메일";
+"Merchant Phone" = "유통사 전화번호";
+"Merchant Address" = "유통사 주소";

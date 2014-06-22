@@ -699,7 +699,7 @@
 			<key>icon</key>
 			<string>wallet_membership</string>
 			<key>name</key>
-			<string>Membership</string>
+			<string>Memberships</string>
 			<key>uniqueID</key>
 			<string>F099C6B6-6BEE-4C17-813C-3D6553A88AC1</string>
 		</dict>
@@ -982,7 +982,7 @@
 				</dict>
 				<dict>
 					<key>name</key>
-					<string>Registered Email Adress</string>
+					<string>Registered Email Address</string>
 					<key>style</key>
 					<string>Normal</string>
 					<key>type</key>
