@@ -364,7 +364,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 		}
 
 		cell.textLabel.text = NSLocalizedString(@"Type", @"Type");
-		cell.detailTextLabel.text = _field.type;
+		cell.detailTextLabel.text = NSLocalizedString(_field.type, nil);
 	}
 	else if (indexPath.section == 2) {
 		cell = [tableView dequeueReusableCellWithIdentifier:A3WalletFieldEditStyleCellID];
@@ -377,7 +377,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 		}
 
 		cell.textLabel.text = NSLocalizedString(@"Style", @"Style");
-		cell.detailTextLabel.text = _field.style;
+		cell.detailTextLabel.text = NSLocalizedString(_field.style, nil);
 	}
 
     return cell;
