@@ -1519,7 +1519,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	UIBarButtonItem *prevButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Prev", @"Prev") style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonPressed)];
 	UIBarButtonItem *nextButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"Next") style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed)];
 	[prevButtonItem setEnabled:[self isPreviousEntryExists]];
+    prevButtonItem.tintColor = [A3AppDelegate instance].themeColor;
 	[nextButtonItem setEnabled:[self isNextEntryExists]];
+    nextButtonItem.tintColor = [A3AppDelegate instance].themeColor;
 	keyboardAccessoryToolbar.items = @[flexibleSpace, prevButtonItem, nextButtonItem];
 	field.inputAccessoryView = keyboardAccessoryToolbar;
 }
