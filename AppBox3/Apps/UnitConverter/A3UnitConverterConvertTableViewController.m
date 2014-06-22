@@ -598,10 +598,16 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	}];
 	if (IS_IPHONE) {
 		[self presentViewController:activityController animated:YES completion:NULL];
-	} else {
-		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
-		[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		_sharePopoverController = popoverController;
+	}
+    else {
+        if ([sender isKindOfClass:[UIButton class]]) {
+            _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromSubView:sender];
+        }
+        else {
+            UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+            [popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            _sharePopoverController = popoverController;
+        }
 	}
 
 	if (IS_IPAD) {
