@@ -326,7 +326,7 @@
 "2 days before" = "2일 전";
 "1 week before" = "1주 전";
 
-"DaysCounterDuration_year_abbreviation" = "년";
+"DaysCounterDuration_year_abbreviation" = "연";
 "DaysCounterDuration_month_abbreviation" = "개월";
 "DaysCounterDuration_week_abbreviation" = "주";
 "DaysCounterDuration_day_abbreviation" = "일";
@@ -335,12 +335,12 @@
 "DaysCounterDuration_minute_abbreviation" = "분";
 "Minutes" = "분";
 
-"%ld y" = "%ld 년";
-"%ld m" = "%ld 월";
-"%ld w" = "%ld 주";
-"%ld d" = "%ld 일";
-"%ld hr" = "%ld 시간";
-"%ld min" = "%ld 분";
+"%ld y" = "%ld년";
+"%ld m" = "%ld월";
+"%ld w" = "%ld주";
+"%ld d" = "%ld일";
+"%ld hr" = "%ld시간";
+"%ld min" = "%ld분";
 "Cube" = "큐브";
 "Dissolve" = "디졸브";
 "Origami" = "종이접기";
@@ -814,7 +814,7 @@
 "CalculatorGroup" = "각종 계산";
 "Translator_All" = "All";
 
-"Year(s)" = "년";
+"Year(s)" = "연";
 "Month(s)" = "개월";
 "Day(s)" = "일";
 
@@ -875,3 +875,6 @@
 "YouTube" = "YouTube";
 
 "None_Mirror" = "일반";
+
+"CALENDARS" = "캘린더";
+"UPDATED" = "최종수정";

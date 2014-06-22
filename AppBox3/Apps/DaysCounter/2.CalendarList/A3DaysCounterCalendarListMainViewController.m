@@ -38,7 +38,37 @@
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
-- (void)setupHeaderInfo;
+
+@property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
+@property (strong, nonatomic) IBOutlet UIView *rightTopButtonView;
+@property (strong, nonatomic) IBOutlet UIView *headerView;
+@property (strong, nonatomic) IBOutlet UIView *footerView;
+@property (strong, nonatomic) IBOutlet UILabel *numberOfCalendarLabel;
+@property (strong, nonatomic) IBOutlet UILabel *numberOfEventsLabel;
+@property (strong, nonatomic) IBOutlet UILabel *updateDateLabel;
+@property (strong, nonatomic) IBOutlet UIView *iPadheaderView;
+@property (strong, nonatomic) IBOutlet UILabel *numberOfCalendarLabeliPad;
+@property (strong, nonatomic) IBOutlet UILabel *numberOfEventsLabeliPad;
+@property (strong, nonatomic) IBOutlet UILabel *updateDateLabeliPad;
+@property (strong, nonatomic) IBOutlet UIButton *addEventButton;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UILabel *headerEventLabel;
+@property (weak, nonatomic) IBOutlet UILabel *headerEventLabel_iPad;
+@property (weak, nonatomic) IBOutlet UILabel *headerCalendarsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *headerCalendarsLabel_iPad;
+@property (weak, nonatomic) IBOutlet UILabel *headerUpdatedLabel;
+@property (weak, nonatomic) IBOutlet UILabel *headerUpdatedLabel_iPad;
+
+@property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *verticalSeperators;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerSeparator1_TopConst_iPhone;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerSeparator2_TopConst_iPhone;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerSeparator1_TopConst_iPad;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerSeparator2_TopConst_iPad;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerView_view1_widthConst_iPad;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerView_view2_widthConst_iPad;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerView_view3_widthConst_iPad;
+
 @end
 
 @implementation A3DaysCounterCalendarListMainViewController
@@ -73,6 +103,11 @@
             _headerView.frame = rect;
         }
         [self.tableView setTableHeaderView:_headerView];
+
+		self.headerCalendarsLabel.text = NSLocalizedString(@"CALENDARS", nil);
+		self.headerEventLabel.text = NSLocalizedString(@"EVENTS", nil);
+		self.headerUpdatedLabel.text = NSLocalizedString(@"UPDATED", nil);
+
         self.numberOfCalendarLabel.font = [UIFont boldSystemFontOfSize:15];
         self.numberOfEventsLabel.font = [UIFont boldSystemFontOfSize:15];
         self.updateDateLabel.font = [UIFont boldSystemFontOfSize:15];
@@ -84,6 +119,11 @@
             _iPadheaderView.frame = rect;
         }
         [self.tableView setTableHeaderView:_iPadheaderView];
+
+		self.headerCalendarsLabel_iPad.text = NSLocalizedString(@"CALENDARS", nil);
+		self.headerEventLabel_iPad.text = NSLocalizedString(@"EVENTS", nil);
+		self.headerUpdatedLabel_iPad.text = NSLocalizedString(@"UPDATED", nil);
+
         self.numberOfCalendarLabel = self.numberOfCalendarLabeliPad;
         self.numberOfEventsLabel = self.numberOfEventsLabeliPad;
         self.updateDateLabel = self.updateDateLabeliPad;
