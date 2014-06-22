@@ -9,30 +9,6 @@
 #import "LoanCalcString.h"
 #import "LoanCalcData.h"
 
-NSString *const A3LC_ModeTitle_DownPayment  = @"Down Payment";
-NSString *const A3LC_ModeTitle_Repayment    = @"Payment";
-NSString *const A3LC_ModeTitle_Principal    = @"Principal";
-NSString *const A3LC_ModeTitle_TermOfYears  = @"Term(years)";
-NSString *const A3LC_ModeTitle_TermOfMonths = @"Term(months)";
-
-NSString *const A3LC_ItemTitle_Principal        = @"Principal";
-NSString *const A3LC_ItemTitle_DownPayment      = @"Down Payment";
-NSString *const A3LC_ItemTitle_Term             = @"Term";
-NSString *const A3LC_ItemTitle_InterestRate     = @"Interest Rate";
-NSString *const A3LC_ItemTitle_Repayment        = @"Payment";
-NSString *const A3LC_ItemTitle_Frequency        = @"Frequency";
-
-NSString *const A3LC_FrequencyTitle_Weekly      = @"Weekly";
-NSString *const A3LC_FrequencyTitle_Biweekly    = @"Biweekly";
-NSString *const A3LC_FrequencyTitle_Monthly     = @"Monthly";
-NSString *const A3LC_FrequencyTitle_Bimonthly   = @"Bimonthly";
-NSString *const A3LC_FrequencyTitle_Quarterly = @"Quarterly";
-NSString *const A3LC_FrequencyTitle_SemiAnnually = @"Semiannually";
-NSString *const A3LC_FrequencyTitle_Annually = @"Annually";
-
-NSString *const A3LC_ExtraPaymentTitle_Monthly  = @"Monthly";
-NSString *const A3LC_ExtraPaymentTitle_Yearly   = @"Yearly";
-NSString *const A3LC_ExtraPaymentTitle_Onetime  = @"One-Time";
 
 @implementation LoanCalcString
 
@@ -40,15 +16,15 @@ NSString *const A3LC_ExtraPaymentTitle_Onetime  = @"One-Time";
 {
     switch (mode) {
         case A3LC_CalculationForDownPayment:
-            return NSLocalizedString(A3LC_ModeTitle_DownPayment, nil);
+            return NSLocalizedString(@"Down Payment", nil);
         case A3LC_CalculationForRepayment:
-            return NSLocalizedString(A3LC_ModeTitle_Repayment, nil);
+            return NSLocalizedString(@"Payment", nil);
         case A3LC_CalculationForPrincipal:
-            return NSLocalizedString(A3LC_ModeTitle_Principal, nil);
+            return NSLocalizedString(@"Principal", nil);
         case A3LC_CalculationForTermOfMonths:
-            return NSLocalizedString(A3LC_ModeTitle_TermOfMonths, nil);
+            return NSLocalizedString(@"Term(years)", nil);
         case A3LC_CalculationForTermOfYears:
-            return NSLocalizedString(A3LC_ModeTitle_TermOfYears, nil);
+            return NSLocalizedString(@"Term(months)", nil);
 
         default:
             return @"";
@@ -59,17 +35,17 @@ NSString *const A3LC_ExtraPaymentTitle_Onetime  = @"One-Time";
 {
     switch (item) {
         case A3LC_CalculationItemPrincipal:
-            return NSLocalizedString(A3LC_ItemTitle_Principal, nil);
+            return NSLocalizedString(@"Principal", nil);
         case A3LC_CalculationItemDownPayment:
-            return NSLocalizedString(A3LC_ItemTitle_DownPayment, nil);
+            return NSLocalizedString(@"Down Payment", nil);
         case A3LC_CalculationItemTerm:
-            return NSLocalizedString(A3LC_ItemTitle_Term, nil);
+            return NSLocalizedString(@"Term", nil);
         case A3LC_CalculationItemInterestRate:
-            return NSLocalizedString(A3LC_ItemTitle_InterestRate, nil);
+            return NSLocalizedString(@"Interest Rate", nil);
         case A3LC_CalculationItemRepayment:
-            return NSLocalizedString(A3LC_ItemTitle_Repayment, nil);
+            return NSLocalizedString(@"Payment", nil);
         case A3LC_CalculationItemFrequency:
-            return NSLocalizedString(A3LC_ItemTitle_Frequency, nil);
+            return NSLocalizedString(@"Frequency", nil);
 
         default:
             return @"";
@@ -80,19 +56,19 @@ NSString *const A3LC_ExtraPaymentTitle_Onetime  = @"One-Time";
 {
     switch (type) {
         case A3LC_FrequencyWeekly:
-            return NSLocalizedString(A3LC_FrequencyTitle_Weekly, nil);
+            return NSLocalizedString(@"Weekly", nil);
         case A3LC_FrequencyBiweekly:
-            return NSLocalizedString(A3LC_FrequencyTitle_Biweekly, nil);
+            return NSLocalizedString(@"Biweekly", nil);
         case A3LC_FrequencyMonthly:
-            return NSLocalizedString(A3LC_FrequencyTitle_Monthly, nil);
+            return NSLocalizedString(@"LoanCalc_Monthly", nil);
         case A3LC_FrequencyBimonthly:
-            return NSLocalizedString(A3LC_FrequencyTitle_Bimonthly, nil);
+            return NSLocalizedString(@"Bimonthly", nil);
         case A3LC_FrequencyQuarterly:
-            return NSLocalizedString(A3LC_FrequencyTitle_Quarterly, nil);
+            return NSLocalizedString(@"Quarterly", nil);
         case A3LC_FrequencySemiannualy:
-            return NSLocalizedString(A3LC_FrequencyTitle_SemiAnnually, nil);
+            return NSLocalizedString(@"Semiannually", nil);
         case A3LC_FrequencyAnnually:
-            return NSLocalizedString(A3LC_FrequencyTitle_Annually, nil);
+            return NSLocalizedString(@"Annually", nil);
 
         default:
             return @"";
@@ -126,11 +102,11 @@ NSString *const A3LC_ExtraPaymentTitle_Onetime  = @"One-Time";
 {
     switch (type) {
         case A3LC_ExtraPaymentMonthly:
-            return NSLocalizedString(A3LC_ExtraPaymentTitle_Monthly, nil);
+            return NSLocalizedString(@"Monthly", nil);
         case A3LC_ExtraPaymentYearly:
-            return NSLocalizedString(A3LC_ExtraPaymentTitle_Yearly, nil);
+            return NSLocalizedString(@"Yearly", nil);
         case A3LC_ExtraPaymentOnetime:
-            return NSLocalizedString(A3LC_ExtraPaymentTitle_Onetime, nil);
+            return NSLocalizedString(@"One-Time", nil);
 
         default:
             return @"";

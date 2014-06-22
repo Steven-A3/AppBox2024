@@ -311,7 +311,7 @@
 			break;
 		}
 		case A3NumberKeyboardTypeMonthYear: {
-			[self fillBigButtonTitleWith:NSLocalizedString(@"Years", @"Years") bigButton2Title:@"Months"];
+			[self fillBigButtonTitleWith:NSLocalizedString(@"Years", @"Years") bigButton2Title:NSLocalizedString(@"Months", @"Months")];
 			bigButton1.selected = YES;
 			if (IS_IPHONE) {
 				[self.bigButton1.titleLabel setFont:[UIFont systemFontOfSize:18.0]];
@@ -320,7 +320,7 @@
 			break;
 		}
 		case A3NumberKeyboardTypeInterestRate: {
-			[self fillBigButtonTitleWith:@"%/yr" bigButton2Title:@"%/mo"];
+			[self fillBigButtonTitleWith:NSLocalizedString(@"%/yr", @"%/yr") bigButton2Title:NSLocalizedString(@"%/mo", @"%/mo")];
 			bigButton1.selected = YES;
 			if (IS_IPHONE) {
 				[self.bigButton1.titleLabel setFont:[UIFont systemFontOfSize:18.0]];

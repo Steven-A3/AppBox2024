@@ -316,7 +316,8 @@
     UIStoryboard *settingsStoryBoard = [UIStoryboard storyboardWithName:@"A3Settings" bundle:nil];
     A3SettingsLunarViewController *settingsViewController = [settingsStoryBoard instantiateViewControllerWithIdentifier:@"SettingsLunarViewController"];
     if (IS_IPHONE) {
-        [self.navigationController pushViewController:settingsViewController animated:YES];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
+        [self presentViewController:nav animated:YES completion:NULL];
     } else {
         [self enableControls:NO];
         [self.A3RootViewController presentRightSideViewController:settingsViewController];
@@ -839,7 +840,7 @@
     
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
         [self.dateFormatter setDateStyle:NSDateFormatterFullStyle];
-		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a conversion with you.<br/><br/>", @"<html><body>I'd like to share a conversion with you.<br/><br/>")];
+		[txt appendString:NSLocalizedString(@"share_Lunar_head", nil)];
         [txt appendString:[self shareString]];
 		[txt appendString:NSLocalizedString(@"LunarConverter_share_text_html_body", nil)];
 	}

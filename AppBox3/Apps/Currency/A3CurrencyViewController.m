@@ -1368,7 +1368,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a conversion with you.<br/><br/>", nil)];
+		[txt appendString:NSLocalizedString(@"share_currencyConverter_head", nil)];
 
 		[txt appendString:[self stringForShare]];
 

@@ -456,7 +456,7 @@
         FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
     }];
     
-    [activityController setValue:@"My Subject Text" forKey:@"subject"];
+//    [activityController setValue:@"My Subject Text" forKey:@"subject"];
 	if (IS_IPHONE) {
 		[self presentViewController:activityController animated:YES completion:NULL];
 	} else {

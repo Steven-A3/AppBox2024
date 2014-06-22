@@ -238,6 +238,12 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			self.navigationItem.titleView = titleLabel;
 		}
 	}
+    
+    A3UnitConverterTabBarController *tabBar = (A3UnitConverterTabBarController *)self.navigationController.tabBarController;
+    if ([tabBar.unitTypes containsObject:self.unitType]) {
+        NSUInteger vcIdx = [tabBar.unitTypes indexOfObject:self.unitType];
+        [[NSUserDefaults standardUserDefaults] setUnitConverterCurrentUnitTap:vcIdx];
+    }
 
 	[self showLeftNavigationItems];
 
@@ -251,11 +257,11 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[super viewDidAppear:animated];
 
 	if ([self isMovingToParentViewController]) {
-		A3UnitConverterTabBarController *tabBar = (A3UnitConverterTabBarController *)self.navigationController.tabBarController;
-		if ([tabBar.unitTypes containsObject:self.unitType]) {
-			NSUInteger vcIdx = [tabBar.unitTypes indexOfObject:self.unitType];
-			[[NSUserDefaults standardUserDefaults] setUnitConverterCurrentUnitTap:vcIdx];
-		}
+//		A3UnitConverterTabBarController *tabBar = (A3UnitConverterTabBarController *)self.navigationController.tabBarController;
+//		if ([tabBar.unitTypes containsObject:self.unitType]) {
+//			NSUInteger vcIdx = [tabBar.unitTypes indexOfObject:self.unitType];
+//			[[NSUserDefaults standardUserDefaults] setUnitConverterCurrentUnitTap:vcIdx];
+//		}
         [self setupInstructionView];
 	}
 }
@@ -660,7 +666,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     if ([activityType isEqualToString:UIActivityTypeMail]) {
         
         NSMutableString *txt = [NSMutableString new];
-		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a conversion with you.<br/><br/>", nil)];
+		[txt appendString:NSLocalizedString(@"share_unitConverter_head", nil)];
         for (int i=0; i<_shareTextList.count; i++) {
             [txt appendString:_shareTextList[i]];
             [txt appendString:@"<br/>"];
@@ -675,7 +681,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
             [txt appendString:_shareTextList[i]];
             [txt appendString:@"\n"];
         }
-		[txt appendString:NSLocalizedString(@"\nCheck out the AppBox Pro!", @"\nCheck out the AppBox Pro!")];
+		//[txt appendString:NSLocalizedString(@"\nCheck out the AppBox Pro!", @"\nCheck out the AppBox Pro!")];
         
         return txt;
     }
@@ -873,6 +879,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)configurePlusCell:(A3UnitConverterTVActionCell *)actionCell {
 	[actionCell.centerButton addTarget:self action:@selector(addUnitAction) forControlEvents:UIControlEventTouchUpInside];
+    actionCell.centerButton.tintColor = [A3AppDelegate instance].themeColor;
 }
 
 #pragma mark - UITableViewDelegate
@@ -1365,9 +1372,13 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)shareActionForCell:(UITableViewCell *)cell sender:(id)sender {
 	NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
-	NSInteger targetIdx = indexPath.row == 0 ? 2 : indexPath.row;
-	NSAssert(self.convertItems[indexPath.row] != _equalItem, @"Selected row must not the equal cell");
-	[self shareActionForSourceIndex:0 targetIndex:targetIdx sender:sender ];
+    if (indexPath.row == 0) {
+        [self shareAll:sender];
+    }
+    else {
+        NSAssert(self.convertItems[indexPath.row] != _equalItem, @"Selected row must not the equal cell");
+        [self shareActionForSourceIndex:0 targetIndex:indexPath.row sender:sender ];
+    }
 
 	[self unSwipeAll];
 }
@@ -1512,7 +1523,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	UIBarButtonItem *prevButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Prev", @"Prev") style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonPressed)];
 	UIBarButtonItem *nextButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"Next") style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed)];
 	[prevButtonItem setEnabled:[self isPreviousEntryExists]];
+    prevButtonItem.tintColor = [A3AppDelegate instance].themeColor;
 	[nextButtonItem setEnabled:[self isNextEntryExists]];
+    nextButtonItem.tintColor = [A3AppDelegate instance].themeColor;
 	keyboardAccessoryToolbar.items = @[flexibleSpace, prevButtonItem, nextButtonItem];
 	field.inputAccessoryView = keyboardAccessoryToolbar;
 }

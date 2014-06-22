@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -9,12 +9,16 @@
                 <outlet property="addEventButton" destination="PbB-Oj-YOd" id="Zsl-b4-g4u"/>
                 <outlet property="bottomToolbar" destination="4qe-bg-2TE" id="OBg-yW-OQn"/>
                 <outlet property="footerView" destination="NCo-qs-zff" id="Kvh-fP-5mg"/>
+                <outlet property="headerCalendarsLabel" destination="9s4-vH-ZM1" id="oBj-Fh-xm1"/>
+                <outlet property="headerCalendarsLabel_iPad" destination="FjR-xT-MtN" id="hqN-2u-dgS"/>
                 <outlet property="headerEventLabel" destination="cwh-zt-SKb" id="p5j-Pg-jPx"/>
                 <outlet property="headerEventLabel_iPad" destination="GrP-W4-GKm" id="Ec5-Oh-SgU"/>
                 <outlet property="headerSeparator1_TopConst_iPad" destination="KlN-0h-1Aj" id="Nee-vJ-t5r"/>
                 <outlet property="headerSeparator1_TopConst_iPhone" destination="Lgg-b3-N71" id="8qE-sW-Fk4"/>
                 <outlet property="headerSeparator2_TopConst_iPad" destination="hac-lC-bun" id="Q58-pK-wkL"/>
                 <outlet property="headerSeparator2_TopConst_iPhone" destination="Wp3-Pg-gy4" id="uaW-Oa-Z27"/>
+                <outlet property="headerUpdatedLabel" destination="hal-K6-uso" id="6l3-Ys-gJg"/>
+                <outlet property="headerUpdatedLabel_iPad" destination="otR-8G-YUQ" id="6yX-Yy-DMV"/>
                 <outlet property="headerView" destination="AOS-JJ-toU" id="CZy-zk-TRj"/>
                 <outlet property="headerView_view1_widthConst_iPad" destination="yfv-21-BWj" id="6e7-kJ-hhN"/>
                 <outlet property="headerView_view2_widthConst_iPad" destination="Dqv-SF-ipm" id="TeA-tQ-kgq"/>

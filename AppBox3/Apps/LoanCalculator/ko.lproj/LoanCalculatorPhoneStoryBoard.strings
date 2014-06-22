@@ -18,7 +18,7 @@
 "71k-JM-vMQ.text" = "B";
 
 /* Class = "IBUILabel"; text = "Total Amount"; ObjectID = "8C0-7E-crV"; */
-"8C0-7E-crV.text" = "총액";
+"8C0-7E-crV.text" = "총상환금";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "8K4-Qo-PvN"; */
 "8K4-Qo-PvN.text" = "Label";
@@ -27,7 +27,7 @@
 "AGB-zu-eGI.text" = "$0.00/mo";
 
 /* Class = "IBUILabel"; text = "TERM"; ObjectID = "Ajr-fK-S6O"; */
-"Ajr-fK-S6O.text" = "기간";
+"Ajr-fK-S6O.text" = "대출기간";
 
 /* Class = "IBUITextField"; placeholder = "TextHere"; ObjectID = "Bc7-HQ-V9f"; */
 "Bc7-HQ-V9f.placeholder" = "TextHere";
@@ -57,7 +57,7 @@
 "IzS-cO-021.text" = "A";
 
 /* Class = "IBUILabel"; text = "INTEREST RATE"; ObjectID = "M1Y-kB-iSk"; */
-"M1Y-kB-iSk.text" = "이자율";
+"M1Y-kB-iSk.text" = "대출금리";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "MBu-OS-7va"; */
 "MBu-OS-7va.text" = "Label";
@@ -114,7 +114,7 @@
 "dia-aD-hhJ.text" = "$3.68";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "eK2-vu-V2i"; */
-"eK2-vu-V2i.text" = "납입액";
+"eK2-vu-V2i.text" = "상환금";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "fi5-fr-eaq"; */
 "fi5-fr-eaq.text" = "Label";
@@ -132,10 +132,10 @@
 "ihV-sA-QKP.placeholder" = "TextHere";
 
 /* Class = "IBUILabel"; text = "Total Interest"; ObjectID = "lIW-t6-4Lw"; */
-"lIW-t6-4Lw.text" = "이지 합계";
+"lIW-t6-4Lw.text" = "총이자";
 
 /* Class = "IBUIButton"; normalTitle = "Total"; ObjectID = "ln5-ed-dwO"; */
-"ln5-ed-dwO.normalTitle" = "합계";
+"ln5-ed-dwO.normalTitle" = "총액";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "m6f-ua-y26"; */
 "m6f-ua-y26.text" = "Label";
@@ -150,7 +150,7 @@
 "rak-XB-51q.text" = "Label";
 
 /* Class = "IBUILabel"; text = "PRINCIPAL"; ObjectID = "shi-Bi-FKl"; */
-"shi-Bi-FKl.text" = "원금";
+"shi-Bi-FKl.text" = "대출금액";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "uuJ-Hb-VeV"; */
 "uuJ-Hb-VeV.text" = "Label";

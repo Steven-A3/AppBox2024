@@ -73,9 +73,14 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
 
     NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterCurrentUnitTap];
     
-    if (vcIdx>=0 && vcIdx<self.viewControllers.count) {
-        UIViewController *selectedVC = self.viewControllers[vcIdx];
-        self.selectedViewController = selectedVC;
+    if (vcIdx > [self.viewControllers count] - 1) {
+        self.selectedViewController = [self.viewControllers lastObject];
+    }
+    else {
+        if (vcIdx >= 0 && vcIdx < self.viewControllers.count) {
+            UIViewController *selectedVC = self.viewControllers[vcIdx];
+            self.selectedViewController = selectedVC;
+        }
     }
     
     self.moreNavigationController.navigationBar.hidden = NO;

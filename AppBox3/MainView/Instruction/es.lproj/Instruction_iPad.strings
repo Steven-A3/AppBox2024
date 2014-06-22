@@ -5,8 +5,8 @@
 /* Class = "IBUILabel"; text = "Swipe left or right to see\ndifferent clock styles"; ObjectID = "0ks-Wf-Yju"; */
 "0ks-Wf-Yju.text" = "Swipe left or right to see\ndifferent clock styles";
 
-/* Class = "IBUILabel"; text = "Touch and hold   -\nto the right of an item,\nthen drag it up or down"; ObjectID = "0lp-cl-Yp6"; */
-"0lp-cl-Yp6.text" = "Touch and hold   -\nto the right of an item,\nthen drag it up or down";
+/* Class = "IBUILabel"; text = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down"; ObjectID = "0lp-cl-Yp6"; */
+"0lp-cl-Yp6.text" = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down";
 
 /* Class = "IBUILabel"; text = "Touch and hold a unit,\nthen drag it up or down"; ObjectID = "1ry-vN-Hwz"; */
 "1ry-vN-Hwz.text" = "Touch and hold a unit,\nthen drag it up or down";
@@ -140,8 +140,8 @@
 /* Class = "IBUILabel"; text = "Touch and hold a language,\nthen drag it up or down"; ObjectID = "s0L-Sq-3OK"; */
 "s0L-Sq-3OK.text" = "Touch and hold a language,\nthen drag it up or down";
 
-/* Class = "IBUILabel"; text = "Tap to add a item"; ObjectID = "s4i-R2-JdL"; */
-"s4i-R2-JdL.text" = "Tap to add a item";
+/* Class = "IBUILabel"; text = "Tap to add an item"; ObjectID = "s4i-R2-JdL"; */
+"s4i-R2-JdL.text" = "Tap to add an item";
 
 /* Class = "IBUILabel"; text = "Tap to see more categories"; ObjectID = "sgz-bU-EMv"; */
 "sgz-bU-EMv.text" = "Tap to see more categories";

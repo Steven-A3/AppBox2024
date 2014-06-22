@@ -232,7 +232,7 @@
 
 - (void)rightBarButton {
     UIImage *image = [UIImage imageNamed:@"general"];
-    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(generalButtonAction:)];
+    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
     
     self.navigationItem.rightBarButtonItems = @[buttonItem, [self instructionHelpBarButton]];
 }
@@ -281,7 +281,7 @@
 
 #pragma mark - Actions
 
-- (void)generalButtonAction:(id)sender {
+- (void)settingsButtonAction:(id)sender {
 	self.settingsViewController = [[A3BatteryStatusSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
 
 	if (IS_IPHONE) {
