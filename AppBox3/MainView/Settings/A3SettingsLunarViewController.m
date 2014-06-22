@@ -35,6 +35,7 @@
 
     if (IS_IPHONE) {
         [self makeBackButtonEmptyArrow];
+        [self rightBarButtonDoneButton];
     }
     else {
         self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
@@ -45,6 +46,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)doneButtonAction:(id)sender {
+	if (IS_IPAD) {
+		[[A3AppDelegate instance].rootViewController dismissRightSideViewController];
+	} else {
+		[self.navigationController dismissViewControllerAnimated:YES completion:nil];
+	}
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

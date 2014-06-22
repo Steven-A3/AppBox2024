@@ -681,7 +681,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
             [txt appendString:_shareTextList[i]];
             [txt appendString:@"\n"];
         }
-		[txt appendString:NSLocalizedString(@"\nCheck out the AppBox Pro!", @"\nCheck out the AppBox Pro!")];
+		//[txt appendString:NSLocalizedString(@"\nCheck out the AppBox Pro!", @"\nCheck out the AppBox Pro!")];
         
         return txt;
     }
@@ -1372,9 +1372,13 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)shareActionForCell:(UITableViewCell *)cell sender:(id)sender {
 	NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
-	NSInteger targetIdx = indexPath.row == 0 ? 2 : indexPath.row;
-	NSAssert(self.convertItems[indexPath.row] != _equalItem, @"Selected row must not the equal cell");
-	[self shareActionForSourceIndex:0 targetIndex:targetIdx sender:sender ];
+    if (indexPath.row == 0) {
+        [self shareAll:sender];
+    }
+    else {
+        NSAssert(self.convertItems[indexPath.row] != _equalItem, @"Selected row must not the equal cell");
+        [self shareActionForSourceIndex:0 targetIndex:indexPath.row sender:sender ];
+    }
 
 	[self unSwipeAll];
 }
@@ -1519,7 +1523,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	UIBarButtonItem *prevButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Prev", @"Prev") style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonPressed)];
 	UIBarButtonItem *nextButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"Next") style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed)];
 	[prevButtonItem setEnabled:[self isPreviousEntryExists]];
+    prevButtonItem.tintColor = [A3AppDelegate instance].themeColor;
 	[nextButtonItem setEnabled:[self isNextEntryExists]];
+    nextButtonItem.tintColor = [A3AppDelegate instance].themeColor;
 	keyboardAccessoryToolbar.items = @[flexibleSpace, prevButtonItem, nextButtonItem];
 	field.inputAccessoryView = keyboardAccessoryToolbar;
 }
