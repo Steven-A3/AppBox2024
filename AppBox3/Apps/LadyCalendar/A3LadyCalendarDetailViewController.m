@@ -124,6 +124,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		}
 	}
 	[self setupSectionsWithItems:_periodItems];
+    
 	[self.tableView reloadData];
 }
 
@@ -169,6 +170,12 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	}
 
 	[rowDataArray addObject:@{ItemKey_Type:@(DetailCellType_Blank)}];
+    
+    // predicted 인 경우, rightBarButton 제거.
+    LadyCalendarPeriod *period = [array firstObject];
+    if (period && [period.isPredict boolValue]) {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 
     self.rowDataArray = rowDataArray;
 }
