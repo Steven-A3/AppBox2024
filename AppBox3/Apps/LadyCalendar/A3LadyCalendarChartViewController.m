@@ -32,11 +32,11 @@
 @end
 
 @implementation A3LadyCalendarChartViewController {
-	NSInteger minCycleLength;
-	NSInteger maxCycleLength;
-	NSInteger minMenstrualPeriod;
-	NSInteger maxMenstrualPeriod;
-	NSInteger xLabelDisplayInterval;
+	NSInteger _minCycleLength;
+	NSInteger _maxCycleLength;
+	NSInteger _minMenstrualPeriod;
+	NSInteger _maxMenstrualPeriod;
+	NSInteger _xLabelDisplayInterval;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -61,7 +61,7 @@
     NSArray *titleArray = @[
 			(IS_IPHONE ? NSLocalizedString(@"6 Mos", @"6 Mos") : NSLocalizedString(@"6 Months", @"6 Months")),
 			(IS_IPHONE ? NSLocalizedString(@"9 Mos", @"9 Mos") : NSLocalizedString(@"9 Months", @"9 Months")), NSLocalizedString(@"1 Year", @"1 Year"), NSLocalizedString(@"2 Years", @"2 Years")];
-    xLabelDisplayInterval = 1;
+    _xLabelDisplayInterval = 1;
     for (NSInteger i=0; i < [_periodSegmentCtrl numberOfSegments];i++) {
         [_periodSegmentCtrl setTitle:[titleArray objectAtIndex:i] forSegmentAtIndex:i];
     }
@@ -134,22 +134,22 @@
 	self.menstrualYLabelArray = [NSMutableArray array];
 
 
-	minCycleLength = 0;
-	maxCycleLength = 0;
-	minMenstrualPeriod = -1;
-	maxMenstrualPeriod = -1;
+	_minCycleLength = 0;
+	_maxCycleLength = 0;
+	_minMenstrualPeriod = -1;
+	_maxMenstrualPeriod = -1;
 
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
     dateFormatter.dateStyle = NSDateFormatterMediumStyle;
     NSString *dateFormat = [dateFormatter formatStringByRemovingMediumYearComponent:[dateFormatter dateFormat]];
     
-	for (NSInteger i=0; i < [array count]; i++) {
-		LadyCalendarPeriod *period = [array objectAtIndex:i];
-		LadyCalendarPeriod *nextPeriod = ( i+1 < [array count] ? [array objectAtIndex:i+1] : nil);
+	for (NSInteger idx=0; idx < [array count]; idx++) {
+		LadyCalendarPeriod *period = [array objectAtIndex:idx];
+		LadyCalendarPeriod *nextPeriod = ( idx + 1 < [array count] ? [array objectAtIndex:idx + 1] : nil);
 		NSInteger mensPeriod = [A3DateHelper diffDaysFromDate:period.startDate toDate:period.endDate];
-		[periodArray addObject:[NSValue valueWithCGPoint:CGPointMake(i, mensPeriod)]];
-		minMenstrualPeriod = ( minMenstrualPeriod < 0 ? mensPeriod : MIN(minMenstrualPeriod, mensPeriod) );
-		maxMenstrualPeriod = (maxMenstrualPeriod < 0 ? mensPeriod : MAX(maxMenstrualPeriod,mensPeriod));
+		[periodArray addObject:[NSValue valueWithCGPoint:CGPointMake(idx, mensPeriod)]];
+		_minMenstrualPeriod = ( _minMenstrualPeriod < 0 ? mensPeriod : MIN(_minMenstrualPeriod, mensPeriod) );
+		_maxMenstrualPeriod = (_maxMenstrualPeriod < 0 ? mensPeriod : MAX(_maxMenstrualPeriod,mensPeriod));
 		[_cycleXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:dateFormat]];
 
 		NSInteger diffDays = 0;
@@ -159,21 +159,35 @@
 		else {
 			diffDays = [A3DateHelper diffDaysFromDate:period.startDate toDate:nextPeriod.startDate];
 		}
-		[cycleArray addObject:[NSValue valueWithCGPoint:CGPointMake(i, diffDays)]];
-		minCycleLength = ( minCycleLength == 0 ? diffDays : MIN(minCycleLength,diffDays));
-		maxCycleLength = ( maxCycleLength == 0 ? diffDays : MAX(maxCycleLength, diffDays));
+		[cycleArray addObject:[NSValue valueWithCGPoint:CGPointMake(idx, diffDays)]];
+		_minCycleLength = ( _minCycleLength == 0 ? diffDays : MIN(_minCycleLength,diffDays));
+		_maxCycleLength = ( _maxCycleLength == 0 ? diffDays : MAX(_maxCycleLength, diffDays));
 
 		[_menstrualXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:dateFormat]];
 	}
 
-	for (NSInteger i = minCycleLength; i <= maxCycleLength; i++)
+	for (NSInteger i = _minCycleLength; i <= _maxCycleLength; i++) {
 		[_cycleYLabelArray addObject:[NSString stringWithFormat:@"%ld", (long)i]];
-	for (NSInteger i = minMenstrualPeriod; i <= maxMenstrualPeriod; i++) {
+    }
+	for (NSInteger i = _minMenstrualPeriod; i <= _maxMenstrualPeriod; i++) {
 		[_menstrualYLabelArray addObject:[NSString stringWithFormat:@"%ld", (long) i]];
 	}
+    if ([_menstrualYLabelArray count] > 6) {
+        NSMutableArray *filteredYLabels = [NSMutableArray new];
+        [filteredYLabels addObject:[_menstrualYLabelArray firstObject]];
+        for (NSInteger idx = 0; idx < 4; idx++) {
+            NSString *mestrualY = [_menstrualYLabelArray objectAtIndex:(([_menstrualYLabelArray count] - 2) / 4) * (idx + 1)];
+            if (mestrualY) {
+                [filteredYLabels addObject:mestrualY];
+            }
+        }
+        [filteredYLabels addObject:[_menstrualYLabelArray lastObject]];
+        self.menstrualYLabelArray = filteredYLabels;
+    }
 
 	self.cycleLengthArray = [NSArray arrayWithArray:cycleArray];
 	self.menstrualPeriodArray = [NSArray arrayWithArray:periodArray];
+
 }
 
 #pragma mark - UITableViewDataSource
@@ -234,10 +248,10 @@
         chartView.showXLabel = NO;
         chartView.showYLabel = YES;
         chartView.minXValue = 0;
-        chartView.minYValue = minCycleLength;
+        chartView.minYValue = _minCycleLength;
         chartView.maxXValue = [_cycleXLabelArray count];
-        chartView.maxYValue = maxCycleLength;
-        chartView.xLabelDisplayInterval = xLabelDisplayInterval;
+        chartView.maxYValue = _maxCycleLength;
+        chartView.xLabelDisplayInterval = _xLabelDisplayInterval;
         chartView.valueArray = _cycleLengthArray;
     }
     else if ( indexPath.row == 1 ) {
@@ -248,10 +262,10 @@
         chartView.showXLabel = YES;
         chartView.showYLabel = YES;
         chartView.minXValue = 0;
-        chartView.minYValue = minMenstrualPeriod;
+        chartView.minYValue = _minMenstrualPeriod;
         chartView.maxXValue = [_menstrualXLabelArray count];
-        chartView.maxYValue = maxMenstrualPeriod;
-        chartView.xLabelDisplayInterval = xLabelDisplayInterval;
+        chartView.maxYValue = _maxMenstrualPeriod;
+        chartView.xLabelDisplayInterval = _xLabelDisplayInterval;
         chartView.valueArray = _menstrualPeriodArray;
     }
 
@@ -278,24 +292,24 @@
     NSInteger periodMonth = [self monthsFromCurrentSegment];
     if ( IS_IPAD ) {
         if ( periodMonth == 24 )
-            xLabelDisplayInterval = 2;
+            _xLabelDisplayInterval = 2;
         else
-            xLabelDisplayInterval = 1;
+            _xLabelDisplayInterval = 1;
     }
     else {
         switch (periodMonth) {
             case 9:
-                xLabelDisplayInterval = 2;
+                _xLabelDisplayInterval = 2;
                 break;
             case 12:
-                xLabelDisplayInterval = 3;
+                _xLabelDisplayInterval = 3;
                 break;
             case 24:
-                xLabelDisplayInterval = 4;
+                _xLabelDisplayInterval = 4;
                 break;
                 
             default:
-                xLabelDisplayInterval = 1;
+                _xLabelDisplayInterval = 1;
                 break;
         }
     }

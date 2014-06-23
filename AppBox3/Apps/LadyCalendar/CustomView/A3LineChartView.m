@@ -69,13 +69,13 @@
     CGContextSetTextDrawingMode(context, kCGTextFill);
     
     NSDictionary *attr = @{NSForegroundColorAttributeName : _xLabelColor,NSFontAttributeName : _xAxisFont};
-    for (NSInteger idx = 0; idx < [_xLabelItems count]; idx++){
-        if ( idx > 0 && (idx + 1) < [_xLabelItems count] ){
+    for (NSInteger idx = 0; idx < [_xLabelItems count]; idx++) {
+        if ( idx > 0 && (idx + 1) < [_xLabelItems count] ) {
             CGPoint ptLine[] = {CGPointMake(xAxisLineRect.origin.x + (idx * xAxisSeparatorInterval), xAxisLineRect.origin.y + xAxisLineRect.size.height),CGPointMake(xAxisLineRect.origin.x + (idx * xAxisSeparatorInterval), xAxisLineRect.origin.y + xAxisLineRect.size.height+ xAxisSeparatorHeight)};
             CGContextStrokeLineSegments(context, ptLine, 2);
         }
         
-        if ( _showXLabel && !(idx % _xLabelDisplayInterval)){
+        if ( _showXLabel && !(idx % _xLabelDisplayInterval)) {
             NSString *str = [_xLabelItems objectAtIndex:idx];
             CGSize strSize = [str sizeWithAttributes:attr];
             
@@ -105,7 +105,7 @@
 - (void)drawYAxisWithContext:(CGContextRef)context
 {
     CGPoint yLabelPos = CGPointMake(0, yStartCenterPosition);
-    for(NSInteger i=0; i < [_yLabelItems count]; i++){
+    for (NSInteger i=0; i < [_yLabelItems count]; i++) {
         CGRect drawRect = CGRectMake(yLabelPos.x, yLabelPos.y - (i * yAxisInterval), yLabelMaxSize.width, yLabelMaxSize.height);
         NSString *str = [_yLabelItems objectAtIndex:i];
         [str drawWithRect:drawRect options:NSLineBreakByCharWrapping|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : self.yAxisFont,NSForegroundColorAttributeName:_yLabelColor} context:nil];
@@ -114,9 +114,9 @@
 
 - (void)drawLineWithContext:(CGContextRef)context
 {
-    for(NSInteger i=0; i < [pointArray count]; i++){
+    for (NSInteger i=0; i < [pointArray count]; i++) {
         CGPoint pos = [[pointArray objectAtIndex:i] CGPointValue];
-        if( i == 0 )
+        if ( i == 0 )
             CGContextMoveToPoint(context, pos.x, pos.y+pointSize.height*0.5);
         else
             CGContextAddLineToPoint(context, pos.x, pos.y+pointSize.height*0.5);
@@ -128,7 +128,7 @@
 
 - (void)drawPointWithContext:(CGContextRef)context
 {
-    for(NSInteger i=0; i < [pointArray count]; i++){
+    for (NSInteger i=0; i < [pointArray count]; i++) {
         CGPoint pos = [[pointArray objectAtIndex:i] CGPointValue];
         CGRect outRect = CGRectMake(pos.x-pointSize.width*0.5, pos.y, pointSize.width, pointSize.height);
         CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
@@ -143,7 +143,7 @@
 
 - (void)drawAverageLineWithContext:(CGContextRef)context
 {
-    if( [_valueArray count] < 1 )
+    if ( [_valueArray count] < 1 )
         return;
     CGFloat averageValue =  valueTotal.y / [_valueArray count];
     averageLineYPos = yStartCenterPosition - ((averageValue - _minYValue) * yAxisInterval)*0.5 + pointSize.height*0.5;
@@ -157,7 +157,7 @@
 
 - (void)drawAverageValueWithContext:(CGContextRef)context
 {
-    if( [_valueArray count] < 1 )
+    if ( [_valueArray count] < 1 )
         return;
 	UIFont *font = IS_IPHONE ? [UIFont systemFontOfSize:15] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     NSDictionary *attribute = @{NSFontAttributeName : font, NSForegroundColorAttributeName : _averageColor};
@@ -200,7 +200,7 @@
     
     // yValue중 가장 크기가 큰 값을 찾는다.
     CGFloat maxYLabelWidth = 0;
-    for(NSString *str in _yLabelItems){
+    for (NSString *str in _yLabelItems) {
         CGRect rect = [str boundingRectWithSize:CGSizeMake(self.frame.size.width, 99999.0) options:NSLineBreakByCharWrapping|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : self.yAxisFont} context:nil];
         maxYLabelWidth = MAX(maxYLabelWidth, rect.size.width);
         yLabelMaxSize = CGSizeMake(maxYLabelWidth, rect.size.height);
@@ -208,10 +208,10 @@
     
     
     xLabelMaxSize = CGSizeZero;
-    if( _showXLabel ){
+    if ( _showXLabel ) {
         CGFloat maxXLabelHeight = 0.0;
         CGFloat maxXLabelWidth = 0.0;
-        for(NSString *str in _xLabelItems){
+        for (NSString *str in _xLabelItems) {
             CGRect rect = [str boundingRectWithSize:CGSizeMake(self.frame.size.width, 99999.0) options:NSLineBreakByCharWrapping|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : self.xAxisFont} context:nil];
             maxXLabelHeight = MAX(maxXLabelHeight, rect.size.height);
             maxXLabelWidth = MAX(maxXLabelWidth, rect.size.width);
@@ -230,7 +230,7 @@
     // 정점좌표 계산
     yStartCenterPosition = xAxisLineRect.origin.y-(yAxisInterval + pointSize.height*0.5) + 1.0;
     valueTotal = CGPointZero;
-    for(NSInteger i=0; i < [_valueArray count]; i++){
+    for (NSInteger i=0; i < [_valueArray count]; i++) {
         CGPoint value = [[_valueArray objectAtIndex:i] CGPointValue];
         CGPoint pos = CGPointMake(xAxisLineRect.origin.x + (value.x - _minXValue) * xAxisSeparatorInterval - (i+1 == [_valueArray count] ? 1.0 : 0.0), yStartCenterPosition - (value.y - _minYValue) * yAxisInterval);
         [pointArray addObject:[NSValue valueWithCGPoint:pos]];
