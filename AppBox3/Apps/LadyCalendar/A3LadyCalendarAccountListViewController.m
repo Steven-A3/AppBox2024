@@ -44,6 +44,7 @@
     self.title = NSLocalizedString(@"Edit Accounts", @"Edit Accounts");
 
 	self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.allowsSelectionDuringEditing = YES;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
