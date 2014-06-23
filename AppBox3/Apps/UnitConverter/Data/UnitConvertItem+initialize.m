@@ -130,9 +130,13 @@
 	[allUnitTypeItems addObject:item];
 	
 	// Fuel Consumption
+    //    miles/gal(US)     6
+    //    miles/gal(UK)     5
+    //    kilometer/liter   2
+    //    liters/100km      3
 	item = [NSArray arrayWithObjects:
-			[NSNumber numberWithInt:5],
 			[NSNumber numberWithInt:6],
+			[NSNumber numberWithInt:5],
 			[NSNumber numberWithInt:2],
 			[NSNumber numberWithInt:3],
 			nil];
@@ -279,8 +283,7 @@
             
             UnitConvertItem *convertItem = [UnitConvertItem MR_createEntity];
             convertItem.item = unitItem;
-//			convertItem.order = [NSString stringWithFormat:@"0%lu00000000", (unsigned long)idxUnit];
-            convertItem.order = [NSString stringWithFormat:@"%lu", (unsigned long)idxUnit];
+			convertItem.order = [NSString orderStringWithOrder:idxUnit];
             NSLog(@"%@", convertItem.order);
         }
     }

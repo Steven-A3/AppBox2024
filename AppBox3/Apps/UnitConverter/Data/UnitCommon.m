@@ -802,8 +802,8 @@ const char *unitShortNames[][34] = {
     
     // Temperature, 3
     {
-        "°C",
-        "°F",
+        "celsius",        //        "°C",
+        "fahrenheit",        //        "°F",
         "K",
         "°R",
         "°Ré"

@@ -807,9 +807,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 		dataCell.codeLabel.text = NSLocalizedStringFromTable(convertItem.item.unitShortName, @"unitShort", nil);
 		dataCell.rateLabel.text = NSLocalizedStringFromTable(convertItem.item.unitName, @"unit", nil);
-
-	} else {
-
+	}
+    else {
 		dataCell.valueField.textColor = [UIColor blackColor];
 		dataCell.value2Field.textColor = [UIColor blackColor];
 		dataCell.valueLabel.textColor = [UIColor blackColor];
@@ -842,6 +841,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		dataCell.codeLabel.text = NSLocalizedStringFromTable(convertItem.item.unitName, @"unit", nil);
 		// 온도 모드에서는 rate값에 일정 비율이 없으므로 표시하지 않는다.
 		if (_isTemperatureMode) {
+//            dataCell.codeLabel.text = NSLocalizedStringFromTable(convertItem.item.unitShortName, @"unitShort", nil);
 			dataCell.rateLabel.text = [TemperatureConverter rateStringFromTemperUnit:convertItemZero.item.unitName toTemperUnit:convertItem.item.unitName];
 		}
 		else {
