@@ -130,10 +130,6 @@
 	[allUnitTypeItems addObject:item];
 	
 	// Fuel Consumption
-    //    miles/gal(US)     6
-    //    miles/gal(UK)     5
-    //    kilometer/liter   2
-    //    liters/100km      3
 	item = [NSArray arrayWithObjects:
 			[NSNumber numberWithInt:6],
 			[NSNumber numberWithInt:5],
@@ -215,22 +211,6 @@
 	[allUnitTypeItems addObject:item];
 	
 	// Volume
-    //    gallon,liquid(US)     19
-    //    quarts,liquid(US)     28
-    //    pints,liquid(US)      25
-    //    cups                  13
-    //    fluid ounces(US)      16
-    //    table spoons          29
-    //    tea spoons            30
-    //    cm3                   5
-    //    liters                20
-    //    milliliters           22
-    //    gallons(UK)           17
-    //    quarts(UK)            26
-    //    pints(UK)             23
-    //    fluid ounces(UK)      15
-    //    feet3                 8
-    //    inches3               9
 	item = [NSArray arrayWithObjects:
 			[NSNumber numberWithInt:19],
 			[NSNumber numberWithInt:28],
@@ -252,14 +232,6 @@
 	[allUnitTypeItems addObject:item];
 	
 	// Weight
-    //    tonnes                16
-    //    kilograms             6
-    //    grams                 4
-    //    tons(UK or long)      14
-    //    tons(US or short)     15
-    //    stones                13
-    //    pounds(US&UK)         9
-    //    ounces(US&UK)         7
 	item = [NSArray arrayWithObjects:
 			[NSNumber numberWithInt:16],
 			[NSNumber numberWithInt:6],
