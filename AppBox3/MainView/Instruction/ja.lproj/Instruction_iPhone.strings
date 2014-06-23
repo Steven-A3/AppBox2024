@@ -21,7 +21,7 @@
 "55x-Hd-Yyy.text" = "Tap to add an item";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "5vX-h0-0KZ"; */
-"5vX-h0-0KZ.text" = "Tap the screen to display\nthe controls";
+"5vX-h0-0KZ.text" = "画面をタップすると、\nコン トロールが表示されます。";
 
 /* Class = "IBUILabel"; text = "Slide the event to the left,\nthen tap Delete"; ObjectID = "7qV-NL-Ajb"; */
 "7qV-NL-Ajb.text" = "Slide the event to the left,\nthen tap Delete";
@@ -33,7 +33,7 @@
 "9Oc-Jc-FLn.text" = "Add or delete countries";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "BOF-lT-L6x"; */
-"BOF-lT-L6x.text" = "Tap the screen to display\nthe controls";
+"BOF-lT-L6x.text" = "画面をタップすると、\nコン トロールが表示されます。";
 
 /* Class = "IBUILabel"; text = "Touch and hold a unit,\nthen drag it up or down"; ObjectID = "DNP-PL-5me"; */
 "DNP-PL-5me.text" = "Touch and hold a unit,\nthen drag it up or down";
@@ -89,8 +89,8 @@
 /* Class = "IBUILabel"; text = "Slide the unit to the left,\nthen tap options"; ObjectID = "fgC-K0-IiZ"; */
 "fgC-K0-IiZ.text" = "Slide the unit to the left,\nthen tap options";
 
-/* Class = "IBUILabel"; text = "Tap to change color"; ObjectID = "g69-at-Gdn"; */
-"g69-at-Gdn.text" = "Tap to change color";
+/* Class = "IBUILabel"; text = "Tap to change color and more"; ObjectID = "g69-at-Gdn"; */
+"g69-at-Gdn.text" = "Tap to change color and more";
 
 /* Class = "IBUILabel"; text = "Touch and hold a event,\nthen drag it up or down"; ObjectID = "g74-h9-vmQ"; */
 "g74-h9-vmQ.text" = "Touch and hold a event,\nthen drag it up or down";
@@ -99,7 +99,7 @@
 "j7s-5h-AsK.text" = "Change color and order";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "k0p-RN-RCK"; */
-"k0p-RN-RCK.text" = "Tap the screen to display\nthe controls";
+"k0p-RN-RCK.text" = "画面をタップすると、\nコン トロールが表示されます。";
 
 /* Class = "IBUILabel"; text = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down"; ObjectID = "ls1-5i-Gos"; */
 "ls1-5i-Gos.text" = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down";
@@ -108,7 +108,7 @@
 "m1h-st-ypH.text" = "Tap to see more info";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "mYi-2r-6n3"; */
-"mYi-2r-6n3.text" = "Tap the screen to display\nthe controls";
+"mYi-2r-6n3.text" = "画面をタップすると、\nコン トロールが表示されます。";
 
 /* Class = "IBUILabel"; text = "Tap anywhere to see more info"; ObjectID = "n3c-eW-iPb"; */
 "n3c-eW-iPb.text" = "Tap anywhere to see more info";
@@ -141,7 +141,7 @@
 "rqI-qD-Dqd.text" = "Touch and hold a item,\nthen drag it up or down";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "sxx-vG-Pll"; */
-"sxx-vG-Pll.text" = "Tap the screen to display\nthe controls";
+"sxx-vG-Pll.text" = "画面をタップすると、\nコン トロールが表示されます。";
 
 /* Class = "IBUILabel"; text = "Tap to change option"; ObjectID = "t5T-1i-yhB"; */
 "t5T-1i-yhB.text" = "Tap to change option";

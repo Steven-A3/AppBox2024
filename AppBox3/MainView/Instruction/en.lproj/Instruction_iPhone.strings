@@ -89,8 +89,8 @@
 /* Class = "IBUILabel"; text = "Slide the unit to the left,\nthen tap options"; ObjectID = "fgC-K0-IiZ"; */
 "fgC-K0-IiZ.text" = "Slide the unit to the left,\nthen tap options";
 
-/* Class = "IBUILabel"; text = "Tap to change color"; ObjectID = "g69-at-Gdn"; */
-"g69-at-Gdn.text" = "Tap to change color";
+/* Class = "IBUILabel"; text = "Tap to change color and more"; ObjectID = "g69-at-Gdn"; */
+"g69-at-Gdn.text" = "Tap to change color and more";
 
 /* Class = "IBUILabel"; text = "Touch and hold a event,\nthen drag it up or down"; ObjectID = "g74-h9-vmQ"; */
 "g74-h9-vmQ.text" = "Touch and hold a event,\nthen drag it up or down";

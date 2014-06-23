@@ -89,7 +89,7 @@
 /* Class = "IBUILabel"; text = "slide the unit to the left,\nthen tap options"; ObjectID = "fgC-K0-IiZ"; */
 "fgC-K0-IiZ.text" = "단위를 왼쪽으로 밀어서\n추가 기능을 선택합니다.";
 
-/* Class = "IBUILabel"; text = "tap to change color"; ObjectID = "g69-at-Gdn"; */
+/* Class = "IBUILabel"; text = "Tap to change color and more"; ObjectID = "g69-at-Gdn"; */
 "g69-at-Gdn.text" = "탭하여 색상을 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a event,\nthen drag it up or down"; ObjectID = "g74-h9-vmQ"; */

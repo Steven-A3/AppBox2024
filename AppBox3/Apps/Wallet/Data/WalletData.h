@@ -20,8 +20,6 @@ extern NSString *const WalletFieldStylePassword;
 extern NSString *const WalletFieldStyleAccount;
 extern NSString *const WalletFieldStyleHidden;
 
-extern NSString *const WalletCategoryTypePhoto;
-extern NSString *const WalletCategoryTypeVideo;
 extern NSString *const WalletFieldNativeType;
 extern NSString *const WalletFieldNativeTypeText;
 extern NSString *const WalletFieldNativeTypeImage;

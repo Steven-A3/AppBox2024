@@ -25,8 +25,6 @@ NSString *const WalletFieldStylePassword	= @"Password";
 NSString *const WalletFieldStyleAccount		= @"Account";
 NSString *const WalletFieldStyleHidden		= @"Hidden";
 
-NSString *const WalletCategoryTypePhoto		= @"Photos";
-NSString *const WalletCategoryTypeVideo		= @"Video";
 NSString *const WalletFieldNativeType 		= @"NativeType";
 NSString *const WalletFieldNativeTypeText	= @"Text";
 NSString *const WalletFieldNativeTypeImage	= @"Image";

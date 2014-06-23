@@ -29,8 +29,8 @@
 /* Class = "IBUILabel"; text = "Tap anywhere to see more info"; ObjectID = "F5U-ls-szF"; */
 "F5U-ls-szF.text" = "Tap anywhere to see more info";
 
-/* Class = "IBUILabel"; text = "Tap to change color"; ObjectID = "HRH-SL-EGk"; */
-"HRH-SL-EGk.text" = "Tap to change color";
+/* Class = "IBUILabel"; text = "Tap to change color and more"; ObjectID = "HRH-SL-EGk"; */
+"HRH-SL-EGk.text" = "Tap to change color and more";
 
 /* Class = "IBUILabel"; text = "Touch and hold a item,\nthen drag it up or down"; ObjectID = "Hg8-OO-NUZ"; */
 "Hg8-OO-NUZ.text" = "Touch and hold a item,\nthen drag it up or down";

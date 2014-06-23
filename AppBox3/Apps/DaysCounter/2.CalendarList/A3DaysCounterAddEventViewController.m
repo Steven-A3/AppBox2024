@@ -766,8 +766,10 @@
     }
     
     lunarImageView.hidden = YES;
+#ifdef DEBUG
     NSDate *keyDate = itemType == EventCellType_StartDate ? [_eventItem.startDate solarDate] : [_eventItem.endDate solarDate];
     NSAssert(keyDate, @"start/end default date is not nil.");
+#endif
     if ([_eventItem.isLunar boolValue]) {
         dateLabel.text = [A3DaysCounterModelManager dateStringOfLunarFromDateModel:itemType == EventCellType_StartDate ? _eventItem.startDate : _eventItem.endDate
                                                                        isLeapMonth:itemType == EventCellType_StartDate ? [_eventItem.startDate.isLeapMonth boolValue] : [_eventItem.endDate.isLeapMonth boolValue] ];

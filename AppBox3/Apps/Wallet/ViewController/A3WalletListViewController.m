@@ -26,6 +26,7 @@
 #import "A3WalletVideoItemViewController.h"
 #import "A3WalletPhotoItemViewController.h"
 #import "NSMutableArray+A3Sort.h"
+#import "WalletCategory+initialize.h"
 
 NSString *const A3WalletTextCellID1 = @"A3WalletListTextCell";
 NSString *const A3WalletBigVideoCellID1 = @"A3WalletListBigVideoCell";
@@ -89,9 +90,10 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 	_tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
 	_tableView.separatorColor = [self tableViewSeparatorColor];
 	_tableView.separatorInset = A3UITableViewSeparatorInset;
-	if ([self.category.name isEqualToString:WalletCategoryTypePhoto] || [self.category.name isEqualToString:WalletCategoryTypeVideo]) {
+	if ([self.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory] || [self.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
 		_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	}
+
 	[self.view addSubview:_tableView];
 
 	[_tableView registerClass:[A3WalletListBigVideoCell class] forCellReuseIdentifier:A3WalletBigVideoCellID1];
@@ -178,7 +180,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath walletItem:(WalletItem *)item {
 	UITableViewCell *cell;
-	if ([_category.name isEqualToString:WalletCategoryTypePhoto]) {
+	if ([_category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory]) {
 		A3WalletListBigPhotoCell *photoCell;
 		photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletBigPhotoCellID1 forIndexPath:indexPath];
 
@@ -212,7 +214,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 
 		cell = photoCell;
 	}
-	else if ([_category.name isEqualToString:WalletCategoryTypeVideo]) {
+	else if ([_category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
 		A3WalletListBigVideoCell *videoCell;
 		videoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletBigVideoCellID1 forIndexPath:indexPath];
 
@@ -246,7 +248,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		}
 
 		cell = videoCell;
-	} else if ([item.category.name isEqualToString:WalletCategoryTypePhoto]) {
+	} else if ([item.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory]) {
 		A3WalletListPhotoCell *photoCell;
 		photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletPhotoCellID forIndexPath:indexPath];
 
@@ -273,7 +275,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 
 		cell = photoCell;
 	}
-	else if ([item.category.name isEqualToString:WalletCategoryTypeVideo]) {
+	else if ([item.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
 		A3WalletListPhotoCell *videoCell;
 		videoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletPhotoCellID forIndexPath:indexPath];
 
@@ -355,7 +357,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath withItem:(WalletItem *)item {
-	if ([item.category.name isEqualToString:WalletCategoryTypePhoto]) {
+	if ([item.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory]) {
 		NSString *boardName = @"WalletPhoneStoryBoard";
 		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
 		A3WalletPhotoItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletPhotoItemViewController"];
@@ -363,7 +365,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		viewController.item = item;
 		[self.navigationController pushViewController:viewController animated:YES];
 	}
-	else if ([item.category.name isEqualToString:WalletCategoryTypeVideo]) {
+	else if ([item.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
 		NSString *boardName = @"WalletPhoneStoryBoard";
 		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
 		A3WalletVideoItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletVideoItemViewController"];

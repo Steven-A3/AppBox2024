@@ -633,7 +633,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.category.name isEqualToString:WalletCategoryTypePhoto] || [self.category.name isEqualToString:WalletCategoryTypeVideo]) {
+    if ([self.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory] || [self.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
         return 84;
     }
     else {

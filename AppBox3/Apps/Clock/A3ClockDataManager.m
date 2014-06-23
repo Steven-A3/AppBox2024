@@ -373,7 +373,7 @@
 - (void)getWeatherInfoWithWOEID:(NSString *)WOEID {
 
 	NSString *weatherUnit = [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? @"f" : @"c";
-	NSURL *weatherURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://weather.yahooapis.com/forecastrss?w=%@&u=%@", WOEID, weatherUnit]];
+	NSURL *weatherURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://weather.yahooapis.com/forecastrss?w=%@&u=%@&language=", WOEID, weatherUnit]];
 
 	NSURLRequest *weatherRequest = [NSURLRequest requestWithURL:weatherURL];
 	AFHTTPRequestOperation *weatherOperation = [[AFHTTPRequestOperation alloc] initWithRequest:weatherRequest];
