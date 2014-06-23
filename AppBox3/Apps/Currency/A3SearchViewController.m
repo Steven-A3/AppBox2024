@@ -204,6 +204,7 @@
 	NSMutableArray *dataContainingSectionsArray = [NSMutableArray new];
 	NSMutableArray *sectionTitles = [NSMutableArray new];
 	NSMutableArray *sectionIndexTitles = [NSMutableArray new];
+	
 	// Now that all the data's in place, each section array needs to be sorted.
 	for (index = 0; index < sectionTitlesCount; index++) {
 
@@ -215,7 +216,7 @@
 			[dataContainingSectionsArray addObject:sortedDataArrayForSection];
 			if (index) {
 				[sectionTitles addObject:[_collation sectionTitles][index - 1]];
-				[sectionIndexTitles addObject:[_collation sectionIndexTitles][index - 1]];
+				[sectionIndexTitles addObject:[_collation sectionTitles][index - 1]];
 			}
 		}
 	}
