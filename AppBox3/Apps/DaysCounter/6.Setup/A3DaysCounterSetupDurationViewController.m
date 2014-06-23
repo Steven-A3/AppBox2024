@@ -13,6 +13,7 @@
 #import "A3DaysCounterModelManager.h"
 #import "SFKImage.h"
 #import "DaysCounterEvent.h"
+#import "UIImage+JHExtension.h"
 
 @interface A3DaysCounterSetupDurationViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -156,13 +157,22 @@
         cell.userInteractionEnabled = YES;
         cell.textLabel.textColor = [UIColor blackColor];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.accessoryType = ( self.selectedOptionFlag & itemRowType ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+        
+        if (self.selectedOptionFlag & itemRowType) {
+            cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]];
+        }
+        else {
+            cell.accessoryView = nil;
+        }
     }
     
     if (itemRowType == DurationOption_Day) {
         cell.userInteractionEnabled = NO;
         cell.textLabel.textColor = [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if (self.selectedOptionFlag & itemRowType) {
+            cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"check_02"] grayColor:[UIColor colorWithRed:205/255.0 green:205/255.0 blue:205/255.0 alpha:1.0]]];
+        }
     }
     
     return cell;
@@ -183,7 +193,12 @@
     NSInteger flag = [[item objectForKey:EventRowType] integerValue];
 
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.accessoryType = (optionValue & flag) ? UITableViewCellAccessoryNone : UITableViewCellAccessoryCheckmark;
+    if (optionValue & flag) {
+        cell.accessoryView = nil;
+    }
+    else {
+        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]];
+    }
     
     optionValue ^= flag;
     if ( optionValue == 0 ) {
@@ -193,7 +208,7 @@
 												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 												  otherButtonTitles: nil];
         [alertView show];
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]];
         return;
     }
     
