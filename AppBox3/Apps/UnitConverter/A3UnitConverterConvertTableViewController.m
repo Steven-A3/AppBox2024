@@ -54,6 +54,7 @@
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
 @property (strong, nonatomic) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (nonatomic, strong) UnitHistory *currentStatusEntity;
 @end
 
 @implementation A3UnitConverterConvertTableViewController {
@@ -61,9 +62,7 @@
 	NSUInteger 	_selectedRow;
     BOOL		_isAddingUnit;
     BOOL		_isShowMoreMenu;
-    
     BOOL        _isTemperatureMode;
-
 	BOOL 		_isSwitchingFractionMode;
 }
 
@@ -95,11 +94,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	}];
 
 	self.vcTitle = self.title;
-
 	[self setupSwipeRecognizers];
-
 	[self makeBackButtonEmptyArrow];
-
 
 	if (IS_IPHONE) {
         [self rightButtonMoreButton];
@@ -129,9 +125,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	_isTemperatureMode = [_unitType.unitTypeName isEqualToString:@"Temperature"];
 
 	[self.decimalFormatter setLocale:[NSLocale currentLocale]];
-
 	[self.view addSubview:self.addButton];
-
 	[self.addButton makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
 		make.centerY.equalTo(self.view.bottom).with.offset(-32);
@@ -420,18 +414,27 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     return _addButton;
 }
 
+- (void)setUnitValue:(NSNumber *)unitValue {
+    _unitValue = unitValue;
+}
+
 - (NSNumber *)unitValue {
     if (!_unitValue) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"source.type == %@", _unitType];
-        NSArray *histories = [UnitHistory MR_findAllSortedBy:@"date" ascending:NO withPredicate:predicate];
-        if (histories.count > 0) {
-            UnitHistory *last = histories[0];
-            _unitValue = @(last.value.floatValue);
+        if (!_currentStatusEntity) {
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"source.type == %@ && date == nil", _unitType];
+            _currentStatusEntity = [UnitHistory MR_findFirstWithPredicate:predicate];
+        }
+        
+        if (_currentStatusEntity) {
+            _unitValue = @(_currentStatusEntity.value.floatValue);
         }
         else {
             _unitValue = @1.0;
+            [self putHistoryForCurrentStatusWithValue:_unitValue];
+            [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         }
     }
+    
     return _unitValue;
 }
 
@@ -854,7 +857,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		// 0.3048, 0.0254
 		// feet 계산
 		int feet = (int)value.floatValue;
-		float inch = (value.floatValue - feet)*kInchesPerFeet;
+		float inch = (value.floatValue - feet) * kInchesPerFeet;
 		dataCell.valueField.text = [self.decimalFormatter stringFromNumber:@(feet)];
 		dataCell.value2Field.text = [self.decimalFormatter stringFromNumber:@(inch)];
 	}
@@ -1162,6 +1165,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 		float value = [[self.decimalFormatter numberFromString:textField.text] floatValue];
 		if (value != 0.0) {
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"source.type == %@ && date == nil", _unitType];
+            UnitHistory *currentStatusEntity = [UnitHistory MR_findFirstWithPredicate:predicate];
+
 			[self putHistoryWithValue:@(value)];
 			_unitValue = nil;
 			[self unitValue];
@@ -1240,6 +1246,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	textField.text = [self.decimalFormatter stringFromNumber:@(value)];
 	[self updateTextFieldsWithSourceTextField:textField];
 	[cell updateMultiTextFieldModeConstraintsWithEditingTextField:nil];
+    [self putHistoryForCurrentStatusWithValue:self.unitValue];
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
@@ -1565,27 +1572,67 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 #pragma mark - History
+- (void)putHistoryForCurrentStatusWithValue:(NSNumber *)value {
+	UnitConvertItem *baseUnit = self.convertItems[0];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"source.type == %@ && date == nil", _unitType];
+    UnitHistory *currentStatusEntity = [UnitHistory MR_findFirstWithPredicate:predicate];
+    if (!currentStatusEntity) {
+        currentStatusEntity = [UnitHistory MR_createEntity];
+    }
+	
+	currentStatusEntity.date = nil;
+	currentStatusEntity.source = baseUnit.item;
+	currentStatusEntity.value = value;
+
+	NSInteger historyItemCount = MIN([self.convertItems count] - 2, 4);
+	NSInteger idx = 0;
+	NSMutableSet *targets = [[NSMutableSet alloc] init];
+	for (; idx < historyItemCount; idx++) {
+		UnitHistoryItem *item = [UnitHistoryItem MR_createEntity];
+		UnitConvertItem *convertItem = self.convertItems[idx + 2];
+		item.unit = convertItem.item;
+		item.order = convertItem.order;
+		[targets addObject:item];
+	}
+	currentStatusEntity.targets = targets;
+    
+//	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+}
 
 - (void)putHistoryWithValue:(NSNumber *)value {
 	UnitConvertItem *baseUnit = self.convertItems[0];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"source.type == %@", _unitType];
-	NSArray *histories = [UnitHistory MR_findAllSortedBy:@"date" ascending:NO withPredicate:predicate];
 
+	NSArray *histories = [UnitHistory MR_findAllSortedBy:@"date" ascending:NO withPredicate:[NSPredicate predicateWithFormat:@"source.type == %@", _unitType]];
 	// Compare code and value.
 	if (histories.count > 0) {
 		UnitHistory *latestHistory = histories[0];
 		if (latestHistory) {
 			if ([latestHistory.source.type.unitTypeName isEqualToString:baseUnit.item.type.unitTypeName] &&
-					[latestHistory.source.unitName isEqualToString:baseUnit.item.unitName] && [value isEqualToNumber:latestHistory.value])
+                [latestHistory.source.unitName isEqualToString:baseUnit.item.unitName] && [value isEqualToNumber:latestHistory.value])
 			{
-
 				FNLOG(@"Does not make new history for same code and value, in history %@, %@", latestHistory.value, value);
 				return;
 			}
 		}
 	}
-
-	UnitHistory *history = [UnitHistory MR_createEntity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"source.type == %@ && date == nil", _unitType];
+    UnitHistory *currentStatusEntity = [UnitHistory MR_findFirstWithPredicate:predicate];
+    if (currentStatusEntity) {
+        currentStatusEntity.date = [NSDate date];
+        [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+        
+        _unitValue = nil;
+        
+        [self enableControls:YES];
+        
+        return;
+    }
+    
+    
+    UnitHistory *history = [UnitHistory MR_createEntity];
+    
 	NSDate *keyDate = [NSDate date];
 	history.date = keyDate;
 	history.source = baseUnit.item;
