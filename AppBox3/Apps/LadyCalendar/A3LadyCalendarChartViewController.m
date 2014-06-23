@@ -62,7 +62,7 @@
 			(IS_IPHONE ? NSLocalizedString(@"6 Mos", @"6 Mos") : NSLocalizedString(@"6 Months", @"6 Months")),
 			(IS_IPHONE ? NSLocalizedString(@"9 Mos", @"9 Mos") : NSLocalizedString(@"9 Months", @"9 Months")), NSLocalizedString(@"1 Year", @"1 Year"), NSLocalizedString(@"2 Years", @"2 Years")];
     xLabelDisplayInterval = 1;
-    for(NSInteger i=0; i < [_periodSegmentCtrl numberOfSegments];i++){
+    for (NSInteger i=0; i < [_periodSegmentCtrl numberOfSegments];i++) {
         [_periodSegmentCtrl setTitle:[titleArray objectAtIndex:i] forSegmentAtIndex:i];
     }
 	[self registerContentSizeCategoryDidChangeNotification];
@@ -143,7 +143,7 @@
     dateFormatter.dateStyle = NSDateFormatterMediumStyle;
     NSString *dateFormat = [dateFormatter formatStringByRemovingMediumYearComponent:[dateFormatter dateFormat]];
     
-	for(NSInteger i=0; i < [array count]; i++){
+	for (NSInteger i=0; i < [array count]; i++) {
 		LadyCalendarPeriod *period = [array objectAtIndex:i];
 		LadyCalendarPeriod *nextPeriod = ( i+1 < [array count] ? [array objectAtIndex:i+1] : nil);
 		NSInteger mensPeriod = [A3DateHelper diffDaysFromDate:period.startDate toDate:period.endDate];
@@ -153,10 +153,10 @@
 		[_cycleXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:dateFormat]];
 
 		NSInteger diffDays = 0;
-		if( nextPeriod == nil ){
+		if ( nextPeriod == nil ) {
 			diffDays = [period.cycleLength integerValue];
 		}
-		else{
+		else {
 			diffDays = [A3DateHelper diffDaysFromDate:period.startDate toDate:nextPeriod.startDate];
 		}
 		[cycleArray addObject:[NSValue valueWithCGPoint:CGPointMake(i, diffDays)]];
@@ -166,9 +166,9 @@
 		[_menstrualXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:dateFormat]];
 	}
 
-	for(NSInteger i = minCycleLength; i <= maxCycleLength; i++)
+	for (NSInteger i = minCycleLength; i <= maxCycleLength; i++)
 		[_cycleYLabelArray addObject:[NSString stringWithFormat:@"%ld", (long)i]];
-	for(NSInteger i = minMenstrualPeriod; i <= maxMenstrualPeriod; i++){
+	for (NSInteger i = minMenstrualPeriod; i <= maxMenstrualPeriod; i++) {
 		[_menstrualYLabelArray addObject:[NSString stringWithFormat:@"%ld", (long) i]];
 	}
 
@@ -202,23 +202,23 @@
 {
     static NSString *cellID = @"chartCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if( cell == nil ){
+    if ( cell == nil ) {
         NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3LadyCalendarChartCell" owner:nil options:nil];
         cell = [cellArray objectAtIndex:0];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         UIView *leftView = [cell viewWithTag:10];
         UIView *bottomView = [cell viewWithTag:11];
-        for(NSLayoutConstraint *layout in cell.contentView.constraints){
-            if( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView )
+        for (NSLayoutConstraint *layout in cell.contentView.constraints) {
+            if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView )
                 layout.constant = (IS_IPHONE ? 15.0 : 28.0);
-            else if( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == bottomView )
+            else if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == bottomView )
                 layout.constant = (IS_IPHONE ? 15.0 : 28.0);
-            else if( layout.firstAttribute == NSLayoutAttributeTrailing && layout.secondItem ==  bottomView )
+            else if ( layout.firstAttribute == NSLayoutAttributeTrailing && layout.secondItem ==  bottomView )
                 layout.constant = (IS_IPHONE ? 18.0 : 28.0);
-            else if( layout.firstAttribute == NSLayoutAttributeTop && layout.firstItem == leftView )
+            else if ( layout.firstAttribute == NSLayoutAttributeTop && layout.firstItem == leftView )
                 layout.constant = (indexPath.row == 0 ? (IS_IPHONE ? 11.0 : 26.0) :(IS_IPHONE ? 14.0 : 45.0));
-            else if( layout.firstAttribute == NSLayoutAttributeTop && layout.firstItem == bottomView )
+            else if ( layout.firstAttribute == NSLayoutAttributeTop && layout.firstItem == bottomView )
                 layout.constant = (IS_IPHONE ? 26.0 : 36.0);
         }
     }
@@ -226,7 +226,7 @@
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     A3LineChartView *chartView = (A3LineChartView*)[cell viewWithTag:11];
     
-    if( indexPath.row == 0 ){
+    if ( indexPath.row == 0 ) {
         textLabel.text = NSLocalizedString(@"CYCLE LENGTH", @"CYCLE LENGTH");
         chartView.averageColor = [UIColor colorWithRGBRed:76 green:217 blue:100 alpha:255];
         chartView.xLabelItems = _cycleXLabelArray;
@@ -240,7 +240,7 @@
         chartView.xLabelDisplayInterval = xLabelDisplayInterval;
         chartView.valueArray = _cycleLengthArray;
     }
-    else if( indexPath.row == 1 ){
+    else if ( indexPath.row == 1 ) {
         textLabel.text = NSLocalizedString(@"MENSTRUAL PERIOD", @"MENSTRUAL PERIOD");
         chartView.averageColor = [UIColor colorWithRGBRed:255 green:45 blue:85 alpha:255];
         chartView.xLabelItems = _menstrualXLabelArray;
@@ -276,13 +276,13 @@
 
 - (IBAction)periodChangedAction:(id)sender {
     NSInteger periodMonth = [self monthsFromCurrentSegment];
-    if( IS_IPAD ){
-        if( periodMonth == 24 )
+    if ( IS_IPAD ) {
+        if ( periodMonth == 24 )
             xLabelDisplayInterval = 2;
         else
             xLabelDisplayInterval = 1;
     }
-    else{
+    else {
         switch (periodMonth) {
             case 9:
                 xLabelDisplayInterval = 2;
@@ -303,7 +303,7 @@
     NSDate *fromMonth = [A3DateHelper dateByAddingMonth:1 fromDate:currentMonth];
     LadyCalendarAccount *account = [_dataManager currentAccount];
     self.itemArray = [_dataManager periodListWithMonth:fromMonth period:periodMonth accountID:account.uniqueID];
-    if( [self.itemArray count] > 0 ){
+    if ( [self.itemArray count] > 0 ) {
         [self makeChartDataWithArray:_itemArray];
     }
     [self.tableView reloadData];

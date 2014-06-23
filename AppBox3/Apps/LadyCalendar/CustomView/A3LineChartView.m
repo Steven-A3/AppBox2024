@@ -53,6 +53,12 @@
 	self.xLabelDisplayInterval = 1;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    [self setNeedsDisplay];
+}
+
 - (void)drawXAxisWithContext:(CGContextRef)context
 {
     CGContextSetFillColorWithColor(context, [self.xAxisColor CGColor]);
