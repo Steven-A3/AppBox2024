@@ -11,6 +11,7 @@
 #import "UnitType.h"
 
 extern NSString *const A3UnitConverterDataCellID;
+extern NSString * const A3UnitConverterTableViewUnitValueKey;
 
 @interface A3UnitConverterConvertTableViewController : UIViewController <UIActivityItemSource>
 

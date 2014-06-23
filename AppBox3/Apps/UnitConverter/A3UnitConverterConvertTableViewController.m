@@ -33,6 +33,8 @@
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
+NSString * const A3UnitConverterTableViewUnitValueKey = @"A3UnitConverterTableViewUnitValueKey";
+
 @interface A3UnitConverterConvertTableViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate,
 		A3UnitSelectViewControllerDelegate, A3UnitConverterFavoriteEditDelegate, A3UnitConverterMenuDelegate,
 		UIPopoverControllerDelegate, UIActivityItemSource, FMMoveTableViewDelegate, FMMoveTableViewDataSource,
@@ -421,11 +423,11 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)setUnitValue:(NSNumber *)unitValue {
-    [[NSUserDefaults standardUserDefaults] setObject:unitValue forKey:@"A3UnitConverterTableViewUnitValue"];
+    [[NSUserDefaults standardUserDefaults] setObject:unitValue forKey:A3UnitConverterTableViewUnitValueKey];
 }
 
 - (NSNumber *)unitValue {
-    NSNumber *_unitValue = [[NSUserDefaults standardUserDefaults] objectForKey:@"A3UnitConverterTableViewUnitValue"];
+    NSNumber *_unitValue = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitConverterTableViewUnitValueKey];
     
     if (!_unitValue) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"source.type == %@", _unitType];
@@ -1167,7 +1169,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		self.textBeforeEditingTextField = textField.text;
 
 		float value = [[self.decimalFormatter numberFromString:textField.text] floatValue];
-		if (value != 0.0) {
+//		if (value != 0.0 && value != [[self unitValue] floatValue]) {
+        if ([self.unitValue integerValue] != 1 || [UnitHistory MR_countOfEntities] != 0 ) {
 			[self putHistoryWithValue:@(value)];
 			self.unitValue = nil;
 			[self unitValue];
