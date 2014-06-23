@@ -177,7 +177,12 @@
         make.leading.equalTo(self.contentView.left);
         make.top.equalTo(self.contentView.top);
         make.bottom.equalTo(self.contentView.bottom);
-        make.right.equalTo(self.rateLabel.left).with.offset(-20);
+        if (IS_IPAD) {
+            make.right.equalTo(self.contentView.right).with.offset(-160);
+        }
+        else {
+            make.right.equalTo(self.rateLabel.left).with.offset(-20);
+        }
     }];
 }
 
