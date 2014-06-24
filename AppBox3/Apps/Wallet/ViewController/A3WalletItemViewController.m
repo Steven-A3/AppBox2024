@@ -358,7 +358,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 			case 0:
 			{
 				// call
-				NSString *urlString = [NSString stringWithFormat:@"tel:%@", result.phoneNumber];
+				NSString *urlString = [NSString stringWithFormat:@"tel://%@", result.phoneNumber];
 				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
 				break;
 			}
@@ -618,12 +618,9 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
             cell = dateCell;
         }
         else {
-            
+            NSLog(@"fieldItem field: %@", [fieldItem field]);
             // 텍스트 액션 여부 확인
             BOOL hasTextAction = [self detectDataText:fieldItem.value];
-            if ([fieldItem.field.type isEqualToString:WalletFieldTypePhone]) {
-                hasTextAction = YES;
-            }
             
             if (hasTextAction) {
                 A3WalletItemFieldActionCell *actionCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldActionCellID forIndexPath:indexPath];
@@ -667,11 +664,17 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
                         actionCell.rightBtn2.hidden = YES;
                     }
                 }
-                else if (result.resultType == NSTextCheckingTypePhoneNumber || [fieldItem.field.type isEqualToString:WalletFieldTypePhone]) {
-                    actionCell.rightBtn1.hidden = ![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel:"]];
+                else if (result.resultType == NSTextCheckingTypePhoneNumber && [fieldItem.field.type isEqualToString:WalletFieldTypePhone]) {
+                    NSString *urlString = [NSString stringWithFormat:@"tel://%@", [fieldItem value]];
+                    BOOL canOpen = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:urlString]];
+                    actionCell.rightBtn1.hidden = canOpen ? NO : YES;
                     actionCell.rightBtn2.hidden = NO;
                     [actionCell.rightBtn1 setImage:[UIImage imageNamed:@"call"] forState:UIControlStateNormal];
                     [actionCell.rightBtn2 setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
+                }
+                else {
+                    actionCell.rightBtn1.hidden = YES;
+                    actionCell.rightBtn2.hidden = YES;
                 }
                 
                 cell = actionCell;
