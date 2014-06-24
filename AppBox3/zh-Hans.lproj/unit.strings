@@ -292,9 +292,9 @@
 "yards/second" = "码/秒";
 "°C" = "°C";
 "°F" = "°F";
-"Kelvin" = "开耳芬";
-"Rankine" = "兰金";
-"Réaumure" = "列氏";
+"kelvin" = "开耳芬";
+"rankine" = "兰金";
+"réaumure" = "列氏";
 "centuries" = "世纪";
 "days" = "天";
 "decades" = "数十年";

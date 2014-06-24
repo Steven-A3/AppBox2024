@@ -292,9 +292,9 @@
 "yards/second" = "yd/s";
 "°C" = "°C";
 "°F" = "°F";
-"Kelvin" = "K";
-"Rankine" = "";
-"Réaumure" = "";
+"kelvin" = "K";
+"rankine" = "";
+"réaumure" = "";
 "centuries" = "";
 "days" = "days";
 "decades" = "decades";

@@ -305,9 +305,9 @@
 
 "°C" = "°C";
 "°F" = "°F";
-"Kelvin" = "Kelvin";
-"Rankine" = "Rankine";
-"Réaumure" = "Réaumure";
+"kelvin" = "kelvin";
+"rankine" = "rankine";
+"réaumure" = "réaumure";
 
 "centuries" = "centuries";
 "days" = "days";

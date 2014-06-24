@@ -292,9 +292,9 @@
 "yards/second" = "ヤード/秒";
 "°C" = "°C";
 "°F" = "°F";
-"Kelvin" = "ケルビン";
-"Rankine" = "ランキン";
-"Réaumure" = "レオミュール";
+"kelvin" = "ケルビン";
+"rankine" = "ランキン";
+"réaumure" = "レオミュール";
 "centuries" = "世紀";
 "days" = "日";
 "decades" = "数十年";

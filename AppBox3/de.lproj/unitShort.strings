@@ -304,9 +304,9 @@
 
 "°C" = "°C";
 "°F" = "°F";
-"Kelvin" = "K";
-"Rankine" = "";
-"Réaumure" = "";
+"kelvin" = "K";
+"rankine" = "";
+"réaumure" = "";
 
 "centuries" = "";
 "days" = "Tag";

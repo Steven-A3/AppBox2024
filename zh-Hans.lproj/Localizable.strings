@@ -31,6 +31,7 @@
 
 "Lunar Calendar" = "农历";
 
+/* "A friend wanted to let you know that the Calculator, Date Calculator, Loan Calculator, Percent Calculator, Sales Calculator, Tip Calculator, Unit Price, Currency Converter, Lunar Converter, Translator, Unit Converter, Days Counter, Expense List, Lady Calendar, Wallet, Holidays, Battery Status, Clock, Magnifier and Mirror you've come to expect from AppBox Pro™ is now available for your iPhone, iPad and iPod Touch. Click below to download AppBox Pro™ from the iTunes App Store.\r\n\r\nhttps://itunes.apple.com/app/id318404385"; */
 "tellafriend" = "iPhone/iPad/iPod Touch的有效使用，推荐您使用包含了闹钟、电池状态信息、镜子、水平仪、汇率、日期计算、纪念日、手电灯、公休日、贷款计算、自然周期、价格比较、随机数表生成、尺子、折扣率计算、系统信息、小费计算、翻译器、单位换算、保安电子钱包、网络应用程序等多种应用程序的AppBox Pro™。
 现在马上在下面网址上下载AppBox Pro™。
 
@@ -195,12 +196,12 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "Public Holidays" = "公众假期";
 "Today  " = "今天  ";
 
-"Date Calculator using AppBox Pro" = "Date Calculator using AppBox Pro";
-"<html><body>I'd like to share a calculation with you.<br/><br/>" = "<html><body>I'd like to share a calculation with you.<br/><br/>";
+"Date Calculator using AppBox Pro" = "日期计算，在AppBox Pro";
+"<html><body>I'd like to share a calculation with you.<br/><br/>" = "<html><body>我想与大家分享一个计算。<br/><br/>";
 "datecalc_share_body" = "<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
-"From: %@<br>" = "From: %@<br>";
-"To: %@<br>" = "To: %@<br>";
-"Exclude: %@<br>" = "Exclude: %@<br>";
+"From: %@<br>" = "特定日 A: %@<br>";
+"To: %@<br>" = "特定日 B: %@<br>";
+"Exclude: %@<br>" = "排除: %@<br>";
 
 "Result: %@" = "Result: %@";
 "Add: 0 day<br>" = "Add: 0 day<br>";
@@ -211,7 +212,7 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "Add or Subtract days" = "Add or Subtract days";
 "From" = "特定日 A";
 "To" = "特定日 B";
-"Exclude" = "Exclude";
+"Exclude" = "排除";
 
 "%ld of %ld" = "%ld of %ld";
 "%@ using AppBox Pro" = "%@ using AppBox Pro";
@@ -534,7 +535,7 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "0 %@ %ld mo" = "0 %@ %ld mo";
 "%ld %@ %ld mo" = "%ld %@ %ld mo";
 "Loan Calculator using AppBox Pro" = "Loan Calculator using AppBox Pro";
-"<html><body>I'd like to share a calculation with you.<br><br>" = "<html><body>I'd like to share a calculation with you.<br><br>";
+"<html><body>I'd like to share a calculation with you.<br><br>" = "<html><body>我想与大家分享一个计算。<br><br>";
 "LoanCalc_Share_HTML_BODY" = "<br><br>You can calculator more in the AppBox Pro.<br><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Share Loan Calculator Data" = "Share Loan Calculator Data";
 "** Loan A <br>" = "** Loan A <br>";
@@ -861,7 +862,7 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 
 "Internet connection is not available." = "Internet connection is not available.";
 
-"How to setup iCloud?" = "You can download and use the iCloud data or delete iCloud data and start it over. How to setup iCloud?";
+"Setup AppBox Pro data in iCloud" = "Setup AppBox Pro data in iCloud";
 
 "Add this place" = "Add this place";
 

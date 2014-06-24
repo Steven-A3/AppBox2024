@@ -373,11 +373,11 @@ const char *unitNames[][34] = {
     
     // Temperature, 5
     {
-        "°C",       //      celsius
-        "°F",       //      fahrenheit
-        "kelvin",   //        "Kelvin",
-        "rankine",  //        "Rankine",
-        "réaumure"  //        "Réaumure"
+		"celsius",        //        "°C",
+		"fahrenheit",        //        "°F",
+        "kelvin",   //        "kelvin",
+        "rankine",  //        "rankine",
+        "réaumure"  //        "réaumure"
     },
     
     // Time, 23
@@ -802,8 +802,8 @@ const char *unitShortNames[][34] = {
     
     // Temperature, 3
     {
-        "celsius",        //        "°C",
-        "fahrenheit",        //        "°F",
+		"°C",       //      celsius
+		"°F",       //      fahrenheit
         "K",
         "°R",
         "°Ré"

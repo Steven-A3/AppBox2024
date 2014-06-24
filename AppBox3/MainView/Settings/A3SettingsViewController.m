@@ -151,7 +151,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
 		if ([keyValueStore boolForKey:A3CloudHasData]) {
 			// Ask user to delete iCloud or not
-			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"How to setup iCloud?", nil)
+			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Setup AppBox Pro data in iCloud", nil)
 																	 delegate:self
 															cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
 													   destructiveButtonTitle:NSLocalizedString(@"Delete iCloud and start over", nil)
