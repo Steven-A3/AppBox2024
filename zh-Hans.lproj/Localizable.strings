@@ -5,32 +5,36 @@
  * Time: 9:34 PM
  */
 
-"Select Currency" = "Select Currency";
-"Principal" = "Principal";
-"Term" = "Term";
-"Interest Rate" = "Interest Rate";
-"Frequency" = "Frequency";
-"LadyCalendar_Start Date" = "Start Date";
-"Notes" = "Notes";
-"One-Time" = "One-Time";
-"Currency" = "Currency";
+"Select Currency" = "选择货币代码";
+"Principal" = "本金";
+"Term" = "期间";
+"Interest Rate" = "利率";
+"Frequency" = "利率";
+"LadyCalendar_Start Date" = "开始日期";
+"Notes" = "笔记";
+"One-Time" = "一次性";
+"Currency" = "货币";
 
 "iCloud" = "iCloud";
-"None" = "None";
+"None" = "无";
 
-"Most Recent" = "Most Recent";
+"Most Recent" = "最新的";
 
-"Korean" = "Korean";
-"Chinese" = "Chinese";
+/* 음력 달력 선택을 위한 것 */
+"Korean" = "韩国农历";
+"Chinese" = "中国农历";
 
-"Settings" = "Settings";
-"Sync" = "Sync";
+"Settings" = "设置";
+"Sync" = "同步";
 
-"Passcode Lock" = "Passcode Lock";
+"Passcode Lock" = "密码锁定";
 
-"Lunar Calendar" = "Lunar Calendar";
+"Lunar Calendar" = "农历";
 
-"tellafriend" = "A friend wanted to let you know that the Calculator, Date Calculator, Loan Calculator, Percent Calculator, Sales Calculator, Tip Calculator, Unit Price, Currency Converter, Lunar Converter, Translator, Unit Converter, Days Counter, Expense List, Lady Calendar, Wallet, Holidays, Battery Status, Clock, Magnifier and Mirror you've come to expect from AppBox Pro™ is now available for your iPhone, iPad and iPod Touch. Click below to download AppBox Pro™ from the iTunes App Store.\r\n\r\nhttps://itunes.apple.com/app/id318404385";
+"tellafriend" = "iPhone/iPad/iPod Touch的有效使用，推荐您使用包含了闹钟、电池状态信息、镜子、水平仪、汇率、日期计算、纪念日、手电灯、公休日、贷款计算、自然周期、价格比较、随机数表生成、尺子、折扣率计算、系统信息、小费计算、翻译器、单位换算、保安电子钱包、网络应用程序等多种应用程序的AppBox Pro™。
+现在马上在下面网址上下载AppBox Pro™。
+
+http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8";
 
 "DISCLAIMER_MESSAGE" = "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case.";
 "HOLIDAYS_ACKNOWLEDGEMENT" = "A Photo behind the Holidays in the AppBox Pro is collected from Flickr that reflect the beauty and magnificence of differnet locations around the world. Flickr screen name and a link to the photo are shown on the screen. Authors get any and all rights over photo. ALLABOUTAPPS Inc. don't own any photo. If you want to paricipate this, send us email. You will not receive financial compensation for use of your photos, however will bring a whole new audience to your photostream. Thanks to authors to share.";
@@ -39,123 +43,122 @@
 
 "microphone access denied" = "AppBox Pro dose not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro";
 
-"Theme Color" = "Theme Color";
+"Theme Color" = "主题颜色";
 
-"About" = "About";
-"Remaining Time" = "Remaining Time";
+"About" = "关于本机";
+"Remaining Time" = "剩余时间";
 
-"Battery Status" = "Battery Status";
-"Calculator" = "Calculator";
-"Date Calculator" = "Date Calculator";
-"Loan Calculator" = "Loan Calculator";
-"Sales Calculator" = "Sales Calculator";
-"Tip Calculator" = "Tip Calculator";
-"Unit Price" = "Unit Price";
-"Percent Calculator" = "Percent Calculator";
-"Currency Converter" = "Currency Converter";
-"Lunar Converter" = "Lunar Converter";
-"Translator" = "Translator";
-"Unit Converter" = "Unit Converter";
+"Battery Status" = "电池状态";
+"Calculator" = "计算器";
+"Date Calculator" = "日期计算";
+"Loan Calculator" = "贷款计算";
+"Sales Calculator" = "折扣价格计算";
+"Tip Calculator" = "小费计算";
+"Unit Price" = "单价";
+"Percent Calculator" = "百分比计算器";
+"Currency Converter" = "币种转换器";
+"Lunar Converter" = "阴历/阳历";
+"Translator" = "翻译";
+"Unit Converter" = "单位换算";
 "Days Counter" = "Days Counter";
-"Lady Calendar" = "Lady Calendar";
-"Wallet" = "Wallet";
-"Expense List" = "Expense List";
-"Holidays" = "Holidays";
-"Clock" = "Clock";
-"Mirror" = "Mirror";
-"Magnifier" = "Magnifier";
-"Favorites" = "Favorites";
+"Lady Calendar" = "淑女日历";
+"Wallet" = "电子钱包";
+"Expense List" = "费用清单";
+"Holidays" = "公休日";
+"Clock" = "时钟";
+"Mirror" = "镜子";
+"Magnifier" = "放大";
+"Favorites" = "收藏夹";
 
-"Last %ld" = "Last %ld";
+"Last %ld" = "末 %ld";
 
 "Apps" = "Apps";
 "iCloud_goto_settings" = "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.";
 
-"Info" = "Info";
-"Cancel" = "Cancel";
-"Delete Photo" = "Delete Photo";
-"Take Photo" = "Take Photo";
-"Choose Existing" = "Choose Existing";
-"Choose and Resize" = "Choose and Resize";
+"Info" = "信息";
+"Cancel" = "取消";
+"Delete Photo" = "照片";
+"Take Photo" = "拍照";
+"Choose Existing" = "选择现有";
+"Choose and Resize" = "选择和调整";
 
-"Enabling iCloud" = "Enabling iCloud";
-"Disableing iCloud" = "Disableing iCloud";
+"Enabling iCloud" = "使iCloud的";
+"Disableing iCloud" = "禁用的iCloud";
 
-"iCloud Enabled" = "iCloud Enabled";
-"Syncing in backgorund" = "Syncing in backgorund";
-"iCloud Disabled" = "iCloud Disabled";
+"iCloud Enabled" = "iCloud的启用";
+"Syncing in backgorund" = "同步在后台";
+"iCloud Disabled" = "禁用的iCloud";
 "Local Store Problem" = "Local Store Problem";
 "Your datastore got corrupted and needs to be recreated." = "Your datastore got corrupted and needs to be recreated.";
 "Recreate" = "Recreate";
 
-"Converter" = "Converter";
-"Productivity" = "Productivity";
-"Reference" = "Reference";
-"Utility" = "Utility";
-"OK" = "OK";
-"Device" = "Device";
-"Version" = "Version";
-"Chips" = "Chips";
+"Converter" = "变流器";
+"Productivity" = "产量";
+"Reference" = "参考";
+"Utility" = "公益事业";
+"OK" = "确认";
+"Device" = "设备";
+"Version" = "版本";
+"Chips" = "片";
 "CPU" = "CPU";
 "GPU" = "GPU";
-"Memory" = "Memory";
-"Capacity" = "Capacity";
+"Memory" = "存储";
+"Capacity" = "容量";
 
-"How to Maximize Power Use" = "How to Maximize Power Use";
-"More Information about Batteries" = "More Information about Batteries";
+"How to Maximize Power Use" = "如何最大限度地提高电源使用";
+"More Information about Batteries" = "有关电池的详细信息";
 
-"Enter The Number!" = "Enter The Number!";
+"Enter The Number!" = "输入号码";
 
-"History" = "History";
-"Clear" = "Clear";
-"Clear History" = "Clear History";
+"History" = "历史";
+"Clear" = "删除";
+"Clear History" = "清除历史记录";
 
-"Basic / Scientific" = "Basic / Scientific";
-"Scientific" = "Scientific";
-"Basic" = "Basic";
+"Basic / Scientific" = "基本的 / 科学的";
+"Scientific" = "科学的";
+"Basic" = "基本的";
 "Calculator using AppBox Pro" = "Calculator using AppBox Pro";
-"I'd like to share a calculation with you.\n\n" = "I'd like to share a calculation with you.\n\n";
+"I'd like to share a calculation with you.\n\n" = "我想与大家分享一个计算。\n\n";
 
 "\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385" = "\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385";
-"CHOOSE COLOR" = "CHOOSE COLOR";
+"CHOOSE COLOR" = "选择颜色";
 
-"Humidity" = "Humidity";
-"High" = "High";
-"Low" = "Low";
+"Humidity" = "湿度";
+"High" = "高";
+"Low" = "低";
 
-"Setting" = "Setting";
-"TIME" = "TIME";
-"DATE" = "DATE";
-"WEATHER" = "WEATHER";
-"The time with seconds" = "The time with seconds";
-"Flash the time separators" = "Flash the time separators";
-"Use a 24-hour clock" = "Use a 24-hour clock";
-"Show AM/PM" = "Show AM/PM";
-"Show the day of the week" = "Show the day of the week";
-"Show date" = "Show date";
-"Show Weather" = "Show Weather";
+"TIME" = "时间";
+"Date" = "日期";
+"WEATHER" = "天气";
+"The time with seconds" = "显示秒";
+"Flash the time separators" = "闪烁时间分隔符";
+"Use a 24-hour clock" = "使用24小时制";
+"Show AM/PM" = "显示AM/PM";
+"Show the day of the week" = "显示一周的天";
+"Show date" = "显示日期";
+"Show Weather" = "显示天气";
 
-"Weather" = "Weather";
+"Weather" = "天气";
 
-"%@, Rate = %0.4f" = "%@, Rate = %0.4f";
-"Each history keeps max 4 currencies." = "Each history keeps max 4 currencies.";
+"%@, Rate = %0.4f" = "%@, 比率 = %0.4f";
+"Each history keeps max 4 currencies." = "每个历史保持最大4货币。";
 
-"%@ to %@ = %.4f" = "%@ to %@ = %.4f";
-"Auto Update" = "Auto Update";
-"Show National Flag" = "Show National Flag";
-"Use Cellular Data" = "Use Cellular Data";
-"Swap" = "Swap";
-"Chart" = "Chart";
-"Share" = "Share";
-"Delete" = "Delete";
+"%@ to %@ = %.4f" = "%@ / %@ = %.4f";
+"Auto Update" = "汇率自动更新";
+"Show National Flag" = "展示国旗";
+"Use Cellular Data" = "使用手机网络数据";
+"Swap" = "交换";
+"Chart" = "图表";
+"Share" = "共享";
+"Delete" = "删除";
 
-"Updating" = "Updating";
-"Updated %@" = "Updated %@";
-"%@Rate = %0.4f" = "%@Rate = %0.4f";
-"Rate = %0.4f" = "Rate = %0.4f";
+"Updating" = "更新";
+"Updated %@" = "已更新 %@";
+"%@Rate = %0.4f" = "%@比率 = %0.4f";
+"Rate = %0.4f" = "比率 = %0.4f";
 
-"%@ equals %@ with rate %0.4f" = "%@ equals %@ with rate %0.4f";
-"Currency Converter in the AppBox Pro" = "Currency Converter in the AppBox Pro";
+"%@ equals %@ with rate %0.4f" = "%@等于%@与速率%0.4f";
+"Currency Converter in the AppBox Pro" = "币种转换器，在AppBox Pro";
 "share_currencyConverter_head" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
 "share_unitConverter_head" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
 "share_Lunar_head" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
@@ -166,31 +169,31 @@
 "Year" = "Year";
 "Month" = "Month";
 "Week" = "Week";
-"Day" = "Day";
-"Duration" = "Duration";
-"Edit Event" = "Edit Event";
-"ADVANCED" = "ADVANCED";
+"Day" = "星期";
+"Duration" = "期间";
+"Edit Event" = "纪念日修改";
+"ADVANCED" = "高级";
 
-"Saturday" = "Saturday";
-"Sunday" = "Sunday";
+"Saturday" = "星期六";
+"Sunday" = "星期天";
 
-"%ldy" = "%ldy";
-"%ldm" = "%ldm";
-"%ldw" = "%ldw";
-"%ldd" = "%ldd";
+"%ldy" = "%ld年";
+"%ldm" = "%ld月";
+"%ldw" = "%ld周";
+"%ldd" = "%ld日";
 
-"0 day" = "0 day";
+"0 day" = "0日";
 
 "To show results, need one option." = "To show results, need one option.";
-"Years" = "Years";
-"Months" = "Months";
-"Weeks" = "Weeks";
-"Days" = "Days";
-"Weekends" = "Weekends";
-"Sat" = "Sat";
-"Sun" = "Sun";
-"Public Holidays" = "Public Holidays";
-"Today  " = "Today  ";
+"Years" = "年";
+"Months" = "月";
+"Weeks" = "周";
+"Days" = "日";
+"Weekends" = "周末";
+"Sat" = "星期六";
+"Sun" = "星期天";
+"Public Holidays" = "公众假期";
+"Today  " = "今天  ";
 
 "Date Calculator using AppBox Pro" = "Date Calculator using AppBox Pro";
 "<html><body>I'd like to share a calculation with you.<br/><br/>" = "<html><body>I'd like to share a calculation with you.<br/><br/>";
@@ -206,8 +209,8 @@
 "Subtract: %@<br>" = "Subtract: %@<br>";
 "Between two dates" = "Between two dates";
 "Add or Subtract days" = "Add or Subtract days";
-"From" = "From";
-"To" = "To";
+"From" = "特定日 A";
+"To" = "特定日 B";
 "Exclude" = "Exclude";
 
 "%ld of %ld" = "%ld of %ld";
@@ -217,7 +220,7 @@
 "Slideshow Options" = "Slideshow Options";
 "Transitions" = "Transitions";
 "Play Each Slide For" = "Play Each Slide For";
-"Repeat" = "Repeat";
+"Repeat" = "反复";
 "Shuffle" = "Shuffle";
 "Start Slideshow" = "Start Slideshow";
 "There is no events." = "There is no events.";
@@ -231,23 +234,23 @@
 "Delete Calendar" = "Delete Calendar";
 "Untitled" = "Untitled";
 
-"Add Event" = "Add Event";
-"Title" = "Title";
-"Photo" = "Photo";
-"Lunar" = "Lunar";
+"Add Event" = "纪念日添加";
+"Title" = "题目";
+"Photo" = "照片";
+"Lunar" = "阴历";
 "Starts-Ends" = "Starts-Ends";
-"Starts" = "Starts";
-"All-day" = "All-day";
+"Starts" = "开始日";
+"All-day" = "一整天";
 
 "Leap Month" = "Leap Month";
-"Ends" = "Ends";
+"Ends" = "结束日";
 "End Repeat" = "End Repeat";
 "Alert" = "Alert";
-"Calendar" = "Calendar";
+"Calendar" = "日历";
 "Duration Option" = "Duration Option";
 "Location" = "Location";
 "Delete Event" = "Delete Event";
-"Date" = "Date";
+"Date" = "日期";
 "Delete Location" = "Delete Location";
 "Use My Location" = "Use My Location";
 "Search Location" = "Search Location";
@@ -262,21 +265,21 @@
 "EVENTS" = "EVENTS";
 "EVENT" = "EVENT";
 
-"today" = "today";
+"today" = "今天";
 "Now" = "Now";
 
 "Edit Calendars" = "Edit Calendars";
 
 "Move these events to a new calendar." = "Move these events to a new calendar.";
 "Please select calendar." = "Please select calendar.";
-"Phone" = "Phone";
+"Phone" = "电话号码";
 "Address" = "Address";
 "Event Details" = "Event Details";
 
 "Share Event" = "Share Event";
 "No location" = "No location";
 "Remove from Favorites" = "Remove from Favorites";
-"Add to Favorites" = "Add to Favorites";
+"Add to Favorites" = "添加到收藏夹";
 "from %@" = "from %@";
 "to %@" = "to %@";
 "repeats %@" = "repeats %@";
@@ -303,12 +306,12 @@
 "Holiday" = "Holiday";
 "Work" = "Work";
 
-"Never" = "Never";
-"Every Day" = "Every Day";
-"Every Week" = "Every Week";
+"Never" = "单次播放";
+"Every Day" = "每天";
+"Every Week" = "每周";
 "Every 2Week" = "Every 2Week";
-"Every Month" = "Every Month";
-"Every Year" = "Every Year";
+"Every Month" = "每月";
+"Every Year" = "每年";
 "Daily" = "Daily";
 "Weekly" = "Weekly";
 "Bi-Weekly" = "Bi-weekly";
@@ -319,9 +322,9 @@
 "5 minutes before" = "5 minutes before";
 "15 minutes before" = "15 minutes before";
 "30 minutes before" = "30 minutes before";
-"1 hour before" = "1 hour before";
+"1 hour before" = "一小时前";
 "2 hours before" = "2 hours before";
-"1 day before" = "1 day before";
+"1 day before" = "一天前";
 "2 days before" = "2 days before";
 "1 week before" = "1 week before";
 
@@ -330,7 +333,7 @@
 "DaysCounterDuration_week_abbreviation" = "w";
 "DaysCounterDuration_day_abbreviation" = "d";
 "DaysCounterDuration_hour_abbreviation" = "hr";
-"Hours" = "Hours";
+"Hours" = "时间";
 "DaysCounterDuration_minute_abbreviation" = "min";
 "Minutes" = "Minutes";
 
@@ -346,7 +349,7 @@
 "Ripple" = "Ripple";
 "Wipe" = "Wipe";
 
-" Today " = " Today ";
+" Today " = " 今天 ";
 " Now " = " Now ";
 "Days\nUntil" = "Days\nUntil";
 "Days\nSince" = "Days\nSince";
@@ -360,10 +363,10 @@
 "Current Location" = "Current Location";
 "Searching" = "Searching";
 "No Results Found" = "No Results Found";
-"Custom" = "Custom";
+"Custom" = "日期提醒";
 "day(s) before" = "day(s) before";
-"Please enter your dates in the future." = "Please enter your dates in the future.";
-"Time" = "Time";
+"Please enter your dates in the future." = "请输入您在未来的日期。";
+"Time" = "时间";
 "Duration Options" = "Duration Options";
 
 "2 years" = "2 years";
@@ -385,7 +388,7 @@
 
 "현재 위치에 대한 정보를 가져올 수 없습니다." = "현재 위치에 대한 정보를 가져올 수 없습니다.";
 
-"Every 2 Weeks" = "Every 2 Weeks";
+"Every 2 Weeks" = "隔周";
 "Undo" = "Undo";
 "Redo" = "Redo";
 "Prev" = "Prev";
@@ -423,7 +426,7 @@
 " over of " = " over of ";
 " left of " = " left of ";
 
-"Done" = "Done";
+"Done" = "完成";
 "Add Holidays to \"Days Conter\" app" = "Add Holidays to \"Days Conter\" app";
 
 /* Public Holiday */
@@ -439,31 +442,31 @@
 "Past %ld" = "Past %ld";
 "Holidays for year %lu is not available." = "Holidays for year %lu is not available.";
 "Discalimer" = "Discalimer";
-"I Agree" = "I Agree";
+"I Agree" = "同意";
 "on flickr" = "on flickr";
 " by %@" = " by %@";
 
-"Edit" = "Edit";
+"Edit" = "编辑";
 "Average" = "Average";
 "Avg." = "Avg.";
 "Edit Accounts" = "Edit Accounts";
 "Edit Account" = "Edit Account";
 "Add Account" = "Add Account";
-"Name" = "Name";
+"Name" = "姓名";
 "Delete Account" = "Delete Account";
 "Optional" = "Optional";
 "Cannot remove current account." = "Cannot remove current account.";
 " Same name already exists. " = " Same name already exists. ";
 "User%02ld" = "User%02ld";
 
-"Edit Period" = "Edit Period";
-"Add Period" = "Add Period";
-"End Date" = "End Date";
-"Cycle Length" = "Cycle Length";
+"Edit Period" = "周期编辑";
+"Add Period" = "周期输入";
+"End Date" = "结束日期";
+"Cycle Length" = "生理周期";
 "Delete Period" = "Delete Period";
 "Please input end date." = "Please input end date.";
 "Cannot Save Period.\nThe start date must be before the end date." = "Cannot Save Period.\nThe start date must be before the end date.";
-"The new date you entered overlaps with previous dates." = "The new date you entered overlaps with previous dates.";
+"The new date you entered overlaps with previous dates." = "新周期和以前周期相重复。";
 "6 Mos" = "6 Mos";
 "6 Months" = "6 Months";
 "9 Mos" = "9 Mos";
@@ -473,9 +476,9 @@
 "CYCLE LENGTH" = "CYCLE LENGTH";
 "MENSTRUAL PERIOD" = "MENSTRUAL PERIOD";
 "Expected Period(+/-2 days)" = "Expected Period(+/-2 days)";
-"Increased Probability of Pregnancy" = "Increased Probability of Pregnancy";
-"Ovulation - Highest Probability" = "Ovulation - Highest Probability";
-"Menstrual Period" = "Menstrual Period";
+"Increased Probability of Pregnancy" = "易于怀孕日";
+"Ovulation - Highest Probability" = "排卵日-可能怀孕日中概率最大的一天";
+"Menstrual Period" = "月经期";
 "Periods" = "Periods";
 "On day(9 AM)" = "On day(9 AM)";
 "1 day before(9 AM)" = "1 day before(9 AM)";
@@ -497,9 +500,9 @@
 "Monthly %@" = "Monthly %@";
 
 "Down Payment" = "Down Payment";
-"Payment" = "Payment";
+"Payment" = "偿还金额";
 "Term(years)" = "Term(years)";
-"Term(months)" = "Term(months)";
+"Term(months)" = "期间（个月）";
 "Biweekly" = "Biweekly";
 "LoanCalc_Monthly" = "Monthly";
 "Bimonthly" = "Bimonthly";
@@ -519,13 +522,13 @@
 "PRINCIPAL" = "PRINCIPAL";
 "INTEREST" = "INTEREST";
 "BALANCE" = "BALANCE";
-"Total Interest" = "Total Interest";
+"Total Interest" = "总利息";
 "Avg.Interest" = "Avg.Interest";
-"Total Amount" = "Total Amount";
+"Total Amount" = "总偿还金额";
 "Average Interest" = "Average Interest";
 "Amounts" = "Amounts";
-"Loan" = "Loan";
-"Comparison" = "Comparison";
+"Loan" = "贷款计算";
+"Comparison" = "贷款条件比较";
 " of " = " of ";
 
 "0 %@ %ld mo" = "0 %@ %ld mo";
@@ -546,8 +549,8 @@
 
 "0 year" = "0 year";
 
-"Loan A" = "Loan A";
-"Loan B" = "Loan B";
+"Loan A" = "贷款A";
+"Loan B" = "贷款B";
 "EXTRA PAYMENTS" = "EXTRA PAYMENTS";
 "years or months" = "years or months";
 " Data" = " Data";
@@ -600,9 +603,9 @@
 "% Change from X to Y" = "% Change from X to Y";
 "Compare % Change from X to Y" = "Compare % Change from X to Y";
 
-"Sale Price" = "Sale Price";
+"Sale Price" = "折扣价格计算";
 "Sale Price Tax" = "Sale Price Tax";
-"Original Price" = "Original Price";
+"Original Price" = "销售价";
 "Original Price Tax" = "Original Price Tax";
 "Saved Amount" = "Saved Amount";
 "Saved Amount Tax" = "Saved Amount Tax";
@@ -615,20 +618,20 @@
 "Sale Price w/Tax" = "Sale Price w/Tax";
 "Discount" = "Discount";
 "Additional Off" = "Additional Off";
-"Tax" = "Tax";
+"Tax" = "税金";
 
 "KNOWN VALUE" = "KNOWN VALUE";
 
-"Total" = "Total";
-"Tip" = "Tip";
+"Total" = "总额";
+"Tip" = "小费";
 
 "Total Per Person" = "Total Per Person";
 "Tip Per Person" = "Tip Per Person";
 "Input" = "Input";
-"Amount" = "Amount";
+"Amount" = "本金";
 "Amount After Tax" = "Amount After Tax";
 "Amount Before Tax" = "Amount Before Tax";
-"Split" = "Split";
+"Split" = "同行人员数";
 
 "Before Split" = "Before Split";
 "Per Person" = "Per Person";
@@ -642,15 +645,15 @@
 "Cost" = "Cost";
 "Value" = "Value";
 "Methods" = "Methods";
-"Exact" = "Exact";
-"Up" = "Up";
-"Down" = "Down";
+"Exact" = "无";
+"Up" = "上舍入";
+"Down" = "下舍入";
 
 "tipcalc_share_body" = "<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 
 "Tip Calculator using AppBox Pro" = "Tip Calculator using AppBox Pro";
 
-"Rounding" =  Rounding;
+"Rounding" = "四舍五入";
 "Select Language" = "Select Language";
 "%@ to %@" = "%@ to %@";
 "Detect Language" = "Detect Language";
@@ -661,7 +664,7 @@
 "From: " = "From: ";
 "To: " = "To: ";
 "Please change \"From\" or \"To\" language." = "Please change \"From\" or \"To\" language.";
-"Translate" = "Translate";
+"Translate" = "翻译";
 
 "All Units" = "All Units";
 "%@ Units" = "%@ Units";
@@ -682,10 +685,10 @@
 "Units on the bar" = "Units on the bar";
 "Units in more" = "Units in more";
 
-"Price A" = "Price A";
-"Price B" = "Price B";
-"Price" = "Price";
-"Unit" = "Unit";
+"Price A" = "价格 A";
+"Price B" = "价格 B";
+"Price" = "价格";
+"Unit" = "单位";
 "Size" = "Size";
 "Quantity" = "Quantity";
 "Discount" = "Discountpo";
@@ -696,38 +699,38 @@
 
 "Area" = "Area";
 "Length" = "Length";
-"Volume" = "Volume";
+"Volume" = "音量";
 "Weight" = "Weight";
 
-"Field Type" = "Field Type";
+"Field Type" = "醒目形式";
 "All Items" = "All Items";
 "CATEGORIES" = "CATEGORIES";
 "CATEGORY" = "CATEGORY";
 "ITEMS" = "ITEMS";
 "UPDATED" = "UPDATED";
-"Add Category" = "Add Category";
-"Edit Category" = "Edit Category";
+"Add Category" = "种类添加";
+"Edit Category" = "种类编辑";
 "Enter catergory name" = "Enter catergory name";
 "Category Name" = "Category Name";
 "add new field" = "add new field";
-"Delete Category" = "Delete Category";
+"Delete Category" = "种类删除";
 
 "Category Info" = "Category Info";
 "Delete Items" = "Delete Items";
 
-"Video" = "Video";
+"Video" = "影像播放";
 "<html><body>I'd like to share a wallet with you.<br/><br/>" = "<html><body>I'd like to share a wallet with you.<br/><br/>";
 "wallet_share_html_body" = "<br/><br/>You can wallet more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Add Field" = "Add Field";
-"Edit Field" = "Edit Field";
+"Edit Field" = "项目编辑";
 " Field name already exists. " = " Field name already exists. ";
-"Field Name" = "Field Name";
+"Field Name" = "项目名称";
 "Type" = "Type";
-"Style" = "Style";
-"Field Style" = "Field Style";
+"Style" = "表示方法";
+"Field Style" = "项目表示方法";
 "Edit Image" = "Edit Image";
-"Add Item" = "Add Item";
-"Edit Item" = "Edit Item";
+"Add Item" = "添加信息";
+"Edit Item" = "信息编辑";
 "Note" = "Note";
 "Delete Video" = "Delete Video";
 "Take Video" = "Take Video";
@@ -740,21 +743,21 @@
 "Duration Time %lds" = "Duration Time %lds";
 "1 Passcode Failed Attempt" = "1 Passcode Failed Attempt";
 "Enter your old passcode" = "Enter your old passcode";
-"Enter your passcode" = "Enter your passcode";
-"Passcode" = "Passcode";
-"Set Passcode" = "Set Passcode";
-"Change Passcode" = "Change Passcode";
+"Enter your passcode" = "输入密码输入密码";
+"Passcode" = "密码";
+"Set Passcode" = "设置密码";
+"Change Passcode" = "更改密码";
 "Turn Off Passcode" = "Turn Off Passcode";
-"Re-enter your passcode" = "Re-enter your passcode";
+"Re-enter your passcode" = "密码再输入";
 "Re-enter your new passcode" = "Re-enter your new passcode";
-"Enter your new passcode" = "Enter your new passcode";
+"Enter your new passcode" = "输入您的新密码";
 "Passcodes did not match. Try again." = "Passcodes did not match. Try again.";
 "%i Passcode Failed Attempts" = "%i Passcode Failed Attempts";
-"Enter Passcode" = "Enter Passcode";
-"New Passcode" = "New Passcode";
+"Enter Passcode" = "输入密码";
+"New Passcode" = "新密码";
 "Confirm Passcode" = "Confirm Passcode";
-"Hint" = "Hint";
-"Old Passcode" = "Old Passcode";
+"Hint" = "提示";
+"Old Passcode" = "旧密码";
 "%li Passcode Failed Attempts" = "%li Passcode Failed Attempts";
 "Please enter new passcode." = "Please enter new passcode.";
 "Please enter confirm passcode." = "Please enter confirm passcode.";
@@ -762,12 +765,12 @@
 "Please enter passcode." = "Please enter passcode.";
 "Open in Safari" = "Open in Safari";
 
-"Today" = "Today";
+"Today" = "今天";
 
-"A friend has recommended AppBox Pro™ from the iTunes App Store" = "A friend has recommended AppBox Pro™ from the iTunes App Store";
-"AppBox Pro™ V%@ Contact Support" = "AppBox Pro™ V%@ Contact Support";
-"Close" = "Close";
-"Continue" = "Continue";
+"A friend has recommended AppBox Pro™ from the iTunes App Store" = "AppBox Pro™ 推荐使用。为了";
+"AppBox Pro™ V%@ Contact Support" = "AppBox Pro™ V%@ 客户支持";
+"Close" = "关闭";
+"Continue" = "继续";
 "Compressing" = "Compressing";
 
 "Uploading" = "Uploading";
@@ -782,27 +785,23 @@
 "Your data has been restored successfully." = "Your data has been restored successfully.";
 "Downloading" = "Downloading";
 "Are you going to replace existing data with the backup data?" = "Are you going to replace existing data with the backup data?";
-"Replace" = "Replace";
+"Replace" = "替代";
 "Deleting" = "Deleting";
 "Unable to delete selected file. Please try it again." = "Unable to delete selected file. Please try it again.";
 
-"Turn Passcode Off" = "Turn Passcode Off";
-"Turn Passcode On" = "Turn Passcode On";
+"Turn Passcode Off" = "解除密码";
+"Turn Passcode On" = "设定密码";
 "How To Enable Data Protection" = "How To Enable Data Protection";
 "Clear Recent" = "Clear Recent";
 "Recent" = "Recent";
-"Information" = "Information";
+"Information" = "信息";
 "Move and Scale" = "Move and Scale";
-
-"Korean New Year's Day(Seollal)" = "Korean New Year's Day(Seollal)";
-
-"To see instrustion again, double-tap with two fingers." = "To see instrustion again, double-tap with two fingers.";
 
 "CALCULATION" = "CALCULATION";
 
 "DoneButton" = "Return";
 
-"Off" = "Off";
+"Off" = "四舍五入";
 
 "Passcode_Off" = "Off";
 
@@ -815,7 +814,7 @@
 
 "LoanCalc_Start Date" = "Start Date";
 
-"Immediately" = "Immediately";
+"Immediately" = "立即";
 
 "Learn about iOS Security" = "Learn about iOS Security";
 
@@ -870,9 +869,9 @@
 
 "Talk Time on 2G" = "Talk Time on 2G";
 "Talk Time on 3G" = "Talk Time on 3G";
-"Internet on 3G" = "Internet on 3G";
+"Internet on 3G" = "互联网 3G";
 "Internet on LTE" = "Internet on LTE";
-"Internet on Wi-Fi" = "Internet on Wi-Fi";
+"Internet on Wi-Fi" = "互联网 Wi-Fi";
 "Internet on Cellular" = "Internet on Cellular";
 "Video playback" = "Video playback";
 "Audio playback" = "Audio playback";
@@ -884,21 +883,24 @@
 "3D Game" = "3D Game";
 "YouTube" = "YouTube";
 
-"None_Mirror" = "None_Mirror";
+"None_Mirror" = "None";
 
-"CALENDARS" = "CALENDARS";
+"CALENDARS" = "日历";
 
 "Encryption Key for Wallet" = "Encryption Key for Wallet";
 "V1_Notice_for_Photo_Quality" = "Please know that the quality of photos saved in the Days Until with the previous version of the AppBox Pro may not good enough to use with the current version. We recommend you to re-add photos to your events.";
 "Notice" = "Notice";
-
 
 "LoanCalc_DATE" = "LoanCalc_DATE";
 
 "%/yr" = "%/yr";
 "%/mo" = "%/mo";
 
-
 "Icon" = "Icon";
 
 "  (e.g. %@)" = "  (e.g. %@)";
+
+
+"DATE" = "DATE";
+
+"DaysCounter_ALL" = "All";

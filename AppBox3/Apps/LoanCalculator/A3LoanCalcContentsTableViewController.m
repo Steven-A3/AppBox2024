@@ -317,7 +317,7 @@
         graphCell.lowLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     });
 
-    NSString *interestText = _totalMode ? NSLocalizedString(@"Interest", @"Interest") : (IS_IPAD ? NSLocalizedString(@"Average Interest", @"Average Interest") : NSLocalizedString(@"Avg.Interest", @"Avg.Interest"));
+    NSString *interestText = _totalMode ? NSLocalizedString(@"Total Interest", @"Interest") : (IS_IPAD ? NSLocalizedString(@"Average Interest", @"Average Interest") : NSLocalizedString(@"Avg.Interest", @"Avg.Interest"));
     NSString *paymentText = _totalMode ? NSLocalizedString(@"Total Amount", @"Total Amount") : NSLocalizedString(@"Payment", @"Payment");
 
     NSDictionary *textAttributes1 = @{
