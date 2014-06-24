@@ -153,6 +153,7 @@
 }
 
 - (void)rightSideViewWillDismiss {
+    self.navigationItem.title = [[self.dataManager currentAccount] name];
 	[self enableControls:YES];
 	[self setupCalendarRange];
 	[self.collectionView reloadData];
