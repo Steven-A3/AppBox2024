@@ -554,7 +554,6 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
     else if (_fieldItems[indexPath.row] == self.categoryItem) {
         
         A3WalletItemFieldCell *textCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCellID forIndexPath:indexPath];
-        
         textCell.selectionStyle = UITableViewCellSelectionStyleNone;
         [self configureFloatingTextField:textCell.valueTextField];
         
@@ -573,9 +572,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
             
             photoCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			[self configureFloatingTextField:photoCell.valueTextField];
-            
             photoCell.valueTextField.placeholder = fieldItem.field.name;
-
 			photoCell.valueTextField.text = @" ";
 			photoCell.photoButton.hidden = NO;
 
@@ -624,6 +621,9 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
             
             // 텍스트 액션 여부 확인
             BOOL hasTextAction = [self detectDataText:fieldItem.value];
+            if ([fieldItem.field.type isEqualToString:WalletFieldTypePhone]) {
+                hasTextAction = YES;
+            }
             
             if (hasTextAction) {
                 A3WalletItemFieldActionCell *actionCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldActionCellID forIndexPath:indexPath];
@@ -667,7 +667,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
                         actionCell.rightBtn2.hidden = YES;
                     }
                 }
-                else if (result.resultType == NSTextCheckingTypePhoneNumber) {
+                else if (result.resultType == NSTextCheckingTypePhoneNumber || [fieldItem.field.type isEqualToString:WalletFieldTypePhone]) {
                     actionCell.rightBtn1.hidden = ![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel:"]];
                     actionCell.rightBtn2.hidden = NO;
                     [actionCell.rightBtn1 setImage:[UIImage imageNamed:@"call"] forState:UIControlStateNormal];

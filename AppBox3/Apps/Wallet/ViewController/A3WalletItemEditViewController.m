@@ -1562,6 +1562,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemNoteCellID4 forIndexPath:indexPath];
 	[noteCell setupTextView];
 	noteCell.textView.text = _item.note;
+    noteCell.textView.delegate = self;
 
 	return noteCell;
 }

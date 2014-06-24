@@ -53,7 +53,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 
 	if (_isEditing) {
 		[self leftBarButtonAddButton];
-//		[self rightBarButtonDoneButton];
+        
         UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonAction:)];
         UIBarButtonItem *help = [self instructionHelpBarButton];
         self.navigationItem.rightBarButtonItems = @[done, help];
@@ -69,6 +69,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	self.tableView.allowsSelectionDuringEditing = YES;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:[MagicalRecordStack defaultStack].context];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryAddedNotification:) name:A3WalletNotificationCategoryAdded object:nil];
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
@@ -163,6 +164,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 	[self.mainTabBarController setupTabBar];
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -252,6 +254,13 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	}
 
 	return _sections;
+}
+
+- (void)didReceiveCategoryAddedNotification:(NSNotification *)notification
+{
+	_categories = nil;
+	_sections = nil;
+	[self.tableView reloadData];
 }
 
 #pragma mark - Table view data source

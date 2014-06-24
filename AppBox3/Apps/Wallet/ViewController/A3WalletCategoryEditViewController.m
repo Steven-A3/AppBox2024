@@ -64,6 +64,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 	if (_isAddingCategory) {
 		self.navigationItem.title = NSLocalizedString(@"Add Category", @"Add Category");
 		_category = [WalletCategory MR_createEntity];
+        _category.uniqueID = [[NSUUID UUID] UUIDString];
 		[_category initValues];
 		[_category assignOrder];
 		_category.icon = [WalletCategory iconList][0];
@@ -189,7 +190,8 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 
 	if (_isAddingCategory) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryAdded object:nil];
-	} else {
+	}
+    else {
 		[self.navigationController popToRootViewControllerAnimated:NO];
 
 		NSNotification *notification = [[NSNotification alloc] initWithName:A3WalletNotificationCategoryChanged
