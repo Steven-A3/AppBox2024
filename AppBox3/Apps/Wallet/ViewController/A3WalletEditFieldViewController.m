@@ -193,7 +193,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 
 #pragma mark - WalletFieldTypeSelectDelegate
 
-- (void)walletFieldTypeSelected:(NSString *)fieldType
+- (void)walletFieldSelectedFieldType:(NSString *)fieldType
 {
     if (fieldType) {
         _field.type = fieldType;

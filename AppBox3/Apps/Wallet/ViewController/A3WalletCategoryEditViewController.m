@@ -34,7 +34,6 @@
 @property (nonatomic, strong) UIViewController *rightSideViewController;
 @property (nonatomic, weak) UITextField *titleTextField;
 @property (nonatomic, strong) MBProgressHUD *alertHUD;
-@property (nonatomic, strong) A3WalletEditFieldViewController *editFieldViewController;
 
 @end
 
@@ -245,23 +244,16 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     return viewController;
 }
 
-- (A3WalletEditFieldViewController *)editFieldViewController {
-	if (!_editFieldViewController) {
-		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
-		_editFieldViewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletEditFieldViewController"];
-		_editFieldViewController.delegate = self;
-
-	}
-	return _editFieldViewController;
-}
-
 - (UIViewController *)editFieldViewController:(NSInteger)index
 {
     WalletField *field = _fields[index];
 
-	self.editFieldViewController.field = field;
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
+    A3WalletEditFieldViewController *editFieldViewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletEditFieldViewController"];
+    editFieldViewController.delegate = self;
+	editFieldViewController.field = field;
 
-    return _editFieldViewController;
+    return editFieldViewController;
 }
 
 - (void)addWalletField
@@ -270,10 +262,13 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 	[self.toAddField initValues];
     _toAddField.category = self.category;
 
-    self.editFieldViewController.isAddMode = YES;
-    _editFieldViewController.field = _toAddField;
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
+    A3WalletEditFieldViewController *editFieldViewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletEditFieldViewController"];
+    editFieldViewController.delegate = self;
+    editFieldViewController.isAddMode = YES;
+	editFieldViewController.field = _toAddField;
 
-    [self presentSubViewController:_editFieldViewController];
+    [self presentSubViewController:editFieldViewController];
 }
 
 - (void)presentSubViewController:(UIViewController *)viewController {
@@ -314,7 +309,6 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 - (void)walletFieldAdded:(WalletField *)field
 {
     if (_toAddField == field) {
-        
         NSUInteger index = [_fields indexOfObject:self.plusItem];
         [self.fields insertObjectToSortedArray:field atIndex:index];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];

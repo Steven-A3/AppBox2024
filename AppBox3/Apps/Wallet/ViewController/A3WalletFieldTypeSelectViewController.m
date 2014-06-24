@@ -81,9 +81,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *type = _fieldTypes[indexPath.row][WalletFieldNativeType];
-    
-    if (_delegate && [_delegate respondsToSelector:@selector(walletFieldTypeSelected:)]) {
-        [_delegate walletFieldTypeSelected:type];
+
+    if (_delegate && [_delegate respondsToSelector:@selector(walletFieldSelectedFieldType:)]) {
+        [_delegate walletFieldSelectedFieldType:type];
     }
     
     [self.navigationController popViewControllerAnimated:YES];
@@ -115,7 +115,7 @@
     // Configure the cell...
     NSDictionary *fieldType = _fieldTypes[indexPath.row];
     cell.textLabel.text = NSLocalizedString(fieldType[WalletFieldTypeID], nil);
-    if ([fieldType[WalletFieldTypeID] isEqualToString:_selectedType]) {
+    if ([fieldType[WalletFieldNativeType] isEqualToString:_selectedType]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;

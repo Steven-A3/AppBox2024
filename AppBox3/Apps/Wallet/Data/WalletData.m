@@ -36,13 +36,13 @@ NSString *const WalletFieldTypeID			= @"Name";
 + (NSArray *)typeList
 {
     return @[@{WalletFieldTypeID : WalletFieldTypeText, WalletFieldNativeType : WalletFieldNativeTypeText},
-             @{WalletFieldTypeID : WalletFieldTypeNumber, WalletFieldNativeType : WalletFieldNativeTypeText},
-             @{WalletFieldTypeID : WalletFieldTypePhone, WalletFieldNativeType : WalletFieldNativeTypeText},
-             @{WalletFieldTypeID : WalletFieldTypeURL, WalletFieldNativeType : WalletFieldNativeTypeText},
-             @{WalletFieldTypeID : WalletFieldTypeEmail, WalletFieldNativeType : WalletFieldNativeTypeText},
-             @{WalletFieldTypeID : WalletFieldTypeDate, WalletFieldNativeType : WalletFieldNativeTypeText},
-             @{WalletFieldTypeID : WalletFieldTypeImage, WalletFieldNativeType : WalletFieldNativeTypeImage},
-             @{WalletFieldTypeID : WalletFieldTypeVideo, WalletFieldNativeType : WalletFieldNativeTypeVideo}];
+             @{WalletFieldTypeID : WalletFieldTypeNumber, WalletFieldNativeType : WalletFieldTypeNumber},
+             @{WalletFieldTypeID : WalletFieldTypePhone, WalletFieldNativeType : WalletFieldTypePhone},
+             @{WalletFieldTypeID : WalletFieldTypeURL, WalletFieldNativeType : WalletFieldTypeURL},
+             @{WalletFieldTypeID : WalletFieldTypeEmail, WalletFieldNativeType : WalletFieldTypeEmail},
+             @{WalletFieldTypeID : WalletFieldTypeDate, WalletFieldNativeType : WalletFieldTypeDate},
+             @{WalletFieldTypeID : WalletFieldTypeImage, WalletFieldNativeType : WalletFieldTypeImage},
+             @{WalletFieldTypeID : WalletFieldTypeVideo, WalletFieldNativeType : WalletFieldTypeVideo}];
 }
 
 + (NSDictionary *)styleList

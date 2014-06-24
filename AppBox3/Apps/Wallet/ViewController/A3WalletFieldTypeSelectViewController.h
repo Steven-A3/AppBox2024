@@ -11,8 +11,7 @@
 @protocol WalletFieldTypeSelectDelegate <NSObject>
 
 @required
-- (void)walletFieldTypeSelected:(NSString *)fieldType;
-
+- (void)walletFieldSelectedFieldType:(NSString *)fieldType;
 @end
 
 @interface A3WalletFieldTypeSelectViewController : UITableViewController
