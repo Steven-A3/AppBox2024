@@ -115,7 +115,7 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 }
 
 - (NSURL *)videoFileURLInOriginal:(BOOL)inOriginal {
-	NSString *filename = [NSString stringWithFormat:@"%@-video", self.uniqueID];
+	NSString *filename = [NSString stringWithFormat:@"%@-video.%@", self.uniqueID, self.video.extension];
 	if (inOriginal) {
 		NSURL *baseURL = [[self baseURL] URLByAppendingPathComponent:A3WalletVideoDirectory];
 		return [baseURL URLByAppendingPathComponent:filename];
