@@ -227,7 +227,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 	changed = [changed stringByTrimmingSpaceCharacters];
 
 	if (![_originalFieldName isEqualToString:changed]) {
-		if ([changed length]) {
+		if ([changed length] && _field.category.uniqueID) {
 			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name == %@ AND category.uniqueID == %@", changed, _field.category.uniqueID];
 			_sameFieldNameExists = [[WalletField MR_findAllWithPredicate:predicate] count] > 0;
 		} else {
