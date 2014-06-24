@@ -123,7 +123,6 @@
 "High" = "High";
 "Low" = "Low";
 
-"Setting" = "Setting";
 "TIME" = "TIME";
 "DATE" = "DATE";
 "WEATHER" = "WEATHER";
@@ -794,10 +793,6 @@
 "Information" = "Information";
 "Move and Scale" = "Move and Scale";
 
-"Korean New Year's Day(Seollal)" = "Korean New Year's Day(Seollal)";
-
-"To see instrustion again, double-tap with two fingers." = "To see instrustion again, double-tap with two fingers.";
-
 "CALCULATION" = "CALCULATION";
 
 "DoneButton" = "Return";
@@ -884,7 +879,7 @@
 "3D Game" = "3D Game";
 "YouTube" = "YouTube";
 
-"None_Mirror" = "None_Mirror";
+"None_Mirror" = "None";
 
 "CALENDARS" = "CALENDARS";
 
@@ -902,3 +897,5 @@
 "Icon" = "Icon";
 
 "  (e.g. %@)" = "  (e.g. %@)";
+
+"DaysCounter_ALL" = "All";

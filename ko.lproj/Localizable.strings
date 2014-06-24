@@ -123,7 +123,6 @@
 "High" = "높음";
 "Low" = "낮음";
 
-"Setting" = "설정";
 "TIME" = "시간";
 "DATE" = "날짜";
 "WEATHER" = "날씨";
@@ -795,8 +794,6 @@
 "Information" = "정보";
 "Move and Scale" = "이동 및 크기 조정";
 
-"To see instrustion again, double-tap with two fingers." = "이 화면을 다시 보려면 화면을 두 손가락으로 두번 탭하세요.";
-
 "CALCULATION" = "계산";
 
 "DoneButton" = "닫기";
@@ -902,7 +899,8 @@
 "Video" = "동영상";
 "Password" = "비밀번호";
 
-
 "Icon" = "이미지";
 
 "  (e.g. %@)" = "  (예: %@)";
+
+"DaysCounter_ALL" = "모든 이벤트";

@@ -198,16 +198,19 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	}
 	[self setupGestureRecognizer];
 
-
-
-
 	lastimageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,47,47)];
 	[lastimageButton addTarget:_cameraRollButton.target action:_cameraRollButton.action forControlEvents:UIControlEventTouchUpInside];
 	lastimageButton.layer.cornerRadius = 23.5;
 	lastimageButton.layer.masksToBounds = YES;
 	[self.bottomBar.items[0] setCustomView:lastimageButton];
 	[self loadFirstPhoto];
-    [self setupInstructionView];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	if ([self isMovingToParentViewController]) {
+		[self setupInstructionView];
+	}
 }
 
 - (void)viewWillLayoutSubviews {

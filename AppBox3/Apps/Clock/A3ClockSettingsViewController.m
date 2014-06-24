@@ -48,7 +48,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 		[self rightBarButtonDoneButton];
 	}
     
-    self.title = NSLocalizedString(@"Setting", @"Setting");
+    self.title = NSLocalizedString(@"Settings", nil);
     
     _sections = @[
 			NSLocalizedString(@"TIME", @"TIME"),
