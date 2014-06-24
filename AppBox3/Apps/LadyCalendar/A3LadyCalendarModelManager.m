@@ -19,7 +19,7 @@
 
 // UserInfo have "changedMonth".
 NSString *const A3NotificationLadyCalendarPeriodDataChanged = @"A3NotificationLadyCalendarPeriodDataChanged";
-NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
+NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 @interface A3LadyCalendarModelManager ()
 

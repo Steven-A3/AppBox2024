@@ -284,7 +284,6 @@
             [tableView reloadRowsAtIndexPaths:@[prevIndexPath,indexPath] withRowAnimation:UITableViewRowAnimationNone];
         else
             [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-
     }
     else {
         NSDictionary *dict = [_itemArray objectAtIndex:indexPath.section];

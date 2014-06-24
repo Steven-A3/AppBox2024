@@ -261,7 +261,7 @@
 	} else {
 		month = indexPath.row + 1;
 	}
-	return [A3DateHelper dateFromYear:indexPath.section + _startYear month:month day:1 hour:12 minute:0 second:0];
+	return [A3DateHelper dateFromYear:(indexPath.section + _startYear) month:month day:1 hour:12 minute:0 second:0];
 }
 
 - (void)setupCalendarRange {
