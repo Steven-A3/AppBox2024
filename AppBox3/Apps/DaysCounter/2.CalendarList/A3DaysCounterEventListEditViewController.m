@@ -218,7 +218,7 @@
             
             for(NSInteger i=0; i < [_itemArray count]; i++){
                 DaysCounterEvent *item = [_itemArray objectAtIndex:i];
-                if( [[_checkStatusDict objectForKey:item.uniqueID] boolValue] ){
+                if( [[_checkStatusDict objectForKey:item.uniqueID] boolValue] ) {
                     [removeItems addObject:item];
                     [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
                 }
@@ -231,11 +231,12 @@
             removeItems = nil;
             [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
         }
+        
+        [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+        
         if( [self.itemArray count] < 1 ){
             [self cancelAction:nil];
         }
-        
-        [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     }
 }
 
