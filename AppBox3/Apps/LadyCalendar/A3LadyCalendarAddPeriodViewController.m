@@ -521,12 +521,18 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     [self closeDateInputCell];
+    self.firstResponder = textView;
+    
     return YES;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     _periodItem.notes = textView.text;
+    if (self.firstResponder == textView) {
+        [self.firstResponder resignFirstResponder];
+        self.firstResponder = nil;
+    }
 }
 
 #pragma mark - UITextFieldDelegate
@@ -540,6 +546,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    self.firstResponder = textField;
+
 	self.keyboardVC = [self simplePrevNextClearNumberKeyboard];
 	self.keyboardVC.delegate = self;
 	self.keyboardVC.textInputTarget = textField;
@@ -565,6 +573,11 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	if (![textField.text length]) {
 		textField.text = @"0";
 	}
+    
+    if (self.firstResponder == textField) {
+        [self.firstResponder resignFirstResponder];
+        self.firstResponder = nil;
+    }
 }
 
 #pragma mark - A3KeyboardDelegate
@@ -622,6 +635,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
     [self resignAllAction];
+    [self.firstResponder resignFirstResponder];
 
 	NSDateComponents *cycleLengthComponents = [NSDateComponents new];
 	cycleLengthComponents.day = [_periodItem.cycleLength integerValue] - 1;
