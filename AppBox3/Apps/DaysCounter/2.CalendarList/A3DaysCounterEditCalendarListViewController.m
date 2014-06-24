@@ -228,8 +228,10 @@
 #pragma mark - action method
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-    if ( IS_IPHONE )
+    if ( IS_IPHONE ) {
+        [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         [self dismissViewControllerAnimated:YES completion:nil];
+    }
     else {
         if ( self.modalVC ) {
             [self.modalVC dismissViewControllerAnimated:NO completion:^{
@@ -260,6 +262,10 @@
     item.isShow = @(!checkState);
     [_itemArray replaceObjectAtIndex:indexPath.row withObject:item];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
+    if (IS_IPAD) {
+        [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    }
 }
 
 - (void)addCalendarAction:(id)sender
