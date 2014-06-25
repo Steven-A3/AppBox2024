@@ -357,7 +357,7 @@
 
 "Create %@" = "Create %@";
 
-"Location information is not available." = "Localtion information is not available.";
+"Location information is not available." = "Location information is not available.";
 
 "Every 2 Weeks" = "Every 2 Weeks";
 "Undo" = "Undo";
@@ -841,7 +841,7 @@
 "Notice" = "Notice";
 
 
-"LoanCalc_DATE" = "LoanCalc_DATE";
+"LoanCalc_DATE" = "DATE";
 
 "%/yr" = "%/yr";
 "%/mo" = "%/mo";
@@ -881,3 +881,6 @@
 "You can translate more in the AppBox Pro." = "You can translate more in the AppBox Pro.";
 
 "Field name already exists." = "Field name already exists.";
+
+"Disclaimer" = "Disclaimer";
+"LadyCalendarDiscalimerMsg" = "The following predictions are based on the calendar method. They are not 100% accurate. There is no guarantee of success and should not be used solely as a tool for natural family planning.";

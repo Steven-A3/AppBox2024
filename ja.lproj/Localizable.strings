@@ -357,7 +357,7 @@
 
 "Create %@" = "Create %@";
 
-"Location information is not available." = "Localtion information is not available.";
+"Location information is not available." = "Location information is not available.";
 
 "Every 2 Weeks" = "Every 2 Weeks";
 "Undo" = "Undo";
@@ -841,7 +841,7 @@
 "Notice" = "Notice";
 
 
-"LoanCalc_DATE" = "LoanCalc_DATE";
+"LoanCalc_DATE" = "DATE";
 
 "%/yr" = "%/yr";
 "%/mo" = "%/mo";
@@ -881,3 +881,6 @@
 "You can translate more in the AppBox Pro." = "You can translate more in the AppBox Pro.";
 
 "Field name already exists." = "Field name already exists.";
+
+"Disclaimer" = "免責事項";
+"LadyCalendarDiscalimerMsg" = "ストレス及び性ホルモンの不均衡により生理予定日が変わることがあるため排卵日、妊娠可能日が実際とは異なることがあります。\r\nまた、生理周期が不規則な場合、結果値が合わないこともあるため、すべての女性に適合さないことがあります。\r\n避妊もしくは可妊のためには排卵日測定法と共に別の方法を一緒に使用してください。";

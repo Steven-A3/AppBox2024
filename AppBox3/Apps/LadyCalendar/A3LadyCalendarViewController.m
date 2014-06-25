@@ -105,6 +105,22 @@
     [self setupInstructionView];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	static NSString *const A3DisclaimerSigned = @"kDefaultPCalendarWarningMessageSigned";
+	if (![[NSUserDefaults standardUserDefaults] boolForKey:A3DisclaimerSigned]) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3DisclaimerSigned];
+
+		UIAlertView *disclaimer = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Disclaimer", @"Disclaimer")
+															 message:NSLocalizedString(@"LadyCalendarDiscalimerMsg", @"LadyCalendarDiscalimerMsg")
+															delegate:nil
+												   cancelButtonTitle:NSLocalizedString(@"I Agree", @"I Agree")
+												   otherButtonTitles:nil];
+		[disclaimer show];
+	}
+}
+
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationLadyCalendarPeriodDataChanged object:nil];
 	if (IS_IPAD) {

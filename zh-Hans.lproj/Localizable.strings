@@ -364,7 +364,7 @@ Since";
 
 "Create %@" = "Create %@";
 
-"Location information is not available." = "Localtion information is not available.";
+"Location information is not available." = "Location information is not available.";
 
 "Every 2 Weeks" = "隔周";
 "Undo" = "Undo";
@@ -835,7 +835,7 @@ Since";
 "V1_Notice_for_Photo_Quality" = "Please know that the quality of photos saved in the Days Until with the previous version of the AppBox Pro may not good enough to use with the current version. We recommend you to re-add photos to your events.";
 "Notice" = "Notice";
 
-"LoanCalc_DATE" = "LoanCalc_DATE";
+"LoanCalc_DATE" = "DATE";
 
 "%/yr" = "%/yr";
 "%/mo" = "%/mo";
@@ -875,3 +875,6 @@ Since";
 "You can translate more in the AppBox Pro." = "You can translate more in the AppBox Pro.";
 
 "Field name already exists." = "Field name already exists.";
+
+"Disclaimer" = "放弃";
+"LadyCalendarDiscalimerMsg" = "因为压力及性荷尔蒙的分泌不均衡可能引起生理预测周期的不同，所以排卵日和易于怀孕日与实际情况可能会有所差别。\n并且，生理周期不规则的情况下，推测值可能产生错误，不适合于所有的女性。\n所以为了避孕或受孕，参考此排卵日测定法的同时，建议和其他可行方法共用。";

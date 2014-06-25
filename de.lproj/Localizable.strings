@@ -357,7 +357,7 @@
 
 "Create %@" = "Create %@";
 
-"Location information is not available." = "Localtion information is not available.";
+"Location information is not available." = "Location information is not available.";
 
 "Every 2 Weeks" = "Every 2 Weeks";
 "Undo" = "Undo";
@@ -842,7 +842,7 @@
 "Notice" = "Notice";
 
 
-"LoanCalc_DATE" = "LoanCalc_DATE";
+"LoanCalc_DATE" = "DATE";
 
 "%/yr" = "%/yr";
 "%/mo" = "%/mo";
@@ -882,3 +882,6 @@
 "You can translate more in the AppBox Pro." = "You can translate more in the AppBox Pro.";
 
 "Field name already exists." = "Field name already exists.";
+
+"Disclaimer" = "Haftungsausschluss";
+"LadyCalendarDiscalimerMsg" = "Die folgenden Prognosen stützen sich auf die Kalendermethode und sind nicht 100 %ig genau. Es gibt keine Garantie für die Richtigkeit der Prognosen und diese sollten nicht allein zur Famileinplanung genutzt werden.";
