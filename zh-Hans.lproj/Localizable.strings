@@ -857,8 +857,8 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "translator_share_HTML_body" = "<br/><br/>You can translate more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Share Translator Data" = "Share Translator Data";
 
-"Delete iCloud and start over" = "Delete iCloud and start over";
-"Download and use iCloud Data" = "Download and use iCloud Data";
+"Delete data stored in iCloud and start over" = "Delete data stored in iCloud and start over";
+"Use data stored in iCloud" = "Use data stored in iCloud";
 
 "Internet connection is not available." = "Internet connection is not available.";
 

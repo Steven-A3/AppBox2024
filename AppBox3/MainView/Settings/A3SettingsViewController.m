@@ -154,8 +154,8 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Setup AppBox Pro data in iCloud", nil)
 																	 delegate:self
 															cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-													   destructiveButtonTitle:NSLocalizedString(@"Delete iCloud and start over", nil)
-															otherButtonTitles:NSLocalizedString(@"Download and use iCloud Data", nil), nil];
+													   destructiveButtonTitle:NSLocalizedString(@"Delete data stored in iCloud and start over", nil)
+															otherButtonTitles:NSLocalizedString(@"Use data stored in iCloud", nil), nil];
 			[actionSheet showInView:self.view];
 			return;
 		}

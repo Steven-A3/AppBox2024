@@ -813,8 +813,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			value = @(1);
 		}
 
-		dataCell.codeLabel.text = NSLocalizedStringFromTable(convertItem.item.unitShortName, @"unitShort", nil);
-		dataCell.rateLabel.text = NSLocalizedStringFromTable(convertItem.item.unitName, @"unit", nil);
+		dataCell.codeLabel.text = NSLocalizedStringFromTable(convertItem.item.unitName, @"unit", nil);
+		dataCell.rateLabel.text = NSLocalizedStringFromTable(convertItem.item.unitShortName, @"unitShort", nil);
 	}
     else {
 		dataCell.valueField.textColor = [UIColor blackColor];

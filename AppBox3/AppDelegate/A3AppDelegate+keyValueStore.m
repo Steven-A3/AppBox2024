@@ -41,14 +41,16 @@
 		// This loop assumes you are using the same key names in both
 		// the user defaults database and the iCloud key-value store
 		for (NSString* key in changedKeys) {
-			NSDictionary *objectInCloud = [store objectForKey:key];
-			NSDictionary *objectInLocal = [userDefaults objectForKey:key];
-			if (!objectInLocal) {
-				[userDefaults setObject:objectInCloud forKey:key];
-			} else if ([objectInCloud[kA3AppsDataUpdateDate] isLaterThanDate:objectInLocal[kA3AppsDataUpdateDate]]) {
-				[userDefaults setObject:objectInCloud forKey:key];
+			id objectInCloud = [store objectForKey:key];
+			id objectInLocal = [userDefaults objectForKey:key];
+			if ([key isEqualToString:kA3MainMenuAllMenu]) {
+				if ([objectInCloud[kA3AppsDataUpdateDate] isLaterThanDate:objectInLocal[kA3AppsDataUpdateDate]]) {
+					[userDefaults setObject:objectInCloud forKey:key];
+				} else {
+					[store setObject:objectInLocal forKey:key];
+				}
 			} else {
-				[store setObject:objectInLocal forKey:key];
+				[userDefaults setObject:objectInCloud forKey:key];
 			}
 		}
 		[userDefaults synchronize];

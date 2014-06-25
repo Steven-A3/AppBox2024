@@ -78,8 +78,8 @@
 "Choose Existing" = "저장된 사진중에서 고르기";
 "Choose and Resize" = "고른 후 크기 조정하기";
 
-"Enabling iCloud" = "iCloud를 동기화를 켜는 중";
-"Disableing iCloud" = "iCloud를 끄는 중";
+"Enabling iCloud" = "iCloud 동기화를 시작하고 있습니다.";
+"Disableing iCloud" = "iCloud 동기화를 중지하는 중 입니다.";
 
 "iCloud Enabled" = "iCloud 동기화가 켜졌습니다.";
 "Syncing in backgorund" = "동기화는 백그라운드로 진행됩니다.";
@@ -845,8 +845,8 @@
 "translator_share_HTML_body" = "<br/><br/>AppBox Pro의 번역 기능을 활용해 보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 "Share Translator Data" = "번역 결과를 공유";
 
-"Delete iCloud and start over" = "iCloud 데이터를 지우고 새로 시작하기";
-"Download and use iCloud Data" = "iCloud 데이터 내려받아 사용";
+"Delete data stored in iCloud and start over" = "iCloud 데이터를 지우고 새로 시작하기";
+"Use data stored in iCloud" = "iCloud 데이터를 사용";
 
 "Internet connection is not available." = "사용 가능한 인터넷 연결이 없습니다.";
 
