@@ -24,7 +24,7 @@
 	NSMutableArray *pointArray;
 	CGFloat yStartCenterPosition;
 	CGPoint valueTotal;
-	CGFloat averageLineYPos;
+	CGFloat _averageLineYPos;
 	CGSize xLabelMaxSize;
 	CGFloat xAxisLineHeight;
 }
@@ -146,12 +146,13 @@
     if ( [_valueArray count] < 1 )
         return;
     CGFloat averageValue =  valueTotal.y / [_valueArray count];
-    averageLineYPos = yStartCenterPosition - ((averageValue - _minYValue) * _yAxisInterval)*0.5 + pointSize.height*0.5;
+    //averageLineYPos = yStartCenterPosition - ((averageValue - _minYValue) * _yAxisInterval)*0.5 + pointSize.height*0.5;
+    _averageLineYPos = [self getYAxisPointForValueY:(NSInteger)averageValue withYLabelIndex:0 yAxisInterval:_yAxisInterval];
     
     CGContextSetStrokeColorWithColor(context, [_averageColor CGColor]);
     CGContextSetLineWidth(context, 1.0);
-    CGContextMoveToPoint(context, xAxisLineRect.origin.x, averageLineYPos );
-    CGContextAddLineToPoint(context, xAxisLineRect.origin.x+xAxisLineRect.size.width, averageLineYPos);
+    CGContextMoveToPoint(context, xAxisLineRect.origin.x, _averageLineYPos );
+    CGContextAddLineToPoint(context, xAxisLineRect.origin.x+xAxisLineRect.size.width, _averageLineYPos);
     CGContextStrokePath(context);
 }
 
@@ -162,11 +163,23 @@
 	UIFont *font = IS_IPHONE ? [UIFont systemFontOfSize:15] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     NSDictionary *attribute = @{NSFontAttributeName : font, NSForegroundColorAttributeName : _averageColor};
     
+    CGFloat averageValueYPos = _averageLineYPos + 10;
+    CGFloat lastValuePos = [self getYAxisPointForValueY:((NSInteger)[[_valueArray lastObject] CGPointValue].y) withYLabelIndex:0 yAxisInterval:_yAxisInterval];
+    if (lastValuePos >= _averageLineYPos) {
+        averageValueYPos = _averageLineYPos - 10 - 26;
+    }
+    if (averageValueYPos < self.bounds.origin.y) {
+        averageValueYPos = self.bounds.origin.y + 2;
+    }
+    else if ((averageValueYPos + 26) > self.bounds.size.height) {
+        averageValueYPos = self.bounds.size.height - 28;
+    }
+    
     NSString *labelStr = [NSString stringWithFormat:@"%@ %g",(IS_IPAD ? NSLocalizedString(@"Average", @"Average") : NSLocalizedString(@"Avg.", @"Avg.")),roundf((valueTotal.y /( [_valueArray count] > 0 ? [_valueArray count] : 1))*100.0)*0.01];
     CGRect bounds = [labelStr boundingRectWithSize:CGSizeMake(xAxisLineRect.size.width,26.0) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine attributes:attribute context:nil];
     
     CGSize markSize = CGSizeMake(bounds.size.width+24.0, 26.0);
-    CGRect shapeFrame = CGRectMake(xAxisLineRect.origin.x+xAxisLineRect.size.width - markSize.width, /*(self.frame.size.height - (self.frame.size.height-xAxisLineRect.origin.y))*0.5 - markSize.height*0.5*/averageLineYPos+20.0, markSize.width, markSize.height);
+    CGRect shapeFrame = CGRectMake(xAxisLineRect.origin.x+xAxisLineRect.size.width - markSize.width, /*(self.frame.size.height - (self.frame.size.height-xAxisLineRect.origin.y))*0.5 - markSize.height*0.5*/averageValueYPos, markSize.width, markSize.height);
     // draw shape
     CGContextMoveToPoint(context, shapeFrame.origin.x, shapeFrame.origin.y + shapeFrame.size.height*0.5);
     CGContextAddLineToPoint(context, shapeFrame.origin.x+10.0, shapeFrame.origin.y);
@@ -263,7 +276,7 @@
     else {
         NSInteger nextYAxisValue = [[_yLabelItems objectAtIndex:idx + 1] integerValue];
         if (valueY < nextYAxisValue) {
-            CGFloat yValueGap =  (nextYAxisValue - valueY) / (nextYAxisValue - yAxisValue);
+            CGFloat yValueGap =  (nextYAxisValue - valueY) / (CGFloat)(nextYAxisValue - yAxisValue);
             return resultYAxis = (yAxisInterval * ([_yLabelItems count] - idx)) + (yAxisInterval * yValueGap) - yAxisInterval;
         }
     }
