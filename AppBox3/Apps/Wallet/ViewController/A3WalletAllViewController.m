@@ -47,6 +47,8 @@
 @property (nonatomic, weak) UISegmentedControl *segmentedControlRef;
 @property (nonatomic, weak) A3WalletAllTopView *topViewRef;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+
+@property (nonatomic, strong) UITableView *tableView;
 @end
 
 @implementation A3WalletAllViewController {
@@ -526,7 +528,7 @@ enum SortingKind {
 		_mySearchDisplayController.searchBar.delegate = self;
 		_mySearchDisplayController.searchResultsTableView.delegate = self;
 		_mySearchDisplayController.searchResultsTableView.dataSource = self;
-		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2f];
+        _mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
 		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
         _mySearchDisplayController.searchResultsTableView.rowHeight = 48;
         
@@ -763,6 +765,11 @@ enum SortingKind {
 {
 	// Return NO if you do not want the item to be re-orderable.
 	return NO;
+}
+
+- (BOOL)moveTableView:(FMMoveTableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
 }
 
 @end

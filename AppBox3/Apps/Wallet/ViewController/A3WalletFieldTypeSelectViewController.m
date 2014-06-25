@@ -80,7 +80,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *type = _fieldTypes[indexPath.row][WalletFieldNativeType];
+    NSString *type = _fieldTypes[indexPath.row][WalletFieldTypeID];
 
     if (_delegate && [_delegate respondsToSelector:@selector(walletFieldSelectedFieldType:)]) {
         [_delegate walletFieldSelectedFieldType:type];
@@ -115,7 +115,7 @@
     // Configure the cell...
     NSDictionary *fieldType = _fieldTypes[indexPath.row];
     cell.textLabel.text = NSLocalizedString(fieldType[WalletFieldTypeID], nil);
-    if ([fieldType[WalletFieldNativeType] isEqualToString:_selectedType]) {
+    if ([fieldType[WalletFieldTypeID] isEqualToString:_selectedType]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;

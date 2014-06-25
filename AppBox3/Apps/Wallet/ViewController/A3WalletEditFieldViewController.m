@@ -54,6 +54,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
     
     self.tableView.separatorColor = [self tableViewSeparatorColor];
     self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     
     [self registerContentSizeCategoryDidChangeNotification];
 

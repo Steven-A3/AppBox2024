@@ -116,6 +116,10 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 
 - (void)rightSideViewWillDismiss {
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+    if (IS_IPAD) {
+        self.navigationItem.leftBarButtonItem.enabled = YES;
+        [self setupDoneButtonEnabled];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -566,6 +570,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
 	[self.fields moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+    [self setupDoneButtonEnabled];
 }
 
 // Override to support conditional rearranging of the table view.
