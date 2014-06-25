@@ -169,6 +169,25 @@
 	for (NSInteger i = _minCycleLength; i <= _maxCycleLength; i++) {
 		[_cycleYLabelArray addObject:[NSString stringWithFormat:@"%ld", (long)i]];
     }
+    
+    NSMutableOrderedSet *filteredYLabelSet = [[NSMutableOrderedSet alloc] initWithArray:_cycleYLabelArray];
+    if ([filteredYLabelSet count] <= 6) {
+        _cycleYLabelArray = [NSMutableArray arrayWithArray:[filteredYLabelSet objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [filteredYLabelSet count])]]];
+    }
+    else {
+        _cycleYLabelArray = [NSMutableArray arrayWithArray:[filteredYLabelSet objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [filteredYLabelSet count])]]];
+        NSMutableArray *filteredYLabels = [NSMutableArray new];
+        [filteredYLabels addObject:[_cycleYLabelArray firstObject]];
+        for (NSInteger idx = 0; idx < 4; idx++) {
+            NSString *mestrualY = [_cycleYLabelArray objectAtIndex:(([_cycleYLabelArray count] - 2) / 4) * (idx + 1)];
+            if (mestrualY) {
+                [filteredYLabels addObject:mestrualY];
+            }
+        }
+        [filteredYLabels addObject:[_cycleYLabelArray lastObject]];
+        self.cycleYLabelArray = filteredYLabels;
+    }
+    
 	for (NSInteger i = _minMenstrualPeriod; i <= _maxMenstrualPeriod; i++) {
 		[_menstrualYLabelArray addObject:[NSString stringWithFormat:@"%ld", (long) i]];
 	}
