@@ -680,12 +680,14 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     if ([activityType isEqualToString:UIActivityTypeMail]) {
         
         NSMutableString *txt = [NSMutableString new];
-		[txt appendString:NSLocalizedString(@"share_unitConverter_head", nil)];
+		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share a conversion with you.", nil)];
         for (int i=0; i<_shareTextList.count; i++) {
             [txt appendString:_shareTextList[i]];
             [txt appendString:@"<br/>"];
         }
-		[txt appendString:NSLocalizedString(@"unitConverter_share_html_body", nil)];
+		[txt appendFormat:@"<br/><br/>%@<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>%@</a></body></html>",
+						  NSLocalizedString(@"You can convert more in the AppBox Pro.", nil),
+						  NSLocalizedString(@"Download from AppStore", nil)];
         
         return txt;
     }
@@ -695,7 +697,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
             [txt appendString:_shareTextList[i]];
             [txt appendString:@"\n"];
         }
-		//[txt appendString:NSLocalizedString(@"\nCheck out the AppBox Pro!", @"\nCheck out the AppBox Pro!")];
+		//[txt appendString:NSLocalizedString(@"Check out the AppBox Pro!", @"Check out the AppBox Pro!")];
         
         return txt;
     }

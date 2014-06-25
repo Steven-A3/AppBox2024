@@ -1310,15 +1310,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	_sharePopoverController = nil;
 }
 
-//- (NSString *)stringForSource:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx {
-//	CurrencyFavorite *source = self.favorites[sourceIdx], *target = self.favorites[targetIdx];
-//	float rate = [self rateForSource:source target:target];
-//	return [NSString stringWithFormat:NSLocalizedString(@"%@ equals %@ with rate %0.4f", @"%@ equals %@ with rate %0.4f"),
-//									  [self stringFromNumber:self.lastInputValue withCurrencyCode:source.currencyCode isShare:NO],
-//									  [self stringFromNumber:@(self.lastInputValue.floatValue * rate) withCurrencyCode:target.currencyCode isShare:NO],
-//									  rate];
-//}
-
 - (void)shareAll:(id)sender {
 	_shareAll = YES;
 	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
@@ -1368,11 +1359,12 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:NSLocalizedString(@"share_currencyConverter_head", nil)];
-
+		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share a conversion with you.", nil)];
 		[txt appendString:[self stringForShare]];
 
-		[txt appendString:NSLocalizedString(@"currency_share_HTML_body", nil)];
+		[txt appendFormat:@"<br/><br/>%@<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>%@</a></body></html>",
+						  NSLocalizedString(@"You can convert more in the AppBox Pro.", nil),
+						  NSLocalizedString(@"Download from AppStore", nil)];
 
 		return txt;
 	}

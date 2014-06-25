@@ -39,16 +39,12 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 
 "DISCLAIMER_MESSAGE" = "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case.";
 "HOLIDAYS_ACKNOWLEDGEMENT" = "A Photo behind the Holidays in the AppBox Pro is collected from Flickr that reflect the beauty and magnificence of differnet locations around the world. Flickr screen name and a link to the photo are shown on the screen. Authors get any and all rights over photo. ALLABOUTAPPS Inc. don't own any photo. If you want to paricipate this, send us email. You will not receive financial compensation for use of your photos, however will bring a whole new audience to your photostream. Thanks to authors to share.";
-
 "SECURITY_INFO" = "Apple uses a technology called Data Protection. It encrypts your data with secure 256-bit key and hardware AES Engine. By setting up a device passcode, you automatically enables Data Protection.\nThe passcode is \"tangled\" with the device's UID, so brute-force attempts must be performed on the device under attack. A large iteration count is used to make each attempt slower. The iteration count is calibrated so that one attempt takes approximately 80 milliseconds. This means it would take more than 5½ years to try all combinations of a six-character alphanumeric passcode with lowercase letters and numbers, or 2½ years for a nine-digit passcode with numbers only.";
-
 "microphone access denied" = "AppBox Pro dose not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro";
-
 "Theme Color" = "主题颜色";
 
 "About" = "关于本机";
 "Remaining Time" = "剩余时间";
-
 "Battery Status" = "电池状态";
 "Calculator" = "计算器";
 "Date Calculator" = "日期计算";
@@ -61,7 +57,7 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "Lunar Converter" = "阴历/阳历";
 "Translator" = "翻译";
 "Unit Converter" = "单位换算";
-"Days Counter" = "Days Counter";
+"Days Counter" = "天计数器";
 "Lady Calendar" = "淑女日历";
 "Wallet" = "电子钱包";
 "Expense List" = "费用清单";
@@ -119,9 +115,7 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "Scientific" = "科学的";
 "Basic" = "基本的";
 "Calculator using AppBox Pro" = "Calculator using AppBox Pro";
-"I'd like to share a calculation with you.\n\n" = "我想与大家分享一个计算。\n\n";
 
-"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385" = "\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385";
 "CHOOSE COLOR" = "选择颜色";
 
 "Humidity" = "湿度";
@@ -158,18 +152,13 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "%@Rate = %0.4f" = "%@比率 = %0.4f";
 "Rate = %0.4f" = "比率 = %0.4f";
 
-"%@ equals %@ with rate %0.4f" = "%@等于%@与速率%0.4f";
 "Currency Converter in the AppBox Pro" = "币种转换器，在AppBox Pro";
-"share_currencyConverter_head" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
-"share_unitConverter_head" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
-"share_Lunar_head" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
-"currency_share_HTML_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Share Currency Converter Data" = "Share Currency Converter Data";
 
 /* Data Calc duration */
-"Year" = "Year";
-"Month" = "Month";
-"Week" = "Week";
+"Year" = "年";
+"Month" = "月";
+"Week" = "周";
 "Day" = "星期";
 "Duration" = "期间";
 "Edit Event" = "纪念日修改";
@@ -197,27 +186,16 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "Today  " = "今天  ";
 
 "Date Calculator using AppBox Pro" = "日期计算，在AppBox Pro";
-"<html><body>I'd like to share a calculation with you.<br/><br/>" = "<html><body>我想与大家分享一个计算。<br/><br/>";
-"datecalc_share_body" = "<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
-"From: %@<br>" = "特定日 A: %@<br>";
-"To: %@<br>" = "特定日 B: %@<br>";
-"Exclude: %@<br>" = "排除: %@<br>";
 
-"Result: %@" = "Result: %@";
-"Add: 0 day<br>" = "Add: 0 day<br>";
-"Add: %@<br>" = "Add: %@<br>";
-"Subtract: 0 day<br>" = "Subtract: 0 day<br>";
-"Subtract: %@<br>" = "Subtract: %@<br>";
-"Between two dates" = "Between two dates";
-"Add or Subtract days" = "Add or Subtract days";
+"Between two dates" = "特定日 A和 特定日 B 之间有多少天?";
+"Add or Subtract days" = "在特定日A上加减特定日 B是几天？";
 "From" = "特定日 A";
 "To" = "特定日 B";
 "Exclude" = "排除";
 
-"%ld of %ld" = "%ld of %ld";
+"%ld of %ld" = "%ld / %ld";
 "%@ using AppBox Pro" = "%@ using AppBox Pro";
 "Share Days Counter Data" = "Share Days Counter Data";
-"<html><body>I'd like to share a event with you.<br/><br/>" = "<html><body>I'd like to share a event with you.<br/><br/>";
 "Slideshow Options" = "Slideshow Options";
 "Transitions" = "Transitions";
 "Play Each Slide For" = "Play Each Slide For";
@@ -256,7 +234,9 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "Use My Location" = "Use My Location";
 "Search Location" = "Search Location";
 "Please enter the end date." = "Please enter the end date.";
-"Cannot Save Event\nThe start date must be before the end date." = "Cannot Save Event\nThe start date must be before the end date.";
+"Cannot Save Event\nThe start date must be before the end date." =
+"Cannot Save Event
+The start date must be before the end date.";
 "Start date is not lunar date" = "Start date is not lunar date";
 "End date is not lunar date" = "End date is not lunar date";
 "It's not a Lunar Date" = "It's not a Lunar Date";
@@ -286,8 +266,6 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "repeats %@" = "repeats %@";
 "since" = "since";
 "first date" = "first date";
-"<html><body>I'd like to share a days count with you.<br/><br/>" = "<html><body>I'd like to share a days count with you.<br/><br/>";
-"daysCounter_share_HTML_body" = "<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 
 "Delete All" = "Delete All";
 "Delete Events" = "Delete Events";
@@ -352,13 +330,12 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 
 " Today " = " 今天 ";
 " Now " = " Now ";
-"Days\nUntil" = "Days\nUntil";
-"Days\nSince" = "Days\nSince";
-
-"%@ (음력 %@)" = "%@ (음력 %@)";
-"음력 %@" = "음력 %@";
-
-"(음력 %@)" = "(음력 %@)";
+"Days\nUntil" =
+"Days
+Until";
+"Days\nSince" =
+"Days
+Since";
 
 "Change Location" = "Change Location";
 "Current Location" = "Current Location";
@@ -378,7 +355,7 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "30 minutes" = "30 minutes";
 "13 seconds" = "13 seconds";
 
-"장소 검색 실패" = "장소 검색 실패";
+"Places are not available." = "Places are not available.";
 
 "Loading locations...." = "Loading locations....";
 
@@ -387,7 +364,7 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 
 "Create %@" = "Create %@";
 
-"현재 위치에 대한 정보를 가져올 수 없습니다." = "현재 위치에 대한 정보를 가져올 수 없습니다.";
+"Location information is not available." = "Localtion information is not available.";
 
 "Every 2 Weeks" = "隔周";
 "Undo" = "Undo";
@@ -535,18 +512,7 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "0 %@ %ld mo" = "0 %@ %ld mo";
 "%ld %@ %ld mo" = "%ld %@ %ld mo";
 "Loan Calculator using AppBox Pro" = "Loan Calculator using AppBox Pro";
-"<html><body>I'd like to share a calculation with you.<br><br>" = "<html><body>我想与大家分享一个计算。<br><br>";
-"LoanCalc_Share_HTML_BODY" = "<br><br>You can calculator more in the AppBox Pro.<br><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Share Loan Calculator Data" = "Share Loan Calculator Data";
-"** Loan A <br>" = "** Loan A <br>";
-"<br>** Loan B <br>" = "<br>** Loan B <br>";
-"*Calculation<br>" = "*Calculation<br>";
-"<br>Interest: %@ <br>" = "<br>Interest: %@ <br>";
-"Total Amount: %@ <br>" = "Total Amount: %@ <br>";
-"<br>*Input<br>" = "<br>*Input<br>";
-"Extra Payment(monthly): %@ <br>" = "Extra Payment(monthly): %@ <br>";
-"Extra Payment(yearly): %@ <br>" = "Extra Payment(yearly): %@ <br>";
-"Extra Payment(one-time): %@ <br>" = "Extra Payment(one-time): %@ <br>";
 
 "0 year" = "0 year";
 
@@ -554,7 +520,7 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "Loan B" = "贷款B";
 "EXTRA PAYMENTS" = "EXTRA PAYMENTS";
 "years or months" = "years or months";
-" Data" = " Data";
+"Data" = "Data";
 
 "Extra Payments(Monthly)" = "Extra Payments(Monthly)";
 "Extra(Monthly)" = "Extra(Monthly)";
@@ -566,11 +532,9 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "Extra Payment" = "Extra Payment";
 
 "Solar" = "Solar";
-"1900년부터 2043년까지만 지원합니다." = "1900년부터 2043년까지만 지원합니다.";
-"%ld년 %ld월은 %ld일까지만 있습니다." = "%ld년 %ld월은 %ld일까지만 있습니다.";
+"Lunar calendar is available from year 1901 to 2042." = "Lunar calendar is available from year 1901 to 2042.";
+"Year %ld month %ld has %ld days." = "Year %ld month %ld has %ld days.";
 "Lunar Converter using AppBox Pro" = "Lunar Converter using AppBox Pro";
-"<html><body>I'd like to share a conversion with you.<br/><br/>" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
-"LunarConverter_share_text_html_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Share Lunar Converter Data" = "Share Lunar Converter Data";
 "Lunar(%@) %@" = "Lunar(%@) %@";
 " = Solar %@" = " = Solar %@";
@@ -649,8 +613,7 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "Exact" = "无";
 "Up" = "上舍入";
 "Down" = "下舍入";
-
-"tipcalc_share_body" = "<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
+"Off" = "四舍五入";
 
 "Tip Calculator using AppBox Pro" = "Tip Calculator using AppBox Pro";
 
@@ -671,8 +634,7 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "%@ Units" = "%@ Units";
 
 "Unit Converter using AppBox Pro" = "Unit Converter using AppBox Pro";
-"unitConverter_share_html_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
-"\nCheck out the AppBox Pro!" = "\nCheck out the AppBox Pro!";
+"Check out the AppBox Pro!" = "Check out the AppBox Pro!";
 "Share unit converting data" = "Share unit converting data";
 "%@, rate = %@" = "%@, rate = %@";
 
@@ -720,11 +682,8 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "Delete Items" = "Delete Items";
 
 "Video" = "影像播放";
-"<html><body>I'd like to share a wallet with you.<br/><br/>" = "<html><body>I'd like to share a wallet with you.<br/><br/>";
-"wallet_share_html_body" = "<br/><br/>You can wallet more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Add Field" = "Add Field";
 "Edit Field" = "项目编辑";
-" Field name already exists. " = " Field name already exists. ";
 "Field Name" = "项目名称";
 "Type" = "Type";
 "Style" = "表示方法";
@@ -801,11 +760,7 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "CALCULATION" = "CALCULATION";
 
 "DoneButton" = "Return";
-
-"Off" = "四舍五入";
-
 "Passcode_Off" = "Off";
-
 "P" = "P";
 
 "DaysCounter_All" = "All";
@@ -848,26 +803,16 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "Wallpaper" = "Wallpaper";
 
 "Show Lunar Date" = "Show Lunar Date";
-
 "Currency Converter using AppBox Pro" = "Currency Converter using AppBox Pro";
-
 "Translator using AppBox Pro" = "Translator using AppBox Pro";
-
-"<html><body>I'd like to share a translation with you.<br/><br/>" = "<html><body>I'd like to share a translation with you.<br/><br/>";
-"translator_share_HTML_body" = "<br/><br/>You can translate more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Share Translator Data" = "Share Translator Data";
-
-"Delete data stored in iCloud and start over" = "Delete data stored in iCloud and start over";
+"Delete and start over" = "Delete and start over";
 "Use data stored in iCloud" = "Use data stored in iCloud";
-
 "Internet connection is not available." = "Internet connection is not available.";
-
-"Setup AppBox Pro data in iCloud" = "Setup AppBox Pro data in iCloud";
-
+"Setup AppBox Pro data stored in iCloud" = "Setup AppBox Pro data stored in iCloud";
 "Add this place" = "Add this place";
 
 "STATUS" = "STATUS";
-
 "Talk Time on 2G" = "Talk Time on 2G";
 "Talk Time on 3G" = "Talk Time on 3G";
 "Internet on 3G" = "互联网 3G";
@@ -885,9 +830,7 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "YouTube" = "YouTube";
 
 "None_Mirror" = "None";
-
 "CALENDARS" = "日历";
-
 "Encryption Key for Wallet" = "Encryption Key for Wallet";
 "V1_Notice_for_Photo_Quality" = "Please know that the quality of photos saved in the Days Until with the previous version of the AppBox Pro may not good enough to use with the current version. We recommend you to re-add photos to your events.";
 "Notice" = "Notice";
@@ -901,7 +844,34 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 
 "  (e.g. %@)" = "  (e.g. %@)";
 
-
 "DATE" = "DATE";
 
 "DaysCounter_ALL" = "All";
+
+"You can calculate more in the AppBox Pro." = "You can calculate more in the AppBox Pro.";
+"I'd like to share a calculation with you." = "我想与大家分享一个计算。";
+
+"I'd like to share a conversion with you." = "I'd like to share a conversion with you.";
+"You can convert more in the AppBox Pro." = "You can convert more in the AppBox Pro.";
+"Download from AppStore" = "Download from AppStore";
+
+"Result" = "Result";
+"Add" = "Add";
+"day" = "day";
+"Subtract" = "Subtract";
+"I'd like to share a event with you." = "I'd like to share a event with you.";
+
+"You can manage your events in the AppBox Pro." = "You can manage your events in the AppBox Pro.";
+
+"Interest" = "Interest";
+"Extra Payment(monthly)" = "Extra Payment(monthly)";
+"Extra Payment(yearly)" = "Extra Payment(yearly)";
+"Extra Payment(one-time)" = "Extra Payment(one-time)";
+
+"I'd like to share a information with you." = "I'd like to share a information with you.";
+"You can manage your information in the AppBox Pro." = "You can manage your information in the AppBox Pro.";
+
+"I'd like to share a translation with you." = "I'd like to share a translation with you.";
+"You can translate more in the AppBox Pro." = "You can translate more in the AppBox Pro.";
+
+"Field name already exists." = "Field name already exists.";

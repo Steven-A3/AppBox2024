@@ -111,15 +111,19 @@
 			MFMessageComposeViewController *viewController = [[MFMessageComposeViewController alloc] init];
 			if (viewController) {
 				viewController.messageComposeDelegate = self;
-				[viewController setBody:NSLocalizedString(@"tellafriend", nil)];
+				NSString *messageBody = NSLocalizedString(@"tellafriend", nil);
+				messageBody = [messageBody stringByAppendingString:@"\n\nhttps://itunes.apple.com/app/id318404385"];
+				[viewController setBody:messageBody];
 
 				[self presentViewController:viewController animated:YES completion:nil];
 			}
 			break;
 		}
 		case 4: {
+			NSString *messageBody = NSLocalizedString(@"tellafriend", nil);
+			messageBody = [messageBody stringByAppendingString:@"\n\nhttps://itunes.apple.com/app/id318404385"];
 			[self openMailComposerWithSubject:NSLocalizedString(@"A friend has recommended AppBox Pro™ from the iTunes App Store", @"")
-									 withBody:NSLocalizedString(@"tellafriend", @"")
+									 withBody:messageBody
 								withRecipient:nil];
 			break;
 		}

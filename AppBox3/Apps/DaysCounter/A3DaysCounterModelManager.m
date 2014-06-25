@@ -1634,12 +1634,14 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         }
         
         if (IS_IPAD) {
-            dateString = [NSString stringWithFormat:NSLocalizedString(@"%@ (음력 %@)", @"%@ (음력 %@)"),
+            dateString = [NSString stringWithFormat:@"%@ (%@ %@)",
+													NSLocalizedString(@"Lunar", @"Lunar"),
 													[A3DateHelper dateStringFromDate:[dateModel solarDate] withFormat:[self dateFormatForDetailIsAllDays:isAllDay]],
 													[A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:isLunar] withFormat:dateFormat]];
         }
         else {
-            dateString = [NSString stringWithFormat:NSLocalizedString(@"(음력 %@)", @"(음력 %@)"),
+            dateString = [NSString stringWithFormat:@"(%@ %@)",
+													NSLocalizedString(@"Lunar", @"Lunar"),
 													[A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:isLunar] withFormat:dateFormat]];
         }
     }
@@ -1673,7 +1675,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     [dateFormat replaceOccurrencesOfString:@"EEEE" withString:@"" options:0 range:NSMakeRange(0, [dateFormat length])];
     [dateFormat replaceOccurrencesOfString:@"MMMM" withString:@"MMM" options:0 range:NSMakeRange(0, [dateFormat length])];
     
-    dateString = [NSString stringWithFormat:NSLocalizedString(@"음력 %@", @"음력 %@"),
+    dateString = [NSString stringWithFormat:@"%@ %@",
+											NSLocalizedString(@"Lunar", @"Lunar"),
 											[A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:YES] withFormat:dateFormat]];
     return dateString;
 }
