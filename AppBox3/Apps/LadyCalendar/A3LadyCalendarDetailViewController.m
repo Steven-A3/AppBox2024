@@ -173,7 +173,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     
     // predicted 인 경우, rightBarButton 제거.
     LadyCalendarPeriod *period = [array firstObject];
-    if (period && [period.isPredict boolValue]) {
+
+    if (period && [period.isPredict boolValue] && ([A3DateHelper diffDaysFromDate:[NSDate date] toDate:[period startDate] isAllDay:YES] > 0)) {
         self.navigationItem.rightBarButtonItem = nil;
     }
 
