@@ -174,6 +174,7 @@
     else if ((averageValueYPos + 26) > self.bounds.size.height) {
         averageValueYPos = self.bounds.size.height - 28;
     }
+    averageValueYPos = ceilf(averageValueYPos);
     
     NSString *labelStr = [NSString stringWithFormat:@"%@ %g",(IS_IPAD ? NSLocalizedString(@"Average", @"Average") : NSLocalizedString(@"Avg.", @"Avg.")),roundf((valueTotal.y /( [_valueArray count] > 0 ? [_valueArray count] : 1))*100.0)*0.01];
     CGRect bounds = [labelStr boundingRectWithSize:CGSizeMake(xAxisLineRect.size.width,26.0) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine attributes:attribute context:nil];
