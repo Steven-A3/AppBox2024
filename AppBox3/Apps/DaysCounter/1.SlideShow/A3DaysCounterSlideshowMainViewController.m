@@ -297,15 +297,12 @@
 	flowLayout.minimumInteritemSpacing = 0;
 	flowLayout.minimumLineSpacing = 0;
 	_collectionView.collectionViewLayout = flowLayout;
+    [_collectionView setContentOffset:CGPointMake(flowLayout.itemSize.width * currentIndex, 0) animated:YES];
 }
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     _isRotating = YES;
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
 }
 
 - (void)cleanUp {
