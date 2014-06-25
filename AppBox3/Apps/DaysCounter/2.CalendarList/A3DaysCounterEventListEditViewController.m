@@ -370,7 +370,7 @@
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a days count with you.<br/><br/>", @"<html><body>I'd like to share a days count with you.<br/><br/>")];
+		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share a event with you.", @"I'd like to share a event with you.")];
 
         for (DaysCounterEvent *event in _selectedArray) {
             // 7 days until (계산된 날짜)
@@ -399,8 +399,9 @@
                                                                      withFormat:[formatter dateFormat]]];
         }
 
-
-		[txt appendString:NSLocalizedString(@"daysCounter_share_HTML_body", nil)];
+		[txt appendFormat:@"<br/>%@<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>%@</a></body></html>",
+						  NSLocalizedString(@"You can manage your events in the AppBox Pro.", @"You can manage your events in the AppBox Pro."),
+						  NSLocalizedString(@"Download from AppStore", @"Download from AppStore")];
         
 		return txt;
 	}

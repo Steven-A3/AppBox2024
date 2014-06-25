@@ -1181,9 +1181,11 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a calculation with you.<br><br>", @"<html><body>I'd like to share a calculation with you.<br><br>")];
+		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share a conversion with you.", nil)];
 		[txt appendString:[self shareStringForMail]];
-		[txt appendString:NSLocalizedString(@"LoanCalc_Share_HTML_BODY", nil)];
+		[txt appendFormat:@"<br/><br/>%@<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>%@</a></body></html>",
+						  NSLocalizedString(@"You can convert more in the AppBox Pro.", nil),
+						  NSLocalizedString(@"Download from AppStore", nil)];
 		// AppBoxPro_amortization_loanA.csv
 		// AppBoxPro_amortization_loanb.csv
 		return txt;
@@ -1231,11 +1233,11 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     
 	if (_isComparisonMode) {
 		// * Loan A
-		[body appendFormat:NSLocalizedString(@"** Loan A <br>", @"** Loan A <br>")];
+		[body appendFormat:@"** %@ A <br>", NSLocalizedString(@"Loan", @"Loan")];
         [body appendString:[self shareStringForLoanCalcData:_loanDataA isShortType:NO]];
         
 		// * Loan B
-		[body appendFormat:NSLocalizedString(@"<br>** Loan B <br>", @"<br>** Loan B <br>")];
+		[body appendFormat:@"<br>** %@ B <br>", NSLocalizedString(@"Loan", @"Loan")];
         [body appendString:[self shareStringForLoanCalcData:_loanDataB isShortType:NO]];
 	}
 	else {
@@ -1252,11 +1254,11 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     
 	if (_isComparisonMode) {
 		// * Loan A
-		[body appendFormat:NSLocalizedString(@"** Loan A <br>", @"** Loan A <br>")];
+		[body appendFormat:@"** %@ A <br>", NSLocalizedString(@"Loan", @"Loan")];
         [body appendString:[self shareStringForLoanCalcData:_loanDataA isShortType:YES]];
         
 		// * Loan B
-		[body appendFormat:NSLocalizedString(@"<br>** Loan B <br>", @"<br>** Loan B <br>")];
+		[body appendFormat:@"<br>** %@ B <br>", NSLocalizedString(@"Loan", @"Loan")];
         [body appendString:[self shareStringForLoanCalcData:_loanDataB isShortType:YES]];
 	}
 	else {
@@ -1271,7 +1273,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 {
     NSMutableString *body = [NSMutableString new];
     if (!isShortType) {
-		[body appendString:NSLocalizedString(@"*Calculation<br>", @"*Calculation<br>")];
+		[body appendFormat:@"*%@<br>", NSLocalizedString(@"Calculation", @"Calculation")];
     }
     // Result
     // Payments or etc
@@ -1294,15 +1296,15 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
         [body appendString:[LoanCalcString valueTextForCalcItem:resultItem fromData:loanData formatter:self.currencyFormatter]];
     }
 
-	[body appendFormat:NSLocalizedString(@"<br>Interest: %@ <br>", @"<br>Interest: %@ <br>"), [self.loanFormatter stringFromNumber:[loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
-	[body appendFormat:NSLocalizedString(@"Total Amount: %@ <br>", @"Total Amount: %@ <br>"), [self.loanFormatter stringFromNumber:[loanData totalAmount]]];
+	[body appendFormat:@"<br>%@: %@ <br>", NSLocalizedString(@"Interest", @"Interest"), [self.loanFormatter stringFromNumber:[loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
+	[body appendFormat:@"%@: %@ <br>", NSLocalizedString(@"Total Amount", @"Total Amount"), [self.loanFormatter stringFromNumber:[loanData totalAmount]]];
     
     if (isShortType) {
         return body;
     }
     
     // Inputs
-	[body appendString:NSLocalizedString(@"<br>*Input<br>", @"<br>*Input<br>")];
+	[body appendFormat:@"<br>*%@<br>", NSLocalizedString(@"Input", @"Input")];
     BOOL downPaymentEnable = (loanData.showDownPayment && (loanData.downPayment.doubleValue >0)) ? YES:NO;
     NSArray *inputCalcItems = [LoanCalcMode calculateItemForMode:loanData.calculationMode withDownPaymentEnabled:downPaymentEnable];
     [inputCalcItems enumerateObjectsUsingBlock:^(NSNumber *itemID, NSUInteger idx, BOOL *stop) {
@@ -1313,15 +1315,15 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     
     if (loanData.extraPaymentMonthly && [loanData.extraPaymentMonthly floatValue] > 0.0) {
         // Extra Payment(monthly): (값이 있는 경우)
-		[body appendFormat:NSLocalizedString(@"Extra Payment(monthly): %@ <br>", @"Extra Payment(monthly): %@ <br>"), [self.loanFormatter stringFromNumber:loanData.extraPaymentMonthly]];
+		[body appendFormat:@"%@: %@ <br>", NSLocalizedString(@"Extra Payment(monthly)", @"Extra Payment(monthly)"), [self.loanFormatter stringFromNumber:loanData.extraPaymentMonthly]];
     }
     if (loanData.extraPaymentYearly && [loanData.extraPaymentYearly floatValue] > 0.0) {
         // Extra Payment(yearly): (값이 있는 경우)
-		[body appendFormat:NSLocalizedString(@"Extra Payment(yearly): %@ <br>", @"Extra Payment(yearly): %@ <br>"), [self.loanFormatter stringFromNumber:loanData.extraPaymentYearly]];
+		[body appendFormat:@"%@: %@ <br>", NSLocalizedString(@"Extra Payment(yearly)", @"Extra Payment(yearly)"), [self.loanFormatter stringFromNumber:loanData.extraPaymentYearly]];
     }
     if (loanData.extraPaymentOneTime && [loanData.extraPaymentOneTime floatValue] > 0.0) {
         // Extra Payment(one-time): (값이 있는 경우)
-		[body appendFormat:NSLocalizedString(@"Extra Payment(one-time): %@ <br>", @"Extra Payment(one-time): %@ <br>"), [self.loanFormatter stringFromNumber:loanData.extraPaymentOneTime]];
+		[body appendFormat:@"%@: %@ <br>", NSLocalizedString(@"Extra Payment(one-time)", @"Extra Payment(one-time)"), [self.loanFormatter stringFromNumber:loanData.extraPaymentOneTime]];
     }
     
     return body;

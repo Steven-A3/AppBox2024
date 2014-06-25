@@ -1359,11 +1359,13 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a translation with you.<br/><br/>", nil)];
+		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share a translation with you.", nil)];
 
 		[txt appendString:[self shareContentsAsHTML:YES ]];
 
-		[txt appendString:NSLocalizedString(@"translator_share_HTML_body", nil)];
+		[txt appendFormat:@"<br/><br/>%@<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>%@</a></body></html>",
+						  NSLocalizedString(@"You can translate more in the AppBox Pro.", nil),
+						  NSLocalizedString(@"Download from AppStore", nil)];
 
 		return txt;
 	}

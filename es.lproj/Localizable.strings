@@ -114,9 +114,7 @@
 "Scientific" = "Scientific";
 "Basic" = "Basic";
 "Calculator using AppBox Pro" = "Calculator using AppBox Pro";
-"I'd like to share a calculation with you.\n\n" = "I'd like to share a calculation with you.\n\n";
 
-"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385" = "\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385";
 "CHOOSE COLOR" = "CHOOSE COLOR";
 
 "Humidity" = "Humidity";
@@ -153,12 +151,7 @@
 "%@Rate = %0.4f" = "%@Rate = %0.4f";
 "Rate = %0.4f" = "Rate = %0.4f";
 
-"%@ equals %@ with rate %0.4f" = "%@ equals %@ with rate %0.4f";
 "Currency Converter in the AppBox Pro" = "Currency Converter in the AppBox Pro";
-"share_currencyConverter_head" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
-"share_unitConverter_head" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
-"share_Lunar_head" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
-"currency_share_HTML_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Share Currency Converter Data" = "Share Currency Converter Data";
 
 /* Data Calc duration */
@@ -192,17 +185,7 @@
 "Today  " = "Today  ";
 
 "Date Calculator using AppBox Pro" = "Date Calculator using AppBox Pro";
-"<html><body>I'd like to share a calculation with you.<br/><br/>" = "<html><body>I'd like to share a calculation with you.<br/><br/>";
-"datecalc_share_body" = "<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
-"From: %@<br>" = "From: %@<br>";
-"To: %@<br>" = "To: %@<br>";
-"Exclude: %@<br>" = "Exclude: %@<br>";
 
-"Result: %@" = "Result: %@";
-"Add: 0 day<br>" = "Add: 0 day<br>";
-"Add: %@<br>" = "Add: %@<br>";
-"Subtract: 0 day<br>" = "Subtract: 0 day<br>";
-"Subtract: %@<br>" = "Subtract: %@<br>";
 "Between two dates" = "Between two dates";
 "Add or Subtract days" = "Add or Subtract days";
 "From" = "From";
@@ -212,7 +195,6 @@
 "%ld of %ld" = "%ld of %ld";
 "%@ using AppBox Pro" = "%@ using AppBox Pro";
 "Share Days Counter Data" = "Share Days Counter Data";
-"<html><body>I'd like to share a event with you.<br/><br/>" = "<html><body>I'd like to share a event with you.<br/><br/>";
 "Slideshow Options" = "Slideshow Options";
 "Transitions" = "Transitions";
 "Play Each Slide For" = "Play Each Slide For";
@@ -281,8 +263,6 @@
 "repeats %@" = "repeats %@";
 "since" = "since";
 "first date" = "first date";
-"<html><body>I'd like to share a days count with you.<br/><br/>" = "<html><body>I'd like to share a days count with you.<br/><br/>";
-"daysCounter_share_HTML_body" = "<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 
 "Delete All" = "Delete All";
 "Delete Events" = "Delete Events";
@@ -350,11 +330,6 @@
 "Days\nUntil" = "Days\nUntil";
 "Days\nSince" = "Days\nSince";
 
-"%@ (음력 %@)" = "%@ (음력 %@)";
-"음력 %@" = "음력 %@";
-
-"(음력 %@)" = "(음력 %@)";
-
 "Change Location" = "Change Location";
 "Current Location" = "Current Location";
 "Searching" = "Searching";
@@ -373,7 +348,7 @@
 "30 minutes" = "30 minutes";
 "13 seconds" = "13 seconds";
 
-"장소 검색 실패" = "장소 검색 실패";
+"Places are not available." = "Places are not available.";
 
 "Loading locations...." = "Loading locations....";
 
@@ -382,7 +357,7 @@
 
 "Create %@" = "Create %@";
 
-"현재 위치에 대한 정보를 가져올 수 없습니다." = "현재 위치에 대한 정보를 가져올 수 없습니다.";
+"Location information is not available." = "Localtion information is not available.";
 
 "Every 2 Weeks" = "Every 2 Weeks";
 "Undo" = "Undo";
@@ -530,18 +505,7 @@
 "0 %@ %ld mo" = "0 %@ %ld mo";
 "%ld %@ %ld mo" = "%ld %@ %ld mo";
 "Loan Calculator using AppBox Pro" = "Loan Calculator using AppBox Pro";
-"<html><body>I'd like to share a calculation with you.<br><br>" = "<html><body>I'd like to share a calculation with you.<br><br>";
-"LoanCalc_Share_HTML_BODY" = "<br><br>You can calculator more in the AppBox Pro.<br><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Share Loan Calculator Data" = "Share Loan Calculator Data";
-"** Loan A <br>" = "** Loan A <br>";
-"<br>** Loan B <br>" = "<br>** Loan B <br>";
-"*Calculation<br>" = "*Calculation<br>";
-"<br>Interest: %@ <br>" = "<br>Interest: %@ <br>";
-"Total Amount: %@ <br>" = "Total Amount: %@ <br>";
-"<br>*Input<br>" = "<br>*Input<br>";
-"Extra Payment(monthly): %@ <br>" = "Extra Payment(monthly): %@ <br>";
-"Extra Payment(yearly): %@ <br>" = "Extra Payment(yearly): %@ <br>";
-"Extra Payment(one-time): %@ <br>" = "Extra Payment(one-time): %@ <br>";
 
 "0 year" = "0 year";
 
@@ -549,7 +513,7 @@
 "Loan B" = "Loan B";
 "EXTRA PAYMENTS" = "EXTRA PAYMENTS";
 "years or months" = "years or months";
-" Data" = " Data";
+"Data" = "Data";
 
 "Extra Payments(Monthly)" = "Extra Payments(Monthly)";
 "Extra(Monthly)" = "Extra(Monthly)";
@@ -561,11 +525,9 @@
 "Extra Payment" = "Extra Payment";
 
 "Solar" = "Solar";
-"1900년부터 2043년까지만 지원합니다." = "1900년부터 2043년까지만 지원합니다.";
-"%ld년 %ld월은 %ld일까지만 있습니다." = "%ld년 %ld월은 %ld일까지만 있습니다.";
+"Lunar calendar is available from year 1901 to 2042." = "Lunar calendar is available from year 1901 to 2042.";
+"Year %ld month %ld has %ld days." = "Year %ld month %ld has %ld days.";
 "Lunar Converter using AppBox Pro" = "Lunar Converter using AppBox Pro";
-"<html><body>I'd like to share a conversion with you.<br/><br/>" = "<html><body>I'd like to share a conversion with you.<br/><br/>";
-"LunarConverter_share_text_html_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Share Lunar Converter Data" = "Share Lunar Converter Data";
 "Lunar(%@) %@" = "Lunar(%@) %@";
 " = Solar %@" = " = Solar %@";
@@ -645,8 +607,6 @@
 "Up" = "Up";
 "Down" = "Down";
 
-"tipcalc_share_body" = "<br/><br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
-
 "Tip Calculator using AppBox Pro" = "Tip Calculator using AppBox Pro";
 
 "Rounding" =  Rounding;
@@ -666,8 +626,7 @@
 "%@ Units" = "%@ Units";
 
 "Unit Converter using AppBox Pro" = "Unit Converter using AppBox Pro";
-"unitConverter_share_html_body" = "<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
-"\nCheck out the AppBox Pro!" = "\nCheck out the AppBox Pro!";
+"Check out the AppBox Pro!" = "Check out the AppBox Pro!";
 "Share unit converting data" = "Share unit converting data";
 "%@, rate = %@" = "%@, rate = %@";
 
@@ -715,11 +674,8 @@
 "Delete Items" = "Delete Items";
 
 "Video" = "Video";
-"<html><body>I'd like to share a wallet with you.<br/><br/>" = "<html><body>I'd like to share a wallet with you.<br/><br/>";
-"wallet_share_html_body" = "<br/><br/>You can wallet more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Add Field" = "Add Field";
 "Edit Field" = "Edit Field";
-" Field name already exists. " = " Field name already exists. ";
 "Field Name" = "Field Name";
 "Type" = "Type";
 "Style" = "Style";
@@ -848,16 +804,14 @@
 
 "Translator using AppBox Pro" = "Translator using AppBox Pro";
 
-"<html><body>I'd like to share a translation with you.<br/><br/>" = "<html><body>I'd like to share a translation with you.<br/><br/>";
-"translator_share_HTML_body" = "<br/><br/>You can translate more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
 "Share Translator Data" = "Share Translator Data";
 
-"Delete data stored in iCloud and start over" = "Delete data stored in iCloud and start over";
+"Delete and start over" = "Delete and start over";
 "Use data stored in iCloud" = "Use data stored in iCloud";
 
 "Internet connection is not available." = "Internet connection is not available.";
 
-"Setup AppBox Pro data in iCloud" = "Setup AppBox Pro data in iCloud";
+"Setup AppBox Pro data stored in iCloud" = "Setup AppBox Pro data stored in iCloud";
 
 "Add this place" = "Add this place";
 
@@ -899,3 +853,32 @@
 "  (e.g. %@)" = "  (e.g. %@)";
 
 "DaysCounter_ALL" = "All";
+
+"You can calculate more in the AppBox Pro." = "You can calculate more in the AppBox Pro.";
+
+"I'd like to share a calculation with you." = "I'd like to share a calculation with you.";
+
+"I'd like to share a conversion with you." = "I'd like to share a conversion with you.";
+"You can convert more in the AppBox Pro." = "You can convert more in the AppBox Pro.";
+"Download from AppStore" = "Download from AppStore";
+
+"Result" = "Result";
+"Add" = "Add";
+"day" = "day";
+"Subtract" = "Subtract";
+"I'd like to share a event with you." = "I'd like to share a event with you.";
+
+"You can manage your events in the AppBox Pro." = "You can manage your events in the AppBox Pro.";
+
+"Interest" = "Interest";
+"Extra Payment(monthly)" = "Extra Payment(monthly)";
+"Extra Payment(yearly)" = "Extra Payment(yearly)";
+"Extra Payment(one-time)" = "Extra Payment(one-time)";
+
+"I'd like to share a information with you." = "I'd like to share a information with you.";
+"You can manage your information in the AppBox Pro." = "You can manage your information in the AppBox Pro.";
+
+"I'd like to share a translation with you." = "I'd like to share a translation with you.";
+"You can translate more in the AppBox Pro." = "You can translate more in the AppBox Pro.";
+
+"Field name already exists." = "Field name already exists.";

@@ -303,7 +303,7 @@
                                       }
                                       else {
                                           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-																						  message:NSLocalizedString(@"장소 검색 실패", @"장소 검색 실패")
+																						  message:NSLocalizedString(@"Places are not available.", nil)
 																						 delegate:nil
 																				cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 																				otherButtonTitles:nil];
@@ -655,7 +655,7 @@
             if ( error == nil ) {
                 if ( [placemarks count] < 1 ) {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																		message:NSLocalizedString(@"현재 위치에 대한 정보를 가져올 수 없습니다.", @"현재 위치에 대한 정보를 가져올 수 없습니다.")
+																		message:NSLocalizedString(@"Location information is not available.", nil)
 																	   delegate:nil
 															  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 															  otherButtonTitles:nil];

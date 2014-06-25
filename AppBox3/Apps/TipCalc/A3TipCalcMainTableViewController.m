@@ -1130,9 +1130,11 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a calculation with you.<br/><br/>", nil)];
+		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share a conversion with you.", nil)];
 		[txt appendString:[self.dataManager sharedDataIsMail:YES]];
-		[txt appendString:NSLocalizedString(@"tipcalc_share_body", nil)];
+		[txt appendFormat:@"<br/><br/>%@<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>%@</a></body></html>",
+						  NSLocalizedString(@"You can convert more in the AppBox Pro.", nil),
+						  NSLocalizedString(@"Download from AppStore", nil)];
         
 		return txt;
 	}

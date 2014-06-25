@@ -435,7 +435,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
 {
     if ([activityType isEqualToString:UIActivityTypeMail]) {
-        NSAttributedString *shareString = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"I'd like to share a calculation with you.\n\n", @"I'd like to share a calculation with you.\n\n")];
+		NSString *normalString = [NSString stringWithFormat:@"%@\n\n", NSLocalizedString(@"I'd like to share a calculation with you.", nil)];
+        NSAttributedString *shareString = [[NSAttributedString alloc] initWithString:normalString];
         NSMutableAttributedString *expression = [[NSMutableAttributedString alloc] initWithAttributedString:[self.calculator getMathAttributedExpression]];
         if ([expression length] >= 3) {
             NSRange range;
@@ -451,7 +452,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
             shareString = [shareString appendWith:[expression appendWithString:[self.calculator getResultString]]];
             
         }
-        shareString = [shareString appendWithString:NSLocalizedString(@"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385", @"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385")];
+		NSString *shareFormat = @"\n\n%@\nhttps://itunes.apple.com/app/id318404385";
+		shareString = [shareString appendWithString:[NSString stringWithFormat:shareFormat, NSLocalizedString(@"You can calculate more in the AppBox Pro.", nil)]];
         return shareString;
     } else {
         return [self.calculator getResultString];

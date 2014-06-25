@@ -30,7 +30,9 @@
 
 "Lunar Calendar" = "음력 달력";
 
-"tellafriend" = "iPhone/iPad/iPod Touch의 유용한 사용을 위해 일반/공학용 계산기, 날짜계산, 대출계산, 퍼센트계산, 할인가격계산, 팁계산, 단가비교, 환율변환, 양음력변환, 번역, 단위 변환, 이벤트 캘린더, 지출 관리, 자연주기, 전자지갑, 세계휴일/기념일, 배터리 정보, 시계, 돋보기, 거울 등의 응용프로그램이 모두 포함된 AppBox Pro™를 추천합니다.\\r\\n\\r\\n지금 바로 아래의 주소에서 AppBox Pro™를 다운받으세요.\\r\\n\\r\\nhttps://itunes.apple.com/app/id318404385";
+"tellafriend" = "iPhone/iPad/iPod Touch의 유용한 사용을 위해 일반/공학용 계산기, 날짜계산, 대출계산, 퍼센트계산, 할인가격계산, 팁계산, 단가비교, 환율변환, 양음력변환, 번역, 단위 변환, 이벤트 캘린더, 지출 관리, 자연주기, 전자지갑, 세계휴일/기념일, 배터리 정보, 시계, 돋보기, 거울 등의 응용프로그램이 모두 포함된 AppBox Pro™를 추천합니다.
+
+지금 바로 아래의 주소에서 AppBox Pro™를 다운받으세요.";
 
 "DISCLAIMER_MESSAGE" = "본 앱에서 제공되는 정보는 작성 시점을 기준으로 최대한 정확한 정보가 되도록 최선을 다하고 있습니다. 그러나, 전세계 지역별 휴일 및 기념일은 예고 없이 변경되고 있어 실제 휴일 정보에서 차이가 발생할 수 있습니다. 여기에서 제공되는 정보는 단순 참고용으로 제공되는 것으로, 이 정보의 제공으로 인한 어떠한 종류의 책임도 지지 않음을 알려드립니다. 단순 참고용 이상의 정보가 필요한 경우에는 해당 국가의 책임있는 기관의 정보를 제공받으시기 바랍니다.";
 "HOLIDAYS_ACKNOWLEDGEMENT" = "본 앱의 휴일 정보 화면 배경으로 제공되는 사진은 Flickr에서 수집된 사진으로 각 지역의 아름다운 모습을 표현하기 위해서 사용되었습니다. 각 사진은 Flickr계정과 사진의 링크를 표시하고 있습니다. 사진의 저작권은 모두 해당 소유자에게 있습니다. 당사는 어떠한 사진도 소유하고 있지 않습니다. 만약 소유하고 계신 사진이 이 앱에서 보여지기를 원하시는 경우에는 저희에게 메일을 보내주시기 바랍니다. 보내주신 정보에 대해서는 어떠한 금전적 보상은 하지 않으나 이 앱을 통해서 소유하신 사진을 앱의 사용자에게 공유하는 계기가 될 것 입니다.";
@@ -114,9 +116,7 @@
 "Scientific" = "공학용";
 "Basic" = "기본";
 "Calculator using AppBox Pro" = "AppBox Pro의 계산기";
-"I'd like to share a calculation with you.\n\n" = "계산 결과를 공유합니다.\n\n";
 
-"\n\nYou can calculate more in the AppBox Pro.\nhttps://itunes.apple.com/app/id318404385" = "\n\nAppBox Pro로 더 많은 계산을 하세요.\nhttps://itunes.apple.com/app/id318404385";
 "CHOOSE COLOR" = "색상 선택";
 
 "Humidity" = "습도";
@@ -153,12 +153,7 @@
 "%@Rate = %0.4f" = "%@환율 = %0.4f";
 "Rate = %0.4f" = "환율 = %0.4f";
 
-"%@ equals %@ with rate %0.4f" = "%@/%@ = %0.4f";
 "Currency Converter in the AppBox Pro" = "AppBox Pro의 환율 변환";
-"share_currencyConverter_head" = "<html><body>환율 계산 결과를 공유합니다.<br/><br/>";
-"share_unitConverter_head" = "<html><body>단위 변환 결과를 공유합니다.<br/><br/>";
-"share_Lunar_head" = "<html><body>양력/음력 변환 결과를 공유합니다.<br/><br/>";
-"currency_share_HTML_body" = "<br/><br/>AppBox Pro의 환율 정보를 활용해 보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 "Share Currency Converter Data" = "환율 변환 정보 공유하기";
 
 /* Data Calc duration */
@@ -192,17 +187,7 @@
 "Today  " = "오늘  ";
 
 "Date Calculator using AppBox Pro" = "AppBox Pro의 날짜 계산기";
-"<html><body>I'd like to share a calculation with you.<br/><br/>" = "<html><body>계산결과를 공유합니다.<br/><br/>";
-"datecalc_share_body" = "<br/><br/>AppBox Pro로 더 많은 계산을 해보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>Download from AppStore</a></body></html>";
-"From: %@<br>" = "시작: %@<br>";
-"To: %@<br>" = "종료: %@<br>";
-"Exclude: %@<br>" = "제외기간: %@<br>";
 
-"Result: %@" = "결과: %@";
-"Add: 0 day<br>" = "더하기: 0 day<br>";
-"Add: %@<br>" = "더하기: %@<br>";
-"Subtract: 0 day<br>" = "빼기: 0 day<br>";
-"Subtract: %@<br>" = "제목: %@<br>";
 "Between two dates" = "두 날짜 사이의 기간";
 "Add or Subtract days" = "날짜에 더하거나 빼기";
 "From" = "시작일";
@@ -212,7 +197,6 @@
 "%ld of %ld" = "%ld / %ld";
 "%@ using AppBox Pro" = "%@ AppBox Pro 사용";
 "Share Days Counter Data" = "이벤트 캘린더 공유";
-"<html><body>I'd like to share a event with you.<br/><br/>" = "<html><body>이벤트를 공유합니다.<br/><br/>";
 "Slideshow Options" = "슬라이드쇼 옵션";
 "Transitions" = "화면전환";
 "Play Each Slide For" = "슬라이드당 재생 시간";
@@ -281,8 +265,6 @@
 "repeats %@" = "반복 %@";
 "since" = "지남";
 "first date" = "최초날짜";
-"<html><body>I'd like to share a days count with you.<br/><br/>" = "<html><body>이벤트를 공유합니다.<br/><br/>";
-"daysCounter_share_HTML_body" = "<br/>AppBox Pro로 이벤트를 관리하세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 
 "Delete All" = "모두 지우기";
 "Delete Events" = "이벤트 지우기";
@@ -351,11 +333,6 @@
 "Days\nUntil" = "일\n남음";
 "Days\nSince" = "일\n지남";
 
-"%@ (음력 %@)" = "%@ (음력 %@)";
-"음력 %@" = "음력 %@";
-
-"(음력 %@)" = "(음력 %@)";
-
 "Change Location" = "위치 바꾸기";
 "Current Location" = "현재 위치";
 "Searching" = "검색중";
@@ -374,7 +351,7 @@
 "30 minutes" = "30 분";
 "13 seconds" = "13 초";
 
-"장소 검색 실패" = "장소 검색 실패";
+"Places are not available." = "주변에 등록된 위치가 없습니다.";
 
 "Loading locations...." = "위치 탐색 중";
 
@@ -383,7 +360,7 @@
 
 "Create %@" = "%@ 만들기";
 
-"현재 위치에 대한 정보를 가져올 수 없습니다." = "현재 위치에 대한 정보를 가져올 수 없습니다.";
+"Location information is not available." = "위치 정보를 조회할 수 없습니다.";
 
 "Every 2 Weeks" = "2주마다";
 "Undo" = "실행취소";
@@ -531,18 +508,7 @@
 "0 %@ %ld mo" = "0 %@ %ld 월";
 "%ld %@ %ld mo" = "%ld %@ %ld 월";
 "Loan Calculator using AppBox Pro" = "AppBox Pro의 대출 계산기";
-"<html><body>I'd like to share a calculation with you.<br><br>" = "<html><body>계산 결과를 공유합니다.<br><br>";
-"LoanCalc_Share_HTML_BODY" = "<br><br>AppBox Pro로 대출 상환금을 계산해 보세요.<br><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 "Share Loan Calculator Data" = "대출계산기 결과를 공유";
-"** Loan A <br>" = "** 대출정보 A <br>";
-"<br>** Loan B <br>" = "<br>** 대출정보 B <br>";
-"*Calculation<br>" = "*계산항목<br>";
-"<br>Interest: %@ <br>" = "<br>대출금리: %@ <br>";
-"Total Amount: %@ <br>" = "총액: %@ <br>";
-"<br>*Input<br>" = "<br>*입력<br>";
-"Extra Payment(monthly): %@ <br>" = "중도상환(매월): %@ <br>";
-"Extra Payment(yearly): %@ <br>" = "중도상환(매년): %@ <br>";
-"Extra Payment(one-time): %@ <br>" = "중도상환(일회): %@ <br>";
 
 "0 year" = "0 년";
 
@@ -550,7 +516,7 @@
 "Loan B" = "대출정보 B";
 "EXTRA PAYMENTS" = "중도상환";
 "years or months" = "년 혹은 월";
-" Data" = " 데이터";
+"Data" = "데이터";
 
 "Extra Payments(Monthly)" = "중도상환(매월)";
 "Extra(Monthly)" = "중도상환(매월)";
@@ -562,11 +528,9 @@
 "Extra Payment" = "중도상환";
 
 "Solar" = "양력";
-"1900년부터 2043년까지만 지원합니다." = "1900년부터 2043년까지만 지원합니다.";
-"%ld년 %ld월은 %ld일까지만 있습니다." = "%ld년 %ld월은 %ld일까지만 있습니다.";
+"Lunar calendar is available from year 1901 to 2042." = "음력은 1901년부터 2042년까지만 제공됩니다.";
+"Year %ld month %ld has %ld days." = "%ld년 %ld월은 %ld일까지 있습니다.";
 "Lunar Converter using AppBox Pro" = "AppBox Pro의 양력/음력 변환";
-"<html><body>I'd like to share a conversion with you.<br/><br/>" = "<html><body>양력/음력 변환 결과를 공유합니다.<br/><br/>";
-"LunarConverter_share_text_html_body" = "<br/><br/>AppBox Pro로 양력/음력 변환을 해보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 "Share Lunar Converter Data" = "양력/음력 변환 결과를 공유";
 "Lunar(%@) %@" = "음력(%@) %@";
 " = Solar %@" = " = 양력 %@";
@@ -646,8 +610,6 @@
 "Up" = "올림";
 "Down" = "버림";
 
-"tipcalc_share_body" = "<br/><br/>AppBox Pro로 팁 계산을 쉽게 할 수 있어요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
-
 "Tip Calculator using AppBox Pro" = "AppBox Pro의 팁 계산기능";
 
 "Rounding" = "반올림";
@@ -667,8 +629,7 @@
 "%@ Units" = "%@ 단위";
 
 "Unit Converter using AppBox Pro" = "AppBox Pro의 단위 변환";
-"unitConverter_share_html_body" = "<br/><br/>AppBox Pro로 다양한 단위간 변환을 해보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
-"\nCheck out the AppBox Pro!" = "\nAppBox Pro에서 작성!";
+"Check out the AppBox Pro!" = "AppBox Pro에서 작성!";
 "Share unit converting data" = "단위 변환 결과를 공유";
 "%@, rate = %@" = "%@, 비율 = %@";
 
@@ -716,11 +677,8 @@
 "Delete Items" = "아이템 지우기";
 
 "Video" = "비디오";
-"<html><body>I'd like to share a wallet with you.<br/><br/>" = "<html><body>정보를 공유합니다.<br/><br/>";
-"wallet_share_html_body" = "<br/>AppBox Pro로 중요한 정보를 관리하세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 "Add Field" = "필드 추가";
 "Edit Field" = "필드 수정";
-" Field name already exists. " = " 같은 이름의 필드명이 이미 존재합니다. ";
 "Field Name" = "필드 이름";
 "Type" = "종류";
 "Style" = "스타일";
@@ -841,16 +799,14 @@
 
 "Translator using AppBox Pro" = "AppBox Pro의 번역기";
 
-"<html><body>I'd like to share a translation with you.<br/><br/>" = "<html><body>번역한 내용을 공유합니다.<br/><br/>";
-"translator_share_HTML_body" = "<br/><br/>AppBox Pro의 번역 기능을 활용해 보세요.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>앱 스토어에서 다운로드</a></body></html>";
 "Share Translator Data" = "번역 결과를 공유";
 
-"Delete data stored in iCloud and start over" = "iCloud 데이터를 지우고 새로 시작하기";
-"Use data stored in iCloud" = "iCloud 데이터를 사용";
+"Delete and start over" = "iCloud를 지우고 새로 시작";
+"Use data stored in iCloud" = "iCloud에 저장된 데이터를 사용";
 
 "Internet connection is not available." = "사용 가능한 인터넷 연결이 없습니다.";
 
-"Setup AppBox Pro data in iCloud" = "iCloud 데이터 설정";
+"Setup AppBox Pro data stored in iCloud" = "iCloud 데이터 설정";
 
 "Add this place" = "장소 추가";
 
@@ -904,3 +860,32 @@
 "  (e.g. %@)" = "  (예: %@)";
 
 "DaysCounter_ALL" = "모든 이벤트";
+
+"You can calculate more in the AppBox Pro." = "You can calculate more in the AppBox Pro.";
+
+"I'd like to share a calculation with you." = "I'd like to share a calculation with you.";
+
+"I'd like to share a conversion with you." = "I'd like to share a conversion with you.";
+"You can convert more in the AppBox Pro." = "You can convert more in the AppBox Pro.";
+"Download from AppStore" = "Download from AppStore";
+
+"Result" = "Result";
+"Add" = "Add";
+"day" = "day";
+"Subtract" = "Subtract";
+"I'd like to share a event with you." = "I'd like to share a event with you.";
+
+"You can manage your events in the AppBox Pro." = "You can manage your events in the AppBox Pro.";
+
+"Interest" = "Interest";
+"Extra Payment(monthly)" = "Extra Payment(monthly)";
+"Extra Payment(yearly)" = "Extra Payment(yearly)";
+"Extra Payment(one-time)" = "Extra Payment(one-time)";
+
+"I'd like to share a information with you." = "I'd like to share a information with you.";
+"You can manage your information in the AppBox Pro." = "You can manage your information in the AppBox Pro.";
+
+"I'd like to share a translation with you." = "I'd like to share a translation with you.";
+"You can translate more in the AppBox Pro." = "You can translate more in the AppBox Pro.";
+
+"Field name already exists." = "Field name already exists.";

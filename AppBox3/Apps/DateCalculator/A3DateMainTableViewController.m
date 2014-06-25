@@ -423,9 +423,11 @@
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
         
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:NSLocalizedString(@"<html><body>I'd like to share a calculation with you.<br/><br/>", @"<html><body>I'd like to share a calculation with you.<br/><br/>")];
+		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share a conversion with you.", nil)];
 		[txt appendString:[self stringForShareForActivityType:UIActivityTypeMail]];
-		[txt appendString:NSLocalizedString(@"datecalc_share_body", nil)];
+		[txt appendFormat:@"<br/><br/>%@<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>%@</a></body></html>",
+						  NSLocalizedString(@"You can convert more in the AppBox Pro.", nil),
+						  NSLocalizedString(@"Download from AppStore", nil)];
         
 		return txt;
 	}
@@ -461,16 +463,16 @@
      To, but not including: 끝날
      Result:  ? years ? months ? days" */
     if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
-        [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"From: %@<br>", nil), [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
-        [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"To: %@<br>", nil), [A3DateCalcStateManager fullStyleDateStringFromDate:_toDate]]];
+        [shareString appendString:[NSString stringWithFormat:@"%@: %@<br>", NSLocalizedString(@"From", @"From"), [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
+        [shareString appendString:[NSString stringWithFormat:@"%@: %@<br>", NSLocalizedString(@"To", @"To"), [A3DateCalcStateManager fullStyleDateStringFromDate:_toDate]]];
     }
     else {
-        [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"From: %@<br>", nil), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
-        [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"To: %@<br>", nil), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_toDate]]];
+        [shareString appendString:[NSString stringWithFormat:@"%@: %@<br>", NSLocalizedString(@"From", @"From"), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
+        [shareString appendString:[NSString stringWithFormat:@"%@: %@<br>", NSLocalizedString(@"To", @"To"), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_toDate]]];
     }
 
     if ([A3DateCalcStateManager excludeOptions] != ExcludeOptions_None) {
-        [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Exclude: %@<br>", nil), [A3DateCalcStateManager excludeOptionsString]]];
+        [shareString appendString:[NSString stringWithFormat:@"%@ %@<br>", NSLocalizedString(@"Exclude", @"Exclude"), [A3DateCalcStateManager excludeOptionsString]]];
     }
     
     NSDateComponents *intervalComp = [A3DateCalcStateManager dateComponentFromDate:_fromDate toDate:_toDate];
@@ -497,9 +499,8 @@
         [intervals appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), labs((long)intervalComp.day)]];
     }
     
-    [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Result: %@", @"Result: %@"), intervals]];
-    
-    
+    [shareString appendString:[NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Result", @"Result"), intervals]];
+
     return shareString;
 }
 
@@ -516,10 +517,10 @@
                                                                                   options:0];
         
         if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
-            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"From: %@<br>", @"From: %@<br>"), [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
+            [shareString appendString:[NSString stringWithFormat:@"%@: %@<br>", NSLocalizedString(@"From", @"From"), [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
         }
         else {
-            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"From: %@<br>", @"From: %@<br>"), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
+            [shareString appendString:[NSString stringWithFormat:@"%@: %@<br>", NSLocalizedString(@"From", @"From"), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
         }
         
         NSMutableString *resultShareString = [[NSMutableString alloc] init];
@@ -537,17 +538,17 @@
         }
         
         if (resultShareString.length <= 0) {
-            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Add: 0 day<br>", nil)]];
+            [shareString appendString:[NSString stringWithFormat:@"%@: 0 %@<br>", NSLocalizedString(@"Add", @"Add"), NSLocalizedString(@"day", @"day")]];
         }
         else {
-            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Add: %@<br>", nil), resultShareString]];
+            [shareString appendString:[NSString stringWithFormat:@"%@: %@<br>", NSLocalizedString(@"Add", @"Add"), resultShareString]];
         }
         
         if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
-            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Result: %@", nil), [A3DateCalcStateManager fullStyleDateStringFromDate:result]]];
+            [shareString appendString:[NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Result", @"Result"), [A3DateCalcStateManager fullStyleDateStringFromDate:result]]];
         }
         else {
-            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Result: %@", nil), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:result]]];
+            [shareString appendString:[NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Result", @"Result"), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:result]]];
         }
     }
     else {
@@ -560,10 +561,10 @@
                                                                                    toDate:_fromDate
                                                                                   options:0];
         if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
-            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"From: %@<br>", nil), [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
+            [shareString appendString:[NSString stringWithFormat:@"%@: %@<br>", NSLocalizedString(@"From", @"From"), [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate]]];
         }
         else {
-            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"From: %@<br>", nil), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
+            [shareString appendString:[NSString stringWithFormat:@"%@: %@<br>", NSLocalizedString(@"From", @"From"), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate]]];
         }
         
         NSMutableString *resultShareString = [[NSMutableString alloc] init];
@@ -581,16 +582,16 @@
         }
         
         if (resultShareString.length <= 0) {
-            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Subtract: 0 day<br>", nil)]];
+            [shareString appendString:[NSString stringWithFormat:@"%@: 0 %@<br>", NSLocalizedString(@"Subtract", @"Subtract"), NSLocalizedString(@"day", @"day")]];
         } else {
-            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Subtract: %@<br>", nil), resultShareString]];
+            [shareString appendString:[NSString stringWithFormat:@"%@: %@<br>", NSLocalizedString(@"Subtract", @"Subtract"), resultShareString]];
         }
         
         if ([activityType isEqualToString:UIActivityTypeMail] || [NSDate isFullStyleLocale]) {
-            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Result: %@", nil), [A3DateCalcStateManager fullStyleDateStringFromDate:result]]];
+            [shareString appendString:[NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Result", @"Result"), [A3DateCalcStateManager fullStyleDateStringFromDate:result]]];
         }
         else {
-            [shareString appendString:[NSString stringWithFormat:NSLocalizedString(@"Result: %@", nil), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:result]]];
+            [shareString appendString:[NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Result", @"Result"), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:result]]];
         }
     }
     

@@ -66,7 +66,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
     line.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.tableView addSubview:line];
     
-    NSString *title = [[LoanCalcString titleOfFrequency:_loanData.frequencyIndex] stringByAppendingString:NSLocalizedString(@" Data", @" Data")];
+    NSString *title = [[LoanCalcString titleOfFrequency:_loanData.frequencyIndex] stringByAppendingString:NSLocalizedString(@"Data", nil)];
     self.navigationItem.title = title;
     
     [self registerContentSizeCategoryDidChangeNotification];
