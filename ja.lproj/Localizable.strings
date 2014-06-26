@@ -203,7 +203,6 @@
 "Start Slideshow" = "Start Slideshow";
 "There is no events." = "There is no events.";
 
-"Slide Show" = "Slide Show";
 "Slideshow" = "Slideshow";
 "Edit Calendar" = "Edit Calendar";
 "Add Calendar" = "Add Calendar";
@@ -272,7 +271,6 @@
 
 "Reminder" = "Reminder";
 
-"All" = "All";
 "List_Upcoming" = "Upcoming";
 "List_Past" = "Past";
 "Anniversary" = "Anniversary";
@@ -657,6 +655,7 @@
 "Volume" = "Volume";
 "Weight" = "Weight";
 
+"Wallet_All_Category" = "All";
 "Field Type" = "Field Type";
 "All Items" = "All Items";
 "CATEGORIES" = "CATEGORIES";
@@ -828,9 +827,6 @@
 "FaceTime" = "FaceTime";
 "GPS" = "GPS";
 "Charging times" = "Charging times";
-"2D Game" = "2D Game";
-"3D Game" = "3D Game";
-"YouTube" = "YouTube";
 
 "None_Mirror" = "None";
 
