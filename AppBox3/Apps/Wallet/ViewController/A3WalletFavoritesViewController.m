@@ -194,7 +194,7 @@
         WalletFavorite *favorite = self.items[(NSUInteger) indexPath.row];
         [self.items removeObject:favorite];
         
-        [favorite.item MR_deleteEntity];
+        [favorite MR_deleteEntity];
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 

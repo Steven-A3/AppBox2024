@@ -1282,6 +1282,8 @@ then drag it up or down</string>
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="wallet3_finger2BottomConst" destination="zM3-Vt-mfa" id="ISi-3m-hZo"/>
+                        <outlet property="wallet3_finger3BottomConst" destination="uVg-Va-0WT" id="QvH-sH-qEN"/>
                         <outletCollection property="childImageViews" destination="UFc-4O-EbR" id="cgc-Ch-4K8"/>
                         <outletCollection property="childImageViews" destination="CJz-2K-52H" id="ByV-XW-YLQ"/>
                         <outletCollection property="childImageViews" destination="wjt-Kq-a4W" id="mal-wS-Llz"/>
@@ -1426,7 +1428,7 @@ then tap Delete</string>
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="208" translatesAutoresizingMaskIntoConstraints="NO" id="5vX-h0-0KZ">
-                                        <rect key="frame" x="102" y="77" width="208" height="39.5"/>
+                                        <rect key="frame" x="102" y="77" width="208" height="40"/>
                                         <string key="text">Tap the screen to display
 the controls</string>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
