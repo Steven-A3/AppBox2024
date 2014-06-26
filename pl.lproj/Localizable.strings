@@ -6,31 +6,30 @@
  */
 
 "Select Currency" = "Select Currency";
-"Principal" = "Principal";
-"Term" = "Term";
+"Principal" = "Kapitał";
+"Term" = "Termin";
 "Interest Rate" = "Interest Rate";
 "Frequency" = "Frequency";
 "LadyCalendar_Start Date" = "Start Date";
 "Notes" = "Notes";
 "One-Time" = "One-Time";
-"Currency" = "Currency";
+"Currency" = "Waluta Kraju";
 
 "iCloud" = "iCloud";
-"None" = "None";
+"None" = "Brak";
 
 "Most Recent" = "Most Recent";
 
-"Korean" = "Korean";
-"Chinese" = "Chinese";
+"Korean" = "Koreański";
+"Chinese" = "Chiński";
 
-"Settings" = "Settings";
+"Settings" = "Ustawienia";
 "Sync" = "Sync";
 
-"Passcode Lock" = "Passcode Lock";
-
+"Passcode Lock" = "Kod blokady";
 "Lunar Calendar" = "Lunar Calendar";
 
-"tellafriend" = "A friend wanted to let you know that the Calculator, Date Calculator, Loan Calculator, Percent Calculator, Sales Calculator, Tip Calculator, Unit Price, Currency Converter, Lunar Converter, Translator, Unit Converter, Days Counter, Expense List, Lady Calendar, Wallet, Holidays, Battery Status, Clock, Magnifier and Mirror you've come to expect from AppBox Pro™ is now available for your iPhone, iPad and iPod Touch. Click below to download AppBox Pro™ from the iTunes App Store.\r\n\r\nhttps://itunes.apple.com/app/id318404385";
+"tellafriend" = "Twój przyjaciel przekazuje Ci informację, że Lustro, Budzik, Poziomica, Waluty, Daty, Odliczanie, Napiwki, Jednostki i aplikacje sieciowe (Web Apps)  z AppBox Pro™ są już dostępne na twojego iPhone-a lub iPod-a Touch. Kliknij link poniżej aby ściągnąć AppBox Pro™ ze sklepu iTunes.\n\nhttps://itunes.apple.com/app/id318404385";
 
 "DISCLAIMER_MESSAGE" = "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case.";
 "HOLIDAYS_ACKNOWLEDGEMENT" = "A Photo behind the Holidays in the AppBox Pro is collected from Flickr that reflect the beauty and magnificence of differnet locations around the world. Flickr screen name and a link to the photo are shown on the screen. Authors get any and all rights over photo. ALLABOUTAPPS Inc. don't own any photo. If you want to paricipate this, send us email. You will not receive financial compensation for use of your photos, however will bring a whole new audience to your photostream. Thanks to authors to share.";
@@ -50,39 +49,39 @@
 "Loan Calculator" = "Loan Calculator";
 "Sales Calculator" = "Sales Calculator";
 "Tip Calculator" = "Tip Calculator";
-"Unit Price" = "Unit Price";
+"Unit Price" = "Cena jednostkowa";
 "Percent Calculator" = "Percent Calculator";
 "Currency Converter" = "Currency Converter";
 "Lunar Converter" = "Lunar Converter";
-"Translator" = "Translator";
+"Translator" = "Tłumacz";
 "Unit Converter" = "Unit Converter";
 "Days Counter" = "Days Counter";
 "Lady Calendar" = "Lady Calendar";
-"Wallet" = "Wallet";
+"Wallet" = "Portfel";
 "Expense List" = "Expense List";
-"Holidays" = "Holidays";
+"Holidays" = "Dni wolne";
 "Clock" = "Clock";
-"Mirror" = "Mirror";
+"Mirror" = "Lustro";
 "Magnifier" = "Magnifier";
-"Favorites" = "Favorites";
+"Favorites" = "Ulubione";
 
 "Last %ld" = "Last %ld";
 
 "Apps" = "Apps";
 "iCloud_goto_settings" = "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.";
 
-"Info" = "Info";
-"Cancel" = "Cancel";
+"Info" = "Informacja";
+"Cancel" = "Anuluj";
 "Delete Photo" = "Delete Photo";
-"Take Photo" = "Take Photo";
-"Choose Existing" = "Choose Existing";
-"Choose and Resize" = "Choose and Resize";
+"Take Photo" = "Zrób zdjęcie";
+"Choose Existing" = "Rolka z aparatu";
+"Choose and Resize" = "Wybierać i zmieniać";
 
 "Enabling iCloud" = "Enabling iCloud";
 "Disabling iCloud" = "Disabling iCloud";
 
 "iCloud Enabled" = "iCloud Enabled";
-"Syncing in background" = "Syncing in backgorund";
+"Syncing in background" = "Syncing in background";
 "iCloud Disabled" = "iCloud Disabled";
 "Local Store Problem" = "Local Store Problem";
 "Your datastore got corrupted and needs to be recreated." = "Your datastore got corrupted and needs to be recreated.";
@@ -94,11 +93,11 @@
 "Utility" = "Utility";
 "OK" = "OK";
 "Device" = "Device";
-"Version" = "Version";
+"Version" = "Wersja";
 "Chips" = "Chips";
 "CPU" = "CPU";
 "GPU" = "GPU";
-"Memory" = "Memory";
+"Memory" = "PAMIĘĆ";
 "Capacity" = "Capacity";
 
 "How to Maximize Power Use" = "How to Maximize Power Use";
@@ -107,7 +106,7 @@
 "Enter The Number!" = "Enter The Number!";
 
 "History" = "History";
-"Clear" = "Clear";
+"Clear" = "Usunąć";
 "Clear History" = "Clear History";
 
 "Basic / Scientific" = "Basic / Scientific";
@@ -144,7 +143,7 @@
 "Swap" = "Swap";
 "Chart" = "Chart";
 "Share" = "Share";
-"Delete" = "Delete";
+"Delete" = "Usuń";
 
 "Updating" = "Updating";
 "Updated %@" = "Updated %@";
@@ -158,9 +157,9 @@
 "Year" = "Year";
 "Month" = "Month";
 "Week" = "Week";
-"Day" = "Day";
-"Duration" = "Duration";
-"Edit Event" = "Edit Event";
+"Day" = "Dzień";
+"Duration" = "Czas trwania";
+"Edit Event" = "Edycja wydarzenia";
 "ADVANCED" = "ADVANCED";
 
 "Saturday" = "Saturday";
@@ -177,8 +176,8 @@
 "Years" = "Years";
 "Months" = "Months";
 "Weeks" = "Weeks";
-"Days" = "Days";
-"Weekends" = "Weekends";
+"Days" = "Dni";
+"Weekends" = "W dni weekendowe";
 "Sat" = "Sat";
 "Sun" = "Sun";
 "Public Holidays" = "Public Holidays";
@@ -188,8 +187,8 @@
 
 "Between two dates" = "Between two dates";
 "Add or Subtract days" = "Add or Subtract days";
-"From" = "From";
-"To" = "To";
+"From" = "Od";
+"To" = "Do";
 "Exclude" = "Exclude";
 
 "%ld of %ld" = "%ld of %ld";
@@ -198,7 +197,7 @@
 "Slideshow Options" = "Slideshow Options";
 "Transitions" = "Transitions";
 "Play Each Slide For" = "Play Each Slide For";
-"Repeat" = "Repeat";
+"Repeat" = "Powtórz";
 "Shuffle" = "Shuffle";
 "Start Slideshow" = "Start Slideshow";
 "There is no events." = "There is no events.";
@@ -211,23 +210,23 @@
 "Delete Calendar" = "Delete Calendar";
 "Untitled" = "Untitled";
 
-"Add Event" = "Add Event";
-"Title" = "Title";
-"Photo" = "Photo";
-"Lunar" = "Lunar";
+"Add Event" = "Dodaj Wydarzenie";
+"Title" = "Nazwa";
+"Photo" = "Zdjęcie";
+"Lunar" = "Księżyc";
 "Starts-Ends" = "Starts-Ends";
-"Starts" = "Starts";
-"All-day" = "All-day";
+"Starts" = "Początek";
+"All-day" = "Całodzienne";
 
 "Leap Month" = "Leap Month";
-"Ends" = "Ends";
+"Ends" = "Koniec";
 "End Repeat" = "End Repeat";
 "Alert" = "Alert";
-"Calendar" = "Calendar";
+"Calendar" = "Kalendarz";
 "Duration Option" = "Duration Option";
 "Location" = "Location";
 "Delete Event" = "Delete Event";
-"Date" = "Date";
+"Date" = "Data";
 "Delete Location" = "Delete Location";
 "Use My Location" = "Use My Location";
 "Search Location" = "Search Location";
@@ -251,14 +250,14 @@
 
 "Move these events to a new calendar." = "Move these events to a new calendar.";
 "Please select calendar." = "Please select calendar.";
-"Phone" = "Phone";
+"Phone" = "Telefon";
 "Address" = "Address";
 "Event Details" = "Event Details";
 
 "Share Event" = "Share Event";
 "No location" = "No location";
 "Remove from Favorites" = "Remove from Favorites";
-"Add to Favorites" = "Add to Favorites";
+"Add to Favorites" = "Dodaj do ulubionych";
 "from %@" = "from %@";
 "to %@" = "to %@";
 "repeats %@" = "repeats %@";
@@ -281,12 +280,12 @@
 "Holiday" = "Holiday";
 "Work" = "Work";
 
-"Never" = "Never";
-"Every Day" = "Every Day";
-"Every Week" = "Every Week";
+"Never" = "Nigdy";
+"Every Day" = "Codziennie";
+"Every Week" = "Co tydzień";
 "Every 2Weeks" = "Every 2Weeks";
-"Every Month" = "Every Month";
-"Every Year" = "Every Year";
+"Every Month" = "Co miesiąc";
+"Every Year" = "Co rok";
 "Daily" = "Daily";
 "Weekly" = "Weekly";
 "Bi-Weekly" = "Bi-weekly";
@@ -297,9 +296,9 @@
 "5 minutes before" = "5 minutes before";
 "15 minutes before" = "15 minutes before";
 "30 minutes before" = "30 minutes before";
-"1 hour before" = "1 hour before";
+"1 hour before" = "1 godzinę przed";
 "2 hours before" = "2 hours before";
-"1 day before" = "1 day before";
+"1 day before" = "1 dzień przed";
 "2 days before" = "2 days before";
 "1 week before" = "1 week before";
 
@@ -308,7 +307,7 @@
 "DaysCounterDuration_week_abbreviation" = "w";
 "DaysCounterDuration_day_abbreviation" = "d";
 "DaysCounterDuration_hour_abbreviation" = "hr";
-"Hours" = "Hours";
+"Hours" = "Godzin";
 "DaysCounterDuration_minute_abbreviation" = "min";
 "Minutes" = "Minutes";
 
@@ -328,10 +327,10 @@
 "Current Location" = "Current Location";
 "Searching" = "Searching";
 "No Results Found" = "No Results Found";
-"Custom" = "Custom";
+"Custom" = "W dniu";
 "day(s) before" = "day(s) before";
-"Please enter your dates in the future." = "Please enter your dates in the future.";
-"Time" = "Time";
+"Please enter your dates in the future." = "Prosimy wprowadzić daty w przyszłości.";
+"Time" = "Godzina";
 "Duration Options" = "Duration Options";
 
 "Until" = "Until";
@@ -359,7 +358,7 @@
 
 "Location information is not available." = "Location information is not available.";
 
-"Every 2 Weeks" = "Every 2 Weeks";
+"Every 2 Weeks" = "Co dwa tygodnie";
 "Undo" = "Undo";
 "Redo" = "Redo";
 "Prev" = "Prev";
@@ -397,7 +396,7 @@
 " over of " = " over of ";
 " left of " = " left of ";
 
-"Done" = "Done";
+"Done" = "Gotowe";
 "Add Holidays to \"Days Counter\" app" = "Add Holidays to \"Days Counter\" app";
 
 /* Public Holiday */
@@ -413,31 +412,31 @@
 "Past" = "Past";
 "Holidays for year %lu is not available." = "Holidays for year %lu is not available.";
 "Disclaimer" = "Disclalmer";
-"I Agree" = "I Agree";
+"I Agree" = "Zgadzam się";
 "on flickr" = "on flickr";
 " by %@" = " by %@";
 
-"Edit" = "Edit";
+"Edit" = "Edycja";
 "Average" = "Average";
 "Avg." = "Avg.";
 "Edit Accounts" = "Edit Accounts";
 "Edit Account" = "Edit Account";
 "Add Account" = "Add Account";
-"Name" = "Name";
+"Name" = "Nazwa";
 "Delete Account" = "Delete Account";
 "Optional" = "Optional";
 "Cannot remove current account." = "Cannot remove current account.";
 " Same name already exists. " = " Same name already exists. ";
 "User" = "User";
 
-"Edit Period" = "Edit Period";
-"Add Period" = "Add Period";
-"End Date" = "End Date";
-"Cycle Length" = "Cycle Length";
+"Edit Period" = "Edytuj okres";
+"Add Period" = "Dodaj okres";
+"End Date" = "Koniec";
+"Cycle Length" = "Długość cyklu";
 "Delete Period" = "Delete Period";
 "Please input end date." = "Please input end date.";
 "Cannot Save Period.\nThe start date must be before the end date." = "Cannot Save Period.\nThe start date must be before the end date.";
-"The new date you entered overlaps with previous dates." = "The new date you entered overlaps with previous dates.";
+"The new date you entered overlaps with previous dates." = "Nowa data pokrywa się z poprzednią.";
 "6 Mos" = "6 Mos";
 "6 Months" = "6 Months";
 "9 Mos" = "9 Mos";
@@ -447,9 +446,9 @@
 "CYCLE LENGTH" = "CYCLE LENGTH";
 "MENSTRUAL PERIOD" = "MENSTRUAL PERIOD";
 "Expected Period(+/-2 days)" = "Expected Period(+/-2 days)";
-"Increased Probability of Pregnancy" = "Increased Probability of Pregnancy";
-"Ovulation - Highest Probability" = "Ovulation - Highest Probability";
-"Menstrual Period" = "Menstrual Period";
+"Increased Probability of Pregnancy" = "Zwiększone prawdopodobieństwo ciąży";
+"Ovulation - Highest Probability" = "Owulacja – Wysokie prawdopodobieństwo";
+"Menstrual Period" = "Miesiączka";
 "Periods" = "Periods";
 "On day(9 AM)" = "On day(9 AM)";
 "1 day before(9 AM)" = "1 day before(9 AM)";
@@ -471,9 +470,9 @@
 "Monthly_Rate" = "Monthly";
 
 "Down Payment" = "Down Payment";
-"Payment" = "Payment";
+"Payment" = "Rata";
 "Term(years)" = "Term(years)";
-"Term(months)" = "Term(months)";
+"Term(months)" = "Termin(miesiące)";
 "Biweekly" = "Biweekly";
 "LoanCalc_Monthly" = "Monthly";
 "Bimonthly" = "Bimonthly";
@@ -493,13 +492,13 @@
 "PRINCIPAL" = "PRINCIPAL";
 "INTEREST" = "INTEREST";
 "BALANCE" = "BALANCE";
-"Total Interest" = "Total Interest";
+"Total Interest" = "Łączne odsetki";
 "Avg.Interest" = "Avg.Interest";
-"Total Amount" = "Total Amount";
+"Total Amount" = "Łączna kwota";
 "Average Interest" = "Average Interest";
 "Amounts" = "Amounts";
-"Loan" = "Loan";
-"Comparison" = "Comparison";
+"Loan" = "Pożyczki";
+"Comparison" = "Porównanie";
 " of " = " of ";
 
 "0 %@ %ld mo" = "0 %@ %ld mo";
@@ -509,8 +508,8 @@
 
 "0 year" = "0 year";
 
-"Loan A" = "Loan A";
-"Loan B" = "Loan B";
+"Loan A" = "Pożyczka A";
+"Loan B" = "Pożyczka B";
 "EXTRA PAYMENTS" = "EXTRA PAYMENTS";
 "years or months" = "years or months";
 "Data" = "Data";
@@ -555,9 +554,9 @@
 "% Change from X to Y" = "% Change from X to Y";
 "Compare % Change from X to Y" = "Compare % Change from X to Y";
 
-"Sale Price" = "Sale Price";
+"Sale Price" = "Obniżka";
 "Sale Price Tax" = "Sale Price Tax";
-"Original Price" = "Original Price";
+"Original Price" = "Oryginalna cena";
 "Original Price Tax" = "Original Price Tax";
 "Saved Amount" = "Saved Amount";
 "Saved Amount Tax" = "Saved Amount Tax";
@@ -570,20 +569,20 @@
 "Sale Price w/Tax" = "Sale Price w/Tax";
 "Discount" = "Discount";
 "Additional Off" = "Additional Off";
-"Tax" = "Tax";
+"Tax" = "Podatek";
 
 "KNOWN VALUE" = "KNOWN VALUE";
 
-"Total" = "Total";
-"Tip" = "Tip";
+"Total" = "Łącznie";
+"Tip" = "Napiwek";
 
 "Total Per Person" = "Total Per Person";
 "Tip Per Person" = "Tip Per Person";
 "Input" = "Input";
-"Amount" = "Amount";
+"Amount" = "Kwota";
 "Amount After Tax" = "Amount After Tax";
 "Amount Before Tax" = "Amount Before Tax";
-"Split" = "Split";
+"Split" = "Podziel na";
 
 "Before Split" = "Before Split";
 "Per Person" = "Per Person";
@@ -597,13 +596,13 @@
 "Cost" = "Cost";
 "Value" = "Value";
 "Methods" = "Methods";
-"Exact" = "Exact";
-"Up" = "Up";
-"Down" = "Down";
+"Exact" = "Dokładne";
+"Up" = "Góra";
+"Down" = "Dół";
 
 "Tip Calculator using AppBox Pro" = "Tip Calculator using AppBox Pro";
 
-"Rounding" =  "Rounding";
+"Rounding" = "Zaokrąglanie";
 "Select Language" = "Select Language";
 "%@ to %@" = "%@ to %@";
 "Detect Language" = "Detect Language";
@@ -614,7 +613,7 @@
 "From: " = "From: ";
 "To: " = "To: ";
 "Please change \"From\" or \"To\" language." = "Please change \"From\" or \"To\" language.";
-"Translate" = "Translate";
+"Translate" = "Tłumacz";
 
 "All Units" = "All Units";
 "%@ Units" = "%@ Units";
@@ -634,10 +633,10 @@
 "Units on the bar" = "Units on the bar";
 "Units in more" = "Units in more";
 
-"Price A" = "Price A";
-"Price B" = "Price B";
-"Price" = "Price";
-"Unit" = "Unit";
+"Price A" = "Cena A";
+"Price B" = "Cena B";
+"Price" = "Cena";
+"Unit" = "Konwerter";
 "Size" = "Size";
 "Quantity" = "Quantity";
 "Discount" = "Discountpo";
@@ -648,36 +647,36 @@
 
 "Area" = "Area";
 "Length" = "Length";
-"Volume" = "Volume";
+"Volume" = "Głośność";
 "Weight" = "Weight";
 
 "Wallet_All_Category" = "All";
-"Field Type" = "Field Type";
+"Field Type" = "Typ pola";
 "All Items" = "All Items";
 "CATEGORIES" = "CATEGORIES";
 "CATEGORY" = "CATEGORY";
 "ITEMS" = "ITEMS";
 "UPDATED" = "UPDATED";
-"Add Category" = "Add Category";
-"Edit Category" = "Edit Category";
+"Add Category" = "Dodaj kategorię";
+"Edit Category" = "Edytuj kategorię";
 "Enter catergory name" = "Enter catergory name";
 "Category Name" = "Category Name";
 "add new field" = "add new field";
-"Delete Category" = "Delete Category";
+"Delete Category" = "Usuń kategorię";
 
 "Category Info" = "Category Info";
 "Delete Items" = "Delete Items";
 
-"Video" = "Video";
+"Video" = "Wideo";
 "Add Field" = "Add Field";
-"Edit Field" = "Edit Field";
-"Field Name" = "Field Name";
+"Edit Field" = "Edycja pola";
+"Field Name" = "Nazwa pola";
 "Type" = "Type";
-"Style" = "Style";
-"Field Style" = "Field Style";
+"Style" = "Styl";
+"Field Style" = "Typ Styl";
 "Edit Image" = "Edit Image";
-"Add Item" = "Add Item";
-"Edit Item" = "Edit Item";
+"Add Item" = "Dodaj element";
+"Edit Item" = "Edytuj element";
 "Note" = "Note";
 "Delete Video" = "Delete Video";
 "Take Video" = "Take Video";
@@ -690,20 +689,20 @@
 "Duration Time" = "Duration Time";
 "1 Passcode Failed Attempt" = "1 Passcode Failed Attempt";
 "Enter your old passcode" = "Enter your old passcode";
-"Enter your passcode" = "Enter your passcode";
-"Passcode" = "Passcode";
-"Set Passcode" = "Set Passcode";
-"Change Passcode" = "Change Passcode";
+"Enter your passcode" = "Wpisz hasło";
+"Passcode" = "Kod blokady";
+"Set Passcode" = "Ustal kod";
+"Change Passcode" = "Zmień kod";
 "Turn Off Passcode" = "Turn Off Passcode";
-"Re-enter your passcode" = "Re-enter your passcode";
+"Re-enter your passcode" = "Wpisz ponownie hasło";
 "Re-enter your new passcode" = "Re-enter your new passcode";
-"Enter your new passcode" = "Enter your new passcode";
+"Enter your new passcode" = "Wpisz nowe kod";
 "Passcodes did not match. Try again." = "Passcodes did not match. Try again.";
 "%i Passcode Failed Attempts" = "%i Passcode Failed Attempts";
-"Enter Passcode" = "Enter Passcode";
-"New Passcode" = "New Passcode";
+"Enter Passcode" = "Wpisz hasło";
+"New Passcode" = "Nowy kod";
 "Confirm Passcode" = "Confirm Passcode";
-"Hint" = "Hint";
+"Hint" = "Wskazówka";
 "Old Passcode" = "Old Passcode";
 "%li Passcode Failed Attempts" = "%li Passcode Failed Attempts";
 "Please enter new passcode." = "Please enter new passcode.";
@@ -712,10 +711,10 @@
 "Please enter passcode." = "Please enter passcode.";
 "Open in Safari" = "Open in Safari";
 
-"A friend has recommended AppBox Pro™ from the iTunes App Store" = "A friend has recommended AppBox Pro™ from the iTunes App Store";
-"AppBox Pro™ V%@ Contact Support" = "AppBox Pro™ V%@ Contact Support";
-"Close" = "Close";
-"Continue" = "Continue";
+"A friend has recommended AppBox Pro™ from the iTunes App Store" = "Przyjacielska rekomendacja aplikacji AppBox Pro™ z iTunes";
+"AppBox Pro™ V%@ Contact Support" = "AppBox Pro™ V%@ Skontaktuj się z pomocą techniczną";
+"Close" = "Zamknij";
+"Continue" = "Kontynuuj";
 "Compressing" = "Compressing";
 
 "Uploading" = "Uploading";
@@ -730,26 +729,26 @@
 "Your data has been restored successfully." = "Your data has been restored successfully.";
 "Downloading" = "Downloading";
 "Are you going to replace existing data with the backup data?" = "Are you going to replace existing data with the backup data?";
-"Replace" = "Replace";
+"Replace" = "Zamień";
 "Deleting" = "Deleting";
 "Unable to delete selected file. Please try it again." = "Unable to delete selected file. Please try it again.";
 
-"Turn Passcode Off" = "Turn Passcode Off";
-"Turn Passcode On" = "Turn Passcode On";
+"Turn Passcode Off" = "Wyłącz żądanie hasła";
+"Turn Passcode On" = "Włącz żądanie hasła";
 "How To Enable Data Protection" = "How To Enable Data Protection";
 "Clear Recent" = "Clear Recent";
 "Recent" = "Recent";
-"Information" = "Information";
+"Information" = "Informacja";
 "Move and Scale" = "Move and Scale";
 
 "CALCULATION" = "CALCULATION";
 "DoneButton" = "Return";
-"Off" = "Off";
+"Off" = "Wył.";
 "Passcode_Off" = "Off";
 "DaysCounter_All" = "All";
 
 "LoanCalc_Start Date" = "Start Date";
-"Immediately" = "Immediately";
+"Immediately" = "Natychmiast";
 "Learn about iOS Security" = "Learn about iOS Security";
 "CalculatorGroup" = "Calculator";
 "Translator_All" = "All";
@@ -791,9 +790,9 @@
 
 "Talk Time on 2G" = "Talk Time on 2G";
 "Talk Time on 3G" = "Talk Time on 3G";
-"Internet on 3G" = "Internet on 3G";
+"Internet on 3G" = "Internet 3G";
 "Internet on LTE" = "Internet on LTE";
-"Internet on Wi-Fi" = "Internet on Wi-Fi";
+"Internet on Wi-Fi" = "Internet Wi-Fi";
 "Internet on Cellular" = "Internet on Cellular";
 "Video playback" = "Video playback";
 "Audio playback" = "Audio playback";
@@ -845,3 +844,4 @@
 
 "Disclaimer" = "Wyłączenie odpowiedzialności";
 "LadyCalendarDisclaimerMsg" = "Następujące prognozy są oparte metodzie kalendarzowej. Nie są one w 100% dokładne. Nie ma gwarancji sukcesu. Prognozy nie powinny być używane jako narzędzie do naturalnego planowania urodzeń.";
+

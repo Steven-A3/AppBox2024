@@ -54,10 +54,10 @@ https://itunes.apple.com/app/id318404385";
 "Tip Calculator" = "Trinkgeld";
 "Unit Price" = "Stückpreis";
 "Percent Calculator" = "Percent Calculator";
-"Currency Converter" = "Currency Converter";
+"Currency Converter" = "Währung";
 "Lunar Converter" = "Lunar Converter";
 "Translator" = "Übersetzer";
-"Unit Converter" = "Unit Converter";
+"Unit Converter" = "Einheitsrechner";
 "Days Counter" = "Days Counter";
 "Lady Calendar" = "Lady Kalender";
 "Wallet" = "Börse";
@@ -71,6 +71,7 @@ https://itunes.apple.com/app/id318404385";
 "Last %ld" = "Last %ld";
 
 "Apps" = "Apps";
+/* "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature."; */
 "iCloud_goto_settings" = "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.";
 
 "Info" = "Info";
@@ -84,7 +85,7 @@ https://itunes.apple.com/app/id318404385";
 "Disabling iCloud" = "Disabling iCloud";
 
 "iCloud Enabled" = "iCloud Enabled";
-"Syncing in background" = "Syncing in backgorund";
+"Syncing in background" = "Syncing in background";
 "iCloud Disabled" = "iCloud Disabled";
 "Local Store Problem" = "Local Store Problem";
 "Your datastore got corrupted and needs to be recreated." = "Your datastore got corrupted and needs to be recreated.";
@@ -136,9 +137,11 @@ https://itunes.apple.com/app/id318404385";
 
 "Weather" = "Weather";
 
+/* US$, Rate = 1.3598 */
 "%@, Rate = %0.4f" = "%@, Rate = %0.4f";
 "Each history keeps max 4 currencies." = "Each history keeps max 4 currencies.";
 
+/* EUR to USD = 1.3598 */
 "%@ to %@ = %.4f" = "%@ to %@ = %.4f";
 "Auto Update" = "Auto Update";
 "Show National Flag" = "Show National Flag";
@@ -168,6 +171,7 @@ https://itunes.apple.com/app/id318404385";
 "Saturday" = "Saturday";
 "Sunday" = "Sunday";
 
+/* Very short format of year, month, week, day */
 "%ldy" = "%ldy";
 "%ldm" = "%ldm";
 "%ldw" = "%ldw";
@@ -812,7 +816,6 @@ https://itunes.apple.com/app/id318404385";
 "Encryption Key for Wallet" = "Encryption Key for Wallet";
 "V1_Notice_for_Photo_Quality" = "Please know that the quality of photos saved in the Days Until with the previous version of the AppBox Pro may not good enough to use with the current version. We recommend you to re-add photos to your events.";
 "Notice" = "Notice";
-
 
 "LoanCalc_DATE" = "DATE";
 "%/yr" = "%/yr";
