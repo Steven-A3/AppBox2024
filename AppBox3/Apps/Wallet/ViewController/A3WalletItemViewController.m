@@ -579,8 +579,10 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 			UIImage *photo = fieldItem.thumbnailImage;
 			photo = [photo imageByScalingProportionallyToSize:CGSizeMake(120, 120)];
 			[photoCell.photoButton setBackgroundImage:photo forState:UIControlStateNormal];
+            
 			[photoCell.photoButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 			photoCell.photoButton.tag = indexPath.row;
+            photoCell.photoButton.backgroundColor = [UIColor redColor];
 
 			if (fieldItem.video) {
 				UIImageView *markView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"video"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
@@ -638,14 +640,14 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
                 actionCell.rightBtn1.tag = indexPath.row;
                 actionCell.rightBtn2.tag = indexPath.row;
                 
-                [actionCell.contentBtn addTarget:self action:@selector(actionCellContentButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+//                [actionCell.contentBtn addTarget:self action:@selector(actionCellContentButtonAction:) forControlEvents:UIControlEventTouchUpInside];
                 [actionCell.rightBtn1 addTarget:self action:@selector(actionCellRight1ButtonAction:) forControlEvents:UIControlEventTouchUpInside];
                 [actionCell.rightBtn2 addTarget:self action:@selector(actionCellRight2ButtonAction:) forControlEvents:UIControlEventTouchUpInside];
                 
                 NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeAddress|NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber error:nil];
                 NSTextCheckingResult *result = [detector firstMatchInString:fieldItem.value options:0 range:NSMakeRange(0, fieldItem.value.length)];
                 
-                if (result.resultType == NSTextCheckingTypeLink) {
+                if (result.resultType == NSTextCheckingTypeLink && ([fieldItem.field.type isEqualToString:WalletFieldTypeEmail] || [fieldItem.field.type isEqualToString:WalletFieldTypeURL]) ) {
                     NSString *urlString = result.URL.absoluteString;
                     
                     NSString *myRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
@@ -662,6 +664,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
                         // just web address
                         actionCell.rightBtn1.hidden = YES;
                         actionCell.rightBtn2.hidden = YES;
+                        [actionCell.contentBtn addTarget:self action:@selector(actionCellContentButtonAction:) forControlEvents:UIControlEventTouchUpInside];
                     }
                 }
                 else if (result.resultType == NSTextCheckingTypePhoneNumber && [fieldItem.field.type isEqualToString:WalletFieldTypePhone]) {
