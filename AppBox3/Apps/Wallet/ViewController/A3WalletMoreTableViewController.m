@@ -202,6 +202,11 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
     [self.navigationController.view addSubview:self.instructionViewController.view];
     self.instructionViewController.view.frame = self.view.superview.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+    
+    if (IS_IPHONE35) {
+        self.instructionViewController.wallet3_finger2BottomConst.constant = 150;
+        self.instructionViewController.wallet3_finger3BottomConst.constant = 62;
+    }
 }
 
 - (void)dismissInstructionViewController:(UIView *)view

@@ -434,6 +434,6 @@
         <element name="WalletFieldItem" positionX="-506" positionY="558" width="128" height="148"/>
         <element name="WalletFieldItemImage" positionX="-335" positionY="531" width="128" height="73"/>
         <element name="WalletFieldItemVideo" positionX="-335" positionY="666" width="128" height="88"/>
-        <element name="WalletItem" positionX="-702" positionY="636" width="128" height="165"/>
+        <element name="WalletItem" positionX="-702" positionY="636" width="128" height="163"/>
     </elements>
 </model>

@@ -117,20 +117,8 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
     if (self.isFromMoreTableViewController) {
         self.navigationItem.leftItemsSupplementBackButton = YES;
         // more 탭바
-
         self.navigationItem.hidesBackButton = NO;
-
-        if (IS_IPAD) {
-            if (IS_LANDSCAPE) {
-                self.navigationItem.leftBarButtonItem = nil;
-            }
-            else {
-				[self leftBarButtonAppsButton];
-            }
-        }
-        else {
-			[self leftBarButtonAppsButton];
-        }
+        [self leftBarButtonAppsButton];
     } else {
 		[self leftBarButtonAppsButton];
     }

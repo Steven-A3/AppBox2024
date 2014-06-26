@@ -26,4 +26,10 @@ extern NSString *const StoryBoardID_Calcualtor;
 #pragma mark - Clock1 Constraints
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *clock1_finger2RightConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *clock1_finger3RightConst;
+
+#pragma mark - Wallet_3 Constraints
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *wallet3_finger2BottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *wallet3_finger3BottomConst;
+
+
 @end
