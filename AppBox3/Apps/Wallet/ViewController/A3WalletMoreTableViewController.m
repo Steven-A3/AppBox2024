@@ -295,13 +295,14 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	cell.cellImageView.tintColor = [UIColor colorWithRed:146.0/255.0 green:146.0/255.0 blue:146.0/255.0 alpha:1.0];
 	[cell.cellImageView sizeToFit];
 	cell.cellTitleLabel.text = walletCategory.name;
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.separatorInset = A3UITableViewSeparatorInset;
 	[cell setShowCheckImageView:indexPath.section == 1];
 	if (_isEditing) {
 		cell.selectionStyle = indexPath.section == 1 ? UITableViewCellSelectionStyleDefault : UITableViewCellSelectionStyleNone;
+        cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	} else {
 		cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 	[cell setShowCheckMark:![walletCategory.doNotShow boolValue]];
 	cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([walletCategory.items count])];
@@ -309,7 +310,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 		cell.rightSideLabelConstraint.with.offset(-15);
 		[cell layoutIfNeeded];
 	}
-
+    
 	return cell;
 }
 
