@@ -55,7 +55,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    
+
     [self setNeedsDisplay];
 }
 
@@ -89,15 +89,6 @@
             else {
                 [str drawAtPoint:CGPointMake(xAxisLineRect.origin.x + (idx * xAxisSeparatorInterval) - strSize.width * 0.5, xAxisLineRect.origin.y + xAxisLineRect.size.height +  xAxisSeparatorHeight) withAttributes:attr];
             }
-//            if ((xAxisLineRect.origin.x + (idx * xAxisSeparatorInterval) - strSize.width * 0.5) + strSize.width > self.bounds.size.width) {
-//                [str drawAtPoint:CGPointMake(self.bounds.size.width - strSize.width, xAxisLineRect.origin.y + xAxisLineRect.size.height +  xAxisSeparatorHeight) withAttributes:attr];
-//            }
-//            else if ((xAxisLineRect.origin.x + (idx * xAxisSeparatorInterval) - strSize.width * 0.5) + strSize.width < self.bounds.origin.x) {
-//                [str drawAtPoint:CGPointMake(0.0, xAxisLineRect.origin.y + xAxisLineRect.size.height +  xAxisSeparatorHeight) withAttributes:attr];
-//            }
-//            else {
-//                [str drawAtPoint:CGPointMake(xAxisLineRect.origin.x + (idx * xAxisSeparatorInterval) - strSize.width * 0.5, xAxisLineRect.origin.y + xAxisLineRect.size.height +  xAxisSeparatorHeight) withAttributes:attr];
-//            }
         }
     }
 }
@@ -106,7 +97,7 @@
 {
     CGPoint yLabelPos = CGPointMake(0, yStartCenterPosition);
     for (NSInteger i=0; i < [_yLabelItems count]; i++) {
-        CGRect drawRect = CGRectMake(yLabelPos.x, yLabelPos.y - (i * _yAxisInterval), yLabelMaxSize.width, yLabelMaxSize.height);
+        CGRect drawRect = CGRectMake(yLabelPos.x, yLabelPos.y - (i * _yAxisInterval) - (yLabelMaxSize.height / 2), yLabelMaxSize.width, yLabelMaxSize.height);
         NSString *str = [_yLabelItems objectAtIndex:i];
         [str drawWithRect:drawRect options:NSLineBreakByCharWrapping|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : self.yAxisFont,NSForegroundColorAttributeName:_yLabelColor} context:nil];
     }
@@ -146,8 +137,7 @@
     if ( [_valueArray count] < 1 )
         return;
     CGFloat averageValue =  valueTotal.y / [_valueArray count];
-    //averageLineYPos = yStartCenterPosition - ((averageValue - _minYValue) * _yAxisInterval)*0.5 + pointSize.height*0.5;
-    _averageLineYPos = [self getYAxisPointForValueY:(NSInteger)averageValue withYLabelIndex:0 yAxisInterval:_yAxisInterval];
+    _averageLineYPos = [self getYAxisPointForValueY:averageValue withYLabelIndex:0 yAxisInterval:_yAxisInterval];
     
     CGContextSetStrokeColorWithColor(context, [_averageColor CGColor]);
     CGContextSetLineWidth(context, 1.0);
@@ -164,15 +154,21 @@
     NSDictionary *attribute = @{NSFontAttributeName : font, NSForegroundColorAttributeName : _averageColor};
     
     CGFloat averageValueYPos = _averageLineYPos + 10;
-    CGFloat lastValuePos = [self getYAxisPointForValueY:((NSInteger)[[_valueArray lastObject] CGPointValue].y) withYLabelIndex:0 yAxisInterval:_yAxisInterval];
+    CGFloat lastValuePos = [self getYAxisPointForValueY:[[_valueArray lastObject] CGPointValue].y withYLabelIndex:0 yAxisInterval:_yAxisInterval];
     if (lastValuePos >= _averageLineYPos) {
         averageValueYPos = _averageLineYPos - 10 - 26;
     }
     if (averageValueYPos < self.bounds.origin.y) {
         averageValueYPos = self.bounds.origin.y + 2;
+        if (averageValueYPos < (lastValuePos + 13)) {
+            averageValueYPos += 19;
+        }
     }
     else if ((averageValueYPos + 26) > self.bounds.size.height) {
         averageValueYPos = self.bounds.size.height - 28;
+        if ((averageValueYPos + 28) < lastValuePos) {
+            averageValueYPos = lastValuePos - 28 - 5;
+        }
     }
     averageValueYPos = ceilf(averageValueYPos);
     
@@ -188,11 +184,8 @@
     CGContextAddLineToPoint(context, shapeFrame.origin.x+shapeFrame.size.width, shapeFrame.origin.y + shapeFrame.size.height);
     CGContextAddLineToPoint(context, shapeFrame.origin.x+10.0, shapeFrame.origin.y+shapeFrame.size.height);
     CGContextAddLineToPoint(context, shapeFrame.origin.x, shapeFrame.origin.y + shapeFrame.size.height*0.5);
-    
-    
-//    CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
-//    CGContextFillPath(context);
-    
+
+
     CGContextMoveToPoint(context, shapeFrame.origin.x, shapeFrame.origin.y + shapeFrame.size.height*0.5);
     CGContextAddLineToPoint(context, shapeFrame.origin.x+10.0, shapeFrame.origin.y);
     CGContextAddLineToPoint(context, shapeFrame.origin.x+shapeFrame.size.width, shapeFrame.origin.y);
@@ -242,43 +235,41 @@
     
     pointArray = [NSMutableArray array];
     // 정점좌표 계산
-    yStartCenterPosition = xAxisLineRect.origin.y-(_yAxisInterval + pointSize.height*0.5) + 1.0;
+    yStartCenterPosition = xAxisLineRect.origin.y - _yAxisInterval + 1.0;
     valueTotal = CGPointZero;
     for (NSInteger i=0; i < [_valueArray count]; i++) {
         CGPoint value = [[_valueArray objectAtIndex:i] CGPointValue];
-        CGFloat xpos = xAxisLineRect.origin.x + (value.x - _minXValue) * xAxisSeparatorInterval - (i+1 == [_valueArray count] ? 1.0 : 0.0);
-//        CGFloat ypos = yStartCenterPosition - (value.y - _minYValue) * yAxisInterval;
-        CGFloat ypos = [self getYAxisPointForValueY:(NSInteger)value.y withYLabelIndex:0 yAxisInterval:_yAxisInterval];
+        CGFloat xpos = xAxisLineRect.origin.x + (value.x - _minXValue) * xAxisSeparatorInterval - (i + 1 == [_valueArray count] ? 1.0 : 0.0);
+        CGFloat ypos = [self getYAxisPointForValueY:value.y withYLabelIndex:0 yAxisInterval:_yAxisInterval];
         
         CGPoint pos = CGPointMake(xpos, ypos);
         [pointArray addObject:[NSValue valueWithCGPoint:pos]];
         valueTotal.x += value.x;
         valueTotal.y += value.y;
     }
-    
-//    for (NSInteger i=0; i < [_valueArray count]; i++) {
-//        CGPoint value = [[_valueArray objectAtIndex:i] CGPointValue];
-//        CGPoint pos = CGPointMake(xAxisLineRect.origin.x + (value.x - _minXValue) * xAxisSeparatorInterval - (i+1 == [_valueArray count] ? 1.0 : 0.0), yStartCenterPosition - (value.y - _minYValue) * yAxisInterval);
-//        [pointArray addObject:[NSValue valueWithCGPoint:pos]];
-//        valueTotal.x += value.x;
-//        valueTotal.y += value.y;
-//    }
 }
 
-- (CGFloat)getYAxisPointForValueY:(NSInteger)valueY withYLabelIndex:(NSInteger)idx yAxisInterval:(CGFloat)yAxisInterval
+- (CGFloat)getYAxisPointForValueY:(CGFloat)valueY withYLabelIndex:(NSInteger)idx yAxisInterval:(CGFloat)yAxisInterval
 {
     CGFloat resultYAxis = 0.0;
-    NSInteger yAxisValue = [[_yLabelItems objectAtIndex:idx] integerValue];
+    CGFloat yAxisValue = [[_yLabelItems objectAtIndex:idx] floatValue];
     
     if (valueY == yAxisValue) {
         resultYAxis = yAxisInterval * ([_yLabelItems count] - idx) - yAxisInterval;
-        return resultYAxis;
+        if (resultYAxis == 0) {
+            resultYAxis = 1;
+        }
+        return roundf(resultYAxis);
     }
     else {
-        NSInteger nextYAxisValue = [[_yLabelItems objectAtIndex:idx + 1] integerValue];
+        CGFloat nextYAxisValue = [[_yLabelItems objectAtIndex:idx + 1] floatValue];
         if (valueY < nextYAxisValue) {
             CGFloat yValueGap =  (nextYAxisValue - valueY) / (CGFloat)(nextYAxisValue - yAxisValue);
-            return resultYAxis = (yAxisInterval * ([_yLabelItems count] - idx)) + (yAxisInterval * yValueGap) - yAxisInterval;
+            resultYAxis = (yAxisInterval * ([_yLabelItems count] - idx)) + (yAxisInterval * yValueGap) - yAxisInterval;
+            if (resultYAxis == 0) {
+                resultYAxis = 1;
+            }
+            return roundf(resultYAxis);
         }
     }
     
