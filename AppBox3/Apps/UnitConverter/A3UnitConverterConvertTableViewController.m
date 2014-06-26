@@ -159,9 +159,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		FNLOG();
 		[self clearEverything];
 		[self removeObserver];
-        if ([self.unitValue integerValue] != 1 || [UnitHistory MR_countOfEntities] != 0 ) {
-            [self putHistoryWithValue:self.unitValue];
-        }
 	}
 }
 
@@ -996,7 +993,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 				fromValue = 1;
 			}
             
-            if (fromValue != 1 || [UnitHistory MR_countOfEntities] != 0 ) {
+            if (fromValue != 1 && [UnitHistory MR_countOfEntities] != 0 ) {
                 [self putHistoryWithValue:@(fromValue)];
             }
 		});
@@ -1172,7 +1169,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 		float value = [[self.decimalFormatter numberFromString:textField.text] floatValue];
 //		if (value != 0.0 && value != [[self unitValue] floatValue]) {
-        if ([self.unitValue integerValue] != 1 || [UnitHistory MR_countOfEntities] != 0 ) {
+//        if ([self.unitValue integerValue] != 1 && [UnitHistory MR_countOfEntities] != 0 ) {
+        if ([self.unitValue integerValue] != 1 || ([self.unitValue integerValue] != 1 && [UnitHistory MR_countOfEntities] > 0)) {
 			[self putHistoryWithValue:@(value)];
 			self.unitValue = nil;
 			[self unitValue];
