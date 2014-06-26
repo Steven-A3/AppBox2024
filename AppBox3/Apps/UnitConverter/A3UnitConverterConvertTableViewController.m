@@ -54,6 +54,8 @@ NSString * const A3UnitConverterTableViewUnitValueKey = @"A3UnitConverterTableVi
 @property (nonatomic, strong) NSString *vcTitle;
 @property (nonatomic, strong) NSNumber *unitValue;
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
+@property (nonatomic, copy) NSString *value1BeforeEditingTextField;
+@property (nonatomic, copy) NSString *value2BeforeEditingTextField;
 @property (strong, nonatomic) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
@@ -1151,6 +1153,15 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 	if(indexPath.row == 0) {
 		[self unSwipeAll];
+        if (cell.inputType == UnitInput_FeetInch) {
+            if (cell.valueField == textField) {
+                self.value1BeforeEditingTextField = [textField text];
+            }
+            else if (cell.value2Field == textField) {
+                self.value2BeforeEditingTextField = [textField text];
+            }
+        }
+        
 		return YES;
 	}
     else {
@@ -1315,7 +1326,17 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		fromValue = 1;
 	}
 
-	self.unitValue = @(fromValue);
+    if (cell.inputType == UnitInput_FeetInch) {
+        if ([cell.valueField.text floatValue] > 0 && [cell.value2Field.text floatValue] > 0) {
+            self.unitValue = @(fromValue);
+        }
+        else {
+            fromValue = [self.unitValue floatValue];
+        }
+    }
+    else {
+        self.unitValue = @(fromValue);
+    }
 
 	NSInteger fromIndex = 0;
 	UnitConvertItem *zeroConvertItem = _convertItems[0];
@@ -1499,6 +1520,10 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
         [cell.valueField becomeFirstResponder];
     }
     else if ((cell.inputType==UnitInput_FeetInch) && (viewInRespond.tag == 2)) {
+        if ([cell.value2Field.text length] == 0) {
+            cell.value2Field.text = self.value2BeforeEditingTextField;
+        }
+        self.textBeforeEditingTextField = cell.valueField.text;
         [cell.valueField becomeFirstResponder];
     }
 	_isSwitchingFractionMode = NO;
@@ -1512,6 +1537,10 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
         [cell.value2Field becomeFirstResponder];
     }
     else if ((cell.inputType==UnitInput_FeetInch) && (viewInRespond.tag == 1)) {
+        if ([cell.valueField.text length] == 0) {
+            cell.valueField.text = self.value1BeforeEditingTextField;
+        }
+        self.textBeforeEditingTextField = cell.value2Field.text;
         [cell.value2Field becomeFirstResponder];
     }
 	_isSwitchingFractionMode = NO;
