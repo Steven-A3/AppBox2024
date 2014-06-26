@@ -79,10 +79,10 @@
 "Choose and Resize" = "고른 후 크기 조정하기";
 
 "Enabling iCloud" = "iCloud 동기화를 시작하고 있습니다.";
-"Disableing iCloud" = "iCloud 동기화를 중지하는 중 입니다.";
+"Disabling iCloud" = "iCloud 동기화를 중지하는 중 입니다.";
 
 "iCloud Enabled" = "iCloud 동기화가 켜졌습니다.";
-"Syncing in backgorund" = "동기화는 백그라운드로 진행됩니다.";
+"Syncing in background" = "동기화는 백그라운드로 진행됩니다.";
 "iCloud Disabled" = "iCloud 동기화가 꺼졌습니다.";
 "Local Store Problem" = "데이터에 손상";
 "Your datastore got corrupted and needs to be recreated." = "저장된 데이터에 손상이 발생하여 데이터를 초기화해야 합니다.";
@@ -237,13 +237,15 @@
 "End date is not lunar date" = "종료일이 바른 음력 날짜가 아닙니다.";
 "It's not a Lunar Date" = "바른 음력날짜가 아닙니다.";
 
-"Can not find current location information" = "현재 위치를 찾을 수 없습니다.";
+"Cannot find current location information" = "현재 위치를 찾을 수 없습니다.";
 
 "EVENTS" = "이벤트";
 "EVENT" = "이벤트";
 
-"today" = "오늘";
+"Today" = "오늘";
 "Now" = "지금";
+"DaysCounter_from" = "From";
+"DaysCounter_to" = "To";
 
 "Edit Calendars" = "캘린더 편집";
 
@@ -260,14 +262,13 @@
 "from %@" = "%@에서";
 "to %@" = "%@까지";
 "repeats %@" = "반복 %@";
-"since" = "지남";
 "first date" = "최초날짜";
 
 "Delete All" = "모두 지우기";
 "Delete Events" = "이벤트 지우기";
 "Please select events." = "이벤트를 선택해 주세요.";
 
-" Events" = " 이벤트";
+"Events" = " 이벤트";
 
 "Reminder" = "미리 알림";
 
@@ -284,7 +285,7 @@
 "Never" = "안 함";
 "Every Day" = "매일";
 "Every Week" = "매주";
-"Every 2Week" = "2주마다";
+"Every 2Weeks" = "2주마다";
 "Every Month" = "매달";
 "Every Year" = "매년";
 "Daily" = "매일";
@@ -324,11 +325,6 @@
 "Ripple" = "아래로 닦아내기";
 "Wipe" = "옆으로 닦아내기";
 
-" Today " = " 오늘 ";
-" Now " = " 지금 ";
-"Days\nUntil" = "일\n남음";
-"Days\nSince" = "일\n지남";
-
 "Change Location" = "위치 바꾸기";
 "Current Location" = "현재 위치";
 "Searching" = "검색중";
@@ -338,6 +334,11 @@
 "Please enter your dates in the future." = "미래의 날짜를 선택해 주세요.";
 "Time" = "시간";
 "Duration Options" = "기간 표시 방법";
+
+"Until" = "남음";
+"until" = "남음";
+"Since" = "지남";
+"since" = "지남";
 
 "2 years" = "2 년";
 "3 months" = "3 개월";
@@ -354,7 +355,7 @@
 "Add this place?" = "장소 추가";
 "We Couldn't find that" = "검색 결과 없음";
 
-"Create %@" = "%@ 만들기";
+"Create" = "다음을 추가:";
 
 "Location information is not available." = "위치 정보를 조회할 수 없습니다.";
 
@@ -377,7 +378,7 @@
 "Shopping" = "쇼핑";
 "Transportation" = "교통";
 "Travel" = "여행";
-"Utilies" = "유틸리티";
+"Utilities" = "유틸리티";
 "Uncategorized" = "미정";
 
 /* Expense List */
@@ -397,7 +398,7 @@
 " left of " = " 남음 ";
 
 "Done" = "완료";
-"Add Holidays to \"Days Conter\" app" = "휴일을 \"이벤트 캘린더\"에 추가";
+"Add Holidays to \"Days Counter\" app" = "휴일을 \"이벤트 캘린더\"에 추가";
 
 /* Public Holiday */
 "Public" = "공휴일";
@@ -408,10 +409,10 @@
 "To add a new country, remove one first." = "새로운 국가를 추가하려면 먼저 기존 국가를 하나 지우세요.";
 
 "Acknowledgement" = "감사의 말";
-"Upcoming %ld" = "남은 휴일 %ld";
-"Past %ld" = "지난 휴일 %ld";
+"Upcoming" = "남은 휴일";
+"Past" = "지난 휴일";
 "Holidays for year %lu is not available." = "%lu 년도의 휴일/기념일 정보는 제공되지 않습니다.";
-"Discalimer" = "정보";
+"Disclaimer" = "정보";
 "I Agree" = "동의함";
 "on flickr" = "출처 Flickr";
 " by %@" = " %@ 소유";
@@ -427,7 +428,7 @@
 "Optional" = "선택사항";
 "Cannot remove current account." = "현재 사용중인 계정은 지울 수 없습니다.";
 " Same name already exists. " = " 같은 이름이 이미 존재합니다. ";
-"User%02ld" = "사용자%02ld";
+"User" = "사용자";
 
 "Edit Period" = "자연주기 수정";
 "Add Period" = "자연주기 추가하기";
@@ -466,8 +467,8 @@
 "FORECASTING %@ PERIODS" = "미래 %@ 번의 예정일을 표시";
 
 "Date, Principal, Payment, Interest, Balance" = "상환일, 납입원금, 상환금, 이자, 잔금";
-"Annual %@" = "연이율 %@";
-"Monthly %@" = "월이율 %@";
+"Annual" = "연이율";
+"Monthly_Rate" = "월이율";
 
 "Down Payment" = "계약금";
 "Payment" = "상환금";
@@ -528,12 +529,6 @@
 "Year %ld month %ld has %ld days." = "%ld년 %ld월은 %ld일까지 있습니다.";
 "Lunar Converter using AppBox Pro" = "AppBox Pro의 양력/음력 변환";
 "Share Lunar Converter Data" = "양력/음력 변환 결과를 공유";
-"Lunar(%@) %@" = "음력(%@) %@";
-" = Solar %@" = " = 양력 %@";
-"Lunar(%@, Leap Month) %@" = "음력(%@, 윤달) %@";
-"Solar %@" = "양력 %@";
-" = Lunar(%@, Leap Month) %@" = " = 음력(%@, 윤달) %@";
-" = Lunar(%@) %@" = " = 음력(%@) %@";
 
 "Take picture failed." = "사진 촬영이 실패했습니다.";
 "Save to camera roll failed." = "카메라 롤에 저장할 수 없습니다.";
@@ -692,7 +687,7 @@
 "New Item" = "새로운 아이템";
 "Details" = "상세정보";
 "Map" = "지도";
-"Duration Time %lds" = "플레이 시간 %lds";
+"Duration Time" = "플레이 시간";
 "1 Passcode Failed Attempt" = "1회 암호를 틀렸습니다.";
 "Enter your old passcode" = "이전 암호를 입력해주세요.";
 "Enter your passcode" = "암호를 입력해 주세요.";
@@ -716,8 +711,6 @@
 "Passcode did not match." = "암호가 일치하지 않습니다.";
 "Please enter passcode." = "암호를 입력해 주세요.";
 "Open in Safari" = "사파리에서 열기";
-
-"Today" = "오늘";
 
 "A friend has recommended AppBox Pro™ from the iTunes App Store" = "AppBox Pro™를 추천합니다.";
 "AppBox Pro™ V%@ Contact Support" = "AppBox Pro™ V%@ 고객 지원";
@@ -756,11 +749,6 @@
 
 "Passcode_Off" = "끔";
 
-"P" = "공";
-
-"until" = "남음";
-"now" = "지금";
-
 "LoanCalc_Start Date" = "대출 개시일";
 "Immediately" = "즉시";
 "Learn about iOS Security" = "iOS 보안에 대해 자세히 알아보기";
@@ -783,7 +771,7 @@
 
 "day(s)" = "일";
 
-"Enter a address or city name" = "주소 또는 도시 이름 입력";
+"Enter an address or city name" = "주소 또는 도시 이름 입력";
 
 "This will reset all settings.\nNo data will be deleted." = "보기/가리기 설정을 초기화합니다.";
 "Reset All" = "재설정";
@@ -885,4 +873,4 @@
 "Field name already exists." = "Field name already exists.";
 
 "Disclaimer" = "책임의 한계";
-"LadyCalendarDiscalimerMsg" = "스트레스 및 성호르몬의 불균형으로 인하여 생리 예정일이 달라질 수 있으므로 배란일, 임신 가능일이 실제와 다를 수 있습니다.\r\n또한, 생리주기가 불규칙한 경우 결과치가 틀릴 수 있으므로 모든 여성에서 적합하지 않을 수 있습니다.\r\n피임 혹은 가임을 위해서는 배란일 측정법과 함께 다른 방법을 함께 사용하시기 바랍니다.";
+"LadyCalendarDisclaimerMsg" = "스트레스 및 성호르몬의 불균형으로 인하여 생리 예정일이 달라질 수 있으므로 배란일, 임신 가능일이 실제와 다를 수 있습니다.\r\n또한, 생리주기가 불규칙한 경우 결과치가 틀릴 수 있으므로 모든 여성에서 적합하지 않을 수 있습니다.\r\n피임 혹은 가임을 위해서는 배란일 측정법과 함께 다른 방법을 함께 사용하시기 바랍니다.";

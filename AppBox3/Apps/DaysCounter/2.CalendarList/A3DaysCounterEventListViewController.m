@@ -141,7 +141,11 @@
         self.calendarItem = [_sharedManager calendarItemByID:self.changedCalendarID inContext:[[MagicalRecordStack defaultStack] context] ];
         self.changedCalendarID = nil;
         if ( self.calendarItem ) {
-            self.title = [NSString stringWithFormat:@"%@%@", _calendarItem.calendarName, [_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : NSLocalizedString(@" Events", @" Events")];
+			if ([_calendarItem.calendarType integerValue] == CalendarCellType_User) {
+				self.title = _calendarItem.calendarName;
+			} else {
+				self.title = [NSString stringWithFormat:@"%@ %@", _calendarItem.calendarName, NSLocalizedString(@"Events", nil)];
+			}
         }
     }
 
@@ -550,7 +554,7 @@
         }
         
         // daysLabel
-        if ([markLabel.text isEqualToString:NSLocalizedString(@"today", @"today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
+        if ([markLabel.text isEqualToString:NSLocalizedString(@"Today", @"Today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
             daysLabel.text = @" ";
         }
         else {

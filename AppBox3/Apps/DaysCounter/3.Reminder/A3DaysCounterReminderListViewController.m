@@ -190,7 +190,7 @@
                                                                  allDayOption:[item.isAllDay boolValue]
                                                                        repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO
                                                                        strict:[A3DaysCounterModelManager hasHourMinDurationOption:[item.durationOption integerValue]]];
-        if ([untilSinceString isEqualToString:NSLocalizedString(@"today", @"today")] || [untilSinceString isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
+        if ([untilSinceString isEqualToString:NSLocalizedString(@"Today", @"Today")] || [untilSinceString isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
             NSDateFormatter *formatter = [NSDateFormatter new];
             if (IS_IPAD || [NSDate isFullStyleLocale]) {
                 [formatter setDateStyle:NSDateFormatterFullStyle];

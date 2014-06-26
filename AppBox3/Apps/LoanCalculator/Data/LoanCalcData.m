@@ -90,9 +90,9 @@ NSString *const A3LoanCalcCurrencyCodeChanged = @"A3LoanCalcCurrencyCodeChanged"
 	[formatter setNumberStyle:NSNumberFormatterPercentStyle];
 	[formatter setMaximumFractionDigits:3];
 	if ([self.showsInterestInYearly boolValue]) {
-		resultString = [NSString stringWithFormat:NSLocalizedString(@"Annual %@", @"Annual %@"), [formatter stringFromNumber:_annualInterestRate ? _annualInterestRate : @0]];
+		resultString = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Annual", @"Annual"), [formatter stringFromNumber:_annualInterestRate ? _annualInterestRate : @0]];
 	} else {
-		resultString = [NSString stringWithFormat:NSLocalizedString(@"Monthly %@", @"Monthly %@"), [formatter stringFromNumber:@([_annualInterestRate doubleValue] / 12.0)]];
+		resultString = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Monthly_Rate", @"Monthly"), [formatter stringFromNumber:@([_annualInterestRate doubleValue] / 12.0)]];
 	}
 	return resultString;
 }

@@ -317,7 +317,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 	if (fieldItem.video) {
 		CGFloat duration = [WalletData getDurationOfMovie:[fieldItem videoFileURLInOriginal:YES ]];
 		NSInteger dur = round(duration);
-		_metadataView.mediaSizeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Duration Time %lds", @"Duration Time %lds"), (long) dur];
+		_metadataView.mediaSizeLabel.text = [NSString stringWithFormat:@"%@ %lds", NSLocalizedString(@"Duration Time", @"Duration Time"), (long) dur];
 
         // Media CreationDate
         NSDateFormatter *dateFormatter = [NSDateFormatter new];

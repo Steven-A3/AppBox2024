@@ -506,7 +506,7 @@ enum A3ExpenseListAddBudgetCellType {
                        NSLocalizedString(@"Shopping", @"Pets"),
                        NSLocalizedString(@"Transportation", @"Pets"),
                        NSLocalizedString(@"Travel", @"Pets"),
-                       NSLocalizedString(@"Utilies", @"Pets"),
+                       NSLocalizedString(@"Utilities", @"Pets"),
                        NSLocalizedString(@"Uncategorized", @"Pets")];
         for (NSString *category in categories) {
             ExpenseListCategories *entity = [ExpenseListCategories MR_createEntity];

@@ -257,7 +257,7 @@
         markLabel.layer.borderColor = markLabel.textColor.CGColor;
 
         // daysLabel
-        if ([markLabel.text isEqualToString:NSLocalizedString(@"today", @"today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
+        if ([markLabel.text isEqualToString:NSLocalizedString(@"Today", @"Today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
             daysLabel.text = @" ";
 
             if ( IS_IPAD ) {

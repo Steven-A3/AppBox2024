@@ -577,7 +577,7 @@
 																 delegate:self
 														cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
 												   destructiveButtonTitle:nil
-														otherButtonTitles:[NSString stringWithFormat:NSLocalizedString(@"Create %@", @"Create %@"), self.searchText], nil];
+														otherButtonTitles:[NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Create", nil), self.searchText], nil];
         [actionSheet showInView:self.view];
     }
     else {

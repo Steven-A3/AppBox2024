@@ -535,7 +535,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
     if( ![_accountItem.name length] ){
         NSInteger totalUser = [LadyCalendarAccount MR_countOfEntities];
-		_accountItem.name = [NSString stringWithFormat:NSLocalizedString(@"User%02ld", @"User%02ld"), (long) totalUser + 1];
+		_accountItem.name = [NSString stringWithFormat:@"%@%02ld", NSLocalizedString(@"User", nil), (long) totalUser + 1];
     }
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 

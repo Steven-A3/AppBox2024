@@ -84,13 +84,13 @@
 {
     NSString *retStr = @"";
     NSArray *valueArray = @[
-			NSLocalizedString(@"2 years", @"2 years"),
-			NSLocalizedString(@"3 months", @"3 months"),
-			NSLocalizedString(@"4 weeks", @"4 weeks"),
-			NSLocalizedString(@"15 days", @"15 days"),
-			NSLocalizedString(@"4 hours", @"4 hours"),
-			NSLocalizedString(@"30 minutes", @"30 minutes"),
-			NSLocalizedString(@"13 seconds", @"13 seconds")
+			NSLocalizedString(@"2 years", nil),
+			NSLocalizedString(@"3 months", nil),
+			NSLocalizedString(@"4 weeks", nil),
+			NSLocalizedString(@"15 days", nil),
+			NSLocalizedString(@"4 hours", nil),
+			NSLocalizedString(@"30 minutes", nil),
+			NSLocalizedString(@"13 seconds", nil)
 	];
     NSArray *optionArray = @[@(DurationOption_Year), @(DurationOption_Month), @(DurationOption_Week), @(DurationOption_Day), @(DurationOption_Hour), @(DurationOption_Minutes), @(DurationOption_Seconds)];
     

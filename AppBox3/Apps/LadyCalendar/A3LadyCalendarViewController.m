@@ -113,7 +113,7 @@
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3DisclaimerSigned];
 
 		UIAlertView *disclaimer = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Disclaimer", @"Disclaimer")
-															 message:NSLocalizedString(@"LadyCalendarDiscalimerMsg", @"LadyCalendarDiscalimerMsg")
+															 message:NSLocalizedString(@"LadyCalendarDisclaimerMsg", @"LadyCalendarDiscalimerMsg")
 															delegate:nil
 												   cancelButtonTitle:NSLocalizedString(@"I Agree", @"I Agree")
 												   otherButtonTitles:nil];

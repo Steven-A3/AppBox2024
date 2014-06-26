@@ -73,7 +73,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 	UIView *targetViewForHud = [[self visibleViewController] view];
 	self.hud = [MBProgressHUD showHUDAddedTo:targetViewForHud animated:YES];
-	self.hud.labelText = enable ? NSLocalizedString(@"Enabling iCloud", @"Enabling iCloud") : NSLocalizedString(@"Disableing iCloud", @"Disableing iCloud");
+	self.hud.labelText = enable ? NSLocalizedString(@"Enabling iCloud", @"Enabling iCloud") : NSLocalizedString(@"Disabling iCloud", @"Disableing iCloud");
 	self.hud.minShowTime = 2;
 	self.hud.removeFromSuperViewOnHide = YES;
 	__typeof(self) __weak weakSelf = self;
@@ -207,7 +207,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 			weakSelf.hud.customView = imageView;
 			if (isCloudStore) {
 				weakSelf.hud.labelText = NSLocalizedString(@"iCloud Enabled", @"iCloud Enabled");
-				weakSelf.hud.detailsLabelText = NSLocalizedString(@"Syncing in backgorund", @"Syncing in backgorund");
+				weakSelf.hud.detailsLabelText = NSLocalizedString(@"Syncing in background", @"Syncing in backgorund");
 			} else {
 				weakSelf.hud.labelText = NSLocalizedString(@"iCloud Disabled", @"iCloud Disabled");
 			}

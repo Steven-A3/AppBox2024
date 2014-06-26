@@ -207,7 +207,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
         }
         case A3LC_CalculationItemInterestRate:
         {
-            placeHolderText = [NSString stringWithFormat:NSLocalizedString(@"Annual %@", @"Annual %@"), [self.percentFormatter stringFromNumber:@(0)]];
+            placeHolderText = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Annual", @"Annual"), [self.percentFormatter stringFromNumber:@(0)]];
             textFieldText = [self.loanData interestRateString];
             break;
         }
@@ -232,7 +232,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
         }
         default:
             break;
-    }
+	}
     inputCell.textField.text = textFieldText;
     inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeHolderText
                                                                                 attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
