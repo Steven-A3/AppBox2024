@@ -639,7 +639,26 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	}
 	else {
 		float targetValue = self.unitValue.floatValue * rate;
-		convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
+        
+        if ([first.item.unitName isEqualToString:@"feet inches"]) {
+            //float rate = [item.item.conversionRate floatValue] / [first.item.conversionRate floatValue];
+            float value = [self.unitValue floatValue];
+            int feet = (int)value;
+            float inch = (value -feet) * kInchesPerFeet;
+            
+            convertInfoText = [NSString stringWithFormat:@"%@ = %@ %@", [NSString stringWithFormat:@"%@ft %@in", [self.decimalFormatter stringFromNumber:@(feet)], [self.decimalFormatter stringFromNumber:@(inch)]], [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
+        }
+        else if ([item.item.unitName isEqualToString:@"feet inches"]) {
+            float rate =  [item.item.conversionRate floatValue] / [first.item.conversionRate floatValue];
+            float value = self.unitValue.floatValue * rate;
+            int feet = (int)value;
+            float inch = (value -feet) * kInchesPerFeet;
+            
+            convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [NSString stringWithFormat:@"%@ft %@in", [self.decimalFormatter stringFromNumber:@(feet)], [self.decimalFormatter stringFromNumber:@(inch)]]];
+        }
+        else {
+            convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
+        }
 	}
 	[_shareTextList addObject:convertInfoText];
 

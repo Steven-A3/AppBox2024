@@ -181,7 +181,7 @@
             make.right.equalTo(self.contentView.right).with.offset(-160);
         }
         else {
-            make.right.equalTo(self.rateLabel.left).with.offset(-20);
+            make.trailing.equalTo(self.rateLabel.right).with.offset(-20);
         }
     }];
 }
