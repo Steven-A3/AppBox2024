@@ -346,6 +346,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 				A3BasicWebViewController *viewController = [A3BasicWebViewController new];
 				viewController.url = result.URL;
 				viewController.showDoneButton = YES;
+                viewController.titleString = NSLocalizedString(@"Website", "Website");
 
 				UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 				[self presentViewController:navigationController animated:YES completion:nil];
