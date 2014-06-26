@@ -204,13 +204,12 @@ http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=318404385&mt=8
 "Start Slideshow" = "Start Slideshow";
 "There is no events." = "There is no events.";
 
-"Slide Show" = "Slide Show";
-"Slideshow" = "Slideshow";
-"Edit Calendar" = "Edit Calendar";
-"Add Calendar" = "Add Calendar";
-"COLOR" = "COLOR";
-"Calendar Name" = "Calendar Name";
-"Delete Calendar" = "Delete Calendar";
+"Slideshow" = "幻灯片显示";
+"Edit Calendar" = "编辑日历";
+"Add Calendar" = "添加日历";
+"COLOR" = "颜色";
+"Calendar Name" = "日历名称";
+"Delete Calendar" = "删除日历";
 "Untitled" = "Untitled";
 
 "Add Event" = "纪念日添加";
@@ -272,10 +271,7 @@ The start date must be before the end date.";
 "Please select events." = "Please select events.";
 
 " Events" = " Events";
-
 "Reminder" = "Reminder";
-
-"All" = "All";
 "List_Upcoming" = "Upcoming";
 "List_Past" = "Past";
 "Anniversary" = "Anniversary";
@@ -665,6 +661,7 @@ Since";
 "Volume" = "音量";
 "Weight" = "Weight";
 
+"Wallet_All_Category" = "All";
 "Field Type" = "醒目形式";
 "All Items" = "All Items";
 "CATEGORIES" = "CATEGORIES";
@@ -825,9 +822,6 @@ Since";
 "FaceTime" = "FaceTime";
 "GPS" = "GPS";
 "Charging times" = "Charging times";
-"2D Game" = "2D Game";
-"3D Game" = "3D Game";
-"YouTube" = "YouTube";
 
 "None_Mirror" = "None";
 "CALENDARS" = "日历";

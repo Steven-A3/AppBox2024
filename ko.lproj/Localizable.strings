@@ -203,7 +203,6 @@
 "Start Slideshow" = "슬라이드쇼 시작";
 "There is no events." = "등록된 이벤트가 없습니다.";
 
-"Slide Show" = "슬라이드쇼";
 "Slideshow" = "슬라이드쇼";
 "Edit Calendar" = "캘린더 편집";
 "Add Calendar" = "캘린더 추가";
@@ -272,7 +271,6 @@
 
 "Reminder" = "미리 알림";
 
-"All" = "모든";
 "DaysCounter_All" = "모든 이벤트";
 "List_Upcoming" = "예정 이벤트";
 "List_Past" = "지난 이벤트";
@@ -658,6 +656,7 @@
 "Volume" = "부피";
 "Weight" = "무게";
 
+"Wallet_All_Category" = "모든 아이템";
 "Field Type" = "필드 종류";
 "All Items" = "모든 아이템";
 "CATEGORIES" = "카테고리";
@@ -822,9 +821,6 @@
 "FaceTime" = "페이스타임";
 "GPS" = "GPS";
 "Charging times" = "완전 충전 시간";
-"2D Game" = "2D Game";
-"3D Game" = "3D Game";
-"YouTube" = "YouTube";
 
 "None_Mirror" = "일반";
 

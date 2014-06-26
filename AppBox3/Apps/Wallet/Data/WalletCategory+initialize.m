@@ -44,7 +44,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 
     WalletCategory *allCategory = [WalletCategory MR_createInContext:context];
 	[allCategory initValues];
-	allCategory.name = NSLocalizedString(@"All", @"All");
+	allCategory.name = NSLocalizedString(@"Wallet_All_Category", @"All");
     allCategory.icon = @"wallet_folder";
 	allCategory.uniqueID = A3WalletUUIDAllCategory;
 	allCategory.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
