@@ -528,14 +528,19 @@ then tap Delete</string>
                             <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aje-N8-YCx">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tap to add period" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="768" translatesAutoresizingMaskIntoConstraints="NO" id="Cat-ab-onw" userLabel="Label - touch and hold a country, then drag it up or down">
-                                        <rect key="frame" x="0.0" y="872" width="768" height="20"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to add period" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="748" translatesAutoresizingMaskIntoConstraints="NO" id="Cat-ab-onw" userLabel="Label - touch and hold a country, then drag it up or down">
+                                        <rect key="frame" x="10" y="872" width="748" height="20"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="Cat-ab-onw" firstAttribute="leading" secondItem="Aje-N8-YCx" secondAttribute="leading" constant="10" id="JwY-rj-48j"/>
+                                    <constraint firstAttribute="centerX" secondItem="Cat-ab-onw" secondAttribute="centerX" id="iW1-4W-MPC"/>
+                                    <constraint firstAttribute="trailing" secondItem="Cat-ab-onw" secondAttribute="trailing" constant="10" id="ypJ-VG-VSA"/>
+                                </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="3xr-zz-sff">
                                 <rect key="frame" x="710" y="34" width="42" height="42"/>
@@ -612,6 +617,7 @@ then tap Delete</string>
                             <constraint firstItem="Y9G-RL-Ien" firstAttribute="leading" secondItem="fod-W7-3WS" secondAttribute="trailing" constant="5" id="cTh-WC-e73"/>
                             <constraint firstItem="F5U-ls-szF" firstAttribute="top" secondItem="6We-94-7TK" secondAttribute="bottom" constant="10" id="cjt-Jc-A5x"/>
                             <constraint firstItem="k1V-zB-30E" firstAttribute="leading" secondItem="Ixs-cb-aRL" secondAttribute="leading" id="dvU-24-bK5"/>
+                            <constraint firstItem="cHd-Tc-CAz" firstAttribute="top" secondItem="Cat-ab-onw" secondAttribute="bottom" constant="10" id="hnR-gT-sl9"/>
                             <constraint firstAttribute="centerX" secondItem="6We-94-7TK" secondAttribute="centerX" id="i0I-lR-mh6"/>
                             <constraint firstItem="fod-W7-3WS" firstAttribute="top" secondItem="Y9G-RL-Ien" secondAttribute="top" constant="-5" id="pjW-kF-Uzv"/>
                             <constraint firstItem="Jc6-JH-cJx" firstAttribute="leading" secondItem="Ixs-cb-aRL" secondAttribute="leading" id="ra5-Rw-Xdq"/>

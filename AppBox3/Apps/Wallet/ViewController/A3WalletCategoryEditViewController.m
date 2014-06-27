@@ -175,7 +175,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     // 입력값 유효성 체크
     if (_category.name.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-                                                        message:NSLocalizedString(@"Enter catergory name", @"Enter catergory name")
+                                                        message:NSLocalizedString(@"Enter category name", @"Enter category name")
                                                        delegate:nil
                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                               otherButtonTitles:nil];

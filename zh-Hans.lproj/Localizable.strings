@@ -423,7 +423,7 @@ The start date must be before the end date.";
 "Past" = "Past";
 /* Holidays for year 1930 is not available. */
 "Holidays for year %lu is not available." = "Holidays for year %lu is not available.";
-"Disclaimer" = "Disclalmer";
+"Disclaimer" = "Disclaimer";
 "I Agree" = "同意";
 
 "on flickr" = "flickr";
@@ -678,7 +678,7 @@ The start date must be before the end date.";
 "UPDATED" = "UPDATED";
 "Add Category" = "种类添加";
 "Edit Category" = "种类编辑";
-"Enter catergory name" = "Enter catergory name";
+"Enter category name" = "Enter category name";
 "Category Name" = "Category Name";
 "add new field" = "add new field";
 "Delete Category" = "种类删除";
@@ -716,7 +716,7 @@ The start date must be before the end date.";
 "Re-enter your passcode" = "密码再输入";
 "Re-enter your new passcode" = "Re-enter your new passcode";
 "Enter your new passcode" = "输入您的新密码";
-"Passcodes did not match. Try again." = "Passcodes did not match. Try again.";
+"Passcode did not match. Try again." = "Passcode did not match. Try again.";
 "%i Passcode Failed Attempts" = "%i Passcode Failed Attempts";
 "Enter Passcode" = "输入密码";
 "New Passcode" = "新密码";
@@ -872,3 +872,6 @@ The start date must be before the end date.";
 
 "I'd like to share a currency conversion with you." = "I'd like to share a currency conversion with you.";
 "You can convert more currencies in the AppBox Pro." = "You can convert more currencies in the AppBox Pro.";
+
+"Increase" = "Increase";
+"Decrease" = "Decrease";

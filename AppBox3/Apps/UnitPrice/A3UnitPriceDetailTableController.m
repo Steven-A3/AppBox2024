@@ -214,7 +214,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (NSMutableDictionary *)discountItem
 {
     if (!_discountItem) {
-        _discountItem = [[NSMutableDictionary alloc] initWithDictionary:@{@"Name": NSLocalizedString(@"Discount", @"Discountpo")}];
+        _discountItem = [[NSMutableDictionary alloc] initWithDictionary:@{@"Name": NSLocalizedString(@"Discount", @"Discount")}];
     }
     return _discountItem;
 }

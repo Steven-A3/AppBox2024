@@ -52,7 +52,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"Chart";
+    self.title = NSLocalizedString(@"Chart", @"Chart");
+
     [self makeBackButtonEmptyArrow];
     _periodSegmentCtrl.selectedSegmentIndex = 0;
     _segmentLeftConst.constant = (IS_IPHONE ? 15.0 : 28.0);

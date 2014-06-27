@@ -105,7 +105,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	_enterPasscodeLabel.textAlignment = NSTextAlignmentCenter;
 	[_animatingView addSubview: _enterPasscodeLabel];
 
-	// It is also used to display the "Passcodes did not match" error message if the user fails to confirm the passcode.
+	// It is also used to display the "Passcode did not match" error message if the user fails to confirm the passcode.
 	_failedAttemptLabel = [[UILabel alloc] initWithFrame: CGRectZero];
 	_failedAttemptLabel.text = NSLocalizedString(@"1 Passcode Failed Attempt", @"1 Passcode Failed Attempt");
 	_failedAttemptLabel.backgroundColor	= kFailedAttemptLabelBackgroundColor;
@@ -713,7 +713,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	_enterPasscodeLabel.text = savedPasscode.length == 0 ? NSLocalizedString(@"Enter your passcode", @"") : NSLocalizedString(@"Enter your new passcode", @"");
 
 	_failedAttemptLabel.hidden = NO;
-	_failedAttemptLabel.text = NSLocalizedString(@"Passcodes did not match. Try again.", @"");
+	_failedAttemptLabel.text = NSLocalizedString(@"Passcode did not match. Try again.", @"");
 	_failedAttemptLabel.backgroundColor = [UIColor clearColor];
 	_failedAttemptLabel.layer.borderWidth = 0;
 	_failedAttemptLabel.layer.borderColor = [UIColor clearColor].CGColor;

@@ -29,13 +29,19 @@
 "Passcode Lock" = "Kod blokady";
 "Lunar Calendar" = "Lunar Calendar";
 
+/* "Twój przyjaciel przekazuje Ci informację, że Lustro, Budzik, Poziomica, Waluty, Daty, Odliczanie, Napiwki, Jednostki i aplikacje sieciowe (Web Apps)  z AppBox Pro™ są już dostępne na twojego iPhone-a lub iPod-a Touch. Kliknij link poniżej aby ściągnąć AppBox Pro™ ze sklepu iTunes.\n\nhttps://itunes.apple.com/app/id318404385"; */
 "tellafriend" = "Twój przyjaciel przekazuje Ci informację, że Lustro, Budzik, Poziomica, Waluty, Daty, Odliczanie, Napiwki, Jednostki i aplikacje sieciowe (Web Apps)  z AppBox Pro™ są już dostępne na twojego iPhone-a lub iPod-a Touch. Kliknij link poniżej aby ściągnąć AppBox Pro™ ze sklepu iTunes.\n\nhttps://itunes.apple.com/app/id318404385";
 
+/* "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case."; */
 "DISCLAIMER_MESSAGE" = "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case.";
+
+/* "A Photo behind the Holidays in the AppBox Pro is collected from Flickr that reflect the beauty and magnificence of different locations around the world. Flickr screen name and a link to the photo are shown on the screen. Authors get any and all rights over photo. ALLABOUTAPPS Inc. don't own any photo. If you want to participate this, send us email. You will not receive financial compensation for use of your photos, however will bring a whole new audience to your photo stream. Thanks to authors to share."; */
 "HOLIDAYS_ACKNOWLEDGEMENT" = "A Photo behind the Holidays in the AppBox Pro is collected from Flickr that reflect the beauty and magnificence of different locations around the world. Flickr screen name and a link to the photo are shown on the screen. Authors get any and all rights over photo. ALLABOUTAPPS Inc. don't own any photo. If you want to participate this, send us email. You will not receive financial compensation for use of your photos, however will bring a whole new audience to your photo stream. Thanks to authors to share.";
 
+/* "Apple uses a technology called Data Protection. It encrypts your data with secure 256-bit key and hardware AES Engine. By setting up a device passcode, you automatically enables Data Protection.\nThe passcode is \"tangled\" with the device's UID, so brute-force attempts must be performed on the device under attack. A large iteration count is used to make each attempt slower. The iteration count is calibrated so that one attempt takes approximately 80 milliseconds. This means it would take more than 5½ years to try all combinations of a six-character alphanumeric passcode with lowercase letters and numbers, or 2½ years for a nine-digit passcode with numbers only."; */
 "SECURITY_INFO" = "Apple uses a technology called Data Protection. It encrypts your data with secure 256-bit key and hardware AES Engine. By setting up a device passcode, you automatically enables Data Protection.\nThe passcode is \"tangled\" with the device's UID, so brute-force attempts must be performed on the device under attack. A large iteration count is used to make each attempt slower. The iteration count is calibrated so that one attempt takes approximately 80 milliseconds. This means it would take more than 5½ years to try all combinations of a six-character alphanumeric passcode with lowercase letters and numbers, or 2½ years for a nine-digit passcode with numbers only.";
 
+/* "AppBox Pro does not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro"; */
 "microphone access denied" = "AppBox Pro does not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro";
 
 "Theme Color" = "Theme Color";
@@ -43,18 +49,18 @@
 "About" = "About";
 "Remaining Time" = "Remaining Time";
 
-"Battery Status" = "Battery Status";
+"Battery Status" = "Bateria";
 "Calculator" = "Calculator";
-"Date Calculator" = "Date Calculator";
-"Loan Calculator" = "Loan Calculator";
-"Sales Calculator" = "Sales Calculator";
-"Tip Calculator" = "Tip Calculator";
+"Date Calculator" = "Daty";
+"Loan Calculator" = "Pożyczki";
+"Sales Calculator" = "Obniżka";
+"Tip Calculator" = "Napiwek";
 "Unit Price" = "Cena jednostkowa";
 "Percent Calculator" = "Percent Calculator";
-"Currency Converter" = "Currency Converter";
+"Currency Converter" = "Kursy walut";
 "Lunar Converter" = "Lunar Converter";
 "Translator" = "Tłumacz";
-"Unit Converter" = "Unit Converter";
+"Unit Converter" = "Konwerter";
 "Days Counter" = "Days Counter";
 "Lady Calendar" = "Lady Calendar";
 "Wallet" = "Portfel";
@@ -68,6 +74,7 @@
 "Last %ld" = "Last %ld";
 
 "Apps" = "Apps";
+/* "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature."; */
 "iCloud_goto_settings" = "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.";
 
 "Info" = "Informacja";
@@ -411,7 +418,7 @@
 "Upcoming" = "Upcoming";
 "Past" = "Past";
 "Holidays for year %lu is not available." = "Holidays for year %lu is not available.";
-"Disclaimer" = "Disclalmer";
+"Disclaimer" = "Disclaimer";
 "I Agree" = "Zgadzam się";
 "on flickr" = "on flickr";
 " by %@" = " by %@";
@@ -639,7 +646,7 @@
 "Unit" = "Konwerter";
 "Size" = "Size";
 "Quantity" = "Quantity";
-"Discount" = "Discountpo";
+"Discount" = "Discount";
 
 "The best unit price is A at %@" = "The best unit price is A at %@";
 "The best unit price is B at %@" = "The best unit price is B at %@";
@@ -659,7 +666,7 @@
 "UPDATED" = "UPDATED";
 "Add Category" = "Dodaj kategorię";
 "Edit Category" = "Edytuj kategorię";
-"Enter catergory name" = "Enter catergory name";
+"Enter category name" = "Enter category name";
 "Category Name" = "Category Name";
 "add new field" = "add new field";
 "Delete Category" = "Usuń kategorię";
@@ -697,7 +704,7 @@
 "Re-enter your passcode" = "Wpisz ponownie hasło";
 "Re-enter your new passcode" = "Re-enter your new passcode";
 "Enter your new passcode" = "Wpisz nowe kod";
-"Passcodes did not match. Try again." = "Passcodes did not match. Try again.";
+"Passcode did not match. Try again." = "Passcode did not match. Try again.";
 "%i Passcode Failed Attempts" = "%i Passcode Failed Attempts";
 "Enter Passcode" = "Wpisz hasło";
 "New Passcode" = "Nowy kod";
@@ -806,6 +813,8 @@
 "CALENDARS" = "CALENDARS";
 
 "Encryption Key for Wallet" = "Encryption Key for Wallet";
+
+/* "Please know that the quality of photos saved in the Days Until with the previous version of the AppBox Pro may not good enough to use with the current version. We recommend you to re-add photos to your events."; */
 "V1_Notice_for_Photo_Quality" = "Please know that the quality of photos saved in the Days Until with the previous version of the AppBox Pro may not good enough to use with the current version. We recommend you to re-add photos to your events.";
 "Notice" = "Notice";
 
@@ -851,3 +860,6 @@
 
 "I'd like to share a currency conversion with you." = "I'd like to share a currency conversion with you.";
 "You can convert more currencies in the AppBox Pro." = "You can convert more currencies in the AppBox Pro.";
+
+"Increase" = "Increase";
+"Decrease" = "Decrease";

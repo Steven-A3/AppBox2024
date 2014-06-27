@@ -605,7 +605,7 @@
 "Unit" = "Unit";
 "Size" = "Size";
 "Quantity" = "Quantity";
-"Discount" = "Discountpo";
+"Discount" = "Discount";
 
 "The best unit price is A at %@" = "The best unit price is A at %@";
 "The best unit price is B at %@" = "The best unit price is B at %@";
@@ -625,7 +625,7 @@
 "UPDATED" = "UPDATED";
 "Add Category" = "Add Category";
 "Edit Category" = "Edit Category";
-"Enter catergory name" = "Enter catergory name";
+"Enter category name" = "Enter category name";
 "Category Name" = "Category Name";
 "add new field" = "add new field";
 "Delete Category" = "Delete Category";
@@ -663,7 +663,7 @@
 "Re-enter your passcode" = "Re-enter your passcode";
 "Re-enter your new passcode" = "Re-enter your new passcode";
 "Enter your new passcode" = "Enter your new passcode";
-"Passcodes did not match. Try again." = "Passcodes did not match. Try again.";
+"Passcode did not match. Try again." = "Passcode did not match. Try again.";
 "%i Passcode Failed Attempts" = "%i Passcode Failed Attempts";
 "Enter Passcode" = "Enter Passcode";
 "New Passcode" = "New Passcode";
@@ -802,3 +802,6 @@
 
 "I'd like to share a currency conversion with you." = "I'd like to share a currency conversion with you.";
 "You can convert more currencies in the AppBox Pro." = "You can convert more currencies in the AppBox Pro.";
+
+"Increase" = "Increase";
+"Decrease" = "Decrease";

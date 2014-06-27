@@ -40,7 +40,7 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Settings";
+    self.title = NSLocalizedString(@"Settings", @"Settings");
 
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;

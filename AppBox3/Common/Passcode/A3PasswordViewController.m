@@ -588,7 +588,7 @@
 		} else if (![_confirmPasswordField.text length]) {
 			[self setMessage:NSLocalizedString(@"Please enter confirm passcode.", @"Please enter confirm passcode.")];
 		} else {
-			[self setMessage:NSLocalizedString(@"Passcodes did not match. Try again.", @"")];
+			[self setMessage:NSLocalizedString(@"Passcode did not match. Try again.", @"")];
 		}
 	}
 	return NO;

@@ -660,7 +660,7 @@
 "UPDATED" = "수정일";
 "Add Category" = "카테고리 추가";
 "Edit Category" = "카테고리 수정";
-"Enter catergory name" = "카테고리 이름을 입력해주세요.";
+"Enter category name" = "카테고리 이름을 입력해주세요.";
 "Category Name" = "카테고리 이름";
 "add new field" = "새 필드 추가";
 "Delete Category" = "카테고리 지우기";
@@ -698,7 +698,7 @@
 "Re-enter your passcode" = "암호를 다시 입력해 주세요.";
 "Re-enter your new passcode" = "새 암호를 다시 한번 입력해 주세요.";
 "Enter your new passcode" = "새 암호를 입력해주세요.";
-"Passcodes did not match. Try again." = "암호가 일치하지 않습니다.";
+"Passcode did not match. Try again." = "암호가 일치하지 않습니다.";
 "%i Passcode Failed Attempts" = "%i 회 암호를 틀렸습니다.";
 "Enter Passcode" = "암호를 입력해주세요.";
 "New Passcode" = "새로운 암호";
@@ -880,3 +880,6 @@
 
 "I'd like to share a currency conversion with you." = "환율 변환 결과를 공유합니다.";
 "You can convert more currencies in the AppBox Pro." = "AppBox Pro를 이용해서 다양한 환율을 변환해 보세요.";
+
+"Increase" = "증가";
+"Decrease" = "감소";

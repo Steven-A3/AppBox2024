@@ -449,13 +449,13 @@
                     if ([rNumber doubleValue] > 0.0) {
                         aLabel.layer.borderColor = [COLOR_POSITIVE CGColor];
                         aLabel.textColor = COLOR_POSITIVE;
-                        _sliderThumb1Label.text = @"increase";
+                        _sliderThumb1Label.text = NSLocalizedString(@"Increase", @"Increase");
                         _sliderLine1GaugeView.backgroundColor = COLOR_POSITIVE;
                         _sliderLine1Thumb.centerColorType = CenterColorType_Positive;
                     } else {
                         aLabel.layer.borderColor = [COLOR_NEGATIVE CGColor];
                         aLabel.textColor = COLOR_NEGATIVE;
-                        _sliderThumb1Label.text = @"decrease";
+                        _sliderThumb1Label.text = NSLocalizedString(@"Decrease", @"Decrease");
                         _sliderLine1GaugeView.backgroundColor = COLOR_NEGATIVE;
                         _sliderLine1Thumb.centerColorType = CenterColorType_Negative;
                     }
@@ -519,13 +519,13 @@
                     if (rNumber.doubleValue > 0.0) {
                         aLabel.layer.borderColor = [COLOR_POSITIVE CGColor];
                         aLabel.textColor = COLOR_POSITIVE;
-                        _sliderThumb2Label.text = @"increase";
+                        _sliderThumb2Label.text = NSLocalizedString(@"Increase", @"Increase");
                         _sliderLine2GaugeView.backgroundColor = COLOR_POSITIVE;
                         _sliderLine2Thumb.centerColorType = CenterColorType_Positive;
                     } else {
                         aLabel.layer.borderColor = [COLOR_NEGATIVE CGColor];
                         aLabel.textColor = COLOR_NEGATIVE;
-                        _sliderThumb2Label.text = @"decrease";
+                        _sliderThumb2Label.text = NSLocalizedString(@"Decrease", @"Decrease");
                         _sliderLine2GaugeView.backgroundColor = COLOR_NEGATIVE;
                         _sliderLine2Thumb.centerColorType = CenterColorType_Negative;
                     }
@@ -691,9 +691,9 @@
             // 결과 라인 상단 레이블, 결과 % or 텍스트 출력
             if (_calcType == PercentCalcType_4) {
                 if ([rNumber doubleValue] > 0.0) {
-                    _sliderThumb1Label.text = @"increase";
+                    _sliderThumb1Label.text = NSLocalizedString(@"Increase", @"Increase");
                 } else {
-                    _sliderThumb1Label.text = @"decrease";
+                    _sliderThumb1Label.text = NSLocalizedString(@"Decrease", @"Decrease");
                 }
             } else {
                 _sliderThumb1Label.text = [NSString stringWithFormat:@"%@%%", [NSNumberFormatter exponentStringFromNumber:rNumber]];
