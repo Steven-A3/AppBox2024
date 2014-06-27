@@ -2333,7 +2333,7 @@
 
 	_eventItem.hasPhoto = @YES;
 	[_eventItem setPhoto:image inOriginalDirectory:NO];
-	[_eventItem saveThumbnailForImage:image inOriginalDirectory:NO ];
+	[_eventItem saveThumbnailForImage:image inOriginalDirectory:NO];
 
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     if ( IS_IPHONE || picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
