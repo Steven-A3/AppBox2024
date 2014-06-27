@@ -99,7 +99,7 @@
     for (NSInteger idx=0; idx < [_yLabelItems count]; idx++) {
         CGRect drawRect = CGRectMake(yLabelPos.x, yLabelPos.y - (idx * _yAxisInterval) - (yLabelMaxSize.height / 2), yLabelMaxSize.width, yLabelMaxSize.height);
         NSString *str = [_yLabelItems objectAtIndex:idx];
-        [str drawWithRect:drawRect options:NSLineBreakByCharWrapping|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : self.yAxisFont,NSForegroundColorAttributeName:_yLabelColor} context:nil];        
+        [str drawWithRect:drawRect options:NSLineBreakByCharWrapping|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : self.yAxisFont,NSForegroundColorAttributeName:_yLabelColor} context:nil];
 //        CGContextMoveToPoint(context, 0, yLabelPos.y - (idx * _yAxisInterval) - (yLabelMaxSize.height / 2));
 //        CGContextAddLineToPoint(context, yLabelMaxSize.width, yLabelPos.y - (idx * _yAxisInterval) - (yLabelMaxSize.height / 2));
 //        CGContextSetLineWidth(context, 1.0);
