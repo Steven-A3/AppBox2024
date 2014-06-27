@@ -240,6 +240,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             UITextField *textField = (UITextField *)[cell viewWithTag:10];
 			textField.textColor = [UIColor blackColor];
             textField.delegate = self;
+			textField.placeholder = NSLocalizedString(@"Name", nil);
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         else if( cellType == AccountCell_Notes ){

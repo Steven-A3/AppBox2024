@@ -283,10 +283,10 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (self.isEditing) {
 		if (section == 0) {
-            return @"Categories on the bar";
+            return NSLocalizedString(@"Categories on the bar", @"Categories on the bar");
         }
         
-		return @"Categories in more";
+		return NSLocalizedString(@"Categories in more", @"Categories in more");
 	}
 	return nil;
 }

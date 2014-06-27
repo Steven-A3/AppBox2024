@@ -308,5 +308,23 @@
 			<string>%ld개의 이벤트</string>
 		</dict>
 	</dict>
+    <key>%ld Delete Translation</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_delete_translation@</string>
+		<key>num_delete_translation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>번역 지우기</string>
+			<key>one</key>
+			<string>번역 지우기</string>
+			<key>other</key>
+			<string>번역 지우기</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

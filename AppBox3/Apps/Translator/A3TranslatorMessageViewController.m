@@ -1424,7 +1424,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
         UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil
                                                                   delegate:self
                                                          cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                    destructiveButtonTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld Delete Translaton", @"StringsDict", nil), [selectedIndexPaths count]]
+                                                    destructiveButtonTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld Delete Translation", @"StringsDict", nil), [selectedIndexPaths count]]
                                                          otherButtonTitles:nil];
         askDeleteAll.tag = kTranslatorAlertViewType_ToolBarDelete;
         

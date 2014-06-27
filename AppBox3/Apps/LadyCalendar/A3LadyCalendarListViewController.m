@@ -226,7 +226,7 @@
         else{
             cycleLength = [item.cycleLength integerValue];
         }
-        detailTextLabel.text = [NSString stringWithFormat:@"During %ld days", (long)cycleLength];
+        detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"During %ld days", @"StringsDict", nil), (long)cycleLength];
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }

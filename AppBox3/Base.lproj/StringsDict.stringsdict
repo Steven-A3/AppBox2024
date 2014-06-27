@@ -16,10 +16,6 @@
 			<string>%1$ld hour, %2$ld minute</string>
 			<key>one</key>
 			<string>%1$ld hour, %2$ld minute</string>
-			<key>few</key>
-			<string>%1$ld hours, %2$ld minutes</string>
-			<key>many</key>
-			<string>%1$ld hours, %2$ld minutes</string>
 			<key>other</key>
 			<string>%1$ld hours, %2$ld minutes</string>
 		</dict>
@@ -38,10 +34,6 @@
 			<string>0 hour</string>
 			<key>one</key>
 			<string>1 hour</string>
-			<key>few</key>
-			<string>%ld hours</string>
-			<key>many</key>
-			<string>%ld hours</string>
 			<key>other</key>
 			<string>%ld hours</string>
 		</dict>
@@ -78,10 +70,6 @@
 			<string>0 minute</string>
 			<key>one</key>
 			<string>1 minute</string>
-			<key>few</key>
-			<string>%ld minutes</string>
-			<key>many</key>
-			<string>%ld minutes</string>
 			<key>other</key>
 			<string>%ld minutes</string>
 		</dict>
@@ -118,10 +106,6 @@
 			<string>Immediately</string>
 			<key>one</key>
 			<string>After 1 hour</string>
-			<key>few</key>
-			<string>After %ld hours</string>
-			<key>many</key>
-			<string>After %ld hours</string>
 			<key>other</key>
 			<string>After %ld hours</string>
 		</dict>
@@ -140,10 +124,6 @@
 			<string>Immediately</string>
 			<key>one</key>
 			<string>After 1 minute</string>
-			<key>few</key>
-			<string>After %ld minutes</string>
-			<key>many</key>
-			<string>After %ld minutes</string>
 			<key>other</key>
 			<string>After %ld minutes</string>
 		</dict>
@@ -336,26 +316,22 @@
 			<string>%ld Events</string>
 		</dict>
 	</dict>
-    <key>%ld Delete Translaton</key>
+    <key>%ld Delete Translation</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@num_delete_translaton@</string>
-		<key>num_delete_translaton</key>
+		<string>%#@num_delete_translation@</string>
+		<key>num_delete_translation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Delete Translaton</string>
+			<string>Delete Translation</string>
 			<key>one</key>
-			<string>Delete Translaton</string>
-			<key>few</key>
-			<string>Delete Translatons</string>
-			<key>many</key>
-			<string>Delete Translatons</string>
+			<string>Delete Translation</string>
 			<key>other</key>
-			<string>Delete Translatons</string>
+			<string>Delete Translations</string>
 		</dict>
 	</dict>
 </dict>
