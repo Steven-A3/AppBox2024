@@ -296,7 +296,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		case DetailCellType_Ovulation:{
 			A3LadyCalendarDetailViewCell *cell = [tableView dequeueReusableCellWithIdentifier:A3LadyCalendarDetailViewCellID forIndexPath:indexPath];
 			cell.titleLabel.text = rowInfo[ItemKey_Title];
-			cell.titleLabel.textColor = [UIColor colorWithRGBRed:238 green:230 blue:87 alpha:255];
+			cell.titleLabel.textColor = [UIColor colorWithRGBRed:227 green:186 blue:5 alpha:255];
 
 			NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:period.startDate];
 //			cell.subTitleLabel.text = [ovulationDate a3FullStyleString];
