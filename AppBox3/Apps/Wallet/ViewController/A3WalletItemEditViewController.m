@@ -965,6 +965,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		[picker dismissViewControllerAnimated:YES completion:NULL];
 	}
 
+    BOOL result;
 	NSString *mediaType = imageEditInfo[UIImagePickerControllerMediaType];
 	if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
 		//get the videoURL
@@ -974,8 +975,14 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			_currentFieldItem.video = [WalletFieldItemVideo MR_createEntity];
 		}
 		_currentFieldItem.video.extension = movieURL.pathExtension;
-		NSURL *destinationMovieURL = [_currentFieldItem videoFileURLInOriginal:NO ];
-		[[NSFileManager defaultManager] moveItemAtURL:movieURL toURL:destinationMovieURL error:NULL];
+		NSURL *destinationMovieURL = [_currentFieldItem videoFileURLInOriginal:NO];
+        NSError *error;
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[destinationMovieURL path]]) {
+            result = [[NSFileManager defaultManager] removeItemAtURL:destinationMovieURL error:&error];
+            NSAssert(result, @"NSFileManager defaultManager");
+        }
+		result = [[NSFileManager defaultManager] moveItemAtURL:movieURL toURL:destinationMovieURL error:&error];
+        NSAssert(result, @"NSFileManager defaultManager");
 
         NSURL *assetURL = imageEditInfo[UIImagePickerControllerReferenceURL];
 		if (assetURL) {
