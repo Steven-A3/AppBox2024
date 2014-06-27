@@ -204,7 +204,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 35.0;
+    //return 35.0;
+    return [self standardHeightForHeaderInSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

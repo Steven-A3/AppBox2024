@@ -625,7 +625,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
             // 텍스트 액션 여부 확인
             BOOL hasTextAction = [self detectDataText:fieldItem.value];
             
-            if (hasTextAction) {
+            if (hasTextAction && ([fieldItem.field.type isEqualToString:WalletFieldTypePhone] || [fieldItem.field.type isEqualToString:WalletFieldTypeEmail] || [fieldItem.field.type isEqualToString:WalletFieldTypeURL])) {
                 A3WalletItemFieldActionCell *actionCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldActionCellID forIndexPath:indexPath];
                 
                 actionCell.selectionStyle = UITableViewCellSelectionStyleNone;
