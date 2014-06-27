@@ -18,7 +18,7 @@
 "6rS-5S-grs.text" = "탭하면 크게 볼 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to add period"; ObjectID = "Cat-ab-onw"; */
-"Cat-ab-onw.text" = "탭하여 자연주기를 추가합니다.";
+"Cat-ab-onw.text" = "탭하여 생리기간을 추가합니다.";
 
 /* Class = "IBUILabel"; text = "Tap the plus button to add a country"; ObjectID = "DU3-Gi-SHf"; */
 "DU3-Gi-SHf.text" = "더하기 버튼을 탭하여 국가를 추가합니다.";
@@ -33,16 +33,16 @@
 "HRH-SL-EGk.text" = "탭하여 색상을 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a item,\nthen drag it up or down"; ObjectID = "Hg8-OO-NUZ"; */
-"Hg8-OO-NUZ.text" = "아이템을 터치하고 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
+"Hg8-OO-NUZ.text" = "아이템을 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "select which categories\nto view"; ObjectID = "JFG-2D-dxV"; */
-"JFG-2D-dxV.text" = "확인할 카테고리를\n선택합니다.";
+"JFG-2D-dxV.text" = "보기/가리기를 설정합니다.";
 
 /* Class = "IBUILabel"; text = "tap to see chart/account/option"; ObjectID = "Jc6-JH-cJx"; */
 "Jc6-JH-cJx.text" = "탭하여 차트, 계정, 옵션을 볼 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "slide the currency to the left,\nthen tap options"; ObjectID = "KuK-sv-rbe"; */
-"KuK-sv-rbe.text" = "통화를 왼쪽으로 밀면\n추가 기능이 나옵니다.";
+"KuK-sv-rbe.text" = "통화를 왼쪽으로 밀면 추가 기능이 나옵니다.";
 
 /* Class = "IBUILabel"; text = "add or delete countries"; ObjectID = "Kyq-vy-Xlr"; */
 "Kyq-vy-Xlr.text" = "국가를 추가하거나 제외합니다.";
@@ -69,10 +69,10 @@
 "SYZ-xq-Dcb.text" = "탭하여 더 많은 정보를 봅니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a item,\nthen drag it up or down"; ObjectID = "UKH-uM-FHa"; */
-"UKH-uM-FHa.text" = "아이템을 터치하고 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
+"UKH-uM-FHa.text" = "아이템을 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a language,\nthen drag it up or down"; ObjectID = "Vz2-2z-yFf"; */
-"Vz2-2z-yFf.text" = "언어를 터치하고 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
+"Vz2-2z-yFf.text" = "언어를 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a country,\nthen drag it up or down"; ObjectID = "XDP-Yt-OPK"; */
 "XDP-Yt-OPK.text" = "국가를 터치한 후 누르고 있으면 위 아래로 움직여서 순서를 바꿀 수 있습니다.";
@@ -90,10 +90,10 @@
 "b7H-so-GW2.text" = "색상과 순서를 변경합니다.";
 
 /* Class = "IBUILabel"; text = "slide the calendar to the left,\nthen tap Delete"; ObjectID = "bJN-4c-KyA"; */
-"bJN-4c-KyA.text" = "캘린더를 왼쪽으로 밀어서\n지울 수 있습니다.";
+"bJN-4c-KyA.text" = "캘린더를 왼쪽으로 밀어서 지울 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a event,\nthen drag it up or down"; ObjectID = "bwk-H3-3rx"; */
-"bwk-H3-3rx.text" = "이벤트를 터치하고 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
+"bwk-H3-3rx.text" = "이벤트를 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "c1e-KD-jLm"; */
 "c1e-KD-jLm.text" = "화면을 탭하여\n버튼을 표시합니다.";
@@ -135,10 +135,10 @@
 "miJ-Sx-wfj.text" = "언어를 왼쪽으로 밀어서\n지울 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "swipe left or right to change\nkeypad for basic/scientific"; ObjectID = "nGX-Pa-fkG"; */
-"nGX-Pa-fkG.text" = "키패드를 왼쪽이나 오른쪽으로 밀어서\n기본 계산기나 공학용 키패드로 변경합니다.";
+"nGX-Pa-fkG.text" = "키패드를 왼쪽이나 오른쪽으로 밀어서\n기본 계산기나 공학용 계산기로 변경합니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a language,\nthen drag it up or down"; ObjectID = "s0L-Sq-3OK"; */
-"s0L-Sq-3OK.text" = "언어를 터치하고 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
+"s0L-Sq-3OK.text" = "언어를 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "Tap to add an item"; ObjectID = "s4i-R2-JdL"; */
 "s4i-R2-JdL.text" = "탭하여 아이템을 추가합니다.";

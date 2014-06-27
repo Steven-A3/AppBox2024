@@ -30,7 +30,7 @@
 
 "Lunar Calendar" = "음력 달력";
 
-"tellafriend" = "iPhone/iPad/iPod Touch의 유용한 사용을 위해 일반/공학용 계산기, 날짜계산, 대출계산, 퍼센트계산, 할인가격계산, 팁계산, 단가비교, 환율변환, 양음력변환, 번역, 단위 변환, 이벤트 캘린더, 지출 관리, 자연주기, 전자지갑, 세계휴일/기념일, 배터리 정보, 시계, 돋보기, 거울 등의 응용프로그램이 모두 포함된 AppBox Pro™를 추천합니다.
+"tellafriend" = "iPhone/iPad/iPod Touch의 유용한 사용을 위해 일반/공학용 계산기, 날짜계산, 대출계산, 퍼센트계산, 할인가격계산, 팁계산, 단가비교, 환율변환, 양음력변환, 번역, 단위 변환, 이벤트 캘린더, 지출 관리, 레이디 캘린더, 전자지갑, 세계휴일/기념일, 배터리 정보, 시계, 돋보기, 거울 등의 응용프로그램이 모두 포함된 AppBox Pro™를 추천합니다.
 
 지금 바로 아래의 주소에서 AppBox Pro™를 다운받으세요.";
 
@@ -152,7 +152,7 @@
 "Rate = %0.4f" = "환율 = %0.4f";
 
 "Currency Converter in the AppBox Pro" = "AppBox Pro의 환율 변환";
-"Share Currency Converter Data" = "환율 변환 정보 공유하기";
+"Share Currency Converter Data" = "환율 변환 결과 공유하기";
 
 /* Data Calc duration */
 "Year" = "연";
@@ -217,7 +217,7 @@
 "Lunar" = "음력";
 "Starts-Ends" = "시작일-종료일";
 "Starts" = "시작일";
-"All-day" = "종일";
+"All-day" = "하루 종일";
 
 "Leap Month" = "윤달";
 "Ends" = "종료일";
@@ -333,7 +333,7 @@
 "day(s) before" = "일 전";
 "Please enter your dates in the future." = "미래의 날짜를 선택해 주세요.";
 "Time" = "시간";
-"Duration Options" = "기간 표시 방법";
+"Duration Options" = "기간 옵션";
 
 "Until" = "남음";
 "until" = "남음";
@@ -406,7 +406,7 @@
 
 "Search" = "검색";
 "Select Country" = "국가 선택";
-"To add a new country, remove one first." = "새로운 국가를 추가하려면 먼저 기존 국가를 하나 지우세요.";
+"To add a new country, remove one first." = "새로운 국가를 더 추가하려면 기존에 추가한 국가 중 하나를 지우셔야 합니다.";
 
 "Acknowledgement" = "감사의 말";
 "Upcoming" = "남은 휴일";
@@ -430,11 +430,11 @@
 " Same name already exists. " = " 같은 이름이 이미 존재합니다. ";
 "User" = "사용자";
 
-"Edit Period" = "자연주기 수정";
-"Add Period" = "자연주기 추가하기";
+"Edit Period" = "생리기간 수정";
+"Add Period" = "생리기간 추가하기";
 "End Date" = "종료일";
-"Cycle Length" = "주기";
-"Delete Period" = "자연주기 지우기";
+"Cycle Length" = "생리주기";
+"Delete Period" = "생리기간 지우기";
 "Please input end date." = "종료일을 입력해 주세요.";
 "Cannot Save Period.\nThe start date must be before the end date." = "시작일은 종료일보다 먼저 시작해야 합니다.";
 "The new date you entered overlaps with previous dates." = "기존에 입력된 정보와 기간이 중복됩니다.";
@@ -444,27 +444,27 @@
 "9 Months" = "9 개월";
 "1 Year" = "1 년";
 "2 Years" = "2 년";
-"CYCLE LENGTH" = "자연주기 간격";
-"MENSTRUAL PERIOD" = "생리 주기";
-"Expected Period(+/-2 days)" = "예상 일자(+/-2 days)";
+"CYCLE LENGTH" = "생리주기";
+"MENSTRUAL PERIOD" = "생리기간";
+"Expected Period(+/-2 days)" = "예상 날짜(+/-2 days)";
 "Increased Probability of Pregnancy" = "임신 가능 기간";
-"Ovulation - Highest Probability" = "배란일 - 임신 가능일 중 가장 확률이 높은 날";
-"Menstrual Period" = "생리 주기";
+"Ovulation - Highest Probability" = "배란일 - 가장 임신확률이 높은 날";
+"Menstrual Period" = "생리기간";
 "Periods" = "자연 주기";
 "On day(9 AM)" = "당일(오전 9시)";
-"1 day before(9 AM)" = "하루 전(오전 9시)";
-"2 days before(9 AM)" = "이틀 전(오전 9시)";
-"Your period is coming." = "자연주기 알림";
-"FORECASTING PERIODS" = "예측 주기";
+"1 day before(9 AM)" = "1일 전(오전 9시)";
+"2 days before(9 AM)" = "2일 전(오전 9시)";
+"Your period is coming." = "레이디 캘린더 알림입니다.";
+"FORECASTING PERIODS" = "예상 생리기간";
 
-"CALCULATE CYCLE LENGTH" = "자연주기 계산 방법";
+"CALCULATE CYCLE LENGTH" = "생리주기 계산 방법";
 "Same Before Cycle" = "이전 주기와 동일하게 적용";
 "Average Before Two Cycle" = "이전 두 주기의 평균값 적용";
 "Average All Cycle" = "전체 주기의 평균값 적용";
-"Automatically save period after estimated starting date." = "해당일이 지나면 예측일을 실제 주기로 인정";
+"Automatically save period after estimated starting date." = "다음 예상 시작일이 지나면 자동으로 생리기간을 기록합니다";
 "Auto Record" = "자동 기록";
-"Notify about estimated next starting date." = "다음 시작일을 알려줍니다.";
-"FORECASTING %@ PERIODS" = "미래 %@ 번의 예정일을 표시";
+"Notify about estimated next starting date." = "다음 예상 시작일을 알려줍니다.";
+"FORECASTING %@ PERIODS" = "예상 생리기간 %@회 표시";
 
 "Date, Principal, Payment, Interest, Balance" = "상환일, 납입원금, 상환금, 이자, 잔금";
 "Annual" = "연이율";
@@ -519,8 +519,8 @@
 "Extra(Monthly)" = "중도상환(매월)";
 "Extra Payments(Yearly)" = "중도상환(매년)";
 "Extra(Yearly)" = "중도상환(매년)";
-"Extra Payments(One-time)" = "중도상환(일회)";
-"Extra(One-time)" = "중도상환(일회)";
+"Extra Payments(One-time)" = "중도상환(1회)";
+"Extra(One-time)" = "중도상환(1회)";
 "Calculation" = "계산항목";
 "Extra Payment" = "중도상환";
 
@@ -549,10 +549,10 @@
 
 "A" = "A";
 "B" = "B";
-"X is Y% of What" = "얼마의 Y%는 X";
-"What is X% of Y" = "Y의 X%는 얼마";
-"X is What % of Y" = "Y의 X는 몇%";
-"% Change from X to Y" = "X가 Y로 변하면";
+"X is Y% of What" = "얼마의 Y%는 X?";
+"What is X% of Y" = "Y의 X%는 얼마?";
+"X is What % of Y" = "Y의 X는 몇%?";
+"% Change from X to Y" = "X가 Y로 변하면 몇%?";
 "Compare % Change from X to Y" = "X가 Y로 변하는 %비교";
 
 "Sale Price" = "할인 가격";
@@ -580,7 +580,7 @@
 "Total Per Person" = "개인별 총액";
 "Tip Per Person" = "개인별 봉사료";
 "Input" = "입력";
-"Amount" = "비용";
+"Amount" = "금액";
 "Amount After Tax" = "세금 포함 금액";
 "Amount Before Tax" = "세금 제외 금액";
 "Split" = "각자내기";
@@ -710,7 +710,7 @@
 "Please enter confirm passcode." = "새 암호를 다시 입력해 주세요.";
 "Passcode did not match." = "암호가 일치하지 않습니다.";
 "Please enter passcode." = "암호를 입력해 주세요.";
-"Open in Safari" = "사파리에서 열기";
+"Open in Safari" = "Safari에서 열기";
 
 "A friend has recommended AppBox Pro™ from the iTunes App Store" = "AppBox Pro™를 추천합니다.";
 "AppBox Pro™ V%@ Contact Support" = "AppBox Pro™ V%@ 고객 지원";
@@ -806,7 +806,7 @@
 "Video playback" = "동영상 재생";
 "Audio playback" = "오디오 재생";
 "Standby" = "대기 시간";
-"FaceTime" = "페이스타임";
+"FaceTime" = "FaceTime";
 "GPS" = "GPS";
 "Charging times" = "완전 충전 시간";
 
@@ -815,19 +815,19 @@
 "CALENDARS" = "캘린더";
 
 "Encryption Key for Wallet" = "전자지갑 암호 키";
-"V1_Notice_for_Photo_Quality" = "기존 버전의 기념일에 추가된 사진의 경우 사진 품질이 현재 버전에서 사용하기에 충분하지 않은 경우가 있을 수 있습니다. 이런 경우에는 사진을 다시 추가해 보시기 바랍니다.";
+"V1_Notice_for_Photo_Quality" = "기존 버전의 이벤트에 추가된 사진의 경우 사진 품질이 현재 버전에서 사용하기에 충분하지 않은 경우가 있을 수 있습니다. 이런 경우에는 사진을 다시 추가해 보시기 바랍니다.";
 "Notice" = "정보";
 
 "LoanCalc_DATE" = "상환일";
 
-"%/yr" = "%/년";
+"%/yr" = "%/연";
 "%/mo" = "%/월";
 
 "Text" = "일반문자열";
 "Number" = "숫자형식";
 "Phone" = "전화번호";
 "Email" = "이메일";
-"Date" = "일자";
+"Date" = "날짜";
 "Normal" = "모두 표시";
 "Password Style" = "암호형으로 표시";
 "Account Style" = "계정정보형으로 표시";
