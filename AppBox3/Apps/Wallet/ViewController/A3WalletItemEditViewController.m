@@ -1373,6 +1373,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	else {
 		UITableViewCell *deleteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldDeleteCellID4 forIndexPath:indexPath];
 		deleteCell.selectionStyle = UITableViewCellSelectionStyleNone;
+		UILabel *textLabel = (UILabel *)[deleteCell viewWithTag:10];
+		textLabel.text = NSLocalizedString(@"Delete Item", nil);
 
 		cell = deleteCell;
 	}

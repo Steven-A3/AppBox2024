@@ -20,6 +20,7 @@
                 <outlet property="settingBarButton" destination="YMX-aS-xdl" id="skN-3N-FKN"/>
                 <outlet property="sunLabel" destination="EGc-gz-TVJ" id="kN3-ig-Rh3"/>
                 <outlet property="thuLabel" destination="VY5-Ym-iIf" id="sqh-ef-EN4"/>
+                <outlet property="todayButtonInToolbar" destination="tvM-vH-4Du" id="A8b-0Q-jtm"/>
                 <outlet property="topSeparatorView" destination="Dy2-hV-ASY" id="gdo-TU-Jpa"/>
                 <outlet property="topSeparatorViewConst" destination="Gw8-gX-icg" id="85B-Td-TG9"/>
                 <outlet property="tueLabel" destination="4o7-As-GrD" id="pdw-40-GJb"/>

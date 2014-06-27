@@ -44,6 +44,7 @@
 @property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @property (weak, nonatomic) IBOutlet UILabel *sunLabel, *monLabel, *tueLabel, *wedLabel, *thuLabel, *friLabel, *satLabel;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *todayButtonInToolbar;
 
 @end
 
@@ -85,6 +86,7 @@
 		self.navigationItem.rightBarButtonItems = @[_settingBarButton, _accountBarButton, _chartBarButton, _helpBarButton];
 	}
 	self.toolbarItems = _bottomToolbar.items;
+	[self.todayButtonInToolbar setTitle:NSLocalizedString(@"Today", nil)];
 	[self setupWeekdayLabels];
 
 	[self makeBackButtonEmptyArrow];

@@ -843,37 +843,40 @@
 
 "DaysCounter_ALL" = "모든 이벤트";
 
-"You can calculate more in the AppBox Pro." = "You can calculate more in the AppBox Pro.";
+"You can calculate more in the AppBox Pro." = "AppBox Pro로 다양한 계산을 해보세요.";
 
-"I'd like to share a calculation with you." = "I'd like to share a calculation with you.";
+"I'd like to share a calculation with you." = "계산 결과를 공유합니다.";
 
-"I'd like to share a conversion with you." = "I'd like to share a conversion with you.";
-"You can convert more in the AppBox Pro." = "You can convert more in the AppBox Pro.";
-"Download from AppStore" = "Download from AppStore";
+"I'd like to share a conversion with you." = "변환 결과를 공유합니다.";
+"You can convert more in the AppBox Pro." = "AppBox Pro로 다양한 변환을 해보세요.";
+"Download from AppStore" = "앱스토어에서 다운로드";
 
-"Result" = "Result";
-"Add" = "Add";
-"day" = "day";
-"Subtract" = "Subtract";
-"I'd like to share a event with you." = "I'd like to share a event with you.";
+"Result" = "결과";
+"Add" = "더하기";
+"day" = "일";
+"Subtract" = "빼기";
+"I'd like to share a event with you." = "이벤트 정보를 공유합니다.";
 
-"You can manage your events in the AppBox Pro." = "You can manage your events in the AppBox Pro.";
+"You can manage your events in the AppBox Pro." = "AppBox Pro로 이벤트를 관래해 보세요.";
 
 "Interest" = "Interest";
-"Extra Payment(monthly)" = "Extra Payment(monthly)";
-"Extra Payment(yearly)" = "Extra Payment(yearly)";
-"Extra Payment(one-time)" = "Extra Payment(one-time)";
+"Extra Payment(monthly)" = "중도상환(매월)";
+"Extra Payment(yearly)" = "중도상환(매년)";
+"Extra Payment(one-time)" = "중도상환(일회)";
 
-"I'd like to share a information with you." = "I'd like to share a information with you.";
-"You can manage your information in the AppBox Pro." = "You can manage your information in the AppBox Pro.";
+"I'd like to share a information with you." = "아래와 같은 정보를 공유합니다.";
+"You can manage your information in the AppBox Pro." = "AppBox Pro로 중요한 정보들을 관리해 보세요.";
 
-"I'd like to share a translation with you." = "I'd like to share a translation with you.";
-"You can translate more in the AppBox Pro." = "You can translate more in the AppBox Pro.";
+"I'd like to share a translation with you." = "번역 결과를 공유합니다.";
+"You can translate more in the AppBox Pro." = "AppBox Pro로 여러가지 언어를 번역해 보세요.";
 
-"Field name already exists." = "Field name already exists.";
+"Field name already exists." = "필드명이 이미 있습니다.";
 
 "Disclaimer" = "책임의 한계";
 "LadyCalendarDisclaimerMsg" = "스트레스 및 성호르몬의 불균형으로 인하여 생리 예정일이 달라질 수 있으므로 배란일, 임신 가능일이 실제와 다를 수 있습니다.\r\n또한, 생리주기가 불규칙한 경우 결과치가 틀릴 수 있으므로 모든 여성에서 적합하지 않을 수 있습니다.\r\n피임 혹은 가임을 위해서는 배란일 측정법과 함께 다른 방법을 함께 사용하시기 바랍니다.";
 
-"Categories on the bar" = "Categories on the bar";
-"Categories in more" = "Categories in more";
+"Categories on the bar" = "기본 바에 표시";
+"Categories in more" = "기타에 표시";
+
+"I'd like to share a currency conversion with you." = "환율 변환 결과를 공유합니다.";
+"You can convert more currencies in the AppBox Pro." = "AppBox Pro를 이용해서 다양한 환율을 변환해 보세요.";

@@ -334,5 +334,23 @@
 			<string>Delete Translations</string>
 		</dict>
 	</dict>
+	<key>During %ld days</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_minutes@</string>
+		<key>num_minutes</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>None</string>
+			<key>one</key>
+			<string>During 1 day</string>
+			<key>other</key>
+			<string>During %ld days</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

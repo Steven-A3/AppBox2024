@@ -10,7 +10,7 @@
 "Term" = "期間";
 "Interest Rate" = "Interest Rate";
 "Frequency" = "Frequency";
-"LadyCalendar_Start Date" = "Start Date";
+"LadyCalendar_Start Date" = "開始日";
 "Notes" = "Notes";
 "One-Time" = "One-Time";
 "Currency" = "為替換算";
@@ -27,17 +27,17 @@
 "Sync" = "Sync";
 
 "Passcode Lock" = "パスコードロック";
-"Lunar Calendar" = "Lunar Calendar";
+"Lunar Calendar" = "陰暦";
 
 "tellafriend" = "iPhone/iPod Touchのより便利なご使用のためにミラー、アラーム時計、バッテリー情報、傾斜計、為替、日付計算、記念日、懐中電灯、祝日、ローン計算、自然周期、価格比較、乱数生成、ものさし、割引率計算、システム情報、チップ計算、翻訳機、単位変換、保安電子財布、ウェブ応用プログラムなどの応用プログラムがすべて含まれたAppBox Proをお勧めいたします。\n今すぐに下のアドレスからAppBox Proをダウンロードしてください。\n\nhttps://itunes.apple.com/app/id318404385";
 
 "DISCLAIMER_MESSAGE" = "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case.";
 
-"HOLIDAYS_ACKNOWLEDGEMENT" = "A Photo behind the Holidays in the AppBox Pro is collected from Flickr that reflect the beauty and magnificence of differnet locations around the world. Flickr screen name and a link to the photo are shown on the screen. Authors get any and all rights over photo. ALLABOUTAPPS Inc. don't own any photo. If you want to paricipate this, send us email. You will not receive financial compensation for use of your photos, however will bring a whole new audience to your photostream. Thanks to authors to share.";
+"HOLIDAYS_ACKNOWLEDGEMENT" = "A Photo behind the Holidays in the AppBox Pro is collected from Flickr that reflect the beauty and magnificence of different locations around the world. Flickr screen name and a link to the photo are shown on the screen. Authors get any and all rights over photo. ALLABOUTAPPS Inc. don't own any photo. If you want to participate this, send us email. You will not receive financial compensation for use of your photos, however will bring a whole new audience to your photostream. Thanks to authors to share.";
 
 "SECURITY_INFO" = "Apple uses a technology called Data Protection. It encrypts your data with secure 256-bit key and hardware AES Engine. By setting up a device passcode, you automatically enables Data Protection.\nThe passcode is \"tangled\" with the device's UID, so brute-force attempts must be performed on the device under attack. A large iteration count is used to make each attempt slower. The iteration count is calibrated so that one attempt takes approximately 80 milliseconds. This means it would take more than 5½ years to try all combinations of a six-character alphanumeric passcode with lowercase letters and numbers, or 2½ years for a nine-digit passcode with numbers only.";
 
-"microphone access denied" = "AppBox Pro dose not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro";
+"microphone access denied" = "AppBox Pro does not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro";
 
 "Theme Color" = "Theme Color";
 
@@ -862,6 +862,8 @@
 "Disclaimer" = "免責事項";
 "LadyCalendarDisclaimerMsg" = "ストレス及び性ホルモンの不均衡により生理予定日が変わることがあるため排卵日、妊娠可能日が実際とは異なることがあります。\r\nまた、生理周期が不規則な場合、結果値が合わないこともあるため、すべての女性に適合さないことがあります。\r\n避妊もしくは可妊のためには排卵日測定法と共に別の方法を一緒に使用してください。";
 
-
 "Categories on the bar" = "Categories on the bar";
 "Categories in more" = "Categories in more";
+
+"I'd like to share a currency conversion with you." = "I'd like to share a currency conversion with you.";
+"You can convert more currencies in the AppBox Pro." = "You can convert more currencies in the AppBox Pro.";

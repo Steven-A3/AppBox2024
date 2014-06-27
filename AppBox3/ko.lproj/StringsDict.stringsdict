@@ -326,5 +326,23 @@
 			<string>번역 지우기</string>
 		</dict>
 	</dict>
+	<key>During %ld days</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_minutes@</string>
+		<key>num_minutes</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>-</string>
+			<key>one</key>
+			<string>주기 1일</string>
+			<key>other</key>
+			<string>주기 %ld일</string>
+		</dict>
+	</dict>
 </dict>
 </plist>
