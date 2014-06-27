@@ -34,12 +34,15 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 			NSURL *ubiquityContainerURL = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
 			NSString *filePath = [A3DaysCounterImageDirectory stringByAppendingPathComponent:self.uniqueID];
+            FNLOG(@"\nphotoOriginalPath(Cloud): %@", filePath);
 			return [ubiquityContainerURL URLByAppendingPathComponent:filePath];
 		} else {
 			NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:self.uniqueID] pathInLibraryDirectory];
+            FNLOG(@"\nphotoOriginalPath: %@", path);
 			return [NSURL fileURLWithPath:path];
 		}
 	} else {
+        FNLOG(@"\nphotoTempPath: %@", [self.uniqueID pathInTemporaryDirectory]);
 		return [NSURL fileURLWithPath:[self.uniqueID pathInTemporaryDirectory] ];
 	}
 }
@@ -50,7 +53,10 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 }
 
 - (void)setPhoto:(UIImage *)image inOriginalDirectory:(BOOL)inOriginalDirectory {
-	[UIImageJPEGRepresentation(image, 1.0) writeToURL:[self photoURLInOriginalDirectory:inOriginalDirectory] atomically:YES];
+    BOOL result = [UIImageJPEGRepresentation(image, 1.0) writeToURL:[self photoURLInOriginalDirectory:inOriginalDirectory] atomically:YES];
+    if (!result) {
+        FNLOG(@"\nFailed to write photo data: %@", [[self photoURLInOriginalDirectory:inOriginalDirectory] path]);
+    }
 }
 
 - (UIImage *)thumbnailImageInOriginalDirectory:(BOOL)inOriginalDirectory {
@@ -100,9 +106,14 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 											options:NSFileCoordinatorReadingWithoutChanges
 								   writingItemAtURL:photoURLInTemporaryDirectory
 											options:NSFileCoordinatorWritingForReplacing
-											  error:&error byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-			[fileManager copyItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
-		}];
+											  error:&error
+                                         byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
+                                             [fileManager copyItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
+                                         }];
+		if (error) {
+			FNLOG(@"%@", error.localizedDescription);
+		}
+        
 		NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:YES];
 		NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:NO];
 		[fileManager removeItemAtPath:thumbnailPathInTemp error:NULL];
@@ -121,7 +132,6 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 		NSURL *photoURLInTemporaryDirectory = [self photoURLInOriginalDirectory:NO];
 
 		NSFileManager *fileManager = [[NSFileManager alloc] init];
-
 		NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
 		NSError *error;
 		[fileCoordinator coordinateReadingItemAtURL:photoURLInTemporaryDirectory
@@ -130,6 +140,8 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 											options:NSFileCoordinatorWritingForReplacing
 											  error:&error
 										 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
+                                             [fileManager removeItemAtURL:newWritingURL error:NULL];
+                                             [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
 											 [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:NULL];
 										 }];
 		if (error) {

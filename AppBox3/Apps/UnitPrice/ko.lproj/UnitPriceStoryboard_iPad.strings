@@ -21,7 +21,7 @@
 "Ecv-hv-npN.text" = "수량";
 
 /* Class = "IBUILabel"; text = "DISCOUNT"; ObjectID = "EgA-Kn-q3Z"; */
-"EgA-Kn-q3Z.text" = "크기";
+"EgA-Kn-q3Z.text" = "할인";
 
 /* Class = "IBUILabel"; text = "A"; ObjectID = "Is9-06-OR1"; */
 "Is9-06-OR1.text" = "A";
@@ -60,7 +60,7 @@
 "Z6V-VR-uSB.text" = "단가";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "bTH-9t-GT8"; */
-"bTH-9t-GT8.text" = "상세정보";
+"bTH-9t-GT8.text" = "가격";
 
 /* Class = "IBUILabel"; text = "A"; ObjectID = "gv8-Y8-xYE"; */
 "gv8-Y8-xYE.text" = "A";
@@ -90,7 +90,7 @@
 "voR-3e-nld.text" = "A";
 
 /* Class = "IBUILabel"; text = "PRICE"; ObjectID = "w5d-3l-4mN"; */
-"w5d-3l-4mN.text" = "상세정보";
+"w5d-3l-4mN.text" = "가격";
 
 /* Class = "IBUILabel"; text = "1"; ObjectID = "xSm-Me-Xz7"; */
 "xSm-Me-Xz7.text" = "1";
