@@ -30,13 +30,13 @@
 
 - (void)testExample
 {
-    BOOL isResultLeapMonth = NO;
-    NSDateComponents *comp = [NSDateComponents new];
-    comp.year = 2013;
-    comp.month = 7;
-    comp.day = 31;
-    NSDate *solarDate = [NSDate dateOfSolarFromLunarDate:[[NSCalendar currentCalendar] dateFromComponents:comp] leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-    NSLog(@"solarDate: %@", solarDate);
+//    BOOL isResultLeapMonth = NO;
+//    NSDateComponents *comp = [NSDateComponents new];
+//    comp.year = 2013;
+//    comp.month = 7;
+//    comp.day = 31;
+//    NSDate *solarDate = [NSDate dateOfSolarFromLunarDate:[[NSCalendar currentCalendar] dateFromComponents:comp] leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+//    NSLog(@"solarDate: %@", solarDate);
 }
 
 @end

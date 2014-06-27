@@ -43,6 +43,8 @@
 @property (strong, nonatomic) NSIndexPath *currentIndexPath;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (weak, nonatomic) IBOutlet UILabel *sunLabel, *monLabel, *tueLabel, *wedLabel, *thuLabel, *friLabel, *satLabel;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *todayButtonInToolbar;
 
 @end
 
@@ -84,6 +86,8 @@
 		self.navigationItem.rightBarButtonItems = @[_settingBarButton, _accountBarButton, _chartBarButton, _helpBarButton];
 	}
 	self.toolbarItems = _bottomToolbar.items;
+	[self.todayButtonInToolbar setTitle:NSLocalizedString(@"Today", nil)];
+	[self setupWeekdayLabels];
 
 	[self makeBackButtonEmptyArrow];
 	[self.dataManager prepare];
@@ -105,6 +109,15 @@
     [self setupInstructionView];
 }
 
+- (void)setupWeekdayLabels {
+	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+	NSArray *weekdaySymbols = [dateFormatter shortWeekdaySymbols];
+	NSArray *labels = @[_sunLabel, _monLabel, _tueLabel, _wedLabel, _thuLabel, _friLabel, _satLabel];
+	[labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
+		label.text = weekdaySymbols[idx];
+	}];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
@@ -113,7 +126,7 @@
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3DisclaimerSigned];
 
 		UIAlertView *disclaimer = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Disclaimer", @"Disclaimer")
-															 message:NSLocalizedString(@"LadyCalendarDiscalimerMsg", @"LadyCalendarDiscalimerMsg")
+															 message:NSLocalizedString(@"LadyCalendarDisclaimerMsg", @"LadyCalendarDiscalimerMsg")
 															delegate:nil
 												   cancelButtonTitle:NSLocalizedString(@"I Agree", @"I Agree")
 												   otherButtonTitles:nil];
@@ -169,7 +182,7 @@
 }
 
 - (void)rightSideViewWillDismiss {
-    self.navigationItem.title = [[self.dataManager currentAccount] name];
+	[self setupNavigationTitle];
 	[self enableControls:YES];
 	[self setupCalendarRange];
 	[self.collectionView reloadData];
@@ -209,12 +222,7 @@
 {
 	[super viewWillAppear:animated];
 
-	if( [self.dataManager numberOfAccountInContext:[[MagicalRecordStack defaultStack] context] ] == 1 && [[[self.dataManager currentAccount] name] isEqualToString:DefaultAccountName] ){
-		self.navigationItem.title = NSLocalizedString(@"Lady Calendar", @"Lady Calendar");
-	}
-	else{
-		self.navigationItem.title = [[self.dataManager currentAccount] name];
-	}
+	[self setupNavigationTitle];
 
 	[self.navigationController setToolbarHidden:NO];
 
@@ -245,6 +253,15 @@
 		[self updateCurrentMonthLabel];
 	});
 
+}
+
+- (void)setupNavigationTitle {
+	if( [self.dataManager numberOfAccountInContext:[[MagicalRecordStack defaultStack] context]] == 1 && [[[self.dataManager currentAccount] name] isEqualToString:[self.dataManager defaultAccountName]]){
+		self.navigationItem.title = NSLocalizedString(@"Lady Calendar", @"Lady Calendar");
+	}
+	else{
+		self.navigationItem.title = [[self.dataManager currentAccount] name];
+	}
 }
 
 - (void)didReceiveMemoryWarning

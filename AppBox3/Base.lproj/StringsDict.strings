@@ -29,4 +29,5 @@
 "%ld yrs" = "%ld yrs";
 "%ld mos" = "%ld mos";
 
-"%ld Delete Translaton" = "%ld Delete Translaton";
+"%ld Delete Translation" = "%ld Delete Translation";
+"During %ld days" = "During %ld days";

@@ -69,3 +69,25 @@
 "VIN" = "Immatriculation";
 "Web Account" = "Compte Web";
 "Web Accounts" = "Comptes Web";
+
+/* New items from V3.0 */
+"Routing Number" = "Routing Number";
+"Passport Number" = "Passport Number";
+"Accounts" = "Accounts";
+"Software" = "Software";
+"Video" = "Video";
+"Purchased Date" = "Purchased Date";
+"Download Link" = "Download Link";
+"License Key" = "License Key";
+"Order Number" = "Order Number";
+"Unit Price" = "Unit Price";
+"Version" = "Version";
+"Registered ID" = "Registered ID";
+"Registered Email Address" = "Registered Email Address";
+"Registered Password" = "Registered Password";
+"Registered URL" = "Registered URL";
+"Merchant Name" = "Merchant Name";
+"Merchant Website" = "Merchant Website";
+"Merchant Email Address" = "Merchant Email Address";
+"Merchant Phone" = "Merchant Phone";
+"Merchant Address" = "Merchant Address";

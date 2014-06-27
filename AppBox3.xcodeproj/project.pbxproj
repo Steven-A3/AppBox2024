@@ -1055,6 +1055,7 @@
 		68024AD71631637600D396F0 /* A3UIDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3UIDevice.m; sourceTree = "<group>"; };
 		68030ABA17F063D100B04487 /* HTCopyableLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTCopyableLabel.h; path = External/HTCopyableLabel/HTCopyableLabel.h; sourceTree = "<group>"; };
 		68030ABB17F063D100B04487 /* HTCopyableLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTCopyableLabel.m; path = External/HTCopyableLabel/HTCopyableLabel.m; sourceTree = "<group>"; };
+		6805706C195D166E003778CD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = en; path = en.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
 		68067C8A186E867C00D1A1D1 /* A3PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PasswordViewController.h; path = Passcode/A3PasswordViewController.h; sourceTree = "<group>"; };
 		68067C8B186E867C00D1A1D1 /* A3PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PasswordViewController.m; path = Passcode/A3PasswordViewController.m; sourceTree = "<group>"; };
 		68067C90186E926D00D1A1D1 /* A3PasscodeViewControllerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = A3PasscodeViewControllerProtocol.h; path = Passcode/A3PasscodeViewControllerProtocol.h; sourceTree = "<group>"; };
@@ -2489,15 +2490,7 @@
 		68F15078194B216600159EAD /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/StringsDict.strings; sourceTree = "<group>"; };
 		68F15079194B216600159EAD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/StringsDict.strings; sourceTree = "<group>"; };
 		68F1507C194B216D00159EAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Base; path = Base.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
-		68F1507E194B217200159EAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = en; path = en.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
 		68F1507F194B217300159EAD /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = ko; path = ko.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
-		68F15080194B217300159EAD /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "zh-Hans"; path = "zh-Hans.lproj/StringsDict.stringsdict"; sourceTree = "<group>"; };
-		68F15081194B217800159EAD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = de; path = de.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
-		68F15082194B217800159EAD /* it */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = it; path = it.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
-		68F15083194B217900159EAD /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = ja; path = ja.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
-		68F15084194B217A00159EAD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = fr; path = fr.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
-		68F15085194B217A00159EAD /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = pl; path = pl.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
-		68F15086194B217A00159EAD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = es; path = es.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
 		68F15089194B252100159EAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencySettings.strings; sourceTree = "<group>"; };
 		68F1508B194C0CEA00159EAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencyChartViewController.strings; sourceTree = "<group>"; };
 		68F1508E194C0CF800159EAD /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/A3CurrencyChartViewController.strings; sourceTree = "<group>"; };
@@ -6678,15 +6671,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				68F1507C194B216D00159EAD /* Base */,
-				68F1507E194B217200159EAD /* en */,
 				68F1507F194B217300159EAD /* ko */,
-				68F15080194B217300159EAD /* zh-Hans */,
-				68F15081194B217800159EAD /* de */,
-				68F15082194B217800159EAD /* it */,
-				68F15083194B217900159EAD /* ja */,
-				68F15084194B217A00159EAD /* fr */,
-				68F15085194B217A00159EAD /* pl */,
-				68F15086194B217A00159EAD /* es */,
+				6805706C195D166E003778CD /* en */,
 			);
 			name = StringsDict.stringsdict;
 			path = AppBox3;

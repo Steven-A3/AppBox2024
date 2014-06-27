@@ -2281,7 +2281,7 @@
         if ( error == nil ) {
             if ( [placemarks count] < 1 ) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-																	message:NSLocalizedString(@"Can not find current location information", @"Can not find current location information")
+																	message:NSLocalizedString(@"Cannot find current location information", @"Can not find current location information")
 																   delegate:nil
 														  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 														  otherButtonTitles:nil];

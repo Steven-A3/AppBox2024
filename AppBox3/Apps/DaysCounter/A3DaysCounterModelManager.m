@@ -183,7 +183,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             retStr = NSLocalizedString(@"Every Week", @"Every Week");
             break;
         case -3:
-            retStr = NSLocalizedString(@"Every 2Week", @"Every 2Week");
+            retStr = NSLocalizedString(@"Every 2Weeks", @"Every 2Week");
             break;
         case -4:
             retStr = NSLocalizedString(@"Every Month", @"Every Month");
@@ -1038,13 +1038,13 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
                                                                    repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO
                                                                    strict:NO];
 
-    if ([untilSinceString isEqualToString:NSLocalizedString(@"today", @"today")] || [untilSinceString isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
+    if ([untilSinceString isEqualToString:NSLocalizedString(@"Today", @"Today")] || [untilSinceString isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
         NSDate *repeatDate = [A3DaysCounterModelManager repeatDateOfCurrentNotNextWithRepeatOption:[item.repeatType integerValue]
                                                                                          firstDate:[item.startDate solarDate]
                                                                                           fromDate:[NSDate date]];
         dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
                                                withFormat:[self dateFormatForPhotoWithIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
-        daysLabel.text = [untilSinceString isEqualToString:NSLocalizedString(@"today", @"today")] ? NSLocalizedString(@" Today ", @" Today ") : NSLocalizedString(@" Now ", @" Now ");
+        daysLabel.text = [NSString stringWithFormat:@" %@ ", [untilSinceString isEqualToString:NSLocalizedString(@"Today", @"Today")] ? NSLocalizedString(@"Today", @"Today") : NSLocalizedString(@"Now", @"Now")];
         markLabel.text = @"";
         daysLabel.font = IS_IPHONE ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0] : [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
     }
@@ -1053,10 +1053,10 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
                                                withFormat:[self dateFormatForPhotoWithIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.effectiveStartDate isAllDay:YES];
         if ( diffDays > 0 ) {
-            markLabel.text = NSLocalizedString(@"Days\nUntil", @"Days\nUntil");
+            markLabel.text = [NSString stringWithFormat:@"%@\n%@", NSLocalizedString(@"Days", @"Days"), NSLocalizedString(@"Until", @"Until")];
         }
         else if ( diffDays < 0 ) {
-            markLabel.text = NSLocalizedString(@"Days\nSince", @"Days\nSince");
+            markLabel.text = [NSString stringWithFormat:@"%@\n%@", NSLocalizedString(@"Days", @"Days"), NSLocalizedString(@"Since", @"Since")];
         }
 
         daysLabel.text = [NSString stringWithFormat:@"%ld", labs(diffDays)];
@@ -1193,7 +1193,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     nowComp.second = 0;
     NSDate *today = [[NSCalendar currentCalendar] dateFromComponents:nowComp];
 
-    // return today or closest until
+    // return Today or closest until
     NSOrderedSet *untilOrderedSet = [calendar.events filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate >= %@", today]];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"effectiveStartDate" ascending:YES];
     NSArray *sortedArray = [untilOrderedSet sortedArrayUsingDescriptors:@[sortDescriptor]];
@@ -1280,7 +1280,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
                                                               leapMonth:[event.startDate.isLeapMonth boolValue]
                                                                fromDate:now];
         nextDate = [[NSCalendar currentCalendar] dateFromComponents:solarComp];
-        FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [[event startDate] solarDate], nextDate);
+        FNLOG(@"\nToday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [[event startDate] solarDate], nextDate);
         return nextDate;
     }
     else {
@@ -1297,7 +1297,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
                                                               fromDate:now
                                                               isAllDay:[event.isLunar boolValue] ? YES : [event.isAllDay boolValue]];
         
-        FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [event startDate], nextDate);
+        FNLOG(@"\nToday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [event startDate], nextDate);
         return nextDate;
     }
 }
@@ -1355,7 +1355,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         eventModel.alertDatetime = [[NSCalendar currentCalendar] dateFromComponents:alertDateComp];
     }
     
-    FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", [NSDate date], [eventModel.startDate solarDate], eventModel.effectiveStartDate, eventModel.alertDatetime);
+    FNLOG(@"\nToday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", [NSDate date], [eventModel.startDate solarDate], eventModel.effectiveStartDate, eventModel.alertDatetime);
 }
 
 #pragma mark - EventTime Management (AlertTime, EffectiveStartDate)

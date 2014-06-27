@@ -158,7 +158,7 @@
 
 - (void)alertDisclaimer {
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:A3HolidaysDoesNotNeedsShowDisclaimer]) {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Discalimer", @"Discalimer")
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Disclaimer", @"Discalimer")
 															message:NSLocalizedString(@"DISCLAIMER_MESSAGE", @"DISCLAIMER_MESSAGE")
 														   delegate:self
 												  cancelButtonTitle:NSLocalizedString(@"I Agree", @"I Agree")

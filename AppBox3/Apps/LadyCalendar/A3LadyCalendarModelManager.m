@@ -39,8 +39,12 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
     [alertView show];
 }
 
+- (NSString *)defaultAccountName {
+	return [NSString stringWithFormat:@"%@01", NSLocalizedString(@"User", nil)];
+}
+
 - (void)addDefaultAccountInContext:(NSManagedObjectContext *)context {
-    [self addAccount:@{AccountItem_ID : DefaultAccountID, AccountItem_Name : DefaultAccountName} inContext:context ];
+    [self addAccount:@{AccountItem_ID : DefaultAccountID, AccountItem_Name : [self defaultAccountName]} inContext:context ];
 }
 
 - (NSDateFormatter *)dateFormatter {

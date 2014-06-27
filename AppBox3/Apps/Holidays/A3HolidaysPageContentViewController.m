@@ -475,8 +475,8 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 		A3FSegmentedControl *segmentedControl = (A3FSegmentedControl *) [headerView viewWithTag:HolidaysHeaderViewSegmentedControl];
 		segmentedControl.items = @[
-				[NSString stringWithFormat:NSLocalizedString(@"Upcoming %ld", nil), (long) ([holidaysInPage count] - myPosition)],
-				[NSString stringWithFormat:NSLocalizedString(@"Past %ld", nil), (long) myPosition]
+				[NSString stringWithFormat:@"%@ %ld", NSLocalizedString(@"Upcoming", @"Upcoming"), (long) ([holidaysInPage count] - myPosition)],
+				[NSString stringWithFormat:@"%@ %ld", NSLocalizedString(@"Past", @"Past"), (long) myPosition]
 		];
 		FNLOG(@"%lu + %lu = %lu : %lu", (unsigned long)([holidaysInPage count] - myPosition), (unsigned long)myPosition, (unsigned long)(myPosition + [holidaysInPage count] - myPosition + 1), (unsigned long)[holidaysInPage count]);
 	}
@@ -515,8 +515,8 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		[segmentedControl setSelectedSegmentIndex:1];
 	}
 	segmentedControl.items = @[
-			[NSString stringWithFormat:NSLocalizedString(@"Upcoming %ld", @"Upcoming %ld"), (long) upcoming],
-			[NSString stringWithFormat:NSLocalizedString(@"Past %ld", @"Past %ld"), (long) past]
+			[NSString stringWithFormat:@"%@ %ld", NSLocalizedString(@"Upcoming", @"Upcoming"), (long) upcoming],
+			[NSString stringWithFormat:@"%@ %ld", NSLocalizedString(@"Past", @"Past"), (long) past]
 	];
 	self.tableView.tableFooterView = [self tableFooterView];
 	[self.tableView reloadData];

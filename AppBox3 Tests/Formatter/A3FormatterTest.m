@@ -272,4 +272,13 @@
 	NSLog(@"%@, %@, %@", resultString1, resultString2, resultString3);
 }
 
+- (void)testWeekdaySymbols {
+	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+	[dateFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US"]];
+	NSArray *en_US = [dateFormatter shortWeekdaySymbols];
+	[dateFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"ko_KR"]];
+	NSArray *ko_KR = [dateFormatter shortWeekdaySymbols];
+	NSLog(@"\n%@, %@\n", en_US, ko_KR);
+}
+
 @end

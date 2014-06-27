@@ -160,7 +160,7 @@
         NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:toDate];
         
         if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
-            return @"today";
+            return @"Today";
         }
         
         fromComp.hour = 0;
@@ -175,7 +175,7 @@
                                                       toDate:[calendar dateFromComponents:toComp]
                                                      options:0];
         if ([daysGapComp day] == 0) {
-            return NSLocalizedString(@"today", @"today");
+            return NSLocalizedString(@"Today", @"Today");
         }
         else {
             if ([daysGapComp day] > 0) {
@@ -193,11 +193,11 @@
         
         if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day] &&
             [fromComp hour] == [toComp hour] && [fromComp minute] == [toComp minute]) {
-            return NSLocalizedString(@"now", @"now");
+            return NSLocalizedString(@"Now", nil);
         }
         else if (!isRepeat && [fromComp year] == [toComp year] && [fromComp month] == [toComp month] && [fromComp day] == [toComp day] &&
                  [fromComp hour] == [toComp hour] && [fromComp minute] == [toComp minute]) {
-            return NSLocalizedString(@"now", @"now");
+            return NSLocalizedString(@"Now", nil);
         }
         
         if (isStrict) {
@@ -207,10 +207,10 @@
             else {
                 if ([fromDate timeIntervalSince1970] > [toDate timeIntervalSince1970]) {
                     if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
-                        return NSLocalizedString(@"today", @"today");
+                        return NSLocalizedString(@"Today", @"Today");
                     }
                     else if (!isRepeat && [fromComp year] == [toComp year] && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
-                        return NSLocalizedString(@"today", @"today");
+                        return NSLocalizedString(@"Today", @"Today");
                     }
                 }
                 return NSLocalizedString(@"since", @"since");
@@ -218,10 +218,10 @@
         }
         else {
             if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
-                return NSLocalizedString(@"today", @"today");
+                return NSLocalizedString(@"Today", @"Today");
             }
             else if (!isRepeat && [fromComp year] == [toComp year] && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
-                return NSLocalizedString(@"today", @"today");
+                return NSLocalizedString(@"Today", @"Today");
             }
             
             if ([toDate timeIntervalSince1970] > [fromDate timeIntervalSince1970]) {

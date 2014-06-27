@@ -482,7 +482,7 @@
                                                                    repeat:[event.repeatType integerValue] != RepeatType_Never ? YES : NO
                                                                    strict:NO];
 
-    if ([untilSinceString isEqualToString:NSLocalizedString(@"today", @"today")] || [untilSinceString isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
+    if ([untilSinceString isEqualToString:NSLocalizedString(@"Today", @"Today")] || [untilSinceString isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
         result = untilSinceString;
     }
     else {

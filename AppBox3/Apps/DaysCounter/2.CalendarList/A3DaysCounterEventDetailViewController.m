@@ -274,7 +274,7 @@
                                                                      allDayOption:[_eventItem.isAllDay boolValue]
                                                                            repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO
                                                                            strict:[A3DaysCounterModelManager hasHourMinDurationOption:[_eventItem.durationOption integerValue]]];
-            if ([untilSinceString isEqualToString:NSLocalizedString(@"today", @"today")] || [untilSinceString isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
+            if ([untilSinceString isEqualToString:NSLocalizedString(@"Today", @"Today")] || [untilSinceString isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
                 NSDate *repeatDate = [A3DaysCounterModelManager repeatDateOfCurrentNotNextWithRepeatOption:[_eventItem.repeatType integerValue]
                                                                                                  firstDate:[_eventItem.startDate solarDate]
                                                                                                   fromDate:[NSDate date]];
@@ -451,7 +451,7 @@
 - (void)updateEventInfoCellToRepeatEventInfo:(DaysCounterEvent*)info cell:(A3DaysCounterEventInfoCell *)cell
 {
     [self adjustLayoutForEventInfoCell:cell eventInfo:info];
-    [self updateTitleCellCurrentPart:cell withEventInfo:info];  // Set Data (until or since or today/now)
+    [self updateTitleCellCurrentPart:cell withEventInfo:info];  // Set Data (until or since or Today/now)
  
 
     BOOL isLunar = [info.isLunar boolValue];
@@ -611,7 +611,7 @@
         cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now toDate:[info.startDate solarDate] allDayOption:[info.isAllDay boolValue] repeat:hasRepeat strict:[A3DaysCounterModelManager hasHourMinDurationOption:[info.durationOption integerValue]]];
         cell.untilRoundWidthConst.constant = 42;
         
-        if ([markLabel.text isEqualToString:NSLocalizedString(@"today", @"today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
+        if ([markLabel.text isEqualToString:NSLocalizedString(@"Today", @"Today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
             daysLabel.text = @"";
 //            if (IS_IPAD || ![info.isLunar boolValue]) {
 //                dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:NO isAllDay:[info.isAllDay boolValue]];
@@ -626,15 +626,15 @@
 //                dateLabel4.text = @"";
 //            }
             if ([info.isLunar boolValue]) {
-                dateLabel1.text = [NSString stringWithFormat:NSLocalizedString(@"from %@", @"from %@"), [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:NO isAllDay:[info.isAllDay boolValue]]];
+                dateLabel1.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"DaysCounter_from", nil), [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:NO isAllDay:[info.isAllDay boolValue]]];
                 dateLabel2.text = [NSString stringWithFormat:@"%@", [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:YES isAllDay:[info.isAllDay boolValue]]];
                 dateLabel3.text = @"";
                 dateLabel4.text = @"";
             }
             else {
                 if (hasEndDate) {
-                    dateLabel1.text = [NSString stringWithFormat:NSLocalizedString(@"from %@", @"from %@"), [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:[info.isLunar boolValue] isAllDay:[info.isAllDay boolValue]]];
-                    dateLabel2.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", @"to %@"), [A3DaysCounterModelManager dateStringFromDateModel:info.endDate isLunar:[info.isLunar boolValue] isAllDay:[info.isAllDay boolValue]]];
+                    dateLabel1.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"DaysCounter_from", @"from"), [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:[info.isLunar boolValue] isAllDay:[info.isAllDay boolValue]]];
+                    dateLabel2.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"DaysCounter_to", @"to"), [A3DaysCounterModelManager dateStringFromDateModel:info.endDate isLunar:[info.isLunar boolValue] isAllDay:[info.isAllDay boolValue]]];
                 }
                 else {
                     dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:NO isAllDay:[info.isAllDay boolValue]];
@@ -717,7 +717,7 @@
                                                                            strict:[A3DaysCounterModelManager hasHourMinDurationOption:[info.durationOption integerValue]]];
         cell.untilRoundWidthConst.constant = 42;
 
-        if ([markLabel.text isEqualToString:NSLocalizedString(@"today", @"today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
+        if ([markLabel.text isEqualToString:NSLocalizedString(@"Today", @"Today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
             if (hasEndDate) {
                 daysLabel.text = @"";
 //                dateLabel1.text = [NSString stringWithFormat:@"from %@", [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:NO isAllDay:[info.isAllDay boolValue]]];
@@ -1068,7 +1068,7 @@ EXIT_FUCTION:
             }
         }
 
-        if ([markLabel.text isEqualToString:NSLocalizedString(@"today", @"today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
+        if ([markLabel.text isEqualToString:NSLocalizedString(@"Today", @"Today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
             daysLabel.text = @"";
 
             dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[A3DaysCounterModelManager repeatDateOfCurrentNotNextWithRepeatOption:[info.repeatType integerValue] firstDate:startDate fromDate:now]
@@ -1148,7 +1148,7 @@ EXIT_FUCTION:
         cell.untilRoundWidthConst.constant = 42;
         
         if (isTypeA) {
-            if ([markLabel.text isEqualToString:NSLocalizedString(@"today", @"today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
+            if ([markLabel.text isEqualToString:NSLocalizedString(@"Today", @"Today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
                 daysLabel.text = @"";
                 dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[A3DaysCounterModelManager repeatDateOfCurrentNotNextWithRepeatOption:[info.repeatType integerValue] firstDate:startDate fromDate:now]
                                                                                           withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];

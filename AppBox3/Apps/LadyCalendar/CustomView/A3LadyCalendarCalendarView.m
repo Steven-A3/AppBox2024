@@ -227,7 +227,8 @@
 {
     NSInteger stDay = [A3DateHelper dayFromDate:stDate];
     NSInteger edDay = [A3DateHelper dayFromDate:edDate];
-    
+
+	// TODO: Locale 고려한 년 월 표시
     NSString *startMonthStr = [A3DateHelper dateStringFromDate:stDate withFormat:@"yyyyMM"];
     NSString *curMonthStr = [A3DateHelper dateStringFromDate:_dateMonth withFormat:@"yyyyMM"];
     NSString *endMonthStr = [A3DateHelper dateStringFromDate:edDate withFormat:@"yyyyMM"];
