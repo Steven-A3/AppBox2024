@@ -96,10 +96,15 @@
 - (void)drawYAxisWithContext:(CGContextRef)context
 {
     CGPoint yLabelPos = CGPointMake(0, yStartCenterPosition);
-    for (NSInteger i=0; i < [_yLabelItems count]; i++) {
-        CGRect drawRect = CGRectMake(yLabelPos.x, yLabelPos.y - (i * _yAxisInterval) - (yLabelMaxSize.height / 2), yLabelMaxSize.width, yLabelMaxSize.height);
-        NSString *str = [_yLabelItems objectAtIndex:i];
-        [str drawWithRect:drawRect options:NSLineBreakByCharWrapping|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : self.yAxisFont,NSForegroundColorAttributeName:_yLabelColor} context:nil];
+    for (NSInteger idx=0; idx < [_yLabelItems count]; idx++) {
+        CGRect drawRect = CGRectMake(yLabelPos.x, yLabelPos.y - (idx * _yAxisInterval) - (yLabelMaxSize.height / 2), yLabelMaxSize.width, yLabelMaxSize.height);
+        NSString *str = [_yLabelItems objectAtIndex:idx];
+        [str drawWithRect:drawRect options:NSLineBreakByCharWrapping|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : self.yAxisFont,NSForegroundColorAttributeName:_yLabelColor} context:nil];        
+//        CGContextMoveToPoint(context, 0, yLabelPos.y - (idx * _yAxisInterval) - (yLabelMaxSize.height / 2));
+//        CGContextAddLineToPoint(context, yLabelMaxSize.width, yLabelPos.y - (idx * _yAxisInterval) - (yLabelMaxSize.height / 2));
+//        CGContextSetLineWidth(context, 1.0);
+//        CGContextSetStrokeColorWithColor(context, [_lineColor CGColor]);
+//        CGContextStrokePath(context);
     }
 }
 
@@ -138,6 +143,7 @@
         return;
     CGFloat averageValue =  valueTotal.y / [_valueArray count];
     _averageLineYPos = [self getYAxisPointForValueY:averageValue withYLabelIndex:0 yAxisInterval:_yAxisInterval];
+    _averageLineYPos = _averageLineYPos + pointSize.height / 2.0;
     
     CGContextSetStrokeColorWithColor(context, [_averageColor CGColor]);
     CGContextSetLineWidth(context, 1.0);
@@ -265,7 +271,7 @@
         CGFloat nextYAxisValue = [[_yLabelItems objectAtIndex:idx + 1] floatValue];
         if (valueY < nextYAxisValue) {
             CGFloat yValueGap =  (nextYAxisValue - valueY) / (CGFloat)(nextYAxisValue - yAxisValue);
-            resultYAxis = (yAxisInterval * ([_yLabelItems count] - idx)) + (yAxisInterval * yValueGap) - yAxisInterval;
+            resultYAxis = (yAxisInterval * ([_yLabelItems count] - idx)) - (yAxisInterval - (yAxisInterval * yValueGap)) - yAxisInterval;
             if (resultYAxis == 0) {
                 resultYAxis = 1;
             }
