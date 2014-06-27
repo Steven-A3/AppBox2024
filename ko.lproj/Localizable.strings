@@ -631,8 +631,8 @@
 "%@ to %@ = %@" = "%@ 에서 %@ = %@";
 
 "More" = "기타";
-"Units on the bar" = "탭바에 있는 단위";
-"Units in more" = "기타에 있는 단위";
+"Units on the bar" = "기본 바에 표시";
+"Units in more" = "기타에 표시";
 
 "Price A" = "가격 A";
 "Price B" = "가격 B";
