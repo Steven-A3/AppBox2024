@@ -153,7 +153,7 @@
 "tkT-KJ-PpW.text" = "아이템을 왼쪽으로 밀면\n지울 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to see more categories"; ObjectID = "uz1-Ap-8Ft"; */
-"uz1-Ap-8Ft.text" = "탭하면 더 많은 카테고리를\n볼 수 있습니다..";
+"uz1-Ap-8Ft.text" = "탭하면 더 많은 카테고리를\n볼 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "swipe left or right to see\nprev/next events"; ObjectID = "yXR-Yi-555"; */
 "yXR-Yi-555.text" = "왼쪽이나 오른쪽으로 밀어서\n이전/다음 이벤트를 봅니다.";

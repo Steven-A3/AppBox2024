@@ -183,8 +183,9 @@
         NSInteger period = [[_settingDict objectForKey:SettingItem_ForeCastingPeriods] integerValue];
         NSString *periodStr = [NSString stringWithFormat:@"%ld", (long)period];
         NSString *text = [NSString stringWithFormat:NSLocalizedString(@"FORECASTING %@ PERIODS", @"FORECASTING %@ PERIODS"), periodStr];
+		NSRange numberRange = [text rangeOfString:periodStr];
         NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:text];
-        [attrStr setAttributes:@{NSForegroundColorAttributeName: [[A3AppDelegate instance] themeColor]} range:NSMakeRange(12, [periodStr length])];
+        [attrStr setAttributes:@{NSForegroundColorAttributeName: [[A3AppDelegate instance] themeColor]} range:numberRange];
         label.attributedText = attrStr;
     }
     else{

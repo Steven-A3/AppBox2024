@@ -211,11 +211,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>당일</string>
+			<string>0일전</string>
 			<key>one</key>
-			<string>%ld일 전</string>
+			<string>%ld일전</string>
 			<key>other</key>
-			<string>%ld일 전</string>
+			<string>%ld일전</string>
 		</dict>
 	</dict>
 	<key>%ld Days Left</key>

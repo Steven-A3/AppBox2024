@@ -6,16 +6,16 @@
 "2PJ-mB-dDh.text" = "상세정보";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "2Xy-hf-wFd"; */
-"2Xy-hf-wFd.text" = "상세정보";
+"2Xy-hf-wFd.text" = "가격";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "6x6-g7-znb"; */
-"6x6-g7-znb.text" = "상세정보";
+"6x6-g7-znb.text" = "가격";
 
 /* Class = "IBUIButton"; normalTitle = "$0.2044/oz"; ObjectID = "BAr-yf-4sh"; */
 "BAr-yf-4sh.normalTitle" = "$0.2044/oz";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "DQr-FZ-M8K"; */
-"DQr-FZ-M8K.text" = "상세정보";
+"DQr-FZ-M8K.text" = "가격";
 
 /* Class = "IBUILabel"; text = "QUANTITY"; ObjectID = "Ecv-hv-npN"; */
 "Ecv-hv-npN.text" = "수량";
@@ -30,7 +30,7 @@
 "JZ4-A5-dZr.text" = "The text displayed in the text view";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "KO6-pk-wUh"; */
-"KO6-pk-wUh.text" = "상세정보";
+"KO6-pk-wUh.text" = "가격";
 
 /* Class = "IBUILabel"; text = "Title"; ObjectID = "KRS-pe-BbO"; */
 "KRS-pe-BbO.text" = "Title";
@@ -42,19 +42,19 @@
 "LBN-UK-r4G.text" = "0";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "Lx7-xF-9XK"; */
-"Lx7-xF-9XK.text" = "상세정보";
+"Lx7-xF-9XK.text" = "가격";
 
 /* Class = "IBUILabel"; text = "UNIT"; ObjectID = "Si0-6G-n3o"; */
 "Si0-6G-n3o.text" = "단위";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "UY8-Yj-JJR"; */
-"UY8-Yj-JJR.text" = "상세정보";
+"UY8-Yj-JJR.text" = "가격";
 
 /* Class = "IBUILabel"; text = "18"; ObjectID = "Vsb-bt-v3m"; */
 "Vsb-bt-v3m.text" = "18";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "YTt-4h-P5F"; */
-"YTt-4h-P5F.text" = "상세정보";
+"YTt-4h-P5F.text" = "가격";
 
 /* Class = "IBUILabel"; text = "UNIT PRICE"; ObjectID = "Z6V-VR-uSB"; */
 "Z6V-VR-uSB.text" = "단가";

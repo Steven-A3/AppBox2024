@@ -160,7 +160,7 @@
         NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:toDate];
         
         if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
-            return @"Today";
+            return NSLocalizedString(@"Today", @"Today");
         }
         
         fromComp.hour = 0;
