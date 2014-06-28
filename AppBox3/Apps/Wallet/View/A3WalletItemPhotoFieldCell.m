@@ -49,9 +49,7 @@
 }
 
 - (void)prepareForReuse {
-	for (UIView *subview in [_photoButton subviews]) {
-		[subview removeFromSuperview];
-	}
+
 }
 
 @end

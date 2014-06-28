@@ -1633,6 +1633,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		photoCell.photoButton.hidden = NO;
 
 		NSString *thumbFilePath = [fieldItem photoImageThumbnailPathInOriginal:NO];
+        NSAssert([[NSFileManager defaultManager] fileExistsAtPath:thumbFilePath], @"[[NSFileManager defaultManager] fileExistsAtPath:thumbFilePath]");
 		NSData *img = [NSData dataWithContentsOfFile:thumbFilePath];
 		UIImage *photo = [UIImage imageWithData:img];
 		photo = [photo imageByScalingProportionallyToSize:CGSizeMake(120, 120)];

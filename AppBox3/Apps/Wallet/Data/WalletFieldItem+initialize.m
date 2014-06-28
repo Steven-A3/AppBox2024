@@ -75,7 +75,14 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 }
 
 - (void)setPhotoImage:(UIImage *)image inOriginalDirectory:(BOOL)inOriginalDirectory {
-	[UIImageJPEGRepresentation(image, 1.0) writeToURL:[self photoImageURLInOriginalDirectory:inOriginalDirectory] atomically:YES];
+    BOOL result;
+    NSURL *fileURL = [self photoImageURLInOriginalDirectory:inOriginalDirectory];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[fileURL path]]) {
+        result = [[NSFileManager defaultManager] removeItemAtURL:fileURL error:NULL];
+        NSAssert(result, @"removeItemAtURL");
+    }
+	result = [UIImageJPEGRepresentation(image, 1.0) writeToURL:[self photoImageURLInOriginalDirectory:inOriginalDirectory] atomically:YES];
+    NSAssert(result, @"setPhotoImage");
 }
 
 - (NSString *)photoImageThumbnailPathInOriginal:(BOOL)original {
@@ -128,7 +135,15 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 	CGSize size = CGSizeMake(160, 160);
 	UIImage *thumbnailImage = [originalImage scaleToCoverSize:size];
 	thumbnailImage = [thumbnailImage cropToSize:size usingMode:NYXCropModeCenter];
-	[UIImageJPEGRepresentation(thumbnailImage, 1.0) writeToFile:path atomically:YES];
+    
+    BOOL result;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        result = [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
+        NSAssert(result, @"removeItemAtURL");
+    }
+    
+	result = [UIImageJPEGRepresentation(thumbnailImage, 1.0) writeToFile:path atomically:YES];
+    NSAssert(result, @"writeToFile");
 	return thumbnailImage;
 }
 
