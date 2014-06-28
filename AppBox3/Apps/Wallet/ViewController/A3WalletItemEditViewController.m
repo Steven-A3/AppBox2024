@@ -52,7 +52,7 @@ NSString *const A3WalletItemDateInputCellID4 = @"A3WalletDateInputCell";
 NSString *const A3WalletItemDateCellID4 = @"A3WalletItemFieldCell";
 NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
-@interface A3WalletItemEditViewController () <WalletCatogerySelectDelegate, UITextFieldDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate>
+@interface A3WalletItemEditViewController () <WalletCatogerySelectDelegate, UITextFieldDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate, NSFileManagerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *sectionItems;
 @property (nonatomic, strong) NSMutableDictionary *titleItem;
@@ -176,6 +176,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (void)copyThumbnailImagesToTemporaryPath {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
+    fileManager.delegate = self;
+    
 	for (WalletFieldItem *fieldItem in _item.fieldItems) {
 		if (fieldItem.image) {
 			NSURL *thumbnailImageURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:YES]];
@@ -280,6 +282,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (void)moveMediaFilesToNormalPath {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
+    fileManager.delegate = self;
+    
 	for (WalletFieldItem *fieldItem in _item.fieldItems) {
 		if (![fieldItem.field.type isEqualToString:WalletFieldTypeImage] && ![fieldItem.field.type isEqualToString:WalletFieldTypeVideo])
 			continue;
@@ -412,22 +416,21 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (void)removeTempFiles {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
+    fileManager.delegate = self;
+    
     BOOL result;
 	for (WalletFieldItem *fieldItem in _item.fieldItems) {
 		if (fieldItem.image) {
 			NSString *thumbnailImagePathInTemp = [fieldItem photoImageThumbnailPathInOriginal:NO];
-			result = [fileManager removeItemAtPath:thumbnailImagePathInTemp error:NULL];
-            NSAssert(result, @"fileManager removeItemAtPath");
+            result = [fileManager removeItemAtPath:thumbnailImagePathInTemp error:NULL];
 			continue;
 		}
 		if (fieldItem.video) {
 			NSString *thumbnailImagePathInTemp = [fieldItem videoThumbnailPathInOriginal:NO];
-			result = [fileManager removeItemAtPath:thumbnailImagePathInTemp error:NULL];
-            NSAssert(result, @"fileManager removeItemAtPath");
+            result = [fileManager removeItemAtPath:thumbnailImagePathInTemp error:NULL];
             
 			NSURL *videoFilePathInTemp = [fieldItem videoFileURLInOriginal:NO];
-			result = [fileManager removeItemAtURL:videoFilePathInTemp error:NULL];
-            NSAssert(result, @"fileManager removeItemAtPath");
+            result = [fileManager removeItemAtURL:videoFilePathInTemp error:NULL];
 		}
 	}
 }
@@ -1780,6 +1783,17 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 {
 	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
 	return [self standardHeightForFooterIsLastSection:isLastSection];
+}
+
+#pragma mark - NSFileManager Delegate
+- (BOOL)fileManager:(NSFileManager *)fileManager shouldRemoveItemAtPath:(NSString *)path
+{
+    return [fileManager fileExistsAtPath:path];
+}
+
+- (BOOL)fileManager:(NSFileManager *)fileManager shouldRemoveItemAtURL:(NSURL *)URL
+{
+    return [fileManager fileExistsAtPath:[URL path]];
 }
 
 @end

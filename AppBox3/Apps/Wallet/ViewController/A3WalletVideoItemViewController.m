@@ -432,13 +432,12 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 }
 
 - (void)videoFinished:(NSNotification*)aNotification{
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayerViewController.moviePlayer];
-
     int value = [[aNotification.userInfo valueForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] intValue];
     if (value == MPMovieFinishReasonUserExited) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayerViewController.moviePlayer];
         [self dismissMoviePlayerViewControllerAnimated];
+        _moviePlayerViewController = nil;
     }
-	_moviePlayerViewController = nil;
 }
 
 - (void)editButtonAction:(id)sender
