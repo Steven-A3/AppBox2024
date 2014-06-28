@@ -46,6 +46,7 @@ NSString *const A3WalletCateEditIconCellID = @"A3WalletCateEditIconCell";
 NSString *const A3WalletCateEditDeleteCellID = @"A3WalletCateEditDeleteCell";
 NSString *const A3WalletCateEditFieldCellID = @"A3WalletCateEditFieldCell";
 NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
+NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -498,17 +499,6 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 		}
 		else if ([_fields[indexPath.row] isKindOfClass:[WalletField class]]) {
 			cell = [tableView dequeueReusableCellWithIdentifier:A3WalletCateEditFieldCellID forIndexPath:indexPath];
-
-			if (IS_RETINA) {
-				UIView *rightLine = [cell.contentView viewWithTag:100];
-				CGRect rect = rightLine.frame;
-				rect.size.width = 0.5f;
-				rightLine.frame = rect;
-			}
-
-			UIView *arrow = [cell.contentView viewWithTag:1000];
-			[cell.textLabel addSubview:arrow];
-			arrow.center = CGPointMake(cell.textLabel.frame.size.width-10, 22);
 
 			WalletField *field = _fields[indexPath.row];
 			cell.textLabel.font = [UIFont systemFontOfSize:17.0];
