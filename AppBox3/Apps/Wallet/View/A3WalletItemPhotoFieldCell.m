@@ -49,7 +49,7 @@
 }
 
 - (void)prepareForReuse {
-
+    [_photoButton setBackgroundImage:nil forState:UIControlStateNormal];
 }
 
 @end
