@@ -23,6 +23,12 @@
     return self;
 }
 
+- (void)awakeFromNib {
+	[_arrowImage makeConstraints:^(MASConstraintMaker *make) {
+		make.right.equalTo(self.contentView.right).with.offset(-20);
+	}];
+}
+
 - (void)layoutSubviews {
 	[super layoutSubviews];
 
@@ -32,12 +38,6 @@
 	self.textLabel.frame = frame;
 	FNLOG(@"%f", self.separatorInset.left);
 	self.separatorInset = UIEdgeInsetsMake(0, 54, 0, 0);
-
-	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-	CGPoint center = _arrowImage.center;
-	center.x = screenBounds.size.width - 118.0;
-	_arrowImage.center = center;
 }
-
 
 @end
