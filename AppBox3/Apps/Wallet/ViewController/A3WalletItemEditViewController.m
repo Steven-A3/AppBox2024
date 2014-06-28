@@ -52,7 +52,7 @@ NSString *const A3WalletItemDateInputCellID4 = @"A3WalletDateInputCell";
 NSString *const A3WalletItemDateCellID4 = @"A3WalletItemFieldCell";
 NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
-@interface A3WalletItemEditViewController () <WalletCatogerySelectDelegate, UITextFieldDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, CLLocationManagerDelegate>
+@interface A3WalletItemEditViewController () <WalletCatogerySelectDelegate, UITextFieldDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *sectionItems;
 @property (nonatomic, strong) NSMutableDictionary *titleItem;
@@ -1074,6 +1074,13 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	}
 }
 
+#pragma mark - UIPopoverController Delegate
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    [self.imagePickerController dismissViewControllerAnimated:YES completion:nil];
+    self.imagePickerController = nil;
+    self.popOverController = nil;
+}
+
 #pragma mark - UIActionSheet delegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -1151,6 +1158,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		}
         else {
             self.popOverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+            self.popOverController.delegate = self;
             CGRect rect = [self frameOfImageViewInCellForIndexPath:_currentIndexPath];
             [_popOverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         }
