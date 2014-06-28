@@ -666,6 +666,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
                         actionCell.rightBtn1.hidden = YES;
                         actionCell.rightBtn2.hidden = YES;
                         [actionCell.contentBtn addTarget:self action:@selector(actionCellContentButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+                        actionCell.selectionStyle = UITableViewCellSelectionStyleGray;
                     }
                 }
                 else if (result.resultType == NSTextCheckingTypePhoneNumber && [fieldItem.field.type isEqualToString:WalletFieldTypePhone]) {
@@ -702,6 +703,19 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	}
     
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    WalletFieldItem *fieldItem = _fieldItems[indexPath.row];
+    if (!fieldItem || ![fieldItem isKindOfClass:[WalletFieldItem class]]) {
+        return;
+    }
+    
+    if ([fieldItem.field.type isEqualToString:WalletFieldTypeURL]) {
+        A3WalletItemFieldActionCell *actionCell = (A3WalletItemFieldActionCell *)[tableView cellForRowAtIndexPath:indexPath];
+        [self performSelector:@selector(actionCellContentButtonAction:) withObject:actionCell.contentBtn];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
