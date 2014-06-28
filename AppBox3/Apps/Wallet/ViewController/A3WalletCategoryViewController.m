@@ -44,23 +44,17 @@
 {
     [super viewDidLoad];
 
-	if (IS_IPHONE) {
-		[self makeBackButtonEmptyArrow];
-	} else {
-		self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.category.name style:UIBarButtonItemStylePlain target:nil action:nil];
-	}
-
     if (IS_IPAD) {
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.category.name style:UIBarButtonItemStylePlain target:nil action:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
         self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:self.infoButton], [self instructionHelpBarButton]];
     }
     else {
+        [self makeBackButtonEmptyArrow];
         self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:self.infoButton]];
     }
 
-	if (IS_IPAD) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
-	}
     [self setupInstructionView];
 }
 
@@ -466,7 +460,7 @@
 - (void)showInstructionView
 {
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
-    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_2"];
+    _instructionViewController = [instructionStoryBoard     instantiateViewControllerWithIdentifier:@"Wallet_2"];
     self.instructionViewController.delegate = self;
     [self.tabBarController.view addSubview:self.instructionViewController.view];
     self.instructionViewController.view.frame = self.tabBarController.view.frame;

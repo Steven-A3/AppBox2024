@@ -912,15 +912,15 @@ EXIT_FUCTION:
     
     // Has Repeat
     NSDate *startDate = [info.startDate solarDate];
-    NSDate *nextDate = [info effectiveStartDate];
+    //    NSDate *nextDate = [info effectiveStartDate];
     
     // until/since & durationOption string
-    cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now
-                                                                       toDate:nextDate
-                                                                 allDayOption:[info.isAllDay boolValue]
-                                                                       repeat:hasRepeat
-                                                                       strict:[A3DaysCounterModelManager hasHourMinDurationOption:[info.durationOption integerValue]]];
-    cell.untilRoundWidthConst.constant = 42;
+    markLabel.text = [A3DateHelper untilSinceStringByFromDate:now
+                                                       toDate:startDate
+                                                 allDayOption:[info.isAllDay boolValue]
+                                                       repeat:hasRepeat
+                                                       strict:[A3DaysCounterModelManager hasHourMinDurationOption:[info.durationOption integerValue]]];
+    cell.sinceRoundWidthConst.constant = 42;
     daysLabel.text = [A3DaysCounterModelManager stringOfDurationOption:[info.durationOption integerValue]
                                                               fromDate:startDate
                                                                 toDate:now
