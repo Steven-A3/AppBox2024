@@ -78,6 +78,7 @@
 	_lunarDateLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
 	_publicMarkView.layer.borderColor = [UIColor whiteColor].CGColor;
 	_publicLabel.textColor = [UIColor whiteColor];
+	_publicLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:11] : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
 
 	_titleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:15] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
 	_dateLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:13] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
@@ -115,7 +116,7 @@
 			_publicLabel = [UILabel new];
 			_publicLabel.textAlignment = NSTextAlignmentCenter;
 			_publicLabel.textColor = [UIColor whiteColor];
-			_publicLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 11 : 13];
+			_publicLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
 			_publicLabel.text = NSLocalizedString(@"Public", @"Public");
 			[self addSubview:_publicLabel];
 
