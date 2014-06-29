@@ -11,8 +11,8 @@
 /* Class = "IBUILabel"; text = "Touch and hold a unit,\nthen drag it up or down"; ObjectID = "1ry-vN-Hwz"; */
 "1ry-vN-Hwz.text" = "Touch and hold a unit,\nthen drag it up or down";
 
-/* Class = "IBUILabel"; text = "Touch and hold a item,\nthen drag it up or down"; ObjectID = "4cl-y6-WyE"; */
-"4cl-y6-WyE.text" = "Touch and hold a item,\nthen drag it up or down";
+/* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "4cl-y6-WyE"; */
+"4cl-y6-WyE.text" = "Touch and hold an item,\nthen drag it up or down";
 
 /* Class = "IBUILabel"; text = "Tap to view larger"; ObjectID = "6rS-5S-grs"; */
 "6rS-5S-grs.text" = "Tap to view larger";
@@ -32,8 +32,8 @@
 /* Class = "IBUILabel"; text = "Tap to change color and more"; ObjectID = "HRH-SL-EGk"; */
 "HRH-SL-EGk.text" = "Tap to change color and more";
 
-/* Class = "IBUILabel"; text = "Touch and hold a item,\nthen drag it up or down"; ObjectID = "Hg8-OO-NUZ"; */
-"Hg8-OO-NUZ.text" = "Touch and hold a item,\nthen drag it up or down";
+/* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "Hg8-OO-NUZ"; */
+"Hg8-OO-NUZ.text" = "Touch and hold an item,\nthen drag it up or down";
 
 /* Class = "IBUILabel"; text = "Select which categories\nto view"; ObjectID = "JFG-2D-dxV"; */
 "JFG-2D-dxV.text" = "Select which categories\nto view";
@@ -68,8 +68,8 @@
 /* Class = "IBUILabel"; text = "Tap to see more info"; ObjectID = "SYZ-xq-Dcb"; */
 "SYZ-xq-Dcb.text" = "Tap to see more info";
 
-/* Class = "IBUILabel"; text = "Touch and hold a item,\nthen drag it up or down"; ObjectID = "UKH-uM-FHa"; */
-"UKH-uM-FHa.text" = "Touch and hold a item,\nthen drag it up or down";
+/* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "UKH-uM-FHa"; */
+"UKH-uM-FHa.text" = "Touch and hold an item,\nthen drag it up or down";
 
 /* Class = "IBUILabel"; text = "Touch and hold a language,\nthen drag it up or down"; ObjectID = "Vz2-2z-yFf"; */
 "Vz2-2z-yFf.text" = "Touch and hold a language,\nthen drag it up or down";

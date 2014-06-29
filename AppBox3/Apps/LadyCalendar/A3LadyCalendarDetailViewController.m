@@ -225,7 +225,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			if (![period.isPredict boolValue]) {
 				A3LadyCalendarDetailViewTitleCell *titleCell = [tableView dequeueReusableCellWithIdentifier:A3LadyCalendarDetailViewTitleCellID forIndexPath:indexPath];
 				titleCell.titleLabel.text = rowInfo[ItemKey_Title];
-				titleCell.subTitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [_dateFormatter stringFromDate:period.modificationDate]];
+				if (period.modificationDate) {
+					titleCell.subTitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [_dateFormatter stringFromDate:period.modificationDate]];
+				}
 				[titleCell.editButton setHidden:isEditNavigationBar];
 				[titleCell.editButton addTarget:self action:@selector(editDetailItem:) forControlEvents:UIControlEventTouchUpInside];
 				titleCell.editButton.tag = indexPath.row;

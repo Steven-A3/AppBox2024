@@ -688,7 +688,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             self.resultLB.text = [NSString stringWithFormat:NSLocalizedString(@"The best unit price is B at %@", @"The best unit price is B at %@"), unitPriceTxt2];
         }
         else {
-            self.resultLB.text = [NSString stringWithFormat:NSLocalizedString(@"The unit price is same at %@", @"The unit price is same at %@"), unitPriceTxt1];
+            self.resultLB.text = [NSString stringWithFormat:NSLocalizedString(@"The unit price is the same at %@", @"The unit price is same at %@"), unitPriceTxt1];
         }
     }
     else {

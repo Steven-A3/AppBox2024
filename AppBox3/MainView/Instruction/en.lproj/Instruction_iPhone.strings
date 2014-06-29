@@ -65,8 +65,8 @@
 /* Class = "IBUILabel"; text = "Pull down to update"; ObjectID = "UOR-Dm-haV"; */
 "UOR-Dm-haV.text" = "Pull down to update";
 
-/* Class = "IBUILabel"; text = "Touch and hold a item,\nthen drag it up or down"; ObjectID = "UvH-ng-N3W"; */
-"UvH-ng-N3W.text" = "Touch and hold a item,\nthen drag it up or down";
+/* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "UvH-ng-N3W"; */
+"UvH-ng-N3W.text" = "Touch and hold an item,\nthen drag it up or down";
 
 /* Class = "IBUILabel"; text = "Tap to add a currency"; ObjectID = "Wca-7F-aIC"; */
 "Wca-7F-aIC.text" = "Tap to add a currency";
@@ -116,8 +116,8 @@
 /* Class = "IBUILabel"; text = "Tap the plus button to add a country"; ObjectID = "nP5-9M-28L"; */
 "nP5-9M-28L.text" = "Tap the plus button to add a country";
 
-/* Class = "IBUILabel"; text = "Touch and hold a item,\nthen drag it up or down"; ObjectID = "nPF-RG-8hQ"; */
-"nPF-RG-8hQ.text" = "Touch and hold a item,\nthen drag it up or down";
+/* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "nPF-RG-8hQ"; */
+"nPF-RG-8hQ.text" = "Touch and hold an item,\nthen drag it up or down";
 
 /* Class = "IBUILabel"; text = "Tap to add a unit"; ObjectID = "o5S-tb-Jbp"; */
 "o5S-tb-Jbp.text" = "Tap to add a unit";
@@ -137,8 +137,8 @@
 /* Class = "IBUILabel"; text = "Select which categories\nto view"; ObjectID = "rHi-Jq-5Rp"; */
 "rHi-Jq-5Rp.text" = "Select which categories\nto view";
 
-/* Class = "IBUILabel"; text = "Touch and hold a item,\nthen drag it up or down"; ObjectID = "rqI-qD-Dqd"; */
-"rqI-qD-Dqd.text" = "Touch and hold a item,\nthen drag it up or down";
+/* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "rqI-qD-Dqd"; */
+"rqI-qD-Dqd.text" = "Touch and hold an item,\nthen drag it up or down";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "sxx-vG-Pll"; */
 "sxx-vG-Pll.text" = "Tap the screen to display\nthe controls";

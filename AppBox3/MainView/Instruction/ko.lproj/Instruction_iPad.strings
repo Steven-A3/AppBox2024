@@ -11,7 +11,7 @@
 /* Class = "IBUILabel"; text = "touch and hold a unit,\nthen drag it up or down"; ObjectID = "1ry-vN-Hwz"; */
 "1ry-vN-Hwz.text" = "단위를 터치한 후 누르고 있으면\n위 아래로 움직여 순서를 바꿀 수 있습니다.";
 
-/* Class = "IBUILabel"; text = "touch and hold a item,\nthen drag it up or down"; ObjectID = "4cl-y6-WyE"; */
+/* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "4cl-y6-WyE"; */
 "4cl-y6-WyE.text" = "아이템을 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to view larger"; ObjectID = "6rS-5S-grs"; */
@@ -32,7 +32,7 @@
 /* Class = "IBUILabel"; text = "Tap to change color and more"; ObjectID = "HRH-SL-EGk"; */
 "HRH-SL-EGk.text" = "탭하여 색상을 바꿀 수 있습니다.";
 
-/* Class = "IBUILabel"; text = "touch and hold a item,\nthen drag it up or down"; ObjectID = "Hg8-OO-NUZ"; */
+/* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "Hg8-OO-NUZ"; */
 "Hg8-OO-NUZ.text" = "아이템을 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "select which categories\nto view"; ObjectID = "JFG-2D-dxV"; */
@@ -68,7 +68,7 @@
 /* Class = "IBUILabel"; text = "tap to see more info"; ObjectID = "SYZ-xq-Dcb"; */
 "SYZ-xq-Dcb.text" = "탭하여 더 많은 정보를 봅니다.";
 
-/* Class = "IBUILabel"; text = "touch and hold a item,\nthen drag it up or down"; ObjectID = "UKH-uM-FHa"; */
+/* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "UKH-uM-FHa"; */
 "UKH-uM-FHa.text" = "아이템을 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a language,\nthen drag it up or down"; ObjectID = "Vz2-2z-yFf"; */

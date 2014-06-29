@@ -1434,7 +1434,7 @@
         NSDateComponents *startComp = [A3DaysCounterModelManager dateComponentsFromDateModelObject:[_eventItem startDate] toLunar:YES];
         BOOL isLunarStartDate = [NSDate isLunarDateComponents:startComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
         if (!isLunarStartDate) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Start date is not lunar date", @"Message in adding event.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Start date is not a lunar date.", @"Message in adding event.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                   otherButtonTitles:nil, nil];
             [alert show];
             return;
@@ -1444,7 +1444,7 @@
             NSDateComponents *startComp = [A3DaysCounterModelManager dateComponentsFromDateModelObject:[_eventItem endDate] toLunar:YES];
             BOOL isLunarEndDate = [NSDate isLunarDateComponents:startComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
             if (!isLunarEndDate) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"End date is not lunar date", @"Message in adding event.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"End date is not a lunar date.", @"Message in adding event.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                       otherButtonTitles:nil, nil] ;
                 [alert show];
                 return;

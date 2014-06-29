@@ -239,8 +239,8 @@
 "Search Location" = "Search Location";
 "Please enter the end date." = "Please enter the end date.";
 "Cannot Save Event\nThe start date must be before the end date." = "Cannot Save Event\nThe start date must be before the end date.";
-"Start date is not lunar date" = "Start date is not lunar date";
-"End date is not lunar date" = "End date is not lunar date";
+"Start date is not a lunar date." = "Start date is not a lunar date.";
+"End date is not a lunar date." = "End date is not a lunar date.";
 "It's not a Lunar Date" = "It's not a Lunar Date";
 
 "Cannot find current location information" = "Cannot find current location information";
@@ -417,7 +417,7 @@
 "Acknowledgement" = "Acknowledgement";
 "Upcoming" = "Upcoming";
 "Past" = "Past";
-"Holidays for year %lu is not available." = "Holidays for year %lu is not available.";
+"Holidays for the year %lu is not available." = "Holidays for the year %lu is not available.";
 "Disclaimer" = "Disclaimer";
 "I Agree" = "Zgadzam się";
 "on flickr" = "on flickr";
@@ -650,7 +650,7 @@
 
 "The best unit price is A at %@" = "The best unit price is A at %@";
 "The best unit price is B at %@" = "The best unit price is B at %@";
-"The unit price is same at %@" = "The unit price is same at %@";
+"The unit price is the same at %@" = "The unit price is the same at %@";
 
 "Area" = "Area";
 "Length" = "Length";

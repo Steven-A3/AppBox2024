@@ -538,7 +538,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 - (void)alertNotAvailableYear:(NSUInteger)year {
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-														message:[NSString stringWithFormat:NSLocalizedString(@"Holidays for year %lu is not available.", @"Holidays for year %lu is not available."), (unsigned long) year]
+														message:[NSString stringWithFormat:NSLocalizedString(@"Holidays for the year %lu is not available.", @"Holidays for year %lu is not available."), (unsigned long) year]
 													   delegate:nil
 											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 											  otherButtonTitles:nil];

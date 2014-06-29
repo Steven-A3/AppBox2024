@@ -241,8 +241,8 @@ https://itunes.apple.com/app/id318404385";
 "Cannot Save Event\nThe start date must be before the end date." =
 "Cannot Save Event
 The start date must be before the end date.";
-"Start date is not lunar date" = "Start date is not lunar date";
-"End date is not lunar date" = "End date is not lunar date";
+"Start date is not a lunar date." = "Start date is not a lunar date.";
+"End date is not a lunar date." = "End date is not a lunar date.";
 "It's not a Lunar Date" = "It's not a Lunar Date";
 
 "Cannot find current location information" = "Cannot find current location information";
@@ -422,7 +422,7 @@ The start date must be before the end date.";
 "Upcoming" = "Upcoming";
 "Past" = "Past";
 /* Holidays for year 1930 is not available. */
-"Holidays for year %lu is not available." = "Holidays for year %lu is not available.";
+"Holidays for the year %lu is not available." = "Holidays for the year %lu is not available.";
 "Disclaimer" = "Disclaimer";
 "I Agree" = "同意";
 
@@ -662,7 +662,7 @@ The start date must be before the end date.";
 
 "The best unit price is A at %@" = "The best unit price is A at %@";
 "The best unit price is B at %@" = "The best unit price is B at %@";
-"The unit price is same at %@" = "The unit price is same at %@";
+"The unit price is the same at %@" = "The unit price is the same at %@";
 
 "Area" = "Area";
 "Length" = "Length";
