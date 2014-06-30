@@ -80,7 +80,7 @@ typedef voidp unzFile;
 #define UNZ_INTERNALERROR               (-104)
 #define UNZ_CRCERROR                    (-105)
 
-/* tm_unz contain date/time info */
+/* tm_unz contain updateDate/time info */
 typedef struct tm_unz_s
 {
     uInt tm_sec;            /* seconds after the minute - [0,59] */
@@ -114,7 +114,7 @@ typedef struct unz_file_info64_s
     uLong version_needed;       /* version needed to extract       2 bytes */
     uLong flag;                 /* general purpose bit flag        2 bytes */
     uLong compression_method;   /* compression method              2 bytes */
-    uLong dosDate;              /* last mod file date in Dos fmt   4 bytes */
+    uLong dosDate;              /* last mod file updateDate in Dos fmt   4 bytes */
     uLong crc;                  /* crc-32                          4 bytes */
     ZPOS64_T compressed_size;   /* compressed size                 8 bytes */
     ZPOS64_T uncompressed_size; /* uncompressed size               8 bytes */
@@ -135,7 +135,7 @@ typedef struct unz_file_info_s
     uLong version_needed;       /* version needed to extract       2 bytes */
     uLong flag;                 /* general purpose bit flag        2 bytes */
     uLong compression_method;   /* compression method              2 bytes */
-    uLong dosDate;              /* last mod file date in Dos fmt   4 bytes */
+    uLong dosDate;              /* last mod file updateDate in Dos fmt   4 bytes */
     uLong crc;                  /* crc-32                          4 bytes */
     uLong compressed_size;      /* compressed size                 4 bytes */
     uLong uncompressed_size;    /* uncompressed size               4 bytes */

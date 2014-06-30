@@ -89,7 +89,7 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [SalesCalcHistory MR_fetchAllSortedBy:@"historyDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [SalesCalcHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}

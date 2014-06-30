@@ -2,7 +2,7 @@
 //  LadyCalendarAccount.h
 //  AppBox3
 //
-//  Created by A3 on 5/3/14.
+//  Created by A3 on 6/30/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -13,12 +13,12 @@
 
 @interface LadyCalendarAccount : NSManagedObject
 
-@property (nonatomic, retain) NSString * uniqueID;
+@property (nonatomic, retain) NSDate * birthDay;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * notes;
-@property (nonatomic, retain) NSDate * birthDay;
 @property (nonatomic, retain) NSNumber * order;
-@property (nonatomic, retain) NSDate * modificationDate;
+@property (nonatomic, retain) NSString * uniqueID;
+@property (nonatomic, retain) NSDate * updateDate;
 @property (nonatomic, retain) NSOrderedSet *periods;
 @end
 

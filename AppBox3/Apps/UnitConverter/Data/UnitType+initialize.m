@@ -22,6 +22,8 @@
     for (int i = 0; i < numOfUnitType; i++) {
         
         UnitType *utype = [UnitType MR_createEntity];
+		utype.uniqueID = [[NSUUID UUID] UUIDString];
+		utype.updateDate = [NSDate date];
         NSString *unitType = [NSString stringWithCString:unitTypes[i] encoding:NSUTF8StringEncoding];
         FNLOG(@"%@", unitType);
         utype.unitTypeName = unitType;

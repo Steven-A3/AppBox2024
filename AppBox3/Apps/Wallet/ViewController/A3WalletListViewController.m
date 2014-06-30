@@ -173,7 +173,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletBigPhotoCellID1 forIndexPath:indexPath];
 
 		photoCell.rightLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-		photoCell.rightLabel.text = [item.modificationDate timeAgo];
+		photoCell.rightLabel.text = [item.updateDate timeAgo];
 		if (IS_IPHONE) {
 			photoCell.rightLabel.font = [UIFont systemFontOfSize:12];
 		}
@@ -207,7 +207,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		videoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletBigVideoCellID1 forIndexPath:indexPath];
 
 		videoCell.rightLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-		videoCell.rightLabel.text = [item.modificationDate timeAgo];
+		videoCell.rightLabel.text = [item.updateDate timeAgo];
 		if (IS_IPHONE) {
 			videoCell.rightLabel.font = [UIFont systemFontOfSize:12];
 		}

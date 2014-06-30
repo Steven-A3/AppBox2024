@@ -62,7 +62,7 @@
 	if ([_calendarItem.calendarType integerValue] == CalendarCellType_User) {
 		self.title = [NSString stringWithFormat:@"%@", _calendarItem.calendarName];
 	} else {
-		self.title = [_sharedManager localizedSystemCalendarNameForCalendarID:_calendarItem.calendarId];
+		self.title = [_sharedManager localizedSystemCalendarNameForCalendarID:_calendarItem.uniqueID];
 	}
     UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchAction:)];
     UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
@@ -137,7 +137,7 @@
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:NO];
 
-    if ( [self.changedCalendarID length] > 0 && ![self.changedCalendarID isEqualToString:_calendarItem.calendarId] ) {
+    if ( [self.changedCalendarID length] > 0 && ![self.changedCalendarID isEqualToString:_calendarItem.uniqueID] ) {
         self.calendarItem = [_sharedManager calendarItemByID:self.changedCalendarID inContext:[[MagicalRecordStack defaultStack] context] ];
         self.changedCalendarID = nil;
         if ( self.calendarItem ) {
@@ -247,13 +247,13 @@
         self.sourceArray = [_calendarItem.events array];
     }
     else {
-        if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_All] ) {
+        if ( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_All] ) {
             self.sourceArray = [_sharedManager allEventsList];
         }
-        else if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Past] ) {
+        else if ( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_Past] ) {
             self.sourceArray = [_sharedManager pastEventsListWithDate:[NSDate date]];
         }
-        else if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Upcoming] ) {
+        else if ( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_Upcoming] ) {
             self.sourceArray = [_sharedManager upcomingEventsListWithDate:[NSDate date]];
         }
     }
@@ -764,7 +764,7 @@
 #pragma mark - A3DaysCounterEventDetailViewControllerDelegate
 - (void)didChangedCalendarEventDetailViewController:(A3DaysCounterEventDetailViewController *)ctrl
 {
-    self.changedCalendarID = ctrl.eventItem.calendar.calendarId;
+    self.changedCalendarID = ctrl.eventItem.calendar.uniqueID;
 }
 
 #pragma mark - UISearchDisplayDelegate
@@ -919,7 +919,7 @@
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
-    viewCtrl.calendarId = _calendarItem.calendarId;
+    viewCtrl.calendarId = _calendarItem.uniqueID;
     viewCtrl.sharedManager = _sharedManager;
     if ([_calendarItem.calendarType integerValue] == CalendarCellType_System) {
         viewCtrl.calendarId = nil;

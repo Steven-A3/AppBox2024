@@ -42,7 +42,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 
 - (NSArray*)tipCalcHistory
 {
-    NSArray* arrRecent = [TipCalcHistory MR_findAllSortedBy:@"dateTime" ascending:NO];
+    NSArray* arrRecent = [TipCalcHistory MR_findAllSortedBy:@"updateDate" ascending:NO];
     
     return arrRecent;
 }
@@ -76,7 +76,8 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 - (void)addHistory:(NSString*)aCaptionTip total:(NSString*)aCaptionTotal
 {
     TipCalcHistory* history = [TipCalcHistory MR_createEntity];
-    history.dateTime = [NSDate date];
+	history.uniqueID = [[NSUUID UUID] UUIDString];
+	history.updateDate = [NSDate date];
     history.labelTip = aCaptionTip;
     history.labelTotal = aCaptionTotal;
     history.rRecently = [TipCalcRecently MR_createEntity];
@@ -342,8 +343,8 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     TipCalcHistory* history = [TipCalcHistory MR_createEntity];
     history.labelTip = [self currencyStringFromDouble:[[self tipValueWithSplitWithRounding:YES] doubleValue]];
     history.labelTotal = [self currencyStringFromDouble:[[self totalBeforeSplitWithTax] doubleValue]];
-    
-    history.dateTime = [NSDate date];
+
+	history.updateDate = [NSDate date];
     history.rRecently = self.tipCalcData;
     self.tipCalcData.isMain = @(NO);
 

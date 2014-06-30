@@ -343,6 +343,8 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
         
         UnitItem *item = addedItems[i];
         UnitPriceFavorite *favorite = [UnitPriceFavorite MR_createEntity];
+		favorite.uniqueID = [[NSUUID UUID] UUIDString];
+		favorite.updateDate = [NSDate date];
         favorite.item = item;
         [_favorites insertObject:favorite atIndex:lastIdx];
         

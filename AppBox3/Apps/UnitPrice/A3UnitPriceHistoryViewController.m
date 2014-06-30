@@ -134,7 +134,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 - (NSFetchedResultsController *)fetchedResultsController {
     
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [UnitPriceHistory MR_fetchAllSortedBy:@"date" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [UnitPriceHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -263,7 +263,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     
     cell.unitPriceALabel.text = unitPrice1Txt;
     cell.unitPriceBLabel.text = unitPrice2Txt;
-    cell.timeLabel.text = [unitPriceHistory.date timeAgo];
+    cell.timeLabel.text = [unitPriceHistory.updateDate timeAgo];
     
     return cell;
 }

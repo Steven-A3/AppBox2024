@@ -412,7 +412,7 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
     // 최근 데이터에 저장했던 데이터인지 체크.
     NSFetchRequest * fetch = [[NSFetchRequest alloc] initWithEntityName:@"PercentCalcHistory"];
     [fetch setFetchLimit:10];
-    [fetch setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"historyDate" ascending:NO]]];
+    [fetch setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"updateDate" ascending:NO]]];
     NSArray *fetchedRows = [PercentCalcHistory MR_executeFetchRequest:fetch];
     for (PercentCalcHistory * entity in fetchedRows) {
         A3PercentCalcData *entityHistory = [NSKeyedUnarchiver unarchiveObjectWithData:entity.historyItem];
@@ -425,7 +425,7 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
         
         if ([aData.values isEqualToArray:entityHistory.values]) {
             // 최근에 저장한 데이터와 일치. 덮어쓰기.
-            entity.historyDate = [NSDate date];
+            entity.updateDate = [NSDate date];
             entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData];
 
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
@@ -442,7 +442,8 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
         if ([_factorX1 isEqualToNumber:@0]==NO && [_factorY1 isEqualToNumber:@0]==NO
             && [_factorX2 isEqualToNumber:@0]==NO && [_factorY2 isEqualToNumber:@0]==NO) {
             PercentCalcHistory *entity = [PercentCalcHistory MR_createEntity];
-            entity.historyDate = [NSDate date];
+			entity.uniqueID = [[NSUUID UUID] UUIDString];
+            entity.updateDate = [NSDate date];
             entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData];
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
             [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * barButton, NSUInteger idx, BOOL *stop) {
@@ -455,7 +456,8 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
         
         if ([_factorX1 isEqualToNumber:@0]==NO && [_factorY1 isEqualToNumber:@0]==NO) {
             PercentCalcHistory *entity = [PercentCalcHistory MR_createEntity];
-            entity.historyDate = [NSDate date];
+			entity.uniqueID = [[NSUUID UUID] UUIDString];
+            entity.updateDate = [NSDate date];
             entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData];
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
             [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * barButton, NSUInteger idx, BOOL *stop) {

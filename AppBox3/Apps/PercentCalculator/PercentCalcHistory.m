@@ -1,9 +1,9 @@
 //
 //  PercentCalcHistory.m
-//  A3TeamWork
+//  AppBox3
 //
-//  Created by jeonghwan kim on 13. 11. 20..
-//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 7/1/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "PercentCalcHistory.h"
@@ -11,7 +11,8 @@
 
 @implementation PercentCalcHistory
 
-@dynamic historyDate;
 @dynamic historyItem;
+@dynamic updateDate;
+@dynamic uniqueID;
 
 @end

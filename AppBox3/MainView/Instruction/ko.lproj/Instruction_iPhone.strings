@@ -50,7 +50,7 @@
 /* Class = "IBUILabel"; text = "slide the language to the left,\nthen tap Delete"; ObjectID = "M6u-St-Kuv"; */
 "M6u-St-Kuv.text" = "언어를 왼쪽으로 밀어서\n지울 수 있습니다.";
 
-/* Class = "IBUILabel"; text = "tap to add a event"; ObjectID = "M89-TC-emC"; */
+/* Class = "IBUILabel"; text = "tap to add an event"; ObjectID = "M89-TC-emC"; */
 "M89-TC-emC.text" = "탭하여 이벤트를 추가합니다.";
 
 /* Class = "IBUILabel"; text = "slide the country to the left,\nthen tap Delete"; ObjectID = "O49-bh-b9I"; */
@@ -92,7 +92,7 @@
 /* Class = "IBUILabel"; text = "Tap to change color and more"; ObjectID = "g69-at-Gdn"; */
 "g69-at-Gdn.text" = "탭하여 색상을 바꿀 수 있습니다.";
 
-/* Class = "IBUILabel"; text = "touch and hold a event,\nthen drag it up or down"; ObjectID = "g74-h9-vmQ"; */
+/* Class = "IBUILabel"; text = "touch and hold an event,\nthen drag it up or down"; ObjectID = "g74-h9-vmQ"; */
 "g74-h9-vmQ.text" = "이벤트를 터치한 후 누르고 있으면\n위 아래로 움직여서\n순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "change color and order"; ObjectID = "j7s-5h-AsK"; */

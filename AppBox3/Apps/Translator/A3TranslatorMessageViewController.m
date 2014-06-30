@@ -839,12 +839,13 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 			firstObject = [_messages firstObject];
 		}
 		_translatingMessage = [TranslatorHistory MR_createEntity];
+		_translatingMessage.uniqueID = [[NSUUID UUID] UUIDString];
+		_translatingMessage.updateDate = [NSDate date];
 		if (firstObject) {
 			_translatingMessage.group = firstObject.group;
 		}
 		_translatingMessage.originalText = _textView.text;
 		self.originalText = _textView.text; // Save to async operation
-		_translatingMessage.date = [NSDate date];
 
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
@@ -955,6 +956,8 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 			_translatingMessage.group = groupCandidates[0];
 		} else if (![groupCandidates count]) {
 			TranslatorGroup *newGroup = [TranslatorGroup MR_createEntity];
+			newGroup.uniqueID = [[NSUUID UUID] UUIDString];
+			newGroup.updateDate = [NSDate date];
 			[newGroup setupOrder];
 			newGroup.sourceLanguage = detectedLanguage;
 			newGroup.targetLanguage = _translatedTextLanguage;
@@ -1467,7 +1470,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 
 - (NSArray *)messages {
 	if (!_messages) {
-		_messages = [TranslatorHistory MR_findAllSortedBy:@"date" ascending:YES withPredicate:[self predicateForMessages]];
+		_messages = [TranslatorHistory MR_findAllSortedBy:@"updateDate" ascending:YES withPredicate:[self predicateForMessages]];
 	}
 	return _messages;
 }

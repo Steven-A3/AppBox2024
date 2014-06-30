@@ -64,7 +64,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:item.calendarColor];
-    [dict setObject:item.calendarId forKey:CalendarItem_ID];
+	[dict setObject:item.uniqueID forKey:CalendarItem_ID];
     [dict setObject:color forKey:CalendarItem_Color];
     [dict setObject:item.calendarColorID forKey:CalendarItem_ColorID];
     [dict setObject:item.calendarName forKey:CalendarItem_Name];
@@ -427,7 +427,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         eventModel.effectiveStartDate = [eventModel.startDate solarDate];
     }
     
-    eventModel.modificationDate = [NSDate date];
+    eventModel.updateDate = [NSDate date];
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
@@ -457,7 +457,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         eventItem.reminder.alertDate = eventItem.alertDatetime;
     }
     
-	eventItem.modificationDate = [NSDate date];
+	eventItem.updateDate = [NSDate date];
     
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
@@ -512,7 +512,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 }
 
 - (id)calendarItemByID:(NSString *)calendarId inContext:(NSManagedObjectContext *)context {
-    return [DaysCounterCalendar MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarId == %@",calendarId] inContext:context];
+    return [DaysCounterCalendar MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@",calendarId] inContext:context];
 }
 
 - (BOOL)removeCalendarItem:(NSMutableDictionary*)item
@@ -560,7 +560,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     NSUInteger numberOfItems = [DaysCounterCalendar MR_countOfEntitiesWithContext:context];
     // save to core data storage
     DaysCounterCalendar *calendar = [DaysCounterCalendar MR_createInContext:context];
-    calendar.calendarId = [item objectForKey:CalendarItem_ID];
+    calendar.uniqueID = [item objectForKey:CalendarItem_ID];
+	calendar.updateDate = [NSDate date];
     calendar.calendarName = [item objectForKey:CalendarItem_Name];
     calendar.calendarColor = [NSKeyedArchiver archivedDataWithRootObject:[item objectForKey:CalendarItem_Color]];
     calendar.isShow = [item objectForKey:CalendarItem_IsShow];
@@ -642,11 +643,11 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSDate*)dateOfLatestEvent
 {
-    DaysCounterEvent *event = [DaysCounterEvent MR_findFirstOrderedByAttribute:@"modificationDate" ascending:NO];
+    DaysCounterEvent *event = [DaysCounterEvent MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if ( event == nil )
         return nil;
     
-    return event.modificationDate;
+    return event.updateDate;
 }
 
 - (DaysCounterCalendar*)defaultCalendar
@@ -1218,6 +1219,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event" withValue:event];
             if (!reminder) {
                 reminder = [DaysCounterReminder MR_createEntity];
+				reminder.uniqueID = [[NSUUID UUID] UUIDString];
+				reminder.updateDate = [NSDate date];
                 reminder.startDate = event.effectiveStartDate;
                 reminder.alertDate = event.alertDatetime;
                 reminder.isOn = @(YES);
@@ -1247,6 +1250,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event" withValue:event];
             if (!reminder) {
                 reminder = [DaysCounterReminder MR_createEntity];
+				reminder.uniqueID = [[NSUUID UUID] UUIDString];
+				reminder.updateDate = [NSDate date];
                 reminder.startDate = event.effectiveStartDate;
                 reminder.alertDate = event.alertDatetime;
                 reminder.isOn = @(YES);
@@ -1394,6 +1399,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event.uniqueID" withValue:[event uniqueID]];
             if (!reminder) {
                 reminder = [DaysCounterReminder MR_createEntity];
+				reminder.uniqueID = [[NSUUID UUID] UUIDString];
+				reminder.updateDate = [NSDate date];
                 reminder.event = event;
                 reminder.isOn = @(NO);
                 reminder.isUnread = @(YES);

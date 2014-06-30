@@ -214,7 +214,7 @@ enum SortingKind {
 {
     if (!super.items) {
 		NSMutableArray *items;
-        NSString *sortValue = (_sortingMode == kSortingDate) ? @"modificationDate" : @"name";
+        NSString *sortValue = (_sortingMode == kSortingDate) ? @"updateDate" : @"name";
         items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:sortValue ascending:_isAscendingSort]];
 		_dataEmpty = ![items count];
 		if (_dataEmpty) {
@@ -359,11 +359,11 @@ enum SortingKind {
     
     // update
     NSString *dateText = @"-";
-    WalletItem *recentItem = [WalletItem MR_findFirstOrderedByAttribute:@"modificationDate" ascending:NO];
+    WalletItem *recentItem = [WalletItem MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (recentItem) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 		[formatter setDateStyle:IS_IPHONE ? NSDateFormatterShortStyle : NSDateFormatterMediumStyle];
-        dateText = [formatter stringFromDate:recentItem.modificationDate];
+        dateText = [formatter stringFromDate:recentItem.updateDate];
     }
     
     nameText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"UPDATED", @"UPDATED")
@@ -476,7 +476,7 @@ enum SortingKind {
     viewController.hidesBottomBarWhenPushed = YES;
     
     // 마지막으로 추가되었던 walletItem의 카테고리가 선택되도록 한다.
-    WalletItem *lastItem = [WalletItem MR_findFirstOrderedByAttribute:@"modificationDate" ascending:NO];
+    WalletItem *lastItem = [WalletItem MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (lastItem) {
         viewController.walletCategory = lastItem.category;
     }

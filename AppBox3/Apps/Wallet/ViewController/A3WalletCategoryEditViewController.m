@@ -66,6 +66,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 		self.navigationItem.title = NSLocalizedString(@"Add Category", @"Add Category");
 		_category = [WalletCategory MR_createEntity];
         _category.uniqueID = [[NSUUID UUID] UUIDString];
+		_category.updateDate = [NSDate date];
 		[_category initValues];
 		[_category assignOrder];
 		_category.icon = [WalletCategory iconList][0];

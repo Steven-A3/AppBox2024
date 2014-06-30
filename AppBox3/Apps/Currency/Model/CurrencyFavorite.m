@@ -2,8 +2,8 @@
 //  CurrencyFavorite.m
 //  AppBox3
 //
-//  Created by A3 on 12/21/13.
-//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 6/30/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "CurrencyFavorite.h"
@@ -16,5 +16,7 @@
 @dynamic flagImageName;
 @dynamic name;
 @dynamic order;
+@dynamic uniqueID;
+@dynamic updateDate;
 
 @end

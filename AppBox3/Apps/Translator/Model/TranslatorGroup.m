@@ -2,7 +2,7 @@
 //  TranslatorGroup.m
 //  AppBox3
 //
-//  Created by A3 on 2/28/14.
+//  Created by A3 on 6/30/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -15,6 +15,8 @@
 @dynamic order;
 @dynamic sourceLanguage;
 @dynamic targetLanguage;
+@dynamic uniqueID;
+@dynamic updateDate;
 @dynamic texts;
 
 @end

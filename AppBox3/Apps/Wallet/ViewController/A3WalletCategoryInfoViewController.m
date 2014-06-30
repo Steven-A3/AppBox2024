@@ -112,7 +112,7 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
             dateFormatter.dateFormat = [dateFormatter customFullWithTimeStyleFormat];
         }
         
-        _headerView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [dateFormatter stringFromDate:_category.modificationDate]];
+        _headerView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [dateFormatter stringFromDate:_category.updateDate]];
     }
     
     return _headerView;

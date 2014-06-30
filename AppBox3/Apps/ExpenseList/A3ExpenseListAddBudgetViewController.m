@@ -207,7 +207,8 @@ enum A3ExpenseListAddBudgetCellType {
 		ExpenseListBudget *resultBudget;
 		if (!_currentBudget) {
 			resultBudget = [ExpenseListBudget MR_createEntity];
-			resultBudget.budgetId = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];
+			resultBudget.uniqueID = [[NSUUID UUID] UUIDString];
+			resultBudget.updateDate = [NSDate date];
 		} else {
 			resultBudget = _currentBudget;
 		}
@@ -510,6 +511,8 @@ enum A3ExpenseListAddBudgetCellType {
                        NSLocalizedString(@"Uncategorized", @"Pets")];
         for (NSString *category in categories) {
             ExpenseListCategories *entity = [ExpenseListCategories MR_createEntity];
+			entity.uniqueID = [[NSUUID UUID] UUIDString];
+			entity.updateDate = [NSDate date];
             entity.name = category;
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         }

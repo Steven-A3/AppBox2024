@@ -107,7 +107,7 @@
     }
     
     imageView.tintColor = [item color];
-    cell.accessoryType = [item.calendarId isEqualToString:_eventModel.calendar.calendarId] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    cell.accessoryType = [item.uniqueID isEqualToString:_eventModel.calendar.uniqueID] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     
     return cell;
 }

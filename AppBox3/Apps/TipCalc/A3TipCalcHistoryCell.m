@@ -109,7 +109,7 @@
     NSString *total = [dataManager currencyStringFromDouble:dTotal];
     NSArray *strings = @[tip, NSLocalizedString(@" of ", @" of "), total];
     
-    _dateLabel.text = [aHistory.dateTime timeAgo];
+    _dateLabel.text = [aHistory.updateDate timeAgo];
     _resultLabel.text = [strings componentsJoinedByString:@""];
     _dateLabel.textColor = COLOR_HISTORYCELL_DATE;
     _dateLabel.font = [UIFont systemFontOfSize:12];

@@ -545,7 +545,7 @@
 }
 
 - (BOOL) isCalculationHistoryEmpty {
-    Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"date" ascending:NO];
+    Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (lastcalculation != nil ) {
         return NO;
     } else {
@@ -644,7 +644,7 @@
 
 - (void)putCalculationHistoryWithExpression:(NSString *)expression{
 	NSString *mathExpression = [self.calculator getMathExpression];
-	Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"date" ascending:NO];
+	Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
 
 	// Compare code and value.
 	if (lastcalculation) {
@@ -654,10 +654,11 @@
 	}
 
 	Calculation *calculation = [Calculation MR_createEntity];
+	calculation.uniqueID = [[NSUUID UUID] UUIDString];
 	NSDate *keyDate = [NSDate date];
 	calculation.expression = mathExpression;
 	calculation.result = [self.calculator getResultString];
-	calculation.date = keyDate;
+	calculation.updateDate = keyDate;
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
 }

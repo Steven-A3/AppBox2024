@@ -42,6 +42,8 @@
             NSNumber *conversionRate = [NSNumber numberWithDouble:conversionTable[typeIdx][unitIdx]];
 
             UnitItem *unit = [UnitItem MR_createEntity];
+			unit.uniqueID = [[NSUUID UUID] UUIDString];
+			unit.updateDate = [NSDate date];
             unit.type = unitType;
             unit.unitName = unitName;
             unit.unitShortName = unitShortName;

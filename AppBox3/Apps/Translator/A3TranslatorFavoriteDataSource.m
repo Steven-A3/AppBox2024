@@ -53,7 +53,7 @@
 													 [A3TranslatorLanguage localizedNameForCode:item.text.group.targetLanguage]];
 	cell.detailTextLabel.text = item.text.originalText;
 	if (IS_IPAD) {
-		cell.dateLabel.text = [item.text.date timeAgo];
+		cell.dateLabel.text = [item.text.updateDate timeAgo];
 	} else {
         cell.textLabel.font = [UIFont systemFontOfSize:15];
 		cell.detailTextLabel.font = [UIFont systemFontOfSize:12];

@@ -1,9 +1,9 @@
 //
 //  PercentCalcHistory.h
-//  A3TeamWork
+//  AppBox3
 //
-//  Created by jeonghwan kim on 13. 11. 20..
-//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 7/1/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -12,7 +12,8 @@
 
 @interface PercentCalcHistory : NSManagedObject
 
-@property (nonatomic, retain) NSDate * historyDate;
 @property (nonatomic, retain) NSData * historyItem;
+@property (nonatomic, retain) NSDate * updateDate;
+@property (nonatomic, retain) NSString * uniqueID;
 
 @end

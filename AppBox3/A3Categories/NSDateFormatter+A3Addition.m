@@ -11,7 +11,7 @@
 
 @implementation NSDateFormatter (A3Addition)
 
-/*! Generate string from date with NSDateFormatterLongStyle omitting Day part
+/*! Generate string from updateDate with NSDateFormatterLongStyle omitting Day part
  * \param NSDate
  * \returns string like February, 2014, 2014년 2월
  */
@@ -22,7 +22,7 @@
 	return [self stringFromDate:date];
 }
 
-/*! Generate string from date with NSDateFormatterMediumStyle omitting Day part
+/*! Generate string from updateDate with NSDateFormatterMediumStyle omitting Day part
  * \param NSDate
  * \returns string like Feb, 2014, 2014년 2월
  */

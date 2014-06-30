@@ -2,8 +2,8 @@
 //  CurrencyHistory.m
 //  AppBox3
 //
-//  Created by A3 on 12/21/13.
-//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 6/30/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "CurrencyHistory.h"
@@ -13,9 +13,9 @@
 @implementation CurrencyHistory
 
 @dynamic currencyCode;
-@dynamic updateDate;
 @dynamic rate;
-@dynamic uniqueIdentifier;
+@dynamic uniqueID;
+@dynamic updateDate;
 @dynamic value;
 @dynamic targets;
 

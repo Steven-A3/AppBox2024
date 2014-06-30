@@ -741,15 +741,15 @@
             
         case CalendarCellType_System:
         {
-			textLabel.text = [_sharedManager localizedSystemCalendarNameForCalendarID:calendarItem.calendarId];
+			textLabel.text = [_sharedManager localizedSystemCalendarNameForCalendarID:calendarItem.uniqueID];
             NSInteger numberOfEvents = 0;
-            if ( [calendarItem.calendarId isEqualToString:SystemCalendarID_All] ) {
+            if ( [calendarItem.uniqueID isEqualToString:SystemCalendarID_All] ) {
                 numberOfEvents = [_sharedManager numberOfAllEvents];
             }
-            else if ( [calendarItem.calendarId isEqualToString:SystemCalendarID_Upcoming]) {
+            else if ( [calendarItem.uniqueID isEqualToString:SystemCalendarID_Upcoming]) {
                 numberOfEvents = [_sharedManager numberOfUpcomingEventsWithDate:[NSDate date]];
             }
-            else if ( [calendarItem.calendarId isEqualToString:SystemCalendarID_Past] ) {
+            else if ( [calendarItem.uniqueID isEqualToString:SystemCalendarID_Past] ) {
                 numberOfEvents = [_sharedManager numberOfPastEventsWithDate:[NSDate date]];
             }
             
@@ -796,8 +796,8 @@
         if ( [item.calendarType integerValue] == CalendarCellType_System ) {
             return;
         }
-        
-        [_sharedManager removeCalendarItemWithID:item.calendarId];
+
+		[_sharedManager removeCalendarItemWithID:item.uniqueID];
         self.itemArray = [_sharedManager visibleCalendarList];
         [self setupHeaderInfo];
         [self.tableView reloadData];

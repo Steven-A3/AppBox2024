@@ -50,8 +50,8 @@
 /* Class = "IBUILabel"; text = "Slide the language to the left,\nthen tap Delete"; ObjectID = "M6u-St-Kuv"; */
 "M6u-St-Kuv.text" = "Slide the language to the left,\nthen tap Delete";
 
-/* Class = "IBUILabel"; text = "Tap to add a event"; ObjectID = "M89-TC-emC"; */
-"M89-TC-emC.text" = "Tap to add a event";
+/* Class = "IBUILabel"; text = "Tap to add an event"; ObjectID = "M89-TC-emC"; */
+"M89-TC-emC.text" = "Tap to add an event";
 
 /* Class = "IBUILabel"; text = "Slide the country to the left,\nthen tap Delete"; ObjectID = "O49-bh-b9I"; */
 "O49-bh-b9I.text" = "Slide the country to the left,\nthen tap Delete";
@@ -92,8 +92,8 @@
 /* Class = "IBUILabel"; text = "Tap to change color and more"; ObjectID = "g69-at-Gdn"; */
 "g69-at-Gdn.text" = "Tap to change color and more";
 
-/* Class = "IBUILabel"; text = "Touch and hold a event,\nthen drag it up or down"; ObjectID = "g74-h9-vmQ"; */
-"g74-h9-vmQ.text" = "Touch and hold a event,\nthen drag it up or down";
+/* Class = "IBUILabel"; text = "Touch and hold an event,\nthen drag it up or down"; ObjectID = "g74-h9-vmQ"; */
+"g74-h9-vmQ.text" = "Touch and hold an event,\nthen drag it up or down";
 
 /* Class = "IBUILabel"; text = "Change color and order"; ObjectID = "j7s-5h-AsK"; */
 "j7s-5h-AsK.text" = "Change color and order";

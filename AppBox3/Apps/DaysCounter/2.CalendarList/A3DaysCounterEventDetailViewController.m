@@ -71,7 +71,7 @@
     [self makeBackButtonEmptyArrow];
 
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
-    self.initialCalendarID = _eventItem.calendar.calendarId;
+    self.initialCalendarID = _eventItem.calendar.uniqueID;
     
     [self setupTopWhitePaddingView];
     self.heightCalculateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
@@ -118,7 +118,7 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
     
-    if ( ![self.initialCalendarID isEqualToString:_eventItem.calendar.calendarId] ) {
+    if ( ![self.initialCalendarID isEqualToString:_eventItem.calendar.uniqueID] ) {
         if ( self.delegate && [self.delegate respondsToSelector:@selector(didChangedCalendarEventDetailViewController:)]) {
             [self.delegate didChangedCalendarEventDetailViewController:self];
         }
@@ -143,7 +143,7 @@
     if ( event.alertDatetime ) {
         [_itemArray addObject:@{ EventRowTitle : NSLocalizedString(@"Alert", @"Alert"), EventRowType : @(EventCellType_Alert)}];
     }
-    if ( [event.calendar.calendarId length] ) {
+    if ( [event.calendar.uniqueID length] ) {
         [_itemArray addObject:@{ EventRowTitle : NSLocalizedString(@"Calendar", @"Calendar"), EventRowType : @(EventCellType_Calendar)}];
     }
     if ( event.durationOption ) {
@@ -1743,7 +1743,7 @@ EXIT_FUCTION:
 #pragma mark - action method
 - (void)editAction:(id)sender
 {
-    self.initialCalendarID = _eventItem.calendar.calendarId;
+    self.initialCalendarID = _eventItem.calendar.uniqueID;
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
     viewCtrl.eventItem = _eventItem;
     viewCtrl.sharedManager = _sharedManager;
@@ -1796,7 +1796,7 @@ EXIT_FUCTION:
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
         
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share a event with you.", @"I'd like to share a event with you.")];
+		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share an event with you.", @"I'd like to share an event with you.")];
 
         // 7 days until (계산된 날짜)
         NSString *daysString = [A3DaysCounterModelManager stringOfDurationOption:[_eventItem.durationOption integerValue]

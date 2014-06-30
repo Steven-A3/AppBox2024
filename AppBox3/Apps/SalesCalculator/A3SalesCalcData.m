@@ -10,7 +10,7 @@
 #import "SalesCalcHistory.h"
 #import "A3SalesCalcPreferences.h"
 
-static NSString *const A3SalesCalcDataKeyHistoryDate = @"historyDate";
+static NSString *const A3SalesCalcDataKeyHistoryDate = @"updateDate";
 static NSString *const A3SalesCalcDataKeyShownPriceType = @"shownPriceType";
 static NSString *const A3SalesCalcDataKeyPrice = @"price";
 static NSString *const A3SalesCalcDataKeyPriceType = @"priceType";
@@ -88,7 +88,8 @@ static NSString *const A3SalesCalcDataKeyNotes = @"notes";
     
     
     SalesCalcHistory *entity = [SalesCalcHistory MR_createEntity];
-    entity.historyDate = [NSDate date];
+	entity.uniqueID = [[NSUUID UUID] UUIDString];
+    entity.updateDate = [NSDate date];
     entity.price = self.price;
     entity.priceType = @(self.priceType);
     entity.discount = self.discount;
@@ -114,7 +115,7 @@ static NSString *const A3SalesCalcDataKeyNotes = @"notes";
     
     if (self.historyDate != nil) {
         NSArray *oldDate = [NSArray arrayWithObjects:self.historyDate, nil];
-        NSArray *oldHistory = [SalesCalcHistory MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"historyDate IN %@", oldDate]];
+        NSArray *oldHistory = [SalesCalcHistory MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"updateDate IN %@", oldDate]];
         if (oldHistory.count!=0) {
             FNLOG(@"존재하는 히스토리입니다.");
             return NO;
@@ -122,7 +123,8 @@ static NSString *const A3SalesCalcDataKeyNotes = @"notes";
     }
     
     SalesCalcHistory *entity = [SalesCalcHistory MR_createEntity];
-    entity.historyDate = [NSDate date];
+	entity.uniqueID = [[NSUUID UUID] UUIDString];
+    entity.updateDate = [NSDate date];
     entity.price = self.price;
     entity.priceType = @(self.priceType);
     entity.discount = self.discount;
@@ -142,7 +144,7 @@ static NSString *const A3SalesCalcDataKeyNotes = @"notes";
 +(A3SalesCalcData *)loadDataFromHistory:(SalesCalcHistory *)history
 {
     A3SalesCalcData *data = [A3SalesCalcData new];
-    data.historyDate = history.historyDate;
+    data.historyDate = history.updateDate;
     data.price = history.price;
     data.priceType = (A3TableElementValueType) history.priceType.integerValue;
     data.discount = history.discount;

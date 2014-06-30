@@ -113,7 +113,7 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [Calculation MR_fetchAllSortedBy:@"date" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [Calculation MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -160,7 +160,7 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 	//((UILabel *) cell.L1).text = calculation.expression;
     FNLOG("expression = %@", calculation.expression);
     ((UILabel *) cell.L1).text = calculation.result;
-    ((UILabel *) cell.R1).text = [calculation.date timeAgo];
+    ((UILabel *) cell.R1).text = [calculation.updateDate timeAgo];
     ((UILabel *) cell.L2).attributedText =  [self.calculator getExpressionWith:calculation.expression];
     
 	return cell;

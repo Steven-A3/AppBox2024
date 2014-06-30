@@ -2,7 +2,7 @@
 //  DaysCounterCalendar.h
 //  AppBox3
 //
-//  Created by A3 on 5/30/14.
+//  Created by A3 on 6/30/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -15,12 +15,13 @@
 
 @property (nonatomic, retain) NSData * calendarColor;
 @property (nonatomic, retain) NSString * calendarColorID;
-@property (nonatomic, retain) NSString * calendarId;
 @property (nonatomic, retain) NSString * calendarName;
 @property (nonatomic, retain) NSNumber * calendarType;
 @property (nonatomic, retain) NSNumber * isDefault;
 @property (nonatomic, retain) NSNumber * isShow;
 @property (nonatomic, retain) NSNumber * order;
+@property (nonatomic, retain) NSString * uniqueID;
+@property (nonatomic, retain) NSDate * updateDate;
 @property (nonatomic, retain) NSOrderedSet *events;
 @end
 

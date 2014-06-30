@@ -371,6 +371,8 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
     for (int i=0; i<addedItems.count; i++) {
         UnitItem *item = addedItems[i];
         UnitFavorite *favorite = [UnitFavorite MR_createEntity];
+		favorite.uniqueID = [[NSUUID UUID] UUIDString];
+		favorite.updateDate = [NSDate date];
         favorite.item = item;
         [_favorites addObjectToSortedArray:favorite];
         

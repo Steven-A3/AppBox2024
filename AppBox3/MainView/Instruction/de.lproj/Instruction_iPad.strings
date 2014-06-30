@@ -50,8 +50,8 @@
 /* Class = "IBUILabel"; text = "Tap to add a currency"; ObjectID = "OLX-lb-sFo"; */
 "OLX-lb-sFo.text" = "Tap to add a currency";
 
-/* Class = "IBUILabel"; text = "Tap to add a event"; ObjectID = "OPT-6P-KMg"; */
-"OPT-6P-KMg.text" = "Tap to add a event";
+/* Class = "IBUILabel"; text = "Tap to add an event"; ObjectID = "OPT-6P-KMg"; */
+"OPT-6P-KMg.text" = "Tap to add an event";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "PNJ-zS-8fw"; */
 "PNJ-zS-8fw.text" = "Auf den Bildschirm tippen,\num die Steuerelemente anzuzeigen";
@@ -92,8 +92,8 @@
 /* Class = "IBUILabel"; text = "Slide the calendar to the left,\nthen tap Delete"; ObjectID = "bJN-4c-KyA"; */
 "bJN-4c-KyA.text" = "Slide the calendar to the left,\nthen tap Delete";
 
-/* Class = "IBUILabel"; text = "Touch and hold a event,\nthen drag it up or down"; ObjectID = "bwk-H3-3rx"; */
-"bwk-H3-3rx.text" = "Touch and hold a event,\nthen drag it up or down";
+/* Class = "IBUILabel"; text = "Touch and hold an event,\nthen drag it up or down"; ObjectID = "bwk-H3-3rx"; */
+"bwk-H3-3rx.text" = "Touch and hold an event,\nthen drag it up or down";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "c1e-KD-jLm"; */
 "c1e-KD-jLm.text" = "Auf den Bildschirm tippen,\num die Steuerelemente anzuzeigen";

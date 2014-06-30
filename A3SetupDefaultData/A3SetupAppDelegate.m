@@ -102,44 +102,11 @@
 
 #pragma mark Make Yahoo Currency Initial Data
 
-//- (void)addFavoritesForCurrencyItem {
-//	NSArray *favorites = @[@"USD", @"EUR", @"GBP", @"CAD", @"JPY", @"HKD", @"CNY", @"CHF", @"KRW"];
-//
-//	[favorites enumerateObjectsUsingBlock:^(NSString *code, NSUInteger idx, BOOL *stop) {
-//		CurrencyFavorite *favorite = [CurrencyFavorite MR_createEntity];
-//		favorite.order = [NSString stringWithFormat:@"0%lu0000000", (unsigned long)idx];
-//		favorite.currencyItem = [CurrencyItem MR_findFirstByAttribute:@"currencyCode" withValue:code];
-//		if ([code isEqualToString:@"USD"]) {
-//			favorite.currencyItem.rateToUSD = @1;
-//		}
-//		NSLog(@"%@, %@", favorite.currencyItem.currencyCode, favorite.order);
-//	}];
-//}
-
 - (void)initCurrencyData {
 	NSArray *yahooArray = [self yahooCurrencyArray];
 	if (nil == yahooArray) {
 		return;
 	}
-
-	/*
-	for (NSDictionary *yahooItem in yahooCurrencyArray) {
-		
-		CurrencyItem *currencyItem = [CurrencyItem MR_createEntity];
-		currencyItem.currencyCode = [[[[yahooItem objectForKey:@"resource"] objectForKey:@"fields"] objectForKey:@"symbol"] substringToIndex:3];
-		NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-		[numberFormatter setCurrencyCode:currencyItem.currencyCode];
-		NSLog(@"%@ = %@, %@", currencyItem.currencyCode, [numberFormatter stringFromNumber:@0], [currencyItem localizedNameForCode:]);
-		
-		currencyItem.rateToUSD = @([yahooItem[@"resource"][@"fields"][@"price"] floatValue]);
-		currencyItem.updated = [NSDate dateWithTimeIntervalSince1970:[yahooItem[@"resource"][@"fields"][@"ts"] integerValue]];
-		currencyItem.flagImageName = [self countryNameForCurrencyCode:currencyItem.currencyCode];
-		
-		
-		[self addFavoritesForCurrencyItem:currencyItem];
-	}
-*/
 
 	NSArray *localesArray = [NSLocale availableLocaleIdentifiers];
 	NSMutableArray *validLocales = [[NSMutableArray alloc] initWithCapacity:[localesArray count]];
@@ -174,20 +141,7 @@
 		if (idx != NSNotFound) {
 			entity.currencySymbol = validLocales[idx][NSLocaleCurrencySymbol];
 		}
-
-//		UIImage *image = [UIImage imageNamed:entity.flagImageName];
-//		if (![entity.flagImageName length] || !image || !entity.currencySymbol || ![entity.name length]) {
-//			NSLog(@"Code: %@, Country name %@, image = %@, symbol = %@, name = %@", entity.currencyCode, entity.flagImageName, image, entity.currencySymbol, entity.name);
-//		}
 	}
-
-//  Add special currency which does not exist in the yahoo data source.
-//	CurrencyItem *usd = [CurrencyItem MR_createEntity];
-//	usd.currencyCode = @"USD";
-//	usd.name = @"USD";
-//	usd.rateToUSD = @1.0;
-//	usd.updated = updated;
-//    usd.currencySymbol = @"$";
 
 	NSArray *exceptionList = @[
 			@{NSLocaleCurrencyCode : @"ALL", NSLocaleCurrencySymbol : @"Lek"},

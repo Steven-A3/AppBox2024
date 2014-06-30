@@ -2,7 +2,7 @@
 //  ExpenseListCategories.h
 //  AppBox3
 //
-//  Created by A3 on 3/13/14.
+//  Created by A3 on 6/30/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -12,7 +12,8 @@
 
 @interface ExpenseListCategories : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * categoryId;
+@property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSDate * updateDate;
 
 @end

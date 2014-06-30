@@ -2,7 +2,7 @@
 //  TranslatorHistory.h
 //  AppBox3
 //
-//  Created by A3 on 2/28/14.
+//  Created by A3 on 6/30/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -13,9 +13,10 @@
 
 @interface TranslatorHistory : NSManagedObject
 
-@property (nonatomic, retain) NSDate * date;
+@property (nonatomic, retain) NSDate *updateDate;
 @property (nonatomic, retain) NSString * originalText;
 @property (nonatomic, retain) NSString * translatedText;
+@property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) TranslatorFavorite *favorite;
 @property (nonatomic, retain) TranslatorGroup *group;
 

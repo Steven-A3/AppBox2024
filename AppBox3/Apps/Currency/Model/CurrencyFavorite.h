@@ -2,8 +2,8 @@
 //  CurrencyFavorite.h
 //  AppBox3
 //
-//  Created by A3 on 12/21/13.
-//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 6/30/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -17,5 +17,7 @@
 @property (nonatomic, retain) NSString * flagImageName;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * order;
+@property (nonatomic, retain) NSString * uniqueID;
+@property (nonatomic, retain) NSDate * updateDate;
 
 @end

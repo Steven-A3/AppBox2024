@@ -137,7 +137,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 - (void)setMessageEntity:(TranslatorHistory *)messageEntity {
 	_messageEntity = messageEntity;
 
-	self.dateLabel.text = [_messageEntity.date timeAgoWithLimit:60 * 60 * 24 dateFormat:NSDateFormatterShortStyle andTimeFormat:NSDateFormatterShortStyle];
+	self.dateLabel.text = [_messageEntity.updateDate timeAgoWithLimit:60 * 60 * 24 dateFormat:NSDateFormatterShortStyle andTimeFormat:NSDateFormatterShortStyle];
 	[self.dateLabel sizeToFit];
 
 	if (_messageEntity.originalText) {

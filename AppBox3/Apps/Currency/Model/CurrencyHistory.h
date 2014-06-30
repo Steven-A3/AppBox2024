@@ -2,8 +2,8 @@
 //  CurrencyHistory.h
 //  AppBox3
 //
-//  Created by A3 on 12/21/13.
-//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 6/30/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -14,9 +14,9 @@
 @interface CurrencyHistory : NSManagedObject
 
 @property (nonatomic, retain) NSString * currencyCode;
-@property (nonatomic, retain) NSDate * updateDate;
 @property (nonatomic, retain) NSNumber * rate;
-@property (nonatomic, retain) NSString * uniqueIdentifier;
+@property (nonatomic, retain) NSString * uniqueID;
+@property (nonatomic, retain) NSDate * updateDate;
 @property (nonatomic, retain) NSNumber * value;
 @property (nonatomic, retain) NSSet *targets;
 @end
