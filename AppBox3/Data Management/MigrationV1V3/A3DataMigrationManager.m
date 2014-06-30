@@ -194,7 +194,6 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 			newEvent.startDate.minute = @(components.minute);
 			NSDate *endDate = v1Item[kKeyForDDayEnds];
 			if (endDate) {
-				newEvent.isPeriod = @YES;
 				newEvent.endDate = [DaysCounterDate MR_createInContext:context];
 				newEvent.endDate.solarDate = endDate;
 
@@ -204,6 +203,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 				newEvent.endDate.day = @(components.day);
 				newEvent.endDate.hour = @(components.hour);
 				newEvent.endDate.minute = @(components.minute);
+				newEvent.isPeriod = @(![newEvent.startDate.solarDate isEqual:endDate]);
 			}
 			newEvent.repeatType = @([self repeatTypeForV1RepeatType:v1Item[kKeyForDDayRepeat]]);
 			NSString *filename = v1Item[kKeyForDDayImageFilename];
