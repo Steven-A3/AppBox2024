@@ -447,15 +447,14 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (void)configureCompareCell:(A3UnitPriceCompareSliderCell *)cell
 {
     [cell.upSliderView labelFontSetting];
-    cell.upSliderView.displayColor = [UIColor colorWithRed:255.0/255.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
+//    cell.upSliderView.displayColor = [UIColor colorWithRed:255.0/255.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
     cell.upSliderView.markLabel.text = @"A";
     cell.upSliderView.layoutType = Slider_UpperOfTwo;
     cell.upSliderView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
     cell.upSliderView.priceNumLabel.hidden = YES;
     cell.upSliderView.priceLabel.hidden = YES;
-    
     [cell.downSliderView labelFontSetting];
-    cell.downSliderView.displayColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+//    cell.downSliderView.displayColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
     cell.downSliderView.markLabel.text = @"B";
     cell.downSliderView.layoutType = Slider_LowerOfTwo;
     cell.downSliderView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
@@ -468,7 +467,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     NSString *unitPriceTxt1 = @"";
     NSString *unitShortName1;
     NSString *priceTxt1;
-    //double maxPrice = MAX(self.price1.price.doubleValue, self.price2.price.doubleValue);
     
     priceTxt1 = [self.currencyFormatter stringFromNumber:@(self.price1.price.doubleValue)];
     unitShortName1 = self.price1.unit ? self.price1.unit.unitShortName : NSLocalizedString(@"None", @"None");
@@ -499,7 +497,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             }
             
             cell.upSliderView.progressBarHidden = NO;
-//            [cell.upSliderView setLayoutWithAnimated];
         }
         else if (unitPrice1 == 0) {
             if (self.price1.unit) {
@@ -511,7 +508,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             }
             
             cell.upSliderView.progressBarHidden = YES;
-//            [cell.upSliderView setLayoutWithNoAnimated];
         }
         else {
             if (self.price1.unit) {
@@ -609,7 +605,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             }
             
             cell.downSliderView.progressBarHidden = NO;
-//            [cell.downSliderView setLayoutWithAnimated];
         }
         else if (unitPrice2 == 0) {
             if (self.price2.unit) {
@@ -621,8 +616,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             }
             
             cell.downSliderView.progressBarHidden = YES;
-//            [cell.downSliderView setLayoutWithNoAnimated];
-            
         }
         else {
             if (self.price2.unit) {
@@ -682,7 +675,15 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         [cell.downSliderView.priceNumLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:23];
     }
     
-    
+    if (unitPrice1 > unitPrice2) {
+        cell.upSliderView.displayColor = [UIColor colorWithRed:255.0/255.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
+        cell.downSliderView.displayColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+    }
+    else {
+        cell.upSliderView.displayColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+        cell.downSliderView.displayColor = [UIColor colorWithRed:255.0/255.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
+    }
+
     if (price1UnitPrice>0 && price2UnitPrice>0) {
         
         if (price1UnitPrice < price2UnitPrice) {
