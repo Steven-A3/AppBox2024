@@ -282,14 +282,20 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
                         NSDate *pickDate = _loanData.extraPaymentYearlyDate;
                         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
                         [formatter setDateStyle:NSDateFormatterMediumStyle];
-                        [formatter setDateFormat:@"MMM"];
+                        [formatter setDateFormat:IS_IPAD ? @"MMMM" : @"MMM"];
                         dateText = [formatter stringFromDate:pickDate];
                     }
                     else {
                         dateText = NSLocalizedString(@"None", @"None");
                     }
-                    
-                    valueLB.text = [NSString stringWithFormat:@"%@ %@", currencyText, dateText];
+
+
+                    if (IS_IPAD) {
+                        valueLB.text = [NSString stringWithFormat:@"%@ %@ %@", currencyText, NSLocalizedString(@"yearly", @"yearly"), dateText];
+                    }
+                    else {
+                        valueLB.text = [NSString stringWithFormat:@"%@ %@", currencyText, dateText];
+                    }
                     break;
                 }
                 case A3LC_ExtraPaymentOnetime:
@@ -310,7 +316,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
                         NSDate *pickDate = _loanData.extraPaymentOneTimeDate;
                         
                         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-                        dateText = [formatter localizedLongStyleYearMonthFromDate:pickDate];
+                        dateText = IS_IPAD ? [formatter localizedLongStyleYearMonthFromDate:pickDate] : [formatter localizedMediumStyleYearMonthFromDate:pickDate];
                     }
                     else {
                         dateText = NSLocalizedString(@"None", @"None");
