@@ -604,19 +604,25 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 }
 
 #pragma mark Instruction Related
+
+static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidShowForMirror";
+
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Mirror"]) {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForMirror]) {
         [self showInstructionView:nil];
     }
 }
 
 - (IBAction)showInstructionView:(id)sender
 {
-    BOOL toolBarHidden = self.topBar.hidden;
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForMirror];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	BOOL toolBarHidden = self.topBar.hidden;
     [self setToolBarsHidden:!toolBarHidden];
     
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Mirror"];
     self.instructionViewController.delegate = self;
     [self.navigationController.view addSubview:self.instructionViewController.view];

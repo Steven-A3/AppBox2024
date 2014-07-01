@@ -141,9 +141,12 @@
 }
 
 #pragma mark Instruction Related
+
+static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3InstructionDidShowForWalletFavorite";
+
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Wallet_4"]) {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForWalletFavorite]) {
         [self showInstructionView];
     }
     self.navigationItem.rightBarButtonItem = [self instructionHelpBarButton];
@@ -151,7 +154,10 @@
 
 - (void)showInstructionView
 {
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForWalletFavorite];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_4"];
     self.instructionViewController.delegate = self;
     [self.tabBarController.view addSubview:self.instructionViewController.view];
