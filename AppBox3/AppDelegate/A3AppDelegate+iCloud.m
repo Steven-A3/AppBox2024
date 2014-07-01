@@ -225,6 +225,39 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 			[self migrateLocalDataToCloudContext:self.managedObjectContext];
 		}
+
+		// Initial de duplication of redundant data.
+		[self deDupeForEntity:NSStringFromClass([Calculation class])];
+		[self deDupeForEntity:NSStringFromClass([CurrencyFavorite class])];
+		[self deDupeForEntity:NSStringFromClass([CurrencyHistory class])];
+		[self deDupeForEntity:NSStringFromClass([DaysCounterCalendar class])];
+		[self deDupeForEntity:NSStringFromClass([DaysCounterEvent class])];
+		[self deDupeForEntity:NSStringFromClass([DaysCounterFavorite class])];
+		[self deDupeForEntity:NSStringFromClass([DaysCounterReminder class])];
+		[self deDupeForEntity:NSStringFromClass([ExpenseListHistory class])];
+		[self deDupeForEntity:NSStringFromClass([ExpenseListBudget class])];
+		[self deDupeForEntity:NSStringFromClass([ExpenseListCategories class])];
+		[self deDupeForEntity:NSStringFromClass([LadyCalendarAccount class])];
+		[self deDupeForEntity:NSStringFromClass([LadyCalendarPeriod class])];
+		[self deDupeForEntity:NSStringFromClass([LoanCalcComparisonHistory class])];
+		[self deDupeForEntity:NSStringFromClass([LoanCalcHistory class])];
+		[self deDupeForEntity:NSStringFromClass([PercentCalcHistory class])];
+		[self deDupeForEntity:NSStringFromClass([SalesCalcHistory class])];
+		[self deDupeForEntity:NSStringFromClass([TipCalcHistory class])];
+		[self deDupeForEntity:NSStringFromClass([TranslatorFavorite class])];
+		[self deDupeForEntity:NSStringFromClass([TranslatorGroup class])];
+		[self deDupeForEntity:NSStringFromClass([UnitItem class])];
+		[self deDupeForEntity:NSStringFromClass([UnitConvertItem class])];
+		[self deDupeForEntity:NSStringFromClass([UnitFavorite class])];
+		[self deDupeForEntity:NSStringFromClass([UnitHistory class])];
+		[self deDupeForEntity:NSStringFromClass([UnitPriceFavorite class])];
+		[self deDupeForEntity:NSStringFromClass([UnitPriceHistory class])];
+		[self deDupeForEntity:NSStringFromClass([UnitPriceInfo class])];
+		[self deDupeForEntity:NSStringFromClass([UnitType class])];
+		[self deDupeForEntity:NSStringFromClass([WalletCategory class])];
+		[self deDupeForEntity:NSStringFromClass([WalletFavorite class])];
+		[self deDupeForEntity:NSStringFromClass([WalletItem class])];
+
 	} else {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[A3CurrencyDataManager setupFavorites];
@@ -355,7 +388,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	return isCloudStore;
 }
 
-#pragma mark - Migrate Local Data and remove duplication
+#pragma mark - Migrate Local Data
 
 - (void)migrateLocalDataToCloudContext:(NSManagedObjectContext *)cloudContext {
 	NSURL *localStoreURL = self.ubiquityStoreManager.localStoreURL;
@@ -379,40 +412,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	[psc migratePersistentStore:localStore toURL:targetURL options:cloudOptions withType:NSSQLiteStoreType error:nil];
 	[psc unlock];
 
-	// De duplication
-	[self deDupeForEntity:NSStringFromClass([Calculation class])];
-	[self deDupeForEntity:NSStringFromClass([CurrencyFavorite class])];
-	[self deDupeForEntity:NSStringFromClass([CurrencyHistory class])];
-	[self deDupeForEntity:NSStringFromClass([DaysCounterCalendar class])];
-	[self deDupeForEntity:NSStringFromClass([DaysCounterEvent class])];
-	[self deDupeForEntity:NSStringFromClass([DaysCounterFavorite class])];
-	[self deDupeForEntity:NSStringFromClass([DaysCounterReminder class])];
-	[self deDupeForEntity:NSStringFromClass([ExpenseListHistory class])];
-	[self deDupeForEntity:NSStringFromClass([ExpenseListBudget class])];
-	[self deDupeForEntity:NSStringFromClass([ExpenseListCategories class])];
-	[self deDupeForEntity:NSStringFromClass([LadyCalendarAccount class])];
-	[self deDupeForEntity:NSStringFromClass([LadyCalendarPeriod class])];
-	[self deDupeForEntity:NSStringFromClass([LoanCalcComparisonHistory class])];
-	[self deDupeForEntity:NSStringFromClass([LoanCalcHistory class])];
-	[self deDupeForEntity:NSStringFromClass([PercentCalcHistory class])];
-	[self deDupeForEntity:NSStringFromClass([SalesCalcHistory class])];
-	[self deDupeForEntity:NSStringFromClass([TipCalcHistory class])];
-	[self deDupeForEntity:NSStringFromClass([TranslatorFavorite class])];
-	[self deDupeForEntity:NSStringFromClass([TranslatorGroup class])];
-	[self deDupeForEntity:NSStringFromClass([UnitItem class])];
-	[self deDupeForEntity:NSStringFromClass([UnitConvertItem class])];
-	[self deDupeForEntity:NSStringFromClass([UnitFavorite class])];
-	[self deDupeForEntity:NSStringFromClass([UnitHistory class])];
-	[self deDupeForEntity:NSStringFromClass([UnitPriceFavorite class])];
-	[self deDupeForEntity:NSStringFromClass([UnitPriceHistory class])];
-	[self deDupeForEntity:NSStringFromClass([UnitPriceInfo class])];
-	[self deDupeForEntity:NSStringFromClass([UnitType class])];
-	[self deDupeForEntity:NSStringFromClass([WalletCategory class])];
-	[self deDupeForEntity:NSStringFromClass([WalletFavorite class])];
-	[self deDupeForEntity:NSStringFromClass([WalletItem class])];
-
 	if ([[NSFileManager defaultManager] fileExistsAtPath:[localStoreURL path]]) {
-		FNLOG(@"File did not removed after migration.");
 		[[NSFileManager defaultManager] removeItemAtURL:localStoreURL error:NULL];
 		NSString *path = [localStoreURL path];
 		[[NSFileManager defaultManager] removeItemAtPath:[path stringByAppendingString:@"-shm"] error:NULL];
