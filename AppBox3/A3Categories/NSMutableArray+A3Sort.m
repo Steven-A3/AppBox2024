@@ -86,7 +86,6 @@ NSString *const A3CommonPropertyOrder = @"order";
 }
 
 - (void)insertObjectToSortedArray:(id)object atIndex:(NSInteger)index {
-	FNLOG(@"%ld", (long)index);
 	NSInteger prevOrder, nextOrder, myOrder;
 	if (index == 0) {
 		prevOrder = 0;

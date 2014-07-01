@@ -258,7 +258,7 @@
 			convertItem.updateDate = [NSDate date];
             convertItem.item = unitItem;
 			convertItem.order = [NSString orderStringWithOrder:idxUnit];
-            NSLog(@"%@", convertItem.order);
+            FNLOG(@"%@", convertItem.order);
         }
     }
 

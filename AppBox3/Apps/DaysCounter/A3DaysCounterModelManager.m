@@ -113,28 +113,60 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 }
 
 - (void)addDefaultUserCalendarItemsInContext:(NSManagedObjectContext *)context {
-    NSMutableArray *array = [NSMutableArray arrayWithArray:@[
-                                                             [NSMutableDictionary dictionaryWithDictionary:@{ CalendarItem_ID:@"1", CalendarItem_Name : NSLocalizedString(@"Anniversary", @"Anniversary"),
-                                                                                                              CalendarItem_Color : [self.calendarColorArray[0] objectForKey:CalendarItem_Color],
-                                                                                                              CalendarItem_IsShow : [NSNumber numberWithBool:YES], CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User], CalendarItem_IsDefault : [NSNumber numberWithBool:YES]}],
-                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"2",CalendarItem_Name : NSLocalizedString(@"Appointment", @"Appointment"),
-                                                                                                             CalendarItem_Color : [self.calendarColorArray[1] objectForKey:CalendarItem_Color],
-                                                                                                             CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}],
-                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"3",CalendarItem_Name : NSLocalizedString(@"Birthday", @"Birthday"),
-                                                                                                             CalendarItem_Color : [self.calendarColorArray[2] objectForKey:CalendarItem_Color],
-                                                                                                             CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}],
-                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"4",CalendarItem_Name : NSLocalizedString(@"Journey", @"Journey"),
-                                                                                                             CalendarItem_Color : [self.calendarColorArray[3] objectForKey:CalendarItem_Color],
-                                                                                                             CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}],
-                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"5",CalendarItem_Name : NSLocalizedString(@"Holiday", @"Holiday"),
-                                                                                                             CalendarItem_Color : [self.calendarColorArray[4] objectForKey:CalendarItem_Color],
-                                                                                                             CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}],
-                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"6",CalendarItem_Name : NSLocalizedString(@"Work", @"Work"),
-                                                                                                             CalendarItem_Color : [self.calendarColorArray[5] objectForKey:CalendarItem_Color],
-                                                                                                             CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}]]];
+	NSMutableArray *array = [NSMutableArray arrayWithArray:@[
+			[NSMutableDictionary dictionaryWithDictionary:@{
+					CalendarItem_ID : @"D4C43175-ED93-4497-91DD-7A9C5DF4E656",
+					CalendarItem_Name : NSLocalizedString(@"Anniversary", @"Anniversary"),
+					CalendarItem_Color : [self.calendarColorArray[0] objectForKey:CalendarItem_Color],
+					CalendarItem_IsShow : [NSNumber numberWithBool:YES],
+					CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],
+					CalendarItem_IsDefault : [NSNumber numberWithBool:YES]
+			}],
+			[NSMutableDictionary dictionaryWithDictionary:@{
+					CalendarItem_ID : @"AA42D868-E781-4F57-AA12-77CF937A24A8",
+					CalendarItem_Name : NSLocalizedString(@"Appointment", @"Appointment"),
+					CalendarItem_Color : [self.calendarColorArray[1] objectForKey:CalendarItem_Color],
+					CalendarItem_IsShow : [NSNumber numberWithBool:YES],
+					CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],
+					CalendarItem_IsDefault : [NSNumber numberWithBool:NO]
+			}],
+			[NSMutableDictionary dictionaryWithDictionary:@{
+					CalendarItem_ID : @"1D6C15F5-591A-49BF-A84A-4A9500C996EC",
+					CalendarItem_Name : NSLocalizedString(@"Birthday", @"Birthday"),
+					CalendarItem_Color : [self.calendarColorArray[2] objectForKey:CalendarItem_Color],
+					CalendarItem_IsShow : [NSNumber numberWithBool:YES],
+					CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],
+					CalendarItem_IsDefault : [NSNumber numberWithBool:NO]
+			}],
+			[NSMutableDictionary dictionaryWithDictionary:@{
+					CalendarItem_ID : @"7E3A9673-39EE-4243-A3E5-F1859E06E66B",
+					CalendarItem_Name : NSLocalizedString(@"Journey", @"Journey"),
+					CalendarItem_Color : [self.calendarColorArray[3] objectForKey:CalendarItem_Color],
+					CalendarItem_IsShow : [NSNumber numberWithBool:YES],
+					CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],
+					CalendarItem_IsDefault : [NSNumber numberWithBool:NO]
+			}],
+			[NSMutableDictionary dictionaryWithDictionary:@{
+					CalendarItem_ID : @"F4B138B7-C60D-4F15-BB42-8A83F8C48040",
+					CalendarItem_Name : NSLocalizedString(@"Holiday", @"Holiday"),
+					CalendarItem_Color : [self.calendarColorArray[4] objectForKey:CalendarItem_Color],
+					CalendarItem_IsShow : [NSNumber numberWithBool:YES],
+					CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],
+					CalendarItem_IsDefault : [NSNumber numberWithBool:NO]
+			}],
+			[NSMutableDictionary dictionaryWithDictionary:@{
+					CalendarItem_ID : @"5A098AFF-3DD2-4264-8E46-E4D04952D750",
+					CalendarItem_Name : NSLocalizedString(@"Work", @"Work"),
+					CalendarItem_Color : [self.calendarColorArray[5] objectForKey:CalendarItem_Color],
+					CalendarItem_IsShow : [NSNumber numberWithBool:YES],
+					CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],
+					CalendarItem_IsDefault : [NSNumber numberWithBool:NO]
+			}]
+	]];
     int idx = 0;
     for (NSMutableDictionary *item in array) {
         NSMutableDictionary *addItem = [self itemForNewUserCalendar];
+		[addItem setObject:[item objectForKey:CalendarItem_ID] forKey:CalendarItem_ID];
         [addItem setObject:[item objectForKey:CalendarItem_Name] forKey:CalendarItem_Name];
         [addItem setObject:[item objectForKey:CalendarItem_Color] forKey:CalendarItem_Color];
         [addItem setObject:[item objectForKey:CalendarItem_IsShow] forKey:CalendarItem_IsShow];
@@ -571,7 +603,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     calendar.calendarColorID = colorID;
     
     [context MR_saveToPersistentStoreAndWait];
-    
+
+	FNLOG(@"%@, %@", calendar.uniqueID, calendar.calendarName);
     return calendar;
 }
 
