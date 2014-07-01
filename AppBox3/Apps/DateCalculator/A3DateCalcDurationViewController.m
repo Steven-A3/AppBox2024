@@ -13,6 +13,7 @@
 #import "A3DateCalcStateManager.h"
 #import "A3DateCalcTableviewCell.h"
 #import "A3DefaultColorDefines.h"
+#import "UIImage+JHExtension.h"
 
 static NSString *CellIdentifier = @"Cell";
 
@@ -47,10 +48,10 @@ static NSString *CellIdentifier = @"Cell";
     _sectionTitles = @[@""];
     _sections = @[
 			@[
-					NSLocalizedString(@"Year", @"Year"),
-					NSLocalizedString(@"Month", @"Month"),
-					NSLocalizedString(@"Week", @"Week"),
-					NSLocalizedString(@"Day", @"Day")
+					NSLocalizedString(@"Years", @"Years"),
+					NSLocalizedString(@"Months", @"Months"),
+					NSLocalizedString(@"Weeks", @"Weeks"),
+					NSLocalizedString(@"Days", @"Days")
 	]
 	];
     
@@ -109,25 +110,26 @@ static NSString *CellIdentifier = @"Cell";
     switch (indexPath.row) {
         case 0:
         {
-            cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Year? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Year? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]] : nil;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
             break;
         case 1:
         {
-            cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Month? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Month? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]] : nil;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
             break;
         case 2:
         {
-            cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Week? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Week? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]] : nil;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
             break;
         case 3:
         {
-            cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Day? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Day? [[UIImageView alloc] initWithImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"check_02"] grayColor:[UIColor colorWithRed:218/255.0 green:218/255.0 blue:218/255.0 alpha:1.0]]] : nil;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.userInteractionEnabled = NO;
             cell.textLabel.textColor = [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
@@ -147,19 +149,19 @@ static NSString *CellIdentifier = @"Cell";
         case 0:
         {
             [A3DateCalcStateManager setDurationType:DurationType_Year];
-            cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Year? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Year? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]] : nil;
         }
             break;
         case 1:
         {
             [A3DateCalcStateManager setDurationType:DurationType_Month];
-            cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Month? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Month? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]] : nil;
         }
             break;
         case 2:
         {
             [A3DateCalcStateManager setDurationType:DurationType_Week];
-            cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Week? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Week? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]] : nil;
         }
             break;
     }
