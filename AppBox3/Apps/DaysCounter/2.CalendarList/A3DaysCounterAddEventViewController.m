@@ -886,7 +886,7 @@
 {
     cell.textLabel.text = title;
     cell.detailTextLabel.text = [_sharedManager alertDateStringFromDate:_eventItem.effectiveStartDate
-                                                                                         alertDate:_eventItem.alertDatetime];
+                                                              alertDate:_eventItem.alertDatetime];
     
     cell.textLabel.textColor = [UIColor blackColor];
 }
