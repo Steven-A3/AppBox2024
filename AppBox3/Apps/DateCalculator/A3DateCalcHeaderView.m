@@ -161,19 +161,21 @@
 
 - (void)setupGestureRecognizer
 {
-    //    UIPanGestureRecognizer *fromPan = [[UIPanGestureRecognizer alloc] initWithTarget:self
-    //                                                                              action:@selector(fromThumbPanGesture:)];
     UITapGestureRecognizer *fromTap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                               action:@selector(fromThumbTapGesture:)];
-    //    [_fromThumbView addGestureRecognizer:fromPan];
+    UITapGestureRecognizer *fromTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                              action:@selector(fromThumbTapGesture:)];
     [_fromThumbView addGestureRecognizer:fromTap];
+    [_fromLabel addGestureRecognizer:fromTap2];
+    _fromLabel.userInteractionEnabled = YES;
     
-    //    UIPanGestureRecognizer *toPan = [[UIPanGestureRecognizer alloc] initWithTarget:self
-    //                                                                            action:@selector(toThumbPanGesture:)];
     UITapGestureRecognizer *toTap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                             action:@selector(toThumbTapGesture:)];
-    //    [_toThumbView addGestureRecognizer:toPan];
     [_toThumbView addGestureRecognizer:toTap];
+    UITapGestureRecognizer *toTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                            action:@selector(toThumbTapGesture:)];
+    [_toLabel addGestureRecognizer:toTap2];
+    _toLabel.userInteractionEnabled = YES;
 }
 
 #pragma mark View Control, Result
@@ -184,13 +186,11 @@
     if (IS_IPAD) {
         self.fromLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         self.toLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        //self.resultLabel.contentLabel.font = _calcType == CALC_TYPE_BETWEEN ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         self.resultLabel.contentLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     }
     else {
         self.fromLabel.font = [UIFont systemFontOfSize:13];
         self.toLabel.font = [UIFont systemFontOfSize:13];
-        //self.resultLabel.contentLabel.font = _calcType == CALC_TYPE_BETWEEN ? [UIFont systemFontOfSize:17] : [UIFont systemFontOfSize:13];
         self.resultLabel.contentLabel.font = [UIFont boldSystemFontOfSize:17];
     }
 
