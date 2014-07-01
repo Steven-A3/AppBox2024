@@ -460,6 +460,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     }
     
     eventModel.updateDate = [NSDate date];
+	eventModel.calendar.updateDate = [NSDate date];
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
@@ -490,6 +491,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     }
     
 	eventItem.updateDate = [NSDate date];
+	eventItem.calendar.updateDate = [NSDate date];
     
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
@@ -510,6 +512,11 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 - (NSMutableArray*)visibleCalendarList
 {
     NSArray *result = [DaysCounterCalendar MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"isShow == %@",[NSNumber numberWithBool:YES]]];
+#ifdef DEBUG
+	for (DaysCounterCalendar *calendar in result) {
+		FNLOG(@"%@, %@", calendar.calendarName, calendar.uniqueID);
+	}
+#endif
     
     return [NSMutableArray arrayWithArray:result];
 }
@@ -620,6 +627,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     existsCalendar.calendarName = [item objectForKey:CalendarItem_Name];
     existsCalendar.isShow = [item objectForKey:CalendarItem_IsShow];
     existsCalendar.calendarColorID = colorID;
+	existsCalendar.updateDate = [NSDate date];
     
     [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     

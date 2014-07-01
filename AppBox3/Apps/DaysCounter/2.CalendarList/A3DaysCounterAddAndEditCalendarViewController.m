@@ -320,18 +320,23 @@
     // 모델 삭제 하고
     [_sharedManager removeCalendarItem:_calendarItem];
     // 창 닫기
-    [self dismissViewControllerAnimated:YES completion:nil];
+	[self dismissSelf];
 }
 
 - (void)cancelAction:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+	[self dismissSelf];
+}
+
+- (void)dismissSelf {
+	[self dismissViewControllerAnimated:YES completion:nil];
 	[self removeObserver];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
     [self resignAllAction];
+
     // 모델 업데이트 하고
     if ( [[_calendarItem objectForKey:CalendarItem_Name] length] < 1 ) {
 		[_calendarItem setObject:NSLocalizedString(@"Untitled", @"Untitled") forKey:CalendarItem_Name];
@@ -344,8 +349,7 @@
         [_sharedManager updateCalendarItem:_calendarItem colorID:_colorID];
     }
     
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-    [self cancelAction:nil];
+	[self dismissSelf];
 }
 
 @end
