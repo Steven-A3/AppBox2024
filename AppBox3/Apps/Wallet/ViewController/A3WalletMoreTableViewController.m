@@ -21,6 +21,8 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "UIColor+A3Addition.h"
 #import "A3InstructionViewController.h"
+#import "WalletItem.h"
+#import "WalletFavorite.h"
 
 
 NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
@@ -312,17 +314,24 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	[cell setShowCheckImageView:indexPath.section == 1];
 	if (_isEditing) {
 		cell.selectionStyle = indexPath.section == 1 ? UITableViewCellSelectionStyleDefault : UITableViewCellSelectionStyleNone;
-//        cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	} else {
 		cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	[cell setShowCheckMark:![walletCategory.doNotShow boolValue]];
-	cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([walletCategory.items count])];
+
+    if ([walletCategory.uniqueID isEqualToString:A3WalletUUIDAllCategory]) {
+        cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([WalletItem MR_countOfEntities])];
+    }
+    else if ([walletCategory.uniqueID isEqualToString:A3WalletUUIDFavoriteCategory]) {
+        cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([WalletFavorite MR_countOfEntities])];
+    }
+    else {
+        cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([walletCategory.items count])];
+    }
+    
 	if (_isEditing) {
 		cell.rightSideLabelConstraint.with.offset(-15);
 		[cell layoutIfNeeded];
