@@ -211,7 +211,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0일전</string>
+			<string>이벤트 당시</string>
 			<key>one</key>
 			<string>%ld일전</string>
 			<key>other</key>

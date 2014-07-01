@@ -183,7 +183,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             retStr = NSLocalizedString(@"Every Week", @"Every Week");
             break;
         case -3:
-            retStr = NSLocalizedString(@"Every 2Weeks", @"Every 2Week");
+            retStr = NSLocalizedString(@"Every 2 Weeks", @"Every 2 Weeks");
             break;
         case -4:
             retStr = NSLocalizedString(@"Every Month", @"Every Month");
@@ -209,19 +209,19 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             retStr = NSLocalizedString(@"Never", nil);
             break;
         case -1:
-            retStr = NSLocalizedString(@"Daily", nil);
+            retStr = NSLocalizedString(@"daily", nil);
             break;
         case -2:
-            retStr = NSLocalizedString(@"Weekly", nil);
+            retStr = NSLocalizedString(@"weekly", nil);
             break;
         case -3:
-            retStr = NSLocalizedString(@"Bi-Weekly", nil);
+            retStr = NSLocalizedString(@"biweekly", nil);
             break;
         case -4:
-            retStr = NSLocalizedString(@"Monthly", nil);
+            retStr = NSLocalizedString(@"monthly", nil);
             break;
         case -5:
-            retStr = NSLocalizedString(@"Yearly", nil);
+            retStr = NSLocalizedString(@"yearly", nil);
             break;
             
         default:

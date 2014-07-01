@@ -865,13 +865,18 @@
 - (void)endRepeatDateTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType title:(NSString *)title
 {
     cell.textLabel.text = title;
-    //cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[_eventItem repeatEndDate] withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:YES]];
-    if (IS_IPAD) {
-        cell.detailTextLabel.text = [self fullStyleDateStringFromDate:[_eventItem repeatEndDate] withShortTime:NO];
+    
+    if (![_eventItem repeatEndDate]) {
+        cell.detailTextLabel.text = NSLocalizedString(@"Never", @"Never");
     }
     else {
-        NSDateFormatter *formatter = [NSDateFormatter new];
-        cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[_eventItem repeatEndDate] withFormat:[formatter customFullStyleFormat]];
+        if (IS_IPAD) {
+            cell.detailTextLabel.text = [self fullStyleDateStringFromDate:[_eventItem repeatEndDate] withShortTime:NO];
+        }
+        else {
+            NSDateFormatter *formatter = [NSDateFormatter new];
+            cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[_eventItem repeatEndDate] withFormat:[formatter customFullStyleFormat]];
+        }
     }
     
     cell.textLabel.textColor = [UIColor blackColor];
