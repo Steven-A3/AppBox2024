@@ -832,9 +832,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
         
         NSUInteger idx = [_sectionItems indexOfObject:self.dateInputItem];
         [_sectionItems removeObject:self.dateInputItem];
-        [self.tableView reloadRowsAtIndexPaths:@[self.dateInputIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadRowsAtIndexPaths:@[self.dateInputIndexPath, [NSIndexPath indexPathForRow:self.dateInputIndexPath.row + 3 inSection:self.dateInputIndexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-        
+
         self.dateInputIndexPath = nil;
         [self.tableView endUpdates];
     }
@@ -1398,7 +1398,10 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                 }
             }
             else if ([field.type isEqualToString:WalletFieldTypeImage]) {
-				[self dismissDatePicker];
+                if ([_sectionItems containsObject:self.dateInputItem]) {
+                    _currentIndexPath = [NSIndexPath indexPathForRow:_currentIndexPath.row - 1 inSection:_currentIndexPath.section];
+                    [self dismissDatePicker];
+                }
 
 				UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:_currentFieldItem.image != nil delegate:self];
 				actionSheet.tag = 1;
