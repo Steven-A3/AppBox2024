@@ -26,7 +26,6 @@ static NSString *CellIdentifier = @"Cell";
 
 @implementation A3DateCalcExcludeViewController
 {
-    UIImage *_blankImage;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -64,10 +63,6 @@ static NSString *CellIdentifier = @"Cell";
 				  ]
 //                  @[@"Saturday", @"Sunday", @"Public Holidays"]
                   ];
-    
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0);
-    _blankImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
     
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
 	[self.tableView setShowsHorizontalScrollIndicator:NO];
@@ -118,7 +113,7 @@ static NSString *CellIdentifier = @"Cell";
     
     switch (indexPath.section) {
         case 0: {
-            cell.imageView.image = [A3DateCalcStateManager excludeOptions] == ExcludeOptions_None ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] : _blankImage;
+            cell.accessoryType = [A3DateCalcStateManager excludeOptions] == ExcludeOptions_None ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         }
             break;
             
@@ -128,17 +123,17 @@ static NSString *CellIdentifier = @"Cell";
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell.imageView.image = options & ExcludeOptions_Saturday ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] : _blankImage;
+                    cell.accessoryType = options & ExcludeOptions_Saturday ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
                 }
                     break;
                 case 1:
                 {
-                    cell.imageView.image = options & ExcludeOptions_Sunday ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] : _blankImage;
+                    cell.accessoryType = options & ExcludeOptions_Sunday ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
                 }
                     break;
                 case 2:
                 {
-                    cell.imageView.image = options & ExcludeOptions_PublicHoliday ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] : _blankImage;
+                    cell.accessoryType = options & ExcludeOptions_PublicHoliday ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
                 }
                     break;
             }

@@ -653,6 +653,10 @@
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.editingIndexPath];
     cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
     UITextField *textField = (UITextField *)[cell.contentView viewWithTag:11];
+    if (self.firstResponder == textField) {
+        return;
+    }
+    
     [textField becomeFirstResponder];
     
     cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
@@ -669,6 +673,10 @@
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.editingIndexPath];
     cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
     UITextField *textField = (UITextField *)[cell.contentView viewWithTag:11];
+    if (self.firstResponder == textField) {
+        return;
+    }
+    
     [textField becomeFirstResponder];
     
     cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];

@@ -211,7 +211,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 day before</string>
+			<string>At time of event</string>
 			<key>one</key>
 			<string>1 day before</string>
 			<key>few</key>

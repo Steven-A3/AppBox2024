@@ -269,22 +269,24 @@
         case EventCellType_Alert:
         {
             cell.textLabel.text = [itemDict objectForKey:EventRowTitle];
-            NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
-                                                                           toDate:_eventItem.effectiveStartDate
-                                                                     allDayOption:[_eventItem.isAllDay boolValue]
-                                                                           repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO
-                                                                           strict:[A3DaysCounterModelManager hasHourMinDurationOption:[_eventItem.durationOption integerValue]]];
-            if ([untilSinceString isEqualToString:NSLocalizedString(@"Today", @"Today")] || [untilSinceString isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
-                NSDate *repeatDate = [A3DaysCounterModelManager repeatDateOfCurrentNotNextWithRepeatOption:[_eventItem.repeatType integerValue]
-                                                                                                 firstDate:[_eventItem.startDate solarDate]
-                                                                                                  fromDate:[NSDate date]];
-                cell.detailTextLabel.text = [_sharedManager alertDateStringFromDate:repeatDate
-                                                                          alertDate:_eventItem.alertDatetime];
-            }
-            else {
-                cell.detailTextLabel.text = [_sharedManager alertDateStringFromDate:_eventItem.effectiveStartDate
-                                                                          alertDate:_eventItem.alertDatetime];
-            }
+            cell.detailTextLabel.text = [_sharedManager alertDateStringFromDate:_eventItem.effectiveStartDate
+                                                                      alertDate:_eventItem.alertDatetime];
+//            NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
+//                                                                           toDate:_eventItem.effectiveStartDate
+//                                                                     allDayOption:[_eventItem.isAllDay boolValue]
+//                                                                           repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO
+//                                                                           strict:[A3DaysCounterModelManager hasHourMinDurationOption:[_eventItem.durationOption integerValue]]];
+//            if ([untilSinceString isEqualToString:NSLocalizedString(@"Today", @"Today")] || [untilSinceString isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
+//                NSDate *repeatDate = [A3DaysCounterModelManager repeatDateOfCurrentNotNextWithRepeatOption:[_eventItem.repeatType integerValue]
+//                                                                                                 firstDate:[_eventItem.startDate solarDate]
+//                                                                                                  fromDate:[NSDate date]];
+//                cell.detailTextLabel.text = [_sharedManager alertDateStringFromDate:repeatDate
+//                                                                          alertDate:_eventItem.alertDatetime];
+//            }
+//            else {
+//                cell.detailTextLabel.text = [_sharedManager alertDateStringFromDate:_eventItem.effectiveStartDate
+//                                                                          alertDate:_eventItem.alertDatetime];
+//            }
         }
             break;
         case EventCellType_DurationOption:
