@@ -96,6 +96,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	} else {
 		_periodItem = [LadyCalendarPeriod MR_createEntity];
 		_periodItem.uniqueID = [[NSUUID UUID] UUIDString];
+		_periodItem.updateDate = [NSDate date];
 		_periodItem.startDate = [A3DateHelper dateMake12PM:[NSDate date]];
 		_periodItem.cycleLength = @28;
 		_periodItem.isPredict = @NO;
@@ -658,7 +659,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         _prevPeriod.cycleLength = @(diffDays);
     }
 
-	_periodItem.modificationDate = [NSDate date];
+	_periodItem.updateDate = [NSDate date];
 	_periodItem.isPredict = @NO;
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];

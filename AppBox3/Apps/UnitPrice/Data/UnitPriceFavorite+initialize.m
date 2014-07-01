@@ -253,6 +253,8 @@
             if (!uitem) return;
             
             UnitPriceFavorite *favorite = [UnitPriceFavorite MR_createEntity];
+			favorite.uniqueID = [[NSUUID UUID] UUIDString];
+			favorite.updateDate = [NSDate date];
             favorite.item = uitem;
             favorite.order = [NSString orderStringWithOrder:(j + 1) * 1000000];
         }

@@ -2,7 +2,7 @@
 //  LoanCalcComparisonHistory.m
 //  AppBox3
 //
-//  Created by dotnetguy83 on 5/22/14.
+//  Created by A3 on 6/30/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -12,11 +12,12 @@
 
 @implementation LoanCalcComparisonHistory
 
-@dynamic calculateDate;
 @dynamic totalAmountA;
 @dynamic totalAmountB;
 @dynamic totalInterestA;
 @dynamic totalInterestB;
+@dynamic uniqueID;
+@dynamic updateDate;
 @dynamic details;
 
 @end

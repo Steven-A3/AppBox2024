@@ -2,7 +2,7 @@
 //  TranslatorHistory.m
 //  AppBox3
 //
-//  Created by A3 on 2/28/14.
+//  Created by A3 on 6/30/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -13,9 +13,10 @@
 
 @implementation TranslatorHistory
 
-@dynamic date;
+@dynamic updateDate;
 @dynamic originalText;
 @dynamic translatedText;
+@dynamic uniqueID;
 @dynamic favorite;
 @dynamic group;
 

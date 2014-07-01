@@ -276,6 +276,8 @@
             if (!uitem) return;
             
             UnitFavorite *favorite = [UnitFavorite MR_createEntity];
+			favorite.uniqueID = [[NSUUID UUID] UUIDString];
+			favorite.updateDate = [NSDate date];
             favorite.item = uitem;
 
             [sortArray addObjectToSortedArray:favorite];

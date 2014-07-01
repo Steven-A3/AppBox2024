@@ -294,6 +294,8 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
         
         UnitItem *item = addedItems[i];
         UnitFavorite *favorite = [UnitFavorite MR_createEntity];
+		favorite.uniqueID = [[NSUUID UUID] UUIDString];
+		favorite.updateDate = [NSDate date];
         favorite.item = item;
         [_favorites insertObject:favorite atIndex:lastIdx];
         

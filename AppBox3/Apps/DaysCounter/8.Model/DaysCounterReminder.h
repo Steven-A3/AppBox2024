@@ -2,7 +2,7 @@
 //  DaysCounterReminder.h
 //  AppBox3
 //
-//  Created by A3 on 5/30/14.
+//  Created by A3 on 7/1/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -17,6 +17,8 @@
 @property (nonatomic, retain) NSNumber * isOn;
 @property (nonatomic, retain) NSNumber * isUnread;
 @property (nonatomic, retain) NSDate * startDate;
+@property (nonatomic, retain) NSString * uniqueID;
+@property (nonatomic, retain) NSDate * updateDate;
 @property (nonatomic, retain) DaysCounterEvent *event;
 
 @end

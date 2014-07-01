@@ -2,7 +2,7 @@
 //  UnitPriceInfo.h
 //  AppBox3
 //
-//  Created by A3 on 4/8/14.
+//  Created by A3 on 6/30/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -20,6 +20,8 @@
 @property (nonatomic, retain) NSString * priceName;
 @property (nonatomic, retain) NSNumber * quantity;
 @property (nonatomic, retain) NSNumber * size;
+@property (nonatomic, retain) NSString * uniqueID;
+@property (nonatomic, retain) NSDate * updateDate;
 @property (nonatomic, retain) UnitItem *unit;
 
 @end

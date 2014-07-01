@@ -1,8 +1,8 @@
 //
 //  SalesCalcHistory.m
-//  A3TeamWork
+//  AppBox3
 //
-//  Created by jeonghwan kim on 1/24/14.
+//  Created by A3 on 7/1/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -15,12 +15,13 @@
 @dynamic additionalOffType;
 @dynamic discount;
 @dynamic discountType;
-@dynamic historyDate;
 @dynamic notes;
 @dynamic price;
 @dynamic priceType;
+@dynamic shownPriceType;
 @dynamic tax;
 @dynamic taxType;
-@dynamic shownPriceType;
+@dynamic updateDate;
+@dynamic uniqueID;
 
 @end

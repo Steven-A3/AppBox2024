@@ -378,8 +378,8 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     if (IS_IPAD) {
         // 히스토리가 존재하는지 체크
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith == nil"];
-        LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"created" ascending:NO];
-        LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"calculateDate" ascending:NO];
+        LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+        LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
         
         //self.navigationItem.rightBarButtonItems = @[setting, history, share];
         UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[1];
@@ -672,8 +672,8 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 
 	// 히스토리가 존재하는지 체크
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith == nil"];
-	LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"created" ascending:NO];
-	LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"calculateDate" ascending:NO];
+	LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+	LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
 
 	if (!history && !comparison) {
 		// 둘다 없음
@@ -960,8 +960,9 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 - (LoanCalcHistory *)loanHistoryForLoanData:(LoanCalcData *)loan
 {
     LoanCalcHistory *history = [LoanCalcHistory MR_createEntity];
+	history.uniqueID = [[NSUUID UUID] UUIDString];
     history.calculationMode = @(loan.calculationMode);
-    history.created = [NSDate date];
+    history.updateDate = [NSDate date];
     history.downPayment = loan.downPayment.stringValue;
     history.extraPaymentMonthly = loan.extraPaymentMonthly.stringValue;
     history.extraPaymentOnetime = loan.extraPaymentOneTime.stringValue;
@@ -1001,7 +1002,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     data.startDate = history.startDate;
     data.monthOfTerms = @(history.term.floatValue);
 	data.showsTermInMonths = history.termTypeMonth;
-    data.calculationDate = history.created;
+    data.calculationDate = history.updateDate;
     data.calculationMode = history.calculationMode.integerValue;
     data.showAdvanced = history.showAdvanced.boolValue;
     data.showDownPayment = history.showDownPayment.boolValue;
@@ -1410,7 +1411,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 - (void)putLoanHistory
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith == nil"];
-    LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"created" ascending:NO];
+    LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
     
     BOOL shouldSave = NO;
     if (history) {
@@ -1933,7 +1934,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 {
     BOOL shouldSave = NO;
     
-    LoanCalcComparisonHistory *lastComparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"calculateDate" ascending:NO];
+    LoanCalcComparisonHistory *lastComparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     
     if (lastComparison) {
 		LoanCalcHistory *historyA, *historyB;
@@ -1960,7 +1961,8 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 		historyA.orderInComparison = @"A";
 		historyB.orderInComparison = @"B";
         LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_createEntity];
-        comparison.calculateDate = [NSDate date];
+		comparison.uniqueID = [[NSUUID UUID] UUIDString];
+        comparison.updateDate = [NSDate date];
 		comparison.details = [NSSet setWithArray:@[historyA, historyB]];
         comparison.totalInterestA = [_loanDataA totalInterest].stringValue;
         comparison.totalInterestB = [_loanDataB totalInterest].stringValue;

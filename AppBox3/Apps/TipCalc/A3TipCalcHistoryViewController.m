@@ -82,7 +82,7 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [TipCalcHistory MR_fetchAllSortedBy:@"dateTime" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [TipCalcHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}

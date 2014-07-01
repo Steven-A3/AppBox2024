@@ -149,7 +149,7 @@ typedef struct
 		{
 			NSDate* mofificationDate = [[fileManager attributesOfItemAtPath:cachedImagePath error:nil] objectForKey:NSFileModificationDate];
 
-			// check modification date
+			// check modification updateDate
 			if (-[mofificationDate timeIntervalSinceNow] > _cacheTime)
 			{
 				// Removes old cache file...

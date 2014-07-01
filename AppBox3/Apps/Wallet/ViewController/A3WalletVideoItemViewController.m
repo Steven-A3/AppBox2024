@@ -306,7 +306,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     else {
         dateFormatter.dateFormat = [dateFormatter customFullWithTimeStyleFormat];
     }
-	_metadataView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [dateFormatter stringFromDate:_item.modificationDate]];
+	_metadataView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [dateFormatter stringFromDate:_item.updateDate]];
 
     if (self.videoFieldItems.count <= page) {
         return;

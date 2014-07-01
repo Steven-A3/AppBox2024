@@ -215,6 +215,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         _price1 = [UnitPriceInfo MR_findFirstByAttribute:@"priceName" withValue:@"A"];
         if (!_price1) {
             _price1 = [UnitPriceInfo MR_createEntity];
+			_price1.uniqueID = [[NSUUID UUID] UUIDString];
+			_price1.updateDate = [NSDate date];
             _price1.priceName = @"A";
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         }
@@ -228,6 +230,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         _price2 = [UnitPriceInfo MR_findFirstByAttribute:@"priceName" withValue:@"B"];
         if (!_price2) {
             _price2 = [UnitPriceInfo MR_createEntity];
+			_price2.uniqueID = [[NSUUID UUID] UUIDString];
+			_price2.updateDate = [NSDate date];
             _price2.priceName = @"B";
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         }
@@ -389,7 +393,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     
     UnitPriceHistory *history = [UnitPriceHistory MR_createEntity];
     NSDate *keyDate = [NSDate date];
-    history.date = keyDate;
+    history.updateDate = keyDate;
     
     UnitPriceHistoryItem *priceAItem = [UnitPriceHistoryItem MR_createEntity];
 	priceAItem.orderInComparison = @"A";
@@ -688,7 +692,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             self.resultLB.text = [NSString stringWithFormat:NSLocalizedString(@"The best unit price is B at %@", @"The best unit price is B at %@"), unitPriceTxt2];
         }
         else {
-            self.resultLB.text = [NSString stringWithFormat:NSLocalizedString(@"The unit price is same at %@", @"The unit price is same at %@"), unitPriceTxt1];
+            self.resultLB.text = [NSString stringWithFormat:NSLocalizedString(@"The unit price is the same at %@", @"The unit price is same at %@"), unitPriceTxt1];
         }
     }
     else {

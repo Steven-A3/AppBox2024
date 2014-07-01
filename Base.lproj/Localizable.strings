@@ -25,9 +25,9 @@
 "Passcode Lock" = "Passcode Lock";
 "Lunar Calendar" = "Lunar Calendar";
 "tellafriend" = "A friend wanted to let you know that the Calculator, Date Calculator, Loan Calculator, Percent Calculator, Sales Calculator, Tip Calculator, Unit Price, Currency Converter, Lunar Converter, Translator, Unit Converter, Days Counter, Expense List, Lady Calendar, Wallet, Holidays, Battery Status, Clock, Magnifier and Mirror you've come to expect from AppBox Pro™ is now available for your iPhone, iPad and iPod Touch. Click below to download AppBox Pro™ from the iTunes App Store.\r\n\r\nhttps://itunes.apple.com/app/id318404385";
-"DISCLAIMER_MESSAGE" = "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case.";
-"HOLIDAYS_ACKNOWLEDGEMENT" = "A Photo behind the Holidays in the AppBox Pro is collected from Flickr that reflect the beauty and magnificence of different locations around the world. Flickr screen name and a link to the photo are shown on the screen. Authors get any and all rights over photo. ALLABOUTAPPS Inc. don't own any photo. If you want to participate this, send us email. You will not receive financial compensation for use of your photos, however will bring a whole new audience to your photo stream. Thanks to authors to share.";
-"SECURITY_INFO" = "Apple uses a technology called Data Protection. It encrypts your data with secure 256-bit key and hardware AES Engine. By setting up a device passcode, you automatically enables Data Protection.\nThe passcode is \"tangled\" with the device's UID, so brute-force attempts must be performed on the device under attack. A large iteration count is used to make each attempt slower. The iteration count is calibrated so that one attempt takes approximately 80 milliseconds. This means it would take more than 5½ years to try all combinations of a six-character alphanumeric passcode with lowercase letters and numbers, or 2½ years for a nine-digit passcode with numbers only.";
+"DISCLAIMER_MESSAGE" = "Every effort has been made to present an accurate holiday list. However, holidays in some countries are subject to last minute decisions by local authorities. We cannot accept any responsibility for errors or omissions in the holiday data. You are therefore advised to verify these dates with the embassy or consulate of each country.";
+"HOLIDAYS_ACKNOWLEDGEMENT" = "Photos behind the Holidays in AppBox Pro have been collected from Flickr to reflect the beauty and magnificence of different locations around the world. A Flickr screen name and link to the photo are shown on the screen. Authors own all the rights of each photo. ALLABOUTAPPS Inc. doesn’t own any of these photos. If you want to participate with your photos, send us an email. You will not receive financial compensation for the use of your photos, however, participating will bring a whole new audience to your photostream. Thanks to the authors for sharing.";
+"SECURITY_INFO" = "Apple uses a technology called Data Protection. It encrypts your data with secure 256-bit key and hardware AES Engine. By setting up a device passcode, you automatically enable Data Protection.\nThe passcode is \"tangled\" with the device's UID, so brute-force attempts must be performed on the device under attack. A large iteration count is used to make each attempt slower. The iteration count is calibrated so that one attempt takes approximately 80 milliseconds. This means it would take more than 5½ years to try all combinations of a six-character alphanumeric passcode with lowercase letters and numbers, or 2½ years for a nine-digit passcode with numbers only.";
 "microphone access denied" = "AppBox Pro does not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro";
 "Theme Color" = "Theme Color";
 "About" = "About";
@@ -55,7 +55,7 @@
 "Favorites" = "Favorites";
 "Last %ld" = "Last %ld";
 "Apps" = "Apps";
-"iCloud_goto_settings" = "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.";
+"iCloud_goto_settings" = "Please enable iCloud, Documents and Data storage in your device Settings to gain access to this feature.";
 "Info" = "Info";
 "Cancel" = "Cancel";
 "Delete Photo" = "Delete Photo";
@@ -202,8 +202,8 @@
 "Search Location" = "Search Location";
 "Please enter the end date." = "Please enter the end date.";
 "Cannot Save Event\nThe start date must be before the end date." = "Cannot Save Event\nThe start date must be before the end date.";
-"Start date is not lunar date" = "Start date is not lunar date";
-"End date is not lunar date" = "End date is not lunar date";
+"Start date is not a lunar date." = "Start date is not a lunar date.";
+"End date is not a lunar date." = "End date is not a lunar date.";
 "It's not a Lunar Date" = "It's not a Lunar Date";
 
 "Cannot find current location information" = "Cannot find current location information";
@@ -377,7 +377,7 @@
 "Acknowledgement" = "Acknowledgement";
 "Upcoming" = "Upcoming";
 "Past" = "Past";
-"Holidays for year %lu is not available." = "Holidays for year %lu is not available.";
+"Holidays for the year %lu is not available." = "Holidays for the year %lu is not available.";
 "I Agree" = "I Agree";
 "on flickr" = "on flickr";
 " by %@" = " by %@";
@@ -609,7 +609,7 @@
 
 "The best unit price is A at %@" = "The best unit price is A at %@";
 "The best unit price is B at %@" = "The best unit price is B at %@";
-"The unit price is same at %@" = "The unit price is same at %@";
+"The unit price is the same at %@" = "The unit price is the same at %@";
 
 "Area" = "Area";
 "Length" = "Length";
@@ -765,7 +765,7 @@
 "None_Mirror" = "None";
 "CALENDARS" = "CALENDARS";
 "Encryption Key for Wallet" = "Encryption Key for Wallet";
-"V1_Notice_for_Photo_Quality" = "Please know that the quality of photos saved in the Days Until with the previous version of the AppBox Pro may not good enough to use with the current version. We recommend you to re-add photos to your events.";
+"V1_Notice_for_Photo_Quality" = "Please note that the quality of photos saved in the Days Until feature with the previous version of the AppBox Pro may not be high enough to use with the current version. We recommend re-adding photos to your events.";
 "Notice" = "Notice";
 "LoanCalc_DATE" = "DATE";
 
@@ -783,7 +783,7 @@
 "Add" = "Add";
 "day" = "day";
 "Subtract" = "Subtract";
-"I'd like to share a event with you." = "I'd like to share a event with you.";
+"I'd like to share an event with you." = "I'd like to share an event with you.";
 "You can manage your events in the AppBox Pro." = "You can manage your events in the AppBox Pro.";
 "Interest" = "Interest";
 "Extra Payment(monthly)" = "Extra Payment(monthly)";

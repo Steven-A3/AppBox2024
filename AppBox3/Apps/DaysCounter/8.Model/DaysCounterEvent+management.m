@@ -21,6 +21,8 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 - (void)toggleFavorite {
 	if (!self.favorite) {
 		DaysCounterFavorite *favorite = [DaysCounterFavorite MR_createEntity];
+		favorite.uniqueID = [[NSUUID UUID] UUIDString];
+		favorite.updateDate = [NSDate date];
 		favorite.event = self;
 		DaysCounterFavorite *lastFavorite = [DaysCounterFavorite MR_findFirstOrderedByAttribute:@"order" ascending:NO];
 		favorite.order = [NSString orderStringWithOrder:[lastFavorite.order integerValue] + 1000000];

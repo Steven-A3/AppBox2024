@@ -177,6 +177,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 		@autoreleasepool {
 			DaysCounterEvent *newEvent = [DaysCounterEvent MR_createInContext:context];
 			newEvent.uniqueID = [[NSUUID UUID] UUIDString];
+			newEvent.updateDate = [NSDate date];
 			newEvent.calendar = daysCounterCalendar;
 			newEvent.eventName = v1Item[kKeyForDDayTitle];
 			newEvent.isAllDay = @([v1Item[kKeyForDDayType] integerValue] == 0);
@@ -194,7 +195,6 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 			newEvent.startDate.minute = @(components.minute);
 			NSDate *endDate = v1Item[kKeyForDDayEnds];
 			if (endDate) {
-				newEvent.isPeriod = @YES;
 				newEvent.endDate = [DaysCounterDate MR_createInContext:context];
 				newEvent.endDate.solarDate = endDate;
 
@@ -204,6 +204,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 				newEvent.endDate.day = @(components.day);
 				newEvent.endDate.hour = @(components.hour);
 				newEvent.endDate.minute = @(components.minute);
+				newEvent.isPeriod = @(![newEvent.startDate.solarDate isEqual:endDate]);
 			}
 			newEvent.repeatType = @([self repeatTypeForV1RepeatType:v1Item[kKeyForDDayRepeat]]);
 			NSString *filename = v1Item[kKeyForDDayImageFilename];
@@ -307,12 +308,15 @@ NSString *const kTargetText						= @"kTargetText";
 			TranslatorGroup *group = [TranslatorGroup MR_findFirstWithPredicate:predicate inContext:context];
 			if (!group) {
 				group = [TranslatorGroup MR_createInContext:context];
+				group.uniqueID = [[NSUUID UUID] UUIDString];
+				group.updateDate = [NSDate date];
 				[group setupOrder];
 				group.sourceLanguage = sourceLanguageCode;
 				group.targetLanguage = targetLanguageCode;
 			}
 			TranslatorHistory *history = [TranslatorHistory MR_createInContext:context];
-			history.date = [NSDate date];
+			history.uniqueID = [[NSUUID UUID] UUIDString];
+			history.updateDate = [NSDate date];
 			history.group = group;
 			history.originalText = item[kSourceText];
 			history.translatedText = item[kTargetText];
@@ -416,7 +420,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 				category.doNotShow = @NO;
 				category.name = [V1Category[KWalletTypeName] stringByTrimmingSpaceCharacters];
 				category.icon = @"wallet_folder";
-				category.modificationDate = [NSDate date];
+				category.updateDate = [NSDate date];
 
 				[categoryMap setObject:category.uniqueID forKey:V1CategoryID];
 
@@ -450,11 +454,12 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 				@autoreleasepool {
 					WalletItem *newItem = [WalletItem MR_createInContext:context];
 					newItem.uniqueID = [[NSUUID UUID] UUIDString];
+					newItem.updateDate = [NSDate date];
 					[newItem assignOrder];
 					newItem.category = category;
 					newItem.name = valueInfo[KWalletItemName];
 					NSDictionary *valueDictionary = valueInfo[KWalletValueDictionary];
-					newItem.modificationDate = valueDictionary[KWalletValueLastUpdated];
+					newItem.updateDate = valueDictionary[KWalletValueLastUpdated];
 
 					[context MR_saveToPersistentStoreAndWait];
 

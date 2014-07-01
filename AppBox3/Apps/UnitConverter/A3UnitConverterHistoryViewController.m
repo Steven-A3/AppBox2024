@@ -143,7 +143,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 - (NSFetchedResultsController *)fetchedResultsController {
     
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [UnitHistory MR_fetchAllSortedBy:@"date" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [UnitHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -186,7 +186,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 	[cell setNumberOfLines:@(numberOfLines)];
     
 	((UILabel *) cell.leftLabels[0]).text = [self.decimalFormatter stringFromNumber:unitHistory.value];
-    ((UILabel *) cell.rightLabels[0]).text = [unitHistory.date timeAgo];
+    ((UILabel *) cell.rightLabels[0]).text = [unitHistory.updateDate timeAgo];
     
     ((UILabel *) cell.leftLabels[0]).font = [UIFont systemFontOfSize:15.0];
     ((UILabel *) cell.leftLabels[0]).textColor = [UIColor blackColor];

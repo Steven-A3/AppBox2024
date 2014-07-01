@@ -155,11 +155,11 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
     
 	if (!_fetchedResultsController) {
         if (_isComparisonMode) {
-            _fetchedResultsController = [LoanCalcComparisonHistory MR_fetchAllSortedBy:@"calculateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+            _fetchedResultsController = [LoanCalcComparisonHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
         }
         else {
             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith = nil"];
-            _fetchedResultsController = [LoanCalcHistory MR_fetchAllSortedBy:@"created" ascending:NO withPredicate:predicate groupBy:nil delegate:nil];
+            _fetchedResultsController = [LoanCalcHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:predicate groupBy:nil delegate:nil];
         }
         
 		if ([_fetchedResultsController.fetchedObjects count] == 0) {
@@ -198,9 +198,9 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
         /*
         NSDateFormatter *df = [NSDateFormatter new];
         [df setDateFormat:@"MM/dd/yy HH:mm a"];
-        loanCell.upRightLb.text = [df stringFromDate:history.created];
+        loanCell.upRightLb.text = [df stringFromDate:history.updateDate];
          */
-        loanCell.upRightLb.text = [history.created timeAgo];
+        loanCell.upRightLb.text = [history.updateDate timeAgo];
         loanCell.upRightLb.font = [UIFont systemFontOfSize:12];
         loanCell.upRightLb.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
         
@@ -289,9 +289,9 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
         /*
         NSDateFormatter *df = [NSDateFormatter new];
         [df setDateFormat:@"MM/dd/yy HH:mm a"];
-        comparisonCell.dateLb.text = [df stringFromDate:history.calculateDate];
+        comparisonCell.dateLb.text = [df stringFromDate:history.updateDate];
         */
-        comparisonCell.dateLb.text = [history.calculateDate timeAgo];
+        comparisonCell.dateLb.text = [history.updateDate timeAgo];
         comparisonCell.dateLb.font = [UIFont systemFontOfSize:12];
         comparisonCell.dateLb.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
         

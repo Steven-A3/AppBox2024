@@ -484,7 +484,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 
 - (BOOL) isCalculationHistoryEmpty {
-    Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"date" ascending:NO];
+    Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (lastcalculation != nil ) {
         return NO;
     } else {
@@ -519,7 +519,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 }
 
 - (void)putCalculationHistoryWithExpression:(NSString *)expression{
-	Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"date" ascending:NO];
+	Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
 	NSString *mathExpression = [self.calculator getMathExpression];
 	// Compare code and value.
 	if (lastcalculation) {
@@ -529,10 +529,11 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 	}
 
 	Calculation *calculation = [Calculation MR_createEntity];
+	calculation.uniqueID = [[NSUUID UUID] UUIDString];
 	NSDate *keyDate = [NSDate date];
 	calculation.expression = mathExpression;
 	calculation.result = self.evaluatedResultLabel.text;
-	calculation.date = keyDate;
+	calculation.updateDate = keyDate;
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
 }

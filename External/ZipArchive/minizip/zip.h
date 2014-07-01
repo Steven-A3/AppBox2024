@@ -85,7 +85,7 @@ typedef voidp zipFile;
 #endif
 /* default memLevel */
 
-/* tm_zip contain date/time info */
+/* tm_zip contain updateDate/time info */
 typedef struct tm_zip_s
 {
     uInt tm_sec;            /* seconds after the minute - [0,59] */
@@ -98,7 +98,7 @@ typedef struct tm_zip_s
 
 typedef struct
 {
-    tm_zip      tmz_date;       /* date in understandable format           */
+    tm_zip      tmz_date;       /* updateDate in understandable format           */
     uLong       dosDate;       /* if dos_date == 0, tmu_date is used      */
 /*    uLong       flag;        */   /* general purpose bit flag        2 bytes */
 

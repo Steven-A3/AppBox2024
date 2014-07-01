@@ -20,6 +20,8 @@
 	if (isFavorite) {
 		// Add Favorite
 		TranslatorFavorite *favorite = [TranslatorFavorite MR_createInContext:self.managedObjectContext];
+		favorite.uniqueID = [[NSUUID UUID] UUIDString];
+		favorite.updateDate = [NSDate date];
 		self.favorite = favorite;
 
 		NSString *largest = [TranslatorFavorite MR_findLargestValueForAttribute:@"order" inContext:self.managedObjectContext];

@@ -78,6 +78,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	if( !_isEditMode ) {
 		_accountItem = [LadyCalendarAccount MR_createEntity];
 		_accountItem.uniqueID = [[NSUUID UUID] UUIDString];
+		_accountItem.updateDate = [NSDate date];
 
 		LadyCalendarAccount *lastAccount = [LadyCalendarAccount MR_findFirstOrderedByAttribute:@"order" ascending:NO];
 		if (lastAccount) {

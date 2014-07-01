@@ -1,9 +1,9 @@
 //
 //  Calculation.h
-//  A3TeamWork
+//  AppBox3
 //
-//  Created by Soon Gyu Kim on 12/30/13.
-//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 6/30/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -14,6 +14,7 @@
 
 @property (nonatomic, retain) NSString * expression;
 @property (nonatomic, retain) NSString * result;
-@property (nonatomic, retain) NSDate * date;
+@property (nonatomic, retain) NSString * uniqueID;
+@property (nonatomic, retain) NSDate * updateDate;
 
 @end

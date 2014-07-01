@@ -216,8 +216,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 		_coverViewOnBlur = [UIView new];
 		_coverViewOnBlur.userInteractionEnabled = NO;
 		_coverViewOnBlur.backgroundColor = [UIColor colorWithWhite:0 alpha:0.17];
-		_coverViewOnBlur.hidden = YES;
-		[self.view insertSubview:_coverViewOnBlur belowSubview:_tableView];
+		_coverViewOnBlur.alpha = 0.0;
+		[_imageView addSubview:_coverViewOnBlur];
 
 		[_coverViewOnBlur makeConstraints:^(MASConstraintMaker *make) {
 			make.top.equalTo(self.view.top);
@@ -538,7 +538,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 - (void)alertNotAvailableYear:(NSUInteger)year {
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-														message:[NSString stringWithFormat:NSLocalizedString(@"Holidays for year %lu is not available.", @"Holidays for year %lu is not available."), (unsigned long) year]
+														message:[NSString stringWithFormat:NSLocalizedString(@"Holidays for the year %lu is not available.", @"Holidays for year %lu is not available."), (unsigned long) year]
 													   delegate:nil
 											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 											  otherButtonTitles:nil];
@@ -690,7 +690,13 @@ static NSString *const CellIdentifier = @"holidaysCell";
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	[self.coverViewOnBlur setHidden:scrollView.contentOffset.y == 0];
+	if (scrollView.contentOffset.y == 0) {
+		[UIView animateWithDuration:1.0 animations:^{
+			[self.coverViewOnBlur setAlpha:0.0];
+		}];
+	} else {
+		[self.coverViewOnBlur setAlpha:1.0];
+	}
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {

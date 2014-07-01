@@ -143,7 +143,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
     account.notes = [item objectForKey:AccountItem_Notes];
     account.birthDay = [item objectForKey:AccountItem_Birthday];
     account.order = [NSNumber numberWithInteger:[self numberOfAccountInContext:context ] +1];
-    account.modificationDate = [NSDate date];
+    account.updateDate = [NSDate date];
     
     [context MR_saveToPersistentStoreAndWait];
     
@@ -363,7 +363,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 		newPeriod.startDate = [A3DateHelper dateMake12PM:[A3DateHelper dateByAddingDays:cycleLength fromDate:prevStartDate]];
 		newPeriod.endDate = [A3DateHelper dateByAddingDays:4 fromDate:newPeriod.startDate];
 		newPeriod.cycleLength = @(cycleLength);
-		newPeriod.modificationDate = [NSDate date];
+		newPeriod.updateDate = [NSDate date];
 		newPeriod.account = account;
 		NSDateComponents *cycleLengthComponents = [NSDateComponents new];
 		cycleLengthComponents.day = [newPeriod.cycleLength integerValue] - 1;

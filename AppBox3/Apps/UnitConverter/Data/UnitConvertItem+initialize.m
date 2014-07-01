@@ -254,6 +254,8 @@
             if (!unitItem) return;
             
             UnitConvertItem *convertItem = [UnitConvertItem MR_createEntity];
+			convertItem.uniqueID = [[NSUUID UUID] UUIDString];
+			convertItem.updateDate = [NSDate date];
             convertItem.item = unitItem;
 			convertItem.order = [NSString orderStringWithOrder:idxUnit];
             NSLog(@"%@", convertItem.order);

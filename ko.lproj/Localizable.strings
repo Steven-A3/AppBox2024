@@ -233,8 +233,8 @@
 "Search Location" = "위치 검색";
 "Please enter the end date." = "종료일을 입력해 주세요.";
 "Cannot Save Event\nThe start date must be before the end date." = "시작일은 종료일 이전에 있어야 합니다.";
-"Start date is not lunar date" = "시작일이 바른 음력날짜가 아닙니다.";
-"End date is not lunar date" = "종료일이 바른 음력 날짜가 아닙니다.";
+"Start date is not a lunar date." = "시작일이 바른 음력날짜가 아닙니다.";
+"End date is not a lunar date." = "종료일이 바른 음력 날짜가 아닙니다.";
 "It's not a Lunar Date" = "바른 음력날짜가 아닙니다.";
 
 "Cannot find current location information" = "현재 위치를 찾을 수 없습니다.";
@@ -411,7 +411,7 @@
 "Acknowledgement" = "감사의 말";
 "Upcoming" = "남은 휴일";
 "Past" = "지난 휴일";
-"Holidays for year %lu is not available." = "%lu 년도의 휴일/기념일 정보는 제공되지 않습니다.";
+"Holidays for the year %lu is not available." = "%lu 년도의 휴일/기념일 정보는 제공되지 않습니다.";
 "Disclaimer" = "정보";
 "I Agree" = "동의함";
 "on flickr" = "출처 Flickr";
@@ -644,7 +644,7 @@
 
 "The best unit price is A at %@" = "단가 %@인 A가 더 저렴합니다.";
 "The best unit price is B at %@" = "단가 %@인 B가 더 저렴합니다.";
-"The unit price is same at %@" = "두개의 단가는 %@로 똑같습니다.";
+"The unit price is the same at %@" = "두개의 단가는 %@로 똑같습니다.";
 
 "Area" = "면적";
 "Length" = "길이";
@@ -855,7 +855,7 @@
 "Add" = "더하기";
 "day" = "일";
 "Subtract" = "빼기";
-"I'd like to share a event with you." = "이벤트 정보를 공유합니다.";
+"I'd like to share an event with you." = "이벤트 정보를 공유합니다.";
 
 "You can manage your events in the AppBox Pro." = "AppBox Pro로 이벤트를 관래해 보세요.";
 
@@ -884,5 +884,5 @@
 "Increase" = "증가";
 "Decrease" = "감소";
 
-"Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather.";
-"Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather.";
+"Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "위치 서비스가 꺼져 있습니다. 날씨를 보시려면, 장치의 설정 > 개인 정보 보호 > 위치 서비스로 이동해서 위치 서비스를 켜고, AppBox Pro가 위치 서비스를 이용할 수 있도록 해주세요.";
+"Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "위치 서비스가 켜져 있기는 하지만, AppBox Pro의 위치 서비스 접근이 차단되어 있습니다. 날씨를 보시려면 장치의 설정 > 개인 정보 보호 > 위치 서비스로 이동해서 AppBox Pro가 위치 서비스를 이용할 수 있도록 허용해 주세요.";

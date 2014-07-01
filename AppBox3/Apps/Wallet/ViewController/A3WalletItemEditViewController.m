@@ -99,6 +99,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 		_item = [WalletItem MR_createEntity];
 		_item.uniqueID = [[NSUUID UUID] UUIDString];
+		_item.updateDate = [NSDate date];
 		[_item assignOrder];
 		_item.category = _walletCategory;
 	} else {
@@ -623,7 +624,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		}
 	}
 
-	_item.modificationDate = [NSDate date];
+	_item.updateDate = [NSDate date];
 	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
 	if ([context hasChanges]) {
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
@@ -1756,7 +1757,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	NSDateFormatter *df = [[NSDateFormatter alloc] init];
 	df.dateStyle = NSDateFormatterFullStyle;
     
-	NSDate *date = _item.modificationDate ? _item.modificationDate : [NSDate date];
+	NSDate *date = _item.updateDate ? _item.updateDate : [NSDate date];
     if (IS_IPAD || [NSDate isFullStyleLocale]) {
         titleCell.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Current %@", @"Current %@"), [self fullStyleDateStringFromDate:date withShortTime:YES]];
     }

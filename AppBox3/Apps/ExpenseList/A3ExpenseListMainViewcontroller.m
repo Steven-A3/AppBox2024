@@ -187,7 +187,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
 			switch (barButtonItem.tag) {
 				case A3RightBarButtonTagComposeButton:{
-					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budget.budgetId == %@ and hasData == YES", _currentBudget.budgetId];
+					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budget.uniqueID == %@ and hasData == YES", _currentBudget.uniqueID];
 					[barButtonItem setEnabled:[ExpenseListItem MR_countOfEntitiesWithPredicate:predicate] > 0];
 					break;
 				}
@@ -600,7 +600,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     
 	_moreMenuButtons = @[help, /*share, */addNew, history];
 	// AddNew
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budget.budgetId == %@ and hasData == YES", _currentBudget.budgetId];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budget.uniqueID == %@ and hasData == YES", _currentBudget.uniqueID];
     addNew.enabled = [ExpenseListItem MR_countOfEntitiesWithPredicate:predicate] > 0;
 	// History
     history.enabled = [ExpenseListHistory MR_countOfEntities] > 0;
@@ -620,7 +620,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
-    _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"budgetId" withValue:[self currentBudgetId]];
+    _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:[self currentBudgetId]];
     
     _tableDataSourceArray = [self loadBudgetFromDB];
     
@@ -772,11 +772,12 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 -(void)reloadBudgetDataWithAnimation:(BOOL)animation
 {
     // 데이터 갱신.
-    _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"budgetId" withValue:[self currentBudgetId]];
+    _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:[self currentBudgetId]];
     
     if (!_currentBudget) {
         _currentBudget = [ExpenseListBudget MR_createEntity];
-        _currentBudget.budgetId = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];
+        _currentBudget.uniqueID = [[NSUUID UUID] UUIDString];
+		_currentBudget.updateDate = [NSDate date];
         
         int defaultCount = 1;
         
@@ -799,8 +800,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
                 item.subTotal = @0;
             }
         }
-        
-        [self setCurrentBudgetId:_currentBudget.budgetId];
+
+		[self setCurrentBudgetId:_currentBudget.uniqueID];
     }
     
     // 계산 & 화면 갱신.
@@ -811,7 +812,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (void)reloadBudgetDataAndRemoveEmptyItem {
-    _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"budgetId" withValue:[self currentBudgetId]];
+    _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:[self currentBudgetId]];
 
     if (_currentBudget) {
 		_tableDataSourceArray = [self loadBudgetFromDB];
@@ -837,6 +838,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
     if (!history) {
         history = [ExpenseListHistory MR_createEntity];
+		history.uniqueID = [[NSUUID UUID] UUIDString];
+		history.updateDate = [NSDate date];
         history.budgetData = _currentBudget;
         history.updateDate = updateDate;
         _currentBudget.expenseHistory = history;
@@ -1062,7 +1065,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     _currentBudget = aBudget;
     
     if (_currentBudget) {
-        [self setCurrentBudgetId:_currentBudget.budgetId];
+		[self setCurrentBudgetId:_currentBudget.uniqueID];
     }
     
     [self reloadBudgetDataWithAnimation:YES];
@@ -1094,7 +1097,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
     // deepcopy 형태로 복원. 기존 히스토리를 건드리지 않기 위함.
     _currentBudget = [ExpenseListBudget MR_createEntity];
-    _currentBudget.budgetId = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];
+    _currentBudget.uniqueID = [[NSUUID UUID] UUIDString];
+	_currentBudget.updateDate = [NSDate date];
     _currentBudget.category = aBudget.category;
     _currentBudget.date = aBudget.date;
     _currentBudget.location = aBudget.location;
@@ -1117,12 +1121,12 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
         temp.budget = _currentBudget;
     }
 
-    [self setCurrentBudgetId:_currentBudget.budgetId];
+	[self setCurrentBudgetId:_currentBudget.uniqueID];
     
     _tableDataSourceArray = [self loadBudgetFromDB];
     
     if (_currentBudget) {
-        [self setCurrentBudgetId:_currentBudget.budgetId];
+		[self setCurrentBudgetId:_currentBudget.uniqueID];
     }
     
     [self reloadBudgetDataWithAnimation:YES];

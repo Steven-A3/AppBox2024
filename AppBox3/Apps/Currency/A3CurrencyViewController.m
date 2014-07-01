@@ -754,6 +754,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		if ([result count]) {
 			CurrencyRateItem *currencyItem = result[0];
 			CurrencyFavorite *newFavorite = [CurrencyFavorite MR_createEntity];
+			newFavorite.uniqueID = [[NSUUID UUID] UUIDString];
+			newFavorite.updateDate = [NSDate date];
 			[A3CurrencyDataManager copyCurrencyFrom:currencyItem to:newFavorite];
 			NSInteger insertIdx = [self.favorites count];
 			[self.favorites insertObjectToSortedArray:newFavorite atIndex:insertIdx];
@@ -1431,6 +1433,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 
 	CurrencyHistory *history = [CurrencyHistory MR_createEntity];
+	history.uniqueID = [[NSUUID UUID] UUIDString];
 	NSDate *keyDate = [NSDate date];
 	history.updateDate = keyDate;
 	history.currencyCode = baseCurrency.currencyCode;

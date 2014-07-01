@@ -96,7 +96,7 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [PercentCalcHistory MR_fetchAllSortedBy:@"historyDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [PercentCalcHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -369,8 +369,8 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 
 //        NSDateFormatter *dateFormatter = [NSDateFormatter new];
 //        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-//        cell.dateLabel.text = [dateFormatter stringFromDate:aData.historyDate];
-        cell.dateLabel.text = [aData.historyDate timeAgo];
+//        cell.dateLabel.text = [dateFormatter stringFromDate:aData.updateDate];
+        cell.dateLabel.text = [aData.updateDate timeAgo];
 
         cell.factorALabel.text = resultStringA;
         cell.factorBLabel.text = resultStringB;
@@ -403,8 +403,8 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
         
 //        NSDateFormatter *dateFormatter = [NSDateFormatter new];
 //        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-//        cell.dateLabel.text = [dateFormatter stringFromDate:aData.historyDate];
-        cell.dateLabel.text = [aData.historyDate timeAgo];
+//        cell.dateLabel.text = [dateFormatter stringFromDate:aData.updateDate];
+        cell.dateLabel.text = [aData.updateDate timeAgo];
         
         cell.factorLabel.text = [NSString stringWithFormat:@"%@", resultStringA];
         cell.factorLabel.font = [UIFont systemFontOfSize:13];

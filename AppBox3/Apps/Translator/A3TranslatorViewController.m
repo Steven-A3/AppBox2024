@@ -293,7 +293,7 @@
 		iPhone_cell.detailTextLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:142.0/255.0 alpha:1.0];
 
 		cell = iPhone_cell;
-		cell.detailTextLabel.text = [[group.texts valueForKeyPath:@"@max.date"] timeAgo];
+		cell.detailTextLabel.text = [[group.texts valueForKeyPath:@"@max.updateDate"] timeAgo];
 	} else {
 		A3TranslatorListCell *iPad_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
@@ -302,7 +302,7 @@
 		}
 
 		cell = iPad_cell;
-		iPad_cell.dateLabel.text = [[group.texts valueForKeyPath:@"@max.date"] timeAgo];
+		iPad_cell.dateLabel.text = [[group.texts valueForKeyPath:@"@max.updateDate"] timeAgo];
 	}
 
 	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"),

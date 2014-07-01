@@ -2,7 +2,7 @@
 //  LadyCalendarPeriod.m
 //  AppBox3
 //
-//  Created by A3 on 5/3/14.
+//  Created by A3 on 6/30/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -16,12 +16,12 @@
 @dynamic endDate;
 @dynamic isAutoSave;
 @dynamic isPredict;
+@dynamic notes;
 @dynamic ovulation;
 @dynamic periodEnds;
-@dynamic uniqueID;
-@dynamic notes;
-@dynamic modificationDate;
 @dynamic startDate;
+@dynamic uniqueID;
+@dynamic updateDate;
 @dynamic account;
 
 @end

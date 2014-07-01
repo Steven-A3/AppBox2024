@@ -535,7 +535,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
             dateFormatter.dateFormat = [dateFormatter customFullWithTimeStyleFormat];
         }
         
-		titleCell.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [dateFormatter stringFromDate:_item.modificationDate]];
+		titleCell.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [dateFormatter stringFromDate:_item.updateDate]];
         
 		// To prevent adding multiple times
 		[titleCell.favoriteButton removeTarget:self action:@selector(favorButtonAction:) forControlEvents:UIControlEventTouchUpInside];

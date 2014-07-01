@@ -51,7 +51,7 @@
     self.navigationController.navigationBar.topItem.prompt = NSLocalizedString(@"Move these events to a new calendar.", @"Move these events to a new calendar.");
     
     NSMutableArray *array = [_sharedManager allUserCalendarList];
-    self.itemArray = [array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarId != %@",_currentCalendar.calendarId]];
+    self.itemArray = [array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@", _currentCalendar.uniqueID]];
     [self.tableView reloadData];
 }
 

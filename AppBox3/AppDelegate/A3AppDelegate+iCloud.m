@@ -25,8 +25,32 @@
 #import "UnitItem+initialize.h"
 #import "UnitType+initialize.h"
 #import "UnitPriceFavorite+initialize.h"
+#import "Calculation.h"
+#import "CurrencyHistory.h"
+#import "DaysCounterCalendar.h"
+#import "DaysCounterFavorite.h"
+#import "DaysCounterReminder.h"
+#import "ExpenseListHistory.h"
+#import "ExpenseListBudget.h"
+#import "ExpenseListCategories.h"
+#import "LadyCalendarAccount.h"
+#import "LadyCalendarPeriod+extension.h"
+#import "LoanCalcComparisonHistory.h"
+#import "LoanCalcHistory.h"
+#import "PercentCalcHistory.h"
+#import "SalesCalcHistory.h"
+#import "TipCalcHistory.h"
+#import "TipCalcRecently.h"
+#import "TranslatorFavorite.h"
+#import "TranslatorGroup.h"
+#import "TranslatorHistory+manager.h"
+#import "UnitHistory.h"
+#import "UnitPriceHistory.h"
+#import "UnitPriceInfo.h"
+#import "WalletFavorite.h"
+#import "WalletItem+Favorite.h"
 
-NSString *const A3UniqueIdentifier = @"uniqueIdentifier";
+NSString *const A3UniqueIdentifier = @"uniqueID";
 NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
 NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 NSString *const A3CloudHasData = @"A3CloudHasData";
@@ -39,7 +63,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 @protocol A3CloudCompatibleData <NSObject>
 
-- (NSString *)uniqueIdentifier;
+- (NSString *)uniqueID;
 - (NSDate *)updateDate;
 
 @end
@@ -63,11 +87,11 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 				return;
 			}];
 		} else {
-			[self.ubiquityStoreManager setCloudEnabled:enable];
+			[self.ubiquityStoreManager setCloudEnabled:YES];
 		}
 	}
 	else {
-		[self.ubiquityStoreManager setCloudEnabled:enable];
+		[self.ubiquityStoreManager setCloudEnabled:NO];
 	}
 	[self enableCloudForFiles:enable];
 
@@ -83,13 +107,53 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)note {
-#ifdef DEBUG
 	NSArray *insertedObjects = [note.userInfo objectForKey:NSInsertedObjectsKey];
-	NSArray *updatedObjects = [note.userInfo objectForKey:NSUpdatedObjectsKey];
-	NSArray *deletedObjects = [note.userInfo objectForKey:NSDeletedObjectsKey];
+//	NSArray *updatedObjects = [note.userInfo objectForKey:NSUpdatedObjectsKey];
+//	NSArray *deletedObjects = [note.userInfo objectForKey:NSDeletedObjectsKey];
 
-	FNLOG(@"\n-----------------------------------------\n%@\n%@\n%@\n-----------------------------------------", insertedObjects, updatedObjects, deletedObjects);
-#endif
+	NSMutableSet *candidates = [NSMutableSet new];
+	for (id insertedObject in insertedObjects) {
+		[candidates addObject:NSStringFromClass([insertedObject class])];
+	}
+
+	for (NSString *className in [candidates allObjects]) {
+		if (
+				[className isEqualToString:NSStringFromClass([Calculation class])] ||
+				[className isEqualToString:NSStringFromClass([CurrencyFavorite class])] ||
+				[className isEqualToString:NSStringFromClass([CurrencyHistory class])] ||
+				[className isEqualToString:NSStringFromClass([DaysCounterCalendar class])] ||
+				[className isEqualToString:NSStringFromClass([DaysCounterEvent class])] ||
+				[className isEqualToString:NSStringFromClass([DaysCounterFavorite class])] ||
+				[className isEqualToString:NSStringFromClass([DaysCounterReminder class])] ||
+				[className isEqualToString:NSStringFromClass([ExpenseListHistory class])] ||
+				[className isEqualToString:NSStringFromClass([ExpenseListBudget class])] ||
+				[className isEqualToString:NSStringFromClass([ExpenseListCategories class])] ||
+				[className isEqualToString:NSStringFromClass([LadyCalendarAccount class])] ||
+				[className isEqualToString:NSStringFromClass([LadyCalendarPeriod class])] ||
+				[className isEqualToString:NSStringFromClass([LoanCalcComparisonHistory class])] ||
+				[className isEqualToString:NSStringFromClass([LoanCalcHistory class])] ||
+				[className isEqualToString:NSStringFromClass([PercentCalcHistory class])] ||
+				[className isEqualToString:NSStringFromClass([SalesCalcHistory class])] ||
+				[className isEqualToString:NSStringFromClass([TipCalcHistory class])] ||
+				[className isEqualToString:NSStringFromClass([TranslatorFavorite class])] ||
+				[className isEqualToString:NSStringFromClass([TranslatorGroup class])] ||
+				[className isEqualToString:NSStringFromClass([UnitItem class])] ||
+				[className isEqualToString:NSStringFromClass([UnitConvertItem class])] ||
+				[className isEqualToString:NSStringFromClass([UnitFavorite class])] ||
+				[className isEqualToString:NSStringFromClass([UnitHistory class])] ||
+				[className isEqualToString:NSStringFromClass([UnitPriceFavorite class])] ||
+				[className isEqualToString:NSStringFromClass([UnitPriceHistory class])] ||
+				[className isEqualToString:NSStringFromClass([UnitPriceInfo class])] ||
+				[className isEqualToString:NSStringFromClass([UnitType class])] ||
+				[className isEqualToString:NSStringFromClass([WalletCategory class])] ||
+				[className isEqualToString:NSStringFromClass([WalletFavorite class])] ||
+				[className isEqualToString:NSStringFromClass([WalletItem class])]
+		)
+		{
+			[self deDupeForEntity:className];
+		}
+	}
+
 	[self startDownloadAllFiles];
 
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3iCloudLastDBImportKey];
@@ -290,33 +354,33 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 #pragma mark - Migrate Local Data and remove duplication
 
 - (void)migrateLocalDataToCloudContext:(NSManagedObjectContext *)cloudContext {
+	NSURL *localStoreURL = self.ubiquityStoreManager.localStoreURL;
+	if (![[NSFileManager defaultManager] fileExistsAtPath:[localStoreURL path]]) {
+		return;
+	}
+
 	NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:nil];
 	NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
-	NSURL *localStoreURL = self.ubiquityStoreManager.localStoreURL;
 
 	NSError *error;
 	NSPersistentStore *localStore = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:localStoreURL options:nil error:&error];
 	NSManagedObjectContext *localContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
 	[localContext setPersistentStoreCoordinator:psc];
 
-	BOOL needMigration = NO;
+	NSURL *targetURL = self.ubiquityStoreManager.URLForCloudStore;
 
-	[CurrencyFavorite MR_truncateAllInContext:localContext];
+	NSDictionary *cloudOptions = [(id<UbiquityStoreManagerInternal>)self.ubiquityStoreManager optionsForCloudStoreURL:targetURL];
 
-	[localContext save:&error];
-	[localContext reset];
+	[psc lock];
+	[psc migratePersistentStore:localStore toURL:targetURL options:cloudOptions withType:NSSQLiteStoreType error:nil];
+	[psc unlock];
 
-	[cloudContext save:&error];
-	[cloudContext reset];
-
-	if (needMigration) {
-		NSURL *targetURL = self.ubiquityStoreManager.URLForCloudStore;
-
-		NSDictionary *cloudOptions = [(id<UbiquityStoreManagerInternal>)self.ubiquityStoreManager optionsForCloudStoreURL:targetURL];
-
-		[psc lock];
-		[psc migratePersistentStore:localStore toURL:targetURL options:cloudOptions withType:NSSQLiteStoreType error:nil];
-		[psc unlock];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:[localStoreURL path]]) {
+		FNLOG(@"File did not removed after migration.");
+		[[NSFileManager defaultManager] removeItemAtURL:localStoreURL error:NULL];
+		NSString *path = [localStoreURL path];
+		[[NSFileManager defaultManager] removeItemAtPath:[path stringByAppendingString:@"-shm"] error:NULL];
+		[[NSFileManager defaultManager] removeItemAtPath:[path stringByAppendingString:@"-wal"] error:NULL];
 	}
 }
 
@@ -327,7 +391,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 		return NO;
 	}
 
-	NSString *uniqueIdentifier = @"uniqueIdentifier";
+	NSString *uniqueIdentifier = @"uniqueID";
 
 	NSArray *uniqueIdentifiers = [localData valueForKeyPath:uniqueIdentifier];
 
@@ -375,7 +439,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	[fr setIncludesPendingChanges:NO]; //distinct has to go down to the db, not implemented for in memory filtering
 	[fr setFetchBatchSize:1000]; //protect thy memory
 
-	NSExpression *countExpr = [NSExpression expressionWithFormat:@"count:(uniqueIdentifier)"];
+	NSExpression *countExpr = [NSExpression expressionWithFormat:@"count:(uniqueID)"];
 	NSExpressionDescription *countExprDesc = [[NSExpressionDescription alloc] init];
 	[countExprDesc setName:@"count"];
 	[countExprDesc setExpression:countExpr];
@@ -420,7 +484,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	NSUInteger i = 1;
 	for (NSManagedObject<A3CloudCompatibleData> *object in dupes) {
 		if (prevObject) {
-			if ([object.uniqueIdentifier isEqualToString:prevObject.uniqueIdentifier]) {
+			if ([object.uniqueID isEqualToString:prevObject.uniqueID]) {
 				if ([object.updateDate compare:prevObject.updateDate] == NSOrderedAscending) {
 					[moc deleteObject:object];
 				} else {

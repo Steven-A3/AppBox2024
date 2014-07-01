@@ -2,7 +2,7 @@
 //  UnitItem.h
 //  AppBox3
 //
-//  Created by A3 on 4/10/14.
+//  Created by A3 on 6/30/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -14,8 +14,10 @@
 @interface UnitItem : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * conversionRate;
+@property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSString * unitName;
 @property (nonatomic, retain) NSString * unitShortName;
+@property (nonatomic, retain) NSDate * updateDate;
 @property (nonatomic, retain) UnitFavorite *favorite;
 @property (nonatomic, retain) UnitType *type;
 @property (nonatomic, retain) UnitConvertItem *unitConvertItem;

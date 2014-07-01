@@ -129,11 +129,11 @@
         self.itemArray = [NSMutableArray arrayWithArray:[_calendarItem.events array]];
     else{
         NSArray *sourceArray = nil;
-        if( [_calendarItem.calendarId isEqualToString:SystemCalendarID_All] )
+        if( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_All] )
             sourceArray = [_sharedManager allEventsList];
-        else if( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Past] )
+        else if( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_Past] )
             sourceArray = [_sharedManager pastEventsListWithDate:[NSDate date]];
-        else if( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Upcoming] )
+        else if( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_Upcoming] )
             sourceArray = [_sharedManager upcomingEventsListWithDate:[NSDate date]];
         self.itemArray = [NSMutableArray arrayWithArray:sourceArray];
     }
@@ -370,7 +370,7 @@
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share a event with you.", @"I'd like to share a event with you.")];
+		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share an event with you.", @"I'd like to share an event with you.")];
 
         for (DaysCounterEvent *event in _selectedArray) {
             // 7 days until (계산된 날짜)
