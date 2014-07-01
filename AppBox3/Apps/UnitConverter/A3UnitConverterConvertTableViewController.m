@@ -529,9 +529,12 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 #pragma mark Instruction Related
+
+static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3InstructionDidShowForUnitConverter";
+
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"UnitConverter"]) {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForUnitConverter]) {
         [self showInstructionView];
     }
 }
@@ -539,7 +542,11 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (void)showInstructionView
 {
     [self dismissMoreMenu];
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForUnitConverter];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"UnitConverter"];
     self.instructionViewController.delegate = self;
     [self.tabBarController.view addSubview:self.instructionViewController.view];

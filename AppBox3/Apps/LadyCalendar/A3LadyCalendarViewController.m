@@ -395,16 +395,22 @@
 }
 
 #pragma mark Instruction Related
+
+static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3InstructionDidShowForLadyCalendar";
+
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"LadyCalendar"]) {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForLadyCalendar]) {
         [self showInstructionView];
     }
 }
 
 - (void)showInstructionView
 {
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForLadyCalendar];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"LadyCalendar"];
     self.instructionViewController.delegate = self;
     [self.navigationController.view.superview addSubview:self.instructionViewController.view];

@@ -10,8 +10,9 @@
 #import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
 
-NSString *const StoryBoardID_BatteryStatus = @"BatteryStatus";
-NSString *const StoryBoardID_Calcualtor = @"Calcualtor";
+NSString *const A3StoryboardInstruction_iPhone = @"Instruction_iPhone";
+NSString *const A3StoryboardInstruction_iPad = @"Instruction_iPad";
+
 @interface A3InstructionViewController () <UIAlertViewDelegate>
 
 @end
@@ -46,11 +47,6 @@ NSString *const StoryBoardID_Calcualtor = @"Calcualtor";
 }
 
 - (IBAction)viewTapped:(UITapGestureRecognizer *)sender {
-    BOOL isShown = [[NSUserDefaults standardUserDefaults] boolForKey:self.restorationIdentifier];
-    if (!isShown) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:self.restorationIdentifier];
-    }
-    
     [self disposeInstructionView];
 }
 

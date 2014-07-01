@@ -106,16 +106,22 @@ extern NSString *const A3CurrencyActionCellID;
 }
 
 #pragma mark Instruction Related
+
+static NSString *const A3V3InstructionDidShowForHolidaysCountryView = @"A3V3InstructionDidShowForHolidaysCountryView";
+
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Holidays_2"]) {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForHolidaysCountryView]) {
         [self showInstructionView];
     }
 }
 
 - (void)showInstructionView
 {
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForHolidaysCountryView];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Holidays_2"];
     self.instructionViewController.delegate = self;
     [self.navigationController.view addSubview:self.instructionViewController.view];

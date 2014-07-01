@@ -80,7 +80,7 @@ color and more</string>
         <!--Calcualtor Instruction View Controller-->
         <scene sceneID="9fW-FS-i76">
             <objects>
-                <viewController storyboardIdentifier="Calcualtor" useStoryboardIdentifierAsRestorationIdentifier="YES" id="z4C-g5-RTc" userLabel="Calcualtor Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Calculator" useStoryboardIdentifierAsRestorationIdentifier="YES" id="z4C-g5-RTc" userLabel="Calcualtor Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pAn-Rl-iw3"/>
                         <viewControllerLayoutGuide type="bottom" id="HvH-ER-EqD"/>

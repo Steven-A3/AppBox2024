@@ -561,16 +561,22 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 }
 
 #pragma mark Instruction Related
+
+static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDidShowForMagnifier";
+
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Magnifier"]) {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForMagnifier]) {
         [self showInstructionView:nil];
     }
 }
 
 - (IBAction)showInstructionView:(id)sender
 {
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForMagnifier];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Magnifier"];
     self.instructionViewController.delegate = self;
     [self.navigationController.view addSubview:self.instructionViewController.view];
