@@ -21,21 +21,6 @@
 #define COLOR_TABLE_SECTION_TITLE   [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0]
 #define COLOR_TABLE_TEXT_TYPING     [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0]
 
-#define FONT_TABLE_SECTION_TITLE    [UIFont fontWithName:@"Helvetica Neue" size:14.0]
-#define FONT_TABLE_TEXTLABEL_DEFAULT    [UIFont fontWithDescriptor:[UIFontDescriptor fontDescriptorWithFontAttributes:@{ \
-                                                                                                UIFontDescriptorFamilyAttribute : @".HelveticaNeueInterface-M3)", \
-                                                                                                                  UIFontWeightTrait : @0.0, \
-                                                                                                 UIFontDescriptorTextStyleAttribute : @"normal" \
-                                                                                                      UIFontDescriptorSizeAttribute : @17.0,}] \
-                                                                                                                               size :17.0]
-
-#define FONT_TABLE_TEXTLABEL_DEFAULT_SIZE(_x_)    [UIFont fontWithDescriptor:[UIFontDescriptor fontDescriptorWithFontAttributes:@{ \
-                              UIFontDescriptorFamilyAttribute : @".HelveticaNeueInterface-M3)", \
-                                            UIFontWeightTrait : @0.0, \
-                           UIFontDescriptorTextStyleAttribute : @"normal", \
-                                UIFontDescriptorSizeAttribute : @_x_}] \
-                                                         size : _x_]
-
 #define COLOR_DEFAULT_GRAY          [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0]
 #define COLOR_DEFAULT_TEXT_GRAY     [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]
 
