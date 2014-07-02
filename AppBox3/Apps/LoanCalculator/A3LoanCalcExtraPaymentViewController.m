@@ -291,7 +291,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         NSDateFormatter *df = [[NSDateFormatter alloc] init];
         df.dateStyle = NSDateFormatterFullStyle;
         df.dateFormat = @"MMMM";
-        NSDate *pickDate = [df dateFromString:_months[row]];
+        NSDate *pickDate = [df dateFromString:_months[row]
+                            ];
         _loanCalcData.extraPaymentYearlyDate = pickDate;
     }
     else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
@@ -392,6 +393,29 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         if (_exPaymentType == A3LC_ExtraPaymentYearly) {
 			if ([textField.text length]) {
 				self.loanCalcData.extraPaymentYearly = inputNum;
+                
+                
+// TODO
+//                NSDate *pickDate = ![_loanCalcData extraPaymentYearlyDate] ? [NSDate date] : [_loanCalcData extraPaymentYearlyDate];
+//                NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:pickDate];
+//                NSInteger month = [components month];
+//                
+//                NSDateFormatter *df = [[NSDateFormatter alloc] init];
+//                [df setDateStyle:NSDateFormatterFullStyle];
+//                //            if (IS_IPAD) {
+//                //                NSArray *months = [df monthSymbols];
+//                //                NSString *monthText = months[month - 1];
+//                //                inputCell.textField.text = monthText;
+//                //            }
+//                //            else {
+//                //                NSArray *months = [df shortMonthSymbols];
+//                //                NSString *monthText = months[month - 1];
+//                //                inputCell.textField.text = monthText;
+//                //            }
+//                NSArray *months = [df monthSymbols];
+//                NSString *monthText = months[month - 1];
+//                inputCell.textField.text = monthText;
+                
 			}
 			NSNumber *data = self.loanCalcData.extraPaymentYearly;
 			textField.text = [self.loanFormatter stringFromNumber:data ? data : @0];

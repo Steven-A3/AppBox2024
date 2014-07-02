@@ -43,6 +43,7 @@
 + (NSString *)titleOfFrequency:(A3LoanCalcFrequencyType)type;
 + (NSString *)titleOfExtraPayment:(A3LoanCalcExtraPaymentType)type;
 + (NSString *)shortTitleOfFrequency:(A3LoanCalcFrequencyType)type;
++ (NSString *)shortUnitTitleOfFrequency:(A3LoanCalcFrequencyType)type;
 + (NSString *)valueTextForCalcItem:(A3LoanCalcCalculationItem)calcItem fromData:(LoanCalcData *)loan formatter:(NSNumberFormatter *)currencyFormatter;
 
 @end

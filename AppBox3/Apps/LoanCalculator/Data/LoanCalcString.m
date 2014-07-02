@@ -98,6 +98,31 @@
     }
 }
 
++ (NSString *)shortUnitTitleOfFrequency:(A3LoanCalcFrequencyType)type
+{
+    BOOL isKorea = [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] isEqualToString:@"KR"];
+    
+    switch (type) {
+        case A3LC_FrequencyWeekly:
+            return NSLocalizedString(@"Loan Calc Frequency short string weekly", @"wk");
+        case A3LC_FrequencyBiweekly:
+            return NSLocalizedString(@"Loan Calc Frequency short string biweekly", @"biwk");
+        case A3LC_FrequencyMonthly:
+            return isKorea ? NSLocalizedString(@"개월", @"개월") : NSLocalizedString(@"Loan Calc Frequency short string monthly", @"mo");
+        case A3LC_FrequencyBimonthly:
+            return NSLocalizedString(@"Loan Calc Frequency short string bi montly", @"bimo");
+        case A3LC_FrequencyQuarterly:
+            return NSLocalizedString(@"Loan Calc Frequency short string quarterly", @"qt");
+        case A3LC_FrequencySemiannualy:
+            return NSLocalizedString(@"Loan Calc Frequency short string semi annually", @"semian");
+        case A3LC_FrequencyAnnually:
+            return isKorea ? NSLocalizedString(@"년", @"년") : NSLocalizedString(@"Loan Calc Frequency short string annually", @"an");
+            
+        default:
+            return @"";
+    }
+}
+
 + (NSString *)titleOfExtraPayment:(A3LoanCalcExtraPaymentType)type
 {
     switch (type) {

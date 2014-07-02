@@ -1107,14 +1107,14 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
             }
             case A3LC_CalculationForTermOfMonths:
             {
-                NSString *unit = [LoanCalcString shortTitleOfFrequency:A3LC_FrequencyMonthly];
+                NSString *unit = [LoanCalcString shortUnitTitleOfFrequency:A3LC_FrequencyMonthly];
                 int monthInt =  (int)round(data.monthOfTerms.doubleValue);
                 NSString *result = [NSString stringWithFormat:@"%ld %@", (long)monthInt, unit];
                 return result;
             }
             case A3LC_CalculationForTermOfYears:
             {
-                NSString *unit = [LoanCalcString shortTitleOfFrequency:A3LC_FrequencyAnnually];
+                NSString *unit = [LoanCalcString shortUnitTitleOfFrequency:A3LC_FrequencyAnnually];
                 if (round([data.monthOfTerms doubleValue]) < 12.0) {
                     NSInteger monthInt = roundl([data.monthOfTerms doubleValue]);
                     NSString *result = [NSString stringWithFormat:NSLocalizedString(@"0 %@ %ld mo", @"0 %@ %ld mo"), unit, (long) monthInt];
