@@ -1444,6 +1444,8 @@
 		682B37C218AB365D00C6BD66 /* Calculator.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Calculator.xcassets; path = "AppBox3/Asset Catalogs/Calculator.xcassets"; sourceTree = "<group>"; };
 		682B37C418AB369500C6BD66 /* Unit.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Unit.xcassets; path = "AppBox3/Asset Catalogs/Unit.xcassets"; sourceTree = "<group>"; };
 		682B37C618AB36B600C6BD66 /* Wallet.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Wallet.xcassets; path = "AppBox3/Asset Catalogs/Wallet.xcassets"; sourceTree = "<group>"; };
+		682C66F81963C39500CA8E75 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = de; path = de.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
+		682C66F91963C3A100CA8E75 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = es; path = es.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
 		682E07E8171968A8007112B9 /* ATSDragToReorderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ATSDragToReorderTableViewController.h; path = ViewControllers/ATSDragToReorderTableViewController.h; sourceTree = "<group>"; };
 		682E07E9171968A8007112B9 /* ATSDragToReorderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ATSDragToReorderTableViewController.m; path = ViewControllers/ATSDragToReorderTableViewController.m; sourceTree = "<group>"; };
 		682EA2D115EB10B000BD6AD4 /* AppBox3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppBox3.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -6685,6 +6687,8 @@
 				68F1507C194B216D00159EAD /* Base */,
 				68F1507F194B217300159EAD /* ko */,
 				6805706C195D166E003778CD /* en */,
+				682C66F81963C39500CA8E75 /* de */,
+				682C66F91963C3A100CA8E75 /* es */,
 			);
 			name = StringsDict.stringsdict;
 			path = AppBox3;

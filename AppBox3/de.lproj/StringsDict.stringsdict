@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%ld hours, %ld minutes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_hours_minutes@</string>
+		<key>num_hours_minutes</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>%1$ld Stunde, %2$ld Minuten</string>
+			<key>one</key>
+			<string>%1$ld Stunde, %2$ld Minute</string>
+			<key>other</key>
+			<string>%1$ld Stunden, %2$ld Minuten</string>
+		</dict>
+	</dict>
+	<key>%ld hours</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_hours@</string>
+		<key>num_hours</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 Stunden</string>
+			<key>one</key>
+			<string>1 Stunde</string>
+			<key>other</key>
+			<string>%ld Stunden</string>
+		</dict>
+	</dict>
+	<key>%ld hrs</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_hrs@</string>
+		<key>num_hrs</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 Std.</string>
+			<key>one</key>
+			<string>1 Std.</string>
+			<key>other</key>
+			<string>%ld Std.</string>
+		</dict>
+	</dict>
+	<key>%ld minutes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_minutes@</string>
+		<key>num_minutes</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 Minuten</string>
+			<key>one</key>
+			<string>1 Minute</string>
+			<key>other</key>
+			<string>%ld Minuten</string>
+		</dict>
+	</dict>
+	<key>%ld mins</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_mins@</string>
+		<key>num_mins</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 Min.</string>
+			<key>one</key>
+			<string>1 Min.</string>
+			<key>other</key>
+			<string>%ld Min.</string>
+		</dict>
+	</dict>
+	<key>After %ld hours</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_hours@</string>
+		<key>num_hours</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>sofort</string>
+			<key>one</key>
+			<string>Nach 1 Stunde</string>
+			<key>other</key>
+			<string>Nach %ld Stunden</string>
+		</dict>
+	</dict>
+	<key>After %ld minutes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_minutes@</string>
+		<key>num_minutes</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>sofort</string>
+			<key>one</key>
+			<string>Nach 1 minute</string>
+			<key>other</key>
+			<string>Nach %ld minuten</string>
+		</dict>
+	</dict>
+	<key>%ld months</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_months@</string>
+		<key>num_months</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 Monate</string>
+			<key>one</key>
+			<string>1 Monat</string>
+			<key>other</key>
+			<string>%ld Monate</string>
+		</dict>
+	</dict>
+	<key>%ld mos</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_mos@</string>
+		<key>num_mos</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 M</string>
+			<key>one</key>
+			<string>1 M</string>
+			<key>other</key>
+			<string>%ld M</string>
+		</dict>
+	</dict>
+	<key>%ld years</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_years@</string>
+		<key>num_years</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 Jahre</string>
+			<key>one</key>
+			<string>1 Jahr</string>
+			<key>other</key>
+			<string>%ld Jahre</string>
+		</dict>
+	</dict>
+	<key>%ld yrs</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_yrs@</string>
+		<key>num_yrs</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 J</string>
+			<key>one</key>
+			<string>1 J</string>
+			<key>other</key>
+			<string>%ld J</string>
+		</dict>
+	</dict>
+	<key>%ld days before</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_days@</string>
+		<key>num_days</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>Pünktlich</string>
+			<key>one</key>
+			<string>1 Tag vorher</string>
+			<key>other</key>
+			<string>%ld Tage vor</string>
+		</dict>
+	</dict>
+	<key>%ld Days Left</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_days@</string>
+		<key>num_days</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>Heute</string>
+			<key>one</key>
+			<string>morgen</string>
+			<key>other</key>
+			<string>Noch %ld Tage</string>
+		</dict>
+	</dict>
+	<key>%ld weeks</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_weeks@</string>
+		<key>num_weeks</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 Wochen</string>
+			<key>one</key>
+			<string>1 Woche</string>
+			<key>other</key>
+			<string>%ld Wochen</string>
+		</dict>
+	</dict>
+	<key>%ld days</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_days@</string>
+		<key>num_days</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 Tage</string>
+			<key>one</key>
+			<string>1 Tag</string>
+			<key>other</key>
+			<string>%ld Tage</string>
+		</dict>
+	</dict>
+	<key>%ld seconds</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_seconds@</string>
+		<key>num_seconds</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>0 Sekunden</string>
+			<key>one</key>
+			<string>1 Sekunde</string>
+			<key>other</key>
+			<string>%ld Sekunden</string>
+		</dict>
+	</dict>
+	<key>%ld Events</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_events@</string>
+		<key>num_events</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>Kein Ereignis</string>
+			<key>one</key>
+			<string>1 Ereignis</string>
+			<key>other</key>
+			<string>%ld Ereignisse</string>
+		</dict>
+	</dict>
+    <key>%ld Delete Translation</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_delete_translation@</string>
+		<key>num_delete_translation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>Übersetzung Löschen</string>
+			<key>one</key>
+			<string>Übersetzung Löschen</string>
+			<key>other</key>
+			<string>Übersetzungen Löschen</string>
+		</dict>
+	</dict>
+	<key>During %ld days</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_minutes@</string>
+		<key>num_minutes</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>Während 0 Tages</string>
+			<key>one</key>
+			<string>Während 1 Tages</string>
+			<key>other</key>
+			<string>Während %ld Tagen</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -826,7 +826,6 @@
 "Text" = "일반문자열";
 "Number" = "숫자형식";
 "Phone" = "전화번호";
-"Email" = "이메일";
 "Date" = "날짜";
 "Normal" = "모두 표시";
 "Password Style" = "암호형으로 표시";
@@ -886,3 +885,12 @@
 
 "Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "위치 서비스가 꺼져 있습니다. 날씨를 보시려면, 장치의 설정 > 개인 정보 보호 > 위치 서비스로 이동해서 위치 서비스를 켜고, AppBox Pro가 위치 서비스를 이용할 수 있도록 해주세요.";
 "Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "위치 서비스가 켜져 있기는 하지만, AppBox Pro의 위치 서비스 접근이 차단되어 있습니다. 날씨를 보시려면 장치의 설정 > 개인 정보 보호 > 위치 서비스로 이동해서 AppBox Pro가 위치 서비스를 이용할 수 있도록 허용해 주세요.";
+
+"daily" = "매일";
+"weekly" = "매주";
+"biweekly" = "매2주";
+"monthly" = "매월";
+"yearly" = "매년";
+
+"No Photos" = "사진이 없습니다.";
+"You can add photos into events." = "이벤트에 사진을 넣어보세요.";
