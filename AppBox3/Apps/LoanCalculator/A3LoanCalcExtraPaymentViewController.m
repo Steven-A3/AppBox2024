@@ -136,9 +136,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 - (NSMutableArray *)years
 {
     if (!_years) {
-        
         // 1800 ~ 2200년까지
-        //Create Years Array from 1960 to This year
+        // Create Years Array from 1960 to This year
         _years = [[NSMutableArray alloc] init];
         for (int i=1800; i<=2200; i++) {
             [_years addObject:@(i).stringValue];
@@ -347,7 +346,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 - (NSInteger)pickerView:(UIPickerView *)thePickerView numberOfRowsInComponent:(NSInteger)component
 {
     if (_exPaymentType == A3LC_ExtraPaymentYearly) {
-        return [_pickerDataSource_0 count];
+        return [self.months count];
     }
     else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
         if (component == 0) {
