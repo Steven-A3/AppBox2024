@@ -54,6 +54,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     self.tableView.separatorColor = [self tableViewSeparatorColor];
 
     [self.tableView registerNib:[UINib nibWithNibName:@"A3UnitPriceHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitPriceHistoryCellID];
+    [self.currencyFormatter setMaximumFractionDigits:2];
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
