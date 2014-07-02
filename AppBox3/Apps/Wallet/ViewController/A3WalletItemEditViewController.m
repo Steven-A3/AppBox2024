@@ -553,6 +553,10 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 }
 
 - (void)dateChanged:(UIDatePicker *)sender {
+    if (!self.dateInputIndexPath) {
+        return;
+    }
+    
 	WalletFieldItem *fieldItem = [self fieldItemForIndexPath:self.dateInputIndexPath create:YES];
 	fieldItem.date = sender.date;
 
