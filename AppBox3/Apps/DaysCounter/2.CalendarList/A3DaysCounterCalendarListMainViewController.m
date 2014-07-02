@@ -154,6 +154,8 @@
     [self mySearchDisplayController];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    
     [self setupInstructionView];
 	[self registerContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {

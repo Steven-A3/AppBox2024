@@ -381,7 +381,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 		return NO;
 	}
-	}
+}
 
 #pragma mark - Migrate Local Data
 

@@ -1492,8 +1492,6 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             [localNotifications addObject:notification];
         }
     }];
-
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 + (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event

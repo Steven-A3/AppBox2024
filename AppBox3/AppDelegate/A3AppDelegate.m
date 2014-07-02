@@ -293,6 +293,8 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 	}
 
 	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    
 	FNLOG(@"%@", _localNotificationUserInfo[A3LocalNotificationDataID]);
 
 	DaysCounterEvent *eventItem = [DaysCounterEvent MR_findFirstByAttribute:@"uniqueID" withValue:_localNotificationUserInfo[A3LocalNotificationDataID]];

@@ -1474,6 +1474,7 @@
 	[_eventItem moveImagesToOriginalDirectory];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
 	if (IS_IPAD) {
 		[self.A3RootViewController dismissCenterViewController];

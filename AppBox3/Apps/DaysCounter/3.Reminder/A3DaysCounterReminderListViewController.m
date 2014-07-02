@@ -57,7 +57,7 @@
     [self makeBackButtonEmptyArrow];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
-
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
