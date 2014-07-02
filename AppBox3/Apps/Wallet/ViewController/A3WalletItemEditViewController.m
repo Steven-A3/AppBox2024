@@ -1609,6 +1609,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	inputCell.valueTextField.placeholder = field.name;
 	inputCell.valueTextField.text = fieldItem.value;
 	inputCell.valueTextField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+    inputCell.valueTextField.enabled = YES;
 
 	cell = inputCell;
 	return cell;
