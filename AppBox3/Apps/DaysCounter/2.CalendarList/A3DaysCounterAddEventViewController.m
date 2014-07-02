@@ -1126,6 +1126,9 @@
             _eventItem.effectiveStartDate =[_eventItem.startDate solarDate];
             _eventItem.repeatEndDate = nil;
             
+            // EffectiveStartDate & EffectiveAlertDate 갱신.
+            [_sharedManager recalculateEventDatesForEvent:_eventItem];
+            
             // EndRepeatRow 제거.
             NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
             
