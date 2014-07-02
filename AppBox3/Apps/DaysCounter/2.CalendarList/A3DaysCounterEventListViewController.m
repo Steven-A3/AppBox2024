@@ -11,17 +11,14 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
-#import "SFKImage.h"
 #import "DaysCounterCalendar.h"
 #import "DaysCounterCalendar+Extension.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterDate.h"
 #import "A3DateHelper.h"
 #import "A3DaysCounterEventListEditViewController.h"
-#import "A3DateHelper.h"
 #import "A3RoundDateView.h"
 #import "A3DaysCounterSlideShowMainViewController.h"
-#import "A3DaysCounterCalendarListMainViewController.h"
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3DaysCounterReminderListViewController.h"
 #import "A3DaysCounterAddEventViewController.h"
@@ -29,8 +26,6 @@
 #import "A3DaysCounterEventListNameCell.h"
 #import "A3DaysCounterEventListSectionHeader.h"
 #import "A3WalletSegmentedControl.h"
-#import "NSDate+LunarConverter.h"
-#import "A3AppDelegate+appearance.h"
 #import "DaysCounterEvent+management.h"
 
 @interface A3DaysCounterEventListViewController () <UINavigationControllerDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, A3DaysCounterEventDetailViewControllerDelegate>
@@ -493,7 +488,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FNLOG();
     NSString *CellIdentifier = (_sortType == EventSortType_Name ? @"eventListNameCell" : @"eventListDateCell");
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -669,7 +663,6 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FNLOG();
     if ([indexPath row] >= [_sourceArray count]) {
         return NO;
     }
@@ -678,6 +671,7 @@
 }
 
 #pragma mark Cell & Item Data Related
+
 - (NSInteger)daysGapForItem:(DaysCounterEvent *)item {
     NSDate *today = [NSDate date];
     NSInteger resultDaysGap;

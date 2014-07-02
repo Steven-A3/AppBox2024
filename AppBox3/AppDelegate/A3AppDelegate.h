@@ -69,7 +69,7 @@ extern NSString *const A3CloudSeedDataCreated;		// BOOL, Key Value Store
 	UIAlertView *_cloudContentHealingAlert;
 	UIAlertView *_handleCloudContentWarningAlert;
 	UIAlertView *_handleLocalStoreAlert;
-	BOOL _needMigrateLocalDataToCloud;
+	BOOL _needsDataMigrationBetweenLocalCloud;
 }
 
 @property (strong, nonatomic) UIWindow *window;

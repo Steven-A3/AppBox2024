@@ -12,7 +12,6 @@
 #import "SFKImage.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3DaysCounterModelManager.h"
-#import "A3DataMigrationManager.h"
 #import "DaysCounterEvent+management.h"
 #import "NSString+conversion.h"
 #import "WalletFieldItem+initialize.h"
@@ -40,10 +39,8 @@
 #import "PercentCalcHistory.h"
 #import "SalesCalcHistory.h"
 #import "TipCalcHistory.h"
-#import "TipCalcRecently.h"
 #import "TranslatorFavorite.h"
 #import "TranslatorGroup.h"
-#import "TranslatorHistory+manager.h"
 #import "UnitHistory.h"
 #import "UnitPriceHistory.h"
 #import "UnitPriceInfo.h"
@@ -57,6 +54,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 @protocol UbiquityStoreManagerInternal <NSObject>
 
+- (NSMutableDictionary *)optionsForLocalStore;
 - (NSMutableDictionary *)optionsForCloudStoreURL:(NSURL *)cloudStoreURL;
 
 @end
@@ -73,11 +71,13 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 - (void)setupCloud {
 
 	self.ubiquityStoreManager = [[UbiquityStoreManager alloc] initWithDelegate:self];
+	self.ubiquityStoreManager.migrationStrategy = UbiquityStoreMigrationStrategyIOS;
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:USMStoreDidImportChangesNotification object:nil];
 }
 
 - (void)setCloudEnabled:(BOOL)enable deleteCloud:(BOOL)deleteCloud {
-	_needMigrateLocalDataToCloud = YES;
+	_needsDataMigrationBetweenLocalCloud = YES;
 
 	if (enable) {
 		if (deleteCloud) {
@@ -91,7 +91,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 		}
 	}
 	else {
-		[self.ubiquityStoreManager setCloudEnabled:NO];
+		[self.ubiquityStoreManager migrateCloudToLocal];
 	}
 	[self enableCloudForFiles:enable];
 
@@ -219,11 +219,11 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 		[self startDownloadAllFiles];
 
-		if (_needMigrateLocalDataToCloud) {
+		if (_needsDataMigrationBetweenLocalCloud) {
 			// Cloud data exist and we need to migrate.
 			// Delete seeding data before migrate because cloud already has seed data such as CurrencyFavorite
 
-			[self migrateLocalDataToCloudContext:self.managedObjectContext];
+			[self migrateLocalDataToCloudContext];
 		}
 
 		// Initial de duplication of redundant data.
@@ -259,31 +259,33 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 		[self deDupeForEntity:NSStringFromClass([WalletItem class])];
 
 	} else {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[A3CurrencyDataManager setupFavorites];
+		if (!_needsDataMigrationBetweenLocalCloud) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[A3CurrencyDataManager setupFavorites];
 
-			A3DaysCounterModelManager *modelManager = [A3DaysCounterModelManager new];
-			[modelManager prepareInContext:self.managedObjectContext];
+				A3DaysCounterModelManager *modelManager = [A3DaysCounterModelManager new];
+				[modelManager prepareInContext:self.managedObjectContext];
 
-			A3LadyCalendarModelManager *dataManager = [A3LadyCalendarModelManager new];
-			[dataManager prepareAccountInContext:self.managedObjectContext ];
-			if ([WalletCategory MR_countOfEntities] == 0) {
-				[WalletCategory resetWalletCategoriesInContext:self.managedObjectContext ];
-			}
+				A3LadyCalendarModelManager *dataManager = [A3LadyCalendarModelManager new];
+				[dataManager prepareAccountInContext:self.managedObjectContext];
+				if ([WalletCategory MR_countOfEntities] == 0) {
+					[WalletCategory resetWalletCategoriesInContext:self.managedObjectContext];
+				}
 
-			if ([UnitConvertItem MR_countOfEntities] == 0) {
-				[UnitConvertItem reset];
-			}
-			if ([UnitFavorite MR_countOfEntities] == 0) {
-				[UnitFavorite reset];
-			}
-			if (![UnitType MR_countOfEntities]) {
-				[UnitType resetUnitTypeLists];
-			}
-			if ([UnitPriceFavorite MR_countOfEntities] == 0) {
-				[UnitPriceFavorite reset];
-			}
-		});
+				if ([UnitConvertItem MR_countOfEntities] == 0) {
+					[UnitConvertItem reset];
+				}
+				if ([UnitFavorite MR_countOfEntities] == 0) {
+					[UnitFavorite reset];
+				}
+				if (![UnitType MR_countOfEntities]) {
+					[UnitType resetUnitTypeLists];
+				}
+				if ([UnitPriceFavorite MR_countOfEntities] == 0) {
+					[UnitPriceFavorite reset];
+				}
+			});
+		}
 	}
 
 	[self coreDataReady];
@@ -379,18 +381,11 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 		return NO;
 	}
-}
-
-- (BOOL)ubiquityStoreManager:(UbiquityStoreManager *)manager shouldMigrateFromStoreURL:(NSURL *)migrationStoreURL
-				  toStoreURL:(NSURL *)destinationStoreURL isCloud:(BOOL)isCloudStore {
-	// If it asks to migrate local data, it means we don't need to migrate data local data.
-	_needMigrateLocalDataToCloud = NO;
-	return isCloudStore;
-}
+	}
 
 #pragma mark - Migrate Local Data
 
-- (void)migrateLocalDataToCloudContext:(NSManagedObjectContext *)cloudContext {
+- (void)migrateLocalDataToCloudContext {
 	NSURL *localStoreURL = self.ubiquityStoreManager.localStoreURL;
 	if (![[NSFileManager defaultManager] fileExistsAtPath:[localStoreURL path]]) {
 		return;
@@ -635,7 +630,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	if (enable) {
 		[self moveFilesToCloud];
 	} else {
-		[self moveFilesFromCloud];
+		[self copyFilesFromCloud];
 	}
 }
 
@@ -680,13 +675,13 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	});
 }
 
-- (void)moveFilesFromCloud {
-	[self moveFilesFromCloudInDirectory:A3DaysCounterImageDirectory];
-	[self moveFilesFromCloudInDirectory:A3WalletImageDirectory];
-	[self moveFilesFromCloudInDirectory:A3WalletVideoDirectory];
+- (void)copyFilesFromCloud {
+	[self copyFilesFromCloudInDirectory:A3DaysCounterImageDirectory];
+	[self copyFilesFromCloudInDirectory:A3WalletImageDirectory];
+	[self copyFilesFromCloudInDirectory:A3WalletVideoDirectory];
 }
 
-- (void)moveFilesFromCloudInDirectory:(NSString *)directory {
+- (void)copyFilesFromCloudInDirectory:(NSString *)directory {
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
 		NSFileManager *fileManager = [[NSFileManager alloc] init];
 		NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
@@ -700,15 +695,20 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 			NSString *filename = [cloudURL lastPathComponent];
 
 			NSURL *localURL = [NSURL fileURLWithPath:[[directory stringByAppendingPathComponent:filename] pathInLibraryDirectory] ];
+
+			NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
 			NSError *error;
-			[fileManager setUbiquitous:NO
-							 itemAtURL:cloudURL
-						destinationURL:localURL
-								 error:&error];
+			[fileCoordinator coordinateReadingItemAtURL:cloudURL
+												options:NSFileCoordinatorReadingWithoutChanges
+									   writingItemAtURL:localURL
+												options:NSFileCoordinatorWritingForReplacing
+												  error:&error
+											 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
+												 [fileManager removeItemAtURL:newWritingURL error:NULL];
+												 [fileManager copyItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
+											 }];
 			if (error) {
-				FNLOG(@"%@, %@", error.localizedDescription, error.localizedFailureReason);
-			} else {
-				FNLOG(@"File moved back to local store: %@, %@", cloudURL, localURL);
+				FNLOG(@"%@", error.localizedDescription);
 			}
 		}
 	});

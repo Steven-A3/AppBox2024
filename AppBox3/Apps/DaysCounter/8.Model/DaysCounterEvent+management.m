@@ -143,8 +143,11 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 											  error:&error
 										 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
                                              [fileManager removeItemAtURL:newWritingURL error:NULL];
-                                             [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
-											 [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:NULL];
+											 if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+												 [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:NULL];
+											 } else {
+												 [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
+											 }
 										 }];
 		if (error) {
 			FNLOG(@"%@", error.localizedDescription);

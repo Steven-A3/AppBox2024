@@ -310,8 +310,12 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                                                      result = [fileManager removeItemAtURL:newWritingURL error:NULL];
                                                      NSAssert(result, @"result");
                                                  }
-                                                 
-                                                 result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
+
+												 if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+													 result = [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:NULL];
+												 } else {
+													 result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
+												 }
                                                  NSAssert(result, @"result");
                                              }];
                 NSAssert([fileManager fileExistsAtPath:[photoImageURLInOriginalDirectory path]], @"[fileManager fileExistsAtPath:[photoImageURLInOriginalDirectory path]");
@@ -370,8 +374,12 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                                                  if (![fileManager fileExistsAtPath:[newReadingURL path]]) {
                                                      FNLOG(@"\n  if (![fileManager fileExistsAtPath:[newReadingURL path]]) ");
                                                  }
-                                                 
-												 result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:&error2];
+
+												 if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+													 result = [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:NULL];
+												 } else {
+													 result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:&error2];
+												 }
                                                  if (error2) {
                                                      FNLOG(@"\n%@", [error2 localizedDescription]);
                                                  }
