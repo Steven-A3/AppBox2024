@@ -22,9 +22,9 @@
         case A3LC_CalculationForPrincipal:
             return NSLocalizedString(@"Principal", nil);
         case A3LC_CalculationForTermOfMonths:
-            return NSLocalizedString(@"Term(years)", nil);
-        case A3LC_CalculationForTermOfYears:
             return NSLocalizedString(@"Term(months)", nil);
+        case A3LC_CalculationForTermOfYears:
+            return NSLocalizedString(@"Term(years)", nil);
 
         default:
             return @"";

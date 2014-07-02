@@ -112,7 +112,8 @@ static NSString *CellIdentifier = @"Cell";
     cell.textLabel.font = [UIFont systemFontOfSize:17];
     
     switch (indexPath.section) {
-        case 0: {
+        case 0:
+        {
             cell.accessoryType = [A3DateCalcStateManager excludeOptions] == ExcludeOptions_None ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         }
             break;
@@ -149,7 +150,8 @@ static NSString *CellIdentifier = @"Cell";
     if (indexPath.section==0 && indexPath.row==0) {
         [A3DateCalcStateManager setExcludeOptions:ExcludeOptions_None];
         
-    } else if (indexPath.section==1) {
+    }
+    else if (indexPath.section==1) {
         switch (indexPath.row) {
             case 0:
             {
@@ -169,11 +171,17 @@ static NSString *CellIdentifier = @"Cell";
         }
     }
     
-    [tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    cell.accessoryType = [A3DateCalcStateManager excludeOptions] == ExcludeOptions_None ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     
-    if ([self.delegate respondsToSelector:@selector(excludeSettingDelegate)]) {
-        [self.delegate excludeSettingDelegate];
-    }
+    ExcludeOptions options = [A3DateCalcStateManager excludeOptions];
+    cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+    cell.accessoryType = options & ExcludeOptions_Saturday ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    
+    cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+    cell.accessoryType = options & ExcludeOptions_Sunday ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 

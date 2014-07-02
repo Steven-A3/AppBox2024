@@ -393,28 +393,9 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 			if ([textField.text length]) {
 				self.loanCalcData.extraPaymentYearly = inputNum;
                 
-                
-// TODO
-//                NSDate *pickDate = ![_loanCalcData extraPaymentYearlyDate] ? [NSDate date] : [_loanCalcData extraPaymentYearlyDate];
-//                NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:pickDate];
-//                NSInteger month = [components month];
-//                
-//                NSDateFormatter *df = [[NSDateFormatter alloc] init];
-//                [df setDateStyle:NSDateFormatterFullStyle];
-//                //            if (IS_IPAD) {
-//                //                NSArray *months = [df monthSymbols];
-//                //                NSString *monthText = months[month - 1];
-//                //                inputCell.textField.text = monthText;
-//                //            }
-//                //            else {
-//                //                NSArray *months = [df shortMonthSymbols];
-//                //                NSString *monthText = months[month - 1];
-//                //                inputCell.textField.text = monthText;
-//                //            }
-//                NSArray *months = [df monthSymbols];
-//                NSString *monthText = months[month - 1];
-//                inputCell.textField.text = monthText;
-                
+                if (![_loanCalcData extraPaymentYearlyDate]) {
+                    _loanCalcData.extraPaymentYearlyDate = [NSDate date];
+                }
 			}
 			NSNumber *data = self.loanCalcData.extraPaymentYearly;
 			textField.text = [self.loanFormatter stringFromNumber:data ? data : @0];
@@ -422,6 +403,10 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
 			if ([textField.text length]) {
 				self.loanCalcData.extraPaymentOneTime = inputNum;
+
+                if (![_loanCalcData extraPaymentOneTimeDate]) {
+                    _loanCalcData.extraPaymentOneTimeDate = [NSDate date];
+                }
 			}
 			NSNumber *data = self.loanCalcData.extraPaymentOneTime;
 			textField.text = [self.loanFormatter stringFromNumber:data ? data : @0];
@@ -442,12 +427,11 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         
         NSIndexPath *dateIP = [NSIndexPath indexPathForRow:1 inSection:0];
         NSIndexPath *pickerIP = [NSIndexPath indexPathForRow:2 inSection:0];
-        
+
         [self.tableView reloadRowsAtIndexPaths:@[dateIP] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView deleteRowsAtIndexPaths:@[pickerIP] withRowAnimation:UITableViewRowAnimationFade];
-        
         [self.tableView endUpdates];
-        
+
         _dateTextField = nil;
     }
 
