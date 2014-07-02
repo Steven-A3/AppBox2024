@@ -809,3 +809,12 @@
 /* 번역 의뢰 후 추가된 부분 */
 "Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather.";
 "Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather.";
+
+"daily" = "daily";
+"weekly" = "weekly";
+"biweekly" = "biweekly";
+"monthly" = "monthly";
+"yearly" = "yearly";
+
+"No Photos" = "No Photos";
+"You can add photos into events." = "You can add photos into events.";

@@ -562,7 +562,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         return NO;
     
     NSManagedObjectContext *context = [removeItem managedObjectContext];
-    BOOL retValue = NO;
+    BOOL retValue;
     if ( [removeItem MR_deleteInContext:context] ) {
         [context MR_saveToPersistentStoreAndWait];
         retValue = YES;

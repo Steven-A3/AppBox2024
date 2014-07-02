@@ -109,6 +109,11 @@
     if ([_eventsArray count] > 0) {
         [self setupInstructionView];
     }
+
+	UILabel *noPhotosLabel = (UILabel *) [self.view viewWithTag:10];
+	noPhotosLabel.text = NSLocalizedString(@"No Photos", nil);
+	UILabel *messageLabel = (UILabel *)[self.view viewWithTag:11];
+	messageLabel.text = NSLocalizedString(@"You can add photos into events.", nil);
 }
 
 - (void)removeObserver {

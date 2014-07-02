@@ -882,3 +882,12 @@ The start date must be before the end date.";
 "During 1 day" = "During 1 day";
 "During 28 days" = "During 28 days";
 
+
+"daily" = "daily";
+"weekly" = "weekly";
+"biweekly" = "biweekly";
+"monthly" = "monthly";
+"yearly" = "yearly";
+
+"No Photos" = "No Photos";
+"You can add photos into events." = "You can add photos into events.";
