@@ -450,16 +450,22 @@
 }
 
 #pragma mark Instruction Related
+
+static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3InstructionDidShowForWalletCategoryView";
+
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Wallet_2"]) {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForWalletCategoryView]) {
         [self showInstructionView];
     }
 }
 
 - (void)showInstructionView
 {
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForWalletCategoryView];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard     instantiateViewControllerWithIdentifier:@"Wallet_2"];
     self.instructionViewController.delegate = self;
     [self.tabBarController.view addSubview:self.instructionViewController.view];

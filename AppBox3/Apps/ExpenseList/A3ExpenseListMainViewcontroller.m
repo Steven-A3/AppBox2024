@@ -327,10 +327,13 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	return currencyCode;
 }
 
-#pragma mark Instructiown Related
+#pragma mark Instruction Related
+
+static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionDidShowForExpenseList";
+
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"ExpenseList"]) {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForExpenseList]) {
         if (IS_IPHONE) {
             [self moreButtonAction:nil];
         }
@@ -340,7 +343,10 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 - (void)showInstructionView
 {
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForExpenseList];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"ExpenseList"];
     self.instructionViewController.delegate = self;
     [self.navigationController.view addSubview:self.instructionViewController.view];

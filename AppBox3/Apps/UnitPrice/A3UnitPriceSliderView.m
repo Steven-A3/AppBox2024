@@ -179,6 +179,9 @@
     float unitPrice = _unitPriceValue;
     float pixelPerPrice = progressLineMaxWidth / _maxValue;
     
+    if (_unitPriceValue == _maxValue) {
+        
+    }
 
     // slider part
     // 경계값 체크

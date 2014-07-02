@@ -429,9 +429,12 @@
 }
 
 #pragma mark Instruction Related
+
+static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDidShowForCalculator";
+
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:StoryBoardID_Calcualtor]) {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForCalculator]) {
         [self showInstructionView];
     }
 }
@@ -443,9 +446,12 @@
     if (IS_LANDSCAPE) {
         return;
     }
-    
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
-    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Calcualtor"];
+
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForCalculator];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Calculator"];
     self.instructionViewController.delegate = self;
     [self.navigationController.view addSubview:self.instructionViewController.view];
 }

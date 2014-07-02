@@ -29,7 +29,6 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 @property (nonatomic, strong) HTCopyableLabel *expressionLabel;
 @property (nonatomic, strong) HTCopyableLabel *evaluatedResultLabel;
 @property (nonatomic, strong) UILabel *degreeandradianLabel;
-@property (nonatomic, strong) UILabel *basicandscientificLabel;
 //@property (nonatomic, strong) UIView *outline;
 @property (nonatomic, strong) A3Calculator *calculator;
 @property (strong, nonatomic) A3CalculatorButtonsViewController_iPad *calculatorkeypad;
@@ -39,6 +38,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, strong) UITextField *textFieldForPlayInputClick;
 @property (nonatomic, strong) A3KeyboardView *inputViewForPlayInputClick;
+@property (nonatomic, strong) UISegmentedControl *calculatorTypeSegment;
 
 @end
 
@@ -85,9 +85,52 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     }
 
 	[self addTextFieldForPlayInputClick];
+    
+    if (IS_IPAD) {
+        self.navigationItem.titleView = self.calculatorTypeSegment;
+    }
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
+}
+
+- (UISegmentedControl *)calculatorTypeSegment
+{
+    if (!_calculatorTypeSegment) {
+        _calculatorTypeSegment = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"Basic", @"Basic"), NSLocalizedString(@"Scientific", @"Scientific")]];
+        
+        [_calculatorTypeSegment setWidth:IS_IPAD ? 150:85 forSegmentAtIndex:0];
+        [_calculatorTypeSegment setWidth:IS_IPAD ? 150:85 forSegmentAtIndex:1];
+        
+        _calculatorTypeSegment.selectedSegmentIndex = 0;
+        [_calculatorTypeSegment addTarget:self action:@selector(calculatorTypeSegmentChanged:) forControlEvents:UIControlEventValueChanged];
+    }
+    
+    return _calculatorTypeSegment;
+}
+
+- (void)calculatorTypeSegmentChanged:(UISegmentedControl*)segment {
+    [_calculatorkeypad.view removeFromSuperview];
+    [_calculatorkeypad removeFromParentViewController];
+    _calculatorkeypad.view = nil;
+    _calculatorkeypad = nil;
+    
+    
+    if (segment.selectedSegmentIndex == 1)
+    {
+        scientific = YES;
+		[self setupScientificKeyPad];
+    }
+    else
+    {
+        scientific = NO;
+        [self setupBasicKeyPad];
+        
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setValue:scientific == YES ? A3CalculatorModeScientific : A3CalculatorModeBasic forKey:A3CalculatorMode];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+//    [self changeCalculatorKindString];
 }
 
 - (void)removeObserver {
@@ -200,17 +243,6 @@ NSString *const A3CalculatorModeScientific = @"scientific";
         make.bottom.equalTo(self.evaluatedResultLabel.bottom).with.offset(-9.5);
     }];
     
-    
-    [self.view addSubview:self.basicandscientificLabel];
-    [_basicandscientificLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view.left).with.offset(15);
-        make.top.equalTo(@95);
-    }];
-    
-    UITapGestureRecognizer *basicscientificTapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(basicScientificTapAction)];
-    [_basicandscientificLabel addGestureRecognizer:basicscientificTapped];
-    
-    
     _calculator = [[A3Calculator alloc] initWithLabel:_expressionLabel result:self.evaluatedResultLabel];
     _calculator.delegate = self;
     
@@ -221,9 +253,10 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     if ([[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorMode]){
         if([[[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorMode] isEqualToString:A3CalculatorModeScientific]) {
 			[self setupScientificKeyPad];
-            [self changeCalculatorKindString];
+            self.calculatorTypeSegment.selectedSegmentIndex = 1;
         } else {
             [self setupBasicKeyPad];
+            self.calculatorTypeSegment.selectedSegmentIndex = 0;
         }
     }
     else {
@@ -240,7 +273,6 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     [self.view addSubview:_calculatorkeypad.view];
     [self addChildViewController:_calculatorkeypad];
 
- //   [self setHorizontalLineForBasic];
     _degreeandradianLabel.hidden = YES;
     _calculatorkeypad.delegate = self;
     _calculatorkeypad.view.clipsToBounds = YES;
@@ -256,32 +288,6 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     _calculatorkeypad.delegate = self;
     _degreeandradianLabel.hidden = NO;
     _calculatorkeypad.view.clipsToBounds = YES;
-}
-
-
-- (void)basicScientificTapAction {
-    
-    [_calculatorkeypad.view removeFromSuperview];
-    [_calculatorkeypad removeFromParentViewController];
-    _calculatorkeypad.view = nil;
-    _calculatorkeypad = nil;
-    
-    if (scientific == NO)
-    {
-        scientific = YES;
-		[self setupScientificKeyPad];
-    }
-    else
-    {
-        scientific = NO;
-        [self setupBasicKeyPad];
-        
-    }
-    
-    [[NSUserDefaults standardUserDefaults] setValue:scientific == YES ? A3CalculatorModeScientific : A3CalculatorModeBasic forKey:A3CalculatorMode];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [self changeCalculatorKindString];
-    
 }
 
 -(void) radiandegreeChange {
@@ -336,32 +342,6 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     }
     
     return _degreeandradianLabel;
-}
-
--(void) changeCalculatorKindString {
-    _basicandscientificLabel.text = NSLocalizedString(@"Basic / Scientific", @"Basic / Scientific");
-    if(scientific == YES)
-    {
-		[_basicandscientificLabel boldSubstring:NSLocalizedString(@"Scientific", @"Scientific")];
-    }
-    else
-    {
-		[_basicandscientificLabel boldSubstring:NSLocalizedString(@"Basic", @"Basic")];
-    }
-    
-}
-
-- (UILabel *)basicandscientificLabel {
-    if(!_basicandscientificLabel) {
-        _basicandscientificLabel = [UILabel new];
-        _basicandscientificLabel.font = [UIFont fontWithName:@"HelvecticaNeue-Light" size:17];
-        _basicandscientificLabel.textColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
-        _basicandscientificLabel.textAlignment = NSTextAlignmentLeft;
-        _basicandscientificLabel.userInteractionEnabled = YES;
-        [self changeCalculatorKindString];
-    }
-    
-    return _basicandscientificLabel;
 }
 
 - (void)didReceiveMemoryWarningo

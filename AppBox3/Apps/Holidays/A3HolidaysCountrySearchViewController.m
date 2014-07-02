@@ -58,6 +58,8 @@ static NSString *const CellIdentifier = @"Cell";
 			object.displayName = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:obj[kHolidayCountryCode]];
 			[_allData addObject:object];
 		}];
+
+		FNLOG(@"Supported Holidays Counter: %ld", (long)[countryCodes count]);
         
         [super setAllData:_allData];
 	}

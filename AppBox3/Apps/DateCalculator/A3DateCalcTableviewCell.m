@@ -30,7 +30,7 @@
 //        self.textLabel.contentMode = UIViewContentModeScaleAspectFit;
         
         UIEdgeInsets inset = self.separatorInset;
-        inset.left = 28.0;
+        inset.left = 15.0;
         self.separatorInset = inset;
     }
 }

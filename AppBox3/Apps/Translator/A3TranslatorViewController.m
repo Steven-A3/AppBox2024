@@ -130,9 +130,12 @@
 }
 
 #pragma mark Instruction Related
+
+static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDidShowForTranslator";
+
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Translator"]) {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForTranslator]) {
         [self showInstructionView];
     }
     self.navigationItem.rightBarButtonItem = [self instructionHelpBarButton];
@@ -143,8 +146,11 @@
     if (_segmentedControl.selectedSegmentIndex != 0) {
         return;
     }
-    
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForTranslator];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Translator"];
     self.instructionViewController.delegate = self;
     [self.navigationController.view addSubview:self.instructionViewController.view];

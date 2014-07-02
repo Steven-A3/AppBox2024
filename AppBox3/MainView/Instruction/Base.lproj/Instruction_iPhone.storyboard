@@ -195,7 +195,7 @@ color and more</string>
         <!--Calcualtor Instruction View Controller-->
         <scene sceneID="1HM-oD-8eX">
             <objects>
-                <viewController storyboardIdentifier="Calcualtor" useStoryboardIdentifierAsRestorationIdentifier="YES" id="CqD-rC-evQ" userLabel="Calcualtor Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Calculator" useStoryboardIdentifierAsRestorationIdentifier="YES" id="CqD-rC-evQ" userLabel="Calcualtor Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GnR-W6-NUG"/>
                         <viewControllerLayoutGuide type="bottom" id="rF6-js-3uf"/>

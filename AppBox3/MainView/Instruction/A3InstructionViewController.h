@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString *const A3StoryboardInstruction_iPhone;
+extern NSString *const A3StoryboardInstruction_iPad;
 extern NSString *const StoryBoardID_BatteryStatus;
-extern NSString *const StoryBoardID_Calcualtor;
+extern NSString *const StoryBoardID_Calculator;
 
 @protocol A3InstructionViewControllerDelegate <NSObject>
 @required

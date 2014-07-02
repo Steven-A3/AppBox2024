@@ -496,16 +496,22 @@ enum SortingKind {
 }
 
 #pragma mark Instruction Related
+
+static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3InstructionDidShowForWalletAllView";
+
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Wallet_1"]) {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForWalletAllView]) {
         [self showInstructionView];
     }
 }
 
 - (void)showInstructionView
 {
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForWalletAllView];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_1"];
     self.instructionViewController.delegate = self;
     [self.tabBarController.view addSubview:self.instructionViewController.view];

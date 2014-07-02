@@ -60,6 +60,7 @@ static NSString *CellIdentifier = @"Cell";
 	[self.tableView setShowsVerticalScrollIndicator:NO];
     self.tableView.tableFooterView = [UIView new];
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
@@ -102,7 +103,6 @@ static NSString *CellIdentifier = @"Cell";
     A3DateCalcTableviewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     cell.textLabel.text = self.sections[indexPath.section][indexPath.row];
-    //cell.textLabel.font = FONT_TABLE_TEXTLABEL_DEFAULT_SIZE(17);
     cell.textLabel.font = [UIFont systemFontOfSize:17];
     cell.textLabel.textColor = [UIColor blackColor];
     cell.userInteractionEnabled = YES;

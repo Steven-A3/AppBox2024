@@ -368,6 +368,9 @@
 	[self showMenus:_chooseColorButton.isHidden];
 }
 
+static NSString *const A3V3InstructionDidShowForClock1 = @"A3V3InstructionDidShowForClock1";
+static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClock2";
+
 - (void)showMenus:(BOOL)show {
 	if (_buttonsTimer) {
 		[_buttonsTimer invalidate];
@@ -387,12 +390,12 @@
 
     if (_useInstruction) {
         if (show) {
-            if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock2"]) {
+            if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
                 [self showInstructionView];
             }
         }
         else {
-            if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock1"]) {
+            if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1]) {
                 [self showInstructionView];
             }
         }
@@ -421,11 +424,12 @@
 }
 
 #pragma mark Instruction Related
+
 - (void)setupInstructionView
 {
     _useInstruction = YES;
     
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock1"]) {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1]) {
         [self showInstructionView];
     }
 }
@@ -438,8 +442,11 @@
     if (IS_IPHONE && IS_LANDSCAPE) {
         return;
     }
-    
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Instruction_iPhone" : @"Instruction_iPad" bundle:nil];
+
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:(_chooseColorButton.isHidden || !_chooseColorButton) ? A3V3InstructionDidShowForClock1 : A3V3InstructionDidShowForClock2];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:(_chooseColorButton.isHidden || !_chooseColorButton) ? @"Clock1" : @"Clock2"];
     self.instructionViewController.delegate = self;
     [self.navigationController.view addSubview:self.instructionViewController.view];
@@ -601,8 +608,8 @@
 - (void)helpButtonAction:(id)aSende
 {
     [self showMenus:NO];
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Clock1"];
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Clock2"];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3V3InstructionDidShowForClock1];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3V3InstructionDidShowForClock2];
     [self showInstructionView];
 }
 

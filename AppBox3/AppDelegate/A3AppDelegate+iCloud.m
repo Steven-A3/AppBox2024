@@ -107,13 +107,13 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)note {
-	NSArray *insertedObjects = [note.userInfo objectForKey:NSInsertedObjectsKey];
-//	NSArray *updatedObjects = [note.userInfo objectForKey:NSUpdatedObjectsKey];
-//	NSArray *deletedObjects = [note.userInfo objectForKey:NSDeletedObjectsKey];
+	FNLOG();
+	NSSet *insertedObjects = [note.userInfo objectForKey:NSInsertedObjectsKey];
 
 	NSMutableSet *candidates = [NSMutableSet new];
-	for (id insertedObject in insertedObjects) {
-		[candidates addObject:NSStringFromClass([insertedObject class])];
+	for (id insertedObjectID in [insertedObjects allObjects]) {
+		NSManagedObject *managedObject = [self.managedObjectContext objectWithID:insertedObjectID];
+		[candidates addObject:NSStringFromClass([managedObject class])];
 	}
 
 	for (NSString *className in [candidates allObjects]) {
@@ -158,6 +158,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3iCloudLastDBImportKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+	FNLOG();
 }
 
 - (NSManagedObjectContext *)ubiquityStoreManager:(UbiquityStoreManager *)manager
@@ -205,7 +206,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 - (void)ubiquityStoreManager:(UbiquityStoreManager *)manager didLoadStoreForCoordinator:(NSPersistentStoreCoordinator *)coordinator
 					 isCloud:(BOOL)isCloudStore {
-
+	FNLOG();
 	[self setPersistentStoreCoordinator:coordinator];
 	[self setupMagicalRecordStackWithCoordinator:coordinator];
 
@@ -224,6 +225,39 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 			[self migrateLocalDataToCloudContext:self.managedObjectContext];
 		}
+
+		// Initial de duplication of redundant data.
+		[self deDupeForEntity:NSStringFromClass([Calculation class])];
+		[self deDupeForEntity:NSStringFromClass([CurrencyFavorite class])];
+		[self deDupeForEntity:NSStringFromClass([CurrencyHistory class])];
+		[self deDupeForEntity:NSStringFromClass([DaysCounterCalendar class])];
+		[self deDupeForEntity:NSStringFromClass([DaysCounterEvent class])];
+		[self deDupeForEntity:NSStringFromClass([DaysCounterFavorite class])];
+		[self deDupeForEntity:NSStringFromClass([DaysCounterReminder class])];
+		[self deDupeForEntity:NSStringFromClass([ExpenseListHistory class])];
+		[self deDupeForEntity:NSStringFromClass([ExpenseListBudget class])];
+		[self deDupeForEntity:NSStringFromClass([ExpenseListCategories class])];
+		[self deDupeForEntity:NSStringFromClass([LadyCalendarAccount class])];
+		[self deDupeForEntity:NSStringFromClass([LadyCalendarPeriod class])];
+		[self deDupeForEntity:NSStringFromClass([LoanCalcComparisonHistory class])];
+		[self deDupeForEntity:NSStringFromClass([LoanCalcHistory class])];
+		[self deDupeForEntity:NSStringFromClass([PercentCalcHistory class])];
+		[self deDupeForEntity:NSStringFromClass([SalesCalcHistory class])];
+		[self deDupeForEntity:NSStringFromClass([TipCalcHistory class])];
+		[self deDupeForEntity:NSStringFromClass([TranslatorFavorite class])];
+		[self deDupeForEntity:NSStringFromClass([TranslatorGroup class])];
+		[self deDupeForEntity:NSStringFromClass([UnitItem class])];
+		[self deDupeForEntity:NSStringFromClass([UnitConvertItem class])];
+		[self deDupeForEntity:NSStringFromClass([UnitFavorite class])];
+		[self deDupeForEntity:NSStringFromClass([UnitHistory class])];
+		[self deDupeForEntity:NSStringFromClass([UnitPriceFavorite class])];
+		[self deDupeForEntity:NSStringFromClass([UnitPriceHistory class])];
+		[self deDupeForEntity:NSStringFromClass([UnitPriceInfo class])];
+		[self deDupeForEntity:NSStringFromClass([UnitType class])];
+		[self deDupeForEntity:NSStringFromClass([WalletCategory class])];
+		[self deDupeForEntity:NSStringFromClass([WalletFavorite class])];
+		[self deDupeForEntity:NSStringFromClass([WalletItem class])];
+
 	} else {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[A3CurrencyDataManager setupFavorites];
@@ -254,10 +288,13 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 	[self coreDataReady];
 
+	FNLOG();
 	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 	[A3LadyCalendarModelManager setupLocalNotification];
+	FNLOG();
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCoreDataReady object:nil];
+	FNLOG();
 
 	if (self.hud) {
 		__typeof(self) __weak weakSelf = self;
@@ -351,7 +388,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	return isCloudStore;
 }
 
-#pragma mark - Migrate Local Data and remove duplication
+#pragma mark - Migrate Local Data
 
 - (void)migrateLocalDataToCloudContext:(NSManagedObjectContext *)cloudContext {
 	NSURL *localStoreURL = self.ubiquityStoreManager.localStoreURL;
@@ -376,7 +413,6 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	[psc unlock];
 
 	if ([[NSFileManager defaultManager] fileExistsAtPath:[localStoreURL path]]) {
-		FNLOG(@"File did not removed after migration.");
 		[[NSFileManager defaultManager] removeItemAtURL:localStoreURL error:NULL];
 		NSString *path = [localStoreURL path];
 		[[NSFileManager defaultManager] removeItemAtPath:[path stringByAppendingString:@"-shm"] error:NULL];
@@ -430,6 +466,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 }
 
 - (void)deDupeForEntity:(NSString *)entityName {
+	FNLOG();
 	//if importNotification, scope dedupe by inserted records
 	//else no search scope, prey for efficiency.
 	NSError *error = nil;
@@ -515,6 +552,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	} else {
 		FNLOG(@"Error saving unique results: %@", error);
 	}
+	FNLOG();
 }
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {

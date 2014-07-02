@@ -757,7 +757,10 @@
      #회색 처리된 circle 도, 탭 가능.
      */
 
-	self.dateKeyboardViewController = self.newDateKeyboardViewController;
+    if (!self.dateKeyboardViewController) {
+        self.dateKeyboardViewController = self.newDateKeyboardViewController;
+    }
+	
 	[self.dateKeyboardViewController changeInputToYear];
 
 	if (!self.isAddSubMode) {
@@ -789,7 +792,10 @@
 }
 
 -(void)dateCalcHeaderToThumbTapped {
-	self.dateKeyboardViewController = self.newDateKeyboardViewController;
+    if (!self.dateKeyboardViewController) {
+        self.dateKeyboardViewController = self.newDateKeyboardViewController;
+    }
+	
 	[self.dateKeyboardViewController changeInputToYear];
 
 	if (!self.isAddSubMode) {
