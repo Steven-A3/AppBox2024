@@ -12,6 +12,7 @@
 #import "FXPageControl.h"
 #import "A3ExpressionComponent.h"
 #import "UIViewController+A3Addition.h"
+#import "UIViewController+MMDrawerController.h"
 #import "A3Calculator.h"
 #import "Calculation.h"
 #import "A3CalculatorHistoryViewController.h"
@@ -358,6 +359,10 @@
 }
 
 - (NSUInteger)a3SupportedInterfaceOrientations {
+    if (IS_IPHONE && self.mm_drawerController.openSide == MMDrawerSideLeft) {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
