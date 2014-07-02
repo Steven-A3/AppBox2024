@@ -828,8 +828,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		NSIndexPath *pickerIndexPath = [NSIndexPath indexPathForRow:dateIndexPath.row+1 inSection:0];
         [self.tableView insertRowsAtIndexPaths:@[pickerIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView endUpdates];
-
-		[self.tableView scrollToRowAtIndexPath:pickerIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 	}
 }
 
@@ -840,9 +838,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
         
         NSUInteger idx = [_sectionItems indexOfObject:self.dateInputItem];
         [_sectionItems removeObject:self.dateInputItem];
-        [self.tableView reloadRowsAtIndexPaths:@[self.dateInputIndexPath, [NSIndexPath indexPathForRow:self.dateInputIndexPath.row + 3 inSection:self.dateInputIndexPath.section], self.currentIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView reloadRowsAtIndexPaths:@[self.dateInputIndexPath] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-//        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:self.dateInputIndexPath.section] withRowAnimation:UITableViewRowAnimationNone];
 
         self.dateInputIndexPath = nil;
         [self.tableView endUpdates];
@@ -1263,7 +1260,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
 	FNLOG();
-	self.firstResponder = nil;
+    if (textField == self.firstResponder) {
+        self.firstResponder = nil;
+    }
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
@@ -1316,6 +1315,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			NSIndexPath *ip = [NSIndexPath indexPathForRow:startIdx inSection:0];
 			A3WalletNoteCell *noteCell = (A3WalletNoteCell *)[self.tableView cellForRowAtIndexPath:ip];
 			[noteCell.textView becomeFirstResponder];
+            self.firstResponder = nil;
 		});
 	}
 	else {
@@ -1409,10 +1409,15 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
             else if ([field.type isEqualToString:WalletFieldTypeImage]) {
                 if ([_sectionItems containsObject:self.dateInputItem]) {
                     if (self.dateInputIndexPath.row < self.currentIndexPath.row) {
+                        [self dismissDatePicker];
                         _currentIndexPath = [NSIndexPath indexPathForRow:_currentIndexPath.row - 1 inSection:_currentIndexPath.section];
                     }
+                    else {
+                        [self dismissDatePicker];
+                    }
                     
-                    [self dismissDatePicker];
+                    
+                    [self.tableView reloadRowsAtIndexPaths:@[self.currentIndexPath] withRowAnimation:UITableViewRowAnimationNone];
                 }
 
 				UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:_currentFieldItem.image != nil delegate:self];
@@ -1446,8 +1451,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                                                         otherButtonTitles:nil];
         actionSheet.tag = 3;
         [actionSheet showInView:self.view];
-
-        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
