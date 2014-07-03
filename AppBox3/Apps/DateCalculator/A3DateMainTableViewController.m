@@ -1493,7 +1493,10 @@
     else if (indexPath.section == 1) {
         // From, To Date Input
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-		self.dateKeyboardViewController = self.newDateKeyboardViewController;
+        if (!self.dateKeyboardViewController) {
+            self.dateKeyboardViewController = self.newDateKeyboardViewController;
+        }
+
 		[self.dateKeyboardViewController changeInputToYear];
         if ([indexPath row] == 0) {
             self.dateKeyboardViewController.date = self.fromDate;
