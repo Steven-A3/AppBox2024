@@ -12,10 +12,11 @@
 "5dF-dl-Cfh.text" = "Darlehensrechner";
 
 /* Class = "IBUILabel"; text = "well designed for both iPhone and iPad"; ObjectID = "73z-Fm-nHB"; */
-"73z-Fm-nHB.text" = "ansprechend gestaltet für iPhone und iPad";
+"73z-Fm-nHB.text" = "ansprechend gestaltet für
+iPhone und iPad";
 
 /* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7KY-kl-Ksz"; */
-"7KY-kl-Ksz.text" = "Standard / Wissenschaftlich Taschenrechner";
+"7KY-kl-Ksz.text" = "Standard/Wissenschaftlich";
 
 /* Class = "IBUILabel"; text = "Mirror"; ObjectID = "86S-LG-bmW"; */
 "86S-LG-bmW.text" = "Spiegel";
@@ -34,8 +35,7 @@
 
 /* Class = "IBUILabel"; text = "keep your data up to date
 on all your devices"; ObjectID = "K25-Dj-0hb"; */
-"K25-Dj-0hb.text" = "halten Sie Ihre Daten auf dem aktuellen Stand
-auf allen Ihren Geräten";
+"K25-Dj-0hb.text" = "halten Sie Ihre Daten auf dem aktuellen Standauf allen Ihren Geräten";
 
 /* Class = "IBUILabel"; text = "Improvements and Optimizations"; ObjectID = "LH1-Sz-F5c"; */
 "LH1-Sz-F5c.text" = "Weiterentwicklungen und Optimierungen";

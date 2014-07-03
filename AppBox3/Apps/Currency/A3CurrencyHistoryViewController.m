@@ -53,7 +53,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
     self.tableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
 
 	UILabel *notice = [[UILabel alloc] init];
-	notice.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	notice.font = [UIFont systemFontOfSize:13];
 	notice.textColor = [UIColor blackColor];
 	notice.text = NSLocalizedString(@"Each history keeps max 4 currencies.", @"Each history keeps max 4 currencies.");
 	notice.textAlignment = NSTextAlignmentCenter;

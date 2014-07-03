@@ -203,3 +203,10 @@
 
 /* Class = "IBUILabel"; text = "Chinese"; ObjectID = "zD5-Op-8e3"; */
 "zD5-Op-8e3.text" = "중국음력";
+
+/* Class = "IBUILabel"; text = "Chinese"; ObjectID = "S47-yQ-cP7"; */
+"S47-yQ-cP7.text" = "중국음력";
+
+/* Class = "IBUILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
+"alM-Rl-6AW.text" = "한국음력";
+

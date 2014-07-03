@@ -9,8 +9,9 @@
 #import "A3UnitPriceInputView.h"
 
 @interface A3UnitPriceInputView ()
-{
-}
+
+@property (weak, nonatomic) IBOutlet UILabel *unitPriceTitleLabel, *priceTitleLabel, *unitTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *sizeTitleLabel, *quantityTitleLabel, *discountTitleLabel;
 
 @end
 
@@ -86,6 +87,13 @@
     _markLabel.layer.cornerRadius = _markLabel.bounds.size.width/2;
     _markLabel.font = [UIFont systemFontOfSize:11];
     _markLabel.backgroundColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
+
+	_unitPriceTitleLabel.text = NSLocalizedString(@"UNIT PRICE", @"UNIT PRICE");
+	_priceTitleLabel.text = NSLocalizedString(@"PRICE", @"PRICE");
+	_unitTitleLabel.text = NSLocalizedString(@"UNIT", @"UNIT");
+	_sizeTitleLabel.text = NSLocalizedString(@"SIZE", @"SIZE");
+	_quantityTitleLabel.text = NSLocalizedString(@"QUANTITY", @"QUANTITY");
+	_discountTitleLabel.text = NSLocalizedString(@"DISCOUNT", @"DISCOUNT");
 }
 
 - (IBAction)buttonTapped:(UIButton *)sender {

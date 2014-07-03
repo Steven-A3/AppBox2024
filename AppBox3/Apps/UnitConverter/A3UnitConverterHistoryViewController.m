@@ -89,7 +89,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 
 - (void)setupTableFooterView {
 	UILabel *notice = [[UILabel alloc] init];
-	notice.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	notice.font = [UIFont systemFontOfSize:13];
 	notice.textColor = [UIColor blackColor];
 	notice.text = NSLocalizedString(@"Each history keeps max 4 units.", @"Each history keeps max 4 units.");
 	notice.textAlignment = NSTextAlignmentCenter;

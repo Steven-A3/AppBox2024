@@ -46,7 +46,9 @@
     _unitPriceValue = 0;
     _priceValue = 0;
     _maxValue = 0;
-    
+
+	_unitPriceLabel.text = NSLocalizedString(@"Unit Price", nil);
+	_priceLabel.text = NSLocalizedString(@"Price", nil);
     [self labelFontSetting];
     [self initialize];
 }

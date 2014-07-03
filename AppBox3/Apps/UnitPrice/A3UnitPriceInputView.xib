@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -132,12 +132,18 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="discountLabel" destination="2tk-fn-vIj" id="kWC-BG-ea4"/>
+                <outlet property="discountTitleLabel" destination="lZR-JR-sqF" id="wg8-up-lDU"/>
                 <outlet property="markLabel" destination="kMJ-xB-FYi" id="rN1-CK-HU3"/>
                 <outlet property="priceLabel" destination="LaY-P5-ycU" id="qrq-pi-zSV"/>
+                <outlet property="priceTitleLabel" destination="dqe-vD-AM6" id="diE-05-KIr"/>
                 <outlet property="quantityLabel" destination="mFK-Bl-VuF" id="8jy-f0-cN6"/>
+                <outlet property="quantityTitleLabel" destination="bwP-6I-hPd" id="Irr-eF-hHF"/>
                 <outlet property="sizeLabel" destination="LAl-lh-VnG" id="OvU-62-GLq"/>
+                <outlet property="sizeTitleLabel" destination="4B8-IG-5t4" id="UWW-tJ-UHC"/>
                 <outlet property="unitLabel" destination="gBM-Z0-Sbr" id="vNA-LQ-Wo6"/>
                 <outlet property="unitPriceBtn" destination="yso-wd-0bj" id="C8t-0O-00d"/>
+                <outlet property="unitPriceTitleLabel" destination="6Tl-Uh-S3d" id="U49-2S-9W6"/>
+                <outlet property="unitTitleLabel" destination="pOQ-w8-DFb" id="pcC-3i-usr"/>
                 <outletCollection property="lineViews" destination="6NF-CV-mN6" id="gvD-XO-xw6"/>
                 <outletCollection property="lineViews" destination="uYx-Bb-o9O" id="1TC-Xq-9fm"/>
                 <outletCollection property="lineViews" destination="H5U-Ot-ZUK" id="8uh-pf-Sr7"/>
