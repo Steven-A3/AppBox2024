@@ -289,13 +289,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
                         dateText = NSLocalizedString(@"None", @"None");
                     }
 
-
-                    if (IS_IPAD) {
-                        valueLB.text = [NSString stringWithFormat:@"%@ %@ %@", currencyText, NSLocalizedString(@"yearly", @"yearly"), dateText];
-                    }
-                    else {
-                        valueLB.text = [NSString stringWithFormat:@"%@ %@", currencyText, dateText];
-                    }
+                    valueLB.text = [NSString stringWithFormat:@"%@ %@", currencyText, dateText];
                     break;
                 }
                 case A3LC_ExtraPaymentOnetime:

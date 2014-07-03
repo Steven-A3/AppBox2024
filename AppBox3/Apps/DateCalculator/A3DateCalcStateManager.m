@@ -155,10 +155,10 @@ static DurationType g_currentDurationType;
         [result addObject:NSLocalizedString(@"Weekends", @"Weekends")];
     } else {
         if (ExcludeOptions_Saturday & options) {
-            [result addObject:NSLocalizedString(@"Sat", @"Sat")];
+            [result addObject:IS_IPHONE ? NSLocalizedString(@"Sat", @"Sat") : NSLocalizedString(@"Saturday", @"Saturday")];
         }
         if (ExcludeOptions_Sunday & options) {
-            [result addObject:NSLocalizedString(@"Sun", @"Sun")];
+            [result addObject:IS_IPHONE ? NSLocalizedString(@"Sun", @"Sun") : NSLocalizedString(@"Sunday", @"Sunday")];
         }
     }
     
