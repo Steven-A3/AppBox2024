@@ -39,7 +39,7 @@
 		[self addSubview:_editButton];
 
 		[_editButton makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(_titleLabel.right).with.offset(20);
+			make.left.equalTo(_titleLabel.right).with.offset(8);
 			make.baseline.equalTo(_titleLabel.baseline);
 		}];
 
@@ -54,7 +54,11 @@
 }
 
 - (void)setupFont {
-	_titleLabel.font = IS_IPHONE ? [UIFont boldSystemFontOfSize:17] : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+	if ([[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"]) {
+		_titleLabel.font = IS_IPHONE ? [UIFont boldSystemFontOfSize:16] : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+	} else {
+		_titleLabel.font = IS_IPHONE ? [UIFont boldSystemFontOfSize:17] : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+	}
 	_subTitleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:13] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 }
 

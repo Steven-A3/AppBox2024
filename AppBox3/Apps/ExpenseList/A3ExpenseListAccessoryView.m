@@ -40,34 +40,48 @@
 - (void)initializeSubviews
 {
     _toolBar = [[UIToolbar alloc] initWithFrame:self.frame];
-    _undoButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Undo", @"Undo")
-                                                   style:UIBarButtonItemStylePlain
-                                                  target:self
-                                                  action:@selector(undoButtonTouchUp:)];
-    _redoButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Redo", @"Redo")
-                                                   style:UIBarButtonItemStylePlain
-                                                  target:self
-                                                  action:@selector(redoButtonTouchUp:)];
     _clearButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear")
                                                     style:UIBarButtonItemStylePlain
                                                    target:self
                                                    action:@selector(clearButtonTouchUp:)];
 
 	if (IS_IPHONE && [[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"]) {
+		UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		[undoButton setImage:[UIImage imageNamed:@"undo"] forState:UIControlStateNormal];
+		[undoButton addTarget:self action:@selector(undoButtonTouchUp:) forControlEvents:UIControlEventTouchUpInside];
+		undoButton.tintColor = [[A3AppDelegate instance] themeColor];
+		[undoButton sizeToFit];
+		_undoButton = [[UIBarButtonItem alloc] initWithCustomView:undoButton];
+
+		UIButton *redoButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		[redoButton setImage:[UIImage imageNamed:@"redo"] forState:UIControlStateNormal];
+		[redoButton addTarget:self action:@selector(redoButtonTouchUp:) forControlEvents:UIControlEventTouchUpInside];
+		redoButton.tintColor = [[A3AppDelegate instance] themeColor];
+		[redoButton sizeToFit];
+		_redoButton = [[UIBarButtonItem alloc] initWithCustomView:redoButton];
+
 		UIButton *prevButton = [UIButton buttonWithType:UIButtonTypeSystem];
-		[prevButton setTitle:@"o" forState:UIControlStateNormal];
-		prevButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];
+		[prevButton setImage:[UIImage imageNamed:@"prev"] forState:UIControlStateNormal];
 		[prevButton addTarget:self action:@selector(prevButtonTouchUp:) forControlEvents:UIControlEventTouchUpInside];
+		prevButton.tintColor = [[A3AppDelegate instance] themeColor];
 		[prevButton sizeToFit];
 		_prevButton = [[UIBarButtonItem alloc] initWithCustomView:prevButton];
 
 		UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeSystem];
-		[nextButton setTitle:@"n" forState:UIControlStateNormal];
-		nextButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];
+		[nextButton setImage:[UIImage imageNamed:@"next"] forState:UIControlStateNormal];
 		[nextButton addTarget:self action:@selector(nextButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+		nextButton.tintColor = [[A3AppDelegate instance] themeColor];
 		[nextButton sizeToFit];
 		_nextButton = [[UIBarButtonItem alloc] initWithCustomView:nextButton];
 	} else {
+		_undoButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Undo", @"Undo")
+													   style:UIBarButtonItemStylePlain
+													  target:self
+													  action:@selector(undoButtonTouchUp:)];
+		_redoButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Redo", @"Redo")
+													   style:UIBarButtonItemStylePlain
+													  target:self
+													  action:@selector(redoButtonTouchUp:)];
 		_prevButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Prev", @"Prev") style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonTouchUp:)];
 		_nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"Next") style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonAction:)];
 	}

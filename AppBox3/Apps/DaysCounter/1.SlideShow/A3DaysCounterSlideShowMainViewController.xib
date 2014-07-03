@@ -48,8 +48,8 @@
                             <color key="textColor" red="0.60000002384185791" green="0.60000002384185791" blue="0.60000002384185791" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can add photos into events." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="utq-Yo-ui9">
-                            <rect key="frame" x="19" y="46" width="280" height="21"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can add photos into events." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="utq-Yo-ui9">
+                            <rect key="frame" x="10" y="46" width="300" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="AUF-XO-ego"/>
@@ -66,8 +66,8 @@
                         <constraint firstItem="9RI-sD-Jlu" firstAttribute="top" secondItem="R5M-x6-qpJ" secondAttribute="top" id="HMF-zj-3mJ"/>
                         <constraint firstAttribute="trailing" secondItem="9RI-sD-Jlu" secondAttribute="trailing" constant="20" id="RUU-zY-F5M"/>
                         <constraint firstItem="9RI-sD-Jlu" firstAttribute="leading" secondItem="R5M-x6-qpJ" secondAttribute="leading" constant="20" id="TNK-hb-s1Q"/>
-                        <constraint firstAttribute="trailing" secondItem="utq-Yo-ui9" secondAttribute="trailing" constant="21" id="l50-5b-g2Y"/>
-                        <constraint firstItem="utq-Yo-ui9" firstAttribute="leading" secondItem="R5M-x6-qpJ" secondAttribute="leading" constant="19" id="pS2-Tg-ybg"/>
+                        <constraint firstAttribute="trailing" secondItem="utq-Yo-ui9" secondAttribute="trailing" constant="10" id="l50-5b-g2Y"/>
+                        <constraint firstItem="utq-Yo-ui9" firstAttribute="leading" secondItem="R5M-x6-qpJ" secondAttribute="leading" constant="10" id="pS2-Tg-ybg"/>
                         <constraint firstAttribute="height" constant="67" id="qdc-Dk-qV6"/>
                     </constraints>
                 </view>

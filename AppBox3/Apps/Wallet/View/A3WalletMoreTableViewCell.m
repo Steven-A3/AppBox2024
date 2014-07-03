@@ -56,11 +56,13 @@
 
 	[_cellImageView makeConstraints:^(MASConstraintMaker *make) {
 		_imageViewLeftConstraint = make.left.equalTo(_checkImageView.right);
+		make.width.equalTo(@30);
 		make.centerY.equalTo(self.centerY);
 	}];
 
 	[_cellTitleLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(_cellImageView.right).with.offset(13);
+		make.right.equalTo(self.contentView.right).with.offset(-20);
 		make.centerY.equalTo(self.centerY);
 	}];
 
