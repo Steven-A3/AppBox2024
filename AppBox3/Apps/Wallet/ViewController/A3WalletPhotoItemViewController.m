@@ -179,7 +179,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 		[self updateMetadataViewWithPage:self.currentPageAtPhotoScrollView];
 
 		if (self.gpsMetaInfo) {
-			[_normalFieldItems addObject:self.mapItem];
+			[_normalFieldItems addObject:self.mapItem]  ;
 		}
 
         NSArray *fieldItems = [_item fieldItemsArray];

@@ -73,9 +73,17 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     UISegmentedControl *segment = (UISegmentedControl *)self.navigationController.tabBarController.navigationItem.titleView;
     self.isFavoriteMode = segment.selectedSegmentIndex==1 ? YES:NO;
     
-//    if (self.editing) {
-//        [self setEditing:NO animated:YES];
-//    }
+    if (![self isEditing]) {
+        if (!_shouldPopViewController && IS_IPHONE) {
+            self.tabBarController.navigationItem.leftBarButtonItem = self.cancelItem;
+        }
+        else {
+            self.tabBarController.navigationItem.leftBarButtonItem = nil;
+        }
+    }
+    else {
+        self.tabBarController.navigationItem.leftBarButtonItem = self.plusItem;
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated

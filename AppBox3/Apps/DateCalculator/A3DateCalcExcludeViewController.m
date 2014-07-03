@@ -171,17 +171,22 @@ static NSString *CellIdentifier = @"Cell";
         }
     }
     
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    cell.accessoryType = [A3DateCalcStateManager excludeOptions] == ExcludeOptions_None ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-    
     ExcludeOptions options = [A3DateCalcStateManager excludeOptions];
+    
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    cell.accessoryType = options == ExcludeOptions_None ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+
     cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     cell.accessoryType = options & ExcludeOptions_Saturday ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-    
+
     cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
     cell.accessoryType = options & ExcludeOptions_Sunday ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if ([_delegate respondsToSelector:@selector(excludeSettingDelegate)]) {
+        [_delegate performSelector:@selector(excludeSettingDelegate)];
+    }
 }
 
 

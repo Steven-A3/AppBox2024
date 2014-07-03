@@ -432,14 +432,17 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		if (fieldItem.image) {
 			NSString *thumbnailImagePathInTemp = [fieldItem photoImageThumbnailPathInOriginal:NO];
             result = [fileManager removeItemAtPath:thumbnailImagePathInTemp error:NULL];
+            NSAssert(result, @"result");
 			continue;
 		}
 		if (fieldItem.video) {
 			NSString *thumbnailImagePathInTemp = [fieldItem videoThumbnailPathInOriginal:NO];
             result = [fileManager removeItemAtPath:thumbnailImagePathInTemp error:NULL];
+            NSAssert(result, @"result");
             
 			NSURL *videoFilePathInTemp = [fieldItem videoFileURLInOriginal:NO];
             result = [fileManager removeItemAtURL:videoFilePathInTemp error:NULL];
+            NSAssert(result, @"result");
 		}
 	}
 }
