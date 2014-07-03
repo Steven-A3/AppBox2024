@@ -121,8 +121,6 @@ https://itunes.apple.com/app/id318404385";
 "Basic" = "基本的";
 "Calculator using AppBox Pro" = "Calculator using AppBox Pro";
 
-"CHOOSE COLOR" = "选择颜色";
-
 "Humidity" = "湿度";
 "High" = "高";
 "Low" = "低";
@@ -896,3 +894,5 @@ The start date must be before the end date.";
 "UNIT" = "UNIT";
 "SIZE" = "SIZE";
 "DISCOUNT" = "DISCOUNT";
+
+"DaysCounterAlert_None" = "None";

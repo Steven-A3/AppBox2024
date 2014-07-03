@@ -115,8 +115,6 @@
 "Basic" = "기본";
 "Calculator using AppBox Pro" = "AppBox Pro의 계산기";
 
-"CHOOSE COLOR" = "색상 선택";
-
 "Humidity" = "습도";
 "High" = "높음";
 "Low" = "낮음";
@@ -899,3 +897,5 @@
 "UNIT" = "UNIT";
 "SIZE" = "SIZE";
 "DISCOUNT" = "DISCOUNT";
+
+"DaysCounterAlert_None" = "사용하지 않음";

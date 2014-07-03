@@ -353,16 +353,10 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[formatter setCurrencyCode:currencyCode];
     
-    if (isShare) {
-        [formatter setPositiveSuffix:[NSString stringWithFormat:@" %@", [formatter positivePrefix]]];
-        [formatter setPositivePrefix:@""];
+    if (!isShare && IS_IPHONE) {
+		[formatter setCurrencySymbol:@""];
     }
-    else {
-        if (IS_IPHONE) {
-            [formatter setCurrencySymbol:@""];
-        }
-    }
-    
+
 	NSString *string = [formatter stringFromNumber:value];
 	FNLOG(@"%@", string);
 	return [string stringByTrimmingSpaceCharacters];
@@ -1401,12 +1395,10 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 - (NSString *)stringForShareOfSource:(NSUInteger)sourceIdx target:(NSUInteger)targetIdx {
 	CurrencyFavorite *source = self.favorites[sourceIdx], *target = self.favorites[targetIdx];
 	float rate = [self rateForSource:source target:target];
-//	return [NSString stringWithFormat:@"%@ %@ = %@<br/>",
-//									  source.currencyCode,
-//									  [self stringFromNumber:self.lastInputValue withCurrencyCode:source.currencyCode],
-//									  [self stringFromNumber:@(self.lastInputValue.floatValue * rate) withCurrencyCode:target.currencyCode]];
-	return [NSString stringWithFormat:@"%@ = %@<br/>",
+	return [NSString stringWithFormat:@"%@ %@ = %@ %@<br/>",
+			source.currencyCode,
             [self stringFromNumber:self.lastInputValue withCurrencyCode:source.currencyCode isShare:YES],
+			target.currencyCode,
             [self stringFromNumber:@(self.lastInputValue.floatValue * rate) withCurrencyCode:target.currencyCode isShare:YES]];
 }
 

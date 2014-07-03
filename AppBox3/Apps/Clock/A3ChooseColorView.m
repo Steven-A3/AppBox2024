@@ -47,7 +47,7 @@ NSString *const ClockColorChooseCell = @"ClockColorCell";
         lbCaption.textAlignment = NSTextAlignmentLeft;
         lbCaption.textColor = [UIColor colorWithRed:109.f/255.f green:109.f/255.f blue:114.f/255.f alpha:1.f];
 		lbCaption.font = [UIFont systemFontOfSize:16];
-        lbCaption.text = NSLocalizedString(@"CHOOSE COLOR", @"CHOOSE COLOR");
+        lbCaption.text = NSLocalizedString(@"Theme Color", nil);
         [self addSubview:lbCaption];
         
         UIButton* btnX = [UIButton buttonWithType:UIButtonTypeSystem];

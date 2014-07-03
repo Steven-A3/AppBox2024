@@ -414,7 +414,7 @@
 }
 
 - (CGFloat)menuWidth:(BOOL)showDelete {
-	return showDelete ? 72.0 * 3 : 72.0 * 2;
+	return showDelete ? 80.0 * 3 : 80.0 * 2;
 }
 
 - (UIView *)menuView:(BOOL)showDelete {
@@ -439,7 +439,7 @@
 		} else {
 			[button setBackgroundColor:[UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0]];
 		}
-		button.frame = CGRectMake(idx * 72.0, 0.0, 72.0, 84.0);
+		button.frame = CGRectMake(idx * 80.0, 0.0, 80.0, 84.0);
 		button.tag = idx;
         [button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         

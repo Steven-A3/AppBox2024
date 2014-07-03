@@ -29,7 +29,7 @@
 "Sync" = "Synchronisieren";
 "Passcode Lock" = "Kennwortsperre";
 "Lunar Calendar" = "Lunar Kalender";
-"tellafriend" = "Ein Freund möchte Sie auf die neuen Funktionen von AppBox Pro™ aufmerksam machen. Nutzen Sie Lupe, Spiegel, Datumsrechner, Darlehensrechner, Kaufpreisrechner, Trinkgeldrechner, Stückpreis, Prozentrechner, Übersetzer, Tageszähler, Lady Kalender, Geldbörse, Ausgabenliste, Uhr, Batteriestatus und Feiertage für Ihr iPhone und iPod Touch. Klicken Sie unten zum Download von AppBox Pro™ aus dem iTunes App Store.";
+"tellafriend" = "Ein Freund möchte Sie auf die neuen Funktionen von AppBox Pro™ aufmerksam machen. Nutzen Sie Lupe, Spiegel, Datumsrechner, Darlehensrechner, Kaufpreisrechner, Trinkgeldrechner, Stückpreis, Prozentrechner, Übersetzer, Tageszähler, Lady Kalender, Geldbörse, Ausgabenliste, Uhr, Batteriestatus und Feiertage für Ihr iPhone, iPad und iPod Touch. Klicken Sie unten zum Download von AppBox Pro™ aus dem iTunes App Store.";
 
 /* "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case."; */
 "DISCLAIMER_MESSAGE" = "Wir prüfen alle Feiertage mit größter Sorgfalt. Dennoch kann es sein, dass einige Angaben fehlerhaft sind, da vielerorts Feiertage durch die jeweiligen Behörden kurzfristig geändert werden können. Deswegen übernehmen wir keine Haftung für die Richtigkeit der hier gemachten Angaben und raten Ihnen die Feiertage mit Hilfe der Botschaft oder des Konsulats des betreffenden Landes zu prüfen.";
@@ -43,7 +43,7 @@
 /* "AppBox Pro does not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro"; */
 "microphone access denied" = "AppBox Pro hat keinen Zugriff auf das Mikrofon. Bitte aktivieren Sie das Mikrofon unter Einstellungen > Datensicherheit > Mikrofon";
 
-"Theme Color" = "Design-Farbe";
+"Theme Color" = "Designfarbe";
 
 "About" = "Über uns";
 "Remaining Time" = "Verbleibende Zeit";
@@ -118,8 +118,6 @@
 "Scientific" = "Wissenschaftlich";
 "Basic" = "Standard";
 "Calculator using AppBox Pro" = "Taschenrechner von AppBox Pro";
-
-"CHOOSE COLOR" = "Farbe wählen";
 
 "Humidity" = "Feuchtigkeit";
 "High" = "Hoch";
@@ -229,8 +227,8 @@
 
 "Leap Month" = "Schaltmonat";
 "Ends" = "Ende";
-"End Repeat" = "Ende der Wiederholung";
-"Alert" = "Alarm";
+"End Repeat" = "Beenden";
+"Alert" = "Erinnerung";
 "Calendar" = "Kalender";
 "Duration Option" = "Anzeige Optionen";
 "Location" = "Ort";
@@ -257,7 +255,7 @@
 
 "Edit Calendars" = "Kalender bearbeiten";
 
-"Move these events to a new calendar." = "Verschieben Sie diese Ereignisse in einen neuen Kalender.";
+"Move these events to a new calendar." = "Ereignisse in neuen Kalender verschieben.";
 "Please select calendar." = "Bitte wählen Sie einen Kalender.";
 "Phone" = "Telefon";
 "Address" = "Adresse";
@@ -288,7 +286,7 @@
 "Holiday" = "Ferien";
 "Work" = "Arbeit";
 
-"Never" = "Nie";
+"Never" = "Niemals";
 "Every Day" = "Täglich";
 "Every Week" = "Wöchentlich";
 "Every 2Weeks" = "Alle 2 Wochen";
@@ -300,7 +298,7 @@
 "Monthly" = "Monatlich";
 "Yearly" = "Jährlich";
 
-"At time of event" = "Zum genauen Zeitpunkt";
+"At time of event" = "zum Ereigniszeitpunkt";
 "5 minutes before" = "5 Minuten vorher";
 "15 minutes before" = "15 Minuten vorher ";
 "30 minutes before" = "30 Minuten vorher ";
@@ -633,7 +631,6 @@
 
 "To convert values, need two units." = "Zum Umrechnen werden zwei Einheiten benötigt.";
 
-/* "Each history keeps max 4 units." = "Der Verlauf kann maximal 4 Einheiten speichern."; */
 "Each history keeps max 4 units." = "Es werden maximal 4 Einheiten speichern.";
 "Each history keeps max 4 currencies." = "Es werden maximal 4 Währungen gespeichert.";
 "%@ to %@ = %@" = "%@ in %@ = %@";
@@ -885,3 +882,5 @@
 "UNIT" = "EINHEIT";
 "SIZE" = "GRÖßE";
 "DISCOUNT" = "NACHLASS";
+
+"DaysCounterAlert_None" = "Ohne";

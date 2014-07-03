@@ -77,7 +77,7 @@
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
 
-	self.itemArray = @[@{EventRowTitle : NSLocalizedString(@"None", @"None"), EventRowType : @(AlertType_None)},
+	self.itemArray = @[@{EventRowTitle : NSLocalizedString(@"DaysCounterAlert_None", @"None"), EventRowType : @(AlertType_None)},
 			@{EventRowTitle : NSLocalizedString(@"At time of event", @"At time of event"), EventRowType : @(AlertType_AtTimeOfEvent)},
 			@{EventRowTitle : NSLocalizedString(@"5 minutes before", @"5 minutes before"), EventRowType : @(AlertType_5MinutesBefore)},
 			@{EventRowTitle : NSLocalizedString(@"15 minutes before", @"15 minutes before"), EventRowType : @(AlertType_15MinutesBefore)},

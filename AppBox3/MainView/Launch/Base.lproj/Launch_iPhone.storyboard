@@ -16,9 +16,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JJQ-rg-bd1">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JJQ-rg-bd1">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="320" id="5Pj-bg-vVk"/>
+                                    <constraint firstAttribute="height" constant="568" id="6S4-u2-cdQ"/>
+                                </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xYa-vJ-mm4">
                                 <rect key="frame" x="0.0" y="525" width="320" height="44"/>
@@ -40,7 +44,9 @@
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="xYa-vJ-mm4" secondAttribute="trailing" id="3hG-sl-z7M"/>
+                            <constraint firstItem="JJQ-rg-bd1" firstAttribute="leading" secondItem="xnt-pc-CdI" secondAttribute="leading" id="892-fs-2dT"/>
                             <constraint firstAttribute="bottom" secondItem="xYa-vJ-mm4" secondAttribute="bottom" constant="-1" id="Jo9-aB-Muw"/>
+                            <constraint firstItem="JJQ-rg-bd1" firstAttribute="top" secondItem="UnD-TB-6nW" secondAttribute="bottom" id="RYB-SP-eHI"/>
                             <constraint firstItem="xYa-vJ-mm4" firstAttribute="leading" secondItem="xnt-pc-CdI" secondAttribute="leading" id="fPb-dh-Uph"/>
                         </constraints>
                     </view>

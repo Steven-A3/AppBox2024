@@ -53,9 +53,25 @@
                                                    target:self
                                                    action:@selector(clearButtonTouchUp:)];
 
-	_prevButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Prev", @"Prev") style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonTouchUp:)];
-	_nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"Next") style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonAction:)];
-    
+	if (IS_IPHONE && [[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"]) {
+		UIButton *prevButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		[prevButton setTitle:@"o" forState:UIControlStateNormal];
+		prevButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];
+		[prevButton addTarget:self action:@selector(prevButtonTouchUp:) forControlEvents:UIControlEventTouchUpInside];
+		[prevButton sizeToFit];
+		_prevButton = [[UIBarButtonItem alloc] initWithCustomView:prevButton];
+
+		UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		[nextButton setTitle:@"n" forState:UIControlStateNormal];
+		nextButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];
+		[nextButton addTarget:self action:@selector(nextButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+		[nextButton sizeToFit];
+		_nextButton = [[UIBarButtonItem alloc] initWithCustomView:nextButton];
+	} else {
+		_prevButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Prev", @"Prev") style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonTouchUp:)];
+		_nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"Next") style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonAction:)];
+	}
+
     _undoButton.tintColor = [A3AppDelegate instance].themeColor;
     _redoButton.tintColor = [A3AppDelegate instance].themeColor;
     _clearButton.tintColor = [A3AppDelegate instance].themeColor;

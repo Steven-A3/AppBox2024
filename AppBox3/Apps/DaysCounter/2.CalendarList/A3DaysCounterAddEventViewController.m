@@ -275,7 +275,7 @@
     
     NSString *alertString = [_sharedManager alertDateStringFromDate:[_eventItem.startDate solarDate]
                                                           alertDate:[_eventItem alertDatetime]];
-    if (alertString && ![alertString isEqualToString:NSLocalizedString(@"None", @"None")]) {
+    if (alertString && ![alertString isEqualToString:NSLocalizedString(@"DaysCounterAlert_None", @"None")]) {
         return YES;
     }
     

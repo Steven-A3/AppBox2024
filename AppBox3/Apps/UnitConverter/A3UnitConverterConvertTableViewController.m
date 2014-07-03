@@ -1591,8 +1591,28 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	UIToolbar *keyboardAccessoryToolbar = [UIToolbar new];
 	[keyboardAccessoryToolbar sizeToFit];
 	UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	UIBarButtonItem *prevButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Prev", @"Prev") style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonPressed)];
-	UIBarButtonItem *nextButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"Next") style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed)];
+
+	UIBarButtonItem *prevButtonItem;
+	UIBarButtonItem *nextButtonItem;
+
+	if (IS_IPHONE && [[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"]) {
+		UIButton *prevButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		[prevButton setTitle:@"o" forState:UIControlStateNormal];
+		prevButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];
+		[prevButton addTarget:self action:@selector(prevButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+		[prevButton sizeToFit];
+		prevButtonItem = [[UIBarButtonItem alloc] initWithCustomView:prevButton];
+
+		UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		[nextButton setTitle:@"n" forState:UIControlStateNormal];
+		nextButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];
+		[nextButton addTarget:self action:@selector(nextButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+		[nextButton sizeToFit];
+		nextButtonItem = [[UIBarButtonItem alloc] initWithCustomView:nextButton];
+	} else {
+		prevButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Prev", @"Prev") style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonPressed)];
+		nextButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"Next") style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed)];
+	}
 	[prevButtonItem setEnabled:[self isPreviousEntryExists]];
     prevButtonItem.tintColor = [A3AppDelegate instance].themeColor;
 	[nextButtonItem setEnabled:[self isNextEntryExists]];

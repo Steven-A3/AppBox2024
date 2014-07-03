@@ -746,12 +746,14 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[_textEntryBarView addSubview:_textView];
 
     [_textView makeConstraints:^(MASConstraintMaker *make) {
-		make.edges.equalTo(_textEntryBarView).insets(UIEdgeInsetsMake(8.0, 8.0, 8.0, 86.0));
+		make.edges.equalTo(_textEntryBarView).insets(UIEdgeInsetsMake(8.0, 8.0, 8.0, IS_IPHONE ? 88.0 : 110.0 ));
 	}];
 
 	_translateButton = [UIButton buttonWithType:UIButtonTypeSystem];
 	[_translateButton setTitle:NSLocalizedString(@"Translate", @"Translate") forState:UIControlStateNormal];
 	_translateButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0];
+	_translateButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+	_translateButton.titleLabel.minimumScaleFactor = 0.5;
 	[_translateButton setTitleColor:[[A3AppDelegate instance] themeColor] forState:UIControlStateNormal];
 	[_translateButton setTitleColor:[UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0] forState:UIControlStateDisabled];
 	[_translateButton addTarget:self action:@selector(translateAction) forControlEvents:UIControlEventTouchUpInside];
@@ -760,7 +762,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 
 	[_translateButton makeConstraints:^(MASConstraintMaker *make) {
 		make.bottom.equalTo(_textEntryBarView.bottom);
-		make.width.equalTo(@86.0);
+		make.width.equalTo(IS_IPHONE ? @86.0 : @110.0);
 		make.height.equalTo(@42.0);
 		make.right.equalTo(_textEntryBarView.right);
 	}];

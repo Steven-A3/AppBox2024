@@ -517,7 +517,7 @@ more holidays</string>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="0Hk-19-LXE">
-                                <rect key="frame" x="139" y="92" width="42" height="42"/>
+                                <rect key="frame" x="139" y="170" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="42" id="L64-Zx-QIp"/>
@@ -533,7 +533,7 @@ more holidays</string>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="3eg-qq-Bz6">
-                                <rect key="frame" x="261" y="343" width="42" height="42"/>
+                                <rect key="frame" x="261" y="75" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="42" id="4aI-cz-dcm"/>
@@ -556,7 +556,7 @@ more holidays</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pull down to update" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="UOR-Dm-haV">
-                                <rect key="frame" x="10" y="136" width="300" height="20"/>
+                                <rect key="frame" x="10" y="214" width="300" height="20"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -570,7 +570,7 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="244" translatesAutoresizingMaskIntoConstraints="NO" id="2ma-Z4-hX7" userLabel="Label - slide the currency to the left, then tap options">
-                                <rect key="frame" x="10" y="356" width="244" height="40"/>
+                                <rect key="frame" x="10" y="88" width="244" height="40"/>
                                 <string key="text">Slide the currency to the left,
 then tap options</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -594,7 +594,7 @@ then tap options</string>
                             <constraint firstItem="UOR-Dm-haV" firstAttribute="top" secondItem="0Hk-19-LXE" secondAttribute="bottom" constant="2" id="7iA-Mr-rMK"/>
                             <constraint firstAttribute="bottom" secondItem="VSP-vN-prH" secondAttribute="bottom" id="7ve-id-suW"/>
                             <constraint firstAttribute="trailing" secondItem="VSP-vN-prH" secondAttribute="trailing" id="Bys-0x-Q1z"/>
-                            <constraint firstItem="0Hk-19-LXE" firstAttribute="top" secondItem="mT1-kh-YL2" secondAttribute="top" constant="92" id="DQY-4k-EQt"/>
+                            <constraint firstItem="0Hk-19-LXE" firstAttribute="top" secondItem="mT1-kh-YL2" secondAttribute="top" constant="170" id="DQY-4k-EQt"/>
                             <constraint firstItem="Wca-7F-aIC" firstAttribute="leading" secondItem="mT1-kh-YL2" secondAttribute="leading" constant="10" id="ISL-Qs-DlH"/>
                             <constraint firstItem="3eg-qq-Bz6" firstAttribute="top" secondItem="2ma-Z4-hX7" secondAttribute="top" constant="-13" id="Ozw-KI-hNN"/>
                             <constraint firstItem="dMm-lL-O9p" firstAttribute="top" secondItem="tiv-Sl-w35" secondAttribute="top" id="Qxu-yg-tVI"/>
@@ -603,7 +603,7 @@ then tap options</string>
                             <constraint firstAttribute="trailing" secondItem="Wca-7F-aIC" secondAttribute="trailing" constant="10" id="ZWy-B2-kMg"/>
                             <constraint firstAttribute="centerX" secondItem="UOR-Dm-haV" secondAttribute="centerX" id="bWc-zl-ixn"/>
                             <constraint firstItem="3eg-qq-Bz6" firstAttribute="leading" secondItem="2ma-Z4-hX7" secondAttribute="trailing" constant="7" id="d4b-zI-r7s"/>
-                            <constraint firstItem="3eg-qq-Bz6" firstAttribute="top" secondItem="mT1-kh-YL2" secondAttribute="top" constant="343" id="fdW-Dc-1Bd"/>
+                            <constraint firstItem="3eg-qq-Bz6" firstAttribute="top" secondItem="mT1-kh-YL2" secondAttribute="top" constant="75" id="fdW-Dc-1Bd"/>
                             <constraint firstAttribute="trailing" secondItem="3r1-n4-BZx" secondAttribute="trailing" constant="10" id="ffO-yU-zV4"/>
                             <constraint firstItem="4vp-4T-yE8" firstAttribute="top" secondItem="mT1-kh-YL2" secondAttribute="top" constant="243" id="gHj-fL-9ih"/>
                             <constraint firstAttribute="trailing" secondItem="3eg-qq-Bz6" secondAttribute="trailing" constant="17" id="hGI-y1-BJE"/>
@@ -1974,7 +1974,7 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="YcB-fl-yv1">
-                                <rect key="frame" x="139" y="237" width="42" height="42"/>
+                                <rect key="frame" x="139" y="185" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="42" id="8k6-wW-UhE"/>
@@ -2011,7 +2011,7 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap anywhere to see more info" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="n3c-eW-iPb" userLabel="Label - touch and hold a country, then drag it up or down">
-                                <rect key="frame" x="10" y="289" width="300" height="20"/>
+                                <rect key="frame" x="10" y="237" width="300" height="20"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -2055,7 +2055,7 @@ then drag it up or down</string>
                             <constraint firstItem="r9Y-2d-qlN" firstAttribute="centerY" secondItem="qF4-08-u3n" secondAttribute="centerY" id="keL-NC-EES"/>
                             <constraint firstAttribute="bottom" secondItem="r9Y-2d-qlN" secondAttribute="bottom" constant="10" id="mSK-rf-F8S"/>
                             <constraint firstItem="zjB-Wc-3zv" firstAttribute="top" secondItem="G3r-so-6LW" secondAttribute="top" id="mdR-Yk-f4h"/>
-                            <constraint firstItem="YcB-fl-yv1" firstAttribute="top" secondItem="G3r-so-6LW" secondAttribute="top" constant="237" id="nt4-xb-wTD"/>
+                            <constraint firstItem="YcB-fl-yv1" firstAttribute="top" secondItem="G3r-so-6LW" secondAttribute="top" constant="185" id="nt4-xb-wTD"/>
                             <constraint firstAttribute="trailing" secondItem="r9Y-2d-qlN" secondAttribute="trailing" constant="38" id="qpc-9a-Qeg"/>
                             <constraint firstAttribute="centerX" secondItem="R5z-eZ-0ii" secondAttribute="centerX" id="wQw-TB-T9A"/>
                         </constraints>

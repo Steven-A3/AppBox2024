@@ -92,7 +92,6 @@
 "Scientific" = "Scientific";
 "Basic" = "Basic";
 "Calculator using AppBox Pro" = "Calculator using AppBox Pro";
-"CHOOSE COLOR" = "CHOOSE COLOR";
 "Humidity" = "Humidity";
 "High" = "High";
 "Low" = "Low";
@@ -823,3 +822,5 @@
 "UNIT" = "UNIT";
 "SIZE" = "SIZE";
 "DISCOUNT" = "DISCOUNT";
+
+"DaysCounterAlert_None" = "None";

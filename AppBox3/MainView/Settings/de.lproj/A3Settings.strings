@@ -97,7 +97,7 @@
 "ROP-jz-ZtT.footerTitle" = "Ein einfaches Kennwort besteht aus 4 Zahlen.";
 
 /* Class = "IBUITableViewController"; title = "Theme Color"; ObjectID = "RpU-td-Vej"; */
-"RpU-td-Vej.title" = "Design Farbe";
+"RpU-td-Vej.title" = "Designfarbe";
 
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "TG9-5P-YDf"; */
 "TG9-5P-YDf.text" = "Tageszähler";
@@ -106,7 +106,7 @@
 "UKS-0H-yut.text" = "Letzten 3";
 
 /* Class = "IBUILabel"; text = "Theme Color"; ObjectID = "Vgb-6m-SyM"; */
-"Vgb-6m-SyM.text" = "Design Farbe";
+"Vgb-6m-SyM.text" = "Designfarbe";
 
 /* Class = "IBUITableViewController"; title = "Require Passcode"; ObjectID = "Xb7-yr-Jd6"; */
 "Xb7-yr-Jd6.title" = "Kennwort benötigt";
@@ -127,7 +127,7 @@
 "ehr-w2-0vk.text" = "Dropbox-Backup";
 
 /* Class = "IBUINavigationItem"; title = "Theme Color"; ObjectID = "eqe-ec-kWO"; */
-"eqe-ec-kWO.title" = "Design Farbe";
+"eqe-ec-kWO.title" = "Designfarbe";
 
 /* Class = "IBUILabel"; text = "Korean"; ObjectID = "fHP-u0-inU"; */
 "fHP-u0-inU.text" = "Koreanisch";

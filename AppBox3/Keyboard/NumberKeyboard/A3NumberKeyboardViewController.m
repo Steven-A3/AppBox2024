@@ -6,14 +6,9 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3KeyboardButton_iOS7_iPhone.h"
 #import "A3CalculatorViewController_iPad.h"
-#import "A3CalculatorViewController_iPhone.h"
-#import "A3CurrencySelectViewController.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
-#import "A3NumberKeyboardViewController.h"
 #import "A3AppDelegate.h"
-#import "A3CacheStoreManager.h"
 #import "CurrencyRateItem.h"
 #import "UIViewController+NumberKeyboard.h"
 
@@ -266,14 +261,26 @@
 		available = [self.delegate isNextEntryExists];
 	}
 
-	[_nextButton setTitle:available ? NSLocalizedString(@"Next", @"Next") : nil forState:UIControlStateNormal];
+	if (available && IS_IPHONE && [[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"]) {
+		[_nextButton setTitle:@"n" forState:UIControlStateNormal];
+		_nextButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];
+		_nextButton.titleEdgeInsets = UIEdgeInsetsMake(0, 2, 0, -2); // top, left, bottom, right
+	} else {
+		[_nextButton setTitle:available ? NSLocalizedString(@"Next", @"Next") : nil forState:UIControlStateNormal];
+	}
 	[_nextButton setEnabled:available];
 
 	available = NO;
 	if ([self.delegate respondsToSelector:@selector(isPreviousEntryExists)]) {
 		available = [self.delegate isPreviousEntryExists];
 	}
-	[_prevButton setTitle:available ? NSLocalizedString(@"Prev", @"Prev") : nil forState:UIControlStateNormal];
+	if (available && IS_IPHONE && [[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"]) {
+		[_prevButton setTitle:@"o" forState:UIControlStateNormal];
+		_prevButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];
+		_prevButton.titleEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 2); // top, left, bottom, right
+	} else {
+		[_prevButton setTitle:available ? NSLocalizedString(@"Prev", @"Prev") : nil forState:UIControlStateNormal];
+	}
 	[_prevButton setEnabled:available];
 
 	[self setupLocale];
