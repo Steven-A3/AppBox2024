@@ -652,7 +652,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	} else {
 		[self dismissViewControllerAnimated:YES completion:NULL];
 
-		extern NSString *const A3WalletNotificationItemCategoryMoved;
 		NSNotification *notification = [[NSNotification alloc] initWithName:A3WalletNotificationItemCategoryMoved
 																	 object:nil
 																   userInfo:@{@"categoryID":_item.category.uniqueID,

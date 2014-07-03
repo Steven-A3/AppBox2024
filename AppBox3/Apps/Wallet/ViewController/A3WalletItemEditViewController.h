@@ -11,6 +11,8 @@
 @class WalletItem;
 @class WalletCategory;
 
+extern NSString *const A3WalletNotificationItemCategoryMoved;
+
 @protocol WalletItemEditDelegate <NSObject>
 
 @required
