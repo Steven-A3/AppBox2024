@@ -68,8 +68,8 @@ different clock styles</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to view larger" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="8OM-Xa-7AG">
-                                <rect key="frame" x="91" y="516" width="138" height="20"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to view larger" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="8OM-Xa-7AG">
+                                <rect key="frame" x="10" y="516" width="300" height="20"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -96,8 +96,10 @@ different clock styles</string>
                             <constraint firstAttribute="trailing" secondItem="Nw8-e0-0Uz" secondAttribute="trailing" constant="36" id="emt-v1-LzI"/>
                             <constraint firstAttribute="centerX" secondItem="2E0-oc-3KW" secondAttribute="centerX" id="gJ7-Vo-hPV"/>
                             <constraint firstItem="NMQ-xY-zn5" firstAttribute="leading" secondItem="Wd6-dN-vyO" secondAttribute="leading" constant="50" id="oZB-3g-kKY"/>
+                            <constraint firstAttribute="trailing" secondItem="8OM-Xa-7AG" secondAttribute="trailing" constant="10" id="qlf-KZ-b9L"/>
                             <constraint firstItem="zdJ-br-tkO" firstAttribute="leading" secondItem="Wd6-dN-vyO" secondAttribute="leading" constant="10" id="xCY-Ij-EJq"/>
                             <constraint firstAttribute="trailing" secondItem="Tcm-zc-xSO" secondAttribute="trailing" id="xOz-Xe-QSw"/>
+                            <constraint firstItem="8OM-Xa-7AG" firstAttribute="leading" secondItem="Wd6-dN-vyO" secondAttribute="leading" constant="10" id="zIi-30-uCb"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="Qdp-fp-srh" appends="YES" id="Odr-VR-55F"/>
@@ -223,7 +225,7 @@ color and more</string>
                                     <constraint firstAttribute="width" constant="14" id="zeg-LV-lKj"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="4Y2-hA-ExK">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="4Y2-hA-ExK">
                                 <rect key="frame" x="10" y="456" width="300" height="40"/>
                                 <string key="text">Swipe left or right to change
 keypad for basic/scientific</string>
@@ -279,7 +281,20 @@ keypad for basic/scientific</string>
                         <subviews>
                             <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kwK-Om-eS2">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="208" translatesAutoresizingMaskIntoConstraints="NO" id="mYi-2r-6n3">
+                                        <rect key="frame" x="102" y="77" width="208" height="40"/>
+                                        <string key="text">Tap the screen to display
+the controls</string>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="mYi-2r-6n3" secondAttribute="trailing" constant="10" id="Fso-Ex-5gP"/>
+                                </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="PxO-xt-eN7">
                                 <rect key="frame" x="50" y="76" width="42" height="42"/>
@@ -320,14 +335,6 @@ keypad for basic/scientific</string>
                                     <constraint firstAttribute="height" constant="14" id="dvw-4Q-y0V"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="208" translatesAutoresizingMaskIntoConstraints="NO" id="mYi-2r-6n3">
-                                <rect key="frame" x="102" y="76" width="208" height="42"/>
-                                <string key="text">Tap the screen to display
-the controls</string>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="223" translatesAutoresizingMaskIntoConstraints="NO" id="f7p-pa-V3C">
                                 <rect key="frame" x="10" y="204" width="223" height="40"/>
                                 <string key="text">Swipe left or right to see
@@ -345,7 +352,7 @@ more holidays</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add or delete countries" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="207" translatesAutoresizingMaskIntoConstraints="NO" id="9Oc-Jc-FLn" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="10" y="529" width="207" height="20"/>
+                                <rect key="frame" x="10" y="525" width="207" height="20"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -358,25 +365,23 @@ more holidays</string>
                             <constraint firstItem="d8D-UW-O72" firstAttribute="leading" secondItem="f7p-pa-V3C" secondAttribute="trailing" constant="10" id="5ee-bK-g1L"/>
                             <constraint firstItem="fOb-uW-XaZ" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" constant="32" id="6c6-QV-XKZ"/>
                             <constraint firstItem="d8D-UW-O72" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="top" constant="203" id="An8-JA-4Cl"/>
-                            <constraint firstItem="PxO-xt-eN7" firstAttribute="centerY" secondItem="mYi-2r-6n3" secondAttribute="centerY" id="BJI-XR-Sik"/>
                             <constraint firstAttribute="bottom" secondItem="QSq-Bz-Ppf" secondAttribute="bottom" constant="8" id="Dxz-89-W7s"/>
                             <constraint firstItem="1GA-EC-PDP" firstAttribute="leading" secondItem="QSq-Bz-Ppf" secondAttribute="trailing" constant="5" id="FiA-cn-3Ja"/>
                             <constraint firstItem="QSq-Bz-Ppf" firstAttribute="top" secondItem="1GA-EC-PDP" secondAttribute="top" constant="-5" id="IEm-Tp-Jam"/>
                             <constraint firstAttribute="bottom" secondItem="kwK-Om-eS2" secondAttribute="bottom" id="Ju6-AU-waA"/>
                             <constraint firstItem="d8D-UW-O72" firstAttribute="centerY" secondItem="f7p-pa-V3C" secondAttribute="centerY" id="Kmn-fY-f2Z"/>
                             <constraint firstItem="RQJ-Od-NDI" firstAttribute="leading" secondItem="fOb-uW-XaZ" secondAttribute="trailing" constant="10" id="Krh-95-a76"/>
-                            <constraint firstItem="PxO-xt-eN7" firstAttribute="trailing" secondItem="mYi-2r-6n3" secondAttribute="leading" constant="-10" id="UhC-Vg-wbB"/>
                             <constraint firstItem="kwK-Om-eS2" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" id="WoW-l7-eI9"/>
                             <constraint firstItem="9Oc-Jc-FLn" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" constant="10" id="Zcp-Ta-rwT"/>
                             <constraint firstItem="kwK-Om-eS2" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="top" id="atf-8W-jSL"/>
-                            <constraint firstItem="9Oc-Jc-FLn" firstAttribute="centerY" secondItem="QSq-Bz-Ppf" secondAttribute="centerY" id="fJF-8o-eSa"/>
+                            <constraint firstItem="mYi-2r-6n3" firstAttribute="leading" secondItem="PxO-xt-eN7" secondAttribute="trailing" constant="10" id="avi-Pk-CNS"/>
+                            <constraint firstItem="mYi-2r-6n3" firstAttribute="centerY" secondItem="PxO-xt-eN7" secondAttribute="centerY" id="dqB-CK-OHJ"/>
                             <constraint firstItem="PxO-xt-eN7" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="top" constant="76" id="fsS-BN-oGH"/>
                             <constraint firstAttribute="trailing" secondItem="QSq-Bz-Ppf" secondAttribute="trailing" constant="51" id="kR9-rZ-Bfg"/>
                             <constraint firstAttribute="trailing" secondItem="RQJ-Od-NDI" secondAttribute="trailing" constant="10" id="lKF-iB-mS9"/>
                             <constraint firstAttribute="trailing" secondItem="kwK-Om-eS2" secondAttribute="trailing" id="m3f-67-QP0"/>
-                            <constraint firstItem="PxO-xt-eN7" firstAttribute="top" secondItem="mYi-2r-6n3" secondAttribute="top" id="mHK-L9-EKv"/>
+                            <constraint firstItem="9Oc-Jc-FLn" firstAttribute="centerY" secondItem="QSq-Bz-Ppf" secondAttribute="centerY" constant="-4" id="nNg-JA-2el"/>
                             <constraint firstAttribute="trailing" secondItem="d8D-UW-O72" secondAttribute="trailing" constant="35" id="p5a-Kk-epV"/>
-                            <constraint firstAttribute="trailing" secondItem="mYi-2r-6n3" secondAttribute="trailing" constant="10" id="rMU-AA-5t4"/>
                             <constraint firstItem="PxO-xt-eN7" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" constant="50" id="rnD-sv-sJw"/>
                             <constraint firstItem="fOb-uW-XaZ" firstAttribute="centerY" secondItem="RQJ-Od-NDI" secondAttribute="centerY" id="trc-MN-uNN"/>
                             <constraint firstItem="f7p-pa-V3C" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" constant="10" id="yO4-5B-qPJ"/>
@@ -528,7 +533,7 @@ more holidays</string>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="3eg-qq-Bz6">
-                                <rect key="frame" x="261" y="329" width="42" height="42"/>
+                                <rect key="frame" x="261" y="343" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="42" id="4aI-cz-dcm"/>
@@ -556,7 +561,7 @@ more holidays</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="3r1-n4-BZx">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="3r1-n4-BZx">
                                 <rect key="frame" x="10" y="287" width="300" height="40"/>
                                 <string key="text">Touch and hold a currency,
 then drag it up or down</string>
@@ -564,8 +569,8 @@ then drag it up or down</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="244" translatesAutoresizingMaskIntoConstraints="NO" id="2ma-Z4-hX7" userLabel="Label - slide the currency to the left, then tap options">
-                                <rect key="frame" x="10" y="334" width="244" height="40"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="244" translatesAutoresizingMaskIntoConstraints="NO" id="2ma-Z4-hX7" userLabel="Label - slide the currency to the left, then tap options">
+                                <rect key="frame" x="10" y="356" width="244" height="40"/>
                                 <string key="text">Slide the currency to the left,
 then tap options</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -591,14 +596,14 @@ then tap options</string>
                             <constraint firstAttribute="trailing" secondItem="VSP-vN-prH" secondAttribute="trailing" id="Bys-0x-Q1z"/>
                             <constraint firstItem="0Hk-19-LXE" firstAttribute="top" secondItem="mT1-kh-YL2" secondAttribute="top" constant="92" id="DQY-4k-EQt"/>
                             <constraint firstItem="Wca-7F-aIC" firstAttribute="leading" secondItem="mT1-kh-YL2" secondAttribute="leading" constant="10" id="ISL-Qs-DlH"/>
-                            <constraint firstItem="3eg-qq-Bz6" firstAttribute="top" secondItem="2ma-Z4-hX7" secondAttribute="top" constant="-5" id="Ozw-KI-hNN"/>
+                            <constraint firstItem="3eg-qq-Bz6" firstAttribute="top" secondItem="2ma-Z4-hX7" secondAttribute="top" constant="-13" id="Ozw-KI-hNN"/>
                             <constraint firstItem="dMm-lL-O9p" firstAttribute="top" secondItem="tiv-Sl-w35" secondAttribute="top" id="Qxu-yg-tVI"/>
                             <constraint firstAttribute="bottom" secondItem="tiv-Sl-w35" secondAttribute="bottom" constant="39" id="S6g-uh-j44"/>
                             <constraint firstAttribute="centerX" secondItem="tiv-Sl-w35" secondAttribute="centerX" id="U3J-vr-CAf"/>
                             <constraint firstAttribute="trailing" secondItem="Wca-7F-aIC" secondAttribute="trailing" constant="10" id="ZWy-B2-kMg"/>
                             <constraint firstAttribute="centerX" secondItem="UOR-Dm-haV" secondAttribute="centerX" id="bWc-zl-ixn"/>
                             <constraint firstItem="3eg-qq-Bz6" firstAttribute="leading" secondItem="2ma-Z4-hX7" secondAttribute="trailing" constant="7" id="d4b-zI-r7s"/>
-                            <constraint firstItem="3eg-qq-Bz6" firstAttribute="top" secondItem="mT1-kh-YL2" secondAttribute="top" constant="329" id="fdW-Dc-1Bd"/>
+                            <constraint firstItem="3eg-qq-Bz6" firstAttribute="top" secondItem="mT1-kh-YL2" secondAttribute="top" constant="343" id="fdW-Dc-1Bd"/>
                             <constraint firstAttribute="trailing" secondItem="3r1-n4-BZx" secondAttribute="trailing" constant="10" id="ffO-yU-zV4"/>
                             <constraint firstItem="4vp-4T-yE8" firstAttribute="top" secondItem="mT1-kh-YL2" secondAttribute="top" constant="243" id="gHj-fL-9ih"/>
                             <constraint firstAttribute="trailing" secondItem="3eg-qq-Bz6" secondAttribute="trailing" constant="17" id="hGI-y1-BJE"/>
@@ -1352,7 +1357,7 @@ then drag it up or down</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="afl-C5-OsY" userLabel="Label - slide the currency to the left, then tap options">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="afl-C5-OsY" userLabel="Label - slide the currency to the left, then tap options">
                                 <rect key="frame" x="10" y="228" width="241" height="40"/>
                                 <string key="text">Slide the calendar to the left,
 then tap Delete</string>
@@ -1427,7 +1432,7 @@ then tap Delete</string>
                             <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9b3-Pq-w3B">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="208" translatesAutoresizingMaskIntoConstraints="NO" id="5vX-h0-0KZ">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="208" translatesAutoresizingMaskIntoConstraints="NO" id="5vX-h0-0KZ">
                                         <rect key="frame" x="102" y="77" width="208" height="40"/>
                                         <string key="text">Tap the screen to display
 the controls</string>
@@ -1437,6 +1442,9 @@ the controls</string>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="5vX-h0-0KZ" secondAttribute="trailing" constant="10" id="QMT-tP-pyE"/>
+                                </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="yL6-t8-Rsz">
                                 <rect key="frame" x="50" y="76" width="42" height="42"/>
@@ -1483,6 +1491,8 @@ prev/next events</string>
                             <constraint firstItem="Tub-Vc-yVU" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="top" constant="207" id="ZlN-NI-PPf"/>
                             <constraint firstAttribute="trailing" secondItem="9b3-Pq-w3B" secondAttribute="trailing" id="dan-QV-ZEP"/>
                             <constraint firstItem="9b3-Pq-w3B" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="top" id="eZ8-4E-8Dv"/>
+                            <constraint firstItem="5vX-h0-0KZ" firstAttribute="leading" secondItem="yL6-t8-Rsz" secondAttribute="trailing" constant="10" id="jVV-ZW-umi"/>
+                            <constraint firstItem="yL6-t8-Rsz" firstAttribute="centerY" secondItem="5vX-h0-0KZ" secondAttribute="centerY" id="lux-bu-9XD"/>
                             <constraint firstItem="yL6-t8-Rsz" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="top" constant="76" id="pWi-8t-deg"/>
                             <constraint firstAttribute="bottom" secondItem="9b3-Pq-w3B" secondAttribute="bottom" id="tqQ-Ho-QqD"/>
                             <constraint firstItem="Adg-z8-lei" firstAttribute="leading" secondItem="Tub-Vc-yVU" secondAttribute="trailing" id="zgv-0Q-9gx"/>

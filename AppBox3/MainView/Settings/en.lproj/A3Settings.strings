@@ -17,9 +17,6 @@
 /* Class = "IBUINavigationItem"; title = "Apps"; ObjectID = "52d-yt-UJk"; */
 "52d-yt-UJk.title" = "Apps";
 
-/* Class = "IBUILabel"; text = "Lunar Calendar"; ObjectID = "5dO-Tl-dv6"; */
-"5dO-Tl-dv6.text" = "Lunar Calendar";
-
 /* Class = "IBUINavigationItem"; title = "Recent to Keep"; ObjectID = "5pd-cg-py2"; */
 "5pd-cg-py2.title" = "Recent to Keep";
 
@@ -98,6 +95,9 @@
 /* Class = "IBUITableViewController"; title = "Theme Color"; ObjectID = "RpU-td-Vej"; */
 "RpU-td-Vej.title" = "Theme Color";
 
+/* Class = "IBUILabel"; text = "Chinese"; ObjectID = "S47-yQ-cP7"; */
+"S47-yQ-cP7.text" = "Chinese";
+
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "TG9-5P-YDf"; */
 "TG9-5P-YDf.text" = "Days Counter";
 
@@ -112,6 +112,9 @@
 
 /* Class = "IBUITableViewController"; title = "Require Passcode"; ObjectID = "Xb7-yr-Jd6"; */
 "Xb7-yr-Jd6.title" = "Require Passcode";
+
+/* Class = "IBUILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
+"alM-Rl-6AW.text" = "Korean";
 
 /* Class = "IBUILabel"; text = "Last 3"; ObjectID = "bWw-QS-8Fs"; */
 "bWw-QS-8Fs.text" = "Last 3";
@@ -130,9 +133,6 @@
 
 /* Class = "IBUINavigationItem"; title = "Theme Color"; ObjectID = "eqe-ec-kWO"; */
 "eqe-ec-kWO.title" = "Theme Color";
-
-/* Class = "IBUILabel"; text = "Korean"; ObjectID = "fHP-u0-inU"; */
-"fHP-u0-inU.text" = "Korean";
 
 /* Class = "IBUINavigationItem"; title = "Favorites"; ObjectID = "fqW-Vk-vP5"; */
 "fqW-Vk-vP5.title" = "Favorites";
@@ -196,6 +196,3 @@
 
 /* Class = "IBUILabel"; text = "Title"; ObjectID = "xJM-LO-q65"; */
 "xJM-LO-q65.text" = "Title";
-
-/* Class = "IBUILabel"; text = "Chinese"; ObjectID = "zD5-Op-8e3"; */
-"zD5-Op-8e3.text" = "Chinese";

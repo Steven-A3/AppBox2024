@@ -1484,6 +1484,7 @@
 		6835659318FA663100C3494C /* A3WalletMoreTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletMoreTableViewController.m; sourceTree = "<group>"; };
 		683B953E15EB233500575377 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = common.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		683B959215EB252400575377 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		6845D36119646FB9008E000B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3Settings.strings; sourceTree = "<group>"; };
 		684609A0194E10A700FD5F53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/UnitPriceStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		684609A3194E10AE00FD5F53 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UnitPriceStoryboard_iPad.strings; sourceTree = "<group>"; };
 		684609A5194E10AF00FD5F53 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/UnitPriceStoryboard_iPad.strings; sourceTree = "<group>"; };
@@ -2518,7 +2519,6 @@
 		68F1509D194C0D2600159EAD /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/A3CurrencyChartViewController.strings; sourceTree = "<group>"; };
 		68F1509F194C0D2900159EAD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/A3CurrencyChartViewController.strings; sourceTree = "<group>"; };
 		68F150A1194C0DFB00159EAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/A3Settings.storyboard; sourceTree = "<group>"; };
-		68F150A4194C0E0200159EAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3Settings.strings; sourceTree = "<group>"; };
 		68F150A6194C0E0300159EAD /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/A3Settings.strings; sourceTree = "<group>"; };
 		68F150A8194C0E0400159EAD /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/A3Settings.strings"; sourceTree = "<group>"; };
 		68F150AA194C0E0500159EAD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/A3Settings.strings; sourceTree = "<group>"; };
@@ -6698,7 +6698,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				68F150A1194C0DFB00159EAD /* Base */,
-				68F150A4194C0E0200159EAD /* en */,
 				68F150A6194C0E0300159EAD /* ko */,
 				68F150A8194C0E0400159EAD /* zh-Hans */,
 				68F150AA194C0E0500159EAD /* de */,
@@ -6707,6 +6706,7 @@
 				68F150B0194C0E0E00159EAD /* fr */,
 				68F150B2194C0E1100159EAD /* pl */,
 				68F150B4194C0E1200159EAD /* es */,
+				6845D36119646FB9008E000B /* en */,
 			);
 			name = A3Settings.storyboard;
 			path = Settings;

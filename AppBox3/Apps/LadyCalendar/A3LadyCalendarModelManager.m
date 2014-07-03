@@ -463,21 +463,22 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
 
 	for (LadyCalendarPeriod *period in predictPeriods) {
+		@autoreleasepool {
+			NSDate *fireDate = [calendar dateByAddingComponents:fireDateComponents toDate:period.startDate options:0];
+			NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fireDate];
+			components.hour = 9;
+			fireDate = [calendar dateFromComponents:components];
 
-		NSDate *fireDate = [calendar dateByAddingComponents:fireDateComponents toDate:period.startDate options:0];
-		NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fireDate];
-		components.hour = 9;
-		fireDate = [calendar dateFromComponents:components];
+			if ([fireDate isEarlierThanDate:today]) continue;
 
-		if ([fireDate isEarlierThanDate:today]) continue;
-
-		NSString *alertBody = NSLocalizedString(@"Your period is coming.", @"Your period is coming.");
-		UILocalNotification *notification = [UILocalNotification new];
-		notification.fireDate = fireDate;
-		notification.alertBody = alertBody;
-		notification.soundName = UILocalNotificationDefaultSoundName;
-		notification.userInfo = @{A3LocalNotificationOwner:A3LocalNotificationFromLadyCalendar, A3LocalNotificationDataID:period.uniqueID};
-		[application scheduleLocalNotification:notification];
+			NSString *alertBody = NSLocalizedString(@"Your period is coming.", @"Your period is coming.");
+			UILocalNotification *notification = [UILocalNotification new];
+			notification.fireDate = fireDate;
+			notification.alertBody = alertBody;
+			notification.soundName = UILocalNotificationDefaultSoundName;
+			notification.userInfo = @{A3LocalNotificationOwner:A3LocalNotificationFromLadyCalendar, A3LocalNotificationDataID:period.uniqueID};
+			[application scheduleLocalNotification:notification];
+		}
 	}
 	FNLOG(@"%@", [application scheduledLocalNotifications]);
 }

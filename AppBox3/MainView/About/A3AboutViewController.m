@@ -57,6 +57,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0 && indexPath.row == 3 && ![MFMessageComposeViewController canSendText]) {
+		cell.textLabel.text = nil;
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
 }

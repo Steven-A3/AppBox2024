@@ -67,7 +67,7 @@
 "LOI-Yd-hc0.footerTitle" = "Für Lunar Umrechner";
 
 /* Class = "IBUILabel"; text = "More Information About Security"; ObjectID = "LZb-sk-84W"; */
-"LZb-sk-84W.text" = "Mehr Informationen über Sicherheit";
+"LZb-sk-84W.text" = "Informationen über Sicherheit";
 
 /* Class = "IBUINavigationItem"; title = "Passcode Lock"; ObjectID = "Lbr-p8-awt"; */
 "Lbr-p8-awt.title" = "Kennwortsperre";
@@ -124,13 +124,16 @@
 "eGG-mK-Q2m.text" = "Sofort";
 
 /* Class = "IBUILabel"; text = "Backup & Restore on Dropbox"; ObjectID = "ehr-w2-0vk"; */
-"ehr-w2-0vk.text" = "Sichern & Wiederherstellen mit Hilfe Ihrer Dropbox";
+"ehr-w2-0vk.text" = "Dropbox-Backup";
 
 /* Class = "IBUINavigationItem"; title = "Theme Color"; ObjectID = "eqe-ec-kWO"; */
 "eqe-ec-kWO.title" = "Design Farbe";
 
 /* Class = "IBUILabel"; text = "Korean"; ObjectID = "fHP-u0-inU"; */
 "fHP-u0-inU.text" = "Koreanisch";
+
+/* Class = "IBUILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
+"alM-Rl-6AW.text" = "Koreanisch";
 
 /* Class = "IBUINavigationItem"; title = "Favorites"; ObjectID = "fqW-Vk-vP5"; */
 "fqW-Vk-vP5.title" = "Favoriten";
@@ -157,7 +160,7 @@
 "oSP-yD-m2L.title" = "Einstellungen";
 
 /* Class = "IBUINavigationItem"; title = "Backup & Restore on Dropbox"; ObjectID = "oxS-sd-8U7"; */
-"oxS-sd-8U7.title" = "Sichern & Wiederherstellen mit Hilfe Ihrer Dropbox";
+"oxS-sd-8U7.title" = "Dropbox-Backup";
 
 /* Class = "IBUILabel"; text = "Passcode Lock"; ObjectID = "pjv-dt-D5o"; */
 "pjv-dt-D5o.text" = "Kennwortsperre";
@@ -191,3 +194,13 @@
 
 /* Class = "IBUILabel"; text = "Chinese"; ObjectID = "zD5-Op-8e3"; */
 "zD5-Op-8e3.text" = "Chinesisch";
+
+/* Class = "IBUILabel"; text = "Korean"; ObjectID = "fHP-u0-inU"; */
+"fHP-u0-inU.text" = "Koreanisch";
+
+/* Class = "IBUILabel"; text = "Chinese"; ObjectID = "S47-yQ-cP7"; */
+"S47-yQ-cP7.text" = "Chinesisch";
+
+/* Class = "IBUILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
+"alM-Rl-6AW.text" = "Koreanisch";
+

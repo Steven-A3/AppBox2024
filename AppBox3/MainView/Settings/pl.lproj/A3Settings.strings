@@ -5,8 +5,12 @@
 /* Class = "IBUILabel"; text = "Last 5"; ObjectID = "0Me-nY-VE5"; */
 "0Me-nY-VE5.text" = "Last 5";
 
-/* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.  "; ObjectID = "1dJ-y3-yh7"; */
-"1dJ-y3-yh7.footerTitle" = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.  ";
+/* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.
+
+"; ObjectID = "1dJ-y3-yh7"; */
+"1dJ-y3-yh7.footerTitle" = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.
+
+";
 
 /* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "2E1-Z8-v5l"; */
 "2E1-Z8-v5l.title" = "Select Backup";
@@ -199,3 +203,10 @@
 
 /* Class = "IBUILabel"; text = "Chinese"; ObjectID = "zD5-Op-8e3"; */
 "zD5-Op-8e3.text" = "Chinese";
+
+/* Class = "IBUILabel"; text = "Chinese"; ObjectID = "S47-yQ-cP7"; */
+"S47-yQ-cP7.text" = "Chinese";
+
+/* Class = "IBUILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
+"alM-Rl-6AW.text" = "Korean";
+

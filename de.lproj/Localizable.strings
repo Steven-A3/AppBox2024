@@ -29,9 +29,7 @@
 "Sync" = "Synchronisieren";
 "Passcode Lock" = "Kennwortsperre";
 "Lunar Calendar" = "Lunar Kalender";
-"tellafriend" = "Ein Freund möchte Sie auf die neuen Funktionen von AppBox Pro™ aufmerksam machen. Nutzen Sie Spiegel, Wecker, Neigungsmesser, Währungsrechner, Datumsrechner, Taschenlampe, Feiertagskalender, Preisrechner, Zufallsgenerator, Trinkgeldrechner, Systeminfo und Web-Apps für Ihr iPhone und iPod Touch. Klicken Sie unten zum Download von AppBox Pro™ aus dem iTunes App Store.
-
-https://itunes.apple.com/app/id318404385";
+"tellafriend" = "Ein Freund möchte Sie auf die neuen Funktionen von AppBox Pro™ aufmerksam machen. Nutzen Sie Lupe, Spiegel, Datumsrechner, Darlehensrechner, Kaufpreisrechner, Trinkgeldrechner, Stückpreis, Prozentrechner, Übersetzer, Tageszähler, Lady Kalender, Geldbörse, Ausgabenliste, Uhr, Batteriestatus und Feiertage für Ihr iPhone und iPod Touch. Klicken Sie unten zum Download von AppBox Pro™ aus dem iTunes App Store.";
 
 /* "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case."; */
 "DISCLAIMER_MESSAGE" = "Wir prüfen alle Feiertage mit größter Sorgfalt. Dennoch kann es sein, dass einige Angaben fehlerhaft sind, da vielerorts Feiertage durch die jeweiligen Behörden kurzfristig geändert werden können. Deswegen übernehmen wir keine Haftung für die Richtigkeit der hier gemachten Angaben und raten Ihnen die Feiertage mit Hilfe der Botschaft oder des Konsulats des betreffenden Landes zu prüfen.";
@@ -43,7 +41,7 @@ https://itunes.apple.com/app/id318404385";
 "SECURITY_INFO" = "Apple nutzt eine Technik namens „Data Protection“. Diese verschlüsselt mit Hilfe eines sicheren 256-bit Schlüssels und einer Hardware AES-Engine die gespeicherten Daten. Wenn Sie das Gerätekennwort einschalten, wird dieser Schutz („Data Protection“) automatisch aktiviert. Das Kennwort ist mit Ihrer Geräte UID verknüpft, sodass Brute-Force-Angriffe direkt am Gerät stattfinden müssen. Ein großer Iterationszähler wird verwendet, um die Angriffsgeschwindigkeit zu verringern. Der Iterationszähler ist so eingestellt, dass ein Angriffsversuch ca 80 Millisekunden dauert. Es würde also länger als 5½ Jahre dauern alle Kombinationen eines sechsstelligen alphanumerischen Kennworte mit Groß-/Kleinschreibung und Zahlen zu entschlüsseln, oder aber 2½ Jahre bei einem neunstelligen Kennwort, welches nur aus Zahlen zusammengesetzt ist.";
 
 /* "AppBox Pro does not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro"; */
-"microphone access denied" = "Zugriff auf das Mikrofon verweigert.";
+"microphone access denied" = "AppBox Pro hat keinen Zugriff auf das Mikrofon. Bitte aktivieren Sie das Mikrofon unter Einstellungen > Datensicherheit > Mikrofon";
 
 "Theme Color" = "Design-Farbe";
 
@@ -142,7 +140,6 @@ https://itunes.apple.com/app/id318404385";
 
 /* US$, Rate = 1.3598 */
 "%@, Rate = %0.4f" = "%@, Kurs = %0.4f";
-"Each history keeps max 4 currencies." = "Es werden maximal 4 Währungen gespeichert.";
 
 /* EUR to USD = 1.3598 */
 "%@ to %@ = %.4f" = "%@ zu %@ = %.4f";
@@ -399,10 +396,10 @@ https://itunes.apple.com/app/id318404385";
 "Gift Card" = "Geschenkkarte";
 
 "ITEM" = "Gegenstand";
-"PRICE" = "Preis";
+"PRICE" = "PREIS";
 "QTY" = "Mg.";
 "SUBTOTAL" = "Zwischensumme";
-"QUANTITY" = "Menge";
+"QUANTITY" = "MENGE";
 
 " over of " = " über ";
 " left of " = " übrig von ";
@@ -563,7 +560,7 @@ https://itunes.apple.com/app/id318404385";
 "What is X% of Y" = "Was ist X% von Y";
 "X is What % of Y" = "X ist wieviel % von Y";
 "% Change from X to Y" = "% Unterschied von X zu Y";
-"Compare % Change from X to Y" = "Vergleich Prozent-Unterschied von X zu Y";
+"Compare % Change from X to Y" = "Vergleiche %-Was von X zu Y";
 
 "Sale Price" = "Verkaufspreis";
 "Sale Price Tax" = "Mehrwertsteuer";
@@ -571,10 +568,10 @@ https://itunes.apple.com/app/id318404385";
 "Original Price Tax" = "Mehrwertsteuer";
 "Saved Amount" = "Ersparnis";
 "Saved Amount Tax" = "Gesparte Steuern";
-"  Sale Price with Tax" = "Verkaufspreis inklusive Steuern";
-"  Sale Price w/Tax" = "Verkaufspreis inkl. Steuern";
-"  Sale Price" = " Verkaufspreis";
-" saved of " = " gespart von";
+"  Sale Price with Tax" = "  Verkaufspreis inklusive Steuern";
+"  Sale Price w/Tax" = "  Verkaufspreis inkl. Steuern";
+"  Sale Price" = "  Verkaufspreis";
+" saved of " = " gespart von ";
 
 "Sale Price with Tax" = " Verkaufspreis inklusive Steuern ";
 "Sale Price w/Tax" = " Verkaufspreis inkl. Steuern ";
@@ -636,7 +633,9 @@ https://itunes.apple.com/app/id318404385";
 
 "To convert values, need two units." = "Zum Umrechnen werden zwei Einheiten benötigt.";
 
-"Each history keeps max 4 units." = "Der Verlauf kann maximal 4 Einheiten speichern.";
+/* "Each history keeps max 4 units." = "Der Verlauf kann maximal 4 Einheiten speichern."; */
+"Each history keeps max 4 units." = "Es werden maximal 4 Einheiten speichern.";
+"Each history keeps max 4 currencies." = "Es werden maximal 4 Währungen gespeichert.";
 "%@ to %@ = %@" = "%@ in %@ = %@";
 
 "More" = "Mehr";
@@ -864,14 +863,14 @@ https://itunes.apple.com/app/id318404385";
 "Categories on the bar" = "Kategorien in der Menüleiste";
 "Categories in more" = "Kategorien unter „Mehr“";
 
-"I'd like to share a currency conversion with you." = "I'd like to share a currency conversion with you.";
-"You can convert more currencies in the AppBox Pro." = "You can convert more currencies in the AppBox Pro.";
+"I'd like to share a currency conversion with you." = "Ich möchte meine Währungsumrechnung mit Ihnen teilen.";
+"You can convert more currencies in the AppBox Pro." = "Jetzt können Sie noch mehr Währungen mit AppBox Pro umrechnen.";
 
-"Increase" = "Increase";
-"Decrease" = "Decrease";
+"Increase" = "Erhöhen";
+"Decrease" = "Verringern";
 
-"Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather.";
-"Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather.";
+"Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "Ortungsdienst nicht verfügbar. Bitte wechseln Sie zu Einstellungen > Datenschutz > Ortungsdienste. Der Ortungsdienst muss aktiviert sein und AppBox Pro die Erlaubnis haben das Wetter anzuzeigen.";
+"Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "Ortungsdienst ist aktiv, aber AppBox Pro benötigt die Erlaubnis das Wetter anzuzeigen. Bitte wechseln Sie zu Einstellungen > Datenschutz > Ortungsdienste und erlauben Sie die Wetteranzeige für AppBox Pro.";
 
 "daily" = "Täglich";
 "weekly" = "wöchentlich";
@@ -879,5 +878,10 @@ https://itunes.apple.com/app/id318404385";
 "monthly" = "monatlich";
 "yearly" = "jährlich";
 
-"No Photos" = "No Photos";
-"You can add photos into events." = "You can add photos into events.";
+"No Photos" = "Keine Fotos";
+"You can add photos into events." = "Sie können Fotos Ereignissen hinzufügen.";
+
+"UNIT PRICE" = "STÜCKPREIS";
+"UNIT" = "EINHEIT";
+"SIZE" = "GRÖßE";
+"DISCOUNT" = "NACHLASS";

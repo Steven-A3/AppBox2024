@@ -264,7 +264,7 @@
 }
 
 - (void)updateDisplay {
-	self.title = [NSString stringWithFormat:@"%@ to %@", self.sourceItem.currencyCode, self.targetItem.currencyCode];
+	self.title = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"), self.sourceItem.currencyCode, self.targetItem.currencyCode];
 
 	[self fillCurrencyTable];
 	self.segmentedControl.selectedSegmentIndex = 0;

@@ -12,16 +12,16 @@
 "1ry-vN-Hwz.text" = "Berühren und halten Sie einen Eintrag,\ndann ziehen Sie diesen nach Oben oder Unten";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "4cl-y6-WyE"; */
-"4cl-y6-WyE.text" = "Berühren und halten Sie einen Eintrag,\n ndann ziehen Sie diesen nach Oben oder Unten";
+"4cl-y6-WyE.text" = "Berühren und halten Sie einen Eintrag,\ndann ziehen Sie diesen nach Oben oder Unten";
 
 /* Class = "IBUILabel"; text = "Tap to view larger"; ObjectID = "6rS-5S-grs"; */
-"6rS-5S-grs.text" = "Hier tippen um die Ansicht zu vergrößern.";
+"6rS-5S-grs.text" = "Hier tippen um die Ansicht zu vergrößern";
 
 /* Class = "IBUILabel"; text = "Tap to add period"; ObjectID = "Cat-ab-onw"; */
 "Cat-ab-onw.text" = "Hier tippen um eine Periode hinzuzufügen";
 
 /* Class = "IBUILabel"; text = "Tap the plus button to add a country"; ObjectID = "DU3-Gi-SHf"; */
-"DU3-Gi-SHf.text" = "Tippen Sie auf das Plus-Symbol um ein Land hinzuzufügen.";
+"DU3-Gi-SHf.text" = "Tippen Sie auf das Plus-Symbol um ein Land hinzuzufügen";
 
 /* Class = "IBUILabel"; text = "Tap to add a language"; ObjectID = "DxY-hj-aOP"; */
 "DxY-hj-aOP.text" = "Hier tippen um eine Sprache hinzuzufügen";
@@ -33,16 +33,16 @@
 "HRH-SL-EGk.text" = "Hier tippen um Farbe und Weiteres zu ändern";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "Hg8-OO-NUZ"; */
-"Hg8-OO-NUZ.text" = "Berühren und halten Sie einen Eintrag,\ndann ziehen Sie diesen nach Oben oder Unten.";
+"Hg8-OO-NUZ.text" = "Berühren und halten Sie einen Eintrag,\ndann ziehen Sie diesen nach Oben oder Unten";
 
 /* Class = "IBUILabel"; text = "Select which categories\nto view"; ObjectID = "JFG-2D-dxV"; */
-"JFG-2D-dxV.text" = "Wählen Sie eine Kategorie \num diese zu betrachten.";
+"JFG-2D-dxV.text" = "Wählen Sie eine Kategorie \num diese zu betrachten";
 
 /* Class = "IBUILabel"; text = "Tap to see chart/account/option"; ObjectID = "Jc6-JH-cJx"; */
-"Jc6-JH-cJx.text" = "Hier tippen um Ihre Tabellen/Konten/Optionen zu sehen.";
+"Jc6-JH-cJx.text" = "Hier tippen um Ihre Tabellen/Konten/Optionen zu sehen";
 
 /* Class = "IBUILabel"; text = "Slide the currency to the left,\nthen tap options"; ObjectID = "KuK-sv-rbe"; */
-"KuK-sv-rbe.text" = "Wischen Sie eine Währung nach links,\ndann tippen Sie auf Optionen.";
+"KuK-sv-rbe.text" = "Wischen Sie eine Währung nach links,\ndann tippen Sie auf Optionen";
 
 /* Class = "IBUILabel"; text = "Add or delete countries"; ObjectID = "Kyq-vy-Xlr"; */
 "Kyq-vy-Xlr.text" = "Hier tippen um Ländern hinzuzufügen oder zu löschen";
