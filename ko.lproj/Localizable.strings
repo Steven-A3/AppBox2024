@@ -898,4 +898,4 @@
 "SIZE" = "SIZE";
 "DISCOUNT" = "DISCOUNT";
 
-"DaysCounterAlert_None" = "사용하지 않음";
+"Alert_None" = "사용하지 않음";

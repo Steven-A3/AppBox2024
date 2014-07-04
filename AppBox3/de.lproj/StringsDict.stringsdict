@@ -211,11 +211,29 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Pünktlich</string>
+			<string>0 Tag vorher</string>
 			<key>one</key>
 			<string>1 Tag vorher</string>
 			<key>other</key>
 			<string>%ld Tage vor</string>
+		</dict>
+	</dict>
+	<key>%ld days before(NO NUMBER)</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_days@</string>
+		<key>num_days</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>Tag vorher</string>
+			<key>one</key>
+			<string>Tag vorher</string>
+			<key>other</key>
+			<string>Tage vor</string>
 		</dict>
 	</dict>
 	<key>%ld Days Left</key>
@@ -270,6 +288,24 @@
 			<string>1 Tag</string>
 			<key>other</key>
 			<string>%ld Tage</string>
+		</dict>
+	</dict>
+	<key>%ld days(NO NUMBER)</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_days@</string>
+		<key>num_days</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>Tage</string>
+			<key>one</key>
+			<string>Tag</string>
+			<key>other</key>
+			<string>Tage</string>
 		</dict>
 	</dict>
 	<key>%ld seconds</key>

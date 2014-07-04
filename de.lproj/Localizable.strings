@@ -18,7 +18,6 @@
 
 "iCloud" = "iCloud";
 "None" = "Keine";
-"Alert - None" = "Aus";
 "Unit is None" = "Keine";
 
 "Most Recent" = "Letzte";
@@ -297,7 +296,7 @@
 "Monthly" = "Monatlich";
 "Yearly" = "Jährlich";
 
-"At time of event" = "zum Ereigniszeitpunkt";
+"At time of event" = "Zum Ereigniszeitpunkt";
 "5 minutes before" = "5 Minuten vorher";
 "15 minutes before" = "15 Minuten vorher ";
 "30 minutes before" = "30 Minuten vorher ";
@@ -500,7 +499,7 @@
 "Total Interest" = "Zinsen insgesamt";
 "Avg.Interest" = "Zinsen durchschnittlich";
 "Total Amount" = "Gesamtbetrag";
-"Average Interest" = " Zinsen durchschnittlich ";
+"Average Interest" = "Zinsen durchschnittlich";
 "Amounts" = "Beträge";
 "Loan" = "Darlehen";
 "Comparison" = "Vergleich";
@@ -570,8 +569,8 @@
 "  Sale Price" = "  Verkaufspreis";
 " saved of " = " gespart von ";
 
-"Sale Price with Tax" = " Verkaufspreis inklusive Steuern ";
-"Sale Price w/Tax" = " Verkaufspreis inkl. Steuern ";
+"Sale Price with Tax" = "Verkaufspreis inklusive Steuern ";
+"Sale Price w/Tax" = "Verkaufspreis inkl. Steuern ";
 "Discount" = "Nachlass";
 "Additional Off" = "Zusätzlicher Nachlass";
 "Tax" = "Steuern";
@@ -794,7 +793,7 @@
 
 "STATUS" = "Status";
 "Talk Time on 2G" = "Gesprächszeit 2G";
-"Talk Time on 3G" = " Gesprächszeit 3G";
+"Talk Time on 3G" = "Gesprächszeit 3G";
 "Internet on 3G" = "Internet 3G";
 "Internet on LTE" = "Internet LTE";
 "Internet on Wi-Fi" = "Internet WLAN";
@@ -828,28 +827,28 @@
 
 "I'd like to share a calculation with you." = "Ich möchte meine Berechnungen mit Ihnen teilen.";
 
-"I'd like to share a conversion with you." = " Ich möchte mein Gespräch mit Ihnen teilen.";
-"You can convert more in the AppBox Pro." = " Jetzt können Sie noch mehr Einheiten in AppBox Pro umrechnen.";
+"I'd like to share a conversion with you." = "Ich möchte mein Gespräch mit Ihnen teilen.";
+"You can convert more in the AppBox Pro." = "Jetzt können Sie noch mehr Einheiten in AppBox Pro umrechnen.";
 "Download from AppStore" = "Download vom AppStore";
 
 "Result" = "Ergebnis";
 "Add" = "Hinzufügen";
 "day" = "Tag";
 "Subtract" = "Abziehen";
-"I'd like to share an event with you." = " Ich möchte ein Ereignis mit Ihnen teilen.";
+"I'd like to share an event with you." = "Ich möchte ein Ereignis mit Ihnen teilen.";
 
-"You can manage your events in the AppBox Pro." = " Jetzt können Sie auch Ereignisse in AppBox Pro bearbeiten.";
+"You can manage your events in the AppBox Pro." = "Jetzt können Sie auch Ereignisse in AppBox Pro bearbeiten.";
 
 "Interest" = "Zinsen";
 "Extra Payment(monthly)" = "Extra Zahlungen(Monatlich)";
 "Extra Payment(yearly)" = "Extra Zahlungen(Jährlich)";
 "Extra Payment(one-time)" = "Extra Zahlung(Einmalig)";
 
-"I'd like to share a information with you." = " Ich möchte eine Information mit Ihnen teilen.";
-"You can manage your information in the AppBox Pro." = " Jetzt können Sie auch Ihre Informationen in AppBox Pro bearbeiten.";
+"I'd like to share a information with you." = "Ich möchte eine Information mit Ihnen teilen.";
+"You can manage your information in the AppBox Pro." = "Jetzt können Sie auch Ihre Informationen in AppBox Pro bearbeiten.";
 
-"I'd like to share a translation with you." = " Ich möchte eine Übersetzung mit Ihnen teilen.";
-"You can translate more in the AppBox Pro." = " Jetzt können Sie mehr Übersetzungen in AppBox Pro durchführen.";
+"I'd like to share a translation with you." = "Ich möchte eine Übersetzung mit Ihnen teilen.";
+"You can translate more in the AppBox Pro." = "Jetzt können Sie mehr Übersetzungen in AppBox Pro durchführen.";
 
 "Field name already exists." = "Der Feldname existiert bereits.";
 
@@ -882,4 +881,4 @@
 "SIZE" = "GRÖßE";
 "DISCOUNT" = "NACHLASS";
 
-"DaysCounterAlert_None" = "Ohne";
+"Alert_None" = "Ohne";

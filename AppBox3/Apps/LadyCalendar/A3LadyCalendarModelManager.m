@@ -277,7 +277,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 {
     NSInteger index = ABS(alertType);
     NSArray *strings = @[
-			NSLocalizedString(@"None", @"None"),
+			NSLocalizedString(@"Alert_None", @"None"),
 			NSLocalizedString(@"On day(9 AM)", @"On day(9 AM)"),
 			NSLocalizedString(@"1 day before(9 AM)", @"1 day before(9 AM)"),
 			NSLocalizedString(@"2 days before(9 AM)", @"2 days before(9 AM)"),

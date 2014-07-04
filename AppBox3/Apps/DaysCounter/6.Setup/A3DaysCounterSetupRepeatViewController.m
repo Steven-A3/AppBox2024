@@ -161,16 +161,29 @@
         
         return cell;
     }
-    
-    NSString *CellIdentifier = (indexPath.row == ([_itemArray count]-1) ? @"customInputCell" : @"Cell");
+
+	// Configure the cell...
+	NSInteger value = [_eventModel.repeatType integerValue];
+	NSInteger index = 0;
+	if ( value < 0 ) {
+		index = ABS(value);
+	}
+	else {
+		if ( value > 0 ) {
+			index = [_itemArray count] -1;
+		}
+		else {
+			index = value;
+		}
+	}
+
+	NSString *CellIdentifier = (indexPath.row == ([_itemArray count]-1) ? @"customInputCell" : @"Cell");
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         if ( indexPath.row == ([_itemArray count] -1) ) {
             cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventRepeatCell" owner:nil options:nil] lastObject];
 			UILabel *textLabel = (UILabel *)[cell viewWithTag:10];
 			textLabel.text = NSLocalizedString(@"Custom", nil);
-			UILabel *daysLabel = (UILabel *)[cell viewWithTag:11];
-			daysLabel.text = NSLocalizedString(@"day(s)", nil);
             UITextField *textField = (UITextField*)[cell viewWithTag:12];
             textField.delegate = self;
             ((A3DaysCounterRepeatCustomCell *)cell).checkImageView.image = [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -178,21 +191,6 @@
         }
         else {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        }
-    }
-    
-    // Configure the cell...
-    NSInteger value = [_eventModel.repeatType integerValue];
-    NSInteger index = 0;
-    if ( value < 0 ) {
-        index = ABS(value);
-    }
-    else {
-        if ( value > 0 ) {
-            index = [_itemArray count] -1;
-        }
-        else {
-            index = value;
         }
     }
     
@@ -207,6 +205,8 @@
     else {
         UITextField *textField = (UITextField*)[cell viewWithTag:12];
         textField.text = [NSString stringWithFormat:@"%ld", (long)(value > 0 ? value : 0)];
+		UILabel *daysLabel = (UILabel *)[cell viewWithTag:11];
+		daysLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days(NO NUMBER)", @"StringsDict", nil), (long)value];
         cell.accessoryType = UITableViewCellAccessoryNone;
         if ([cell isSelected]) {
             [self setCheckmarkOnCustomInputCell:cell CheckShow:YES];

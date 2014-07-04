@@ -33,3 +33,7 @@
 "During %ld days" = "During %ld days";
 
 "Last %ld" = "Last %ld";
+
+"%ld days before(NO NUMBER)" = "%ld days before(NO NUMBER)";
+
+"%ld days(NO NUMBER)" = "%ld days(NO NUMBER)";

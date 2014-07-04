@@ -211,11 +211,47 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>이벤트 당시</string>
+			<string>0일전</string>
 			<key>one</key>
 			<string>%ld일전</string>
 			<key>other</key>
 			<string>%ld일전</string>
+		</dict>
+	</dict>
+	<key>%ld days(NO NUMBER)</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_days@</string>
+		<key>num_days</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>일전</string>
+			<key>one</key>
+			<string>일전</string>
+			<key>other</key>
+			<string>일전</string>
+		</dict>
+	</dict>
+	<key>%ld days before(NO NUMBER)</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_days@</string>
+		<key>num_days</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>일전</string>
+			<key>one</key>
+			<string>일전</string>
+			<key>other</key>
+			<string>일전</string>
 		</dict>
 	</dict>
 	<key>%ld Days Left</key>

@@ -279,7 +279,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 - (NSString*)alertStringForType:(NSInteger)alertType
 {
     NSArray *array = @[
-			NSLocalizedString(@"DaysCounterAlert_None", @"None"),
+			NSLocalizedString(@"Alert_None", @"None"),
 			NSLocalizedString(@"At time of event", @"At time of event"),
 			NSLocalizedString(@"5 minutes before", @"5 minutes before"),
 			NSLocalizedString(@"15 minutes before", @"15 minutes before"),

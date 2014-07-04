@@ -3,7 +3,7 @@
 "0A4-77-7Bu.text" = "Deslice el país hacia la izquierda,\nluego pulse Borrar";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to see\ndifferent clock styles"; ObjectID = "0ks-Wf-Yju"; */
-"0ks-Wf-Yju.text" = "Deslice a la izquierda o a la derecha para ver \ndiferentes tipos de reloj";
+"0ks-Wf-Yju.text" = "Deslice a la izquierda o a la derecha para ver\ndiferentes tipos de reloj";
 
 /* Class = "IBUILabel"; text = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down"; ObjectID = "0lp-cl-Yp6"; */
 "0lp-cl-Yp6.text" = "Toque y mantenga presionado ≡\na la derecha de un artículo,\nluego arrástrelo hacia arriba o hacia abajo.";
@@ -75,10 +75,10 @@
 "Vz2-2z-yFf.text" = "Presione y mantenga un idioma,\nluego arrástrelo hacia arriba o hacia abajo";
 
 /* Class = "IBUILabel"; text = "Touch and hold a country,\nthen drag it up or down"; ObjectID = "XDP-Yt-OPK"; */
-"XDP-Yt-OPK.text" = "Presione y mantenga un país,\n luego arrástrelo hacia arriba o hacia abajo";
+"XDP-Yt-OPK.text" = "Presione y mantenga un país,\nluego arrástrelo hacia arriba o hacia abajo";
 
 /* Class = "IBUILabel"; text = "Touch and hold a currency,\nthen drag it up or down"; ObjectID = "ZUB-bK-boD"; */
-"ZUB-bK-boD.text" = "Presione y mantenga un tipo de cambio,\n luego arrástrelo hacia arriba o hacia abajo";
+"ZUB-bK-boD.text" = "Presione y mantenga un tipo de cambio,\nluego arrástrelo hacia arriba o hacia abajo";
 
 /* Class = "IBUILabel"; text = "Pull up to see\nmore holidays"; ObjectID = "aLZ-Rx-7OQ"; */
 "aLZ-Rx-7OQ.text" = "Jale para ver más\ndías festivos";
@@ -93,7 +93,7 @@
 "bJN-4c-KyA.text" = "Deslize el calendario a la izquierda,\nluego pulse Borrar";
 
 /* Class = "IBUILabel"; text = "Touch and hold an event,\nthen drag it up or down"; ObjectID = "bwk-H3-3rx"; */
-"bwk-H3-3rx.text" = "Pulse y mantenga una evento,\n luego arrástrelo hacia arriba o hacia abajo";
+"bwk-H3-3rx.text" = "Pulse y mantenga una evento,\nluego arrástrelo hacia arriba o hacia abajo";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "c1e-KD-jLm"; */
 "c1e-KD-jLm.text" = "Pulsar la pantalla para\nmostrar los controles";

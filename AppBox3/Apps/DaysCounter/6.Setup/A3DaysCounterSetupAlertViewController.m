@@ -77,7 +77,7 @@
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
 
-	self.itemArray = @[@{EventRowTitle : NSLocalizedString(@"DaysCounterAlert_None", @"None"), EventRowType : @(AlertType_None)},
+	self.itemArray = @[@{EventRowTitle : NSLocalizedString(@"Alert_None", @"None"), EventRowType : @(AlertType_None)},
 			@{EventRowTitle : NSLocalizedString(@"At time of event", @"At time of event"), EventRowType : @(AlertType_AtTimeOfEvent)},
 			@{EventRowTitle : NSLocalizedString(@"5 minutes before", @"5 minutes before"), EventRowType : @(AlertType_5MinutesBefore)},
 			@{EventRowTitle : NSLocalizedString(@"15 minutes before", @"15 minutes before"), EventRowType : @(AlertType_15MinutesBefore)},
@@ -155,7 +155,7 @@
 			UITextField *textField = (UITextField*)[cell viewWithTag:12];
 			textField.delegate = self;
 			UILabel *detailLabel = (UILabel*)[cell viewWithTag:11];
-			detailLabel.text = NSLocalizedString(@"day(s) before", @"day(s) before");
+			detailLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days before(NO NUMBER)", @"StringsDict", nil), (long)[textField.text integerValue]];
 			((A3DaysCounterRepeatCustomCell *)cell).daysLabelWidthConst.constant = 100;
 			((A3DaysCounterRepeatCustomCell *)cell).checkImageView.image = [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 			[((A3DaysCounterRepeatCustomCell *)cell).checkImageView setTintColor:[A3AppDelegate instance].themeColor];

@@ -3,28 +3,28 @@
 "0gd-1F-IlN.text" = "Pulse para adicionar una categoria";
 
 /* Class = "IBUILabel"; text = "Touch and hold a country,\nthen drag it up or down"; ObjectID = "0ze-pQ-4fo"; */
-"0ze-pQ-4fo.text" = "Presione y mantenga un país,\n luego arrástrelo hacia arriba o hacia abajo";
+"0ze-pQ-4fo.text" = "Presione y mantenga un país, luego arrástrelo hacia arriba o hacia abajo";
 
 /* Class = "IBUILabel"; text = "Tap to add a new list"; ObjectID = "1dD-l5-TzF"; */
 "1dD-l5-TzF.text" = "Pulse para adicionar una nueva lista";
 
 /* Class = "IBUILabel"; text = "Slide the currency to the left,\nthen tap options"; ObjectID = "2ma-Z4-hX7"; */
-"2ma-Z4-hX7.text" = "Deslice el tipo de cambio a la izquierda,\nluego pulse opciones";
+"2ma-Z4-hX7.text" = "Deslice el tipo de cambio a la izquierda, luego pulse opciones";
 
 /* Class = "IBUILabel"; text = "Touch and hold a currency,\nthen drag it up or down"; ObjectID = "3r1-n4-BZx"; */
-"3r1-n4-BZx.text" = "Presione y mantenga un tipo de cambio,\n luego arrástrelo hacia arriba o hacia abajo";
+"3r1-n4-BZx.text" = "Presione y mantenga un tipo de cambio, luego arrástrelo hacia arriba o hacia abajo";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to change\nkeypad for basic/scientific"; ObjectID = "4Y2-hA-ExK"; */
-"4Y2-hA-ExK.text" = "Deslice a la izquierda o a la derecha para cambiar \nel teclado a básico/ científico";
+"4Y2-hA-ExK.text" = "Deslice a la izquierda o a la derecha para cambiar el teclado a básico/ científico";
 
 /* Class = "IBUILabel"; text = "Tap to add an item"; ObjectID = "55x-Hd-Yyy"; */
 "55x-Hd-Yyy.text" = "Pulse para adicionar un artículo";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "5vX-h0-0KZ"; */
-"5vX-h0-0KZ.text" = "Pulse la pantalla para\nmostrar los controles";
+"5vX-h0-0KZ.text" = "Pulse la pantalla para mostrar los controles";
 
 /* Class = "IBUILabel"; text = "Slide the event to the left,\nthen tap Delete"; ObjectID = "7qV-NL-Ajb"; */
-"7qV-NL-Ajb.text" = "Deslice el evento a la izquierda,\nluego pulse Borrar.";
+"7qV-NL-Ajb.text" = "Deslice el evento a la izquierda, luego pulse Borrar.";
 
 /* Class = "IBUILabel"; text = "Tap to view larger"; ObjectID = "8OM-Xa-7AG"; */
 "8OM-Xa-7AG.text" = "Pulse para ampliarlo";
@@ -33,31 +33,31 @@
 "9Oc-Jc-FLn.text" = "Adicionar o eliminar países";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "BOF-lT-L6x"; */
-"BOF-lT-L6x.text" = "Pulse la pantalla para\nmostrar los controles";
+"BOF-lT-L6x.text" = "Pulse la pantalla para mostrar los controles";
 
 /* Class = "IBUILabel"; text = "Touch and hold a unit,\nthen drag it up or down"; ObjectID = "DNP-PL-5me"; */
-"DNP-PL-5me.text" = "Toque y mantenga presionado una unidad,\nluego arrástrelo hacia arriba o hacia abajo";
+"DNP-PL-5me.text" = "Toque y mantenga presionado una unidad, luego arrástrelo hacia arriba o hacia abajo";
 
 /* Class = "IBUILabel"; text = "Tap to change \ncolor and more"; ObjectID = "EHY-52-AW9"; */
-"EHY-52-AW9.text" = "Pulsar para cambiar el \ncolor y más opciones";
+"EHY-52-AW9.text" = "Pulsar para cambiar el color y más opciones";
 
 /* Class = "IBUILabel"; text = "Slide the item to left,\nthen tap Delete"; ObjectID = "FNw-cz-Xbp"; */
-"FNw-cz-Xbp.text" = "Deslice el artículo a la izquierda,\nluego pulse Borrar";
+"FNw-cz-Xbp.text" = "Deslice el artículo a la izquierda, luego pulse Borrar";
 
 /* Class = "IBUILabel"; text = "Tap to see more categories"; ObjectID = "Hom-fh-Uyk"; */
 "Hom-fh-Uyk.text" = "Pulse para ver más categorías";
 
 /* Class = "IBUILabel"; text = "Slide the language to the left,\nthen tap Delete"; ObjectID = "M6u-St-Kuv"; */
-"M6u-St-Kuv.text" = "Deslice el idioma a la izquierda,\nluego pulse Borrar";
+"M6u-St-Kuv.text" = "Deslice el idioma a la izquierda, luego pulse Borrar";
 
 /* Class = "IBUILabel"; text = "Tap to add an event"; ObjectID = "M89-TC-emC"; */
 "M89-TC-emC.text" = "Pulse para adicionar un evento";
 
 /* Class = "IBUILabel"; text = "Slide the country to the left,\nthen tap Delete"; ObjectID = "O49-bh-b9I"; */
-"O49-bh-b9I.text" = "Deslice el país hacia la izquierda,\nluego pulse Borrar";
+"O49-bh-b9I.text" = "Deslice el país hacia la izquierda, luego pulse Borrar";
 
 /* Class = "IBUILabel"; text = "Pull up to see\nmore holidays"; ObjectID = "RQJ-Od-NDI"; */
-"RQJ-Od-NDI.text" = "Jale para ver más\ndías festivos";
+"RQJ-Od-NDI.text" = "Jale para ver más días festivos";
 
 /* Class = "IBUILabel"; text = "Tap to add or edit budget"; ObjectID = "U1j-Mc-LaR"; */
 "U1j-Mc-LaR.text" = "Pulsar adicionar o editar presupuesto";
@@ -66,49 +66,49 @@
 "UOR-Dm-haV.text" = "Descargue para actualizar";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "UvH-ng-N3W"; */
-"UvH-ng-N3W.text" = "Presione y mantenga un artículo,\nluego arrástrelo hacia arriba o hacia abajo";
+"UvH-ng-N3W.text" = "Presione y mantenga un artículo, luego arrástrelo hacia arriba o hacia abajo";
 
 /* Class = "IBUILabel"; text = "Tap to add a currency"; ObjectID = "Wca-7F-aIC"; */
 "Wca-7F-aIC.text" = "Pulse para adicionar un tipo de cambio";
 
 /* Class = "IBUILabel"; text = "Touch and hold a language,\nthen drag it up or down"; ObjectID = "Wl0-Ir-Vwx"; */
-"Wl0-Ir-Vwx.text" = "Toque y mantenga presionada un idioma,\luego arrástrelo hacia arriba o hacia abajo";
+"Wl0-Ir-Vwx.text" = "Toque y mantenga presionada un idioma, luego arrástrelo hacia arriba\no hacia abajo";
 
 /* Class = "IBUILabel"; text = "Tap to see chart/account/option"; ObjectID = "ZkW-mi-nXJ"; */
 "ZkW-mi-nXJ.text" = "Pulse para ver los gráficos/cuenta/opción";
 
 /* Class = "IBUILabel"; text = "Slide the calendar to the left,\nthen tap Delete"; ObjectID = "afl-C5-OsY"; */
-"afl-C5-OsY.text" = "Deslize el calendario a la izquierda,\nluego pulse Borrar";
+"afl-C5-OsY.text" = "Deslize el calendario a la izquierda, luego pulse Borrar";
 
 /* Class = "IBUILabel"; text = "Tap to add period"; ObjectID = "cXb-sm-2AK"; */
 "cXb-sm-2AK.text" = "Pulse para añadir período";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to see\nholidays for another country"; ObjectID = "f7p-pa-V3C"; */
-"f7p-pa-V3C.text" = "Desplace de izquierda a derecha para ver \nlos días festivos de otro país";
+"f7p-pa-V3C.text" = "Desplace de izquierda a derecha para ver los días festivos de otro país";
 
 /* Class = "IBUILabel"; text = "Slide the unit to the left,\nthen tap options"; ObjectID = "fgC-K0-IiZ"; */
-"fgC-K0-IiZ.text" = "Deslice la unidad a la izquierda,\nluego pulse opciones";
+"fgC-K0-IiZ.text" = "Deslice la unidad a la izquierda, luego pulse opciones";
 
 /* Class = "IBUILabel"; text = "Tap to change color and more"; ObjectID = "g69-at-Gdn"; */
 "g69-at-Gdn.text" = "Pulse para cambiar el color y más opciones";
 
 /* Class = "IBUILabel"; text = "Touch and hold an event,\nthen drag it up or down"; ObjectID = "g74-h9-vmQ"; */
-"g74-h9-vmQ.text" = "Pulse y mantenga una evento,\n luego arrástrelo hacia arriba o hacia abajo";
+"g74-h9-vmQ.text" = "Pulse y mantenga una evento, luego arrástrelo hacia arriba o hacia abajo";
 
 /* Class = "IBUILabel"; text = "Change color and order"; ObjectID = "j7s-5h-AsK"; */
 "j7s-5h-AsK.text" = "Cambiar el color y ordenar";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "k0p-RN-RCK"; */
-"k0p-RN-RCK.text" = "Pulse la pantalla para\nmostrar los controles";
+"k0p-RN-RCK.text" = "Pulse la pantalla para mostrar los controles";
 
 /* Class = "IBUILabel"; text = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down"; ObjectID = "ls1-5i-Gos"; */
-"ls1-5i-Gos.text" = "Toque y mantenga presionado ≡\na la derecha de un artículo,\nluego arrástrelo hacia arriba o hacia abajo.";
+"ls1-5i-Gos.text" = "Toque y mantenga presionado ≡\na la derecha de un artículo, luego arrástrelo hacia arriba o hacia abajo.";
 
 /* Class = "IBUILabel"; text = "Tap to see more info"; ObjectID = "m1h-st-ypH"; */
 "m1h-st-ypH.text" = "Pulse para ver más información";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "mYi-2r-6n3"; */
-"mYi-2r-6n3.text" = "Pulse la pantalla para\nmostrar los controles";
+"mYi-2r-6n3.text" = "Pulse la pantalla para mostrar los controles";
 
 /* Class = "IBUILabel"; text = "Tap anywhere to see more info"; ObjectID = "n3c-eW-iPb"; */
 "n3c-eW-iPb.text" = "Pulse en cualquier lugar para ver mayor información";
@@ -117,7 +117,7 @@
 "nP5-9M-28L.text" = "Pulse el botón de más para adicionar un país";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "nPF-RG-8hQ"; */
-"nPF-RG-8hQ.text" = "Presione y mantenga un artículo,\nluego arrástrelo hacia arriba o hacia abajo";
+"nPF-RG-8hQ.text" = "Presione y mantenga un artículo, luego arrástrelo hacia arriba o hacia abajo";
 
 /* Class = "IBUILabel"; text = "Tap to add a unit"; ObjectID = "o5S-tb-Jbp"; */
 "o5S-tb-Jbp.text" = "Pulse para agregar una unidad";
@@ -129,34 +129,34 @@
 "qF4-08-u3n.text" = "Pulse para ver la lista de los períodos";
 
 /* Class = "IBUILabel"; text = "Slide the item to the left,\nthen tap Delete"; ObjectID = "qMW-Th-lrs"; */
-"qMW-Th-lrs.text" = "Deslice el artículo a la izquierda,\nluego pulse Borrar";
+"qMW-Th-lrs.text" = "Deslice el artículo a la izquierda, luego pulse Borrar";
 
 /* Class = "IBUILabel"; text = "Slide the language to the left,\nthen tap Delete"; ObjectID = "qRC-cW-j6h"; */
-"qRC-cW-j6h.text" = "Deslice el idioma a la izquierda,\nluego pulse Borrar";
+"qRC-cW-j6h.text" = "Deslice el idioma a la izquierda, luego pulse Borrar";
 
 /* Class = "IBUILabel"; text = "Select which categories\nto view"; ObjectID = "rHi-Jq-5Rp"; */
-"rHi-Jq-5Rp.text" = "Selecione las categorias \npara ver";
+"rHi-Jq-5Rp.text" = "Selecione las categorias para ver";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "rqI-qD-Dqd"; */
-"rqI-qD-Dqd.text" = "Presione y mantenga un artículo,\nluego arrástrelo hacia arriba o hacia abajo";
+"rqI-qD-Dqd.text" = "Presione y mantenga un artículo, luego arrástrelo hacia arriba o hacia abajo";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "sxx-vG-Pll"; */
-"sxx-vG-Pll.text" = "Pulse la pantalla para\nmostrar los controles";
+"sxx-vG-Pll.text" = "Pulse la pantalla para mostrar los controles";
 
 /* Class = "IBUILabel"; text = "Tap to change option"; ObjectID = "t5T-1i-yhB"; */
 "t5T-1i-yhB.text" = "Pulsar la opción de cambiar";
 
 /* Class = "IBUILabel"; text = "Touch and hold a language,\nthen drag it up or down"; ObjectID = "tZj-CP-DIE"; */
-"tZj-CP-DIE.text" = "Toque y mantenga presionada un idioma,\luego arrástrelo hacia arriba o hacia abajo";
+"tZj-CP-DIE.text" = "Toque y mantenga presionada un idioma, luego arrástrelo hacia arriba\no hacia abajo";
 
 /* Class = "IBUILabel"; text = "Slide the item to the left,\nthen tap Delete"; ObjectID = "tkT-KJ-PpW"; */
-"tkT-KJ-PpW.text" = "Deslice el artículo a la izquierda,\nluego pulse Borrar";
+"tkT-KJ-PpW.text" = "Deslice el artículo a la izquierda, luego pulse Borrar";
 
 /* Class = "IBUILabel"; text = "Tap to see more categories"; ObjectID = "uz1-Ap-8Ft"; */
 "uz1-Ap-8Ft.text" = "Pulse para ver más categorías";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to see\nprev/next events"; ObjectID = "yXR-Yi-555"; */
-"yXR-Yi-555.text" = "Desplace de izquierda a derecha para ver \nlos eventos anteriores/siguientes";
+"yXR-Yi-555.text" = "Desplace de izquierda a derecha para ver los eventos anteriores/siguientes";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to see\ndifferent clock styles"; ObjectID = "zdJ-br-tkO"; */
-"zdJ-br-tkO.text" = "Deslice a la izquierda o a la derecha para ver \ndiferentes tipos de reloj";
+"zdJ-br-tkO.text" = "Deslice a la izquierda o a la derecha para ver diferentes tipos de reloj";
