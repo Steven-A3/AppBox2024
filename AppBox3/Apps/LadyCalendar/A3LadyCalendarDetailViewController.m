@@ -236,7 +236,14 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			} else {
 				A3LadyCalendarDetailViewExpectedTitleCell *titleCell = [tableView dequeueReusableCellWithIdentifier:A3LadyCalendarDetailViewExpectedTitleCellID forIndexPath:indexPath];
 				titleCell.titleLabel.text = rowInfo[ItemKey_Title];
-				[titleCell.editButton setHidden:isEditNavigationBar];
+
+                if ([A3DateHelper diffDaysFromDate:[NSDate date] toDate:[period startDate] isAllDay:YES] > 0) {
+                    [titleCell.editButton setHidden:YES];
+                }
+                else {
+                    [titleCell.editButton setHidden:isEditNavigationBar];
+                }
+                
 				[titleCell.editButton addTarget:self action:@selector(editDetailItem:) forControlEvents:UIControlEventTouchUpInside];
 				titleCell.editButton.tag = indexPath.row;
 
