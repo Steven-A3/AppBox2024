@@ -29,7 +29,7 @@
 "Sync" = "Synchronisieren";
 "Passcode Lock" = "Kennwortsperre";
 "Lunar Calendar" = "Lunar Kalender";
-"tellafriend" = "Ein Freund möchte Sie auf die neuen Funktionen von AppBox Pro™ aufmerksam machen. Nutzen Sie Lupe, Spiegel, Datumsrechner, Darlehensrechner, Kaufpreisrechner, Trinkgeldrechner, Stückpreis, Prozentrechner, Übersetzer, Tageszähler, Lady Kalender, Geldbörse, Ausgabenliste, Uhr, Batteriestatus und Feiertage für Ihr iPhone, iPad und iPod Touch. Klicken Sie unten zum Download von AppBox Pro™ aus dem iTunes App Store.";
+"tellafriend" = "Ein Freund möchte Sie auf die neuen Funktionen von AppBox Pro™ aufmerksam machen. Nutzen Sie Lupe, Spiegel, Datumsrechner, Darlehensrechner, Kaufpreisrechner, Trinkgeldrechner, Stückpreis, Prozentrechner, Übersetzer, Tageszähler, Damen-Kalender, Geldbörse, Ausgabenliste, Uhr, Batteriestatus und Feiertage für Ihr iPhone, iPad und iPod Touch. Klicken Sie unten zum Download von AppBox Pro™ aus dem iTunes App Store.";
 
 /* "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case."; */
 "DISCLAIMER_MESSAGE" = "Wir prüfen alle Feiertage mit größter Sorgfalt. Dennoch kann es sein, dass einige Angaben fehlerhaft sind, da vielerorts Feiertage durch die jeweiligen Behörden kurzfristig geändert werden können. Deswegen übernehmen wir keine Haftung für die Richtigkeit der hier gemachten Angaben und raten Ihnen die Feiertage mit Hilfe der Botschaft oder des Konsulats des betreffenden Landes zu prüfen.";
@@ -60,7 +60,7 @@
 "Translator" = "Übersetzer";
 "Unit Converter" = "Einheitenrechner";
 "Days Counter" = "Tageszähler";
-"Lady Calendar" = "Lady Kalender";
+"Lady Calendar" = "Damen-Kalender";
 "Wallet" = "Geldbörse";
 "Expense List" = "Ausgabenliste";
 "Holidays" = "Feiertage";
@@ -105,7 +105,7 @@
 "Memory" = "Speicher";
 "Capacity" = "Kapazität";
 
-"How to Maximize Power Use" = "Erfahren Sie, wie Sie die Batteriedauer erhöhen können";
+"How to Maximize Power Use" = "Wie Power Nutzung maximieren";
 "More Information about Batteries" = "Mehr Informationen über Batterien";
 
 "Enter The Number!" = "Geben Sie die Nummer ein!";
@@ -127,9 +127,9 @@
 "DATE" = "Datum";
 "WEATHER" = "Wetter";
 "The time with seconds" = "Sekunden anzeigen";
-"Flash the time separators" = "Blinken des Trennzeichens.";
-"Use a 24-hour clock" = "24-Std.-Anzeige";
-"Show AM/PM" = "12-Std.-Anzeige";
+"Flash the time separators" = "Blinkende Trennzeichen";
+"Use a 24-hour clock" = "24 Stunden verwenden";
+"Show AM/PM" = "Uhrzeit mit Suffix anzeigen";
 "Show the day of the week" = "Wochentag anzeigen";
 "Show date" = "Datum anzeigen";
 "Show Weather" = "Wetter anzeigen";
@@ -196,18 +196,18 @@
 "To" = "Bis";
 "Exclude" = "Ausschließen";
 
-"%ld of %ld" = "%lT of %lT";
+"%ld of %ld" = "%ld von %ld";
 "%@ using AppBox Pro" = "%@ von AppBox Pro";
 "Share Days Counter Data" = "Daten des Datumsrechners teilen";
-"Slideshow Options" = "Slideshow Optionen";
+"Slideshow Options" = "Diashow-Optionen";
 "Transitions" = "Übergänge";
-"Play Each Slide For" = "Nutze Slide für";
+"Play Each Slide For" = "Anzeigezeit pro Dia";
 "Repeat" = "Wiederholen";
-"Shuffle" = "Shuffle";
-"Start Slideshow" = "Beginne Slideshow";
+"Shuffle" = "Zufällig";
+"Start Slideshow" = "Präsentation starten";
 "There is no events." = "Es gibt keine Ereignisse.";
 
-"Slideshow" = "Slideshow";
+"Slideshow" = "Diashow";
 "Edit Calendar" = "Kalender bearbeiten";
 "Add Calendar" = "Kalender hinzufügen";
 "COLOR" = "Farbe";
@@ -218,7 +218,6 @@
 "Add Event" = "Ereignis hinzufügen";
 "Title" = "Titel";
 "Photo" = "Foto";
-
 
 "Lunar" = "Lunar";
 "Starts-Ends" = "Beginn- Ende";
@@ -324,16 +323,16 @@
 "%ld hr" = "%ld Std.";
 "%ld min" = "%ld Min.";
 "Cube" = "Würfel";
-"Dissolve" = "Überblendung";
+"Dissolve" = "Überblenden";
 "Origami" = "Origami";
-"Ripple" = "Riffel";
-"Wipe" = "Verwischung";
+"Ripple" = "Wellen";
+"Wipe" = "Wischen";
 
 "Change Location" = "Ort ändern";
 "Current Location" = "Aktueller Ort";
 "Searching" = "Suchen";
 "No Results Found" = "Keine Ergebnisse gefunden";
-"Custom" = "Benutzerdefiniert";
+"Custom" = "Eigene";
 "day(s) before" = "Tag(e) bis";
 "Please enter your dates in the future." = "Bitte geben Sie ein zukünftiges Datum ein.";
 "Time" = "Zeit";
@@ -394,9 +393,9 @@
 "Gift Card" = "Geschenkkarte";
 
 "ITEM" = "Gegenstand";
-"PRICE" = "PREIS";
+"PRICE" = "Preis";
 "QTY" = "Mg.";
-"SUBTOTAL" = "Zwischensumme";
+"SUBTOTAL" = "Teilergebnis";
 "QUANTITY" = "MENGE";
 
 " over of " = " über ";
@@ -457,14 +456,14 @@
 "Ovulation - Highest Probability" = "Eisprung - Höchste Wahrscheinlichkeit";
 "Menstrual Period" = "Monatsblutung";
 "Periods" = "Perioden";
-"On day(9 AM)" = "Am selben Tag (9 AM)";
-"1 day before(9 AM)" = "1 Tag vorher (9 AM)";
-"2 days before(9 AM)" = "2 Tage vorher (9 AM)";
+"On day(9 AM)" = "Gleicher Tag (09:00)";
+"1 day before(9 AM)" = "1 Tag vorher (09:00)";
+"2 days before(9 AM)" = "2 Tage vorher (09:00)";
 "Your period is coming." = "Ihre Periode beginnt.";
 "FORECASTING PERIODS" = "Prognose der Perioden";
 "CALCULATE CYCLE LENGTH" = "Berechnung Ihrer Zykluslänge";
 "Same Before Cycle" = "Wie die letzte Periode";
-"Average Before Two Cycle" = "Durchschnitt der letzten zwei Perioden";
+"Average Before Two Cycle" = "Durchschnitt der zwei Perioden";
 "Average All Cycle" = "Durchschnitt aller Perioden";
 "Automatically save period after estimated starting date." = "Ihre Daten nach der Berechnung automatisch speichern.";
 "Auto Record" = "Automatisch Speichern";
@@ -541,12 +540,12 @@
 
 "Mono" = "Mono";
 "Tonal" = "Tonal";
-"Noir" = "Noir";
-"Fade" = "Verblassen";
+"Noir" = "Schwarz";
+"Fade" = "Ausblenden";
 "Chrome" = "Chrom";
 "Process" = "Prozess";
 "Transfer" = "Transfer";
-"Instant" = "Instant";
+"Instant" = "Sofort";
 
 "The photos you take with Mirror are saved in your Camera Roll album in the Photos app." = "Die Fotos, die mit dem Spiegel aufgenommen werden, werden im Systemordner der Foto-App gespeichert.";
 "Percent_Calc_SliderMarkLabel_for_A" = "A";
@@ -780,7 +779,7 @@
 
 "This will reset all settings.\nNo data will be deleted." = "Alle Einstellungen zurücksetzten.\nEs werden keine Daten gelöscht.";
 "Reset All" = "Alles zurücksetzten";
-"Reset Show/Hide Settings" = "Zurücksetzen der Anzeigeeinstellungen";
+"Reset Show/Hide Settings" = "Anzeige zurücksetzen";
 "Wallpaper" = "Hintergrund";
 
 "Show Lunar Date" = "Zeige Lunar Tage";
@@ -798,7 +797,7 @@
 "Talk Time on 3G" = " Gesprächszeit 3G";
 "Internet on 3G" = "Internet 3G";
 "Internet on LTE" = "Internet LTE";
-"Internet on Wi-Fi" = "Internet WiFi";
+"Internet on Wi-Fi" = "Internet WLAN";
 "Internet on Cellular" = "Internet Mobilfunk";
 "Video playback" = "Video Wiedergabe";
 "Audio playback" = "Audio Wiedergabe";
@@ -807,7 +806,7 @@
 "GPS" = "GPS";
 "Charging times" = "Ladezeit";
 
-"None_Mirror" = "Kein";
+"None_Mirror" = "Keine";
 
 "CALENDARS" = "Kalender";
 
