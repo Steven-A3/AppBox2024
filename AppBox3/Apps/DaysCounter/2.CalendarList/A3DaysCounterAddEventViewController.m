@@ -206,6 +206,7 @@
 
 - (void)rightSideViewWillDismiss {
 	[self enableControls:YES];
+    [self.tableView reloadData];
 }
 
 - (void)enableControls:(BOOL)enable {
@@ -1208,10 +1209,12 @@
         cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[_eventItem repeatEndDate] withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:YES]];
     };
     
-    if ( IS_IPHONE )
+    if ( IS_IPHONE ) {
         [self.navigationController pushViewController:nextVC animated:YES];
-    else
+    }
+    else {
         [self.A3RootViewController presentRightSideViewController:nextVC];
+    }
     [self closeDatePickerCell];
 }
 
