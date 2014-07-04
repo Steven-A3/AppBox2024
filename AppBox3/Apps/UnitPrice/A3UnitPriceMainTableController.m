@@ -639,7 +639,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.downSliderView.priceValue = self.price2.price.floatValue;
     
     price2UnitPrice = unitPrice2;
-    
+
     double maxPrice = MAX(unitPrice1, unitPrice2);
     double minPrice = MIN(unitPrice1, unitPrice2);
     cell.upSliderView.maxValue = maxPrice;

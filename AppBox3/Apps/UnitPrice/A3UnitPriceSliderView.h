@@ -28,8 +28,8 @@ typedef NS_ENUM(NSInteger, UnitPriceSliderViewLayout) {
 @property (weak, nonatomic) IBOutlet UIView *lineView;
 @property (weak, nonatomic) IBOutlet UIView *progressLineView;
 
-@property (nonatomic, readwrite) float maxValue;
-@property (nonatomic, readwrite) float minValue;
+@property (nonatomic, readwrite) double maxValue;
+@property (nonatomic, readwrite) double minValue;
 @property (nonatomic, readwrite) float priceValue;
 @property (nonatomic, readwrite) double unitPriceValue;
 @property (nonatomic, strong) UnitItem *unit;

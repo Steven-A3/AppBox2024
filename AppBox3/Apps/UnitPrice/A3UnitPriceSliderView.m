@@ -152,14 +152,14 @@
 }
 
 
-- (void)setMaxValue:(float)maxValue
+- (void)setMaxValue:(double)maxValue
 {
-    _maxValue = (maxValue>0) ? (maxValue * 1.2) : 0;
+    _maxValue = (maxValue>0) ? maxValue : 0;
 }
 
-- (void)setMinValue:(float)minValue
+- (void)setMinValue:(double)minValue
 {
-    _minValue = (minValue > 0) ? (minValue * 0.8) : 0;
+    _minValue = (minValue > 0) ? minValue : 0;
 }
 
 - (void)setPriceValue:(float)priceValue
@@ -184,7 +184,11 @@
     float progressLineMaxWidth = _lineView.frame.size.width * 0.8;
     
     float unitPrice = _unitPriceValue;
-    float pixelPerPrice = progressLineMaxWidth / (_maxValue - _minValue);
+    float pixelPerPrice = progressLineMaxWidth / _maxValue;
+
+    if (_unitPriceValue == _minValue && ((1.0 - (_minValue / _maxValue)) < 0.2)) {
+        pixelPerPrice = progressLineMaxWidth / (_maxValue * 1.2);
+    }
     
     if (_unitPriceValue == _maxValue) {
         
