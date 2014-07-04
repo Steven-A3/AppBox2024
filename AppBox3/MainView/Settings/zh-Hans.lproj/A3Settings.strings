@@ -1,212 +1,203 @@
 
 /* Class = "IBUILabel"; text = "Lady Calendar"; ObjectID = "05t-yj-k37"; */
-"05t-yj-k37.text" = "Lady Calendar";
+"05t-yj-k37.text" = "淑女日历";
 
-/* Class = "IBUILabel"; text = "Last 5"; ObjectID = "0Me-nY-VE5"; */
-"0Me-nY-VE5.text" = "Last 5";
+/* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
+"0Me-nY-VE5.text" = "5条最近记录";
 
 /* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.
 
 "; ObjectID = "1dJ-y3-yh7"; */
-"1dJ-y3-yh7.footerTitle" = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.
-
-";
+"1dJ-y3-yh7.footerTitle" = "同步或备份每个应用的历史记录、天数计算事件、费用清单、淑女日历周期和钱包信息。";
 
 /* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "2E1-Z8-v5l"; */
-"2E1-Z8-v5l.title" = "Select Backup";
+"2E1-Z8-v5l.title" = "选择备份";
 
 /* Class = "IBUITableViewSection"; headerTitle = "PASSCODE REQUIRED FOR"; ObjectID = "4da-k5-f71"; */
-"4da-k5-f71.headerTitle" = "PASSCODE REQUIRED FOR";
+"4da-k5-f71.headerTitle" = "需要密码";
 
 /* Class = "IBUINavigationItem"; title = "Apps"; ObjectID = "52d-yt-UJk"; */
-"52d-yt-UJk.title" = "Apps";
+"52d-yt-UJk.title" = "应用";
 
 /* Class = "IBUILabel"; text = "Lunar Calendar"; ObjectID = "5dO-Tl-dv6"; */
-"5dO-Tl-dv6.text" = "Lunar Calendar";
+"5dO-Tl-dv6.text" = "阴历";
 
 /* Class = "IBUINavigationItem"; title = "Recent to Keep"; ObjectID = "5pd-cg-py2"; */
-"5pd-cg-py2.title" = "Recent to Keep";
+"5pd-cg-py2.title" = "保留最近记录";
 
 /* Class = "IBUITableViewController"; title = "Dropbox Files"; ObjectID = "5tS-iN-3NI"; */
-"5tS-iN-3NI.title" = "Dropbox Files";
+"5tS-iN-3NI.title" = "Dropbox 文件";
 
 /* Class = "IBUILabel"; text = "Subtitle"; ObjectID = "6F3-BB-fcx"; */
-"6F3-BB-fcx.text" = "Subtitle";
+"6F3-BB-fcx.text" = "副标题";
 
 /* Class = "IBUILabel"; text = "Turn Passcode On"; ObjectID = "6ow-jx-9ZQ"; */
-"6ow-jx-9ZQ.text" = "Turn Passcode On";
+"6ow-jx-9ZQ.text" = "开启密码";
 
 /* Class = "IBUILabel"; text = "Use iCloud"; ObjectID = "7Pd-or-AM2"; */
-"7Pd-or-AM2.text" = "Use iCloud";
+"7Pd-or-AM2.text" = "使用 iCloud";
 
 /* Class = "IBUILabel"; text = "Clear Recent"; ObjectID = "7Wm-Bw-iY8"; */
-"7Wm-Bw-iY8.text" = "Clear Recent";
+"7Wm-Bw-iY8.text" = "清除最近记录";
 
 /* Class = "IBUITableViewController"; title = "Lunar Calendar"; ObjectID = "7oW-es-0Zb"; */
-"7oW-es-0Zb.title" = "Lunar Calendar";
+"7oW-es-0Zb.title" = "阴历 ";
 
 /* Class = "IBUILabel"; text = "Require Passcode"; ObjectID = "A3j-68-3Oy"; */
-"A3j-68-3Oy.text" = "Require Passcode";
+"A3j-68-3Oy.text" = "为  需要密码";
 
 /* Class = "IBUILabel"; text = "Recent to Keep"; ObjectID = "BGG-KB-Wog"; */
-"BGG-KB-Wog.text" = "Recent to Keep";
+"BGG-KB-Wog.text" = "保留最近记录";
 
 /* Class = "IBUINavigationItem"; title = "Lunar Calendar"; ObjectID = "CDn-14-haS"; */
-"CDn-14-haS.title" = "Lunar Calendar";
+"CDn-14-haS.title" = "阴历";
 
 /* Class = "IBUILabel"; text = "Simple Passcode"; ObjectID = "EA1-5P-PnP"; */
-"EA1-5P-PnP.text" = "Simple Passcode";
+"EA1-5P-PnP.text" = "简单密码";
 
 /* Class = "IBUILabel"; text = "Change Passcode"; ObjectID = "Fvs-tZ-usV"; */
-"Fvs-tZ-usV.text" = "Change Passcode";
+"Fvs-tZ-usV.text" = "更改密码";
 
 /* Class = "IBUITableViewController"; title = "Passcode Lock"; ObjectID = "KML-Ub-d8M"; */
-"KML-Ub-d8M.title" = "Passcode Lock";
+"KML-Ub-d8M.title" = "密码锁";
 
 /* Class = "IBUITableViewSection"; footerTitle = "For Lunar Converter"; ObjectID = "LOI-Yd-hc0"; */
-"LOI-Yd-hc0.footerTitle" = "For Lunar Converter";
+"LOI-Yd-hc0.footerTitle" = "为阴历转换器";
 
 /* Class = "IBUILabel"; text = "More Information About Security"; ObjectID = "LZb-sk-84W"; */
-"LZb-sk-84W.text" = "More Information About Security";
+"LZb-sk-84W.text" = "关于安全的更多信息";
 
 /* Class = "IBUINavigationItem"; title = "Passcode Lock"; ObjectID = "Lbr-p8-awt"; */
-"Lbr-p8-awt.title" = "Passcode Lock";
+"Lbr-p8-awt.title" = "密码锁";
 
 /* Class = "IBUITableViewSection"; footerTitle = "Shorter times are more secure."; ObjectID = "MUh-Ac-pHs"; */
-"MUh-Ac-pHs.footerTitle" = "Shorter times are more secure.";
+"MUh-Ac-pHs.footerTitle" = "时间越短越安全.";
 
 /* Class = "IBUILabel"; text = "After 4 hours"; ObjectID = "McJ-yq-SBi"; */
-"McJ-yq-SBi.text" = "After 4 hours";
+"McJ-yq-SBi.text" = "4小时之后";
 
 /* Class = "IBUILabel"; text = "Off"; ObjectID = "Mzm-Rw-Yrb"; */
-"Mzm-Rw-Yrb.text" = "Off";
+"Mzm-Rw-Yrb.text" = "关闭";
 
 /* Class = "IBUILabel"; text = "Backup"; ObjectID = "NGG-P3-DCE"; */
-"NGG-P3-DCE.text" = "Backup";
+"NGG-P3-DCE.text" = "备份";
 
 /* Class = "IBUILabel"; text = "Wallet"; ObjectID = "O52-H9-qgV"; */
-"O52-H9-qgV.text" = "Wallet";
+"O52-H9-qgV.text" = "钱包";
 
 /* Class = "IBUILabel"; text = "After 1 minute"; ObjectID = "OmZ-rj-JvF"; */
-"OmZ-rj-JvF.text" = "After 1 minute";
+"OmZ-rj-JvF.text" = "1分钟以后";
 
 /* Class = "IBUILabel"; text = "Detail"; ObjectID = "QDB-IM-N8E"; */
-"QDB-IM-N8E.text" = "Detail";
+"QDB-IM-N8E.text" = "详细内容";
 
 /* Class = "IBUITableViewSection"; footerTitle = "A simple passcode is a 4 digit number."; ObjectID = "ROP-jz-ZtT"; */
-"ROP-jz-ZtT.footerTitle" = "A simple passcode is a 4 digit number.";
+"ROP-jz-ZtT.footerTitle" = "简单密码是四位数字.";
 
 /* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "ROP-jz-ZtT"; */
 "ROP-jz-ZtT.headerTitle" = " ";
 
 /* Class = "IBUITableViewController"; title = "Theme Color"; ObjectID = "RpU-td-Vej"; */
-"RpU-td-Vej.title" = "Theme Color";
+"RpU-td-Vej.title" = "主题颜色";
 
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "TG9-5P-YDf"; */
-"TG9-5P-YDf.text" = "Days Counter";
+"TG9-5P-YDf.text" = "天数计算器";
 
-/* Class = "IBUILabel"; text = "Last 3"; ObjectID = "UKS-0H-yut"; */
-"UKS-0H-yut.text" = "Last 3";
+/* Class = "IBUILabel"; text = "3 Most Recent"; ObjectID = "UKS-0H-yut"; */
+"UKS-0H-yut.text" = "3条最近记录";
 
 /* Class = "IBUILabel"; text = "Title"; ObjectID = "UnN-yq-AkZ"; */
-"UnN-yq-AkZ.text" = "Title";
+"UnN-yq-AkZ.text" = "标题";
 
 /* Class = "IBUILabel"; text = "Theme Color"; ObjectID = "Vgb-6m-SyM"; */
-"Vgb-6m-SyM.text" = "Theme Color";
+"Vgb-6m-SyM.text" = "主题颜色";
 
 /* Class = "IBUITableViewController"; title = "Require Passcode"; ObjectID = "Xb7-yr-Jd6"; */
-"Xb7-yr-Jd6.title" = "Require Passcode";
+"Xb7-yr-Jd6.title" = "需要密码";
 
-/* Class = "IBUILabel"; text = "Last 3"; ObjectID = "bWw-QS-8Fs"; */
-"bWw-QS-8Fs.text" = "Last 3";
+/* Class = "IBUILabel"; text = "3 Most Recent"; ObjectID = "bWw-QS-8Fs"; */
+"bWw-QS-8Fs.text" = "3条最近记录";
 
 /* Class = "IBUILabel"; text = "After 5 minutes"; ObjectID = "cHo-o5-yl0"; */
-"cHo-o5-yl0.text" = "After 5 minutes";
+"cHo-o5-yl0.text" = "5分钟之后";
 
 /* Class = "IBUILabel"; text = "Immediately"; ObjectID = "ck4-7j-nEw"; */
-"ck4-7j-nEw.text" = "Immediately";
+"ck4-7j-nEw.text" = "立刻";
 
 /* Class = "IBUILabel"; text = "Immediately"; ObjectID = "eGG-mK-Q2m"; */
-"eGG-mK-Q2m.text" = "Immediately";
+"eGG-mK-Q2m.text" = "立刻";
 
 /* Class = "IBUILabel"; text = "Backup & Restore on Dropbox"; ObjectID = "ehr-w2-0vk"; */
-"ehr-w2-0vk.text" = "Backup & Restore on Dropbox";
+"ehr-w2-0vk.text" = " 在Dropbox上备份及恢复";
 
 /* Class = "IBUINavigationItem"; title = "Theme Color"; ObjectID = "eqe-ec-kWO"; */
-"eqe-ec-kWO.title" = "Theme Color";
+"eqe-ec-kWO.title" = "主题颜色";
 
 /* Class = "IBUILabel"; text = "Korean"; ObjectID = "fHP-u0-inU"; */
-"fHP-u0-inU.text" = "Korean";
+"fHP-u0-inU.text" = "韩语";
 
 /* Class = "IBUINavigationItem"; title = "Favorites"; ObjectID = "fqW-Vk-vP5"; */
-"fqW-Vk-vP5.title" = "Favorites";
+"fqW-Vk-vP5.title" = "收藏";
 
 /* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "go4-fr-Ah2"; */
-"go4-fr-Ah2.title" = "Settings";
+"go4-fr-Ah2.title" = "设置";
 
 /* Class = "IBUILabel"; text = "Most Recent"; ObjectID = "h1H-Ma-NYM"; */
-"h1H-Ma-NYM.text" = "Most Recent";
+"h1H-Ma-NYM.text" = "最近记录";
 
-/* Class = "IBUILabel"; text = "Last 2"; ObjectID = "hXr-2r-LdP"; */
-"hXr-2r-LdP.text" = "Last 2";
+/* Class = "IBUILabel"; text = "2 Most Recent"; ObjectID = "hXr-2r-LdP"; */
+"hXr-2r-LdP.text" = "2条最近记录";
 
 /* Class = "IBUILabel"; text = "Unlink from Dropbox"; ObjectID = "iav-1w-bex"; */
-"iav-1w-bex.text" = "Unlink from Dropbox";
+"iav-1w-bex.text" = "取消Dropbox链接";
 
 /* Class = "IBUILabel"; text = "Favorites"; ObjectID = "m3s-eA-4WD"; */
-"m3s-eA-4WD.text" = "Favorites";
+"m3s-eA-4WD.text" = "收藏夹";
 
 /* Class = "IBUITableViewController"; title = "Sync"; ObjectID = "o9N-EA-Uky"; */
-"o9N-EA-Uky.title" = "Sync";
+"o9N-EA-Uky.title" = "同步";
 
 /* Class = "IBUINavigationItem"; title = "Settings"; ObjectID = "oSP-yD-m2L"; */
-"oSP-yD-m2L.title" = "Settings";
+"oSP-yD-m2L.title" = "设置";
 
 /* Class = "IBUINavigationItem"; title = "Backup & Restore on Dropbox"; ObjectID = "oxS-sd-8U7"; */
-"oxS-sd-8U7.title" = "Backup & Restore on Dropbox";
+"oxS-sd-8U7.title" = "在Dropbox中备份或恢复";
 
 /* Class = "IBUILabel"; text = "Passcode Lock"; ObjectID = "pjv-dt-D5o"; */
-"pjv-dt-D5o.text" = "Passcode Lock";
+"pjv-dt-D5o.text" = "密码锁";
 
 /* Class = "IBUINavigationItem"; title = "Require Passcode"; ObjectID = "qcD-FX-Y5d"; */
-"qcD-FX-Y5d.title" = "Require Passcode";
+"qcD-FX-Y5d.title" = "需要密码";
 
 /* Class = "IBUILabel"; text = "Account"; ObjectID = "rZ1-di-1G0"; */
-"rZ1-di-1G0.text" = "Account";
+"rZ1-di-1G0.text" = "账户";
 
 /* Class = "IBUILabel"; text = "Settings"; ObjectID = "sL2-cQ-mx7"; */
-"sL2-cQ-mx7.text" = "Settings";
+"sL2-cQ-mx7.text" = "设置";
 
 /* Class = "IBUILabel"; text = "After 1 hour"; ObjectID = "sks-IW-96W"; */
-"sks-IW-96W.text" = "After 1 hour";
+"sks-IW-96W.text" = " 1小时之后";
 
 /* Class = "IBUITableViewController"; title = "Recent To Keep"; ObjectID = "srb-MD-eSG"; */
-"srb-MD-eSG.title" = "Recent To Keep";
+"srb-MD-eSG.title" = "保留最近记录";
 
 /* Class = "IBUILabel"; text = "Title"; ObjectID = "uQK-1o-GIR"; */
-"uQK-1o-GIR.text" = "Title";
+"uQK-1o-GIR.text" = "标题";
 
 /* Class = "IBUILabel"; text = "Starting"; ObjectID = "uR7-vn-SkB"; */
-"uR7-vn-SkB.text" = "Starting";
+"uR7-vn-SkB.text" = "开始";
 
 /* Class = "IBUILabel"; text = "After 15 minutes"; ObjectID = "uxS-dx-9By"; */
-"uxS-dx-9By.text" = "After 15 minutes";
+"uxS-dx-9By.text" = " 15分钟之后";
 
 /* Class = "IBUITableViewController"; title = "Edit Favorites"; ObjectID = "vRR-Rd-eut"; */
-"vRR-Rd-eut.title" = "Edit Favorites";
+"vRR-Rd-eut.title" = "编辑收藏夹";
 
 /* Class = "IBUILabel"; text = "Restore"; ObjectID = "xJL-au-A2W"; */
-"xJL-au-A2W.text" = "Restore";
+"xJL-au-A2W.text" = "回复";
 
 /* Class = "IBUILabel"; text = "Title"; ObjectID = "xJM-LO-q65"; */
-"xJM-LO-q65.text" = "Title";
+"xJM-LO-q65.text" = "标题";
 
 /* Class = "IBUILabel"; text = "Chinese"; ObjectID = "zD5-Op-8e3"; */
-"zD5-Op-8e3.text" = "Chinese";
-
-/* Class = "IBUILabel"; text = "Chinese"; ObjectID = "S47-yQ-cP7"; */
-"S47-yQ-cP7.text" = "Chinese";
-
-/* Class = "IBUILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
-"alM-Rl-6AW.text" = "Korean";
-
+"zD5-Op-8e3.text" = "中文";

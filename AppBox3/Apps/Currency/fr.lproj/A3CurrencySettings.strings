@@ -1,6 +1,6 @@
 
 /* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "1Hw-30-UK7"; */
-"1Hw-30-UK7.title" = "Settings";
+"1Hw-30-UK7.title" = "Paramètres";
 
 /* Class = "IBUILabel"; text = "Auto Update"; ObjectID = "c8y-Na-LHw"; */
-"c8y-Na-LHw.text" = "Auto Update";
+"c8y-Na-LHw.text" = "Mise à jour auto";

@@ -154,8 +154,6 @@
 			label.text = NSLocalizedString(@"Custom", nil);
 			UITextField *textField = (UITextField*)[cell viewWithTag:12];
 			textField.delegate = self;
-			UILabel *detailLabel = (UILabel*)[cell viewWithTag:11];
-			detailLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days before(NO NUMBER)", @"StringsDict", nil), (long)[textField.text integerValue]];
 			((A3DaysCounterRepeatCustomCell *)cell).daysLabelWidthConst.constant = 100;
 			((A3DaysCounterRepeatCustomCell *)cell).checkImageView.image = [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 			[((A3DaysCounterRepeatCustomCell *)cell).checkImageView setTintColor:[A3AppDelegate instance].themeColor];
@@ -186,6 +184,8 @@
 			textField.text = @"0";
 			[self setCheckmarkOnCustomInputCell:cell CheckShow:NO];
 		}
+		UILabel *detailLabel = (UILabel*)[cell viewWithTag:11];
+		detailLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days before(NO NUMBER)", @"StringsDict", nil), (long)[textField.text integerValue]];
 	}
 	else {
 		cell.textLabel.text = [item objectForKey:EventRowTitle];

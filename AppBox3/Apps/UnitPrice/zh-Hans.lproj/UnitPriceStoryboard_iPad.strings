@@ -1,99 +1,57 @@
 
-/* Class = "IBUITextField"; text = "$3.68"; ObjectID = "1xt-yz-LfC"; */
-"1xt-yz-LfC.text" = "$3.68";
-
-/* Class = "IBUILabel"; text = "Detail"; ObjectID = "2PJ-mB-dDh"; */
-"2PJ-mB-dDh.text" = "Detail";
-
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "2Xy-hf-wFd"; */
-"2Xy-hf-wFd.text" = "Price";
+"2Xy-hf-wFd.text" = "价格";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "6x6-g7-znb"; */
-"6x6-g7-znb.text" = "Price";
-
-/* Class = "IBUIButton"; normalTitle = "$0.2044/oz"; ObjectID = "BAr-yf-4sh"; */
-"BAr-yf-4sh.normalTitle" = "$0.2044/oz";
+"6x6-g7-znb.text" = "价格";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "DQr-FZ-M8K"; */
-"DQr-FZ-M8K.text" = "Price";
+"DQr-FZ-M8K.text" = "价格";
 
 /* Class = "IBUILabel"; text = "QUANTITY"; ObjectID = "Ecv-hv-npN"; */
-"Ecv-hv-npN.text" = "QUANTITY";
+"Ecv-hv-npN.text" = "数量";
 
 /* Class = "IBUILabel"; text = "DISCOUNT"; ObjectID = "EgA-Kn-q3Z"; */
-"EgA-Kn-q3Z.text" = "DISCOUNT";
-
-/* Class = "IBUILabel"; text = "A"; ObjectID = "Is9-06-OR1"; */
-"Is9-06-OR1.text" = "A";
-
-/* Class = "IBUITextView"; text = "The text displayed in the text view"; ObjectID = "JZ4-A5-dZr"; */
-"JZ4-A5-dZr.text" = "The text displayed in the text view";
+"EgA-Kn-q3Z.text" = "折扣";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "KO6-pk-wUh"; */
-"KO6-pk-wUh.text" = "Price";
-
-/* Class = "IBUILabel"; text = "Title"; ObjectID = "KRS-pe-BbO"; */
-"KRS-pe-BbO.text" = "Title";
-
-/* Class = "IBUILabel"; text = "$3.68"; ObjectID = "KZ3-ij-xiC"; */
-"KZ3-ij-xiC.text" = "$3.68";
-
-/* Class = "IBUILabel"; text = "0"; ObjectID = "LBN-UK-r4G"; */
-"LBN-UK-r4G.text" = "0";
+"KO6-pk-wUh.text" = "价格";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "Lx7-xF-9XK"; */
-"Lx7-xF-9XK.text" = "Price";
+"Lx7-xF-9XK.text" = "价格";
 
 /* Class = "IBUILabel"; text = "UNIT"; ObjectID = "Si0-6G-n3o"; */
 "Si0-6G-n3o.text" = "UNIT";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "UY8-Yj-JJR"; */
-"UY8-Yj-JJR.text" = "Price";
-
-/* Class = "IBUILabel"; text = "18"; ObjectID = "Vsb-bt-v3m"; */
-"Vsb-bt-v3m.text" = "18";
+"UY8-Yj-JJR.text" = "价格";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "YTt-4h-P5F"; */
-"YTt-4h-P5F.text" = "Price";
+"YTt-4h-P5F.text" = "价格";
 
 /* Class = "IBUILabel"; text = "UNIT PRICE"; ObjectID = "Z6V-VR-uSB"; */
-"Z6V-VR-uSB.text" = "UNIT PRICE";
+"Z6V-VR-uSB.text" = "单价";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "bTH-9t-GT8"; */
-"bTH-9t-GT8.text" = "Price";
-
-/* Class = "IBUILabel"; text = "A"; ObjectID = "gv8-Y8-xYE"; */
-"gv8-Y8-xYE.text" = "A";
+"bTH-9t-GT8.text" = "价格";
 
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "hW6-LI-MCK"; */
-"hW6-LI-MCK.text" = "Unit Price";
+"hW6-LI-MCK.text" = "单价";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "k8q-8C-FUd"; */
-"k8q-8C-FUd.text" = "Price";
-
-/* Class = "IBUILabel"; text = "A"; ObjectID = "nMu-jR-vMJ"; */
-"nMu-jR-vMJ.text" = "A";
+"k8q-8C-FUd.text" = "价格";
 
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "oHY-7Y-4TI"; */
-"oHY-7Y-4TI.text" = "Unit Price";
+"oHY-7Y-4TI.text" = "单价";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "oei-CS-z7I"; */
-"oei-CS-z7I.text" = "Price";
-
-/* Class = "IBUILabel"; text = "OZ"; ObjectID = "p6k-1r-cwe"; */
-"p6k-1r-cwe.text" = "OZ";
+"oei-CS-z7I.text" = "价格";
 
 /* Class = "IBUILabel"; text = "SIZE"; ObjectID = "rV0-DY-9UV"; */
-"rV0-DY-9UV.text" = "SIZE";
-
-/* Class = "IBUILabel"; text = "A"; ObjectID = "voR-3e-nld"; */
-"voR-3e-nld.text" = "A";
+"rV0-DY-9UV.text" = "尺寸";
 
 /* Class = "IBUILabel"; text = "PRICE"; ObjectID = "w5d-3l-4mN"; */
-"w5d-3l-4mN.text" = "PRICE";
-
-/* Class = "IBUILabel"; text = "1"; ObjectID = "xSm-Me-Xz7"; */
-"xSm-Me-Xz7.text" = "1";
+"w5d-3l-4mN.text" = "价格";
 
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "zWC-aV-ElS"; */
-"zWC-aV-ElS.text" = "Unit Price";
+"zWC-aV-ElS.text" = "单价";

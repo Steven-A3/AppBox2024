@@ -1,212 +1,194 @@
 
 /* Class = "IBUILabel"; text = "Lady Calendar"; ObjectID = "05t-yj-k37"; */
-"05t-yj-k37.text" = "Lady Calendar";
+"05t-yj-k37.text" = "Calendrier dame";
 
-/* Class = "IBUILabel"; text = "Last 5"; ObjectID = "0Me-nY-VE5"; */
-"0Me-nY-VE5.text" = "Last 5";
+/* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
+"0Me-nY-VE5.text" = "5 plus récent";
 
 /* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.
-
+ 
 "; ObjectID = "1dJ-y3-yh7"; */
-"1dJ-y3-yh7.footerTitle" = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.
+"1dJ-y3-yh7.footerTitle" = "Sync ou Sauvegarde de l’historique de tous les apps, événements du compteur de jours, listes de dépenses, périodes du calendrier dame et items du portefeuille.
 
 ";
 
 /* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "2E1-Z8-v5l"; */
-"2E1-Z8-v5l.title" = "Select Backup";
+"2E1-Z8-v5l.title" = "Choisir une sauvegarde";
 
+/* Reference Image */
 /* Class = "IBUITableViewSection"; headerTitle = "PASSCODE REQUIRED FOR"; ObjectID = "4da-k5-f71"; */
-"4da-k5-f71.headerTitle" = "PASSCODE REQUIRED FOR";
+"4da-k5-f71.headerTitle" = "CODE D’ACCÈS REQUIS POUR";
 
 /* Class = "IBUINavigationItem"; title = "Apps"; ObjectID = "52d-yt-UJk"; */
 "52d-yt-UJk.title" = "Apps";
 
 /* Class = "IBUILabel"; text = "Lunar Calendar"; ObjectID = "5dO-Tl-dv6"; */
-"5dO-Tl-dv6.text" = "Lunar Calendar";
+"5dO-Tl-dv6.text" = "Calendrier lunaire";
 
 /* Class = "IBUINavigationItem"; title = "Recent to Keep"; ObjectID = "5pd-cg-py2"; */
-"5pd-cg-py2.title" = "Recent to Keep";
+"5pd-cg-py2.title" = "Récent à garder";
 
 /* Class = "IBUITableViewController"; title = "Dropbox Files"; ObjectID = "5tS-iN-3NI"; */
-"5tS-iN-3NI.title" = "Dropbox Files";
+"5tS-iN-3NI.title" = "Fichiers Dropbox";
 
 /* Class = "IBUILabel"; text = "Subtitle"; ObjectID = "6F3-BB-fcx"; */
-"6F3-BB-fcx.text" = "Subtitle";
+"6F3-BB-fcx.text" = "Sous-titre";
 
 /* Class = "IBUILabel"; text = "Turn Passcode On"; ObjectID = "6ow-jx-9ZQ"; */
-"6ow-jx-9ZQ.text" = "Turn Passcode On";
+"6ow-jx-9ZQ.text" = "Activer le code d’accès";
 
 /* Class = "IBUILabel"; text = "Use iCloud"; ObjectID = "7Pd-or-AM2"; */
-"7Pd-or-AM2.text" = "Use iCloud";
+"7Pd-or-AM2.text" = "Utiliser iCloud";
 
 /* Class = "IBUILabel"; text = "Clear Recent"; ObjectID = "7Wm-Bw-iY8"; */
-"7Wm-Bw-iY8.text" = "Clear Recent";
+"7Wm-Bw-iY8.text" = "Effacer les récents";
 
 /* Class = "IBUITableViewController"; title = "Lunar Calendar"; ObjectID = "7oW-es-0Zb"; */
-"7oW-es-0Zb.title" = "Lunar Calendar";
+"7oW-es-0Zb.title" = "Calendrier linaire";
 
 /* Class = "IBUILabel"; text = "Require Passcode"; ObjectID = "A3j-68-3Oy"; */
-"A3j-68-3Oy.text" = "Require Passcode";
+"A3j-68-3Oy.text" = "Code d’accès requis";
 
 /* Class = "IBUILabel"; text = "Recent to Keep"; ObjectID = "BGG-KB-Wog"; */
-"BGG-KB-Wog.text" = "Recent to Keep";
+"BGG-KB-Wog.text" = "Récent à garder";
 
 /* Class = "IBUINavigationItem"; title = "Lunar Calendar"; ObjectID = "CDn-14-haS"; */
-"CDn-14-haS.title" = "Lunar Calendar";
+"CDn-14-haS.title" = "Calendrier lunaire";
 
 /* Class = "IBUILabel"; text = "Simple Passcode"; ObjectID = "EA1-5P-PnP"; */
-"EA1-5P-PnP.text" = "Simple Passcode";
+"EA1-5P-PnP.text" = "Code d’accès simple";
 
 /* Class = "IBUILabel"; text = "Change Passcode"; ObjectID = "Fvs-tZ-usV"; */
-"Fvs-tZ-usV.text" = "Change Passcode";
+"Fvs-tZ-usV.text" = "Changer le code d’accès";
 
 /* Class = "IBUITableViewController"; title = "Passcode Lock"; ObjectID = "KML-Ub-d8M"; */
-"KML-Ub-d8M.title" = "Passcode Lock";
+"KML-Ub-d8M.title" = "Code";
 
 /* Class = "IBUITableViewSection"; footerTitle = "For Lunar Converter"; ObjectID = "LOI-Yd-hc0"; */
-"LOI-Yd-hc0.footerTitle" = "For Lunar Converter";
+"LOI-Yd-hc0.footerTitle" = "Pour lunaire Converter";
 
 /* Class = "IBUILabel"; text = "More Information About Security"; ObjectID = "LZb-sk-84W"; */
-"LZb-sk-84W.text" = "More Information About Security";
+"LZb-sk-84W.text" = "Plus d’informations sur la sécurité";
 
 /* Class = "IBUINavigationItem"; title = "Passcode Lock"; ObjectID = "Lbr-p8-awt"; */
-"Lbr-p8-awt.title" = "Passcode Lock";
+"Lbr-p8-awt.title" = "Code d’accès verrouillé";
 
 /* Class = "IBUITableViewSection"; footerTitle = "Shorter times are more secure."; ObjectID = "MUh-Ac-pHs"; */
-"MUh-Ac-pHs.footerTitle" = "Shorter times are more secure.";
+"MUh-Ac-pHs.footerTitle" = "Des temps plus courts sont plus sécurisés.";
 
 /* Class = "IBUILabel"; text = "After 4 hours"; ObjectID = "McJ-yq-SBi"; */
-"McJ-yq-SBi.text" = "After 4 hours";
+"McJ-yq-SBi.text" = "Après 4 heures";
 
 /* Class = "IBUILabel"; text = "Off"; ObjectID = "Mzm-Rw-Yrb"; */
-"Mzm-Rw-Yrb.text" = "Off";
+"Mzm-Rw-Yrb.text" = " Éteint";
 
 /* Class = "IBUILabel"; text = "Backup"; ObjectID = "NGG-P3-DCE"; */
-"NGG-P3-DCE.text" = "Backup";
+"NGG-P3-DCE.text" = "Sauvegarde";
 
 /* Class = "IBUILabel"; text = "Wallet"; ObjectID = "O52-H9-qgV"; */
-"O52-H9-qgV.text" = "Wallet";
+"O52-H9-qgV.text" = "Portefeuille";
 
 /* Class = "IBUILabel"; text = "After 1 minute"; ObjectID = "OmZ-rj-JvF"; */
-"OmZ-rj-JvF.text" = "After 1 minute";
+"OmZ-rj-JvF.text" = "Après 1 minute";
 
 /* Class = "IBUILabel"; text = "Detail"; ObjectID = "QDB-IM-N8E"; */
-"QDB-IM-N8E.text" = "Detail";
+"QDB-IM-N8E.text" = "Détail";
 
 /* Class = "IBUITableViewSection"; footerTitle = "A simple passcode is a 4 digit number."; ObjectID = "ROP-jz-ZtT"; */
-"ROP-jz-ZtT.footerTitle" = "A simple passcode is a 4 digit number.";
-
-/* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "ROP-jz-ZtT"; */
-"ROP-jz-ZtT.headerTitle" = " ";
+"ROP-jz-ZtT.footerTitle" = "Un simple code d’accès est un nombre à 4 chiffres.";
 
 /* Class = "IBUITableViewController"; title = "Theme Color"; ObjectID = "RpU-td-Vej"; */
-"RpU-td-Vej.title" = "Theme Color";
+"RpU-td-Vej.title" = "Couleur de thème";
 
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "TG9-5P-YDf"; */
-"TG9-5P-YDf.text" = "Days Counter";
+"TG9-5P-YDf.text" = "Compteur de jours";
 
-/* Class = "IBUILabel"; text = "Last 3"; ObjectID = "UKS-0H-yut"; */
-"UKS-0H-yut.text" = "Last 3";
-
-/* Class = "IBUILabel"; text = "Title"; ObjectID = "UnN-yq-AkZ"; */
-"UnN-yq-AkZ.text" = "Title";
+/* Class = "IBUILabel"; text = "3 Most Recent"; ObjectID = "UKS-0H-yut"; */
+"UKS-0H-yut.text" = "3 plus récents";
 
 /* Class = "IBUILabel"; text = "Theme Color"; ObjectID = "Vgb-6m-SyM"; */
-"Vgb-6m-SyM.text" = "Theme Color";
+"Vgb-6m-SyM.text" = "Couleur de thème";
 
 /* Class = "IBUITableViewController"; title = "Require Passcode"; ObjectID = "Xb7-yr-Jd6"; */
-"Xb7-yr-Jd6.title" = "Require Passcode";
+"Xb7-yr-Jd6.title" = "Code d’accès requis";
 
-/* Class = "IBUILabel"; text = "Last 3"; ObjectID = "bWw-QS-8Fs"; */
-"bWw-QS-8Fs.text" = "Last 3";
+/* Class = "IBUILabel"; text = "3 Most Recent"; ObjectID = "bWw-QS-8Fs"; */
+"bWw-QS-8Fs.text" = "3 plus récents";
 
 /* Class = "IBUILabel"; text = "After 5 minutes"; ObjectID = "cHo-o5-yl0"; */
-"cHo-o5-yl0.text" = "After 5 minutes";
+"cHo-o5-yl0.text" = "Après 5 minutes";
 
 /* Class = "IBUILabel"; text = "Immediately"; ObjectID = "ck4-7j-nEw"; */
-"ck4-7j-nEw.text" = "Immediately";
+"ck4-7j-nEw.text" = "Immédiatement";
 
 /* Class = "IBUILabel"; text = "Immediately"; ObjectID = "eGG-mK-Q2m"; */
-"eGG-mK-Q2m.text" = "Immediately";
+"eGG-mK-Q2m.text" = "Immédiatement";
 
 /* Class = "IBUILabel"; text = "Backup & Restore on Dropbox"; ObjectID = "ehr-w2-0vk"; */
-"ehr-w2-0vk.text" = "Backup & Restore on Dropbox";
+"ehr-w2-0vk.text" = "Sauvegarde & Restaurer sur Dropbox";
 
 /* Class = "IBUINavigationItem"; title = "Theme Color"; ObjectID = "eqe-ec-kWO"; */
-"eqe-ec-kWO.title" = "Theme Color";
+"eqe-ec-kWO.title" = "Couleur de thème";
 
 /* Class = "IBUILabel"; text = "Korean"; ObjectID = "fHP-u0-inU"; */
-"fHP-u0-inU.text" = "Korean";
+"fHP-u0-inU.text" = "Coréen";
 
 /* Class = "IBUINavigationItem"; title = "Favorites"; ObjectID = "fqW-Vk-vP5"; */
-"fqW-Vk-vP5.title" = "Favorites";
+"fqW-Vk-vP5.title" = "Paramètres";
 
 /* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "go4-fr-Ah2"; */
-"go4-fr-Ah2.title" = "Settings";
+"go4-fr-Ah2.title" = "Paramètres";
 
 /* Class = "IBUILabel"; text = "Most Recent"; ObjectID = "h1H-Ma-NYM"; */
-"h1H-Ma-NYM.text" = "Most Recent";
+"h1H-Ma-NYM.text" = "Plus récents";
 
-/* Class = "IBUILabel"; text = "Last 2"; ObjectID = "hXr-2r-LdP"; */
-"hXr-2r-LdP.text" = "Last 2";
+/* Class = "IBUILabel"; text = "2 Most Recent"; ObjectID = "hXr-2r-LdP"; */
+"hXr-2r-LdP.text" = "2 plus récents";
 
 /* Class = "IBUILabel"; text = "Unlink from Dropbox"; ObjectID = "iav-1w-bex"; */
-"iav-1w-bex.text" = "Unlink from Dropbox";
+"iav-1w-bex.text" = "Couper le lien depuis Dropbox";
 
 /* Class = "IBUILabel"; text = "Favorites"; ObjectID = "m3s-eA-4WD"; */
-"m3s-eA-4WD.text" = "Favorites";
+"m3s-eA-4WD.text" = "Favoris";
 
 /* Class = "IBUITableViewController"; title = "Sync"; ObjectID = "o9N-EA-Uky"; */
 "o9N-EA-Uky.title" = "Sync";
 
 /* Class = "IBUINavigationItem"; title = "Settings"; ObjectID = "oSP-yD-m2L"; */
-"oSP-yD-m2L.title" = "Settings";
+"oSP-yD-m2L.title" = "Paramètres";
 
 /* Class = "IBUINavigationItem"; title = "Backup & Restore on Dropbox"; ObjectID = "oxS-sd-8U7"; */
-"oxS-sd-8U7.title" = "Backup & Restore on Dropbox";
+"oxS-sd-8U7.title" = "Sauvegarder & Restaurer sur on Dropbox";
 
 /* Class = "IBUILabel"; text = "Passcode Lock"; ObjectID = "pjv-dt-D5o"; */
-"pjv-dt-D5o.text" = "Passcode Lock";
+"pjv-dt-D5o.text" = "Verrouillage du code d’accès";
 
 /* Class = "IBUINavigationItem"; title = "Require Passcode"; ObjectID = "qcD-FX-Y5d"; */
-"qcD-FX-Y5d.title" = "Require Passcode";
+"qcD-FX-Y5d.title" = "Code d’accès requis";
 
 /* Class = "IBUILabel"; text = "Account"; ObjectID = "rZ1-di-1G0"; */
-"rZ1-di-1G0.text" = "Account";
+"rZ1-di-1G0.text" = "Compte";
 
 /* Class = "IBUILabel"; text = "Settings"; ObjectID = "sL2-cQ-mx7"; */
-"sL2-cQ-mx7.text" = "Settings";
+"sL2-cQ-mx7.text" = "Paramètres";
 
 /* Class = "IBUILabel"; text = "After 1 hour"; ObjectID = "sks-IW-96W"; */
-"sks-IW-96W.text" = "After 1 hour";
+"sks-IW-96W.text" = "Après 1 heure";
 
 /* Class = "IBUITableViewController"; title = "Recent To Keep"; ObjectID = "srb-MD-eSG"; */
-"srb-MD-eSG.title" = "Recent To Keep";
-
-/* Class = "IBUILabel"; text = "Title"; ObjectID = "uQK-1o-GIR"; */
-"uQK-1o-GIR.text" = "Title";
+"srb-MD-eSG.title" = "Récent à garder";
 
 /* Class = "IBUILabel"; text = "Starting"; ObjectID = "uR7-vn-SkB"; */
-"uR7-vn-SkB.text" = "Starting";
+"uR7-vn-SkB.text" = "Démarrage";
 
 /* Class = "IBUILabel"; text = "After 15 minutes"; ObjectID = "uxS-dx-9By"; */
-"uxS-dx-9By.text" = "After 15 minutes";
+"uxS-dx-9By.text" = "Après 15 minutes";
 
 /* Class = "IBUITableViewController"; title = "Edit Favorites"; ObjectID = "vRR-Rd-eut"; */
-"vRR-Rd-eut.title" = "Edit Favorites";
+"vRR-Rd-eut.title" = "Modifier les favoris";
 
 /* Class = "IBUILabel"; text = "Restore"; ObjectID = "xJL-au-A2W"; */
-"xJL-au-A2W.text" = "Restore";
-
-/* Class = "IBUILabel"; text = "Title"; ObjectID = "xJM-LO-q65"; */
-"xJM-LO-q65.text" = "Title";
+"xJL-au-A2W.text" = "Restaurer";
 
 /* Class = "IBUILabel"; text = "Chinese"; ObjectID = "zD5-Op-8e3"; */
-"zD5-Op-8e3.text" = "Chinese";
-
-/* Class = "IBUILabel"; text = "Chinese"; ObjectID = "S47-yQ-cP7"; */
-"S47-yQ-cP7.text" = "Chinese";
-
-/* Class = "IBUILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
-"alM-Rl-6AW.text" = "Korean";
-
+"zD5-Op-8e3.text" = "Chinois";

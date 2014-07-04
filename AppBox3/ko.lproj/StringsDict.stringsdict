@@ -229,11 +229,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>일전</string>
+			<string>일</string>
 			<key>one</key>
-			<string>일전</string>
+			<string>일</string>
 			<key>other</key>
-			<string>일전</string>
+			<string>일</string>
 		</dict>
 	</dict>
 	<key>%ld days before(NO NUMBER)</key>
