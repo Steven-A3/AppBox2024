@@ -154,7 +154,12 @@
 
 - (void)setMaxValue:(float)maxValue
 {
-    _maxValue = (maxValue>0) ? maxValue : 0;
+    _maxValue = (maxValue>0) ? (maxValue * 1.2) : 0;
+}
+
+- (void)setMinValue:(float)minValue
+{
+    _minValue = (minValue > 0) ? (minValue * 0.8) : 0;
 }
 
 - (void)setPriceValue:(float)priceValue
@@ -179,7 +184,7 @@
     float progressLineMaxWidth = _lineView.frame.size.width * 0.8;
     
     float unitPrice = _unitPriceValue;
-    float pixelPerPrice = progressLineMaxWidth / _maxValue;
+    float pixelPerPrice = progressLineMaxWidth / (_maxValue - _minValue);
     
     if (_unitPriceValue == _maxValue) {
         
@@ -195,6 +200,7 @@
     else {
         thumbX = 0;
     }
+    
     thumbX_Min = _thumbView.frame.size.width / 2;
     thumbX_Max = progressLineMaxWidth;
     

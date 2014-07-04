@@ -641,8 +641,11 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     price2UnitPrice = unitPrice2;
     
     double maxPrice = MAX(unitPrice1, unitPrice2);
+    double minPrice = MIN(unitPrice1, unitPrice2);
     cell.upSliderView.maxValue = maxPrice;
+    cell.upSliderView.minValue = minPrice;
     cell.downSliderView.maxValue = maxPrice;
+    cell.downSliderView.minValue = minPrice;
     [cell.upSliderView setLayoutWithAnimated];
     [cell.downSliderView setLayoutWithAnimated];
     
