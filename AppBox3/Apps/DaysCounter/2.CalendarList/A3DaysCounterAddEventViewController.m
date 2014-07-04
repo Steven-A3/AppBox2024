@@ -1738,7 +1738,18 @@
     
     if ( swButton.on ) {
         if ( ![self isExistsEndDateCellInItems:sectionRow_items] ) {
-            _eventItem.endDate = _eventItem.startDate;
+            if (!_eventItem.endDate) {
+                _eventItem.endDate = [DaysCounterDate MR_createEntity];
+            }
+            _eventItem.endDate.day = [_eventItem.startDate.day copy];
+            _eventItem.endDate.hour = [_eventItem.startDate.hour copy];
+            _eventItem.endDate.isLeapMonth = [_eventItem.startDate.isLeapMonth copy];
+            _eventItem.endDate.minute = [_eventItem.startDate.minute copy];
+            _eventItem.endDate.month = [_eventItem.startDate.month copy];
+            _eventItem.endDate.solarDate = [_eventItem.startDate.solarDate copy];
+            _eventItem.endDate.year = [_eventItem.startDate.year copy];
+            
+
             NSInteger startDateRowIndex = [self indexOfRowForItemType:EventCellType_StartDate atSectionArray:sectionRow_items];
             NSInteger datePickerRow = 0;
             NSInteger datePickerRowIndex = [self indexOfRowForItemType:EventCellType_DateInput atSectionArray:sectionRow_items];
