@@ -15,7 +15,7 @@
 "4cl-y6-WyE.text" = "Touch and hold an item,\nthen drag it up or down";
 
 /* Class = "IBUILabel"; text = "Tap to view larger"; ObjectID = "6rS-5S-grs"; */
-"6rS-5S-grs.text" = "Tap to view larger";
+"6rS-5S-grs.text" = "Pulse para ampliarlo";
 
 /* Class = "IBUILabel"; text = "Tap to add period"; ObjectID = "Cat-ab-onw"; */
 "Cat-ab-onw.text" = "Tap to add period";

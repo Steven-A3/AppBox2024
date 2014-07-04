@@ -261,7 +261,7 @@
 		available = [self.delegate isNextEntryExists];
 	}
 
-	if (available && IS_IPHONE && [[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"]) {
+	if (available && [A3UIDevice shouldUseImageForPrevNextButton]) {
 		[_nextButton setTitle:@"n" forState:UIControlStateNormal];
 		_nextButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];
 		_nextButton.titleEdgeInsets = UIEdgeInsetsMake(0, 2, 0, -2); // top, left, bottom, right
@@ -274,7 +274,7 @@
 	if ([self.delegate respondsToSelector:@selector(isPreviousEntryExists)]) {
 		available = [self.delegate isPreviousEntryExists];
 	}
-	if (available && IS_IPHONE && [[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"]) {
+	if (available && [A3UIDevice shouldUseImageForPrevNextButton]) {
 		[_prevButton setTitle:@"o" forState:UIControlStateNormal];
 		_prevButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];
 		_prevButton.titleEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 2); // top, left, bottom, right

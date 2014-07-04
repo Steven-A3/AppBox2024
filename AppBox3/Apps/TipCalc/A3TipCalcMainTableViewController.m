@@ -489,8 +489,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             A3TableViewInputElement *costs = [A3TableViewInputElement new];
 			costs.delegate = self;
             if ([self.dataManager.tipCalcData.showTax boolValue]) {
-                costs.title = [self.dataManager knownValue] == TCKnownValue_Subtotal ? NSLocalizedString(@"Amount After Tax", @"Amount After Tax") : NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
-            }
+				if ([[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"es"]) {
+					costs.title = NSLocalizedString(@"Amount", nil);
+				} else {
+					costs.title = [self.dataManager knownValue] == TCKnownValue_Subtotal ? NSLocalizedString(@"Amount After Tax", @"Amount After Tax") : NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
+				}
+			}
             else {
                 costs.title = NSLocalizedString(@"Cost", @"Cost");
             }

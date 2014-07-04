@@ -1769,6 +1769,11 @@
 		689C9A471839CD7F007C97EE /* UIProgressView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIProgressView+AFNetworking.m"; sourceTree = "<group>"; };
 		689C9A481839CD7F007C97EE /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		689C9A491839CD7F007C97EE /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
+		689D41F4196661E200D7F1A7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "zh-Hans"; path = "zh-Hans.lproj/StringsDict.stringsdict"; sourceTree = "<group>"; };
+		689D41F5196661E600D7F1A7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = ja; path = ja.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
+		689D41F6196661E700D7F1A7 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = it; path = it.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
+		689D41F7196661EA00D7F1A7 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = fr; path = fr.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
+		689D41F8196661EC00D7F1A7 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = pl; path = pl.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
 		68ADE13E17D83D28009618A7 /* MMDrawerBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDrawerBarButtonItem.h; path = MMDrawerController/MMDrawerBarButtonItem.h; sourceTree = "<group>"; };
 		68ADE13F17D83D28009618A7 /* MMDrawerBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMDrawerBarButtonItem.m; path = MMDrawerController/MMDrawerBarButtonItem.m; sourceTree = "<group>"; };
 		68ADE14017D83D28009618A7 /* MMDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDrawerController.h; path = MMDrawerController/MMDrawerController.h; sourceTree = "<group>"; };
@@ -6689,6 +6694,11 @@
 				6805706C195D166E003778CD /* en */,
 				682C66F81963C39500CA8E75 /* de */,
 				682C66F91963C3A100CA8E75 /* es */,
+				689D41F4196661E200D7F1A7 /* zh-Hans */,
+				689D41F5196661E600D7F1A7 /* ja */,
+				689D41F6196661E700D7F1A7 /* it */,
+				689D41F7196661EA00D7F1A7 /* fr */,
+				689D41F8196661EC00D7F1A7 /* pl */,
 			);
 			name = StringsDict.stringsdict;
 			path = AppBox3;

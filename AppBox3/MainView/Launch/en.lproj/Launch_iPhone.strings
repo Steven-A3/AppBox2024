@@ -32,8 +32,10 @@
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Ixg-rR-GNM"; */
 "Ixg-rR-GNM.normalTitle" = "Continue";
 
-/* Class = "IBUILabel"; text = "keep your data up to date on all your devices"; ObjectID = "K25-Dj-0hb"; */
-"K25-Dj-0hb.text" = "keep your data up to date on all your devices";
+/* Class = "IBUILabel"; text = "keep your data up to date
+on all your devices"; ObjectID = "K25-Dj-0hb"; */
+"K25-Dj-0hb.text" = "keep your data up to date
+on all your devices";
 
 /* Class = "IBUILabel"; text = "Improvements and Optimizations"; ObjectID = "LH1-Sz-F5c"; */
 "LH1-Sz-F5c.text" = "Improvements and Optimizations";
@@ -53,8 +55,10 @@
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "XOG-GS-v6Y"; */
 "XOG-GS-v6Y.text" = "Unit Price";
 
-/* Class = "IBUILabel"; text = "easy, faster and more focused, 64Bit and much more"; ObjectID = "ZZQ-VK-PjS"; */
-"ZZQ-VK-PjS.text" = "easy, faster and more focused, 64Bit and much more";
+/* Class = "IBUILabel"; text = "easy, faster and more focused,
+64Bit and much more"; ObjectID = "ZZQ-VK-PjS"; */
+"ZZQ-VK-PjS.text" = "easy, faster and more focused,
+64Bit and much more";
 
 /* Class = "IBUILabel"; text = "Expense List"; ObjectID = "c42-0X-ouA"; */
 "c42-0X-ouA.text" = "Expense List";

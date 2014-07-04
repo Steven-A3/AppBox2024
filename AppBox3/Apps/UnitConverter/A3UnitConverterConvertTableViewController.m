@@ -1595,7 +1595,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	UIBarButtonItem *prevButtonItem;
 	UIBarButtonItem *nextButtonItem;
 
-	if (IS_IPHONE && [[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"]) {
+	if ([A3UIDevice shouldUseImageForPrevNextButton]) {
 		UIButton *prevButton = [UIButton buttonWithType:UIButtonTypeSystem];
 		[prevButton setTitle:@"o" forState:UIControlStateNormal];
 		prevButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];

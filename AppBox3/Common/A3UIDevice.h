@@ -73,4 +73,6 @@ extern NSString *const A3AnimationIDKeyboardWillShow;
 + (NSString *)capacity;
 
 + (void)verifyAndAlertMicrophoneAvailability;
+
++ (BOOL)shouldUseImageForPrevNextButton;
 @end

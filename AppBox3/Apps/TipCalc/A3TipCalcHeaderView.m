@@ -131,16 +131,16 @@
 - (void)setupConstraints {
     // Buttons
     [_beforeSplitButton makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(IS_IPHONE ? @45 : @220);
+        make.leading.equalTo(IS_IPHONE ? @40 : @220);
         make.bottom.equalTo(self.bottom).with.offset(-16);
-        make.width.equalTo(IS_IPHONE ? @80 : @110);
+        make.width.equalTo(IS_IPHONE ? @110 : @110);
         make.height.equalTo(@20);
     }];
     
     [_perPersonButton makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.equalTo(IS_IPHONE ? @-45 : @-220);
+        make.trailing.equalTo(IS_IPHONE ? @-40 : @-220);
         make.bottom.equalTo(self.bottom).with.offset(-16);
-        make.width.equalTo(IS_IPHONE ? @80 : @110);
+        make.width.equalTo(IS_IPHONE ? @110 : @110);
         make.height.equalTo(@20);
     }];
     

@@ -554,7 +554,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
         [button addTarget:self action:@selector(advButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [_advancedTitleView addSubview:button];
 
-        UILabel *adv = [[UILabel alloc] initWithFrame:CGRectMake(IS_IPAD ? 28:15, 18.5, 100, 35)];
+        UILabel *adv = [[UILabel alloc] initWithFrame:CGRectMake(IS_IPAD ? 28:15, 18.5, 200, 35)];
         adv.text = NSLocalizedString(@"ADVANCED", @"ADVANCED");
         adv.tag = 1234;
         

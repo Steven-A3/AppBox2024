@@ -251,4 +251,11 @@ https://github.com/andrealufino/ALSystemUtilities/blob/develop/ALSystemUtilities
 	}
 }
 
++ (BOOL)shouldUseImageForPrevNextButton {
+	if (IS_IPAD) return NO;
+	NSString *languageCode = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+	NSArray *languagesNotUsingImage = @[@"en", @"kr", @"ja", @"zh-Hans", @"zh-Hant"];
+	return [languagesNotUsingImage indexOfObject:languageCode] == NSNotFound;
+}
+
 @end

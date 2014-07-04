@@ -344,5 +344,23 @@
 			<string>Während %ld Tagen</string>
 		</dict>
 	</dict>
+	<key>Last %ld</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_items@</string>
+		<key>num_items</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>Keine</string>
+			<key>one</key>
+			<string>Letzte 1</string>
+			<key>other</key>
+			<string>Letzte %ld</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

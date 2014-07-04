@@ -630,7 +630,7 @@
 
 "To convert values, need two units." = "Zum Umrechnen werden zwei Einheiten benötigt.";
 
-"Each history keeps max 4 units." = "Es werden maximal 4 Einheiten speichern.";
+"Each history keeps max 4 units." = "Es werden maximal 4 Einheiten gespeichert.";
 "Each history keeps max 4 currencies." = "Es werden maximal 4 Währungen gespeichert.";
 "%@ to %@ = %@" = "%@ in %@ = %@";
 

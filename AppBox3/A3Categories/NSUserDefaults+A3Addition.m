@@ -23,7 +23,7 @@ NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseK
 	NSInteger numberOfItemsToKeep = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
 
 	if (numberOfItemsToKeep > 1) {
-		return [NSString stringWithFormat:NSLocalizedString(@"Last %ld", @"Settings for main menu, in setting the number of items to show in recent list."), (long)numberOfItemsToKeep];
+		return [NSString stringWithFormat:NSLocalizedStringFromTable(@"Last %ld", @"StringsDict", nil), (long)numberOfItemsToKeep];
 	} else {
 		return NSLocalizedString(@"Most Recent", @"Settings for Main menu, in setting the number of items to show recent list, most recent means that it will show only one last one.");
 	}

@@ -45,7 +45,7 @@
                                                    target:self
                                                    action:@selector(clearButtonTouchUp:)];
 
-	if (IS_IPHONE && [[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"]) {
+	if ([A3UIDevice shouldUseImageForPrevNextButton]) {
 		UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeSystem];
 		[undoButton setImage:[UIImage imageNamed:@"undo"] forState:UIControlStateNormal];
 		[undoButton addTarget:self action:@selector(undoButtonTouchUp:) forControlEvents:UIControlEventTouchUpInside];
