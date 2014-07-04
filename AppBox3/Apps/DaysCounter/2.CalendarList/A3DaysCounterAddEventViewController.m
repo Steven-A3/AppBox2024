@@ -1738,6 +1738,7 @@
     
     if ( swButton.on ) {
         if ( ![self isExistsEndDateCellInItems:sectionRow_items] ) {
+            _eventItem.endDate = _eventItem.startDate;
             NSInteger startDateRowIndex = [self indexOfRowForItemType:EventCellType_StartDate atSectionArray:sectionRow_items];
             NSInteger datePickerRow = 0;
             NSInteger datePickerRowIndex = [self indexOfRowForItemType:EventCellType_DateInput atSectionArray:sectionRow_items];
