@@ -66,6 +66,8 @@
     self.currentView = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterSlideshowEventSummaryView" owner:nil options:nil] objectAtIndex:0];
     
     [_sharedManager setupEventSummaryInfo:[_itemArray objectAtIndex:currentIndex] toView:self.currentView];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
+    
     
     self.currentView.userInteractionEnabled = NO;
     [self addView:self.currentView];
@@ -300,6 +302,7 @@
     if( slideTimer )
         [slideTimer invalidate];
     slideTimer = nil;
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
 - (void)addView:(UIView*)addView
