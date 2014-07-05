@@ -148,7 +148,7 @@
 				_askPasscodeForSettings = [UISwitch new];
 				[_askPasscodeForSettings addTarget:self action:@selector(askPasscodeForSettingsValueChanged:) forControlEvents:UIControlEventValueChanged];
 			}
-			[_askPasscodeForSettings setEnabled:passcodeEnabled && ![[A3AppDelegate instance] askPasscodeForStarting]];
+			[_askPasscodeForSettings setEnabled:passcodeEnabled];
 			[_askPasscodeForSettings setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings]];
 			cell.accessoryView = _askPasscodeForSettings;
 			break;
@@ -157,7 +157,7 @@
 				_askPasscodeForDaysCounter = [UISwitch new];
 				[_askPasscodeForDaysCounter addTarget:self action:@selector(askPasscodeForDaysCounterValueChanged:) forControlEvents:UIControlEventValueChanged];
 			}
-			[_askPasscodeForDaysCounter setEnabled:passcodeEnabled && ![[A3AppDelegate instance] askPasscodeForStarting]];
+			[_askPasscodeForDaysCounter setEnabled:passcodeEnabled];
 			[_askPasscodeForDaysCounter setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForDaysCounter]];
 			cell.accessoryView = _askPasscodeForDaysCounter;
 			break;
@@ -166,7 +166,7 @@
 				_askPasscodeForLadyCalendar = [UISwitch new];
 				[_askPasscodeForLadyCalendar addTarget:self action:@selector(askPasscodeForLadyCalendarValuedChanged:) forControlEvents:UIControlEventValueChanged];
 			}
-			[_askPasscodeForLadyCalendar setEnabled:passcodeEnabled && ![[A3AppDelegate instance] askPasscodeForStarting]];
+			[_askPasscodeForLadyCalendar setEnabled:passcodeEnabled];
 			[_askPasscodeForLadyCalendar setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar]];
 			cell.accessoryView = _askPasscodeForLadyCalendar;
 			break;
@@ -175,7 +175,7 @@
 				_askPasscodeForWallet = [UISwitch new];
 				[_askPasscodeForWallet addTarget:self action:@selector(askPasscodeForWalletValuedChanged:) forControlEvents:UIControlEventValueChanged];
 			}
-			[_askPasscodeForWallet setEnabled:passcodeEnabled && ![[A3AppDelegate instance] askPasscodeForStarting]];
+			[_askPasscodeForWallet setEnabled:passcodeEnabled];
 			[_askPasscodeForWallet setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForWallet]];
 			cell.accessoryView = _askPasscodeForWallet;
 			break;
@@ -187,28 +187,45 @@
 	[self.tableView reloadData];
 }
 
+- (void)maintainPasscodeCheckCondition {
+	BOOL isEnabled = NO;
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	isEnabled |= [defaults boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
+	isEnabled |= [defaults boolForKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
+	isEnabled |= [defaults boolForKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
+	isEnabled |= [defaults boolForKey:kUserDefaultsKeyForAskPasscodeForWallet];
+
+	[defaults setBool:!isEnabled forKey:kUserDefaultsKeyForAskPasscodeForStarting];
+	[defaults synchronize];
+	[self.tableView reloadData];
+}
+
 - (void)askPasscodeForSettingsValueChanged:(UISwitch *)control {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setBool:control.isOn forKey:kUserDefaultsKeyForAskPasscodeForSettings];
 	[defaults synchronize];
+	[self maintainPasscodeCheckCondition];
 }
 
 - (void)askPasscodeForDaysCounterValueChanged:(UISwitch *)control {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setBool:control.isOn forKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
 	[defaults synchronize];
+	[self maintainPasscodeCheckCondition];
 }
 
 - (void)askPasscodeForLadyCalendarValuedChanged:(UISwitch *)control {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setBool:control.isOn forKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
 	[defaults synchronize];
+	[self maintainPasscodeCheckCondition];
 }
 
 - (void)askPasscodeForWalletValuedChanged:(UISwitch *)control {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setBool:control.isOn forKey:kUserDefaultsKeyForAskPasscodeForWallet];
 	[defaults synchronize];
+	[self maintainPasscodeCheckCondition];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

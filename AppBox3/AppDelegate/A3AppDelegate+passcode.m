@@ -28,7 +28,6 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 	return [[NSUserDefaults standardUserDefaults] doubleForKey:kUserDefaultsKeyForPasscodeTimerDuration];
 }
 
-
 - (NSTimeInterval)timerStartTime {
 	NSDate *date = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultTimerStart];
 	if (!date) return -1;
@@ -38,6 +37,9 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 
 - (void)saveTimerStartTime {
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kUserDefaultTimerStart];
+	FNLOG(@"**************************************************************");
+	FNLOG(@"%@", [NSDate date]);
+	FNLOG(@"**************************************************************");
 }
 
 
@@ -146,7 +148,7 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 	self.passcodeViewController = nil;
 }
 
-- (BOOL)askPasscodeForStarting {
+- (BOOL)shouldAskPasscodeForStarting {
 	NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 	if (number) {
 		return [number boolValue];
@@ -167,19 +169,27 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (BOOL)askPasscodeForSettings {
+- (void)registerPasscodeUserDefaults {
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForStarting : @YES}];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForSettings : @NO}];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForDaysCounter : @NO}];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForLadyCalendar : @NO}];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForWallet : @NO}];
+}
+
+- (BOOL)shouldAskPasscodeForSettings {
 	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
 }
 
-- (BOOL)askPasscodeForDaysCounter {
+- (BOOL)shouldAskPasscodeForDaysCounter {
 	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
 }
 
-- (BOOL)askPasscodeForLadyCalendar {
+- (BOOL)shouldAskPasscodeForLadyCalendar {
 	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
 }
 
-- (BOOL)askPasscodeForWallet {
+- (BOOL)shouldAskPasscodeForWallet {
 	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForWallet];
 }
 

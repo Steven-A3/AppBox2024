@@ -52,6 +52,7 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	[self prepareDirectories];
+	[self registerPasscodeUserDefaults];
 
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (localNotification) {

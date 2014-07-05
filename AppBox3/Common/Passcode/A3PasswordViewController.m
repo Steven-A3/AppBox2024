@@ -513,6 +513,8 @@
 		if ([self isPasswordValid]) {
 			if (_isUserTurningPasscodeOff) {
 				[A3KeychainUtils removePassword];
+			} else {
+				[[A3AppDelegate instance] saveTimerStartTime];
 			}
 			_passcodeValid = YES;
 
@@ -525,7 +527,7 @@
 		if (!nextTextField) {
 			BOOL passcodeValid = [self isPasswordValid];
 			if (passcodeValid && [self isNewPasscodeValid]) {
-				
+				[[A3AppDelegate instance] saveTimerStartTime];
 				[A3KeychainUtils storePassword:_aNewPasswordField.text hint:_passwordHintField.text];
 				NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 				[defaults setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
@@ -548,9 +550,8 @@
 			[nextTextField becomeFirstResponder];
 		} else {
 			if ([self isNewPasscodeValid]) {
-				
+				[[A3AppDelegate instance] saveTimerStartTime];
 				[A3KeychainUtils storePassword:_aNewPasswordField.text hint:_passwordHintField.text];
-				[[A3AppDelegate instance] setEnableAskPasscodeForStarting:YES];
 				NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 				[defaults setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
 				[defaults synchronize];

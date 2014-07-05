@@ -370,7 +370,6 @@
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share an event with you.", @"I'd like to share an event with you.")];
 
         for (DaysCounterEvent *event in _selectedArray) {
             // 7 days until (계산된 날짜)
@@ -398,12 +397,9 @@
             [txt appendFormat:@"%@<br/><br/>", [A3DateHelper dateStringFromDate:[event effectiveStartDate]
                                                                      withFormat:[formatter dateFormat]]];
         }
-
-		[txt appendFormat:@"<br/>%@<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>%@</a></body></html>",
-						  NSLocalizedString(@"You can manage your events in the AppBox Pro.", @"You can manage your events in the AppBox Pro."),
-						  NSLocalizedString(@"Download from AppStore", @"Download from AppStore")];
-        
-		return txt;
+		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share an event with you.", @"I'd like to share an event with you.")
+									   contents:txt
+										   tail:NSLocalizedString(@"You can manage your events in the AppBox Pro.", @"You can manage your events in the AppBox Pro.")];
 	}
 	else {
 		NSMutableString *txt = [NSMutableString new];

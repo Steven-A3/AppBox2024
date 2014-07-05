@@ -355,9 +355,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Eliminar traducciones</string>
+			<string>Eliminar traducción</string>
 			<key>one</key>
-			<string>Eliminar traducciones</string>
+			<string>Eliminar traducción</string>
 			<key>other</key>
 			<string>Eliminar traducciones</string>
 		</dict>

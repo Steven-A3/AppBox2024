@@ -73,4 +73,11 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (NSString *)fullStyleDateStringFromDate:(NSDate *)date withShortTime:(BOOL)shortTime;
 - (NSString *)customFullStyleDateStringFromDate:(NSDate *)date withShortTime:(BOOL)shortTime;
 
+- (NSString *)shareMessageFormat;
+
+- (NSString *)commonShareFooter;
+
+- (NSString *)appITunesURL;
+
+- (NSString *)shareMailMessageWithHeader:(NSString *)header contents:(NSString *)contents tail:(NSString *)tail;
 @end

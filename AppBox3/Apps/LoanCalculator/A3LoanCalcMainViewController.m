@@ -1181,15 +1181,9 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		NSMutableString *txt = [NSMutableString new];
-		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share a conversion with you.", nil)];
-		[txt appendString:[self shareStringForMail]];
-		[txt appendFormat:@"<br/><br/>%@<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>%@</a></body></html>",
-						  NSLocalizedString(@"You can convert more in the AppBox Pro.", nil),
-						  NSLocalizedString(@"Download from AppStore", nil)];
-		// AppBoxPro_amortization_loanA.csv
-		// AppBoxPro_amortization_loanb.csv
-		return txt;
+		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a conversion with you.", nil)
+									   contents:[self shareStringForMail]
+										   tail:NSLocalizedString(@"You can convert more in the AppBox Pro.", nil)];
 	}
 	else {
         NSString *shareString = [self shareStringForEtc];

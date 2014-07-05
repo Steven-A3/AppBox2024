@@ -59,7 +59,10 @@
 	if (indexPath.section == 0 && indexPath.row == 3 && ![MFMessageComposeViewController canSendText]) {
 		cell.textLabel.text = nil;
 		cell.accessoryType = UITableViewCellAccessoryNone;
+	} else if (indexPath.section == 2 && indexPath.row == 0) {
+		cell.detailTextLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 	}
+	
 }
 
 #pragma mark -- UITableViewDelegate
@@ -113,8 +116,7 @@
 			if (viewController) {
 				viewController.messageComposeDelegate = self;
 				NSString *messageBody = NSLocalizedString(@"tellafriend", nil);
-				messageBody = [messageBody stringByAppendingString:@"\n\nhttps://itunes.apple.com/app/id318404385"];
-				[viewController setBody:messageBody];
+				[viewController setBody:[NSString stringWithFormat:@"%@\n\n%@", messageBody, [self appITunesURL]]];
 
 				[self presentViewController:viewController animated:YES completion:nil];
 			}
@@ -122,10 +124,10 @@
 		}
 		case 4: {
 			NSString *messageBody = NSLocalizedString(@"tellafriend", nil);
-			messageBody = [messageBody stringByAppendingString:@"\n\nhttps://itunes.apple.com/app/id318404385"];
 			[self openMailComposerWithSubject:NSLocalizedString(@"A friend has recommended AppBox Pro™ from the iTunes App Store", @"")
-									 withBody:messageBody
-								withRecipient:nil];
+									 withBody:[NSString stringWithFormat:@"<html><body>%@</br></br>%@", messageBody, [self commonShareFooter]]
+								withRecipient:nil
+									   isHTML:YES ];
 			break;
 		}
 		case 5: {
@@ -142,7 +144,7 @@
 	}
 }
 
-- (void)openMailComposerWithSubject:(NSString *)subject withBody:(NSString *)body withRecipient:(NSString *)recipient {
+- (void)openMailComposerWithSubject:(NSString *)subject withBody:(NSString *)body withRecipient:(NSString *)recipient isHTML:(BOOL)isHTML {
 	MFMailComposeViewController *viewController = [[MFMailComposeViewController alloc] init];
 	if (viewController) {
 		viewController.mailComposeDelegate = self;
@@ -155,7 +157,7 @@
 			[viewController setToRecipients:toRecipients];
 		}
 		if (body)
-			[viewController setMessageBody:body isHTML:NO];
+			[viewController setMessageBody:body isHTML:isHTML];
 
 		[self presentViewController:viewController animated:YES completion:nil];
 	}
@@ -168,7 +170,7 @@
 	}
 	NSString *emailSubject = [NSString stringWithFormat:
 			NSLocalizedString(@"AppBox Pro™ V%@ Contact Support", nil),
-			[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] ];
+			[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] ];
 
 	UIDevice *currentDevice = [UIDevice currentDevice];
 	NSLocale *currentLocale = [NSLocale currentLocale];
@@ -176,15 +178,38 @@
 					[A3UIDevice platformString], [A3UIDevice platform],
 					[currentDevice systemVersion],
 					[currentLocale displayNameForKey:NSLocaleIdentifier value:[currentLocale localeIdentifier]]];
-	[self openMailComposerWithSubject:emailSubject
-							 withBody:body
-						withRecipient:@"support@allaboutapps.net"];
+	[self openMailComposerWithSubject:emailSubject withBody:body withRecipient:@"support@allaboutapps.net" isHTML:NO ];
 }
 
 - (void)didSelectSectionTwoAtRow:(NSInteger)row {
 	switch (row) {
 		case 1:{
 			[self presentLaunchViewController];
+			break;
+		}
+		case 2: {
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Acknowledgement", @"Acknowledgement")
+																message:NSLocalizedString(@"HOLIDAYS_ACKNOWLEDGEMENT", nil)
+															   delegate:nil
+													  cancelButtonTitle:@"OK"
+													  otherButtonTitles:nil];
+			[alertView show];
+			break;
+		}
+		case 3: {
+			NSMutableString *message = [NSMutableString new];
+			[message appendString:[NSString stringWithFormat:@"\n📌 %@\n\n", NSLocalizedString(@"Holidays", nil)]];
+			[message appendString:[NSString stringWithFormat:@"%@\n\n", NSLocalizedString(@"DISCLAIMER_MESSAGE", nil)]];
+
+			[message appendString:[NSString stringWithFormat:@"📌 %@\n\n", NSLocalizedString(@"Lady Calendar", nil)]];
+			[message appendString:[NSString stringWithFormat:@"%@\n\n", NSLocalizedString(@"LadyCalendarDisclaimerMsg", nil)]];
+
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Disclaimer", nil)
+																message:message
+															   delegate:nil
+													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+													  otherButtonTitles:nil];
+			[alertView show];
 			break;
 		}
 
