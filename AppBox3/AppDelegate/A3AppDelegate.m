@@ -30,7 +30,7 @@ NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
 NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 NSString *const A3LocalNotificationOwner = @"A3LocalNotificationOwner";
 NSString *const A3LocalNotificationDataID = @"A3LocalNotificationDataID";
-NSString *const A3LocalNotificationFromLadyCalendar = @"Lady Calendar";
+NSString *const A3LocalNotificationFromLadyCalendar = @"Ladies Calendar";
 NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 
 NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";

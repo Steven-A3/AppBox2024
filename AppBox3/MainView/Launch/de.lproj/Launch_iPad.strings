@@ -108,7 +108,7 @@ on all your devices"; ObjectID = "mal-lH-ucN"; */
 "mal-lH-ucN.text" = "halten Sie Ihre Daten auf dem aktuellen Stand
 auf allen Ihren Geräten";
 
-/* Class = "IBUILabel"; text = "Lady Calendar"; ObjectID = "noh-Kb-lie"; */
+/* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "noh-Kb-lie"; */
 "noh-Kb-lie.text" = "Damen-Kalender";
 
 /* Class = "IBUILabel"; text = "Expense List"; ObjectID = "oCV-n4-Pex"; */

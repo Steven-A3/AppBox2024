@@ -62,7 +62,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 				 kA3AppsMenuName : @"Productivity",
 				 kA3AppsExpandableChildren : @[
 						 @{kA3AppsMenuName : @"Days Counter", kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"DaysCounter", kA3AppsMenuNeedSecurityCheck : @YES},
-						 @{kA3AppsMenuName : @"Lady Calendar", kA3AppsClassName_iPhone : @"A3LadyCalendarViewController", kA3AppsNibName_iPhone:@"A3LadyCalendarViewController", kA3AppsMenuImageName : @"LadyCalendar", kA3AppsMenuNeedSecurityCheck : @YES},
+						 @{kA3AppsMenuName : @"Ladies Calendar", kA3AppsClassName_iPhone : @"A3LadyCalendarViewController", kA3AppsNibName_iPhone:@"A3LadyCalendarViewController", kA3AppsMenuImageName : @"LadyCalendar", kA3AppsMenuNeedSecurityCheck : @YES},
 						 @{kA3AppsMenuName : @"Wallet", kA3AppsClassName_iPhone : @"A3WalletMainTabBarController", kA3AppsMenuImageName : @"Wallet", kA3AppsMenuNeedSecurityCheck : @YES},
 						 @{kA3AppsMenuName : @"Expense List", kA3AppsClassName_iPhone : @"A3ExpenseListMainViewController", kA3AppsMenuImageName : @"ExpenseList"},
 						 ]

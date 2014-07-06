@@ -108,7 +108,7 @@ on all your devices"; ObjectID = "mal-lH-ucN"; */
 "mal-lH-ucN.text" = "소유한 모든 장비에서
 정보를 모두 동기화";
 
-/* Class = "IBUILabel"; text = "Lady Calendar"; ObjectID = "noh-Kb-lie"; */
+/* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "noh-Kb-lie"; */
 "noh-Kb-lie.text" = "레이디 캘린더";
 
 /* Class = "IBUILabel"; text = "Expense List"; ObjectID = "oCV-n4-Pex"; */

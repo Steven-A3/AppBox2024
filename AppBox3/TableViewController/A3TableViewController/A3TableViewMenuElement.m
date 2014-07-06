@@ -15,7 +15,7 @@
 	if (_needSecurityCheck) {
 		if ([self.title isEqualToString:@"Days Counter"]) {
 			return [[A3AppDelegate instance] shouldAskPasscodeForDaysCounter];
-		} else if ([self.title isEqualToString:@"Lady Calendar"]) {
+		} else if ([self.title isEqualToString:@"Ladies Calendar"]) {
 			return [[A3AppDelegate instance] shouldAskPasscodeForLadyCalendar];
 		} else if ([self.title isEqualToString:@"Wallet"]) {
 			return [[A3AppDelegate instance] shouldAskPasscodeForWallet];
