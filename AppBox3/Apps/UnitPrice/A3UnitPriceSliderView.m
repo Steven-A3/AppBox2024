@@ -186,12 +186,8 @@
     float unitPrice = _unitPriceValue;
     float pixelPerPrice = progressLineMaxWidth / _maxValue;
 
-    if (_unitPriceValue == _minValue && ((1.0 - (_minValue / _maxValue)) < 0.05)) {
+    if (_unitPriceValue == _minValue && _unitPriceValue < _maxValue && ((1.0 - (_minValue / _maxValue)) < 0.05)) {
         pixelPerPrice = progressLineMaxWidth / (_maxValue * 1.1);
-    }
-    
-    if (_unitPriceValue == _maxValue) {
-        
     }
 
     // slider part

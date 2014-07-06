@@ -44,7 +44,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 @implementation A3CalculatorViewController_iPad {
     BOOL scientific;
-    BOOL radian;
+
     BOOL _isShowMoreMenu;
     UIBarButtonItem *_share;
     UIBarButtonItem *_history;
@@ -74,8 +74,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 		[self rightBarButtonDoneButton];
 	}
 	self.navigationItem.hidesBackButton = YES;
-
-    radian = YES;
+    
     [self setupSubViews];
 
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]){
@@ -92,6 +91,11 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
+    
+    // Radian / Degrees 버튼 초기화
+    [_calculator setRadian:[self radian]];
+    _degreeandradianLabel.text = [self radian] == YES ? @"Radian" : @"Degrees";
+    [_calculatorkeypad.radbutton setTitle:[self radian] == YES ? @"Deg" : @"Rad" forState:UIControlStateNormal];
 }
 
 - (UISegmentedControl *)calculatorTypeSegment
@@ -120,6 +124,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     {
         scientific = YES;
 		[self setupScientificKeyPad];
+        [_calculatorkeypad.radbutton setTitle:[self radian] == YES ? @"Deg" : @"Rad" forState:UIControlStateNormal];
     }
     else
     {
@@ -291,13 +296,13 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 }
 
 -(void) radiandegreeChange {
-    if(radian == YES) {
+    if([self radian] == YES) {
         [_calculator setRadian:FALSE];
-        radian = NO;
+        self.radian = NO;
         _degreeandradianLabel.text = @"Degrees";
     } else {
         [_calculator setRadian:TRUE];
-        radian = YES;
+        self.radian = YES;
         _degreeandradianLabel.text = @"Radian";
     }
 }

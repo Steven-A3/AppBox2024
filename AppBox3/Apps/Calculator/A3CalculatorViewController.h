@@ -14,12 +14,15 @@
 
 @class HTCopyableLabel;
 
+extern NSString *const kUserDefaultsKeyCalculatorRadianDegreeState;
+
 @interface A3CalculatorViewController : UIViewController {
 	UIViewController *_modalPresentingParentViewController;
 }
 
 @property (nonatomic, strong) HTCopyableLabel *evaluatedResultLabel;
 @property (nonatomic, weak) id<A3CalculatorViewControllerDelegate> delegate;
+@property (nonatomic, assign) BOOL radian;
 
 - (instancetype)initWithPresentingViewController:(UIViewController *)modalPresentingParentViewController;
 
