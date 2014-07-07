@@ -391,16 +391,6 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 	return [self.dateFormatter stringFromDate:date];
 }
 
-- (NSString*)stringFromDateOmittingYear:(NSDate*)date {
-	[self.dateFormatter setDateStyle:NSDateFormatterLongStyle];
-	[_dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-
-	NSString *format = [_dateFormatter formatStringByRemovingYearComponent:_dateFormatter.dateFormat];
-	[_dateFormatter setDateFormat:format];
-
-	return [_dateFormatter stringFromDate:date];
-}
-
 - (NSDate *)startDateForCurrentAccount {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.uniqueID == %@", self.currentAccount.uniqueID];
 	LadyCalendarPeriod *firstPeriod = [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:YES];
