@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
 #import "A3WalletItemEditViewController.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+MMDrawerController.h"
@@ -605,6 +606,13 @@
 
 - (NSString *)appITunesURL {
 	return @"https://itunes.apple.com/app/id318404385";
+}
+
+- (void)alertLocationDisabled {
+	NSString *message = ![CLLocationManager locationServicesEnabled] ? NSLocalizedString(@"Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather.", nil) :
+			NSLocalizedString(@"Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather.", nil);
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
+	[alertView show];
 }
 
 @end

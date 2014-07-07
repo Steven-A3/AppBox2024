@@ -1,132 +1,136 @@
 
 /* Class = "IBUILabel"; text = "Unit Conveter"; ObjectID = "0bh-Bt-1Rg"; */
-"0bh-Bt-1Rg.text" = "Unit Conveter";
+"0bh-Bt-1Rg.text" = "Convertitore Unità";
 
 /* Class = "IBUILabel"; text = "Utility"; ObjectID = "3pq-Ua-ezN"; */
-"3pq-Ua-ezN.text" = "Utility";
+"3pq-Ua-ezN.text" = "Utilità";
 
 /* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "3xh-WT-2qJ"; */
-"3xh-WT-2qJ.text" = "Lady Calendar";
+"3xh-WT-2qJ.text" = "Calendario femminile";
 
 /* Class = "IBUILabel"; text = "Loan Calculator"; ObjectID = "5dF-dl-Cfh"; */
-"5dF-dl-Cfh.text" = "Loan Calculator";
+"5dF-dl-Cfh.text" = "Calcolatore Prestito";
 
 /* Class = "IBUILabel"; text = "well designed for both iPhone and iPad"; ObjectID = "73z-Fm-nHB"; */
-"73z-Fm-nHB.text" = "well designed for both iPhone and iPad";
+"73z-Fm-nHB.text" = "Ben progettato sia per iPhone che per iPad";
 
 /* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7KY-kl-Ksz"; */
-"7KY-kl-Ksz.text" = "Basic/Scientific Calculator";
+"7KY-kl-Ksz.text" = "Basico/Scientifico Calcolatore";
 
 /* Class = "IBUILabel"; text = "Mirror"; ObjectID = "86S-LG-bmW"; */
-"86S-LG-bmW.text" = "Mirror";
+"86S-LG-bmW.text" = "Specchio";
 
 /* Class = "IBUILabel"; text = "Percent Calculator"; ObjectID = "C7O-ix-OQV"; */
-"C7O-ix-OQV.text" = "Percent Calculator";
+"C7O-ix-OQV.text" = "Calcolatore Percentuale";
 
 /* Class = "IBUILabel"; text = "Clock"; ObjectID = "CUC-uG-Jld"; */
 "CUC-uG-Jld.text" = "Clock";
 
 /* Class = "IBUILabel"; text = "Holidays"; ObjectID = "Hg6-My-X9i"; */
-"Hg6-My-X9i.text" = "Holidays";
+"Hg6-My-X9i.text" = "Festività";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Ixg-rR-GNM"; */
-"Ixg-rR-GNM.normalTitle" = "Continue";
+"Ixg-rR-GNM.normalTitle" = "Continua";
 
-/* Class = "IBUILabel"; text = "keep your data up to date on all your devices"; ObjectID = "K25-Dj-0hb"; */
-"K25-Dj-0hb.text" = "keep your data up to date on all your devices";
+/* Class = "IBUILabel"; text = "keep your data up to date
+on all your devices"; ObjectID = "K25-Dj-0hb"; */
+"K25-Dj-0hb.text" = "Mantieni i dati aggiornati
+su tutti i tuoi dispositivi";
 
 /* Class = "IBUILabel"; text = "Improvements and Optimizations"; ObjectID = "LH1-Sz-F5c"; */
-"LH1-Sz-F5c.text" = "Improvements and Optimizations";
+"LH1-Sz-F5c.text" = "Miglioramenti ed ottimizzazioni";
 
 /* Class = "IBUILabel"; text = "Sales Calculator"; ObjectID = "QRY-F6-eI0"; */
-"QRY-F6-eI0.text" = "Sales Calculator";
+"QRY-F6-eI0.text" = "Calcolatore Sconti";
 
 /* Class = "IBUILabel"; text = "Date Calculator"; ObjectID = "TO4-lW-QE2"; */
-"TO4-lW-QE2.text" = "Date Calculator";
+"TO4-lW-QE2.text" = "Calcolatore Data";
 
 /* Class = "IBUIButton"; normalTitle = "Later"; ObjectID = "UGi-UW-2XK"; */
-"UGi-UW-2XK.normalTitle" = "Later";
+"UGi-UW-2XK.normalTitle" = "Più tardi";
 
 /* Class = "IBUILabel"; text = "New Look"; ObjectID = "X9y-7J-ggo"; */
-"X9y-7J-ggo.text" = "New Look";
+"X9y-7J-ggo.text" = "Nuovo aspetto";
 
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "XOG-GS-v6Y"; */
-"XOG-GS-v6Y.text" = "Unit Price";
+"XOG-GS-v6Y.text" = "Prezzo per Unità";
 
-/* Class = "IBUILabel"; text = "easy, faster and more focused, 64Bit and much more"; ObjectID = "ZZQ-VK-PjS"; */
-"ZZQ-VK-PjS.text" = "easy, faster and more focused, 64Bit and much more";
+/* Class = "IBUILabel"; text = "easy, faster and more focused,
+64Bit and much more"; ObjectID = "ZZQ-VK-PjS"; */
+"ZZQ-VK-PjS.text" = "facile, più veloce e più calibrato,
+a 64Bit e molto altro";
 
 /* Class = "IBUILabel"; text = "Expense List"; ObjectID = "c42-0X-ouA"; */
-"c42-0X-ouA.text" = "Expense List";
+"c42-0X-ouA.text" = "Lista Spesa";
 
 /* Class = "IBUILabel"; text = "Currency Converter"; ObjectID = "eTo-UJ-qLJ"; */
-"eTo-UJ-qLJ.text" = "Currency Converter";
+"eTo-UJ-qLJ.text" = "Convertitore Valuta";
 
 /* Class = "IBUILabel"; text = "Battery Status"; ObjectID = "fVE-ef-mZ7"; */
-"fVE-ef-mZ7.text" = "Battery Status";
+"fVE-ef-mZ7.text" = "Stato Batteria";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "gJ6-AU-90c"; */
-"gJ6-AU-90c.normalTitle" = "Use AppBox Pro";
+"gJ6-AU-90c.normalTitle" = "Usa AppBox Pro";
 
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "gMT-1E-eq4"; */
-"gMT-1E-eq4.text" = "Days Counter";
+"gMT-1E-eq4.text" = "Conta Giorni";
 
 /* Class = "IBUILabel"; text = "Wallet"; ObjectID = "hYb-Yr-r9V"; */
-"hYb-Yr-r9V.text" = "Wallet";
+"hYb-Yr-r9V.text" = "Portafoglio";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "hb4-tU-6Zr"; */
-"hb4-tU-6Zr.normalTitle" = "Continue";
+"hb4-tU-6Zr.normalTitle" = "Continua";
 
 /* Class = "IBUILabel"; text = "iCloud Sync"; ObjectID = "hey-av-TTu"; */
-"hey-av-TTu.text" = "iCloud Sync";
+"hey-av-TTu.text" = "Sincronizzazione iCloud";
 
 /* Class = "IBUILabel"; text = "Lunar Converter"; ObjectID = "hit-L7-cuy"; */
-"hit-L7-cuy.text" = "Lunar Converter";
+"hit-L7-cuy.text" = "Convertitore Lunare";
 
 /* Class = "IBUIButton"; normalTitle = "Use iCloud"; ObjectID = "jNp-9m-gWI"; */
-"jNp-9m-gWI.normalTitle" = "Use iCloud";
+"jNp-9m-gWI.normalTitle" = "Usa iCloud";
 
 /* Class = "IBUILabel"; text = "Converter"; ObjectID = "keG-kf-hWu"; */
-"keG-kf-hWu.text" = "Converter";
+"keG-kf-hWu.text" = "Converti";
 
 /* Class = "IBUILabel"; text = "Translator"; ObjectID = "kkF-Z6-oM0"; */
-"kkF-Z6-oM0.text" = "Translator";
+"kkF-Z6-oM0.text" = "Traduttore";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "kyc-gi-ylJ"; */
-"kyc-gi-ylJ.normalTitle" = "Use AppBox Pro";
+"kyc-gi-ylJ.normalTitle" = "Usa AppBox Pro";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "lr0-dL-j7a"; */
-"lr0-dL-j7a.normalTitle" = "Continue";
+"lr0-dL-j7a.normalTitle" = "Continua";
 
 /* Class = "IBUILabel"; text = "What's New"; ObjectID = "mT0-ZK-dI1"; */
-"mT0-ZK-dI1.text" = "What's New";
+"mT0-ZK-dI1.text" = "Cosa c'è di Nuovo";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "mUw-5N-ug2"; */
-"mUw-5N-ug2.normalTitle" = "Use AppBox Pro";
+"mUw-5N-ug2.normalTitle" = "Usa AppBox Pro";
 
 /* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "ni3-pI-wdj"; */
-"ni3-pI-wdj.text" = "Magnifier";
+"ni3-pI-wdj.text" = "Lente d'ingrandimento";
 
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "pMI-GK-toN"; */
-"pMI-GK-toN.text" = "Calculator";
+"pMI-GK-toN.text" = "Calcolatore";
 
 /* Class = "IBUILabel"; text = "Reference"; ObjectID = "pRj-wQ-ZtV"; */
-"pRj-wQ-ZtV.text" = "Reference";
+"pRj-wQ-ZtV.text" = "Riferimento";
 
 /* Class = "IBUILabel"; text = "Tip Calculator"; ObjectID = "pgE-6d-yU7"; */
-"pgE-6d-yU7.text" = "Tip Calculator";
+"pgE-6d-yU7.text" = "Calcolatore Mancia";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "qCf-Nb-LdB"; */
-"qCf-Nb-LdB.normalTitle" = "Use AppBox Pro";
+"qCf-Nb-LdB.normalTitle" = "Usa AppBox Pro";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "qLl-8c-QA3"; */
-"qLl-8c-QA3.normalTitle" = "Continue";
+"qLl-8c-QA3.normalTitle" = "Continua";
 
 /* Class = "IBUILabel"; text = "Productivity"; ObjectID = "wFh-rf-oGS"; */
-"wFh-rf-oGS.text" = "Productivity";
+"wFh-rf-oGS.text" = "Produttività";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "xYa-vJ-mm4"; */
-"xYa-vJ-mm4.normalTitle" = "Continue";
+"xYa-vJ-mm4.normalTitle" = "Continua";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "xk9-a9-WGh"; */
-"xk9-a9-WGh.normalTitle" = "Use AppBox Pro";
+"xk9-a9-WGh.normalTitle" = "Usa AppBox Pro";

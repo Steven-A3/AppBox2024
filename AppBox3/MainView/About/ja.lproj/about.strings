@@ -3,19 +3,19 @@
 "0Ql-Zd-0gc.text" = "@appbox_pro";
 
 /* Class = "IBUILabel"; text = "Write a Review"; ObjectID = "1q8-UP-67U"; */
-"1q8-UP-67U.text" = "Write a Review";
+"1q8-UP-67U.text" = "レビューを書く";
 
 /* Class = "IBUILabel"; text = "Website"; ObjectID = "5OA-em-QL5"; */
-"5OA-em-QL5.text" = "Website";
+"5OA-em-QL5.text" = "ウェブサイト";
 
 /* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "6ib-TK-JMG"; */
 "6ib-TK-JMG.headerTitle" = " ";
 
 /* Class = "IBUILabel"; text = "Disclaimer"; ObjectID = "9Z8-Bh-Lsm"; */
-"9Z8-Bh-Lsm.text" = "Disclaimer";
+"9Z8-Bh-Lsm.text" = "免責事項";
 
 /* Class = "IBUILabel"; text = "Tell a Friend by email"; ObjectID = "CKx-jh-s85"; */
-"CKx-jh-s85.text" = "Tell a Friend by email";
+"CKx-jh-s85.text" = "メールで友達に知らせる";
 
 /* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "Fc3-n4-rxm"; */
 "Fc3-n4-rxm.headerTitle" = " ";
@@ -39,25 +39,25 @@
 "Spr-CR-vU4.headerTitle" = " ";
 
 /* Class = "IBUILabel"; text = "Acknowledgement"; ObjectID = "Y4I-oe-yba"; */
-"Y4I-oe-yba.text" = "Acknowledgement";
+"Y4I-oe-yba.text" = "謝辞";
 
 /* Class = "IBUILabel"; text = "Contact Support"; ObjectID = "YRa-HJ-6kz"; */
-"YRa-HJ-6kz.text" = "Contact Support";
+"YRa-HJ-6kz.text" = "サポートに連絡";
 
 /* Class = "IBUILabel"; text = "3.0.0"; ObjectID = "cFb-Qr-7IF"; */
-"cFb-Qr-7IF.text" = "3.0.0";
+"cFb-Qr-7IF.text" = "3.0";
 
 /* Class = "IBUILabel"; text = "What's New"; ObjectID = "jzI-Kv-pA8"; */
-"jzI-Kv-pA8.text" = "What's New";
+"jzI-Kv-pA8.text" = "新しいこと";
 
 /* Class = "IBUILabel"; text = "Other Apps"; ObjectID = "qGh-tu-1aG"; */
-"qGh-tu-1aG.text" = "Other Apps";
+"qGh-tu-1aG.text" = "他のアプリ";
 
 /* Class = "IBUILabel"; text = "Version"; ObjectID = "rPK-fC-u92"; */
-"rPK-fC-u92.text" = "Version";
+"rPK-fC-u92.text" = "バージョン";
 
 /* Class = "IBUINavigationItem"; title = "About"; ObjectID = "vLL-sw-MLM"; */
-"vLL-sw-MLM.title" = "About";
+"vLL-sw-MLM.title" = "情報";
 
 /* Class = "IBUILabel"; text = "Tell a Friend by message"; ObjectID = "ygM-lV-AEG"; */
-"ygM-lV-AEG.text" = "Tell a Friend by message";
+"ygM-lV-AEG.text" = "メッセージでお友達に知らせる";

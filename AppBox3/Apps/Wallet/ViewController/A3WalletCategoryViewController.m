@@ -506,7 +506,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
             [txt appendString:_shareTextList[i]];
             [txt appendString:@"<br/>"];
         }
-        return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a information with you.", @"I'd like to share a information with you.")
+        return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share an information with you.", @"I'd like to share a information with you.")
 									   contents:txt
 										   tail:NSLocalizedString(@"You can manage your information in the AppBox Pro.", nil)];
     }

@@ -79,5 +79,7 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 
 - (NSString *)appITunesURL;
 
+- (void)alertLocationDisabled;
+
 - (NSString *)shareMailMessageWithHeader:(NSString *)header contents:(NSString *)contents tail:(NSString *)tail;
 @end

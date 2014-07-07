@@ -861,7 +861,7 @@
 "Extra Payment(yearly)" = "중도상환(매년)";
 "Extra Payment(one-time)" = "중도상환(일회)";
 
-"I'd like to share a information with you." = "아래와 같은 정보를 공유합니다.";
+"I'd like to share an information with you." = "아래와 같은 정보를 공유합니다.";
 "You can manage your information in the AppBox Pro." = "AppBox Pro로 중요한 정보들을 관리해 보세요.";
 
 "I'd like to share a translation with you." = "번역 결과를 공유합니다.";
@@ -881,8 +881,8 @@
 "Increase" = "증가";
 "Decrease" = "감소";
 
-"Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "위치 서비스가 꺼져 있습니다. 날씨를 보시려면, 장치의 설정 > 개인 정보 보호 > 위치 서비스로 이동해서 위치 서비스를 켜고, AppBox Pro가 위치 서비스를 이용할 수 있도록 해주세요.";
-"Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "위치 서비스가 켜져 있기는 하지만, AppBox Pro의 위치 서비스 접근이 차단되어 있습니다. 날씨를 보시려면 장치의 설정 > 개인 정보 보호 > 위치 서비스로 이동해서 AppBox Pro가 위치 서비스를 이용할 수 있도록 허용해 주세요.";
+"Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "위치 서비스가 꺼져 있습니다. 장치의 설정 > 개인 정보 보호 > 위치 서비스로 이동해서 위치 서비스를 켜고, AppBox Pro가 위치 서비스를 이용할 수 있도록 해주세요.";
+"Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "위치 서비스가 켜져 있기는 하지만, AppBox Pro의 위치 서비스 접근이 차단되어 있습니다. 장치의 설정 > 개인 정보 보호 > 위치 서비스로 이동해서 AppBox Pro가 위치 서비스를 이용할 수 있도록 허용해 주세요.";
 
 "daily" = "매일";
 "weekly" = "매주";

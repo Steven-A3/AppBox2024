@@ -1,168 +1,36 @@
 
-/* Class = "IBUILabel"; text = "A"; ObjectID = "2eP-hY-v8m"; */
-"2eP-hY-v8m.text" = "A";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "3Fg-Et-Klf"; */
-"3Fg-Et-Klf.text" = "Label";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "3xZ-TX-A82"; */
-"3xZ-TX-A82.text" = "Label";
-
-/* Class = "IBUILabel"; text = "B"; ObjectID = "49x-QU-8nS"; */
-"49x-QU-8nS.text" = "B";
-
-/* Class = "IBUILabel"; text = "$347,749.70"; ObjectID = "5pE-bK-lka"; */
-"5pE-bK-lka.text" = "$347,749.70";
-
-/* Class = "IBUILabel"; text = "B"; ObjectID = "71k-JM-vMQ"; */
-"71k-JM-vMQ.text" = "B";
-
 /* Class = "IBUILabel"; text = "Total Amount"; ObjectID = "8C0-7E-crV"; */
-"8C0-7E-crV.text" = "Total Amount";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "8K4-Qo-PvN"; */
-"8K4-Qo-PvN.text" = "Label";
-
-/* Class = "IBUILabel"; text = "$0.00/mo"; ObjectID = "AGB-zu-eGI"; */
-"AGB-zu-eGI.text" = "$0.00/mo";
+"8C0-7E-crV.text" = "Importo totale";
 
 /* Class = "IBUILabel"; text = "TERM"; ObjectID = "Ajr-fK-S6O"; */
-"Ajr-fK-S6O.text" = "TERM";
-
-/* Class = "IBUITextField"; placeholder = "TextHere"; ObjectID = "Bc7-HQ-V9f"; */
-"Bc7-HQ-V9f.placeholder" = "TextHere";
-
-/* Class = "IBUILabel"; text = "$34,749,470 Total Amount"; ObjectID = "CGF-x3-Nc2"; */
-"CGF-x3-Nc2.text" = "$34,749,470 Total Amount";
+"Ajr-fK-S6O.text" = "TERMINE";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "CxJ-Nr-hb6"; */
-"CxJ-Nr-hb6.text" = "PAYMENT";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "DJ9-F7-c1D"; */
-"DJ9-F7-c1D.text" = "Label";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "EtX-sB-GFK"; */
-"EtX-sB-GFK.text" = "Label";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "F3B-oB-Jxa"; */
-"F3B-oB-Jxa.text" = "Label";
-
-/* Class = "IBUILabel"; text = "OZ"; ObjectID = "Fy1-yu-fhd"; */
-"Fy1-yu-fhd.text" = "OZ";
-
-/* Class = "IBUILabel"; text = "$0.00/mo"; ObjectID = "HjV-pt-Yh0"; */
-"HjV-pt-Yh0.text" = "$0.00/mo";
-
-/* Class = "IBUILabel"; text = "A"; ObjectID = "IzS-cO-021"; */
-"IzS-cO-021.text" = "A";
+"CxJ-Nr-hb6.text" = "PAGAMENTO";
 
 /* Class = "IBUILabel"; text = "INTEREST RATE"; ObjectID = "M1Y-kB-iSk"; */
-"M1Y-kB-iSk.text" = "INTEREST RATE";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "MBu-OS-7va"; */
-"MBu-OS-7va.text" = "Label";
-
-/* Class = "IBUILabel"; text = "Detail"; ObjectID = "PAu-DD-MR1"; */
-"PAu-DD-MR1.text" = "Detail";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "PNL-yM-KAa"; */
-"PNL-yM-KAa.text" = "Label";
-
-/* Class = "IBUILabel"; text = "A"; ObjectID = "PQD-3Y-dkx"; */
-"PQD-3Y-dkx.text" = "A";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "QXh-tY-pn0"; */
-"QXh-tY-pn0.text" = "Label";
-
-/* Class = "IBUILabel"; text = "$4,749.70"; ObjectID = "Rbn-z3-Mo9"; */
-"Rbn-z3-Mo9.text" = "$4,749.70";
-
-/* Class = "IBUITextField"; placeholder = "TextHere"; ObjectID = "S8q-23-rEf"; */
-"S8q-23-rEf.placeholder" = "TextHere";
-
-/* Class = "IBUILabel"; text = "18"; ObjectID = "VUn-if-gNc"; */
-"VUn-if-gNc.text" = "18";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "Vtd-dn-T4e"; */
-"Vtd-dn-T4e.text" = "Label";
-
-/* Class = "IBUILabel"; text = "$4,749,470 Interest"; ObjectID = "WYC-d6-Yqs"; */
-"WYC-d6-Yqs.text" = "$4,749,470 Interest";
-
-/* Class = "IBUILabel"; text = "1"; ObjectID = "aFD-MF-Y43"; */
-"aFD-MF-Y43.text" = "1";
-
-/* Class = "IBUILabel"; text = "$347,749.70"; ObjectID = "al2-2n-gDr"; */
-"al2-2n-gDr.text" = "$347,749.70";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "awV-GM-G7o"; */
-"awV-GM-G7o.text" = "Label";
-
-/* Class = "IBUILabel"; text = "Title"; ObjectID = "bQy-ZH-3Nh"; */
-"bQy-ZH-3Nh.text" = "Title";
-
-/* Class = "IBUILabel"; text = "Detail"; ObjectID = "bnc-d5-DoG"; */
-"bnc-d5-DoG.text" = "Detail";
+"M1Y-kB-iSk.text" = "TASSO DI INTERESSE";
 
 /* Class = "IBUIButton"; normalTitle = "Monthly"; ObjectID = "cvj-is-8ew"; */
-"cvj-is-8ew.normalTitle" = "Monthly";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "dWd-Hz-Dl1"; */
-"dWd-Hz-Dl1.text" = "Label";
-
-/* Class = "IBUILabel"; text = "$3.68"; ObjectID = "dia-aD-hhJ"; */
-"dia-aD-hhJ.text" = "$3.68";
+"cvj-is-8ew.normalTitle" = "Mensile";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "eK2-vu-V2i"; */
-"eK2-vu-V2i.text" = "PAYMENT";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "fi5-fr-eaq"; */
-"fi5-fr-eaq.text" = "Label";
-
-/* Class = "IBUILabel"; text = "$34,749,470 Total Amount"; ObjectID = "fnM-bu-ClL"; */
-"fnM-bu-ClL.text" = "$34,749,470 Total Amount";
+"eK2-vu-V2i.text" = "PAGAMENTO";
 
 /* Class = "IBUIButton"; normalTitle = "Monthly"; ObjectID = "ghb-Oq-2Tz"; */
-"ghb-Oq-2Tz.normalTitle" = "Monthly";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "hix-Vy-Z8b"; */
-"hix-Vy-Z8b.text" = "Label";
-
-/* Class = "IBUITextField"; placeholder = "TextHere"; ObjectID = "ihV-sA-QKP"; */
-"ihV-sA-QKP.placeholder" = "TextHere";
+"ghb-Oq-2Tz.normalTitle" = "Mensile";
 
 /* Class = "IBUILabel"; text = "Total Interest"; ObjectID = "lIW-t6-4Lw"; */
-"lIW-t6-4Lw.text" = "Total Interest";
+"lIW-t6-4Lw.text" = "Interesse Totale";
 
 /* Class = "IBUIButton"; normalTitle = "Total"; ObjectID = "ln5-ed-dwO"; */
-"ln5-ed-dwO.normalTitle" = "Total";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "m6f-ua-y26"; */
-"m6f-ua-y26.text" = "Label";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "pYM-d2-f6x"; */
-"pYM-d2-f6x.text" = "Label";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "qjg-fJ-hCB"; */
-"qjg-fJ-hCB.text" = "Label";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "rak-XB-51q"; */
-"rak-XB-51q.text" = "Label";
+"ln5-ed-dwO.normalTitle" = "Totale";
 
 /* Class = "IBUILabel"; text = "PRINCIPAL"; ObjectID = "shi-Bi-FKl"; */
-"shi-Bi-FKl.text" = "PRINCIPAL";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "uuJ-Hb-VeV"; */
-"uuJ-Hb-VeV.text" = "Label";
-
-/* Class = "IBUILabel"; text = "$4,749.70"; ObjectID = "vKW-cQ-InC"; */
-"vKW-cQ-InC.text" = "$4,749.70";
+"shi-Bi-FKl.text" = "CAPITALE";
 
 /* Class = "IBUILabel"; text = "FREQUENCY"; ObjectID = "vs2-WG-64j"; */
-"vs2-WG-64j.text" = "FREQUENCY";
-
-/* Class = "IBUILabel"; text = "$4,749,470 Interest"; ObjectID = "wgR-Ec-wid"; */
-"wgR-Ec-wid.text" = "$4,749,470 Interest";
+"vs2-WG-64j.text" = "FREQUENZA";
 
 /* Class = "IBUIButton"; normalTitle = "Total"; ObjectID = "xc8-ZM-WY9"; */
-"xc8-ZM-WY9.normalTitle" = "Total";
+"xc8-ZM-WY9.normalTitle" = "Totale";

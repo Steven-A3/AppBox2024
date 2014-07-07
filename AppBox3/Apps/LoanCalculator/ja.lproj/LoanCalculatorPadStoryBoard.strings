@@ -1,141 +1,43 @@
 
-/* Class = "IBUILabel"; text = "B"; ObjectID = "1EG-93-ITB"; */
-"1EG-93-ITB.text" = "B";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "38h-On-5Cn"; */
-"38h-On-5Cn.text" = "Label";
-
-/* Class = "IBUILabel"; text = "$4,749,470 Interest"; ObjectID = "3bQ-KN-l5E"; */
-"3bQ-KN-l5E.text" = "$4,749,470 Interest";
-
 /* Class = "IBUIButton"; normalTitle = "Total"; ObjectID = "3s5-4s-1CT"; */
-"3s5-4s-1CT.normalTitle" = "Total";
+"3s5-4s-1CT.normalTitle" = "合計金額";
 
 /* Class = "IBUILabel"; text = "Total Interest"; ObjectID = "42J-Av-wC6"; */
-"42J-Av-wC6.text" = "Total Interest";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "4M7-1W-baH"; */
-"4M7-1W-baH.text" = "Label";
-
-/* Class = "IBUILabel"; text = "$347,749.70"; ObjectID = "5mF-bU-zlN"; */
-"5mF-bU-zlN.text" = "$347,749.70";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "BFi-ou-tAx"; */
-"BFi-ou-tAx.text" = "Label";
-
-/* Class = "IBUILabel"; text = "$4,749,470 Interest"; ObjectID = "BUp-XT-zW8"; */
-"BUp-XT-zW8.text" = "$4,749,470 Interest";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "BgM-ze-Nt4"; */
-"BgM-ze-Nt4.text" = "Label";
+"42J-Av-wC6.text" = "総利子";
 
 /* Class = "IBUIButton"; normalTitle = "Monthly"; ObjectID = "EGD-V3-oEo"; */
-"EGD-V3-oEo.normalTitle" = "Monthly";
-
-/* Class = "IBUILabel"; text = "OZ"; ObjectID = "EWp-Dv-mTP"; */
-"EWp-Dv-mTP.text" = "OZ";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "FET-8b-cbE"; */
-"FET-8b-cbE.text" = "Label";
+"EGD-V3-oEo.normalTitle" = "毎月";
 
 /* Class = "IBUILabel"; text = "TOTAL AMOUNT"; ObjectID = "HoT-uR-KnN"; */
-"HoT-uR-KnN.text" = "TOTAL AMOUNT";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "I6j-2t-Twp"; */
-"I6j-2t-Twp.text" = "Label";
+"HoT-uR-KnN.text" = "総返済額";
 
 /* Class = "IBUILabel"; text = "FREQUENCY"; ObjectID = "IQd-UR-Egy"; */
-"IQd-UR-Egy.text" = "FREQUENCY";
+"IQd-UR-Egy.text" = "返済頻度";
 
 /* Class = "IBUILabel"; text = "PRINCIPAL"; ObjectID = "Kjj-Yf-Cp0"; */
-"Kjj-Yf-Cp0.text" = "PRINCIPAL";
+"Kjj-Yf-Cp0.text" = "借入金額";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "Lay-j3-68g"; */
-"Lay-j3-68g.text" = "PAYMENT";
+"Lay-j3-68g.text" = "返済額";
 
 /* Class = "IBUILabel"; text = "Total Amount"; ObjectID = "O4w-GW-tyw"; */
-"O4w-GW-tyw.text" = "Total Amount";
-
-/* Class = "IBUILabel"; text = "$0.00/mo"; ObjectID = "PvE-ES-NPA"; */
-"PvE-ES-NPA.text" = "$0.00/mo";
+"O4w-GW-tyw.text" = "総返済額";
 
 /* Class = "IBUILabel"; text = "TOTAL AMOUNT"; ObjectID = "PyM-Ux-VrQ"; */
-"PyM-Ux-VrQ.text" = "TOTAL AMOUNT";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "RET-uw-eQo"; */
-"RET-uw-eQo.text" = "Label";
-
-/* Class = "IBUILabel"; text = "$4,749.70"; ObjectID = "TlG-wb-lf4"; */
-"TlG-wb-lf4.text" = "$4,749.70";
-
-/* Class = "IBUILabel"; text = "A"; ObjectID = "V1G-OH-rO3"; */
-"V1G-OH-rO3.text" = "A";
+"PyM-Ux-VrQ.text" = "総返済額";
 
 /* Class = "IBUILabel"; text = "INTEREST RATE"; ObjectID = "V4g-Ka-you"; */
-"V4g-Ka-you.text" = "INTEREST RATE";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "XA0-MA-CbH"; */
-"XA0-MA-CbH.text" = "Label";
-
-/* Class = "IBUILabel"; text = "$0.00/mo"; ObjectID = "XNx-rV-a0e"; */
-"XNx-rV-a0e.text" = "$0.00/mo";
-
-/* Class = "IBUILabel"; text = "$34,749,470 Total Amount"; ObjectID = "YBJ-jb-LEW"; */
-"YBJ-jb-LEW.text" = "$34,749,470 Total Amount";
-
-/* Class = "IBUILabel"; text = "$3.68"; ObjectID = "YaL-9c-Ewm"; */
-"YaL-9c-Ewm.text" = "$3.68";
-
-/* Class = "IBUITextField"; placeholder = "TextHere"; ObjectID = "aUr-1k-LfK"; */
-"aUr-1k-LfK.placeholder" = "TextHere";
-
-/* Class = "IBUILabel"; text = "1"; ObjectID = "awQ-zm-sPR"; */
-"awQ-zm-sPR.text" = "1";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "b83-gt-7pL"; */
-"b83-gt-7pL.text" = "Label";
-
-/* Class = "IBUILabel"; text = "$0.00/mo"; ObjectID = "goS-F5-Lzm"; */
-"goS-F5-Lzm.text" = "$0.00/mo";
-
-/* Class = "IBUILabel"; text = "18"; ObjectID = "jB0-Ot-Ilc"; */
-"jB0-Ot-Ilc.text" = "18";
-
-/* Class = "IBUILabel"; text = "$4,749.70"; ObjectID = "jVJ-Zr-wXJ"; */
-"jVJ-Zr-wXJ.text" = "$4,749.70";
+"V4g-Ka-you.text" = "返済金利";
 
 /* Class = "IBUIButton"; normalTitle = "Monthly"; ObjectID = "kxb-Ku-lTX"; */
-"kxb-Ku-lTX.normalTitle" = "Monthly";
-
-/* Class = "IBUILabel"; text = "A"; ObjectID = "mSG-SM-GwN"; */
-"mSG-SM-GwN.text" = "A";
-
-/* Class = "IBUILabel"; text = "$347,749.70"; ObjectID = "mgS-j4-3of"; */
-"mgS-j4-3of.text" = "$347,749.70";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "oMF-aa-Nt2"; */
-"oMF-aa-Nt2.text" = "Label";
+"kxb-Ku-lTX.normalTitle" = "毎月";
 
 /* Class = "IBUILabel"; text = "TERM"; ObjectID = "p8M-3c-orl"; */
-"p8M-3c-orl.text" = "TERM";
-
-/* Class = "IBUILabel"; text = "$34,749,470 Total Amount"; ObjectID = "pOT-dv-WMW"; */
-"pOT-dv-WMW.text" = "$34,749,470 Total Amount";
-
-/* Class = "IBUILabel"; text = "Detail"; ObjectID = "uhy-Vu-FhR"; */
-"uhy-Vu-FhR.text" = "Detail";
-
-/* Class = "IBUITextField"; placeholder = "TextHere"; ObjectID = "vZT-FI-RK3"; */
-"vZT-FI-RK3.placeholder" = "TextHere";
+"p8M-3c-orl.text" = "返済期間";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "vlc-Uw-6Wc"; */
-"vlc-Uw-6Wc.text" = "PAYMENT";
+"vlc-Uw-6Wc.text" = "返済額";
 
 /* Class = "IBUIButton"; normalTitle = "Total"; ObjectID = "wH7-0h-TSe"; */
-"wH7-0h-TSe.normalTitle" = "Total";
+"wH7-0h-TSe.normalTitle" = "合計金額";
 
-/* Class = "IBUILabel"; text = "Detail"; ObjectID = "wSw-jU-DIJ"; */
-"wSw-jU-DIJ.text" = "Detail";
-
-/* Class = "IBUILabel"; text = "$0.00/mo"; ObjectID = "x2B-T1-AEf"; */
-"x2B-T1-AEf.text" = "$0.00/mo";

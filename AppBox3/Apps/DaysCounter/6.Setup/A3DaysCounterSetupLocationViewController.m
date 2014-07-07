@@ -110,6 +110,16 @@
     }];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if ([self isMovingToParentViewController]) {
+		if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
+			[self alertLocationDisabled];
+		}
+	}
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
