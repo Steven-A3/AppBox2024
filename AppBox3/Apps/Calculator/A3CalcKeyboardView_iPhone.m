@@ -312,6 +312,11 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 
 			id title = buttonTitle[idx];
 			[self setTitle:title forButton:button];
+            A3ExpressionKind buttonID = [[title objectForKey:kA3CalcButtonID] integerValue];
+            if (buttonID == A3E_RADIAN_DEGREE) {
+                _radianDegreeButton = button;
+            }
+            
 			if (column == 7) {
                 /*
 				[button setBackgroundColor:[UIColor colorWithRed:0 green:122.0/255.0 blue:1.0 alpha:0.75]];
@@ -379,6 +384,10 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
             }
            // [button setImage:nil forState:UIControlStateNormal];
 			[self setTitle:title forButton:button];
+            A3ExpressionKind buttonID = [[title objectForKey:kA3CalcButtonID] integerValue];
+            if (buttonID == A3E_RADIAN_DEGREE) {
+                _radianDegreeButton = button;
+            }
         }
     }
 }
@@ -446,6 +455,10 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 					A3KeyboardButton_iOS7_iPhone *button = (A3KeyboardButton_iOS7_iPhone *) [self viewWithTag:idx + KBD_BUTTON_TAG_BASE];
 					id title = buttonTitles[idx];
 					[self setTitle:title forButton:button];
+                    A3ExpressionKind buttonID = [[title objectForKey:kA3CalcButtonID] integerValue];
+                    if (buttonID == A3E_RADIAN_DEGREE) {
+                        _radianDegreeButton = button;
+                    }
 				}
 			}
 		}

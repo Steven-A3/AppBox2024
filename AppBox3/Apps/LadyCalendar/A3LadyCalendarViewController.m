@@ -59,7 +59,7 @@
 {
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
-	self.title = NSLocalizedString(@"Lady Calendar", @"Lady Calendar");
+	self.title = NSLocalizedString(@"Ladies Calendar", @"Lady Calendar");
 
 	[self leftBarButtonAppsButton];
 
@@ -257,7 +257,7 @@
 
 - (void)setupNavigationTitle {
 	if( [self.dataManager numberOfAccountInContext:[[MagicalRecordStack defaultStack] context]] == 1 && [[[self.dataManager currentAccount] name] isEqualToString:[self.dataManager defaultAccountName]]){
-		self.navigationItem.title = NSLocalizedString(@"Lady Calendar", @"Lady Calendar");
+		self.navigationItem.title = NSLocalizedString(@"Ladies Calendar", @"Lady Calendar");
 	}
 	else{
 		self.navigationItem.title = [[self.dataManager currentAccount] name];

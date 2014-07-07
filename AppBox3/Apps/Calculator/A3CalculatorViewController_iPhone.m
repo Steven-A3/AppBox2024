@@ -20,6 +20,7 @@
 #import "NSAttributedString+Append.h"
 #import "A3InstructionViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "A3KeyboardButton_iOS7_iPhone.h"
 
 @interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate,MBProgressHUDDelegate, A3CalcMessagShowDelegate, A3InstructionViewControllerDelegate, UITextFieldDelegate>
 
@@ -49,7 +50,7 @@
 
 @implementation A3CalculatorViewController_iPhone {
     BOOL _isShowMoreMenu;
-    BOOL radian;
+
     UITapGestureRecognizer *navGestureRecognizer;
     UIBarButtonItem *share;
     UIBarButtonItem *history;
@@ -93,8 +94,7 @@
 		[self leftBarButtonCancelButton];
 		[self rightBarButtonDoneButton];
 	}
-
-    radian = YES;
+    
 	[self setupSubviews];
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]){
         [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]];
@@ -113,8 +113,12 @@
     
     if (IS_IPHONE) {
         [self setupInstructionView];
-//        [self setupTwoFingerDoubleTapGestureToShowInstruction];
     }
+    
+    // Radian / Degrees 버튼 초기화
+    [_calculator setRadian:[self radian]];
+    _degreeandradianLabel.text = [self radian] == YES ? @"Rad" : @"Deg";
+    [_keyboardView.radianDegreeButton setTitle:([self radian] == YES ? @"Deg" : @"Rad") forState:UIControlStateNormal];
 }
 
 - (void)didMoveToParentViewController:(UIViewController *)parent {
@@ -160,13 +164,13 @@
 }
 
 -(void) radiandegreeChange {
-    if(radian == YES) {
+    if([self radian] == YES) {
         [_calculator setRadian:FALSE];
-        radian = NO;
+        self.radian = NO;
         _degreeandradianLabel.text = @"Deg";
     } else {
         [_calculator setRadian:TRUE];
-        radian = YES;
+        self.radian = YES;
         _degreeandradianLabel.text = @"Rad";
     }
 }

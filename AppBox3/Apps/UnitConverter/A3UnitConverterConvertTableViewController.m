@@ -704,16 +704,13 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
     if ([activityType isEqualToString:UIActivityTypeMail]) {
         
         NSMutableString *txt = [NSMutableString new];
-		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share a conversion with you.", nil)];
         for (int i=0; i<_shareTextList.count; i++) {
             [txt appendString:_shareTextList[i]];
             [txt appendString:@"<br/>"];
         }
-		[txt appendFormat:@"<br/><br/>%@<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>%@</a></body></html>",
-						  NSLocalizedString(@"You can convert more in the AppBox Pro.", nil),
-						  NSLocalizedString(@"Download from AppStore", nil)];
-        
-        return txt;
+		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a conversion with you.", nil)
+									   contents:txt
+										   tail:NSLocalizedString(@"You can convert more in the AppBox Pro.", nil)];
     }
     else {
         NSMutableString *txt = [NSMutableString new];

@@ -2,24 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%ld hours, %ld minutes</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@num_hours_minutes@</string>
-		<key>num_hours_minutes</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>ld</string>
-			<key>zero</key>
-			<string>%1$ld hour, %2$ld minute</string>
-			<key>one</key>
-			<string>%1$ld hour, %2$ld minute</string>
-			<key>other</key>
-			<string>%1$ld hours, %2$ld minutes</string>
-		</dict>
-	</dict>
 	<key>%ld hours</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -31,11 +13,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 hour</string>
+			<string>0 ore</string>
 			<key>one</key>
-			<string>1 hour</string>
+			<string>1 ora</string>
 			<key>other</key>
-			<string>%ld hours</string>
+			<string>%ld ore</string>
 		</dict>
 	</dict>
 	<key>%ld hrs</key>
@@ -49,11 +31,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 hr</string>
+			<string>0 ore</string>
 			<key>one</key>
-			<string>1 hr</string>
+			<string>1 ora</string>
 			<key>other</key>
-			<string>%ld hrs</string>
+			<string>%ld ore</string>
 		</dict>
 	</dict>
 	<key>%ld minutes</key>
@@ -67,11 +49,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 minute</string>
+			<string>0 minuti</string>
 			<key>one</key>
-			<string>1 minute</string>
+			<string>1 minuto</string>
 			<key>other</key>
-			<string>%ld minutes</string>
+			<string>%ld minuti</string>
 		</dict>
 	</dict>
 	<key>%ld mins</key>
@@ -89,7 +71,7 @@
 			<key>one</key>
 			<string>1 min</string>
 			<key>other</key>
-			<string>%ld mins</string>
+			<string>%ld min</string>
 		</dict>
 	</dict>
 	<key>After %ld hours</key>
@@ -103,11 +85,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Immediately</string>
+			<string>Subito</string>
 			<key>one</key>
-			<string>After 1 hour</string>
+			<string>Dopo 1 ora</string>
 			<key>other</key>
-			<string>After %ld hours</string>
+			<string>Dopo %ld ore</string>
 		</dict>
 	</dict>
 	<key>After %ld minutes</key>
@@ -121,11 +103,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Immediately</string>
+			<string>Subito</string>
 			<key>one</key>
-			<string>After 1 minute</string>
+			<string>Dopo 1 minuto</string>
 			<key>other</key>
-			<string>After %ld minutes</string>
+			<string>Dopo %ld minuti</string>
 		</dict>
 	</dict>
 	<key>%ld months</key>
@@ -139,11 +121,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 month</string>
+			<string>0 mesi</string>
 			<key>one</key>
-			<string>1 month</string>
+			<string>1 mese</string>
 			<key>other</key>
-			<string>%ld months</string>
+			<string>%ld mese</string>
 		</dict>
 	</dict>
 	<key>%ld mos</key>
@@ -157,11 +139,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 mon</string>
+			<string>0 mesi</string>
 			<key>one</key>
-			<string>1 mon</string>
+			<string>1 mese</string>
 			<key>other</key>
-			<string>%ld mos</string>
+			<string>%ld mesi</string>
 		</dict>
 	</dict>
 	<key>%ld years</key>
@@ -175,11 +157,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 year</string>
+			<string>0 anni</string>
 			<key>one</key>
-			<string>1 year</string>
+			<string>1 anno</string>
 			<key>other</key>
-			<string>%ld years</string>
+			<string>%ld anni</string>
 		</dict>
 	</dict>
 	<key>%ld yrs</key>
@@ -193,11 +175,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 yr</string>
+			<string>0 an</string>
 			<key>one</key>
-			<string>1 yr</string>
+			<string>1 an</string>
 			<key>other</key>
-			<string>%ld yrs</string>
+			<string>%ld an</string>
 		</dict>
 	</dict>
 	<key>%ld days before</key>
@@ -211,11 +193,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>At time of event</string>
+			<string>All’ora dell’evento</string>
 			<key>one</key>
-			<string>1 day before</string>
+			<string>1 giorno prima</string>
 			<key>other</key>
-			<string>%ld days before</string>
+			<string>%ld giorni prima</string>
 		</dict>
 	</dict>
 	<key>%ld days before(NO NUMBER)</key>
@@ -229,11 +211,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>day before</string>
+			<string>giorni prima</string>
 			<key>one</key>
-			<string>day before</string>
+			<string>giorno prima</string>
 			<key>other</key>
-			<string>days before</string>
+			<string>giorni prima</string>
 		</dict>
 	</dict>
 	<key>%ld Days Left</key>
@@ -247,15 +229,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Today</string>
+			<string>Oggi</string>
 			<key>one</key>
-			<string>Tomorrow</string>
-			<key>few</key>
-			<string>The day after tomorrow</string>
-			<key>many</key>
-			<string>%ld Days Left</string>
+			<string>Domani</string>
 			<key>other</key>
-			<string>%ld Days Left</string>
+			<string>%ld giorni rimasti</string>
 		</dict>
 	</dict>
 	<key>%ld weeks</key>
@@ -269,11 +247,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 week</string>
+			<string>0 settimane</string>
 			<key>one</key>
-			<string>1 week</string>
+			<string>1 settimana</string>
 			<key>other</key>
-			<string>%ld weeks</string>
+			<string>%ld settimane</string>
 		</dict>
 	</dict>
 	<key>%ld days</key>
@@ -287,11 +265,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 day</string>
+			<string>0 giorni</string>
 			<key>one</key>
-			<string>1 day</string>
+			<string>1 giorno</string>
 			<key>other</key>
-			<string>%ld days</string>
+			<string>%ld giorni</string>
 		</dict>
 	</dict>
 	<key>%ld days(NO NUMBER)</key>
@@ -305,11 +283,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>day</string>
+			<string>giorni</string>
 			<key>one</key>
-			<string>day</string>
+			<string>giorno</string>
 			<key>other</key>
-			<string>days</string>
+			<string>giorni</string>
 		</dict>
 	</dict>
 	<key>%ld seconds</key>
@@ -323,11 +301,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 second</string>
+			<string>0 secondi</string>
 			<key>one</key>
-			<string>1 second</string>
+			<string>1 secondo</string>
 			<key>other</key>
-			<string>%ld seconds</string>
+			<string>%ld secondi</string>
 		</dict>
 	</dict>
 	<key>%ld Events</key>
@@ -341,11 +319,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>No Event</string>
+			<string>Non ci sono eventi</string>
 			<key>one</key>
-			<string>1 Event</string>
+			<string>1 Evento</string>
 			<key>other</key>
-			<string>%ld Events</string>
+			<string>%ld Eventi</string>
 		</dict>
 	</dict>
     <key>%ld Delete Translation</key>
@@ -359,11 +337,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Delete Translation</string>
+			<string>Elimina le traduzioni</string>
 			<key>one</key>
-			<string>Delete Translation</string>
+			<string>Elimina le traduzione</string>
 			<key>other</key>
-			<string>Delete Translations</string>
+			<string>Elimina le traduzioni</string>
 		</dict>
 	</dict>
 	<key>During %ld days</key>
@@ -379,9 +357,9 @@
 			<key>zero</key>
 			<string>None</string>
 			<key>one</key>
-			<string>During 1 day</string>
+			<string>Per 1 giorno</string>
 			<key>other</key>
-			<string>During %ld days</string>
+			<string>per %ld giorni</string>
 		</dict>
 	</dict>
 	<key>Last %ld</key>
@@ -395,11 +373,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>None</string>
+			<string>Più Recente</string>
 			<key>one</key>
-			<string>Last 1</string>
+			<string>Più Recente</string>
 			<key>other</key>
-			<string>Last %ld</string>
+			<string>I %ld più recenti</string>
 		</dict>
 	</dict>
 </dict>

@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
 #import "A3WalletItemEditViewController.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+MMDrawerController.h"
@@ -577,6 +578,41 @@
 
 - (void)showInstructionView {
     
+}
+
+#pragma mark - Share Format
+
+- (NSString *)shareMailMessageWithHeader:(NSString *)header contents:(NSString *)contents tail:(NSString *)tail {
+	NSMutableString *txt = [NSMutableString new];
+	[txt appendFormat:@"<html><body>%@<br/><br/>", header];
+	[txt appendString:contents];
+
+	[txt appendFormat:[self shareMessageFormat], tail];
+	return txt;
+}
+
+/*! [NSString stringWithFormat:] 에서 사용할 수 있는 문자열을 돌려주며, 하나의 파라메터를 허용하는 포맷으로, 파라메터로는 공유할 내용을 전달함
+ * \param 없음
+ * \returns
+ */
+- (NSString *)shareMessageFormat {
+	return [NSString stringWithFormat:@"<br/>%%@<br/>%@", [self commonShareFooter]];
+}
+
+- (NSString *)commonShareFooter {
+	return [NSString stringWithFormat:@"<img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>%@</a></body></html>",
+									  NSLocalizedString(@"Download from AppStore", nil)];
+}
+
+- (NSString *)appITunesURL {
+	return @"https://itunes.apple.com/app/id318404385";
+}
+
+- (void)alertLocationDisabled {
+	NSString *message = ![CLLocationManager locationServicesEnabled] ? NSLocalizedString(@"Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather.", nil) :
+			NSLocalizedString(@"Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather.", nil);
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
+	[alertView show];
 }
 
 @end

@@ -9,6 +9,8 @@
 #import "HTCopyableLabel.h"
 #import "A3CalculatorViewController.h"
 
+NSString *const kUserDefaultsKeyCalculatorRadianDegreeState = @"kUserDefaultsKeyCalculatorRadianDegreeState";
+
 @implementation A3CalculatorViewController
 
 - (instancetype)initWithPresentingViewController:(UIViewController *)modalPresentingParentViewController {
@@ -27,6 +29,15 @@
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
 	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)setRadian:(BOOL)radian {
+    [[NSUserDefaults standardUserDefaults] setBool:radian forKey:kUserDefaultsKeyCalculatorRadianDegreeState];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (BOOL)radian {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyCalculatorRadianDegreeState];
 }
 
 @end

@@ -239,7 +239,6 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			element.needSecurityCheck = [elementDescription[kA3AppsMenuNeedSecurityCheck] boolValue];
 			element.doNotKeepAsRecent = [elementDescription[kA3AppsDoNotKeepAsRecent] boolValue];
 
-
 			__typeof(self) __weak weakSelf = self;
 
 			element.onSelected = ^(A3TableViewElement *elementObject) {
@@ -249,7 +248,12 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 				BOOL proceedPasscodeCheck = NO;
 				// Check active view controller
 				if (![weakSelf isActiveViewController:[targetViewController class]]) {
-					if ([A3KeychainUtils getPassword] && [menuElement respondsToSelector:@selector(needSecurityCheck)] && [menuElement needSecurityCheck]) {
+					if (   [A3KeychainUtils getPassword]
+						&& [menuElement respondsToSelector:@selector(needSecurityCheck)]
+						&& [menuElement needSecurityCheck]
+						&& [[A3AppDelegate instance] didPasscodeTimerEnd]
+						)
+					{
 						proceedPasscodeCheck = YES;
 
 						if ([menuElement.storyboardName_iPhone isEqualToString:@"A3Settings"]) {

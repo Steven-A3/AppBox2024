@@ -61,7 +61,7 @@
 "Translator" = "Traducteur";
 "Unit Converter" = "Convertisseur d’unité";
 "Days Counter" = "Compteur de jours";
-"Lady Calendar" = "Calendrier dame";
+"Ladies Calendar" = "Calendrier dame";
 "Wallet" = "Portefeuille";
 "Expense List" = "Liste de dépense";
 "Holidays" = "Vacances";
@@ -844,7 +844,7 @@
 "Extra Payment(yearly)" = "Paiement supplémentaire (annuel)";
 "Extra Payment(one-time)" = "Paiement supplémentaire (une fois)";
 
-"I'd like to share a information with you." = "J’aimerais partager une information avec vous.";
+"I'd like to share an information with you." = "J’aimerais partager une information avec vous.";
 "You can manage your information in the AppBox Pro." = "Vous pouvez gérer vos informations dans l’AppBox Pro.";
 
 "I'd like to share a translation with you." = "J’aimerais partager une traduction avec vous.";
@@ -867,5 +867,20 @@
 "Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "Services de location non activés. Aller aux Paramètres > Vie privée > Services de location. Les services de location doivent être activés et AppBox Pro autorisé à afficher la météo.";
 "Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "Services de location activés, mais AppBox Pro n’est pas autorisé à accéder aux services de location. Aller aux Paramètres > Vie privée > Services de location et l’autoriser à afficher la météo.";
 
-"During 1 day" = "Pendant 1 jour";
-"During 28 days" = "Pendant 28 jours";
+"daily" = "daily";
+"weekly" = "weekly";
+"biweekly" = "biweekly";
+"monthly" = "monthly";
+"yearly" = "yearly";
+
+"No Photos" = "No Photos";
+"You can add photos into events." = "You can add photos into events.";
+
+"UNIT PRICE" = "UNIT PRICE";
+"UNIT" = "UNIT";
+"SIZE" = "SIZE";
+"DISCOUNT" = "DISCOUNT";
+
+"Alert_None" = "None";
+
+"FaceTime" = "FaceTime";

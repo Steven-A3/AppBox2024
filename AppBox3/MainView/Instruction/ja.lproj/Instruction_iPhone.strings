@@ -1,162 +1,164 @@
 
 /* Class = "IBUILabel"; text = "Tap to add a category"; ObjectID = "0gd-1F-IlN"; */
-"0gd-1F-IlN.text" = "Tap to add a category";
+"0gd-1F-IlN.text" = "タップしてカテゴリーを追加します。";
 
 /* Class = "IBUILabel"; text = "Touch and hold a country,\nthen drag it up or down"; ObjectID = "0ze-pQ-4fo"; */
-"0ze-pQ-4fo.text" = "Touch and hold a country,\nthen drag it up or down";
+"0ze-pQ-4fo.text" = "国家をタッチして押し続けながら上下に動かして順番を変更する事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap to add a new list"; ObjectID = "1dD-l5-TzF"; */
-"1dD-l5-TzF.text" = "Tap to add a new list";
+"1dD-l5-TzF.text" = "タップして新しいリストを作ります。";
 
 /* Class = "IBUILabel"; text = "Slide the currency to the left,\nthen tap options"; ObjectID = "2ma-Z4-hX7"; */
-"2ma-Z4-hX7.text" = "Slide the currency to the left,\nthen tap options";
+"2ma-Z4-hX7.text" = "通話を左にスライドすれば追加機能が出ます。";
 
 /* Class = "IBUILabel"; text = "Touch and hold a currency,\nthen drag it up or down"; ObjectID = "3r1-n4-BZx"; */
-"3r1-n4-BZx.text" = "Touch and hold a currency,\nthen drag it up or down";
+"3r1-n4-BZx.text" = "通話をタッチして押し続けながら上下に動かして順番を変更する事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to change\nkeypad for basic/scientific"; ObjectID = "4Y2-hA-ExK"; */
-"4Y2-hA-ExK.text" = "Swipe left or right to change\nkeypad for basic/scientific";
+"4Y2-hA-ExK.text" = "キーボードを左右にスライドさせて通常の電卓や関数電卓を変更する事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap to add an item"; ObjectID = "55x-Hd-Yyy"; */
-"55x-Hd-Yyy.text" = "Tap to add an item";
+"55x-Hd-Yyy.text" = "タップしてアイテムを追加します。";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "5vX-h0-0KZ"; */
-"5vX-h0-0KZ.text" = "画面をタップすると、\nコン トロールが表示されます。";
+"5vX-h0-0KZ.text" = "画面をタップすると、
+コン トロールが表示されます。";
 
 /* Class = "IBUILabel"; text = "Slide the event to the left,\nthen tap Delete"; ObjectID = "7qV-NL-Ajb"; */
-"7qV-NL-Ajb.text" = "Slide the event to the left,\nthen tap Delete";
+"7qV-NL-Ajb.text" = "イベントを左にスライドさせて消す事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap to view larger"; ObjectID = "8OM-Xa-7AG"; */
-"8OM-Xa-7AG.text" = "Tap to view larger";
+"8OM-Xa-7AG.text" = "タップすれば拡大して見る事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Add or delete countries"; ObjectID = "9Oc-Jc-FLn"; */
-"9Oc-Jc-FLn.text" = "Add or delete countries";
+"9Oc-Jc-FLn.text" = "国家を追加するか除外します。";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "BOF-lT-L6x"; */
-"BOF-lT-L6x.text" = "画面をタップすると、\nコン トロールが表示されます。";
+"BOF-lT-L6x.text" = "画面をタップすると、
+コン トロールが表示されます。";
 
 /* Class = "IBUILabel"; text = "Touch and hold a unit,\nthen drag it up or down"; ObjectID = "DNP-PL-5me"; */
-"DNP-PL-5me.text" = "Touch and hold a unit,\nthen drag it up or down";
+"DNP-PL-5me.text" = "単位を押し続けながら上下に動かして順番を変更する事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap to change \ncolor and more"; ObjectID = "EHY-52-AW9"; */
-"EHY-52-AW9.text" = "Tap to change \ncolor and more";
+"EHY-52-AW9.text" = "タップして色を変更します。";
 
 /* Class = "IBUILabel"; text = "Slide the item to left,\nthen tap Delete"; ObjectID = "FNw-cz-Xbp"; */
-"FNw-cz-Xbp.text" = "Slide the item to left,\nthen tap Delete";
+"FNw-cz-Xbp.text" = "アイテムを左にスライドさせて消す事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap to see more categories"; ObjectID = "Hom-fh-Uyk"; */
-"Hom-fh-Uyk.text" = "Tap to see more categories";
+"Hom-fh-Uyk.text" = "タップすれば別のカテゴリを見る事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Slide the language to the left,\nthen tap Delete"; ObjectID = "M6u-St-Kuv"; */
-"M6u-St-Kuv.text" = "Slide the language to the left,\nthen tap Delete";
+"M6u-St-Kuv.text" = "言語を左にスライドさせて消す事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap to add an event"; ObjectID = "M89-TC-emC"; */
-"M89-TC-emC.text" = "Tap to add an event";
+"M89-TC-emC.text" = "タップしてイベントを追加します。";
 
 /* Class = "IBUILabel"; text = "Slide the country to the left,\nthen tap Delete"; ObjectID = "O49-bh-b9I"; */
-"O49-bh-b9I.text" = "Slide the country to the left,\nthen tap Delete";
+"O49-bh-b9I.text" = "国家を左にスライドさせて画面から見えなくする事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Pull up to see\nmore holidays"; ObjectID = "RQJ-Od-NDI"; */
-"RQJ-Od-NDI.text" = "Pull up to see\nmore holidays";
+"RQJ-Od-NDI.text" = "上にスライドさせるともっと沢山の休日情報を見る事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap to add or edit budget"; ObjectID = "U1j-Mc-LaR"; */
-"U1j-Mc-LaR.text" = "Tap to add or edit budget";
+"U1j-Mc-LaR.text" = "タップして予算を追加するか修正します。";
 
 /* Class = "IBUILabel"; text = "Pull down to update"; ObjectID = "UOR-Dm-haV"; */
-"UOR-Dm-haV.text" = "Pull down to update";
+"UOR-Dm-haV.text" = "画面を下にスライドさせてレート情報を更新することが出来ます。";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "UvH-ng-N3W"; */
-"UvH-ng-N3W.text" = "Touch and hold an item,\nthen drag it up or down";
+"UvH-ng-N3W.text" = "アイテムを押し続けながら上下に動かして順番を変更する事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap to add a currency"; ObjectID = "Wca-7F-aIC"; */
-"Wca-7F-aIC.text" = "Tap to add a currency";
+"Wca-7F-aIC.text" = "タップして通話を追加します。";
 
 /* Class = "IBUILabel"; text = "Touch and hold a language,\nthen drag it up or down"; ObjectID = "Wl0-Ir-Vwx"; */
-"Wl0-Ir-Vwx.text" = "Touch and hold a language,\nthen drag it up or down";
+"Wl0-Ir-Vwx.text" = "言語をタッチして押し続けながら上下に動かして順番を変更する事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap to see chart/account/option"; ObjectID = "ZkW-mi-nXJ"; */
-"ZkW-mi-nXJ.text" = "Tap to see chart/account/option";
+"ZkW-mi-nXJ.text" = "タップしてチャート、アカウントID、オプションを見る事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Slide the calendar to the left,\nthen tap Delete"; ObjectID = "afl-C5-OsY"; */
-"afl-C5-OsY.text" = "Slide the calendar to the left,\nthen tap Delete";
+"afl-C5-OsY.text" = "カレンダーを左にスライドさせて消す事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap to add period"; ObjectID = "cXb-sm-2AK"; */
-"cXb-sm-2AK.text" = "Tap to add period";
+"cXb-sm-2AK.text" = "タップすれば自然周期の追加が出来ます。";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to see\nholidays for another country"; ObjectID = "f7p-pa-V3C"; */
-"f7p-pa-V3C.text" = "Swipe left or right to see\nholidays for another country";
+"f7p-pa-V3C.text" = "画面を左右にスライドさせて他の国の休日情報を確認します。";
 
 /* Class = "IBUILabel"; text = "Slide the unit to the left,\nthen tap options"; ObjectID = "fgC-K0-IiZ"; */
-"fgC-K0-IiZ.text" = "Slide the unit to the left,\nthen tap options";
+"fgC-K0-IiZ.text" = "単位を左にスライドさせて追加機能を選択します。";
 
 /* Class = "IBUILabel"; text = "Tap to change color and more"; ObjectID = "g69-at-Gdn"; */
-"g69-at-Gdn.text" = "Tap to change color and more";
+"g69-at-Gdn.text" = "タップして色を変更できます。";
 
 /* Class = "IBUILabel"; text = "Touch and hold an event,\nthen drag it up or down"; ObjectID = "g74-h9-vmQ"; */
-"g74-h9-vmQ.text" = "Touch and hold an event,\nthen drag it up or down";
+"g74-h9-vmQ.text" = "イベントをタッチして押し続けながら上下に動かして順番を変更する事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Change color and order"; ObjectID = "j7s-5h-AsK"; */
-"j7s-5h-AsK.text" = "Change color and order";
+"j7s-5h-AsK.text" = "色と順番を変更します。";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "k0p-RN-RCK"; */
 "k0p-RN-RCK.text" = "画面をタップすると、\nコン トロールが表示されます。";
 
 /* Class = "IBUILabel"; text = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down"; ObjectID = "ls1-5i-Gos"; */
-"ls1-5i-Gos.text" = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down";
+"ls1-5i-Gos.text" = "アイテムの右≡を押し続けながら上下に動かして順番を変更する事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap to see more info"; ObjectID = "m1h-st-ypH"; */
-"m1h-st-ypH.text" = "Tap to see more info";
+"m1h-st-ypH.text" = "タップしてもっと沢山の情報を見ます。";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "mYi-2r-6n3"; */
 "mYi-2r-6n3.text" = "画面をタップすると、\nコン トロールが表示されます。";
 
 /* Class = "IBUILabel"; text = "Tap anywhere to see more info"; ObjectID = "n3c-eW-iPb"; */
-"n3c-eW-iPb.text" = "Tap anywhere to see more info";
+"n3c-eW-iPb.text" = "画面をタップしてもっと沢山の情報を見る事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap the plus button to add a country"; ObjectID = "nP5-9M-28L"; */
-"nP5-9M-28L.text" = "Tap the plus button to add a country";
+"nP5-9M-28L.text" = "プラスボタンをタップして国家を追加します。";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "nPF-RG-8hQ"; */
-"nPF-RG-8hQ.text" = "Touch and hold an item,\nthen drag it up or down";
+"nPF-RG-8hQ.text" = "アイテムを押し続けながら上下に動かして順番を変更する事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap to add a unit"; ObjectID = "o5S-tb-Jbp"; */
-"o5S-tb-Jbp.text" = "Tap to add a unit";
+"o5S-tb-Jbp.text" = "タップして単位を追加します。";
 
 /* Class = "IBUILabel"; text = "Tap to add a language"; ObjectID = "qDX-1u-CmJ"; */
-"qDX-1u-CmJ.text" = "Tap to add a language";
+"qDX-1u-CmJ.text" = "タップして言語を追加します。";
 
 /* Class = "IBUILabel"; text = "Tap to view list of periods"; ObjectID = "qF4-08-u3n"; */
-"qF4-08-u3n.text" = "Tap to view list of periods";
+"qF4-08-u3n.text" = "タップしてリストを見る事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Slide the item to the left,\nthen tap Delete"; ObjectID = "qMW-Th-lrs"; */
-"qMW-Th-lrs.text" = "Slide the item to the left,\nthen tap Delete";
+"qMW-Th-lrs.text" = "アイテムを左にスライドさせて消す事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Slide the language to the left,\nthen tap Delete"; ObjectID = "qRC-cW-j6h"; */
-"qRC-cW-j6h.text" = "Slide the language to the left,\nthen tap Delete";
+"qRC-cW-j6h.text" = "言語を左にスライドさせて消す事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Select which categories\nto view"; ObjectID = "rHi-Jq-5Rp"; */
-"rHi-Jq-5Rp.text" = "Select which categories\nto view";
+"rHi-Jq-5Rp.text" = "確認するカテゴリーを選択します。";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "rqI-qD-Dqd"; */
-"rqI-qD-Dqd.text" = "Touch and hold an item,\nthen drag it up or down";
+"rqI-qD-Dqd.text" = "アイテムを押し続けながら上下に動かして順番を変更する事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "sxx-vG-Pll"; */
 "sxx-vG-Pll.text" = "画面をタップすると、\nコン トロールが表示されます。";
 
 /* Class = "IBUILabel"; text = "Tap to change option"; ObjectID = "t5T-1i-yhB"; */
-"t5T-1i-yhB.text" = "Tap to change option";
+"t5T-1i-yhB.text" = "タップして設定を変更します。";
 
 /* Class = "IBUILabel"; text = "Touch and hold a language,\nthen drag it up or down"; ObjectID = "tZj-CP-DIE"; */
-"tZj-CP-DIE.text" = "Touch and hold a language,\nthen drag it up or down";
+"tZj-CP-DIE.text" = "言語をタッチして押し続けながら上下に動かして順番を変更する事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Slide the item to the left,\nthen tap Delete"; ObjectID = "tkT-KJ-PpW"; */
-"tkT-KJ-PpW.text" = "Slide the item to the left,\nthen tap Delete";
+"tkT-KJ-PpW.text" = "アイテムを左にスライドさせて消す事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Tap to see more categories"; ObjectID = "uz1-Ap-8Ft"; */
-"uz1-Ap-8Ft.text" = "Tap to see more categories";
+"uz1-Ap-8Ft.text" = "タップすれば別のカテゴリを見る事が出来ます。";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to see\nprev/next events"; ObjectID = "yXR-Yi-555"; */
-"yXR-Yi-555.text" = "Swipe left or right to see\nprev/next events";
+"yXR-Yi-555.text" = "左右にスライドさせて前と次のイベントを見ます。";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to see\ndifferent clock styles"; ObjectID = "zdJ-br-tkO"; */
-"zdJ-br-tkO.text" = "Swipe left or right to see\ndifferent clock styles";
+"zdJ-br-tkO.text" = "画面を左右にスライドさせて他のスタイルの時計を見る事が出来ます。";

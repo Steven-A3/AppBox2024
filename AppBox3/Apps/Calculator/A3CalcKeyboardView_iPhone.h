@@ -12,6 +12,9 @@
 - (void)keyboardButtonPressed:(NSUInteger)key;
 @end
 
+@class A3KeyboardButton_iOS7_iPhone;
+
 @interface A3CalcKeyboardView_iPhone : UIView
 @property (nonatomic, weak) id<A3CalcKeyboardViewDelegate> delegate;
+@property (nonatomic, strong) A3KeyboardButton_iOS7_iPhone *radianDegreeButton;
 @end

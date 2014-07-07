@@ -62,7 +62,7 @@
 "Translator" = "Tłumacz";
 "Unit Converter" = "Konwerter";
 "Days Counter" = "Days Counter";
-"Lady Calendar" = "Lady Calendar";
+"Ladies Calendar" = "Ladies Calendar";
 "Wallet" = "Portfel";
 "Expense List" = "Expense List";
 "Holidays" = "Dni wolne";
@@ -841,7 +841,7 @@
 "Extra Payment(yearly)" = "Extra Payment(yearly)";
 "Extra Payment(one-time)" = "Extra Payment(one-time)";
 
-"I'd like to share a information with you." = "I'd like to share a information with you.";
+"I'd like to share an information with you." = "I'd like to share a information with you.";
 "You can manage your information in the AppBox Pro." = "You can manage your information in the AppBox Pro.";
 
 "I'd like to share a translation with you." = "I'd like to share a translation with you.";

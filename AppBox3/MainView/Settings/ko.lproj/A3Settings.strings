@@ -1,11 +1,11 @@
 
-/* Class = "IBUILabel"; text = "Lady Calendar"; ObjectID = "05t-yj-k37"; */
+/* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "05t-yj-k37"; */
 "05t-yj-k37.text" = "레이디 캘린더";
 
 /* Class = "IBUILabel"; text = "Last 5"; ObjectID = "0Me-nY-VE5"; */
 "0Me-nY-VE5.text" = "최근 5개";
 
-/* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.
+/* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Ladies Calendar periods and Wallet items.
 
 "; ObjectID = "1dJ-y3-yh7"; */
 "1dJ-y3-yh7.footerTitle" = "동기화를 하거나 모든 앱의 히스토리, 이벤트 캘린더의 이벤트, 지출 관리, 레이디 캘린더 정보, 전자지갑 아이템들을 백업할 수 있습니다.

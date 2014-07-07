@@ -5,7 +5,7 @@
 /* Class = "IBUILabel"; text = "Utility"; ObjectID = "3pq-Ua-ezN"; */
 "3pq-Ua-ezN.text" = "유틸리티";
 
-/* Class = "IBUILabel"; text = "Lady Calendar"; ObjectID = "3xh-WT-2qJ"; */
+/* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "3xh-WT-2qJ"; */
 "3xh-WT-2qJ.text" = "레이디 캘린더";
 
 /* Class = "IBUILabel"; text = "Loan Calculator"; ObjectID = "5dF-dl-Cfh"; */
@@ -57,8 +57,8 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 
 /* Class = "IBUILabel"; text = "easy, faster and more focused,
 64Bit and much more"; ObjectID = "ZZQ-VK-PjS"; */
-"ZZQ-VK-PjS.text" = "쉽고, 빠르며, 보다 기본에 충실하고
-64비트 지원을 포함하여 엄청난 변화";
+"ZZQ-VK-PjS.text" = "쉽고, 빠르고, 기본에 충실하고
+64비트 지원과 대단한 변화";
 
 /* Class = "IBUILabel"; text = "Expense List"; ObjectID = "c42-0X-ouA"; */
 "c42-0X-ouA.text" = "지출 관리";
@@ -133,4 +133,4 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 "xYa-vJ-mm4.normalTitle" = "계속";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "xk9-a9-WGh"; */
-"xk9-a9-WGh.normalTitle" = "AppBox Pro 시작";;
+"xk9-a9-WGh.normalTitle" = "AppBox Pro 시작";

@@ -835,17 +835,14 @@
 
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
 {
-    NSMutableString *txt = [NSMutableString new];
-    
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
         [self.dateFormatter setDateStyle:NSDateFormatterFullStyle];
-		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share a conversion with you.", nil)];
-        [txt appendString:[self shareString]];
-		[txt appendFormat:@"<br/><br/>%@<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>%@</a></body></html>",
-						  NSLocalizedString(@"You can convert more in the AppBox Pro.", nil),
-						  NSLocalizedString(@"Download from AppStore", nil)];
-	}
-	else {
+		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a conversion with you.", nil)
+									   contents:[self shareString]
+										   tail:NSLocalizedString(@"You can convert more in the AppBox Pro.", nil)];
+	} else {
+		NSMutableString *txt = [NSMutableString new];
+		
         if ([NSDate isFullStyleLocale]) {
             [self.dateFormatter setDateStyle:NSDateFormatterFullStyle];
         }
@@ -854,9 +851,8 @@
         }
         
         [txt appendString:[[self shareString] stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"]];
+		return txt;
     }
-    
-    return txt;
 }
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController

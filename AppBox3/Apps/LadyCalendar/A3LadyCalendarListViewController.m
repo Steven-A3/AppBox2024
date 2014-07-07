@@ -17,6 +17,7 @@
 #import "LadyCalendarPeriod.h"
 #import "A3DateHelper.h"
 #import "A3ColoredCircleView.h"
+#import "NSDateFormatter+A3Addition.h"
 
 @interface A3LadyCalendarListViewController ()
 
@@ -214,7 +215,23 @@
     if( item ){
         FNLOG(@"%s %ld/%ld %@",__FUNCTION__, (long)indexPath.section, (long)indexPath.row,item);
         circleView.hidden = NO;
-        textLabel.text = (IS_IPHONE ? [_dataManager stringFromDateOmittingYear:item.startDate] : [NSString stringWithFormat:@"%@ - %@", [_dataManager stringFromDateOmittingYear:item.startDate], [_dataManager stringFromDateOmittingYear:item.endDate]]);
+        
+        if (IS_IPHONE) {
+            NSDateFormatter *dateFormatter = [NSDateFormatter new];
+            NSString *dateFormat = [dateFormatter customFullStyleFormat];
+            dateFormat = [dateFormatter formatStringByRemovingYearComponent:dateFormat];
+            [dateFormatter setDateFormat:dateFormat];
+            textLabel.text = [dateFormatter stringFromDate:item.startDate];
+        }
+        else {
+            NSDateFormatter *dateFormatter = [NSDateFormatter new];
+            dateFormatter.dateStyle = NSDateFormatterFullStyle;
+            NSString *dateFormat = [dateFormatter dateFormat];
+            dateFormat = [dateFormatter formatStringByRemovingYearComponent:dateFormat];
+            [dateFormatter setDateFormat:dateFormat];
+            textLabel.text = [NSString stringWithFormat:@"%@ - %@", [dateFormatter stringFromDate:item.startDate], [dateFormatter stringFromDate:item.endDate]];
+        }
+        
 //        LadyCalendarPeriod *prevPeriod = [self previousPeriodFromIndexPath:indexPath];
         LadyCalendarPeriod *nextPeriod = [self nextPeriodFromIndexPath:indexPath];
 //        BOOL isRealLast = ( (![item.isPredict boolValue] && nextPeriod == nil) || (nextPeriod && [nextPeriod.isPredict boolValue]) );

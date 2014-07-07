@@ -59,7 +59,7 @@
 "Translator" = "Übersetzer";
 "Unit Converter" = "Einheitenrechner";
 "Days Counter" = "Tageszähler";
-"Lady Calendar" = "Damen-Kalender";
+"Ladies Calendar" = "Damen-Kalender";
 "Wallet" = "Geldbörse";
 "Expense List" = "Ausgabenliste";
 "Holidays" = "Feiertage";
@@ -844,7 +844,7 @@
 "Extra Payment(yearly)" = "Extra Zahlungen(Jährlich)";
 "Extra Payment(one-time)" = "Extra Zahlung(Einmalig)";
 
-"I'd like to share a information with you." = "Ich möchte eine Information mit Ihnen teilen.";
+"I'd like to share an information with you." = "Ich möchte eine Information mit Ihnen teilen.";
 "You can manage your information in the AppBox Pro." = "Jetzt können Sie auch Ihre Informationen in AppBox Pro bearbeiten.";
 
 "I'd like to share a translation with you." = "Ich möchte eine Übersetzung mit Ihnen teilen.";

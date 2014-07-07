@@ -40,7 +40,6 @@ extern NSString *const A3LadyCalendarChangedDateKey;
 - (NSString*)stringForAlertType:(NSInteger)alertType;
 - (void)recalculateDates;
 - (NSString*)stringFromDate:(NSDate*)date;
-- (NSString*)stringFromDateOmittingYear:(NSDate*)date;
 - (NSDate *)startDateForCurrentAccount;
 - (NSDate *)endDateForCurrentAccount;
 

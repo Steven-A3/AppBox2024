@@ -2242,11 +2242,15 @@
             [self.tableView reloadData];
         }
         else if ( buttonIndex == actionSheet.firstOtherButtonIndex ) {
-            self.locationManager = [[CLLocationManager alloc] init];
-            _locationManager.delegate = self;
-            _locationManager.distanceFilter = kCLDistanceFilterNone;
-            _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-            [_locationManager startUpdatingLocation];
+			if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
+				[self alertLocationDisabled];
+			} else {
+				self.locationManager = [[CLLocationManager alloc] init];
+				_locationManager.delegate = self;
+				_locationManager.distanceFilter = kCLDistanceFilterNone;
+				_locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+				[_locationManager startUpdatingLocation];
+			}
         }
         else if ( buttonIndex == (actionSheet.firstOtherButtonIndex + 1)) {
             if (![[A3AppDelegate instance].reachability isReachable]) {

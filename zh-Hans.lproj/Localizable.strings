@@ -30,7 +30,7 @@
 "Passcode Lock" = "密码锁定";
 "Lunar Calendar" = "阴历";
 
-/* "A friend wanted to let you know that the Calculator, Date Calculator, Loan Calculator, Percent Calculator, Sales Calculator, Tip Calculator, Unit Price, Currency Converter, Lunar Converter, Translator, Unit Converter, Days Counter, Expense List, Lady Calendar, Wallet, Holidays, Battery Status, Clock, Magnifier and Mirror you've come to expect from AppBox Pro™ is now available for your iPhone, iPad and iPod Touch. Click below to download AppBox Pro™ from the iTunes App Store.\r\n\r\nhttps://itunes.apple.com/app/id318404385"; */
+/* "A friend wanted to let you know that the Calculator, Date Calculator, Loan Calculator, Percent Calculator, Sales Calculator, Tip Calculator, Unit Price, Currency Converter, Lunar Converter, Translator, Unit Converter, Days Counter, Expense List, Ladies Calendar, Wallet, Holidays, Battery Status, Clock, Magnifier and Mirror you've come to expect from AppBox Pro™ is now available for your iPhone, iPad and iPod Touch. Click below to download AppBox Pro™ from the iTunes App Store.\r\n\r\nhttps://itunes.apple.com/app/id318404385"; */
 "tellafriend" = "iPhone/iPad/iPod Touch的有效使用，推荐您使用包含了闹钟、电池状态信息、镜子、水平仪、汇率、日期计算、纪念日、手电灯、公休日、贷款计算、自然周期、价格比较、随机数表生成、尺子、折扣率计算、系统信息、小费计算、翻译器、单位换算、保安电子钱包、网络应用程序等多种应用程序的AppBox Pro™。
 
 现在马上在下面网址上下载AppBox Pro™。";
@@ -65,7 +65,7 @@
 "Translator" = "翻译";
 "Unit Converter" = "单位换算";
 "Days Counter" = "天计数器";
-"Lady Calendar" = "淑女日历";
+"Ladies Calendar" = "淑女日历";
 "Wallet" = "电子钱包";
 "Expense List" = "费用清单";
 "Holidays" = "节日/纪念日";
@@ -880,7 +880,7 @@
 "Extra Payment(yearly)" = "额外支付(每年)";
 "Extra Payment(one-time)" = "额外支付(一次)";
 
-"I'd like to share a information with you." = "我想和你分享一个信息。";
+"I'd like to share an information with you." = "我想和你分享一个信息。";
 "You can manage your information in the AppBox Pro." = "你可以在 AppBox Pro中管理信息。";
 
 "I'd like to share a translation with you." = "我想和你分享一段翻译";
@@ -903,5 +903,20 @@
 "Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "定位服务不可用。前往 设置 > 隐私 > 定位服务.必须启动定位服务后授权 AppBox Pro显示天气。";
 "Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "定位服务可用，但是 AppBox Pro未能获得使用定位服务的权限。前往 设置 > 隐私 >定位服务授权可以显示天气";
 
-"During 1 day" = "1天期间";
-"During 28 days" = "28天 期间";
+"daily" = "daily";
+"weekly" = "weekly";
+"biweekly" = "biweekly";
+"monthly" = "monthly";
+"yearly" = "yearly";
+
+"No Photos" = "No Photos";
+"You can add photos into events." = "You can add photos into events.";
+
+"UNIT PRICE" = "UNIT PRICE";
+"UNIT" = "UNIT";
+"SIZE" = "SIZE";
+"DISCOUNT" = "DISCOUNT";
+
+"Alert_None" = "None";
+
+"FaceTime" = "FaceTime";

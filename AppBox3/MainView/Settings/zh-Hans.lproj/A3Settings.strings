@@ -1,11 +1,11 @@
 
-/* Class = "IBUILabel"; text = "Lady Calendar"; ObjectID = "05t-yj-k37"; */
+/* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "05t-yj-k37"; */
 "05t-yj-k37.text" = "淑女日历";
 
 /* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
 "0Me-nY-VE5.text" = "5条最近记录";
 
-/* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.
+/* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Ladies Calendar periods and Wallet items.
 
 "; ObjectID = "1dJ-y3-yh7"; */
 "1dJ-y3-yh7.footerTitle" = "同步或备份每个应用的历史记录、天数计算事件、费用清单、淑女日历周期和钱包信息。";

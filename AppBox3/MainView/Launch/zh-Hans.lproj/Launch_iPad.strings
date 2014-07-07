@@ -107,7 +107,7 @@
 on all your devices"; ObjectID = "mal-lH-ucN"; */
 "mal-lH-ucN.text" = "保持数据在所有设备上持续更新";
 
-/* Class = "IBUILabel"; text = "Lady Calendar"; ObjectID = "noh-Kb-lie"; */
+/* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "noh-Kb-lie"; */
 "noh-Kb-lie.text" = "淑女日历";
 
 /* Class = "IBUILabel"; text = "Expense List"; ObjectID = "oCV-n4-Pex"; */

@@ -13,11 +13,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>%1$ld hour, %2$ld minute</string>
+			<string>%1$ld時間、%2$ld分</string>
 			<key>one</key>
-			<string>%1$ld hour, %2$ld minute</string>
+			<string>%1$ld時間、%2$ld分</string>
 			<key>other</key>
-			<string>%1$ld hours, %2$ld minutes</string>
+			<string>%1$ld時間、%2$ld分</string>
 		</dict>
 	</dict>
 	<key>%ld hours</key>
@@ -31,11 +31,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 hour</string>
+			<string>0時間</string>
 			<key>one</key>
-			<string>1 hour</string>
+			<string>1時間</string>
 			<key>other</key>
-			<string>%ld hours</string>
+			<string>%ld時間</string>
 		</dict>
 	</dict>
 	<key>%ld hrs</key>
@@ -49,11 +49,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 hr</string>
+			<string>0時間</string>
 			<key>one</key>
-			<string>1 hr</string>
+			<string>1時間</string>
 			<key>other</key>
-			<string>%ld hrs</string>
+			<string>%ld時間</string>
 		</dict>
 	</dict>
 	<key>%ld minutes</key>
@@ -67,11 +67,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 minute</string>
+			<string>0分</string>
 			<key>one</key>
-			<string>1 minute</string>
+			<string>1分</string>
 			<key>other</key>
-			<string>%ld minutes</string>
+			<string>%ld分</string>
 		</dict>
 	</dict>
 	<key>%ld mins</key>
@@ -85,11 +85,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 min</string>
+			<string>0分</string>
 			<key>one</key>
-			<string>1 min</string>
+			<string>1分</string>
 			<key>other</key>
-			<string>%ld mins</string>
+			<string>%ld分</string>
 		</dict>
 	</dict>
 	<key>After %ld hours</key>
@@ -103,11 +103,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Immediately</string>
+			<string>即時</string>
 			<key>one</key>
-			<string>After 1 hour</string>
+			<string>1時間後</string>
 			<key>other</key>
-			<string>After %ld hours</string>
+			<string>%ld時間後</string>
 		</dict>
 	</dict>
 	<key>After %ld minutes</key>
@@ -121,11 +121,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Immediately</string>
+			<string>即時</string>
 			<key>one</key>
-			<string>After 1 minute</string>
+			<string>1分後</string>
 			<key>other</key>
-			<string>After %ld minutes</string>
+			<string>%ld分後</string>
 		</dict>
 	</dict>
 	<key>%ld months</key>
@@ -139,11 +139,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 month</string>
+			<string>0ヶ月</string>
 			<key>one</key>
-			<string>1 month</string>
+			<string>1ヶ月</string>
 			<key>other</key>
-			<string>%ld months</string>
+			<string>%ldヶ月</string>
 		</dict>
 	</dict>
 	<key>%ld mos</key>
@@ -157,11 +157,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 mon</string>
+			<string>0ヶ月</string>
 			<key>one</key>
-			<string>1 mon</string>
+			<string>1ヶ月</string>
 			<key>other</key>
-			<string>%ld mos</string>
+			<string>%ldヶ月</string>
 		</dict>
 	</dict>
 	<key>%ld years</key>
@@ -175,11 +175,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 year</string>
+			<string>0年</string>
 			<key>one</key>
-			<string>1 year</string>
+			<string>1年</string>
 			<key>other</key>
-			<string>%ld years</string>
+			<string>%ld年</string>
 		</dict>
 	</dict>
 	<key>%ld yrs</key>
@@ -193,11 +193,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 yr</string>
+			<string>0年</string>
 			<key>one</key>
-			<string>1 yr</string>
+			<string>1年</string>
 			<key>other</key>
-			<string>%ld yrs</string>
+			<string>%ld年</string>
 		</dict>
 	</dict>
 	<key>%ld days before</key>
@@ -211,11 +211,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>At time of event</string>
+			<string>その時間</string>
 			<key>one</key>
-			<string>1 day before</string>
+			<string>1日前</string>
 			<key>other</key>
-			<string>%ld days before</string>
+			<string>%ld日前</string>
 		</dict>
 	</dict>
 	<key>%ld days before(NO NUMBER)</key>
@@ -229,11 +229,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>day before</string>
+			<string>日前</string>
 			<key>one</key>
-			<string>day before</string>
+			<string>日前/string>
 			<key>other</key>
-			<string>days before</string>
+			<string>日前</string>
 		</dict>
 	</dict>
 	<key>%ld Days Left</key>
@@ -247,15 +247,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Today</string>
+			<string>今日</string>
 			<key>one</key>
-			<string>Tomorrow</string>
-			<key>few</key>
-			<string>The day after tomorrow</string>
-			<key>many</key>
-			<string>%ld Days Left</string>
+			<string>明日</string>
 			<key>other</key>
-			<string>%ld Days Left</string>
+			<string>%ld日後</string>
 		</dict>
 	</dict>
 	<key>%ld weeks</key>
@@ -269,11 +265,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 week</string>
+			<string>0週</string>
 			<key>one</key>
-			<string>1 week</string>
+			<string>1週</string>
 			<key>other</key>
-			<string>%ld weeks</string>
+			<string>%ld週</string>
 		</dict>
 	</dict>
 	<key>%ld days</key>
@@ -287,11 +283,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 day</string>
+			<string>0日</string>
 			<key>one</key>
-			<string>1 day</string>
+			<string>1日</string>
 			<key>other</key>
-			<string>%ld days</string>
+			<string>%ld日</string>
 		</dict>
 	</dict>
 	<key>%ld days(NO NUMBER)</key>
@@ -305,11 +301,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>day</string>
+			<string>日</string>
 			<key>one</key>
-			<string>day</string>
+			<string>日</string>
 			<key>other</key>
-			<string>days</string>
+			<string>日</string>
 		</dict>
 	</dict>
 	<key>%ld seconds</key>
@@ -323,11 +319,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 second</string>
+			<string>0秒</string>
 			<key>one</key>
-			<string>1 second</string>
+			<string>1秒</string>
 			<key>other</key>
-			<string>%ld seconds</string>
+			<string>%ld秒</string>
 		</dict>
 	</dict>
 	<key>%ld Events</key>
@@ -341,11 +337,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>No Event</string>
+			<string>イベントはありません。</string>
 			<key>one</key>
-			<string>1 Event</string>
+			<string>1イベント</string>
 			<key>other</key>
-			<string>%ld Events</string>
+			<string>%ldイベント</string>
 		</dict>
 	</dict>
     <key>%ld Delete Translation</key>
@@ -359,11 +355,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Delete Translation</string>
+			<string>翻訳を削除</string>
 			<key>one</key>
-			<string>Delete Translation</string>
+			<string>翻訳を削除</string>
 			<key>other</key>
-			<string>Delete Translations</string>
+			<string>翻訳を削除</string>
 		</dict>
 	</dict>
 	<key>During %ld days</key>
@@ -377,11 +373,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>None</string>
+			<string>なし</string>
 			<key>one</key>
-			<string>During 1 day</string>
+			<string>1日</string>
 			<key>other</key>
-			<string>During %ld days</string>
+			<string>%ld日</string>
 		</dict>
 	</dict>
 	<key>Last %ld</key>
@@ -395,11 +391,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>None</string>
+			<string>オフ</string>
 			<key>one</key>
-			<string>Last 1</string>
+			<string>最近の1</string>
 			<key>other</key>
-			<string>Last %ld</string>
+			<string>最近の%ld</string>
 		</dict>
 	</dict>
 </dict>

@@ -69,7 +69,7 @@
 		// 0 뒤에 . 이 입력된 경우는 OK
 		// 0 뒤에 0이 들어오면 무시
 		// 0 뒤에 1~9가 들어오면 0을 없앤다.
-		if ([textField.text length] == 1 && [textField.text isEqualToString:@"0"]) {
+		if (_keyboardType != A3NumberKeyboardTypePasscode && [textField.text length] == 1 && [textField.text isEqualToString:@"0"]) {
 			if ([inputString isEqualToString:@"0"]) {
 				// 입력을 처리하지 않는다.
 				return;
@@ -239,6 +239,8 @@
 				[self.dotButton setTitle:nil forState:UIControlStateNormal];
 				[self.dotButton setEnabled:NO];
 				break;
+
+			case A3NumberKeyboardTypePasscode:break;
 		}
 	}
 	switch (_keyboardType) {
@@ -344,6 +346,7 @@
 			}
 			break;
 		}
+		case A3NumberKeyboardTypePasscode:break;
 	}
 	[self setupLocale];
 }
@@ -368,6 +371,7 @@
 				[self.delegate handleBigButton1];
 			}
 			break;
+		case A3NumberKeyboardTypePasscode:break;
 	}
 	[self setupLocale];
 }
@@ -393,6 +397,7 @@
 				[self.delegate handleBigButton2];
 			}
 			break;
+		case A3NumberKeyboardTypePasscode:break;
 	}
 	if (self.keyboardType == A3NumberKeyboardTypePercent && [_textInputTarget isKindOfClass:[UITextField class]]) {
 		// 화폐 형식으로 입력을 전환하는 경우, 소수점 자리수 조정이 필요

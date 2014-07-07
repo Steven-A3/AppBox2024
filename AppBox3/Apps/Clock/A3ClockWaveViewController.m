@@ -6,6 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
 #import "A3ClockInfo.h"
 #import "A3ClockDataManager.h"
 #import "A3ClockWaveViewController.h"
@@ -697,6 +698,11 @@
 }
 
 - (void)clockWaveCircleTapped:(A3ClockWaveCircleView *)circleView {
+	if (circleView == _temperatureCircle && !_weatherInfoAvailable) {
+		if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
+			[self alertLocationDisabled];
+		}
+	}
 	circleView.isMustChange = YES;
 	A3ClockWaveCircleView *oldBigCircle = [self circleViewForType:(A3ClockWaveCircleTypes) [_circleArray[0] unsignedIntegerValue]];
 	oldBigCircle.isMustChange = YES;

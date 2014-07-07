@@ -12,6 +12,13 @@
 #import "UIViewController+A3Addition.h"
 #import "A3UIDevice.h"
 #import "UIViewController+MMDrawerController.h"
+#import "A3SettingsViewController.h"
+#import "A3DaysCounterSlideShowMainViewController.h"
+#import "A3DaysCounterCalendarListMainViewController.h"
+#import "A3DaysCounterReminderListViewController.h"
+#import "A3DaysCounterFavoriteListViewController.h"
+#import "A3LadyCalendarViewController.h"
+#import "A3WalletMainTabBarController.h"
 
 NSString *const kUserDefaultTimerStart = @"AppBoxPasscodeTimerStart";
 NSString *const kUserDefaultsKeyForPasscodeTimerDuration = @"kUserRequirePasscodeAfterMinutes";
@@ -28,7 +35,6 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 	return [[NSUserDefaults standardUserDefaults] doubleForKey:kUserDefaultsKeyForPasscodeTimerDuration];
 }
 
-
 - (NSTimeInterval)timerStartTime {
 	NSDate *date = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultTimerStart];
 	if (!date) return -1;
@@ -38,6 +44,9 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 
 - (void)saveTimerStartTime {
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kUserDefaultTimerStart];
+	FNLOG(@"**************************************************************");
+	FNLOG(@"%@", [NSDate date]);
+	FNLOG(@"**************************************************************");
 }
 
 
@@ -58,14 +67,46 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 }
 
 - (void)showLockScreen {
-	NSNumber *flag = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 
-	if ([flag boolValue] && [A3KeychainUtils getPassword] && [self didPasscodeTimerEnd]) {
+	BOOL passwordEnabled = [A3KeychainUtils getPassword] != nil;
+	BOOL passcodeTimerEnd = [self didPasscodeTimerEnd];
+
+	if (!passwordEnabled || !passcodeTimerEnd) return;
+
+	BOOL presentLockScreen = [self shouldProtectScreen];
+	if (presentLockScreen) {
 		if (!self.passcodeViewController) {
 			self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
 			[self.passcodeViewController showLockscreenWithAnimation:NO showCacelButton:NO];
 		}
 	}
+}
+
+- (BOOL)shouldProtectScreen {
+	BOOL presentLockScreen = NO;
+	BOOL shouldAskForStarting = [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
+	if (shouldAskForStarting) {
+		presentLockScreen = YES;
+	} else {
+		UINavigationController *navigationController = self.navigationController;
+		if ([navigationController.viewControllers count] >= 2) {
+			id activeViewController = navigationController.viewControllers[1];
+			if ([activeViewController isKindOfClass:[A3SettingsViewController class]]) {
+				presentLockScreen = [self shouldAskPasscodeForSettings];
+			} else if ([activeViewController isKindOfClass:[A3DaysCounterSlideShowMainViewController class]] ||
+					[activeViewController isKindOfClass:[A3DaysCounterCalendarListMainViewController class]] ||
+					[activeViewController isKindOfClass:[A3DaysCounterReminderListViewController class]] ||
+					[activeViewController isKindOfClass:[A3DaysCounterFavoriteListViewController class]] )
+			{
+				presentLockScreen = [self shouldAskPasscodeForDaysCounter];
+			} else if ([activeViewController isKindOfClass:[A3LadyCalendarViewController class]]) {
+				presentLockScreen = [self shouldAskPasscodeForLadyCalendar];
+			} else if ([activeViewController isKindOfClass:[A3WalletMainTabBarController class]]) {
+				presentLockScreen = [self shouldAskPasscodeForWallet];
+			}
+		}
+	}
+	return presentLockScreen;
 }
 
 #pragma mark - Notification Observers
@@ -91,9 +132,7 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 }
 
 - (void)applicationWillResignActive_passcode {
-	NSNumber *flag = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
-
-	if ([flag boolValue] && [A3KeychainUtils getPassword]) {
+	if ([A3KeychainUtils getPassword] && [self shouldProtectScreen]) {
 		FNLOG(@"CoverView added to Window");
 		[[UIApplication sharedApplication] ignoreSnapshotOnNextApplicationLaunch];
 
@@ -146,7 +185,7 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 	self.passcodeViewController = nil;
 }
 
-- (BOOL)askPasscodeForStarting {
+- (BOOL)shouldAskPasscodeForStarting {
 	NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 	if (number) {
 		return [number boolValue];
@@ -167,19 +206,27 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (BOOL)askPasscodeForSettings {
+- (void)registerPasscodeUserDefaults {
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForStarting : @YES}];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForSettings : @NO}];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForDaysCounter : @NO}];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForLadyCalendar : @NO}];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForWallet : @NO}];
+}
+
+- (BOOL)shouldAskPasscodeForSettings {
 	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
 }
 
-- (BOOL)askPasscodeForDaysCounter {
+- (BOOL)shouldAskPasscodeForDaysCounter {
 	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
 }
 
-- (BOOL)askPasscodeForLadyCalendar {
+- (BOOL)shouldAskPasscodeForLadyCalendar {
 	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
 }
 
-- (BOOL)askPasscodeForWallet {
+- (BOOL)shouldAskPasscodeForWallet {
 	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForWallet];
 }
 

@@ -275,6 +275,7 @@
     else if ( indexPath.section == 2) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") otherButtonTitles:nil];
         [actionSheet showInView:self.view];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
 

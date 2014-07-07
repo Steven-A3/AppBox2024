@@ -31,8 +31,8 @@
 
 /* Class = "IBUILabel"; text = "easy, faster and more focused,
 64Bit and much more"; ObjectID = "Dxm-da-st4"; */
-"Dxm-da-st4.text" = "쉽고, 빠르며, 보다 기본에 충실하고
-64비트 지원을 포함하여 엄청난 변화";
+"Dxm-da-st4.text" = "쉽고, 빠르고, 기본에 충실하고
+64비트 지원과 대단한 변화";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "EVR-ah-KPZ"; */
 "EVR-ah-KPZ.normalTitle" = "계속";
@@ -108,7 +108,7 @@ on all your devices"; ObjectID = "mal-lH-ucN"; */
 "mal-lH-ucN.text" = "소유한 모든 장비에서
 정보를 모두 동기화";
 
-/* Class = "IBUILabel"; text = "Lady Calendar"; ObjectID = "noh-Kb-lie"; */
+/* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "noh-Kb-lie"; */
 "noh-Kb-lie.text" = "레이디 캘린더";
 
 /* Class = "IBUILabel"; text = "Expense List"; ObjectID = "oCV-n4-Pex"; */

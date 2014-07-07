@@ -1358,16 +1358,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-
-		NSMutableString *txt = [NSMutableString new];
-		[txt appendFormat:@"<html><body>%@<br/><br/>", NSLocalizedString(@"I'd like to share a currency conversion with you.", nil)];
-		[txt appendString:[self stringForShare]];
-
-		[txt appendFormat:@"<br/><br/>%@<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/app/id318404385'>%@</a></body></html>",
-						  NSLocalizedString(@"You can convert more currencies in the AppBox Pro.", nil),
-						  NSLocalizedString(@"Download from AppStore", nil)];
-
-		return txt;
+		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a currency conversion with you.", nil)
+									   contents:[self stringForShare]
+										   tail:NSLocalizedString(@"You can convert more currencies in the AppBox Pro.", nil)];
 	}
 	else {
         return [[self stringForShare] stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];

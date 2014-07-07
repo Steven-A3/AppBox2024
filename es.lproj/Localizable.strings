@@ -64,7 +64,7 @@ https://itunes.apple.com/app/id318404385";
 "Translator" = "Traductor";
 "Unit Converter" = "Unidad";
 "Days Counter" = "Contador de días";
-"Lady Calendar" = "Calendario femenino";
+"Ladies Calendar" = "Calendario femenino";
 "Wallet" = "Billetera";
 "Expense List" = "Lista de gastos";
 "Holidays" = "Días festivos";
@@ -850,7 +850,7 @@ https://itunes.apple.com/app/id318404385";
 "Extra Payment(yearly)" = "Pago extra(anualmente)";
 "Extra Payment(one-time)" = "Pago extra(Todo de una vez)";
 
-"I'd like to share a information with you." = "Me gustaría compartir una información contigo.";
+"I'd like to share an information with you." = "Me gustaría compartir una información contigo.";
 "You can manage your information in the AppBox Pro." = "Usted puede adminsitrar su información con AppBox Pro.";
 
 "I'd like to share a translation with you." = "Me gustaría compartir una traducción contigo.";
@@ -879,8 +879,8 @@ https://itunes.apple.com/app/id318404385";
 "monthly" = "mensual";
 "yearly" = "anualmente";
 
-"No Photos" = "No Photos";
-"You can add photos into events." = "You can add photos into events.";
+"No Photos" = "No hay fotos disponibles";
+"You can add photos into events." = "Usted puede adicionar fotos a los eventos.";
 
 "UNIT PRICE" = "PRECIO UNITARIO";
 "UNIT" = "UNIDAD";

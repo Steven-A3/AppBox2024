@@ -21,17 +21,19 @@
 - (void)applicationWillEnterForeground_passcode;
 - (void)applicationWillResignActive_passcode;
 
-- (BOOL)askPasscodeForStarting;
+- (BOOL)shouldAskPasscodeForStarting;
 
 - (void)setEnableAskPasscodeForStarting:(BOOL)enable;
 
-- (BOOL)askPasscodeForSettings;
+- (void)registerPasscodeUserDefaults;
 
-- (BOOL)askPasscodeForDaysCounter;
+- (BOOL)shouldAskPasscodeForSettings;
 
-- (BOOL)askPasscodeForLadyCalendar;
+- (BOOL)shouldAskPasscodeForDaysCounter;
 
-- (BOOL)askPasscodeForWallet;
+- (BOOL)shouldAskPasscodeForLadyCalendar;
+
+- (BOOL)shouldAskPasscodeForWallet;
 
 - (double)timerDuration;
 

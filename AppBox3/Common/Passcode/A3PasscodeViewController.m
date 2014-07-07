@@ -324,10 +324,18 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	[self dismissViewControllerAnimated: YES completion: nil];
 }
 
+/*! dismissMe 는 암호가 확인이 되면 호출이 됨. 만약 암호가 틀리면 denyAccess 가 수행이 된다.
+ * Cancel 을 눌렀을때는 cancelAndDismissMe 로 분기가 되는 것
+ * \param
+ * \returns
+ */
 - (void)dismissMe {
 	_isCurrentlyOnScreen = NO;
 	[self resetUI];
 	[_passcodeTextField resignFirstResponder];
+
+	[[A3AppDelegate instance] saveTimerStartTime];
+
 	[UIView animateWithDuration: kLockAnimationDuration animations: ^{
 		if (_beingDisplayedAsLockscreen) {
 //			if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft) {
@@ -350,9 +358,9 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 			}
 					// Update the Keychain if adding or changing passcode
 			else {
-				if (_isUserEnablingPasscode) {
+				if (_isUserEnablingPasscode|| _isUserChangingPasscode) {
+					[[A3AppDelegate instance] saveTimerStartTime];
 					[A3KeychainUtils storePassword:_tempPasscode hint:nil];
-					[[A3AppDelegate instance] setEnableAskPasscodeForStarting:YES];
 
 					NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 					[defaults setBool:YES forKey:kUserDefaultsKeyForUseSimplePasscode];
@@ -531,7 +539,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	[self resetUI];
 }
 
-
 - (void)prepareForEnablingPasscode {
 	_isCurrentlyOnScreen = YES;
 	_isUserTurningPasscodeOff = NO;
@@ -542,7 +549,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	[self resetUI];
 }
 
-
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
@@ -552,11 +558,9 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	return YES;
 }
 
-
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
 	return !_isCurrentlyOnScreen;
 }
-
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
 	if ([string isEqualToString: @"\n"]) return NO;
