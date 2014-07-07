@@ -85,7 +85,6 @@
     [self makeBackButtonEmptyArrow];
 
     
-//	UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
     A3DaysCounterSlideShowCollectionViewLayout *flowLayout = [A3DaysCounterSlideShowCollectionViewLayout new];
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	flowLayout.itemSize = screenBounds.size;
@@ -299,11 +298,8 @@
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	//UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
     A3DaysCounterSlideShowCollectionViewLayout *flowLayout = [A3DaysCounterSlideShowCollectionViewLayout new];
 	flowLayout.itemSize = self.view.bounds.size;
-//    flowLayout.itemSize = CGSizeMake(self.view.bounds.size.width - 20, self.view.bounds.size.height);
-    NSLog(@"view Size: %@", NSStringFromCGRect(self.view.bounds));
 	flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
 	flowLayout.minimumInteritemSpacing = 0;
 	flowLayout.minimumLineSpacing = 0;
@@ -685,10 +681,8 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 #pragma mark UIScrollView
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    for (UICollectionViewCell *cell in [self.collectionView visibleCells]) {
-        NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
-        currentIndex = indexPath.row;
-    }
+    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[self.collectionView contentOffset]];
+    currentIndex = indexPath.row;
     
     if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
         self.navigationItem.title = NSLocalizedString(@"Days Counter", @"Days Counter");
