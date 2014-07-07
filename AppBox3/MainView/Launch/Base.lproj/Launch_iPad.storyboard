@@ -367,7 +367,7 @@
                                         <rect key="frame" x="121" y="192" width="29" height="29"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </imageView>
-                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="LunarConverter" id="maC-nf-gL3">
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="UnitConverter" id="maC-nf-gL3">
                                         <rect key="frame" x="121" y="333" width="29" height="29"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </imageView>
@@ -375,7 +375,7 @@
                                         <rect key="frame" x="121" y="474" width="29" height="29"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </imageView>
-                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="UnitConverter" id="cPg-Of-LpL">
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="LunarConverter" id="cPg-Of-LpL">
                                         <rect key="frame" x="121" y="615" width="29" height="29"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </imageView>
@@ -386,7 +386,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lunar Converter" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DKJ-oV-07R">
-                                        <rect key="frame" x="162" y="324" width="606" height="47"/>
+                                        <rect key="frame" x="162" y="606" width="606" height="47"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="33"/>
                                         <nil key="highlightedColor"/>
@@ -398,7 +398,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unit Conveter" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="85l-L8-ozk">
-                                        <rect key="frame" x="162" y="606" width="606" height="47"/>
+                                        <rect key="frame" x="162" y="324" width="606" height="47"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="33"/>
                                         <nil key="highlightedColor"/>
@@ -437,6 +437,9 @@
                     <connections>
                         <outlet property="contentView" destination="YjV-vg-jCd" id="Myr-De-WW1"/>
                         <outlet property="leftButton" destination="2eu-dh-CwY" id="iIh-u9-iI4"/>
+                        <outlet property="lunarImage" destination="cPg-Of-LpL" id="EOZ-oS-bez"/>
+                        <outlet property="lunarLabel" destination="DKJ-oV-07R" id="NZV-BQ-379"/>
+                        <outlet property="lunarLineView" destination="hvA-Vz-ABb" id="kcL-3L-4tI"/>
                         <outlet property="rightButton" destination="Z9P-lk-CAW" id="uZz-Bt-ZNl"/>
                     </connections>
                 </viewController>

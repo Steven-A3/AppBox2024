@@ -258,4 +258,14 @@ https://github.com/andrealufino/ALSystemUtilities/blob/develop/ALSystemUtilities
 	return [languagesNotUsingImage indexOfObject:languageCode] == NSNotFound;
 }
 
++ (BOOL)shouldSupportLunarCalendar {
+	NSLocale *currentLocale = [NSLocale currentLocale];
+	// Language 가 한글 혹은 중국어인 경우
+	NSArray *languageCodes = @[@"ko", @"zh_hans", @"zh_hant"];
+	if ([languageCodes indexOfObject:[currentLocale objectForKey:NSLocaleLanguageCode]] != NSNotFound) return YES;
+
+	NSArray *countryCodes = @[@"KO", @"TW", @"CN", @"HK", @"MO", @"SG"];
+	return [countryCodes indexOfObject:[currentLocale objectForKey:NSLocaleCountryCode]] != NSNotFound;
+}
+
 @end

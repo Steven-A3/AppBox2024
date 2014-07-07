@@ -115,6 +115,14 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 			[originalMenus sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 				return [NSLocalizedString(obj1[kA3AppsMenuName], nil) compare:NSLocalizedString(obj2[kA3AppsMenuName], nil)];
 			}];
+			if (![A3UIDevice shouldSupportLunarCalendar]) {
+				NSUInteger indexOfLunarConverter = [originalMenus indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+					return [obj[kA3AppsMenuName] isEqualToString:@"Lunar Converter"];
+				}];
+				if (indexOfLunarConverter != NSNotFound) {
+					[originalMenus removeObjectAtIndex:indexOfLunarConverter];
+				}
+			}
 			modifiedSection[kA3AppsExpandableChildren] = originalMenus;
 			[sortedMenuArray addObject:modifiedSection];
 		}

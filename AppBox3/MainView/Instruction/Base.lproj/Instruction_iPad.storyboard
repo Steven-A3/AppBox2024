@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="s55-Nm-cjw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6154.21" systemVersion="13D65" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="s55-Nm-cjw">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6153.13"/>
     </dependencies>
     <scenes>
         <!--BateryStatus Instruction View Controller-->
@@ -1634,10 +1635,6 @@ then drag it up or down</string>
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jp0-U5-7vV">
-                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="mZN-Ao-21g">
                                 <rect key="frame" x="50" y="75" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1685,36 +1682,38 @@ different clock styles</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to view larger" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="250" translatesAutoresizingMaskIntoConstraints="NO" id="6rS-5S-grs">
-                                <rect key="frame" x="622" y="972" width="250" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="250" id="1b1-K4-431"/>
-                                </constraints>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to view larger" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="748" translatesAutoresizingMaskIntoConstraints="NO" id="6rS-5S-grs">
+                                <rect key="frame" x="10" y="972" width="748" height="20"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jp0-U5-7vV">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="6rS-5S-grs" firstAttribute="centerX" secondItem="s1Z-qu-pXd" secondAttribute="centerX" id="10W-Mh-vZA"/>
                             <constraint firstItem="Jp0-U5-7vV" firstAttribute="leading" secondItem="wZg-tF-q8s" secondAttribute="leading" id="4g5-AT-tM3"/>
                             <constraint firstItem="TKh-px-FyI" firstAttribute="leading" secondItem="0ks-Wf-Yju" secondAttribute="trailing" constant="10" id="4sQ-cK-SML"/>
+                            <constraint firstItem="6rS-5S-grs" firstAttribute="leading" secondItem="wZg-tF-q8s" secondAttribute="leading" constant="10" id="5cX-3Q-QIu"/>
                             <constraint firstItem="mZN-Ao-21g" firstAttribute="leading" secondItem="wZg-tF-q8s" secondAttribute="leading" constant="50" id="A4J-8M-9f0"/>
                             <constraint firstItem="mZN-Ao-21g" firstAttribute="top" secondItem="wZg-tF-q8s" secondAttribute="top" constant="75" id="Hzb-c7-NGS"/>
                             <constraint firstItem="0ks-Wf-Yju" firstAttribute="leading" secondItem="wZg-tF-q8s" secondAttribute="leading" id="JVa-rE-mVy"/>
+                            <constraint firstAttribute="trailing" secondItem="6rS-5S-grs" secondAttribute="trailing" constant="10" id="MCK-dj-H8L"/>
                             <constraint firstAttribute="trailing" secondItem="PNJ-zS-8fw" secondAttribute="trailing" id="Qey-VU-nmD"/>
                             <constraint firstItem="PNJ-zS-8fw" firstAttribute="top" secondItem="mZN-Ao-21g" secondAttribute="top" id="RHs-2A-vij"/>
                             <constraint firstAttribute="bottom" secondItem="Jp0-U5-7vV" secondAttribute="bottom" id="THS-Qz-fCl"/>
                             <constraint firstItem="Jp0-U5-7vV" firstAttribute="top" secondItem="wZg-tF-q8s" secondAttribute="top" id="Vo7-cU-Wwm"/>
-                            <constraint firstItem="6rS-5S-grs" firstAttribute="top" secondItem="s1Z-qu-pXd" secondAttribute="bottom" constant="10" id="VyS-4h-jh1"/>
                             <constraint firstAttribute="trailing" secondItem="TKh-px-FyI" secondAttribute="trailing" id="XJ1-lY-x0Y"/>
                             <constraint firstItem="z2u-hy-Xrw" firstAttribute="top" secondItem="s1Z-qu-pXd" secondAttribute="top" id="Xzm-qZ-0yp"/>
                             <constraint firstAttribute="trailing" secondItem="s1Z-qu-pXd" secondAttribute="trailing" id="bja-Te-02T"/>
                             <constraint firstItem="PNJ-zS-8fw" firstAttribute="leading" secondItem="mZN-Ao-21g" secondAttribute="trailing" constant="10" id="cCk-cO-XT4"/>
                             <constraint firstItem="TKh-px-FyI" firstAttribute="top" secondItem="0ks-Wf-Yju" secondAttribute="top" id="cup-2A-OuW"/>
                             <constraint firstItem="TKh-px-FyI" firstAttribute="top" secondItem="wZg-tF-q8s" secondAttribute="top" constant="265" id="e5h-Ja-oAj"/>
+                            <constraint firstItem="6rS-5S-grs" firstAttribute="top" secondItem="s1Z-qu-pXd" secondAttribute="bottom" constant="10" id="i9i-7d-Qle"/>
                             <constraint firstAttribute="bottom" secondItem="s1Z-qu-pXd" secondAttribute="bottom" constant="62" id="vGR-6B-j18"/>
                             <constraint firstAttribute="trailing" secondItem="Jp0-U5-7vV" secondAttribute="trailing" id="xMJ-Yp-xiH"/>
                             <constraint firstItem="z2u-hy-Xrw" firstAttribute="leading" secondItem="s1Z-qu-pXd" secondAttribute="trailing" id="xPH-x2-Of9"/>

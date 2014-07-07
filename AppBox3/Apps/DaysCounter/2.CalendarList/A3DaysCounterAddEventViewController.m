@@ -141,7 +141,7 @@
         [self configureTableViewDataSourceForEventInfo:_eventItem];
     }
     else {
-        if ( [_sharedManager isSupportLunar] ) {
+        if ( [A3UIDevice shouldSupportLunarCalendar] ) {
             self.sectionTitleArray = [NSMutableArray arrayWithObjects:
                                       // section 0
                                       @{AddEventSectionName : @"", AddEventItems : [NSMutableArray arrayWithObjects:
@@ -404,7 +404,7 @@
 {
     NSMutableArray *section1_Items = [NSMutableArray array];
     
-    if ([_sharedManager isSupportLunar]) {
+    if ([A3UIDevice shouldSupportLunarCalendar]) {
         [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"Lunar", @"Lunar"), EventRowType : @(EventCellType_IsLunar)}];
         if ([info.isLunar boolValue]) {
             [section1_Items addObject:@{ EventRowTitle : NSLocalizedString(@"Leap Month", @"Leap Month"), EventRowType : @(EventCellType_IsLeapMonth)}];

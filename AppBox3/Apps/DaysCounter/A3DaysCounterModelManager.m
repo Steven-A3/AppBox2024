@@ -1128,15 +1128,6 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     }
 }
 
-- (BOOL)isSupportLunar
-{
-    NSString *locale = [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
-    if ( [locale isEqualToString:@"KR"] || [locale isEqualToString:@"CN"] || [locale isEqualToString:@"TW"] || [locale isEqualToString:@"HK"] || [locale isEqualToString:@"MO"] )
-        return YES;
-    
-    return NO;
-}
-
 - (NSString*)dateFormatForPhotoWithIsAllDays:(BOOL)isAllDays
 {
     NSString *retFormat;

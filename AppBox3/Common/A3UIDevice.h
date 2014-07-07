@@ -75,4 +75,6 @@ extern NSString *const A3AnimationIDKeyboardWillShow;
 + (void)verifyAndAlertMicrophoneAvailability;
 
 + (BOOL)shouldUseImageForPrevNextButton;
+
++ (BOOL)shouldSupportLunarCalendar;
 @end

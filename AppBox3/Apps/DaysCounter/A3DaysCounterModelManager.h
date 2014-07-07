@@ -75,7 +75,6 @@
 - (NSString*)stringForSlideshowTransitionType:(NSInteger)type;
 - (void)setupEventSummaryInfo:(DaysCounterEvent*)item toView:(UIView*)toView;
 
-- (BOOL)isSupportLunar;
 + (NSString*)dateFormatForDetailIsAllDays:(BOOL)isAllDays;
 - (NSString*)dateFormatForPhotoWithIsAllDays:(BOOL)isAllDays;
 

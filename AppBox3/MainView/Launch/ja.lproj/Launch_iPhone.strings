@@ -58,7 +58,8 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 /* Class = "IBUILabel"; text = "easy, faster and more focused,
 64Bit and much more"; ObjectID = "ZZQ-VK-PjS"; */
 "ZZQ-VK-PjS.text" = "簡単で、早く、基本に忠実に
-６４ビット支援を含めすばらしい変化";
+６４ビット支援を含め
+すばらしい変化";
 
 /* Class = "IBUILabel"; text = "Expense List"; ObjectID = "c42-0X-ouA"; */
 "c42-0X-ouA.text" = "費用リスト";

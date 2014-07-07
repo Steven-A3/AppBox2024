@@ -15,6 +15,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) MASConstraint *topOffsetConstraint, *leftOffsetConstraint;
+@property (weak, nonatomic) IBOutlet UILabel *lunarLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *lunarImage;
+@property (weak, nonatomic) IBOutlet UIView *lunarLineView;
 
 @end
 
@@ -79,6 +82,12 @@
 		[self.leftButton setTitle:NSLocalizedString(@"Close", @"Close") forState:UIControlStateNormal];
 		[self.rightButton setTitle:NSLocalizedString(@"Continue", @"Continue") forState:UIControlStateNormal];
 		FNLOG(@"%ld", (long)_sceneNumber);
+	}
+	
+	if (self.lunarLabel && ![A3UIDevice shouldSupportLunarCalendar]) {
+		[self.lunarLabel setHidden:YES];
+		[self.lunarImage setHidden:YES];
+		[self.lunarLineView setHidden:YES];
 	}
 }
 

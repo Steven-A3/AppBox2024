@@ -12,10 +12,11 @@
 "5dF-dl-Cfh.text" = "Calculador de préstamo";
 
 /* Class = "IBUILabel"; text = "well designed for both iPhone and iPad"; ObjectID = "73z-Fm-nHB"; */
-"73z-Fm-nHB.text" = "bien diseñada tanto para iPhone y iPad";
+"73z-Fm-nHB.text" = "bien diseñada tanto para
+iPhone y iPad";
 
 /* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7KY-kl-Ksz"; */
-"7KY-kl-Ksz.text" = "Básico / Científico Calculador";
+"7KY-kl-Ksz.text" = "Básico/Científico Calculador";
 
 /* Class = "IBUILabel"; text = "Mirror"; ObjectID = "86S-LG-bmW"; */
 "86S-LG-bmW.text" = "Espejo";
