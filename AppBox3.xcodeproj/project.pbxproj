@@ -913,6 +913,7 @@
 		68F9391A17D0DDBB0082234C /* FMMoveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */; };
 		68F967BF1818D74300D64A0A /* NSArray+validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F967BE1818D74300D64A0A /* NSArray+validation.m */; };
 		8079DFBC190F93B90084BD89 /* A3DateLunarTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8079DFBB190F93B90084BD89 /* A3DateLunarTest.m */; };
+		808DA9EB196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DA9EA196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2652,6 +2653,8 @@
 		68F967BD1818D74300D64A0A /* NSArray+validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+validation.h"; sourceTree = "<group>"; };
 		68F967BE1818D74300D64A0A /* NSArray+validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+validation.m"; sourceTree = "<group>"; };
 		8079DFBB190F93B90084BD89 /* A3DateLunarTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateLunarTest.m; sourceTree = "<group>"; };
+		808DA9E9196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterSlideShowCollectionViewLayout.h; sourceTree = "<group>"; };
+		808DA9EA196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterSlideShowCollectionViewLayout.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -4988,6 +4991,8 @@
 				68F14F2519485E8500159EAD /* A3DaysCounterSlideshowViewController.m */,
 				68F14F2719485E8500159EAD /* A3SlideshowActivity.h */,
 				68F14F2819485E8500159EAD /* A3SlideshowActivity.m */,
+				808DA9E9196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.h */,
+				808DA9EA196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m */,
 			);
 			path = 1.SlideShow;
 			sourceTree = "<group>";
@@ -5740,6 +5745,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68B6A45E18CEE781004084EF /* SDWebImageDecoder.m in Sources */,
+				808DA9EB196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m in Sources */,
 				68CA9B821961AD58002E58DC /* UnitPriceInfo.m in Sources */,
 				68F1C8DB18D7F37D009FAE8A /* A3LineChartView.m in Sources */,
 				682EA2E415EB10B000BD6AD4 /* main.m in Sources */,

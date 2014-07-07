@@ -28,11 +28,11 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "NSDate+formatting.h"
 #import "A3InstructionViewController.h"
-
+#import "A3DaysCounterSlideShowCollectionViewLayout.h"
 
 #define VISIBLE_INDEX_INTERVAL      2
 
-@interface A3DaysCounterSlideShowMainViewController () <A3DaysCounterEventDetailViewControllerDelegate, A3InstructionViewControllerDelegate, UIActivityItemSource>
+@interface A3DaysCounterSlideShowMainViewController () <A3CenterViewDelegate, A3DaysCounterEventDetailViewControllerDelegate, A3InstructionViewControllerDelegate, UIActivityItemSource, UIPopoverControllerDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource,UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (strong, nonatomic) NSArray *eventsArray;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -59,6 +59,7 @@
     return self;
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -83,7 +84,9 @@
     currentIndex = 0;
     [self makeBackButtonEmptyArrow];
 
-	UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
+    
+//	UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
+    A3DaysCounterSlideShowCollectionViewLayout *flowLayout = [A3DaysCounterSlideShowCollectionViewLayout new];
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	flowLayout.itemSize = screenBounds.size;
 	flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -296,15 +299,19 @@
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
+	//UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
+    A3DaysCounterSlideShowCollectionViewLayout *flowLayout = [A3DaysCounterSlideShowCollectionViewLayout new];
 	flowLayout.itemSize = self.view.bounds.size;
+//    flowLayout.itemSize = CGSizeMake(self.view.bounds.size.width - 20, self.view.bounds.size.height);
+    NSLog(@"view Size: %@", NSStringFromCGRect(self.view.bounds));
 	flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
 	flowLayout.minimumInteritemSpacing = 0;
 	flowLayout.minimumLineSpacing = 0;
-	_collectionView.collectionViewLayout = flowLayout;
+    [_collectionView setCollectionViewLayout:flowLayout animated:NO];
     [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
                             atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                     animated:NO];
+
 }
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -661,9 +668,23 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
     FNLOG(@"collectionView: %@", collectionView);
 }
 
+#pragma mark UICollectionViewFlowLayout Delegate
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+//    NSLog(@"cell Size: %@", NSStringFromCGRect(self.view.frame));
+//    return CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame));
+//}
+//
+//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+//    return 500.0;
+//}
+//
+//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+//    return 500.0;
+//}
+
 #pragma mark UIScrollView
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     for (UICollectionViewCell *cell in [self.collectionView visibleCells]) {
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
         currentIndex = indexPath.row;
