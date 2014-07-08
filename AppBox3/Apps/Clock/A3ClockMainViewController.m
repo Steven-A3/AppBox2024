@@ -443,15 +443,22 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
         return;
     }
 
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:(_chooseColorButton.isHidden || !_chooseColorButton) ? A3V3InstructionDidShowForClock1 : A3V3InstructionDidShowForClock2];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:(_chooseColorButton.isHidden || !_chooseColorButton) ? @"Clock1" : @"Clock2"];
     self.instructionViewController.delegate = self;
     [self.navigationController.view addSubview:self.instructionViewController.view];
     self.instructionViewController.view.frame = self.navigationController.view.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+    
+    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1] && ![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
+        self.instructionViewController.disableAnimation = YES;
+    }
+    else {
+        self.instructionViewController.disableAnimation = NO;
+    }
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:(_chooseColorButton.isHidden || !_chooseColorButton) ? A3V3InstructionDidShowForClock1 : A3V3InstructionDidShowForClock2];
+	[[NSUserDefaults standardUserDefaults] synchronize];
  
     [self adjustInstructionFingerPositionForPortrait:IS_PORTRAIT];
 }
@@ -460,6 +467,15 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 {
     [self.instructionViewController.view removeFromSuperview];
     self.instructionViewController = nil;
+    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1]) {
+        [self showMenus:NO];
+        [self showInstructionView];
+    }
+    else if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
+        [self showMenus:YES];
+        [self showInstructionView];
+    }
 }
 
 - (void)adjustInstructionFingerPositionForPortrait:(BOOL)isPortrait
@@ -486,10 +502,18 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
             if (isPortrait) {
                 _instructionViewController.clock1_finger2RightConst.constant = 125;
                 _instructionViewController.clock1_finger3RightConst.constant = 358;
+                UILabel *bottomLabel = (UILabel *)[_instructionViewController.view viewWithTag:13];
+                if (bottomLabel) {
+                    bottomLabel.textAlignment = NSTextAlignmentCenter;
+                }
             }
             else {
                 _instructionViewController.clock1_finger2RightConst.constant = 315;
                 _instructionViewController.clock1_finger3RightConst.constant = 195;
+                UILabel *bottomLabel = (UILabel *)[_instructionViewController.view viewWithTag:13];
+                if (bottomLabel) {
+                    bottomLabel.textAlignment = NSTextAlignmentRight;
+                }
             }
         }
     }

@@ -53,6 +53,11 @@ NSString *const A3StoryboardInstruction_iPad = @"Instruction_iPad";
 - (void)disposeInstructionView
 {
     if ([_delegate respondsToSelector:@selector(dismissInstructionViewController:)]) {
+        if (_disableAnimation) {
+            [_delegate dismissInstructionViewController:self.view];
+            return;
+        }
+
         [UIView animateWithDuration:0.3 animations:^{
             self.view.alpha = 0.0;
         } completion:^(BOOL finished) {

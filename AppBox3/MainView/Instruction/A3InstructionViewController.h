@@ -23,6 +23,7 @@ extern NSString *const StoryBoardID_Calculator;
 @property (weak, nonatomic) id<A3InstructionViewControllerDelegate> delegate;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *childImageViews;
 @property (assign, nonatomic) BOOL isFirstInstruction;
+@property (assign, nonatomic) BOOL disableAnimation;
 - (IBAction)viewTapped:(UITapGestureRecognizer *)sender;
 
 #pragma mark - Clock1 Constraints
