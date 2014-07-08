@@ -1,15 +1,15 @@
 
 /* Class = "IBUISegmentedControl"; 7k9-Yw-aZ1.segmentTitles[0] = "1 Day"; ObjectID = "7k9-Yw-aZ1"; */
-"7k9-Yw-aZ1.segmentTitles[0]" = "1 Day";
+"7k9-Yw-aZ1.segmentTitles[0]" = "1d";
 
 /* Class = "IBUISegmentedControl"; 7k9-Yw-aZ1.segmentTitles[1] = "5 Days"; ObjectID = "7k9-Yw-aZ1"; */
-"7k9-Yw-aZ1.segmentTitles[1]" = "5 Days";
+"7k9-Yw-aZ1.segmentTitles[1]" = "5d";
 
 /* Class = "IBUISegmentedControl"; 7k9-Yw-aZ1.segmentTitles[2] = "1 Month"; ObjectID = "7k9-Yw-aZ1"; */
-"7k9-Yw-aZ1.segmentTitles[2]" = "1 Month";
+"7k9-Yw-aZ1.segmentTitles[2]" = "1m";
 
 /* Class = "IBUISegmentedControl"; 7k9-Yw-aZ1.segmentTitles[3] = "5 Mos"; ObjectID = "7k9-Yw-aZ1"; */
-"7k9-Yw-aZ1.segmentTitles[3]" = "5 Mos";
+"7k9-Yw-aZ1.segmentTitles[3]" = "5m";
 
 /* Class = "IBUISegmentedControl"; 7k9-Yw-aZ1.segmentTitles[4] = "1 Year"; ObjectID = "7k9-Yw-aZ1"; */
-"7k9-Yw-aZ1.segmentTitles[4]" = "1 Year";
+"7k9-Yw-aZ1.segmentTitles[4]" = "1rok";
