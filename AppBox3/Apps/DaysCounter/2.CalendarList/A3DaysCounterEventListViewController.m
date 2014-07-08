@@ -260,6 +260,7 @@
 
         self.itemArray = [self sortedArrayByDateAscending:_isDateAscending];
     }
+    
     [self.tableView reloadData];
     
     _sortTypeSegmentCtrl.enabled = ([_sourceArray count] > 0);
@@ -658,6 +659,8 @@
         
         [_sharedManager removeEvent:item];
 		[self loadEventData];
+        [self.tableView setEditing:YES];
+        [self.tableView setEditing:NO];
     }
 }
 
