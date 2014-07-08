@@ -1358,7 +1358,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a currency conversion with you.", nil)
+		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a conversion with you.", nil)
 									   contents:[self stringForShare]
 										   tail:NSLocalizedString(@"You can convert more currencies in the AppBox Pro.", nil)];
 	}

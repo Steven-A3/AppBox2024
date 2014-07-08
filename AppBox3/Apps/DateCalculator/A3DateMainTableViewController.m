@@ -422,7 +422,7 @@
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a conversion with you.", nil)
+		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a calculation with you.", nil)
 									   contents:[self stringForShareForActivityType:UIActivityTypeMail]
 										   tail:NSLocalizedString(@"You can convert more in the AppBox Pro.", nil)];
 	}
