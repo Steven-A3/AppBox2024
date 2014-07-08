@@ -44,10 +44,11 @@
 
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
-	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
 
-    if( IS_IPHONE )
+    if( IS_IPHONE ) {
         [self rightBarButtonDoneButton];
+    }
     [self makeBackButtonEmptyArrow];
     
     self.itemArray = @[
