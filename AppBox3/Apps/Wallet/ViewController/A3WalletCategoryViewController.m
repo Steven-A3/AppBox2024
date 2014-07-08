@@ -684,7 +684,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
                         NSAssert(result, @"result");
                     }
                     if ([[NSFileManager defaultManager] fileExistsAtPath:[[fieldItem photoImageURLInOriginalDirectory:NO] path]]) {
-                        result = [[NSFileManager defaultManager] removeItemAtPath:[[fieldItem photoImageURLInOriginalDirectory:NO] path] error:NULL];
+                        result = [[NSFileManager defaultManager] removeItemAtURL:[fieldItem photoImageURLInOriginalDirectory:NO] error:NULL];
                         NSAssert(result, @"result");
                     }
                     if ([[NSFileManager defaultManager] fileExistsAtPath:[[fieldItem photoImageURLInOriginalDirectory:YES] path]]) {
@@ -698,6 +698,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
                     }
                     if ([[NSFileManager defaultManager] fileExistsAtPath:[[fieldItem videoFileURLInOriginal:YES] path]]) {
                         result = [[NSFileManager defaultManager] removeItemAtPath:[[fieldItem videoFileURLInOriginal:YES] path] error:NULL];
+                        result = [[NSFileManager defaultManager] removeItemAtURL:[fieldItem videoFileURLInOriginal:YES] error:NULL];
                         NSAssert(result, @"result");
                     }
                 }
