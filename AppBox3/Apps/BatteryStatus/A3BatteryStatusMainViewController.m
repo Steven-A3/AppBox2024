@@ -393,8 +393,8 @@ static NSString *CellIdentifier = @"Cell";
 		long minutes = labs(remainingMinute % 60);
 		if (hours != 0 && minutes != 0) {
 			cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@",
-																   [NSString stringWithFormat:@"%@", NSLocalizedStringFromTable(@"%ld hours", @"StringsDict", nil)],
-																   [NSString stringWithFormat:@"%@", NSLocalizedStringFromTable(@"%ld minutes", @"StringsDict", nil)]];
+																   [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours", @"StringsDict", nil), hours],
+																   [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld minutes", @"StringsDict", nil), minutes]];
 
 		} else if (hours != 0) {
 			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours", @"StringsDict", nil), hours];

@@ -1360,7 +1360,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a conversion with you.", nil)
 									   contents:[self stringForShare]
-										   tail:NSLocalizedString(@"You can convert more currencies in the AppBox Pro.", nil)];
+										   tail:NSLocalizedString(@"You can convert more in the AppBox Pro.", nil)];
 	}
 	else {
         return [[self stringForShare] stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];

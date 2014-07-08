@@ -259,12 +259,12 @@ https://github.com/andrealufino/ALSystemUtilities/blob/develop/ALSystemUtilities
 }
 
 + (BOOL)shouldSupportLunarCalendar {
-	NSLocale *currentLocale = [NSLocale currentLocale];
 	// Language 가 한글 혹은 중국어인 경우
 	NSArray *languageCodes = @[@"ko", @"zh_hans", @"zh_hant"];
-	if ([languageCodes indexOfObject:[currentLocale objectForKey:NSLocaleLanguageCode]] != NSNotFound) return YES;
+	if ([languageCodes indexOfObject:[NSLocale preferredLanguages][0]] != NSNotFound) return YES;
 
-	NSArray *countryCodes = @[@"KO", @"TW", @"CN", @"HK", @"MO", @"SG"];
+	NSLocale *currentLocale = [NSLocale currentLocale];
+	NSArray *countryCodes = @[@"KR", @"TW", @"CN", @"HK", @"MO", @"SG"];
 	return [countryCodes indexOfObject:[currentLocale objectForKey:NSLocaleCountryCode]] != NSNotFound;
 }
 

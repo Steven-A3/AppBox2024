@@ -25,13 +25,13 @@
 
 "Settings" = "設定";
 "Sync" = "同期化";
-"Passcode Lock" = "パスワード";
+"Passcode Lock" = "パスコード";
 "Lunar Calendar" = "旧暦カレンダー";
 
 "tellafriend" = "iPhone/iPod Touchのより便利にご使用の頂くためにミラー、アラーム時計、バッテリー情報、傾斜計、為替、日付計算、記念日、懐中電灯、祝日、ローン計算、自然周期、価格比較、乱数生成、ものさし、割引率計算、システム情報、チップ計算、翻訳機、単位変換、保安電子財布などの応用プログラムがすべて含まれているAppBox Proをお勧め致します。今すぐに下記のアドレスからAppBox Proをダウンロードして下さい。";
 "DISCLAIMER_MESSAGE" = "現在の正確な祝祭日を作成するため多くの努力が必要でしたが、全世界の祝日の多くは、各国政府独自に変更される場合があるので、それに関する祝日エラーや抜けには私達は責任を負い兼ねます。ですから予定を立てる前に各国の大使館や領事館に確認することをお勧め致します。";
 "HOLIDAYS_ACKNOWLEDGEMENT" = "AppBox Proで使われている写真は、世界各国色々な場所の美しく雄大な写真をFlickrから集めて使用しております。写真にはFlickrの名前やリンクがつけられています。写真に関しては、作者に全ての権利があります。ALLABOUTAPPS Inc.は、それらの写真を所有しておりません。もしあなたの写真を参加させたいならメールしてください。送られた写真の使用に関する金銭的な保証はありませんが、あなたの写真で新しい顧客が集まって来ると思います。共有して下さりありがとうございました。";
-"SECURITY_INFO" = "Appleはデータプロテクションと呼ばれる技術を使用してます。これはあなたのデータを256ビットキーとハードウェアAESで守ります。機器パスワードを設定することで、自動にデータ保護ができます。器機UIDのパスワードを混乱させていますのでウィルスからの激しい攻撃から機器を守ります。多くの反復的なカウントは、それぞれの攻撃を遅くさせます。この反復的なカウントは、自動的に80ミリセカンド/回で計算されています。この意味は、6桁の小文字と数字が含まれたアルファベットパスワード場合、すべての組み合わせるのに５年半以上かかります。または、９桁の数字だけのパスワードの場合は、２年半かかります。";
+"SECURITY_INFO" = "Appleはデータプロテクションと呼ばれる技術を使用してます。これはあなたのデータを256ビットキーとハードウェアAESで守ります。機器パスコードを設定することで、自動にデータ保護ができます。器機UIDのパスコードを混乱させていますのでウィルスからの激しい攻撃から機器を守ります。多くの反復的なカウントは、それぞれの攻撃を遅くさせます。この反復的なカウントは、自動的に80ミリセカンド/回で計算されています。この意味は、6桁の小文字と数字が含まれたアルファベットパスコード場合、すべての組み合わせるのに５年半以上かかります。または、９桁の数字だけのパスコードの場合は、２年半かかります。";
 /* AppBox Pro가 마이크로폰에 접근이 제한되어 있어, 소리를 녹음할 수 없습니다. */
 "microphone access denied" = "AppBox Proがマイクへのアクセスがブロックされており、録画時の音を一緒に記録することができません。音を一緒に録画するためには、機器の設定>プライバシー>マイクに行ってAppBox Proとマイクのアクセスを許可してください。";
 
@@ -651,7 +651,7 @@
 "Weight" = "重量";
 
 "Wallet_All_Category" = "カテゴリー全体";
-"Field Type" = "項目形式";
+"Field Type" = "フィールドタイプ";
 "All Items" = "全てのアイテム";
 "CATEGORIES" = "カテゴリー";
 "CATEGORY" = "カテゴリー";
@@ -661,54 +661,54 @@
 "Edit Category" = "カテゴリー編集";
 "Enter category name" = "カテゴリー名を入力してくたさい。";
 "Category Name" = "カテゴリー名";
-"add new field" = "新しい項目の追加";
+"add new field" = "新しいフィールドを追加する";
 "Delete Category" = "カテゴリー削除";
 
 "Category Info" = "カテゴリー情報";
-"Delete Items" = "品目削除";
+"Delete Items" = "項目を削除する";
 
-"Video" = "映像再生";
-"Add Field" = "項目追加";
-"Edit Field" = "項目編集";
-"Field Name" = "項目名";
+"Video" = "ビデオ";
+"Add Field" = "フィールドを追加";
+"Edit Field" = "フィールドを編集";
+"Field Name" = "フィールド名";
 "Type" = "タイプ";
 "Style" = "表示方法";
-"Field Style" = "項目表示方法";
+"Field Style" = "フィールド表示方法";
 "Edit Image" = "イメージ編集";
 "Add Item" = "情報追加";
 "Edit Item" = "情報編集";
 "Note" = "ノート";
-"Delete Video" = "映像削除";
-"Take Video" = "映像撮影";
+"Delete Video" = "ビデオ削除";
+"Take Video" = "ビデオ撮影";
 "Delete Item" = "項目削除";
 "Category" = "カテゴリー";
 "Current %@" = "現在 %@";
 "New Item" = "新しい項目";
-"Details" = "詳しい説明";
+"Details" = "詳細情報";
 "Map" = "地図";
-"Duration Time" = "持続時間";
-"1 Passcode Failed Attempt" = "パスワード入力失敗";
-"Enter your old passcode" = "既存のパスワード入力";
-"Enter your passcode" = "パスワード入力";
-"Passcode" = "パスワード";
-"Set Passcode" = "パスワード設定";
-"Change Passcode" = "パスワード変更";
-"Turn Off Passcode" = "パスワードオフ";
-"Re-enter your passcode" = "パスワード再入力";
-"Re-enter your new passcode" = "新しいパスワード再入力 ";
-"Enter your new passcode" = "新しいパスワード入力";
-"Passcode did not match." = " パスワードが違います。もう一度入力してください。";
-"%i Passcode Failed Attempts" = "%回、パスワード失敗";
-"Enter Passcode" = "パスワード入力";
-"New Passcode" = "新しいパスワード";
-"Confirm Passcode" = "パスワード承認";
+"Duration Time" = "再生時間";
+"1 Passcode Failed Attempt" = "パスコード入力に１回失敗";
+"Enter your old passcode" = "古いパスコード入力";
+"Enter your passcode" = "パスコード入力";
+"Passcode" = "パスコード";
+"Set Passcode" = "パスコードを設定";
+"Change Passcode" = "パスコードを変更";
+"Turn Off Passcode" = "パスコードをオフにする";
+"Re-enter your passcode" = "パスコードを再入力";
+"Re-enter your new passcode" = "新しいパスコードを再入力";
+"Enter your new passcode" = "新しいパスコードを入力";
+"Passcode did not match." = "パスコードが違います。";
+"%i Passcode Failed Attempts" = "パスコード入力に%i回失敗";
+"Enter Passcode" = "パスコードを入力";
+"New Passcode" = "新しいパスコード";
+"Confirm Passcode" = "新しいパスコードを再入力";
 "Hint" = "ヒント";
-"Old Passcode" = "古いパスワード";
-"%li Passcode Failed Attempts" = "%li回、パスワード失敗";
-"Please enter new passcode." = " 新しいパスワードを入力してください。";
-"Please enter confirm passcode." = "パスワードの最終承認をしてください。";
-"Passcode did not match." = "パスワードが一致しません。";
-"Please enter passcode." = "パスワードを入力してください。";
+"Old Passcode" = "古いパスコード";
+"%li Passcode Failed Attempts" = "パスコード入力に%i回失敗";
+"Please enter new passcode." = " 新しいパスコードを入力してください。";
+"Please enter confirm passcode." = "新しいパスコードを再入力してください。";
+"Passcode did not match." = "パスコードが違います。";
+"Please enter passcode." = "パスコードを入力してください。";
 "Open in Safari" = "Safariでオープン";
 
 "A friend has recommended AppBox Pro™ from the iTunes App Store" = "iTunes App Store のAppBox Pro™を推薦いたします。";
@@ -718,33 +718,33 @@
 "Compressing" = "圧縮";
 
 "Uploading" = "アップローディング";
-"Backup file has been uploaded to Dropbox successfully." = "バックアップファイルが Dropbox に確実にアップデートされました。";
+"Backup file has been uploaded to Dropbox successfully." = "バックアップファイルが正常にDropboxにアップロードされています。";
 "Error" = "エラー";
-"Backup process failed to upload backup file to Dropbox." = "Dropbox にバックアップファイルのアップロードが失敗しました。";
-"Please turn iCloud sync off." = "iCloud 同期化シンクを消して下さい。";
+"Backup process failed to upload backup file to Dropbox." = "Dropboxにバックアップファイルのアップロードが失敗しました。";
+"Please turn iCloud sync off." = "iCloud同期化をオフにしてくたさい。";
 "Dropbox" = "Dropbox";
 "You have no backup files stored in Dropbox." = "Dropboxにバックアップファイルがありません。";
 "Last Backup: %@" = "最新バックアップ: %@";
-"Unarchiving" = "Unarchiving";
-"Your data has been restored successfully." = "データが確実に回復しました。";
+"Unarchiving" = "解凍する";
+"Your data has been restored successfully." = "データが正常に回復しました。";
 "Downloading" = "ダウンロード";
-"Are you going to replace existing data with the backup data?" = "現在のデータをバックアップデータに変更しますか？";
+"Are you going to replace existing data with the backup data?" = "バックアップデータで既存のデータを交換しようとします。続行しますか？";
 "Replace" = "交換";
 "Deleting" = "削除中";
-"Unable to delete selected file. Please try it again." = "選択のファイルは削除できません。もう一度行ってください。";
+"Unable to delete selected file. Please try it again." = "選択のファイルは削除できません。";
 
-"Turn Passcode Off" = "パスワードをオフにする";
-"Turn Passcode On" = "パスワードをオンにする";
-"How To Enable Data Protection" = "Data Protectionを使用する方法";
+"Turn Passcode Off" = "パスコードをオフにする";
+"Turn Passcode On" = "パスコードをオンにする";
+"How To Enable Data Protection" = "データ保護を使用する方法";
 "Clear Recent" = "最近記録のクリア";
-"Recent" = "最近";
+"Recent" = "最近記録";
 "Information" = "情報";
 "Move and Scale" = "移動とサイズを変更する";
 
 "CALCULATION" = "計算";
-"DoneButton" = "閉じる";
+"DoneButton" = "完了";
 "Off" = "オフ";
-"Passcode_Off" = "パスワードオフ";
+"Passcode_Off" = "オフ";
 "DaysCounter_All" = "全て";
 
 "LoanCalc_Start Date" = "スタートする日付";

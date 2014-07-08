@@ -423,8 +423,8 @@
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a calculation with you.", nil)
-									   contents:[self stringForShareForActivityType:UIActivityTypeMail]
-										   tail:NSLocalizedString(@"You can convert more in the AppBox Pro.", nil)];
+									   contents:[[self stringForShareForActivityType:UIActivityTypeMail] stringByAppendingString:@"<br/>"]
+										   tail:NSLocalizedString(@"You can calculate more in the AppBox Pro.", nil)];
 	}
 	else {
         NSString *shareString = [self stringForShareForActivityType:nil];
@@ -589,7 +589,7 @@
             [shareString appendString:[NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Result", @"Result"), [A3DateCalcStateManager fullCustomStyleDateStringFromDate:result]]];
         }
     }
-    
+
     return shareString;
 }
 
