@@ -1183,7 +1183,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a calculation with you.", nil)
 									   contents:[self shareStringForMail]
-										   tail:NSLocalizedString(@"You can convert more in the AppBox Pro.", nil)];
+										   tail:NSLocalizedString(@"You can calculate more in the AppBox Pro.", nil)];
 	}
 	else {
         NSString *shareString = [self shareStringForEtc];
