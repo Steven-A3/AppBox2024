@@ -5,32 +5,32 @@
  * Time: 9:34 PM
  */
 
-"Select Currency" = "Select Currency";
+"Select Currency" = "Wybierz walutę";
 "Principal" = "Kapitał";
 "Term" = "Termin";
-"Interest Rate" = "Interest Rate";
-"Frequency" = "Frequency";
-"LadyCalendar_Start Date" = "Start Date";
+"Interest Rate" = "Stopa procentowa";
+"Frequency" = "Częstotliwość";
+"LadyCalendar_Start Date" = "Początek";
 "Notes" = "Notes";
-"One-Time" = "One-Time";
-"Currency" = "Waluta Kraju";
+"One-Time" = "Jeden raz";
+"Currency" = "Waluta";
 
 "iCloud" = "iCloud";
 "None" = "Brak";
 
-"Most Recent" = "Most Recent";
+"Most Recent" = "Ostatnie";
 
 "Korean" = "Koreański";
 "Chinese" = "Chiński";
 
 "Settings" = "Ustawienia";
-"Sync" = "Sync";
+"Sync" = "Synch";
 
 "Passcode Lock" = "Kod blokady";
-"Lunar Calendar" = "Lunar Calendar";
+"Lunar Calendar" = "Kalendarz księżycowy";
 
 /* "Twój przyjaciel przekazuje Ci informację, że Lustro, Budzik, Poziomica, Waluty, Daty, Odliczanie, Napiwki, Jednostki i aplikacje sieciowe (Web Apps)  z AppBox Pro™ są już dostępne na twojego iPhone-a lub iPod-a Touch. Kliknij link poniżej aby ściągnąć AppBox Pro™ ze sklepu iTunes.\n\nhttps://itunes.apple.com/app/id318404385"; */
-"tellafriend" = "Twój przyjaciel przekazuje Ci informację, że Lustro, Budzik, Poziomica, Waluty, Daty, Odliczanie, Napiwki, Jednostki i aplikacje sieciowe (Web Apps)  z AppBox Pro™ są już dostępne na twojego iPhone-a lub iPod-a Touch. Kliknij link poniżej aby ściągnąć AppBox Pro™ ze sklepu iTunes.\n\nhttps://itunes.apple.com/app/id318404385";
+"tellafriend" = "Twój przyjaciel przekazuje Ci informację, że Lustro, Budzik, Poziomica, Waluty, Daty, Odliczanie, Napiwki, Jednostki i aplikacje sieciowe (Web Apps)  z AppBox Pro™ są już dostępne na twojego iPhone-a lub iPod-a Touch. Kliknij link poniżej aby ściągnąć AppBox Pro™ ze sklepu iTunes.";
 
 /* "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case."; */
 "DISCLAIMER_MESSAGE" = "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case.";
@@ -42,501 +42,503 @@
 "SECURITY_INFO" = "Apple uses a technology called Data Protection. It encrypts your data with secure 256-bit key and hardware AES Engine. By setting up a device passcode, you automatically enables Data Protection.\nThe passcode is \"tangled\" with the device's UID, so brute-force attempts must be performed on the device under attack. A large iteration count is used to make each attempt slower. The iteration count is calibrated so that one attempt takes approximately 80 milliseconds. This means it would take more than 5½ years to try all combinations of a six-character alphanumeric passcode with lowercase letters and numbers, or 2½ years for a nine-digit passcode with numbers only.";
 
 /* "AppBox Pro does not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro"; */
-"microphone access denied" = "AppBox Pro does not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro";
+"microphone access denied" = "AppBox Pro nie ma dostępu do mikrofonu. \nAby włączyć dostęp, przejdź do Ustawienia > Prywatność > Mikrofon > AppBox Pro";
 
-"Theme Color" = "Theme Color";
+"Theme Color" = "Kolor tematu";
 
-"About" = "About";
-"Remaining Time" = "Remaining Time";
+"About" = "O Aplikacji";
+"Remaining Time" = "Pozostały czas";
 
-"Battery Status" = "Bateria";
-"Calculator" = "Calculator";
+"Battery Status" = "Status baterii";
+"Calculator" = "Kalkulator";
 "Date Calculator" = "Daty";
 "Loan Calculator" = "Pożyczki";
-"Sales Calculator" = "Obniżka";
-"Tip Calculator" = "Napiwek";
+"Sales Calculator" = "Obniżki";
+"Tip Calculator" = "Napiwki";
 "Unit Price" = "Cena jednostkowa";
-"Percent Calculator" = "Percent Calculator";
-"Currency Converter" = "Kursy walut";
-"Lunar Converter" = "Lunar Converter";
+"Percent Calculator" = "Kalkulator procentowy";
+"Currency Converter" = "Przelicznik walut";
+"Lunar Converter" = "Konwerter księżycowy";
 "Translator" = "Tłumacz";
-"Unit Converter" = "Konwerter";
-"Days Counter" = "Days Counter";
-"Ladies Calendar" = "Ladies Calendar";
+"Unit Converter" = "Konwerter jednostek";
+"Days Counter" = "Odliczacz dni";
+"Lady Calendar" = "Kalendarz kobiecy";
 "Wallet" = "Portfel";
-"Expense List" = "Expense List";
+"Expense List" = "Lista wydatków";
 "Holidays" = "Dni wolne";
-"Clock" = "Clock";
+"Clock" = "Zegar";
 "Mirror" = "Lustro";
-"Magnifier" = "Magnifier";
+"Magnifier" = "Lupa";
 "Favorites" = "Ulubione";
 
-"Last %ld" = "Last %ld";
+"Last %ld" = "Ostatnie %ld";
 
-"Apps" = "Apps";
+"Apps" = "Aplikacje";
 /* "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature."; */
-"iCloud_goto_settings" = "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.";
+"iCloud_goto_settings" = "Przejdź do Ustawień urządzenia. Włącz iCloud i Dokumenty oraz Dane aplikacji aby uzyskać dostęp do tych funkcji.";
 
-"Info" = "Informacja";
+"Info" = "Informacje";
 "Cancel" = "Anuluj";
-"Delete Photo" = "Delete Photo";
+"Delete Photo" = "Usuń zdjęcie";
 "Take Photo" = "Zrób zdjęcie";
-"Choose Existing" = "Rolka z aparatu";
-"Choose and Resize" = "Wybierać i zmieniać";
+"Choose Existing" = "Wybierz istniejące";
+"Choose and Resize" = "Wybierz i przytnij";
 
-"Enabling iCloud" = "Enabling iCloud";
-"Disabling iCloud" = "Disabling iCloud";
+"Enabling iCloud" = "Włączanie iCloud";
+"Disabling iCloud" = "Wyłączanie iCloud";
 
-"iCloud Enabled" = "iCloud Enabled";
-"Syncing in background" = "Syncing in background";
-"iCloud Disabled" = "iCloud Disabled";
-"Local Store Problem" = "Local Store Problem";
-"Your datastore got corrupted and needs to be recreated." = "Your datastore got corrupted and needs to be recreated.";
-"Recreate" = "Recreate";
+"iCloud Enabled" = "iCloud włączone";
+"Syncing in background" = "Synchonizacja w tle";
+"iCloud Disabled" = "iCloud wyłączone";
+"Local Store Problem" = "Problem lokalnego magazynu";
+"Your datastore got corrupted and needs to be recreated." = "Baza danych została uszkodzona, musi być stworzona na nowo.";
+"Recreate" = "Stwórz ponownie";
 
-"Converter" = "Converter";
-"Productivity" = "Productivity";
-"Reference" = "Reference";
-"Utility" = "Utility";
+"Converter" = "Konwerter";
+"Productivity" = "Produktywność";
+"Reference" = "Odniesienia";
+"Utility" = "Narzędzia";
 "OK" = "OK";
-"Device" = "Device";
+"Device" = "Urządzenie";
 "Version" = "Wersja";
-"Chips" = "Chips";
+"Chips" = "Chipset";
 "CPU" = "CPU";
 "GPU" = "GPU";
 "Memory" = "PAMIĘĆ";
-"Capacity" = "Capacity";
+"Capacity" = "Pojemność";
 
-"How to Maximize Power Use" = "How to Maximize Power Use";
-"More Information about Batteries" = "More Information about Batteries";
+"How to Maximize Power Use" = "Jak zwiększyć ilość energii";
+"More Information about Batteries" = "Więcej informacji na temat baterii";
 
-"Enter The Number!" = "Enter The Number!";
+"Enter The Number!" = "Wpisz numer!";
 
-"History" = "History";
-"Clear" = "Usunąć";
-"Clear History" = "Clear History";
+"History" = "Historia";
+"Clear" = "Wyczyść";
+"Clear History" = "Wyczyść historię";
 
-"Basic / Scientific" = "Basic / Scientific";
-"Scientific" = "Scientific";
-"Basic" = "Basic";
-"Calculator using AppBox Pro" = "Calculator using AppBox Pro";
+"Basic / Scientific" = "Prosty / Naukowy";
+"Scientific" = "Naukowy";
+"Basic" = "Prosty";
+"Calculator using AppBox Pro" = "Kalulator używa AppBox Pro";
 
-"Humidity" = "Humidity";
-"High" = "High";
-"Low" = "Low";
+"CHOOSE COLOR" = "WYBIERZ KOLOR";
 
-"TIME" = "TIME";
-"DATE" = "DATE";
-"WEATHER" = "WEATHER";
-"The time with seconds" = "The time with seconds";
-"Flash the time separators" = "Flash the time separators";
-"Use a 24-hour clock" = "Use a 24-hour clock";
-"Show AM/PM" = "Show AM/PM";
-"Show the day of the week" = "Show the day of the week";
-"Show date" = "Show date";
-"Show Weather" = "Show Weather";
+"Humidity" = "Wilgotność";
+"High" = "Wysoki";
+"Low" = "Niski";
 
-"Weather" = "Weather";
+"TIME" = "GODZINA";
+"DATE" = "DATA";
+"WEATHER" = "POGODA";
+"The time with seconds" = "Godzina z sekundami";
+"Flash the time separators" = "Migający separator";
+"Use a 24-hour clock" = "Używaj trybu 24h";
+"Show AM/PM" = "Pokaż AM/PM";
+"Show the day of the week" = "Pokaż dzień tygodnia";
+"Show date" = "Pokaż datę";
+"Show Weather" = "Pokaż pogodę";
 
-"%@, Rate = %0.4f" = "%@, Rate = %0.4f";
-"Each history keeps max 4 currencies." = "Each history keeps max 4 currencies.";
+"Weather" = "Pogoda";
 
-"%@ to %@ = %.4f" = "%@ to %@ = %.4f";
-"Auto Update" = "Auto Update";
-"Show National Flag" = "Show National Flag";
-"Use Cellular Data" = "Use Cellular Data";
-"Swap" = "Swap";
-"Chart" = "Chart";
-"Share" = "Share";
+"%@, Rate = %0.4f" = "%@, stawka = %0.4f";
+"Each history keeps max 4 currencies." = "Historia przechowuje maksymalnie 4 waluty.";
+
+"%@ to %@ = %.4f" = "%@ do %@ = %.4f";
+"Auto Update" = "Aktualizacja automatyczna";
+"Show National Flag" = "Pokaż flagi kraju";
+"Use Cellular Data" = "Używaj danych komórkowych";
+"Swap" = "Zamiana";
+"Chart" = "Wykres";
+"Share" = "Udostępnij";
 "Delete" = "Usuń";
 
-"Updating" = "Updating";
-"Updated %@" = "Updated %@";
-"%@Rate = %0.4f" = "%@Rate = %0.4f";
-"Rate = %0.4f" = "Rate = %0.4f";
+"Updating" = "Aktualizacja";
+"Updated %@" = "Zaktualizowano %@";
+"%@Rate = %0.4f" = "%@Stawka = %0.4f";
+"Rate = %0.4f" = "Stawka = %0.4f";
 
-"Currency Converter in the AppBox Pro" = "Currency Converter in the AppBox Pro";
-"Share Currency Converter Data" = "Share Currency Converter Data";
+"Currency Converter in the AppBox Pro" = "Konwerter Walut w  AppBox Pro";
+"Share Currency Converter Data" = "Udostępnij dane Konwertera Walut";
 
 /* Data Calc duration */
-"Year" = "Year";
-"Month" = "Month";
-"Week" = "Week";
+"Year" = "Rok";
+"Month" = "Miesiąc";
+"Week" = "Tydzień";
 "Day" = "Dzień";
 "Duration" = "Czas trwania";
-"Edit Event" = "Edycja wydarzenia";
-"ADVANCED" = "ADVANCED";
+"Edit Event" = "Edytuj wydarzenie";
+"ADVANCED" = "ZAAWANSOWANE";
 
-"Saturday" = "Saturday";
-"Sunday" = "Sunday";
+"Saturday" = "Sobota";
+"Sunday" = "Niedziela";
 
 "%ldy" = "%ldy";
 "%ldm" = "%ldm";
 "%ldw" = "%ldw";
 "%ldd" = "%ldd";
 
-"0 day" = "0 day";
+"0 day" = "0 dni";
 
-"To show results, need one option." = "To show results, need one option.";
-"Years" = "Years";
-"Months" = "Months";
-"Weeks" = "Weeks";
+"To show results, need one option." = "Aby pokazać wyniki, wybierz jedną opcje.";
+"Years" = "Lat";
+"Months" = "Miesięcy";
+"Weeks" = "Tygodni";
 "Days" = "Dni";
-"Weekends" = "W dni weekendowe";
-"Sat" = "Sat";
-"Sun" = "Sun";
-"Public Holidays" = "Public Holidays";
-"Today  " = "Today  ";
+"Weekends" = "Weekendy";
+"Sat" = "Sob";
+"Sun" = "Nie";
+"Public Holidays" = "Dni wolne";
+"Today  " = "Dzisiaj  ";
 
-"Date Calculator using AppBox Pro" = "Date Calculator using AppBox Pro";
+"Date Calculator using AppBox Pro" = "Kalulator Dat używa AppBox Pro";
 
-"Between two dates" = "Between two dates";
-"Add or Subtract days" = "Add or Subtract days";
+"Between two dates" = "Pomiędzy dwoma datami";
+"Add or Subtract days" = "Dodaj lub odejmij dni";
 "From" = "Od";
 "To" = "Do";
-"Exclude" = "Exclude";
+"Exclude" = "Wyłącz";
 
-"%ld of %ld" = "%ld of %ld";
-"%@ using AppBox Pro" = "%@ using AppBox Pro";
-"Share Days Counter Data" = "Share Days Counter Data";
-"Slideshow Options" = "Slideshow Options";
-"Transitions" = "Transitions";
-"Play Each Slide For" = "Play Each Slide For";
+"%ld of %ld" = "%ld z %ld";
+"%@ using AppBox Pro" = "%@ używa AppBox Pro";
+"Share Days Counter Data" = "Udostępnij dane Odliczania";
+"Slideshow Options" = "Opcje pokazu";
+"Transitions" = "Przejścia";
+"Play Each Slide For" = "Odtwarzaj każdy slajd przez";
 "Repeat" = "Powtórz";
-"Shuffle" = "Shuffle";
-"Start Slideshow" = "Start Slideshow";
-"There is no events." = "There is no events.";
+"Shuffle" = "Wymieszaj";
+"Start Slideshow" = "Uruchom pokaz";
+"There is no events." = "Brak wydarzenia.";
 
-"Slideshow" = "Slideshow";
-"Edit Calendar" = "Edit Calendar";
-"Add Calendar" = "Add Calendar";
-"COLOR" = "COLOR";
-"Calendar Name" = "Calendar Name";
-"Delete Calendar" = "Delete Calendar";
-"Untitled" = "Untitled";
+"Slideshow" = "Pokaz slajdów";
+"Edit Calendar" = "Edytuj kalendarz";
+"Add Calendar" = "Dodaj kalendarz";
+"COLOR" = "KOLOR";
+"Calendar Name" = "Nazwa kalendarza";
+"Delete Calendar" = "Usuń kalendarz";
+"Untitled" = "Beznazwy";
 
 "Add Event" = "Dodaj Wydarzenie";
 "Title" = "Nazwa";
 "Photo" = "Zdjęcie";
 "Lunar" = "Księżyc";
-"Starts-Ends" = "Starts-Ends";
+"Starts-Ends" = "Start-Koniec";
 "Starts" = "Początek";
 "All-day" = "Całodzienne";
 
 "Leap Month" = "Leap Month";
 "Ends" = "Koniec";
-"End Repeat" = "End Repeat";
-"Alert" = "Alert";
+"End Repeat" = "Koniec powtarzania";
+"Alert" = "Alarm";
 "Calendar" = "Kalendarz";
-"Duration Option" = "Duration Option";
-"Location" = "Location";
-"Delete Event" = "Delete Event";
+"Duration Option" = "Opcje trwania";
+"Location" = "Miejsce";
+"Delete Event" = "Usuń wydarzenie";
 "Date" = "Data";
-"Delete Location" = "Delete Location";
-"Use My Location" = "Use My Location";
-"Search Location" = "Search Location";
-"Please enter the end date." = "Please enter the end date.";
-"Cannot Save Event\nThe start date must be before the end date." = "Cannot Save Event\nThe start date must be before the end date.";
-"Start date is not a lunar date." = "Start date is not a lunar date.";
-"End date is not a lunar date." = "End date is not a lunar date.";
-"It's not a Lunar Date" = "It's not a Lunar Date";
+"Delete Location" = "Usuń położenie";
+"Use My Location" = "Użyj moje położenie";
+"Search Location" = "Znajdź położenie";
+"Please enter the end date." = "Wpisz datę końcową.";
+"Cannot Save Event\nThe start date must be before the end date." = "Błąd podczas zapisu wydarzenia\nData początku musi być przed datą końca.";
+"Start date is not a lunar date." = "Data początku nie jest datą księżycową.";
+"End date is not a lunar date." = "Data zakończenia nie jest datą księżycową.";
+"It's not a Lunar Date" = "To nie jest data księżycowa";
 
-"Cannot find current location information" = "Cannot find current location information";
+"Cannot find current location information" = "Nie mogę znaleźć akutalnego położenia";
 
-"EVENTS" = "EVENTS";
-"EVENT" = "EVENT";
+"EVENTS" = "WYDARZENIA";
+"EVENT" = "WYDARZENIE";
 
-"Today" = "Today";
-"Now" = "Now";
-"DaysCounter_from" = "From";
-"DaysCounter_to" = "To";
+"Today" = "Dzisaj";
+"Now" = "Teraz";
+"DaysCounter_from" = "Od";
+"DaysCounter_to" = "Do";
 
-"Edit Calendars" = "Edit Calendars";
+"Edit Calendars" = "Edytuj kalendarze";
 
-"Move these events to a new calendar." = "Move these events to a new calendar.";
-"Please select calendar." = "Please select calendar.";
+"Move these events to a new calendar." = "Przesuń te wydarzenia do nowego kalendarza.";
+"Please select calendar." = "Wybierz kalendarz.";
 "Phone" = "Telefon";
-"Address" = "Address";
-"Event Details" = "Event Details";
+"Address" = "Adres";
+"Event Details" = "Szczegóły wydarzenia";
 
-"Share Event" = "Share Event";
-"No location" = "No location";
-"Remove from Favorites" = "Remove from Favorites";
+"Share Event" = "Udostępnij wydarzenie";
+"No location" = "Brak położenia";
+"Remove from Favorites" = "Usuń w ulubionych";
 "Add to Favorites" = "Dodaj do ulubionych";
-"from %@" = "from %@";
-"to %@" = "to %@";
-"repeats %@" = "repeats %@";
-"first date" = "first date";
+"from %@" = "od %@";
+"to %@" = "do %@";
+"repeats %@" = "powtarzaj %@";
+"first date" = "pierwsza data";
 
-"Delete All" = "Delete All";
-"Delete Events" = "Delete Events";
-"Please select events." = "Please select events.";
+"Delete All" = "Usuń wszystko";
+"Delete Events" = "Usuń wydarzenia";
+"Please select events." = "Wybierz wydarzenia.";
 
-"Events" = "Events";
+"Events" = "Wydarzenia";
 
-"Reminder" = "Reminder";
+"Reminder" = "Przypomnienie";
 
-"List_Upcoming" = "Upcoming";
-"List_Past" = "Past";
-"Anniversary" = "Anniversary";
-"Appointment" = "Appointment";
-"Birthday" = "Birthday";
-"Journey" = "Journey";
-"Holiday" = "Holiday";
-"Work" = "Work";
+"List_Upcoming" = "Nadchodzące";
+"List_Past" = "Przeszłe";
+"Anniversary" = "Rocznica";
+"Appointment" = "Spotkanie";
+"Birthday" = "Urodziny";
+"Journey" = "Podróż";
+"Holiday" = "Dni wolne";
+"Work" = "Praca";
 
 "Never" = "Nigdy";
 "Every Day" = "Codziennie";
 "Every Week" = "Co tydzień";
-"Every 2Weeks" = "Every 2Weeks";
+"Every 2Weeks" = "Co 2 tygodnie";
 "Every Month" = "Co miesiąc";
 "Every Year" = "Co rok";
-"Daily" = "Daily";
-"Weekly" = "Weekly";
-"Bi-Weekly" = "Bi-weekly";
-"Monthly" = "Monthly";
-"Yearly" = "Yearly";
+"Daily" = "Codziennie";
+"Weekly" = "Tygodniowo";
+"Bi-Weekly" = "Co 2 tygodnie";
+"Monthly" = "Miesięcznie";
+"Yearly" = "Rocznie";
 
-"At time of event" = "At time of event";
-"5 minutes before" = "5 minutes before";
-"15 minutes before" = "15 minutes before";
-"30 minutes before" = "30 minutes before";
+"At time of event" = "W chwili wydarzenia";
+"5 minutes before" = "5 minut wcześniej";
+"15 minutes before" = "15 minut wcześniej";
+"30 minutes before" = "30 minut wcześniej";
 "1 hour before" = "1 godzinę przed";
-"2 hours before" = "2 hours before";
+"2 hours before" = "2 godziny przed";
 "1 day before" = "1 dzień przed";
-"2 days before" = "2 days before";
-"1 week before" = "1 week before";
+"2 days before" = "2 dni przed";
+"1 week before" = "1 tydzień przed";
 
-"DaysCounterDuration_year_abbreviation" = "y";
+"DaysCounterDuration_year_abbreviation" = "r";
 "DaysCounterDuration_month_abbreviation" = "m";
-"DaysCounterDuration_week_abbreviation" = "w";
+"DaysCounterDuration_week_abbreviation" = "t";
 "DaysCounterDuration_day_abbreviation" = "d";
-"DaysCounterDuration_hour_abbreviation" = "hr";
+"DaysCounterDuration_hour_abbreviation" = "h";
 "Hours" = "Godzin";
 "DaysCounterDuration_minute_abbreviation" = "min";
-"Minutes" = "Minutes";
+"Minutes" = "Minut";
 
-"%ld y" = "%ld y";
+"%ld y" = "%ld r";
 "%ld m" = "%ld m";
-"%ld w" = "%ld w";
+"%ld w" = "%ld t";
 "%ld d" = "%ld d";
-"%ld hr" = "%ld hr";
+"%ld hr" = "%ld g";
 "%ld min" = "%ld min";
-"Cube" = "Cube";
+"Cube" = "Kostka";
 "Dissolve" = "Dissolve";
 "Origami" = "Origami";
 "Ripple" = "Ripple";
 "Wipe" = "Wipe";
 
-"Change Location" = "Change Location";
-"Current Location" = "Current Location";
-"Searching" = "Searching";
-"No Results Found" = "No Results Found";
-"Custom" = "W dniu";
-"day(s) before" = "day(s) before";
-"Please enter your dates in the future." = "Prosimy wprowadzić daty w przyszłości.";
+"Change Location" = "Zmień położenie";
+"Current Location" = "Aktualne położenie";
+"Searching" = "Wyszukiwanie";
+"No Results Found" = "Brak wyników";
+"Custom" = "Nieokreślone";
+"day(s) before" = "dni przed";
+"Please enter your dates in the future." = "Wprowadź przyszłą datę.";
 "Time" = "Godzina";
-"Duration Options" = "Duration Options";
+"Duration Options" = "Opcje trwania";
 
-"Until" = "Until";
-"until" = "until";
-"Since" = "Since";
-"since" = "since";
+"Until" = "Od";
+"until" = "od";
+"Since" = "Od";
+"since" = "od";
 
-"2 years" = "2 years";
-"3 months" = "3 months";
-"4 weeks" = "4 weeks";
-"15 days" = "15 days";
-"4 hours" = "4 hours";
-"30 minutes" = "30 minutes";
-"13 seconds" = "13 seconds";
+"2 years" = "2 lat";
+"3 months" = "3 miesięcy";
+"4 weeks" = "4 tygodni";
+"15 days" = "15 dni";
+"4 hours" = "4 godzin";
+"30 minutes" = "30 minut";
+"13 seconds" = "13 sekund";
 
-"Places are not available." = "Places are not available.";
+"Places are not available." = "Miejsce nie jest dostępne.";
 
-"Loading locations...." = "Loading locations....";
+"Loading locations...." = "Wczytywanie położeń....";
 
-"Add this place?" = "Add this place?";
-"We Couldn't find that" = "We Couldn't find that";
+"Add this place?" = "Dodać to miejsce?";
+"We Couldn't find that" = "Nie znaleziono";
 
 /* Add new place with name like "Create new place" */
-"Create" = "Create";
+"Create" = "Stwórz";
 
-"Location information is not available." = "Location information is not available.";
+"Location information is not available." = "Informacje o położeniu są niedostępne.";
 
-"Every 2 Weeks" = "Co dwa tygodnie";
-"Undo" = "Undo";
-"Redo" = "Redo";
-"Prev" = "Prev";
-"Next" = "Next";
-"Add Budget" = "Add Budget";
-"Edit Budget" = "Edit Budget";
-"Budget" = "Budget";
-"Categories" = "Categories";
-"Payment Type" = "Payment Type";
+"Every 2 Weeks" = "Co 2 tygodnie";
+"Undo" = "Cofnij";
+"Redo" = "Ponów";
+"Prev" = "Poprzedni";
+"Next" = "Następny";
+"Add Budget" = "Dodaj budżet";
+"Edit Budget" = "Edytuj budżet";
+"Budget" = "Budżet";
+"Categories" = "Kategorie";
+"Payment Type" = "Typ płatności";
 
-"Food" = "Food";
-"Personal" = "Personal";
-"Pets" = "Pets";
-"School" = "School";
-"Service" = "Service";
-"Shopping" = "Shopping";
-"Transportation" = "Transportation";
-"Travel" = "Travel";
-"Utilities" = "Utilities";
-"Uncategorized" = "Uncategorized";
+"Food" = "Jedzenie";
+"Personal" = "Osobiste";
+"Pets" = "Zwierzęta";
+"School" = "Szkoła";
+"Service" = "Naprawy";
+"Shopping" = "Zakupy";
+"Transportation" = "Transport";
+"Travel" = "Podróże";
+"Utilities" = "Narzędzia";
+"Uncategorized" = "Bezkategorii";
 
 /* Expense List */
-"Cash" = "Cash";
-"Check" = "Check";
-"Credit" = "Credit";
-"Debit Card" = "Debit Card";
-"Gift Card" = "Gift Card";
+"Cash" = "Gotówka";
+"Check" = "Czek";
+"Credit" = "Kredyt";
+"Debit Card" = "Karta debetowa";
+"Gift Card" = "Karta podarunkowa";
 
-"ITEM" = "ITEM";
-"PRICE" = "PRICE";
-"QTY" = "QTY";
-"SUBTOTAL" = "SUBTOTAL";
-"QUANTITY" = "QUANTITY";
+"ITEM" = "POZYCJA";
+"PRICE" = "CENA";
+"QTY" = "WLK";
+"SUBTOTAL" = "RAZEM";
+"QUANTITY" = "WIELKOŚĆ";
 
-" over of " = " over of ";
-" left of " = " left of ";
+" over of " = " na z ";
+" left of " = " z ";
 
 "Done" = "Gotowe";
-"Add Holidays to \"Days Counter\" app" = "Add Holidays to \"Days Counter\" app";
+"Add Holidays to \"Days Counter\" app" = "Dodaj dni wolne do \"Odliczania\"";
 
 /* Public Holiday */
-"Public" = "Public";
+"Public" = "Publiczne";
 "Holiday_Public_holiday_abbreviation" = "P";
 
-"Search" = "Search";
-"Select Country" = "Select Country";
-"To add a new country, remove one first." = "To add a new country, remove one first.";
+"Search" = "Szukaj";
+"Select Country" = "Wybierz kraj";
+"To add a new country, remove one first." = "Aby dodać nowy kraj, usuń najpierw jakiś rekord.";
 
-"Acknowledgement" = "Acknowledgement";
-"Upcoming" = "Upcoming";
-"Past" = "Past";
-"Holidays for the year %lu is not available." = "Holidays for the year %lu is not available.";
-"Disclaimer" = "Disclaimer";
+"Acknowledgement" = "Podziękowanie";
+"Upcoming" = "Nadchodzące";
+"Past" = "Przeszłe";
+"Holidays for the year %lu is not available." = "Dni dolne dla roku %lu nie są dostępne.";
+"Disclaimer" = "Wykluczenia";
 "I Agree" = "Zgadzam się";
-"on flickr" = "on flickr";
-" by %@" = " by %@";
+"on flickr" = "na flickr";
+" by %@" = " przez %@";
 
 "Edit" = "Edycja";
-"Average" = "Average";
-"Avg." = "Avg.";
-"Edit Accounts" = "Edit Accounts";
-"Edit Account" = "Edit Account";
-"Add Account" = "Add Account";
+"Average" = "Średnia";
+"Avg." = "Śre.";
+"Edit Accounts" = "Edytuj konta";
+"Edit Account" = "Edytuj konto";
+"Add Account" = "Dodaj konto";
 "Name" = "Nazwa";
-"Delete Account" = "Delete Account";
-"Optional" = "Optional";
-"Cannot remove current account." = "Cannot remove current account.";
-" Same name already exists. " = " Same name already exists. ";
-"User" = "User";
+"Delete Account" = "Usuń konto";
+"Optional" = "Dodatkowe";
+"Cannot remove current account." = "Nie można usunąć obecnego konta.";
+" Same name already exists. " = " Istnieje już konto o takiej nazwie. ";
+"User" = "Użytkownik";
 
 "Edit Period" = "Edytuj okres";
 "Add Period" = "Dodaj okres";
 "End Date" = "Koniec";
 "Cycle Length" = "Długość cyklu";
-"Delete Period" = "Delete Period";
-"Please input end date." = "Please input end date.";
-"Cannot Save Period.\nThe start date must be before the end date." = "Cannot Save Period.\nThe start date must be before the end date.";
-"The new date you entered overlaps with previous dates." = "Nowa data pokrywa się z poprzednią.";
-"6 Mos" = "6 Mos";
-"6 Months" = "6 Months";
-"9 Mos" = "9 Mos";
-"9 Months" = "9 Months";
-"1 Year" = "1 Year";
-"2 Years" = "2 Years";
-"CYCLE LENGTH" = "CYCLE LENGTH";
-"MENSTRUAL PERIOD" = "MENSTRUAL PERIOD";
-"Expected Period(+/-2 days)" = "Expected Period(+/-2 days)";
+"Delete Period" = "Usuń okres";
+"Please input end date." = "Wpisz datę zakończenia.";
+"Cannot Save Period.\nThe start date must be before the end date." = "Błąd zapisu okresu.\nData rozpoczęcia musi być przed datą zakończenia.";
+"The new date you entered overlaps with previous dates." = "Wpisana data pokrywa się z poprzednią.";
+"6 Mos" = "6 Mie";
+"6 Months" = "6 miesięcy";
+"9 Mos" = "9 Mie";
+"9 Months" = "9 miesięcy";
+"1 Year" = "1 rok";
+"2 Years" = "2 lata";
+"CYCLE LENGTH" = "DŁUGOŚĆ CYKLU";
+"MENSTRUAL PERIOD" = " MIESIĄCZKI";
+"Expected Period(+/-2 days)" = "Spodziwany okres (+/-2 dni)";
 "Increased Probability of Pregnancy" = "Zwiększone prawdopodobieństwo ciąży";
 "Ovulation - Highest Probability" = "Owulacja – Wysokie prawdopodobieństwo";
 "Menstrual Period" = "Miesiączka";
-"Periods" = "Periods";
-"On day(9 AM)" = "On day(9 AM)";
-"1 day before(9 AM)" = "1 day before(9 AM)";
-"2 days before(9 AM)" = "2 days before(9 AM)";
-"Your period is coming." = "Your period is coming.";
-"FORECASTING PERIODS" = "FORECASTING PERIODS";
+"Periods" = "Okresy";
+"On day(9 AM)" = "Rano (9 AM)";
+"1 day before(9 AM)" = "1 dzień wcześniej (9 AM)";
+"2 days before(9 AM)" = "2 dni wcześniej (9 AM)";
+"Your period is coming." = "Zbliża się twój okres.";
+"FORECASTING PERIODS" = "PROGNOZOWANE OKRESY";
 
-"CALCULATE CYCLE LENGTH" = "CALCULATE CYCLE LENGTH";
-"Same Before Cycle" = "Same Before Cycle";
-"Average Before Two Cycle" = "Average Before Two Cycle";
-"Average All Cycle" = "Average All Cycle";
-"Automatically save period after estimated starting date." = "Automatically save period after estimated starting date.";
-"Auto Record" = "Auto Record";
-"Notify about estimated next starting date." = "Notify about estimated next starting date.";
-"FORECASTING %@ PERIODS" = "FORECASTING %@ PERIODS";
+"CALCULATE CYCLE LENGTH" = "WYLICZ DŁUGOŚĆ CYKLU";
+"Same Before Cycle" = "Taki sam jak poprzednio";
+"Average Before Two Cycle" = "Średnia przez ostatnie 2 cykle";
+"Average All Cycle" = "Średnia wszystkich cykli";
+"Automatically save period after estimated starting date." = "Zapisz automatycznie okres po spodziewanej dacie startu.";
+"Auto Record" = "Automatyczny wpis";
+"Notify about estimated next starting date." = "Powiadom o spodziewanej następnej dacie rozpoczęcia.";
+"FORECASTING %@ PERIODS" = "PROGNOZOWANE %@ OKRESY";
 
-"Date, Principal, Payment, Interest, Balance" = "Date, Principal, Payment, Interest, Balance";
-"Annual" = "Annual";
-"Monthly_Rate" = "Monthly";
+"Date, Principal, Payment, Interest, Balance" = "Data, Zleceniodawca, Płatność, Odsetki, Bilans";
+"Annual" = "Rocznie";
+"Monthly_Rate" = "Miesięcznie";
 
-"Down Payment" = "Down Payment";
+"Down Payment" = "Zadatek";
 "Payment" = "Rata";
-"Term(years)" = "Term(years)";
+"Term(years)" = "Termin(lata)";
 "Term(months)" = "Termin(miesiące)";
-"Biweekly" = "Biweekly";
-"LoanCalc_Monthly" = "Monthly";
-"Bimonthly" = "Bimonthly";
-"Quarterly" = "Quarterly";
-"Semiannually" = "Semiannually";
-"Annually" = "Annually";
+"Biweekly" = "Dwutygodniowy";
+"LoanCalc_Monthly" = "Miesięczny";
+"Bimonthly" = "Dwumiesięczny";
+"Quarterly" = "Kwartalny";
+"Semiannually" = "Półroczny";
+"Annually" = "Roczny";
 
-"Loan Calc Frequency short string weekly" = "wk";
-"Loan Calc Frequency short string biweekly" = "biwk";
-"Loan Calc Frequency short string monthly" = "mo";
-"Loan Calc Frequency short string bi montly" = "bimo";
-"Loan Calc Frequency short string quarterly" = "qt";
-"Loan Calc Frequency short string semi annually" = "semian";
-"Loan Calc Frequency short string annually" = "an";
+"Loan Calc Frequency short string weekly" = "tyg";
+"Loan Calc Frequency short string biweekly" = "dtyg";
+"Loan Calc Frequency short string monthly" = "mie";
+"Loan Calc Frequency short string bi montly" = "dmie";
+"Loan Calc Frequency short string quarterly" = "kw";
+"Loan Calc Frequency short string semi annually" = "pół";
+"Loan Calc Frequency short string annually" = "rocz";
 
-"PAYMENT" = "PAYMENT";
-"PRINCIPAL" = "PRINCIPAL";
-"INTEREST" = "INTEREST";
-"BALANCE" = "BALANCE";
+"PAYMENT" = "PŁATNOŚĆ";
+"PRINCIPAL" = "ZLECENIODAWCA";
+"INTEREST" = "ODSETKI";
+"BALANCE" = "BILANS";
 "Total Interest" = "Łączne odsetki";
-"Avg.Interest" = "Avg.Interest";
+"Avg.Interest" = "Śre.odsetki";
 "Total Amount" = "Łączna kwota";
-"Average Interest" = "Average Interest";
-"Amounts" = "Amounts";
+"Average Interest" = "Średnie odsetki";
+"Amounts" = "Kwoty";
 "Loan" = "Pożyczki";
 "Comparison" = "Porównanie";
-" of " = " of ";
+" of " = " z ";
 
-"0 %@ %ld mo" = "0 %@ %ld mo";
-"%ld %@ %ld mo" = "%ld %@ %ld mo";
-"Loan Calculator using AppBox Pro" = "Loan Calculator using AppBox Pro";
-"Share Loan Calculator Data" = "Share Loan Calculator Data";
+"0 %@ %ld mo" = "0 %@ %ld mie";
+"%ld %@ %ld mo" = "%ld %@ %ld mie";
+"Loan Calculator using AppBox Pro" = "Kalkulator pożyczek używa AppBox Pro";
+"Share Loan Calculator Data" = "Udostępnij dane kalkulatora pożyczek";
 
-"0 year" = "0 year";
+"0 year" = "0 lat";
 
 "Loan A" = "Pożyczka A";
 "Loan B" = "Pożyczka B";
-"EXTRA PAYMENTS" = "EXTRA PAYMENTS";
-"years or months" = "years or months";
+"EXTRA PAYMENTS" = "DODATKOWE OPŁATY";
+"years or months" = "lat lub miesięcy";
 "Data" = "Data";
 
-"Extra Payments(Monthly)" = "Extra Payments(Monthly)";
-"Extra(Monthly)" = "Extra(Monthly)";
-"Extra Payments(Yearly)" = "Extra Payments(Yearly)";
-"Extra(Yearly)" = "Extra(Yearly)";
-"Extra Payments(One-time)" = "Extra Payments(One-time)";
-"Extra(One-time)" = "Extra(One-time)";
-"Calculation" = "Calculation";
-"Extra Payment" = "Extra Payment";
+"Extra Payments(Monthly)" = "Dodatkowe Płatności (Miesięczne)";
+"Extra(Monthly)" = "Dodatkowe(Miesięczne)";
+"Extra Payments(Yearly)" = "Dodatkowe Płatności (Roczne)";
+"Extra(Yearly)" = "Dodatkowe(Rocznie)";
+"Extra Payments(One-time)" = "Dodatkowe Płatności (Jednorazowe)";
+"Extra(One-time)" = "Dodatkowe(Jednorazowe)";
+"Calculation" = "Kalkulacja";
+"Extra Payment" = "Dodatkowa płatność";
 
 "Solar" = "Solar";
-"Lunar calendar is available from year 1901 to 2042." = "Lunar calendar is available from year 1901 to 2042.";
-"Year %ld month %ld has %ld days." = "Year %ld month %ld has %ld days.";
-"Lunar Converter using AppBox Pro" = "Lunar Converter using AppBox Pro";
-"Share Lunar Converter Data" = "Share Lunar Converter Data";
+"Lunar calendar is available from year 1901 to 2042." = "Kalendarz księżycowy jest dostępny od roku 1901 do 2042.";
+"Year %ld month %ld has %ld days." = "Rok %ld miesiąc %ld ma %ld dni.";
+"Lunar Converter using AppBox Pro" = "Konwerter Księżycowy używa AppBox Pro";
+"Share Lunar Converter Data" = "Udostępnij dane Konwertera Księżycowego";
 
-"Take picture failed." = "Take picture failed.";
-"Save to camera roll failed." = "Save to camera roll failed.";
-"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app." = "The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.";
+"Take picture failed." = "Błąd podczas robienia zdjęcia.";
+"Save to camera roll failed." = "Błąd zapisywania zdjęcia.";
+"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app." = "Zdjęcia zrobione za pomocą Magnifier są zapisywane w Rolce aparatu i w aplikacji Zdjęcia.";
 
 "Mono" = "Mono";
 "Tonal" = "Tonal";
@@ -547,323 +549,323 @@
 "Transfer" = "Transfer";
 "Instant" = "Instant";
 
-"The photos you take with Mirror are saved in your Camera Roll album in the Photos app." = "The photos you take with Mirror are saved in your Camera Roll album in the Photos app";
+"The photos you take with Mirror are saved in your Camera Roll album in the Photos app." = "Zdjęcia zrobione za pomocą Magnifier są zapisywane w Rolce aparatu i w aplikacji Zdjęcia.";
 "Percent_Calc_SliderMarkLabel_for_A" = "A";
 "Percent_Calc_SliderMarkLabel_for_B" = "B";
 
 "A" = "A";
 "B" = "B";
-"X is Y% of What" = "X is Y% of What";
-"What is X% of Y" = "What is X% of Y";
-"X is What % of Y" = "X is What % of Y";
-"% Change from X to Y" = "% Change from X to Y";
-"Compare % Change from X to Y" = "Compare % Change from X to Y";
+"X is Y% of What" = "X jest Y% z What";
+"What is X% of Y" = "What jest X% z Y";
+"X is What % of Y" = "X jest What % z Y";
+"% Change from X to Y" = "% Zmień z X do Y";
+"Compare % Change from X to Y" = "Porównaj % Zmień z X do Y";
 
 "Sale Price" = "Obniżka";
-"Sale Price Tax" = "Sale Price Tax";
+"Sale Price Tax" = "Podatek";
 "Original Price" = "Oryginalna cena";
-"Original Price Tax" = "Original Price Tax";
-"Saved Amount" = "Saved Amount";
-"Saved Amount Tax" = "Saved Amount Tax";
-"  Sale Price with Tax" = "  Sale Price with Tax";
-"  Sale Price w/Tax" = "  Sale Price w/Tax";
-"  Sale Price" = "  Sale Price";
-" saved of " = " saved of ";
+"Original Price Tax" = "Podatek ceny oryginalnej";
+"Saved Amount" = "Zaoszczędzona kwota";
+"Saved Amount Tax" = "Zaoszczędzony podatek";
+"  Sale Price with Tax" = "  obniżka z podatkiem";
+"  Sale Price w/Tax" = "  obniżka z/podatek";
+"  Sale Price" = "  Obniżka";
+" saved of " = " oszczędzono ";
 
-"Sale Price with Tax" = "Sale Price with Tax";
-"Sale Price w/Tax" = "Sale Price w/Tax";
-"Discount" = "Discount";
-"Additional Off" = "Additional Off";
+"Sale Price with Tax" = "Obniżka z podatkiem";
+"Sale Price w/Tax" = "Obniżka z/podatek";
+"Discount" = "Zniżka";
+"Additional Off" = "Dodatkowo ";
 "Tax" = "Podatek";
 
-"KNOWN VALUE" = "KNOWN VALUE";
+"KNOWN VALUE" = "ZNANA WARTOŚĆ";
 
 "Total" = "Łącznie";
 "Tip" = "Napiwek";
 
-"Total Per Person" = "Total Per Person";
-"Tip Per Person" = "Tip Per Person";
-"Input" = "Input";
+"Total Per Person" = "Łącznie na osobę";
+"Tip Per Person" = "Napiwek na osobę";
+"Input" = "Wejście";
 "Amount" = "Kwota";
-"Amount After Tax" = "Amount After Tax";
-"Amount Before Tax" = "Amount Before Tax";
+"Amount After Tax" = "Kwota po podatku";
+"Amount Before Tax" = "Kwota przed podatkiem";
 "Split" = "Podziel na";
 
-"Before Split" = "Before Split";
-"Per Person" = "Per Person";
-"  Tip" = "  Tip";
-" Total Per Person" = " Total Per Person";
-" Total Before Split" = " Total Before Split";
-" Total" = " Total";
+"Before Split" = "Przed podziałem";
+"Per Person" = "Na osobę";
+"  Tip" = "  Napiwek";
+" Total Per Person" = " Łącznie na osobę";
+" Total Before Split" = " Łącznie przed podziałem ";
+" Total" = " Łącznie";
 
-"Subtotal" = "Subtotal";
-"ROUNDING" = "ROUNDING";
-"Cost" = "Cost";
-"Value" = "Value";
-"Methods" = "Methods";
+"Subtotal" = "Razem";
+"ROUNDING" = "ZAOKRĄGLANIE";
+"Cost" = "Koszt";
+"Value" = "Wartość";
+"Methods" = "Metody";
 "Exact" = "Dokładne";
 "Up" = "Góra";
 "Down" = "Dół";
 
-"Tip Calculator using AppBox Pro" = "Tip Calculator using AppBox Pro";
+"Tip Calculator using AppBox Pro" = "Kalkulator Napiwków używa AppBox Pro";
 
 "Rounding" = "Zaokrąglanie";
-"Select Language" = "Select Language";
-"%@ to %@" = "%@ to %@";
-"Detect Language" = "Detect Language";
-"Simplified Chinese" = "Simplified Chinese";
-"Traditional Chinese" = "Traditional Chinese";
+"Select Language" = "Wybierz język";
+"%@ to %@" = "%@ do %@";
+"Detect Language" = "Wykryj język";
+"Simplified Chinese" = "Prosty Chiński";
+"Traditional Chinese" = "Tradycyjny Chiński";
 
-"New Translator" = "New Translator";
-"From: " = "From: ";
-"To: " = "To: ";
-"Please change \"From\" or \"To\" language." = "Please change \"From\" or \"To\" language.";
+"New Translator" = "Nowe tłumaczenie";
+"From: " = "Z: ";
+"To: " = "Na: ";
+"Please change \"From\" or \"To\" language." = "Zmień \"Z\" lub \"Na\" język.";
 "Translate" = "Tłumacz";
 
-"All Units" = "All Units";
-"%@ Units" = "%@ Units";
+"All Units" = "Wszystkie jednostki";
+"%@ Units" = "%@ jednostek";
 
-"Unit Converter using AppBox Pro" = "Unit Converter using AppBox Pro";
-"Check out the AppBox Pro!" = "Check out the AppBox Pro!";
-"Share unit converting data" = "Share unit converting data";
-"%@, rate = %@" = "%@, rate = %@";
+"Unit Converter using AppBox Pro" = "Konwerter jednostek używa AppBox Pro";
+"Check out the AppBox Pro!" = "Sprawdź AppBox Pro!";
+"Share unit converting data" = "Udostępnij dane konwertera jednostek";
+"%@, rate = %@" = "%@, rata = %@";
 
-"To convert values, need two units." = "To convert values, need two units.";
+"To convert values, need two units." = "Aby konwertować wartości, wybierz 2 jednostki.";
 
-"Each history keeps max 4 units." = "Each history keeps max 4 units.";
+"Each history keeps max 4 units." = "Historia przechowuje maksymalnie 4 jednostki.";
 
-"%@ to %@ = %@" = "%@ to %@ = %@";
+"%@ to %@ = %@" = "%@ do %@ = %@";
 
-"More" = "More";
-"Units on the bar" = "Units on the bar";
-"Units in more" = "Units in more";
+"More" = "Więcej";
+"Units on the bar" = "Jednostki na belce";
+"Units in more" = "Więcej jednostek";
 
 "Price A" = "Cena A";
 "Price B" = "Cena B";
 "Price" = "Cena";
-"Unit" = "Konwerter";
-"Size" = "Size";
-"Quantity" = "Quantity";
-"Discount" = "Discount";
+"Unit" = "Jednostka";
+"Size" = "Rozmiar";
+"Quantity" = "Ilość";
+"Discount" = "Zniżka";
 
-"The best unit price is A at %@" = "The best unit price is A at %@";
-"The best unit price is B at %@" = "The best unit price is B at %@";
-"The unit price is the same at %@" = "The unit price is the same at %@";
+"The best unit price is A at %@" = "Najlepsza cena to A z %@";
+"The best unit price is B at %@" = "Najlepsza cena to B z %@";
+"The unit price is the same at %@" = "Cena jednostki jest taka sama na %@";
 
-"Area" = "Area";
-"Length" = "Length";
+"Area" = "Obszar";
+"Length" = "Długość";
 "Volume" = "Głośność";
-"Weight" = "Weight";
+"Weight" = "Waga";
 
-"Wallet_All_Category" = "All";
+"Wallet_All_Category" = "Wszystkie";
 "Field Type" = "Typ pola";
-"All Items" = "All Items";
-"CATEGORIES" = "CATEGORIES";
-"CATEGORY" = "CATEGORY";
-"ITEMS" = "ITEMS";
-"UPDATED" = "UPDATED";
+"All Items" = "Wszystkie";
+"CATEGORIES" = "KATEGORIE";
+"CATEGORY" = "KATEGORIA";
+"ITEMS" = "ELEMENTY";
+"UPDATED" = "ZMIENIONE";
 "Add Category" = "Dodaj kategorię";
 "Edit Category" = "Edytuj kategorię";
-"Enter category name" = "Enter category name";
-"Category Name" = "Category Name";
-"add new field" = "add new field";
+"Enter category name" = "Wpisz nazwę kategorii";
+"Category Name" = "Nazwa kategorii";
+"add new field" = "dodaj nowe pole";
 "Delete Category" = "Usuń kategorię";
 
-"Category Info" = "Category Info";
-"Delete Items" = "Delete Items";
+"Category Info" = "Informacje o kategorii";
+"Delete Items" = "Usuń elementy";
 
 "Video" = "Wideo";
-"Add Field" = "Add Field";
+"Add Field" = "Dodaj Pole";
 "Edit Field" = "Edycja pola";
 "Field Name" = "Nazwa pola";
-"Type" = "Type";
+"Type" = "Typ";
 "Style" = "Styl";
-"Field Style" = "Typ Styl";
-"Edit Image" = "Edit Image";
+"Field Style" = "Pole stylu";
+"Edit Image" = "Edytuj obraz";
 "Add Item" = "Dodaj element";
 "Edit Item" = "Edytuj element";
-"Note" = "Note";
-"Delete Video" = "Delete Video";
-"Take Video" = "Take Video";
-"Delete Item" = "Delete Item";
-"Category" = "Category";
-"Current %@" = "Current %@";
-"New Item" = "New Item";
-"Details" = "Details";
-"Map" = "Map";
-"Duration Time" = "Duration Time";
-"1 Passcode Failed Attempt" = "1 Passcode Failed Attempt";
-"Enter your old passcode" = "Enter your old passcode";
+"Note" = "Notatka";
+"Delete Video" = "Usuń Wideo";
+"Take Video" = "Zrób Wideo";
+"Delete Item" = "Usuń element";
+"Category" = "Kategoria";
+"Current %@" = "Aktualnie %@";
+"New Item" = "Nowy element";
+"Details" = "Szczegóły";
+"Map" = "Mapa";
+"Duration Time" = "Czas trwania";
+"1 Passcode Failed Attempt" = "1 błąd wpisywania hasła";
+"Enter your old passcode" = "Wpisz stare hasło";
 "Enter your passcode" = "Wpisz hasło";
 "Passcode" = "Kod blokady";
 "Set Passcode" = "Ustal kod";
 "Change Passcode" = "Zmień kod";
-"Turn Off Passcode" = "Turn Off Passcode";
+"Turn Off Passcode" = "Wyłącz kod";
 "Re-enter your passcode" = "Wpisz ponownie hasło";
-"Re-enter your new passcode" = "Re-enter your new passcode";
-"Enter your new passcode" = "Wpisz nowe kod";
-"Passcode did not match. Try again." = "Passcode did not match. Try again.";
-"%i Passcode Failed Attempts" = "%i Passcode Failed Attempts";
+"Re-enter your new passcode" = "Wpisz ponownie nowe hasło";
+"Enter your new passcode" = "Wpisz nowy kod";
+"Passcode did not match. Try again." = "Hasło nie pasuje, spróbuj ponownie.";
+"%i Passcode Failed Attempts" = "%i błąd wpisywania hasła";
 "Enter Passcode" = "Wpisz hasło";
 "New Passcode" = "Nowy kod";
-"Confirm Passcode" = "Confirm Passcode";
+"Confirm Passcode" = "Potwierdź kod";
 "Hint" = "Wskazówka";
-"Old Passcode" = "Old Passcode";
-"%li Passcode Failed Attempts" = "%li Passcode Failed Attempts";
-"Please enter new passcode." = "Please enter new passcode.";
-"Please enter confirm passcode." = "Please enter confirm passcode.";
-"Passcode did not match." = "Passcode did not match.";
-"Please enter passcode." = "Please enter passcode.";
-"Open in Safari" = "Open in Safari";
+"Old Passcode" = "Stary kod";
+"%li Passcode Failed Attempts" = "%li błąd wpisywania hasła";
+"Please enter new passcode." = "Wpisz nowy kod.";
+"Please enter confirm passcode." = "Potwierdź kod.";
+"Passcode did not match." = "Hasła nie pasują.";
+"Please enter passcode." = "Wpisz hasło.";
+"Open in Safari" = "Otwórz w Safari";
 
 "A friend has recommended AppBox Pro™ from the iTunes App Store" = "Przyjacielska rekomendacja aplikacji AppBox Pro™ z iTunes";
 "AppBox Pro™ V%@ Contact Support" = "AppBox Pro™ V%@ Skontaktuj się z pomocą techniczną";
 "Close" = "Zamknij";
 "Continue" = "Kontynuuj";
-"Compressing" = "Compressing";
+"Compressing" = "Kompresja";
 
-"Uploading" = "Uploading";
-"Backup file has been uploaded to Dropbox successfully." = "Backup file has been uploaded to Dropbox successfully.";
+"Uploading" = "Przekazywanie";
+"Backup file has been uploaded to Dropbox successfully." = "Kopia zapasowa została przekazana poprawnie do Dropbox.";
 "Error" = "Error";
-"Backup process failed to upload backup file to Dropbox." = "Backup process failed to upload backup file to Dropbox.";
-"Please turn iCloud sync off." = "Please turn iCloud sync off.";
+"Backup process failed to upload backup file to Dropbox." = "Błąd podczas przekazywania kopii zapasowej do Dropbox.";
+"Please turn iCloud sync off." = "Wyłącz synchronizację iCloud.";
 "Dropbox" = "Dropbox";
-"You have no backup files stored in Dropbox." = "You have no backup files stored in Dropbox.";
-"Last Backup: %@" = "Last Backup: %@";
-"Unarchiving" = "Unarchiving";
-"Your data has been restored successfully." = "Your data has been restored successfully.";
-"Downloading" = "Downloading";
-"Are you going to replace existing data with the backup data?" = "Are you going to replace existing data with the backup data?";
+"You have no backup files stored in Dropbox." = "Nie posiadasz kopii zapasowych w Dropbox.";
+"Last Backup: %@" = "Ostatnia kopia: %@";
+"Unarchiving" = "Dekompresja";
+"Your data has been restored successfully." = "Twoje dane zostały przywrócone.";
+"Downloading" = "Pobieranie";
+"Are you going to replace existing data with the backup data?" = "Czy chcesz zamienić obecne dane, danymi z kopii zapasowej?";
 "Replace" = "Zamień";
-"Deleting" = "Deleting";
-"Unable to delete selected file. Please try it again." = "Unable to delete selected file. Please try it again.";
+"Deleting" = "Usuwanie";
+"Unable to delete selected file. Please try it again." = "Błąd usuwania zaznaczonego pliku. Spróbuj ponownie.";
 
 "Turn Passcode Off" = "Wyłącz żądanie hasła";
 "Turn Passcode On" = "Włącz żądanie hasła";
-"How To Enable Data Protection" = "How To Enable Data Protection";
-"Clear Recent" = "Clear Recent";
-"Recent" = "Recent";
+"How To Enable Data Protection" = "Jak zabezpieczyć dane";
+"Clear Recent" = "Wyczyść ostatnie";
+"Recent" = "Ostatnie";
 "Information" = "Informacja";
-"Move and Scale" = "Move and Scale";
+"Move and Scale" = "Przesuń i zmień";
 
-"CALCULATION" = "CALCULATION";
-"DoneButton" = "Return";
+"CALCULATION" = "KALKULACJA";
+"DoneButton" = "Powrót";
 "Off" = "Wył.";
-"Passcode_Off" = "Off";
-"DaysCounter_All" = "All";
+"Passcode_Off" = "Wył";
+"DaysCounter_All" = "Wszystkie";
 
-"LoanCalc_Start Date" = "Start Date";
+"LoanCalc_Start Date" = "Data rozpoczęcia";
 "Immediately" = "Natychmiast";
-"Learn about iOS Security" = "Learn about iOS Security";
-"CalculatorGroup" = "Calculator";
-"Translator_All" = "All";
+"Learn about iOS Security" = "Poczytaj o bezpieczeństwie iOS";
+"CalculatorGroup" = "Kalkulator";
+"Translator_All" = "Wszystko";
 
-"Year(s)" = "Year(s)";
-"Month(s)" = "Month(s)";
-"Day(s)" = "Day(s)";
+"Year(s)" = "Rok()";
+"Month(s)" = "Miesiąc(e)";
+"Day(s)" = "Dzień()";
 
-"Red" = "Red";
-"Orange" = "Orange";
-"Yellow" = "Yellow";
+"Red" = "Czerwony";
+"Orange" = "Pomarańczowy";
+"Yellow" = "Żółty";
 
-"Green" = "Green";
-"Blue" = "Blue";
-"Violet" = "Violet";
-"Purple" = "Purple";
-"Brown" = "Brown";
-"Gray" = "Gray";
+"Green" = "Zielony";
+"Blue" = "Niebieski";
+"Violet" = "Fioletowy";
+"Purple" = "Purpurowy";
+"Brown" = "Brązowy";
+"Gray" = "Szary";
 
-"day(s)" = "day(s)";
-"Enter an address or city name" = "Enter an address or city name";
+"day(s)" = "dzień(dni)";
+"Enter an address or city name" = "Wpisz adres lub nazwę miasta";
 
-"This will reset all settings.\nNo data will be deleted." = "This will reset all settings.\nNo data will be deleted.";
-"Reset All" = "Reset All";
-"Reset Show/Hide Settings" = "Reset Show/Hide Settings";
-"Wallpaper" = "Wallpaper";
+"This will reset all settings.\nNo data will be deleted." = "Ustawienia zostaną resetowane.\nŻadne dane nie zostaną usunięte.";
+"Reset All" = "Resetuj wszystko";
+"Reset Show/Hide Settings" = "Reset ustawień Pokaż/Ukryj";
+"Wallpaper" = "Tapeta";
 
-"Show Lunar Date" = "Show Lunar Date";
-"Currency Converter using AppBox Pro" = "Currency Converter using AppBox Pro";
-"Translator using AppBox Pro" = "Translator using AppBox Pro";
-"Share Translator Data" = "Share Translator Data";
-"Delete and start over" = "Delete and start over";
-"Use data stored in iCloud" = "Use data stored in iCloud";
-"Internet connection is not available." = "Internet connection is not available.";
-"Setup AppBox Pro data stored in iCloud" = "Setup AppBox Pro data stored in iCloud";
-"Add this place" = "Add this place";
+"Show Lunar Date" = "Pokaż daty księżycowe";
+"Currency Converter using AppBox Pro" = "Konwerter walut używa AppBox Pro";
+"Translator using AppBox Pro" = "Tłumacz używa AppBox Pro";
+"Share Translator Data" = "Udostępnij dane Tłumacza";
+"Delete and start over" = "Usuń i rozpocznij ponownie";
+"Use data stored in iCloud" = "Użyj danych z iCloud";
+"Internet connection is not available." = "Brak połączenia internetowego.";
+"Setup AppBox Pro data stored in iCloud" = "Inicjalizacja danych AppBox Pro przechowywanych w iCloud";
+"Add this place" = "Dodaj to położenie";
 
 "STATUS" = "STATUS";
 
-"Talk Time on 2G" = "Talk Time on 2G";
-"Talk Time on 3G" = "Talk Time on 3G";
+"Talk Time on 2G" = "Czas rozmowy na 2G";
+"Talk Time on 3G" = "Czas rozmowy na 3G";
 "Internet on 3G" = "Internet 3G";
-"Internet on LTE" = "Internet on LTE";
+"Internet on LTE" = "Internet na LTE";
 "Internet on Wi-Fi" = "Internet Wi-Fi";
-"Internet on Cellular" = "Internet on Cellular";
-"Video playback" = "Video playback";
-"Audio playback" = "Audio playback";
-"Standby" = "Standby";
+"Internet on Cellular" = "Internet komórkowy";
+"Video playback" = "Odtwarzanie wideo";
+"Audio playback" = "Odtwarzanie audio";
+"Standby" = "Czuwanie";
 "FaceTime" = "FaceTime";
 "GPS" = "GPS";
-"Charging times" = "Charging times";
+"Charging times" = "Czasy ładowania";
 
-"None_Mirror" = "None";
+"None_Mirror" = "Brak";
 
-"CALENDARS" = "CALENDARS";
+"CALENDARS" = "KALENDARZE";
 
-"Encryption Key for Wallet" = "Encryption Key for Wallet";
+"Encryption Key for Wallet" = "Klucz szyfrowania do portfela";
 
 /* "Please know that the quality of photos saved in the Days Until with the previous version of the AppBox Pro may not good enough to use with the current version. We recommend you to re-add photos to your events."; */
 "V1_Notice_for_Photo_Quality" = "Please know that the quality of photos saved in the Days Until with the previous version of the AppBox Pro may not good enough to use with the current version. We recommend you to re-add photos to your events.";
-"Notice" = "Notice";
+"Notice" = "Ogłoszenie";
 
-"LoanCalc_DATE" = "DATE";
+"LoanCalc_DATE" = "DATA";
 
-"%/yr" = "%/yr";
-"%/mo" = "%/mo";
+"%/yr" = "%/r";
+"%/mo" = "%/m";
 
-"Icon" = "Icon";
+"Icon" = "Ikona";
 "  (e.g. %@)" = "  (e.g. %@)";
-"DaysCounter_ALL" = "All";
-"You can calculate more in the AppBox Pro." = "You can calculate more in the AppBox Pro.";
-"I'd like to share a calculation with you." = "I'd like to share a calculation with you.";
-"I'd like to share a conversion with you." = "I'd like to share a conversion with you.";
-"You can convert more in the AppBox Pro." = "You can convert more in the AppBox Pro.";
-"Download from AppStore" = "Download from AppStore";
+"DaysCounter_ALL" = "Wszystko";
+"You can calculate more in the AppBox Pro." = "Możesz przeliczyć więcej w AppBox Pro.";
+"I'd like to share a calculation with you." = "Chcę udostępnij Tobie kalkulacje.";
+"I'd like to share a conversion with you." = "Chcę udostępnić Tobie konwersje.";
+"You can convert more in the AppBox Pro." = "Możesz konwertować więcej w AppBox Pro.";
+"Download from AppStore" = "Pobierz z AppStore";
 
-"Result" = "Result";
-"Add" = "Add";
-"day" = "day";
-"Subtract" = "Subtract";
-"I'd like to share an event with you." = "I'd like to share an event with you.";
-"You can manage your events in the AppBox Pro." = "You can manage your events in the AppBox Pro.";
-"Interest" = "Interest";
-"Extra Payment(monthly)" = "Extra Payment(monthly)";
-"Extra Payment(yearly)" = "Extra Payment(yearly)";
-"Extra Payment(one-time)" = "Extra Payment(one-time)";
+"Result" = "Wynik";
+"Add" = "Dodaj";
+"day" = "dzień";
+"Subtract" = "Razem";
+"I'd like to share an event with you." = "Chcę udostępnić Tobie wydarzenie.";
+"You can manage your events in the AppBox Pro." = "Możesz zarządzać wydarzeniami w AppBox Pro.";
+"Interest" = "Odsetki";
+"Extra Payment(monthly)" = "Dodatkowa płatność (miesięczne)";
+"Extra Payment(yearly)" = "Dodakowa płatność (rocznie)";
+"Extra Payment(one-time)" = "Dodatkowa płatność (jednorazowa)";
 
-"I'd like to share an information with you." = "I'd like to share a information with you.";
-"You can manage your information in the AppBox Pro." = "You can manage your information in the AppBox Pro.";
+"I'd like to share a information with you." = "Chcę udsotępnić Tobie informacje.";
+"You can manage your information in the AppBox Pro." = "Możesz zarządzać swoimi danymi w aplikacji AppBox Pro.";
 
-"I'd like to share a translation with you." = "I'd like to share a translation with you.";
-"You can translate more in the AppBox Pro." = "You can translate more in the AppBox Pro.";
+"I'd like to share a translation with you." = "Chcę udostępnić Tobie tłumaczenie.";
+"You can translate more in the AppBox Pro." = "Możesz przetłumaczyć więcej w aplikacji AppBox Pro.";
 
-"Field name already exists." = "Field name already exists.";
+"Field name already exists." = "Taka nazwa pola już istnieje.";
 
-"Disclaimer" = "Wyłączenie odpowiedzialności";
+"Disclaimer" = "Wykluczenia";
 "LadyCalendarDisclaimerMsg" = "Następujące prognozy są oparte metodzie kalendarzowej. Nie są one w 100% dokładne. Nie ma gwarancji sukcesu. Prognozy nie powinny być używane jako narzędzie do naturalnego planowania urodzeń.";
 
 
-"Categories on the bar" = "Categories on the bar";
-"Categories in more" = "Categories in more";
+"Categories on the bar" = "Kategorie na belce";
+"Categories in more" = "Więcej kategorii";
 
-"I'd like to share a currency conversion with you." = "I'd like to share a currency conversion with you.";
-"You can convert more currencies in the AppBox Pro." = "You can convert more currencies in the AppBox Pro.";
+"I'd like to share a currency conversion with you." = "Chcę udostępnić Tobie przeliczenia walut.";
+"You can convert more currencies in the AppBox Pro." = "Możesz przeliczyć więcej walut w aplikacji AppBox Pro.";
 
-"Increase" = "Increase";
-"Decrease" = "Decrease";
+"Increase" = "Zwiększ";
+"Decrease" = "Zmniejsz";
 
-"Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather.";
-"Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather.";
+"Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "Usługi lokalizacji są niedostępne. Przejdź do Ustawienia > Prywatność > Usługi lokalizacji i włącz autoryzację dla AppBox Pro do pokazywania pogody.";
+"Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "Usługi lokalizacji są niedostępne. Przejdź do Ustawienia > Prywatność > Usługi lokalizacji i włącz autoryzację dla AppBox Pro do pokazywania pogody.";
 
 "daily" = "daily";
 "weekly" = "weekly";
@@ -875,8 +877,8 @@
 "You can add photos into events." = "You can add photos into events.";
 
 "UNIT PRICE" = "UNIT PRICE";
-"UNIT" = "UNIT";
+"UNIT" = "JEDNOSTKA";
 "SIZE" = "SIZE";
-"DISCOUNT" = "DISCOUNT";
+"DISCOUNT" = "ZNIŻKA";
 
 "Alert_None" = "None";
