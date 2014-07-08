@@ -351,6 +351,11 @@
 		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 		[[UIApplication sharedApplication] setStatusBarHidden:NO];
 		[self determineStatusBarStyle];
+
+		if (_buttonsTimer) {
+			[_buttonsTimer invalidate];
+			_buttonsTimer = nil;
+		}
 	}
 }
 

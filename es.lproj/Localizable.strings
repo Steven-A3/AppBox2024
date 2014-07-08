@@ -864,9 +864,6 @@ https://itunes.apple.com/app/id318404385";
 "Categories on the bar" = "Categorias en la barra";
 "Categories in more" = "Más opciones de categorias";
 
-"I'd like to share a currency conversion with you." = "Me gustaría compartir una conversión de moneda contigo.";
-"You can convert more currencies in the AppBox Pro." = "AppBox Pro tiene más opciones de convertir monedas.";
-
 "Increase" = "Incrementar";
 "Decrease" = "Decrementar";
 
@@ -889,4 +886,4 @@ https://itunes.apple.com/app/id318404385";
 
 "Alert_None" = "Nada";
 
-"Last %ld" = "Last %ld";
+"Last %ld" = "Más reciente %ld";

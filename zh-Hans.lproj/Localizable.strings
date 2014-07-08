@@ -31,9 +31,7 @@
 "Lunar Calendar" = "阴历";
 
 /* "A friend wanted to let you know that the Calculator, Date Calculator, Loan Calculator, Percent Calculator, Sales Calculator, Tip Calculator, Unit Price, Currency Converter, Lunar Converter, Translator, Unit Converter, Days Counter, Expense List, Ladies Calendar, Wallet, Holidays, Battery Status, Clock, Magnifier and Mirror you've come to expect from AppBox Pro™ is now available for your iPhone, iPad and iPod Touch. Click below to download AppBox Pro™ from the iTunes App Store.\r\n\r\nhttps://itunes.apple.com/app/id318404385"; */
-"tellafriend" = "iPhone/iPad/iPod Touch的有效使用，推荐您使用包含了闹钟、电池状态信息、镜子、水平仪、汇率、日期计算、纪念日、手电灯、公休日、贷款计算、自然周期、价格比较、随机数表生成、尺子、折扣率计算、系统信息、小费计算、翻译器、单位换算、保安电子钱包、网络应用程序等多种应用程序的AppBox Pro™。
-
-现在马上在下面网址上下载AppBox Pro™。";
+"tellafriend" = "iPhone/iPad/iPod Touch的有效使用，推荐您使用包含了闹钟、电池状态信息、镜子、水平仪、汇率、日期计算、纪念日、手电灯、公休日、贷款计算、自然周期、价格比较、随机数表生成、尺子、折扣率计算、系统信息、小费计算、翻译器、单位换算、保安电子钱包、网络应用程序等多种应用程序的AppBox Pro™。现在马上在下面网址上下载AppBox Pro™。";
 
 /* "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case." */
 "DISCLAIMER_MESSAGE" = "我们会努力为您提供准确的假日列表。但是由于世界各地的假期会由于政府的调整而有所变化，所以我们不会对假期数据的错误或遗漏承担责任。所以建议您在制定计划之前与大使馆或者领事馆确认。";
@@ -49,7 +47,6 @@
 
 "Theme Color" = "主题颜色";
 
-/* Reference Image */
 "About" = "关于本机";
 "Remaining Time" = "剩余时间";
 "Battery Status" = "电池状态";
@@ -102,7 +99,6 @@
 "Utility" = "公益事业";
 "OK" = "确认";
 
-/* Reference Image */
 "Device" = "设备";
 "Version" = "版本";
 /*  */
@@ -126,13 +122,10 @@
 "Basic" = "基本的";
 "Calculator using AppBox Pro" = "使用AppBox Pro的计算器";
 
-"CHOOSE COLOR" = "选择颜色";
-
 "Humidity" = "湿度";
 "High" = "高";
 "Low" = "低";
 
-/* Reference Image */
 "TIME" = "时间";
 "Date" = "日期";
 "WEATHER" = "天气";
@@ -146,7 +139,6 @@
 
 "Weather" = "天气";
 
-/* Reference Image */
 "%@, Rate = %0.4f" = "%@, 比率 = %0.4f";
 "Each history keeps max 4 currencies." = "每个历史最多保留4种货币。";
 
@@ -167,7 +159,6 @@
 "Currency Converter in the AppBox Pro" = "AppBox Pro中的币种转换器";
 "Share Currency Converter Data" = "共享货币转换数据";
 
-/* Reference Image */
 /* Data Calc duration */
 "Year" = "年";
 "Month" = "月";
@@ -206,7 +197,6 @@
 "To" = "特定日 B";
 "Exclude" = "排除";
 
-/* Reference Image */
 "%ld of %ld" = "%ld / %ld";
 "%@ using AppBox Pro" = "%@ 使用 AppBox Pro";
 "Share Days Counter Data" = "共享日期计算数据";
@@ -218,7 +208,6 @@
 "Start Slideshow" = "开始播放幻灯片";
 "There is no events." = "没有任何项目。";
 
-/* Reference Image */
 "Slideshow" = "幻灯片显示";
 "Edit Calendar" = "编辑日历";
 "Add Calendar" = "添加日历";
@@ -227,7 +216,6 @@
 "Delete Calendar" = "删除日历";
 "Untitled" = "无标题";
 
-/* Reference Image */
 "Add Event" = "纪念日添加";
 "Title" = "题目";
 "Photo" = "照片";
@@ -379,7 +367,6 @@
 
 "Location information is not available." = "位置信息不可用。";
 
-/* Reference Image */
 "Every 2 Weeks" = "隔周";
 "Undo" = "撤消";
 "Redo" = "重做";
@@ -421,7 +408,6 @@
 "Done" = "完成";
 "Add Holidays to \"Days Counter\" app" = "在\"天数计算器\" 应用中增加假日";
 
-/* Reference Image */
 /* Public Holiday */
 "Public" = "公共假日";
 "Holiday_Public_holiday_abbreviation" = "公";
@@ -440,7 +426,6 @@
 "on flickr" = "flickr";
 " by %@" = " 提供 %@";
 
-/* Reference Image */
 "Edit" = "编辑";
 "Average" = "平均";
 "Avg." = "平均。";
@@ -488,12 +473,8 @@
 "Automatically save period after estimated starting date." = "估算开始日期后自动保存周期。";
 "Auto Record" = "自动记录";
 "Notify about estimated next starting date." = "关于下一个开始日期的通知。";
-"FORECASTING %@ PERIODS" = "预告 %@ 周期";
+"FORECASTING %@ PERIODS" = "预计 %@ 周期";
 
-/* FORECASTING 3 PERIODS or FORECASTING 6 PERIODS */
-"预计 %@ 周期" = "预计 %@ 周期";
-
-/* Reference Image */
 "Date, Principal, Payment, Interest, Balance" = "日期, 本金, 支付, 利率, 账户余额";
 "Annual" = "年利率";
 "Monthly_Rate" = "月利率";
@@ -562,7 +543,6 @@
 "Save to camera roll failed." = "未能储存到相册";
 "The photos you take with Magnifier are saved in your Camera Roll album in the Photos app." = "用放大镜拍摄的照片已经被储存到照片应用的相册。";
 
-/* Reference Image */
 "Mono" = "单色";
 "Tonal" = "色调";
 "Noir" = "黑白";
@@ -576,7 +556,6 @@
 "Percent_Calc_SliderMarkLabel_for_A" = "A";
 "Percent_Calc_SliderMarkLabel_for_B" = "B";
 
-/* Reference Image */
 "A" = "A";
 "B" = "B";
 "X is Y% of What" = "X 是什么的 Y";
@@ -585,7 +564,6 @@
 "% Change from X to Y" = "% 从X 变为 Y";
 "Compare % Change from X to Y" = "比较 % 从 X 变为 Y";
 
-/* Reference Image */
 "Sale Price" = "折扣价格计算";
 "Sale Price Tax" = "折扣价格税金";
 "Original Price" = "销售价";
@@ -605,7 +583,6 @@
 
 "KNOWN VALUE" = "已知值";
 
-/* Reference Image */
 "Total" = "总额";
 "Tip" = "小费";
 
@@ -638,7 +615,6 @@
 
 "Rounding" = "四舍五入";
 
-/* Reference Image */
 "Select Language" = "选择语言";
 "%@ to %@" = "%@ 到 %@";
 "Detect Language" = "检测语言 ";
@@ -653,7 +629,6 @@
 "Please change \"From\" or \"To\" language." = "请改变 \"从\" 或 \"到\" 语言。";
 "Translate" = "翻译";
 
-/* Reference Image */
 "All Units" = "所有单位";
 "%@ Units" = "%@ 单位";
 
@@ -673,7 +648,6 @@
 "Units on the bar" = "工具栏上的单位";
 "Units in more" = "更多单位";
 
-/* Reference Image */
 "Price A" = "价格 A";
 "Price B" = "价格 B";
 "Price" = "价格";
@@ -691,7 +665,6 @@
 "Volume" = "音量";
 "Weight" = "重量";
 
-/* Reference Image */
 "Wallet_All_Category" = "钱包_所有_种类";
 "Field Type" = "区域类型";
 "All Items" = "所有信息";
@@ -759,7 +732,6 @@
 "Continue" = "继续";
 "Compressing" = "压缩";
 
-/* Reference Image */
 "Uploading" = "正在上传";
 "Backup file has been uploaded to Dropbox successfully." = "备份文件已经成功上传至Dropbox";
 "Error" = "错误";
@@ -798,7 +770,6 @@
 "Month(s)" = "月";
 "Day(s)" = "天";
 
-/* Reference Image */
 "Red" = "红色";
 "Orange" = "橙色";
 "Yellow" = "黄色";
@@ -894,29 +865,26 @@
 "Categories on the bar" = "工具栏上的种类";
 "Categories in more" = "更多种类";
 
-"I'd like to share a currency conversion with you." = "我想和你分享一个货币转换信息。";
-"You can convert more currencies in the AppBox Pro." = "你可以用AppBox Pro做更多的货币转换。";
-
 "Increase" = "增加";
 "Decrease" = "减少";
 
 "Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "定位服务不可用。前往 设置 > 隐私 > 定位服务.必须启动定位服务后授权 AppBox Pro显示天气。";
 "Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "定位服务可用，但是 AppBox Pro未能获得使用定位服务的权限。前往 设置 > 隐私 >定位服务授权可以显示天气";
 
-"daily" = "daily";
-"weekly" = "weekly";
-"biweekly" = "biweekly";
-"monthly" = "monthly";
-"yearly" = "yearly";
+"daily" = "每日";
+"weekly" = "每周";
+"biweekly" = "每2周";
+"monthly" = "每月";
+"yearly" = "每年";
 
-"No Photos" = "No Photos";
-"You can add photos into events." = "You can add photos into events.";
+"No Photos" = "没有照片";
+"You can add photos into events." = "尝试将照片添加到该事件。";
 
 "UNIT PRICE" = "UNIT PRICE";
-"UNIT" = "UNIT";
-"SIZE" = "SIZE";
-"DISCOUNT" = "DISCOUNT";
+"UNIT" = "单价";
+"SIZE" = "尺寸";
+"DISCOUNT" = "折扣";
 
-"Alert_None" = "None";
-
+"Alert_None" = "无";
 "FaceTime" = "FaceTime";
+"Last %ld" = "最后的%ld个";

@@ -54,6 +54,12 @@
         }
 	}
 
+	NSArray *poppedVCs = [navigationController popToRootViewControllerAnimated:NO];
+	for (UIViewController<A3CenterViewDelegate> *vc in poppedVCs) {
+		if ([vc respondsToSelector:@selector(cleanUp)]) {
+			[vc performSelector:@selector(cleanUp)];
+		}
+	}
 	[navigationController setToolbarHidden:YES];
 	[navigationController setNavigationBarHidden:NO animated:NO];
 
@@ -71,21 +77,21 @@
         [navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
         [navigationController.navigationBar setShadowImage:image];
     } else {
-        [navigationController setNavigationBarHidden:NO animated:YES];
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 
-        [navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        [navigationController.navigationBar setShadowImage:nil];
-    }
-    navigationController.navigationBar.tintColor = [A3AppDelegate instance].themeColor;
+		[navigationController setNavigationBarHidden:NO animated:YES];
+		[navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+		[navigationController.navigationBar setShadowImage:nil];
 
-	NSArray *poppedVCs = [navigationController popToRootViewControllerAnimated:NO];
-	for (UIViewController<A3CenterViewDelegate> *vc in poppedVCs) {
-		if ([vc respondsToSelector:@selector(cleanUp)]) {
-			[vc performSelector:@selector(cleanUp)];
-		}
+		[navigationController setToolbarHidden:NO];
+		[navigationController setNavigationBarHidden:YES animated:NO];
+
+		[navigationController setToolbarHidden:YES];
+		[navigationController setNavigationBarHidden:NO animated:NO];
+
 	}
+    navigationController.navigationBar.tintColor = [A3AppDelegate instance].themeColor;
 
 	if (IS_IPAD) {
 		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
@@ -614,5 +620,6 @@
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
 	[alertView show];
 }
+
 
 @end

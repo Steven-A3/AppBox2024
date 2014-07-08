@@ -711,13 +711,13 @@
 "Please enter passcode." = "パスコードを入力してください。";
 "Open in Safari" = "Safariでオープン";
 
-"A friend has recommended AppBox Pro™ from the iTunes App Store" = "iTunes App Store のAppBox Pro™を推薦いたします。";
+"A friend has recommended AppBox Pro™ from the iTunes App Store" = "AppBox Pro™を推薦いたします。";
 "AppBox Pro™ V%@ Contact Support" = "AppBox Pro™ V%@ サポートに連絡";
 "Close" = "閉じる";
 "Continue" = "続ける";
 "Compressing" = "圧縮";
 
-"Uploading" = "アップローディング";
+"Uploading" = "アップロード中";
 "Backup file has been uploaded to Dropbox successfully." = "バックアップファイルが正常にDropboxにアップロードされています。";
 "Error" = "エラー";
 "Backup process failed to upload backup file to Dropbox." = "Dropboxにバックアップファイルのアップロードが失敗しました。";
@@ -736,8 +736,8 @@
 "Turn Passcode Off" = "パスコードをオフにする";
 "Turn Passcode On" = "パスコードをオンにする";
 "How To Enable Data Protection" = "データ保護を使用する方法";
-"Clear Recent" = "最近記録のクリア";
-"Recent" = "最近記録";
+"Clear Recent" = "最近使用記録のクリア";
+"Recent" = "最近使用App";
 "Information" = "情報";
 "Move and Scale" = "移動とサイズを変更する";
 
@@ -747,9 +747,9 @@
 "Passcode_Off" = "オフ";
 "DaysCounter_All" = "全て";
 
-"LoanCalc_Start Date" = "スタートする日付";
+"LoanCalc_Start Date" = "返済開始日";
 "Immediately" = "即時";
-"Learn about iOS Security" = "iOS セキュリティーについて";
+"Learn about iOS Security" = "iOSのセキュリティーについて";
 "CalculatorGroup" = "計算機";
 "Translator_All" = "全て";
 
@@ -772,38 +772,38 @@
 
 "Enter an address or city name" = "住所や都市名を入力して下さい。";
 
-"This will reset all settings.\nNo data will be deleted." = "リセットが完了しました。¥削除されたデーターはありません。";
-"Reset All" = "全てリセット";
-"Reset Show/Hide Settings" = "リセットをみる/みない";
+"This will reset all settings.\nNo data will be deleted." = "表示の設定を初期化します。データは消去されません。";
+"Reset All" = "表示の設定を初期化";
+"Reset Show/Hide Settings" = "表示の設定を初期化";
 "Wallpaper" = "ウォールペーパー";
 
 "Show Lunar Date" = "旧暦でみる";
 
-"Currency Converter using AppBox Pro" = "AppBox Proで使用している現在の変換機";
+"Currency Converter using AppBox Pro" = "AppBox Proで使用している現在の変換";
 
-"Translator using AppBox Pro" = "AppBox Proで使用している翻訳機";
+"Translator using AppBox Pro" = "AppBox Proで使用している翻訳";
 
 "Share Translator Data" = "翻訳データーの共有";
 
-"Internet connection is not available." = "インターネットが使えません。";
+"Internet connection is not available." = "インターネット接続が利用できません。";
 
 "Setup AppBox Pro data stored in iCloud" = "iCloudに載っているAppBox Proデーターをセットアップする";
-"Delete and start over" = "削除して 再スタートする";
+"Delete and start over" = "データを消去して新たに始める";
 "Use data stored in iCloud" = "iCloudに載っているデーターを使う";
 
-"Add this place" = "場所を追加";
+"Add this place" = "この場所を追加";
 
 "STATUS" = "状態";
 
-"Talk Time on 2G" = "2Gで会話した時間";
-"Talk Time on 3G" = "3Gで会話した時間";
+"Talk Time on 2G" = "2Gで通話時間";
+"Talk Time on 3G" = "3Gで通話時間";
 "Internet on 3G" = "3Gインターネット";
 "Internet on LTE" = "LTEインターネット";
 "Internet on Wi-Fi" = "Wi-Fiインターネット";
 "Internet on Cellular" = "携帯インターネット";
 "Video playback" = "ビデオ再生";
 "Audio playback" = "オーディオ再生";
-"Standby" = "待機";
+"Standby" = "待機時間";
 "GPS" = "GPS";
 "Charging times" = "充電時間";
 
@@ -828,12 +828,8 @@
 
 "DaysCounter_ALL" = "全て";
 
-"You can calculate more in the AppBox Pro." = "AppBox Proでもっと沢山の計算が出来ます。";
-
-"I'd like to share a calculation with you." = "この計算をあなたと共有したいです。";
-
-"I'd like to share a conversion with you." = "この為替をレートあなたと共有したいです。";
-"You can convert more in the AppBox Pro." = "AppBox Proでもっと沢山の為替レートを見る事が出来ます。";
+"You can calculate more in the AppBox Pro." = "AppBox Proのさまざまな計算機能を利用してみてください。";
+"I'd like to share a calculation with you." = "この計算結果を共有します。";
 "Download from AppStore" = "AppStoreでダウンロード";
 
 "Result" = "結果";
@@ -841,7 +837,6 @@
 "day" = "日";
 "Subtract" = "引く";
 "I'd like to share an event with you." = "このイベントをあなたと共有したいです。";
-
 "You can manage your events in the AppBox Pro." = "AppBox Proでイベントを管理することが出来ます。";
 
 "Interest" = "金利";
@@ -852,10 +847,10 @@
 "I'd like to share an information with you." = "この情報をあなたと共有したいです。";
 "You can manage your information in the AppBox Pro." = "AppBox Proで情報を管理することが出来ます。";
 
-"I'd like to share a translation with you." = "この翻訳をあなたと共有したいです。";
-"You can translate more in the AppBox Pro." = "AppBox Proでもっと沢山の翻訳が出来ます。";
+"I'd like to share a translation with you." = "翻訳結果を共有します。";
+"You can translate more in the AppBox Pro." = "AppBox Proの翻訳機能を利用してみてください。";
 
-"Field name already exists." = "分野名がすでに存在します";
+"Field name already exists." = "フィールド名が既に存在します。";
 
 "Disclaimer" = "免責事項";
 "LadyCalendarDisclaimerMsg" = "ストレス及び性ホルモンの不均衡により生理予定日が変わることがあるため排卵日、妊娠可能日が実際とは異なることがあります。\nまた、生理周期が不規則な場合、結果値が合わないこともあるため、すべての女性に適合さないことがあります。\n避妊もしくは可妊のためには排卵日測定法と共に別の方法を一緒に使用してください。";
@@ -863,30 +858,31 @@
 "Categories on the bar" = "バーにあるカテゴリー";
 "Categories in more" = "それ以外のカテゴリー";
 
-"I'd like to share a currency conversion with you." = "この現在の為替レートをあなたと共有したいです。";
-"You can convert more currencies in the AppBox Pro." = "AppBox Proでもっと沢山の為替レートを見る事が出来ます。";
-
 "Increase" = "上昇";
 "Decrease" = "下落";
 
-"Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "ロケーションサービスが出来ない場合。設定→プライバシー→ロケーションサービスに移動して下さい。ロケーションサービスを可能にして下さい。";
+"Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." =
+"位置情報サービスへのアクセスがブロックされています。デバイスの設定＞プライバシー＞位置情報サービスに移動して、ロケーションサービスを可能にして下さい。";
 
-"Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "ロケーションサービスは可能ですが、 AppBox Proのロケーションサービスに接続できない場合。 設定→プライバシー→ロケーションサービスに移動して下さい。";
+"Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." =
+"位置情報サービスがオンになっているが、AppBox Proの位置情報サービスのアクセスがブロックされています。デバイスの設定＞プライバシー＞位置情報サービスに移動して、アクセスを許可してください。";
 
 "FaceTime" = "FaceTime";
 
-"daily" = "daily";
-"weekly" = "weekly";
-"biweekly" = "biweekly";
-"monthly" = "monthly";
-"yearly" = "yearly";
+"daily" = "毎日";
+"weekly" = "毎週";
+"biweekly" = "隔週";
+"monthly" = "毎月";
+"yearly" = "毎年";
 
-"No Photos" = "No Photos";
-"You can add photos into events." = "You can add photos into events.";
+"No Photos" = "写真無し";
+"You can add photos into events." = "イベントに写真を追加してください。";
 
-"UNIT PRICE" = "UNIT PRICE";
-"UNIT" = "UNIT";
-"SIZE" = "SIZE";
-"DISCOUNT" = "DISCOUNT";
+"UNIT PRICE" = "単価";
+"UNIT" = "ユニット";
+"SIZE" = "サイズ";
+"DISCOUNT" = "割引";
 
-"Alert_None" = "None";
+"Alert_None" = "なし";
+
+"Last %ld" = "最近の%ldつ";

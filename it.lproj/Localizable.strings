@@ -37,7 +37,7 @@
 "SECURITY_INFO" = "Apple usa una tecnologia chiamata Data Protection. I tuoi dati sono cifrati con una chiave di 256-bit usando il motore hardware AES. Configurando un codice per il dispositivo, si attiva automaticamente Data Protection. Il codice è \”legato\” all’UID del dispositivo, quindi ogni tentativo di forzare il codice deve essere eseguito sul dispositivo stesso. Il contatore dei tentativi è calibrato in modo tale che ogni tentativo impiega approssimativamente 80 millisecondi. In questo modo per provare tutte le combinazioni di un codice alfanumerico di sei caratteri ci vorrebbero più di 5½ anni, o 2½ anni per un codice di nove caratteri composto da soli numeri";
 
 /* AppBox Pro does not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro"; */
-"microphone access denied" = "AppBox Pro non ha accesso al microfono. \nPer attivare l’accesso vai a %@Impostazioni > Privacy > Microfono > AppBox Pro";
+"microphone access denied" = "AppBox Pro non ha accesso al microfono.\nPer attivare l’accesso vai a %@Impostazioni > Privacy > Microfono > AppBox Pro";
 "Theme Color" = "Colore Tema";
 "About" = "Circa";
 "Remaining Time" = "Tempo Residuo";
@@ -852,17 +852,11 @@
 "Categories on the bar" = "Categorie sulla barra";
 "Categories in more" = "Categorie in più";
 
-"I'd like to share a currency conversion with you." = "Vorrei condividere una conversione di valuta con te";
-"You can convert more currencies in the AppBox Pro." = "È possibile convertire più valute nell’AppBox Pro";
-
 "Increase" = "Aumento";
 "Decrease" = "Diminuzione";
 
 "Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "Servizi di localizzazione non abilitati. Andare in Impostazioni > Privacy > Servizi di localizzazione. I servizi di localizzazione devono essere attivati e AppBox Pro deve autorizzare a mostrare il meteo";
 "Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "I servizi di localizzazione sono attivati, ma AppBox Pro non è autorizzata ad accedere ai servizi di localizzazione. Vai in Impostazioni > Privacy > Servizi di localizzazione e autorizzala a mostrare il meteo";
-
-"During 1 day" = "Per 1 giorno";
-"During 28 days" = "Per 28 giorni";
 
 "daily" = "quotidiano";
 "weekly" = "settimanale";
@@ -870,8 +864,8 @@
 "monthly" = "mensile";
 "yearly" = "annuale";
 
-"No Photos" = "No Photos";
-"You can add photos into events." = "You can add photos into events.";
+"No Photos" = "Nessuna foto";
+"You can add photos into events." = "È possibile aggiungere le foto in eventi.";
 
 "UNIT PRICE" = "PREZZO PER UNITÀ";
 "UNIT" = "UNITÀ";
@@ -879,3 +873,5 @@
 "DISCOUNT" = "SCONTO";
 
 "Alert_None" = "Nessuno";
+
+"Last %ld" = "Più Recente %ld";
