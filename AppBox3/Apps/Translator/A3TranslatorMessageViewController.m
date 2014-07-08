@@ -1363,7 +1363,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a translation with you.", nil)
-									   contents:[self shareContentsAsHTML:YES ]
+									   contents:[[self shareContentsAsHTML:YES ] stringByAppendingString:@"<br/>"]
 										   tail:NSLocalizedString(@"You can translate more in the AppBox Pro.", nil)];
 	}
 	else {

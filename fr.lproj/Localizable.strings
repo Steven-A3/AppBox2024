@@ -702,7 +702,7 @@
 "Re-enter your passcode" = "Saisissez de nouveau votre code d’accès";
 "Re-enter your new passcode" = "Saisissez de nouveau votre nouveau code d’accès";
 "Enter your new passcode" = "Saisissez votre nouveau code d’accès";
-"Passcode did not match." = "Les codes d’accès ne correspondent pas. Réessayer.";
+"Passcode did not match. Try again." = "Les codes d’accès ne correspondent pas. Réessayer.";
 "%i Passcode Failed Attempts" = "%i tentatives de code d’accès échouées";
 "Enter Passcode" = "Saisir le code d’accès";
 "New Passcode" = "Nouveau code d’accès";

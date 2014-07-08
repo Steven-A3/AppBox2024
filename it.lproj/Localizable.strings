@@ -703,7 +703,7 @@
 "%li Passcode Failed Attempts" = "%li Tentativi codice di accesso non riusciti";
 "Please enter new passcode." = "Si prega di inserire un nuovo codice di accesso";
 "Please enter confirm passcode." = "Si prega di confermare il codice di accesso";
-"Passcode did not match." = "Il codice di accesso non corrisponde";
+"Passcode did not match. Try again." = "Il codice di accesso non corrisponde";
 "Please enter passcode." = "Si prega di inserire il codice di accesso";
 "Open in Safari" = "Open in Safari";
 

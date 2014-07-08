@@ -707,7 +707,7 @@
 "%li Passcode Failed Attempts" = "パスコード入力に%i回失敗";
 "Please enter new passcode." = " 新しいパスコードを入力してください。";
 "Please enter confirm passcode." = "新しいパスコードを再入力してください。";
-"Passcode did not match." = "パスコードが違います。";
+"Passcode did not match. Try again." = "パスコードが違います。";
 "Please enter passcode." = "パスコードを入力してください。";
 "Open in Safari" = "Safariでオープン";
 

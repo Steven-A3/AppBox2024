@@ -15,7 +15,7 @@
 "3r1-n4-BZx.text" = "Naciśnij i przytrzymaj walutę,\nnastępnie przesuń w górę lub w dół";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to change\nkeypad for basic/scientific"; ObjectID = "4Y2-hA-ExK"; */
-"4Y2-hA-ExK.text" = "Przesuń w lewo lub w prawo aby zmienić\nklawiaturę na prostą/naukową";
+"4Y2-hA-ExK.text" = "Przesuń w lewo lub w prawo aby zmienić klawiaturę na prostą/naukową";
 
 /* Class = "IBUILabel"; text = "Tap to add an item"; ObjectID = "55x-Hd-Yyy"; */
 "55x-Hd-Yyy.text" = "Naciśnij aby dodać element";
@@ -75,7 +75,7 @@
 "Wl0-Ir-Vwx.text" = "Naciśnij i przytrzymaj język,\nnastępnie przesuń w górę lub w dół";
 
 /* Class = "IBUILabel"; text = "Tap to see chart/account/option"; ObjectID = "ZkW-mi-nXJ"; */
-"ZkW-mi-nXJ.text" = "Naciśnij aby zobaczyć wykres/konto/opcje";
+"ZkW-mi-nXJ.text" = "Naciśnij aby zobaczyć\nwykres/konto/opcje";
 
 /* Class = "IBUILabel"; text = "Slide the calendar to the left,\nthen tap Delete"; ObjectID = "afl-C5-OsY"; */
 "afl-C5-OsY.text" = "Przesuń kalendarz w lewo,\nnastępnie naciśnij Usuń";
@@ -102,7 +102,7 @@
 "k0p-RN-RCK.text" = "Naciśnij w ekran aby\nwyświetlić przyciski.";
 
 /* Class = "IBUILabel"; text = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down"; ObjectID = "ls1-5i-Gos"; */
-"ls1-5i-Gos.text" = "Naciśnij i przytrzymaj ≡\npo prawej stronie elementu,\nnastępnie przesuń w górę lub w dół";
+"ls1-5i-Gos.text" = "Naciśnij i przytrzymaj ≡\npo prawej stronie elementu, następnie przesuń w górę lub w dół";
 
 /* Class = "IBUILabel"; text = "Tap to see more info"; ObjectID = "m1h-st-ypH"; */
 "m1h-st-ypH.text" = "Naciśnij aby zobaczyc więcej informacji";
@@ -111,7 +111,8 @@
 "mYi-2r-6n3.text" = "Naciśnij w ekran aby\nwyświetlić przyciski.";
 
 /* Class = "IBUILabel"; text = "Tap anywhere to see more info"; ObjectID = "n3c-eW-iPb"; */
-"n3c-eW-iPb.text" = "Naciśnij aby zobaczyć więcej informacji";
+"n3c-eW-iPb.text" = "Naciśnij aby zobaczyć
+więcej informacji";
 
 /* Class = "IBUILabel"; text = "Tap the plus button to add a country"; ObjectID = "nP5-9M-28L"; */
 "nP5-9M-28L.text" = "Naciśnij guzik plus aby dodać kraj";
@@ -126,7 +127,8 @@
 "qDX-1u-CmJ.text" = "Naciśnij aby dodać język";
 
 /* Class = "IBUILabel"; text = "Tap to view list of periods"; ObjectID = "qF4-08-u3n"; */
-"qF4-08-u3n.text" = "Naciśnij aby zobaczyć listę okresów";
+"qF4-08-u3n.text" = "Naciśnij aby zobaczyć
+listę okresów";
 
 /* Class = "IBUILabel"; text = "Slide the item to the left,\nthen tap Delete"; ObjectID = "qMW-Th-lrs"; */
 "qMW-Th-lrs.text" = "Przesuń element w lewo,\nnastępnie naciśnij Usuń";
@@ -153,10 +155,11 @@
 "tkT-KJ-PpW.text" = "Przesuń element w lewo,\nnastępnie naciśnij Usuń";
 
 /* Class = "IBUILabel"; text = "Tap to see more categories"; ObjectID = "uz1-Ap-8Ft"; */
-"uz1-Ap-8Ft.text" = "Naciśnij aby zobaczyć więcej kategorii";
+"uz1-Ap-8Ft.text" = "Naciśnij aby zobaczyć
+więcej kategorii";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to see\nprev/next events"; ObjectID = "yXR-Yi-555"; */
-"yXR-Yi-555.text" = "Przesuń w lewo lub w prawo aby zobaczyć \npoprz/nast wydarzenie";
+"yXR-Yi-555.text" = "Przesuń w lewo lub w prawo aby zobaczyć poprz/nast wydarzenie";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to see\ndifferent clock styles"; ObjectID = "zdJ-br-tkO"; */
 "zdJ-br-tkO.text" = "Przesuń w lewo lub w prawo aby zobaczyć \ninne style zegara";

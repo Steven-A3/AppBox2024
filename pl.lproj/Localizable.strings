@@ -62,7 +62,7 @@
 "Translator" = "Tłumacz";
 "Unit Converter" = "Konwerter jednostek";
 "Days Counter" = "Odliczacz dni";
-"Lady Calendar" = "Kalendarz kobiecy";
+"Ladies Calendar" = "Kalendarz kobiecy";
 "Wallet" = "Portfel";
 "Expense List" = "Lista wydatków";
 "Holidays" = "Dni wolne";
@@ -120,8 +120,6 @@
 "Scientific" = "Naukowy";
 "Basic" = "Prosty";
 "Calculator using AppBox Pro" = "Kalulator używa AppBox Pro";
-
-"CHOOSE COLOR" = "WYBIERZ KOLOR";
 
 "Humidity" = "Wilgotność";
 "High" = "Wysoki";
@@ -843,7 +841,7 @@
 "Extra Payment(yearly)" = "Dodakowa płatność (rocznie)";
 "Extra Payment(one-time)" = "Dodatkowa płatność (jednorazowa)";
 
-"I'd like to share a information with you." = "Chcę udsotępnić Tobie informacje.";
+"I'd like to share an information with you." = "Chcę udsotępnić Tobie informacje.";
 "You can manage your information in the AppBox Pro." = "Możesz zarządzać swoimi danymi w aplikacji AppBox Pro.";
 
 "I'd like to share a translation with you." = "Chcę udostępnić Tobie tłumaczenie.";
@@ -854,12 +852,10 @@
 "Disclaimer" = "Wykluczenia";
 "LadyCalendarDisclaimerMsg" = "Następujące prognozy są oparte metodzie kalendarzowej. Nie są one w 100% dokładne. Nie ma gwarancji sukcesu. Prognozy nie powinny być używane jako narzędzie do naturalnego planowania urodzeń.";
 
-
 "Categories on the bar" = "Kategorie na belce";
 "Categories in more" = "Więcej kategorii";
 
 "I'd like to share a currency conversion with you." = "Chcę udostępnić Tobie przeliczenia walut.";
-"You can convert more currencies in the AppBox Pro." = "Możesz przeliczyć więcej walut w aplikacji AppBox Pro.";
 
 "Increase" = "Zwiększ";
 "Decrease" = "Zmniejsz";
@@ -867,18 +863,18 @@
 "Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "Usługi lokalizacji są niedostępne. Przejdź do Ustawienia > Prywatność > Usługi lokalizacji i włącz autoryzację dla AppBox Pro do pokazywania pogody.";
 "Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "Usługi lokalizacji są niedostępne. Przejdź do Ustawienia > Prywatność > Usługi lokalizacji i włącz autoryzację dla AppBox Pro do pokazywania pogody.";
 
-"daily" = "daily";
-"weekly" = "weekly";
-"biweekly" = "biweekly";
-"monthly" = "monthly";
-"yearly" = "yearly";
+"daily" = "codziennie";
+"weekly" = "tygodnika";
+"biweekly" = "dwutygodnik";
+"monthly" = "miesięcznika";
+"yearly" = "w ciągu roku";
 
 "No Photos" = "No Photos";
 "You can add photos into events." = "You can add photos into events.";
 
-"UNIT PRICE" = "UNIT PRICE";
+"UNIT PRICE" = "CENA JEDNOSTKOWA";
 "UNIT" = "JEDNOSTKA";
-"SIZE" = "SIZE";
+"SIZE" = "ROZMIAR";
 "DISCOUNT" = "ZNIŻKA";
 
-"Alert_None" = "None";
+"Alert_None" = "Brak";

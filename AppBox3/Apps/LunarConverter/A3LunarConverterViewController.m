@@ -838,7 +838,7 @@
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
         [self.dateFormatter setDateStyle:NSDateFormatterFullStyle];
 		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a conversion with you.", nil)
-									   contents:[self shareString]
+									   contents:[[self shareString] stringByAppendingString:@"<br/>"]
 										   tail:NSLocalizedString(@"You can convert more in the AppBox Pro.", nil)];
 	} else {
 		NSMutableString *txt = [NSMutableString new];
