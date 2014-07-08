@@ -533,7 +533,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     
     price1UnitPrice = unitPrice1;
     
-    float unitPrice2 = 0;
+    double unitPrice2 = 0;
     NSString *unitPriceTxt2 = @"";
     NSString *unitShortName2;
     NSString *priceTxt2;
@@ -639,7 +639,10 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.downSliderView.priceValue = self.price2.price.floatValue;
     
     price2UnitPrice = unitPrice2;
-
+    
+    unitPrice1 = [[self.decimalFormatter stringFromNumber:@(unitPrice1)] doubleValue];
+    unitPrice2 = [[self.decimalFormatter stringFromNumber:@(unitPrice2)] doubleValue];
+    
     double maxPrice = MAX(unitPrice1, unitPrice2);
     double minPrice = MIN(unitPrice1, unitPrice2);
     cell.upSliderView.maxValue = maxPrice;
