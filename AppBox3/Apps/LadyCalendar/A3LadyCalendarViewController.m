@@ -263,8 +263,6 @@
         _currentMonth = currentWatchingDate;
 
         self.dataManager.currentAccount.watchingDate = currentWatchingDate;
-//		self.currentMonth = currentWatchingDate;
-//		FNLOG(@"%@", self.currentMonth);
 		[self moveToCurrentMonth];
 		[self updateCurrentMonthLabel];
 	});
