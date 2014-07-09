@@ -148,7 +148,7 @@
 
 	double delayInSeconds = 0.15;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
 		[self.tableView reloadData];
 	});
 }
@@ -171,12 +171,15 @@
 
 #pragma mark - action method
 
-- (void)editButtonAction:(UIButton *)button {
+- (void)editButtonAction:(UIButton *)button
+{
 	LadyCalendarAccount *item = [_itemArray objectAtIndex:button.tag];
-	A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] init];
+	
+    A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;
 	viewCtrl.isEditMode = YES;
 	viewCtrl.accountItem = item;
+    
 	A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
 	navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
 	[self presentViewController:navCtrl animated:YES completion:nil];
@@ -184,7 +187,7 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-	if( IS_IPHONE ){
+	if ( IS_IPHONE ) {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
 }
@@ -200,10 +203,11 @@
 
 - (void)reorderingItems
 {
-	for(NSInteger i=0; i < [_itemArray count]; i++){
+	for (NSInteger i=0; i < [_itemArray count]; i++) {
 		LadyCalendarAccount *item = [_itemArray objectAtIndex:i];
 		item.order = [NSNumber numberWithInteger:i+1];
 	}
+
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 

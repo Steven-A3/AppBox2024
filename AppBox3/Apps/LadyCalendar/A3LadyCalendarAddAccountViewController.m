@@ -75,7 +75,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 					ItemKey_Type : @( AccountCell_Notes )
 			}
 	]];
-	if( !_isEditMode ) {
+	if ( !_isEditMode ) {
 		_accountItem = [LadyCalendarAccount MR_createEntity];
 		_accountItem.uniqueID = [[NSUUID UUID] UUIDString];
 		_accountItem.updateDate = [NSDate date];
@@ -101,14 +101,17 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	}
 }
 
-- (void)removeObserver {
+- (void)removeObserver
+{
 	[self removeContentSizeCategoryDidChangeNotification];
+    
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
 	[super viewWillDisappear:animated];
 
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {

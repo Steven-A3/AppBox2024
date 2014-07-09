@@ -32,11 +32,6 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 @property (strong, nonatomic) LadyCalendarPeriod *prevPeriod;
 @property (copy, nonatomic) NSString *textBeforeEditingTextField;
 
-- (void)cancelAction:(id)sender;
-- (void)changeDateAction:(id)sender;
-- (void)reloadItemAtCellType:(NSInteger)cellType;
-- (void)closeDateInputCell;
-
 @end
 
 @implementation A3LadyCalendarAddPeriodViewController
@@ -87,7 +82,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 							ItemKey_Type : @(PeriodCellType_Notes)
 					}]]} ]];
 
-	if( _isEditMode /*&& ![_periodItem.isPredict boolValue]*/ ) {
+	if ( _isEditMode /*&& ![_periodItem.isPredict boolValue]*/ ) {
 		[self.sectionsArray addObject:@{ItemKey_Items : [NSMutableArray arrayWithArray:@[
 				@{
 						ItemKey_Title : NSLocalizedString(@"Delete Period", @"Delete Period"),
@@ -143,17 +138,17 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (void)reloadItemAtCellType:(NSInteger)cellType
 {
     NSMutableArray *array = [NSMutableArray array];
-    for(NSInteger section=0; section < [_sectionsArray count]; section++){
+    for (NSInteger section=0; section < [_sectionsArray count]; section++) {
         NSArray *items = [[_sectionsArray objectAtIndex:section] objectForKey:ItemKey_Items];
 
-        for(NSInteger row = 0; row < [items count]; row++){
+        for (NSInteger row = 0; row < [items count]; row++) {
             NSDictionary *item = [items objectAtIndex:row];
-            if( [[item objectForKey:ItemKey_Type] integerValue] == cellType ){
+            if ( [[item objectForKey:ItemKey_Type] integerValue] == cellType ) {
                 [array addObject:[NSIndexPath indexPathForRow:row inSection:section]];
             }
         }
     }
-    if( [array count] > 0 )
+    if ( [array count] > 0 )
         [self.tableView reloadRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
 }
 
@@ -161,19 +156,19 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 {
     NSInteger findRow = NSNotFound;
     NSInteger findSection = NSNotFound;
-    for(NSInteger section=0; section < [_sectionsArray count]; section++){
+    for (NSInteger section=0; section < [_sectionsArray count]; section++) {
         NSArray *items = [[_sectionsArray objectAtIndex:section] objectForKey:ItemKey_Items];
 
-        for(NSInteger row = 0; row < [items count]; row++){
+        for (NSInteger row = 0; row < [items count]; row++) {
             NSDictionary *item = [items objectAtIndex:row];
-            if( [[item objectForKey:ItemKey_Type] integerValue] == PeriodCellType_DateInput ){
+            if ( [[item objectForKey:ItemKey_Type] integerValue] == PeriodCellType_DateInput ) {
                 findRow = row;
                 findSection = section;
                 break;
             }
         }
     }
-    if( findSection == NSNotFound || findRow == NSNotFound )
+    if ( findSection == NSNotFound || findRow == NSNotFound )
         return;
 
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:findRow inSection:findSection];
@@ -184,11 +179,11 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
     NSInteger inputCellType = 0;
 
-    if( [self.inputItemKey isEqualToString:PeriodItem_StartDate] )
+    if ( [self.inputItemKey isEqualToString:PeriodItem_StartDate] )
         inputCellType = PeriodCellType_StartDate;
-    else if( [self.inputItemKey isEqualToString:PeriodItem_EndDate] )
+    else if ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] )
         inputCellType = PeriodCellType_EndDate;
-    else if( [self.inputItemKey isEqualToString:PeriodItem_Ovulation] )
+    else if ( [self.inputItemKey isEqualToString:PeriodItem_Ovulation] )
         inputCellType = PeriodCellType_Ovulation;
     self.inputItemKey = nil;
     [self reloadItemAtCellType:inputCellType];
@@ -197,18 +192,18 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)resignAllAction
 {
-    for(NSInteger section=0; section < [_sectionsArray count]; section++){
+    for (NSInteger section=0; section < [_sectionsArray count]; section++) {
         NSArray *items = [[_sectionsArray objectAtIndex:section] objectForKey:ItemKey_Items];
 
-        for(NSInteger row = 0; row < [items count]; row++){
+        for (NSInteger row = 0; row < [items count]; row++) {
             NSDictionary *item = [items objectAtIndex:row];
             NSInteger cellType = [[item objectForKey:ItemKey_Type] integerValue];
-            if( cellType == PeriodCellType_CycleLength ){
+            if ( cellType == PeriodCellType_CycleLength ) {
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
                 UITextField *textField = (UITextField*)cell.accessoryView;
                 [textField resignFirstResponder];
             }
-            else if( cellType == PeriodCellType_Notes ){
+            else if ( cellType == PeriodCellType_Notes ) {
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
                 UITextView *textView = (UITextView*)[cell viewWithTag:10];
                 [textView resignFirstResponder];
@@ -237,7 +232,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if( section == ([_sectionsArray count]-1) )
+    if ( section == ([_sectionsArray count]-1) )
         return 38.0;
     return 0.01;
 }
@@ -349,7 +344,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             cell.detailTextLabel.text = [formatter stringFromDate:_periodItem.endDate];
             cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
 
-            if( [_periodItem.endDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970] ){
+            if ( [_periodItem.endDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970] ) {
                 NSDictionary *attr = @{NSFontAttributeName: cell.detailTextLabel.font, NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)};
                 cell.detailTextLabel.attributedText = [[NSAttributedString alloc] initWithString:cell.detailTextLabel.text attributes:attr];
             }
@@ -422,7 +417,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     NSDictionary *item = [items objectAtIndex:indexPath.row];
     NSInteger cellType = [[item objectForKey:ItemKey_Type] integerValue];
     
-    if( cellType == PeriodCellType_Delete ){
+    if ( cellType == PeriodCellType_Delete ) {
         cell.textLabel.frame = CGRectMake(cell.textLabel.frame.origin.x, cell.textLabel.frame.origin.y, cell.contentView.frame.size.width, cell.textLabel.frame.size.height);
     }
 }
@@ -440,29 +435,29 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             [self resignAllAction];
             NSInteger inputCellType = 0;
             
-            if( [self.inputItemKey isEqualToString:PeriodItem_StartDate] )
+            if ( [self.inputItemKey isEqualToString:PeriodItem_StartDate] )
                 inputCellType = PeriodCellType_StartDate;
-            else if( [self.inputItemKey isEqualToString:PeriodItem_EndDate] )
+            else if ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] )
                 inputCellType = PeriodCellType_EndDate;
-            else if( [self.inputItemKey isEqualToString:PeriodItem_Ovulation] )
+            else if ( [self.inputItemKey isEqualToString:PeriodItem_Ovulation] )
                 inputCellType = PeriodCellType_Ovulation;
             
-            if( [self.inputItemKey length] > 0 ){
+            if ( [self.inputItemKey length] > 0 ) {
                 [self closeDateInputCell];
                 
-                if( cellType == inputCellType )
+                if ( cellType == inputCellType )
                     return;
-                else if( inputCellType == PeriodCellType_StartDate && indexPath.section == 0 )
+                else if ( inputCellType == PeriodCellType_StartDate && indexPath.section == 0 )
                     indexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
             }
             
             // open
             [items insertObject:@{ItemKey_Title : @"", ItemKey_Type : @(PeriodCellType_DateInput)} atIndex:indexPath.row+1];
-            if( cellType == PeriodCellType_StartDate )
+            if ( cellType == PeriodCellType_StartDate )
                 self.inputItemKey = PeriodItem_StartDate;
-            else if( cellType == PeriodCellType_EndDate )
+            else if ( cellType == PeriodCellType_EndDate )
                 self.inputItemKey = PeriodItem_EndDate;
-            else if( cellType == PeriodCellType_Ovulation )
+            else if ( cellType == PeriodCellType_Ovulation )
                 self.inputItemKey = PeriodItem_Ovulation;
             [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
             [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -500,7 +495,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if( buttonIndex == actionSheet.destructiveButtonIndex ){
+    if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
 		[_periodItem MR_deleteEntity];
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
@@ -605,28 +600,28 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	[_periodItem setValue:currentDate forKey:self.inputItemKey];
     
     NSInteger inputCellType = 0;
-    if( [self.inputItemKey isEqualToString:PeriodItem_StartDate] )
+    if ( [self.inputItemKey isEqualToString:PeriodItem_StartDate] )
         inputCellType = PeriodCellType_StartDate;
-    else if( [self.inputItemKey isEqualToString:PeriodItem_EndDate] )
+    else if ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] )
         inputCellType = PeriodCellType_EndDate;
-    else if( [self.inputItemKey isEqualToString:PeriodItem_Ovulation] )
+    else if ( [self.inputItemKey isEqualToString:PeriodItem_Ovulation] )
         inputCellType = PeriodCellType_Ovulation;
     [self reloadItemAtCellType:inputCellType];
     
-    if( inputCellType == PeriodCellType_StartDate ){
+    if ( inputCellType == PeriodCellType_StartDate ) {
         NSDate *endDate = _periodItem.endDate;
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:prevDate toDate:endDate];
         endDate = [A3DateHelper dateByAddingDays:diffDays fromDate:_periodItem.startDate];
 		_periodItem.endDate = endDate;
         [self reloadItemAtCellType:PeriodCellType_EndDate];
 
-        if( _prevPeriod ){
+        if ( _prevPeriod ) {
             NSInteger cycleLength = [A3DateHelper diffDaysFromDate:_prevPeriod.startDate toDate:currentDate];
 			_periodItem.cycleLength = @(cycleLength);
             [self reloadItemAtCellType:PeriodCellType_CycleLength];
         }
     }
-    else if( inputCellType == PeriodCellType_Ovulation ){
+    else if ( inputCellType == PeriodCellType_Ovulation ) {
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:_periodItem.startDate toDate:_periodItem.ovulation];
         [[NSUserDefaults standardUserDefaults] setInteger:diffDays forKey:A3LadyCalendarOvulationDays];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -642,19 +637,19 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	cycleLengthComponents.day = [_periodItem.cycleLength integerValue] - 1;
 	_periodItem.periodEnds = [[A3AppDelegate instance].calendar dateByAddingComponents:cycleLengthComponents toDate:_periodItem.startDate options:0];
 
-	if( _periodItem.endDate == nil){
+	if ( _periodItem.endDate == nil) {
 		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"Please input end date.", @"Please input end date.") title:nil];
         return;
     }
-    else if ( [_periodItem.endDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970] ){
+    else if ( [_periodItem.endDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970] ) {
 		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"Cannot Save Period.\nThe start date must be before the end date.", @"Cannot Save Period.\nThe start date must be before the end date.") title:nil];
         return;
     }
-    else if ( [_dataManager isOverlapStartDate:_periodItem.startDate endDate:_periodItem.endDate accountID:_dataManager.currentAccount.uniqueID periodID:_periodItem.uniqueID] ){
+    else if ( [_dataManager isOverlapStartDate:_periodItem.startDate endDate:_periodItem.endDate accountID:_dataManager.currentAccount.uniqueID periodID:_periodItem.uniqueID] ) {
 		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"The new date you entered overlaps with previous dates.", @"The new date you entered overlaps with previous dates.") title:nil];
         return;
     }
-    if( _prevPeriod ){
+    if ( _prevPeriod ) {
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:_prevPeriod.startDate toDate:_periodItem.startDate];
         _prevPeriod.cycleLength = @(diffDays);
     }
