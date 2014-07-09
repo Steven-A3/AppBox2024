@@ -2171,17 +2171,6 @@
 }
 
 #pragma mark - UIActionSheetDelegate
-- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-     if ( actionSheet.tag == ActionTag_Location ) {
-//        [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:2] animated:YES];
-
-//         NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-//         NSIndexPath *locationIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_Location atSectionArray:section1_items]
-//                                                             inSection:AddSection_Section_1];
-//         [self.tableView deselectRowAtIndexPath:locationIndexPath animated:YES];
-     }
-}
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
@@ -2258,10 +2247,16 @@
                 return;
             }
             
-            A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
-            nextVC.eventModel = self.eventItem;
-            nextVC.sharedManager = _sharedManager;
-            [self.navigationController pushViewController:nextVC animated:YES];
+			if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
+                [self alertLocationDisabled];
+                return;
+            }
+            else {
+                A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
+                nextVC.eventModel = self.eventItem;
+                nextVC.sharedManager = _sharedManager;
+                [self.navigationController pushViewController:nextVC animated:YES];
+            }
         }
     }
     else if ( actionSheet.tag == ActionTag_DeleteEvent ) {
