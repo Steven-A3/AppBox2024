@@ -197,8 +197,6 @@
 
 		// Get the array for the section.
 		NSMutableArray *sections = newSectionsArray[sectionNumber];
-		A3SearchTargetItem *targetItem = object;
-		FNLOG(@"%@, %ld, %@", targetItem.displayName, (long)sectionNumber, [_collation sectionTitles][sectionNumber]);
 
 		//  Add the time zone to the section.
 		[sections addObject:object];

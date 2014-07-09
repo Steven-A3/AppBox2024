@@ -213,7 +213,7 @@ static const CGFloat kSideViewWidth = 320.0;
 	if (!_centerCoverView) {
 		_centerCoverView = [UIView new];
 		_centerCoverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		_centerCoverView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.1];
+		_centerCoverView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.15];
 		UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCoverViewHandler:)];
 		[_centerCoverView addGestureRecognizer:gestureRecognizer];
 		[self.centerNavigationController.view addSubview:_centerCoverView];
