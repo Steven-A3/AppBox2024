@@ -32,7 +32,7 @@
 
 @property (strong, nonatomic) A3LadyCalendarModelManager *dataManager;
 @property (strong, nonatomic) UIView *headerView;
-//@property (strong, nonatomic) NSDate *currentMonth;
+@property (strong, nonatomic) NSDate *currentMonth;
 @property (strong, nonatomic) NSMutableArray *sectionArray;
 @property (strong, nonatomic) NSMutableDictionary *monthDict;
 
@@ -218,6 +218,8 @@
 //	self.currentMonth = [notification.userInfo objectForKey:A3LadyCalendarChangedDateKey];
 //	[[NSUserDefaults standardUserDefaults] setObject:self.currentMonth forKey:A3LadyCalendarLastViewMonth];
 //	[[NSUserDefaults standardUserDefaults] synchronize];
+    self.dataManager.currentAccount.watchingDate = [notification.userInfo objectForKey:A3LadyCalendarChangedDateKey];
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 	[self moveToCurrentMonth];
 }
@@ -229,6 +231,7 @@
 	[self setupNavigationTitle];
 
 	[self.navigationController setToolbarHidden:NO];
+    _collectionView.delegate = self;
 
 	if( isFirst ) {
 		isFirst = NO;
@@ -251,11 +254,13 @@
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         NSDate *currentWatchingDate = [[self.dataManager currentAccount] watchingDate];
-        if (!currentWatchingDate) {
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.uniqueID == %@", [[self.dataManager currentAccount] uniqueID]];
-            LadyCalendarPeriod *firstPeriod = [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:YES];
-            currentWatchingDate = firstPeriod ? [firstPeriod startDate] : [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
-        }
+//        if (!currentWatchingDate) {
+//            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.uniqueID == %@", [[self.dataManager currentAccount] uniqueID]];
+//            LadyCalendarPeriod *firstPeriod = [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:YES];
+//            currentWatchingDate = firstPeriod ? [firstPeriod startDate] : [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
+//        }
+        currentWatchingDate = (currentWatchingDate == nil ? [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]] : currentWatchingDate);
+        _currentMonth = currentWatchingDate;
 
         self.dataManager.currentAccount.watchingDate = currentWatchingDate;
 //		self.currentMonth = currentWatchingDate;
@@ -344,13 +349,13 @@
 - (void)updateCurrentMonthLabel
 {
 	[self calculateCurrentMonthWithScrollView:_collectionView];
-//	FNLOG(@"%@", _currentMonth);
 
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateStyle:NSDateFormatterLongStyle];
 	NSString *dateFormat = [dateFormatter formatStringByRemovingDayComponent:dateFormatter.dateFormat];
 	[dateFormatter setDateFormat:dateFormat];
-	self.currentMonthLabel.text = [dateFormatter stringFromDate:[self.dataManager.currentAccount watchingDate]];
+	//self.currentMonthLabel.text = [dateFormatter stringFromDate:[self.dataManager.currentAccount watchingDate]];
+    self.currentMonthLabel.text = [dateFormatter stringFromDate:_currentMonth];
 
     NSDate *todayMonth = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
 
@@ -514,20 +519,15 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
     if( self.currentIndexPath == nil ){
         self.currentIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     }
-    
-//    NSDate *month = [self dateFromIndexPath:_currentIndexPath];
-//    if( ![self.currentMonth isEqual:month] ){
-//        self.currentMonth = month;
-//		[self updateCurrentMonthLabel];
-//    }
-    NSDate *currentWatchingDate = [[self.dataManager currentAccount] watchingDate];
+
+    NSDate *currentWatchingDate = _currentMonth;
     NSDate *month = [self dateFromIndexPath:_currentIndexPath];
-//    if( ![currentWatchingDate isEqual:month] ){
-//        self.dataManager.currentAccount.watchingDate = month;
-//		[self updateCurrentMonthLabel];
-//    }
-    if( [currentWatchingDate isEqual:month] ){
-        self.dataManager.currentAccount.watchingDate = month;
+
+    if( ![currentWatchingDate isEqual:month] ){
+        _currentMonth = month;
+        if (currentWatchingDate) {
+            self.dataManager.currentAccount.watchingDate = month;
+        }
 		[self updateCurrentMonthLabel];
     }
     
