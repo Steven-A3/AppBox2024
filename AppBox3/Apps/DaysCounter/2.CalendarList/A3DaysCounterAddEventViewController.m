@@ -1309,6 +1309,11 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
+        [self alertLocationDisabled];
+        return;
+    }
+    
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 															 delegate:self
 													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
@@ -2231,15 +2236,11 @@
             [self.tableView reloadData];
         }
         else if ( buttonIndex == actionSheet.firstOtherButtonIndex ) {
-			if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
-				[self alertLocationDisabled];
-			} else {
 				self.locationManager = [[CLLocationManager alloc] init];
 				_locationManager.delegate = self;
 				_locationManager.distanceFilter = kCLDistanceFilterNone;
 				_locationManager.desiredAccuracy = kCLLocationAccuracyBest;
 				[_locationManager startUpdatingLocation];
-			}
         }
         else if ( buttonIndex == (actionSheet.firstOtherButtonIndex + 1)) {
             if (![[A3AppDelegate instance].reachability isReachable]) {
@@ -2247,16 +2248,10 @@
                 return;
             }
             
-			if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
-                [self alertLocationDisabled];
-                return;
-            }
-            else {
-                A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
-                nextVC.eventModel = self.eventItem;
-                nextVC.sharedManager = _sharedManager;
-                [self.navigationController pushViewController:nextVC animated:YES];
-            }
+            A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
+            nextVC.eventModel = self.eventItem;
+            nextVC.sharedManager = _sharedManager;
+            [self.navigationController pushViewController:nextVC animated:YES];
         }
     }
     else if ( actionSheet.tag == ActionTag_DeleteEvent ) {
