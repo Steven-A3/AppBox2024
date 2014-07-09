@@ -106,8 +106,9 @@
 					   }
 	];
     self.settingDict = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting]];
-    if( self.settingDict == nil )
+    if ( self.settingDict == nil ) {
         self.settingDict = [_dataManager createDefaultSetting];
+    }
 	self.tableView.showsVerticalScrollIndicator = NO;
 }
 

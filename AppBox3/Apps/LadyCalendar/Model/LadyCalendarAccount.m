@@ -2,7 +2,7 @@
 //  LadyCalendarAccount.m
 //  AppBox3
 //
-//  Created by A3 on 6/30/14.
+//  Created by kimjeonghwan on 7/9/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -18,6 +18,7 @@
 @dynamic order;
 @dynamic uniqueID;
 @dynamic updateDate;
+@dynamic watchingDate;
 @dynamic periods;
 
 @end
