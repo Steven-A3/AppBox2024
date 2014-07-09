@@ -662,8 +662,9 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 }
 
 + (NSArray *)candidateForLunarDates {
-	return @[@"kr", @"cn", @"hk", @"tw"];
+	return @[@"kr", @"cn", @"hk", @"tw", @"sg", @"mo"];
 }
+
 + (NSMutableArray *)arrayOfShowingLunarDates {
 	NSArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:kHolidayCountriesShowLunarDates];
 	if (!array) {
