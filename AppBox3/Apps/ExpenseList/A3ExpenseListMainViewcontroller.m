@@ -1212,6 +1212,11 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     textField.userInteractionEnabled = NO;
     
     NSIndexPath *index = [self.tableView indexPathForCell:aCell];
+    if ([_tableDataSourceArray count] < [index row]) {
+        self.firstResponder = nil;
+        return;
+    }
+    
     ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:index.row];
 
 	if (textField == aCell.nameTextField) {
