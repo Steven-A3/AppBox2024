@@ -656,6 +656,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 	_periodItem.updateDate = [NSDate date];
 	_periodItem.isPredict = @NO;
+    _periodItem.account.watchingDate = _periodItem.startDate;
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
