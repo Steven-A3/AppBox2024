@@ -191,7 +191,7 @@
 				[self.constraints addObject:make.bottom.equalTo(self.view.centerY).with.offset(-timeHalfHeightUp)];
 			}];
 		}
-		if (self.showDate) {
+		if (self.showDate || self.showTheDayOfTheWeek) {
 			[_date setFont:otherFont];
 			[_date makeConstraints:^(MASConstraintMaker *make) {
 				[self.constraints addObject:make.right.equalTo(self.view.centerX).with.offset(zeroSize.width * 3 + spaceSize.width - 8)];
@@ -264,7 +264,7 @@
 				[self.constraints addObject:make.bottom.equalTo(self.view.centerY).with.offset(-(timeHalfHeightUp))];
 			}];
 		}
-		if (self.showDate) {
+		if (self.showDate || self.showTheDayOfTheWeek) {
 			[_date setFont:otherFont];
 			[_date makeConstraints:^(MASConstraintMaker *make) {
 				[self.constraints addObject:make.right.equalTo(self.view.centerX).with.offset(zeroSize.width * 2 + spaceSize.width / 2 - 8)];
@@ -442,9 +442,10 @@
 }
 
 - (void)setupDateLabel {
-	if (self.showDate) {
+	if (self.showDate || self.showTheDayOfTheWeek) {
 		if (!_date) {
 			_date = [self makeLabel];
+			_date.textAlignment = NSTextAlignmentRight;
 			[self.view addSubview:_date];
 		}
 	} else {
@@ -491,7 +492,7 @@
 	if (self.showAMPM) {
 		_AMPM.text = clockInfo.AMPM;
 	}
-	if (self.showDate) {
+	if (self.showDate || self.showTheDayOfTheWeek) {
 		_date.text = clockInfo.dateStringConsideringOptions;
 	}
 

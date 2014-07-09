@@ -19,11 +19,9 @@
 #import "A3LadyCalendarAddPeriodViewController.h"
 #import "LadyCalendarAccount.h"
 #import "LadyCalendarPeriod.h"
-#import "UIColor+A3Addition.h"
 #import "A3LadyCalendarCalendarView.h"
 #import "A3UserDefaults.h"
 #import "A3LadyCalendarAccountListViewController.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3InstructionViewController.h"
 #import "NSDateFormatter+A3Addition.h"
@@ -59,7 +57,7 @@
 {
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
-	self.title = NSLocalizedString(@"Ladies Calendar", @"Lady Calendar");
+	self.title = NSLocalizedString(@"Ladies Calendar", nil);
 
 	[self leftBarButtonAppsButton];
 
@@ -270,7 +268,7 @@
 
 - (void)setupNavigationTitle {
 	if( [self.dataManager numberOfAccountInContext:[[MagicalRecordStack defaultStack] context]] == 1 && [[[self.dataManager currentAccount] name] isEqualToString:[self.dataManager defaultAccountName]]){
-		self.navigationItem.title = NSLocalizedString(@"Ladies Calendar", @"Lady Calendar");
+		self.navigationItem.title = NSLocalizedString(@"Ladies Calendar", nil);
 	}
 	else{
 		self.navigationItem.title = [[self.dataManager currentAccount] name];
