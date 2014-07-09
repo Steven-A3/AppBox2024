@@ -406,7 +406,7 @@
 "Select Country" = "국가 선택";
 "To add a new country, remove one first." = "새로운 국가를 더 추가하려면 기존에 추가한 국가 중 하나를 지우셔야 합니다.";
 
-"Acknowledgement" = "감사의 말";
+"Acknowledgement" = "감사의 말씀";
 "Upcoming" = "남은 휴일";
 "Past" = "지난 휴일";
 "Holidays for the year %lu is not available." = "%lu 년도의 휴일/기념일 정보는 제공되지 않습니다.";

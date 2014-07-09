@@ -266,7 +266,6 @@
 		[self moveToCurrentMonth];
 		[self updateCurrentMonthLabel];
 	});
-
 }
 
 - (void)setupNavigationTitle {

@@ -178,6 +178,8 @@
 			NSInteger uniCode = code - 44032;
 			NSInteger chosungIndex = uniCode / 21 / 28;
 			[result appendString:[chosung objectAtIndex:chosungIndex]];
+		} else {
+			[result appendString:[self substringWithRange:NSMakeRange(i, 1)]];
 		}
 	}
 	return result;

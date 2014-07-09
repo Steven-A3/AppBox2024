@@ -11,6 +11,7 @@
 #import "A3CurrencySelectViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "NSString+conversion.h"
 
 @implementation A3SearchTargetItem
 @end
@@ -196,6 +197,8 @@
 
 		// Get the array for the section.
 		NSMutableArray *sections = newSectionsArray[sectionNumber];
+		A3SearchTargetItem *targetItem = object;
+		FNLOG(@"%@, %ld, %@", targetItem.displayName, (long)sectionNumber, [_collation sectionTitles][sectionNumber]);
 
 		//  Add the time zone to the section.
 		[sections addObject:object];
@@ -204,7 +207,7 @@
 	NSMutableArray *dataContainingSectionsArray = [NSMutableArray new];
 	NSMutableArray *sectionTitles = [NSMutableArray new];
 	NSMutableArray *sectionIndexTitles = [NSMutableArray new];
-	
+
 	// Now that all the data's in place, each section array needs to be sorted.
 	for (index = 0; index < sectionTitlesCount; index++) {
 
@@ -213,10 +216,18 @@
 		if ([dataArrayForSection count]) {
 			// If the table view or its contents were editable, you would make a mutable copy here.
 			NSArray *sortedDataArrayForSection = [self.collation sortedArrayFromArray:dataArrayForSection collationStringSelector:NSSelectorFromString(@"displayName")];
+
+			A3SearchTargetItem *firstItem = sortedDataArrayForSection[0];
+			NSString *firstLetter = [[[firstItem displayName] substringToIndex:1] componentsSeparatedByKorean];
 			[dataContainingSectionsArray addObject:sortedDataArrayForSection];
-			if (index) {
-				[sectionTitles addObject:[_collation sectionTitles][index - 1]];
-				[sectionIndexTitles addObject:[_collation sectionTitles][index - 1]];
+			NSInteger sectionTitleIndex = [[_collation sectionTitles] indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+				return [obj isEqualToString:firstLetter];
+			}];
+			if (sectionTitleIndex != NSNotFound) {
+				[sectionTitles addObject:[_collation sectionTitles][sectionTitleIndex]];
+				[sectionIndexTitles addObject:[_collation sectionTitles][sectionTitleIndex]];
+			} else {
+				FNLOG(@"%@, %@", firstItem.displayName, firstLetter);
 			}
 		}
 	}
