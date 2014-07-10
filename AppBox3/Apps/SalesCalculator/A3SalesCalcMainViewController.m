@@ -235,6 +235,9 @@ static NSString *const A3SalesCalcSavedInputDataKey = @"A3SalesCalcSavedInputDat
 }
 
 -(void)saveToHistory:(id)sender {
+    [self.firstResponder resignFirstResponder];
+    [self.textViewResponder resignFirstResponder];
+    
     BOOL result;
     A3TextViewElement *notes = (A3TextViewElement *)[self.root elementForIndexPath:[NSIndexPath indexPathForRow:2 inSection:2]];
     self.preferences.calcData.notes = notes.value;
