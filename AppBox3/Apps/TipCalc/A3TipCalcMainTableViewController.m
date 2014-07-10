@@ -259,7 +259,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		_headerView.dataManager = self.dataManager;
         [_headerView.beforeSplitButton addTarget:self action:@selector(beforeSplitButtonTouchedUp:) forControlEvents:UIControlEventTouchUpInside];
         [_headerView.perPersonButton addTarget:self action:@selector(perPersonButtonTouchedUp:) forControlEvents:UIControlEventTouchUpInside];
-        [_headerView.detailInfoButton addTarget:self action:@selector(detailButtonTouchedUp:) forControlEvents:UIControlEventTouchUpInside];
+        [_headerView.detailInfoButton addTarget:self action:@selector(detailInfoButtonTouchedUp:) forControlEvents:UIControlEventTouchUpInside];
     }
 	if ([self.dataManager isSplitOptionOn]) {
 		if (IS_IPAD) {
@@ -335,7 +335,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 #pragma mark - button event
-- (void)detailButtonTouchedUp:(UIButton* )aSender
+- (void)detailInfoButtonTouchedUp:(UIButton* )aSender
 {
     if (self.localPopoverController) {
         [self disposeInitializedCondition];
@@ -346,6 +346,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         [self.firstResponder resignFirstResponder];
         return;
     }
+    
+    [self dismissMoreMenu];
     
     A3PopoverTableViewController * popoverTableView = [[A3PopoverTableViewController alloc] initWithStyle:UITableViewStylePlain];
     NSMutableArray *titles = [NSMutableArray new];
