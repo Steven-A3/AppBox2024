@@ -640,8 +640,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     
     price2UnitPrice = unitPrice2;
     
-    unitPrice1 = [[self.decimalFormatter stringFromNumber:@(unitPrice1)] doubleValue];
-    unitPrice2 = [[self.decimalFormatter stringFromNumber:@(unitPrice2)] doubleValue];
+    unitPrice1 = [[self.decimalFormatter numberFromString:[self.decimalFormatter stringFromNumber:@(unitPrice1)]] doubleValue];
+    unitPrice2 = [[self.decimalFormatter numberFromString:[self.decimalFormatter stringFromNumber:@(unitPrice2)]] doubleValue];
     
     double maxPrice = MAX(unitPrice1, unitPrice2);
     double minPrice = MIN(unitPrice1, unitPrice2);
