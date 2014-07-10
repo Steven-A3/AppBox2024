@@ -48,6 +48,8 @@
 @property (nonatomic, assign) BOOL useInstruction;
 @end
 
+NSString *const A3ClockUserDefaultsCurrentPage = @"A3ClockUserDefaultsCurrentPage";
+
 @implementation A3ClockMainViewController
 
 - (A3ClockDataManager *)clockDataManager {
@@ -145,9 +147,12 @@
 		[self layoutSubviews];
 		[self.clockDataManager startTimer];
 		[self setupInstructionView];
-        if (self.instructionViewController) {
-            [self adjustInstructionFingerPositionForPortrait:IS_PORTRAIT];
-        }
+		if (self.instructionViewController) {
+			[self adjustInstructionFingerPositionForPortrait:IS_PORTRAIT];
+		}
+		_pageControl.currentPage = [[NSUserDefaults standardUserDefaults] integerForKey:A3ClockUserDefaultsCurrentPage];
+		[self scrollToPage:_pageControl.currentPage];
+		[self gotoPage:_pageControl.currentPage];
 	}
 }
 
@@ -305,7 +310,7 @@
 		_pageControl.currentPage = 0;
 		_pageControl.numberOfPages = kCntPage;
 		[_pageControl setHidden:YES];
-		[_pageControl addTarget:self action:@selector(pageChangeValue:) forControlEvents:UIControlEventValueChanged];
+		[_pageControl addTarget:self action:@selector(pageControlValueChanged:) forControlEvents:UIControlEventValueChanged];
 		[_pageControl sizeToFit];
 	}
 	return _pageControl;
@@ -685,9 +690,10 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 
 #pragma mark - scrollView & pageControl event
 
-- (void)pageChangeValue:(id)sender {
+- (void)pageControlValueChanged:(id)sender {
     UIPageControl *pControl = (UIPageControl *) sender;
-    [_scrollView setContentOffset:CGPointMake(pControl.currentPage*self.view.bounds.size.width, 0) animated:YES];
+    [self scrollToPage:pControl.currentPage];
+	[self gotoPage:pControl.currentPage];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -699,15 +705,24 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 {
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	CGFloat pageWidth = screenBounds.size.width;
-
 	_pageControl.currentPage = (NSInteger) floorf(_scrollView.contentOffset.x / pageWidth);
-    
-    _currentClockViewController = self.viewControllers[(NSUInteger) _pageControl.currentPage];
-    [self.view setBackgroundColor:_currentClockViewController.view.backgroundColor];
+	[self gotoPage:_pageControl.currentPage];
+}
+
+- (void)gotoPage:(NSInteger)page {
+	[[NSUserDefaults standardUserDefaults] setInteger:_pageControl.currentPage forKey:A3ClockUserDefaultsCurrentPage];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	_currentClockViewController = self.viewControllers[(NSUInteger) _pageControl.currentPage];
+	[self.view setBackgroundColor:_currentClockViewController.view.backgroundColor];
 
 	[_currentClockViewController updateLayout];
 
 	[self setButtonTintColor];
+}
+
+- (void)scrollToPage:(NSInteger)page {
+	[_scrollView setContentOffset:CGPointMake(page * self.view.bounds.size.width, 0)];
 }
 
 - (void)setButtonTintColor {

@@ -153,6 +153,7 @@
 	if (!_layoutInitialized) {
 		_layoutInitialized = YES;
 		[self layoutSubviews];
+		[self refreshWholeClock:self.clockDataManager.clockInfo];
 	}
 }
 

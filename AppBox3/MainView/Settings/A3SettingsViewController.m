@@ -14,6 +14,7 @@
 #import "A3UIDevice.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate+iCloud.h"
+#import "Reachability.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowUseiCloud = 1100,
@@ -183,6 +184,18 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	BOOL deleteCloud = buttonIndex == actionSheet.destructiveButtonIndex;
 
 	[[A3AppDelegate instance] setCloudEnabled:YES deleteCloud:deleteCloud ];
+}
+
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+	if ([identifier isEqualToString:@"pushDropboxBackup"]) {
+		if (![[A3AppDelegate instance].reachability isReachable]) {
+			[self alertInternetConnectionIsNotAvailable];
+			NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+			[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+			return NO;
+		}
+	}
+	return YES;
 }
 
 @end
