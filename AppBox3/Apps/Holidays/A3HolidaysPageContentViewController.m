@@ -120,12 +120,10 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 }
 
 - (void)imageDownloaded:(NSNotification *)notification {
-	FNLOG(@"%@, %@", notification.userInfo[@"CountryCode"], _countryCode);
 	if ([notification.userInfo[@"CountryCode"] isEqualToString:_countryCode]) {
-		[_pageViewController updatePhotoLabelText];
-		_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode];
-
 		dispatch_async(dispatch_get_main_queue(), ^{
+			[_pageViewController updatePhotoLabelText];
+			_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode];
 			[self alertAcknowledgment];
 		});
 	}

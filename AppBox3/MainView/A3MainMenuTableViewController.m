@@ -217,6 +217,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 }
 
 - (NSArray *)elementsWithData:(NSArray *)elementsDescriptions {
+	FNLOG(@"%@", elementsDescriptions);
 	NSMutableArray *elementsArray = [NSMutableArray new];
 	for (NSDictionary *elementDescription in elementsDescriptions) {
 		if ([elementDescription[kA3AppsMenuExpandable] boolValue] && elementDescription[kA3AppsExpandableChildren]) {
@@ -249,8 +250,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 				// Check active view controller
 				if (![weakSelf isActiveViewController:[targetViewController class]]) {
 					if (   [A3KeychainUtils getPassword]
-						&& [menuElement respondsToSelector:@selector(needSecurityCheck)]
-						&& [menuElement needSecurityCheck]
+						&& [menuElement securitySettingsIsOn]
 						&& [[A3AppDelegate instance] didPasscodeTimerEnd]
 						)
 					{
