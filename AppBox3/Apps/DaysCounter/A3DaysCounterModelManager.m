@@ -596,11 +596,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     if ([self calendarItemByID:[item objectForKey:CalendarItem_ID] inContext:context] )
         return nil;
     
-    //NSUInteger numberOfItems = [DaysCounterCalendar MR_countOfEntitiesWithContext:context];
-    NSArray *allCalendar = [DaysCounterCalendar MR_findAll];
-    [allCalendar enumerateObjectsUsingBlock:^(DaysCounterCalendar *obj, NSUInteger idx, BOOL *stop) {
-        obj.order = @([obj.order integerValue] + 1);
-    }];
+    NSUInteger numberOfItems = [DaysCounterCalendar MR_countOfEntitiesWithContext:context];
     
     // save to core data storage
     DaysCounterCalendar *calendar = [DaysCounterCalendar MR_createInContext:context];
@@ -610,7 +606,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     calendar.calendarColor = [NSKeyedArchiver archivedDataWithRootObject:[item objectForKey:CalendarItem_Color]];
     calendar.isShow = [item objectForKey:CalendarItem_IsShow];
     calendar.calendarType = [item objectForKey:CalendarItem_Type];
-    calendar.order = [NSNumber numberWithInteger:0];
+    calendar.order = [NSNumber numberWithInteger:numberOfItems + 1];
     calendar.isDefault = [item objectForKey:CalendarItem_IsDefault];
     calendar.calendarColorID = colorID;
     
@@ -620,6 +616,29 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return calendar;
 }
 
+- (DaysCounterCalendar *)addCalendarToFirstItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context {
+    NSArray *allCalendar = [DaysCounterCalendar MR_findAll];
+    [allCalendar enumerateObjectsUsingBlock:^(DaysCounterCalendar *obj, NSUInteger idx, BOOL *stop) {
+        obj.order = @([obj.order integerValue] + 1);
+    }];
+    
+    // save to core data storage
+    DaysCounterCalendar *calendar = [DaysCounterCalendar MR_createInContext:context];
+    calendar.uniqueID = [item objectForKey:CalendarItem_ID];
+    calendar.updateDate = [NSDate date];
+    calendar.calendarName = [item objectForKey:CalendarItem_Name];
+    calendar.calendarColor = [NSKeyedArchiver archivedDataWithRootObject:[item objectForKey:CalendarItem_Color]];
+    calendar.isShow = [item objectForKey:CalendarItem_IsShow];
+    calendar.calendarType = [item objectForKey:CalendarItem_Type];
+    calendar.order = [NSNumber numberWithInteger:0];
+    calendar.isDefault = [item objectForKey:CalendarItem_IsDefault];
+    calendar.calendarColorID = colorID;
+    
+    [context MR_saveToPersistentStoreAndWait];
+    
+    FNLOG(@"%@, %@", calendar.uniqueID, calendar.calendarName);
+    return calendar;
+}
 
 - (BOOL)updateCalendarItem:(NSMutableDictionary*)item colorID:(NSString *)colorID
 {

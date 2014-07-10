@@ -119,13 +119,13 @@
             }
         }
         else {
-            DaysCounterCalendar *anniversaryCalendar = [_sharedManager calendarItemByID:@"1" inContext:[[MagicalRecordStack defaultStack] context] ];
-            if (!anniversaryCalendar) {
-                anniversaryCalendar = [[[_sharedManager allUserCalendarList] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isShow == %@", @(YES)]] firstObject];
-            }
+            DaysCounterCalendar *anniversaryCalendar = [[[_sharedManager allUserCalendarList] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isShow == %@", @(YES)]] firstObject];
             if (!anniversaryCalendar) {
                 anniversaryCalendar = [[_sharedManager allUserCalendarList] firstObject];
             }
+            
+            NSAssert(anniversaryCalendar, @"anniversaryCalendar");
+            
             if (anniversaryCalendar) {
                 _eventItem.calendar = anniversaryCalendar;
             }

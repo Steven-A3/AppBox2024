@@ -50,6 +50,7 @@
 - (BOOL)removeCalendarItemWithID:(NSString*)calendarID;
 
 - (DaysCounterCalendar *)addCalendarItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context;
+- (DaysCounterCalendar *)addCalendarToFirstItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context;
 - (BOOL)updateCalendarItem:(NSMutableDictionary*)item colorID:(NSString *)colorID;
 - (NSInteger)numberOfAllEvents;
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date;

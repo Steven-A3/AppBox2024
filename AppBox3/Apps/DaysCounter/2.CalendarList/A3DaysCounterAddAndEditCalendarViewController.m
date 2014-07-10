@@ -344,7 +344,8 @@
     }
     
     if ( !_isEditMode ) {
-        [_sharedManager addCalendarItem:_calendarItem colorID:_colorID inContext:[[MagicalRecordStack defaultStack] context] ];
+//        [_sharedManager addCalendarItem:_calendarItem colorID:_colorID inContext:[[MagicalRecordStack defaultStack] context] ];
+        [_sharedManager addCalendarToFirstItem:_calendarItem colorID:_colorID inContext:[[MagicalRecordStack defaultStack] context]];
     }
     else {
         [_sharedManager updateCalendarItem:_calendarItem colorID:_colorID];
