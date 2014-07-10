@@ -877,3 +877,4 @@
 
 "Alert_None" = "Brak";
 
+"Failed to download backup file." = "Pobranie zawartości nie powiodło się.";

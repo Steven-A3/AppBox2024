@@ -882,3 +882,4 @@
 "FaceTime" = "FaceTime";
 "Last %ld" = "Plus récent %ld";
 
+"Failed to download backup file." = "Impossible de télécharger le fichier de sauvegarde.";

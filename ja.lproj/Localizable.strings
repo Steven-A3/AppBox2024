@@ -829,7 +829,9 @@
 "DaysCounter_ALL" = "全て";
 
 "You can calculate more in the AppBox Pro." = "AppBox Proのさまざまな計算機能を利用してみてください。";
-"I'd like to share a calculation with you." = "この計算結果を共有します。";
+"I'd like to share a calculation with you." = "計算結果を共有します。";
+"I'd like to share a conversion with you." = "変換結果を共有します。";
+"You can convert more in the AppBox Pro." = "AppBox Proのさまざまな変換機能を利用してみてください。";
 "Download from AppStore" = "AppStoreでダウンロード";
 
 "Result" = "結果";
@@ -887,3 +889,4 @@
 
 "Last %ld" = "最近の%ldつ";
 
+"Failed to download backup file." = "バックアップファイルのダウンロードに失敗しました。";

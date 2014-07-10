@@ -24,6 +24,7 @@
 #import "DaysCounterEvent+management.h"
 #import "NSString+conversion.h"
 #import "WalletData.h"
+#import "A3SettingsBackupRestoreViewController.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -147,13 +148,18 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+	// Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 	[self applicationWillEnterForeground_passcode];
 	FNLOG();
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+	UINavigationController *navigationController = [self navigationController];
+	UIViewController *topViewController = self.navigationController.topViewController;
+	if ([topViewController isKindOfClass:[A3SettingsBackupRestoreViewController class]] && ![[DBSession sharedSession] isLinked]) {
+		[navigationController popViewControllerAnimated:NO];
+	}
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 	[self applicationDidBecomeActive_passcode];
 

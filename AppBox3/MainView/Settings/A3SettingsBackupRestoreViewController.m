@@ -262,6 +262,12 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 }
 
 - (void)restClient:(DBRestClient *)client loadFileFailedWithError:(NSError *)error {
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+														message:NSLocalizedString(@"Failed to download backup file.", @"Failed to download backup file.")
+													   delegate:nil
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+											  otherButtonTitles:nil];
+	[alertView show];
 	[_HUD hide:YES];
 	_HUD = nil;
 }

@@ -889,3 +889,4 @@
 "FaceTime" = "FaceTime";
 "Last %ld" = "最后的%ld个";
 
+"Failed to download backup file." = "无法下载备份文件。";

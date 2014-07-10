@@ -897,3 +897,4 @@
 
 "Alert_None" = "사용하지 않음";
 
+"Failed to download backup file." = "백업파일을 다운로드하지 못했습니다.";
