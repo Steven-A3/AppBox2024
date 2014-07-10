@@ -27,7 +27,6 @@
 #import "WalletCategory+initialize.h"
 
 @interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate>
-@property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) UIButton *infoButton;
@@ -129,14 +128,6 @@
 {
     BOOL itemHave = (self.items.count>0) ? YES:NO;
     self.editButtonItem.enabled = itemHave;
-
-	NSUInteger maxCellInWindow = IS_IPHONE ? 8 : 14;
-	if (self.items.count > maxCellInWindow) {
-		self.tableView.tableFooterView = self.footerView;
-	}
-	else {
-		self.tableView.tableFooterView = nil;
-	}
 }
 
 - (NSMutableArray *)items
@@ -150,15 +141,6 @@
     }
 
     return super.items;
-}
-
-- (UIView *)footerView
-{
-    if (!_footerView) {
-        _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.tableView.rowHeight)];
-    }
-
-    return _footerView;
 }
 
 - (UIBarButtonItem *)deleteBarItem
@@ -526,10 +508,11 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-    return NSLocalizedString(@"Share unit converting data", @"Share unit converting data");
+    return NSLocalizedString(@"Share information", nil);
 }
 
 #pragma mark - ActionSheet delegate
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 
     if (actionSheet.tag == 1111) {

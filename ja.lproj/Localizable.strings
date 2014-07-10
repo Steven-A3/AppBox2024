@@ -890,3 +890,5 @@
 "Last %ld" = "最近の%ldつ";
 
 "Failed to download backup file." = "バックアップファイルのダウンロードに失敗しました。";
+
+"Share information" = "情報を共有する";

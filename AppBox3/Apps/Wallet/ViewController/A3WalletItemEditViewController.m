@@ -828,7 +828,12 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     if (![_sectionItems containsObject:self.dateInputItem]) {
         [self.tableView beginUpdates];
         self.dateInputIndexPath = dateIndexPath;
-        
+
+		WalletFieldItem *fieldItem = [self fieldItemForIndexPath:self.dateInputIndexPath create:YES];
+		if (fieldItem.date == nil) {
+			fieldItem.date = [NSDate date];
+		}
+
         [_sectionItems insertObject:self.dateInputItem atIndex:dateIndexPath.row + 1];
         [self.tableView reloadRowsAtIndexPaths:@[self.dateInputIndexPath] withRowAnimation:UITableViewRowAnimationFade];
 		NSIndexPath *pickerIndexPath = [NSIndexPath indexPathForRow:dateIndexPath.row+1 inSection:0];

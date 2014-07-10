@@ -822,5 +822,6 @@
 
 "Alert_None" = "None";
 
-
 "Failed to download backup file." = "Failed to download backup file.";
+
+"Share information" = "Share information";

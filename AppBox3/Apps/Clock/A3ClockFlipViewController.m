@@ -514,8 +514,8 @@
 	_temperature.text = [NSString stringWithFormat:@"%ld°", (long)clockInfo.currentWeather.currentTemperature];
 
 	_weatherHumidity.text = [NSString stringWithFormat:@"%@%%", [self.clockDataManager.clockInfo.weatherAtmosphere objectForKey:@"humidity"]];
-	_weatherTemperatureHigh.text = [NSString stringWithFormat:@"%ld", (long)clockInfo.currentWeather.highTemperature];
-	_weatherTemperatureLow.text = [NSString stringWithFormat:@"%ld", (long)clockInfo.currentWeather.lowTemperature];
+	_weatherTemperatureHigh.text = [NSString stringWithFormat:@"%ld°", (long)clockInfo.currentWeather.highTemperature];
+	_weatherTemperatureLow.text = [NSString stringWithFormat:@"%ld°", (long)clockInfo.currentWeather.lowTemperature];
 }
 
 

@@ -202,8 +202,8 @@ NSString *const A3ClockUserDefaultsCurrentPage = @"A3ClockUserDefaultsCurrentPag
 		[_settingsButton makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.view.right).with.offset(-28);
 			make.centerY.equalTo(_clockAppsButton.centerY);
-			make.width.equalTo(@40);
-			make.height.equalTo(@40);
+			make.width.equalTo(@44);
+			make.height.equalTo(@44);
 		}];
         
 	}
@@ -221,10 +221,10 @@ NSString *const A3ClockUserDefaultsCurrentPage = @"A3ClockUserDefaultsCurrentPag
         [self.view addSubview:_helpButton];
         
         [_helpButton makeConstraints:^(MASConstraintMaker *make) {
-			make.centerX.equalTo(self.view.right).with.offset(-68);
+			make.centerX.equalTo(self.view.right).with.offset(-78);
 			make.centerY.equalTo(_clockAppsButton.centerY);
-			make.width.equalTo(@40);
-			make.height.equalTo(@40);
+			make.width.equalTo(@44);
+			make.height.equalTo(@44);
         }];
     }
     
