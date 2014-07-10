@@ -91,12 +91,17 @@
     _clearButton.tintColor = [A3AppDelegate instance].themeColor;
     _prevButton.tintColor = [A3AppDelegate instance].themeColor;
     _nextButton.tintColor = [A3AppDelegate instance].themeColor;
+    
+	UIBarButtonItem *space20 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                           target:self
+                                                                           action:nil];
+    space20.width = [A3UIDevice shouldUseImageForPrevNextButton] ? 23: 8;
 
     [_toolBar setItems:@[
 			self.fixedSpace, _undoButton,
-			self.fixedSpace, _redoButton,
-			self.fixedSpace, _prevButton,
-			self.fixedSpace, _nextButton,
+			space20, _redoButton,
+			space20, _prevButton,
+			space20, _nextButton,
 			self.flexibleSpace, _clearButton,
 			self.fixedSpace]];
     [self addSubview:_toolBar];
