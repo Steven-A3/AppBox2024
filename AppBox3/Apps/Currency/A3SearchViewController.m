@@ -225,7 +225,8 @@
 				[sectionTitles addObject:[_collation sectionTitles][sectionTitleIndex]];
 				[sectionIndexTitles addObject:[_collation sectionTitles][sectionTitleIndex]];
 			} else {
-				FNLOG(@"%@, %@", firstItem.displayName, firstLetter);
+				[sectionTitles addObject:[_collation sectionTitles][index]];
+				[sectionIndexTitles addObject:[_collation sectionTitles][index]];
 			}
 		}
 	}
