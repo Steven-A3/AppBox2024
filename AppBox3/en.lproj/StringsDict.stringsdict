@@ -157,9 +157,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 mon</string>
+			<string>0 mo</string>
 			<key>one</key>
-			<string>1 mon</string>
+			<string>1 mo</string>
 			<key>other</key>
 			<string>%ld mos</string>
 		</dict>

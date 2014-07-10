@@ -6,7 +6,8 @@
 "2eu-dh-CwY.normalTitle" = "Use AppBox Pro";
 
 /* Class = "IBUILabel"; text = "well designed for both iPhone and iPad"; ObjectID = "3ye-4w-mZR"; */
-"3ye-4w-mZR.text" = "well designed for both iPhone and iPad";
+"3ye-4w-mZR.text" = "enhanced designed 
+for iPhone, iPod touch and iPad";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "4vD-c0-4t2"; */
 "4vD-c0-4t2.normalTitle" = "Use AppBox Pro";
@@ -29,8 +30,10 @@
 /* Class = "IBUILabel"; text = "Lunar Converter"; ObjectID = "DKJ-oV-07R"; */
 "DKJ-oV-07R.text" = "Lunar Converter";
 
-/* Class = "IBUILabel"; text = "easy, faster and more focused, 64Bit and much more"; ObjectID = "Dxm-da-st4"; */
-"Dxm-da-st4.text" = "easy, faster and more focused, 64Bit and much more";
+/* Class = "IBUILabel"; text = "easy, faster and more focused,
+64Bit and much more"; ObjectID = "Dxm-da-st4"; */
+"Dxm-da-st4.text" = "easy, faster and more focused,
+64Bit and much more";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "EVR-ah-KPZ"; */
 "EVR-ah-KPZ.normalTitle" = "Continue";
@@ -101,8 +104,10 @@
 /* Class = "IBUILabel"; text = "What's New"; ObjectID = "k96-nV-XIl"; */
 "k96-nV-XIl.text" = "What's New";
 
-/* Class = "IBUILabel"; text = "keep your data up to date on all your devices"; ObjectID = "mal-lH-ucN"; */
-"mal-lH-ucN.text" = "keep your data up to date on all your devices";
+/* Class = "IBUILabel"; text = "keep your data up to date
+on all your devices"; ObjectID = "mal-lH-ucN"; */
+"mal-lH-ucN.text" = "keep your data, keep up-to-date
+on all your devices";
 
 /* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "noh-Kb-lie"; */
 "noh-Kb-lie.text" = "Ladies Calendar";

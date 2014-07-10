@@ -19,4 +19,5 @@
 @property (nonatomic, assign) BOOL needSecurityCheck;
 @property (nonatomic, assign) BOOL doNotKeepAsRecent;
 
+- (BOOL)securitySettingsIsOn;
 @end
