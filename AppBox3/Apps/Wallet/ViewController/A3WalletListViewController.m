@@ -230,7 +230,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		[videoCell resetThumbImages];
 		for (int i=0; i<showPhotoCount; i++) {
 			WalletFieldItem *fieldItem = photoPick[i];
-			UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem videoThumbnailPathInOriginal:YES ]];
+			UIImage *thumbImg = [fieldItem thumbnailImage];
 			float duration = [WalletData getDurationOfMovie:[fieldItem videoFileURLInOriginal:YES ]];
 			[videoCell addThumbImage:thumbImg withDuration:duration];
 		}
@@ -282,7 +282,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		[videoCell resetThumbImages];
 		for (NSUInteger idx =0; idx < showPhotoCount; idx++) {
 			WalletFieldItem *fieldItem = photoPick[idx];
-			UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem videoThumbnailPathInOriginal:YES ]];
+			UIImage *thumbImg = [fieldItem thumbnailImage];
 			[videoCell addThumbImage:thumbImg isVideo:YES ];
 		}
 

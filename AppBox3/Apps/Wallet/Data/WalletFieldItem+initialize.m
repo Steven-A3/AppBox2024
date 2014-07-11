@@ -111,6 +111,17 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 	return nil;
 }
 
+- (UIImage *)videoThumbnail {
+	NSString *thumbnailImagePath = [self videoThumbnailPathInOriginal:YES];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:thumbnailImagePath]) {
+		return [UIImage imageWithContentsOfFile:thumbnailImagePath];
+	}
+	NSURL *videoURL = [self videoFileURLInOriginal:YES];
+	UIImage *originalImage = [WalletData videoPreviewImageOfURL:videoURL];
+	[self makeVideoThumbnailWithImage:originalImage inOriginalDirectory:YES];
+	return [UIImage imageWithContentsOfFile:thumbnailImagePath];
+}
+
 - (NSString *)videoThumbnailPathInOriginal:(BOOL)inOriginal {
 	NSString *filename = [NSString stringWithFormat:@"%@-videoThumbnail", self.uniqueID];
 	if (inOriginal) {
@@ -152,14 +163,10 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 }
 
 - (UIImage *)thumbnailImage {
-	NSString *thumbnailPath = nil;
 	if (self.image) {
 		return [self photoImageThumbnail];
 	} else if (self.video) {
-		thumbnailPath = [self videoThumbnailPathInOriginal:YES ];
-		if (thumbnailPath) {
-			return [[UIImage alloc] initWithContentsOfFile:thumbnailPath];
-		}
+		return [self videoThumbnail];
 	}
 	return nil;
 }
