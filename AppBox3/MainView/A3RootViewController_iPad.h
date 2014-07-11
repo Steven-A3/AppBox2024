@@ -14,6 +14,7 @@
 @property (nonatomic, strong)	A3NavigationController *leftNavigationController;
 @property (nonatomic, strong)	A3NavigationController *centerNavigationController;
 @property (nonatomic, strong)	A3NavigationController *rightNavigationController;
+@property (nonatomic, weak)		UIViewController *modalPresentedInRightNavigationViewController;
 @property (nonatomic, strong)   NSMutableArray *presentViewControllers;
 
 @property(nonatomic) BOOL showLeftView;

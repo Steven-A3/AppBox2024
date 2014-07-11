@@ -554,6 +554,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 }
 
 #pragma mark - A3CalendarViewDelegate
+
 - (void)calendarView:(A3LadyCalendarCalendarView *)calendarView didSelectDay:(NSInteger)day
 {
     NSArray *periods = [self.dataManager periodListWithMonth:calendarView.dateMonth accountID:[[self.dataManager currentAccount] uniqueID] containPredict:YES];

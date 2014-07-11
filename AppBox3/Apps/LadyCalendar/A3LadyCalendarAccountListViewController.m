@@ -61,8 +61,13 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
     self.itemArray = [NSMutableArray arrayWithArray:[_dataManager accountListSortedByOrderIsAscending:YES]];
     [self.tableView reloadData];
+
+	if (IS_IPAD) {
+		[A3AppDelegate instance].rootViewController.modalPresentedInRightNavigationViewController = nil;
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -183,6 +188,10 @@
 	A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
 	navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
 	[self presentViewController:navCtrl animated:YES completion:nil];
+
+	if (IS_IPAD) {
+		[A3AppDelegate instance].rootViewController.modalPresentedInRightNavigationViewController = navCtrl;
+	}
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
@@ -199,6 +208,10 @@
     A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self presentViewController:navCtrl animated:YES completion:nil];
+
+	if (IS_IPAD) {
+		[A3AppDelegate instance].rootViewController.modalPresentedInRightNavigationViewController = navCtrl;
+	}
 }
 
 - (void)reorderingItems

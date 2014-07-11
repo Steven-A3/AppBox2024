@@ -87,6 +87,8 @@ static const CGFloat kSideViewWidth = 320.0;
 		_leftNavigationController.view.frame = CGRectMake(-kSideViewWidth - 1,0,kSideViewWidth, bounds.size.height);
 		_rightNavigationController.view.frame = CGRectMake(bounds.size.width - kSideViewWidth, 0, kSideViewWidth, bounds.size.height);
 		[self bringUpCenterCoverView];
+
+		_modalPresentedInRightNavigationViewController.view.frame = _rightNavigationController.view.frame;
 	} else {
 		_leftNavigationController.view.frame = CGRectMake(-kSideViewWidth - 1,0,kSideViewWidth, bounds.size.height);
 		_rightNavigationController.view.frame = CGRectMake(bounds.size.width, 0, kSideViewWidth, bounds.size.height);
@@ -341,6 +343,8 @@ static const CGFloat kSideViewWidth = 320.0;
 
 - (void)dismissRightSideViewController {
 	if (!_showRightView) return;
+
+	self.modalPresentedInRightNavigationViewController = nil;
 
     id topViewController = [_rightNavigationController topViewController];
     if ( [topViewController respondsToSelector:@selector(willDismissFromRightSide)] ) {
