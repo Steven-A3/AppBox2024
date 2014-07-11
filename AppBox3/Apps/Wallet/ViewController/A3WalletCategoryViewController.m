@@ -680,7 +680,6 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
                         NSAssert(result, @"result");
                     }
                     if ([[NSFileManager defaultManager] fileExistsAtPath:[[fieldItem videoFileURLInOriginal:YES] path]]) {
-                        result = [[NSFileManager defaultManager] removeItemAtPath:[[fieldItem videoFileURLInOriginal:YES] path] error:NULL];
                         result = [[NSFileManager defaultManager] removeItemAtURL:[fieldItem videoFileURLInOriginal:YES] error:NULL];
                         NSAssert(result, @"result");
                     }

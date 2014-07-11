@@ -2,9 +2,6 @@
 /* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "05t-yj-k37"; */
 "05t-yj-k37.text" = "レディースカレンダー";
 
-/* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
-"0Me-nY-VE5.text" = "最近５個";
-
 /* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Ladies Calendar periods and Wallet items.
 
 "; ObjectID = "1dJ-y3-yh7"; */
@@ -103,9 +100,6 @@
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "TG9-5P-YDf"; */
 "TG9-5P-YDf.text" = "イベントカレンダー";
 
-/* Class = "IBUILabel"; text = "3 Most Recent"; ObjectID = "UKS-0H-yut"; */
-"UKS-0H-yut.text" = "最近の３つ";
-
 /* Class = "IBUILabel"; text = "Title"; ObjectID = "UnN-yq-AkZ"; */
 "UnN-yq-AkZ.text" = "タイトル";
 
@@ -114,9 +108,6 @@
 
 /* Class = "IBUITableViewController"; title = "Require Passcode"; ObjectID = "Xb7-yr-Jd6"; */
 "Xb7-yr-Jd6.title" = "暗号要求";
-
-/* Class = "IBUILabel"; text = "3 Most Recent"; ObjectID = "bWw-QS-8Fs"; */
-"bWw-QS-8Fs.text" = "最近の３つ";
 
 /* Class = "IBUILabel"; text = "After 5 minutes"; ObjectID = "cHo-o5-yl0"; */
 "cHo-o5-yl0.text" = "５分後";
@@ -141,12 +132,6 @@
 
 /* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "go4-fr-Ah2"; */
 "go4-fr-Ah2.title" = "設定";
-
-/* Class = "IBUILabel"; text = "Most Recent"; ObjectID = "h1H-Ma-NYM"; */
-"h1H-Ma-NYM.text" = "最近の１つ";
-
-/* Class = "IBUILabel"; text = "2 Most Recent"; ObjectID = "hXr-2r-LdP"; */
-"hXr-2r-LdP.text" = "最近の２つ";
 
 /* Class = "IBUILabel"; text = "Unlink from Dropbox"; ObjectID = "iav-1w-bex"; */
 "iav-1w-bex.text" = "アカウントID削除";

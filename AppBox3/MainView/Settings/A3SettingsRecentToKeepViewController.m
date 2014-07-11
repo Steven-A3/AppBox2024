@@ -77,8 +77,10 @@
 				cell.tag = 5;
 				break;
 		}
+		cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld Most Recent", @"StringsDict", nil), (long)cell.tag];
 	} else if (indexPath.section == 1) {
 		cell.textLabel.textColor = [[A3AppDelegate instance] themeColor];
+		cell.textLabel.textAlignment = NSTextAlignmentCenter;
 	}
 }
 

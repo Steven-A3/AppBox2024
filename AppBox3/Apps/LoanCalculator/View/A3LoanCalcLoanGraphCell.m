@@ -92,6 +92,11 @@
         CGPoint center2 = self.infoButton.center;
         center2.x = self.bounds.size.width - fromRightDistance2;
         self.infoButton.center = center2;
+		CGRect bounds = self.infoButton.bounds;
+		bounds.size.width = 44.0;
+		bounds.size.height = 44.0;
+		self.infoButton.bounds = bounds;
+		FNLOG(@"InfoButton boudnds set.");
         self.infoButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         
     });

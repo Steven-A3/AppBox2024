@@ -380,7 +380,7 @@
 			<string>Während %ld Tagen</string>
 		</dict>
 	</dict>
-	<key>Last %ld</key>
+	<key>%ld Most Recent</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@num_items@</string>
@@ -391,11 +391,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Keine</string>
+			<string>Die neueste</string>
 			<key>one</key>
-			<string>Letzte 1</string>
+			<string>Die 3 neueste</string>
 			<key>other</key>
-			<string>Letzte %ld</string>
+			<string>Die %ld neueste</string>
 		</dict>
 	</dict>
 </dict>

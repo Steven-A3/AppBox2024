@@ -2,9 +2,6 @@
 /* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "05t-yj-k37"; */
 "05t-yj-k37.text" = "Kalendarz Kobiecy";
 
-/* Class = "IBUILabel"; text = "Last 5"; ObjectID = "0Me-nY-VE5"; */
-"0Me-nY-VE5.text" = "Ostatnie 5";
-
 /* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.
  
  "; ObjectID = "1dJ-y3-yh7"; */
@@ -105,9 +102,6 @@
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "TG9-5P-YDf"; */
 "TG9-5P-YDf.text" = "Odliczanie";
 
-/* Class = "IBUILabel"; text = "Last 3"; ObjectID = "UKS-0H-yut"; */
-"UKS-0H-yut.text" = "Ostatnie 3";
-
 /* Class = "IBUILabel"; text = "Title"; ObjectID = "UnN-yq-AkZ"; */
 "UnN-yq-AkZ.text" = "Tytuł";
 
@@ -116,9 +110,6 @@
 
 /* Class = "IBUITableViewController"; title = "Require Passcode"; ObjectID = "Xb7-yr-Jd6"; */
 "Xb7-yr-Jd6.title" = "Wymagaj kodu";
-
-/* Class = "IBUILabel"; text = "Last 3"; ObjectID = "bWw-QS-8Fs"; */
-"bWw-QS-8Fs.text" = "Ostatnie 3";
 
 /* Class = "IBUILabel"; text = "After 5 minutes"; ObjectID = "cHo-o5-yl0"; */
 "cHo-o5-yl0.text" = "Po 5 minutach";
@@ -143,12 +134,6 @@
 
 /* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "go4-fr-Ah2"; */
 "go4-fr-Ah2.title" = "Ustawienia";
-
-/* Class = "IBUILabel"; text = "Most Recent"; ObjectID = "h1H-Ma-NYM"; */
-"h1H-Ma-NYM.text" = "Ostatnie";
-
-/* Class = "IBUILabel"; text = "Last 2"; ObjectID = "hXr-2r-LdP"; */
-"hXr-2r-LdP.text" = "Ostatnie 2";
 
 /* Class = "IBUILabel"; text = "Unlink from Dropbox"; ObjectID = "iav-1w-bex"; */
 "iav-1w-bex.text" = "Odłącz od Dropbox";

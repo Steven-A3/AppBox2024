@@ -2,9 +2,6 @@
 /* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "05t-yj-k37"; */
 "05t-yj-k37.text" = "레이디 캘린더";
 
-/* Class = "IBUILabel"; text = "Last 5"; ObjectID = "0Me-nY-VE5"; */
-"0Me-nY-VE5.text" = "최근 5개";
-
 /* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Ladies Calendar periods and Wallet items.
 
 "; ObjectID = "1dJ-y3-yh7"; */
@@ -105,9 +102,6 @@
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "TG9-5P-YDf"; */
 "TG9-5P-YDf.text" = "이벤트 캘린더";
 
-/* Class = "IBUILabel"; text = "Last 3"; ObjectID = "UKS-0H-yut"; */
-"UKS-0H-yut.text" = "최근 3개";
-
 /* Class = "IBUILabel"; text = "Title"; ObjectID = "UnN-yq-AkZ"; */
 "UnN-yq-AkZ.text" = "Title";
 
@@ -116,9 +110,6 @@
 
 /* Class = "IBUITableViewController"; title = "Require Passcode"; ObjectID = "Xb7-yr-Jd6"; */
 "Xb7-yr-Jd6.title" = "암호 요구";
-
-/* Class = "IBUILabel"; text = "Last 3"; ObjectID = "bWw-QS-8Fs"; */
-"bWw-QS-8Fs.text" = "최근 3개";
 
 /* Class = "IBUILabel"; text = "After 5 minutes"; ObjectID = "cHo-o5-yl0"; */
 "cHo-o5-yl0.text" = "5분 후";
@@ -143,12 +134,6 @@
 
 /* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "go4-fr-Ah2"; */
 "go4-fr-Ah2.title" = "설정";
-
-/* Class = "IBUILabel"; text = "Most Recent"; ObjectID = "h1H-Ma-NYM"; */
-"h1H-Ma-NYM.text" = "가장 최근 한개";
-
-/* Class = "IBUILabel"; text = "Last 2"; ObjectID = "hXr-2r-LdP"; */
-"hXr-2r-LdP.text" = "최근 2개";
 
 /* Class = "IBUILabel"; text = "Unlink from Dropbox"; ObjectID = "iav-1w-bex"; */
 "iav-1w-bex.text" = "계정 삭제";

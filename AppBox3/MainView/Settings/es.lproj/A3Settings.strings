@@ -100,17 +100,11 @@
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "TG9-5P-YDf"; */
 "TG9-5P-YDf.text" = "Contador de días";
 
-/* Class = "IBUILabel"; text = "3 Most Recent"; ObjectID = "UKS-0H-yut"; */
-"UKS-0H-yut.text" = "Los 3 más recientes";
-
 /* Class = "IBUILabel"; text = "Theme Color"; ObjectID = "Vgb-6m-SyM"; */
 "Vgb-6m-SyM.text" = "Color de tema";
 
 /* Class = "IBUITableViewController"; title = "Require Passcode"; ObjectID = "Xb7-yr-Jd6"; */
 "Xb7-yr-Jd6.title" = "Clave de acceso requerido";
-
-/* Class = "IBUILabel"; text = "3 Most Recent"; ObjectID = "bWw-QS-8Fs"; */
-"bWw-QS-8Fs.text" = "Los 3 más recientes";
 
 /* Class = "IBUILabel"; text = "After 5 minutes"; ObjectID = "cHo-o5-yl0"; */
 "cHo-o5-yl0.text" = "Después de 5 minutos";
@@ -135,12 +129,6 @@
 
 /* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "go4-fr-Ah2"; */
 "go4-fr-Ah2.title" = "Ajustes";
-
-/* Class = "IBUILabel"; text = "Most Recent"; ObjectID = "h1H-Ma-NYM"; */
-"h1H-Ma-NYM.text" = "Más reciente";
-
-/* Class = "IBUILabel"; text = "2 Most Recent"; ObjectID = "hXr-2r-LdP"; */
-"hXr-2r-LdP.text" = "Los 2 más recientes";
 
 /* Class = "IBUILabel"; text = "Unlink from Dropbox"; ObjectID = "iav-1w-bex"; */
 "iav-1w-bex.text" = "Desconectarse de Dropbox";

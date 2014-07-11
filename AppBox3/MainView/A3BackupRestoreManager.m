@@ -16,6 +16,7 @@
 #import "WalletFieldItem+initialize.h"
 #import "AAAZip.h"
 #import "A3UserDefaults.h"
+#import "WalletFieldItemVideo.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -125,7 +126,7 @@ extern NSString *const USMCloudContentName;
 		[fileList addObject:
 			@{
 				A3ZipFilename : [[video videoFileURLInOriginal:YES] path],
-				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@", A3WalletVideoDirectory, video.uniqueID]
+				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@.%@", A3WalletVideoDirectory, video.uniqueID, video.video.extension]
 			}];
 	}
 
@@ -190,7 +191,7 @@ extern NSString *const USMCloudContentName;
 
 	[self.restClient uploadFile:[_backupFilePath lastPathComponent] toPath:kDropboxDir withParentRev:nil fromPath:_backupFilePath];
 
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [[NSFileManager alloc] init];
 	for (NSString *path in _deleteFilesAfterZip) {
 		[fileManager removeItemAtPath:path error:NULL];
 	}
