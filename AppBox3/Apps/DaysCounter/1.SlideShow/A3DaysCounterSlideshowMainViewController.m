@@ -179,6 +179,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+	
     self.isRotating = NO;
     self.navigationController.delegate = self;
     self.eventsArray = [_sharedManager allEventsListContainedImage];
@@ -230,15 +231,18 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     if (_prevShownEventID) {
-        [_eventsArray enumerateObjectsUsingBlock:^(DaysCounterEvent *item, NSUInteger idx, BOOL *stop) {
-            if ([item.uniqueID isEqualToString:_prevShownEventID]) {
-                [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]
-                                        atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
-                                                animated:NO];
-                currentIndex = idx;
-                [self updateNavigationTitle];
-            }
-        }];
+		NSUInteger eventIdx = [_eventsArray indexOfObjectPassingTest:^BOOL(DaysCounterEvent *item, NSUInteger idx, BOOL *stop) {
+			return [item.uniqueID isEqualToString:_prevShownEventID];
+		}];
+		if (eventIdx != NSNotFound) {
+			[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:eventIdx inSection:0]
+									atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+											animated:NO];
+			currentIndex = eventIdx;
+		} else {
+			currentIndex = 0;
+		}
+		[self updateNavigationTitle];
     }
 }
 
@@ -522,6 +526,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 }
 
 #pragma mark - action method
+
 - (IBAction)detailAction:(id)sender {
     [self dismissMoreMenu];
     if ( [_eventsArray count] < 1 ) {
