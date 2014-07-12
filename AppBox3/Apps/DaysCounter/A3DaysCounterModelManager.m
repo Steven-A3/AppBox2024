@@ -1696,8 +1696,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         
         if (IS_IPAD) {
             dateString = [NSString stringWithFormat:@"%@ (%@ %@)",
-													NSLocalizedString(@"Lunar", @"Lunar"),
 													[A3DateHelper dateStringFromDate:[dateModel solarDate] withFormat:[self dateFormatForDetailIsAllDays:isAllDay]],
+													NSLocalizedString(@"Lunar", @"Lunar"),
 													[A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:isLunar] withFormat:dateFormat]];
         }
         else {

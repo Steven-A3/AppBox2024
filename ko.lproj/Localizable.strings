@@ -219,7 +219,7 @@
 
 "Leap Month" = "윤달";
 "Ends" = "종료일";
-"End Repeat" = "반복 종료일";
+"End Repeat" = "반복 종료";
 "Alert" = "알림";
 "Calendar" = "캘린더";
 "Duration Option" = "기간 옵션";
@@ -292,7 +292,7 @@
 "Monthly" = "매월";
 "Yearly" = "매년";
 
-"At time of event" = "이벤트 당시";
+"At time of event" = "이벤트 시간";
 "5 minutes before" = "5분 전";
 "15 minutes before" = "15분 전";
 "30 minutes before" = "30분 전";
@@ -320,8 +320,8 @@
 "Cube" = "큐브";
 "Dissolve" = "디졸브";
 "Origami" = "종이접기";
-"Ripple" = "아래로 닦아내기";
-"Wipe" = "옆으로 닦아내기";
+"Ripple" = "물결";
+"Wipe" = "닦아내기";
 
 "Change Location" = "위치 바꾸기";
 "Current Location" = "현재 위치";
@@ -357,7 +357,7 @@
 
 "Location information is not available." = "위치 정보를 조회할 수 없습니다.";
 
-"Every 2 Weeks" = "2주마다";
+"Every 2 Weeks" = "격주";
 "Undo" = "실행취소";
 "Redo" = "다시실행";
 "Prev" = "이전";
@@ -856,7 +856,7 @@
 
 "You can manage your events in the AppBox Pro." = "AppBox Pro로 이벤트를 관래해 보세요.";
 
-"Interest" = "Interest";
+"Interest" = "대출금리";
 "Extra Payment(monthly)" = "중도상환(매월)";
 "Extra Payment(yearly)" = "중도상환(매년)";
 "Extra Payment(one-time)" = "중도상환(일회)";
@@ -883,8 +883,8 @@
 
 "daily" = "매일";
 "weekly" = "매주";
-"biweekly" = "매2주";
-"monthly" = "매월";
+"biweekly" = "격주";
+"monthly" = "매달";
 "yearly" = "매년";
 
 "No Photos" = "사진이 없습니다.";
