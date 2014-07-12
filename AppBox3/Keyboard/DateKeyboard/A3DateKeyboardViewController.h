@@ -31,9 +31,9 @@
 @property (nonatomic, weak)	IBOutlet UIButton *num1_Jul_Button;
 @property (nonatomic, weak)	IBOutlet UIButton *num2_Aug_Button;
 @property (nonatomic, weak)	IBOutlet UIButton *num3_Sep_Button;
-@property (nonatomic, weak)	IBOutlet UIButton *num0_Oct_Button;
-@property (nonatomic, weak) IBOutlet UIButton *Nov_Button;
-@property (nonatomic, weak)	IBOutlet UIButton *today_Dec_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *today_Oct_Button;
+@property (nonatomic, weak) IBOutlet UIButton *num0_Nov_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *delete_Dec_Button;
 @property (nonatomic, weak)	IBOutlet UIButton *doneButton;
 
 @property (nonatomic, weak)	UILabel	*displayLabel;

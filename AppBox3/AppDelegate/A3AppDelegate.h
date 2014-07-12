@@ -92,11 +92,8 @@ extern NSString *const A3CloudSeedDataCreated;		// BOOL, Key Value Store
 @property (nonatomic, strong) NSMetadataQuery *metadataQuery;
 
 + (A3AppDelegate *)instance;
-
 - (void)coreDataReady;
-
 - (void)showReceivedLocalNotifications;
-
 - (UINavigationController *)navigationController;
 - (UIViewController *)visibleViewController;
 

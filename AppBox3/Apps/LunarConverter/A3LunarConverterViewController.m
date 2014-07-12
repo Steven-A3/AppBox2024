@@ -23,6 +23,7 @@
 #import "UIColor+A3Addition.h"
 #import "A3SettingsLunarViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "NSString+conversion.h"
 
 
 @interface A3LunarConverterViewController () <UIScrollViewDelegate, A3DateKeyboardDelegate, UITextFieldDelegate, UIPopoverControllerDelegate, UIActivityItemSource>
@@ -80,7 +81,10 @@
 		[self.cellHeightConstraints addObject:make.top.equalTo(self.view.top).with.offset(IS_IPHONE35 ? 234.5 : 315)];
 	}];
 
-	_dbManager = [[SQLiteWrapper alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"LunarConverter" ofType:@"sqlite"]];
+	NSString *dataFilePath = [@"LunarConverter.sqlite" pathInCachesDataDirectory];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:dataFilePath]) {
+		_dbManager = [[SQLiteWrapper alloc] initWithPath:dataFilePath];
+	}
 	[self setAutomaticallyAdjustsScrollViewInsets:NO];
 
 	CGFloat viewHeight = 84 * 3 + 1;
@@ -714,6 +718,8 @@
     if (([dateComponents year] < 1900) || ([dateComponents year] > 2043))
         return @"";
 
+	if (!_dbManager) return @"";
+
     NSString *query = [NSString stringWithFormat:@"select * from calendar_data WHERE cd_ly=%ld and cd_lm=%ld and cd_ld=%ld and %@", (long)[dateComponents year], (long)[dateComponents month], (long)[dateComponents day], (isLeapMonth ? @"cd_leap_month > 1" : @"cd_leap_month < 2")];
     NSArray *result = [_dbManager executeSql:query];
     if ( [result count] < 1 )
@@ -729,6 +735,8 @@
 {
     if (([dateComponents year] < 1900) || ([dateComponents year] > 2043) || isLeapMonth)
         return @"";
+
+	if (!_dbManager) return @"";
 
     NSString *query = [NSString stringWithFormat:@"select * from calendar_data WHERE cd_ly=%ld and cd_lm=%ld and cd_ld=%ld and %@", (long)[dateComponents year], (long)[dateComponents month], (long)[dateComponents day],(isLeapMonth ? @"cd_leap_month > 1" : @"cd_leap_month < 2")];
 

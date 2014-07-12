@@ -99,14 +99,8 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 }
 
 - (NSArray *)allMenuArrayFromUserDefaults {
-	NSMutableDictionary *allMenusDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuAllMenu];
-
 	NSArray *allMenuArray;
-	if (allMenusDictionary) {
-		allMenuArray = allMenusDictionary[kA3AppsMenuArray];
-	} else {
-		allMenuArray = [self allMenu];
-	}
+	allMenuArray = [self allMenu];
 	NSMutableArray *sortedMenuArray = [NSMutableArray new];
 	for (NSDictionary *section in allMenuArray) {
 		@autoreleasepool {

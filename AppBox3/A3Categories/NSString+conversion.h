@@ -23,6 +23,8 @@
 
 - (NSString *)stringByTrimmingSpaceCharacters;
 
+- (NSString *)pathInCachesDataDirectory;
+
 - (NSString *)stringGroupByFirstInitial;
 - (float)floatValueEx;
 - (NSString *)stringByDecimalConversion;

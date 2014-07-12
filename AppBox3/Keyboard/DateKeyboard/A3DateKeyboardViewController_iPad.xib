@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
     <dependencies>
         <deployment version="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -7,11 +7,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3DateKeyboardViewController_iPad">
             <connections>
-                <outlet property="Nov_Button" destination="axY-8Z-F4a" id="KMM-UO-Afj"/>
                 <outlet property="dayButton" destination="970" id="979"/>
+                <outlet property="delete_Dec_Button" destination="185" id="wgh-gc-yKM"/>
                 <outlet property="doneButton" destination="1026" id="1029"/>
                 <outlet property="monthButton" destination="969" id="982"/>
-                <outlet property="num0_Oct_Button" destination="186" id="984"/>
+                <outlet property="num0_Nov_Button" destination="axY-8Z-F4a" id="KMM-UO-Afj"/>
                 <outlet property="num1_Jul_Button" destination="182" id="985"/>
                 <outlet property="num2_Aug_Button" destination="183" id="986"/>
                 <outlet property="num3_Sep_Button" destination="184" id="987"/>
@@ -21,7 +21,7 @@
                 <outlet property="num7_Jan_Button" destination="43" id="991"/>
                 <outlet property="num8_Feb_Button" destination="51" id="992"/>
                 <outlet property="num9_Mar_Button" destination="74" id="993"/>
-                <outlet property="today_Dec_Button" destination="185" id="wgh-gc-yKM"/>
+                <outlet property="today_Oct_Button" destination="186" id="984"/>
                 <outlet property="view" destination="596" id="XHb-2A-aE9"/>
                 <outlet property="yearButton" destination="1035" id="1037"/>
             </connections>
@@ -191,32 +191,33 @@
                     <rect key="frame" x="578" y="265" width="108" height="77"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" title="Today">
+                    <state key="normal" image="backspace_p">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
+                        <action selector="deleteButtonAction" destination="-1" eventType="touchUpInside" id="brq-70-Lcv"/>
                         <action selector="numberButtonAction:" destination="-1" eventType="touchUpInside" id="1011"/>
-                        <action selector="todayButtonAction" destination="-1" eventType="touchUpInside" id="5bh-ZW-eGu"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="186" customClass="A3KeyboardButton_iOS7_iPad">
                     <rect key="frame" x="332.5" y="265" width="108" height="77"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" title="0">
+                    <state key="normal" title="Today">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="numberButtonAction:" destination="-1" eventType="touchUpInside" id="1013"/>
+                        <action selector="todayButtonAction" destination="-1" eventType="touchUpInside" id="yZS-Am-OH1"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="axY-8Z-F4a" customClass="A3KeyboardButton_iOS7_iPad">
                     <rect key="frame" x="455" y="265" width="108" height="77"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" title="Nov">
+                    <state key="normal" title="0">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -244,4 +245,7 @@
             <color key="backgroundColor" red="0.86274509799999999" green="0.87450980389999999" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
         </view>
     </objects>
+    <resources>
+        <image name="backspace_p" width="30" height="22"/>
+    </resources>
 </document>

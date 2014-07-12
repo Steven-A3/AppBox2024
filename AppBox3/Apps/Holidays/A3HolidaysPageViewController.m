@@ -40,7 +40,6 @@
 @property (nonatomic, strong) MASConstraint *pageControlWidth;
 @property (nonatomic, strong) A3GradientView *coverGradientView;
 @property (nonatomic, strong) NSTimer *dayChangedTimer;
-@property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) UIPageViewController *pageViewController;
 @property (atomic, strong) NSMutableDictionary *viewControllerCache;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
@@ -48,7 +47,9 @@
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
-@implementation A3HolidaysPageViewController
+@implementation A3HolidaysPageViewController {
+	NSInteger _lastPageIndex, _currentPageIndex;
+}
 
 - (void)cleanUp {
 	FNLOG();
@@ -66,6 +67,7 @@
 	_photoLabel2 = nil;
 	_footerView = nil;
 	_coverGradientView = nil;
+	[_dayChangedTimer invalidate];
 	_dayChangedTimer = nil;
 	_viewControllerCache = nil;
 }
@@ -96,6 +98,8 @@
 	[self registerContentSizeCategoryDidChangeNotification];
     [self setupInstructionView];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+	_lastPageIndex = NSNotFound;
+	_currentPageIndex = NSNotFound;
 }
 
 - (void)removeObserver {
@@ -108,8 +112,6 @@
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
 		FNLOG();
 		[self removeObserver];
-	}
-	if (self.isMovingFromParentViewController) {
 		[_dayChangedTimer invalidate];
 		_dayChangedTimer = nil;
 	}
@@ -133,11 +135,6 @@
 	[super viewDidAppear:animated];
 
 	if (self.isMovingToParentViewController) {
-
-		if (![self startAskLocation]) {
-			[self.currentContentViewController startDownloadWallpaperFromFlickr];
-		}
-
 		NSDate *fireDate = [[NSDate dateTomorrow] dateAtStartOfDay];
 		FNLOG(@"%@, %f", fireDate, [fireDate timeIntervalSinceNow]/(60 * 60));
 		_dayChangedTimer = [[NSTimer alloc] initWithFireDate:fireDate
@@ -218,54 +215,6 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 
 
 #pragma mark - Find location and udpate country list
-
-- (BOOL)startAskLocation {
-	if (![CLLocationManager locationServicesEnabled]) return NO;
-
-	_locationManager = [[CLLocationManager alloc] init];
-	[_locationManager setDesiredAccuracy:kCLLocationAccuracyKilometer];
-	[_locationManager setDelegate:self];
-	[_locationManager startUpdatingLocation];
-	return YES;
-}
-
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-	[manager stopUpdatingLocation];
-
-	CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
-	[geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placeMarks, NSError *error) {
-		NSString *_countryCodeOfCurrentLocation;
-		for (CLPlacemark *placeMark in placeMarks) {
-			//			FNLOG(@"%@", [placeMarks description]);
-			//			FNLOG(@"address Dictionary: %@", placeMark.addressDictionary);
-			//			FNLOG(@"Administrative Area: %@", placeMark.administrativeArea);
-			//			FNLOG(@"areas of Interest: %@", placeMark.areasOfInterest);
-			//			FNLOG(@"locality: %@", placeMark.locality);
-			//			FNLOG(@"name: %@", placeMark.name);
-			//			FNLOG(@"subLocality: %@", placeMark.subLocality);
-
-			_countryCodeOfCurrentLocation = [placeMark.addressDictionary[@"CountryCode"] lowercaseString];
-		}
-
-		if ([_countryCodeOfCurrentLocation length]) {
-			if (![self.countries[0] isEqualToString:_countryCodeOfCurrentLocation]) {
-				NSMutableArray *tempArray = [_countries mutableCopy];
-				if ([tempArray containsObject:_countryCodeOfCurrentLocation]) {
-					NSInteger idx = [tempArray indexOfObject:_countryCodeOfCurrentLocation];
-					[tempArray removeObjectAtIndex:idx];
-				}
-
-				[tempArray insertObject:_countryCodeOfCurrentLocation atIndex:0];
-				_countries = tempArray;
-
-				[HolidayData setUserSelectedCountries:_countries];
-
-				[self jumpToPage:0 direction:UIPageViewControllerNavigationDirectionForward animated:NO];
-			}
-		}
-		[self.currentContentViewController startDownloadWallpaperFromFlickr];
-	}];
-}
 
 - (void)viewWillLayoutSubviews{
 	[super viewWillLayoutSubviews];
@@ -432,13 +381,19 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers {
+
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed {
-	_pageControl.currentPage = [self currentPage];
+	_lastPageIndex = _currentPageIndex;
+	_currentPageIndex = [self currentPage];
+	_pageControl.currentPage = _currentPageIndex;
 	[self updatePhotoLabelText];
 
-	[self.currentContentViewController startDownloadWallpaperFromFlickr];
+	if (_lastPageIndex != NSNotFound) {
+		A3HolidaysPageContentViewController *lastViewController = [self contentViewControllerAtPage:_lastPageIndex];
+		[lastViewController startDownloadWallpaperFromFlickr];
+	}
 }
 
 - (BOOL)usesFullScreenInLandscape {

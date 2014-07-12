@@ -7,12 +7,10 @@
 //
 
 #import "A3DateKeyboardViewController.h"
-#import "A3Formatter.h"
 #import "A3KeyboardButton_iOS7.h"
 #import "NSDateFormatter+LunarDate.h"
 #import "NSDate+LunarConverter.h"
 #import "NSUserDefaults+A3Addition.h"
-#import "MBProgressHUD.h"
 
 @interface A3DateKeyboardViewController ()
 @property (nonatomic, strong) NSCalendar *gregorian;
@@ -57,7 +55,7 @@
 }
 
 - (void)resetToNumbersButtons {
-	NSArray *order = @[_num0_Oct_Button,
+	NSArray *order = @[_num0_Nov_Button,
 			_num1_Jul_Button, _num2_Aug_Button, _num3_Sep_Button,
 			_num4_Apr_Button, _num5_May_Button, _num6_Jun_Button,
 			_num7_Jan_Button, _num8_Feb_Button, _num9_Mar_Button
@@ -68,18 +66,10 @@
 		button.titleLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 26 : IS_LANDSCAPE ? 27 : 22];
 	}];
 
-	[CATransaction begin];
-	[CATransaction setValue:[NSNumber numberWithBool:YES] forKey:kCATransactionDisableActions];
-
-	[_Nov_Button setHidden:YES];
-	[_today_Dec_Button setTitle:NSLocalizedString(@"Today", @"Today") forState:UIControlStateNormal];
-	_today_Dec_Button.titleLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 18 : IS_LANDSCAPE ? 25 : 18];
-
-	CGRect frame = _num0_Oct_Button.frame;
-	frame.size.width = CGRectGetMaxX(_num2_Aug_Button.frame) - CGRectGetMinX(_num1_Jul_Button.frame);
-	_num0_Oct_Button.frame = frame;
-
-	[CATransaction commit];
+	[_today_Oct_Button setTitle:NSLocalizedString(@"Today", @"Today") forState:UIControlStateNormal];
+	_today_Oct_Button.titleLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 18 : IS_LANDSCAPE ? 25 : 18];
+	[_delete_Dec_Button setImage:[UIImage imageNamed:IS_IPHONE ? @"backspace" : @"backspace_p"] forState:UIControlStateNormal];
+	[_delete_Dec_Button setTitle:nil forState:UIControlStateNormal];
 }
 
 - (IBAction)switchToYear {
@@ -94,6 +84,8 @@
 	_yearButton.selected = NO;
 	_monthButton.selected = YES;
 	_dayButton.selected = NO;
+
+	[_delete_Dec_Button setImage:nil forState:UIControlStateNormal];
 
 	NSArray *order = [self monthOrder];
 
@@ -117,17 +109,6 @@
 			button.titleLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 18 : 20];
 		}
 	}];
-
-	[CATransaction begin];
-	[CATransaction setValue:[NSNumber numberWithBool:YES] forKey:kCATransactionDisableActions];
-
-	CGRect frame = _num0_Oct_Button.frame;
-	frame.size.width = CGRectGetWidth(_num1_Jul_Button.frame);
-	_num0_Oct_Button.frame = frame;
-
-	[_Nov_Button setHidden:NO];
-
-	[CATransaction commit];
 }
 
 - (IBAction)switchToDay {
@@ -155,11 +136,11 @@
 			_num7_Jan_Button, _num8_Feb_Button, _num9_Mar_Button,
 			_num4_Apr_Button, _num5_May_Button, _num6_Jun_Button,
 			_num1_Jul_Button, _num2_Aug_Button, _num3_Sep_Button,
-			_num0_Oct_Button, _Nov_Button, _today_Dec_Button];
+			_today_Oct_Button, _num0_Nov_Button, _delete_Dec_Button];
 }
 
 - (NSArray *)numberOrder {
-	return @[_num0_Oct_Button, _num1_Jul_Button, _num2_Aug_Button,
+	return @[_num0_Nov_Button, _num1_Jul_Button, _num2_Aug_Button,
 			_num3_Sep_Button, _num4_Apr_Button, _num5_May_Button,
 			_num6_Jun_Button, _num7_Jan_Button, _num8_Feb_Button,
 			_num9_Mar_Button
@@ -185,21 +166,22 @@
 }
 
 - (IBAction)numberButtonAction:(UIButton *)button {
-	if (!_monthButton.selected && button == _today_Dec_Button) {
-		return;
-	}
-	
 	[[UIDevice currentDevice] playInputClick];
 	
 	if (_monthButton.selected) {
 		self.dateComponents.month = [self monthNumberOfButton:button];
 	} else if (_yearButton.selected) {
+		if (button == _delete_Dec_Button) return;
+		if (button == _today_Oct_Button) return;
 		NSInteger year = self.dateComponents.year;
 		year *= 10;
 		if (year >= 10000) year = 0;
 		year += [self numberOfButton:button];
 		self.dateComponents.year = year;
 	} else {
+		if (button == _delete_Dec_Button) return;
+		if (button == _today_Oct_Button) return;
+
 		NSInteger day = self.dateComponents.day, entered = [self numberOfButton:button];
 		day *= 10;
 		day += entered;
@@ -263,6 +245,19 @@
 	[self updateResult];
 }
 
+- (IBAction)deleteButtonAction {
+	if (_yearButton.selected) {
+		NSInteger year = self.dateComponents.year;
+		year /= 10;
+		self.dateComponents.year = year;
+	} else {
+		NSInteger day = self.dateComponents.day;
+		day /= 10;
+		self.dateComponents.day = MAX(day, 1);
+	}
+	[self updateResult];
+}
+
 /*! Virtual method implementation to override.
  *  Subclasses will implement this for iPhone or iPad
  */
@@ -277,7 +272,6 @@
 		_dateComponents = nil;
 	}
 }
-
 
 - (NSDateComponents *)dateComponents {
 	if (!_dateComponents) {

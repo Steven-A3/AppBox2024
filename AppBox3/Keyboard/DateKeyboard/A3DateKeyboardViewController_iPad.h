@@ -23,9 +23,9 @@
 @property (nonatomic, weak)	IBOutlet A3KeyboardButton_iOS7_iPad *num1_Jul_Button;
 @property (nonatomic, weak)	IBOutlet A3KeyboardButton_iOS7_iPad *num2_Aug_Button;
 @property (nonatomic, weak)	IBOutlet A3KeyboardButton_iOS7_iPad *num3_Sep_Button;
-@property (nonatomic, weak)	IBOutlet A3KeyboardButton_iOS7_iPad *num0_Oct_Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPad *Nov_Button;
-@property (nonatomic, weak)	IBOutlet A3KeyboardButton_iOS7_iPad *today_Dec_Button;
+@property (nonatomic, weak)	IBOutlet A3KeyboardButton_iOS7_iPad *today_Oct_Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPad *num0_Nov_Button;
+@property (nonatomic, weak)	IBOutlet A3KeyboardButton_iOS7_iPad *delete_Dec_Button;
 @property (nonatomic, weak)	IBOutlet A3KeyboardButton_iOS7_iPad *doneButton;
 
 @end

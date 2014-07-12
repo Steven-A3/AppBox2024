@@ -455,7 +455,7 @@
             if( fp )
             {
                 fclose( fp );
-                // set the orignal datetime property
+                // set the original datetime property
                 NSDate* orgDate = nil;
                 
                 //{{ thanks to brad.eaton for the solution

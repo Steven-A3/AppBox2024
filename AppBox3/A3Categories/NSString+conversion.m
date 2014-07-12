@@ -208,4 +208,8 @@
 	return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
+- (NSString *)pathInCachesDataDirectory {
+	return [[@"data" pathInCachesDirectory] stringByAppendingPathComponent:self];
+}
+
 @end

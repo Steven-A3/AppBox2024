@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment version="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -7,11 +7,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3DateKeyboardViewController_iPhone">
             <connections>
-                <outlet property="Nov_Button" destination="8AJ-dv-wUm" id="KAM-oe-GUO"/>
                 <outlet property="dayButton" destination="66" id="71"/>
+                <outlet property="delete_Dec_Button" destination="20" id="CHc-rl-GlG"/>
                 <outlet property="doneButton" destination="26" id="72"/>
                 <outlet property="monthButton" destination="15" id="73"/>
-                <outlet property="num0_Oct_Button" destination="21" id="75"/>
+                <outlet property="num0_Nov_Button" destination="8AJ-dv-wUm" id="KAM-oe-GUO"/>
                 <outlet property="num1_Jul_Button" destination="16" id="76"/>
                 <outlet property="num2_Aug_Button" destination="17" id="77"/>
                 <outlet property="num3_Sep_Button" destination="18" id="78"/>
@@ -21,7 +21,7 @@
                 <outlet property="num7_Jan_Button" destination="8" id="82"/>
                 <outlet property="num8_Feb_Button" destination="9" id="83"/>
                 <outlet property="num9_Mar_Button" destination="10" id="84"/>
-                <outlet property="today_Dec_Button" destination="20" id="CHc-rl-GlG"/>
+                <outlet property="today_Oct_Button" destination="21" id="75"/>
                 <outlet property="view" destination="1" id="45"/>
                 <outlet property="yearButton" destination="64" id="87"/>
             </connections>
@@ -148,12 +148,12 @@
                     <rect key="frame" x="160" y="162" width="81" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <state key="normal" title="Today">
+                    <state key="normal" image="backspace">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
+                        <action selector="deleteButtonAction" destination="-1" eventType="touchUpInside" id="CvS-RM-wjt"/>
                         <action selector="numberButtonAction:" destination="-1" eventType="touchUpInside" id="102"/>
-                        <action selector="todayButtonAction" destination="-1" eventType="touchUpInside" id="G0o-zu-WwK"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9" userLabel="Keyboard Button i Phone - 8 Feb" customClass="A3KeyboardButton_iOS7_iPhone">
@@ -196,7 +196,8 @@
                     <rect key="frame" x="80" y="162" width="81" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <state key="normal" title="Nov">
+                    <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                    <state key="normal" title="0">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -243,12 +244,12 @@
                     <rect key="frame" x="-1" y="162" width="82" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                    <state key="normal" title="0">
+                    <state key="normal" title="Today">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="numberButtonAction:" destination="-1" eventType="touchUpInside" id="101"/>
+                        <action selector="todayButtonAction" destination="-1" eventType="touchUpInside" id="pf2-ZN-9hq"/>
                     </connections>
                 </button>
             </subviews>
@@ -256,4 +257,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
+    <resources>
+        <image name="backspace" width="22" height="16"/>
+    </resources>
 </document>

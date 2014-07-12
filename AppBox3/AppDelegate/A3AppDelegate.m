@@ -25,6 +25,10 @@
 #import "NSString+conversion.h"
 #import "WalletData.h"
 #import "A3SettingsBackupRestoreViewController.h"
+#import "AAAZip.h"
+#import "HolidayData.h"
+#import "HolidayData+Country.h"
+#import "A3HolidaysFlickrDownloadManager.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -33,13 +37,17 @@ NSString *const A3LocalNotificationOwner = @"A3LocalNotificationOwner";
 NSString *const A3LocalNotificationDataID = @"A3LocalNotificationDataID";
 NSString *const A3LocalNotificationFromLadyCalendar = @"Ladies Calendar";
 NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
-
 NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 
-@interface A3AppDelegate () <UIAlertViewDelegate, A3DataMigrationManagerDelegate>
+@interface A3AppDelegate () <UIAlertViewDelegate, A3DataMigrationManagerDelegate, NSURLSessionDownloadDelegate, AAAZipDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, strong) NSString *previousVersion;
 @property (nonatomic, strong) NSDictionary *localNotificationUserInfo;
+@property (nonatomic, strong) NSMutableArray *downloadList;
+@property (nonatomic, strong) NSURLSessionDownloadTask *downloadTask;
+@property (nonatomic, strong) AAAZip *zipArchive;
+@property (nonatomic, strong) NSURLSession *backgroundDownloadSession;
+@property (nonatomic, strong) CLLocationManager *locationManager;
 
 @end
 
@@ -52,14 +60,16 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+
 	[self prepareDirectories];
 	[self registerPasscodeUserDefaults];
 
-    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-    if (localNotification) {
+	UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+	if (localNotification) {
 		_localNotificationUserInfo = localNotification.userInfo;
-    }
-    
+	}
+
 	_previousVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
 	if (_previousVersion) {
 		if ([_previousVersion floatValue] < 3.0) {
@@ -74,6 +84,7 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 
 	self.reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
 	[self.reachability startNotifier];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
 
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	[fileManager setupCacheStoreFile];
@@ -126,6 +137,8 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 
 	[[NSUserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:kA3ApplicationLastRunVersion];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	[self downloadDataFiles];
 
 	return YES;
 }
@@ -392,14 +405,166 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 #pragma mark - Prepare subdirectories
 
 - (void)prepareDirectories {
-	if ( ![[NSFileManager defaultManager] fileExistsAtPath:[A3DaysCounterModelManager thumbnailDirectory]] ) {
-		[[NSFileManager defaultManager] createDirectoryAtPath:[A3DaysCounterModelManager thumbnailDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if ( ![fileManager fileExistsAtPath:[A3DaysCounterModelManager thumbnailDirectory]] ) {
+		[fileManager createDirectoryAtPath:[A3DaysCounterModelManager thumbnailDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
 	}
 	NSString *imageDirectory = [A3DaysCounterImageDirectory pathInLibraryDirectory];
-	if (![[NSFileManager defaultManager] fileExistsAtPath:imageDirectory]) {
-		[[NSFileManager defaultManager] createDirectoryAtPath:imageDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
+	if (![fileManager fileExistsAtPath:imageDirectory]) {
+		[fileManager createDirectoryAtPath:imageDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
 	}
 	[WalletData createDirectories];
+	NSString *dataDirectory = [@"data" pathInCachesDirectory];
+	if (![fileManager fileExistsAtPath:dataDirectory]) {
+		[fileManager createDirectoryAtPath:dataDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
+	}
+}
+
+#pragma mark - Download data files in background, 간지 데이터, Flick Recommendation, Message to customers.
+
+- (NSURLSession *)backgroundDownloadSession {
+	if (!_backgroundDownloadSession) {
+		NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:@"net.allaboutapps.backgroundTransfer.backgroundSession"];
+		_backgroundDownloadSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+	}
+	return _backgroundDownloadSession;
+}
+
+- (void)reachabilityChanged:(NSNotification *)notification {
+	if (![_downloadList count]) {
+		_downloadList = nil;
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+		return;
+	}
+	if (_downloadTask) return;
+
+	Reachability *reachability = notification.object;
+	if ([_downloadList count] && [reachability isReachableViaWiFi]) {
+		[self startDownloadDataFiles];
+	}
+}
+
+- (void)downloadDataFiles {
+	_downloadList = [NSMutableArray new];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if ([A3UIDevice shouldSupportLunarCalendar]) {
+		NSString *kanjiDataFile = [@"data/LunarConverter.sqlite" pathInCachesDirectory];
+		if (![fileManager fileExistsAtPath:kanjiDataFile]) {
+			[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/LunarConverter.sqlite.zip"]];
+		}
+	}
+	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/FlickrRecommendation.json.zip"]];
+//	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/message.zip"]];
+
+	[self startDownloadDataFiles];
+}
+
+- (void)startDownloadDataFiles {
+	FNLOG();
+	if (![_downloadList count]) {
+		_downloadList = nil;
+		_downloadTask = nil;
+		_backgroundDownloadSession = nil;
+
+		[self updateHolidayNations];
+		return;
+	}
+	if (_downloadTask || ![self.reachability isReachableViaWiFi]) {
+		return;
+	}
+	NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:_downloadList[0]];
+	_downloadTask = [self.backgroundDownloadSession downloadTaskWithRequest:downloadRequest];
+	[_downloadTask resume];
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location {
+	FNLOG();
+	[_downloadList removeObjectAtIndex:0];
+
+	NSFileManager *fileManager = [NSFileManager new];
+	NSString *filename = [[location path] lastPathComponent];
+	NSString *tempPath = [filename pathInTemporaryDirectory];
+	[fileManager moveItemAtURL:location toURL:[NSURL fileURLWithPath:tempPath] error:NULL];
+	_zipArchive = [[AAAZip alloc] init];
+	_zipArchive.delegate = self;
+	[_zipArchive unzipFile:tempPath unzipFileto:[@"data" pathInCachesDirectory]];
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
+
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes {
+
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
+	FNLOG();
+	if (error) {
+		FNLOG(@"%ld", (long)error.code);
+		if (error.code == -1100) {
+			[_downloadList removeObjectAtIndex:0];
+		}
+		[self startDownloadDataFiles];
+	}
+	_downloadTask = nil;
+}
+
+#pragma mark - AAAZip delegate
+
+- (void)completedUnzipProcess:(BOOL)bResult {
+	FNLOG();
+
+	_zipArchive = nil;
+	[self startDownloadDataFiles];
+}
+
+#pragma mark - HolidayNations
+
+- (void)updateHolidayNations {
+	dispatch_async(dispatch_get_main_queue(), ^{
+		if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+			_locationManager = [[CLLocationManager alloc] init];
+			_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
+			_locationManager.delegate = self;
+			[_locationManager startMonitoringSignificantLocationChanges];
+		} else {
+			NSArray *holidayCountries = [HolidayData userSelectedCountries];
+			for (NSString *countryCode in holidayCountries) {
+				[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:countryCode];
+			}
+		}
+	});
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+	[_locationManager stopUpdatingLocation];
+
+	CLLocation *location = locations[0];
+	CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
+	NSMutableArray *countries = [[HolidayData userSelectedCountries] mutableCopy];
+	[geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placeMarks, NSError *error) {
+		NSString *_countryCodeOfCurrentLocation;
+		for (CLPlacemark *placeMark in placeMarks) {
+			_countryCodeOfCurrentLocation = [placeMark.addressDictionary[@"CountryCode"] lowercaseString];
+		}
+
+		if ([_countryCodeOfCurrentLocation length]) {
+			if (![countries[0] isEqualToString:_countryCodeOfCurrentLocation]) {
+				NSInteger idx = [countries indexOfObject:_countryCodeOfCurrentLocation];
+				if (idx != NSNotFound) {
+					[countries removeObjectAtIndex:idx];
+				}
+
+				[countries insertObject:_countryCodeOfCurrentLocation atIndex:0];
+
+				[HolidayData setUserSelectedCountries:countries];
+			}
+		}
+		for (NSString *countryCode in countries) {
+			[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:countryCode];
+		}
+	}];
 }
 
 @end

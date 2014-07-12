@@ -16,7 +16,7 @@
 #import "HolidayData+Country.h"
 #import "UIImage+imageWithColor.h"
 
-NSString *A3HolidaysFlickrDownloadManagerDownloadComplete = @"A3HolidaysFlickrDownloadManagerDownloadComplete";
+NSString *const A3HolidaysFlickrDownloadManagerDownloadComplete = @"A3HolidaysFlickrDownloadManagerDownloadComplete";
 NSString *const kA3HolidayScreenImagePath = @"kA3HolidayScreenImagePath";		// USE key + country code
 NSString *const kA3HolidayScreenImageOwner = @"kA3HolidayScreenImageOwner";		// USE key + country code
 NSString *const kA3HolidayScreenImageURL = @"kA3HolidayScreenImageURL";			// USE key + country code
@@ -24,7 +24,7 @@ NSString *const kA3HolidayScreenImageID = @"kA3HolidayScreenImageID";			// USE k
 NSString *const kA3HolidayScreenImageLicense = @"kA3HolidayScreenImageLicense";			// USE key + country code
 NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownloadDate";			// USE key + country code
 
-@interface A3HolidaysFlickrDownloadManager () <NSURLSessionDelegate>
+@interface A3HolidaysFlickrDownloadManager () <NSURLSessionDownloadDelegate>
 
 @property (atomic, strong) NSMutableArray *downloadQueue;
 @property (atomic, strong) NSMutableArray *deleteQueue;
@@ -34,8 +34,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 
 @end
 
-@implementation A3HolidaysFlickrDownloadManager {
-}
+@implementation A3HolidaysFlickrDownloadManager
 
 + (instancetype)sharedInstance {
     static A3HolidaysFlickrDownloadManager *_sharedInstance = nil;
@@ -55,7 +54,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 	static NSURLSession *session = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:@"net.allaboutapps.BackgroundTransfer.BackgroundSession"];
+		NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:@"net.allaboutapps.backgroundTransfer.flickrImageDownloadSession"];
 		session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
 	});
 	return session;
@@ -130,18 +129,23 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 	if (self.downloadInProgress || ![self.downloadQueue count]) {
 		return;
 	}
+	NSString *countryCode = self.downloadQueue[0];
 	if ([[Reachability reachabilityWithHostname:@"www.flickr.com"] isReachableViaWiFi]) {
 		self.downloadInProgress = YES;
 
-		NSString *filePath = [[NSBundle mainBundle] pathForResource:@"FlickrRecommendation" ofType:@"json"];
+		NSString *filePath = [@"FlickrRecommendation.json" pathInCachesDataDirectory];
+		if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+			FNLOG(@"FlickrRecommendation.json file did not downloaded yet.");
+			return;
+		}
 		NSError *error;
 		NSArray *candidates = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:0 error:&error];
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"country == %@", self.downloadQueue[0]];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"country == %@", countryCode];
 		candidates = [candidates filteredArrayUsingPredicate:predicate];
 		if ([candidates count]) {
 			static NSUInteger photoIndex = 0;
 
-			NSString *prevPhotoID = [self imageIDForCountryCode:self.downloadQueue[0]];
+			NSString *prevPhotoID = [self imageIDForCountryCode:countryCode];
 			if (prevPhotoID) {
 				[candidates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 					if ([prevPhotoID isEqualToString:obj[@"photo_id"]]) {
@@ -156,7 +160,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 
 			NSURLRequest *request = [NSURLRequest requestWithURL:photoURL];
 			self.downloadTask = [self.session downloadTaskWithRequest:request];
-			self.downloadTask.taskDescription = self.downloadQueue[0];
+			self.downloadTask.taskDescription = countryCode;
 			[self.downloadTask resume];
 		} else {
 			self.downloadInProgress = NO;
@@ -202,6 +206,14 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
     }
 
     [self startDownload];
+
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
+
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes {
 
 }
 
