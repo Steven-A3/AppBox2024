@@ -48,6 +48,7 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 @property (nonatomic, strong) AAAZip *zipArchive;
 @property (nonatomic, strong) NSURLSession *backgroundDownloadSession;
 @property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) NSTimer *locationUpdateTimer;
 
 @end
 
@@ -523,11 +524,13 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 
 - (void)updateHolidayNations {
 	dispatch_async(dispatch_get_main_queue(), ^{
-		if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+		if ([CLLocationManager locationServicesEnabled]) {
 			_locationManager = [[CLLocationManager alloc] init];
 			_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
 			_locationManager.delegate = self;
 			[_locationManager startMonitoringSignificantLocationChanges];
+
+			_locationUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:20 target:self selector:@selector(locationDidNotRespond) userInfo:nil repeats:NO];
 		} else {
 			NSArray *holidayCountries = [HolidayData userSelectedCountries];
 			for (NSString *countryCode in holidayCountries) {
@@ -538,7 +541,11 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-	[_locationManager stopUpdatingLocation];
+	[_locationUpdateTimer invalidate];
+	_locationUpdateTimer = nil;
+
+	[_locationManager stopMonitoringSignificantLocationChanges];
+	_locationManager = nil;
 
 	CLLocation *location = locations[0];
 	CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
@@ -565,6 +572,30 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 			[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:countryCode];
 		}
 	}];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+	[_locationUpdateTimer invalidate];
+	_locationUpdateTimer = nil;
+
+	[_locationManager stopMonitoringSignificantLocationChanges];
+	_locationManager = nil;
+	NSArray *holidayCountries = [HolidayData userSelectedCountries];
+	for (NSString *countryCode in holidayCountries) {
+		[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:countryCode];
+	}
+}
+
+- (void)locationDidNotRespond {
+	[_locationUpdateTimer invalidate];
+	_locationUpdateTimer = nil;
+
+	[_locationManager stopMonitoringSignificantLocationChanges];
+	_locationManager = nil;
+	NSArray *holidayCountries = [HolidayData userSelectedCountries];
+	for (NSString *countryCode in holidayCountries) {
+		[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:countryCode];
+	}
 }
 
 @end
