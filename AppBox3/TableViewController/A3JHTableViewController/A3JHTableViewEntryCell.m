@@ -31,7 +31,7 @@
 - (void)calculateTextFieldFrame {
 
 	if (self.textLabel.font) {
-        CGFloat x = self.leftSeparatorInset;
+        CGFloat width = 60.0;
 
 		if ([self.textField.text length]) {
 			NSStringDrawingContext *context = [NSStringDrawingContext new];
@@ -40,17 +40,17 @@
 																	attributes:@{NSFontAttributeName:self.textLabel.font}
 																	   context:context];
 			if (textFieldBounds.size.width < 60.0) {
-				x = 60.0;
+				width = 60.0;
 			} else if (textFieldBounds.size.width > self.bounds.size.width / 2.0 - 30.0) {
-				x = self.bounds.size.width / 2.0 - 30.0;
+				width = self.bounds.size.width / 2.0 - 30.0;
 			} else {
-				x = ceilf(textFieldBounds.size.width);
+				width = ceilf(textFieldBounds.size.width);
 			}
 		}
 		CGRect textLabelFrame = self.textLabel.frame;
-		textLabelFrame.size.width = self.bounds.size.width - x - 30.0;
+		textLabelFrame.size.width = self.bounds.size.width - width - 30.0;
 		self.textLabel.frame = textLabelFrame;
-        self.textField.frame = CGRectMake(self.bounds.size.width - x - 15.0, 0, x, CGRectGetHeight(self.frame));
+        self.textField.frame = CGRectMake(self.bounds.size.width - width - 15.0, 0, width, CGRectGetHeight(self.frame));
 	}
 }
 

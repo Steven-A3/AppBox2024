@@ -80,7 +80,7 @@
     self.sectionArray = @[
                           @{EventRowTitle : @"", EventKey_Items : @[@{EventRowTitle : NSLocalizedString(@"Transitions", @"Transitions"), EventRowType : @(SlideshowOptionType_Transition)}]},
                           @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : NSLocalizedString(@"Play Each Slide For", @"Play Each Slide For"),EventRowType : @(SlideshowOptionType_Showtime)}]},
-                          @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : NSLocalizedString(@"Repeat", @"Repeat"),EventRowType : @(SlideshowOptionType_Repeat)},
+                          @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : NSLocalizedString(@"Slideshow_Repeat", @"Repeat"),EventRowType : @(SlideshowOptionType_Repeat)},
                                                                    @{EventRowTitle : NSLocalizedString(@"Shuffle", @"Shuffle"),EventRowType : @(SlideshowOptionType_Shuffle)}]},
                           @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : NSLocalizedString(@"Start Slideshow", @"Start Slideshow"),EventRowType : @(SlideshowOptionType_Startshow)}]}];
     

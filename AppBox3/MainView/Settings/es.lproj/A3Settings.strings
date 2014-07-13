@@ -2,25 +2,19 @@
 /* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "05t-yj-k37"; */
 "05t-yj-k37.text" = "Calendario femenino";
 
-/* Class = "IBUILabel"; text = "Los 5 más recientes "; ObjectID = "0Me-nY-VE5"; */
-"0Me-nY-VE5.text" = "Los 5 más recientes";
-
 /* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Ladies Calendar periods and Wallet items.
 
 "; ObjectID = "1dJ-y3-yh7"; */
 "1dJ-y3-yh7.footerTitle" = "Sincronizar o hacer copias de seguridad del Historial de cada aplicación, Contar eventos en días, Lista de Gastos, Periodos del calendario femenino artículos de la billetera.";
 
-/* Class = "IBUINavigationItem"; title = "Selecionar Copia de Respaldo "; ObjectID = "2E1-Z8-v5l"; */
-"2E1-Z8-v5l.title" = "Seleccione las copias de respaldo";
+/* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "2E1-Z8-v5l"; */
+"2E1-Z8-v5l.title" = "Selecciona archivo";
 
 /* Class = "IBUITableViewSection"; headerTitle = "LA CLAVE DE ACCESO ES REQUERIDO PARA "; ObjectID = "4da-k5-f71"; */
-"4da-k5-f71.headerTitle" = " LA CLAVE DE ACCESO ES REQUERIDO PARA ";
+"4da-k5-f71.headerTitle" = "CÓDIGO REQUERIDO PARA LAS";
 
 /* Class = "IBUINavigationItem"; title = "Aplicaciones"; ObjectID = "52d-yt-UJk"; */
 "52d-yt-UJk.title" = " Aplicaciones ";
-
-/* Class = "IBUILabel"; text = "Calendario lunar"; ObjectID = "5dO-Tl-dv6"; */
-"5dO-Tl-dv6.text" = "Calendario lunar";
 
 /* Class = "IBUINavigationItem"; title = "Recent to Keep"; ObjectID = "5pd-cg-py2"; */
 "5pd-cg-py2.title" = "Recientes a guardar";
@@ -35,7 +29,7 @@
 "6ow-jx-9ZQ.text" = "Activar la clave de acceso";
 
 /* Class = "IBUILabel"; text = "Use iCloud"; ObjectID = "7Pd-or-AM2"; */
-"7Pd-or-AM2.text" = "Use iCloud";
+"7Pd-or-AM2.text" = "Usar iCloud";
 
 /* Class = "IBUILabel"; text = "Clear Recent"; ObjectID = "7Wm-Bw-iY8"; */
 "7Wm-Bw-iY8.text" = "Limpiar los recientes";
@@ -44,7 +38,7 @@
 "7oW-es-0Zb.title" = "Calendario lunar";
 
 /* Class = "IBUILabel"; text = "Require Passcode"; ObjectID = "A3j-68-3Oy"; */
-"A3j-68-3Oy.text" = "Clave de acceso requerido";
+"A3j-68-3Oy.text" = "Solicitar";
 
 /* Class = "IBUILabel"; text = "Recent to Keep"; ObjectID = "BGG-KB-Wog"; */
 "BGG-KB-Wog.text" = "Recientes a guardar";
@@ -53,25 +47,25 @@
 "CDn-14-haS.title" = "Calendario Lunar";
 
 /* Class = "IBUILabel"; text = "Simple Passcode"; ObjectID = "EA1-5P-PnP"; */
-"EA1-5P-PnP.text" = "Clave de acceso simple";
+"EA1-5P-PnP.text" = "Código simple";
 
 /* Class = "IBUILabel"; text = "Change Passcode"; ObjectID = "Fvs-tZ-usV"; */
-"Fvs-tZ-usV.text" = "Cambiar clave de acceso";
+"Fvs-tZ-usV.text" = "Cambiar código";
 
 /* Class = "IBUITableViewController"; title = "Passcode Lock"; ObjectID = "KML-Ub-d8M"; */
-"KML-Ub-d8M.title" = "Bloquear la clave de acceso";
+"KML-Ub-d8M.title" = "Bloqueo con código";
 
 /* Class = "IBUITableViewSection"; footerTitle = "For Lunar Converter"; ObjectID = "LOI-Yd-hc0"; */
 "LOI-Yd-hc0.footerTitle" = "Para convertir a calendario lunar";
 
 /* Class = "IBUILabel"; text = "More Information About Security"; ObjectID = "LZb-sk-84W"; */
-"LZb-sk-84W.text" = "Mayor información sobre seguridad";
+"LZb-sk-84W.text" = "Más información";
 
 /* Class = "IBUINavigationItem"; title = "Passcode Lock"; ObjectID = "Lbr-p8-awt"; */
-"Lbr-p8-awt.title" = "Bloquear clave de acceso";
+"Lbr-p8-awt.title" = "Bloqueo con código";
 
 /* Class = "IBUITableViewSection"; footerTitle = "Shorter times are more secure."; ObjectID = "MUh-Ac-pHs"; */
-"MUh-Ac-pHs.footerTitle" = "Los cortos tiempos son más seguros.";
+"MUh-Ac-pHs.footerTitle" = "Los intervalos cortos son más seguros.";
 
 /* Class = "IBUILabel"; text = "After 4 hours"; ObjectID = "McJ-yq-SBi"; */
 "McJ-yq-SBi.text" = "Después de 4 horas";
@@ -92,7 +86,7 @@
 "QDB-IM-N8E.text" = "Detalle";
 
 /* Class = "IBUITableViewSection"; footerTitle = "A simple passcode is a 4 digit number."; ObjectID = "ROP-jz-ZtT"; */
-"ROP-jz-ZtT.footerTitle" = "Una clave de acceso simple es de 4 dígitos numéricos.";
+"ROP-jz-ZtT.footerTitle" = "Un código simple es un número de 4 dígitos.";
 
 /* Class = "IBUITableViewController"; title = "Theme Color"; ObjectID = "RpU-td-Vej"; */
 "RpU-td-Vej.title" = "Color de tema";
@@ -104,25 +98,22 @@
 "Vgb-6m-SyM.text" = "Color de tema";
 
 /* Class = "IBUITableViewController"; title = "Require Passcode"; ObjectID = "Xb7-yr-Jd6"; */
-"Xb7-yr-Jd6.title" = "Clave de acceso requerido";
+"Xb7-yr-Jd6.title" = "Solicitar";
 
 /* Class = "IBUILabel"; text = "After 5 minutes"; ObjectID = "cHo-o5-yl0"; */
 "cHo-o5-yl0.text" = "Después de 5 minutos";
 
 /* Class = "IBUILabel"; text = "Immediately"; ObjectID = "ck4-7j-nEw"; */
-"ck4-7j-nEw.text" = "Inmediatamente";
+"ck4-7j-nEw.text" = "De inmediato";
 
 /* Class = "IBUILabel"; text = "Immediately"; ObjectID = "eGG-mK-Q2m"; */
-"eGG-mK-Q2m.text" = "Inmediatamente";
+"eGG-mK-Q2m.text" = "De inmediato";
 
 /* Class = "IBUILabel"; text = "Backup & Restore on Dropbox"; ObjectID = "ehr-w2-0vk"; */
 "ehr-w2-0vk.text" = "Copia de seguridad de Dropbox";
 
 /* Class = "IBUINavigationItem"; title = "Theme Color"; ObjectID = "eqe-ec-kWO"; */
 "eqe-ec-kWO.title" = "Color del tema";
-
-/* Class = "IBUILabel"; text = "Korean"; ObjectID = "fHP-u0-inU"; */
-"fHP-u0-inU.text" = "Coreano";
 
 /* Class = "IBUINavigationItem"; title = "Favorites"; ObjectID = "fqW-Vk-vP5"; */
 "fqW-Vk-vP5.title" = "Favoritos";
@@ -146,10 +137,10 @@
 "oxS-sd-8U7.title" = "Copia de seguridad de Dropbox";
 
 /* Class = "IBUILabel"; text = "Passcode Lock"; ObjectID = "pjv-dt-D5o"; */
-"pjv-dt-D5o.text" = "Código";
+"pjv-dt-D5o.text" = "Bloqueo con código";
 
 /* Class = "IBUINavigationItem"; title = "Require Passcode"; ObjectID = "qcD-FX-Y5d"; */
-"qcD-FX-Y5d.title" = "Clave de acceso requerido";
+"qcD-FX-Y5d.title" = "Solicitar";
 
 /* Class = "IBUILabel"; text = "Account"; ObjectID = "rZ1-di-1G0"; */
 "rZ1-di-1G0.text" = "Cuenta";
@@ -175,5 +166,11 @@
 /* Class = "IBUILabel"; text = "Restore"; ObjectID = "xJL-au-A2W"; */
 "xJL-au-A2W.text" = "Restaurar";
 
-/* Class = "IBUILabel"; text = "Chinese"; ObjectID = "zD5-Op-8e3"; */
-"zD5-Op-8e3.text" = "Chino";
+/* Class = "IBUILabel"; text = "Chinese"; ObjectID = "S47-yQ-cP7"; */
+"S47-yQ-cP7.text" = "Chino";
+
+/* Class = "IBUILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
+"alM-Rl-6AW.text" = "Coreano";
+
+/* Class = "IBUILabel"; text = "Los 5 más recientes "; ObjectID = "0Me-nY-VE5"; */
+"0Me-nY-VE5.text" = "Los 5 más recientes";

@@ -15,7 +15,7 @@
 "IQd-UR-Egy.text" = "FRECUENCIA";
 
 /* Class = "IBUILabel"; text = "PRINCIPAL"; ObjectID = "Kjj-Yf-Cp0"; */
-"Kjj-Yf-Cp0.text" = "PRINCIPAL";
+"Kjj-Yf-Cp0.text" = "CAPITAL PRESTADO";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "Lay-j3-68g"; */
 "Lay-j3-68g.text" = "PAGO";
@@ -27,13 +27,13 @@
 "PyM-Ux-VrQ.text" = "MONTO TOTAL";
 
 /* Class = "IBUILabel"; text = "INTEREST RATE"; ObjectID = "V4g-Ka-you"; */
-"V4g-Ka-you.text" = "TASA DE INTERÉS";
+"V4g-Ka-you.text" = "TIPO DE INTERÉS";
 
 /* Class = "IBUIButton"; normalTitle = "Monthly"; ObjectID = "kxb-Ku-lTX"; */
 "kxb-Ku-lTX.normalTitle" = "Mensual";
 
 /* Class = "IBUILabel"; text = "TERM"; ObjectID = "p8M-3c-orl"; */
-"p8M-3c-orl.text" = "TÉRMINO";
+"p8M-3c-orl.text" = "PLAZO";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "vlc-Uw-6Wc"; */
 "vlc-Uw-6Wc.text" = "PAGO";

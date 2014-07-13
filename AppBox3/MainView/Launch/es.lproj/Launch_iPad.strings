@@ -3,13 +3,13 @@
 "2Pn-I6-0xR.text" = "Contador de días";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "2eu-dh-CwY"; */
-"2eu-dh-CwY.normalTitle" = "Use AppBox Pro";
+"2eu-dh-CwY.normalTitle" = "Usar AppBox Pro";
 
 /* Class = "IBUILabel"; text = "well designed for both iPhone and iPad"; ObjectID = "3ye-4w-mZR"; */
 "3ye-4w-mZR.text" = "bien diseñada tanto para iPhone y iPad";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "4vD-c0-4t2"; */
-"4vD-c0-4t2.normalTitle" = "Use AppBox Pro";
+"4vD-c0-4t2.normalTitle" = "Usar AppBox Pro";
 
 /* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7if-xU-XZH"; */
 "7if-xU-XZH.text" = "Básico / Científico Calculador";
@@ -38,7 +38,7 @@
 "EVR-ah-KPZ.normalTitle" = "continuar";
 
 /* Class = "IBUIButton"; normalTitle = "Use iCloud"; ObjectID = "Eha-Jd-EEF"; */
-"Eha-Jd-EEF.normalTitle" = "Use iCloud";
+"Eha-Jd-EEF.normalTitle" = "Usar iCloud";
 
 /* Class = "IBUILabel"; text = "Productivity"; ObjectID = "FZq-hj-leX"; */
 "FZq-hj-leX.text" = "Productividad";
@@ -77,7 +77,7 @@
 "bKr-UI-1QI.text" = "Billetera";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "bqT-N1-DoK"; */
-"bqT-N1-DoK.normalTitle" = "Use AppBox Pro";
+"bqT-N1-DoK.normalTitle" = "Usar AppBox Pro";
 
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "bwe-yZ-jRu"; */
 "bwe-yZ-jRu.text" = "Calculadora";
@@ -98,7 +98,7 @@
 "gfY-Dc-cGm.text" = "Calculador de fechas";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "k5O-Qu-0Jo"; */
-"k5O-Qu-0Jo.normalTitle" = "Use AppBox Pro";
+"k5O-Qu-0Jo.normalTitle" = "Usar AppBox Pro";
 
 /* Class = "IBUILabel"; text = "What's New"; ObjectID = "k96-nV-XIl"; */
 "k96-nV-XIl.text" = "LO NUEVO";
@@ -133,4 +133,4 @@ en todos sus dispositivos";
 "xFS-er-fHt.text" = "iCloud Sync";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "zB9-QC-DdP"; */
-"zB9-QC-DdP.normalTitle" = "Use AppBox Pro";
+"zB9-QC-DdP.normalTitle" = "Usar AppBox Pro";

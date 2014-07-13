@@ -2,9 +2,6 @@
 /* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "05t-yj-k37"; */
 "05t-yj-k37.text" = "Damen-Kalender";
 
-/* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
-"0Me-nY-VE5.text" = "Die 5 neueste";
-
 /* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Ladies Calendar periods and Wallet items.
 
 "; ObjectID = "1dJ-y3-yh7"; */
@@ -22,7 +19,6 @@
 "52d-yt-UJk.title" = "Apps";
 
 /* Class = "IBUILabel"; text = "Lunar Calendar"; ObjectID = "5dO-Tl-dv6"; */
-"5dO-Tl-dv6.text" = "Lunar Kalender";
 
 /* Class = "IBUINavigationItem"; title = "Recent to Keep"; ObjectID = "5pd-cg-py2"; */
 "5pd-cg-py2.title" = "Verlauf speichern";
@@ -130,7 +126,6 @@
 "eqe-ec-kWO.title" = "Designfarbe";
 
 /* Class = "IBUILabel"; text = "Korean"; ObjectID = "fHP-u0-inU"; */
-"fHP-u0-inU.text" = "Koreanisch";
 
 /* Class = "IBUILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
 "alM-Rl-6AW.text" = "Koreanisch";
@@ -192,15 +187,11 @@
 /* Class = "IBUILabel"; text = "Restore"; ObjectID = "xJL-au-A2W"; */
 "xJL-au-A2W.text" = "Wiederherstellen";
 
-/* Class = "IBUILabel"; text = "Chinese"; ObjectID = "zD5-Op-8e3"; */
-"zD5-Op-8e3.text" = "Chinesisch";
-
-/* Class = "IBUILabel"; text = "Korean"; ObjectID = "fHP-u0-inU"; */
-"fHP-u0-inU.text" = "Koreanisch";
-
 /* Class = "IBUILabel"; text = "Chinese"; ObjectID = "S47-yQ-cP7"; */
 "S47-yQ-cP7.text" = "Chinesisch";
 
 /* Class = "IBUILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
 "alM-Rl-6AW.text" = "Koreanisch";
 
+/* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
+"0Me-nY-VE5.text" = "Die 5 neueste";

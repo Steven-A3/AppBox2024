@@ -19,7 +19,6 @@
 "52d-yt-UJk.title" = "Apps";
 
 /* Class = "IBUILabel"; text = "Lunar Calendar"; ObjectID = "5dO-Tl-dv6"; */
-"5dO-Tl-dv6.text" = "음력 설정";
 
 /* Class = "IBUINavigationItem"; title = "Recent to Keep"; ObjectID = "5pd-cg-py2"; */
 "5pd-cg-py2.title" = "최근 사용 목록";
@@ -127,7 +126,6 @@
 "eqe-ec-kWO.title" = "테마 색상";
 
 /* Class = "IBUILabel"; text = "Korean"; ObjectID = "fHP-u0-inU"; */
-"fHP-u0-inU.text" = "한국음력";
 
 /* Class = "IBUINavigationItem"; title = "Favorites"; ObjectID = "fqW-Vk-vP5"; */
 "fqW-Vk-vP5.title" = "즐겨찾기";
@@ -183,15 +181,11 @@
 /* Class = "IBUILabel"; text = "Restore"; ObjectID = "xJL-au-A2W"; */
 "xJL-au-A2W.text" = "복원";
 
-/* Class = "IBUILabel"; text = "Title"; ObjectID = "xJM-LO-q65"; */
-"xJM-LO-q65.text" = "Title";
-
-/* Class = "IBUILabel"; text = "Chinese"; ObjectID = "zD5-Op-8e3"; */
-"zD5-Op-8e3.text" = "중국음력";
-
 /* Class = "IBUILabel"; text = "Chinese"; ObjectID = "S47-yQ-cP7"; */
 "S47-yQ-cP7.text" = "중국음력";
 
 /* Class = "IBUILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
 "alM-Rl-6AW.text" = "한국음력";
 
+/* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
+"0Me-nY-VE5.text" = "최근 5 개";

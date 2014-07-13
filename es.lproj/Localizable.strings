@@ -5,12 +5,11 @@
  * Time: 9:34 PM
  */
 
-"Select Currency" = "Seleccione el tipo de moneda";
-"Principal" = "Principal";
-"Term" = "Término";
-"Interest Rate" = "Tasa de interés";
+"Select Currency" = "Seleccione Moneda";
+"Principal" = "Capital prestado";
+"Term" = "Plazo";
+"Interest Rate" = "Tipo de interés";
 "Frequency" = "Frecuencia";
-"LadyCalendar_Start Date" = "Fecha de inicio";
 "Notes" = "Notas";
 "One-Time" = "Una vez";
 "Currency" = "Moneda";
@@ -30,9 +29,7 @@
 
 "Lunar Calendar" = "Calendario lunar";
 
-"tellafriend" = "Tu amigo te informa que las siguientes opciones ya están disponibles en AppBox Pro™: Calculadora, Calculador de fechas, Calculador de préstamos, Calculador de porcentaje, Calculador de ventas, Calculador de propinas, Precio Unitario, Convertidor de monedas, Convertidor de Calendario Lunar, Traductor, Convertidor de Unidades, Contador de días, Lista de Gastos, Calendario femenino, Billetera, Días festivos, Estado de la batería,  Reloj, Agrandador y Espejo,  todas estas nuevas herramientas están disponibles para iPhone,iPad y iPod Touch. Haga un click en el link de abajo para bajar AppBox Pro™ desde iTunes App Store.
-
-https://itunes.apple.com/app/id318404385";
+"tellafriend" = "Tu amigo te informa que las siguientes opciones ya están disponibles en AppBox Pro™: Calculadora, Calculador de fechas, Calculador de préstamos, Calculador de porcentaje, Calculador de ventas, Calculador de propinas, Precio Unitario, Convertidor de monedas, Traductor, Convertidor de Unidades, Contador de días, Lista de Gastos, Calendario femenino, Billetera, Días festivos, Batería,  Reloj, Agrandador y Espejo,  todas estas nuevas herramientas están disponibles para iPhone, iPad y iPod Touch. Haga un click en el link de abajo para bajar AppBox Pro™ desde iTunes App Store.";
 
 /* "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case."; */
 "DISCLAIMER_MESSAGE" = "Hemos hecho todo el esfuerzo para listar con exactitud los días festivos a nivel mundial. Debido a que los días festivos están sujetos a cambios por autoridades locales. No aceptamos ninguna responsabilidad por cualquier error o omisión de las fechas festivas. Se le aconseja verificar las fechas con la embajada o consulado de su país, antes de realizar algún plan.";
@@ -49,9 +46,9 @@ https://itunes.apple.com/app/id318404385";
 /* Reference  Image */
 "Theme Color" = "Color del Tema";
 
-"About" = "Acerca de";
+"About" = "Información";
 "Remaining Time" = "Tiempo restante";
-"Battery Status" = "Estado de la batería";
+"Battery Status" = "Batería";
 "Calculator" = "Calculadora";
 "Date Calculator" = "Calculo de fechas";
 "Loan Calculator" = "Préstamo";
@@ -71,7 +68,7 @@ https://itunes.apple.com/app/id318404385";
 "Clock" = "Reloj";
 "Mirror" = "Espejo";
 "Magnifier" = "Amplificador";
-"Favorites" = "Mis Favoritos";
+"Favorites" = "Favoritos";
 
 "Apps" = "Apps";
 /* "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature."; */
@@ -108,8 +105,8 @@ https://itunes.apple.com/app/id318404385";
 "Memory" = "Memoria";
 "Capacity" = "Capacidad";
 
-"How to Maximize Power Use" = "¿Cómo maximizar la utilización de este dispositivo";
-"More Information about Batteries" = "Más información sobre las Baterías";
+"How to Maximize Power Use" = "Cómo maximizar uso de la energía";
+"More Information about Batteries" = "Más info sobre las Baterías";
 
 "Enter The Number!" = "¡Ingrese el número!";
 
@@ -130,12 +127,12 @@ https://itunes.apple.com/app/id318404385";
 "DATE" = "FECHA";
 "WEATHER" = "TIEMPO";
 "The time with seconds" = "La hora con segundos";
-"Flash the time separators" = "Parpadeo de los separadores de hora";
-"Use a 24-hour clock" = "Sistema horario de 24 horas";
-"Show AM/PM" = "Muestra AM/PM";
-"Show the day of the week" = "Muestra el día de la semana";
-"Show date" = "Muestra la fecha";
-"Show Weather" = "Muestra el clima";
+"Flash the time separators" = "Parpadeo de \":\"";
+"Use a 24-hour clock" = "Usar reloj de 24 horas";
+"Show AM/PM" = "Mostrar a.m./p.m/";
+"Show the day of the week" = "Mostrar el día de la semana";
+"Show date" = "Mostrar fecha";
+"Show Weather" = "Mostrar tiempo";
 
 "Weather" = "Clima";
 
@@ -146,15 +143,15 @@ https://itunes.apple.com/app/id318404385";
 "Auto Update" = "Actualización automática";
 "Show National Flag" = "Muestra la bandera nacional";
 "Use Cellular Data" = "Use los datos del teléfono móvil";
-"Swap" = "Intercambio";
+"Swap" = "Cambiar";
 "Chart" = "Gráfico";
-"Share" = "Compartir";
+"Share" = "Acción";
 "Delete" = "Eliminar";
 
 "Updating" = "Actualizando";
 "Updated %@" = "Actualizado %@";
-"%@Rate = %0.4f" = "%@Rate = %0.4f";
-"Rate = %0.4f" = "Rate = %0.4f";
+"%@Rate = %0.4f" = "%@Precio = %0.4f";
+"Rate = %0.4f" = "Precio = %0.4f";
 
 "Currency Converter in the AppBox Pro" = "Convertidor de moneda en AppBox Pro";
 "Share Currency Converter Data" = "Compartir datos del convertidor de moneda";
@@ -192,46 +189,46 @@ https://itunes.apple.com/app/id318404385";
 "Date Calculator using AppBox Pro" = "Cálcule la fecha de AppBox Pro";
 
 "Between two dates" = "Entre dos fechas";
-"Add or Subtract days" = "Adicione o reduzca días";
-"From" = "Fecha inicial";
-"To" = "Fecha final";
+"Add or Subtract days" = "Sumar o restar días";
+"From" = "De";
+"To" = "A";
 "Exclude" = "Excluir";
 
 "%ld of %ld" = "%ld of %ld";
 "%@ using AppBox Pro" = "%@ de AppBox Pro";
 "Share Days Counter Data" = "Comparta los días del Contador de datos";
-"Slideshow Options" = "Opciones de presentación";
+"Slideshow Options" = "Opciones del pase";
 "Transitions" = "Transiciones";
-"Play Each Slide For" = "Ejecute cada diapositiva para";
+"Play Each Slide For" = "Visualizar durante";
 "Repeat" = "Repetir";
-"Shuffle" = "Mezclar";
-"Start Slideshow" = "Inicie la presentación";
+"Shuffle" = "Aleatorio";
+"Start Slideshow" = "Iniciar pase";
 "There is no events." = "´No hay eventos.";
 
-"Slideshow" = "Presentación";
+"Slideshow" = "Pase de diapositivas";
 "Edit Calendar" = "Editar Calendario";
-"Add Calendar" = "Adicionar Calendario";
+"Add Calendar" = "Añadir calendario";
 "COLOR" = "COLOR";
 "Calendar Name" = "Nombre del Calendario";
-"Delete Calendar" = "Eliminar Calendario";
+"Delete Calendar" = "Eliminar calendario";
 "Untitled" = "Sin título";
 
-"Add Event" = "Agregar eventos";
-"Title" = "Nombre de Evento";
+"Add Event" = "Añadir evento";
+"Title" = "Titulo";
 "Photo" = "Foto";
 "Lunar" = "Lunar";
-"Starts-Ends" = "Iniciar-Terminar";
+"Starts-Ends" = "Empieza-Termina";
 "Starts" = "Iniciar";
-"All-day" = "Todo el día";
+"All-day" = "Día entero";
 
 "Leap Month" = "Mes bisiesto";
 "Ends" = "Terminar";
-"End Repeat" = "Fin de la repetición";
+"End Repeat" = "Terminar";
 "Alert" = "Alerta";
 "Calendar" = "Calendario";
 "Duration Option" = "Opción de duración";
 "Location" = "Ubicación";
-"Delete Event" = "Borrar evento";
+"Delete Event" = "Eliminar evento";
 "Delete Location" = "Borrar ubicación";
 "Use My Location" = "Usar mi ubicación";
 "Search Location" = "Buscar ubicación";
@@ -251,12 +248,12 @@ https://itunes.apple.com/app/id318404385";
 "DaysCounter_from" = "Desde";
 "DaysCounter_to" = "Hasta";
 
-"Edit Calendars" = "Editar Calendario";
+"Edit Calendars" = "Editar calendarios";
 
 "Move these events to a new calendar." = "Mover estos eventos al nuevo calendario.";
 "Please select calendar." = "Por favor seleccione el calendario.";
 "Address" = "Dirección";
-"Event Details" = "Detalles del Evento";
+"Event Details" = "Detalles";
 
 "Share Event" = "Compartir Evento";
 "No location" = "No hay ubicación";
@@ -273,7 +270,7 @@ https://itunes.apple.com/app/id318404385";
 
 "Events" = "Eventos";
 
-"Reminder" = "Recordatorio";
+"Reminder" = "Recordatorios";
 
 "List_Upcoming" = "Próximos";
 "List_Past" = "Pasados";
@@ -288,15 +285,15 @@ https://itunes.apple.com/app/id318404385";
 "Every Day" = "Todos los días";
 "Every Week" = "Todas las semanas";
 "Every 2Weeks" = "Cada dos semanas";
-"Every Month" = "Cada mes";
-"Every Year" = "Cada año";
+"Every Month" = "Todos los meses";
+"Every Year" = "Todos los años";
 "Daily" = "Diariamente";
 "Weekly" = "Semanalmente";
 "Bi-Weekly" = "Cada dos semanas";
 "Monthly" = "Mensual";
 "Yearly" = "Anualmente";
 
-"At time of event" = "En la hora del evento";
+"At time of event" = "A la hora del evento";
 "5 minutes before" = "5 minutos antes";
 "15 minutes before" = "15 minutos antes";
 "30 minutes before" = "30 minutos antes";
@@ -322,16 +319,16 @@ https://itunes.apple.com/app/id318404385";
 "%ld hr" = "%ld hr";
 "%ld min" = "%ld min";
 "Cube" = "Cubo";
-"Dissolve" = "Disolver";
+"Dissolve" = "Disolución";
 "Origami" = "Origami";
-"Ripple" = "Ondular";
-"Wipe" = "Limpiar";
+"Ripple" = "Onda";
+"Wipe" = "Barrido";
 
 "Change Location" = "Cambiar ubicación";
-"Current Location" = "Actual ubicación";
+"Current Location" = "Ubicación actual";
 "Searching" = "Buscando";
 "No Results Found" = "No se encontraron";
-"Custom" = "Personalizado";
+"Custom" = "Personalizar";
 "day(s) before" = "día(s) anterior(es)";
 "Please enter your dates in the future." = "Por favor, introduzca fechas futuras.";
 "Time" = "Hora";
@@ -408,7 +405,7 @@ https://itunes.apple.com/app/id318404385";
 "Holiday_Public_holiday_abbreviation" = "P";
 
 "Search" = "Buscar";
-"Select Country" = "Seleccione el país";
+"Select Country" = "Seleccione País";
 "To add a new country, remove one first." = "Para adicionar un nuevo país, elimine uno de la lista.";
 
 "Acknowledgement" = "Reconocimiento";
@@ -427,7 +424,7 @@ https://itunes.apple.com/app/id318404385";
 "Edit Account" = "Editar Cuenta";
 "Add Account" = "Adicionar Cuenta";
 "Name" = "Nombre";
-"Delete Account" = "Borrar cuenta";
+"Delete Account" = "Eliminar cuenta";
 "Optional" = "Opcional";
 "Cannot remove current account." = "No se puede eliminar la cuenta actual.";
 " Same name already exists. " = " Ya existe el mismo nombre. ";
@@ -435,9 +432,10 @@ https://itunes.apple.com/app/id318404385";
 
 "Edit Period" = "Editar periodo";
 "Add Period" = "Adicionar periodo";
-"End Date" = "Fecha de finalización";
+"LadyCalendar_Start Date" = "De";
+"End Date" = "A";
 "Cycle Length" = "Duración del ciclo";
-"Delete Period" = "Borrar periodo";
+"Delete Period" = "Eliminar periodo";
 "Please input end date." = "Por favor, introduzca la fecha final.";
 "Cannot Save Period.\nThe start date must be before the end date." = "No se puede guardar el Periodo.\nLa fecha de inicio debe ser antes de la fecha final.";
 "The new date you entered overlaps with previous dates." = "La nueva fecha introducida se solapa con la fecha anterior.";
@@ -447,20 +445,20 @@ https://itunes.apple.com/app/id318404385";
 "9 Months" = "9 Meses";
 "1 Year" = "1 año";
 "2 Years" = "2 Años";
-"CYCLE LENGTH" = "TIEMPO DEL CICLO";
+"CYCLE LENGTH" = "DURACIÓN DEL CICLO";
 "MENSTRUAL PERIOD" = "PERIODO MENSTRUAL";
 "Expected Period(+/-2 days)" = "Periodo esperado(+/-2 días)";
 "Increased Probability of Pregnancy" = "Alta probabilidad de embarazo";
 "Ovulation - Highest Probability" = "Ovulación - más alta probabilidad";
 "Menstrual Period" = "Período Menstrual";
 "Periods" = "Periodos";
-"On day(9 AM)" = "En el día(9 AM)";
-"1 day before(9 AM)" = "1 día antes(9 AM)";
-"2 days before(9 AM)" = "2 días antes(9 AM)";
+"On day(9 AM)" = "En el día (09:00)";
+"1 day before(9 AM)" = "1 día antes (09:00)";
+"2 days before(9 AM)" = "2 días antes (09:00)";
 "Your period is coming." = "Su periodo se acerca.";
 "FORECASTING PERIODS" = "PRONÓSTICO DE PERIODOS";
 
-"CALCULATE CYCLE LENGTH" = "CÁLCULO DEL TIEMPO DEL CICLO";
+"CALCULATE CYCLE LENGTH" = "CÁLCULO DEL DURACIÓN DEL CICLO";
 "Same Before Cycle" = "Igual que el ciclo anterior";
 "Average Before Two Cycle" = "Promedio entre dos ciclos anteriores";
 "Average All Cycle" = "Promedio de todos los ciclos";
@@ -469,11 +467,11 @@ https://itunes.apple.com/app/id318404385";
 "Notify about estimated next starting date." = "Avisar sobre la próxima fecha de inicio.";
 "FORECASTING %@ PERIODS" = "PRONÓSTICANDO %@ PERIODOS";
 
-"Date, Principal, Payment, Interest, Balance" = "Fecha, Principal, Pago, Interés, Balance";
+"Date, Principal, Payment, Interest, Balance" = "Fecha, Capital prestado, Pago, Interés, Balance";
 "Annual" = "Anual";
 "Monthly_Rate" = "Mensual";
 
-"Down Payment" = "Pago inicial";
+"Down Payment" = "Cuota Inicial";
 "Payment" = "Pago";
 "Term(years)" = "Plazo(años)";
 "Term(months)" = "Plazo(meses)";
@@ -484,13 +482,13 @@ https://itunes.apple.com/app/id318404385";
 "Semiannually" = "Semestralmente";
 "Annually" = "Anualmente";
 
-"Loan Calc Frequency short string weekly" = "wk";
-"Loan Calc Frequency short string biweekly" = "biwk";
-"Loan Calc Frequency short string monthly" = "mo";
-"Loan Calc Frequency short string bi montly" = "bimo";
-"Loan Calc Frequency short string quarterly" = "qt";
-"Loan Calc Frequency short string semi annually" = "semian";
-"Loan Calc Frequency short string annually" = "an";
+"Loan Calc Frequency short string weekly" = "sema";
+"Loan Calc Frequency short string biweekly" = "bisem";
+"Loan Calc Frequency short string monthly" = "mensual";
+"Loan Calc Frequency short string bi montly" = "bimensual";
+"Loan Calc Frequency short string quarterly" = "trimestral";
+"Loan Calc Frequency short string semi annually" = "semestralmente";
+"Loan Calc Frequency short string annually" = "anualmente";
 
 "PAYMENT" = "PAGO";
 "PRINCIPAL" = "PRINCIPAL";
@@ -522,8 +520,8 @@ https://itunes.apple.com/app/id318404385";
 "Extra(Monthly)" = "Extra(Mensual)";
 "Extra Payments(Yearly)" = "Pagos extras(Anualmente)";
 "Extra(Yearly)" = "Extra(Anualmente)";
-"Extra Payments(One-time)" = "Pagos extras(Una sola vez)";
-"Extra(One-time)" = "Extra(Una sola vez)";
+"Extra Payments(One-time)" = "Pagos extras(Una vez)";
+"Extra(One-time)" = "Extra(Una vez)";
 "Calculation" = "Cálculo";
 "Extra Payment" = "Pagos extras";
 
@@ -537,14 +535,15 @@ https://itunes.apple.com/app/id318404385";
 "Save to camera roll failed." = "Guardar en cámara de fallado.";
 "The photos you take with Magnifier are saved in your Camera Roll album in the Photos app." = "Las fotos tomadas con el Amplificador están guardadas en su álbum de Camera Roll en la aplicación de fotos.";
 
+"None_Mirror" = "Sin filtro";
 "Mono" = "Mono";
 "Tonal" = "Tonal";
 "Noir" = "Noir";
-"Fade" = "Desvanecer";
-"Chrome" = "Cromado";
-"Process" = "Proceso";
-"Transfer" = "Traspasar";
-"Instant" = "Instantáneo";
+"Fade" = "Fade";
+"Chrome" = "Chrome";
+"Process" = "Process";
+"Transfer" = "Transfer";
+"Instant" = "Instant";
 
 "The photos you take with Mirror are saved in your Camera Roll album in the Photos app." = "Las fotos tomadas con el Espejo están guardadas en su álbum de Camera Roll en la aplicación de fotos";
 "Percent_Calc_SliderMarkLabel_for_A" = "A";
@@ -558,12 +557,12 @@ https://itunes.apple.com/app/id318404385";
 "% Change from X to Y" = "% cambio de X a Y";
 "Compare % Change from X to Y" = "Compare % los cambios de X a Y";
 
-"Sale Price" = "Descuento";
-"Sale Price Tax" = "Impuestos de descuento";
+"Sale Price" = "Precio de venta";
+"Sale Price Tax" = "Impuestos";
 "Original Price" = "Precio original";
-"Original Price Tax" = "Impuestos del Precio Original";
+"Original Price Tax" = "Impuestos";
 "Saved Amount" = "Monto ahorrado";
-"Saved Amount Tax" = "Impuestos del monto ahorrado";
+"Saved Amount Tax" = "Impuestos";
 "  Sale Price with Tax" = " Precio de venta con impuestos";
 "  Sale Price w/Tax" = "  Precio de venta c/impuestos";
 "  Sale Price" = "  Precio de venta";
@@ -608,7 +607,7 @@ https://itunes.apple.com/app/id318404385";
 
 "Rounding" = "Redondeo";
 
-"Select Language" = "Seleccione el idioma";
+"Select Language" = "Seleccione Idioma";
 "%@ to %@" = "%@ a %@";
 "Detect Language" = "Detección de idioma";
 "Simplified Chinese" = "Chino simplificado";
@@ -620,7 +619,7 @@ https://itunes.apple.com/app/id318404385";
 "Please change \"From\" or \"To\" language." = "Por favor cambie  \"del  idioma \" o \"a\".";
 "Translate" = "Traductor";
 
-"All Units" = "Todas las unidades";
+"All Units" = "Todo";
 "%@ Units" = "%@ unidades";
 
 "Unit Converter using AppBox Pro" = "Convertidor de unidad de AppBox Pro";
@@ -691,26 +690,26 @@ https://itunes.apple.com/app/id318404385";
 "Details" = "Detalle";
 "Map" = "Mapa";
 "Duration Time" = "Tiempo de duración";
-"1 Passcode Failed Attempt" = "Primer fallo en el intento de clave de acceso";
-"Enter your old passcode" = "Introduzca su anterior clave de acceso";
-"Enter your passcode" = "Introduzca su clave de acceso";
-"Passcode" = "Clave de acceso";
-"Set Passcode" = "Definir clave de acceso";
-"Change Passcode" = "Cambiar clave de acceso";
+"1 Passcode Failed Attempt" = "1 intento fallido";
+"%li Passcode Failed Attempts" = "%li intentos fallidos";
+"Enter your old passcode" = "Introduzca el código antiguo";
+"Enter your passcode" = "Introduzca el código";
+"Passcode" = "Código";
+"Set Passcode" = "Ajustar código";
+"Change Passcode" = "Cambiar código";
 "Turn Off Passcode" = "Desactivar la clave de acceso";
-"Re-enter your passcode" = "Introduzca de nuevo su clave de acceso.";
-"Re-enter your new passcode" = "Vuelva a ingresar su clave de acceso";
-"Enter your new passcode" = "Ingrese su nueva clave de acceso";
-"Passcode did not match. Try again." = "La clave de acceso no coincide. Inténtelo nuevamente.";
+"Re-enter your passcode" = "Vuelva a introducir el código";
+"Re-enter your new passcode" = "Vuelva a introducir el nuevo código";
+"Enter your new passcode" = "Introduzca el nuevo código ";
+"Passcode did not match. Try again." = "Los códigos no coinciden. Intentélo de nuevo.";
 "Enter Passcode" = "Introduzca la clave de acceso";
 "New Passcode" = "Nueva clave de acceso";
 "Confirm Passcode" = "Confirmar la clave de acceso";
 "Hint" = "Pista";
 "Old Passcode" = "Clave de acceso vieja";
-"%li Passcode Failed Attempts" = "%li de intentos fallidos de ingreso de clave de acceso";
-"Please enter new passcode." = "Por favor introduzca su nueva clave de acceso.";
+"Please enter new passcode." = "Introduzca el nuevo código ";
 "Please enter confirm passcode." = "Por favor confirme la clave de acceso.";
-"Passcode did not match." = "La clave de acceso no coincide.";
+"Passcode did not match." = "Los códigos no coinciden.";
 "Please enter passcode." = "Por favor introduzca la clave de acceso.";
 "Open in Safari" = "Abrir en Safari";
 
@@ -736,8 +735,8 @@ https://itunes.apple.com/app/id318404385";
 "Deleting" = "Borrando";
 "Unable to delete selected file. Please try it again." = "No se puede borrar el archivo seleccionado. Por favor trate nuevamente.";
 
-"Turn Passcode Off" = "Desactivar la clave de acceso";
-"Turn Passcode On" = "Activar la clave de acceso";
+"Turn Passcode Off" = "Desactivar código";
+"Turn Passcode On" = "Activar código";
 "How To Enable Data Protection" = "Como activar la Protección de Datos";
 "Clear Recent" = "Limpiar los recientes";
 "Recent" = "Reciente";
@@ -745,12 +744,12 @@ https://itunes.apple.com/app/id318404385";
 "Move and Scale" = "Mover y cambiar de tamaño";
 
 "CALCULATION" = "CÁLCULO";
-"DoneButton" = "Volver";
+"DoneButton" = "intro";
 "Off" = "Redondeo";
-"Passcode_Off" = "Desactivado";
+"Passcode_Off" = "No";
 "DaysCounter_All" = "Todo";
 "LoanCalc_Start Date" = "Fecha de inicio";
-"Immediately" = "Inmediatamente";
+"Immediately" = "De inmediato";
 "Learn about iOS Security" = "Aprenda sobre la seguridad iOS";
 "CalculatorGroup" = "Calculadora";
 "Translator_All" = "Todo";
@@ -760,22 +759,22 @@ https://itunes.apple.com/app/id318404385";
 "Day(s)" = "Día(s)";
 
 "Red" = "Rojo";
-"Orange" = "Anaranjado";
+"Orange" = "Naranja";
 "Yellow" = "Amarillo";
 "Green" = "Verde";
 "Blue" = "Azul";
 "Violet" = "Violeta";
 "Purple" = "Morado";
-"Brown" = "Castaño";
+"Brown" = "Marrón";
 "Gray" = "Gris";
 
 "day(s)" = "día(s)";
 
-"Enter an address or city name" = "Introduzca una dirección o nombre de ciudad";
+"Enter an address or city name" = "Escribir dirección o nombre de ciudad";
 "This will reset all settings.\nNo data will be deleted." = "Este procedimiento restablecerá la configuración inicial.\nNo se eliminarán los datos.";
 "Reset All" = "Restablecer todo";
-"Reset Show/Hide Settings" = "Mostrar/Ocultar la configuración de restauración";
-"Wallpaper" = "Papel tapiz";
+"Reset Show/Hide Settings" = "Restablecer Mostrar/Ocultar ajustes";
+"Wallpaper" = "Fondo de pantalla";
 "Show Lunar Date" = "Mostrar la fecha lunar";
 "Currency Converter using AppBox Pro" = "Convertidor de moneda de AppBox Pro";
 "Translator using AppBox Pro" = "Traductor de AppBox Pro";
@@ -786,44 +785,27 @@ https://itunes.apple.com/app/id318404385";
 "Setup AppBox Pro data stored in iCloud" = "Configurar AppBox Pro de los datos almacenados en iCloud";
 "Add this place" = "Adicionar este lugar";
 
-/*
-
-●	Batería recargable integrada de iones de litio
-●	Carga por conexión USB con un ordenador o adaptador de corriente
-●	Tiempo en conversación: hasta 10 horas con 3G
-●	Tiempo en reposo: hasta 250 horas
-●	Navegación por Internet: hasta 8 horas con 3G y hasta 10 horas con Wi-Fi
-●	Reproducción de vídeo: hasta 10 horas
-●	Reproducción de audio: hasta 40 horas
-●	Batería recargable integrada de iones de litio
-●	Reproducción de música: hasta 40 horas con carga completa
-●	Reproducción de vídeo: hasta 8 horas con carga completa
-●	Recarga: carga rápida en unas 2 horas (80% de capacidad); carga completa en unas 4 horas
-*/
-
-
 "STATUS" = "ESTADO";
-"Talk Time on 2G" = "Tiempo de hablar en 2G";
-"Talk Time on 3G" = "Tiempo de hablar en 3G";
+"Talk Time on 2G" = "En conversación con 2G";
+"Talk Time on 3G" = "En conversación con 3G";
 "Internet on 3G" = "Internet en 3G";
 "Internet on LTE" = "Internet en LTE";
 "Internet on Wi-Fi" = "Internet Wi-Fi";
-"Internet on Cellular" = "Internet de telefonía móvil";
+"Internet on Cellular" = "Internet Móviles";
 "Video playback" = "Reproducir video";
 "Audio playback" = "Reproducir audio";
-"Standby" = "En espera";
+"Standby" = "En reposo";
 "FaceTime" = "FaceTime";
 "GPS" = "GPS";
-"Charging times" = "Hora de cargar";
-"None_Mirror" = "Ninguno";
+"Charging times" = "Recarga";
 "CALENDARS" = "CALENDARIO";
 "Encryption Key for Wallet" = "Clave de encriptación para la Billetera.";
 /* "Please know that the quality of photos saved in the Days Until with the previous version of the AppBox Pro may not good enough to use with the current version. We recommend you to re-add photos to your events."; */
 "V1_Notice_for_Photo_Quality" = "La calidad de las fotos guardadas con la versión anterior de AppBox Pro, puede que no sean buenas para usar con la versión actual. Le recomendamos que vuelva a añadir fotos a sus eventos.";
 "Notice" = "Aviso";
 "LoanCalc_DATE" = "FECHA";
-"%/yr" = "%/yr";
-"%/mo" = "%/mo";
+"%/yr" = "%/año";
+"%/mo" = "%/mes";
 "Icon" = "Icon";
 "  (e.g. %@)" = "  (e.g. %@)";
 "DaysCounter_ALL" = "Todo";
@@ -837,7 +819,7 @@ https://itunes.apple.com/app/id318404385";
 "Add" = "Adicionar";
 "day" = "día";
 "Subtract" = "Restar";
-"I'd like to share an event with you." = "Me gustaría compartir una conversión contigo.";
+"I'd like to share an event with you." = "Me gustaría compartir una evento contigo.";
 
 "You can manage your events in the AppBox Pro." = "AppBox Pro  tiene opciones de administración de eventos.";
 
@@ -858,7 +840,7 @@ https://itunes.apple.com/app/id318404385";
 "LadyCalendarDisclaimerMsg" = "Las siguientes predicciones se basan en el método del calendario (ritmo), estos no son 100% precisas. Por lo que no representa una garantía de éxito y no debe ser utilizado como una herramienta para la planificación familiar.";
 
 "Categories on the bar" = "Categorias en la barra";
-"Categories in more" = "Más opciones de categorias";
+"Categories in more" = "Más categorias";
 
 "Increase" = "Incrementar";
 "Decrease" = "Decrementar";
@@ -872,7 +854,7 @@ https://itunes.apple.com/app/id318404385";
 "monthly" = "mensual";
 "yearly" = "anualmente";
 
-"No Photos" = "No hay fotos disponibles";
+"No Photos" = "No hay fotos";
 "You can add photos into events." = "Usted puede adicionar fotos a los eventos.";
 
 "UNIT PRICE" = "PRECIO UNITARIO";
@@ -880,8 +862,8 @@ https://itunes.apple.com/app/id318404385";
 "SIZE" = "TAMAÑO";
 "DISCOUNT" = "DESCUENTO";
 
-"Alert_None" = "Nada";
-"DateCalcExclude_None" = "Nada";
+"Alert_None" = "Ninguna";
+"DateCalcExclude_None" = "Ninguna";
 "Failed to download backup file." = "No se pudo descargar el contenido.";
 
 "Share information" = "Compartir información";
@@ -899,3 +881,5 @@ https://itunes.apple.com/app/id318404385";
 "Password" = "Contraseña";
 "Account" = "Cuenta";
 "Hidden" = "Oculto";
+
+"Slideshow_Repeat" = "Repetición";

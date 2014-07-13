@@ -71,7 +71,7 @@ en todos sus dispositivos";
 "fVE-ef-mZ7.text" = "Estado de la batería";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "gJ6-AU-90c"; */
-"gJ6-AU-90c.normalTitle" = "Use AppBox Pro";
+"gJ6-AU-90c.normalTitle" = "Usar AppBox Pro";
 
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "gMT-1E-eq4"; */
 "gMT-1E-eq4.text" = "Contador de días";
@@ -89,7 +89,7 @@ en todos sus dispositivos";
 "hit-L7-cuy.text" = "Convertidor a calendario Lunar";
 
 /* Class = "IBUIButton"; normalTitle = "Use iCloud"; ObjectID = "jNp-9m-gWI"; */
-"jNp-9m-gWI.normalTitle" = "Use iCloud";
+"jNp-9m-gWI.normalTitle" = "Usar iCloud";
 
 /* Class = "IBUILabel"; text = "Converter"; ObjectID = "keG-kf-hWu"; */
 "keG-kf-hWu.text" = "Convertidor";
@@ -98,7 +98,7 @@ en todos sus dispositivos";
 "kkF-Z6-oM0.text" = "Traductor";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "kyc-gi-ylJ"; */
-"kyc-gi-ylJ.normalTitle" = "Use AppBox Pro";
+"kyc-gi-ylJ.normalTitle" = "Usar AppBox Pro";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "lr0-dL-j7a"; */
 "lr0-dL-j7a.normalTitle" = "continuar";
@@ -107,7 +107,7 @@ en todos sus dispositivos";
 "mT0-ZK-dI1.text" = "LO NUEVO";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "mUw-5N-ug2"; */
-"mUw-5N-ug2.normalTitle" = "Use AppBox Pro";
+"mUw-5N-ug2.normalTitle" = "Usar AppBox Pro";
 
 /* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "ni3-pI-wdj"; */
 "ni3-pI-wdj.text" = "Amplificador";
@@ -122,7 +122,7 @@ en todos sus dispositivos";
 "pgE-6d-yU7.text" = "Calculador de propina";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "qCf-Nb-LdB"; */
-"qCf-Nb-LdB.normalTitle" = "Use AppBox Pro";
+"qCf-Nb-LdB.normalTitle" = "Usar AppBox Pro";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "qLl-8c-QA3"; */
 "qLl-8c-QA3.normalTitle" = "continuar";
@@ -134,4 +134,4 @@ en todos sus dispositivos";
 "xYa-vJ-mm4.normalTitle" = "continuar";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "xk9-a9-WGh"; */
-"xk9-a9-WGh.normalTitle" = "Use AppBox Pro";
+"xk9-a9-WGh.normalTitle" = "Usar AppBox Pro";

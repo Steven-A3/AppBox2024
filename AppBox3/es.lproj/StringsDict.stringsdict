@@ -2,24 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%ld hours, %ld minutes</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@num_hours_minutes@</string>
-		<key>num_hours_minutes</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>ld</string>
-			<key>zero</key>
-			<string>%1$ld horas, %2$ld minutos</string>
-			<key>one</key>
-			<string>%1$ld hora, %2$ld minuto</string>
-			<key>other</key>
-			<string>%1$ld horas, %2$ld minutos</string>
-		</dict>
-	</dict>
 	<key>%ld hours</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -103,11 +85,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Inmediatamente</string>
+			<string>De inmediato</string>
 			<key>one</key>
-			<string>Después de 1 hora</string>
+			<string>Tras 1 hora</string>
 			<key>other</key>
-			<string>Después de %ld horas</string>
+			<string>Tras %ld horas</string>
 		</dict>
 	</dict>
 	<key>After %ld minutes</key>
@@ -121,11 +103,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Inmediatamente</string>
+			<string>De inmediato</string>
 			<key>one</key>
-			<string>Después de 1 minuto</string>
+			<string>Tras 1 min</string>
 			<key>other</key>
-			<string>Después de %ld minutos</string>
+			<string>Tras %ld min</string>
 		</dict>
 	</dict>
 	<key>%ld months</key>

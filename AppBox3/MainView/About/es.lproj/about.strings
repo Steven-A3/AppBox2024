@@ -33,7 +33,7 @@
 "R44-Fm-Kr5.text" = "Facebook";
 
 /* Class = "IBUITableViewSection"; footerTitle = "Copyright © 2009-2014 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
-"Spr-CR-vU4.footerTitle" = "Copyright © 2009-2014 ALLABOUTAPPS Inc. Reservados todos los derechos.";
+"Spr-CR-vU4.footerTitle" = "Copyright © 2009-2014 ALLABOUTAPPS Inc. Todos los derechos reservados.";
 
 /* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "Spr-CR-vU4"; */
 "Spr-CR-vU4.headerTitle" = " ";
@@ -57,7 +57,7 @@
 "rPK-fC-u92.text" = "Versión";
 
 /* Class = "IBUINavigationItem"; title = "About"; ObjectID = "vLL-sw-MLM"; */
-"vLL-sw-MLM.title" = "Sobre";
+"vLL-sw-MLM.title" = "Información";
 
 /* Class = "IBUILabel"; text = "Tell a Friend by message"; ObjectID = "ygM-lV-AEG"; */
 "ygM-lV-AEG.text" = "Weiterempfehlen per SMS";

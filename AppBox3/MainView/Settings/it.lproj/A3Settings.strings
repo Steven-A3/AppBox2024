@@ -18,7 +18,6 @@
 "52d-yt-UJk.title" = "Apps";
 
 /* Class = "IBUILabel"; text = "Lunar Calendar"; ObjectID = "5dO-Tl-dv6"; */
-"5dO-Tl-dv6.text" = "Calendario lunare";
 
 /* Class = "IBUINavigationItem"; title = "Recent to Keep"; ObjectID = "5pd-cg-py2"; */
 "5pd-cg-py2.title" = "Recenti da conservare";
@@ -120,7 +119,6 @@
 "eqe-ec-kWO.title" = "Colore tema";
 
 /* Class = "IBUILabel"; text = "Korean"; ObjectID = "fHP-u0-inU"; */
-"fHP-u0-inU.text" = "Coreano";
 
 /* Class = "IBUINavigationItem"; title = "Favorites"; ObjectID = "fqW-Vk-vP5"; */
 "fqW-Vk-vP5.title" = "Preferiti";
@@ -173,6 +171,11 @@
 /* Class = "IBUILabel"; text = "Restore"; ObjectID = "xJL-au-A2W"; */
 "xJL-au-A2W.text" = "Ripristina";
 
-/* Class = "IBUILabel"; text = "Chinese"; ObjectID = "zD5-Op-8e3"; */
-"zD5-Op-8e3.text" = "Cinese";
+/* Class = "IBUILabel"; text = "Chinese"; ObjectID = "S47-yQ-cP7"; */
+"S47-yQ-cP7.text" = "Cinese";
 
+/* Class = "IBUILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
+"alM-Rl-6AW.text" = "Coreano";
+
+/* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
+"0Me-nY-VE5.text" = "Le 5 più recenti";

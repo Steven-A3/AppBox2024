@@ -618,9 +618,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 -(CellTextInputBlock)cellTextInputChangedBlock
 {
+	__typeof(self) __weak weakSelf = self;
+
     if (!_cellTextInputChangedBlock) {
         _cellTextInputChangedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-            
+			A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *) [weakSelf.tableView cellForCellSubview:textField];
+			[cell setNeedsLayout];
         };
     }
     
@@ -680,7 +683,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             [weakSelf.headerView setResult:weakSelf.dataManager.tipCalcData withAnimation:YES];
             [weakSelf refreshMoreButtonState];
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-        };
+
+			A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *) [weakSelf.tableView cellForCellSubview:textField];
+			[cell setNeedsLayout];
+		};
     }
     
     return _cellTextInputFinishedBlock;

@@ -51,6 +51,7 @@
 {
 	[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
 		[self.constraints addObject:make.left.equalTo(self.left).with.offset(28)];
+		[self.constraints addObject:make.right.equalTo(self.right).with.offset(-100)];
 		[self.constraints addObject:make.centerY.equalTo(self.centerY)];
 	}];
 

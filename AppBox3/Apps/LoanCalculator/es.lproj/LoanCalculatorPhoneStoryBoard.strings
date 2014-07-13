@@ -3,13 +3,13 @@
 "8C0-7E-crV.text" = "Monto Total";
 
 /* Class = "IBUILabel"; text = "TERM"; ObjectID = "Ajr-fK-S6O"; */
-"Ajr-fK-S6O.text" = "TÉRMINO";
+"Ajr-fK-S6O.text" = "PLAZO";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "CxJ-Nr-hb6"; */
 "CxJ-Nr-hb6.text" = "PAGO";
 
 /* Class = "IBUILabel"; text = "INTEREST RATE"; ObjectID = "M1Y-kB-iSk"; */
-"M1Y-kB-iSk.text" = "TASA DE INTERÉS";
+"M1Y-kB-iSk.text" = "TIPO DE INTERÉS";
 
 /* Class = "IBUIButton"; normalTitle = "Monthly"; ObjectID = "cvj-is-8ew"; */
 "cvj-is-8ew.normalTitle" = "Mensual";
@@ -27,7 +27,7 @@
 "ln5-ed-dwO.normalTitle" = "Total";
 
 /* Class = "IBUILabel"; text = "PRINCIPAL"; ObjectID = "shi-Bi-FKl"; */
-"shi-Bi-FKl.text" = "PRINCIPAL";
+"shi-Bi-FKl.text" = "CAPITAL PRESTADO";
 
 /* Class = "IBUILabel"; text = "FREQUENCY"; ObjectID = "vs2-WG-64j"; */
 "vs2-WG-64j.text" = "FRECUENCIA";
