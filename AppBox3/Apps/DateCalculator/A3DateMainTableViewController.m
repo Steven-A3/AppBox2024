@@ -20,7 +20,6 @@
 #import "A3DateCalcAddSubCell1.h"
 #import "A3DateCalcAddSubCell2.h"
 #import "A3DefaultColorDefines.h"
-#import "A3AppDelegate+appearance.h"
 #import "NSString+conversion.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSDate+formatting.h"

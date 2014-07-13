@@ -497,7 +497,7 @@ static NSString *const A3SalesCalcSavedInputDataKey = @"A3SalesCalcSavedInputDat
     return elements;
 }
 
--(NSArray *)advancedSectionWithData:(A3SalesCalcData *)aData {
+- (NSArray *)advancedSectionWithData:(A3SalesCalcData *)aData {
     NSMutableArray *elements = [NSMutableArray new];
     
     A3TableViewInputElement *additional = [A3TableViewInputElement new];
@@ -574,7 +574,7 @@ static NSString *const A3SalesCalcSavedInputDataKey = @"A3SalesCalcSavedInputDat
 }
 
 #pragma mark - Input Related
--(CellTextInputBlock)cellTextInputBeginBlock
+- (CellTextInputBlock)cellTextInputBeginBlock
 {
     if (!_cellTextInputBeginBlock) {
 		__typeof(self) __weak  weakSelf = self;
@@ -587,13 +587,16 @@ static NSString *const A3SalesCalcSavedInputDataKey = @"A3SalesCalcSavedInputDat
     return _cellTextInputBeginBlock;
 }
 
--(CellTextInputBlock)cellTextInputChangedBlock
+- (CellTextInputBlock)cellTextInputChangedBlock
 {
+	__typeof(self) __weak weakSelf = self;
+
     if (!_cellTextInputChangedBlock) {
         _cellTextInputChangedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-        };
+			A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *) [weakSelf.tableView cellForCellSubview:textField];
+			[cell setNeedsLayout];
+		};
     }
-
 
     return _cellTextInputChangedBlock;
 }

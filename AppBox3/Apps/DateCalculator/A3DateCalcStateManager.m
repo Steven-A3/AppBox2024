@@ -146,7 +146,7 @@ static DurationType g_currentDurationType;
 {
     ExcludeOptions options = (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:@"excludeOptions"];
     if (ExcludeOptions_None == options) {
-        return NSLocalizedString(@"None", @"None");
+        return NSLocalizedString(@"DateCalcExclude_None", nil);
     }
     
     NSMutableArray *result = [[NSMutableArray alloc] init];

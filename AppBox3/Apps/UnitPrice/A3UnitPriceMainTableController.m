@@ -38,6 +38,7 @@ NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUni
 @property (nonatomic, strong) UIBarButtonItem *historyBarItem;
 @property (nonatomic, strong) UIBarButtonItem *composeBarItem;
 @property (nonatomic, strong) UILabel *resultLB;
+@property (nonatomic, strong) UIView *footerView;
 @property (strong, nonatomic) UINavigationController *modalNavigationController;
 
 @end
@@ -177,15 +178,32 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	[self enableControls:YES];
 }
 
+- (UIView *)footerView {
+	if (!_footerView) {
+		_footerView = [UIView new];
+		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		screenBounds.size.height = 30.0;
+		_footerView.frame = screenBounds;
+		[_footerView addSubview:[self resultLB]];
+
+		[_resultLB makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(_footerView.left).with.offset(10);
+			make.right.equalTo(_footerView.right).with.offset(-10);
+			make.top.equalTo(_footerView.top).with.offset(8);
+		}];
+	}
+	return _footerView;
+}
+
 - (UILabel *)resultLB
 {
     if (!_resultLB) {
-		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-        _resultLB = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.width, 30)];
+        _resultLB = [UILabel new];
         
         _resultLB.font = [UIFont systemFontOfSize:14.0];
         _resultLB.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
         _resultLB.textAlignment = NSTextAlignmentCenter;
+		_resultLB.numberOfLines = 0;
         _resultLB.text = @"";
     }
     
@@ -962,7 +980,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
-        return self.resultLB;
+        return self.footerView;
     }
     
     return nil;

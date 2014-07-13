@@ -465,7 +465,7 @@
 "Notify about estimated next starting date." = "Mitteilung über die nächste erwartete Periode.";
 "FORECASTING %@ PERIODS" = "Prognose %@ Perioden";
 
-"Date, Principal, Payment, Interest, Balance" = "Datum, Betrag, Zahlung, Zinsen, Kontostand";
+"Date, Principal, Payment, Interest, Balance" = "Datum, Betrag, Zahlung, Zinsen, Remain";
 "Annual" = "Jährlich";
 "Monthly_Rate" = "Monatlich";
 
@@ -488,10 +488,10 @@
 "Loan Calc Frequency short string semi annually" = "halbj.";
 "Loan Calc Frequency short string annually" = "j.";
 
-"PAYMENT" = "Zahlung";
+"PAYMENT" = "ZAHLUNG";
 "PRINCIPAL" = "BETRAG";
-"INTEREST" = "Zinsen";
-"BALANCE" = "Kontostand";
+"INTEREST" = "ZINSEN";
+"BALANCE" = "REMAIN";
 "Total Interest" = "Zinsen insgesamt";
 "Avg.Interest" = "Zinsen durchschnittlich";
 "Total Amount" = "Gesamtbetrag";
@@ -690,24 +690,24 @@
 "%li Passcode Failed Attempts" = "%li fehlgeschlagene Anmeldeversuche";
 "Enter your old passcode" = "Alten Code eingeben";
 "Enter your passcode" = "Ihren code eingeben";
-"Passcode" = "Kennwort";
+"Passcode" = "Code";
 "Set Passcode" = "Code sichern";
 "Change Passcode" = "Code ändern";
-"Turn Off Passcode" = "Kennwort ausschalten";
+"Turn Off Passcode" = "Code deaktivieren";
 "Re-enter your passcode" = "Code erneut eingeben";
 "Re-enter your new passcode" = "Neuen Code erneut eingeben";
 "Enter your new passcode" = "Neuen Code eingeben";
 "Passcode did not match. Try again." = "Codes stimmen nicht überein.
 Erneut versuchen.";
-"Enter Passcode" = "Kennwort eingeben";
-"New Passcode" = "Neues Kennwort";
-"Confirm Passcode" = "Kennwort bestätigen";
+"Enter Passcode" = "Ihren code eingeben";
+"New Passcode" = "Neuer Code";
+"Confirm Passcode" = "Code bestätigen";
 "Hint" = "Hinweis";
-"Old Passcode" = "Altes Kennwort";
-"Please enter new passcode." = "Bitte geben Sie ein neues Kennwort ein.";
-"Please enter confirm passcode." = "Bitte die Kennwortbestätigung eingeben.";
-"Passcode did not match." = "Kennwörter stimmen nicht überein.";
-"Please enter passcode." = "Bitte Kennwort eingeben.";
+"Old Passcode" = "Alter Code";
+"Please enter new passcode." = "Neuen Code eingeben";
+"Please enter confirm passcode." = "Neuen Code erneut eingeben";
+"Passcode did not match." = "Codes stimmen nicht überein.";
+"Please enter passcode." = "Ihren code eingeben";
 "Open in Safari" = "In Safari öffnen";
 
 "A friend has recommended AppBox Pro™ from the iTunes App Store" = "Ein Freund hat Ihnen AppBox Pro™ aus dem iTunes App Store empfohlen.";
@@ -808,7 +808,7 @@ Erneut versuchen.";
 "V1_Notice_for_Photo_Quality" = "Bitte beachten Sie, dass Fotos aus älteren Versionen von AppBox Pro ggf. nicht die nötige Qualität haben, um optimale Ergebnisse zu erzielen. Wir empfehlen Ihnen die Fotos Ihren Ereignissen neu zuzuordnen.";
 "Notice" = "Hinweis";
 
-"LoanCalc_DATE" = "Datum";
+"LoanCalc_DATE" = "DATUM";
 "%/yr" = "%/J";
 "%/mo" = "%/M";
 
