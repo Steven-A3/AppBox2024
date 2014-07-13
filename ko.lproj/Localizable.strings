@@ -66,8 +66,6 @@
 "Magnifier" = "돋보기";
 "Favorites" = "즐겨찾기";
 
-"Last %ld" = "최근 %ld 개";
-
 "Apps" = "Apps";
 "iCloud_goto_settings" = "iCloud 동기화 기능을 사용하시려면 장치의 설정을 열어서 iCloud 도큐멘트 및 데이터를 저장하도록 설정하여 주세요.";
 
@@ -225,7 +223,6 @@
 "Duration Option" = "기간 옵션";
 "Location" = "위치";
 "Delete Event" = "이벤트 지우기";
-"Date" = "날짜";
 "Delete Location" = "위치 지우기";
 "Use My Location" = "나의 위치 사용";
 "Search Location" = "위치 검색";
@@ -249,7 +246,6 @@
 
 "Move these events to a new calendar." = "이벤트를 새로운 캘린더로 이동";
 "Please select calendar." = "캘린더를 선택해 주세요.";
-"Phone" = "전화번호";
 "Address" = "주소";
 "Event Details" = "이벤트 상세보기";
 
@@ -666,7 +662,6 @@
 "Category Info" = "카테고리 정보";
 "Delete Items" = "아이템 지우기";
 
-"Video" = "비디오";
 "Add Field" = "필드 추가";
 "Edit Field" = "필드 수정";
 "Field Name" = "필드 이름";
@@ -697,7 +692,6 @@
 "Re-enter your new passcode" = "새 암호를 다시 한번 입력해 주세요.";
 "Enter your new passcode" = "새 암호를 입력해주세요.";
 "Passcode did not match. Try again." = "암호가 일치하지 않습니다.";
-"%i Passcode Failed Attempts" = "%i 회 암호를 틀렸습니다.";
 "Enter Passcode" = "암호를 입력해주세요.";
 "New Passcode" = "새로운 암호";
 "Confirm Passcode" = "새 암호 확인";
@@ -821,19 +815,6 @@
 "%/yr" = "%/연";
 "%/mo" = "%/월";
 
-"Text" = "일반문자열";
-"Number" = "숫자형식";
-"Phone" = "전화번호";
-"Date" = "날짜";
-"Normal" = "모두 표시";
-"Password Style" = "암호형으로 표시";
-"Account Style" = "계정정보형으로 표시";
-"Hidden" = "모두 가림";
-"Account" = "계정";
-"Image" = "사진";
-"Video" = "동영상";
-"Password" = "비밀번호";
-
 "Icon" = "이미지";
 
 "  (e.g. %@)" = "  (예: %@)";
@@ -895,8 +876,22 @@
 "SIZE" = "SIZE";
 "DISCOUNT" = "DISCOUNT";
 
-"Alert_None" = "사용하지 않음";
+"Alert_None" = "끔";
+"DateCalcExclude_None" = "없음";
 
 "Failed to download backup file." = "백업파일을 다운로드하지 못했습니다.";
-
 "Share information" = "정보 공유";
+
+"Text" = "문자";
+"Number" = "숫자";
+"Phone" = "전화번호";
+"URL" = "URL";
+"Email" = "이메일";
+"Date" = "날짜";
+"Image" = "사진";
+"Video" = "동영상";
+
+"Normal" = "모두 표시";
+"Password" = "뒤자리를 숨김";
+"Account" = "앞자리를 숨김";
+"Hidden" = "모두 숨김";

@@ -127,7 +127,6 @@
 "Low" = "低";
 
 "TIME" = "时间";
-"Date" = "日期";
 "WEATHER" = "天气";
 "The time with seconds" = "显示秒";
 "Flash the time separators" = "闪烁时间分隔符";
@@ -258,7 +257,6 @@
 
 "Move these events to a new calendar." = "将这些事件移动到新的日历。";
 "Please select calendar." = "请选择日历";
-"Phone" = "电话号码";
 "Address" = "地址";
 "Event Details" = "事件内容";
 
@@ -682,7 +680,6 @@
 "Category Info" = "种类信息";
 "Delete Items" = "删除信息";
 
-"Video" = "影像播放";
 "Add Field" = "增加项目";
 "Edit Field" = "项目编辑";
 "Field Name" = "项目名称";
@@ -713,7 +710,6 @@
 "Re-enter your new passcode" = "重新输入新密码";
 "Enter your new passcode" = "输入您的新密码";
 "Passcode did not match. Try again." = "密码不匹配。请再试一次。";
-"%i Passcode Failed Attempts" = "%i次密码尝试失败";
 "Enter Passcode" = "输入密码";
 "New Passcode" = "新密码";
 "Confirm Passcode" = "确认密码";
@@ -886,9 +882,22 @@
 "DISCOUNT" = "折扣";
 
 "Alert_None" = "无";
+"DateCalcExclude_None" = "无";
 "FaceTime" = "FaceTime";
-"Last %ld" = "最后的%ld个";
 
 "Failed to download backup file." = "无法下载备份文件。";
-
 "Share information" = "分享信息";
+
+"Text" = "一般文本";
+"Number" = "数字形式";
+"Phone" = "电话号码";
+"URL" = "URL";
+"Email" = "电子邮件";
+"Date" = "日期";
+"Image" = "图像";
+"Video" = "视频";
+
+"Normal" = "全部标示";
+"Password" = "暗号形式标示";
+"Account" = "账户信息型标示";
+"Hidden" = "全部隐藏";

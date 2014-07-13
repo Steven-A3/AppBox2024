@@ -12,7 +12,7 @@
 "4vD-c0-4t2.normalTitle" = "AppBox Pro nutzen";
 
 /* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7if-xU-XZH"; */
-"7if-xU-XZH.text" = "Std/Wissenschaftlich Taschenrechner";
+"7if-xU-XZH.text" = "Std/Wissenschaftlich Rechner";
 
 /* Class = "IBUILabel"; text = "Unit Converter"; ObjectID = "85l-L8-ozk"; */
 "85l-L8-ozk.text" = "Einheitenrechner";
@@ -80,7 +80,7 @@
 "bqT-N1-DoK.normalTitle" = "AppBox Pro nutzen";
 
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "bwe-yZ-jRu"; */
-"bwe-yZ-jRu.text" = "Taschenrechner";
+"bwe-yZ-jRu.text" = "Rechner";
 
 /* Class = "IBUILabel"; text = "Mirror"; ObjectID = "cFb-hc-ow3"; */
 "cFb-hc-ow3.text" = "Spiegel";

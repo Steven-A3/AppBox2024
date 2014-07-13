@@ -232,7 +232,6 @@ https://itunes.apple.com/app/id318404385";
 "Duration Option" = "Opción de duración";
 "Location" = "Ubicación";
 "Delete Event" = "Borrar evento";
-"Date" = "Fecha";
 "Delete Location" = "Borrar ubicación";
 "Use My Location" = "Usar mi ubicación";
 "Search Location" = "Buscar ubicación";
@@ -256,7 +255,6 @@ https://itunes.apple.com/app/id318404385";
 
 "Move these events to a new calendar." = "Mover estos eventos al nuevo calendario.";
 "Please select calendar." = "Por favor seleccione el calendario.";
-"Phone" = "Teléfono";
 "Address" = "Dirección";
 "Event Details" = "Detalles del Evento";
 
@@ -674,7 +672,6 @@ https://itunes.apple.com/app/id318404385";
 "Category Info" = "Información de categoría";
 "Delete Items" = "Artículos borrados";
 
-"Video" = "Video";
 "Add Field" = "Adicionar campo";
 "Edit Field" = "Editar campo";
 "Field Name" = "Nombre de campo";
@@ -705,7 +702,6 @@ https://itunes.apple.com/app/id318404385";
 "Re-enter your new passcode" = "Vuelva a ingresar su clave de acceso";
 "Enter your new passcode" = "Ingrese su nueva clave de acceso";
 "Passcode did not match. Try again." = "La clave de acceso no coincide. Inténtelo nuevamente.";
-"%i Passcode Failed Attempts" = "%i de intentos fallidos de ingreso de clave de acceso";
 "Enter Passcode" = "Introduzca la clave de acceso";
 "New Passcode" = "Nueva clave de acceso";
 "Confirm Passcode" = "Confirmar la clave de acceso";
@@ -885,9 +881,21 @@ https://itunes.apple.com/app/id318404385";
 "DISCOUNT" = "DESCUENTO";
 
 "Alert_None" = "Nada";
-
-"Last %ld" = "Más reciente %ld";
-
+"DateCalcExclude_None" = "Nada";
 "Failed to download backup file." = "No se pudo descargar el contenido.";
 
 "Share information" = "Compartir información";
+
+"Text" = "Texto";
+"Number" = "Numeral";
+"Phone" = "Teléfono";
+"URL" = "URL";
+"Email" = "Email";
+"Date" = "Fecha";
+"Image" = "Imagen";
+"Video" = "Video";
+
+"Normal" = "General";
+"Password" = "Contraseña";
+"Account" = "Cuenta";
+"Hidden" = "Oculto";

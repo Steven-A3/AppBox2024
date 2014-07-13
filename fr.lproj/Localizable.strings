@@ -229,7 +229,6 @@
 "Duration Option" = "Option de durée";
 "Location" = "Emplacement";
 "Delete Event" = "Effacer l’événement";
-"Date" = "Date";
 "Delete Location" = "Effacer l’emplacement";
 "Use My Location" = "Utiliser mon emplacement";
 "Search Location" = "Rechercher l’emplacement";
@@ -253,7 +252,6 @@
 
 "Move these events to a new calendar." = "Déplacer ces événements vers un nouveau calendrier.";
 "Please select calendar." = "Veuillez choisir un calendrier.";
-"Phone" = "Téléphone";
 "Address" = "Adresse";
 "Event Details" = "Détails de l’événement";
 
@@ -672,7 +670,6 @@
 "Category Info" = "Infos de la catégorie";
 "Delete Items" = "Supprimer les items";
 
-"Video" = "Vidéo";
 "Add Field" = "Ajouter un champ";
 "Edit Field" = "Modifier le champ";
 "Field Name" = "Nom du champ";
@@ -703,7 +700,6 @@
 "Re-enter your new passcode" = "Saisissez de nouveau votre nouveau code d’accès";
 "Enter your new passcode" = "Saisissez votre nouveau code d’accès";
 "Passcode did not match. Try again." = "Les codes d’accès ne correspondent pas. Réessayer.";
-"%i Passcode Failed Attempts" = "%i tentatives de code d’accès échouées";
 "Enter Passcode" = "Saisir le code d’accès";
 "New Passcode" = "Nouveau code d’accès";
 "Confirm Passcode" = "Confirmez le code d’accès";
@@ -879,9 +875,22 @@
 "DISCOUNT" = "RABAIS";
 
 "Alert_None" = "Aucun";
+"DateCalcExclude_None" = "Aucun";
 "FaceTime" = "FaceTime";
-"Last %ld" = "Plus récent %ld";
 
 "Failed to download backup file." = "Impossible de télécharger le fichier de sauvegarde.";
-
 "Share information" = "Partager l'information";
+
+"Text" = "Texte";
+"Number" = "Nombre";
+"Phone" = "Téléphone";
+"URL" = "URL";
+"Email" = "E-mail";
+"Date" = "Date";
+"Image" = "Image";
+"Video" = "Vidéo";
+
+"Normal" = "Normal";
+"Password" = "Mot de passe";
+"Account" = "Compte";
+"Hidden" = "Caché";

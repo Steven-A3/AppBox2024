@@ -112,7 +112,7 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 "ni3-pI-wdj.text" = "Lupe";
 
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "pMI-GK-toN"; */
-"pMI-GK-toN.text" = "Taschenrechner";
+"pMI-GK-toN.text" = "Rechner";
 
 /* Class = "IBUILabel"; text = "Reference"; ObjectID = "pRj-wQ-ZtV"; */
 "pRj-wQ-ZtV.text" = "Referenzen";

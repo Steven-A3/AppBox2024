@@ -15,7 +15,7 @@
 "IQd-UR-Egy.text" = "HÄUFIGKEIT";
 
 /* Class = "IBUILabel"; text = "PRINCIPAL"; ObjectID = "Kjj-Yf-Cp0"; */
-"Kjj-Yf-Cp0.text" = "KREDITSUMME";
+"Kjj-Yf-Cp0.text" = "BETRAG";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "Lay-j3-68g"; */
 "Lay-j3-68g.text" = "ZAHLUNG";

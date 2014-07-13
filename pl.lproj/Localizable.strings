@@ -71,8 +71,6 @@
 "Magnifier" = "Lupa";
 "Favorites" = "Ulubione";
 
-"Last %ld" = "Ostatnie %ld";
-
 "Apps" = "Aplikacje";
 /* "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature."; */
 "iCloud_goto_settings" = "Przejdź do Ustawień urządzenia. Włącz iCloud i Dokumenty oraz Dane aplikacji aby uzyskać dostęp do tych funkcji.";
@@ -231,7 +229,6 @@
 "Duration Option" = "Opcje trwania";
 "Location" = "Miejsce";
 "Delete Event" = "Usuń wydarzenie";
-"Date" = "Data";
 "Delete Location" = "Usuń położenie";
 "Use My Location" = "Użyj moje położenie";
 "Search Location" = "Znajdź położenie";
@@ -255,7 +252,6 @@
 
 "Move these events to a new calendar." = "Przesuń te wydarzenia do nowego kalendarza.";
 "Please select calendar." = "Wybierz kalendarz.";
-"Phone" = "Telefon";
 "Address" = "Adres";
 "Event Details" = "Szczegóły wydarzenia";
 
@@ -672,7 +668,6 @@
 "Category Info" = "Informacje o kategorii";
 "Delete Items" = "Usuń elementy";
 
-"Video" = "Wideo";
 "Add Field" = "Dodaj Pole";
 "Edit Field" = "Edycja pola";
 "Field Name" = "Nazwa pola";
@@ -703,7 +698,6 @@
 "Re-enter your new passcode" = "Wpisz ponownie nowe hasło";
 "Enter your new passcode" = "Wpisz nowy kod";
 "Passcode did not match. Try again." = "Hasło nie pasuje, spróbuj ponownie.";
-"%i Passcode Failed Attempts" = "%i błąd wpisywania hasła";
 "Enter Passcode" = "Wpisz hasło";
 "New Passcode" = "Nowy kod";
 "Confirm Passcode" = "Potwierdź kod";
@@ -876,7 +870,21 @@
 "DISCOUNT" = "ZNIŻKA";
 
 "Alert_None" = "Brak";
+"DateCalcExclude_None" = "Brak";
 
 "Failed to download backup file." = "Pobranie zawartości nie powiodło się.";
-
 "Share information" = "informacje udział";
+
+"Text" = "Tekst";
+"Number" = "Numer";
+"Phone" = "Telefon";
+"URL" = "URL";
+"Email" = "Email";
+"Date" = "Data";
+"Image" = "Obraz";
+"Video" = "Wideo";
+
+"Normal" = "Ogólny";
+"Password" = "Hasło";
+"Account" = "Księgowy";
+"Hidden" = "Ukryty";

@@ -223,7 +223,6 @@
 "Duration Option" = "期間の表示オプション";
 "Location" = "位置";
 "Delete Event" = "イベント削除";
-"Date" = "日付";
 "Delete Location" = "位置削除";
 "Use My Location" = "自分の位置使用";
 "Search Location" = "位置検索";
@@ -248,7 +247,6 @@
 
 "Move these events to a new calendar." = "このイベントを新しいカレンダーに移動。";
 "Please select calendar." = "カレンダーを選択してください。";
-"Phone" = "電話番号";
 "Address" = "住所";
 "Event Details" = "イベント詳細";
 
@@ -667,7 +665,6 @@
 "Category Info" = "カテゴリー情報";
 "Delete Items" = "項目を削除する";
 
-"Video" = "ビデオ";
 "Add Field" = "フィールドを追加";
 "Edit Field" = "フィールドを編集";
 "Field Name" = "フィールド名";
@@ -698,7 +695,6 @@
 "Re-enter your new passcode" = "新しいパスコードを再入力";
 "Enter your new passcode" = "新しいパスコードを入力";
 "Passcode did not match." = "パスコードが違います。";
-"%i Passcode Failed Attempts" = "パスコード入力に%i回失敗";
 "Enter Passcode" = "パスコードを入力";
 "New Passcode" = "新しいパスコード";
 "Confirm Passcode" = "新しいパスコードを再入力";
@@ -886,9 +882,21 @@
 "DISCOUNT" = "割引";
 
 "Alert_None" = "なし";
-
-"Last %ld" = "最近の%ldつ";
+"DateCalcExclude_None" = "なし";
 
 "Failed to download backup file." = "バックアップファイルのダウンロードに失敗しました。";
-
 "Share information" = "情報を共有する";
+
+"Text" = "一般文字";
+"Number" = "数字";
+"Phone" = "電話番号";
+"URL" = "URL";
+"Email" = "メール";
+"Date" = "日付";
+"Image" = "画像";
+"Video" = "ビデオ";
+
+"Normal" = "すべて表示";
+"Password" = "パスワードタイプ";
+"Account" = "アカウントタイプ";
+"Hidden" = "すべて隠す";

@@ -221,7 +221,6 @@
 "Duration Option" = "Opzione di durata";
 "Location" = "Localizzazione";
 "Delete Event" = "Elimina evento";
-"Date" = "Data";
 "Delete Location" = "Elimina località";
 "Use My Location" = "Usa My Location";
 "Search Location" = "Cerca località";
@@ -245,7 +244,6 @@
 
 "Move these events to a new calendar." = "Sposta questi eventi in un nuovo calendario";
 "Please select calendar." = "Si prega di selezionare il calendario";
-"Phone" = "Telefono";
 "Address" = "Indirizzo";
 "Event Details" = "Dettagli dell’evento";
 
@@ -663,7 +661,6 @@
 "Category Info" = "Info di categoria";
 "Delete Items" = "Elimina articoli";
 
-"Video" = "Video";
 "Add Field" = "Aggiungi campo";
 "Edit Field" = "Modifica campo";
 "Field Name" = "Nome del campo";
@@ -694,7 +691,6 @@
 "Re-enter your new passcode" = "Reinserisci il tuo nuovo codice di accesso";
 "Enter your new passcode" = "Inserisci il tuo nuovo codice di accesso";
 "Passcode did not match." = "Il codice di accesso non corrisponde. Riprova";
-"%i Passcode Failed Attempts" = "%i Tentativi codice di accesso non riusciti";
 "Enter Passcode" = "Inserisci il codice d’accesso";
 "New Passcode" = "Nuovo codice di accesso";
 "Confirm Passcode" = "Conferma codice di accesso";
@@ -873,9 +869,21 @@
 "DISCOUNT" = "SCONTO";
 
 "Alert_None" = "Nessuno";
-
-"Last %ld" = "Più Recente %ld";
+"DateCalcExclude_None" = "Nessuno";
 
 "Failed to download backup file." = "Impossibile scaricare il file di backup.";
-
 "Share information" = "Condividi informazioni";
+
+"Text" = "Testo";
+"Number" = "Numero";
+"Phone" = "Telefono";
+"URL" = "URL";
+"Email" = "Email";
+"Date" = "Data";
+"Image" = "Immagine";
+"Video" = "Video";
+
+"Normal" = "Normale";
+"Password" = "Password";
+"Account" = "Conto";
+"Hidden" = "Nascosto";

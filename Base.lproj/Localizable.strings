@@ -53,7 +53,6 @@
 "Mirror" = "Mirror";
 "Magnifier" = "Magnifier";
 "Favorites" = "Favorites";
-"Last %ld" = "Last %ld";
 "Apps" = "Apps";
 "iCloud_goto_settings" = "Please enable iCloud, Documents and Data storage in your device Settings to gain access to this feature.";
 "Info" = "Info";
@@ -195,7 +194,6 @@
 "Duration Option" = "Duration Option";
 "Location" = "Location";
 "Delete Event" = "Delete Event";
-"Date" = "Date";
 "Delete Location" = "Delete Location";
 "Use My Location" = "Use My Location";
 "Search Location" = "Search Location";
@@ -219,7 +217,6 @@
 
 "Move these events to a new calendar." = "Move these events to a new calendar.";
 "Please select calendar." = "Please select calendar.";
-"Phone" = "Phone";
 "Address" = "Address";
 "Event Details" = "Event Details";
 
@@ -606,9 +603,9 @@
 "Quantity" = "Quantity";
 "Discount" = "Discount";
 
-"The best unit price is A at %@" = "The best unit price is A at %@";
-"The best unit price is B at %@" = "The best unit price is B at %@";
-"The unit price is the same at %@" = "The unit price is the same at %@";
+"The best unit price is A at %@" = "The best unit price is A at %@.";
+"The best unit price is B at %@" = "The best unit price is B at %@.";
+"The unit price is the same at %@" = "The unit price is the same at %@.";
 
 "Area" = "Area";
 "Length" = "Length";
@@ -632,7 +629,6 @@
 "Category Info" = "Category Info";
 "Delete Items" = "Delete Items";
 
-"Video" = "Video";
 "Add Field" = "Add Field";
 "Edit Field" = "Edit Field";
 "Field Name" = "Field Name";
@@ -663,7 +659,6 @@
 "Re-enter your new passcode" = "Re-enter your new passcode";
 "Enter your new passcode" = "Enter your new passcode";
 "Passcode did not match. Try again." = "Passcode did not match. Try again.";
-"%i Passcode Failed Attempts" = "%i Passcode Failed Attempts";
 "Enter Passcode" = "Enter Passcode";
 "New Passcode" = "New Passcode";
 "Confirm Passcode" = "Confirm Passcode";
@@ -825,3 +820,19 @@
 "Failed to download backup file." = "Failed to download backup file.";
 
 "Share information" = "Share information";
+
+"DateCalcExclude_None" = "None";
+
+"Text" = "Text";
+"Number" = "Number";
+"Phone" = "Phone";
+"URL" = "URL";
+"Email" = "Email";
+"Date" = "Date";
+"Image" = "Image";
+"Video" = "Video";
+
+"Normal" = "Normal";
+"Password" = "Password";
+"Account" = "Account";
+"Hidden" = "Hidden";

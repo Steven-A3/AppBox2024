@@ -55,7 +55,7 @@ static NSString *CellIdentifier = @"Cell";
     self.sectionTitles = @[@"", @""];
     self.sections = @[
                   @[
-						  NSLocalizedString(@"None", @"None")
+						  NSLocalizedString(@"DateCalcExclude_None", @"None")
 				  ],
                   @[
 						  NSLocalizedString(@"Saturday", @"Saturday"),

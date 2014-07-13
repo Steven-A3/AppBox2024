@@ -32,18 +32,25 @@
 
 	if (self.textLabel.font) {
         CGFloat x = self.leftSeparatorInset;
-        
-		NSStringDrawingContext *context = [NSStringDrawingContext new];
-		CGRect textLabelBounds = [self.textLabel.text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
-                                                                   options:NSStringDrawingUsesLineFragmentOrigin
-                                                                attributes:@{NSFontAttributeName:self.textLabel.font}
-                                                                   context:context];
-        if (textLabelBounds.size.width != 0) {          // KJH
-            x += ceil(textLabelBounds.size.width) + 10; // + self.leftSeparatorInset;
-        }
-        
-        //self.textField.frame = CGRectMake(x, 10, CGRectGetWidth(self.frame) - x - 15, CGRectGetHeight(self.frame) - 20);
-        self.textField.frame = CGRectMake(x, 0, CGRectGetWidth(self.frame) - x - 15, CGRectGetHeight(self.frame));
+
+		if ([self.textField.text length]) {
+			NSStringDrawingContext *context = [NSStringDrawingContext new];
+			CGRect textFieldBounds = [self.textField.text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
+																	   options:NSStringDrawingUsesLineFragmentOrigin
+																	attributes:@{NSFontAttributeName:self.textLabel.font}
+																	   context:context];
+			if (textFieldBounds.size.width < 60.0) {
+				x = 60.0;
+			} else if (textFieldBounds.size.width > self.bounds.size.width / 2.0 - 30.0) {
+				x = self.bounds.size.width / 2.0 - 30.0;
+			} else {
+				x = ceilf(textFieldBounds.size.width);
+			}
+		}
+		CGRect textLabelFrame = self.textLabel.frame;
+		textLabelFrame.size.width = self.bounds.size.width - x - 30.0;
+		self.textLabel.frame = textLabelFrame;
+        self.textField.frame = CGRectMake(self.bounds.size.width - x - 15.0, 0, x, CGRectGetHeight(self.frame));
 	}
 }
 

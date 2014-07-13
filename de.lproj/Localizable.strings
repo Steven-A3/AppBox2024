@@ -6,7 +6,7 @@
  */
 
 "Select Currency" = "Währung wählen";
-"Principal" = "Kreditsumme";
+"Principal" = "Betrag";
 "Term" = "Laufzeit";
 "Interest Rate" = "Zinssatz";
 "Frequency" = "Häufigkeit";
@@ -26,9 +26,9 @@
 
 "Settings" = "Einstellungen";
 "Sync" = "Synchronisieren";
-"Passcode Lock" = "Kennwortsperre";
+"Passcode Lock" = "Code-Sperre";
 "Lunar Calendar" = "Lunar Kalender";
-"tellafriend" = "Ein Freund möchte Sie auf die neuen Funktionen von AppBox Pro™ aufmerksam machen. Nutzen Sie Lupe, Spiegel, Datumsrechner, Darlehensrechner, Kaufpreisrechner, Trinkgeldrechner, Stückpreis, Prozentrechner, Übersetzer, Tageszähler, Damen-Kalender, Geldbörse, Ausgabenliste, Uhr, Batteriestatus und Feiertage für Ihr iPhone, iPad und iPod Touch. Klicken Sie unten zum Download von AppBox Pro™ aus dem iTunes App Store.";
+"tellafriend" = "Ein Freund möchte Sie auf die neuen Funktionen von AppBox Pro™ aufmerksam machen. Nutzen Sie Rechner, Lupe, Spiegel, Datumsrechner, Darlehensrechner, Kaufpreisrechner, Trinkgeldrechner, Stückpreis, Prozentrechner, Übersetzer, Tageszähler, Damen-Kalender, Geldbörse, Ausgabenliste, Uhr, Batteriestatus und Feiertage für Ihr iPhone, iPad und iPod Touch. Klicken Sie unten zum Download von AppBox Pro™ aus dem iTunes App Store.";
 
 /* "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case."; */
 "DISCLAIMER_MESSAGE" = "Wir prüfen alle Feiertage mit größter Sorgfalt. Dennoch kann es sein, dass einige Angaben fehlerhaft sind, da vielerorts Feiertage durch die jeweiligen Behörden kurzfristig geändert werden können. Deswegen übernehmen wir keine Haftung für die Richtigkeit der hier gemachten Angaben und raten Ihnen die Feiertage mit Hilfe der Botschaft oder des Konsulats des betreffenden Landes zu prüfen.";
@@ -47,7 +47,7 @@
 "About" = "Über uns";
 "Remaining Time" = "Verbleibende Zeit";
 "Battery Status" = "Batteriestatus";
-"Calculator" = "Taschenrechner";
+"Calculator" = "Rechner";
 "Date Calculator" = "Datumsrechner";
 "Loan Calculator" = "Darlehensrechner";
 "Sales Calculator" = "Kaufpreisrechner";
@@ -67,8 +67,6 @@
 "Mirror" = "Spiegel";
 "Magnifier" = "Lupe";
 "Favorites" = "Favoriten";
-
-"Last %ld" = "Letzte %ld";
 
 "Apps" = "Apps";
 /* "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature."; */
@@ -116,7 +114,7 @@
 "Basic / Scientific" = "Standard / Wissenschaftlich";
 "Scientific" = "Wissenschaftlich";
 "Basic" = "Standard";
-"Calculator using AppBox Pro" = "Taschenrechner von AppBox Pro";
+"Calculator using AppBox Pro" = "Rechner von AppBox Pro";
 
 "Humidity" = "Feuchtigkeit";
 "High" = "Hoch";
@@ -189,8 +187,8 @@
 
 "Date Calculator using AppBox Pro" = "Datumsrechner von AppBox Pro";
 
-"Between two dates" = "Zwischen zwei Ereignissen";
-"Add or Subtract days" = "Tage hinzufügen oder abziehen";
+"Between two dates" = "Zwischen zwei Datumsangaben";
+"Add or Subtract days" = "Addieren oder Subtrahieren Tage";
 "From" = "Von";
 "To" = "Bis";
 "Exclude" = "Ausschließen";
@@ -207,10 +205,10 @@
 "There is no events." = "Es gibt keine Ereignisse.";
 
 "Slideshow" = "Diashow";
-"Edit Calendar" = "Kalender bearbeiten";
-"Add Calendar" = "Kalender hinzufügen";
+"Edit Calendar" = "Bearbeiten";
+"Add Calendar" = "Hinzufügen";
 "COLOR" = "Farbe";
-"Calendar Name" = "Kalender benennen";
+"Calendar Name" = "Kalendername";
 "Delete Calendar" = "Kalender löschen";
 "Untitled" = "Unbenannt";
 
@@ -231,7 +229,6 @@
 "Duration Option" = "Anzeige Optionen";
 "Location" = "Ort";
 "Delete Event" = "Ereignis löschen";
-"Date" = "Datum";
 "Delete Location" = "Ort löschen";
 "Use My Location" = "Ort verwenden";
 "Search Location" = "Ort suchen";
@@ -251,11 +248,10 @@
 "DaysCounter_from" = "Von";
 "DaysCounter_to" = "Bis";
 
-"Edit Calendars" = "Kalender bearbeiten";
+"Edit Calendars" = "Bearbeiten";
 
 "Move these events to a new calendar." = "Ereignisse in neuen Kalender verschieben.";
 "Please select calendar." = "Bitte wählen Sie einen Kalender.";
-"Phone" = "Telefon";
 "Address" = "Adresse";
 "Event Details" = "Ereignis-Details";
 
@@ -273,7 +269,7 @@
 "Please select events." = "Bitte Ereignisse wählen.";
 
 "Events" = "Ereignisse";
-"Reminder" = "Erinnerung";
+"Reminder" = "Erinnerungen";
 
 "List_Upcoming" = "Anstehende";
 "List_Past" = "Vergangene";
@@ -453,7 +449,7 @@
 "Expected Period(+/-2 days)" = "Erwartete Periode(+/-2 days)";
 "Increased Probability of Pregnancy" = "Erhöhte Empfängniswahrscheinlichkeit";
 "Ovulation - Highest Probability" = "Eisprung - Höchste Wahrscheinlichkeit";
-"Menstrual Period" = "Monatsblutung";
+"Menstrual Period" = "Menstruationsperiode";
 "Periods" = "Perioden";
 "On day(9 AM)" = "Gleicher Tag (09:00)";
 "1 day before(9 AM)" = "1 Tag vorher (09:00)";
@@ -469,11 +465,11 @@
 "Notify about estimated next starting date." = "Mitteilung über die nächste erwartete Periode.";
 "FORECASTING %@ PERIODS" = "Prognose %@ Perioden";
 
-"Date, Principal, Payment, Interest, Balance" = "Datum, Kreditsumme, Zahlung, Zinsen, Kontostand";
+"Date, Principal, Payment, Interest, Balance" = "Datum, Betrag, Zahlung, Zinsen, Kontostand";
 "Annual" = "Jährlich";
 "Monthly_Rate" = "Monatlich";
 
-"Down Payment" = "Akonto";
+"Down Payment" = "Anzahlung";
 "Payment" = "Zahlung";
 "Term(years)" = "Laufzeit(Jahre)";
 "Term(months)" = "Laufzeit(Monate)";
@@ -493,7 +489,7 @@
 "Loan Calc Frequency short string annually" = "j.";
 
 "PAYMENT" = "Zahlung";
-"PRINCIPAL" = "Kreditsumme";
+"PRINCIPAL" = "BETRAG";
 "INTEREST" = "Zinsen";
 "BALANCE" = "Kontostand";
 "Total Interest" = "Zinsen insgesamt";
@@ -634,8 +630,8 @@
 "%@ to %@ = %@" = "%@ in %@ = %@";
 
 "More" = "Mehr";
-"Units on the bar" = "Stückpreis";
-"Units in more" = "Stückpreis";
+"Units on the bar" = "Einheit in der Menüleiste";
+"Units in more" = "Einheit unter „Mehr“";
 
 "Price A" = "Preis A";
 "Price B" = "Preis B";
@@ -645,9 +641,9 @@
 "Quantity" = "Menge";
 "Discount" = "Nachlass";
 
-"The best unit price is A at %@" = "Den besseren Stückpreis hat A mit %@";
-"The best unit price is B at %@" = "Den besseren Stückpreis hat B mit %@";
-"The unit price is the same at %@" = "Die Stückpreise sind gleich mit %@";
+"The best unit price is A at %@" = "Den besseren Stückpreis hat A mit %@.";
+"The best unit price is B at %@" = "Den besseren Stückpreis hat B mit %@.";
+"The unit price is the same at %@" = "Die Stückpreise sind gleich mit %@.";
 
 "Area" = "Fläche";
 "Length" = "Länge";
@@ -671,7 +667,6 @@
 "Category Info" = "Kategorie Info";
 "Delete Items" = "Eintrag löschen";
 
-"Video" = "Video";
 "Add Field" = "Feld hinzufügen";
 "Edit Field" = "Feld bearbeiten";
 "Field Name" = "Feldname";
@@ -691,24 +686,24 @@
 "Details" = "Details";
 "Map" = "Karte";
 "Duration Time" = "Dauer";
-"1 Passcode Failed Attempt" = "Erste Fehleingabe";
-"Enter your old passcode" = "Altes Kennwort eingeben";
-"Enter your passcode" = "Kennwort eingeben";
+"1 Passcode Failed Attempt" = "1 fehlgeschlagener Anmeldeversuch";
+"%li Passcode Failed Attempts" = "%li fehlgeschlagene Anmeldeversuche";
+"Enter your old passcode" = "Alten Code eingeben";
+"Enter your passcode" = "Ihren code eingeben";
 "Passcode" = "Kennwort";
-"Set Passcode" = "Kennwort festlegen";
-"Change Passcode" = "Kennwort ändern";
+"Set Passcode" = "Code sichern";
+"Change Passcode" = "Code ändern";
 "Turn Off Passcode" = "Kennwort ausschalten";
-"Re-enter your passcode" = "Kennwort erneut eingeben";
-"Re-enter your new passcode" = "Neues Kennwort erneut eingeben ";
-"Enter your new passcode" = "Bitte geben Sie ein neues Kennwort ein";
-"Passcode did not match. Try again." = "Kennwörter stimmen nicht überein. Bitte versuchen Sie es erneut.";
-"%i Passcode Failed Attempts" = "%i Fehleingabe";
+"Re-enter your passcode" = "Code erneut eingeben";
+"Re-enter your new passcode" = "Neuen Code erneut eingeben";
+"Enter your new passcode" = "Neuen Code eingeben";
+"Passcode did not match. Try again." = "Codes stimmen nicht überein.
+Erneut versuchen.";
 "Enter Passcode" = "Kennwort eingeben";
 "New Passcode" = "Neues Kennwort";
 "Confirm Passcode" = "Kennwort bestätigen";
 "Hint" = "Hinweis";
 "Old Passcode" = "Altes Kennwort";
-"%li Passcode Failed Attempts" = "%li Fehleingabe";
 "Please enter new passcode." = "Bitte geben Sie ein neues Kennwort ein.";
 "Please enter confirm passcode." = "Bitte die Kennwortbestätigung eingeben.";
 "Passcode did not match." = "Kennwörter stimmen nicht überein.";
@@ -737,8 +732,8 @@
 "Deleting" = "Löschen";
 "Unable to delete selected file. Please try it again." = "Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.";
 
-"Turn Passcode Off" = "Kennwort deaktivieren";
-"Turn Passcode On" = "Kennwort aktivieren";
+"Turn Passcode Off" = "Code deaktivieren";
+"Turn Passcode On" = "Code aktivieren";
 "How To Enable Data Protection" = "Wie Sie den Datenschutz aktivieren";
 "Clear Recent" = "Verlauf leeren";
 "Recent" = "Verlauf";
@@ -746,7 +741,7 @@
 "Move and Scale" = "Verschieben und Skalieren";
 
 "CALCULATION" = "Berechnung";
-"DoneButton" = "Eingabe";
+"DoneButton" = "Return";
 "Off" = "Aus";
 "Passcode_Off" = "Aus";
 
@@ -779,7 +774,7 @@
 "This will reset all settings.\nNo data will be deleted." = "Alle Einstellungen zurücksetzten.\nEs werden keine Daten gelöscht.";
 "Reset All" = "Alles zurücksetzten";
 "Reset Show/Hide Settings" = "Anzeige zurücksetzen";
-"Wallpaper" = "Hintergrund";
+"Wallpaper" = "Hintergrund wählen";
 
 "Show Lunar Date" = "Zeige Lunar Tage";
 "Currency Converter using AppBox Pro" = "Währungsrechner von AppBox Pro";
@@ -792,8 +787,8 @@
 "Add this place" = "Ort hinzufügen";
 
 "STATUS" = "Status";
-"Talk Time on 2G" = "Gesprächszeit 2G";
-"Talk Time on 3G" = "Gesprächszeit 3G";
+"Talk Time on 2G" = "Sprechdauer mit 2G";
+"Talk Time on 3G" = "Sprechdauer mit 3G";
 "Internet on 3G" = "Internet 3G";
 "Internet on LTE" = "Internet LTE";
 "Internet on Wi-Fi" = "Internet WLAN";
@@ -879,7 +874,21 @@
 "DISCOUNT" = "NACHLASS";
 
 "Alert_None" = "Ohne";
+"DateCalcExclude_None" = "Ohne";
 
 "Failed to download backup file." = "Fehler beim Herunterladen von Inhalten.";
-
 "Share information" = "Informationen zur Aktie";
+
+"Text" = "Text";
+"Number" = "Nummer";
+"Phone" = "Telefon";
+"URL" = "URL";
+"Email" = "E-Mail";
+"Date" = "Datum";
+"Image" = "Bild";
+"Video" = "Video";
+
+"Normal" = "Einfacher";
+"Password" = "Passwort";
+"Account" = "Konto";
+"Hidden" = "Versteckt";

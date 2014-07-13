@@ -27,7 +27,7 @@
 "ln5-ed-dwO.normalTitle" = "Gesamt";
 
 /* Class = "IBUILabel"; text = "PRINCIPAL"; ObjectID = "shi-Bi-FKl"; */
-"shi-Bi-FKl.text" = "KREDITSUMME";
+"shi-Bi-FKl.text" = "BETRAG";
 
 /* Class = "IBUILabel"; text = "FREQUENCY"; ObjectID = "vs2-WG-64j"; */
 "vs2-WG-64j.text" = "HÄUFIGKEIT";

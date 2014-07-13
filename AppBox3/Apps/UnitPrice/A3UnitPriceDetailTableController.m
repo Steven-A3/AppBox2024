@@ -245,7 +245,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     UnitPriceInfo *priceInfo = self.price;
     
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
-    unitShortName = priceInfo.unit ? priceInfo.unit.unitShortName : NSLocalizedString(@"None", @"None");
+    unitShortName = priceInfo.unit ? NSLocalizedStringFromTable(priceInfo.unit.unitName, @"shortName", nil) : NSLocalizedString(@"None", @"None");
     unitName = priceInfo.unit ? NSLocalizedStringFromTable(priceInfo.unit.unitName, @"unit", nil) : NSLocalizedString(@"None", @"None");
     
     double priceValue = priceInfo.price.doubleValue;
@@ -758,7 +758,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 			actionCell.textLabel.font = [UIFont systemFontOfSize:17];
 			actionCell.detailTextLabel.font = [UIFont systemFontOfSize:17];
 			actionCell.textLabel.text = NSLocalizedString(@"Unit", @"Unit");
-			NSString *unitName = self.price.unit ? self.price.unit.unitName : NSLocalizedString(@"None", @"None");
+			NSString *unitName = self.price.unit ? NSLocalizedStringFromTable(self.price.unit.unitName, @"unit", nil) : NSLocalizedString(@"None", @"None");
 			actionCell.detailTextLabel.text = unitName;
 
 			cell = actionCell;
