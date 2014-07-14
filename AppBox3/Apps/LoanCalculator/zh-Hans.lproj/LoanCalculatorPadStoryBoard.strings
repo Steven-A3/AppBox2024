@@ -18,7 +18,7 @@
 "Kjj-Yf-Cp0.text" = "本金";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "Lay-j3-68g"; */
-"Lay-j3-68g.text" = "偿还金额";
+"Lay-j3-68g.text" = "付款";
 
 /* Class = "IBUILabel"; text = "Total Amount"; ObjectID = "O4w-GW-tyw"; */
 "O4w-GW-tyw.text" = "总偿还金额";
@@ -36,7 +36,7 @@
 "p8M-3c-orl.text" = "期间";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "vlc-Uw-6Wc"; */
-"vlc-Uw-6Wc.text" = "偿还金额";
+"vlc-Uw-6Wc.text" = "付款";
 
 /* Class = "IBUIButton"; normalTitle = "Total"; ObjectID = "wH7-0h-TSe"; */
 "wH7-0h-TSe.normalTitle" = "总额";

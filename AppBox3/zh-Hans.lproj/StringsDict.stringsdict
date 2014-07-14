@@ -2,24 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%ld hours, %ld minutes</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@num_hours_minutes@</string>
-		<key>num_hours_minutes</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>ld</string>
-			<key>zero</key>
-			<string>%1$ld小时%2$ld分钟</string>
-			<key>one</key>
-			<string>%1$ld小时%2$ld分钟</string>
-			<key>other</key>
-			<string>%1$ld小时%2$ld分钟</string>
-		</dict>
-	</dict>
 	<key>%ld hours</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -103,9 +85,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>即刻</string>
+			<string>立即</string>
 			<key>one</key>
-			<string>在1小时后</string>
+			<string>1小时后</string>
 			<key>other</key>
 			<string>%ld小时后</string>
 		</dict>
@@ -121,9 +103,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>即刻</string>
+			<string>立即</string>
 			<key>one</key>
-			<string>一分钟后</string>
+			<string>1分钟后</string>
 			<key>other</key>
 			<string>%ld分钟后</string>
 		</dict>
@@ -319,11 +301,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0秒</string>
+			<string>0秒钟</string>
 			<key>one</key>
-			<string>1秒</string>
+			<string>1秒钟</string>
 			<key>other</key>
-			<string>%ld秒</string>
+			<string>%ld秒钟</string>
 		</dict>
 	</dict>
 	<key>%ld Events</key>
@@ -391,11 +373,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>最新单集</string>
+			<string>最新的1集</string>
 			<key>one</key>
-			<string>最新单集</string>
+			<string>最新的1集</string>
 			<key>other</key>
-			<string>最新 %ld 集</string>
+			<string>最新%ld集</string>
 		</dict>
 	</dict>
 </dict>

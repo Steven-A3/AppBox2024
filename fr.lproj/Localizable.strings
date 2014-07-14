@@ -184,6 +184,7 @@
 "Months" = "Mois";
 "Weeks" = "Semaines";
 "Days" = "Jours";
+"DaysCounterDuration_Days" = "Jours";
 "Weekends" = "Le week-end";
 "Sat" = "Sam";
 "Sun" = "Dim";

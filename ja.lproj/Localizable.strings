@@ -56,7 +56,7 @@
 "Passcode Lock" = "パスコード";
 "Lunar Calendar" = "旧暦カレンダー";
 
-"tellafriend" = "iPhone/iPod Touchのより便利にご使用の頂くためにミラー、アラーム時計、バッテリー情報、傾斜計、為替、日付計算、記念日、懐中電灯、祝日、ローン計算、自然周期、価格比較、乱数生成、ものさし、割引率計算、システム情報、チップ計算、翻訳機、単位変換、保安電子財布などの応用プログラムがすべて含まれているAppBox Proをお勧め致します。今すぐに下記のアドレスからAppBox Proをダウンロードして下さい。";
+"tellafriend" = "iPhone/iPad/iPod Touchのより便利にご使用の頂くためにミラー、アラーム時計、バッテリー情報、傾斜計、為替、日付計算、記念日、懐中電灯、祝日、ローン計算、自然周期、価格比較、乱数生成、ものさし、割引率計算、チップ計算、翻訳機、単位変換、保安電子財布などの応用プログラムがすべて含まれているAppBox Proをお勧め致します。今すぐに下記のアドレスからAppBox Proをダウンロードして下さい。";
 "DISCLAIMER_MESSAGE" = "現在の正確な祝祭日を作成するため多くの努力が必要でしたが、全世界の祝日の多くは、各国政府独自に変更される場合があるので、それに関する祝日エラーや抜けには私達は責任を負い兼ねます。ですから予定を立てる前に各国の大使館や領事館に確認することをお勧め致します。";
 "HOLIDAYS_ACKNOWLEDGEMENT" = "AppBox Proで使われている写真は、世界各国色々な場所の美しく雄大な写真をFlickrから集めて使用しております。写真にはFlickrの名前やリンクがつけられています。写真に関しては、作者に全ての権利があります。ALLABOUTAPPS Inc.は、それらの写真を所有しておりません。もしあなたの写真を参加させたいならメールしてください。送られた写真の使用に関する金銭的な保証はありませんが、あなたの写真で新しい顧客が集まって来ると思います。共有して下さりありがとうございました。";
 "SECURITY_INFO" = "Appleはデータプロテクションと呼ばれる技術を使用してます。これはあなたのデータを256ビットキーとハードウェアAESで守ります。機器パスコードを設定することで、自動にデータ保護ができます。器機UIDのパスコードを混乱させていますのでウィルスからの激しい攻撃から機器を守ります。多くの反復的なカウントは、それぞれの攻撃を遅くさせます。この反復的なカウントは、自動的に80ミリセカンド/回で計算されています。この意味は、6桁の小文字と数字が含まれたアルファベットパスコード場合、すべての組み合わせるのに５年半以上かかります。または、９桁の数字だけのパスコードの場合は、２年半かかります。";
@@ -68,7 +68,7 @@
 "About" = "情報";
 "Remaining Time" = "残り時間";
 
-"Favorites" = "お気に入り";
+"Favorites" = "よく使う項目";
 "Apps" = "Apps";
 
 /* "iCloud 동기화 기능을 사용하시려면 장치의 설정을 열어서 iCloud 도큐멘트 및 데이터를 저장하도록 설정하여 주세요."; */
@@ -112,8 +112,8 @@
 "Enter The Number!" = "数字の入力";
 
 "History" = "履歴";
-"Clear" = "クリア";
-"Clear History" = "履歴のクリア";
+"Clear" = "消去";
+"Clear History" = "履歴を消去";
 
 "Basic / Scientific" = "通常の電卓/関数電卓";
 "Scientific" = "関数電卓";
@@ -181,6 +181,7 @@
 "Months" = "月";
 "Weeks" = "週";
 "Days" = "日";
+"DaysCounterDuration_Days" = "日";
 "Weekends" = "週末";
 "Sat" = "土";
 "Sun" = "日";
@@ -207,20 +208,20 @@
 "There is no events." = "イベントなし";
 
 "Slideshow" = "スライドショー";
-"Edit Calendar" = "カレンダー編集";
-"Add Calendar" = "カレンダー追加";
+"Edit Calendar" = "カレンダーを編集";
+"Add Calendar" = "カレンダーを追加";
 "COLOR" = "カラー";
 "Calendar Name" = "カレンダーの名前";
-"Delete Calendar" = "カレンダー消去";
+"Delete Calendar" = "カレンダーを消去";
 "Untitled" = "タイトルなし";
 
-"Add Event" = "記念日追加";
+"Add Event" = "イベントを追加";
 "Title" = "タイトル";
 "Photo" = "写真";
 "Lunar" = "旧暦";
 "Starts-Ends" = "開始日-終了日";
 "Starts" = "開始日";
-"All-day" = "一日";
+"All-day" = "終日";
 
 "Leap Month" = "閏月";
 "Ends" = "終了日";
@@ -250,7 +251,7 @@
 "DaysCounter_from" = "開始日";
 "DaysCounter_to" = "終了日";
 
-"Edit Calendars" = "カレンダー編集";
+"Edit Calendars" = "カレンダーを編集";
 
 "Move these events to a new calendar." = "このイベントを新しいカレンダーに移動。";
 "Please select calendar." = "カレンダーを選択してください。";
@@ -259,8 +260,8 @@
 
 "Share Event" = "イベントを共有";
 "No location" = "位置情報がありません。";
-"Remove from Favorites" = "お気に入りから削除";
-"Add to Favorites" = "お気に入りに追加";
+"Remove from Favorites" = "よく使う項目から削除";
+"Add to Favorites" = "よく使う項目に追加";
 "from %@" = "%@から";
 "to %@" = "%@まで";
 "repeats %@" = "%@リピート";
@@ -327,7 +328,7 @@
 "Wipe" = "下にワイプ";
 
 "Change Location" = "位置変更";
-"Current Location" = "現在位置";
+"Current Location" = "現在地";
 "Searching" = "検索";
 "No Results Found" = "検索結果なし";
 "Custom" = "通知日";
@@ -542,7 +543,7 @@
 "Tonal" = "色調";
 "Noir" = "ノアール";
 "Fade" = "フェード";
-"Chrome" = "クロム";
+"Chrome" = "クロ一ム";
 "Process" = "プロセス";
 "Transfer" = "トランスファー";
 "Instant" = "インスタント";
@@ -655,7 +656,7 @@
 "Volume" = "体積";
 "Weight" = "重量";
 
-"Wallet_All_Category" = "カテゴリー全体";
+"Wallet_All_Category" = "全て";
 "Field Type" = "フィールドタイプ";
 "All Items" = "全てのアイテム";
 "CATEGORIES" = "カテゴリー";
@@ -745,7 +746,7 @@
 "Move and Scale" = "移動とサイズを変更する";
 
 "CALCULATION" = "計算";
-"DoneButton" = "完了";
+"DoneButton" = "閉じる";
 "Off" = "オフ";
 "Passcode_Off" = "オフ";
 "DaysCounter_All" = "全て";
@@ -760,16 +761,15 @@
 "Month(s)" = "月";
 "Day(s)" = "日";
 
-"Red" = "赤";
+"Red" = "レッド";
 "Orange" = "オレンジ";
-"Yellow" = "黄色";
-
-"Green" = "緑";
-"Blue" = "青";
-"Violet" = "薄紫";
-"Purple" = "紫";
-"Brown" = "茶";
-"Gray" = "灰色";
+"Yellow" = "イエロー";
+"Green" = "グリーン";
+"Blue" = "ブルー";
+"Violet" = "バイオレット";
+"Purple" = "パープル";
+"Brown" = "ブラウン";
+"Gray" = "グレー";
 
 "day(s)" = "日";
 
@@ -841,7 +841,7 @@
 "Add" = "足す";
 "day" = "日";
 "Subtract" = "引く";
-"I'd like to share an event with you." = "このイベントをあなたと共有したいです。";
+"I'd like to share an event with you." = "イベントを共有します。";
 "You can manage your events in the AppBox Pro." = "AppBox Proでイベントを管理することが出来ます。";
 
 "Interest" = "金利";

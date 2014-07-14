@@ -48,7 +48,7 @@
                        @{EventRowTitle : NSLocalizedString(@"Years", @"Years"),EventRowType : @(DurationOption_Year)},
                        @{EventRowTitle : NSLocalizedString(@"Months", @"Months"),EventRowType : @(DurationOption_Month)},
                        @{EventRowTitle : NSLocalizedString(@"Weeks", @"Weeks"),EventRowType : @(DurationOption_Week)},
-                       @{EventRowTitle : NSLocalizedString(@"Days", @"Days"),EventRowType : @(DurationOption_Day)},
+                       @{EventRowTitle : NSLocalizedString(@"DaysCounterDuration_Days", @"Days"),EventRowType : @(DurationOption_Day)},
                        @{EventRowTitle : NSLocalizedString(@"Hours", @"Hours"),EventRowType : @(DurationOption_Hour)},
                        @{EventRowTitle : NSLocalizedString(@"Minutes", @"Minutes"),EventRowType : @(DurationOption_Minutes)}];
 

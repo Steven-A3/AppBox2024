@@ -180,6 +180,7 @@
 "Months" = "Mesi";
 "Weeks" = "Settimane";
 "Days" = "Giorni";
+"DaysCounterDuration_Days" = "Giorni";
 "Weekends" = "Fine settimana";
 "Sat" = "Sab";
 "Sun" = "Dom";

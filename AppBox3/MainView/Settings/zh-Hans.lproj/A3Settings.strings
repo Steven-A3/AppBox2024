@@ -11,7 +11,7 @@
 "2E1-Z8-v5l.title" = "选择备份";
 
 /* Class = "IBUITableViewSection"; headerTitle = "PASSCODE REQUIRED FOR"; ObjectID = "4da-k5-f71"; */
-"4da-k5-f71.headerTitle" = "需要密码";
+"4da-k5-f71.headerTitle" = "需要输入密码才能";
 
 /* Class = "IBUINavigationItem"; title = "Apps"; ObjectID = "52d-yt-UJk"; */
 "52d-yt-UJk.title" = "应用";
@@ -28,7 +28,7 @@
 "6F3-BB-fcx.text" = "副标题";
 
 /* Class = "IBUILabel"; text = "Turn Passcode On"; ObjectID = "6ow-jx-9ZQ"; */
-"6ow-jx-9ZQ.text" = "开启密码";
+"6ow-jx-9ZQ.text" = "打开密码";
 
 /* Class = "IBUILabel"; text = "Use iCloud"; ObjectID = "7Pd-or-AM2"; */
 "7Pd-or-AM2.text" = "使用 iCloud";
@@ -40,7 +40,7 @@
 "7oW-es-0Zb.title" = "阴历 ";
 
 /* Class = "IBUILabel"; text = "Require Passcode"; ObjectID = "A3j-68-3Oy"; */
-"A3j-68-3Oy.text" = "为  需要密码";
+"A3j-68-3Oy.text" = "需要密码";
 
 /* Class = "IBUILabel"; text = "Recent to Keep"; ObjectID = "BGG-KB-Wog"; */
 "BGG-KB-Wog.text" = "保留最近记录";
@@ -55,7 +55,7 @@
 "Fvs-tZ-usV.text" = "更改密码";
 
 /* Class = "IBUITableViewController"; title = "Passcode Lock"; ObjectID = "KML-Ub-d8M"; */
-"KML-Ub-d8M.title" = "密码锁";
+"KML-Ub-d8M.title" = "密码锁定";
 
 /* Class = "IBUITableViewSection"; footerTitle = "For Lunar Converter"; ObjectID = "LOI-Yd-hc0"; */
 "LOI-Yd-hc0.footerTitle" = "为阴历转换器";
@@ -64,13 +64,13 @@
 "LZb-sk-84W.text" = "关于安全的更多信息";
 
 /* Class = "IBUINavigationItem"; title = "Passcode Lock"; ObjectID = "Lbr-p8-awt"; */
-"Lbr-p8-awt.title" = "密码锁";
+"Lbr-p8-awt.title" = "密码锁定";
 
 /* Class = "IBUITableViewSection"; footerTitle = "Shorter times are more secure."; ObjectID = "MUh-Ac-pHs"; */
 "MUh-Ac-pHs.footerTitle" = "时间越短越安全.";
 
 /* Class = "IBUILabel"; text = "After 4 hours"; ObjectID = "McJ-yq-SBi"; */
-"McJ-yq-SBi.text" = "4小时之后";
+"McJ-yq-SBi.text" = "4小时后";
 
 /* Class = "IBUILabel"; text = "Off"; ObjectID = "Mzm-Rw-Yrb"; */
 "Mzm-Rw-Yrb.text" = "关闭";
@@ -82,13 +82,13 @@
 "O52-H9-qgV.text" = "钱包";
 
 /* Class = "IBUILabel"; text = "After 1 minute"; ObjectID = "OmZ-rj-JvF"; */
-"OmZ-rj-JvF.text" = "1分钟以后";
+"OmZ-rj-JvF.text" = "1分钟后";
 
 /* Class = "IBUILabel"; text = "Detail"; ObjectID = "QDB-IM-N8E"; */
 "QDB-IM-N8E.text" = "详细内容";
 
 /* Class = "IBUITableViewSection"; footerTitle = "A simple passcode is a 4 digit number."; ObjectID = "ROP-jz-ZtT"; */
-"ROP-jz-ZtT.footerTitle" = "简单密码是四位数字.";
+"ROP-jz-ZtT.footerTitle" = "简单密码由4个数字组成";
 
 /* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "ROP-jz-ZtT"; */
 "ROP-jz-ZtT.headerTitle" = " ";
@@ -109,13 +109,13 @@
 "Xb7-yr-Jd6.title" = "需要密码";
 
 /* Class = "IBUILabel"; text = "After 5 minutes"; ObjectID = "cHo-o5-yl0"; */
-"cHo-o5-yl0.text" = "5分钟之后";
+"cHo-o5-yl0.text" = "5分钟后";
 
 /* Class = "IBUILabel"; text = "Immediately"; ObjectID = "ck4-7j-nEw"; */
-"ck4-7j-nEw.text" = "立刻";
+"ck4-7j-nEw.text" = "立即";
 
 /* Class = "IBUILabel"; text = "Immediately"; ObjectID = "eGG-mK-Q2m"; */
-"eGG-mK-Q2m.text" = "立刻";
+"eGG-mK-Q2m.text" = "立即";
 
 /* Class = "IBUILabel"; text = "Backup & Restore on Dropbox"; ObjectID = "ehr-w2-0vk"; */
 "ehr-w2-0vk.text" = " 在Dropbox上备份及恢复";
@@ -147,7 +147,7 @@
 "oxS-sd-8U7.title" = "在Dropbox中备份或恢复";
 
 /* Class = "IBUILabel"; text = "Passcode Lock"; ObjectID = "pjv-dt-D5o"; */
-"pjv-dt-D5o.text" = "密码锁";
+"pjv-dt-D5o.text" = "密码锁定";
 
 /* Class = "IBUINavigationItem"; title = "Require Passcode"; ObjectID = "qcD-FX-Y5d"; */
 "qcD-FX-Y5d.title" = "需要密码";
@@ -159,7 +159,7 @@
 "sL2-cQ-mx7.text" = "设置";
 
 /* Class = "IBUILabel"; text = "After 1 hour"; ObjectID = "sks-IW-96W"; */
-"sks-IW-96W.text" = " 1小时之后";
+"sks-IW-96W.text" = "1小时后";
 
 /* Class = "IBUITableViewController"; title = "Recent To Keep"; ObjectID = "srb-MD-eSG"; */
 "srb-MD-eSG.title" = "保留最近记录";
@@ -171,7 +171,7 @@
 "uR7-vn-SkB.text" = "开始";
 
 /* Class = "IBUILabel"; text = "After 15 minutes"; ObjectID = "uxS-dx-9By"; */
-"uxS-dx-9By.text" = " 15分钟之后";
+"uxS-dx-9By.text" = "15分钟后";
 
 /* Class = "IBUITableViewController"; title = "Edit Favorites"; ObjectID = "vRR-Rd-eut"; */
 "vRR-Rd-eut.title" = "编辑收藏夹";

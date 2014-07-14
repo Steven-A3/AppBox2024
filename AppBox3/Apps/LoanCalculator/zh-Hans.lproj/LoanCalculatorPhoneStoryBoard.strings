@@ -6,7 +6,7 @@
 "Ajr-fK-S6O.text" = "期间";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "CxJ-Nr-hb6"; */
-"CxJ-Nr-hb6.text" = "偿还金额";
+"CxJ-Nr-hb6.text" = "付款";
 
 /* Class = "IBUILabel"; text = "INTEREST RATE"; ObjectID = "M1Y-kB-iSk"; */
 "M1Y-kB-iSk.text" = "利率";
@@ -15,7 +15,7 @@
 "cvj-is-8ew.normalTitle" = "每月";
 
 /* Class = "IBUILabel"; text = "PAYMENT"; ObjectID = "eK2-vu-V2i"; */
-"eK2-vu-V2i.text" = "偿还金额";
+"eK2-vu-V2i.text" = "付款";
 
 /* Class = "IBUIButton"; normalTitle = "Monthly"; ObjectID = "ghb-Oq-2Tz"; */
 "ghb-Oq-2Tz.normalTitle" = "每月";
