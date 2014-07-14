@@ -316,6 +316,7 @@ enum SortingKind {
                                      };
 
     NSUInteger cateCount = [WalletCategory MR_countOfEntities];
+    cateCount = cateCount - 2;  // All + More Category
     
     NSAttributedString *nameText = [[NSAttributedString alloc] initWithString:(cateCount > 1) ? NSLocalizedString(@"CATEGORIES", @"CATEGORIES") : NSLocalizedString(@"CATEGORY", @"CATEGORY")
                                                                    attributes:textAttributes];
