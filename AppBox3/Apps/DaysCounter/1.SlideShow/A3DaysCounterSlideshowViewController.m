@@ -52,11 +52,11 @@
     self.title = NSLocalizedString(@"Slideshow", nil);
     currentIndex = 0;
     
-    if( self.optionDict == nil )
+    if ( self.optionDict == nil )
         self.optionDict = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterSlideshowOption];
     self.itemArray = [_sharedManager allEventsListContainedImage];
     
-    if( [[_optionDict objectForKey:OptionKey_Shuffle] boolValue] ){
+    if ( [[_optionDict objectForKey:OptionKey_Shuffle] boolValue] ) {
         self.itemArray = [self shuffleArray:self.itemArray];
     }
     
@@ -72,7 +72,7 @@
     self.currentView.userInteractionEnabled = NO;
     [self addView:self.currentView];
     
-    if( self.navigationController )
+    if ( self.navigationController )
        [self.navigationController setToolbarHidden:YES];
 }
 
@@ -91,7 +91,7 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    if( slideTimer == nil )
+    if ( slideTimer == nil )
         [_sharedManager setupEventSummaryInfo:[_itemArray objectAtIndex:currentIndex] toView:self.currentView];
 }
 
@@ -117,7 +117,7 @@
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if( buttonIndex == alertView.firstOtherButtonIndex ){
+    if ( buttonIndex == alertView.firstOtherButtonIndex ) {
         [self endSlideshow];
     }
 }
@@ -157,7 +157,7 @@
 - (void)origamiTransition
 {
     CGSize size = self.view.frame.size;
-    if( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) )
+    if ( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) )
         size = CGSizeMake(self.view.frame.size.height, self.view.frame.size.width);
     //    self.currentView.bounds = CGRectMake(0, 0, size.width, size.height);
     //    self.nextView.bounds = self.currentView.bounds;
@@ -171,7 +171,7 @@
     //    MPFoldTransition *foldTransition = [[MPFoldTransition alloc] initWithSourceView:self.currentView destinationView:self.nextView duration:0.7 style:MPFoldStyleDefault completionAction:MPTransitionActionNone];
     //    foldTransition.rect = self.nextView.frame;
     //    [foldTransition perform:^(BOOL finished) {
-    //        if( finished ){
+    //        if ( finished ) {
     //            [self.currentView removeFromSuperview];
     //            [self addView:self.nextView];
     //            self.currentView = self.nextView;
@@ -181,7 +181,7 @@
     
     
     [MPFoldTransition transitionFromView:self.currentView toView:self.nextView duration:0.7 style:MPFoldStyleDefault transitionAction:MPTransitionActionNone completion:^(BOOL finished) {
-        if( finished ){
+        if ( finished ) {
             [self.currentView removeFromSuperview];
             [self addView:self.nextView];
             self.currentView = self.nextView;
@@ -250,8 +250,8 @@
 
 - (void)slideTimerAction:(NSTimer*)theTimer
 {
-    if( currentIndex + 1 >= [_itemArray count]){
-        if(![[_optionDict objectForKey:OptionKey_Repeat] boolValue] ){
+    if ( currentIndex + 1 >= [_itemArray count]) {
+        if (![[_optionDict objectForKey:OptionKey_Repeat] boolValue] ) {
             [self endSlideshow];
             return;
         }
@@ -292,14 +292,14 @@
 
 - (void)startTimer
 {
-    if(slideTimer)
+    if (slideTimer)
         [slideTimer invalidate];
     slideTimer = [NSTimer scheduledTimerWithTimeInterval:[[_optionDict objectForKey:OptionKey_Showtime] doubleValue] target:self selector:@selector(slideTimerAction:) userInfo:nil repeats:NO];
 }
 
 - (void)stopTimer
 {
-    if( slideTimer )
+    if ( slideTimer )
         [slideTimer invalidate];
     slideTimer = nil;
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
@@ -307,7 +307,7 @@
 
 - (void)addView:(UIView*)addView
 {
-    if( [addView isDescendantOfView:self.view] )
+    if ( [addView isDescendantOfView:self.view] )
         return;
     
     addView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -325,7 +325,7 @@
 
 - (void)insertView:(UIView*)addView belowView:(UIView*)targetView
 {
-    if( [addView isDescendantOfView:self.view] )
+    if ( [addView isDescendantOfView:self.view] )
         return;
     
     addView.translatesAutoresizingMaskIntoConstraints = NO;
