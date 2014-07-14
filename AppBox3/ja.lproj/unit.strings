@@ -367,9 +367,6 @@
 "tons(US or short)" = "トン[米国]";
 "tonnes" = "トン(tonnes)";
 
-"All Categories" = "全体種類";
-"No Units available." = "使用できる単位がありません。";
-"There must be at least two units selected." = "最低2つを選択しなければなりません。";
 "inch" = "inch";
 "Categories" = "種類";
 "Units" = "単位";

@@ -98,7 +98,8 @@
 			make.width.equalTo(@120);
 			make.right.equalTo(cell.contentView.right).with.offset(type == currentType ? 0 : -15);
 		}];
-		_customTextField.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days before", @"StringsDict", @"Lady Calendar Custome Alert"), (long) [[_settingDict objectForKey:SettingItem_CustomAlertDays] integerValue]];
+		NSInteger customAlertDay = [[_settingDict objectForKey:SettingItem_CustomAlertDays] integerValue];
+		_customTextField.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days before", @"StringsDict", @"Lady Calendar Custome Alert"), (long) customAlertDay];
 	}
     else{
         cell.detailTextLabel.text = nil;

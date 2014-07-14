@@ -777,7 +777,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         unitPrice = (priceValue - discountValue) / (sizeValue * quantityValue);
         
         if (unitPrice > 0) {
-            if (priceInfo.unit) {
+            if (IS_IPAD && priceInfo.unit) {
                 unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice)], unitShortName];
             }
             else {
@@ -785,7 +785,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             }
         }
         else if (unitPrice == 0) {
-            if (priceInfo.unit) {
+            if (IS_IPAD && priceInfo.unit) {
                 unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice)], unitShortName];
             }
             else {
@@ -794,7 +794,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             
         }
         else {
-            if (priceInfo.unit) {
+            if (IS_IPAD && priceInfo.unit) {
                 unitPriceTxt = [NSString stringWithFormat:@"-%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice*-1)], unitShortName];
             }
             else {
@@ -881,7 +881,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         unitPrice = (priceValue - discountValue) / (sizeValue * quantityValue * rate);
         
         if (unitPrice > 0) {
-            if (priceInfo.unit) {
+            if (IS_IPAD && priceInfo.unit) {
                 
                 if (self.price1.unit != self.price2.unit) {
                     
@@ -905,7 +905,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             }
         }
         else if (unitPrice == 0) {
-            if (priceInfo.unit) {
+            if (IS_IPAD && priceInfo.unit) {
                 unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice)], unitShortName];
             }
             else {
@@ -914,7 +914,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             
         }
         else {
-            if (priceInfo.unit) {
+            if (IS_IPAD && priceInfo.unit) {
                 unitPriceTxt = [NSString stringWithFormat:@"-%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice*-1)], unitShortName];
             }
             else {

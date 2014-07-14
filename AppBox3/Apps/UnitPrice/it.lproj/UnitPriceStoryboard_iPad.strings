@@ -30,19 +30,19 @@
 "YTt-4h-P5F.text" = "Prezzo";
 
 /* Class = "IBUILabel"; text = "UNIT PRICE"; ObjectID = "Z6V-VR-uSB"; */
-"Z6V-VR-uSB.text" = "PREZZO PER UNITÀ";
+"Z6V-VR-uSB.text" = "PREZZO UNITARIO";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "bTH-9t-GT8"; */
 "bTH-9t-GT8.text" = "Prezzo";
 
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "hW6-LI-MCK"; */
-"hW6-LI-MCK.text" = "Prezzo per Unità";
+"hW6-LI-MCK.text" = "Prezzo unitario";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "k8q-8C-FUd"; */
 "k8q-8C-FUd.text" = "Prezzo";
 
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "oHY-7Y-4TI"; */
-"oHY-7Y-4TI.text" = "Prezzo per Unità";
+"oHY-7Y-4TI.text" = "Prezzo unitario";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "oei-CS-z7I"; */
 "oei-CS-z7I.text" = "Prezzo";
@@ -54,4 +54,4 @@
 "w5d-3l-4mN.text" = "PREZZO";
 
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "zWC-aV-ElS"; */
-"zWC-aV-ElS.text" = "Prezzo per Unità";
+"zWC-aV-ElS.text" = "Prezzo unitario";

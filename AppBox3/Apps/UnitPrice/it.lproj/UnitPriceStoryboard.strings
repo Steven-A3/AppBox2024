@@ -1,6 +1,6 @@
 
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "3QQ-oH-SON"; */
-"3QQ-oH-SON.text" = "Prezzo per Unità";
+"3QQ-oH-SON.text" = "Prezzo unitario";
 
 /* Class = "IBUILabel"; text = "PRICE"; ObjectID = "9Ap-su-P5I"; */
 "9Ap-su-P5I.text" = "PREZZO";
@@ -9,10 +9,10 @@
 "BPT-UJ-7S3.text" = "DIMENSIONE";
 
 /* Class = "IBUILabel"; text = "UNIT PRICE"; ObjectID = "Bhe-Qi-2t8"; */
-"Bhe-Qi-2t8.text" = "PREZZO PER UNITÀ";
+"Bhe-Qi-2t8.text" = "PREZZO UNITARIO";
 
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "HZl-1i-kxx"; */
-"HZl-1i-kxx.text" = "Prezzo per Unità";
+"HZl-1i-kxx.text" = "Prezzo unitario";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "IrO-mP-z4f"; */
 "IrO-mP-z4f.text" = "Prezzo";
@@ -44,8 +44,8 @@
 /* Class = "IBUILabel"; text = "UNIT"; ObjectID = "hBe-Sn-IPk"; */
 "hBe-Sn-IPk.text" = "UNITÀ";
 
-/* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "sUp-O5-OKQ"; */
-"sUp-O5-OKQ.text" = "Prezzo per Unità";
+/* Class = "IBUILabel"; text = s; ObjectID = "sUp-O5-OKQ"; */
+"sUp-O5-OKQ.text" = "Prezzo unitario";
 
 /* Class = "IBUILabel"; text = "Price"; ObjectID = "wfG-C6-KIn"; */
 "wfG-C6-KIn.text" = "Prezzo";

@@ -19,7 +19,7 @@ valuta, poi trascinala su o giù";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to change\nkeypad for basic/scientific"; ObjectID = "4Y2-hA-ExK"; */
 "4Y2-hA-ExK.text" = "Scorri a sinistra o a destra per cambiare il tastierino in
-basico/scientifico";
+Basilare/Scientifica";
 
 /* Class = "IBUILabel"; text = "Tap to add an item"; ObjectID = "55x-Hd-Yyy"; */
 "55x-Hd-Yyy.text" = "Tocca per aggiungere un elemento";

@@ -188,7 +188,7 @@ sinistra, poi tocca Elimina";
 /* Class = "IBUILabel"; text = "Swipe left or right to change\nkeypad for basic/scientific"; ObjectID = "nGX-Pa-fkG"; */
 "nGX-Pa-fkG.text" =
 "Scorri a sinistra o a destra per cambiare
-il tastierino in basico/scientifico";
+il tastierino in Basilare/Scientifica";
 
 /* Class = "IBUILabel"; text = "Touch and hold a language,\nthen drag it up or down"; ObjectID = "s0L-Sq-3OK"; */
 "s0L-Sq-3OK.text" =

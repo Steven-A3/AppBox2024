@@ -356,7 +356,7 @@
 "liters" = "litry";
 "liters(1901-1964)" = "litry(1901-1964)";
 "milliliters" = "milimetry";
-"pints(UK),pinty(UK)";
+"pints(UK)" = "pinty(UK)";
 "pints,dry(US)" = "pinta,sucha(US)";
 "pints,liquid(US)" = "pinta,mokra(US)";
 "quarts(UK)" = "kwarty(UK)";
@@ -383,9 +383,6 @@
 "tons(US or short)" = "tony (US)";
 "tonnes" = "tony";
 
-"All Categories" = "Wszystkie kategorie";
-"No Units available." = "Nie są dostępne.";
-"There must be at least two units selected." = "Muszą zostać wybrane chociaż dwie jednostki.";
 "inch" = "cal";
 "Categories" = "Kategorie";
 "Units" = "Jednostki";

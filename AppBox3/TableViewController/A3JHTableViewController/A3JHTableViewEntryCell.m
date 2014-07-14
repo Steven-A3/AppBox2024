@@ -32,6 +32,17 @@
 
 	if (self.textLabel.font) {
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+
+		if (![self.textLabel.text length]) {
+			CGRect frame;
+			frame.origin.x = IS_IPHONE ? 15 : 28;
+			frame.origin.y = 0;
+			frame.size.width = screenBounds.size.width - (IS_IPHONE ? 30 : 28 + 15);
+			frame.size.height = CGRectGetHeight(self.frame);
+			self.textField.frame = frame;
+			return;
+		}
+
 		CGFloat minWidth = screenBounds.size.width * 0.4;
         CGFloat textFieldWidth = minWidth;
 		CGFloat textFieldTextWidth = 60.0;

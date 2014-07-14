@@ -3,13 +3,13 @@
 "3s5-4s-1CT.normalTitle" = "Totale";
 
 /* Class = "IBUILabel"; text = "Total Interest"; ObjectID = "42J-Av-wC6"; */
-"42J-Av-wC6.text" = "Interesse Totale";
+"42J-Av-wC6.text" = "Totale interssi";
 
 /* Class = "IBUIButton"; normalTitle = "Monthly"; ObjectID = "EGD-V3-oEo"; */
 "EGD-V3-oEo.normalTitle" = "Mensile";
 
 /* Class = "IBUILabel"; text = "TOTAL AMOUNT"; ObjectID = "HoT-uR-KnN"; */
-"HoT-uR-KnN.text" = "IMPORTO TOTALE";
+"HoT-uR-KnN.text" = "TOTALE PAGATO";
 
 /* Class = "IBUILabel"; text = "FREQUENCY"; ObjectID = "IQd-UR-Egy"; */
 "IQd-UR-Egy.text" = "FREQUENZA";
@@ -21,13 +21,13 @@
 "Lay-j3-68g.text" = "PAGAMENTO";
 
 /* Class = "IBUILabel"; text = "Total Amount"; ObjectID = "O4w-GW-tyw"; */
-"O4w-GW-tyw.text" = "Importo totale";
+"O4w-GW-tyw.text" = "Totale pagato";
 
 /* Class = "IBUILabel"; text = "TOTAL AMOUNT"; ObjectID = "PyM-Ux-VrQ"; */
-"PyM-Ux-VrQ.text" = "IMPORTO TOTALE";
+"PyM-Ux-VrQ.text" = "TOTALE PAGATO";
 
 /* Class = "IBUILabel"; text = "INTEREST RATE"; ObjectID = "V4g-Ka-you"; */
-"V4g-Ka-you.text" = "TASSO DI INTERESSE";
+"V4g-Ka-you.text" = "TASSO D'INTERESSE";
 
 /* Class = "IBUIButton"; normalTitle = "Monthly"; ObjectID = "kxb-Ku-lTX"; */
 "kxb-Ku-lTX.normalTitle" = "Mensile";
