@@ -31,26 +31,32 @@
 - (void)calculateTextFieldFrame {
 
 	if (self.textLabel.font) {
-        CGFloat width = 60.0;
+		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		CGFloat minWidth = screenBounds.size.width * 0.4;
+        CGFloat textFieldWidth = minWidth;
+		CGFloat textFieldTextWidth = 60.0;
 
 		if ([self.textField.text length]) {
 			NSStringDrawingContext *context = [NSStringDrawingContext new];
 			CGRect textFieldBounds = [self.textField.text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
 																	   options:NSStringDrawingUsesLineFragmentOrigin
-																	attributes:@{NSFontAttributeName:self.textLabel.font}
+																	attributes:@{NSFontAttributeName:self.textField.font}
 																	   context:context];
-			if (textFieldBounds.size.width < 60.0) {
-				width = 60.0;
+			textFieldTextWidth = textFieldBounds.size.width;
+			if (textFieldBounds.size.width < minWidth) {
+				textFieldWidth = minWidth;
 			} else if (textFieldBounds.size.width > self.bounds.size.width / 2.0 - 30.0) {
-				width = self.bounds.size.width / 2.0 - 30.0;
+				textFieldWidth = self.bounds.size.width / 2.0 - 30.0;
 			} else {
-				width = ceilf(textFieldBounds.size.width);
+				textFieldWidth = roundf(textFieldBounds.size.width);
 			}
 		}
+		textFieldWidth += 10.0;
 		CGRect textLabelFrame = self.textLabel.frame;
-		textLabelFrame.size.width = self.bounds.size.width - width - 30.0;
+		textLabelFrame.size.width = self.bounds.size.width - textFieldTextWidth - 30.0;
 		self.textLabel.frame = textLabelFrame;
-        self.textField.frame = CGRectMake(self.bounds.size.width - width - 15.0, 0, width, CGRectGetHeight(self.frame));
+        self.textField.frame = CGRectMake(self.bounds.size.width - textFieldWidth - 15.0, 0, textFieldWidth, CGRectGetHeight(self.frame));
+		self.textField.backgroundColor = [UIColor greenColor];
 	}
 }
 
