@@ -234,16 +234,22 @@
 		NSUInteger eventIdx = [_eventsArray indexOfObjectPassingTest:^BOOL(DaysCounterEvent *item, NSUInteger idx, BOOL *stop) {
 			return [item.uniqueID isEqualToString:_prevShownEventID];
 		}];
+        
 		if (eventIdx != NSNotFound) {
-			[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:eventIdx inSection:0]
-									atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
-											animated:NO];
 			currentIndex = eventIdx;
-		} else {
+		}
+        else {
 			currentIndex = 0;
 		}
-		[self updateNavigationTitle];
+        
+        if ([_eventsArray count] > 0) {
+            [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
+                                    atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                            animated:NO];
+        }
     }
+    
+    [self updateNavigationTitle];
 }
 
 - (void)viewWillLayoutSubviews
