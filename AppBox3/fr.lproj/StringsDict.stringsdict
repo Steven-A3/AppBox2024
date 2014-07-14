@@ -2,24 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%ld hours, %ld minutes</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@num_hours_minutes@</string>
-		<key>num_hours_minutes</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>ld</string>
-			<key>zero</key>
-			<string>%1$ld heures, %2$ld minutes</string>
-			<key>one</key>
-			<string>%1$ld heure, %2$ld minute</string>
-			<key>other</key>
-			<string>%1$ld heures, %2$ld minutes</string>
-		</dict>
-	</dict>
 	<key>%ld hours</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -211,7 +193,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Au moment de l’événement</string>
+			<string>0 jour avant</string>
 			<key>one</key>
 			<string>1 jour avant</string>
 			<key>other</key>
@@ -247,7 +229,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>aujourd'hui</string>
+			<string>auj.</string>
 			<key>one</key>
 			<string>demain</string>
 			<key>other</key>
@@ -319,11 +301,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>0 secondes</string>
+			<string>0 s</string>
 			<key>one</key>
-			<string>1 seconde</string>
+			<string>1 s</string>
 			<key>other</key>
-			<string>%ld secondes</string>
+			<string>%ld s</string>
 		</dict>
 	</dict>
 	<key>%ld Events</key>
@@ -391,11 +373,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Les plus récents</string>
+			<string>Le plus récent</string>
 			<key>one</key>
-			<string>Les plus récents</string>
+			<string>Le plus récent</string>
 			<key>other</key>
-			<string>Les %ld plus récents</string>
+			<string>Les %ld plus récent</string>
 		</dict>
 	</dict>
 </dict>

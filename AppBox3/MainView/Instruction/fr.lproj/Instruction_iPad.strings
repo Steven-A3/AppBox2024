@@ -81,7 +81,7 @@
 "ZUB-bK-boD.text" = "Toucher et maintenir une devise,\npuis la traîner vers le haut ou le bas";
 
 /* Class = "IBUILabel"; text = "Pull up to see\nmore holidays"; ObjectID = "aLZ-Rx-7OQ"; */
-"aLZ-Rx-7OQ.text" = "Tirer vers le haut pour voir \nplus de vacances";
+"aLZ-Rx-7OQ.text" = "Tirer vers le haut pour voir \nplus de Jours fériés";
 
 /* Class = "IBUILabel"; text = "Tap to change option"; ObjectID = "aZF-Kt-xMb"; */
 "aZF-Kt-xMb.text" = "Appuyer pour changer l’option";
@@ -102,7 +102,7 @@
 "cd9-3W-dMs.text" = "Pousser vers la gauche ou la droite pour voir \npréc/suiv. évènements";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to see\nholidays for another country"; ObjectID = "dP2-Qa-JvS"; */
-"dP2-Qa-JvS.text" = "Pousser vers la gauche ou la droite pour voir \nvacances pour un autre pays";
+"dP2-Qa-JvS.text" = "Pousser vers la gauche ou la droite pour voir \nJours fériés pour un autre pays";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "dlc-w8-sH6"; */
 "dlc-w8-sH6.text" = "Appuyer l’écran pour\nafficher les commandes.";

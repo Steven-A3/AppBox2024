@@ -1,6 +1,6 @@
 
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "2Pn-I6-0xR"; */
-"2Pn-I6-0xR.text" = "Compteur de jours";
+"2Pn-I6-0xR.text" = "Événements";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "2eu-dh-CwY"; */
 "2eu-dh-CwY.normalTitle" = "Utiliser AppBox Pro";
@@ -12,7 +12,7 @@
 "4vD-c0-4t2.normalTitle" = "Utiliser AppBox Pro";
 
 /* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7if-xU-XZH"; */
-"7if-xU-XZH.text" = "Basique/Scientifique Calculateur";
+"7if-xU-XZH.text" = "Basique/Scientifique Calculette";
 
 /* Class = "IBUILabel"; text = "Unit Conveter"; ObjectID = "85l-L8-ozk"; */
 "85l-L8-ozk.text" = "Convertisseur d’unité";
@@ -21,7 +21,7 @@
 "8Fx-P1-Pjr.normalTitle" = "Ultérieur";
 
 /* Class = "IBUILabel"; text = "Sales Calculator"; ObjectID = "8gx-TA-Y32"; */
-"8gx-TA-Y32.text" = "Calculateur des ventes";
+"8gx-TA-Y32.text" = "Calculette des ventes";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Cyd-xI-Wjv"; */
 "Cyd-xI-Wjv.normalTitle" = "Continuer";
@@ -53,7 +53,7 @@
 "QVX-vI-Tzn.normalTitle" = "Continuer";
 
 /* Class = "IBUILabel"; text = "Holidays"; ObjectID = "TDf-63-7ce"; */
-"TDf-63-7ce.text" = "Vacances";
+"TDf-63-7ce.text" = "Jours fériés";
 
 /* Class = "IBUILabel"; text = "Currency Converter"; ObjectID = "TX8-le-6Df"; */
 "TX8-le-6Df.text" = "Convertisseur de devises";
@@ -68,7 +68,7 @@
 "Z9P-lk-CAW.normalTitle" = "Continuer";
 
 /* Class = "IBUILabel"; text = "Battery Status"; ObjectID = "Zic-Ru-M9D"; */
-"Zic-Ru-M9D.text" = "Statut de la batterie";
+"Zic-Ru-M9D.text" = "Batterie";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "abQ-r0-gCo"; */
 "abQ-r0-gCo.normalTitle" = "Continuer";
@@ -80,7 +80,7 @@
 "bqT-N1-DoK.normalTitle" = "Utiliser AppBox Pro";
 
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "bwe-yZ-jRu"; */
-"bwe-yZ-jRu.text" = "Calculateur";
+"bwe-yZ-jRu.text" = "Calculette";
 
 /* Class = "IBUILabel"; text = "Mirror"; ObjectID = "cFb-hc-ow3"; */
 "cFb-hc-ow3.text" = "Miroir";
@@ -92,10 +92,10 @@
 "fFN-V5-j3K.text" = "Utilité";
 
 /* Class = "IBUILabel"; text = "Tip Calculator"; ObjectID = "g3L-3p-AJp"; */
-"g3L-3p-AJp.text" = "Calculateur du pourboire";
+"g3L-3p-AJp.text" = "Calculette du pourboire";
 
 /* Class = "IBUILabel"; text = "Date Calculator"; ObjectID = "gfY-Dc-cGm"; */
-"gfY-Dc-cGm.text" = "Calculateur de date";
+"gfY-Dc-cGm.text" = "Calculette de date";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "k5O-Qu-0Jo"; */
 "k5O-Qu-0Jo.normalTitle" = "Utiliser AppBox Pro";
@@ -115,13 +115,13 @@ sur tous vos dispositifs";
 "oCV-n4-Pex.text" = "Liste de dépense";
 
 /* Class = "IBUILabel"; text = "Percent Calculator"; ObjectID = "qbo-OG-u9j"; */
-"qbo-OG-u9j.text" = "Calculateur de pourcentage";
+"qbo-OG-u9j.text" = "Calculette de pourcentage";
 
 /* Class = "IBUILabel"; text = "Converter"; ObjectID = "rfG-z0-3e0"; */
 "rfG-z0-3e0.text" = "Convertisseur";
 
 /* Class = "IBUILabel"; text = "Loan Calculator"; ObjectID = "vEW-JN-pPp"; */
-"vEW-JN-pPp.text" = "Calculateur du prêt";
+"vEW-JN-pPp.text" = "Calculette du prêt";
 
 /* Class = "IBUILabel"; text = "Reference"; ObjectID = "vJ2-Dp-SnT"; */
 "vJ2-Dp-SnT.text" = "Référence";

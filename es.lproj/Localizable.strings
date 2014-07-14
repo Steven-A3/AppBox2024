@@ -5,6 +5,34 @@
  * Time: 9:34 PM
  */
 
+"Calculator" = "Calculadora";
+"Date Calculator" = "Calculo de fechas";
+"Loan Calculator" = "Préstamo";
+"Percent Calculator" = "Porcentaje";
+"Percent Calculator_Short" = "Porcentaje";
+"Sales Calculator" = "Descuento";
+"Sales Calculator_Short" = "Descuento";
+"Tip Calculator" = "Calculador de propina";
+"Unit Price" = "Precio unitario";
+
+"Currency Converter" = "Moneda";
+"Lunar Converter" = "Lunar Convertidor";
+"Lunar Converter_Short" = "Lunar";
+"Translator" = "Traductor";
+"Unit Converter" = "Unidad";
+
+"Expense List" = "Lista de gastos";
+"Days Counter" = "Contador de días";
+"Ladies Calendar" = "Calendario femenino";
+"Wallet" = "Billetera";
+
+"Holidays" = "Días festivos";
+
+"Battery Status" = "Batería";
+"Clock" = "Reloj";
+"Mirror" = "Espejo";
+"Magnifier" = "Amplificador";
+
 "Select Currency" = "Seleccione Moneda";
 "Principal" = "Capital prestado";
 "Term" = "Plazo";
@@ -48,26 +76,6 @@
 
 "About" = "Información";
 "Remaining Time" = "Tiempo restante";
-"Battery Status" = "Batería";
-"Calculator" = "Calculadora";
-"Date Calculator" = "Calculo de fechas";
-"Loan Calculator" = "Préstamo";
-"Sales Calculator" = "Descuento";
-"Tip Calculator" = "Calculador de propina";
-"Unit Price" = "Precio unitario";
-"Percent Calculator" = "Porcentaje";
-"Currency Converter" = "Moneda";
-"Lunar Converter" = "Lunar Convertidor";
-"Translator" = "Traductor";
-"Unit Converter" = "Unidad";
-"Days Counter" = "Contador de días";
-"Ladies Calendar" = "Calendario femenino";
-"Wallet" = "Billetera";
-"Expense List" = "Lista de gastos";
-"Holidays" = "Días festivos";
-"Clock" = "Reloj";
-"Mirror" = "Espejo";
-"Magnifier" = "Amplificador";
 "Favorites" = "Favoritos";
 
 "Apps" = "Apps";
@@ -624,7 +632,7 @@
 
 "Unit Converter using AppBox Pro" = "Convertidor de unidad de AppBox Pro";
 "Check out the AppBox Pro!" = "¡Descubra las opciones de AppBox Pro!";
-"Share unit converting data" = "Compartir los datos de conversión de la unidad";
+"Share Unit Converter data" = "Compartir los datos de conversión de la unidad";
 "%@, rate = %@" = "%@, rate = %@";
 
 "To convert values, need two units." = "Para convertir los valores es necesario dos unidades.";

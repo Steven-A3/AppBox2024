@@ -5,6 +5,34 @@
  * Time: 9:34 PM
  */
 
+"Calculator" = "Kalkulator";
+"Date Calculator" = "Daty";
+"Loan Calculator" = "Pożyczki";
+"Percent Calculator" = "Kalkulator procentowy";
+"Percent Calculator_Short" = "Kalkulator procentowy";
+"Sales Calculator" = "Obniżki";
+"Sales Calculator_Short" = "Obniżki";
+"Tip Calculator" = "Napiwki";
+"Unit Price" = "Cena jednostkowa";
+
+"Currency Converter" = "Przelicznik walut";
+"Lunar Converter" = "Konwerter księżycowy";
+"Lunar Converter_Short" = "Księżycowy";
+"Translator" = "Tłumacz";
+"Unit Converter" = "Konwerter jednostek";
+
+"Expense List" = "Lista wydatków";
+"Days Counter" = "Odliczacz dni";
+"Ladies Calendar" = "Kalendarz kobiecy";
+"Wallet" = "Portfel";
+
+"Holidays" = "Dni wolne";
+
+"Battery Status" = "Status baterii";
+"Clock" = "Zegar";
+"Mirror" = "Lustro";
+"Magnifier" = "Lupa";
+
 "Select Currency" = "Wybierz walutę";
 "Principal" = "Kapitał";
 "Term" = "Termin";
@@ -49,26 +77,6 @@
 "About" = "O Aplikacji";
 "Remaining Time" = "Pozostały czas";
 
-"Battery Status" = "Status baterii";
-"Calculator" = "Kalkulator";
-"Date Calculator" = "Daty";
-"Loan Calculator" = "Pożyczki";
-"Sales Calculator" = "Obniżki";
-"Tip Calculator" = "Napiwki";
-"Unit Price" = "Cena jednostkowa";
-"Percent Calculator" = "Kalkulator procentowy";
-"Currency Converter" = "Przelicznik walut";
-"Lunar Converter" = "Konwerter księżycowy";
-"Translator" = "Tłumacz";
-"Unit Converter" = "Konwerter jednostek";
-"Days Counter" = "Odliczacz dni";
-"Ladies Calendar" = "Kalendarz kobiecy";
-"Wallet" = "Portfel";
-"Expense List" = "Lista wydatków";
-"Holidays" = "Dni wolne";
-"Clock" = "Zegar";
-"Mirror" = "Lustro";
-"Magnifier" = "Lupa";
 "Favorites" = "Ulubione";
 
 "Apps" = "Aplikacje";
@@ -621,7 +629,7 @@
 
 "Unit Converter using AppBox Pro" = "Konwerter jednostek używa AppBox Pro";
 "Check out the AppBox Pro!" = "Sprawdź AppBox Pro!";
-"Share unit converting data" = "Udostępnij dane konwertera jednostek";
+"Share Unit Converter data" = "Udostępnij dane konwertera jednostek";
 "%@, rate = %@" = "%@, rata = %@";
 
 "To convert values, need two units." = "Aby konwertować wartości, wybierz 2 jednostki.";

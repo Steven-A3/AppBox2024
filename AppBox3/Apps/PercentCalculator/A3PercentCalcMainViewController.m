@@ -63,7 +63,7 @@
 {
     [super viewDidLoad];
 
-    self.title = NSLocalizedString(@"Percent Calculator", @"Percent Calculator");
+    self.title = IS_IPHONE ? NSLocalizedString(@"Percent Calculator_Short", nil) : NSLocalizedString(@"Percent Calculator", @"Percent Calculator");
     
     [self leftBarButtonAppsButton];
     [self rightButtonHistoryButton];

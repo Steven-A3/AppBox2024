@@ -5,6 +5,34 @@
  * Time: 9:34 PM
  */
 
+"Calculator" = "Calcolatore";
+"Date Calculator" = "Calcolatore Data";
+"Loan Calculator" = "Calcolatore Prestito";
+"Sales Calculator" = "Calcolatore Sconti";
+"Sales Calculator_Short" = "Calcolatore Sconti";
+"Percent Calculator" = "Calcolatore Percentuale";
+"Percent Calculator_Short" = "Calcolatore Percentuale";
+"Tip Calculator" = "Calcolatore Mancia";
+"Unit Price" = "Prezzo per Unità";
+
+"Currency Converter" = "Convertitore Valuta";
+"Lunar Converter" = "Convertitore Lunare";
+"Lunar Converter_Short" = "Lunare";
+"Translator" = "Traduttore";
+"Unit Converter" = "Convertitore Unità";
+
+"Expense List" = "Lista Spesa";
+"Days Counter" = "Conta Giorni";
+"Ladies Calendar" = "Calendario femminile";
+"Wallet" = "Portafoglio";
+
+"Holidays" = "Festività";
+
+"Battery Status" = "Stato Batteria";
+"Clock" = "Clock";
+"Magnifier" = "Lente d'ingrandimento";
+"Mirror" = "Specchio";
+
 "Select Currency" = "Seleziona Valuta";
 "Principal" = "Capitale";
 "Term" = "Termine";
@@ -42,26 +70,6 @@
 "About" = "Circa";
 "Remaining Time" = "Tempo Residuo";
 
-"Battery Status" = "Stato Batteria";
-"Calculator" = "Calcolatore";
-"Date Calculator" = "Calcolatore Data";
-"Loan Calculator" = "Calcolatore Prestito";
-"Sales Calculator" = "Calcolatore Sconti";
-"Tip Calculator" = "Calcolatore Mancia";
-"Unit Price" = "Prezzo per Unità";
-"Percent Calculator" = "Calcolatore Percentuale";
-"Currency Converter" = "Convertitore Valuta";
-"Lunar Converter" = "Convertitore Lunare";
-"Translator" = "Traduttore";
-"Unit Converter" = "Convertitore Unità";
-"Days Counter" = "Conta Giorni";
-"Ladies Calendar" = "Calendario femminile";
-"Wallet" = "Portafoglio";
-"Expense List" = "Lista Spesa";
-"Holidays" = "Festività";
-"Clock" = "Clock";
-"Mirror" = "Specchio";
-"Magnifier" = "Lente d'ingrandimento";
 "Favorites" = "Preferiti";
 
 "Apps" = "Apps";
@@ -614,7 +622,7 @@
 
 "Unit Converter using AppBox Pro" = "Convertitore di unità che usa AppBox Pro";
 "Check out the AppBox Pro!" = "Verifica AppBox Pro!";
-"Share unit converting data" = "Condividi i dati della conversione di unità";
+"Share Unit Converter data" = "Condividi i dati della conversione di unità";
 "%@, rate = %@" = "%@, tasso = %@";
 
 "To convert values, need two units." = "Per convertire i valori, occorrono due unità";

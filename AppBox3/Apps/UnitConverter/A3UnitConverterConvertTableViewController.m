@@ -726,7 +726,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-    return NSLocalizedString(@"Share unit converting data", @"Share unit converting data");
+    return NSLocalizedString(@"Share Unit Converter data", @"Share unit converting data");
 }
 
 #pragma mark - Table view data source

@@ -5,6 +5,34 @@
  * Time: 9:34 PM
  */
 
+"Calculator" = "計算機";
+"Date Calculator" = "日付計算";
+"Loan Calculator" = "ローン計算";
+"Percent Calculator" = "パーセント計算";
+"Percent Calculator_Short" = "パーセント計算";
+"Sales Calculator" = "割引価格計算";
+"Sales Calculator_Short" = "割引価格計算";
+"Tip Calculator" = "チップ計算";
+"Unit Price" = "単価比較";
+
+"Currency Converter" = "為替換算";
+"Lunar Converter" = "旧暦変換";
+"Lunar Converter_Short" = "旧暦変換";
+"Translator" = "翻訳";
+"Unit Converter" = "単位変換";
+
+"Expense List" = "費用リスト";
+"Days Counter" = "イベントカレンダー";
+"Ladies Calendar" = "レディースカレンダー";
+"Wallet" = "電子財布";
+
+"Holidays" = "休日/記念日情報";
+
+"Battery Status" = "バッテリー状態";
+"Clock" = "時計";
+"Magnifier" = "拡大鏡";
+"Mirror" = "ミラー";
+
 "Select Currency" = "通貨を選択";
 "Principal" = "借入金額";
 "Term" = "返済期間";
@@ -39,29 +67,8 @@
 
 "About" = "情報";
 "Remaining Time" = "残り時間";
-"Battery Status" = "バッテリー状態";
-"Calculator" = "計算機";
-"Date Calculator" = "日付計算";
-"Loan Calculator" = "ローン計算";
-"Sales Calculator" = "割引価格計算";
-"Tip Calculator" = "チップ計算";
-"Unit Price" = "単価比較";
-"Percent Calculator" = "パーセント計算";
-"Currency Converter" = "為替換算";
 
-"Lunar Converter" = "旧暦変換";
-"Translator" = "翻訳";
-"Unit Converter" = "単位変換";
-"Days Counter" = "イベントカレンダー";
-"Ladies Calendar" = "レディースカレンダー";
-"Wallet" = "電子財布";
-"Expense List" = "費用リスト";
-"Holidays" = "休日/記念日情報";
-"Clock" = "時計";
-"Mirror" = "ミラー";
-"Magnifier" = "拡大鏡";
 "Favorites" = "お気に入り";
-
 "Apps" = "Apps";
 
 /* "iCloud 동기화 기능을 사용하시려면 장치의 설정을 열어서 iCloud 도큐멘트 및 데이터를 저장하도록 설정하여 주세요."; */
@@ -618,7 +625,7 @@
 
 "Unit Converter using AppBox Pro" = "AppBox Proを使用したユニット変換";
 "Check out the AppBox Pro!" = "AppBox Proを使ってみましょう。";
-"Share unit converting data" = "変換された結果を共有する";
+"Share Unit Converter data" = "変換された結果を共有する";
 "%@, rate = %@" = "%@, レート = %@";
 
 "To convert values, need two units." = "変換するために２つのユニットが必要です";

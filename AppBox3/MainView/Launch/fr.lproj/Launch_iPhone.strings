@@ -9,25 +9,25 @@
 "3xh-WT-2qJ.text" = "Calendrier dame";
 
 /* Class = "IBUILabel"; text = "Loan Calculator"; ObjectID = "5dF-dl-Cfh"; */
-"5dF-dl-Cfh.text" = "Calculateur du prêt";
+"5dF-dl-Cfh.text" = "Calculette du prêt";
 
 /* Class = "IBUILabel"; text = "well designed for both iPhone and iPad"; ObjectID = "73z-Fm-nHB"; */
 "73z-Fm-nHB.text" = "Bien conçu pour l’iPhone et l’iPad";
 
 /* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7KY-kl-Ksz"; */
-"7KY-kl-Ksz.text" = "Normal/Scientifique Calculateur";
+"7KY-kl-Ksz.text" = "Standard/Scientifique";
 
 /* Class = "IBUILabel"; text = "Mirror"; ObjectID = "86S-LG-bmW"; */
 "86S-LG-bmW.text" = "Miroir";
 
 /* Class = "IBUILabel"; text = "Percent Calculator"; ObjectID = "C7O-ix-OQV"; */
-"C7O-ix-OQV.text" = "Calculateur de pourcentage";
+"C7O-ix-OQV.text" = "Calculette de pourcentage";
 
 /* Class = "IBUILabel"; text = "Clock"; ObjectID = "CUC-uG-Jld"; */
 "CUC-uG-Jld.text" = "Horloge";
 
 /* Class = "IBUILabel"; text = "Holidays"; ObjectID = "Hg6-My-X9i"; */
-"Hg6-My-X9i.text" = "Vacances";
+"Hg6-My-X9i.text" = "Jours fériés";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Ixg-rR-GNM"; */
 "Ixg-rR-GNM.normalTitle" = "Continuer";
@@ -41,10 +41,10 @@ sur tous vos dispositifs";
 "LH1-Sz-F5c.text" = "Améliorations et Optimisations";
 
 /* Class = "IBUILabel"; text = "Sales Calculator"; ObjectID = "QRY-F6-eI0"; */
-"QRY-F6-eI0.text" = "Calculateur des ventes";
+"QRY-F6-eI0.text" = "Calculette des ventes";
 
 /* Class = "IBUILabel"; text = "Date Calculator"; ObjectID = "TO4-lW-QE2"; */
-"TO4-lW-QE2.text" = "Calculateur de date";
+"TO4-lW-QE2.text" = "Calculette de date";
 
 /* Class = "IBUIButton"; normalTitle = "Later"; ObjectID = "UGi-UW-2XK"; */
 "UGi-UW-2XK.normalTitle" = "Ultérieur";
@@ -67,13 +67,13 @@ sur tous vos dispositifs";
 "eTo-UJ-qLJ.text" = "Convertisseur de devises";
 
 /* Class = "IBUILabel"; text = "Battery Status"; ObjectID = "fVE-ef-mZ7"; */
-"fVE-ef-mZ7.text" = "Statut de la batterie";
+"fVE-ef-mZ7.text" = "Batterie";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "gJ6-AU-90c"; */
 "gJ6-AU-90c.normalTitle" = "Utiliser AppBox Pro";
 
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "gMT-1E-eq4"; */
-"gMT-1E-eq4.text" = "Compteur de jours";
+"gMT-1E-eq4.text" = "Événements";
 
 /* Class = "IBUILabel"; text = "Wallet"; ObjectID = "hYb-Yr-r9V"; */
 "hYb-Yr-r9V.text" = "Portefeuille";
@@ -112,13 +112,13 @@ sur tous vos dispositifs";
 "ni3-pI-wdj.text" = "Magnifier";
 
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "pMI-GK-toN"; */
-"pMI-GK-toN.text" = "Calculateur";
+"pMI-GK-toN.text" = "Calculette";
 
 /* Class = "IBUILabel"; text = "Reference"; ObjectID = "pRj-wQ-ZtV"; */
 "pRj-wQ-ZtV.text" = "Référence";
 
 /* Class = "IBUILabel"; text = "Tip Calculator"; ObjectID = "pgE-6d-yU7"; */
-"pgE-6d-yU7.text" = "Calculateur du pourboire";
+"pgE-6d-yU7.text" = "Calculette du pourboire";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "qCf-Nb-LdB"; */
 "qCf-Nb-LdB.normalTitle" = "Utiliser AppBox Pro";

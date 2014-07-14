@@ -5,6 +5,34 @@
  * Time: 9:34 PM
  */
 
+"Calculator" = "일반/공학용 계산기";
+"Date Calculator" = "날짜 계산";
+"Loan Calculator" = "대출 계산";
+"Sales Calculator" = "할인가격 계산";
+"Sales Calculator_Short" = "할인가격 계산";
+"Percent Calculator" = "퍼센트 계산";
+"Percent Calculator_Short" = "퍼센트 계산";
+"Tip Calculator" = "팁 계산";
+"Unit Price" = "단가 비교";
+
+"Currency Converter" = "환율";
+"Lunar Converter" = "양력/음력 변환";
+"Lunar Converter_Short" = "양력/음력 변환";
+"Translator" = "번역";
+"Unit Converter" = "단위 변환";
+
+"Expense List" = "지출 관리";
+"Days Counter" = "이벤트 캘린더";
+"Ladies Calendar" = "레이디 캘린더";
+"Wallet" = "전자지갑";
+
+"Holidays" = "세계휴일/기념일";
+
+"Battery Status" = "배터리 정보";
+"Clock" = "시계";
+"Mirror" = "거울";
+"Magnifier" = "돋보기";
+
 "Select Currency" = "통화 선택";
 "Principal" = "대출금액";
 "Term" = "대출기간";
@@ -44,26 +72,6 @@
 "About" = "정보";
 "Remaining Time" = "잔여시간";
 
-"Battery Status" = "배터리 정보";
-"Calculator" = "일반/공학용 계산기";
-"Date Calculator" = "날짜 계산";
-"Loan Calculator" = "대출 계산";
-"Sales Calculator" = "할인가격 계산";
-"Tip Calculator" = "팁 계산";
-"Unit Price" = "단가 비교";
-"Percent Calculator" = "퍼센트 계산";
-"Currency Converter" = "환율";
-"Lunar Converter" = "양력/음력 변환";
-"Translator" = "번역";
-"Unit Converter" = "단위 변환";
-"Days Counter" = "이벤트 캘린더";
-"Ladies Calendar" = "레이디 캘린더";
-"Wallet" = "전자지갑";
-"Expense List" = "지출 관리";
-"Holidays" = "세계휴일/기념일";
-"Clock" = "시계";
-"Mirror" = "거울";
-"Magnifier" = "돋보기";
 "Favorites" = "즐겨찾기";
 
 "Apps" = "Apps";
@@ -615,7 +623,7 @@
 
 "Unit Converter using AppBox Pro" = "AppBox Pro의 단위 변환";
 "Check out the AppBox Pro!" = "AppBox Pro에서 작성!";
-"Share unit converting data" = "단위 변환 결과를 공유";
+"Share Unit Converter data" = "단위 변환 결과를 공유";
 "%@, rate = %@" = "%@, 비율 = %@";
 
 "To convert values, need two units." = "단위 변환을 하려면 최소 두개의 단위가 필요합니다.";

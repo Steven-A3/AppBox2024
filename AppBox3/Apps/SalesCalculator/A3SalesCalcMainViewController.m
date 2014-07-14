@@ -78,7 +78,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 	self = [super initWithStyle:UITableViewStyleGrouped];
 	if (self) {
         // Custom initialization
-        self.title = NSLocalizedString(@"Sales Calculator", @"Sales Calculator");
+        self.title = IS_IPHONE ? NSLocalizedString(@"Sales Calculator_Short", nil): NSLocalizedString(@"Sales Calculator", @"Sales Calculator");
         [self configureTableData];
         
         _locationManager = [[CLLocationManager alloc] init];

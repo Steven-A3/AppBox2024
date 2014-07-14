@@ -59,7 +59,7 @@ les pays";
 gauche, puis cliquer Effacer";
 
 /* Class = "IBUILabel"; text = "Pull up to see\nmore holidays"; ObjectID = "RQJ-Od-NDI"; */
-"RQJ-Od-NDI.text" = "Tirer vers le haut pour voir \nplus de vacances";
+"RQJ-Od-NDI.text" = "Tirer vers le haut pour voir \nplus de Jours fériés";
 
 /* Class = "IBUILabel"; text = "Tap to add or edit budget"; ObjectID = "U1j-Mc-LaR"; */
 "U1j-Mc-LaR.text" = "Appuyer pour ajouter ou modifier le budget";
@@ -86,7 +86,7 @@ gauche, puis cliquer Effacer";
 "cXb-sm-2AK.text" = "Appuyer pour ajouter la période";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to see\nholidays for another country"; ObjectID = "f7p-pa-V3C"; */
-"f7p-pa-V3C.text" = "Pousser vers la gauche ou la droite pour voir vacances pour un autre pays";
+"f7p-pa-V3C.text" = "Pousser vers la gauche ou la droite pour voir Jours fériés pour un autre pays";
 
 /* Class = "IBUILabel"; text = "Slide the unit to the left,\nthen tap options"; ObjectID = "fgC-K0-IiZ"; */
 "fgC-K0-IiZ.text" = "Glisser l’unité vers la gauche,\npuis appuyer les options";

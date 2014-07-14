@@ -5,7 +5,7 @@
 /* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Ladies Calendar periods and Wallet items.
  
 "; ObjectID = "1dJ-y3-yh7"; */
-"1dJ-y3-yh7.footerTitle" = "Sync ou Sauvegarde de l’historique de tous les apps, événements du compteur de jours, listes de dépenses, périodes du calendrier dame et items du portefeuille.
+"1dJ-y3-yh7.footerTitle" = "Sync ou Sauvegarde de l’historique de tous les apps, événements du Événements, listes de dépenses, périodes du calendrier dame et items du portefeuille.
 
 ";
 
@@ -14,7 +14,7 @@
 
 /* Reference Image */
 /* Class = "IBUITableViewSection"; headerTitle = "PASSCODE REQUIRED FOR"; ObjectID = "4da-k5-f71"; */
-"4da-k5-f71.headerTitle" = "CODE D’ACCÈS REQUIS POUR";
+"4da-k5-f71.headerTitle" = "CODE REQUIS POUR";
 
 /* Class = "IBUINavigationItem"; title = "Apps"; ObjectID = "52d-yt-UJk"; */
 "52d-yt-UJk.title" = "Apps";
@@ -31,7 +31,7 @@
 "6F3-BB-fcx.text" = "Sous-titre";
 
 /* Class = "IBUILabel"; text = "Turn Passcode On"; ObjectID = "6ow-jx-9ZQ"; */
-"6ow-jx-9ZQ.text" = "Activer le code d’accès";
+"6ow-jx-9ZQ.text" = "Activer le code";
 
 /* Class = "IBUILabel"; text = "Use iCloud"; ObjectID = "7Pd-or-AM2"; */
 "7Pd-or-AM2.text" = "Utiliser iCloud";
@@ -43,7 +43,7 @@
 "7oW-es-0Zb.title" = "Calendrier linaire";
 
 /* Class = "IBUILabel"; text = "Require Passcode"; ObjectID = "A3j-68-3Oy"; */
-"A3j-68-3Oy.text" = "Code d’accès requis";
+"A3j-68-3Oy.text" = "Exiger le code";
 
 /* Class = "IBUILabel"; text = "Recent to Keep"; ObjectID = "BGG-KB-Wog"; */
 "BGG-KB-Wog.text" = "Récent à garder";
@@ -52,25 +52,25 @@
 "CDn-14-haS.title" = "Calendrier lunaire";
 
 /* Class = "IBUILabel"; text = "Simple Passcode"; ObjectID = "EA1-5P-PnP"; */
-"EA1-5P-PnP.text" = "Code d’accès simple";
+"EA1-5P-PnP.text" = "Code simple";
 
 /* Class = "IBUILabel"; text = "Change Passcode"; ObjectID = "Fvs-tZ-usV"; */
-"Fvs-tZ-usV.text" = "Changer le code d’accès";
+"Fvs-tZ-usV.text" = "Changer le code";
 
 /* Class = "IBUITableViewController"; title = "Passcode Lock"; ObjectID = "KML-Ub-d8M"; */
-"KML-Ub-d8M.title" = "Code";
+"KML-Ub-d8M.title" = "Verrouillage par code";
 
 /* Class = "IBUITableViewSection"; footerTitle = "For Lunar Converter"; ObjectID = "LOI-Yd-hc0"; */
 "LOI-Yd-hc0.footerTitle" = "Pour lunaire Converter";
 
 /* Class = "IBUILabel"; text = "More Information About Security"; ObjectID = "LZb-sk-84W"; */
-"LZb-sk-84W.text" = "Plus d’informations sur la sécurité";
+"LZb-sk-84W.text" = "Plus d’informations";
 
 /* Class = "IBUINavigationItem"; title = "Passcode Lock"; ObjectID = "Lbr-p8-awt"; */
-"Lbr-p8-awt.title" = "Code d’accès verrouillé";
+"Lbr-p8-awt.title" = "Verrouillage par code";
 
 /* Class = "IBUITableViewSection"; footerTitle = "Shorter times are more secure."; ObjectID = "MUh-Ac-pHs"; */
-"MUh-Ac-pHs.footerTitle" = "Des temps plus courts sont plus sécurisés.";
+"MUh-Ac-pHs.footerTitle" = "Plus le délai est court, plus la sécurité est renforcée.";
 
 /* Class = "IBUILabel"; text = "After 4 hours"; ObjectID = "McJ-yq-SBi"; */
 "McJ-yq-SBi.text" = "Après 4 heures";
@@ -91,13 +91,13 @@
 "QDB-IM-N8E.text" = "Détail";
 
 /* Class = "IBUITableViewSection"; footerTitle = "A simple passcode is a 4 digit number."; ObjectID = "ROP-jz-ZtT"; */
-"ROP-jz-ZtT.footerTitle" = "Un simple code d’accès est un nombre à 4 chiffres.";
+"ROP-jz-ZtT.footerTitle" = "Un code simple est un nombre à 4 chiffres.";
 
 /* Class = "IBUITableViewController"; title = "Theme Color"; ObjectID = "RpU-td-Vej"; */
 "RpU-td-Vej.title" = "Couleur de thème";
 
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "TG9-5P-YDf"; */
-"TG9-5P-YDf.text" = "Compteur de jours";
+"TG9-5P-YDf.text" = "Événements";
 
 /* Class = "IBUILabel"; text = "Theme Color"; ObjectID = "Vgb-6m-SyM"; */
 "Vgb-6m-SyM.text" = "Couleur de thème";
@@ -123,10 +123,10 @@
 /* Class = "IBUILabel"; text = "Korean"; ObjectID = "fHP-u0-inU"; */
 
 /* Class = "IBUINavigationItem"; title = "Favorites"; ObjectID = "fqW-Vk-vP5"; */
-"fqW-Vk-vP5.title" = "Paramètres";
+"fqW-Vk-vP5.title" = "Favoris";
 
 /* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "go4-fr-Ah2"; */
-"go4-fr-Ah2.title" = "Paramètres";
+"go4-fr-Ah2.title" = "Réglages";
 
 /* Class = "IBUILabel"; text = "Unlink from Dropbox"; ObjectID = "iav-1w-bex"; */
 "iav-1w-bex.text" = "Couper le lien depuis Dropbox";
@@ -138,22 +138,22 @@
 "o9N-EA-Uky.title" = "Sync";
 
 /* Class = "IBUINavigationItem"; title = "Settings"; ObjectID = "oSP-yD-m2L"; */
-"oSP-yD-m2L.title" = "Paramètres";
+"oSP-yD-m2L.title" = "Réglages";
 
 /* Class = "IBUINavigationItem"; title = "Backup & Restore on Dropbox"; ObjectID = "oxS-sd-8U7"; */
-"oxS-sd-8U7.title" = "Sauvegarder & Restaurer sur on Dropbox";
+"oxS-sd-8U7.title" = "Sauvegarde de Dropbox";
 
 /* Class = "IBUILabel"; text = "Passcode Lock"; ObjectID = "pjv-dt-D5o"; */
-"pjv-dt-D5o.text" = "Verrouillage du code d’accès";
+"pjv-dt-D5o.text" = "Verrouillage par code";
 
 /* Class = "IBUINavigationItem"; title = "Require Passcode"; ObjectID = "qcD-FX-Y5d"; */
-"qcD-FX-Y5d.title" = "Code d’accès requis";
+"qcD-FX-Y5d.title" = "Exiger le code";
 
 /* Class = "IBUILabel"; text = "Account"; ObjectID = "rZ1-di-1G0"; */
 "rZ1-di-1G0.text" = "Compte";
 
 /* Class = "IBUILabel"; text = "Settings"; ObjectID = "sL2-cQ-mx7"; */
-"sL2-cQ-mx7.text" = "Paramètres";
+"sL2-cQ-mx7.text" = "Réglages";
 
 /* Class = "IBUILabel"; text = "After 1 hour"; ObjectID = "sks-IW-96W"; */
 "sks-IW-96W.text" = "Après 1 heure";
@@ -180,4 +180,4 @@
 "alM-Rl-6AW.text" = "Coréen";
 
 /* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
-"0Me-nY-VE5.text" = "Les 5 plus récents";
+"0Me-nY-VE5.text" = "Les 5 plus récent";

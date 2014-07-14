@@ -5,6 +5,33 @@
  * Time: 9:34 PM
  */
 
+"Calculator" = "计算器";
+"Date Calculator" = "日期计算";
+"Loan Calculator" = "贷款计算";
+"Sales Calculator" = "折扣价格计算";
+"Sales Calculator_Short" = "折扣价格计算";
+"Percent Calculator" = "百分比计算器";
+"Percent Calculator_Short" = "百分比计算器";
+"Tip Calculator" = "小费计算";
+"Unit Price" = "单价";
+
+"Currency Converter" = "币种转换器";
+"Lunar Converter" = "阴历/阳历";
+"Translator" = "翻译";
+"Unit Converter" = "单位换算";
+
+"Expense List" = "费用清单";
+"Days Counter" = "天计数器";
+"Ladies Calendar" = "淑女日历";
+"Wallet" = "电子钱包";
+
+"Holidays" = "节日/纪念日";
+
+"Battery Status" = "电池状态";
+"Clock" = "时钟";
+"Mirror" = "镜子";
+"Magnifier" = "放大镜";
+
 "Select Currency" = "选择货币代码";
 "Principal" = "本金";
 "Term" = "期间";
@@ -49,26 +76,6 @@
 
 "About" = "关于本机";
 "Remaining Time" = "剩余时间";
-"Battery Status" = "电池状态";
-"Calculator" = "计算器";
-"Date Calculator" = "日期计算";
-"Loan Calculator" = "贷款计算";
-"Sales Calculator" = "折扣价格计算";
-"Tip Calculator" = "小费计算";
-"Unit Price" = "单价";
-"Percent Calculator" = "百分比计算器";
-"Currency Converter" = "币种转换器";
-"Lunar Converter" = "阴历/阳历";
-"Translator" = "翻译";
-"Unit Converter" = "单位换算";
-"Days Counter" = "天计数器";
-"Ladies Calendar" = "淑女日历";
-"Wallet" = "电子钱包";
-"Expense List" = "费用清单";
-"Holidays" = "节日/纪念日";
-"Clock" = "时钟";
-"Mirror" = "镜子";
-"Magnifier" = "放大镜";
 "Favorites" = "收藏夹";
 
 "Apps" = "Apps";
@@ -632,7 +639,7 @@
 
 "Unit Converter using AppBox Pro" = "使用AppBox Pro的单元转换器";
 "Check out the AppBox Pro!" = "查看AppBox Pro!";
-"Share unit converting data" = "共享单位转换数据";
+"Share Unit Converter data" = "共享单位转换数据";
 "%@, rate = %@" = "%@, rate = %@";
 
 "To convert values, need two units." = "若要改变值,需要两个单位。";
@@ -903,3 +910,5 @@
 "Hidden" = "全部隐藏";
 
 "Slideshow_Repeat" = "反复";
+
+"Lunar Converter_Short" = "Lunar Converter_Short";

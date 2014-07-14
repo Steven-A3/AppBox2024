@@ -5,6 +5,34 @@
  * Time: 9:34 PM
  */
 
+"Calculator" = "Rechner";
+"Date Calculator" = "Datumsrechner";
+"Loan Calculator" = "Darlehensrechner";
+"Sales Calculator" = "Kaufpreisrechner";
+"Sales Calculator_Short" = "Kaufpreisrechner";
+"Percent Calculator" = "Prozentrechner";
+"Percent Calculator_Short" = "Prozentrechner";
+"Tip Calculator" = "Trinkgeldrechner";
+"Unit Price" = "Stückpreis";
+
+"Currency Converter" = "Währungsrechner";
+"Lunar Converter" = "Lunar Umrechner";
+"Lunar Converter_Short" = "Lunar Umrechner";
+"Translator" = "Übersetzer";
+"Unit Converter" = "Einheitenrechner";
+
+"Expense List" = "Ausgabenliste";
+"Days Counter" = "Tageszähler";
+"Ladies Calendar" = "Damen-Kalender";
+"Wallet" = "Geldbörse";
+
+"Holidays" = "Feiertage";
+
+"Battery Status" = "Batteriestatus";
+"Clock" = "Uhr";
+"Mirror" = "Spiegel";
+"Magnifier" = "Lupe";
+
 "Select Currency" = "Währung wählen";
 "Principal" = "Betrag";
 "Term" = "Laufzeit";
@@ -46,26 +74,6 @@
 
 "About" = "Über uns";
 "Remaining Time" = "Verbleibende Zeit";
-"Battery Status" = "Batteriestatus";
-"Calculator" = "Rechner";
-"Date Calculator" = "Datumsrechner";
-"Loan Calculator" = "Darlehensrechner";
-"Sales Calculator" = "Kaufpreisrechner";
-"Tip Calculator" = "Trinkgeldrechner";
-"Unit Price" = "Stückpreis";
-"Percent Calculator" = "Prozentrechner";
-"Currency Converter" = "Währungsrechner";
-"Lunar Converter" = "Lunar Umrechner";
-"Translator" = "Übersetzer";
-"Unit Converter" = "Einheitenrechner";
-"Days Counter" = "Tageszähler";
-"Ladies Calendar" = "Damen-Kalender";
-"Wallet" = "Geldbörse";
-"Expense List" = "Ausgabenliste";
-"Holidays" = "Feiertage";
-"Clock" = "Uhr";
-"Mirror" = "Spiegel";
-"Magnifier" = "Lupe";
 "Favorites" = "Favoriten";
 
 "Apps" = "Apps";
@@ -620,7 +628,7 @@
 
 "Unit Converter using AppBox Pro" = "Einheitenrechner von AppBox Pro";
 "Check out the AppBox Pro!" = "Testen Sie AppBox Pro!";
-"Share unit converting data" = "Daten des Einheitenrechners teilen";
+"Share Unit Converter data" = "Daten des Einheitenrechners teilen";
 "%@, rate = %@" = "%@, Anteil = %@";
 
 "To convert values, need two units." = "Zum Umrechnen werden zwei Einheiten benötigt.";
