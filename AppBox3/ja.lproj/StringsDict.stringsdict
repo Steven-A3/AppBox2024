@@ -2,24 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%ld hours, %ld minutes</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@num_hours_minutes@</string>
-		<key>num_hours_minutes</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>ld</string>
-			<key>zero</key>
-			<string>%1$ld時間、%2$ld分</string>
-			<key>one</key>
-			<string>%1$ld時間、%2$ld分</string>
-			<key>other</key>
-			<string>%1$ld時間、%2$ld分</string>
-		</dict>
-	</dict>
 	<key>%ld hours</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -231,7 +213,7 @@
 			<key>zero</key>
 			<string>日前</string>
 			<key>one</key>
-			<string>日前/string>
+			<string>日前</string>
 			<key>other</key>
 			<string>日前</string>
 		</dict>
@@ -344,7 +326,7 @@
 			<string>%ldイベント</string>
 		</dict>
 	</dict>
-    <key>%ld Delete Translation</key>
+	<key>%ld Delete Translation</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@num_delete_translation@</string>
@@ -359,7 +341,7 @@
 			<key>one</key>
 			<string>翻訳を削除</string>
 			<key>other</key>
-			<string>翻訳を削除</string>
+			<string>%ld件の翻訳を削除</string>
 		</dict>
 	</dict>
 	<key>During %ld days</key>
@@ -391,9 +373,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>最新1個</string>
+			<string>最新</string>
 			<key>one</key>
-			<string>最新1個</string>
+			<string>最新</string>
 			<key>other</key>
 			<string>最新%ld個</string>
 		</dict>

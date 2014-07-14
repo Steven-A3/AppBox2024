@@ -26,14 +26,14 @@
 "Ladies Calendar" = "レディースカレンダー";
 "Wallet" = "電子財布";
 
-"Holidays" = "休日/記念日情報";
+"Holidays" = "祝日";
 
 "Battery Status" = "バッテリー状態";
 "Clock" = "時計";
 "Magnifier" = "拡大鏡";
 "Mirror" = "ミラー";
 
-"Select Currency" = "通貨を選択";
+"Select Currency" = "通貨の選択";
 "Principal" = "借入金額";
 "Term" = "返済期間";
 "Interest Rate" = "返済金利";
@@ -53,10 +53,10 @@
 
 "Settings" = "設定";
 "Sync" = "同期化";
-"Passcode Lock" = "パスコード";
+"Passcode Lock" = "パスコードロック";
 "Lunar Calendar" = "旧暦カレンダー";
 
-"tellafriend" = "iPhone/iPad/iPod Touchのより便利にご使用の頂くためにミラー、アラーム時計、バッテリー情報、傾斜計、為替、日付計算、記念日、懐中電灯、祝日、ローン計算、自然周期、価格比較、乱数生成、ものさし、割引率計算、チップ計算、翻訳機、単位変換、保安電子財布などの応用プログラムがすべて含まれているAppBox Proをお勧め致します。今すぐに下記のアドレスからAppBox Proをダウンロードして下さい。";
+"tellafriend" = "iPhone/iPad/iPod Touchのより便利にご使用の頂くために計算機、日付計算、ローン計算、パーセント計算、割引価格計算、チップ計算、単価比較、為替換算、翻訳、単位変換、費用リスト、イベントカレンダー、レディースカレンダー、電子財布、祝日、バッテリー状態、時計、拡大鏡、ミラーなどの応用プログラムがすべて含まれているAppBox Proをお勧め致します。今すぐに下記のアドレスからAppBox Proをダウンロードして下さい。";
 "DISCLAIMER_MESSAGE" = "現在の正確な祝祭日を作成するため多くの努力が必要でしたが、全世界の祝日の多くは、各国政府独自に変更される場合があるので、それに関する祝日エラーや抜けには私達は責任を負い兼ねます。ですから予定を立てる前に各国の大使館や領事館に確認することをお勧め致します。";
 "HOLIDAYS_ACKNOWLEDGEMENT" = "AppBox Proで使われている写真は、世界各国色々な場所の美しく雄大な写真をFlickrから集めて使用しております。写真にはFlickrの名前やリンクがつけられています。写真に関しては、作者に全ての権利があります。ALLABOUTAPPS Inc.は、それらの写真を所有しておりません。もしあなたの写真を参加させたいならメールしてください。送られた写真の使用に関する金銭的な保証はありませんが、あなたの写真で新しい顧客が集まって来ると思います。共有して下さりありがとうございました。";
 "SECURITY_INFO" = "Appleはデータプロテクションと呼ばれる技術を使用してます。これはあなたのデータを256ビットキーとハードウェアAESで守ります。機器パスコードを設定することで、自動にデータ保護ができます。器機UIDのパスコードを混乱させていますのでウィルスからの激しい攻撃から機器を守ります。多くの反復的なカウントは、それぞれの攻撃を遅くさせます。この反復的なカウントは、自動的に80ミリセカンド/回で計算されています。この意味は、6桁の小文字と数字が含まれたアルファベットパスコード場合、すべての組み合わせるのに５年半以上かかります。または、９桁の数字だけのパスコードの場合は、２年半かかります。";
@@ -115,10 +115,28 @@
 "Clear" = "消去";
 "Clear History" = "履歴を消去";
 
-"Basic / Scientific" = "通常の電卓/関数電卓";
+"Basic / Scientific" = "普通/関数電卓";
+"Basic" = "普通";
 "Scientific" = "関数電卓";
-"Basic" = "通常の電卓";
+
+"%@ using AppBox Pro" = "%@ AppBox Proを使用";
 "Calculator using AppBox Pro" = "AppBox Proを使用する計算";
+"Date Calculator using AppBox Pro" = "AppBox Proを使用する日付計算";
+"Loan Calculator using AppBox Pro" = "AppBox Proを使用するローンの計算";
+"Lunar Converter using AppBox Pro" = "AppBox Proを使用する旧暦変換";
+"Tip Calculator using AppBox Pro" = "AppBox Proを使用するチップ計算";
+"Unit Converter using AppBox Pro" = "AppBox Proを使用する単位変換";
+"Currency Converter using AppBox Pro" = "AppBox Proを使用する為替換算";
+"Translator using AppBox Pro" = "AppBox Proを使用する翻訳";
+
+"Share information" = "情報を共有する";
+"Share Unit Converter data" = "変換された結果を共有する";
+"Share Translator Data" = "翻訳結果を共有する";
+"Share Lunar Converter Data" = "旧暦変換結果を共有する";
+"Share Loan Calculator Data" = "ローンの計算結果を共有する";
+"Share Currency Converter Data" = "通貨変換の結果を共有する";
+"Share Days Counter Data" = "イベント情報を共有する";
+"Share Event" = "イベントを共有";
 
 "Humidity" = "湿度";
 "High" = "高";
@@ -128,9 +146,9 @@
 "DATE" = "日付";
 "WEATHER" = "天気";
 "The time with seconds" = "秒を表示";
-"Flash the time separators" = "時間内の”：”を点滅";
-"Use a 24-hour clock" = "２４時間表示";
-"Show AM/PM" = "午前/午後表示";
+"Flash the time separators" = "時刻内の\":\"を点滅させる";
+"Use a 24-hour clock" = "24時間表示にする";
+"Show AM/PM" = "午前/午後を表示";
 "Show the day of the week" = "曜日を表示";
 "Show date" = "日付を表示";
 "Show Weather" = "天気を表示";
@@ -138,7 +156,8 @@
 "Weather" = "天気";
 
 "%@, Rate = %0.4f" = "%@, レート= %0.4f";
-"Each history keeps max 4 currencies." = "それぞれの履歴は、最大4つの通貨のみを保存します。";
+"Each history keeps max 4 currencies." = "各履歴は最大4通貨を維持します。";
+"Each history keeps max 4 units." = "各履歴は最大4単位を維持します。";
 
 "%@ to %@ = %.4f" = "%@/%@ = %.4f";
 "Auto Update" = "自動アップデート";
@@ -155,7 +174,6 @@
 "Rate = %0.4f" = "レート = %0.4f";
 
 "Currency Converter in the AppBox Pro" = "AppBox Proの通貨変換器";
-"Share Currency Converter Data" = "通貨変換の結果を共有する";
 
 /* Data Calc duration */
 "Year" = "年";
@@ -188,22 +206,18 @@
 "Public Holidays" = "祝祭日";
 "Today  " = "今日  ";
 
-"Date Calculator using AppBox Pro" = "AppBox Proの日付計算機";
-
-"Between two dates" = "2つの日付の間の間隔";
-"Add or Subtract days" = "日付に日数を加算または減算";
+"Between two dates" = "2つの日付の差を計算";
+"Add or Subtract days" = "指定した日付の加算または減算";
 "From" = "開始";
 "To" = "終了";
 "Exclude" = "排除";
 
 "%ld of %ld" = "%ld / %ld";
-"%@ using AppBox Pro" = "%@ AppBox Proを使用";
-"Share Days Counter Data" = "日付カウントデーターの共有";
-"Slideshow Options" = "スライドショーオプション";
+"Slideshow Options" = "スライドショー設定";
 "Transitions" = "トランジション";
-"Play Each Slide For" = "スライド一枚​​プレイ時間";
-"Repeat" = "リピート";
-"Shuffle" = "ランダム";
+"Play Each Slide For" = "各スライドの再生時間";
+"Repeat" = "繰り返し";
+"Shuffle" = "シャッフル";
 "Start Slideshow" = "スライドショーを開始";
 "There is no events." = "イベントなし";
 
@@ -219,18 +233,18 @@
 "Title" = "タイトル";
 "Photo" = "写真";
 "Lunar" = "旧暦";
-"Starts-Ends" = "開始日-終了日";
+"Starts-Ends" = "開始-終了";
 "Starts" = "開始日";
 "All-day" = "終日";
 
 "Leap Month" = "閏月";
 "Ends" = "終了日";
-"End Repeat" = "繰り返し終了";
-"Alert" = "アラート";
+"End Repeat" = "繰り返しの終了";
+"Alert" = "通知";
 "Calendar" = "旧暦の設定";
 "Duration Option" = "期間の表示オプション";
 "Location" = "位置";
-"Delete Event" = "イベント削除";
+"Delete Event" = "イベントを削除";
 "Delete Location" = "位置削除";
 "Use My Location" = "自分の位置使用";
 "Search Location" = "位置検索";
@@ -258,7 +272,6 @@
 "Address" = "住所";
 "Event Details" = "イベント詳細";
 
-"Share Event" = "イベントを共有";
 "No location" = "位置情報がありません。";
 "Remove from Favorites" = "よく使う項目から削除";
 "Add to Favorites" = "よく使う項目に追加";
@@ -284,10 +297,10 @@
 "Holiday" = "休日";
 "Work" = "仕事";
 
-"Never" = "なし";
+"Never" = "しない";
 "Every Day" = "毎日";
 "Every Week" = "毎週";
-"Every 2Weeks" = "隔週";
+"Every 2Weeks" = "2週間ごと";
 "Every Month" = "毎月";
 "Every Year" = "毎年";
 "Daily" = "毎日";
@@ -296,15 +309,15 @@
 "Monthly" = "毎月";
 "Yearly" = "毎年";
 
-"At time of event" = "イベント時間";
-"5 minutes before" = "５分前";
-"15 minutes before" = "１５分前";
-"30 minutes before" = "３０分前";
-"1 hour before" = "１時間前";
-"2 hours before" = "２時間前";
+"At time of event" = "イベントの予定時刻";
+"5 minutes before" = "5分前";
+"15 minutes before" = "15分前";
+"30 minutes before" = "30分前";
+"1 hour before" = "1時間前";
+"2 hours before" = "2時間前";
 "1 day before" = "1日前";
-"2 days before" = "２日前";
-"1 week before" = "１週間前";
+"2 days before" = "2日前";
+"1 week before" = "1週間前";
 
 "DaysCounterDuration_year_abbreviation" = "年";
 "DaysCounterDuration_month_abbreviation" = "月";
@@ -324,31 +337,31 @@
 "Cube" = "キューブ";
 "Dissolve" = "ディゾルブ";
 "Origami" = "折り紙";
-"Ripple" = "左右にワイプ";
+"Ripple" = "波紋";
 "Wipe" = "下にワイプ";
 
 "Change Location" = "位置変更";
 "Current Location" = "現在地";
 "Searching" = "検索";
 "No Results Found" = "検索結果なし";
-"Custom" = "通知日";
+"Custom" = "カスタム";
 "day(s) before" = "日前";
 "Please enter your dates in the future." = "将来的なお日にちをご入力ください。";
 "Time" = "時刻";
-"Duration Options" = "期間の表示オプション";
+"Duration Options" = "期間の表示方法";
 
 "Until" = "まで";
 "until" = "まで";
 "Since" = "から";
 "since" = "から";
 
-"2 years" = "２年";
-"3 months" = "３ヶ月";
-"4 weeks" = "４週間";
-"15 days" = "１５日";
-"4 hours" = "４時間";
-"30 minutes" = "３０分";
-"13 seconds" = "１３秒";
+"2 years" = "2年";
+"3 months" = "3ヶ月";
+"4 weeks" = "4週間";
+"15 days" = "15日";
+"4 hours" = "4時間";
+"30 minutes" = "30分";
+"13 seconds" = "13秒";
 
 "Places are not available." = "利用できない場所です。";
 
@@ -408,7 +421,7 @@
 "Holiday_Public_holiday_abbreviation" = "法";
 
 "Search" = "検索";
-"Select Country" = "国名を検索";
+"Select Country" = "国を選択";
 "To add a new country, remove one first." = "新しい国を追加するには、既存の国のいずれかを消してください。";
 
 "Acknowledgement" = "謝辞";
@@ -448,20 +461,20 @@
 "9 Months" = "9ヶ月";
 "1 Year" = "1年";
 "2 Years" = "2年";
-"CYCLE LENGTH" = "周期";
-"MENSTRUAL PERIOD" = "生理の期間";
+"CYCLE LENGTH" = "生理周期";
+"MENSTRUAL PERIOD" = "生理期間";
 "Expected Period(+/-2 days)" = "予想の期間(+/-2日)";
 "Increased Probability of Pregnancy" = "妊娠可能日";
 "Ovulation - Highest Probability" = "排卵日 – 妊娠可能日のうち最も確率が高い日";
 "Menstrual Period" = "生理期間";
 "Periods" = "周期";
-"On day(9 AM)" = "当日(午前９時)";
-"1 day before(9 AM)" = "一日前(午前９時)";
-"2 days before(9 AM)" = "二日前(午前９時) ";
+"On day(9 AM)" = "指定日(9:00)";
+"1 day before(9 AM)" = "1日前(9:00)";
+"2 days before(9 AM)" = "2日前(9:00)";
 "Your period is coming." = "あなたの期間が来ています。";
 "FORECASTING PERIODS" = "予想周期";
 
-"CALCULATE CYCLE LENGTH" = "周期期間の計算";
+"CALCULATE CYCLE LENGTH" = "生理周期の計算";
 "Same Before Cycle" = "前回と同様";
 "Average Before Two Cycle" = "前周期２回分の平均";
 "Average All Cycle" = "全ての周期の平均";
@@ -481,10 +494,10 @@
 "Biweekly" = "隔週";
 
 "LoanCalc_Monthly" = "毎月";
-"Bimonthly" = "２ヶ月毎";
-"Quarterly" = "３ヶ月毎";
-"Semiannually" = "半年毎";
-"Annually" = "一年毎";
+"Bimonthly" = "隔月";
+"Quarterly" = "季刊";
+"Semiannually" = "半年";
+"Annually" = "毎年";
 
 "Loan Calc Frequency short string weekly" = "週間";
 "Loan Calc Frequency short string biweekly" = "隔週";
@@ -503,14 +516,12 @@
 "Total Amount" = "総返済額";
 "Average Interest" = "平均利子";
 "Amounts" = "返済額";
-"Loan" = "ローン計算";
-"Comparison" = "ローン条件比較";
+"Loan" = "ローン";
+"Comparison" = "比較";
 " of " = " / ";
 
 "0 %@ %ld mo" = "0 %@ %ld 月";
 "%ld %@ %ld mo" = "%ld %@ %ld 月";
-"Loan Calculator using AppBox Pro" = "AppBox Proのローン計算";
-"Share Loan Calculator Data" = "ローンの計算結果を共有する";
 
 "0 year" = "0年";
 
@@ -532,8 +543,6 @@
 "Solar" = "陽暦";
 "Lunar calendar is available from year 1901 to 2042." = "旧暦カレンダーは１９０１年から２０４２年まで使用可能です。";
 "Year %ld month %ld has %ld days." = "%ld年%ld月は%ld日までです。";
-"Lunar Converter using AppBox Pro" = "AppBox Proの旧暦変換機";
-"Share Lunar Converter Data" = "旧暦変換結果の共有する";
 
 "Take picture failed." = "写真撮影に失敗しました。";
 "Save to camera roll failed." = "写真の保存に失敗しました。";
@@ -606,10 +615,9 @@
 "Up" = "繰り上がり";
 "Down" = "繰り下がり";
 
-"Tip Calculator using AppBox Pro" = "AppBox Proを使用したチップ計算";
 
 "Rounding" = "四捨五入";
-"Select Language" = "言語選択";
+"Select Language" = "言語の選択";
 "%@ to %@" = "%@ から %@";
 "Detect Language" = "言語を検出";
 "Simplified Chinese" = "簡体中文";
@@ -621,23 +629,21 @@
 "Please change \"From\" or \"To\" language."= "原文の言語や翻訳の言語を変更して下さい。";
 "Translate" = "翻訳";
 
-"All Units" = "全体のユニット";
+"All Units" = "全ての単位";
 "%@ Units" = "%@ ユニット";
 
-"Unit Converter using AppBox Pro" = "AppBox Proを使用したユニット変換";
 "Check out the AppBox Pro!" = "AppBox Proを使ってみましょう。";
-"Share Unit Converter data" = "変換された結果を共有する";
 "%@, rate = %@" = "%@, レート = %@";
 
 "To convert values, need two units." = "変換するために２つのユニットが必要です";
 
-"Each history keeps max 4 units." = "それぞれの履歴は、最大4つのユニットのみを保存します。";
-
 "%@ to %@ = %@" = "%@ から %@ = %@";
 
-"More" = "これ以外";
-"Units on the bar" = "バーにあるユニット";
-"Units in more" = "これ以外のユニット";
+"More" = "その他";
+"Units on the bar" = "バー上の単位";
+"Units in more" = "その他単位";
+"Categories on the bar" = "バー上のカテゴリー";
+"Categories in more" = "その他カテゴリー";
 
 "Price A" = "価格A";
 "Price B" = "価格B";
@@ -692,9 +698,10 @@
 "Details" = "詳細情報";
 "Map" = "地図";
 "Duration Time" = "再生時間";
-"1 Passcode Failed Attempt" = "パスコード入力に１回失敗";
-"Enter your old passcode" = "古いパスコード入力";
-"Enter your passcode" = "パスコード入力";
+"1 Passcode Failed Attempt" = "パスコード入力に1回失敗";
+"%li Passcode Failed Attempts" = "パスコード入力に%li回失敗";
+"Enter your old passcode" = "古いパスコードを入力";
+"Enter your passcode" = "パスコードを入力";
 "Passcode" = "パスコード";
 "Set Passcode" = "パスコードを設定";
 "Change Passcode" = "パスコードを変更";
@@ -702,16 +709,15 @@
 "Re-enter your passcode" = "パスコードを再入力";
 "Re-enter your new passcode" = "新しいパスコードを再入力";
 "Enter your new passcode" = "新しいパスコードを入力";
-"Passcode did not match." = "パスコードが違います。";
+"Passcode did not match." = "パスコードが一致しません。";
+"Passcode did not match. Try again." = "パスコードが一致しません。";
 "Enter Passcode" = "パスコードを入力";
 "New Passcode" = "新しいパスコード";
 "Confirm Passcode" = "新しいパスコードを再入力";
 "Hint" = "ヒント";
 "Old Passcode" = "古いパスコード";
-"%li Passcode Failed Attempts" = "パスコード入力に%i回失敗";
 "Please enter new passcode." = " 新しいパスコードを入力してください。";
 "Please enter confirm passcode." = "新しいパスコードを再入力してください。";
-"Passcode did not match. Try again." = "パスコードが違います。";
 "Please enter passcode." = "パスコードを入力してください。";
 "Open in Safari" = "Safariでオープン";
 
@@ -777,16 +783,10 @@
 
 "This will reset all settings.\nNo data will be deleted." = "表示の設定を初期化します。データは消去されません。";
 "Reset All" = "表示の設定を初期化";
-"Reset Show/Hide Settings" = "表示の設定を初期化";
-"Wallpaper" = "ウォールペーパー";
+"Reset Show/Hide Settings" = "表示の設定をリセット";
+"Wallpaper" = "壁紙";
 
 "Show Lunar Date" = "旧暦でみる";
-
-"Currency Converter using AppBox Pro" = "AppBox Proで使用している現在の変換";
-
-"Translator using AppBox Pro" = "AppBox Proで使用している翻訳";
-
-"Share Translator Data" = "翻訳データーの共有";
 
 "Internet connection is not available." = "インターネット接続が利用できません。";
 
@@ -853,15 +853,12 @@
 "You can manage your information in the AppBox Pro." = "AppBox Proで情報を管理することが出来ます。";
 
 "I'd like to share a translation with you." = "翻訳結果を共有します。";
-"You can translate more in the AppBox Pro." = "AppBox Proの翻訳機能を利用してみてください。";
+"You can translate more in the AppBox Pro." = "AppBox Proのさまざまな翻訳機能を利用してみてください。";
 
 "Field name already exists." = "フィールド名が既に存在します。";
 
 "Disclaimer" = "免責事項";
 "LadyCalendarDisclaimerMsg" = "ストレス及び性ホルモンの不均衡により生理予定日が変わることがあるため排卵日、妊娠可能日が実際とは異なることがあります。\nまた、生理周期が不規則な場合、結果値が合わないこともあるため、すべての女性に適合さないことがあります。\n避妊もしくは可妊のためには排卵日測定法と共に別の方法を一緒に使用してください。";
-
-"Categories on the bar" = "バーにあるカテゴリー";
-"Categories in more" = "それ以外のカテゴリー";
 
 "Increase" = "上昇";
 "Decrease" = "下落";
@@ -892,7 +889,6 @@
 "DateCalcExclude_None" = "なし";
 
 "Failed to download backup file." = "バックアップファイルのダウンロードに失敗しました。";
-"Share information" = "情報を共有する";
 
 "Text" = "一般文字";
 "Number" = "数字";

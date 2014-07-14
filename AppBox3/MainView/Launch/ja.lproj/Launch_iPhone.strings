@@ -15,7 +15,7 @@
 "73z-Fm-nHB.text" = "iPhoneとiPadの為の最高のデザイン";
 
 /* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7KY-kl-Ksz"; */
-"7KY-kl-Ksz.text" = "通常/関数電卓";
+"7KY-kl-Ksz.text" = "普通/関数電卓";
 
 /* Class = "IBUILabel"; text = "Mirror"; ObjectID = "86S-LG-bmW"; */
 "86S-LG-bmW.text" = "ミラー";
@@ -27,7 +27,7 @@
 "CUC-uG-Jld.text" = "時計";
 
 /* Class = "IBUILabel"; text = "Holidays"; ObjectID = "Hg6-My-X9i"; */
-"Hg6-My-X9i.text" = "休日/記念日情報";
+"Hg6-My-X9i.text" = "祝日";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Ixg-rR-GNM"; */
 "Ixg-rR-GNM.normalTitle" = "続ける";
