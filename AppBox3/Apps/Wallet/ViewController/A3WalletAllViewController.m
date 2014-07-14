@@ -316,12 +316,12 @@ enum SortingKind {
                                      };
 
     NSUInteger cateCount = [WalletCategory MR_countOfEntities];
-    cateCount = cateCount - 2;  // All + More Category
+    cateCount = cateCount - 2;      // All + More Category
     
     NSAttributedString *nameText = [[NSAttributedString alloc] initWithString:(cateCount > 1) ? NSLocalizedString(@"CATEGORIES", @"CATEGORIES") : NSLocalizedString(@"CATEGORY", @"CATEGORY")
                                                                    attributes:textAttributes];
     NSAttributedString *countText = [[NSAttributedString alloc] initWithString:@(cateCount).stringValue
-                                                                  attributes:valueAttributes];
+                                                                    attributes:valueAttributes];
     if (IS_IPAD) {
         [cateAttrString appendAttributedString:countText];
         [cateAttrString appendAttributedString:[[NSAttributedString alloc] initWithString:@" " attributes:textAttributes]];
