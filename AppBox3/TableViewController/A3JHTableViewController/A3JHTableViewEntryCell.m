@@ -56,7 +56,6 @@
 		textLabelFrame.size.width = self.bounds.size.width - textFieldTextWidth - 30.0;
 		self.textLabel.frame = textLabelFrame;
         self.textField.frame = CGRectMake(self.bounds.size.width - textFieldWidth - 15.0, 0, textFieldWidth, CGRectGetHeight(self.frame));
-		self.textField.backgroundColor = [UIColor greenColor];
 	}
 }
 
