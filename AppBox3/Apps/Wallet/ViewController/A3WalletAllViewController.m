@@ -742,34 +742,34 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
         WalletItem *item = self.items[indexPath.row];
         [item.fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem *fieldItem, BOOL *stop) {
             BOOL result;
             if (fieldItem.image) {
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO]]) {
-                    result = [[NSFileManager defaultManager] removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO] error:NULL];
+                if ([fileManager fileExistsAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO]]) {
+                    result = [fileManager removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO] error:NULL];
                     NSAssert(result, @"result");
                 }
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[fieldItem photoImageThumbnailPathInOriginal:YES]]) {
-                    result = [[NSFileManager defaultManager] removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:YES] error:NULL];
+                if ([fileManager fileExistsAtPath:[fieldItem photoImageThumbnailPathInOriginal:YES]]) {
+                    result = [fileManager removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:YES] error:NULL];
                     NSAssert(result, @"result");
                 }
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[[fieldItem photoImageURLInOriginalDirectory:NO] path]]) {
-                    result = [[NSFileManager defaultManager] removeItemAtURL:[fieldItem photoImageURLInOriginalDirectory:NO] error:NULL];
+                if ([fileManager fileExistsAtPath:[[fieldItem photoImageURLInOriginalDirectory:NO] path]]) {
+                    result = [fileManager removeItemAtURL:[fieldItem photoImageURLInOriginalDirectory:NO] error:NULL];
                     NSAssert(result, @"result");
                 }
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[[fieldItem photoImageURLInOriginalDirectory:YES] path]]) {
-                    [[NSFileManager defaultManager] removeItemAtPath:[[fieldItem photoImageURLInOriginalDirectory:YES] path] error:NULL];
+                if ([fileManager fileExistsAtPath:[[fieldItem photoImageURLInOriginalDirectory:YES] path]]) {
+                    [fileManager removeItemAtPath:[[fieldItem photoImageURLInOriginalDirectory:YES] path] error:NULL];
                     NSAssert(result, @"result");
                 }
             } else {
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[fieldItem videoThumbnailPathInOriginal:NO]]) {
-                    result = [[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO] error:NULL];
+                if ([fileManager fileExistsAtPath:[fieldItem videoThumbnailPathInOriginal:NO]]) {
+                    result = [fileManager removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO] error:NULL];
                     NSAssert(result, @"result");
                 }
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[[fieldItem videoFileURLInOriginal:YES] path]]) {
-                    result = [[NSFileManager defaultManager] removeItemAtPath:[[fieldItem videoFileURLInOriginal:YES] path] error:NULL];
-                    result = [[NSFileManager defaultManager] removeItemAtURL:[fieldItem videoFileURLInOriginal:YES] error:NULL];
+                if ([fileManager fileExistsAtPath:[[fieldItem videoFileURLInOriginal:YES] path]]) {
+                    result = [fileManager removeItemAtURL:[fieldItem videoFileURLInOriginal:YES] error:NULL];
                     NSAssert(result, @"result");
                 }
             }
