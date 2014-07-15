@@ -206,7 +206,9 @@
 
 - (void)rightSideViewWillDismiss {
 	[self enableControls:YES];
-    [self.tableView reloadData];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 - (void)enableControls:(BOOL)enable {
