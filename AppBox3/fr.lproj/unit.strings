@@ -168,7 +168,7 @@
 "newtons" = "newtons";
 "pounds force" = "livres vigueur";
 "poundals" = "poundals";
-"sthenes(kN)" = "sthenes(kN)";
+"sthenes(=kN)" = "sthenes(=kN)";
 "tonnes force" = "tonnes force";
 "tons force(UK)" = "tonnes force(GB)";
 "tons force(US)" = "tonnes force(US)";
@@ -367,9 +367,6 @@
 "tons(US or short)" = "tonnes (États-Unis ou court)";
 "tonnes" = "tonnes";
 
-"All Categories" = "Toutes les Catégories";
-"No Units available." = "Pas d'unités disponibles.";
-"There must be at least two units selected." = "Il doit y avoir au moins deux unités sélectionnées.";
 "inch" = "pouce";
 "Categories" = "Catégories";
 "Units" = "Unités";

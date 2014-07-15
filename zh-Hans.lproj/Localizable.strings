@@ -17,6 +17,7 @@
 
 "Currency Converter" = "币种转换器";
 "Lunar Converter" = "阴历/阳历";
+"Lunar Converter_Short" = "阴历/阳历";
 "Translator" = "翻译";
 "Unit Converter" = "单位换算";
 
@@ -32,13 +33,13 @@
 "Mirror" = "镜子";
 "Magnifier" = "放大镜";
 
-"Select Currency" = "选择货币代码";
+"Select Currency" = "选取货币";
 "Principal" = "本金";
 "Term" = "期间";
 "Interest Rate" = "利率";
 "Frequency" = "次数";
 "LadyCalendar_Start Date" = "开始日期";
-"Notes" = "笔记";
+"Notes" = "备忘录";
 "One-Time" = "一次性";
 "Currency" = "货币";
 
@@ -76,7 +77,7 @@
 
 "About" = "关于本机";
 "Remaining Time" = "剩余时间";
-"Favorites" = "收藏夹";
+"Favorites" = "个入收藏";
 
 "Apps" = "Apps";
 
@@ -109,7 +110,7 @@
 "Device" = "设备";
 "Version" = "版本";
 /*  */
-"Chips" = "片";
+"Chips" = "芯片";
 "CPU" = "CPU";
 "GPU" = "GPU";
 "Memory" = "存储";
@@ -120,13 +121,13 @@
 
 "Enter The Number!" = "输入号码";
 
-"History" = "历史";
-"Clear" = "删除";
+"History" = "历史记录";
+"Clear" = "清除";
 "Clear History" = "清除历史记录";
 
-"Basic / Scientific" = "基本的/科学的";
-"Scientific" = "科学的";
-"Basic" = "基本的";
+"Basic / Scientific" = "基本型/科学型";
+"Scientific" = "科学型";
+"Basic" = "基本型";
 "Calculator using AppBox Pro" = "使用AppBox Pro的计算器";
 
 "Humidity" = "湿度";
@@ -135,11 +136,11 @@
 
 "TIME" = "时间";
 "WEATHER" = "天气";
-"The time with seconds" = "显示秒";
-"Flash the time separators" = "闪烁时间分隔符";
-"Use a 24-hour clock" = "使用24小时制";
-"Show AM/PM" = "显示AM/PM";
-"Show the day of the week" = "显示一周的天";
+"The time with seconds" = "在时间中显示秒钟";
+"Flash the time separators" = "闪动时间分隔符";
+"Use a 24-hour clock" = "使用24小时格式时钟";
+"Show AM/PM" = "显示上午／下午";
+"Show the day of the week" = "显示星期几";
 "Show date" = "显示日期";
 "Show Weather" = "显示天气";
 
@@ -189,6 +190,7 @@
 "Months" = "月";
 "Weeks" = "周";
 "Days" = "日";
+"DaysCounterDuration_Days" = "天";
 "Weekends" = "周末";
 "Sat" = "星期六";
 "Sun" = "星期天";
@@ -197,10 +199,10 @@
 
 "Date Calculator using AppBox Pro" = "使用AppBox Pro进行日期计算";
 
-"Between two dates" = "特定日 A和 特定日 B 之间有多少天?";
-"Add or Subtract days" = "在特定日A上加减特定日 B是几天？";
-"From" = "特定日 A";
-"To" = "特定日 B";
+"Between two dates" = "计算两个日期之差";
+"Add or Subtract days" = "加上或減去到指定日期的天数";
+"From" = "从";
+"To" = "到";
 "Exclude" = "排除";
 
 "%ld of %ld" = "%ld / %ld";
@@ -210,7 +212,7 @@
 "Transitions" = "过渡";
 "Play Each Slide For" = "每张幻灯片播放";
 "Repeat" = "反复";
-"Shuffle" = "拖曳";
+"Shuffle" = "随机播放";
 "Start Slideshow" = "开始播放幻灯片";
 "There is no events." = "没有任何项目。";
 
@@ -222,18 +224,18 @@
 "Delete Calendar" = "删除日历";
 "Untitled" = "无标题";
 
-"Add Event" = "纪念日添加";
-"Title" = "题目";
+"Add Event" = "添加事件";
+"Title" = "标题";
 "Photo" = "照片";
 "Lunar" = "阴历";
 "Starts-Ends" = "开始-结束";
 "Starts" = "开始日";
 "Ends" = "结束日";
-"All-day" = "一整天";
+"All-day" = "全天";
 
 "Leap Month" = "闰月";
-"End Repeat" = "结束重复";
-"Alert" = "题型";
+"End Repeat" = "重复";
+"Alert" = "提醒";
 "Calendar" = "日历";
 "Duration Option" = "持续时间选项";
 "Location" = "位置";
@@ -280,7 +282,7 @@
 "Delete Events" = "删除事件";
 "Please select events." = "请选择事件。";
 
-"Reminder" = "提示";
+"Reminder" = "提醒事项";
 "List_Upcoming" = "即将到来";
 "List_Past" = "过去";
 "Anniversary" = "纪念日";
@@ -291,10 +293,10 @@
 "Work" = "工作";
 
 /* Days counter event repeat option */
-"Never" = "单次播放";
+"Never" = "永不";
 "Every Day" = "每天";
 "Every Week" = "每周";
-"Every 2 Weeks" = "每2周";
+"Every 2 Weeks" = "每两周";
 "Every Month" = "每月";
 "Every Year" = "每年";
 "Daily" = "每日";
@@ -303,7 +305,7 @@
 "Monthly" = "每月";
 "Yearly" = "每年";
 
-"At time of event" = "准时";
+"At time of event" = "事件发生时";
 "5 minutes before" = "5分钟前";
 "15 minutes before" = "15分钟前";
 "30 minutes before" = "30分钟前";
@@ -331,17 +333,17 @@
 "%ld hr" = "%ld 小时";
 "%ld min" = "%ld 分钟";
 
-"Cube" = "立方体";
-"Dissolve" = "溶解";
-"Origami" = "折叠";
-"Ripple" = "涟漪";
+"Cube" = "立体翻转";
+"Dissolve" = "渐隐";
+"Origami" = "折纸效果";
+"Ripple" = "波纹";
 "Wipe" = "擦除";
 
 "Change Location" = "改变位置";
-"Current Location" = "现位置";
+"Current Location" = "当前位置";
 "Searching" = "搜索";
 "No Results Found" = "未搜索到结果";
-"Custom" = "日期提醒";
+"Custom" = "自定";
 "day(s) before" = "天前";
 "Please enter your dates in the future." = "请输入未来的日期。";
 "Time" = "时间";
@@ -418,7 +420,7 @@
 "Holiday_Public_holiday_abbreviation" = "公";
 
 "Search" = "搜索";
-"Select Country" = "选择国家";
+"Select Country" = "选取国家";
 "To add a new country, remove one first." = "若要增加一个新的国家，请首先移除一个。";
 
 "Acknowledgement" = "确认";
@@ -465,13 +467,13 @@
 "Ovulation - Highest Probability" = "排卵日-可能怀孕日中概率最大的一天";
 "Menstrual Period" = "月经期";
 "Periods" = "周期";
-"On day(9 AM)" = "当天(9 AM)";
-"1 day before(9 AM)" = "1天前(9 AM)";
-"2 days before(9 AM)" = "2天前(9 AM)";
+"On day(9 AM)" = "事件发生当天（上午9时）";
+"1 day before(9 AM)" = "1天前（上午9时)";
+"2 days before(9 AM)" = "2天前（上午9时)";
 "Your period is coming." = "您的周期即将到来。";
 "FORECASTING PERIODS" = "预告周期";
 
-"CALCULATE CYCLE LENGTH" = "计算周期长度";
+"CALCULATE CYCLE LENGTH" = "计算生理周期";
 "Same Before Cycle" = "与前一周期相同";
 "Average Before Two Cycle" = "平均前两个周期";
 "Average All Cycle" = "平均所有周期";
@@ -484,10 +486,10 @@
 "Annual" = "年利率";
 "Monthly_Rate" = "月利率";
 
-"Down Payment" = "定金";
-"Payment" = "偿还金额";
+"Down Payment" = "预付款";
+"Payment" = "付款";
 "Term(years)" = "期间(年)";
-"Term(months)" = "期间（个月）";
+"Term(months)" = "期间(个月)";
 "Biweekly" = "每两周";
 "LoanCalc_Monthly" = "每月";
 "Bimonthly" = "每两个月";
@@ -512,8 +514,8 @@
 "Total Amount" = "总偿还金额";
 "Average Interest" = "平均利息";
 "Amounts" = "数量";
-"Loan" = "贷款计算";
-"Comparison" = "贷款条件比较";
+"Loan" = "贷款";
+"Comparison" = "比较";
 " of " = " / ";
 
 "0 %@ %ld mo" = "0 %@ %ld 月";
@@ -620,7 +622,7 @@
 
 "Rounding" = "四舍五入";
 
-"Select Language" = "选择语言";
+"Select Language" = "选取语言";
 "%@ to %@" = "%@ 到 %@";
 "Detect Language" = "检测语言 ";
 "Simplified Chinese" = "简体中文";
@@ -644,7 +646,7 @@
 
 "To convert values, need two units." = "若要改变值,需要两个单位。";
 
-"Each history keeps max 4 units." = "每个历史记录保存最多四个单位。";
+"Each history keeps max 4 units." = "每个历史最多保留4个单位。";
 
 /* Example, km to m = 1000 */
 "%@ to %@ = %@" = "%@ to %@ = %@";
@@ -670,11 +672,11 @@
 "Volume" = "音量";
 "Weight" = "重量";
 
-"Wallet_All_Category" = "钱包_所有_种类";
+"Wallet_All_Category" = "所有";
 "Field Type" = "区域类型";
 "All Items" = "所有信息";
-"CATEGORIES" = "种类";
-"CATEGORY" = "种类";
+"CATEGORIES" = "类别";
+"CATEGORY" = "类别";
 "ITEMS" = "信息";
 "UPDATED" = "更新的";
 "Add Category" = "种类添加";
@@ -706,23 +708,23 @@
 "Details" = "详细内容";
 "Map" = "地图";
 "Duration Time" = "持续时间";
-"1 Passcode Failed Attempt" = "1次密码尝试失败";
-"Enter your old passcode" = "输入旧密码";
-"Enter your passcode" = "输入密码";
-"Passcode" = "密码";
+"1 Passcode Failed Attempt" = "1次密码输入错误";
+"%li Passcode Failed Attempts" = "%li次密码输入错误";
+"Enter your old passcode" = "请输入旧密码";
+"Enter your passcode" = "请输入密码";
+"Passcode" = "输入密码";
 "Set Passcode" = "设置密码";
 "Change Passcode" = "更改密码";
 "Turn Off Passcode" = "关闭密码";
-"Re-enter your passcode" = "重新输入密码";
-"Re-enter your new passcode" = "重新输入新密码";
-"Enter your new passcode" = "输入您的新密码";
+"Re-enter your passcode" = "请再次输入密码";
+"Re-enter your new passcode" = "请再次输入新密码";
+"Enter your new passcode" = "请输入新密码";
 "Passcode did not match. Try again." = "密码不匹配。请再试一次。";
 "Enter Passcode" = "输入密码";
 "New Passcode" = "新密码";
 "Confirm Passcode" = "确认密码";
 "Hint" = "提示";
 "Old Passcode" = "旧密码";
-"%li Passcode Failed Attempts" = "%li 次密码尝试失败";
 "Please enter new passcode." = "请输入新密码";
 "Please enter confirm passcode." = "请输入确认密码";
 "Passcode did not match." = "密码不匹配。";
@@ -751,8 +753,8 @@
 "Deleting" = "删除";
 "Unable to delete selected file. Please try it again." = "无法删除所选文件。请再试一次。";
 
-"Turn Passcode Off" = "解除密码";
-"Turn Passcode On" = "设定密码";
+"Turn Passcode Off" = "关闭密码";
+"Turn Passcode On" = "打开密码";
 "How To Enable Data Protection" = "如何启动数据保护";
 "Clear Recent" = "清除最近记录";
 "Recent" = "最近记录";
@@ -765,7 +767,7 @@
 "Passcode_Off" = "关闭";
 "DaysCounter_All" = "所有";
 "LoanCalc_Start Date" = "开始日期";
-"Immediately" = "即刻";
+"Immediately" = "立即";
 "Learn about iOS Security" = "学习关于iOS安全的内容";
 "CalculatorGroup" = "计算器";
 "Translator_All" = "全部";
@@ -780,7 +782,7 @@
 "Blue" = "蓝色";
 "Violet" = "紫罗兰";
 "Purple" = "紫色";
-"Brown" = "棕色";
+"Brown" = "褐色";
 "Gray" = "黑色";
 
 "day(s)" = "天";
@@ -789,8 +791,8 @@
 
 "This will reset all settings.\nNo data will be deleted." = "需要重置所有设置。 \n不会删除任何数据";
 "Reset All" = "全部重置";
-"Reset Show/Hide Settings" = "重置显示/隐藏设置";
-"Wallpaper" = "壁纸";
+"Reset Show/Hide Settings" = "还原显示/隐藏设置";
+"Wallpaper" = "墙纸";
 
 "Show Lunar Date" = "显示阴历时间";
 "Currency Converter using AppBox Pro" = "使用 AppBox Pro的货币转换器";
@@ -823,10 +825,10 @@
 
 "LoanCalc_DATE" = "日期";
 
-"%/yr" = "%/yr";
-"%/mo" = "%/mo";
+"%/yr" = "%/年";
+"%/mo" = "%/月";
 
-"Icon" = "Icon";
+"Icon" = "图标";
 
 "  (e.g. %@)" = "  (例 %@)";
 
@@ -865,8 +867,8 @@
 "Disclaimer" = "放弃";
 "LadyCalendarDisclaimerMsg" = "因为压力及性荷尔蒙的分泌不均衡可能引起生理预测周期的不同，所以排卵日和易于怀孕日与实际情况可能会有所差别。\n并且，生理周期不规则的情况下，推测值可能产生错误，不适合于所有的女性。\n所以为了避孕或受孕，参考此排卵日测定法的同时，建议和其他可行方法共用。";
 
-"Categories on the bar" = "工具栏上的种类";
-"Categories in more" = "更多种类";
+"Categories on the bar" = "在酒吧类别";
+"Categories in more" = "更多类别";
 
 "Increase" = "增加";
 "Decrease" = "减少";
@@ -909,6 +911,4 @@
 "Account" = "账户信息型标示";
 "Hidden" = "全部隐藏";
 
-"Slideshow_Repeat" = "反复";
-
-"Lunar Converter_Short" = "Lunar Converter_Short";
+"Slideshow_Repeat" = "重复播放";

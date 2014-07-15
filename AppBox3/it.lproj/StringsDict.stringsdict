@@ -193,7 +193,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>All’ora dell’evento</string>
+			<string>0 giorni prima</string>
 			<key>one</key>
 			<string>1 giorno prima</string>
 			<key>other</key>
@@ -373,9 +373,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Più recenti</string>
+			<string>Più recente</string>
 			<key>one</key>
-			<string>Più recenti</string>
+			<string>Più recente</string>
 			<key>other</key>
 			<string>Le %ld più recenti</string>
 		</dict>

@@ -9,20 +9,20 @@
 "3xh-WT-2qJ.text" = "Calendario femminile";
 
 /* Class = "IBUILabel"; text = "Loan Calculator"; ObjectID = "5dF-dl-Cfh"; */
-"5dF-dl-Cfh.text" = "Calcolatore Prestito";
+"5dF-dl-Cfh.text" = "Calcolatrice Prestito";
 
 /* Class = "IBUILabel"; text = "well designed for both iPhone and iPad"; ObjectID = "73z-Fm-nHB"; */
 "73z-Fm-nHB.text" = "Ben progettato sia per
 iPhone che per iPad";
 
 /* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7KY-kl-Ksz"; */
-"7KY-kl-Ksz.text" = "Basico/Scientifico Calcolatore";
+"7KY-kl-Ksz.text" = "Basilare/Scientifica Calcolatrice";
 
 /* Class = "IBUILabel"; text = "Mirror"; ObjectID = "86S-LG-bmW"; */
 "86S-LG-bmW.text" = "Specchio";
 
 /* Class = "IBUILabel"; text = "Percent Calculator"; ObjectID = "C7O-ix-OQV"; */
-"C7O-ix-OQV.text" = "Calcolatore Percentuale";
+"C7O-ix-OQV.text" = "Calcolatrice Percentuale";
 
 /* Class = "IBUILabel"; text = "Clock"; ObjectID = "CUC-uG-Jld"; */
 "CUC-uG-Jld.text" = "Clock";
@@ -42,10 +42,10 @@ su tutti i tuoi dispositivi";
 "LH1-Sz-F5c.text" = "Miglioramenti ed ottimizzazioni";
 
 /* Class = "IBUILabel"; text = "Sales Calculator"; ObjectID = "QRY-F6-eI0"; */
-"QRY-F6-eI0.text" = "Calcolatore Sconti";
+"QRY-F6-eI0.text" = "Calcolatrice Sconti";
 
 /* Class = "IBUILabel"; text = "Date Calculator"; ObjectID = "TO4-lW-QE2"; */
-"TO4-lW-QE2.text" = "Calcolatore Data";
+"TO4-lW-QE2.text" = "Calcolatrice Data";
 
 /* Class = "IBUIButton"; normalTitle = "Later"; ObjectID = "UGi-UW-2XK"; */
 "UGi-UW-2XK.normalTitle" = "Più tardi";
@@ -113,13 +113,13 @@ a 64Bit e molto altro";
 "ni3-pI-wdj.text" = "Lente d'ingrandimento";
 
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "pMI-GK-toN"; */
-"pMI-GK-toN.text" = "Calcolatore";
+"pMI-GK-toN.text" = "Calcolatrice";
 
 /* Class = "IBUILabel"; text = "Reference"; ObjectID = "pRj-wQ-ZtV"; */
 "pRj-wQ-ZtV.text" = "Riferimento";
 
 /* Class = "IBUILabel"; text = "Tip Calculator"; ObjectID = "pgE-6d-yU7"; */
-"pgE-6d-yU7.text" = "Calcolatore Mancia";
+"pgE-6d-yU7.text" = "Calcolatrice Mancia";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "qCf-Nb-LdB"; */
 "qCf-Nb-LdB.normalTitle" = "Usa AppBox Pro";

@@ -188,6 +188,7 @@
 "Months" = "Miesięcy";
 "Weeks" = "Tygodni";
 "Days" = "Dni";
+"DaysCounterDuration_Days" = "Dni";
 "Weekends" = "Weekendy";
 "Sat" = "Sob";
 "Sun" = "Nie";

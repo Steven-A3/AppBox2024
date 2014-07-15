@@ -153,6 +153,7 @@
 "Months" = "Months";
 "Weeks" = "Weeks";
 "Days" = "Days";
+"DaysCounterDuration_Days" = "Days";
 "Weekends" = "Weekends";
 "Sat" = "Sat";
 "Sun" = "Sun";

@@ -182,6 +182,7 @@
 "Months" = "월";
 "Weeks" = "주";
 "Days" = "일";
+"DaysCounterDuration_Days" = "일";
 "Weekends" = "주말";
 "Sat" = "토";
 "Sun" = "일";

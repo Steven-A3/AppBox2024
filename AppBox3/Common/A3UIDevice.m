@@ -253,14 +253,14 @@ https://github.com/andrealufino/ALSystemUtilities/blob/develop/ALSystemUtilities
 
 + (BOOL)shouldUseImageForPrevNextButton {
 	if (IS_IPAD) return NO;
-	NSString *languageCode = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
-	NSArray *languagesNotUsingImage = @[@"en", @"kr", @"ja", @"zh-Hans", @"zh-Hant"];
+	NSString *languageCode = [NSLocale preferredLanguages][0];
+	NSArray *languagesNotUsingImage = @[@"en", @"kr", @"zh-Hans", @"zh-Hant"];
 	return [languagesNotUsingImage indexOfObject:languageCode] == NSNotFound;
 }
 
 + (BOOL)shouldSupportLunarCalendar {
 	// Language 가 한글 혹은 중국어인 경우
-	NSArray *languageCodes = @[@"ko", @"zh_hans", @"zh_hant"];
+	NSArray *languageCodes = @[@"ko", @"zh-hans", @"zh-hant"];
 	if ([languageCodes indexOfObject:[NSLocale preferredLanguages][0]] != NSNotFound) return YES;
 
 	NSLocale *currentLocale = [NSLocale currentLocale];

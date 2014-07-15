@@ -1,6 +1,6 @@
 
 /* Class = "IBUILabel"; text = "Total Amount"; ObjectID = "8C0-7E-crV"; */
-"8C0-7E-crV.text" = "Importo totale";
+"8C0-7E-crV.text" = "Totale pagato";
 
 /* Class = "IBUILabel"; text = "TERM"; ObjectID = "Ajr-fK-S6O"; */
 "Ajr-fK-S6O.text" = "TERMINE";
@@ -9,7 +9,7 @@
 "CxJ-Nr-hb6.text" = "PAGAMENTO";
 
 /* Class = "IBUILabel"; text = "INTEREST RATE"; ObjectID = "M1Y-kB-iSk"; */
-"M1Y-kB-iSk.text" = "TASSO DI INTERESSE";
+"M1Y-kB-iSk.text" = "TASSO D'INTERESSE";
 
 /* Class = "IBUIButton"; normalTitle = "Monthly"; ObjectID = "cvj-is-8ew"; */
 "cvj-is-8ew.normalTitle" = "Mensile";
@@ -21,7 +21,7 @@
 "ghb-Oq-2Tz.normalTitle" = "Mensile";
 
 /* Class = "IBUILabel"; text = "Total Interest"; ObjectID = "lIW-t6-4Lw"; */
-"lIW-t6-4Lw.text" = "Interesse Totale";
+"lIW-t6-4Lw.text" = "Totale interssi";
 
 /* Class = "IBUIButton"; normalTitle = "Total"; ObjectID = "ln5-ed-dwO"; */
 "ln5-ed-dwO.normalTitle" = "Totale";

@@ -11,7 +11,7 @@
 "2E1-Z8-v5l.title" = "バックアップ選択";
 
 /* Class = "IBUITableViewSection"; headerTitle = "PASSCODE REQUIRED FOR"; ObjectID = "4da-k5-f71"; */
-"4da-k5-f71.headerTitle" = "暗号確認";
+"4da-k5-f71.headerTitle" = "パスコードを要求";
 
 /* Class = "IBUINavigationItem"; title = "Apps"; ObjectID = "52d-yt-UJk"; */
 "52d-yt-UJk.title" = "アプリ";
@@ -40,7 +40,7 @@
 "7oW-es-0Zb.title" = "旧暦カレンダー設定";
 
 /* Class = "IBUILabel"; text = "Require Passcode"; ObjectID = "A3j-68-3Oy"; */
-"A3j-68-3Oy.text" = "暗号確認";
+"A3j-68-3Oy.text" = "パスコードを要求";
 
 /* Class = "IBUILabel"; text = "Recent to Keep"; ObjectID = "BGG-KB-Wog"; */
 "BGG-KB-Wog.text" = "最近使用リスト";
@@ -49,13 +49,13 @@
 "CDn-14-haS.title" = "旧暦カレンダー";
 
 /* Class = "IBUILabel"; text = "Simple Passcode"; ObjectID = "EA1-5P-PnP"; */
-"EA1-5P-PnP.text" = "簡単な暗号";
+"EA1-5P-PnP.text" = "簡単なパスコード";
 
 /* Class = "IBUILabel"; text = "Change Passcode"; ObjectID = "Fvs-tZ-usV"; */
 "Fvs-tZ-usV.text" = "暗号変更";
 
 /* Class = "IBUITableViewController"; title = "Passcode Lock"; ObjectID = "KML-Ub-d8M"; */
-"KML-Ub-d8M.title" = "暗号ロック";
+"KML-Ub-d8M.title" = "パスコードロック";
 
 /* Class = "IBUITableViewSection"; footerTitle = "For Lunar Converter"; ObjectID = "LOI-Yd-hc0"; */
 "LOI-Yd-hc0.footerTitle" = "旧暦変換用";
@@ -64,10 +64,10 @@
 "LZb-sk-84W.text" = "保安に関する追加情報";
 
 /* Class = "IBUINavigationItem"; title = "Passcode Lock"; ObjectID = "Lbr-p8-awt"; */
-"Lbr-p8-awt.title" = " 暗号ロック";
+"Lbr-p8-awt.title" = "パスコードロック";
 
 /* Class = "IBUITableViewSection"; footerTitle = "Shorter times are more secure."; ObjectID = "MUh-Ac-pHs"; */
-"MUh-Ac-pHs.footerTitle" = "時間が短いほど安全です。";
+"MUh-Ac-pHs.footerTitle" = "短い方がより安全です";
 
 /* Class = "IBUILabel"; text = "After 4 hours"; ObjectID = "McJ-yq-SBi"; */
 "McJ-yq-SBi.text" = "4時間後";
@@ -88,7 +88,7 @@
 "QDB-IM-N8E.text" = "細部項目";
 
 /* Class = "IBUITableViewSection"; footerTitle = "A simple passcode is a 4 digit number."; ObjectID = "ROP-jz-ZtT"; */
-"ROP-jz-ZtT.footerTitle" = "簡単な暗号は４桁の数字です。";
+"ROP-jz-ZtT.footerTitle" = "簡単なパスコードは4桁の数です。";
 
 /* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "ROP-jz-ZtT"; */
 "ROP-jz-ZtT.headerTitle" = " ";
@@ -106,7 +106,7 @@
 "Vgb-6m-SyM.text" = "テーマ色";
 
 /* Class = "IBUITableViewController"; title = "Require Passcode"; ObjectID = "Xb7-yr-Jd6"; */
-"Xb7-yr-Jd6.title" = "暗号要求";
+"Xb7-yr-Jd6.title" = "パスコードを要求";
 
 /* Class = "IBUILabel"; text = "After 5 minutes"; ObjectID = "cHo-o5-yl0"; */
 "cHo-o5-yl0.text" = "５分後";
@@ -118,7 +118,7 @@
 "eGG-mK-Q2m.text" = "即時";
 
 /* Class = "IBUILabel"; text = "Backup & Restore on Dropbox"; ObjectID = "ehr-w2-0vk"; */
-"ehr-w2-0vk.text" = "Dropbox のバックアップ及び復元";
+"ehr-w2-0vk.text" = "Dropboxのバックアップ及び復元";
 
 /* Class = "IBUINavigationItem"; title = "Theme Color"; ObjectID = "eqe-ec-kWO"; */
 "eqe-ec-kWO.title" = "テーマ色";
@@ -147,10 +147,10 @@
 "oxS-sd-8U7.title" = "Dropboxのバックアップ及び復元";
 
 /* Class = "IBUILabel"; text = "Passcode Lock"; ObjectID = "pjv-dt-D5o"; */
-"pjv-dt-D5o.text" = "暗号ロック";
+"pjv-dt-D5o.text" = "パスコードロック";
 
 /* Class = "IBUINavigationItem"; title = "Require Passcode"; ObjectID = "qcD-FX-Y5d"; */
-"qcD-FX-Y5d.title" = "暗号確認";
+"qcD-FX-Y5d.title" = "パスコードを要求";
 
 /* Class = "IBUILabel"; text = "Account"; ObjectID = "rZ1-di-1G0"; */
 "rZ1-di-1G0.text" = "アカウントID";
