@@ -233,8 +233,27 @@
     pathAnimation.repeatCount = 1;
     pathAnimation.autoreverses = NO;
     pathAnimation.delegate = self;
+    pathAnimation.removedOnCompletion = NO;
     [clipLayer addAnimation:pathAnimation forKey:@"path"];
-    
+}
+
+- (void)wipeTransition2
+{
+    [self addView:_nextView];
+    _nextView.layer.frame = CGRectMake(_currentView.bounds.size.width, _currentView.bounds.origin.y, _currentView.bounds.size.width, _currentView.bounds.size.height);
+    [UIView animateWithDuration:0.3
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         _nextView.layer.frame = _currentView.bounds;
+                         _currentView.layer.frame = CGRectMake(-_currentView.bounds.size.width, _currentView.bounds.origin.y, _currentView.bounds.size.width, _currentView.bounds.size.height);
+                     }
+                     completion:^(BOOL finished) {
+                         [_currentView removeFromSuperview];
+                         _currentView = nil;
+                         _currentView = _nextView;
+                         [self startTimer];
+                     }];
 }
 
 - (void)dissolveTransition
@@ -281,7 +300,7 @@
             [self rippleTransition];
             break;
         case TransitionType_Wipe:
-            [self wipeTransition];
+            [self wipeTransition2];
             break;
         case TransitionType_Dissolve:
         default:
@@ -292,9 +311,15 @@
 
 - (void)startTimer
 {
-    if (slideTimer)
+    if (slideTimer) {
         [slideTimer invalidate];
-    slideTimer = [NSTimer scheduledTimerWithTimeInterval:[[_optionDict objectForKey:OptionKey_Showtime] doubleValue] target:self selector:@selector(slideTimerAction:) userInfo:nil repeats:NO];
+    }
+    
+    slideTimer = [NSTimer scheduledTimerWithTimeInterval:[[_optionDict objectForKey:OptionKey_Showtime] doubleValue]
+                                                  target:self
+                                                selector:@selector(slideTimerAction:)
+                                                userInfo:nil
+                                                 repeats:NO];
 }
 
 - (void)stopTimer
@@ -334,6 +359,7 @@
     FNLOG(@"%s %@ / %@ / %@",__FUNCTION__,NSStringFromCGRect(addView.frame),NSStringFromCGRect(self.view.bounds),NSStringFromCGRect(self.view.frame));
     
     [self.view insertSubview:addView belowSubview:targetView];
+//    [self.view insertSubview:addView aboveSubview:targetView];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:addView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:addView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
