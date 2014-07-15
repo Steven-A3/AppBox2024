@@ -19,7 +19,7 @@
 #import "TranslatorHistory+manager.h"
 #import "NSData-AES.h"
 #import "WalletCategory.h"
-#import "WalletCategory+initialize.h"
+#import "WalletCategory+extension.h"
 #import "WalletItem.h"
 #import "WalletField+initialize.h"
 #import "WalletFieldItem+initialize.h"
@@ -178,7 +178,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 			DaysCounterEvent *newEvent = [DaysCounterEvent MR_createInContext:context];
 			newEvent.uniqueID = [[NSUUID UUID] UUIDString];
 			newEvent.updateDate = [NSDate date];
-			newEvent.calendar = daysCounterCalendar;
+			newEvent.calendarID = daysCounterCalendar.uniqueID;
 			newEvent.eventName = v1Item[kKeyForDDayTitle];
 			newEvent.isAllDay = @([v1Item[kKeyForDDayType] integerValue] == 0);
 			newEvent.durationOption = @(DurationOption_Day);
@@ -271,7 +271,7 @@ NSString *const kMyGirlsDayHistoryTypeInput				= @"input";
 			@autoreleasepool {
 				LadyCalendarPeriod *period = [LadyCalendarPeriod MR_createInContext:context];
 				period.uniqueID = [[NSUUID UUID] UUIDString];
-				period.account = account;
+				period.accountID = account.uniqueID;
 				period.startDate = item[1];
 				period.endDate = item[2];
 				period.cycleLength = @([item[3] integerValue]);
@@ -456,7 +456,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 					newItem.uniqueID = [[NSUUID UUID] UUIDString];
 					newItem.updateDate = [NSDate date];
 					[newItem assignOrder];
-					newItem.category = category;
+					newItem.categoryID = category.uniqueID;
 					newItem.name = valueInfo[KWalletItemName];
 					NSDictionary *valueDictionary = valueInfo[KWalletValueDictionary];
 					newItem.updateDate = valueDictionary[KWalletValueLastUpdated];

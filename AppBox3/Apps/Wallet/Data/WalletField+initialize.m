@@ -8,7 +8,7 @@
 
 #import "WalletField+initialize.h"
 #import "WalletCategory.h"
-#import "WalletCategory+initialize.h"
+#import "WalletCategory+extension.h"
 #import "NSString+conversion.h"
 
 @implementation WalletField (initialize)

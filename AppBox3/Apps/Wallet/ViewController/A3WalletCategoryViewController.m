@@ -24,7 +24,7 @@
 #import "A3WalletItemEditViewController.h"
 #import "UIColor+A3Addition.h"
 #import "A3InstructionViewController.h"
-#import "WalletCategory+initialize.h"
+#import "WalletCategory+extension.h"
 
 @interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate>
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -135,7 +135,7 @@
     if (!super.items) {
 		FNLOG();
 		NSMutableArray *items;
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category == %@", self.category];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID];
         items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
 		[super setItems:items];
     }

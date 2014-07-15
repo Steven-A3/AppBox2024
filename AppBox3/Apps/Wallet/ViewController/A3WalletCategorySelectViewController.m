@@ -10,7 +10,7 @@
 #import "WalletCategory.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "WalletCategory+initialize.h"
+#import "WalletCategory+extension.h"
 
 @interface A3WalletCategorySelectViewController ()
 

@@ -16,7 +16,7 @@
 #import "NSString+conversion.h"
 #import "WalletFieldItem+initialize.h"
 #import "WalletCategory.h"
-#import "WalletCategory+initialize.h"
+#import "WalletCategory+extension.h"
 #import "UnitConvertItem.h"
 #import "UnitConvertItem+initialize.h"
 #import "UnitFavorite.h"
@@ -63,6 +63,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 - (NSString *)uniqueID;
 - (NSDate *)updateDate;
+- (void)moveChildesFromObject:(id)object;
 
 @end
 
@@ -518,8 +519,14 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 		if (prevObject) {
 			if ([object.uniqueID isEqualToString:prevObject.uniqueID]) {
 				if ([object.updateDate compare:prevObject.updateDate] == NSOrderedAscending) {
+					if ([prevObject respondsToSelector:@selector(moveChildesFromObject:)]) {
+						[prevObject moveChildesFromObject:object];
+					}
 					[moc deleteObject:object];
 				} else {
+					if ([object respondsToSelector:@selector(moveChildesFromObject:)]) {
+						[object moveChildesFromObject:prevObject];
+					}
 					[moc deleteObject:prevObject];
 					prevObject = object;
 				}

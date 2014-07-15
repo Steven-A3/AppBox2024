@@ -9,8 +9,10 @@
 #import "DaysCounterCalendar+Extension.h"
 
 @implementation DaysCounterCalendar (Extension)
+
 - (UIColor*)color
 {
     return (self.calendarColor ? [NSKeyedUnarchiver unarchiveObjectWithData:self.calendarColor] : nil);
 }
+
 @end

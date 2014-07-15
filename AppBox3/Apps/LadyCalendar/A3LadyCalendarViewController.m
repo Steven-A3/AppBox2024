@@ -104,7 +104,15 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:USMStoreDidImportChangesNotification object:nil];
     [self setupInstructionView];
+}
+
+- (void)cloudDidImportChanges:(NSNotification *)notification {
+	_dataManager = nil;
+	[self.dataManager prepare];
+	[self.dataManager currentAccount];
+	[self rightSideViewWillDismiss];
 }
 
 - (void)setupWeekdayLabels {
@@ -140,6 +148,7 @@
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:USMStoreDidImportChangesNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -252,11 +261,6 @@
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         NSDate *currentWatchingDate = [[self.dataManager currentAccount] watchingDate];
-//        if (!currentWatchingDate) {
-//            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.uniqueID == %@", [[self.dataManager currentAccount] uniqueID]];
-//            LadyCalendarPeriod *firstPeriod = [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:YES];
-//            currentWatchingDate = firstPeriod ? [firstPeriod startDate] : [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
-//        }
         currentWatchingDate = (currentWatchingDate == nil ? [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]] : currentWatchingDate);
         _currentMonth = currentWatchingDate;
 

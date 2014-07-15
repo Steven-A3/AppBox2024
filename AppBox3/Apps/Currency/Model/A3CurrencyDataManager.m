@@ -71,7 +71,7 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 	idx = 1;
 	for (NSString *code in favorites) {
 		CurrencyFavorite *favorite = [CurrencyFavorite MR_createEntity];
-		favorite.uniqueID = [[NSUUID UUID] UUIDString];
+		favorite.uniqueID = code;
 		favorite.updateDate = [NSDate date];
 		CurrencyRateItem *item = [CurrencyRateItem MR_findFirstByAttribute:A3KeyCurrencyCode withValue:code inContext:[A3AppDelegate instance].cacheStoreManager.context];
 		favorite.order = [NSString orderStringWithOrder:idx * 1000000];

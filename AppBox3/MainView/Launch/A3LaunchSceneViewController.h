@@ -19,6 +19,6 @@
 @property (assign, nonatomic) BOOL showAsWhatsNew;
 
 - (void)hideButtons;
-
 - (void)showButtons;
+
 @end

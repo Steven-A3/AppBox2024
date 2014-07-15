@@ -11,7 +11,7 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "WalletCategory.h"
-#import "WalletCategory+initialize.h"
+#import "WalletCategory+extension.h"
 #import "UIImage+imageWithColor.h"
 
 @interface A3WalletIconSelectViewController ()

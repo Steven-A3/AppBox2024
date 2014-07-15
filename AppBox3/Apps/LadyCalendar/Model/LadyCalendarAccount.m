@@ -2,12 +2,11 @@
 //  LadyCalendarAccount.m
 //  AppBox3
 //
-//  Created by kimjeonghwan on 7/9/14.
+//  Created by A3 on 7/15/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "LadyCalendarAccount.h"
-#import "LadyCalendarPeriod.h"
 
 
 @implementation LadyCalendarAccount
@@ -19,6 +18,5 @@
 @dynamic uniqueID;
 @dynamic updateDate;
 @dynamic watchingDate;
-@dynamic periods;
 
 @end

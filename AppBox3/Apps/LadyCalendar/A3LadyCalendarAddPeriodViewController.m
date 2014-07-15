@@ -96,7 +96,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		_periodItem.cycleLength = @28;
 		_periodItem.isPredict = @NO;
 		_periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
-		_periodItem.account = _dataManager.currentAccount;
+		_periodItem.accountID = _dataManager.currentAccount.uniqueID;
 	}
 
 	if ( _isEditMode ) {
@@ -656,7 +656,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 	_periodItem.updateDate = [NSDate date];
 	_periodItem.isPredict = @NO;
-    _periodItem.account.watchingDate = _periodItem.startDate;
+	_dataManager.currentAccount.watchingDate = _periodItem.startDate;
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 

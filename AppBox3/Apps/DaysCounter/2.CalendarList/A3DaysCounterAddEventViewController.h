@@ -19,7 +19,7 @@
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) DaysCounterEvent *eventItem;
 @property (assign, nonatomic) BOOL landscapeFullScreen;
-@property (strong, nonatomic) NSString *calendarId;
+@property (strong, nonatomic) NSString *calendarID;
 
 - (void)showKeyboard;
 

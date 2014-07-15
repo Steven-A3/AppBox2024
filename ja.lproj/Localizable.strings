@@ -477,7 +477,7 @@
 "CALCULATE CYCLE LENGTH" = "生理周期の計算";
 "Same Before Cycle" = "前回と同様";
 "Average Before Two Cycle" = "前周期２回分の平均";
-"Average All Cycle" = "全ての周期の平均";
+"Average All Cycle" = "すべての周期の平均";
 "Automatically save period after estimated starting date." = "開始日の予想後に自動的に周期の保管。";
 "Auto Record" = "自動記録";
 "Notify about estimated next starting date." = "次の予想開始日のお知らせ。";
@@ -629,7 +629,7 @@
 "Please change \"From\" or \"To\" language."= "原文の言語や翻訳の言語を変更して下さい。";
 "Translate" = "翻訳";
 
-"All Units" = "全ての単位";
+"All Units" = "すべての単位";
 "%@ Units" = "%@ ユニット";
 
 "Check out the AppBox Pro!" = "AppBox Proを使ってみましょう。";
@@ -655,16 +655,16 @@
 
 "The best unit price is A at %@" = "Aは低価格であり、単価は%@円になります。";
 "The best unit price is B at %@" = "Bは低価格であり、単価は%@円になります。";
-"The unit price is the same at %@" = "単価は全て%@に相当します。";
+"The unit price is the same at %@" = "単価はすべて%@に相当します。";
 
 "Area" = "面積";
 "Length" = "長さ";
 "Volume" = "体積";
 "Weight" = "重量";
 
-"Wallet_All_Category" = "全て";
+"Wallet_All_Category" = "すべて";
 "Field Type" = "フィールドタイプ";
-"All Items" = "全てのアイテム";
+"All Items" = "すべてのアイテム";
 "CATEGORIES" = "カテゴリー";
 "CATEGORY" = "カテゴリー";
 "ITEMS" = "アイテム";
@@ -755,13 +755,13 @@
 "DoneButton" = "閉じる";
 "Off" = "オフ";
 "Passcode_Off" = "オフ";
-"DaysCounter_All" = "全て";
+"DaysCounter_All" = "すべて";
 
 "LoanCalc_Start Date" = "返済開始日";
 "Immediately" = "即時";
 "Learn about iOS Security" = "iOSのセキュリティーについて";
 "CalculatorGroup" = "計算機";
-"Translator_All" = "全て";
+"Translator_All" = "すべて";
 
 "Year(s)" = "年";
 "Month(s)" = "月";
@@ -829,7 +829,7 @@
 
 "  (e.g. %@)" = "  (例 %@)";
 
-"DaysCounter_ALL" = "全て";
+"DaysCounter_ALL" = "すべて";
 
 "You can calculate more in the AppBox Pro." = "AppBox Proのさまざまな計算機能を利用してみてください。";
 "I'd like to share a calculation with you." = "計算結果を共有します。";
@@ -905,3 +905,5 @@
 "Hidden" = "すべて隠す";
 
 "Slideshow_Repeat" = "リピート";
+
+"Use AppBox Pro" = "AppBox Proを使用";

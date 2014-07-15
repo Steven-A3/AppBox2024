@@ -479,7 +479,7 @@ enum SortingKind {
     // 마지막으로 추가되었던 walletItem의 카테고리가 선택되도록 한다.
     WalletItem *lastItem = [WalletItem MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (lastItem) {
-        viewController.walletCategory = lastItem.category;
+        viewController.walletCategory = [WalletCategory MR_findFirstByAttribute:@"uniqueID" withValue:lastItem.categoryID];
     }
     else {
         WalletCategory *category = [WalletCategory MR_findFirstOrderedByAttribute:@"name" ascending:YES];

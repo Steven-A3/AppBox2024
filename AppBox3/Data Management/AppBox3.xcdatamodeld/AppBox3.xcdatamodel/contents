@@ -18,7 +18,7 @@
     <entity name="CurrencyHistory" representedClassName="CurrencyHistory" syncable="YES">
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="targets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CurrencyHistoryItem" inverseName="history" inverseEntity="CurrencyHistoryItem" syncable="YES"/>
@@ -47,7 +47,6 @@
         <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="events" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="DaysCounterEvent" inverseName="calendar" inverseEntity="DaysCounterEvent" syncable="YES"/>
     </entity>
     <entity name="DaysCounterDate" representedClassName="DaysCounterDate" syncable="YES">
         <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -64,6 +63,7 @@
         <attribute name="alertDatetime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="alertInterval" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="alertType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="calendarID" attributeType="String" syncable="YES"/>
         <attribute name="durationOption" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="effectiveStartDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="eventName" optional="YES" attributeType="String" syncable="YES"/>
@@ -77,7 +77,6 @@
         <attribute name="repeatType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="calendar" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterCalendar" inverseName="events" inverseEntity="DaysCounterCalendar" syncable="YES"/>
         <relationship name="endDate" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DaysCounterDate" inverseName="endDate" inverseEntity="DaysCounterDate" syncable="YES"/>
         <relationship name="favorite" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DaysCounterFavorite" inverseName="event" inverseEntity="DaysCounterFavorite" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DaysCounterEventLocation" inverseName="event" inverseEntity="DaysCounterEventLocation" syncable="YES"/>
@@ -107,7 +106,7 @@
         <attribute name="isOn" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isUnread" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterEvent" inverseName="reminder" inverseEntity="DaysCounterEvent" syncable="YES"/>
     </entity>
@@ -119,7 +118,7 @@
         <attribute name="paymentType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="usedAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="expenseHistory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExpenseListHistory" inverseName="budgetData" inverseEntity="ExpenseListHistory" syncable="YES"/>
@@ -139,11 +138,11 @@
     </entity>
     <entity name="ExpenseListCategories" representedClassName="ExpenseListCategories" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
     <entity name="ExpenseListHistory" representedClassName="ExpenseListHistory" syncable="YES">
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="budgetData" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ExpenseListBudget" inverseName="expenseHistory" inverseEntity="ExpenseListBudget" syncable="YES"/>
     </entity>
@@ -165,9 +164,9 @@
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="watchingDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="periods" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="LadyCalendarPeriod" inverseName="account" inverseEntity="LadyCalendarPeriod" syncable="YES"/>
     </entity>
     <entity name="LadyCalendarPeriod" representedClassName="LadyCalendarPeriod" syncable="YES">
+        <attribute name="accountID" attributeType="String" syncable="YES"/>
         <attribute name="cycleLength" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="endDate" attributeType="Date" syncable="YES"/>
         <attribute name="isAutoSave" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -178,14 +177,13 @@
         <attribute name="startDate" attributeType="Date" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LadyCalendarAccount" inverseName="periods" inverseEntity="LadyCalendarAccount" syncable="YES"/>
     </entity>
     <entity name="LoanCalcComparisonHistory" representedClassName="LoanCalcComparisonHistory" syncable="YES">
         <attribute name="totalAmountA" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalAmountB" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalInterestA" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalInterestB" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="details" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="LoanCalcHistory" inverseName="comparisonHistory" inverseEntity="LoanCalcHistory" syncable="YES"/>
     </entity>
@@ -212,7 +210,7 @@
         <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="term" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="termTypeMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="useSimpleInterest" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="compareWith" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="LoanCalcHistory" inverseName="compareWith" inverseEntity="LoanCalcHistory" syncable="YES"/>
@@ -240,11 +238,11 @@
     <entity name="TipCalcHistory" representedClassName="TipCalcHistory" syncable="YES">
         <attribute name="labelTip" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="labelTotal" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="rRecently" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TipCalcRecently" inverseName="history" inverseEntity="TipCalcRecently" syncable="YES"/>
+        <relationship name="recent" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TipCalcRecently" inverseName="history" inverseEntity="TipCalcRecently" syncable="YES"/>
     </entity>
-    <entity name="TipCalcRecently" representedClassName="TipCalcRecently" syncable="YES">
+    <entity name="TipCalcRecently" representedClassName="TipCalcRecent" syncable="YES">
         <attribute name="beforeSplit" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="costs" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
@@ -258,17 +256,17 @@
         <attribute name="split" optional="YES" attributeType="Double" defaultValueString="1" syncable="YES"/>
         <attribute name="tax" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="tip" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="history" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TipCalcHistory" inverseName="rRecently" inverseEntity="TipCalcHistory" syncable="YES"/>
-        <relationship name="rRoundMethod" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TipCalcRoundMethod" inverseName="rRecently" inverseEntity="TipCalcRoundMethod" syncable="YES"/>
+        <relationship name="history" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TipCalcHistory" inverseName="recent" inverseEntity="TipCalcHistory" syncable="YES"/>
+        <relationship name="roundMethod" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TipCalcRoundMethod" inverseName="recent" inverseEntity="TipCalcRoundMethod" syncable="YES"/>
     </entity>
     <entity name="TipCalcRoundMethod" representedClassName="TipCalcRoundMethod" syncable="YES">
         <attribute name="optionType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="valueType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="rRecently" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TipCalcRecently" inverseName="rRoundMethod" inverseEntity="TipCalcRecently" syncable="YES"/>
+        <relationship name="recent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TipCalcRecently" inverseName="roundMethod" inverseEntity="TipCalcRecently" syncable="YES"/>
     </entity>
     <entity name="TranslatorFavorite" representedClassName="TranslatorFavorite" syncable="YES">
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="text" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TranslatorHistory" inverseName="favorite" inverseEntity="TranslatorHistory" syncable="YES"/>
     </entity>
@@ -276,14 +274,14 @@
         <attribute name="order" attributeType="String" syncable="YES"/>
         <attribute name="sourceLanguage" attributeType="String" syncable="YES"/>
         <attribute name="targetLanguage" attributeType="String" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="texts" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="TranslatorHistory" inverseName="group" inverseEntity="TranslatorHistory" syncable="YES"/>
+        <relationship name="texts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TranslatorHistory" inverseName="group" inverseEntity="TranslatorHistory" syncable="YES"/>
     </entity>
     <entity name="TranslatorHistory" representedClassName="TranslatorHistory" syncable="YES">
         <attribute name="originalText" attributeType="String" syncable="YES"/>
         <attribute name="translatedText" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" attributeType="Date" syncable="YES"/>
         <relationship name="favorite" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TranslatorFavorite" inverseName="text" inverseEntity="TranslatorFavorite" syncable="YES"/>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TranslatorGroup" inverseName="texts" inverseEntity="TranslatorGroup" syncable="YES"/>
@@ -301,7 +299,7 @@
         <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="favorite" inverseEntity="UnitItem" syncable="YES"/>
     </entity>
     <entity name="UnitHistory" representedClassName="UnitHistory" syncable="YES">
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="source" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="unitHistories" inverseEntity="UnitItem" syncable="YES"/>
@@ -314,7 +312,7 @@
     </entity>
     <entity name="UnitItem" representedClassName="UnitItem" syncable="YES">
         <attribute name="conversionRate" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="unitName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="unitShortName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -329,12 +327,12 @@
     </entity>
     <entity name="UnitPriceFavorite" representedClassName="UnitPriceFavorite" syncable="YES">
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="unitPriceFavorite" inverseEntity="UnitItem" syncable="YES"/>
     </entity>
     <entity name="UnitPriceHistory" representedClassName="UnitPriceHistory" syncable="YES">
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="unitPrices" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="UnitPriceHistoryItem" inverseName="unitPriceHistory" inverseEntity="UnitPriceHistoryItem" syncable="YES"/>
     </entity>
@@ -376,11 +374,10 @@
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="fields" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WalletField" inverseName="category" inverseEntity="WalletField" syncable="YES"/>
-        <relationship name="items" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WalletItem" inverseName="category" inverseEntity="WalletItem" syncable="YES"/>
     </entity>
     <entity name="WalletFavorite" representedClassName="WalletFavorite" syncable="YES">
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletItem" inverseName="favorite" inverseEntity="WalletItem" syncable="YES"/>
     </entity>
@@ -412,12 +409,12 @@
         <relationship name="fieldItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletFieldItem" inverseName="video" inverseEntity="WalletFieldItem" syncable="YES"/>
     </entity>
     <entity name="WalletItem" representedClassName="WalletItem" syncable="YES">
+        <attribute name="categoryID" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletCategory" inverseName="items" inverseEntity="WalletCategory" syncable="YES"/>
         <relationship name="favorite" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="WalletFavorite" inverseName="item" inverseEntity="WalletFavorite" syncable="YES"/>
         <relationship name="fieldItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WalletFieldItem" inverseName="walletItem" inverseEntity="WalletFieldItem" syncable="YES"/>
     </entity>
@@ -427,7 +424,7 @@
         <element name="CurrencyHistory" positionX="207" positionY="-549" width="128" height="135"/>
         <element name="CurrencyHistoryItem" positionX="54" positionY="-621" width="128" height="105"/>
         <element name="CurrencyRateItem" positionX="54" positionY="-504" width="128" height="135"/>
-        <element name="DaysCounterCalendar" positionX="-414" positionY="-837" width="128" height="195"/>
+        <element name="DaysCounterCalendar" positionX="-414" positionY="-837" width="128" height="180"/>
         <element name="DaysCounterDate" positionX="-578" positionY="-646" width="128" height="178"/>
         <element name="DaysCounterEvent" positionX="-236" positionY="-837" width="128" height="373"/>
         <element name="DaysCounterEventLocation" positionX="-81" positionY="-801" width="162" height="193"/>
@@ -435,21 +432,21 @@
         <element name="DaysCounterReminder" positionX="-83" positionY="-523" width="128" height="150"/>
         <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="240"/>
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="178"/>
-        <element name="ExpenseListCategories" positionX="540" positionY="-432" width="135" height="88"/>
-        <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="88"/>
+        <element name="ExpenseListCategories" positionX="540" positionY="-432" width="135" height="90"/>
+        <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="90"/>
         <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="163"/>
-        <element name="LadyCalendarAccount" positionX="-765" positionY="950" width="128" height="165"/>
-        <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="238"/>
+        <element name="LadyCalendarAccount" positionX="-765" positionY="950" width="128" height="150"/>
+        <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="208"/>
         <element name="LoanCalcComparisonHistory" positionX="198" positionY="837" width="128" height="150"/>
         <element name="LoanCalcHistory" positionX="441" positionY="531" width="128" height="450"/>
         <element name="PercentCalcHistory" positionX="-783" positionY="15" width="128" height="90"/>
         <element name="SalesCalcHistory" positionX="-407" positionY="-327" width="128" height="223"/>
-        <element name="TipCalcHistory" positionX="-587" positionY="-310" width="128" height="118"/>
+        <element name="TipCalcHistory" positionX="-587" positionY="-310" width="128" height="120"/>
         <element name="TipCalcRecently" positionX="-774" positionY="-306" width="128" height="268"/>
         <element name="TipCalcRoundMethod" positionX="-585" positionY="-189" width="128" height="90"/>
-        <element name="TranslatorFavorite" positionX="304" positionY="-36" width="128" height="105"/>
-        <element name="TranslatorGroup" positionX="-396" positionY="-63" width="128" height="135"/>
-        <element name="TranslatorHistory" positionX="-216" positionY="-84" width="128" height="133"/>
+        <element name="TranslatorFavorite" positionX="304" positionY="-36" width="128" height="103"/>
+        <element name="TranslatorGroup" positionX="-396" positionY="-63" width="128" height="133"/>
+        <element name="TranslatorHistory" positionX="-216" positionY="-84" width="128" height="135"/>
         <element name="UnitConvertItem" positionX="412" positionY="270" width="128" height="103"/>
         <element name="UnitFavorite" positionX="7" positionY="90" width="128" height="103"/>
         <element name="UnitHistory" positionX="-2" positionY="225" width="128" height="120"/>
@@ -460,8 +457,8 @@
         <element name="UnitPriceHistoryItem" positionX="-371" positionY="209" width="128" height="178"/>
         <element name="UnitPriceInfo" positionX="-47" positionY="396" width="128" height="193"/>
         <element name="UnitType" positionX="412" positionY="162" width="128" height="120"/>
-        <element name="WalletCategory" positionX="-918" positionY="531" width="128" height="165"/>
-        <element name="WalletFavorite" positionX="-335" positionY="764" width="128" height="103"/>
+        <element name="WalletCategory" positionX="-918" positionY="531" width="128" height="148"/>
+        <element name="WalletFavorite" positionX="-335" positionY="764" width="128" height="105"/>
         <element name="WalletField" positionX="-702" positionY="440" width="128" height="148"/>
         <element name="WalletFieldItem" positionX="-506" positionY="558" width="128" height="148"/>
         <element name="WalletFieldItemImage" positionX="-335" positionY="531" width="128" height="73"/>

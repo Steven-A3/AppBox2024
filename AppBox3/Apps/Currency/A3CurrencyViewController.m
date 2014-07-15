@@ -747,13 +747,13 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
-	NSArray *result = [CurrencyRateItem MR_findByAttribute:A3KeyCurrencyCode withValue:selectedItem inContext:[A3AppDelegate instance].cacheStoreManager.context];
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedCode {
+	NSArray *result = [CurrencyRateItem MR_findByAttribute:A3KeyCurrencyCode withValue:selectedCode inContext:[A3AppDelegate instance].cacheStoreManager.context];
 	if (_isAddingCurrency) {
 		if ([result count]) {
 			CurrencyRateItem *currencyItem = result[0];
 			CurrencyFavorite *newFavorite = [CurrencyFavorite MR_createEntity];
-			newFavorite.uniqueID = [[NSUUID UUID] UUIDString];
+			newFavorite.uniqueID = selectedCode;
 			newFavorite.updateDate = [NSDate date];
 			[A3CurrencyDataManager copyCurrencyFrom:currencyItem to:newFavorite];
 			NSInteger insertIdx = [self.favorites count];

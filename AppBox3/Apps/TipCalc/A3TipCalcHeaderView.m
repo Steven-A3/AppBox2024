@@ -239,7 +239,7 @@
 
 #pragma mark -
 
-- (void)setResult:(TipCalcRecently *)result {
+- (void)setResult:(TipCalcRecent *)result {
 
     // tipLabel
     double dTip = 0.0;
@@ -336,7 +336,7 @@
     }
 }
 
-- (void)setResult:(TipCalcRecently *)result withAnimation:(BOOL)animate {
+- (void)setResult:(TipCalcRecent *)result withAnimation:(BOOL)animate {
     if (animate) {
         [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];

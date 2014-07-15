@@ -239,7 +239,7 @@
 - (void)loadEventData
 {
     if ( [_calendarItem.calendarType integerValue] == CalendarCellType_User) {
-        self.sourceArray = [_calendarItem.events array];
+        self.sourceArray = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", _calendarItem.uniqueID]];
     }
     else {
         if ( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_All] ) {
@@ -575,7 +575,8 @@
         // RoundDateView
         if ( _sortType == EventSortType_Date ) {
             UIImageView *favoriteView = (UIImageView*)[cell viewWithTag:15];
-            roundDateView.fillColor = [item.calendar color];
+			DaysCounterCalendar *calendar = [DaysCounterCalendar MR_findFirstByAttribute:@"uniqueID" withValue:item.calendarID];
+			roundDateView.fillColor = [calendar color];
             roundDateView.strokColor = roundDateView.fillColor;
             roundDateView.date = item.effectiveStartDate;
             roundDateView.hidden = NO;
@@ -761,7 +762,7 @@
 #pragma mark - A3DaysCounterEventDetailViewControllerDelegate
 - (void)didChangedCalendarEventDetailViewController:(A3DaysCounterEventDetailViewController *)ctrl
 {
-    self.changedCalendarID = ctrl.eventItem.calendar.uniqueID;
+    self.changedCalendarID = ctrl.eventItem.calendarID;
 }
 
 #pragma mark - UISearchDisplayDelegate
@@ -916,10 +917,10 @@
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
-    viewCtrl.calendarId = _calendarItem.uniqueID;
+    viewCtrl.calendarID = _calendarItem.uniqueID;
     viewCtrl.sharedManager = _sharedManager;
     if ([_calendarItem.calendarType integerValue] == CalendarCellType_System) {
-        viewCtrl.calendarId = nil;
+        viewCtrl.calendarID = nil;
     }
 
     viewCtrl.landscapeFullScreen = NO;

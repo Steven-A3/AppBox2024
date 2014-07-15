@@ -8,7 +8,7 @@
 
 #import "A3WalletMoreTableViewController.h"
 #import "WalletCategory.h"
-#import "WalletCategory+initialize.h"
+#import "WalletCategory+extension.h"
 #import "A3WalletMoreTableViewCell.h"
 #import "UIViewController+A3Addition.h"
 #import "A3WalletMainTabBarController.h"
@@ -335,7 +335,8 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
         cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([WalletFavorite MR_countOfEntities])];
     }
     else {
-        cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([walletCategory.items count])];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", walletCategory.uniqueID];
+        cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([WalletItem MR_countOfEntitiesWithPredicate:predicate])];
     }
     
 	if (_isEditing) {

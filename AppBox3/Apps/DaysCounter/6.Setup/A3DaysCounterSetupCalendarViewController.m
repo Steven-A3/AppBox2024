@@ -45,7 +45,7 @@
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
     if( IS_IPAD ){
-        self.originalValue = self.eventModel.calendar;
+        self.originalValue = [DaysCounterCalendar MR_findFirstByAttribute:@"uniqueID" withValue:self.eventModel.calendarID];
     }
     self.title = NSLocalizedString(@"Calendar", @"Calendar");
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
@@ -107,7 +107,7 @@
     }
     
     imageView.tintColor = [item color];
-    cell.accessoryType = [item.uniqueID isEqualToString:_eventModel.calendar.uniqueID] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    cell.accessoryType = [item.uniqueID isEqualToString:_eventModel.calendarID] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     
     return cell;
 }
@@ -117,7 +117,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DaysCounterCalendar *calendar = [_itemArray objectAtIndex:indexPath.row];
-    _eventModel.calendar = calendar;
+    _eventModel.calendarID = calendar.uniqueID;
     
     [tableView reloadData];
     [self doneButtonAction:nil];
@@ -130,7 +130,7 @@
 #pragma mark - action method
 - (void)cancelAction:(id)sender
 {
-    _eventModel.calendar = self.originalValue;
+    _eventModel.calendarID = self.originalValue.uniqueID;
 
     if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];
