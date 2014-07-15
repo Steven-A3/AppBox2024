@@ -459,10 +459,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     if (!eventModel.effectiveStartDate) {
         eventModel.effectiveStartDate = [eventModel.startDate solarDate];
     }
-    
     eventModel.updateDate = [NSDate date];
-	DaysCounterCalendar *calendar = [DaysCounterCalendar MR_findFirstByAttribute:@"uniqueID" withValue:eventModel.calendarID];
-	calendar.updateDate = [NSDate date];
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
@@ -493,9 +490,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     }
     
 	eventItem.updateDate = [NSDate date];
-	DaysCounterCalendar *calendar = [DaysCounterCalendar MR_findFirstByAttribute:@"uniqueID" withValue:eventItem.calendarID];
-	calendar.updateDate = [NSDate date];
-    
+
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
     return YES;
@@ -654,8 +649,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     existsCalendar.calendarName = [item objectForKey:CalendarItem_Name];
     existsCalendar.isShow = [item objectForKey:CalendarItem_IsShow];
     existsCalendar.calendarColorID = colorID;
-	existsCalendar.updateDate = [NSDate date];
-    
+
     [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
     return YES;

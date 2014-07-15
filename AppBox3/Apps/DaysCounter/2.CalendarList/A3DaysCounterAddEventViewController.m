@@ -505,6 +505,7 @@
                     UITextField *textField = (UITextField*)[cell viewWithTag:10];
                     UIButton *button = (UIButton*)[cell viewWithTag:11];
                     textField.delegate = self;
+					textField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
 					textField.placeholder = NSLocalizedString(@"Title", nil);
                     [button addTarget:self action:@selector(toggleFavorite:) forControlEvents:UIControlEventTouchUpInside];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
