@@ -868,6 +868,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     // name, order 변경안됨
     // category를 바꾼걸로
     _item.categoryID = toCategory.uniqueID;
+	_walletCategory = toCategory;
 
 	_isMemoCategory = [_item.categoryID isEqualToString:A3WalletUUIDMemoCategory];
 
