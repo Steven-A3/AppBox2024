@@ -791,8 +791,8 @@
 "Internet connection is not available." = "インターネット接続が利用できません。";
 
 "Setup AppBox Pro data stored in iCloud" = "iCloudに載っているAppBox Proデーターをセットアップする";
-"Delete and start over" = "データを消去して新たに始める";
-"Use data stored in iCloud" = "iCloudに載っているデーターを使う";
+"Delete and start over" = "データを消去,新たに始める";
+"Use data stored in iCloud" = "iCloudのデーターを使う";
 
 "Add this place" = "この場所を追加";
 

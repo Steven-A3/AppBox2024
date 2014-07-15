@@ -22,7 +22,7 @@
 }
 
 + (CGFloat)noteCellHeight {
-	return 150.0;
+	return IS_IPHONE35 ? 120.0 : 150.0;
 //	CGFloat keyboardHeight;
 //	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 //

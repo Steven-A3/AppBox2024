@@ -246,6 +246,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			textField.textColor = [UIColor blackColor];
             textField.delegate = self;
 			textField.placeholder = NSLocalizedString(@"Name", nil);
+			textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         else if( cellType == AccountCell_Notes ){
