@@ -63,14 +63,14 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (cell.tag) {
 		case 1100:
-			if (![[NSUserDefaults standardUserDefaults] useKoreanLunarCalendar]) {
+			if (![[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion]) {
 				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 			} else {
 				cell.accessoryType = UITableViewCellAccessoryNone;
 			}
 			break;
 		case 1200:
-			if ([[NSUserDefaults standardUserDefaults] useKoreanLunarCalendar]) {
+			if ([[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion]) {
 				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 			} else {
 				cell.accessoryType = UITableViewCellAccessoryNone;

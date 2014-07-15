@@ -677,12 +677,12 @@ extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 	return [_dateFormatter stringFromDate:date];
 }
 
-- (NSString *)lunarStringFromDate:(NSDate *)date {
+- (NSString *)lunarStringFromDate:(NSDate *)date isKorean:(BOOL)isKorean {
 	NSDateComponents *dateComponents = [[A3AppDelegate instance].calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:date];
 	NSDateComponents *lunarComponents = [NSDate lunarCalcWithComponents:dateComponents
 													   gregorianToLunar:YES
 															  leapMonth:NO
-																 korean:[[NSUserDefaults standardUserDefaults] useKoreanLunarCalendar]
+																 korean:isKorean
 														resultLeapMonth:NULL];
 	[self.dateFormatter setDateFormat:_dateFormat];
 	return [_dateFormatter stringFromDateComponents:lunarComponents];

@@ -268,4 +268,8 @@ https://github.com/andrealufino/ALSystemUtilities/blob/develop/ALSystemUtilities
 	return [countryCodes indexOfObject:[currentLocale objectForKey:NSLocaleCountryCode]] != NSNotFound;
 }
 
++ (BOOL)useKoreanLunarCalendar {
+	return [[NSLocale preferredLanguages][0] isEqualToString:@"ko"] || [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] isEqualToString:@"KR"];
+}
+
 @end

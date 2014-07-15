@@ -12,7 +12,8 @@
 - (void)setNavigationBarHidden:(BOOL)hidden;
 - (void)updatePhotoLabelText;
 - (NSString *)stringFromDate:(NSDate *)date;
-- (NSString *)lunarStringFromDate:(NSDate *)date;
+
+- (NSString *)lunarStringFromDate:(NSDate *)date isKorean:(BOOL)isKorean;
 
 @end
 

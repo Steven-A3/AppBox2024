@@ -17,7 +17,7 @@ extern NSString *const A3SettingsUseKoreanCalendarForLunarConversion;
 - (NSString *)stringForSyncMethod;
 - (NSString *)stringForRecentToKeep;
 
-- (BOOL)useKoreanLunarCalendar;
+- (BOOL)useKoreanLunarCalendarForConversion;
 
 - (void)setDateComponents:(NSDateComponents *)dateComponents forKey:(NSString *)key;
 

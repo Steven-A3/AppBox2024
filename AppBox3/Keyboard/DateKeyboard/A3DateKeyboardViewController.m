@@ -188,7 +188,8 @@
 
 		NSRange range;
 		if (_isLunarDate) {
-			BOOL useKorean = [[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion];
+			// 한국 음력 적용 규칙, 음력 변환기에서는 설정에 따르고 디폴트 설정은 언어/국가를 보고 한글/한국인경우에는 한국 음력, 그 외는 중국 음력을 적용한다.
+			BOOL useKorean = [A3UIDevice useKoreanLunarCalendar];
 			NSInteger maxDayForMonth = [NSDate lastMonthDayForLunarYear:self.dateComponents.year month:self.dateComponents.month isKorean:useKorean];
 			range = NSMakeRange(0, maxDayForMonth);
 		} else {

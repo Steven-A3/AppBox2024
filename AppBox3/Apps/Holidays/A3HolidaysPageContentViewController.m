@@ -659,7 +659,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		holidayCell.dateLabel.text = [self.pageViewController stringFromDate: cellData[kHolidayDate] ];
 
 		if (showLunar) {
-			holidayCell.lunarDateLabel.text = [self.pageViewController lunarStringFromDate:cellData[kHolidayDate]];
+			holidayCell.lunarDateLabel.text = [self.pageViewController lunarStringFromDate:cellData[kHolidayDate] isKorean:[self.countryCode isEqualToString:@"kr"] ];
 		}
 
 		cell = holidayCell;
