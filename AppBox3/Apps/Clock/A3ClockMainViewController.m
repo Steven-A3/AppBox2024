@@ -184,6 +184,8 @@ NSString *const A3ClockUserDefaultsCurrentPage = @"A3ClockUserDefaultsCurrentPag
 		[_clockAppsButton makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.view).with.offset(8);
 			_appsButtonTop = make.top.equalTo(self.view.top).with.offset(26);
+            make.width.equalTo(@44);
+            make.height.equalTo(@44);
 		}];
 	}
 	return _clockAppsButton;
