@@ -705,6 +705,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 }
 
 #pragma mark FileManagerDelegate
+
 /* fileManager:shouldCopyItemAtPath:toPath: gives the delegate an opportunity to filter the resulting copy. Returning YES from this method will allow the copy to happen. Returning NO from this method causes the item in question to be skipped. If the item skipped was a directory, no children of that directory will be copied, nor will the delegate be notified of those children.
  
  If the delegate does not implement this method, the NSFileManager instance acts as if this method returned YES.
@@ -746,12 +747,12 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
  If the delegate does not implement this method, the NSFileManager instance acts as if this method returned NO.
  */
 - (BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error movingItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath {
-    NSLog(@"Error : %@", error);
+    FNLOG(@"Error : %@", error);
     return NO;
 }
 
 - (BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error movingItemAtURL:(NSURL *)srcURL toURL:(NSURL *)dstURL {
-    NSLog(@"Error : %@", error);
+    FNLOG(@"Error : %@", error);
     return NO;
 }
 
@@ -772,12 +773,12 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
  If the delegate does not implement this method, the NSFileManager instance acts as if this method returned NO.
  */
 - (BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error linkingItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath {
-    NSLog(@"Error : %@", error);
+    FNLOG(@"Error : %@", error);
     return NO;
 }
 
 - (BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error linkingItemAtURL:(NSURL *)srcURL toURL:(NSURL *)dstURL {
-    NSLog(@"Error : %@", error);
+    FNLOG(@"Error : %@", error);
     return NO;
 }
 
@@ -798,12 +799,12 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
  If the delegate does not implement this method, the NSFileManager instance acts as if this method returned NO.
  */
 - (BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error removingItemAtPath:(NSString *)path {
-    NSLog(@"Error : %@", error);
+    FNLOG(@"Error : %@", error);
     return NO;
 }
 
 - (BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error removingItemAtURL:(NSURL *)URL {
-    NSLog(@"Error : %@", error);
+    FNLOG(@"Error : %@", error);
     return NO;
 }
 

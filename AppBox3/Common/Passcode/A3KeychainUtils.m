@@ -110,10 +110,11 @@ static NSString *kA3KeychainAccountName = @"A3AppBox3Passcode";
 
 #pragma mark - Migration from V1
 
-NSString *const kUserEnabledPasscode				= @"kUserEnabledPasscode";
+NSString *const kUserEnabledPasscode					= @"kUserEnabledPasscode";
 NSString *const kUserSavedPasscode					= @"kUserSavedPasscode";
 NSString *const kUserSavedPasscodeHint				= @"kUserSavedPasscodHint";
 NSString *const USERPASSCODEDECRYPTKEY				= @"d54?qjS8QD[.,UasG2R7FhS8?uk-D9+L";
+NSString *const kUserUseSimplePasscode				= @"kUserUseSimplePasscode";
 
 + (void)migrateV1Passcode {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:kUserEnabledPasscode]) {
@@ -123,12 +124,23 @@ NSString *const USERPASSCODEDECRYPTKEY				= @"d54?qjS8QD[.,UasG2R7FhS8?uk-D9+L";
 			NSData *encryptedHintData = [[NSUserDefaults standardUserDefaults] objectForKey:kUserSavedPasscodeHint];
 			NSString *decryptedHint = [[NSString alloc] initWithData:[encryptedHintData AESDecryptWithPassphrase:USERPASSCODEDECRYPTKEY] encoding:NSUTF8StringEncoding];
 
+			if (![[NSUserDefaults standardUserDefaults] boolForKey:kUserUseSimplePasscode]) {
+				[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
+			} else {
+				// Verify is it simple passcode.
+				NSCharacterSet *digitCharacterSet = [NSCharacterSet decimalDigitCharacterSet];
+				NSString *verification = [decryptedPasscode stringByTrimmingCharactersInSet:digitCharacterSet];
+				if ([decryptedPasscode length] != 4 || [verification length] != 0) {
+					[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
+				}
+			}
 			[A3KeychainUtils storePassword:decryptedPasscode hint:decryptedHint];
 		}
 	}
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserEnabledPasscode];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserSavedPasscode];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserSavedPasscodeHint];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserUseSimplePasscode];
 }
 
 @end
