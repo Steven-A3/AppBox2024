@@ -134,7 +134,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 		self.downloadInProgress = YES;
 
 		NSString *filePath = [@"FlickrRecommendation.json" pathInCachesDataDirectory];
-		if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+		if (![[NSFileManager new] fileExistsAtPath:filePath]) {
 			FNLOG(@"FlickrRecommendation.json file did not downloaded yet.");
 			return;
 		}
@@ -325,7 +325,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 		}
 	}
 	NSString *filename = [[NSUserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [NSFileManager new];
 	[fileManager removeItemAtPath:[filename pathInLibraryDirectory] error:NULL];
 
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

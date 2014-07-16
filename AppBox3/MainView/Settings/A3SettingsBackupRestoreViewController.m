@@ -289,7 +289,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 		A3AppDelegate *appDelegate = [A3AppDelegate instance];
 		appDelegate.ubiquityStoreManager = nil;
 
-		NSURL *applicationSupportURL = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory
+		NSURL *applicationSupportURL = [[[NSFileManager new] URLsForDirectory:NSApplicationSupportDirectory
 																			   inDomains:NSUserDomainMask] lastObject];
 		self.backupRestoreManager.delegate = self;
 		[self.backupRestoreManager restoreDataAt:[@"restore" pathInCachesDirectory] toURL:[applicationSupportURL URLByAppendingPathComponent:@"UbiquityStore.sqlite"]];
@@ -347,7 +347,6 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 	_HUD.labelText = NSLocalizedString(@"Downloading", @"Downloading");
 
 	[_HUD show:YES];
-
 }
 
 #pragma mark - Backup Restore Manager

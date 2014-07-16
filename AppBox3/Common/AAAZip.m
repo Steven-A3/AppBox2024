@@ -79,7 +79,7 @@
     //	zipInfo.dosDate = (unsigned long) current;
     
 	NSError *error = nil;
-	NSDictionary* attr = [[NSFileManager defaultManager] attributesOfItemAtPath:file error:&error];
+	NSDictionary* attr = [[NSFileManager new] attributesOfItemAtPath:file error:&error];
 	if( attr )
 	{
 		NSDate* fileDate = (NSDate*)[attr objectForKey:NSFileModificationDate];
@@ -265,7 +265,7 @@
     for(aFileInfo in filelist)
     {
         aFilePath = [aFileInfo objectForKey:@"name"];
-        fileattrib = [[NSFileManager defaultManager] attributesOfItemAtPath:aFilePath error:&error];
+        fileattrib = [[NSFileManager new] attributesOfItemAtPath:aFilePath error:&error];
         if(error)
         {
             FNLOG(@"getTotalBytes error %@, %@", aFilePath, error.localizedDescription );
@@ -314,7 +314,7 @@
                 
                 // compress file
                 if([self addFileToZip:filePath newname:newPath]) {
-                    currentByte += [[[[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil] objectForKey:NSFileSize] floatValue];
+                    currentByte += [[[[NSFileManager new] attributesOfItemAtPath:filePath error:nil] objectForKey:NSFileSize] floatValue];
 					[self performSelectorOnMainThread:@selector(compressProgress) withObject:nil waitUntilDone:NO];
                 } else {
                     bResult = FALSE;
@@ -369,7 +369,7 @@
 	if( _unzFile ){
         int ret = unzGoToFirstFile( _unzFile );
         unsigned char		buffer[4096] = {0};
-        NSFileManager* fman = [NSFileManager defaultManager];
+        NSFileManager* fman = [NSFileManager new];
         
         if( ret!=UNZ_OK )
         {
@@ -478,7 +478,7 @@
                 if( attr )
                 {
                     //		[attr  setValue:orgDate forKey:NSFileCreationDate];
-                    if( ![[NSFileManager defaultManager] setAttributes:attr ofItemAtPath:fullPath error:nil] )
+                    if( ![fman setAttributes:attr ofItemAtPath:fullPath error:nil] )
                     {
                         // cann't set attributes 
                         FNLOG(@"Failed to set attributes");

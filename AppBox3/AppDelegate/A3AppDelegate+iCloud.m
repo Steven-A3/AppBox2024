@@ -391,8 +391,9 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 #pragma mark - Migrate Local Data
 
 - (void)migrateLocalDataToCloudContext {
+	NSFileManager *fileManager = [NSFileManager new];
 	NSURL *localStoreURL = self.ubiquityStoreManager.localStoreURL;
-	if (![[NSFileManager defaultManager] fileExistsAtPath:[localStoreURL path]]) {
+	if (![fileManager fileExistsAtPath:[localStoreURL path]]) {
 		return;
 	}
 
@@ -412,11 +413,11 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	[psc migratePersistentStore:localStore toURL:targetURL options:cloudOptions withType:NSSQLiteStoreType error:nil];
 	[psc unlock];
 
-	if ([[NSFileManager defaultManager] fileExistsAtPath:[localStoreURL path]]) {
-		[[NSFileManager defaultManager] removeItemAtURL:localStoreURL error:NULL];
+	if ([fileManager fileExistsAtPath:[localStoreURL path]]) {
+		[fileManager removeItemAtURL:localStoreURL error:NULL];
 		NSString *path = [localStoreURL path];
-		[[NSFileManager defaultManager] removeItemAtPath:[path stringByAppendingString:@"-shm"] error:NULL];
-		[[NSFileManager defaultManager] removeItemAtPath:[path stringByAppendingString:@"-wal"] error:NULL];
+		[fileManager removeItemAtPath:[path stringByAppendingString:@"-shm"] error:NULL];
+		[fileManager removeItemAtPath:[path stringByAppendingString:@"-wal"] error:NULL];
 	}
 }
 
@@ -742,7 +743,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 		FNLOG(@"%@", [metaData valueForAttribute:NSMetadataItemFSNameKey]);
 		if (![[metaData valueForAttribute:NSMetadataUbiquitousItemDownloadingStatusKey] isEqualToString:NSMetadataUbiquitousItemDownloadingStatusDownloaded]) {
 			NSURL *fileURL = [metaData valueForKey:NSMetadataItemURLKey];
-			[[NSFileManager defaultManager] startDownloadingUbiquitousItemAtURL:fileURL error:NULL];
+			[[NSFileManager new] startDownloadingUbiquitousItemAtURL:fileURL error:NULL];
 		}
 	}
 
@@ -765,7 +766,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 }
 
 - (void)startDownloadInDirectory:(NSString *)directory {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [NSFileManager new];
 	NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
 	NSArray *files = [fileManager contentsOfDirectoryAtURL:[ubiquityContainerURL URLByAppendingPathComponent:directory] includingPropertiesForKeys:nil options:0 error:NULL];
 	for (NSURL *fileURL in files) {
@@ -782,7 +783,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 }
 
 - (void)deleteCloudFilesToResetCloudInDirectory:(NSString *)directory {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [NSFileManager new];
 	NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
 	NSArray *files = [fileManager contentsOfDirectoryAtURL:[ubiquityContainerURL URLByAppendingPathComponent:directory] includingPropertiesForKeys:nil options:0 error:NULL];
 	for (NSURL *fileURL in files) {

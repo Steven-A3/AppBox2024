@@ -217,7 +217,6 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 }
 
 - (NSArray *)elementsWithData:(NSArray *)elementsDescriptions {
-	FNLOG(@"%@", elementsDescriptions);
 	NSMutableArray *elementsArray = [NSMutableArray new];
 	for (NSDictionary *elementDescription in elementsDescriptions) {
 		if ([elementDescription[kA3AppsMenuExpandable] boolValue] && elementDescription[kA3AppsExpandableChildren]) {

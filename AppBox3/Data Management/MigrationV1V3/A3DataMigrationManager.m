@@ -121,7 +121,7 @@ NSString *const V1AlarmDirectoryName = @"Alarm";
 NSString *const V1AlarmMP3DirectoryName = @"mp3";
 
 - (void)deleteV1DataFiles {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [NSFileManager new];
 	NSArray *deleteCandidates = @[
 			V1AlarmsDataFilename, V1CurrencyCodesDBFilename, V1UnitConverterDataFilename, V1UnitConverterFavoriteDataFilename,
 			V1UnitFavoritesDataFilename, V1DashboardSettingsFilename, V1DashboardBackgroundFilename, V1DaysUntilDataFilename,
@@ -171,7 +171,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 	[modelManager prepareInContext:context];
 
 	DaysCounterCalendar *daysCounterCalendar = [DaysCounterCalendar MR_findFirstOrderedByAttribute:@"order" ascending:YES inContext:context];
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [NSFileManager new];
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
 	for (NSDictionary *v1Item in V1DataArray) {
 		@autoreleasepool {
@@ -358,7 +358,7 @@ NSString *const WalletFieldID				= @"WALLETFIELDID";		//	Key, string
 NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 
 - (BOOL)walletDataFileExists {
-	return [[NSFileManager defaultManager] fileExistsAtPath:[self walletDataFilePath]];
+	return [[NSFileManager new] fileExistsAtPath:[self walletDataFilePath]];
 }
 
 - (NSDictionary *)walletDataWithPassword:(NSString *)password {
@@ -401,7 +401,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 
 	NSArray *V1CategoryInfoArray = walletDictionary[KWalletTypeInfoArray];
 
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [NSFileManager new];
 
 	for (NSDictionary *V1Category in V1CategoryInfoArray) {
 		@autoreleasepool {

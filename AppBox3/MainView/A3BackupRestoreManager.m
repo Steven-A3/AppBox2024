@@ -204,7 +204,7 @@ extern NSString *const USMCloudContentName;
 	NSString *seedFilename = [NSString stringWithFormat:@"storeBackupFile-%ld-%ld-%ld-%ld-%ld-%ld", (long) components.year, (long) components.month, (long) components.day, (long) components.hour, (long) components.minute, (long) components.second];
 	NSString *filename = seedFilename;
 	NSString *path = [[filename stringByAppendingPathExtension:@"sqlite"] pathInDocumentDirectory];
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [NSFileManager new];
 	NSInteger option = 1;
 	while ([fileManager fileExistsAtPath:path]) {
 		filename = [seedFilename stringByAppendingFormat:@"-%ld", (long)option++];
@@ -219,7 +219,7 @@ extern NSString *const USMCloudContentName;
 	NSString *seedFilename = [NSString stringWithFormat:@"AppBoxBackup-%ld-%ld-%ld-%ld-%ld-%ld", (long) components.year, (long) components.month, (long) components.day, (long) components.hour, (long) components.minute, (long) components.second];
 	NSString *filename = seedFilename;
 	NSString *path = [[filename stringByAppendingPathExtension:@"backup"] pathInDocumentDirectory];
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [NSFileManager new];
 	NSInteger option = 1;
 	while ([fileManager fileExistsAtPath:path]) {
 		filename = [seedFilename stringByAppendingFormat:@"-%ld", (long)option++];
@@ -271,7 +271,7 @@ extern NSString *const USMCloudContentName;
 // targetURL : .../UbiquityStore.sqlite
 
 - (void)restoreDataAt:(NSString *)backupFilePath toURL:(NSURL *)toURL {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [NSFileManager new];
 	[self deleteCoreDataStoreFilesAt:toURL];
 	[self removeMediaFiles];
 
@@ -329,13 +329,13 @@ extern NSString *const USMCloudContentName;
 }
 
 - (void)moveComponent:(NSString *)component fromURL:(NSURL *)fromURL toURL:(NSURL *)toURL {
-	[[NSFileManager defaultManager] moveItemAtURL:[fromURL URLByAppendingPathComponent:component]
+	[[NSFileManager new] moveItemAtURL:[fromURL URLByAppendingPathComponent:component]
 											toURL:[toURL URLByAppendingPathComponent:component]
 											error:NULL];
 }
 
 - (void)moveFilesFromURL:(NSURL *)fromURL toURL:(NSURL *)toURL {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [NSFileManager new];
 	NSArray *files = [fileManager contentsOfDirectoryAtPath:[fromURL path] error:NULL];
 	for (NSString *filename in files) {
 		[fileManager moveItemAtURL:[fromURL URLByAppendingPathComponent:filename]
@@ -352,7 +352,7 @@ extern NSString *const USMCloudContentName;
 }
 
 - (void)deleteCoreDataStoreFilesAt:(NSURL *)targetURL {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [NSFileManager new];
 
 	// Delete existing Core Data Store
 	NSString *storeFilename = [targetURL lastPathComponent];
@@ -377,7 +377,7 @@ extern NSString *const USMCloudContentName;
 }
 
 - (void)removeFilesAtDirectory:(NSString *)path {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [NSFileManager new];
 	NSArray *filesInDirectory = [fileManager contentsOfDirectoryAtPath:path error:NULL];
 	for (NSString *filename in filesInDirectory) {
 		[fileManager removeItemAtPath:[path stringByAppendingPathComponent:filename] error:NULL];

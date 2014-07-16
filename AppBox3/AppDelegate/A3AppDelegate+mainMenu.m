@@ -121,7 +121,6 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 			[sortedMenuArray addObject:modifiedSection];
 		}
 	}
-	FNLOG(@"%@", sortedMenuArray);
 	return sortedMenuArray;
 }
 

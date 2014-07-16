@@ -85,7 +85,7 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 	[self.reachability startNotifier];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
 
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [NSFileManager new];
 	[fileManager setupCacheStoreFile];
 	[self setupCloud];
 
@@ -445,7 +445,7 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 
 - (void)downloadDataFiles {
 	_downloadList = [NSMutableArray new];
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fileManager = [NSFileManager new];
 	if ([A3UIDevice shouldSupportLunarCalendar]) {
 		NSString *kanjiDataFile = [@"data/LunarConverter.sqlite" pathInCachesDirectory];
 		if (![fileManager fileExistsAtPath:kanjiDataFile]) {
