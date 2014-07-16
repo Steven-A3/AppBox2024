@@ -53,40 +53,24 @@ extern NSString *const USMCloudContentName;
 }
 
 - (void)backupCoreDataStore {
-	// Copy core data store file to backup file
-	NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:nil];
-	NSPersistentStoreCoordinator *applicationStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
-	NSURL *applicationStoreURL;
 	A3AppDelegate *appDelegate = [A3AppDelegate instance];
-	NSMutableDictionary *storeOptions;
-	if (appDelegate.ubiquityStoreManager.cloudEnabled) {
-		applicationStoreURL = [appDelegate.ubiquityStoreManager URLForCloudStore];
-		storeOptions = [appDelegate.ubiquityStoreManager optionsForCloudStoreURL:applicationStoreURL];
-		[storeOptions setObject:@YES forKey:NSPersistentStoreRemoveUbiquitousMetadataOption];
-	} else {
-		applicationStoreURL = [appDelegate.ubiquityStoreManager localStoreURL];
-		storeOptions = [appDelegate.ubiquityStoreManager optionsForLocalStore];
-	}
-
-	NSError *error;
-	id sourceStore = [applicationStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-											  configuration:nil
-														URL:applicationStoreURL
-													options:storeOptions
-													  error:&error];
 
 	self.backupCoreDataStorePath = [self uniquePathInDocumentDirectory];
-	if (sourceStore) {
-		NSDictionary *migrationOptions = nil;
-		if (appDelegate.ubiquityStoreManager.cloudEnabled) {
-			migrationOptions = @{NSPersistentStoreRemoveUbiquitousMetadataOption:@YES};
-		}
-		NSURL *backupStoreURL = [NSURL fileURLWithPath:_backupCoreDataStorePath];
-		[applicationStoreCoordinator migratePersistentStore:sourceStore toURL:backupStoreURL
-													options:migrationOptions
-												   withType:NSSQLiteStoreType
-													  error:&error];
+	NSDictionary *migrationOptions = nil;
+	if (appDelegate.ubiquityStoreManager.cloudEnabled) {
+		migrationOptions = @{NSPersistentStoreRemoveUbiquitousMetadataOption:@YES};
 	}
+	NSURL *backupStoreURL = [NSURL fileURLWithPath:_backupCoreDataStorePath];
+	
+	NSError *error;
+	NSPersistentStoreCoordinator *appPSC = [[A3AppDelegate instance] persistentStoreCoordinator];
+	[appPSC lock];
+	[appPSC migratePersistentStore:appPSC.persistentStores[0]
+							 toURL:backupStoreURL
+						   options:migrationOptions
+						  withType:NSSQLiteStoreType
+							 error:&error];
+	[appPSC unlock];
 
 	NSMutableArray *fileList = [NSMutableArray new];
 	_deleteFilesAfterZip = [NSMutableArray new];

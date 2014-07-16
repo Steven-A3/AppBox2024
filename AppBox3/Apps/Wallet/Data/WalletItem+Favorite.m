@@ -19,6 +19,8 @@
     if (isAdd) {
         if (self.favorite == nil) {
             WalletFavorite *favorite = [WalletFavorite MR_createEntity];
+			favorite.uniqueID = [[NSUUID UUID] UUIDString];
+			favorite.updateDate = [NSDate date];
 			[favorite assignOrder];
 			self.favorite = favorite;
             

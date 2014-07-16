@@ -642,12 +642,13 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	_item.updateDate = [NSDate date];
 	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
 	if ([context hasChanges]) {
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[context MR_saveToPersistentStoreAndWait];
         
         if (_delegate && [_delegate respondsToSelector:@selector(walletItemEdited:)]) {
             [_delegate walletItemEdited:_item];
         }
     }
+
 	[self moveMediaFilesToNormalPath];
 
 	if (_alwaysReturnToOriginalCategory || [_originalCategoryUniqueID isEqualToString:_item.categoryID]) {
