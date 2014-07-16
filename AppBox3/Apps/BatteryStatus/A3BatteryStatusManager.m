@@ -173,7 +173,7 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
 			@"Standby",
 			@"FaceTime",
 			@"GPS",
-			@"Charging times",
+			@"Charging time",
 			@"2D Game",
 			@"3D Game",
 			@"YouTube"];

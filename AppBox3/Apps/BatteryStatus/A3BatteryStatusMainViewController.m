@@ -386,21 +386,41 @@ static NSString *CellIdentifier = @"Cell";
 
     if (_sectionHeaderView.tableSegmentButton.selectedSegmentIndex==0) {
         cell.detailTextLabel.text = [rowData objectForKey:@"value"];
-    } else {
-        NSInteger maxTime = [[rowData objectForKey:@"value"] integerValue];
-        NSInteger remainingMinute = (maxTime*60) * [[UIDevice currentDevice] batteryLevel];
-		long hours = labs(remainingMinute / 60);
-		long minutes = labs(remainingMinute % 60);
-		if (hours != 0 && minutes != 0) {
-			cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
-																   [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours", @"StringsDict", nil), hours],
-																   [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld minutes", @"StringsDict", nil), minutes]];
-
-		} else if (hours != 0) {
-			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours", @"StringsDict", nil), hours];
-		} else {
-			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld minutes", @"StringsDict", nil), minutes];
-		}
+    }
+    else {
+        
+        if ([[rowData objectForKey:@"title"] isEqualToString:@"Charging time"]) {
+            NSInteger maxTime = [[rowData objectForKey:@"value"] integerValue];
+            NSInteger remainingMinute = (maxTime*60) * (1.0 - [[UIDevice currentDevice] batteryLevel]);
+            long hours = labs(remainingMinute / 60);
+            long minutes = labs(remainingMinute % 60);
+            if (hours != 0 && minutes != 0) {
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
+                                             [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours", @"StringsDict", nil), hours],
+                                             [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld minutes", @"StringsDict", nil), minutes]];
+                
+            } else if (hours != 0) {
+                cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours", @"StringsDict", nil), hours];
+            } else {
+                cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld minutes", @"StringsDict", nil), minutes];
+            }
+        }
+        else {
+            NSInteger maxTime = [[rowData objectForKey:@"value"] integerValue];
+            NSInteger remainingMinute = (maxTime*60) * [[UIDevice currentDevice] batteryLevel];
+            long hours = labs(remainingMinute / 60);
+            long minutes = labs(remainingMinute % 60);
+            if (hours != 0 && minutes != 0) {
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
+                                             [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours", @"StringsDict", nil), hours],
+                                             [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld minutes", @"StringsDict", nil), minutes]];
+                
+            } else if (hours != 0) {
+                cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours", @"StringsDict", nil), hours];
+            } else {
+                cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld minutes", @"StringsDict", nil), minutes];
+            }
+        }
     }
     
     return cell;
