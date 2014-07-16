@@ -164,7 +164,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 - (void)ubiquityStoreManager:(UbiquityStoreManager *)manager willLoadStoreIsCloud:(BOOL)isCloudStore {
 	if (!_userChangingCloud) {
 		dispatch_async(dispatch_get_main_queue(), ^{
-			self.hud.labelText = NSLocalizedString(@"Syncing is in Progress", nil);
+			self.hud.labelText = NSLocalizedString(@"Loading", nil);
 		});
 	}
 
@@ -298,9 +298,9 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCoreDataReady object:nil];
 	FNLOG();
 
+	__typeof(self) __weak weakSelf = self;
 	if (_userChangingCloud) {
 		_userChangingCloud = NO;
-		__typeof(self) __weak weakSelf = self;
 		dispatch_async(dispatch_get_main_queue(), ^{
 			UIImageView *imageView = [UIImageView new];
 			[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:37]];
@@ -323,7 +323,9 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 			});
 		});
 	} else {
-		[self.hud hide:YES];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self.hud hide:YES];
+		});
 	}
 }
 

@@ -906,7 +906,5 @@
 "Hidden" = "모두 숨김";
 
 "Slideshow_Repeat" = "반복";
-
 "Use AppBox Pro" = "AppBox Pro 시작";
-
-"Syncing is in Progress" = "데이터를 동기화하고 있습니다.";
+"Loading" = "로드하는 중";
