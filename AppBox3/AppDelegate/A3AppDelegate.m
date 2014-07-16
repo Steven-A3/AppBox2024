@@ -61,8 +61,6 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
-
 	[self prepareDirectories];
 	[self registerPasscodeUserDefaults];
 
@@ -596,6 +594,20 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 	for (NSString *countryCode in holidayCountries) {
 		[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:countryCode];
 	}
+}
+
+- (MBProgressHUD *)hud {
+	if (!_hud) {
+		UIView *targetViewForHud = [[self visibleViewController] view];
+		_hud = [MBProgressHUD showHUDAddedTo:targetViewForHud animated:YES];
+		_hud.minShowTime = 2;
+		_hud.removeFromSuperViewOnHide = YES;
+		__typeof(self) __weak weakSelf = self;
+		self.hud.completionBlock = ^{
+			weakSelf.hud = nil;
+		};
+	}
+	return _hud;
 }
 
 @end

@@ -79,6 +79,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 - (void)setCloudEnabled:(BOOL)enable deleteCloud:(BOOL)deleteCloud {
 	_needsDataMigrationBetweenLocalCloud = YES;
+	_userChangingCloud = YES;
 
 	if (enable) {
 		if (deleteCloud) {
@@ -96,15 +97,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	}
 	[self enableCloudForFiles:enable];
 
-	UIView *targetViewForHud = [[self visibleViewController] view];
-	self.hud = [MBProgressHUD showHUDAddedTo:targetViewForHud animated:YES];
 	self.hud.labelText = enable ? NSLocalizedString(@"Enabling iCloud", @"Enabling iCloud") : NSLocalizedString(@"Disabling iCloud", @"Disableing iCloud");
-	self.hud.minShowTime = 2;
-	self.hud.removeFromSuperViewOnHide = YES;
-	__typeof(self) __weak weakSelf = self;
-	self.hud.completionBlock = ^{
-		weakSelf.hud = nil;
-	};
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)note {
@@ -169,6 +162,12 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 }
 
 - (void)ubiquityStoreManager:(UbiquityStoreManager *)manager willLoadStoreIsCloud:(BOOL)isCloudStore {
+	if (!_userChangingCloud) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.hud.labelText = NSLocalizedString(@"Syncing is in Progress", nil);
+		});
+	}
+
 	if (self.managedObjectContext) {
 		NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
 		[managedObjectContext performBlockAndWait:^{
@@ -299,7 +298,8 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCoreDataReady object:nil];
 	FNLOG();
 
-	if (self.hud) {
+	if (_userChangingCloud) {
+		_userChangingCloud = NO;
 		__typeof(self) __weak weakSelf = self;
 		dispatch_async(dispatch_get_main_queue(), ^{
 			UIImageView *imageView = [UIImageView new];
@@ -322,6 +322,8 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 				[weakSelf.hud hide:YES];
 			});
 		});
+	} else {
+		[self.hud hide:YES];
 	}
 }
 

@@ -773,9 +773,7 @@
 "Gray" = "Grigio";
 
 "day(s)" = "giorno(i)";
-
 "Enter an address or city name" = "Inserisci un indirizzo o un nome di città";
-
 "This will reset all settings.\nNo data will be deleted." = "Questo resetterà tutte le impostazioni.\nNessun dato sarà eliminato";
 "Reset All" = "Resetta tutto";
 "Reset Show/Hide Settings" = "Resetta Impostazioni";
@@ -816,15 +814,11 @@
 "%/mo" = "%/mes";
 
 "Icon" = "Icona";
-
 "  (e.g. %@)" = "  (es. %@)";
 
 "DaysCounter_ALL" = "Tutte";
-
 "You can calculate more in the AppBox Pro." = "È possibile calcolare altro nell’AppBox Pro.";
-
 "I'd like to share a calculation with you." = "Vorrei condividere un calcolo con te";
-
 "I'd like to share a conversion with you." = "Vorrei condividere una conversione con te";
 "You can convert more in the AppBox Pro." = "È possibile convertire altro nell’AppBox Pro.";
 "Download from AppStore" = "Scarica da AppStore";
@@ -896,5 +890,5 @@
 "Hidden" = "Nascosto";
 
 "Slideshow_Repeat" = "Ripeti";
-
 "Use AppBox Pro" = "Usa AppBox Pro";
+"Syncing is in Progress" = "Sincronizzazione è in corso";

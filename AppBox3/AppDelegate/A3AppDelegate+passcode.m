@@ -49,14 +49,12 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 	FNLOG(@"**************************************************************");
 }
 
-
 - (BOOL)didPasscodeTimerEnd {
 	NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
 	// startTime wasn't saved yet (first app use and it crashed, phone force closed, etc) if it returns -1.
 	if (now - [self timerStartTime] >= [self timerDuration] || [self timerStartTime] == -1) return YES;
 	return NO;
 }
-
 
 - (BOOL)isSimplePasscode {
 	NSNumber *obj = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForUseSimplePasscode];
