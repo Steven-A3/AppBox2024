@@ -1272,7 +1272,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	if (closestEvent) return closestEvent;
 
 	// return closest since
-	return [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate < %@", today] sortedBy:@"effectiveStartDate" ascending:YES];
+	return [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate < %@", calendar.uniqueID, today] sortedBy:@"effectiveStartDate" ascending:YES];
 }
 
 - (void)renewEffectiveStartDates:(DaysCounterCalendar *)calendar
