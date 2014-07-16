@@ -23,6 +23,10 @@
 #import "UIViewController+A3Addition.h"
 #import "UILabel+BaseAlignment.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UnitConvertItem+initialize.h"
+#import "UnitFavorite+initialize.h"
+#import "UnitType+initialize.h"
+#import "UnitPriceFavorite+initialize.h"
 
 NSString *const A3UnitPriceCurrencyCode = @"A3UnitPriceCurrencyCode";
 NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUnitPriceCurrencyCodeChanged";
@@ -61,6 +65,19 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 {
     [super viewDidLoad];
 
+	if ([UnitConvertItem MR_countOfEntities] == 0) {
+		[UnitConvertItem reset];
+	}
+	if ([UnitFavorite MR_countOfEntities] == 0) {
+		[UnitFavorite reset];
+	}
+	if (![UnitType MR_countOfEntities]) {
+		[UnitType resetUnitTypeLists];
+	}
+	if ([UnitPriceFavorite MR_countOfEntities] == 0) {
+		[UnitPriceFavorite reset];
+	}
+	
     self.navigationItem.title = NSLocalizedString(@"Unit Price", @"Unit Price");
     
     [self makeBackButtonEmptyArrow];

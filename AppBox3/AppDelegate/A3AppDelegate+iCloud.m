@@ -257,46 +257,16 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 		[self deDupeForEntity:NSStringFromClass([WalletCategory class])];
 		[self deDupeForEntity:NSStringFromClass([WalletFavorite class])];
 		[self deDupeForEntity:NSStringFromClass([WalletItem class])];
-
-	} else {
-		if (!_needsDataMigrationBetweenLocalCloud) {
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[A3CurrencyDataManager setupFavorites];
-
-				A3DaysCounterModelManager *modelManager = [A3DaysCounterModelManager new];
-				[modelManager prepareInContext:self.managedObjectContext];
-
-				A3LadyCalendarModelManager *dataManager = [A3LadyCalendarModelManager new];
-				[dataManager prepareAccountInContext:self.managedObjectContext];
-				if ([WalletCategory MR_countOfEntities] == 0) {
-					[WalletCategory resetWalletCategoriesInContext:self.managedObjectContext];
-				}
-
-				if ([UnitConvertItem MR_countOfEntities] == 0) {
-					[UnitConvertItem reset];
-				}
-				if ([UnitFavorite MR_countOfEntities] == 0) {
-					[UnitFavorite reset];
-				}
-				if (![UnitType MR_countOfEntities]) {
-					[UnitType resetUnitTypeLists];
-				}
-				if ([UnitPriceFavorite MR_countOfEntities] == 0) {
-					[UnitPriceFavorite reset];
-				}
-			});
-		}
 	}
 
 	[self coreDataReady];
 
-	FNLOG();
-	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
-	[A3LadyCalendarModelManager setupLocalNotification];
-	FNLOG();
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
+		[A3LadyCalendarModelManager setupLocalNotification];
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCoreDataReady object:nil];
-	FNLOG();
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCoreDataReady object:nil];
+	});
 
 	__typeof(self) __weak weakSelf = self;
 	if (_userChangingCloud) {
@@ -324,9 +294,10 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 		});
 	} else {
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[self.hud hide:YES];
+			[weakSelf.hud hide:YES];
 		});
 	}
+	FNLOG();
 }
 
 - (void)ubiquityStoreManager:(UbiquityStoreManager *)manager failedLoadingStoreWithCause:(UbiquityStoreErrorCause)cause context:(id)context

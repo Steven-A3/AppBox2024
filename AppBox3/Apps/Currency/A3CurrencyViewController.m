@@ -84,6 +84,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 {
     [super viewDidLoad];
 
+	[A3CurrencyDataManager setupFavorites];
+	
 	self.tableView.dataSource = self;
 	self.tableView.delegate = self;
 

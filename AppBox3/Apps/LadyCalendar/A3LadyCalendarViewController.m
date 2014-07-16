@@ -57,6 +57,8 @@
 {
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
+	
+	
 	self.title = NSLocalizedString(@"Ladies Calendar", nil);
 
 	[self leftBarButtonAppsButton];
@@ -88,8 +90,11 @@
 	[self setupWeekdayLabels];
 
 	[self makeBackButtonEmptyArrow];
+	
 	[self.dataManager prepare];
+	[self.dataManager prepareAccountInContext:[A3AppDelegate instance].managedObjectContext];
 	[self.dataManager currentAccount];
+	
 	[self setupCalendarRange];
 	numberOfMonthInPage = 1;
 	self.topSeparatorViewConst.constant = 1.0 / [[UIScreen mainScreen] scale];

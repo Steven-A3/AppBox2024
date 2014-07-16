@@ -334,6 +334,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 	if ([menuElement.imageName isEqualToString:@"DaysCounter"]) {
         A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
+		[sharedManager prepareInContext:[A3AppDelegate instance].managedObjectContext];
 
         NSInteger lastOpenedMainIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"DaysCounterLastOpenedMainIndex"];
         switch (lastOpenedMainIndex) {
@@ -410,48 +411,20 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	return YES;
 }
 
-- (BOOL)isAppAvailableForElement:(A3TableViewMenuElement *)element {
-	if (![element isKindOfClass:[A3TableViewMenuElement class]]) return NO;
-	if ([element.className_iPhone isEqualToString:@"A3CurrencyViewController"]) {
-		if ([[A3AppDelegate instance] coreDataReadyToUse]) {
-			NSUInteger count = [CurrencyFavorite MR_countOfEntities];
-			return count > 0;
-		} else {
-			return NO;
-		}
-	}
-	return YES;
-}
-
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	A3TableViewMenuElement *element = (A3TableViewMenuElement *) [self elementAtIndexPath:indexPath];
 
 	cell.textLabel.text = NSLocalizedString(cell.textLabel.text, nil);
-	
+
 	if ([element isKindOfClass:[A3TableViewMenuElement class]]) {
-		if ([self isAppAvailableForElement:element]) {
-			cell.textLabel.textColor = [UIColor blackColor];
-			cell.accessoryView = nil;
-			if (![element isKindOfClass:[A3TableViewExpandableElement class]]) {
-				cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-			}
-			if ([element.imageName length]) {
-				cell.imageView.image= [UIImage imageNamed:element.imageName];
-				cell.imageView.tintColor = nil;
-			}
-		} else {
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-			cell.textLabel.textColor = [UIColor colorWithRed:194.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1.0];
-
-			UIImage *image = [[UIImage imageNamed:element.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-			cell.imageView.image = image;
-			cell.imageView.tintColor = [UIColor colorWithRed:194.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1.0];
-
-			JNJProgressButton *progressButton = [[JNJProgressButton alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
-			progressButton.needsProgress = YES;
-			progressButton.userInteractionEnabled = NO;
-			cell.accessoryView = progressButton;
-			[(id<JNJProgressButtonExtension>)progressButton startProgress];
+		cell.textLabel.textColor = [UIColor blackColor];
+		cell.accessoryView = nil;
+		if (![element isKindOfClass:[A3TableViewExpandableElement class]]) {
+			cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+		}
+		if ([element.imageName length]) {
+			cell.imageView.image= [UIImage imageNamed:element.imageName];
+			cell.imageView.tintColor = nil;
 		}
 	}
 }
@@ -466,9 +439,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		return;
 	}
 	A3TableViewMenuElement *element = (A3TableViewMenuElement *) [self elementAtIndexPath:indexPath];
-	if ([self isAppAvailableForElement:element]) {
-		[element didSelectCellInViewController:(id) self tableView:self.tableView atIndexPath:indexPath];
-	}
+	[element didSelectCellInViewController:(id) self tableView:self.tableView atIndexPath:indexPath];
 }
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {

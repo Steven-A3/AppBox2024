@@ -12,6 +12,10 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "NSUserDefaults+A3Defaults.h"
 #import "A3UnitConverterMoreTableViewController.h"
+#import "UnitConvertItem.h"
+#import "UnitConvertItem+initialize.h"
+#import "UnitFavorite.h"
+#import "UnitFavorite+initialize.h"
 
 // NSUserDefaults key values:
 NSString *kWhichTabPrefKey		= @"kWhichTab";     // which tab to select at launch
@@ -44,7 +48,17 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
     self = [super initWithCoder:aDecoder];
     if (self) {
         //init
-        
+
+		if ([UnitConvertItem MR_countOfEntities] == 0) {
+			[UnitConvertItem reset];
+		}
+		if ([UnitFavorite MR_countOfEntities] == 0) {
+			[UnitFavorite reset];
+		}
+		if (![UnitType MR_countOfEntities]) {
+			[UnitType resetUnitTypeLists];
+		}
+
         self.delegate = self;
         
         // test for "kWhichTabPrefKey" key value

@@ -423,6 +423,11 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 + (void)setupLocalNotification {
 	[A3LadyCalendarModelManager resetLocalNotifications];
 
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isPredict == %@", @YES];
+	NSArray *predictPeriods = [LadyCalendarPeriod MR_findAllWithPredicate:predicate];
+
+	if (![predictPeriods count]) return;
+
 	NSDictionary *settings = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting];
 	A3LadyCalendarSettingAlertType alertType = (A3LadyCalendarSettingAlertType) [settings[SettingItem_AlertType] integerValue];
 
@@ -448,8 +453,6 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 		case AlertType_None:
 			break;
 	}
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isPredict == %@", @YES];
-	NSArray *predictPeriods = [LadyCalendarPeriod MR_findAllWithPredicate:predicate];
 
 	NSDateComponents *fireDateComponents = [NSDateComponents new];
 	fireDateComponents.day = -beforeDay;

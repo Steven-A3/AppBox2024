@@ -99,8 +99,14 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 }
 
 - (NSArray *)allMenuArrayFromUserDefaults {
+	NSMutableDictionary *allMenusDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuAllMenu];
+	
 	NSArray *allMenuArray;
-	allMenuArray = [self allMenu];
+	if (allMenusDictionary) {
+		allMenuArray = allMenusDictionary[kA3AppsMenuArray];
+	} else {
+		allMenuArray = [self allMenu];
+	}
 	NSMutableArray *sortedMenuArray = [NSMutableArray new];
 	for (NSDictionary *section in allMenuArray) {
 		@autoreleasepool {
@@ -180,8 +186,6 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 }
 
 - (void)storeMenuDictionary:(NSMutableDictionary *)mutableDictionary forKey:(NSString *)key {
-	FNLOG(@"%@, %@", key, mutableDictionary);
-
 	[[NSUserDefaults standardUserDefaults] setObject:mutableDictionary forKey:key];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 

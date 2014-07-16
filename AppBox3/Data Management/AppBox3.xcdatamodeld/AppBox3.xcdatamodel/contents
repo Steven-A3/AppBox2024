@@ -240,9 +240,9 @@
         <attribute name="labelTotal" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="recent" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TipCalcRecently" inverseName="history" inverseEntity="TipCalcRecently" syncable="YES"/>
+        <relationship name="recent" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TipCalcRecent" inverseName="history" inverseEntity="TipCalcRecent" syncable="YES"/>
     </entity>
-    <entity name="TipCalcRecently" representedClassName="TipCalcRecent" syncable="YES">
+    <entity name="TipCalcRecent" representedClassName="TipCalcRecent" syncable="YES">
         <attribute name="beforeSplit" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="costs" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
@@ -262,7 +262,7 @@
     <entity name="TipCalcRoundMethod" representedClassName="TipCalcRoundMethod" syncable="YES">
         <attribute name="optionType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="valueType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="recent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TipCalcRecently" inverseName="roundMethod" inverseEntity="TipCalcRecently" syncable="YES"/>
+        <relationship name="recent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TipCalcRecent" inverseName="roundMethod" inverseEntity="TipCalcRecent" syncable="YES"/>
     </entity>
     <entity name="TranslatorFavorite" representedClassName="TranslatorFavorite" syncable="YES">
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
@@ -442,7 +442,7 @@
         <element name="PercentCalcHistory" positionX="-783" positionY="15" width="128" height="90"/>
         <element name="SalesCalcHistory" positionX="-407" positionY="-327" width="128" height="223"/>
         <element name="TipCalcHistory" positionX="-587" positionY="-310" width="128" height="120"/>
-        <element name="TipCalcRecently" positionX="-774" positionY="-306" width="128" height="268"/>
+        <element name="TipCalcRecent" positionX="-774" positionY="-306" width="128" height="270"/>
         <element name="TipCalcRoundMethod" positionX="-585" positionY="-189" width="128" height="90"/>
         <element name="TranslatorFavorite" positionX="304" positionY="-36" width="128" height="103"/>
         <element name="TranslatorGroup" positionX="-396" positionY="-63" width="128" height="133"/>

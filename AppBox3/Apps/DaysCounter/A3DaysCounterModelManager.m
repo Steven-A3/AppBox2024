@@ -1441,10 +1441,12 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         }
     }];
 
+	NSArray *alertItems = [DaysCounterEvent MR_findAllSortedBy:@"alertDatetime" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"alertDatetime != nil"]];
+	if (![alertItems count]) return;
+
     // 얼럿 생성 & 등록.
     __block NSDate *now = [NSDate date];
     NSMutableArray *localNotifications = [NSMutableArray new];
-    NSArray *alertItems = [DaysCounterEvent MR_findAllSortedBy:@"alertDatetime" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"alertDatetime != nil"]];
     [alertItems enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
         if ([event.hasReminder isEqualToNumber:@(NO)] && event.reminder) {
             [event.reminder MR_deleteEntity];

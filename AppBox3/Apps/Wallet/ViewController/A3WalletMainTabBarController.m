@@ -60,6 +60,9 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
             [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
         }
 
+		if ([WalletCategory MR_countOfEntities] == 0) {
+			[WalletCategory resetWalletCategoriesInContext:[[A3AppDelegate instance] managedObjectContext]];
+		}
 		[WalletData createDirectories];
 
         [self categories];
