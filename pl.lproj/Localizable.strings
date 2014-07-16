@@ -58,23 +58,23 @@
 "Lunar Calendar" = "Kalendarz księżycowy";
 
 /* "Twój przyjaciel przekazuje Ci informację, że Lustro, Budzik, Poziomica, Waluty, Daty, Odliczanie, Napiwki, Jednostki i aplikacje sieciowe (Web Apps)  z AppBox Pro™ są już dostępne na twojego iPhone-a lub iPod-a Touch. Kliknij link poniżej aby ściągnąć AppBox Pro™ ze sklepu iTunes.\n\nhttps://itunes.apple.com/app/id318404385"; */
-"tellafriend" = "Twój przyjaciel przekazuje Ci informację, że Lustro, Budzik, Poziomica, Waluty, Daty, Odliczanie, Napiwki, Jednostki i aplikacje sieciowe (Web Apps)  z AppBox Pro™ są już dostępne na twojego iPhone-a lub iPod-a Touch. Kliknij link poniżej aby ściągnąć AppBox Pro™ ze sklepu iTunes.";
+"tellafriend" = "Przyjaciel przekazuje Ci informacje, że Kalkulator, Daty, Pożyczki, Procenty, Wyprzedaże, Napiwki, Jednostki, Waluty, Kalendarz księżycowy, Tłumacz, Konwerter jednostek, Odliczanie, Wydatki, Kalendarz kobiecy, Portfel, Dni wolne, Status baterii, Zegar, Lupa oraz Lustro są dostępne w aplikacji AppBox Pro™ na iPhone, iPad oraz iPod Touch. Kliknij poniżej aby pobrać AppBox Pro™ z iTunes App Store.”;
 
 /* "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case."; */
-"DISCLAIMER_MESSAGE" = "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case.";
+"DISCLAIMER_MESSAGE" = "Staraliśmy się aby wyświetlić aktualną listę dni wolnych. Jednak w wiele dni wolnych na świecie zależy od lokalnych władz i ich ustaleń. Nie możemy wziąść odpowiedzialności za jakikolwiek błąd lub pominięcie jakieś daty dnia wolnego. Zalecamy aby sprawdzić datę w ambasadzie lub konsulacie kraju, zanim podejmie się decyzję na temat planowanego wyjazdu.";
 
 /* "A Photo behind the Holidays in the AppBox Pro is collected from Flickr that reflect the beauty and magnificence of different locations around the world. Flickr screen name and a link to the photo are shown on the screen. Authors get any and all rights over photo. ALLABOUTAPPS Inc. don't own any photo. If you want to participate this, send us email. You will not receive financial compensation for use of your photos, however will bring a whole new audience to your photo stream. Thanks to authors to share."; */
-"HOLIDAYS_ACKNOWLEDGEMENT" = "A Photo behind the Holidays in the AppBox Pro is collected from Flickr that reflect the beauty and magnificence of different locations around the world. Flickr screen name and a link to the photo are shown on the screen. Authors get any and all rights over photo. ALLABOUTAPPS Inc. don't own any photo. If you want to participate this, send us email. You will not receive financial compensation for use of your photos, however will bring a whole new audience to your photo stream. Thanks to authors to share.";
+"HOLIDAYS_ACKNOWLEDGEMENT" = "Zdjęcia wyświetlane w tle w aplikacji Dni Wolne w pakiecie AppBox Pro są pobierane z serwisu Flickr i pokazują wspaniałe ujęcia z różnych lokalizacji na świecie. Nazwa użytkownika oraz link do zdjęcia są wyświetlane na ekranie. Autorzy zdjęć posiadają do nich wszystkie prawa. ALLABOUTAPPS Inc. nie jest właścicielem tych zdjęć. Jeżeli nie zgadzasz się z udostępnieniem Twojego zdjęcia, wyślij do nas wiadomość email. Nie wypłacamy żadnych finansowych rekompensat za użycie Twoich zdjęć, pomagamy tylko w udostępnieniu Twoich zdjęć szerszej publiczności. Dziękujemy autorom zdjęć za ich udostępnienie.";
 
 /* "Apple uses a technology called Data Protection. It encrypts your data with secure 256-bit key and hardware AES Engine. By setting up a device passcode, you automatically enables Data Protection.\nThe passcode is \"tangled\" with the device's UID, so brute-force attempts must be performed on the device under attack. A large iteration count is used to make each attempt slower. The iteration count is calibrated so that one attempt takes approximately 80 milliseconds. This means it would take more than 5½ years to try all combinations of a six-character alphanumeric passcode with lowercase letters and numbers, or 2½ years for a nine-digit passcode with numbers only."; */
-"SECURITY_INFO" = "Apple uses a technology called Data Protection. It encrypts your data with secure 256-bit key and hardware AES Engine. By setting up a device passcode, you automatically enables Data Protection.\nThe passcode is \"tangled\" with the device's UID, so brute-force attempts must be performed on the device under attack. A large iteration count is used to make each attempt slower. The iteration count is calibrated so that one attempt takes approximately 80 milliseconds. This means it would take more than 5½ years to try all combinations of a six-character alphanumeric passcode with lowercase letters and numbers, or 2½ years for a nine-digit passcode with numbers only.";
+"SECURITY_INFO" = "Firma Apple używa technologii Data Protection. Ta technologia szyfruje Twoje dane za pomocą bezpieczengo klucza 256-bitowego wykorzystując sprzętowy silnik AES. Ustawiając kod blokady, automatycznie uruchamiana jest technologia Data Protection.\n Kod blokady jest \"splątany\" z numerem UID urządzenia, więc wszelkie próby ataku słownikowej mogą być przeprowadzone tylko na fizycznym urządzeniu. Jedno sprawdzenie hasła może być wykonywane co 80 milisekund. W związku z tym, sprawdzenie wszystkich kombinacji hasła zawierajacego sześć znaków alfanumerycznych zawierających małe litery i cyfry może wymagać więcej niż 5 lat i 6 miesięcy lub 2 lata i 6 miesięcy w przypadku hasła zbudowanego z dziewięciu samych cyfr.";
 
 /* "AppBox Pro does not have access to your microphone.\nTo enable access go to %@ Settings > Privacy > Microphone > AppBox Pro"; */
 "microphone access denied" = "AppBox Pro nie ma dostępu do mikrofonu. \nAby włączyć dostęp, przejdź do Ustawienia > Prywatność > Mikrofon > AppBox Pro";
 
 "Theme Color" = "Kolor tematu";
 
-"About" = "O Aplikacji";
+"About" = "Urządzenie";
 "Remaining Time" = "Pozostały czas";
 
 "Favorites" = "Ulubione";
@@ -870,8 +870,8 @@
 "monthly" = "miesięcznika";
 "yearly" = "w ciągu roku";
 
-"No Photos" = "No Photos";
-"You can add photos into events." = "You can add photos into events.";
+"No Photos" = "Brak zdjęć";
+"You can add photos into events." = "Możesz dodać zdjęcia do wydarzeń.";
 
 "UNIT PRICE" = "CENA JEDNOSTKOWA";
 "UNIT" = "JEDNOSTKA";
