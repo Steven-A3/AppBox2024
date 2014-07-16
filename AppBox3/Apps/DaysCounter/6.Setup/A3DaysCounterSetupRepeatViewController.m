@@ -222,7 +222,6 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
 	if ( ![_eventModel.isLunar boolValue] && indexPath.row == ([_itemArray count]-1) ) {
 		// 키보드 보여주기
 		[self showNumberKeyboard];
@@ -232,13 +231,13 @@
 
     if ([_eventModel.isLunar boolValue]) {
         _eventModel.repeatType = indexPath.row == 0 ? @(RepeatType_Never) : @(RepeatType_EveryYear);
-        [self doneButtonAction:nil];
     }
     else {
         NSInteger value = (indexPath.row == ([_itemArray count]-1)) ? 1 : indexPath.row * -1;
         _eventModel.repeatType = @(value);
     }
-	[self doneButtonAction:nil];
+    
+    [self doneButtonAction:nil];
 }
 
 #pragma mark - UITextFieldDelegate
