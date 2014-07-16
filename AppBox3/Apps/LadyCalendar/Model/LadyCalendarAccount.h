@@ -2,14 +2,13 @@
 //  LadyCalendarAccount.h
 //  AppBox3
 //
-//  Created by kimjeonghwan on 7/9/14.
+//  Created by A3 on 7/15/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class LadyCalendarPeriod;
 
 @interface LadyCalendarAccount : NSManagedObject
 
@@ -20,19 +19,5 @@
 @property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSDate * updateDate;
 @property (nonatomic, retain) NSDate * watchingDate;
-@property (nonatomic, retain) NSOrderedSet *periods;
-@end
 
-@interface LadyCalendarAccount (CoreDataGeneratedAccessors)
-
-- (void)insertObject:(LadyCalendarPeriod *)value inPeriodsAtIndex:(NSUInteger)idx;
-- (void)removeObjectFromPeriodsAtIndex:(NSUInteger)idx;
-- (void)insertPeriods:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
-- (void)removePeriodsAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInPeriodsAtIndex:(NSUInteger)idx withObject:(LadyCalendarPeriod *)value;
-- (void)replacePeriodsAtIndexes:(NSIndexSet *)indexes withPeriods:(NSArray *)values;
-- (void)addPeriodsObject:(LadyCalendarPeriod *)value;
-- (void)removePeriodsObject:(LadyCalendarPeriod *)value;
-- (void)addPeriods:(NSOrderedSet *)values;
-- (void)removePeriods:(NSOrderedSet *)values;
 @end

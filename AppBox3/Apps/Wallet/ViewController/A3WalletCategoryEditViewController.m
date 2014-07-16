@@ -12,7 +12,7 @@
 #import "A3WalletCateEditTitleCell.h"
 #import "A3WalletCateEditIconCell.h"
 #import "WalletCategory.h"
-#import "WalletCategory+initialize.h"
+#import "WalletCategory+extension.h"
 #import "WalletField.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+NumberKeyboard.h"

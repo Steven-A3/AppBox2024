@@ -2,12 +2,11 @@
 //  DaysCounterEvent.m
 //  AppBox3
 //
-//  Created by A3 on 6/30/14.
+//  Created by A3 on 7/15/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "DaysCounterEvent.h"
-#import "DaysCounterCalendar.h"
 #import "DaysCounterDate.h"
 #import "DaysCounterEventLocation.h"
 #import "DaysCounterFavorite.h"
@@ -19,6 +18,7 @@
 @dynamic alertDatetime;
 @dynamic alertInterval;
 @dynamic alertType;
+@dynamic calendarID;
 @dynamic durationOption;
 @dynamic effectiveStartDate;
 @dynamic eventName;
@@ -32,7 +32,6 @@
 @dynamic repeatType;
 @dynamic uniqueID;
 @dynamic updateDate;
-@dynamic calendar;
 @dynamic endDate;
 @dynamic favorite;
 @dynamic location;

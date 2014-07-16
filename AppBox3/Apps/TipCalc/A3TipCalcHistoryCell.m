@@ -10,7 +10,7 @@
 #import "NSDate+TimeAgo.h"
 #import "A3DefaultColorDefines.h"
 #import "TipCalcHistory.h"
-#import "TipCalcRecently.h"
+#import "TipCalcRecent.h"
 #import "A3TipCalcDataManager.h"
 
 @interface A3TipCalcHistoryCell ()

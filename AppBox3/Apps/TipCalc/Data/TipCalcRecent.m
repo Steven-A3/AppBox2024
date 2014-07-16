@@ -1,17 +1,17 @@
 //
-//  TipCalcRecently.m
+//  TipCalcRecent.m
 //  AppBox3
 //
-//  Created by A3 on 6/30/14.
+//  Created by A3 on 7/15/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "TipCalcRecently.h"
+#import "TipCalcRecent.h"
 #import "TipCalcHistory.h"
 #import "TipCalcRoundMethod.h"
 
 
-@implementation TipCalcRecently
+@implementation TipCalcRecent
 
 @dynamic beforeSplit;
 @dynamic costs;
@@ -27,6 +27,6 @@
 @dynamic tax;
 @dynamic tip;
 @dynamic history;
-@dynamic rRoundMethod;
+@dynamic roundMethod;
 
 @end

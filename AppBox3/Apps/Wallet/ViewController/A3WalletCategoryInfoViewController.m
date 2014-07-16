@@ -10,7 +10,7 @@
 #import "A3WalletCateTitleView.h"
 #import "A3WalletCateInfoFieldCell.h"
 #import "WalletCategory.h"
-#import "WalletCategory+initialize.h"
+#import "WalletCategory+extension.h"
 #import "WalletField.h"
 #import "WalletData.h"
 #import "NSDate+TimeAgo.h"

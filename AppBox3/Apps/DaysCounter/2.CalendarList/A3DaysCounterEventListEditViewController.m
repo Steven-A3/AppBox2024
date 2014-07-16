@@ -125,9 +125,11 @@
 
 - (void)reloadTableView
 {
-    if( [_calendarItem.calendarType integerValue] == CalendarCellType_User )
-        self.itemArray = [NSMutableArray arrayWithArray:[_calendarItem.events array]];
-    else{
+    if( [_calendarItem.calendarType integerValue] == CalendarCellType_User ) {
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", _calendarItem.uniqueID];
+		NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:predicate];
+        self.itemArray = [NSMutableArray arrayWithArray:events];
+	} else {
         NSArray *sourceArray = nil;
         if( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_All] )
             sourceArray = [_sharedManager allEventsList];
@@ -207,7 +209,6 @@
             for(DaysCounterEvent *event in _itemArray){
                 [event MR_deleteEntity];
             }
-            _calendarItem.events = nil;
             [_checkStatusDict removeAllObjects];
             [_itemArray removeAllObjects];
             [self.tableView reloadData];

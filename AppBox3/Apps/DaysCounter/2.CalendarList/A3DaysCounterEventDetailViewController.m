@@ -71,7 +71,7 @@
     [self makeBackButtonEmptyArrow];
 
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
-    self.initialCalendarID = _eventItem.calendar.uniqueID;
+    self.initialCalendarID = _eventItem.calendarID;
     
     [self setupTopWhitePaddingView];
     self.heightCalculateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
@@ -118,7 +118,7 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
     
-    if ( ![self.initialCalendarID isEqualToString:_eventItem.calendar.uniqueID] ) {
+    if ( ![self.initialCalendarID isEqualToString:_eventItem.calendarID] ) {
         if ( self.delegate && [self.delegate respondsToSelector:@selector(didChangedCalendarEventDetailViewController:)]) {
             [self.delegate didChangedCalendarEventDetailViewController:self];
         }
@@ -143,7 +143,7 @@
     if ( event.alertDatetime ) {
         [_itemArray addObject:@{ EventRowTitle : NSLocalizedString(@"Alert", @"Alert"), EventRowType : @(EventCellType_Alert)}];
     }
-    if ( [event.calendar.uniqueID length] ) {
+    if ( [event.calendarID length] ) {
         [_itemArray addObject:@{ EventRowTitle : NSLocalizedString(@"Calendar", @"Calendar"), EventRowType : @(EventCellType_Calendar)}];
     }
     if ( event.durationOption ) {
@@ -300,7 +300,7 @@
             UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
             UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
             
-            DaysCounterCalendar *calendar = _eventItem.calendar;
+            DaysCounterCalendar *calendar = [DaysCounterCalendar MR_findFirstByAttribute:@"uniqueID" withValue:_eventItem.calendarID];
             if ( calendar ) {
                 nameLabel.text = calendar.calendarName;
                 colorImageView.tintColor = [calendar color];
@@ -1745,7 +1745,7 @@ EXIT_FUCTION:
 #pragma mark - action method
 - (void)editAction:(id)sender
 {
-    self.initialCalendarID = _eventItem.calendar.uniqueID;
+    self.initialCalendarID = _eventItem.calendarID;
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
     viewCtrl.eventItem = _eventItem;
     viewCtrl.sharedManager = _sharedManager;

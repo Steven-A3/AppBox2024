@@ -43,7 +43,7 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
     TCRoundingMethodOption_Off
 };
 
-#import "TipCalcRecently.h"
+#import "TipCalcRecent.h"
 #import "TipCalcHistory.h"
 #import <CoreLocation/CoreLocation.h>
 
@@ -56,7 +56,7 @@ extern NSString *const A3TipCalcCurrencyCode;
 
 @property (nonatomic, weak) id<A3TipCalcDataManagerDelegate> delegate;
 
-- (TipCalcRecently*)tipCalcData;
+- (TipCalcRecent *)tipCalcData;
 - (NSArray*)tipCalcHistory;
 
 @property (nonatomic, strong) NSNumber * defaultTax;

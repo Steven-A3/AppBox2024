@@ -26,7 +26,7 @@
 #import "A3WalletVideoItemViewController.h"
 #import "A3WalletPhotoItemViewController.h"
 #import "NSMutableArray+A3Sort.h"
-#import "WalletCategory+initialize.h"
+#import "WalletCategory+extension.h"
 
 NSString *const A3WalletTextCellID1 = @"A3WalletListTextCell";
 NSString *const A3WalletBigVideoCellID1 = @"A3WalletListBigVideoCell";
@@ -236,7 +236,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		}
 
 		cell = videoCell;
-	} else if ([item.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory]) {
+	} else if ([item.categoryID isEqualToString:A3WalletUUIDPhotoCategory]) {
 		A3WalletListPhotoCell *photoCell;
 		photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletPhotoCellID forIndexPath:indexPath];
 
@@ -263,7 +263,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 
 		cell = photoCell;
 	}
-	else if ([item.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
+	else if ([item.categoryID isEqualToString:A3WalletUUIDVideoCategory]) {
 		A3WalletListPhotoCell *videoCell;
 		videoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletPhotoCellID forIndexPath:indexPath];
 
@@ -345,7 +345,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath withItem:(WalletItem *)item {
-	if ([item.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory]) {
+	if ([item.categoryID isEqualToString:A3WalletUUIDPhotoCategory]) {
 		NSString *boardName = @"WalletPhoneStoryBoard";
 		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
 		A3WalletPhotoItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletPhotoItemViewController"];
@@ -353,7 +353,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		viewController.item = item;
 		[self.navigationController pushViewController:viewController animated:YES];
 	}
-	else if ([item.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
+	else if ([item.categoryID isEqualToString:A3WalletUUIDVideoCategory]) {
 		NSString *boardName = @"WalletPhoneStoryBoard";
 		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
 		A3WalletVideoItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletVideoItemViewController"];

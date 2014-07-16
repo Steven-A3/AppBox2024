@@ -2,14 +2,13 @@
 //  LadyCalendarPeriod.h
 //  AppBox3
 //
-//  Created by kimjeonghwan on 7/9/14.
+//  Created by A3 on 7/15/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class LadyCalendarAccount;
 
 @interface LadyCalendarPeriod : NSManagedObject
 
@@ -23,6 +22,6 @@
 @property (nonatomic, retain) NSDate * startDate;
 @property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSDate * updateDate;
-@property (nonatomic, retain) LadyCalendarAccount *account;
+@property (nonatomic, retain) NSString * accountID;
 
 @end

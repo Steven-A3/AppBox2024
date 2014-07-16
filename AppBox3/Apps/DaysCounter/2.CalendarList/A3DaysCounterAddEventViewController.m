@@ -112,23 +112,15 @@
         _eventItem.repeatType = @(RepeatType_Never);
         _eventItem.repeatEndDate = nil;
 
-        if (self.calendarId) {
-            DaysCounterCalendar *selectedCalendar = [[[_sharedManager allUserCalendarList] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", self.calendarId]] lastObject];
-            if (selectedCalendar) {
-                _eventItem.calendar = selectedCalendar;
-            }
+        if (self.calendarID) {
+			_eventItem.calendarID = self.calendarID;
         }
         else {
-            DaysCounterCalendar *anniversaryCalendar = [[[_sharedManager allUserCalendarList] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isShow == %@", @(YES)]] firstObject];
-            if (!anniversaryCalendar) {
-                anniversaryCalendar = [[_sharedManager allUserCalendarList] firstObject];
-            }
-            
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isShow == YES"];
+			DaysCounterCalendar *anniversaryCalendar = [DaysCounterCalendar MR_findFirstWithPredicate:predicate sortedBy:@"order" ascending:YES];
             NSAssert(anniversaryCalendar, @"anniversaryCalendar");
             
-            if (anniversaryCalendar) {
-                _eventItem.calendar = anniversaryCalendar;
-            }
+			_eventItem.calendarID = anniversaryCalendar.uniqueID;
         }
     }
 
@@ -513,6 +505,7 @@
                     UITextField *textField = (UITextField*)[cell viewWithTag:10];
                     UIButton *button = (UIButton*)[cell viewWithTag:11];
                     textField.delegate = self;
+					textField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
 					textField.placeholder = NSLocalizedString(@"Title", nil);
                     [button addTarget:self action:@selector(toggleFavorite:) forControlEvents:UIControlEventTouchUpInside];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -899,7 +892,7 @@
     UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
     UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
     
-    DaysCounterCalendar *calendar = _eventItem.calendar;
+	DaysCounterCalendar *calendar = [DaysCounterCalendar MR_findFirstByAttribute:@"uniqueID" withValue:_eventItem.calendarID];
     if (calendar) {
         nameLabel.text = calendar.calendarName;
         colorImageView.tintColor = [calendar color];
@@ -1262,7 +1255,7 @@
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:calendarIndexPath];
         UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
         UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
-        DaysCounterCalendar *calendar = _eventItem.calendar;
+        DaysCounterCalendar *calendar = [DaysCounterCalendar MR_findFirstByAttribute:@"uniqueID" withValue:_eventItem.calendarID];
         if (calendar) {
             nameLabel.text = calendar.calendarName;
             colorImageView.tintColor = [calendar color];

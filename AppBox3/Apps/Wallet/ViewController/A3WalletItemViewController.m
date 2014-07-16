@@ -562,8 +562,10 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
         textCell.valueTextField.font = [UIFont systemFontOfSize:17];
         textCell.valueTextField.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         textCell.valueTextField.placeholder = NSLocalizedString(@"Category", @"Category");
-        textCell.valueTextField.text = _item.category.name;
-        
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", _item.categoryID];
+		WalletCategory *category = [WalletCategory MR_findFirstWithPredicate:predicate];
+		textCell.valueTextField.text = category.name;
+
         cell = textCell;
     }
     else if ([_fieldItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {

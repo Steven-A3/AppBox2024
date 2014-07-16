@@ -19,7 +19,7 @@
 #import "WalletItem+Favorite.h"
 #import "WalletFieldItem.h"
 #import "WalletFieldItem+initialize.h"
-#import "WalletCategory+initialize.h"
+#import "WalletCategory+extension.h"
 #import "WalletField.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+NumberKeyboard.h"
@@ -101,11 +101,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		_item.uniqueID = [[NSUUID UUID] UUIDString];
 		_item.updateDate = [NSDate date];
 		[_item assignOrder];
-		_item.category = _walletCategory;
+		_item.categoryID = _walletCategory.uniqueID;
 	} else {
 		self.navigationItem.title = NSLocalizedString(@"Edit Item", @"Edit Item");
 
-		_walletCategory = _item.category;
+		_walletCategory = [WalletCategory MR_findFirstByAttribute:@"uniqueID" withValue:_item.categoryID];
 
 		[self copyThumbnailImagesToTemporaryPath];
 
@@ -113,7 +113,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	}
 
 	_originalCategoryUniqueID = _walletCategory.uniqueID;
-	_isMemoCategory = [_item.category.uniqueID isEqualToString:A3WalletUUIDMemoCategory];
+	_isMemoCategory = [_item.categoryID isEqualToString:A3WalletUUIDMemoCategory];
 
 	[self makeBackButtonEmptyArrow];
     [self rightBarButtonDoneButton];
@@ -467,7 +467,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 {
     if (!_sectionItems) {
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
-        _sectionItems = [[NSMutableArray alloc] initWithArray:[_item.category.fields.allObjects sortedArrayUsingDescriptors:@[sortDescriptor]]];
+        _sectionItems = [[NSMutableArray alloc] initWithArray:[_walletCategory.fields.allObjects sortedArrayUsingDescriptors:@[sortDescriptor]]];
 
 		[_sectionItems insertObject:self.titleItem atIndex:0];
 		[_sectionItems insertObject:self.categoryItem atIndex:1];
@@ -579,7 +579,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 }
 
 - (void)updateDoneButtonEnabled {
-	if ([_item.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory]) {
+	if ([_item.categoryID isEqualToString:A3WalletUUIDPhotoCategory]) {
 		BOOL hasImage = NO;
 		BOOL categoryDoesNotHaveImageField = YES;
 		for (WalletFieldItem *fieldItem in _item.fieldItems) {
@@ -593,7 +593,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			[self.navigationItem.rightBarButtonItem setEnabled:hasImage];
 			return;
 		}
-	} else if ([_item.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
+	} else if ([_item.categoryID isEqualToString:A3WalletUUIDVideoCategory]) {
 		BOOL hasVideo = NO;
 		BOOL categoryDoesNotHaveVideoField = YES;
 		for (WalletFieldItem *fieldItem in _item.fieldItems) {
@@ -650,14 +650,14 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     }
 	[self moveMediaFilesToNormalPath];
 
-	if (_alwaysReturnToOriginalCategory || [_originalCategoryUniqueID isEqualToString:_item.category.uniqueID]) {
+	if (_alwaysReturnToOriginalCategory || [_originalCategoryUniqueID isEqualToString:_item.categoryID]) {
 		[self dismissViewControllerAnimated:YES completion:NULL];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:NULL];
 
 		NSNotification *notification = [[NSNotification alloc] initWithName:A3WalletNotificationItemCategoryMoved
 																	 object:nil
-																   userInfo:@{@"categoryID":_item.category.uniqueID,
+																   userInfo:@{@"categoryID":_item.categoryID,
 																              @"itemID":_item.uniqueID}];
 		[[NSNotificationCenter defaultCenter] postNotification:notification];
 	}
@@ -870,9 +870,10 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     
     // name, order 변경안됨
     // category를 바꾼걸로
-    _item.category = toCategory;
+    _item.categoryID = toCategory.uniqueID;
+	_walletCategory = toCategory;
 
-	_isMemoCategory = [_item.category.uniqueID isEqualToString:A3WalletUUIDMemoCategory];
+	_isMemoCategory = [_item.categoryID isEqualToString:A3WalletUUIDMemoCategory];
 
     // 현재 변경중인 field item 정보를, 새로운 카테고리에 해당하는 field item으로 바꾼다.
 	NSArray *fieldsOfTargetCategory = [toCategory fieldsArray];
@@ -1205,7 +1206,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		[self dismissRightSideView];
 	}
 
-    if (_item.category != category) {
+    if (![_item.categoryID isEqualToString:category.uniqueID]) {
         FNLOG(@"Change category");
         
         [self changeCategory:category];
@@ -1298,7 +1299,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 }
 
 - (BOOL)isMediaCategory {
-	return [_item.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory] || [_item.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory];
+	return [_item.categoryID isEqualToString:A3WalletUUIDPhotoCategory] || [_item.categoryID isEqualToString:A3WalletUUIDVideoCategory];
 }
 
 - (BOOL)isNonTextInputItem:(id)item {
@@ -1391,7 +1392,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	    if ([self.sectionItems objectAtIndex:indexPath.row] == self.categoryItem) {
             // category
             A3WalletCategorySelectViewController *viewController = [[A3WalletCategorySelectViewController alloc] initWithStyle:UITableViewStyleGrouped];
-            viewController.selectedCategory = _item.category;
+            viewController.selectedCategory = [WalletCategory MR_findFirstByAttribute:@"uniqueID" withValue:_item.categoryID];
             viewController.delegate = self;
 
             if (IS_IPHONE) {
@@ -1771,7 +1772,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	inputCell.valueTextField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
 	inputCell.valueTextField.enabled = NO;
 	inputCell.valueTextField.placeholder = NSLocalizedString(@"Category", @"Category");
-	inputCell.valueTextField.text = _item.category.name;
+	inputCell.valueTextField.text = _walletCategory.name;
 	return inputCell;
 }
 

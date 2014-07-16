@@ -29,12 +29,12 @@ NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseK
 	}
 }
 
-- (BOOL)useKoreanLunarCalendar {
+- (BOOL)useKoreanLunarCalendarForConversion {
 	NSNumber *obj = [self objectForKey:A3SettingsUseKoreanCalendarForLunarConversion];
 	if (obj) {
 		return [obj boolValue];
 	}
-	return [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] isEqualToString:@"KR"];
+	return [A3UIDevice useKoreanLunarCalendar];
 }
 
 - (void)setDateComponents:(NSDateComponents *)dateComponents forKey:(NSString *)key {

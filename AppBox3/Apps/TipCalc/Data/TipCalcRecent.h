@@ -1,8 +1,8 @@
 //
-//  TipCalcRecently.h
+//  TipCalcRecent.h
 //  AppBox3
 //
-//  Created by A3 on 6/30/14.
+//  Created by A3 on 7/15/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -11,7 +11,7 @@
 
 @class TipCalcHistory, TipCalcRoundMethod;
 
-@interface TipCalcRecently : NSManagedObject
+@interface TipCalcRecent : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * beforeSplit;
 @property (nonatomic, retain) NSNumber * costs;
@@ -27,6 +27,6 @@
 @property (nonatomic, retain) NSNumber * tax;
 @property (nonatomic, retain) NSNumber * tip;
 @property (nonatomic, retain) TipCalcHistory *history;
-@property (nonatomic, retain) TipCalcRoundMethod *rRoundMethod;
+@property (nonatomic, retain) TipCalcRoundMethod *roundMethod;
 
 @end

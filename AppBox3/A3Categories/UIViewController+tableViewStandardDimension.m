@@ -22,20 +22,7 @@
 }
 
 + (CGFloat)noteCellHeight {
-	return 150.0;
-//	CGFloat keyboardHeight;
-//	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-//
-//	if (IS_IPHONE) {
-//		keyboardHeight = 216.0;
-//	} else {
-//		if (IS_PORTRAIT) {
-//			keyboardHeight = 264;
-//		} else {
-//			keyboardHeight = 352;
-//		}
-//	}
-//	return screenBounds.size.height - keyboardHeight - 64 - 30; // StatusBar + NavigationBar = 64, Bottom margin = 30
+	return IS_IPHONE35 ? 120.0 : 150.0;
 }
 
 @end

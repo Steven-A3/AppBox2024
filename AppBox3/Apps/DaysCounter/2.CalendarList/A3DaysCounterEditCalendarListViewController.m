@@ -18,6 +18,7 @@
 #import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "DaysCounterEvent.h"
 
 @interface A3DaysCounterEditCalendarListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -141,7 +142,9 @@
     imageView.tintColor = [item color];
     textLabel.text = item.calendarName;
     checkButton.selected = [item.isShow boolValue];
-    detailTextLabel.text = [NSString stringWithFormat:@"%ld", (long)[item.events count]];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", item.uniqueID];
+	long eventCounts = [DaysCounterEvent MR_countOfEntitiesWithPredicate:predicate];
+    detailTextLabel.text = [NSString stringWithFormat:@"%ld", eventCounts];
     
     textLabel.font = [UIFont systemFontOfSize:17];
     

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "WalletCategory+initialize.h"
+#import "WalletCategory+extension.h"
 #import "WalletItem+initialize.h"
 #import "WalletField.h"
 #import "WalletData.h"
@@ -18,7 +18,7 @@ NSString *const A3WalletUUIDPhotoCategory = @"D840A875-9C99-481E-A592-4059DEF7A2
 NSString *const A3WalletUUIDVideoCategory = @"7FE1693F-76DA-42FC-A0A7-1C2E7F6346D9";
 NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F2";
 
-@implementation WalletCategory (initialize)
+@implementation WalletCategory (extension)
 
 - (void)initValues {
 	self.doNotShow = @NO;
@@ -166,6 +166,17 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 		[array addObject:categoryDictionary];
 	}
 	[array writeToFile:[@"wallet_preset.plist" pathInLibraryDirectory] atomically:YES];
+}
+
+- (void)moveChildesFromObject:(WalletCategory *)sourceObject {
+	for (WalletField *field in sourceObject.fields) {
+		NSSet *objectsHasSaveID = [self.fields objectsPassingTest:^BOOL(WalletField *obj, BOOL *stop) {
+			return [field.uniqueID isEqualToString:obj.uniqueID];
+		}];
+		if (![objectsHasSaveID count]) {
+			[self addFieldsObject:field];
+		}
+	}
 }
 
 @end

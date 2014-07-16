@@ -788,7 +788,7 @@
 "Share Translator Data" = "번역 결과를 공유";
 
 "Delete and start over" = "iCloud를 지우고 새로 시작";
-"Use data stored in iCloud" = "iCloud에 저장된 데이터를 사용";
+"Use data stored in iCloud" = "iCloud 데이터 사용";
 
 "Internet connection is not available." = "사용 가능한 인터넷 연결이 없습니다.";
 
@@ -906,3 +906,5 @@
 "Hidden" = "모두 숨김";
 
 "Slideshow_Repeat" = "반복";
+
+"Use AppBox Pro" = "AppBox Pro 시작";

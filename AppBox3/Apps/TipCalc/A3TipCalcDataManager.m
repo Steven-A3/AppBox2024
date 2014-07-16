@@ -13,7 +13,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 
 @implementation A3TipCalcDataManager
 {
-    TipCalcRecently* _tipCalcData;
+    TipCalcRecent * _tipCalcData;
 }
 
 - (id)init
@@ -30,7 +30,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     return self;
 }
 
-- (TipCalcRecently *)tipCalcData
+- (TipCalcRecent *)tipCalcData
 {
     if (!_tipCalcData) {
         [self setTipCalcDataForMainTableView];
@@ -55,7 +55,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 	return [self.currencyFormatter stringFromNumber:@(value)];
 }
 
-- (void)deepCopyRecently:(TipCalcRecently *)source dest:(TipCalcRecently*)destination
+- (void)deepCopyRecently:(TipCalcRecent *)source dest:(TipCalcRecent *)destination
 {
     destination.beforeSplit = source.beforeSplit;
     destination.costs = source.costs;
@@ -69,8 +69,8 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     destination.split = source.split;
     destination.tax = source.tax;
     destination.tip = source.tip;
-    destination.rRoundMethod.optionType = source.rRoundMethod.optionType;
-    destination.rRoundMethod.valueType = source.rRoundMethod.valueType;
+    destination.roundMethod.optionType = source.roundMethod.optionType;
+    destination.roundMethod.valueType = source.roundMethod.valueType;
 }
 
 - (void)addHistory:(NSString*)aCaptionTip total:(NSString*)aCaptionTotal
@@ -80,14 +80,14 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 	history.updateDate = [NSDate date];
     history.labelTip = aCaptionTip;
     history.labelTotal = aCaptionTotal;
-    history.rRecently = [TipCalcRecently MR_createEntity];
+    history.recent = [TipCalcRecent MR_createEntity];
 
-	[self deepCopyRecently:self.tipCalcData dest:history.rRecently];
+	[self deepCopyRecently:self.tipCalcData dest:history.recent];
 }
 
 - (void)historyToRecently:(TipCalcHistory*)aHistory
 {
-	[self deepCopyRecently:aHistory.rRecently dest:self.tipCalcData];
+	[self deepCopyRecently:aHistory.recent dest:self.tipCalcData];
 }
 
 
@@ -261,14 +261,14 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 
 - (void)setTipCalcDataForMainTableView {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMain == %@",[NSNumber numberWithBool:YES]];
-    NSArray* arrRecent = [TipCalcRecently MR_findAllWithPredicate:predicate];
+    NSArray* arrRecent = [TipCalcRecent MR_findAllWithPredicate:predicate];
     
     if(arrRecent.count > 0) {
         _tipCalcData = arrRecent[0];
         _tipCalcData.currencyCode = self.currencyCode;
     }
     else {
-        TipCalcRecently* recently = [TipCalcRecently MR_createEntity];
+        TipCalcRecent * recently = [TipCalcRecent MR_createEntity];
         recently.knownValue = @(TCKnownValue_CostsBeforeTax);
         recently.isMain = [NSNumber numberWithBool:YES];
         recently.tip = @20;
@@ -279,15 +279,15 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
         recently.showTax = @(YES);
         recently.showSplit = @(YES);
         recently.showRounding = @(YES);
-        recently.rRoundMethod = [TipCalcRoundMethod MR_createEntity];
-        recently.rRoundMethod.optionType = @(TCRoundingMethodOption_Exact);
+        recently.roundMethod = [TipCalcRoundMethod MR_createEntity];
+        recently.roundMethod.optionType = @(TCRoundingMethodOption_Exact);
         
         _tipCalcData = recently;
     }
 }
 
 - (void)setTipCalcDataForHistoryData:(TipCalcHistory *)aHistory {
-    _tipCalcData = aHistory.rRecently;
+    _tipCalcData = aHistory.recent;
 }
 
 #pragma mark Split Option
@@ -345,12 +345,12 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     history.labelTotal = [self currencyStringFromDouble:[[self totalBeforeSplitWithTax] doubleValue]];
 
 	history.updateDate = [NSDate date];
-    history.rRecently = self.tipCalcData;
+    history.recent = self.tipCalcData;
     self.tipCalcData.isMain = @(NO);
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
-    TipCalcRecently* recently = [TipCalcRecently MR_createEntity];
+    TipCalcRecent * recently = [TipCalcRecent MR_createEntity];
     recently.isMain = @(YES);
     recently.split = @1;
     recently.knownValue = @(TCKnownValue_CostsBeforeTax);
@@ -360,7 +360,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     recently.showTax = @(YES);
     recently.showSplit = @(YES);
     recently.showRounding = @(YES);
-    recently.rRoundMethod = [TipCalcRoundMethod MR_createEntity];
+    recently.roundMethod = [TipCalcRoundMethod MR_createEntity];
     recently.currencyCode = self.currencyCode;
     _tipCalcData = recently;
 }
@@ -368,21 +368,21 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 #pragma mark Rounding Method
 
 - (void)setRoundingMethodValue:(TCRoundingMethodValue)value {
-    self.tipCalcData.rRoundMethod.valueType =  @(value);
+    self.tipCalcData.roundMethod.valueType =  @(value);
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 - (TCRoundingMethodValue)roundingMethodValue {
-    return (TCRoundingMethodValue) [self.tipCalcData.rRoundMethod.valueType integerValue];
+    return (TCRoundingMethodValue) [self.tipCalcData.roundMethod.valueType integerValue];
 }
 
 - (void)setRoundingMethodOption:(TCRoundingMethodOption)option {
-    self.tipCalcData.rRoundMethod.optionType = @(option);
+    self.tipCalcData.roundMethod.optionType = @(option);
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 - (TCRoundingMethodOption)roundingMethodOption {
-    return (TCRoundingMethodOption) [self.tipCalcData.rRoundMethod.optionType integerValue];
+    return (TCRoundingMethodOption) [self.tipCalcData.roundMethod.optionType integerValue];
 }
 
 #pragma mark - Result Calculation

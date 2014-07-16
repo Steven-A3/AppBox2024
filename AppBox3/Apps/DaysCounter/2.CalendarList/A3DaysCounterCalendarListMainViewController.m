@@ -690,15 +690,17 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     countLabel.textColor = [calendarItem color];
     textLabel.text = calendarItem.calendarName;
 
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", calendarItem.uniqueID];
+	long eventCount = [DaysCounterEvent MR_countOfEntitiesWithPredicate:predicate];
     switch (cellType) {
         case CalendarCellType_User:
         {
-            countLabel.text = [NSString stringWithFormat:@"%ld", (long)[calendarItem.events count]];
+            countLabel.text = [NSString stringWithFormat:@"%ld", eventCount];
             
             UILabel *eventDetailInfoLabel1 = (UILabel*)[cell viewWithTag:14];
             UILabel *eventDetailInfoLabel2 = (UILabel*)[cell viewWithTag:15];
             NSMutableAttributedString *eventDetailInfoString = [[NSMutableAttributedString alloc] initWithString:@""];
-            if ([calendarItem.events count] > 0) {
+            if (eventCount > 0) {
                 DaysCounterEvent *event = [_sharedManager closestEventObjectOfCalendar:calendarItem];
                 NSAttributedString *eventName;
                 NSAttributedString *period;
