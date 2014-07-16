@@ -176,7 +176,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 }
 
 - (void)copyThumbnailImagesToTemporaryPath {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
     fileManager.delegate = self;
     
 	for (WalletFieldItem *fieldItem in _item.fieldItems) {
@@ -282,7 +282,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 }
 
 - (void)moveMediaFilesToNormalPath {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
     fileManager.delegate = self;
     
 	for (WalletFieldItem *fieldItem in _item.fieldItems) {
@@ -424,9 +424,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 }
 
 - (void)removeTempFiles {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
     fileManager.delegate = self;
-    
+
     BOOL result;
 	for (WalletFieldItem *fieldItem in _item.fieldItems) {
 		if (fieldItem.image) {
@@ -671,12 +671,15 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 }
 
 - (void)deleteMediaItem {
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    fileManager.delegate = self;
+    
 	if ([self.sectionItems[_currentIndexPath.row] isKindOfClass:[WalletFieldItem class]]) {
 		WalletFieldItem *fieldItem = _sectionItems[_currentIndexPath.row];
 		if (fieldItem.image) {
-			[[NSFileManager defaultManager] removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO] error:NULL];
+			[fileManager removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO] error:NULL];
 		} else {
-			[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO] error:NULL];
+			[fileManager removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO] error:NULL];
 		}
 		[fieldItem MR_deleteEntity];
 
@@ -686,12 +689,12 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		WalletFieldItem *fieldItem = [self fieldItemForIndexPath:_currentIndexPath create:NO];
 		if (fieldItem) {
 			if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
-				[[NSFileManager defaultManager] removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO ] error:NULL];
+				[fileManager removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO ] error:NULL];
 				[fieldItem.image MR_deleteEntity];
 				fieldItem.image = nil;
 			} else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-				[[NSFileManager defaultManager] removeItemAtURL:[fieldItem videoFileURLInOriginal:NO ] error:NULL];
-				[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO ] error:NULL];
+				[fileManager removeItemAtURL:[fieldItem videoFileURLInOriginal:NO ] error:NULL];
+				[fileManager removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO ] error:NULL];
 				[fieldItem.video MR_deleteEntity];
 				fieldItem.video = nil;
 			}
@@ -998,11 +1001,14 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		_currentFieldItem.video.extension = movieURL.pathExtension;
 		NSURL *destinationMovieURL = [_currentFieldItem videoFileURLInOriginal:NO];
         NSError *error;
-        if ([[NSFileManager defaultManager] fileExistsAtPath:[destinationMovieURL path]]) {
-            result = [[NSFileManager defaultManager] removeItemAtURL:destinationMovieURL error:&error];
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        fileManager.delegate = self;
+        
+        if ([fileManager fileExistsAtPath:[destinationMovieURL path]]) {
+            result = [fileManager removeItemAtURL:destinationMovieURL error:&error];
             NSAssert(result, @"NSFileManager defaultManager");
         }
-		result = [[NSFileManager defaultManager] moveItemAtURL:movieURL toURL:destinationMovieURL error:&error];
+		result = [fileManager moveItemAtURL:movieURL toURL:destinationMovieURL error:&error];
         NSAssert(result, @"NSFileManager defaultManager");
 
         NSURL *assetURL = imageEditInfo[UIImagePickerControllerReferenceURL];
@@ -1016,7 +1022,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			}];
 		} else {
             NSError *error = [NSError new];
-            NSDictionary *itemAttribute = [[NSFileManager defaultManager] attributesOfItemAtPath:[destinationMovieURL path] error:&error];
+            NSDictionary *itemAttribute = [fileManager attributesOfItemAtPath:[destinationMovieURL path] error:&error];
             NSDate *mediaCreationDate = [itemAttribute objectForKey:NSFileCreationDate];
             _currentFieldItem.video.creationDate = mediaCreationDate;
 		}
@@ -1675,7 +1681,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		photoCell.photoButton.hidden = NO;
 
 		NSString *thumbFilePath = [fieldItem photoImageThumbnailPathInOriginal:NO];
-        NSAssert([[NSFileManager defaultManager] fileExistsAtPath:thumbFilePath], @"[[NSFileManager defaultManager] fileExistsAtPath:thumbFilePath]");
 		NSData *img = [NSData dataWithContentsOfFile:thumbFilePath];
 		UIImage *photo = [UIImage imageWithData:img];
 		photo = [photo imageByScalingProportionallyToSize:CGSizeMake(120, 120)];
@@ -1816,7 +1821,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	return [self standardHeightForFooterIsLastSection:isLastSection];
 }
 
-#pragma mark - NSFileManager Delegate
+#pragma mark - NSFileManagerDelegate
 - (BOOL)fileManager:(NSFileManager *)fileManager shouldRemoveItemAtPath:(NSString *)path
 {
     return [fileManager fileExistsAtPath:path];
@@ -1825,6 +1830,36 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (BOOL)fileManager:(NSFileManager *)fileManager shouldRemoveItemAtURL:(NSURL *)URL
 {
     return [fileManager fileExistsAtPath:[URL path]];
+}
+
+-(BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error copyingItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath {
+    FNLOG(@"%@", error);
+    return NO;
+}
+
+-(BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error copyingItemAtURL:(NSURL *)srcURL toURL:(NSURL *)dstURL {
+    FNLOG(@"%@", error);
+    return NO;
+}
+
+-(BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error movingItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath {
+    FNLOG(@"%@", error);
+    return NO;
+}
+
+-(BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error movingItemAtURL:(NSURL *)srcURL toURL:(NSURL *)dstURL {
+    FNLOG(@"%@", error);
+    return NO;
+}
+
+- (BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error removingItemAtPath:(NSString *)path {
+    FNLOG(@"%@", error);
+    return NO;
+}
+
+- (BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error removingItemAtURL:(NSURL *)URL {
+    FNLOG(@"%@", error);
+    return NO;
 }
 
 @end
