@@ -115,9 +115,9 @@
 "Clear" = "消去";
 "Clear History" = "履歴を消去";
 
-"Basic / Scientific" = "普通/関数電卓";
-"Basic" = "普通";
-"Scientific" = "関数電卓";
+"Basic / Scientific" = "基本 / 科学計算";
+"Basic" = "基本";
+"Scientific" = "科学計算";
 
 "%@ using AppBox Pro" = "%@ AppBox Proを使用";
 "Calculator using AppBox Pro" = "AppBox Proを使用する計算";

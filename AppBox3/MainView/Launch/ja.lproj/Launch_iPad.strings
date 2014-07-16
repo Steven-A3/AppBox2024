@@ -12,7 +12,7 @@
 "4vD-c0-4t2.normalTitle" = "AppBox Proを使用";
 
 /* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7if-xU-XZH"; */
-"7if-xU-XZH.text" = "普通/関数電卓";
+"7if-xU-XZH.text" = "基本/科学計算";
 
 /* Class = "IBUILabel"; text = "Unit Conveter"; ObjectID = "85l-L8-ozk"; */
 "85l-L8-ozk.text" = "単位変換";
