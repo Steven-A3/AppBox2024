@@ -68,7 +68,7 @@
 "MUh-Ac-pHs.footerTitle" = "Los intervalos cortos son más seguros.";
 
 /* Class = "IBUILabel"; text = "After 4 hours"; ObjectID = "McJ-yq-SBi"; */
-"McJ-yq-SBi.text" = "Después de 4 horas";
+"McJ-yq-SBi.text" = "Tras 4 horas";
 
 /* Class = "IBUILabel"; text = "Off"; ObjectID = "Mzm-Rw-Yrb"; */
 "Mzm-Rw-Yrb.text" = "Desactivar";
@@ -80,7 +80,7 @@
 "O52-H9-qgV.text" = "Billetera";
 
 /* Class = "IBUILabel"; text = "After 1 minute"; ObjectID = "OmZ-rj-JvF"; */
-"OmZ-rj-JvF.text" = "Después de un minuto";
+"OmZ-rj-JvF.text" = "Tras 1 min";
 
 /* Class = "IBUILabel"; text = "Detail"; ObjectID = "QDB-IM-N8E"; */
 "QDB-IM-N8E.text" = "Detalle";
@@ -101,7 +101,7 @@
 "Xb7-yr-Jd6.title" = "Solicitar";
 
 /* Class = "IBUILabel"; text = "After 5 minutes"; ObjectID = "cHo-o5-yl0"; */
-"cHo-o5-yl0.text" = "Después de 5 minutos";
+"cHo-o5-yl0.text" = "Tras 5 min";
 
 /* Class = "IBUILabel"; text = "Immediately"; ObjectID = "ck4-7j-nEw"; */
 "ck4-7j-nEw.text" = "De inmediato";
@@ -149,7 +149,7 @@
 "sL2-cQ-mx7.text" = "Ajustes";
 
 /* Class = "IBUILabel"; text = "After 1 hour"; ObjectID = "sks-IW-96W"; */
-"sks-IW-96W.text" = "Después de una hora";
+"sks-IW-96W.text" = "Tras 1 hora";
 
 /* Class = "IBUITableViewController"; title = "Recent To Keep"; ObjectID = "srb-MD-eSG"; */
 "srb-MD-eSG.title" = "Almacenado recientemente";
@@ -158,7 +158,7 @@
 "uR7-vn-SkB.text" = "Iniciar";
 
 /* Class = "IBUILabel"; text = "After 15 minutes"; ObjectID = "uxS-dx-9By"; */
-"uxS-dx-9By.text" = "Después de 15 minutos";
+"uxS-dx-9By.text" = "Tras 15 min";
 
 /* Class = "IBUITableViewController"; title = "Edit Favorites"; ObjectID = "vRR-Rd-eut"; */
 "vRR-Rd-eut.title" = "Editar favoritos";

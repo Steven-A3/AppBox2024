@@ -113,7 +113,7 @@
 "eGG-mK-Q2m.text" = "Subito";
 
 /* Class = "IBUILabel"; text = "Backup & Restore on Dropbox"; ObjectID = "ehr-w2-0vk"; */
-"ehr-w2-0vk.text" = "Esegui Backup & Ripristina su Dropbox";
+"ehr-w2-0vk.text" = "Backup di Dropbox";
 
 /* Class = "IBUINavigationItem"; title = "Theme Color"; ObjectID = "eqe-ec-kWO"; */
 "eqe-ec-kWO.title" = "Colore tema";

@@ -10,8 +10,8 @@
 "Loan Calculator" = "Calculette du prêt";
 "Percent Calculator" = "Calculette de pourcentage";
 "Percent Calculator_Short" = "Pourcentage";
-"Sales Calculator" = "Calculette des ventes";
-"Sales Calculator_Short" = "Calc des ventes";
+"Sales Calculator" = "Calculette de ventes";
+"Sales Calculator_Short" = "Calc de ventes";
 "Tip Calculator" = "Calculette du pourboire";
 "Unit Price" = "Prix à l'unité";
 
@@ -193,9 +193,9 @@
 
 "%@ using AppBox Pro" = "%@ utilsant AppBox Pro";
 "Calculator using AppBox Pro" = "Calculette utilisant AppBox Pro";
-"Date Calculator using AppBox Pro" = "Calculette de date utilsant AppBox Pro";
+"Date Calculator using AppBox Pro" = "Calculette de date utilisant AppBox Pro";
 "Tip Calculator using AppBox Pro" = "Calculette de pourboire utilsant AppBox Pro";
-"Loan Calculator using AppBox Pro" = "Calculette du prêt utilsant AppBox Pro";
+"Loan Calculator using AppBox Pro" = "Calculette du prêt utilisant AppBox Pro";
 "Currency Converter using AppBox Pro" = "Convertisseur de devises utilsant AppBox Pro";
 "Lunar Converter using AppBox Pro" = "Convertisseur lunaire utilsant AppBox Pro";
 "Unit Converter using AppBox Pro" = "Convertisseur d’unité utilsant AppBox Pro";
@@ -574,7 +574,7 @@
 "Original Price" = "Prix d'origine";
 "Original Price Tax" = "Taxe";
 "Saved Amount" = "Épargne";
-"Saved Amount Tax" = "Taxes";
+"Saved Amount Tax" = "Taxe";
 "  Sale Price with Tax" = "  Prix de vente avec taxe";
 "  Sale Price w/Tax" = "  Prix de vente avec taxe";
 "  Sale Price" = "  Prix de vente";
@@ -704,10 +704,10 @@
 "%li Passcode Failed Attempts" = "%li tentatives ont échoué.";
 "Enter your old passcode" = "Tapez votre ancien code";
 "Enter your passcode" = "Tapez votre code";
-"Passcode" = "Code d’accès";
+"Passcode" = "Saisissez le code";
 "Set Passcode" = "Définir le code";
 "Change Passcode" = "Changer le code";
-"Turn Off Passcode" = "Désactivez le code d’accès";
+"Turn Off Passcode" = "Désactiver le code";
 "Re-enter your passcode" = "Retapez votre code";
 "Re-enter your new passcode" = "Retapez votre nouveau code";
 "Enter your new passcode" = "Tapez votre nouveau code";
@@ -879,7 +879,7 @@
 "SIZE" = "TAILLE";
 "DISCOUNT" = "RABAIS";
 
-"Alert_None" = "Aucun";
+"Alert_None" = "Aucune";
 "DateCalcExclude_None" = "jamais";
 "FaceTime" = "FaceTime";
 

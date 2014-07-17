@@ -21,7 +21,7 @@
 "8Fx-P1-Pjr.normalTitle" = "Ultérieur";
 
 /* Class = "IBUILabel"; text = "Sales Calculator"; ObjectID = "8gx-TA-Y32"; */
-"8gx-TA-Y32.text" = "Calculette des ventes";
+"8gx-TA-Y32.text" = "Calculette de ventes";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Cyd-xI-Wjv"; */
 "Cyd-xI-Wjv.normalTitle" = "Continuer";

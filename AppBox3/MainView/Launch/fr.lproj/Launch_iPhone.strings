@@ -41,7 +41,7 @@ sur tous vos dispositifs";
 "LH1-Sz-F5c.text" = "Améliorations et Optimisations";
 
 /* Class = "IBUILabel"; text = "Sales Calculator"; ObjectID = "QRY-F6-eI0"; */
-"QRY-F6-eI0.text" = "Calculette des ventes";
+"QRY-F6-eI0.text" = "Calculette de ventes";
 
 /* Class = "IBUILabel"; text = "Date Calculator"; ObjectID = "TO4-lW-QE2"; */
 "TO4-lW-QE2.text" = "Calculette de date";

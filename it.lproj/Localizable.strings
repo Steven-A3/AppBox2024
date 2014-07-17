@@ -466,7 +466,7 @@
 "Periods" = "Periodi";
 "On day(9 AM)" = "Il giorno(09:00)";
 "1 day before(9 AM)" = "1 giorno prima(09:00)";
-"2 days before(9 AM)" = "2 giorno prima(09:00)";
+"2 days before(9 AM)" = "2 giorni prima(09:00)";
 "Your period is coming." = "Il tuo periodo è in arrivo";
 "FORECASTING PERIODS" = "PERIODI DI PREVISIONE";
 
@@ -700,7 +700,7 @@
 "Passcode" = "Codice di accesso";
 "Set Passcode" = "Imposta codice";
 "Change Passcode" = "Cambia codice";
-"Turn Off Passcode" = "Disattiva codice di accesso";
+"Turn Off Passcode" = "Disabilita codice";
 "Re-enter your passcode" = "Reinserisci il codice";
 "Re-enter your new passcode" = "Reinserisci il nuovo codice";
 "Enter your new passcode" = "Inserisci nuovo codice";

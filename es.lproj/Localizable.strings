@@ -215,7 +215,7 @@
 "There is no events." = "´No hay eventos.";
 
 "Slideshow" = "Pase de diapositivas";
-"Edit Calendar" = "Editar Calendario";
+"Edit Calendar" = "Editar calendario";
 "Add Calendar" = "Añadir calendario";
 "COLOR" = "COLOR";
 "Calendar Name" = "Nombre del Calendario";
@@ -567,11 +567,11 @@
 "Compare % Change from X to Y" = "Compare % los cambios de X a Y";
 
 "Sale Price" = "Precio de venta";
-"Sale Price Tax" = "Impuestos";
+"Sale Price Tax" = "Impuestor";
 "Original Price" = "Precio original";
-"Original Price Tax" = "Impuestos";
+"Original Price Tax" = "Impuestor";
 "Saved Amount" = "Monto ahorrado";
-"Saved Amount Tax" = "Impuestos";
+"Saved Amount Tax" = "Impuestor";
 "  Sale Price with Tax" = " Precio de venta con impuestos";
 "  Sale Price w/Tax" = "  Precio de venta c/impuestos";
 "  Sale Price" = "  Precio de venta";
@@ -706,7 +706,7 @@
 "Passcode" = "Código";
 "Set Passcode" = "Ajustar código";
 "Change Passcode" = "Cambiar código";
-"Turn Off Passcode" = "Desactivar la clave de acceso";
+"Turn Off Passcode" = "Desactivar código";
 "Re-enter your passcode" = "Vuelva a introducir el código";
 "Re-enter your new passcode" = "Vuelva a introducir el nuevo código";
 "Enter your new passcode" = "Introduzca el nuevo código ";
