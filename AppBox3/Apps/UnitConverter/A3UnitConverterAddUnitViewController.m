@@ -15,6 +15,8 @@
 #import "UnitItem.h"
 #import "A3UnitConverterTVActionCell.h"
 #import "A3UnitConverterAddViewController.h"
+#import "UnitItem+extension.h"
+#import "UnitFavorite+extension.h"
 
 
 @interface A3UnitConverterAddUnitViewController () <UISearchDisplayDelegate, A3UnitConverterAddViewControllerDelegate>
@@ -224,7 +226,7 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
     viewController.shouldPopViewController = YES;
     
     UnitItem *item = _allData[0];
-    viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"type" withValue:item.type andOrderBy:@"unitName" ascending:YES]];
+    viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"type" withValue:[item type] andOrderBy:@"unitName" ascending:YES]];
     
     return viewController;
 }
@@ -294,9 +296,9 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
         
         UnitItem *item = addedItems[i];
         UnitFavorite *favorite = [UnitFavorite MR_createEntity];
-		favorite.uniqueID = [[NSUUID UUID] UUIDString];
+		favorite.uniqueID = item.uniqueID;
 		favorite.updateDate = [NSDate date];
-        favorite.item = item;
+        favorite.itemID = item.uniqueID;
         [_favorites insertObject:favorite atIndex:lastIdx];
         
         NSIndexPath *ip = [NSIndexPath indexPathForRow:lastIdx inSection:0];
@@ -366,7 +368,7 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
 		else {
 			if (isFavoriteMode) {
 				UnitFavorite *favorite = _favorites[indexPath.row];
-				data = favorite.item;
+				data = [favorite item];
 			}
 			else {
 				data = _allData[indexPath.row];
@@ -471,7 +473,7 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
 
 				if ([_favorites[indexPath.row] isKindOfClass:[UnitFavorite class]]) {
 					UnitFavorite *favorite = _favorites[indexPath.row];
-					data = favorite.item;
+					data = [favorite item];
 				}
 				else {
 					[tableView deselectRowAtIndexPath:indexPath animated:YES];

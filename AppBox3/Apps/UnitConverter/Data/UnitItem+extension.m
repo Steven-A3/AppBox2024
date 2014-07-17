@@ -6,11 +6,12 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "UnitItem+initialize.h"
-#import "UnitType+initialize.h"
+#import "UnitItem+extension.h"
+#import "UnitType+extension.h"
 #import "UnitCommon.h"
+#import "UnitType.h"
 
-@implementation UnitItem (initialize)
+@implementation UnitItem (extension)
 
 + (void)resetUnitItemLists {
     
@@ -42,9 +43,9 @@
             NSNumber *conversionRate = [NSNumber numberWithDouble:conversionTable[typeIdx][unitIdx]];
 
             UnitItem *unit = [UnitItem MR_createEntity];
-			unit.uniqueID = [[NSUUID UUID] UUIDString];
+			unit.uniqueID = [NSString stringWithFormat:@"%@_%@", unitType.unitTypeName, unitName];
 			unit.updateDate = [NSDate date];
-            unit.type = unitType;
+            unit.typeID = unitType.uniqueID;
             unit.unitName = unitName;
             unit.unitShortName = unitShortName;
             unit.conversionRate = conversionRate;
@@ -52,6 +53,10 @@
     }
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+}
+
+- (UnitType *)type {
+	return [UnitType MR_findFirstByAttribute:@"uniqueID" withValue:self.typeID];
 }
 
 @end

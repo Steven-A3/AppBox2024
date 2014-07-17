@@ -2,19 +2,15 @@
 //  ExpenseListBudget.m
 //  AppBox3
 //
-//  Created by A3 on 6/30/14.
+//  Created by A3 on 7/18/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "ExpenseListBudget.h"
-#import "ExpenseListBudgetLocation.h"
-#import "ExpenseListHistory.h"
-#import "ExpenseListItem.h"
 
 
 @implementation ExpenseListBudget
 
-@dynamic uniqueID;
 @dynamic category;
 @dynamic date;
 @dynamic location;
@@ -22,10 +18,8 @@
 @dynamic paymentType;
 @dynamic title;
 @dynamic totalAmount;
+@dynamic uniqueID;
 @dynamic updateDate;
 @dynamic usedAmount;
-@dynamic expenseHistory;
-@dynamic expenseItems;
-@dynamic expenseLocation;
 
 @end

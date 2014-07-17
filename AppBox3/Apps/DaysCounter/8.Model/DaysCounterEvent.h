@@ -2,14 +2,13 @@
 //  DaysCounterEvent.h
 //  AppBox3
 //
-//  Created by A3 on 7/15/14.
+//  Created by A3 on 7/18/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class DaysCounterDate, DaysCounterEventLocation, DaysCounterFavorite, DaysCounterReminder;
 
 @interface DaysCounterEvent : NSManagedObject
 
@@ -30,10 +29,5 @@
 @property (nonatomic, retain) NSNumber * repeatType;
 @property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSDate * updateDate;
-@property (nonatomic, retain) DaysCounterDate *endDate;
-@property (nonatomic, retain) DaysCounterFavorite *favorite;
-@property (nonatomic, retain) DaysCounterEventLocation *location;
-@property (nonatomic, retain) DaysCounterReminder *reminder;
-@property (nonatomic, retain) DaysCounterDate *startDate;
 
 @end

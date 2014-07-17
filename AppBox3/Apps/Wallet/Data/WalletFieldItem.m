@@ -2,25 +2,25 @@
 //  WalletFieldItem.m
 //  AppBox3
 //
-//  Created by A3 on 7/15/14.
+//  Created by A3 on 7/18/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "WalletFieldItem.h"
-#import "WalletField.h"
-#import "WalletFieldItemImage.h"
-#import "WalletFieldItemVideo.h"
-#import "WalletItem.h"
 
 
 @implementation WalletFieldItem
 
 @dynamic date;
+@dynamic fieldID;
+@dynamic hasImage;
+@dynamic hasVideo;
+@dynamic imageMetaData;
 @dynamic uniqueID;
+@dynamic updateDate;
 @dynamic value;
-@dynamic field;
-@dynamic image;
-@dynamic video;
-@dynamic walletItem;
+@dynamic videoCreationDate;
+@dynamic videoExtension;
+@dynamic walletItemID;
 
 @end

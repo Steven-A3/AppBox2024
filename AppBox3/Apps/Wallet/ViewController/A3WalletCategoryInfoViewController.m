@@ -190,7 +190,8 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return _category.fields.count;
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", _category.uniqueID];
+    return [WalletField MR_countOfEntitiesWithPredicate:predicate];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

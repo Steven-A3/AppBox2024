@@ -30,6 +30,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "NSDate+formatting.h"
 #import "A3InstructionViewController.h"
+#import "DaysCounterEvent+extension.h"
 
 
 @interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, A3InstructionViewControllerDelegate>
@@ -501,16 +502,17 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     }
     else {
         if ( [event.repeatType integerValue] != RepeatType_Never ) {
+			DaysCounterDate *startDate = [event startDate];
             NSDate *nextDate;
             if ([event.isLunar boolValue]) {
                 nextDate = [A3DaysCounterModelManager nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[event startDate]
                                                                                                                                                 toLunar:[event.isLunar boolValue]]
-                                                                                 leapMonth:[event.startDate.isLeapMonth boolValue]
+                                                                                 leapMonth:[startDate.isLeapMonth boolValue]
                                                                                   fromDate:today];
             }
             else {
                 nextDate = [A3DaysCounterModelManager nextDateWithRepeatOption:[event.repeatType integerValue]
-                                                                     firstDate:[event.startDate solarDate]
+                                                                     firstDate:[startDate solarDate]
                                                                       fromDate:today
                                                                       isAllDay:[event.isAllDay boolValue]];
             }
@@ -522,7 +524,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
                                                                  strict:NO];
 
             BOOL isAllDay = [event.isAllDay boolValue];
-            if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.startDate.solarDate timeIntervalSince1970]) > 86400)) {
+            if (!isAllDay && (llabs([today timeIntervalSince1970] - [startDate.solarDate timeIntervalSince1970]) > 86400)) {
                 isAllDay = YES;
             }
 

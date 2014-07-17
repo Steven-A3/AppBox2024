@@ -7,8 +7,18 @@
 //
 
 #import "CurrencyHistory+handler.h"
+#import "CurrencyHistoryItem.h"
 
 @implementation CurrencyHistory (handler)
 
+- (NSInteger)targetCount {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"historyID == %@", self.uniqueID];
+	return [CurrencyHistoryItem MR_countOfEntitiesWithPredicate:predicate];
+}
+
+- (NSArray *)targets {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"historyID == %@", self.uniqueID];
+	return [CurrencyHistoryItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
+}
 
 @end

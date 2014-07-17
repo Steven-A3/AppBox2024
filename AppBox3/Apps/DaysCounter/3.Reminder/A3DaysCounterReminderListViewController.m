@@ -12,25 +12,21 @@
 #import "A3DaysCounterSlideShowMainViewController.h"
 #import "A3DaysCounterAddEventViewController.h"
 #import "A3DaysCounterCalendarListMainViewController.h"
-#import "A3DaysCounterReminderListViewController.h"
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3DaysCounterEventDetailViewController.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
-#import "DaysCounterCalendar.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterReminder.h"
 #import "A3DateHelper.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
-#import "A3AppDelegate+appearance.h"
+#import "DaysCounterReminder+extension.h"
 
 @interface A3DaysCounterReminderListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
 @property (strong, nonatomic) NSIndexPath *clearIndexPath;
 
-- (void)clearAction:(id)sender;
-- (void)changeClearAction:(id)sender;
 @end
 
 @implementation A3DaysCounterReminderListViewController
@@ -182,7 +178,7 @@
     
     if ( [_itemArray count] > 0 ) {
         DaysCounterReminder *reminder = [_itemArray objectAtIndex:indexPath.row];
-        DaysCounterEvent *item = reminder.event;
+        DaysCounterEvent *item = [reminder event];
         cell.textLabel.text = item.eventName;
         
         NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
@@ -256,7 +252,7 @@
         reminder.isOn = @(NO);
     }
     
-    DaysCounterEvent *item = reminder.event;
+    DaysCounterEvent *item = [reminder event];
     // 미반복의 경우 더이상 Reminder에 올라오지 않도록 함.
     if (item.repeatType && [item.repeatType isEqualToNumber:@(RepeatType_Never)] &&
         [reminder.startDate timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
@@ -313,8 +309,8 @@
     }
     
     DaysCounterReminder *reminder = [_itemArray objectAtIndex:indexPath.row];
-    DaysCounterEvent *item = reminder.event;
-    
+    DaysCounterEvent *item = [reminder event];
+
     item.alertDatetime = nil;
     [item.managedObjectContext MR_saveToPersistentStoreAndWait];
     self.clearIndexPath = nil;

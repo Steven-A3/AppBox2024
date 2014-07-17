@@ -13,6 +13,7 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+UnitConverter.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UnitItem+extension.h"
 
 @interface A3UnitConverterAddViewController ()
 
@@ -36,7 +37,7 @@
     [super viewDidLoad];
 
     UnitItem *firstItem = _allData[0];
-    self.title = NSLocalizedStringFromTable(firstItem.type.unitTypeName, @"unit", nil);
+    self.title = NSLocalizedStringFromTable([firstItem type].unitTypeName, @"unit", nil);
     
     [self rightBarButtonDoneButton];
     

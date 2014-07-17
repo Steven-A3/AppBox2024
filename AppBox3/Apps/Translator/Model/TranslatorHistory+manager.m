@@ -13,16 +13,21 @@
 
 @implementation TranslatorHistory (manager)
 
+- (TranslatorFavorite *)favorite {
+	return [TranslatorFavorite MR_findFirstByAttribute:@"historyID" withValue:self.uniqueID];
+}
+
 - (void)setAsFavoriteMember:(BOOL)isFavorite {
-	if ([self favorite] && isFavorite) return;
-	if (![self favorite] && !isFavorite) return;
+	TranslatorFavorite *favorite = [self favorite];
+	if (favorite && isFavorite) return;
+	if (!favorite && !isFavorite) return;
 
 	if (isFavorite) {
 		// Add Favorite
-		TranslatorFavorite *favorite = [TranslatorFavorite MR_createInContext:self.managedObjectContext];
+		favorite = [TranslatorFavorite MR_createInContext:self.managedObjectContext];
 		favorite.uniqueID = [[NSUUID UUID] UUIDString];
 		favorite.updateDate = [NSDate date];
-		self.favorite = favorite;
+		favorite.historyID = self.uniqueID;
 
 		NSString *largest = [TranslatorFavorite MR_findLargestValueForAttribute:@"order" inContext:self.managedObjectContext];
 		NSString *nextLargest = [NSString orderStringWithOrder:[largest integerValue] + 1000000];

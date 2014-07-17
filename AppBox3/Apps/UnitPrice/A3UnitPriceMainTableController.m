@@ -23,10 +23,12 @@
 #import "UIViewController+A3Addition.h"
 #import "UILabel+BaseAlignment.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "UnitConvertItem+initialize.h"
-#import "UnitFavorite+initialize.h"
-#import "UnitType+initialize.h"
+#import "UnitConvertItem+extension.h"
+#import "UnitFavorite+extension.h"
+#import "UnitType+extension.h"
 #import "UnitPriceFavorite+initialize.h"
+#import "UnitPriceHistory+extension.h"
+#import "UnitPriceInfo+extension.h"
 
 NSString *const A3UnitPriceCurrencyCode = @"A3UnitPriceCurrencyCode";
 NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUnitPriceCurrencyCodeChanged";
@@ -320,10 +322,10 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 {
     if (history) {
         FNLOG(@"Selected History\n%@", [history description]);
-		for (UnitPriceHistoryItem *item in history.unitPrices) {
+		for (UnitPriceHistoryItem *item in [history unitPrices]) {
 			if ([item.orderInComparison isEqualToString:@"A"]) {
 				_price1.price = item.price;
-				_price1.unit = item.unit;
+				_price1.unitID = item.unitID;
 				_price1.size = item.size;
 				_price1.quantity = item.quantity;
 				_price1.discountPercent = item.discountPercent;
@@ -331,7 +333,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 				_price1.note = item.note;
 			} else {
 				_price2.price = item.price;
-				_price2.unit = item.unit;
+				_price2.unitID = item.unitID;
 				_price2.size = item.size;
 				_price2.quantity = item.quantity;
 				_price2.discountPercent = item.discountPercent;
@@ -364,12 +366,12 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         priceOther = _price1;
     }
     
-    if (priceSelf.unit && !priceOther.unit) {
-        priceOther.unit = priceSelf.unit;
+    if (priceSelf.unitID && !priceOther.unitID) {
+        priceOther.unitID = priceSelf.unitID;
     }
-    else if (priceSelf.unit && priceOther.unit && (priceSelf.unit.type != priceOther.unit.type)) {
+    else if (priceSelf.unitID && priceOther.unitID && ![[priceSelf unit].typeID isEqualToString:[priceOther unit].typeID]) {
         // 얼럿창
-        priceOther.unit = priceSelf.unit;
+        priceOther.unitID = priceSelf.unitID;
     }
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
@@ -432,27 +434,31 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     history.updateDate = keyDate;
     
     UnitPriceHistoryItem *priceAItem = [UnitPriceHistoryItem MR_createEntity];
+	priceAItem.uniqueID = [[NSUUID UUID] UUIDString];
+	priceAItem.updateDate = [NSDate date];
 	priceAItem.orderInComparison = @"A";
     priceAItem.price = _price1.price;
-    priceAItem.unit = _price1.unit;
+    priceAItem.unitID = _price1.unitID;
     priceAItem.size = _price1.size;
     priceAItem.quantity = _price1.quantity;
     priceAItem.discountPercent = _price1.discountPercent;
     priceAItem.discountPrice = _price1.discountPrice;
     priceAItem.note = _price1.note;
+	priceAItem.historyID = history.uniqueID;
     
     UnitPriceHistoryItem *priceBItem = [UnitPriceHistoryItem MR_createEntity];
+	priceBItem.uniqueID = [[NSUUID UUID] UUIDString];
+	priceBItem.updateDate = [NSDate date];
 	priceBItem.orderInComparison = @"B";
     priceBItem.price = _price2.price;
-    priceBItem.unit = _price2.unit;
+    priceBItem.unitID = _price2.unitID;
     priceBItem.size = _price2.size;
     priceBItem.quantity = _price2.quantity;
     priceBItem.discountPercent = _price2.discountPercent;
     priceBItem.discountPrice = _price2.discountPrice;
     priceBItem.note = _price2.note;
+	priceBItem.historyID = history.uniqueID;
     
-	history.unitPrices = [NSSet setWithArray:@[priceAItem, priceBItem]];
-
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
     self.historyBarItem.enabled = YES;

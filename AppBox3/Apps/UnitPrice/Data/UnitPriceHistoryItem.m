@@ -2,25 +2,25 @@
 //  UnitPriceHistoryItem.m
 //  AppBox3
 //
-//  Created by A3 on 6/30/14.
+//  Created by A3 on 7/18/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "UnitPriceHistoryItem.h"
-#import "UnitItem.h"
-#import "UnitPriceHistory.h"
 
 
 @implementation UnitPriceHistoryItem
 
 @dynamic discountPercent;
 @dynamic discountPrice;
+@dynamic historyID;
 @dynamic note;
 @dynamic orderInComparison;
 @dynamic price;
 @dynamic quantity;
 @dynamic size;
-@dynamic unit;
-@dynamic unitPriceHistory;
+@dynamic uniqueID;
+@dynamic unitID;
+@dynamic updateDate;
 
 @end

@@ -351,9 +351,9 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
         
         UnitItem *item = addedItems[i];
         UnitPriceFavorite *favorite = [UnitPriceFavorite MR_createEntity];
-		favorite.uniqueID = [[NSUUID UUID] UUIDString];
+		favorite.uniqueID = item.uniqueID;
 		favorite.updateDate = [NSDate date];
-        favorite.item = item;
+        favorite.unitItemID = item.uniqueID;
         [_favorites insertObject:favorite atIndex:lastIdx];
         
         NSIndexPath *ip = [NSIndexPath indexPathForRow:lastIdx inSection:0];
@@ -429,7 +429,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 		else {
 			if (_isFavoriteMode) {
 				UnitPriceFavorite *favorite = _favorites[indexPath.row];
-				data = favorite.item;
+				data = [UnitItem MR_findFirstByAttribute:@"uniqueID" withValue:favorite.unitItemID];
 			}
 			else {
 				data = _allData[indexPath.row];
@@ -551,7 +551,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 				if ([_favorites[indexPath.row] isKindOfClass:[UnitPriceFavorite class]]) {
 					UnitPriceFavorite *favorite = _favorites[indexPath.row];
-					data = favorite.item;
+					data = [UnitItem MR_findFirstByAttribute:@"uniqueID" withValue:favorite.unitItemID];
 				}
 				else {
 					[tableView deselectRowAtIndexPath:indexPath animated:YES];

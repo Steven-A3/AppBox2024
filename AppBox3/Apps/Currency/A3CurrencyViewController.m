@@ -1437,13 +1437,15 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	NSMutableSet *targets = [[NSMutableSet alloc] init];
 	for (; idx < historyItemCount; idx++) {
 		CurrencyHistoryItem *item = [CurrencyHistoryItem MR_createEntity];
+		item.uniqueID = [[NSUUID UUID] UUIDString];
+		item.updateDate = [NSDate date];
+		item.historyID = history.uniqueID;
 		CurrencyFavorite *favorite = self.favorites[idx + 2];
 		item.currencyCode = favorite.currencyCode;
 		item.rate = @([[A3AppDelegate instance].cacheStoreManager rateForCurrencyCode:favorite.currencyCode]);
 		item.order = favorite.order;
 		[targets addObject:item];
 	}
-	history.targets = targets;
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 

@@ -12,17 +12,17 @@
 #import "SFKImage.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3DaysCounterModelManager.h"
-#import "DaysCounterEvent+management.h"
+#import "DaysCounterEvent+extension.h"
 #import "NSString+conversion.h"
 #import "WalletFieldItem+initialize.h"
 #import "WalletCategory.h"
 #import "WalletCategory+extension.h"
 #import "UnitConvertItem.h"
-#import "UnitConvertItem+initialize.h"
+#import "UnitConvertItem+extension.h"
 #import "UnitFavorite.h"
-#import "UnitFavorite+initialize.h"
-#import "UnitItem+initialize.h"
-#import "UnitType+initialize.h"
+#import "UnitFavorite+extension.h"
+#import "UnitItem+extension.h"
+#import "UnitType+extension.h"
 #import "UnitPriceFavorite+initialize.h"
 #import "Calculation.h"
 #import "CurrencyHistory.h"
@@ -46,6 +46,16 @@
 #import "UnitPriceInfo.h"
 #import "WalletFavorite.h"
 #import "WalletItem+Favorite.h"
+#import "CurrencyHistoryItem.h"
+#import "DaysCounterDate.h"
+#import "DaysCounterEventLocation.h"
+#import "ExpenseListBudgetLocation.h"
+#import "ExpenseListItem.h"
+#import "TipCalcRecent.h"
+#import "TranslatorHistory.h"
+#import "UnitHistoryItem.h"
+#import "UnitPriceHistoryItem.h"
+#import "WalletField.h"
 
 NSString *const A3UniqueIdentifier = @"uniqueID";
 NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
@@ -115,13 +125,18 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 				[className isEqualToString:NSStringFromClass([Calculation class])] ||
 				[className isEqualToString:NSStringFromClass([CurrencyFavorite class])] ||
 				[className isEqualToString:NSStringFromClass([CurrencyHistory class])] ||
+				[className isEqualToString:NSStringFromClass([CurrencyHistoryItem class])] ||
 				[className isEqualToString:NSStringFromClass([DaysCounterCalendar class])] ||
 				[className isEqualToString:NSStringFromClass([DaysCounterEvent class])] ||
+				[className isEqualToString:NSStringFromClass([DaysCounterDate class])] ||
 				[className isEqualToString:NSStringFromClass([DaysCounterFavorite class])] ||
+				[className isEqualToString:NSStringFromClass([DaysCounterEventLocation class])] ||
 				[className isEqualToString:NSStringFromClass([DaysCounterReminder class])] ||
 				[className isEqualToString:NSStringFromClass([ExpenseListHistory class])] ||
 				[className isEqualToString:NSStringFromClass([ExpenseListBudget class])] ||
+				[className isEqualToString:NSStringFromClass([ExpenseListBudgetLocation class])] ||
 				[className isEqualToString:NSStringFromClass([ExpenseListCategories class])] ||
+				[className isEqualToString:NSStringFromClass([ExpenseListItem class])] ||
 				[className isEqualToString:NSStringFromClass([LadyCalendarAccount class])] ||
 				[className isEqualToString:NSStringFromClass([LadyCalendarPeriod class])] ||
 				[className isEqualToString:NSStringFromClass([LoanCalcComparisonHistory class])] ||
@@ -129,19 +144,25 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 				[className isEqualToString:NSStringFromClass([PercentCalcHistory class])] ||
 				[className isEqualToString:NSStringFromClass([SalesCalcHistory class])] ||
 				[className isEqualToString:NSStringFromClass([TipCalcHistory class])] ||
+				[className isEqualToString:NSStringFromClass([TipCalcRecent class])] ||
 				[className isEqualToString:NSStringFromClass([TranslatorFavorite class])] ||
 				[className isEqualToString:NSStringFromClass([TranslatorGroup class])] ||
+				[className isEqualToString:NSStringFromClass([TranslatorHistory class])] ||
 				[className isEqualToString:NSStringFromClass([UnitItem class])] ||
 				[className isEqualToString:NSStringFromClass([UnitConvertItem class])] ||
 				[className isEqualToString:NSStringFromClass([UnitFavorite class])] ||
 				[className isEqualToString:NSStringFromClass([UnitHistory class])] ||
+				[className isEqualToString:NSStringFromClass([UnitHistoryItem class])] ||
 				[className isEqualToString:NSStringFromClass([UnitPriceFavorite class])] ||
 				[className isEqualToString:NSStringFromClass([UnitPriceHistory class])] ||
+				[className isEqualToString:NSStringFromClass([UnitPriceHistoryItem class])] ||
 				[className isEqualToString:NSStringFromClass([UnitPriceInfo class])] ||
 				[className isEqualToString:NSStringFromClass([UnitType class])] ||
 				[className isEqualToString:NSStringFromClass([WalletCategory class])] ||
 				[className isEqualToString:NSStringFromClass([WalletFavorite class])] ||
-				[className isEqualToString:NSStringFromClass([WalletItem class])]
+				[className isEqualToString:NSStringFromClass([WalletItem class])] ||
+				[className isEqualToString:NSStringFromClass([WalletField class])] ||
+				[className isEqualToString:NSStringFromClass([WalletFieldItem class])]
 		)
 		{
 			[self deDupeForEntity:className];
@@ -230,13 +251,18 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 		[self deDupeForEntity:NSStringFromClass([Calculation class])];
 		[self deDupeForEntity:NSStringFromClass([CurrencyFavorite class])];
 		[self deDupeForEntity:NSStringFromClass([CurrencyHistory class])];
+		[self deDupeForEntity:NSStringFromClass([CurrencyHistoryItem class])];
 		[self deDupeForEntity:NSStringFromClass([DaysCounterCalendar class])];
 		[self deDupeForEntity:NSStringFromClass([DaysCounterEvent class])];
+		[self deDupeForEntity:NSStringFromClass([DaysCounterDate class])];
 		[self deDupeForEntity:NSStringFromClass([DaysCounterFavorite class])];
+		[self deDupeForEntity:NSStringFromClass([DaysCounterEventLocation class])];
 		[self deDupeForEntity:NSStringFromClass([DaysCounterReminder class])];
 		[self deDupeForEntity:NSStringFromClass([ExpenseListHistory class])];
 		[self deDupeForEntity:NSStringFromClass([ExpenseListBudget class])];
+		[self deDupeForEntity:NSStringFromClass([ExpenseListBudgetLocation class])];
 		[self deDupeForEntity:NSStringFromClass([ExpenseListCategories class])];
+		[self deDupeForEntity:NSStringFromClass([ExpenseListItem class])];
 		[self deDupeForEntity:NSStringFromClass([LadyCalendarAccount class])];
 		[self deDupeForEntity:NSStringFromClass([LadyCalendarPeriod class])];
 		[self deDupeForEntity:NSStringFromClass([LoanCalcComparisonHistory class])];
@@ -244,19 +270,25 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 		[self deDupeForEntity:NSStringFromClass([PercentCalcHistory class])];
 		[self deDupeForEntity:NSStringFromClass([SalesCalcHistory class])];
 		[self deDupeForEntity:NSStringFromClass([TipCalcHistory class])];
+		[self deDupeForEntity:NSStringFromClass([TipCalcRecent class])];
 		[self deDupeForEntity:NSStringFromClass([TranslatorFavorite class])];
 		[self deDupeForEntity:NSStringFromClass([TranslatorGroup class])];
+		[self deDupeForEntity:NSStringFromClass([TranslatorHistory class])];
 		[self deDupeForEntity:NSStringFromClass([UnitItem class])];
 		[self deDupeForEntity:NSStringFromClass([UnitConvertItem class])];
 		[self deDupeForEntity:NSStringFromClass([UnitFavorite class])];
 		[self deDupeForEntity:NSStringFromClass([UnitHistory class])];
+		[self deDupeForEntity:NSStringFromClass([UnitHistoryItem class])];
 		[self deDupeForEntity:NSStringFromClass([UnitPriceFavorite class])];
 		[self deDupeForEntity:NSStringFromClass([UnitPriceHistory class])];
+		[self deDupeForEntity:NSStringFromClass([UnitPriceHistoryItem class])];
 		[self deDupeForEntity:NSStringFromClass([UnitPriceInfo class])];
 		[self deDupeForEntity:NSStringFromClass([UnitType class])];
 		[self deDupeForEntity:NSStringFromClass([WalletCategory class])];
 		[self deDupeForEntity:NSStringFromClass([WalletFavorite class])];
 		[self deDupeForEntity:NSStringFromClass([WalletItem class])];
+		[self deDupeForEntity:NSStringFromClass([WalletField class])];
+		[self deDupeForEntity:NSStringFromClass([WalletFieldItem class])];
 	}
 
 	[self coreDataReady];

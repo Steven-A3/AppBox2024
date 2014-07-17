@@ -11,7 +11,7 @@
 #import "A3AppDelegate.h"
 #import "NSString+conversion.h"
 #import "DaysCounterEvent.h"
-#import "DaysCounterEvent+management.h"
+#import "DaysCounterEvent+extension.h"
 #import "WalletFieldItemImage.h"
 #import "WalletFieldItem+initialize.h"
 #import "AAAZip.h"
@@ -110,7 +110,7 @@ extern NSString *const USMCloudContentName;
 		[fileList addObject:
 			@{
 				A3ZipFilename : [[video videoFileURLInOriginal:YES] path],
-				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@-video.%@", A3WalletVideoDirectory, video.uniqueID, video.video.extension]
+				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@-video.%@", A3WalletVideoDirectory, video.uniqueID, video.videoExtension]
 			}];
 	}
 

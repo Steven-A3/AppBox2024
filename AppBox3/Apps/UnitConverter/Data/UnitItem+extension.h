@@ -8,8 +8,11 @@
 
 #import "UnitItem.h"
 
-@interface UnitItem (initialize)
+@class UnitType;
+
+@interface UnitItem (extension)
 
 + (void)resetUnitItemLists;
 
+- (UnitType *)type;
 @end

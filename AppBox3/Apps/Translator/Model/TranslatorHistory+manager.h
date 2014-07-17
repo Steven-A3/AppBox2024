@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "TranslatorHistory.h"
 
+@class TranslatorFavorite;
+
 @interface TranslatorHistory (manager)
+- (TranslatorFavorite *)favorite;
+
 - (void)setAsFavoriteMember:(BOOL)isFavorite;
 @end

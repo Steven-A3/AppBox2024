@@ -19,6 +19,8 @@
 #import "TemperatureConverter.h"
 #import "A3UnitConverterHistoryViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UnitHistory+extension.h"
+#import "UnitItem+extension.h"
 
 @interface A3UnitConverterHistoryViewController () <UIActionSheetDelegate>
 {
@@ -179,8 +181,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 		cell = [[A3UnitConverterHistory3RowCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3UnitConverterHistory3RowCellID];
 	}
     
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
-	NSArray *items = [unitHistory.targets sortedArrayUsingDescriptors:@[sortDescriptor]];
+	NSArray *items = [unitHistory targets];
     
     NSInteger numberOfLines = [items count] + 1;
 	[cell setNumberOfLines:@(numberOfLines)];
@@ -206,14 +207,16 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
         ((UILabel *) cell.leftLabels[index]).textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
         ((UILabel *) cell.rightLabels[index]).font = [UIFont systemFontOfSize:13.0];
         ((UILabel *) cell.rightLabels[index]).textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
+
+		UnitItem *sourceUnit = [UnitItem MR_findFirstByAttribute:@"uniqueID" withValue:unitHistory.sourceUnitID];
+		UnitItem *targetUnit = [UnitItem MR_findFirstByAttribute:@"uniqueID" withValue:item.targetUnitItemID];
+		float rate = sourceUnit.conversionRate.floatValue / targetUnit.conversionRate.floatValue;
         
-        float rate = unitHistory.source.conversionRate.floatValue / item.unit.conversionRate.floatValue;
-        
-        BOOL _isTemperatureMode = [unitHistory.source.type.unitTypeName isEqualToString:@"Temperature"];
+        BOOL _isTemperatureMode = [[sourceUnit type].unitTypeName isEqualToString:@"Temperature"];
         
         if (_isTemperatureMode) {
-            float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:unitHistory.source.unitName andTemperature:unitHistory.value.floatValue];
-            float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:item.unit.unitName];
+            float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:sourceUnit.unitName andTemperature:unitHistory.value.floatValue];
+            float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnit.unitName];
             ((UILabel *) cell.leftLabels[index]).text = [self.decimalFormatter stringFromNumber:@(targetValue)];
         }
         else {
@@ -222,11 +225,11 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
         
         // a to b = 40.469 표시 (right label)
         if (_isTemperatureMode) {
-            ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"), unitHistory.source.unitShortName, [TemperatureConverter rateStringFromTemperUnit:unitHistory.source.unitName toTemperUnit:item.unit.unitName]];
+            ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"), sourceUnit.unitShortName, [TemperatureConverter rateStringFromTemperUnit:sourceUnit.unitName toTemperUnit:targetUnit.unitName]];
         }
         else {
-            float conversionRate = unitHistory.source.conversionRate.floatValue / item.unit.conversionRate.floatValue;
-            ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@ = %@", @"%@ to %@ = %@"), unitHistory.source.unitShortName, item.unit.unitShortName, [self.decimalFormatter stringFromNumber:@(conversionRate)]];
+            float conversionRate = sourceUnit.conversionRate.floatValue / targetUnit.conversionRate.floatValue;
+            ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@ = %@", @"%@ to %@ = %@"), sourceUnit.unitShortName, targetUnit.unitShortName, [self.decimalFormatter stringFromNumber:@(conversionRate)]];
         }
 	}
     

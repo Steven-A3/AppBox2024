@@ -21,7 +21,7 @@
 #import "A3DaysCounterModelManager.h"
 
 #import "A3LadyCalendarDetailViewController.h"
-#import "DaysCounterEvent+management.h"
+#import "DaysCounterEvent+extension.h"
 #import "NSString+conversion.h"
 #import "WalletData.h"
 #import "A3SettingsBackupRestoreViewController.h"

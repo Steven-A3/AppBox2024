@@ -2,12 +2,10 @@
 //  LoanCalcHistory.m
 //  AppBox3
 //
-//  Created by A3 on 6/30/14.
+//  Created by A3 on 7/17/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "LoanCalcHistory.h"
-#import "LoanCalcComparisonHistory.h"
 #import "LoanCalcHistory.h"
 
 
@@ -38,7 +36,7 @@
 @dynamic uniqueID;
 @dynamic updateDate;
 @dynamic useSimpleInterest;
-@dynamic compareWith;
-@dynamic comparisonHistory;
+@dynamic comparisonHistoryID;
+@dynamic isAPart;
 
 @end

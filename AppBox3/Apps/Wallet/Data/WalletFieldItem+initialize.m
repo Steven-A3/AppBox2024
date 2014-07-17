@@ -25,7 +25,8 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 	if (self.isDeleted) {
 		FNLOG();
 		NSFileManager *fileManager = [NSFileManager defaultManager];
-		if ([self.field.type isEqualToString:WalletFieldTypeImage]) {
+		WalletField *field = [WalletField MR_findFirstByAttribute:@"uniqueID" withValue:self.fieldID];
+		if ([field.type isEqualToString:WalletFieldTypeImage]) {
 			NSError *error;
 			NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
 			[coordinator coordinateWritingItemAtURL:[self photoImageURLInOriginalDirectory:YES]
@@ -37,7 +38,7 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 			[fileManager removeItemAtPath:[self photoImageThumbnailPathInOriginal:YES] error:NULL];
 			return;
 		}
-		if ([self.field.type isEqualToString:WalletFieldTypeVideo] && self.video)  {
+		if ([field.type isEqualToString:WalletFieldTypeVideo] && [self.hasVideo boolValue])  {
 			NSError *error;
 			NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
 			[coordinator coordinateWritingItemAtURL:[self videoFileURLInOriginal:YES]
@@ -133,7 +134,7 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 }
 
 - (NSURL *)videoFileURLInOriginal:(BOOL)inOriginal {
-	NSString *filename = [NSString stringWithFormat:@"%@-video.%@", self.uniqueID, self.video.extension];
+	NSString *filename = [NSString stringWithFormat:@"%@-video.%@", self.uniqueID, self.videoExtension];
 	if (inOriginal) {
 		NSURL *baseURL = [[self baseURL] URLByAppendingPathComponent:A3WalletVideoDirectory];
 		return [baseURL URLByAppendingPathComponent:filename];
@@ -163,9 +164,9 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 }
 
 - (UIImage *)thumbnailImage {
-	if (self.image) {
+	if ([self.hasImage boolValue]) {
 		return [self photoImageThumbnail];
-	} else if (self.video) {
+	} else if ([self.hasVideo boolValue]) {
 		return [self videoThumbnail];
 	}
 	return nil;

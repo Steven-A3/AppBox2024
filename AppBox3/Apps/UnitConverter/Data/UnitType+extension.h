@@ -8,7 +8,7 @@
 
 #import "UnitType.h"
 
-@interface UnitType (initialize)
+@interface UnitType (extension)
 
 + (void)resetUnitTypeLists;
 - (NSString *)flagImageName;

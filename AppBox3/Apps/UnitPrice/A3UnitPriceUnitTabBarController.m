@@ -10,13 +10,14 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UnitType.h"
-#import "UnitType+initialize.h"
+#import "UnitType+extension.h"
 #import "UnitItem.h"
 #import "UnitPriceFavorite.h"
 #import "UnitPriceFavorite+initialize.h"
 #import "UnitPriceInfo.h"
 #import "A3AppDelegate.h"
 #import "A3NumberKeyboardViewController.h"
+#import "UnitPriceInfo+extension.h"
 
 @interface A3UnitPriceUnitTabBarController () <UITabBarControllerDelegate>
 {
@@ -112,8 +113,8 @@
     self.viewControllers = viewControllers;
     
     // PriceInfo에 설정된 unitType에 해당한 탭바가 선택되도록 한다.
-    if (self.price.unit) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitTypeName == %@", self.price.unit.type.unitTypeName];
+    if (self.price.unitID) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", [self.price unit].typeID];
         NSArray *types = [_unitTypes filteredArrayUsingPredicate:predicate];
         if (types.count > 0) {
             UnitType *type = types[0];
@@ -169,15 +170,10 @@
 - (NSMutableArray *)unitTypes
 {
     if (!_unitTypes) {
-        _unitTypes = [[NSMutableArray alloc] init];
-        
-        NSArray *names = @[@"Area", @"Length", @"Volume", @"Weight"];
-        for (int i = 0; i < names.count; i++) {
-            UnitType *unitType = [UnitType MR_findFirstByAttribute:@"unitTypeName" withValue:names[i]];
-            if (unitType) {
-                [_unitTypes addObject:unitType];
-            }
-        }
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitTypeName IN %@", @[@"Area", @"Length", @"Volume", @"Weight"]];
+		NSArray *typesMatchingNames = [UnitType MR_findAllWithPredicate:predicate];
+
+		_unitTypes = [[NSMutableArray alloc] initWithArray:typesMatchingNames];
     }
     return _unitTypes;
 }

@@ -8,8 +8,11 @@
 
 #import "UnitConvertItem.h"
 
-@interface UnitConvertItem (initialize)
+@class UnitItem;
+
+@interface UnitConvertItem (extension)
 
 + (void)reset;
 
+- (UnitItem *)item;
 @end

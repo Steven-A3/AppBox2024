@@ -23,10 +23,11 @@
 #import "A3DaysCounterEventListNameCell.h"
 #import "DaysCounterFavorite.h"
 #import "NSMutableArray+A3Sort.h"
-#import "DaysCounterEvent+management.h"
+#import "DaysCounterEvent+extension.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "A3InstructionViewController.h"
+#import "DaysCounterFavorite+extension.h"
 
 
 @interface A3DaysCounterFavoriteListViewController () <FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate>
@@ -221,8 +222,9 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
     
     if ( [_itemArray count] > 0) {
         DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
-        textLabel.text = favorite.event.eventName;
-		if ([favorite.event.hasPhoto boolValue]) {
+		DaysCounterEvent *event = [favorite event];
+        textLabel.text = event.eventName;
+		if ([event.hasPhoto boolValue]) {
 			imageView.image = [favorite.event thumbnailImageInOriginalDirectory:YES];
 			imageView.contentMode = UIViewContentModeScaleAspectFill;
 			imageView.layer.cornerRadius = imageView.bounds.size.width / 2.0;
@@ -274,8 +276,8 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
                 }
                 
                 UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
-                NSDate *repeatDate = [A3DaysCounterModelManager repeatDateOfCurrentNotNextWithRepeatOption:[favorite.event.repeatType integerValue]
-                                                                                                 firstDate:[favorite.event.startDate solarDate]
+                NSDate *repeatDate = [A3DaysCounterModelManager repeatDateOfCurrentNotNextWithRepeatOption:[event.repeatType integerValue]
+                                                                                                 firstDate:[[event startDate] solarDate]
                                                                                                   fromDate:[NSDate date]];
                 dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
                                                        withFormat:[formatter dateFormat]];
@@ -285,10 +287,10 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
             }
         }
         else {
-            daysLabel.text = [A3DaysCounterModelManager stringOfDurationOption:[favorite.event.durationOption integerValue]
+            daysLabel.text = [A3DaysCounterModelManager stringOfDurationOption:[event.durationOption integerValue]
                                                                       fromDate:today
-                                                                        toDate:[favorite.event effectiveStartDate] //nextDate
-                                                                      isAllDay:[favorite.event.isAllDay boolValue]
+                                                                        toDate:[event effectiveStartDate] //nextDate
+                                                                      isAllDay:[event.isAllDay boolValue]
                                                                   isShortStyle:IS_IPHONE ? YES : NO
                                                              isStrictShortType:NO];
             if ( IS_IPAD ) {

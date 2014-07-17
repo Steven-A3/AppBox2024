@@ -323,9 +323,10 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 }
 
 - (UIButton *)speakButton {
-	if ([self speechAvailableForLanguage:_messageEntity.group.targetLanguage]) {
+	TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
+	if ([self speechAvailableForLanguage:group.targetLanguage]) {
 		_speakWithApple = YES;
-	} else if ([self googleSpeechAvailableForLanguage:_messageEntity.group.targetLanguage]) {
+	} else if ([self googleSpeechAvailableForLanguage:group.targetLanguage]) {
 		_speakWithApple = NO;
 	} else {
 		return nil;
@@ -405,14 +406,15 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		}
 
         NSArray *languages = [A3TranslatorLanguage findAllWithDetectLanguage:NO];
-        __block NSString *targetLangauge = _messageEntity.group.targetLanguage;
+		TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
+        __block NSString *targetLanguage = group.targetLanguage;
         [languages enumerateObjectsUsingBlock:^(A3TranslatorLanguage *languageItem, NSUInteger idx, BOOL *stop) {
-            if ([languageItem.code isEqualToString:targetLangauge]) {
+            if ([languageItem.code isEqualToString:targetLanguage]) {
                 *stop = YES;
-                targetLangauge = [languageItem googleCode];
+                targetLanguage = [languageItem googleCode];
             }
         }];
-		AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:[self speechLanguageForLanguage:targetLangauge]];
+		AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:[self speechLanguageForLanguage:targetLanguage]];
 		AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:_messageEntity.translatedText];
 		utterance.voice = voice;
 		[self.speechSynthesizer speakUtterance:utterance];
@@ -423,7 +425,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 
 - (void)changeFavoriteButtonImage {
 	UIImage *image;
-	if (_messageEntity.favorite) {
+	if ([_messageEntity favorite]) {
 		image = [UIImage imageNamed:@"star02_on"];
 	} else {
 		image = [UIImage imageNamed:@"star02"];
@@ -432,7 +434,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 }
 
 - (void)favoriteButtonAction {
-	[_messageEntity setAsFavoriteMember:_messageEntity.favorite == nil];
+	[_messageEntity setAsFavoriteMember:[_messageEntity favorite] == nil];
 
 	[self changeFavoriteButtonImage];
 }
@@ -525,7 +527,8 @@ static NSString *const GOOGLE_LISTEN_URL	= @"http://translate.google.com/transla
 
 	NSMutableString *urlString = [NSMutableString stringWithCapacity:300];
 	[urlString appendString:GOOGLE_LISTEN_URL];
-	[urlString appendString:[A3TranslatorLanguage googleCodeFromAppleCode:_messageEntity.group.targetLanguage]];
+	TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
+	[urlString appendString:[A3TranslatorLanguage googleCodeFromAppleCode:group.targetLanguage]];
 	[urlString appendString:@"&q="];
 	[urlString appendString:[_messageEntity.translatedText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 

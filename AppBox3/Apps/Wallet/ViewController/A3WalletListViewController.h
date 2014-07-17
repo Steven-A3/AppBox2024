@@ -22,13 +22,11 @@
 @property (nonatomic, assign) BOOL showCategoryInDetailViewController;
 
 - (void)initializeViews;
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath walletItem:(WalletItem *)item;
-
 - (void)showLeftNavigationBarItems;
 - (void)addButtonConstraints;
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath withItem:(WalletItem *)item;
+
 @end
 
 extern NSString *const A3WalletTextCellID1;

@@ -2,18 +2,16 @@
 //  ExpenseListBudget.h
 //  AppBox3
 //
-//  Created by A3 on 6/30/14.
+//  Created by A3 on 7/18/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class ExpenseListBudgetLocation, ExpenseListHistory, ExpenseListItem;
 
 @interface ExpenseListBudget : NSManagedObject
 
-@property (nonatomic, retain) NSString *uniqueID;
 @property (nonatomic, retain) NSString * category;
 @property (nonatomic, retain) NSDate * date;
 @property (nonatomic, retain) NSData * location;
@@ -21,18 +19,8 @@
 @property (nonatomic, retain) NSString * paymentType;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSNumber * totalAmount;
+@property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSDate * updateDate;
 @property (nonatomic, retain) NSNumber * usedAmount;
-@property (nonatomic, retain) ExpenseListHistory *expenseHistory;
-@property (nonatomic, retain) NSSet *expenseItems;
-@property (nonatomic, retain) ExpenseListBudgetLocation *expenseLocation;
-@end
-
-@interface ExpenseListBudget (CoreDataGeneratedAccessors)
-
-- (void)addExpenseItemsObject:(ExpenseListItem *)value;
-- (void)removeExpenseItemsObject:(ExpenseListItem *)value;
-- (void)addExpenseItems:(NSSet *)values;
-- (void)removeExpenseItems:(NSSet *)values;
 
 @end

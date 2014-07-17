@@ -21,4 +21,9 @@
 	}
 }
 
++ (BOOL)isFavoriteForItemID:(NSString *)itemID {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", itemID];
+	return [WalletFavorite MR_countOfEntitiesWithPredicate:predicate] > 0;
+}
+
 @end

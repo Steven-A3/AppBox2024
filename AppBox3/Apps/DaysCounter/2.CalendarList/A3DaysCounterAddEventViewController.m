@@ -12,7 +12,6 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
-#import "A3Formatter.h"
 #import "A3DaysCounterSetupRepeatViewController.h"
 #import "A3DaysCounterSetupEndRepeatViewController.h"
 #import "A3DaysCounterSetupAlertViewController.h"
@@ -30,12 +29,10 @@
 #import "A3DateHelper.h"
 #import "A3WalletNoteCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
-#import "DaysCounterFavorite.h"
-#import "DaysCounterEvent+management.h"
+#import "DaysCounterEvent+extension.h"
 #import "A3JHTableViewExpandableHeaderCell.h"
 #import "UITableView+utility.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "UIImage+Resizing.h"
 #import "NSDateFormatter+A3Addition.h"
 
 
@@ -607,7 +604,7 @@
             UIButton *button = (UIButton*)[cell viewWithTag:11];
             textField.text = _eventItem.eventName;
             
-            BOOL isSelected = _eventItem.favorite != nil;
+            BOOL isSelected = [_eventItem favorite] != nil;
             [button setImage:[UIImage imageNamed:isSelected ? @"star02_on" : @"star02"] forState:UIControlStateNormal];
             button.tintColor = [A3AppDelegate instance].themeColor;
         }
@@ -729,8 +726,9 @@
     BOOL isStartDateLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.startDate toLunar:YES]
                                                                 isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
     BOOL isEndDateLeapMonth = NO;
-    if (_eventItem.endDate) {
-        isEndDateLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.endDate toLunar:YES]
+	DaysCounterDate *endDate = [_eventItem endDateCreateIfNotExist:NO ];
+    if (endDate) {
+        isEndDateLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:endDate toLunar:YES]
                                                              isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
     }
     
@@ -762,15 +760,15 @@
     
     lunarImageView.hidden = YES;
 #ifdef DEBUG
-    NSDate *keyDate = itemType == EventCellType_StartDate ? [_eventItem.startDate solarDate] : [_eventItem.endDate solarDate];
+    NSDate *keyDate = itemType == EventCellType_StartDate ? [_eventItem.startDate solarDate] : [[_eventItem endDateCreateIfNotExist:NO ] solarDate];
     NSAssert(keyDate, @"start/end default date is not nil.");
 #endif
     if ([_eventItem.isLunar boolValue]) {
-        dateLabel.text = [A3DaysCounterModelManager dateStringOfLunarFromDateModel:itemType == EventCellType_StartDate ? _eventItem.startDate : _eventItem.endDate
-                                                                       isLeapMonth:itemType == EventCellType_StartDate ? [_eventItem.startDate.isLeapMonth boolValue] : [_eventItem.endDate.isLeapMonth boolValue] ];
+        dateLabel.text = [A3DaysCounterModelManager dateStringOfLunarFromDateModel:itemType == EventCellType_StartDate ? _eventItem.startDate : [_eventItem endDateCreateIfNotExist:NO ]
+                                                                       isLeapMonth:itemType == EventCellType_StartDate ? [_eventItem.startDate.isLeapMonth boolValue] : [[_eventItem endDateCreateIfNotExist:NO ].isLeapMonth boolValue] ];
     }
     else {
-        dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:itemType == EventCellType_StartDate ? _eventItem.startDate : _eventItem.endDate isLunar:NO isAllDay:[_eventItem.isAllDay boolValue]];
+        dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:itemType == EventCellType_StartDate ? _eventItem.startDate : [_eventItem endDateCreateIfNotExist:NO ] isLunar:NO isAllDay:[_eventItem.isAllDay boolValue]];
     }
     
     NSInteger inputType;
@@ -827,8 +825,8 @@
     
     if ( [_eventItem.isPeriod boolValue] && itemType == EventCellType_EndDate ) {
         NSDate *startDate = [_eventItem.startDate solarDate];
-        if ( _eventItem.endDate ) {
-            NSDate *endDate = [_eventItem.endDate solarDate];
+        if ([_eventItem endDateCreateIfNotExist:NO ]) {
+            NSDate *endDate = [[_eventItem endDateCreateIfNotExist:NO ] solarDate];
             if ( [endDate timeIntervalSince1970] < [startDate timeIntervalSince1970] ) {
                 NSDictionary *attr = @{NSFontAttributeName: dateLabel.font, NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)};
                 dateLabel.attributedText = [[NSAttributedString alloc] initWithString:dateLabel.text attributes:attr];
@@ -943,7 +941,7 @@
     if ( [self.inputDateKey isEqualToString: EventItem_StartDate] ) {
         NSDate *date = [_eventItem.startDate solarDate];
         if (!date) {
-            date = [_eventItem.endDate solarDate] ? [_eventItem.endDate solarDate] : [NSDate date];
+            date = [[_eventItem endDateCreateIfNotExist:NO ] solarDate] ? [[_eventItem endDateCreateIfNotExist:NO ] solarDate] : [NSDate date];
         }
         
         datePicker.date = date;
@@ -956,7 +954,7 @@
         }
     }
     else if ( [self.inputDateKey isEqualToString: EventItem_EndDate] ) {
-        NSDate *date = [_eventItem.endDate solarDate];
+        NSDate *date = [[_eventItem endDateCreateIfNotExist:NO ] solarDate];
         if (!date) {
             date = [_eventItem.startDate solarDate] ? [_eventItem.startDate solarDate] : [NSDate date];
         }
@@ -1418,14 +1416,14 @@
     if ( [_eventItem.eventName length] < 1 ) {
         _eventItem.eventName = NSLocalizedString(@"Untitled", @"Untitled");
     }
-    if ( [_eventItem.isPeriod boolValue] && !_eventItem.endDate ) {
+    if ( [_eventItem.isPeriod boolValue] && ![_eventItem endDateCreateIfNotExist:NO ]) {
 		[self alertMessage:NSLocalizedString(@"Please enter the end date.", @"Please enter the end date.")];
         return;
     }
     
     if ( [_eventItem.isPeriod boolValue] ) {
         NSDate *startDate = [_eventItem.startDate solarDate];
-        NSDate *endDate = [_eventItem.endDate solarDate];
+        NSDate *endDate = [[_eventItem endDateCreateIfNotExist:NO ] solarDate];
         
         if ( [endDate timeIntervalSince1970] < [startDate timeIntervalSince1970]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
@@ -1451,7 +1449,7 @@
         }
         
         if ( [_eventItem.isPeriod boolValue] ) {
-            NSDateComponents *startComp = [A3DaysCounterModelManager dateComponentsFromDateModelObject:[_eventItem endDate] toLunar:YES];
+            NSDateComponents *startComp = [A3DaysCounterModelManager dateComponentsFromDateModelObject:[_eventItem endDateCreateIfNotExist:NO ] toLunar:YES];
             BOOL isLunarEndDate = [NSDate isLunarDateComponents:startComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
             if (!isLunarEndDate) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"End date is not a lunar date.", @"Message in adding event.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
@@ -1464,7 +1462,7 @@
 
     if ( _isAddingEvent ) {
         if (_eventItem.location) {
-            _eventItem.location.eventId = _eventItem.uniqueID;
+            _eventItem.location.eventID = _eventItem.uniqueID;
         }
         
         [_sharedManager addEvent:_eventItem];
@@ -1525,11 +1523,11 @@
 {
     NSMutableArray *items = [[_sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
     if ( [_eventItem.isPeriod boolValue] ) {
-        if ( _eventItem.endDate ) {
-            NSDate *endDate = [_eventItem.endDate solarDate];
+        if ([_eventItem endDateCreateIfNotExist:NO ]) {
+            NSDate *endDate = [[_eventItem endDateCreateIfNotExist:NO ] solarDate];
             NSTimeInterval diff = [endDate timeIntervalSince1970] - [startDate timeIntervalSince1970];
             endDate = [NSDate dateWithTimeInterval:diff sinceDate:[_eventItem.startDate solarDate]];
-            _eventItem.endDate.solarDate = endDate;
+			[_eventItem endDateCreateIfNotExist:NO ].solarDate = endDate;
         }
         else {
             _eventItem.endDate = _eventItem.startDate;
@@ -1625,8 +1623,8 @@
         [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.startDate toLunar:YES]
                                                         withEventModel:_eventItem
                                                                endDate:NO];
-        if (_eventItem.endDate) {
-            [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.endDate toLunar:YES]
+        if ([_eventItem endDateCreateIfNotExist:NO ]) {
+            [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[_eventItem endDateCreateIfNotExist:NO ] toLunar:YES]
                                                             withEventModel:_eventItem
                                                                    endDate:YES];
         }
@@ -1661,8 +1659,8 @@
         }
 
         // Reload EndDate
-        if (_eventItem.endDate) {
-            [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.endDate toLunar:NO]
+        if ([_eventItem endDateCreateIfNotExist:NO ]) {
+            [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[_eventItem endDateCreateIfNotExist:NO ] toLunar:NO]
                                                             withEventModel:_eventItem
                                                                    endDate:YES];
             if (reloadRowIndex != -1) {
@@ -1691,8 +1689,8 @@
     }
     
     // Reload EndDate
-    if (_eventItem.endDate) {
-        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.endDate toLunar:NO]
+    if ([_eventItem endDateCreateIfNotExist:NO ]) {
+        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[_eventItem endDateCreateIfNotExist:NO ] toLunar:NO]
                                                         withEventModel:_eventItem
                                                                endDate:YES];
         if (reloadRowIndex != -1) {
@@ -1739,17 +1737,15 @@
     
     if ( swButton.on ) {
         if ( ![self isExistsEndDateCellInItems:sectionRow_items] ) {
-            if (!_eventItem.endDate) {
-                _eventItem.endDate = [DaysCounterDate MR_createEntity];
-            }
-            _eventItem.endDate.day = [_eventItem.startDate.day copy];
-            _eventItem.endDate.hour = [_eventItem.startDate.hour copy];
-            _eventItem.endDate.isLeapMonth = [_eventItem.startDate.isLeapMonth copy];
-            _eventItem.endDate.minute = [_eventItem.startDate.minute copy];
-            _eventItem.endDate.month = [_eventItem.startDate.month copy];
-            _eventItem.endDate.solarDate = [_eventItem.startDate.solarDate copy];
-            _eventItem.endDate.year = [_eventItem.startDate.year copy];
-            
+			DaysCounterDate *startDate = [_eventItem startDate];
+			DaysCounterDate *endDate = [_eventItem endDateCreateIfNotExist:YES ];
+            endDate.day = startDate.day;
+            endDate.hour = startDate.hour;
+            endDate.isLeapMonth = startDate.isLeapMonth;
+            endDate.minute = startDate.minute;
+            endDate.month = startDate.month;
+            endDate.solarDate = startDate.solarDate;
+            endDate.year = startDate.year;
 
             NSInteger startDateRowIndex = [self indexOfRowForItemType:EventCellType_StartDate atSectionArray:sectionRow_items];
             NSInteger datePickerRow = 0;
@@ -1828,7 +1824,7 @@
     else {
         dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[datePicker date]];
         dateComp.second = 0;
-        DaysCounterDate *dateData = [self.inputDateKey isEqualToString:EventItem_StartDate] ? _eventItem.startDate : _eventItem.endDate;
+        DaysCounterDate *dateData = [self.inputDateKey isEqualToString:EventItem_StartDate] ? _eventItem.startDate : [_eventItem endDateCreateIfNotExist:NO ];
         if ([dateData.hour integerValue] != dateComp.hour || [dateData.minute integerValue] != dateComp.minute) {
             NSInteger durationFlag = [_eventItem.durationOption integerValue];
             durationFlag |= DurationOption_Hour|DurationOption_Minutes;
@@ -1850,7 +1846,7 @@
                 datePicker.date = [_eventItem.startDate solarDate];
             }
             else {
-                datePicker.date = [_eventItem.endDate solarDate];
+                datePicker.date = [[_eventItem endDateCreateIfNotExist:NO ] solarDate];
             }
 
             return;
@@ -2037,7 +2033,7 @@
     if ((indexPath.section == 1 && indexPath.row == startDateIndex) || (indexPath.section == 1 && indexPath.row == endDateIndex)) {    // start Date
         if (!self.dateKeyboardViewController) {
             self.dateKeyboardViewController = [self newDateKeyboardViewController];
-            self.dateKeyboardViewController.dateComponents = [A3DaysCounterModelManager dateComponentsFromDateModelObject:indexPath.row == startDateIndex ? _eventItem.startDate : _eventItem.endDate
+            self.dateKeyboardViewController.dateComponents = [A3DaysCounterModelManager dateComponentsFromDateModelObject:indexPath.row == startDateIndex ? _eventItem.startDate : [_eventItem endDateCreateIfNotExist:NO ]
                                                                                                                   toLunar:YES];
         }
 		self.dateKeyboardViewController.delegate = self;
@@ -2131,11 +2127,11 @@
 
             
             if ([_eventItem.isLunar boolValue]) {
-                dateLabel.text = [A3DaysCounterModelManager dateStringOfLunarFromDateModel:_eventItem.endDate
-                                                                               isLeapMonth:[_eventItem.endDate.isLeapMonth boolValue]];
+                dateLabel.text = [A3DaysCounterModelManager dateStringOfLunarFromDateModel:[_eventItem endDateCreateIfNotExist:NO ]
+                                                                               isLeapMonth:[[_eventItem endDateCreateIfNotExist:NO ].isLeapMonth boolValue]];
             }
             else {
-                dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:_eventItem.endDate isLunar:NO isAllDay:[_eventItem.isAllDay boolValue]];
+                dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:[_eventItem endDateCreateIfNotExist:NO ] isLunar:NO isAllDay:[_eventItem.isAllDay boolValue]];
             }
         }
     }
@@ -2225,7 +2221,9 @@
     }
     else if ( actionSheet.tag == ActionTag_Location ) {
         if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
-            _eventItem.location = nil;
+			DaysCounterEventLocation *location = [_eventItem location];
+			[location MR_deleteEntity];
+
             [self.tableView reloadData];
         }
         else if ( buttonIndex == actionSheet.firstOtherButtonIndex ) {
@@ -2305,18 +2303,19 @@
             NSDictionary *addressDict = placeMark.addressDictionary;
             
             DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
-            locItem.eventId = _eventItem.uniqueID;
+			locItem.uniqueID = [[NSUUID UUID] UUIDString];
+			locItem.updateDate = [NSDate date];
+            locItem.eventID = _eventItem.uniqueID;
             locItem.latitude = @(location.coordinate.latitude);
             locItem.longitude = @(location.coordinate.longitude);
-            
             locItem.locationName = [addressDict objectForKey:(NSString*)kABPersonAddressStreetKey];
             locItem.country = ([[addressDict objectForKey:(NSString*)kABPersonAddressCountryKey] length] > 0 ? [addressDict objectForKey:(NSString*)kABPersonAddressCountryKey] : @"");
             locItem.state = ([[addressDict objectForKey:(NSString*)kABPersonAddressCountryKey] length] > 0 ? [addressDict objectForKey:(NSString*)kABPersonAddressCountryKey] : @"");
             locItem.city = ([[addressDict objectForKey:(NSString*)kABPersonAddressCityKey] length] > 0 ? [addressDict objectForKey:(NSString*)kABPersonAddressCityKey] : @"");
             locItem.address = ([[addressDict objectForKey:(NSString*)kABPersonAddressStreetKey] length] > 0 ? [addressDict objectForKey:(NSString*)kABPersonAddressStreetKey] : @"");
             locItem.contact = @"";
-            self.eventItem.location = locItem;
-            [self.tableView reloadData];
+
+			[self.tableView reloadData];
         }
     }];
     self.locationManager = nil;

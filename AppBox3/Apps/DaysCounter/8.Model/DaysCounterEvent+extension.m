@@ -6,28 +6,87 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "DaysCounterEvent+management.h"
+#import "DaysCounterEvent+extension.h"
 #import "DaysCounterFavorite.h"
 #import "NSString+conversion.h"
 #import "UIImage+Resizing.h"
 #import "A3DaysCounterModelManager.h"
 #import "A3AppDelegate.h"
+#import "DaysCounterDate.h"
+#import "DaysCounterDate.h"
+#import "DaysCounterEventLocation.h"
+#import "DaysCounterReminder.h"
+#import "DaysCounterReminder.h"
 
 NSString *const A3DaysCounterImageDirectory = @"DaysCounterImages";
 NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbnail";
 
-@implementation DaysCounterEvent (management)
+@implementation DaysCounterEvent (extension)
+
+- (DaysCounterReminder *)reminder {
+	return [DaysCounterReminder MR_findFirstByAttribute:@"eventID" withValue:self.uniqueID];
+}
+
+- (DaysCounterFavorite *)favorite {
+	return [DaysCounterFavorite MR_findFirstByAttribute:@"eventID" withValue:self.uniqueID];
+}
+
+/*! 이것을 호출하면 startDate가 없는 경우, 항상 만든다. 있으면 만들지 않는다.
+ * \param
+ * \returns
+ */
+- (DaysCounterDate *)startDate {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eventID == %@ AND isStartDate == YES", self.uniqueID];
+	DaysCounterDate *startDate = [DaysCounterDate MR_findFirstWithPredicate:predicate inContext:self.managedObjectContext];
+	if (!startDate) {
+		startDate = [DaysCounterDate MR_createInContext:self.managedObjectContext];
+		startDate.uniqueID = [[NSUUID UUID] UUIDString];
+		startDate.updateDate = [NSDate date];
+		startDate.eventID = self.uniqueID;
+		startDate.isStartDate = @YES;
+	}
+	return startDate;
+}
+
+- (DaysCounterDate *)endDateCreateIfNotExist:(BOOL)createIfNotExist {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eventID == %@ AND isStartDate == NO", self.uniqueID];
+	DaysCounterDate *endDate = [DaysCounterDate MR_findFirstWithPredicate:predicate inContext:self.managedObjectContext];
+	if (!endDate && createIfNotExist) {
+		endDate = [DaysCounterDate MR_createInContext:self.managedObjectContext];
+		endDate.uniqueID = [[NSUUID UUID] UUIDString];
+		endDate.updateDate = [NSDate date];
+		endDate.eventID = self.uniqueID;
+		endDate.isStartDate = @NO;
+	}
+	return endDate;
+}
+
+- (void)setEndDate:(DaysCounterDate *)dateObject {
+	DaysCounterDate *endDate = [self endDateCreateIfNotExist:NO ];
+	endDate.year = dateObject.year;
+	endDate.month = dateObject.month;
+	endDate.day = dateObject.day;
+	endDate.hour = dateObject.hour;
+	endDate.minute = dateObject.minute;
+	endDate.solarDate = dateObject.solarDate;
+	endDate.isLeapMonth = dateObject.isLeapMonth;
+}
+
+- (DaysCounterEventLocation *)location {
+	return [DaysCounterEventLocation MR_findFirstByAttribute:@"eventID" withValue:self.uniqueID];
+}
 
 - (void)toggleFavorite {
-	if (!self.favorite) {
-		DaysCounterFavorite *favorite = [DaysCounterFavorite MR_createEntity];
+	DaysCounterFavorite *favorite = [self favorite];
+	if (!favorite) {
+		favorite = [DaysCounterFavorite MR_createEntity];
 		favorite.uniqueID = [[NSUUID UUID] UUIDString];
 		favorite.updateDate = [NSDate date];
-		favorite.event = self;
+		favorite.eventID = self.uniqueID;
 		DaysCounterFavorite *lastFavorite = [DaysCounterFavorite MR_findFirstOrderedByAttribute:@"order" ascending:NO];
 		favorite.order = [NSString orderStringWithOrder:[lastFavorite.order integerValue] + 1000000];
 	} else {
-		[self.favorite MR_deleteEntity];
+		[favorite MR_deleteEntity];
 	}
 }
 

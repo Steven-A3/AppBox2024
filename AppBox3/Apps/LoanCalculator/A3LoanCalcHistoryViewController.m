@@ -16,6 +16,7 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
+#import "LoanCalcComparisonHistory+extension.h"
 
 @interface A3LoanCalcHistoryViewController () <UIActionSheetDelegate>
 {
@@ -183,7 +184,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 
 - (void)deleteComparisonHistory:(LoanCalcComparisonHistory *)history
 {
-	for (LoanCalcHistory *detail in history.details) {
+	for (LoanCalcHistory *detail in [history details]) {
 		[detail MR_deleteEntity];
 	}
 

@@ -14,6 +14,7 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UnitItem+extension.h"
 
 @interface A3UnitPriceAddViewController ()
 
@@ -37,7 +38,7 @@
     [super viewDidLoad];
     
     UnitItem *firstItem = _allData[0];
-    self.title = [NSString stringWithFormat:NSLocalizedString(@"%@ Units", @"%@ Units"), NSLocalizedStringFromTable(firstItem.type.unitTypeName, @"unit", nil)];
+    self.title = [NSString stringWithFormat:NSLocalizedString(@"%@ Units", @"%@ Units"), NSLocalizedStringFromTable([firstItem type].unitTypeName, @"unit", nil)];
     
     self.tableView.rowHeight = 44.0;
 	self.tableView.showsVerticalScrollIndicator = NO;

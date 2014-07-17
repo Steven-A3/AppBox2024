@@ -17,13 +17,14 @@
 - (void)changeFavorite:(BOOL)isAdd
 {
     if (isAdd) {
-        if (self.favorite == nil) {
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.uniqueID];
+        if ([WalletFavorite MR_countOfEntitiesWithPredicate:predicate] == 0) {
             WalletFavorite *favorite = [WalletFavorite MR_createEntity];
 			favorite.uniqueID = [[NSUUID UUID] UUIDString];
 			favorite.updateDate = [NSDate date];
+			favorite.itemID = self.uniqueID;
 			[favorite assignOrder];
-			self.favorite = favorite;
-            
+
             // order set
             NSArray *favors = [WalletFavorite MR_findAllSortedBy:@"order" ascending:YES];
             NSMutableArray *tmp = [[NSMutableArray alloc] initWithArray:favors];
@@ -33,14 +34,12 @@
         }
     }
     else {
-        if (self.favorite != nil) {
-            NSArray *favors = [WalletFavorite MR_findByAttribute:@"item" withValue:self];
-            for (WalletFavorite *favor in favors) {
-                [favor MR_deleteEntity];
-            }
+		NSArray *favors = [WalletFavorite MR_findByAttribute:@"itemID" withValue:self.uniqueID];
+		for (WalletFavorite *favor in favors) {
+			[favor MR_deleteEntity];
+		}
 
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-        }
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     }
 }
 

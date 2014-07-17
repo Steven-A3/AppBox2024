@@ -8,7 +8,7 @@
 
 #import "A3UnitConverterMoreTableViewController.h"
 #import "UnitType.h"
-#import "UnitType+initialize.h"
+#import "UnitType+extension.h"
 #import "UIViewController+A3Addition.h"
 #import "A3UnitConverterConvertTableViewController.h"
 #import "UIViewController+NumberKeyboard.h"

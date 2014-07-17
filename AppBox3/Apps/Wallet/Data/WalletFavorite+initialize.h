@@ -10,5 +10,7 @@
 
 @interface WalletFavorite (initialize)
 
++ (BOOL)isFavoriteForItemID:(NSString *)itemID;
+
 - (void)assignOrder;
 @end

@@ -25,7 +25,7 @@
 #import "SFKImage.h"
 #import "A3AppDelegate+appearance.h"
 #import "DaysCounterReminder.h"
-#import "DaysCounterEvent+management.h"
+#import "DaysCounterEvent+extension.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
@@ -175,7 +175,7 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-    self.eventItem.reminder.isUnread = @(NO);
+	[self.eventItem reminder].isUnread = @(NO);
     [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -420,7 +420,7 @@
     
     BOOL isLunar = [info.isLunar boolValue];
     NSDate *startDate = [info.startDate solarDate];
-    NSDate *endDate = [info.endDate solarDate];
+    NSDate *endDate = [[info endDateCreateIfNotExist:NO ] solarDate];
     
     if ( isLunar ) {
         NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
@@ -636,7 +636,7 @@
             else {
                 if (hasEndDate) {
                     dateLabel1.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"DaysCounter_from", @"from"), [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:[info.isLunar boolValue] isAllDay:[info.isAllDay boolValue]]];
-                    dateLabel2.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"DaysCounter_to", @"to"), [A3DaysCounterModelManager dateStringFromDateModel:info.endDate isLunar:[info.isLunar boolValue] isAllDay:[info.isAllDay boolValue]]];
+                    dateLabel2.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"DaysCounter_to", @"to"), [A3DaysCounterModelManager dateStringFromDateModel:[info endDateCreateIfNotExist:NO ] isLunar:[info.isLunar boolValue] isAllDay:[info.isAllDay boolValue]]];
                 }
                 else {
                     dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:NO isAllDay:[info.isAllDay boolValue]];
@@ -666,7 +666,7 @@
             //            to 선택날짜/시간
             //            repeats 옵션
             dateLabel1.text = [NSString stringWithFormat:NSLocalizedString(@"from %@", @"from %@"), [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:[info.isLunar boolValue] isAllDay:[info.isAllDay boolValue]]];
-            dateLabel2.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", @"to %@"), [A3DaysCounterModelManager dateStringFromDateModel:info.endDate isLunar:[info.isLunar boolValue] isAllDay:[info.isAllDay boolValue]]];
+            dateLabel2.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", @"to %@"), [A3DaysCounterModelManager dateStringFromDateModel:[info endDateCreateIfNotExist:NO ] isLunar:[info.isLunar boolValue] isAllDay:[info.isAllDay boolValue]]];
             if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                 dateLabel3.text = [NSString stringWithFormat:NSLocalizedString(@"repeats %@", @"repeats %@"), [_sharedManager repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
             }
@@ -709,7 +709,7 @@
         // Has Repeat
         NSDate *startDate = [info.startDate solarDate];
         NSDate *nextDate = [info effectiveStartDate];
-        NSDate *endDate = [info.endDate solarDate];
+        NSDate *endDate = [[info endDateCreateIfNotExist:NO ] solarDate];
         
         // until/since & durationOption string
         cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now
@@ -938,7 +938,7 @@ EXIT_FUCTION:
         //            to 선택날짜/시간
         //            repeats 옵션
         dateLabel1.text = [NSString stringWithFormat:NSLocalizedString(@"from %@", @"from %@"), [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:[info.isLunar boolValue] isAllDay:[info.isAllDay boolValue]]];
-        dateLabel2.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", @"to %@"), [A3DaysCounterModelManager dateStringFromDateModel:info.endDate isLunar:[info.isLunar boolValue] isAllDay:[info.isAllDay boolValue]]];
+        dateLabel2.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", @"to %@"), [A3DaysCounterModelManager dateStringFromDateModel:[info endDateCreateIfNotExist:NO ] isLunar:[info.isLunar boolValue] isAllDay:[info.isAllDay boolValue]]];
         dateLabel3.text = NSLocalizedString(@"first date", @"first date");
         dateLabel4.text = @"";
     }
@@ -1037,7 +1037,7 @@ EXIT_FUCTION:
     
     if (!hasRepeat) {
         NSDate *startDate = [info.startDate solarDate];
-        NSDate *endDate = [info.endDate solarDate];
+        NSDate *endDate = [[info endDateCreateIfNotExist:NO ] solarDate];
 
         cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now
                                                                            toDate:[info.startDate solarDate]
@@ -1196,7 +1196,7 @@ EXIT_FUCTION:
                     dateLabel1.text = [NSString stringWithFormat:NSLocalizedString(@"from %@", @"from %@"), [A3DateHelper dateStringFromDate:nextDate
 																																  withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
                     
-                    NSTimeInterval diff = [info.endDate.solarDate timeIntervalSince1970] - [info.startDate.solarDate timeIntervalSince1970];
+                    NSTimeInterval diff = [[info endDateCreateIfNotExist:NO ].solarDate timeIntervalSince1970] - [info.startDate.solarDate timeIntervalSince1970];
                     NSDate *nextEndDate = [NSDate dateWithTimeInterval:diff sinceDate:nextDate];
                     dateLabel2.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", @"to %@"), [A3DateHelper dateStringFromDate:nextEndDate
 																															  withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
@@ -1207,7 +1207,7 @@ EXIT_FUCTION:
                 else {
                     dateLabel1.text = [NSString stringWithFormat:NSLocalizedString(@"from %@", @"from %@"), [A3DateHelper dateStringFromDate:[info.startDate solarDate]
 																																  withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
-                    dateLabel2.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", @"to %@"), [A3DateHelper dateStringFromDate:[info.endDate solarDate]
+                    dateLabel2.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", @"to %@"), [A3DateHelper dateStringFromDate:[[info endDateCreateIfNotExist:NO ] solarDate]
 																															  withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
                     dateLabel3.text = [NSString stringWithFormat:NSLocalizedString(@"first date", @"first date")];
                 }
@@ -1222,7 +1222,7 @@ EXIT_FUCTION:
                 //            repeats 옵션
                 dateLabel1.text = [NSString stringWithFormat:NSLocalizedString(@"from %@", @"from %@"), [A3DateHelper dateStringFromDate:[info.startDate solarDate]
 																															  withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
-                dateLabel2.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", @"to %@"), [A3DateHelper dateStringFromDate:[info.endDate solarDate]
+                dateLabel2.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", @"to %@"), [A3DateHelper dateStringFromDate:[[info endDateCreateIfNotExist:NO ] solarDate]
 																														  withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
                 if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                     dateLabel3.text = [NSString stringWithFormat:NSLocalizedString(@"repeats %@", @"repeats %@"), [_sharedManager repeatTypeStringForDetailValue:[info.repeatType integerValue]]];

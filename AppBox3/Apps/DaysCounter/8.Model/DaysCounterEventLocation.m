@@ -2,12 +2,11 @@
 //  DaysCounterEventLocation.m
 //  AppBox3
 //
-//  Created by A3 on 7/15/14.
+//  Created by A3 on 7/18/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "DaysCounterEventLocation.h"
-#import "DaysCounterEvent.h"
 
 
 @implementation DaysCounterEventLocation
@@ -16,11 +15,12 @@
 @dynamic city;
 @dynamic contact;
 @dynamic country;
-@dynamic eventId;
+@dynamic eventID;
 @dynamic latitude;
 @dynamic locationName;
 @dynamic longitude;
 @dynamic state;
-@dynamic event;
+@dynamic uniqueID;
+@dynamic updateDate;
 
 @end

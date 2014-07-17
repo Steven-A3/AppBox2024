@@ -48,12 +48,13 @@
 	}
 
 	TranslatorFavorite *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-
-	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"), [A3TranslatorLanguage localizedNameForCode:item.text.group.sourceLanguage],
-													 [A3TranslatorLanguage localizedNameForCode:item.text.group.targetLanguage]];
-	cell.detailTextLabel.text = item.text.originalText;
+	TranslatorHistory *history = [TranslatorHistory MR_findFirstByAttribute:@"uniqueID" withValue:item.historyID];
+	TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:history.groupID];
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"), [A3TranslatorLanguage localizedNameForCode:group.sourceLanguage],
+													 [A3TranslatorLanguage localizedNameForCode:group.targetLanguage]];
+	cell.detailTextLabel.text = history.originalText;
 	if (IS_IPAD) {
-		cell.dateLabel.text = [item.text.updateDate timeAgo];
+		cell.dateLabel.text = [history.updateDate timeAgo];
 	} else {
         cell.textLabel.font = [UIFont systemFontOfSize:15];
 		cell.detailTextLabel.font = [UIFont systemFontOfSize:12];

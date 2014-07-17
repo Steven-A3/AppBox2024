@@ -6,10 +6,10 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "UnitType+initialize.h"
+#import "UnitType+extension.h"
 #import "UnitCommon.h"
 
-@implementation UnitType (initialize)
+@implementation UnitType (extension)
 
 + (void)resetUnitTypeLists
 {
@@ -20,12 +20,10 @@
     
     // unit type set : make and set to coredata
     for (int i = 0; i < numOfUnitType; i++) {
-        
         UnitType *utype = [UnitType MR_createEntity];
-		utype.uniqueID = [[NSUUID UUID] UUIDString];
+		NSString *unitType = [NSString stringWithCString:unitTypes[i] encoding:NSUTF8StringEncoding];
+		utype.uniqueID = unitType;
 		utype.updateDate = [NSDate date];
-        NSString *unitType = [NSString stringWithCString:unitTypes[i] encoding:NSUTF8StringEncoding];
-        FNLOG(@"%@", unitType);
         utype.unitTypeName = unitType;
         utype.order = [NSNumber numberWithInt:i];
     }

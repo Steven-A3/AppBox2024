@@ -8,10 +8,27 @@
 
 #import "DaysCounterEvent.h"
 
+@class DaysCounterDate;
+@class DaysCounterEventLocation;
+@class DaysCounterFavorite;
+@class DaysCounterReminder;
+
 extern NSString *const A3DaysCounterImageDirectory;
 extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
-@interface DaysCounterEvent (management)
+@interface DaysCounterEvent (extension)
+
+- (DaysCounterReminder *)reminder;
+
+- (DaysCounterFavorite *)favorite;
+
+- (DaysCounterDate *)startDate;
+
+- (DaysCounterDate *)endDateCreateIfNotExist:(BOOL)createIfNotExist;
+
+- (void)setEndDate:(DaysCounterDate *)dateObject;
+
+- (DaysCounterEventLocation *)location;
 
 - (void)toggleFavorite;
 - (NSURL *)photoURLInOriginalDirectory:(BOOL)inOriginalDirectory;

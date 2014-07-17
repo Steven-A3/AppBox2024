@@ -15,6 +15,8 @@
 #import "UnitPriceHistoryItem.h"
 #import "A3UnitPriceHistoryCell.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UnitPriceHistory+extension.h"
+#import "UnitPriceHistoryItem+extension.h"
 
 @interface A3UnitPriceHistoryViewController () <UIActionSheetDelegate>
 
@@ -226,7 +228,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     cell.timeLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
 
 	UnitPriceHistoryItem *unitPriceAItem, *unitPriceBItem;
-	for (UnitPriceHistoryItem *item in unitPriceHistory.unitPrices) {
+	for (UnitPriceHistoryItem *item in [unitPriceHistory unitPrices]) {
 		if ([item.orderInComparison isEqualToString:@"A"]) {
 			unitPriceAItem = item;
 		} else {
@@ -237,25 +239,25 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     double unitPriceB = [self calcuUnitPriceOfHistoryItem:unitPriceBItem];
     
     NSString *unitPrice1Txt, *unitPrice2Txt;
-    if (unitPriceAItem.unit) {
-        unitPrice1Txt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPriceA)], unitPriceAItem.unit.unitShortName];
+    if (unitPriceAItem.unitID) {
+        unitPrice1Txt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPriceA)], [unitPriceAItem unit].unitShortName];
     }
     else {
         unitPrice1Txt = [self.currencyFormatter stringFromNumber:@(unitPriceA)];
     }
     
-    if (unitPriceBItem.unit) {
-        unitPrice2Txt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPriceB)], unitPriceBItem.unit.unitShortName];
+    if (unitPriceBItem.unitID) {
+        unitPrice2Txt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPriceB)], [unitPriceBItem unit].unitShortName];
     }
     else {
         unitPrice2Txt = [self.currencyFormatter stringFromNumber:@(unitPriceB)];
     }
 
     // A,B값이 같으면, A만 보인다.
-    if ((unitPriceAItem.unit == nil && unitPriceBItem.unit == nil) && (unitPriceA == unitPriceB)) {
+    if ((unitPriceAItem.unitID == nil && unitPriceBItem.unitID == nil) && (unitPriceA == unitPriceB)) {
         cell.historyBView.hidden = YES;
     }
-    else if ((unitPriceAItem.unit && unitPriceBItem.unit) && ([unitPriceAItem.unit.unitName isEqualToString:unitPriceBItem.unit.unitName]) && (unitPriceA == unitPriceB)) {
+    else if ((unitPriceAItem.unitID && unitPriceBItem.unitID) && ([unitPriceAItem.unitID isEqualToString:unitPriceBItem.unitID]) && (unitPriceA == unitPriceB)) {
         cell.historyBView.hidden = YES;
     }
     else {

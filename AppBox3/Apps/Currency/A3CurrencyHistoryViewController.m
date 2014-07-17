@@ -15,6 +15,7 @@
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "CurrencyHistory+handler.h"
 
 @interface A3CurrencyHistoryViewController () <UIActionSheetDelegate>
 
@@ -153,7 +154,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	CurrencyHistory *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	return 50.0 + [history.targets count] * 14.0;
+	return 50.0 + [history targetCount] * 14.0;
 }
 
 
@@ -171,10 +172,9 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 
 	[nf setCurrencyCode:currencyHistory.currencyCode];
 
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
-	NSArray *items = [currencyHistory.targets sortedArrayUsingDescriptors:@[sortDescriptor]];
+	NSArray *items = [currencyHistory targets];
 
-	NSInteger numberOfLines = [currencyHistory.targets count] + 1;
+	NSInteger numberOfLines = [currencyHistory targetCount] + 1;
 	[cell setNumberOfLines:@(numberOfLines)];
 
 	((UILabel *) cell.leftLabels[0]).text = [nf stringFromNumber:currencyHistory.value];
@@ -206,10 +206,9 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
         // Delete the row from the data source
         
         CurrencyHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
-		[history.targets enumerateObjectsUsingBlock:^(CurrencyHistoryItem *obj, BOOL *stop) {
-			[obj MR_deleteEntity];
-		}];
-		history.targets = nil;
+		for (CurrencyHistoryItem *historyItem in history.targets) {
+			[historyItem MR_deleteEntity];
+		}
         [history MR_deleteEntity];
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 		_fetchedResultsController = nil;

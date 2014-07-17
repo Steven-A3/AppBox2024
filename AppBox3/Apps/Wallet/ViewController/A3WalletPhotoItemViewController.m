@@ -29,6 +29,8 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "NSDate+Formatting.h"
+#import "WalletFavorite.h"
+#import "WalletFavorite+initialize.h"
 
 @interface A3WalletPhotoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, MWPhotoBrowserDelegate>
 
@@ -157,9 +159,10 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         _photoFieldItems = [[NSMutableArray alloc] init];
         
         NSArray *fieldItems = [_item fieldItemsArray];
-        for (int i=0; i<fieldItems.count; i++) {
+        for (int i = 0; i<fieldItems.count; i++) {
             WalletFieldItem *fieldItem = fieldItems[i];
-            if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && fieldItem.image) {
+			WalletField *field = [_item fieldForFieldItem:fieldItem];
+            if ([field.type isEqualToString:WalletFieldTypeImage]) {
                 [_photoFieldItems addObject:fieldItem];
             }
         }
@@ -185,10 +188,11 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         NSArray *fieldItems = [_item fieldItemsArray];
         for (NSUInteger idx = 0; idx < fieldItems.count; idx++) {
             WalletFieldItem *fieldItem = fieldItems[idx];
-			if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate] && !fieldItem.date) {
+			WalletField *field = [_item fieldForFieldItem:fieldItem];
+			if ([field.type isEqualToString:WalletFieldTypeDate] && !fieldItem.date) {
 				continue;
 			}
-            if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || ![fieldItem.value length]) {
+            if ([field.type isEqualToString:WalletFieldTypeImage] || ![fieldItem.value length]) {
 				continue;
 			}
 			[_normalFieldItems addObject:fieldItem];
@@ -321,8 +325,9 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 - (void)updateMetadataViewWithPage:(NSUInteger)page {
 	FNLOG(@"%ld", (long)page);
 	self.metadataView.titleTextField.text = [_item.name length] ?  _item.name : NSLocalizedString(@"New Item", @"New Item");
-	_metadataView.favoriteButton.selected = self.item.favorite != nil;
-    
+
+	_metadataView.favoriteButton.selected = [WalletFavorite isFavoriteForItemID:self.item.uniqueID];
+
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
     if (IS_IPAD || [NSDate isFullStyleLocale]) {
         dateFormatter.dateStyle = NSDateFormatterFullStyle;
@@ -339,12 +344,13 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     }
     
     WalletFieldItem *fieldItem = _photoFieldItems[page];
-    if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
+	WalletField *field = [_item fieldForFieldItem:fieldItem];
+    if ([field.type isEqualToString:WalletFieldTypeImage]) {
         NSDictionary *metadata;
-		if (fieldItem.image.metadata) {
+		if (fieldItem.imageMetaData) {
 			NSPropertyListFormat format;
 			NSString *errorDescription;
-			metadata = [NSPropertyListSerialization propertyListFromData:fieldItem.image.metadata mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&errorDescription];
+			metadata = [NSPropertyListSerialization propertyListFromData:fieldItem.imageMetaData mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&errorDescription];
 		}
         if (metadata) {
 			NSDictionary *exifMetadata = [metadata objectForKey:(id)kCGImagePropertyExifDictionary];
@@ -488,8 +494,9 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 - (void)favoriteButtonAction:(UIButton *)favorButton
 {
-	[_item changeFavorite:_item.favorite == nil];
-    _metadataView.favoriteButton.selected = _item.favorite != nil;
+	BOOL isFavorite = ![WalletFavorite isFavoriteForItemID:_item.uniqueID];
+	[_item changeFavorite:!isFavorite];
+    _metadataView.favoriteButton.selected = isFavorite;
 }
 
 - (void)editButtonAction:(id)sender
@@ -530,9 +537,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 {
     NSInteger index = floorf(_photoScrollView.contentOffset.x/_photoScrollView.bounds.size.width);
     WalletFieldItem *fieldItem = _photoFieldItems[index];
-    
-    if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
-        
+    WalletField *field = [_item fieldForFieldItem:fieldItem];
+    if ([field.type isEqualToString:WalletFieldTypeImage]) {
         // Create browser
         MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
         browser.displayActionButton = YES;
@@ -739,16 +745,16 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     }
     else if ([_normalFieldItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
         WalletFieldItem *fieldItem = _normalFieldItems[indexPath.row];
-        
-        if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || [fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+        WalletField *field = [_item fieldForFieldItem:fieldItem];
+        if ([field.type isEqualToString:WalletFieldTypeImage] || [field.type isEqualToString:WalletFieldTypeVideo]) {
             A3WalletItemPhotoFieldCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemPhotoFieldCellID1 forIndexPath:indexPath];
             
             photoCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			[self configureFloatingTextField:photoCell.valueTextField];
             
-            photoCell.valueTextField.placeholder = fieldItem.field.name;
+            photoCell.valueTextField.placeholder = field.name;
             
-            if (fieldItem.image) {
+            if (fieldItem) {
                 photoCell.valueTextField.text = @" ";
                 photoCell.photoButton.hidden = NO;
                 
@@ -766,13 +772,13 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
             
             cell = photoCell;
         }
-        else if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
+        else if ([field.type isEqualToString:WalletFieldTypeDate]) {
             A3WalletItemFieldCell *dateCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCellID1 forIndexPath:indexPath];
             
             dateCell.selectionStyle = UITableViewCellSelectionStyleNone;
             [self configureFloatingTextField:dateCell.valueTextField];
             
-            dateCell.valueTextField.placeholder = fieldItem.field.name;
+            dateCell.valueTextField.placeholder = field.name;
             if (fieldItem.date) {
                 NSDateFormatter *df = [[NSDateFormatter alloc] init];
                 [df setDateStyle:NSDateFormatterMediumStyle];
@@ -790,7 +796,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
             textCell.selectionStyle = UITableViewCellSelectionStyleNone;
             [self configureFloatingTextField:textCell.valueTextField];
             
-            textCell.valueTextField.placeholder = fieldItem.field.name;
+            textCell.valueTextField.placeholder = field.name;
             textCell.valueTextField.text = fieldItem.value;
             
             if (fieldItem.value) {

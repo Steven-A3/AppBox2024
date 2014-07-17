@@ -2,23 +2,21 @@
 //  WalletField.m
 //  AppBox3
 //
-//  Created by A3 on 7/15/14.
+//  Created by A3 on 7/18/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "WalletField.h"
-#import "WalletCategory.h"
-#import "WalletFieldItem.h"
 
 
 @implementation WalletField
 
+@dynamic categoryID;
 @dynamic name;
 @dynamic order;
 @dynamic style;
 @dynamic type;
 @dynamic uniqueID;
-@dynamic category;
-@dynamic fieldItems;
+@dynamic updateDate;
 
 @end

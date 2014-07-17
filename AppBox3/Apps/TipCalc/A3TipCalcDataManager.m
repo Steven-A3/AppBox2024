@@ -9,7 +9,6 @@
 NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 
 #import "A3TipCalcDataManager.h"
-#import "TipCalcRoundMethod.h"
 
 @implementation A3TipCalcDataManager
 {
@@ -69,8 +68,8 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     destination.split = source.split;
     destination.tax = source.tax;
     destination.tip = source.tip;
-    destination.roundMethod.optionType = source.roundMethod.optionType;
-    destination.roundMethod.valueType = source.roundMethod.valueType;
+    destination.optionType = source.optionType;
+    destination.valueType = source.valueType;
 }
 
 - (void)addHistory:(NSString*)aCaptionTip total:(NSString*)aCaptionTotal
@@ -80,16 +79,20 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 	history.updateDate = [NSDate date];
     history.labelTip = aCaptionTip;
     history.labelTotal = aCaptionTotal;
-    history.recent = [TipCalcRecent MR_createEntity];
 
-	[self deepCopyRecently:self.tipCalcData dest:history.recent];
+	TipCalcRecent *recent = [TipCalcRecent MR_createEntity];
+	recent.uniqueID = [[NSUUID UUID] UUIDString];
+	recent.updateDate = [NSDate date];
+    recent.historyID = history.uniqueID;
+
+	[self deepCopyRecently:self.tipCalcData dest:recent];
 }
 
 - (void)historyToRecently:(TipCalcHistory*)aHistory
 {
-	[self deepCopyRecently:aHistory.recent dest:self.tipCalcData];
+	TipCalcRecent *recent = [TipCalcRecent MR_findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID];
+	[self deepCopyRecently:recent dest:self.tipCalcData];
 }
-
 
 #pragma mark - calculate
 
@@ -269,6 +272,8 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     }
     else {
         TipCalcRecent * recently = [TipCalcRecent MR_createEntity];
+		recently.uniqueID = [[NSUUID UUID] UUIDString];
+		recently.updateDate = [NSDate date];
         recently.knownValue = @(TCKnownValue_CostsBeforeTax);
         recently.isMain = [NSNumber numberWithBool:YES];
         recently.tip = @20;
@@ -279,15 +284,14 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
         recently.showTax = @(YES);
         recently.showSplit = @(YES);
         recently.showRounding = @(YES);
-        recently.roundMethod = [TipCalcRoundMethod MR_createEntity];
-        recently.roundMethod.optionType = @(TCRoundingMethodOption_Exact);
+        recently.optionType = @(TCRoundingMethodOption_Exact);
         
         _tipCalcData = recently;
     }
 }
 
 - (void)setTipCalcDataForHistoryData:(TipCalcHistory *)aHistory {
-    _tipCalcData = aHistory.recent;
+    _tipCalcData = [TipCalcRecent MR_findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID];
 }
 
 #pragma mark Split Option
@@ -345,13 +349,15 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     history.labelTotal = [self currencyStringFromDouble:[[self totalBeforeSplitWithTax] doubleValue]];
 
 	history.updateDate = [NSDate date];
-    history.recent = self.tipCalcData;
+	self.tipCalcData.historyID = history.uniqueID;
     self.tipCalcData.isMain = @(NO);
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
     TipCalcRecent * recently = [TipCalcRecent MR_createEntity];
-    recently.isMain = @(YES);
+	recently.uniqueID = [[NSUUID UUID] UUIDString];
+	recently.updateDate = [NSDate date];
+	recently.isMain = @(YES);
     recently.split = @1;
     recently.knownValue = @(TCKnownValue_CostsBeforeTax);
     recently.tip = @20;
@@ -360,7 +366,6 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
     recently.showTax = @(YES);
     recently.showSplit = @(YES);
     recently.showRounding = @(YES);
-    recently.roundMethod = [TipCalcRoundMethod MR_createEntity];
     recently.currencyCode = self.currencyCode;
     _tipCalcData = recently;
 }
@@ -368,21 +373,21 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 #pragma mark Rounding Method
 
 - (void)setRoundingMethodValue:(TCRoundingMethodValue)value {
-    self.tipCalcData.roundMethod.valueType =  @(value);
+    self.tipCalcData.valueType =  @(value);
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 - (TCRoundingMethodValue)roundingMethodValue {
-    return (TCRoundingMethodValue) [self.tipCalcData.roundMethod.valueType integerValue];
+    return (TCRoundingMethodValue) [self.tipCalcData.valueType integerValue];
 }
 
 - (void)setRoundingMethodOption:(TCRoundingMethodOption)option {
-    self.tipCalcData.roundMethod.optionType = @(option);
+    self.tipCalcData.optionType = @(option);
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 - (TCRoundingMethodOption)roundingMethodOption {
-    return (TCRoundingMethodOption) [self.tipCalcData.roundMethod.optionType integerValue];
+    return (TCRoundingMethodOption) [self.tipCalcData.optionType integerValue];
 }
 
 #pragma mark - Result Calculation

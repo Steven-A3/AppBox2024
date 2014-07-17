@@ -26,7 +26,7 @@
 #import "A3DaysCounterEventListNameCell.h"
 #import "A3DaysCounterEventListSectionHeader.h"
 #import "A3WalletSegmentedControl.h"
-#import "DaysCounterEvent+management.h"
+#import "DaysCounterEvent+extension.h"
 
 @interface A3DaysCounterEventListViewController () <UINavigationControllerDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, A3DaysCounterEventDetailViewControllerDelegate>
 @property (strong, nonatomic) NSArray *itemArray;

@@ -21,7 +21,7 @@
 #import "A3UnitConverterHistoryViewController.h"
 #import "A3UnitConverterSelectViewController.h"
 #import "UnitItem.h"
-#import "UnitFavorite+initialize.h"
+#import "UnitFavorite+extension.h"
 #import "UnitConvertItem.h"
 #import "UnitHistory.h"
 #import "UnitHistoryItem.h"
@@ -30,6 +30,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIColor+A3Addition.h"
 #import "A3InstructionViewController.h"
+#import "UnitConvertItem+extension.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
@@ -509,7 +510,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     viewController.hidesBottomBarWhenPushed = YES;
 	if (selectedIndex >= 0 && selectedIndex <= ([_convertItems count] - 1) ) {
 		UnitConvertItem *selectedItem = _convertItems[selectedIndex];
-		viewController.placeHolder = NSLocalizedStringFromTable(selectedItem.item.unitName, @"unit", nil);
+		viewController.placeHolder = NSLocalizedStringFromTable([selectedItem item].unitName, @"unit", nil);
         
         // toss unit data
         viewController.selectedItem = selectedItem;
@@ -572,33 +573,33 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			NSString *convertInfoText = @"";
 
 			UnitConvertItem *item = _convertItems[index];
-			float rate = first.item.conversionRate.floatValue / item.item.conversionRate.floatValue;
+			float rate = [first item].conversionRate.floatValue / [item item].conversionRate.floatValue;
 
 			if (_isTemperatureMode) {
-				float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:first.item.unitName andTemperature:self.unitValue.floatValue];
-				float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:item.item.unitName];
-				convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
+				float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:[first item].unitName andTemperature:self.unitValue.floatValue];
+				float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:[item item].unitName];
+				convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], [first item].unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], [item item].unitShortName];
 			}
 			else {
 				float targetValue = self.unitValue.floatValue * rate;
 
-                if ([first.item.unitName isEqualToString:@"feet inches"]) {
+                if ([[first item].unitName isEqualToString:@"feet inches"]) {
                     //float rate = [item.item.conversionRate floatValue] / [first.item.conversionRate floatValue];
                     float value = [self.unitValue floatValue];
                     int feet = (int)value;
                     float inch = (value -feet) * kInchesPerFeet;
 
-                    convertInfoText = [NSString stringWithFormat:@"%@ = %@ %@", [NSString stringWithFormat:@"%@ft %@in", [self.decimalFormatter stringFromNumber:@(feet)], [self.decimalFormatter stringFromNumber:@(inch)]], [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
+                    convertInfoText = [NSString stringWithFormat:@"%@ = %@ %@", [NSString stringWithFormat:@"%@ft %@in", [self.decimalFormatter stringFromNumber:@(feet)], [self.decimalFormatter stringFromNumber:@(inch)]], [self.decimalFormatter stringFromNumber:@(targetValue)], [item item].unitShortName];
                 }
-                else if ([item.item.unitName isEqualToString:@"feet inches"]) {
+                else if ([[item item].unitName isEqualToString:@"feet inches"]) {
                     float value = self.unitValue.floatValue * rate;
                     int feet = (int)value;
                     float inch = (value -feet) * kInchesPerFeet;
                     
-                    convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [NSString stringWithFormat:@"%@ft %@in", [self.decimalFormatter stringFromNumber:@(feet)], [self.decimalFormatter stringFromNumber:@(inch)]]];
+                    convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@", [self.decimalFormatter stringFromNumber:self.unitValue], [first item].unitShortName, [NSString stringWithFormat:@"%@ft %@in", [self.decimalFormatter stringFromNumber:@(feet)], [self.decimalFormatter stringFromNumber:@(inch)]]];
                 }
                 else {
-                    convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
+                    convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], [first item].unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], [item item].unitShortName];
                 }
 			}
 			[_shareTextList addObject:convertInfoText];
@@ -636,36 +637,50 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	self.shareTextList = [NSMutableArray new];
 
 	UnitConvertItem *first = _convertItems[sourceIdx];
-	UnitConvertItem *item = _convertItems[targetIdx];
+	UnitConvertItem *currentRowConvertItem = _convertItems[targetIdx];
 	NSString *convertInfoText = @"";
-	float rate = first.item.conversionRate.floatValue / item.item.conversionRate.floatValue;
+	UnitItem *firstUnit = [first item];
+	UnitItem *currentUnit = [currentRowConvertItem item];
+	float rate = firstUnit.conversionRate.floatValue / [currentRowConvertItem item].conversionRate.floatValue;
 
 	if (_isTemperatureMode) {
-		float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:first.item.unitName andTemperature:self.unitValue.floatValue];
-		float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:item.item.unitName];
-		convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
+		float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:[first item].unitName andTemperature:self.unitValue.floatValue];
+		float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:currentUnit.unitName];
+		convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], firstUnit.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], currentUnit.unitShortName];
 	}
 	else {
 		float targetValue = self.unitValue.floatValue * rate;
         
-        if ([first.item.unitName isEqualToString:@"feet inches"]) {
-            //float rate = [item.item.conversionRate floatValue] / [first.item.conversionRate floatValue];
+        if ([firstUnit.unitName isEqualToString:@"feet inches"]) {
             float value = [self.unitValue floatValue];
             int feet = (int)value;
             float inch = (value -feet) * kInchesPerFeet;
             
-            convertInfoText = [NSString stringWithFormat:@"%@ = %@ %@", [NSString stringWithFormat:@"%@ft %@in", [self.decimalFormatter stringFromNumber:@(feet)], [self.decimalFormatter stringFromNumber:@(inch)]], [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
+            convertInfoText = [NSString stringWithFormat:@"%@ = %@ %@",
+							[NSString stringWithFormat:@"%@ft %@in",
+											[self.decimalFormatter stringFromNumber:@(feet)],
+											[self.decimalFormatter stringFromNumber:@(inch)]],
+							[self.decimalFormatter stringFromNumber:@(targetValue)],
+							currentUnit.unitShortName];
         }
-        else if ([item.item.unitName isEqualToString:@"feet inches"]) {
-            //            float rate =  [item.item.conversionRate floatValue] / [first.item.conversionRate floatValue];
+        else if ([currentRowConvertItem.item.unitName isEqualToString:@"feet inches"]) {
             float value = self.unitValue.floatValue * rate;
             int feet = (int)value;
             float inch = (value -feet) * kInchesPerFeet;
             
-            convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [NSString stringWithFormat:@"%@ft %@in", [self.decimalFormatter stringFromNumber:@(feet)], [self.decimalFormatter stringFromNumber:@(inch)]]];
+            convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@",
+							[self.decimalFormatter stringFromNumber:self.unitValue],
+							firstUnit.unitShortName,
+							[NSString stringWithFormat:@"%@ft %@in",
+											[self.decimalFormatter stringFromNumber:@(feet)],
+											[self.decimalFormatter stringFromNumber:@(inch)]]];
         }
         else {
-            convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], first.item.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], item.item.unitShortName];
+            convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@",
+							[self.decimalFormatter stringFromNumber:self.unitValue],
+							firstUnit.unitShortName,
+							[self.decimalFormatter stringFromNumber:@(targetValue)],
+							currentUnit.unitShortName];
         }
 	}
 	[_shareTextList addObject:convertInfoText];
@@ -1064,7 +1079,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			UnitConvertItem *convertItem = [UnitConvertItem MR_createEntity];
 			convertItem.uniqueID = [[NSUUID UUID] UUIDString];
 			convertItem.updateDate = [NSDate date];
-			convertItem.item = selectedItem;
+			convertItem.unitID = selectedItem.uniqueID;
 
 			NSUInteger idx = [_convertItems count];
 			[self.convertItems insertObjectToSortedArray:convertItem atIndex:idx];
@@ -1126,7 +1141,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 					// 아니면, 현재 unit을 교체한다.
 			else {
 				UnitConvertItem *replacedItem = _convertItems[_selectedRow];
-				replacedItem.item = selectedItem;
+				replacedItem.unitID = selectedItem.uniqueID;
 				[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 				[_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
@@ -1656,14 +1671,10 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	// Compare code and value.
 	if (histories.count > 0) {
 		UnitHistory *latestHistory = histories[0];
-		if (latestHistory) {
-			if ([latestHistory.source.type.unitTypeName isEqualToString:baseUnit.item.type.unitTypeName] &&
-					[latestHistory.source.unitName isEqualToString:baseUnit.item.unitName] && [value isEqualToNumber:latestHistory.value])
-			{
-
-				FNLOG(@"Does not make new history for same code and value, in history %@, %@", latestHistory.value, value);
-				return;
-			}
+		if (latestHistory && [latestHistory.sourceUnitID isEqualToString:baseUnit.unitID] && [value isEqualToNumber:latestHistory.value])
+		{
+			FNLOG(@"Does not make new history for same code and value, in history %@, %@", latestHistory.value, value);
+			return;
 		}
 	}
 
@@ -1671,20 +1682,18 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	history.uniqueID = [[NSUUID UUID] UUIDString];
 	NSDate *keyDate = [NSDate date];
 	history.updateDate = keyDate;
-	history.source = baseUnit.item;
+	history.sourceUnitID = baseUnit.unitID;
 	history.value = value;
 
 	NSInteger historyItemCount = MIN([self.convertItems count] - 2, 4);
 	NSInteger idx = 0;
-	NSMutableSet *targets = [[NSMutableSet alloc] init];
 	for (; idx < historyItemCount; idx++) {
 		UnitHistoryItem *item = [UnitHistoryItem MR_createEntity];
+		item.unitHistoryID = history.uniqueID;
 		UnitConvertItem *convertItem = self.convertItems[idx + 2];
-		item.unit = convertItem.item;
+		item.targetUnitItemID = convertItem.unitID;
 		item.order = convertItem.order;
-		[targets addObject:item];
 	}
-	history.targets = targets;
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 

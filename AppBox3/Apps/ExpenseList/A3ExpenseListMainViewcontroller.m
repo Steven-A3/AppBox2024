@@ -25,6 +25,7 @@
 #import "A3CalculatorViewController.h"
 #import "UITableView+utility.h"
 #import "A3InstructionViewController.h"
+#import "ExpenseListBudget+extension.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -301,12 +302,12 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     self.navigationItem.rightBarButtonItems = @[history, add, [self instructionHelpBarButton]];
 }
 
--(void)setCurrentBudgetId:(NSString *)currentBudgetId {
+- (void)setCurrentBudgetId:(NSString *)currentBudgetId {
 	[[NSUserDefaults standardUserDefaults] setObject:currentBudgetId forKey:A3ExpenseListCurrentBudgetID];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
--(NSString *)currentBudgetId {
+- (NSString *)currentBudgetID {
     return [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListCurrentBudgetID];
 }
 
@@ -407,7 +408,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 - (void)addItemWithFocus:(BOOL)focus
 {
     ExpenseListItem *item = [ExpenseListItem MR_createEntity];
-    [_currentBudget addExpenseItemsObject:item];
+	item.uniqueID = [[NSUUID UUID] UUIDString];
+	item.updateDate = [NSDate date];
+	item.budgetID = _currentBudget.uniqueID;
     item.itemDate = [NSDate date];
     item.itemName = @"";
     item.price = @0;
@@ -417,7 +420,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
-	NSInteger focusingRow = _currentBudget.expenseItems.count - 1;
+	NSInteger focusingRow = [_currentBudget expenseItemsCount] - 1;
 
     _tableDataSourceArray = [self loadBudgetFromDB];
 	[self.tableView reloadData];
@@ -621,12 +624,14 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     _currentBudget.updateDate = [NSDate date];
     
     ExpenseListItem *item = [ExpenseListItem MR_createEntity];
-    [_currentBudget addExpenseItemsObject:item];
+	item.uniqueID = [[NSUUID UUID] UUIDString];
+	item.updateDate = [NSDate date];
+	item.budgetID = [self currentBudgetID];
 	item.order = [item makeOrderString];
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
-    _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:[self currentBudgetId]];
+    _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:[self currentBudgetID]];
     
     _tableDataSourceArray = [self loadBudgetFromDB];
     
@@ -707,8 +712,6 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 - (NSMutableArray *)loadBudgetFromDB
 {
 	FNLOG();
-    NSArray *result = nil;
-
     if (_currentBudget) {
 		// Delete !hasData rows and recreate it with required number of rows
 		for (ExpenseListItem *item in _currentBudget.expenseItems) {
@@ -724,17 +727,17 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 			for (NSInteger idx = 0; idx < leakCount; idx++) {
 				ExpenseListItem *item = [ExpenseListItem MR_createEntity];
+				item.uniqueID = [[NSUUID UUID] UUIDString];
+				item.updateDate = [NSDate date];
+				item.budgetID = _currentBudget.uniqueID;
 				item.order = [item makeOrderString];
-				[_currentBudget addExpenseItemsObject:item];
 			}
 		}
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
-		NSSortDescriptor *sortByOrder = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
-		result = [_currentBudget.expenseItems sortedArrayUsingDescriptors:@[sortByOrder]];
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 	};
     
-    return [NSMutableArray arrayWithArray:result];
+    return [NSMutableArray arrayWithArray:[_currentBudget expenseItems]];
 }
 
 - (void)setAddItemButtonPosition
@@ -778,7 +781,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 -(void)reloadBudgetDataWithAnimation:(BOOL)animation
 {
     // 데이터 갱신.
-    _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:[self currentBudgetId]];
+    _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:[self currentBudgetID]];
     
     if (!_currentBudget) {
         _currentBudget = [ExpenseListBudget MR_createEntity];
@@ -796,8 +799,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         
         for (NSInteger i = 0; i < defaultCount; i++) {
             ExpenseListItem *item = [ExpenseListItem MR_createEntity];
+			item.uniqueID = [[NSUUID UUID] UUIDString];
+			item.updateDate = [NSDate date];
+			item.budgetID = _currentBudget.uniqueID;
 			item.order = [item makeOrderString];
-            [_currentBudget addExpenseItemsObject:item];
             if (i == 0) {
                 item.itemDate = [NSDate date];
                 item.itemName = @"";
@@ -818,7 +823,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (void)reloadBudgetDataAndRemoveEmptyItem {
-    _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:[self currentBudgetId]];
+    _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:[self currentBudgetID]];
 
     if (_currentBudget) {
 		_tableDataSourceArray = [self loadBudgetFromDB];
@@ -846,9 +851,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         history = [ExpenseListHistory MR_createEntity];
 		history.uniqueID = [[NSUUID UUID] UUIDString];
 		history.updateDate = [NSDate date];
-        history.budgetData = _currentBudget;
-        history.updateDate = updateDate;
-        _currentBudget.expenseHistory = history;
+        history.budgetID = _currentBudget.uniqueID;
     }
     
     if (history) {
@@ -1079,7 +1082,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 #pragma mark History Delegate
 
-- (BOOL)isAddedBudged:(ExpenseListBudget *)aBudget{
+- (BOOL)isAddedBudget:(ExpenseListBudget *)aBudget{
     if (aBudget.category) {
         return YES;
     }
@@ -1090,13 +1093,13 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 -(void)didSelectBudgetHistory:(ExpenseListBudget *)aBudget
 {
     // 현재 화면의 데이터 저장, 입력된 데이터가 없는 경우는 제외.
-    NSSet *filtteredSet = [_currentBudget.expenseItems filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"hasData == YES"]];
-    if ([filtteredSet count] == 0 && ![self isAddedBudged:_currentBudget]) {
+	NSArray *expenseItemsHasData = [_currentBudget expenseItemsHasData];
+    if ([expenseItemsHasData count] == 0 && ![self isAddedBudget:_currentBudget]) {
         [ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budget == %@", _currentBudget]];
         [_currentBudget MR_deleteEntity];
         _currentBudget = nil;
     }
-    else if ([filtteredSet count] > 0 || [self isAddedBudged:_currentBudget]) {
+    else if ([expenseItemsHasData count] > 0 || [self isAddedBudget:_currentBudget]) {
         // 편집중이던 데이터는 히스토리에 저장.
         [self saveCurrentBudgetToHistory];
     }
@@ -1117,14 +1120,16 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
     for (ExpenseListItem *item in aBudget.expenseItems) {
         ExpenseListItem *temp = [ExpenseListItem MR_createEntity];
+		temp.uniqueID = [[NSUUID UUID] UUIDString];
+		temp.updateDate = [NSDate date];
         temp.itemDate = item.itemDate;
         temp.itemName = item.itemName;
         temp.price = item.price;
         temp.qty = item.qty;
         temp.subTotal = item.subTotal;
         temp.hasData = item.hasData;
-		temp.order = [item makeOrderString];
-        temp.budget = _currentBudget;
+		temp.order = item.order;
+        temp.budgetID = _currentBudget.uniqueID;
     }
 
 	[self setCurrentBudgetId:_currentBudget.uniqueID];

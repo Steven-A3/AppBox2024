@@ -178,7 +178,7 @@ static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3Instructi
 	if ([[self.items objectAtIndex:(NSUInteger) indexPath.row] isKindOfClass:[WalletFavorite class]]) {
 
 		WalletFavorite *favorite = self.items[(NSUInteger) indexPath.row];
-		WalletItem *item = favorite.item;
+		WalletItem *item = [WalletItem MR_findFirstByAttribute:@"uniqueID" withValue:favorite.itemID];
 
 		return [self tableView:tableView cellForRowAtIndexPath:indexPath walletItem:item];
 	}
@@ -188,7 +188,8 @@ static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3Instructi
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	WalletFavorite *favorite = self.items[indexPath.row];
-	[self tableView:tableView didSelectRowAtIndexPath:indexPath withItem:favorite.item];
+	WalletItem *item = [WalletItem MR_findFirstByAttribute:@"uniqueID" withValue:favorite.itemID];
+	[self tableView:tableView didSelectRowAtIndexPath:indexPath withItem:item];
 }
 
 // Override to support editing the table view.

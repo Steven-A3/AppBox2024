@@ -268,7 +268,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 {
     self.toAddField = [WalletField MR_createEntity];
 	[self.toAddField initValues];
-    _toAddField.category = self.category;
+    _toAddField.categoryID = self.category.uniqueID;
 
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
     A3WalletEditFieldViewController *editFieldViewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletEditFieldViewController"];
@@ -320,8 +320,8 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
         NSUInteger index = [_fields indexOfObject:self.plusItem];
         [self.fields insertObjectToSortedArray:field atIndex:index];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
-        
-        [_category addFieldsObject:field];
+
+		field.categoryID = _category.uniqueID;
     }
 	[self setupDoneButtonEnabled];
 }
@@ -529,10 +529,6 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
         // Delete the row from the data source
 
         WalletField *field = [_fields objectAtIndex:indexPath.row];
-
-        NSMutableSet *tmp = [[NSMutableSet alloc] initWithArray:[_category fieldsArray]];
-        [tmp removeObject:field];
-        _category.fields = tmp;
         [_fields removeObject:field];
 
 		[field MR_deleteEntity];

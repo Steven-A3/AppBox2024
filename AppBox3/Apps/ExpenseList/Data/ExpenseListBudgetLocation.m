@@ -2,24 +2,24 @@
 //  ExpenseListBudgetLocation.m
 //  AppBox3
 //
-//  Created by A3 on 6/30/14.
+//  Created by A3 on 7/18/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "ExpenseListBudgetLocation.h"
-#import "ExpenseListBudget.h"
 
 
 @implementation ExpenseListBudgetLocation
 
 @dynamic address;
-@dynamic budgetId;
+@dynamic budgetID;
 @dynamic city;
 @dynamic contact;
 @dynamic country;
 @dynamic latitude;
 @dynamic longitude;
 @dynamic state;
-@dynamic budget;
+@dynamic uniqueID;
+@dynamic updateDate;
 
 @end

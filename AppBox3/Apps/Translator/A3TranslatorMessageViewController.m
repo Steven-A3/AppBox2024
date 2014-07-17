@@ -844,7 +844,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		_translatingMessage.uniqueID = [[NSUUID UUID] UUIDString];
 		_translatingMessage.updateDate = [NSDate date];
 		if (firstObject) {
-			_translatingMessage.group = firstObject.group;
+			_translatingMessage.groupID = firstObject.groupID;
 		}
 		_translatingMessage.originalText = _textView.text;
 		self.originalText = _textView.text; // Save to async operation
@@ -947,16 +947,17 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 }
 
 - (void)addTranslatedString:(NSString *)translatedString detectedSourceLanguage:(NSString *)detectedLanguage {
-	if (_translatingMessage.group && (![_translatingMessage.group.sourceLanguage isEqualToString:detectedLanguage] || ![_translatingMessage.group.targetLanguage isEqualToString:_translatedTextLanguage])) {
-		_translatingMessage.group = nil;
+	TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:_translatingMessage.groupID];
+	if (group && (![group.sourceLanguage isEqualToString:detectedLanguage] || ![group.targetLanguage isEqualToString:_translatedTextLanguage])) {
+		_translatingMessage.groupID = nil;
 	}
 
-	if (!_translatingMessage.group) {
+	if (!group) {
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceLanguage == %@ AND targetLanguage == %@", detectedLanguage, _translatedTextLanguage];
-		NSArray *groupCandidates = [TranslatorGroup MR_findAllWithPredicate:predicate];
-		if ([groupCandidates count]) {
-			_translatingMessage.group = groupCandidates[0];
-		} else if (![groupCandidates count]) {
+		TranslatorGroup *groupCandidate = [TranslatorGroup MR_findFirstWithPredicate:predicate];
+		if (groupCandidate) {
+			_translatingMessage.groupID = groupCandidate.uniqueID;
+		} else if (!groupCandidate) {
 			TranslatorGroup *newGroup = [TranslatorGroup MR_createEntity];
 			newGroup.uniqueID = [[NSUUID UUID] UUIDString];
 			newGroup.updateDate = [NSDate date];
@@ -964,7 +965,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 			newGroup.sourceLanguage = detectedLanguage;
 			newGroup.targetLanguage = _translatedTextLanguage;
 
-			_translatingMessage.group = newGroup;
+			_translatingMessage.groupID = newGroup.uniqueID;
 		}
 	}
 
@@ -1341,7 +1342,8 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	NSString *lineBreak = asHTML ? @"</br>" : @"\n";
 	for (NSIndexPath *indexPath in selectedIndexPaths) {
 		TranslatorHistory *item = _messages[indexPath.row];
-		translatedLanguage = [A3TranslatorLanguage localizedNameForCode:item.group.targetLanguage];
+		TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:item.groupID];
+		translatedLanguage = [A3TranslatorLanguage localizedNameForCode:group.targetLanguage];
 		if ([item.originalText length] && [item.translatedText length] && [translatedLanguage length]) {
 			[shareMessage appendString:[NSString stringWithFormat:@"\"%@\" is \"%@\"%@", item.originalText, item.translatedText, lineBreak]];
 		}

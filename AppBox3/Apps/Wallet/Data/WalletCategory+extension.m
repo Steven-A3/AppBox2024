@@ -67,7 +67,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
             WalletField *field = [WalletField MR_createInContext:context];
 			field.uniqueID = fieldPreset[@"uniqueID"];
 			field.name = NSLocalizedStringFromTable(fieldPreset[@"name"], @"WalletPreset",nil);
-            field.category = category;
+            field.categoryID = category.uniqueID;
             field.type = fieldPreset[@"type"];
             field.style = fieldPreset[@"style"];
 			field.order = [NSString orderStringWithOrder:fieldIdx++ * 1000000];
@@ -79,8 +79,8 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 
 - (NSArray *)fieldsArray
 {
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
-    return [self.fields sortedArrayUsingDescriptors:@[sortDescriptor]];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", self.uniqueID];
+	return [WalletField MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
 }
 
 + (NSArray *)iconList
@@ -147,7 +147,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	NSMutableArray *array = [NSMutableArray new];
 	for (WalletCategory *category in categories) {
 		NSMutableArray *fieldsArray = [NSMutableArray new];
-		NSArray *fields = [WalletField MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"category.uniqueID == %@", category.uniqueID]];
+		NSArray *fields = [WalletField MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@", category.uniqueID]];
 		for (WalletField *field in fields) {
 			NSDictionary *fieldDictionary = @{
 					@"name" : field.name,
@@ -166,17 +166,6 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 		[array addObject:categoryDictionary];
 	}
 	[array writeToFile:[@"wallet_preset.plist" pathInLibraryDirectory] atomically:YES];
-}
-
-- (void)moveChildesFromObject:(WalletCategory *)sourceObject {
-	for (WalletField *field in sourceObject.fields) {
-		NSSet *objectsHasSaveID = [self.fields objectsPassingTest:^BOOL(WalletField *obj, BOOL *stop) {
-			return [field.uniqueID isEqualToString:obj.uniqueID];
-		}];
-		if (![objectsHasSaveID count]) {
-			[self addFieldsObject:field];
-		}
-	}
 }
 
 @end

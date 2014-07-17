@@ -8,14 +8,14 @@
 
 #import "A3UnitConverterTabBarController.h"
 #import "A3UnitConverterConvertTableViewController.h"
-#import "UnitType+initialize.h"
+#import "UnitType+extension.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "NSUserDefaults+A3Defaults.h"
 #import "A3UnitConverterMoreTableViewController.h"
 #import "UnitConvertItem.h"
-#import "UnitConvertItem+initialize.h"
+#import "UnitConvertItem+extension.h"
 #import "UnitFavorite.h"
-#import "UnitFavorite+initialize.h"
+#import "UnitFavorite+extension.h"
 
 // NSUserDefaults key values:
 NSString *kWhichTabPrefKey		= @"kWhichTab";     // which tab to select at launch

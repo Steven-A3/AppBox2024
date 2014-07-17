@@ -8,8 +8,11 @@
 
 #import "UnitFavorite.h"
 
-@interface UnitFavorite (initialize)
+@class UnitItem;
+
+@interface UnitFavorite (extension)
 
 + (void)reset;
 
+- (UnitItem *)item;
 @end

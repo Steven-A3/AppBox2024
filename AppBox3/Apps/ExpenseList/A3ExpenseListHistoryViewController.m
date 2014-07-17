@@ -17,6 +17,7 @@
 #import "ExpenseListItem.h"
 #import "ExpenseListBudgetLocation.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "ExpenseListHistory+extension.h"
 
 static NSString *CellIdentifier = @"Cell";
 
@@ -95,7 +96,7 @@ static NSString *CellIdentifier = @"Cell";
         //[ExpenseListBudget MR_truncateAll];
 
         NSString *currentBudgetId = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListCurrentBudgetID];
-//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID != %@", currentBudgetId];
+//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID != %@", currentBudgetID];
 //        [ExpenseListBudget MR_deleteAllMatchingPredicate:predicate];//현재 값 유지 후, 전체삭제 하는 형태로 변경필요.
         ExpenseListBudget *currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:currentBudgetId];
 

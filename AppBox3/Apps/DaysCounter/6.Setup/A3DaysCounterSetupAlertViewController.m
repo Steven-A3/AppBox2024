@@ -18,6 +18,7 @@
 #import "DaysCounterEvent.h"
 #import "DaysCounterDate.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "DaysCounterEvent+extension.h"
 
 @interface A3DaysCounterSetupAlertViewController () <A3KeyboardDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) NSArray *itemArray;
@@ -223,7 +224,7 @@
 	id prevValue = _eventModel.alertDatetime;
 	id value = nil;
 
-	NSDate *startDate = [_eventModel.startDate solarDate];
+	NSDate *startDate = [[_eventModel startDate] solarDate];
 	NSInteger prevIndex = [_sharedManager alertTypeIndexFromDate:startDate alertDate:prevValue];
 	double alertTimeInterval;
 
@@ -322,7 +323,7 @@
 - (IBAction)dateChangedAction:(id)sender {
 	UIDatePicker *datePicker = (UIDatePicker*)sender;
 
-	NSDate *startDate = [_eventModel.startDate solarDate];
+	NSDate *startDate = [[_eventModel startDate] solarDate];
 	NSDate *today = [NSDate date];
     
 	if ( [today timeIntervalSince1970] > [startDate timeIntervalSince1970] && [datePicker.date timeIntervalSince1970] < [today timeIntervalSince1970] ) {

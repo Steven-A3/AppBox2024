@@ -2,19 +2,11 @@
 //  UnitItem.m
 //  AppBox3
 //
-//  Created by A3 on 6/30/14.
+//  Created by A3 on 7/17/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "UnitItem.h"
-#import "UnitConvertItem.h"
-#import "UnitFavorite.h"
-#import "UnitHistory.h"
-#import "UnitHistoryItem.h"
-#import "UnitPriceFavorite.h"
-#import "UnitPriceHistoryItem.h"
-#import "UnitPriceInfo.h"
-#import "UnitType.h"
 
 
 @implementation UnitItem
@@ -24,13 +16,6 @@
 @dynamic unitName;
 @dynamic unitShortName;
 @dynamic updateDate;
-@dynamic favorite;
-@dynamic type;
-@dynamic unitConvertItem;
-@dynamic unitHistories;
-@dynamic unitHistoryItems;
-@dynamic unitPriceFavorite;
-@dynamic unitPriceHistories;
-@dynamic unitPriceInfos;
+@dynamic typeID;
 
 @end

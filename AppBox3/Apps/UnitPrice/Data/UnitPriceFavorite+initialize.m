@@ -7,8 +7,8 @@
 //
 
 #import "UnitPriceFavorite+initialize.h"
-#import "UnitItem+initialize.h"
-#import "UnitType+initialize.h"
+#import "UnitItem+extension.h"
+#import "UnitType+extension.h"
 #import "UnitCommon.h"
 #import "NSManagedObject+MagicalFinders.h"
 #import "NSManagedObject+MagicalAggregation.h"
@@ -248,14 +248,14 @@
         for (int j=0; j<typeFavorites.count; j++) {
             NSNumber *unitIdx = typeFavorites[j];
             NSString *unitName = [NSString stringWithCString:unitNames[i][unitIdx.intValue] encoding:NSUTF8StringEncoding];
-            UnitItem *uitem = [UnitItem MR_findFirstByAttribute:@"unitName" withValue:unitName];
+            UnitItem *unitItem = [UnitItem MR_findFirstByAttribute:@"unitName" withValue:unitName];
             
-            if (!uitem) return;
+            if (!unitItem) return;
             
             UnitPriceFavorite *favorite = [UnitPriceFavorite MR_createEntity];
-			favorite.uniqueID = [[NSUUID UUID] UUIDString];
+			favorite.uniqueID = unitItem.uniqueID;
 			favorite.updateDate = [NSDate date];
-            favorite.item = uitem;
+            favorite.unitItemID = unitItem.uniqueID;
             favorite.order = [NSString orderStringWithOrder:(j + 1) * 1000000];
         }
     }

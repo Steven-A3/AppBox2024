@@ -29,7 +29,7 @@
 #import "WalletItem+initialize.h"
 #import "A3DaysCounterModelManager.h"
 #import "DaysCounterCalendar.h"
-#import "DaysCounterEvent+management.h"
+#import "DaysCounterEvent+extension.h"
 #import "A3AppDelegate.h"
 #import "NSString+conversion.h"
 
@@ -183,28 +183,29 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 			newEvent.isAllDay = @([v1Item[kKeyForDDayType] integerValue] == 0);
 			newEvent.durationOption = @(DurationOption_Day);
 
-			newEvent.startDate = [DaysCounterDate MR_createInContext:context];
-			newEvent.startDate.solarDate = v1Item[kKeyForDDayDate];
-			newEvent.effectiveStartDate = newEvent.startDate.solarDate;
+			DaysCounterDate *startDate = [newEvent startDate];
+			startDate.solarDate = v1Item[kKeyForDDayDate];
+			newEvent.effectiveStartDate = startDate.solarDate;
 
 			NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:newEvent.startDate.solarDate];
-			newEvent.startDate.year = @(components.year);
-			newEvent.startDate.month = @(components.month);
-			newEvent.startDate.day = @(components.day);
-			newEvent.startDate.hour = @(components.hour);
-			newEvent.startDate.minute = @(components.minute);
-			NSDate *endDate = v1Item[kKeyForDDayEnds];
-			if (endDate) {
-				newEvent.endDate = [DaysCounterDate MR_createInContext:context];
-				newEvent.endDate.solarDate = endDate;
+			startDate.year = @(components.year);
+			startDate.month = @(components.month);
+			startDate.day = @(components.day);
+			startDate.hour = @(components.hour);
+			startDate.minute = @(components.minute);
 
-				components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:endDate];
-				newEvent.endDate.year = @(components.year);
-				newEvent.endDate.month = @(components.month);
-				newEvent.endDate.day = @(components.day);
-				newEvent.endDate.hour = @(components.hour);
-				newEvent.endDate.minute = @(components.minute);
-				newEvent.isPeriod = @(![newEvent.startDate.solarDate isEqual:endDate]);
+			NSDate *V1endDate = v1Item[kKeyForDDayEnds];
+			if (V1endDate) {
+				DaysCounterDate *endDate = [newEvent endDateCreateIfNotExist:YES ];
+				endDate.solarDate = V1endDate;
+
+				components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:V1endDate];
+				endDate.year = @(components.year);
+				endDate.month = @(components.month);
+				endDate.day = @(components.day);
+				endDate.hour = @(components.hour);
+				endDate.minute = @(components.minute);
+				newEvent.isPeriod = @(![startDate.solarDate isEqual:endDate]);
 			}
 			newEvent.repeatType = @([self repeatTypeForV1RepeatType:v1Item[kKeyForDDayRepeat]]);
 			NSString *filename = v1Item[kKeyForDDayImageFilename];
@@ -317,7 +318,7 @@ NSString *const kTargetText						= @"kTargetText";
 			TranslatorHistory *history = [TranslatorHistory MR_createInContext:context];
 			history.uniqueID = [[NSUUID UUID] UUIDString];
 			history.updateDate = [NSDate date];
-			history.group = group;
+			history.groupID = group.uniqueID;
 			history.originalText = item[kSourceText];
 			history.translatedText = item[kTargetText];
 			[history setAsFavoriteMember:YES];
@@ -427,7 +428,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 				NSArray *fieldInfoArray = V1Category[KWalletFieldInfoArray];
 				for (NSDictionary *fieldInfo in fieldInfoArray) {
 					WalletField *newField = [WalletField MR_createInContext:context];
-					newField.category = category;
+					newField.categoryID = category.uniqueID;
 					[newField initValues];
 					newField.name = fieldInfo[WalletFieldName];
 					newField.type = fieldInfo[WalletFieldType];
@@ -477,7 +478,8 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 							if (fieldInfoIndex != NSNotFound) {
 								WalletFieldItem *V3FieldItem = [WalletFieldItem MR_createInContext:context];
 								V3FieldItem.uniqueID = [[NSUUID UUID] UUIDString];
-								[newItem addFieldItemsObject:V3FieldItem];
+								V3FieldItem.updateDate = [NSDate date];
+								V3FieldItem.walletItemID = newItem.uniqueID;
 
 								NSString *V3FieldID = fieldMap[fieldID];
 								if (!V3FieldID) {
@@ -488,14 +490,14 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 									if (fieldIndex != NSNotFound) {
 										NSDictionary *V1FieldInfo = fieldInfoArray[fieldIndex];
 										WalletField *newField = [WalletField MR_createInContext:context];
-										newField.category = category;
+										newField.categoryID = category.uniqueID;
 										[newField initValues];
 
 										newField.name = V1FieldInfo[WalletFieldName];
 										newField.type = V1FieldInfo[WalletFieldType];
 										newField.style = V1FieldInfo[WalletFieldStyle];
 
-										V3FieldItem.field = newField;
+										V3FieldItem.fieldID = newField.uniqueID;
 									} else {
 										// 만약 value는 있는데 해당하는 field정보가 없다면 값을 Note에 추가를 해준다.
 										if ([newItem.note length]) {
@@ -505,8 +507,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 										}
 									}
 								} else {
-									WalletField *V3Field = [WalletField MR_findFirstByAttribute:@"uniqueID" withValue:V3FieldID inContext:context];
-									V3FieldItem.field = V3Field;
+									V3FieldItem.fieldID = V3FieldID;
 								}
 
 								NSDictionary *V1FieldInfo = V1FieldInfoArray[fieldInfoIndex];

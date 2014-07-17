@@ -1,14 +1,15 @@
 //
-//  UnitConvertItem+initialize.m
+//  UnitFavorite+initialize.m
 //  A3TeamWork
 //
-//  Created by kihyunkim on 2013. 12. 18..
+//  Created by kihyunkim on 13. 10. 17..
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "UnitConvertItem+initialize.h"
-#import "UnitItem+initialize.h"
-#import "UnitType+initialize.h"
+#import "UnitFavorite+extension.h"
+#import "UnitItem+extension.h"
+#import "UnitType+extension.h"
+#import "UnitItem.h"
 #import "UnitCommon.h"
 #import "NSManagedObject+MagicalFinders.h"
 #import "NSManagedObject+MagicalAggregation.h"
@@ -16,19 +17,19 @@
 #import "NSString+conversion.h"
 #import "NSMutableArray+A3Sort.h"
 
-@implementation UnitConvertItem (initialize)
+@implementation UnitFavorite (extension)
 
 + (void)reset {
     
     FNLOG();
     
-	[UnitConvertItem MR_truncateAll];
+	[UnitFavorite MR_truncateAll];
     
 	if ([[UnitItem MR_numberOfEntities] isEqualToNumber:@0]) {
 		[UnitItem resetUnitItemLists];
 	}
     
-    NSMutableArray *allUnitTypeItems = [[NSMutableArray alloc] init];
+    NSMutableArray *unitFavorites = [[NSMutableArray alloc] init];
 	NSArray *item;
     
 	// Angle
@@ -39,20 +40,23 @@
 			[NSNumber numberWithInt:11],
 			[NSNumber numberWithInt:14],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Area
 	item = [NSArray arrayWithObjects:
-			[NSNumber numberWithInt:10],
-			[NSNumber numberWithInt:3],
-			[NSNumber numberWithInt:11],
-			[NSNumber numberWithInt:12],
 			[NSNumber numberWithInt:0],
-			[NSNumber numberWithInt:16],
+			[NSNumber numberWithInt:1],
+			[NSNumber numberWithInt:3],
+			[NSNumber numberWithInt:6],
 			[NSNumber numberWithInt:7],
 			[NSNumber numberWithInt:9],
+			[NSNumber numberWithInt:10],
+			[NSNumber numberWithInt:11],
+			[NSNumber numberWithInt:12],
+			[NSNumber numberWithInt:13],
+			[NSNumber numberWithInt:16],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Bits
 	item = [NSArray arrayWithObjects:
@@ -64,28 +68,30 @@
 			[NSNumber numberWithInt:5],
 			[NSNumber numberWithInt:6],
 			[NSNumber numberWithInt:7],
-			[NSNumber numberWithInt:8],
-			[NSNumber numberWithInt:9],
-			[NSNumber numberWithInt:10],
-			[NSNumber numberWithInt:11],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
     
 	// Cooking
 	item = [NSArray arrayWithObjects:
+			[NSNumber numberWithInt:0],
+			[NSNumber numberWithInt:1],
+			[NSNumber numberWithInt:7],
+			[NSNumber numberWithInt:8],
+			[NSNumber numberWithInt:10],
+			[NSNumber numberWithInt:11],
 			[NSNumber numberWithInt:13],
 			[NSNumber numberWithInt:14],
 			[NSNumber numberWithInt:18],
 			[NSNumber numberWithInt:19],
-			[NSNumber numberWithInt:0],
 			[NSNumber numberWithInt:24],
 			[NSNumber numberWithInt:25],
+			[NSNumber numberWithInt:26],
 			[NSNumber numberWithInt:27],
 			[NSNumber numberWithInt:28],
-			[NSNumber numberWithInt:11],
-			[NSNumber numberWithInt:12],
+			[NSNumber numberWithInt:29],
+			[NSNumber numberWithInt:30],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Density
 	item = [NSArray arrayWithObjects:
@@ -98,7 +104,7 @@
 			[NSNumber numberWithInt:15],
 			[NSNumber numberWithInt:16],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Electric Currents
 	item = [NSArray arrayWithObjects:
@@ -107,7 +113,7 @@
 			[NSNumber numberWithInt:21],
 			[NSNumber numberWithInt:22],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Energy
 	item = [NSArray arrayWithObjects:
@@ -117,7 +123,7 @@
 			[NSNumber numberWithInt:21],
 			[NSNumber numberWithInt:26],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Force
 	item = [NSArray arrayWithObjects:
@@ -127,30 +133,35 @@
 			[NSNumber numberWithInt:10],
 			[NSNumber numberWithInt:11],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Fuel Consumption
 	item = [NSArray arrayWithObjects:
-			[NSNumber numberWithInt:6],
-			[NSNumber numberWithInt:5],
+			[NSNumber numberWithInt:0],
+			[NSNumber numberWithInt:1],
 			[NSNumber numberWithInt:2],
 			[NSNumber numberWithInt:3],
+			[NSNumber numberWithInt:4],
+			[NSNumber numberWithInt:5],
+			[NSNumber numberWithInt:6],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Length
 	item = [NSArray arrayWithObjects:
+			[NSNumber numberWithInt:4],
+			[NSNumber numberWithInt:10],
+			[NSNumber numberWithInt:11],
+			[NSNumber numberWithInt:15],
 			[NSNumber numberWithInt:16],
 			[NSNumber numberWithInt:18],
-			[NSNumber numberWithInt:4],
-			[NSNumber numberWithInt:24],
 			[NSNumber numberWithInt:21],
 			[NSNumber numberWithInt:22],
+			[NSNumber numberWithInt:23],
+			[NSNumber numberWithInt:24],
 			[NSNumber numberWithInt:30],
-			[NSNumber numberWithInt:10],
-			[NSNumber numberWithInt:15],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Power
 	item = [NSArray arrayWithObjects:
@@ -163,106 +174,122 @@
 			[NSNumber numberWithInt:21],
 			[NSNumber numberWithInt:22],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Pressure
 	item = [NSArray arrayWithObjects:
-			[NSNumber numberWithInt:23],
-			[NSNumber numberWithInt:1],
 			[NSNumber numberWithInt:0],
+			[NSNumber numberWithInt:1],
+			[NSNumber numberWithInt:2],
+			[NSNumber numberWithInt:3],
+			[NSNumber numberWithInt:5],
+			[NSNumber numberWithInt:8],
+			[NSNumber numberWithInt:9],
+			[NSNumber numberWithInt:17],
+			[NSNumber numberWithInt:18],
+			[NSNumber numberWithInt:19],
+			[NSNumber numberWithInt:23],
 			[NSNumber numberWithInt:33],
-			[NSNumber numberWithInt:25],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Speed
 	item = [NSArray arrayWithObjects:
-			[NSNumber numberWithInt:14],
-			[NSNumber numberWithInt:4],
-			[NSNumber numberWithInt:13],
+			[NSNumber numberWithInt:2],
 			[NSNumber numberWithInt:7],
 			[NSNumber numberWithInt:9],
+			[NSNumber numberWithInt:14],
+			[NSNumber numberWithInt:17],
+			[NSNumber numberWithInt:20],
+			[NSNumber numberWithInt:21],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Temperature
 	item = [NSArray arrayWithObjects:
 			[NSNumber numberWithInt:0],
 			[NSNumber numberWithInt:1],
 			[NSNumber numberWithInt:2],
+			[NSNumber numberWithInt:3],
+			[NSNumber numberWithInt:4],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Time
 	item = [NSArray arrayWithObjects:
-			[NSNumber numberWithInt:12],
-			[NSNumber numberWithInt:6],
-			[NSNumber numberWithInt:8],
-			[NSNumber numberWithInt:15],
-			[NSNumber numberWithInt:9],
-			[NSNumber numberWithInt:5],
-			[NSNumber numberWithInt:1],
-			[NSNumber numberWithInt:17],
-			[NSNumber numberWithInt:10],
-			[NSNumber numberWithInt:19],
-			[NSNumber numberWithInt:2],
 			[NSNumber numberWithInt:0],
+			[NSNumber numberWithInt:1],
+			[NSNumber numberWithInt:2],
+			[NSNumber numberWithInt:4],
+			[NSNumber numberWithInt:7],
+			[NSNumber numberWithInt:17],
+			[NSNumber numberWithInt:19],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Volume
 	item = [NSArray arrayWithObjects:
-			[NSNumber numberWithInt:19],
-			[NSNumber numberWithInt:28],
-			[NSNumber numberWithInt:25],
-			[NSNumber numberWithInt:13],
-			[NSNumber numberWithInt:16],
-			[NSNumber numberWithInt:29],
-			[NSNumber numberWithInt:30],
+			[NSNumber numberWithInt:1],
 			[NSNumber numberWithInt:5],
-			[NSNumber numberWithInt:20],
-			[NSNumber numberWithInt:22],
-			[NSNumber numberWithInt:17],
-			[NSNumber numberWithInt:26],
-			[NSNumber numberWithInt:23],
-			[NSNumber numberWithInt:15],
 			[NSNumber numberWithInt:8],
 			[NSNumber numberWithInt:9],
+			[NSNumber numberWithInt:10],
+			[NSNumber numberWithInt:15],
+			[NSNumber numberWithInt:16],
+			[NSNumber numberWithInt:17],
+			[NSNumber numberWithInt:18],
+			[NSNumber numberWithInt:19],
+			[NSNumber numberWithInt:20],
+			[NSNumber numberWithInt:23],
+			[NSNumber numberWithInt:24],
+			[NSNumber numberWithInt:25],
+			[NSNumber numberWithInt:26],
+			[NSNumber numberWithInt:27],
+			[NSNumber numberWithInt:28],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
 	
 	// Weight
 	item = [NSArray arrayWithObjects:
-			[NSNumber numberWithInt:16],
-			[NSNumber numberWithInt:6],
+			[NSNumber numberWithInt:0],
+			[NSNumber numberWithInt:3],
 			[NSNumber numberWithInt:4],
+			[NSNumber numberWithInt:6],
+			[NSNumber numberWithInt:7],
+			[NSNumber numberWithInt:8],
+			[NSNumber numberWithInt:9],
+			[NSNumber numberWithInt:10],
+			[NSNumber numberWithInt:13],
 			[NSNumber numberWithInt:14],
 			[NSNumber numberWithInt:15],
-			[NSNumber numberWithInt:13],
-			[NSNumber numberWithInt:9],
-			[NSNumber numberWithInt:7],
+			[NSNumber numberWithInt:16],
 			nil];
-	[allUnitTypeItems addObject:item];
+	[unitFavorites addObject:item];
     
-    for (NSInteger idxType = 0; idxType < allUnitTypeItems.count; idxType++) {
-        NSArray *unitItems = allUnitTypeItems[idxType];
-        for (NSInteger idxUnit = 0; idxUnit < unitItems.count; idxUnit++) {
-            NSNumber *unitIdentifier = unitItems[idxUnit];
-            NSString *unitName = [NSString stringWithCString:unitNames[idxType][unitIdentifier.intValue] encoding:NSUTF8StringEncoding];
-            UnitItem *unitItem = [UnitItem MR_findFirstByAttribute:@"unitName" withValue:unitName];
+    for (int i=0; i<unitFavorites.count; i++) {
+        NSArray *typeFavorites = unitFavorites[i];
+        NSMutableArray *sortArray = [[NSMutableArray alloc] init];
+        for (int j=0; j<typeFavorites.count; j++) {
+            NSNumber *unitIdx = typeFavorites[j];
+            NSString *unitName = [NSString stringWithCString:unitNames[i][unitIdx.intValue] encoding:NSUTF8StringEncoding];
+            UnitItem *uitem = [UnitItem MR_findFirstByAttribute:@"unitName" withValue:unitName];
             
-            if (!unitItem) return;
+            if (!uitem) return;
             
-            UnitConvertItem *convertItem = [UnitConvertItem MR_createEntity];
-			convertItem.uniqueID = [[NSUUID UUID] UUIDString];
-			convertItem.updateDate = [NSDate date];
-            convertItem.item = unitItem;
-			convertItem.order = [NSString orderStringWithOrder:idxUnit];
-            FNLOG(@"%@", convertItem.order);
+            UnitFavorite *favorite = [UnitFavorite MR_createEntity];
+			favorite.uniqueID = uitem.uniqueID;
+			favorite.updateDate = [NSDate date];
+            favorite.itemID = uitem.uniqueID;
+
+            [sortArray addObjectToSortedArray:favorite];
         }
     }
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+}
+
+- (UnitItem *)item {
+	return [UnitItem MR_findFirstByAttribute:@"uniqueID" withValue:self.itemID];
 }
 
 @end

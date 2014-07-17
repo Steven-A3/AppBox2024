@@ -21,6 +21,7 @@
 #import "A3GradientView.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
+#import "DaysCounterEvent+extension.h"
 
 @interface A3DaysCounterLocationDetailViewController ()
 @property (strong, nonatomic) NSString *addressStr;
@@ -78,7 +79,7 @@
     [super viewDidAppear:animated];
     
     if ( _isEditMode ) {
-        DaysCounterEventLocation *locItem = _eventModel.location;
+        DaysCounterEventLocation *locItem = [_eventModel location];
         if ( (locItem.latitude && locItem.longitude) &&
             ([locItem.latitude doubleValue] != _locationItem.location.coordinate.latitude ||
              [locItem.longitude doubleValue] != _locationItem.location.coordinate.longitude) ) {
@@ -263,7 +264,9 @@
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
     DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
-    locItem.eventId = _eventModel.uniqueID;
+	locItem.uniqueID = [[NSUUID UUID] UUIDString];
+	locItem.updateDate = [NSDate date];
+    locItem.eventID = _eventModel.uniqueID;
     locItem.latitude = @(_locationItem.location.coordinate.latitude);
     locItem.longitude = @(_locationItem.location.coordinate.longitude);
     locItem.locationName = _locationItem.name;
@@ -272,8 +275,7 @@
     locItem.city = ([_locationItem.location.city length] > 0 ? _locationItem.location.city : @"");
     locItem.address = ([_locationItem.location.address length] > 0 ? _locationItem.location.address : @"");
     locItem.contact = ([_locationItem.contact length] > 0 ? _locationItem.contact : @"");
-    _eventModel.location = locItem;
-    
+
     if ( _isEditMode ) {
         [self.navigationController popViewControllerAnimated:YES];
     }

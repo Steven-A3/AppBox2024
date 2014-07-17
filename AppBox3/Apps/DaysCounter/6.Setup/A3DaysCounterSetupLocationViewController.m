@@ -27,6 +27,7 @@
 #import "MBProgressHUD.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
+#import "DaysCounterEvent+extension.h"
 
 @interface A3DaysCounterSetupLocationViewController () <MBProgressHUDDelegate>
 @property (nonatomic, strong) A3LocationPlacemarkView *placemarkView;
@@ -235,7 +236,7 @@
 #pragma mark Search
 - (void)initializeSelectedLocation
 {
-    DaysCounterEventLocation *locationInfo  = _eventModel.location;
+    DaysCounterEventLocation *locationInfo  = [_eventModel location];
     if (!locationInfo) {
         return;
     }
@@ -600,7 +601,9 @@
         }
 
         DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
-        locItem.eventId = _eventModel.uniqueID;
+		locItem.uniqueID = [[NSUUID UUID] UUIDString];
+		locItem.updateDate = [NSDate date];
+        locItem.eventID = _eventModel.uniqueID;
         locItem.latitude = @(item.location.coordinate.latitude);
         locItem.longitude = @(item.location.coordinate.longitude);
         locItem.locationName = item.name;
@@ -609,8 +612,7 @@
         locItem.city = ([item.location.city length] > 0 ? item.location.city : @"");
         locItem.address = ([item.location.address length] > 0 ? item.location.address : @"");
         locItem.contact = ([item.contact length] > 0 ? item.contact : @"");
-        _eventModel.location = locItem;
-        
+
         [tableView reloadData];
 
         [self.navigationController popViewControllerAnimated:YES];
@@ -761,7 +763,9 @@
         };
         viewCtrl.dismissCompletionBlock = ^(FSVenue *locationItem) {
             DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
-            locItem.eventId = _eventModel.uniqueID;
+			locItem.uniqueID = [[NSUUID UUID] UUIDString];
+			locItem.updateDate = [NSDate date];
+            locItem.eventID = _eventModel.uniqueID;
             locItem.latitude = @(locationItem.location.coordinate.latitude);
             locItem.longitude = @(locationItem.location.coordinate.longitude);
             locItem.locationName = locationItem.name;
@@ -770,7 +774,7 @@
             locItem.city = ([locationItem.location.city length] > 0 ? locationItem.location.city : @"");
             locItem.address = ([locationItem.location.address length] > 0 ? locationItem.location.address : @"");
             locItem.contact = ([locationItem.contact length] > 0 ? locationItem.contact : @"");
-            _eventModel.location = locItem;
+
             [self.navigationController popViewControllerAnimated:YES];
         };
         

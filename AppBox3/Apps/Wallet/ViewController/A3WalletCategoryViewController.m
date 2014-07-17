@@ -25,6 +25,7 @@
 #import "UIColor+A3Addition.h"
 #import "A3InstructionViewController.h"
 #import "WalletCategory+extension.h"
+#import "WalletItem+initialize.h"
 
 @interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate, NSFileManagerDelegate>
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -284,16 +285,16 @@
 				convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
 			}
 			else {
-
 				NSString *itemName = item.name;
 				NSString *firstFieldItemValue = @"";
 
-				NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
-				NSArray *fieldItems = [item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
+				NSArray *fieldItems = [item fieldItemsArray];
 				if (fieldItems.count>0) {
 					WalletFieldItem *fieldItem = fieldItems[0];
 					NSString *itemValue;
-					if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
+
+					WalletField *field = [item fieldForFieldItem:fieldItem];
+					if ([field.type isEqualToString:WalletFieldTypeDate]) {
 						NSDateFormatter *df = [[NSDateFormatter alloc] init];
 						[df setDateStyle:NSDateFormatterFullStyle];
 						itemValue = [df stringFromDate:fieldItem.date];
@@ -303,7 +304,7 @@
 					}
 
 					if (itemValue && (itemValue.length>0)) {
-						firstFieldItemValue = [itemValue stringForStyle:fieldItem.field.style];
+						firstFieldItemValue = [itemValue stringForStyle:field.style];
 					}
 				}
 
@@ -365,12 +366,12 @@
 				NSString *itemName = item.name;
 				NSString *firstFieldItemValue = @"";
 
-				NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
-				NSArray *fieldItems = [item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
+				NSArray *fieldItems = [item fieldItemsArray];
 				if (fieldItems.count>0) {
 					WalletFieldItem *fieldItem = fieldItems[0];
 					NSString *itemValue = @"";
-					if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
+					WalletField *field = [item fieldForFieldItem:fieldItem];
+					if ([field.type isEqualToString:WalletFieldTypeDate]) {
 						NSDateFormatter *df = [[NSDateFormatter alloc] init];
 						[df setDateStyle:NSDateFormatterFullStyle];
 						itemValue = [df stringFromDate:fieldItem.date];
@@ -380,7 +381,7 @@
 					}
 
 					if (itemValue && (itemValue.length>0)) {
-						firstFieldItemValue = [itemValue stringForStyle:fieldItem.field.style];
+						firstFieldItemValue = [itemValue stringForStyle:field.style];
 					}
 				}
 
@@ -650,46 +651,45 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        NSFileManager *fileManager = [[NSFileManager alloc] init];
-        fileManager.delegate = self;
 
         if ([self.items[indexPath.row] isKindOfClass:[WalletItem class]]) {
-
             WalletItem *item = self.items[indexPath.row];
-            [item.fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem *fieldItem, BOOL *stop) {
-                BOOL result;
-                if (fieldItem.image) {
-                    if ([fileManager fileExistsAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO]]) {
-                        result = [fileManager removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO] error:NULL];
-                        NSAssert(result, @"result");
-                    }
-                    if ([fileManager fileExistsAtPath:[fieldItem photoImageThumbnailPathInOriginal:YES]]) {
-                        result = [fileManager removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:YES] error:NULL];
-                        NSAssert(result, @"result");
-                    }
-                    if ([fileManager fileExistsAtPath:[[fieldItem photoImageURLInOriginalDirectory:NO] path]]) {
-                        result = [fileManager removeItemAtURL:[fieldItem photoImageURLInOriginalDirectory:NO] error:NULL];
-                        NSAssert(result, @"result");
-                    }
-                    if ([fileManager fileExistsAtPath:[[fieldItem photoImageURLInOriginalDirectory:YES] path]]) {
-                        [fileManager removeItemAtPath:[[fieldItem photoImageURLInOriginalDirectory:YES] path] error:NULL];
-                        NSAssert(result, @"result");
-                    }
-                } else {
-                    if ([fileManager fileExistsAtPath:[fieldItem videoThumbnailPathInOriginal:NO]]) {
-                        result = [fileManager removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO] error:NULL];
-                        NSAssert(result, @"result");
-                    }
-                    if ([fileManager fileExistsAtPath:[[fieldItem videoFileURLInOriginal:YES] path]]) {
-                        result = [fileManager removeItemAtURL:[fieldItem videoFileURLInOriginal:YES] error:NULL];
-                        NSAssert(result, @"result");
-                    }
-                }
-            }];
+			NSArray *fieldItems = [item fieldItemsArray];
+			[fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem *fieldItem, NSUInteger idx, BOOL *stop) {
+				BOOL result;
+				NSFileManager *fileManager = [[NSFileManager alloc] init];
+				fileManager.delegate = self;
+				if ([fieldItem.hasImage boolValue]) {
+					if ([fileManager fileExistsAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO]]) {
+						result = [fileManager removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO] error:NULL];
+						NSAssert(result, @"result");
+					}
+					if ([fileManager fileExistsAtPath:[fieldItem photoImageThumbnailPathInOriginal:YES]]) {
+						result = [fileManager removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:YES] error:NULL];
+						NSAssert(result, @"result");
+					}
+					if ([fileManager fileExistsAtPath:[[fieldItem photoImageURLInOriginalDirectory:NO] path]]) {
+						result = [fileManager removeItemAtURL:[fieldItem photoImageURLInOriginalDirectory:NO] error:NULL];
+						NSAssert(result, @"result");
+					}
+					if ([fileManager fileExistsAtPath:[[fieldItem photoImageURLInOriginalDirectory:YES] path]]) {
+						[fileManager removeItemAtPath:[[fieldItem photoImageURLInOriginalDirectory:YES] path] error:NULL];
+						NSAssert(result, @"result");
+					}
+				} else {
+					if ([fileManager fileExistsAtPath:[fieldItem videoThumbnailPathInOriginal:NO]]) {
+						result = [fileManager removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO] error:NULL];
+						NSAssert(result, @"result");
+					}
+					if ([fileManager fileExistsAtPath:[[fieldItem videoFileURLInOriginal:YES] path]]) {
+						result = [fileManager removeItemAtURL:[fieldItem videoFileURLInOriginal:YES] error:NULL];
+						NSAssert(result, @"result");
+					}
+				}
+			}];
             [self.items removeObject:item];
             [item MR_deleteEntity];
-            
-            
+
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];

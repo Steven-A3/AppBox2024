@@ -35,6 +35,7 @@
 #import "UITableView+utility.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "LoanCalcComparisonHistory+extension.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
@@ -1932,7 +1933,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     
     if (lastComparison) {
 		LoanCalcHistory *historyA, *historyB;
-		for (LoanCalcHistory *history in lastComparison.details) {
+		for (LoanCalcHistory *history in [lastComparison details]) {
 			if ([history.orderInComparison isEqualToString:@"A"]) {
 				historyA = history;
 			} else {
@@ -1950,18 +1951,19 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     if (shouldSave) {
         LoanCalcHistory *historyA = [self loanHistoryForLoanData:_loanDataA];
         LoanCalcHistory *historyB = [self loanHistoryForLoanData:_loanDataB];
-        historyA.compareWith = historyB;
-        historyB.compareWith = historyA;
 		historyA.orderInComparison = @"A";
 		historyB.orderInComparison = @"B";
         LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_createEntity];
 		comparison.uniqueID = [[NSUUID UUID] UUIDString];
         comparison.updateDate = [NSDate date];
-		comparison.details = [NSSet setWithArray:@[historyA, historyB]];
         comparison.totalInterestA = [_loanDataA totalInterest].stringValue;
         comparison.totalInterestB = [_loanDataB totalInterest].stringValue;
         comparison.totalAmountA = [_loanDataA totalAmount].stringValue;
         comparison.totalAmountB = [_loanDataB totalAmount].stringValue;
+
+		historyA.comparisonHistoryID = comparison.uniqueID;
+		historyB.comparisonHistoryID = comparison.uniqueID;
+
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     }
 }

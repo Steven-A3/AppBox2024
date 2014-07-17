@@ -25,7 +25,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "A3AppDelegate.h"
 #import "DaysCounterFavorite.h"
-#import "DaysCounterEvent+management.h"
+#import "DaysCounterEvent+extension.h"
 #import "NSString+conversion.h"
 
 extern NSString *const A3DaysCounterImageThumbnailDirectory;
@@ -481,12 +481,13 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         eventItem.alertDatetime = [A3DaysCounterModelManager effectiveAlertDateForEvent:eventItem];
         eventItem.hasReminder = ([eventItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventItem.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
     }
-    
-    if ([eventItem.hasReminder boolValue] && eventItem.reminder) {
-        eventItem.reminder.isUnread = @(YES);
-        eventItem.reminder.isOn = @(NO);
-        eventItem.reminder.startDate = eventItem.effectiveStartDate;
-        eventItem.reminder.alertDate = eventItem.alertDatetime;
+
+	DaysCounterReminder *reminder = [eventItem reminder];
+    if ([eventItem.hasReminder boolValue] && reminder) {
+        reminder.isUnread = @(YES);
+        reminder.isOn = @(NO);
+        reminder.startDate = eventItem.effectiveStartDate;
+        reminder.alertDate = eventItem.alertDatetime;
     }
     
 	eventItem.updateDate = [NSDate date];
@@ -1287,12 +1288,12 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             if (!reminder) {
                 reminder = [DaysCounterReminder MR_createEntity];
 				reminder.uniqueID = [[NSUUID UUID] UUIDString];
+				reminder.eventID = event.uniqueID;
 				reminder.updateDate = [NSDate date];
                 reminder.startDate = event.effectiveStartDate;
                 reminder.alertDate = event.alertDatetime;
                 reminder.isOn = @(YES);
                 reminder.isUnread = @(YES);
-                reminder.event = event;
             }
             else {
                 if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
@@ -1318,12 +1319,12 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             if (!reminder) {
                 reminder = [DaysCounterReminder MR_createEntity];
 				reminder.uniqueID = [[NSUUID UUID] UUIDString];
+				reminder.eventID = event.uniqueID;
 				reminder.updateDate = [NSDate date];
                 reminder.startDate = event.effectiveStartDate;
                 reminder.alertDate = event.alertDatetime;
                 reminder.isOn = @(YES);
                 reminder.isUnread = @(YES);
-                reminder.event = event;
             }
             else {
                 if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
@@ -1448,9 +1449,10 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     __block NSDate *now = [NSDate date];
     NSMutableArray *localNotifications = [NSMutableArray new];
     [alertItems enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
-        if ([event.hasReminder isEqualToNumber:@(NO)] && event.reminder) {
-            [event.reminder MR_deleteEntity];
-            event.reminder = nil;
+		DaysCounterReminder *reminder = [event reminder];
+        if ([event.hasReminder isEqualToNumber:@(NO)] && reminder) {
+            [reminder MR_deleteEntity];
+			reminder = nil;
         }
         
         if (event.repeatEndDate && [event.repeatEndDate timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
@@ -1460,17 +1462,15 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         event.effectiveStartDate = [A3DaysCounterModelManager effectiveDateForEvent:event basisTime:now];    // 현재 기준 앞으로 발생할 실제 이벤트 시간을 얻는다.
         event.alertDatetime = [self effectiveAlertDateForEvent:event];                  // 이벤트 시간 기준, 실제 발생할 이벤트 얼럿 시간을 얻는다.
         FNLOG(@"\n[%ld] EventID: %@, EventName: %@\nEffectiveStartDate: %@, \nAlertDatetime: %@", (long)idx, event.uniqueID, event.eventName, event.effectiveStartDate, event.alertDatetime);
-        
-        
-        
+
         // 리마인더 이벤트 리스트 관리.
+		reminder = [event reminder];
         if ([event.hasReminder isEqualToNumber:@(YES)]) {
-            DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event.uniqueID" withValue:[event uniqueID]];
             if (!reminder) {
                 reminder = [DaysCounterReminder MR_createEntity];
 				reminder.uniqueID = [[NSUUID UUID] UUIDString];
 				reminder.updateDate = [NSDate date];
-                reminder.event = event;
+                reminder.eventID = event.uniqueID;
                 reminder.isOn = @(NO);
                 reminder.isUnread = @(YES);
                 reminder.startDate = event.effectiveStartDate;
@@ -1501,7 +1501,6 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             }
         }
         else {
-            DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event.uniqueID" withValue:[event uniqueID]];
             if (reminder) {
                 [reminder MR_deleteEntity];
             }
@@ -1622,19 +1621,11 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 }
 
 #pragma mark - Manipulate DaysCounterDateModel Object
+
 + (void)setDateModelObjectForDateComponents:(NSDateComponents *)dateComponents withEventModel:(DaysCounterEvent *)eventModel endDate:(BOOL)isEndDate;
 {
-    DaysCounterDate *dateModel = isEndDate ? eventModel.endDate : eventModel.startDate;
-    if (!dateModel) {
-        dateModel = [DaysCounterDate MR_createEntity];
-        if (isEndDate) {
-            eventModel.endDate = dateModel;
-        }
-        else {
-            eventModel.startDate = dateModel;
-        }
-    }
-    
+    DaysCounterDate *dateModel = isEndDate ? [eventModel endDateCreateIfNotExist:YES ] : eventModel.startDate;
+
     BOOL isResultLeapMonth;
     if ([eventModel.isLunar boolValue]) {
         dateModel.year = @(dateComponents.year);

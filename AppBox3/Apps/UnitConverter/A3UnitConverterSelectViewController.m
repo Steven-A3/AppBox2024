@@ -18,6 +18,9 @@
 #import "A3UnitConverterAddViewController.h"
 #import "NSMutableArray+A3Sort.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UnitFavorite+extension.h"
+#import "UnitConvertItem+extension.h"
+#import "UnitItem+extension.h"
 
 
 @interface A3UnitConverterSelectViewController () <UISearchDisplayDelegate, A3UnitConverterAddViewControllerDelegate>
@@ -304,7 +307,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
     viewController.delegate = self;
     
     UnitItem *item = _allData[0];
-    viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"type" withValue:item.type andOrderBy:@"unitName" ascending:YES]];
+    viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"type" withValue:[item type] andOrderBy:@"unitName" ascending:YES]];
     
     return viewController;
 }
@@ -371,9 +374,10 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
     for (int i=0; i<addedItems.count; i++) {
         UnitItem *item = addedItems[i];
         UnitFavorite *favorite = [UnitFavorite MR_createEntity];
-		favorite.uniqueID = [[NSUUID UUID] UUIDString];
+		favorite.uniqueID = item.uniqueID;
 		favorite.updateDate = [NSDate date];
-        favorite.item = item;
+        favorite.itemID = item.uniqueID;
+		favorite.typeID = item.typeID;
         [_favorites addObjectToSortedArray:favorite];
         
         NSUInteger idx = [_favorites indexOfObject:favorite];
@@ -439,7 +443,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 	else {
 		if (isFavoriteMode) {
 			UnitFavorite *favorite = _favorites[indexPath.row];
-			data = favorite.item;
+			data = [favorite item];
 		}
 		else {
 			data = _allData[indexPath.row];
@@ -484,7 +488,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     UnitFavorite *favorite = _favorites[indexPath.row];
-    if ([favorite.item.unitName isEqualToString:_selectedItem.item.unitName]) {
+    if ([favorite.item.unitName isEqualToString:[_selectedItem item].unitName]) {
         return UITableViewCellEditingStyleDelete;
     }
     else {

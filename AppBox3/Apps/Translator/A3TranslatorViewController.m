@@ -254,10 +254,12 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 - (void)translatorFavoriteItemSelected:(TranslatorFavorite *)item {
 	A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
 
-	viewController.originalTextLanguage = item.text.group.sourceLanguage;
-	viewController.translatedTextLanguage = item.text.group.targetLanguage;
+	TranslatorHistory *history = [TranslatorHistory MR_findFirstByAttribute:@"uniqueID" withValue:item.historyID];
+	TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:history.groupID];
+	viewController.originalTextLanguage = group.sourceLanguage;
+	viewController.translatedTextLanguage = group.targetLanguage;
 	viewController.delegate = self;
-	viewController.selectItem = item.text;
+	viewController.selectItem = history;
 	[self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -287,6 +289,9 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 
 	TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
 
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID];
+	TranslatorHistory *history = [TranslatorHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+	NSDate *updateDate = history.updateDate;
 	if (IS_IPHONE) {
 		UITableViewCell *iPhone_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
@@ -299,7 +304,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 		iPhone_cell.detailTextLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:142.0/255.0 alpha:1.0];
 
 		cell = iPhone_cell;
-		cell.detailTextLabel.text = [[group.texts valueForKeyPath:@"@max.updateDate"] timeAgo];
+		cell.detailTextLabel.text = [updateDate timeAgo];
 	} else {
 		A3TranslatorListCell *iPad_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
@@ -308,7 +313,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 		}
 
 		cell = iPad_cell;
-		iPad_cell.dateLabel.text = [[group.texts valueForKeyPath:@"@max.updateDate"] timeAgo];
+		iPad_cell.dateLabel.text = [updateDate timeAgo];
 	}
 
 	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"),
@@ -316,7 +321,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 													 [A3TranslatorLanguage localizedNameForCode:group.targetLanguage]];
 
 	A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-	circleView.textLabel.text = [NSString stringWithFormat:@"%ld", (long)[group.texts count]];
+	circleView.textLabel.text = [NSString stringWithFormat:@"%ld", (long)[TranslatorGroup MR_countOfEntitiesWithPredicate:predicate]];
 	cell.imageView.image = [circleView imageByRenderingView];
 
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

@@ -29,6 +29,7 @@
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
 #import "UIViewController+A3Addition.h"
+#import "UnitPriceInfo+extension.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
 	Price_Percent = 0,
@@ -245,8 +246,9 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     UnitPriceInfo *priceInfo = self.price;
     
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
-    unitShortName = priceInfo.unit ? NSLocalizedStringFromTable(priceInfo.unit.unitName, @"shortName", nil) : NSLocalizedString(@"None", @"None");
-    unitName = priceInfo.unit ? NSLocalizedStringFromTable(priceInfo.unit.unitName, @"unit", nil) : NSLocalizedString(@"None", @"None");
+	UnitItem *unit = [priceInfo unit];
+    unitShortName = priceInfo.unitID ? NSLocalizedStringFromTable(unit.unitName, @"shortName", nil) : NSLocalizedString(@"None", @"None");
+    unitName = priceInfo.unit ? NSLocalizedStringFromTable(unit.unitName, @"unit", nil) : NSLocalizedString(@"None", @"None");
     
     double priceValue = priceInfo.price.doubleValue;
     NSInteger sizeValue = (priceInfo.size.integerValue <= 0) ? 1:priceInfo.size.integerValue;
@@ -663,7 +665,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (void)selectViewController:(UIViewController *)viewController unitSelectedWithItem:(UnitItem *)selectedItem
 {
-	self.price.unit = selectedItem;
+	self.price.unitID = selectedItem.uniqueID;
 
 	NSIndexPath *sliderIP = [NSIndexPath indexPathForRow:0 inSection:0];
 	NSIndexPath *unitIP = [NSIndexPath indexPathForRow:[self.items indexOfObject:self.unitItem] inSection:1];

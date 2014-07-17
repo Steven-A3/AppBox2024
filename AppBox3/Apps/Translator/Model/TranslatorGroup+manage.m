@@ -20,8 +20,4 @@
 	self.order = nextLargestInOrder;
 }
 
-- (void)moveChildesFromObject:(TranslatorGroup *)sourceObject {
-	[self addTexts:sourceObject.texts];
-}
-
 @end
