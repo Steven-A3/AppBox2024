@@ -23,6 +23,7 @@
 #import "TranslatorGroup+manage.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSString+conversion.h"
+#import "TranslatorFavorite.h"
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 static NSString *const A3AnimationKeyOpacity = @"opacity";
@@ -953,13 +954,14 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	}
 
 	if (!group) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceLanguage == %@ AND targetLanguage == %@", detectedLanguage, _translatedTextLanguage];
+		NSString *uniqueID = [NSString stringWithFormat:@"%@-%@", detectedLanguage, _translatedTextLanguage];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", uniqueID];
 		TranslatorGroup *groupCandidate = [TranslatorGroup MR_findFirstWithPredicate:predicate];
 		if (groupCandidate) {
 			_translatingMessage.groupID = groupCandidate.uniqueID;
 		} else if (!groupCandidate) {
 			TranslatorGroup *newGroup = [TranslatorGroup MR_createEntity];
-			newGroup.uniqueID = [[NSUUID UUID] UUIDString];
+			newGroup.uniqueID = uniqueID;
 			newGroup.updateDate = [NSDate date];
 			[newGroup setupOrder];
 			newGroup.sourceLanguage = detectedLanguage;
@@ -1436,6 +1438,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
 	for (NSIndexPath *indexPath in selectedIndexPaths) {
 		TranslatorHistory *itemToDelete = _messages[indexPath.row];
+		[TranslatorFavorite MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", itemToDelete.uniqueID]];
 		[itemToDelete MR_deleteEntity];
 	}
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
@@ -1461,7 +1464,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 #pragma mark - messages
 
 - (NSPredicate *)predicateForMessages {
-	return [NSPredicate predicateWithFormat:@"group.sourceLanguage == %@ AND group.targetLanguage == %@", _originalTextLanguage, _translatedTextLanguage];
+	return [NSPredicate predicateWithFormat:@"groupID == %@", [NSString stringWithFormat:@"%@-%@", _originalTextLanguage, _translatedTextLanguage]];
 }
 
 - (NSArray *)messages {

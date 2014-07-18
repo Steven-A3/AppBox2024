@@ -105,7 +105,9 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        [TipCalcHistory MR_truncateAll];
+		[TipCalcHistory MR_truncateAll];
+		[TipCalcRecent MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID != NULL"]];
+
         _fetchedResultsController = nil;
         [self.tableView reloadData];
         
@@ -177,6 +179,7 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         TipCalcHistory *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
+		[TipCalcRecent MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID != %@", history.uniqueID]];
         [history MR_deleteEntity];
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         _fetchedResultsController = nil;

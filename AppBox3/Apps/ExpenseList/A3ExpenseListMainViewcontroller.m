@@ -188,7 +188,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
 			switch (barButtonItem.tag) {
 				case A3RightBarButtonTagComposeButton:{
-					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budget.uniqueID == %@ and hasData == YES", _currentBudget.uniqueID];
+					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@ and hasData == YES", _currentBudget.uniqueID];
 					[barButtonItem setEnabled:[ExpenseListItem MR_countOfEntitiesWithPredicate:predicate] > 0];
 					break;
 				}
@@ -609,7 +609,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     
 	_moreMenuButtons = @[help, /*share, */addNew, history];
 	// AddNew
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budget.uniqueID == %@ and hasData == YES", _currentBudget.uniqueID];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@ and hasData == YES", _currentBudget.uniqueID];
     addNew.enabled = [ExpenseListItem MR_countOfEntitiesWithPredicate:predicate] > 0;
 	// History
     history.enabled = [ExpenseListHistory MR_countOfEntities] > 0;
@@ -1095,7 +1095,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     // 현재 화면의 데이터 저장, 입력된 데이터가 없는 경우는 제외.
 	NSArray *expenseItemsHasData = [_currentBudget expenseItemsHasData];
     if ([expenseItemsHasData count] == 0 && ![self isAddedBudget:_currentBudget]) {
-        [ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budget == %@", _currentBudget]];
+        [ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID == %@", _currentBudget.uniqueID]];
         [_currentBudget MR_deleteEntity];
         _currentBudget = nil;
     }

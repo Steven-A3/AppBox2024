@@ -378,7 +378,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 - (void)refreshRightBarItems {
     if (IS_IPAD) {
         // 히스토리가 존재하는지 체크
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith == nil"];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"orderInComparison == nil"];
         LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
         LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
         
@@ -672,7 +672,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 	}
 
 	// 히스토리가 존재하는지 체크
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith == nil"];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"orderInComparison == nil"];
 	LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
 	LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
 
@@ -1405,7 +1405,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 
 - (void)putLoanHistory
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith == nil"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"orderInComparison == nil"];
     LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
     
     BOOL shouldSave = NO;

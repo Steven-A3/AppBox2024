@@ -20,4 +20,6 @@
 - (void)verifyNULLField;
 
 - (WalletField *)fieldForFieldItem:(WalletFieldItem *)fieldItem;
+
+- (void)deleteWalletItem;
 @end

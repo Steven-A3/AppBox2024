@@ -23,6 +23,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "LadyCalendarPeriod+extension.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -404,6 +405,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if( buttonIndex == actionSheet.destructiveButtonIndex ){
+		[LadyCalendarPeriod MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"accountID == %@", _accountItem.uniqueID]];
 		[_accountItem MR_deleteEntity];
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 

@@ -24,6 +24,8 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3WalletCategoryEditAddNewFieldCell.h"
+#import "WalletItem.h"
+#import "WalletItem+initialize.h"
 
 @interface A3WalletCategoryEditViewController () <UIActionSheetDelegate, WalletIconSelectDelegate, WalletEditFieldDelegate,  UITextFieldDelegate>
 
@@ -635,6 +637,11 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
+		NSArray *items = [WalletItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID]];
+		for (WalletItem *item in items) {
+			[item deleteWalletItem];
+		}
+		[WalletField MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID]];
 		[self.category MR_deleteEntity];
 
 		[self dismissViewControllerAnimated:YES completion:NULL];

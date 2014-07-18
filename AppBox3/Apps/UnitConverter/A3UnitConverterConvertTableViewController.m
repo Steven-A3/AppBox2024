@@ -393,7 +393,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (NSMutableArray *)convertItems {
 	if (nil == _convertItems) {
-        _convertItems = [NSMutableArray arrayWithArray:[UnitConvertItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"item.type==%@", _unitType]]];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"typeID == %@", _unitType.uniqueID];
+        _convertItems = [NSMutableArray arrayWithArray:[UnitConvertItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
         
 		[self addEqualAndPlus];
 	}
@@ -430,7 +431,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     NSNumber *_unitValue = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitConverterTableViewUnitValueKey];
     
     if (!_unitValue) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"source.type == %@", _unitType];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceTypeID == %@", _unitType.uniqueID];
         NSArray *histories = [UnitHistory MR_findAllSortedBy:@"updateDate" ascending:NO withPredicate:predicate];
         if (histories.count > 0) {
             UnitHistory *last = histories[0];
@@ -1080,6 +1081,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			convertItem.uniqueID = [[NSUUID UUID] UUIDString];
 			convertItem.updateDate = [NSDate date];
 			convertItem.unitID = selectedItem.uniqueID;
+			convertItem.typeID = selectedItem.typeID;
 
 			NSUInteger idx = [_convertItems count];
 			[self.convertItems insertObjectToSortedArray:convertItem atIndex:idx];
@@ -1665,7 +1667,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 - (void)putHistoryWithValue:(NSNumber *)value {
 	UnitConvertItem *baseUnit = self.convertItems[0];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"source.type == %@", _unitType];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceTypeID == %@", _unitType];
 	NSArray *histories = [UnitHistory MR_findAllSortedBy:@"updateDate" ascending:NO withPredicate:predicate];
 
 	// Compare code and value.
@@ -1683,6 +1685,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	NSDate *keyDate = [NSDate date];
 	history.updateDate = keyDate;
 	history.sourceUnitID = baseUnit.unitID;
+	history.sourceTypeID = baseUnit.typeID;
 	history.value = value;
 
 	NSInteger historyItemCount = MIN([self.convertItems count] - 2, 4);

@@ -100,8 +100,8 @@ static NSString *CellIdentifier = @"Cell";
 //        [ExpenseListBudget MR_deleteAllMatchingPredicate:predicate];//현재 값 유지 후, 전체삭제 하는 형태로 변경필요.
         ExpenseListBudget *currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:currentBudgetId];
 
-        [ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budget != %@", currentBudget]];
-        [ExpenseListBudgetLocation MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budget != %@", currentBudget]];
+        [ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID != %@", currentBudget]];
+        [ExpenseListBudgetLocation MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID != %@", currentBudget]];
         [ExpenseListBudget MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@", currentBudgetId]];
         [ExpenseListHistory MR_truncateAll];
         
@@ -194,7 +194,7 @@ static NSString *CellIdentifier = @"Cell";
             [aHistory MR_deleteEntity];
         }
         else {
-            [ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budget == %@", aData]];
+            [ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID == %@", aData.uniqueID]];
             [aData MR_deleteEntity];
             [aHistory MR_deleteEntity];
         }

@@ -159,7 +159,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
             _fetchedResultsController = [LoanCalcComparisonHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
         }
         else {
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith = nil"];
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"orderInComparison == nil"];
             _fetchedResultsController = [LoanCalcHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:predicate groupBy:nil delegate:nil];
         }
         
@@ -336,6 +336,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
                 NSIndexPath *ip = [NSIndexPath indexPathForRow:j inSection:i];
                 if (_isComparisonMode) {
                     LoanCalcComparisonHistory *comparisonHistory = [_fetchedResultsController objectAtIndexPath:ip];
+					[LoanCalcHistory MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"comparisonHistoryID == %@", comparisonHistory.uniqueID]];
                     [comparisonHistory MR_deleteEntity];
                 }
                 else {

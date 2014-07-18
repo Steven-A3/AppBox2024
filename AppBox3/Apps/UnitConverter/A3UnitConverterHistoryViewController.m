@@ -153,11 +153,6 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 	return _fetchedResultsController;
 }
 
-- (NSMutableArray *)unitConverterItemsOfUnitType:(UnitType *)unitType
-{
-    return [NSMutableArray arrayWithArray:[UnitConvertItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"item.type==%@", unitType]]];
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

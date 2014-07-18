@@ -44,8 +44,8 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 
 @property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *equalItem;
-@property (nonatomic, strong) NSMutableDictionary *textFields;
 @property (nonatomic, strong) CurrencyHistory *history;
+@property (nonatomic, strong) NSMutableDictionary *textFields;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;

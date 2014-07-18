@@ -336,6 +336,8 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
+		[TranslatorHistory MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]];
+		[TranslatorFavorite MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]];
 		[group MR_deleteEntity];
 
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];

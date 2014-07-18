@@ -115,6 +115,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
             for (int j=0; j<row; j++) {
                 NSIndexPath *ip = [NSIndexPath indexPathForRow:j inSection:i];
                 UnitPriceHistory *unitPriceHistory = [_fetchedResultsController objectAtIndexPath:ip];
+				[UnitPriceHistoryItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", unitPriceHistory.uniqueID]];
                 [unitPriceHistory MR_deleteEntity];
             }
         }
@@ -147,6 +148,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 
 - (void)deleteHistory:(UnitPriceHistory *)history
 {
+	[UnitPriceHistoryItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
     [history MR_deleteEntity];
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }

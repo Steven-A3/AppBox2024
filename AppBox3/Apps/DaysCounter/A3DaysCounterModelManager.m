@@ -497,17 +497,6 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return YES;
 }
 
-- (BOOL)removeEvent:(DaysCounterEvent *)eventItem
-{
-    // event store 에 설정된 값도 삭제한다.
-    [eventItem MR_deleteEntity];
-	[eventItem deletePhoto];
-
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-    
-    return YES;
-}
-
 - (NSMutableArray*)visibleCalendarList
 {
     NSArray *result = [DaysCounterCalendar MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"isShow == %@",[NSNumber numberWithBool:YES]]];
@@ -562,13 +551,34 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     
     NSManagedObjectContext *context = [removeItem managedObjectContext];
     BOOL retValue;
+	NSString *calendarID = removeItem.uniqueID;
     if ( [removeItem MR_deleteInContext:context] ) {
+		NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendarID]];
+		for (DaysCounterEvent *event in events) {
+			[self removeEvent:event];
+		}
+
         [context MR_saveToPersistentStoreAndWait];
         retValue = YES;
-    }
+
+		[[self class] reloadAlertDateListForLocalNotification];
+	}
     else
         retValue = NO;
     return retValue;
+}
+
+- (BOOL)removeEvent:(DaysCounterEvent *)event {
+	[event deletePhoto];
+
+	[DaysCounterDate MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
+	[DaysCounterEventLocation MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
+	[DaysCounterFavorite MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
+	[DaysCounterReminder MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
+
+	[event MR_deleteEntity];
+
+	return YES;
 }
 
 - (BOOL)removeCalendarItemWithID:(NSString*)calendarID

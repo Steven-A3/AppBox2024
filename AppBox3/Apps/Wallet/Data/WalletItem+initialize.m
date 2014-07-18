@@ -88,4 +88,42 @@
 	return [WalletField MR_findFirstWithPredicate:predicate];
 }
 
+- (void)deleteWalletItem {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.uniqueID];
+	NSArray *fieldItems = [WalletFieldItem MR_findAllWithPredicate:predicate];
+	[fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem *fieldItem, NSUInteger idx, BOOL *stop) {
+		NSFileManager *fileManager = [[NSFileManager alloc] init];
+		BOOL result;
+		if ([fieldItem.hasImage boolValue]) {
+			if ([fileManager fileExistsAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO]]) {
+				result = [fileManager removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO] error:NULL];
+				NSAssert(result, @"result");
+			}
+			if ([fileManager fileExistsAtPath:[fieldItem photoImageThumbnailPathInOriginal:YES]]) {
+				result = [fileManager removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:YES] error:NULL];
+				NSAssert(result, @"result");
+			}
+			if ([fileManager fileExistsAtPath:[[fieldItem photoImageURLInOriginalDirectory:NO] path]]) {
+				result = [fileManager removeItemAtURL:[fieldItem photoImageURLInOriginalDirectory:NO] error:NULL];
+				NSAssert(result, @"result");
+			}
+			if ([fileManager fileExistsAtPath:[[fieldItem photoImageURLInOriginalDirectory:YES] path]]) {
+				[fileManager removeItemAtPath:[[fieldItem photoImageURLInOriginalDirectory:YES] path] error:NULL];
+				NSAssert(result, @"result");
+			}
+		} else {
+			if ([fileManager fileExistsAtPath:[fieldItem videoThumbnailPathInOriginal:NO]]) {
+				result = [fileManager removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO] error:NULL];
+				NSAssert(result, @"result");
+			}
+			if ([fileManager fileExistsAtPath:[[fieldItem videoFileURLInOriginal:YES] path]]) {
+				result = [fileManager removeItemAtURL:[fieldItem videoFileURLInOriginal:YES] error:NULL];
+				NSAssert(result, @"result");
+			}
+		}
+	}];
+	[WalletFieldItem MR_deleteAllMatchingPredicate:predicate];
+	[WalletFavorite MR_deleteAllMatchingPredicate:predicate];
+}
+
 @end

@@ -525,7 +525,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
                     WalletItem *item = self.items[idx];
                     [self.items removeObject:item];
-					[item MR_deleteEntity];
+					[item deleteWalletItem];
 				}
             }
 
@@ -552,8 +552,8 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
                 if ([self.items[indexPath.row] isKindOfClass:[WalletItem class]]) {
 
                     WalletItem *item = self.items[indexPath.row];
-                    [item MR_deleteEntity];
-                }
+					[item deleteWalletItem];
+				}
             }
 
             [self.items removeObjectsAtIndexes:mis];
@@ -688,9 +688,9 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 				}
 			}];
             [self.items removeObject:item];
-            [item MR_deleteEntity];
+			[item deleteWalletItem];
 
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 

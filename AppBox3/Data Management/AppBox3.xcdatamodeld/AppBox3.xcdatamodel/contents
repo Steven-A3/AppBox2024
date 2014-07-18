@@ -259,6 +259,7 @@
         <attribute name="valueType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="TranslatorFavorite" representedClassName="TranslatorFavorite" syncable="YES">
+        <attribute name="groupID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="historyID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
@@ -293,6 +294,7 @@
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
     <entity name="UnitHistory" representedClassName="UnitHistory" syncable="YES">
+        <attribute name="sourceTypeID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sourceUnitID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -421,12 +423,12 @@
         <element name="SalesCalcHistory" positionX="-407" positionY="-327" width="128" height="223"/>
         <element name="TipCalcHistory" positionX="-587" positionY="-310" width="128" height="103"/>
         <element name="TipCalcRecent" positionX="-774" positionY="-306" width="128" height="313"/>
-        <element name="TranslatorFavorite" positionX="304" positionY="-36" width="128" height="103"/>
+        <element name="TranslatorFavorite" positionX="304" positionY="-36" width="128" height="118"/>
         <element name="TranslatorGroup" positionX="-396" positionY="-63" width="128" height="118"/>
         <element name="TranslatorHistory" positionX="-216" positionY="-84" width="128" height="118"/>
         <element name="UnitConvertItem" positionX="412" positionY="270" width="128" height="118"/>
         <element name="UnitFavorite" positionX="-0" positionY="81" width="128" height="118"/>
-        <element name="UnitHistory" positionX="-2" positionY="207" width="128" height="103"/>
+        <element name="UnitHistory" positionX="-2" positionY="207" width="128" height="118"/>
         <element name="UnitHistoryItem" positionX="-191" positionY="252" width="128" height="88"/>
         <element name="UnitItem" positionX="205" positionY="198" width="128" height="133"/>
         <element name="UnitPriceFavorite" positionX="412" positionY="390" width="128" height="105"/>

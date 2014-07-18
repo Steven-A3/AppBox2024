@@ -300,16 +300,16 @@ NSString *const kTargetText						= @"kTargetText";
 	if (![historyArray count]) {
 		return;
 	}
-	NSPredicate *predicateTemplate = [NSPredicate predicateWithFormat:@"sourceLanguage == $source AND targetLanguage == $target"];
 	for (NSDictionary *item in historyArray) {
 		@autoreleasepool {
 			NSString *sourceLanguageCode = item[kSourceLanguageCode];
 			NSString *targetLanguageCode = item[kTargetLanguageCode];
-			NSPredicate *predicate = [predicateTemplate predicateWithSubstitutionVariables:@{@"source":sourceLanguageCode, @"target":targetLanguageCode}];
+			NSString *uniqueID = [NSString stringWithFormat:@"%@-%@", sourceLanguageCode, targetLanguageCode];
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", uniqueID];
 			TranslatorGroup *group = [TranslatorGroup MR_findFirstWithPredicate:predicate inContext:context];
 			if (!group) {
 				group = [TranslatorGroup MR_createInContext:context];
-				group.uniqueID = [[NSUUID UUID] UUIDString];
+				group.uniqueID = uniqueID;
 				group.updateDate = [NSDate date];
 				[group setupOrder];
 				group.sourceLanguage = sourceLanguageCode;

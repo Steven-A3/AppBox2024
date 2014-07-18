@@ -28,6 +28,7 @@
 		favorite.uniqueID = [[NSUUID UUID] UUIDString];
 		favorite.updateDate = [NSDate date];
 		favorite.historyID = self.uniqueID;
+		favorite.groupID = self.groupID;
 
 		NSString *largest = [TranslatorFavorite MR_findLargestValueForAttribute:@"order" inContext:self.managedObjectContext];
 		NSString *nextLargest = [NSString orderStringWithOrder:[largest integerValue] + 1000000];
