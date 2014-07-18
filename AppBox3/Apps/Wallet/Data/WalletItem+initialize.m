@@ -20,7 +20,7 @@
 
 - (NSArray *)fieldItemsArray
 {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.uniqueID];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", self.uniqueID];
 	NSArray *fieldItems = [WalletFieldItem MR_findAllWithPredicate:predicate];
 	fieldItems = [fieldItems sortedArrayUsingComparator:^NSComparisonResult(WalletFieldItem *obj1, WalletFieldItem *obj2) {
 		WalletField *field1 = [WalletField MR_findFirstByAttribute:@"uniqueID" withValue:obj1.fieldID];
@@ -89,7 +89,7 @@
 }
 
 - (void)deleteWalletItem {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.uniqueID];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", self.uniqueID];
 	NSArray *fieldItems = [WalletFieldItem MR_findAllWithPredicate:predicate];
 	[fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem *fieldItem, NSUInteger idx, BOOL *stop) {
 		NSFileManager *fileManager = [[NSFileManager alloc] init];
