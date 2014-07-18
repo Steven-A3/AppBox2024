@@ -7,6 +7,11 @@
 //
 
 #import "A3DateCalcAddSubCell2.h"
+#import "A3AppDelegate.h"
+
+NSString *const A3DateCalcDefaultsSavedYear = @"A3DateCalcDefaultSavedYear";
+NSString *const A3DateCalcDefaultsSavedMonth = @"A3DateCalcDefaultSavedMonth";
+NSString *const A3DateCalcDefaultsSavedDay = @"A3DateCalcDefaultSavedDay";
 
 @implementation A3DateCalcAddSubCell2
 
@@ -230,9 +235,9 @@
 
 +(NSDateComponents *)dateComponentBySavedText {
     NSDateComponents * date = [NSDateComponents new];
-    NSString *year = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedYearText"];
-    NSString *month = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedMonthText"];
-    NSString *day = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedDayText"];
+    NSString *year = [[NSUserDefaults standardUserDefaults] objectForKey:A3DateCalcDefaultsSavedYear];
+    NSString *month = [[NSUserDefaults standardUserDefaults] objectForKey:A3DateCalcDefaultsSavedMonth];
+    NSString *day = [[NSUserDefaults standardUserDefaults] objectForKey:A3DateCalcDefaultsSavedDay];
     date.year = year.integerValue;
     date.month = month.integerValue;
     date.day = day.integerValue;
@@ -246,18 +251,28 @@
 }
 
 -(void)saveInputedTextField:(UITextField *)textField {
+	NSString *key, *value;
     if (textField == _yearTextField) {
-        [[NSUserDefaults standardUserDefaults] setObject:_yearTextField.text forKey:@"savedYearText"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+		key = A3DateCalcDefaultsSavedYear;
+		value = _yearTextField.text;
     }
     else if (textField == _monthTextField) {
-        [[NSUserDefaults standardUserDefaults] setObject:_monthTextField.text forKey:@"savedMonthText"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+		key = A3DateCalcDefaultsSavedMonth;
+		value = _monthTextField.text;
     }
     else if (textField == _dayTextField) {
-        [[NSUserDefaults standardUserDefaults] setObject:_dayTextField.text forKey:@"savedDayText"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+		key = A3DateCalcDefaultsSavedDay;
+		value = _dayTextField.text;
     }
+
+	[[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:value forKey:key];
+		[store synchronize];
+	}
 }
 
 -(BOOL)hasEqualTextField:(UITextField *)textField {
