@@ -826,6 +826,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         }
     }
 
+	FNLOG(@"%@, %@", unitShortName, unitName);
     // input1
     cell.inputView.priceLabel.text = priceTxt;
     cell.inputView.unitLabel.text = IS_IPHONE ? unitShortName : unitName;

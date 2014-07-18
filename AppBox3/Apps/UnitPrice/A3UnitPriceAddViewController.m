@@ -152,9 +152,9 @@
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
-- (BOOL)isFavoriteItemForUnitItem:(id)object
+- (BOOL)isFavoriteItemForUnitItem:(UnitItem *)item
 {
-    NSArray *result = [UnitPriceFavorite MR_findByAttribute:@"item" withValue:object];
+    NSArray *result = [UnitPriceFavorite MR_findByAttribute:@"itemID" withValue:item.uniqueID];
 	return [result count] > 0;
 }
 

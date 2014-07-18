@@ -256,6 +256,7 @@
 			favorite.uniqueID = unitItem.uniqueID;
 			favorite.updateDate = [NSDate date];
             favorite.unitItemID = unitItem.uniqueID;
+			favorite.unitTypeID = unitItem.typeID;
             favorite.order = [NSString orderStringWithOrder:(j + 1) * 1000000];
         }
     }

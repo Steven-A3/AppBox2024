@@ -185,9 +185,9 @@
 	viewController.shouldPopViewController = YES;
     
     viewController.unitType = uType;
-    viewController.favorites = [NSMutableArray arrayWithArray:[UnitPriceFavorite MR_findByAttribute:@"item.type" withValue:uType andOrderBy:@"order" ascending:YES]];
+    viewController.favorites = [NSMutableArray arrayWithArray:[UnitPriceFavorite MR_findByAttribute:@"unitTypeID" withValue:uType.uniqueID andOrderBy:@"order" ascending:YES]];
     viewController.selectedUnit = _price.unit;
-    NSArray *items = [UnitItem MR_findByAttribute:@"type" withValue:uType andOrderBy:@"unitName" ascending:YES];
+    NSArray *items = [UnitItem MR_findByAttribute:@"typeID" withValue:uType.uniqueID andOrderBy:@"unitName" ascending:YES];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitName != %@", @"feet inches"];
     viewController.allData = [NSMutableArray arrayWithArray:[items filteredArrayUsingPredicate:predicate]];
     

@@ -16,5 +16,6 @@
 @property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSString * unitItemID;
 @property (nonatomic, retain) NSDate * updateDate;
+@property (nonatomic, retain) NSString * unitTypeID;
 
 @end
