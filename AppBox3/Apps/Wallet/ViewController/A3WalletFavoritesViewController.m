@@ -52,9 +52,11 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
     [self setupInstructionView];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImportChanges) name:USMStoreDidImportChangesNotification object:nil];
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:USMStoreDidImportChangesNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextWillSaveNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
@@ -103,6 +105,10 @@
     
     // 페이지 들어올때마다 갱신한다.
     [self refreshItems];
+}
+
+- (void)cloudStoreDidImportChanges {
+	[self refreshItems];
 }
 
 - (void)viewWillLayoutSubviews {

@@ -9,7 +9,6 @@
 #import "LadyCalendarPeriod+extension.h"
 #import "A3AppDelegate.h"
 
-
 @implementation LadyCalendarPeriod (extension)
 
 - (void)awakeFromFetch {
@@ -18,6 +17,11 @@
 	NSDateComponents *components = [NSDateComponents new];
 	components.day = [self.cycleLength integerValue];
 	self.periodEnds = [[A3AppDelegate instance].calendar dateByAddingComponents:components toDate:self.startDate options:0];
+}
+
+- (void)reassignUniqueIDWithStartDate {
+	NSDateComponents *components = [[A3AppDelegate instance].calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self.startDate];
+	self.uniqueID = [NSString stringWithFormat:@"%ld-%02ld-%02ld", (long)components.year, (long)components.month, (long)components.day];
 }
 
 @end

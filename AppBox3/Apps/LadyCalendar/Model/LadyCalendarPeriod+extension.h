@@ -12,5 +12,5 @@
 @interface LadyCalendarPeriod (extension)
 
 
-
+- (void)reassignUniqueIDWithStartDate;
 @end
