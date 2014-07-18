@@ -12,7 +12,7 @@
 @implementation ExpenseListHistory (extension)
 
 - (ExpenseListBudget *)budgetData {
-	return [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:@"budgetID"];
+	return [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:self.budgetID];
 }
 
 @end
