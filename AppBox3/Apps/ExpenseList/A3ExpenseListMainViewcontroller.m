@@ -845,7 +845,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 {
     NSDate * updateDate = [NSDate date];
 
-    ExpenseListHistory * history = [ExpenseListHistory MR_findFirstByAttribute:@"budgetData" withValue:_currentBudget];
+    ExpenseListHistory * history = [ExpenseListHistory MR_findFirstByAttribute:@"budgetID" withValue:_currentBudget.uniqueID];
 
     if (!history) {
         history = [ExpenseListHistory MR_createEntity];
