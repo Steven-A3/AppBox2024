@@ -27,6 +27,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 @property (nonatomic, strong) MBProgressHUD *HUD;
 @property (nonatomic, strong) NSString *backupInfoString;
 @property (nonatomic, strong) A3BackupRestoreManager *backupRestoreManager;
+@property (nonatomic, copy) NSString *downloadFilePath;
 
 @end
 
@@ -283,6 +284,8 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 - (void)completedUnzipProcess:(BOOL)bResult{
 	[_HUD hide:YES];
 	_HUD = nil;
+	NSFileManager *fileManager = [NSFileManager new];
+	[fileManager removeItemAtPath:_downloadFilePath error:NULL];
 	if (_restoreInProgress) {
 		_restoreInProgress = NO;
 
@@ -327,15 +330,15 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 	[vc dismissViewControllerAnimated:YES completion:nil];
 
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-	NSString *downloadFilePath = [NSString stringWithFormat:@"%@/%@", paths[0], metadata.filename];
+	self.downloadFilePath = [NSString stringWithFormat:@"%@/%@", paths[0], metadata.filename];
 
 	NSFileManager *fileManager = [NSFileManager defaultManager];
-	if ([fileManager fileExistsAtPath:downloadFilePath]) {
-		[fileManager removeItemAtPath:downloadFilePath error:nil];
+	if ([fileManager fileExistsAtPath:_downloadFilePath]) {
+		[fileManager removeItemAtPath:_downloadFilePath error:nil];
 	}
 
 	_totalBytes = metadata.totalBytes;
-	[self.restClient loadFile:metadata.path intoPath:downloadFilePath];
+	[self.restClient loadFile:metadata.path intoPath:_downloadFilePath];
 
 	self.HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
 	[self.navigationController.view addSubview:_HUD];
