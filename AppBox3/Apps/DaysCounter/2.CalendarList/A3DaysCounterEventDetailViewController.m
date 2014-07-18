@@ -906,7 +906,7 @@ EXIT_FUCTION:
     }
     
     NSDate *now = [NSDate date];
-    BOOL hasRepeat = [_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO;
+//    BOOL hasRepeat = [_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO;
     BOOL hasEndDate = [_eventItem.isPeriod boolValue];
     
     lunarImageView.hidden = ![info.isLunar boolValue];

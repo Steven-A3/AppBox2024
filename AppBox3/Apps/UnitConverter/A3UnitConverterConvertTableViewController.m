@@ -1078,7 +1078,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			}
 
 			UnitConvertItem *convertItem = [UnitConvertItem MR_createEntity];
-			convertItem.uniqueID = [[NSUUID UUID] UUIDString];
+			convertItem.uniqueID = selectedItem.uniqueID;
 			convertItem.updateDate = [NSDate date];
 			convertItem.unitID = selectedItem.uniqueID;
 			convertItem.typeID = selectedItem.typeID;
