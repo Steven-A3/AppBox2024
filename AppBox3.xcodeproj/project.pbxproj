@@ -3910,8 +3910,6 @@
 				684E9EF6188A206C00FAA48E /* A3AboutViewController.m */,
 				684E9EF8188A20E800FAA48E /* A3HelpViewController.h */,
 				684E9EF9188A20E800FAA48E /* A3HelpViewController.m */,
-				17D4242BE119DDE4F3E5A8D7 /* A3DaysCounterEventListViewController.h */,
-				17D42555D4EFD9D7B167055D /* A3DaysCounterEventListViewController.m */,
 			);
 			name = About;
 			sourceTree = "<group>";
@@ -5051,6 +5049,8 @@
 				68F14F3919485E8500159EAD /* A3DaysCounterEventDetailLocationViewController.h */,
 				68F14F3A19485E8500159EAD /* A3DaysCounterEventDetailLocationViewController.m */,
 				68F14F3B19485E8500159EAD /* A3DaysCounterEventDetailLocationViewController.xib */,
+				17D4242BE119DDE4F3E5A8D7 /* A3DaysCounterEventListViewController.h */,
+				17D42555D4EFD9D7B167055D /* A3DaysCounterEventListViewController.m */,
 				68F14F3C19485E8500159EAD /* A3DaysCounterEventDetailViewController.h */,
 				68F14F3D19485E8500159EAD /* A3DaysCounterEventDetailViewController.m */,
 				68F14F4019485E8500159EAD /* A3DaysCounterEventListEditViewController.h */,

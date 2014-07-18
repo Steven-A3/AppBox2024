@@ -126,7 +126,7 @@
 - (void)reloadTableView
 {
     if( [_calendarItem.calendarType integerValue] == CalendarCellType_User ) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", _calendarItem.uniqueID];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", _calendarItem.uniqueID];
 		NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:predicate];
         self.itemArray = [NSMutableArray arrayWithArray:events];
 	} else {

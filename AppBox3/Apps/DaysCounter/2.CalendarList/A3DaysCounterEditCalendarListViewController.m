@@ -142,7 +142,7 @@
     imageView.tintColor = [item color];
     textLabel.text = item.calendarName;
     checkButton.selected = [item.isShow boolValue];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", item.uniqueID];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", item.uniqueID];
 	long eventCounts = [DaysCounterEvent MR_countOfEntitiesWithPredicate:predicate];
     detailTextLabel.text = [NSString stringWithFormat:@"%ld", eventCounts];
     

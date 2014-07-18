@@ -19,7 +19,7 @@
     BOOL _isNameAscending;
 }
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
-@property (weak, nonatomic) DaysCounterCalendar *calendarItem;
+@property (strong, nonatomic) DaysCounterCalendar *calendarItem;
 @property (weak, nonatomic) IBOutlet A3WalletSegmentedControl *sortTypeSegmentCtrl;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolbar;
