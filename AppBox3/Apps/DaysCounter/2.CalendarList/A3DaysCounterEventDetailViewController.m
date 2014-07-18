@@ -917,11 +917,12 @@ EXIT_FUCTION:
     //    NSDate *nextDate = [info effectiveStartDate];
     
     // until/since & durationOption string
-    markLabel.text = [A3DateHelper untilSinceStringByFromDate:now
-                                                       toDate:startDate
-                                                 allDayOption:[info.isAllDay boolValue]
-                                                       repeat:hasRepeat
-                                                       strict:[A3DaysCounterModelManager hasHourMinDurationOption:[info.durationOption integerValue]]];
+//    markLabel.text = [A3DateHelper untilSinceStringByFromDate:now
+//                                                       toDate:startDate
+//                                                 allDayOption:[info.isAllDay boolValue]
+//                                                       repeat:hasRepeat
+//                                                       strict:[A3DaysCounterModelManager hasHourMinDurationOption:[info.durationOption integerValue]]];
+    markLabel.text = NSLocalizedString(@"since", @"since");
     cell.sinceRoundWidthConst.constant = 42;
     daysLabel.text = [A3DaysCounterModelManager stringOfDurationOption:[info.durationOption integerValue]
                                                               fromDate:startDate
