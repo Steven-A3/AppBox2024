@@ -27,7 +27,7 @@
 "CUC-uG-Jld.text" = "时钟";
 
 /* Class = "IBUILabel"; text = "Holidays"; ObjectID = "Hg6-My-X9i"; */
-"Hg6-My-X9i.text" = "节日/纪念日";
+"Hg6-My-X9i.text" = "节假日/纪念日";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Ixg-rR-GNM"; */
 "Ixg-rR-GNM.normalTitle" = "继续";

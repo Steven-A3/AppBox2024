@@ -53,7 +53,7 @@
 "QVX-vI-Tzn.normalTitle" = "继续";
 
 /* Class = "IBUILabel"; text = "Holidays"; ObjectID = "TDf-63-7ce"; */
-"TDf-63-7ce.text" = "节日/纪念日";
+"TDf-63-7ce.text" = "节假日/纪念日";
 
 /* Class = "IBUILabel"; text = "Currency Converter"; ObjectID = "TX8-le-6Df"; */
 "TX8-le-6Df.text" = "币种转换器";

@@ -3,16 +3,16 @@
 "0gd-1F-IlN.text" = "轻按以添加种类。";
 
 /* Class = "IBUILabel"; text = "Touch and hold a country,\nthen drag it up or down"; ObjectID = "0ze-pQ-4fo"; */
-"0ze-pQ-4fo.text" = "点击一个国家不要放开，\n然后向上或向下拖拽";
+"0ze-pQ-4fo.text" = "点击一个国家不要放开,\n然后向上或向下拖拽";
 
 /* Class = "IBUILabel"; text = "Tap to add a new list"; ObjectID = "1dD-l5-TzF"; */
 "1dD-l5-TzF.text" = "轻按以添加新的清单";
 
 /* Class = "IBUILabel"; text = "Slide the currency to the left,\nthen tap options"; ObjectID = "2ma-Z4-hX7"; */
-"2ma-Z4-hX7.text" = "将货币滑至左侧，\n然后点击选项。";
+"2ma-Z4-hX7.text" = "将货币滑至左侧,\n然后点击选项。";
 
 /* Class = "IBUILabel"; text = "Touch and hold a currency,\nthen drag it up or down"; ObjectID = "3r1-n4-BZx"; */
-"3r1-n4-BZx.text" = "点击一个货币不要放开，\n然后向上或向下拖拽";
+"3r1-n4-BZx.text" = "点击一个货币不要放开,\n然后向上或向下拖拽";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to change\nkeypad for basic/scientific"; ObjectID = "4Y2-hA-ExK"; */
 "4Y2-hA-ExK.text" = "向左或向右滑以更改\n按键区的基本/科学模式";
@@ -24,7 +24,7 @@
 "5vX-h0-0KZ.text" = "轻按屏幕可显示控制";
 
 /* Class = "IBUILabel"; text = "Slide the event to the left,\nthen tap Delete"; ObjectID = "7qV-NL-Ajb"; */
-"7qV-NL-Ajb.text" = "将事件滑至左侧，\然后点击删除";
+"7qV-NL-Ajb.text" = "将事件滑至左侧,\然后点击删除";
 
 /* Class = "IBUILabel"; text = "Tap to view larger"; ObjectID = "8OM-Xa-7AG"; */
 "8OM-Xa-7AG.text" = "轻按以放大。";
@@ -36,28 +36,28 @@
 "BOF-lT-L6x.text" = "轻按屏幕可显示控制";
 
 /* Class = "IBUILabel"; text = "Touch and hold a unit,\nthen drag it up or down"; ObjectID = "DNP-PL-5me"; */
-"DNP-PL-5me.text" = "点击一个单位不要放开，\n然后向上或向下拖拽";
+"DNP-PL-5me.text" = "点击一个单位不要放开,\n然后向上或向下拖拽";
 
 /* Class = "IBUILabel"; text = "Tap to change \ncolor and more"; ObjectID = "EHY-52-AW9"; */
 "EHY-52-AW9.text" = "轻按来改变 \n颜色及更多";
 
 /* Class = "IBUILabel"; text = "Slide the item to left,\nthen tap Delete"; ObjectID = "FNw-cz-Xbp"; */
-"FNw-cz-Xbp.text" = "将信息滑至左侧，\n然后轻按删除";
+"FNw-cz-Xbp.text" = "将信息滑至左侧,\n然后轻按删除";
 
 /* Class = "IBUILabel"; text = "Tap to see more categories"; ObjectID = "Hom-fh-Uyk"; */
 "Hom-fh-Uyk.text" = "轻按以查看更多种类";
 
 /* Class = "IBUILabel"; text = "Slide the language to the left,\nthen tap Delete"; ObjectID = "M6u-St-Kuv"; */
-"M6u-St-Kuv.text" = "将语言滑至左侧，\n然后轻按删除";
+"M6u-St-Kuv.text" = "将语言滑至左侧,\n然后轻按删除";
 
 /* Class = "IBUILabel"; text = "Tap to add an event"; ObjectID = "M89-TC-emC"; */
 "M89-TC-emC.text" = "轻按以添加事件";
 
 /* Class = "IBUILabel"; text = "Slide the country to the left,\nthen tap Delete"; ObjectID = "O49-bh-b9I"; */
-"O49-bh-b9I.text" = "将国家滑至左侧，\n然后轻按删除";
+"O49-bh-b9I.text" = "将国家滑至左侧,\n然后轻按删除";
 
 /* Class = "IBUILabel"; text = "Pull up to see\nmore holidays"; ObjectID = "RQJ-Od-NDI"; */
-"RQJ-Od-NDI.text" = "向上拉以查看\n更多假日";
+"RQJ-Od-NDI.text" = "向上拉以查看\n更多节假日";
 
 /* Class = "IBUILabel"; text = "Tap to add or edit budget"; ObjectID = "U1j-Mc-LaR"; */
 "U1j-Mc-LaR.text" = "轻按以添加或编辑预算";
@@ -66,19 +66,19 @@
 "UOR-Dm-haV.text" = "下拉刷新";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "UvH-ng-N3W"; */
-"UvH-ng-N3W.text" = "轻按一条信息不要放开，\n然后向上或向下拖拽。";
+"UvH-ng-N3W.text" = "轻按一条信息不要放开,\n然后向上或向下拖拽。";
 
 /* Class = "IBUILabel"; text = "Tap to add a currency"; ObjectID = "Wca-7F-aIC"; */
 "Wca-7F-aIC.text" = "轻按以添加货币。";
 
 /* Class = "IBUILabel"; text = "Touch and hold a language,\nthen drag it up or down"; ObjectID = "Wl0-Ir-Vwx"; */
-"Wl0-Ir-Vwx.text" = "点击一个语言不要放开，\n然后向上或向下拖拽";
+"Wl0-Ir-Vwx.text" = "点击一个语言不要放开,\n然后向上或向下拖拽";
 
 /* Class = "IBUILabel"; text = "Tap to see chart/account/option"; ObjectID = "ZkW-mi-nXJ"; */
 "ZkW-mi-nXJ.text" = "轻按以查看图表、账户、选项";
 
 /* Class = "IBUILabel"; text = "Slide the calendar to the left,\nthen tap Delete"; ObjectID = "afl-C5-OsY"; */
-"afl-C5-OsY.text" = "将日历滑至左侧，\n然后轻按删除";
+"afl-C5-OsY.text" = "将日历滑至左侧,\n然后轻按删除";
 
 /* Class = "IBUILabel"; text = "Tap to add period"; ObjectID = "cXb-sm-2AK"; */
 "cXb-sm-2AK.text" = "轻按以添加周期。";
@@ -87,13 +87,13 @@
 "f7p-pa-V3C.text" = "向左或向右滑以查看\n假日或另一个国家";
 
 /* Class = "IBUILabel"; text = "Slide the unit to the left,\nthen tap options"; ObjectID = "fgC-K0-IiZ"; */
-"fgC-K0-IiZ.text" = "将单位滑至左侧，\n然后轻按选项";
+"fgC-K0-IiZ.text" = "将单位滑至左侧,\n然后轻按选项";
 
 /* Class = "IBUILabel"; text = "Tap to change color and more"; ObjectID = "g69-at-Gdn"; */
 "g69-at-Gdn.text" = "轻按以改变颜色及更多";
 
 /* Class = "IBUILabel"; text = "Touch and hold an event,\nthen drag it up or down"; ObjectID = "g74-h9-vmQ"; */
-"g74-h9-vmQ.text" = "轻按一个事件不要放开，\n然后向上或向下拖拽";
+"g74-h9-vmQ.text" = "轻按一个事件不要放开,\n然后向上或向下拖拽";
 
 /* Class = "IBUILabel"; text = "Change color and order"; ObjectID = "j7s-5h-AsK"; */
 "j7s-5h-AsK.text" = "改变颜色和顺序";
@@ -102,7 +102,7 @@
 "k0p-RN-RCK.text" = "轻按屏幕可显示控制";
 
 /* Class = "IBUILabel"; text = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down"; ObjectID = "ls1-5i-Gos"; */
-"ls1-5i-Gos.text" = "点击信息的右侧不要放开，\n然后向上或向下拖拽";
+"ls1-5i-Gos.text" = "点击信息的右侧不要放开,\n然后向上或向下拖拽";
 
 /* Class = "IBUILabel"; text = "Tap to see more info"; ObjectID = "m1h-st-ypH"; */
 "m1h-st-ypH.text" = "轻按以查看更多信息";
@@ -117,7 +117,7 @@
 "nP5-9M-28L.text" = "轻按添加按钮以添加国家";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "nPF-RG-8hQ"; */
-"nPF-RG-8hQ.text" = "点击一条信息不要放开，\n然后向上或向下拖拽";
+"nPF-RG-8hQ.text" = "点击一条信息不要放开,\n然后向上或向下拖拽";
 
 /* Class = "IBUILabel"; text = "Tap to add a unit"; ObjectID = "o5S-tb-Jbp"; */
 "o5S-tb-Jbp.text" = "轻按以增加一个单位";
@@ -129,16 +129,16 @@
 "qF4-08-u3n.text" = "轻按以查看周期列表";
 
 /* Class = "IBUILabel"; text = "Slide the item to the left,\nthen tap Delete"; ObjectID = "qMW-Th-lrs"; */
-"qMW-Th-lrs.text" = "将信息滑至左侧，\n然后轻按删除";
+"qMW-Th-lrs.text" = "将信息滑至左侧,\n然后轻按删除";
 
 /* Class = "IBUILabel"; text = "Slide the language to the left,\nthen tap Delete"; ObjectID = "qRC-cW-j6h"; */
-"qRC-cW-j6h.text" = "将语言滑至左侧，\n然后轻按删除";
+"qRC-cW-j6h.text" = "将语言滑至左侧,\n然后轻按删除";
 
 /* Class = "IBUILabel"; text = "Select which categories\nto view"; ObjectID = "rHi-Jq-5Rp"; */
 "rHi-Jq-5Rp.text" = "选择要查看的种类";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "rqI-qD-Dqd"; */
-"rqI-qD-Dqd.text" = "点击一条信息不要放开，\n然后向上或向下拖拽";
+"rqI-qD-Dqd.text" = "点击一条信息不要放开,\n然后向上或向下拖拽";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "sxx-vG-Pll"; */
 "sxx-vG-Pll.text" = "轻按屏幕可显示控制";
@@ -147,7 +147,7 @@
 "t5T-1i-yhB.text" = "轻按以改变选项";
 
 /* Class = "IBUILabel"; text = "Touch and hold a language,\nthen drag it up or down"; ObjectID = "tZj-CP-DIE"; */
-"tZj-CP-DIE.text" = "轻按一个语言不要放开，\n然后向上或向下拖拽";
+"tZj-CP-DIE.text" = "轻按一个语言不要放开,\n然后向上或向下拖拽";
 
 /* Class = "IBUILabel"; text = "Slide the item to the left,\nthen tap Delete"; ObjectID = "tkT-KJ-PpW"; */
 "tkT-KJ-PpW.text" = "将信息滑至左侧\n然后轻按删除";
