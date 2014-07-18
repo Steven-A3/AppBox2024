@@ -70,7 +70,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     [dict setObject:item.calendarName forKey:CalendarItem_Name];
     [dict setObject:item.isShow forKey:CalendarItem_IsShow];
     [dict setObject:[NSNumber numberWithInteger:CalendarCellType_User] forKey:CalendarItem_Type];
-	NSInteger count = [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", item.uniqueID]];
+	NSInteger count = [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", item.uniqueID]];
     [dict setObject:[NSNumber numberWithInteger:count] forKey:CalendarItem_NumberOfEvents];
     
     return dict;
@@ -553,7 +553,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     BOOL retValue;
 	NSString *calendarID = removeItem.uniqueID;
     if ( [removeItem MR_deleteInContext:context] ) {
-		NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendarID]];
+		NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", calendarID]];
 		for (DaysCounterEvent *event in events) {
 			[self removeEvent:event];
 		}
@@ -696,27 +696,27 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSInteger)numberOfAllEvents
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@", [self hiddenCalendars]]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT uniqueID IN %@", [self hiddenCalendars]]];
 }
 
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == nil))", [self hiddenCalendars], date, date, @(RepeatType_Never)]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT uniqueID IN %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == nil))", [self hiddenCalendars], date, date, @(RepeatType_Never)]];
 }
 
 - (NSInteger)numberOfPastEventsWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && ((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate == nil && repeatEndDate < %@))", [self hiddenCalendars], date, @(RepeatType_Never), date]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT uniqueID IN %@ && ((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate == nil && repeatEndDate < %@))", [self hiddenCalendars], date, @(RepeatType_Never), date]];
 }
 
 - (NSInteger)numberOfUserCalendarVisible
 {
-    return [DaysCounterCalendar MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ and calendarType == %@", [self hiddenCalendars], [NSNumber numberWithInteger:CalendarCellType_User]]];
+    return [DaysCounterCalendar MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT uniqueID IN %@ and calendarType == %@", [self hiddenCalendars], [NSNumber numberWithInteger:CalendarCellType_User]]];
 }
 
 - (NSInteger)numberOfEventContainedImage
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && hasPhoto == YES", [self hiddenCalendars]]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT uniqueID IN %@ && hasPhoto == YES", [self hiddenCalendars]]];
 }
 
 - (NSDate*)dateOfLatestEvent
@@ -749,12 +749,12 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSArray*)allEventsList
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@", [self hiddenCalendars]]];
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"NOT uniqueID IN %@", [self hiddenCalendars]]];
 }
 
 - (NSArray*)allEventsListContainedImage
 {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && hasPhoto == YES", [self hiddenCalendars]];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT uniqueID IN %@ && hasPhoto == YES", [self hiddenCalendars]];
     return [DaysCounterEvent MR_findAllSortedBy:@"effectiveStartDate"
 									  ascending:YES
 								  withPredicate:predicate];
@@ -763,7 +763,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date
 {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:
-			@"NOT calendarID IN %@ && \
+			@"NOT uniqueID IN %@ && \
 			(effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == nil))",
 					[self hiddenCalendars],
 					date,
@@ -775,7 +775,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 - (NSArray*)pastEventsListWithDate:(NSDate*)date
 {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:
-			@"NOT calendarID IN %@ && \
+			@"NOT uniqueID IN %@ && \
  			((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate == nil && repeatEndDate < %@))",
 					[self hiddenCalendars],
 					date,
@@ -1279,17 +1279,17 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     NSDate *today = [[NSCalendar currentCalendar] dateFromComponents:nowComp];
 
 	// return Today or closest until
-	DaysCounterEvent *closestEvent = [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate >= %@", calendar.uniqueID, today] sortedBy:@"effectiveStartDate" ascending:YES];
+	DaysCounterEvent *closestEvent = [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@ AND effectiveStartDate >= %@", calendar.uniqueID, today] sortedBy:@"effectiveStartDate" ascending:YES];
 	if (closestEvent) return closestEvent;
 
 	// return closest since
-	return [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate < %@", calendar.uniqueID, today] sortedBy:@"effectiveStartDate" ascending:YES];
+	return [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@ AND effectiveStartDate < %@", calendar.uniqueID, today] sortedBy:@"effectiveStartDate" ascending:YES];
 }
 
 - (void)renewEffectiveStartDates:(DaysCounterCalendar *)calendar
 {
     NSDate * const now = [NSDate date];
-	NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendar.uniqueID]];
+	NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", calendar.uniqueID]];
     [events enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
         event.effectiveStartDate = [A3DaysCounterModelManager effectiveDateForEvent:event basisTime:now];
         event.alertDatetime = [A3DaysCounterModelManager effectiveAlertDateForEvent:event];

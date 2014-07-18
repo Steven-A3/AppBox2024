@@ -239,7 +239,7 @@
 - (void)loadEventData
 {
     if ( [_calendarItem.calendarType integerValue] == CalendarCellType_User) {
-        self.sourceArray = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", _calendarItem.uniqueID]];
+        self.sourceArray = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", _calendarItem.uniqueID]];
     }
     else {
         if ( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_All] ) {
