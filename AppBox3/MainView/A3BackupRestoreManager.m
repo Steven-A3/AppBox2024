@@ -96,7 +96,7 @@ extern NSString *const USMCloudContentName;
 			}];
 	}
 
-	NSArray *walletImages = [WalletFieldItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"image != NULL"]];
+	NSArray *walletImages = [WalletFieldItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasImage == YES"]];
 	for (WalletFieldItem *item in walletImages) {
 		[fileList addObject:
 			@{
@@ -105,7 +105,7 @@ extern NSString *const USMCloudContentName;
 			}];
 	}
 
-	NSArray *walletVideos = [WalletFieldItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"video != NULL"]];
+	NSArray *walletVideos = [WalletFieldItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasVideo == YES"]];
 	for (WalletFieldItem *video in walletVideos) {
 		[fileList addObject:
 			@{

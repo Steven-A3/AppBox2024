@@ -355,7 +355,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
      NSMutableArray *removedIndexPaths = [[NSMutableArray alloc] init];
      for (int i=0; i<removedItems.count; i++) {
          UnitItem *item = removedItems[i];
-         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item == %@", item];
+         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", item.uniqueID];
          NSArray *filtered = [_favorites filteredArrayUsingPredicate:predicate];
          
          if (filtered.count>0) {
@@ -466,7 +466,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 		cell.textLabel.textColor = [UIColor blackColor];
 	}
 
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item == %@", data];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitID == %@", data.uniqueID];
 	NSArray *items = [self.convertItems filteredArrayUsingPredicate:predicate];
 	if (items.count > 0) {
 		cell.textLabel.textColor = [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0];
