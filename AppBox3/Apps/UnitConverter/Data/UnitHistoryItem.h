@@ -2,7 +2,7 @@
 //  UnitHistoryItem.h
 //  AppBox3
 //
-//  Created by A3 on 7/17/14.
+//  Created by A3 on 7/18/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -14,6 +14,8 @@
 
 @property (nonatomic, retain) NSString * order;
 @property (nonatomic, retain) NSString * targetUnitItemID;
+@property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSString * unitHistoryID;
+@property (nonatomic, retain) NSDate * updateDate;
 
 @end

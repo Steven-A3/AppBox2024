@@ -1692,6 +1692,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	NSInteger idx = 0;
 	for (; idx < historyItemCount; idx++) {
 		UnitHistoryItem *item = [UnitHistoryItem MR_createEntity];
+		item.uniqueID = [[NSUUID UUID] UUIDString];
+		item.updateDate = [NSDate date];
 		item.unitHistoryID = history.uniqueID;
 		UnitConvertItem *convertItem = self.convertItems[idx + 2];
 		item.targetUnitItemID = convertItem.unitID;

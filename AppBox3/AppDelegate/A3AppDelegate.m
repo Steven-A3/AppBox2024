@@ -477,8 +477,9 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 }
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location {
-	FNLOG();
-	[_downloadList removeObjectAtIndex:0];
+	if ([_downloadList count]) {
+		[_downloadList removeObjectAtIndex:0];
+	}
 
 	NSFileManager *fileManager = [NSFileManager new];
 	NSString *filename = [[location path] lastPathComponent];

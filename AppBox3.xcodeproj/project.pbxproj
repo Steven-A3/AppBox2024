@@ -420,7 +420,6 @@
 		6874840C1977F19D00EA8F74 /* LoanCalcComparisonHistory+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874840B1977F19D00EA8F74 /* LoanCalcComparisonHistory+extension.m */; };
 		6874840F1977F44D00EA8F74 /* LoanCalcHistory+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874840E1977F44D00EA8F74 /* LoanCalcHistory+extension.m */; };
 		687484391977FE5C00EA8F74 /* UnitConvertItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484381977FE5C00EA8F74 /* UnitConvertItem.m */; };
-		6874843F1977FE5C00EA8F74 /* UnitHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874843E1977FE5C00EA8F74 /* UnitHistoryItem.m */; };
 		687484421977FE5D00EA8F74 /* UnitType.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484411977FE5D00EA8F74 /* UnitType.m */; };
 		687484451977FE5D00EA8F74 /* UnitItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484441977FE5D00EA8F74 /* UnitItem.m */; };
 		687484481977FE5D00EA8F74 /* UnitFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484471977FE5D00EA8F74 /* UnitFavorite.m */; };
@@ -700,6 +699,7 @@
 		68B6A46818CEE781004084EF /* MWPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A43E18CEE781004084EF /* MWPhotoBrowser.bundle */; };
 		68B7014819789F8200F7CE1E /* TranslatorFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B7014719789F8200F7CE1E /* TranslatorFavorite.m */; };
 		68B7014B19789FB900F7CE1E /* UnitHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B7014A19789FB900F7CE1E /* UnitHistory.m */; };
+		68B7014E1978CC5F00F7CE1E /* UnitHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B7014D1978CC5F00F7CE1E /* UnitHistoryItem.m */; };
 		68B9B15717CF4D8F003ACAD0 /* FXPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B15617CF4D8F003ACAD0 /* FXPageControl.m */; };
 		68B9B15C17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B15B17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m */; };
 		68B9B16317D02B85003ACAD0 /* A3HolidaysCountryViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B16217D02B85003ACAD0 /* A3HolidaysCountryViewCell.m */; };
@@ -1641,8 +1641,6 @@
 		6874840E1977F44D00EA8F74 /* LoanCalcHistory+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LoanCalcHistory+extension.m"; sourceTree = "<group>"; };
 		687484371977FE5C00EA8F74 /* UnitConvertItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitConvertItem.h; sourceTree = "<group>"; };
 		687484381977FE5C00EA8F74 /* UnitConvertItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitConvertItem.m; sourceTree = "<group>"; };
-		6874843D1977FE5C00EA8F74 /* UnitHistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitHistoryItem.h; sourceTree = "<group>"; };
-		6874843E1977FE5C00EA8F74 /* UnitHistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitHistoryItem.m; sourceTree = "<group>"; };
 		687484401977FE5D00EA8F74 /* UnitType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitType.h; sourceTree = "<group>"; };
 		687484411977FE5D00EA8F74 /* UnitType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitType.m; sourceTree = "<group>"; };
 		687484431977FE5D00EA8F74 /* UnitItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitItem.h; sourceTree = "<group>"; };
@@ -2198,6 +2196,8 @@
 		68B7014719789F8200F7CE1E /* TranslatorFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TranslatorFavorite.m; sourceTree = "<group>"; };
 		68B7014919789FB900F7CE1E /* UnitHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitHistory.h; sourceTree = "<group>"; };
 		68B7014A19789FB900F7CE1E /* UnitHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitHistory.m; sourceTree = "<group>"; };
+		68B7014C1978CC5F00F7CE1E /* UnitHistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitHistoryItem.h; sourceTree = "<group>"; };
+		68B7014D1978CC5F00F7CE1E /* UnitHistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitHistoryItem.m; sourceTree = "<group>"; };
 		68B9B15517CF4D8F003ACAD0 /* FXPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FXPageControl.h; path = External/FXPageControl/FXPageControl/FXPageControl.h; sourceTree = "<group>"; };
 		68B9B15617CF4D8F003ACAD0 /* FXPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FXPageControl.m; path = External/FXPageControl/FXPageControl/FXPageControl.m; sourceTree = "<group>"; };
 		68B9B15A17D01EB6003ACAD0 /* A3HolidaysCountryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysCountryViewController.h; path = Holidays/A3HolidaysCountryViewController.h; sourceTree = "<group>"; };
@@ -4362,6 +4362,8 @@
 		68B6A1C818CEC76C004084EF /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				68B7014C1978CC5F00F7CE1E /* UnitHistoryItem.h */,
+				68B7014D1978CC5F00F7CE1E /* UnitHistoryItem.m */,
 				68B7014919789FB900F7CE1E /* UnitHistory.h */,
 				68B7014A19789FB900F7CE1E /* UnitHistory.m */,
 				687484461977FE5D00EA8F74 /* UnitFavorite.h */,
@@ -4370,8 +4372,6 @@
 				687484441977FE5D00EA8F74 /* UnitItem.m */,
 				687484401977FE5D00EA8F74 /* UnitType.h */,
 				687484411977FE5D00EA8F74 /* UnitType.m */,
-				6874843D1977FE5C00EA8F74 /* UnitHistoryItem.h */,
-				6874843E1977FE5C00EA8F74 /* UnitHistoryItem.m */,
 				687484371977FE5C00EA8F74 /* UnitConvertItem.h */,
 				687484381977FE5C00EA8F74 /* UnitConvertItem.m */,
 				68B6A1C918CEC76C004084EF /* TemperatureConvertDef.h */,
@@ -5858,7 +5858,7 @@
 				68E2A64818D0B1FC00E834D9 /* A3ExpenseListColumnSectionView.m in Sources */,
 				68E2A65F18D0B1FC00E834D9 /* A3PercentCalcHistoryCompareCell.m in Sources */,
 				6823F6FC1863294700E6E90D /* A3YahooCurrency.m in Sources */,
-				6874843F1977FE5C00EA8F74 /* UnitHistoryItem.m in Sources */,
+				68B7014E1978CC5F00F7CE1E /* UnitHistoryItem.m in Sources */,
 				687484A819783B9D00EA8F74 /* DaysCounterReminder.m in Sources */,
 				680886D81891751B0093FD97 /* A3ClockInfo.m in Sources */,
 				68F14FE819485E8500159EAD /* A3DaysCounterEventListNameCell.m in Sources */,

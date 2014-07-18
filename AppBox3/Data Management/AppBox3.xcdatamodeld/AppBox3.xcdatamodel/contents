@@ -303,7 +303,9 @@
     <entity name="UnitHistoryItem" representedClassName="UnitHistoryItem" syncable="YES">
         <attribute name="order" attributeType="String" syncable="YES"/>
         <attribute name="targetUnitItemID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="unitHistoryID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
     <entity name="UnitItem" representedClassName="UnitItem" syncable="YES">
         <attribute name="conversionRate" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
@@ -429,7 +431,7 @@
         <element name="UnitConvertItem" positionX="412" positionY="270" width="128" height="118"/>
         <element name="UnitFavorite" positionX="-0" positionY="81" width="128" height="118"/>
         <element name="UnitHistory" positionX="-2" positionY="207" width="128" height="118"/>
-        <element name="UnitHistoryItem" positionX="-191" positionY="252" width="128" height="88"/>
+        <element name="UnitHistoryItem" positionX="-191" positionY="252" width="128" height="120"/>
         <element name="UnitItem" positionX="205" positionY="198" width="128" height="133"/>
         <element name="UnitPriceFavorite" positionX="412" positionY="390" width="128" height="105"/>
         <element name="UnitPriceHistory" positionX="-605" positionY="332" width="128" height="73"/>

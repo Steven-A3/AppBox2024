@@ -227,26 +227,25 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 
 - (void)ubiquityStoreManager:(UbiquityStoreManager *)manager didLoadStoreForCoordinator:(NSPersistentStoreCoordinator *)coordinator
 					 isCloud:(BOOL)isCloudStore {
-	FNLOG();
 	[self setPersistentStoreCoordinator:coordinator];
 	[self setupMagicalRecordStackWithCoordinator:coordinator];
-
+	
 	self.coreDataReadyToUse = YES;
-
+	
 	if (isCloudStore) {
 		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
 		[keyValueStore setBool:YES forKey:A3CloudHasData];
 		[keyValueStore synchronize];
-
+		
 		[self startDownloadAllFiles];
-
+		
 		if (_needsDataMigrationBetweenLocalCloud) {
 			// Cloud data exist and we need to migrate.
 			// Delete seeding data before migrate because cloud already has seed data such as CurrencyFavorite
-
+			
 			[self migrateLocalDataToCloudContext];
 		}
-
+		
 		// Initial de duplication of redundant data.
 		[self deDupeForEntity:NSStringFromClass([Calculation class])];
 		[self deDupeForEntity:NSStringFromClass([CurrencyFavorite class])];
@@ -290,20 +289,18 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 		[self deDupeForEntity:NSStringFromClass([WalletField class])];
 		[self deDupeForEntity:NSStringFromClass([WalletFieldItem class])];
 	}
-
-	[self coreDataReady];
-
+		
+	__typeof(self) __weak weakSelf = self;
 	dispatch_async(dispatch_get_main_queue(), ^{
+		[self coreDataReady];
+		
 		[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 		[A3LadyCalendarModelManager setupLocalNotification];
-
+		
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCoreDataReady object:nil];
-	});
-
-	__typeof(self) __weak weakSelf = self;
-	if (_userChangingCloud) {
-		_userChangingCloud = NO;
-		dispatch_async(dispatch_get_main_queue(), ^{
+		
+		if (_userChangingCloud) {
+			_userChangingCloud = NO;
 			UIImageView *imageView = [UIImageView new];
 			[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:37]];
 			[SFKImage setDefaultColor:[UIColor whiteColor]];
@@ -317,19 +314,16 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 			} else {
 				weakSelf.hud.labelText = NSLocalizedString(@"iCloud Disabled", @"iCloud Disabled");
 			}
-
+			
 			double delayInSeconds = 2.0;
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 				[weakSelf.hud hide:YES];
 			});
-		});
-	} else {
-		dispatch_async(dispatch_get_main_queue(), ^{
+		} else {
 			[weakSelf.hud hide:YES];
-		});
-	}
-	FNLOG();
+		}
+	});
 }
 
 - (void)ubiquityStoreManager:(UbiquityStoreManager *)manager failedLoadingStoreWithCause:(UbiquityStoreErrorCause)cause context:(id)context
@@ -470,7 +464,6 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 }
 
 - (void)deDupeForEntity:(NSString *)entityName {
-	FNLOG();
 	//if importNotification, scope dedupe by inserted records
 	//else no search scope, prey for efficiency.
 	NSError *error = nil;
@@ -562,7 +555,6 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	} else {
 		FNLOG(@"Error saving unique results: %@", error);
 	}
-	FNLOG();
 }
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
