@@ -638,7 +638,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     }
 
 	for (WalletFieldItem *fieldItem in _item.fieldItemsArray) {
-		if (!fieldItem.value && !fieldItem.date) {
+		if (!fieldItem.value && !fieldItem.date && !fieldItem.hasImage && !fieldItem.hasVideo) {
 			[fieldItem MR_deleteEntity];
 		}
 	}
@@ -873,8 +873,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     
     // name, order 변경안됨
     // category를 바꾼걸로
-    _item.categoryID = toCategory.uniqueID;
-	_walletCategory = toCategory;
 
 	_isMemoCategory = [_item.categoryID isEqualToString:A3WalletUUIDMemoCategory];
 
@@ -937,6 +935,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     if (moveToNoteString.length > 0) {
         self.item.note = [moveToNoteString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n\t "]];
     }
+	_walletCategory = toCategory;
+    _item.categoryID = toCategory.uniqueID;
     
     // 정보 불러오기
     _sectionItems = nil;

@@ -47,7 +47,7 @@ a 64Bit e molto altro";
 "MQq-Fj-ljR.text" = "Prezzo per Unità";
 
 /* Class = "IBUILabel"; text = "Clock"; ObjectID = "Pqo-MO-BYd"; */
-"Pqo-MO-BYd.text" = "Clock";
+"Pqo-MO-BYd.text" = "Orologio";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "QVX-vI-Tzn"; */
 "QVX-vI-Tzn.normalTitle" = "Continua";
