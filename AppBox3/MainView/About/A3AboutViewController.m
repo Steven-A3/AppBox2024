@@ -51,12 +51,12 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0 && indexPath.row == 3 && ![MFMessageComposeViewController canSendText]) return 0;
+	if (indexPath.section == 0 && indexPath.row == 2 && ![MFMessageComposeViewController canSendText]) return 0;
 	return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0 && indexPath.row == 3 && ![MFMessageComposeViewController canSendText]) {
+	if (indexPath.section == 0 && indexPath.row == 2 && ![MFMessageComposeViewController canSendText]) {
 		cell.textLabel.text = nil;
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	} else if (indexPath.section == 2 && indexPath.row == 0) {
@@ -104,14 +104,6 @@
 			break;
 		}
 		case 2: {
-			NSURL *facebookURL = [NSURL URLWithString:@"fb://profile/131703690193422"];
-			if (![[UIApplication sharedApplication] canOpenURL:facebookURL])	{
-				facebookURL = [NSURL URLWithString:@"http://www.facebook.com/AllaboutappsFan"];
-			}
-			[[UIApplication sharedApplication] openURL:facebookURL];
-			break;
-		}
-		case 3: {
 			MFMessageComposeViewController *viewController = [[MFMessageComposeViewController alloc] init];
 			if (viewController) {
 				viewController.messageComposeDelegate = self;
@@ -122,7 +114,7 @@
 			}
 			break;
 		}
-		case 4: {
+		case 3: {
 			NSString *messageBody = NSLocalizedString(@"tellafriend", nil);
 			[self openMailComposerWithSubject:NSLocalizedString(@"A friend has recommended AppBox Pro™ from the iTunes App Store", @"")
 									 withBody:[NSString stringWithFormat:@"<html><body>%@</br></br>%@", messageBody, [self commonShareFooter]]
@@ -130,13 +122,13 @@
 									   isHTML:YES ];
 			break;
 		}
-		case 5: {
+		case 4: {
 			NSString *review_url = @"itms-apps://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/addUserReview?id=318404385";
 			NSURL *url = [[NSURL alloc] initWithString:review_url];
 			[[UIApplication sharedApplication] openURL:url];
 			break;
 		}
-		case 6: {
+		case 5: {
 			NSURL *url = [[NSURL alloc] initWithString:@"itms-apps://itunes.apple.com/artist/allaboutapps/id307094026"];
 			[[UIApplication sharedApplication] openURL:url];
 			break;
