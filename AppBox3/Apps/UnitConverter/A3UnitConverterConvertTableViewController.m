@@ -497,8 +497,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     // toss unit data
     viewController.convertItems = self.convertItems;
     viewController.selectedItem = nil;
-    viewController.favorites = [NSMutableArray arrayWithArray:[UnitFavorite MR_findByAttribute:@"item.type" withValue:_unitType andOrderBy:@"order" ascending:YES]];
-    viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"type" withValue:_unitType andOrderBy:@"unitName" ascending:YES]];
+    viewController.favorites = [NSMutableArray arrayWithArray:[UnitFavorite MR_findByAttribute:@"typeID" withValue:_unitType.uniqueID andOrderBy:@"order" ascending:YES]];
+    viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"typeID" withValue:_unitType.uniqueID andOrderBy:@"unitName" ascending:YES]];
     
 	return viewController;
 }
@@ -515,8 +515,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
         
         // toss unit data
         viewController.selectedItem = selectedItem;
-        viewController.favorites = [NSMutableArray arrayWithArray:[UnitFavorite MR_findByAttribute:@"item.type" withValue:_unitType andOrderBy:@"order" ascending:YES]];
-        viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"type" withValue:_unitType andOrderBy:@"unitName" ascending:YES]];
+        viewController.favorites = [NSMutableArray arrayWithArray:[UnitFavorite MR_findByAttribute:@"typeID" withValue:_unitType.uniqueID andOrderBy:@"order" ascending:YES]];
+        viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"typeID" withValue:_unitType.uniqueID andOrderBy:@"unitName" ascending:YES]];
         viewController.convertItems = self.convertItems;
 	}
     
@@ -1070,7 +1070,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		if (selectedItem) {
 
 			// 존재 유무 체크
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item == %@", selectedItem];
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitID == %@", selectedItem.uniqueID];
 			NSArray *items = [_convertItems filteredArrayUsingPredicate:predicate];
 			if (items.count > 0) {
 				// 이미 존재하는 unitItem임
@@ -1099,7 +1099,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	else {
 		// 선택된 unitItem이 이미 convertItems에 추가된 unit이면, swap을 한다.
 		if (selectedItem) {
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item == %@", selectedItem];
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitID == %@", selectedItem.uniqueID];
 			NSArray *filtered = [_convertItems filteredArrayUsingPredicate:predicate];
 			if (filtered.count > 0) {
 				if (_selectedRow == 0) {

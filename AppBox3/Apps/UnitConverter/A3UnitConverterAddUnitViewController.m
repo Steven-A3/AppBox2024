@@ -226,7 +226,7 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
     viewController.shouldPopViewController = YES;
     
     UnitItem *item = _allData[0];
-    viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"type" withValue:[item type] andOrderBy:@"unitName" ascending:YES]];
+    viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"typeID" withValue:item.typeID andOrderBy:@"unitName" ascending:YES]];
     
     return viewController;
 }
@@ -274,7 +274,7 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
     NSMutableArray *removedIndexPaths = [[NSMutableArray alloc] init];
     for (int i=0; i<removedItems.count; i++) {
         UnitItem *item = removedItems[i];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item == %@", item];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", item.uniqueID];
         NSArray *filtered = [_favorites filteredArrayUsingPredicate:predicate];
         
         if (filtered.count>0) {

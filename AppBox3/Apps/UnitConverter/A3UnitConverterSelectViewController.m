@@ -307,7 +307,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
     viewController.delegate = self;
     
     UnitItem *item = _allData[0];
-    viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"type" withValue:[item type] andOrderBy:@"unitName" ascending:YES]];
+    viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"typeID" withValue:item.typeID andOrderBy:@"unitName" ascending:YES]];
     
     return viewController;
 }

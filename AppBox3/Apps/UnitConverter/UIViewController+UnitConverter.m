@@ -8,12 +8,13 @@
 
 #import "UIViewController+UnitConverter.h"
 #import "UnitFavorite.h"
+#import "UnitItem.h"
 
 @implementation UIViewController (UnitConverter)
 
-- (BOOL)isFavoriteItemForUnitItem:(id)object
+- (BOOL)isFavoriteItemForUnitItem:(UnitItem *)item
 {
-    NSArray *result = [UnitFavorite MR_findByAttribute:@"item" withValue:object];
+    NSArray *result = [UnitFavorite MR_findByAttribute:@"itemID" withValue:item.uniqueID];
 	return [result count] > 0;
 }
 
