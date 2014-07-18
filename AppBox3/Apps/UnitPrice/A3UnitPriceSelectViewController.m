@@ -328,7 +328,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 //    [self.tableView beginUpdates];
     for (int i=0; i<removedItems.count; i++) {
         UnitItem *item = removedItems[i];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item == %@", item];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitItemID == %@", item.uniqueID];
         NSArray *filtered = [_favorites filteredArrayUsingPredicate:predicate];
         
         if (filtered.count > 0) {
