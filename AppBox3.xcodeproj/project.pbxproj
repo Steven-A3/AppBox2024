@@ -60,7 +60,6 @@
 		17D42CC05C00D47B63A1491C /* FSWebLogin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17D4261CD5E1463A7D7053FF /* FSWebLogin.xib */; };
 		17D42CD07704EE2EF58EB82A /* UIViewController+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C97A50D5039256BA161 /* UIViewController+A3Addition.m */; };
 		17D42CEB95809CCFCB72DCB2 /* UITableViewCell+accessory.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4212AA5D840ED553C3647 /* UITableViewCell+accessory.m */; };
-		17D42D3AD62EA698BD5E6A9B /* JNJProgressButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4278F4890744C41FE7D19 /* JNJProgressButton.m */; };
 		17D42D573FAB2BFE604A808F /* A3TranslatorFavoriteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DF75A3EA2B85378A368 /* A3TranslatorFavoriteDataSource.m */; };
 		17D42D692E16244D9FFB4B2E /* A3DaysCounterEventListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42555D4EFD9D7B167055D /* A3DaysCounterEventListViewController.m */; };
 		17D42DC93704B5A21363A17F /* A3LadyCalendarDetailViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4205C5D769DC62FD84F2E /* A3LadyCalendarDetailViewCell.m */; };
@@ -996,7 +995,6 @@
 		17D426E84D1FF67C4C0146D3 /* NSString+conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+conversion.h"; sourceTree = "<group>"; };
 		17D426EC699433D4B659CF5B /* HolidayData+Country.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HolidayData+Country.m"; path = "Holidays/HolidayData+Country.m"; sourceTree = "<group>"; };
 		17D4277F4622416B208150E0 /* A3StandardLeft15Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3StandardLeft15Cell.h; sourceTree = "<group>"; };
-		17D4278F4890744C41FE7D19 /* JNJProgressButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNJProgressButton.m; sourceTree = "<group>"; };
 		17D427C9CA2A92CC4C1A522C /* NSManagedObject+Clone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Clone.h"; sourceTree = "<group>"; };
 		17D427CE6C25E3FDE8D82EB7 /* A3LadyCalendarDetailViewTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LadyCalendarDetailViewTitleCell.m; sourceTree = "<group>"; };
 		17D427DBB6EAAE740BD75F4B /* A3LanguagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LanguagePickerController.h; path = Translator/A3LanguagePickerController.h; sourceTree = "<group>"; };
@@ -1020,7 +1018,6 @@
 		17D42A6A85C5AC7738ED273B /* A3SettingsAddFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsAddFavoritesViewController.h; path = Settings/A3SettingsAddFavoritesViewController.h; sourceTree = "<group>"; };
 		17D42A98847F44914C3F8F2B /* FSOAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSOAuth.m; sourceTree = "<group>"; };
 		17D42AADDEA67C2204FB400B /* A3SettingsBackupRestoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsBackupRestoreViewController.m; path = Settings/A3SettingsBackupRestoreViewController.m; sourceTree = "<group>"; };
-		17D42B28914A1D7FD233EC49 /* JNJProgressButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNJProgressButton.h; sourceTree = "<group>"; };
 		17D42B2B3CE8DE055680771A /* FSRequester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSRequester.h; sourceTree = "<group>"; };
 		17D42B32D0B5C1A2CA8C6E43 /* A3SettingsLunarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsLunarViewController.h; path = Settings/A3SettingsLunarViewController.h; sourceTree = "<group>"; };
 		17D42B3BE8DDD4EBEBCA10BE /* A3BackgroundWithPatternView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BackgroundWithPatternView.h; sourceTree = "<group>"; };
@@ -2890,16 +2887,6 @@
 			name = Settings;
 			path = AppBox3/MainView;
 			sourceTree = SOURCE_ROOT;
-		};
-		17D42AF11799F890C4C2FE35 /* JNJProgressButton */ = {
-			isa = PBXGroup;
-			children = (
-				17D42B28914A1D7FD233EC49 /* JNJProgressButton.h */,
-				17D4278F4890744C41FE7D19 /* JNJProgressButton.m */,
-			);
-			name = JNJProgressButton;
-			path = External/JNJProgressButton/JNJProgressButton;
-			sourceTree = "<group>";
 		};
 		17D42BF42008BA7F7244A036 /* Location */ = {
 			isa = PBXGroup;
@@ -4804,7 +4791,6 @@
 				68521A4317E1FF1C00E08FB1 /* FXLabel */,
 				68B9B15217CF4D6B003ACAD0 /* FXPageControl */,
 				68030AB717F063B400B04487 /* HTCopyableLabel */,
-				17D42AF11799F890C4C2FE35 /* JNJProgressButton */,
 				68B6A35318CEDDD1004084EF /* JVFloatLabeledTextField */,
 				6829679618503B2100B70E13 /* MagicalRecord */,
 				6825363818A7AA4C00EAFB84 /* Masonry */,
@@ -6392,7 +6378,6 @@
 				68B6A2E618CEC76D004084EF /* UIViewController+UnitConverter.m in Sources */,
 				68B6A2E218CEC76D004084EF /* UnitItem+extension.m in Sources */,
 				68E2A64718D0B1FC00E834D9 /* A3ExpenseListAddBudgetViewController.m in Sources */,
-				17D42D3AD62EA698BD5E6A9B /* JNJProgressButton.m in Sources */,
 				17D4237EB40E1456E494D076 /* TranslatorHistory+manager.m in Sources */,
 				68B6A2EB18CEC76D004084EF /* A3UnitPriceDetailTableController.m in Sources */,
 				68B6A34E18CEC76D004084EF /* A3WalletMainTabBarController.m in Sources */,

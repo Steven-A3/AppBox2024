@@ -280,6 +280,7 @@
 			favorite.uniqueID = uitem.uniqueID;
 			favorite.updateDate = [NSDate date];
             favorite.itemID = uitem.uniqueID;
+			favorite.typeID = uitem.typeID;
 
             [sortArray addObjectToSortedArray:favorite];
         }
