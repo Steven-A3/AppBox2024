@@ -211,7 +211,7 @@
 "Slideshow Options" = "幻灯片显示选项";
 "Transitions" = "过渡";
 "Play Each Slide For" = "每张幻灯片播放";
-"Repeat" = "反复";
+"Repeat" = "重复";
 "Shuffle" = "随机播放";
 "Start Slideshow" = "开始播放幻灯片";
 "There is no events." = "没有任何项目。";
@@ -374,7 +374,7 @@
 
 "Location information is not available." = "位置信息不可用。";
 
-"Every 2 Weeks" = "隔周";
+"Every 2 Weeks" = "每两周";
 "Undo" = "撤消";
 "Redo" = "重做";
 "Prev" = "上一个";
