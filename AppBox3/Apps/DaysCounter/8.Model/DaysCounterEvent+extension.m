@@ -80,7 +80,7 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 	DaysCounterFavorite *favorite = [self favorite];
 	if (!favorite) {
 		favorite = [DaysCounterFavorite MR_createEntity];
-		favorite.uniqueID = [[NSUUID UUID] UUIDString];
+		favorite.uniqueID = self.uniqueID;
 		favorite.updateDate = [NSDate date];
 		favorite.eventID = self.uniqueID;
 		DaysCounterFavorite *lastFavorite = [DaysCounterFavorite MR_findFirstOrderedByAttribute:@"order" ascending:NO];

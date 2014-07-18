@@ -255,7 +255,7 @@
             if (!unitItem) return;
             
             UnitConvertItem *convertItem = [UnitConvertItem MR_createEntity];
-			convertItem.uniqueID = [[NSUUID UUID] UUIDString];
+			convertItem.uniqueID = unitItem.uniqueID;
 			convertItem.updateDate = [NSDate date];
             convertItem.unitID = unitItem.uniqueID;
 			convertItem.typeID = unitItem.typeID;

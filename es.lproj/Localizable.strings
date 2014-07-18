@@ -806,7 +806,7 @@
 "Standby" = "En reposo";
 "FaceTime" = "FaceTime";
 "GPS" = "GPS";
-"Charging times" = "Recarga";
+"Charging time" = "Recarga";
 "CALENDARS" = "CALENDARIO";
 "Encryption Key for Wallet" = "Clave de encriptación para la Billetera.";
 /* "Please know that the quality of photos saved in the Days Until with the previous version of the AppBox Pro may not good enough to use with the current version. We recommend you to re-add photos to your events."; */

@@ -299,6 +299,7 @@ NSString *const A3UnitConverterActionCellID3 = @"A3UnitConverterActionCell";
 		favorite.uniqueID = item.uniqueID;
 		favorite.updateDate = [NSDate date];
         favorite.itemID = item.uniqueID;
+		favorite.typeID = item.typeID;
         [_favorites insertObject:favorite atIndex:lastIdx];
         
         NSIndexPath *ip = [NSIndexPath indexPathForRow:lastIdx inSection:0];

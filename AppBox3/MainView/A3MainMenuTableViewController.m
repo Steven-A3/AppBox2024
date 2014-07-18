@@ -10,18 +10,13 @@
 #import "A3TableViewRootElement.h"
 #import "A3TableViewSection.h"
 #import "A3TableViewExpandableElement.h"
-#import "A3UIDevice.h"
 #import "A3RootViewController_iPad.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+MMDrawerController.h"
 #import "UIViewController+A3Addition.h"
-#import "CurrencyFavorite.h"
-#import "JNJProgressButton.h"
 #import "A3TableViewMenuElement.h"
 #import "A3KeychainUtils.h"
-#import "A3AppDelegate+iCloud.h"
 #import "NSMutableArray+MoveObject.h"
-#import "A3AppDelegate+mainMenu.h"
 #import "A3TableViewExpandableCell.h"
 #import "A3DaysCounterModelManager.h"
 #import "A3DaysCounterSlideShowMainViewController.h"
@@ -29,10 +24,6 @@
 #import "A3DaysCounterReminderListViewController.h"
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3ClockMainViewController.h"
-
-@protocol JNJProgressButtonExtension <NSObject>
-- (void)startProgress;
-@end
 
 NSString *const kA3MainMenuFavorites = @"kA3MainMenuFavorites";				// Store NSDictionary
 NSString *const kA3MainMenuRecentlyUsed = @"kA3MainMenuRecentlyUsed";		// Store NSDictionary
