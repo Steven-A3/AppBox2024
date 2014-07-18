@@ -128,11 +128,6 @@
 			[[UIApplication sharedApplication] openURL:url];
 			break;
 		}
-		case 5: {
-			NSURL *url = [[NSURL alloc] initWithString:@"itms-apps://itunes.apple.com/artist/allaboutapps/id307094026"];
-			[[UIApplication sharedApplication] openURL:url];
-			break;
-		}
 	}
 }
 
