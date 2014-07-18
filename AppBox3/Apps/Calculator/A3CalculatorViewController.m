@@ -10,7 +10,6 @@
 #import "A3CalculatorViewController.h"
 
 NSString *const kUserDefaultsKeyCalculatorRadianDegreeState = @"kUserDefaultsKeyCalculatorRadianDegreeState";
-NSString *const kUserDefaultsKeyCalculatorSavedLastExpression = @"savedTheLastExpressionInCalculator";
 
 @implementation A3CalculatorViewController
 

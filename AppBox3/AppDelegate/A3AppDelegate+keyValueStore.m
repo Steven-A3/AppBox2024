@@ -54,6 +54,8 @@
 			}
 		}
 		[userDefaults synchronize];
+
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	}
 }
 

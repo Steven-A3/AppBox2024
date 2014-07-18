@@ -38,6 +38,8 @@ NSString *const A3LocalNotificationDataID = @"A3LocalNotificationDataID";
 NSString *const A3LocalNotificationFromLadyCalendar = @"Ladies Calendar";
 NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
+NSString *const A3NotificationCloudKeyValueStoreDidImport = @"A3CloudKeyValueStoreDidImport";
+NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataStoreDidImport";
 
 @interface A3AppDelegate () <UIAlertViewDelegate, A3DataMigrationManagerDelegate, NSURLSessionDownloadDelegate, AAAZipDelegate, CLLocationManagerDelegate>
 
@@ -121,7 +123,8 @@ NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 		rootViewController = _drawerController;
 	}
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyValueStoreDidChangeExternally:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:[NSUbiquitousKeyValueStore defaultStore]];
+	NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyValueStoreDidChangeExternally:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:store];
 
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = rootViewController;

@@ -171,7 +171,7 @@
 {
     if (!_unitTypes) {
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitTypeName IN %@", @[@"Area", @"Length", @"Volume", @"Weight"]];
-		NSArray *typesMatchingNames = [UnitType MR_findAllWithPredicate:predicate];
+		NSArray *typesMatchingNames = [UnitType MR_findAllSortedBy:@"unitTypeName" ascending:YES withPredicate:predicate];
 
 		_unitTypes = [[NSMutableArray alloc] initWithArray:typesMatchingNames];
     }

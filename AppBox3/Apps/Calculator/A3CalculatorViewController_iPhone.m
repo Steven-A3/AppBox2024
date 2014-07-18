@@ -96,8 +96,8 @@
 	}
     
 	[self setupSubviews];
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]){
-        [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyCalculatorSavedLastExpression]){
+        [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyCalculatorSavedLastExpression]];
         [_calculator evaluateAndSet];
         [self checkRightButtonDisable];
     }
@@ -119,6 +119,17 @@
     [_calculator setRadian:[self radian]];
     _degreeandradianLabel.text = [self radian] == YES ? @"Rad" : @"Deg";
     [_keyboardView.radianDegreeButton setTitle:([self radian] == YES ? @"Deg" : @"Rad") forState:UIControlStateNormal];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)cloudKeyValueStoreDidImport {
+	NSString *mathExpression = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyCalculatorSavedLastExpression];
+	if (mathExpression){
+		[_calculator setMathExpression:mathExpression];
+		[_calculator evaluateAndSet];
+		[self checkRightButtonDisable];
+	}
 }
 
 - (void)didMoveToParentViewController:(UIViewController *)parent {
@@ -134,6 +145,28 @@
 	[super viewWillAppear:animated];
 
 	_scrollView.contentOffset = CGPointMake(320, 0);
+}
+
+- (void)removeObserver {
+	FNLOG();
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
+		[self removeObserver];
+	}
+}
+
+- (void)cleanUp {
+	[self removeObserver];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)setupGestureRecognizer {
