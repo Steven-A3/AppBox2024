@@ -18,7 +18,7 @@
 - (id)init
 {
     self = [super init];
-    if( self ){
+    if ( self ) {
         self.lineRect = CGRectZero;
         self.lineColor = [UIColor whiteColor];
     }
@@ -33,7 +33,7 @@
 - (id)init
 {
     self = [super init];
-    if( self ){
+    if ( self ) {
         self.circleRect = CGRectMake(0, 0, 15.0, 15.0);
         self.circleColor = [UIColor whiteColor];
         self.isAlphaCircleShow = NO;
@@ -53,21 +53,21 @@
 @end
 
 @implementation A3LadyCalendarCalendarView {
-	NSInteger numberOfWeeks;
-	NSInteger firstDayStartIndex;
-	NSInteger lastDayIndex;
-	NSInteger lastWeekday;
-	NSInteger lastDay;
+	NSInteger _numberOfWeeks;
+	NSInteger _firstDayStartIndex;
+	NSInteger _lastDayIndex;
+	NSInteger _lastWeekday;
+	NSInteger _lastDay;
 
-	NSInteger dateBGHeight;
-	NSArray *periods;
-	__strong NSMutableArray *redLines;
-	__strong NSMutableArray *greenLines;
-	__strong NSMutableArray *yellowLines;
-	__strong NSMutableArray *circleArray;
-	__block dispatch_queue_t dQueue;
-	BOOL isCurrentMonth;
-	NSInteger today;
+	NSInteger _dateBGHeight;
+	NSArray *_periods;
+	__strong NSMutableArray *_redLines;
+	__strong NSMutableArray *_greenLines;
+	__strong NSMutableArray *_yellowLines;
+	__strong NSMutableArray *_circleArray;
+	__block dispatch_queue_t _dQueue;
+	BOOL _isCurrentMonth;
+	NSInteger _today;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -85,10 +85,10 @@
 	self.dateTextColor = [UIColor blackColor];
 	self.weekendTextColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
 	CGSizeMake(0, 0.5);
-	redLines = [NSMutableArray array];
-	greenLines = [NSMutableArray array];
-	yellowLines = [NSMutableArray array];
-	circleArray = [NSMutableArray array];
+	_redLines = [NSMutableArray array];
+	_greenLines = [NSMutableArray array];
+	_yellowLines = [NSMutableArray array];
+	_circleArray = [NSMutableArray array];
 }
 
 - (void)awakeFromNib
@@ -100,7 +100,7 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
-    if( self.dateMonth == nil )
+    if ( self.dateMonth == nil )
         return;
     
     CGFloat xPos = 0.0;
@@ -119,28 +119,28 @@
     NSDictionary *todayTextAttr = @{NSForegroundColorAttributeName : [UIColor whiteColor],NSFontAttributeName : _dateFont,NSParagraphStyleAttributeName : paraStyle};
 
     NSInteger index = 0;
-    for(NSInteger y=0; y < numberOfWeeks; y++){
+    for (NSInteger y=0; y < _numberOfWeeks; y++) {
         CGContextSetShouldAntialias(context , YES);
-        for(NSInteger x=0; x < 7; x++,index++){
-            if( index > lastDayIndex )  continue;
-            if( index < firstDayStartIndex ){
+        for (NSInteger x=0; x < 7; x++,index++) {
+            if ( index > _lastDayIndex )  continue;
+            if ( index < _firstDayStartIndex ) {
                 xPos += _cellSize.width;
                 continue;
             }
-            NSInteger day = index - firstDayStartIndex + 1;
-            NSString *str = (index == firstDayStartIndex ? [A3DateHelper dateStringFromDate:_dateMonth withFormat:@"MMM d"] : [NSString stringWithFormat:@"%ld",(long)(index - firstDayStartIndex + 1)]);
-            if( isCurrentMonth && today == day){
+            NSInteger day = index - _firstDayStartIndex + 1;
+            NSString *str = (index == _firstDayStartIndex ? [A3DateHelper dateStringFromDate:_dateMonth withFormat:@"MMM d"] : [NSString stringWithFormat:@"%ld",(long)(index - _firstDayStartIndex + 1)]);
+            if ( _isCurrentMonth && _today == day) {
 				CGContextSaveGState(context);
 				CGContextSetAllowsAntialiasing(context, NO);
 				CGContextSetStrokeColorWithColor(context, [[[A3AppDelegate instance] themeColor] CGColor]);
                 CGContextSetFillColorWithColor(context, [[[A3AppDelegate instance] themeColor] CGColor]);
-                CGContextFillRect(context, CGRectMake(xPos, yPos, _cellSize.width, dateBGHeight));
+                CGContextFillRect(context, CGRectMake(xPos, yPos, _cellSize.width, _dateBGHeight));
 				CGContextSetAllowsAntialiasing(context, YES);
-				[str drawInRect:CGRectMake(xPos, yPos + (IS_IPHONE ? 9.0 : 15.0), _cellSize.width, dateBGHeight + 5.0) withAttributes:todayTextAttr];
+				[str drawInRect:CGRectMake(xPos, yPos + (IS_IPHONE ? 9.0 : 15.0), _cellSize.width, _dateBGHeight + 5.0) withAttributes:todayTextAttr];
 				CGContextRestoreGState(context);
             }
             else{
-                [str drawInRect:CGRectMake(xPos, yPos + (IS_IPHONE ? 9.0 : 15.0), _cellSize.width, dateBGHeight + 5.0) withAttributes:(x==0 || x==6 ? weekendTextAttr :textAttr)];
+                [str drawInRect:CGRectMake(xPos, yPos + (IS_IPHONE ? 9.0 : 15.0), _cellSize.width, _dateBGHeight + 5.0) withAttributes:(x==0 || x==6 ? weekendTextAttr :textAttr)];
             }
             xPos += _cellSize.width;
         }
@@ -151,25 +151,25 @@
         CGContextSetShouldAntialias(context , NO);
         CGContextSetStrokeColorWithColor(context, [[UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0] CGColor]);
         CGContextMoveToPoint(context, xPos, yPos );
-        CGContextAddLineToPoint(context,( (y+1) == numberOfWeeks ? xPos + lastWeekday*_cellSize.width : rect.size.width), yPos);
+        CGContextAddLineToPoint(context,( (y+1) == _numberOfWeeks ? xPos + _lastWeekday*_cellSize.width : rect.size.width), yPos);
         CGContextSetLineWidth(context, 1.0 / [[UIScreen mainScreen] scale]);
         CGContextStrokePath(context);
 //        yPos += 0.5;
     }
     
     // 빨간선을 그린다.
-    for(LineDisplayModel *ldmObj in redLines){
+    for (LineDisplayModel *ldmObj in _redLines) {
         CGContextSetFillColorWithColor(context, [ldmObj.lineColor CGColor]);
         CGContextFillRect(context, ldmObj.lineRect);
     }
     
-    for(LineDisplayModel *ldmObj in greenLines){
+    for (LineDisplayModel *ldmObj in _greenLines) {
         CGContextSetFillColorWithColor(context, [ldmObj.lineColor CGColor]);
         CGContextFillRect(context, ldmObj.lineRect);
     }
     
     
-    for(LineDisplayModel *ldmObj in yellowLines){
+    for (LineDisplayModel *ldmObj in _yellowLines) {
         CGContextSetFillColorWithColor(context, [ldmObj.lineColor CGColor]);
         CGContextFillRect(context, ldmObj.lineRect);
     }
@@ -178,8 +178,8 @@
     UIColor *outlineColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
     UIColor *outCircleColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.05];
     CGContextSetShouldAntialias(context , YES);
-    for(CircleDisplayModel *cdmObj in circleArray){
-        if( cdmObj.isAlphaCircleShow ){
+    for (CircleDisplayModel *cdmObj in _circleArray) {
+        if ( cdmObj.isAlphaCircleShow ) {
 			// 31x31
             [outCircleColor setFill];
 			CGFloat offset = IS_RETINA ? 8.0 : 7.5;
@@ -209,11 +209,11 @@
     _year = [A3DateHelper yearFromDate:_dateMonth];
     _month = [A3DateHelper monthFromDate:_dateMonth];
     NSDate *date = [NSDate date];
-    if( _year == [A3DateHelper yearFromDate:date] && _month == [A3DateHelper monthFromDate:date] )
-        isCurrentMonth = YES;
+    if ( _year == [A3DateHelper yearFromDate:date] && _month == [A3DateHelper monthFromDate:date] )
+        _isCurrentMonth = YES;
     else
-        isCurrentMonth = NO;
-    today = [A3DateHelper dayFromDate:date];
+        _isCurrentMonth = NO;
+    _today = [A3DateHelper dayFromDate:date];
 }
 
 - (void)setDateMonth:(NSDate *)dateMonth
@@ -233,21 +233,21 @@
     NSString *curMonthStr = [A3DateHelper dateStringFromDate:_dateMonth withFormat:@"yyyyMM"];
     NSString *endMonthStr = [A3DateHelper dateStringFromDate:edDate withFormat:@"yyyyMM"];
     
-    if( [startMonthStr integerValue] < [curMonthStr integerValue] ){
+    if ( [startMonthStr integerValue] < [curMonthStr integerValue] ) {
         stDay = 1;
     }
-    if( [endMonthStr integerValue] > [curMonthStr integerValue] ){
+    if ( [endMonthStr integerValue] > [curMonthStr integerValue] ) {
         edDay = [A3DateHelper lastDaysOfMonth:_dateMonth];
     }
-    NSInteger stWeek = ((stDay-1) + firstDayStartIndex) / 7;
-    NSInteger stWeekday = ((stDay-1) + firstDayStartIndex) % 7;
-    NSInteger edWeek = ((edDay-1) + firstDayStartIndex) / 7;
-    NSInteger edWeekday = ((edDay-1) + firstDayStartIndex) % 7;
+    NSInteger stWeek = ((stDay-1) + _firstDayStartIndex) / 7;
+    NSInteger stWeekday = ((stDay-1) + _firstDayStartIndex) % 7;
+    NSInteger edWeek = ((edDay-1) + _firstDayStartIndex) / 7;
+    NSInteger edWeekday = ((edDay-1) + _firstDayStartIndex) % 7;
     
     CGFloat lineHeight = 5.0;
 
 	CGFloat diffFromSeparator = IS_IPHONE ? 22.0 : 25.0;
-    if( stWeek == edWeek ){
+    if ( stWeek == edWeek ) {
         LineDisplayModel *ldpModel = [[LineDisplayModel alloc] init];
 		CGFloat diffFromSeparator2 = diffFromSeparator /*+ ((stWeek > 1) ? 0.5 : 0.0) */;
         ldpModel.lineColor = color;
@@ -256,14 +256,14 @@
     }
     else{
         NSInteger totalWeek = (edWeek - stWeek)+1;
-        for(NSInteger i=0; i < totalWeek; i++){
+        for (NSInteger i=0; i < totalWeek; i++) {
             LineDisplayModel *ldpModel = [[LineDisplayModel alloc] init];
             ldpModel.lineColor = color;
 			CGFloat diffFromSeparator2 = diffFromSeparator + ((i > 1) ? 0.5 : 0.0);
-            if( i == 0 ){
+            if ( i == 0 ) {
                 ldpModel.lineRect = CGRectMake((stWeekday+i) * _cellSize.width + (isStartMargin ? 2.0 : 0.0), (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 : diffFromSeparator2) - lineHeight , (8-stWeekday)*_cellSize.width, lineHeight);
             }
-            else if( i == (totalWeek-1) ){
+            else if ( i == (totalWeek-1) ) {
                 ldpModel.lineRect = CGRectMake(0, (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight , (edWeekday+1)*_cellSize.width - (isEndMargin ? 2.0 : 0.0), lineHeight);
             }
             else{
@@ -279,11 +279,11 @@
 - (void)addCircleAtDay:(NSDate *)date color:(UIColor *)circleColor isAlphaCircleShow:(BOOL)isAlphaCircleShow alignment:(NSTextAlignment)alignment toArray:(NSMutableArray*)array
 {
     NSInteger day = [A3DateHelper dayFromDate:date];
-//    if( [A3DateHelper monthFromDate:date] != _month )
+//    if ( [A3DateHelper monthFromDate:date] != _month )
 //        return;
     
-    NSInteger week = ((day-1) + firstDayStartIndex) / 7;
-    NSInteger weekday = ((day-1) + firstDayStartIndex) % 7;
+    NSInteger week = ((day-1) + _firstDayStartIndex) / 7;
+    NSInteger weekday = ((day-1) + _firstDayStartIndex) % 7;
     
     CircleDisplayModel *cdModel = [[CircleDisplayModel alloc] init];
     cdModel.isAlphaCircleShow = isAlphaCircleShow;
@@ -291,13 +291,13 @@
     
     CGSize circleSize = CGSizeMake(15.0, 15.0);
     CGFloat lineHeight = 5.0;
-    if( alignment == NSTextAlignmentLeft ){
+    if ( alignment == NSTextAlignmentLeft ) {
         cdModel.circleRect = CGRectMake(weekday*_cellSize.width, (week+1)*_cellSize.height - (_isSmallCell ? 6.0 :(IS_IPHONE ? 22.0 : 25.0)) - lineHeight*0.5 - circleSize.height*0.5, circleSize.width, circleSize.height);
     }
-    else if( alignment == NSTextAlignmentRight ){
+    else if ( alignment == NSTextAlignmentRight ) {
         cdModel.circleRect = CGRectMake((weekday+1)*_cellSize.width - circleSize.width, (week+1)*_cellSize.height - (_isSmallCell ? 6.0 :(IS_IPHONE ? 22.0 : 25.0)) - lineHeight*0.5 - circleSize.height*0.5, circleSize.width, circleSize.height);
     }
-    else if( alignment == NSTextAlignmentCenter ){
+    else if ( alignment == NSTextAlignmentCenter ) {
         cdModel.circleRect = CGRectMake( (weekday+1)*_cellSize.width - _cellSize.width*0.5 - circleSize.width*0.5, (week+1)*_cellSize.height - (_isSmallCell ? 6.0 :(IS_IPHONE ? 22.0 : 25.0)) - lineHeight*0.5 - circleSize.height*0.5, circleSize.width, circleSize.height);
     }
     [array addObject:cdModel];
@@ -307,26 +307,26 @@
 - (void)reload
 {
 	FNLOG(@"%@", _dateMonth);
-    if( _dateMonth == nil ){
+    if ( _dateMonth == nil ) {
         _dateMonth = [NSDate date];
 		[self updateDates];
     }
-	numberOfWeeks = [A3DateHelper numberOfWeeksOfMonth:_dateMonth];
+	_numberOfWeeks = [A3DateHelper numberOfWeeksOfMonth:_dateMonth];
 	NSInteger weekday = [A3DateHelper weekdayFromDate:[A3DateHelper dateMakeMonthFirstDayAtDate:_dateMonth]];
-	firstDayStartIndex = weekday-1;
-	lastDay = [A3DateHelper lastDaysOfMonth:_dateMonth];
-	lastDayIndex = firstDayStartIndex + lastDay - 1;
-	NSDate *lastDate = [A3DateHelper dateByAddingDays:(lastDay-1) fromDate:_dateMonth];
-	lastWeekday = [A3DateHelper weekdayFromDate:lastDate];
+	_firstDayStartIndex = weekday-1;
+	_lastDay = [A3DateHelper lastDaysOfMonth:_dateMonth];
+	_lastDayIndex = _firstDayStartIndex + _lastDay - 1;
+	NSDate *lastDate = [A3DateHelper dateByAddingDays:(_lastDay-1) fromDate:_dateMonth];
+	_lastWeekday = [A3DateHelper weekdayFromDate:lastDate];
 
-	dateBGHeight = (IS_IPHONE ? 25.0 : 36.0);
-	periods = [_dataManager periodListInRangeWithMonth:_dateMonth accountID:self.dataManager.currentAccount.uniqueID];
-	[redLines removeAllObjects];
-	[greenLines removeAllObjects];
-	[yellowLines removeAllObjects];
-	[circleArray removeAllObjects];
+	_dateBGHeight = (IS_IPHONE ? 25.0 : 36.0);
+	_periods = [_dataManager periodListInRangeWithMonth:_dateMonth accountID:self.dataManager.currentAccount.uniqueID];
+	[_redLines removeAllObjects];
+	[_greenLines removeAllObjects];
+	[_yellowLines removeAllObjects];
+	[_circleArray removeAllObjects];
 
-	for(LadyCalendarPeriod *period in periods){
+	for (LadyCalendarPeriod *period in _periods) {
 		LadyCalendarPeriod *nextPeriod = [_dataManager nextPeriodFromDate:period.startDate];
 		NSDate *nextStartDate = ( nextPeriod ? nextPeriod.startDate : [A3DateHelper dateByAddingDays:[period.cycleLength integerValue] fromDate:period.startDate] );
 		NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:nextStartDate];
@@ -342,27 +342,27 @@
 		UIColor *greenColor = [UIColor colorWithRed:44.0/255.0 green:201.0/255.0 blue:144.0/255.0 alpha:alpha];
 		UIColor *yellowColor = [UIColor colorWithRed:227.0/255.0 green:186.0/255.0 blue:5.0/255.0 alpha:alpha];
 
-		if( [A3DateHelper monthFromDate:period.startDate] == _month || [A3DateHelper monthFromDate:period.endDate] == _month ){
-			[self addLineFromDate:period.startDate endDate:period.endDate toArray:redLines withColor:redColor isStartMargin:YES isEndMargin:YES];
-			if( [A3DateHelper monthFromDate:period.startDate] == _month )
-				[self addCircleAtDay:period.startDate color:[UIColor colorWithRed:252.0 / 255.0 green:96.0 / 255.0 blue:66.0 / 255.0 alpha:alphaForRed] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:circleArray];
-			if( [A3DateHelper monthFromDate:period.endDate] == _month )
-				[self addCircleAtDay:period.endDate color:[UIColor colorWithRed:252.0 / 255.0 green:96.0 / 255.0 blue:66.0 / 255.0 alpha:alphaForRed] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:circleArray];
+		if ( [A3DateHelper monthFromDate:period.startDate] == _month || [A3DateHelper monthFromDate:period.endDate] == _month ) {
+			[self addLineFromDate:period.startDate endDate:period.endDate toArray:_redLines withColor:redColor isStartMargin:YES isEndMargin:YES];
+			if ( [A3DateHelper monthFromDate:period.startDate] == _month )
+				[self addCircleAtDay:period.startDate color:[UIColor colorWithRed:252.0 / 255.0 green:96.0 / 255.0 blue:66.0 / 255.0 alpha:alphaForRed] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:_circleArray];
+			if ( [A3DateHelper monthFromDate:period.endDate] == _month )
+				[self addCircleAtDay:period.endDate color:[UIColor colorWithRed:252.0 / 255.0 green:96.0 / 255.0 blue:66.0 / 255.0 alpha:alphaForRed] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:_circleArray];
 		}
 
-		if([A3DateHelper monthFromDate:pregnantStartDate] == _month || [A3DateHelper monthFromDate:prevOvulationDate] == _month ){
-			[self addLineFromDate:pregnantStartDate endDate:prevOvulationDate toArray:greenLines withColor:greenColor isStartMargin:YES isEndMargin:NO];
-			if([A3DateHelper monthFromDate:pregnantStartDate] == _month )
-				[self addCircleAtDay:pregnantStartDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:alpha] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:circleArray];
+		if ([A3DateHelper monthFromDate:pregnantStartDate] == _month || [A3DateHelper monthFromDate:prevOvulationDate] == _month ) {
+			[self addLineFromDate:pregnantStartDate endDate:prevOvulationDate toArray:_greenLines withColor:greenColor isStartMargin:YES isEndMargin:NO];
+			if ([A3DateHelper monthFromDate:pregnantStartDate] == _month )
+				[self addCircleAtDay:pregnantStartDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:alpha] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:_circleArray];
 		}
-		if([A3DateHelper monthFromDate:nextOvulationDate] == _month || [A3DateHelper monthFromDate:pregnantEndDate] == _month ){
-			[self addLineFromDate:nextOvulationDate endDate:pregnantEndDate toArray:greenLines withColor:greenColor isStartMargin:NO isEndMargin:YES];
-			if([A3DateHelper monthFromDate:pregnantEndDate] == _month )
-				[self addCircleAtDay:pregnantEndDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:alpha] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:circleArray];
+		if ([A3DateHelper monthFromDate:nextOvulationDate] == _month || [A3DateHelper monthFromDate:pregnantEndDate] == _month ) {
+			[self addLineFromDate:nextOvulationDate endDate:pregnantEndDate toArray:_greenLines withColor:greenColor isStartMargin:NO isEndMargin:YES];
+			if ([A3DateHelper monthFromDate:pregnantEndDate] == _month )
+				[self addCircleAtDay:pregnantEndDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:alpha] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:_circleArray];
 		}
-		if( [A3DateHelper monthFromDate:ovulationDate] == _month ){
-			[self addLineFromDate:ovulationDate endDate:ovulationDate toArray:yellowLines withColor:yellowColor isStartMargin:NO isEndMargin:NO];
-			[self addCircleAtDay:ovulationDate color:[UIColor colorWithRed:227.0 / 255.0 green:186.0 / 255.0 blue:5.0 / 255.0 alpha:alpha] isAlphaCircleShow:YES alignment:NSTextAlignmentCenter toArray:circleArray];
+		if ( [A3DateHelper monthFromDate:ovulationDate] == _month ) {
+			[self addLineFromDate:ovulationDate endDate:ovulationDate toArray:_yellowLines withColor:yellowColor isStartMargin:NO isEndMargin:NO];
+			[self addCircleAtDay:ovulationDate color:[UIColor colorWithRed:227.0 / 255.0 green:186.0 / 255.0 blue:5.0 / 255.0 alpha:alpha] isAlphaCircleShow:YES alignment:NSTextAlignmentCenter toArray:_circleArray];
 		}
 	}
 	[self setNeedsDisplay];
@@ -384,12 +384,12 @@
     CGPoint pos = [touch locationInView:self];
     NSInteger y = pos.y / _cellSize.height;
     NSInteger x = pos.x / _cellSize.width;
-    NSInteger day = y * 7 + (x - firstDayStartIndex) + 1;
+    NSInteger day = y * 7 + (x - _firstDayStartIndex) + 1;
     
-    if( day < 1 || day > lastDay )
+    if ( day < 1 || day > _lastDay )
         return;
     
-    if( self.delegate && [self.delegate respondsToSelector:@selector(calendarView:didSelectDay:)])
+    if ( self.delegate && [self.delegate respondsToSelector:@selector(calendarView:didSelectDay:)])
         [self.delegate calendarView:self didSelectDay:day];
 }
 
