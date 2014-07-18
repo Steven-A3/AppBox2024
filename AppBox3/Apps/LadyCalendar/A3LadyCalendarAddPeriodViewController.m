@@ -22,6 +22,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "LadyCalendarPeriod+extension.h"
 
 extern NSString *const A3WalletItemFieldNoteCellID;
 
@@ -90,9 +91,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 				}]]}];
 	} else {
 		_periodItem = [LadyCalendarPeriod MR_createEntity];
-		_periodItem.uniqueID = [[NSUUID UUID] UUIDString];
 		_periodItem.updateDate = [NSDate date];
 		_periodItem.startDate = [A3DateHelper dateMake12PM:[NSDate date]];
+		[_periodItem reassignUniqueIDWithStartDate];
 		_periodItem.cycleLength = @28;
 		_periodItem.isPredict = @NO;
 		_periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];

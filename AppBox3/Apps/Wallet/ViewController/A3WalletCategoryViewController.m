@@ -57,9 +57,11 @@
     }
 
     [self setupInstructionView];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImportChanges) name:USMStoreDidImportChangesNotification object:nil];
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:USMStoreDidImportChangesNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
@@ -112,6 +114,17 @@
 
     // more button 활성화여부
     [self itemCountCheck];
+}
+
+- (void)cloudStoreDidImportChanges {
+	self.items = nil;
+	[self refreshItems];
+
+	// 타이틀 표시 (갯수가 있으므로 페이지 진입시 갱신한다.)
+	self.navigationItem.title = [NSString stringWithFormat:@"%@(%ld)", self.category.name, (long)self.items.count];
+
+	// more button 활성화여부
+	[self itemCountCheck];
 }
 
 - (void)initializeViews
