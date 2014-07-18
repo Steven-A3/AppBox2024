@@ -200,7 +200,7 @@ extern NSString *const USMCloudContentName;
 - (NSString *)uniqueBackupFilename {
 	NSDate *date = [NSDate date];
 	NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:date];
-	NSString *seedFilename = [NSString stringWithFormat:@"AppBoxBackup-%ld-%ld-%ld-%ld-%ld-%ld", (long) components.year, (long) components.month, (long) components.day, (long) components.hour, (long) components.minute, (long) components.second];
+	NSString *seedFilename = [NSString stringWithFormat:@"AppBoxBackup-%0ld-%02ld-%02ld-%02ld-%02ld", (long) components.year, (long) components.month, (long) components.day, (long) components.hour, (long) components.minute];
 	NSString *filename = seedFilename;
 	NSString *path = [[filename stringByAppendingPathExtension:@"backup"] pathInDocumentDirectory];
 	NSFileManager *fileManager = [NSFileManager new];
@@ -235,6 +235,8 @@ extern NSString *const USMCloudContentName;
 	_HUD = nil;
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Backup file has been uploaded to Dropbox successfully.", @"Backup file has been uploaded to Dropbox successfully.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[alert show];
+
+	[self deleteBackupFile];
 }
 
 - (void)restClient:(DBRestClient *)client uploadProgress:(CGFloat)progress forFile:(NSString *)destPath from:(NSString *)srcPath {
@@ -248,6 +250,13 @@ extern NSString *const USMCloudContentName;
 
 	UIAlertView *alertFail = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Backup process failed to upload backup file to Dropbox.", @"Backup process failed to upload backup file to Dropbox.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[alertFail show];
+
+	[self deleteBackupFile];
+}
+
+- (void)deleteBackupFile {
+	NSFileManager *fileManager = [NSFileManager new];
+	[fileManager removeItemAtPath:_backupFilePath error:NULL];
 }
 
 #pragma mark - Restore data
@@ -293,6 +302,7 @@ extern NSString *const USMCloudContentName;
 		if ([_delegate respondsToSelector:@selector(backupRestoreManager:restoreCompleteWithSuccess:)]) {
 			[_delegate backupRestoreManager:self restoreCompleteWithSuccess:YES];
 		}
+		[fileManager removeItemAtPath:backupInfoFilePath error:NULL];
 	} else {
 		[self extractV1DataFilesAt:backupFilePath];
 

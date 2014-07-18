@@ -15,5 +15,6 @@
 @dynamic uniqueID;
 @dynamic unitItemID;
 @dynamic updateDate;
+@dynamic unitTypeID;
 
 @end

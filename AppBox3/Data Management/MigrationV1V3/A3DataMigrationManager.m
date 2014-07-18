@@ -32,6 +32,7 @@
 #import "DaysCounterEvent+extension.h"
 #import "A3AppDelegate.h"
 #import "NSString+conversion.h"
+#import "LadyCalendarPeriod+extension.h"
 
 NSString *const A3NotificationDataMigrationFinished = @"A3NotificationDataMigrationFinished";
 
@@ -271,11 +272,11 @@ NSString *const kMyGirlsDayHistoryTypeInput				= @"input";
 		if ([item[0] isEqualToString:kMyGirlsDayHistoryTypeInput]) {
 			@autoreleasepool {
 				LadyCalendarPeriod *period = [LadyCalendarPeriod MR_createInContext:context];
-				period.uniqueID = [[NSUUID UUID] UUIDString];
 				period.accountID = account.uniqueID;
 				period.startDate = item[1];
 				period.endDate = item[2];
 				period.cycleLength = @([item[3] integerValue]);
+				[period reassignUniqueIDWithStartDate];
 				[context MR_saveToPersistentStoreAndWait];
 			}
 		}

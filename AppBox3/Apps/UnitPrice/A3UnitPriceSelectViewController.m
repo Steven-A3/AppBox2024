@@ -277,7 +277,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     viewController.delegate = self;
     viewController.shouldPopViewController = YES;
     
-    NSArray *items = [UnitItem MR_findByAttribute:@"type" withValue:self.unitType andOrderBy:@"unitName" ascending:YES];
+    NSArray *items = [UnitItem MR_findByAttribute:@"typeID" withValue:self.unitType.uniqueID andOrderBy:@"unitName" ascending:YES];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitName != %@", @"feet inches"];
     viewController.allData = [NSMutableArray arrayWithArray:[items filteredArrayUsingPredicate:predicate]];
     
@@ -354,6 +354,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 		favorite.uniqueID = item.uniqueID;
 		favorite.updateDate = [NSDate date];
         favorite.unitItemID = item.uniqueID;
+		favorite.unitTypeID = item.typeID;
         [_favorites insertObject:favorite atIndex:lastIdx];
         
         NSIndexPath *ip = [NSIndexPath indexPathForRow:lastIdx inSection:0];

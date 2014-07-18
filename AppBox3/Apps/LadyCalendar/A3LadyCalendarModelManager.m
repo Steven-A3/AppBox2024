@@ -16,6 +16,7 @@
 #import "NSDate+calculation.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "NSDate-Utilities.h"
+#import "LadyCalendarPeriod+extension.h"
 
 // UserInfo have "changedMonth".
 NSString *const A3NotificationLadyCalendarPeriodDataChanged = @"A3NotificationLadyCalendarPeriodDataChanged";
@@ -365,9 +366,9 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 	for (NSInteger idx = 0; idx < numberOfPredicts; idx++){
 		LadyCalendarPeriod *newPeriod = [LadyCalendarPeriod MR_createEntity];
-		newPeriod.uniqueID = [[NSUUID UUID] UUIDString];
 		newPeriod.isPredict = @(YES);
 		newPeriod.startDate = [A3DateHelper dateMake12PM:[A3DateHelper dateByAddingDays:cycleLength fromDate:prevStartDate]];
+		[newPeriod reassignUniqueIDWithStartDate];
 		newPeriod.endDate = [A3DateHelper dateByAddingDays:4 fromDate:newPeriod.startDate];
 		newPeriod.cycleLength = @(cycleLength);
 		newPeriod.updateDate = [NSDate date];

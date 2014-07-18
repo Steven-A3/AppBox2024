@@ -647,12 +647,12 @@
     if (scrollView == _infoTableView) {
         if (scrollView.contentOffset.y > 0) {
             self.mapViewHeightConst.constant = 0;
-            self.currentLocationButtonTopConst.constant = -CGRectGetHeight(self.currentLocationButton.frame);
+            self.currentLocationButtonTopConst.constant = -(CGRectGetHeight(self.currentLocationButton.frame) + 5);
         }
         else {
             CGFloat heightOffset = fabs(scrollView.contentOffset.y);
             self.mapViewHeightConst.constant = heightOffset < 0 ? 0 : heightOffset;
-            self.currentLocationButtonTopConst.constant = heightOffset - CGRectGetHeight(self.currentLocationButton.frame) - 17;
+            self.currentLocationButtonTopConst.constant = heightOffset - CGRectGetHeight(self.currentLocationButton.frame) - 17 - 5;
         }
     }
 }

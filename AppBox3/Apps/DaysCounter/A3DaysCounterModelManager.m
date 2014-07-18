@@ -711,7 +711,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSInteger)numberOfUserCalendarVisible
 {
-    return [DaysCounterCalendar MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ and calendarType == %@", [self hiddenCalendars], [NSNumber numberWithInteger:CalendarCellType_User]]];
+    return [DaysCounterCalendar MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT uniqueID IN %@ and calendarType == %@", [self hiddenCalendars], [NSNumber numberWithInteger:CalendarCellType_User]]];
 }
 
 - (NSInteger)numberOfEventContainedImage

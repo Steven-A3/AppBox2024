@@ -26,7 +26,7 @@
 #define EventKey_Date                           @"date"
 #define EventKey_Items                          @"items"
 
-#define CalendarItem_ID                         @"calendarId"
+#define CalendarItem_ID                         @"uniqueID"
 #define CalendarItem_Name                       @"calendarName"
 #define CalendarItem_Color                      @"calendarColor"
 #define CalendarItem_ColorID                      @"calendarColorID"
