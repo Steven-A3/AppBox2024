@@ -47,11 +47,6 @@ NSString *const A3LoanCalcLoanNoteCellID = @"A3WalletNoteCell";
 NSString *const A3LoanCalcCompareGraphCellID = @"A3LoanCalcCompareGraphCell";
 NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
-NSString *const A3LoanCalcLoanDataKey = @"A3LoanCalcLoanData";
-NSString *const A3LoanCalcLoanDataKey_A = @"A3LoanCalcLoanData_A";
-NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
-
-
 @interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate, LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate, UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate, UIActivityItemSource>
 
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -79,7 +74,8 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 	// Loan mode
 	BOOL        _isComparisonMode;
 
-	NSDate *preDate;
+	NSDate 		*preDate;
+	BOOL		_cancelInputCloudDataRecieved;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -144,8 +140,21 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide:) name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 
     [self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)cloudKeyValueStoreDidImport {
+	if (self.firstResponder) {
+		_cancelInputCloudDataRecieved = YES;
+		[self.firstResponder resignFirstResponder];
+	}
+
+	[self loadPreviousCalculation];
+	[self selectSegmentChanged:self.selectSegment];
+
+	[self.tableView reloadData];
 }
 
 - (void)removeObserver {
@@ -156,6 +165,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3LoanCalcNotificationExtraPaymentEnabled object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3LoanCalcCurrencyCodeChanged object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -630,6 +640,12 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     
     [[NSUserDefaults standardUserDefaults] setBool:_isComparisonMode forKey:LoanCalcModeSave];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setBool:_isComparisonMode forKey:LoanCalcModeSave];
+		[store synchronize];
+	}
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
@@ -855,6 +871,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 {
 	self.calcItems = nil;
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationFade];
+	[self updateLoanCalculation];
 }
 
 - (UITextField *)previousTextField:(UITextField *) current
@@ -1048,6 +1065,11 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 
 - (void)loadPreviousCalculation
 {
+	self.calcItems = nil;
+	self.loanData = nil;
+	_loanDataA = nil;
+	_loanDataB = nil;
+
     [self loanData];
     [self loanDataA];
     [self loanDataB];
@@ -1055,7 +1077,6 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     _isComparisonMode = [[NSUserDefaults standardUserDefaults] boolForKey:LoanCalcModeSave];
     [self selectSegment].selectedSegmentIndex = _isComparisonMode ? 1:0;
     
- 
     /*
     if (self.loanData.calculationDate) {
         if (self.loanDataA.calculationDate && self.loanDataB.calculationDate) {
@@ -1429,6 +1450,12 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:self.loanData];
     [[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:A3LoanCalcLoanDataKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:myLoanData forKey:A3LoanCalcLoanDataKey];
+		[store synchronize];
+	}
 }
 
 - (void)saveLoanDataA
@@ -1436,6 +1463,12 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:_loanDataA];
     [[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:A3LoanCalcLoanDataKey_A];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:myLoanData forKey:A3LoanCalcLoanDataKey_A];
+		[store synchronize];
+	}
 }
 
 - (void)saveLoanDataB
@@ -1443,24 +1476,48 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:_loanDataB];
     [[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:A3LoanCalcLoanDataKey_B];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:_loanDataB forKey:A3LoanCalcLoanDataKey_B];
+		[store synchronize];
+	}
 }
 
 - (void)deleteLoanData
 {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:A3LoanCalcLoanDataKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store removeObjectForKey:A3LoanCalcLoanDataKey];
+		[store synchronize];
+	}
 }
 
 - (void)deleteLoanDataA
 {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:A3LoanCalcLoanDataKey_A];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store removeObjectForKey:A3LoanCalcLoanDataKey_A];
+		[store synchronize];
+	}
 }
 
 - (void)deleteLoanDataB
 {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:A3LoanCalcLoanDataKey_B];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store removeObjectForKey:A3LoanCalcLoanDataKey_B];
+		[store synchronize];
+	}
 }
 
 #pragma mark - Compare mode calculation
@@ -2057,6 +2114,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
 	[self setFirstResponder:nil];
+	_cancelInputCloudDataRecieved = NO;
 }
 
 #pragma mark - TextFieldDelegate
@@ -2245,7 +2303,10 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 		}
 	}
 
-	[self updateLoanCalculation];
+	if (!_cancelInputCloudDataRecieved) {
+		[self updateLoanCalculation];
+	}
+	_cancelInputCloudDataRecieved = NO;
 }
 
 #pragma mark - LoanCalcHistoryViewController delegate
@@ -2418,10 +2479,12 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
             if (indexPath.section == 1) {
                 viewController.navigationItem.title = NSLocalizedString(@"Loan A", @"Loan A");
                 viewController.loanData = self.loanDataA;
+				viewController.isLoanData_A = YES;
             }
             else {
                 viewController.navigationItem.title = NSLocalizedString(@"Loan B", @"Loan B");
                 viewController.loanData = self.loanDataB;
+				viewController.isLoanData_A = NO;
             }
             viewController.delegate = self;
             [self.navigationController pushViewController:viewController animated:YES];
@@ -2738,13 +2801,14 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
         infoCell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         infoCell.markLabel.text = @"A";
-        
-        if ([_loanDataA calculated]) {
-            [self updateInfoCell:infoCell withLoanInfo:_loanDataA];
-        }
-        else {
-            [self makeClearInfoCell:infoCell];
-        }
+
+		[self updateInfoCell:infoCell withLoanInfo:_loanDataA];
+//        if ([_loanDataA calculated]) {
+//            [self updateInfoCell:infoCell withLoanInfo:_loanDataA];
+//        }
+//        else {
+//            [self makeClearInfoCell:infoCell];
+//        }
         
         if (IS_RETINA) {
             for (UIView *line in infoCell.hori1PxLines) {
@@ -2761,13 +2825,14 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
         infoCell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         infoCell.markLabel.text = @"B";
-        
-        if ([_loanDataB calculated]) {
-            [self updateInfoCell:infoCell withLoanInfo:_loanDataB];
-        }
-        else {
-            [self makeClearInfoCell:infoCell];
-        }
+
+		[self updateInfoCell:infoCell withLoanInfo:_loanDataB];
+//        if ([_loanDataB calculated]) {
+//            [self updateInfoCell:infoCell withLoanInfo:_loanDataB];
+//        }
+//        else {
+//            [self makeClearInfoCell:infoCell];
+//        }
         
         if (IS_RETINA) {
             for (UIView *line in infoCell.hori1PxLines) {

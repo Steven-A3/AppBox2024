@@ -28,6 +28,12 @@
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]
 #define kSelectedButtonColor    [A3AppDelegate instance].themeColor
 
+NSString *const A3DateCalcDefaultsIsAddSubMode = @"A3DateCalcDefaultsIsAddSubMode";
+NSString *const A3DateCalcDefaultsFromDate = @"A3DateCalcDefaultsFromDate";
+NSString *const A3DateCalcDefaultsToDate = @"A3DateCalcDefaultsToDate";
+NSString *const A3DateCalcDefaultsOffsetDate = @"A3DateCalcDefaultsOffsetDate";
+NSString *const A3DateCalcDefaultsDidSelectMinus = @"A3DateCalcDefaultsDidSelectMinus";
+
 @interface A3DateMainTableViewController () <UITextFieldDelegate, UIPopoverControllerDelegate, A3DateKeyboardDelegate, A3DateCalcExcludeDelegate, A3DateCalcDurationDelegate, A3DateCalcHeaderViewDelegate, A3DateCalcEditEventDelegate, UIActivityItemSource>
 
 @property (strong, nonatomic) A3DateCalcHeaderView *headerView;
@@ -91,25 +97,8 @@
 	self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
-    
-    // 저장된 textField의 값으로 초기화 하도록 수정.
-    self.offsetComp = [A3DateCalcAddSubCell2 dateComponentBySavedText];
-    
-    if (self.fromDate==nil) {
-        self.fromDate = [NSDate date];
-    }
-    if (self.toDate==nil) {
-        NSDateComponents *comp = [NSDateComponents new];
-        comp.month = 1;
-        self.toDate = [[A3DateCalcStateManager currentCalendar] dateByAddingComponents:comp toDate:self.fromDate options:0];
-    }
-    
-    if ([A3DateCalcStateManager excludeOptions]==0) {
-        [A3DateCalcStateManager setExcludeOptions:ExcludeOptions_None];
-    }
-    if ([A3DateCalcStateManager durationType]==0) {
-        [A3DateCalcStateManager setDurationType:DurationType_Year|DurationType_Month|DurationType_Day];
-    }
+
+	[self readFromSavedValue];
     _isKeyboardShown = NO;
 
     [self initializeControl];
@@ -124,11 +113,42 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)cloudKeyValueStoreDidImport {
+	[self readFromSavedValue];
+	[self reloadTableViewData:NO];
+	if ([self isAddSubMode]) {
+		[self refreshAddSubModeButtonForResultWithAnimation:YES];
+	}
+}
+
+- (void)readFromSavedValue {
+	// 저장된 textField의 값으로 초기화 하도록 수정.
+	self.offsetComp = [A3DateCalcAddSubCell2 dateComponentBySavedText];
+
+	if (self.fromDate==nil) {
+		self.fromDate = [NSDate date];
+	}
+	if (self.toDate==nil) {
+		NSDateComponents *comp = [NSDateComponents new];
+		comp.month = 1;
+		self.toDate = [[A3DateCalcStateManager currentCalendar] dateByAddingComponents:comp toDate:self.fromDate options:0];
+	}
+
+	if ([A3DateCalcStateManager excludeOptions]==0) {
+		[A3DateCalcStateManager setExcludeOptions:ExcludeOptions_None];
+	}
+	if ([A3DateCalcStateManager durationType]==0) {
+		[A3DateCalcStateManager setDurationType:DurationType_Year|DurationType_Month|DurationType_Day];
+	}
 }
 
 - (void)removeObserver {
 	FNLOG();
 	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -226,22 +246,27 @@
 }
 
 #pragma mark - Properties
-#define kDefault_didSelectMinus @"didSelectMinus"
 
 -(void)setIsAddSubMode:(BOOL)isAddSubMode
 {
-    [[NSUserDefaults standardUserDefaults] setBool:isAddSubMode forKey:@"isAddSubMode"];
+	[[NSUserDefaults standardUserDefaults] setBool:isAddSubMode forKey:A3DateCalcDefaultsIsAddSubMode];
     [[NSUserDefaults standardUserDefaults] synchronize];
+	
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setBool:isAddSubMode forKey:A3DateCalcDefaultsIsAddSubMode];
+		[store synchronize];
+	}
 }
 
 -(BOOL)isAddSubMode
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"isAddSubMode"];
+    return [[NSUserDefaults standardUserDefaults] boolForKey:A3DateCalcDefaultsIsAddSubMode];
 }
 
 -(BOOL)didSelectedAdd
 {
-    BOOL didSelectMinus = [[NSUserDefaults standardUserDefaults] boolForKey:kDefault_didSelectMinus];
+    BOOL didSelectMinus = [[NSUserDefaults standardUserDefaults] boolForKey:A3DateCalcDefaultsDidSelectMinus];
     return didSelectMinus==YES? NO : YES;
 }
 
@@ -254,8 +279,14 @@
     comp.minute = 0;
     _fromDate = [[A3DateCalcStateManager currentCalendar] dateFromComponents:comp];
     
-    [[NSUserDefaults standardUserDefaults] setObject:_fromDate forKey:@"fromDate"];
+    [[NSUserDefaults standardUserDefaults] setObject:_fromDate forKey:A3DateCalcDefaultsFromDate];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:_fromDate forKey:A3DateCalcDefaultsFromDate];
+		[store synchronize];
+	}
 }
 
 -(void)setToDate:(NSDate *)toDate
@@ -267,36 +298,48 @@
     comp.minute = 0;
     _toDate = [[A3DateCalcStateManager currentCalendar] dateFromComponents:comp];
     
-    [[NSUserDefaults standardUserDefaults] setObject:_toDate forKey:@"toDate"];
+    [[NSUserDefaults standardUserDefaults] setObject:_toDate forKey:A3DateCalcDefaultsToDate];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:_toDate forKey:A3DateCalcDefaultsToDate];
+		[store synchronize];
+	}
 }
 
 -(void)setOffsetDate:(NSDate *)offsetDate
 {
     _offsetDate = [offsetDate copy];
-    [[NSUserDefaults standardUserDefaults] setObject:_offsetDate forKey:@"offsetDate"];
+    [[NSUserDefaults standardUserDefaults] setObject:_offsetDate forKey:A3DateCalcDefaultsOffsetDate];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:_offsetDate forKey:A3DateCalcDefaultsOffsetDate];
+		[store synchronize];
+	}
 }
 
--(NSDate *)fromDate
+- (NSDate *)fromDate
 {
-    _fromDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"fromDate"];
+    _fromDate = [[NSUserDefaults standardUserDefaults] objectForKey:A3DateCalcDefaultsFromDate];
     return _fromDate;
 }
 
--(NSDate *)toDate
+- (NSDate *)toDate
 {
-    _toDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"toDate"];
+    _toDate = [[NSUserDefaults standardUserDefaults] objectForKey:A3DateCalcDefaultsToDate];
     return _toDate;
 }
 
--(NSDate *)offsetDate
+- (NSDate *)offsetDate
 {
-    _offsetDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"offsetDate"];
+    _offsetDate = [[NSUserDefaults standardUserDefaults] objectForKey:A3DateCalcDefaultsOffsetDate];
     return _offsetDate;
 }
 
--(NSDateComponents *)betweenDateCalculatedFromTo
+- (NSDateComponents *)betweenDateCalculatedFromTo
 {
     NSUInteger unitFlags = NSDayCalendarUnit;
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -308,10 +351,16 @@
 
 - (IBAction)addButtonTouchUpAction:(id)sender
 {
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kDefault_didSelectMinus];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3DateCalcDefaultsDidSelectMinus];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    BOOL isMinusSelected = [[NSUserDefaults standardUserDefaults] boolForKey:kDefault_didSelectMinus];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setBool:NO forKey:A3DateCalcDefaultsDidSelectMinus];
+		[store synchronize];
+	}
+
+	BOOL isMinusSelected = [[NSUserDefaults standardUserDefaults] boolForKey:A3DateCalcDefaultsDidSelectMinus];
 
     A3DateCalcAddSubCell1 *footerAddSubCell = (A3DateCalcAddSubCell1 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
     footerAddSubCell.addModeButton.selected = isMinusSelected ? NO : YES;
@@ -326,10 +375,16 @@
 
 - (IBAction)subButtonTouchUpAction:(id)sender
 {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kDefault_didSelectMinus];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3DateCalcDefaultsDidSelectMinus];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    BOOL isMinusSelected = [[NSUserDefaults standardUserDefaults] boolForKey:kDefault_didSelectMinus];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setBool:YES forKey:A3DateCalcDefaultsDidSelectMinus];
+		[store synchronize];
+	}
+
+    BOOL isMinusSelected = [[NSUserDefaults standardUserDefaults] boolForKey:A3DateCalcDefaultsDidSelectMinus];
     
     A3DateCalcAddSubCell1 *footerAddSubCell = (A3DateCalcAddSubCell1 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
     footerAddSubCell.addModeButton.selected = isMinusSelected ? NO : YES;
@@ -946,6 +1001,7 @@
 }
 
 #pragma mark  A3KeyboardViewControllerDelegate
+
 - (void)dateKeyboardValueChangedDate:(NSDate *)date
 {
     A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
@@ -1196,7 +1252,7 @@
     [footerAddSubCell.addModeButton addTarget:self action:@selector(addButtonTouchUpAction:) forControlEvents:UIControlEventTouchUpInside];
     [footerAddSubCell.subModeButton addTarget:self action:@selector(subButtonTouchUpAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    BOOL isMinusSelected = [[NSUserDefaults standardUserDefaults] boolForKey:kDefault_didSelectMinus];
+    BOOL isMinusSelected = [[NSUserDefaults standardUserDefaults] boolForKey:A3DateCalcDefaultsDidSelectMinus];
     footerAddSubCell.addModeButton.selected = isMinusSelected ? NO : YES;
     footerAddSubCell.subModeButton.selected = isMinusSelected ? YES : NO;
     

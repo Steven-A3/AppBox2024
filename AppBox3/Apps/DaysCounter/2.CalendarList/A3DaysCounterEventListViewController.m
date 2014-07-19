@@ -102,7 +102,7 @@
     [self.view layoutIfNeeded];
 
 	[self registerContentSizeCategoryDidChangeNotification];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:USMStoreDidImportChangesNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)notification {
@@ -110,7 +110,7 @@
 }
 
 - (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:USMStoreDidImportChangesNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 

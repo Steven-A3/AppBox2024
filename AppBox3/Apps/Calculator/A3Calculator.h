@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "HTCopyableLabel.h"
+
+extern NSString *const kUserDefaultsKeyCalculatorSavedLastExpression;
+
 @protocol A3CalcMessagShowDelegate<NSObject>
 -(void)ShowMessage:(NSString *) message;
 @end

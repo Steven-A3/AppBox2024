@@ -77,8 +77,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     
     [self setupSubViews];
 
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]){
-        [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyCalculatorSavedLastExpression]){
+        [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyCalculatorSavedLastExpression]];
         [_calculator evaluateAndSet];
         [self checkRightButtonDisable];
     }
@@ -91,11 +91,21 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
     
     // Radian / Degrees 버튼 초기화
     [_calculator setRadian:[self radian]];
     _degreeandradianLabel.text = [self radian] == YES ? @"Radian" : @"Degrees";
     [_calculatorkeypad.radbutton setTitle:[self radian] == YES ? @"Deg" : @"Rad" forState:UIControlStateNormal];
+}
+
+- (void)cloudKeyValueStoreDidImport {
+	NSString *mathExpression = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyCalculatorSavedLastExpression];
+	if (mathExpression){
+		[_calculator setMathExpression:mathExpression];
+		[_calculator evaluateAndSet];
+		[self checkRightButtonDisable];
+	}
 }
 
 - (UISegmentedControl *)calculatorTypeSegment
@@ -140,6 +150,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 - (void)removeObserver {
 	FNLOG();
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 }

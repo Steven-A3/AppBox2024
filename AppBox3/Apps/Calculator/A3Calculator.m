@@ -13,6 +13,9 @@
 #import "MathParser.h"
 #import "A3CalculatorUtil.h"
 #import "NSAttributedString+Append.h"
+#import "A3AppDelegate.h"
+
+NSString *const kUserDefaultsKeyCalculatorSavedLastExpression = @"savedTheLastExpressionInCalculator";
 
 @interface A3Calculator ()
 
@@ -253,9 +256,14 @@ typedef CMathParser<char, double> MathParser;
         [self constantHandler:key];
     }
     
-    [[NSUserDefaults standardUserDefaults] setValue:mathexpression forKey:@"savedTheLastExpressionInCalculator"];
+    [[NSUserDefaults standardUserDefaults] setValue:mathexpression forKey:kUserDefaultsKeyCalculatorSavedLastExpression];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setString:mathexpression forKey:kUserDefaultsKeyCalculatorSavedLastExpression];
+		[store synchronize];
+	}
 }
 
 - (void) eehandler {

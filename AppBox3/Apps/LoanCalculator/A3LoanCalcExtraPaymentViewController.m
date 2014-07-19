@@ -747,6 +747,12 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 		[[NSUserDefaults standardUserDefaults] setObject:selectedItem forKey:A3LoanCalcCustomCurrencyCode];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
+		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+			[store setObject:selectedItem forKey:A3LoanCalcCustomCurrencyCode];
+			[store synchronize];
+		}
+
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3LoanCalcCurrencyCodeChanged object:nil];
 
 		[self.loanFormatter setCurrencyCode:selectedItem];

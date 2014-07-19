@@ -80,7 +80,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 
 	__typeof(self) __weak weakSelf = self;
 	self.usmStoreDidImportChangesObserver =
-			[[NSNotificationCenter defaultCenter] addObserverForName:USMStoreDidImportChangesNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+			[[NSNotificationCenter defaultCenter] addObserverForName:A3NotificationCloudCoreDataStoreDidImport object:nil queue:nil usingBlock:^(NSNotification *note) {
 				[weakSelf.tableView reloadData];
 			}];
 

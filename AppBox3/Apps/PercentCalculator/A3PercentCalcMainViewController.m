@@ -44,6 +44,8 @@
     UIImage *_blankImage;
     BOOL _prevShow, _nextShow;
     BOOL _isKeyboardShown;
+	BOOL _cancelInputNewCloudDataReceived;
+	BOOL _barButtonEnabled;
 }
 
 - (id)init {
@@ -64,7 +66,9 @@
     [super viewDidLoad];
 
     self.title = IS_IPHONE ? NSLocalizedString(@"Percent Calculator_Short", nil) : NSLocalizedString(@"Percent Calculator", @"Percent Calculator");
-    
+
+	_barButtonEnabled = YES;
+
     [self leftBarButtonAppsButton];
     [self rightButtonHistoryButton];
     [self makeBackButtonEmptyArrow];
@@ -110,11 +114,28 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
     [self registerContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)cloudKeyValueStoreDidImport {
+	if (self.firstResponder) {
+		_cancelInputNewCloudDataReceived = YES;
+		[self.firstResponder resignFirstResponder];
+	}
+	[self reloadInputData];
+	[self reloadTableHeaderView];
+	[self.tableView reloadData];
+	// 배경 설명
+	// 아이패드에서 HistoryViewController가 나와 있는 상태에서 업데이트를 받은 경우,
+	// apps button이 enable되는 것을 막기 위해서 barButton enable 상태를 기억하고
+	// 상태에 따라서 button 의 상태를 결정한다.
+	[self setBarButtonEnable:_barButtonEnabled];
 }
 
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
 
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -198,27 +219,10 @@ static NSString *const A3PercentCalcSavedInputData = @"A3PercentCalcSavedInputDa
 - (void)initHeaderView {
     self.headerView = [[A3PercentCalcHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 157)];
     self.headerView.bottomLineView.backgroundColor = COLOR_TABLE_SEPARATOR;
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:A3PercentCalcSavedInputData]) {
-        A3PercentCalcData *savedInputData = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:A3PercentCalcSavedInputData]];
-        
-        if (savedInputData.dataType==PercentCalcType_5) {
-            _factorX1 = savedInputData.values[ValueIdx_X1];
-            _factorY1 = savedInputData.values[ValueIdx_Y1];
-            _factorX2 = savedInputData.values[ValueIdx_X2];
-            _factorY2 = savedInputData.values[ValueIdx_Y2];
-        } else {
-            _factorX1 = savedInputData.values[ValueIdx_X1];
-            _factorY1 = savedInputData.values[ValueIdx_Y1];
-        }
-        
-        self.calcType = savedInputData.dataType;
+
+    if ([self reloadInputData]) {
         _selectedOptionIndexPath = [NSIndexPath indexPathForRow:self.calcType inSection:1];
         self.headerView.calcType = self.calcType;
-        self.headerView.factorValues.values = savedInputData.values;
-        _formattedFactorValues = [savedInputData formattedStringValuesByCalcType];
-        FNLOG();
-        self.headerView.factorValues = savedInputData;
-        
     } else {
         self.headerView.calcType = self.calcType;
         self.headerView.factorValues = [A3PercentCalcData new];
@@ -227,6 +231,34 @@ static NSString *const A3PercentCalcSavedInputData = @"A3PercentCalcSavedInputDa
     }
     
     [self reloadTableHeaderView];
+}
+
+/*! NSUserDefaults 에 저장한 데이터를 읽어온다.
+ * \param none
+ * \returns 저장된 데이터가 있는 경우에는 YES, 아니면 NO
+ */
+- (BOOL)reloadInputData {
+	NSData *inputData = [[NSUserDefaults standardUserDefaults] objectForKey:A3PercentCalcSavedInputData];
+	if (inputData) {
+		A3PercentCalcData *savedInputData = [NSKeyedUnarchiver unarchiveObjectWithData:inputData];
+
+		if (savedInputData.dataType==PercentCalcType_5) {
+			_factorX1 = savedInputData.values[ValueIdx_X1];
+			_factorY1 = savedInputData.values[ValueIdx_Y1];
+			_factorX2 = savedInputData.values[ValueIdx_X2];
+			_factorY2 = savedInputData.values[ValueIdx_Y2];
+		} else {
+			_factorX1 = savedInputData.values[ValueIdx_X1];
+			_factorY1 = savedInputData.values[ValueIdx_Y1];
+		}
+
+		self.calcType = savedInputData.dataType;
+		self.headerView.factorValues.values = savedInputData.values;
+		_formattedFactorValues = [savedInputData formattedStringValuesByCalcType];
+		self.headerView.factorValues = savedInputData;
+		return YES;
+	}
+	return NO;
 }
 
 - (void)rightButtonHistoryButton {
@@ -262,6 +294,7 @@ static NSString *const A3PercentCalcSavedInputData = @"A3PercentCalcSavedInputDa
 
 -(void)setBarButtonEnable:(BOOL)enable
 {
+	_barButtonEnabled = enable;
     if (enable) {
         // History 버튼, 히스토리가 있는 경우에만 활성.
         UIBarButtonItem *historyButton = [self.navigationItem.rightBarButtonItems objectAtIndex:0];
@@ -316,8 +349,14 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
     if (self.headerView) {
         self.headerView.calcType = calcType;
     }
-    [[NSUserDefaults standardUserDefaults] setInteger:calcType forKey:A3PercentCalcCalculationType];
+    [[NSUserDefaults standardUserDefaults] setObject:@(calcType) forKey:A3PercentCalcCalculationType];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:@(calcType) forKey:A3PercentCalcCalculationType];
+		[store synchronize];
+	}
 }
 
 -(PercentCalcType)calcType
@@ -473,10 +512,16 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
     if (inputTextData.dataType!=PercentCalcType_5 && inputTextData.values.count>2) {
         inputTextData.values = [NSArray arrayWithObjects:inputTextData.values[0], inputTextData.values[1], nil];
     }
-    
-    
-    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:inputTextData] forKey:A3PercentCalcSavedInputData];
+
+	id inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData];
+    [[NSUserDefaults standardUserDefaults] setObject:inputData forKey:A3PercentCalcSavedInputData];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:inputData forKey:A3PercentCalcSavedInputData];
+		[store synchronize];
+	}
 }
 
 #pragma mark - Table view data source
@@ -1059,6 +1104,11 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
         [self setFirstResponder:nil];
     }
 
+	if (_cancelInputNewCloudDataReceived) {
+		_cancelInputNewCloudDataReceived = NO;
+		return;
+	}
+
 	if (![textField.text length]) {
 		if ([_textBeforeEditingTextField length]) {
 			textField.text = _textBeforeEditingTextField;
@@ -1184,7 +1234,6 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
     
     
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-    
     
     if (![textField.text length])
         return;

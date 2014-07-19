@@ -65,6 +65,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3TableViewInputElement *calculatorTargetElement;
 @property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
+@property (nonatomic, assign) BOOL cancelInputNewCloudDataReceived;
 
 @end
 
@@ -72,6 +73,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 {
     NSNumber * _locationTax;
     NSString * _locationCode;
+	BOOL _barButtonEnabled;
 }
 
 - (id)init {
@@ -93,7 +95,9 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+	_barButtonEnabled = YES;
+
     [self makeBackButtonEmptyArrow];
 	[self leftBarButtonAppsButton];
     [self rightButtonHistoryButton];
@@ -116,12 +120,33 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)cloudKeyValueStoreDidImport {
+	if (self.firstResponder) {
+		_cancelInputNewCloudDataReceived = YES;
+		[self.firstResponder resignFirstResponder];
+	}
+
+	[self setCurrencyFormatter:nil];
+	_preferences = nil;
+
+	self.headerView.currencyFormatter = self.currencyFormatter;
+
+	[self configureTableData];
+	[self.tableView reloadData];
+	[self.headerView setResultData:self.preferences.calcData withAnimation:NO];
+	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top)];
+
+	[self enableControls:_barButtonEnabled];
 }
 
 - (void)removeObserver {
 	FNLOG();
 	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -208,6 +233,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 
 - (void)enableControls:(BOOL)enable
 {
+	_barButtonEnabled = enable;
     if (enable) {
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
 			switch (barButtonItem.tag) {
@@ -230,8 +256,15 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 static NSString *const A3SalesCalcSavedInputDataKey = @"A3SalesCalcSavedInputDataKey";
 
 -(void)saveInputTextData:(A3SalesCalcData *)inputTextData {
-    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:inputTextData] forKey:A3SalesCalcSavedInputDataKey];
+	NSData *inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData];
+    [[NSUserDefaults standardUserDefaults] setObject:inputData forKey:A3SalesCalcSavedInputDataKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:inputData forKey:A3SalesCalcSavedInputDataKey];
+		[store synchronize];
+	}
 }
 
 -(void)saveToHistory:(id)sender {
@@ -558,6 +591,12 @@ static NSString *const A3SalesCalcSavedInputDataKey = @"A3SalesCalcSavedInputDat
     };
 	_notes.onEditingDidEnd = ^(A3TextViewElement *element, UITextView *textView) {
 		[weakSelf.tableView setContentOffset:CGPointMake(0, -weakSelf.tableView.contentInset.top )];
+		if (weakSelf.cancelInputNewCloudDataReceived) {
+			weakSelf.cancelInputNewCloudDataReceived = NO;
+			return;
+		}
+		weakSelf.preferences.calcData.notes = textView.text;
+		[weakSelf saveInputTextData:weakSelf.preferences.calcData];
 	};
     if (aData) {
         _notes.value = aData.notes;
@@ -611,7 +650,11 @@ static NSString *const A3SalesCalcSavedInputDataKey = @"A3SalesCalcSavedInputDat
                 weakSelf.firstResponder = nil;
             }
 			[weakSelf removeNumberKeyboardNotificationObservers];
-            
+
+			if (weakSelf.cancelInputNewCloudDataReceived) {
+				weakSelf.cancelInputNewCloudDataReceived = NO;
+				return;
+			}
             NSString *inputString = textField.text;
 			NSNumber *inputNumber = [weakSelf.decimalFormatter numberFromString:textField.text];
 
@@ -765,13 +808,12 @@ static NSString *const A3SalesCalcSavedInputDataKey = @"A3SalesCalcSavedInputDat
     if (!_cellInputDoneButtonPressed) {
         __weak A3SalesCalcMainViewController * weakSelf = self;
         _cellInputDoneButtonPressed = ^(id sender){
-            
+			weakSelf.firstResponder = nil;
+
             if (weakSelf.preferences.calcData == nil) {
                 return;
             }
 
-            weakSelf.firstResponder = nil;
-            
             if (!weakSelf.preferences.calcData.price || [weakSelf.preferences.calcData.price isEqualToNumber:@0] ||
                 !weakSelf.preferences.calcData.discount || [weakSelf.preferences.calcData.discount isEqualToNumber:@0])
                 return;
@@ -1190,6 +1232,12 @@ static NSString *const A3SalesCalcSavedInputDataKey = @"A3SalesCalcSavedInputDat
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
 	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3SalesCalcCurrencyCode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:currencyCode forKey:A3SalesCalcCurrencyCode];
+		[store synchronize];
+	}
 
 	[self setCurrencyFormatter:nil];
 	self.headerView.currencyFormatter = self.currencyFormatter;

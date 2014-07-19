@@ -116,11 +116,11 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryDeletedNotification:) name:A3WalletNotificationCategoryDeleted object:nil];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveItemCategoryMovedNotification:) name:A3WalletNotificationItemCategoryMoved object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImportChanges) name:USMStoreDidImportChangesNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImportChanges) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 }
 
 - (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:USMStoreDidImportChangesNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3WalletNotificationCategoryChanged object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3WalletNotificationCategoryAdded object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3WalletNotificationCategoryDeleted object:nil];

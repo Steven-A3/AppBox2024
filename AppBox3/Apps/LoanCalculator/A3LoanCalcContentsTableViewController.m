@@ -18,6 +18,11 @@
 #import "A3NumberKeyboardViewController.h"
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
+#import "A3AppDelegate.h"
+
+NSString *const A3LoanCalcLoanDataKey = @"A3LoanCalcLoanData";
+NSString *const A3LoanCalcLoanDataKey_A = @"A3LoanCalcLoanData_A";
+NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 
 @interface A3LoanCalcContentsTableViewController () <A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 @end
@@ -438,6 +443,12 @@
 	if ([currencyCode length]) {
 		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3LoanCalcCustomCurrencyCode];
 		[[NSUserDefaults standardUserDefaults] synchronize];
+
+		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+			[store setObject:currencyCode forKey:A3LoanCalcCustomCurrencyCode];
+			[store synchronize];
+		}
 
 		[self.loanFormatter setCurrencyCode:currencyCode];
 

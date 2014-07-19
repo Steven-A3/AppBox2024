@@ -79,7 +79,7 @@ enum SortingKind {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
     [self setupInstructionView];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImportChanges) name:USMStoreDidImportChangesNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImportChanges) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 }
 
 - (void)cloudStoreDidImportChanges {
@@ -89,7 +89,7 @@ enum SortingKind {
 }
 
 - (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:USMStoreDidImportChangesNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];

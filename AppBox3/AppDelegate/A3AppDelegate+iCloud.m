@@ -174,6 +174,10 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3iCloudLastDBImportKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	FNLOG();
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	});
 }
 
 - (NSManagedObjectContext *)ubiquityStoreManager:(UbiquityStoreManager *)manager

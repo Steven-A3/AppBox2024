@@ -9,6 +9,10 @@
 #import "A3DateCalcStateManager.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "A3AppDelegate.h"
+
+NSString *const A3DateCalcDefaultsDurationType = @"A3DateCalcDefaultsDurationType";
+NSString *const A3DateCalcDefaultsExcludeOptions = @"A3DateCalcDefaultsExcludeOptions";
 
 @implementation A3DateCalcStateManager
 
@@ -19,11 +23,11 @@ static DurationType g_currentDurationType;
 {
 //    DurationType result = DurationType_Year;
     DurationType result = DurationType_Day;
-    DurationType oldOptions = (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
+    DurationType oldOptions = (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:A3DateCalcDefaultsDurationType];
     
     if (oldOptions == options) {
         // 선택 항목이 마지막 하나 남은 경우.
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DateCalculator", nil)
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Date Calculator", nil)
                                                             message:NSLocalizedString(@"To show results, need one option.", nil)
                                                            delegate:self
                                                   cancelButtonTitle:NSLocalizedString(@"OK", nil)
@@ -49,19 +53,25 @@ static DurationType g_currentDurationType;
         result = DurationType_Day;
     }
     
-    [[NSUserDefaults standardUserDefaults] setInteger:result forKey:@"durationType"];
+    [[NSUserDefaults standardUserDefaults] setObject:@(result) forKey:A3DateCalcDefaultsDurationType];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:@(result) forKey:A3DateCalcDefaultsDurationType];
+		[store synchronize];
+	}
 }
 
 + (DurationType)durationType
 {
-    return (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
+    return (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:A3DateCalcDefaultsDurationType];
 }
 
 + (NSCalendarUnit)calendarUnitByDurationType
 {
     NSCalendarUnit calUnit = 0;
-    DurationType durationType = (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
+    DurationType durationType = (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:A3DateCalcDefaultsDurationType];
  
     if (durationType & DurationType_Year) {
         calUnit |= NSYearCalendarUnit;
@@ -81,7 +91,7 @@ static DurationType g_currentDurationType;
 
 + (NSString *)durationTypeString
 {
-    DurationType type = (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
+    DurationType type = (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:A3DateCalcDefaultsDurationType];
     
     NSMutableArray *result = [[NSMutableArray alloc] init];
     if (type & DurationType_None || type & DurationType_Year) {
@@ -116,7 +126,7 @@ static DurationType g_currentDurationType;
 + (void)setExcludeOptions:(ExcludeOptions)options
 {
     ExcludeOptions result = ExcludeOptions_None;
-    ExcludeOptions oldOptions = (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:@"excludeOptions"];
+    ExcludeOptions oldOptions = (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:A3DateCalcDefaultsExcludeOptions];
     
     if (oldOptions == options) {
         return;
@@ -133,18 +143,25 @@ static DurationType g_currentDurationType;
         }
     }
     
-    [[NSUserDefaults standardUserDefaults] setInteger:result forKey:@"excludeOptions"];
+    [[NSUserDefaults standardUserDefaults] setObject:@(result) forKey:A3DateCalcDefaultsExcludeOptions];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:@(result) forKey:A3DateCalcDefaultsExcludeOptions];
+		[store synchronize];
+	}
+
 }
 
 + (ExcludeOptions)excludeOptions
 {
-    return (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:@"excludeOptions"];
+    return (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:A3DateCalcDefaultsExcludeOptions];
 }
 
 + (NSString *)excludeOptionsString
 {
-    ExcludeOptions options = (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:@"excludeOptions"];
+    ExcludeOptions options = (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:A3DateCalcDefaultsExcludeOptions];
     if (ExcludeOptions_None == options) {
         return NSLocalizedString(@"DateCalcExclude_None", nil);
     }

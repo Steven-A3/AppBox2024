@@ -7,6 +7,7 @@
 //
 
 #import "LoanCalcPreference.h"
+#import "A3AppDelegate.h"
 
 NSString *const A3LoanCalcNotificationDownPaymentEnabled = @"A3LoanCalcNotificationDownPaymentEnabled";
 NSString *const A3LoanCalcNotificationDownPaymentDisabled = @"A3LoanCalcNotificationDownPaymentDisabled";
@@ -28,8 +29,14 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
 }
 
 - (void)setCalculationFor:(A3LoanCalcCalculationFor)calculationFor {
-	[[NSUserDefaults standardUserDefaults] setInteger:calculationFor forKey:A3LoanCalcDefaultCalculationFor];
+	[[NSUserDefaults standardUserDefaults] setObject:@(calculationFor) forKey:A3LoanCalcDefaultCalculationFor];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:@(calculationFor) forKey:A3LoanCalcDefaultCalculationFor];
+		[store synchronize];
+	}
 }
 
 - (BOOL)showDownPayment {
@@ -43,6 +50,12 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
 - (void)setShowDownPayment:(BOOL)showDownPayment {
 	[[NSUserDefaults standardUserDefaults] setBool:showDownPayment forKey:A3LoanCalcDefaultShowDownPayment];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setBool:showDownPayment forKey:A3LoanCalcDefaultShowDownPayment];
+		[store synchronize];
+	}
 }
 
 - (BOOL)showExtraPayment {
@@ -56,6 +69,12 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
 - (void)setShowExtraPayment:(BOOL)showExtraPayment {
 	[[NSUserDefaults standardUserDefaults] setBool:showExtraPayment forKey:A3LoanCalcDefaultShowExtraPayment];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setBool:showExtraPayment forKey:A3LoanCalcDefaultShowExtraPayment];
+		[store synchronize];
+	}
 }
 
 - (BOOL)showAdvanced {
@@ -71,6 +90,12 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
 - (void)setShowAdvanced:(BOOL)showAdvanced {
 	[[NSUserDefaults standardUserDefaults] setBool:showAdvanced forKey:A3LoanCalcDefaultShowAdvanced];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setBool:showAdvanced forKey:A3LoanCalcDefaultShowAdvanced];
+		[store synchronize];
+	}
 }
 
 - (BOOL)useSimpleInterest {
@@ -84,5 +109,12 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
 - (void)setUseSimpleInterest:(BOOL)useSimpleInterest {
 	[[NSUserDefaults standardUserDefaults] setBool:useSimpleInterest forKey:A3LoanCalcDefaultUseSimpleInterest];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setBool:useSimpleInterest forKey:A3LoanCalcDefaultUseSimpleInterest];
+		[store synchronize];
+	}
 }
+
 @end
