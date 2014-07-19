@@ -62,6 +62,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 @property (nonatomic, strong) A3TableViewInputElement *calculatorTargetElement;
 @property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
 @property (nonatomic, strong) CLLocationManager * lm;
+@property (nonatomic, assign) BOOL cancelInputNewCloudDataReceived;
+
 @end
 
 @implementation A3TipCalcMainTableViewController
@@ -75,6 +77,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     
     NSNumber * _locationTax;
     NSString * _locationCode;
+	BOOL _barButtonEnabled;
 }
 
 - (id)init {
@@ -108,11 +111,36 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+/*! Tip Calculator 의 경우에는 KeyValueStore 에는 CurrencyCode 만 저장이 된다.
+ *  입력 데이터의 경우에는 Core Data 에 저장이 되므로, Core Data 변경 사항을 반영 해야 한다.
+ *  KeyValue Store 의 변경 사항이던, Core Data 변경 사항이던 처리는 동일하게 진행한다.
+ * \param
+ * \returns
+ */
+- (void)cloudStoreDidImport {
+	if (self.firstResponder) {
+		// 아래의 flag은 firstResponder가 있는 경우에만 켜야 한다. 왜냐하면, responder가 resign할 때 반드시 꺼야 하기 때문.
+		// resignFirstResponer를 하기 전에 설정되어야 한다. 그래야, resign 과정에서 참조할 수 있다.
+		_cancelInputNewCloudDataReceived = YES;
+		[self.firstResponder resignFirstResponder];
+	}
+
+	_dataManager = nil;
+	_headerView.dataManager = self.dataManager;
+	[self outputAllResultWithAnimation:YES];
+
+	[self setBarButtonsEnable:_barButtonEnabled];
 }
 
 - (void)removeObserver {
 	FNLOG();
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
@@ -160,7 +188,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)initialize {
-	FNLOG();
+	_barButtonEnabled = YES;
+
     [self makeBackButtonEmptyArrow];
     [self leftBarButtonAppsButton];
     [self rightBarButtons];
@@ -192,6 +221,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)setBarButtonsEnable:(BOOL)enable {
+	_barButtonEnabled = enable;
     self.headerView.detailInfoButton.enabled = enable;
     self.navigationItem.leftBarButtonItem.enabled = enable;
 	self.headerView.beforeSplitButton.enabled = enable;
@@ -641,6 +671,11 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             }
 			[weakSelf removeNumberKeyboardNotificationObservers];
 
+			if (weakSelf.cancelInputNewCloudDataReceived) {
+				weakSelf.cancelInputNewCloudDataReceived = NO;
+				return;
+			}
+
             NSNumber *value;
             if ([textField.text length] == 0) {
                 value = [weakSelf.decimalFormatter numberFromString:[element value]];
@@ -923,8 +958,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
             UITableViewCell *costs = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             costs.textLabel.text = [self.dataManager knownValue] == TCKnownValue_Subtotal ? NSLocalizedString(@"Amount After Tax", @"Amount After Tax") : NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
-        }
-            break;
+
+			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			break;
+		}
 
         case RowElementID_Costs:
         case RowElementID_Tax:
@@ -933,9 +970,9 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         {
             A3JHTableViewEntryCell * cell = (A3JHTableViewEntryCell *)[tableView cellForRowAtIndexPath:indexPath];
             [cell.textField becomeFirstResponder];
-        }
-            break;
-            
+			break;
+		}
+
         case RowElementID_Value:
         case RowElementID_Option:
         {
@@ -1168,6 +1205,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
 	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3TipCalcCurrencyCode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:currencyCode forKey:A3TipCalcCurrencyCode];
+		[store synchronize];
+	}
 
 	[self.dataManager setCurrencyFormatter:nil];
 

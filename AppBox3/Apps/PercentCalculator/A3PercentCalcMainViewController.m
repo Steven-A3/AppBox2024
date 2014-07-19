@@ -66,7 +66,9 @@
     [super viewDidLoad];
 
     self.title = IS_IPHONE ? NSLocalizedString(@"Percent Calculator_Short", nil) : NSLocalizedString(@"Percent Calculator", @"Percent Calculator");
-    
+
+	_barButtonEnabled = YES;
+
     [self leftBarButtonAppsButton];
     [self rightButtonHistoryButton];
     [self makeBackButtonEmptyArrow];

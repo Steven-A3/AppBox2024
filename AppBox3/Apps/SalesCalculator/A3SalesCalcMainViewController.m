@@ -95,7 +95,9 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+	_barButtonEnabled = YES;
+
     [self makeBackButtonEmptyArrow];
 	[self leftBarButtonAppsButton];
     [self rightButtonHistoryButton];
