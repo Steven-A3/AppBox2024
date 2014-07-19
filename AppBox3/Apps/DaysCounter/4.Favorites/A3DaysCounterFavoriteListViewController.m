@@ -39,7 +39,9 @@
 
 @end
 
-@implementation A3DaysCounterFavoriteListViewController
+@implementation A3DaysCounterFavoriteListViewController {
+	BOOL _barButtonEnabled;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -55,6 +57,7 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Favorites", @"Favorites");
+	_barButtonEnabled = YES;
     //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
     self.toolbarItems = _bottomToolbar.items;
@@ -70,9 +73,17 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
 	[self registerContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+}
+
+- (void)cloudStoreDidImport {
+	self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager favoriteEventsList]];
+	[self.tableView reloadData];
+	[self enableControls:_barButtonEnabled];
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
@@ -100,6 +111,8 @@
 - (void)enableControls:(BOOL)enable {
 	if (!IS_IPAD) return;
 
+	_barButtonEnabled = enable;
+
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 
 	[self.toolbarItems[6] setEnabled:enable];
@@ -120,7 +133,7 @@
     self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager favoriteEventsList]];
     [self.tableView reloadData];
     
-    [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:@"DaysCounterLastOpenedMainIndex"];
+    [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:A3DaysCounterLastOpenedMainIndex];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

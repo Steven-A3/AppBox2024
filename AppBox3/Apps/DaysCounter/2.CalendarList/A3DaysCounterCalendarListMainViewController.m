@@ -24,9 +24,6 @@
 #import "DaysCounterEvent.h"
 #import "DaysCounterDate.h"
 #import "A3DateHelper.h"
-#import "NSDate+LunarConverter.h"
-#import "A3AppDelegate+appearance.h"
-#import "UIColor+A3Addition.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "NSDate+formatting.h"
 #import "A3InstructionViewController.h"
@@ -226,7 +223,7 @@
     
     [self reloadTableView];
     
-    [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:@"DaysCounterLastOpenedMainIndex"];
+    [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:A3DaysCounterLastOpenedMainIndex];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -737,16 +734,20 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
                                                                           NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote],
                                                                           NSForegroundColorAttributeName : [UIColor colorWithRed:77/255.0 green:77/255.0 blue:77/255.0 alpha:1.0]
                                                                           }];
-                    date = [[NSAttributedString alloc] initWithString:[self dateStringForEvent:event]
-                                                           attributes:@{
-                                                                        NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1],
-                                                                        NSForegroundColorAttributeName : [UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0]
-                                                                        }];
+					NSString *dateString = [self dateStringForEvent:event];
+					if (dateString) {
+						date = [[NSAttributedString alloc] initWithString:[self dateStringForEvent:event]
+															   attributes:@{
+																	   NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1],
+																	   NSForegroundColorAttributeName : [UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0]
+															   }];
+					}
                 }
-                
-                
+
                 [eventDetailInfoString appendAttributedString:period];
-                [eventDetailInfoString appendAttributedString:date];
+				if (date) {
+                	[eventDetailInfoString appendAttributedString:date];
+				}
                 eventDetailInfoLabel1.attributedText = eventName;
                 eventDetailInfoLabel2.attributedText = eventDetailInfoString;
             }

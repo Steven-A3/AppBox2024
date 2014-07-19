@@ -180,6 +180,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 - (void)enableControls:(BOOL)enable
 {
+	_barButtonEnabled = enable;
     if (enable) {
 		self.composeBarItem.enabled = price1UnitPrice > 0 && price2UnitPrice > 0;
 		self.historyBarItem.enabled = [UnitPriceHistory MR_countOfEntities] > 0;

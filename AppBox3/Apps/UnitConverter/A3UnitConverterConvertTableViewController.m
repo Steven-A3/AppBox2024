@@ -200,6 +200,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 {
 	if (!IS_IPAD) return;
 
+	_barButtonEnabled = enable;
 	UIColor *disabledColor = [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
     [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
         switch ([barButton tag]) {

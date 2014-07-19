@@ -48,7 +48,9 @@
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
-@implementation A3DaysCounterSlideShowMainViewController
+@implementation A3DaysCounterSlideShowMainViewController {
+	BOOL _barButtonEnabled;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -63,6 +65,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	_barButtonEnabled = YES;
 
 	if ( IS_IPHONE ) {
 		[self leftBarButtonAppsButton];
@@ -106,8 +110,9 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
-    
-    self.eventsArray = [_sharedManager allEventsListContainedImage];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+
+	self.eventsArray = [_sharedManager allEventsListContainedImage];
     if ([_eventsArray count] > 0) {
         [self setupInstructionView];
     }
@@ -118,7 +123,14 @@
 	messageLabel.text = NSLocalizedString(@"You can add photos into events.", nil);
 }
 
+- (void)cloudStoreDidImport {
+	self.eventsArray = [_sharedManager allEventsListContainedImage];
+	[self.collectionView reloadData];
+	[self enableControls:_barButtonEnabled];
+}
+
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -157,6 +169,7 @@
 }
 
 - (void)enableControls:(BOOL)enable {
+	_barButtonEnabled = enable;
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	if (enable) {
 		BOOL hasPhotos = [_sharedManager numberOfEventContainedImage] > 0;
@@ -227,7 +240,7 @@
 
     [_collectionView reloadData];
     
-    [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"DaysCounterLastOpenedMainIndex"];
+    [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:A3DaysCounterLastOpenedMainIndex];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     if (_prevShownEventID) {

@@ -48,6 +48,12 @@
 {
     [[NSUserDefaults standardUserDefaults] setObject:_optionDict forKey:A3DaysCounterSlideshowOption];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:_optionDict forKey:A3DaysCounterSlideshowOption];
+		[store synchronize];
+	}
 }
 
 - (NSDictionary*)itemAtIndexPath:(NSIndexPath*)indexPath
