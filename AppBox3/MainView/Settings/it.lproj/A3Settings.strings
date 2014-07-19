@@ -53,7 +53,7 @@
 "EA1-5P-PnP.text" = "Codice semplice";
 
 /* Class = "IBUILabel"; text = "Change Passcode"; ObjectID = "Fvs-tZ-usV"; */
-"Fvs-tZ-usV.text" = "Cambia codice d’accesso";
+"Fvs-tZ-usV.text" = "Cambia codice";
 
 /* Class = "IBUITableViewController"; title = "Passcode Lock"; ObjectID = "KML-Ub-d8M"; */
 "KML-Ub-d8M.title" = "Blocco con codice";
