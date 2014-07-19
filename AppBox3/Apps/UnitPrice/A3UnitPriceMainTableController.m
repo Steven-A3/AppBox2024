@@ -52,7 +52,9 @@ NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUni
 NSString *const A3UnitPriceCompareSliderCellID = @"A3UnitPriceCompareSliderCell";
 NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
-@implementation A3UnitPriceMainTableController
+@implementation A3UnitPriceMainTableController {
+	BOOL _barButtonEnabled;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -66,6 +68,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	_barButtonEnabled = YES;
 
 	if ([UnitConvertItem MR_countOfEntities] == 0) {
 		[UnitConvertItem reset];
@@ -111,17 +115,30 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+}
+
+- (void)cloudKeyValueStoreDidImport {
+	_price1 = nil;
+	_price2 = nil;
+
+	[self.tableView reloadData];
+	[self enableControls:_barButtonEnabled];
 }
 
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
 
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationUnitPriceCurrencyCodeChanged object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 }
+
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
@@ -194,6 +211,10 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 {
     [super viewWillAppear:animated];
 
+	if (![self isMovingToParentViewController]) {
+		_price1 = nil;
+		_price2 = nil;
+	}
 	[self enableControls:YES];
 }
 
@@ -357,13 +378,12 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     UnitPriceInfo *priceSelf;
     UnitPriceInfo *priceOther;
     
-    if (price == _price1) {
-        priceSelf = _price1;
-        priceOther = _price2;
-    }
-    else if (price == _price2) {
-        priceSelf = _price2;
-        priceOther = _price1;
+    if ([price.priceName isEqualToString:@"A"]) {
+        priceSelf = [UnitPriceInfo MR_findFirstByAttribute:@"priceName" withValue:@"A"];
+        priceOther = [UnitPriceInfo MR_findFirstByAttribute:@"priceName" withValue:@"B"];
+    } else {
+        priceSelf = [UnitPriceInfo MR_findFirstByAttribute:@"priceName" withValue:@"B"];
+        priceOther = [UnitPriceInfo MR_findFirstByAttribute:@"priceName" withValue:@"A"];
     }
     
     if (priceSelf.unitID && !priceOther.unitID) {

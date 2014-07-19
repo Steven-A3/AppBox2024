@@ -25,7 +25,6 @@
 #import "A3WalletNoteCell.h"
 #import "NSString+conversion.h"
 #import "UIViewController+tableViewStandardDimension.h"
-#import "A3TableViewInputElement.h"
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
 #import "UIViewController+A3Addition.h"
@@ -56,6 +55,7 @@ typedef NS_ENUM(NSInteger, PriceDiscountType) {
 @property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
 @property (nonatomic, copy) NSString *placeholderBeforeEditingTextField;
+@property (nonatomic, assign) BOOL cancelInputNewCloudDataReceived;
 
 @end
 
@@ -99,13 +99,30 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     [self.tableView addSubview:lineView];
     
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 
 	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)cloudKeyValueStoreDidImport {
+	if (self.firstResponder) {
+		_cancelInputNewCloudDataReceived = YES;
+		[self.firstResponder resignFirstResponder];
+	}
+
+	self.currencyFormatter = nil;
+	self.currencyFormatter.maximumFractionDigits = 2;
+	_price = [UnitPriceInfo MR_findFirstByAttribute:@"priceName" withValue:_isPriceA ? @"A" : @"B"];
+
+	[self.tableView reloadData];
 }
 
 - (void)removeObserver {
 	FNLOG();
 	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
 }
 
@@ -139,14 +156,9 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     [super viewDidDisappear:animated];
     
     if (![self.navigationController.viewControllers containsObject:self]) {
-        //pop this controller
-        if ([[[MagicalRecordStack defaultStack] context] hasChanges]) {
-            [[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
-            
-            if (_delegate && [_delegate respondsToSelector:@selector(unitPriceInfoChanged:)]) {
-                [_delegate unitPriceInfoChanged:self.price];
-            }
-        }
+		if (_delegate && [_delegate respondsToSelector:@selector(unitPriceInfoChanged:)]) {
+			[_delegate unitPriceInfoChanged:self.price];
+		}
     }
 }
 
@@ -451,6 +463,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
         }
 		textField.text = self.price.size ? [self.decimalFormatter stringFromNumber:self.price.size]: @"";
     }
+
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 #pragma mark - UITextViewDelegate
@@ -475,9 +489,13 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     [self.tableView endUpdates];
 }
 
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    self.price.note = textView.text;
+- (void)textViewDidEndEditing:(UITextView *)textView {
+	if (_cancelInputNewCloudDataReceived) {
+		_cancelInputNewCloudDataReceived = NO;
+		return;
+	}
+	self.price.note = textView.text;
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 #pragma mark - A3TbvCellTextInputDelegate
@@ -567,6 +585,11 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	[self removeNumberKeyboardNotificationObservers];
 
 	[self setFirstResponder:nil];
+
+	if (_cancelInputNewCloudDataReceived) {
+		_cancelInputNewCloudDataReceived = NO;
+		return;
+	}
 
 	textField.placeholder = _placeholderBeforeEditingTextField;
 
@@ -666,6 +689,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (void)selectViewController:(UIViewController *)viewController unitSelectedWithItem:(UnitItem *)selectedItem
 {
 	self.price.unitID = selectedItem.uniqueID;
+
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 	NSIndexPath *sliderIP = [NSIndexPath indexPathForRow:0 inSection:0];
 	NSIndexPath *unitIP = [NSIndexPath indexPathForRow:[self.items indexOfObject:self.unitItem] inSection:1];
@@ -835,6 +860,12 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	if ([currencyCode length]) {
 		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3UnitPriceCurrencyCode];
 		[[NSUserDefaults standardUserDefaults] synchronize];
+
+		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+			[store setObject:currencyCode forKey:A3UnitPriceCurrencyCode];
+			[store synchronize];
+		}
 
 		[self.currencyFormatter setCurrencyCode:currencyCode];
         self.currencyFormatter.maximumFractionDigits = 2;
