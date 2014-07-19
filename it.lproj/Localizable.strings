@@ -145,7 +145,7 @@
 "DATE" = "DATA";
 "WEATHER" = "METEO";
 "The time with seconds" = "L’ora con i secondi";
-"Flash the time separators" = "Separatore dell'ora lampeggiante";
+"Flash the time separators" = "\" : \" dell'ora lampeggiante";
 "Use a 24-hour clock" = "Usa orologio di 24 ore";
 "Show AM/PM" = "Mostra AM/PM";
 "Show the day of the week" = "Mostra i giorni della settimana";
@@ -697,7 +697,7 @@
 "%li Passcode Failed Attempts" = "%li tentativi codice falliti";
 "Enter your old passcode" = "Inserisci il vecchio codice";
 "Enter your passcode" = "Inserisci il codice";
-"Passcode" = "Codice di accesso";
+"Passcode" = "Inserisci codice";
 "Set Passcode" = "Imposta codice";
 "Change Passcode" = "Cambia codice";
 "Turn Off Passcode" = "Disabilita codice";
@@ -776,7 +776,7 @@
 "Enter an address or city name" = "Inserisci un indirizzo o un nome di città";
 "This will reset all settings.\nNo data will be deleted." = "Questo resetterà tutte le impostazioni.\nNessun dato sarà eliminato";
 "Reset All" = "Resetta tutto";
-"Reset Show/Hide Settings" = "Resetta Impostazioni";
+"Reset Show/Hide Settings" = "Ripristina Impostazioni";
 "Wallpaper" = "Sfondo";
 
 "Show Lunar Date" = "Mostra calendario lunare";
