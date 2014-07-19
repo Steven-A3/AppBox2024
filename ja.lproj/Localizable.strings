@@ -226,7 +226,7 @@
 "Add Calendar" = "カレンダーを追加";
 "COLOR" = "カラー";
 "Calendar Name" = "カレンダーの名前";
-"Delete Calendar" = "カレンダーを消去";
+"Delete Calendar" = "カレンダーを削除";
 "Untitled" = "タイトルなし";
 
 "Add Event" = "イベントを追加";
@@ -242,7 +242,7 @@
 "End Repeat" = "繰り返しの終了";
 "Alert" = "通知";
 "Calendar" = "旧暦の設定";
-"Duration Option" = "期間の表示オプション";
+"Duration Option" = "期間の表示方法";
 "Location" = "位置";
 "Delete Event" = "イベントを削除";
 "Delete Location" = "位置削除";

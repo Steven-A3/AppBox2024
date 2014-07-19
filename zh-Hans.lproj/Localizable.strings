@@ -189,7 +189,7 @@
 "Years" = "年";
 "Months" = "月";
 "Weeks" = "周";
-"Days" = "日";
+"Days" = "天";
 "DaysCounterDuration_Days" = "天";
 "Weekends" = "周末";
 "Sat" = "星期六";
@@ -237,7 +237,7 @@
 "End Repeat" = "重复";
 "Alert" = "提醒";
 "Calendar" = "日历";
-"Duration Option" = "持续时间选项";
+"Duration Option" = "期间选项";
 "Location" = "位置";
 "Delete Event" = "删除事件";
 "Date" = "日期";
@@ -679,14 +679,14 @@
 "CATEGORY" = "类别";
 "ITEMS" = "信息";
 "UPDATED" = "更新的";
-"Add Category" = "种类添加";
-"Edit Category" = "种类编辑";
+"Add Category" = "添加类别";
+"Edit Category" = "编辑类别";
 "Enter category name" = "输入种类名称";
 "Category Name" = "种类名称";
 "add new field" = "增加新区域";
-"Delete Category" = "删除种类";
+"Delete Category" = "删除类别";
 
-"Category Info" = "种类信息";
+"Category Info" = "类别信息";
 "Delete Items" = "删除信息";
 
 "Add Field" = "增加项目";
