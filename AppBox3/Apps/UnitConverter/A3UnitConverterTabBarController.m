@@ -16,12 +16,7 @@
 #import "UnitConvertItem+extension.h"
 #import "UnitFavorite.h"
 #import "UnitFavorite+extension.h"
-
-// NSUserDefaults key values:
-NSString *kWhichTabPrefKey		= @"kWhichTab";     // which tab to select at launch
-NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
-
-#define kDefaultTabSelection    0	// default tab value is 0 (tab #1), stored in NSUserDefaults
+#import "A3AppDelegate.h"
 
 @interface A3UnitConverterTabBarController ()
 
@@ -60,21 +55,7 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
 		}
 
         self.delegate = self;
-        
-        // test for "kWhichTabPrefKey" key value
-        NSUInteger testValue = [[NSUserDefaults standardUserDefaults] integerForKey:kWhichTabPrefKey];
-        if (testValue == 0)
-        {
-            // no default source value has been set, create it here
-            //
-            // since no default values have been set (i.e. no preferences file created), create it here
-            NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-                                         [NSNumber numberWithInt:kDefaultTabSelection], kWhichTabPrefKey,
-                                         nil];
-            
-            [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
-        }
-        
+
         [self setupTabBar];
     }
     
@@ -85,19 +66,38 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
 {
     [super viewDidLoad];
 
-    NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterCurrentUnitTap];
-    
-    if (vcIdx > [self.viewControllers count] - 1) {
-        self.selectedViewController = [self.viewControllers lastObject];
-    }
-    else {
-        if (vcIdx >= 0 && vcIdx < self.viewControllers.count) {
-            UIViewController *selectedVC = self.viewControllers[vcIdx];
-            self.selectedViewController = selectedVC;
-        }
-    }
-    
-    self.moreNavigationController.navigationBar.hidden = NO;
+    [self resetSelectedTab];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)resetSelectedTab {
+	NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterCurrentUnitTap];
+
+	if (vcIdx > [self.viewControllers count] - 1) {
+		self.selectedViewController = [self.viewControllers lastObject];
+	}
+	else {
+		if (vcIdx >= 0 && vcIdx < self.viewControllers.count) {
+			UIViewController *selectedVC = self.viewControllers[vcIdx];
+			self.selectedViewController = selectedVC;
+		}
+	}
+}
+
+- (void)cloudStoreDidImport {
+	NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterCurrentUnitTap];
+	if (self.selectedIndex != vcIdx) {
+		[self resetSelectedTab];
+	}
+}
+
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)didReceiveMemoryWarning
@@ -120,9 +120,9 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
 
 	if ([self isMovingFromParentViewController]) {
 		[self.navigationController setNavigationBarHidden:NO animated:NO];
+		[self removeObserver];
 	}
 }
-
 
 - (NSMutableArray *)unitTypes {
 	if (nil == _unitTypes) {

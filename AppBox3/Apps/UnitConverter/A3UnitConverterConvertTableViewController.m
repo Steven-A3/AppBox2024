@@ -70,6 +70,8 @@ NSString * const A3UnitConverterTableViewUnitValueKey = @"A3UnitConverterTableVi
     BOOL        _isTemperatureMode;
 
 	BOOL 		_isSwitchingFractionMode;
+	BOOL		_cancelInputNewCloudDataReceived;
+	BOOL		_barButtonEnabled;
 }
 
 NSString *const A3UnitConverterDataCellID = @"A3UnitConverterDataCell";
@@ -88,6 +90,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	_barButtonEnabled = YES;
 
 	_fmMoveTableView = [[FMMoveTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
 	_fmMoveTableView.delegate = self;
@@ -147,9 +151,23 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewWillHide:) name:A3NotificationRightSideViewWillDismiss object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+}
+
+- (void)cloudStoreDidImport {
+	if ([self firstResponder]) {
+		_cancelInputNewCloudDataReceived = YES;
+		[self.firstResponder resignFirstResponder];
+	}
+
+	[self.fmMoveTableView reloadData];
+	[self enableControls:_barButtonEnabled];
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
@@ -425,6 +443,12 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)setUnitValue:(NSNumber *)unitValue {
     [[NSUserDefaults standardUserDefaults] setObject:unitValue forKey:A3UnitConverterTableViewUnitValueKey];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:unitValue forKey:A3UnitConverterTableViewUnitValueKey];
+		[store synchronize];
+	}
 }
 
 - (NSNumber *)unitValue {
@@ -1261,6 +1285,10 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 	[self setFirstResponder:nil];
 
+	if (_cancelInputNewCloudDataReceived) {
+		_cancelInputNewCloudDataReceived = NO;
+		return;
+	}
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
 
 	if (_isSwitchingFractionMode) {

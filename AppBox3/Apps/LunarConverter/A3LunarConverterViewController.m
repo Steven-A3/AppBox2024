@@ -120,12 +120,7 @@
 	// Init data
 	_calendar = [[A3AppDelegate instance] calendar];
 
-	_inputDateComponents = [[NSUserDefaults standardUserDefaults] dateComponentsForKey:A3LunarConverterLastInputDateComponents];
-	if (!_inputDateComponents) {
-		_inputDateComponents = [_calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:[NSDate date]];
-	}
-	_isLunarInput = [[NSUserDefaults standardUserDefaults] boolForKey:A3LunarConverterLastInputDateIsLunar];
-
+	[self reloadDataFromStore];
 	_isShowKeyboard = YES;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuBecameFirstResponder) name:A3MainMenuBecameFirstResponder object:nil];
@@ -140,7 +135,22 @@
 }
 
 - (void)cloudStoreDidImport {
+	BOOL oldIsLunarInput = _isLunarInput;
+	[self reloadDataFromStore];
 
+	if (oldIsLunarInput != _isLunarInput) {
+		_isLunarInput = oldIsLunarInput;
+		[self swapAction:nil];
+	}
+	[self calculateDate];
+}
+
+- (void)reloadDataFromStore {
+	_inputDateComponents = [[NSUserDefaults standardUserDefaults] dateComponentsForKey:A3LunarConverterLastInputDateComponents];
+	if (!_inputDateComponents) {
+		_inputDateComponents = [_calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:[NSDate date]];
+	}
+	_isLunarInput = [[NSUserDefaults standardUserDefaults] boolForKey:A3LunarConverterLastInputDateIsLunar];
 }
 
 - (void)removeObserver {
@@ -765,6 +775,13 @@
         [[NSUserDefaults standardUserDefaults] setBool:_isLunarInput forKey:A3LunarConverterLastInputDateIsLunar];
         [[NSUserDefaults standardUserDefaults] synchronize];
 
+		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+			// Date Components 는 setDateComponents 에서 KVStore 에 저장함
+			[store setBool:_isLunarInput forKey:A3LunarConverterLastInputDateIsLunar];
+			[store synchronize];
+		}
+
         // 첫 페이지의 결과값
         // 첫페이지의 입력이 양력일 경우 leapmonth = NO
         // 첫페이지 입력이 양력이고 결과에 윤달이 있으면 leapmonth = YES
@@ -777,7 +794,11 @@
         // 두번째 페이지뷰를 만든다.
         if ( _isLunarInput && isInputLeapMonth ) {
             [self showSecondPage];
-            self.secondPageResultDateComponents = [NSDate lunarCalcWithComponents:self.inputDateComponents gregorianToLunar:NO leapMonth:YES korean:[[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion] resultLeapMonth:&isResultLeapMonth];
+            self.secondPageResultDateComponents = [NSDate lunarCalcWithComponents:self.inputDateComponents
+																 gregorianToLunar:NO
+																		leapMonth:YES
+																		   korean:[[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion]
+																  resultLeapMonth:&isResultLeapMonth];
 			[self updatePageData:_secondPageView resultDate:self.secondPageResultDateComponents isInputLeapMonth:isInputLeapMonth isResultLeapMonth:NO];
         }
         else {
@@ -950,7 +971,7 @@
 	_isLunarInput = !_isLunarInput;
 
 	// swap 애니메이션
-	UIView *baseView = button.superview.superview;
+	UIView *baseView = !_pageControl.currentPage ? _firstPageView : _secondPageView;
 	A3LunarConverterCellView *topView = (A3LunarConverterCellView*)[baseView viewWithTag:100];
 	topView.descriptionLabel.hidden = YES;
 
