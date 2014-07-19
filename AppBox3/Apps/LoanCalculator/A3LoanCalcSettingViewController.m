@@ -40,12 +40,6 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Settings");
     
     self.tableView.separatorColor = [self tableViewSeparatorColor];
@@ -54,6 +48,13 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
     if (IS_IPHONE) {
         [self rightBarButtonDoneButton];
     }
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)cloudKeyValueStoreDidImport {
+	_preference = nil;
+	[self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -62,6 +63,14 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 	if ([self isBeingDismissed]) {
 		[self removeObserver];
 	}
+}
+
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)didMoveToParentViewController:(UIViewController *)parent {

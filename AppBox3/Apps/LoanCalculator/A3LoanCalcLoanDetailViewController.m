@@ -27,6 +27,7 @@
 @interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate, A3KeyboardDelegate, UITextFieldDelegate>
 {
     BOOL _isLoanCalcEdited;
+	BOOL _cancelInputNewCloudDataRecieved;
 }
 
 @end
@@ -69,13 +70,31 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 
 	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)cloudKeyValueStoreDidImport {
+	if (self.firstResponder) {
+		_cancelInputNewCloudDataRecieved = YES;
+	}
+	self.calcItems = nil;
+
+	NSString *key = _isLoanData_A ? A3LoanCalcLoanDataKey_A : A3LoanCalcLoanDataKey_B;
+	NSData *loanData = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+	if (loanData) {
+		self.loanData = [NSKeyedUnarchiver unarchiveObjectWithData:loanData];
+	}
+
+	[self.tableView reloadData];
+	[self enableControls:YES];
 }
 
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
 
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
@@ -328,6 +347,21 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
         //[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
         [self scrollToTopOfTableView];
     }
+	[self saveLoanData];
+}
+
+- (void)saveLoanData
+{
+	NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:self.loanData];
+	NSString *key = _isLoanData_A ? A3LoanCalcLoanDataKey_A : A3LoanCalcLoanDataKey_B;
+	[[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:key];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:myLoanData forKey:key];
+		[store synchronize];
+	}
 }
 
 #pragma mark - LoanCalcSelectFrequencyDelegate
@@ -515,8 +549,11 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 			textField.text = [self.loanFormatter stringFromNumber:self.loanData.extraPaymentMonthly];
         }
     }
-    
-    [self updateLoanCalculation];
+
+	if (!_cancelInputNewCloudDataRecieved) {
+		[self updateLoanCalculation];
+	}
+	_cancelInputNewCloudDataRecieved = NO;
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField

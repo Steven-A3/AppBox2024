@@ -20,6 +20,7 @@
 
 @interface A3LoanCalcLoanDetailViewController : A3LoanCalcContentsTableViewController
 
+@property (nonatomic, assign) BOOL isLoanData_A;
 @property (nonatomic, assign) id<LoanCalcLoanDataDelegate> delegate;
 
 @end
