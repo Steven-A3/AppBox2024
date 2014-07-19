@@ -134,11 +134,17 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
     }
-    
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
+- (void)cloudStoreDidImport {
+
+}
+
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3MainMenuBecameFirstResponder object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];

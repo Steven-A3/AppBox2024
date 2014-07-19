@@ -91,7 +91,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
     
     // Radian / Degrees 버튼 초기화
     [_calculator setRadian:[self radian]];
@@ -99,7 +99,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     [_calculatorkeypad.radbutton setTitle:[self radian] == YES ? @"Deg" : @"Rad" forState:UIControlStateNormal];
 }
 
-- (void)cloudKeyValueStoreDidImport {
+- (void)cloudStoreDidImport {
 	NSString *mathExpression = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyCalculatorSavedLastExpression];
 	if (mathExpression){
 		[_calculator setMathExpression:mathExpression];

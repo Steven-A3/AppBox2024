@@ -140,12 +140,12 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide:) name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
-- (void)cloudKeyValueStoreDidImport {
+- (void)cloudStoreDidImport {
 	if (self.firstResponder) {
 		_cancelInputCloudDataRecieved = YES;
 		[self.firstResponder resignFirstResponder];
