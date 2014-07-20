@@ -1218,8 +1218,18 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 	if (!_isSwitchingFractionMode && [textField.text length]) {
 		self.textBeforeEditingTextField = textField.text;
-
 		float value = [[self.decimalFormatter numberFromString:textField.text] floatValue];
+        
+        if (cell.inputType == UnitInput_FeetInch) {
+            // 0.3048, 0.0254
+            // feet inch 값을 inch값으로 변화시킨다.
+            float feet = [[self.decimalFormatter numberFromString:cell.valueField.text] floatValue];
+            float inch = [[self.decimalFormatter numberFromString:cell.value2Field.text] floatValue];
+            value = feet + inch/kInchesPerFeet;
+            FNLOG(@"Feet : %f / Inch : %f", feet, inch);
+            FNLOG(@"Calculated : %f", value);
+        }
+        
 //		if (value != 0.0 && value != [[self unitValue] floatValue]) {
 //        if ([self.unitValue integerValue] != 1 && [UnitHistory MR_countOfEntities] != 0 ) {
         if ([self.unitValue integerValue] != 1 || ([self.unitValue integerValue] != 1 && [UnitHistory MR_countOfEntities] > 0)) {

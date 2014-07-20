@@ -181,7 +181,17 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
     NSInteger numberOfLines = [items count] + 1;
 	[cell setNumberOfLines:@(numberOfLines)];
     
-	((UILabel *) cell.leftLabels[0]).text = [self.decimalFormatter stringFromNumber:unitHistory.value];
+    if ([unitHistory.sourceUnitID isEqualToString:@"Length_feet inches"]) {
+        float value = [unitHistory.value floatValue];
+        int feet = (int)value;
+        float inch = (value - feet) * (0.3048/0.0254);
+    
+        ((UILabel *) cell.leftLabels[0]).text = [NSString stringWithFormat:@"%@ft %@in", [self.decimalFormatter stringFromNumber:@(feet)], [self.decimalFormatter stringFromNumber:@(inch)]];
+    }
+    else {
+        ((UILabel *) cell.leftLabels[0]).text = [self.decimalFormatter stringFromNumber:unitHistory.value];
+    }
+	
     ((UILabel *) cell.rightLabels[0]).text = [unitHistory.updateDate timeAgo];
     
     ((UILabel *) cell.leftLabels[0]).font = [UIFont systemFontOfSize:15.0];
@@ -215,7 +225,16 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
             ((UILabel *) cell.leftLabels[index]).text = [self.decimalFormatter stringFromNumber:@(targetValue)];
         }
         else {
-            ((UILabel *) cell.leftLabels[index]).text = [self.decimalFormatter stringFromNumber:@(unitHistory.value.floatValue * rate)];
+            if ([targetUnit.uniqueID isEqualToString:@"Length_feet inches"]) {
+                float value = unitHistory.value.floatValue * rate;
+                int feet = (int)value;
+                float inch = (value - feet) * (0.3048/0.0254);
+                
+                ((UILabel *) cell.leftLabels[index]).text = [NSString stringWithFormat:@"%@ft %@in", [self.decimalFormatter stringFromNumber:@(feet)], [self.decimalFormatter stringFromNumber:@(inch)]];
+            }
+            else {
+                ((UILabel *) cell.leftLabels[index]).text = [self.decimalFormatter stringFromNumber:@(unitHistory.value.floatValue * rate)];
+            }
         }
         
         // a to b = 40.469 표시 (right label)

@@ -118,6 +118,7 @@
     NSDictionary *weekendTextAttr = @{NSForegroundColorAttributeName : _weekendTextColor,NSFontAttributeName : _dateFont,NSParagraphStyleAttributeName : paraStyle};
     NSDictionary *todayTextAttr = @{NSForegroundColorAttributeName : [UIColor whiteColor],NSFontAttributeName : _dateFont,NSParagraphStyleAttributeName : paraStyle};
 
+    // Calendar, 달력 그리기.
     NSInteger index = 0;
     for (NSInteger y=0; y < _numberOfWeeks; y++) {
         CGContextSetShouldAntialias(context , YES);
@@ -139,7 +140,7 @@
 				[str drawInRect:CGRectMake(xPos, yPos + (IS_IPHONE ? 9.0 : 15.0), _cellSize.width, _dateBGHeight + 5.0) withAttributes:todayTextAttr];
 				CGContextRestoreGState(context);
             }
-            else{
+            else {
                 [str drawInRect:CGRectMake(xPos, yPos + (IS_IPHONE ? 9.0 : 15.0), _cellSize.width, _dateBGHeight + 5.0) withAttributes:(x==0 || x==6 ? weekendTextAttr :textAttr)];
             }
             xPos += _cellSize.width;
@@ -156,25 +157,29 @@
         CGContextStrokePath(context);
 //        yPos += 0.5;
     }
+
     
-    // 빨간선을 그린다.
+    
+    // Period 라인을 그린다.
+    // 빨간선.
     for (LineDisplayModel *ldmObj in _redLines) {
         CGContextSetFillColorWithColor(context, [ldmObj.lineColor CGColor]);
         CGContextFillRect(context, ldmObj.lineRect);
     }
-    
+    // 녹색선.
     for (LineDisplayModel *ldmObj in _greenLines) {
         CGContextSetFillColorWithColor(context, [ldmObj.lineColor CGColor]);
         CGContextFillRect(context, ldmObj.lineRect);
     }
     
-    
+    // 노랑선.
     for (LineDisplayModel *ldmObj in _yellowLines) {
         CGContextSetFillColorWithColor(context, [ldmObj.lineColor CGColor]);
         CGContextFillRect(context, ldmObj.lineRect);
     }
     
-    // 라인을 그린다.
+
+    // Period Circle 을 그린다.
     UIColor *outlineColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
     UIColor *outCircleColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.05];
     CGContextSetShouldAntialias(context , YES);
@@ -251,10 +256,10 @@
         LineDisplayModel *ldpModel = [[LineDisplayModel alloc] init];
 		CGFloat diffFromSeparator2 = diffFromSeparator /*+ ((stWeek > 1) ? 0.5 : 0.0) */;
         ldpModel.lineColor = color;
-        ldpModel.lineRect = CGRectMake(stWeekday * _cellSize.width+(isStartMargin ? 2.0 : 0.0), (stWeek +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight , (edWeekday-stWeekday+1)*_cellSize.width-(isEndMargin ? 2.0 : 0.0), lineHeight);
+        ldpModel.lineRect = CGRectMake(stWeekday * _cellSize.width + (isStartMargin ? 2.0 : 0.0), (stWeek +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight , (edWeekday-stWeekday+1)*_cellSize.width-(isEndMargin ? 2.0 : 0.0), lineHeight);
         [array addObject:ldpModel];
     }
-    else{
+    else {
         NSInteger totalWeek = (edWeek - stWeek)+1;
         for (NSInteger i=0; i < totalWeek; i++) {
             LineDisplayModel *ldpModel = [[LineDisplayModel alloc] init];
@@ -266,7 +271,7 @@
             else if ( i == (totalWeek-1) ) {
                 ldpModel.lineRect = CGRectMake(0, (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight , (edWeekday+1)*_cellSize.width - (isEndMargin ? 2.0 : 0.0), lineHeight);
             }
-            else{
+            else {
                 ldpModel.lineRect = CGRectMake(0, (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight, 7 * _cellSize.width, lineHeight);
             }
             [array addObject:ldpModel];
