@@ -255,10 +255,23 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 - (BOOL)isOverlapStartDate:(NSDate*)startDate endDate:(NSDate*)endDate accountID:(NSString*)accountID periodID:(NSString*)periodID
 {
     NSArray *array = nil;
-    if( [periodID length] < 1 )
-        return [[LadyCalendarPeriod MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(accountID == %@) AND (isPredict == %@) AND ((startDate <= %@ AND endDate >= %@) OR (startDate <= %@ AND endDate >= %@))", accountID, @(NO), startDate, startDate, endDate, endDate]] count] > 0;
-    else
+    if( [periodID length] < 1 ) {
+//        NSMutableString *sqlString = [NSMutableString new];
+//        [sqlString appendFormat:@"(accountID == %@)", accountID];
+//        [sqlString appendString:@" AND "];
+//        [sqlString appendFormat:@"(isPredict == %@)", @(NO)];
+//        [sqlString appendString:@" AND "];
+//        [sqlString appendFormat:@"(startDate <= %@ AND endDate >= %@)", startDate, startDate];
+//        [sqlString appendString:@" OR "];
+//        [sqlString appendFormat:@"(startDate <= %@ AND endDate >= %@)", startDate, startDate];
+//        
+//        [sqlString appendFormat:@"(accountID == %@)", accountID];
+//        [sqlString appendFormat:@"(accountID == %@)", accountID];
+        array = [LadyCalendarPeriod MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(uniqueID != nil) AND (accountID == %@) AND (isPredict == %@) AND ((startDate <= %@ AND endDate >= %@) OR (startDate <= %@ AND endDate >= %@))", accountID, @(NO), startDate, startDate, endDate, endDate]];
+    }
+    else {
         array = [LadyCalendarPeriod MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(accountID == %@) AND (isPredict == %@) AND ((startDate <= %@ AND endDate >= %@) OR (startDate <= %@ AND endDate >= %@)) AND uniqueID != %@", accountID, @(NO), startDate, startDate, endDate, endDate, periodID]];
+    }
     
     return ([array count] > 0 );
 }

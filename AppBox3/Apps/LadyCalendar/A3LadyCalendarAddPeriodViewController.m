@@ -93,7 +93,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		_periodItem = [LadyCalendarPeriod MR_createEntity];
 		_periodItem.updateDate = [NSDate date];
 		_periodItem.startDate = [A3DateHelper dateMake12PM:[NSDate date]];
-		[_periodItem reassignUniqueIDWithStartDate];
+//		[_periodItem reassignUniqueIDWithStartDate];
 		_periodItem.cycleLength = @28;
 		_periodItem.isPredict = @NO;
 		_periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
@@ -653,6 +653,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     if ( _prevPeriod ) {
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:_prevPeriod.startDate toDate:_periodItem.startDate];
         _prevPeriod.cycleLength = @(diffDays);
+    }
+    
+    if (!_periodItem.uniqueID) {
+        [_periodItem reassignUniqueIDWithStartDate];
     }
 
 	_periodItem.updateDate = [NSDate date];
