@@ -242,14 +242,18 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     
     NSString *unitPrice1Txt, *unitPrice2Txt;
     if (unitPriceAItem.unitID) {
-        unitPrice1Txt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPriceA)], [unitPriceAItem unit].unitShortName];
+        unitPrice1Txt = [NSString stringWithFormat:@"%@/%@",
+						[self.currencyFormatter stringFromNumber:@(unitPriceA)],
+						NSLocalizedStringFromTable([unitPriceAItem unit].unitShortName, @"unitShort", nil)];
     }
     else {
         unitPrice1Txt = [self.currencyFormatter stringFromNumber:@(unitPriceA)];
     }
     
     if (unitPriceBItem.unitID) {
-        unitPrice2Txt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPriceB)], [unitPriceBItem unit].unitShortName];
+        unitPrice2Txt = [NSString stringWithFormat:@"%@/%@",
+						[self.currencyFormatter stringFromNumber:@(unitPriceB)],
+						NSLocalizedStringFromTable([unitPriceBItem unit].unitShortName, @"unitShort", nil)];
     }
     else {
         unitPrice2Txt = [self.currencyFormatter stringFromNumber:@(unitPriceB)];

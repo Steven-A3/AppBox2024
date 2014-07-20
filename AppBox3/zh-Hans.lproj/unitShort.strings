@@ -290,8 +290,8 @@
 "yards/hour" = "码/小时";
 "yards/minute" = "码/分";
 "yards/second" = "码/秒";
-"°C" = "°C";
-"°F" = "°F";
+"celsius" = "°C";
+"fahrenheit" = "°F";
 "kelvin" = "开耳芬";
 "rankine" = "兰金";
 "réaumure" = "列氏";
@@ -366,3 +366,5 @@
 "tons(UK or long)" = "吨[英国]";
 "tons(US or short)" = "吨[美国]";
 "tonnes" = "吨(tonnes)";
+
+"feet inches" = "feet inches";

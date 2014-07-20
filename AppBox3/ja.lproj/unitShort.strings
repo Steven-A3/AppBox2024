@@ -290,8 +290,8 @@
 "yards/hour" = "ヤード/時間";
 "yards/minute" = "ヤード/分";
 "yards/second" = "ヤード/秒";
-"°C" = "°C";
-"°F" = "°F";
+"celsius" = "°C";
+"fahrenheit" = "°F";
 "kelvin" = "ケルビン";
 "rankine" = "ランキン";
 "réaumure" = "レオミュール";
@@ -366,3 +366,5 @@
 "tons(UK or long)" = "トン[英国]";
 "tons(US or short)" = "トン[米国]";
 "tonnes" = "トン(tonnes)";
+
+"feet inches" = "feet inches";

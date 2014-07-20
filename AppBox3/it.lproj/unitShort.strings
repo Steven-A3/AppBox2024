@@ -290,8 +290,8 @@
 "yards/hour" = "iarde/ore";
 "yards/minute" = "iarde/minuto";
 "yards/second" = "iarde/secondo";
-"°C" = "°C";
-"°F" = "°F";
+"celsius" = "°C";
+"fahrenheit" = "°F";
 "kelvin" = "kelvin";
 "rankine" = "rankine";
 "réaumure" = "réaumure";
@@ -366,3 +366,5 @@
 "tons(UK or long)" = "T(UK o lungo)";
 "tons(US or short)" = "T(UK o corto)";
 "tonnes" = "T";
+
+"feet inches" = "feet inches";

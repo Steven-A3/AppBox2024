@@ -522,6 +522,8 @@
 		689C9A591839CD7F007C97EE /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A491839CD7F007C97EE /* UIWebView+AFNetworking.m */; };
 		689D41FB1966F33900D7F1A7 /* A3DateKeyboardViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 689D41F91966F33900D7F1A7 /* A3DateKeyboardViewController_iPad.xib */; };
 		689D41FC1966F33900D7F1A7 /* A3DateKeyboardViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 689D41FA1966F33900D7F1A7 /* A3DateKeyboardViewController_iPhone.xib */; };
+		689E9855197C1B99003710C3 /* A3UnitNamesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689E9854197C1B99003710C3 /* A3UnitNamesTest.m */; };
+		689E9856197C1BB5003710C3 /* UnitCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1CD18CEC76C004084EF /* UnitCommon.m */; };
 		68ADE14717D83D28009618A7 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE13F17D83D28009618A7 /* MMDrawerBarButtonItem.m */; };
 		68ADE14817D83D28009618A7 /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14117D83D28009618A7 /* MMDrawerController.m */; };
 		68ADE14917D83D28009618A7 /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14417D83D28009618A7 /* MMDrawerVisualState.m */; };
@@ -1853,6 +1855,7 @@
 		689D41F8196661EC00D7F1A7 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = pl; path = pl.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
 		689D41F91966F33900D7F1A7 /* A3DateKeyboardViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DateKeyboardViewController_iPad.xib; sourceTree = "<group>"; };
 		689D41FA1966F33900D7F1A7 /* A3DateKeyboardViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DateKeyboardViewController_iPhone.xib; sourceTree = "<group>"; };
+		689E9854197C1B99003710C3 /* A3UnitNamesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitNamesTest.m; sourceTree = "<group>"; };
 		68ADE13E17D83D28009618A7 /* MMDrawerBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDrawerBarButtonItem.h; path = MMDrawerController/MMDrawerBarButtonItem.h; sourceTree = "<group>"; };
 		68ADE13F17D83D28009618A7 /* MMDrawerBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMDrawerBarButtonItem.m; path = MMDrawerController/MMDrawerBarButtonItem.m; sourceTree = "<group>"; };
 		68ADE14017D83D28009618A7 /* MMDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDrawerController.h; path = MMDrawerController/MMDrawerController.h; sourceTree = "<group>"; };
@@ -3982,6 +3985,7 @@
 				6876D70E17A75E5A00E16991 /* Currency */,
 				6876D6FF17A75DAE00E16991 /* Supporting Files */,
 				685946D018C371C800528190 /* A3SpeechTest.m */,
+				689E9854197C1B99003710C3 /* A3UnitNamesTest.m */,
 			);
 			path = "AppBox3 Tests";
 			sourceTree = "<group>";
@@ -6441,7 +6445,9 @@
 				68DBF05017CB8AA0009CAC33 /* HolidayData.m in Sources */,
 				8079DFBC190F93B90084BD89 /* A3DateLunarTest.m in Sources */,
 				68DBF05417CB8AAB009CAC33 /* HolidayData+Asia.m in Sources */,
+				689E9856197C1BB5003710C3 /* UnitCommon.m in Sources */,
 				68DBF04B17CB884F009CAC33 /* A3HolidaysTest.m in Sources */,
+				689E9855197C1B99003710C3 /* A3UnitNamesTest.m in Sources */,
 				68DBF05717CB8AAB009CAC33 /* HolidayData+MiddleEast.m in Sources */,
 				6819A86F18A6092B00E63C8B /* NSDateFormatter+A3Addition.m in Sources */,
 				68143D7A18E4FFBB00569691 /* NSDate+TimeAgo.m in Sources */,

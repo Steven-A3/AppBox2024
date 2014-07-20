@@ -39,7 +39,7 @@
 				continue;
 			}
 
-            NSString *unitShortName = [NSString stringWithCString:unitShortNames[typeIdx][unitIdx] encoding:NSUTF8StringEncoding];
+            NSString *unitShortName = [NSString stringWithCString:unitNames[typeIdx][unitIdx] encoding:NSUTF8StringEncoding];
             NSNumber *conversionRate = [NSNumber numberWithDouble:conversionTable[typeIdx][unitIdx]];
 
             UnitItem *unit = [UnitItem MR_createEntity];

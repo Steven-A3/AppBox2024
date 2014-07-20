@@ -302,8 +302,8 @@
 "yards/minute" = "";
 "yards/second" = "";
 
-"°C" = "°C";
-"°F" = "°F";
+"celsius" = "°C";
+"fahrenheit" = "°F";
 "kelvin" = "K";
 "rankine" = "";
 "réaumure" = "";
@@ -381,3 +381,5 @@
 "tons(UK or long)" = "Tonnen";
 "tons(US or short)" = "Tonnen";
 "tonnes" = "t";
+
+"feet inches" = "feet inches";

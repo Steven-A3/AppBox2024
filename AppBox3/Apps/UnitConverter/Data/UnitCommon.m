@@ -74,7 +74,7 @@ const char *unitNames[][34] = {
         "mm²",					// 13
         "squares(of timber)",	// 14
         "rods²(or poles²)",		// 15
-        "Yards²",				// 16
+        "yards²",				// 16
         "townships",			// 17
         "pyung"					// 18
     },
