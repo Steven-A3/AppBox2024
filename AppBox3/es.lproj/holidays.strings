@@ -43,7 +43,7 @@
 "Assumption Day" = "Día de la Asunción";
 "Ferragosto/Assumption Day" = "Día de la Asunción";
 "Assumption Day(only for Guatemala City)" = "Día de la Asunción(Solamente para la Ciudad de Guatemala)";
-"Assumption of Mary" = "La Asunción de María ";
+"Assumption of Mary" = "Día de la Asunción";
 "Assumption of the Blessed Virgin Mary" = "La Asunción de la Virgen María";
 "August Civic Holiday" = "Fiesta Cívica de Agosto";
 "August Festivals(Aug 1~7)" = "Festivales de Agosto";
@@ -146,7 +146,7 @@
 "Early May Bank Holiday" = "Temprano Festival Mayo del Banco";
 "Easter" = "Pascua";
 "Easter Day" = "Pascua";
-"Easter Monday" = "Lúnes de Pascua";
+"Easter Monday" = "Pascua";
 "Easter Monday(England/Wales)" = "Lúnes de Pascua(Inglaterra/Wales)";
 "Easter Sunday" = "Domingo de Pascua";
 "Easter and Easter Monday" = "Pascua y el Lúnes de Pascua";
@@ -156,7 +156,7 @@
 "Epiphany" = "Epifanía";
 "Evacuation Day(Eid el-Galaa)" = "Día de Evacuación ";
 "Family Day" = "Día de la Familia";
-"Father's Day" = "Día del padre";
+"Father's Day" = "Día del Padre";
 "Feast of Assumption" = "Fiesta de Asunción";
 "Feast of Our Lady of Victories (Jum il-Vittorja)" = "Fiesta de Nuestra Señora de Victorias (Jum Il-Vittorja)";
 "Feast of St. Joseph" = "Fiesta de San José";
@@ -206,7 +206,7 @@
 "Hurricane Supplication Day" = "Día de Súplica Huracán ";
 "Hurricane Thanksgiving Day" = "Día de Gracias Huracanes";
 "Immaculate Conception Day" = "Día de Concepción Imaculada";
-"Immaculate Conception" = "Concepción Imaculada";
+"Immaculate Conception" = "Inmaculada Concepción";
 "Independence Day(Jum I-Indipendenza)" = "Día de la Independencia(Jum I-Indipendenza)";
 "Independence Day" = "Día de la Independencia";
 "Independence Day(July 28~29)" = "Día de la Independencia (28~29 de Julio)";
@@ -645,7 +645,7 @@
 "All Souls' Day" = "Día de los Espiritus";
 "St. Andrew's Day" = "Día de San Andrés";
 "Twelfth Night" = "Duodécima noche";
-"Epiphany" = "Epifanía (día decimotercero de Navidad)";
+"Epiphany" = "Día de Reyes";
 "Easter Saturday" = "Sábado Santo";
 "Walpurgis Night" = "Noche de Walpurgis";
 "Ascension Eve" = "Víspera de la Ascensión";
@@ -690,3 +690,8 @@
 "Chuseok( ~Sep 13)" = "Chuseok( ~Sep 13)";
 "Chuseok(Sep 21~23)" = "Chuseok(Sep 21~23)";
 "Hangul Day(HangeulNal)" = "Hangul Day(HangeulNal)";
+
+//2014.7.20
+"Día de San Valentin" = "Día de San Valentin";
+"Hispanic Day" = "Fiesta Nacional de España";
+
