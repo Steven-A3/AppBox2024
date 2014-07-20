@@ -34,23 +34,23 @@
 "Anti-fascist struggle day" = "Journée de la Lutte Anti-Fasciste";
 "Anzac Day" = "Journée du Corps d'armée australien et néo-zélandais";
 "Armed Forces Day" = "Journée des Forces armées";
-"Armistice Day" = "Journée de l'Armistice";
+"Armistice Day" = "Armistice de 1918";
 "Army Day" = "Journée de l'Armée";
 "Arrival of Indentured Labourers" = "Arrivée de l'Engagisme";
-"Ascension Day" = "Journée de l'Ascension";
+"Ascension Day" = "Ascension";
 "Ascension of Jesus" = "Ascension de Jésus";
 "Ash Wednesday" = "Mercredi des Cendres";
 "Assumption Day" = "Journée l'Assomption";
 "Ferragosto/Assumption Day" = "Journée l'Assomption";
 "Assumption Day(only for Guatemala City)" = "Assomption(seulement pour la ville de Guatemala)";
-"Assumption of Mary" = "Assomption de la Marie";
+"Assumption of Mary" = "Assomption";
 "Assumption of the Blessed Virgin Mary" = "Assomption de la Vierge Marie";
 "August Civic Holiday" = "Congé Civique d'Août";
 "August Festivals(Aug 1~7)" = "Festivités d'Août (1~7 août)";
 "August Holiday" = "Jour férié d'Août";
 "Autumnal Equinox" = "Equinoxe d'automne";
 "Bank Holiday" = "Jour férié";
-"Bastille Day" = "Fête Nationale (Prise de la Bastille)";
+"Bastille Day" = "Fête Nationale";
 "Bataan and Corregidor Day" = "Jour de Bataan et Corregidor";
 "Battle of Angamos" = "Bataille d'Angamos";
 "Battle of Boyacá" = "Bataille de Boyacá";
@@ -415,7 +415,7 @@
 "Unification Day" = "Jour de l'unification";
 "Unity Day" = "Jour de l'Unité";
 "V-E Day" = "Victoire 1945";
-"Valentine's Day" = "Saint Valentin";
+"Valentine's Day" = "Saint-Valentin";
 "Vernal Equinox" = "Équinoxe";
 "Vesak Day" = "Jour Vesak";
 "Veterans Day" = "Journée des anciens combattants";
@@ -507,7 +507,7 @@
 "Eid-e-Milad-Un Nabi(Prophet's Birthday)" = "Eid-e-Milad-Un Nabi(Anniversaire du Prophète)";
 "Sheikh Mujibur Rahman's Birth Anniversary" = "Anniversaire de Sheikh Mujibur Rahman";
 "Pahela Baishakh(Bengla New Year)" = "Pahela Baishakh(Bengla Nouvel An)";
-"Labour Day" = "Fête du travail";
+"Labour Day" = "Journée Internationale du Travail";
 "Buddha Purnuma(Buddha Day)" = "Buddha Purnuma(Fête de Bouddha)";
 "Shab e-Barat(Ascension of the Prophet)" = "Shab e-Barat(Ascension du Prophète)";
 "National Mourning Day" = "Journée nationale de deuil";
@@ -690,3 +690,8 @@
 "Chuseok( ~Sep 13)" = "Chuseok( ~Sep 13)";
 "Chuseok(Sep 21~23)" = "Chuseok(Sep 21~23)";
 "Hangul Day(HangeulNal)" = "Hangul Day(HangeulNal)";
+
+//2014.07.20
+"Victory in Europe Day" = "Victoire de 1945";
+"St. Stephen's Day(Alsace-Moselle)" = "Saint Étienne(Alsace-Moselle)";"
+

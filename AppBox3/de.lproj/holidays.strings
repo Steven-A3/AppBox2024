@@ -93,7 +93,7 @@
 "Chong Chao (Mid-Autumn Festival)" = "Chong Chao (Mittherbstfest)";
 "Chong Chao Bank Holiday" = "Chong Chao (Mittherbstfest)";
 "Chong Yeong (Ancestors' Day)" = "Chong Yeong (Tag der Vorfahren)";
-"Christmas Day" = "Weihnachten";
+"Christmas Day" = "1. Weihnachtsfeiertag";
 "Christmas Day(25~26)" = "Weihnachten (25. - 26.)";
 "Christmas Eve" = "Heiligabend";
 "Christmas Eve's Day" = "Heiligabend";
@@ -336,7 +336,7 @@
 "Peace Memorial Day" = "Frieden Gedenktag";
 "Pentecost Monday" = "Pfingstmontag";
 "Pentecost Sunday" = "Pfingstsonntag";
-"Pentecost" = "Pfingsten";
+"Pentecost" = "Pfingstsonntag";
 "People Power Day" = "People Power Day (Feiertag Philippinen)";
 "Pesach*" = "Pesach* (Jüdische Feiertag)";
 "Pidjiguiti Day" = "Pidjiguiti Tag (Feiertag in Guinea)";
@@ -691,3 +691,10 @@
 "Chuseok( ~Sep 13)" = "Chuseok( ~Sep 13)";
 "Chuseok(Sep 21~23)" = "Chuseok(Sep 21~23)";
 "Hangul Day(HangeulNal)" = "Hangul Day(HangeulNal)";
+
+//2014.07.20
+"International Workers' Day" = "Tag der Arbeit";
+"German Unity Day" = "Tag der Deutschen Einheit";
+"Day of Repentance and Prayer" = "Buß- und Bettag";
+"St Stephen's Day / Boxing Day" = "2. Weihnachtsfeiertag";
+
