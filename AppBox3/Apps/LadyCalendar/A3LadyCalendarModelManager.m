@@ -64,14 +64,14 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
         NSMutableDictionary *item = [self createDefaultSetting];
         [[NSUserDefaults standardUserDefaults] setObject:item forKey:A3LadyCalendarSetting];
         [[NSUserDefaults standardUserDefaults] synchronize];
+
+		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+			[store setObject:item forKey:A3LadyCalendarSetting];
+			[store synchronize];
+		}
     }
-    
-    // 배란예정일 간격을 저장한다.
-    if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarOvulationDays]  == nil ){
-        [[NSUserDefaults standardUserDefaults] setInteger:14 forKey:A3LadyCalendarOvulationDays];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-    
+
     [self savePredictItemBeforeNow];
     
     [self recalculateDates];
@@ -82,9 +82,15 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 	if( [self numberOfAccountInContext:context ] < 1 ){
 		[self addDefaultAccountInContext:context ];
 
-		if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] == nil ){
+		if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] == nil ) {
 			[[NSUserDefaults standardUserDefaults] setObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID];
 			[[NSUserDefaults standardUserDefaults] synchronize];
+
+			if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+				NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+				[store setObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID];
+				[store synchronize];
+			}
 		}
 	}
 }
@@ -125,6 +131,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 #pragma mark - account
+
 - (NSInteger)numberOfAccountInContext:(NSManagedObjectContext *)context {
     return [LadyCalendarAccount MR_countOfEntitiesWithContext:context];
 }

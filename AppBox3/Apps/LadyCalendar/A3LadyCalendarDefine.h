@@ -20,7 +20,6 @@
 #define PeriodItem_StartDate                @"startDate"
 #define PeriodItem_EndDate                  @"endDate"
 #define PeriodItem_CycleLength              @"cycleLength"
-#define PeriodItem_Ovulation                @"ovulation"
 #define PeriodItem_Notes                    @"periodNotes"
 #define PeriodItem_RegDate                  @"regDate"
 #define PeriodItem_AccountID                @"accountID"
@@ -86,7 +85,6 @@ typedef NS_ENUM(NSInteger, A3LadyCalendarPeriodCellType) {
     PeriodCellType_StartDate = 0,
     PeriodCellType_EndDate,
     PeriodCellType_CycleLength,
-    PeriodCellType_Ovulation,
     PeriodCellType_Notes,
     PeriodCellType_DateInput,
     PeriodCellType_Delete,

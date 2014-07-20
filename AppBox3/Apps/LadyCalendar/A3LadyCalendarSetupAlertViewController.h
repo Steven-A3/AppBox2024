@@ -12,7 +12,7 @@
 
 @interface A3LadyCalendarSetupAlertViewController : UITableViewController
 
-@property (strong, nonatomic) NSMutableDictionary *settingDict;
+@property (nonatomic, weak) NSMutableDictionary *settingDict;
 @property (nonatomic, weak) A3LadyCalendarModelManager *dataManager;
 
 @end

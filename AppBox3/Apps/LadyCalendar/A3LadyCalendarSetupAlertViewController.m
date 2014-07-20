@@ -121,6 +121,12 @@
 	[[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:self.settingDict forKey:A3LadyCalendarSetting];
+		[store synchronize];
+	}
+
 	[A3LadyCalendarModelManager setupLocalNotification];
 
     [tableView reloadData];
@@ -168,6 +174,12 @@
 
 	[[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:self.settingDict forKey:A3LadyCalendarSetting];
+		[store synchronize];
+	}
 	[A3LadyCalendarModelManager setupLocalNotification];
 
 	[self.tableView reloadData];
