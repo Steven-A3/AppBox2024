@@ -65,6 +65,7 @@ enum A3ExpenseListAddBudgetCellType {
 
 @property (nonatomic, strong) A3TableViewInputElement *calculatorTargetElement;
 @property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
+@property (nonatomic, assign) BOOL cancelInputNewCloudDataReceived;
 
 @end
 
@@ -74,6 +75,7 @@ enum A3ExpenseListAddBudgetCellType {
     BOOL _showDatePicker;
     BOOL _isCategoryModified;
 	BOOL _isAddBudget;
+	BOOL _barButtonEnabled;
 }
 
 #pragma mark -
@@ -106,6 +108,8 @@ enum A3ExpenseListAddBudgetCellType {
 {
     [super viewDidLoad];
 
+	_barButtonEnabled = YES;
+
     if (_currentBudget == nil || _currentBudget.category == nil) {
 		_isAddBudget = YES;
         self.title = NSLocalizedString(@"Add Budget", @"Add Budget");
@@ -134,9 +138,25 @@ enum A3ExpenseListAddBudgetCellType {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)cloudStoreDidImport {
+	if (self.firstResponder) {
+		_cancelInputNewCloudDataReceived = YES;
+		[self.firstResponder resignFirstResponder];
+	}
+	// reload data
+	_currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:_currentBudget.uniqueID];
+	[self.tableView reloadData];
+
+	[self enableControls:_barButtonEnabled];
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	FNLOG();
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidAppear object:nil];
@@ -166,6 +186,7 @@ enum A3ExpenseListAddBudgetCellType {
 }
 
 - (void)enableControls:(BOOL)enable {
+	_barButtonEnabled = enable;
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.navigationItem.rightBarButtonItem setEnabled:enable];
 }
@@ -243,7 +264,7 @@ enum A3ExpenseListAddBudgetCellType {
 
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
-		[_delegate performSelector:@selector(setExpenseBudgetDataFor:) withObject:resultBudget];
+		[_delegate setExpenseBudgetDataFor:resultBudget];
 	}
 	[self removeObserver];
 }
@@ -258,6 +279,13 @@ enum A3ExpenseListAddBudgetCellType {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3ExpenseListIsAddBudgetCanceledByUser];
     [[NSUserDefaults standardUserDefaults] synchronize];
 	[self removeObserver];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setBool:YES forKey:A3ExpenseListIsAddBudgetCanceledByUser];
+		[store synchronize];
+	}
+
 }
 
 -(NSString *) dateStringFromDate:(NSDate *)date {
@@ -882,6 +910,12 @@ static NSString *CellIdentifier = @"Cell";
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
 	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3ExpenseListCurrencyCode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:currencyCode forKey:A3ExpenseListCurrencyCode];
+		[store synchronize];
+	}
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationExpenseListCurrencyCodeChanged object:nil];
 
