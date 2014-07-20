@@ -102,7 +102,7 @@
 "Clean Monday" = "复活节的星期一";
 "Columbus Day / PR Friendship Day" = "哥伦布日/公关友谊日";
 "Columbus Day" = "哥伦布日";
-"Coming-of-Age Day" = "日本成人节";
+"Coming of Age Day" = "日本成人节";
 "Commemoration of Atatürk, Youth and Sports Day" = "纪念阿塔图尔克青年和体育节 ";
 "Commonwealth Constitution Day" = "联邦宪法日";
 "Concord Day" = "康科德日";
@@ -217,7 +217,7 @@
 "Independence of Guayaquil (1820)" = "瓜亚基尔独立纪念日(1820)";
 "Independent Czechoslovak State Day" = "捷克斯洛伐克建国日";
 "Indigenous Resistance Day" = "土著人民抵抗日";
-"International Women's Day" = "国际妇女节";
+"International Women's Day" = "妇女节";
 "Intl' Solidarity Day of Workers" = "国际劳动节";
 "Intl' Women's Day" = "国际妇女节";
 "Islamic New Year" = "伊斯兰新年";
@@ -285,7 +285,7 @@
 "Navy Day" = "海军节";
 "New Year Holiday" = "元旦";
 "New Year's Eve" = "新年除夕";
-"New Year's Day" = "新年";
+"New Year's Day" = "元旦";
 "New Year's Day(Fraternidade Universal)" = "元旦";
 "New Year's Day(Jan 1~2)" = "新年（1～2日）";
 "Ninoy Aquino Day" = "尼诺艾奎诺日";
@@ -335,7 +335,7 @@
 "Repentance Day" = "忏悔日";
 "Republic Day (Jum ir-Repubblika)" = "共和国纪念日";
 "Republic Day" = "共和国纪念日";
-"Respect-for-the-Aged Day" = "敬老节";
+"Respect for the Aged Day" = "敬老节";
 "Restoration Day" = "光复节";
 "Restoration of Independence" = "光复节";
 "Revolución de Mayo" = "革命纪念日";
@@ -638,9 +638,9 @@
 "Arbor Day" = "植树节";
 "Qingming Festival" = "清明节";
 "International Worker's Day" = "国际劳动节";
-"International Children's Day" = "国际儿童节";
+"International Children's Day" = "儿童节";
 "Summer Solstice" = "夏至";
-"The CPC Founding Day" = "中国共产党建党日";
+"The CPC Founding Day" = "建党节";
 "Spirit Festival" = "中元节";
 "Double Ninth Festival" = "重阳节";
 "Macau Special Administrative Region Establishment Day" = "澳门特别行政区成立日";
@@ -694,3 +694,6 @@
 "Chuseok( ~Sep 13)" = "Chuseok( ~Sep 13)";
 "Chuseok(Sep 21~23)" = "Chuseok(Sep 21~23)";
 "Hangul Day(HangeulNal)" = "Hangul Day(HangeulNal)";
+
+//2014.07.20
+"Chinese New Year's Eve" = "除夕";

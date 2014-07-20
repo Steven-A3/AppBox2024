@@ -40,7 +40,7 @@
 "Ascension Day" = "Festa d’Ascensione";
 "Ascension of Jesus" = "Ascensione di Gesú";
 "Ash Wednesday" = "Mercoledì delle ceneri";
-"Assumption Day" = "Giorno dell’Assunzione";
+"Assumption Day" = "Assunzione di Maria";
 "Ferragosto/Assumption Day" = "Ferragosto/Assunzione";
 "Assumption Day(only for Guatemala City)" = "Giorno dell’Assunzione(solo per la città Guatemala)";
 "Assumption of Mary" = "Assunzione di Maria";
@@ -102,7 +102,7 @@
 "Clean Monday" = "Pulizia Lunedì pasquale";
 "Columbus Day / PR Friendship Day" = "Festa di Columbus/Giorno d’Amicizia di PR";
 "Columbus Day" = "Festa di Columbus";
-"Coming-of-Age Day" = "Festa di Provenienti d’Età";
+"Coming of Age Day" = "Festa di Provenienti d’Età";
 "Commemoration of Atatürk, Youth and Sports Day" = "Giorno di Commemorazione di Atatürk, Gioventù e dello Sport";
 "Commonwealth Constitution Day" = "Giorno della Costituzione Confederale";
 "Concord Day" = "Giorno di Concord";
@@ -146,7 +146,7 @@
 "Early May Bank Holiday" = "Giorni festivi di Primi Maggio";
 "Easter" = "Pasqua";
 "Easter Day" = "Feste di Pasqua";
-"Easter Monday" = "Pasquetta";
+"Easter Monday" = "Lunedi dell'Angelo";
 "Easter Monday(England/Wales)" = "Pasquetta (Inghilterra/Galles)";
 "Easter Sunday" = "Pasqua";
 "Easter and Easter Monday" = "Pasqua e Pasquetta";
@@ -237,7 +237,7 @@
 "Labour Day(WA)" = "Festa del Lavoro(WA)";
 "Lantern Festival" = "Festa delle Lanterne";
 "Leopold III, Margrave of Austria" = "Leopoldo III, Margravio d’Austria";
-"Liberation Day" = "Giorno di Liberazione";
+"Liberation Day" = "Festa della Liberazione";
 "Liberation Day/FSLN Revolution Day" = "Giorno di Liberazione/FSLN Giorno di Rivoluzione";
 "Liberty Day" = "Giorno della Libertà";
 "Lunar New Year Holiday" = "Capodanno Lunare";
@@ -286,7 +286,7 @@
 "Navy Day" = "Giorno della Marina";
 "New Year Holiday" = "Festivi di Nuovo Anno";
 "New Year's Eve" = "Vigilia dell’Anno Nuovo";
-"New Year's Day" = "Capodanno";
+"New Year's Day" = "Primo dell'anno";
 "New Year's Day(Fraternidade Universal)" = "Capodanno(Fraternità Universale)";
 "New Year's Day(Jan 1~2)" = "Capodanno(Gen 1~2)";
 "Ninoy Aquino Day" = "Giorno di Ninoy Aquino";
@@ -336,7 +336,7 @@
 "Repentance Day" = "Giorno di Pentimento";
 "Republic Day (Jum ir-Repubblika)" = "Giorno della Repubblica(Jum ir-Repubblika)";
 "Republic Day" = "Festa della Repubblica";
-"Respect-for-the-Aged Day" = "Giorno del Rispetto per l’Età";
+"Respect for the Aged Day" = "Giorno del Rispetto per l’Età";
 "Restoration Day" = "Giorno di Restituzione";
 "Restoration of Independence" = "Restituzione dell’Indipendenza";
 "Revolución de Mayo" = "Revolzione di Mayo";
@@ -654,7 +654,7 @@
 "All Souls' Day" = "Ognissanti";
 "St. Andrew's Day" = "Sant'Andrea";
 "Twelfth Night" = "Epifania";
-"Epiphany" = "Epifania - Tredicesimo giorno di Natale";
+"Epiphany" = "Epifania";
 "Easter Saturday" = "Sabato Santo";
 "Walpurgis Night" = "Notte di Valpurga";
 "Ascension Eve" = "Ascensione di Gesù";
@@ -692,3 +692,7 @@
 "Chuseok( ~Sep 13)" = "Chuseok( ~Sep 13)";
 "Chuseok(Sep 21~23)" = "Chuseok(Sep 21~23)";
 "Hangul Day(HangeulNal)" = "Hangul Day(HangeulNal)";
+
+//2014.07.20
+"International Workers' Day" = "Festa del lavoro";
+

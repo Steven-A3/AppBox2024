@@ -102,7 +102,7 @@
 "Clean Monday" = "イースターマンデー";
 "Columbus Day / PR Friendship Day" = "コロンブス記念日";
 "Columbus Day" = "コロンブス記念日";
-"Coming-of-Age Day" = "成人の日";
+"Coming of Age Day" = "成人の日";
 "Commemoration of Atatürk, Youth and Sports Day" = "青年とスポーツの日";
 "Commonwealth Constitution Day" = "連邦憲法の日";
 "Concord Day" = "コンコードの日";
@@ -169,7 +169,7 @@
 "First Day of Christmas" = "クリスマス";
 "Flag Day" = "国旗の日";
 "Flooding of the Nile(Wafaa Elnil)" = "ナイル川の洪水";
-"Foundation Day" = "建国記念日";
+"Foundation Day" = "建国記念の日";
 "Foundation of Quito (1534)" = "キト記念日(1534)";
 "Founding Day" = "建国記念日";
 "Founding of Asunción" = "アスンシオンの日";
@@ -336,7 +336,7 @@
 "Repentance Day" = "悔い改めの日";
 "Republic Day (Jum ir-Repubblika)" = "共和国記念日";
 "Republic Day" = "共和国記念日";
-"Respect-for-the-Aged Day" = "敬老の日";
+"Respect for the Aged Day" = "敬老の日";
 "Restoration Day" = "光復記念日";
 "Restoration of Independence" = "光復記念日";
 "Revolución de Mayo" = "革命記念日";
@@ -694,3 +694,10 @@
 "Chuseok( ~Sep 13)" = "Chuseok( ~Sep 13)";
 "Chuseok(Sep 21~23)" = "Chuseok(Sep 21~23)";
 "Hangul Day(HangeulNal)" = "Hangul Day(HangeulNal)";
+
+//2014.07.20
+"Vernal Equinox Day" = "春分の日";
+"Showa Day" = "昭和の日";
+"Constitution Memorial Day" = "憲法記念日";
+"Autumnal Equinox Day" = "秋分の日";
+
