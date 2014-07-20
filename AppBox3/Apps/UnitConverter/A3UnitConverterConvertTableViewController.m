@@ -1058,7 +1058,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 				fromValue = 1;
 			}
             
-            if (fromValue != 1 && [UnitHistory MR_countOfEntities] != 0 ) {
+            if (fromValue != 1.0 && [UnitHistory MR_countOfEntities] != 0 ) {
                 [self putHistoryWithValue:@(fromValue)];
             }
 		});
@@ -1257,7 +1257,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
         
 //		if (value != 0.0 && value != [[self unitValue] floatValue]) {
 //        if ([self.unitValue integerValue] != 1 && [UnitHistory MR_countOfEntities] != 0 ) {
-        if ([self.unitValue integerValue] != 1 || ([self.unitValue integerValue] != 1 && [UnitHistory MR_countOfEntities] > 0)) {
+        if ([self.unitValue floatValue] != 1.0 || ([self.unitValue floatValue] != 1.0 && [UnitHistory MR_countOfEntities] > 0)) {
 			[self putHistoryWithValue:@(value)];
 			self.unitValue = nil;
 			[self unitValue];
