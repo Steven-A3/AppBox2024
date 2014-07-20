@@ -94,6 +94,7 @@
 
     [self initHeaderView];
     [self reloadTableDataSource];
+	[self reloadInputData];
     [self setBarButtonEnable:YES];
 
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -242,7 +243,7 @@ static NSString *const A3PercentCalcSavedInputData = @"A3PercentCalcSavedInputDa
 	if (inputData) {
 		A3PercentCalcData *savedInputData = [NSKeyedUnarchiver unarchiveObjectWithData:inputData];
 
-		if (savedInputData.dataType==PercentCalcType_5) {
+		if (savedInputData.dataType == PercentCalcType_5) {
 			_factorX1 = savedInputData.values[ValueIdx_X1];
 			_factorY1 = savedInputData.values[ValueIdx_Y1];
 			_factorX2 = savedInputData.values[ValueIdx_X2];
@@ -794,6 +795,8 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
                     A3PercentCalcData *factorData = [A3PercentCalcData new];
                     factorData.dataType = self.calcType;
                     factorData.values = @[_factorX1, _factorY1];
+					[self saveInputTextData:factorData calculated:YES];
+
                     _formattedFactorValues = [factorData formattedStringValuesByCalcType];
                     self.headerView.factorValues = factorData;
                     [self.tableView.tableHeaderView setNeedsLayout];
@@ -852,9 +855,9 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
                 } completion:^(BOOL finished) {
                     [self.tableView reloadData];
                 }];
-            }
-                break;
-                
+				break;
+			}
+
             default:
                 break;
         }
