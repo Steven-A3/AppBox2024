@@ -492,6 +492,9 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 	} else {
 		calendarView.cellSize = CGSizeMake(floor(self.view.frame.size.width / 7), (IS_IPHONE ? 37.0 : 55.0 ));
 	}
+    FNLOG(@"cellSize: %@", NSStringFromCGSize(calendarView.cellSize));
+    
+    
     calendarView.isSmallCell = (numberOfMonthInPage > 1);
 	NSInteger month;
 	if (indexPath.section == 0) {

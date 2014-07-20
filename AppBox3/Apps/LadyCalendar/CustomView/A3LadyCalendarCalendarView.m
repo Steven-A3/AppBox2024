@@ -232,6 +232,7 @@
 {
     NSInteger stDay = [A3DateHelper dayFromDate:stDate];
     NSInteger edDay = [A3DateHelper dayFromDate:edDate];
+    BOOL unlinkedAtLastWeekday = NO;
 
 	// TODO: Locale 고려한 년 월 표시
     NSString *startMonthStr = [A3DateHelper dateStringFromDate:stDate withFormat:@"yyyyMM"];
@@ -243,6 +244,15 @@
     }
     if ( [endMonthStr integerValue] > [curMonthStr integerValue] ) {
         edDay = [A3DateHelper lastDaysOfMonth:_dateMonth];
+        
+        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:edDate];
+        dateComp.day = 1;
+        NSDate *firstDateOfMonth = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
+        dateComp = [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:firstDateOfMonth];
+        
+        if ([dateComp weekday] == 1) {
+            unlinkedAtLastWeekday = YES;
+        }
     }
     NSInteger stWeek = ((stDay-1) + _firstDayStartIndex) / 7;
     NSInteger stWeekday = ((stDay-1) + _firstDayStartIndex) % 7;
@@ -256,7 +266,17 @@
         LineDisplayModel *ldpModel = [[LineDisplayModel alloc] init];
 		CGFloat diffFromSeparator2 = diffFromSeparator /*+ ((stWeek > 1) ? 0.5 : 0.0) */;
         ldpModel.lineColor = color;
-        ldpModel.lineRect = CGRectMake(stWeekday * _cellSize.width + (isStartMargin ? 2.0 : 0.0), (stWeek +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight , (edWeekday-stWeekday+1)*_cellSize.width-(isEndMargin ? 2.0 : 0.0), lineHeight);
+        ldpModel.lineRect = CGRectMake(stWeekday * _cellSize.width + (isStartMargin ? 2.0 : 0.0),
+                                       (stWeek +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight ,
+                                       (edWeekday-stWeekday+1)*_cellSize.width-(isEndMargin ? 2.0 : 0.0),
+                                       lineHeight);
+        
+        if (unlinkedAtLastWeekday && (ldpModel.lineRect.origin.x + ldpModel.lineRect.size.width) != CGRectGetWidth(self.frame)) {
+            CGRect lineRect = ldpModel.lineRect;
+            lineRect.size.width = lineRect.size.width + (CGRectGetWidth(self.frame) - (ldpModel.lineRect.origin.x + ldpModel.lineRect.size.width));
+            ldpModel.lineRect = lineRect;
+        }
+        
         [array addObject:ldpModel];
     }
     else {
@@ -266,13 +286,22 @@
             ldpModel.lineColor = color;
 			CGFloat diffFromSeparator2 = diffFromSeparator + ((i > 1) ? 0.5 : 0.0);
             if ( i == 0 ) {
-                ldpModel.lineRect = CGRectMake((stWeekday+i) * _cellSize.width + (isStartMargin ? 2.0 : 0.0), (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 : diffFromSeparator2) - lineHeight , (8-stWeekday)*_cellSize.width, lineHeight);
+                ldpModel.lineRect = CGRectMake((stWeekday+i) * _cellSize.width + (isStartMargin ? 2.0 : 0.0),
+                                               (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 : diffFromSeparator2) - lineHeight ,
+                                               (8-stWeekday)*_cellSize.width,
+                                               lineHeight);
             }
             else if ( i == (totalWeek-1) ) {
-                ldpModel.lineRect = CGRectMake(0, (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight , (edWeekday+1)*_cellSize.width - (isEndMargin ? 2.0 : 0.0), lineHeight);
+                ldpModel.lineRect = CGRectMake(0,
+                                               (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight ,
+                                               (edWeekday+1)*_cellSize.width - (isEndMargin ? 2.0 : 0.0),
+                                               lineHeight);
             }
             else {
-                ldpModel.lineRect = CGRectMake(0, (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight, 7 * _cellSize.width, lineHeight);
+                ldpModel.lineRect = CGRectMake(0,
+                                               (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight,
+                                               7 * _cellSize.width,
+                                               lineHeight);
             }
             [array addObject:ldpModel];
 			FNLOG(@"%ld %@", (long)i, NSStringFromCGRect(ldpModel.lineRect));
@@ -348,7 +377,13 @@
 		UIColor *yellowColor = [UIColor colorWithRed:227.0/255.0 green:186.0/255.0 blue:5.0/255.0 alpha:alpha];
 
 		if ( [A3DateHelper monthFromDate:period.startDate] == _month || [A3DateHelper monthFromDate:period.endDate] == _month ) {
-			[self addLineFromDate:period.startDate endDate:period.endDate toArray:_redLines withColor:redColor isStartMargin:YES isEndMargin:YES];
+			[self addLineFromDate:period.startDate
+                          endDate:period.endDate
+                          toArray:_redLines
+                        withColor:redColor
+                    isStartMargin:YES
+                      isEndMargin:YES];
+            
 			if ( [A3DateHelper monthFromDate:period.startDate] == _month )
 				[self addCircleAtDay:period.startDate color:[UIColor colorWithRed:252.0 / 255.0 green:96.0 / 255.0 blue:66.0 / 255.0 alpha:alphaForRed] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:_circleArray];
 			if ( [A3DateHelper monthFromDate:period.endDate] == _month )
@@ -361,7 +396,13 @@
 				[self addCircleAtDay:pregnantStartDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:alpha] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:_circleArray];
 		}
 		if ([A3DateHelper monthFromDate:nextOvulationDate] == _month || [A3DateHelper monthFromDate:pregnantEndDate] == _month ) {
-			[self addLineFromDate:nextOvulationDate endDate:pregnantEndDate toArray:_greenLines withColor:greenColor isStartMargin:NO isEndMargin:YES];
+			[self addLineFromDate:nextOvulationDate
+                          endDate:pregnantEndDate
+                          toArray:_greenLines
+                        withColor:greenColor
+                    isStartMargin:NO
+                      isEndMargin:[A3DateHelper monthFromDate:nextOvulationDate] != [A3DateHelper monthFromDate:pregnantEndDate] ? NO : YES];
+            
 			if ([A3DateHelper monthFromDate:pregnantEndDate] == _month )
 				[self addCircleAtDay:pregnantEndDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:alpha] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:_circleArray];
 		}
