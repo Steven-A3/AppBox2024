@@ -58,7 +58,6 @@
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
 	
-	
 	self.title = NSLocalizedString(@"Ladies Calendar", nil);
 
 	[self leftBarButtonAppsButton];
@@ -109,13 +108,13 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
     [self setupInstructionView];
 }
 
-- (void)cloudDidImportChanges:(NSNotification *)notification {
-	_dataManager = nil;
-	[self.dataManager prepare];
+- (void)cloudDidImportChanges {
+	self.dataManager.currentAccount = nil;
 	[self.dataManager currentAccount];
 	[self rightSideViewWillDismiss];
 }
@@ -176,6 +175,11 @@
 		[[NSUserDefaults standardUserDefaults] setObject:[self.dataManager.currentAccount watchingDate] forKey:A3LadyCalendarLastViewMonth];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
+		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+			[store setObject:[self.dataManager.currentAccount watchingDate] forKey:A3LadyCalendarLastViewMonth];
+			[store synchronize];
+		}
 	} else {
 		[_calendarHeaderView setHidden:YES];
 	}
@@ -227,9 +231,7 @@
 - (void)periodDataChanged:(NSNotification *)notification {
 	[self setupCalendarRange];
 	[_collectionView reloadData];
-//	self.currentMonth = [notification.userInfo objectForKey:A3LadyCalendarChangedDateKey];
-//	[[NSUserDefaults standardUserDefaults] setObject:self.currentMonth forKey:A3LadyCalendarLastViewMonth];
-//	[[NSUserDefaults standardUserDefaults] synchronize];
+
     self.dataManager.currentAccount.watchingDate = [notification.userInfo objectForKey:A3LadyCalendarChangedDateKey];
     [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 

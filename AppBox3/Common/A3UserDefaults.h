@@ -70,7 +70,6 @@ extern NSString *const A3DaysCounterSlideshowOption;
 #pragma mark ------ LadyCalendar
 extern NSString *const A3LadyCalendarCurrentAccountID;
 extern NSString *const A3LadyCalendarSetting;
-extern NSString *const A3LadyCalendarOvulationDays;
 extern NSString *const A3LadyCalendarLastViewMonth;
 
 #endif

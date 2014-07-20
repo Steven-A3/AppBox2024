@@ -110,6 +110,27 @@
         self.settingDict = [_dataManager createDefaultSetting];
     }
 	self.tableView.showsVerticalScrollIndicator = NO;
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)cloudStoreDidImport {
+	self.settingDict = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting]];
+	[self.tableView reloadData];
+}
+
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	if ([self isMovingToParentViewController] || [self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -282,6 +303,8 @@
     if( indexPath.section == 1 ){
         NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:[[_settingDict objectForKey:SettingItem_CalculateCycle] integerValue] inSection:indexPath.section];
         [_settingDict setObject:@(indexPath.row) forKey:SettingItem_CalculateCycle];
+		[self saveSettings];
+
         [tableView reloadData];
         if( prevIndexPath.row != indexPath.row )
             [tableView reloadRowsAtIndexPaths:@[prevIndexPath,indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -303,12 +326,12 @@
 }
 
 #pragma mark - action method
+
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-    [[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [_dataManager recalculateDates];
+	[self removeObserver];
+
+	[_dataManager recalculateDates];
     if( IS_IPHONE )
         [self dismissViewControllerAnimated:YES completion:nil];
     else
@@ -319,6 +342,7 @@
 {
     UISwitch *swButton = (UISwitch*)sender;
     [_settingDict setObject:@(swButton.on) forKey:SettingItem_AutoRecord];
+	[self saveSettings];
 }
 
 - (void)periodChangedAction:(id)sender
@@ -326,6 +350,8 @@
     UISlider *slider = (UISlider*)sender;
     CGFloat sliderValue = roundf(slider.value);
     [_settingDict setObject:@(sliderValue) forKey:SettingItem_ForeCastingPeriods];
+	[self saveSettings];
+
 //    UITableViewCell *cell = (UITableViewCell*)[[slider.superview superview] superview];
 //    UILabel *leftLabel = (UILabel*)[cell viewWithTag:11];
 //    leftLabel.text = [NSString stringWithFormat:@"%.0f",sliderValue];
@@ -337,8 +363,25 @@
 {
     [[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [_dataManager recalculateDates];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:self.settingDict forKey:A3LadyCalendarSetting];
+		[store synchronize];
+	}
+
+	[_dataManager recalculateDates];
+}
+
+- (void)saveSettings {
+	[[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:self.settingDict forKey:A3LadyCalendarSetting];
+		[store synchronize];
+	}
 }
 
 @end
