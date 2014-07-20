@@ -52,7 +52,7 @@
 "EA1-5P-PnP.text" = "簡単なパスコード";
 
 /* Class = "IBUILabel"; text = "Change Passcode"; ObjectID = "Fvs-tZ-usV"; */
-"Fvs-tZ-usV.text" = "暗号変更";
+"Fvs-tZ-usV.text" = "パスコードを変更";
 
 /* Class = "IBUITableViewController"; title = "Passcode Lock"; ObjectID = "KML-Ub-d8M"; */
 "KML-Ub-d8M.title" = "パスコードロック";
@@ -126,7 +126,7 @@
 /* Class = "IBUILabel"; text = "Korean"; ObjectID = "fHP-u0-inU"; */
 
 /* Class = "IBUINavigationItem"; title = "Favorites"; ObjectID = "fqW-Vk-vP5"; */
-"fqW-Vk-vP5.title" = "お気に入り";
+"fqW-Vk-vP5.title" = "よく使う項目";
 
 /* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "go4-fr-Ah2"; */
 "go4-fr-Ah2.title" = "設定";
@@ -135,7 +135,7 @@
 "iav-1w-bex.text" = "アカウントID削除";
 
 /* Class = "IBUILabel"; text = "Favorites"; ObjectID = "m3s-eA-4WD"; */
-"m3s-eA-4WD.text" = "お気に入り";
+"m3s-eA-4WD.text" = "よく使う項目";
 
 /* Class = "IBUITableViewController"; title = "Sync"; ObjectID = "o9N-EA-Uky"; */
 "o9N-EA-Uky.title" = "同期化";

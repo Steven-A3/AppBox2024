@@ -99,13 +99,13 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     [self.tableView addSubview:lineView];
     
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
-- (void)cloudKeyValueStoreDidImport {
+- (void)cloudStoreDidImport {
 	if (self.firstResponder) {
 		_cancelInputNewCloudDataReceived = YES;
 		[self.firstResponder resignFirstResponder];

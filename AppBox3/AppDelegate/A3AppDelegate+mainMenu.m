@@ -190,7 +190,9 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([self.ubiquityStoreManager cloudEnabled]) {
-		[[NSUbiquitousKeyValueStore defaultStore] setDictionary:mutableDictionary forKey:key];
+		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
+		[keyValueStore setDictionary:mutableDictionary forKey:key];
+		[keyValueStore synchronize];
 	}
 }
 

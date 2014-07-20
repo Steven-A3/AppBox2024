@@ -49,10 +49,10 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
         [self rightBarButtonDoneButton];
     }
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 }
 
-- (void)cloudKeyValueStoreDidImport {
+- (void)cloudStoreDidImport {
 	_preference = nil;
 	[self.tableView reloadData];
 }

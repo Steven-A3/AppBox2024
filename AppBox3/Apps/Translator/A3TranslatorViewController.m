@@ -62,10 +62,21 @@
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
     [self setupInstructionView];
 }
 
+- (void)cloudStoreDidImport {
+	if (self.segmentedControl.selectedSegmentIndex == 0) {
+		_fetchedResultsController = nil;
+	} else {
+		[_favoriteDataSource resetData];
+	}
+	[self.tableView reloadData];
+}
+
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];

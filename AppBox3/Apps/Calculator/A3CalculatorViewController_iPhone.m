@@ -120,10 +120,10 @@
     _degreeandradianLabel.text = [self radian] == YES ? @"Rad" : @"Deg";
     [_keyboardView.radianDegreeButton setTitle:([self radian] == YES ? @"Deg" : @"Rad") forState:UIControlStateNormal];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 }
 
-- (void)cloudKeyValueStoreDidImport {
+- (void)cloudStoreDidImport {
 	NSString *mathExpression = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyCalculatorSavedLastExpression];
 	if (mathExpression){
 		[_calculator setMathExpression:mathExpression];

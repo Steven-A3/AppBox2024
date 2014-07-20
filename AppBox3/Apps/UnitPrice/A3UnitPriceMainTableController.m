@@ -115,11 +115,11 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 }
 
-- (void)cloudKeyValueStoreDidImport {
+- (void)cloudStoreDidImport {
 	_price1 = nil;
 	_price2 = nil;
 
@@ -180,6 +180,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 - (void)enableControls:(BOOL)enable
 {
+	_barButtonEnabled = enable;
     if (enable) {
 		self.composeBarItem.enabled = price1UnitPrice > 0 && price2UnitPrice > 0;
 		self.historyBarItem.enabled = [UnitPriceHistory MR_countOfEntities] > 0;

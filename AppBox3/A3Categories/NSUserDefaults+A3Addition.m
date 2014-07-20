@@ -41,6 +41,12 @@ NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseK
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dateComponents];
 	[self setObject:data forKey:key];
 	[self synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:data forKey:key];
+		[store synchronize];
+	}
 }
 
 - (NSDateComponents *)dateComponentsForKey:(NSString *)key {

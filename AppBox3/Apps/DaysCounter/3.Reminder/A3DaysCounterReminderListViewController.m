@@ -108,7 +108,7 @@
     [self.tableView reloadData];
     [self.navigationController setToolbarHidden:NO];
     
-    [[NSUserDefaults standardUserDefaults] setInteger:3 forKey:@"DaysCounterLastOpenedMainIndex"];
+    [[NSUserDefaults standardUserDefaults] setInteger:3 forKey:A3DaysCounterLastOpenedMainIndex];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

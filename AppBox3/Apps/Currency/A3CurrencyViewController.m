@@ -62,6 +62,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UITableViewController *tableViewController;
+@property (nonatomic, assign) BOOL cancelInputNewCloudDataReceived;
 
 @end
 
@@ -74,6 +75,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 	BOOL		_currentValueIsNotFromUser;
 	NSUInteger	_shareSourceIndex, _shareTargetIndex;
 	BOOL		_shareAll;
+	BOOL		_barButtonEnabled;
 }
 
 NSString *const A3CurrencyDataCellID = @"A3CurrencyDataCell";
@@ -85,7 +87,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
     [super viewDidLoad];
 
 	[A3CurrencyDataManager setupFavorites];
-	
+
+	_barButtonEnabled = YES;
+
 	self.tableView.dataSource = self;
 	self.tableView.delegate = self;
 
@@ -132,6 +136,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	self.tableView.showsVerticalScrollIndicator = NO;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3CurrencySettingsChangedNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -142,10 +147,23 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
     [self setupInstructionView];
 }
 
+- (void)cloudDidImportChanges:(NSNotification *)note {
+	if (self.firstResponder) {
+		_cancelInputNewCloudDataReceived = YES;
+		[self.firstResponder resignFirstResponder];
+	}
+
+	_favorites = nil;
+	[self favorites];
+
+	[self.tableView reloadData];
+	[self enableControls:_barButtonEnabled];
+}
+
 - (void)removeObserver {
-	FNLOG();
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3CurrencySettingsChangedNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -221,6 +239,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (void)enableControls:(BOOL)enable {
 	if (!IS_IPAD) return;
+
+	_barButtonEnabled = enable;
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.plusButton setEnabled:enable];
 
@@ -981,6 +1001,10 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[self setFirstResponder:nil];
 	[self setNumberKeyboardViewController:nil];
 
+	if (_cancelInputNewCloudDataReceived) {
+		_cancelInputNewCloudDataReceived = NO;
+		return;
+	}
 	BOOL valueChanged = NO;
 	if (![textField.text length]) {
 		textField.text = self.previousValue;
@@ -1056,6 +1080,12 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 	[[NSUserDefaults standardUserDefaults] setObject:@(fromValue) forKey:A3CurrencyLastInputValue];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:@(fromValue) forKey:A3CurrencyLastInputValue];
+		[store synchronize];
+	}
 
 	NSInteger fromIndex = 0;
 	FNLOG(@"%@", _textFields);
@@ -1450,13 +1480,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 	[self.historyBarButton setEnabled:YES];
-}
-
-- (void)cloudDidImportChanges:(NSNotification *)note {
-	_favorites = nil;
-	[self favorites];
-
-	[self.tableView reloadData];
 }
 
 #pragma mark -- THE END

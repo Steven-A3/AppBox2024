@@ -28,6 +28,7 @@
 #import "DaysCounterEvent+extension.h"
 #import "NSString+conversion.h"
 
+NSString *const A3DaysCounterLastOpenedMainIndex = @"A3DaysCounterLastOpenedMainIndex";
 extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 @interface A3DaysCounterModelManager ()
@@ -1283,7 +1284,9 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	if (closestEvent) return closestEvent;
 
 	// return closest since
-	return [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate < %@", calendar.uniqueID, today] sortedBy:@"effectiveStartDate" ascending:YES];
+	closestEvent =  [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate < %@", calendar.uniqueID, today] sortedBy:@"effectiveStartDate" ascending:YES];
+	if (closestEvent) return closestEvent;
+	return [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendar.uniqueID] sortedBy:@"effectiveStartDate" ascending:YES];
 }
 
 - (void)renewEffectiveStartDates:(DaysCounterCalendar *)calendar

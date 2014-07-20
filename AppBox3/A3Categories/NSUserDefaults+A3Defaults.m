@@ -8,6 +8,7 @@
 
 #import "NSUserDefaults+A3Defaults.h"
 #import "A3UserDefaults.h"
+#import "A3AppDelegate.h"
 
 @implementation NSUserDefaults (A3Defaults)
 
@@ -255,6 +256,13 @@
 {
 	[self setInteger:tapIndex forKey:A3UnitConverterDefaultCurrentUnitTap];
 	[self synchronize];
+
+	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:@(tapIndex) forKey:A3UnitConverterDefaultCurrentUnitTap];
+		[store synchronize];
+	}
+
 }
 
 - (NSUInteger)unitConverterCurrentUnitTap

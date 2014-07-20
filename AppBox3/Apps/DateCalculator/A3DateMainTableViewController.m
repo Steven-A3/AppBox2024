@@ -113,10 +113,10 @@ NSString *const A3DateCalcDefaultsDidSelectMinus = @"A3DateCalcDefaultsDidSelect
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudKeyValueStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 }
 
-- (void)cloudKeyValueStoreDidImport {
+- (void)cloudStoreDidImport {
 	[self readFromSavedValue];
 	[self reloadTableViewData:NO];
 	if ([self isAddSubMode]) {
