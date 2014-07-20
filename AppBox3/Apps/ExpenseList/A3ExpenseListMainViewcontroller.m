@@ -1238,6 +1238,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     item.subTotal = @(item.price.floatValue * item.qty.floatValue);
     aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:item.subTotal];
 	item.hasData = @(YES);
+	item.updateDate = [NSDate date];
 
     // 전체 항목 계산 & 화면(헤더뷰) 반영.
     [self calculateAndDisplayResultWithAnimation:YES saveData:YES ];
@@ -1261,6 +1262,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         item.itemName = nil;
         item.price = nil;
         item.qty = nil;
+		item.updateDate = [NSDate date];
+		
         aCell.nameTextField.text = @"";
         aCell.priceTextField.text = @"";
         aCell.qtyTextField.text = @"";
@@ -1270,7 +1273,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         if (textField == [self firstResponder]) {
             self.firstResponder = nil;
         }
-        
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         return;
     }
 
