@@ -116,7 +116,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryDeletedNotification:) name:A3WalletNotificationCategoryDeleted object:nil];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveItemCategoryMovedNotification:) name:A3WalletNotificationItemCategoryMoved object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImportChanges) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 }
 
 - (void)removeObserver {
@@ -165,7 +165,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	return _categories;
 }
 
-- (void)cloudStoreDidImportChanges {
+- (void)cloudStoreDidImport {
 	_categories = nil;
 	[self setupTabBar];
 }

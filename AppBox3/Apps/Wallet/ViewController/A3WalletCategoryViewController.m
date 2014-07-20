@@ -57,7 +57,7 @@
     }
 
     [self setupInstructionView];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImportChanges) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 }
 
 - (void)removeObserver {
@@ -116,7 +116,7 @@
     [self itemCountCheck];
 }
 
-- (void)cloudStoreDidImportChanges {
+- (void)cloudStoreDidImport {
 	self.items = nil;
 	[self refreshItems];
 

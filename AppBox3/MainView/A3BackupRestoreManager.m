@@ -114,23 +114,12 @@ extern NSString *const USMCloudContentName;
 			}];
 	}
 
-	NSMutableDictionary *userDefaults = [NSMutableDictionary new];
-	// LadyCalendar Specific
-	id currentAccountID = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID];
-	if (currentAccountID) {
-		[userDefaults setObject:currentAccountID forKey:A3LadyCalendarCurrentAccountID];
-	}
-	id lastViewMonth = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarLastViewMonth];
-	if (lastViewMonth) {
-		[userDefaults setObject:lastViewMonth forKey:A3LadyCalendarLastViewMonth];
-	}
-
 	NSDictionary *backupInfoDictionary = @{
 			A3BackupFileVersionKey : [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
 			A3BackupFileDateKey : [NSDate date],
 			A3BackupFileOSVersionKey : [[UIDevice currentDevice] systemVersion],
 			A3BackupFileSystemModelKey : [A3UIDevice platform],
-			A3BackupFileUserDefaultsKey : userDefaults
+			A3BackupFileUserDefaultsKey : [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]
 	};
 
 	[backupInfoDictionary writeToFile:[A3BackupInfoFilename pathInDocumentDirectory] atomically:YES];

@@ -52,7 +52,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
     [self setupInstructionView];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImportChanges) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 }
 
 - (void)removeObserver {
@@ -107,7 +107,7 @@
     [self refreshItems];
 }
 
-- (void)cloudStoreDidImportChanges {
+- (void)cloudStoreDidImport {
 	[self refreshItems];
 }
 
