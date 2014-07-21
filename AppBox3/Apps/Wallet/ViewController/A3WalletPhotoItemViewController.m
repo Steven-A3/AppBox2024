@@ -491,9 +491,9 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 - (void)favoriteButtonAction:(UIButton *)favorButton
 {
-	BOOL isFavorite = ![WalletFavorite isFavoriteForItemID:_item.uniqueID];
+	BOOL isFavorite = [WalletFavorite isFavoriteForItemID:_item.uniqueID];
 	[_item changeFavorite:!isFavorite];
-    _metadataView.favoriteButton.selected = isFavorite;
+    _metadataView.favoriteButton.selected = !isFavorite;
 }
 
 - (void)editButtonAction:(id)sender
