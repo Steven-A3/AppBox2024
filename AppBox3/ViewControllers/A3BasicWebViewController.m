@@ -134,13 +134,9 @@
                                                                                      applicationActivities:activities];
 	if (IS_IPHONE) {
 		[self.navigationItem.rightBarButtonItem setEnabled:NO];
-		UIView *emptyView = [UIView new];
-		UIBarButtonItem *emptyButton = [[UIBarButtonItem alloc] initWithCustomView:emptyView];
-		self.navigationItem.leftBarButtonItem = emptyButton;
-
 		[self.navigationController presentViewController:activityController animated:YES completion:NULL];
+        
         [activityController setCompletionHandler:^(NSString *activityType, BOOL completed){
-			self.navigationItem.leftBarButtonItem = nil;
 			[self.navigationItem.rightBarButtonItem setEnabled:YES];
         }];
 	} else {
