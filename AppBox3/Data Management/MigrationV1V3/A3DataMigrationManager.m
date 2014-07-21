@@ -205,7 +205,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 				endDate.day = @(components.day);
 				endDate.hour = @(components.hour);
 				endDate.minute = @(components.minute);
-				newEvent.isPeriod = @(![startDate.solarDate isEqual:endDate]);
+				newEvent.isPeriod = @(![startDate.solarDate isEqual:V1endDate]);
 			}
 			newEvent.repeatType = @([self repeatTypeForV1RepeatType:v1Item[kKeyForDDayRepeat]]);
 			NSString *filename = v1Item[kKeyForDDayImageFilename];
