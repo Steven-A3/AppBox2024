@@ -567,9 +567,9 @@
 "Sale Price" = "Obniżka";
 "Sale Price Tax" = "Podatek";
 "Original Price" = "Oryginalna cena";
-"Original Price Tax" = "Podatek ceny oryginalnej";
-"Saved Amount" = "Zaoszczędzona kwota";
-"Saved Amount Tax" = "Zaoszczędzony podatek";
+"Original Price Tax" = "Podatek";
+"Saved Amount" = "Zaoszczędzona";
+"Saved Amount Tax" = "Podatek";
 "  Sale Price with Tax" = "  obniżka z podatkiem";
 "  Sale Price w/Tax" = "  obniżka z/podatek";
 "  Sale Price" = "  Obniżka";
