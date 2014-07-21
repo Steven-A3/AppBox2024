@@ -824,6 +824,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	dataCell.value2Field.delegate = self;
 
 	UnitConvertItem *convertItem = self.convertItems[dataIndex];
+	UnitItem *targetUnitItem = [convertItem item];
 
 	// <- dictionary key reset
 	NSSet *keys = [_text1Fields keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
@@ -851,11 +852,11 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	}
 	// ->
 
-	[self.text1Fields setObject:dataCell.valueField forKey:convertItem.item.unitName];
-	[self.text2Fields setObject:dataCell.value2Field forKey:convertItem.item.unitName];
+	[self.text1Fields setObject:dataCell.valueField forKey:targetUnitItem.unitName];
+	[self.text2Fields setObject:dataCell.value2Field forKey:targetUnitItem.unitName];
 
 	BOOL isFeetInchMode = NO;
-	if ([convertItem.item.unitName isEqualToString:@"feet inches"]) {
+	if ([targetUnitItem.unitName isEqualToString:@"feet inches"]) {
 		// 0.3048, 0.0254
 		isFeetInchMode = YES;
 		dataCell.inputType = UnitInput_FeetInch;
@@ -877,8 +878,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			value = @(1);
 		}
 
-		dataCell.codeLabel.text = NSLocalizedStringFromTable(convertItem.item.unitName, @"unit", nil);
-		dataCell.rateLabel.text = NSLocalizedStringFromTable(convertItem.item.unitShortName, @"unitShort", nil);
+		dataCell.codeLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unit", nil);
+		dataCell.rateLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unitShort", nil);
 	}
     else {
 		dataCell.valueField.textColor = [UIColor blackColor];
@@ -901,23 +902,25 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			// 먼저 입력된 값을 섭씨기준의 온도로 변환한다.
 			// 섭씨온도를 해당 unit값으로 변환한다
 			float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:convertItemZero.item.unitName andTemperature:value.floatValue];
-			value = @([TemperatureConverter convertCelsius:celsiusValue toUnit:convertItem.item.unitName]);
+			value = @([TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnitItem.unitName]);
 
 		}
 		else {
-			conversionRate = convertItemZero.item.conversionRate.floatValue / convertItem.item.conversionRate.floatValue;
+			conversionRate = convertItemZero.item.conversionRate.floatValue / targetUnitItem.conversionRate.floatValue;
 			value = @(value.floatValue * conversionRate);
 		}
 
 		// code 및 rate 정보 표시
-		dataCell.codeLabel.text = NSLocalizedStringFromTable(convertItem.item.unitName, @"unit", nil);
+		dataCell.codeLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unit", nil);
 		// 온도 모드에서는 rate값에 일정 비율이 없으므로 표시하지 않는다.
 		if (_isTemperatureMode) {
-//            dataCell.codeLabel.text = NSLocalizedStringFromTable(convertItem.item.unitShortName, @"unitShort", nil);
-			dataCell.rateLabel.text = [TemperatureConverter rateStringFromTemperUnit:convertItemZero.item.unitName toTemperUnit:convertItem.item.unitName];
+			dataCell.rateLabel.text = [TemperatureConverter rateStringFromTemperUnit:NSLocalizedStringFromTable(convertItemZero.item.unitName, @"unitShort", nil)
+																		toTemperUnit:NSLocalizedStringFromTable(targetUnitItem.unitName, @"unitShort", nil)];
 		}
 		else {
-			dataCell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, rate = %@", @"%@, rate = %@"), convertItem.item.unitShortName, [self.decimalFormatter stringFromNumber:@(conversionRate)]];
+			dataCell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, rate = %@", @"%@, rate = %@"),
+							NSLocalizedStringFromTable(targetUnitItem.unitShortName, @"unitShort", nil),
+							[self.decimalFormatter stringFromNumber:@(conversionRate)]];
 		}
 	}
 
@@ -1415,12 +1418,14 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		NSUInteger targetIndex = [self indexForUnitName:key];
 		if (targetIndex != NSNotFound) {
 			UnitConvertItem *targetUnit = self.convertItems[targetIndex];
+			UnitItem *sourceUnitItem = [sourceUnit item];
+			UnitItem *targetUnitItem = [targetUnit item];
 
 			if (_isTemperatureMode) {
 				// 먼저 입력된 값을 섭씨기준의 온도로 변환한다.
 				// 섭씨온도를 해당 unit값으로 변환한다
-				float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:sourceUnit.item.unitName andTemperature:fromValue];
-				float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnit.item.unitName];
+				float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:sourceUnitItem.unitName andTemperature:fromValue];
+				float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnitItem.unitName];
 				targetTextField.text = [self.decimalFormatter stringFromNumber:@(targetValue)];
 			}
 			else {
@@ -1431,7 +1436,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 				if (isFeetInchMode) {
 					// 0.3048, 0.0254
 					// feet 계산
-					float rate = [sourceUnit.item.conversionRate floatValue] / [targetUnit.item.conversionRate floatValue];
+					float rate = [sourceUnitItem.conversionRate floatValue] / [targetUnitItem.conversionRate floatValue];
 					float value = fromValue * rate;
 					int feet = (int)value;
 					float inch = (value -feet) * kInchesPerFeet;
@@ -1440,7 +1445,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 					targetValue2TextFiled.text = [self.decimalFormatter stringFromNumber:@(inch)];
 				}
 				else {
-					float rate = [sourceUnit.item.conversionRate floatValue] / [targetUnit.item.conversionRate floatValue];
+					float rate = [sourceUnitItem.conversionRate floatValue] / [targetUnitItem.conversionRate floatValue];
 					targetTextField.text = [self.decimalFormatter stringFromNumber:@(fromValue*rate)];
 				}
 			}
@@ -1518,9 +1523,10 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 	NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
 	UnitConvertItem *convertItem = self.convertItems[indexPath.row];
+	UnitItem *targetUnitItem = [convertItem item];
 	if ([convertItem isKindOfClass:[UnitConvertItem class]]) {
-		[self.text1Fields removeObjectForKey:convertItem.item.unitName];
-		[self.text2Fields removeObjectForKey:convertItem.item.unitName];
+		[self.text1Fields removeObjectForKey:targetUnitItem.unitName];
+		[self.text2Fields removeObjectForKey:targetUnitItem.unitName];
 
 		[convertItem MR_deleteEntity];
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];

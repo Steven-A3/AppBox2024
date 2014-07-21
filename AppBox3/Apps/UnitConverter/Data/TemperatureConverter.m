@@ -61,7 +61,7 @@ static NSString *const reaumure = @"réaumure";
     else if ([unitName isEqualToString:fahrenheit]) {
         return TemperUnit_C2F(value);
     }
-    else if ([unitName isEqualToString:fahrenheit]) {
+    else if ([unitName isEqualToString:kelvin]) {
         return TemperUnit_C2Kelvin(value);
     }
     else if ([unitName isEqualToString:rankine]) {
