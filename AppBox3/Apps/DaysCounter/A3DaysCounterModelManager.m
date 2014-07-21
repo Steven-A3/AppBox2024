@@ -578,6 +578,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	[DaysCounterReminder MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
 
 	[event MR_deleteEntity];
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 	return YES;
 }
