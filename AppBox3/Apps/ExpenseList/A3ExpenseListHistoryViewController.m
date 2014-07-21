@@ -93,16 +93,9 @@ static NSString *CellIdentifier = @"Cell";
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        //[ExpenseListBudget MR_truncateAll];
-
-        NSString *currentBudgetId = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListCurrentBudgetID];
-//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID != %@", currentBudgetID];
-//        [ExpenseListBudget MR_deleteAllMatchingPredicate:predicate];//현재 값 유지 후, 전체삭제 하는 형태로 변경필요.
-        ExpenseListBudget *currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:currentBudgetId];
-
-        [ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID != %@", currentBudget]];
-        [ExpenseListBudgetLocation MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID != %@", currentBudget]];
-        [ExpenseListBudget MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@", currentBudgetId]];
+        [ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID != %@", A3ExpenseListCurrentBudgetID]];
+        [ExpenseListBudgetLocation MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID != %@", A3ExpenseListCurrentBudgetID]];
+        [ExpenseListBudget MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@", A3ExpenseListCurrentBudgetID]];
         [ExpenseListHistory MR_truncateAll];
         
         FNLOG(@"History : %ld", (long)[[ExpenseListHistory MR_findAll] count]);
@@ -113,10 +106,6 @@ static NSString *CellIdentifier = @"Cell";
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         _fetchedResultsController = nil;
         [self.tableView reloadData];
-        
-//        if ([_delegate respondsToSelector:@selector(didSelectBudgetHistory:)]) {
-//            [_delegate didSelectBudgetHistory:nil];
-//        }
 	}
 }
 
@@ -184,22 +173,13 @@ static NSString *CellIdentifier = @"Cell";
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         ExpenseListHistory *aHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
         ExpenseListBudget *aData = [aHistory budgetData];
-        
-        // 현재의 편집중인 budget을 삭제한 경우.
-        NSString *currentBudgetId = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListCurrentBudgetID];
-        if ([aData.uniqueID isEqualToString:currentBudgetId]) {
-//            if ([_delegate respondsToSelector:@selector(didSelectBudgetHistory:)]) {
-//                [_delegate didSelectBudgetHistory:nil];
-//            }
-            [aHistory MR_deleteEntity];
-        }
-        else {
-            [ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID == %@", aData.uniqueID]];
-            [aData MR_deleteEntity];
-            [aHistory MR_deleteEntity];
-        }
+
+		[ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID == %@", aData.uniqueID]];
+		[aData MR_deleteEntity];
+		[aHistory MR_deleteEntity];
 
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
         _fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

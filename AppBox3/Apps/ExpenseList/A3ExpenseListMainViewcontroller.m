@@ -65,6 +65,7 @@ NSString *const A3ExpenseListIsAddBudgetCanceledByUser = @"A3ExpenseListIsAddBud
     UITapGestureRecognizer *_tapGestureRecognizer;
 	BOOL _isAutoMovingAddBudgetView;
 	BOOL _barButtonEnabled, _cancelInputNewCloudDataReceived;
+	CGFloat _tableCellStartY;
 }
 
 NSString *const ExpenseListMainCellIdentifier = @"Cell";
@@ -409,7 +410,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)addItemWithFocus:(BOOL)focus
 {
-    ExpenseListItem *item = [self createExpenseListOfBudgetID:_currentBudget.uniqueID];
+    ExpenseListItem *item = [self createExpenseListItemWithBudgetID:_currentBudget.uniqueID];
 	item.budgetID = _currentBudget.uniqueID;
     item.itemDate = [NSDate date];
     item.itemName = @"";
@@ -472,6 +473,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)didTapOnTableView:(UIGestureRecognizer *)recognizer {
     CGPoint tapLocation = [recognizer locationInView:self.tableView];
+	if (tapLocation.y < _tableCellStartY) {
+		return;
+	}
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:tapLocation];
 	FNLOG(@"%ld", (long)indexPath.row);
     
@@ -627,8 +631,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 - (void)addItemButtonAction:(id)sender
 {
     _currentBudget.updateDate = [NSDate date];
-    
-    [self createExpenseListOfBudgetID:_currentBudget.uniqueID];
+
+	[self createExpenseListItemWithBudgetID:_currentBudget.uniqueID];
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
@@ -791,7 +795,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 		for (NSInteger idx = 0; idx < defaultCount; idx++) {
 			ExpenseListItem *item = [ExpenseListItem MR_createEntity];
-			item.uniqueID = [NSString stringWithFormat:@"%@-%10ld", A3ExpenseListCurrentBudgetID, (long) idx];
+			item.uniqueID = [self itemIDWithIndex:idx];
 			item.updateDate = [NSDate date];
 			item.budgetID = _currentBudget.uniqueID;
 			item.order = [item makeOrderString];
@@ -810,20 +814,27 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	_tableDataSourceArray = [self loadBudgetFromDB];
 }
 
-- (ExpenseListItem *)createExpenseListOfBudgetID:(NSString *)budgetID {
+- (ExpenseListItem *)createExpenseListItemWithBudgetID:(NSString *)budgetID {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@", budgetID];
 	ExpenseListItem *newItem = [ExpenseListItem MR_createEntity];
-	ExpenseListItem *lastItem = [ExpenseListItem MR_findLargestValueForAttribute:@"uniqueID" withPredicate:predicate];
+	NSString *lastUniqueID = [ExpenseListItem MR_findLargestValueForAttribute:@"uniqueID" withPredicate:predicate];
 	NSInteger largestIndex = 0;
-	if (lastItem) {
-		largestIndex = [[lastItem.uniqueID componentsSeparatedByString:@"-"][1] integerValue];
+	if (lastUniqueID) {
+		NSArray *components = [lastUniqueID componentsSeparatedByString:@"-"];
+		if ([components count] >= 2) {
+			largestIndex = [components[1] integerValue];
+		}
 	}
-	newItem.uniqueID = [NSString stringWithFormat:@"%@-%10ld", A3ExpenseListCurrentBudgetID, (long)largestIndex];
+	newItem.uniqueID = [self itemIDWithIndex:largestIndex];
 	newItem.updateDate = [NSDate date];
 	newItem.order = [newItem makeOrderString];
 	newItem.budgetID = budgetID;
 
 	return newItem;
+}
+
+- (NSString *)itemIDWithIndex:(NSInteger)idx {
+	return [NSString stringWithFormat:@"%@-0%10ld", A3ExpenseListCurrentBudgetID, (long)idx];
 }
 
 #pragma mark Save Related
@@ -861,7 +872,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 #pragma mark - misc
 
 - (void)moveToAddBudgetIfBudgetNotExistWithDelay:(CGFloat)delay {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"ExpenseList"]) {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForExpenseList]) {
         return;
     }
     
@@ -917,6 +928,12 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	[self setupCell:cell atIndexPath:indexPath];
 
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row == 0) {
+		_tableCellStartY = cell.frame.origin.y;
+	}
 }
 
 - (UITableViewCell *)cellIdenticalToCellAtIndexPath:(NSIndexPath *)indexPath forDragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController {
@@ -1110,7 +1127,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 	[[aBudget expenseItems] enumerateObjectsUsingBlock:^(ExpenseListItem *item, NSUInteger idx, BOOL *stop) {
 		ExpenseListItem *newCurrentItem = [ExpenseListItem MR_createEntity];
-		newCurrentItem.uniqueID = [NSString stringWithFormat:@"%@-%10ld", A3ExpenseListCurrentBudgetID, (long)idx];
+		newCurrentItem.uniqueID = [self itemIDWithIndex:idx];
 		newCurrentItem.updateDate = item.updateDate;
 		newCurrentItem.itemDate = item.itemDate;
 		newCurrentItem.itemName = item.itemName;
