@@ -229,7 +229,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		if ([[NSUserDefaults standardUserDefaults] currencyAutoUpdate]) {
 			if ([reachability isReachableViaWiFi] ||
 					([userDefaults currencyUseCellularData] && [A3UIDevice hasCellularNetwork])) {
-				[self updateCurrencyRates];
+				[self updateCurrencyRatesWithAnimation:NO ];
 			}
 		}
 
@@ -462,10 +462,10 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 	NSAttributedString *updating = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Updating", @"Updating") attributes:[self refreshControlTitleAttribute]];
 	self.refreshControl.attributedTitle = updating;
-	[self updateCurrencyRates];
+	[self updateCurrencyRatesWithAnimation:NO ];
 }
 
-- (void)updateCurrencyRates {
+- (void)updateCurrencyRatesWithAnimation:(BOOL)animate {
 	if (_isUpdating) return;
 
 	_isUpdating = YES;
@@ -477,7 +477,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyRatesUpdated) name:A3NotificationCurrencyRatesUpdated object:nil];
 
 
-	if (!self.firstResponder) {
+	if (!self.firstResponder && animate) {
 		[self.refreshControl beginRefreshing];
 	}
 

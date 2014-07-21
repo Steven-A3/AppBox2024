@@ -878,8 +878,13 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			value = @(1);
 		}
 
-		dataCell.codeLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unit", nil);
-		dataCell.rateLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unitShort", nil);
+		if (IS_IPHONE && dataCell.inputType == UnitInput_FeetInch) {
+			dataCell.codeLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unitShort", nil);
+			dataCell.rateLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unit", nil);
+		} else {
+			dataCell.codeLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unit", nil);
+			dataCell.rateLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unitShort", nil);
+		}
 	}
     else {
 		dataCell.valueField.textColor = [UIColor blackColor];
@@ -914,8 +919,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		dataCell.codeLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unit", nil);
 		// 온도 모드에서는 rate값에 일정 비율이 없으므로 표시하지 않는다.
 		if (_isTemperatureMode) {
-			dataCell.rateLabel.text = [TemperatureConverter rateStringFromTemperUnit:NSLocalizedStringFromTable(convertItemZero.item.unitName, @"unitShort", nil)
-																		toTemperUnit:NSLocalizedStringFromTable(targetUnitItem.unitName, @"unitShort", nil)];
+			dataCell.rateLabel.text = [TemperatureConverter rateStringFromTemperUnit:convertItemZero.item.unitName
+																		toTemperUnit:targetUnitItem.unitName];
 		}
 		else {
 			dataCell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, rate = %@", @"%@, rate = %@"),
@@ -1660,6 +1665,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		prevButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];
 		[prevButton addTarget:self action:@selector(prevButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 		[prevButton sizeToFit];
+		prevButton.tintColor = [[A3AppDelegate instance] themeColor];
 		prevButtonItem = [[UIBarButtonItem alloc] initWithCustomView:prevButton];
 
 		UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -1667,6 +1673,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		nextButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];
 		[nextButton addTarget:self action:@selector(nextButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 		[nextButton sizeToFit];
+		nextButton.tintColor = [[A3AppDelegate instance] themeColor];
 		nextButtonItem = [[UIBarButtonItem alloc] initWithCustomView:nextButton];
 	} else {
 		prevButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Prev", @"Prev") style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonPressed)];
