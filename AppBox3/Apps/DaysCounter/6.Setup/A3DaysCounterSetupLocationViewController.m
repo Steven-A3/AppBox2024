@@ -600,8 +600,12 @@
             item = [self.nearbyVenues objectAtIndex:indexPath.row];
         }
 
-        DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
-		locItem.uniqueID = [[NSUUID UUID] UUIDString];
+        DaysCounterEventLocation *locItem = [_eventModel location];
+        if (!locItem) {
+            locItem = [DaysCounterEventLocation MR_createEntity];
+            locItem.uniqueID = [[NSUUID UUID] UUIDString];
+        }
+		
 		locItem.updateDate = [NSDate date];
         locItem.eventID = _eventModel.uniqueID;
         locItem.latitude = @(item.location.coordinate.latitude);
