@@ -9,7 +9,6 @@
 #import "WalletFieldItem+initialize.h"
 #import "WalletField+initialize.h"
 #import "WalletData.h"
-#import "WalletFieldItemVideo.h"
 #import "NSString+conversion.h"
 #import "UIImage+Resizing.h"
 #import "A3AppDelegate.h"

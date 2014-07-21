@@ -16,7 +16,6 @@
 #import "NSDate+formatting.h"
 #import "WalletData.h"
 #import "WalletItem.h"
-#import "walletfielditemvideo.h"
 #import "WalletItem+initialize.h"
 #import "WalletItem+Favorite.h"
 #import "WalletField.h"

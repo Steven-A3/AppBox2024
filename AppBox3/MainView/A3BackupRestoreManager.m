@@ -12,11 +12,8 @@
 #import "NSString+conversion.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterEvent+extension.h"
-#import "WalletFieldItemImage.h"
 #import "WalletFieldItem+initialize.h"
 #import "AAAZip.h"
-#import "A3UserDefaults.h"
-#import "WalletFieldItemVideo.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";

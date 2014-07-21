@@ -29,8 +29,6 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3WalletItemTitleCell.h"
-#import "WalletFieldItemVideo.h"
-#import "WalletFieldItemImage.h"
 #import "WalletItem+initialize.h"
 #import "NSString+conversion.h"
 #import "NSDate+formatting.h"

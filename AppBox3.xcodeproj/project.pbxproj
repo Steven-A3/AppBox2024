@@ -343,8 +343,6 @@
 		6832ADE216A8D38500BEEEE6 /* A3CurrencySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */; };
 		6835659418FA663100C3494C /* A3WalletMoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6835659318FA663100C3494C /* A3WalletMoreTableViewController.m */; };
 		683B959315EB252400575377 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683B959215EB252400575377 /* QuartzCore.framework */; };
-		68425D2819776615007C1AAE /* WalletFieldItemImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D2719776615007C1AAE /* WalletFieldItemImage.m */; };
-		68425D3119776615007C1AAE /* WalletFieldItemVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D3019776615007C1AAE /* WalletFieldItemVideo.m */; };
 		68425D581977BD5F007C1AAE /* DaysCounterReminder+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D571977BD5F007C1AAE /* DaysCounterReminder+extension.m */; };
 		68425D5B1977BF63007C1AAE /* DaysCounterFavorite+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D5A1977BF63007C1AAE /* DaysCounterFavorite+extension.m */; };
 		6846099F194E10A700FD5F53 /* UnitPriceStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 684609A1194E10A700FD5F53 /* UnitPriceStoryboard_iPad.storyboard */; };
@@ -1472,10 +1470,6 @@
 		6835659318FA663100C3494C /* A3WalletMoreTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletMoreTableViewController.m; sourceTree = "<group>"; };
 		683B953E15EB233500575377 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = common.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		683B959215EB252400575377 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		68425D2619776615007C1AAE /* WalletFieldItemImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletFieldItemImage.h; sourceTree = "<group>"; };
-		68425D2719776615007C1AAE /* WalletFieldItemImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletFieldItemImage.m; sourceTree = "<group>"; };
-		68425D2F19776615007C1AAE /* WalletFieldItemVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletFieldItemVideo.h; sourceTree = "<group>"; };
-		68425D3019776615007C1AAE /* WalletFieldItemVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletFieldItemVideo.m; sourceTree = "<group>"; };
 		68425D561977BD5F007C1AAE /* DaysCounterReminder+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DaysCounterReminder+extension.h"; sourceTree = "<group>"; };
 		68425D571977BD5F007C1AAE /* DaysCounterReminder+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DaysCounterReminder+extension.m"; sourceTree = "<group>"; };
 		68425D591977BF63007C1AAE /* DaysCounterFavorite+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DaysCounterFavorite+extension.h"; sourceTree = "<group>"; };
@@ -4481,10 +4475,6 @@
 				687484BF19783BE100EA8F74 /* WalletItem.m */,
 				687484BB19783BE100EA8F74 /* WalletField.h */,
 				687484BC19783BE100EA8F74 /* WalletField.m */,
-				68425D2F19776615007C1AAE /* WalletFieldItemVideo.h */,
-				68425D3019776615007C1AAE /* WalletFieldItemVideo.m */,
-				68425D2619776615007C1AAE /* WalletFieldItemImage.h */,
-				68425D2719776615007C1AAE /* WalletFieldItemImage.m */,
 				68C802DD19571A2000BC19EE /* WalletPreset.strings */,
 				68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */,
 				6898A6E51908AEA50099C09E /* WalletFavorite+initialize.h */,
@@ -6183,7 +6173,6 @@
 				6874845D1977FEBA00EA8F74 /* TranslatorGroup.m in Sources */,
 				6829681A18503B2100B70E13 /* NSManagedObject+MagicalFinders.m in Sources */,
 				68F14FB219485E8500159EAD /* A3DaysCounterSlideshowTimeSelectViewController.m in Sources */,
-				68425D2819776615007C1AAE /* WalletFieldItemImage.m in Sources */,
 				6874840F1977F44D00EA8F74 /* LoanCalcHistory+extension.m in Sources */,
 				684D92FF18BC1FBC005016F7 /* A3DateCalcTableviewCell.m in Sources */,
 				684D92FE18BC1FBC005016F7 /* A3DateCalcTableRowData.m in Sources */,
@@ -6196,7 +6185,6 @@
 				68521A4617E1FF2E00E08FB1 /* FXLabel.m in Sources */,
 				68F1C8CB18D7F37D009FAE8A /* A3LadyCalendarListViewController.m in Sources */,
 				685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */,
-				68425D3119776615007C1AAE /* WalletFieldItemVideo.m in Sources */,
 				68F1500119485E8500159EAD /* DaysCounterCalendar+Extension.m in Sources */,
 				681E1264193443F00077DCFA /* mztools.c in Sources */,
 				68B6A34618CEC76D004084EF /* A3WalletCategoryViewController.m in Sources */,

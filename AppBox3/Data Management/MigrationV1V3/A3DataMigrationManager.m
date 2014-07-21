@@ -23,7 +23,6 @@
 #import "WalletItem.h"
 #import "WalletField+initialize.h"
 #import "WalletFieldItem+initialize.h"
-#import "WalletFieldItemImage.h"
 #import "A3UserDefaults.h"
 #import "WalletData.h"
 #import "WalletItem+initialize.h"
@@ -513,9 +512,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 
 								NSDictionary *V1FieldInfo = V1FieldInfoArray[fieldInfoIndex];
 								if ([V1FieldInfo[WalletFieldType] isEqualToString:WalletFieldTypeImage]) {
-									WalletFieldItemImage *itemImage = [WalletFieldItemImage MR_createInContext:context];
-									itemImage.fieldItem = V3FieldItem;
-
+									V3FieldItem.hasImage = @YES;
 									NSURL *fileURL = [V3FieldItem photoImageURLInOriginalDirectory:YES];
 									[fileManager removeItemAtURL:fileURL error:NULL];
 									[fileManager moveItemAtURL:[NSURL fileURLWithPath:[self pathForFilename:valueDictionary[fieldID]]] toURL:fileURL error:NULL];

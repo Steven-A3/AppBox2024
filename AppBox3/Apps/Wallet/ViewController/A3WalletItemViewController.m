@@ -29,7 +29,6 @@
 #import "A3BasicWebViewController.h"
 #import "WalletFieldItem+initialize.h"
 #import "A3WalletItemTitleCell.h"
-#import "WalletFieldItemImage.h"
 #import "WalletItem+initialize.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
