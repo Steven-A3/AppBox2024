@@ -274,7 +274,7 @@
         calendarNameCell.imageView.tintColor = [_calendarItem objectForKey:CalendarItem_Color];
     }
     else if ( indexPath.section == 2) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") otherButtonTitles:nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.", @"Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") otherButtonTitles:nil];
         [actionSheet showInView:self.view];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }

@@ -545,28 +545,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (BOOL)removeCalendarItem:(NSMutableDictionary*)item
 {
-    DaysCounterCalendar *removeItem = [self calendarItemByID:[item objectForKey:CalendarItem_ID] inContext:[[MagicalRecordStack defaultStack] context] ];
-    
-    if ( removeItem == nil )
-        return NO;
-    
-    NSManagedObjectContext *context = [removeItem managedObjectContext];
-    BOOL retValue;
-	NSString *calendarID = removeItem.uniqueID;
-    if ( [removeItem MR_deleteInContext:context] ) {
-		NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendarID]];
-		for (DaysCounterEvent *event in events) {
-			[self removeEvent:event];
-		}
-
-        [context MR_saveToPersistentStoreAndWait];
-        retValue = YES;
-
-		[[self class] reloadAlertDateListForLocalNotification];
-	}
-    else
-        retValue = NO;
-    return retValue;
+    return [self removeCalendarItemWithID:[item objectForKey:CalendarItem_ID]];
 }
 
 - (BOOL)removeEvent:(DaysCounterEvent *)event {
@@ -585,17 +564,25 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (BOOL)removeCalendarItemWithID:(NSString*)calendarID
 {
-    DaysCounterCalendar *removeItem = [self calendarItemByID:calendarID inContext:[[MagicalRecordStack defaultStack] context] ];
+    DaysCounterCalendar *removeItem = [self calendarItemByID:calendarID inContext:[[MagicalRecordStack defaultStack] context]];
     
     if ( removeItem == nil )
         return NO;
     
     NSManagedObjectContext *context = [removeItem managedObjectContext];
-    BOOL retValue = NO;
+    BOOL retValue;
+	NSString *calendarUniqueID = removeItem.uniqueID;
     if ( [removeItem MR_deleteInContext:context] ) {
+		NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendarUniqueID]];
+		for (DaysCounterEvent *event in events) {
+			[self removeEvent:event];
+		}
+        
         [context MR_saveToPersistentStoreAndWait];
         retValue = YES;
-    }
+        
+		[[self class] reloadAlertDateListForLocalNotification];
+	}
     else {
         retValue = NO;
     }

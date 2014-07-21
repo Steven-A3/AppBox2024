@@ -29,8 +29,9 @@
 #import "A3InstructionViewController.h"
 #import "DaysCounterEvent+extension.h"
 
+#define ActionTag_DeleteCalendar 100
 
-@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, A3InstructionViewControllerDelegate>
+@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, A3InstructionViewControllerDelegate>
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) NSArray *searchResultArray;
 @property (nonatomic, strong) UISearchBar *searchBar;
@@ -67,6 +68,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerView_view2_widthConst_iPad;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerView_view3_widthConst_iPad;
 
+@property (nonatomic) NSInteger selectedRowIndex;
 @end
 
 @implementation A3DaysCounterCalendarListMainViewController
@@ -532,46 +534,12 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
                                                                                                isShortStyle:isAllDay? NO : YES
                                                                                           isStrictShortType:YES]
                       , untilSinceString];
-//            if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]) < 86400)) {
-//                NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:event.effectiveStartDate isAllDay:YES];
-//                if (diffDays == 1) {
-//                    result = [NSString stringWithFormat:@"%ld day %@", (long)diffDays, untilSinceString];
-//                }
-//                else {
-//                    result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
-//                                                                                                           fromDate:today
-//                                                                                                             toDate:nextDate
-//                                                                                                           isAllDay:isAllDay
-//                                                                                                       isShortStyle:isAllDay? NO : YES
-//                                                                                                  isStrictShortType:YES]
-//                              , untilSinceString];
-//
-//                }
-//            }
-//            else {
-//                result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
-//                                                                                                       fromDate:today
-//                                                                                                         toDate:nextDate
-//                                                                                                       isAllDay:isAllDay
-//                                                                                                   isShortStyle:isAllDay? NO : YES
-//                                                                                              isStrictShortType:YES]
-//                          , untilSinceString];
-//            }
         }
         else {
             BOOL isAllDay = [event.isAllDay boolValue];
             if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]) > 86400)) {
                 isAllDay = YES;
             }
-//            //if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.startDate.solarDate timeIntervalSince1970]) < 86400)) {
-//            FNLOG(@"%lld", llabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]));
-//            if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]) < 86400)) {
-//                NSDateComponents *todayComp = [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:today];
-//                NSDateComponents *efftvComp = [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:[event effectiveStartDate]];
-//                if (todayComp.day != efftvComp.day) {
-//                    isAllDay = YES;
-//                }
-//            }
 
             result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
                                                                                                    fromDate:today
@@ -580,31 +548,6 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
                                                                                                isShortStyle:isAllDay? NO : YES //![event.isAllDay boolValue]
                                                                                           isStrictShortType:YES]
                       , untilSinceString];
-
-//            if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]) < 86400)) {
-//                NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:event.effectiveStartDate isAllDay:YES];
-//                if (diffDays == 1) {
-//                    result = [NSString stringWithFormat:@"%ld day %@", (long)diffDays, untilSinceString];
-//                }
-//                else {
-//                    result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
-//                                                                                                           fromDate:today
-//                                                                                                             toDate:[event effectiveStartDate] //[event.startDate solarDate]
-//                                                                                                           isAllDay:isAllDay
-//                                                                                                       isShortStyle:isAllDay? NO : YES //![event.isAllDay boolValue]
-//                                                                                                  isStrictShortType:YES]
-//                              , untilSinceString];
-//                }
-//            }
-//            else {
-//                result = [NSString stringWithFormat:@"%@ %@", [A3DaysCounterModelManager stringOfDurationOption:DurationOption_Day
-//                                                                                                       fromDate:today
-//                                                                                                         toDate:[event effectiveStartDate] //[event.startDate solarDate]
-//                                                                                                       isAllDay:isAllDay
-//                                                                                                   isShortStyle:isAllDay? NO : YES //![event.isAllDay boolValue]
-//                                                                                              isStrictShortType:YES]
-//                          , untilSinceString];
-//            }
         }
     }
     
@@ -811,15 +754,10 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 {
     FNLOG();
     if ( editingStyle == UITableViewCellEditingStyleDelete ) {
-        DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
-        if ( [item.calendarType integerValue] == CalendarCellType_System ) {
-            return;
-        }
-
-		[_sharedManager removeCalendarItemWithID:item.uniqueID];
-        self.itemArray = [_sharedManager visibleCalendarList];
-        [self setupHeaderInfo];
-        [self.tableView reloadData];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.", @"Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") otherButtonTitles:nil];
+        actionSheet.tag = ActionTag_DeleteCalendar;
+        [actionSheet showInView:self.view];
+        _selectedRowIndex = indexPath.row;
     }
 }
 
@@ -862,6 +800,31 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
         return;
     if ( !decelerate )
         [self scrollViewDidEndDecelerating:scrollView];
+}
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if ( actionSheet.tag == ActionTag_DeleteCalendar ) {
+		if (buttonIndex == actionSheet.cancelButtonIndex) {
+//            [CATransaction begin];
+//            [CATransaction setCompletionBlock:^{
+//                [self.tableView setEditing:YES];
+//            }];
+            [self.tableView setEditing:NO animated:YES];
+//            [CATransaction commit];
+            return;
+        }
+        
+        DaysCounterCalendar *item = [_itemArray objectAtIndex:_selectedRowIndex];
+        if ( [item.calendarType integerValue] == CalendarCellType_System ) {
+            return;
+        }
+        
+		[_sharedManager removeCalendarItemWithID:item.uniqueID];
+        self.itemArray = [_sharedManager visibleCalendarList];
+        [self setupHeaderInfo];
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark - UISearchDisplayDelegate
