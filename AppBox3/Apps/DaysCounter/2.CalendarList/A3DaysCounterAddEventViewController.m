@@ -2301,9 +2301,13 @@
             
             CLPlacemark *placeMark = [placemarks objectAtIndex:0];
             NSDictionary *addressDict = placeMark.addressDictionary;
-            
-            DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
-			locItem.uniqueID = [[NSUUID UUID] UUIDString];
+
+            DaysCounterEventLocation *locItem = [_eventItem location];
+            if (!locItem) {
+                locItem = [DaysCounterEventLocation MR_createEntity];
+                locItem.uniqueID = [[NSUUID UUID] UUIDString];
+            }
+
 			locItem.updateDate = [NSDate date];
             locItem.eventID = _eventItem.uniqueID;
             locItem.latitude = @(location.coordinate.latitude);
