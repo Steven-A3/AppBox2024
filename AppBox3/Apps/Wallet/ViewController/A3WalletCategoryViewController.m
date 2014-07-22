@@ -541,7 +541,8 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 					[item deleteWalletItem];
 				}
             }
-
+            [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+            
             [self.tableView reloadData];
 
             self.deleteBarItem.enabled = NO;
@@ -567,7 +568,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 					[item deleteWalletItem];
 				}
             }
-
+            [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
             [self.items removeObjectsAtIndexes:mis];
 
             [self.tableView deleteRowsAtIndexPaths:ips withRowAnimation:UITableViewRowAnimationFade];
@@ -700,6 +701,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 			}];
             [self.items removeObject:item];
 			[item deleteWalletItem];
+            [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
             // more button 활성화여부

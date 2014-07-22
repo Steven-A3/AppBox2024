@@ -126,7 +126,7 @@
 	predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.uniqueID];
 	[WalletFavorite MR_deleteAllMatchingPredicate:predicate];
 	[self MR_deleteEntity];
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+//	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 @end

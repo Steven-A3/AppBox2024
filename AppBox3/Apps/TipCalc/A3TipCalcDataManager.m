@@ -594,7 +594,6 @@
     
     // percentType
     double resultTipValue = [[self costBeforeTax] doubleValue] * [tipValue doubleValue] / 100.0;
-    resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
     
     if ([self tipSplitOption] == TipSplitOption_BeforeSplit) {
         if (rounding) {
@@ -610,6 +609,8 @@
             }
         }
     }
+    
+    resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
     
     return @(resultTipValue);
 }
