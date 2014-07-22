@@ -32,8 +32,8 @@
 #import "UIColor+A3Addition.h"
 #import "A3CalculatorViewController.h"
 #import "A3InstructionViewController.h"
+#import "A3UserDefaults.h"
 
-NSString *const A3CurrencyLastInputValue = @"A3CurrencyLastInputValue";
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
 NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 
@@ -1078,12 +1078,15 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 - (void)updateTextFieldsWithSourceTextField:(UITextField *)textField {
 	float fromValue = [textField.text floatValueEx];
 
-	[[NSUserDefaults standardUserDefaults] setObject:@(fromValue) forKey:A3CurrencyLastInputValue];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3CurrencyUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] setObject:@(fromValue) forKey:A3CurrencyUserDefaultsLastInputValue];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:@(fromValue) forKey:A3CurrencyLastInputValue];
+		[store setObject:@(fromValue) forKey:A3CurrencyUserDefaultsLastInputValue];
+		[store setObject:updateDate forKey:A3CurrencyUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 
@@ -1239,7 +1242,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (void)chartViewControllerValueChangedChartViewController:(A3CurrencyChartViewController *)chartViewController valueChanged:(NSNumber *)newValue newCodes:(NSArray *)newCodesArray {
 	if ([newValue doubleValue] != [self.previousValue doubleValue]) {
-		[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:A3CurrencyLastInputValue];
+		[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:A3CurrencyUserDefaultsLastInputValue];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		[self putHistoryWithValue:newValue];
 	}
@@ -1430,7 +1433,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 #pragma mark - History
 
 - (NSNumber *)lastInputValue {
-	NSNumber *lastInput = [[NSUserDefaults standardUserDefaults] objectForKey:A3CurrencyLastInputValue];
+	NSNumber *lastInput = [[NSUserDefaults standardUserDefaults] objectForKey:A3CurrencyUserDefaultsLastInputValue];
 	_currentValueIsNotFromUser = lastInput == nil;
 	return lastInput ? lastInput : @1;
 }

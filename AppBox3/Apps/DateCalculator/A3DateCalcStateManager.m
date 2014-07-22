@@ -10,9 +10,7 @@
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "A3AppDelegate.h"
-
-NSString *const A3DateCalcDefaultsDurationType = @"A3DateCalcDefaultsDurationType";
-NSString *const A3DateCalcDefaultsExcludeOptions = @"A3DateCalcDefaultsExcludeOptions";
+#import "A3DateMainTableViewController.h"
 
 @implementation A3DateCalcStateManager
 
@@ -52,13 +50,16 @@ static DurationType g_currentDurationType;
         //result = DurationType_Year;
         result = DurationType_Day;
     }
-    
-    [[NSUserDefaults standardUserDefaults] setObject:@(result) forKey:A3DateCalcDefaultsDurationType];
+
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] setObject:@(result) forKey:A3DateCalcDefaultsDurationType];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:@(result) forKey:A3DateCalcDefaultsDurationType];
+		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }
@@ -142,13 +143,16 @@ static DurationType g_currentDurationType;
             result = oldOptions|options;
         }
     }
-    
+
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
     [[NSUserDefaults standardUserDefaults] setObject:@(result) forKey:A3DateCalcDefaultsExcludeOptions];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:@(result) forKey:A3DateCalcDefaultsExcludeOptions];
+		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 

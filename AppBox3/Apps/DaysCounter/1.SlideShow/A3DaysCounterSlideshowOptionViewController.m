@@ -43,15 +43,17 @@
 	return self;
 }
 
-
 - (void)saveCurrentOption
 {
-    [[NSUserDefaults standardUserDefaults] setObject:_optionDict forKey:A3DaysCounterSlideshowOption];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DaysCounterUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] setObject:_optionDict forKey:A3DaysCounterUserDefaultsSlideShowOptions];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:_optionDict forKey:A3DaysCounterSlideshowOption];
+		[store setObject:_optionDict forKey:A3DaysCounterUserDefaultsSlideShowOptions];
+		[store setObject:updateDate forKey:A3DaysCounterUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }
@@ -90,7 +92,7 @@
                                                                    @{EventRowTitle : NSLocalizedString(@"Shuffle", @"Shuffle"),EventRowType : @(SlideshowOptionType_Shuffle)}]},
                           @{EventRowTitle : @"",EventKey_Items : @[@{EventRowTitle : NSLocalizedString(@"Start Slideshow", @"Start Slideshow"),EventRowType : @(SlideshowOptionType_Startshow)}]}];
     
-    NSDictionary *opt = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterSlideshowOption];
+    NSDictionary *opt = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterUserDefaultsSlideShowOptions];
     self.optionDict = [NSMutableDictionary dictionaryWithDictionary:opt];
 }
 

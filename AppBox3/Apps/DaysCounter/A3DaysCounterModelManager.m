@@ -189,14 +189,14 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     [self checkAndAddSystemCalendarItemsInContext:context ];
     
     // slideshow option create
-    NSDictionary *opt = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterSlideshowOption];
+    NSDictionary *opt = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterUserDefaultsSlideShowOptions];
     if ( opt == nil || [opt count] < 4 ) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         [dict setObject:@(TransitionType_Dissolve) forKey:OptionKey_Transition];
         [dict setObject:@(3) forKey:OptionKey_Showtime];
         [dict setObject:@(NO) forKey:OptionKey_Repeat];
         [dict setObject:@(NO) forKey:OptionKey_Shuffle];
-        [[NSUserDefaults standardUserDefaults] setObject:dict forKey:A3DaysCounterSlideshowOption];
+		[[NSUserDefaults standardUserDefaults] setObject:dict forKey:A3DaysCounterUserDefaultsSlideShowOptions];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }

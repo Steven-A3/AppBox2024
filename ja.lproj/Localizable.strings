@@ -46,7 +46,7 @@
 "iCloud" = "iCloud";
 "None" = "なし";
 
-"Most Recent" = "最近";
+"Most Recent" = "最新";
 
 "Korean" = "韓国旧暦";
 "Chinese" = "中国の太陰暦";
@@ -300,12 +300,9 @@
 "Never" = "しない";
 "Every Day" = "毎日";
 "Every Week" = "毎週";
-"Every 2Weeks" = "2週間ごと";
 "Every Month" = "毎月";
 "Every Year" = "毎年";
-"Daily" = "毎日";
 "Weekly" = "毎週";
-"Bi-Weekly" = "隔週";
 "Monthly" = "毎月";
 "Yearly" = "毎年";
 

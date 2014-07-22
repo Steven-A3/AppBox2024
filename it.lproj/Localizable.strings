@@ -297,12 +297,9 @@
 "Never" = "Mai";
 "Every Day" = "Ogni Giorno";
 "Every Week" = "Ogni Settimana";
-"Every 2Weeks" = "Ogni 2Settimane";
 "Every Month" = "Ogni Mese";
 "Every Year" = "Ogni Anno";
-"Daily" = "Quotidiano";
 "Weekly" = "Settimanale";
-"Bi-Weekly" = "Bisettimanale";
 "Monthly" = "Mensile";
 "Yearly" = "Annuale";
 

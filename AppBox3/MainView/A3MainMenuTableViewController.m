@@ -330,7 +330,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
         A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
 		[sharedManager prepareInContext:[A3AppDelegate instance].managedObjectContext];
 
-        NSInteger lastOpenedMainIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"DaysCounterLastOpenedMainIndex"];
+        NSInteger lastOpenedMainIndex = [[NSUserDefaults standardUserDefaults] integerForKey:A3DaysCounterLastOpenedMainIndex];
         switch (lastOpenedMainIndex) {
             case 1:
                 targetViewController = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];

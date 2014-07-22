@@ -53,7 +53,7 @@
     currentIndex = 0;
     
     if ( self.optionDict == nil )
-        self.optionDict = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterSlideshowOption];
+        self.optionDict = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterUserDefaultsSlideShowOptions];
     self.itemArray = [_sharedManager allEventsListContainedImage];
     
     if ( [[_optionDict objectForKey:OptionKey_Shuffle] boolValue] ) {

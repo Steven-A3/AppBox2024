@@ -293,12 +293,10 @@
 "Never" = "Nunca";
 "Every Day" = "Todos los días";
 "Every Week" = "Todas las semanas";
-"Every 2Weeks" = "Cada dos semanas";
 "Every Month" = "Todos los meses";
 "Every Year" = "Todos los años";
-"Daily" = "Diariamente";
-"Weekly" = "Semanalmente";
-"Bi-Weekly" = "Cada dos semanas";
+
+"Weekly" = "Semanal";
 "Monthly" = "Mensual";
 "Yearly" = "Anualmente";
 
@@ -484,20 +482,20 @@
 "Payment" = "Pago";
 "Term(years)" = "Plazo(años)";
 "Term(months)" = "Plazo(meses)";
-"Biweekly" = "Cada dos semanas";
+"Biweekly" = "Bisemanal";
 "LoanCalc_Monthly" = "Mensual";
 "Bimonthly" = "Bimensual";
-"Quarterly" = "Trimestralmente";
-"Semiannually" = "Semestralmente";
-"Annually" = "Anualmente";
+"Quarterly" = "Trimestral";
+"Semiannually" = "Semestral";
+"Annually" = "Anual";
 
 "Loan Calc Frequency short string weekly" = "sema";
 "Loan Calc Frequency short string biweekly" = "bisem";
 "Loan Calc Frequency short string monthly" = "mensual";
-"Loan Calc Frequency short string bi montly" = "bimensual";
-"Loan Calc Frequency short string quarterly" = "trimestral";
-"Loan Calc Frequency short string semi annually" = "semestralmente";
-"Loan Calc Frequency short string annually" = "anualmente";
+"Loan Calc Frequency short string bi montly" = "2M";
+"Loan Calc Frequency short string quarterly" = "3M";
+"Loan Calc Frequency short string semi annually" = "6M";
+"Loan Calc Frequency short string annually" = "anual";
 
 "PAYMENT" = "PAGO";
 "PRINCIPAL" = "PRINCIPAL";
@@ -857,11 +855,11 @@
 "Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." = "Los servicios de ubicación no están activados. Ir a Configuración > Privacidad > Servicios de ubicación. Los servicios de ubicación deben estar activados y AppBox Pro autorizado para mostrar el clima.";
 "Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." = "Los servicios de ubicación están habilitados pero AppBox Pro no tiene autorización para acceder a los servicios de localización. Ir a Configuración> Privacidad> Servicios de ubicación y autorícelo para mostrar el clima.";
 
-"daily" = "diariamente";
-"weekly" = "semanalmente";
-"biweekly" = "cada dos semanas";
+"daily" = "cada día";
+"weekly" = "semanal";
+"biweekly" = "bisemanal";
 "monthly" = "mensual";
-"yearly" = "anualmente";
+"yearly" = "anual";
 
 "No Photos" = "No hay fotos";
 "You can add photos into events." = "Usted puede adicionar fotos a los eventos.";

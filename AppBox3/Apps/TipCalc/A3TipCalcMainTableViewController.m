@@ -30,6 +30,7 @@
 #import "A3CalculatorViewController.h"
 #import "UITableView+utility.h"
 #import "UIColor+A3Addition.h"
+#import "A3UserDefaults.h"
 
 #define kColorPlaceHolder [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 
@@ -1203,12 +1204,15 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
-	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3TipCalcCurrencyCode];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3TipCalcUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3TipCalcUserDefaultsCurrencyCode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:currencyCode forKey:A3TipCalcCurrencyCode];
+		[store setObject:currencyCode forKey:A3TipCalcUserDefaultsCurrencyCode];
+		[store setObject:updateDate forKey:A3TipCalcUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 

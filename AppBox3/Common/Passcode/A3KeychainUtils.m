@@ -124,7 +124,7 @@ NSString *const kUserUseSimplePasscode				= @"kUserUseSimplePasscode";
 			NSData *encryptedHintData = [[NSUserDefaults standardUserDefaults] objectForKey:kUserSavedPasscodeHint];
 			NSString *decryptedHint = [[NSString alloc] initWithData:[encryptedHintData AESDecryptWithPassphrase:USERPASSCODEDECRYPTKEY] encoding:NSUTF8StringEncoding];
 
-			if (![[NSUserDefaults standardUserDefaults] boolForKey:kUserUseSimplePasscode]) {
+			if (![[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForUseSimplePasscode]) {
 				[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
 			} else {
 				// Verify is it simple passcode.
@@ -132,6 +132,8 @@ NSString *const kUserUseSimplePasscode				= @"kUserUseSimplePasscode";
 				NSString *verification = [decryptedPasscode stringByTrimmingCharactersInSet:digitCharacterSet];
 				if ([decryptedPasscode length] != 4 || [verification length] != 0) {
 					[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
+				} else {
+					[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kUserDefaultsKeyForUseSimplePasscode];
 				}
 			}
 			[A3KeychainUtils storePassword:decryptedPasscode hint:decryptedHint];
@@ -140,7 +142,7 @@ NSString *const kUserUseSimplePasscode				= @"kUserUseSimplePasscode";
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserEnabledPasscode];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserSavedPasscode];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserSavedPasscodeHint];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserUseSimplePasscode];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end

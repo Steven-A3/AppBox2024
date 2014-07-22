@@ -14,7 +14,7 @@
 
 - (BOOL)currencyAutoUpdate {
 	NSNumber *object;
-	object = [self objectForKey:A3CurrencyAutoUpdate];
+	object = [self objectForKey:A3CurrencyUserDefaultsAutoUpdate];
 	if (object) {
 		return [object boolValue];
 	}
@@ -22,13 +22,13 @@
 }
 
 - (void)setCurrencyAutoUpdate:(BOOL)boolValue {
-	[self setBool:boolValue forKey:A3CurrencyAutoUpdate];
+	[self setBool:boolValue forKey:A3CurrencyUserDefaultsAutoUpdate];
 	[self synchronize];
 }
 
 - (BOOL)currencyUseCellularData {
 	NSNumber *object;
-	object = [self objectForKey:A3CurrencyUseCellularData];
+	object = [self objectForKey:A3CurrencyUserDefaultsUseCellularData];
 	if (object) {
 		return [object boolValue];
 	}
@@ -36,13 +36,13 @@
 }
 
 - (void)setCurrencyUseCellularData:(BOOL)boolValue {
-	[self setBool:boolValue forKey:A3CurrencyUseCellularData];
+	[self setBool:boolValue forKey:A3CurrencyUserDefaultsUseCellularData];
 	[self synchronize];
 }
 
 - (BOOL)currencyShowNationalFlag {
 	NSNumber *object;
-	object = [self objectForKey:A3CurrencyShowNationalFlag];
+	object = [self objectForKey:A3CurrencyUserDefaultsShowNationalFlag];
 	if (object) {
 		return [object boolValue];
 	}
@@ -50,7 +50,7 @@
 }
 
 - (void)setCurrencyShowNationalFlag:(BOOL)boolValue {
-	[self setBool:boolValue forKey:A3CurrencyShowNationalFlag];
+	[self setBool:boolValue forKey:A3CurrencyUserDefaultsShowNationalFlag];
 	[self synchronize];
 }
 
@@ -254,12 +254,15 @@
 
 - (void)setUnitConverterCurrentUnitTap:(NSUInteger)tapIndex
 {
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3UnitConverterUserDefaultsUpdateDate];
 	[self setInteger:tapIndex forKey:A3UnitConverterDefaultCurrentUnitTap];
 	[self synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:@(tapIndex) forKey:A3UnitConverterDefaultCurrentUnitTap];
+		[store setObject:updateDate forKey:A3UnitConverterUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 

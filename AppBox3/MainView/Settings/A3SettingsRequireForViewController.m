@@ -48,8 +48,10 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
-	return [self standardHeightForFooterIsLastSection:isLastSection];
+	if (([self.tableView numberOfSections] - 1) == section) {
+		return UITableViewAutomaticDimension;
+	}
+	return [self standardHeightForFooterIsLastSection:NO];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

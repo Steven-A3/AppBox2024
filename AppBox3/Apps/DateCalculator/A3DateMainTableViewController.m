@@ -28,11 +28,18 @@
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]
 #define kSelectedButtonColor    [A3AppDelegate instance].themeColor
 
+NSString *const A3DateCalcDefaultsUpdateDate = @"A3DateCalcDefaultsUpdateDate";
+NSString *const A3DateCalcDefaultsCloudUpdateDate = @"A3DateCalcDefaultsCloudUpdateDate";
 NSString *const A3DateCalcDefaultsIsAddSubMode = @"A3DateCalcDefaultsIsAddSubMode";
 NSString *const A3DateCalcDefaultsFromDate = @"A3DateCalcDefaultsFromDate";
 NSString *const A3DateCalcDefaultsToDate = @"A3DateCalcDefaultsToDate";
 NSString *const A3DateCalcDefaultsOffsetDate = @"A3DateCalcDefaultsOffsetDate";
 NSString *const A3DateCalcDefaultsDidSelectMinus = @"A3DateCalcDefaultsDidSelectMinus";
+NSString *const A3DateCalcDefaultsSavedYear = @"A3DateCalcDefaultSavedYear";
+NSString *const A3DateCalcDefaultsSavedMonth = @"A3DateCalcDefaultSavedMonth";
+NSString *const A3DateCalcDefaultsSavedDay = @"A3DateCalcDefaultSavedDay";
+NSString *const A3DateCalcDefaultsDurationType = @"A3DateCalcDefaultsDurationType";
+NSString *const A3DateCalcDefaultsExcludeOptions = @"A3DateCalcDefaultsExcludeOptions";
 
 @interface A3DateMainTableViewController () <UITextFieldDelegate, UIPopoverControllerDelegate, A3DateKeyboardDelegate, A3DateCalcExcludeDelegate, A3DateCalcDurationDelegate, A3DateCalcHeaderViewDelegate, A3DateCalcEditEventDelegate, UIActivityItemSource>
 
@@ -249,11 +256,14 @@ NSString *const A3DateCalcDefaultsDidSelectMinus = @"A3DateCalcDefaultsDidSelect
 
 -(void)setIsAddSubMode:(BOOL)isAddSubMode
 {
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
 	[[NSUserDefaults standardUserDefaults] setBool:isAddSubMode forKey:A3DateCalcDefaultsIsAddSubMode];
     [[NSUserDefaults standardUserDefaults] synchronize];
 	
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store setBool:isAddSubMode forKey:A3DateCalcDefaultsIsAddSubMode];
 		[store synchronize];
 	}
@@ -278,12 +288,15 @@ NSString *const A3DateCalcDefaultsDidSelectMinus = @"A3DateCalcDefaultsDidSelect
     comp.hour = 0;
     comp.minute = 0;
     _fromDate = [[A3DateCalcStateManager currentCalendar] dateFromComponents:comp];
-    
+
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
     [[NSUserDefaults standardUserDefaults] setObject:_fromDate forKey:A3DateCalcDefaultsFromDate];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store setObject:_fromDate forKey:A3DateCalcDefaultsFromDate];
 		[store synchronize];
 	}
@@ -297,12 +310,15 @@ NSString *const A3DateCalcDefaultsDidSelectMinus = @"A3DateCalcDefaultsDidSelect
     comp.hour = 0;
     comp.minute = 0;
     _toDate = [[A3DateCalcStateManager currentCalendar] dateFromComponents:comp];
-    
+
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
     [[NSUserDefaults standardUserDefaults] setObject:_toDate forKey:A3DateCalcDefaultsToDate];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store setObject:_toDate forKey:A3DateCalcDefaultsToDate];
 		[store synchronize];
 	}
@@ -311,11 +327,14 @@ NSString *const A3DateCalcDefaultsDidSelectMinus = @"A3DateCalcDefaultsDidSelect
 -(void)setOffsetDate:(NSDate *)offsetDate
 {
     _offsetDate = [offsetDate copy];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
     [[NSUserDefaults standardUserDefaults] setObject:_offsetDate forKey:A3DateCalcDefaultsOffsetDate];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store setObject:_offsetDate forKey:A3DateCalcDefaultsOffsetDate];
 		[store synchronize];
 	}
@@ -351,11 +370,14 @@ NSString *const A3DateCalcDefaultsDidSelectMinus = @"A3DateCalcDefaultsDidSelect
 
 - (IBAction)addButtonTouchUpAction:(id)sender
 {
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3DateCalcDefaultsDidSelectMinus];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store setBool:NO forKey:A3DateCalcDefaultsDidSelectMinus];
 		[store synchronize];
 	}
@@ -375,11 +397,14 @@ NSString *const A3DateCalcDefaultsDidSelectMinus = @"A3DateCalcDefaultsDidSelect
 
 - (IBAction)subButtonTouchUpAction:(id)sender
 {
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3DateCalcDefaultsDidSelectMinus];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store setBool:YES forKey:A3DateCalcDefaultsDidSelectMinus];
 		[store synchronize];
 	}

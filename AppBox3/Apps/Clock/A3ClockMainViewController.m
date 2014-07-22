@@ -156,13 +156,16 @@ NSString *const A3ClockUserDefaultsCurrentPage = @"A3ClockUserDefaultsCurrentPag
 	}
 }
 
+static NSString *const A3V3InstructionDidShowForClock1 = @"A3V3InstructionDidShowForClock1";
+static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClock2";
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
 	[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
 
 	if ([self isMovingToParentViewController]) {
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock1"] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"Clock2"]) {
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1] && ![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
             [self showMenus:NO];
         }
         else {
@@ -379,9 +382,6 @@ NSString *const A3ClockUserDefaultsCurrentPage = @"A3ClockUserDefaultsCurrentPag
 	}
 	[self showMenus:_chooseColorButton.isHidden];
 }
-
-static NSString *const A3V3InstructionDidShowForClock1 = @"A3V3InstructionDidShowForClock1";
-static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClock2";
 
 - (void)showMenus:(BOOL)show {
 	if (_buttonsTimer) {

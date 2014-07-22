@@ -46,7 +46,7 @@
 "iCloud" = "云服务";
 "None" = "无";
 
-"Most Recent" = "最新的";
+"Most Recent" = "最新的1集";
 
 /* 음력 달력 선택을 위한 것 */
 "Korean" = "韩国阴历";
@@ -181,7 +181,7 @@
 "%ldy" = "%ld年";
 "%ldm" = "%ld月";
 "%ldw" = "%ld周";
-"%ldd" = "%ld日";
+"%ldd" = "%ld天";
 
 "0 day" = "0日";
 
@@ -299,9 +299,7 @@
 "Every 2 Weeks" = "每两周";
 "Every Month" = "每月";
 "Every Year" = "每年";
-"Daily" = "每日";
 "Weekly" = "每周";
-"Bi-Weekly" = "每2周";
 "Monthly" = "每月";
 "Yearly" = "每年";
 
@@ -319,7 +317,7 @@
 "DaysCounterDuration_year_abbreviation" = "年";
 "DaysCounterDuration_month_abbreviation" = "月";
 "DaysCounterDuration_week_abbreviation" = "周";
-"DaysCounterDuration_day_abbreviation" = "日";
+"DaysCounterDuration_day_abbreviation" = "天";
 "DaysCounterDuration_hour_abbreviation" = "小时";
 "Hours" = "时间";
 /* Days Counter Duration minutes abbreviation, "min" */
@@ -329,7 +327,7 @@
 "%ld y" = "%ld 年";
 "%ld m" = "%ld 月";
 "%ld w" = "%ld 周";
-"%ld d" = "%ld 日";
+"%ld d" = "%ld 天";
 "%ld hr" = "%ld 小时";
 "%ld min" = "%ld 分钟";
 

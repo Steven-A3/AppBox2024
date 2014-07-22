@@ -6,9 +6,8 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
-
 #import "A3TipCalcDataManager.h"
+#import "A3UserDefaults.h"
 
 @implementation A3TipCalcDataManager
 {
@@ -345,10 +344,11 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 
 - (void)saveToHistory {
     TipCalcHistory* history = [TipCalcHistory MR_createEntity];
-    history.labelTip = [self currencyStringFromDouble:[[self tipValueWithSplitWithRounding:YES] doubleValue]];
-    history.labelTotal = [self currencyStringFromDouble:[[self totalBeforeSplitWithTax] doubleValue]];
-
+	history.uniqueID = [[NSUUID UUID] UUIDString];
 	history.updateDate = [NSDate date];
+	history.labelTip = [self currencyStringFromDouble:[[self tipValueWithSplitWithRounding:YES] doubleValue]];
+	history.labelTotal = [self currencyStringFromDouble:[[self totalBeforeSplitWithTax] doubleValue]];
+
 	self.tipCalcData.historyID = history.uniqueID;
     self.tipCalcData.isMain = @(NO);
 
@@ -743,7 +743,7 @@ NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
 }
 
 - (NSString *)currencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3TipCalcCurrencyCode];
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3TipCalcUserDefaultsCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}

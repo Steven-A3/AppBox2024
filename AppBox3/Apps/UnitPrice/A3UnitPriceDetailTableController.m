@@ -29,6 +29,7 @@
 #import "A3CalculatorViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UnitPriceInfo+extension.h"
+#import "A3UserDefaults.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
 	Price_Percent = 0,
@@ -846,7 +847,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 }
 
 - (NSString *)defaultCurrencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceCurrencyCode];
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}
@@ -862,12 +863,15 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
 	if ([currencyCode length]) {
-		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3UnitPriceCurrencyCode];
+		NSDate *updateDate = [NSDate date];
+		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3UnitPriceUserDefaultsUpdateDate];
+		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3UnitPriceUserDefaultsCurrencyCode];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
 		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-			[store setObject:currencyCode forKey:A3UnitPriceCurrencyCode];
+			[store setObject:currencyCode forKey:A3UnitPriceUserDefaultsCurrencyCode];
+			[store setObject:updateDate forKey:A3UnitPriceUserDefaultsCloudUpdateDate];
 			[store synchronize];
 		}
 

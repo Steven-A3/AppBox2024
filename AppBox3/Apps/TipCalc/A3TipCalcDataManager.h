@@ -47,8 +47,6 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
 #import "TipCalcHistory.h"
 #import <CoreLocation/CoreLocation.h>
 
-extern NSString *const A3TipCalcCurrencyCode;
-
 @interface A3TipCalcDataManager : NSObject<CLLocationManagerDelegate>
 {
     CLLocationManager *_locationManager;

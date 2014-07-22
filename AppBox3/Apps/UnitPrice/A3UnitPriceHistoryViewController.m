@@ -224,8 +224,6 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     // set font
     cell.unitPriceALabel.font = [UIFont systemFontOfSize:15.0];
     cell.unitPriceBLabel.font = [UIFont systemFontOfSize:15.0];
-    cell.unitPriceALabel.textColor = [UIColor blackColor];
-    cell.unitPriceBLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
     cell.timeLabel.font = [UIFont systemFontOfSize:12.0];
     cell.timeLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
 
@@ -259,17 +257,12 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
         unitPrice2Txt = [self.currencyFormatter stringFromNumber:@(unitPriceB)];
     }
 
-    // A,B값이 같으면, A만 보인다.
-    if ((unitPriceAItem.unitID == nil && unitPriceBItem.unitID == nil) && (unitPriceA == unitPriceB)) {
-        cell.historyBView.hidden = YES;
-    }
-    else if ((unitPriceAItem.unitID && unitPriceBItem.unitID) && ([unitPriceAItem.unitID isEqualToString:unitPriceBItem.unitID]) && (unitPriceA == unitPriceB)) {
-        cell.historyBView.hidden = YES;
-    }
-    else {
-        cell.historyBView.hidden = NO;
-    }
-    
+	UIColor *blackColor = [UIColor blackColor];
+    UIColor *greenColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+
+	cell.unitPriceALabel.textColor = unitPriceA < unitPriceB ? greenColor : blackColor;
+	cell.unitPriceBLabel.textColor = unitPriceB < unitPriceA ? greenColor : blackColor;
+	
     cell.unitPriceALabel.text = unitPrice1Txt;
     cell.unitPriceBLabel.text = unitPrice2Txt;
     cell.timeLabel.text = [unitPriceHistory.updateDate timeAgo];
