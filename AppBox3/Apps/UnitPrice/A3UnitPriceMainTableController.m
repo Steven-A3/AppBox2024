@@ -784,8 +784,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.inputView.markLabel.text = @"A";
     [cell.inputView loadFontSettings];
     
-    double unitPrice = 0;
-    NSString *unitPriceTxt = @"";
+    NSString *unitPriceTxt = [self.price1 unitPriceStringWithFormatter:self.currencyFormatter];
     NSString *unitShortName = @"";
     NSString *unitName = @"";
     NSString *priceTxt = @"";
@@ -797,58 +796,20 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	UnitPriceInfo *priceInfo = self.price1;
     
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
-    unitShortName = priceInfo.unit ? NSLocalizedStringFromTable(priceInfo.unit.unitName, @"unitShort", nil) : NSLocalizedString(@"None", @"None");
-    unitName = priceInfo.unit ? NSLocalizedStringFromTable(priceInfo.unit.unitName, @"unit", nil) : NSLocalizedString(@"None", @"None");
-    sizeTxt = priceInfo.size.doubleValue != 0.0 ? [decimalFormatter stringFromNumber:priceInfo.size] : @"-";
-    
-    double priceValue = priceInfo.price.doubleValue;
-    NSInteger sizeValue = (priceInfo.size.integerValue <= 0) ? 1:priceInfo.size.integerValue;
-    NSInteger quantityValue = priceInfo.quantity.integerValue;
-    
+	sizeTxt = priceInfo.size.doubleValue != 0.0 ? [decimalFormatter stringFromNumber:priceInfo.size] : @"-";
+
+	unitShortName = priceInfo.unit ? NSLocalizedStringFromTable(priceInfo.unit.unitName, @"unitShort", nil) : NSLocalizedString(@"None", @"None");
+	unitName = priceInfo.unit ? NSLocalizedStringFromTable(priceInfo.unit.unitName, @"unit", nil) : NSLocalizedString(@"None", @"None");
+
     // 할인값
     NSString *discountText = [self.currencyFormatter stringFromNumber:@(0)];
-    double discountValue = 0;
     if (priceInfo.discountPrice.doubleValue > 0) {
         discountText = [self.currencyFormatter stringFromNumber:@(priceInfo.discountPrice.doubleValue)];
-        discountValue = priceInfo.discountPrice.doubleValue;
-        discountValue = MIN(discountValue, priceValue);
     }
     else if (priceInfo.discountPercent.doubleValue > 0) {
         discountText = [self.percentFormatter stringFromNumber:@(priceInfo.discountPercent.doubleValue)];
-        discountValue = priceValue * priceInfo.discountPercent.doubleValue;
-    }
-    
-    if ((priceValue>0) && (sizeValue>0) && (quantityValue>0)) {
-        unitPrice = (priceValue - discountValue) / (sizeValue * quantityValue);
-        
-        if (unitPrice > 0) {
-            if (IS_IPAD && priceInfo.unit) {
-                unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice)], unitShortName];
-            }
-            else {
-                unitPriceTxt = [self.currencyFormatter stringFromNumber:@(unitPrice)];
-            }
-        }
-        else if (unitPrice == 0) {
-            if (IS_IPAD && priceInfo.unit) {
-                unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice)], unitShortName];
-            }
-            else {
-                unitPriceTxt = [self.currencyFormatter stringFromNumber:@(unitPrice)];
-            }
-            
-        }
-        else {
-            if (IS_IPAD && priceInfo.unit) {
-                unitPriceTxt = [NSString stringWithFormat:@"-%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice*-1)], unitShortName];
-            }
-            else {
-                unitPriceTxt = [NSString stringWithFormat:@"-%@", [self.currencyFormatter stringFromNumber:@(unitPrice*-1)]];
-            }
-        }
     }
 
-	FNLOG(@"%@, %@", unitShortName, unitName);
     // input1
     cell.inputView.priceLabel.text = priceTxt;
     cell.inputView.unitLabel.text = IS_IPHONE ? unitShortName : unitName;
@@ -865,9 +826,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.inputView.markLabel.text = @"B";
     [cell.inputView loadFontSettings];
     
-    double unitPrice = 0;
-    NSString *unitPriceTxt = @"";
-    NSString *price1UnitShortName;
+    NSString *unitPriceTxt = [self.price2 unitPrice2StringWithPrice1:self.price1 formatter:self.currencyFormatter];
     NSString *unitShortName;
     NSString *unitName;
     NSString *priceTxt;
@@ -879,96 +838,19 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     UnitPriceInfo *priceInfo = self.price2;
     
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
-    price1UnitShortName = _price1.unit ? NSLocalizedStringFromTable(_price1.unit.unitName, @"unitShort", nil) : NSLocalizedString(@"None", @"None");
     unitShortName = priceInfo.unit ? NSLocalizedStringFromTable(priceInfo.unit.unitName, @"unitShort", nil) : NSLocalizedString(@"None", @"None");
     unitName = priceInfo.unit ? NSLocalizedStringFromTable(priceInfo.unit.unitName, @"unit", nil) : NSLocalizedString(@"None", @"None");
     sizeTxt = priceInfo.size.doubleValue != 0.0 ? [decimalFormatter stringFromNumber:priceInfo.size] : @"-";
     
-    double priceValue = priceInfo.price.floatValue;
-    NSInteger sizeValue = (priceInfo.size.integerValue <= 0) ? 1:priceInfo.size.integerValue;
-    NSInteger quantityValue = priceInfo.quantity.integerValue;
-    
     // 할인값
     NSString *discountText = [self.currencyFormatter stringFromNumber:@(0)];
-    double discountValue = 0;
     if (priceInfo.discountPrice.floatValue > 0) {
         discountText = [self.currencyFormatter stringFromNumber:@(priceInfo.discountPrice.doubleValue)];
-        discountValue = priceInfo.discountPrice.floatValue;
-        discountValue = MIN(discountValue, priceValue);
     }
     else if (priceInfo.discountPercent.floatValue > 0) {
         discountText = [self.percentFormatter stringFromNumber:@(priceInfo.discountPercent.doubleValue)];
-        discountValue = priceValue * priceInfo.discountPercent.floatValue;
     }
-    
-    if ((priceValue>0) && (sizeValue>0) && (quantityValue>0)) {
-        
-        double price1CnvRate, price2CnvRate;
-        
-        if (_price1.unit && _price2.unit) {
-            price1CnvRate = _price1.unit.conversionRate.floatValue;
-            price2CnvRate = _price2.unit.conversionRate.floatValue;
-        }
-        else if (_price1.unit && !_price2.unit) {
-            price1CnvRate = _price1.unit.conversionRate.floatValue;
-            price2CnvRate = _price1.unit.conversionRate.floatValue;
-        }
-        else if (!_price1.unit && _price2.unit) {
-            price1CnvRate = _price2.unit.conversionRate.floatValue;
-            price2CnvRate = _price2.unit.conversionRate.floatValue;
-        }
-        else {
-            price1CnvRate = 1;
-            price2CnvRate = 1;
-        }
-        
-        double rate = price2CnvRate / price1CnvRate;
-        
-        unitPrice = (priceValue - discountValue) / (sizeValue * quantityValue * rate);
-        
-        if (unitPrice > 0) {
-            if (IS_IPAD && priceInfo.unit) {
-                
-                if (self.price1.unit != self.price2.unit) {
-                    
-                    float normalPrice = (priceValue - discountValue) / (sizeValue * quantityValue);
-                    
-                    if (IS_IPAD) {
-                        unitPriceTxt = [NSString stringWithFormat:@"%@/%@ (%@/%@)", [self.currencyFormatter stringFromNumber:@(unitPrice)], price1UnitShortName, [self.currencyFormatter stringFromNumber:@(normalPrice)], unitShortName];
-                    }
-                    else {
-                        unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice)], price1UnitShortName];
-                    }
-                    
-                }
-                else {
-                    unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice)], unitShortName];
-                }
-                
-            }
-            else {
-                unitPriceTxt = [self.currencyFormatter stringFromNumber:@(unitPrice)];
-            }
-        }
-        else if (unitPrice == 0) {
-            if (IS_IPAD && priceInfo.unit) {
-                unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice)], unitShortName];
-            }
-            else {
-                unitPriceTxt = [self.currencyFormatter stringFromNumber:@(unitPrice)];
-            }
-            
-        }
-        else {
-            if (IS_IPAD && priceInfo.unit) {
-                unitPriceTxt = [NSString stringWithFormat:@"-%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice*-1)], unitShortName];
-            }
-            else {
-                unitPriceTxt = [NSString stringWithFormat:@"-%@", [self.currencyFormatter stringFromNumber:@(unitPrice*-1)]];
-            }
-        }
-    }
-    
+
     // input2
     cell.inputView.priceLabel.text = priceTxt;
     cell.inputView.unitLabel.text = IS_IPHONE ? unitShortName : unitName;

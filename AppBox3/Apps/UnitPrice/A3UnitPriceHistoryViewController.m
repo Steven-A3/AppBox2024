@@ -235,27 +235,8 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 			unitPriceBItem = item;
 		}
 	}
-    double unitPriceA = [self calcuUnitPriceOfHistoryItem:unitPriceAItem];
-    double unitPriceB = [self calcuUnitPriceOfHistoryItem:unitPriceBItem];
-    
-    NSString *unitPrice1Txt, *unitPrice2Txt;
-    if (unitPriceAItem.unitID) {
-        unitPrice1Txt = [NSString stringWithFormat:@"%@/%@",
-						[self.currencyFormatter stringFromNumber:@(unitPriceA)],
-						NSLocalizedStringFromTable([unitPriceAItem unit].unitShortName, @"unitShort", nil)];
-    }
-    else {
-        unitPrice1Txt = [self.currencyFormatter stringFromNumber:@(unitPriceA)];
-    }
-    
-    if (unitPriceBItem.unitID) {
-        unitPrice2Txt = [NSString stringWithFormat:@"%@/%@",
-						[self.currencyFormatter stringFromNumber:@(unitPriceB)],
-						NSLocalizedStringFromTable([unitPriceBItem unit].unitShortName, @"unitShort", nil)];
-    }
-    else {
-        unitPrice2Txt = [self.currencyFormatter stringFromNumber:@(unitPriceB)];
-    }
+    double unitPriceA = [unitPriceAItem unitPrice];
+    double unitPriceB = [unitPriceBItem unitPrice2WithPrice1:unitPriceAItem];
 
 	UIColor *blackColor = [UIColor blackColor];
     UIColor *greenColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
@@ -263,8 +244,8 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 	cell.unitPriceALabel.textColor = unitPriceA < unitPriceB ? greenColor : blackColor;
 	cell.unitPriceBLabel.textColor = unitPriceB < unitPriceA ? greenColor : blackColor;
 	
-    cell.unitPriceALabel.text = unitPrice1Txt;
-    cell.unitPriceBLabel.text = unitPrice2Txt;
+    cell.unitPriceALabel.text = [unitPriceAItem unitPriceStringWithFormatter:self.currencyFormatter];
+    cell.unitPriceBLabel.text = [unitPriceBItem unitPrice2StringWithPrice1:unitPriceAItem formatter:self.currencyFormatter];
     cell.timeLabel.text = [unitPriceHistory.updateDate timeAgo];
     
     return cell;
