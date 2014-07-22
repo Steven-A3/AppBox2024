@@ -761,8 +761,6 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		}
 
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-
 		// 버튼 기능 활성화 여부
         [self itemCountCheck];
 		if (_topViewRef) {

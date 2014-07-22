@@ -10,6 +10,7 @@
 #import "A3MainMenuTableViewController.h"
 #import "NSDate-Utilities.h"
 #import "A3AppDelegate+mainMenu.h"
+#import "A3UserDefaults.h"
 
 @implementation A3AppDelegate (keyValueStore)
 
@@ -43,7 +44,7 @@
 		for (NSString* key in changedKeys) {
 			id objectInCloud = [store objectForKey:key];
 			id objectInLocal = [userDefaults objectForKey:key];
-			if ([key isEqualToString:kA3MainMenuAllMenu]) {
+			if ([key isEqualToString:A3MainMenuUserDefaultsAllMenu]) {
 				if ([objectInCloud[kA3AppsDataUpdateDate] isLaterThanDate:objectInLocal[kA3AppsDataUpdateDate]]) {
 					[userDefaults setObject:objectInCloud forKey:key];
 				} else {
@@ -56,30 +57,6 @@
 		[userDefaults synchronize];
 
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	}
-}
-
-- (void)migrateToKeyValueStore {
-	NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
-
-	[self migrateObjectToKeyValueStore:kA3MainMenuFavorites];
-	[self migrateObjectToKeyValueStore:kA3MainMenuRecentlyUsed];
-	[self migrateObjectToKeyValueStore:kA3MainMenuAllMenu];
-	[self migrateObjectToKeyValueStore:kA3MainMenuMaxRecentlyUsed];
-
-	[keyValueStore synchronize];
-}
-
-- (void)migrateObjectToKeyValueStore:(NSString *)key {
-	NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
-	id object = [keyValueStore objectForKey:key];
-	if (object) {
-		[[NSUserDefaults standardUserDefaults] setObject:object forKey:key];
-	} else {
-		object = [[NSUserDefaults standardUserDefaults] objectForKey:key];
-		if (object) {
-			[keyValueStore setObject:object forKey:key];
-		}
 	}
 }
 

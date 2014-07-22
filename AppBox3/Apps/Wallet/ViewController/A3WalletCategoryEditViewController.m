@@ -643,6 +643,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 		}
 		[WalletField MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID]];
 		[self.category MR_deleteEntity];
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 		[self dismissViewControllerAnimated:YES completion:NULL];
         

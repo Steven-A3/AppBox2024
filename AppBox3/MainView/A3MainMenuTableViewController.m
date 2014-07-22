@@ -25,11 +25,6 @@
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3ClockMainViewController.h"
 
-NSString *const kA3MainMenuFavorites = @"kA3MainMenuFavorites";				// Store NSDictionary
-NSString *const kA3MainMenuRecentlyUsed = @"kA3MainMenuRecentlyUsed";		// Store NSDictionary
-NSString *const kA3MainMenuAllMenu = @"kA3MainMenuAllMenu";					// Store NSArray
-NSString *const kA3MainMenuMaxRecentlyUsed = @"kA3MainMenuMaxRecentlyUsed";	// Store NSNumber
-
 NSString *const A3NotificationAppsMainMenuContentsChanged = @"A3NotificationAppsMainMenuContentsChanged";
 NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponder";
 NSString *const A3NotificationMainMenuDidShow = @"A3NotificationMainMenuDidShow";
@@ -158,7 +153,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 #pragma mark - Data Handler
 
 - (NSDictionary *)recentlyUsedMenuItems {
-	return [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuRecentlyUsed];
+	return [[NSUserDefaults standardUserDefaults] objectForKey:A3MainMenuUserDefaultsRecentlyUsed];
 }
 
 - (void)setupData {
@@ -471,7 +466,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			favoriteDictionary[kA3AppsMenuCollapsed] = @(element.isCollapsed);
 			[[A3AppDelegate instance] storeFavoriteMenuDictionary:favoriteDictionary withDate:[NSDate date]];
 		} else {
-			NSMutableDictionary *recentDictionary = [[[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuRecentlyUsed] mutableCopy];
+			NSMutableDictionary *recentDictionary = [[[NSUserDefaults standardUserDefaults] objectForKey:A3MainMenuUserDefaultsRecentlyUsed] mutableCopy];
 			recentDictionary[kA3AppsMenuCollapsed] = @(element.isCollapsed);
 			[[A3AppDelegate instance] storeRecentlyUsedMenuDictionary:recentDictionary withDate:[NSDate date]];
 		}
@@ -494,7 +489,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		return;
 	}
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	NSMutableDictionary *recentlyUsed = [[userDefaults objectForKey:kA3MainMenuRecentlyUsed] mutableCopy];
+	NSMutableDictionary *recentlyUsed = [[userDefaults objectForKey:A3MainMenuUserDefaultsRecentlyUsed] mutableCopy];
 	if (!recentlyUsed) {
 		recentlyUsed = [NSMutableDictionary new];
 		recentlyUsed[kA3AppsMenuName] = @"Recent";

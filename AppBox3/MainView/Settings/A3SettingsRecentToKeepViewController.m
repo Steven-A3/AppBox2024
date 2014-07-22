@@ -52,7 +52,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NSDictionary *recentMenus = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuRecentlyUsed];
+	NSDictionary *recentMenus = [[NSUserDefaults standardUserDefaults] objectForKey:A3MainMenuUserDefaultsRecentlyUsed];
 	return recentMenus ? 2 : 1;
 }
 
