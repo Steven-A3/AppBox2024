@@ -344,10 +344,11 @@
 
 - (void)saveToHistory {
     TipCalcHistory* history = [TipCalcHistory MR_createEntity];
-    history.labelTip = [self currencyStringFromDouble:[[self tipValueWithSplitWithRounding:YES] doubleValue]];
-    history.labelTotal = [self currencyStringFromDouble:[[self totalBeforeSplitWithTax] doubleValue]];
-
+	history.uniqueID = [[NSUUID UUID] UUIDString];
 	history.updateDate = [NSDate date];
+	history.labelTip = [self currencyStringFromDouble:[[self tipValueWithSplitWithRounding:YES] doubleValue]];
+	history.labelTotal = [self currencyStringFromDouble:[[self totalBeforeSplitWithTax] doubleValue]];
+
 	self.tipCalcData.historyID = history.uniqueID;
     self.tipCalcData.isMain = @(NO);
 

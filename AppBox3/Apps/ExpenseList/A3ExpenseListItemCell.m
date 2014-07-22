@@ -277,13 +277,13 @@
     return YES;
 }
 
-	- (NSString *)defaultCurrencyCode {
-		NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
-		if (!currencyCode) {
-			currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
-		}
-		return currencyCode;
+- (NSString *)defaultCurrencyCode {
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
+	if (!currencyCode) {
+		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}
+	return currencyCode;
+}
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	_firstResponder = textField;
