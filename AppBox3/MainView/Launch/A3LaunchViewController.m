@@ -135,6 +135,8 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		}
 
 		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
+		[keyValueStore synchronize];
+
 		if ([keyValueStore boolForKey:A3CloudHasData]) {
 			// Ask user to delete iCloud or not
 			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Setup AppBox Pro data stored in iCloud", nil)

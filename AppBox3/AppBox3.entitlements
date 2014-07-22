@@ -4,13 +4,13 @@
 <dict>
 	<key>com.apple.developer.ubiquity-container-identifiers</key>
 	<array>
-		<string>$(TeamIdentifierPrefix)net.allaboutapps.appbox</string>
+		<string>$(TeamIdentifierPrefix)net.allaboutapps.AppBox</string>
 	</array>
 	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
-	<string>$(TeamIdentifierPrefix)$(CFBundleIdentifier)</string>
+	<string>$(TeamIdentifierPrefix)net.allaboutapps.AppBox</string>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)com.allaboutapps.appbox</string>
+		<string>$(AppIdentifierPrefix)net.allaboutapps.AppBox</string>
 	</array>
 </dict>
 </plist>
