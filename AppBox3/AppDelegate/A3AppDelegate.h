@@ -35,12 +35,6 @@ extern NSString *const kA3AppsMenuNeedSecurityCheck;
 extern NSString *const kA3AppsMenuArray;
 extern NSString *const kA3AppsDataUpdateDate;
 
-/* Key for User Defaults */
-extern NSString *const kA3MainMenuFavorites;			// Store NSDictionary
-extern NSString *const kA3MainMenuAllMenu;				// Store NSArray
-extern NSString *const kA3MainMenuMaxRecentlyUsed;		// Store NSNumber
-extern NSString *const kA3MainMenuRecentlyUsed;
-
 /* Notifications */
 extern NSString *const A3NotificationAppsMainMenuContentsChanged;
 extern NSString *const A3DrawerStateChanged;

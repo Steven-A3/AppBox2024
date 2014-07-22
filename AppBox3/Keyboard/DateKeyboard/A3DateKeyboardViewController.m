@@ -16,7 +16,9 @@
 @property (nonatomic, strong) NSCalendar *gregorian;
 @end
 
-@implementation A3DateKeyboardViewController
+@implementation A3DateKeyboardViewController {
+	BOOL _currentDayZero;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -183,8 +185,12 @@
 		if (button == _today_Oct_Button) return;
 
 		NSInteger day = self.dateComponents.day, entered = [self numberOfButton:button];
-		day *= 10;
-		day += entered;
+		if (_currentDayZero) {
+			day = entered;
+		} else {
+			day *= 10;
+			day += entered;
+		}
 
 		NSRange range;
 		if (_isLunarDate) {
@@ -254,6 +260,7 @@
 	} else {
 		NSInteger day = self.dateComponents.day;
 		day /= 10;
+		_currentDayZero = day == 0;
 		self.dateComponents.day = MAX(day, 1);
 	}
 	[self updateResult];

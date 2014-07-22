@@ -12,6 +12,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate+appearance.h"
 #import "Calculation.h"
+#import "A3UserDefaults.h"
 
 @interface A3SettingsRecentToKeepViewController () <UIActionSheetDelegate>
 
@@ -52,7 +53,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NSDictionary *recentMenus = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuRecentlyUsed];
+	NSDictionary *recentMenus = [[NSUserDefaults standardUserDefaults] objectForKey:A3MainMenuUserDefaultsRecentlyUsed];
 	return recentMenus ? 2 : 1;
 }
 
