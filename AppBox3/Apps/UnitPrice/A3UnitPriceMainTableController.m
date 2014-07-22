@@ -451,6 +451,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     FNLOG(@"+ putHistory !!");
     
     UnitPriceHistory *history = [UnitPriceHistory MR_createEntity];
+	history.uniqueID = [[NSUUID UUID] UUIDString];
     NSDate *keyDate = [NSDate date];
     history.updateDate = keyDate;
     
