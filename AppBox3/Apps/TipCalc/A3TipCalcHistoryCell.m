@@ -85,27 +85,19 @@
     [dataManager setTipCalcDataForHistoryData:aHistory];
     
     double dTip = 0.0;
-    if ([dataManager tipSplitOption] == TipSplitOption_PerPerson) {
-        dTip = [[dataManager tipValueWithSplitWithRounding:YES] doubleValue];
-    }
-    else {
+    if ([dataManager roundingMethodValue] == TCRoundingMethodValue_Tip && [dataManager isRoundingOptionOn]) {
         dTip = [[dataManager tipValueWithRounding:YES] doubleValue];
     }
+    else {
+        dTip = [[dataManager tipValueWithRounding:NO] doubleValue];
+    }
+
     NSString *tip = [dataManager currencyStringFromDouble:dTip];
     
 
     double dTotal = 0.0;
-    if ([dataManager isSplitOptionOn]) {
-        if ([dataManager tipSplitOption] == TipSplitOption_PerPerson) {
-            dTotal = [[dataManager totalPerPersonWithTax] doubleValue];
-        }
-        else {
-            dTotal = [[dataManager totalBeforeSplitWithTax] doubleValue];
-        }
-    }
-    else {
-        dTotal = [[dataManager totalBeforeSplitWithTax] doubleValue];
-    }
+    dTotal = [[dataManager totalBeforeSplitWithTax] doubleValue];
+    
     NSString *total = [dataManager currencyStringFromDouble:dTotal];
     NSArray *strings = @[tip, NSLocalizedString(@" of ", @" of "), total];
     
