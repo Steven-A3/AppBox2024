@@ -2264,7 +2264,14 @@
 			if ([o respondsToSelector:@selector(viewControllerWillDismissByDeletingEvent)]) {
 				[o viewControllerWillDismissByDeletingEvent];
 			}
-			[self dismissViewControllerAnimated:YES completion:nil];
+
+            if (IS_IPAD) {
+                A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+                [rootViewController dismissCenterViewController];
+            }
+            else {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
         }
     }
 }
