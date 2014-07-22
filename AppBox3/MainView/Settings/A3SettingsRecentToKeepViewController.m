@@ -12,6 +12,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate+appearance.h"
 #import "Calculation.h"
+#import "A3UserDefaults.h"
 
 @interface A3SettingsRecentToKeepViewController () <UIActionSheetDelegate>
 
