@@ -527,16 +527,10 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	NSUInteger i = 1;
 	for (NSManagedObject<A3CloudCompatibleData> *object in dupes) {
 		if (prevObject) {
-			if ([object.uniqueID isEqualToString:prevObject.uniqueID]) {
-				if ([object.updateDate compare:prevObject.updateDate] == NSOrderedAscending) {
-					if ([prevObject respondsToSelector:@selector(moveChildesFromObject:)]) {
-						[prevObject moveChildesFromObject:object];
-					}
+			if ([[object valueForKey:@"uniqueID"] isEqualToString:[prevObject valueForKey:@"uniqueID"]]) {
+				if ([[object valueForKey:@"updateDate"] compare:[prevObject valueForKey:@"updateDate"]] == NSOrderedAscending) {
 					[moc deleteObject:object];
 				} else {
-					if ([object respondsToSelector:@selector(moveChildesFromObject:)]) {
-						[object moveChildesFromObject:prevObject];
-					}
 					[moc deleteObject:prevObject];
 					prevObject = object;
 				}
@@ -830,8 +824,13 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 }
 
 - (void)mergeUserDefaultsDeleteCloud:(BOOL)deleteCloud {
-	// Date Calculator
-	[self mergeMainMenuDeleteCloud:deleteCloud];
+	[[NSUbiquitousKeyValueStore defaultStore] synchronize];
+
+	if (deleteCloud) {
+		[self mergeMainMenuDeleteCloud:deleteCloud];
+	} else {
+		[self migrateMainMenuFromCloud];
+	}
 	[self mergeCalculatorDeleteCloud:deleteCloud];
 	[self mergeCurrencyDeleteCloud:deleteCloud];
 	[self mergeDateCalcDeleteCloud:deleteCloud];
@@ -1137,6 +1136,26 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	} else {
 		[self migrateDefaultsFromStoreForKeys:migratingKeys];
 		[userDefaults setObject:cloudUpdateDate forKey:A3MainMenuUserDefaultsUpdateDate];
+	}
+}
+
+- (void)migrateMainMenuFromCloud {
+	NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
+	NSDate *cloudUpdateDate = [store objectForKey:A3MainMenuUserDefaultsCloudUpdateDate];
+	[userDefaults setObject:cloudUpdateDate forKey:A3MainMenuUserDefaultsUpdateDate];
+	NSArray *migratingKeys = @[
+			A3MainMenuUserDefaultsFavorites,
+			A3MainMenuUserDefaultsRecentlyUsed,
+			A3MainMenuUserDefaultsAllMenu,
+			A3MainMenuUserDefaultsMaxRecentlyUsed
+	];
+	for (NSString *key in migratingKeys) {
+		id object = [store objectForKey:key];
+		if (object) {
+			[userDefaults setObject:object forKey:key];
+		}
 	}
 }
 
