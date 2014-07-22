@@ -10,9 +10,8 @@
 #import "ATSDragToReorderTableViewController.h"
 
 extern NSString *const A3ExpenseListCurrentBudgetID;
-extern NSString *const A3ExpenseListCurrencyCode;
 extern NSString *const A3NotificationExpenseListCurrencyCodeChanged;
-extern NSString *const A3ExpenseListIsAddBudgetCanceledByUser;
+
 @class ExpenseListBudget;
 
 @protocol A3ExpenseBudgetSettingDelegate <NSObject>

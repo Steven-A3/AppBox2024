@@ -193,7 +193,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>W chwili wydarzenia</string>
+			<string>0 dni przed</string>
 			<key>one</key>
 			<string>1 dzień przed</string>
 			<key>other</key>

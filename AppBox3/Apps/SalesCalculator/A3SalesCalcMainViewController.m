@@ -31,6 +31,7 @@
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
 #import "UITableView+utility.h"
+#import "A3UserDefaults.h"
 
 enum A3TableElementCellType {
     A3TableElementCellType_Price = 100,
@@ -39,8 +40,6 @@ enum A3TableElementCellType {
     A3TableElementCellType_Tax,
     A3TableElementCellType_Note
 };
-
-NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 
 @interface A3SalesCalcMainViewController () <CLLocationManagerDelegate, UIPopoverControllerDelegate,
 		A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, A3TableViewInputElementDelegate,
@@ -253,16 +252,17 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 }
 
-static NSString *const A3SalesCalcSavedInputDataKey = @"A3SalesCalcSavedInputDataKey";
-
 -(void)saveInputTextData:(A3SalesCalcData *)inputTextData {
 	NSData *inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData];
-    [[NSUserDefaults standardUserDefaults] setObject:inputData forKey:A3SalesCalcSavedInputDataKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3SalesCalcUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] setObject:inputData forKey:A3SalesCalcUserDefaultsSavedInputDataKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:inputData forKey:A3SalesCalcSavedInputDataKey];
+		[store setObject:inputData forKey:A3SalesCalcUserDefaultsSavedInputDataKey];
+		[store setObject:updateDate forKey:A3SalesCalcUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }
@@ -357,7 +357,7 @@ static NSString *const A3SalesCalcSavedInputDataKey = @"A3SalesCalcSavedInputDat
 - (A3SalesCalcPreferences *)preferences {
 	if (!_preferences) {
 		_preferences = [A3SalesCalcPreferences new];
-        NSData * saveData = [[NSUserDefaults standardUserDefaults] objectForKey:A3SalesCalcSavedInputDataKey];
+        NSData * saveData = [[NSUserDefaults standardUserDefaults] objectForKey:A3SalesCalcUserDefaultsSavedInputDataKey];
         if (saveData) {
             A3SalesCalcData * calcData = (A3SalesCalcData * )[NSKeyedUnarchiver unarchiveObjectWithData:saveData];
             _preferences.calcData = calcData;
@@ -425,7 +425,7 @@ static NSString *const A3SalesCalcSavedInputDataKey = @"A3SalesCalcSavedInputDat
 }
 
 - (NSString *)defaultCurrencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3SalesCalcCurrencyCode];
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3SalesCalcUserDefaultsCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}
@@ -1230,12 +1230,15 @@ static NSString *const A3SalesCalcSavedInputDataKey = @"A3SalesCalcSavedInputDat
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
-	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3SalesCalcCurrencyCode];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3SalesCalcUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:currencyCode forKey:A3SalesCalcCurrencyCode];
+		[store setObject:currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode];
+		[store setObject:updateDate forKey:A3SalesCalcUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 

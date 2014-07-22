@@ -29,8 +29,8 @@
 #import "UnitPriceFavorite+initialize.h"
 #import "UnitPriceHistory+extension.h"
 #import "UnitPriceInfo+extension.h"
+#import "A3UserDefaults.h"
 
-NSString *const A3UnitPriceCurrencyCode = @"A3UnitPriceCurrencyCode";
 NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUnitPriceCurrencyCodeChanged";
 
 @interface A3UnitPriceMainTableController () <UnitPriceInputDelegate, A3UnitPriceModifyDelegate, UnitPriceHistoryViewControllerDelegate>
@@ -163,7 +163,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 }
 
 - (void)currencyCodeChanged:(NSNotification *)notification {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceCurrencyCode];
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
 	[self.currencyFormatter setCurrencyCode:currencyCode];
     [self.currencyFormatter setMaximumFractionDigits:2];
 	[self.tableView reloadData];
@@ -866,11 +866,11 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     
     double unitPrice = 0;
     NSString *unitPriceTxt = @"";
-    NSString *price1UnitShortName = @"";
-    NSString *unitShortName = @"";
-    NSString *unitName = @"";
-    NSString *priceTxt = @"";
-    NSString *sizeTxt = @"";
+    NSString *price1UnitShortName;
+    NSString *unitShortName;
+    NSString *unitName;
+    NSString *priceTxt;
+    NSString *sizeTxt;
 
 	NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
 	[decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -1118,7 +1118,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
  */
 
 - (NSString *)defaultCurrencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceCurrencyCode];
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}

@@ -771,14 +771,17 @@
     BOOL isResultLeapMonth = ( _isLunarInput ? NO : [self isLeapMonthAtDateComponents:self.inputDateComponents gregorianToLunar:!_isLunarInput]);
     
     if ( self.inputDateComponents ) {
+		NSDate *updateDate = [NSDate date];
+		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LunarConverterUserDefaultsUpdateDate];
 		[[NSUserDefaults standardUserDefaults] setDateComponents:self.inputDateComponents forKey:A3LunarConverterLastInputDateComponents];
-        [[NSUserDefaults standardUserDefaults] setBool:_isLunarInput forKey:A3LunarConverterLastInputDateIsLunar];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+		[[NSUserDefaults standardUserDefaults] setBool:_isLunarInput forKey:A3LunarConverterLastInputDateIsLunar];
+		[[NSUserDefaults standardUserDefaults] synchronize];
 
 		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 			// Date Components 는 setDateComponents 에서 KVStore 에 저장함
 			[store setBool:_isLunarInput forKey:A3LunarConverterLastInputDateIsLunar];
+			[store setObject:updateDate forKey:A3LunarConverterUserDefaultsCloudUpdateDate];
 			[store synchronize];
 		}
 

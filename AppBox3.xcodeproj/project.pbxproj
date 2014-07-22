@@ -739,7 +739,6 @@
 		68E2A64B18D0B1FC00E834D9 /* A3ExpenseListHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A60F18D0B1FC00E834D9 /* A3ExpenseListHistoryViewController.m */; };
 		68E2A64C18D0B1FC00E834D9 /* A3ExpenseListItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61118D0B1FC00E834D9 /* A3ExpenseListItemCell.m */; };
 		68E2A64D18D0B1FC00E834D9 /* A3ExpenseListMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61318D0B1FC00E834D9 /* A3ExpenseListMainViewController.m */; };
-		68E2A64E18D0B1FC00E834D9 /* A3ExpenseListPreference.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61518D0B1FC00E834D9 /* A3ExpenseListPreference.m */; };
 		68E2A64F18D0B1FC00E834D9 /* A3ItemSelectListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61718D0B1FC00E834D9 /* A3ItemSelectListViewController.m */; };
 		68E2A65018D0B1FC00E834D9 /* A3TableViewDatePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61918D0B1FC00E834D9 /* A3TableViewDatePickerCell.m */; };
 		68E2A65118D0B1FC00E834D9 /* A3TableViewDatePickerElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61B18D0B1FC00E834D9 /* A3TableViewDatePickerElement.m */; };
@@ -2279,8 +2278,6 @@
 		68E2A61118D0B1FC00E834D9 /* A3ExpenseListItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ExpenseListItemCell.m; sourceTree = "<group>"; };
 		68E2A61218D0B1FC00E834D9 /* A3ExpenseListMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ExpenseListMainViewController.h; sourceTree = "<group>"; };
 		68E2A61318D0B1FC00E834D9 /* A3ExpenseListMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ExpenseListMainViewController.m; sourceTree = "<group>"; };
-		68E2A61418D0B1FC00E834D9 /* A3ExpenseListPreference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ExpenseListPreference.h; sourceTree = "<group>"; };
-		68E2A61518D0B1FC00E834D9 /* A3ExpenseListPreference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ExpenseListPreference.m; sourceTree = "<group>"; };
 		68E2A61618D0B1FC00E834D9 /* A3ItemSelectListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ItemSelectListViewController.h; sourceTree = "<group>"; };
 		68E2A61718D0B1FC00E834D9 /* A3ItemSelectListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ItemSelectListViewController.m; sourceTree = "<group>"; };
 		68E2A61818D0B1FC00E834D9 /* A3TableViewDatePickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TableViewDatePickerCell.h; sourceTree = "<group>"; };
@@ -4850,8 +4847,6 @@
 				68E2A61118D0B1FC00E834D9 /* A3ExpenseListItemCell.m */,
 				68E2A61218D0B1FC00E834D9 /* A3ExpenseListMainViewController.h */,
 				68E2A61318D0B1FC00E834D9 /* A3ExpenseListMainViewController.m */,
-				68E2A61418D0B1FC00E834D9 /* A3ExpenseListPreference.h */,
-				68E2A61518D0B1FC00E834D9 /* A3ExpenseListPreference.m */,
 				68E2A61618D0B1FC00E834D9 /* A3ItemSelectListViewController.h */,
 				68E2A61718D0B1FC00E834D9 /* A3ItemSelectListViewController.m */,
 				68E2A61818D0B1FC00E834D9 /* A3TableViewDatePickerCell.h */,
@@ -6110,7 +6105,6 @@
 				68B6A2D018CEC76D004084EF /* A3UnitConverterHistoryCell.m in Sources */,
 				68E2A64918D0B1FC00E834D9 /* A3ExpenseListHeaderView.m in Sources */,
 				68E2A66318D0B1FC00E834D9 /* A3PercentCalcResultLabelView.m in Sources */,
-				68E2A64E18D0B1FC00E834D9 /* A3ExpenseListPreference.m in Sources */,
 				684D92BF18BC1EFE005016F7 /* A3BatteryStatusManager.m in Sources */,
 				680886D51891751B0093FD97 /* A3ClockFlipViewController.m in Sources */,
 				68F1C8FA18D7FA41009FAE8A /* MPFlipSegue.m in Sources */,

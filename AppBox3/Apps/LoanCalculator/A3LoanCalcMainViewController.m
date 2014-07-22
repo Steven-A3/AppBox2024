@@ -431,8 +431,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (LoanCalcData *)loanData {
 	if (!super.loanData) {
-		if ([[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcLoanDataKey]) {
-			NSData *loanData = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcLoanDataKey];
+		if ([[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultsLoanDataKey]) {
+			NSData *loanData = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultsLoanDataKey];
 			super.loanData = [NSKeyedUnarchiver unarchiveObjectWithData:loanData];
 		}
 		else {
@@ -448,8 +448,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     if (!_loanDataA) {
         
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcLoanDataKey_A]) {
-            NSData *loanData = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcLoanDataKey_A];
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultsLoanDataKey_A]) {
+            NSData *loanData = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultsLoanDataKey_A];
             _loanDataA = [NSKeyedUnarchiver unarchiveObjectWithData:loanData];
         }
         else {
@@ -465,8 +465,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     if (!_loanDataB) {
         
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcLoanDataKey_B]) {
-            NSData *loanData = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcLoanDataKey_B];
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultsLoanDataKey_B]) {
+            NSData *loanData = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultsLoanDataKey_B];
             _loanDataB = [NSKeyedUnarchiver unarchiveObjectWithData:loanData];
         }
         else {
@@ -637,13 +637,16 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     
     [self dismissMoreMenu];
     [self refreshRightBarItems];
-    
+
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
     [[NSUserDefaults standardUserDefaults] setBool:_isComparisonMode forKey:LoanCalcModeSave];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setBool:_isComparisonMode forKey:LoanCalcModeSave];
+		[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }
@@ -1448,12 +1451,15 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)saveLoanData
 {
     NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:self.loanData];
-    [[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:A3LoanCalcLoanDataKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:A3LoanCalcUserDefaultsLoanDataKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:myLoanData forKey:A3LoanCalcLoanDataKey];
+		[store setObject:myLoanData forKey:A3LoanCalcUserDefaultsLoanDataKey];
+		[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }
@@ -1461,12 +1467,15 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)saveLoanDataA
 {
     NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:_loanDataA];
-    [[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:A3LoanCalcLoanDataKey_A];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:A3LoanCalcUserDefaultsLoanDataKey_A];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:myLoanData forKey:A3LoanCalcLoanDataKey_A];
+		[store setObject:myLoanData forKey:A3LoanCalcUserDefaultsLoanDataKey_A];
+		[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }
@@ -1474,48 +1483,60 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)saveLoanDataB
 {
     NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:_loanDataB];
-    [[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:A3LoanCalcLoanDataKey_B];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:A3LoanCalcUserDefaultsLoanDataKey_B];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:_loanDataB forKey:A3LoanCalcLoanDataKey_B];
+		[store setObject:_loanDataB forKey:A3LoanCalcUserDefaultsLoanDataKey_B];
+		[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }
 
 - (void)deleteLoanData
 {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:A3LoanCalcLoanDataKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3LoanCalcUserDefaultsLoanDataKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store removeObjectForKey:A3LoanCalcLoanDataKey];
+		[store removeObjectForKey:A3LoanCalcUserDefaultsLoanDataKey];
+		[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }
 
 - (void)deleteLoanDataA
 {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:A3LoanCalcLoanDataKey_A];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3LoanCalcUserDefaultsLoanDataKey_A];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store removeObjectForKey:A3LoanCalcLoanDataKey_A];
+		[store removeObjectForKey:A3LoanCalcUserDefaultsLoanDataKey_A];
+		[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }
 
 - (void)deleteLoanDataB
 {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:A3LoanCalcLoanDataKey_B];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3LoanCalcUserDefaultsLoanDataKey_B];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store removeObjectForKey:A3LoanCalcLoanDataKey_B];
+		[store removeObjectForKey:A3LoanCalcUserDefaultsLoanDataKey_B];
+		[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }
@@ -2864,15 +2885,14 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             
             if ([self.loanData calculated]) {
                 [self displayGraphCell:graphCell];
-            }
-            else {
+            } else {
                 [self makeGraphCellClear:graphCell];
             }
             
             [graphCell.monthlyButton setTitle:[LoanCalcString titleOfFrequency:self.loanData.frequencyIndex] forState:UIControlStateNormal];
             graphCell.monthlyButton.titleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
             graphCell.totalButton.titleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-            
+
             cell = graphCell;
 			break;
 		}
@@ -3143,7 +3163,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)reloadCurrencyCode {
-	NSString *customCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
+	NSString *customCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 	if ([customCurrencyCode length]) {
 		[self.loanFormatter setCurrencyCode:customCurrencyCode];
 	}

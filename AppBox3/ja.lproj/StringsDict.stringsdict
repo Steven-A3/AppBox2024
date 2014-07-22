@@ -193,7 +193,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>その時間</string>
+			<string>0日前</string>
 			<key>one</key>
 			<string>1日前</string>
 			<key>other</key>

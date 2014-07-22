@@ -19,10 +19,7 @@
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
 #import "A3AppDelegate.h"
-
-NSString *const A3LoanCalcLoanDataKey = @"A3LoanCalcLoanData";
-NSString *const A3LoanCalcLoanDataKey_A = @"A3LoanCalcLoanData_A";
-NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
+#import "A3UserDefaults.h"
 
 @interface A3LoanCalcContentsTableViewController () <A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 @end
@@ -425,7 +422,7 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 #pragma mark --- Response to Calculator Button and result
 
 - (NSString *)defaultCurrencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}
@@ -441,12 +438,15 @@ NSString *const A3LoanCalcLoanDataKey_B = @"A3LoanCalcLoanData_B";
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
 	if ([currencyCode length]) {
-		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3LoanCalcCustomCurrencyCode];
+		NSDate *updateDate = [NSDate date];
+		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
+		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
 		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-			[store setObject:currencyCode forKey:A3LoanCalcCustomCurrencyCode];
+			[store setObject:currencyCode forKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
+			[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];
 			[store synchronize];
 		}
 

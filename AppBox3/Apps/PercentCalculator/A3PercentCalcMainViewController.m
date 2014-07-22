@@ -15,6 +15,7 @@
 #import "PercentCalcHistory.h"
 #import "A3JHTableViewEntryCell.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "A3UserDefaults.h"
 
 
 @interface A3PercentCalcMainViewController () <UITextFieldDelegate, A3PercentCalcHistoryDelegate>
@@ -215,8 +216,6 @@
     [self.tableView addSubview:_sectionBLabel];
 }
 
-static NSString *const A3PercentCalcSavedInputData = @"A3PercentCalcSavedInputData";
-
 - (void)initHeaderView {
     self.headerView = [[A3PercentCalcHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 157)];
     self.headerView.bottomLineView.backgroundColor = COLOR_TABLE_SEPARATOR;
@@ -239,7 +238,7 @@ static NSString *const A3PercentCalcSavedInputData = @"A3PercentCalcSavedInputDa
  * \returns 저장된 데이터가 있는 경우에는 YES, 아니면 NO
  */
 - (BOOL)reloadInputData {
-	NSData *inputData = [[NSUserDefaults standardUserDefaults] objectForKey:A3PercentCalcSavedInputData];
+	NSData *inputData = [[NSUserDefaults standardUserDefaults] objectForKey:A3PercentCalcUserDefaultsSavedInputData];
 	if (inputData) {
 		A3PercentCalcData *savedInputData = [NSKeyedUnarchiver unarchiveObjectWithData:inputData];
 
@@ -343,26 +342,27 @@ static NSString *const A3PercentCalcSavedInputData = @"A3PercentCalcSavedInputDa
 
 #pragma mark -
 
-static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculationType";
-
 -(void)setCalcType:(PercentCalcType)calcType
 {
     if (self.headerView) {
         self.headerView.calcType = calcType;
     }
-    [[NSUserDefaults standardUserDefaults] setObject:@(calcType) forKey:A3PercentCalcCalculationType];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3PercentCalcUserDefaultsUpdateDate];
+    [[NSUserDefaults standardUserDefaults] setObject:@(calcType) forKey:A3PercentCalcUserDefaultsCalculationType];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:@(calcType) forKey:A3PercentCalcCalculationType];
+		[store setObject:@(calcType) forKey:A3PercentCalcUserDefaultsCalculationType];
+		[store setObject:updateDate forKey:A3PercentCalcUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }
 
 -(PercentCalcType)calcType
 {
-    PercentCalcType result = (PercentCalcType) [[NSUserDefaults standardUserDefaults] integerForKey:A3PercentCalcCalculationType];
+    PercentCalcType result = (PercentCalcType) [[NSUserDefaults standardUserDefaults] integerForKey:A3PercentCalcUserDefaultsCalculationType];
     return result;
 }
 
@@ -515,12 +515,15 @@ static NSString *const A3PercentCalcCalculationType = @"A3PercentCalcCalculation
     }
 
 	id inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData];
-    [[NSUserDefaults standardUserDefaults] setObject:inputData forKey:A3PercentCalcSavedInputData];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3PercentCalcUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] setObject:inputData forKey:A3PercentCalcUserDefaultsSavedInputData];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:inputData forKey:A3PercentCalcSavedInputData];
+		[store setObject:inputData forKey:A3PercentCalcUserDefaultsSavedInputData];
+		[store setObject:updateDate forKey:A3PercentCalcUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }

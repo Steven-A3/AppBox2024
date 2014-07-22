@@ -8,10 +8,7 @@
 
 #import "A3DateCalcAddSubCell2.h"
 #import "A3AppDelegate.h"
-
-NSString *const A3DateCalcDefaultsSavedYear = @"A3DateCalcDefaultSavedYear";
-NSString *const A3DateCalcDefaultsSavedMonth = @"A3DateCalcDefaultSavedMonth";
-NSString *const A3DateCalcDefaultsSavedDay = @"A3DateCalcDefaultSavedDay";
+#import "A3DateMainTableViewController.h"
 
 @implementation A3DateCalcAddSubCell2
 
@@ -265,12 +262,15 @@ NSString *const A3DateCalcDefaultsSavedDay = @"A3DateCalcDefaultSavedDay";
 		value = _dayTextField.text;
     }
 
+	NSDate *updateDate = [NSDate date];
 	[[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:value forKey:key];
+		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }

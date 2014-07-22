@@ -31,6 +31,7 @@ NSString *jhSelectTableViewCellIdentifier = @"SelectTableViewCell";
     [super viewDidLoad];
 
 	self.title = self.root.title;
+	self.tableView.showsVerticalScrollIndicator = NO;
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:jhSelectTableViewCellIdentifier];
 }
 

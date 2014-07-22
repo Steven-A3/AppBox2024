@@ -301,12 +301,9 @@
 "Never" = "Jamais";
 "Every Day" = "Tous les jours";
 "Every Week" = "Toutes les semaines";
-"Every 2Weeks" = "Toutes les 2 semaines";
 "Every Month" = "Tous les mois";
 "Every Year" = "Tous les ans";
-"Daily" = "Quotidien";
 "Weekly" = "Hebdomadaire";
-"Bi-Weekly" = "Bi-hebdomadaire";
 "Monthly" = "Mensuel";
 "Yearly" = "Annuel";
 

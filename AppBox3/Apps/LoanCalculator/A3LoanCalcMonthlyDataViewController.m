@@ -19,6 +19,7 @@
 #import "A3LoanCalcMonthlyTableTitleView.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "A3UserDefaults.h"
 
 
 @interface A3LoanCalcMonthlyDataViewController ()
@@ -74,7 +75,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
 }
 
 - (void)reloadCurrencyCode {
-	NSString *customCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
+	NSString *customCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 	if ([customCurrencyCode length]) {
 		[self.currencyFormatter setCurrencyCode:customCurrencyCode];
 	}

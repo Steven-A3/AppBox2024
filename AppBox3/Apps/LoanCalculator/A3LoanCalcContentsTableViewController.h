@@ -12,10 +12,6 @@
 @class LoanCalcData;
 @class A3LoanCalcLoanGraphCell;
 
-extern NSString *const A3LoanCalcLoanDataKey;
-extern NSString *const A3LoanCalcLoanDataKey_A;
-extern NSString *const A3LoanCalcLoanDataKey_B;
-
 @interface A3LoanCalcContentsTableViewController : UITableViewController <UITextFieldDelegate>
 
 @property (nonatomic, strong) LoanCalcData *loanData;

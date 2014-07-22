@@ -361,12 +361,15 @@
 
 - (void)willDismissFromRightSide
 {
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
     [[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:self.settingDict forKey:A3LadyCalendarSetting];
+		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 
@@ -374,12 +377,15 @@
 }
 
 - (void)saveSettings {
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
 	[[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:self.settingDict forKey:A3LadyCalendarSetting];
+		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }

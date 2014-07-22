@@ -77,8 +77,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     
     [self setupSubViews];
 
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyCalculatorSavedLastExpression]){
-        [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyCalculatorSavedLastExpression]];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorUserDefaultsSavedLastExpression]){
+        [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorUserDefaultsSavedLastExpression]];
         [_calculator evaluateAndSet];
         [self checkRightButtonDisable];
     }
@@ -100,7 +100,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 }
 
 - (void)cloudStoreDidImport {
-	NSString *mathExpression = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyCalculatorSavedLastExpression];
+	NSString *mathExpression = [[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
 	if (mathExpression){
 		[_calculator setMathExpression:mathExpression];
 		[_calculator evaluateAndSet];

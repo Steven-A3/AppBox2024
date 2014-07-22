@@ -21,6 +21,7 @@
 #import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
 #import "A3DateHelper.h"
+#import "A3UserDefaults.h"
 
 @interface A3LoanCalcExtraPaymentViewController () <A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 {
@@ -744,12 +745,15 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
 	if ([selectedItem length]) {
-		[[NSUserDefaults standardUserDefaults] setObject:selectedItem forKey:A3LoanCalcCustomCurrencyCode];
+		NSDate *updateDate = [NSDate date];
+		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
+		[[NSUserDefaults standardUserDefaults] setObject:selectedItem forKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
 		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-			[store setObject:selectedItem forKey:A3LoanCalcCustomCurrencyCode];
+			[store setObject:selectedItem forKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
+			[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];
 			[store synchronize];
 		}
 
@@ -774,7 +778,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 }
 
 - (NSString *)defaultCurrencyCode {
-	NSString *code = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
+	NSString *code = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 	if (!code) {
 		code = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}

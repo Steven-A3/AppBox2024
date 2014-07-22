@@ -62,12 +62,15 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
     // 기본 설정값을 저장한다.
     if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting] == nil ){
         NSMutableDictionary *item = [self createDefaultSetting];
+		NSDate *updateDate = [NSDate date];
+		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
         [[NSUserDefaults standardUserDefaults] setObject:item forKey:A3LadyCalendarSetting];
         [[NSUserDefaults standardUserDefaults] synchronize];
 
 		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 			[store setObject:item forKey:A3LadyCalendarSetting];
+			[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
 			[store synchronize];
 		}
     }
@@ -83,12 +86,15 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 		[self addDefaultAccountInContext:context ];
 
 		if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] == nil ) {
+			NSDate *updateDate = [NSDate date];
+			[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
 			[[NSUserDefaults standardUserDefaults] setObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID];
 			[[NSUserDefaults standardUserDefaults] synchronize];
 
 			if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 				NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 				[store setObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID];
+				[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
 				[store synchronize];
 			}
 		}

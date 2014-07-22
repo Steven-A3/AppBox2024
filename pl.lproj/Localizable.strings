@@ -9,7 +9,7 @@
 "Date Calculator" = "Daty";
 "Loan Calculator" = "Pożyczki";
 "Percent Calculator" = "Kalkulator procentowy";
-"Percent Calculator_Short" = "Kalkulator procentowy";
+"Percent Calculator_Short" = "Procentowy";
 "Sales Calculator" = "Obniżki";
 "Sales Calculator_Short" = "Obniżki";
 "Tip Calculator" = "Napiwki";
@@ -293,12 +293,9 @@
 "Never" = "Nigdy";
 "Every Day" = "Codziennie";
 "Every Week" = "Co tydzień";
-"Every 2Weeks" = "Co 2 tygodnie";
 "Every Month" = "Co miesiąc";
 "Every Year" = "Co rok";
-"Daily" = "Codziennie";
 "Weekly" = "Tygodniowo";
-"Bi-Weekly" = "Co 2 tygodnie";
 "Monthly" = "Miesięcznie";
 "Yearly" = "Rocznie";
 
@@ -625,7 +622,7 @@
 "Please change \"From\" or \"To\" language." = "Zmień \"Z\" lub \"Na\" język.";
 "Translate" = "Tłumacz";
 
-"All Units" = "Wszystkie jednostki";
+"All Units" = "Wszystkie";
 "%@ Units" = "%@ jednostek";
 
 "Unit Converter using AppBox Pro" = "Konwerter jednostek używa AppBox Pro";

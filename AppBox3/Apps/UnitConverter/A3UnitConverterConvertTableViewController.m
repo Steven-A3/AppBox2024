@@ -31,10 +31,9 @@
 #import "UIColor+A3Addition.h"
 #import "A3InstructionViewController.h"
 #import "UnitConvertItem+extension.h"
+#import "A3UserDefaults.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
-
-NSString * const A3UnitConverterTableViewUnitValueKey = @"A3UnitConverterTableViewUnitValueKey";
 
 @interface A3UnitConverterConvertTableViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate,
 		A3UnitSelectViewControllerDelegate, A3UnitConverterFavoriteEditDelegate, A3UnitConverterMenuDelegate,
@@ -443,11 +442,15 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)setUnitValue:(NSNumber *)unitValue {
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3UnitConverterUserDefaultsUpdateDate];
     [[NSUserDefaults standardUserDefaults] setObject:unitValue forKey:A3UnitConverterTableViewUnitValueKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:unitValue forKey:A3UnitConverterTableViewUnitValueKey];
+		[store setObject:updateDate forKey:A3UnitConverterUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }

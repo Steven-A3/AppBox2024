@@ -9,6 +9,7 @@
 #import "NSUserDefaults+A3Addition.h"
 #import "A3AppDelegate+iCloud.h"
 #import "A3AppDelegate+mainMenu.h"
+#import "A3UserDefaults.h"
 
 NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseKoreanCalendarForLunarConversion";
 
@@ -39,12 +40,15 @@ NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseK
 
 - (void)setDateComponents:(NSDateComponents *)dateComponents forKey:(NSString *)key {
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dateComponents];
+	NSDate *updateDate;
+	[self setObject:updateDate forKey:A3LunarConverterUserDefaultsUpdateDate];
 	[self setObject:data forKey:key];
 	[self synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:data forKey:key];
+		[store setObject:updateDate forKey:A3LunarConverterUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }

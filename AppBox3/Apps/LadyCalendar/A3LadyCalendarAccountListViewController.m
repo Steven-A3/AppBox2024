@@ -168,12 +168,15 @@
 	LadyCalendarAccount *account = [_itemArray objectAtIndex:indexPath.row];
 	[_dataManager setCurrentAccount:account];
 
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
 	[[NSUserDefaults standardUserDefaults] setObject:account.uniqueID forKey:A3LadyCalendarCurrentAccountID];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:account.uniqueID forKey:A3LadyCalendarCurrentAccountID];
+		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 

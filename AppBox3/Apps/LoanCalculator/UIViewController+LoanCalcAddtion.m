@@ -7,10 +7,11 @@
 //
 
 #import "UIViewController+LoanCalcAddtion.h"
+#import "A3LoanCalcContentsTableViewController.h"
+#import "A3UserDefaults.h"
 #import <objc/runtime.h>
 
 static char const *const key_loanFormatter	= "key_loanFormatter";
-NSString *const A3LoanCalcCustomCurrencyCode = @"LoanCustomCurrencyCode";
 
 @implementation UIViewController (LoanCalcAddtion)
 
@@ -38,7 +39,7 @@ NSString *const A3LoanCalcCustomCurrencyCode = @"LoanCustomCurrencyCode";
 }
 
 - (NSString *)defaultLoanCurrencyCode {
-	NSString *customCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
+	NSString *customCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 	if ([customCurrencyCode length]) {
 		return customCurrencyCode;
 	}

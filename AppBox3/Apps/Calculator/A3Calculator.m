@@ -15,7 +15,9 @@
 #import "NSAttributedString+Append.h"
 #import "A3AppDelegate.h"
 
-NSString *const kUserDefaultsKeyCalculatorSavedLastExpression = @"savedTheLastExpressionInCalculator";
+NSString *const A3CalculatorUserDefaultsUpdateDate = @"A3CalculatorUserDefaultsUpdateDate";
+NSString *const A3CalculatorUserDefaultsCloudUpdateDate = @"A3CalculatorUserDefaultsCloudUpdateDate";
+NSString *const A3CalculatorUserDefaultsSavedLastExpression = @"A3CalculatorUserDefaultsSavedLastExpression";
 
 @interface A3Calculator ()
 
@@ -255,13 +257,16 @@ typedef CMathParser<char, double> MathParser;
     else if (A3E_PI <= key && key < A3E_CONSTANT_END) {
         [self constantHandler:key];
     }
-    
-    [[NSUserDefaults standardUserDefaults] setValue:mathexpression forKey:kUserDefaultsKeyCalculatorSavedLastExpression];
+
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3CalculatorUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] setValue:mathexpression forKey:A3CalculatorUserDefaultsSavedLastExpression];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setString:mathexpression forKey:kUserDefaultsKeyCalculatorSavedLastExpression];
+		[store setString:mathexpression forKey:A3CalculatorUserDefaultsSavedLastExpression];
+		[store setObject:updateDate forKey:A3CalculatorUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 }

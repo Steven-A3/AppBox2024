@@ -171,13 +171,16 @@
         
 //        self.dataManager.currentAccount.watchingDate = self.currentMonth;
         [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-        
+
+		NSDate *updateDate = [NSDate date];
+		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
 		[[NSUserDefaults standardUserDefaults] setObject:[self.dataManager.currentAccount watchingDate] forKey:A3LadyCalendarLastViewMonth];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
 		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 			[store setObject:[self.dataManager.currentAccount watchingDate] forKey:A3LadyCalendarLastViewMonth];
+			[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
 			[store synchronize];
 		}
 	} else {

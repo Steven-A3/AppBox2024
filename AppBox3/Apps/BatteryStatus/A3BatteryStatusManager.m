@@ -11,43 +11,48 @@
 
 NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorChanged";
 
+static NSString *const A3BatteryChosenThemeIndex = @"A3BatteryChosenThemeIndex";
+static NSString *const A3BatteryChosenTheme = @"A3BatteryChosenTheme";
+static NSString *const A3BatteryAdjustedIndex = @"A3BatteryAdjustedIndex";
+static NSString *const A3BatteryShowIndex = @"A3BatteryShowIndex";
+
 @implementation A3BatteryStatusManager
 
 #pragma mark -
 
 +(void)setChosenThemeIndex:(NSInteger)chosenThemeIndex
 {
-    [[NSUserDefaults standardUserDefaults] setInteger:chosenThemeIndex forKey:@"chosenThemeIndex"];
+    [[NSUserDefaults standardUserDefaults] setInteger:chosenThemeIndex forKey:A3BatteryChosenThemeIndex];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 +(void)setChosenTheme:(UIColor *)chosenTheme
 {
     NSData* themeData = [NSKeyedArchiver archivedDataWithRootObject:chosenTheme];
-    [[NSUserDefaults standardUserDefaults] setObject:themeData forKey:@"chosenTheme"];
+    [[NSUserDefaults standardUserDefaults] setObject:themeData forKey:A3BatteryChosenTheme];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 +(void)setAdjustedIndex:(NSArray *)adjustedIndex
 {
-    [[NSUserDefaults standardUserDefaults] setObject:adjustedIndex forKey:@"adjustedIndex"];
+    [[NSUserDefaults standardUserDefaults] setObject:adjustedIndex forKey:A3BatteryAdjustedIndex];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 +(void)setShowIndex:(NSArray *)showIndex
 {
-    [[NSUserDefaults standardUserDefaults] setObject:showIndex forKey:@"showIndex"];
+    [[NSUserDefaults standardUserDefaults] setObject:showIndex forKey:A3BatteryShowIndex];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 +(NSInteger)chosenThemeIndex
 {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:@"chosenThemeIndex"];
+    return [[NSUserDefaults standardUserDefaults] integerForKey:A3BatteryChosenThemeIndex];
 }
 
 +(UIColor *)chosenTheme {
 
-    NSData * themeData = [[NSUserDefaults standardUserDefaults] objectForKey:@"chosenTheme"];
+    NSData * themeData = [[NSUserDefaults standardUserDefaults] objectForKey:A3BatteryChosenTheme];
     if (!themeData) {
         [self setChosenThemeIndex:3];
         return [UIColor colorWithRed:0.0/255.0 green:230.0/255.0 blue:76.0/255.0 alpha:1.0];
@@ -76,11 +81,11 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
 }
 
 +(NSArray *)adjustedIndex {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"adjustedIndex"];
+    return [[NSUserDefaults standardUserDefaults] objectForKey:A3BatteryAdjustedIndex];
 }
 
 +(NSArray *)showIndex {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"showIndex"];
+    return [[NSUserDefaults standardUserDefaults] objectForKey:A3BatteryShowIndex];
 }
 
 #pragma mark -

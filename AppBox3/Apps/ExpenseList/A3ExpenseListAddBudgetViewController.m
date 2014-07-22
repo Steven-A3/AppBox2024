@@ -9,7 +9,6 @@
 #import "A3ExpenseListAddBudgetViewController.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
-#import "A3ExpenseListPreference.h"
 #import "A3JHTableViewRootElement.h"
 #import "A3TableViewInputElement.h"
 #import "A3JHTableViewEntryCell.h"
@@ -32,6 +31,7 @@
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
 #import "UITableView+utility.h"
+#import "A3UserDefaults.h"
 
 enum A3ExpenseListAddBudgetCellType {
     AddBudgetCellID_Budget = 100,
@@ -46,7 +46,6 @@ enum A3ExpenseListAddBudgetCellType {
 @interface A3ExpenseListAddBudgetViewController () <A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 @property (nonatomic, strong) ExpenseListBudget *currentBudget;
 @property (nonatomic, strong) A3JHTableViewRootElement *root;
-@property (nonatomic, strong) A3ExpenseListPreference *preferences;
 @property (nonatomic, strong) CellTextInputBlock cellTextInputBeginBlock;
 @property (nonatomic, strong) CellTextInputBlock cellTextInputChangedBlock;
 @property (nonatomic, strong) CellTextInputBlock cellTextInputFinishedBlock;
@@ -198,7 +197,7 @@ enum A3ExpenseListAddBudgetCellType {
 }
 
 - (NSString *)defaultCurrencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListCurrencyCode];
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}
@@ -276,6 +275,8 @@ enum A3ExpenseListAddBudgetCellType {
 	else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3ExpenseListUserDefaultsUpdateDate];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3ExpenseListIsAddBudgetCanceledByUser];
     [[NSUserDefaults standardUserDefaults] synchronize];
 	[self removeObserver];
@@ -283,6 +284,7 @@ enum A3ExpenseListAddBudgetCellType {
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setBool:YES forKey:A3ExpenseListIsAddBudgetCanceledByUser];
+		[store setObject:updateDate forKey:A3ExpenseListUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 
@@ -381,13 +383,12 @@ enum A3ExpenseListAddBudgetCellType {
         category.title = NSLocalizedString(@"Categories", @"Categories");
         
         NSArray *dataArray = [self getCategoryEntities];
-        NSMutableArray *names = [NSMutableArray new];
-        NSAssert(dataArray, @"Category 데이터가 없습니다.");
-        for (ExpenseListCategories *aCategory in dataArray) {
-            [names addObject:aCategory.name];
-        }
+		NSArray *names = [dataArray valueForKeyPath:@"@unionOfObjects.name"];
+		NSInteger foodIndex = [dataArray indexOfObjectPassingTest:^BOOL(ExpenseListCategories *item, NSUInteger idx, BOOL *stop) {
+			return [item.uniqueID isEqualToString:@"Food"];
+		}];
         category.items = names;
-        category.selectedIndex = 0;
+        category.selectedIndex = foodIndex != NSNotFound ? foodIndex : 0;
         category.identifier = AddBudgetCellID_Categories;
         [elements addObject:category];
         
@@ -525,27 +526,27 @@ enum A3ExpenseListAddBudgetCellType {
 }
 
 -(NSArray *)getCategoryEntities {
-    NSArray *categories = [ExpenseListCategories MR_findAll];
+    NSArray *categories = [ExpenseListCategories MR_findAllSortedBy:@"name" ascending:YES];
     if (!categories || categories.count==0) {
-        categories = @[NSLocalizedString(@"Food", @"Food"),
-                       NSLocalizedString(@"Personal", @"Personal"),
-                       NSLocalizedString(@"Pets", @"Pets"),
-                       NSLocalizedString(@"School", @"Pets"),
-                       NSLocalizedString(@"Service", @"Pets"),
-                       NSLocalizedString(@"Shopping", @"Pets"),
-                       NSLocalizedString(@"Transportation", @"Pets"),
-                       NSLocalizedString(@"Travel", @"Pets"),
-                       NSLocalizedString(@"Utilities", @"Pets"),
-                       NSLocalizedString(@"Uncategorized", @"Pets")];
+        categories = @[@"Food",
+                       @"Personal",
+                       @"Pets",
+                       @"School",
+                       @"Service",
+                       @"Shopping",
+                       @"Transportation",
+                       @"Travel",
+                       @"Utilities",
+                       @"Uncategorized"];
         for (NSString *category in categories) {
             ExpenseListCategories *entity = [ExpenseListCategories MR_createEntity];
-			entity.uniqueID = [[NSUUID UUID] UUIDString];
+			entity.uniqueID = category;
 			entity.updateDate = [NSDate date];
-            entity.name = category;
+            entity.name = NSLocalizedString(category, nil);
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         }
         
-        categories = [ExpenseListCategories MR_findAll];
+        categories = [ExpenseListCategories MR_findAllSortedBy:@"name" ascending:YES];
     }
     
     return categories;
@@ -908,12 +909,15 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
-	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3ExpenseListCurrencyCode];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3ExpenseListUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:currencyCode forKey:A3ExpenseListCurrencyCode];
+		[store setObject:currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
+		[store setObject:updateDate forKey:A3ExpenseListUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 
