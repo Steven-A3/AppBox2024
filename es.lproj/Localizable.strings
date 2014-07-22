@@ -892,3 +892,5 @@
 "Slideshow_Repeat" = "Repetición";
 "Use AppBox Pro" = "Usar AppBox Pro";
 "Loading" = "Cargando";
+
+"DaysCalendar_CalendarDeleteConfirmMsg" = "¿Seguro que desea eliminar este calendario? Todos los eventos asociados al calendario también se eliminaràn.";

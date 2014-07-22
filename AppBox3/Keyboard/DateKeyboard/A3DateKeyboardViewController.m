@@ -186,6 +186,7 @@
 
 		NSInteger day = self.dateComponents.day, entered = [self numberOfButton:button];
 		if (_currentDayZero) {
+			_currentDayZero = NO;
 			day = entered;
 		} else {
 			day *= 10;

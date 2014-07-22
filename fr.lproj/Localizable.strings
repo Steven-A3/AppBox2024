@@ -900,3 +900,5 @@
 "Slideshow_Repeat" = "Boucle";
 "Use AppBox Pro" = "Utiliser AppBox Pro";
 "Loading" = "Chargement";
+
+"DaysCalendar_CalendarDeleteConfirmMsg" = "Voulez-vous vraiment supprimer ce calendrier? Tous les événements associés au calendrier seront également supprimés.";

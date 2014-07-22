@@ -904,3 +904,5 @@
 "Slideshow_Repeat" = "リピート";
 "Use AppBox Pro" = "AppBox Proを使用";
 "Loading" = "読み込み中";
+
+"DaysCalendar_CalendarDeleteConfirmMsg" = "このカレンダーを削除してもよろしいですか？ このカレンダーに登録されているすべてのイベントとリマインダーも削除されます。";

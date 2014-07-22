@@ -912,3 +912,5 @@
 "Slideshow_Repeat" = "重复播放";
 "Use AppBox Pro" = "使用 AppBox Pro";
 "Loading" = "正在加载";
+
+"DaysCalendar_CalendarDeleteConfirmMsg" = "您确定要删除此日历吗？所有与此日历关联的事件也都将被删除。";
