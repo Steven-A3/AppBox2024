@@ -30,7 +30,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
 
-@interface A3DaysCounterEventDetailViewController () <UIAlertViewDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate, UIActivityItemSource>
+@interface A3DaysCounterEventDetailViewController () <UIAlertViewDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate, UIActivityItemSource, A3DaysCounterAddEventViewControllerDelegate>
 @property (strong, nonatomic) NSMutableArray *itemArray;
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (strong, nonatomic) NSString *initialCalendarID;
@@ -62,8 +62,7 @@
 
 	if (_isModal) {
         [self removeBackAndEditButton];
-    }
-    else {
+    } else {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     }
 
@@ -1484,11 +1483,9 @@ EXIT_FUCTION:
 //                hasSince = [[NSDate date] timeIntervalSince1970] > [_eventItem.effectiveStartDate timeIntervalSince1970] ? YES : NO;
 //            }
             
-            
             if ([_eventItem.isAllDay boolValue]) {
                 hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:[_eventItem.startDate solarDate] isAllDay:[_eventItem.isAllDay boolValue]] < 0 ? YES : NO;
-            }
-            else {
+            } else {
                 hasSince = [[NSDate date] timeIntervalSince1970] > [[_eventItem.startDate solarDate] timeIntervalSince1970] ? YES : NO;
             }
 
@@ -1744,10 +1741,12 @@ EXIT_FUCTION:
 }
 
 #pragma mark - action method
+
 - (void)editAction:(id)sender
 {
     self.initialCalendarID = _eventItem.calendarID;
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
+	viewCtrl.delegate = self;
     viewCtrl.eventItem = _eventItem;
     viewCtrl.sharedManager = _sharedManager;
     
@@ -1866,5 +1865,9 @@ EXIT_FUCTION:
 	}
 }
 
+- (void)viewControllerWillDismissByDeletingEvent {
+	_eventItem = nil;
+	[self dismissViewControllerAnimated:NO completion:NULL];
+}
 
 @end

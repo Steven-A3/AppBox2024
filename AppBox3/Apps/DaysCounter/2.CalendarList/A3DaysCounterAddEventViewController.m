@@ -35,12 +35,24 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSDateFormatter+A3Addition.h"
 
-
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
 #define ActionTag_DeleteEvent   102
 
-@interface A3DaysCounterAddEventViewController () <UITextFieldDelegate, UITextViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate, UIPopoverControllerDelegate, A3DateKeyboardDelegate, A3TableViewExpandableHeaderCellProtocol>
+@interface A3DaysCounterAddEventViewController ()
+		<
+		UITextFieldDelegate,
+		UITextViewDelegate,
+		UIActionSheetDelegate,
+		UIImagePickerControllerDelegate,
+		UINavigationControllerDelegate,
+		CLLocationManagerDelegate,
+		UIPopoverControllerDelegate,
+		UIPopoverControllerDelegate,
+		A3DateKeyboardDelegate,
+		A3TableViewExpandableHeaderCellProtocol
+		>
+
 @property (strong, nonatomic) NSArray *cellIDArray;
 @property (strong, nonatomic) NSMutableArray *sectionTitleArray;
 @property (strong, nonatomic) NSString *inputDateKey;
@@ -2247,8 +2259,12 @@
     }
     else if ( actionSheet.tag == ActionTag_DeleteEvent ) {
         if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
-            [_sharedManager removeEvent:_eventItem];
-            [self dismissViewControllerAnimated:YES completion:nil];
+			[_sharedManager removeEvent:_eventItem];
+			id <A3DaysCounterAddEventViewControllerDelegate> o = self.delegate;
+			if ([o respondsToSelector:@selector(viewControllerWillDismissByDeletingEvent)]) {
+				[o viewControllerWillDismissByDeletingEvent];
+			}
+			[self dismissViewControllerAnimated:YES completion:nil];
         }
     }
 }

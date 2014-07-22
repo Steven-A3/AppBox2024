@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
+@protocol A3DaysCounterAddEventViewControllerDelegate <NSObject>
+- (void)viewControllerWillDismissByDeletingEvent;
+@end
+
 @class DaysCounterEvent;
 @class A3DaysCounterModelManager;
 
@@ -20,6 +24,7 @@
 @property (strong, nonatomic) DaysCounterEvent *eventItem;
 @property (assign, nonatomic) BOOL landscapeFullScreen;
 @property (strong, nonatomic) NSString *calendarID;
+@property (weak, nonatomic) id<A3DaysCounterAddEventViewControllerDelegate> delegate;
 
 - (void)showKeyboard;
 
