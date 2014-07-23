@@ -237,18 +237,34 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 		[self setLabelRotation:transferLabel];
 		[self ShowMultipleViews:NO];
 		[self.zoomSlider  setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 106, self.zoomSlider.frame.size.height)];
+        [_topBar setItems:@[[self appsBarButton]] animated:YES];
 	}
 	else {
 		[self setFilterViewRotation:[self currentFilterView] withScreenBounds:screenBounds];
 		[self.zoomSlider  setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 98, self.zoomSlider.frame.size.height)];
+        [_topBar setItems:[self topToolBarBarButtons] animated:YES];
 	}
 
 	[self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
 	[self.topBar setFrame:(CGRectMake(self.topBar.bounds.origin.x, 20 , screenBounds.size.width, self.topBar.bounds.size.height))];
 	[self.bottomBar setFrame:CGRectMake(self.bottomBar.bounds.origin.x, screenBounds.size.height - 74 , screenBounds.size.width, 74)];
-
-
 }
+
+- (UIBarButtonItem *)appsBarButton {
+    UIBarButtonItem *appButton = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStyleBordered target:self action:@selector(appsButton:)];
+    return appButton;
+}
+
+- (NSArray *)topToolBarBarButtons {
+    
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *help = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"help"] style:UIBarButtonItemStyleBordered target:self action:@selector(showInstructionView:)];
+    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    fixedSpace.width = 24;
+    UIBarButtonItem *flip = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"m_horizon"] style:UIBarButtonItemStyleBordered target:self action:@selector(flipButton:)];
+    return @[[self appsBarButton], flexibleSpace, help, fixedSpace, flip];
+}
+
 - (void) setFilterViewRotation:(GLKView *)filterView withScreenBounds:(CGRect)screenBounds{
 
 	[self setViewRotation:filterView];
