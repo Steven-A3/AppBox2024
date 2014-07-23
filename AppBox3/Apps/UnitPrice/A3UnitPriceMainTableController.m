@@ -211,6 +211,11 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+	if (![self isMovingToParentViewController]) {
+		_price1 = nil;
+		_price2 = nil;
+	}
+    
 	[self enableControls:YES];
 }
 
@@ -454,7 +459,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	priceAItem.uniqueID = [[NSUUID UUID] UUIDString];
 	priceAItem.updateDate = [NSDate date];
 	priceAItem.orderInComparison = @"A";
-    priceAItem.price = _price1.price;
+    priceAItem.price = [self.price1 price];
     priceAItem.unitID = _price1.unitID;
     priceAItem.size = _price1.size;
     priceAItem.quantity = _price1.quantity;
@@ -467,7 +472,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	priceBItem.uniqueID = [[NSUUID UUID] UUIDString];
 	priceBItem.updateDate = [NSDate date];
 	priceBItem.orderInComparison = @"B";
-    priceBItem.price = _price2.price;
+    priceBItem.price = [self.price2 price];
     priceBItem.unitID = _price2.unitID;
     priceBItem.size = _price2.size;
     priceBItem.quantity = _price2.quantity;
