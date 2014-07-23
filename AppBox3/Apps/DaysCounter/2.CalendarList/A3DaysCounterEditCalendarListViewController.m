@@ -288,6 +288,10 @@
 
     self.modalVC = navCtrl;
     [self presentViewController:navCtrl animated:YES completion:nil];
+
+	if (IS_IPAD) {
+		[A3AppDelegate instance].rootViewController.modalPresentedInRightNavigationViewController = navCtrl;
+	}
 }
 
 - (void)editCalendarAction:(id)sender
@@ -315,5 +319,10 @@
     [navCtrl.view addSubview:leftLineView];
     
     [self presentViewController:navCtrl animated:YES completion:nil];
+
+	if (IS_IPAD) {
+		[A3AppDelegate instance].rootViewController.modalPresentedInRightNavigationViewController = navCtrl;
+	}
 }
+
 @end
