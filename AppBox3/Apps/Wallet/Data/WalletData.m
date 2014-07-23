@@ -91,8 +91,10 @@ NSString *const WalletFieldTypeID			= @"Name";
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:videoUrl options:nil];
     AVAssetImageGenerator *generateImg = [[AVAssetImageGenerator alloc] initWithAsset:asset];
     generateImg.appliesPreferredTrackTransform = YES;
+    NSArray *mediaTypes = [asset tracksWithMediaType:AVMediaTypeVideo];
+    CMTimeRange range = [[mediaTypes lastObject] timeRange];
     NSError *error = NULL;
-    CMTime time = CMTimeMake(1, 65);
+    CMTime time = CMTimeMake(((range.duration.value / range.duration.timescale) > 10) ? (10 * 65) : 1, 65);
     CGImageRef refImg = [generateImg copyCGImageAtTime:time actualTime:NULL error:&error];
     FNLOG(@"error==%@, Refimage==%@", error, refImg);
     
