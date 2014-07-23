@@ -204,6 +204,13 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	lastimageButton.layer.masksToBounds = YES;
 	[self.bottomBar.items[0] setCustomView:lastimageButton];
 	[self loadFirstPhoto];
+    
+    [_topBar setTranslucent:YES];
+    [_topBar setBackgroundImage:[UIImage new]
+             forToolbarPosition:UIBarPositionAny
+                     barMetrics:UIBarMetricsDefault];
+    [_topBar setShadowImage:[UIImage new]
+         forToolbarPosition:UIToolbarPositionAny];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
