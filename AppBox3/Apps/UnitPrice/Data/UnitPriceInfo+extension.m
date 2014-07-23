@@ -83,7 +83,8 @@
 
 - (NSString *)unitPriceStringWithFormatter:(NSNumberFormatter *)currencyFormatter {
 	NSString *unitShortName;
-	unitShortName = self.unit ? NSLocalizedStringFromTable(self.unit.unitName, @"unitShort", nil) : NSLocalizedString(@"None", @"None");
+	UnitItem *unitItem = [self unit];
+	unitShortName = self.unit ? NSLocalizedStringFromTable(unitItem.unitName, @"unitShort", nil) : NSLocalizedString(@"None", @"None");
 	NSString *unitPriceTxt = @"";
 
 	double priceValue = self.price.doubleValue;
@@ -104,7 +105,7 @@
 		double unitPrice = (priceValue - discountValue) / (sizeValue * quantityValue);
 
 		if (unitPrice > 0) {
-			if (IS_IPAD && self.unit) {
+			if (IS_IPAD && unitItem) {
 				unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [currencyFormatter stringFromNumber:@(unitPrice)], unitShortName];
 			}
 			else {
@@ -112,7 +113,7 @@
 			}
 		}
 		else if (unitPrice == 0) {
-			if (IS_IPAD && self.unit) {
+			if (IS_IPAD && unitItem) {
 				unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [currencyFormatter stringFromNumber:@(unitPrice)], unitShortName];
 			}
 			else {
@@ -121,7 +122,7 @@
 
 		}
 		else {
-			if (IS_IPAD && self.unit) {
+			if (IS_IPAD && unitItem) {
 				unitPriceTxt = [NSString stringWithFormat:@"-%@/%@", [currencyFormatter stringFromNumber:@(unitPrice*-1)], unitShortName];
 			}
 			else {
@@ -158,15 +159,15 @@
 
 		UnitItem *price1Unit = [price1 unit];
 		UnitItem *price2Unit = [self unit];
-		if (price1.unit && self.unit) {
+		if (price1Unit && price2Unit) {
 			price1CnvRate = price1Unit.conversionRate.floatValue;
 			price2CnvRate = price2Unit.conversionRate.floatValue;
 		}
-		else if (price1.unit && !self.unit) {
+		else if (price1Unit && !price2Unit) {
 			price1CnvRate = price1Unit.conversionRate.floatValue;
 			price2CnvRate = price1Unit.conversionRate.floatValue;
 		}
-		else if (!price1.unit && self.unit) {
+		else if (!price1Unit && price2Unit) {
 			price1CnvRate = price2Unit.conversionRate.floatValue;
 			price2CnvRate = price2Unit.conversionRate.floatValue;
 		}
@@ -180,9 +181,9 @@
 		double unitPrice = (priceValue - discountValue) / (sizeValue * quantityValue * rate);
 
 		if (unitPrice > 0) {
-			if (IS_IPAD && self.unit) {
+			if (IS_IPAD && price2Unit) {
 
-				if (price1.unit != self.unit) {
+				if (![price1Unit.uniqueID isEqualToString:price2Unit.uniqueID]) {
 
 					double normalPrice = (priceValue - discountValue) / (sizeValue * quantityValue);
 
@@ -204,7 +205,7 @@
 			}
 		}
 		else if (unitPrice == 0) {
-			if (IS_IPAD && self.unit) {
+			if (IS_IPAD && price2Unit) {
 				unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [currencyFormatter stringFromNumber:@(unitPrice)], unitShortName];
 			}
 			else {
@@ -213,7 +214,7 @@
 
 		}
 		else {
-			if (IS_IPAD && self.unit) {
+			if (IS_IPAD && price2Unit) {
 				unitPriceTxt = [NSString stringWithFormat:@"-%@/%@", [currencyFormatter stringFromNumber:@(unitPrice*-1)], unitShortName];
 			}
 			else {
