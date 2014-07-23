@@ -14,7 +14,7 @@
 
 @interface A3DaysCounterEventDetailViewController : UITableViewController
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
-@property (weak, nonatomic) DaysCounterEvent *eventItem;
+@property (strong, nonatomic) DaysCounterEvent *eventItem;
 @property (assign, nonatomic) id<A3DaysCounterEventDetailViewControllerDelegate> delegate;
 @property (assign, nonatomic) BOOL isModal;
 
