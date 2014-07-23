@@ -518,18 +518,6 @@
     
     if ( item ) {
         NSDate *startDate = item.effectiveStartDate;
-//        if ( [item.isLunar boolValue] ) {
-//            startDate = [[A3DaysCounterModelManager sharedManager] nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[item startDate] toLunar:[item.isLunar boolValue]]
-//                                                                                              leapMonth:[item.startDate.isLeapMonth boolValue]
-//                                                                                               fromDate:[NSDate date]];
-//        }
-//        else {
-//            startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
-//                                                                                  firstDate:[item.startDate solarDate]
-//                                                                                   fromDate:[NSDate date]
-//                                                                                   isAllDay:[item.isAllDay boolValue]];
-//        }
-
         // textLabel
         textLabel.text = item.eventName;
         

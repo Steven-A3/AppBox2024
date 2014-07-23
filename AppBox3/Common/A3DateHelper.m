@@ -201,7 +201,7 @@
         }
         
         if (isStrict) {
-            if ([toDate timeIntervalSince1970] > ([fromDate timeIntervalSince1970] + 60)) {
+            if ([toDate timeIntervalSince1970] > [fromDate timeIntervalSince1970]) {
                 return NSLocalizedString(@"until", @"until");
             }
             else {
