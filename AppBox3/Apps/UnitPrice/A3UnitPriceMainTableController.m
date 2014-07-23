@@ -211,11 +211,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-	if (![self isMovingToParentViewController]) {
-		_price1 = nil;
-		_price2 = nil;
-	}
 	[self enableControls:YES];
 }
 
@@ -302,7 +297,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (void)composeButtonAction:(UIButton *)button {
 	// history 입력 및 데이타 초기화
 
-	if (price1UnitPrice>0 && price2UnitPrice>0) {
+	if (price1UnitPrice > 0 && price2UnitPrice > 0) {
 		[self putHistory];
 	}
 	[self clearCalculation];
