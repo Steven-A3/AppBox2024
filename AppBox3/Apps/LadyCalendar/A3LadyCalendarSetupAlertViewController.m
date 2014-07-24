@@ -15,6 +15,7 @@
 #import "A3UserDefaults.h"
 #import "UIColor+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3SyncManager.h"
 
 @interface A3LadyCalendarSetupAlertViewController () <UITextFieldDelegate, A3KeyboardDelegate>
 
@@ -123,7 +124,7 @@
 	[[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:self.settingDict forKey:A3LadyCalendarSetting];
 		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
@@ -180,7 +181,7 @@
 	[[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:self.settingDict forKey:A3LadyCalendarSetting];
 		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];

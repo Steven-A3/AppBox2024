@@ -119,7 +119,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
                 [unitPriceHistory MR_deleteEntity];
             }
         }
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		_fetchedResultsController = nil;
 		[self.tableView reloadData];
         
@@ -150,7 +150,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 {
 	[UnitPriceHistoryItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
     [history MR_deleteEntity];
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (double)calcuUnitPriceOfHistoryItem:(UnitPriceHistoryItem *)item

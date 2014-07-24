@@ -62,12 +62,10 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 	BOOL _migrateV1WithDaysCounterPhoto;
 }
 
-- (instancetype)initWithPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+- (instancetype)init {
 	self = [super init];
 	if (self) {
-		_context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-		_context.persistentStoreCoordinator = persistentStoreCoordinator;
-		_context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		_context = [NSManagedObjectContext MR_newContext];
 		_context.undoManager = nil;
 	}
 	return self;
@@ -175,7 +173,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
 	for (NSDictionary *v1Item in V1DataArray) {
 		@autoreleasepool {
-			DaysCounterEvent *newEvent = [DaysCounterEvent MR_createInContext:context];
+			DaysCounterEvent *newEvent = [DaysCounterEvent MR_createEntityInContext:context];
 			newEvent.uniqueID = [[NSUUID UUID] UUIDString];
 			newEvent.updateDate = [NSDate date];
 			newEvent.calendarID = daysCounterCalendar.uniqueID;
@@ -270,7 +268,7 @@ NSString *const kMyGirlsDayHistoryTypeInput				= @"input";
 	for (NSArray *item in history) {
 		if ([item[0] isEqualToString:kMyGirlsDayHistoryTypeInput]) {
 			@autoreleasepool {
-				LadyCalendarPeriod *period = [LadyCalendarPeriod MR_createInContext:context];
+				LadyCalendarPeriod *period = [LadyCalendarPeriod MR_createEntityInContext:context];
 				period.accountID = account.uniqueID;
 				period.startDate = item[1];
 				period.endDate = item[2];
@@ -308,14 +306,14 @@ NSString *const kTargetText						= @"kTargetText";
 			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", uniqueID];
 			TranslatorGroup *group = [TranslatorGroup MR_findFirstWithPredicate:predicate inContext:context];
 			if (!group) {
-				group = [TranslatorGroup MR_createInContext:context];
+				group = [TranslatorGroup MR_createEntityInContext:context];
 				group.uniqueID = uniqueID;
 				group.updateDate = [NSDate date];
 				[group setupOrder];
 				group.sourceLanguage = sourceLanguageCode;
 				group.targetLanguage = targetLanguageCode;
 			}
-			TranslatorHistory *history = [TranslatorHistory MR_createInContext:context];
+			TranslatorHistory *history = [TranslatorHistory MR_createEntityInContext:context];
 			history.uniqueID = [[NSUUID UUID] UUIDString];
 			history.updateDate = [NSDate date];
 			history.groupID = group.uniqueID;
@@ -416,7 +414,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 			WalletCategory *category;
 			if (!V3CategoryID) {
 				fieldMap = [NSMutableDictionary new];
-				category = [WalletCategory MR_createInContext:context];
+				category = [WalletCategory MR_createEntityInContext:context];
 				category.uniqueID = [[NSUUID UUID] UUIDString];
 				category.doNotShow = @NO;
 				category.name = [V1Category[KWalletTypeName] stringByTrimmingSpaceCharacters];
@@ -427,7 +425,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 
 				NSArray *fieldInfoArray = V1Category[KWalletFieldInfoArray];
 				for (NSDictionary *fieldInfo in fieldInfoArray) {
-					WalletField *newField = [WalletField MR_createInContext:context];
+					WalletField *newField = [WalletField MR_createEntityInContext:context];
 					newField.categoryID = category.uniqueID;
 					[newField initValues];
 					newField.name = fieldInfo[WalletFieldName];
@@ -453,7 +451,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 
 			for (NSDictionary *valueInfo in V1FieldItemsArray) {
 				@autoreleasepool {
-					WalletItem *newItem = [WalletItem MR_createInContext:context];
+					WalletItem *newItem = [WalletItem MR_createEntityInContext:context];
 					newItem.uniqueID = [[NSUUID UUID] UUIDString];
 					newItem.updateDate = [NSDate date];
 					[newItem assignOrder];
@@ -476,7 +474,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 								return [fieldInfo[WalletFieldID] isEqualToString:fieldID];
 							}];
 							if (fieldInfoIndex != NSNotFound) {
-								WalletFieldItem *V3FieldItem = [WalletFieldItem MR_createInContext:context];
+								WalletFieldItem *V3FieldItem = [WalletFieldItem MR_createEntityInContext:context];
 								V3FieldItem.uniqueID = [[NSUUID UUID] UUIDString];
 								V3FieldItem.updateDate = [NSDate date];
 								V3FieldItem.walletItemID = newItem.uniqueID;
@@ -489,7 +487,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 									}];
 									if (fieldIndex != NSNotFound) {
 										NSDictionary *V1FieldInfo = fieldInfoArray[fieldIndex];
-										WalletField *newField = [WalletField MR_createInContext:context];
+										WalletField *newField = [WalletField MR_createEntityInContext:context];
 										newField.categoryID = category.uniqueID;
 										[newField initValues];
 

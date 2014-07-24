@@ -24,6 +24,7 @@
 #import "A3SettingsLunarViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSString+conversion.h"
+#import "A3SyncManager.h"
 
 
 @interface A3LunarConverterViewController () <UIScrollViewDelegate, A3DateKeyboardDelegate, UITextFieldDelegate, UIPopoverControllerDelegate, UIActivityItemSource>
@@ -777,7 +778,7 @@
 		[[NSUserDefaults standardUserDefaults] setBool:_isLunarInput forKey:A3LunarConverterLastInputDateIsLunar];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
-		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 			// Date Components 는 setDateComponents 에서 KVStore 에 저장함
 			[store setBool:_isLunarInput forKey:A3LunarConverterLastInputDateIsLunar];

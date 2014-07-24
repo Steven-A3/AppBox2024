@@ -501,7 +501,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
     A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
     viewController.delegate = self;
-    viewController.item = self.item;
+    viewController.item = [self.item MR_inContext:[NSManagedObjectContext MR_rootSavingContext]];
     viewController.hidesBottomBarWhenPushed = YES;
 	viewController.alwaysReturnToOriginalCategory = self.alwaysReturnToOriginalCategory;
     

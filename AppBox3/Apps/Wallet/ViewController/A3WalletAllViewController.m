@@ -752,7 +752,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
         WalletItem *item = self.items[indexPath.row];
 		[self.items removeObject:item];
 		[item deleteWalletItem];
-        [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         
 		if ([self.items count] == 1) {
 			_dataEmpty = YES;

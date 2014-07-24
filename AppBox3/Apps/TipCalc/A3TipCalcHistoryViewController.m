@@ -181,7 +181,7 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
         TipCalcHistory *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
 		[TipCalcRecent MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID != %@", history.uniqueID]];
         [history MR_deleteEntity];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         _fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

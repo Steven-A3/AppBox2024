@@ -103,7 +103,7 @@ static NSString *CellIdentifier = @"Cell";
         FNLOG(@"Items : %ld", (long)[[ExpenseListItem MR_findAll] count]);
         FNLOG(@"Location : %ld", (long)[[ExpenseListBudgetLocation MR_findAll] count]);
 
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         _fetchedResultsController = nil;
         [self.tableView reloadData];
 	}
@@ -178,7 +178,7 @@ static NSString *CellIdentifier = @"Cell";
 		[aData MR_deleteEntity];
 		[aHistory MR_deleteEntity];
 
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
         _fetchedResultsController = nil;
         

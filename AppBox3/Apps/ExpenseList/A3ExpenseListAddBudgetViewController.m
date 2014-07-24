@@ -32,6 +32,7 @@
 #import "A3CalculatorViewController.h"
 #import "UITableView+utility.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 enum A3ExpenseListAddBudgetCellType {
     AddBudgetCellID_Budget = 100,
@@ -261,7 +262,7 @@ enum A3ExpenseListAddBudgetCellType {
 		resultBudget.notes = notes.value;
 		resultBudget.updateDate = [NSDate date];
 
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 		[_delegate setExpenseBudgetDataFor:resultBudget];
 	}
@@ -281,7 +282,7 @@ enum A3ExpenseListAddBudgetCellType {
     [[NSUserDefaults standardUserDefaults] synchronize];
 	[self removeObserver];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setBool:YES forKey:A3ExpenseListIsAddBudgetCanceledByUser];
 		[store setObject:updateDate forKey:A3ExpenseListUserDefaultsCloudUpdateDate];
@@ -543,7 +544,7 @@ enum A3ExpenseListAddBudgetCellType {
 			entity.uniqueID = category;
 			entity.updateDate = [NSDate date];
             entity.name = NSLocalizedString(category, nil);
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         }
         
         categories = [ExpenseListCategories MR_findAllSortedBy:@"name" ascending:YES];
@@ -914,7 +915,7 @@ static NSString *CellIdentifier = @"Cell";
 	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
 		[store setObject:updateDate forKey:A3ExpenseListUserDefaultsCloudUpdateDate];

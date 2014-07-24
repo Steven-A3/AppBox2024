@@ -23,6 +23,7 @@
 #import "UITableView+utility.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3AppDelegate+appearance.h"
+#import "A3SyncManager.h"
 
 @interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate, A3KeyboardDelegate, UITextFieldDelegate>
 {
@@ -359,7 +360,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	[[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:key];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:myLoanData forKey:key];
 		[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];

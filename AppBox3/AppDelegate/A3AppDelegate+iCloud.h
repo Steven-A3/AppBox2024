@@ -8,16 +8,11 @@
 
 #import "A3AppDelegate.h"
 
-extern NSString *const A3NotificationCoreDataReady;
 extern NSString *const A3CloudHasData;
 
-@interface A3AppDelegate (iCloud) <UbiquityStoreManagerDelegate>
-
-- (void)setupCloud;
+@interface A3AppDelegate (iCloud)
 
 - (void)setCloudEnabled:(BOOL)enable deleteCloud:(BOOL)deleteCloud;
-- (void)resetCoreDataStack;
-- (void)startCloudFileQuery;
-- (void)stopCloudFileQuery;
 
+- (void)startDownloadAllFiles;
 @end

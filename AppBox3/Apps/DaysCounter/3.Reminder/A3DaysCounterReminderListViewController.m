@@ -53,7 +53,7 @@
     [self makeBackButtonEmptyArrow];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
@@ -258,7 +258,7 @@
         [reminder.startDate timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
             item.hasReminder = @(NO);
     }
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager reminderList]];
 

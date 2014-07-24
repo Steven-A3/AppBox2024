@@ -28,7 +28,7 @@
         utype.order = [NSNumber numberWithInt:i];
     }
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (NSString *)flagImageName

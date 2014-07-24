@@ -246,7 +246,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 	[section1 enumerateObjectsUsingBlock:^(UnitType *unitType, NSUInteger idx, BOOL *stop) {
 		unitType.order = @(numberOfItemsOnTabBar + idx);
 	}];
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 // Override to support conditional rearranging of the table view.

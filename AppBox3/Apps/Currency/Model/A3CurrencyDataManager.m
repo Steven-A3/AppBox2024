@@ -80,7 +80,7 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 		idx++;
 	}
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 + (BOOL)yahooNetworkAvailable {
@@ -113,7 +113,7 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 			CurrencyRateItem *entity = [CurrencyRateItem MR_findFirstByAttribute:A3KeyCurrencyCode withValue:yahoo.currencyCode inContext:context];
 
 			if (!entity) {
-				entity = [CurrencyRateItem MR_createInContext:context];
+				entity = [CurrencyRateItem MR_createEntityInContext:context];
 				entity.currencyCode = yahoo.currencyCode;
 				entity.name = yahoo.name;
 			}

@@ -22,6 +22,7 @@
 #import "UIImage+imageWithColor.h"
 #import "A3DateHelper.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 @interface A3LoanCalcExtraPaymentViewController () <A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 {
@@ -750,7 +751,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 		[[NSUserDefaults standardUserDefaults] setObject:selectedItem forKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
-		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 			[store setObject:selectedItem forKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 			[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];

@@ -33,6 +33,7 @@
 #import "A3CalculatorViewController.h"
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
 NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
@@ -142,7 +143,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataChanged:) name:NSManagedObjectContextObjectsDidChangeNotification object:[[MagicalRecordStack defaultStack] context]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataChanged:) name:NSManagedObjectContextObjectsDidChangeNotification object:[NSManagedObjectContext MR_defaultContext]];
 	[self registerContentSizeCategoryDidChangeNotification];
     [self setupInstructionView];
 }
@@ -169,7 +170,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:[[MagicalRecordStack defaultStack] context]];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:[NSManagedObjectContext MR_defaultContext]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -781,7 +782,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 			NSInteger insertIdx = [self.favorites count];
 			[self.favorites insertObjectToSortedArray:newFavorite atIndex:insertIdx];
 
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 			[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:insertIdx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
 		}
@@ -792,7 +793,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 			[self replaceTextFieldKeyFrom:favorite.currencyCode to:currencyRateItem.currencyCode];
 			[A3CurrencyDataManager copyCurrencyFrom:result[0] to:favorite];
 
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 			// Reload favorites
 			_favorites = nil;
@@ -902,7 +903,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	[self.favorites moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	dispatch_async(dispatch_get_main_queue(), ^{
 		NSInteger equalIndex;
@@ -916,7 +917,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 			if (equalIndex == 0) {
 				[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]  withRowAnimation:UITableViewRowAnimationNone];
 			}
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		}
 
 		if (fromIndexPath.row == 0 || toIndexPath.row == 0) {
@@ -1020,7 +1021,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 	if (valueChanged) {
 		[self putHistoryWithValue:@([self.previousValue floatValueEx])];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	}
 }
 
@@ -1063,7 +1064,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 	if (valueChanged) {
 		[self putHistoryWithValue:@([self.previousValue floatValueEx])];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	}
 }
 
@@ -1083,7 +1084,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[[NSUserDefaults standardUserDefaults] setObject:@(fromValue) forKey:A3CurrencyUserDefaultsLastInputValue];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:@(fromValue) forKey:A3CurrencyUserDefaultsLastInputValue];
 		[store setObject:updateDate forKey:A3CurrencyUserDefaultsCloudUpdateDate];
@@ -1161,7 +1162,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 //		});
 //	}
 //
-//	[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
+//	[[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
 //
 //#ifdef DEBUG
 //	[self logFavorites];
@@ -1284,7 +1285,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		}
 	}
 	if ([reloadingRows count]) {
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 		_favorites = nil;
 		[self favorites];
@@ -1319,7 +1320,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		[self.textFields removeObjectForKey:favorite.currencyCode];
 
 		[favorite MR_deleteEntity];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 		[self.favorites removeObjectAtIndex:indexPath.row];
 
@@ -1480,7 +1481,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		[targets addObject:item];
 	}
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	[self.historyBarButton setEnabled:YES];
 }

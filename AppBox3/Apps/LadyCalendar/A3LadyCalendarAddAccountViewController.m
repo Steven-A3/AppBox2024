@@ -77,7 +77,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			}
 	]];
 	if ( !_isEditMode ) {
-		_accountItem = [LadyCalendarAccount MR_createEntity];
+		_accountItem = [LadyCalendarAccount MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 		_accountItem.uniqueID = [[NSUUID UUID] UUIDString];
 		_accountItem.updateDate = [NSDate date];
 
@@ -126,7 +126,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 }
 
 - (void)willDismissRightSideView {
-	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
+	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
 	if ([context hasChanges]) {
 		[context rollback];
 	}
@@ -193,7 +193,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	BOOL canDeleteThisAccount = [LadyCalendarAccount MR_countOfEntities] > 1;
+	BOOL canDeleteThisAccount = [LadyCalendarAccount MR_countOfEntitiesWithContext:[NSManagedObjectContext MR_rootSavingContext]] > 1;
 	if (canDeleteThisAccount) {
 		NSString *currentUserID = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID];
 		canDeleteThisAccount = ![_accountItem.uniqueID isEqualToString:currentUserID];
@@ -405,9 +405,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if( buttonIndex == actionSheet.destructiveButtonIndex ){
-		[LadyCalendarPeriod MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"accountID == %@", _accountItem.uniqueID]];
-		[_accountItem MR_deleteEntity];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+		[LadyCalendarPeriod MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"accountID == %@", _accountItem.uniqueID] inContext:savingContext];
+		[_accountItem MR_deleteEntityInContext:savingContext];
+		[savingContext MR_saveToPersistentStoreAndWait];
 
 		[self dismissViewControllerAnimated:YES completion:nil];
     }
@@ -432,7 +433,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	NSString *inputName = [text stringByTrimmingSpaceCharacters];
 
 	_accountItem.name = inputName;
-	_sameNameExists = [[LadyCalendarAccount MR_findByAttribute:@"name" withValue:inputName] count] > 1;
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name == %@", inputName];
+	_sameNameExists = [LadyCalendarAccount MR_countOfEntitiesWithPredicate:predicate inContext:[NSManagedObjectContext MR_rootSavingContext]] > 1;
 
 	if (_sameNameExists) {
 		[self.alertHUD show:YES];
@@ -529,7 +531,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
-	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
+	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
 	if ([context hasChanges]) {
 		[context rollback];
 	}
@@ -543,10 +545,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     [self resignAllAction];
 
     if( ![_accountItem.name length] ){
-        NSInteger totalUser = [LadyCalendarAccount MR_countOfEntities];
+        NSInteger totalUser = [LadyCalendarAccount MR_countOfEntitiesWithContext:[NSManagedObjectContext MR_rootSavingContext]];
 		_accountItem.name = [NSString stringWithFormat:@"%@%02ld", NSLocalizedString(@"User", nil), (long) totalUser + 1];
     }
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
 
 	[self dismissViewControllerAnimated:YES completion:nil];
 }

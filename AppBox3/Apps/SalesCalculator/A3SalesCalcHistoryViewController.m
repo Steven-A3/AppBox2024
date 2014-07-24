@@ -113,7 +113,7 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         [SalesCalcHistory MR_truncateAll];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         _fetchedResultsController = nil;
         [self.tableView reloadData];
         
@@ -188,7 +188,7 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         SalesCalcHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
         [history MR_deleteEntity];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         _fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

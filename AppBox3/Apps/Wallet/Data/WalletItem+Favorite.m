@@ -30,7 +30,7 @@
             NSMutableArray *tmp = [[NSMutableArray alloc] initWithArray:favors];
             [tmp addObjectToSortedArray:favorite];
 
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         }
     }
     else {
@@ -39,7 +39,7 @@
 			[favor MR_deleteEntity];
 		}
 
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     }
 }
 

@@ -32,6 +32,7 @@
 #import "A3InstructionViewController.h"
 #import "UnitConvertItem+extension.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
@@ -447,7 +448,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     [[NSUserDefaults standardUserDefaults] setObject:unitValue forKey:A3UnitConverterTableViewUnitValueKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:unitValue forKey:A3UnitConverterTableViewUnitValueKey];
 		[store setObject:updateDate forKey:A3UnitConverterUserDefaultsCloudUpdateDate];
@@ -1018,7 +1019,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	[self.convertItems moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	dispatch_async(dispatch_get_main_queue(), ^{
 		NSInteger equalIndex;
@@ -1033,7 +1034,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			if (equalIndex == 0) {
 				[_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]  withRowAnimation:UITableViewRowAnimationNone];
 			}
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		}
 	});
 
@@ -1121,7 +1122,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 			NSUInteger idx = [_convertItems count];
 			[self.convertItems insertObjectToSortedArray:convertItem atIndex:idx];
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 			[_fmMoveTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
 
@@ -1180,7 +1181,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			else {
 				UnitConvertItem *replacedItem = _convertItems[_selectedRow];
 				replacedItem.unitID = selectedItem.uniqueID;
-				[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+				[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 				[_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
 
@@ -1352,7 +1353,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	[self updateTextFieldsWithSourceTextField:textField];
 	[cell updateMultiTextFieldModeConstraintsWithEditingTextField:nil];
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)textFieldDidChange:(NSNotification *)notification {
@@ -1472,7 +1473,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 - (void)swapCellOfFromIndexPath:(NSIndexPath *)fromIp toIndexPath:(NSIndexPath *)toIp
 {
     [self.convertItems exchangeObjectInSortedArrayAtIndex:fromIp.row withObjectAtIndex:toIp.row];
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     [_fmMoveTableView reloadRowsAtIndexPaths:@[fromIp, toIp] withRowAnimation:UITableViewRowAnimationMiddle];
     
     double delayInSeconds = 0.3;
@@ -1537,7 +1538,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		[self.text2Fields removeObjectForKey:targetUnitItem.unitName];
 
 		[convertItem MR_deleteEntity];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		[self.convertItems removeObjectAtIndex:indexPath.row];
 
 		[_fmMoveTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
@@ -1755,7 +1756,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		item.order = convertItem.order;
 	}
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	self.unitValue = nil;
 

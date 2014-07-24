@@ -25,6 +25,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3InstructionViewController.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "A3SyncManager.h"
 
 @interface A3LadyCalendarViewController () <A3InstructionViewControllerDelegate>
 
@@ -170,14 +171,14 @@
         _collectionView.delegate = nil;
         
 //        self.dataManager.currentAccount.watchingDate = self.currentMonth;
-        [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 		NSDate *updateDate = [NSDate date];
 		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
 		[[NSUserDefaults standardUserDefaults] setObject:[self.dataManager.currentAccount watchingDate] forKey:A3LadyCalendarLastViewMonth];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
-		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 			[store setObject:[self.dataManager.currentAccount watchingDate] forKey:A3LadyCalendarLastViewMonth];
 			[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
@@ -236,7 +237,7 @@
 	[_collectionView reloadData];
 
     self.dataManager.currentAccount.watchingDate = [notification.userInfo objectForKey:A3LadyCalendarChangedDateKey];
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	[self moveToCurrentMonth];
 }
@@ -281,7 +282,7 @@
 }
 
 - (void)setupNavigationTitle {
-	if( [self.dataManager numberOfAccountInContext:[[MagicalRecordStack defaultStack] context]] == 1 && [[[self.dataManager currentAccount] name] isEqualToString:[self.dataManager defaultAccountName]]){
+	if( [self.dataManager numberOfAccountInContext:[NSManagedObjectContext MR_defaultContext]] == 1 && [[[self.dataManager currentAccount] name] isEqualToString:[self.dataManager defaultAccountName]]){
 		self.navigationItem.title = NSLocalizedString(@"Ladies Calendar", nil);
 	}
 	else{

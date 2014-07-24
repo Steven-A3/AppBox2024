@@ -233,7 +233,7 @@
             [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
         }
         
-        [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         
         if( [self.itemArray count] < 1 ){
             [self cancelAction:nil];

@@ -13,6 +13,7 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "A3DataMigrationManager.h"
+#import "A3SyncManager.h"
 
 NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 
@@ -129,7 +130,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		[_currentSceneViewController.leftButton removeTarget:_currentSceneViewController action:NULL forControlEvents:UIControlEventTouchUpInside];
 		[_currentSceneViewController.leftButton addTarget:_currentSceneViewController action:NSSelectorFromString(@"useAppBoxProAction:") forControlEvents:UIControlEventTouchUpInside];
 
-		if (![[A3AppDelegate instance].ubiquityStoreManager cloudAvailable]) {
+		if (![[A3SyncManager sharedSyncManager] isCloudAvailable]) {
 			[self alertCloudNotEnabled];
 			return;
 		}
@@ -137,7 +138,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
 		[keyValueStore synchronize];
 
-		if ([keyValueStore boolForKey:A3CloudHasData]) {
+		if ([keyValueStore objectForKey:A3SyncManagerCloudStoreID]) {
 			// Ask user to delete iCloud or not
 			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Setup AppBox Pro data stored in iCloud", nil)
 																	 delegate:self

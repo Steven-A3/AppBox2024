@@ -365,14 +365,14 @@
 	[button setImage:[UIImage imageNamed:@"history"] forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(historyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 	if (managedObjectClass) {
-		[button setEnabled:[managedObjectClass MR_countOfEntitiesWithContext:[[MagicalRecordStack defaultStack] context] ] > 0 ];
+		[button setEnabled:[managedObjectClass MR_countOfEntitiesWithContext:[NSManagedObjectContext MR_defaultContext] ] > 0 ];
 	}
 	return button;
 }
 
 - (UIBarButtonItem *)historyBarButton:(Class)managedObjectClass {
 	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
-	[barButtonItem setEnabled:[managedObjectClass MR_countOfEntitiesWithContext:[[MagicalRecordStack defaultStack] context] ] > 0 ];
+	[barButtonItem setEnabled:[managedObjectClass MR_countOfEntitiesWithContext:[NSManagedObjectContext MR_defaultContext] ] > 0 ];
 	return barButtonItem;
 }
 

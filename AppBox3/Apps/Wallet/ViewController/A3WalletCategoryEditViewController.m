@@ -66,7 +66,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 	if (_isAddingCategory) {
 		self.navigationItem.title = NSLocalizedString(@"Add Category", @"Add Category");
-		_category = [WalletCategory MR_createEntity];
+		_category = [WalletCategory MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
         _category.uniqueID = [[NSUUID UUID] UUIDString];
 		_category.updateDate = [NSDate date];
 		[_category initValues];
@@ -187,7 +187,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
         return;
     }
 
-	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
+	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
 	if ([context hasChanges]) {
 		[context MR_saveToPersistentStoreAndWait];
 	}
@@ -215,7 +215,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
-	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
+	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
 	if ([context hasChanges]) {
 		[context rollback];
 	}
@@ -268,7 +268,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 - (void)addWalletField
 {
-    self.toAddField = [WalletField MR_createEntity];
+    self.toAddField = [WalletField MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 	[self.toAddField initValues];
     _toAddField.categoryID = self.category.uniqueID;
 
@@ -383,7 +383,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 	if (![_originalCategoryName isEqualToString:changed]) {
 		if ([changed length]) {
-			_sameCategoryNameExists = [[WalletCategory MR_findByAttribute:@"name" withValue:changed] count] > 0;
+			_sameCategoryNameExists = [[WalletCategory MR_findByAttribute:@"name" withValue:changed inContext:[NSManagedObjectContext MR_rootSavingContext]] count] > 0;
 		} else {
 			_sameCategoryNameExists = NO;
 		}
@@ -405,7 +405,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 - (void)setupDoneButtonEnabled {
 	self.navigationItem.leftBarButtonItem.enabled = YES;
-	BOOL enable = [[[MagicalRecordStack defaultStack] context] hasChanges];
+	BOOL enable = [[NSManagedObjectContext MR_rootSavingContext] hasChanges];
 	if (_titleTextField) {
 		enable = enable && [_titleTextField.text length] && !_sameCategoryNameExists;
 	}
@@ -533,7 +533,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
         WalletField *field = [_fields objectAtIndex:indexPath.row];
         [_fields removeObject:field];
 
-		[field MR_deleteEntity];
+		[field MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
@@ -637,13 +637,14 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-		NSArray *items = [WalletItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID]];
+		NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+		NSArray *items = [WalletItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID] inContext:savingContext];
 		for (WalletItem *item in items) {
 			[item deleteWalletItem];
 		}
-		[WalletField MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID]];
-		[self.category MR_deleteEntity];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[WalletField MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID] inContext:savingContext];
+		[self.category MR_deleteEntityInContext:savingContext];
+		[savingContext MR_saveToPersistentStoreAndWait];
 
 		[self dismissViewControllerAnimated:YES completion:NULL];
         

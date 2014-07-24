@@ -541,7 +541,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 					[item deleteWalletItem];
 				}
             }
-            [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+            [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
             
             [self.tableView reloadData];
 
@@ -568,7 +568,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 					[item deleteWalletItem];
 				}
             }
-            [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+            [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
             [self.items removeObjectsAtIndexes:mis];
 
             [self.tableView deleteRowsAtIndexPaths:ips withRowAnimation:UITableViewRowAnimationFade];
@@ -701,7 +701,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 			}];
             [self.items removeObject:item];
 			[item deleteWalletItem];
-            [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+            [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
             // more button 활성화여부
@@ -823,13 +823,13 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 {
 	[self.items moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	[self.items moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 // Override to support conditional rearranging of the table view.

@@ -28,11 +28,11 @@
 		if ([fileManager fileExistsAtPath:storePath]) {
 			[fileManager removeItemAtPath:storePath error:&error];
 		}
-		[MagicalRecord setupAutoMigratingStackWithSQLiteStoreAtURL:storeURL];
+		[MagicalRecord setupAutoMigratingCoreDataStack];
 
 		[self initCurrencyData];
 
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	}
 	@catch (id exception) {
 		NSLog(@"%@", [(id <NSObject>)exception description]);

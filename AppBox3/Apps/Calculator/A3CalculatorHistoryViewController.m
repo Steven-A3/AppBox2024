@@ -95,7 +95,7 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
 		_fetchedResultsController = nil;
 		[Calculation MR_truncateAll];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 		[self.tableView reloadData];
         if(IS_IPAD) {
@@ -181,7 +181,7 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
         
         Calculation *calculation = [_fetchedResultsController objectAtIndexPath:indexPath];
         [calculation MR_deleteEntity];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		_fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

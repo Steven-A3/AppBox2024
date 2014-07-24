@@ -11,12 +11,13 @@
 #import "NSDate-Utilities.h"
 #import "A3AppDelegate+mainMenu.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 @implementation A3AppDelegate (keyValueStore)
 
 - (void)keyValueStoreDidChangeExternally:(NSNotification *)notification {
 	FNLOG(@"keyValueStoreDidChangeExternally");
-	if (![self.ubiquityStoreManager cloudEnabled]) return;
+	if (![[A3SyncManager sharedSyncManager] isCloudEnabled]) return;
 
 	FNLOG(@"keyValueStoreDidChangeExternally, data download and merged.");
 
@@ -42,6 +43,10 @@
 		// This loop assumes you are using the same key names in both
 		// the user defaults database and the iCloud key-value store
 		for (NSString* key in changedKeys) {
+			if ([key isEqualToString:A3SyncManagerCloudStoreID]) {
+				// Cloud Store ID 는 동기화에서 제외
+				continue;
+			}
 			id objectInCloud = [store objectForKey:key];
 			id objectInLocal = [userDefaults objectForKey:key];
 			if ([key isEqualToString:A3MainMenuUserDefaultsAllMenu]) {

@@ -12,6 +12,7 @@
 #import "NSString+conversion.h"
 #import "UIImage+Resizing.h"
 #import "A3AppDelegate.h"
+#import "A3SyncManager.h"
 
 NSString *const A3WalletImageDirectory = @"WalletImages";		// in Library Directory
 NSString *const A3WalletVideoDirectory = @"WalletVideos";		// in Library Directory
@@ -52,7 +53,7 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 }
 
 - (NSURL *)baseURL {
-	if ([[[A3AppDelegate instance] ubiquityStoreManager] cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		return [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
 	} else {
 		return [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0]];

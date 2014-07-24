@@ -90,7 +90,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 						ItemKey_Type : @(PeriodCellType_Delete)
 				}]]}];
 	} else {
-		_periodItem = [LadyCalendarPeriod MR_createEntity];
+		_periodItem = [LadyCalendarPeriod MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 		_periodItem.updateDate = [NSDate date];
 		_periodItem.startDate = [A3DateHelper dateMake12PM:[NSDate date]];
 //		[_periodItem reassignUniqueIDWithStartDate];
@@ -484,8 +484,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
-		[_periodItem MR_deleteEntity];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[_periodItem MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
+		[[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
 
 		[_dataManager recalculateDates];
 
@@ -643,7 +643,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	_periodItem.isPredict = @NO;
 	_dataManager.currentAccount.watchingDate = _periodItem.startDate;
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
 
 	[_dataManager recalculateDates];
 
@@ -655,7 +655,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)cancelAction:(id)sender
 {
-	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
+	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
 	if ([context hasChanges]) {
 		[context rollback];
 	}

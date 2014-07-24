@@ -15,6 +15,7 @@
 #import "NSString+conversion.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3BackupRestoreManager.h"
+#import "A3SyncManager.h"
 #import <DropboxSDK/DropboxSDK.h>
 
 NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
@@ -158,7 +159,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 		case 1:
 			switch (indexPath.row) {
 				case 0:
-					if ([[[A3AppDelegate instance] ubiquityStoreManager] cloudEnabled]) {
+					if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 						UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
 																			message:NSLocalizedString(@"Please turn iCloud sync off.", @"Please turn iCloud sync off.")
 																		   delegate:nil
@@ -289,25 +290,20 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 	if (_restoreInProgress) {
 		_restoreInProgress = NO;
 
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		appDelegate.ubiquityStoreManager = nil;
-
-		NSURL *applicationSupportURL = [[[NSFileManager new] URLsForDirectory:NSApplicationSupportDirectory
-																			   inDomains:NSUserDomainMask] lastObject];
 		self.backupRestoreManager.delegate = self;
-		[self.backupRestoreManager restoreDataAt:[@"restore" pathInCachesDirectory] toURL:[applicationSupportURL URLByAppendingPathComponent:@"UbiquityStore.sqlite"]];
+		[self.backupRestoreManager restoreDataAt:[@"restore" pathInCachesDirectory] toURL:[[A3AppDelegate instance] storeURL]];
 	}
 }
 
 - (void)backupRestoreManager:(A3BackupRestoreManager *)manager restoreCompleteWithSuccess:(BOOL)success {
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-														message:NSLocalizedString(@"Your data has been restored successfully.", @"Your data has been restored successfully.")
+														message:NSLocalizedString(@"Your data has been restored successfully.", nil)
 													   delegate:nil
 											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 											  otherButtonTitles:nil];
 	[alertView show];
 
-	[[A3AppDelegate instance] setupCloud];
+	[[A3AppDelegate instance].managedObjectContext reset];
 }
 
 #pragma mark - segue

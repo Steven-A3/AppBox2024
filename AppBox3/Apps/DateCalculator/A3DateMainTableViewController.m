@@ -23,6 +23,7 @@
 #import "NSString+conversion.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSDate+formatting.h"
+#import "A3SyncManager.h"
 
 #define kDefaultBackgroundColor [UIColor lightGrayColor]
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]
@@ -261,7 +262,7 @@ NSString *const A3DateCalcDefaultsExcludeOptions = @"A3DateCalcDefaultsExcludeOp
 	[[NSUserDefaults standardUserDefaults] setBool:isAddSubMode forKey:A3DateCalcDefaultsIsAddSubMode];
     [[NSUserDefaults standardUserDefaults] synchronize];
 	
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store setBool:isAddSubMode forKey:A3DateCalcDefaultsIsAddSubMode];
@@ -294,7 +295,7 @@ NSString *const A3DateCalcDefaultsExcludeOptions = @"A3DateCalcDefaultsExcludeOp
     [[NSUserDefaults standardUserDefaults] setObject:_fromDate forKey:A3DateCalcDefaultsFromDate];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store setObject:_fromDate forKey:A3DateCalcDefaultsFromDate];
@@ -316,7 +317,7 @@ NSString *const A3DateCalcDefaultsExcludeOptions = @"A3DateCalcDefaultsExcludeOp
     [[NSUserDefaults standardUserDefaults] setObject:_toDate forKey:A3DateCalcDefaultsToDate];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store setObject:_toDate forKey:A3DateCalcDefaultsToDate];
@@ -332,7 +333,7 @@ NSString *const A3DateCalcDefaultsExcludeOptions = @"A3DateCalcDefaultsExcludeOp
     [[NSUserDefaults standardUserDefaults] setObject:_offsetDate forKey:A3DateCalcDefaultsOffsetDate];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store setObject:_offsetDate forKey:A3DateCalcDefaultsOffsetDate];
@@ -375,7 +376,7 @@ NSString *const A3DateCalcDefaultsExcludeOptions = @"A3DateCalcDefaultsExcludeOp
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3DateCalcDefaultsDidSelectMinus];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store setBool:NO forKey:A3DateCalcDefaultsDidSelectMinus];
@@ -402,7 +403,7 @@ NSString *const A3DateCalcDefaultsExcludeOptions = @"A3DateCalcDefaultsExcludeOp
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3DateCalcDefaultsDidSelectMinus];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
 		[store setBool:YES forKey:A3DateCalcDefaultsDidSelectMinus];

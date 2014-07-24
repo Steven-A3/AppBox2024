@@ -278,7 +278,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 			_price1.uniqueID = [[NSUUID UUID] UUIDString];
 			_price1.updateDate = [NSDate date];
             _price1.priceName = @"A";
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         }
     }
     return _price1;
@@ -293,7 +293,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 			_price2.uniqueID = [[NSUUID UUID] UUIDString];
 			_price2.updateDate = [NSDate date];
             _price2.priceName = @"B";
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         }
     }
     return _price2;
@@ -364,7 +364,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 			}
 		}
 
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         
         [self updateUnitPrices:NO];
 
@@ -395,7 +395,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         priceOther.unitID = priceSelf.unitID;
     }
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     [self updateUnitPrices:YES];
 
@@ -481,7 +481,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     priceBItem.note = _price2.note;
 	priceBItem.historyID = history.uniqueID;
     
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     self.historyBarItem.enabled = YES;
 }
