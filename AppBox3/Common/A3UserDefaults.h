@@ -33,6 +33,7 @@ extern NSString *const A3LoanCalcUserDefaultsCustomCurrencyCode;
 #pragma mark ------ Expense List
 extern NSString *const A3ExpenseListUserDefaultsCurrencyCode;
 extern NSString *const A3ExpenseListIsAddBudgetCanceledByUser;
+extern NSString *const A3ExpenseListIsAddBudgetIntiatedOnce;
 extern NSString *const A3ExpenseListUserDefaultsUpdateDate;
 extern NSString *const A3ExpenseListUserDefaultsCloudUpdateDate;
 
