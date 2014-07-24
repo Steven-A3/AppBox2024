@@ -105,6 +105,7 @@ NSString *const A3UnitPriceUserDefaultsCloudUpdateDate 		= @"A3UnitPriceUserDefa
 #pragma mark ---- Expense List
 NSString *const A3ExpenseListUserDefaultsCurrencyCode 		= @"A3ExpenseListUserDefaultsCurrencyCode";
 NSString *const A3ExpenseListIsAddBudgetCanceledByUser 		= @"A3ExpenseListIsAddBudgetCanceledByUser";
+NSString *const A3ExpenseListIsAddBudgetIntiatedOnce 		= @"A3ExpenseListIsAddBudgetIntiatedOnce";
 NSString *const A3ExpenseListUserDefaultsUpdateDate 		= @"A3ExpenseListUserDefaultsUpdateDate";
 NSString *const A3ExpenseListUserDefaultsCloudUpdateDate 	= @"A3ExpenseListUserDefaultsCloudUpdateDate";
 
