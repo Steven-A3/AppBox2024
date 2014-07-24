@@ -125,64 +125,62 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 		[candidates addObject:NSStringFromClass([managedObject class])];
 	}
 
-	for (NSString *className in [candidates allObjects]) {
-		if (
-				[className isEqualToString:NSStringFromClass([Calculation class])] ||
-				[className isEqualToString:NSStringFromClass([CurrencyFavorite class])] ||
-				[className isEqualToString:NSStringFromClass([CurrencyHistory class])] ||
-				[className isEqualToString:NSStringFromClass([CurrencyHistoryItem class])] ||
-				[className isEqualToString:NSStringFromClass([DaysCounterCalendar class])] ||
-				[className isEqualToString:NSStringFromClass([DaysCounterEvent class])] ||
-				[className isEqualToString:NSStringFromClass([DaysCounterDate class])] ||
-				[className isEqualToString:NSStringFromClass([DaysCounterFavorite class])] ||
-				[className isEqualToString:NSStringFromClass([DaysCounterEventLocation class])] ||
-				[className isEqualToString:NSStringFromClass([DaysCounterReminder class])] ||
-				[className isEqualToString:NSStringFromClass([ExpenseListHistory class])] ||
-				[className isEqualToString:NSStringFromClass([ExpenseListBudget class])] ||
-				[className isEqualToString:NSStringFromClass([ExpenseListBudgetLocation class])] ||
-				[className isEqualToString:NSStringFromClass([ExpenseListCategories class])] ||
-				[className isEqualToString:NSStringFromClass([ExpenseListItem class])] ||
-				[className isEqualToString:NSStringFromClass([LadyCalendarAccount class])] ||
-				[className isEqualToString:NSStringFromClass([LadyCalendarPeriod class])] ||
-				[className isEqualToString:NSStringFromClass([LoanCalcComparisonHistory class])] ||
-				[className isEqualToString:NSStringFromClass([LoanCalcHistory class])] ||
-				[className isEqualToString:NSStringFromClass([PercentCalcHistory class])] ||
-				[className isEqualToString:NSStringFromClass([SalesCalcHistory class])] ||
-				[className isEqualToString:NSStringFromClass([TipCalcHistory class])] ||
-				[className isEqualToString:NSStringFromClass([TipCalcRecent class])] ||
-				[className isEqualToString:NSStringFromClass([TranslatorFavorite class])] ||
-				[className isEqualToString:NSStringFromClass([TranslatorGroup class])] ||
-				[className isEqualToString:NSStringFromClass([TranslatorHistory class])] ||
-				[className isEqualToString:NSStringFromClass([UnitItem class])] ||
-				[className isEqualToString:NSStringFromClass([UnitConvertItem class])] ||
-				[className isEqualToString:NSStringFromClass([UnitFavorite class])] ||
-				[className isEqualToString:NSStringFromClass([UnitHistory class])] ||
-				[className isEqualToString:NSStringFromClass([UnitHistoryItem class])] ||
-				[className isEqualToString:NSStringFromClass([UnitPriceFavorite class])] ||
-				[className isEqualToString:NSStringFromClass([UnitPriceHistory class])] ||
-				[className isEqualToString:NSStringFromClass([UnitPriceHistoryItem class])] ||
-				[className isEqualToString:NSStringFromClass([UnitPriceInfo class])] ||
-				[className isEqualToString:NSStringFromClass([UnitType class])] ||
-				[className isEqualToString:NSStringFromClass([WalletCategory class])] ||
-				[className isEqualToString:NSStringFromClass([WalletFavorite class])] ||
-				[className isEqualToString:NSStringFromClass([WalletItem class])] ||
-				[className isEqualToString:NSStringFromClass([WalletField class])] ||
-				[className isEqualToString:NSStringFromClass([WalletFieldItem class])]
-		)
-		{
-			[self deDupeForEntity:className];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		for (NSString *className in [candidates allObjects]) {
+			if (
+					[className isEqualToString:NSStringFromClass([Calculation class])] ||
+							[className isEqualToString:NSStringFromClass([CurrencyFavorite class])] ||
+							[className isEqualToString:NSStringFromClass([CurrencyHistory class])] ||
+							[className isEqualToString:NSStringFromClass([CurrencyHistoryItem class])] ||
+							[className isEqualToString:NSStringFromClass([DaysCounterCalendar class])] ||
+							[className isEqualToString:NSStringFromClass([DaysCounterEvent class])] ||
+							[className isEqualToString:NSStringFromClass([DaysCounterDate class])] ||
+							[className isEqualToString:NSStringFromClass([DaysCounterFavorite class])] ||
+							[className isEqualToString:NSStringFromClass([DaysCounterEventLocation class])] ||
+							[className isEqualToString:NSStringFromClass([DaysCounterReminder class])] ||
+							[className isEqualToString:NSStringFromClass([ExpenseListHistory class])] ||
+							[className isEqualToString:NSStringFromClass([ExpenseListBudget class])] ||
+							[className isEqualToString:NSStringFromClass([ExpenseListBudgetLocation class])] ||
+							[className isEqualToString:NSStringFromClass([ExpenseListCategories class])] ||
+							[className isEqualToString:NSStringFromClass([ExpenseListItem class])] ||
+							[className isEqualToString:NSStringFromClass([LadyCalendarAccount class])] ||
+							[className isEqualToString:NSStringFromClass([LadyCalendarPeriod class])] ||
+							[className isEqualToString:NSStringFromClass([LoanCalcComparisonHistory class])] ||
+							[className isEqualToString:NSStringFromClass([LoanCalcHistory class])] ||
+							[className isEqualToString:NSStringFromClass([PercentCalcHistory class])] ||
+							[className isEqualToString:NSStringFromClass([SalesCalcHistory class])] ||
+							[className isEqualToString:NSStringFromClass([TipCalcHistory class])] ||
+							[className isEqualToString:NSStringFromClass([TipCalcRecent class])] ||
+							[className isEqualToString:NSStringFromClass([TranslatorFavorite class])] ||
+							[className isEqualToString:NSStringFromClass([TranslatorGroup class])] ||
+							[className isEqualToString:NSStringFromClass([TranslatorHistory class])] ||
+							[className isEqualToString:NSStringFromClass([UnitItem class])] ||
+							[className isEqualToString:NSStringFromClass([UnitConvertItem class])] ||
+							[className isEqualToString:NSStringFromClass([UnitFavorite class])] ||
+							[className isEqualToString:NSStringFromClass([UnitHistory class])] ||
+							[className isEqualToString:NSStringFromClass([UnitHistoryItem class])] ||
+							[className isEqualToString:NSStringFromClass([UnitPriceFavorite class])] ||
+							[className isEqualToString:NSStringFromClass([UnitPriceHistory class])] ||
+							[className isEqualToString:NSStringFromClass([UnitPriceHistoryItem class])] ||
+							[className isEqualToString:NSStringFromClass([UnitPriceInfo class])] ||
+							[className isEqualToString:NSStringFromClass([UnitType class])] ||
+							[className isEqualToString:NSStringFromClass([WalletCategory class])] ||
+							[className isEqualToString:NSStringFromClass([WalletFavorite class])] ||
+							[className isEqualToString:NSStringFromClass([WalletItem class])] ||
+							[className isEqualToString:NSStringFromClass([WalletField class])] ||
+							[className isEqualToString:NSStringFromClass([WalletFieldItem class])]
+					)
+			{
+				[self deDupeForEntity:className];
+			}
 		}
-	}
+		[self startDownloadAllFiles];
 
-	[self startDownloadAllFiles];
-
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	});
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3iCloudLastDBImportKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	FNLOG();
-
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCloudCoreDataStoreDidImport object:nil];
-	});
 }
 
 - (NSManagedObjectContext *)ubiquityStoreManager:(UbiquityStoreManager *)manager
@@ -245,8 +243,6 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
 		[keyValueStore setBool:YES forKey:A3CloudHasData];
 		[keyValueStore synchronize];
-		
-		[self startDownloadAllFiles];
 		
 		if (_needsDataMigrationBetweenLocalCloud) {
 			// Cloud data exist and we need to migrate.
@@ -331,6 +327,9 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 			});
 		} else {
 			[weakSelf.hud hide:YES];
+		}
+		if (isCloudStore) {
+			[self startDownloadAllFiles];
 		}
 	});
 }
@@ -527,16 +526,12 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	NSUInteger i = 1;
 	for (NSManagedObject<A3CloudCompatibleData> *object in dupes) {
 		if (prevObject) {
-			if ([object.uniqueID isEqualToString:prevObject.uniqueID]) {
-				if ([object.updateDate compare:prevObject.updateDate] == NSOrderedAscending) {
-					if ([prevObject respondsToSelector:@selector(moveChildesFromObject:)]) {
-						[prevObject moveChildesFromObject:object];
-					}
+			if ([[object valueForKey:@"uniqueID"] isEqualToString:[prevObject valueForKey:@"uniqueID"]]) {
+				NSDate *objectUpdateDate = [object valueForKey:@"updateDate"];
+				NSDate *prevObjectUpdateDate = [prevObject valueForKey:@"updateDate"];
+				if ((!objectUpdateDate && prevObjectUpdateDate) || [objectUpdateDate compare:prevObjectUpdateDate] == NSOrderedAscending) {
 					[moc deleteObject:object];
 				} else {
-					if ([object respondsToSelector:@selector(moveChildesFromObject:)]) {
-						[object moveChildesFromObject:prevObject];
-					}
 					[moc deleteObject:prevObject];
 					prevObject = object;
 				}
@@ -702,6 +697,9 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 		NSFileManager *fileManager = [[NSFileManager alloc] init];
 		NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
 
+		if (!ubiquityContainerURL || !directory) {
+			return;
+		}
 		NSArray *files = [fileManager contentsOfDirectoryAtURL:[ubiquityContainerURL URLByAppendingPathComponent:directory]
 									includingPropertiesForKeys:nil
 													   options:0
@@ -772,6 +770,8 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 - (void)startDownloadInDirectory:(NSString *)directory {
 	NSFileManager *fileManager = [NSFileManager new];
 	NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
+	if (!ubiquityContainerURL || !directory) return;
+
 	NSArray *files = [fileManager contentsOfDirectoryAtURL:[ubiquityContainerURL URLByAppendingPathComponent:directory] includingPropertiesForKeys:nil options:0 error:NULL];
 	for (NSURL *fileURL in files) {
 		[fileManager startDownloadingUbiquitousItemAtURL:fileURL error:NULL];
@@ -789,6 +789,7 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 - (void)deleteCloudFilesToResetCloudInDirectory:(NSString *)directory {
 	NSFileManager *fileManager = [NSFileManager new];
 	NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
+	if (!ubiquityContainerURL || !directory) return;
 	NSArray *files = [fileManager contentsOfDirectoryAtURL:[ubiquityContainerURL URLByAppendingPathComponent:directory] includingPropertiesForKeys:nil options:0 error:NULL];
 	for (NSURL *fileURL in files) {
 		[fileManager removeItemAtURL:fileURL error:NULL];
@@ -830,10 +831,16 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 }
 
 - (void)mergeUserDefaultsDeleteCloud:(BOOL)deleteCloud {
-	// Date Calculator
-	[self mergeDateCalcDeleteCloud:deleteCloud];
+	[[NSUbiquitousKeyValueStore defaultStore] synchronize];
+
+	if (deleteCloud) {
+		[self mergeMainMenuDeleteCloud:deleteCloud];
+	} else {
+		[self migrateMainMenuFromCloud];
+	}
 	[self mergeCalculatorDeleteCloud:deleteCloud];
 	[self mergeCurrencyDeleteCloud:deleteCloud];
+	[self mergeDateCalcDeleteCloud:deleteCloud];
 	[self mergeDaysCounterDeleteCloud:deleteCloud];
 	[self mergeExpenseListDeleteCloud:deleteCloud];
 	[self mergeLadyCalendarDeleteCloud:deleteCloud];
@@ -1114,6 +1121,48 @@ NSString *const A3CloudHasData = @"A3CloudHasData";
 	} else {
 		[self migrateDefaultsFromStoreForKeys:migratingKeys];
 		[userDefaults setObject:cloudUpdateDate forKey:A3UnitPriceUserDefaultsUpdateDate];
+	}
+}
+
+- (void)mergeMainMenuDeleteCloud:(BOOL)deleteCloud {
+	NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
+	NSDate *cloudUpdateDate = [store objectForKey:A3MainMenuUserDefaultsCloudUpdateDate];
+	NSDate *localUpdateDate = [userDefaults objectForKey:A3MainMenuUserDefaultsUpdateDate];
+
+	NSArray *migratingKeys = @[
+			A3MainMenuUserDefaultsFavorites,
+			A3MainMenuUserDefaultsRecentlyUsed,
+			A3MainMenuUserDefaultsAllMenu,
+			A3MainMenuUserDefaultsMaxRecentlyUsed
+	];
+	if (deleteCloud || [self isLocalLaterForLocal:localUpdateDate cloud:cloudUpdateDate]) {
+		[self migrateDefaultsToStoreForKeys:migratingKeys];
+		[store setObject:localUpdateDate forKey:A3MainMenuUserDefaultsCloudUpdateDate];
+	} else {
+		[self migrateDefaultsFromStoreForKeys:migratingKeys];
+		[userDefaults setObject:cloudUpdateDate forKey:A3MainMenuUserDefaultsUpdateDate];
+	}
+}
+
+- (void)migrateMainMenuFromCloud {
+	NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
+	NSDate *cloudUpdateDate = [store objectForKey:A3MainMenuUserDefaultsCloudUpdateDate];
+	[userDefaults setObject:cloudUpdateDate forKey:A3MainMenuUserDefaultsUpdateDate];
+	NSArray *migratingKeys = @[
+			A3MainMenuUserDefaultsFavorites,
+			A3MainMenuUserDefaultsRecentlyUsed,
+			A3MainMenuUserDefaultsAllMenu,
+			A3MainMenuUserDefaultsMaxRecentlyUsed
+	];
+	for (NSString *key in migratingKeys) {
+		id object = [store objectForKey:key];
+		if (object) {
+			[userDefaults setObject:object forKey:key];
+		}
 	}
 }
 

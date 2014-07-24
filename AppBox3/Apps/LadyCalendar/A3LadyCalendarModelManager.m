@@ -45,7 +45,18 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (void)addDefaultAccountInContext:(NSManagedObjectContext *)context {
-    [self addAccount:@{AccountItem_ID : DefaultAccountID, AccountItem_Name : [self defaultAccountName]} inContext:context ];
+	LadyCalendarAccount *account = [self accountForID:DefaultAccountID inContext:context];
+	if( account ) return;
+
+	account = [LadyCalendarAccount MR_createInContext:context];
+	account.uniqueID = DefaultAccountID;
+	account.name = DefaultAccountName;
+	account.order = [NSNumber numberWithInteger:[self numberOfAccountInContext:context ] +1];
+	// 첫 장비에서 어카운트 생성, 이름 변경, updateDate 설정, 두번째 장비에서 어카운트 생성
+	// 생성시 updateDate 는 설정하지 않음.
+	account.updateDate = nil;
+
+	[context MR_saveToPersistentStoreAndWait];
 }
 
 - (NSDateFormatter *)dateFormatter {
@@ -144,24 +155,6 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 - (LadyCalendarAccount *)accountForID:(NSString *)accountID inContext:(NSManagedObjectContext *)context {
     return [LadyCalendarAccount MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@",accountID] inContext:context];
-}
-
-- (BOOL)addAccount:(NSDictionary *)item inContext:(NSManagedObjectContext *)context {
-    LadyCalendarAccount *account = [self accountForID:[item objectForKey:AccountItem_ID] inContext:context ];
-    if( account )
-        return NO;
-    
-    account = [LadyCalendarAccount MR_createInContext:context];
-    account.uniqueID = [item objectForKey:AccountItem_ID];
-    account.name = [item objectForKey:AccountItem_Name];
-    account.notes = [item objectForKey:AccountItem_Notes];
-    account.birthDay = [item objectForKey:AccountItem_Birthday];
-    account.order = [NSNumber numberWithInteger:[self numberOfAccountInContext:context ] +1];
-    account.updateDate = [NSDate date];
-    
-    [context MR_saveToPersistentStoreAndWait];
-    
-    return YES;
 }
 
 - (NSArray*)accountListSortedByOrderIsAscending:(BOOL)ascending
@@ -269,17 +262,6 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 {
     NSArray *array = nil;
     if( [periodID length] < 1 ) {
-//        NSMutableString *sqlString = [NSMutableString new];
-//        [sqlString appendFormat:@"(accountID == %@)", accountID];
-//        [sqlString appendString:@" AND "];
-//        [sqlString appendFormat:@"(isPredict == %@)", @(NO)];
-//        [sqlString appendString:@" AND "];
-//        [sqlString appendFormat:@"(startDate <= %@ AND endDate >= %@)", startDate, startDate];
-//        [sqlString appendString:@" OR "];
-//        [sqlString appendFormat:@"(startDate <= %@ AND endDate >= %@)", startDate, startDate];
-//        
-//        [sqlString appendFormat:@"(accountID == %@)", accountID];
-//        [sqlString appendFormat:@"(accountID == %@)", accountID];
         array = [LadyCalendarPeriod MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(uniqueID != nil) AND (accountID == %@) AND (isPredict == %@) AND ((startDate <= %@ AND endDate >= %@) OR (startDate <= %@ AND endDate >= %@))", accountID, @(NO), startDate, startDate, endDate, endDate]];
     }
     else {

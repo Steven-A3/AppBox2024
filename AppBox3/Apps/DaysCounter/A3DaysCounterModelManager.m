@@ -108,13 +108,13 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	];
     
     for (NSDictionary *item in array) {
-        [self addCalendarItem:item colorID:nil inContext:context ];
+		[self addDefaultCalendarItem:item colorID:nil inContext:context];
     }
     
 	[context MR_saveToPersistentStoreAndWait];
 }
 
-- (void)addDefaultUserCalendarItemsInContext:(NSManagedObjectContext *)context {
+- (void)addDefaultCalendarItemsInContext:(NSManagedObjectContext *)context {
 	NSMutableArray *array = [NSMutableArray arrayWithArray:@[
 			[NSMutableDictionary dictionaryWithDictionary:@{
 					CalendarItem_ID : @"D4C43175-ED93-4497-91DD-7A9C5DF4E656",
@@ -173,7 +173,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         [addItem setObject:[item objectForKey:CalendarItem_Color] forKey:CalendarItem_Color];
         [addItem setObject:[item objectForKey:CalendarItem_IsShow] forKey:CalendarItem_IsShow];
         [addItem setObject:[item objectForKey:CalendarItem_IsDefault] forKey:CalendarItem_IsDefault];
-        [self addCalendarItem:addItem colorID:[self.calendarColorArray[idx] objectForKey:CalendarItem_Name] inContext:context ];
+		[self addDefaultCalendarItem:addItem colorID:[self.calendarColorArray[idx] objectForKey:CalendarItem_Name] inContext:context];
         idx++;
     }
     
@@ -184,7 +184,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     NSUInteger count = [DaysCounterCalendar MR_countOfEntitiesWithContext:context];
 
 	if ( count == 0 ) {
-        [self addDefaultUserCalendarItemsInContext:context ];
+		[self addDefaultCalendarItemsInContext:context];
     }
     [self checkAndAddSystemCalendarItemsInContext:context ];
     
@@ -590,7 +590,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return retValue;
 }
 
-- (DaysCounterCalendar *)addCalendarItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context {
+- (DaysCounterCalendar *)addDefaultCalendarItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context {
     if ([self calendarItemByID:[item objectForKey:CalendarItem_ID] inContext:context] )
         return nil;
     
@@ -599,7 +599,10 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     // save to core data storage
     DaysCounterCalendar *calendar = [DaysCounterCalendar MR_createInContext:context];
     calendar.uniqueID = [item objectForKey:CalendarItem_ID];
-	calendar.updateDate = [NSDate date];
+	// Default System Calendar 의 updateDate 는 nil 로 설정
+	// 처음 장비에서 캘린더 생성. 첫번째 캘린더에서 캘린더 이름 변경, 두번째 장비에서 디폴트 캘린더 생성, 이때 첫번째 캘린더가 남아야 하는데,
+	// 두번째 캘린더의 updateDate 의 초기값이 생성된 날짜로 기록을 한다면, 두번째 캘린더가 남게 되는 모순이 생김
+	calendar.updateDate = nil;
     calendar.calendarName = [item objectForKey:CalendarItem_Name];
     calendar.calendarColor = [NSKeyedArchiver archivedDataWithRootObject:[item objectForKey:CalendarItem_Color]];
     calendar.isShow = [item objectForKey:CalendarItem_IsShow];
@@ -614,7 +617,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return calendar;
 }
 
-- (DaysCounterCalendar *)addCalendarToFirstItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context {
+- (DaysCounterCalendar *)addUserCalendarToFirstItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context {
     NSArray *allCalendar = [DaysCounterCalendar MR_findAll];
     [allCalendar enumerateObjectsUsingBlock:^(DaysCounterCalendar *obj, NSUInteger idx, BOOL *stop) {
         obj.order = @([obj.order integerValue] + 1);

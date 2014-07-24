@@ -51,8 +51,8 @@ extern NSString *const A3DaysCounterLastOpenedMainIndex;
 - (BOOL)removeCalendarItem:(NSMutableDictionary*)item;
 - (BOOL)removeCalendarItemWithID:(NSString*)calendarID;
 
-- (DaysCounterCalendar *)addCalendarItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context;
-- (DaysCounterCalendar *)addCalendarToFirstItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context;
+- (DaysCounterCalendar *)addDefaultCalendarItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context;
+- (DaysCounterCalendar *)addUserCalendarToFirstItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context;
 - (BOOL)updateCalendarItem:(NSMutableDictionary*)item colorID:(NSString *)colorID;
 - (NSInteger)numberOfAllEvents;
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date;

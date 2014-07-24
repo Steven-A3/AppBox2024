@@ -902,3 +902,5 @@ Erneut versuchen.";
 "Slideshow_Repeat" = "Wiederholen";
 "Use AppBox Pro" = "AppBox Pro nutzen";
 "Loading" = "Ladevorgang";
+
+"DaysCalendar_CalendarDeleteConfirmMsg" = "Möchten Sie diesen Kalender wirklich löschen? Alle Ereignisse in diesem Kalender werden ebenfalls gelöscht.";

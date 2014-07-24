@@ -274,7 +274,11 @@
         calendarNameCell.imageView.tintColor = [_calendarItem objectForKey:CalendarItem_Color];
     }
     else if ( indexPath.section == 2) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.", @"Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") otherButtonTitles:nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"DaysCalendar_CalendarDeleteConfirmMsg", nil)
+																 delegate:self
+														cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+												   destructiveButtonTitle:NSLocalizedString(@"Delete Calendar", nil)
+														otherButtonTitles:nil];
         [actionSheet showInView:self.view];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -346,7 +350,7 @@
     
     if ( !_isEditMode ) {
 //        [_sharedManager addCalendarItem:_calendarItem colorID:_colorID inContext:[[MagicalRecordStack defaultStack] context] ];
-        [_sharedManager addCalendarToFirstItem:_calendarItem colorID:_colorID inContext:[[MagicalRecordStack defaultStack] context]];
+		[_sharedManager addUserCalendarToFirstItem:_calendarItem colorID:_colorID inContext:[[MagicalRecordStack defaultStack] context]];
     }
     else {
         [_sharedManager updateCalendarItem:_calendarItem colorID:_colorID];

@@ -332,7 +332,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 													 [A3TranslatorLanguage localizedNameForCode:group.targetLanguage]];
 
 	A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-	circleView.textLabel.text = [NSString stringWithFormat:@"%ld", (long)[TranslatorGroup MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", group.uniqueID]]];
+    circleView.textLabel.text = [NSString stringWithFormat:@"%ld", (long)[TranslatorHistory MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]]];
 	cell.imageView.image = [circleView imageByRenderingView];
 
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

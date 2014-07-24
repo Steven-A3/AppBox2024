@@ -125,6 +125,7 @@
 	[WalletFieldItem MR_deleteAllMatchingPredicate:predicate];
 	predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.uniqueID];
 	[WalletFavorite MR_deleteAllMatchingPredicate:predicate];
+	[self MR_deleteEntity];
 }
 
 @end

@@ -22,7 +22,6 @@ extern NSString *const A3LadyCalendarChangedDateKey;
 - (void)prepareAccountInContext:(NSManagedObjectContext *)context;
 - (void)savePredictItemBeforeNow;
 - (NSInteger)numberOfAccountInContext:(NSManagedObjectContext *)context;
-- (BOOL)addAccount:(NSDictionary *)item inContext:(NSManagedObjectContext *)context;
 - (NSArray*)accountListSortedByOrderIsAscending:(BOOL)ascending;
 - (LadyCalendarAccount*)currentAccount;
 - (NSInteger)numberOfPeriodsWithAccountID:(NSString*)accountID;

@@ -1844,13 +1844,14 @@ EXIT_FUCTION:
         
         // Friday, April 11, 2014 (사용자가 입력한 날)
         NSDateFormatter *formatter = [NSDateFormatter new];
-        if ([NSDate isFullStyleLocale]) {
-            [formatter setDateStyle:NSDateFormatterFullStyle];
-            if (![_eventItem.isAllDay boolValue]) {
-                [formatter setTimeStyle:NSDateFormatterShortStyle];
-            }
-        }
-        else {
+		if ([NSDate isFullStyleLocale]) {
+			[formatter setDateStyle:NSDateFormatterFullStyle];
+			if (![_eventItem.isAllDay boolValue]) {
+				[formatter setTimeStyle:NSDateFormatterShortStyle];
+			}
+		}
+		else
+		{
             if ([_eventItem.isAllDay boolValue]) {
                 [formatter setDateFormat:[formatter customFullStyleFormat]];
             }
@@ -1866,8 +1867,12 @@ EXIT_FUCTION:
 }
 
 - (void)viewControllerWillDismissByDeletingEvent {
-	_eventItem = nil;
-	[self dismissViewControllerAnimated:NO completion:NULL];
+    if (IS_IPHONE) {
+        [self dismissViewControllerAnimated:NO completion:NULL];
+    }
+    else {
+        [self.navigationController popViewControllerAnimated:NO];
+    }
 }
 
 @end

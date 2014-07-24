@@ -8,6 +8,14 @@
 
 #import "A3Utilities.h"
 
+#pragma mark ------ Main Menu
+NSString *const A3MainMenuUserDefaultsFavorites 			= @"A3MainMenuUserDefaultsFavorites";
+NSString *const A3MainMenuUserDefaultsRecentlyUsed 			= @"A3MainMenuUserDefaultsRecentlyUsed";
+NSString *const A3MainMenuUserDefaultsAllMenu 				= @"A3MainMenuUserDefaultsAllMenu";
+NSString *const A3MainMenuUserDefaultsMaxRecentlyUsed 		= @"A3MainMenuUserDefaultsMaxRecentlyUsed";
+NSString *const A3MainMenuUserDefaultsUpdateDate			= @"A3MainMenuUserDefaultsUpdateDate";
+NSString *const A3MainMenuUserDefaultsCloudUpdateDate		= @"A3MainMenuUserDefaultsCloudUpdateDate";
+
 #pragma mark ------ Loan Calc
 NSString *const A3LoanCalcUserDefaultCalculationFor 		= @"A3LoanCalcUserDefaultCalculationFor";
 NSString *const A3LoanCalcUserDefaultShowDownPayment 		= @"A3LoanCalcUserDefaultShowDownPayment";

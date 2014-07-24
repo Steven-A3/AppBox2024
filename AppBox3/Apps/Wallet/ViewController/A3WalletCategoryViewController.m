@@ -541,9 +541,9 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 					[item deleteWalletItem];
 				}
             }
-
+            [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+            
             [self.tableView reloadData];
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
             self.deleteBarItem.enabled = NO;
             self.shareBarItem.enabled = NO;
@@ -568,11 +568,10 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 					[item deleteWalletItem];
 				}
             }
-
+            [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
             [self.items removeObjectsAtIndexes:mis];
 
             [self.tableView deleteRowsAtIndexPaths:ips withRowAnimation:UITableViewRowAnimationFade];
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
             // 만약 남아있는 _items 이 없다면 edit 화면을 나간다.
             if (self.items.count == 0) {
@@ -702,10 +701,8 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 			}];
             [self.items removeObject:item];
 			[item deleteWalletItem];
-
+            [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
             // more button 활성화여부
             [self itemCountCheck];

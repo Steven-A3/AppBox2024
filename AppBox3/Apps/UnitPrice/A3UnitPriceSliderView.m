@@ -185,8 +185,8 @@
     
     float unitPrice = _unitPriceValue;
     float pixelPerPrice = progressLineMaxWidth / _maxValue;
-
-    if (_unitPriceValue == _minValue && _unitPriceValue < _maxValue && ((1.0 - (_minValue / _maxValue)) < 0.05)) {
+    
+    if ((floor(_unitPriceValue * 100) / 100) == (floor(_minValue * 100) / 100) && _unitPriceValue < _maxValue && ((1.0 - (_minValue / _maxValue)) < 0.05)) {
         pixelPerPrice = progressLineMaxWidth / (_maxValue * 1.1);
     }
 
@@ -302,34 +302,6 @@
             // 좌측 , 우측에 고정하는걸로 수정
             _unitPriceLabel.center = CGPointMake(leftSideMargin + _unitPriceLabel.frame.size.width/2, _unitPriceLabel.center.y);
             _priceLabel.center = CGPointMake(_lineView.frame.size.width - rightSideMargin - _priceLabel.frame.size.width/2, _priceLabel.center.y);
-            
-            /*
-            _unitPriceLabel.center = CGPointMake(thumbX, _unitPriceLabel.center.y);
-            _priceLabel.center = CGPointMake(markX, _priceLabel.center.y);
-            
-            float unitPriceX_Min = 0 + sideMargin + _unitPriceLabel.frame.size.width/2;
-            float unitPriceX_Max = _lineView.frame.size.width - (lbBetweenMargin + _priceLabel.frame.size.width +sideMargin + _unitPriceLabel.frame.size.width/2);
-            
-            
-            if (_unitPriceLabel.center.x < unitPriceX_Min) {
-                _unitPriceLabel.center = CGPointMake(unitPriceX_Min, _unitPriceLabel.center.y);
-            }
-            
-            if (_unitPriceLabel.center.x > unitPriceX_Max) {
-                _unitPriceLabel.center = CGPointMake(unitPriceX_Max, _unitPriceLabel.center.y);
-            }
-            
-            float priceX_Min = _unitPriceLabel.center.x + _unitPriceLabel.frame.size.width/2 +lbBetweenMargin + _priceLabel.frame.size.width/2;
-            float priceX_Max = _lineView.frame.size.width - (_priceLabel.frame.size.width/2 + sideMargin);
-            
-            if (_priceLabel.center.x < priceX_Min) {
-                _priceLabel.center = CGPointMake(priceX_Min, _priceLabel.center.y);
-            }
-            
-            if (_priceLabel.center.x > priceX_Max) {
-                _priceLabel.center = CGPointMake(priceX_Max, _priceLabel.center.y);
-            }
-             */
             
             break;
         }

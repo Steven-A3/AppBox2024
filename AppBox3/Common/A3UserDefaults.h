@@ -9,6 +9,14 @@
 #ifndef AppBox3_A3UserDefaults_h
 #define AppBox3_A3UserDefaults_h
 
+#pragma mark ------ Main Menu
+extern NSString *const A3MainMenuUserDefaultsFavorites;
+extern NSString *const A3MainMenuUserDefaultsRecentlyUsed;
+extern NSString *const A3MainMenuUserDefaultsAllMenu;
+extern NSString *const A3MainMenuUserDefaultsMaxRecentlyUsed;
+extern NSString *const A3MainMenuUserDefaultsUpdateDate;
+extern NSString *const A3MainMenuUserDefaultsCloudUpdateDate;
+
 #pragma mark ------ Loan Calc
 extern NSString *const A3LoanCalcUserDefaultCalculationFor;
 extern NSString *const A3LoanCalcUserDefaultShowDownPayment;

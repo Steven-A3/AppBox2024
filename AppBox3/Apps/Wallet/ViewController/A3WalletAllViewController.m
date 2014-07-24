@@ -752,7 +752,8 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
         WalletItem *item = self.items[indexPath.row];
 		[self.items removeObject:item];
 		[item deleteWalletItem];
-
+        [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+        
 		if ([self.items count] == 1) {
 			_dataEmpty = YES;
 			[self.items addObject:self.emptyItem];
@@ -760,8 +761,6 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 		} else {
 			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		}
-
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 		// 버튼 기능 활성화 여부
         [self itemCountCheck];

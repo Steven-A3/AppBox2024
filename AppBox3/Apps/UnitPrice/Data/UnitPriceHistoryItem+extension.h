@@ -13,4 +13,12 @@
 @interface UnitPriceHistoryItem (extension)
 
 - (UnitItem *)unit;
+
+- (double)unitPrice;
+
+- (double)unitPrice2WithPrice1:(UnitPriceHistoryItem *)price1;
+
+- (NSString *)unitPriceStringWithFormatter:(NSNumberFormatter *)currencyFormatter;
+
+- (NSString *)unitPrice2StringWithPrice1:(UnitPriceHistoryItem *)price1 formatter:(NSNumberFormatter *)currencyFormatter;
 @end
