@@ -641,8 +641,6 @@
         }
     }
     
-    resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
-    
     return @(resultTipValue);
 }
 
