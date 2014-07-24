@@ -113,6 +113,8 @@
 		680D63A018CFF9D400938AD0 /* A3MirrorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680D638B18CFF9D400938AD0 /* A3MirrorViewController.xib */; };
 		680D63A318CFFC2500938AD0 /* VerticalSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D63A218CFFC2500938AD0 /* VerticalSlider.m */; };
 		680D63A418D06B3F00938AD0 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */; };
+		680FF70C19809B7500C736F5 /* Ensembles.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 680FF70A19809B7500C736F5 /* Ensembles.bundle */; };
+		680FF70D19809B7500C736F5 /* Ensembles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 680FF70B19809B7500C736F5 /* Ensembles.framework */; };
 		68143CF718E3EC1F00569691 /* appbox.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC518E3EC1F00569691 /* appbox.ttf */; };
 		68143CF818E3EC1F00569691 /* Digit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC618E3EC1F00569691 /* Digit.ttf */; };
 		68143CF918E3EC1F00569691 /* REGISTER.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC718E3EC1F00569691 /* REGISTER.TTF */; };
@@ -1141,6 +1143,8 @@
 		680D638B18CFF9D400938AD0 /* A3MirrorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3MirrorViewController.xib; sourceTree = "<group>"; };
 		680D63A118CFFC2500938AD0 /* VerticalSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticalSlider.h; sourceTree = "<group>"; };
 		680D63A218CFFC2500938AD0 /* VerticalSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticalSlider.m; sourceTree = "<group>"; };
+		680FF70A19809B7500C736F5 /* Ensembles.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Ensembles.bundle; sourceTree = "<group>"; };
+		680FF70B19809B7500C736F5 /* Ensembles.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ensembles.framework; path = External/Ensembles2/Ensembles.framework; sourceTree = "<group>"; };
 		68143CC518E3EC1F00569691 /* appbox.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = appbox.ttf; sourceTree = "<group>"; };
 		68143CC618E3EC1F00569691 /* Digit.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Digit.ttf; sourceTree = "<group>"; };
 		68143CC718E3EC1F00569691 /* REGISTER.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = REGISTER.TTF; sourceTree = "<group>"; };
@@ -2710,6 +2714,7 @@
 				682EA2D815EB10B000BD6AD4 /* Foundation.framework in Frameworks */,
 				682EA2DA15EB10B000BD6AD4 /* CoreGraphics.framework in Frameworks */,
 				682EA2DC15EB10B000BD6AD4 /* CoreData.framework in Frameworks */,
+				680FF70D19809B7500C736F5 /* Ensembles.framework in Frameworks */,
 				17D4235B678996668439565E /* CoreText.framework in Frameworks */,
 				17D421789FF0D787F9D7911C /* MessageUI.framework in Frameworks */,
 			);
@@ -3018,6 +3023,15 @@
 				680D638B18CFF9D400938AD0 /* A3MirrorViewController.xib */,
 			);
 			path = Mirror;
+			sourceTree = "<group>";
+		};
+		680FF70919809B7500C736F5 /* Ensembles2 */ = {
+			isa = PBXGroup;
+			children = (
+				680FF70A19809B7500C736F5 /* Ensembles.bundle */,
+			);
+			name = Ensembles2;
+			path = External/Ensembles2;
 			sourceTree = "<group>";
 		};
 		68143CC418E3EC1F00569691 /* Fonts */ = {
@@ -3588,6 +3602,7 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				680FF70B19809B7500C736F5 /* Ensembles.framework */,
 				681E1280193447D70077DCFA /* libz.dylib */,
 				68DBAB6C18C4C2B2003A67E5 /* MediaPlayer.framework */,
 				6831407E18C20C9700896819 /* AVFoundation.framework */,
@@ -4774,9 +4789,9 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
-				681E1225193443F00077DCFA /* ZipArchive */,
 				689C9A261839CD7F007C97EE /* AFNetworking */,
 				683224B717CE1AB900973F34 /* DKLiveBlur */,
+				680FF70919809B7500C736F5 /* Ensembles2 */,
 				6890AB0B1786B800004FECE4 /* expecta */,
 				68F9391117D0DDA50082234C /* FMMoveTableView */,
 				68521A4317E1FF1C00E08FB1 /* FXLabel */,
@@ -4797,6 +4812,7 @@
 				68CC1595174F76530000870F /* SymbolFontKit */,
 				6831EBFF1861C5F600BAF15B /* UbiquityStoreManager */,
 				689C9A3A1839CD7F007C97EE /* UIKit+AFNetworking */,
+				681E1225193443F00077DCFA /* ZipArchive */,
 			);
 			name = External;
 			sourceTree = "<group>";
@@ -5599,6 +5615,7 @@
 				68F14FEB19485E8500159EAD /* A3DaysCounterEventListSectionHeader.xib in Resources */,
 				68F1C8D618D7F37D009FAE8A /* A3LadyCalendarViewController.xib in Resources */,
 				689D41FC1966F33900D7F1A7 /* A3DateKeyboardViewController_iPhone.xib in Resources */,
+				680FF70C19809B7500C736F5 /* Ensembles.bundle in Resources */,
 				6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */,
 				68143D0B18E3EC1F00569691 /* A3PasscodeKeyboard_iPad.xib in Resources */,
 				68B6A2FD18CEC76D004084EF /* A3UnitPriceSliderView.xib in Resources */,
@@ -6928,6 +6945,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
+					"$(PROJECT_DIR)/External/Ensembles2",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
@@ -6960,6 +6978,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
+					"$(PROJECT_DIR)/External/Ensembles2",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";

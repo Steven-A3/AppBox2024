@@ -129,17 +129,8 @@ static NSString *CellIdentifier = @"Cell";
 													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
 											   destructiveButtonTitle:NSLocalizedString(@"Reset All", @"Reset All")
 													otherButtonTitles:nil];
+	actionSheet.tag = 100;
 	[actionSheet showInView:self.view];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:[HolidayData keyForExcludedHolidaysForCountry:_countryCode]];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-        _excludedHolidays = nil;
-		[self.tableView reloadData];
-		_dataUpdated = YES;
-	}
 }
 
 #pragma mark - Setup data
@@ -287,62 +278,78 @@ static NSString *CellIdentifier = @"Cell";
 
 	A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
 	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[downloadManager hasUserSuppliedImageForCountry:_countryCode] delegate:self];
+	actionSheet.tag = 200;
 	[actionSheet showInView:self.view];
 }
 
 #pragma mark - UIActionSheet delegate
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.cancelButtonIndex) return;
 
-	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-		A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
-		[downloadManager deleteImageForCountryCode:_countryCode];
-		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]] withRowAnimation:UITableViewRowAnimationNone];
-
-		_dataUpdated = YES;
-		return;
-	}
-
-	NSInteger myButtonIndex = buttonIndex;
-	_imagePickerController = [[UIImagePickerController alloc] init];
-	if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-		myButtonIndex++;
-	if (actionSheet.destructiveButtonIndex>=0)
-		myButtonIndex--;
-	switch (myButtonIndex) {
-		case 0:
-			_imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-			_imagePickerController.allowsEditing = NO;
+	switch (actionSheet.tag) {
+		case 100: {
+			if (buttonIndex == actionSheet.destructiveButtonIndex) {
+				[[NSUserDefaults standardUserDefaults] removeObjectForKey:[HolidayData keyForExcludedHolidaysForCountry:_countryCode]];
+				[[NSUserDefaults standardUserDefaults] synchronize];
+				_excludedHolidays = nil;
+				[self.tableView reloadData];
+				_dataUpdated = YES;
+			}
 			break;
-		case 1:
-			_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-			_imagePickerController.allowsEditing = NO;
-			break;
-		case 2:
-			_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-			_imagePickerController.allowsEditing = YES;
-			break;
-	}
-
-	_imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
-	_imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
-	_imagePickerController.delegate = self;
-
-	if (IS_IPAD) {
-		if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
-			_imagePickerController.showsCameraControls = YES;
-			[self presentViewController:_imagePickerController animated:YES completion:NULL];
 		}
-		else {
-			self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-			UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
-			CGRect rect = [self.view convertRect:self.cameraButton.frame fromView:cell];
-			[_imagePickerPopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		case 200: {
+			if (buttonIndex == actionSheet.destructiveButtonIndex) {
+				A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
+				[downloadManager deleteImageForCountryCode:_countryCode];
+				[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]] withRowAnimation:UITableViewRowAnimationNone];
+
+				_dataUpdated = YES;
+				return;
+			}
+
+			NSInteger myButtonIndex = buttonIndex;
+			_imagePickerController = [[UIImagePickerController alloc] init];
+			if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+				myButtonIndex++;
+			if (actionSheet.destructiveButtonIndex>=0)
+				myButtonIndex--;
+			switch (myButtonIndex) {
+				case 0:
+					_imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+					_imagePickerController.allowsEditing = NO;
+					break;
+				case 1:
+					_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+					_imagePickerController.allowsEditing = NO;
+					break;
+				case 2:
+					_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+					_imagePickerController.allowsEditing = YES;
+					break;
+			}
+
+			_imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
+			_imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
+			_imagePickerController.delegate = self;
+
+			if (IS_IPAD) {
+				if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
+					_imagePickerController.showsCameraControls = YES;
+					[self presentViewController:_imagePickerController animated:YES completion:NULL];
+				}
+				else {
+					self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+					UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
+					CGRect rect = [self.view convertRect:self.cameraButton.frame fromView:cell];
+					[_imagePickerPopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+				}
+			}
+			else {
+				[self presentViewController:_imagePickerController animated:YES completion:NULL];
+			}
+			break;
 		}
-	}
-	else {
-		[self presentViewController:_imagePickerController animated:YES completion:NULL];
 	}
 }
 

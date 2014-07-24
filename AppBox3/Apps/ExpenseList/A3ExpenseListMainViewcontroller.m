@@ -836,7 +836,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (NSString *)itemIDWithIndex:(NSInteger)idx {
-	return [NSString stringWithFormat:@"%@-0%10ld", A3ExpenseListCurrentBudgetID, (long)idx];
+	return [NSString stringWithFormat:@"%@-%010ld", A3ExpenseListCurrentBudgetID, (long)idx];
 }
 
 #pragma mark Save Related
