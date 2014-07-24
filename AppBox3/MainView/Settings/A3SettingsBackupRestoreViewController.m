@@ -302,8 +302,6 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 											  otherButtonTitles:nil];
 	[alertView show];
-
-	[[A3AppDelegate instance].managedObjectContext reset];
 }
 
 #pragma mark - segue

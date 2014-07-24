@@ -88,6 +88,8 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 - (UINavigationController *)navigationController;
 - (UIViewController *)visibleViewController;
 
+- (void)setupContext;
+
 - (NSURL *)storeURL;
 
 - (NSString *)storeFileName;

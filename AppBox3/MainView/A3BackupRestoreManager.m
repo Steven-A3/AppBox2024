@@ -49,7 +49,9 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	NSURL *backupStoreURL = [NSURL fileURLWithPath:_backupCoreDataStorePath];
 	
 	NSError *error;
-	NSPersistentStoreCoordinator *appPSC = [NSPersistentStoreCoordinator MR_newPersistentStoreCoordinator];
+	NSPersistentStoreCoordinator *appPSC = [NSPersistentStoreCoordinator MR_coordinatorWithAutoMigratingSqliteStoreNamed:
+																		 [[A3AppDelegate instance] storeFileName]
+	];
 	[appPSC lock];
 	[appPSC migratePersistentStore:appPSC.persistentStores[0]
 							 toURL:backupStoreURL
@@ -239,6 +241,9 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 - (void)restoreDataAt:(NSString *)backupFilePath toURL:(NSURL *)toURL {
 	NSFileManager *fileManager = [NSFileManager new];
+
+	[MagicalRecord cleanUp];
+
 	[self deleteCoreDataStoreFilesAt:toURL];
 	[self removeMediaFiles];
 
@@ -274,12 +279,16 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		}
 		[standardUserDefaults synchronize];
 
+		[[A3AppDelegate instance] setupContext];
+
 		if ([_delegate respondsToSelector:@selector(backupRestoreManager:restoreCompleteWithSuccess:)]) {
 			[_delegate backupRestoreManager:self restoreCompleteWithSuccess:YES];
 		}
 		[fileManager removeItemAtPath:backupInfoFilePath error:NULL];
 	} else {
 		[self extractV1DataFilesAt:backupFilePath];
+
+		[[A3AppDelegate instance] setupContext];
 
 		A3DataMigrationManager *migrationManager = [[A3DataMigrationManager alloc] init];
 		migrationManager.migrationDirectory = backupFilePath;
