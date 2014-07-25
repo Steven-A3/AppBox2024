@@ -708,7 +708,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSInteger)numberOfEventContainedImage
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && hasPhoto == YES", [self hiddenCalendars]]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && photoID != nil", [self hiddenCalendars]]];
 }
 
 - (NSDate*)dateOfLatestEvent
@@ -746,7 +746,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSArray*)allEventsListContainedImage
 {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && hasPhoto == YES", [self hiddenCalendars]];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && photoID != nil", [self hiddenCalendars]];
     return [DaysCounterEvent MR_findAllSortedBy:@"effectiveStartDate"
 									  ascending:YES
 								  withPredicate:predicate];
