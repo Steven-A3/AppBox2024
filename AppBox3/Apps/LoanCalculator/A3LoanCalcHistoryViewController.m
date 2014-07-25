@@ -179,7 +179,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 - (void)deleteLoanHistory:(LoanCalcHistory *)history
 {
     [history MR_deleteEntity];
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)deleteComparisonHistory:(LoanCalcComparisonHistory *)history
@@ -190,7 +190,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 
     [history MR_deleteEntity];
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)configureLoanCell:(A3LoanCalcLoanHistoryCell *)loanCell withHistory:(LoanCalcHistory *) history
@@ -345,7 +345,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
                 }
             }
         }
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         _fetchedResultsController = nil;
         [self.tableView reloadData];
 	}
@@ -441,7 +441,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
             [self deleteLoanHistory:history];
         }
         
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         _fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

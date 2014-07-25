@@ -35,7 +35,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	NSUInteger categoryIdx = 1;
 
     // create all, favorite category
-    WalletCategory *favoriteCategory = [WalletCategory MR_createInContext:context];
+    WalletCategory *favoriteCategory = [WalletCategory MR_createEntityInContext:context];
 	[favoriteCategory initValues];
 	favoriteCategory.name = NSLocalizedString(@"Favorites", nil);
     favoriteCategory.icon = @"star01";
@@ -43,7 +43,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	favoriteCategory.updateDate = [NSDate date];
 	favoriteCategory.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
-    WalletCategory *allCategory = [WalletCategory MR_createInContext:context];
+    WalletCategory *allCategory = [WalletCategory MR_createEntityInContext:context];
 	[allCategory initValues];
 	allCategory.name = NSLocalizedString(@"Wallet_All_Category", @"All");
     allCategory.icon = @"wallet_folder";
@@ -52,7 +52,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	allCategory.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
     for (NSDictionary *preset in categoryPresets) {
-        WalletCategory *category = [WalletCategory MR_createInContext:context];
+        WalletCategory *category = [WalletCategory MR_createEntityInContext:context];
 		[category initValues];
 
 		category.uniqueID = preset[@"uniqueID"];
@@ -64,7 +64,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 		NSArray *fieldPresets = preset[@"Fields"];
         NSUInteger fieldIdx = 1;
 		for (NSDictionary *fieldPreset in fieldPresets) {
-            WalletField *field = [WalletField MR_createInContext:context];
+            WalletField *field = [WalletField MR_createEntityInContext:context];
 			field.uniqueID = fieldPreset[@"uniqueID"];
 			field.name = NSLocalizedStringFromTable(fieldPreset[@"name"], @"WalletPreset",nil);
             field.categoryID = category.uniqueID;

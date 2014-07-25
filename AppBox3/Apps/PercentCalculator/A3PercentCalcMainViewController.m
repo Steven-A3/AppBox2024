@@ -16,6 +16,7 @@
 #import "A3JHTableViewEntryCell.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 
 @interface A3PercentCalcMainViewController () <UITextFieldDelegate, A3PercentCalcHistoryDelegate>
@@ -352,7 +353,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:@(calcType) forKey:A3PercentCalcUserDefaultsCalculationType];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:@(calcType) forKey:A3PercentCalcUserDefaultsCalculationType];
 		[store setObject:updateDate forKey:A3PercentCalcUserDefaultsCloudUpdateDate];
@@ -468,7 +469,7 @@
             entity.updateDate = [NSDate date];
             entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData];
 
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
             return;
         }
     }
@@ -485,7 +486,7 @@
 			entity.uniqueID = [[NSUUID UUID] UUIDString];
             entity.updateDate = [NSDate date];
             entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData];
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
             [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * barButton, NSUInteger idx, BOOL *stop) {
                 barButton.enabled = YES;
             }];
@@ -499,7 +500,7 @@
 			entity.uniqueID = [[NSUUID UUID] UUIDString];
             entity.updateDate = [NSDate date];
             entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData];
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
             [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * barButton, NSUInteger idx, BOOL *stop) {
                 barButton.enabled = YES;
             }];
@@ -520,7 +521,7 @@
 	[[NSUserDefaults standardUserDefaults] setObject:inputData forKey:A3PercentCalcUserDefaultsSavedInputData];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:inputData forKey:A3PercentCalcUserDefaultsSavedInputData];
 		[store setObject:updateDate forKey:A3PercentCalcUserDefaultsCloudUpdateDate];

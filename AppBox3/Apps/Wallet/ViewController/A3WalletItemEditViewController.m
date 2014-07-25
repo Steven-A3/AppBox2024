@@ -35,6 +35,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "WalletFavorite.h"
 #import "WalletFavorite+initialize.h"
+#import "A3SyncManager.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <ImageIO/ImageIO.h>
@@ -97,7 +98,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	if (_isAddNewItem) {
 		self.navigationItem.title = NSLocalizedString(@"Add Item", @"Add Item");
 
-		_item = [WalletItem MR_createEntity];
+		_item = [WalletItem MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 		_item.uniqueID = [[NSUUID UUID] UUIDString];
 		_item.updateDate = [NSDate date];
 		[_item assignOrder];
@@ -312,7 +313,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                                                      NSAssert(result, @"result");
                                                  }
 
-												 if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+												 if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 													 result = [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:NULL];
 												 } else {
 													 result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
@@ -376,7 +377,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                                                      FNLOG(@"\n  if (![fileManager fileExistsAtPath:[newReadingURL path]]) ");
                                                  }
 
-												 if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+												 if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 													 result = [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:NULL];
 												 } else {
 													 result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:&error2];
@@ -473,7 +474,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		[_sectionItems insertObject:self.categoryItem atIndex:1];
 
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@ AND fieldID == NULL", _item.uniqueID];
-		NSArray *fieldItemsFieldEqualsNULL = [WalletFieldItem MR_findAllWithPredicate:predicate];
+		NSArray *fieldItemsFieldEqualsNULL = [WalletFieldItem MR_findAllWithPredicate:predicate inContext:[NSManagedObjectContext MR_rootSavingContext]];
 		for (WalletFieldItem *fieldItem in fieldItemsFieldEqualsNULL) {
 			if ([fieldItem.hasImage boolValue] || [fieldItem.hasVideo boolValue]) {
 				[_sectionItems addObject:fieldItem];
@@ -541,11 +542,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		return nil;
 	}
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@ AND fieldID == %@", _item.uniqueID, field.uniqueID];
-	WalletFieldItem *fieldItem = [WalletFieldItem MR_findFirstWithPredicate:predicate];
+	WalletFieldItem *fieldItem = [WalletFieldItem MR_findFirstWithPredicate:predicate inContext:[NSManagedObjectContext MR_rootSavingContext]];
 	if (fieldItem) return fieldItem;
 
 	if (create) {
-		fieldItem = [WalletFieldItem MR_createEntity];
+		fieldItem = [WalletFieldItem MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 		fieldItem.uniqueID = [[NSUUID UUID] UUIDString];
 		fieldItem.updateDate = [NSDate date];
 		fieldItem.walletItemID = _item.uniqueID;
@@ -620,7 +621,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		[self.firstResponder resignFirstResponder];
 	}
 
-	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
+	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
 	if ([context hasChanges]) {
 		[context rollback];
 	}
@@ -637,12 +638,12 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 	for (WalletFieldItem *fieldItem in _item.fieldItemsArray) {
 		if (!fieldItem.value && !fieldItem.date && !fieldItem.hasImage && !fieldItem.hasVideo) {
-			[fieldItem MR_deleteEntity];
+			[fieldItem MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 		}
 	}
 
 	_item.updateDate = [NSDate date];
-	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
+	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
 	if ([context hasChanges]) {
 		[context MR_saveToPersistentStoreAndWait];
         
@@ -684,7 +685,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		} else {
 			[fileManager removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO] error:NULL];
 		}
-		[fieldItem MR_deleteEntity];
+		[fieldItem MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 
 		[_sectionItems removeObjectAtIndex:_currentIndexPath.row];
 		[self.tableView deleteRowsAtIndexPaths:@[_currentIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -698,7 +699,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 				[fileManager removeItemAtURL:[fieldItem videoFileURLInOriginal:NO ] error:NULL];
 				[fileManager removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO ] error:NULL];
 			}
-			[fieldItem MR_deleteEntity];
+			[fieldItem MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 			[self.tableView reloadRowsAtIndexPaths:@[_currentIndexPath] withRowAnimation:UITableViewRowAnimationFade];
 		}
 	}
@@ -786,7 +787,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	if (_isAddNewItem) {
 		return ![self isItemDataEmpty];
 	}
-	return [[[MagicalRecordStack defaultStack] context] hasChanges];
+	return [[NSManagedObjectContext MR_rootSavingContext] hasChanges];
 }
 
 - (BOOL)isItemDataEmpty
@@ -925,7 +926,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			[moveToNoteString appendString:movingText];
         }
 		if (![remainingItemField.type isEqualToString:WalletFieldTypeImage] && ![remainingItemField.type isEqualToString:WalletFieldTypeVideo]) {
-			[remainItem MR_deleteEntity];
+			[remainItem MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 		} else {
 			remainItem.fieldID = nil;
 		}
@@ -1126,8 +1127,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
         }
         else if (actionSheet.tag == 3) {
 
-			[self.item MR_deleteEntity];
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[self.item MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
+			[[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
 
             [self dismissViewControllerAnimated:NO completion:NULL];
             

@@ -115,7 +115,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 		_fetchedResultsController = nil;
 		[CurrencyHistory MR_truncateAll];
 		[CurrencyHistoryItem MR_truncateAll];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 		[self.tableView reloadData];
 	}
@@ -210,7 +210,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 			[historyItem MR_deleteEntity];
 		}
         [history MR_deleteEntity];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		_fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

@@ -365,7 +365,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     
     [self resetOrdering];
     
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
     [self updateEditedDataToDelegate];
 }
@@ -494,7 +494,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
         [self resetOrdering];
         
         [favorite MR_deleteEntity];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
@@ -511,7 +511,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     
     [self resetOrdering];
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 // Override to support conditional rearranging of the table view.

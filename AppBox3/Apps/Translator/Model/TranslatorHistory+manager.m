@@ -24,17 +24,18 @@
 
 	if (isFavorite) {
 		// Add Favorite
-		favorite = [TranslatorFavorite MR_createInContext:self.managedObjectContext];
+		favorite = [TranslatorFavorite MR_createEntityInContext:self.managedObjectContext];
 		favorite.uniqueID = [[NSUUID UUID] UUIDString];
 		favorite.updateDate = [NSDate date];
 		favorite.historyID = self.uniqueID;
 		favorite.groupID = self.groupID;
 
-		NSString *largest = [TranslatorFavorite MR_findLargestValueForAttribute:@"order" inContext:self.managedObjectContext];
+		TranslatorFavorite *lastFavorite = [TranslatorFavorite MR_findFirstOrderedByAttribute:@"order" ascending:NO];
+		NSString *largest = lastFavorite.order;
 		NSString *nextLargest = [NSString orderStringWithOrder:[largest integerValue] + 1000000];
 		favorite.order = nextLargest;
 	} else {
-		[self.favorite MR_deleteInContext:self.managedObjectContext];
+		[self.favorite MR_deleteEntityInContext:self.managedObjectContext];
 	}
 
 	[[self managedObjectContext] MR_saveToPersistentStoreAndWait];

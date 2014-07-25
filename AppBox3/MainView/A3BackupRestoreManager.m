@@ -14,6 +14,7 @@
 #import "DaysCounterEvent+extension.h"
 #import "WalletFieldItem+initialize.h"
 #import "AAAZip.h"
+#import "A3SyncManager.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -23,13 +24,6 @@ NSString *const A3BackupFileOSVersionKey = @"OSVersion";
 NSString *const A3BackupFileSystemModelKey = @"Model";
 NSString *const A3BackupFileUserDefaultsKey = @"UserDefaults";
 NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
-
-extern NSString *const USMCloudContentName;
-
-@interface UbiquityStoreManager (extension)
-- (NSMutableDictionary *)optionsForLocalStore;
-- (NSMutableDictionary *)optionsForCloudStoreURL:(NSURL *)cloudStoreURL;
-@end
 
 @interface A3BackupRestoreManager () <AAAZipDelegate, DBRestClientDelegate, A3DataMigrationManagerDelegate>
 @property (nonatomic, strong) MBProgressHUD *HUD;
@@ -50,21 +44,18 @@ extern NSString *const USMCloudContentName;
 }
 
 - (void)backupCoreDataStore {
-	A3AppDelegate *appDelegate = [A3AppDelegate instance];
 
 	self.backupCoreDataStorePath = [self uniquePathInDocumentDirectory];
-	NSDictionary *migrationOptions = nil;
-	if (appDelegate.ubiquityStoreManager.cloudEnabled) {
-		migrationOptions = @{NSPersistentStoreRemoveUbiquitousMetadataOption:@YES};
-	}
 	NSURL *backupStoreURL = [NSURL fileURLWithPath:_backupCoreDataStorePath];
 	
 	NSError *error;
-	NSPersistentStoreCoordinator *appPSC = [[A3AppDelegate instance] persistentStoreCoordinator];
+	NSPersistentStoreCoordinator *appPSC = [NSPersistentStoreCoordinator MR_coordinatorWithAutoMigratingSqliteStoreNamed:
+																		 [[A3AppDelegate instance] storeFileName]
+	];
 	[appPSC lock];
 	[appPSC migratePersistentStore:appPSC.persistentStores[0]
 							 toURL:backupStoreURL
-						   options:migrationOptions
+						   options:nil
 						  withType:NSSQLiteStoreType
 							 error:&error];
 	[appPSC unlock];
@@ -73,15 +64,16 @@ extern NSString *const USMCloudContentName;
 	_deleteFilesAfterZip = [NSMutableArray new];
 
 	NSString *path;
-	[fileList addObject:@{A3ZipFilename : _backupCoreDataStorePath, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", USMCloudContentName, @".sqlite"]}];
+	NSString *filename = [[A3AppDelegate instance] storeFileName];
+	[fileList addObject:@{A3ZipFilename : _backupCoreDataStorePath, A3ZipNewFilename : filename}];
 	[_deleteFilesAfterZip addObject:_backupCoreDataStorePath];
 
 	path = [NSString stringWithFormat:@"%@%@", _backupCoreDataStorePath, @"-shm"];
-	[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", USMCloudContentName, @".sqlite-shm"]}];
+	[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-shm"]}];
 	[_deleteFilesAfterZip addObject:path];
 
 	path = [NSString stringWithFormat:@"%@%@", _backupCoreDataStorePath, @"-wal"];
-	[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", USMCloudContentName, @".sqlite-wal"]}];
+	[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-wal"]}];
 	[_deleteFilesAfterZip addObject:path];
 
 	NSArray *daysCounterEvents = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasPhoto == YES"]];
@@ -247,10 +239,11 @@ extern NSString *const USMCloudContentName;
 
 #pragma mark - Restore data
 
-// targetURL : .../UbiquityStore.sqlite
-
 - (void)restoreDataAt:(NSString *)backupFilePath toURL:(NSURL *)toURL {
 	NSFileManager *fileManager = [NSFileManager new];
+
+	[MagicalRecord cleanUp];
+
 	[self deleteCoreDataStoreFilesAt:toURL];
 	[self removeMediaFiles];
 
@@ -260,9 +253,10 @@ extern NSString *const USMCloudContentName;
 		NSURL *sourceBaseURL = [NSURL fileURLWithPath:backupFilePath];
 		NSURL *targetBaseURL = [toURL URLByDeletingLastPathComponent];
 
-		[self moveComponent:[NSString stringWithFormat:@"%@%@", USMCloudContentName, @".sqlite"] fromURL:sourceBaseURL toURL:targetBaseURL];
-		[self moveComponent:[NSString stringWithFormat:@"%@%@", USMCloudContentName, @".sqlite-wal"] fromURL:sourceBaseURL toURL:targetBaseURL];
-		[self moveComponent:[NSString stringWithFormat:@"%@%@", USMCloudContentName, @".sqlite-shm"] fromURL:sourceBaseURL toURL:targetBaseURL];
+		NSString *filename = [[A3AppDelegate instance] storeFileName];
+		[self moveComponent:filename fromURL:sourceBaseURL toURL:targetBaseURL];
+		[self moveComponent:[NSString stringWithFormat:@"%@%@", filename, @"-wal"] fromURL:sourceBaseURL toURL:targetBaseURL];
+		[self moveComponent:[NSString stringWithFormat:@"%@%@", filename, @"-shm"] fromURL:sourceBaseURL toURL:targetBaseURL];
 
 		targetBaseURL = [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0]];
 
@@ -285,6 +279,8 @@ extern NSString *const USMCloudContentName;
 		}
 		[standardUserDefaults synchronize];
 
+		[[A3AppDelegate instance] setupContext];
+
 		if ([_delegate respondsToSelector:@selector(backupRestoreManager:restoreCompleteWithSuccess:)]) {
 			[_delegate backupRestoreManager:self restoreCompleteWithSuccess:YES];
 		}
@@ -292,8 +288,9 @@ extern NSString *const USMCloudContentName;
 	} else {
 		[self extractV1DataFilesAt:backupFilePath];
 
-		SQLiteMagicalRecordStack *sqLiteMagicalRecordStack = [[SQLiteMagicalRecordStack alloc] initWithStoreAtURL:toURL];
-		A3DataMigrationManager *migrationManager = [[A3DataMigrationManager alloc] initWithPersistentStoreCoordinator:sqLiteMagicalRecordStack.coordinator];
+		[[A3AppDelegate instance] setupContext];
+
+		A3DataMigrationManager *migrationManager = [[A3DataMigrationManager alloc] init];
 		migrationManager.migrationDirectory = backupFilePath;
 		if ([migrationManager walletDataFileExists] && ![migrationManager walletDataWithPassword:nil]) {
 			migrationManager.delegate = self;

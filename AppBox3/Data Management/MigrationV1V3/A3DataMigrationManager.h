@@ -19,7 +19,7 @@ extern NSString *const A3NotificationDataMigrationFinished;
 @property (nonatomic, weak) id<A3DataMigrationManagerDelegate> delegate;
 @property (nonatomic, copy) NSString *migrationDirectory;
 
-- (instancetype)initWithPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)persistentStoreCoordinator;
+- (instancetype)init;
 - (void)migrateV1DataWithPassword:(NSString *)password;
 - (BOOL)walletDataFileExists;
 - (NSDictionary *)walletDataWithPassword:(NSString *)password;

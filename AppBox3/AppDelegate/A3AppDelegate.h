@@ -7,7 +7,6 @@
 //
 
 #import "A3RootViewController_iPad.h"
-#import "UbiquityStoreManager.h"
 #import "MBProgressHUD.h"
 #import "A3PasscodeViewControllerProtocol.h"
 #import "A3CacheStoreManager.h"
@@ -54,8 +53,6 @@ extern NSString *const A3LocalNotificationDataID;
 extern NSString *const A3LocalNotificationFromLadyCalendar;
 extern NSString *const A3LocalNotificationFromDaysCounter;
 
-extern NSString *const A3CloudSeedDataCreated;		// BOOL, Key Value Store
-
 @protocol A3ViewControllerProtocol <NSObject>
 - (NSUInteger)a3SupportedInterfaceOrientations;
 @end
@@ -65,15 +62,12 @@ extern NSString *const A3CloudSeedDataCreated;		// BOOL, Key Value Store
 	UIAlertView *_cloudContentHealingAlert;
 	UIAlertView *_handleCloudContentWarningAlert;
 	UIAlertView *_handleLocalStoreAlert;
-	BOOL _needsDataMigrationBetweenLocalCloud;
-	BOOL _userChangingCloud;
 }
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MMDrawerController *drawerController;
 @property (strong, nonatomic) A3RootViewController_iPad *rootViewController;
 @property (strong, nonatomic) UIViewController *rootViewController_iPhone;
-@property (strong, nonatomic) UbiquityStoreManager *ubiquityStoreManager;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSDate *wakeUpTime;
 @property (strong, nonatomic) MBProgressHUD *hud;
@@ -94,6 +88,11 @@ extern NSString *const A3CloudSeedDataCreated;		// BOOL, Key Value Store
 - (UINavigationController *)navigationController;
 - (UIViewController *)visibleViewController;
 
+- (void)setupContext;
+
+- (NSURL *)storeURL;
+
+- (NSString *)storeFileName;
 @end
 
 #import "A3AppDelegate+iCloud.h"

@@ -97,7 +97,7 @@
 	NSMutableArray *mutableArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
 	[mutableArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	[self.fetchedResultsController performFetch:nil];
 }

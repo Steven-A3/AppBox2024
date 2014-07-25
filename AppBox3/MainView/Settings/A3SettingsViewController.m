@@ -15,6 +15,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate+iCloud.h"
 #import "Reachability.h"
+#import "A3SyncManager.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowUseiCloud = 1100,
@@ -89,7 +90,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		case A3SettingsRowUseiCloud:
 			if (!_iCloudSwitch) {
 				_iCloudSwitch = [UISwitch new];
-				_iCloudSwitch.on = [[A3AppDelegate instance].ubiquityStoreManager cloudEnabled];
+				_iCloudSwitch.on = [[A3SyncManager sharedSyncManager] isCloudEnabled];
 				[_iCloudSwitch addTarget:self action:@selector(toggleCloud:) forControlEvents:UIControlEventValueChanged];
 			}
 			cell.accessoryView = _iCloudSwitch;
@@ -143,7 +144,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 - (void)toggleCloud:(UISwitch *)switchControl {
 	if ([switchControl isOn]) {
-		if (![[A3AppDelegate instance].ubiquityStoreManager cloudAvailable]) {
+		if (![[A3SyncManager sharedSyncManager] isCloudAvailable]) {
 			[self alertCloudNotEnabled];
 			[switchControl setOn:NO animated:YES];
 			return;
@@ -152,7 +153,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
 		[keyValueStore synchronize];
 
-		if ([keyValueStore boolForKey:A3CloudHasData]) {
+		if ([keyValueStore objectForKey:A3SyncManagerCloudStoreID]) {
 			// Ask user to delete iCloud or not
 			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Setup AppBox Pro data stored in iCloud", nil)
 																	 delegate:self

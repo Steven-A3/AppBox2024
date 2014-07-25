@@ -87,7 +87,7 @@
         item.order = [NSNumber numberWithInteger:i+1];
     }
     
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 #pragma mark - Table view data source
@@ -232,7 +232,7 @@
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
     if ( IS_IPHONE ) {
-        [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         [self dismissViewControllerAnimated:YES completion:nil];
     }
     else {
@@ -267,7 +267,7 @@
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
     if (IS_IPAD) {
-        [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     }
 }
 

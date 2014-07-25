@@ -14,6 +14,7 @@
 #import "A3CalculatorUtil.h"
 #import "NSAttributedString+Append.h"
 #import "A3AppDelegate.h"
+#import "A3SyncManager.h"
 
 NSString *const A3CalculatorUserDefaultsUpdateDate = @"A3CalculatorUserDefaultsUpdateDate";
 NSString *const A3CalculatorUserDefaultsCloudUpdateDate = @"A3CalculatorUserDefaultsCloudUpdateDate";
@@ -263,7 +264,7 @@ typedef CMathParser<char, double> MathParser;
 	[[NSUserDefaults standardUserDefaults] setValue:mathexpression forKey:A3CalculatorUserDefaultsSavedLastExpression];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setString:mathexpression forKey:A3CalculatorUserDefaultsSavedLastExpression];
 		[store setObject:updateDate forKey:A3CalculatorUserDefaultsCloudUpdateDate];

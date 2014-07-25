@@ -531,7 +531,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 	calculation.result = self.evaluatedResultLabel.text;
 	calculation.updateDate = keyDate;
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
 }
 
 - (void) ShowMessage:(NSString *)message {

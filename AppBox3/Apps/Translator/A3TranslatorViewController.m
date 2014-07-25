@@ -351,7 +351,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 		[TranslatorFavorite MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]];
 		[group MR_deleteEntity];
 
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 		[self.fetchedResultsController performFetch:nil];
 
@@ -392,7 +392,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	NSMutableArray *mutableArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
 	[mutableArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	_fetchedResultsController = nil;
 }
 

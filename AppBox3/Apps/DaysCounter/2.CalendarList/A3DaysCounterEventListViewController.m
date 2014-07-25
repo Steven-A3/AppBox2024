@@ -133,7 +133,7 @@
     [self.navigationController setToolbarHidden:NO];
 
     if ( [self.changedCalendarID length] > 0 && ![self.changedCalendarID isEqualToString:_calendarItem.uniqueID] ) {
-        self.calendarItem = [_sharedManager calendarItemByID:self.changedCalendarID inContext:[[MagicalRecordStack defaultStack] context] ];
+        self.calendarItem = [_sharedManager calendarItemByID:self.changedCalendarID inContext:[NSManagedObjectContext MR_defaultContext] ];
         self.changedCalendarID = nil;
         if ( self.calendarItem ) {
 			if ([_calendarItem.calendarType integerValue] == CalendarCellType_User) {

@@ -372,7 +372,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	[_itemArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 #pragma mark - action method

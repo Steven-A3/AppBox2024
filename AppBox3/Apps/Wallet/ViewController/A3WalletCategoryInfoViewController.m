@@ -129,7 +129,7 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     A3WalletCategoryEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletCategoryEditViewController"];
 
     viewController.delegate = self;
-    viewController.category = _category;
+    viewController.category = [_category MR_inContext:[NSManagedObjectContext MR_rootSavingContext]];
     
     [self presentSubViewController:viewController];
 }

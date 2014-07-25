@@ -10,13 +10,14 @@
 #import "A3AppDelegate+iCloud.h"
 #import "A3AppDelegate+mainMenu.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseKoreanCalendarForLunarConversion";
 
 @implementation NSUserDefaults (A3Addition)
 
 - (NSString *)stringForSyncMethod {
-	return [[A3AppDelegate instance].ubiquityStoreManager cloudEnabled] ?
+	return [[A3SyncManager sharedSyncManager] isCloudEnabled] ?
 			NSLocalizedString(@"iCloud", @"Setgings > Sync, enable disable iCloud sync") : NSLocalizedString(@"None", @"Settings, not use iCloud sync");
 }
 
@@ -45,7 +46,7 @@ NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseK
 	[self setObject:data forKey:key];
 	[self synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:data forKey:key];
 		[store setObject:updateDate forKey:A3LunarConverterUserDefaultsCloudUpdateDate];

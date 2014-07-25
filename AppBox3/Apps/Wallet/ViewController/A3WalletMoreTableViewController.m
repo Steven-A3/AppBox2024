@@ -73,7 +73,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
         [self.tableView setEditing:YES animated:YES];
     }
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:[MagicalRecordStack defaultStack].context];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:[NSManagedObjectContext MR_defaultContext]];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryAddedNotification:) name:A3WalletNotificationCategoryAdded object:nil];
 
 	if (IS_IPAD) {
@@ -174,7 +174,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	[self.mainTabBarController setupTabBar];
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -418,7 +418,7 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 		category.order = [NSString orderStringWithOrder:(numberOfItemsOnTabBar + idx + 1) * 1000000];
 	}];
 	// Update order and save to persistent store
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 // Override to support conditional rearranging of the table view.
@@ -439,7 +439,7 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 		A3WalletMoreTableViewCell *cell = (A3WalletMoreTableViewCell *) [self.tableView cellForRowAtIndexPath:indexPath];
 		[cell setShowCheckMark:![walletCategory.doNotShow boolValue]];
 
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		return;
 	}
 

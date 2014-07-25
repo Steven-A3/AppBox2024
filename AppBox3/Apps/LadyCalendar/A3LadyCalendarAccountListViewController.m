@@ -18,6 +18,7 @@
 #import "A3UserDefaults.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3SyncManager.h"
 
 @interface A3LadyCalendarAccountListViewController ()
 
@@ -173,7 +174,7 @@
 	[[NSUserDefaults standardUserDefaults] setObject:account.uniqueID forKey:A3LadyCalendarCurrentAccountID];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:account.uniqueID forKey:A3LadyCalendarCurrentAccountID];
 		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
@@ -192,7 +193,7 @@
     A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;
 	viewCtrl.isEditMode = YES;
-	viewCtrl.accountItem = item;
+	viewCtrl.accountItem = [item MR_inContext:[NSManagedObjectContext MR_rootSavingContext]];
     
 	A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
 	navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -230,7 +231,7 @@
 		item.order = [NSNumber numberWithInteger:i+1];
 	}
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 @end

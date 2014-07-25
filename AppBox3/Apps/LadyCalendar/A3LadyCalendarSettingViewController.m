@@ -17,6 +17,7 @@
 #import "A3DateHelper.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3SyncManager.h"
 
 @interface A3LadyCalendarSettingViewController ()
 
@@ -366,7 +367,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:self.settingDict forKey:A3LadyCalendarSetting];
 		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
@@ -382,7 +383,7 @@
 	[[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:self.settingDict forKey:A3LadyCalendarSetting];
 		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];

@@ -31,6 +31,7 @@
 #import "UITableView+utility.h"
 #import "UIColor+A3Addition.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 #define kColorPlaceHolder [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 
@@ -718,7 +719,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             [weakSelf.headerView showDetailInfoButton];
             [weakSelf.headerView setResult:weakSelf.dataManager.tipCalcData withAnimation:YES];
             [weakSelf refreshMoreButtonState];
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 			A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *) [weakSelf.tableView cellForCellSubview:textField];
 			[cell setNeedsLayout];
@@ -960,7 +961,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             UITableViewCell *costs = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             costs.textLabel.text = [self.dataManager knownValue] == TCKnownValue_Subtotal ? NSLocalizedString(@"Amount After Tax", @"Amount After Tax") : NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
 
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 			break;
 		}
 
@@ -1209,7 +1210,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3TipCalcUserDefaultsCurrencyCode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:currencyCode forKey:A3TipCalcUserDefaultsCurrencyCode];
 		[store setObject:updateDate forKey:A3TipCalcUserDefaultsCloudUpdateDate];

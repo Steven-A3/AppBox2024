@@ -17,6 +17,7 @@
 #import "A3DaysCounterSlideshowViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3SyncManager.h"
 
 @interface A3DaysCounterSlideshowOptionViewController ()
 @property (strong, nonatomic) NSArray *sectionArray;
@@ -50,7 +51,7 @@
 	[[NSUserDefaults standardUserDefaults] setObject:_optionDict forKey:A3DaysCounterUserDefaultsSlideShowOptions];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:_optionDict forKey:A3DaysCounterUserDefaultsSlideShowOptions];
 		[store setObject:updateDate forKey:A3DaysCounterUserDefaultsCloudUpdateDate];

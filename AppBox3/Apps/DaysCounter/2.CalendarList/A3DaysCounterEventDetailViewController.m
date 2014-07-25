@@ -175,7 +175,7 @@
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
 	[self.eventItem reminder].isUnread = @(NO);
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
@@ -1747,7 +1747,7 @@ EXIT_FUCTION:
     self.initialCalendarID = _eventItem.calendarID;
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
 	viewCtrl.delegate = self;
-    viewCtrl.eventItem = _eventItem;
+    viewCtrl.eventItem = [_eventItem MR_inContext:[NSManagedObjectContext MR_rootSavingContext]];
     viewCtrl.sharedManager = _sharedManager;
     
     if (IS_IPHONE) {

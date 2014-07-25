@@ -8,6 +8,7 @@
 
 #import "A3AppDelegate+mainMenu.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 @implementation A3AppDelegate (mainMenu)
 
@@ -192,7 +193,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 	[[NSUserDefaults standardUserDefaults] setObject:mutableDictionary forKey:key];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([self.ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setDictionary:mutableDictionary forKey:key];
 		[store setObject:updateDate forKey:A3MainMenuUserDefaultsCloudUpdateDate];
@@ -212,7 +213,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 	[[NSUserDefaults standardUserDefaults] setInteger:maxNumber forKey:A3MainMenuUserDefaultsMaxRecentlyUsed];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	
-	if ([self.ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:@(maxNumber) forKey:A3MainMenuUserDefaultsMaxRecentlyUsed];
 		[store setObject:updateDate forKey:A3MainMenuUserDefaultsCloudUpdateDate];
@@ -226,7 +227,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3MainMenuUserDefaultsRecentlyUsed];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([self.ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store removeObjectForKey:A3MainMenuUserDefaultsRecentlyUsed];
 		[store setObject:updateDate forKey:A3MainMenuUserDefaultsCloudUpdateDate];

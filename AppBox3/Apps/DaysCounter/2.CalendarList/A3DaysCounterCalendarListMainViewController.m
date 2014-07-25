@@ -154,7 +154,7 @@
     [self mySearchDisplayController];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     [self setupInstructionView];
 	[self registerContentSizeCategoryDidChangeNotification];

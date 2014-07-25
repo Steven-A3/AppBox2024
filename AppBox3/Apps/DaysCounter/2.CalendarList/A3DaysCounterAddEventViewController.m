@@ -102,7 +102,7 @@
 		_isAddingEvent = YES;
         self.title = NSLocalizedString(@"Add Event", @"Add Event");
         _isAdvancedCellOpen = NO;
-        _eventItem = [DaysCounterEvent MR_createEntity];
+        _eventItem = [DaysCounterEvent MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 
 		// 사진 저장 및 기타 연관 정보 저장을 위해서
 		// uniqueID가 필요합니다. 만약 추가인지 수정인지를 구분해야 한다면
@@ -1485,7 +1485,7 @@
 	[_eventItem moveImagesToOriginalDirectory];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    [[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
     
 	if (IS_IPAD) {
 		[self.A3RootViewController dismissCenterViewController];
@@ -1500,7 +1500,7 @@
 {
     [self resignAllAction];
 
-	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
+	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
 	if ([context hasChanges]) {
 		[context rollback];
 	}
@@ -2234,7 +2234,7 @@
     else if ( actionSheet.tag == ActionTag_Location ) {
         if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
 			DaysCounterEventLocation *location = [_eventItem location];
-			[location MR_deleteEntity];
+			[location MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 
             [self.tableView reloadData];
         }
@@ -2327,7 +2327,7 @@
 
             DaysCounterEventLocation *locItem = [_eventItem location];
             if (!locItem) {
-                locItem = [DaysCounterEventLocation MR_createEntity];
+                locItem = [DaysCounterEventLocation MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
                 locItem.uniqueID = [[NSUUID UUID] UUIDString];
             }
 

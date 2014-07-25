@@ -32,6 +32,7 @@
 #import "A3CalculatorViewController.h"
 #import "UITableView+utility.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 enum A3TableElementCellType {
     A3TableElementCellType_Price = 100,
@@ -259,7 +260,7 @@ enum A3TableElementCellType {
 	[[NSUserDefaults standardUserDefaults] setObject:inputData forKey:A3SalesCalcUserDefaultsSavedInputDataKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:inputData forKey:A3SalesCalcUserDefaultsSavedInputDataKey];
 		[store setObject:updateDate forKey:A3SalesCalcUserDefaultsCloudUpdateDate];
@@ -1235,7 +1236,7 @@ enum A3TableElementCellType {
 	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode];
 		[store setObject:updateDate forKey:A3SalesCalcUserDefaultsCloudUpdateDate];

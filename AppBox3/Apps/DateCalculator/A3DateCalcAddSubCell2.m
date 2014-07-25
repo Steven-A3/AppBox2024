@@ -9,6 +9,7 @@
 #import "A3DateCalcAddSubCell2.h"
 #import "A3AppDelegate.h"
 #import "A3DateMainTableViewController.h"
+#import "A3SyncManager.h"
 
 @implementation A3DateCalcAddSubCell2
 
@@ -267,7 +268,7 @@
 	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:value forKey:key];
 		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];

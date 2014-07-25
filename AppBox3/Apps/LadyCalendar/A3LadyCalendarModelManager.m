@@ -17,6 +17,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "NSDate-Utilities.h"
 #import "LadyCalendarPeriod+extension.h"
+#import "A3SyncManager.h"
 
 // UserInfo have "changedMonth".
 NSString *const A3NotificationLadyCalendarPeriodDataChanged = @"A3NotificationLadyCalendarPeriodDataChanged";
@@ -48,7 +49,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 	LadyCalendarAccount *account = [self accountForID:DefaultAccountID inContext:context];
 	if( account ) return;
 
-	account = [LadyCalendarAccount MR_createInContext:context];
+	account = [LadyCalendarAccount MR_createEntityInContext:context];
 	account.uniqueID = DefaultAccountID;
 	account.name = DefaultAccountName;
 	account.order = [NSNumber numberWithInteger:[self numberOfAccountInContext:context ] +1];
@@ -68,7 +69,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 - (void)prepare
 {
-	[self prepareAccountInContext:[[MagicalRecordStack defaultStack] context] ];
+	[self prepareAccountInContext:[NSManagedObjectContext MR_defaultContext] ];
 
     // 기본 설정값을 저장한다.
     if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting] == nil ){
@@ -78,7 +79,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
         [[NSUserDefaults standardUserDefaults] setObject:item forKey:A3LadyCalendarSetting];
         [[NSUserDefaults standardUserDefaults] synchronize];
 
-		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 			[store setObject:item forKey:A3LadyCalendarSetting];
 			[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
@@ -102,7 +103,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 			[[NSUserDefaults standardUserDefaults] setObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID];
 			[[NSUserDefaults standardUserDefaults] synchronize];
 
-			if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+			if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 				NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 				[store setObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID];
 				[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
@@ -144,7 +145,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 			period.isAutoSave = @(YES);
 		}
 	}
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 #pragma mark - account
@@ -311,7 +312,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
     for(LadyCalendarPeriod *item in predictArray){
 		[item MR_deleteEntity];
     }
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (NSInteger)cycleLengthConsideringUserOption {
@@ -387,7 +388,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 		prevStartDate = newPeriod.startDate;
 	}
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)recalculateDates

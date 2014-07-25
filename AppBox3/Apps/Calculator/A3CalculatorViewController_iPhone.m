@@ -708,7 +708,7 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 	calculation.result = [self.calculator getResultString];
 	calculation.updateDate = keyDate;
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
 }
 
 - (void) ShowMessage:(NSString *)message {

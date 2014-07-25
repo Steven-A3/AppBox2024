@@ -172,9 +172,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 }
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)downloadURL {
-    FNLOG(@"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-    FNLOG(@"%d, %@", self.downloadInProgress, self.downloadQueue);
-    FNLOG(@"%@", downloadTask.taskDescription);
+    FNLOG(@"Hodliays background image downloaded for country:%@", downloadTask.taskDescription);
     NSString *countryCode = downloadTask.taskDescription;
     
     NSString *imageName = [NSString stringWithFormat:@"Downloaded_%@", countryCode];
@@ -196,8 +194,6 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 }
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
-    FNLOG(@"*******************************************************************************************************************************************************");
-    FNLOG(@"%d, %@", self.downloadInProgress, self.downloadQueue);
     self.downloadTask = nil;
 
 	self.downloadInProgress = NO;

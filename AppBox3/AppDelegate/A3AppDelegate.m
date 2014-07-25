@@ -29,6 +29,7 @@
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 #import "A3HolidaysFlickrDownloadManager.h"
+#import "A3SyncManager.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -37,7 +38,6 @@ NSString *const A3LocalNotificationOwner = @"A3LocalNotificationOwner";
 NSString *const A3LocalNotificationDataID = @"A3LocalNotificationDataID";
 NSString *const A3LocalNotificationFromLadyCalendar = @"Ladies Calendar";
 NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
-NSString *const A3CloudSeedDataCreated = @"A3CloudSeedDataCreated";
 NSString *const A3NotificationCloudKeyValueStoreDidImport = @"A3CloudKeyValueStoreDidImport";
 NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataStoreDidImport";
 
@@ -63,9 +63,12 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	CDESetCurrentLoggingLevel(CDELoggingLevelVerbose);
+
 	[[NSUbiquitousKeyValueStore defaultStore] synchronize];
 
 	[self prepareDirectories];
+	[self setupContext];
 	[self registerPasscodeUserDefaults];
 
 	UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
@@ -82,8 +85,6 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 	} else {
 		[A3KeychainUtils removePassword];
 	}
-	// TODO: 아래 한줄은 테스트 종료 후에는 반드시 삭제
-//	_shouldMigrateV1Data = YES;
 
 	self.reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
 	[self.reachability startNotifier];
@@ -91,7 +92,6 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 
 	NSFileManager *fileManager = [NSFileManager new];
 	[fileManager setupCacheStoreFile];
-	[self setupCloud];
 
 	UIViewController *rootViewController;
 	if (IS_IPAD) {
@@ -142,6 +142,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 	[[NSUserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:kA3ApplicationLastRunVersion];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
+	[self coreDataReady];
 	[self downloadDataFiles];
 
 	return YES;
@@ -160,7 +161,20 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 	[self applicationDidEnterBackground_passcode];
-	FNLOG();
+
+	UIBackgroundTaskIdentifier identifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
+	dispatch_async(dispatch_get_global_queue(0, 0), ^{
+		NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_defaultContext];
+		[managedObjectContext performBlock:^{
+			if (managedObjectContext.hasChanges) {
+				[managedObjectContext save:NULL];
+			}
+
+			[[A3SyncManager sharedSyncManager] synchronizeWithCompletion:^(NSError *error) {
+				[[UIApplication sharedApplication] endBackgroundTask:identifier];
+			}];
+		}];
+	});
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -172,6 +186,8 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+	[[A3SyncManager sharedSyncManager] synchronizeWithCompletion:NULL];
+
 	UINavigationController *navigationController = [self navigationController];
 	UIViewController *topViewController = self.navigationController.topViewController;
 	if ([topViewController isKindOfClass:[A3SettingsBackupRestoreViewController class]] && ![[DBSession sharedSession] isLinked]) {
@@ -231,7 +247,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (self.shouldMigrateV1Data) {
-				A3DataMigrationManager *migrationManager = [[A3DataMigrationManager alloc] initWithPersistentStoreCoordinator:[[A3AppDelegate instance] persistentStoreCoordinator]];
+				A3DataMigrationManager *migrationManager = [[A3DataMigrationManager alloc] init];
 				if ([migrationManager walletDataFileExists] && ![migrationManager walletDataWithPassword:nil]) {
 					self.migrationManager = migrationManager;
 					self.migrationManager.delegate = self;
@@ -239,7 +255,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 				} else {
 					[migrationManager migrateV1DataWithPassword:nil];
 					self.shouldMigrateV1Data = NO;
-					[self resetCoreDataStack];
+					[self.managedObjectContext reset];
 				}
 			}
 			[self showReceivedLocalNotifications];
@@ -248,7 +264,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 }
 
 - (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {
-	[self resetCoreDataStack];
+	[self.managedObjectContext reset];
 	self.shouldMigrateV1Data = NO;
 	self.migrationManager = nil;
 }
@@ -317,8 +333,9 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 	}
 
 	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-    
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
 	FNLOG(@"%@", _localNotificationUserInfo[A3LocalNotificationDataID]);
 
 	DaysCounterEvent *eventItem = [DaysCounterEvent MR_findFirstByAttribute:@"uniqueID" withValue:_localNotificationUserInfo[A3LocalNotificationDataID]];
@@ -326,7 +343,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 	viewController.isModal = YES;
 	viewController.eventItem = eventItem;
     A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
-    [sharedManager prepareInContext:[[MagicalRecordStack defaultStack] context] ];
+    [sharedManager prepareInContext:[NSManagedObjectContext MR_defaultContext] ];
     viewController.sharedManager = sharedManager;
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
@@ -534,7 +551,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 			_locationManager.delegate = self;
 			[_locationManager startMonitoringSignificantLocationChanges];
 
-			_locationUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:20 target:self selector:@selector(locationDidNotRespond) userInfo:nil repeats:NO];
+			_locationUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(locationDidNotRespond) userInfo:nil repeats:NO];
 		} else {
 			NSArray *holidayCountries = [HolidayData userSelectedCountries];
 			for (NSString *countryCode in holidayCountries) {
@@ -614,6 +631,37 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 		};
 	}
 	return _hud;
+}
+
+#pragma mark - Setup Core Data Managed Object Context
+
+- (void)setupContext
+{
+	NSManagedObjectModel *model = [NSManagedObjectModel MR_newManagedObjectModelNamed:@"AppBox3.momd"];
+	[NSManagedObjectModel MR_setDefaultManagedObjectModel:model];
+
+	[MagicalRecord setShouldAutoCreateManagedObjectModel:NO];
+	[MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:[self storeFileName]];
+
+	self.managedObjectContext = [NSManagedObjectContext MR_defaultContext];
+
+	if ([[NSUserDefaults standardUserDefaults] objectForKey:A3SyncManagerCloudStoreID]) {
+		FNLOG(@"Cloud Store ID: %@", [[NSUserDefaults standardUserDefaults] objectForKey:A3SyncManagerCloudStoreID]);
+		A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
+		sharedSyncManager.storePath = [[self storeURL] path];
+		[sharedSyncManager setupEnsemble];
+		[sharedSyncManager synchronizeWithCompletion:NULL];
+		[self startDownloadAllFiles];
+	}
+}
+
+- (NSURL *)storeURL
+{
+	return [NSPersistentStore MR_urlForStoreName:[self storeFileName]];
+}
+
+- (NSString *)storeFileName {
+	return @"AppBoxStore.sqlite";
 }
 
 @end

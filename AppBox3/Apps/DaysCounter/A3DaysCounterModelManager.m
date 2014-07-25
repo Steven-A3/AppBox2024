@@ -462,7 +462,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     }
     eventModel.updateDate = [NSDate date];
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     return YES;
 }
@@ -493,7 +493,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     
 	eventItem.updateDate = [NSDate date];
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     return YES;
 }
@@ -557,14 +557,14 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	[DaysCounterReminder MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
 
 	[event MR_deleteEntity];
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	return YES;
 }
 
 - (BOOL)removeCalendarItemWithID:(NSString*)calendarID
 {
-    DaysCounterCalendar *removeItem = [self calendarItemByID:calendarID inContext:[[MagicalRecordStack defaultStack] context]];
+    DaysCounterCalendar *removeItem = [self calendarItemByID:calendarID inContext:[NSManagedObjectContext MR_defaultContext]];
     
     if ( removeItem == nil )
         return NO;
@@ -572,7 +572,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     NSManagedObjectContext *context = [removeItem managedObjectContext];
     BOOL retValue;
 	NSString *calendarUniqueID = removeItem.uniqueID;
-    if ( [removeItem MR_deleteInContext:context] ) {
+    if ( [removeItem MR_deleteEntityInContext:context] ) {
 		NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendarUniqueID]];
 		for (DaysCounterEvent *event in events) {
 			[self removeEvent:event];
@@ -597,7 +597,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     NSUInteger numberOfItems = [DaysCounterCalendar MR_countOfEntitiesWithContext:context];
     
     // save to core data storage
-    DaysCounterCalendar *calendar = [DaysCounterCalendar MR_createInContext:context];
+    DaysCounterCalendar *calendar = [DaysCounterCalendar MR_createEntityInContext:context];
     calendar.uniqueID = [item objectForKey:CalendarItem_ID];
 	// Default System Calendar 의 updateDate 는 nil 로 설정
 	// 처음 장비에서 캘린더 생성. 첫번째 캘린더에서 캘린더 이름 변경, 두번째 장비에서 디폴트 캘린더 생성, 이때 첫번째 캘린더가 남아야 하는데,
@@ -624,7 +624,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     }];
     
     // save to core data storage
-    DaysCounterCalendar *calendar = [DaysCounterCalendar MR_createInContext:context];
+    DaysCounterCalendar *calendar = [DaysCounterCalendar MR_createEntityInContext:context];
     calendar.uniqueID = [item objectForKey:CalendarItem_ID];
     calendar.updateDate = [NSDate date];
     calendar.calendarName = [item objectForKey:CalendarItem_Name];
@@ -643,7 +643,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (BOOL)updateCalendarItem:(NSMutableDictionary*)item colorID:(NSString *)colorID
 {
-    DaysCounterCalendar *existsCalendar = [self calendarItemByID:[item objectForKey:CalendarItem_ID] inContext:[[MagicalRecordStack defaultStack] context]];
+    DaysCounterCalendar *existsCalendar = [self calendarItemByID:[item objectForKey:CalendarItem_ID] inContext:[NSManagedObjectContext MR_defaultContext]];
 
     if (existsCalendar == nil )
         return NO;
@@ -653,7 +653,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     existsCalendar.isShow = [item objectForKey:CalendarItem_IsShow];
     existsCalendar.calendarColorID = colorID;
 
-    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     return YES;
 }

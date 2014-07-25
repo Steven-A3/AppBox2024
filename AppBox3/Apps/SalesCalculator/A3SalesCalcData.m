@@ -101,7 +101,7 @@ static NSString *const A3SalesCalcDataKeyNotes = @"notes";
     entity.notes = self.notes;
     entity.shownPriceType = @(self.shownPriceType);
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     return YES;
 }
@@ -136,7 +136,7 @@ static NSString *const A3SalesCalcDataKeyNotes = @"notes";
     entity.notes = self.notes;
     entity.shownPriceType = @(self.shownPriceType);
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     return YES;
 }

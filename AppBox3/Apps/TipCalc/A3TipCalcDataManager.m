@@ -252,7 +252,7 @@
 
 -(void)setRoundingOption:(BOOL)RoundingOption {
 	self.tipCalcData.showRounding = @(RoundingOption);
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (BOOL)isRoundingOptionOn {
@@ -296,7 +296,7 @@
 #pragma mark Split Option
 - (void)setTipSplitOption:(TipSplitOption)option {
     self.tipCalcData.beforeSplit = @(option);
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (TipSplitOption)tipSplitOption {
@@ -306,7 +306,7 @@
 #pragma mark KnownValue
 - (void)setKnownValue:(TCKnownValue)value {
     self.tipCalcData.knownValue = value == TCKnownValue_Subtotal ? @(TCKnownValue_Subtotal) : @(TCKnownValue_CostsBeforeTax);
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (TCKnownValue)knownValue {
@@ -339,7 +339,7 @@
 #pragma mark Save Data
 
 - (void)saveTipCalcData {
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)saveToHistory {
@@ -352,7 +352,7 @@
 	self.tipCalcData.historyID = history.uniqueID;
     self.tipCalcData.isMain = @(NO);
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     TipCalcRecent * recently = [TipCalcRecent MR_createEntity];
 	recently.uniqueID = [[NSUUID UUID] UUIDString];
@@ -374,7 +374,7 @@
 
 - (void)setRoundingMethodValue:(TCRoundingMethodValue)value {
     self.tipCalcData.valueType =  @(value);
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (TCRoundingMethodValue)roundingMethodValue {
@@ -383,7 +383,7 @@
 
 - (void)setRoundingMethodOption:(TCRoundingMethodOption)option {
     self.tipCalcData.optionType = @(option);
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (TCRoundingMethodOption)roundingMethodOption {

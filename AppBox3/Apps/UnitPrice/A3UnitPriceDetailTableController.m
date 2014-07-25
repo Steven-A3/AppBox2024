@@ -30,6 +30,7 @@
 #import "UIViewController+A3Addition.h"
 #import "UnitPriceInfo+extension.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
 	Price_Percent = 0,
@@ -469,7 +470,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 		textField.text = self.price.size ? [self.decimalFormatter stringFromNumber:self.price.size]: @"";
     }
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 #pragma mark - UITextViewDelegate
@@ -500,7 +501,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 		return;
 	}
 	self.price.note = textView.text;
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 #pragma mark - A3TbvCellTextInputDelegate
@@ -695,7 +696,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 {
 	self.price.unitID = selectedItem.uniqueID;
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	NSIndexPath *sliderIP = [NSIndexPath indexPathForRow:0 inSection:0];
 	NSIndexPath *unitIP = [NSIndexPath indexPathForRow:[self.items indexOfObject:self.unitItem] inSection:1];
@@ -868,7 +869,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3UnitPriceUserDefaultsCurrencyCode];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
-		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 			[store setObject:currencyCode forKey:A3UnitPriceUserDefaultsCurrencyCode];
 			[store setObject:updateDate forKey:A3UnitPriceUserDefaultsCloudUpdateDate];

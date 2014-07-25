@@ -27,6 +27,7 @@
 #import "A3InstructionViewController.h"
 #import "ExpenseListBudget+extension.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -418,7 +419,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	item.order = [item makeOrderString];
     item.hasData = @(YES);
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	NSInteger focusingRow = [_currentBudget expenseItemsCount] - 1;
 
@@ -519,7 +520,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3ExpenseListIsAddBudgetCanceledByUser];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setBool:NO forKey:A3ExpenseListIsAddBudgetCanceledByUser];
 		[store setObject:updateDate forKey:A3ExpenseListUserDefaultsCloudUpdateDate];
@@ -636,7 +637,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 	[self createExpenseListItemWithBudgetID:_currentBudget.uniqueID];
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:A3ExpenseListCurrentBudgetID];
     _tableDataSourceArray = [self loadBudgetFromDB];
@@ -811,7 +812,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 			}
 		}
 
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	}
 	_tableDataSourceArray = [self loadBudgetFromDB];
 }
@@ -819,7 +820,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 - (ExpenseListItem *)createExpenseListItemWithBudgetID:(NSString *)budgetID {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@", budgetID];
 	ExpenseListItem *newItem = [ExpenseListItem MR_createEntity];
-	NSString *lastUniqueID = [ExpenseListItem MR_findLargestValueForAttribute:@"uniqueID" withPredicate:predicate];
+	ExpenseListItem *lastItem = [ExpenseListItem MR_findFirstWithPredicate:predicate sortedBy:@"uniqueID" ascending:NO];
+	NSString *lastUniqueID = lastItem.uniqueID;
 	NSInteger largestIndex = 0;
 	if (lastUniqueID) {
 		NSArray *components = [lastUniqueID componentsSeparatedByString:@"-"];
@@ -843,7 +845,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)saveCurrentBudget
 {
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
     FNLOG(@"History count : %ld", (long)[ExpenseListHistory MR_countOfEntities]);
     FNLOG(@"Budget count : %ld", (long)[ExpenseListBudget MR_countOfEntities]);
@@ -863,7 +865,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		item.budgetID = _currentBudget.uniqueID;
 	}
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	_currentBudget = nil;
 
@@ -1016,7 +1018,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     if (_tableDataSourceArray.count > defaultItemCount) {
         ExpenseListItem *aItem = _tableDataSourceArray[indexPath.row];
         [aItem MR_deleteEntity];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
         [self reloadBudgetDataWithAnimation:YES saveData:NO ];
     }
@@ -1028,7 +1030,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         aItem.qty = nil;
         aItem.subTotal = nil;
         aItem.hasData = @(NO);
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
             ExpenseListItem * aItem = (ExpenseListItem *)evaluatedObject;
@@ -1043,7 +1045,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
             aItem.price = @0;
             aItem.qty = @1;
             aItem.hasData = @(NO);
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         }
         
         [self reloadBudgetDataWithAnimation:YES saveData:NO ];
@@ -1083,7 +1085,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
 	FNLOG();
 	[_tableDataSourceArray moveItemInSortedArrayFromIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 #pragma mark - BudgetSetting Delegate
@@ -1297,7 +1299,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         if (textField == [self firstResponder]) {
             self.firstResponder = nil;
         }
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         return;
     }
 

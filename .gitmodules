@@ -37,9 +37,6 @@
 [submodule "External/JNJProgressButton"]
 	path = External/JNJProgressButton
 	url = https://github.com/jnjosh/JNJProgressButton.git
-[submodule "External/MagicalRecord"]
-	path = External/MagicalRecord
-	url = https://github.com/magicalpanda/MagicalRecord.git
 [submodule "External/JVFloatLabeledTextField"]
 	path = External/JVFloatLabeledTextField
 	url = https://github.com/Steven-Gwug/JVFloatLabeledTextField.git

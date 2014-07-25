@@ -17,6 +17,7 @@
 #import "DaysCounterEventLocation.h"
 #import "DaysCounterReminder.h"
 #import "DaysCounterReminder.h"
+#import "A3SyncManager.h"
 
 NSString *const A3DaysCounterImageDirectory = @"DaysCounterImages";
 NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbnail";
@@ -39,7 +40,7 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eventID == %@ AND isStartDate == YES", self.uniqueID];
 	DaysCounterDate *startDate = [DaysCounterDate MR_findFirstWithPredicate:predicate inContext:self.managedObjectContext];
 	if (!startDate) {
-		startDate = [DaysCounterDate MR_createInContext:self.managedObjectContext];
+		startDate = [DaysCounterDate MR_createEntityInContext:self.managedObjectContext];
 		startDate.uniqueID = [[NSUUID UUID] UUIDString];
 		startDate.updateDate = [NSDate date];
 		startDate.eventID = self.uniqueID;
@@ -52,7 +53,7 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eventID == %@ AND isStartDate == NO", self.uniqueID];
 	DaysCounterDate *endDate = [DaysCounterDate MR_findFirstWithPredicate:predicate inContext:self.managedObjectContext];
 	if (!endDate && createIfNotExist) {
-		endDate = [DaysCounterDate MR_createInContext:self.managedObjectContext];
+		endDate = [DaysCounterDate MR_createEntityInContext:self.managedObjectContext];
 		endDate.uniqueID = [[NSUUID UUID] UUIDString];
 		endDate.updateDate = [NSDate date];
 		endDate.eventID = self.uniqueID;
@@ -92,7 +93,7 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 
 - (NSURL *)photoURLInOriginalDirectory:(BOOL)inOriginalDirectory {
 	if (inOriginalDirectory) {
-		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 			NSURL *ubiquityContainerURL = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
 			NSString *filePath = [A3DaysCounterImageDirectory stringByAppendingPathComponent:self.uniqueID];
             FNLOG(@"\nphotoOriginalPath(Cloud): %@", filePath);
@@ -202,7 +203,7 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 											  error:&error
 										 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
                                              [fileManager removeItemAtURL:newWritingURL error:NULL];
-											 if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+											 if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 												 [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:NULL];
 											 } else {
 												 [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];

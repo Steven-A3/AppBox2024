@@ -859,7 +859,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		_translatingMessage.originalText = _textView.text;
 		self.originalText = _textView.text; // Save to async operation
 
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 		if ([_languageSelectView superview]) {
 			[self switchToMessageView];
@@ -987,7 +987,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 
 	_translatingMessage.translatedText = translated;
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	_originalTextLanguage = detectedLanguage;
 
@@ -1404,7 +1404,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 		A3TranslatorMessageCell *cell = (A3TranslatorMessageCell *) [_messageTableView cellForRowAtIndexPath:indexPath];
 		[cell changeFavoriteButtonImage];
 	}
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)unsetFavoriteActionFromToolbar {
@@ -1416,7 +1416,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 		A3TranslatorMessageCell *cell = (A3TranslatorMessageCell *) [_messageTableView cellForRowAtIndexPath:indexPath];
 		[cell changeFavoriteButtonImage];
 	}
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)deleteActionFromToolbar {
@@ -1450,7 +1450,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 		[TranslatorFavorite MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", itemToDelete.uniqueID]];
 		[itemToDelete MR_deleteEntity];
 	}
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
 	// Reload messages
 	_messages = nil;
@@ -1486,7 +1486,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 - (void)deleteAllMessages {
 	[TranslatorHistory MR_deleteAllMatchingPredicate:[self predicateForMessages]];
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	_messages = nil;
 	[self messages];

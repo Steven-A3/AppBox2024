@@ -20,6 +20,7 @@
 #import "A3CalculatorViewController.h"
 #import "A3AppDelegate.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 @interface A3LoanCalcContentsTableViewController () <A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 @end
@@ -443,7 +444,7 @@
 		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
-		if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 			[store setObject:currencyCode forKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 			[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];

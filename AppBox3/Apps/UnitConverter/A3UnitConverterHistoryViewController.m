@@ -130,7 +130,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         
 		[UnitHistory MR_truncateAll];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		_fetchedResultsController = nil;
 		[self.tableView reloadData];
 	}
@@ -270,7 +270,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
         
         UnitHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
 		[history MR_deleteEntity];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		_fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

@@ -11,6 +11,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "A3AppDelegate.h"
 #import "A3DateMainTableViewController.h"
+#import "A3SyncManager.h"
 
 @implementation A3DateCalcStateManager
 
@@ -56,7 +57,7 @@ static DurationType g_currentDurationType;
 	[[NSUserDefaults standardUserDefaults] setObject:@(result) forKey:A3DateCalcDefaultsDurationType];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:@(result) forKey:A3DateCalcDefaultsDurationType];
 		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
@@ -149,7 +150,7 @@ static DurationType g_currentDurationType;
     [[NSUserDefaults standardUserDefaults] setObject:@(result) forKey:A3DateCalcDefaultsExcludeOptions];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3AppDelegate instance].ubiquityStoreManager cloudEnabled]) {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:@(result) forKey:A3DateCalcDefaultsExcludeOptions];
 		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];

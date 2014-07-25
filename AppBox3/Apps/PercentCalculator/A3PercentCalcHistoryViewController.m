@@ -123,7 +123,7 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         [PercentCalcHistory MR_truncateAll];
         _fetchedResultsController = nil;
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
         [self.tableView reloadData];
         if ([_delegate respondsToSelector:@selector(didDeleteHistory)]) {
@@ -499,7 +499,7 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         PercentCalcHistory *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
         [aData MR_deleteEntity];
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         _fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

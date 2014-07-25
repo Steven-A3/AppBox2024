@@ -13,7 +13,8 @@
 @implementation TranslatorGroup (manage)
 
 - (void)setupOrder {
-	NSString *largestInOrder = [TranslatorGroup MR_findLargestValueForAttribute:@"order"];
+	TranslatorGroup *group = [TranslatorGroup MR_findFirstOrderedByAttribute:@"order" ascending:NO];
+	NSString *largestInOrder = group.order;
 	NSString *nextLargestInOrder = [NSString orderStringWithOrder:[largestInOrder integerValue] + 100000];
 	FNLOG(@"nextLargestInOrder = %@", nextLargestInOrder);
 

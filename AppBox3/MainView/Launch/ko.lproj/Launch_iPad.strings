@@ -31,8 +31,8 @@
 
 /* Class = "IBUILabel"; text = "easy, faster and more focused,
 64Bit and much more"; ObjectID = "Dxm-da-st4"; */
-"Dxm-da-st4.text" = "쉽고, 빠르고, 기본에 충실하고
-64비트 지원과 대단한 변화";
+"Dxm-da-st4.text" = "쉽고, 더 빠르고, 기본에 충실하며
+64비트 지원을 비롯한 혁신적인 변화";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "EVR-ah-KPZ"; */
 "EVR-ah-KPZ.normalTitle" = "계속";
@@ -106,7 +106,7 @@
 /* Class = "IBUILabel"; text = "keep your data up to date
 on all your devices"; ObjectID = "mal-lH-ucN"; */
 "mal-lH-ucN.text" = "소유한 모든 장비에서
-정보를 모두 동기화";
+정보를 동기화";
 
 /* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "noh-Kb-lie"; */
 "noh-Kb-lie.text" = "레이디 캘린더";
@@ -127,7 +127,7 @@ on all your devices"; ObjectID = "mal-lH-ucN"; */
 "vJ2-Dp-SnT.text" = "레퍼런스";
 
 /* Class = "IBUILabel"; text = "New Look"; ObjectID = "wUS-T4-5Qp"; */
-"wUS-T4-5Qp.text" = "새로운 느낌";
+"wUS-T4-5Qp.text" = "새로운 모습";
 
 /* Class = "IBUILabel"; text = "iCloud Sync"; ObjectID = "xFS-er-fHt"; */
 "xFS-er-fHt.text" = "iCloud 동기화";
