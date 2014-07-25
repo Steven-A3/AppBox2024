@@ -186,7 +186,12 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-	[[A3SyncManager sharedSyncManager] synchronizeWithCompletion:NULL];
+	A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
+	[syncManager synchronizeWithCompletion:NULL];
+	if ([syncManager isCloudEnabled]) {
+		[syncManager uploadFilesToCloud];
+		[syncManager downloadFilesFromCloud];
+	}
 
 	UINavigationController *navigationController = [self navigationController];
 	UIViewController *topViewController = self.navigationController.topViewController;
@@ -649,7 +654,8 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 		sharedSyncManager.storePath = [[self storeURL] path];
 		[sharedSyncManager setupEnsemble];
 		[sharedSyncManager synchronizeWithCompletion:NULL];
-		[self downloadFilesFromCloud];
+		[sharedSyncManager uploadFilesToCloud];
+		[sharedSyncManager downloadFilesFromCloud];
 	}
 }
 

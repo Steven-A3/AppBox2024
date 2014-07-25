@@ -24,6 +24,10 @@ extern NSString * const A3SyncManagerCloudEnabled;
 - (BOOL)isCloudEnabled;
 - (void)synchronizeWithCompletion:(CDECompletionBlock)completion;
 
+- (void)uploadFilesToCloud;
+
+- (void)downloadFilesFromCloud;
+
 - (void)fileExistsAtPath:(NSString *)path completion:(void (^)(BOOL exists, BOOL isDirectory, NSError *error))block;
 
 - (void)contentsOfDirectoryAtPath:(NSString *)path completion:(void (^)(NSArray *contents, NSError *error))block;

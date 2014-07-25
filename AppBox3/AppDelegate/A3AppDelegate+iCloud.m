@@ -26,9 +26,6 @@
 		sharedSyncManager.storePath = [self.storeURL path];
 		[sharedSyncManager enableCloudSync];
 		[self mergeUserDefaultsDeleteCloud:NO];
-
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SyncManagerCloudEnabled];
-		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	else {
 		[sharedSyncManager disableCloudSync];
@@ -74,61 +71,9 @@
 
 - (void)enableCloudForFiles:(BOOL)enable {
 	if (enable) {
-		[self uploadFilesToCloud];
+		[[A3SyncManager sharedSyncManager] uploadFilesToCloud];
 	}
-	[self downloadFilesFromCloud];
-}
-
-- (void)uploadFilesToCloud {
-	[self uploadFilesToCloudInDirectory:A3DaysCounterImageDirectory];
-	[self uploadFilesToCloudInDirectory:A3WalletImageDirectory];
-	[self uploadFilesToCloudInDirectory:A3WalletVideoDirectory];
-}
-
-- (void)uploadFilesToCloudInDirectory:(NSString *)directory {
-	A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
-	[syncManager fileExistsAtPath:directory completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
-		if (!exists) {
-			[syncManager createDirectoryAtPath:directory completion:NULL];
-		}
-	}];
-	NSFileManager *fileManager = [[NSFileManager alloc] init];
-
-	NSArray *files = [fileManager contentsOfDirectoryAtPath:[directory pathInLibraryDirectory] error:NULL];
-	NSString *localBasePath = [directory pathInLibraryDirectory];
-	for (NSString *filename in files) {
-		FNLOG(@"Filename: %@", filename);
-		NSString *localPath = [localBasePath stringByAppendingPathComponent:filename];
-		NSString *cloudPath = [directory stringByAppendingPathComponent:filename];
-
-		FNLOG(@"%@, %@", localPath, cloudPath);
-		[syncManager fileExistsAtPath:cloudPath completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
-			if (!exists) {
-				[syncManager uploadLocalFile:localPath toPath:cloudPath completion:NULL];
-			}
-		}];
-	}
-}
-
-- (void)downloadFilesFromCloud {
-	[self downloadFilesFromCloudInDirectory:A3DaysCounterImageDirectory];
-	[self downloadFilesFromCloudInDirectory:A3WalletImageDirectory];
-	[self downloadFilesFromCloudInDirectory:A3WalletVideoDirectory];
-}
-
-- (void)downloadFilesFromCloudInDirectory:(NSString *)directory {
-	A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
-	[syncManager contentsOfDirectoryAtPath:directory completion:^(NSArray *contents, NSError *error) {
-		NSFileManager *fileManager = [NSFileManager new];
-		for (NSString *path in contents) {
-			NSString *filename = [path lastPathComponent];
-			NSString *localFile = [[directory stringByAppendingPathComponent:filename] pathInLibraryDirectory];
-
-			if (![fileManager fileExistsAtPath:localFile]) {
-				[syncManager downloadFromPath:path toLocalFile:localFile completion:NULL];
-			}
-		}
-	}];
+	[[A3SyncManager sharedSyncManager] downloadFilesFromCloud];
 }
 
 #pragma mark - NSMetadataQuery
