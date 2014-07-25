@@ -234,13 +234,12 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	NSArray *files = [_fileManager contentsOfDirectoryAtPath:[directory pathInLibraryDirectory] error:NULL];
 	NSString *localBasePath = [directory pathInLibraryDirectory];
 	for (NSString *filename in files) {
-		FNLOG(@"Filename: %@", filename);
 		NSString *localPath = [localBasePath stringByAppendingPathComponent:filename];
 		NSString *cloudPath = [directory stringByAppendingPathComponent:filename];
 		
-		FNLOG(@"%@, %@", localPath, cloudPath);
 		[self fileExistsAtPath:cloudPath completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
 			if (!exists) {
+				FNLOG(@"Filename: %@", filename);
 				[self uploadLocalFile:localPath toPath:cloudPath completion:NULL];
 			}
 		}];
@@ -256,11 +255,11 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 - (void)downloadFilesFromCloudInDirectory:(NSString *)directory {
 	[self contentsOfDirectoryAtPath:directory completion:^(NSArray *contents, NSError *error) {
 		for (CDECloudFile *file in contents) {
-			FNLOG(@"%@, %@", file.name, file.path);
 			NSString *filename = file.name;
 			NSString *localFile = [[directory stringByAppendingPathComponent:filename] pathInLibraryDirectory];
 			
 			if (![_fileManager fileExistsAtPath:localFile]) {
+				FNLOG(@"%@, %@", file.name, file.path);
 				[self downloadFromPath:file.path toLocalFile:localFile completion:NULL];
 			}
 		}
