@@ -257,7 +257,6 @@
         self.itemArray = [self sortedArrayByNameAscending:_isNameAscending];
     }
     else if ( _sortType == EventSortType_Date ) {
-
         self.itemArray = [self sortedArrayByDateAscending:_isDateAscending];
     }
     
@@ -407,6 +406,10 @@
         return nil;
     }
     
+    if (!_itemArray || [_itemArray count] == 0) {
+        return nil;
+    }
+    
     NSDictionary *dict = [_itemArray objectAtIndex:section];
     NSArray *items = [dict objectForKey:EventKey_Items];
     if ( [items count] < 1 ) {
@@ -439,7 +442,9 @@
 {
     if ( tableView != self.tableView) {
         return 0;
-        //return 0.01;
+    }
+    if (!_itemArray || [_itemArray count] == 0) {
+        return 0.01;
     }
     
     NSDictionary *dict = [_itemArray objectAtIndex:section];
