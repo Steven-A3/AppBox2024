@@ -150,7 +150,7 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 	} else {
 		directory = NSTemporaryDirectory();
 	}
-	NSString *imageThumbnail = [NSString stringWithFormat:@"%@-imageThumbnail", self.uniqueID];
+	NSString *imageThumbnail = [NSString stringWithFormat:@"%@-imageThumbnail", self.photoID];
 	return [directory stringByAppendingPathComponent:imageThumbnail];
 }
 
