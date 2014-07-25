@@ -20,22 +20,21 @@
 
 @implementation A3AppDelegate (iCloud)
 
-- (void)setCloudEnabled:(BOOL)enable deleteCloud:(BOOL)deleteCloud {
+- (void)setCloudEnabled:(BOOL)enable {
 	A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
 	if (enable) {
-		if (deleteCloud) {
-			[sharedSyncManager removeCloudStore];
-			[self deleteCloudFilesToResetCloud];
-		}
 		sharedSyncManager.storePath = [self.storeURL path];
-
 		[sharedSyncManager enableCloudSync];
+		[self mergeUserDefaultsDeleteCloud:NO];
 
-		[self mergeUserDefaultsDeleteCloud:(BOOL)deleteCloud];
-		[self startDownloadAllFiles];
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SyncManagerCloudEnabled];
+		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	else {
 		[sharedSyncManager disableCloudSync];
+
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SyncManagerCloudEnabled];
+		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	[self enableCloudForFiles:enable];
 
@@ -75,93 +74,61 @@
 
 - (void)enableCloudForFiles:(BOOL)enable {
 	if (enable) {
-		[self moveFilesToCloud];
-	} else {
-		[self copyFilesFromCloud];
+		[self uploadFilesToCloud];
+	}
+	[self downloadFilesFromCloud];
+}
+
+- (void)uploadFilesToCloud {
+	[self uploadFilesToCloudInDirectory:A3DaysCounterImageDirectory];
+	[self uploadFilesToCloudInDirectory:A3WalletImageDirectory];
+	[self uploadFilesToCloudInDirectory:A3WalletVideoDirectory];
+}
+
+- (void)uploadFilesToCloudInDirectory:(NSString *)directory {
+	A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
+	[syncManager fileExistsAtPath:directory completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
+		if (!exists) {
+			[syncManager createDirectoryAtPath:directory completion:NULL];
+		}
+	}];
+	NSFileManager *fileManager = [[NSFileManager alloc] init];
+
+	NSArray *files = [fileManager contentsOfDirectoryAtPath:[directory pathInLibraryDirectory] error:NULL];
+	NSString *localBasePath = [directory pathInLibraryDirectory];
+	for (NSString *filename in files) {
+		FNLOG(@"Filename: %@", filename);
+		NSString *localPath = [localBasePath stringByAppendingPathComponent:filename];
+		NSString *cloudPath = [directory stringByAppendingPathComponent:filename];
+
+		FNLOG(@"%@, %@", localPath, cloudPath);
+		[syncManager fileExistsAtPath:cloudPath completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
+			if (!exists) {
+				[syncManager uploadLocalFile:localPath toPath:cloudPath completion:NULL];
+			}
+		}];
 	}
 }
 
-- (void)moveFilesToCloud {
-	[self moveFilesToCloudInDirectory:A3DaysCounterImageDirectory];
-	[self moveFilesToCloudInDirectory:A3WalletImageDirectory];
-	[self moveFilesToCloudInDirectory:A3WalletVideoDirectory];
+- (void)downloadFilesFromCloud {
+	[self downloadFilesFromCloudInDirectory:A3DaysCounterImageDirectory];
+	[self downloadFilesFromCloudInDirectory:A3WalletImageDirectory];
+	[self downloadFilesFromCloudInDirectory:A3WalletVideoDirectory];
 }
 
-- (void)moveFilesToCloudInDirectory:(NSString *)directory {
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-		NSFileManager *fileManager = [[NSFileManager alloc] init];
-		NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-		NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
-		NSURL *directoryURL = [ubiquityContainerURL URLByAppendingPathComponent:directory];
-		NSError *error;
-		if (![fileManager isUbiquitousItemAtURL:directoryURL]) {
-			[fileCoordinator coordinateWritingItemAtURL:directoryURL
-												options:NSFileCoordinatorWritingForReplacing
-												  error:&error
-											 byAccessor:^(NSURL *newURL) {
-												 [fileManager createDirectoryAtURL:newURL withIntermediateDirectories:YES attributes:nil error:NULL];
-											 }];
-		}
+- (void)downloadFilesFromCloudInDirectory:(NSString *)directory {
+	A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
+	[syncManager contentsOfDirectoryAtPath:directory completion:^(NSArray *contents, NSError *error) {
+		NSFileManager *fileManager = [NSFileManager new];
+		for (NSString *path in contents) {
+			NSString *filename = [path lastPathComponent];
+			NSString *localFile = [[directory stringByAppendingPathComponent:filename] pathInLibraryDirectory];
 
-		NSArray *files = [fileManager contentsOfDirectoryAtPath:[directory pathInLibraryDirectory] error:NULL];
-		FNLOG(@"%@", files);
-		for (NSString *filename in files) {
-			NSString *filePath = [directory stringByAppendingPathComponent:filename];
-			NSURL *localURL = [NSURL fileURLWithPath:[filePath pathInLibraryDirectory] ];
-			NSURL *cloudURL = [ubiquityContainerURL URLByAppendingPathComponent:filePath];
-
-			FNLOG(@"%@, %@", localURL, cloudURL);
-			[fileManager setUbiquitous:YES
-							 itemAtURL:localURL
-						destinationURL:cloudURL
-								 error:&error];
-			if (error) {
-				FNLOG(@"%@, %@", error.localizedDescription, error.localizedFailureReason);
+			if (![fileManager fileExistsAtPath:localFile]) {
+				[syncManager downloadFromPath:path toLocalFile:localFile completion:NULL];
 			}
 		}
-	});
-}
-
-- (void)copyFilesFromCloud {
-	[self copyFilesFromCloudInDirectory:A3DaysCounterImageDirectory];
-	[self copyFilesFromCloudInDirectory:A3WalletImageDirectory];
-	[self copyFilesFromCloudInDirectory:A3WalletVideoDirectory];
-}
-
-- (void)copyFilesFromCloudInDirectory:(NSString *)directory {
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-		NSFileManager *fileManager = [[NSFileManager alloc] init];
-		NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
-
-		if (!ubiquityContainerURL || !directory) {
-			return;
-		}
-		NSArray *files = [fileManager contentsOfDirectoryAtURL:[ubiquityContainerURL URLByAppendingPathComponent:directory]
-									includingPropertiesForKeys:nil
-													   options:0
-														 error:NULL];
-
-		for (NSURL *cloudURL in files) {
-			NSString *filename = [cloudURL lastPathComponent];
-
-			NSURL *localURL = [NSURL fileURLWithPath:[[directory stringByAppendingPathComponent:filename] pathInLibraryDirectory] ];
-
-			NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-			NSError *error;
-			[fileCoordinator coordinateReadingItemAtURL:cloudURL
-												options:NSFileCoordinatorReadingWithoutChanges
-									   writingItemAtURL:localURL
-												options:NSFileCoordinatorWritingForReplacing
-												  error:&error
-											 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-												 [fileManager removeItemAtURL:newWritingURL error:NULL];
-												 [fileManager copyItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
-											 }];
-			if (error) {
-				FNLOG(@"%@", error.localizedDescription);
-			}
-		}
-	});
+	}];
 }
 
 #pragma mark - NSMetadataQuery
@@ -196,24 +163,6 @@
 	}
 }
 
-- (void)startDownloadAllFiles {
-	FNLOG();
-	[self startDownloadInDirectory:A3DaysCounterImageDirectory];
-	[self startDownloadInDirectory:A3WalletImageDirectory];
-	[self startDownloadInDirectory:A3WalletVideoDirectory];
-}
-
-- (void)startDownloadInDirectory:(NSString *)directory {
-	NSFileManager *fileManager = [NSFileManager new];
-	NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
-	if (!ubiquityContainerURL || !directory) return;
-
-	NSArray *files = [fileManager contentsOfDirectoryAtURL:[ubiquityContainerURL URLByAppendingPathComponent:directory] includingPropertiesForKeys:nil options:0 error:NULL];
-	for (NSURL *fileURL in files) {
-		[fileManager startDownloadingUbiquitousItemAtURL:fileURL error:NULL];
-	}
-}
-
 - (void)deleteCloudFilesToResetCloud {
 	// iCloud 데이터를 초기화 하는 경우에, 이미지 파일들도 함께 지워야 한다.
 	// DaysCounter image, Wallet 사진, 비디오 이미지를 함께 삭제한다.
@@ -227,8 +176,9 @@
 	NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
 	if (!ubiquityContainerURL || !directory) return;
 	NSArray *files = [fileManager contentsOfDirectoryAtURL:[ubiquityContainerURL URLByAppendingPathComponent:directory] includingPropertiesForKeys:nil options:0 error:NULL];
+	CDEICloudFileSystem *fileSystem = [[A3SyncManager sharedSyncManager] cloudFileSystem];
 	for (NSURL *fileURL in files) {
-		[fileManager removeItemAtURL:fileURL error:NULL];
+		[fileSystem removeItemAtPath:[fileURL path] completion:NULL];
 	}
 }
 
@@ -237,6 +187,8 @@
 	if (!local) return NO;
 	return [cloud isEarlierThanDate:local];
 }
+
+#pragma mark - NSUserDefaults & NSUbiquitousKeyValueStore
 
 - (void)migrateDefaultsToStoreForKeys:(NSArray *)keys {
 	NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];

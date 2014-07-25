@@ -313,11 +313,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                                                      NSAssert(result, @"result");
                                                  }
 
-												 if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-													 result = [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:NULL];
-												 } else {
-													 result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
-												 }
+												 result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
                                                  NSAssert(result, @"result");
                                              }];
                 NSAssert([fileManager fileExistsAtPath:[photoImageURLInOriginalDirectory path]], @"[fileManager fileExistsAtPath:[photoImageURLInOriginalDirectory path]");
@@ -993,6 +989,15 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	else {
 		[picker dismissViewControllerAnimated:YES completion:NULL];
 	}
+
+	WalletFieldItem *fieldItem = [WalletFieldItem MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
+	fieldItem.uniqueID = [[NSUUID UUID] UUIDString];
+	fieldItem.updateDate = [NSDate date];
+	fieldItem.walletItemID = _item.uniqueID;
+	fieldItem.fieldID = _currentFieldItem.fieldID;
+
+	[_currentFieldItem MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
+	_currentFieldItem = fieldItem;
 
     BOOL result;
 	NSString *mediaType = imageEditInfo[UIImagePickerControllerMediaType];

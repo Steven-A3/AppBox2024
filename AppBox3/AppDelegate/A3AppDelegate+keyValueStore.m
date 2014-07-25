@@ -43,10 +43,6 @@
 		// This loop assumes you are using the same key names in both
 		// the user defaults database and the iCloud key-value store
 		for (NSString* key in changedKeys) {
-			if ([key isEqualToString:A3SyncManagerCloudStoreID]) {
-				// Cloud Store ID 는 동기화에서 제외
-				continue;
-			}
 			id objectInCloud = [store objectForKey:key];
 			id objectInLocal = [userDefaults objectForKey:key];
 			if ([key isEqualToString:A3MainMenuUserDefaultsAllMenu]) {

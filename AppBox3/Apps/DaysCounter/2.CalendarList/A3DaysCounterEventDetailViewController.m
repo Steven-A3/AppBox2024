@@ -367,7 +367,7 @@
         cell.eventTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     }
     
-    if ([event.hasPhoto boolValue]) {
+    if ([event.photoID length]) {
         cell.eventPhotoImageView.image = [event thumbnailImageInOriginalDirectory:YES];
 		cell.eventPhotoImageView.layer.cornerRadius = cell.eventPhotoImageView.image.size.width / 2.0;
 		cell.eventPhotoImageView.layer.masksToBounds = YES;
@@ -381,7 +381,7 @@
 
     cell.eventTitleLabel.text = event.eventName;
     CGSize calculatedTitleSize = [cell.eventTitleLabel.text sizeWithAttributes:@{ NSFontAttributeName : cell.eventTitleLabel.font }];
-    CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - (event.favorite != nil ? 43 : 15) - ([event.hasPhoto boolValue] ? 73 : 0) - (IS_IPHONE ? 15 : 28);
+    CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - (event.favorite != nil ? 43 : 15) - ([event.photoID length] ? 73 : 0) - (IS_IPHONE ? 15 : 28);
 
     if (calculatedTitleSize.width > titleMaxWidth) {
         calculatedTitleSize = [cell.eventTitleLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
@@ -1525,7 +1525,7 @@ EXIT_FUCTION:
 
 			UIFont *titleFont = IS_IPHONE ? [UIFont boldSystemFontOfSize:17.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
 			CGSize calculatedTitleSize = [_eventItem.eventName sizeWithAttributes:@{ NSFontAttributeName : titleFont }];
-			CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - (_eventItem.favorite != nil ? 43 : 15) - ([_eventItem.hasPhoto boolValue] ? 73 : 0) - (IS_IPHONE ? 15 : 28);
+			CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - (_eventItem.favorite != nil ? 43 : 15) - ([_eventItem.photoID length] ? 73 : 0) - (IS_IPHONE ? 15 : 28);
 
 			if (calculatedTitleSize.width > titleMaxWidth) {
 ////                    UILabel *label = [[UILabel alloc] init];

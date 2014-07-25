@@ -93,19 +93,12 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 
 - (NSURL *)photoURLInOriginalDirectory:(BOOL)inOriginalDirectory {
 	if (inOriginalDirectory) {
-		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-			NSURL *ubiquityContainerURL = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
-			NSString *filePath = [A3DaysCounterImageDirectory stringByAppendingPathComponent:self.uniqueID];
-            FNLOG(@"\nphotoOriginalPath(Cloud): %@", filePath);
-			return [ubiquityContainerURL URLByAppendingPathComponent:filePath];
-		} else {
-			NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:self.uniqueID] pathInLibraryDirectory];
-            FNLOG(@"\nphotoOriginalPath: %@", path);
-			return [NSURL fileURLWithPath:path];
-		}
+		NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:self.photoID] pathInLibraryDirectory];
+		FNLOG(@"\nphotoOriginalPath: %@", path);
+		return [NSURL fileURLWithPath:path];
 	} else {
-        FNLOG(@"\nphotoTempPath: %@", [self.uniqueID pathInTemporaryDirectory]);
-		return [NSURL fileURLWithPath:[self.uniqueID pathInTemporaryDirectory] ];
+        FNLOG(@"\nphotoTempPath: %@", [self.photoID pathInTemporaryDirectory]);
+		return [NSURL fileURLWithPath:[self.photoID pathInTemporaryDirectory] ];
 	}
 }
 
@@ -115,6 +108,7 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 }
 
 - (void)setPhoto:(UIImage *)image inOriginalDirectory:(BOOL)inOriginalDirectory {
+	self.photoID = [[NSUUID UUID] UUIDString];
     BOOL result = [UIImageJPEGRepresentation(image, 1.0) writeToURL:[self photoURLInOriginalDirectory:inOriginalDirectory] atomically:YES];
     if (!result) {
         FNLOG(@"\nFailed to write photo data: %@", [[self photoURLInOriginalDirectory:inOriginalDirectory] path]);
@@ -122,7 +116,7 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 }
 
 - (UIImage *)thumbnailImageInOriginalDirectory:(BOOL)inOriginalDirectory {
-	if (![self.hasPhoto boolValue]) return nil;
+	if (![self.photoID length]) return nil;
 	NSString *filePath = [self thumbnailPathInOriginalDirectory:inOriginalDirectory];
 	if (inOriginalDirectory && ![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
 		UIImage *image = [self photoInOriginalDirectory:YES];
@@ -153,7 +147,7 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 }
 
 - (void)copyImagesToTemporaryDirectory {
-	if (![self.hasPhoto boolValue]) {
+	if (![self.photoID length]) {
 		return;
 	}
 
@@ -184,7 +178,7 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 }
 
 - (void)moveImagesToOriginalDirectory {
-	if (![self.hasPhoto boolValue]) {
+	if (![self.photoID length]) {
 		[self deletePhoto];
 		return;
 	}
@@ -203,11 +197,7 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 											  error:&error
 										 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
                                              [fileManager removeItemAtURL:newWritingURL error:NULL];
-											 if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-												 [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:NULL];
-											 } else {
-												 [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
-											 }
+											 [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
 										 }];
 		if (error) {
 			FNLOG(@"%@", error.localizedDescription);
@@ -222,7 +212,6 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 }
 
 - (void)deletePhoto {
-	self.hasPhoto = @NO;
 
 	NSFileManager *fileManager = [[NSFileManager alloc] init];
 	NSURL *photoURL = [self photoURLInOriginalDirectory:YES];
@@ -238,6 +227,8 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 	
 	[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:YES] error:NULL];
 	[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:NO] error:NULL];
+
+	self.photoID = nil;
 }
 
 @end

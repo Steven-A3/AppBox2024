@@ -22,13 +22,12 @@
 	NSError *error = nil;
 	@try {
 		NSFileManager *fileManager = [NSFileManager defaultManager];
-		NSString *storePath = [fileManager cacheStorePath];
-		NSURL *storeURL = [NSURL fileURLWithPath:storePath];
+		NSString *storePath = [[fileManager applicationSupportPath] stringByAppendingPathComponent:@"AppBoxCacheStore.sqlite"];
 
 		if ([fileManager fileExistsAtPath:storePath]) {
 			[fileManager removeItemAtPath:storePath error:&error];
 		}
-		[MagicalRecord setupAutoMigratingCoreDataStack];
+		[MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"AppBoxCacheStore.sqlite"];
 
 		[self initCurrencyData];
 

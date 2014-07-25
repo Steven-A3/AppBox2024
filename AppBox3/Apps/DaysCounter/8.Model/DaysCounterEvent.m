@@ -2,7 +2,7 @@
 //  DaysCounterEvent.m
 //  AppBox3
 //
-//  Created by A3 on 7/18/14.
+//  Created by A3 on 7/25/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -18,7 +18,6 @@
 @dynamic durationOption;
 @dynamic effectiveStartDate;
 @dynamic eventName;
-@dynamic hasPhoto;
 @dynamic hasReminder;
 @dynamic isAllDay;
 @dynamic isLunar;
@@ -28,5 +27,6 @@
 @dynamic repeatType;
 @dynamic uniqueID;
 @dynamic updateDate;
+@dynamic photoID;
 
 @end

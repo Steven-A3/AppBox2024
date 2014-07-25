@@ -645,13 +645,12 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 
 	self.managedObjectContext = [NSManagedObjectContext MR_defaultContext];
 
-	if ([[NSUserDefaults standardUserDefaults] objectForKey:A3SyncManagerCloudStoreID]) {
-		FNLOG(@"Cloud Store ID: %@", [[NSUserDefaults standardUserDefaults] objectForKey:A3SyncManagerCloudStoreID]);
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
 		A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
 		sharedSyncManager.storePath = [[self storeURL] path];
 		[sharedSyncManager setupEnsemble];
 		[sharedSyncManager synchronizeWithCompletion:NULL];
-		[self startDownloadAllFiles];
+		[self downloadFilesFromCloud];
 	}
 }
 

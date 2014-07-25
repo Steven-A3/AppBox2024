@@ -138,31 +138,11 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
 		[keyValueStore synchronize];
 
-		if ([keyValueStore objectForKey:A3SyncManagerCloudStoreID]) {
-			// Ask user to delete iCloud or not
-			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Setup AppBox Pro data stored in iCloud", nil)
-																	 delegate:self
-															cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-													   destructiveButtonTitle:NSLocalizedString(@"Delete and start over", nil)
-															otherButtonTitles:NSLocalizedString(@"Use data stored in iCloud", nil), nil];
-			[actionSheet showInView:self.view];
-			return;
-		}
-		[[A3AppDelegate instance] setCloudEnabled:YES deleteCloud:NO ];
+		[[A3AppDelegate instance] setCloudEnabled:YES ];
 	} else {
 		[self continueButtonPressedInViewController:_currentSceneViewController];
 	}
 }
-
-#pragma mark - UIActionSheet Delegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex == actionSheet.cancelButtonIndex) return;
-	BOOL deleteCloud = buttonIndex == actionSheet.destructiveButtonIndex;
-
-	[[A3AppDelegate instance] setCloudEnabled:YES deleteCloud:deleteCloud ];
-}
-
 
 - (void)continueButtonPressedInViewController:(UIViewController *)viewController {
 	_sceneNumber++;

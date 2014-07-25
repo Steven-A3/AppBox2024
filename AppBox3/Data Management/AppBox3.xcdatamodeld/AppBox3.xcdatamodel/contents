@@ -70,12 +70,12 @@
         <attribute name="durationOption" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="effectiveStartDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="eventName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="hasPhoto" optional="YES" attributeType="Boolean" valueTransformerName="A3ImageToDataTransformer" defaultValueString="NO" storedInTruthFile="YES" syncable="YES"/>
         <attribute name="hasReminder" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isAllDay" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isLunar" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isPeriod" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="photoID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="repeatEndDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="repeatType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
@@ -409,7 +409,7 @@
         <element name="CurrencyRateItem" positionX="54" positionY="-504" width="128" height="135"/>
         <element name="DaysCounterCalendar" positionX="-414" positionY="-837" width="128" height="180"/>
         <element name="DaysCounterDate" positionX="-578" positionY="-646" width="128" height="208"/>
-        <element name="DaysCounterEvent" positionX="-236" positionY="-837" width="128" height="298"/>
+        <element name="DaysCounterEvent" positionX="-236" positionY="-837" width="128" height="300"/>
         <element name="DaysCounterEventLocation" positionX="-81" positionY="-801" width="162" height="208"/>
         <element name="DaysCounterFavorite" positionX="-432" positionY="-640" width="128" height="103"/>
         <element name="DaysCounterReminder" positionX="-83" positionY="-523" width="128" height="148"/>

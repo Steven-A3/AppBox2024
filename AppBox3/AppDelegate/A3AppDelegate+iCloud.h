@@ -12,7 +12,8 @@ extern NSString *const A3CloudHasData;
 
 @interface A3AppDelegate (iCloud)
 
-- (void)setCloudEnabled:(BOOL)enable deleteCloud:(BOOL)deleteCloud;
+- (void)setCloudEnabled:(BOOL)enable;
+- (void)uploadFilesToCloud;
+- (void)downloadFilesFromCloud;
 
-- (void)startDownloadAllFiles;
 @end

@@ -53,11 +53,7 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 }
 
 - (NSURL *)baseURL {
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		return [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
-	} else {
-		return [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0]];
-	}
+	return [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0]];
 }
 
 - (NSURL *)photoImageURLInOriginalDirectory:(BOOL)inOriginalDirectory {

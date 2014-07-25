@@ -210,8 +210,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 			NSString *filePath = [self pathForFilename:filename];
 			if ([filename length] && [fileManager fileExistsAtPath:filePath] ) {
 				_migrateV1WithDaysCounterPhoto = YES;
-				newEvent.hasPhoto = @YES;
-
+				newEvent.photoID = [[NSUUID UUID] UUIDString];
 				NSURL *photoURL = [newEvent photoURLInOriginalDirectory:YES];
 				[fileManager removeItemAtURL:photoURL error:NULL];		// If file exist at toURL, moveItem will fail.
 				[fileManager moveItemAtURL:[NSURL fileURLWithPath:filePath] toURL:photoURL error:NULL];

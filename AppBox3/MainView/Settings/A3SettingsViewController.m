@@ -149,22 +149,8 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			[switchControl setOn:NO animated:YES];
 			return;
 		}
-
-		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
-		[keyValueStore synchronize];
-
-		if ([keyValueStore objectForKey:A3SyncManagerCloudStoreID]) {
-			// Ask user to delete iCloud or not
-			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Setup AppBox Pro data stored in iCloud", nil)
-																	 delegate:self
-															cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-													   destructiveButtonTitle:NSLocalizedString(@"Delete and start over", nil)
-															otherButtonTitles:NSLocalizedString(@"Use data stored in iCloud", nil), nil];
-			[actionSheet showInView:self.view];
-			return;
-		}
 	}
-	[[A3AppDelegate instance] setCloudEnabled:switchControl.on deleteCloud:NO ];
+	[[A3AppDelegate instance] setCloudEnabled:switchControl.on];
 }
 
 - (void)themeColor {
@@ -178,16 +164,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 }
 
 #pragma mark - UIActionSheet Delegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex == actionSheet.cancelButtonIndex) {
-		[_iCloudSwitch setOn:NO];
-		return;
-	}
-	BOOL deleteCloud = buttonIndex == actionSheet.destructiveButtonIndex;
-
-	[[A3AppDelegate instance] setCloudEnabled:YES deleteCloud:deleteCloud ];
-}
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
 	if ([identifier isEqualToString:@"pushDropboxBackup"]) {

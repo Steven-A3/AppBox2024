@@ -10,6 +10,8 @@
 
 @interface NSFileManager (A3Addtion)
 
+- (NSString *)applicationSupportPath;
+
 - (NSString *)storePath;
 
 - (NSString *)storeName;

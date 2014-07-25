@@ -237,7 +237,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
         DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
 		DaysCounterEvent *event = [favorite event];
         textLabel.text = event.eventName;
-		if ([event.hasPhoto boolValue]) {
+		if ([event.photoID length]) {
 			imageView.image = [favorite.event thumbnailImageInOriginalDirectory:YES];
 			imageView.contentMode = UIViewContentModeScaleAspectFill;
 			imageView.layer.cornerRadius = imageView.bounds.size.width / 2.0;

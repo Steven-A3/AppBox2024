@@ -62,6 +62,7 @@
 @property (assign, nonatomic) BOOL isDurationInitialized;//temp...
 @property (weak, nonatomic) UITextView *textViewResponder;
 @property (strong, nonatomic) UIImagePickerController *imagePickerController;
+@property (copy, nonatomic) NSString *originalPhotoID;
 @end
 
 @implementation A3DaysCounterAddEventViewController {
@@ -97,6 +98,7 @@
         _isDurationInitialized = YES;
 
 		[_eventItem copyImagesToTemporaryDirectory];
+		_originalPhotoID = _eventItem.photoID;
     }
     else {
 		_isAddingEvent = YES;
@@ -718,7 +720,7 @@
 - (void)photoTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType
 {
     UIButton *button = (UIButton*)[cell viewWithTag:11];
-	if ([_eventItem.hasPhoto boolValue]) {
+	if ([_eventItem.photoID length]) {
 		button.layer.cornerRadius = button.bounds.size.width / 2.0;
 		button.layer.masksToBounds = YES;
 		button.contentMode = UIViewContentModeScaleAspectFill;
@@ -1480,8 +1482,11 @@
         [_sharedManager addEvent:_eventItem];
     }
     else {
-        [_sharedManager modifyEvent:_eventItem];
-    }
+		if ([_originalPhotoID isEqualToString:_eventItem.photoID]) {
+
+		}
+		[_sharedManager modifyEvent:_eventItem];
+	}
 	[_eventItem moveImagesToOriginalDirectory];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
@@ -1526,7 +1531,7 @@
 {
     [self resignAllAction];
 
-	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_eventItem.hasPhoto boolValue] delegate:self];
+	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_eventItem.photoID length] > 0 delegate:self];
 	actionSheet.tag = ActionTag_Photo;
 	[actionSheet showInView:self.view];
 }
@@ -2184,7 +2189,7 @@
 		if (buttonIndex == actionSheet.cancelButtonIndex) return;
 
 		if (buttonIndex == actionSheet.destructiveButtonIndex) {
-			_eventItem.hasPhoto = @NO;
+			_eventItem.photoID = nil;
             [self.tableView reloadData];
 			return;
 		}
@@ -2369,7 +2374,10 @@
         image = [info objectForKey:UIImagePickerControllerOriginalImage];
     }
 
-	_eventItem.hasPhoto = @YES;
+	if ([_originalPhotoID isEqualToString:_eventItem.photoID]) {
+		NSURL *photoURL = [_eventItem photoURLInOriginalDirectory:NO];
+		[[NSFileManager defaultManager] removeItemAtURL:photoURL error:NULL];
+	}
 	[_eventItem setPhoto:image inOriginalDirectory:NO];
 	[_eventItem saveThumbnailForImage:image inOriginalDirectory:NO];
 
