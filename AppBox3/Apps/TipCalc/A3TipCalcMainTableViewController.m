@@ -125,6 +125,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
  * \returns
  */
 - (void)cloudStoreDidImport {
+    if (self.firstResponder) {
+        return;
+    }
+    
 	if (self.firstResponder) {
 		// 아래의 flag은 firstResponder가 있는 경우에만 켜야 한다. 왜냐하면, responder가 resign할 때 반드시 꺼야 하기 때문.
 		// resignFirstResponer를 하기 전에 설정되어야 한다. 그래야, resign 과정에서 참조할 수 있다.
