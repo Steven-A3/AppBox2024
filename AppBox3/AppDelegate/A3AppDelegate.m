@@ -45,6 +45,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 
 @property (nonatomic, strong) NSString *previousVersion;
 @property (nonatomic, strong) NSDictionary *localNotificationUserInfo;
+@property (nonatomic, strong) UILocalNotification *storedLocalNotification;
 @property (nonatomic, strong) NSMutableArray *downloadList;
 @property (nonatomic, strong) NSURLSessionDownloadTask *downloadTask;
 @property (nonatomic, strong) AAAZip *zipArchive;
@@ -73,7 +74,8 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 
 	UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
 	if (localNotification) {
-		_localNotificationUserInfo = localNotification.userInfo;
+		_localNotificationUserInfo = [localNotification.userInfo copy];
+        [[UIApplication sharedApplication] cancelLocalNotification:localNotification];
 	}
 
 	_previousVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
@@ -279,21 +281,27 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
 	FNLOG();
-	_localNotificationUserInfo = notification.userInfo;
-
-    NSString *notificationOwner = [notification.userInfo objectForKey:A3LocalNotificationOwner];
+	_localNotificationUserInfo = [notification.userInfo copy];
+    self.storedLocalNotification = notification;
     
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:notificationOwner
-													message:notification.alertBody
-												   delegate:self
-										  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-										  otherButtonTitles:NSLocalizedString(@"Details", @"Details"), nil];
-    if ([notificationOwner isEqualToString:A3LocalNotificationFromDaysCounter]) {
-        alert.tag = 11;
-    } else if ([notificationOwner isEqualToString:A3LocalNotificationFromLadyCalendar]) {
-		alert.tag = 21;
-	}
-	[alert show];
+    if ([application applicationState] == UIApplicationStateInactive) {
+        [self showReceivedLocalNotifications];
+    }
+    else {
+        NSString *notificationOwner = [notification.userInfo objectForKey:A3LocalNotificationOwner];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:notificationOwner
+                                                        message:notification.alertBody
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                              otherButtonTitles:NSLocalizedString(@"Details", @"Details"), nil];
+        if ([notificationOwner isEqualToString:A3LocalNotificationFromDaysCounter]) {
+            alert.tag = 11;
+        } else if ([notificationOwner isEqualToString:A3LocalNotificationFromLadyCalendar]) {
+            alert.tag = 21;
+        }
+        [alert show];
+    }
 }
 
 - (void)showReceivedLocalNotifications {
@@ -329,7 +337,11 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 			[self showLadyCalendarDetailView];
 			break;
 	}
+    
 	_localNotificationUserInfo = nil;
+    if (_storedLocalNotification) {
+        [[UIApplication sharedApplication] cancelLocalNotification:_storedLocalNotification];
+    }
 }
 
 - (void)showDaysCounterDetail {
