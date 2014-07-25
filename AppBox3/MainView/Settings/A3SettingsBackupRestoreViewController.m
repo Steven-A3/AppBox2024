@@ -302,6 +302,14 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 											  otherButtonTitles:nil];
 	[alertView show];
+
+	NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ThemeColorIndex];
+	if (selectedColor) {
+		self.view.tintColor = [[A3AppDelegate instance] themeColor];
+		[A3AppDelegate instance].window.tintColor = [[A3AppDelegate instance] themeColor];
+		self.navigationController.navigationBar.tintColor = [[A3AppDelegate instance] themeColor];
+		[self.tableView reloadData];
+	}
 }
 
 #pragma mark - segue

@@ -63,6 +63,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	[super viewWillAppear:animated];
 
 	if (![self isMovingToParentViewController]) {
+		[self leftBarButtonAppsButton];
 		[self.tableView reloadData];
 	}
 }

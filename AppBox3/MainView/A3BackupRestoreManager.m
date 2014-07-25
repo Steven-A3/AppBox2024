@@ -14,6 +14,8 @@
 #import "DaysCounterEvent+extension.h"
 #import "WalletFieldItem+initialize.h"
 #import "AAAZip.h"
+#import "HolidayData+Country.h"
+#import "A3HolidaysFlickrDownloadManager.h"
 #import "A3SyncManager.h"
 
 NSString *const A3ZipFilename = @"name";
@@ -83,6 +85,22 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 				A3ZipFilename : [[event photoURLInOriginalDirectory:YES] path],
 				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@", A3DaysCounterImageDirectory, event.uniqueID]
 			}];
+	}
+
+	NSArray *holidayCountries = [HolidayData userSelectedCountries];
+	A3HolidaysFlickrDownloadManager *holidaysFlickrDownloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
+	for (NSString *countryCode in holidayCountries) {
+		if ([holidaysFlickrDownloadManager hasUserSuppliedImageForCountry:countryCode]) {
+			NSString *holidayBackground = [[A3HolidaysFlickrDownloadManager sharedInstance] holidayImagePathForCountryCode:countryCode];
+			if ([holidayBackground length]) {
+				[fileList addObject:
+						@{
+								A3ZipFilename : holidayBackground,
+								A3ZipNewFilename : [holidayBackground lastPathComponent]
+						}
+				];
+			}
+		}
 	}
 
 	NSArray *walletImages = [WalletFieldItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasImage == YES"]];
@@ -271,13 +289,21 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		[self moveFilesFromURL:[sourceBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory]
 						 toURL:[targetBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory]];
 
+		[self moveFilesFromURL:sourceBaseURL toURL:targetBaseURL];
+
 		NSDictionary *backupInfo = [[NSDictionary alloc] initWithContentsOfFile:backupInfoFilePath];
 		NSDictionary *userDefaults = backupInfo[A3BackupFileUserDefaultsKey];
 		NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
 		for (NSString *key in userDefaults.allKeys) {
 			[standardUserDefaults setObject:userDefaults[key] forKey:key];
 		}
+		[standardUserDefaults removeObjectForKey:A3SyncManagerCloudEnabled];
 		[standardUserDefaults synchronize];
+
+		NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ThemeColorIndex];
+		if (selectedColor) {
+			[A3AppDelegate instance].window.tintColor = [[A3AppDelegate instance] themeColor];
+		}
 
 		[[A3AppDelegate instance] setupContext];
 

@@ -22,6 +22,9 @@ extern NSString *const A3HolidaysFlickrDownloadManagerDownloadComplete;
 + (instancetype)sharedInstance;
 
 - (UIImage *)imageForCountryCode:(NSString *)countryCode;
+
+- (NSString *)holidayImagePathForCountryCode:(NSString *)countryCode;
+
 - (BOOL)isDayForCountryCode:(NSString *)countryCode;
 - (BOOL)hasUserSuppliedImageForCountry:(NSString *)code;
 - (UIImageView *)thumbnailOfUserSuppliedImageForCountryCode:(NSString *)countryCode;
