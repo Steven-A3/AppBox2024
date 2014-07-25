@@ -92,6 +92,10 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 }
 
 - (NSURL *)photoURLInOriginalDirectory:(BOOL)inOriginalDirectory {
+    if (!self.photoID) {
+        return nil;
+    }
+    
 	if (inOriginalDirectory) {
 		NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:self.photoID] pathInLibraryDirectory];
 		FNLOG(@"\nphotoOriginalPath: %@", path);
@@ -136,6 +140,10 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 }
 
 - (NSString *)thumbnailPathInOriginalDirectory:(BOOL)inOriginalDirectory {
+    if (!self.photoID) {
+        return nil;
+    }
+    
 	NSString *directory;
 	if (inOriginalDirectory) {
 		directory = [A3DaysCounterModelManager thumbnailDirectory];
