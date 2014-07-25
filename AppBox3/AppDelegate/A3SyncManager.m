@@ -64,21 +64,6 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	return @"net.allaboutapps.AppBox";
 }
 
-- (void)setupEnsemble
-{
-	if (!self.isCloudEnabled) return;
-
-	NSURL *storeURL = [NSPersistentStore MR_urlForStoreName:[[A3AppDelegate instance] storeFileName]];
-	NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"AppBox3" withExtension:@"momd"];
-	_ensemble = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:self.cloudStoreID persistentStoreURL:storeURL managedObjectModelURL:modelURL cloudFileSystem:self.cloudFileSystem];
-	_ensemble.delegate = self;
-	_rootDirectoryURL = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
-	[_rootDirectoryURL URLByAppendingPathComponent:[self rootDirectoryName]];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localSaveOccurred:) name:CDEMonitoredManagedObjectContextDidSaveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(icloudDidDownload:) name:CDEICloudFileSystemDidDownloadFilesNotification object:nil];
-}
-
 - (CDEICloudFileSystem *)cloudFileSystem {
 	if (!_cloudFileSystem) {
 		_cloudFileSystem = [[CDEICloudFileSystem alloc] initWithUbiquityContainerIdentifier:nil relativePathToRootInContainer:[self rootDirectoryName]];
@@ -96,6 +81,21 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	[self synchronizeWithCompletion:^(NSError *error) {
 		[self.ensemble mergeWithCompletion:NULL];
 	}];
+}
+
+- (void)setupEnsemble
+{
+	if (!self.isCloudEnabled) return;
+
+	NSURL *storeURL = [NSPersistentStore MR_urlForStoreName:[[A3AppDelegate instance] storeFileName]];
+	NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"AppBox3" withExtension:@"momd"];
+	_ensemble = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:self.cloudStoreID persistentStoreURL:storeURL managedObjectModelURL:modelURL cloudFileSystem:self.cloudFileSystem];
+	_ensemble.delegate = self;
+	_rootDirectoryURL = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+	[_rootDirectoryURL URLByAppendingPathComponent:[self rootDirectoryName]];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localSaveOccurred:) name:CDEMonitoredManagedObjectContextDidSaveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(icloudDidDownload:) name:CDEICloudFileSystemDidDownloadFilesNotification object:nil];
 }
 
 - (void)disableCloudSync {

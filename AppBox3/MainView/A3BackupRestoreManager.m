@@ -76,7 +76,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-wal"]}];
 	[_deleteFilesAfterZip addObject:path];
 
-	NSArray *daysCounterEvents = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasPhoto == YES"]];
+	NSArray *daysCounterEvents = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"photoID != NULL"]];
 	for (DaysCounterEvent *event in daysCounterEvents) {
 		[fileList addObject:
 			@{
