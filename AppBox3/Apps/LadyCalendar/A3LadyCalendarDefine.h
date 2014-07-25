@@ -43,7 +43,7 @@
 #define SettingItem_CustomAlertTime         @"customAlertTime"
 
 #define DefaultAccountID                    @"defaultAccount"
-#define DefaultAccountName                  @"User01"
+#define DefaultAccountName                  [NSString stringWithFormat:@"%@01", NSLocalizedString(@"User", nil)]
 
 #define CalendarItem_Month                  @"monthDate"
 #define CalendarItem_FirstDayPosition       @"firstDayPosition"

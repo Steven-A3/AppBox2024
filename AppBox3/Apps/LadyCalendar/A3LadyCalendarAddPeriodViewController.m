@@ -55,6 +55,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																						  target:self
@@ -246,10 +247,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			@"value1Cell",
 			@"value1Cell",
 			@"defaultCell",
-			@"value1Cell",
-			@"inputNotesCell",
+            A3WalletItemFieldNoteCellID,
 			@"dateInputCell",
 			@"deleteCell"];
+    
     NSString *cellID = [cellIDs objectAtIndex:cellType];
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
@@ -363,6 +364,14 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
         case PeriodCellType_Notes:
         {
+            A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID forIndexPath:indexPath];
+            [noteCell setupTextView];
+            
+            noteCell.textView.delegate = self;
+            noteCell.textView.text = _periodItem.notes;
+            
+            cell = noteCell;
+            
 			break;
 		}
         case PeriodCellType_DateInput:
@@ -392,7 +401,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     NSInteger cellType = [[item objectForKey:ItemKey_Type] integerValue];
     
     switch (cellType)  {
-        case PeriodCellType_Notes:{
+        case PeriodCellType_Notes: {
 			return [UIViewController noteCellHeight];
 		}
         case PeriodCellType_DateInput:
@@ -427,46 +436,55 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             [self resignAllAction];
             NSInteger inputCellType = 0;
             
-            if ( [self.inputItemKey isEqualToString:PeriodItem_StartDate] )
+            if ( [self.inputItemKey isEqualToString:PeriodItem_StartDate] ) {
                 inputCellType = PeriodCellType_StartDate;
-            else if ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] )
+            }
+            else if ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] ) {
                 inputCellType = PeriodCellType_EndDate;
+            }
 
             if ( [self.inputItemKey length] > 0 ) {
                 [self closeDateInputCell];
                 
-                if ( cellType == inputCellType )
+                if ( cellType == inputCellType ) {
                     return;
-                else if ( inputCellType == PeriodCellType_StartDate && indexPath.section == 0 )
+                }
+                else if ( inputCellType == PeriodCellType_StartDate && indexPath.section == 0 ) {
                     indexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
+                }
             }
             
             // open
             [items insertObject:@{ItemKey_Title : @"", ItemKey_Type : @(PeriodCellType_DateInput)} atIndex:indexPath.row+1];
-            if ( cellType == PeriodCellType_StartDate )
+            if ( cellType == PeriodCellType_StartDate ) {
                 self.inputItemKey = PeriodItem_StartDate;
-            else if ( cellType == PeriodCellType_EndDate )
+            }
+            else if ( cellType == PeriodCellType_EndDate ) {
                 self.inputItemKey = PeriodItem_EndDate;
+            }
+            
             [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
             [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-
         }
             break;
-        case PeriodCellType_CycleLength:{
+            
+        case PeriodCellType_CycleLength: {
             [self closeDateInputCell];
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
             UITextField *textField = (UITextField*)cell.accessoryView;
             [textField becomeFirstResponder];
         }
             break;
-        case PeriodCellType_Notes:{
+            
+        case PeriodCellType_Notes: {
             [self closeDateInputCell];
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
             UITextView *textView = (UITextView*)[cell viewWithTag:10];
             [textView becomeFirstResponder];
         }
             break;
-        case PeriodCellType_Delete:{
+            
+        case PeriodCellType_Delete: {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 																	 delegate:self
