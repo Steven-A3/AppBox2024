@@ -434,7 +434,7 @@
 "Optional" = "Optional";
 "Cannot remove current account." = "Aktuelles Konto kann nicht gelöscht werden.";
 " Same name already exists. " = " Der Name existiert bereits. ";
-"User" = "Nutzer";
+"User" = "Benutzer";
 
 "Edit Period" = "Periode bearbeiten";
 "Add Period" = "Periode hinzufügen";

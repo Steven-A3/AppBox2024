@@ -442,7 +442,7 @@
 "Optional" = "Facultatif";
 "Cannot remove current account." = "Impossible de supprimer le compte actuel.";
 " Same name already exists. " = "Ce nom existe déjà. ";
-"User" = "Utilisateurr";
+"User" = "Utilisateur";
 
 "Edit Period" = "Modifier la période";
 "Add Period" = "Ajouter la période";
