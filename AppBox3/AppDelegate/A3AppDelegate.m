@@ -334,13 +334,12 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 
 	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	FNLOG(@"%@", _localNotificationUserInfo[A3LocalNotificationDataID]);
 
 	DaysCounterEvent *eventItem = [DaysCounterEvent MR_findFirstByAttribute:@"uniqueID" withValue:_localNotificationUserInfo[A3LocalNotificationDataID]];
 	A3DaysCounterEventDetailViewController *viewController = [[A3DaysCounterEventDetailViewController alloc] init];
-	viewController.isModal = YES;
+	viewController.isNotificationPopup = YES;
 	viewController.eventItem = eventItem;
     A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
     [sharedManager prepareInContext:[NSManagedObjectContext MR_defaultContext] ];

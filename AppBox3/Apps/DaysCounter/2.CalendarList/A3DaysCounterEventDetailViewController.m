@@ -60,7 +60,7 @@
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
-	if (_isModal) {
+	if (_isNotificationPopup) {
         [self removeBackAndEditButton];
     } else {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
@@ -265,35 +265,22 @@
             [self updateEventInfoCell:(A3DaysCounterEventInfoCell *)cell withInfo:_eventItem];
         }
             break;
+            
         case EventCellType_Alert:
         {
             cell.textLabel.text = [itemDict objectForKey:EventRowTitle];
             cell.detailTextLabel.text = [_sharedManager alertDateStringFromDate:_eventItem.effectiveStartDate
                                                                       alertDate:_eventItem.alertDatetime];
-//            NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
-//                                                                           toDate:_eventItem.effectiveStartDate
-//                                                                     allDayOption:[_eventItem.isAllDay boolValue]
-//                                                                           repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO
-//                                                                           strict:[A3DaysCounterModelManager hasHourMinDurationOption:[_eventItem.durationOption integerValue]]];
-//            if ([untilSinceString isEqualToString:NSLocalizedString(@"Today", @"Today")] || [untilSinceString isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
-//                NSDate *repeatDate = [A3DaysCounterModelManager repeatDateOfCurrentNotNextWithRepeatOption:[_eventItem.repeatType integerValue]
-//                                                                                                 firstDate:[_eventItem.startDate solarDate]
-//                                                                                                  fromDate:[NSDate date]];
-//                cell.detailTextLabel.text = [_sharedManager alertDateStringFromDate:repeatDate
-//                                                                          alertDate:_eventItem.alertDatetime];
-//            }
-//            else {
-//                cell.detailTextLabel.text = [_sharedManager alertDateStringFromDate:_eventItem.effectiveStartDate
-//                                                                          alertDate:_eventItem.alertDatetime];
-//            }
         }
             break;
+            
         case EventCellType_DurationOption:
         {
             cell.textLabel.text = [itemDict objectForKey:EventRowTitle];
             cell.detailTextLabel.text = [_sharedManager durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
         }
             break;
+            
         case EventCellType_Calendar:
         {
             UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
@@ -310,6 +297,7 @@
             colorImageView.hidden = ([nameLabel.text length] < 1 );
         }
             break;
+            
         case EventCellType_Location:
         {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
@@ -330,12 +318,14 @@
             }
         }
             break;
+            
         case EventCellType_Notes:
         {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.text = _eventItem.notes;
         }
             break;
+            
         case EventCellType_Share:
         {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
@@ -343,6 +333,7 @@
             textLabel.textColor = [A3AppDelegate instance].themeColor;
         }
             break;
+            
         case EventCellType_Favorites:
         {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
@@ -1347,6 +1338,10 @@ EXIT_FUCTION:
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if (_isNotificationPopup) {
+        return 1;
+    }
+    
     return 2;
 }
 
