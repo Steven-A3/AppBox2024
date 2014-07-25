@@ -2130,6 +2130,7 @@
 		68B9B16F17D04152003ACAD0 /* NSDate+daysleft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+daysleft.m"; sourceTree = "<group>"; };
 		68C1ABF818B1C05200021001 /* NSDateFormatter+LunarDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+LunarDate.h"; sourceTree = "<group>"; };
 		68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+LunarDate.m"; sourceTree = "<group>"; };
+		68C68B16198291BA000E3A2C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WalletCategoryPreset.plist; sourceTree = "<group>"; };
 		68C802DC19571A2000BC19EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/WalletPreset.strings; sourceTree = "<group>"; };
 		68C802DE19571A2800BC19EE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WalletPreset.strings; sourceTree = "<group>"; };
@@ -6419,6 +6420,7 @@
 				68F1505D194B200300159EAD /* pl */,
 				68F15068194B206A00159EAD /* es */,
 				68F1506B194B210800159EAD /* Base */,
+				68C68B16198291BA000E3A2C /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
