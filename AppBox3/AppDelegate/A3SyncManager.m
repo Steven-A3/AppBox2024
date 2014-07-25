@@ -123,10 +123,6 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	if (!self.isCloudEnabled) return;
 	
 	[self synchronizeWithCompletion:NULL];
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[self uploadFilesToCloud];
-		[self downloadFilesFromCloud];
-	});
 }
 
 - (void)localSaveOccurred:(NSNotification *)notif
@@ -134,10 +130,6 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	if (!self.isCloudEnabled) return;
 	
 	[self synchronizeWithCompletion:NULL];
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[self uploadFilesToCloud];
-		[self downloadFilesFromCloud];
-	});
 }
 
 - (BOOL)isCloudEnabled {
@@ -152,6 +144,9 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	[self incrementMergeCount];
 	if (!_ensemble.isLeeched) {
 		[_ensemble leechPersistentStoreWithCompletion:^(NSError *error) {
+			[self uploadFilesToCloud];
+			[self downloadFilesFromCloud];
+
 			[self decrementMergeCount];
 			if (error && !_ensemble.isLeeched) {
 				NSLog(@"Could not leech to ensemble: %@", error);
@@ -164,6 +159,9 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	}
 	else {
 		[_ensemble mergeWithCompletion:^(NSError *error) {
+			[self uploadFilesToCloud];
+			[self downloadFilesFromCloud];
+
 			[self decrementMergeCount];
 			if (error) NSLog(@"Error merging: %@", error);
 			if (completion) completion(error);

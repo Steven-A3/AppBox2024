@@ -76,6 +76,8 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
  * \returns
  */
 - (void)migrateV1DataWithPassword:(NSString *)password {
+	[self migrateFilesForV1_7];
+
 	_migrateV1WithDaysCounterPhoto = NO;
 
 	[self migrateDaysCounterInContext:_context];
@@ -702,6 +704,54 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 		[self migrateV1DataWithPassword:password];
 	} else {
 		[self askWalletPassword];
+	}
+}
+
+- (void)migrateFilesForV1_7 {
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentDirectory = [paths objectAtIndex:0];
+	paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+	NSString *libraryDirectory = [paths objectAtIndex:0];
+
+	NSFileManager	*fileManager = [NSFileManager defaultManager];
+	NSString *source, *target, *filename;
+
+	NSArray *fileNames = @[
+			@"dashboardBackground.png", @"dashboardSettings.db", @"alarms.db",
+			@"wallet.db", @"unitConverterData.db", @"unitConverterFavoriteData.db",
+			@"unitFavorites.db", @"translatorFavorites.db", @"myGirlsDayData.db",
+			@"currencyCodesData.db", @"holidayNations.db", @"toolsconf.db"
+	];
+	for (NSString *file in fileNames) {
+		source = [documentDirectory stringByAppendingPathComponent:file];
+		if ([fileManager fileExistsAtPath:source]) {
+			target = [libraryDirectory stringByAppendingPathComponent:file];
+			[fileManager moveItemAtPath:source toPath:target error:NULL];
+		}
+	}
+
+	filename = @"DDayData.db";
+	source = [documentDirectory stringByAppendingPathComponent:filename];
+	if ([fileManager fileExistsAtPath:source]) {
+		target = [libraryDirectory stringByAppendingPathComponent:filename];
+		[fileManager moveItemAtPath:source toPath:target error:NULL];
+
+		NSArray *ddayArray = [NSArray arrayWithContentsOfFile:target];
+		NSInteger index, count = [ddayArray count];
+		for (index = 0; index < count; index++) {
+			NSDictionary *data = [ddayArray objectAtIndex:index];
+			NSString *imagefilename = [data objectForKey:kKeyForDDayImageFilename];
+			if ([imagefilename length]) {
+				source = [documentDirectory stringByAppendingPathComponent:imagefilename];
+				target = [libraryDirectory stringByAppendingPathComponent:imagefilename];
+				[fileManager moveItemAtPath:source toPath:target error:NULL];
+			}
+			source = [source stringByAppendingString:@"thumbnail"];
+			if ([fileManager fileExistsAtPath:source]) {
+				target = [target stringByAppendingString:@"thumbnail"];
+				[fileManager moveItemAtPath:source toPath:target error:NULL];
+			}
+		}
 	}
 }
 

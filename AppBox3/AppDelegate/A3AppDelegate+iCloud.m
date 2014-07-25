@@ -50,16 +50,20 @@
 	// set the time of wake up to use for returning if we updated
 	self.wakeUpTime = [NSDate date];
 	FNLOG(@"%@", self.wakeUpTime);
-		
+
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
+		[[A3SyncManager sharedSyncManager] synchronizeWithCompletion:^(NSError *error) {
+			[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
+			[A3LadyCalendarModelManager setupLocalNotification];
+		}];
+	}
+
 	// pass on the completion handler to another method with delay to allow any imports to occur
 	// the API Allows 30 seconds so I only delay for 28 seconds just to be safe
 	[self performSelector:@selector(sendBGFetchCompletionHandler:) withObject:completionHandler afterDelay:28];
 }
 
 - (void)sendBGFetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
-	[A3LadyCalendarModelManager setupLocalNotification];
-
 	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		completionHandler(UIBackgroundFetchResultNewData);
 	} else {

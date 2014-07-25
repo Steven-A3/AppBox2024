@@ -30,6 +30,7 @@
 #import "HolidayData+Country.h"
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "A3SyncManager.h"
+#import "AFHTTPRequestOperation.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -52,6 +53,8 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 @property (nonatomic, strong) NSURLSession *backgroundDownloadSession;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSTimer *locationUpdateTimer;
+@property (nonatomic, copy) NSString *deviceToken;
+@property (nonatomic, copy) NSString *alertURLString;
 
 @end
 
@@ -203,7 +206,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 	[self applicationDidBecomeActive_passcode];
 
-	FNLOG();
+	[self fetchPushNotification];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -323,6 +326,8 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 
 #pragma mark - UIAlertViewDelegate
 
+#define	ABAD_ALERT_PUSH_ALERT		1000
+
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	if (buttonIndex == alertView.cancelButtonIndex) {
@@ -335,6 +340,10 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 			break;
 		case 21:
 			[self showLadyCalendarDetailView];
+			break;
+		case ABAD_ALERT_PUSH_ALERT:
+			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.alertURLString]];
+			self.alertURLString = nil;
 			break;
 	}
     
@@ -678,6 +687,125 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 
 - (NSString *)storeFileName {
 	return @"AppBoxStore.sqlite";
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken {
+	// Get Bundle Info for Remote Registration (handy if you have more than one app)
+	NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+	NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+	
+	// Check what Notifications the user has turned on.  We registered for all three, but they may have manually disabled some or all of them.
+	NSUInteger rntypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+	
+	// Set the defaults to disabled unless we find otherwise...
+	NSString *pushBadge = (rntypes & UIRemoteNotificationTypeBadge) ? @"enabled" : @"disabled";
+	NSString *pushAlert = (rntypes & UIRemoteNotificationTypeAlert) ? @"enabled" : @"disabled";
+	NSString *pushSound = (rntypes & UIRemoteNotificationTypeSound) ? @"enabled" : @"disabled";
+	
+	// Get the users Device Model, Display Name, Unique ID, Token & Version Number
+	UIDevice *device = [UIDevice currentDevice];
+	NSString *identifierForVendor = [[device identifierForVendor] UUIDString];
+
+	NSString *deviceName = [device name];
+	NSString *deviceModel = [A3UIDevice platformString];
+	NSString *deviceSystemVersion = device.systemVersion;
+	
+	// Prepare the Device Token for Registration (remove spaces and < >)
+	NSString *deviceToken = [[[[devToken description]
+							   stringByReplacingOccurrencesOfString:@"<"withString:@""]
+							  stringByReplacingOccurrencesOfString:@">" withString:@""]
+							 stringByReplacingOccurrencesOfString: @" " withString: @""];
+	_deviceToken = deviceToken;
+
+	NSString *urlString = [[NSString stringWithFormat:@"http://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
+					appName,
+					appVersion,
+					identifierForVendor,
+					deviceToken,
+					deviceName,
+					deviceModel,
+					deviceSystemVersion,
+					pushBadge,
+					pushAlert,
+					pushSound] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+	AFHTTPRequestOperation *registerOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+	[registerOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+		[self fetchPushNotification];
+	} failure:NULL];
+	[registerOperation start];
+	/*
+	 // !!! CHANGE "/apns.php?" TO THE PATH TO WHERE apns.php IS INSTALLED
+	 // !!! ( MUST START WITH / AND END WITH ? ).
+	 // !!! SAMPLE: "/path/to/apns.php?"
+	 NSString *urlString = [NSString stringWithFormat:@"/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register", appName,appVersion, deviceUuid, deviceToken, deviceName, deviceModel, deviceSystemVersion, pushBadge, pushAlert, pushSound];
+	 
+	 // Build URL String for Registration
+	 // !!! CHANGE "www.mywebsite.com" TO YOUR WEBSITE. Leave out the http://
+	 // !!! SAMPLE: "secure.awesomeapp.com"
+	 NSString *host = @"apns.allaboutapps.net";
+	 
+	 // Register the Device Data
+	 // !!! CHANGE "http" TO "https" IF YOU ARE USING HTTPS PROTOCOL
+	 NSURL *url = [[NSURL alloc] initWithScheme:@"http" host:host path:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	 NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+	 NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+	 NSLog(@"Register URL: %@", url);
+	 NSLog(@"Return Data: %@", returnData);
+	 */
+
+}
+
+- (void)fetchPushNotification {
+	NSString *urlString = [NSString stringWithFormat:@"http://apns.allaboutapps.net/apns/apns.php?task=message&devicetoken=%@", _deviceToken];
+	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+	AFHTTPRequestOperation *fetchOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+	fetchOperation.responseSerializer = [AFJSONResponseSerializer serializer];
+	[fetchOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id message) {
+		if (message) {
+			[self application:[UIApplication sharedApplication] didReceiveRemoteNotification:message];
+		}
+	} failure:NULL];
+	[fetchOperation start];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+	FNLOG(@"Error in registration. Error: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+
+	FNLOG(@"remote notification: %@",[userInfo description]);
+	NSDictionary *apsInfo = [userInfo objectForKey:@"aps"];
+
+#ifdef DEBUG
+	NSString *alert = [apsInfo objectForKey:@"alert"];
+	FNLOG(@"Received Push Alert: %@", alert);
+
+	NSString *sound = [apsInfo objectForKey:@"sound"];
+	FNLOG(@"Received Push Sound: %@", sound);
+
+	NSString *badge = [apsInfo objectForKey:@"badge"];
+	FNLOG(@"Received Push Badge: %@", badge);
+#endif
+	
+	application.applicationIconBadgeNumber = 0;
+
+	NSString *url = [userInfo objectForKey:@"url"];
+	NSString *urlTitle = [userInfo objectForKey:@"urlTitle"];
+	if (![urlTitle length]) {
+		urlTitle = url;
+	}
+	self.alertURLString = url;
+	NSString *alertTitle = [userInfo objectForKey:@"alertTitle"];
+
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:alertTitle message:[apsInfo objectForKey:@"alert"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	alertView.tag = ABAD_ALERT_PUSH_ALERT;
+	if ([url length]) {
+		[alertView addButtonWithTitle:urlTitle];
+	}
+	[alertView show];
 }
 
 @end
