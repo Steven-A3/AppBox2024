@@ -224,7 +224,6 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 										 [fileManager removeItemAtURL:newURL error:NULL];
 									 }];
 	[fileManager removeItemAtURL:[self photoURLInOriginalDirectory:NO] error:NULL];
-	
 	[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:YES] error:NULL];
 	[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:NO] error:NULL];
 

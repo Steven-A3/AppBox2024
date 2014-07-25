@@ -35,7 +35,7 @@
 /* Class = "IBUILabel"; text = "keep your data up to date
 on all your devices"; ObjectID = "K25-Dj-0hb"; */
 "K25-Dj-0hb.text" = "소유한 모든 장비에서
-정보를 모두 동기화";
+정보를 동기화";
 
 /* Class = "IBUILabel"; text = "Improvements and Optimizations"; ObjectID = "LH1-Sz-F5c"; */
 "LH1-Sz-F5c.text" = "수많은 개선사항과 최적화";
@@ -50,15 +50,15 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 "UGi-UW-2XK.normalTitle" = "나중에";
 
 /* Class = "IBUILabel"; text = "New Look"; ObjectID = "X9y-7J-ggo"; */
-"X9y-7J-ggo.text" = "새로운 느낌";
+"X9y-7J-ggo.text" = "새로운 모습";
 
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "XOG-GS-v6Y"; */
 "XOG-GS-v6Y.text" = "단가 비교";
 
 /* Class = "IBUILabel"; text = "easy, faster and more focused,
 64Bit and much more"; ObjectID = "ZZQ-VK-PjS"; */
-"ZZQ-VK-PjS.text" = "쉽고, 빠르고, 기본에 충실하고
-64비트 지원과 대단한 변화";
+"ZZQ-VK-PjS.text" = "쉽고, 더 빠르고, 기본에 충실하며
+64비트 지원을 비롯한 혁신적인 변화";
 
 /* Class = "IBUILabel"; text = "Expense List"; ObjectID = "c42-0X-ouA"; */
 "c42-0X-ouA.text" = "지출 관리";
