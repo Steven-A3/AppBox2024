@@ -110,7 +110,7 @@ NSString *const A3DateCalcDefaultsExcludeOptions = @"A3DateCalcDefaultsExcludeOp
     _isKeyboardShown = NO;
 
     [self initializeControl];
-    [self reloadTableViewData:YES];
+    [self reloadTableViewDataWithInitialization:YES];
     if ([self isAddSubMode]) {
         [self refreshAddSubModeButtonForResultWithAnimation:YES];
     }
@@ -126,7 +126,7 @@ NSString *const A3DateCalcDefaultsExcludeOptions = @"A3DateCalcDefaultsExcludeOp
 
 - (void)cloudStoreDidImport {
 	[self readFromSavedValue];
-	[self reloadTableViewData:NO];
+	[self reloadTableViewDataWithInitialization:YES];
 	if ([self isAddSubMode]) {
 		[self refreshAddSubModeButtonForResultWithAnimation:YES];
 	}
@@ -1429,7 +1429,7 @@ NSString *const A3DateCalcDefaultsExcludeOptions = @"A3DateCalcDefaultsExcludeOp
     return cell;
 }
 
-- (void)reloadTableViewData:(BOOL)bInit
+- (void)reloadTableViewDataWithInitialization:(BOOL)bInit
 {
     if (bInit) {
         if (self.isAddSubMode) {
@@ -1560,7 +1560,7 @@ NSString *const A3DateCalcDefaultsExcludeOptions = @"A3DateCalcDefaultsExcludeOp
             cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:!indexPath.row inSection:indexPath.section]];
             cell.accessoryType = UITableViewCellAccessoryNone;
             
-            [self reloadTableViewData:NO];
+            [self reloadTableViewDataWithInitialization:NO];
             if ([self isAddSubMode]) {
                 [self refreshAddSubModeButtonForResultWithAnimation:NO];
             }
