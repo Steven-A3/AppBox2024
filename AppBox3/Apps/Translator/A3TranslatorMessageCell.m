@@ -416,6 +416,8 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
         }];
 		AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:[self speechLanguageForLanguage:targetLanguage]];
 		AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:_messageEntity.translatedText];
+		utterance.rate = 0.2;
+		FNLOG(@"%f, %f, %f", AVSpeechUtteranceMinimumSpeechRate, AVSpeechUtteranceDefaultSpeechRate, AVSpeechUtteranceMaximumSpeechRate);
 		utterance.voice = voice;
 		[self.speechSynthesizer speakUtterance:utterance];
 	} else {
