@@ -67,7 +67,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	CDESetCurrentLoggingLevel(CDELoggingLevelVerbose);
+	CDESetCurrentLoggingLevel(CDELoggingLevelNone);
 
 	[[NSUbiquitousKeyValueStore defaultStore] synchronize];
 

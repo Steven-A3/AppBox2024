@@ -140,6 +140,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (void)cloudStoreDidImport {
+	if (self.firstResponder) return;
 	[self reloadBudgetDataWithAnimation:YES saveData:NO ];
 
 	[self enableControls:_barButtonEnabled];
