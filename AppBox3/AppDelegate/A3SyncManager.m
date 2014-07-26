@@ -123,8 +123,6 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	if (!self.isCloudEnabled) return;
 	
 	[self synchronizeWithCompletion:NULL];
-
-	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCloudCoreDataStoreDidImport object:nil];
 }
 
 - (void)localSaveOccurred:(NSNotification *)notif
@@ -175,6 +173,7 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 {
 	_activeMergeCount--;
 	if (_activeMergeCount == 0) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCloudCoreDataStoreDidImport object:nil];
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3SyncActivityDidEndNotification object:nil];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 	}
@@ -184,6 +183,7 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 {
 	_activeMergeCount++;
 	if (_activeMergeCount == 1) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCloudCoreDataStoreDidImport object:nil];
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3SyncActivityDidBeginNotification object:nil];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	}
@@ -221,6 +221,11 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	[alertView show];
 	[self reset];
 }
+
+- (BOOL)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble didFailToSaveMergedChangesInManagedObjectContext:(NSManagedObjectContext *)savingContext error:(NSError *)error reparationManagedObjectContext:(NSManagedObjectContext *)reparationContext {
+	return NO;
+}
+
 
 #pragma mark - Upload Download Manager
 

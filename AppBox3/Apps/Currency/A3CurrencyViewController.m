@@ -782,9 +782,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 			NSInteger insertIdx = [self.favorites count];
 			[self.favorites insertObjectToSortedArray:newFavorite atIndex:insertIdx];
 
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-
 			[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:insertIdx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		}
 	} else {
 		CurrencyFavorite *favorite = self.favorites[_selectedRow];
@@ -792,8 +792,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 			CurrencyRateItem *currencyRateItem = result[0];
 			[self replaceTextFieldKeyFrom:favorite.currencyCode to:currencyRateItem.currencyCode];
 			[A3CurrencyDataManager copyCurrencyFrom:result[0] to:favorite];
-
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 			// Reload favorites
 			_favorites = nil;
@@ -806,6 +804,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 				[self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
 			});
+
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		}
 	}
 }
@@ -903,7 +903,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	[self.favorites moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	dispatch_async(dispatch_get_main_queue(), ^{
 		NSInteger equalIndex;
@@ -927,6 +926,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 				[self.tableView reloadData];
 			});
 		}
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	});
 }
 
@@ -1285,8 +1285,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		}
 	}
 	if ([reloadingRows count]) {
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-
 		_favorites = nil;
 		[self favorites];
 
@@ -1294,6 +1292,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	}
 
 	[self updateTextFieldsWithSourceTextField:_textFields[newSource.currencyCode]];
+
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 #pragma mark --- Share
@@ -1319,9 +1319,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	if ([favorite isKindOfClass:[CurrencyFavorite class]]) {
 		[self.textFields removeObjectForKey:favorite.currencyCode];
 
-		[favorite MR_deleteEntity];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-
 		[self.favorites removeObjectAtIndex:indexPath.row];
 
 		[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
@@ -1335,6 +1332,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 				[self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationMiddle];
 			});
 		}
+		[favorite MR_deleteEntity];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	}
 }
 
