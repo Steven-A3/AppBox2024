@@ -289,6 +289,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
     
     if ([application applicationState] == UIApplicationStateInactive) {
         [self showReceivedLocalNotifications];
+        [[UIApplication sharedApplication] cancelLocalNotification:notification];
     }
     else {
         NSString *notificationOwner = [notification.userInfo objectForKey:A3LocalNotificationOwner];
@@ -372,7 +373,14 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
     viewController.sharedManager = sharedManager;
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-	[self.navigationController presentViewController:navigationController animated:YES completion:NULL];
+	
+    if (self.navigationController.presentedViewController) {
+        [self.navigationController.presentedViewController resignFirstResponder];
+        [self.navigationController.presentedViewController presentViewController:navigationController animated:YES completion:NULL];
+    }
+    else {
+        [self.navigationController presentViewController:navigationController animated:YES completion:NULL];
+    }
 }
 
 - (void)showLadyCalendarDetailView {
@@ -381,7 +389,14 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 	viewController.periodID = _localNotificationUserInfo[A3LocalNotificationDataID];
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-	[self.navigationController presentViewController:navigationController animated:YES completion:NULL];
+    
+    if (self.navigationController.presentedViewController) {
+        [self.navigationController.presentedViewController resignFirstResponder];
+        [self.navigationController.presentedViewController presentViewController:navigationController animated:YES completion:NULL];
+    }
+    else {
+        [self.navigationController presentViewController:navigationController animated:YES completion:NULL];
+    }
 }
 
 #pragma mark
