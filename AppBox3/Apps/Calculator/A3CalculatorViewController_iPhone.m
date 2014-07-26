@@ -21,6 +21,7 @@
 #import "A3InstructionViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
+#import "A3UserDefaults.h"
 
 @interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate,MBProgressHUDDelegate, A3CalcMessagShowDelegate, A3InstructionViewControllerDelegate, UITextFieldDelegate>
 

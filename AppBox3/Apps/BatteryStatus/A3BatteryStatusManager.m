@@ -8,13 +8,9 @@
 
 #import "A3BatteryStatusManager.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults.h"
 
 NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorChanged";
-
-static NSString *const A3BatteryChosenThemeIndex = @"A3BatteryChosenThemeIndex";
-static NSString *const A3BatteryChosenTheme = @"A3BatteryChosenTheme";
-static NSString *const A3BatteryAdjustedIndex = @"A3BatteryAdjustedIndex";
-static NSString *const A3BatteryShowIndex = @"A3BatteryShowIndex";
 
 @implementation A3BatteryStatusManager
 

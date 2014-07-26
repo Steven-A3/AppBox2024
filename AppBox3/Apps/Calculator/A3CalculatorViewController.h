@@ -14,8 +14,6 @@
 
 @class HTCopyableLabel;
 
-extern NSString *const kUserDefaultsKeyCalculatorRadianDegreeState;
-
 @interface A3CalculatorViewController : UIViewController {
 	UIViewController *_modalPresentingParentViewController;
 }

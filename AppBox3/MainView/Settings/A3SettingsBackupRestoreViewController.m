@@ -16,6 +16,7 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3BackupRestoreManager.h"
 #import "A3SyncManager.h"
+#import "A3UserDefaults.h"
 #import <DropboxSDK/DropboxSDK.h>
 
 NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
@@ -303,7 +304,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 											  otherButtonTitles:nil];
 	[alertView show];
 
-	NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ThemeColorIndex];
+	NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 	if (selectedColor) {
 		self.view.tintColor = [[A3AppDelegate instance] themeColor];
 		[A3AppDelegate instance].window.tintColor = [[A3AppDelegate instance] themeColor];

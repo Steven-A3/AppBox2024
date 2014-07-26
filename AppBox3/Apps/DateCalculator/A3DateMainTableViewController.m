@@ -24,23 +24,11 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSDate+formatting.h"
 #import "A3SyncManager.h"
+#import "A3UserDefaults.h"
 
 #define kDefaultBackgroundColor [UIColor lightGrayColor]
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]
 #define kSelectedButtonColor    [A3AppDelegate instance].themeColor
-
-NSString *const A3DateCalcDefaultsUpdateDate = @"A3DateCalcDefaultsUpdateDate";
-NSString *const A3DateCalcDefaultsCloudUpdateDate = @"A3DateCalcDefaultsCloudUpdateDate";
-NSString *const A3DateCalcDefaultsIsAddSubMode = @"A3DateCalcDefaultsIsAddSubMode";
-NSString *const A3DateCalcDefaultsFromDate = @"A3DateCalcDefaultsFromDate";
-NSString *const A3DateCalcDefaultsToDate = @"A3DateCalcDefaultsToDate";
-NSString *const A3DateCalcDefaultsOffsetDate = @"A3DateCalcDefaultsOffsetDate";
-NSString *const A3DateCalcDefaultsDidSelectMinus = @"A3DateCalcDefaultsDidSelectMinus";
-NSString *const A3DateCalcDefaultsSavedYear = @"A3DateCalcDefaultSavedYear";
-NSString *const A3DateCalcDefaultsSavedMonth = @"A3DateCalcDefaultSavedMonth";
-NSString *const A3DateCalcDefaultsSavedDay = @"A3DateCalcDefaultSavedDay";
-NSString *const A3DateCalcDefaultsDurationType = @"A3DateCalcDefaultsDurationType";
-NSString *const A3DateCalcDefaultsExcludeOptions = @"A3DateCalcDefaultsExcludeOptions";
 
 @interface A3DateMainTableViewController () <UITextFieldDelegate, UIPopoverControllerDelegate, A3DateKeyboardDelegate, A3DateCalcExcludeDelegate, A3DateCalcDurationDelegate, A3DateCalcHeaderViewDelegate, A3DateCalcEditEventDelegate, UIActivityItemSource>
 

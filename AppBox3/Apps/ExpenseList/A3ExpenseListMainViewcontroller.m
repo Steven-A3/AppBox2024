@@ -885,13 +885,13 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         return;
     }
 
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:A3ExpenseListIsAddBudgetIntiatedOnce]) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:A3ExpenseListIsAddBudgetInitiatedOnce]) {
         return;
     }
     
     // 버젯이 없는 경우 이동한다.
     if (!_currentBudget || _currentBudget.category==nil ) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3ExpenseListIsAddBudgetIntiatedOnce];
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3ExpenseListIsAddBudgetInitiatedOnce];
         [self performSelector:@selector(moveToAddBudgetViewController) withObject:nil afterDelay:delay];
         _isAutoMovingAddBudgetView = YES;
     }

@@ -26,8 +26,6 @@ NSString *const kA3AppsStoryboard_iPad = @"kA3AppsStoryboard_iPad";
 NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 NSString *const kA3AppsMenuNeedSecurityCheck = @"kA3AppsMenuNeedSecurityCheck";
 
-NSString *const kA3ThemeColorIndex = @"kA3ThemeColorIndex";
-
 NSString *const kA3AppsMenuArray = @"kA3AppsMenuArray";
 NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 

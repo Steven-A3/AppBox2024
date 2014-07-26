@@ -30,6 +30,15 @@ extern NSString *const A3HolidaysFlickrDownloadManagerDownloadComplete;
 - (UIImageView *)thumbnailOfUserSuppliedImageForCountryCode:(NSString *)countryCode;
 - (void)addDownloadTaskForCountryCode:(NSString *)countryCode;
 - (void)saveUserSuppliedImage:(UIImage *)image forCountryCode:(NSString *)countryCode;
+
+- (NSString *)imageNameKeyForCountryCode:(NSString *)countryCode;
+
+- (NSString *)ownerKeyForCountryCode:(NSString *)countryCode;
+
+- (NSString *)urlKeyForCountryCode:(NSString *)countryCode;
+
+- (NSString *)dateKeyForCountryCode:(NSString *)countryCode;
+
 - (void)deleteImageForCountryCode:(NSString *)countryCode;
 
 @end

@@ -8,8 +8,7 @@
 
 #import "HTCopyableLabel.h"
 #import "A3CalculatorViewController.h"
-
-NSString *const kUserDefaultsKeyCalculatorRadianDegreeState = @"kUserDefaultsKeyCalculatorRadianDegreeState";
+#import "A3UserDefaults.h"
 
 @implementation A3CalculatorViewController
 
@@ -32,12 +31,12 @@ NSString *const kUserDefaultsKeyCalculatorRadianDegreeState = @"kUserDefaultsKey
 }
 
 - (void)setRadian:(BOOL)radian {
-    [[NSUserDefaults standardUserDefaults] setBool:radian forKey:kUserDefaultsKeyCalculatorRadianDegreeState];
+	[[NSUserDefaults standardUserDefaults] setBool:radian forKey:A3CalculatorUserDefaultsRadianDegreeState];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (BOOL)radian {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyCalculatorRadianDegreeState];
+    return [[NSUserDefaults standardUserDefaults] boolForKey:A3CalculatorUserDefaultsRadianDegreeState];
 }
 
 @end

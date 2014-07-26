@@ -46,8 +46,6 @@ extern NSString *const A3NotificationCloudKeyValueStoreDidImport;
 extern NSString *const A3NotificationCloudCoreDataStoreDidImport;
 
 /* Global Settings */
-extern NSString *const kA3ThemeColorIndex;
-
 extern NSString *const A3LocalNotificationOwner;
 extern NSString *const A3LocalNotificationDataID;
 extern NSString *const A3LocalNotificationFromLadyCalendar;

@@ -20,8 +20,8 @@
 #import "NSAttributedString+Append.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "A3UserDefaults.h"
 
-NSString *const A3CalculatorMode = @"A3CalculatorMode";
 NSString *const A3CalculatorModeBasic = @"basic";
 NSString *const A3CalculatorModeScientific = @"scientific";
 
@@ -142,8 +142,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
         [self setupBasicKeyPad];
         
     }
-    
-    [[NSUserDefaults standardUserDefaults] setValue:scientific == YES ? A3CalculatorModeScientific : A3CalculatorModeBasic forKey:A3CalculatorMode];
+
+	[[NSUserDefaults standardUserDefaults] setValue:scientific == YES ? A3CalculatorModeScientific : A3CalculatorModeBasic forKey:A3CalculatorUserDefaultsCalculatorMode];
     [[NSUserDefaults standardUserDefaults] synchronize];
 //    [self changeCalculatorKindString];
 }
@@ -266,8 +266,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     [self.view layoutIfNeeded];
 
     [self checkRightButtonDisable];
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorMode]){
-        if([[[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorMode] isEqualToString:A3CalculatorModeScientific]) {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorUserDefaultsCalculatorMode]){
+        if([[[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorUserDefaultsCalculatorMode] isEqualToString:A3CalculatorModeScientific]) {
 			[self setupScientificKeyPad];
             self.calculatorTypeSegment.selectedSegmentIndex = 1;
         } else {
@@ -524,14 +524,14 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 		}
 	}
 
-	Calculation *calculation = [Calculation MR_createEntity];
+	Calculation *calculation = [Calculation MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 	calculation.uniqueID = [[NSUUID UUID] UUIDString];
 	NSDate *keyDate = [NSDate date];
 	calculation.expression = mathExpression;
 	calculation.result = self.evaluatedResultLabel.text;
 	calculation.updateDate = keyDate;
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
+	[[NSManagedObjectContext MR_rootSavingContext] MR_saveOnlySelfAndWait];
 }
 
 - (void) ShowMessage:(NSString *)message {

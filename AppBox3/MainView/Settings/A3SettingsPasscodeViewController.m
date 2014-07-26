@@ -15,6 +15,7 @@
 #import "A3UIDevice.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "Reachability.h"
+#import "A3UserDefaults.h"
 
 @interface A3SettingsPasscodeViewController () <A3PasscodeViewControllerDelegate, UIAlertViewDelegate>
 

@@ -29,6 +29,7 @@
 #import "NSDate+formatting.h"
 #import "A3InstructionViewController.h"
 #import "A3DaysCounterSlideShowCollectionViewLayout.h"
+#import "A3UserDefaults.h"
 
 #define VISIBLE_INDEX_INTERVAL      2
 

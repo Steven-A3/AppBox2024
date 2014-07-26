@@ -10,10 +10,7 @@
 #import "HolidayData+Country.h"
 #import "A3UIDevice.h"
 #import "A3AppDelegate.h"
-
-NSString *const kHolidayCountriesForCurrentDevice = @"HolidayCountriesForCurrentDevice";
-NSString *const kHolidayCountryExcludedHolidays = @"kHolidayCountryExcludedHolidays";
-NSString *const kHolidayCountriesShowLunarDates = @"kHolidayCountriesShowLunarDates"; // Holds array of country codes
+#import "A3UserDefaults.h"
 
 NSString *const kHolidayCountryCode = @"kHolidayCountryCode";
 NSString *const kHolidayCapitalCityName = @"kHolidayCapitalCityName";

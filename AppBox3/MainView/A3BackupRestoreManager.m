@@ -17,6 +17,7 @@
 #import "HolidayData+Country.h"
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "A3SyncManager.h"
+#import "A3UserDefaults.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -126,9 +127,10 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			A3BackupFileDateKey : [NSDate date],
 			A3BackupFileOSVersionKey : [[UIDevice currentDevice] systemVersion],
 			A3BackupFileSystemModelKey : [A3UIDevice platform],
-			A3BackupFileUserDefaultsKey : [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]
+			A3BackupFileUserDefaultsKey : [self userDefaultsDictionary]
 	};
 
+	FNLOG(@"%@", backupInfoDictionary);
 	[backupInfoDictionary writeToFile:[A3BackupInfoFilename pathInDocumentDirectory] atomically:YES];
 	[fileList addObject:@{
 			A3ZipFilename : [A3BackupInfoFilename pathInDocumentDirectory],
@@ -144,6 +146,155 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	zip.delegate = self;
 	_backupFilePath = [self uniqueBackupFilename];
 	[zip createZipFile:_backupFilePath withArray:fileList];
+}
+
+- (NSArray *)userDefaultsKeys {
+	return @[
+			A3SettingsUserDefaultsThemeColorIndex,
+			A3SettingsUseKoreanCalendarForLunarConversion,
+
+			A3MainMenuUserDefaultsFavorites,
+			A3MainMenuUserDefaultsRecentlyUsed,
+			A3MainMenuUserDefaultsAllMenu,
+			A3MainMenuUserDefaultsMaxRecentlyUsed,
+			A3MainMenuUserDefaultsUpdateDate,
+			A3MainMenuUserDefaultsCloudUpdateDate,
+
+			A3LoanCalcUserDefaultShowDownPayment,
+			A3LoanCalcUserDefaultShowExtraPayment,
+			A3LoanCalcUserDefaultShowAdvanced,
+			A3LoanCalcUserDefaultsUpdateDate,
+			A3LoanCalcUserDefaultsCloudUpdateDate,
+			A3LoanCalcUserDefaultsLoanDataKey,
+			A3LoanCalcUserDefaultsLoanDataKey_A,
+			A3LoanCalcUserDefaultsLoanDataKey_B,
+			A3LoanCalcUserDefaultsCustomCurrencyCode,
+
+			A3ExpenseListUserDefaultsCurrencyCode,
+			A3ExpenseListIsAddBudgetCanceledByUser,
+			A3ExpenseListIsAddBudgetInitiatedOnce,
+			A3ExpenseListUserDefaultsUpdateDate,
+			A3ExpenseListUserDefaultsCloudUpdateDate,
+
+			A3CurrencyUserDefaultsAutoUpdate,
+			A3CurrencyUserDefaultsUseCellularData,
+			A3CurrencyUserDefaultsShowNationalFlag,
+			A3CurrencyUserDefaultsLastInputValue,
+			A3CurrencyUserDefaultsUpdateDate,
+			A3CurrencyUserDefaultsCloudUpdateDate,
+
+			A3LunarConverterLastInputDateComponents,
+			A3LunarConverterLastInputDateIsLunar,
+			A3LunarConverterUserDefaultsUpdateDate,
+			A3LunarConverterUserDefaultsCloudUpdateDate,
+
+			A3BatteryChosenThemeIndex,
+			A3BatteryChosenTheme,
+			A3BatteryAdjustedIndex,
+			A3BatteryShowIndex,
+
+			A3CalculatorUserDefaultsUpdateDate,
+			A3CalculatorUserDefaultsCloudUpdateDate,
+			A3CalculatorUserDefaultsSavedLastExpression,
+			A3CalculatorUserDefaultsRadianDegreeState,
+			A3CalculatorUserDefaultsCalculatorMode,
+
+			A3ClockTheTimeWithSeconds,
+			A3ClockFlashTheTimeSeparators,
+			A3ClockUse24hourClock,
+			A3ClockShowAMPM,
+			A3ClockShowTheDayOfTheWeek,
+			A3ClockShowDate,
+			A3ClockShowWeather,
+			A3ClockUsesFahrenheit,
+			A3ClockWaveClockColor,
+			A3ClockWaveClockColorIndex,
+			A3ClockWaveCircleLayout,
+			A3ClockFlipDarkColor,
+			A3ClockFlipDarkColorIndex,
+			A3ClockFlipLightColor,
+			A3ClockFlipLightColorIndex,
+			A3ClockLEDColor,
+			A3ClockLEDColorIndex,
+			A3ClockUserDefaultsCurrentPage,
+
+			A3DateCalcDefaultsUpdateDate,
+			A3DateCalcDefaultsCloudUpdateDate,
+			A3DateCalcDefaultsIsAddSubMode,
+			A3DateCalcDefaultsFromDate,
+			A3DateCalcDefaultsToDate,
+			A3DateCalcDefaultsOffsetDate,
+			A3DateCalcDefaultsDidSelectMinus,
+			A3DateCalcDefaultsSavedYear,
+			A3DateCalcDefaultsSavedMonth,
+			A3DateCalcDefaultsSavedDay,
+			A3DateCalcDefaultsDurationType,
+			A3DateCalcDefaultsExcludeOptions,
+
+			A3DaysCounterUserDefaultsSlideShowOptions,
+			A3DaysCounterUserDefaultsUpdateDate,
+			A3DaysCounterUserDefaultsCloudUpdateDate,
+			A3DaysCounterLastOpenedMainIndex,
+
+			A3LadyCalendarCurrentAccountID,
+			A3LadyCalendarSetting,
+			A3LadyCalendarLastViewMonth,
+			A3LadyCalendarUserDefaultsUpdateDate,
+			A3LadyCalendarUserDefaultsCloudUpdateDate,
+
+			A3PercentCalcUserDefaultsCalculationType,
+			A3PercentCalcUserDefaultsSavedInputData,
+			A3PercentCalcUserDefaultsUpdateDate,
+			A3PercentCalcUserDefaultsCloudUpdateDate,
+
+			A3SalesCalcUserDefaultsSavedInputDataKey,
+			A3SalesCalcUserDefaultsCurrencyCode,
+			A3SalesCalcUserDefaultsUpdateDate,
+			A3SalesCalcUserDefaultsCloudUpdateDate,
+
+			A3TipCalcUserDefaultsCurrencyCode,
+			A3TipCalcUserDefaultsUpdateDate,
+			A3TipCalcUserDefaultsCloudUpdateDate,
+
+			A3UnitConverterDefaultCurrentUnitTap,
+			A3UnitConverterTableViewUnitValueKey,
+			A3UnitConverterUserDefaultsUpdateDate,
+			A3UnitConverterUserDefaultsCloudUpdateDate,
+
+			A3UnitPriceUserDefaultsCurrencyCode,
+			A3UnitPriceUserDefaultsUpdateDate,
+			A3UnitPriceUserDefaultsCloudUpdateDate,
+
+			kHolidayCountriesForCurrentDevice,
+			kHolidayCountryExcludedHolidays,
+			kHolidayCountriesShowLunarDates,
+
+			A3WalletUserDefaultsSelectedTab
+	];
+}
+
+- (NSDictionary *)userDefaultsDictionary {
+	NSArray *defaultKeys = [self userDefaultsKeys];
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	NSMutableDictionary *keysAndValues = [NSMutableDictionary new];
+	for (NSString *key in defaultKeys) {
+		[self addKey:key ifHasValueTo:keysAndValues];
+	}
+	A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
+	for (NSString *countryCode in [userDefaults objectForKey:kHolidayCountriesForCurrentDevice]) {
+		[self addKey:[downloadManager imageNameKeyForCountryCode:countryCode] ifHasValueTo:keysAndValues];
+		[self addKey:[downloadManager ownerKeyForCountryCode:countryCode] ifHasValueTo:keysAndValues];
+		[self addKey:[downloadManager urlKeyForCountryCode:countryCode] ifHasValueTo:keysAndValues];
+		[self addKey:[downloadManager dateKeyForCountryCode:countryCode] ifHasValueTo:keysAndValues];
+	}
+	return keysAndValues;
+}
+
+- (void)addKey:(NSString *)key ifHasValueTo:(NSMutableDictionary *)target {
+	id object = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+	if (object) {
+		[target setObject:object forKey:key];
+	}
 }
 
 - (MBProgressHUD *)HUD {
@@ -294,13 +445,18 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		NSDictionary *backupInfo = [[NSDictionary alloc] initWithContentsOfFile:backupInfoFilePath];
 		NSDictionary *userDefaults = backupInfo[A3BackupFileUserDefaultsKey];
 		NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-		for (NSString *key in userDefaults.allKeys) {
-			[standardUserDefaults setObject:userDefaults[key] forKey:key];
+		for (NSString *key in [self userDefaultsKeys]) {
+			id object = [userDefaults objectForKey:key];
+			if (object) {
+				[standardUserDefaults setObject:object forKey:key];
+			} else {
+				[standardUserDefaults removeObjectForKey:key];
+			}
 		}
 		[standardUserDefaults removeObjectForKey:A3SyncManagerCloudEnabled];
 		[standardUserDefaults synchronize];
 
-		NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ThemeColorIndex];
+		NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 		if (selectedColor) {
 			[A3AppDelegate instance].window.tintColor = [[A3AppDelegate instance] themeColor];
 		}

@@ -324,11 +324,9 @@
 	NSDate *localUpdateDate = [userDefaults objectForKey:A3LoanCalcUserDefaultsUpdateDate];
 
 	NSArray *migratingKeys = @[
-			A3LoanCalcUserDefaultCalculationFor,
 			A3LoanCalcUserDefaultShowDownPayment,
 			A3LoanCalcUserDefaultShowExtraPayment,
 			A3LoanCalcUserDefaultShowAdvanced,
-			A3LoanCalcUserDefaultUseSimpleInterest,
 			A3LoanCalcUserDefaultsLoanDataKey,
 			A3LoanCalcUserDefaultsLoanDataKey_A,
 			A3LoanCalcUserDefaultsLoanDataKey_B,

@@ -12,8 +12,6 @@
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
 
-NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseKoreanCalendarForLunarConversion";
-
 @implementation NSUserDefaults (A3Addition)
 
 - (NSString *)stringForSyncMethod {

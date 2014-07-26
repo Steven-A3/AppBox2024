@@ -9,6 +9,9 @@
 #ifndef AppBox3_A3UserDefaults_h
 #define AppBox3_A3UserDefaults_h
 
+extern NSString *const A3SettingsUserDefaultsThemeColorIndex;
+extern NSString *const A3SettingsUseKoreanCalendarForLunarConversion;
+
 #pragma mark ------ Main Menu
 extern NSString *const A3MainMenuUserDefaultsFavorites;
 extern NSString *const A3MainMenuUserDefaultsRecentlyUsed;
@@ -18,11 +21,9 @@ extern NSString *const A3MainMenuUserDefaultsUpdateDate;
 extern NSString *const A3MainMenuUserDefaultsCloudUpdateDate;
 
 #pragma mark ------ Loan Calc
-extern NSString *const A3LoanCalcUserDefaultCalculationFor;
 extern NSString *const A3LoanCalcUserDefaultShowDownPayment;
 extern NSString *const A3LoanCalcUserDefaultShowExtraPayment;
 extern NSString *const A3LoanCalcUserDefaultShowAdvanced;
-extern NSString *const A3LoanCalcUserDefaultUseSimpleInterest;
 extern NSString *const A3LoanCalcUserDefaultsUpdateDate;
 extern NSString *const A3LoanCalcUserDefaultsCloudUpdateDate;
 extern NSString *const A3LoanCalcUserDefaultsLoanDataKey;
@@ -33,7 +34,7 @@ extern NSString *const A3LoanCalcUserDefaultsCustomCurrencyCode;
 #pragma mark ------ Expense List
 extern NSString *const A3ExpenseListUserDefaultsCurrencyCode;
 extern NSString *const A3ExpenseListIsAddBudgetCanceledByUser;
-extern NSString *const A3ExpenseListIsAddBudgetIntiatedOnce;
+extern NSString *const A3ExpenseListIsAddBudgetInitiatedOnce;
 extern NSString *const A3ExpenseListUserDefaultsUpdateDate;
 extern NSString *const A3ExpenseListUserDefaultsCloudUpdateDate;
 
@@ -51,7 +52,20 @@ extern NSString *const A3LunarConverterLastInputDateIsLunar;
 extern NSString *const A3LunarConverterUserDefaultsUpdateDate;
 extern NSString *const A3LunarConverterUserDefaultsCloudUpdateDate;
 
-#pragma mark ------ clock
+#pragma mark ------ Battery
+extern NSString *const A3BatteryChosenThemeIndex;
+extern NSString *const A3BatteryChosenTheme;
+extern NSString *const A3BatteryAdjustedIndex;
+extern NSString *const A3BatteryShowIndex;
+
+#pragma mark ------ Calculator
+extern NSString *const A3CalculatorUserDefaultsUpdateDate;
+extern NSString *const A3CalculatorUserDefaultsCloudUpdateDate;
+extern NSString *const A3CalculatorUserDefaultsSavedLastExpression;
+extern NSString *const A3CalculatorUserDefaultsRadianDegreeState;
+extern NSString *const A3CalculatorUserDefaultsCalculatorMode;
+
+#pragma mark ------ Clock
 extern NSString *const A3ClockTheTimeWithSeconds;
 extern NSString *const A3ClockFlashTheTimeSeparators;
 extern NSString *const A3ClockUse24hourClock;
@@ -69,11 +83,27 @@ extern NSString *const A3ClockFlipLightColor;
 extern NSString *const A3ClockFlipLightColorIndex;
 extern NSString *const A3ClockLEDColor;
 extern NSString *const A3ClockLEDColorIndex;
+extern NSString *const A3ClockUserDefaultsCurrentPage;
+
+#pragma mark ------ Date Calculator
+extern NSString *const A3DateCalcDefaultsUpdateDate;
+extern NSString *const A3DateCalcDefaultsCloudUpdateDate;
+extern NSString *const A3DateCalcDefaultsIsAddSubMode;
+extern NSString *const A3DateCalcDefaultsFromDate;
+extern NSString *const A3DateCalcDefaultsToDate;
+extern NSString *const A3DateCalcDefaultsOffsetDate;
+extern NSString *const A3DateCalcDefaultsDidSelectMinus;
+extern NSString *const A3DateCalcDefaultsSavedYear;
+extern NSString *const A3DateCalcDefaultsSavedMonth;
+extern NSString *const A3DateCalcDefaultsSavedDay;
+extern NSString *const A3DateCalcDefaultsDurationType;
+extern NSString *const A3DateCalcDefaultsExcludeOptions;
 
 #pragma mark ------ DaysCounter
 extern NSString *const A3DaysCounterUserDefaultsSlideShowOptions;
 extern NSString *const A3DaysCounterUserDefaultsUpdateDate;
 extern NSString *const A3DaysCounterUserDefaultsCloudUpdateDate;
+extern NSString *const A3DaysCounterLastOpenedMainIndex;
 
 #pragma mark ------ LadyCalendar
 extern NSString *const A3LadyCalendarCurrentAccountID;
@@ -109,5 +139,21 @@ extern NSString *const A3UnitConverterUserDefaultsCloudUpdateDate;
 extern NSString *const A3UnitPriceUserDefaultsCurrencyCode;
 extern NSString *const A3UnitPriceUserDefaultsUpdateDate;
 extern NSString *const A3UnitPriceUserDefaultsCloudUpdateDate;
+
+#pragma mark ------ Passcode
+extern NSString *const kUserDefaultTimerStart;
+extern NSString *const kUserDefaultsKeyForPasscodeTimerDuration;
+extern NSString *const kUserDefaultsKeyForUseSimplePasscode;
+extern NSString *const kUserDefaultsKeyForAskPasscodeForStarting;
+extern NSString *const kUserDefaultsKeyForAskPasscodeForSettings;
+extern NSString *const kUserDefaultsKeyForAskPasscodeForDaysCounter;
+extern NSString *const kUserDefaultsKeyForAskPasscodeForLadyCalendar;
+extern NSString *const kUserDefaultsKeyForAskPasscodeForWallet;
+
+extern NSString *const A3WalletUserDefaultsSelectedTab;
+
+extern NSString *const kHolidayCountriesForCurrentDevice;
+extern NSString *const kHolidayCountryExcludedHolidays;
+extern NSString *const kHolidayCountriesShowLunarDates; // Holds array of country codes
 
 #endif

@@ -18,10 +18,7 @@
 #import "WalletItem.h"
 #import "WalletData.h"
 #import "A3AppDelegate.h"
-
-// NSUserDefaults key values:
-NSString *kWallet_WhichTabPrefKey		= @"kWhichTab";     // which tab to select at launch
-NSString *kWallet_TabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
+#import "A3UserDefaults.h"
 
 #define kDefaultTabSelection    1	// default tab value is 0 (tab #1), stored in NSUserDefaults
 
@@ -47,15 +44,15 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
         self.delegate = self;
         
         // test for "kWhichTabPrefKey" key value
-        NSUInteger preTabIndex = [[NSUserDefaults standardUserDefaults] integerForKey:kWallet_WhichTabPrefKey];
+        NSUInteger preTabIndex = [[NSUserDefaults standardUserDefaults] integerForKey:A3WalletUserDefaultsSelectedTab];
         if (preTabIndex == 0)
         {
             // no default source value has been set, create it here
             //
             // since no default values have been set (i.e. no preferences file created), create it here
             NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-                                         [NSNumber numberWithInt:kDefaultTabSelection], kWallet_WhichTabPrefKey,
-                                         nil];
+					[NSNumber numberWithInt:kDefaultTabSelection], A3WalletUserDefaultsSelectedTab,
+					nil];
             
             [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
         }
@@ -82,15 +79,15 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
         self.delegate = self;
         
         // test for "kWhichTabPrefKey" key value
-        NSUInteger preTabIndex = [[NSUserDefaults standardUserDefaults] integerForKey:kWallet_WhichTabPrefKey];
+        NSUInteger preTabIndex = [[NSUserDefaults standardUserDefaults] integerForKey:A3WalletUserDefaultsSelectedTab];
         if (preTabIndex == 0)
         {
             // no default source value has been set, create it here
             //
             // since no default values have been set (i.e. no preferences file created), create it here
             NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-                                         [NSNumber numberWithInt:kDefaultTabSelection], kWallet_WhichTabPrefKey,
-                                         nil];
+					[NSNumber numberWithInt:kDefaultTabSelection], A3WalletUserDefaultsSelectedTab,
+					nil];
             
             [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
         }
@@ -276,8 +273,8 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
     self.title = tabBarController.selectedViewController.tabBarItem.title;
-    
-    [[NSUserDefaults standardUserDefaults] setInteger:self.selectedIndex forKey:kWallet_WhichTabPrefKey];
+
+	[[NSUserDefaults standardUserDefaults] setInteger:self.selectedIndex forKey:A3WalletUserDefaultsSelectedTab];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     if (_myMoreNavigationController && (_myMoreNavigationController.viewControllers.count>1)) {
@@ -366,7 +363,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 
     self.viewControllers = viewControllers;
 
-    self.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:kWallet_WhichTabPrefKey];
+    self.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:A3WalletUserDefaultsSelectedTab];
 
 }
 

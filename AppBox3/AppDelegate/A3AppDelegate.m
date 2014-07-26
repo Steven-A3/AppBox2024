@@ -31,6 +31,7 @@
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "A3SyncManager.h"
 #import "AFHTTPRequestOperation.h"
+#import "A3UserDefaults.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -67,7 +68,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	CDESetCurrentLoggingLevel(CDELoggingLevelNone);
+	CDESetCurrentLoggingLevel(CDELoggingLevelTrace);
 
 	[[NSUbiquitousKeyValueStore defaultStore] synchronize];
 
@@ -137,7 +138,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 	self.window.rootViewController = rootViewController;
 	self.window.backgroundColor = [UIColor whiteColor];
 
-	NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ThemeColorIndex];
+	NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 	if (selectedColor) {
 		self.window.tintColor = self.themeColors[[selectedColor unsignedIntegerValue]];
 	}

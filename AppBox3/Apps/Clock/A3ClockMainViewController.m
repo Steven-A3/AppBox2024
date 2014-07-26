@@ -48,8 +48,6 @@
 @property (nonatomic, assign) BOOL useInstruction;
 @end
 
-NSString *const A3ClockUserDefaultsCurrentPage = @"A3ClockUserDefaultsCurrentPage";
-
 @implementation A3ClockMainViewController
 
 - (A3ClockDataManager *)clockDataManager {

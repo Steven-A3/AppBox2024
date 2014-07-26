@@ -9,6 +9,7 @@
 #import "A3SettingsRequireForViewController.h"
 #import "A3AppDelegate+passcode.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3UserDefaults.h"
 
 @interface A3SettingsRequireForViewController ()
 

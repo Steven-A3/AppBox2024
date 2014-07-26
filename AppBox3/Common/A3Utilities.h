@@ -10,8 +10,6 @@
 
 void drawLinearGradient(CGContextRef context, CGRect rect, NSArray *colors);
 
-extern CGFloat dash_line_pattern[];
-
 @interface A3Utilities : NSObject
 
 @end

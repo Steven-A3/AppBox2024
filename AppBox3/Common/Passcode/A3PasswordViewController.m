@@ -11,6 +11,7 @@
 #import "A3KeychainUtils.h"
 #import "A3StandardTableViewCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3UserDefaults.h"
 
 #define kFailedAttemptLabelBackgroundColor [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f]
 #define kLabelFont (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize * kFontSizeModifier] : [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize])

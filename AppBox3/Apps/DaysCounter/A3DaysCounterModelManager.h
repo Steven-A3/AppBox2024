@@ -10,8 +10,6 @@
 #import "FSVenue.h"
 #import "MagicalRecord.h"
 
-extern NSString *const A3DaysCounterLastOpenedMainIndex;
-
 @class DaysCounterCalendar;
 @class DaysCounterEvent;
 @class DaysCounterEventLocation;

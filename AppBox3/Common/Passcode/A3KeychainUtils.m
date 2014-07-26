@@ -9,6 +9,7 @@
 #import "A3KeychainUtils.h"
 #import "A3AppDelegate+passcode.h"
 #import "NSData-AES.h"
+#import "A3UserDefaults.h"
 #import <Security/Security.h>
 
 static NSString *kA3KeychainServiceName = @"A3PasscodeService";

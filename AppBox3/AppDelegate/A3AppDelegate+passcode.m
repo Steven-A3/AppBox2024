@@ -19,15 +19,7 @@
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3LadyCalendarViewController.h"
 #import "A3WalletMainTabBarController.h"
-
-NSString *const kUserDefaultTimerStart = @"AppBoxPasscodeTimerStart";
-NSString *const kUserDefaultsKeyForPasscodeTimerDuration = @"kUserRequirePasscodeAfterMinutes";
-NSString *const kUserDefaultsKeyForUseSimplePasscode = @"kUserUseSimplePasscode";
-NSString *const kUserDefaultsKeyForAskPasscodeForStarting = @"kUserRequirePasscodeAppBoxPro";
-NSString *const kUserDefaultsKeyForAskPasscodeForSettings = @"kUserRequirePasscodeSettiings";
-NSString *const kUserDefaultsKeyForAskPasscodeForDaysCounter = @"kUserRequirePasscodeDaysUntil";
-NSString *const kUserDefaultsKeyForAskPasscodeForLadyCalendar = @"kUserRequirePasscodePCalendar";
-NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeForWallet";
+#import "A3UserDefaults.h"
 
 @implementation A3AppDelegate (passcode)
 

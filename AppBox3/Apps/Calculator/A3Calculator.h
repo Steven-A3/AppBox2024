@@ -9,10 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "HTCopyableLabel.h"
 
-extern NSString *const A3CalculatorUserDefaultsUpdateDate;
-extern NSString *const A3CalculatorUserDefaultsCloudUpdateDate;
-extern NSString *const A3CalculatorUserDefaultsSavedLastExpression;
-
 @protocol A3CalcMessagShowDelegate<NSObject>
 -(void)ShowMessage:(NSString *) message;
 @end

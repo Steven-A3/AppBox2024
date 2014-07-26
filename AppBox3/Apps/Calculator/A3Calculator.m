@@ -15,10 +15,7 @@
 #import "NSAttributedString+Append.h"
 #import "A3AppDelegate.h"
 #import "A3SyncManager.h"
-
-NSString *const A3CalculatorUserDefaultsUpdateDate = @"A3CalculatorUserDefaultsUpdateDate";
-NSString *const A3CalculatorUserDefaultsCloudUpdateDate = @"A3CalculatorUserDefaultsCloudUpdateDate";
-NSString *const A3CalculatorUserDefaultsSavedLastExpression = @"A3CalculatorUserDefaultsSavedLastExpression";
+#import "A3UserDefaults.h"
 
 @interface A3Calculator ()
 

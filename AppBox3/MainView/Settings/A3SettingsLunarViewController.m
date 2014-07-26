@@ -10,6 +10,7 @@
 #import "NSUserDefaults+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UIViewController+A3Addition.h"
+#import "A3UserDefaults.h"
 
 @interface A3SettingsLunarViewController ()
 

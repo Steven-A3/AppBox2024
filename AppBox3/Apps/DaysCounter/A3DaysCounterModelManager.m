@@ -28,7 +28,6 @@
 #import "DaysCounterEvent+extension.h"
 #import "NSString+conversion.h"
 
-NSString *const A3DaysCounterLastOpenedMainIndex = @"A3DaysCounterLastOpenedMainIndex";
 extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 @interface A3DaysCounterModelManager ()
