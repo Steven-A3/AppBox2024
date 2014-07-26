@@ -23,9 +23,6 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 {
 	NSUInteger _activeMergeCount;
 	NSFileManager *_fileManager;
-	NSURL *_rootDirectoryURL;
-	NSOperationQueue *_operationQueue;
-	dispatch_queue_t _timeOutQueue;
 }
 
 + (instancetype)sharedSyncManager
@@ -42,11 +39,6 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	self = [super init];
 	if (self) {
 		_fileManager = [NSFileManager new];
-		_operationQueue = [[NSOperationQueue alloc] init];
-		_operationQueue.maxConcurrentOperationCount = 1;
-		_timeOutQueue = dispatch_queue_create("com.allaboutapps.appbox.queue.icloudtimeout", DISPATCH_QUEUE_SERIAL);
-		_rootDirectoryURL = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
-		[_rootDirectoryURL URLByAppendingPathComponent:[self rootDirectoryName]];
 	}
 
 	return self;
@@ -91,8 +83,6 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"AppBox3" withExtension:@"momd"];
 	_ensemble = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:self.cloudStoreID persistentStoreURL:storeURL managedObjectModelURL:modelURL cloudFileSystem:self.cloudFileSystem];
 	_ensemble.delegate = self;
-	_rootDirectoryURL = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
-	[_rootDirectoryURL URLByAppendingPathComponent:[self rootDirectoryName]];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localSaveOccurred:) name:CDEMonitoredManagedObjectContextDidSaveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(icloudDidDownload:) name:CDEICloudFileSystemDidDownloadFilesNotification object:nil];
@@ -223,9 +213,8 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 }
 
 - (BOOL)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble didFailToSaveMergedChangesInManagedObjectContext:(NSManagedObjectContext *)savingContext error:(NSError *)error reparationManagedObjectContext:(NSManagedObjectContext *)reparationContext {
-	return NO;
+	return YES;
 }
-
 
 #pragma mark - Upload Download Manager
 
@@ -236,25 +225,30 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 }
 
 - (void)uploadFilesToCloudInDirectory:(NSString *)directory {
-	[self fileExistsAtPath:directory completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
-		if (!exists) {
-			[self createDirectoryAtPath:directory completion:NULL];
-		}
-	}];
-	
-	NSArray *files = [_fileManager contentsOfDirectoryAtPath:[directory pathInLibraryDirectory] error:NULL];
-	NSString *localBasePath = [directory pathInLibraryDirectory];
-	for (NSString *filename in files) {
-		NSString *localPath = [localBasePath stringByAppendingPathComponent:filename];
-		NSString *cloudPath = [directory stringByAppendingPathComponent:filename];
-		
-		[self fileExistsAtPath:cloudPath completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
+	[_cloudFileSystem connect:^(NSError *error) {
+		[_cloudFileSystem fileExistsAtPath:directory completion:^(BOOL exists, BOOL isDirectory, NSError *error_) {
+			void (^fileCopyBlock)(NSError *) = ^(NSError *error__){
+				NSArray *files = [_fileManager contentsOfDirectoryAtPath:[directory pathInLibraryDirectory] error:NULL];
+				NSString *localBasePath = [directory pathInLibraryDirectory];
+				for (NSString *filename in files) {
+					NSString *localPath = [localBasePath stringByAppendingPathComponent:filename];
+					NSString *cloudPath = [directory stringByAppendingPathComponent:filename];
+
+					[_cloudFileSystem fileExistsAtPath:cloudPath completion:^(BOOL exists_, BOOL isDirectory_, NSError *error___) {
+						if (!exists_) {
+							FNLOG(@"Filename: %@", filename);
+							[_cloudFileSystem uploadLocalFile:localPath toPath:cloudPath completion:NULL];
+						}
+					}];
+				}
+			};
 			if (!exists) {
-				FNLOG(@"Filename: %@", filename);
-				[self uploadLocalFile:localPath toPath:cloudPath completion:NULL];
+				[_cloudFileSystem createDirectoryAtPath:directory completion:fileCopyBlock];
+			} else {
+				fileCopyBlock(nil);
 			}
 		}];
-	}
+	}];
 }
 
 - (void)downloadFilesFromCloud {
@@ -264,261 +258,19 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 }
 
 - (void)downloadFilesFromCloudInDirectory:(NSString *)directory {
-	[self contentsOfDirectoryAtPath:directory completion:^(NSArray *contents, NSError *error) {
-		for (CDECloudFile *file in contents) {
-			NSString *filename = file.name;
-			NSString *localFile = [[directory stringByAppendingPathComponent:filename] pathInLibraryDirectory];
-			
-			if (![_fileManager fileExistsAtPath:localFile]) {
-				FNLOG(@"%@, %@", file.name, file.path);
-				[self downloadFromPath:file.path toLocalFile:localFile completion:NULL];
-			}
-		}
-	}];
-}
+	[_cloudFileSystem connect:^(NSError *error) {
+		[_cloudFileSystem contentsOfDirectoryAtPath:directory completion:^(NSArray *contents, NSError *error_) {
+			for (CDECloudFile *file in contents) {
+				NSString *filename = file.name;
+				NSString *localFile = [[directory stringByAppendingPathComponent:filename] pathInLibraryDirectory];
 
-static const NSTimeInterval CDEFileCoordinatorTimeOut = 10.0;
-
-- (void)fileExistsAtPath:(NSString *)path completion:(void(^)(BOOL exists, BOOL isDirectory, NSError *error))block
-{
-	[_operationQueue addOperationWithBlock:^{
-		NSError *fileCoordinatorError = nil;
-		__block NSError *timeoutError = nil;
-		__block BOOL coordinatorExecuted = NO;
-		__block BOOL isDirectory = NO;
-		__block BOOL exists = NO;
-
-		NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, CDEFileCoordinatorTimeOut * NSEC_PER_SEC);
-		dispatch_after(popTime, _timeOutQueue, ^{
-			if (!coordinatorExecuted) {
-				[coordinator cancel];
-				timeoutError = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeFileCoordinatorTimedOut userInfo:nil];
-			}
-		});
-
-		NSURL *url = [NSURL fileURLWithPath:[self fullPathForPath:path]];
-		[coordinator coordinateReadingItemAtURL:url options:0 error:&fileCoordinatorError byAccessor:^(NSURL *newURL) {
-			dispatch_sync(_timeOutQueue, ^{
-				coordinatorExecuted = YES;
-			});
-			if (timeoutError) return;
-			exists = [_fileManager fileExistsAtPath:newURL.path isDirectory:&isDirectory];
-		}];
-
-		NSError *error = fileCoordinatorError ?: timeoutError ?: nil;
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (block) block(exists, isDirectory, error);
-		});
-	}];
-}
-
-- (void)contentsOfDirectoryAtPath:(NSString *)path completion:(void(^)(NSArray *contents, NSError *error))block
-{
-	[_operationQueue addOperationWithBlock:^{
-		NSError *fileCoordinatorError = nil;
-		__block NSError *timeoutError = nil;
-		__block NSError *fileManagerError = nil;
-		__block BOOL coordinatorExecuted = NO;
-
-		NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, CDEFileCoordinatorTimeOut * NSEC_PER_SEC);
-		dispatch_after(popTime, _timeOutQueue, ^{
-			if (!coordinatorExecuted) {
-				[coordinator cancel];
-				timeoutError = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeFileCoordinatorTimedOut userInfo:nil];
-			}
-		});
-
-		__block NSArray *contents = nil;
-		NSURL *url = [NSURL fileURLWithPath:[self fullPathForPath:path]];
-		[coordinator coordinateReadingItemAtURL:url options:0 error:&fileCoordinatorError byAccessor:^(NSURL *newURL) {
-			dispatch_sync(_timeOutQueue, ^{
-				coordinatorExecuted = YES;
-			});
-			if (timeoutError) return;
-
-			NSDirectoryEnumerator *dirEnum = [_fileManager enumeratorAtPath:[self fullPathForPath:path]];
-			NSDictionary *info = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:@"Couldn't create directory enumerator for path: %@", path]};
-			if (!dirEnum) fileManagerError = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeFileAccessFailed userInfo:info];
-
-			NSString *filename;
-			NSMutableArray *mutableContents = [[NSMutableArray alloc] init];
-			while ((filename = [dirEnum nextObject])) {
-				if ([filename hasPrefix:@"."]) continue; // Skip .DS_Store and other system files
-				NSString *filePath = [path stringByAppendingPathComponent:filename];
-				if ([dirEnum.fileAttributes.fileType isEqualToString:NSFileTypeDirectory]) {
-					[dirEnum skipDescendants];
-
-					CDECloudDirectory *dir = [[CDECloudDirectory alloc] init];
-					dir.name = filename;
-					dir.path = filePath;
-					[mutableContents addObject:dir];
-				}
-				else {
-					CDECloudFile *file = [CDECloudFile new];
-					file.name = filename;
-					file.path = filePath;
-					file.size = dirEnum.fileAttributes.fileSize;
-					[mutableContents addObject:file];
+				if (![_fileManager fileExistsAtPath:localFile]) {
+					FNLOG(@"%@, %@", file.name, file.path);
+					[_cloudFileSystem downloadFromPath:file.path toLocalFile:localFile completion:NULL];
 				}
 			}
-
-			if (!fileManagerError) contents = mutableContents;
 		}];
-
-		NSError *error = fileCoordinatorError ?: timeoutError ?: fileManagerError ?: nil;
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (block) block(contents, error);
-		});
 	}];
-
-}
-
-- (void)createDirectoryAtPath:(NSString *)path completion:(CDECompletionBlock)block
-{
-	[_operationQueue addOperationWithBlock:^{
-		NSError *fileCoordinatorError = nil;
-		__block NSError *timeoutError = nil;
-		__block NSError *fileManagerError = nil;
-		__block BOOL coordinatorExecuted = NO;
-
-		NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, CDEFileCoordinatorTimeOut * NSEC_PER_SEC);
-		dispatch_after(popTime, _timeOutQueue, ^{
-			if (!coordinatorExecuted) {
-				[coordinator cancel];
-				timeoutError = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeFileCoordinatorTimedOut userInfo:nil];
-			}
-		});
-
-		NSURL *url = [NSURL fileURLWithPath:[self fullPathForPath:path]];
-		[coordinator coordinateWritingItemAtURL:url options:0 error:&fileCoordinatorError byAccessor:^(NSURL *newURL) {
-			dispatch_sync(_timeOutQueue, ^{
-				coordinatorExecuted = YES;
-			});
-			if (timeoutError) return;
-			[_fileManager createDirectoryAtPath:newURL.path withIntermediateDirectories:NO attributes:nil error:&fileManagerError];
-		}];
-
-		NSError *error = fileCoordinatorError ?: timeoutError ?: fileManagerError ?: nil;
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (block) block(error);
-		});
-	}];
-}
-
-- (void)removeItemAtPath:(NSString *)path completion:(CDECompletionBlock)block
-{
-	[_operationQueue addOperationWithBlock:^{
-		NSError *fileCoordinatorError = nil;
-		__block NSError *timeoutError = nil;
-		__block NSError *fileManagerError = nil;
-		__block BOOL coordinatorExecuted = NO;
-
-		NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, CDEFileCoordinatorTimeOut * NSEC_PER_SEC);
-		dispatch_after(popTime, _timeOutQueue, ^{
-			if (!coordinatorExecuted) {
-				[coordinator cancel];
-				timeoutError = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeFileCoordinatorTimedOut userInfo:nil];
-			}
-		});
-
-		NSURL *url = [NSURL fileURLWithPath:[self fullPathForPath:path]];
-		[coordinator coordinateWritingItemAtURL:url options:NSFileCoordinatorWritingForDeleting error:&fileCoordinatorError byAccessor:^(NSURL *newURL) {
-			dispatch_sync(_timeOutQueue, ^{
-				coordinatorExecuted = YES;
-			});
-			if (timeoutError) return;
-			[_fileManager removeItemAtPath:newURL.path error:&fileManagerError];
-		}];
-
-		NSError *error = fileCoordinatorError ?: timeoutError ?: fileManagerError ?: nil;
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (block) block(error);
-		});
-	}];
-}
-
-- (void)uploadLocalFile:(NSString *)fromPath toPath:(NSString *)toPath completion:(CDECompletionBlock)block
-{
-	[_operationQueue addOperationWithBlock:^{
-		NSError *fileCoordinatorError = nil;
-		__block NSError *timeoutError = nil;
-		__block NSError *fileManagerError = nil;
-		__block BOOL coordinatorExecuted = NO;
-
-		NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, CDEFileCoordinatorTimeOut * NSEC_PER_SEC);
-		dispatch_after(popTime, _timeOutQueue, ^{
-			if (!coordinatorExecuted) {
-				[coordinator cancel];
-				timeoutError = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeFileCoordinatorTimedOut userInfo:nil];
-			}
-		});
-
-		NSURL *fromURL = [NSURL fileURLWithPath:fromPath];
-		NSURL *toURL = [NSURL fileURLWithPath:[self fullPathForPath:toPath]];
-		[coordinator coordinateReadingItemAtURL:fromURL options:0 writingItemAtURL:toURL options:NSFileCoordinatorWritingForReplacing error:&fileCoordinatorError byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-			dispatch_sync(_timeOutQueue, ^{
-				coordinatorExecuted = YES;
-			});
-			if (timeoutError) return;
-			[_fileManager removeItemAtPath:newWritingURL.path error:NULL];
-			[_fileManager copyItemAtPath:newReadingURL.path toPath:newWritingURL.path error:&fileManagerError];
-		}];
-
-		NSError *error = fileCoordinatorError ?: timeoutError ?: fileManagerError ?: nil;
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (block) block(error);
-		});
-	}];
-}
-
-- (void)downloadFromPath:(NSString *)fromPath toLocalFile:(NSString *)toPath completion:(CDECompletionBlock)block
-{
-	[_operationQueue addOperationWithBlock:^{
-		NSError *fileCoordinatorError = nil;
-		__block NSError *timeoutError = nil;
-		__block NSError *fileManagerError = nil;
-		__block BOOL coordinatorExecuted = NO;
-
-		NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, CDEFileCoordinatorTimeOut * NSEC_PER_SEC);
-		dispatch_after(popTime, _timeOutQueue, ^{
-			if (!coordinatorExecuted) {
-				[coordinator cancel];
-				timeoutError = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeFileCoordinatorTimedOut userInfo:nil];
-			}
-		});
-
-		NSURL *fromURL = [NSURL fileURLWithPath:[self fullPathForPath:fromPath]];
-		NSURL *toURL = [NSURL fileURLWithPath:toPath];
-		[coordinator coordinateReadingItemAtURL:fromURL options:0 writingItemAtURL:toURL options:NSFileCoordinatorWritingForReplacing error:&fileCoordinatorError byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-			dispatch_sync(_timeOutQueue, ^{
-				coordinatorExecuted = YES;
-			});
-			if (timeoutError) return;
-			[_fileManager removeItemAtPath:newWritingURL.path error:NULL];
-			[_fileManager copyItemAtPath:newReadingURL.path toPath:newWritingURL.path error:&fileManagerError];
-		}];
-
-		NSError *error = fileCoordinatorError ?: timeoutError ?: fileManagerError ?: nil;
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (block) block(error);
-		});
-	}];
-}
-
-- (NSString *)fullPathForPath:(NSString *)path {
-	return [[_rootDirectoryURL path] stringByAppendingPathComponent:path];
 }
 
 @end
