@@ -123,6 +123,8 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	if (!self.isCloudEnabled) return;
 	
 	[self synchronizeWithCompletion:NULL];
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCloudCoreDataStoreDidImport object:nil];
 }
 
 - (void)localSaveOccurred:(NSNotification *)notif
@@ -174,7 +176,6 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	_activeMergeCount--;
 	if (_activeMergeCount == 0) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3SyncActivityDidEndNotification object:nil];
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCloudCoreDataStoreDidImport object:nil];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 	}
 }
@@ -184,7 +185,6 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	_activeMergeCount++;
 	if (_activeMergeCount == 1) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3SyncActivityDidBeginNotification object:nil];
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCloudCoreDataStoreDidImport object:nil];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	}
 }
@@ -212,7 +212,13 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 
 - (void)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble didDeleechWithError:(NSError *)error
 {
-	NSLog(@"Store did deleech with error: %@", error);
+	FNLOG(@"Store did deleech with error: %@", error);
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+														message:NSLocalizedString(@"iCloud Disabled", nil)
+													   delegate:nil
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+											  otherButtonTitles:nil];
+	[alertView show];
 	[self reset];
 }
 
