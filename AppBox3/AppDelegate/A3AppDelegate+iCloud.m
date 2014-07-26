@@ -46,7 +46,7 @@
 	return YES;
 }
 
-- (void) application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	// set the time of wake up to use for returning if we updated
 	self.wakeUpTime = [NSDate date];
 	FNLOG(@"%@", self.wakeUpTime);
