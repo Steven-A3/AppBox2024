@@ -1450,7 +1450,9 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	if (![alertItems count]) return;
 
     // 얼럿 생성 & 등록.
-    __block NSDate *now = [NSDate date];
+    NSDateComponents *nowDateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
+    nowDateComp.second = 0;
+    __block NSDate *now = [[NSCalendar currentCalendar] dateFromComponents:nowDateComp];
     NSMutableArray *localNotifications = [NSMutableArray new];
     [alertItems enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
 		DaysCounterReminder *reminder = [event reminder];
