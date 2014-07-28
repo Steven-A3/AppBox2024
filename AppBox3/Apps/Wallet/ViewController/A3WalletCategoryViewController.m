@@ -12,10 +12,8 @@
 #import "A3WalletListBigPhotoCell.h"
 #import "WalletData.h"
 #import "WalletItem.h"
-#import "WalletField.h"
 #import "WalletFieldItem.h"
 #import "WalletFieldItem+initialize.h"
-#import "WalletCategory.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
@@ -24,7 +22,6 @@
 #import "A3WalletItemEditViewController.h"
 #import "UIColor+A3Addition.h"
 #import "A3InstructionViewController.h"
-#import "WalletCategory+extension.h"
 #import "WalletItem+initialize.h"
 
 @interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate, NSFileManagerDelegate>
@@ -46,7 +43,7 @@
     [super viewDidLoad];
 
     if (IS_IPAD) {
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.category.name style:UIBarButtonItemStylePlain target:nil action:nil];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.category[W_NAME_KEY] style:UIBarButtonItemStylePlain target:nil action:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
         self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:self.infoButton], [self instructionHelpBarButton]];
@@ -110,7 +107,7 @@
     [self refreshItems];
 
 	// 타이틀 표시 (갯수가 있으므로 페이지 진입시 갱신한다.)
-	self.navigationItem.title = [NSString stringWithFormat:@"%@(%ld)", self.category.name, (long)self.items.count];
+	self.navigationItem.title = [NSString stringWithFormat:@"%@(%ld)", self.category[W_NAME_KEY], (long)self.items.count];
 
     // more button 활성화여부
     [self itemCountCheck];
@@ -121,7 +118,7 @@
 	[self refreshItems];
 
 	// 타이틀 표시 (갯수가 있으므로 페이지 진입시 갱신한다.)
-	self.navigationItem.title = [NSString stringWithFormat:@"%@(%ld)", self.category.name, (long)self.items.count];
+	self.navigationItem.title = [NSString stringWithFormat:@"%@(%ld)", self.category[W_NAME_KEY], (long)self.items.count];
 
 	// more button 활성화여부
 	[self itemCountCheck];
@@ -149,7 +146,7 @@
     if (!super.items) {
 		FNLOG();
 		NSMutableArray *items;
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", self.category[W_ID_KEY]];
         items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
 		[super setItems:items];
     }
@@ -285,13 +282,13 @@
 			WalletItem *item = self.items[ip.row];
 			NSString *convertInfoText = @"";
 
-			if ([self.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory]) {
+			if ([self.category[W_ID_KEY] isEqualToString:A3WalletUUIDPhotoCategory]) {
 				NSString *itemName = item.name;
 				NSString *firstFieldItemValue = NSLocalizedString(@"Photo", @"Photo");
 
 				convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
 			}
-			else if ([self.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
+			else if ([self.category[W_ID_KEY] isEqualToString:A3WalletUUIDVideoCategory]) {
 				NSString *itemName = item.name;
 				NSString *firstFieldItemValue = NSLocalizedString(@"Video", @"Video");
 
@@ -301,13 +298,13 @@
 				NSString *itemName = item.name;
 				NSString *firstFieldItemValue = @"";
 
-				NSArray *fieldItems = [item fieldItemsArray];
+				NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 				if (fieldItems.count>0) {
 					WalletFieldItem *fieldItem = fieldItems[0];
 					NSString *itemValue;
 
-					WalletField *field = [item fieldForFieldItem:fieldItem];
-					if ([field.type isEqualToString:WalletFieldTypeDate]) {
+					NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];
+					if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeDate]) {
 						NSDateFormatter *df = [[NSDateFormatter alloc] init];
 						[df setDateStyle:NSDateFormatterFullStyle];
 						itemValue = [df stringFromDate:fieldItem.date];
@@ -317,7 +314,7 @@
 					}
 
 					if (itemValue && (itemValue.length>0)) {
-						firstFieldItemValue = [itemValue stringForStyle:field.style];
+						firstFieldItemValue = [itemValue stringForStyle:field[W_STYLE_KEY]];
 					}
 				}
 
@@ -362,13 +359,13 @@
 			WalletItem *item = self.items[index];
 			NSString *convertInfoText = @"";
 
-			if ([self.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory]) {
+			if ([self.category[W_ID_KEY] isEqualToString:A3WalletUUIDPhotoCategory]) {
 				NSString *itemName = item.name;
 				NSString *firstFieldItemValue = NSLocalizedString(@"Photo", @"Photo");
 
 				convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
 			}
-			else if ([self.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
+			else if ([self.category[W_ID_KEY] isEqualToString:A3WalletUUIDVideoCategory]) {
 				NSString *itemName = item.name;
 				NSString *firstFieldItemValue = @"Video";
 
@@ -379,12 +376,12 @@
 				NSString *itemName = item.name;
 				NSString *firstFieldItemValue = @"";
 
-				NSArray *fieldItems = [item fieldItemsArray];
+				NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 				if (fieldItems.count>0) {
 					WalletFieldItem *fieldItem = fieldItems[0];
 					NSString *itemValue = @"";
-					WalletField *field = [item fieldForFieldItem:fieldItem];
-					if ([field.type isEqualToString:WalletFieldTypeDate]) {
+					NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];
+					if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeDate]) {
 						NSDateFormatter *df = [[NSDateFormatter alloc] init];
 						[df setDateStyle:NSDateFormatterFullStyle];
 						itemValue = [df stringFromDate:fieldItem.date];
@@ -394,7 +391,7 @@
 					}
 
 					if (itemValue && (itemValue.length>0)) {
-						firstFieldItemValue = [itemValue stringForStyle:field.style];
+						firstFieldItemValue = [itemValue stringForStyle:field[W_STYLE_KEY]];
 					}
 				}
 
@@ -429,7 +426,7 @@
     A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
 	viewController.isAddNewItem = YES;
     viewController.hidesBottomBarWhenPushed = YES;
-    viewController.walletCategory = self.category;
+    viewController.category = self.category;
 
     return viewController;
 }
@@ -633,7 +630,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory] || [self.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
+    if ([self.category[W_ID_KEY] isEqualToString:A3WalletUUIDPhotoCategory] || [self.category[W_ID_KEY] isEqualToString:A3WalletUUIDVideoCategory]) {
         return 84;
     }
     else {
@@ -666,7 +663,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
         if ([self.items[indexPath.row] isKindOfClass:[WalletItem class]]) {
             WalletItem *item = self.items[indexPath.row];
-			NSArray *fieldItems = [item fieldItemsArray];
+			NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 			[fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem *fieldItem, NSUInteger idx, BOOL *stop) {
 				BOOL result;
 				NSFileManager *fileManager = [[NSFileManager alloc] init];
@@ -708,7 +705,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
             [self itemCountCheck];
 
             // 타이틀 표시 (갯수가 있으므로 페이지 진입시 갱신한다.)
-            NSString *cateTitle = [NSString stringWithFormat:@"%@(%ld)", self.category.name, (long)self.items.count];
+            NSString *cateTitle = [NSString stringWithFormat:@"%@(%ld)", self.category[W_NAME_KEY], (long)self.items.count];
             self.navigationItem.title = cateTitle;
         }
     }

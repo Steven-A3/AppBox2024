@@ -8,18 +8,13 @@
 
 #import "WalletItem.h"
 
-@class WalletField;
 @class WalletFieldItem;
 
 @interface WalletItem (initialize)
 
-- (NSArray *)fieldItemsArray;
-
+- (NSArray *)fieldItemsArraySortedByFieldOrder;
 - (void)assignOrder;
-
 - (void)verifyNULLField;
-
-- (WalletField *)fieldForFieldItem:(WalletFieldItem *)fieldItem;
-
 - (void)deleteWalletItem;
+
 @end

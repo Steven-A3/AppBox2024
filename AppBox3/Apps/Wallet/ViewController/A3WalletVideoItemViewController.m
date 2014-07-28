@@ -18,8 +18,6 @@
 #import "WalletItem.h"
 #import "WalletItem+initialize.h"
 #import "WalletItem+Favorite.h"
-#import "WalletField.h"
-#import "NSDate+TimeAgo.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "WalletFieldItem.h"
 #import "UIImage+Extension2.h"
@@ -155,11 +153,11 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     if (!_videoFieldItems) {
         _videoFieldItems = [[NSMutableArray alloc] init];
         
-        NSArray *fieldItems = [_item fieldItemsArray];
+        NSArray *fieldItems = [_item fieldItemsArraySortedByFieldOrder];
         for (int i=0; i<fieldItems.count; i++) {
             WalletFieldItem *fieldItem = fieldItems[i];
-			WalletField *field = [_item fieldForFieldItem:fieldItem];
-            if ([field.type isEqualToString:WalletFieldTypeVideo]) {
+			NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];;
+            if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo]) {
                 [_videoFieldItems addObject:fieldItem];
             }
         }
@@ -176,14 +174,14 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 		[_normalFieldItems addObject:self.photoItem];
 		[_normalFieldItems addObject:self.metadataItem];
 
-		NSArray *fieldItems = [_item fieldItemsArray];
+		NSArray *fieldItems = [_item fieldItemsArraySortedByFieldOrder];
 		for (NSUInteger idx = 0; idx < fieldItems.count; idx++) {
 			WalletFieldItem *fieldItem = fieldItems[idx];
-			WalletField *field = [_item fieldForFieldItem:fieldItem];
-			if ([field.type isEqualToString:WalletFieldTypeDate] && !fieldItem.date) {
+			NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];;
+			if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeDate] && !fieldItem.date) {
 				continue;
 			}
-			if ([field.type isEqualToString:WalletFieldTypeVideo] || ![fieldItem.value length]) {
+			if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo] || ![fieldItem.value length]) {
 				continue;
 			}
 			[_normalFieldItems addObject:fieldItem];
@@ -482,8 +480,8 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 {
     NSUInteger index = _photoScrollView.contentOffset.x/_photoScrollView.bounds.size.width;
     WalletFieldItem *fieldItem = _videoFieldItems[index];
-    WalletField *field = [_item fieldForFieldItem:fieldItem];
-    if ([field.type isEqualToString:WalletFieldTypeVideo]) {
+    NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];;
+    if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo]) {
         if (fieldItem) {
 			NSURL *fileURL = [fieldItem videoFileURLInOriginal:YES ];
 			_moviePlayerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:fileURL];
@@ -619,23 +617,23 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     }
     else if ([_normalFieldItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
         WalletFieldItem *fieldItem = _normalFieldItems[indexPath.row];
-		WalletField *field = [_item fieldForFieldItem:fieldItem];
-        if ([field.type isEqualToString:WalletFieldTypeImage] || [field.type isEqualToString:WalletFieldTypeVideo]) {
+		NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];;
+        if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage] || [field[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo]) {
             
             A3WalletItemPhotoFieldCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemPhotoFieldCellID2 forIndexPath:indexPath];
             
             photoCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			[self configureFloatingTextField:photoCell.valueTextField];
             
-            photoCell.valueTextField.placeholder = field.name;
+            photoCell.valueTextField.placeholder = field[W_NAME_KEY];
 
-			if ([field.type isEqualToString:WalletFieldTypeImage]) {
+			if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage]) {
 				photoCell.valueTextField.text = @" ";
 				photoCell.photoButton.hidden = NO;
 
 				[self setImageToCell:photoCell image:[fieldItem thumbnailImage]];
 				photoCell.photoButton.tag = indexPath.row;
-			} else if ([field.type isEqualToString:WalletFieldTypeVideo]) {
+			} else if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo]) {
 				photoCell.valueTextField.text = @" ";
 				photoCell.photoButton.hidden = NO;
 
@@ -648,14 +646,14 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
             cell = photoCell;
         }
-        else if ([field.type isEqualToString:WalletFieldTypeDate]) {
+        else if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeDate]) {
             
             A3WalletItemFieldCell *dateCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCellID2 forIndexPath:indexPath];
             
             dateCell.selectionStyle = UITableViewCellSelectionStyleNone;
             [self configureFloatingTextField:dateCell.valueTextField];
             
-            dateCell.valueTextField.placeholder = field.name;
+            dateCell.valueTextField.placeholder = field[W_NAME_KEY];
             if (fieldItem.date) {
                 
                 NSDateFormatter *df = [[NSDateFormatter alloc] init];
@@ -675,7 +673,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
             textCell.selectionStyle = UITableViewCellSelectionStyleNone;
             [self configureFloatingTextField:textCell.valueTextField];
             
-            textCell.valueTextField.placeholder = field.name;
+            textCell.valueTextField.placeholder = field[W_NAME_KEY];
             textCell.valueTextField.text = fieldItem.value;
             
             if (fieldItem.value) {

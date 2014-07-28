@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "A3WalletListViewController.h"
 
-@class WalletCategory;
-
 @interface A3WalletCategoryViewController : A3WalletListViewController
 
 @end

@@ -9,17 +9,12 @@
 #import "A3WalletCategoryInfoViewController.h"
 #import "A3WalletCateTitleView.h"
 #import "A3WalletCateInfoFieldCell.h"
-#import "WalletCategory.h"
-#import "WalletCategory+extension.h"
-#import "WalletField.h"
 #import "WalletData.h"
-#import "NSDate+TimeAgo.h"
-#import "A3AppDelegate.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "UIViewController+A3Addition.h"
 #import "A3WalletMainTabBarController.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "NSDate+formatting.h"
+#import "WalletItem.h"
 
 NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
 
@@ -61,7 +56,7 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
     
-    _headerView.icon.image = [UIImage imageNamed:_category.icon];
+    _headerView.icon.image = [UIImage imageNamed:_category[W_ICON_KEY]];
     
     [self registerContentSizeCategoryDidChangeNotification];
 }
@@ -99,8 +94,8 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
         NSString *nibName = IS_IPAD ? @"A3WalletCateTitleView_iPad" : @"A3WalletCateTitleView";
         _headerView = [[[NSBundle mainBundle] loadNibNamed:nibName owner:Nil options:nil] lastObject];
 		[self setupHeaderViewFont];
-        _headerView.nameLabel.text = _category.name;
-        _headerView.icon.image = [UIImage imageNamed:_category.icon];
+        _headerView.nameLabel.text = _category[W_NAME_KEY];
+        _headerView.icon.image = [UIImage imageNamed:_category[W_ICON_KEY]];
         
         NSDateFormatter *dateFormatter = [NSDateFormatter new];
         if (IS_IPAD || [NSDate isFullStyleLocale]) {
@@ -111,8 +106,12 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
         else {
             dateFormatter.dateFormat = [dateFormatter customFullWithTimeStyleFormat];
         }
-        
-        _headerView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [dateFormatter stringFromDate:_category.updateDate]];
+
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", _category[W_ID_KEY]];
+		WalletItem *item = [WalletItem MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+		if (item) {
+			_headerView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [dateFormatter stringFromDate:item.updateDate]];
+		}
     }
     
     return _headerView;
@@ -129,7 +128,7 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     A3WalletCategoryEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletCategoryEditViewController"];
 
     viewController.delegate = self;
-    viewController.category = [_category MR_inContext:[NSManagedObjectContext MR_rootSavingContext]];
+    viewController.categoryID = _category[W_ID_KEY];
     
     [self presentSubViewController:viewController];
 }
@@ -168,13 +167,13 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     
 }
 
-- (void)walletCategoryEdited:(WalletCategory *)category
+- (void)walletCategoryEdited:(NSDictionary *)category
 {
     // category 정보가 변경됨.
     [self.tableView reloadData];
     
-    _headerView.nameLabel.text = _category.name;
-    _headerView.icon.image = [UIImage imageNamed:_category.icon];
+    _headerView.nameLabel.text = _category[W_NAME_KEY];
+    _headerView.icon.image = [UIImage imageNamed:_category[W_ICON_KEY]];
 
 	_categoryContentsChanged = YES;
 }
@@ -189,9 +188,8 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", _category.uniqueID];
-    return [WalletField MR_countOfEntitiesWithPredicate:predicate];
+	NSArray *fields = _category[W_FIELDS_KEY];
+    return [fields count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -207,16 +205,16 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-	NSArray *items = [_category fieldsArray];
-    WalletField *field = items[indexPath.row];
+	NSArray *items = _category[W_FIELDS_KEY];
+    NSDictionary *field = items[indexPath.row];
     
     // Configure the cell...
-    cell.nameLabel.text = field.name;
-    if ([field.type isEqualToString:WalletFieldTypeImage] || [field.type isEqualToString:WalletFieldTypeVideo]) {
-        cell.typeLabel.text = NSLocalizedString(field.type, nil);
+    cell.nameLabel.text = field[W_NAME_KEY];
+    if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage] || [field[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo]) {
+        cell.typeLabel.text = NSLocalizedString(field[W_TYPE_KEY], nil);
     }
     else {
-        cell.typeLabel.text = [NSString stringWithFormat:@"%@, %@", NSLocalizedString(field.type, nil), NSLocalizedString(field.style, nil)];
+        cell.typeLabel.text = [NSString stringWithFormat:@"%@, %@", NSLocalizedString(field[W_TYPE_KEY], nil), NSLocalizedString(field[W_STYLE_KEY], nil)];
     }
 
     return cell;

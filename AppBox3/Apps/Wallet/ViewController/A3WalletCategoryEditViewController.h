@@ -13,7 +13,7 @@
 @protocol WalletCategoryEditDelegate <NSObject>
 
 @required
-- (void)walletCategoryEdited:(WalletCategory *)category;
+- (void)walletCategoryEdited:(NSDictionary *)category;
 
 @optional
 - (void)walletCateEditCanceled;
@@ -23,7 +23,7 @@
 @interface A3WalletCategoryEditViewController : UITableViewController
 
 @property (nonatomic, assign) id<WalletCategoryEditDelegate> delegate;
-@property (nonatomic, strong) WalletCategory *category;
+@property (nonatomic, strong) NSString *categoryID;
 @property (nonatomic, assign) BOOL isAddingCategory;
 
 @end

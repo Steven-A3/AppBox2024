@@ -18,11 +18,7 @@
 #import "TranslatorHistory.h"
 #import "TranslatorHistory+manager.h"
 #import "NSData-AES.h"
-#import "WalletCategory.h"
-#import "WalletCategory+extension.h"
 #import "WalletItem.h"
-#import "WalletField+initialize.h"
-#import "WalletFieldItem+initialize.h"
 #import "A3UserDefaults.h"
 #import "WalletData.h"
 #import "WalletItem+initialize.h"
@@ -32,6 +28,7 @@
 #import "A3AppDelegate.h"
 #import "NSString+conversion.h"
 #import "LadyCalendarPeriod+extension.h"
+#import "WalletFieldItem+initialize.h"
 
 NSString *const A3NotificationDataMigrationFinished = @"A3NotificationDataMigrationFinished";
 
@@ -383,7 +380,6 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 
 - (BOOL)migrateWalletDataInContext:(NSManagedObjectContext *)context withPassword:(NSString *)password {
 	[WalletData createDirectories];
-	[WalletCategory resetWalletCategoriesInContext:context ];
 
 	if (![self walletDataFileExists]) {
 		FNLOG(@"Wallet Data File does not exist. Nothing to migrate.");
@@ -396,6 +392,10 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 	}
 	FNLOG(@"%@", walletDictionary);
 
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3WalletUserDefaultsCategoryInfo];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	NSMutableArray *V3CategoryInfo = [[WalletData categoryPresetData] mutableCopy];
 	NSMutableDictionary *categoryMap = [[self categoryMap] mutableCopy];
 	NSMutableDictionary *allFieldMap = [[self fieldMap] mutableCopy];
 
@@ -412,43 +412,58 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 			NSMutableDictionary *fieldMap = [allFieldMap[V1CategoryID] mutableCopy];
 
 			NSString *V3CategoryID = categoryMap[V1CategoryID];
-			WalletCategory *category;
+			NSMutableDictionary *category;
+			NSUInteger categoryIndex = NSNotFound;
 			if (!V3CategoryID) {
 				fieldMap = [NSMutableDictionary new];
-				category = [WalletCategory MR_createEntityInContext:context];
-				category.uniqueID = [[NSUUID UUID] UUIDString];
-				category.doNotShow = @NO;
-				category.name = [V1Category[KWalletTypeName] stringByTrimmingSpaceCharacters];
-				category.icon = @"wallet_folder";
-				category.updateDate = [NSDate date];
+				category = [NSMutableDictionary new];
+				category[W_ID_KEY] = [[NSUUID UUID] UUIDString];
+				category[W_NAME_KEY] = [V1Category[KWalletTypeName] stringByTrimmingSpaceCharacters];
+				category[W_ICON_KEY] = @"wallet_folder";
 
-				[categoryMap setObject:category.uniqueID forKey:V1CategoryID];
+				[categoryMap setObject:category[W_ID_KEY] forKey:V1CategoryID];
 
 				NSArray *fieldInfoArray = V1Category[KWalletFieldInfoArray];
 				for (NSDictionary *fieldInfo in fieldInfoArray) {
-					WalletField *newField = [WalletField MR_createEntityInContext:context];
-					newField.categoryID = category.uniqueID;
-					[newField initValues];
-					newField.name = fieldInfo[WalletFieldName];
-					newField.type = fieldInfo[WalletFieldType];
-					newField.style = fieldInfo[WalletFieldStyle];
+					NSMutableDictionary *newField = [NSMutableDictionary new];
+					newField[W_ID_KEY] = category[W_ID_KEY];
+					newField[W_NAME_KEY] = fieldInfo[WalletFieldName];
+					newField[W_TYPE_KEY] = fieldInfo[WalletFieldType];
+					newField[W_STYLE_KEY] = fieldInfo[WalletFieldStyle];
 
-					[fieldMap setObject:newField.uniqueID forKey:fieldInfo[WalletFieldID]];
+					[fieldMap setObject:newField[W_ID_KEY] forKey:fieldInfo[WalletFieldID]];
 				}
 				[allFieldMap setObject:fieldMap forKey:V1CategoryID];
+
+				[V3CategoryInfo addObject:category];
+				categoryIndex = [V3CategoryInfo count] - 1;
 			} else {
-				category = [WalletCategory MR_findFirstByAttribute:@"uniqueID" withValue:V3CategoryID inContext:context];
-				category.name = V1Category[KWalletTypeName];
+				categoryIndex = [V3CategoryInfo indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+					return [obj[W_ID_KEY] isEqualToString:V3CategoryID];
+				}];
+				category = [V3CategoryInfo[categoryIndex] mutableCopy];
+				category[W_NAME_KEY] = V1Category[KWalletTypeName];
+				V3CategoryInfo[categoryIndex] = category;
 			}
 			NSArray *V1FieldInfoArray = V1Category[KWalletFieldInfoArray];
+			NSMutableArray *V3FieldsArray = [category[W_FIELDS_KEY] mutableCopy];
 
-			// Copy fields name from V1
-			for (NSDictionary *V1FieldInfo in V1FieldInfoArray) {
-				NSString *V3FieldID = fieldMap[V1FieldInfo[WalletFieldID]];
-				WalletField *V3Field = [WalletField MR_findFirstByAttribute:@"uniqueID" withValue:V3FieldID inContext:context];
-				V3Field.name = V1FieldInfo[WalletFieldName];
+			if ([V3CategoryID length]) {
+				// Copy fields name from V1
+				for (NSDictionary *V1FieldInfo in V1FieldInfoArray) {
+					NSString *V3FieldID = fieldMap[V1FieldInfo[WalletFieldID]];
+					NSUInteger idx = [V3FieldsArray indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+						return [obj[W_ID_KEY] isEqualToString:V3FieldID];
+					}];
+					if (idx != NSNotFound) {
+						NSMutableDictionary *V3Field = [V3FieldsArray[idx] mutableCopy];
+						V3Field[W_NAME_KEY] = V1FieldInfo[WalletFieldName];
+						V3FieldsArray[idx] = V3Field;
+					}
+				}
+				category[W_FIELDS_KEY] = V3FieldsArray;
+				V3CategoryInfo[categoryIndex] = category;
 			}
-			[context MR_saveToPersistentStoreAndWait];
 
 			for (NSDictionary *valueInfo in V1FieldItemsArray) {
 				@autoreleasepool {
@@ -456,7 +471,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 					newItem.uniqueID = [[NSUUID UUID] UUIDString];
 					newItem.updateDate = [NSDate date];
 					[newItem assignOrder];
-					newItem.categoryID = category.uniqueID;
+					newItem.categoryID = category[W_ID_KEY];
 					newItem.name = valueInfo[KWalletItemName];
 					NSDictionary *valueDictionary = valueInfo[KWalletValueDictionary];
 					newItem.updateDate = valueDictionary[KWalletValueLastUpdated];
@@ -487,16 +502,19 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 										return [fieldInfo[WalletFieldID] isEqualToString:fieldID];
 									}];
 									if (fieldIndex != NSNotFound) {
+
 										NSDictionary *V1FieldInfo = fieldInfoArray[fieldIndex];
-										WalletField *newField = [WalletField MR_createEntityInContext:context];
-										newField.categoryID = category.uniqueID;
-										[newField initValues];
+										NSMutableDictionary *newField = [NSMutableDictionary new];
+										newField[W_ID_KEY] = category[W_ID_KEY];
+										newField[W_NAME_KEY] = V1FieldInfo[WalletFieldName];
+										newField[W_TYPE_KEY] = V1FieldInfo[WalletFieldType];
+										newField[W_STYLE_KEY] = V1FieldInfo[WalletFieldStyle];
+										[V3FieldsArray addObject:newField];
 
-										newField.name = V1FieldInfo[WalletFieldName];
-										newField.type = V1FieldInfo[WalletFieldType];
-										newField.style = V1FieldInfo[WalletFieldStyle];
+										category[W_FIELDS_KEY] = V3FieldsArray;
+										V3CategoryInfo[categoryIndex] = category;
 
-										V3FieldItem.fieldID = newField.uniqueID;
+										V3FieldItem.fieldID = newField[W_ID_KEY];
 									} else {
 										// 만약 value는 있는데 해당하는 field정보가 없다면 값을 Note에 추가를 해준다.
 										if ([newItem.note length]) {
@@ -531,21 +549,29 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 			}
 		}
 	}
-	// Sort category by name except all and favorite.
-	NSArray *categories = [WalletCategory MR_findAllSortedBy:@"name" ascending:YES inContext:context];
-	NSInteger index = 3000000;
-	for (WalletCategory *category in categories) {
-		if ([category.uniqueID isEqualToString:A3WalletUUIDFavoriteCategory]) {
-			category.order = [NSString orderStringWithOrder:1000000];
-			continue;
-		} else if ([category.uniqueID isEqualToString:A3WalletUUIDAllCategory]) {
-			category.order = [NSString orderStringWithOrder:2000000];
-			continue;
-		}
-		category.order = [NSString orderStringWithOrder:index];
-		index += 1000000;
-	}
 	[context MR_saveToPersistentStoreAndWait];
+
+	[V3CategoryInfo sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+		return [NSLocalizedStringFromTable(obj1[W_NAME_KEY], @"WalletPreset", nil)
+				compare:NSLocalizedStringFromTable(obj2[W_NAME_KEY], @"WalletPreset", nil)];
+	}];
+
+	[V3CategoryInfo insertObject:@{
+			W_ID_KEY : A3WalletUUIDFavoriteCategory,
+			W_NAME_KEY : NSLocalizedString(@"Favorites", nil),
+			W_ICON_KEY : @"star01",
+			W_SYSTEM_KEY : W_SYSTEM_KEY
+	} atIndex:0];
+
+	[V3CategoryInfo insertObject:@{
+			W_ID_KEY : A3WalletUUIDAllCategory,
+			W_NAME_KEY : NSLocalizedString(@"Wallet_All_Category", @"All"),
+			W_ICON_KEY : @"wallet_folder",
+			W_SYSTEM_KEY : W_SYSTEM_KEY
+	} atIndex:1];
+
+	[[NSUserDefaults standardUserDefaults] setObject:V3CategoryInfo forKey:A3WalletUserDefaultsCategoryInfo];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	return YES;
 }

@@ -7,25 +7,24 @@
 //
 
 #import "WalletItem+initialize.h"
-#import "WalletItem+Favorite.h"
 #import "WalletFavorite.h"
 #import "WalletFieldItem+initialize.h"
 #import "NSString+conversion.h"
-#import "WalletField.h"
-#import "WalletField.h"
-#import "WalletFieldItem.h"
 #import "WalletData.h"
 
 @implementation WalletItem (initialize)
 
-- (NSArray *)fieldItemsArray
+- (NSArray *)fieldItemsArraySortedByFieldOrder
 {
+	NSDictionary *category = [WalletData categoryItemWithID:self.categoryID];
+	NSArray *fields = category[W_FIELDS_KEY];
+	NSArray *fieldIDs = [fields valueForKeyPath:W_ID_KEY];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", self.uniqueID];
 	NSArray *fieldItems = [WalletFieldItem MR_findAllWithPredicate:predicate];
 	fieldItems = [fieldItems sortedArrayUsingComparator:^NSComparisonResult(WalletFieldItem *obj1, WalletFieldItem *obj2) {
-		WalletField *field1 = [WalletField MR_findFirstByAttribute:@"uniqueID" withValue:obj1.fieldID];
-		WalletField *field2 = [WalletField MR_findFirstByAttribute:@"uniqueID" withValue:obj2.fieldID];
-		return [field1.order compare:field2.order];
+		NSUInteger idx1 = [fieldIDs indexOfObject:obj1.fieldID];
+		NSUInteger idx2 = [fieldIDs indexOfObject:obj2.fieldID];
+		return [@(idx1) compare:@(idx2)];
 	}];
     return fieldItems;
 }
@@ -41,25 +40,28 @@
 }
 
 - (void)verifyNULLField {
-	NSArray *fieldItems = [self fieldItemsArray];
+	NSArray *fieldItems = [self fieldItemsArraySortedByFieldOrder];
 	NSMutableArray *fieldItemsFieldDoesNotExist = [NSMutableArray new];
+	NSDictionary *category = [WalletData categoryItemWithID:self.categoryID];
+	NSArray *fields = category[W_FIELDS_KEY];
 	for (WalletFieldItem *fieldItem in fieldItems) {
 		if (![fieldItem.fieldID length]) {
 			[fieldItemsFieldDoesNotExist addObject:fieldItem];
 			continue;
 		}
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@ && categoryID == %@", fieldItem.fieldID, self.categoryID];
-		WalletField *field = [WalletField MR_findFirstWithPredicate:predicate];
-		if (!field) {
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", W_ID_KEY, fieldItem.fieldID];
+		NSArray *filteredArray = [fields filteredArrayUsingPredicate:predicate];
+		if (![filteredArray count]) {
 			fieldItem.fieldID = nil;
 			[fieldItemsFieldDoesNotExist addObject:fieldItem];
 			continue;
 		}
-		if ([fieldItem.hasImage boolValue] && ![field.type isEqualToString:WalletFieldTypeImage]) {
+		NSDictionary *field = filteredArray[0];
+		if ([fieldItem.hasImage boolValue] && ![field[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage]) {
 			fieldItem.fieldID = nil;
 			continue;
 		}
-		if ([fieldItem.hasVideo boolValue] && ![field.type isEqualToString:WalletFieldTypeVideo]) {
+		if ([fieldItem.hasVideo boolValue] && ![field[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo]) {
 			fieldItem.fieldID = nil;
 		}
 	}
@@ -81,11 +83,6 @@
 		self.note = [NSString stringWithFormat:@"%@%@", [self.note length] ? [NSString stringWithFormat:@"%@\n", self.note] : @"", collectedTexts];
 	}
 	[[self managedObjectContext] MR_saveToPersistentStoreAndWait];
-}
-
-- (WalletField *)fieldForFieldItem:(WalletFieldItem *)fieldItem {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@ AND categoryID == %@", fieldItem.fieldID, self.categoryID];
-	return [WalletField MR_findFirstWithPredicate:predicate];
 }
 
 - (void)deleteWalletItem {

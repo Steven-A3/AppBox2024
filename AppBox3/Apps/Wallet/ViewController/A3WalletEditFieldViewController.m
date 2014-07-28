@@ -10,18 +10,17 @@
 #import "A3WalletFieldTypeSelectViewController.h"
 #import "A3WalletFieldStyleSelectViewController.h"
 #import "WalletData.h"
-#import "WalletField.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSString+conversion.h"
-#import "WalletCategory.h"
 #import "A3WalletFieldEditTitleCell.h"
 
 @interface A3WalletEditFieldViewController () <WalletFieldTypeSelectDelegate, WalletFieldStyleSelectDelegate, UITextFieldDelegate>
 @property (nonatomic, strong) MBProgressHUD *alertHUD;
 @property (nonatomic, copy) NSString *originalFieldName;
+@property (nonatomic, copy) NSDictionary *originalField;
 @end
 
 @implementation A3WalletEditFieldViewController {
@@ -47,7 +46,8 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 
     self.navigationItem.title = _isAddMode ? NSLocalizedString(@"Add Field", @"Add Field") : NSLocalizedString(@"Edit Field", @"Edit Field");
 	if (!_isAddMode) {
-		self.originalFieldName = _field.name;
+		self.originalFieldName = _field[W_NAME_KEY];
+		self.originalField = _field;
 	}
 
     [self makeBackButtonEmptyArrow];
@@ -125,11 +125,8 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 - (void)closeEditing {
 	[self.firstResponder resignFirstResponder];
 
-	if (_field.name.length > 0 && !_sameFieldNameExists) {
+	if ([_field[W_NAME_KEY] length] > 0 && !_sameFieldNameExists) {
 		[self updateEditedInfo];
-	}
-	else {
-		[_field MR_deleteEntity];
 	}
 
 	if (_delegate && [_delegate respondsToSelector:@selector(dismissedViewController:)]) {
@@ -150,13 +147,10 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 
     if (IS_IPAD) {
         
-        if (_field.name.length > 0 && !_sameFieldNameExists) {
+        if ([_field[W_NAME_KEY] length] > 0 && !_sameFieldNameExists) {
             [self updateEditedInfo];
         }
-        else {
-            [_field MR_deleteEntity];
-        }
-        
+
 		[self.A3RootViewController dismissRightSideViewController];
         
         if (_delegate && [_delegate respondsToSelector:@selector(dismissedViewController:)]) {
@@ -169,14 +163,14 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 {
     // 추가모드
     if (_isAddMode) {
-        if ([_field hasChanges] && _delegate && [_delegate respondsToSelector:@selector(walletFieldAdded:)]) {
+        if ([_field[W_NAME_KEY] length] && _delegate && [_delegate respondsToSelector:@selector(walletFieldAdded:)]) {
             [_delegate walletFieldAdded:_field];
         }
     }
     // 편집모드
     else {
         // 변화가 있으면 delegate호출
-        if ([_field hasChanges] && _delegate && [_delegate respondsToSelector:@selector(walletFieldEdited:)]) {
+        if (![_field isEqualToDictionary:_originalField] && _delegate && [_delegate respondsToSelector:@selector(walletFieldEdited:)]) {
             [_delegate walletFieldEdited:_field];
         }
     }
@@ -187,7 +181,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 - (void)walletFieldStyleSelected:(NSString *)fieldStyle
 {
     if (fieldStyle) {
-        _field.style = fieldStyle;
+        _field[W_STYLE_KEY] = fieldStyle;
         [self.tableView reloadData];
     }
 }
@@ -197,7 +191,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 - (void)walletFieldSelectedFieldType:(NSString *)fieldType
 {
     if (fieldType) {
-        _field.type = fieldType;
+        _field[W_TYPE_KEY] = fieldType;
         [self.tableView reloadData];
     }
 }
@@ -219,7 +213,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    _field.name = textField.text;
+    _field[W_NAME_KEY] = textField.text;
 	[self setFirstResponder:nil];
 }
 
@@ -228,9 +222,9 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 	changed = [changed stringByTrimmingSpaceCharacters];
 
 	if (![_originalFieldName isEqualToString:changed]) {
-		if ([changed length] && _field.categoryID) {
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name == %@ AND categoryID == %@", changed, _field.categoryID];
-			_sameFieldNameExists = [[WalletField MR_findAllWithPredicate:predicate] count] > 0 ? YES : NO;
+		if ([changed length]) {
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", W_NAME_KEY, changed];
+			_sameFieldNameExists = [[_fields filteredArrayUsingPredicate:predicate] count] > 0 ? YES : NO;
 		} else {
 			_sameFieldNameExists = NO;
 		}
@@ -276,7 +270,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
         // field type
         A3WalletFieldTypeSelectViewController *viewController = [[A3WalletFieldTypeSelectViewController alloc] initWithStyle:UITableViewStyleGrouped];
         viewController.delegate = self;
-        viewController.selectedType = _field.type;
+        viewController.selectedType = _field[W_TYPE_KEY];
         
         [self.navigationController pushViewController:viewController animated:YES];
     }
@@ -284,8 +278,8 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
         // field style
         A3WalletFieldStyleSelectViewController *viewController = [[A3WalletFieldStyleSelectViewController alloc] initWithStyle:UITableViewStyleGrouped];
         viewController.delegate = self;
-        viewController.typeName = _field.type;
-        viewController.selectedStyle = _field.style;
+        viewController.typeName = _field[W_TYPE_KEY];
+        viewController.selectedStyle = _field[W_STYLE_KEY];
         
         [self.navigationController pushViewController:viewController animated:YES];
     }
@@ -329,7 +323,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
     
     // style section
     if (section == 2) {
-        if ([_field.type isEqualToString:WalletFieldTypeImage] || [_field.type isEqualToString:WalletFieldTypeVideo]) {
+        if ([_field[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage] || [_field[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo]) {
             return 0;
         }
     }
@@ -347,7 +341,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 		titleCell.selectionStyle = UITableViewCellSelectionStyleNone;
 		titleCell.textField.textColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
 		titleCell.textField.font = [UIFont systemFontOfSize:17];
-		titleCell.textField.text = _field.name;
+		titleCell.textField.text = _field[W_NAME_KEY];
 		titleCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
 		titleCell.textField.placeholder = NSLocalizedString(@"Field Name", @"Field Name");
 		titleCell.textField.delegate = self;
@@ -365,7 +359,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 		}
 
 		cell.textLabel.text = NSLocalizedString(@"Type", @"Type");
-		cell.detailTextLabel.text = NSLocalizedString(_field.type, nil);
+		cell.detailTextLabel.text = NSLocalizedString(_field[W_TYPE_KEY], nil);
 	}
 	else if (indexPath.section == 2) {
 		cell = [tableView dequeueReusableCellWithIdentifier:A3WalletFieldEditStyleCellID];
@@ -378,7 +372,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 		}
 
 		cell.textLabel.text = NSLocalizedString(@"Style", @"Style");
-		cell.detailTextLabel.text = NSLocalizedString(_field.style, nil);
+		cell.detailTextLabel.text = NSLocalizedString(_field[W_STYLE_KEY], nil);
 	}
 
     return cell;

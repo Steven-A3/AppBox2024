@@ -8,18 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@class WalletCategory;
-
-@protocol WalletCatogerySelectDelegate <NSObject>
+@protocol WalletCategorySelectDelegate <NSObject>
 
 @required
-- (void)walletCategorySelected:(WalletCategory *) category;
+- (void)walletCategorySelected:(NSDictionary *) category;
 
 @end
 
 @interface A3WalletCategorySelectViewController : UITableViewController
 
-@property (assign) id<WalletCatogerySelectDelegate> delegate;
-@property (nonatomic, strong) WalletCategory *selectedCategory;
+@property (assign) id<WalletCategorySelectDelegate> delegate;
+@property (nonatomic, strong) NSDictionary *selectedCategory;
 
 @end

@@ -10,9 +10,8 @@
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "WalletCategory.h"
-#import "WalletCategory+extension.h"
 #import "UIImage+imageWithColor.h"
+#import "WalletData.h"
 
 @interface A3WalletIconSelectViewController ()
 {
@@ -98,7 +97,7 @@
 - (NSArray *)iconList
 {
     if (!_iconList) {
-        _iconList = [WalletCategory iconList];
+        _iconList = [WalletData iconList];
     }
     
     return _iconList;

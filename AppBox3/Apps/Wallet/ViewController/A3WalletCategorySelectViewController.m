@@ -7,10 +7,9 @@
 //
 
 #import "A3WalletCategorySelectViewController.h"
-#import "WalletCategory.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "WalletCategory+extension.h"
+#import "WalletData.h"
 
 @interface A3WalletCategorySelectViewController ()
 
@@ -75,17 +74,7 @@
 - (NSMutableArray *)allCategories
 {
     if (!_allCategories) {
-        _allCategories = [NSMutableArray arrayWithArray:[WalletCategory MR_findAllSortedBy:@"order" ascending:YES]];
-        
-        WalletCategory *favCate = [WalletCategory favoriteCategory];
-        WalletCategory *allCate = [WalletCategory allCategory];
-        
-        if (favCate) {
-            [_allCategories removeObject:favCate];
-        }
-        if (allCate) {
-            [_allCategories removeObject:allCate];
-        }
+		_allCategories = [[WalletData categoriesExcludingSystemCategories] mutableCopy];
     }
     
     return _allCategories;
@@ -130,8 +119,8 @@
     }
     
     // Configure the cell...
-    WalletCategory *cate = _allCategories[indexPath.row];
-    cell.textLabel.text = cate.name;
+    NSDictionary *cate = _allCategories[indexPath.row];
+    cell.textLabel.text = cate[W_NAME_KEY];
     
     if (cate == _selectedCategory) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -145,8 +134,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_delegate && [_delegate respondsToSelector:@selector(walletCategorySelected:)]) {
-        
-        WalletCategory *category = self.allCategories[indexPath.row];
+
+		NSDictionary *category = self.allCategories[indexPath.row];
         [_delegate walletCategorySelected:category];
     }
     

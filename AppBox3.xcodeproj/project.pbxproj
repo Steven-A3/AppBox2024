@@ -399,11 +399,9 @@
 		687484AB19783B9D00EA8F74 /* DaysCounterFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484AA19783B9D00EA8F74 /* DaysCounterFavorite.m */; };
 		687484AE19783B9D00EA8F74 /* DaysCounterDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484AD19783B9D00EA8F74 /* DaysCounterDate.m */; };
 		687484B119783BBF00EA8F74 /* UnitPriceHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484B019783BBF00EA8F74 /* UnitPriceHistory.m */; };
-		687484BD19783BE100EA8F74 /* WalletField.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484BC19783BE100EA8F74 /* WalletField.m */; };
 		687484C019783BE100EA8F74 /* WalletItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484BF19783BE100EA8F74 /* WalletItem.m */; };
 		687484C319783BE100EA8F74 /* WalletFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484C219783BE100EA8F74 /* WalletFavorite.m */; };
 		687484C619783BE100EA8F74 /* WalletFieldItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484C519783BE100EA8F74 /* WalletFieldItem.m */; };
-		687484C919783BE100EA8F74 /* WalletCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484C819783BE100EA8F74 /* WalletCategory.m */; };
 		687484CC19783C0F00EA8F74 /* ExpenseListBudgetLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484CB19783C0F00EA8F74 /* ExpenseListBudgetLocation.m */; };
 		687484CF19783C1000EA8F74 /* ExpenseListHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484CE19783C1000EA8F74 /* ExpenseListHistory.m */; };
 		687484D219783C1000EA8F74 /* ExpenseListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484D119783C1000EA8F74 /* ExpenseListItem.m */; };
@@ -554,9 +552,7 @@
 		68B6A2FD18CEC76D004084EF /* A3UnitPriceSliderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A20B18CEC76C004084EF /* A3UnitPriceSliderView.xib */; };
 		68B6A2FE18CEC76D004084EF /* A3UnitPriceUnitTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A20D18CEC76C004084EF /* A3UnitPriceUnitTabBarController.m */; };
 		68B6A30418CEC76D004084EF /* UILabel+BaseAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A21A18CEC76C004084EF /* UILabel+BaseAlignment.m */; };
-		68B6A30718CEC76D004084EF /* WalletCategory+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A22018CEC76C004084EF /* WalletCategory+extension.m */; };
 		68B6A30A18CEC76D004084EF /* WalletData.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A22518CEC76C004084EF /* WalletData.m */; };
-		68B6A30C18CEC76D004084EF /* WalletField+initialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A22918CEC76C004084EF /* WalletField+initialize.m */; };
 		68B6A30E18CEC76D004084EF /* WalletFieldItem+initialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A22D18CEC76C004084EF /* WalletFieldItem+initialize.m */; };
 		68B6A31018CEC76D004084EF /* WalletItem+Favorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A23118CEC76C004084EF /* WalletItem+Favorite.m */; };
 		68B6A31118CEC76D004084EF /* WalletItem+initialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A23318CEC76C004084EF /* WalletItem+initialize.m */; };
@@ -1578,16 +1574,12 @@
 		687484AD19783B9D00EA8F74 /* DaysCounterDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterDate.m; sourceTree = "<group>"; };
 		687484AF19783BBF00EA8F74 /* UnitPriceHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitPriceHistory.h; sourceTree = "<group>"; };
 		687484B019783BBF00EA8F74 /* UnitPriceHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitPriceHistory.m; sourceTree = "<group>"; };
-		687484BB19783BE100EA8F74 /* WalletField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletField.h; sourceTree = "<group>"; };
-		687484BC19783BE100EA8F74 /* WalletField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletField.m; sourceTree = "<group>"; };
 		687484BE19783BE100EA8F74 /* WalletItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletItem.h; sourceTree = "<group>"; };
 		687484BF19783BE100EA8F74 /* WalletItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletItem.m; sourceTree = "<group>"; };
 		687484C119783BE100EA8F74 /* WalletFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletFavorite.h; sourceTree = "<group>"; };
 		687484C219783BE100EA8F74 /* WalletFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletFavorite.m; sourceTree = "<group>"; };
 		687484C419783BE100EA8F74 /* WalletFieldItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletFieldItem.h; sourceTree = "<group>"; };
 		687484C519783BE100EA8F74 /* WalletFieldItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletFieldItem.m; sourceTree = "<group>"; };
-		687484C719783BE100EA8F74 /* WalletCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletCategory.h; sourceTree = "<group>"; };
-		687484C819783BE100EA8F74 /* WalletCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletCategory.m; sourceTree = "<group>"; };
 		687484CA19783C0F00EA8F74 /* ExpenseListBudgetLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListBudgetLocation.h; path = Data/ExpenseListBudgetLocation.h; sourceTree = "<group>"; };
 		687484CB19783C0F00EA8F74 /* ExpenseListBudgetLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListBudgetLocation.m; path = Data/ExpenseListBudgetLocation.m; sourceTree = "<group>"; };
 		687484CD19783C1000EA8F74 /* ExpenseListHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListHistory.h; path = Data/ExpenseListHistory.h; sourceTree = "<group>"; };
@@ -1884,12 +1876,8 @@
 		68B6A20D18CEC76C004084EF /* A3UnitPriceUnitTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitPriceUnitTabBarController.m; sourceTree = "<group>"; };
 		68B6A21918CEC76C004084EF /* UILabel+BaseAlignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+BaseAlignment.h"; sourceTree = "<group>"; };
 		68B6A21A18CEC76C004084EF /* UILabel+BaseAlignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+BaseAlignment.m"; sourceTree = "<group>"; };
-		68B6A21F18CEC76C004084EF /* WalletCategory+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WalletCategory+extension.h"; sourceTree = "<group>"; };
-		68B6A22018CEC76C004084EF /* WalletCategory+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WalletCategory+extension.m"; sourceTree = "<group>"; };
 		68B6A22418CEC76C004084EF /* WalletData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletData.h; sourceTree = "<group>"; };
 		68B6A22518CEC76C004084EF /* WalletData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletData.m; sourceTree = "<group>"; };
-		68B6A22818CEC76C004084EF /* WalletField+initialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WalletField+initialize.h"; sourceTree = "<group>"; };
-		68B6A22918CEC76C004084EF /* WalletField+initialize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WalletField+initialize.m"; sourceTree = "<group>"; };
 		68B6A22C18CEC76C004084EF /* WalletFieldItem+initialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WalletFieldItem+initialize.h"; sourceTree = "<group>"; };
 		68B6A22D18CEC76C004084EF /* WalletFieldItem+initialize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WalletFieldItem+initialize.m"; sourceTree = "<group>"; };
 		68B6A23018CEC76C004084EF /* WalletItem+Favorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WalletItem+Favorite.h"; sourceTree = "<group>"; };
@@ -4245,26 +4233,18 @@
 		68B6A21E18CEC76C004084EF /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				687484C719783BE100EA8F74 /* WalletCategory.h */,
-				687484C819783BE100EA8F74 /* WalletCategory.m */,
 				687484C419783BE100EA8F74 /* WalletFieldItem.h */,
 				687484C519783BE100EA8F74 /* WalletFieldItem.m */,
 				687484C119783BE100EA8F74 /* WalletFavorite.h */,
 				687484C219783BE100EA8F74 /* WalletFavorite.m */,
 				687484BE19783BE100EA8F74 /* WalletItem.h */,
 				687484BF19783BE100EA8F74 /* WalletItem.m */,
-				687484BB19783BE100EA8F74 /* WalletField.h */,
-				687484BC19783BE100EA8F74 /* WalletField.m */,
 				68C802DD19571A2000BC19EE /* WalletPreset.strings */,
 				68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */,
 				6898A6E51908AEA50099C09E /* WalletFavorite+initialize.h */,
 				6898A6E61908AEA50099C09E /* WalletFavorite+initialize.m */,
-				68B6A21F18CEC76C004084EF /* WalletCategory+extension.h */,
-				68B6A22018CEC76C004084EF /* WalletCategory+extension.m */,
 				68B6A22418CEC76C004084EF /* WalletData.h */,
 				68B6A22518CEC76C004084EF /* WalletData.m */,
-				68B6A22818CEC76C004084EF /* WalletField+initialize.h */,
-				68B6A22918CEC76C004084EF /* WalletField+initialize.m */,
 				68B6A22C18CEC76C004084EF /* WalletFieldItem+initialize.h */,
 				68B6A22D18CEC76C004084EF /* WalletFieldItem+initialize.m */,
 				68B6A23018CEC76C004084EF /* WalletItem+Favorite.h */,
@@ -5559,7 +5539,6 @@
 				680886D31891751B0093FD97 /* A3ChooseColorView.m in Sources */,
 				3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */,
 				68F1C8D518D7F37D009FAE8A /* A3LadyCalendarViewController.m in Sources */,
-				68B6A30718CEC76D004084EF /* WalletCategory+extension.m in Sources */,
 				68B6A2B518CEC76D004084EF /* LoanCalcMode.m in Sources */,
 				68143D6118E3EC7C00569691 /* A3TableViewEntryElement.m in Sources */,
 				6817825316253640008A6E4B /* A3SegmentedControl.m in Sources */,
@@ -5654,7 +5633,6 @@
 				68B6A31E18CEC76D004084EF /* A3WalletAllTopView.m in Sources */,
 				68B6A2AB18CEC76D004084EF /* A3LoanCalcHistoryViewController.m in Sources */,
 				6825365518A7AA4C00EAFB84 /* NSArray+MASAdditions.m in Sources */,
-				687484C919783BE100EA8F74 /* WalletCategory.m in Sources */,
 				68E2A64A18D0B1FC00E834D9 /* A3ExpenseListHistoryCell.m in Sources */,
 				68B6A2F418CEC76D004084EF /* A3UnitPriceMainTableController.m in Sources */,
 				6825365618A7AA4C00EAFB84 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
@@ -5708,7 +5686,6 @@
 				68E2A6B118D0B22800E834D9 /* A3TipCalcHeaderView.m in Sources */,
 				68B6A2C218CEC76D004084EF /* A3LoanCalcLoanHistoryCell.m in Sources */,
 				68953486178686AF007061CA /* UIScrollView+Screenshot.m in Sources */,
-				68B6A30C18CEC76D004084EF /* WalletField+initialize.m in Sources */,
 				68F14FF819485E8500159EAD /* A3DaysCounterSetupDurationViewController.m in Sources */,
 				68E2A6AE18D0B22800E834D9 /* A3PopoverTableViewController.m in Sources */,
 				68C9E3FE1882EF1B007E4697 /* A3AppDelegate+mainMenu.m in Sources */,
@@ -6056,7 +6033,6 @@
 				687484031977EE0A00EA8F74 /* ExpenseListHistory+extension.m in Sources */,
 				68B6A2C418CEC76D004084EF /* A3LoanCalcLoanInfo3Cell.m in Sources */,
 				687483E21977E77D00EA8F74 /* ExpenseListBudget+extension.m in Sources */,
-				687484BD19783BE100EA8F74 /* WalletField.m in Sources */,
 				68B6A46418CEE781004084EF /* UIImage+GIF.m in Sources */,
 				68F1C8CD18D7F37D009FAE8A /* A3LadyCalendarModelManager.m in Sources */,
 				17D42A39FA849C645CB674DD /* A3TranslatorFavoriteCell.m in Sources */,

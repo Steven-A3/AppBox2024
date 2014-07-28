@@ -7,30 +7,18 @@
 //
 
 #import "A3WalletAllViewController.h"
-#import "A3WalletItemViewController.h"
-#import "A3WalletPhotoItemViewController.h"
 #import "A3WalletListPhotoCell.h"
 #import "A3WalletAllTopView.h"
 #import "A3WalletAllTopCell.h"
 #import "WalletData.h"
 #import "WalletItem+Favorite.h"
 #import "WalletItem+initialize.h"
-#import "WalletField.h"
-#import "WalletFieldItem.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
-#import "NSDate+TimeAgo.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "WalletCategory.h"
-#import "A3WalletVideoItemViewController.h"
 #import "A3WalletItemEditViewController.h"
-#import "WalletFieldItem+initialize.h"
-#import "NSString+WalletStyle.h"
-#import "UIViewController+iPad_rightSideView.h"
 #import "UIColor+A3Addition.h"
 #import "A3InstructionViewController.h"
-
-#define TopHeaderHeight 96
 
 @interface A3WalletAllViewController () <UISearchBarDelegate, UISearchDisplayDelegate, A3InstructionViewControllerDelegate>
 
@@ -322,9 +310,8 @@ enum SortingKind {
                                      NSForegroundColorAttributeName:[UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0]
                                      };
 
-    NSUInteger cateCount = [WalletCategory MR_countOfEntities];
-    cateCount = cateCount - 2;      // All + More Category
-    
+    NSUInteger cateCount = [WalletData visibleCategoryCount];
+
     NSAttributedString *nameText = [[NSAttributedString alloc] initWithString:(cateCount > 1) ? NSLocalizedString(@"CATEGORIES", @"CATEGORIES") : NSLocalizedString(@"CATEGORY", @"CATEGORY")
                                                                    attributes:textAttributes];
     NSAttributedString *countText = [[NSAttributedString alloc] initWithString:@(cateCount).stringValue
@@ -486,11 +473,10 @@ enum SortingKind {
     // 마지막으로 추가되었던 walletItem의 카테고리가 선택되도록 한다.
     WalletItem *lastItem = [WalletItem MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (lastItem) {
-        viewController.walletCategory = [WalletCategory MR_findFirstByAttribute:@"uniqueID" withValue:lastItem.categoryID];
+        viewController.category = [WalletData categoryItemWithID:lastItem.categoryID];
     }
     else {
-        WalletCategory *category = [WalletCategory MR_findFirstOrderedByAttribute:@"name" ascending:YES];
-        viewController.walletCategory = category;
+        viewController.category = [WalletData firstEditableWalletCategory];
     }
     
     return viewController;

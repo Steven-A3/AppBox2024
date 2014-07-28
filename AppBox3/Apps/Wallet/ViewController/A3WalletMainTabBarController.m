@@ -10,7 +10,6 @@
 #import "A3WalletCategoryViewController.h"
 #import "A3WalletAllViewController.h"
 #import "A3WalletFavoritesViewController.h"
-#import "WalletCategory+extension.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3WalletMoreTableViewController.h"
 #import "A3WalletCategoryInfoViewController.h"
@@ -57,9 +56,6 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
             [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
         }
 
-		if ([WalletCategory MR_countOfEntities] == 0) {
-			[WalletCategory resetWalletCategoriesInContext:[[A3AppDelegate instance] managedObjectContext]];
-		}
 		[WalletData createDirectories];
 
         [self categories];
@@ -157,7 +153,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 
 - (NSMutableArray *)categories {
 	if (nil == _categories) {
-		_categories = [NSMutableArray arrayWithArray:[WalletCategory MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"doNotShow == NO"]]];
+		_categories = [[WalletData walletCategoriesFilterDoNotShow:YES] mutableCopy];
 	}
 	return _categories;
 }
@@ -176,8 +172,8 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 		NSString *categoryID = [notification.userInfo valueForKey:@"categoryID"];
 		NSString *itemID = [notification.userInfo valueForKey:@"itemID"];
 
-		NSUInteger indexOfSelectedCategory = [self.categories indexOfObjectPassingTest:^BOOL(WalletCategory *category, NSUInteger idx, BOOL *stop) {
-			BOOL match = [category.uniqueID isEqualToString:categoryID];
+		NSUInteger indexOfSelectedCategory = [self.categories indexOfObjectPassingTest:^BOOL(NSDictionary *category, NSUInteger idx, BOOL *stop) {
+			BOOL match = [category[W_ID_KEY] isEqualToString:categoryID];
 			if (match) *stop = YES;
 			return match;
 		}];
@@ -222,8 +218,8 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	[self setupTabBar];
 	if (notification.userInfo) {
 		NSString *categoryID = [notification.userInfo valueForKey:@"uniqueID"];
-		NSUInteger indexOfSelectedCategory = [self.categories indexOfObjectPassingTest:^BOOL(WalletCategory *category, NSUInteger idx, BOOL *stop) {
-			BOOL match = [category.uniqueID isEqualToString:categoryID];
+		NSUInteger indexOfSelectedCategory = [self.categories indexOfObjectPassingTest:^BOOL(NSDictionary *category, NSUInteger idx, BOOL *stop) {
+			BOOL match = [category[W_ID_KEY] isEqualToString:categoryID];
 			if (match) *stop = YES;
 			return match;
 		}];
@@ -299,39 +295,40 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	NSUInteger numberOfItemsOnTapBar = [self numberOfCategoriesInTabBar];
 	for (NSUInteger idx = 0; idx < numberOfItemsOnTapBar; idx++) {
 
-        WalletCategory *category = self.categories[idx];
+        NSDictionary *category = self.categories[idx];
         UIViewController *viewController;
         UIImage *selectedIcon;
         
-        if ([category.uniqueID isEqualToString:A3WalletUUIDAllCategory]) {
+        if ([category[W_ID_KEY] isEqualToString:A3WalletUUIDAllCategory]) {
             A3WalletAllViewController *vc = [[A3WalletAllViewController alloc] initWithNibName:nil bundle:nil];
             vc.category = category;
             viewController = vc;
-            NSString *selected = [category.icon stringByAppendingString:@"_on"];
+            NSString *selected = [category[W_ICON_KEY] stringByAppendingString:@"_on"];
             selectedIcon = [UIImage imageNamed:selected];
         }
-        else if ([category.uniqueID isEqualToString:A3WalletUUIDFavoriteCategory]) {
+        else if ([category[W_ID_KEY] isEqualToString:A3WalletUUIDFavoriteCategory]) {
             A3WalletFavoritesViewController *vc = [[A3WalletFavoritesViewController alloc] init];
             vc.category = category;
             viewController = vc;
-            NSString *selected = [category.icon stringByAppendingString:@"_on"];
+            NSString *selected = [category[W_ICON_KEY] stringByAppendingString:@"_on"];
             selectedIcon = [UIImage imageNamed:selected];
         }
         else {
             A3WalletCategoryViewController *vc = [[A3WalletCategoryViewController alloc] initWithNibName:nil bundle:nil];
             vc.category = category;
             viewController = vc;
-            NSString *selected = [category.icon stringByAppendingString:@"_on"];
+            NSString *selected = [category[W_ICON_KEY] stringByAppendingString:@"_on"];
             selectedIcon = [UIImage imageNamed:selected];
         }
         
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-        nav.tabBarItem.image = [UIImage imageNamed:category.icon];
+        nav.tabBarItem.image = [UIImage imageNamed:category[W_ICON_KEY]];
         nav.tabBarItem.selectedImage = selectedIcon;
-        nav.tabBarItem.title = category.name;
+		NSString *title = category[W_NAME_KEY];
+        nav.tabBarItem.title = title;
         
         UIFont *titleFont;
-        NSArray *words = [category.name componentsSeparatedByString:@" "];
+        NSArray *words = [title componentsSeparatedByString:@" "];
         if (words.count>1) {
             if (IS_IPAD) {
                 titleFont = [UIFont systemFontOfSize:11];

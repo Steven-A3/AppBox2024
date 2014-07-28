@@ -155,6 +155,9 @@ extern NSString *const kUserDefaultsKeyForAskPasscodeForLadyCalendar;
 extern NSString *const kUserDefaultsKeyForAskPasscodeForWallet;
 
 extern NSString *const A3WalletUserDefaultsSelectedTab;
+extern NSString *const A3WalletUserDefaultsCategoryInfo;
+extern NSString *const A3WalletUserDefaultsUpdateDate;
+extern NSString *const A3WalletUserDefaultsCloudUpdateDate;
 
 extern NSString *const kHolidayCountriesForCurrentDevice;
 extern NSString *const kHolidayCountryExcludedHolidays;

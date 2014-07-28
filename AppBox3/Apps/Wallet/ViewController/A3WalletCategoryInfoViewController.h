@@ -9,10 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "A3WalletCategoryEditViewController.h"
 
-@class WalletCategory;
-
 @interface A3WalletCategoryInfoViewController : UITableViewController <WalletCategoryEditDelegate>
 
-@property (nonatomic, strong) WalletCategory *category;
+@property (nonatomic, strong) NSDictionary *category;
 
 @end

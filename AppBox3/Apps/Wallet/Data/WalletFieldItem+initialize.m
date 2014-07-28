@@ -7,12 +7,9 @@
 //
 
 #import "WalletFieldItem+initialize.h"
-#import "WalletField+initialize.h"
 #import "WalletData.h"
 #import "NSString+conversion.h"
 #import "UIImage+Resizing.h"
-#import "A3AppDelegate.h"
-#import "A3SyncManager.h"
 
 NSString *const A3WalletImageDirectory = @"WalletImages";		// in Library Directory
 NSString *const A3WalletVideoDirectory = @"WalletVideos";		// in Library Directory
@@ -25,8 +22,7 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 	if (self.isDeleted) {
 		FNLOG();
 		NSFileManager *fileManager = [NSFileManager defaultManager];
-		WalletField *field = [WalletField MR_findFirstByAttribute:@"uniqueID" withValue:self.fieldID];
-		if ([field.type isEqualToString:WalletFieldTypeImage]) {
+		if ([self.hasImage boolValue]) {
 			NSError *error;
 			NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
 			[coordinator coordinateWritingItemAtURL:[self photoImageURLInOriginalDirectory:YES]
@@ -38,7 +34,7 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 			[fileManager removeItemAtPath:[self photoImageThumbnailPathInOriginal:YES] error:NULL];
 			return;
 		}
-		if ([field.type isEqualToString:WalletFieldTypeVideo] && [self.hasVideo boolValue])  {
+		if ([self.hasVideo boolValue])  {
 			NSError *error;
 			NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
 			[coordinator coordinateWritingItemAtURL:[self videoFileURLInOriginal:YES]

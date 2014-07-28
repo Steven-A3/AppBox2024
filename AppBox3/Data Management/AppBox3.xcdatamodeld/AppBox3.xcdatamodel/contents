@@ -311,26 +311,9 @@
         <attribute name="unitID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
-    <entity name="WalletCategory" representedClassName="WalletCategory" syncable="YES">
-        <attribute name="doNotShow" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-    </entity>
     <entity name="WalletFavorite" representedClassName="WalletFavorite" syncable="YES">
         <attribute name="itemID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-    </entity>
-    <entity name="WalletField" representedClassName="WalletField" syncable="YES">
-        <attribute name="categoryID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="style" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
@@ -387,9 +370,7 @@
         <element name="UnitHistoryItem" positionX="-191" positionY="252" width="128" height="118"/>
         <element name="UnitPriceHistory" positionX="-605" positionY="332" width="128" height="73"/>
         <element name="UnitPriceInfo" positionX="-47" positionY="428" width="128" height="223"/>
-        <element name="WalletCategory" positionX="-918" positionY="531" width="128" height="133"/>
         <element name="WalletFavorite" positionX="-335" positionY="764" width="128" height="103"/>
-        <element name="WalletField" positionX="-702" positionY="440" width="128" height="148"/>
         <element name="WalletFieldItem" positionX="-506" positionY="558" width="128" height="208"/>
         <element name="WalletItem" positionX="-702" positionY="636" width="128" height="133"/>
     </elements>
