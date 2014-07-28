@@ -99,6 +99,47 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		_periodItem.isPredict = @NO;
 		_periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
 		_periodItem.accountID = _dataManager.currentAccount.uniqueID;
+        
+        NSArray *beforePeriods = [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:NO];
+        if (beforePeriods || [beforePeriods count] > 0) {
+            NSDictionary * settingDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting];
+            NSInteger cycleType = [[settingDictionary objectForKey:SettingItem_CalculateCycle] integerValue];
+            switch (cycleType) {
+                case CycleLength_SameBeforeCycle:
+                {
+                    LadyCalendarPeriod *beforePeriod = [beforePeriods lastObject];
+                    _periodItem.cycleLength = [beforePeriod cycleLength];
+                    
+                }
+                    break;
+                    
+                case CycleLength_AverageBeforeTwoCycle:
+                {
+                    NSInteger twoCyle;
+                    if ([beforePeriods count] >= 2) {
+                        twoCyle = ([[[beforePeriods objectAtIndex:0] cycleLength] integerValue] + [[[beforePeriods objectAtIndex:1] cycleLength] integerValue]) / 2;
+                    }
+                    else {
+                        twoCyle = [[[beforePeriods objectAtIndex:0] cycleLength] integerValue];
+                    }
+                    _periodItem.cycleLength = @(twoCyle);
+                }
+                    break;
+                    
+                case CycleLength_AverageAllCycle:
+                {
+                    __block NSInteger allCycle;
+                    [beforePeriods enumerateObjectsUsingBlock:^(LadyCalendarPeriod *obj, NSUInteger idx, BOOL *stop) {
+                        allCycle += [[obj cycleLength] integerValue];
+                    }];
+                    _periodItem.cycleLength = @(allCycle / [beforePeriods count]);
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
 	}
 
 	if ( _isEditMode ) {
