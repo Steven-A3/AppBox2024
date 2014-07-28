@@ -256,7 +256,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			A3TipCalcUserDefaultsUpdateDate,
 			A3TipCalcUserDefaultsCloudUpdateDate,
 
-			A3UnitConverterDefaultCurrentUnitTap,
+			A3UnitConverterDefaultSelectedCategoryID,
 			A3UnitConverterTableViewUnitValueKey,
 			A3UnitConverterUserDefaultsUpdateDate,
 			A3UnitConverterUserDefaultsCloudUpdateDate,

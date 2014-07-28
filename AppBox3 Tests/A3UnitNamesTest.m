@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "UnitCommon.h"
+#import "A3UnitDataManager.h"
 
 @interface A3UnitNamesTest : XCTestCase
 

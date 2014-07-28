@@ -104,8 +104,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 	if (mathExpression){
 		[_calculator setMathExpression:mathExpression];
 		[_calculator evaluateAndSet];
-		[self checkRightButtonDisable];
 	}
+	[self checkRightButtonDisable];
 }
 
 - (UISegmentedControl *)calculatorTypeSegment

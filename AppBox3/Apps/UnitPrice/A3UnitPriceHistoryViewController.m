@@ -11,12 +11,11 @@
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+A3Addition.h"
 #import "UnitPriceHistory.h"
-#import "UnitItem.h"
-#import "UnitPriceHistoryItem.h"
 #import "A3UnitPriceHistoryCell.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UnitPriceHistory+extension.h"
-#import "UnitPriceHistoryItem+extension.h"
+#import "UnitPriceInfo.h"
+#import "UnitPriceInfo+extension.h"
 
 @interface A3UnitPriceHistoryViewController () <UIActionSheetDelegate>
 
@@ -115,7 +114,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
             for (int j=0; j<row; j++) {
                 NSIndexPath *ip = [NSIndexPath indexPathForRow:j inSection:i];
                 UnitPriceHistory *unitPriceHistory = [_fetchedResultsController objectAtIndexPath:ip];
-				[UnitPriceHistoryItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", unitPriceHistory.uniqueID]];
+				[UnitPriceInfo MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", unitPriceHistory.uniqueID]];
                 [unitPriceHistory MR_deleteEntity];
             }
         }
@@ -148,12 +147,12 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 
 - (void)deleteHistory:(UnitPriceHistory *)history
 {
-	[UnitPriceHistoryItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
+	[UnitPriceInfo MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
     [history MR_deleteEntity];
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
-- (double)calcuUnitPriceOfHistoryItem:(UnitPriceHistoryItem *)item
+- (double)calcuUnitPriceOfHistoryItem:(UnitPriceInfo *)item
 {
     double unitPrice = 0;
     
@@ -227,9 +226,9 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     cell.timeLabel.font = [UIFont systemFontOfSize:12.0];
     cell.timeLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
 
-	UnitPriceHistoryItem *unitPriceAItem, *unitPriceBItem;
-	for (UnitPriceHistoryItem *item in [unitPriceHistory unitPrices]) {
-		if ([item.orderInComparison isEqualToString:@"A"]) {
+	UnitPriceInfo *unitPriceAItem, *unitPriceBItem;
+	for (UnitPriceInfo *item in [unitPriceHistory unitPrices]) {
+		if ([item.priceName isEqualToString:@"A"]) {
 			unitPriceAItem = item;
 		} else {
 			unitPriceBItem = item;

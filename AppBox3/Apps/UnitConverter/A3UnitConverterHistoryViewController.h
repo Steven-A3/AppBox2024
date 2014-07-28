@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class UnitType;
+@class A3UnitDataManager;
 
 @interface A3UnitConverterHistoryViewController : UITableViewController
+
+@property (nonatomic, weak) A3UnitDataManager *dataManager;
 
 @end

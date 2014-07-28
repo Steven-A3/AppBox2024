@@ -7,15 +7,12 @@
 //
 
 #import "A3UnitPriceDetailTableController.h"
-
 #import "A3UnitPriceSliderView.h"
 #import "A3UnitPriceUnitTabBarController.h"
 #import "UnitPriceInfo.h"
-#import "UnitItem.h"
 #import "A3UnitPriceSliderCell.h"
 #import "A3UnitPriceInputCell.h"
 #import "A3UnitPriceActionCell.h"
-
 #import "A3AppDelegate.h"
 #import "A3NumberKeyboardViewController.h"
 #import "UILabel+BaseAlignment.h"
@@ -31,6 +28,7 @@
 #import "UnitPriceInfo+extension.h"
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
+#import "A3UnitDataManager.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
 	Price_Percent = 0,
@@ -40,8 +38,6 @@ typedef NS_ENUM(NSInteger, PriceDiscountType) {
 @interface A3UnitPriceDetailTableController () <UITextFieldDelegate, UITextViewDelegate, A3KeyboardDelegate, UINavigationControllerDelegate, A3UnitSelectViewControllerDelegate, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 {
     PriceDiscountType _discountType;
-    
-    float textViewHeight;
 }
 
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
@@ -58,6 +54,7 @@ typedef NS_ENUM(NSInteger, PriceDiscountType) {
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
 @property (nonatomic, copy) NSString *placeholderBeforeEditingTextField;
 @property (nonatomic, assign) BOOL cancelInputNewCloudDataReceived;
+@property (nonatomic, strong) A3UnitDataManager *unitDataManager;
 
 @end
 
@@ -170,6 +167,13 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     // Dispose of any resources that can be recreated.
 }
 
+- (A3UnitDataManager *)unitDataManager {
+	if (!_unitDataManager) {
+		_unitDataManager = [A3UnitDataManager new];
+	}
+	return _unitDataManager;
+}
+
 - (NSNumberFormatter *)decimalFormatter {
 	if (!_decimalFormatter) {
 		_decimalFormatter = [NSNumberFormatter new];
@@ -178,7 +182,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	}
 	return _decimalFormatter;
 }
-
 
 -(NSMutableArray *)items {
     if (!_items) {
@@ -253,14 +256,12 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     
     double unitPrice = 0;
     NSString *unitPriceTxt = @"";
-    NSString *unitName;
+    NSString *unitName = IS_IPHONE ? [self unitShortName] : [self unitName];
     NSString *priceTxt;
     
     UnitPriceInfo *priceInfo = self.price;
     
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
-	UnitItem *unit = [priceInfo unit];
-    unitName = priceInfo.unitID ? NSLocalizedStringFromTable(unit.unitName, IS_IPHONE ? @"unitShort" : @"unit", nil) : NSLocalizedString(@"None", @"None");
 
     double priceValue = priceInfo.price.doubleValue;
     NSInteger sizeValue = (priceInfo.size.integerValue <= 0) ? 1:priceInfo.size.integerValue;
@@ -289,7 +290,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
         unitPrice = (priceValue - discountValue) / (sizeValue * quantityValue);
 
         if (unitPrice > 0) {
-            if (priceInfo.unit) {
+            if (priceInfo.unitID) {
                 unitPriceTxt = [NSString stringWithFormat:@"%@/%@",
 								[self.currencyFormatter stringFromNumber:@(unitPrice)],
 								unitName];
@@ -301,7 +302,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
             sliderCell.sliderView.progressBarHidden = NO;
         }
         else if (unitPrice == 0) {
-            if (priceInfo.unit) {
+            if (priceInfo.unitID) {
                 unitPriceTxt = [NSString stringWithFormat:@"%@/%@",
 								[self.currencyFormatter stringFromNumber:@(unitPrice)],
 								unitName];
@@ -313,7 +314,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
             sliderCell.sliderView.progressBarHidden = YES;
         }
         else {
-            if (priceInfo.unit) {
+            if (priceInfo.unitID) {
                 unitPriceTxt = [NSString stringWithFormat:@"-%@/%@",
 								[self.currencyFormatter stringFromNumber:@(unitPrice*-1)],
 								unitName];
@@ -473,6 +474,20 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
+- (NSString *)unitName {
+	return self.price.unitID ?
+		NSLocalizedStringFromTable(
+			[self.unitDataManager unitNameForUnitID:[self.price.unitID unsignedIntegerValue] categoryID:[self.price.unitCategoryID unsignedIntegerValue]], @"unit", nil)
+			: NSLocalizedString(@"None", @"None");
+}
+
+- (NSString *)unitShortName {
+	return self.price.unitID ?
+			NSLocalizedStringFromTable(
+			[self.unitDataManager unitNameForUnitID:[self.price.unitID unsignedIntegerValue] categoryID:[self.price.unitCategoryID unsignedIntegerValue]], @"unitShort", nil)
+			: NSLocalizedString(@"None", @"None");
+}
+
 #pragma mark - UITextViewDelegate
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
@@ -489,8 +504,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     CGRect frame = textView.frame;
     frame.size.height = textView.contentSize.height+25;
     textView.frame = frame;
-    
-    textViewHeight = frame.size.height;
     
     [self.tableView endUpdates];
 }
@@ -692,20 +705,15 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 #pragma mark - A3UnitSelectViewControllerDelegate
 
-- (void)selectViewController:(UIViewController *)viewController unitSelectedWithItem:(UnitItem *)selectedItem
-{
-	self.price.unitID = selectedItem.uniqueID;
+- (void)selectViewController:(UIViewController *)viewController didSelectCategoryID:(NSUInteger)categoryID unitID:(NSUInteger)unitID {
+	self.price.unitCategoryID = @(categoryID);
+	self.price.unitID = @(unitID);
 
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	NSIndexPath *sliderIP = [NSIndexPath indexPathForRow:0 inSection:0];
 	NSIndexPath *unitIP = [NSIndexPath indexPathForRow:[self.items indexOfObject:self.unitItem] inSection:1];
 	[self.tableView reloadRowsAtIndexPaths:@[sliderIP, unitIP] withRowAnimation:UITableViewRowAnimationAutomatic];
-}
-
-- (void)didCancledSelectUnit
-{
-    
 }
 
 #pragma mark - Table view delegate
@@ -791,7 +799,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 			actionCell.textLabel.font = [UIFont systemFontOfSize:17];
 			actionCell.detailTextLabel.font = [UIFont systemFontOfSize:17];
 			actionCell.textLabel.text = NSLocalizedString(@"Unit", @"Unit");
-			NSString *unitName = self.price.unit ? NSLocalizedStringFromTable(self.price.unit.unitName, @"unit", nil) : NSLocalizedString(@"None", @"None");
+			NSString *unitName = [self unitName];
 			actionCell.detailTextLabel.text = unitName;
 
 			cell = actionCell;

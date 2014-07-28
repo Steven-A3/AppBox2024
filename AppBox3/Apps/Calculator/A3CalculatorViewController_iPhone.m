@@ -129,8 +129,8 @@
 	if (mathExpression){
 		[_calculator setMathExpression:mathExpression];
 		[_calculator evaluateAndSet];
-		[self checkRightButtonDisable];
 	}
+	[self checkRightButtonDisable];
 }
 
 - (void)didMoveToParentViewController:(UIViewController *)parent {
@@ -702,14 +702,14 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 		}
 	}
 
-	Calculation *calculation = [Calculation MR_createEntity];
+	Calculation *calculation = [Calculation MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 	calculation.uniqueID = [[NSUUID UUID] UUIDString];
 	NSDate *keyDate = [NSDate date];
 	calculation.expression = mathExpression;
 	calculation.result = [self.calculator getResultString];
 	calculation.updateDate = keyDate;
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
+	[[NSManagedObjectContext MR_rootSavingContext] MR_saveOnlySelfAndWait];
 }
 
 - (void) ShowMessage:(NSString *)message {

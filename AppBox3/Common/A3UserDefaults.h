@@ -130,15 +130,19 @@ extern NSString *const A3TipCalcUserDefaultsUpdateDate;
 extern NSString *const A3TipCalcUserDefaultsCloudUpdateDate;
 
 #pragma mark ------ Unit Converter
-extern NSString *const A3UnitConverterDefaultCurrentUnitTap;
+extern NSString *const A3UnitConverterDefaultSelectedCategoryID;
 extern NSString *const A3UnitConverterTableViewUnitValueKey;
 extern NSString *const A3UnitConverterUserDefaultsUpdateDate;
 extern NSString *const A3UnitConverterUserDefaultsCloudUpdateDate;
+extern NSString *const A3UnitConverterUserDefaultsUnitCategories;
+extern NSString *const A3UnitConverterUserDefaultsConvertItems;
+extern NSString *const A3UnitConverterUserDefaultsFavorites;
 
 #pragma mark ------ Unit Price
 extern NSString *const A3UnitPriceUserDefaultsCurrencyCode;
 extern NSString *const A3UnitPriceUserDefaultsUpdateDate;
 extern NSString *const A3UnitPriceUserDefaultsCloudUpdateDate;
+extern NSString *const A3UnitPriceUserDefaultsUnitFavorites;
 
 #pragma mark ------ Passcode
 extern NSString *const kUserDefaultTimerStart;

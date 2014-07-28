@@ -42,6 +42,7 @@ typedef CMathParser<char, double> MathParser;
 - (NSAttributedString *) getMathAttributedExpression {
     return [self getExpressionWith:mathexpression];
 }
+
 - (id) initWithLabel:(HTCopyableLabel *) expression result:(HTCopyableLabel *) result {
     self = [super init];
     if (self) {
@@ -105,7 +106,7 @@ typedef CMathParser<char, double> MathParser;
     NSUInteger maxFractionDigt = 15;
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
     NSUInteger maxDigitLen = 16, maxSignificantDigits = 16;
-    FNLOG("value   = %.15f %ld", value, (long)nf.roundingMode);
+//    FNLOG("value   = %.15f %ld", value, (long)nf.roundingMode);
     NSUInteger numLen = [[NSString stringWithFormat:@"%f", value] length];
     NSString *resultString = nil;
     
@@ -116,7 +117,7 @@ typedef CMathParser<char, double> MathParser;
         maxDigitLen = 9;
         maxSignificantDigits = 8;
     }
-    FNLOG(@"%@", [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]);
+//    FNLOG(@"%@", [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]);
     [nf setLocale:[NSLocale currentLocale]];
     [nf setMaximumFractionDigits:maxFractionDigt];
     //[nf setUsesSignificantDigits:YES];
@@ -125,7 +126,7 @@ typedef CMathParser<char, double> MathParser;
         [nf setNumberStyle:NSNumberFormatterDecimalStyle];
 
         resultString = [nf stringFromNumber:[NSNumber numberWithDouble:value]];
-        FNLOG(@"Normal : %@",resultString);
+//        FNLOG(@"Normal : %@",resultString);
     }else {
         [nf setNumberStyle:NSNumberFormatterScientificStyle];
         [nf setExponentSymbol:@"e"];
@@ -136,7 +137,7 @@ typedef CMathParser<char, double> MathParser;
         }
         
         resultString = [nf stringFromNumber:[NSNumber numberWithDouble:value]];
-                FNLOG(@"Faction : %@",resultString);
+//                FNLOG(@"Faction : %@",resultString);
     }
     
     return resultString;
@@ -370,7 +371,7 @@ typedef CMathParser<char, double> MathParser;
 
 
 - (NSAttributedString *) getExpressionWith:(NSString *) mExpression isDefault:(BOOL)bDefault{
-    FNLOG(@"mExpression = %@",mExpression);
+//    FNLOG(@"mExpression = %@",mExpression);
     //NSAttributedString *temp = [[NSAttributedString alloc] initWithAttributedString:[calutil invisibleString]];
     NSAttributedString *temp = [NSAttributedString new];
     NSUInteger i, length = [mExpression length];

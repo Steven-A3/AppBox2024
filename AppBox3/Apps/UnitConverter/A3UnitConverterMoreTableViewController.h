@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 @class A3UnitConverterTabBarController;
+@class A3UnitDataManager;
 
 @interface A3UnitConverterMoreTableViewController : UITableViewController
 
 @property (nonatomic) BOOL isEditing;
 @property (nonatomic, weak) A3UnitConverterTabBarController *mainTabBarController;
+@property (nonatomic, weak) A3UnitDataManager *dataManager;
 
 @end

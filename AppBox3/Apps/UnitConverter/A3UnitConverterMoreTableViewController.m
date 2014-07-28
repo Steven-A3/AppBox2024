@@ -7,19 +7,18 @@
 //
 
 #import "A3UnitConverterMoreTableViewController.h"
-#import "UnitType.h"
-#import "UnitType+extension.h"
 #import "UIViewController+A3Addition.h"
 #import "A3UnitConverterConvertTableViewController.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3UnitDataManager.h"
 #import "A3MoreTableViewCell.h"
 #import "A3UnitConverterTabBarController.h"
 #import "NSUserDefaults+A3Defaults.h"
 
 @interface A3UnitConverterMoreTableViewController ()
 
-@property (nonatomic, strong) NSArray *unitTypes;
+@property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, strong) NSArray *sections;
 
 @end
@@ -54,12 +53,13 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 	[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 	self.tableView.showsVerticalScrollIndicator = NO;
 
-    NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterCurrentUnitTap];
+    NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterSelectedCategory];
     if (vcIdx > [self.tabBarController.viewControllers count] - 2) {
-        UnitType *unitType = self.sections[0][vcIdx - [self.tabBarController.viewControllers count] + 1];
+        NSDictionary *categoryData = self.sections[0][vcIdx - [self.tabBarController.viewControllers count] + 1];
         A3UnitConverterConvertTableViewController *viewController = [[A3UnitConverterConvertTableViewController alloc] init];
-        viewController.unitType = unitType;
-        viewController.title = NSLocalizedStringFromTable(unitType.unitTypeName, @"unit", nil);
+		viewController.dataManager = _dataManager;
+        viewController.categoryID = [categoryData[ID_KEY] unsignedIntegerValue];
+		viewController.title = categoryData[NAME_KEY];
         viewController.isFromMoreTableViewController = YES;
         
         [self.navigationController pushViewController:viewController animated:YES];
@@ -87,7 +87,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (void)managedObjectContextDidSave:(NSNotification *)notification {
-	_unitTypes = nil;
+	_categories = nil;
 	[self.tableView reloadData];
 }
 
@@ -118,11 +118,11 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 
 #pragma mark - Prepare Data
 
-- (NSArray *)unitTypes {
-	if (nil == _unitTypes) {
-		_unitTypes = [UnitType MR_findAllSortedBy:@"order" ascending:YES];
+- (NSArray *)categories {
+	if (nil == _categories) {
+		_categories = [self.dataManager allCategoriesSortedByLocalizedCategoryName];
 	}
-	return _unitTypes;
+	return _categories;
 }
 
 - (NSUInteger)numberOfItemsOnTapBar {
@@ -139,7 +139,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 		if (self.isEditing) {
 			NSMutableArray *section0 = [NSMutableArray new];
 			for (; idx < numberOfItemsOnTapBar; idx++) {
-				[section0 addObject:self.unitTypes[idx]];
+				[section0 addObject:self.categories[idx]];
 			}
 			[sections addObject:section0];
 		} else {
@@ -147,8 +147,8 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 		}
 
 		NSMutableArray *section1 = [NSMutableArray new];
-		for (; idx < [self.unitTypes count]; idx++) {
-			[section1 addObject:self.unitTypes[idx]];
+		for (; idx < [self.categories count]; idx++) {
+			[section1 addObject:self.categories[idx]];
 		}
 		[sections addObject:section1];
 		_sections = sections;
@@ -181,9 +181,9 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 {
     A3MoreTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:A3UnitConverterMoreTableViewCellIdentifier forIndexPath:indexPath];
 
-	UnitType *unitType = self.sections[indexPath.section][indexPath.row];
-	cell.cellImageView.image = [UIImage imageNamed:unitType.flagImageName];
-	cell.cellTitleLabel.text = NSLocalizedStringFromTable(unitType.unitTypeName, @"unit", nil);
+	NSDictionary *category = self.sections[indexPath.section][indexPath.row];
+	cell.cellImageView.image = [UIImage imageNamed:[_dataManager iconNameForID:[category[ID_KEY] unsignedIntegerValue]]];
+	cell.cellTitleLabel.text = [_dataManager localizedCategoryNameForID:[category[ID_KEY] unsignedIntegerValue]] ;
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.separatorInset = A3UITableViewSeparatorInset;
 
@@ -235,18 +235,6 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 			}
 		});
 	}
-
-	// Update order and save to persistent store
-	NSArray *section0 = self.sections[0];
-	[section0 enumerateObjectsUsingBlock:^(UnitType *unitType, NSUInteger idx, BOOL *stop) {
-		unitType.order = @(idx);
-	}];
-	NSInteger numberOfItemsOnTabBar = [self numberOfItemsOnTapBar];
-	NSArray *section1 = self.sections[1];
-	[section1 enumerateObjectsUsingBlock:^(UnitType *unitType, NSUInteger idx, BOOL *stop) {
-		unitType.order = @(numberOfItemsOnTabBar + idx);
-	}];
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 // Override to support conditional rearranging of the table view.
@@ -259,10 +247,11 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-	UnitType *unitType = self.sections[indexPath.section][indexPath.row];
+	NSDictionary *categoryData = self.sections[indexPath.section][indexPath.row];
 	A3UnitConverterConvertTableViewController *viewController = [[A3UnitConverterConvertTableViewController alloc] init];
-	viewController.unitType = unitType;
-	viewController.title = NSLocalizedStringFromTable(unitType.unitTypeName, @"unit", nil);
+	viewController.dataManager = _dataManager;
+	viewController.categoryID = [categoryData[ID_KEY] unsignedIntegerValue];
+	viewController.title = categoryData[NAME_KEY];
 	viewController.isFromMoreTableViewController = YES;
 
 	[self.navigationController pushViewController:viewController animated:YES];

@@ -7,17 +7,14 @@
 //
 
 #import "A3UnitConverterAddViewController.h"
-#import "UnitItem.h"
-#import "UnitType.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+UnitConverter.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "UnitItem+extension.h"
+#import "A3UnitDataManager.h"
 
 @interface A3UnitConverterAddViewController ()
 
-@property (nonatomic, strong) NSMutableArray *addedItems;
+@property (nonatomic, strong) NSMutableArray *favorites;
 
 @end
 
@@ -36,9 +33,8 @@
 {
     [super viewDidLoad];
 
-    UnitItem *firstItem = _allData[0];
-    self.title = NSLocalizedStringFromTable([firstItem type].unitTypeName, @"unit", nil);
-    
+    self.title = [_dataManager localizedCategoryNameForID:_categoryID];
+
     [self rightBarButtonDoneButton];
     
     self.navigationItem.hidesBackButton = YES;
@@ -76,39 +72,15 @@
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
-    // 변경 사항 있는지 체크한다
-    NSMutableArray *favoredItems = [[NSMutableArray alloc] init];
-    for (UnitItem *item in _allData) {
-        if ([self isFavoriteItemForUnitItem:item]) {
-            [favoredItems addObject:item];
-        }
-    }
+	NSArray *savedFavorites = [_dataManager favoritesForCategoryID:_categoryID];
 
-    NSMutableArray *toAddItems = [[NSMutableArray alloc] init];
-    
-    for (UnitItem *item in _addedItems) {
-        if ([favoredItems containsObject:item]) {
-            [favoredItems removeObject:item];
-        }
-        else {
-            [toAddItems addObject:item];
-        }
-    }
-    
-    // favoredItems에서 남겨진건 remove해야할 item이고, toAddItems 추가해야할 item 들임
-    BOOL isChanged = (toAddItems.count > 0) || (favoredItems.count > 0);
-    
-    if (isChanged) {
-        if ([_delegate respondsToSelector:@selector(addViewController:itemsAdded:itemsRemoved:)]) {
-            [_delegate addViewController:self itemsAdded:toAddItems itemsRemoved:favoredItems];
-        }
-    }
-    else {
-        if ([_delegate respondsToSelector:@selector(willDismissAddViewController)]) {
-            [_delegate willDismissAddViewController];
-        }
-    }
-    
+	if (![savedFavorites isEqualToArray:_favorites]) {
+		[_dataManager saveFavorites:_favorites categoryID:_categoryID];
+		if ([_delegate respondsToSelector:@selector(favoritesUpdatedInAddViewController)]) {
+			[_delegate favoritesUpdatedInAddViewController];
+		}
+	}
+
 	if (_shouldPopViewController) {
         [self.navigationController popViewControllerAnimated:YES];
     } else {
@@ -122,30 +94,25 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (NSMutableArray *)addedItems
+- (NSMutableArray *)favorites
 {
-    if (!_addedItems) {
-        _addedItems = [[NSMutableArray alloc] init];
-        for (UnitItem *item in _allData) {
-            if ([self isFavoriteItemForUnitItem:item]) {
-                [_addedItems addObject:item];
-            }
-        }
+    if (!_favorites) {
+		_favorites = [NSMutableArray arrayWithArray:[_dataManager favoritesForCategoryID:_categoryID]];
     }
     
-    return _addedItems;
+    return _favorites;
 }
 
 -(void)addButtonClicked:(UIButton *)button
 {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:button.tag inSection:0];
-    UnitItem *item = _allData[indexPath.row];
+    NSDictionary *item = _allData[indexPath.row];
     
-    if ([self.addedItems containsObject:item]) {
-        [_addedItems removeObject:item];
+    if ([self.favorites containsObject:item[ID_KEY]]) {
+        [_favorites removeObject:item[ID_KEY]];
     }
     else {
-        [_addedItems addObject:item];
+        [_favorites addObject:item[ID_KEY]];
     }
     
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -183,12 +150,12 @@
     }
     
     // Configure the cell...
-    UnitItem *item = _allData[indexPath.row];
-    cell.textLabel.text = NSLocalizedStringFromTable(item.unitName, @"unit", nil);
+    NSDictionary *item = _allData[indexPath.row];
+    cell.textLabel.text = item[NAME_KEY];
     
     UIButton *plusBtn = (UIButton *)cell.accessoryView;
     plusBtn.tag = indexPath.row;
-    if ([self.addedItems containsObject:item]) {
+    if ([self.favorites containsObject:item[ID_KEY]]) {
         plusBtn.selected = YES;
         cell.textLabel.textColor = [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0];
     }
@@ -201,70 +168,19 @@
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
-
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    UnitItem *item = _allData[indexPath.row];
+    NSDictionary *item = _allData[indexPath.row];
     
-    if ([self.addedItems containsObject:item]) {
-        [_addedItems removeObject:item];
+    if ([self.favorites containsObject:item[ID_KEY]]) {
+        [_favorites removeObject:item];
     }
     else {
-        [_addedItems addObject:item];
+        [_favorites addObject:item[ID_KEY]];
     }
     
     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

@@ -253,25 +253,25 @@
 
 #pragma mark - UnitConverter
 
-- (void)setUnitConverterCurrentUnitTap:(NSUInteger)tapIndex
+- (void)setUnitConverterSelectedCategoryID:(NSUInteger)categoryIndex
 {
 	NSDate *updateDate = [NSDate date];
 	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3UnitConverterUserDefaultsUpdateDate];
-	[self setInteger:tapIndex forKey:A3UnitConverterDefaultCurrentUnitTap];
+	[self setInteger:categoryIndex forKey:A3UnitConverterDefaultSelectedCategoryID];
 	[self synchronize];
 
 	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:@(tapIndex) forKey:A3UnitConverterDefaultCurrentUnitTap];
+		[store setObject:@(categoryIndex) forKey:A3UnitConverterDefaultSelectedCategoryID];
 		[store setObject:updateDate forKey:A3UnitConverterUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
 
 }
 
-- (NSUInteger)unitConverterCurrentUnitTap
+- (NSUInteger)unitConverterSelectedCategory
 {
-	return [self integerForKey:A3UnitConverterDefaultCurrentUnitTap];
+	return (NSUInteger) [self integerForKey:A3UnitConverterDefaultSelectedCategoryID];
 }
 
 @end

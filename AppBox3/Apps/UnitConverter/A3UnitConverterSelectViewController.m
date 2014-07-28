@@ -9,19 +9,9 @@
 #import "A3UnitConverterSelectViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "UnitConvertItem.h"
-#import "UnitFavorite.h"
-#import "NSString+conversion.h"
-#import "UnitType.h"
-#import "UnitItem.h"
-#import "A3UnitConverterTVActionCell.h"
 #import "A3UnitConverterAddViewController.h"
-#import "NSMutableArray+A3Sort.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "UnitFavorite+extension.h"
-#import "UnitConvertItem+extension.h"
-#import "UnitItem+extension.h"
-
+#import "A3UnitDataManager.h"
 
 @interface A3UnitConverterSelectViewController () <UISearchDisplayDelegate, A3UnitConverterAddViewControllerDelegate>
 {
@@ -29,9 +19,18 @@
     BOOL isEdited;
 }
 
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UISegmentedControl *selectSegment;
 @property (nonatomic, strong) UIBarButtonItem *cancelItem;
-@property (nonatomic, strong) UIBarButtonItem *plusItem;
+@property (nonatomic, strong) UIBarButtonItem *plusBarButtonItem;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
+@property (nonatomic, strong) NSArray *filteredResults;
+@property (nonatomic, strong) NSMutableArray *sectionsArray;
+@property (nonatomic, strong) NSMutableArray *allData;
+@property (nonatomic, strong) NSMutableArray *favorites;
+@property (nonatomic, strong) NSMutableArray *convertItems;
 
 @end
 
@@ -121,13 +120,13 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
     return _cancelItem;
 }
 
-- (UIBarButtonItem *)plusItem
+- (UIBarButtonItem *)plusBarButtonItem
 {
-    if (!_plusItem) {
-        _plusItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add03"] style:UIBarButtonItemStylePlain target:self action:@selector(plusButtonAction:)];
+    if (!_plusBarButtonItem) {
+        _plusBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add03"] style:UIBarButtonItemStylePlain target:self action:@selector(plusButtonAction:)];
     }
     
-    return _plusItem;
+    return _plusBarButtonItem;
 }
 
 - (UISearchDisplayController *)mySearchDisplayController {
@@ -223,7 +222,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
     [self.tableView setEditing:editing animated:animated];
     
     if (editing) {
-        self.navigationItem.leftBarButtonItem = self.plusItem;
+        self.navigationItem.leftBarButtonItem = self.plusBarButtonItem;
     }
     else {
         if (!_shouldPopViewController && IS_IPHONE) {
@@ -240,25 +239,9 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
     }
 }
 
-- (A3UnitConverterTVActionCell *)reusableActionCellForTableView:(UITableView *)tableView {
-	A3UnitConverterTVActionCell *cell;
-	cell = [tableView dequeueReusableCellWithIdentifier:A3UnitConverterActionCellID2];
-	if (nil == cell) {
-		cell = [[A3UnitConverterTVActionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3UnitConverterActionCellID2];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	}
-	return cell;
-}
-
-- (void)configurePlusCell:(A3UnitConverterTVActionCell *)actionCell {
-    //	actionCell.centerButton.titleLabel.font = [UIFont fontWithName:@"FontAwesome" size:25.0];
-    //	[actionCell.centerButton setTitleColor:nil forState:UIControlStateNormal];
-	[actionCell.centerButton addTarget:self action:@selector(addUnitAction) forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)callDelegate:(UnitItem *)selectedItem {
-	if ([_delegate respondsToSelector:@selector(selectViewController:unitSelectedWithItem:)]) {
-        [_delegate selectViewController:self unitSelectedWithItem:selectedItem];
+- (void)callDelegate:(NSUInteger)selectedUnitID {
+	if ([_delegate respondsToSelector:@selector(selectViewController:didSelectCategoryID:unitID:)]) {
+		[_delegate selectViewController:self didSelectCategoryID:_categoryID unitID:selectedUnitID];
 	}
 	if (IS_IPHONE) {
 		if (_shouldPopViewController) {
@@ -272,8 +255,8 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 }
 
 - (void)doneButtonAction:(id)button {
-	if (_delegate && [_delegate respondsToSelector:@selector(didUnitSelectCancled)]) {
-		[_delegate didUnitSelectCancled];
+	if (_delegate && [_delegate respondsToSelector:@selector(didCancelUnitSelect)]) {
+		[_delegate didCancelUnitSelect];
 	}
 
 	if (self.presentedViewController) {
@@ -304,10 +287,11 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 
 - (A3UnitConverterAddViewController *)unitAddViewController {
     A3UnitConverterAddViewController *viewController = [[A3UnitConverterAddViewController alloc] initWithNibName:nil bundle:nil];
+	viewController.dataManager = _dataManager;
     viewController.delegate = self;
+	viewController.categoryID = _categoryID;
     
-    UnitItem *item = _allData[0];
-    viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"typeID" withValue:item.typeID andOrderBy:@"unitName" ascending:YES]];
+    viewController.allData = [_dataManager allUnitsSortedByLocalizedNameForCategoryID:_categoryID];
     
     return viewController;
 }
@@ -316,24 +300,12 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 {
 	NSString *query = searchText;
 	if (query && query.length) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitName contains[cd] %@", query];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K contains[cd] %@", NAME_KEY, query];
 		_filteredResults = [self.allData filteredArrayUsingPredicate:predicate];
 	} else {
 		_filteredResults = nil;
 	}
 	[self.tableView reloadData];
-}
-
-- (void)resetOrdering
-{
-    // reset ordering
-    for (int i=0; i<_favorites.count; i++) {
-        id object = _favorites[i];
-        
-        if ([ object isKindOfClass:[UnitFavorite class] ]) {
-            ((UnitFavorite *)object).order = [NSString orderStringWithOrder:(i + 1) * 1000000];
-		}
-    }
 }
 
 - (void)updateEditedDataToDelegate
@@ -342,60 +314,37 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
         [_editingDelegate favoritesEdited];
         isEdited = NO;
     }
+	_favorites = nil;
+	[self.tableView reloadData];
+}
+
+#pragma mark - Data
+
+- (NSMutableArray *)allData {
+	if (!_allData) {
+		_allData = [_dataManager allUnitsSortedByLocalizedNameForCategoryID:_categoryID];
+	}
+	return _allData;
+}
+
+- (NSMutableArray *)favorites {
+	if (!_favorites) {
+		_favorites = [NSMutableArray arrayWithArray:[_dataManager favoritesForCategoryID:_categoryID]];
+	}
+	return _favorites;
+}
+
+- (NSMutableArray *)convertItems {
+	if (!_convertItems) {
+		_convertItems = [NSMutableArray arrayWithArray:[_dataManager unitConvertItemsForCategoryID:_categoryID]];
+	}
+	return _convertItems;
 }
 
 #pragma mark - A3UnitConverterAddViewControllerDelegate
 
-- (void)addViewController:(UIViewController *)viewController itemsAdded:(NSArray *)addedItems itemsRemoved:(NSArray *)removedItems
-{
-    FNLOG(@"Added\n%@", [addedItems description]);
-    FNLOG(@"Removed\n%@", [removedItems description]);
-    
-    // 삭제하기
-     NSMutableArray *removedIndexPaths = [[NSMutableArray alloc] init];
-     for (int i=0; i<removedItems.count; i++) {
-         UnitItem *item = removedItems[i];
-         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", item.uniqueID];
-         NSArray *filtered = [_favorites filteredArrayUsingPredicate:predicate];
-         
-         if (filtered.count>0) {
-             UnitFavorite *favor = filtered[0];
-             NSUInteger itemIdx = [_favorites indexOfObject:favor];
-             [favor MR_deleteEntity];
-             [_favorites removeObject:favor];
-
-             NSIndexPath *ip = [NSIndexPath indexPathForRow:itemIdx inSection:0];
-             [removedIndexPaths addObject:ip];
-         }
-     }
-    
-    // 추가하기
-    NSMutableArray *addIndexPaths = [[NSMutableArray alloc] init];
-    for (int i=0; i<addedItems.count; i++) {
-        UnitItem *item = addedItems[i];
-        UnitFavorite *favorite = [UnitFavorite MR_createEntity];
-		favorite.uniqueID = item.uniqueID;
-		favorite.updateDate = [NSDate date];
-        favorite.itemID = item.uniqueID;
-		favorite.typeID = item.typeID;
-        [_favorites addObjectToSortedArray:favorite];
-        
-        NSUInteger idx = [_favorites indexOfObject:favorite];
-        NSIndexPath *ip = [NSIndexPath indexPathForRow:idx inSection:0];
-        [addIndexPaths addObject:ip];
-    }
-    
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    
+- (void)favoritesUpdatedInAddViewController {
     [self updateEditedDataToDelegate];
-}
-
-- (void)willDismissAddViewController
-{
-    FNLOG(@"%s", __PRETTY_FUNCTION__);
-
 }
 
 #pragma mark - Table view data source
@@ -415,10 +364,10 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 	}
     else {
         if (isFavoriteMode) {
-            return _favorites.count;
+            return self.favorites.count;
         }
         else {
-            return _allData.count;
+            return self.allData.count;
         }
     }
 }
@@ -436,23 +385,28 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 
 	// Configure the cell...
 	BOOL checkedItem = NO;
-	UnitItem *data;
+	NSUInteger unitID;
+	NSString *unitName;
 	if (tableView == self.searchDisplayController.searchResultsTableView) {
-		data = self.filteredResults[indexPath.row];
+		NSDictionary *data = self.filteredResults[indexPath.row];
+		unitID = [data[ID_KEY] unsignedIntegerValue];
+		unitName = data[NAME_KEY];
 	}
 	else {
 		if (isFavoriteMode) {
-			UnitFavorite *favorite = _favorites[indexPath.row];
-			data = [favorite item];
+			unitID = [_favorites[indexPath.row] unsignedIntegerValue];
+			unitName = [_dataManager localizedUnitNameForUnitID:unitID categoryID:_categoryID];
 		}
 		else {
-			data = _allData[indexPath.row];
+			NSDictionary *data = _allData[indexPath.row];
+			unitID = [data[ID_KEY] unsignedIntegerValue];
+			unitName = data[NAME_KEY];
 		}
 	}
 
-	cell.textLabel.text = NSLocalizedStringFromTable(data.unitName, @"unit", nil);
+	cell.textLabel.text = unitName;
 
-	if ([data.unitName isEqualToString:_selectedItem.item.unitName]) {
+	if (unitID == _currentUnitID) {
 		checkedItem = YES;
 	}
 
@@ -466,9 +420,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 		cell.textLabel.textColor = [UIColor blackColor];
 	}
 
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitID == %@", data.uniqueID];
-	NSArray *items = [self.convertItems filteredArrayUsingPredicate:predicate];
-	if (items.count > 0) {
+	if ([self.convertItems containsObject:@(unitID)]) {
 		cell.textLabel.textColor = [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0];
 		FNLOG(@"%@", cell.textLabel.text);
 	}
@@ -487,31 +439,19 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UnitFavorite *favorite = _favorites[indexPath.row];
-    if ([favorite.item.unitName isEqualToString:[_selectedItem item].unitName]) {
-        return UITableViewCellEditingStyleDelete;
-    }
-    else {
-        return UITableViewCellEditingStyleDelete;
-    }
+	return UITableViewCellEditingStyleDelete;
 }
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         isEdited = YES;
         
-        UnitFavorite *favorite = _favorites[indexPath.row];
-        
         [_favorites removeObjectAtIndex:indexPath.row];
-        [self resetOrdering];
-        
-        [favorite MR_deleteEntity];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-        
+		[_dataManager saveFavorites:_favorites categoryID:_categoryID];
+
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
@@ -520,14 +460,12 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
     isEdited = YES;
-    
-    UnitFavorite *favorite = _favorites[fromIndexPath.row];
+
+    NSNumber *favorite = _favorites[fromIndexPath.row];
     [_favorites removeObjectAtIndex:fromIndexPath.row];
     [_favorites insertObject:favorite atIndex:toIndexPath.row];
-    
-    [self resetOrdering];
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	[_dataManager saveFavorites:_favorites categoryID:_categoryID];
 }
 
 // Override to support conditional rearranging of the table view.
@@ -537,45 +475,25 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
     return YES;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-	UnitItem *data;
+	NSUInteger selectedUnitID;
 	if (tableView == self.searchDisplayController.searchResultsTableView) {
-		data = self.filteredResults[indexPath.row];
+		selectedUnitID = [self.filteredResults[indexPath.row][ID_KEY] unsignedIntegerValue];
 	} else {
 		if (isFavoriteMode) {
-
-			if ([_favorites[indexPath.row] isKindOfClass:[UnitFavorite class]]) {
-				UnitFavorite *favorite = _favorites[indexPath.row];
-				data = favorite.item;
-			}
-			else {
-				return;
-			}
+			selectedUnitID = [self.favorites[indexPath.row] unsignedIntegerValue];
 		}
 		else {
-			data = _allData[indexPath.row];
+			selectedUnitID = [self.allData[indexPath.row][ID_KEY] unsignedIntegerValue];
 		}
 	}
 
-	if ([data.unitName isEqualToString:_selectedItem.item.unitName]) {
-
+	if (selectedUnitID == _currentUnitID) {
 		// 원래 아이템을 선택하였으므로 아무일 없이 돌아간다.
 		if (IS_IPHONE) {
 			if (_shouldPopViewController) {
@@ -590,7 +508,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 		return;
 	}
 
-	[self callDelegate:data];
+	[self callDelegate:selectedUnitID];
 }
 
 #pragma mark- UISearchDisplayControllerDelegate

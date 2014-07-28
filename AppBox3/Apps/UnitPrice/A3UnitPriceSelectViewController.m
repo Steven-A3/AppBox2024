@@ -9,22 +9,22 @@
 #import "A3UnitPriceSelectViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "UnitPriceFavorite.h"
-#import "NSString+conversion.h"
-#import "UnitType.h"
-#import "UnitItem.h"
 #import "A3UnitConverterTVActionCell.h"
 #import "A3UnitPriceAddViewController.h"
 #import "UIColor+A3Addition.h"
-
-#define kCellHeight 56
+#import "A3UnitDataManager.h"
 
 @interface A3UnitPriceSelectViewController () <UISearchDisplayDelegate, A3UnitPriceAddViewControllerDelegate>
 {
     BOOL isEdited;
 }
 
-@property (nonatomic, strong) UISegmentedControl *selectSegment;
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
+@property (nonatomic, strong) NSArray *filteredResults;
+@property (nonatomic, strong) NSMutableArray *allData;
+@property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *noneItem;
 @property (nonatomic, strong) UIBarButtonItem *cancelItem;
 @property (nonatomic, strong) UIBarButtonItem *plusItem;
@@ -60,6 +60,20 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     if (!_shouldPopViewController && IS_IPHONE) {
         self.tabBarController.navigationItem.leftBarButtonItem = self.cancelItem;
     }
+}
+
+- (NSMutableArray *)allData {
+	if (!_allData) {
+		_allData = [_dataManager allUnitsSortedByLocalizedNameForCategoryID:_categoryID];
+	}
+	return _allData;
+}
+
+- (NSMutableArray *)favorites {
+	if (!_favorites) {
+		_favorites = [NSMutableArray arrayWithArray:[_dataManager favoritesForCategoryID:_categoryID]];
+	}
+	return _favorites;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -218,7 +232,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 - (void)configureNoneCell:(UITableViewCell *)cell {
 	cell.textLabel.text = NSLocalizedString(@"None", @"None");
-    if (!_selectedUnit) {
+    if (_currentUnitID == NSNotFound) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         cell.textLabel.textColor = [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
     }
@@ -228,9 +242,9 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     }
 }
 
-- (void)callDelegate:(UnitItem *)selectedItem {
-	if ([_delegate respondsToSelector:@selector(selectViewController:unitSelectedWithItem:)]) {
-        [_delegate selectViewController:self unitSelectedWithItem:selectedItem];
+- (void)callDelegate:(NSUInteger)selectedUnitID {
+	if ([_delegate respondsToSelector:@selector(selectViewController:didSelectCategoryID:unitID:)]) {
+		[_delegate selectViewController:self didSelectCategoryID:0 unitID:selectedUnitID];
 	}
     
     if (IS_IPHONE) {
@@ -276,11 +290,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     A3UnitPriceAddViewController *viewController = [[A3UnitPriceAddViewController alloc] initWithNibName:nil bundle:nil];
     viewController.delegate = self;
     viewController.shouldPopViewController = YES;
-    
-    NSArray *items = [UnitItem MR_findByAttribute:@"typeID" withValue:self.unitType.uniqueID andOrderBy:@"unitName" ascending:YES];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitName != %@", @"feet inches"];
-    viewController.allData = [NSMutableArray arrayWithArray:[items filteredArrayUsingPredicate:predicate]];
-    
+
     return viewController;
 }
 
@@ -296,18 +306,6 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	[self.tableView reloadData];
 }
 
-- (void)resetOrdering
-{
-    // reset ordering
-    for (int i=0; i<_favorites.count; i++) {
-        id object = _favorites[i];
-        
-        if ([ object isKindOfClass:[UnitPriceFavorite class] ]) {
-            ((UnitPriceFavorite *)object).order = [NSString orderStringWithOrder:(i + 1) * 1000000];
-		}
-    }
-}
-
 - (void)updateEditedDataToDelegate
 {
     if (_editingDelegate && [_editingDelegate respondsToSelector:@selector(favoritesEdited)]) {
@@ -318,61 +316,8 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 #pragma mark - A3UnitPriceAddViewControllerDelegate
 
-- (void)addViewController:(UIViewController *)viewController itemsAdded:(NSArray *)addedItems itemsRemoved:(NSArray *)removedItems
-{
-    FNLOG(@"Added\n%@", [addedItems description]);
-    FNLOG(@"Removed\n%@", [removedItems description]);
-    
-    // 삭제하기
-    NSMutableArray *removedIndexPaths = [[NSMutableArray alloc] init];
-//    [self.tableView beginUpdates];
-    for (int i=0; i<removedItems.count; i++) {
-        UnitItem *item = removedItems[i];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitItemID == %@", item.uniqueID];
-        NSArray *filtered = [_favorites filteredArrayUsingPredicate:predicate];
-        
-        if (filtered.count > 0) {
-            UnitPriceFavorite *favor = filtered[0];
-            NSUInteger itemIdx = [_favorites indexOfObject:favor];
-            [favor MR_deleteEntity];
-            [_favorites removeObject:favor];
-            
-            [removedIndexPaths addObject:[NSIndexPath indexPathForRow:itemIdx inSection:0]];
-        }
-    }
-//    [self.tableView deleteRowsAtIndexPaths:removedIndexPaths withRowAnimation:UITableViewRowAnimationLeft];
-//    [self.tableView endUpdates];
-    
-    // 추가하기
-//    [self.tableView beginUpdates];
-    NSMutableArray *addIndexPaths = [[NSMutableArray alloc] init];
-    for (int i=0; i<addedItems.count; i++) {
-        NSUInteger lastIdx = [_favorites count];
-        
-        UnitItem *item = addedItems[i];
-        UnitPriceFavorite *favorite = [UnitPriceFavorite MR_createEntity];
-		favorite.uniqueID = item.uniqueID;
-		favorite.updateDate = [NSDate date];
-        favorite.unitItemID = item.uniqueID;
-		favorite.unitTypeID = item.typeID;
-        [_favorites insertObject:favorite atIndex:lastIdx];
-        
-        NSIndexPath *ip = [NSIndexPath indexPathForRow:lastIdx inSection:0];
-        [addIndexPaths addObject:ip];
-    }
-//    [self.tableView insertRowsAtIndexPaths:addIndexPaths withRowAnimation:UITableViewRowAnimationRight];
-//    [self.tableView endUpdates];
-    
-    [self resetOrdering];
-    
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-
+- (void)addViewControllerDidUpdateData {
     [self updateEditedDataToDelegate];
-}
-
-- (void)willDismissAddViewController
-{
-    
 }
 
 #pragma mark - Table view data source
@@ -423,23 +368,26 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 		// Configure the cell...
 		BOOL checkedItem = NO;
-		UnitItem *data;
+		NSUInteger unitID;
+		NSString *unitName;
 		if (tableView == self.searchDisplayController.searchResultsTableView) {
-			data = self.filteredResults[indexPath.row];
+			unitID = [self.filteredResults[indexPath.row][ID_KEY] unsignedIntegerValue];
+			unitName = self.filteredResults[indexPath.row][NAME_KEY];
 		}
 		else {
 			if (_isFavoriteMode) {
-				UnitPriceFavorite *favorite = _favorites[indexPath.row];
-				data = [UnitItem MR_findFirstByAttribute:@"uniqueID" withValue:favorite.unitItemID];
+				unitID = [_favorites[indexPath.row] unsignedIntegerValue];
+				unitName = [_dataManager unitNameForUnitID:unitID categoryID:_categoryID];
 			}
 			else {
-				data = _allData[indexPath.row];
+				unitID = [_allData[indexPath.row][ID_KEY] unsignedIntegerValue];
+				unitName = _allData[indexPath.row][NAME_KEY];
 			}
 		}
 
-		cell.textLabel.text = NSLocalizedStringFromTable(data.unitName, @"unit", nil);
+		cell.textLabel.text = unitName;
 
-		if (_selectedUnit && ([[data objectID] isEqual:[_selectedUnit objectID]])) {
+		if (_currentUnitID == unitID) {
 			checkedItem = YES;
 		}
 
@@ -466,18 +414,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     return UITableViewCellEditingStyleDelete;
-    
-    /*
-    UnitPriceFavorite *favorite = _favorites[indexPath.row];
-    if ([favorite.item.unitName isEqualToString:_selectedFavorite.item.unitName]) {
-        return UITableViewCellEditingStyleNone;
-    }
-    else {
-        return UITableViewCellEditingStyleDelete;
-    }
-     */
 }
 
 // Override to support editing the table view.
@@ -488,13 +425,8 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
         // Delete the row from the data source
         isEdited = YES;
         
-        UnitPriceFavorite *favorite = _favorites[indexPath.row];
-        
         [_favorites removeObjectAtIndex:indexPath.row];
-        [self resetOrdering];
-        
-        [favorite MR_deleteEntity];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+		[_dataManager saveUnitPriceFavorites:_favorites categoryID:_categoryID];
 
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
@@ -505,13 +437,11 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 {
     isEdited = YES;
     
-    UnitPriceFavorite *favorite = _favorites[fromIndexPath.row];
+    NSNumber *favorite = _favorites[fromIndexPath.row];
     [_favorites removeObjectAtIndex:fromIndexPath.row];
     [_favorites insertObject:favorite atIndex:toIndexPath.row];
-    
-    [self resetOrdering];
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	[_dataManager saveUnitPriceFavorites:_favorites categoryID:_categoryID];
 }
 
 // Override to support conditional rearranging of the table view.
@@ -538,33 +468,25 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (!_isFavoriteMode && (tableView != self.searchDisplayController.searchResultsTableView) && ([self.allData objectAtIndex:indexPath.row] == self.noneItem)) {
-		[self callDelegate:nil];
+		[self callDelegate:NSNotFound];
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 	else {
-		UnitItem *data;
+		NSUInteger selectedUnitID = NSNotFound;
 		if (tableView == self.searchDisplayController.searchResultsTableView) {
-			data = self.filteredResults[indexPath.row];
+			selectedUnitID = [self.filteredResults[indexPath.row][ID_KEY] unsignedIntegerValue];
 			[self.searchDisplayController setActive:NO animated:NO];
 
 		} else {
 			if (_isFavoriteMode) {
-
-				if ([_favorites[indexPath.row] isKindOfClass:[UnitPriceFavorite class]]) {
-					UnitPriceFavorite *favorite = _favorites[indexPath.row];
-					data = [UnitItem MR_findFirstByAttribute:@"uniqueID" withValue:favorite.unitItemID];
-				}
-				else {
-					[tableView deselectRowAtIndexPath:indexPath animated:YES];
-					return;
-				}
+				selectedUnitID = [_favorites[indexPath.row] unsignedIntegerValue];
 			}
 			else {
-				data = _allData[indexPath.row];
+				selectedUnitID = [_allData[indexPath.row][ID_KEY] unsignedIntegerValue];
 			}
 		}
 
-		if (_selectedUnit && ([[data objectID] isEqual:[_selectedUnit objectID]])) {
+		if (_currentUnitID == selectedUnitID) {
 			[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 			// 원래 아이템을 선택하였으므로 아무일 없이 돌아간다.
@@ -581,7 +503,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 			return;
 		}
 
-		[self callDelegate:data];
+		[self callDelegate:selectedUnitID];
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 }

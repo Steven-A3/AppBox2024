@@ -7,13 +7,13 @@
 //
 
 #import "UnitPriceHistory+extension.h"
-#import "UnitPriceHistoryItem.h"
+#import "UnitPriceInfo.h"
 
 @implementation UnitPriceHistory (extension)
 
 - (NSArray *)unitPrices {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"historyID == %@", self.uniqueID];
-	return [UnitPriceHistoryItem MR_findAllWithPredicate:predicate];
+	return [UnitPriceInfo MR_findAllWithPredicate:predicate];
 }
 
 @end

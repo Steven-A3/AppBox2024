@@ -10,7 +10,6 @@
 
 @interface A3UnitConverterTabBarController : UITabBarController <UITabBarControllerDelegate>
 
-@property (nonatomic, strong) NSMutableArray *unitTypes;
-
 - (void)setupTabBar;
+
 @end

@@ -10,17 +10,14 @@
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+A3Addition.h"
 #import "UnitHistory.h"
+#import "A3UnitDataManager.h"
 #import "UnitHistoryItem.h"
-#import "UnitItem.h"
-#import "UnitType.h"
-#import "UnitConvertItem.h"
 #import "A3UnitConverterHistoryCell.h"
 #import "A3UnitConverterHistory3RowCell.h"
 #import "TemperatureConverter.h"
 #import "A3UnitConverterHistoryViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UnitHistory+extension.h"
-#import "UnitItem+extension.h"
 
 @interface A3UnitConverterHistoryViewController () <UIActionSheetDelegate>
 {
@@ -181,7 +178,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
     NSInteger numberOfLines = [items count] + 1;
 	[cell setNumberOfLines:@(numberOfLines)];
     
-    if ([unitHistory.sourceUnitID isEqualToString:@"Length_feet inches"]) {
+    if ([unitHistory.categoryID isEqualToNumber:@(7)] && [unitHistory.unitID isEqualToNumber:@(31)]) {
         float value = [unitHistory.value floatValue];
         int feet = (int)value;
         float inch = (value - feet) * (0.3048/0.0254);
@@ -213,19 +210,19 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
         ((UILabel *) cell.rightLabels[index]).font = [UIFont systemFontOfSize:13.0];
         ((UILabel *) cell.rightLabels[index]).textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
 
-		UnitItem *sourceUnit = [UnitItem MR_findFirstByAttribute:@"uniqueID" withValue:unitHistory.sourceUnitID];
-		UnitItem *targetUnit = [UnitItem MR_findFirstByAttribute:@"uniqueID" withValue:item.targetUnitItemID];
-		float rate = sourceUnit.conversionRate.floatValue / targetUnit.conversionRate.floatValue;
-        
-        BOOL _isTemperatureMode = [[sourceUnit type].unitTypeName isEqualToString:@"Temperature"];
+		NSString *sourceUnitName = [_dataManager unitNameForUnitID:[unitHistory.unitID unsignedIntegerValue] categoryID:[unitHistory.categoryID unsignedIntegerValue] ];
+		NSString *targetUnitName = [_dataManager unitNameForUnitID:[item.targetUnitItemID unsignedIntegerValue] categoryID:[unitHistory.categoryID unsignedIntegerValue] ];
+		float rate = (float) (conversionTable[[unitHistory.categoryID unsignedIntegerValue]][[unitHistory.unitID unsignedIntegerValue]] / conversionTable[[unitHistory.categoryID unsignedIntegerValue]][[item.targetUnitItemID unsignedIntegerValue]]);
+
+        BOOL _isTemperatureMode = [sourceUnitName isEqualToString:@"Temperature"];
         
         if (_isTemperatureMode) {
-            float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:sourceUnit.unitName andTemperature:unitHistory.value.floatValue];
-            float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnit.unitName];
+            float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:sourceUnitName andTemperature:unitHistory.value.floatValue];
+            float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnitName];
             ((UILabel *) cell.leftLabels[index]).text = [self.decimalFormatter stringFromNumber:@(targetValue)];
         }
         else {
-            if ([targetUnit.uniqueID isEqualToString:@"Length_feet inches"]) {
+            if ([unitHistory.categoryID isEqualToNumber:@9] && [item.targetUnitItemID isEqualToNumber:@31]) {
                 float value = unitHistory.value.floatValue * rate;
                 int feet = (int)value;
                 float inch = (value - feet) * (0.3048/0.0254);
@@ -239,11 +236,15 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
         
         // a to b = 40.469 표시 (right label)
         if (_isTemperatureMode) {
-            ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"), sourceUnit.unitShortName, [TemperatureConverter rateStringFromTemperUnit:sourceUnit.unitName toTemperUnit:targetUnit.unitName]];
+            ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"),
+							NSLocalizedStringFromTable(sourceUnitName, @"unitShort", nil),
+							[TemperatureConverter rateStringFromTemperUnit:sourceUnitName toTemperUnit:targetUnitName]];
         }
         else {
-            float conversionRate = sourceUnit.conversionRate.floatValue / targetUnit.conversionRate.floatValue;
-            ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@ = %@", @"%@ to %@ = %@"), sourceUnit.unitShortName, targetUnit.unitShortName, [self.decimalFormatter stringFromNumber:@(conversionRate)]];
+            ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@ = %@", @"%@ to %@ = %@"),
+							NSLocalizedStringFromTable(sourceUnitName, @"unitShort", nil),
+							NSLocalizedStringFromTable(targetUnitName, @"unitSHort", nil),
+							[self.decimalFormatter stringFromNumber:@(rate)]];
         }
 	}
     

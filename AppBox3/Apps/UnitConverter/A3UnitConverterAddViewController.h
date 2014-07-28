@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol A3UnitConverterAddViewControllerDelegate <NSObject>
-- (void)addViewController:(UIViewController *)viewController itemsAdded:(NSArray *)addedItems itemsRemoved:(NSArray *)removedItems;
+@class A3UnitDataManager;
 
-@optional
-- (void)willDismissAddViewController;
+@protocol A3UnitConverterAddViewControllerDelegate <NSObject>
+- (void)favoritesUpdatedInAddViewController;
 
 @end
 
@@ -20,7 +19,8 @@
 
 @property (nonatomic, weak) id<A3UnitConverterAddViewControllerDelegate> delegate;
 @property (nonatomic) BOOL shouldPopViewController;
+@property (nonatomic, assign) NSUInteger categoryID;
 @property (nonatomic, strong) NSMutableArray *allData;
-@property (nonatomic, strong) NSArray *filteredResults;
+@property (nonatomic, weak) A3UnitDataManager *dataManager;
 
 @end

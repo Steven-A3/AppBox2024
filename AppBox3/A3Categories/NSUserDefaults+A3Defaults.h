@@ -62,7 +62,7 @@
 
 #pragma mark - UnitConverter
 
-- (void)setUnitConverterCurrentUnitTap:(NSUInteger)tapIndex;
-- (NSUInteger)unitConverterCurrentUnitTap;
+- (void)setUnitConverterSelectedCategoryID:(NSUInteger)categoryIndex;
+- (NSUInteger)unitConverterSelectedCategory;
 
 @end

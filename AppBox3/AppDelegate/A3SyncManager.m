@@ -110,6 +110,7 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 
 - (void)icloudDidDownload:(NSNotification *)notif
 {
+	FNLOG();
 	if (!self.isCloudEnabled) return;
 	
 	[self synchronizeWithCompletion:NULL];
@@ -117,6 +118,7 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 
 - (void)localSaveOccurred:(NSNotification *)notif
 {
+	FNLOG();
 	if (!self.isCloudEnabled) return;
 	
 	[self synchronizeWithCompletion:NULL];

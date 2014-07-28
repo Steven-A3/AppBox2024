@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "ATSDragToReorderTableViewController.h"
-#import "UnitType.h"
+
+@class A3UnitDataManager;
 
 extern NSString *const A3UnitConverterDataCellID;
 
 @interface A3UnitConverterConvertTableViewController : UIViewController <UIActivityItemSource>
 
-@property (nonatomic, strong) UnitType *unitType;
+@property (nonatomic, assign) NSUInteger categoryID;
 @property (nonatomic, assign) BOOL isFromMoreTableViewController;
+@property (nonatomic, strong) A3UnitDataManager *dataManager;
 
 @end

@@ -7,7 +7,6 @@
 //
 
 #import "A3UnitConverterConvertTableViewController.h"
-#import "A3UnitConverterTabBarController.h"
 #import "A3UnitConverterTVActionCell.h"
 #import "A3UnitConverterTVEqualCell.h"
 #import "A3UnitConverterTVDataCell.h"
@@ -15,14 +14,11 @@
 #import "A3NumberKeyboardViewController.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "NSMutableArray+A3Sort.h"
-#import "NSUserDefaults+A3Defaults.h"
+#import "A3UnitDataManager.h"
 #import "UIViewController+MMDrawerController.h"
 #import "UIViewController+A3Addition.h"
 #import "A3UnitConverterHistoryViewController.h"
 #import "A3UnitConverterSelectViewController.h"
-#import "UnitItem.h"
-#import "UnitFavorite+extension.h"
-#import "UnitConvertItem.h"
 #import "UnitHistory.h"
 #import "UnitHistoryItem.h"
 #import "TemperatureConverter.h"
@@ -30,7 +26,6 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIColor+A3Addition.h"
 #import "A3InstructionViewController.h"
-#import "UnitConvertItem+extension.h"
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
 
@@ -57,8 +52,9 @@
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
 @property (nonatomic, copy) NSString *value1BeforeEditingTextField;
 @property (nonatomic, copy) NSString *value2BeforeEditingTextField;
-@property (strong, nonatomic) UINavigationController *modalNavigationController;
+@property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+
 @end
 
 @implementation A3UnitConverterConvertTableViewController {
@@ -135,7 +131,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	_fmMoveTableView.contentInset = UIEdgeInsetsMake(0, 0, 70.0, 0);
 	_fmMoveTableView.showsVerticalScrollIndicator = NO;
 
-	_isTemperatureMode = [_unitType.unitTypeName isEqualToString:@"Temperature"];
+	_isTemperatureMode = [[_dataManager categoryNameForID:_categoryID] isEqualToString:@"Temperature"];
 
 	[self.decimalFormatter setLocale:[NSLocale currentLocale]];
 
@@ -260,12 +256,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		}
 	}
     
-    A3UnitConverterTabBarController *tabBar = (A3UnitConverterTabBarController *)self.navigationController.tabBarController;
-    if ([tabBar.unitTypes containsObject:self.unitType]) {
-        NSUInteger vcIdx = [tabBar.unitTypes indexOfObject:self.unitType];
-        [[NSUserDefaults standardUserDefaults] setUnitConverterCurrentUnitTap:vcIdx];
-    }
-
 	[self showLeftNavigationItems];
 
     [self enableControls:YES];
@@ -279,8 +269,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 	if ([self isMovingToParentViewController]) {
 //		A3UnitConverterTabBarController *tabBar = (A3UnitConverterTabBarController *)self.navigationController.tabBarController;
-//		if ([tabBar.unitTypes containsObject:self.unitType]) {
-//			NSUInteger vcIdx = [tabBar.unitTypes indexOfObject:self.unitType];
+//		if ([tabBar.categories containsObject:self.unitType]) {
+//			NSUInteger vcIdx = [tabBar.categories indexOfObject:self.unitType];
 //			[[NSUserDefaults standardUserDefaults] setUnitConverterCurrentUnitTap:vcIdx];
 //		}
         [self setupInstructionView];
@@ -395,6 +385,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[self clearEverything];
 
 	A3UnitConverterHistoryViewController *viewController = [[A3UnitConverterHistoryViewController alloc] initWithNibName:nil bundle:nil];
+	viewController.dataManager = self.dataManager;
 	if (IS_IPHONE) {
 		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
@@ -412,8 +403,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (NSMutableArray *)convertItems {
 	if (nil == _convertItems) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"typeID == %@", _unitType.uniqueID];
-        _convertItems = [NSMutableArray arrayWithArray:[UnitConvertItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
+        _convertItems = [NSMutableArray arrayWithArray:[self.dataManager unitConvertItemsForCategoryID:_categoryID]];
         
 		[self addEqualAndPlus];
 	}
@@ -421,7 +411,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)addEqualAndPlus {
-	[_convertItems insertObjectToSortedArray:self.equalItem atIndex:1];
+	[_convertItems insertObject:self.equalItem atIndex:1];
 }
 
 - (NSMutableDictionary *)equalItem {
@@ -460,11 +450,10 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     NSNumber *_unitValue = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitConverterTableViewUnitValueKey];
     
     if (!_unitValue) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceTypeID == %@", _unitType.uniqueID];
-        NSArray *histories = [UnitHistory MR_findAllSortedBy:@"updateDate" ascending:NO withPredicate:predicate];
-        if (histories.count > 0) {
-            UnitHistory *last = histories[0];
-            _unitValue = @(last.value.floatValue);
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", @(_categoryID)];
+        UnitHistory *history = [UnitHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+		if (history) {
+            _unitValue = @(history.value.floatValue);
         }
         else {
             _unitValue = @1.0;
@@ -519,34 +508,25 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (A3UnitConverterSelectViewController *)unitAddViewController {
     A3UnitConverterSelectViewController *viewController = [[A3UnitConverterSelectViewController alloc] initWithNibName:nil bundle:nil];
+	viewController.dataManager = _dataManager;
     viewController.editingDelegate = self;
     viewController.delegate = self;
     viewController.shouldPopViewController = NO;    // modal
-    
-    // toss unit data
-    viewController.convertItems = self.convertItems;
-    viewController.selectedItem = nil;
-    viewController.favorites = [NSMutableArray arrayWithArray:[UnitFavorite MR_findByAttribute:@"typeID" withValue:_unitType.uniqueID andOrderBy:@"order" ascending:YES]];
-    viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"typeID" withValue:_unitType.uniqueID andOrderBy:@"unitName" ascending:YES]];
-    
+	viewController.categoryID = _categoryID;
+
 	return viewController;
 }
 
 - (A3UnitConverterSelectViewController *)unitSelectViewControllerWithSelectedUnit:(NSInteger)selectedIndex {
-    
 	A3UnitConverterSelectViewController *viewController = [[A3UnitConverterSelectViewController alloc] initWithNibName:nil bundle:nil];
+	viewController.dataManager = _dataManager;
+	viewController.categoryID = _categoryID;
 	viewController.delegate = self;
     viewController.editingDelegate = self;
     viewController.hidesBottomBarWhenPushed = YES;
 	if (selectedIndex >= 0 && selectedIndex <= ([_convertItems count] - 1) ) {
-		UnitConvertItem *selectedItem = _convertItems[selectedIndex];
-		viewController.placeHolder = NSLocalizedStringFromTable([selectedItem item].unitName, @"unit", nil);
-        
-        // toss unit data
-        viewController.selectedItem = selectedItem;
-        viewController.favorites = [NSMutableArray arrayWithArray:[UnitFavorite MR_findByAttribute:@"typeID" withValue:_unitType.uniqueID andOrderBy:@"order" ascending:YES]];
-        viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"typeID" withValue:_unitType.uniqueID andOrderBy:@"unitName" ascending:YES]];
-        viewController.convertItems = self.convertItems;
+		viewController.placeHolder = [_dataManager localizedUnitNameForUnitID:[_convertItems[selectedIndex] integerValue] categoryID:_categoryID];
+        viewController.currentUnitID = [_convertItems[selectedIndex] unsignedIntegerValue];
 	}
     
 	return viewController;
@@ -596,40 +576,59 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 - (void)shareAll:(id)sender {
 	self.shareTextList = [NSMutableArray new];
 
-	UnitConvertItem *first = _convertItems[0];
+	NSUInteger sourceID = [_convertItems[0] unsignedIntegerValue];
+	NSString *sourceShortName = NSLocalizedStringFromTable([_dataManager unitNameForUnitID:sourceID categoryID:_categoryID], @"unitShort", nil);
 	for (NSInteger index = 1; index < _convertItems.count; index++) {
-		if ([_convertItems[index] isKindOfClass:[UnitConvertItem class]]) {
-
+		if ([_convertItems[index] isKindOfClass:[NSNumber class]]) {
+			NSUInteger targetID = [_convertItems[index] unsignedIntegerValue];
+			NSString *targetShortName = NSLocalizedStringFromTable([_dataManager unitNameForUnitID:targetID categoryID:_categoryID], @"unitShort", nil);
 			NSString *convertInfoText = @"";
 
-			UnitConvertItem *item = _convertItems[index];
-			float rate = [first item].conversionRate.floatValue / [item item].conversionRate.floatValue;
+			float rate = conversionTable[_categoryID][sourceID] / conversionTable[_categoryID][targetID];
 
 			if (_isTemperatureMode) {
-				float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:[first item].unitName andTemperature:self.unitValue.floatValue];
-				float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:[item item].unitName];
-				convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], [first item].unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], [item item].unitShortName];
+				float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:[_dataManager unitNameForUnitID:sourceID categoryID:_categoryID] andTemperature:self.unitValue.floatValue];
+				float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:[_dataManager unitNameForUnitID:sourceID categoryID:_categoryID]];
+				convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@",
+															 [self.decimalFormatter stringFromNumber:self.unitValue],
+															 sourceShortName,
+															 [self.decimalFormatter stringFromNumber:@(targetValue)],
+															 targetShortName];
 			}
 			else {
 				float targetValue = self.unitValue.floatValue * rate;
 
-                if ([[first item].unitName isEqualToString:@"feet inches"]) {
+                if ([[_dataManager unitNameForUnitID:sourceID categoryID:_categoryID] isEqualToString:@"feet inches"]) {
                     //float rate = [item.item.conversionRate floatValue] / [first.item.conversionRate floatValue];
                     float value = [self.unitValue floatValue];
                     int feet = (int)value;
                     float inch = (value -feet) * kInchesPerFeet;
 
-                    convertInfoText = [NSString stringWithFormat:@"%@ = %@ %@", [NSString stringWithFormat:@"%@ft %@in", [self.decimalFormatter stringFromNumber:@(feet)], [self.decimalFormatter stringFromNumber:@(inch)]], [self.decimalFormatter stringFromNumber:@(targetValue)], [item item].unitShortName];
+                    convertInfoText = [NSString stringWithFormat:@"%@ = %@ %@",
+									[NSString stringWithFormat:@"%@ft %@in",
+													[self.decimalFormatter stringFromNumber:@(feet)],
+													[self.decimalFormatter stringFromNumber:@(inch)]],
+									[self.decimalFormatter stringFromNumber:@(targetValue)],
+									targetShortName];
                 }
-                else if ([[item item].unitName isEqualToString:@"feet inches"]) {
+                else if ([[_dataManager unitNameForUnitID:targetID categoryID:_categoryID] isEqualToString:@"feet inches"]) {
                     float value = self.unitValue.floatValue * rate;
                     int feet = (int)value;
                     float inch = (value -feet) * kInchesPerFeet;
                     
-                    convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@", [self.decimalFormatter stringFromNumber:self.unitValue], [first item].unitShortName, [NSString stringWithFormat:@"%@ft %@in", [self.decimalFormatter stringFromNumber:@(feet)], [self.decimalFormatter stringFromNumber:@(inch)]]];
+                    convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@",
+									[self.decimalFormatter stringFromNumber:self.unitValue],
+									sourceShortName,
+									[NSString stringWithFormat:@"%@ft %@in",
+													[self.decimalFormatter stringFromNumber:@(feet)],
+													[self.decimalFormatter stringFromNumber:@(inch)]]];
                 }
                 else {
-                    convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], [first item].unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], [item item].unitShortName];
+                    convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@",
+									[self.decimalFormatter stringFromNumber:self.unitValue],
+									sourceShortName,
+									[self.decimalFormatter stringFromNumber:@(targetValue)],
+									targetShortName];
                 }
 			}
 			[_shareTextList addObject:convertInfoText];
@@ -666,22 +665,27 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 - (void)shareActionForSourceIndex:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx sender:(id)sender {
 	self.shareTextList = [NSMutableArray new];
 
-	UnitConvertItem *first = _convertItems[sourceIdx];
-	UnitConvertItem *currentRowConvertItem = _convertItems[targetIdx];
 	NSString *convertInfoText = @"";
-	UnitItem *firstUnit = [first item];
-	UnitItem *currentUnit = [currentRowConvertItem item];
-	float rate = firstUnit.conversionRate.floatValue / [currentRowConvertItem item].conversionRate.floatValue;
+	NSUInteger sourceID = [_convertItems[sourceIdx] unsignedIntegerValue];
+	NSString *sourceShortName = NSLocalizedStringFromTable([_dataManager unitNameForUnitID:sourceID categoryID:_categoryID], @"unitShort", nil);
+	NSUInteger targetID = [_convertItems[targetIdx] unsignedIntegerValue];
+	NSString *targetShortName = NSLocalizedStringFromTable([_dataManager unitNameForUnitID:targetID categoryID:_categoryID], @"unitShort", nil);
+
+	float rate = conversionTable[_categoryID][sourceID] / conversionTable[_categoryID][targetID];
 
 	if (_isTemperatureMode) {
-		float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:[first item].unitName andTemperature:self.unitValue.floatValue];
-		float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:currentUnit.unitName];
-		convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@", [self.decimalFormatter stringFromNumber:self.unitValue], firstUnit.unitShortName, [self.decimalFormatter stringFromNumber:@(targetValue)], currentUnit.unitShortName];
+		float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:[_dataManager unitNameForUnitID:sourceID categoryID:_categoryID] andTemperature:self.unitValue.floatValue];
+		float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:[_dataManager unitNameForUnitID:sourceID categoryID:_categoryID]];
+		convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@",
+						[self.decimalFormatter stringFromNumber:self.unitValue],
+						sourceShortName,
+						[self.decimalFormatter stringFromNumber:@(targetValue)],
+						targetShortName];
 	}
 	else {
 		float targetValue = self.unitValue.floatValue * rate;
         
-        if ([firstUnit.unitName isEqualToString:@"feet inches"]) {
+        if ([[_dataManager unitNameForUnitID:sourceID categoryID:_categoryID] isEqualToString:@"feet inches"]) {
             float value = [self.unitValue floatValue];
             int feet = (int)value;
             float inch = (value -feet) * kInchesPerFeet;
@@ -691,16 +695,16 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 											[self.decimalFormatter stringFromNumber:@(feet)],
 											[self.decimalFormatter stringFromNumber:@(inch)]],
 							[self.decimalFormatter stringFromNumber:@(targetValue)],
-							currentUnit.unitShortName];
+							targetShortName];
         }
-        else if ([currentRowConvertItem.item.unitName isEqualToString:@"feet inches"]) {
+        else if ([[_dataManager unitNameForUnitID:targetIdx categoryID:_categoryID] isEqualToString:@"feet inches"]) {
             float value = self.unitValue.floatValue * rate;
             int feet = (int)value;
             float inch = (value -feet) * kInchesPerFeet;
             
             convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@",
 							[self.decimalFormatter stringFromNumber:self.unitValue],
-							firstUnit.unitShortName,
+							sourceShortName,
 							[NSString stringWithFormat:@"%@ft %@in",
 											[self.decimalFormatter stringFromNumber:@(feet)],
 											[self.decimalFormatter stringFromNumber:@(inch)]]];
@@ -708,9 +712,9 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
         else {
             convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@",
 							[self.decimalFormatter stringFromNumber:self.unitValue],
-							firstUnit.unitShortName,
+							sourceShortName,
 							[self.decimalFormatter stringFromNumber:@(targetValue)],
-							currentUnit.unitShortName];
+							targetShortName];
         }
 	}
 	[_shareTextList addObject:convertInfoText];
@@ -802,7 +806,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		A3UnitConverterTVEqualCell *equalCell = [self reusableEqualCellForTableView:tableView];
 		cell = equalCell;
 	}
-	else if ([ [self.convertItems objectAtIndex:indexPath.row] isKindOfClass:[UnitConvertItem class] ]) {
+	else if ([ [self.convertItems objectAtIndex:indexPath.row] isKindOfClass:[NSNumber class] ]) {
 		A3UnitConverterTVDataCell *dataCell;
 		dataCell = [tableView dequeueReusableCellWithIdentifier:A3UnitConverterDataCellID forIndexPath:indexPath];
 
@@ -827,8 +831,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	dataCell.valueField.delegate = self;
 	dataCell.value2Field.delegate = self;
 
-	UnitConvertItem *convertItem = self.convertItems[dataIndex];
-	UnitItem *targetUnitItem = [convertItem item];
+	NSUInteger targetID = [self.convertItems[dataIndex] unsignedIntegerValue];
 
 	// <- dictionary key reset
 	NSSet *keys = [_text1Fields keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
@@ -855,12 +858,12 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		[self.text2Fields removeObjectForKey:key2];
 	}
 	// ->
-
-	[self.text1Fields setObject:dataCell.valueField forKey:targetUnitItem.unitName];
-	[self.text2Fields setObject:dataCell.value2Field forKey:targetUnitItem.unitName];
+	NSString *targetUnitName = [_dataManager unitNameForUnitID:targetID categoryID:_categoryID];
+	[self.text1Fields setObject:dataCell.valueField forKey:targetUnitName];
+	[self.text2Fields setObject:dataCell.value2Field forKey:targetUnitName];
 
 	BOOL isFeetInchMode = NO;
-	if ([targetUnitItem.unitName isEqualToString:@"feet inches"]) {
+	if ([targetUnitName isEqualToString:@"feet inches"]) {
 		// 0.3048, 0.0254
 		isFeetInchMode = YES;
 		dataCell.inputType = UnitInput_FeetInch;
@@ -883,11 +886,11 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		}
 
 		if (IS_IPHONE && dataCell.inputType == UnitInput_FeetInch) {
-			dataCell.codeLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unitShort", nil);
-			dataCell.rateLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unit", nil);
+			dataCell.codeLabel.text = NSLocalizedStringFromTable(targetUnitName, @"unitShort", nil);
+			dataCell.rateLabel.text = NSLocalizedStringFromTable(targetUnitName, @"unit", nil);
 		} else {
-			dataCell.codeLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unit", nil);
-			dataCell.rateLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unitShort", nil);
+			dataCell.codeLabel.text = NSLocalizedStringFromTable(targetUnitName, @"unit", nil);
+			dataCell.rateLabel.text = NSLocalizedStringFromTable(targetUnitName, @"unitShort", nil);
 		}
 	}
     else {
@@ -899,36 +902,30 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 		float conversionRate = 0;
 
-		UnitConvertItem *convertItemZero = nil;
-		for (id object in self.convertItems) {
-			if ([object isKindOfClass:[UnitConvertItem class]]) {
-				convertItemZero = object;
-				break;
-			}
-		}
-
+		NSUInteger sourceID = [_convertItems[0] unsignedIntegerValue];
+		NSString *sourceUnitName = [_dataManager unitNameForUnitID:sourceID categoryID:_categoryID];
 		if (_isTemperatureMode) {
 			// 먼저 입력된 값을 섭씨기준의 온도로 변환한다.
 			// 섭씨온도를 해당 unit값으로 변환한다
-			float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:convertItemZero.item.unitName andTemperature:value.floatValue];
-			value = @([TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnitItem.unitName]);
+			float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:sourceUnitName andTemperature:value.floatValue];
+			value = @([TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnitName]);
 
 		}
 		else {
-			conversionRate = convertItemZero.item.conversionRate.floatValue / targetUnitItem.conversionRate.floatValue;
+			conversionRate = (float) (conversionTable[_categoryID][sourceID] / conversionTable[_categoryID][targetID]);
 			value = @(value.floatValue * conversionRate);
 		}
 
 		// code 및 rate 정보 표시
-		dataCell.codeLabel.text = NSLocalizedStringFromTable(targetUnitItem.unitName, @"unit", nil);
+		dataCell.codeLabel.text = NSLocalizedStringFromTable(targetUnitName, @"unit", nil);
 		// 온도 모드에서는 rate값에 일정 비율이 없으므로 표시하지 않는다.
 		if (_isTemperatureMode) {
-			dataCell.rateLabel.text = [TemperatureConverter rateStringFromTemperUnit:convertItemZero.item.unitName
-																		toTemperUnit:targetUnitItem.unitName];
+			dataCell.rateLabel.text = [TemperatureConverter rateStringFromTemperUnit:sourceUnitName
+																		toTemperUnit:targetUnitName];
 		}
 		else {
 			dataCell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, rate = %@", @"%@, rate = %@"),
-							NSLocalizedStringFromTable(targetUnitItem.unitShortName, @"unitShort", nil),
+							NSLocalizedStringFromTable(targetUnitName, @"unitShort", nil),
 							[self.decimalFormatter stringFromNumber:@(conversionRate)]];
 		}
 	}
@@ -1018,8 +1015,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 #pragma mark - FMMoveTableView
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-	[self.convertItems moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	[_convertItems exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
+	[_dataManager replaceConvertItems:[_convertItems copy] forCategory:_categoryID];
 
 	dispatch_async(dispatch_get_main_queue(), ^{
 		NSInteger equalIndex;
@@ -1029,12 +1026,14 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			FNLOG(@"equal index %ld is not 1.", (long)equalIndex);
 			FNLOG(@"%@", _convertItems);
 			[self.convertItems moveItemInSortedArrayFromIndex:equalIndex toIndex:1];
+			[_convertItems exchangeObjectAtIndex:equalIndex withObjectAtIndex:1];
+			[_dataManager replaceConvertItems:[_convertItems copy] forCategory:_categoryID];
+
 			FNLOG(@"%@", _convertItems);
 			[_fmMoveTableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:equalIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
 			if (equalIndex == 0) {
 				[_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]  withRowAnimation:UITableViewRowAnimationNone];
 			}
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		}
 	});
 
@@ -1090,41 +1089,28 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 #pragma mark - A3UnitSelectViewControllerDelegate
 
-- (void)didUnitSelectCancled
+- (void)didCancelUnitSelect
 {
 	if (IS_IPAD) {
 		[self rightBarItemsEnabling:YES];
 	}
 }
 
-- (void)selectViewController:(UIViewController *)viewController unitSelectedWithItem:(UnitItem *)selectedItem
-{
+- (void)selectViewController:(UIViewController *)viewController didSelectCategoryID:(NSUInteger)categoryID unitID:(NSUInteger)unitID {
 	if (IS_IPAD) {
 		[self rightBarItemsEnabling:YES];
 	}
 
 	if (_isAddingUnit) {
-		if (selectedItem) {
-
-			// 존재 유무 체크
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitID == %@", selectedItem.uniqueID];
-			NSArray *items = [_convertItems filteredArrayUsingPredicate:predicate];
-			if (items.count > 0) {
-				// 이미 존재하는 unitItem임
+		if (unitID) {
+			if ([_convertItems containsObject:@(unitID)]) {
 				return;
 			}
 
-			UnitConvertItem *convertItem = [UnitConvertItem MR_createEntity];
-			convertItem.uniqueID = selectedItem.uniqueID;
-			convertItem.updateDate = [NSDate date];
-			convertItem.unitID = selectedItem.uniqueID;
-			convertItem.typeID = selectedItem.typeID;
+			[_convertItems addObject:@(unitID)];
+			[_dataManager addUnitToConvertItemForUnit:unitID categoryID:_categoryID];
 
-			NSUInteger idx = [_convertItems count];
-			[self.convertItems insertObjectToSortedArray:convertItem atIndex:idx];
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-
-			[_fmMoveTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+			[_fmMoveTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_convertItems count] - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
 
 			double delayInSeconds = 0.3;
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -1135,14 +1121,11 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	}
 	else {
 		// 선택된 unitItem이 이미 convertItems에 추가된 unit이면, swap을 한다.
-		if (selectedItem) {
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitID == %@", selectedItem.uniqueID];
-			NSArray *filtered = [_convertItems filteredArrayUsingPredicate:predicate];
-			if (filtered.count > 0) {
+		if (unitID) {
+			NSInteger existingIndex = [_convertItems indexOfObject:@(unitID)];
+			if (existingIndex != NSNotFound) {
 				if (_selectedRow == 0) {
-					NSUInteger pickedUnitIdx = [_convertItems indexOfObject:filtered[0]];
-
-					NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:pickedUnitIdx inSection:0];
+					NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:existingIndex inSection:0];
 					NSIndexPath *targetIndexPath;
 					if (sourceIndexPath.row == 0) {
 						targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
@@ -1153,10 +1136,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 					[self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
 				}
 				else {
-					NSUInteger pickedUnitIdx = [_convertItems indexOfObject:filtered[0]];
-
 					// 선택된 unitItem이 첫번째 unit이면, swap한다.
-					if (pickedUnitIdx == 0) {
+					if (existingIndex == 0) {
 						NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:_selectedRow inSection:0];
 						NSIndexPath *targetIndexPath;
 						if (sourceIndexPath.row == 0) {
@@ -1171,7 +1152,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 					else {
 
 						NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:_selectedRow inSection:0];
-						NSIndexPath *targetIndexPath = [NSIndexPath indexPathForRow:pickedUnitIdx inSection:0];
+						NSIndexPath *targetIndexPath = [NSIndexPath indexPathForRow:existingIndex inSection:0];
 
 						[self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
 					}
@@ -1179,9 +1160,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			}
 					// 아니면, 현재 unit을 교체한다.
 			else {
-				UnitConvertItem *replacedItem = _convertItems[_selectedRow];
-				replacedItem.unitID = selectedItem.uniqueID;
-				[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+				[_convertItems replaceObjectAtIndex:_selectedRow withObject:@(unitID)];
+				[_dataManager replaceConvertItems:[_convertItems copy] forCategory:_categoryID];
 
 				[_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
 
@@ -1352,8 +1332,6 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	textField.text = [self.decimalFormatter stringFromNumber:@(value)];
 	[self updateTextFieldsWithSourceTextField:textField];
 	[cell updateMultiTextFieldModeConstraintsWithEditingTextField:nil];
-
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)textFieldDidChange:(NSNotification *)notification {
@@ -1365,9 +1343,9 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 }
 
 - (NSUInteger)indexForUnitName:(NSString *)name {
-	NSUInteger targetIndex = [self.convertItems indexOfObjectPassingTest:^BOOL(UnitConvertItem *object, NSUInteger idx, BOOL *stop) {
-		if ([object isKindOfClass:[NSMutableDictionary class]]) return NO;
-		return ([object.item.unitName isEqualToString:name]);
+	NSUInteger targetIndex = [self.convertItems indexOfObjectPassingTest:^BOOL(NSNumber *object, NSUInteger idx, BOOL *stop) {
+		return [object isKindOfClass:[NSNumber class]] &&
+				[[_dataManager unitNameForUnitID:[object integerValue] categoryID:_categoryID] isEqualToString:name];
 	}];
 	return targetIndex;
 }
@@ -1411,9 +1389,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
         self.unitValue = @(fromValue);
     }
 
-	NSInteger fromIndex = 0;
-	UnitConvertItem *zeroConvertItem = _convertItems[0];
-	NSString *zeroKey = zeroConvertItem.item.unitName;
+	NSUInteger sourceID = [_convertItems[0] unsignedIntegerValue];
+	NSString *zeroKey = [_dataManager unitNameForUnitID:sourceID categoryID:_categoryID];
 
 	for (NSString *key in [_text1Fields allKeys]) {
 
@@ -1423,18 +1400,16 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 		UITextField *targetTextField = _text1Fields[key];
 
-		UnitConvertItem *sourceUnit = self.convertItems[fromIndex];
 		NSUInteger targetIndex = [self indexForUnitName:key];
 		if (targetIndex != NSNotFound) {
-			UnitConvertItem *targetUnit = self.convertItems[targetIndex];
-			UnitItem *sourceUnitItem = [sourceUnit item];
-			UnitItem *targetUnitItem = [targetUnit item];
+			NSUInteger targetID = [_convertItems[targetIndex] unsignedIntegerValue];
+			NSString *targetUnitName = [_dataManager unitNameForUnitID:targetID categoryID:_categoryID];
 
 			if (_isTemperatureMode) {
 				// 먼저 입력된 값을 섭씨기준의 온도로 변환한다.
 				// 섭씨온도를 해당 unit값으로 변환한다
-				float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:sourceUnitItem.unitName andTemperature:fromValue];
-				float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnitItem.unitName];
+				float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:zeroKey andTemperature:fromValue];
+				float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnitName];
 				targetTextField.text = [self.decimalFormatter stringFromNumber:@(targetValue)];
 			}
 			else {
@@ -1442,10 +1417,10 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 				if ([key isEqualToString:@"feet inches"]) {
 					isFeetInchMode = YES;
 				}
+				float rate = (float) (conversionTable[_categoryID][sourceID] / conversionTable[_categoryID][targetID]);
 				if (isFeetInchMode) {
 					// 0.3048, 0.0254
 					// feet 계산
-					float rate = [sourceUnitItem.conversionRate floatValue] / [targetUnitItem.conversionRate floatValue];
 					float value = fromValue * rate;
 					int feet = (int)value;
 					float inch = (value -feet) * kInchesPerFeet;
@@ -1454,7 +1429,6 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 					targetValue2TextFiled.text = [self.decimalFormatter stringFromNumber:@(inch)];
 				}
 				else {
-					float rate = [sourceUnitItem.conversionRate floatValue] / [targetUnitItem.conversionRate floatValue];
 					targetTextField.text = [self.decimalFormatter stringFromNumber:@(fromValue*rate)];
 				}
 			}
@@ -1472,8 +1446,9 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 - (void)swapCellOfFromIndexPath:(NSIndexPath *)fromIp toIndexPath:(NSIndexPath *)toIp
 {
-    [self.convertItems exchangeObjectInSortedArrayAtIndex:fromIp.row withObjectAtIndex:toIp.row];
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	[_convertItems exchangeObjectAtIndex:fromIp.row withObjectAtIndex:toIp.row];
+	[_dataManager replaceConvertItems:[_convertItems copy] forCategory:_categoryID];
+
     [_fmMoveTableView reloadRowsAtIndexPaths:@[fromIp, toIp] withRowAnimation:UITableViewRowAnimationMiddle];
     
     double delayInSeconds = 0.3;
@@ -1531,15 +1506,15 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	}
 
 	NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
-	UnitConvertItem *convertItem = self.convertItems[indexPath.row];
-	UnitItem *targetUnitItem = [convertItem item];
-	if ([convertItem isKindOfClass:[UnitConvertItem class]]) {
-		[self.text1Fields removeObjectForKey:targetUnitItem.unitName];
-		[self.text2Fields removeObjectForKey:targetUnitItem.unitName];
+	NSUInteger targetID = [self.convertItems[indexPath.row] unsignedIntegerValue];
+	NSString *targetName = [_dataManager unitNameForUnitID:targetID categoryID:_categoryID];
+	NSNumber *convertItem = self.convertItems[indexPath.row];
+	if ([convertItem isKindOfClass:[NSNumber class]]) {
+		[self.text1Fields removeObjectForKey:targetName];
+		[self.text2Fields removeObjectForKey:targetName];
 
-		[convertItem MR_deleteEntity];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		[self.convertItems removeObjectAtIndex:indexPath.row];
+		[_dataManager replaceConvertItems:[_convertItems copy] forCategory:_categoryID];
 
 		[_fmMoveTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 
@@ -1722,41 +1697,37 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 #pragma mark - History
 
 - (void)putHistoryWithValue:(NSNumber *)value {
-	UnitConvertItem *baseUnit = self.convertItems[0];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceTypeID == %@", _unitType];
-	NSArray *histories = [UnitHistory MR_findAllSortedBy:@"updateDate" ascending:NO withPredicate:predicate];
+	NSString *categoryName = [_dataManager categoryNameForID:_categoryID];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", categoryName];
+	UnitHistory *latestHistory = [UnitHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
 
 	// Compare code and value.
-	if (histories.count > 0) {
-		UnitHistory *latestHistory = histories[0];
-		if (latestHistory && [latestHistory.sourceUnitID isEqualToString:baseUnit.unitID] && [value isEqualToNumber:latestHistory.value])
-		{
-			FNLOG(@"Does not make new history for same code and value, in history %@, %@", latestHistory.value, value);
-			return;
-		}
+	if (latestHistory && [latestHistory.unitID isEqualToNumber:_convertItems[0]] && [value isEqualToNumber:latestHistory.value])
+	{
+		FNLOG(@"Does not make new history for same code and value, in history %@, %@", latestHistory.value, value);
+		return;
 	}
 
-	UnitHistory *history = [UnitHistory MR_createEntity];
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+	UnitHistory *history = [UnitHistory MR_createEntityInContext:savingContext];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
-	NSDate *keyDate = [NSDate date];
-	history.updateDate = keyDate;
-	history.sourceUnitID = baseUnit.unitID;
-	history.sourceTypeID = baseUnit.typeID;
+	history.updateDate = [NSDate date];
+	history.unitID = _convertItems[0];
+	history.categoryID = @(_categoryID);
 	history.value = value;
 
 	NSInteger historyItemCount = MIN([self.convertItems count] - 2, 4);
 	NSInteger idx = 0;
 	for (; idx < historyItemCount; idx++) {
-		UnitHistoryItem *item = [UnitHistoryItem MR_createEntity];
+		UnitHistoryItem *item = [UnitHistoryItem MR_createEntityInContext:savingContext];
 		item.uniqueID = [[NSUUID UUID] UUIDString];
 		item.updateDate = [NSDate date];
 		item.unitHistoryID = history.uniqueID;
-		UnitConvertItem *convertItem = self.convertItems[idx + 2];
-		item.targetUnitItemID = convertItem.unitID;
-		item.order = convertItem.order;
+		item.targetUnitItemID = _convertItems[idx + 2];
+		item.order = [NSString stringWithFormat:@"%010ld", (long)idx];
 	}
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	[savingContext MR_saveToPersistentStoreAndWait];
 
 	self.unitValue = nil;
 

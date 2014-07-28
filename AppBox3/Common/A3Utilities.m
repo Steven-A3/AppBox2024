@@ -95,20 +95,24 @@ NSString *const A3TipCalcUserDefaultsUpdateDate 			= @"A3TipCalcUserDefaultsUpda
 NSString *const A3TipCalcUserDefaultsCloudUpdateDate 		= @"A3TipCalcUserDefaultsCloudUpdateDate";
 
 #pragma mark ------ Unit Converter
-NSString *const A3UnitConverterDefaultCurrentUnitTap		= @"A3UnitConverterDefaultCurrentUnitTap";
+NSString *const A3UnitConverterDefaultSelectedCategoryID 	= @"A3UnitConverterDefaultSelectedCategoryID";
 NSString *const A3UnitConverterTableViewUnitValueKey 		= @"A3UnitConverterTableViewUnitValueKey";
 NSString *const A3UnitConverterUserDefaultsUpdateDate 		= @"A3UnitConverterUserDefaultsUpdateDate";
 NSString *const A3UnitConverterUserDefaultsCloudUpdateDate 	= @"A3UnitConverterUserDefaultsCloudUpdateDate";
+NSString *const A3UnitConverterUserDefaultsUnitCategories	= @"A3UnitConverterUserDefaultsUnitCategories";
+NSString *const A3UnitConverterUserDefaultsConvertItems  	= @"A3UnitConverterUserDefaultsConvertItems";
+NSString *const A3UnitConverterUserDefaultsFavorites		= @"A3UnitConverterUserDefaultsFavorites";
 
 #pragma mark ------ Unit Price
 NSString *const A3UnitPriceUserDefaultsCurrencyCode			= @"A3UnitPriceUserDefaultsCurrencyCode";
 NSString *const A3UnitPriceUserDefaultsUpdateDate 			= @"A3UnitPriceUserDefaultsUpdateDate";
 NSString *const A3UnitPriceUserDefaultsCloudUpdateDate 		= @"A3UnitPriceUserDefaultsCloudUpdateDate";
+NSString *const A3UnitPriceUserDefaultsUnitFavorites		= @"A3UnitPriceUserDefaultsUnitFavorites";
 
 #pragma mark ---- Expense List
 NSString *const A3ExpenseListUserDefaultsCurrencyCode 		= @"A3ExpenseListUserDefaultsCurrencyCode";
 NSString *const A3ExpenseListIsAddBudgetCanceledByUser 		= @"A3ExpenseListIsAddBudgetCanceledByUser";
-NSString *const A3ExpenseListIsAddBudgetInitiatedOnce = @"A3ExpenseListIsAddBudgetInitiatedOnce";
+NSString *const A3ExpenseListIsAddBudgetInitiatedOnce 		= @"A3ExpenseListIsAddBudgetInitiatedOnce";
 NSString *const A3ExpenseListUserDefaultsUpdateDate 		= @"A3ExpenseListUserDefaultsUpdateDate";
 NSString *const A3ExpenseListUserDefaultsCloudUpdateDate 	= @"A3ExpenseListUserDefaultsCloudUpdateDate";
 

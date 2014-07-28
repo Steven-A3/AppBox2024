@@ -7,13 +7,9 @@
 //
 
 #import "UnitPriceInfo+extension.h"
-#import "UnitItem.h"
+#import "A3UnitDataManager.h"
 
 @implementation UnitPriceInfo (extension)
-
-- (UnitItem *)unit {
-	return [UnitItem MR_findFirstByAttribute:@"uniqueID" withValue:self.unitID];
-}
 
 - (double)unitPrice {
 	double priceValue = self.price.doubleValue;
@@ -55,19 +51,17 @@
 
 		double price1CnvRate, price2CnvRate;
 
-		UnitItem *price1Unit = [price1 unit];
-		UnitItem *price2Unit = [self unit];
-		if (price1.unit && self.unit) {
-			price1CnvRate = price1Unit.conversionRate.floatValue;
-			price2CnvRate = price2Unit.conversionRate.floatValue;
+		if (price1.unitID && self.unitID) {
+			price1CnvRate = conversionTable[[price1.unitCategoryID unsignedIntegerValue]][[price1.unitID unsignedIntegerValue]];
+			price2CnvRate = conversionTable[[self.unitCategoryID unsignedIntegerValue]][[self.unitID unsignedIntegerValue]];
 		}
-		else if (price1.unit && !self.unit) {
-			price1CnvRate = price1Unit.conversionRate.floatValue;
-			price2CnvRate = price1Unit.conversionRate.floatValue;
+		else if (price1.unitID && !self.unitID) {
+			price1CnvRate = conversionTable[[price1.unitCategoryID unsignedIntegerValue]][[price1.unitID unsignedIntegerValue]];
+			price2CnvRate = conversionTable[[price1.unitCategoryID unsignedIntegerValue]][[price1.unitID unsignedIntegerValue]];
 		}
-		else if (!price1.unit && self.unit) {
-			price1CnvRate = price2Unit.conversionRate.floatValue;
-			price2CnvRate = price2Unit.conversionRate.floatValue;
+		else if (!price1.unitID && self.unitID) {
+			price1CnvRate = conversionTable[[self.unitCategoryID unsignedIntegerValue]][[self.unitID unsignedIntegerValue]];
+			price2CnvRate = conversionTable[[self.unitCategoryID unsignedIntegerValue]][[self.unitID unsignedIntegerValue]];
 		}
 		else {
 			price1CnvRate = 1;
@@ -83,8 +77,7 @@
 
 - (NSString *)unitPriceStringWithFormatter:(NSNumberFormatter *)currencyFormatter {
 	NSString *unitShortName;
-	UnitItem *unitItem = [self unit];
-	unitShortName = self.unit ? NSLocalizedStringFromTable(unitItem.unitName, @"unitShort", nil) : NSLocalizedString(@"None", @"None");
+	unitShortName = self.unitID ? [self unitShortNameForPriceInfo:self] : NSLocalizedString(@"None", @"None");
 	NSString *unitPriceTxt = @"";
 
 	double priceValue = self.price.doubleValue;
@@ -105,7 +98,7 @@
 		double unitPrice = (priceValue - discountValue) / (sizeValue * quantityValue);
 
 		if (unitPrice > 0) {
-			if (IS_IPAD && unitItem) {
+			if (IS_IPAD && self.unitID) {
 				unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [currencyFormatter stringFromNumber:@(unitPrice)], unitShortName];
 			}
 			else {
@@ -113,7 +106,7 @@
 			}
 		}
 		else if (unitPrice == 0) {
-			if (IS_IPAD && unitItem) {
+			if (IS_IPAD && self.unitID) {
 				unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [currencyFormatter stringFromNumber:@(unitPrice)], unitShortName];
 			}
 			else {
@@ -122,7 +115,7 @@
 
 		}
 		else {
-			if (IS_IPAD && unitItem) {
+			if (IS_IPAD && self.unitID) {
 				unitPriceTxt = [NSString stringWithFormat:@"-%@/%@", [currencyFormatter stringFromNumber:@(unitPrice*-1)], unitShortName];
 			}
 			else {
@@ -133,11 +126,18 @@
 	return unitPriceTxt;
 }
 
+- (NSString *)unitShortNameForPriceInfo:(UnitPriceInfo *)priceInfo {
+	NSUInteger categoryID = [priceInfo.unitCategoryID unsignedIntegerValue];
+	NSUInteger unitID = [priceInfo.unitID unsignedIntegerValue];
+
+	return NSLocalizedStringFromTable([NSString stringWithCString:unitNames[categoryID][unitID] encoding:NSUTF8StringEncoding], @"unitShort", nil);
+}
+
 - (NSString *)unitPrice2StringWithPrice1:(UnitPriceInfo *)price1 formatter:(NSNumberFormatter *)currencyFormatter {
 	NSString *unitPriceTxt = @"";
 	NSString *price1UnitShortName, *unitShortName;
-	price1UnitShortName = price1.unit ? NSLocalizedStringFromTable(price1.unit.unitName, @"unitShort", nil) : NSLocalizedString(@"None", @"None");
-	unitShortName = self.unit ? NSLocalizedStringFromTable(self.unit.unitName, @"unitShort", nil) : NSLocalizedString(@"None", @"None");
+	price1UnitShortName = price1.unitID ? [self unitShortNameForPriceInfo:price1] : NSLocalizedString(@"None", @"None");
+	unitShortName = self.unitID ? [self unitShortNameForPriceInfo:self] : NSLocalizedString(@"None", @"None");
 
 	double priceValue = self.price.floatValue;
 	NSInteger sizeValue = (self.size.integerValue <= 0) ? 1:self.size.integerValue;
@@ -157,19 +157,17 @@
 
 		double price1CnvRate, price2CnvRate;
 
-		UnitItem *price1Unit = [price1 unit];
-		UnitItem *price2Unit = [self unit];
-		if (price1Unit && price2Unit) {
-			price1CnvRate = price1Unit.conversionRate.floatValue;
-			price2CnvRate = price2Unit.conversionRate.floatValue;
+		if (price1.unitID && self.unitID) {
+			price1CnvRate = conversionTable[[price1.unitCategoryID unsignedIntegerValue]][[price1.unitID unsignedIntegerValue]];
+			price2CnvRate = conversionTable[[self.unitCategoryID unsignedIntegerValue]][[self.unitID unsignedIntegerValue]];
 		}
-		else if (price1Unit && !price2Unit) {
-			price1CnvRate = price1Unit.conversionRate.floatValue;
-			price2CnvRate = price1Unit.conversionRate.floatValue;
+		else if (price1.unitID && !self.unitID) {
+			price1CnvRate = conversionTable[[price1.unitCategoryID unsignedIntegerValue]][[price1.unitID unsignedIntegerValue]];
+			price2CnvRate = conversionTable[[price1.unitCategoryID unsignedIntegerValue]][[price1.unitID unsignedIntegerValue]];
 		}
-		else if (!price1Unit && price2Unit) {
-			price1CnvRate = price2Unit.conversionRate.floatValue;
-			price2CnvRate = price2Unit.conversionRate.floatValue;
+		else if (!price1.unitID && self.unitID) {
+			price1CnvRate = conversionTable[[self.unitCategoryID unsignedIntegerValue]][[self.unitID unsignedIntegerValue]];
+			price2CnvRate = conversionTable[[self.unitCategoryID unsignedIntegerValue]][[self.unitID unsignedIntegerValue]];
 		}
 		else {
 			price1CnvRate = 1;
@@ -181,9 +179,9 @@
 		double unitPrice = (priceValue - discountValue) / (sizeValue * quantityValue * rate);
 
 		if (unitPrice > 0) {
-			if (IS_IPAD && price2Unit) {
+			if (IS_IPAD && self.unitID) {
 
-				if (![price1Unit.uniqueID isEqualToString:price2Unit.uniqueID]) {
+				if (![price1UnitShortName isEqualToString:unitShortName]) {
 
 					double normalPrice = (priceValue - discountValue) / (sizeValue * quantityValue);
 
@@ -205,7 +203,7 @@
 			}
 		}
 		else if (unitPrice == 0) {
-			if (IS_IPAD && price2Unit) {
+			if (IS_IPAD && self.unitID) {
 				unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [currencyFormatter stringFromNumber:@(unitPrice)], unitShortName];
 			}
 			else {
@@ -214,7 +212,7 @@
 
 		}
 		else {
-			if (IS_IPAD && price2Unit) {
+			if (IS_IPAD && self.unitID) {
 				unitPriceTxt = [NSString stringWithFormat:@"-%@/%@", [currencyFormatter stringFromNumber:@(unitPrice*-1)], unitShortName];
 			}
 			else {

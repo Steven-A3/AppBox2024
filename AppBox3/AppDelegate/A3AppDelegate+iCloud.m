@@ -428,7 +428,7 @@
 	NSDate *localUpdateDate = [userDefaults objectForKey:A3UnitConverterUserDefaultsUpdateDate];
 
 	NSArray *migratingKeys = @[
-			A3UnitConverterDefaultCurrentUnitTap,
+			A3UnitConverterDefaultSelectedCategoryID,
 			A3UnitConverterTableViewUnitValueKey
 	];
 	if (deleteCloud || [self isLocalLaterForLocal:localUpdateDate cloud:cloudUpdateDate]) {

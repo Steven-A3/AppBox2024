@@ -9,15 +9,8 @@
 #import "A3UnitPriceUnitTabBarController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "UnitType.h"
-#import "UnitType+extension.h"
-#import "UnitItem.h"
-#import "UnitPriceFavorite.h"
-#import "UnitPriceFavorite+initialize.h"
 #import "UnitPriceInfo.h"
-#import "A3AppDelegate.h"
-#import "A3NumberKeyboardViewController.h"
-#import "UnitPriceInfo+extension.h"
+#import "A3UnitDataManager.h"
 
 @interface A3UnitPriceUnitTabBarController () <UITabBarControllerDelegate>
 {
@@ -26,8 +19,9 @@
     id<A3UnitSelectViewControllerDelegate> tossedDelegate;
 }
 
-@property (nonatomic, strong) NSMutableArray *unitTypes;
+@property (nonatomic, strong) NSMutableArray *unitCategories;
 @property (nonatomic, strong) UISegmentedControl *selectSegment;
+@property (nonatomic, strong) A3UnitDataManager *dataManager;
 
 @end
 
@@ -37,8 +31,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
-        
         self.delegate = self;
         
         [self setupTapBar];
@@ -74,6 +66,14 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (A3UnitDataManager *)dataManager {
+	if (!_dataManager) {
+		_dataManager = [A3UnitDataManager new];
+	}
+	return _dataManager;
+}
+
+
 - (void)doneButtonAction:(id)button {
 	if (self.selectedViewController.presentedViewController) {
 		[self.selectedViewController.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
@@ -92,15 +92,16 @@
     
     NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
     
-    for (NSInteger i = 0; i < self.unitTypes.count; i++) {
-        UnitType *unitType = _unitTypes[i];
-        
-        A3UnitPriceSelectViewController *viewController = [self unitSelectViewControllerWithUnitType:unitType];
-        
+    for (NSInteger i = 0; i < self.unitCategories.count; i++) {
+        NSDictionary *unitCategory = _unitCategories[i];
+		NSUInteger categoryID = [unitCategory[ID_KEY] unsignedIntegerValue];
+
+		A3UnitPriceSelectViewController *viewController = [self unitSelectViewControllerWithUnitType:categoryID];
+
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-        nav.tabBarItem.image = [UIImage imageNamed:unitType.flagImageName];
-        nav.tabBarItem.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_on", unitType.flagImageName]];
-        nav.tabBarItem.title = NSLocalizedString(unitType.unitTypeName, nil);
+        nav.tabBarItem.image = [UIImage imageNamed:[_dataManager iconNameForID:categoryID ] ];
+        nav.tabBarItem.selectedImage = [UIImage imageNamed:[_dataManager selectedIconNameForID:categoryID ] ];
+        nav.tabBarItem.title = unitCategory[NAME_KEY];
         
         [nav.navigationBar setShadowImage:[UIImage new]];
         [nav.navigationBar setBackgroundImage:[UIImage new]
@@ -113,15 +114,10 @@
     self.viewControllers = viewControllers;
     
     // PriceInfo에 설정된 unitType에 해당한 탭바가 선택되도록 한다.
-    if (self.price.unitID) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", [self.price unit].typeID];
-        NSArray *types = [_unitTypes filteredArrayUsingPredicate:predicate];
-        if (types.count > 0) {
-            UnitType *type = types[0];
-            NSUInteger idx = [_unitTypes indexOfObject:type];
-            
-            self.selectedIndex = idx;
-        }
+    if (self.price.unitCategoryID) {
+		NSUInteger idx = [_unitCategories indexOfObject:self.price.unitCategoryID];
+
+		self.selectedIndex = idx;
     }
 }
 
@@ -167,42 +163,31 @@
     }
 }
 
-- (NSMutableArray *)unitTypes
+- (NSMutableArray *)unitCategories
 {
-    if (!_unitTypes) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitTypeName IN %@", @[@"Area", @"Length", @"Volume", @"Weight"]];
-		NSArray *typesMatchingNames = [UnitType MR_findAllSortedBy:@"unitTypeName" ascending:YES withPredicate:predicate];
+    if (!_unitCategories) {
+		NSArray *allUnitCategories = [_dataManager allCategoriesSortedByLocalizedCategoryName];
+		_unitCategories = [NSMutableArray new];
 
-		_unitTypes = [[NSMutableArray alloc] initWithArray:typesMatchingNames];
+		NSArray *unitPriceUnits = @[@"Area", @"Length", @"Volume", @"Weight"];
+		[allUnitCategories enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+			if ([unitPriceUnits containsObject:[_dataManager categoryNameForID:idx]]) {
+				[_unitCategories addObject:obj];
+			}
+		}];
     }
-    return _unitTypes;
+    return _unitCategories;
 }
 
-- (A3UnitPriceSelectViewController *)unitSelectViewControllerWithUnitType:(UnitType *)uType {
-    
+- (A3UnitPriceSelectViewController *)unitSelectViewControllerWithUnitType:(NSUInteger)categoryID {
 	A3UnitPriceSelectViewController *viewController = [[A3UnitPriceSelectViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = tossedDelegate;
 	viewController.shouldPopViewController = YES;
-    
-    viewController.unitType = uType;
-    viewController.favorites = [NSMutableArray arrayWithArray:[UnitPriceFavorite MR_findByAttribute:@"unitTypeID" withValue:uType.uniqueID andOrderBy:@"order" ascending:YES]];
-    viewController.selectedUnit = _price.unit;
-    NSArray *items = [UnitItem MR_findByAttribute:@"typeID" withValue:uType.uniqueID andOrderBy:@"unitName" ascending:YES];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitName != %@", @"feet inches"];
-    viewController.allData = [NSMutableArray arrayWithArray:[items filteredArrayUsingPredicate:predicate]];
-    
+    viewController.categoryID = categoryID;
+	viewController.currentUnitID = _price.unitID ? [_price.unitID unsignedIntegerValue] : NSNotFound;
+	viewController.dataManager = self.dataManager;
+
 	return viewController;
-}
-
-#pragma mark - UITabBarControllerDelegate
-
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
-{
-    /*
-    UINavigationController *nav = (UINavigationController *)viewController;
-    A3UnitPriceSelectViewController *vc = (A3UnitPriceSelectViewController *)nav.topViewController;
-    vc.isFavoriteMode = isFavoriteMode;
-     */
 }
 
 @end

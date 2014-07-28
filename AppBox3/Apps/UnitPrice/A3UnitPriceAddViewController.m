@@ -7,18 +7,15 @@
 //
 
 #import "A3UnitPriceAddViewController.h"
-
-#import "UnitItem.h"
-#import "UnitType.h"
-#import "UnitPriceFavorite.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "UnitItem+extension.h"
+#import "A3UnitDataManager.h"
 
 @interface A3UnitPriceAddViewController ()
 
-@property (nonatomic, strong) NSMutableArray *addedItems;
+@property (nonatomic, strong) NSMutableArray *allData;
+@property (nonatomic, strong) NSMutableArray *favorites;
 
 @end
 
@@ -37,9 +34,8 @@
 {
     [super viewDidLoad];
     
-    UnitItem *firstItem = _allData[0];
-    self.title = [NSString stringWithFormat:NSLocalizedString(@"%@ Units", @"%@ Units"), NSLocalizedStringFromTable([firstItem type].unitTypeName, @"unit", nil)];
-    
+    self.title = [_dataManager localizedCategoryNameForID:_categoryID];
+
     self.tableView.rowHeight = 44.0;
 	self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
@@ -71,45 +67,19 @@
 	[super viewWillDisappear:animated];
 
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-		FNLOG();
 		[self removeObserver];
 	}
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
-    // 변경 사항 있는지 체크한다
-    NSMutableArray *favoredItems = [[NSMutableArray alloc] init];
-    for (UnitItem *item in _allData) {
-        if ([self isFavoriteItemForUnitItem:item]) {
-            [favoredItems addObject:item];
-        }
-    }
-    
-    NSMutableArray *toAddItems = [[NSMutableArray alloc] init];
-    
-    for (UnitItem *item in _addedItems) {
-        if ([favoredItems containsObject:item]) {
-            [favoredItems removeObject:item];
-        }
-        else {
-            [toAddItems addObject:item];
-        }
-    }
-    
-    // favoredItems에서 남겨진건 remove해야할 item이고, toAddItems 추가해야할 item 들임
-    BOOL isChanged = (toAddItems.count > 0) || (favoredItems.count > 0);
-    
-    if (isChanged) {
-        if ([_delegate respondsToSelector:@selector(addViewController:itemsAdded:itemsRemoved:)]) {
-            [_delegate addViewController:self itemsAdded:toAddItems itemsRemoved:favoredItems];
-        }
-    }
-    else {
-        if ([_delegate respondsToSelector:@selector(willDismissAddViewController)]) {
-            [_delegate willDismissAddViewController];
-        }
-    }
-    
+	NSArray *originalFavorites = [_dataManager unitPriceFavoriteForCategoryID:_categoryID];
+	if (![originalFavorites isEqualToArray:_favorites]) {
+		[_dataManager saveUnitPriceFavorites:_favorites categoryID:_categoryID];
+		if ([_delegate respondsToSelector:@selector(addViewControllerDidUpdateData)]) {
+			[_delegate addViewControllerDidUpdateData];
+		}
+	}
+
 	if (_shouldPopViewController) {
         [self.navigationController popViewControllerAnimated:YES];
     } else {
@@ -123,39 +93,35 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (NSMutableArray *)addedItems
+- (NSMutableArray *)favorites
 {
-    if (!_addedItems) {
-        _addedItems = [[NSMutableArray alloc] init];
-        for (UnitItem *item in _allData) {
-            if ([self isFavoriteItemForUnitItem:item]) {
-                [_addedItems addObject:item];
-            }
-        }
+    if (!_favorites) {
+		_favorites = [_dataManager unitPriceFavoriteForCategoryID:_categoryID];
     }
     
-    return _addedItems;
+    return _favorites;
+}
+
+- (NSMutableArray *)allData {
+	if (!_allData) {
+		_allData = [_dataManager allUnitsSortedByLocalizedNameForCategoryID:_categoryID];
+	}
+	return _allData;
 }
 
 -(void)addButtonClicked:(UIButton *)button
 {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:button.tag inSection:0];
-    UnitItem *item = _allData[indexPath.row];
+    NSDictionary *item = _allData[indexPath.row];
     
-    if ([self.addedItems containsObject:item]) {
-        [_addedItems removeObject:item];
+    if ([self.favorites containsObject:item[ID_KEY]]) {
+        [_favorites removeObject:item[ID_KEY]];
     }
     else {
-        [_addedItems addObject:item];
+        [_favorites addObject:item[ID_KEY]];
     }
     
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-}
-
-- (BOOL)isFavoriteItemForUnitItem:(UnitItem *)item
-{
-    NSArray *result = [UnitPriceFavorite MR_findByAttribute:@"unitItemID" withValue:item.uniqueID];
-	return [result count] > 0;
 }
 
 #pragma mark - Table view data source
@@ -189,12 +155,12 @@
     }
     
     // Configure the cell...
-    UnitItem *item = _allData[indexPath.row];
-    cell.textLabel.text = NSLocalizedStringFromTable(item.unitName, @"unit", nil);
+    NSDictionary *item = _allData[indexPath.row];
+    cell.textLabel.text = item[NAME_KEY];
     
     UIButton *plusBtn = (UIButton *)cell.accessoryView;
     plusBtn.tag = indexPath.row;
-    if ([self.addedItems containsObject:item]) {
+    if ([self.favorites containsObject:item]) {
         plusBtn.selected = YES;
         cell.textLabel.textColor = [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0];
     }
@@ -202,8 +168,7 @@
         plusBtn.selected = NO;
         cell.textLabel.textColor = [UIColor blackColor];
     }
-    
-    
+
     return cell;
 }
 
@@ -213,13 +178,13 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    UnitItem *item = _allData[indexPath.row];
+    NSDictionary *item = _allData[indexPath.row];
     
-    if ([self.addedItems containsObject:item]) {
-        [_addedItems removeObject:item];
+    if ([self.favorites containsObject:item[ID_KEY]]) {
+        [_favorites removeObject:item[ID_KEY]];
     }
     else {
-        [_addedItems addObject:item];
+        [_favorites addObject:item[ID_KEY]];
     }
     
     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

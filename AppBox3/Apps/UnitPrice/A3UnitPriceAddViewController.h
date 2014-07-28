@@ -8,19 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol A3UnitPriceAddViewControllerDelegate <NSObject>
-- (void)addViewController:(UIViewController *)viewController itemsAdded:(NSArray *)addedItems itemsRemoved:(NSArray *)removedItems;
+@class A3UnitDataManager;
 
-@optional
-- (void)willDismissAddViewController;
+@protocol A3UnitPriceAddViewControllerDelegate <NSObject>
+- (void)addViewControllerDidUpdateData;
 
 @end
 
 @interface A3UnitPriceAddViewController : UITableViewController
 
 @property (nonatomic, weak) id<A3UnitPriceAddViewControllerDelegate> delegate;
-@property (nonatomic)		BOOL shouldPopViewController;
-@property (nonatomic, strong) NSMutableArray *allData;
-@property (nonatomic, strong) NSArray *filteredResults;
+@property (nonatomic, assign) NSUInteger categoryID;
+@property (nonatomic, weak) A3UnitDataManager *dataManager;
+@property (nonatomic, assign) BOOL shouldPopViewController;
 
 @end

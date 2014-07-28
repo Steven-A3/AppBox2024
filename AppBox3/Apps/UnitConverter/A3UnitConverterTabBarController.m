@@ -8,21 +8,17 @@
 
 #import "A3UnitConverterTabBarController.h"
 #import "A3UnitConverterConvertTableViewController.h"
-#import "UnitType+extension.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "NSUserDefaults+A3Defaults.h"
 #import "A3UnitConverterMoreTableViewController.h"
-#import "UnitConvertItem.h"
-#import "UnitConvertItem+extension.h"
-#import "UnitFavorite.h"
-#import "UnitFavorite+extension.h"
 #import "A3AppDelegate.h"
+#import "A3UnitDataManager.h"
 
 @interface A3UnitConverterTabBarController ()
 
 @property (nonatomic, strong) UINavigationController *myMoreNavigationController;
-@property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
+@property (nonatomic, strong) A3UnitDataManager *dataManager;
 
 @end
 
@@ -42,18 +38,6 @@
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        //init
-
-		if ([UnitConvertItem MR_countOfEntities] == 0) {
-			[UnitConvertItem reset];
-		}
-		if ([UnitFavorite MR_countOfEntities] == 0) {
-			[UnitFavorite reset];
-		}
-		if (![UnitType MR_countOfEntities]) {
-			[UnitType resetUnitTypeLists];
-		}
-
         self.delegate = self;
 
         [self setupTabBar];
@@ -71,8 +55,16 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 }
 
+- (A3UnitDataManager *)dataManager {
+	if (!_dataManager) {
+		_dataManager = [A3UnitDataManager new];
+	}
+	return _dataManager;
+}
+
 - (void)resetSelectedTab {
-	NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterCurrentUnitTap];
+	NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterSelectedCategory];
+
 
 	if (vcIdx > [self.viewControllers count] - 1) {
 		self.selectedViewController = [self.viewControllers lastObject];
@@ -86,7 +78,7 @@
 }
 
 - (void)cloudStoreDidImport {
-	NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterCurrentUnitTap];
+	NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterSelectedCategory];
 	if (self.selectedIndex != vcIdx) {
 		[self resetSelectedTab];
 	}
@@ -124,13 +116,6 @@
 	}
 }
 
-- (NSMutableArray *)unitTypes {
-	if (nil == _unitTypes) {
-		_unitTypes = [NSMutableArray arrayWithArray:[UnitType MR_findAllSortedBy:@"order" ascending:YES]];
-	}
-	return _unitTypes;
-}
-
 - (BOOL)hidesNavigationBar {
     return YES;
 }
@@ -139,12 +124,14 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    self.title = tabBarController.selectedViewController.tabBarItem.title;
+	self.title = tabBarController.selectedViewController.tabBarItem.title;
 	if (viewController != _myMoreNavigationController) {
 		if ([_myMoreNavigationController.viewControllers count] > 1) {
 			[_myMoreNavigationController popToRootViewControllerAnimated:NO];
 		}
 	}
+	NSUInteger selectedCategoryID = [[self.dataManager allCategoriesSortedByLocalizedCategoryName][self.selectedIndex][ID_KEY] unsignedIntegerValue];
+	[[NSUserDefaults standardUserDefaults] setUnitConverterSelectedCategoryID:selectedCategoryID];
 }
 
 #pragma mark - Added Function
@@ -156,30 +143,31 @@
 	};
 	[[UITabBarItem appearance] setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
 
+	NSArray *unitCategories = [self.dataManager allCategoriesSortedByLocalizedCategoryName];
     NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
 
-	_unitTypes = nil;
 	NSUInteger numberOfItemsOnTapBar = IS_IPHONE ? 4 : 7;
-    for (NSInteger idx = 0; idx < numberOfItemsOnTapBar; idx++) {
-        UnitType *unitType = self.unitTypes[idx];
-		NSString *unitName = NSLocalizedStringFromTable(unitType.unitTypeName, @"unit", nil);
-        
+    for (NSUInteger idx = 0; idx < numberOfItemsOnTapBar; idx++) {
+		NSUInteger categoryID = [unitCategories[idx][ID_KEY] unsignedIntegerValue];
+		NSString *categoryName = [self.dataManager localizedCategoryNameForID:categoryID];
+
         A3UnitConverterConvertTableViewController *converterViewController = [[A3UnitConverterConvertTableViewController alloc] init];
-        converterViewController.unitType = unitType;
-        converterViewController.title = unitName;
+        converterViewController.categoryID = categoryID;
+        converterViewController.title = categoryName;
+		converterViewController.dataManager = _dataManager;
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:converterViewController];
-        navigationController.tabBarItem.image = [UIImage imageNamed:unitType.flagImageName];
-        navigationController.tabBarItem.selectedImage = [UIImage imageNamed:unitType.selectedFlagImageName];
+        navigationController.tabBarItem.image = [UIImage imageNamed:[_dataManager iconNameForID:categoryID]];
+        navigationController.tabBarItem.selectedImage = [UIImage imageNamed:[_dataManager selectedIconNameForID:categoryID]];
         
-        NSArray *unitNameArray = [unitName componentsSeparatedByString:@" "];
+        NSArray *unitNameArray = [categoryName componentsSeparatedByString:@" "];
         if (unitNameArray.count > 1) {
             if (IS_IPHONE) {
                 navigationController.tabBarItem.title = unitNameArray[0];
             }
         }
         else {
-            navigationController.tabBarItem.title = unitName;
+            navigationController.tabBarItem.title = categoryName;
         }
 
 		[viewControllers addObject:navigationController];
@@ -187,6 +175,7 @@
 
 	A3UnitConverterMoreTableViewController *moreViewController = [[A3UnitConverterMoreTableViewController alloc] initWithStyle:UITableViewStylePlain];
 	moreViewController.mainTabBarController = self;
+	moreViewController.dataManager = self.dataManager;
 	_myMoreNavigationController = [[UINavigationController alloc] initWithRootViewController:moreViewController];
 	_myMoreNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore tag:0];
 	[viewControllers addObject:_myMoreNavigationController];
