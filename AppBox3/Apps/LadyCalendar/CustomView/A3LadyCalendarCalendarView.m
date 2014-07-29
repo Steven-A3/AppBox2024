@@ -9,7 +9,6 @@
 #import "A3LadyCalendarCalendarView.h"
 #import "A3DateHelper.h"
 #import "A3LadyCalendarModelManager.h"
-#import "LadyCalendarAccount.h"
 #import "LadyCalendarPeriod.h"
 #import "A3AppDelegate+appearance.h"
 
@@ -354,7 +353,7 @@
 	_lastWeekday = [A3DateHelper weekdayFromDate:lastDate];
 
 	_dateBGHeight = (IS_IPHONE ? 25.0 : 36.0);
-	_periods = [_dataManager periodListInRangeWithMonth:_dateMonth accountID:self.dataManager.currentAccount.uniqueID];
+	_periods = [_dataManager periodListInRangeWithMonth:_dateMonth accountID:self.dataManager.currentAccount[L_ID_KEY]];
 	[_redLines removeAllObjects];
 	[_greenLines removeAllObjects];
 	[_yellowLines removeAllObjects];

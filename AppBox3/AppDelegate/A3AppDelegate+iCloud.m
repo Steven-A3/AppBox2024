@@ -304,7 +304,7 @@
 
 	NSArray *migratingKeys = @[
 			A3LadyCalendarCurrentAccountID,
-			A3LadyCalendarSetting,
+			A3LadyCalendarUserDefaultsSettings,
 			A3LadyCalendarLastViewMonth
 	];
 	if (deleteCloud || [self isLocalLaterForLocal:localUpdateDate cloud:cloudUpdateDate]) {

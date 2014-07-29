@@ -11,7 +11,6 @@
 #import "DaysCounterDate.h"
 #import "A3DaysCounterDefine.h"
 #import "LadyCalendarPeriod.h"
-#import "LadyCalendarAccount.h"
 #import "A3LadyCalendarModelManager.h"
 #import "TranslatorGroup.h"
 #import "TranslatorGroup+manage.h"
@@ -257,16 +256,15 @@ NSString *const kMyGirlsDayHistoryTypeInput				= @"input";
 
 	// Create Default account and get account
 	A3LadyCalendarModelManager *dataManager = [A3LadyCalendarModelManager new];
-	[dataManager prepareAccountInContext:context ];
+	[dataManager prepareAccount];
 
 	NSString *accountID = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID];
-	LadyCalendarAccount *account = [LadyCalendarAccount MR_findFirstByAttribute:@"uniqueID" withValue:accountID inContext:context];
 
 	for (NSArray *item in history) {
 		if ([item[0] isEqualToString:kMyGirlsDayHistoryTypeInput]) {
 			@autoreleasepool {
 				LadyCalendarPeriod *period = [LadyCalendarPeriod MR_createEntityInContext:context];
-				period.accountID = account.uniqueID;
+				period.accountID = accountID;
 				period.startDate = item[1];
 				period.endDate = item[2];
 				period.cycleLength = @([item[3] integerValue]);

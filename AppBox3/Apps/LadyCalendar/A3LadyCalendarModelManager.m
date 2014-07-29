@@ -8,13 +8,11 @@
 
 #import "A3LadyCalendarModelManager.h"
 #import "A3LadyCalendarDefine.h"
-#import "LadyCalendarAccount.h"
 #import "LadyCalendarPeriod.h"
 #import "A3DateHelper.h"
 #import "A3UserDefaults.h"
 #import "A3AppDelegate.h"
 #import "NSDate+calculation.h"
-#import "NSDateFormatter+A3Addition.h"
 #import "NSDate-Utilities.h"
 #import "LadyCalendarPeriod+extension.h"
 #import "A3SyncManager.h"
@@ -22,6 +20,12 @@
 // UserInfo have "changedMonth".
 NSString *const A3NotificationLadyCalendarPeriodDataChanged = @"A3NotificationLadyCalendarPeriodDataChanged";
 NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
+
+NSString *const L_ID_KEY = @"uniqueID";
+NSString *const L_NAME_KEY = @"name";
+NSString *const L_BIRTHDAY_KEY = @"birthDay";
+NSString *const L_NOTES_KEY = @"notes";
+NSString *const L_WatchingDate_KEY = @"watchingDate";
 
 @interface A3LadyCalendarModelManager ()
 
@@ -45,19 +49,14 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 	return [NSString stringWithFormat:@"%@01", NSLocalizedString(@"User", nil)];
 }
 
-- (void)addDefaultAccountInContext:(NSManagedObjectContext *)context {
-	LadyCalendarAccount *account = [self accountForID:DefaultAccountID inContext:context];
-	if( account ) return;
+- (void)addDefaultAccount {
+	NSDictionary *defaultAccount =
+	@{
+			L_ID_KEY : DefaultAccountID,
+			L_NAME_KEY : [self defaultAccountName]
+	};
 
-	account = [LadyCalendarAccount MR_createEntityInContext:context];
-	account.uniqueID = DefaultAccountID;
-	account.name = DefaultAccountName;
-	account.order = [NSNumber numberWithInteger:[self numberOfAccountInContext:context ] +1];
-	// 첫 장비에서 어카운트 생성, 이름 변경, updateDate 설정, 두번째 장비에서 어카운트 생성
-	// 생성시 updateDate 는 설정하지 않음.
-	account.updateDate = nil;
-
-	[context MR_saveToPersistentStoreAndWait];
+	[self saveLadyCalendarObject:@[defaultAccount] forKey:A3LadyCalendarUserDefaultsAccounts];
 }
 
 - (NSDateFormatter *)dateFormatter {
@@ -69,22 +68,12 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 - (void)prepare
 {
-	[self prepareAccountInContext:[NSManagedObjectContext MR_defaultContext] ];
+	[self prepareAccount];
 
     // 기본 설정값을 저장한다.
-    if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting] == nil ){
+    if([[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings] == nil ){
         NSMutableDictionary *item = [self createDefaultSetting];
-		NSDate *updateDate = [NSDate date];
-		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
-        [[NSUserDefaults standardUserDefaults] setObject:item forKey:A3LadyCalendarSetting];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-
-		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-			[store setObject:item forKey:A3LadyCalendarSetting];
-			[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
-			[store synchronize];
-		}
+		[self saveLadyCalendarObject:item forKey:A3LadyCalendarUserDefaultsSettings];
     }
 
     [self savePredictItemBeforeNow];
@@ -92,23 +81,53 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
     [self recalculateDates];
 }
 
-- (void)prepareAccountInContext:(NSManagedObjectContext *)context {
+- (void)prepareAccount {
 	// 기본 계정을 한개 추가한다.
-	if( [self numberOfAccountInContext:context ] < 1 ){
-		[self addDefaultAccountInContext:context ];
+	if([self numberOfAccount] < 1 ){
+		[self addDefaultAccount];
 
 		if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] == nil ) {
-			NSDate *updateDate = [NSDate date];
-			[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
-			[[NSUserDefaults standardUserDefaults] setObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID];
-			[[NSUserDefaults standardUserDefaults] synchronize];
+			[self saveLadyCalendarObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID];
+		}
+	}
+}
 
-			if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-				NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-				[store setObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID];
-				[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
-				[store synchronize];
-			}
+- (void)deleteAccount:(NSDictionary *)account {
+	NSMutableArray *accounts = [[self accountList] mutableCopy];
+	NSUInteger idx = [accounts indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		return [obj[L_ID_KEY] isEqualToString:account[L_ID_KEY]];
+	}];
+	if (idx != NSNotFound) {
+		[accounts removeObjectAtIndex:idx];
+	}
+	[self saveLadyCalendarObject:accounts forKey:A3LadyCalendarUserDefaultsAccounts];
+}
+
+- (void)saveAccount:(NSDictionary *)account {
+	NSMutableArray *accounts = [[self accountList] mutableCopy];
+	NSUInteger idx = [accounts indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		return [obj[L_ID_KEY] isEqualToString:account[L_ID_KEY]];
+	}];
+	if (idx == NSNotFound) {
+		[accounts addObject:account];
+	} else {
+		[accounts replaceObjectAtIndex:idx withObject:account];
+	}
+	[self saveLadyCalendarObject:accounts forKey:A3LadyCalendarUserDefaultsAccounts];
+}
+
+- (void)saveLadyCalendarObject:(id)object forKey:(NSString *)key {
+	if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] == nil ) {
+		NSDate *updateDate = [NSDate date];
+		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
+		[[NSUserDefaults standardUserDefaults] setObject:object forKey:key];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+
+		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
+			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+			[store setObject:object forKey:key];
+			[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
+			[store synchronize];
 		}
 	}
 }
@@ -118,11 +137,11 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
     NSDictionary *setting = [self currentSetting];
 	if( ![[setting objectForKey:SettingItem_AutoRecord] boolValue] ) return;
 
-	LadyCalendarAccount *account = [self currentAccount];
+	NSDictionary *account = [self currentAccount];
 	if( !account ) return;
 
 	// Make predict item until today
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@ && isPredict == %@", account.uniqueID, @NO];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@ && isPredict == %@", account[L_ID_KEY], @NO];
 	if (![LadyCalendarPeriod MR_countOfEntitiesWithPredicate:predicate]) return;
 
 	LadyCalendarPeriod *period = [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:NO];
@@ -150,24 +169,28 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 #pragma mark - account
 
-- (NSInteger)numberOfAccountInContext:(NSManagedObjectContext *)context {
-    return [LadyCalendarAccount MR_countOfEntitiesWithContext:context];
+- (NSInteger)numberOfAccount {
+	NSArray *accounts = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsAccounts];
+    return [accounts count];
 }
 
-- (LadyCalendarAccount *)accountForID:(NSString *)accountID inContext:(NSManagedObjectContext *)context {
-    return [LadyCalendarAccount MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@",accountID] inContext:context];
+- (NSArray *)accountList {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsAccounts];
 }
 
-- (NSArray*)accountListSortedByOrderIsAscending:(BOOL)ascending
-{
-    return [LadyCalendarAccount MR_findAllSortedBy:@"order" ascending:ascending];
-}
-
-- (LadyCalendarAccount*)currentAccount {
+- (NSDictionary *)currentAccount {
 	if (!_currentAccount) {
 		NSString *accountID = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID];
 		NSAssert(accountID != nil, @"Default account ID must be set in initialization.");
-		_currentAccount = [LadyCalendarAccount MR_findFirstByAttribute:@"uniqueID" withValue:accountID];
+		NSArray *accounts = [self accountList];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", L_ID_KEY, accountID];
+		NSArray *filtered = [accounts filteredArrayUsingPredicate:predicate];
+		if ([filtered count]) {
+			_currentAccount = filtered[0];
+		} else {
+			[self prepareAccount];
+			_currentAccount = [self accountList][0];
+		}
 	}
 
 	return _currentAccount;
@@ -182,14 +205,14 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (NSArray *)periodListSortedByStartDateIsAscending:(BOOL)ascending {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@ AND isPredict == %@", _currentAccount.uniqueID, @(NO)];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@ AND isPredict == %@", _currentAccount[L_ID_KEY], @(NO)];
     return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate"
 										ascending:ascending
 									withPredicate:predicate];
 }
 
 - (NSArray *)predictPeriodListSortedByStartDateIsAscending:(BOOL)ascending {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@ AND isPredict == %@", _currentAccount.uniqueID, @(YES)];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@ AND isPredict == %@", _currentAccount[L_ID_KEY], @(YES)];
     return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate"
 										ascending:ascending
 									withPredicate:predicate];
@@ -221,7 +244,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 - (NSArray *)periodListStartsInMonth:(NSDate *)month {
 	NSDate *nextMonth = [month dateByAddingCalendarMonth:1];
 
-	return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"(accountID == %@) AND ((startDate >= %@) AND (startDate < %@))", _currentAccount.uniqueID, month, nextMonth]];
+	return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"(accountID == %@) AND ((startDate >= %@) AND (startDate < %@))", _currentAccount[L_ID_KEY], month, nextMonth]];
 }
 
 - (NSArray *)periodListInRangeWithMonth:(NSDate*)month accountID:(NSString*)accountID
@@ -250,12 +273,12 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (LadyCalendarPeriod *)previousPeriodFromDate:(NSDate *)date {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate < %@) AND (accountID == %@) AND (isPredict == %@)", date, _currentAccount.uniqueID, @(NO)];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate < %@) AND (accountID == %@) AND (isPredict == %@)", date, _currentAccount[L_ID_KEY], @(NO)];
 	return [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:NO];
 }
 
 - (LadyCalendarPeriod *)nextPeriodFromDate:(NSDate *)date {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate > %@) AND (accountID == %@)", date, _currentAccount.uniqueID];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate > %@) AND (accountID == %@)", date, _currentAccount[L_ID_KEY]];
     return [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:YES];
 }
 
@@ -287,7 +310,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 - (NSDictionary*)currentSetting
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting];
+    return [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings];
 }
 
 - (NSString*)stringForAlertType:(NSInteger)alertType
@@ -318,7 +341,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 - (NSInteger)cycleLengthConsideringUserOption {
 	NSArray *periodArray = [self periodListSortedByStartDateIsAscending:YES ];
 
-	NSDictionary *setting = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting];
+	NSDictionary *setting = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings];
 
 	NSInteger cycleOption = [[setting objectForKey:SettingItem_CalculateCycle] integerValue];
 
@@ -338,7 +361,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (void)updatePredictPeriodsWithCount:(NSInteger)numberOfPredicts {
-	LadyCalendarAccount *account = [self currentAccount];
+	NSDictionary *account = [self currentAccount];
 	if( account == nil )
 		return;
 
@@ -347,11 +370,11 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 	if( [periodArray count] < 1 ){
 		// 예상치 저장된 것들이 있다면 다 삭제한다.
-		[self removeAllPredictItemsAccountID:account.uniqueID];
+		[self removeAllPredictItemsAccountID:account[L_ID_KEY]];
 		return;
 	}
 
-	NSDictionary *setting = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting];
+	NSDictionary *setting = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings];
 
 	NSInteger cycleOption = [[setting objectForKey:SettingItem_CalculateCycle] integerValue];
 
@@ -368,7 +391,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 	}
 
 	// 현재 예상목록을 모두 지우고 다시 생성한다.
-	[self removeAllPredictItemsAccountID:account.uniqueID];
+	[self removeAllPredictItemsAccountID:account[L_ID_KEY]];
 
 	LadyCalendarPeriod *lastItem = [periodArray lastObject];
 	NSDate *prevStartDate = lastItem.startDate;
@@ -381,7 +404,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 		newPeriod.endDate = [A3DateHelper dateByAddingDays:4 fromDate:newPeriod.startDate];
 		newPeriod.cycleLength = @(cycleLength);
 		newPeriod.updateDate = [NSDate date];
-		newPeriod.accountID = account.uniqueID;
+		newPeriod.accountID = account[L_ID_KEY];
 		NSDateComponents *cycleLengthComponents = [NSDateComponents new];
 		cycleLengthComponents.day = [newPeriod.cycleLength integerValue] - 1;
 		newPeriod.periodEnds = [[A3AppDelegate instance].calendar dateByAddingComponents:cycleLengthComponents toDate:newPeriod.startDate options:0];
@@ -393,7 +416,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 - (void)recalculateDates
 {
-	NSDictionary *setting = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting];
+	NSDictionary *setting = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings];
 
 	NSInteger periodLength = [[setting objectForKey:SettingItem_ForeCastingPeriods] integerValue];
 	[self updatePredictPeriodsWithCount:periodLength];
@@ -409,13 +432,13 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (NSDate *)startDateForCurrentAccount {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@", self.currentAccount.uniqueID];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@", self.currentAccount[L_ID_KEY]];
 	LadyCalendarPeriod *firstPeriod = [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:YES];
 	return firstPeriod ? firstPeriod.startDate : [NSDate date];
 }
 
 - (NSDate *)endDateForCurrentAccount {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@", self.currentAccount.uniqueID];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@", self.currentAccount[L_ID_KEY]];
 	LadyCalendarPeriod *furthestPeriodEnds = [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"periodEnds" ascending:NO];
 	return furthestPeriodEnds ? furthestPeriodEnds.periodEnds : [NSDate date];
 }
@@ -438,7 +461,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 	if (![predictPeriods count]) return;
 
-	NSDictionary *settings = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting];
+	NSDictionary *settings = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings];
 	A3LadyCalendarSettingAlertType alertType = (A3LadyCalendarSettingAlertType) [settings[SettingItem_AlertType] integerValue];
 
 	if (alertType == AlertType_None) return;

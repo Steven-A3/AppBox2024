@@ -106,7 +106,7 @@
 							   ]
 					   }
 	];
-    self.settingDict = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting]];
+    self.settingDict = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings]];
     if ( self.settingDict == nil ) {
         self.settingDict = [_dataManager createDefaultSetting];
     }
@@ -116,7 +116,7 @@
 }
 
 - (void)cloudStoreDidImport {
-	self.settingDict = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting]];
+	self.settingDict = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings]];
 	[self.tableView reloadData];
 }
 
@@ -364,12 +364,12 @@
 {
 	NSDate *updateDate = [NSDate date];
 	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
-    [[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
+	[[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:self.settingDict forKey:A3LadyCalendarSetting];
+		[store setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings];
 		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
@@ -380,12 +380,12 @@
 - (void)saveSettings {
 	NSDate *updateDate = [NSDate date];
 	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
+	[[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:self.settingDict forKey:A3LadyCalendarSetting];
+		[store setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings];
 		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}

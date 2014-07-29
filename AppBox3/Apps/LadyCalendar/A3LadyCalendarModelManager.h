@@ -8,22 +8,34 @@
 
 extern NSString *const A3NotificationLadyCalendarPeriodDataChanged;
 extern NSString *const A3LadyCalendarChangedDateKey;
+extern NSString *const L_ID_KEY;
+extern NSString *const L_NAME_KEY;
+extern NSString *const L_BIRTHDAY_KEY;
+extern NSString *const L_NOTES_KEY;
+extern NSString *const L_WatchingDate_KEY;
 
-@class LadyCalendarAccount;
 @class LadyCalendarPeriod;
 
 @interface A3LadyCalendarModelManager : NSObject
 
-@property (nonatomic, strong) LadyCalendarAccount *currentAccount;
+@property (nonatomic, strong) NSDictionary *currentAccount;
 
 + (void)alertMessage:(NSString*)message title:(NSString*)title;
 - (NSString *)defaultAccountName;
 - (void)prepare;
-- (void)prepareAccountInContext:(NSManagedObjectContext *)context;
+
+- (void)prepareAccount;
+
+- (void)deleteAccount:(NSDictionary *)account;
+
+- (void)saveAccount:(NSDictionary *)account;
+
 - (void)savePredictItemBeforeNow;
-- (NSInteger)numberOfAccountInContext:(NSManagedObjectContext *)context;
-- (NSArray*)accountListSortedByOrderIsAscending:(BOOL)ascending;
-- (LadyCalendarAccount*)currentAccount;
+
+- (NSInteger)numberOfAccount;
+
+- (NSArray *)accountList;
+- (NSDictionary *)currentAccount;
 - (NSInteger)numberOfPeriodsWithAccountID:(NSString*)accountID;
 - (NSArray *)periodListSortedByStartDateIsAscending:(BOOL)ascending;
 - (NSArray *)predictPeriodListSortedByStartDateIsAscending:(BOOL)ascending;

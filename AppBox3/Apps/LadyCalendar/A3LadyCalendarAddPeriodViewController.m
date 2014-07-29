@@ -12,7 +12,6 @@
 #import "A3LadyCalendarDefine.h"
 #import "A3LadyCalendarModelManager.h"
 #import "LadyCalendarPeriod.h"
-#import "LadyCalendarAccount.h"
 #import "A3DateHelper.h"
 #import "A3NumberKeyboardViewController.h"
 #import "UIColor+A3Addition.h"
@@ -98,11 +97,11 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		_periodItem.cycleLength = @28;
 		_periodItem.isPredict = @NO;
 		_periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
-		_periodItem.accountID = _dataManager.currentAccount.uniqueID;
+		_periodItem.accountID = _dataManager.currentAccount[L_ID_KEY];
         
         NSArray *beforePeriods = [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:NO];
         if (beforePeriods || [beforePeriods count] > 0) {
-            NSDictionary * settingDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting];
+            NSDictionary * settingDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings];
             NSInteger cycleType = [[settingDictionary objectForKey:SettingItem_CalculateCycle] integerValue];
             switch (cycleType) {
                 case CycleLength_SameBeforeCycle:
@@ -685,7 +684,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"Cannot Save Period.\nThe start date must be before the end date.", @"Cannot Save Period.\nThe start date must be before the end date.") title:nil];
         return;
     }
-    else if ( [_dataManager isOverlapStartDate:_periodItem.startDate endDate:_periodItem.endDate accountID:_dataManager.currentAccount.uniqueID periodID:_periodItem.uniqueID] ) {
+    else if ( [_dataManager isOverlapStartDate:_periodItem.startDate endDate:_periodItem.endDate accountID:_dataManager.currentAccount[L_ID_KEY] periodID:_periodItem.uniqueID] ) {
 		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"The new date you entered overlaps with previous dates.", @"The new date you entered overlaps with previous dates.") title:nil];
         return;
     }
@@ -700,9 +699,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 	_periodItem.updateDate = [NSDate date];
 	_periodItem.isPredict = @NO;
-	_dataManager.currentAccount.watchingDate = _periodItem.startDate;
 
-	[[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
+	NSMutableDictionary *mutableAccount = [self.dataManager.currentAccount mutableCopy];
+	mutableAccount[L_WatchingDate_KEY] = _periodItem.startDate;
+	[self.dataManager saveAccount:mutableAccount];
 
 	[_dataManager recalculateDates];
 

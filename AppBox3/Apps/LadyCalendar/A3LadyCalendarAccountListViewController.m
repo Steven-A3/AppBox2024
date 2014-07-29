@@ -9,14 +9,9 @@
 #import "A3LadyCalendarAccountListViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "A3LadyCalendarDefine.h"
 #import "A3LadyCalendarModelManager.h"
-#import "LadyCalendarAccount.h"
 #import "A3LadyCalendarAddAccountViewController.h"
-#import "SFKImage.h"
-#import "A3DateHelper.h"
 #import "A3UserDefaults.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3SyncManager.h"
 
@@ -63,7 +58,7 @@
 {
     [super viewWillAppear:animated];
 
-    self.itemArray = [NSMutableArray arrayWithArray:[_dataManager accountListSortedByOrderIsAscending:YES]];
+    self.itemArray = [NSMutableArray arrayWithArray:[_dataManager accountList]];
     [self.tableView reloadData];
 
 	if (IS_IPAD) {
@@ -101,17 +96,17 @@
 		imageView.tintColor = [[A3AppDelegate instance] themeColor];
 	}
     
-    LadyCalendarAccount *item = [_itemArray objectAtIndex:indexPath.row];
+    NSDictionary *item = [_itemArray objectAtIndex:indexPath.row];
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:12];
     
-    textLabel.text = item.name;
+    textLabel.text = item[L_NAME_KEY];
 
-	if (item.birthDay) {
+	if (item[L_BIRTHDAY_KEY]) {
 		NSDateFormatter *dateFormatter = [NSDateFormatter new];
 		[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-		detailTextLabel.text = [dateFormatter stringFromDate:item.birthDay];
+		detailTextLabel.text = [dateFormatter stringFromDate:item[L_BIRTHDAY_KEY]];
 	} else {
 		detailTextLabel.text = @"";
 	}
@@ -124,7 +119,7 @@
     cell.editingAccessoryView = editButton;
 
     NSString *defaultID = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID];
-    imageView.hidden = ![item.uniqueID isEqualToString:defaultID];
+    imageView.hidden = ![item[L_ID_KEY] isEqualToString:defaultID];
     
     return cell;
 }
@@ -146,12 +141,10 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    LadyCalendarAccount *item = [_itemArray objectAtIndex:fromIndexPath.row];
+    NSDictionary *item = [_itemArray objectAtIndex:fromIndexPath.row];
     [_itemArray removeObjectAtIndex:fromIndexPath.row];
     [_itemArray insertObject:item atIndex:toIndexPath.row];
     
-    [self reorderingItems];
-
 	double delayInSeconds = 0.15;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
@@ -166,17 +159,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	LadyCalendarAccount *account = [_itemArray objectAtIndex:indexPath.row];
+	NSDictionary *account = [_itemArray objectAtIndex:indexPath.row];
 	[_dataManager setCurrentAccount:account];
 
 	NSDate *updateDate = [NSDate date];
 	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:account.uniqueID forKey:A3LadyCalendarCurrentAccountID];
+	[[NSUserDefaults standardUserDefaults] setObject:account[L_ID_KEY] forKey:A3LadyCalendarCurrentAccountID];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:account.uniqueID forKey:A3LadyCalendarCurrentAccountID];
+		[store setObject:account[L_ID_KEY] forKey:A3LadyCalendarCurrentAccountID];
 		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
@@ -188,12 +181,12 @@
 
 - (void)editButtonAction:(UIButton *)button
 {
-	LadyCalendarAccount *item = [_itemArray objectAtIndex:button.tag];
+	NSDictionary *item = [_itemArray objectAtIndex:button.tag];
 	
     A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;
 	viewCtrl.isEditMode = YES;
-	viewCtrl.accountItem = [item MR_inContext:[NSManagedObjectContext MR_rootSavingContext]];
+	viewCtrl.accountItem = item;
     
 	A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
 	navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -222,16 +215,6 @@
 	if (IS_IPAD) {
 		[A3AppDelegate instance].rootViewController.modalPresentedInRightNavigationViewController = navCtrl;
 	}
-}
-
-- (void)reorderingItems
-{
-	for (NSInteger i=0; i < [_itemArray count]; i++) {
-		LadyCalendarAccount *item = [_itemArray objectAtIndex:i];
-		item.order = [NSNumber numberWithInteger:i+1];
-	}
-
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 @end

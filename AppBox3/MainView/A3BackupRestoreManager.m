@@ -237,7 +237,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			A3DaysCounterLastOpenedMainIndex,
 
 			A3LadyCalendarCurrentAccountID,
-			A3LadyCalendarSetting,
+			A3LadyCalendarUserDefaultsSettings,
 			A3LadyCalendarLastViewMonth,
 			A3LadyCalendarUserDefaultsUpdateDate,
 			A3LadyCalendarUserDefaultsCloudUpdateDate,

@@ -13,7 +13,6 @@
 #import "A3LadyCalendarDetailViewController.h"
 #import "A3LadyCalendarDefine.h"
 #import "A3LadyCalendarModelManager.h"
-#import "LadyCalendarAccount.h"
 #import "LadyCalendarPeriod.h"
 #import "A3DateHelper.h"
 #import "A3ColoredCircleView.h"

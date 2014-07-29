@@ -361,7 +361,6 @@
 		685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */; };
 		685F723C16A64ADD004C7222 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685F723B16A64ADD004C7222 /* SystemConfiguration.framework */; };
 		685F723E16A64C91004C7222 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685F723D16A64C91004C7222 /* MobileCoreServices.framework */; };
-		6862375C1974E7C200001DE7 /* LadyCalendarAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 6862375B1974E7C200001DE7 /* LadyCalendarAccount.m */; };
 		6862375F1974E7C300001DE7 /* LadyCalendarPeriod.m in Sources */ = {isa = PBXBuildFile; fileRef = 6862375E1974E7C300001DE7 /* LadyCalendarPeriod.m */; };
 		6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */; };
 		6866956618839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 6866956518839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m */; };
@@ -1502,8 +1501,6 @@
 		685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyTVActionCell.m; path = Apps/Currency/A3CurrencyTVActionCell.m; sourceTree = "<group>"; };
 		685F723B16A64ADD004C7222 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		685F723D16A64C91004C7222 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		6862375A1974E7C200001DE7 /* LadyCalendarAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LadyCalendarAccount.h; sourceTree = "<group>"; };
-		6862375B1974E7C200001DE7 /* LadyCalendarAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LadyCalendarAccount.m; sourceTree = "<group>"; };
 		6862375D1974E7C300001DE7 /* LadyCalendarPeriod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LadyCalendarPeriod.h; sourceTree = "<group>"; };
 		6862375E1974E7C300001DE7 /* LadyCalendarPeriod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LadyCalendarPeriod.m; sourceTree = "<group>"; };
 		6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcons.xcassets; path = "AppBox3/Asset Catalogs/AppIcons.xcassets"; sourceTree = "<group>"; };
@@ -5029,8 +5026,6 @@
 			children = (
 				6862375D1974E7C300001DE7 /* LadyCalendarPeriod.h */,
 				6862375E1974E7C300001DE7 /* LadyCalendarPeriod.m */,
-				6862375A1974E7C200001DE7 /* LadyCalendarAccount.h */,
-				6862375B1974E7C200001DE7 /* LadyCalendarAccount.m */,
 				17D42F730914FF3D6F379281 /* LadyCalendarPeriod+extension.m */,
 				17D42FE39BA656A96951C52E /* LadyCalendarPeriod+extension.h */,
 			);
@@ -5893,7 +5888,6 @@
 				687F928918F69C74006377B9 /* A3MoreTableViewCell.m in Sources */,
 				68F14FB619485E8500159EAD /* A3DaysCounterSlideshowViewController.m in Sources */,
 				687D0D1017CAE519005AB571 /* HolidayData.m in Sources */,
-				6862375C1974E7C200001DE7 /* LadyCalendarAccount.m in Sources */,
 				684D92F218BC1FBC005016F7 /* A3DateCalcDurationViewController.m in Sources */,
 				68B6A44418CEE781004084EF /* MWTapDetectingImageView.m in Sources */,
 				682FDF2C1981CC0400C6C83D /* MagicalRecord+ErrorHandling.m in Sources */,

@@ -109,10 +109,11 @@ extern NSString *const A3DaysCounterUserDefaultsCalendars;
 
 #pragma mark ------ LadyCalendar
 extern NSString *const A3LadyCalendarCurrentAccountID;
-extern NSString *const A3LadyCalendarSetting;
+extern NSString *const A3LadyCalendarUserDefaultsSettings;
 extern NSString *const A3LadyCalendarLastViewMonth;
 extern NSString *const A3LadyCalendarUserDefaultsUpdateDate;
 extern NSString *const A3LadyCalendarUserDefaultsCloudUpdateDate;
+extern NSString *const A3LadyCalendarUserDefaultsAccounts;
 
 #pragma mark ------ Percent Calculator
 extern NSString *const A3PercentCalcUserDefaultsCalculationType;
