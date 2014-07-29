@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "A3DaysCounterEventDetailViewController.h"
 
-@class DaysCounterCalendar;
 @class A3WalletSegmentedControl;
 @class A3DaysCounterModelManager;
 @interface A3DaysCounterEventListViewController : UIViewController
@@ -19,13 +18,13 @@
     BOOL _isNameAscending;
 }
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
-@property (strong, nonatomic) DaysCounterCalendar *calendarItem;
+@property (strong, nonatomic) NSDictionary *calendarItem;
 @property (weak, nonatomic) IBOutlet A3WalletSegmentedControl *sortTypeSegmentCtrl;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 @property (weak, nonatomic) IBOutlet UIButton *addEventButton;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIView *headerSeperatorView;
+@property (weak, nonatomic) IBOutlet UIView *headerSeparatorView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentControlWidthConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerViewTopConst;

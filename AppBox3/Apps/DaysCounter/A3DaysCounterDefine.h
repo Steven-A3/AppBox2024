@@ -29,12 +29,10 @@
 #define CalendarItem_ID                         @"uniqueID"
 #define CalendarItem_Name                       @"calendarName"
 #define CalendarItem_Color                      @"calendarColor"
-#define CalendarItem_ColorID                      @"calendarColorID"
+#define CalendarItem_ColorID                    @"calendarColorID"
 #define CalendarItem_IsShow                     @"isShow"
 #define CalendarItem_Type                       @"calendarType"
 #define CalendarItem_IsDefault                  @"isDefault"
-#define CalendarItem_NumberOfEvents             @"numberOfEvents"
-
 
 #define SystemCalendarID_All                    @"A"
 #define SystemCalendarID_Upcoming               @"U"

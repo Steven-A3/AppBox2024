@@ -8,7 +8,7 @@
             <connections>
                 <outlet property="addEventButton" destination="1yj-jE-SCC" id="AUB-Nq-Vzr"/>
                 <outlet property="bottomToolbar" destination="S3u-7Y-Yjq" id="kzk-zt-0mB"/>
-                <outlet property="headerSeperatorView" destination="uWa-Al-TvQ" id="aji-RM-t5j"/>
+                <outlet property="headerSeparatorView" destination="uWa-Al-TvQ" id="aji-RM-t5j"/>
                 <outlet property="headerView" destination="rtE-zw-6ea" id="XKW-Vo-8PF"/>
                 <outlet property="headerViewSeparatorHeightConst" destination="hIe-Q4-k75" id="j24-M5-hDh"/>
                 <outlet property="searchDisplayController" destination="dwC-tC-hWB" id="hvZ-AF-qKg"/>

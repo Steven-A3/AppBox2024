@@ -23,7 +23,6 @@
 #import "WalletData.h"
 #import "WalletItem+initialize.h"
 #import "A3DaysCounterModelManager.h"
-#import "DaysCounterCalendar.h"
 #import "DaysCounterEvent+extension.h"
 #import "A3AppDelegate.h"
 #import "NSString+conversion.h"
@@ -167,7 +166,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 	A3DaysCounterModelManager *modelManager = [A3DaysCounterModelManager new];
 	[modelManager prepareInContext:context];
 
-	DaysCounterCalendar *daysCounterCalendar = [DaysCounterCalendar MR_findFirstOrderedByAttribute:@"order" ascending:YES inContext:context];
+	NSDictionary *daysCounterCalendar = [modelManager calendars][0];
 	NSFileManager *fileManager = [NSFileManager new];
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
 	for (NSDictionary *v1Item in V1DataArray) {
@@ -175,7 +174,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 			DaysCounterEvent *newEvent = [DaysCounterEvent MR_createEntityInContext:context];
 			newEvent.uniqueID = [[NSUUID UUID] UUIDString];
 			newEvent.updateDate = [NSDate date];
-			newEvent.calendarID = daysCounterCalendar.uniqueID;
+			newEvent.calendarID = daysCounterCalendar[CalendarItem_ID];
 			newEvent.eventName = v1Item[kKeyForDDayTitle];
 			newEvent.isAllDay = @([v1Item[kKeyForDDayType] integerValue] == 0);
 			newEvent.durationOption = @(DurationOption_Day);

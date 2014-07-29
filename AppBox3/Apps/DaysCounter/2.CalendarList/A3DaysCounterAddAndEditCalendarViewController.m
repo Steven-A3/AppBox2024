@@ -12,7 +12,6 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "DaysCounterCalendar.h"
 #import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterAddAndEditCalendarViewController ()
@@ -62,7 +61,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     [self rightBarButtonDoneButton];
     
-    self.colorArray = [_sharedManager calendarColorList];
+    self.colorArray = [_sharedManager calendarColorArray];
     
     if ( !_isEditMode ) {
         self.calendarItem = [_sharedManager itemForNewUserCalendar];
@@ -125,7 +124,8 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (_isEditMode) {
-        if ([DaysCounterCalendar MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendarType == %@", @(CalendarCellType_User)]] == 1) {
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarType == %@", @(CalendarCellType_User)];
+		if ([[[_sharedManager calendars] filteredArrayUsingPredicate:predicate] count] == 1) {
             return 2;
         }
         
@@ -140,8 +140,11 @@
     NSInteger rowCount = 0;
     if ( section == 0 )
         rowCount = 1;
-    else if ( section == 1 )
-        rowCount = [_colorArray count];
+	else if ( section == 1 ) {
+		// 사용자가 선택할 수 있는 색은 9개로 고정. 이하 세가지는 시스템 캘린더용으로 선택용으로 제공하지 않는다.
+		rowCount = 9;
+//		rowCount = [_colorArray count];
+	}
     else if ( section == 2 )
         rowCount = 1;
     return rowCount;
@@ -169,7 +172,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    BOOL hasOneCalendar = [DaysCounterCalendar MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendarType == %@", @(CalendarCellType_User)]] == 1 ? YES : NO;
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarType == %@", @(CalendarCellType_User)];
+    BOOL hasOneCalendar = [[[_sharedManager calendars] filteredArrayUsingPredicate:predicate] count] == 1;
 
     if ( section == ((_isEditMode && !hasOneCalendar) ? 2 : 1) ) {
         return 38;
@@ -347,14 +351,21 @@
     if ( [[_calendarItem objectForKey:CalendarItem_Name] length] < 1 ) {
 		[_calendarItem setObject:NSLocalizedString(@"Untitled", @"Untitled") forKey:CalendarItem_Name];
     }
-    
+
+	NSMutableArray *calendars = [_sharedManager calendars];
     if ( !_isEditMode ) {
-//        [_sharedManager addCalendarItem:_calendarItem colorID:_colorID inContext:[NSManagedObjectContext MR_defaultContext] ];
-		[_sharedManager addUserCalendarToFirstItem:_calendarItem colorID:_colorID inContext:[NSManagedObjectContext MR_defaultContext]];
+		[calendars insertObject:_calendarItem atIndex:0];
+		[_sharedManager saveCalendars:calendars];
     }
     else {
-        [_sharedManager updateCalendarItem:_calendarItem colorID:_colorID];
-    }
+		NSUInteger idx = [calendars indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+			return [obj[CalendarItem_ID] isEqualToString:_calendarItem[CalendarItem_ID]];
+		}];
+		if (![_calendarItem isEqualToDictionary:calendars[idx]]) {
+			calendars[idx] = _calendarItem;
+			[_sharedManager saveCalendars:calendars];
+		}
+	}
     
 	[self dismissSelf];
 }

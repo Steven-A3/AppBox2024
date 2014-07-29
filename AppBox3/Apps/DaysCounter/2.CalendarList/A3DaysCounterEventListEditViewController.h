@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class DaysCounterCalendar;
 @class A3DaysCounterModelManager;
 @interface A3DaysCounterEventListEditViewController : UITableViewController
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
-@property (strong, nonatomic) DaysCounterCalendar *calendarItem;
+@property (strong, nonatomic) NSDictionary *calendarItem;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *trashBarButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *calendarBarButton;
