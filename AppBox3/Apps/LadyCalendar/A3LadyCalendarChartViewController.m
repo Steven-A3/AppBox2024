@@ -261,7 +261,7 @@
     
     if ( indexPath.row == 0 ) {
         textLabel.text = NSLocalizedString(@"CYCLE LENGTH", @"CYCLE LENGTH");
-        chartView.averageColor = [UIColor colorWithRGBRed:76 green:217 blue:100 alpha:255];
+        chartView.averageColor = [UIColor colorWithRGBRed:73 green:191 blue:31 alpha:255];
         chartView.xLabelItems = _cycleXLabelArray;
         chartView.yLabelItems = _cycleYLabelArray;
         chartView.showXLabel = NO;

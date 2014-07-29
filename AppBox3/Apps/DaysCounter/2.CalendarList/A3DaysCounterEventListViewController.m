@@ -536,7 +536,7 @@
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         }
         else {
-            markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+            markLabel.textColor = [UIColor colorWithRed:73.0/255.0 green:191.0/255.0 blue:31.0/255.0 alpha:1.0];
         }
         
         // daysLabel
