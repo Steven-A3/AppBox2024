@@ -15,6 +15,7 @@
 #import "A3MoreTableViewCell.h"
 #import "A3UnitConverterTabBarController.h"
 #import "NSUserDefaults+A3Defaults.h"
+#import "A3UserDefaults.h"
 
 @interface A3UnitConverterMoreTableViewController ()
 
@@ -53,7 +54,10 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 	[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 	self.tableView.showsVerticalScrollIndicator = NO;
 
-    NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterSelectedCategory];
+    NSInteger unitID = [[NSUserDefaults standardUserDefaults] unitConverterSelectedCategory];
+	NSInteger vcIdx = [self.categories indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		return [obj[ID_KEY] unsignedIntegerValue] == unitID;
+	}];
     if (vcIdx > [self.tabBarController.viewControllers count] - 2) {
         NSDictionary *categoryData = self.sections[0][vcIdx - [self.tabBarController.viewControllers count] + 1];
         A3UnitConverterConvertTableViewController *viewController = [[A3UnitConverterConvertTableViewController alloc] init];
@@ -98,6 +102,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 
 - (void)editButtonAction:(UIBarButtonItem *)editButton {
 	A3UnitConverterMoreTableViewController *editingViewController = [[A3UnitConverterMoreTableViewController alloc] init];
+	editingViewController.dataManager = _dataManager;
 	editingViewController.mainTabBarController = self.mainTabBarController;
 	editingViewController.isEditing = YES;
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editingViewController];
@@ -106,7 +111,12 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
+	NSMutableArray *modifiedCategories = [NSMutableArray arrayWithArray:_sections[0]];
+	[modifiedCategories addObjectsFromArray:_sections[1]];
+	[_dataManager saveUnitData:modifiedCategories forKey:A3UnitConverterUserDefaultsUnitCategories];
+
 	[self.mainTabBarController setupTabBar];
+
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -120,7 +130,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 
 - (NSArray *)categories {
 	if (nil == _categories) {
-		_categories = [self.dataManager allCategoriesSortedByLocalizedCategoryName];
+		_categories = [self.dataManager allCategories];
 	}
 	return _categories;
 }

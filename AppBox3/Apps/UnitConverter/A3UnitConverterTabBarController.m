@@ -63,8 +63,11 @@
 }
 
 - (void)resetSelectedTab {
-	NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterSelectedCategory];
-
+	NSInteger unitID = [[NSUserDefaults standardUserDefaults] unitConverterSelectedCategory];
+	NSArray *allCategories = [self.dataManager allCategories];
+	NSInteger vcIdx = [allCategories indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		return [obj[ID_KEY] unsignedIntegerValue] == unitID;
+	}];
 
 	if (vcIdx > [self.viewControllers count] - 1) {
 		self.selectedViewController = [self.viewControllers lastObject];
@@ -130,8 +133,6 @@
 			[_myMoreNavigationController popToRootViewControllerAnimated:NO];
 		}
 	}
-	NSUInteger selectedCategoryID = [[self.dataManager allCategoriesSortedByLocalizedCategoryName][self.selectedIndex][ID_KEY] unsignedIntegerValue];
-	[[NSUserDefaults standardUserDefaults] setUnitConverterSelectedCategoryID:selectedCategoryID];
 }
 
 #pragma mark - Added Function
@@ -143,7 +144,7 @@
 	};
 	[[UITabBarItem appearance] setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
 
-	NSArray *unitCategories = [self.dataManager allCategoriesSortedByLocalizedCategoryName];
+	NSArray *unitCategories = [self.dataManager allCategories];
     NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
 
 	NSUInteger numberOfItemsOnTapBar = IS_IPHONE ? 4 : 7;

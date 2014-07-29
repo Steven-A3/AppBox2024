@@ -762,7 +762,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	if (_isAddingCurrency) {
 			[_favorites addObject:selectedCode];
 			[A3CurrencyDataManager saveFavorites:_favorites];
-			NSInteger insertIdx = [self.favorites count];
+			NSInteger insertIdx = [self.favorites count] - 1;
 			[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:insertIdx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
 	} else {
 		[_favorites replaceObjectAtIndex:_selectedRow withObject:selectedCode];
@@ -906,7 +906,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 #pragma mark -- UITextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-	_calculatorTargetTextField = textField;
     [self dismissMoreMenu];
 
 	NSString *favorite = self.favorites[0];
@@ -958,6 +957,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+	_calculatorTargetTextField = textField;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
 	[self addNumberKeyboardNotificationObservers];
 }

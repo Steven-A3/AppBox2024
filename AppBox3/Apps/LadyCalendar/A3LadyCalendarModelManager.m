@@ -117,18 +117,16 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 }
 
 - (void)saveLadyCalendarObject:(id)object forKey:(NSString *)key {
-	if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] == nil ) {
-		NSDate *updateDate = [NSDate date];
-		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
-		[[NSUserDefaults standardUserDefaults] setObject:object forKey:key];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] setObject:object forKey:key];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
-		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-			[store setObject:object forKey:key];
-			[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
-			[store synchronize];
-		}
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:object forKey:key];
+		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
+		[store synchronize];
 	}
 }
 

@@ -28,6 +28,7 @@
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
+#import "NSUserDefaults+A3Defaults.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
@@ -261,6 +262,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     [self enableControls:YES];
 
     [_fmMoveTableView reloadData];
+
+	[[NSUserDefaults standardUserDefaults] setUnitConverterSelectedCategoryID:_categoryID];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -268,11 +271,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[super viewDidAppear:animated];
 
 	if ([self isMovingToParentViewController]) {
-//		A3UnitConverterTabBarController *tabBar = (A3UnitConverterTabBarController *)self.navigationController.tabBarController;
-//		if ([tabBar.categories containsObject:self.unitType]) {
-//			NSUInteger vcIdx = [tabBar.categories indexOfObject:self.unitType];
-//			[[NSUserDefaults standardUserDefaults] setUnitConverterCurrentUnitTap:vcIdx];
-//		}
         [self setupInstructionView];
 	}
 }

@@ -1332,7 +1332,7 @@ const double conversionTable[][34] = {
  * \param
  * \returns NSArray of NSDictionary having ID_KEY and NAME_KEY
  */
-- (NSArray *)allCategoriesSortedByLocalizedCategoryName {
+- (NSArray *)allCategories {
 	NSArray *categories = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitConverterUserDefaultsUnitCategories];
 	if (!categories) {
 		NSMutableArray *categoriesBeforeSort = [NSMutableArray new];

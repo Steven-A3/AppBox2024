@@ -20,8 +20,9 @@
 #import "A3CurrencyDataManager.h"
 #import "CurrencyRateItem.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "A3CalculatorViewController.h"
 
-@interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, A3SearchViewControllerDelegate>
+@interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIView *line1;
@@ -40,6 +41,7 @@
 @property (nonatomic, copy) NSString *previousValue;
 @property (nonatomic, strong) NSMutableArray *constraints;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
+@property (nonatomic, weak) UITextField *calculatorTargetTextField;
 
 @end
 
@@ -430,12 +432,14 @@
 	self.numberKeyboardViewController = keyboardVC;
 	keyboardVC.textInputTarget = textField;
 	keyboardVC.delegate = self;
+	keyboardVC.keyboardType = A3NumberKeyboardTypeCurrency;
 	textField.inputView = [keyboardVC view];
 	textField.text = @"";
 	return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+	_calculatorTargetTextField = textField;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
@@ -502,6 +506,19 @@
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
 	[keyInputDelegate resignFirstResponder];
+}
+
+#pragma mark - Number Keyboard Calculator Button Notification
+
+- (void)calculatorButtonAction {
+	_calculatorTargetTextField = (UITextField *) self.firstResponder;
+	[self.firstResponder resignFirstResponder];
+	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
+	viewController.delegate = self;
+}
+
+- (void)calculatorDidDismissWithValue:(NSString *)value {
+	[self textFieldDidEndEditing:_calculatorTargetTextField];
 }
 
 #pragma mark - UISegmentedControl event handler

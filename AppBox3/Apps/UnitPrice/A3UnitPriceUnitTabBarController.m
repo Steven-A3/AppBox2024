@@ -166,7 +166,7 @@
 - (NSMutableArray *)unitCategories
 {
     if (!_unitCategories) {
-		NSArray *allUnitCategories = [_dataManager allCategoriesSortedByLocalizedCategoryName];
+		NSArray *allUnitCategories = [_dataManager allCategories];
 		_unitCategories = [NSMutableArray new];
 
 		NSArray *unitPriceUnits = @[@"Area", @"Length", @"Volume", @"Weight"];

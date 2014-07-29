@@ -519,10 +519,6 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
-	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
-	if ([context hasChanges]) {
-		[context rollback];
-	}
 
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -536,7 +532,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         NSInteger totalUser = [self.dataManager numberOfAccount];
 		_accountItem[L_NAME_KEY] = [NSString stringWithFormat:@"%@%02ld", NSLocalizedString(@"User", nil), (long) totalUser + 1];
     }
-	[[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
+
+	[self.dataManager saveAccount:_accountItem];
 
 	[self dismissViewControllerAnimated:YES completion:nil];
 }

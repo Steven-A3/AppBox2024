@@ -12,7 +12,7 @@ extern NSString *const NAME_KEY;
 
 @interface A3UnitDataManager : NSObject
 
-- (NSArray *)allCategoriesSortedByLocalizedCategoryName;
+- (NSArray *)allCategories;
 
 - (NSString *)localizedCategoryNameForID:(NSInteger)index1;
 
@@ -41,6 +41,8 @@ extern NSString *const NAME_KEY;
 - (void)addUnitToConvertItemForUnit:(NSUInteger)unitID categoryID:(NSUInteger)categoryID;
 
 - (BOOL)isFavoriteForUnitID:(NSUInteger)unitID categoryID:(NSUInteger)categoryID;
+
+- (void)saveUnitData:(id)data forKey:(NSString *)key;
 
 - (NSMutableArray *)allUnitPriceFavorites;
 
