@@ -186,7 +186,7 @@
     A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;
 	viewCtrl.isEditMode = YES;
-	viewCtrl.accountItem = item;
+	viewCtrl.accountItem = [item mutableCopy];
     
 	A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
 	navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
