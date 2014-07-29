@@ -149,6 +149,13 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 	}
 }
 
+- (NSDictionary *)category {
+	if (!_category) {
+		_category = [WalletData categoryItemWithID:_item.categoryID];
+	}
+	return _category;
+}
+
 - (NSMutableArray *)photoFieldItems
 {
     if (!_photoFieldItems) {

@@ -319,9 +319,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 	}];
 	_fields[index] = field;
 
-	NSMutableArray *copyOfFields = [_fields mutableCopy];
-	[copyOfFields removeLastObject];
-	_category[W_FIELDS_KEY] = copyOfFields;
+	[self updateCategoryFields:[_fields mutableCopy]];
 
     NSIndexPath *ip = [NSIndexPath indexPathForRow:index inSection:1];
     [self.tableView reloadRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationFade];
@@ -334,13 +332,16 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
         NSUInteger index = [_fields indexOfObject:self.plusItem];
 		[_fields insertObject:field atIndex:index];
 
-		NSMutableArray *copyOfFields = [_fields mutableCopy];
-		[copyOfFields removeLastObject];
-		_category[W_FIELDS_KEY] = copyOfFields;
+		[self updateCategoryFields:[_fields mutableCopy]];
 
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
     }
 	[self setupDoneButtonEnabled];
+}
+
+- (void)updateCategoryFields:(NSMutableArray *)fields {
+	[fields removeLastObject];
+	_category[W_FIELDS_KEY] = fields;
 }
 
 - (void)dismissedViewController:(UIViewController *)viewController
@@ -575,6 +576,8 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 	id fromObject = [_fields objectAtIndex:fromIndexPath.row];
 	[_fields removeObjectAtIndex:fromIndexPath.row];
 	[_fields insertObject:fromObject atIndex:toIndexPath.row];
+
+	[self updateCategoryFields:[_fields mutableCopy]];
 
     [self setupDoneButtonEnabled];
 }

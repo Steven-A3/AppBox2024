@@ -182,7 +182,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 		for (int i=0; i<fieldItems.count; i++) {
 			WalletFieldItem *fieldItem = fieldItems[i];
-			NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];
+			NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:[WalletData categoryItemWithID:item.categoryID]];
 			if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage] && [fieldItem.hasImage boolValue]) {
 				[photoPick addObject:fieldItem];
 			}
@@ -217,7 +217,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 		for (int i=0; i<fieldItems.count; i++) {
 			WalletFieldItem *fieldItem = fieldItems[i];
-			NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];
+			NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:[WalletData categoryItemWithID:item.categoryID]];
 			if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo] && [fieldItem.hasVideo boolValue]) {
 				[photoPick addObject:fieldItem];
 			}
@@ -243,7 +243,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 		for (int i=0; i<fieldItems.count; i++) {
 			WalletFieldItem *fieldItem = fieldItems[i];
-			NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];
+			NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:[WalletData categoryItemWithID:item.categoryID]];
 			if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage] && [fieldItem.hasImage boolValue]) {
 				[photoPick addObject:fieldItem];
 			}
@@ -271,7 +271,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 		for (NSUInteger idx = 0; idx < fieldItems.count; idx++) {
 			WalletFieldItem *fieldItem = fieldItems[idx];
-			NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];
+			NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:[WalletData categoryItemWithID:item.categoryID]];
 			if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo] && [fieldItem.hasVideo boolValue]) {
 				[photoPick addObject:fieldItem];
 			}
@@ -317,7 +317,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 		if (fieldItems.count > 0) {
 			WalletFieldItem *fieldItem = fieldItems[0];
 			NSString *itemValue = @"";
-			NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];
+			NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:[WalletData categoryItemWithID:item.categoryID]];
 			if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeDate]) {
 				NSDateFormatter *df = [[NSDateFormatter alloc] init];
 				[df setDateStyle:NSDateFormatterFullStyle];
