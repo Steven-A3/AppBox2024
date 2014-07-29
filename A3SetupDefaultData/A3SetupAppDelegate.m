@@ -27,6 +27,10 @@
 		if ([fileManager fileExistsAtPath:storePath]) {
 			[fileManager removeItemAtPath:storePath error:&error];
 		}
+		NSManagedObjectModel *model = [NSManagedObjectModel MR_newManagedObjectModelNamed:@"Currency.momd"];
+		[NSManagedObjectModel MR_setDefaultManagedObjectModel:model];
+
+		[MagicalRecord setShouldAutoCreateManagedObjectModel:NO];
 		[MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"AppBoxCacheStore.sqlite"];
 
 		[self initCurrencyData];
@@ -186,9 +190,9 @@
 
 	NSArray *results = [CurrencyRateItem MR_findAll];
 	for (CurrencyRateItem *entity in results) {
-		NSLog(@"Code: %@, Country name %@, symbol = %@, name = %@", entity.currencyCode, entity.flagImageName, entity.currencySymbol, entity.name);
+		NSLog(@"Code: %@, Country name %@, symbol = %@, rate = %.4f", entity.currencyCode, entity.flagImageName, entity.currencySymbol, [entity.rateToUSD floatValue]);
 	}
-
+	NSLog(@"Number of currencies :%ld", (long)[CurrencyRateItem MR_countOfEntities]);
 }
 
 - (NSString *)countryNameForCurrencyCode:(NSString *)code {

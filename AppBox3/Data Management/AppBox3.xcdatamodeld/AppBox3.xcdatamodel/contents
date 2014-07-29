@@ -21,14 +21,6 @@
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
-    <entity name="CurrencyRateItem" representedClassName="CurrencyRateItem" syncable="YES">
-        <attribute name="currencyCode" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="currencySymbol" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="flagImageName" attributeType="String" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="rateToUSD" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="updated" optional="YES" attributeType="Date" syncable="YES"/>
-    </entity>
     <entity name="DaysCounterDate" representedClassName="DaysCounterDate" syncable="YES">
         <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="eventID" optional="YES" attributeType="String" syncable="YES"/>
@@ -308,7 +300,6 @@
         <element name="Calculation" positionX="-783" positionY="-441" width="128" height="105"/>
         <element name="CurrencyHistory" positionX="207" positionY="-549" width="128" height="118"/>
         <element name="CurrencyHistoryItem" positionX="54" positionY="-621" width="128" height="133"/>
-        <element name="CurrencyRateItem" positionX="54" positionY="-504" width="128" height="135"/>
         <element name="DaysCounterDate" positionX="-578" positionY="-646" width="128" height="208"/>
         <element name="DaysCounterEvent" positionX="-236" positionY="-837" width="128" height="300"/>
         <element name="DaysCounterEventLocation" positionX="-81" positionY="-801" width="162" height="208"/>

@@ -23,7 +23,7 @@
 	self = [super init];
 	if (self) {
 		@try {
-			_model = [NSManagedObjectModel mergedModelFromBundles:nil];
+			_model = [NSManagedObjectModel MR_managedObjectModelNamed:@"Currency.momd"];
 			_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:_model];
 			NSURL *cacheStoreURL = [NSURL fileURLWithPath:[[NSFileManager defaultManager] cacheStorePath]];
 			NSDictionary *cacheStoreOptions = @{

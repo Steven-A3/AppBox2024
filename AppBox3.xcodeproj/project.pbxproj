@@ -674,6 +674,8 @@
 		68E213B81986502500A82BBA /* UnitPriceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E213B71986502500A82BBA /* UnitPriceInfo.m */; };
 		68E213BB19865C3100A82BBA /* UnitHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E213BA19865C3100A82BBA /* UnitHistory.m */; };
 		68E213BE1986615B00A82BBA /* UnitHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E213BD1986615B00A82BBA /* UnitHistoryItem.m */; };
+		68E27C831987AD3C00CA873D /* Currency.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68E27C811987AD3C00CA873D /* Currency.xcdatamodeld */; };
+		68E27C841987AF8B00CA873D /* Currency.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68E27C811987AD3C00CA873D /* Currency.xcdatamodeld */; };
 		68E2A5DB18D0AC5200E834D9 /* A3DateMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A5D818D0AC5200E834D9 /* A3DateMainTableViewController.m */; };
 		68E2A64618D0B1FC00E834D9 /* A3ExpenseListAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A60418D0B1FC00E834D9 /* A3ExpenseListAccessoryView.m */; };
 		68E2A64718D0B1FC00E834D9 /* A3ExpenseListAddBudgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A60618D0B1FC00E834D9 /* A3ExpenseListAddBudgetViewController.m */; };
@@ -2121,6 +2123,7 @@
 		68E213BA19865C3100A82BBA /* UnitHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitHistory.m; sourceTree = "<group>"; };
 		68E213BC1986615B00A82BBA /* UnitHistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitHistoryItem.h; sourceTree = "<group>"; };
 		68E213BD1986615B00A82BBA /* UnitHistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitHistoryItem.m; sourceTree = "<group>"; };
+		68E27C821987AD3C00CA873D /* Currency.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Currency.xcdatamodel; sourceTree = "<group>"; };
 		68E2A5D718D0AC5200E834D9 /* A3DateMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateMainTableViewController.h; sourceTree = "<group>"; };
 		68E2A5D818D0AC5200E834D9 /* A3DateMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateMainTableViewController.m; sourceTree = "<group>"; };
 		68E2A60218D0B1FC00E834D9 /* A3CommonColorDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CommonColorDefine.h; sourceTree = "<group>"; };
@@ -3561,6 +3564,7 @@
 				6831EBFA18619CC800BAF15B /* AppBoxCacheStore.sqlite-wal */,
 				6831EC141862055000BAF15B /* A3CacheStoreManager.h */,
 				6831EC151862055000BAF15B /* A3CacheStoreManager.m */,
+				68E27C811987AD3C00CA873D /* Currency.xcdatamodeld */,
 			);
 			path = "Data Management";
 			sourceTree = "<group>";
@@ -5439,6 +5443,7 @@
 				682FDF171981CC0400C6C83D /* NSManagedObject+MagicalFinders.m in Sources */,
 				6823F716186358F500E6E90D /* AFURLSessionManager.m in Sources */,
 				682FDF131981CC0400C6C83D /* NSManagedObject+MagicalAggregation.m in Sources */,
+				68E27C841987AF8B00CA873D /* Currency.xcdatamodeld in Sources */,
 				687484DF197842BE00EA8F74 /* CurrencyHistoryItem.m in Sources */,
 				682FDF151981CC0400C6C83D /* NSManagedObject+MagicalDataImport.m in Sources */,
 				6823F714186358F500E6E90D /* AFURLRequestSerialization.m in Sources */,
@@ -5791,6 +5796,7 @@
 				68E2A66118D0B1FC00E834D9 /* A3PercentCalcHistoryViewController.m in Sources */,
 				684D92BC18BC1EFE005016F7 /* A3BatterStatusChooseColorViewController.m in Sources */,
 				68B6A44C18CEE781004084EF /* PSTCollectionViewCell.m in Sources */,
+				68E27C831987AD3C00CA873D /* Currency.xcdatamodeld in Sources */,
 				680886E41891751B0093FD97 /* SBGradientOverlayLayer.m in Sources */,
 				682FDF061981CC0400C6C83D /* NSAttributeDescription+MagicalDataImport.m in Sources */,
 				68143CFA18E3EC1F00569691 /* A3DateKeyboardViewController.m in Sources */,
@@ -6775,6 +6781,16 @@
 			);
 			currentVersion = 6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */;
 			path = AppBox3.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		68E27C811987AD3C00CA873D /* Currency.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				68E27C821987AD3C00CA873D /* Currency.xcdatamodel */,
+			);
+			currentVersion = 68E27C821987AD3C00CA873D /* Currency.xcdatamodel */;
+			path = Currency.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

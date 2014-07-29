@@ -149,7 +149,7 @@ NSString *const A3UnitConverterUserDefaultsFavorites		= @"A3UnitConverterUserDef
 NSString *const A3UnitPriceUserDefaultsCurrencyCode			= @"A3UnitPriceUserDefaultsCurrencyCode";
 NSString *const A3UnitPriceUserDefaultsUpdateDate 			= @"A3UnitPriceUserDefaultsUpdateDate";
 NSString *const A3UnitPriceUserDefaultsCloudUpdateDate 		= @"A3UnitPriceUserDefaultsCloudUpdateDate";
-NSString *const A3UnitPriceUserDefaultsUnitFavorites		= @"A3UnitPriceUserDefaultsUnitFavorites";
+NSString *const A3UnitPriceUserDefaultsUnitPriceFavorites = @"A3UnitPriceUserDefaultsUnitPriceFavorites";
 
 #pragma mark ------ Wallet
 NSString *const A3WalletUserDefaultsSelectedTab 			= @"A3WalletUserDefaultsSelectedTab";

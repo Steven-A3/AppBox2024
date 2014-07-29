@@ -158,13 +158,11 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			A3MainMenuUserDefaultsAllMenu,
 			A3MainMenuUserDefaultsMaxRecentlyUsed,
 			A3MainMenuUserDefaultsUpdateDate,
-			A3MainMenuUserDefaultsCloudUpdateDate,
 
 			A3LoanCalcUserDefaultShowDownPayment,
 			A3LoanCalcUserDefaultShowExtraPayment,
 			A3LoanCalcUserDefaultShowAdvanced,
 			A3LoanCalcUserDefaultsUpdateDate,
-			A3LoanCalcUserDefaultsCloudUpdateDate,
 			A3LoanCalcUserDefaultsLoanDataKey,
 			A3LoanCalcUserDefaultsLoanDataKey_A,
 			A3LoanCalcUserDefaultsLoanDataKey_B,
@@ -174,19 +172,17 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			A3ExpenseListIsAddBudgetCanceledByUser,
 			A3ExpenseListIsAddBudgetInitiatedOnce,
 			A3ExpenseListUserDefaultsUpdateDate,
-			A3ExpenseListUserDefaultsCloudUpdateDate,
 
 			A3CurrencyUserDefaultsAutoUpdate,
 			A3CurrencyUserDefaultsUseCellularData,
 			A3CurrencyUserDefaultsShowNationalFlag,
 			A3CurrencyUserDefaultsLastInputValue,
 			A3CurrencyUserDefaultsUpdateDate,
-			A3CurrencyUserDefaultsCloudUpdateDate,
+			A3CurrencyUserDefaultsFavorites,
 
 			A3LunarConverterLastInputDateComponents,
 			A3LunarConverterLastInputDateIsLunar,
 			A3LunarConverterUserDefaultsUpdateDate,
-			A3LunarConverterUserDefaultsCloudUpdateDate,
 
 			A3BatteryChosenThemeIndex,
 			A3BatteryChosenTheme,
@@ -194,7 +190,6 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			A3BatteryShowIndex,
 
 			A3CalculatorUserDefaultsUpdateDate,
-			A3CalculatorUserDefaultsCloudUpdateDate,
 			A3CalculatorUserDefaultsSavedLastExpression,
 			A3CalculatorUserDefaultsRadianDegreeState,
 			A3CalculatorUserDefaultsCalculatorMode,
@@ -219,7 +214,6 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			A3ClockUserDefaultsCurrentPage,
 
 			A3DateCalcDefaultsUpdateDate,
-			A3DateCalcDefaultsCloudUpdateDate,
 			A3DateCalcDefaultsIsAddSubMode,
 			A3DateCalcDefaultsFromDate,
 			A3DateCalcDefaultsToDate,
@@ -233,43 +227,44 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 			A3DaysCounterUserDefaultsSlideShowOptions,
 			A3DaysCounterUserDefaultsUpdateDate,
-			A3DaysCounterUserDefaultsCloudUpdateDate,
 			A3DaysCounterLastOpenedMainIndex,
+			A3DaysCounterUserDefaultsCalendars,
 
 			A3LadyCalendarCurrentAccountID,
 			A3LadyCalendarUserDefaultsSettings,
 			A3LadyCalendarLastViewMonth,
 			A3LadyCalendarUserDefaultsUpdateDate,
-			A3LadyCalendarUserDefaultsCloudUpdateDate,
+			A3LadyCalendarUserDefaultsAccounts,
 
 			A3PercentCalcUserDefaultsCalculationType,
 			A3PercentCalcUserDefaultsSavedInputData,
 			A3PercentCalcUserDefaultsUpdateDate,
-			A3PercentCalcUserDefaultsCloudUpdateDate,
 
 			A3SalesCalcUserDefaultsSavedInputDataKey,
 			A3SalesCalcUserDefaultsCurrencyCode,
 			A3SalesCalcUserDefaultsUpdateDate,
-			A3SalesCalcUserDefaultsCloudUpdateDate,
 
 			A3TipCalcUserDefaultsCurrencyCode,
 			A3TipCalcUserDefaultsUpdateDate,
-			A3TipCalcUserDefaultsCloudUpdateDate,
 
 			A3UnitConverterDefaultSelectedCategoryID,
 			A3UnitConverterTableViewUnitValueKey,
 			A3UnitConverterUserDefaultsUpdateDate,
-			A3UnitConverterUserDefaultsCloudUpdateDate,
+			A3UnitConverterUserDefaultsUnitCategories,
+			A3UnitConverterUserDefaultsConvertItems,
+			A3UnitConverterUserDefaultsFavorites,
 
 			A3UnitPriceUserDefaultsCurrencyCode,
 			A3UnitPriceUserDefaultsUpdateDate,
-			A3UnitPriceUserDefaultsCloudUpdateDate,
+			A3UnitPriceUserDefaultsUnitPriceFavorites,
 
 			kHolidayCountriesForCurrentDevice,
 			kHolidayCountryExcludedHolidays,
 			kHolidayCountriesShowLunarDates,
 
-			A3WalletUserDefaultsSelectedTab
+			A3WalletUserDefaultsSelectedTab,
+			A3WalletUserDefaultsCategoryInfo,
+			A3WalletUserDefaultsUpdateDate,
 	];
 }
 

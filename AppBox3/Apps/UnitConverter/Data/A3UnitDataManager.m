@@ -1976,7 +1976,7 @@ const double conversionTable[][34] = {
 #pragma mark - Unit Price Favorites
 
 - (NSMutableArray *)allUnitPriceFavorites {
-	id favoriteData = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsUnitFavorites];
+	id favoriteData = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsUnitPriceFavorites];
 	if (favoriteData) {
 		return [NSMutableArray arrayWithArray:favoriteData];
 	}
@@ -2209,7 +2209,7 @@ const double conversionTable[][34] = {
 	NSMutableArray *allFavorites = [self allUnitPriceFavorites];
 	allFavorites[categoryID] = favorites;
 
-	[self saveUnitPriceData:allFavorites forKey:A3UnitPriceUserDefaultsUnitFavorites];
+	[self saveUnitPriceData:allFavorites forKey:A3UnitPriceUserDefaultsUnitPriceFavorites];
 }
 
 #pragma mark - Save Unit Price Data
