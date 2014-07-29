@@ -238,7 +238,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     double unitPriceB = [unitPriceBItem unitPrice2WithPrice1:unitPriceAItem];
 
 	UIColor *blackColor = [UIColor blackColor];
-    UIColor *greenColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+    UIColor *greenColor = [UIColor colorWithRed:73.0/255.0 green:191.0/255.0 blue:31.0/255.0 alpha:1.0];
 
 	cell.unitPriceALabel.textColor = unitPriceA < unitPriceB ? greenColor : blackColor;
 	cell.unitPriceBLabel.textColor = unitPriceB < unitPriceA ? greenColor : blackColor;

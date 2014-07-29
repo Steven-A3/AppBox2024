@@ -35,7 +35,7 @@ const CGFloat LINE_WITH = 1.0;
     if (self) {
         self.contentLabel = [[UILabel alloc] initWithFrame:frame];
         self.contentLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin;
-        self.contentLabel.textColor = self.isPositive ? [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0] : COLOR_NEGATIVE;
+        self.contentLabel.textColor = self.isPositive ? [UIColor colorWithRed:73.0/255.0 green:191.0/255.0 blue:31.0/255.0 alpha:1.0] : COLOR_NEGATIVE;
         self.contentLabel.textAlignment = NSTextAlignmentCenter;
         self.contentLabel.backgroundColor = [UIColor clearColor];
         self.arrowDirection = arrowDirection;
@@ -113,7 +113,7 @@ const CGFloat LINE_WITH = 1.0;
 {
     _isPositive = isPositive;
     
-    self.contentLabel.textColor = self.isPositive ? [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0] : COLOR_NEGATIVE;
+    self.contentLabel.textColor = self.isPositive ? [UIColor colorWithRed:73.0/255.0 green:191.0/255.0 blue:31.0/255.0 alpha:1.0] : COLOR_NEGATIVE;
     [self setNeedsDisplay];
 }
 
@@ -167,7 +167,7 @@ const CGFloat LINE_WITH = 1.0;
         aLinePath.lineWidth = 1.0;
     }
     
-    self.isPositive? [[UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0] setStroke] : [COLOR_NEGATIVE setStroke];
+    self.isPositive? [[UIColor colorWithRed:73.0/255.0 green:191.0/255.0 blue:31.0/255.0 alpha:1.0] setStroke] : [COLOR_NEGATIVE setStroke];
     [aLinePath stroke];
 }
 

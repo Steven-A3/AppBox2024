@@ -290,7 +290,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		case DetailCellType_Pregnancy:{
 			A3LadyCalendarDetailViewCell *cell = [tableView dequeueReusableCellWithIdentifier:A3LadyCalendarDetailViewCellID forIndexPath:indexPath];
 			cell.titleLabel.text = rowInfo[ItemKey_Title];
-			cell.titleLabel.textColor = [UIColor colorWithRGBRed:44 green:201 blue:144 alpha:255];
+			cell.titleLabel.textColor = [UIColor colorWithRGBRed:27 green:153 blue:107 alpha:255];
 
 			NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:period.startDate];
 			NSDate *pregnantStartDate = [A3DateHelper dateByAddingDays:-4 fromDate:ovulationDate];
@@ -305,7 +305,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		case DetailCellType_Ovulation:{
 			A3LadyCalendarDetailViewCell *cell = [tableView dequeueReusableCellWithIdentifier:A3LadyCalendarDetailViewCellID forIndexPath:indexPath];
 			cell.titleLabel.text = rowInfo[ItemKey_Title];
-			cell.titleLabel.textColor = [UIColor colorWithRGBRed:227 green:186 blue:5 alpha:255];
+			cell.titleLabel.textColor = [UIColor colorWithRGBRed:189 green:139 blue:8 alpha:255];
 
 			NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:period.startDate];
 //			cell.subTitleLabel.text = [ovulationDate a3FullStyleString];
@@ -317,7 +317,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		case DetailCellType_MenstrualPeriod:{
 			A3LadyCalendarDetailViewCell *cell = [tableView dequeueReusableCellWithIdentifier:A3LadyCalendarDetailViewCellID forIndexPath:indexPath];
 			cell.titleLabel.text = rowInfo[ItemKey_Title];
-			cell.titleLabel.textColor = [UIColor colorWithRGBRed:252 green:96 blue:66 alpha:255];
+			cell.titleLabel.textColor = [UIColor colorWithRGBRed:230 green:64 blue:32 alpha:255];
 //			cell.subTitleLabel.text = [NSString stringWithFormat:@"%@ - %@", [period.startDate a3FullStyleString], [period.endDate a3FullStyleString]];
             cell.subTitleLabel.text = [NSString stringWithFormat:@"%@ - %@", [_dateFormatter stringFromDate:period.startDate], [_dateFormatter stringFromDate:period.endDate]];
 
