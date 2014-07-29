@@ -441,6 +441,7 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	_calculatorTargetTextField = textField;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+	[self addNumberKeyboardNotificationObservers];
 }
 
 - (NSNumberFormatter *)currencyFormatterWithCurrencyCode:(NSString *)code {
@@ -455,6 +456,7 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+	[self removeNumberKeyboardNotificationObservers];
 	self.numberKeyboardViewController = nil;
 
     FNLOG(@"%@, %@", textField.text, textField);
@@ -511,13 +513,17 @@
 #pragma mark - Number Keyboard Calculator Button Notification
 
 - (void)calculatorButtonAction {
-	_calculatorTargetTextField = (UITextField *) self.firstResponder;
 	[self.firstResponder resignFirstResponder];
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;
 }
 
 - (void)calculatorDidDismissWithValue:(NSString *)value {
+	NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
+	[numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+
+	_calculatorTargetTextField.text = value;
+
 	[self textFieldDidEndEditing:_calculatorTargetTextField];
 }
 
