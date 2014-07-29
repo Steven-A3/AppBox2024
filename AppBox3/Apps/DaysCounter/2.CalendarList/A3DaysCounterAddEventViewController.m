@@ -18,8 +18,6 @@
 #import "A3DaysCounterSetupCalendarViewController.h"
 #import "A3DaysCounterSetupDurationViewController.h"
 #import "A3DaysCounterSetupLocationViewController.h"
-#import "DaysCounterCalendar.h"
-#import "DaysCounterCalendar+Extension.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
 #import "DaysCounterDate.h"
@@ -127,11 +125,10 @@
 			_eventItem.calendarID = self.calendarID;
         }
         else {
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isShow == YES"];
-			DaysCounterCalendar *anniversaryCalendar = [DaysCounterCalendar MR_findFirstWithPredicate:predicate sortedBy:@"order" ascending:YES];
+			NSDictionary *anniversaryCalendar = [_sharedManager visibleCalendarList][0];
             NSAssert(anniversaryCalendar, @"anniversaryCalendar");
             
-			_eventItem.calendarID = anniversaryCalendar.uniqueID;
+			_eventItem.calendarID = anniversaryCalendar[CalendarItem_ID];
         }
     }
 
@@ -902,10 +899,10 @@
     UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
     UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
     
-	DaysCounterCalendar *calendar = [DaysCounterCalendar MR_findFirstByAttribute:@"uniqueID" withValue:_eventItem.calendarID];
+	NSDictionary *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
     if (calendar) {
-        nameLabel.text = calendar.calendarName;
-        colorImageView.tintColor = [calendar color];
+        nameLabel.text = calendar[CalendarItem_Name];
+        colorImageView.tintColor = [_sharedManager colorForCalendar:calendar];
     }
     else {
         nameLabel.text = @"";
@@ -1265,11 +1262,11 @@
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:calendarIndexPath];
         UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
         UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
-        DaysCounterCalendar *calendar = [DaysCounterCalendar MR_findFirstByAttribute:@"uniqueID" withValue:_eventItem.calendarID];
+        NSDictionary *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
         if (calendar) {
-            nameLabel.text = calendar.calendarName;
-            colorImageView.tintColor = [calendar color];
-        }
+            nameLabel.text = calendar[CalendarItem_Name];
+            colorImageView.tintColor = [_sharedManager colorForCalendar:calendar];
+		}
         else {
             nameLabel.text = @"";
         }
@@ -2264,7 +2261,7 @@
     }
     else if ( actionSheet.tag == ActionTag_DeleteEvent ) {
         if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
-			[_sharedManager removeEvent:_eventItem];
+			[_sharedManager removeEvent:_eventItem inContext:nil ];
 			id <A3DaysCounterAddEventViewControllerDelegate> o = self.delegate;
 			if ([o respondsToSelector:@selector(viewControllerWillDismissByDeletingEvent)]) {
 				[o viewControllerWillDismissByDeletingEvent];

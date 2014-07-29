@@ -10,7 +10,6 @@
 #import "FSVenue.h"
 #import "MagicalRecord.h"
 
-@class DaysCounterCalendar;
 @class DaysCounterEvent;
 @class DaysCounterEventLocation;
 @class DaysCounterDate;
@@ -19,6 +18,10 @@
 
 + (UIImage*)strokeCircleImageSize:(CGSize)size color:(UIColor*)color;
 + (NSString *)thumbnailDirectory;
+
+- (NSMutableArray *)calendars;
+
+- (void)saveCalendars:(NSArray *)calendars;
 
 - (void)prepareInContext:(NSManagedObjectContext *)context;
 - (NSString*)repeatTypeStringFromValue:(NSInteger)repeatType;
@@ -37,30 +40,30 @@
 - (BOOL)addEvent:(DaysCounterEvent *)eventModel;
 
 - (BOOL)modifyEvent:(DaysCounterEvent *)eventItem;
-- (BOOL)removeEvent:(DaysCounterEvent*)eventItem;
 
-- (NSMutableDictionary *)dictionaryFromCalendarEntity:(DaysCounterCalendar*)item;
-- (NSMutableArray*)visibleCalendarList;
-- (NSMutableArray*)allCalendarList;
-- (NSMutableArray*)allUserCalendarList;
+- (BOOL)removeEvent:(DaysCounterEvent *)eventItem inContext:(NSManagedObjectContext *)context;
+
+- (NSArray *)visibleCalendarList;
+- (NSArray *)allUserCalendarList;
 - (NSMutableDictionary *)itemForNewUserCalendar;
 
-- (id)calendarItemByID:(NSString *)calendarId inContext:(NSManagedObjectContext *)context;
+- (id)calendarItemByID:(NSString *)calendarID;
 - (BOOL)removeCalendarItem:(NSMutableDictionary*)item;
 - (BOOL)removeCalendarItemWithID:(NSString*)calendarID;
 
-- (DaysCounterCalendar *)addDefaultCalendarItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context;
-- (DaysCounterCalendar *)addUserCalendarToFirstItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context;
-- (BOOL)updateCalendarItem:(NSMutableDictionary*)item colorID:(NSString *)colorID;
 - (NSInteger)numberOfAllEvents;
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date;
 - (NSInteger)numberOfPastEventsWithDate:(NSDate*)date;
 - (NSInteger)numberOfUserCalendarVisible;
 - (NSInteger)numberOfEventContainedImage;
 - (NSDate*)dateOfLatestEvent;
-- (DaysCounterCalendar*)defaultCalendar;
 
-- (NSArray*)calendarColorList;
+- (UIColor *)colorForCalendar:(NSDictionary *)calendar;
+
+- (NSString *)colorNameForCalendar:(NSDictionary *)calendar;
+
+- (NSArray *)calendarColorArray;
+
 - (NSArray*)allEventsList;
 - (NSArray*)allEventsListContainedImage;
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date;
@@ -83,9 +86,7 @@
 + (BOOL)hasHourMinDurationOption:(NSInteger)durationOption;
 
 #pragma mark - Period
-- (DaysCounterEvent *)closestEventObjectOfCalendar:(DaysCounterCalendar *)calendar;
-- (void)renewEffectiveStartDates:(DaysCounterCalendar *)calendar;
-- (void)renewAllEffectiveStartDates;
+- (DaysCounterEvent *)closestEventObjectOfCalendar:(NSDictionary *)calendar;
 + (NSDate *)effectiveDateForEvent:(DaysCounterEvent *)event basisTime:(NSDate *)now;
 #pragma mark EventModel Dictionary
 - (void)recalculateEventDatesForEvent:(DaysCounterEvent *)event;

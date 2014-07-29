@@ -10,7 +10,6 @@
 #import "A3DaysCounterModelManager.h"
 #import "A3DaysCounterDefine.h"
 #import "A3Formatter.h"
-#import "DaysCounterCalendar.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
 #import "DaysCounterReminder.h"
@@ -27,12 +26,12 @@
 #import "DaysCounterFavorite.h"
 #import "DaysCounterEvent+extension.h"
 #import "NSString+conversion.h"
+#import "A3CurrencyDataManager.h"
+#import "A3SyncManager.h"
 
 extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 @interface A3DaysCounterModelManager ()
-
-@property (strong, nonatomic) NSMutableArray *calendarColorArray;
 
 @end
 
@@ -60,134 +59,117 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return [cacheFolder stringByAppendingPathComponent:A3DaysCounterImageThumbnailDirectory];
 }
 
-- (NSMutableDictionary *)dictionaryFromCalendarEntity:(DaysCounterCalendar*)item
-{
-    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:item.calendarColor];
-	[dict setObject:item.uniqueID forKey:CalendarItem_ID];
-    [dict setObject:color forKey:CalendarItem_Color];
-    [dict setObject:item.calendarColorID forKey:CalendarItem_ColorID];
-    [dict setObject:item.calendarName forKey:CalendarItem_Name];
-    [dict setObject:item.isShow forKey:CalendarItem_IsShow];
-    [dict setObject:[NSNumber numberWithInteger:CalendarCellType_User] forKey:CalendarItem_Type];
-	NSInteger count = [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", item.uniqueID]];
-    [dict setObject:[NSNumber numberWithInteger:count] forKey:CalendarItem_NumberOfEvents];
-    
-    return dict;
-}
+- (NSMutableArray *)calendars {
+	NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterUserDefaultsCalendars];
+	if (data) {
+		NSMutableArray *calendars = [NSPropertyListSerialization propertyListWithData:data
+																			  options:NSPropertyListMutableContainersAndLeaves
+																			   format:NULL
+																				error:NULL];
+		if (calendars) {
+			return [calendars mutableCopy];
+		}
+	}
 
-- (void)checkAndAddSystemCalendarItemsInContext:(NSManagedObjectContext *)context {
-    NSArray *array = @[
-			[NSMutableDictionary dictionaryWithDictionary:
-			@{
-					CalendarItem_ID: SystemCalendarID_All,
-					CalendarItem_Name : @"All",
-					CalendarItem_Color : [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0],
-					CalendarItem_IsShow : @YES,
-					CalendarItem_Type : @(CalendarCellType_System),
-					CalendarItem_IsDefault : @YES
-			}],
-			[NSMutableDictionary dictionaryWithDictionary:
-					@{
-							CalendarItem_ID: SystemCalendarID_Upcoming,
-							CalendarItem_Name : @"Upcoming",
-							CalendarItem_Color : [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0],
-							CalendarItem_IsShow : @YES,
-							CalendarItem_Type : @(CalendarCellType_System),
-							CalendarItem_IsDefault : @YES
-					}],
-			[NSMutableDictionary dictionaryWithDictionary:
-					@{CalendarItem_ID: SystemCalendarID_Past,
-							CalendarItem_Name : @"Past",
-							CalendarItem_Color : [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0],
-							CalendarItem_IsShow : @YES,
-							CalendarItem_Type : @(CalendarCellType_System),
-							CalendarItem_IsDefault : @YES
-					}]
-	];
-    
-    for (NSDictionary *item in array) {
-		[self addDefaultCalendarItem:item colorID:nil inContext:context];
-    }
-    
-	[context MR_saveToPersistentStoreAndWait];
-}
-
-- (void)addDefaultCalendarItemsInContext:(NSManagedObjectContext *)context {
-	NSMutableArray *array = [NSMutableArray arrayWithArray:@[
+	return [NSMutableArray arrayWithArray:@[
 			[NSMutableDictionary dictionaryWithDictionary:@{
 					CalendarItem_ID : @"D4C43175-ED93-4497-91DD-7A9C5DF4E656",
 					CalendarItem_Name : NSLocalizedString(@"Anniversary", @"Anniversary"),
-					CalendarItem_Color : [self.calendarColorArray[0] objectForKey:CalendarItem_Color],
-					CalendarItem_IsShow : [NSNumber numberWithBool:YES],
-					CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],
-					CalendarItem_IsDefault : [NSNumber numberWithBool:YES]
+					CalendarItem_ColorID : @0,
+					CalendarItem_IsShow : @YES,
+					CalendarItem_Type : @(CalendarCellType_User),
+					CalendarItem_IsDefault : @YES
 			}],
 			[NSMutableDictionary dictionaryWithDictionary:@{
 					CalendarItem_ID : @"AA42D868-E781-4F57-AA12-77CF937A24A8",
 					CalendarItem_Name : NSLocalizedString(@"Appointment", @"Appointment"),
-					CalendarItem_Color : [self.calendarColorArray[1] objectForKey:CalendarItem_Color],
-					CalendarItem_IsShow : [NSNumber numberWithBool:YES],
-					CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],
-					CalendarItem_IsDefault : [NSNumber numberWithBool:NO]
+					CalendarItem_ColorID : @1,
+					CalendarItem_IsShow : @YES,
+					CalendarItem_Type : @(CalendarCellType_User),
+					CalendarItem_IsDefault : @NO
 			}],
 			[NSMutableDictionary dictionaryWithDictionary:@{
 					CalendarItem_ID : @"1D6C15F5-591A-49BF-A84A-4A9500C996EC",
 					CalendarItem_Name : NSLocalizedString(@"Birthday", @"Birthday"),
-					CalendarItem_Color : [self.calendarColorArray[2] objectForKey:CalendarItem_Color],
-					CalendarItem_IsShow : [NSNumber numberWithBool:YES],
-					CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],
-					CalendarItem_IsDefault : [NSNumber numberWithBool:NO]
+					CalendarItem_ColorID : @2,
+					CalendarItem_IsShow : @YES,
+					CalendarItem_Type : @(CalendarCellType_User),
+					CalendarItem_IsDefault : @NO
 			}],
 			[NSMutableDictionary dictionaryWithDictionary:@{
 					CalendarItem_ID : @"7E3A9673-39EE-4243-A3E5-F1859E06E66B",
 					CalendarItem_Name : NSLocalizedString(@"Journey", @"Journey"),
-					CalendarItem_Color : [self.calendarColorArray[3] objectForKey:CalendarItem_Color],
-					CalendarItem_IsShow : [NSNumber numberWithBool:YES],
-					CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],
-					CalendarItem_IsDefault : [NSNumber numberWithBool:NO]
+					CalendarItem_ColorID : @3,
+					CalendarItem_IsShow : @YES,
+					CalendarItem_Type : @(CalendarCellType_User),
+					CalendarItem_IsDefault : @NO
 			}],
 			[NSMutableDictionary dictionaryWithDictionary:@{
 					CalendarItem_ID : @"F4B138B7-C60D-4F15-BB42-8A83F8C48040",
 					CalendarItem_Name : NSLocalizedString(@"Holiday", @"Holiday"),
-					CalendarItem_Color : [self.calendarColorArray[4] objectForKey:CalendarItem_Color],
-					CalendarItem_IsShow : [NSNumber numberWithBool:YES],
-					CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],
-					CalendarItem_IsDefault : [NSNumber numberWithBool:NO]
+					CalendarItem_ColorID : @4,
+					CalendarItem_IsShow : @YES,
+					CalendarItem_Type : @(CalendarCellType_User),
+					CalendarItem_IsDefault : @NO
 			}],
 			[NSMutableDictionary dictionaryWithDictionary:@{
 					CalendarItem_ID : @"5A098AFF-3DD2-4264-8E46-E4D04952D750",
 					CalendarItem_Name : NSLocalizedString(@"Work", @"Work"),
-					CalendarItem_Color : [self.calendarColorArray[5] objectForKey:CalendarItem_Color],
-					CalendarItem_IsShow : [NSNumber numberWithBool:YES],
-					CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],
-					CalendarItem_IsDefault : [NSNumber numberWithBool:NO]
+					CalendarItem_ColorID : @5,
+					CalendarItem_IsShow : @YES,
+					CalendarItem_Type : @(CalendarCellType_User),
+					CalendarItem_IsDefault : @NO
+			}],
+			[NSMutableDictionary dictionaryWithDictionary:@{
+					CalendarItem_ID: SystemCalendarID_All,
+					CalendarItem_Name : @"All",
+					CalendarItem_ColorID : @6,
+					CalendarItem_IsShow : @YES,
+					CalendarItem_Type : @(CalendarCellType_System),
+					CalendarItem_IsDefault : @YES
+			}],
+			[NSMutableDictionary dictionaryWithDictionary:@{
+					CalendarItem_ID: SystemCalendarID_Upcoming,
+					CalendarItem_Name : @"Upcoming",
+					CalendarItem_ColorID : @7,
+					CalendarItem_IsShow : @YES,
+					CalendarItem_Type : @(CalendarCellType_System),
+					CalendarItem_IsDefault : @YES
+			}],
+			[NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: SystemCalendarID_Past,
+					CalendarItem_Name : @"Past",
+					CalendarItem_ColorID : @8,
+					CalendarItem_IsShow : @YES,
+					CalendarItem_Type : @(CalendarCellType_System),
+					CalendarItem_IsDefault : @YES
 			}]
 	]];
-    int idx = 0;
-    for (NSMutableDictionary *item in array) {
-        NSMutableDictionary *addItem = [self itemForNewUserCalendar];
-		[addItem setObject:[item objectForKey:CalendarItem_ID] forKey:CalendarItem_ID];
-        [addItem setObject:[item objectForKey:CalendarItem_Name] forKey:CalendarItem_Name];
-        [addItem setObject:[item objectForKey:CalendarItem_Color] forKey:CalendarItem_Color];
-        [addItem setObject:[item objectForKey:CalendarItem_IsShow] forKey:CalendarItem_IsShow];
-        [addItem setObject:[item objectForKey:CalendarItem_IsDefault] forKey:CalendarItem_IsDefault];
-		[self addDefaultCalendarItem:addItem colorID:[self.calendarColorArray[idx] objectForKey:CalendarItem_Name] inContext:context];
-        idx++;
-    }
-    
-    [context MR_saveToPersistentStoreAndWait];
+}
+
+- (void)saveCalendars:(NSArray *)calendars {
+	NSData *data = [NSPropertyListSerialization dataWithPropertyList:calendars
+															  format:NSPropertyListBinaryFormat_v1_0
+															 options:0
+															   error:NULL];
+	[self saveDaysCounterObject:data forKey:A3DaysCounterUserDefaultsCalendars];
+}
+
+- (void)saveDaysCounterObject:(id)object forKey:(NSString *)key {
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:object forKey:key];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DaysCounterUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:object forKey:key];
+		[store setObject:updateDate forKey:A3DaysCounterUserDefaultsCloudUpdateDate];
+		[store synchronize];
+	}
 }
 
 - (void)prepareInContext:(NSManagedObjectContext *)context {
-    NSUInteger count = [DaysCounterCalendar MR_countOfEntitiesWithContext:context];
-
-	if ( count == 0 ) {
-		[self addDefaultCalendarItemsInContext:context];
-    }
-    [self checkAndAddSystemCalendarItemsInContext:context ];
-    
-    // slideshow option create
+    // Create Slide Show Option
     NSDictionary *opt = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterUserDefaultsSlideShowOptions];
     if ( opt == nil || [opt count] < 4 ) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
@@ -199,7 +181,6 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
-
 
 - (NSString*)repeatTypeStringFromValue:(NSInteger)repeatType
 {
@@ -497,30 +478,18 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return YES;
 }
 
-- (NSMutableArray*)visibleCalendarList
+- (NSArray *)visibleCalendarList
 {
-    NSArray *result = [DaysCounterCalendar MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"isShow == %@",[NSNumber numberWithBool:YES]]];
-#ifdef DEBUG
-	for (DaysCounterCalendar *calendar in result) {
-		FNLOG(@"%@, %@", calendar.calendarName, calendar.uniqueID);
-	}
-#endif
-    
-    return [NSMutableArray arrayWithArray:result];
+	NSMutableArray *calendar = [self calendars];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", CalendarItem_IsShow, @YES];
+    return [calendar filteredArrayUsingPredicate:predicate];
 }
 
-- (NSMutableArray*)allCalendarList
+- (NSArray *)allUserCalendarList
 {
-    NSArray *result = [DaysCounterCalendar MR_findAllSortedBy:@"order" ascending:YES];
-    
-    return [NSMutableArray arrayWithArray:result];
-}
-
-- (NSMutableArray*)allUserCalendarList
-{
-    NSArray *result = [DaysCounterCalendar MR_findAllSortedBy:@"order" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"calendarType == %@",[NSNumber numberWithInteger:CalendarCellType_User]]];
-    
-    return [NSMutableArray arrayWithArray:result];
+	NSMutableArray *calendar = [self calendars];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", CalendarItem_Type, @(CalendarCellType_User)];
+    return [calendar filteredArrayUsingPredicate:predicate];
 }
 
 - (NSMutableDictionary *)itemForNewUserCalendar
@@ -531,15 +500,15 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     [item setObject:@"" forKey:CalendarItem_Name];
     [item setObject:@(YES) forKey:CalendarItem_IsShow];
     [item setObject:@(CalendarCellType_User) forKey:CalendarItem_Type];
-    [item setObject:[self.calendarColorArray[6] objectForKey:CalendarItem_Color] forKey:CalendarItem_Color];
-    [item setObject:[self.calendarColorArray[6] objectForKey:CalendarItem_Name] forKey:CalendarItem_ColorID];
-    [item setObject:[NSNumber numberWithInteger:0] forKey:CalendarItem_NumberOfEvents];
-    
+    [item setObject:@6 forKey:CalendarItem_ColorID];
+
     return item;
 }
 
-- (id)calendarItemByID:(NSString *)calendarId inContext:(NSManagedObjectContext *)context {
-    return [DaysCounterCalendar MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@",calendarId] inContext:context];
+- (id)calendarItemByID:(NSString *)calendarID {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", CalendarItem_ID, calendarID];
+	NSArray *filtered = [[self calendars] filteredArrayUsingPredicate:predicate];
+    return [filtered count] ? filtered[0] : nil;
 }
 
 - (BOOL)removeCalendarItem:(NSMutableDictionary*)item
@@ -547,142 +516,104 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return [self removeCalendarItemWithID:[item objectForKey:CalendarItem_ID]];
 }
 
-- (BOOL)removeEvent:(DaysCounterEvent *)event {
+- (BOOL)removeEvent:(DaysCounterEvent *)event inContext:(NSManagedObjectContext *)context {
 	[event deletePhoto];
 
-	[DaysCounterDate MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
-	[DaysCounterEventLocation MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
-	[DaysCounterFavorite MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
-	[DaysCounterReminder MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
+	[DaysCounterDate MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID] inContext:context];
+	[DaysCounterEventLocation MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID] inContext:context];
+	[DaysCounterFavorite MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID] inContext:context];
+	[DaysCounterReminder MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID] inContext:context];
 
-	[event MR_deleteEntity];
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	[event MR_deleteEntityInContext:context];
+    [context MR_saveToPersistentStoreAndWait];
 
 	return YES;
 }
 
 - (BOOL)removeCalendarItemWithID:(NSString*)calendarID
 {
-    DaysCounterCalendar *removeItem = [self calendarItemByID:calendarID inContext:[NSManagedObjectContext MR_defaultContext]];
-    
-    if ( removeItem == nil )
+	NSMutableArray *calendars = [self calendars];
+	NSUInteger idx = [calendars indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+		return [obj[CalendarItem_ID] isEqualToString:calendarID];
+	}];
+
+    if ( idx == NSNotFound )
         return NO;
     
-    NSManagedObjectContext *context = [removeItem managedObjectContext];
+	[calendars removeObjectAtIndex:idx];
+	[self saveCalendars:calendars];
+	
     BOOL retValue;
-	NSString *calendarUniqueID = removeItem.uniqueID;
-    if ( [removeItem MR_deleteEntityInContext:context] ) {
-		NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendarUniqueID]];
-		for (DaysCounterEvent *event in events) {
-			[self removeEvent:event];
-		}
-        
-        [context MR_saveToPersistentStoreAndWait];
-        retValue = YES;
-        
-		[[self class] reloadAlertDateListForLocalNotification];
+	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
+	NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendarID]];
+	for (DaysCounterEvent *event in events) {
+		[self removeEvent:event inContext:nil ];
 	}
-    else {
-        retValue = NO;
-    }
-    
+
+	[context MR_saveToPersistentStoreAndWait];
+	retValue = YES;
+
+	[[self class] reloadAlertDateListForLocalNotification];
+
     return retValue;
 }
 
-- (DaysCounterCalendar *)addDefaultCalendarItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context {
-    if ([self calendarItemByID:[item objectForKey:CalendarItem_ID] inContext:context] )
-        return nil;
-    
-    NSUInteger numberOfItems = [DaysCounterCalendar MR_countOfEntitiesWithContext:context];
-    
-    // save to core data storage
-    DaysCounterCalendar *calendar = [DaysCounterCalendar MR_createEntityInContext:context];
-    calendar.uniqueID = [item objectForKey:CalendarItem_ID];
-	// Default System Calendar 의 updateDate 는 nil 로 설정
-	// 처음 장비에서 캘린더 생성. 첫번째 캘린더에서 캘린더 이름 변경, 두번째 장비에서 디폴트 캘린더 생성, 이때 첫번째 캘린더가 남아야 하는데,
-	// 두번째 캘린더의 updateDate 의 초기값이 생성된 날짜로 기록을 한다면, 두번째 캘린더가 남게 되는 모순이 생김
-	calendar.updateDate = nil;
-    calendar.calendarName = [item objectForKey:CalendarItem_Name];
-    calendar.calendarColor = [NSKeyedArchiver archivedDataWithRootObject:[item objectForKey:CalendarItem_Color]];
-    calendar.isShow = [item objectForKey:CalendarItem_IsShow];
-    calendar.calendarType = [item objectForKey:CalendarItem_Type];
-    calendar.order = [NSNumber numberWithInteger:numberOfItems + 1];
-    calendar.isDefault = [item objectForKey:CalendarItem_IsDefault];
-    calendar.calendarColorID = colorID;
-    
-    [context MR_saveToPersistentStoreAndWait];
-
-	FNLOG(@"%@, %@", calendar.uniqueID, calendar.calendarName);
-    return calendar;
+- (UIColor *)colorForCalendar:(NSDictionary *)calendar {
+	NSUInteger index = [calendar[CalendarItem_ColorID] unsignedIntegerValue];
+	return [self calendarColorArray][index][CalendarItem_Color];
 }
 
-- (DaysCounterCalendar *)addUserCalendarToFirstItem:(NSDictionary *)item colorID:(NSString *)colorID inContext:(NSManagedObjectContext *)context {
-    NSArray *allCalendar = [DaysCounterCalendar MR_findAll];
-    [allCalendar enumerateObjectsUsingBlock:^(DaysCounterCalendar *obj, NSUInteger idx, BOOL *stop) {
-        obj.order = @([obj.order integerValue] + 1);
-    }];
-    
-    // save to core data storage
-    DaysCounterCalendar *calendar = [DaysCounterCalendar MR_createEntityInContext:context];
-    calendar.uniqueID = [item objectForKey:CalendarItem_ID];
-    calendar.updateDate = [NSDate date];
-    calendar.calendarName = [item objectForKey:CalendarItem_Name];
-    calendar.calendarColor = [NSKeyedArchiver archivedDataWithRootObject:[item objectForKey:CalendarItem_Color]];
-    calendar.isShow = [item objectForKey:CalendarItem_IsShow];
-    calendar.calendarType = [item objectForKey:CalendarItem_Type];
-    calendar.order = [NSNumber numberWithInteger:0];
-    calendar.isDefault = [item objectForKey:CalendarItem_IsDefault];
-    calendar.calendarColorID = colorID;
-    
-    [context MR_saveToPersistentStoreAndWait];
-    
-    FNLOG(@"%@, %@", calendar.uniqueID, calendar.calendarName);
-    return calendar;
+- (NSString *)colorNameForCalendar:(NSDictionary *)calendar {
+	NSUInteger index = [calendar[CalendarItem_ColorID] unsignedIntegerValue];
+	return [self calendarColorArray][index][CalendarItem_Name];
 }
 
-- (BOOL)updateCalendarItem:(NSMutableDictionary*)item colorID:(NSString *)colorID
+- (NSArray *)calendarColorArray
 {
-    DaysCounterCalendar *existsCalendar = [self calendarItemByID:[item objectForKey:CalendarItem_ID] inContext:[NSManagedObjectContext MR_defaultContext]];
-
-    if (existsCalendar == nil )
-        return NO;
-
-    existsCalendar.calendarColor = [NSKeyedArchiver archivedDataWithRootObject:[item objectForKey:CalendarItem_Color]];
-    existsCalendar.calendarName = [item objectForKey:CalendarItem_Name];
-    existsCalendar.isShow = [item objectForKey:CalendarItem_IsShow];
-    existsCalendar.calendarColorID = colorID;
-
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    
-    return YES;
-}
-
-- (NSArray*)calendarColorList
-{
-    return [NSArray arrayWithArray:[self calendarColorArray]];
-}
-
-- (NSMutableArray *)calendarColorArray
-{
-    if (!_calendarColorArray) {
-        _calendarColorArray = [NSMutableArray array];
-        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0], CalendarItem_Name : @"Red"}];
-        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:149.0/255.0 blue:0 alpha:1.0], CalendarItem_Name : @"Orange"}];
-        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:204.0/255.0 blue:0 alpha:1.0], CalendarItem_Name : @"Yellow"}];
-        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:99.0/255.0 green:218.0/255.0 blue:56.0/255.0 alpha:1.0], CalendarItem_Name : @"Green" }];
-        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:27.0/255.0 green:173.0/255.0 blue:248.0/255.0 alpha:1.0], CalendarItem_Name : @"Blue" }];
-        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:88.0/255.0 green:86.0/255.0 blue:214.0/255.0 alpha:1.0], CalendarItem_Name : @"Violet" }];
-        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:204.0/255.0 green:115.0/255.0 blue:225.0/255.0 alpha:1.0], CalendarItem_Name : @"Purple" }];
-        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:162.0/255.0 green:132.0/255.0 blue:94.0/255.0 alpha:1.0], CalendarItem_Name : @"Brown" }];
-        [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0], CalendarItem_Name : @"Gray" }];
-    }
-    
-    return _calendarColorArray;
+	return @[
+			@{
+					CalendarItem_Color : [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0],
+					CalendarItem_Name : @"Red"},
+			@{
+					CalendarItem_Color : [UIColor colorWithRed:1.0 green:149.0/255.0 blue:0 alpha:1.0],
+					CalendarItem_Name : @"Orange"},
+			@{
+					CalendarItem_Color : [UIColor colorWithRed:1.0 green:204.0/255.0 blue:0 alpha:1.0],
+					CalendarItem_Name : @"Yellow"},
+			@{
+					CalendarItem_Color : [UIColor colorWithRed:99.0/255.0 green:218.0/255.0 blue:56.0/255.0 alpha:1.0],
+					CalendarItem_Name : @"Green" },
+			@{
+					CalendarItem_Color : [UIColor colorWithRed:27.0/255.0 green:173.0/255.0 blue:248.0/255.0 alpha:1.0],
+					CalendarItem_Name : @"Blue" },
+			@{
+					CalendarItem_Color : [UIColor colorWithRed:88.0/255.0 green:86.0/255.0 blue:214.0/255.0 alpha:1.0],
+					CalendarItem_Name : @"Violet" },
+			@{
+					CalendarItem_Color : [UIColor colorWithRed:204.0/255.0 green:115.0/255.0 blue:225.0/255.0 alpha:1.0],
+					CalendarItem_Name : @"Purple" },
+			@{
+					CalendarItem_Color : [UIColor colorWithRed:162.0/255.0 green:132.0/255.0 blue:94.0/255.0 alpha:1.0],
+					CalendarItem_Name : @"Brown" },
+			@{
+					CalendarItem_Color : [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0],
+					CalendarItem_Name : @"Gray" },
+			@{
+					CalendarItem_Color : [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0],
+					CalendarItem_Name : @"Black" },
+			@{
+					CalendarItem_Color : [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0],
+					CalendarItem_Name : @"Dark Gray" },
+			@{
+					CalendarItem_Color : [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0],
+					CalendarItem_Name : @"Little Dark Gray" },
+	];
 }
 
 - (NSArray *)hiddenCalendars {
-	NSArray *hiddenCalendars = [DaysCounterCalendar MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"isShow == NO"]];
-	return [hiddenCalendars valueForKeyPath:@"@unionOfObjects.uniqueID"];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isShow == NO"];
+	NSArray *hiddenCalendars = [[self calendars] filteredArrayUsingPredicate:predicate];
+	return [hiddenCalendars valueForKeyPath:@"uniqueID"];
 }
 
 - (NSInteger)numberOfAllEvents
@@ -702,7 +633,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSInteger)numberOfUserCalendarVisible
 {
-    return [DaysCounterCalendar MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT uniqueID IN %@ and calendarType == %@", [self hiddenCalendars], [NSNumber numberWithInteger:CalendarCellType_User]]];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@ AND %K == %@", CalendarItem_IsShow, @YES, CalendarItem_Type, @(CalendarCellType_User)];
+	return [[[self calendars] filteredArrayUsingPredicate:predicate] count];
 }
 
 - (NSInteger)numberOfEventContainedImage
@@ -717,25 +649,6 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         return nil;
     
     return event.updateDate;
-}
-
-- (DaysCounterCalendar*)defaultCalendar
-{
-    DaysCounterCalendar *defaultCalendar = [DaysCounterCalendar MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"isDefault == %@", [NSNumber numberWithBool:YES]]];
-    if ( defaultCalendar == nil ) {
-        NSArray *calendarList = [self visibleCalendarList];
-        if ( [calendarList count] < 1 )
-            calendarList = [self allUserCalendarList];
-        if ( [calendarList count] > 0 )
-            defaultCalendar = [calendarList objectAtIndex:0];
-        
-        if ( defaultCalendar ) {
-            defaultCalendar.isDefault = @(YES);
-            [defaultCalendar.managedObjectContext  MR_saveToPersistentStoreAndWait];
-        }
-    }
-    
-    return defaultCalendar;
 }
 
 - (NSArray*)allEventsList
@@ -1261,7 +1174,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 #pragma mark - Period
 
-- (DaysCounterEvent *)closestEventObjectOfCalendar:(DaysCounterCalendar *)calendar
+- (DaysCounterEvent *)closestEventObjectOfCalendar:(NSDictionary *)calendar
 {
     NSDateComponents *nowComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
     nowComp.hour = 0;
@@ -1270,75 +1183,18 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     NSDate *today = [[NSCalendar currentCalendar] dateFromComponents:nowComp];
 
 	// return Today or closest until
-	DaysCounterEvent *closestEvent = [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate >= %@", calendar.uniqueID, today] sortedBy:@"effectiveStartDate" ascending:YES];
+	DaysCounterEvent *closestEvent = [DaysCounterEvent MR_findFirstWithPredicate:
+			[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate >= %@",
+					calendar[CalendarItem_ID],
+					today]
+																		sortedBy:@"effectiveStartDate"
+																	   ascending:YES];
 	if (closestEvent) return closestEvent;
 
 	// return closest since
-	closestEvent =  [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate < %@", calendar.uniqueID, today] sortedBy:@"effectiveStartDate" ascending:YES];
+	closestEvent =  [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate < %@", calendar[CalendarItem_ID], today] sortedBy:@"effectiveStartDate" ascending:YES];
 	if (closestEvent) return closestEvent;
-	return [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendar.uniqueID] sortedBy:@"effectiveStartDate" ascending:YES];
-}
-
-- (void)renewEffectiveStartDates:(DaysCounterCalendar *)calendar
-{
-    NSDate * const now = [NSDate date];
-	NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendar.uniqueID]];
-    [events enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
-        event.effectiveStartDate = [A3DaysCounterModelManager effectiveDateForEvent:event basisTime:now];
-        event.alertDatetime = [A3DaysCounterModelManager effectiveAlertDateForEvent:event];
-        if ([event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970] && event.alertInterval && [event.alertInterval integerValue] > 0) {
-            DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event" withValue:event];
-            if (!reminder) {
-                reminder = [DaysCounterReminder MR_createEntity];
-				reminder.uniqueID = [[NSUUID UUID] UUIDString];
-				reminder.eventID = event.uniqueID;
-				reminder.updateDate = [NSDate date];
-                reminder.startDate = event.effectiveStartDate;
-                reminder.alertDate = event.alertDatetime;
-                reminder.isOn = @(YES);
-                reminder.isUnread = @(YES);
-            }
-            else {
-                if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
-                    reminder.startDate = event.effectiveStartDate;
-                    reminder.alertDate = event.alertDatetime;
-                    reminder.isOn = @(YES);
-                    reminder.isUnread = @(YES);
-                }
-            }
-        }
-    }];
-}
-
-- (void)renewAllEffectiveStartDates
-{
-    NSDate *now = [NSDate date];
-    NSArray *allEvents = [DaysCounterEvent MR_findAll];
-    [allEvents enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
-        event.effectiveStartDate = [A3DaysCounterModelManager effectiveDateForEvent:event basisTime:now];
-        event.alertDatetime = [A3DaysCounterModelManager effectiveAlertDateForEvent:event];
-        if ([event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970] && event.alertInterval && [event.alertInterval integerValue] > 0) {
-            DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event" withValue:event];
-            if (!reminder) {
-                reminder = [DaysCounterReminder MR_createEntity];
-				reminder.uniqueID = [[NSUUID UUID] UUIDString];
-				reminder.eventID = event.uniqueID;
-				reminder.updateDate = [NSDate date];
-                reminder.startDate = event.effectiveStartDate;
-                reminder.alertDate = event.alertDatetime;
-                reminder.isOn = @(YES);
-                reminder.isUnread = @(YES);
-            }
-            else {
-                if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
-                    reminder.startDate = event.effectiveStartDate;
-                    reminder.alertDate = event.alertDatetime;
-                    reminder.isOn = @(YES);
-                    reminder.isUnread = @(YES);
-                }
-            }
-        }
-    }];
+	return [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendar[CalendarItem_ID]] sortedBy:@"effectiveStartDate" ascending:YES];
 }
 
 + (NSDate *)effectiveDateForEvent:(DaysCounterEvent *)event basisTime:(NSDate *)now

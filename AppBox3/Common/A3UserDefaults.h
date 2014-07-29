@@ -105,6 +105,7 @@ extern NSString *const A3DaysCounterUserDefaultsSlideShowOptions;
 extern NSString *const A3DaysCounterUserDefaultsUpdateDate;
 extern NSString *const A3DaysCounterUserDefaultsCloudUpdateDate;
 extern NSString *const A3DaysCounterLastOpenedMainIndex;
+extern NSString *const A3DaysCounterUserDefaultsCalendars;
 
 #pragma mark ------ LadyCalendar
 extern NSString *const A3LadyCalendarCurrentAccountID;

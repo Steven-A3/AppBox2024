@@ -80,6 +80,7 @@ NSString *const A3DaysCounterUserDefaultsUpdateDate			= @"A3DaysCounterUserDefau
 NSString *const A3DaysCounterUserDefaultsCloudUpdateDate	= @"A3DaysCounterUserDefaultsCloudUpdateDate";
 NSString *const A3DaysCounterUserDefaultsSlideShowOptions 	= @"A3DaysCounterUserDefaultsSlideShowOptions";
 NSString *const A3DaysCounterLastOpenedMainIndex			= @"A3DaysCounterLastOpenedMainIndex";
+NSString *const A3DaysCounterUserDefaultsCalendars			= @"A3DaysCounterUserDefaultsCalendars";
 
 #pragma mark ------ Expense List
 NSString *const A3ExpenseListUserDefaultsCurrencyCode 		= @"A3ExpenseListUserDefaultsCurrencyCode";

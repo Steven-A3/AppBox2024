@@ -11,8 +11,6 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
-#import "DaysCounterCalendar.h"
-#import "DaysCounterCalendar+Extension.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterDate.h"
 #import "A3DateHelper.h"
@@ -54,10 +52,10 @@
 {
     [super viewDidLoad];
 
-	if ([_calendarItem.calendarType integerValue] == CalendarCellType_User) {
-		self.title = [NSString stringWithFormat:@"%@", _calendarItem.calendarName];
+	if ([_calendarItem[CalendarItem_ID] integerValue] == CalendarCellType_User) {
+		self.title = [NSString stringWithFormat:@"%@", _calendarItem[CalendarItem_Name]];
 	} else {
-		self.title = [_sharedManager localizedSystemCalendarNameForCalendarID:_calendarItem.uniqueID];
+		self.title = [_sharedManager localizedSystemCalendarNameForCalendarID:_calendarItem[CalendarItem_ID]];
 	}
     UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchAction:)];
     UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
@@ -132,14 +130,14 @@
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:NO];
 
-    if ( [self.changedCalendarID length] > 0 && ![self.changedCalendarID isEqualToString:_calendarItem.uniqueID] ) {
-        self.calendarItem = [_sharedManager calendarItemByID:self.changedCalendarID inContext:[NSManagedObjectContext MR_defaultContext] ];
+    if ( [self.changedCalendarID length] > 0 && ![self.changedCalendarID isEqualToString:_calendarItem[CalendarItem_ID]] ) {
+        self.calendarItem = [_sharedManager calendarItemByID:self.changedCalendarID];
         self.changedCalendarID = nil;
         if ( self.calendarItem ) {
-			if ([_calendarItem.calendarType integerValue] == CalendarCellType_User) {
-				self.title = _calendarItem.calendarName;
+			if ([_calendarItem[CalendarItem_Type] integerValue] == CalendarCellType_User) {
+				self.title = _calendarItem[CalendarItem_Name];
 			} else {
-				self.title = [NSString stringWithFormat:@"%@ %@", _calendarItem.calendarName, NSLocalizedString(@"Events", nil)];
+				self.title = [NSString stringWithFormat:@"%@ %@", _calendarItem[CalendarItem_Name], NSLocalizedString(@"Events", nil)];
 			}
         }
     }
@@ -238,17 +236,17 @@
 
 - (void)loadEventData
 {
-    if ( [_calendarItem.calendarType integerValue] == CalendarCellType_User) {
-        self.sourceArray = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", _calendarItem.uniqueID]];
+    if ( [_calendarItem[CalendarItem_Type] integerValue] == CalendarCellType_User) {
+        self.sourceArray = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", _calendarItem[CalendarItem_ID]]];
     }
     else {
-        if ( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_All] ) {
+        if ( [_calendarItem[CalendarItem_ID] isEqualToString:SystemCalendarID_All] ) {
             self.sourceArray = [_sharedManager allEventsList];
         }
-        else if ( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_Past] ) {
+        else if ( [_calendarItem[CalendarItem_ID] isEqualToString:SystemCalendarID_Past] ) {
             self.sourceArray = [_sharedManager pastEventsListWithDate:[NSDate date]];
         }
-        else if ( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_Upcoming] ) {
+        else if ( [_calendarItem[CalendarItem_ID] isEqualToString:SystemCalendarID_Upcoming] ) {
             self.sourceArray = [_sharedManager upcomingEventsListWithDate:[NSDate date]];
         }
     }
@@ -568,8 +566,8 @@
         // RoundDateView
         if ( _sortType == EventSortType_Date ) {
             UIImageView *favoriteView = (UIImageView*)[cell viewWithTag:15];
-			DaysCounterCalendar *calendar = [DaysCounterCalendar MR_findFirstByAttribute:@"uniqueID" withValue:item.calendarID];
-			roundDateView.fillColor = [calendar color];
+			NSDictionary *calendar = [_sharedManager calendarItemByID:item.calendarID];
+			roundDateView.fillColor = [_sharedManager colorForCalendar:calendar];
             roundDateView.strokColor = roundDateView.fillColor;
             roundDateView.date = item.effectiveStartDate;
             roundDateView.hidden = NO;
@@ -651,7 +649,7 @@
             item = [items objectAtIndex:indexPath.row];
         }
         
-        [_sharedManager removeEvent:item];
+        [_sharedManager removeEvent:item inContext:nil ];
 		[self loadEventData];
         [self.tableView setEditing:YES];
         [self.tableView setEditing:NO];
@@ -910,9 +908,9 @@
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
-    viewCtrl.calendarID = _calendarItem.uniqueID;
+    viewCtrl.calendarID = _calendarItem[CalendarItem_ID];
     viewCtrl.sharedManager = _sharedManager;
-    if ([_calendarItem.calendarType integerValue] == CalendarCellType_System) {
+    if ([_calendarItem[CalendarItem_Type] integerValue] == CalendarCellType_System) {
         viewCtrl.calendarID = nil;
     }
 

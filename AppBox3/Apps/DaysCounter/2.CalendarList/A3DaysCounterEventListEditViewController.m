@@ -12,14 +12,9 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
-#import "DaysCounterCalendar.h"
 #import "DaysCounterEvent.h"
 #import "A3DaysCounterEventChangeCalendarViewController.h"
-#import "A3AppDelegate+appearance.h"
-#import "UIImage+JHExtension.h"
 #import "A3DateHelper.h"
-#import "DaysCounterEvent.h"
-#import "DaysCounterDate.h"
 #import "UIImage+imageWithColor.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
@@ -57,7 +52,7 @@
 {
     [super viewDidLoad];
 
-    self.title = _calendarItem.calendarName;
+    self.title = _calendarItem[CalendarItem_Name];
     [self rightBarButtonDoneButton];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Delete All", @"Delete All") style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllAction:)];
     self.toolbarItems = _bottomToolbar.items;
@@ -125,17 +120,17 @@
 
 - (void)reloadTableView
 {
-    if( [_calendarItem.calendarType integerValue] == CalendarCellType_User ) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", _calendarItem.uniqueID];
+    if( [_calendarItem[CalendarItem_Type] integerValue] == CalendarCellType_User ) {
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", _calendarItem[CalendarItem_ID]];
 		NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:predicate];
         self.itemArray = [NSMutableArray arrayWithArray:events];
 	} else {
         NSArray *sourceArray = nil;
-        if( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_All] )
+        if( [_calendarItem[CalendarItem_ID] isEqualToString:SystemCalendarID_All] )
             sourceArray = [_sharedManager allEventsList];
-        else if( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_Past] )
+        else if( [_calendarItem[CalendarItem_ID] isEqualToString:SystemCalendarID_Past] )
             sourceArray = [_sharedManager pastEventsListWithDate:[NSDate date]];
-        else if( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_Upcoming] )
+        else if( [_calendarItem[CalendarItem_ID] isEqualToString:SystemCalendarID_Upcoming] )
             sourceArray = [_sharedManager upcomingEventsListWithDate:[NSDate date]];
         self.itemArray = [NSMutableArray arrayWithArray:sourceArray];
     }

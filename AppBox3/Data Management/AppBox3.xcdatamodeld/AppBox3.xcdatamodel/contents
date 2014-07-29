@@ -29,17 +29,6 @@
         <attribute name="rateToUSD" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="updated" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
-    <entity name="DaysCounterCalendar" representedClassName="DaysCounterCalendar" syncable="YES">
-        <attribute name="calendarColor" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="calendarColorID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="calendarName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="calendarType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="isDefault" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isShow" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
-        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-    </entity>
     <entity name="DaysCounterDate" representedClassName="DaysCounterDate" syncable="YES">
         <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="eventID" optional="YES" attributeType="String" syncable="YES"/>
@@ -334,7 +323,6 @@
         <element name="CurrencyHistory" positionX="207" positionY="-549" width="128" height="118"/>
         <element name="CurrencyHistoryItem" positionX="54" positionY="-621" width="128" height="133"/>
         <element name="CurrencyRateItem" positionX="54" positionY="-504" width="128" height="135"/>
-        <element name="DaysCounterCalendar" positionX="-414" positionY="-837" width="128" height="180"/>
         <element name="DaysCounterDate" positionX="-578" positionY="-646" width="128" height="208"/>
         <element name="DaysCounterEvent" positionX="-236" positionY="-837" width="128" height="300"/>
         <element name="DaysCounterEventLocation" positionX="-81" positionY="-801" width="162" height="208"/>

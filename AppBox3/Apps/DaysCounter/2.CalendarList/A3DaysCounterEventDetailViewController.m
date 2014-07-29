@@ -12,8 +12,6 @@
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "A3DateHelper.h"
-#import "DaysCounterCalendar.h"
-#import "DaysCounterCalendar+Extension.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
 #import "DaysCounterDate.h"
@@ -286,11 +284,11 @@
             UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
             UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
             
-            DaysCounterCalendar *calendar = [DaysCounterCalendar MR_findFirstByAttribute:@"uniqueID" withValue:_eventItem.calendarID];
+            NSDictionary *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
             if ( calendar ) {
-                nameLabel.text = calendar.calendarName;
-                colorImageView.tintColor = [calendar color];
-            }
+                nameLabel.text = calendar[CalendarItem_Name];
+                colorImageView.tintColor = [_sharedManager colorForCalendar:calendar];
+			}
             else {
                 nameLabel.text = @"";
             }
@@ -1715,7 +1713,7 @@ EXIT_FUCTION:
             [self.delegate willDeleteEvent:self.eventItem daysCounterEventDetailViewController:self];
         }
         else {
-            [_sharedManager removeEvent:_eventItem];
+            [_sharedManager removeEvent:_eventItem inContext:nil ];
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
@@ -1729,7 +1727,7 @@ EXIT_FUCTION:
             [self.delegate willDeleteEvent:self.eventItem daysCounterEventDetailViewController:self];
         }
         else {
-            [_sharedManager removeEvent:_eventItem];
+            [_sharedManager removeEvent:_eventItem inContext:nil ];
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
