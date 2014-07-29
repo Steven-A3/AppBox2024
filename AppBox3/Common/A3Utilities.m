@@ -59,6 +59,7 @@ NSString *const A3CurrencyUserDefaultsShowNationalFlag 		= @"A3CurrencyUserDefau
 NSString *const A3CurrencyUserDefaultsLastInputValue 		= @"A3CurrencyUserDefaultsLastInputValue";
 NSString *const A3CurrencyUserDefaultsUpdateDate 			= @"A3CurrencyUserDefaultsUpdateDate";
 NSString *const A3CurrencyUserDefaultsCloudUpdateDate 		= @"A3CurrencyUserDefaultsCloudUpdateDate";
+NSString *const A3CurrencyUserDefaultsFavorites				= @"A3CurrencyUserDefaultsFavorites";
 
 #pragma mark ------ Date Calculator
 NSString *const A3DateCalcDefaultsUpdateDate 				= @"A3DateCalcDefaultsUpdateDate";

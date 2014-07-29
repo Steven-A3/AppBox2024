@@ -6,15 +6,6 @@
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
-    <entity name="CurrencyFavorite" representedClassName="CurrencyFavorite" syncable="YES">
-        <attribute name="currencyCode" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="currencySymbol" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="flagImageName" attributeType="String" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="order" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-    </entity>
     <entity name="CurrencyHistory" representedClassName="CurrencyHistory" syncable="YES">
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -340,7 +331,6 @@
     </entity>
     <elements>
         <element name="Calculation" positionX="-783" positionY="-441" width="128" height="105"/>
-        <element name="CurrencyFavorite" positionX="358" positionY="-549" width="128" height="150"/>
         <element name="CurrencyHistory" positionX="207" positionY="-549" width="128" height="118"/>
         <element name="CurrencyHistoryItem" positionX="54" positionY="-621" width="128" height="133"/>
         <element name="CurrencyRateItem" positionX="54" positionY="-504" width="128" height="135"/>

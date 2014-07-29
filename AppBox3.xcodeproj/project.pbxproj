@@ -390,7 +390,6 @@
 		6874847B19780EFC00EA8F74 /* UnitPriceInfo+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874847A19780EFC00EA8F74 /* UnitPriceInfo+extension.m */; };
 		687484901978256A00EA8F74 /* UnitHistory+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874848F1978256A00EA8F74 /* UnitHistory+extension.m */; };
 		6874849319783B7800EA8F74 /* CurrencyRateItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849219783B7800EA8F74 /* CurrencyRateItem.m */; };
-		6874849619783B7900EA8F74 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849519783B7900EA8F74 /* CurrencyFavorite.m */; };
 		6874849919783B7900EA8F74 /* CurrencyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849819783B7900EA8F74 /* CurrencyHistory.m */; };
 		6874849C19783B7900EA8F74 /* CurrencyHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849B19783B7900EA8F74 /* CurrencyHistoryItem.m */; };
 		6874849F19783B9C00EA8F74 /* DaysCounterCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849E19783B9C00EA8F74 /* DaysCounterCalendar.m */; };
@@ -411,7 +410,6 @@
 		687484DE19783C3000EA8F74 /* TipCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484DD19783C3000EA8F74 /* TipCalcHistory.m */; };
 		687484DF197842BE00EA8F74 /* CurrencyHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849B19783B7900EA8F74 /* CurrencyHistoryItem.m */; };
 		687484E0197842BE00EA8F74 /* CurrencyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849819783B7900EA8F74 /* CurrencyHistory.m */; };
-		687484E1197842BE00EA8F74 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849519783B7900EA8F74 /* CurrencyFavorite.m */; };
 		687484E2197842BE00EA8F74 /* CurrencyRateItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849219783B7800EA8F74 /* CurrencyRateItem.m */; };
 		6874892F1854430C008972CC /* NationalFlags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6874892E1854430C008972CC /* NationalFlags.xcassets */; };
 		687489301854477F008972CC /* NationalFlags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6874892E1854430C008972CC /* NationalFlags.xcassets */; };
@@ -1556,8 +1554,6 @@
 		6874848F1978256A00EA8F74 /* UnitHistory+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UnitHistory+extension.m"; sourceTree = "<group>"; };
 		6874849119783B7800EA8F74 /* CurrencyRateItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyRateItem.h; path = Apps/Currency/Model/CurrencyRateItem.h; sourceTree = "<group>"; };
 		6874849219783B7800EA8F74 /* CurrencyRateItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyRateItem.m; path = Apps/Currency/Model/CurrencyRateItem.m; sourceTree = "<group>"; };
-		6874849419783B7900EA8F74 /* CurrencyFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyFavorite.h; path = Apps/Currency/Model/CurrencyFavorite.h; sourceTree = "<group>"; };
-		6874849519783B7900EA8F74 /* CurrencyFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyFavorite.m; path = Apps/Currency/Model/CurrencyFavorite.m; sourceTree = "<group>"; };
 		6874849719783B7900EA8F74 /* CurrencyHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyHistory.h; path = Apps/Currency/Model/CurrencyHistory.h; sourceTree = "<group>"; };
 		6874849819783B7900EA8F74 /* CurrencyHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyHistory.m; path = Apps/Currency/Model/CurrencyHistory.m; sourceTree = "<group>"; };
 		6874849A19783B7900EA8F74 /* CurrencyHistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyHistoryItem.h; path = Apps/Currency/Model/CurrencyHistoryItem.h; sourceTree = "<group>"; };
@@ -3149,8 +3145,6 @@
 				6874849B19783B7900EA8F74 /* CurrencyHistoryItem.m */,
 				6874849719783B7900EA8F74 /* CurrencyHistory.h */,
 				6874849819783B7900EA8F74 /* CurrencyHistory.m */,
-				6874849419783B7900EA8F74 /* CurrencyFavorite.h */,
-				6874849519783B7900EA8F74 /* CurrencyFavorite.m */,
 				6874849119783B7800EA8F74 /* CurrencyRateItem.h */,
 				6874849219783B7800EA8F74 /* CurrencyRateItem.m */,
 				6823F700186329DC00E6E90D /* A3CurrencyDataManager.h */,
@@ -5487,7 +5481,6 @@
 				689A3ADA1961C87F008BC2F4 /* A3YahooCurrency.m in Sources */,
 				682FDF2B1981CC0400C6C83D /* MagicalRecord+Actions.m in Sources */,
 				682FDF1D1981CC0400C6C83D /* NSManagedObjectContext+MagicalObserving.m in Sources */,
-				687484E1197842BE00EA8F74 /* CurrencyFavorite.m in Sources */,
 				6823F70D186358CC00E6E90D /* Reachability.m in Sources */,
 				682FDF191981CC0400C6C83D /* NSManagedObject+MagicalRecord.m in Sources */,
 				6823F7171863595E00E6E90D /* AppBox3.xcdatamodeld in Sources */,
@@ -6080,7 +6073,6 @@
 				68B6A2EB18CEC76D004084EF /* A3UnitPriceDetailTableController.m in Sources */,
 				68B6A34E18CEC76D004084EF /* A3WalletMainTabBarController.m in Sources */,
 				17D420FD697D545A9027AB7C /* A3PasscodeCommonViewController.m in Sources */,
-				6874849619783B7900EA8F74 /* CurrencyFavorite.m in Sources */,
 				68F319FC18D83D1F0003BE62 /* A3LaunchSceneViewController.m in Sources */,
 				17D425CA8B84A776935B9382 /* Foursquare2.m in Sources */,
 				17D42E4EE3830FB7CC709BC8 /* FSOAuth.m in Sources */,

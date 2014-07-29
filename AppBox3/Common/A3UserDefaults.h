@@ -45,6 +45,7 @@ extern NSString *const A3CurrencyUserDefaultsShowNationalFlag;
 extern NSString *const A3CurrencyUserDefaultsLastInputValue;
 extern NSString *const A3CurrencyUserDefaultsUpdateDate;
 extern NSString *const A3CurrencyUserDefaultsCloudUpdateDate;
+extern NSString *const A3CurrencyUserDefaultsFavorites;
 
 #pragma mark ------ Lunar Converter
 extern NSString *const A3LunarConverterLastInputDateComponents;

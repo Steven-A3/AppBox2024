@@ -9,8 +9,6 @@
 #import "A3CacheStoreManager.h"
 #import "NSFileManager+A3Addtion.h"
 #import "CurrencyRateItem.h"
-#import "CurrencyFavorite.h"
-#import "A3CurrencyDataManager.h"
 
 @interface A3CacheStoreManager ()
 
@@ -58,6 +56,16 @@
 	NSAssert(currencyItem, @"CurrencyRateItem: Currency data does not exist for '%@'", currency);
 	rate = currencyItem.rateToUSD.floatValue;
 	return rate;
+}
+
+- (NSString *)symbolForCurrencyCode:(NSString *)code {
+	CurrencyRateItem *currencyItem = [CurrencyRateItem MR_findFirstByAttribute:@"currencyCode" withValue:code inContext:self.context];
+	NSAssert(currencyItem, @"CurrencyRateItem: Currency data does not exist for '%@'", code);
+	return currencyItem.currencySymbol;
+}
+
+- (CurrencyRateItem *)currencyInfoWithCode:(NSString *)code {
+	return [CurrencyRateItem MR_findFirstByAttribute:@"currencyCode" withValue:code inContext:self.context];
 }
 
 @end

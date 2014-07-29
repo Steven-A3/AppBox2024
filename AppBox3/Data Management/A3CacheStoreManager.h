@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class CurrencyRateItem;
+
 @interface A3CacheStoreManager : NSObject
 
 @property (strong, nonatomic) NSManagedObjectContext *context;
@@ -15,4 +17,7 @@
 - (void)save;
 - (float)rateForCurrencyCode:(NSString *)currency;
 
+- (NSString *)symbolForCurrencyCode:(NSString *)code;
+
+- (CurrencyRateItem *)currencyInfoWithCode:(NSString *)code;
 @end

@@ -7,15 +7,13 @@
 //
 
 #import "A3CurrencyDataManager.h"
-#import "A3CacheStoreManager.h"
 #import "NSMutableArray+MoveObject.h"
 #import "CurrencyRateItem.h"
-#import "CurrencyFavorite.h"
 #import "AFHTTPRequestOperation.h"
 #import "A3YahooCurrency.h"
 #import "Reachability.h"
-#import "A3AppDelegate.h"
-#import "NSString+conversion.h"
+#import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 NSString *const A3KeyCurrencyCode = @"currencyCode";
 NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRatesUdpated";
@@ -38,15 +36,8 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 	return name;
 }
 
-+ (void)copyCurrencyFrom:(CurrencyRateItem *)item to:(CurrencyFavorite *)favorite {
-	favorite.currencyCode = item.currencyCode;
-	favorite.currencySymbol = item.currencySymbol;
-	favorite.flagImageName = item.flagImageName;
-	favorite.name = item.name;
-}
-
 + (void)setupFavorites {
-	NSArray *currencyFavorites = [CurrencyFavorite MR_findAll];
+	NSArray *currencyFavorites = [[NSUserDefaults standardUserDefaults] objectForKey:A3CurrencyUserDefaultsFavorites];
 	if ([currencyFavorites count]) {
 		return;
 	}
@@ -67,20 +58,32 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 			[favorites moveObjectFromIndex:idx toIndex:1];
 		}
 	}
+	[[NSUserDefaults standardUserDefaults] setObject:favorites forKey:A3CurrencyUserDefaultsFavorites];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
 
-	idx = 1;
-	for (NSString *code in favorites) {
-		CurrencyFavorite *favorite = [CurrencyFavorite MR_createEntity];
-		favorite.uniqueID = code;
-		favorite.updateDate = [NSDate date];
-		CurrencyRateItem *item = [CurrencyRateItem MR_findFirstByAttribute:A3KeyCurrencyCode withValue:code inContext:[A3AppDelegate instance].cacheStoreManager.context];
-		favorite.order = [NSString orderStringWithOrder:idx * 1000000];
-		[A3CurrencyDataManager copyCurrencyFrom:item to:favorite];
-		FNLOG(@"%@, %@", item, favorite);
-		idx++;
++ (void)saveFavorites:(NSArray *)favorites {
+	NSMutableArray *savingFavorites = [NSMutableArray new];
+	for (id item in favorites) {
+		if ([item isKindOfClass:[NSString class]] && [item length] == 3) {
+			[savingFavorites addObject:item];
+		}
 	}
+	[A3CurrencyDataManager saveCurrencyObject:savingFavorites forKey:A3CurrencyUserDefaultsFavorites];
+}
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
++ (void)saveCurrencyObject:(id)object forKey:(NSString *)key {
+	NSDate *updateDate = [NSDate date];
+	[[NSUserDefaults standardUserDefaults] setObject:object forKey:key];
+	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3CurrencyUserDefaultsUpdateDate];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:object forKey:key];
+		[store setObject:updateDate forKey:A3CurrencyUserDefaultsCloudUpdateDate];
+		[store synchronize];
+	}
 }
 
 + (BOOL)yahooNetworkAvailable {

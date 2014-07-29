@@ -16,8 +16,11 @@ extern NSString *const A3KeyCurrencyCode;
 
 @interface A3CurrencyDataManager : NSObject
 
-+ (void)copyCurrencyFrom:(CurrencyRateItem *)item to:(CurrencyFavorite *)favorite;
 + (void)setupFavorites;
+
++ (void)saveFavorites:(NSArray *)favorites;
+
++ (void)saveCurrencyObject:(id)object forKey:(NSString *)key;
 
 + (void)updateCurrencyRatesInContext:(NSManagedObjectContext *)context;
 

@@ -24,7 +24,6 @@
 #import "WalletData.h"
 #import "A3UserDefaults.h"
 
-
 NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 
 @interface A3WalletMoreTableViewController () <A3InstructionViewControllerDelegate>
