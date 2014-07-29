@@ -72,7 +72,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
         [self.tableView setEditing:YES animated:YES];
     }
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:[NSManagedObjectContext MR_defaultContext]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDefaultsDidChange) name:NSUserDefaultsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryAddedNotification:) name:A3WalletNotificationCategoryAdded object:nil];
 
 	if (IS_IPAD) {
@@ -82,7 +82,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
@@ -146,8 +146,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
     }
 }
 
-- (void)managedObjectContextDidSave:(NSNotification *)notification {
-	FNLOG();
+- (void)userDefaultsDidChange {
 	_categories = nil;
 	_sections = nil;
 	[self.tableView reloadData];
@@ -173,7 +172,9 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	NSMutableArray *modifiedArray = [NSMutableArray arrayWithArray:_sections[0]];
+	[modifiedArray addObjectsFromArray:_sections[1]];
+	[WalletData saveWalletObject:modifiedArray forKey:A3WalletUserDefaultsCategoryInfo];
 	[self.mainTabBarController setupTabBar];
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -257,7 +258,7 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 		if (self.isEditing) {
 			NSMutableArray *section0 = [NSMutableArray new];
 			for (; idx < numberOfItemsOnTapBar; idx++) {
-				[section0 addObject:self.categories[idx]];
+				[section0 addObject:[self.categories[idx] mutableCopy]];
 			}
 			[sections addObject:section0];
 		} else {
@@ -266,7 +267,7 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 
 		NSMutableArray *section1 = [NSMutableArray new];
 		for (; idx < [self.categories count]; idx++) {
-			[section1 addObject:self.categories[idx]];
+			[section1 addObject:[self.categories[idx] mutableCopy]];
 		}
 		[sections addObject:section1];
 		_sections = sections;
@@ -396,10 +397,6 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 				[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:movingRow inSection:0] toIndexPath:adjustedIndexPath];
 			}
 			[self.tableView reloadRowsAtIndexPaths:@[adjustedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-
-			NSMutableArray *modifiedCategories = [NSMutableArray arrayWithArray:_sections[0]];
-			[modifiedCategories addObjectsFromArray:_sections[1]];
-			[WalletData saveWalletObject:modifiedCategories forKey:A3WalletUserDefaultsCategoryInfo];
 		});
 	}
 }
@@ -414,13 +411,12 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	if (_isEditing) {
-		NSMutableDictionary *walletCategory = [self.sections[indexPath.section][indexPath.row] mutableCopy];
+		NSMutableDictionary *walletCategory = self.sections[indexPath.section][indexPath.row];
 		walletCategory[W_DoNotShow_KEY] = @(![walletCategory[W_DoNotShow_KEY] boolValue]);
-
-		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
 		A3WalletMoreTableViewCell *cell = (A3WalletMoreTableViewCell *) [self.tableView cellForRowAtIndexPath:indexPath];
 		[cell setShowCheckMark:![walletCategory[W_DoNotShow_KEY] boolValue]];
+
+		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 		return;
 	}

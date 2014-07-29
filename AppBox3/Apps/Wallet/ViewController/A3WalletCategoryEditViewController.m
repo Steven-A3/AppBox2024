@@ -14,7 +14,6 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
-#import "NSMutableArray+A3Sort.h"
 #import "A3WalletMainTabBarController.h"
 #import "NSString+conversion.h"
 #import "UIViewController+iPad_rightSideView.h"
@@ -36,6 +35,7 @@
 @property (nonatomic, strong) MBProgressHUD *alertHUD;
 @property (nonatomic, strong) NSMutableDictionary *category;
 @property (nonatomic, strong) NSArray *allCategories;
+@property (nonatomic, copy) NSDictionary *originalCategory;
 
 @end
 
@@ -72,6 +72,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 		self.navigationItem.title = NSLocalizedString(@"Edit Category", @"Edit Category");
 		_category = [[WalletData categoryItemWithID:_categoryID] mutableCopy];
 	}
+	self.originalCategory = _category;
 	self.originalCategoryName = _category[W_NAME_KEY];
     
     [self makeBackButtonEmptyArrow];
@@ -191,10 +192,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
         return;
     }
 
-	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
-	if ([context hasChanges]) {
-		[context MR_saveToPersistentStoreAndWait];
-	}
+	[WalletData saveCategory:_category];
 
 	if (_delegate && [_delegate respondsToSelector:@selector(walletCategoryEdited:)]) {
 		[_delegate walletCategoryEdited:_category];
@@ -275,6 +273,8 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 {
     self.toAddField = [NSMutableDictionary new];
 	_toAddField[W_ID_KEY] = [[NSUUID UUID] UUIDString];
+	_toAddField[W_TYPE_KEY] = WalletFieldTypeText;
+	_toAddField[W_STYLE_KEY] = WalletFieldStyleNormal;
 
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
     A3WalletEditFieldViewController *editFieldViewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletEditFieldViewController"];
@@ -314,8 +314,14 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 - (void)walletFieldEdited:(NSDictionary *)field
 {
-    NSUInteger index = [_fields indexOfObject:field];
+    NSUInteger index = [_fields indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		return [obj[W_ID_KEY] isEqualToString:field[W_ID_KEY]];
+	}];
 	_fields[index] = field;
+
+	NSMutableArray *copyOfFields = [_fields mutableCopy];
+	[copyOfFields removeLastObject];
+	_category[W_FIELDS_KEY] = copyOfFields;
 
     NSIndexPath *ip = [NSIndexPath indexPathForRow:index inSection:1];
     [self.tableView reloadRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationFade];
@@ -326,7 +332,12 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 {
     if (_toAddField == field) {
         NSUInteger index = [_fields indexOfObject:self.plusItem];
-		[self.fields insertObject:field atIndex:index];
+		[_fields insertObject:field atIndex:index];
+
+		NSMutableArray *copyOfFields = [_fields mutableCopy];
+		[copyOfFields removeLastObject];
+		_category[W_FIELDS_KEY] = copyOfFields;
+
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
     }
 	[self setupDoneButtonEnabled];
@@ -410,7 +421,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 - (void)setupDoneButtonEnabled {
 	self.navigationItem.leftBarButtonItem.enabled = YES;
-	BOOL enable = [[NSManagedObjectContext MR_rootSavingContext] hasChanges];
+	BOOL enable = ![_originalCategory isEqualToDictionary:_category];
 	if (_titleTextField) {
 		enable = enable && [_titleTextField.text length] && !_sameCategoryNameExists;
 	}

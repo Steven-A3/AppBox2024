@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class WalletCategory;
-
 @protocol WalletCategoryEditDelegate <NSObject>
 
 @required

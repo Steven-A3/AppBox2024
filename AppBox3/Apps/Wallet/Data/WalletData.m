@@ -144,7 +144,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	NSArray *object = [[NSUserDefaults standardUserDefaults] objectForKey:A3WalletUserDefaultsCategoryInfo];
 	if (object) {
 		if (hideDoNotShow) {
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != NO", W_DoNotShow_KEY];
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != YES", W_DoNotShow_KEY];
 			return [object filteredArrayUsingPredicate:predicate];
 		}
 		return object;
@@ -204,7 +204,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 
 + (NSArray *)categoriesExcludingSystemCategories {
 	NSArray *allCategories = [WalletData walletCategoriesFilterDoNotShow:YES];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == NULL"];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == NULL", W_SYSTEM_KEY];
 	return [allCategories filteredArrayUsingPredicate:predicate];
 }
 
@@ -245,7 +245,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	NSArray *allCategories = [WalletData walletCategoriesFilterDoNotShow:NO];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", W_ID_KEY, categoryID];
 	NSArray *result = [allCategories filteredArrayUsingPredicate:predicate];
-	if (result) {
+	if ([result count] >= 1) {
 		return result[0];
 	}
 	return nil;
@@ -282,7 +282,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	NSArray *fields = category[W_FIELDS_KEY];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", W_ID_KEY, fieldItem.fieldID];
 	NSArray *filtered = [fields filteredArrayUsingPredicate:predicate];
-	if (filtered) {
+	if ([filtered count]) {
 		return filtered[0];
 	}
 	return nil;

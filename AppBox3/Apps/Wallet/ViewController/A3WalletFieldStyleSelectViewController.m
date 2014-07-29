@@ -74,10 +74,12 @@
         NSArray *typeList = [WalletData typeList];
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", WalletFieldTypeID, _typeName];
         NSArray *types = [typeList filteredArrayUsingPredicate:predicate];
-        NSDictionary *typeInfo = types[0];
-        NSDictionary *styleDic = [WalletData styleList];
-        NSArray *styleList = styleDic[typeInfo[WalletFieldNativeType]];
-        _fieldStyles = [[NSMutableArray alloc] initWithArray:styleList];
+		if ([types count] >= 1) {
+			NSDictionary *typeInfo = types[0];
+			NSDictionary *styleDic = [WalletData styleList];
+			NSArray *styleList = styleDic[typeInfo[WalletFieldNativeType]];
+			_fieldStyles = [[NSMutableArray alloc] initWithArray:styleList];
+		}
     }
     
     return _fieldStyles;
