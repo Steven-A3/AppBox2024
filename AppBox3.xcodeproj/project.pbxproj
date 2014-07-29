@@ -403,7 +403,6 @@
 		687484CF19783C1000EA8F74 /* ExpenseListHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484CE19783C1000EA8F74 /* ExpenseListHistory.m */; };
 		687484D219783C1000EA8F74 /* ExpenseListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484D119783C1000EA8F74 /* ExpenseListItem.m */; };
 		687484D519783C1000EA8F74 /* ExpenseListBudget.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484D419783C1000EA8F74 /* ExpenseListBudget.m */; };
-		687484D819783C1000EA8F74 /* ExpenseListCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484D719783C1000EA8F74 /* ExpenseListCategories.m */; };
 		687484DB19783C2F00EA8F74 /* TipCalcRecent.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484DA19783C2F00EA8F74 /* TipCalcRecent.m */; };
 		687484DE19783C3000EA8F74 /* TipCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484DD19783C3000EA8F74 /* TipCalcHistory.m */; };
 		687484DF197842BE00EA8F74 /* CurrencyHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849B19783B7900EA8F74 /* CurrencyHistoryItem.m */; };
@@ -1577,8 +1576,6 @@
 		687484D119783C1000EA8F74 /* ExpenseListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListItem.m; path = Data/ExpenseListItem.m; sourceTree = "<group>"; };
 		687484D319783C1000EA8F74 /* ExpenseListBudget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListBudget.h; path = Data/ExpenseListBudget.h; sourceTree = "<group>"; };
 		687484D419783C1000EA8F74 /* ExpenseListBudget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListBudget.m; path = Data/ExpenseListBudget.m; sourceTree = "<group>"; };
-		687484D619783C1000EA8F74 /* ExpenseListCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListCategories.h; path = Data/ExpenseListCategories.h; sourceTree = "<group>"; };
-		687484D719783C1000EA8F74 /* ExpenseListCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListCategories.m; path = Data/ExpenseListCategories.m; sourceTree = "<group>"; };
 		687484D919783C2F00EA8F74 /* TipCalcRecent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TipCalcRecent.h; path = Data/TipCalcRecent.h; sourceTree = "<group>"; };
 		687484DA19783C2F00EA8F74 /* TipCalcRecent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TipCalcRecent.m; path = Data/TipCalcRecent.m; sourceTree = "<group>"; };
 		687484DC19783C3000EA8F74 /* TipCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TipCalcHistory.h; path = Data/TipCalcHistory.h; sourceTree = "<group>"; };
@@ -4699,8 +4696,6 @@
 		68E2A6BC18D0B3F600E834D9 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				687484D619783C1000EA8F74 /* ExpenseListCategories.h */,
-				687484D719783C1000EA8F74 /* ExpenseListCategories.m */,
 				687484D319783C1000EA8F74 /* ExpenseListBudget.h */,
 				687484D419783C1000EA8F74 /* ExpenseListBudget.m */,
 				687484D019783C1000EA8F74 /* ExpenseListItem.h */,
@@ -5672,7 +5667,6 @@
 				68B6A2C118CEC76D004084EF /* A3LoanCalcLoanGraphCell.m in Sources */,
 				68EC80D616E1ADF800CF672E /* A3Formatter.m in Sources */,
 				68B9B15C17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m in Sources */,
-				687484D819783C1000EA8F74 /* ExpenseListCategories.m in Sources */,
 				682FDF241981CC0400C6C83D /* NSManagedObjectModel+MagicalRecord.m in Sources */,
 				68B6A45018CEE781004084EF /* PSTCollectionViewItemKey.m in Sources */,
 				68425D581977BD5F007C1AAE /* DaysCounterReminder+extension.m in Sources */,

@@ -113,11 +113,6 @@
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
-    <entity name="ExpenseListCategories" representedClassName="ExpenseListCategories" syncable="YES">
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-    </entity>
     <entity name="ExpenseListHistory" representedClassName="ExpenseListHistory" syncable="YES">
         <attribute name="budgetID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
@@ -321,7 +316,6 @@
         <element name="DaysCounterReminder" positionX="-83" positionY="-523" width="128" height="148"/>
         <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="193"/>
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="193"/>
-        <element name="ExpenseListCategories" positionX="540" positionY="-432" width="135" height="90"/>
         <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="90"/>
         <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="193"/>
         <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="208"/>

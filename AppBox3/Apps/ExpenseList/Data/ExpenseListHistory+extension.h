@@ -11,6 +11,5 @@
 @class ExpenseListBudget;
 
 @interface ExpenseListHistory (extension)
-
 - (ExpenseListBudget *)budgetData;
 @end

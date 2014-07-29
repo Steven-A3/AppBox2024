@@ -17,7 +17,6 @@
 #import "A3JHTableViewDateEntryElement.h"
 #import "A3ExpenseListMainViewController.h"
 #import "A3JHSelectTableViewController.h"
-#import "ExpenseListCategories.h"
 #import "ExpenseListBudget.h"
 #import "A3TableViewDatePickerElement.h"
 #import "A3DefaultColorDefines.h"
@@ -383,12 +382,11 @@ enum A3ExpenseListAddBudgetCellType {
         A3JHTableViewSelectElement *category =[A3JHTableViewSelectElement new];
         category.title = NSLocalizedString(@"Categories", @"Categories");
         
-        NSArray *dataArray = [self getCategoryEntities];
-		NSArray *names = [dataArray valueForKeyPath:@"@unionOfObjects.name"];
-		NSInteger foodIndex = [dataArray indexOfObjectPassingTest:^BOOL(ExpenseListCategories *item, NSUInteger idx, BOOL *stop) {
-			return [item.uniqueID isEqualToString:@"Food"];
+        NSArray *dataArray = [self getCategories];
+		NSInteger foodIndex = [dataArray indexOfObjectPassingTest:^BOOL(NSString *item, NSUInteger idx, BOOL *stop) {
+			return [item isEqualToString:NSLocalizedString(@"Food", @"Food")];
 		}];
-        category.items = names;
+        category.items = dataArray;
         category.selectedIndex = foodIndex != NSNotFound ? foodIndex : 0;
         category.identifier = AddBudgetCellID_Categories;
         [elements addObject:category];
@@ -405,11 +403,10 @@ enum A3ExpenseListAddBudgetCellType {
             category.value = _currentBudget.category;
             paymentType.value = _currentBudget.paymentType;
             
-            NSArray *cateArray = [self getCategoryEntities];
+            NSArray *cateArray = [self getCategories];
             
             for (int i=0; i<cateArray.count; i++) {
-                ExpenseListCategories *aData = [cateArray objectAtIndex:i];
-                if ([aData.name isEqualToString:category.value]) {
+                if ([cateArray[i] isEqualToString:category.value]) {
                     category.selectedIndex = i;
                     break;
                 }
@@ -526,37 +523,29 @@ enum A3ExpenseListAddBudgetCellType {
 	return _root;
 }
 
--(NSArray *)getCategoryEntities {
-    NSArray *categories = [ExpenseListCategories MR_findAllSortedBy:@"name" ascending:YES];
-    if (!categories || categories.count==0) {
-        categories = @[@"Food",
-                       @"Personal",
-                       @"Pets",
-                       @"School",
-                       @"Service",
-                       @"Shopping",
-                       @"Transportation",
-                       @"Travel",
-                       @"Utilities",
-                       @"Uncategorized"];
-        for (NSString *category in categories) {
-            ExpenseListCategories *entity = [ExpenseListCategories MR_createEntity];
-			entity.uniqueID = category;
-			entity.updateDate = [NSDate date];
-            entity.name = NSLocalizedString(category, nil);
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-        }
-        
-        categories = [ExpenseListCategories MR_findAllSortedBy:@"name" ascending:YES];
-    }
-    
+- (NSArray *)getCategories {
+	NSMutableArray *categories = [
+			@[NSLocalizedString(@"Food", nil),
+			NSLocalizedString(@"Personal", @"Personal"),
+			NSLocalizedString(@"Pets", @"Pets"),
+			NSLocalizedString(@"School", @"School"),
+			NSLocalizedString(@"Service", @"Service"),
+			NSLocalizedString(@"Shopping", @"Shopping"),
+			NSLocalizedString(@"Transportation", @"Transportation"),
+			NSLocalizedString(@"Travel", @"Travel"),
+			NSLocalizedString(@"Utilities", @"Utilities"),
+			NSLocalizedString(@"Uncategorized", @"Uncategorized")] mutableCopy];
+
+	[categories sortUsingComparator:^NSComparisonResult(NSString *obj1, NSString *obj2) {
+		return [obj1 compare:obj2];
+	}];
+
     return categories;
 }
 
 -(NSString *)getCategoryNameForIndex:(NSInteger)index {
-    NSArray *categories = [self getCategoryEntities];
-    ExpenseListCategories *entity = [categories objectAtIndex:index];
-    return entity.name;
+    NSArray *categories = [self getCategories];
+    return categories[index];
 }
 
 -(NSArray *)getPaymentArray {
