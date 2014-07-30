@@ -300,7 +300,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 {
 	NSString *query = searchText;
 	if (query && query.length) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitName contains[cd] %@", query];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[cd] %@", query];
 		_filteredResults = [self.allData filteredArrayUsingPredicate:predicate];
 	} else {
 		_filteredResults = nil;
@@ -376,6 +376,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 		if (tableView == self.searchDisplayController.searchResultsTableView) {
 			unitID = [self.filteredResults[indexPath.row][ID_KEY] unsignedIntegerValue];
 			unitName = self.filteredResults[indexPath.row][NAME_KEY];
+			cell.textLabel.text = unitName;
 		}
 		else {
 			if (_isFavoriteMode) {
