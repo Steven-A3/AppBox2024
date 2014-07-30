@@ -556,11 +556,20 @@
                     break;
                     
                 case TCRoundingMethodValue_Total:
-                case TCRoundingMethodValue_TotalPerPerson:
                 {
                     double totalBeforeRounding = [self.subtotal doubleValue] + [tipValue doubleValue];
                     double totalAfterRounding = [[self numberByRoundingMethodForValue:@([self.subtotal doubleValue] + [tipValue doubleValue])] doubleValue];
                     tipValue = @([tipValue doubleValue] + (totalAfterRounding - totalBeforeRounding));
+                }
+                    break;
+                    
+                case TCRoundingMethodValue_TotalPerPerson:
+                {
+                    tipValue = @([tipValue doubleValue] / [self.tipCalcData.split doubleValue]);
+                    double totalBeforeRounding = [self.subtotalWithSplit doubleValue] + [tipValue doubleValue];
+                    double totalAfterRounding = [[self numberByRoundingMethodForValue:@([self.subtotalWithSplit doubleValue] + [tipValue doubleValue])] doubleValue];
+                    tipValue = @([tipValue doubleValue] + (totalAfterRounding - totalBeforeRounding));
+                    tipValue = @([tipValue doubleValue] * [self.tipCalcData.split doubleValue]);
                 }
                     break;
                     
@@ -587,11 +596,20 @@
                 break;
                 
             case TCRoundingMethodValue_Total:
-            case TCRoundingMethodValue_TotalPerPerson:
             {
                 double totalBeforeRounding = [self.subtotal doubleValue] + resultTipValue;
                 double totalAfterRounding = [[self numberByRoundingMethodForValue:@([self.subtotal doubleValue] + resultTipValue)] doubleValue];
                 resultTipValue += totalAfterRounding - totalBeforeRounding;
+            }
+                break;
+                
+            case TCRoundingMethodValue_TotalPerPerson:
+            {
+                resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
+                double totalBeforeRounding = [self.subtotalWithSplit doubleValue] + resultTipValue;
+                double totalAfterRounding = [[self numberByRoundingMethodForValue:@([self.subtotalWithSplit doubleValue] + resultTipValue)] doubleValue];
+                resultTipValue += totalAfterRounding - totalBeforeRounding;
+                resultTipValue = resultTipValue * [self.tipCalcData.split doubleValue];
             }
                 break;
                 
