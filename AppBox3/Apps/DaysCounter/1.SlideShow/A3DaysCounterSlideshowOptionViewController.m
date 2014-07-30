@@ -79,7 +79,7 @@
 
     self.title = NSLocalizedString(@"Slideshow Options", @"Slideshow Options");
     if ( IS_IPHONE )
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     [self makeBackButtonEmptyArrow];
 
 	self.tableView.showsVerticalScrollIndicator = NO;
