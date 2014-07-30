@@ -248,7 +248,7 @@
             dTip = [[self.dataManager tipValueWithSplitWithRounding:YES] doubleValue];
         }
         else {
-            dTip = [[self.dataManager tipValueWithRounding:YES] doubleValue];
+            dTip = [[self.dataManager tipValueWithRounding] doubleValue];
         }
     }
     

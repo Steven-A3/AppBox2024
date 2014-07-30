@@ -401,7 +401,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         
         values = [NSMutableArray new];
         [values addObject:[formatter stringFromNumber:[self.dataManager subtotal]]];
-        [values addObject:[formatter stringFromNumber:[self.dataManager tipValueWithRounding:YES]]];
+        [values addObject:[formatter stringFromNumber:[self.dataManager tipValueWithRounding]]];
         [titles addObject:@[NSLocalizedString(@"Subtotal", @"Subtotal"), NSLocalizedString(@"Tip", @"Tip")]];
         [details addObject:values];
     }
@@ -479,7 +479,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     // Section 1
     [sections addObject:@""];
     // Section 2
-    if ([self.dataManager isRoundingOptionOn]) {
+    if ([self.dataManager isRoundingOptionSwitchOn]) {
 		[sections addObject:NSLocalizedString(@"ROUNDING", @"ROUNDING")];
     }
     
@@ -494,7 +494,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     
     [sectionsRows addObject:[self tableSectionDataAtSection:1]];
     
-    if ([self.dataManager isRoundingOptionOn]) {
+    if ([self.dataManager isRoundingOptionSwitchOn]) {
         [sectionsRows addObject:[self tableSectionDataAtSection:2]];
     }
     
@@ -510,7 +510,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             A3TableViewCheckMarkElement *subtotal = [A3TableViewCheckMarkElement new];
             subtotal.title = NSLocalizedString(@"Amount After Tax", @"Amount After Tax");
             subtotal.identifier = RowElementID_SubTotal;
-            subtotal.checked = [self.dataManager knownValue] == TCKnownValue_Subtotal ? YES : NO;
+            subtotal.checked = [self.dataManager knownValue] == TCKnownValue_CostAfterTax ? YES : NO;
             
             A3TableViewCheckMarkElement *costsBeforeTax = [A3TableViewCheckMarkElement new];
             costsBeforeTax.title = NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
@@ -530,7 +530,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 				if ([[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"es"]) {
 					costs.title = NSLocalizedString(@"Amount", nil);
 				} else {
-					costs.title = [self.dataManager knownValue] == TCKnownValue_Subtotal ? NSLocalizedString(@"Amount After Tax", @"Amount After Tax") : NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
+					costs.title = [self.dataManager knownValue] == TCKnownValue_CostAfterTax ? NSLocalizedString(@"Amount After Tax", @"Amount After Tax") : NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
 				}
 			}
             else {
@@ -940,7 +940,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                 beforeTax.checked = NO;
                 subtotalCell.accessoryType = UITableViewCellAccessoryCheckmark;
                 beforeTaxCell.accessoryType = UITableViewCellAccessoryNone;
-				self.dataManager.knownValue = TCKnownValue_Subtotal;
+				self.dataManager.knownValue = TCKnownValue_CostAfterTax;
             }
             else {
                 subtotal.checked = NO;
@@ -963,7 +963,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             
 
             UITableViewCell *costs = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
-            costs.textLabel.text = [self.dataManager knownValue] == TCKnownValue_Subtotal ? NSLocalizedString(@"Amount After Tax", @"Amount After Tax") : NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
+            costs.textLabel.text = [self.dataManager knownValue] == TCKnownValue_CostAfterTax ? NSLocalizedString(@"Amount After Tax", @"Amount After Tax") : NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
 
 			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 			break;

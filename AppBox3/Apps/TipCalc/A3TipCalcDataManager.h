@@ -25,7 +25,7 @@ typedef NS_ENUM (NSInteger, TipSplitOption) {
 };
 
 typedef NS_ENUM (NSInteger, TCKnownValue) {
-	TCKnownValue_Subtotal = 0,
+	TCKnownValue_CostAfterTax = 0,
     TCKnownValue_CostsBeforeTax
 };
 
@@ -79,7 +79,7 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
 #pragma mark - Setting
 @property (nonatomic, assign, getter = isTaxOptionOn) BOOL taxOption;
 @property (nonatomic, assign, getter = isSplitOptionOn) BOOL splitOption;
-@property (nonatomic, assign, getter = isRoundingOptionOn) BOOL RoundingOption;
+@property (nonatomic, assign, getter = isRoundingOptionSwitchOn) BOOL RoundingOption;
 @property (nonatomic, strong) NSNumberFormatter *currencyFormatter;
 
 #pragma mark Manipulate TipCalc Data
@@ -113,8 +113,8 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
 - (NSNumber *)totalPerPersonWithTax;
 - (NSNumber *)taxPercent;
 - (NSNumber *)taxValue;
+- (NSNumber *)tipValueWithRounding;
 - (NSNumber *)taxValueWithSplit;
-- (NSNumber *)tipValueWithRounding:(BOOL)rounding;
 - (NSNumber *)tipValueWithSplitWithRounding:(BOOL)rounding;
 - (NSNumber *)tipPercent;
 

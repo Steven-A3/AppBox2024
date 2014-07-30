@@ -85,12 +85,7 @@
     [dataManager setTipCalcDataForHistoryData:aHistory];
     
     double dTip = 0.0;
-    if ([dataManager roundingMethodValue] == TCRoundingMethodValue_Tip && [dataManager isRoundingOptionOn]) {
-        dTip = [[dataManager tipValueWithRounding:YES] doubleValue];
-    }
-    else {
-        dTip = [[dataManager tipValueWithRounding:NO] doubleValue];
-    }
+    dTip = [[dataManager tipValueWithRounding] doubleValue];
 
     NSString *tip = [dataManager currencyStringFromDouble:dTip];
     
