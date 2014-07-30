@@ -112,7 +112,16 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 	self.currencyFormatter = nil;
 	self.currencyFormatter.maximumFractionDigits = 2;
-	_price = [UnitPriceInfo MR_findFirstByAttribute:@"priceName" withValue:_isPriceA ? @"A" : @"B"];
+
+	NSDictionary *userDefaults;
+	if (_isPriceA) {
+		userDefaults = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsPriceA];
+	} else {
+		userDefaults = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsPriceB];
+	}
+	if (userDefaults) {
+		[_price copyValueFrom:userDefaults];
+	}
 
 	[self.tableView reloadData];
 }
@@ -470,8 +479,15 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
         }
 		textField.text = self.price.size ? [self.decimalFormatter stringFromNumber:self.price.size]: @"";
     }
+	[self saveToUserDefaults];
+}
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+- (void)saveToUserDefaults {
+	if (_isPriceA) {
+		[self.unitDataManager saveUnitPriceData:[_price dictionaryRepresentation] forKey:A3UnitPriceUserDefaultsPriceA];
+	} else {
+		[self.unitDataManager saveUnitPriceData:[_price dictionaryRepresentation] forKey:A3UnitPriceUserDefaultsPriceB];
+	}
 }
 
 - (NSString *)unitName {
@@ -514,7 +530,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 		return;
 	}
 	self.price.note = textView.text;
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
+	[self saveToUserDefaults];
 }
 
 #pragma mark - A3TbvCellTextInputDelegate
@@ -709,7 +726,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	self.price.unitCategoryID = @(categoryID);
 	self.price.unitID = @(unitID);
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	[self saveToUserDefaults];
 
 	NSIndexPath *sliderIP = [NSIndexPath indexPathForRow:0 inSection:0];
 	NSIndexPath *unitIP = [NSIndexPath indexPathForRow:[self.items indexOfObject:self.unitItem] inSection:1];

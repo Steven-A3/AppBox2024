@@ -146,6 +146,8 @@ extern NSString *const A3UnitPriceUserDefaultsCurrencyCode;
 extern NSString *const A3UnitPriceUserDefaultsUpdateDate;
 extern NSString *const A3UnitPriceUserDefaultsCloudUpdateDate;
 extern NSString *const A3UnitPriceUserDefaultsUnitPriceFavorites;
+extern NSString *const A3UnitPriceUserDefaultsPriceA;
+extern NSString *const A3UnitPriceUserDefaultsPriceB;
 
 #pragma mark ------ Passcode
 extern NSString *const kUserDefaultTimerStart;
