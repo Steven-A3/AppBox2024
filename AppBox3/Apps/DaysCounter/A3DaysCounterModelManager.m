@@ -123,7 +123,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 			[NSMutableDictionary dictionaryWithDictionary:@{
 					CalendarItem_ID: SystemCalendarID_All,
 					CalendarItem_Name : @"All",
-					CalendarItem_ColorID : @6,
+					CalendarItem_ColorID : @9,
 					CalendarItem_IsShow : @YES,
 					CalendarItem_Type : @(CalendarCellType_System),
 					CalendarItem_IsDefault : @YES
@@ -131,14 +131,14 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 			[NSMutableDictionary dictionaryWithDictionary:@{
 					CalendarItem_ID: SystemCalendarID_Upcoming,
 					CalendarItem_Name : @"Upcoming",
-					CalendarItem_ColorID : @7,
+					CalendarItem_ColorID : @10,
 					CalendarItem_IsShow : @YES,
 					CalendarItem_Type : @(CalendarCellType_System),
 					CalendarItem_IsDefault : @YES
 			}],
 			[NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: SystemCalendarID_Past,
 					CalendarItem_Name : @"Past",
-					CalendarItem_ColorID : @8,
+					CalendarItem_ColorID : @11,
 					CalendarItem_IsShow : @YES,
 					CalendarItem_Type : @(CalendarCellType_System),
 					CalendarItem_IsDefault : @YES
