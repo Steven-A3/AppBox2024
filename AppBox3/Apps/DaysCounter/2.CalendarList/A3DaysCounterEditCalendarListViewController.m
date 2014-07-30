@@ -128,7 +128,7 @@
     if ( [item[CalendarItem_Type] integerValue] == CalendarCellType_System ) {
         NSInteger numberOfEvents = 0;
         if ( [item[CalendarItem_ID] isEqualToString:SystemCalendarID_All] ) {
-            numberOfEvents = [_sharedManager numberOfAllEvents];
+            numberOfEvents = [_sharedManager numberOfAllEventsToIncludeHiddenCalendar];
 			textLabel.text = NSLocalizedString(@"DaysCounter_ALL", nil);
 		}
         else if ( [item[CalendarItem_ID] isEqualToString:SystemCalendarID_Upcoming]) {
