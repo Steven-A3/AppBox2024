@@ -166,12 +166,12 @@
 - (NSMutableArray *)unitCategories
 {
     if (!_unitCategories) {
-		NSArray *allUnitCategories = [_dataManager allCategories];
+		NSArray *allUnitCategories = [self.dataManager allCategories];
 		_unitCategories = [NSMutableArray new];
 
 		NSArray *unitPriceUnits = @[@"Area", @"Length", @"Volume", @"Weight"];
 		[allUnitCategories enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-			if ([unitPriceUnits containsObject:[_dataManager categoryNameForID:idx]]) {
+			if ([unitPriceUnits containsObject:[_dataManager categoryNameForID:[obj[ID_KEY] unsignedIntegerValue] ] ]) {
 				[_unitCategories addObject:obj];
 			}
 		}];
@@ -184,7 +184,7 @@
 	viewController.delegate = tossedDelegate;
 	viewController.shouldPopViewController = YES;
     viewController.categoryID = categoryID;
-	viewController.currentUnitID = _price.unitID ? [_price.unitID unsignedIntegerValue] : NSNotFound;
+	viewController.currentUnitID = validUnit(_price.unitID) ? [_price.unitID unsignedIntegerValue] : NSNotFound;
 	viewController.dataManager = self.dataManager;
 
 	return viewController;

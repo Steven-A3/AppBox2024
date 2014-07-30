@@ -10,6 +10,8 @@
 extern NSString *const ID_KEY;
 extern NSString *const NAME_KEY;
 
+BOOL validUnit(NSNumber *value);
+
 @interface A3UnitDataManager : NSObject
 
 - (NSArray *)allCategories;

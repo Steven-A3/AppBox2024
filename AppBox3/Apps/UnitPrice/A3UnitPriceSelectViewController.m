@@ -71,7 +71,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 - (NSMutableArray *)favorites {
 	if (!_favorites) {
-		_favorites = [NSMutableArray arrayWithArray:[_dataManager favoritesForCategoryID:_categoryID]];
+		_favorites = [NSMutableArray arrayWithArray:[_dataManager unitPriceFavoriteForCategoryID:_categoryID]];
 	}
 	return _favorites;
 }
@@ -244,7 +244,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 - (void)callDelegate:(NSUInteger)selectedUnitID {
 	if ([_delegate respondsToSelector:@selector(selectViewController:didSelectCategoryID:unitID:)]) {
-		[_delegate selectViewController:self didSelectCategoryID:0 unitID:selectedUnitID];
+		[_delegate selectViewController:self didSelectCategoryID:_categoryID unitID:selectedUnitID];
 	}
     
     if (IS_IPHONE) {
@@ -337,10 +337,10 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	}
     else {
         if (_isFavoriteMode) {
-            return _favorites.count;
+            return self.favorites.count;
         }
         else {
-            return _allData.count;
+            return self.allData.count;
         }
     }
 }

@@ -290,7 +290,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
         unitPrice = (priceValue - discountValue) / (sizeValue * quantityValue);
 
         if (unitPrice > 0) {
-            if (priceInfo.unitID) {
+            if (validUnit(priceInfo.unitID)) {
                 unitPriceTxt = [NSString stringWithFormat:@"%@/%@",
 								[self.currencyFormatter stringFromNumber:@(unitPrice)],
 								unitName];
@@ -302,7 +302,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
             sliderCell.sliderView.progressBarHidden = NO;
         }
         else if (unitPrice == 0) {
-            if (priceInfo.unitID) {
+            if (validUnit(priceInfo.unitID)) {
                 unitPriceTxt = [NSString stringWithFormat:@"%@/%@",
 								[self.currencyFormatter stringFromNumber:@(unitPrice)],
 								unitName];
@@ -314,7 +314,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
             sliderCell.sliderView.progressBarHidden = YES;
         }
         else {
-            if (priceInfo.unitID) {
+            if (validUnit(priceInfo.unitID)) {
                 unitPriceTxt = [NSString stringWithFormat:@"-%@/%@",
 								[self.currencyFormatter stringFromNumber:@(unitPrice*-1)],
 								unitName];
@@ -475,14 +475,14 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 }
 
 - (NSString *)unitName {
-	return self.price.unitID ?
+	return validUnit(self.price.unitID) ?
 		NSLocalizedStringFromTable(
 			[self.unitDataManager unitNameForUnitID:[self.price.unitID unsignedIntegerValue] categoryID:[self.price.unitCategoryID unsignedIntegerValue]], @"unit", nil)
 			: NSLocalizedString(@"None", @"None");
 }
 
 - (NSString *)unitShortName {
-	return self.price.unitID ?
+	return validUnit(self.price.unitID) ?
 			NSLocalizedStringFromTable(
 			[self.unitDataManager unitNameForUnitID:[self.price.unitID unsignedIntegerValue] categoryID:[self.price.unitCategoryID unsignedIntegerValue]], @"unitShort", nil)
 			: NSLocalizedString(@"None", @"None");

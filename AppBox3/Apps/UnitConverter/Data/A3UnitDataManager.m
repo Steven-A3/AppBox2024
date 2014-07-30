@@ -13,6 +13,10 @@
 NSString *const ID_KEY = @"ID";
 NSString *const NAME_KEY = @"name";
 
+BOOL validUnit(NSNumber *value) {
+	return [value integerValue] != -1;
+}
+
 @implementation A3UnitDataManager
 
 const int numOfUnitType = 17;
