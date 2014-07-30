@@ -1,14 +1,19 @@
 //
 //  A3DefaultColorDefines.h
-//  A3TeamWork
+//  AppBox3
 //
-//  Created by jeonghwan kim on 12/21/13.
-//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//  Created by kimjeonghwan on 7/30/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#ifndef A3TeamWork_A3DefaultColorDefines_h
-#define A3TeamWork_A3DefaultColorDefines_h
+#ifndef AppBox3_A3DefaultColorDefines_h
+#define AppBox3_A3DefaultColorDefines_h
 
+#pragma mark ------ Common
+#define A3DefaultColorHistoryPositiveText [UIColor colorWithRed:73.0/255.0 green:191.0/255.0 blue:31.0/255.0 alpha:1.0]
+
+
+#pragma mark ------ DateCalculator
 #define COLOR_POSITIVE  [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0]
 #define COLOR_NEGATIVE  [UIColor colorWithRed:255.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0]
 
@@ -33,7 +38,6 @@
 #define COLOR_BATTERY_BACKGROUND    [UIColor colorWithRed:220.0/255.0 green:223.0/255.0 blue:226.0/255.0 alpha:1.0]
 
 // PopOver Disable
-//#define COLOR_DISABLE_POPOVER       [UIColor colorWithRed:219.0/255.0 green:219.0/255.0 blue:219.0/255.0 alpha:1.0]
 #define COLOR_DISABLE_POPOVER       [UIColor colorWithRed:196/255.0 green:196/255.0 blue:196/255.0 alpha:1.0]
 
 #endif

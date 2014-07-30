@@ -1005,6 +1005,7 @@
 		17D42FEEE5D02AC4D6E1CB7A /* A3TranslatorMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorMessageViewController.m; path = Translator/A3TranslatorMessageViewController.m; sourceTree = "<group>"; };
 		3E21D15318FB1BF100B88D62 /* FrameRateCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameRateCalculator.h; sourceTree = "<group>"; };
 		3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrameRateCalculator.m; sourceTree = "<group>"; };
+		5718E4991988E91400B4C7ED /* A3DefaultColorDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DefaultColorDefines.h; sourceTree = "<group>"; };
 		57888EC01940667000306028 /* A3InstructionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3InstructionViewController.h; path = Instruction/A3InstructionViewController.h; sourceTree = "<group>"; };
 		57888EC11940667000306028 /* A3InstructionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3InstructionViewController.m; path = Instruction/A3InstructionViewController.m; sourceTree = "<group>"; };
 		68024AD61631637600D396F0 /* A3UIDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIDevice.h; sourceTree = "<group>"; };
@@ -1469,7 +1470,6 @@
 		684D92E418BC1FBC005016F7 /* A3DateCalcTableRowData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcTableRowData.m; sourceTree = "<group>"; };
 		684D92E518BC1FBC005016F7 /* A3DateCalcTableviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateCalcTableviewCell.h; sourceTree = "<group>"; };
 		684D92E618BC1FBC005016F7 /* A3DateCalcTableviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcTableviewCell.m; sourceTree = "<group>"; };
-		684D92E718BC1FBC005016F7 /* A3DefaultColorDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DefaultColorDefines.h; sourceTree = "<group>"; };
 		684D932C18BC20E1005016F7 /* NSDate+formatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+formatting.h"; sourceTree = "<group>"; };
 		684D932D18BC20E1005016F7 /* NSDate+formatting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+formatting.m"; sourceTree = "<group>"; };
 		684E944117C22E760081A8B5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "AppBox3/Asset Catalogs/Images.xcassets"; sourceTree = "<group>"; };
@@ -3531,6 +3531,7 @@
 				68024AD61631637600D396F0 /* A3UIDevice.h */,
 				68024AD71631637600D396F0 /* A3UIDevice.m */,
 				68C9DBDC16AE329500F34A54 /* A3UserDefaults.h */,
+				5718E4991988E91400B4C7ED /* A3DefaultColorDefines.h */,
 				685560041670448D00F200B7 /* A3Utilities.h */,
 				685560051670448D00F200B7 /* A3Utilities.m */,
 				683B953E15EB233500575377 /* common.h */,
@@ -3663,7 +3664,6 @@
 				684D92E418BC1FBC005016F7 /* A3DateCalcTableRowData.m */,
 				68E2A5D718D0AC5200E834D9 /* A3DateMainTableViewController.h */,
 				68E2A5D818D0AC5200E834D9 /* A3DateMainTableViewController.m */,
-				684D92E718BC1FBC005016F7 /* A3DefaultColorDefines.h */,
 			);
 			path = DateCalculator;
 			sourceTree = "<group>";
