@@ -710,10 +710,10 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
                 numberOfEvents = [_sharedManager numberOfAllEvents];
             }
             else if ( [calendarItem[CalendarItem_ID] isEqualToString:SystemCalendarID_Upcoming]) {
-                numberOfEvents = [_sharedManager numberOfUpcomingEventsWithDate:[NSDate date]];
+                numberOfEvents = [_sharedManager numberOfUpcomingEventsWithDate:[NSDate date] withHiddenCalendar:NO];
             }
             else if ( [calendarItem[CalendarItem_ID] isEqualToString:SystemCalendarID_Past] ) {
-                numberOfEvents = [_sharedManager numberOfPastEventsWithDate:[NSDate date]];
+                numberOfEvents = [_sharedManager numberOfPastEventsWithDate:[NSDate date] withHiddenCalendar:NO];
             }
             
             countLabel.text = [NSString stringWithFormat:@"%ld", (long)numberOfEvents];

@@ -132,11 +132,11 @@
 			textLabel.text = NSLocalizedString(@"DaysCounter_ALL", nil);
 		}
         else if ( [item[CalendarItem_ID] isEqualToString:SystemCalendarID_Upcoming]) {
-            numberOfEvents = [_sharedManager numberOfUpcomingEventsWithDate:[NSDate date]];
+            numberOfEvents = [_sharedManager numberOfUpcomingEventsWithDate:[NSDate date] withHiddenCalendar:YES];
 			textLabel.text = NSLocalizedString(@"List_Upcoming", nil);
 		}
         else if ( [item[CalendarItem_ID] isEqualToString:SystemCalendarID_Past] ) {
-            numberOfEvents = [_sharedManager numberOfPastEventsWithDate:[NSDate date]];
+            numberOfEvents = [_sharedManager numberOfPastEventsWithDate:[NSDate date] withHiddenCalendar:YES];
 			textLabel.text = NSLocalizedString(@"List_Past", nil);
 		}
         detailTextLabel.text = [NSString stringWithFormat:@"%ld", (long)numberOfEvents];

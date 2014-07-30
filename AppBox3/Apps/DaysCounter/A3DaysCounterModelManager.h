@@ -53,8 +53,8 @@
 
 - (NSInteger)numberOfAllEvents;
 - (NSInteger)numberOfAllEventsToIncludeHiddenCalendar;
-- (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date;
-- (NSInteger)numberOfPastEventsWithDate:(NSDate*)date;
+- (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date withHiddenCalendar:(BOOL)hiddenCalendar;
+- (NSInteger)numberOfPastEventsWithDate:(NSDate*)date withHiddenCalendar:(BOOL)hiddenCalendar;
 - (NSInteger)numberOfUserCalendarVisible;
 - (NSInteger)numberOfEventContainedImage;
 - (NSDate*)dateOfLatestEvent;
