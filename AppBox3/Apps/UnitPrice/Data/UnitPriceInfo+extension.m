@@ -9,7 +9,49 @@
 #import "UnitPriceInfo+extension.h"
 #import "A3UnitDataManager.h"
 
+NSString *const PRICE_KEY		= @"price";
+NSString *const SIZE_KEY		= @"size";
+NSString *const QUANTITY_KEY	= @"quantity";
+NSString *const UNIT_KEY		= @"unitID";
+NSString *const UNIT_CATEGORY_KEY	= @"unitCategoryID";
+NSString *const DISCOUNT_PERCENT_KEY = @"discountPercent";
+NSString *const DISCOUNT_PRICE_KEY = @"discountPrice";
+NSString *const NOTES_KEY		= @"notes";
+
 @implementation UnitPriceInfo (extension)
+
+- (void)initValues {
+	self.unitCategoryID = @(-1);
+	self.unitID = @(-1);
+	self.quantity = @0;
+	self.size = @0;
+	self.price = @0;
+	self.note = nil;
+	self.discountPercent = @0;
+	self.discountPrice = @0;
+	self.historyID = nil;
+}
+
+- (void)copyValueFrom:(NSDictionary *)store {
+	[self initValues];
+
+	for (NSString *key in [store allKeys]) {
+		[self setValue:[store objectForKey:key] forKey:key];
+	}
+}
+
+- (NSDictionary *)dictionaryRepresentation {
+	NSMutableDictionary *dictionary = [NSMutableDictionary new];
+	[dictionary setObject:self.price forKey:PRICE_KEY];
+	[dictionary setObject:self.size forKey:SIZE_KEY];
+	[dictionary setObject:self.quantity forKey:QUANTITY_KEY];
+	[dictionary setObject:self.unitID forKey:UNIT_KEY];
+	[dictionary setObject:self.unitCategoryID forKey:UNIT_CATEGORY_KEY];
+	[dictionary setObject:self.discountPercent forKey:DISCOUNT_PERCENT_KEY];
+	[dictionary setObject:self.discountPrice forKey:DISCOUNT_PRICE_KEY];
+	if (self.note) [dictionary setObject:self.note forKey:NOTES_KEY];
+	return dictionary;
+}
 
 - (double)unitPrice {
 	double priceValue = self.price.doubleValue;

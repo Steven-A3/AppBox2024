@@ -41,6 +41,7 @@ NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUni
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3UnitDataManager *unitDataManager;
+@property (nonatomic, strong) NSManagedObjectContext *privateContext;
 
 @end
 
@@ -196,6 +197,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	if (![self isMovingToParentViewController]) {
 		_price1 = nil;
 		_price2 = nil;
+		[self.tableView reloadData];
 	}
     
 	[self enableControls:YES];
@@ -251,37 +253,42 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     return _historyBarItem;
 }
 
+- (NSManagedObjectContext *)privateContext {
+	if (!_privateContext) {
+		_privateContext = [NSManagedObjectContext MR_newContext];
+	}
+	return _privateContext;
+}
+
 - (UnitPriceInfo *)price1
 {
     if (!_price1) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"priceName == %@ AND historyID == NULL", @"A"];
-        _price1 = [UnitPriceInfo MR_findFirstWithPredicate:predicate];
-		if (!_price1) {
-            _price1 = [UnitPriceInfo MR_createEntity];
-			_price1.uniqueID = [[NSUUID UUID] UUIDString];
-			_price1.updateDate = [NSDate date];
-            _price1.priceName = @"A";
-			[self initValues:_price1];
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-        }
-    }
+		_price1 = [UnitPriceInfo MR_createEntityInContext:_privateContext];
+		_price1.uniqueID = [[NSUUID UUID] UUIDString];
+		_price1.priceName = @"A";
+		NSDictionary *store = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsPriceA];
+		if (store) {
+			[_price1 copyValueFrom:store];
+		} else {
+			[_price1 initValues];
+		}
+	}
     return _price1;
 }
 
 - (UnitPriceInfo *)price2
 {
-    if (!_price2) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"priceName == %@ AND historyID == NULL", @"B"];
-		_price2 = [UnitPriceInfo MR_findFirstWithPredicate:predicate];
-        if (!_price2) {
-            _price2 = [UnitPriceInfo MR_createEntity];
-			_price2.uniqueID = [[NSUUID UUID] UUIDString];
-			_price2.updateDate = [NSDate date];
-            _price2.priceName = @"B";
-			[self initValues:_price2];
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-        }
-    }
+	if (!_price2) {
+		_price2 = [UnitPriceInfo MR_createEntity];
+		_price2.uniqueID = [[NSUUID UUID] UUIDString];
+		_price2.priceName = @"B";
+		NSDictionary *store = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsPriceB];
+		if (store) {
+			[_price2 copyValueFrom:store];
+		} else {
+			[_price2 initValues];
+		}
+	}
     return _price2;
 }
 
@@ -359,8 +366,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 			}
 		}
 
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-        
+		[self saveDataToUserDefaults];
         [self updateUnitPrices:NO];
 
 	}
@@ -374,12 +380,12 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     UnitPriceInfo *priceSelf;
     UnitPriceInfo *priceOther;
     
-    if ([price.priceName isEqualToString:@"A"]) {
-        priceSelf = [UnitPriceInfo MR_findFirstByAttribute:@"priceName" withValue:@"A"];
-        priceOther = [UnitPriceInfo MR_findFirstByAttribute:@"priceName" withValue:@"B"];
+    if (price == _price1) {
+        priceSelf = _price1;
+        priceOther = _price2;
     } else {
-        priceSelf = [UnitPriceInfo MR_findFirstByAttribute:@"priceName" withValue:@"B"];
-        priceOther = [UnitPriceInfo MR_findFirstByAttribute:@"priceName" withValue:@"A"];
+        priceSelf = _price2;
+        priceOther = _price1;
     }
     
     if (validUnit(priceSelf.unitID) && !validUnit(priceOther.unitID)) {
@@ -392,10 +398,15 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         priceOther.unitID = priceSelf.unitID;
     }
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	[self saveDataToUserDefaults];
     
     [self updateUnitPrices:YES];
 
+}
+
+- (void)saveDataToUserDefaults {
+	[self.unitDataManager saveUnitPriceData:[_price1 dictionaryRepresentation] forKey:A3UnitPriceUserDefaultsPriceA];
+	[self.unitDataManager saveUnitPriceData:[_price2 dictionaryRepresentation] forKey:A3UnitPriceUserDefaultsPriceB];
 }
 
 #pragma mark - UnitPriceInputDelegate
@@ -481,7 +492,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	priceBItem.historyID = history.uniqueID;
     
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    
+
     self.historyBarItem.enabled = YES;
 }
 
@@ -492,22 +503,12 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     price1UnitPrice = 0;
     price2UnitPrice = 0;
 
-	[self initValues:_price1];
-	[self initValues:_price2];
+	[_price1 initValues];
+	[_price2 initValues];
+
+	[self saveDataToUserDefaults];
 
     [self.tableView reloadData];
-}
-
-- (void)initValues:(UnitPriceInfo *)priceInfo {
-	priceInfo.unitCategoryID = @(-1);
-	priceInfo.unitID = @(-1);
-	priceInfo.quantity = @0;
-	priceInfo.size = @0;
-	priceInfo.price = @0;
-	priceInfo.note = nil;
-	priceInfo.discountPercent = @0;
-	priceInfo.discountPrice = @0;
-	priceInfo.historyID = nil;
 }
 
 #pragma mark - Cell Configure

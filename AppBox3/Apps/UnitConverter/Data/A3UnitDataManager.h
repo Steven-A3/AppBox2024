@@ -52,6 +52,8 @@ BOOL validUnit(NSNumber *value);
 
 - (void)saveUnitPriceFavorites:(NSArray *)favorites categoryID:(NSUInteger)categoryID;
 
+- (void)saveUnitPriceData:(id)data forKey:(NSString *)key;
+
 - (void)replaceConvertItems:(NSArray *)newConvertItems forCategory:(NSUInteger)categoryID;
 
 extern const int numOfUnitType;
