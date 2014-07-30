@@ -152,7 +152,7 @@
     [self.view addSubview:self.searchBar];
     [self mySearchDisplayController];
     
-    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
+    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_newContext] ];
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     [self setupInstructionView];
@@ -360,7 +360,8 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
     viewCtrl.landscapeFullScreen = NO;
     viewCtrl.sharedManager = _sharedManager;
-    
+	viewCtrl.savingContext = [NSManagedObjectContext MR_newContext];
+
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;

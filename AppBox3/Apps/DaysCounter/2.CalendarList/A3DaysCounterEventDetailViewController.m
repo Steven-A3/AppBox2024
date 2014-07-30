@@ -1713,7 +1713,7 @@ EXIT_FUCTION:
             [self.delegate willDeleteEvent:self.eventItem daysCounterEventDetailViewController:self];
         }
         else {
-            [_sharedManager removeEvent:_eventItem inContext:nil ];
+            [_sharedManager removeEvent:_eventItem inContext:[NSManagedObjectContext MR_rootSavingContext] ];
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
@@ -1727,7 +1727,7 @@ EXIT_FUCTION:
             [self.delegate willDeleteEvent:self.eventItem daysCounterEventDetailViewController:self];
         }
         else {
-            [_sharedManager removeEvent:_eventItem inContext:nil ];
+            [_sharedManager removeEvent:_eventItem inContext:[NSManagedObjectContext MR_rootSavingContext] ];
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
@@ -1740,7 +1740,8 @@ EXIT_FUCTION:
     self.initialCalendarID = _eventItem.calendarID;
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
 	viewCtrl.delegate = self;
-    viewCtrl.eventItem = [_eventItem MR_inContext:[NSManagedObjectContext MR_rootSavingContext]];
+	viewCtrl.savingContext = [NSManagedObjectContext MR_newContext];
+    viewCtrl.eventItem = [_eventItem MR_inContext:viewCtrl.savingContext];
     viewCtrl.sharedManager = _sharedManager;
     
     if (IS_IPHONE) {
@@ -1860,12 +1861,7 @@ EXIT_FUCTION:
 }
 
 - (void)viewControllerWillDismissByDeletingEvent {
-    if (IS_IPHONE) {
-        [self dismissViewControllerAnimated:NO completion:NULL];
-    }
-    else {
-        [self.navigationController popViewControllerAnimated:NO];
-    }
+	[self.navigationController popViewControllerAnimated:NO];
 }
 
 @end

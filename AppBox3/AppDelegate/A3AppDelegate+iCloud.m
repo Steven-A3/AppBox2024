@@ -53,7 +53,7 @@
 
 	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		[[A3SyncManager sharedSyncManager] synchronizeWithCompletion:^(NSError *error) {
-			[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
+			[A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_newContext] ];
 			[A3LadyCalendarModelManager setupLocalNotification];
 		}];
 	}

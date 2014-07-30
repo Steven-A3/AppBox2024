@@ -52,7 +52,7 @@
 {
     [super viewDidLoad];
 
-	if ([_calendarItem[CalendarItem_ID] integerValue] == CalendarCellType_User) {
+	if ([_calendarItem[CalendarItem_Type] integerValue] == CalendarCellType_User) {
 		self.title = [NSString stringWithFormat:@"%@", _calendarItem[CalendarItem_Name]];
 	} else {
 		self.title = [_sharedManager localizedSystemCalendarNameForCalendarID:_calendarItem[CalendarItem_ID]];
@@ -649,7 +649,7 @@
             item = [items objectAtIndex:indexPath.row];
         }
         
-        [_sharedManager removeEvent:item inContext:nil ];
+        [_sharedManager removeEvent:item inContext:[NSManagedObjectContext MR_rootSavingContext] ];
 		[self loadEventData];
         [self.tableView setEditing:YES];
         [self.tableView setEditing:NO];
@@ -908,6 +908,7 @@
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
+	viewCtrl.savingContext = [NSManagedObjectContext MR_newContext];
     viewCtrl.calendarID = _calendarItem[CalendarItem_ID];
     viewCtrl.sharedManager = _sharedManager;
     if ([_calendarItem[CalendarItem_Type] integerValue] == CalendarCellType_System) {

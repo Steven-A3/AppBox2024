@@ -447,7 +447,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return YES;
 }
 
-- (BOOL)modifyEvent:(DaysCounterEvent *)eventItem {
+- (BOOL)modifyEvent:(DaysCounterEvent *)eventItem inContext:(NSManagedObjectContext *)context {
     if ( !eventItem.effectiveStartDate ) {
         eventItem.effectiveStartDate = [eventItem.startDate solarDate];
     }
@@ -547,13 +547,13 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
 	NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendarID]];
 	for (DaysCounterEvent *event in events) {
-		[self removeEvent:event inContext:nil ];
+		[self removeEvent:event inContext:[NSManagedObjectContext MR_rootSavingContext] ];
 	}
 
 	[context MR_saveToPersistentStoreAndWait];
 	retValue = YES;
 
-	[[self class] reloadAlertDateListForLocalNotification];
+	[[self class] reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_newContext] ];
 
     return retValue;
 }
@@ -611,7 +611,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 }
 
 - (NSArray *)hiddenCalendars {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isShow == NO"];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isShow != YES"];
 	NSArray *hiddenCalendars = [[self calendars] filteredArrayUsingPredicate:predicate];
 	return [hiddenCalendars valueForKeyPath:@"uniqueID"];
 }
@@ -1291,8 +1291,11 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 }
 
 #pragma mark - EventTime Management (AlertTime, EffectiveStartDate)
-+ (void)reloadAlertDateListForLocalNotification
-{
++ (void)reloadAlertDateListForLocalNotification:(NSManagedObjectContext *)context {
+	if (context == nil) {
+		context = [NSManagedObjectContext MR_rootSavingContext];
+	}
+
     // 기존 등록 얼럿 제거.
     [[[UIApplication sharedApplication] scheduledLocalNotifications] enumerateObjectsUsingBlock:^(UILocalNotification *notification, NSUInteger idx, BOOL *stop) {
         NSString *notificationType = [notification.userInfo objectForKey:A3LocalNotificationOwner];
@@ -1301,7 +1304,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         }
     }];
 
-	NSArray *alertItems = [DaysCounterEvent MR_findAllSortedBy:@"alertDatetime" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"alertDatetime != nil"]];
+	NSArray *alertItems = [DaysCounterEvent MR_findAllSortedBy:@"alertDatetime" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"alertDatetime != nil"] inContext:context];
 	if (![alertItems count]) return;
 
     // 얼럿 생성 & 등록.
@@ -1312,7 +1315,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     [alertItems enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
 		DaysCounterReminder *reminder = [event reminder];
         if ([event.hasReminder isEqualToNumber:@(NO)] && reminder) {
-            [reminder MR_deleteEntity];
+            [reminder MR_deleteEntityInContext:context];
 			reminder = nil;
         }
         
@@ -1328,7 +1331,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 		reminder = [event reminder];
         if ([event.hasReminder isEqualToNumber:@(YES)]) {
             if (!reminder) {
-                reminder = [DaysCounterReminder MR_createEntity];
+                reminder = [DaysCounterReminder MR_createEntityInContext:context];
 				reminder.uniqueID = [[NSUUID UUID] UUIDString];
 				reminder.updateDate = [NSDate date];
                 reminder.eventID = event.uniqueID;
@@ -1363,7 +1366,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         }
         else {
             if (reminder) {
-                [reminder MR_deleteEntity];
+                [reminder MR_deleteEntityInContext:context];
             }
         }
         

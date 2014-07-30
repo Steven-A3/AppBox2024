@@ -53,7 +53,7 @@
 	[self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
     
-    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
+    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_newContext] ];
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
@@ -284,6 +284,7 @@
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
+	viewCtrl.savingContext = [NSManagedObjectContext MR_newContext];
     viewCtrl.sharedManager = _sharedManager;
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];

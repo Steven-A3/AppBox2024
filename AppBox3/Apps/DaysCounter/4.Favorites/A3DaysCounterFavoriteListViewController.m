@@ -392,6 +392,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
+	viewCtrl.savingContext = [NSManagedObjectContext MR_newContext];
     viewCtrl.sharedManager = _sharedManager;
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];

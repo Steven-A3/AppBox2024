@@ -25,6 +25,7 @@
 @property (assign, nonatomic) BOOL landscapeFullScreen;
 @property (strong, nonatomic) NSString *calendarID;
 @property (weak, nonatomic) id<A3DaysCounterAddEventViewControllerDelegate> delegate;
+@property (strong, nonatomic) NSManagedObjectContext *savingContext;
 
 - (void)showKeyboard;
 

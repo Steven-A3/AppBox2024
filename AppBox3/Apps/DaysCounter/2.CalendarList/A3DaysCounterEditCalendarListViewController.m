@@ -227,7 +227,8 @@
     BOOL checkState = [item[CalendarItem_IsShow] boolValue];
     item[CalendarItem_IsShow] = @(!checkState);
     [_calendarArray replaceObjectAtIndex:indexPath.row withObject:item];
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+	[_sharedManager saveCalendars:_calendarArray];
+	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)addCalendarAction:(id)sender

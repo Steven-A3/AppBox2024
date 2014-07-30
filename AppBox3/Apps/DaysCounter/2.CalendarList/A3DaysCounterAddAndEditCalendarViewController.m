@@ -36,15 +36,7 @@
 
 - (NSInteger)indexOfCurrentColor:(UIColor*)color
 {
-    NSInteger retIndex = NSNotFound;
-    for(NSInteger i=0; i < [_colorArray count]; i++) {
-        NSDictionary *item = [_colorArray objectAtIndex:i];
-        if ( CGColorEqualToColor([[item objectForKey:CalendarItem_Color] CGColor], [color CGColor]) ) {
-            retIndex = i;
-            break;
-        }
-    }
-    return retIndex;
+	return [_calendarItem[CalendarItem_ColorID] unsignedIntegerValue];
 }
 
 - (void)viewDidLoad
@@ -225,7 +217,7 @@
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             cell.imageView.tintColor = [colorItem objectForKey:CalendarItem_Color];
 
-            if ([[colorItem objectForKey:CalendarItem_Name] isEqualToString:[_calendarItem objectForKey:CalendarItem_ColorID]]) {
+            if ([_calendarItem[CalendarItem_ColorID] unsignedIntegerValue] == indexPath.row) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }
             else {
@@ -259,14 +251,11 @@
 {
     if ( indexPath.section == 1 )
     {
-        NSInteger index = [self indexOfCurrentColor:[_calendarItem objectForKey:CalendarItem_Color]];
-        if ( index == indexPath.row )
+        NSInteger index = [_calendarItem[CalendarItem_ColorID] unsignedIntegerValue];
+		if ( index == indexPath.row )
             return;
         
-        UIColor *color = [[_colorArray objectAtIndex:indexPath.row] objectForKey:CalendarItem_Color];
-        [_calendarItem setObject:color forKey:CalendarItem_Color];
-        _colorID = [[_colorArray objectAtIndex:indexPath.row] objectForKey:CalendarItem_Name];
-        [_calendarItem setObject:_colorID forKey:CalendarItem_ColorID];
+        [_calendarItem setObject:@(indexPath.row) forKey:CalendarItem_ColorID];
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         UITableViewCell *prevCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:indexPath.section]];
@@ -275,7 +264,8 @@
         curCell.accessoryType = UITableViewCellAccessoryCheckmark;
         
         UITableViewCell *calendarNameCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        calendarNameCell.imageView.tintColor = [_calendarItem objectForKey:CalendarItem_Color];
+		NSUInteger colorID = [_calendarItem[CalendarItem_ColorID] unsignedIntegerValue];
+		calendarNameCell.imageView.tintColor = self.colorArray[colorID][CalendarItem_Color];
     }
     else if ( indexPath.section == 2) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"DaysCalendar_CalendarDeleteConfirmMsg", nil)

@@ -76,6 +76,13 @@
 	return self;
 }
 
+- (NSManagedObjectContext *)savingContext {
+	if (!_savingContext) {
+		_savingContext = [NSManagedObjectContext MR_newContext];
+	}
+	return _savingContext;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -102,7 +109,7 @@
 		_isAddingEvent = YES;
         self.title = NSLocalizedString(@"Add Event", @"Add Event");
         _isAdvancedCellOpen = NO;
-        _eventItem = [DaysCounterEvent MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
+        _eventItem = [DaysCounterEvent MR_createEntityInContext:_savingContext];
 
 		// 사진 저장 및 기타 연관 정보 저장을 위해서
 		// uniqueID가 필요합니다. 만약 추가인지 수정인지를 구분해야 한다면
@@ -1482,12 +1489,12 @@
 		if ([_originalPhotoID isEqualToString:_eventItem.photoID]) {
 
 		}
-		[_sharedManager modifyEvent:_eventItem];
+		[_sharedManager modifyEvent:_eventItem inContext:_savingContext ];
 	}
 	[_eventItem moveImagesToOriginalDirectory];
     
-    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
-    [[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
+    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:_savingContext ];
+    [_savingContext MR_saveToPersistentStoreAndWait];
     
 	if (IS_IPAD) {
 		[self.A3RootViewController dismissCenterViewController];
@@ -1502,9 +1509,8 @@
 {
     [self resignAllAction];
 
-	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
-	if ([context hasChanges]) {
-		[context rollback];
+	if ([_savingContext hasChanges]) {
+		[_savingContext rollback];
 	}
 
 	if (IS_IPAD) {
@@ -2236,7 +2242,7 @@
     else if ( actionSheet.tag == ActionTag_Location ) {
         if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
 			DaysCounterEventLocation *location = [_eventItem location];
-			[location MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
+			[location MR_deleteEntityInContext:_savingContext];
 
             [self.tableView reloadData];
         }
@@ -2261,7 +2267,7 @@
     }
     else if ( actionSheet.tag == ActionTag_DeleteEvent ) {
         if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
-			[_sharedManager removeEvent:_eventItem inContext:nil ];
+			[_sharedManager removeEvent:_eventItem inContext:_savingContext ];
 			id <A3DaysCounterAddEventViewControllerDelegate> o = self.delegate;
 			if ([o respondsToSelector:@selector(viewControllerWillDismissByDeletingEvent)]) {
 				[o viewControllerWillDismissByDeletingEvent];
@@ -2283,7 +2289,6 @@
     actionSheet.tag = ActionTag_DeleteEvent;
     [actionSheet showInView:self.view];
 }
-
 
 #pragma mark - UIPopoverControllerDelegate
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
@@ -2329,7 +2334,7 @@
 
             DaysCounterEventLocation *locItem = [_eventItem location];
             if (!locItem) {
-                locItem = [DaysCounterEventLocation MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
+                locItem = [DaysCounterEventLocation MR_createEntityInContext:_savingContext];
                 locItem.uniqueID = [[NSUUID UUID] UUIDString];
             }
 

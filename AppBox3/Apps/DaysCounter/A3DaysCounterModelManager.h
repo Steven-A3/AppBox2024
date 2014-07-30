@@ -39,7 +39,7 @@
 
 - (BOOL)addEvent:(DaysCounterEvent *)eventModel;
 
-- (BOOL)modifyEvent:(DaysCounterEvent *)eventItem;
+- (BOOL)modifyEvent:(DaysCounterEvent *)eventItem inContext:(NSManagedObjectContext *)context;
 
 - (BOOL)removeEvent:(DaysCounterEvent *)eventItem inContext:(NSManagedObjectContext *)context;
 
@@ -95,7 +95,8 @@
 - (NSString *)localizedSystemCalendarNameForCalendarID:(NSString *)calendarID;
 
 + (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event;
-+ (void)reloadAlertDateListForLocalNotification;
+
++ (void)reloadAlertDateListForLocalNotification:(NSManagedObjectContext *)context;
 
 #pragma mark - Lunar
 + (NSDateComponents *)nextSolarDateComponentsFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;

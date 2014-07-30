@@ -80,7 +80,7 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 - (void)toggleFavorite {
 	DaysCounterFavorite *favorite = [self favorite];
 	if (!favorite) {
-		favorite = [DaysCounterFavorite MR_createEntity];
+		favorite = [DaysCounterFavorite MR_createEntityInContext:self.managedObjectContext];
 		favorite.uniqueID = self.uniqueID;
 		favorite.updateDate = [NSDate date];
 		favorite.eventID = self.uniqueID;
