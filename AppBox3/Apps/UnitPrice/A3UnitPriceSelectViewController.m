@@ -290,6 +290,8 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     A3UnitPriceAddViewController *viewController = [[A3UnitPriceAddViewController alloc] initWithNibName:nil bundle:nil];
     viewController.delegate = self;
     viewController.shouldPopViewController = YES;
+	viewController.dataManager = _dataManager;
+	viewController.categoryID = _categoryID;
 
     return viewController;
 }
@@ -317,6 +319,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 #pragma mark - A3UnitPriceAddViewControllerDelegate
 
 - (void)addViewControllerDidUpdateData {
+	_favorites = nil;
     [self updateEditedDataToDelegate];
 }
 
@@ -378,14 +381,14 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 			if (_isFavoriteMode) {
 				unitID = [_favorites[indexPath.row] unsignedIntegerValue];
 				unitName = [_dataManager unitNameForUnitID:unitID categoryID:_categoryID];
+				cell.textLabel.text = NSLocalizedStringFromTable(unitName, @"unit", nil);
 			}
 			else {
 				unitID = [_allData[indexPath.row][ID_KEY] unsignedIntegerValue];
 				unitName = _allData[indexPath.row][NAME_KEY];
+				cell.textLabel.text = unitName;
 			}
 		}
-
-		cell.textLabel.text = unitName;
 
 		if (_currentUnitID == unitID) {
 			checkedItem = YES;

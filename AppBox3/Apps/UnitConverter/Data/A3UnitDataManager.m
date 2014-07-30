@@ -2206,7 +2206,12 @@ const double conversionTable[][34] = {
 }
 
 - (NSMutableArray *)unitPriceFavoriteForCategoryID:(NSUInteger)categoryID {
-	return [NSMutableArray arrayWithArray:[self allUnitPriceFavorites][categoryID]];
+	NSMutableArray *favorites = [NSMutableArray arrayWithArray:[self allUnitPriceFavorites][categoryID]];
+	[favorites sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+		return [NSLocalizedStringFromTable([NSString stringWithCString:unitNames[categoryID][[obj1 integerValue]] encoding:NSUTF8StringEncoding], @"unit", nil) compare:
+				NSLocalizedStringFromTable([NSString stringWithCString:unitNames[categoryID][[obj2 integerValue]] encoding:NSUTF8StringEncoding], @"unit", nil)];
+	}];
+	return favorites;
 }
 
 - (void)saveUnitPriceFavorites:(NSArray *)favorites categoryID:(NSUInteger)categoryID {

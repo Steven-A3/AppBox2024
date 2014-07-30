@@ -135,7 +135,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [_allData count];
+    return [self.allData count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -160,7 +160,7 @@
     
     UIButton *plusBtn = (UIButton *)cell.accessoryView;
     plusBtn.tag = indexPath.row;
-    if ([self.favorites containsObject:item]) {
+    if ([self.favorites containsObject:item[ID_KEY]]) {
         plusBtn.selected = YES;
         cell.textLabel.textColor = [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0];
     }
@@ -181,10 +181,10 @@
     NSDictionary *item = _allData[indexPath.row];
     
     if ([self.favorites containsObject:item[ID_KEY]]) {
-        [_favorites removeObject:item[ID_KEY]];
+        [self.favorites removeObject:item[ID_KEY]];
     }
     else {
-        [_favorites addObject:item[ID_KEY]];
+        [self.favorites addObject:item[ID_KEY]];
     }
     
     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
