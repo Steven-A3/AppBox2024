@@ -254,14 +254,14 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (UnitPriceInfo *)price1
 {
     if (!_price1) {
-        _price1 = [UnitPriceInfo MR_findFirstByAttribute:@"priceName" withValue:@"A"];
-        if (!_price1) {
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"priceName == %@ AND historyID == NULL", @"A"];
+        _price1 = [UnitPriceInfo MR_findFirstWithPredicate:predicate];
+		if (!_price1) {
             _price1 = [UnitPriceInfo MR_createEntity];
 			_price1.uniqueID = [[NSUUID UUID] UUIDString];
 			_price1.updateDate = [NSDate date];
             _price1.priceName = @"A";
-			_price1.unitCategoryID = @(-1);
-			_price1.unitID = @(-1);
+			[self initValues:_price1];
 			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         }
     }
@@ -271,14 +271,14 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (UnitPriceInfo *)price2
 {
     if (!_price2) {
-        _price2 = [UnitPriceInfo MR_findFirstByAttribute:@"priceName" withValue:@"B"];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"priceName == %@ AND historyID == NULL", @"B"];
+		_price2 = [UnitPriceInfo MR_findFirstWithPredicate:predicate];
         if (!_price2) {
             _price2 = [UnitPriceInfo MR_createEntity];
 			_price2.uniqueID = [[NSUUID UUID] UUIDString];
 			_price2.updateDate = [NSDate date];
             _price2.priceName = @"B";
-			_price2.unitCategoryID = @(-1);
-			_price2.unitID = @(-1);
+			[self initValues:_price2];
 			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         }
     }
@@ -491,18 +491,23 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     
     price1UnitPrice = 0;
     price2UnitPrice = 0;
-    
-    if (_price1) {
-        [_price1 MR_deleteEntity];
-    }
-    if (_price2) {
-        [_price2 MR_deleteEntity];
-    }
-    
-    _price1 = nil;
-    _price2 = nil;
-    
+
+	[self initValues:_price1];
+	[self initValues:_price2];
+
     [self.tableView reloadData];
+}
+
+- (void)initValues:(UnitPriceInfo *)priceInfo {
+	priceInfo.unitCategoryID = @(-1);
+	priceInfo.unitID = @(-1);
+	priceInfo.quantity = @0;
+	priceInfo.size = @0;
+	priceInfo.price = @0;
+	priceInfo.note = nil;
+	priceInfo.discountPercent = @0;
+	priceInfo.discountPrice = @0;
+	priceInfo.historyID = nil;
 }
 
 #pragma mark - Cell Configure
