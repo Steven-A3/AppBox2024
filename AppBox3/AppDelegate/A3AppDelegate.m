@@ -568,7 +568,9 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 		if (error.code == -1100) {
 			[_downloadList removeObjectAtIndex:0];
 		}
-		[self startDownloadDataFiles];
+		if ([self.reachability isReachableViaWiFi]) {
+			[self startDownloadDataFiles];
+		}
 	}
 	_downloadTask = nil;
 }
