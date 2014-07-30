@@ -214,9 +214,9 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 		NSString *targetUnitName = [_dataManager unitNameForUnitID:[item.targetUnitItemID unsignedIntegerValue] categoryID:[unitHistory.categoryID unsignedIntegerValue] ];
 		float rate = (float) (conversionTable[[unitHistory.categoryID unsignedIntegerValue]][[unitHistory.unitID unsignedIntegerValue]] / conversionTable[[unitHistory.categoryID unsignedIntegerValue]][[item.targetUnitItemID unsignedIntegerValue]]);
 
-        BOOL _isTemperatureMode = [sourceUnitName isEqualToString:@"Temperature"];
-        
-        if (_isTemperatureMode) {
+        BOOL _isTemperatureMode = [unitHistory.categoryID isEqualToNumber:@(13)];
+
+		if (_isTemperatureMode) {
             float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:sourceUnitName andTemperature:unitHistory.value.floatValue];
             float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnitName];
             ((UILabel *) cell.leftLabels[index]).text = [self.decimalFormatter stringFromNumber:@(targetValue)];
