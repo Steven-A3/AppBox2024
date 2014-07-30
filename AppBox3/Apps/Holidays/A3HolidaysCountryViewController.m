@@ -226,6 +226,7 @@ static NSString *const A3V3InstructionDidShowForHolidaysCountryView = @"A3V3Inst
 
 	[_userSelectedCountries addObject:selectedItem];
 	[HolidayData setUserSelectedCountries:_userSelectedCountries];
+	[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:selectedItem];
 
 	[self.tableView reloadData];
 }

@@ -91,7 +91,7 @@
 			@{EventRowTitle : NSLocalizedString(@"Custom", @"Custom"), EventRowType : @(AlertType_Custom)}];
 
 	self.originalValue = _eventModel.alertDatetime;
-	self.numberKeyboardVC = [self simpleNumberKeyboard];
+	self.numberKeyboardVC = [self simplePrevNextNumberKeyboard];
 }
 
 - (void)didReceiveMemoryWarning

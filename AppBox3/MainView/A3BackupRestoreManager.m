@@ -257,6 +257,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			A3UnitPriceUserDefaultsCurrencyCode,
 			A3UnitPriceUserDefaultsUpdateDate,
 			A3UnitPriceUserDefaultsUnitPriceFavorites,
+			A3UnitPriceUserDefaultsPriceA,
+			A3UnitPriceUserDefaultsPriceB,
 
 			kHolidayCountriesForCurrentDevice,
 			kHolidayCountryExcludedHolidays,

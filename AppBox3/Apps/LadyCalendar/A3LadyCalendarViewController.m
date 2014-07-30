@@ -110,7 +110,13 @@
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDefaultsDidChange) name:NSUserDefaultsDidChangeNotification object:nil];
     [self setupInstructionView];
+}
+
+- (void)userDefaultsDidChange {
+	self.dataManager.currentAccount = nil;
+	[self.dataManager currentAccount];
 }
 
 - (void)cloudDidImportChanges {
@@ -145,6 +151,7 @@
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationLadyCalendarPeriodDataChanged object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
