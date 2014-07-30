@@ -82,8 +82,8 @@
 				NSLocalizedString(@"Every Year", @"Every Year"),
 				NSLocalizedString(@"Custom", @"Custom")];
     }
-    self.numberKeyboardVC = [self simpleNumberKeyboard];
-    self.originalValue = _eventModel.repeatType;
+    self.numberKeyboardVC = [self simplePrevNextNumberKeyboard];
+	self.originalValue = _eventModel.repeatType;
 }
 
 - (void)didReceiveMemoryWarning
