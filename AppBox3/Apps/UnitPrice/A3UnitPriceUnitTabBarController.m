@@ -115,7 +115,9 @@
     
     // PriceInfo에 설정된 unitType에 해당한 탭바가 선택되도록 한다.
     if (self.price.unitCategoryID) {
-		NSUInteger idx = [_unitCategories indexOfObject:self.price.unitCategoryID];
+		NSUInteger idx = [_unitCategories indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+			return [obj[ID_KEY] isEqualToNumber:self.price.unitCategoryID];
+		}];
 
 		self.selectedIndex = idx;
     }

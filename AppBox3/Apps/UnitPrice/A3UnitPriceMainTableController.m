@@ -194,12 +194,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-	if (![self isMovingToParentViewController]) {
-		_price1 = nil;
-		_price2 = nil;
-		[self.tableView reloadData];
-	}
-    
+
 	[self enableControls:YES];
 }
 
