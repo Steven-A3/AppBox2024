@@ -323,7 +323,6 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 		cell.selectionStyle = UITableViewCellSelectionStyleDefault;
 	}
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
 	[cell setShowCheckMark:![walletCategory[W_DoNotShow_KEY] boolValue]];
 

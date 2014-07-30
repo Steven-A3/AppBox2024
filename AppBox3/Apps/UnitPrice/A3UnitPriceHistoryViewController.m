@@ -16,6 +16,7 @@
 #import "UnitPriceHistory+extension.h"
 #import "UnitPriceInfo.h"
 #import "UnitPriceInfo+extension.h"
+#import "A3DefaultColorDefines.h"
 
 @interface A3UnitPriceHistoryViewController () <UIActionSheetDelegate>
 
@@ -238,7 +239,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     double unitPriceB = [unitPriceBItem unitPrice2WithPrice1:unitPriceAItem];
 
 	UIColor *blackColor = [UIColor blackColor];
-    UIColor *greenColor = [UIColor colorWithRed:73.0/255.0 green:191.0/255.0 blue:31.0/255.0 alpha:1.0];
+    UIColor *greenColor = A3DefaultColorHistoryPositiveText;
 
 	cell.unitPriceALabel.textColor = unitPriceA < unitPriceB ? greenColor : blackColor;
 	cell.unitPriceBLabel.textColor = unitPriceB < unitPriceA ? greenColor : blackColor;
@@ -279,55 +280,5 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     }
 }
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
-/*
- #pragma mark - Navigation
- 
- // In a story board-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
- {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- 
- */
 
 @end

@@ -280,96 +280,10 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
         default:
             break;
     }
-//    NSMutableArray *resultStringArray = [[NSMutableArray alloc] init];
-//    NSMutableArray *resultStringArrayB = [[NSMutableArray alloc] init];
-//    switch (historyData.dataType) {
-//        case PercentCalcType_1:
-//        {
-//            // X is Y% of What
-//            [resultStringArray addObject:formattedValues[ValueIdx_X1]];
-//            [resultStringArray addObject:@"="];
-//            [resultStringArray addObject:results[0]];
-//            [resultStringArray addObject:@"×"];
-//            [resultStringArray addObject:formattedValues[ValueIdx_Y1]];
-//        }
-//            break;
-//            
-//        case PercentCalcType_2:
-//        {
-//            // What is X% of Y
-//            [resultStringArray addObject:results[0]];
-//            [resultStringArray addObject:@"="];
-//            [resultStringArray addObject:formattedValues[ValueIdx_Y1]];
-//            [resultStringArray addObject:@"×"];
-//            [resultStringArray addObject:formattedValues[ValueIdx_X1]];
-//        }
-//            break;
-//        case PercentCalcType_3:
-//        {
-//            // X is What % of Y, (X = Y x ANSWER)
-//            [resultStringArray addObject:formattedValues[ValueIdx_X1]];
-//            [resultStringArray addObject:@"="];
-//            [resultStringArray addObject:formattedValues[ValueIdx_Y1]];
-//            [resultStringArray addObject:@"×"];
-//            [resultStringArray addObject:results[0]];
-//        }
-//            break;
-//        case PercentCalcType_4:
-//        {
-//            // % Change from X to Y
-//            [resultStringArray addObject:results[0]];
-//            [resultStringArray addObject:@"="];
-//            [resultStringArray addObject:@"("];
-//            [resultStringArray addObject:formattedValues[ValueIdx_Y1]];
-//            [resultStringArray addObject:@"−"];
-//            [resultStringArray addObject:formattedValues[ValueIdx_X1]];
-//            [resultStringArray addObject:@")"];
-//            [resultStringArray addObject:@"÷"];
-//            [resultStringArray addObject:formattedValues[ValueIdx_X1]];
-//            [resultStringArray addObject:@"×"];
-//            [resultStringArray addObject:@"100"];
-//        }
-//            break;
-//        case PercentCalcType_5:
-//        {
-//            // Compare % Change from X to Y
-//            [resultStringArray addObject:results[0]];
-//            [resultStringArray addObject:@"="];
-//            [resultStringArray addObject:@"("];
-//            [resultStringArray addObject:formattedValues[ValueIdx_Y1]];
-//            [resultStringArray addObject:@"−"];
-//            [resultStringArray addObject:formattedValues[ValueIdx_X1]];
-//            [resultStringArray addObject:@")"];
-//            [resultStringArray addObject:@"÷"];
-//            [resultStringArray addObject:formattedValues[ValueIdx_X1]];
-//            [resultStringArray addObject:@"×"];
-//            [resultStringArray addObject:@"100"];
-//            
-//            [resultStringArrayB addObject:results[1]];
-//            [resultStringArrayB addObject:@"="];
-//            [resultStringArrayB addObject:@"("];
-//            [resultStringArrayB addObject:formattedValues[ValueIdx_Y2]];
-//            [resultStringArrayB addObject:@"−"];
-//            [resultStringArrayB addObject:formattedValues[ValueIdx_X2]];
-//            [resultStringArrayB addObject:@")"];
-//            [resultStringArrayB addObject:@"÷"];
-//            [resultStringArrayB addObject:formattedValues[ValueIdx_X2]];
-//            [resultStringArrayB addObject:@"×"];
-//            [resultStringArrayB addObject:@"100"];
-//        }
-//            break;
-//            
-//        default:
-//            break;
-//    }
-    
+
 
     if (historyData.dataType == PercentCalcType_5) {
         A3PercentCalcHistoryCompareCell *cell = [tableView dequeueReusableCellWithIdentifier:A3PercentCalcHistoryCompareCellID forIndexPath:indexPath];
-
-//        NSDateFormatter *dateFormatter = [NSDateFormatter new];
-//        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-//        cell.dateLabel.text = [dateFormatter stringFromDate:aData.updateDate];
         cell.dateLabel.text = [aData.updateDate timeAgo];
 
         cell.factorALabel.text = resultStringA;
@@ -379,13 +293,12 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
         NSMutableAttributedString *textA = [[NSMutableAttributedString alloc] initWithAttributedString:cell.factorALabel.attributedText];
         NSMutableAttributedString *textB = [[NSMutableAttributedString alloc] initWithAttributedString:cell.factorBLabel.attributedText];
         [textA addAttribute:NSForegroundColorAttributeName
-                      value: isAPositive ? COLOR_POSITIVE : COLOR_NEGATIVE
+                      value: isAPositive ? A3DefaultColorHistoryPositiveText : COLOR_NEGATIVE
                       range:resultLocationA];
         [textB addAttribute:NSForegroundColorAttributeName
-                      value: isBPositive ? COLOR_POSITIVE : COLOR_NEGATIVE
+                      value: isBPositive ? A3DefaultColorHistoryPositiveText : COLOR_NEGATIVE
                       range:resultLocationB];
-//        [textA addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] range:resultLocationA];
-//        [textB addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] range:resultLocationB];
+        
         [textA addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:resultLocationA];
         [textB addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:resultLocationB];
         cell.factorALabel.attributedText = textA;
@@ -394,42 +307,27 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
         [cell.dateLabel sizeToFit];
         [cell.factorALabel sizeToFit];
         [cell.factorBLabel sizeToFit];
-        //[cell setNeedsLayout];
 
         return cell;
         
     } else {
         A3PercentCalcHistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:A3PercentCalcHistoryCellID forIndexPath:indexPath];
-        
-//        NSDateFormatter *dateFormatter = [NSDateFormatter new];
-//        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-//        cell.dateLabel.text = [dateFormatter stringFromDate:aData.updateDate];
         cell.dateLabel.text = [aData.updateDate timeAgo];
         
         cell.factorLabel.text = [NSString stringWithFormat:@"%@", resultStringA];
         cell.factorLabel.font = [UIFont systemFontOfSize:13];
         NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithAttributedString:cell.factorLabel.attributedText];
         [text addAttribute: NSForegroundColorAttributeName
-                     value: isAPositive ? COLOR_POSITIVE : COLOR_NEGATIVE
+                     value: isAPositive ? A3DefaultColorHistoryPositiveText : COLOR_NEGATIVE
                      range:resultLocationA];
-        //[text addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] range:resultLocationA];
         [text addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:resultLocationA];
         cell.factorLabel.attributedText = text;
         
         [cell.dateLabel sizeToFit];
         [cell.factorLabel sizeToFit];
-        //[cell setNeedsLayout];
-        
         
         return cell;
     }
-    
-    //cell.textLabel.text = [NSString stringWithFormat:@"%@\n%@", [resultStringArray componentsJoinedByString:@" "], [resultStringArrayB componentsJoinedByString:@" "]];
-
-    
-    // Configure the cell...
-    
-    //return cell;
 }
 
 -(NSString *)formattedResultString:(NSString *)resultString withType:(PercentCalcType)calcType
@@ -458,11 +356,6 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
     PercentCalcHistory *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
     A3PercentCalcData *historyData = [NSKeyedUnarchiver unarchiveObjectWithData:aData.historyItem];
     
-//    if (IS_RETINA) {
-//        return historyData.dataType==PercentCalcType_5 ? 84.0 : 61.5;
-//    } else {
-//        return historyData.dataType==PercentCalcType_5 ? 84.0 : 62.0;
-//    }
     return historyData.dataType==PercentCalcType_5 ? 84.0 : 62.0;
 }
 

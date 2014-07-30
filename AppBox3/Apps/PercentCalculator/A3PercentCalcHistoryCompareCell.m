@@ -34,20 +34,6 @@
     return self;
 }
 
--(void)layoutSubviews
-{
-    [super layoutSubviews];
-
-//    _factorALabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-//    _factorBLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-//    _factorALabel.adjustsFontSizeToFitWidth = YES;
-//    _factorBLabel.adjustsFontSizeToFitWidth = YES;
-//    [_factorALabel sizeToFit];
-//    [_factorBLabel sizeToFit];
-    
-    [super layoutSubviews];
-}
-
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
@@ -58,9 +44,6 @@
 - (void)setupConstraint
 {
     NSNumber * leftInset = @15;
-//    if (IS_IPAD) {
-//        leftInset = @28;
-//    }
     
     [_dateLabel makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(@10);
@@ -91,7 +74,6 @@
         make.centerY.equalTo(_BLabel.centerY);
         make.leading.equalTo(_BLabel.right).with.offset(10.0);
         make.trailing.equalTo(self.right);
-        //make.trailing.equalTo(self.right).with.offset(-15.0);
     }];
 
     _ALabel.layer.cornerRadius = _ALabel.bounds.size.width / 2.0;

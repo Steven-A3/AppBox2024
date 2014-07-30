@@ -18,7 +18,6 @@
 @property (nonatomic, strong) UILabel *salePriceLabel;
 @property (nonatomic, strong) UILabel *dateLabel;
 @property (nonatomic, strong) UILabel *resultPriceLabel;
-//@property (nonatomic, strong) UILabel *productNameLabel;
 
 @end
 
@@ -51,23 +50,17 @@
     _salePriceLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _dateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _resultPriceLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-//    _productNameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     
     _salePriceLabel.textColor = [UIColor blackColor];
     _dateLabel.textColor = COLOR_HISTORYCELL_DATE;
     _resultPriceLabel.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
-//    _productNameLabel.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
-//    _productNameLabel.textAlignment = NSTextAlignmentRight;
     
     [self.contentView addSubview:_salePriceLabel];
     [self.contentView addSubview:_salePriceLabel];
     [self.contentView addSubview:_dateLabel];
     [self.contentView addSubview:_resultPriceLabel];
-//    [self.contentView addSubview:_productNameLabel];
     
     _resultPriceLabel.adjustsFontSizeToFitWidth = YES;
-//    _productNameLabel.adjustsFontSizeToFitWidth = YES;
-//    _productNameLabel.hidden = YES;
 }
 
 -(void)setupConstraintLayout {
@@ -86,26 +79,17 @@
         make.trailing.equalTo(@-15);
         make.baseline.equalTo(self.bottom).with.offset(-13);
         make.right.equalTo(@-15);
-        //make.right.equalTo(_productNameLabel.left).with.offset(-10.0);
     }];
-    
-//    [_productNameLabel makeConstraints:^(MASConstraintMaker *make) {
-//        make.trailing.equalTo(@-15);
-//        make.leading.equalTo(_resultPriceLabel.right);
-//        make.centerY.equalTo(self.top).with.offset(43);
-//    }];
 }
 
 -(void)adjustConstraintLaout {
     _salePriceLabel.font = [UIFont systemFontOfSize:15];
     _dateLabel.font = [UIFont systemFontOfSize:12];
     _resultPriceLabel.font = [UIFont systemFontOfSize:13];
-//	_productNameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     
     [_salePriceLabel sizeToFit];
     [_dateLabel sizeToFit];
     [_resultPriceLabel sizeToFit];
-//    [_productNameLabel sizeToFit];
 }
 
 -(void)setSalesCalcData:(A3SalesCalcData *)aData {
@@ -118,7 +102,6 @@
     
     _salePriceLabel.text = [nFormatter stringFromNumber:salePriceWithTax];
     _dateLabel.text = [aData.historyDate timeAgo];
-//    _productNameLabel.text = aData.notes;
     
     NSArray *strings;
     strings = @[[nFormatter stringFromNumber:savedAmount],
@@ -127,7 +110,7 @@
     _resultPriceLabel.text = [strings componentsJoinedByString:@""];
     NSMutableAttributedString *savedPriceAttribute = [[NSMutableAttributedString alloc] initWithAttributedString:_resultPriceLabel.attributedText];
     [savedPriceAttribute addAttribute: NSForegroundColorAttributeName
-                                value: COLOR_POSITIVE
+                                value: A3DefaultColorHistoryPositiveText
                                 range: NSMakeRange(0, ((NSString *)strings[0]).length)];
     [savedPriceAttribute addAttribute: NSForegroundColorAttributeName
                                 value: [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0]
