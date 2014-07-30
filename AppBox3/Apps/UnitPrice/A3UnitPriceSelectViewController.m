@@ -71,7 +71,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 - (NSMutableArray *)favorites {
 	if (!_favorites) {
-		_favorites = [NSMutableArray arrayWithArray:[_dataManager favoritesForCategoryID:_categoryID]];
+		_favorites = [NSMutableArray arrayWithArray:[_dataManager unitPriceFavoriteForCategoryID:_categoryID]];
 	}
 	return _favorites;
 }
@@ -244,7 +244,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 - (void)callDelegate:(NSUInteger)selectedUnitID {
 	if ([_delegate respondsToSelector:@selector(selectViewController:didSelectCategoryID:unitID:)]) {
-		[_delegate selectViewController:self didSelectCategoryID:0 unitID:selectedUnitID];
+		[_delegate selectViewController:self didSelectCategoryID:_categoryID unitID:selectedUnitID];
 	}
     
     if (IS_IPHONE) {
@@ -290,6 +290,8 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     A3UnitPriceAddViewController *viewController = [[A3UnitPriceAddViewController alloc] initWithNibName:nil bundle:nil];
     viewController.delegate = self;
     viewController.shouldPopViewController = YES;
+	viewController.dataManager = _dataManager;
+	viewController.categoryID = _categoryID;
 
     return viewController;
 }
@@ -298,7 +300,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 {
 	NSString *query = searchText;
 	if (query && query.length) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitName contains[cd] %@", query];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[cd] %@", query];
 		_filteredResults = [self.allData filteredArrayUsingPredicate:predicate];
 	} else {
 		_filteredResults = nil;
@@ -317,6 +319,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 #pragma mark - A3UnitPriceAddViewControllerDelegate
 
 - (void)addViewControllerDidUpdateData {
+	_favorites = nil;
     [self updateEditedDataToDelegate];
 }
 
@@ -337,10 +340,10 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	}
     else {
         if (_isFavoriteMode) {
-            return _favorites.count;
+            return self.favorites.count;
         }
         else {
-            return _allData.count;
+            return self.allData.count;
         }
     }
 }
@@ -373,19 +376,20 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 		if (tableView == self.searchDisplayController.searchResultsTableView) {
 			unitID = [self.filteredResults[indexPath.row][ID_KEY] unsignedIntegerValue];
 			unitName = self.filteredResults[indexPath.row][NAME_KEY];
+			cell.textLabel.text = unitName;
 		}
 		else {
 			if (_isFavoriteMode) {
 				unitID = [_favorites[indexPath.row] unsignedIntegerValue];
 				unitName = [_dataManager unitNameForUnitID:unitID categoryID:_categoryID];
+				cell.textLabel.text = NSLocalizedStringFromTable(unitName, @"unit", nil);
 			}
 			else {
 				unitID = [_allData[indexPath.row][ID_KEY] unsignedIntegerValue];
 				unitName = _allData[indexPath.row][NAME_KEY];
+				cell.textLabel.text = unitName;
 			}
 		}
-
-		cell.textLabel.text = unitName;
 
 		if (_currentUnitID == unitID) {
 			checkedItem = YES;
