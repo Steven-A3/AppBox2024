@@ -621,6 +621,12 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@", [self hiddenCalendars]]];
 }
 
+- (NSInteger)numberOfAllEventsToIncludeHiddenCalendar
+{
+    return [DaysCounterEvent MR_countOfEntities];
+}
+
+
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date
 {
     return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == nil))", [self hiddenCalendars], date, date, @(RepeatType_Never)]];

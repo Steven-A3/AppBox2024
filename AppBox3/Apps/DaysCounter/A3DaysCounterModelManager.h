@@ -52,6 +52,7 @@
 - (BOOL)removeCalendarItemWithID:(NSString*)calendarID;
 
 - (NSInteger)numberOfAllEvents;
+- (NSInteger)numberOfAllEventsToIncludeHiddenCalendar;
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date;
 - (NSInteger)numberOfPastEventsWithDate:(NSDate*)date;
 - (NSInteger)numberOfUserCalendarVisible;

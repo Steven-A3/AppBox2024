@@ -656,8 +656,8 @@ enum A3TableElementCellType {
 				weakSelf.cancelInputNewCloudDataReceived = NO;
 				return;
 			}
-            NSString *inputString = textField.text;
-			NSNumber *inputNumber = [weakSelf.decimalFormatter numberFromString:textField.text];
+            
+			NSNumber *inputNumber = [weakSelf.decimalFormatter numberFromString:(!textField.text || [textField.text length] == 0) ? @"0" : textField.text];
 
             switch (element.identifier) {
                 case A3TableElementCellType_Price:
@@ -665,12 +665,7 @@ enum A3TableElementCellType {
                 case A3TableElementCellType_Additional:
                 case A3TableElementCellType_Tax:
                 {
-                    if (textField.text && textField.text.length!=0) {
-                        element.value = (!inputNumber || [inputNumber isEqualToNumber:@0]) ? @"" : [weakSelf.decimalFormatter stringFromNumber:inputNumber];
-                    }
-                    else if ([textField.text length] == 0 && [element.value length] > 0) {
-                        inputNumber = [weakSelf.decimalFormatter numberFromString:element.value];
-                    }
+                    element.value = [weakSelf.decimalFormatter stringFromNumber:inputNumber];
                 }
                     break;
                     
@@ -704,18 +699,18 @@ enum A3TableElementCellType {
             }
             else if (element.identifier == A3TableElementCellType_Note) {
                 [weakSelf.preferences.calcData setNotes:element.value];
-                if ([inputString length] == 0) {
+                if ([textField.text length] == 0) {
                     textField.placeholder = NSLocalizedString(@"Notes", @"Notes");
                 }
                 else {
-                    textField.placeholder = inputString;
+                    textField.placeholder = [textField text];
                 }
             }
 
 			if (element.valueType == A3TableViewValueTypePercent) {
                 NSNumberFormatter *percentFormatter = [NSNumberFormatter new];
 
-                if ((!element || ![element value]) && [inputString length] == 0) {
+                if ((!element || ![element value]) && [textField.text length] == 0) {
                     if (element.identifier == A3TableElementCellType_Discount) {
                         element.value = @"0";
 

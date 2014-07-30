@@ -203,10 +203,6 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	FNLOG();
 
-//	if (_onEditingBegin) {
-//		_onEditingBegin(self, textField);
-//	}
-
 	switch (self.inputType) {
 		case A3TableViewEntryTypeText:
 			break;
@@ -219,11 +215,6 @@
 			textField.placeholder = @"";
 			break;
 	}
-
-//	NSIndexPath *indexPath = [_rootTableView indexPathForCellSubview:textField];
-//	if (indexPath) {
-//		[self moveTableScrollToIndexPath:indexPath textField:textField ];
-//	}
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string

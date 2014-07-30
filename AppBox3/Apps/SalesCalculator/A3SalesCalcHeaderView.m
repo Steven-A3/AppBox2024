@@ -337,6 +337,9 @@
         resultData.additionalOff = @0;
         resultData.tax = @0;
     }
+    if (!resultData.price) {
+        resultData.price = @0;
+    }
     
     NSArray *strings;
     NSNumber *salePrice;
