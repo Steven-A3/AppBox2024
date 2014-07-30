@@ -243,8 +243,8 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 	cell.unitPriceALabel.textColor = unitPriceA < unitPriceB ? greenColor : blackColor;
 	cell.unitPriceBLabel.textColor = unitPriceB < unitPriceA ? greenColor : blackColor;
 	
-    cell.unitPriceALabel.text = [unitPriceAItem unitPriceStringWithFormatter:self.currencyFormatter];
-    cell.unitPriceBLabel.text = [unitPriceBItem unitPrice2StringWithPrice1:unitPriceAItem formatter:self.currencyFormatter];
+    cell.unitPriceALabel.text = [unitPriceAItem unitPriceStringWithFormatter:self.currencyFormatter showUnit:YES ];
+    cell.unitPriceBLabel.text = [unitPriceBItem unitPrice2StringWithPrice1:unitPriceAItem formatter:self.currencyFormatter showUnit:YES ];
     cell.timeLabel.text = [unitPriceHistory.updateDate timeAgo];
     
     return cell;

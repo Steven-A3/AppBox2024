@@ -800,7 +800,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.inputView.markLabel.text = @"A";
     [cell.inputView loadFontSettings];
     
-    NSString *unitPriceTxt = [self.price1 unitPriceStringWithFormatter:self.currencyFormatter];
+    NSString *unitPriceTxt = [self.price1 unitPriceStringWithFormatter:self.currencyFormatter showUnit:IS_IPAD ];
     NSString *unitShortName = @"";
     NSString *unitName = @"";
     NSString *priceTxt = @"";
@@ -842,7 +842,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.inputView.markLabel.text = @"B";
     [cell.inputView loadFontSettings];
     
-    NSString *unitPriceTxt = [self.price2 unitPrice2StringWithPrice1:self.price1 formatter:self.currencyFormatter];
+    NSString *unitPriceTxt = [self.price2 unitPrice2StringWithPrice1:self.price1 formatter:self.currencyFormatter showUnit:IS_IPAD ];
     NSString *unitShortName;
     NSString *unitName;
     NSString *priceTxt;
