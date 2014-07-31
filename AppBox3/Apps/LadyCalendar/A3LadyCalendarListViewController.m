@@ -344,6 +344,7 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
+    [self.tableView setEditing:NO];
     [self cancelAction:nil];
 }
 
