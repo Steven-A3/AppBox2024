@@ -36,7 +36,7 @@
 	[_yahooButton makeConstraints:^(MASConstraintMaker *make) {
 		make.right.equalTo(self.contentView.right).with.offset(-15);
 		make.bottom.equalTo(self.contentView.bottom).with.offset(7);
-		make.width.equalTo(@44);
+		make.width.equalTo(@52);
 		make.height.equalTo(@44);
 	}];
 }
