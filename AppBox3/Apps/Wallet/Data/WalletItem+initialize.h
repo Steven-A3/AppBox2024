@@ -12,6 +12,8 @@
 
 @interface WalletItem (initialize)
 
+- (NSArray *)fieldItems;
+
 - (NSArray *)fieldItemsArraySortedByFieldOrder;
 - (void)assignOrder;
 - (void)verifyNULLField;

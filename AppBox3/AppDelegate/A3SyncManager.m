@@ -24,6 +24,7 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	NSUInteger _activeMergeCount;
 	NSFileManager *_fileManager;
 	NSUInteger _leechFailCount;
+	NSTimer *_syncTimer;
 }
 
 + (instancetype)sharedSyncManager
@@ -160,6 +161,18 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 			if (error) NSLog(@"Error merging: %@", error);
 			if (completion) completion(error);
 		}];
+	}
+	[_syncTimer invalidate];
+	_syncTimer = [NSTimer scheduledTimerWithTimeInterval:45 target:self selector:@selector(syncWithTimer) userInfo:nil repeats:NO];
+}
+
+- (void)syncWithTimer {
+	[_syncTimer invalidate];
+	_syncTimer = nil;
+
+	if (![_ensemble isMerging]) {
+		FNLOG(@"Sync initiated by timer.");
+		[self synchronizeWithCompletion:NULL];
 	}
 }
 
