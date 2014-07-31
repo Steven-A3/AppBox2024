@@ -353,9 +353,6 @@
     [_settingDict setObject:@(sliderValue) forKey:SettingItem_ForeCastingPeriods];
 	[self saveSettings];
 
-//    UITableViewCell *cell = (UITableViewCell*)[[slider.superview superview] superview];
-//    UILabel *leftLabel = (UILabel*)[cell viewWithTag:11];
-//    leftLabel.text = [NSString stringWithFormat:@"%.0f",sliderValue];
     slider.value = sliderValue;
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
 }

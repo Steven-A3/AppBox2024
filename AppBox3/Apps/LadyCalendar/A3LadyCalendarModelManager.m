@@ -71,22 +71,21 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 	[self prepareAccount];
 
     // 기본 설정값을 저장한다.
-    if([[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings] == nil ){
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings] == nil ){
         NSMutableDictionary *item = [self createDefaultSetting];
 		[self saveLadyCalendarObject:item forKey:A3LadyCalendarUserDefaultsSettings];
     }
 
-    [self savePredictItemBeforeNow];
-    
+    [self makePredictedPerioedsBeforeCurrentPeriod];
     [self recalculateDates];
 }
 
 - (void)prepareAccount {
 	// 기본 계정을 한개 추가한다.
-	if([self numberOfAccount] < 1 ){
+	if ([self numberOfAccount] < 1 ){
 		[self addDefaultAccount];
 
-		if( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] == nil ) {
+		if ( [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] == nil ) {
 			[self saveLadyCalendarObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID];
 		}
 	}
@@ -130,21 +129,25 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 	}
 }
 
-- (void)savePredictItemBeforeNow
+- (void)makePredictedPerioedsBeforeCurrentPeriod
 {
     NSDictionary *setting = [self currentSetting];
-	if( ![[setting objectForKey:SettingItem_AutoRecord] boolValue] ) return;
+	if ( ![[setting objectForKey:SettingItem_AutoRecord] boolValue] )
+        return;
 
 	NSDictionary *account = [self currentAccount];
-	if( !account ) return;
+	if ( !account )
+        return;
 
 	// Make predict item until today
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@ && isPredict == %@", account[L_ID_KEY], @NO];
-	if (![LadyCalendarPeriod MR_countOfEntitiesWithPredicate:predicate]) return;
+	if (![LadyCalendarPeriod MR_countOfEntitiesWithPredicate:predicate])
+        return;
 
 	LadyCalendarPeriod *period = [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:NO];
 	NSDate *today = [NSDate date];
-	if ([today isEarlierThanDate:period.periodEnds]) return;
+	if ([today isEarlierThanDate:period.periodEnds])
+        return;
 
 	NSInteger averageCycleLength = [self cycleLengthConsideringUserOption];
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
@@ -157,7 +160,7 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 
 	NSArray *predictList = [self predictPeriodListSortedByStartDateIsAscending:YES ];
 	for(LadyCalendarPeriod *period in predictList ) {
-		if( [period.endDate isEarlierThanDate:today] ){
+		if ( [period.endDate isEarlierThanDate:today] ){
 			period.isPredict = @(NO);
 			period.isAutoSave = @(YES);
 		}
@@ -218,14 +221,14 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 
 - (NSInteger)calculateAverageCycleFromArray:(NSArray*)array fromIndex:(NSInteger)index
 {
-    if( [array count] < 1 )
+    if ( [array count] < 1 )
         return 0;
-    else if( [array count] == 1 ){
+    else if ( [array count] == 1 ){
         LadyCalendarPeriod *item = [array objectAtIndex:0];
         return [item.cycleLength integerValue];
     }
     
-    if( index < 0 )
+    if ( index < 0 )
         index = 0;
     
     NSInteger count = 0;
@@ -257,7 +260,7 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 {
     NSDate *nextMonth = [month dateByAddingCalendarMonth:1];
     
-    if( containPredict )
+    if ( containPredict )
         return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"(accountID == %@) AND ((startDate >= %@) AND (startDate < %@))",accountID,month,nextMonth]];
     
     return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"isPredict == %@ AND (accountID == %@) AND ((startDate >= %@) AND (startDate < %@))",@(NO),accountID,month,nextMonth]];
@@ -289,7 +292,7 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 - (BOOL)isOverlapStartDate:(NSDate*)startDate endDate:(NSDate*)endDate accountID:(NSString*)accountID periodID:(NSString*)periodID
 {
     NSArray *array = nil;
-    if( [periodID length] < 1 ) {
+    if ( [periodID length] < 1 ) {
         array = [LadyCalendarPeriod MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(uniqueID != nil) AND (accountID == %@) AND (isPredict == %@) AND ((startDate <= %@ AND endDate >= %@) OR (startDate <= %@ AND endDate >= %@))", accountID, @(NO), startDate, startDate, endDate, endDate]];
     }
     else {
@@ -327,7 +330,7 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 			NSLocalizedString(@"2 days before(9 AM)", @"2 days before(9 AM)"),
 			NSLocalizedString(@"1 week before", @"1 week before"),
 			NSLocalizedString(@"Custom", @"Custom")];
-    if( index < 0 || index >= [strings count] )
+    if ( index < 0 || index >= [strings count] )
         return @"";
     
     return [strings objectAtIndex:index];
@@ -351,13 +354,13 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 
 	NSInteger cycleLength = 0;
 	// 주기값을 구한다.
-	if( cycleOption == CycleLength_SameBeforeCycle ){
+	if ( cycleOption == CycleLength_SameBeforeCycle ){
 		cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:[periodArray count]-1];
 	}
-	else if( cycleOption == CycleLength_AverageBeforeTwoCycle ){
+	else if ( cycleOption == CycleLength_AverageBeforeTwoCycle ){
 		cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:[periodArray count]-2];
 	}
-	else if( cycleOption == CycleLength_AverageAllCycle ){
+	else if ( cycleOption == CycleLength_AverageAllCycle ){
 		cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:0];
 	}
 
@@ -385,13 +388,13 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 
 - (void)updatePredictPeriodsWithCount:(NSInteger)numberOfPredicts {
 	NSDictionary *account = [self currentAccount];
-	if( account == nil )
+	if ( account == nil )
 		return;
 
 	// 예상치 제외한 값을 가져온다.
 	NSArray *periodArray = [self periodListSortedByStartDateIsAscending:YES ];
 
-	if( [periodArray count] < 1 ){
+	if ( [periodArray count] < 1 ){
 		// 예상치 저장된 것들이 있다면 다 삭제한다.
 		[self removeAllPredictItemsAccountID:account[L_ID_KEY]];
 		return;
@@ -403,13 +406,13 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 
 	NSInteger cycleLength = 0;
 	// 주기값을 구한다.
-	if( cycleOption == CycleLength_SameBeforeCycle ){
+	if ( cycleOption == CycleLength_SameBeforeCycle ){
 		cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:[periodArray count]-1];
 	}
-	else if( cycleOption == CycleLength_AverageBeforeTwoCycle ){
+	else if ( cycleOption == CycleLength_AverageBeforeTwoCycle ){
 		cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:[periodArray count]-2];
 	}
-	else if( cycleOption == CycleLength_AverageAllCycle ){
+	else if ( cycleOption == CycleLength_AverageAllCycle ){
 		cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:0];
 	}
 

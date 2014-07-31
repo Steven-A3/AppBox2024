@@ -738,8 +738,14 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	NSMutableDictionary *mutableAccount = [self.dataManager.currentAccount mutableCopy];
 	mutableAccount[L_WatchingDate_KEY] = _periodItem.startDate;
 	[self.dataManager saveAccount:mutableAccount];
-
+    
 	[_dataManager recalculateDates];
+    
+    NSDictionary * settingDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings];
+    if ([[settingDictionary objectForKey:SettingItem_AutoRecord] boolValue]) {
+        [_dataManager makePredictedPerioedsBeforeCurrentPeriod];
+        [_dataManager recalculateDates];
+    }
 
 	[self dismissViewControllerAnimated:YES completion:nil];
 

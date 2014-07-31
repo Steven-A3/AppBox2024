@@ -30,7 +30,7 @@ extern NSString *const L_WatchingDate_KEY;
 
 - (void)saveAccount:(NSDictionary *)account;
 
-- (void)savePredictItemBeforeNow;
+- (void)makePredictedPerioedsBeforeCurrentPeriod;
 
 - (NSInteger)numberOfAccount;
 
