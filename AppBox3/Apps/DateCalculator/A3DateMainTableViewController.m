@@ -979,6 +979,9 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
     
 	[self updateOffsetDateCompWithTextField:textField];
+	
+    A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+	[footerCell saveInputedTextField:textField];
 
 	textField.placeholder = _placeholderBeforeEditingText;
 }

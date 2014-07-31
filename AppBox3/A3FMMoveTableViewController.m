@@ -38,7 +38,6 @@ const CGFloat kVisibleWidth = 100.0;
 // Called when a swipe is performed.
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer
 {
-	FNLOG();
 	bool doneSwiping = recognizer && (recognizer.state == UIGestureRecognizerStateEnded);
 
 	if (doneSwiping)
@@ -106,8 +105,6 @@ const CGFloat kVisibleWidth = 100.0;
 
 // Animates the cells to the left offset with kVisibleWidth
 -(void)shiftLeft:(UITableViewCell<A3FMMoveTableViewSwipeCellDelegate> *)cell {
-	FNLOG();
-
 	bool cellAlreadySwiped = [self.swipedCells containsObject:cell];
 	if (!cellAlreadySwiped) {
 		// add the cell menu view and shift the cell to the right
@@ -137,7 +134,6 @@ const CGFloat kVisibleWidth = 100.0;
 }
 
 - (void)unSwipeAll {
-	FNLOG();
 	[self shiftRight:self.swipedCells];
 }
 

@@ -380,7 +380,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
     }
 
 	NSString *string = [formatter stringFromNumber:value];
-	FNLOG(@"%@", string);
 	return [string stringByTrimmingSpaceCharacters];
 }
 
@@ -749,6 +748,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	id fromObject = _favorites[fromIndexPath.row];
 	[_favorites removeObjectAtIndex:fromIndexPath.row];
 	[_favorites insertObject:fromObject atIndex:toIndexPath.row];
+
+	[A3CurrencyDataManager saveFavorites:_favorites];
 }
 
 #pragma mark -- A3SearchViewDelegate / A3CurrencySelectViewController delegate
@@ -900,6 +901,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 				[self.tableView reloadData];
 			});
 		}
+		[A3CurrencyDataManager saveFavorites:_favorites];
 	});
 }
 
@@ -1117,7 +1119,10 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	} else {
 		targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 	}
-	[self.favorites exchangeObjectInSortedArrayAtIndex:sourceIndexPath.row withObjectAtIndex:targetIndexPath.row];
+
+	[self.favorites exchangeObjectAtIndex:sourceIndexPath.row withObjectAtIndex:targetIndexPath.row];
+	[A3CurrencyDataManager saveFavorites:_favorites];
+
 	[self.tableView reloadRowsAtIndexPaths:@[sourceIndexPath, targetIndexPath] withRowAnimation:UITableViewRowAnimationMiddle];
 
 	double delayInSeconds = 0.3;
