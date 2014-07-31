@@ -159,10 +159,11 @@ typedef CMathParser<char, double> MathParser;
 	
     if ([self checkIfexpressionisnull] == NO) {
         double result = [self evaluate:&isError];
-        
-        if (isError == NO) {
-            _evaluatedResultLabel.text = [self getResultValueString:result shortFormat: (IS_IPHONE && _isLandScape == NO ? YES:NO)];
+
+        if (isError) {
+			result = 0.0;
         }
+		_evaluatedResultLabel.text = [self getResultValueString:result shortFormat: (IS_IPHONE && _isLandScape == NO ? YES:NO)];
     }
 }
 

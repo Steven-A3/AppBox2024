@@ -7,10 +7,10 @@
 //
 
 #import "A3TextViewElement.h"
-#import "A3TextViewCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3WalletNoteCell.h"
 #import "NSString+conversion.h"
+#import "A3JHTableViewCell.h"
 
 @interface A3TextViewElement() <UITextViewDelegate>
 @end

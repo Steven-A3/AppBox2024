@@ -147,9 +147,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)cloudStoreDidImport {
+	// 입력 중에 있다면 refresh를 하지 않는다.
 	if (self.firstResponder) {
-		_cancelInputCloudDataRecieved = YES;
-		[self.firstResponder resignFirstResponder];
+		return;
 	}
 
 	[self loadPreviousCalculation];

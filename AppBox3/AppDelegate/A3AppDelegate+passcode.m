@@ -144,7 +144,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
-	return YES;
+	return NO;
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
@@ -153,7 +153,7 @@
 	if ([flag boolValue] && [A3KeychainUtils getPassword]) {
 		[application ignoreSnapshotOnNextApplicationLaunch];
 	}
-	return YES;
+	return NO;
 }
 
 - (void)removeSecurityCoverView {

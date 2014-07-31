@@ -16,7 +16,7 @@ NSString *const UNIT_KEY		= @"unitID";
 NSString *const UNIT_CATEGORY_KEY	= @"unitCategoryID";
 NSString *const DISCOUNT_PERCENT_KEY = @"discountPercent";
 NSString *const DISCOUNT_PRICE_KEY = @"discountPrice";
-NSString *const NOTES_KEY		= @"notes";
+NSString *const NOTES_KEY		= @"note";
 
 @implementation UnitPriceInfo (extension)
 
