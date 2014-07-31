@@ -656,8 +656,9 @@ enum A3TableElementCellType {
 				weakSelf.cancelInputNewCloudDataReceived = NO;
 				return;
 			}
-            
-			NSNumber *inputNumber = [weakSelf.decimalFormatter numberFromString:(!textField.text || [textField.text length] == 0) ? @"0" : textField.text];
+
+
+			NSNumber *inputNumber = ([textField.text length] == 0 && [element.value length] > 0) ? [weakSelf.decimalFormatter numberFromString:element.value] : [weakSelf.decimalFormatter numberFromString:textField.text];
 
             switch (element.identifier) {
                 case A3TableElementCellType_Price:
