@@ -57,7 +57,7 @@
 
 - (id) invisibleString {
 	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"lll"];
-    [string addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0,3)];
+    [string addAttribute:NSForegroundColorAttributeName value:[UIColor clearColor] range:NSMakeRange(0,3)];
    // [string addAttribute: NSBaselineOffsetAttributeName value: [NSNumber numberWithFloat: -10.0] range:NSMakeRange(0,1)];
     	[string addAttribute:(NSString *)kCTSuperscriptAttributeName value:@(-1)   range:NSMakeRange(0,1)];
     [string addAttribute:(NSString *)kCTSuperscriptAttributeName value:@(1)   range:NSMakeRange(2,1)];
@@ -66,6 +66,7 @@
 	//[string addAttribute:NSFontAttributeName value:[self superscriptSystemFont] range:NSMakeRange(0, 3)];
 	return string;
 }
+
 - (id)stringArcTanh {
 	return [self stringWithSuperscript:@"tanh-1" location:4 length:2 value:@1];
 }
