@@ -13,7 +13,6 @@
 #import "A3NumberKeyboardViewController_iPad.h"
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 #import "A3JHTableViewExpandableHeaderCell.h"
-#import "A3TextViewCell.h"
 #import "A3WalletNoteCell.h"
 
 @interface A3TableViewInputElement () <UITextFieldDelegate, A3KeyboardDelegate>
@@ -410,36 +409,30 @@
 }
 
 - (void)nextButtonPressed{
-    NSIndexPath *indexPath;
-    
-    if (_nextEnabled) {
-        indexPath = [NSIndexPath indexPathForRow:_currentIndexPath.row + 1 inSection:_currentIndexPath.section];
-        A3JHTableViewCell *cell = (A3JHTableViewCell *)[_rootTableView cellForRowAtIndexPath:indexPath];
-        if (!cell) {
-            indexPath = [NSIndexPath indexPathForRow:0 inSection:_currentIndexPath.section + 1];
-            cell = (A3JHTableViewCell *)[_rootTableView cellForRowAtIndexPath:indexPath];
-            if ([cell isKindOfClass:[A3JHTableViewExpandableHeaderCell class]]) {
-                indexPath = [NSIndexPath indexPathForRow:1 inSection:_currentIndexPath.section + 1];
-                cell = (A3JHTableViewCell *)[_rootTableView cellForRowAtIndexPath:indexPath];
-            }
-        }
-        
-        if (![cell isKindOfClass:[A3JHTableViewEntryCell class]] && ![cell isKindOfClass:[A3TextViewCell class]] && ![cell isKindOfClass:[A3WalletNoteCell class]]
-            ) {
-            return;
-        }
-        
-        if ([cell isKindOfClass:[A3JHTableViewEntryCell class]]) {
-            [((A3JHTableViewEntryCell *)cell).textField becomeFirstResponder];
-        }
-        else if ([cell isKindOfClass:[A3WalletNoteCell class]]) {
-            [((A3WalletNoteCell *)cell).textView becomeFirstResponder];
-        }
-        else {
-            // kjh
-            [((A3TextViewCell *)cell).textView becomeFirstResponder];
-        }
-    }
+    if (!_nextEnabled) return;
+
+	NSIndexPath *indexPath;
+
+	indexPath = [NSIndexPath indexPathForRow:_currentIndexPath.row + 1 inSection:_currentIndexPath.section];
+	A3JHTableViewCell *cell = (A3JHTableViewCell *)[_rootTableView cellForRowAtIndexPath:indexPath];
+	if (!cell) {
+		indexPath = [NSIndexPath indexPathForRow:0 inSection:_currentIndexPath.section + 1];
+		cell = (A3JHTableViewCell *)[_rootTableView cellForRowAtIndexPath:indexPath];
+		if ([cell isKindOfClass:[A3JHTableViewExpandableHeaderCell class]]) {
+			indexPath = [NSIndexPath indexPathForRow:1 inSection:_currentIndexPath.section + 1];
+			cell = (A3JHTableViewCell *)[_rootTableView cellForRowAtIndexPath:indexPath];
+		}
+	}
+
+	if (![cell isKindOfClass:[A3JHTableViewEntryCell class]] && ![cell isKindOfClass:[A3WalletNoteCell class]]) {
+		return;
+	}
+
+	if ([cell isKindOfClass:[A3JHTableViewEntryCell class]]) {
+		[((A3JHTableViewEntryCell *)cell).textField becomeFirstResponder];
+	} else {
+		[((A3WalletNoteCell *)cell).textView becomeFirstResponder];
+	}
 }
 
 #pragma mark - misc

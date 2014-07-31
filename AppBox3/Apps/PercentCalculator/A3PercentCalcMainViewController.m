@@ -122,8 +122,7 @@
 
 - (void)cloudStoreDidImport {
 	if (self.firstResponder) {
-		_cancelInputNewCloudDataReceived = YES;
-		[self.firstResponder resignFirstResponder];
+		return;
 	}
 	[self reloadInputData];
 	[self reloadTableHeaderView];

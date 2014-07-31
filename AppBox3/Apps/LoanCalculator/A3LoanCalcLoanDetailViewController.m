@@ -77,8 +77,9 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 }
 
 - (void)cloudStoreDidImport {
+	// 입력 중에 있다면, reload 하지 않는다.
 	if (self.firstResponder) {
-		_cancelInputNewCloudDataRecieved = YES;
+		return;
 	}
 	self.calcItems = nil;
 
