@@ -32,6 +32,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "WalletFavorite.h"
 #import "WalletFavorite+initialize.h"
+#import "A3SyncManager.h"
 
 
 @interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>
@@ -86,9 +87,22 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
     self.tableView.backgroundColor = [UIColor whiteColor];
 
     [self registerContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	if (![[A3SyncManager sharedSyncManager] isCloudEnabled]) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextDidSaveNotification object:nil];
+	}
+}
+
+- (void)cloudStoreDidImport {
+	_fieldItems = nil;
+	[self.tableView reloadData];
 }
 
 - (void)removeObserver {
+	if (![[A3SyncManager sharedSyncManager] isCloudEnabled]) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
+	}
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
@@ -255,7 +269,6 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 {
 	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
 	A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
-	viewController.delegate = self;
 	viewController.item = [self.item MR_inContext:[NSManagedObjectContext MR_rootSavingContext]];
 	viewController.hidesBottomBarWhenPushed = YES;
 	viewController.alwaysReturnToOriginalCategory = self.alwaysReturnToOriginalCategory;

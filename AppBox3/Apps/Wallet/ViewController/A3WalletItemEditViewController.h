@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @class WalletItem;
-@class WalletCategory;
 
 extern NSString *const A3WalletNotificationItemCategoryMoved;
 

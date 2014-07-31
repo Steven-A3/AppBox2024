@@ -890,9 +890,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			WalletFieldItem *originalFieldItem = originalFieldItems[idx];
 			NSDictionary *originalField = [WalletData fieldOfFieldItem:originalFieldItem category:self.category];
 			if ([originalField[W_TYPE_KEY] isEqualToString:fieldOfTargetCategory[W_TYPE_KEY]]) {
+				originalFieldItem.fieldID = fieldOfTargetCategory[W_ID_KEY];
 				[addedItems addObject:originalFieldItem];
 			}
 			else if (![originalField[W_TYPE_KEY] isEqualToString:WalletFieldTypeDate] && ![originalField[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage] && ![originalField[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo]) {
+				originalFieldItem.fieldID = fieldOfTargetCategory[W_ID_KEY];
 				[addedItems addObject:originalFieldItem];
 			}
 		}
