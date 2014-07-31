@@ -46,45 +46,34 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	[self backupCoreDataStore];
 }
 
+- (NSString *)storeFilePath {
+	NSString *bundleName = [[[NSBundle mainBundle] infoDictionary] valueForKey:(NSString *)kCFBundleNameKey];
+	NSString *path = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES)[0];
+	path = [path stringByAppendingPathComponent:bundleName];
+	return [path stringByAppendingPathComponent:[[A3AppDelegate instance] storeFileName]];
+}
+
 - (void)backupCoreDataStore {
-
-	self.backupCoreDataStorePath = [self uniquePathInDocumentDirectory];
-	NSURL *backupStoreURL = [NSURL fileURLWithPath:_backupCoreDataStorePath];
-	
-	NSError *error;
-	NSPersistentStoreCoordinator *appPSC = [NSPersistentStoreCoordinator MR_coordinatorWithAutoMigratingSqliteStoreNamed:
-																		 [[A3AppDelegate instance] storeFileName]
-	];
-	[appPSC lock];
-	[appPSC migratePersistentStore:appPSC.persistentStores[0]
-							 toURL:backupStoreURL
-						   options:nil
-						  withType:NSSQLiteStoreType
-							 error:&error];
-	[appPSC unlock];
-
 	NSMutableArray *fileList = [NSMutableArray new];
 	_deleteFilesAfterZip = [NSMutableArray new];
 
+	_backupCoreDataStorePath = [self storeFilePath];
 	NSString *path;
 	NSString *filename = [[A3AppDelegate instance] storeFileName];
 	[fileList addObject:@{A3ZipFilename : _backupCoreDataStorePath, A3ZipNewFilename : filename}];
-	[_deleteFilesAfterZip addObject:_backupCoreDataStorePath];
 
 	path = [NSString stringWithFormat:@"%@%@", _backupCoreDataStorePath, @"-shm"];
 	[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-shm"]}];
-	[_deleteFilesAfterZip addObject:path];
 
 	path = [NSString stringWithFormat:@"%@%@", _backupCoreDataStorePath, @"-wal"];
 	[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-wal"]}];
-	[_deleteFilesAfterZip addObject:path];
 
 	NSArray *daysCounterEvents = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"photoID != NULL"]];
 	for (DaysCounterEvent *event in daysCounterEvents) {
 		[fileList addObject:
 			@{
 				A3ZipFilename : [[event photoURLInOriginalDirectory:YES] path],
-				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@", A3DaysCounterImageDirectory, event.uniqueID]
+				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@", A3DaysCounterImageDirectory, event.photoID]
 			}];
 	}
 
@@ -437,8 +426,6 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		[self moveFilesFromURL:[sourceBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory]
 						 toURL:[targetBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory]];
 
-		[self moveFilesFromURL:sourceBaseURL toURL:targetBaseURL];
-
 		NSDictionary *backupInfo = [[NSDictionary alloc] initWithContentsOfFile:backupInfoFilePath];
 		NSDictionary *userDefaults = backupInfo[A3BackupFileUserDefaultsKey];
 		NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
@@ -457,13 +444,14 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		if (selectedColor) {
 			[A3AppDelegate instance].window.tintColor = [[A3AppDelegate instance] themeColor];
 		}
+		[fileManager removeItemAtPath:backupInfoFilePath error:NULL];
+		[self moveFilesFromURL:sourceBaseURL toURL:targetBaseURL];
 
 		[[A3AppDelegate instance] setupContext];
 
 		if ([_delegate respondsToSelector:@selector(backupRestoreManager:restoreCompleteWithSuccess:)]) {
 			[_delegate backupRestoreManager:self restoreCompleteWithSuccess:YES];
 		}
-		[fileManager removeItemAtPath:backupInfoFilePath error:NULL];
 	} else {
 		[self extractV1DataFilesAt:backupFilePath];
 
