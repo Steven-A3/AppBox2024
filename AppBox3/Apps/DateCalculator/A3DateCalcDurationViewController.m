@@ -107,30 +107,28 @@ static NSString *CellIdentifier = @"Cell";
     cell.textLabel.textColor = [UIColor blackColor];
     cell.userInteractionEnabled = YES;
 
-	UIImageView *checkImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-	checkImageView.tintColor = [[A3AppDelegate instance] themeColor];
     switch (indexPath.row) {
         case 0:
         {
-            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Year? checkImageView : nil;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Year? [self checkImageView] : nil;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
             break;
         case 1:
         {
-            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Month? checkImageView : nil;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Month? [self checkImageView] : nil;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
             break;
         case 2:
         {
-            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Week? checkImageView : nil;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Week? [self checkImageView] : nil;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
             break;
         case 3:
         {
-            checkImageView.tintColor = [UIColor colorWithRed:218/255.0 green:218/255.0 blue:218/255.0 alpha:1.0];
+			UIImageView *checkImageView = [self checkImageView];
             cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Day? checkImageView : nil;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.userInteractionEnabled = NO;
@@ -142,7 +140,13 @@ static NSString *CellIdentifier = @"Cell";
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (UIImageView *)checkImageView {
+	UIImageView *checkImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+	checkImageView.tintColor = [[A3AppDelegate instance] themeColor];
+	return checkImageView;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -151,21 +155,21 @@ static NSString *CellIdentifier = @"Cell";
         case 0:
         {
             [A3DateCalcStateManager setDurationType:DurationType_Year];
-            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Year? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]] : nil;
-        }
-            break;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Year? [self checkImageView] : nil;
+			break;
+		}
         case 1:
         {
             [A3DateCalcStateManager setDurationType:DurationType_Month];
-            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Month? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]] : nil;
-        }
-            break;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Month? [self checkImageView] : nil;
+			break;
+		}
         case 2:
         {
             [A3DateCalcStateManager setDurationType:DurationType_Week];
-            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Week? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]] : nil;
-        }
-            break;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Week? [self checkImageView] : nil;
+			break;
+		}
     }
 
     if ([self.delegate respondsToSelector:@selector(durationSettingChanged)]) {
