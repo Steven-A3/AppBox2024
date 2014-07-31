@@ -25,11 +25,11 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 @implementation DaysCounterEvent (extension)
 
 - (DaysCounterReminder *)reminder {
-	return [DaysCounterReminder MR_findFirstByAttribute:@"eventID" withValue:self.uniqueID];
+	return [DaysCounterReminder MR_findFirstByAttribute:@"eventID" withValue:self.uniqueID inContext:self.managedObjectContext];
 }
 
 - (DaysCounterFavorite *)favorite {
-	return [DaysCounterFavorite MR_findFirstByAttribute:@"eventID" withValue:self.uniqueID];
+	return [DaysCounterFavorite MR_findFirstByAttribute:@"eventID" withValue:self.uniqueID inContext:self.managedObjectContext];
 }
 
 /*! 이것을 호출하면 startDate가 없는 경우, 항상 만든다. 있으면 만들지 않는다.
@@ -74,7 +74,7 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 }
 
 - (DaysCounterEventLocation *)location {
-	return [DaysCounterEventLocation MR_findFirstByAttribute:@"eventID" withValue:self.uniqueID];
+	return [DaysCounterEventLocation MR_findFirstByAttribute:@"eventID" withValue:self.uniqueID inContext:self.managedObjectContext];
 }
 
 - (void)toggleFavorite {
@@ -87,7 +87,7 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 		DaysCounterFavorite *lastFavorite = [DaysCounterFavorite MR_findFirstOrderedByAttribute:@"order" ascending:NO];
 		favorite.order = [NSString orderStringWithOrder:[lastFavorite.order integerValue] + 1000000];
 	} else {
-		[favorite MR_deleteEntity];
+		[favorite MR_deleteEntityInContext:self.managedObjectContext];
 	}
 }
 
