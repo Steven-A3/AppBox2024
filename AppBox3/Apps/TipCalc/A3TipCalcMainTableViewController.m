@@ -65,6 +65,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 @property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
 @property (nonatomic, strong) CLLocationManager * lm;
 @property (nonatomic, assign) BOOL cancelInputNewCloudDataReceived;
+@property (nonatomic, assign) BOOL isTextFieldEditing;
 
 @end
 
@@ -125,7 +126,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
  * \returns
  */
 - (void)cloudStoreDidImport {
-    if (self.firstResponder) {
+    if (_isTextFieldEditing) {
         return;
     }
     
@@ -629,6 +630,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     if (!_cellTextInputBeginBlock) {
         __weak A3TipCalcMainTableViewController * weakSelf = self;
         _cellTextInputBeginBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
+			weakSelf.isTextFieldEditing = YES;
             weakSelf.firstResponder = textField;
             [weakSelf dismissMoreMenu];
 			[weakSelf addNumberKeyboardNotificationObservers];
@@ -665,6 +667,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         __weak A3TipCalcMainTableViewController * weakSelf = self;
         
         _cellTextInputFinishedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
+			weakSelf.isTextFieldEditing = NO;
             if (weakSelf.firstResponder == textField) {
                 weakSelf.firstResponder = nil;
             }
