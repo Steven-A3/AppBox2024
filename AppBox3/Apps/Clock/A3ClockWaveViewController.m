@@ -320,7 +320,6 @@
 	NSArray *centerArray;
 	NSUInteger numberOfViews = [_circleArray count];
 	CGRect bounds = self.view.bounds;
-	FNLOGRECT(bounds);
 
 	switch (numberOfViews) {
 		case 1:
@@ -440,8 +439,6 @@
 }
 
 - (void)prepareOptionalSubviews {
-	FNLOG();
-
 	[self removeTemperatureView];
 	[self removeWeatherView];
 	[self removeDateView];
@@ -848,7 +845,6 @@
 		return;
 	}
 
-	FNLOG(@"%@", clockInfo.currentWeather);
 	if (!clockInfo.currentWeather) {
 		_weatherInfoAvailable = NO;
 		return;

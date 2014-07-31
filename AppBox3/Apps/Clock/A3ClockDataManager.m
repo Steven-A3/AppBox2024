@@ -56,7 +56,6 @@
 }
 
 - (void)applicationWillEnterForeground {
-	FNLOG();
 	[self refreshClock:YES];
 }
 
@@ -371,7 +370,6 @@
 
 
 - (void)getWeatherInfoWithWOEID:(NSString *)WOEID {
-
 	NSString *weatherUnit = [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? @"f" : @"c";
 	NSURL *weatherURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://weather.yahooapis.com/forecastrss?w=%@&u=%@&language=", WOEID, weatherUnit]];
 
@@ -395,7 +393,7 @@
 				return;
 			}
 
-#define LOG_WEATHER	1
+//#define LOG_WEATHER	0
 #ifdef LOG_WEATHER
 			NSMutableString *log = [NSMutableString new];
 			[log appendString:[NSString stringWithFormat:@"%@\n", _weatherForecast]];
@@ -446,7 +444,6 @@
 		[_locationManager startMonitoringSignificantLocationChanges];
 		return;
 	}
-	FNLOG(@"%@", [_addressCandidates lastObject]);
 
 	NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://where.yahooapis.com/v1/places.q(%@)?appid=%@&format=json", [_addressCandidates lastObject], YAHOO_APP_ID] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 
@@ -513,7 +510,6 @@
 			[log appendString:[NSString stringWithFormat:@"locality:%@\n", placeMark.locality]];
 			[log appendString:[NSString stringWithFormat:@"name:%@\n", placeMark.name]];
 			[log appendString:[NSString stringWithFormat:@"subLocality:%@\n", placeMark.subLocality]];
-			FNLOG(@"%@", log);
 
 #ifdef  ALERT_LOCATION
 			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Location" message:log delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];

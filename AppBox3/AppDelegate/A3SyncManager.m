@@ -23,6 +23,7 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 {
 	NSUInteger _activeMergeCount;
 	NSFileManager *_fileManager;
+	NSUInteger _leechFailCount;
 }
 
 + (instancetype)sharedSyncManager
@@ -145,6 +146,7 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 				[self disableCloudSync];
 			}
 			else {
+				_leechFailCount = 0;
 				if (completion) completion(error);
 			}
 		}];
@@ -202,9 +204,14 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	return [objects valueForKeyPath:@"uniqueID"];
 }
 
-- (void)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble didDeleechWithError:(NSError *)error
-{
-	FNLOG(@"Store did deleech with error: %@", error);
+- (void)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble didDeleechWithError:(NSError *)error {
+	if (error) {
+		if (self.isCloudAvailable && _leechFailCount < 4) {
+			_leechFailCount++;
+			[self enableCloudSync];
+			return;
+		}
+	}
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
 														message:NSLocalizedString(@"iCloud Disabled", nil)
 													   delegate:nil

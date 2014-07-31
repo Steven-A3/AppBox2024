@@ -188,6 +188,7 @@
 	[self mergeTipCalcDeleteCloud:deleteCloud];
 	[self mergeUnitConverterDeleteCloud:deleteCloud];
 	[self mergeUnitPriceDeleteCloud:deleteCloud];
+	[self mergeWalletDeleteCloud:deleteCloud];
 }
 
 - (void)mergeDateCalcDeleteCloud:(BOOL)deleteCloud {
@@ -284,7 +285,8 @@
 
 	NSArray *migratingKeys = @[
 			A3ExpenseListUserDefaultsCurrencyCode,
-			A3ExpenseListIsAddBudgetCanceledByUser
+			A3ExpenseListIsAddBudgetCanceledByUser,
+			A3ExpenseListIsAddBudgetInitiatedOnce,
 	];
 	if (deleteCloud || [self isLocalLaterForLocal:localUpdateDate cloud:cloudUpdateDate]) {
 		[self migrateDefaultsToStoreForKeys:migratingKeys];
@@ -304,6 +306,7 @@
 
 	NSArray *migratingKeys = @[
 			A3LadyCalendarCurrentAccountID,
+			A3LadyCalendarUserDefaultsAccounts,
 			A3LadyCalendarUserDefaultsSettings,
 			A3LadyCalendarLastViewMonth
 	];
@@ -429,7 +432,10 @@
 
 	NSArray *migratingKeys = @[
 			A3UnitConverterDefaultSelectedCategoryID,
-			A3UnitConverterTableViewUnitValueKey
+			A3UnitConverterTableViewUnitValueKey,
+			A3UnitConverterUserDefaultsConvertItems,
+			A3UnitConverterUserDefaultsFavorites,
+			A3UnitConverterUserDefaultsUnitCategories
 	];
 	if (deleteCloud || [self isLocalLaterForLocal:localUpdateDate cloud:cloudUpdateDate]) {
 		[self migrateDefaultsToStoreForKeys:migratingKeys];
@@ -448,7 +454,10 @@
 	NSDate *localUpdateDate = [userDefaults objectForKey:A3UnitPriceUserDefaultsUpdateDate];
 
 	NSArray *migratingKeys = @[
-			A3UnitPriceUserDefaultsCurrencyCode
+			A3UnitPriceUserDefaultsCurrencyCode,
+			A3UnitPriceUserDefaultsPriceA,
+			A3UnitPriceUserDefaultsPriceB,
+			A3UnitPriceUserDefaultsUnitPriceFavorites
 	];
 	if (deleteCloud || [self isLocalLaterForLocal:localUpdateDate cloud:cloudUpdateDate]) {
 		[self migrateDefaultsToStoreForKeys:migratingKeys];
@@ -456,6 +465,25 @@
 	} else {
 		[self migrateDefaultsFromStoreForKeys:migratingKeys];
 		[userDefaults setObject:cloudUpdateDate forKey:A3UnitPriceUserDefaultsUpdateDate];
+	}
+}
+
+- (void)mergeWalletDeleteCloud:(BOOL)deleteCloud {
+	NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
+	NSDate *cloudUpdateDate = [store objectForKey:A3WalletUserDefaultsCloudUpdateDate];
+	NSDate *localUpdateDate = [userDefaults objectForKey:A3WalletUserDefaultsUpdateDate];
+
+	NSArray *migratingKeys = @[
+			A3WalletUserDefaultsCategoryInfo
+	];
+	if (deleteCloud || [self isLocalLaterForLocal:localUpdateDate cloud:cloudUpdateDate]) {
+		[self migrateDefaultsToStoreForKeys:migratingKeys];
+		[store setObject:localUpdateDate forKey:A3WalletUserDefaultsCloudUpdateDate];
+	} else {
+		[self migrateDefaultsFromStoreForKeys:migratingKeys];
+		[userDefaults setObject:cloudUpdateDate forKey:A3WalletUserDefaultsUpdateDate];
 	}
 }
 

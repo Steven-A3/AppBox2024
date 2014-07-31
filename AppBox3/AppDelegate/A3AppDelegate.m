@@ -252,7 +252,6 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 }
 
 - (void)coreDataReady {
-	FNLOG();
 	double delayInSeconds = 0.01;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -522,7 +521,6 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 }
 
 - (void)startDownloadDataFiles {
-	FNLOG();
 	if (![_downloadList count]) {
 		_downloadList = nil;
 		_downloadTask = nil;
@@ -578,8 +576,6 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 #pragma mark - AAAZip delegate
 
 - (void)completedUnzipProcess:(BOOL)bResult {
-	FNLOG();
-
 	_zipArchive = nil;
 	[self startDownloadDataFiles];
 }

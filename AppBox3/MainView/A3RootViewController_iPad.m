@@ -69,7 +69,6 @@
 static const CGFloat kSideViewWidth = 320.0;
 
 - (void)layoutSubviews {
-	FNLOG();
 	CGRect bounds = [self screenBoundsAdjustedWithOrientation];
 
 	self.centerNavigationController.view.frame = bounds;
@@ -137,7 +136,6 @@ static const CGFloat kSideViewWidth = 320.0;
 
 - (void)animateLeftView {
 	if (_showLeftView) {
-		FNLOG(@"setStatusBarHidden:NO");
 		[[UIApplication sharedApplication] setStatusBarHidden:NO];
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
@@ -333,7 +331,6 @@ static const CGFloat kSideViewWidth = 320.0;
 }
 
 - (void)tapCoverViewHandler:(UITapGestureRecognizer *)gestureRecognizer {
-	FNLOG();
 	if (_showLeftView) {
 		[self setShowLeftView:NO];
 	} else {

@@ -157,7 +157,6 @@
 }
 
 - (void)removeSecurityCoverView {
-	FNLOG();
 	if (self.coverView) {
 		[self.coverView removeFromSuperview];
 		self.coverView = nil;

@@ -137,7 +137,6 @@
 		frame.size.height = timeHalfHeightUp * 2 + 60;
 		_gradientView.frame = frame;
 		_gradientLayer.frame = _gradientView.bounds;
-		FNLOGRECT(frame);
 
 		[_hour1 makeConstraints:^(MASConstraintMaker *make) {
 			[self.constraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(-(zeroSize.width * 2 + spaceSize.width + zeroSize.width / 2))];

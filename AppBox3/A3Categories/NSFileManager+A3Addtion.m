@@ -31,7 +31,6 @@ static NSString *const A3CacheStoreFilename = @"AppBoxCacheStore.sqlite";
 
 - (void)setupCacheStoreFile {
 	NSString *cacheStorePath = [self cacheStorePath];
-	FNLOG(@"%@", cacheStorePath);
 	if (![self fileExistsAtPath:self.storePath]) {
 		NSError *error = nil;
 		@try {

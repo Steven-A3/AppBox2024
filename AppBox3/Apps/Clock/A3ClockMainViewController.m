@@ -108,7 +108,6 @@
 }
 
 - (void)removeObserver {
-	FNLOG();
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3DrawerStateChanged object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationClockSettingsChanged object:nil];
@@ -118,7 +117,6 @@
 	[super viewWillDisappear:animated];
 
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-		FNLOG();
 		[self removeObserver];
 	}
 }
