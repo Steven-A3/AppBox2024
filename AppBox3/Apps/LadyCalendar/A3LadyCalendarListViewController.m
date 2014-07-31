@@ -62,11 +62,11 @@
 {
     NSMutableArray *groupedArray = [NSMutableArray array];
     NSMutableDictionary *groupInfo = [NSMutableDictionary dictionary];
-    for(LadyCalendarPeriod *item in array){
+    for (LadyCalendarPeriod *item in array) {
         NSInteger year = [A3DateHelper yearFromDate:item.startDate];
         NSString *key = [NSString stringWithFormat:@"%ld", (long)year];
         NSMutableArray *items = [groupInfo objectForKey:key];
-        if( items == nil ){
+        if ( items == nil ) {
             items = [NSMutableArray array];
             [groupInfo setObject:items forKey:key];
             [groupedArray addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:items,ItemKey_Items,@(year),ItemKey_Type, nil]];
@@ -79,7 +79,7 @@
 
 - (LadyCalendarPeriod *)previousPeriodFromIndexPath:(NSIndexPath*)indexPath
 {
-    if( indexPath.section == 0 && indexPath.row == 0 )
+    if ( indexPath.section == 0 && indexPath.row == 0 )
         return nil;
     
     NSInteger prevSection = ( indexPath.row == 0 ? indexPath.section-1 : indexPath.section );
@@ -92,11 +92,11 @@
 - (LadyCalendarPeriod *)nextPeriodFromIndexPath:(NSIndexPath*)indexPath
 {
     NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
-    if( (indexPath.section+1 >= [_itemArray count]) && (indexPath.row+1 >= [items count]) )
+    if ( (indexPath.section+1 >= [_itemArray count]) && (indexPath.row+1 >= [items count]) )
         return nil;
     
     LadyCalendarPeriod *periodItem = nil;
-    if( (indexPath.row+1) >= [items count] ){
+    if ( (indexPath.row+1) >= [items count] ) {
         NSInteger nextSection = indexPath.section+1;
         periodItem = [[[_itemArray objectAtIndex:nextSection] objectForKey:ItemKey_Items] objectAtIndex:0];
     }
@@ -119,10 +119,10 @@
     NSString *nextYearDate = ( nextItem ? [A3DateHelper dateStringFromDate:nextItem.startDate withFormat:@"yyyyMM"] : nil );
     
     NSMutableArray *array = [NSMutableArray array];
-    if( [prevYearDate isEqualToString:itemYearDate] )
+    if ( [prevYearDate isEqualToString:itemYearDate] )
         [array addObject:prevItem];
     [array addObject:item];
-    if( [nextYearDate isEqualToString:itemYearDate] )
+    if ( [nextYearDate isEqualToString:itemYearDate] )
         [array addObject:nextItem];
     
     return array;
@@ -130,7 +130,7 @@
 
 - (void)setupAddButton
 {
-	if( ![_addButton isDescendantOfView:self.view] ){
+	if ( ![_addButton isDescendantOfView:self.view] ) {
 		[self.view addSubview:_addButton];
 		[_addButton makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.view.centerX);
@@ -154,9 +154,9 @@
     NSArray *items = [dict objectForKey:ItemKey_Items];
     
     NSInteger dummyCounter = 0;
-    if( section == [_itemArray count]-1 ){
+    if ( section == [_itemArray count]-1 ) {
         CGFloat totalHeight = 0.0;
-        for(NSInteger i=0; i < [_itemArray count]; i++){
+        for (NSInteger i=0; i < [_itemArray count]; i++) {
             totalHeight += 23.0;
             totalHeight += (44.0 * [[[_itemArray objectAtIndex:i] objectForKey:ItemKey_Items] count]);
         }
@@ -177,8 +177,8 @@
     UILabel *textLabel = (UILabel*)[headerView viewWithTag:10];
     NSDictionary *dict = [_itemArray objectAtIndex:section];
     textLabel.text = [NSString stringWithFormat:@"%ld", (long)[[dict objectForKey:ItemKey_Type] integerValue]];
-    for(NSLayoutConstraint *layout in headerView.constraints){
-        if( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == textLabel )
+    for (NSLayoutConstraint *layout in headerView.constraints) {
+        if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == textLabel )
             layout.constant = (IS_IPHONE ? 15.0 : 28.0);
     }
     
@@ -198,8 +198,8 @@
         NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3LadyCalendarListCell" owner:nil options:nil];
         cell = [cellArray objectAtIndex:0];
         UIView *leftView = [cell viewWithTag:12];
-        for(NSLayoutConstraint *layout in cell.contentView.constraints){
-            if( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView )
+        for (NSLayoutConstraint *layout in cell.contentView.constraints) {
+            if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView )
                 layout.constant = (IS_IPHONE ? 15.0 : 28.0);
         }
     }
@@ -211,7 +211,7 @@
     UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
     A3ColoredCircleView *circleView = (A3ColoredCircleView*)[cell viewWithTag:12];
 
-    if( item ){
+    if ( item ) {
         FNLOG(@"%s %ld/%ld %@",__FUNCTION__, (long)indexPath.section, (long)indexPath.row,item);
         circleView.hidden = NO;
         
@@ -231,17 +231,17 @@
             textLabel.text = [NSString stringWithFormat:@"%@ - %@", [dateFormatter stringFromDate:item.startDate], [dateFormatter stringFromDate:item.endDate]];
         }
         
-//        LadyCalendarPeriod *prevPeriod = [self previousPeriodFromIndexPath:indexPath];
-        LadyCalendarPeriod *nextPeriod = [self nextPeriodFromIndexPath:indexPath];
-//        BOOL isRealLast = ( (![item.isPredict boolValue] && nextPeriod == nil) || (nextPeriod && [nextPeriod.isPredict boolValue]) );
+        LadyCalendarPeriod *prevPeriod = [self previousPeriodFromIndexPath:indexPath];
         NSInteger cycleLength = 0;
         
-        if( nextPeriod ){
-            cycleLength = [A3DateHelper diffDaysFromDate:item.startDate toDate:nextPeriod.startDate];
+        if ( prevPeriod ) {
+            cycleLength = [A3DateHelper diffDaysFromDate:item.startDate toDate:prevPeriod.startDate];
         }
         else{
             cycleLength = [item.cycleLength integerValue];
         }
+        cycleLength = labs(cycleLength);
+        
         detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"During %ld days", @"StringsDict", nil), (long)cycleLength];
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -262,9 +262,9 @@
 {
     NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
     LadyCalendarPeriod *item = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
-    if( item ){
+    if ( item ) {
         A3ColoredCircleView *circleView = (A3ColoredCircleView*)[cell viewWithTag:12];
-        if( [item.isPredict boolValue] )
+        if ( [item.isPredict boolValue] )
             circleView.centerCircleColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
         else
             circleView.centerCircleColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
@@ -277,17 +277,17 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( editingStyle == UITableViewCellEditingStyleDelete ){
+    if ( editingStyle == UITableViewCellEditingStyleDelete ) {
         NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
         LadyCalendarPeriod *period = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
         
-        if(period){
+        if (period) {
 			[period MR_deleteEntity];
 			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 			double delayInSeconds = 0.1;
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
 				[_dataManager recalculateDates];
 
 				self.sourceArray = [_dataManager periodListSortedByStartDateIsAscending:YES ];
@@ -315,7 +315,7 @@
     NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
     LadyCalendarPeriod *item = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
     
-    if( item == nil )
+    if ( item == nil )
         return;
     
     NSString *monthStr = [A3DateHelper dateStringFromDate:item.startDate withFormat:@"MMMM"];

@@ -719,7 +719,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     }
     if ( _prevPeriod ) {
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:_prevPeriod.startDate toDate:_periodItem.startDate];
-        _prevPeriod.cycleLength = @(diffDays);
+        _periodItem.cycleLength = @(diffDays);
     }
     
     if (!_periodItem.uniqueID) {

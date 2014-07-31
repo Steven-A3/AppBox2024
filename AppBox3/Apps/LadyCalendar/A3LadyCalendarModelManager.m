@@ -271,7 +271,7 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 }
 
 - (LadyCalendarPeriod *)currentPeriodFromDate:(NSDate *)date {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate <= %@ && periodEnds >= %@) AND (accountID == %@)", date, date, [self currentAccount][L_ID_KEY]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate < %@ && periodEnds > %@) AND (accountID == %@)", date, date, [self currentAccount][L_ID_KEY]];
     return [LadyCalendarPeriod MR_findFirstWithPredicate:predicate];
 }
 
