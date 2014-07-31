@@ -1320,7 +1320,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     }];
 
 	NSArray *alertItems = [DaysCounterEvent MR_findAllSortedBy:@"alertDatetime" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"alertDatetime != nil"] inContext:context];
-	if (![alertItems count]) return;
+	if (![alertItems count])
+        return;
 
     // 얼럿 생성 & 등록.
     NSDateComponents *nowDateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
