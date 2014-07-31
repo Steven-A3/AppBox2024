@@ -172,6 +172,28 @@
 	
 	if (_monthButton.selected) {
 		self.dateComponents.month = [self monthNumberOfButton:button];
+        
+		NSInteger day = self.dateComponents.day;
+        
+		NSRange range;
+		if (_isLunarDate) {
+			// 한국 음력 적용 규칙, 음력 변환기에서는 설정에 따르고 디폴트 설정은 언어/국가를 보고 한글/한국인경우에는 한국 음력, 그 외는 중국 음력을 적용한다.
+			BOOL useKorean = [A3UIDevice useKoreanLunarCalendar];
+			NSInteger maxDayForMonth = [NSDate lastMonthDayForLunarYear:self.dateComponents.year month:self.dateComponents.month isKorean:useKorean];
+			range = NSMakeRange(0, maxDayForMonth);
+		} else {
+			NSDateComponents *verifyingComponents = [self.dateComponents copy];
+			verifyingComponents.day = 1;
+			NSDate *verifyingDate = [self.gregorian dateFromComponents:verifyingComponents];
+			range = [self.gregorian rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:verifyingDate];
+		}
+        
+		if (day > range.length) {
+			day = 1;
+		}
+
+		self.dateComponents.day = MAX(MIN(day, range.length), 1);
+        
 	} else if (_yearButton.selected) {
 		if (button == _delete_Dec_Button) return;
 		if (button == _today_Oct_Button) return;
