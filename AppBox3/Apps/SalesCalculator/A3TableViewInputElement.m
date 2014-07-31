@@ -176,10 +176,6 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 	FNLOG();
-    _firstResponder = textField;
-	if (_onEditingBegin) {
-		_onEditingBegin(self, textField);
-	}
 
     [textField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
     
@@ -202,6 +198,11 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	FNLOG();
+
+	_firstResponder = textField;
+	if (_onEditingBegin) {
+		_onEditingBegin(self, textField);
+	}
 
 	switch (self.inputType) {
 		case A3TableViewEntryTypeText:

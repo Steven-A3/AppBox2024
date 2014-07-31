@@ -195,7 +195,6 @@
 }
 
 - (void)setupLocale {
-	FNLOG(@"%@", _currencyCode);
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	if ([_currencyCode length]) {
