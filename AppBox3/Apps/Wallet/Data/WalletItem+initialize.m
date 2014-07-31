@@ -19,8 +19,8 @@
 	NSDictionary *category = [WalletData categoryItemWithID:self.categoryID];
 	NSArray *fields = category[W_FIELDS_KEY];
 	NSArray *fieldIDs = [fields valueForKeyPath:W_ID_KEY];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", self.uniqueID];
-	NSArray *fieldItems = [WalletFieldItem MR_findAllWithPredicate:predicate];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@ AND fieldID != NULL", self.uniqueID];
+	NSArray *fieldItems = [WalletFieldItem MR_findAllWithPredicate:predicate inContext:self.managedObjectContext];
 	fieldItems = [fieldItems sortedArrayUsingComparator:^NSComparisonResult(WalletFieldItem *obj1, WalletFieldItem *obj2) {
 		NSUInteger idx1 = [fieldIDs indexOfObject:obj1.fieldID];
 		NSUInteger idx2 = [fieldIDs indexOfObject:obj2.fieldID];

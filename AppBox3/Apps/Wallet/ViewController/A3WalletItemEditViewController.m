@@ -630,16 +630,19 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
         [self.firstResponder resignFirstResponder];
     }
 
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	for (WalletFieldItem *fieldItem in _item.fieldItemsArraySortedByFieldOrder) {
-		if (!fieldItem.value && !fieldItem.date && !fieldItem.hasImage && !fieldItem.hasVideo) {
-			[fieldItem MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
+		if ((!fieldItem.fieldID && !fieldItem.hasImage && !fieldItem.hasVideo ) || (
+				!fieldItem.value && !fieldItem.date && !fieldItem.hasImage && !fieldItem.hasVideo))
+		{
+			[fieldItem MR_deleteEntityInContext:savingContext];
 		}
 	}
 
 	_item.updateDate = [NSDate date];
-	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
-	if ([context hasChanges]) {
-		[context MR_saveToPersistentStoreAndWait];
+
+	if ([savingContext hasChanges]) {
+		[savingContext MR_saveToPersistentStoreAndWait];
         
         if (_delegate && [_delegate respondsToSelector:@selector(walletItemEdited:)]) {
             [_delegate walletItemEdited:_item];
@@ -858,7 +861,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (void)changeCategory:(NSDictionary *)toCategory
 {
-    // 카테고리 변경
+	// 카테고리 변경
     // 같은 이름 필드는 값 입력
     // 나머지는 노트에 추가
     
@@ -876,22 +879,22 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     NSMutableArray *addedItems = [NSMutableArray new];
 
 	for (NSDictionary *fieldOfTargetCategory in fieldsOfTargetCategory) {
-		NSInteger idx = [originalFieldItems indexOfObjectPassingTest:^BOOL(WalletFieldItem *obj, NSUInteger idx, BOOL *stop) {
-			NSDictionary *field = [WalletData fieldOfFieldItem:obj category:self.category];
-			return [field[W_NAME_KEY] isEqualToString:fieldOfTargetCategory[W_NAME_KEY]];
-		}];
+		@autoreleasepool {
+			NSInteger idx = [originalFieldItems indexOfObjectPassingTest:^BOOL(WalletFieldItem *obj, NSUInteger idx, BOOL *stop) {
+				NSDictionary *field = [WalletData fieldOfFieldItem:obj category:self.category];
+				return [field[W_NAME_KEY] isEqualToString:fieldOfTargetCategory[W_NAME_KEY]];
+			}];
 
-		if (idx == NSNotFound) continue;
+			if (idx == NSNotFound) continue;
 
-		WalletFieldItem *originalFieldItem = originalFieldItems[idx];
-		NSDictionary *originalField = [WalletData fieldOfFieldItem:originalFieldItem category:self.category];
-		if ([originalField[W_TYPE_KEY] isEqualToString:fieldOfTargetCategory[W_TYPE_KEY]]) {
-			originalField = fieldOfTargetCategory;
-			[addedItems addObject:originalFieldItem];
-		}
-		else if (![originalField[W_TYPE_KEY] isEqualToString:WalletFieldTypeDate] && ![originalField[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage] && ![originalField[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo]) {
-			originalField = fieldOfTargetCategory;
-			[addedItems addObject:originalFieldItem];
+			WalletFieldItem *originalFieldItem = originalFieldItems[idx];
+			NSDictionary *originalField = [WalletData fieldOfFieldItem:originalFieldItem category:self.category];
+			if ([originalField[W_TYPE_KEY] isEqualToString:fieldOfTargetCategory[W_TYPE_KEY]]) {
+				[addedItems addObject:originalFieldItem];
+			}
+			else if (![originalField[W_TYPE_KEY] isEqualToString:WalletFieldTypeDate] && ![originalField[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage] && ![originalField[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo]) {
+				[addedItems addObject:originalFieldItem];
+			}
 		}
     }
     
@@ -911,17 +914,15 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     }
 
 	for (WalletFieldItem *remainItem in originalFieldItems) {
-		NSDictionary *remainingItemField = [WalletData fieldOfFieldItem:remainItem category:self.category];
-		if ([remainingItemField[W_TYPE_KEY] isEqualToString:WalletFieldTypeDate] && remainItem.date) {
-			[moveToNoteString appendFormat:@"%@ : %@\n", remainingItemField[W_NAME_KEY], [dateFormatter stringFromDate:remainItem.date]];
-		} else
-        if (remainItem.value.length > 0) {
-            NSString *movingText = [NSString stringWithFormat:@"%@ : %@\n", remainingItemField[W_NAME_KEY], remainItem.value];
-			[moveToNoteString appendString:movingText];
-        }
-		if (![remainingItemField[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage] && ![remainingItemField[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo]) {
-			[remainItem MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
-		} else {
+		@autoreleasepool {
+			NSDictionary *remainingItemField = [WalletData fieldOfFieldItem:remainItem category:self.category];
+			if ([remainingItemField[W_TYPE_KEY] isEqualToString:WalletFieldTypeDate] && remainItem.date) {
+				[moveToNoteString appendFormat:@"%@ : %@\n", remainingItemField[W_NAME_KEY], [dateFormatter stringFromDate:remainItem.date]];
+			} else
+			if (remainItem.value.length > 0) {
+				NSString *movingText = [NSString stringWithFormat:@"%@ : %@\n", remainingItemField[W_NAME_KEY], remainItem.value];
+				[moveToNoteString appendString:movingText];
+			}
 			remainItem.fieldID = nil;
 		}
     }
