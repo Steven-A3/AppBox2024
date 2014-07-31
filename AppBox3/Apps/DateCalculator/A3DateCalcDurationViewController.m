@@ -128,8 +128,7 @@ static NSString *CellIdentifier = @"Cell";
             break;
         case 3:
         {
-			UIImageView *checkImageView = [self checkImageView];
-            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Day? checkImageView : nil;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Day? [[UIImageView alloc] initWithImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"check_02"] grayColor:[UIColor colorWithRed:218/255.0 green:218/255.0 blue:218/255.0 alpha:1.0]]] : nil;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.userInteractionEnabled = NO;
             cell.textLabel.textColor = [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
