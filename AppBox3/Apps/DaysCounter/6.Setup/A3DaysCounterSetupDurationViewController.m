@@ -159,7 +159,10 @@
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         
         if (self.selectedOptionFlag & itemRowType) {
-            cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]];
+			UIImageView *checkImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+			checkImageView.tintColor = [[A3AppDelegate instance] themeColor];
+            cell.accessoryView = checkImageView;
+
         }
         else {
             cell.accessoryView = nil;
@@ -197,7 +200,9 @@
         cell.accessoryView = nil;
     }
     else {
-        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]];
+		UIImageView *checkImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+		checkImageView.tintColor = [[A3AppDelegate instance] themeColor];
+        cell.accessoryView = checkImageView;
     }
     
     optionValue ^= flag;
@@ -208,7 +213,9 @@
 												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 												  otherButtonTitles: nil];
         [alertView show];
-        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]];
+		UIImageView *checkImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+		checkImageView.tintColor = [[A3AppDelegate instance] themeColor];
+        cell.accessoryView = checkImageView;
         return;
     }
     

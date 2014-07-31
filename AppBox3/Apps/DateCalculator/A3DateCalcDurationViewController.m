@@ -106,30 +106,32 @@ static NSString *CellIdentifier = @"Cell";
     cell.textLabel.font = [UIFont systemFontOfSize:17];
     cell.textLabel.textColor = [UIColor blackColor];
     cell.userInteractionEnabled = YES;
-    
+
+	UIImageView *checkImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+	checkImageView.tintColor = [[A3AppDelegate instance] themeColor];
     switch (indexPath.row) {
         case 0:
         {
-            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Year? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]] : nil;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Year? checkImageView : nil;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
             break;
         case 1:
         {
-            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Month? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]] : nil;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Month? checkImageView : nil;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
             break;
         case 2:
         {
-            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Week? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_02"]] : nil;
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Week? checkImageView : nil;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
             break;
         case 3:
         {
-            
-            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Day? [[UIImageView alloc] initWithImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"check_02"] grayColor:[UIColor colorWithRed:218/255.0 green:218/255.0 blue:218/255.0 alpha:1.0]]] : nil;
+            checkImageView.tintColor = [UIColor colorWithRed:218/255.0 green:218/255.0 blue:218/255.0 alpha:1.0];
+            cell.accessoryView = [A3DateCalcStateManager durationType] & DurationType_Day? checkImageView : nil;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.userInteractionEnabled = NO;
             cell.textLabel.textColor = [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
