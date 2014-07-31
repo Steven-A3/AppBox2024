@@ -268,6 +268,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         }
     }
     
+    
     if( cellType == AccountCell_Name ){
         UITextField *textField = (UITextField *)[cell viewWithTag:10];
         textField.text = _accountItem[L_NAME_KEY];

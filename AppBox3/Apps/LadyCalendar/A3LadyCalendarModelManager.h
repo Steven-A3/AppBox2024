@@ -41,6 +41,7 @@ extern NSString *const L_WatchingDate_KEY;
 - (NSArray *)predictPeriodListSortedByStartDateIsAscending:(BOOL)ascending;
 - (NSArray*)periodListWithMonth:(NSDate*)month accountID:(NSString*)accountID containPredict:(BOOL)containPredict;
 - (NSArray*)periodListWithMonth:(NSDate*)month period:(NSInteger)period accountID:(NSString*)accountID;
+- (LadyCalendarPeriod *)currentPeriodFromDate:(NSDate *)date;
 - (LadyCalendarPeriod *)previousPeriodFromDate:(NSDate *)date;
 - (LadyCalendarPeriod *)nextPeriodFromDate:(NSDate *)date;
 - (NSArray *)periodListStartsInMonth:(NSDate *)month;

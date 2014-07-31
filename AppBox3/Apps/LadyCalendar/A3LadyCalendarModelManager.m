@@ -203,14 +203,14 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 }
 
 - (NSArray *)periodListSortedByStartDateIsAscending:(BOOL)ascending {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@ AND isPredict == %@", _currentAccount[L_ID_KEY], @(NO)];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@ AND isPredict == %@", [self currentAccount][L_ID_KEY], @(NO)];
     return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate"
 										ascending:ascending
 									withPredicate:predicate];
 }
 
 - (NSArray *)predictPeriodListSortedByStartDateIsAscending:(BOOL)ascending {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@ AND isPredict == %@", _currentAccount[L_ID_KEY], @(YES)];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@ AND isPredict == %@", [self currentAccount][L_ID_KEY], @(YES)];
     return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate"
 										ascending:ascending
 									withPredicate:predicate];
@@ -242,7 +242,7 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 - (NSArray *)periodListStartsInMonth:(NSDate *)month {
 	NSDate *nextMonth = [month dateByAddingCalendarMonth:1];
 
-	return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"(accountID == %@) AND ((startDate >= %@) AND (startDate < %@))", _currentAccount[L_ID_KEY], month, nextMonth]];
+	return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"(accountID == %@) AND ((startDate >= %@) AND (startDate < %@))", [self currentAccount][L_ID_KEY], month, nextMonth]];
 }
 
 - (NSArray *)periodListInRangeWithMonth:(NSDate*)month accountID:(NSString*)accountID
@@ -270,13 +270,19 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
     return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"isPredict == %@ AND (accountID == %@) AND ((startDate >= %@) AND (startDate < %@))",@(NO),accountID,startMonth,month]];
 }
 
+- (LadyCalendarPeriod *)currentPeriodFromDate:(NSDate *)date {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate <= %@ && periodEnds >= %@) AND (accountID == %@)", date, date, [self currentAccount][L_ID_KEY]];
+    return [LadyCalendarPeriod MR_findFirstWithPredicate:predicate];
+}
+
 - (LadyCalendarPeriod *)previousPeriodFromDate:(NSDate *)date {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate < %@) AND (accountID == %@) AND (isPredict == %@)", date, _currentAccount[L_ID_KEY], @(NO)];
+//	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate < %@) AND (accountID == %@) AND (isPredict == %@)", date, _currentAccount[L_ID_KEY], @(NO)];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate < %@) AND (accountID == %@)", date, [self currentAccount][L_ID_KEY]];
 	return [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:NO];
 }
 
 - (LadyCalendarPeriod *)nextPeriodFromDate:(NSDate *)date {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate > %@) AND (accountID == %@)", date, _currentAccount[L_ID_KEY]];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate > %@) AND (accountID == %@)", date, [self currentAccount][L_ID_KEY]];
     return [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:YES];
 }
 

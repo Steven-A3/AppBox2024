@@ -83,7 +83,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 							ItemKey_Type : @(PeriodCellType_Notes)
 					}]]} ]];
 
-	if ( _isEditMode /*&& ![_periodItem.isPredict boolValue]*/ ) {
+
+    if ( _isEditMode /*&& ![_periodItem.isPredict boolValue]*/ ) {
 		[self.sectionsArray addObject:@{ItemKey_Items : [NSMutableArray arrayWithArray:@[
 				@{
 						ItemKey_Title : NSLocalizedString(@"Delete Period", @"Delete Period"),
@@ -148,7 +149,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	{
 		NSInteger ovulationDays = 14;
 		_periodItem.ovulation = [A3DateHelper dateByAddingDays:ovulationDays fromDate:_periodItem.startDate];
-		self.prevPeriod = nil;
+        self.prevPeriod = [_dataManager previousPeriodFromDate:_periodItem.startDate];
 	}
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
 
@@ -399,6 +400,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
             UITextField *textField = (UITextField*)cell.accessoryView;
             textField.text = [NSString stringWithFormat:@"%ld",[_periodItem.cycleLength longValue]];
+            cell.textLabel.enabled = !_prevPeriod ? YES : NO;
+            textField.enabled = !_prevPeriod ? YES : NO;
+            textField.userInteractionEnabled = !_prevPeriod ? YES : NO;
 			break;
 		}
 
@@ -509,7 +513,12 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             break;
             
         case PeriodCellType_CycleLength: {
+            if (_prevPeriod) {
+                return;
+            }
+            
             [self closeDateInputCell];
+
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
             UITextField *textField = (UITextField*)cell.accessoryView;
             [textField becomeFirstResponder];
@@ -646,24 +655,44 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	[_periodItem setValue:currentDate forKey:self.inputItemKey];
     
     NSInteger inputCellType = 0;
-    if ( [self.inputItemKey isEqualToString:PeriodItem_StartDate] )
+    if ( [self.inputItemKey isEqualToString:PeriodItem_StartDate] ) {
         inputCellType = PeriodCellType_StartDate;
-    else if ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] )
+    }
+    else if ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] ) {
         inputCellType = PeriodCellType_EndDate;
+    }
+    
     [self reloadItemAtCellType:inputCellType];
     
     if ( inputCellType == PeriodCellType_StartDate ) {
         NSDate *endDate = _periodItem.endDate;
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:prevDate toDate:endDate];
-        endDate = [A3DateHelper dateByAddingDays:diffDays fromDate:_periodItem.startDate];
+        endDate = [A3DateHelper dateByAddingDays:diffDays fromDate:[_periodItem startDate]];
 		_periodItem.endDate = endDate;
         [self reloadItemAtCellType:PeriodCellType_EndDate];
+        [self calculateCycleLengthFromDate:currentDate];
+    }
+}
 
-        if ( _prevPeriod ) {
-            NSInteger cycleLength = [A3DateHelper diffDaysFromDate:_prevPeriod.startDate toDate:currentDate];
-			_periodItem.cycleLength = @(cycleLength);
-            [self reloadItemAtCellType:PeriodCellType_CycleLength];
-        }
+- (void)calculateCycleLengthFromDate:(NSDate *)fromDate
+{
+    // cycle length 변경.
+    LadyCalendarPeriod *currentPeriod = [_dataManager currentPeriodFromDate:fromDate];
+    _prevPeriod = [_dataManager previousPeriodFromDate: currentPeriod ? [currentPeriod startDate] : fromDate];
+    if (!_prevPeriod && currentPeriod ) {    // 더이상 이전월이 없는, 최초의 달.
+        _prevPeriod = currentPeriod;
+    }
+    else if (!_prevPeriod && !currentPeriod) {    // 더이상 않이 없는, 이전 월인 경우.
+        // cycleLength 활성?
+        [self reloadItemAtCellType:PeriodCellType_CycleLength];
+        return;
+    }
+    
+    if (_prevPeriod) {
+        NSInteger cycleLength = [A3DateHelper diffDaysFromDate:_prevPeriod.startDate
+                                                        toDate:fromDate];
+        _periodItem.cycleLength = @(labs(cycleLength));
+        [self reloadItemAtCellType:PeriodCellType_CycleLength];
     }
 }
 
