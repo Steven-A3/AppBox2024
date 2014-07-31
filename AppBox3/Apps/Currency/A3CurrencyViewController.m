@@ -380,7 +380,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
     }
 
 	NSString *string = [formatter stringFromNumber:value];
-	FNLOG(@"%@", string);
 	return [string stringByTrimmingSpaceCharacters];
 }
 

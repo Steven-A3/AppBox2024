@@ -201,7 +201,6 @@
 }
 
 - (void)buttonPressed:(UIButton *)button {
-	FNLOG(@"%ld", (long)button.tag);
 	switch (button.tag) {
 		case 0:
 			if ([_menuDelegate respondsToSelector:@selector(swapActionForCell:)]) {
