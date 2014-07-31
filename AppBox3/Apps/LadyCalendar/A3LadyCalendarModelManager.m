@@ -364,6 +364,25 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 	return cycleLength;
 }
 
+- (void)updatePassedPeriodsCycleLength {
+    
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@", [self currentAccount][L_ID_KEY]];
+    NSArray *periodArray =  [LadyCalendarPeriod MR_findAllSortedBy:@"startDate"
+                                                         ascending:YES
+                                                     withPredicate:predicate];
+
+    [periodArray enumerateObjectsUsingBlock:^(LadyCalendarPeriod *aPeriod, NSUInteger idx, BOOL *stop) {
+        LadyCalendarPeriod *prevPeriod;
+        if (idx > 0) {
+            prevPeriod = [periodArray objectAtIndex:idx - 1];
+        }
+
+        if (prevPeriod && ![aPeriod.isPredict boolValue]) {
+            aPeriod.cycleLength = @(labs([A3DateHelper diffDaysFromDate:[prevPeriod startDate] toDate:[aPeriod startDate] isAllDay:YES]));
+        }
+    }];
+}
+
 - (void)updatePredictPeriodsWithCount:(NSInteger)numberOfPredicts {
 	NSDictionary *account = [self currentAccount];
 	if( account == nil )
@@ -423,6 +442,7 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 	NSDictionary *setting = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings];
 
 	NSInteger periodLength = [[setting objectForKey:SettingItem_ForeCastingPeriods] integerValue];
+    [self updatePassedPeriodsCycleLength];
 	[self updatePredictPeriodsWithCount:periodLength];
 
 	[A3LadyCalendarModelManager setupLocalNotification];
