@@ -14,12 +14,23 @@
 
 @implementation WalletItem (initialize)
 
+/*! 다른 조건 없이 오로지 이 아이템 ID를 가지고 있는 field item 을 순서에 관계없이 찾는다. 순서가 의미가 없는 경우에 한함
+ *  Field 의 순서를 따라야 한다면, fieldItemsArraySortedByFieldOrder 를 써야 한다.
+ * \param
+ * \returns
+ */
+- (NSArray *)fieldItems {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", self.uniqueID];
+	return [WalletFieldItem MR_findAllWithPredicate:predicate inContext:self.managedObjectContext];
+}
+
+
 - (NSArray *)fieldItemsArraySortedByFieldOrder
 {
 	NSDictionary *category = [WalletData categoryItemWithID:self.categoryID];
 	NSArray *fields = category[W_FIELDS_KEY];
 	NSArray *fieldIDs = [fields valueForKeyPath:W_ID_KEY];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@ AND fieldID != NULL", self.uniqueID];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", self.uniqueID];
 	NSArray *fieldItems = [WalletFieldItem MR_findAllWithPredicate:predicate inContext:self.managedObjectContext];
 	fieldItems = [fieldItems sortedArrayUsingComparator:^NSComparisonResult(WalletFieldItem *obj1, WalletFieldItem *obj2) {
 		NSUInteger idx1 = [fieldIDs indexOfObject:obj1.fieldID];
