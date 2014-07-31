@@ -779,7 +779,6 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 - (void)layoutSubviews {
 	self.view.frame = [self screenBoundsAdjustedWithOrientation];
 	CGRect bounds = self.view.bounds;
-	FNLOGRECT(bounds);
 
 	[self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop) {
 		CGRect frame = CGRectMake(bounds.size.width * idx, 0, bounds.size.width, bounds.size.height);
@@ -793,9 +792,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 	} else {
 		BOOL hideStatusBar = [_clockAppsButton isHidden] || !self.A3RootViewController.showLeftView;
-		FNLOG(@"%ld, %ld", (long)hideStatusBar, (long)self.A3RootViewController.showLeftView);
 		_appsButtonTop.with.offset(26);
-		FNLOG(@"setStatusBarHidden:%ld", (long)hideStatusBar);
 		[[UIApplication sharedApplication] setStatusBarHidden:hideStatusBar withAnimation:UIStatusBarAnimationNone];
 		[self determineStatusBarStyle];
 	}

@@ -20,7 +20,7 @@
 @interface A3HolidaysCountryViewCell ()
 
 @property (nonatomic, strong) UIView *coverOnImageView;
-@property (nonatomic, strong) FXLabel *countryName;
+@property (nonatomic, strong) UILabel *countryName;
 @property (nonatomic, strong) FXLabel *upcomingHoliday;
 @property (nonatomic, strong) FXLabel *daysLeft;
 @property (nonatomic, strong) FXLabel *numberOfHolidays;
@@ -68,12 +68,14 @@
 		}];
 		[_numberOfHolidays setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
-		_countryName = [FXLabel new];
+		_countryName = [UILabel new];
 		_countryName.textColor = [UIColor whiteColor];
 		_countryName.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:30];
 		_countryName.adjustsFontSizeToFitWidth = YES;
 		_countryName.minimumScaleFactor = 0.5;
-		[self setupShadow:_countryName];
+		_countryName.shadowOffset = CGSizeMake(0, 0.5);
+		_countryName.shadowColor = [UIColor lightGrayColor];
+//		[self setupShadow:_countryName];
 		[self.contentView addSubview:_countryName];
 
 		[_countryName makeConstraints:^(MASConstraintMaker *make) {
