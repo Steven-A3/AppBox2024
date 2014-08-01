@@ -106,16 +106,7 @@
 -(void)addButtonClicked:(UIButton *)button
 {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:button.tag inSection:0];
-    NSDictionary *item = _allData[indexPath.row];
-    
-    if ([self.favorites containsObject:item[ID_KEY]]) {
-        [_favorites removeObject:item[ID_KEY]];
-    }
-    else {
-        [_favorites addObject:item[ID_KEY]];
-    }
-    
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+	[self toggleFavoritesAtIndexPath:indexPath];
 }
 
 #pragma mark - Table view data source
@@ -173,17 +164,20 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    NSDictionary *item = _allData[indexPath.row];
-    
-    if ([self.favorites containsObject:item[ID_KEY]]) {
-        [_favorites removeObject:item];
-    }
-    else {
-        [_favorites addObject:item[ID_KEY]];
-    }
-    
-    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [self toggleFavoritesAtIndexPath:indexPath];
+}
+
+- (void)toggleFavoritesAtIndexPath:(NSIndexPath *)indexPath {
+	NSDictionary *item = _allData[indexPath.row];
+
+	if ([self.favorites containsObject:item[ID_KEY]]) {
+		[_favorites removeObject:item[ID_KEY]];
+	}
+	else {
+		[_favorites addObject:item[ID_KEY]];
+	}
+
+	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 @end
