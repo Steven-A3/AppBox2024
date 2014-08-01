@@ -1330,7 +1330,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     NSMutableArray *localNotifications = [NSMutableArray new];
     [alertItems enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
 		DaysCounterReminder *reminder = [event reminderWithContext:context];
-        if ([event.hasReminder isEqualToNumber:@(NO)] && reminder) {
+        if ([event.hasReminder isEqualToNumber:@(NO)] && reminder) { 
             [reminder MR_deleteEntityInContext:context];
 			reminder = nil;
         }
@@ -1362,7 +1362,9 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
                 reminder.startDate = event.effectiveStartDate;      // 시간갱신
                 reminder.alertDate = event.alertDatetime;           // 시간갱신, 이벤트 알림시간은 now 보다 미래가 됨.
                 reminder.isOn = @(NO);                              // 리마인더리스트에서 숨김.
-                reminder.isUnread = @(YES);                         // 안 읽음 상태
+                if ([event.repeatType integerValue] != RepeatType_Never) {
+                    reminder.isUnread = @(YES);                     // 안 읽음 상태
+                }
             }
             else if ([reminder.isUnread boolValue] == YES && [event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970]) {   // 읽지 않음 && 이벤트의 알림 날짜를 경과 (이벤트 알림 날짜는 항상 갱신됨)
                 reminder.startDate = event.effectiveStartDate;      // 시간갱신
