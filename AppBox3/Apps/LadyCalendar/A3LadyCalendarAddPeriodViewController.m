@@ -99,47 +99,6 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		_periodItem.isPredict = @NO;
 		_periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
 		_periodItem.accountID = _dataManager.currentAccount[L_ID_KEY];
-        
-        NSArray *beforePeriods = [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:NO];
-        if (beforePeriods || [beforePeriods count] > 0) {
-            NSDictionary * settingDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings];
-            NSInteger cycleType = [[settingDictionary objectForKey:SettingItem_CalculateCycle] integerValue];
-            switch (cycleType) {
-                case CycleLength_SameBeforeCycle:
-                {
-                    LadyCalendarPeriod *beforePeriod = [beforePeriods lastObject];
-                    _periodItem.cycleLength = [beforePeriod cycleLength];
-                    
-                }
-                    break;
-                    
-                case CycleLength_AverageBeforeTwoCycle:
-                {
-                    NSInteger twoCyle;
-                    if ([beforePeriods count] >= 2) {
-                        twoCyle = ([[[beforePeriods objectAtIndex:0] cycleLength] integerValue] + [[[beforePeriods objectAtIndex:1] cycleLength] integerValue]) / 2;
-                    }
-                    else {
-                        twoCyle = [[[beforePeriods objectAtIndex:0] cycleLength] integerValue];
-                    }
-                    _periodItem.cycleLength = @(twoCyle);
-                }
-                    break;
-                    
-                case CycleLength_AverageAllCycle:
-                {
-                    __block NSInteger allCycle;
-                    [beforePeriods enumerateObjectsUsingBlock:^(LadyCalendarPeriod *obj, NSUInteger idx, BOOL *stop) {
-                        allCycle += [[obj cycleLength] integerValue];
-                    }];
-                    _periodItem.cycleLength = @(allCycle / [beforePeriods count]);
-                }
-                    break;
-                    
-                default:
-                    break;
-            }
-        }
 	}
 
 	if ( _isEditMode ) {
@@ -150,6 +109,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		NSInteger ovulationDays = 14;
 		_periodItem.ovulation = [A3DateHelper dateByAddingDays:ovulationDays fromDate:_periodItem.startDate];
         self.prevPeriod = [_dataManager previousPeriodFromDate:_periodItem.startDate];
+        if (self.prevPeriod) {
+            [self calculateCycleLengthFromDate:_periodItem.startDate];
+        }
 	}
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
 
@@ -399,7 +361,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
             UITextField *textField = (UITextField*)cell.accessoryView;
             textField.text = [NSString stringWithFormat:@"%ld",[_periodItem.cycleLength longValue]];
-            textField.textColor = !_prevPeriod ? [UIColor blackColor] : [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
+            textField.textColor = !_prevPeriod ? [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] : [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
             textField.userInteractionEnabled = !_prevPeriod ? YES : NO;
 			break;
 		}
