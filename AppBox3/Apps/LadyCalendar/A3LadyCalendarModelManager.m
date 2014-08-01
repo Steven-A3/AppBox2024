@@ -115,6 +115,10 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 	[self saveLadyCalendarObject:accounts forKey:A3LadyCalendarUserDefaultsAccounts];
 }
 
+- (void)saveAccountList:(NSArray *)accountList {
+	[self saveLadyCalendarObject:accountList forKey:A3LadyCalendarUserDefaultsAccounts];
+}
+
 - (void)saveLadyCalendarObject:(id)object forKey:(NSString *)key {
 	NSDate *updateDate = [NSDate date];
 	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];

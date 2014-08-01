@@ -29,6 +29,7 @@ extern NSString *const L_WatchingDate_KEY;
 - (void)deleteAccount:(NSDictionary *)account;
 
 - (void)saveAccount:(NSDictionary *)account;
+- (void)saveAccountList:(NSArray *)accountList;
 
 - (void)makePredictedPerioedsBeforeCurrentPeriod;
 
