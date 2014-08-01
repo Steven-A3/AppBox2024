@@ -399,7 +399,6 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
             UITextField *textField = (UITextField*)cell.accessoryView;
             textField.text = [NSString stringWithFormat:@"%ld",[_periodItem.cycleLength longValue]];
-            cell.textLabel.textColor = !_prevPeriod ? [UIColor blackColor] : [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
             textField.textColor = !_prevPeriod ? [UIColor blackColor] : [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
             textField.userInteractionEnabled = !_prevPeriod ? YES : NO;
 			break;
