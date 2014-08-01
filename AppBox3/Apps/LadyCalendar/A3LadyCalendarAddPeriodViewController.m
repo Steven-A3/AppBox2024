@@ -311,7 +311,6 @@ extern NSString *const A3WalletItemFieldNoteCellID;
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 80.0, 44.0)];
-//                textField.keyboardType = UIKeyboardTypeNumberPad;
                 textField.borderStyle = UITextBorderStyleNone;
                 textField.textAlignment = NSTextAlignmentRight;
                 textField.delegate = self;
@@ -400,8 +399,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
             UITextField *textField = (UITextField*)cell.accessoryView;
             textField.text = [NSString stringWithFormat:@"%ld",[_periodItem.cycleLength longValue]];
-            cell.textLabel.enabled = !_prevPeriod ? YES : NO;
-            textField.enabled = !_prevPeriod ? YES : NO;
+            cell.textLabel.textColor = !_prevPeriod ? [UIColor blackColor] : [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
+            textField.textColor = !_prevPeriod ? [UIColor blackColor] : [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
             textField.userInteractionEnabled = !_prevPeriod ? YES : NO;
 			break;
 		}
