@@ -63,7 +63,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3TableViewInputElement *calculatorTargetElement;
 @property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
-@property (nonatomic, weak) UITextField *editingTextField;
 
 @end
 
@@ -121,7 +120,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
  * \returns
  */
 - (void)cloudStoreDidImport {
-    if (self.editingTextField) {
+    if (self.firstResponder) {
         return;
     }
     
@@ -625,7 +624,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     if (!_cellTextInputBeginBlock) {
         __weak A3TipCalcMainTableViewController * weakSelf = self;
         _cellTextInputBeginBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-			weakSelf.editingTextField = textField;
             weakSelf.firstResponder = textField;
             [weakSelf dismissMoreMenu];
 			[weakSelf addNumberKeyboardNotificationObservers];
@@ -662,10 +660,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         __weak A3TipCalcMainTableViewController * weakSelf = self;
         
         _cellTextInputFinishedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-			weakSelf.editingTextField = nil;
-            if (weakSelf.firstResponder == textField) {
-                weakSelf.firstResponder = nil;
-            }
 			[weakSelf removeNumberKeyboardNotificationObservers];
 
             NSNumber *value;
@@ -713,6 +707,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 			A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *) [weakSelf.tableView cellForCellSubview:textField];
 			[cell setNeedsLayout];
+
+			if (weakSelf.firstResponder == textField) {
+				weakSelf.firstResponder = nil;
+			}
 		};
     }
     
