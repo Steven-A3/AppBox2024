@@ -150,6 +150,7 @@
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
 		[self.tableView reloadData];
 	});
+	[self.dataManager saveAccountList:_itemArray];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
