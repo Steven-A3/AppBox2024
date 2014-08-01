@@ -53,8 +53,9 @@
 	[self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
     
-    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_newContext] ];
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *newContext = [NSManagedObjectContext MR_newContext];
+    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:newContext];
+    [newContext MR_saveToPersistentStoreAndWait];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
