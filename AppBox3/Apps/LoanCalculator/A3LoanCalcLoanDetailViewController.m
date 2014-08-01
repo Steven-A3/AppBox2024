@@ -389,6 +389,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 #pragma mark - LoanCalcExtraPaymentDelegate
 
 - (void)didChangedLoanCalcExtraPayment:(LoanCalcData *)loanCalc {
+	[self updateLoanCalculation];
     [self.tableView reloadData];
 }
 

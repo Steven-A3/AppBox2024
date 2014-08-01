@@ -574,7 +574,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 - (void)shareAll:(id)sender {
 	self.shareTextList = [NSMutableArray new];
 
-	NSUInteger sourceID = [_convertItems[0] unsignedIntegerValue];
+	NSUInteger sourceID = [_convertItems[[self firstUnitIndex]] unsignedIntegerValue];
 	NSString *sourceShortName = NSLocalizedStringFromTable([_dataManager unitNameForUnitID:sourceID categoryID:_categoryID], @"unitShort", nil);
 	for (NSInteger index = 1; index < _convertItems.count; index++) {
 		if ([_convertItems[index] isKindOfClass:[NSNumber class]]) {
@@ -900,7 +900,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 		float conversionRate = 0;
 
-		NSUInteger sourceID = [_convertItems[0] unsignedIntegerValue];
+		NSUInteger sourceID = [_convertItems[[self firstUnitIndex]] unsignedIntegerValue];
 		NSString *sourceUnitName = [_dataManager unitNameForUnitID:sourceID categoryID:_categoryID];
 		if (_isTemperatureMode) {
 			// 먼저 입력된 값을 섭씨기준의 온도로 변환한다.
@@ -1348,6 +1348,12 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	return targetIndex;
 }
 
+- (NSUInteger)firstUnitIndex {
+	return [self.convertItems indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		return [obj isKindOfClass:[NSNumber class]];
+	}];
+}
+
 - (void)updateTextFieldsWithSourceTextField:(UITextField *)textField {
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
 
@@ -1387,7 +1393,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
         self.unitValue = @(fromValue);
     }
 
-	NSUInteger sourceID = [_convertItems[0] unsignedIntegerValue];
+	NSUInteger sourceID = [_convertItems[[self firstUnitIndex]] unsignedIntegerValue];
 	NSString *zeroKey = [_dataManager unitNameForUnitID:sourceID categoryID:_categoryID];
 
 	for (NSString *key in [_text1Fields allKeys]) {
@@ -1512,9 +1518,9 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		[self.text2Fields removeObjectForKey:targetName];
 
 		[self.convertItems removeObjectAtIndex:indexPath.row];
-		[_dataManager replaceConvertItems:[_convertItems copy] forCategory:_categoryID];
 
 		[_fmMoveTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+		[_dataManager replaceConvertItems:[self.convertItems copy] forCategory:_categoryID];
 
 		if (indexPath.row == 0) {
 			_convertItems = nil;
@@ -1700,7 +1706,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	UnitHistory *latestHistory = [UnitHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
 
 	// Compare code and value.
-	if (latestHistory && [latestHistory.unitID isEqualToNumber:_convertItems[0]] && [value isEqualToNumber:latestHistory.value])
+	if (latestHistory && [latestHistory.unitID isEqualToNumber:_convertItems[[self firstUnitIndex]]] && [value isEqualToNumber:latestHistory.value])
 	{
 		FNLOG(@"Does not make new history for same code and value, in history %@, %@", latestHistory.value, value);
 		return;
@@ -1710,7 +1716,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	UnitHistory *history = [UnitHistory MR_createEntityInContext:savingContext];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
 	history.updateDate = [NSDate date];
-	history.unitID = _convertItems[0];
+	history.unitID = _convertItems[[self firstUnitIndex]];
 	history.categoryID = @(_categoryID);
 	history.value = value;
 
