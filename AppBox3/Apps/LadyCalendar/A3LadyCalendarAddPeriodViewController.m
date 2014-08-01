@@ -636,6 +636,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)calculateCycleLengthFromDate:(NSDate *)fromDate
 {
+    if (_isEditMode) {
+        return;
+    }
+
     // cycle length 변경.
     LadyCalendarPeriod *currentPeriod = [_dataManager currentPeriodFromDate:fromDate];
     if (_isEditMode && currentPeriod && [currentPeriod.startDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970]) {
@@ -648,8 +652,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     if (!_prevPeriod && currentPeriod ) {    // 더이상 이전월이 없는, 최초의 달.
         _prevPeriod = currentPeriod;
     }
-    else if (!_prevPeriod && !currentPeriod) {    // 더이상 않이 없는, 이전 월인 경우.
-        // cycleLength 활성?
+    else if ((!_prevPeriod && !currentPeriod) || ([_prevPeriod.startDate timeIntervalSince1970] == [currentPeriod.startDate timeIntervalSince1970])) {    // 더이상 않이 없는, 이전 월인 경우.
         [self reloadItemAtCellType:PeriodCellType_CycleLength];
         return;
     }
