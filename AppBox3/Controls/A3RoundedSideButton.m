@@ -37,7 +37,6 @@
 - (void)setSelected:(BOOL)selected {
 	[super setSelected:selected];
 
-	FNLOG(@"%@, %ld", self.titleLabel.text, (long)selected);
 	if (selected) {
 		self.layer.cornerRadius = self.bounds.size.height / 2.0;
 		self.layer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
