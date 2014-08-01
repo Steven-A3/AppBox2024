@@ -53,7 +53,6 @@ typedef NS_ENUM(NSInteger, PriceDiscountType) {
 @property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
 @property (nonatomic, copy) NSString *placeholderBeforeEditingTextField;
-@property (nonatomic, assign) BOOL cancelInputNewCloudDataReceived;
 @property (nonatomic, strong) A3UnitDataManager *unitDataManager;
 
 @end
@@ -106,8 +105,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (void)cloudStoreDidImport {
 	if (self.firstResponder) {
-		_cancelInputNewCloudDataReceived = YES;
-		[self.firstResponder resignFirstResponder];
+		return;
 	}
 
 	self.currencyFormatter = nil;
@@ -525,10 +523,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-	if (_cancelInputNewCloudDataReceived) {
-		_cancelInputNewCloudDataReceived = NO;
-		return;
-	}
 	self.price.note = textView.text;
 
 	[self saveToUserDefaults];
@@ -569,6 +563,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+	self.firstResponder = textField;
+
 	_textBeforeEditingTextField = textField.text;
 	_placeholderBeforeEditingTextField = textField.placeholder;
 	textField.text = @"";
@@ -576,8 +572,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 	[self addNumberKeyboardNotificationObservers];
-
-	[self setFirstResponder:textField];
 
 	_currentIndexPath = [self.tableView indexPathForCellSubview:textField];
 
@@ -606,7 +600,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
 
 	return YES;
 }
@@ -620,13 +613,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 	[self removeNumberKeyboardNotificationObservers];
 
-	[self setFirstResponder:nil];
-
-	if (_cancelInputNewCloudDataReceived) {
-		_cancelInputNewCloudDataReceived = NO;
-		return;
-	}
-
 	textField.placeholder = _placeholderBeforeEditingTextField;
 
 	if (![textField.text length]) {
@@ -634,6 +620,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	}
 	[self updateValueTextField:textField];
 	[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+	[self setFirstResponder:nil];
 }
 
 #pragma mark - A3KeyboardDelegate
