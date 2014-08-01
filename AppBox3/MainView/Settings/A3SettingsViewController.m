@@ -150,6 +150,10 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			[switchControl setOn:NO animated:YES];
 			return;
 		}
+		if (![[A3SyncManager sharedSyncManager] canSyncStart]) {
+			[switchControl setOn:NO animated:YES];
+			return;
+		}
 	}
 	[[A3AppDelegate instance] setCloudEnabled:switchControl.on];
 }

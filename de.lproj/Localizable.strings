@@ -904,3 +904,5 @@ Erneut versuchen.";
 "Loading" = "Ladevorgang";
 
 "DaysCalendar_CalendarDeleteConfirmMsg" = "Möchten Sie diesen Kalender wirklich löschen? Alle Ereignisse in diesem Kalender werden ebenfalls gelöscht.";
+
+"%@ syncing is in progress. Try after 10 minutes." = "%@ Synchronisierung ist in Arbeit. Versuchen Sie, nach 10 Minuten.";

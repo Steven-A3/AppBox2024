@@ -9,6 +9,7 @@
 #import <Ensembles/Ensembles.h>
 
 extern NSString * const A3SyncManagerCloudEnabled;
+extern NSString * const A3SyncDeviceSyncStartInfo;
 
 @interface A3SyncManager : NSObject
 
@@ -17,6 +18,9 @@ extern NSString * const A3SyncManagerCloudEnabled;
 @property (nonatomic, copy) NSString *storePath;
 
 + (instancetype)sharedSyncManager;
+
+- (BOOL)canSyncStart;
+
 - (BOOL)isCloudAvailable;
 - (void)setupEnsemble;
 - (void)enableCloudSync;

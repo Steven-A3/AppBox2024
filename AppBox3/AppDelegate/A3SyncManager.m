@@ -15,6 +15,9 @@
 NSString * const A3SyncManagerCloudEnabled = @"A3SyncManagerCloudEnabled";
 NSString * const A3SyncActivityDidBeginNotification = @"A3SyncActivityDidBegin";
 NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
+NSString * const A3SyncDeviceSyncStartInfo = @"A3SyncDeviceSyncStartInfo";	// Dictionary. Time and device name.
+NSString * const A3SyncStartTime = @"A3SyncStartTime";
+NSString * const A3SyncStartDevice = @"A3SyncStartDevice";
 
 @interface A3SyncManager () <CDEPersistentStoreEnsembleDelegate>
 @end
@@ -46,6 +49,28 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 	return self;
 }
 
+- (BOOL)canSyncStart {
+	NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
+	NSDictionary *syncInfo = [keyValueStore objectForKey:A3SyncDeviceSyncStartInfo];
+	if (!syncInfo) {
+		return YES;
+	}
+	NSDate *lastSyncStartTime = syncInfo[A3SyncStartTime];
+	NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:lastSyncStartTime];
+	if (interval >= 60 * 10) {
+		return YES;
+	}
+
+	NSString *message = [NSString stringWithFormat:NSLocalizedString(@"%@ syncing is in progress. Try after 10 minutes.", nil), syncInfo[A3SyncStartDevice]];
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+														message:message
+													   delegate:nil
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+											  otherButtonTitles:nil];
+	[alertView show];
+	return NO;
+}
+
 - (BOOL)isCloudAvailable {
 	return [[NSFileManager defaultManager] ubiquityIdentityToken] != nil;
 }
@@ -67,6 +92,15 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 
 - (void)enableCloudSync {
 	if ([self isCloudEnabled]) return;
+
+	NSDictionary *syncInfo = @{
+			A3SyncStartTime : [NSDate date],
+			A3SyncStartDevice : [[UIDevice currentDevice] name]
+	};
+
+	NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
+	[keyValueStore setObject:syncInfo forKey:A3SyncDeviceSyncStartInfo];
+	[keyValueStore synchronize];
 
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SyncManagerCloudEnabled];
 	[[NSUserDefaults standardUserDefaults] synchronize];

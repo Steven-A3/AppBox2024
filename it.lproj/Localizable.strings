@@ -891,3 +891,5 @@
 "Loading" = "Caricamento in corso";
 
 "DaysCalendar_CalendarDeleteConfirmMsg" = "Vuoi  eliminare il calendario? Tutti gli eventi associati al calendario verranno eliminati.";
+
+"%@ syncing is in progress. Try after 10 minutes." = "%@ sincronizzazione è in corso. Prova dopo 10 minuti.";

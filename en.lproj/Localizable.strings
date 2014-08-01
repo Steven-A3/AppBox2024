@@ -848,3 +848,5 @@
 "Loading" = "Loading";
 
 "DaysCalendar_CalendarDeleteConfirmMsg" = "Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.";
+
+"%@ syncing is in progress. Try after 10 minutes." = "%@ syncing is in progress. Try after 10 minutes.";
