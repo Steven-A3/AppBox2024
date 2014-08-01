@@ -2079,7 +2079,9 @@
         
     }
     
-    self.firstResponder = nil;
+    if (textField == self.firstResponder) {
+        self.firstResponder = nil;
+    }
 }
 
 #pragma mark  A3KeyboardViewControllerDelegate
