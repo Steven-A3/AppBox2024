@@ -43,12 +43,18 @@ NSString *const NOTES_KEY		= @"note";
 - (NSDictionary *)dictionaryRepresentation {
 	NSMutableDictionary *dictionary = [NSMutableDictionary new];
 	[dictionary setObject:self.price forKey:PRICE_KEY];
-	[dictionary setObject:self.size forKey:SIZE_KEY];
+    if (self.size) {
+        [dictionary setObject:self.size forKey:SIZE_KEY];
+    }
 	[dictionary setObject:self.quantity forKey:QUANTITY_KEY];
 	[dictionary setObject:self.unitID forKey:UNIT_KEY];
 	[dictionary setObject:self.unitCategoryID forKey:UNIT_CATEGORY_KEY];
-	[dictionary setObject:self.discountPercent forKey:DISCOUNT_PERCENT_KEY];
-	[dictionary setObject:self.discountPrice forKey:DISCOUNT_PRICE_KEY];
+    if (self.discountPercent) {
+        [dictionary setObject:self.discountPercent forKey:DISCOUNT_PERCENT_KEY];
+    }
+    if (self.discountPrice) {
+        [dictionary setObject:self.discountPrice forKey:DISCOUNT_PRICE_KEY];
+    }
 	if (self.note) [dictionary setObject:self.note forKey:NOTES_KEY];
 	return dictionary;
 }
