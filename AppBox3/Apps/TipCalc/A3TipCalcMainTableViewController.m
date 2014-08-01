@@ -63,9 +63,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3TableViewInputElement *calculatorTargetElement;
 @property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
-@property (nonatomic, strong) CLLocationManager * lm;
-@property (nonatomic, assign) BOOL cancelInputNewCloudDataReceived;
-@property (nonatomic, assign) BOOL isTextFieldEditing;
+@property (nonatomic, weak) UITextField *editingTextField;
 
 @end
 
@@ -75,11 +73,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     UIView* _moreMenuView;
     BOOL _isShowMoreMenu;
 
-    CGFloat _fTableDefaultOffset;
-    A3TableViewInputElement *_taxElement;
-    
-    NSNumber * _locationTax;
-    NSString * _locationCode;
+	A3TableViewInputElement *_taxElement;
+
 	BOOL _barButtonEnabled;
 }
 
@@ -126,7 +121,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
  * \returns
  */
 - (void)cloudStoreDidImport {
-    if (_isTextFieldEditing) {
+    if (self.editingTextField) {
         return;
     }
     
@@ -630,7 +625,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     if (!_cellTextInputBeginBlock) {
         __weak A3TipCalcMainTableViewController * weakSelf = self;
         _cellTextInputBeginBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-			weakSelf.isTextFieldEditing = YES;
+			weakSelf.editingTextField = textField;
             weakSelf.firstResponder = textField;
             [weakSelf dismissMoreMenu];
 			[weakSelf addNumberKeyboardNotificationObservers];
@@ -667,16 +662,11 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         __weak A3TipCalcMainTableViewController * weakSelf = self;
         
         _cellTextInputFinishedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-			weakSelf.isTextFieldEditing = NO;
+			weakSelf.editingTextField = nil;
             if (weakSelf.firstResponder == textField) {
                 weakSelf.firstResponder = nil;
             }
 			[weakSelf removeNumberKeyboardNotificationObservers];
-
-			if (weakSelf.cancelInputNewCloudDataReceived) {
-				weakSelf.cancelInputNewCloudDataReceived = NO;
-				return;
-			}
 
             NSNumber *value;
             if ([textField.text length] == 0) {
