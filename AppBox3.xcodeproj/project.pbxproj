@@ -31,6 +31,7 @@
 		17D424D17668444DCC9A50D7 /* A3LadyCalendarDetailViewTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D427CE6C25E3FDE8D82EB7 /* A3LadyCalendarDetailViewTitleCell.m */; };
 		17D425100E1C4BDFC5E6CF0C /* A3SettingsAddFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D420998FD2347EFF70EFDA /* A3SettingsAddFavoritesViewController.m */; };
 		17D42564DA81AFE9484B0D58 /* A3TranslatorMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4292480B4F2F878AD138E /* A3TranslatorMessageCell.m */; };
+		17D4257DD60BA9435E1D2103 /* NSManagedObject+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D426C577E54ADD2419E6DB /* NSManagedObject+extension.m */; };
 		17D425CA8B84A776935B9382 /* Foursquare2.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42335F0EAF9428BAC7BBD /* Foursquare2.m */; };
 		17D425D8B8511A61A52DBE3E /* A3SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4263A1F905EB73EA573B2 /* A3SearchViewController.m */; };
 		17D4262AB96A4454B8EF3B49 /* A3LanguagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D425363271B74082FD8477 /* A3LanguagePickerController.m */; };
@@ -934,6 +935,7 @@
 		17D42647DF41660948614893 /* A3PasscodeCommonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PasscodeCommonViewController.m; path = Passcode/A3PasscodeCommonViewController.m; sourceTree = "<group>"; };
 		17D426503D335516CC3EFD93 /* A3TranslatorFavoriteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorFavoriteCell.m; path = Translator/A3TranslatorFavoriteCell.m; sourceTree = "<group>"; };
 		17D426B199FD2AC623B42755 /* UITableViewCell+accessory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+accessory.h"; sourceTree = "<group>"; };
+		17D426C577E54ADD2419E6DB /* NSManagedObject+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+extension.m"; sourceTree = "<group>"; };
 		17D426DEC2D6FD7E280056BD /* UIView+A3Drawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+A3Drawing.m"; sourceTree = "<group>"; };
 		17D426E84D1FF67C4C0146D3 /* NSString+conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+conversion.h"; sourceTree = "<group>"; };
 		17D426EC699433D4B659CF5B /* HolidayData+Country.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HolidayData+Country.m"; path = "Holidays/HolidayData+Country.m"; sourceTree = "<group>"; };
@@ -947,6 +949,7 @@
 		17D4283B29E7CACCE273EF77 /* NSMutableArray+MoveObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+MoveObject.m"; sourceTree = "<group>"; };
 		17D4283E196270552D6283A1 /* A3StandardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3StandardTableViewCell.m; sourceTree = "<group>"; };
 		17D4289E801DA848F979FEC4 /* NSDate+calculation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+calculation.m"; sourceTree = "<group>"; };
+		17D428A55CFBBBAC10E994F1 /* NSManagedObject+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+extension.h"; sourceTree = "<group>"; };
 		17D428A5D07C3D7181154ED3 /* A3TranslatorFavoriteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorFavoriteCell.h; path = Translator/A3TranslatorFavoriteCell.h; sourceTree = "<group>"; };
 		17D428AB1CD232306110EBB3 /* UIView+A3Drawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+A3Drawing.h"; sourceTree = "<group>"; };
 		17D428D2153390BB37D744B6 /* A3SettingsDropboxSelectBackupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsDropboxSelectBackupViewController.h; path = Settings/A3SettingsDropboxSelectBackupViewController.h; sourceTree = "<group>"; };
@@ -2681,6 +2684,8 @@
 				6852297F18FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.m */,
 				17D4289E801DA848F979FEC4 /* NSDate+calculation.m */,
 				17D42CE8989EC0F3EED05376 /* NSDate+calculation.h */,
+				17D426C577E54ADD2419E6DB /* NSManagedObject+extension.m */,
+				17D428A55CFBBBAC10E994F1 /* NSManagedObject+extension.h */,
 			);
 			path = A3Categories;
 			sourceTree = "<group>";
@@ -6090,6 +6095,7 @@
 				17D42E9D7756E743947E5964 /* A3BackupRestoreManager.m in Sources */,
 				17D420349D0BFABA3B992C9C /* A3FMMoveTableViewController.m in Sources */,
 				17D42D692E16244D9FFB4B2E /* A3DaysCounterEventListViewController.m in Sources */,
+				17D4257DD60BA9435E1D2103 /* NSManagedObject+extension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

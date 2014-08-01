@@ -11,6 +11,7 @@
 #import "DaysCounterEvent+extension.h"
 #import "WalletFieldItem+initialize.h"
 #import "NSString+conversion.h"
+#import "NSManagedObject+extension.h"
 
 NSString * const A3SyncManagerCloudEnabled = @"A3SyncManagerCloudEnabled";
 NSString * const A3SyncActivityDidBeginNotification = @"A3SyncActivityDidBegin";
@@ -44,9 +45,36 @@ NSString * const A3SyncStartDevice = @"A3SyncStartDevice";
 	self = [super init];
 	if (self) {
 		_fileManager = [NSFileManager new];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ensembleDidBeginActivity:) name:CDEPersistentStoreEnsembleDidBeginActivityNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ensembleDidMakeProgress:) name:CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ensembleWilEndActivity:) name:CDEPersistentStoreEnsembleWillEndActivityNotification object:nil];
 	}
 
 	return self;
+}
+
+- (void)ensembleDidBeginActivity:(NSNotification *)notification {
+	FNLOG(@"%@", notification.userInfo[CDEEnsembleActivityKey]);
+}
+
+- (void)ensembleDidMakeProgress:(NSNotification *)notification {
+	FNLOG(@"%@", notification.userInfo[CDEEnsembleActivityKey]);
+	FNLOG(@"%@", notification.userInfo[CDEProgressFractionKey]);
+}
+
+- (void)ensembleWilEndActivity:(NSNotification *)notification {
+	id activity = notification.userInfo[CDEEnsembleActivityKey];
+	FNLOG(@"%@", activity);
+	switch ([activity unsignedIntegerValue]) {
+		case CDEEnsembleActivityLeeching: {
+			NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
+			[keyValueStore removeObjectForKey:A3SyncDeviceSyncStartInfo];
+			break;
+		}
+		case CDEEnsembleActivityDeleeching:
+		default:
+			break;
+	}
 }
 
 - (BOOL)canSyncStart {
@@ -232,6 +260,7 @@ NSString * const A3SyncStartDevice = @"A3SyncStartDevice";
 
 #pragma mark - Persistent Store Ensemble Delegate
 
+
 - (void)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble didSaveMergeChangesWithNotification:(NSNotification *)notification
 {
 	FNLOG();
@@ -269,6 +298,39 @@ NSString * const A3SyncStartDevice = @"A3SyncStartDevice";
 }
 
 - (BOOL)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble didFailToSaveMergedChangesInManagedObjectContext:(NSManagedObjectContext *)savingContext error:(NSError *)error reparationManagedObjectContext:(NSManagedObjectContext *)reparationContext {
+	NSMutableArray *objectIDs = [NSMutableArray array];
+	NSMutableArray *errors = [NSMutableArray array];
+	FNLOG(@"%@", objectIDs);
+	FNLOG(@"%@", errors);
+
+	[savingContext performBlockAndWait:^{
+		if (error.code != NSValidationMultipleErrorsError) {
+			NSManagedObject *object = error.userInfo[@"NSValidationErrorObject"];
+			[objectIDs addObject:object.objectID];
+			[errors addObject:error];
+		} else {
+			NSArray *detailedErrors = error.userInfo[NSDetailedErrorsKey];
+			for (NSError *error_ in detailedErrors) {
+				NSDictionary *detailedInfo = error_.userInfo;
+				NSManagedObject *object = detailedInfo[@"NSValidationErrorObject"];
+				[objectIDs addObject:object.objectID];
+				[errors addObject:error_];
+			}
+		}
+	}];
+
+	[reparationContext performBlockAndWait:^{
+		[objectIDs enumerateObjectsWithOptions:0 usingBlock:^(NSManagedObjectID *objectID, NSUInteger idx, BOOL *stop) {
+			NSError *error_;
+			id object = [reparationContext existingObjectWithID:objectID error:&error_];
+			if (!object) {
+				FNLOG(@"Failed to retrieve invalid object: %@", error_);
+				return;
+			}
+			[object repairWithError:errors[idx]];
+		}];
+	}];
+
 	return YES;
 }
 
