@@ -114,8 +114,6 @@
 		680D63A018CFF9D400938AD0 /* A3MirrorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680D638B18CFF9D400938AD0 /* A3MirrorViewController.xib */; };
 		680D63A318CFFC2500938AD0 /* VerticalSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D63A218CFFC2500938AD0 /* VerticalSlider.m */; };
 		680D63A418D06B3F00938AD0 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */; };
-		680FF70C19809B7500C736F5 /* Ensembles.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 680FF70A19809B7500C736F5 /* Ensembles.bundle */; };
-		680FF70D19809B7500C736F5 /* Ensembles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 680FF70B19809B7500C736F5 /* Ensembles.framework */; };
 		680FF7131980B88D00C736F5 /* A3SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 680FF7121980B88D00C736F5 /* A3SyncManager.m */; };
 		68143CF718E3EC1F00569691 /* appbox.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC518E3EC1F00569691 /* appbox.ttf */; };
 		68143CF818E3EC1F00569691 /* Digit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC618E3EC1F00569691 /* Digit.ttf */; };
@@ -363,6 +361,8 @@
 		685F723C16A64ADD004C7222 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685F723B16A64ADD004C7222 /* SystemConfiguration.framework */; };
 		685F723E16A64C91004C7222 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685F723D16A64C91004C7222 /* MobileCoreServices.framework */; };
 		6862375F1974E7C300001DE7 /* LadyCalendarPeriod.m in Sources */ = {isa = PBXBuildFile; fileRef = 6862375E1974E7C300001DE7 /* LadyCalendarPeriod.m */; };
+		68636000198BF88F00C3A323 /* libensembles.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68635FFB198BF80E00C3A323 /* libensembles.a */; };
+		68636003198BF91300C3A323 /* Ensembles.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68635FFD198BF80E00C3A323 /* Ensembles.bundle */; };
 		6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */; };
 		6866956618839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 6866956518839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m */; };
 		686BB86119092D94009163F2 /* A3WalletCategoryEditFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 686BB86019092D94009163F2 /* A3WalletCategoryEditFieldCell.m */; };
@@ -867,6 +867,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		68635FFA198BF80E00C3A323 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 07BF374517F184DD00C56F64;
+			remoteInfo = "Ensembles iOS";
+		};
+		68635FFC198BF80E00C3A323 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 07571F0F1910EC02008479A9;
+			remoteInfo = "Ensembles Resources";
+		};
+		68635FFE198BF80E00C3A323 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 070D336118018A960054BA23;
+			remoteInfo = "Tests iOS";
+		};
+		68636001198BF8F400C3A323 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 07571F0E1910EC02008479A9;
+			remoteInfo = "Ensembles Resources";
+		};
 		6876D70717A75DAE00E16991 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 682EA2C815EB10B000BD6AD4 /* Project object */;
@@ -1089,8 +1117,6 @@
 		680D638B18CFF9D400938AD0 /* A3MirrorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3MirrorViewController.xib; sourceTree = "<group>"; };
 		680D63A118CFFC2500938AD0 /* VerticalSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticalSlider.h; sourceTree = "<group>"; };
 		680D63A218CFFC2500938AD0 /* VerticalSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticalSlider.m; sourceTree = "<group>"; };
-		680FF70A19809B7500C736F5 /* Ensembles.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Ensembles.bundle; sourceTree = "<group>"; };
-		680FF70B19809B7500C736F5 /* Ensembles.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ensembles.framework; path = External/Ensembles2/Ensembles.framework; sourceTree = "<group>"; };
 		680FF7111980B88D00C736F5 /* A3SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SyncManager.h; path = AppDelegate/A3SyncManager.h; sourceTree = "<group>"; };
 		680FF7121980B88D00C736F5 /* A3SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SyncManager.m; path = AppDelegate/A3SyncManager.m; sourceTree = "<group>"; };
 		68143CC518E3EC1F00569691 /* appbox.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = appbox.ttf; sourceTree = "<group>"; };
@@ -1506,6 +1532,7 @@
 		685F723D16A64C91004C7222 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		6862375D1974E7C300001DE7 /* LadyCalendarPeriod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LadyCalendarPeriod.h; sourceTree = "<group>"; };
 		6862375E1974E7C300001DE7 /* LadyCalendarPeriod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LadyCalendarPeriod.m; sourceTree = "<group>"; };
+		68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Ensembles iOS.xcodeproj"; path = "External/ensembles-next/Framework/Ensembles iOS.xcodeproj"; sourceTree = "<group>"; };
 		6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcons.xcassets; path = "AppBox3/Asset Catalogs/AppIcons.xcassets"; sourceTree = "<group>"; };
 		6866956418839B8C00BABFA5 /* A3AppDelegate+keyValueStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+keyValueStore.h"; path = "AppDelegate/A3AppDelegate+keyValueStore.h"; sourceTree = "<group>"; };
 		6866956518839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+keyValueStore.m"; path = "AppDelegate/A3AppDelegate+keyValueStore.m"; sourceTree = "<group>"; };
@@ -2550,6 +2577,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68636000198BF88F00C3A323 /* libensembles.a in Frameworks */,
 				681E1281193447D70077DCFA /* libz.dylib in Frameworks */,
 				680D63A418D06B3F00938AD0 /* DropboxSDK.framework in Frameworks */,
 				68DBAB6D18C4C2B2003A67E5 /* MediaPlayer.framework in Frameworks */,
@@ -2573,7 +2601,6 @@
 				682EA2D815EB10B000BD6AD4 /* Foundation.framework in Frameworks */,
 				682EA2DA15EB10B000BD6AD4 /* CoreGraphics.framework in Frameworks */,
 				682EA2DC15EB10B000BD6AD4 /* CoreData.framework in Frameworks */,
-				680FF70D19809B7500C736F5 /* Ensembles.framework in Frameworks */,
 				17D4235B678996668439565E /* CoreText.framework in Frameworks */,
 				17D421789FF0D787F9D7911C /* MessageUI.framework in Frameworks */,
 			);
@@ -2884,15 +2911,6 @@
 				680D638B18CFF9D400938AD0 /* A3MirrorViewController.xib */,
 			);
 			path = Mirror;
-			sourceTree = "<group>";
-		};
-		680FF70919809B7500C736F5 /* Ensembles2 */ = {
-			isa = PBXGroup;
-			children = (
-				680FF70A19809B7500C736F5 /* Ensembles.bundle */,
-			);
-			name = Ensembles2;
-			path = External/Ensembles2;
 			sourceTree = "<group>";
 		};
 		68143CC418E3EC1F00569691 /* Fonts */ = {
@@ -3283,7 +3301,6 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				680FF70B19809B7500C736F5 /* Ensembles.framework */,
 				681E1280193447D70077DCFA /* libz.dylib */,
 				68DBAB6C18C4C2B2003A67E5 /* MediaPlayer.framework */,
 				6831407E18C20C9700896819 /* AVFoundation.framework */,
@@ -3719,6 +3736,16 @@
 				68521A4517E1FF2E00E08FB1 /* FXLabel.m */,
 			);
 			name = FXLabel;
+			sourceTree = "<group>";
+		};
+		68635FF3198BF80E00C3A323 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				68635FFB198BF80E00C3A323 /* libensembles.a */,
+				68635FFD198BF80E00C3A323 /* Ensembles.bundle */,
+				68635FFF198BF80E00C3A323 /* Tests iOS.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		686FCF331775CD1300F19332 /* NYXImagesKit */ = {
@@ -4525,9 +4552,9 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
+				68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */,
 				689C9A261839CD7F007C97EE /* AFNetworking */,
 				683224B717CE1AB900973F34 /* DKLiveBlur */,
-				680FF70919809B7500C736F5 /* Ensembles2 */,
 				6890AB0B1786B800004FECE4 /* expecta */,
 				68F9391117D0DDA50082234C /* FMMoveTableView */,
 				68521A4317E1FF1C00E08FB1 /* FXLabel */,
@@ -5168,6 +5195,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				68636002198BF8F400C3A323 /* PBXTargetDependency */,
 			);
 			name = AppBox3;
 			productName = AppBox3;
@@ -5247,6 +5275,12 @@
 			mainGroup = 682EA2C615EB10B000BD6AD4;
 			productRefGroup = 682EA2D215EB10B000BD6AD4 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 68635FF3198BF80E00C3A323 /* Products */;
+					ProjectRef = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				682EA2D015EB10B000BD6AD4 /* AppBox3 */,
@@ -5255,6 +5289,30 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		68635FFB198BF80E00C3A323 /* libensembles.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libensembles.a;
+			remoteRef = 68635FFA198BF80E00C3A323 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		68635FFD198BF80E00C3A323 /* Ensembles.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Ensembles.bundle;
+			remoteRef = 68635FFC198BF80E00C3A323 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		68635FFF198BF80E00C3A323 /* Tests iOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Tests iOS.xctest";
+			remoteRef = 68635FFE198BF80E00C3A323 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6829688C18505E3800B70E13 /* Resources */ = {
@@ -5272,6 +5330,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68636003198BF91300C3A323 /* Ensembles.bundle in Resources */,
 				68143D0318E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.xib in Resources */,
 				68F14FD519485E8500159EAD /* A3DaysCounterAddEventDateInputCell.xib in Resources */,
 				68B6A2F318CEC76D004084EF /* A3UnitPriceInputView_iPad.xib in Resources */,
@@ -5340,7 +5399,6 @@
 				68F14FEB19485E8500159EAD /* A3DaysCounterEventListSectionHeader.xib in Resources */,
 				68F1C8D618D7F37D009FAE8A /* A3LadyCalendarViewController.xib in Resources */,
 				689D41FC1966F33900D7F1A7 /* A3DateKeyboardViewController_iPhone.xib in Resources */,
-				680FF70C19809B7500C736F5 /* Ensembles.bundle in Resources */,
 				6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */,
 				68143D0B18E3EC1F00569691 /* A3PasscodeKeyboard_iPad.xib in Resources */,
 				68B6A2FD18CEC76D004084EF /* A3UnitPriceSliderView.xib in Resources */,
@@ -6128,6 +6186,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		68636002198BF8F400C3A323 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Ensembles Resources";
+			targetProxy = 68636001198BF8F400C3A323 /* PBXContainerItemProxy */;
+		};
 		6876D70817A75DAE00E16991 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 682EA2D015EB10B000BD6AD4 /* AppBox3 */;

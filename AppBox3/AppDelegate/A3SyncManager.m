@@ -45,14 +45,17 @@ NSString * const A3SyncStartDevice = @"A3SyncStartDevice";
 	self = [super init];
 	if (self) {
 		_fileManager = [NSFileManager new];
+#ifdef DEBUG
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ensembleDidBeginActivity:) name:CDEPersistentStoreEnsembleDidBeginActivityNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ensembleDidMakeProgress:) name:CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ensembleWilEndActivity:) name:CDEPersistentStoreEnsembleWillEndActivityNotification object:nil];
+#endif
 	}
 
 	return self;
 }
 
+#ifdef DEBUG
 - (void)ensembleDidBeginActivity:(NSNotification *)notification {
 	FNLOG(@"%@", notification.userInfo[CDEEnsembleActivityKey]);
 }
@@ -77,6 +80,7 @@ NSString * const A3SyncStartDevice = @"A3SyncStartDevice";
 			break;
 	}
 }
+#endif
 
 - (BOOL)canSyncStart {
 	NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];

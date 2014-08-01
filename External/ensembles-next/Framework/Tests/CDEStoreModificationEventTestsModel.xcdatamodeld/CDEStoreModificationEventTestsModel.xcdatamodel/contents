@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="BatchChild" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="batchGrandParents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BatchGrandParent" inverseName="batchChildren" inverseEntity="BatchGrandParent" syncable="YES"/>
+        <relationship name="batchParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BatchParent" inverseName="batchChildren" inverseEntity="BatchParent" syncable="YES"/>
+        <relationship name="friend" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BatchChild" inverseName="friendTo" inverseEntity="BatchChild" syncable="YES"/>
+        <relationship name="friendTo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BatchChild" inverseName="friend" inverseEntity="BatchChild" syncable="YES"/>
+        <relationship name="siblings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BatchChild" inverseName="siblingsTo" inverseEntity="BatchChild" syncable="YES"/>
+        <relationship name="siblingsTo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BatchChild" inverseName="siblings" inverseEntity="BatchChild" syncable="YES"/>
+        <userInfo>
+            <entry key="CDEMigrationBatchSizeKey" value="500"/>
+            <entry key="CDEMigrationPriorityKey" value="20"/>
+        </userInfo>
+    </entity>
+    <entity name="BatchGrandParent" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="batchChildren" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BatchChild" inverseName="batchGrandParents" inverseEntity="BatchChild" syncable="YES"/>
+        <relationship name="batchParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BatchParent" inverseName="batchGrandParent" inverseEntity="BatchParent" syncable="YES"/>
+    </entity>
+    <entity name="BatchParent" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="batchChildren" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="BatchChild" inverseName="batchParent" inverseEntity="BatchChild" syncable="YES"/>
+        <relationship name="batchGrandParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BatchGrandParent" inverseName="batchParent" inverseEntity="BatchGrandParent" syncable="YES"/>
+        <userInfo>
+            <entry key="CDEMigrationBatchSizeKey" value="50"/>
+            <entry key="CDEMigrationPriorityKey" value="10"/>
+        </userInfo>
+    </entity>
+    <entity name="Child" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="maxedParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Parent" inverseName="maxedChildren" inverseEntity="Parent" syncable="YES"/>
+        <relationship name="orderedParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Parent" inverseName="orderedChildren" inverseEntity="Parent" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Parent" inverseName="child" inverseEntity="Parent" syncable="YES"/>
+        <relationship name="parentWithSiblings" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Parent" inverseName="children" inverseEntity="Parent" syncable="YES"/>
+        <relationship name="testFriends" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Parent" inverseName="friends" inverseEntity="Parent" syncable="YES"/>
+    </entity>
+    <entity name="Parent" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="Binary" storedInTruthFile="YES" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="invalidatingAttribute" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="child" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Child" inverseName="parent" inverseEntity="Child" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Child" inverseName="parentWithSiblings" inverseEntity="Child" syncable="YES"/>
+        <relationship name="friends" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Child" inverseName="testFriends" inverseEntity="Child" syncable="YES"/>
+        <relationship name="maxedChildren" optional="YES" toMany="YES" maxCount="2" deletionRule="Cascade" destinationEntity="Child" inverseName="maxedParent" inverseEntity="Child" syncable="YES"/>
+        <relationship name="orderedChildren" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Child" inverseName="orderedParent" inverseEntity="Child" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="BatchChild" positionX="178" positionY="-343" width="128" height="148"/>
+        <element name="BatchParent" positionX="-549" positionY="-268" width="128" height="88"/>
+        <element name="Child" positionX="0" positionY="5" width="128" height="133"/>
+        <element name="Parent" positionX="-614" positionY="56" width="128" height="178"/>
+        <element name="BatchGrandParent" positionX="-297" positionY="-148" width="128" height="88"/>
+    </elements>
+</model>

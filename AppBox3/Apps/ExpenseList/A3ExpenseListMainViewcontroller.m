@@ -891,7 +891,18 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     
     // 버젯이 없는 경우 이동한다.
     if (!_currentBudget || _currentBudget.category==nil ) {
+		NSDate *updateDate = [NSDate date];
+		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3ExpenseListUserDefaultsUpdateDate];
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3ExpenseListIsAddBudgetInitiatedOnce];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+
+		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
+			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+			[store setObject:@YES forKey:A3ExpenseListIsAddBudgetInitiatedOnce];
+			[store setObject:updateDate forKey:A3ExpenseListUserDefaultsCloudUpdateDate];
+			[store synchronize];
+		}
+
         [self performSelector:@selector(moveToAddBudgetViewController) withObject:nil afterDelay:delay];
         _isAutoMovingAddBudgetView = YES;
     }
