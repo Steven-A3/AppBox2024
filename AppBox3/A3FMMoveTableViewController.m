@@ -7,6 +7,7 @@
 //
 
 #import "A3FMMoveTableViewController.h"
+#import "UIViewController+NumberKeyboard.h"
 
 const CGFloat kVisibleWidth = 100.0;
 
@@ -45,6 +46,9 @@ const CGFloat kVisibleWidth = 100.0;
 		// find the swiped cell
 		CGPoint location = [recognizer locationInView:self.tableView];
 		NSIndexPath* indexPath = [self.tableView indexPathForRowAtPoint:location];
+		if (indexPath.row == 0 && self.firstResponder) {
+			return;
+		}
 		UITableViewCell<A3FMMoveTableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3FMMoveTableViewSwipeCellDelegate> *) [self.tableView cellForRowAtIndexPath:indexPath];
 
 		BOOL shouldShowMenu = NO;

@@ -1761,6 +1761,8 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 		// find the swiped cell
 		CGPoint location = [recognizer locationInView:_fmMoveTableView];
 		NSIndexPath* indexPath = [_fmMoveTableView indexPathForRowAtPoint:location];
+		if (indexPath.row == 0 && self.firstResponder) return;
+
 		UITableViewCell<A3FMMoveTableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3FMMoveTableViewSwipeCellDelegate> *) [_fmMoveTableView cellForRowAtIndexPath:indexPath];
 
 		BOOL shouldShowMenu = NO;
