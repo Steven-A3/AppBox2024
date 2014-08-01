@@ -164,7 +164,7 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 
 	NSArray *predictList = [self predictPeriodListSortedByStartDateIsAscending:YES ];
 	for(LadyCalendarPeriod *period in predictList ) {
-		if ( [period.endDate isEarlierThanDate:today] ){
+		if ( [period.startDate isEarlierThanDate:today] ){
 			period.isPredict = @(NO);
 			period.isAutoSave = @(YES);
 		}
