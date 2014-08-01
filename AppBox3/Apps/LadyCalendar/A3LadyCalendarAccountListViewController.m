@@ -149,7 +149,6 @@
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
 		[self.tableView reloadData];
-        [self.dataManager saveAccountList:_itemArray];
 	});
 }
 
@@ -182,6 +181,8 @@
 
 - (void)editButtonAction:(UIButton *)button
 {
+    [self.dataManager saveAccountList:_itemArray];
+    
 	NSDictionary *item = [_itemArray objectAtIndex:button.tag];
 	
     A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] init];
@@ -207,6 +208,8 @@
 
 - (void)addAction:(id)sender
 {
+    [self.dataManager saveAccountList:_itemArray];
+    
     A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;
     A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];

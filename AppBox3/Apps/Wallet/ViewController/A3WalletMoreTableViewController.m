@@ -181,6 +181,12 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 
 - (void)addCategoryButtonAction {
 	_isAddingCategoryInProgress = YES;
+    
+    // Save List Order
+	NSMutableArray *modifiedArray = [NSMutableArray arrayWithArray:_sections[0]];
+	[modifiedArray addObjectsFromArray:_sections[1]];
+	[WalletData saveWalletObject:modifiedArray forKey:A3WalletUserDefaultsCategoryInfo];
+    
 
 	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
 	A3WalletCategoryEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletCategoryEditViewController"];
