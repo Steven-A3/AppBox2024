@@ -69,6 +69,7 @@ NSString * const A3SyncStartDevice = @"A3SyncStartDevice";
 		case CDEEnsembleActivityLeeching: {
 			NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
 			[keyValueStore removeObjectForKey:A3SyncDeviceSyncStartInfo];
+			[keyValueStore synchronize];
 			break;
 		}
 		case CDEEnsembleActivityDeleeching:
