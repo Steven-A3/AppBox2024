@@ -172,8 +172,8 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-	[self.eventItem reminder].isUnread = @(NO);
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	[self.eventItem reminderWithContext:[NSManagedObjectContext MR_rootSavingContext]].isUnread = @(NO);
+    [[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }

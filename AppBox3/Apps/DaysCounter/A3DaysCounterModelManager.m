@@ -463,7 +463,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         eventItem.hasReminder = ([eventItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventItem.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
     }
 
-	DaysCounterReminder *reminder = [eventItem reminder];
+	DaysCounterReminder *reminder = [eventItem reminderWithContext:[NSManagedObjectContext MR_rootSavingContext]];
     if ([eventItem.hasReminder boolValue] && reminder) {
         reminder.isUnread = @(YES);
         reminder.isOn = @(NO);
@@ -473,7 +473,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     
 	eventItem.updateDate = [NSDate date];
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
     
     return YES;
 }
@@ -1329,7 +1329,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     __block NSDate *now = [[NSCalendar currentCalendar] dateFromComponents:nowDateComp];
     NSMutableArray *localNotifications = [NSMutableArray new];
     [alertItems enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
-		DaysCounterReminder *reminder = [event reminder];
+		DaysCounterReminder *reminder = [event reminderWithContext:context];
         if ([event.hasReminder isEqualToNumber:@(NO)] && reminder) {
             [reminder MR_deleteEntityInContext:context];
 			reminder = nil;
@@ -1344,7 +1344,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         FNLOG(@"\n[%ld] EventID: %@, EventName: %@\nEffectiveStartDate: %@, \nAlertDatetime: %@", (long)idx, event.uniqueID, event.eventName, event.effectiveStartDate, event.alertDatetime);
 
         // 리마인더 이벤트 리스트 관리.
-		reminder = [event reminder];
+		reminder = [event reminderWithContext:context];
         if ([event.hasReminder isEqualToNumber:@(YES)]) {
             if (!reminder) {
                 reminder = [DaysCounterReminder MR_createEntityInContext:context];
@@ -1376,7 +1376,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             }
 
             // 이벤트 알림시간을 경과
-            if ([event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970]) {
+            if ([event.alertDatetime timeIntervalSince1970] <= [now timeIntervalSince1970]) {
                 reminder.isOn = @(YES);     // 리마인더리스트에 출력.
             }
         }

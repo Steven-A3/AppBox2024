@@ -18,7 +18,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 @interface DaysCounterEvent (extension)
 
-- (DaysCounterReminder *)reminder;
+- (DaysCounterReminder *)reminderWithContext:(NSManagedObjectContext *)context;
 
 - (DaysCounterFavorite *)favorite;
 

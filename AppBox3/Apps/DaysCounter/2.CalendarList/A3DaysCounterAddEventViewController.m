@@ -1494,7 +1494,7 @@
 	[_eventItem moveImagesToOriginalDirectory];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:_savingContext ];
-    [_savingContext MR_saveToPersistentStoreAndWait];
+
     
 	if (IS_IPAD) {
 		[self.A3RootViewController dismissCenterViewController];

@@ -152,8 +152,7 @@
     [self.view addSubview:self.searchBar];
     [self mySearchDisplayController];
     
-    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_newContext] ];
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_newContext]];
     
     [self setupInstructionView];
 	[self registerContentSizeCategoryDidChangeNotification];

@@ -24,8 +24,8 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 
 @implementation DaysCounterEvent (extension)
 
-- (DaysCounterReminder *)reminder {
-	return [DaysCounterReminder MR_findFirstByAttribute:@"eventID" withValue:self.uniqueID inContext:self.managedObjectContext];
+- (DaysCounterReminder *)reminderWithContext:(NSManagedObjectContext *)context {
+	return [DaysCounterReminder MR_findFirstByAttribute:@"eventID" withValue:self.uniqueID inContext:context ? context : self.managedObjectContext];
 }
 
 - (DaysCounterFavorite *)favorite {
