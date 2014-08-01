@@ -33,6 +33,7 @@
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
+#import "NSMutableArray+MoveObject.h"
 
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
 NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
@@ -1223,11 +1224,12 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		[self.textFields removeObjectForKey:favorite];
 
 		[self.favorites removeObjectAtIndex:indexPath.row];
-		[A3CurrencyDataManager saveFavorites:_favorites];
 
 		[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+		[A3CurrencyDataManager saveFavorites:_favorites];
 
 		if (indexPath.row == 0) {
+			[_favorites moveObjectFromIndex:1 toIndex:0];
 			[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] toIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 
 			double delayInSeconds = 0.3;
