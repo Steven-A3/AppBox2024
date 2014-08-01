@@ -327,7 +327,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         _dateTextField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
     }
     
-    if (IS_IPAD && _delegate && [_delegate respondsToSelector:@selector(didChangedLoanCalcExtraPayment:)]) {
+    if (_delegate && [_delegate respondsToSelector:@selector(didChangedLoanCalcExtraPayment:)]) {
         [_delegate didChangedLoanCalcExtraPayment:_loanCalcData];
     }
 }
@@ -422,7 +422,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 			textField.text = [self.loanFormatter stringFromNumber:data ? data : @0];
 		}
 
-		if (IS_IPAD && _delegate && [_delegate respondsToSelector:@selector(didChangedLoanCalcExtraPayment:)]) {
+		if (_delegate && [_delegate respondsToSelector:@selector(didChangedLoanCalcExtraPayment:)]) {
 			[_delegate didChangedLoanCalcExtraPayment:_loanCalcData];
 		}
 	}
