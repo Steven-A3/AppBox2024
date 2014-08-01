@@ -372,14 +372,8 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
     viewController.sharedManager = sharedManager;
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-	
-    if (self.navigationController.presentedViewController) {
-        [self.navigationController.presentedViewController resignFirstResponder];
-        [self.navigationController.presentedViewController presentViewController:navigationController animated:YES completion:NULL];
-    }
-    else {
-        [self.navigationController presentViewController:navigationController animated:YES completion:NULL];
-    }
+
+	[self.navigationController.visibleViewController presentViewController:navigationController animated:YES completion:NULL];
 }
 
 - (void)showLadyCalendarDetailView {

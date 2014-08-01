@@ -968,6 +968,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     _sectionItems = nil;
 	[self sectionItems];
     [self.tableView reloadData];
+
+	[self updateDoneButtonEnabled];
 }
 
 #pragma mark- UIImagePickerControllerDelegate
@@ -1784,6 +1786,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	titleCell.titleTextField.placeholder = NSLocalizedString(@"Title", @"Title");
 	titleCell.titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	[titleCell.favoriteButton addTarget:self action:@selector(favoriteButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+	titleCell.favoriteButton.selected = [WalletFavorite isFavoriteForItemID:_item.uniqueID];
 
 	titleCell.titleTextField.text = _item.name;
 
