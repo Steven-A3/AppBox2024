@@ -138,6 +138,8 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
 		[keyValueStore synchronize];
 
+		if (![[A3SyncManager sharedSyncManager] canSyncStart]) return;
+
 		[[A3AppDelegate instance] setCloudEnabled:YES ];
 	} else {
 		[self continueButtonPressedInViewController:_currentSceneViewController];

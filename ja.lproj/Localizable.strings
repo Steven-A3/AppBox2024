@@ -906,3 +906,5 @@
 "Loading" = "読み込み中";
 
 "DaysCalendar_CalendarDeleteConfirmMsg" = "このカレンダーを削除してもよろしいですか？ このカレンダーに登録されているすべてのイベントとリマインダーも削除されます。";
+
+"%@ syncing is in progress. Try after 10 minutes." = "%@の同期が進行中です。10分後に試してみてください。";
