@@ -233,6 +233,7 @@ static NSString *const A3V3InstructionDidShowForHolidaysCountryView = @"A3V3Inst
 
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row == 0) return NO;
 	if ([self.userSelectedCountries count] == 1) {
 		return NO;
 	}
