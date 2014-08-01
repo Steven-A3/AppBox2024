@@ -208,7 +208,8 @@
             if ( [[self.calendarItem objectForKey:CalendarItem_Name] length] > 0 ) {
                 textField.text = [self.calendarItem objectForKey:CalendarItem_Name];
             }
-            cell.imageView.tintColor = [_calendarItem objectForKey:CalendarItem_Color];
+            NSInteger colorID = [[_calendarItem objectForKey:CalendarItem_ColorID] integerValue];
+            cell.imageView.tintColor = [[_colorArray objectAtIndex:colorID] objectForKey:CalendarItem_Color];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         else if ( indexPath.section == 1 ) {

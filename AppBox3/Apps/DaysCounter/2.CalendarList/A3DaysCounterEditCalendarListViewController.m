@@ -233,6 +233,8 @@
 
 - (void)addCalendarAction:(id)sender
 {
+    [_sharedManager saveCalendars:_calendarArray];
+    
     A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] init];
     viewCtrl.isEditMode = NO;
     viewCtrl.calendarItem = nil;
