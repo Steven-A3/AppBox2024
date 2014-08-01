@@ -263,6 +263,9 @@
 		key = A3DateCalcDefaultsSavedDay;
 		value = _dayTextField.text;
     }
+    else {
+        return;
+    }
 
 	NSDate *updateDate = [NSDate date];
 	[[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
