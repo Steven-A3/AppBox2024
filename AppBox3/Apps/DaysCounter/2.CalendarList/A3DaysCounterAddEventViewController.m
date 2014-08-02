@@ -1483,7 +1483,7 @@
             _eventItem.location.eventID = _eventItem.uniqueID;
         }
         
-        [_sharedManager addEvent:_eventItem];
+        [_sharedManager addEvent:_eventItem inContext:_savingContext];
     }
     else {
 		if ([_originalPhotoID isEqualToString:_eventItem.photoID]) {

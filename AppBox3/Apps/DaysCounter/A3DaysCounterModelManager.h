@@ -37,7 +37,7 @@
 - (FSVenue*)fsvenueFromEventModel:(DaysCounterEventLocation *)locationItem;
 - (FSVenue*)fsvenueFromEventLocationModel:(id)location;
 
-- (BOOL)addEvent:(DaysCounterEvent *)eventModel;
+- (BOOL)addEvent:(DaysCounterEvent *)eventModel inContext:(NSManagedObjectContext *)context;
 
 - (BOOL)modifyEvent:(DaysCounterEvent *)eventItem inContext:(NSManagedObjectContext *)context;
 

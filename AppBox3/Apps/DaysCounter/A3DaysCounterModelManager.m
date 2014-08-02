@@ -428,7 +428,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return venue;
 }
 
-- (BOOL)addEvent:(DaysCounterEvent *)eventModel {
+- (BOOL)addEvent:(DaysCounterEvent *)eventModel inContext:(NSManagedObjectContext *)context {
     if ( !eventModel.alertDatetime ) {
         eventModel.alertDatetime = nil;
         eventModel.hasReminder = @(NO);
@@ -442,7 +442,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     }
     eventModel.updateDate = [NSDate date];
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	[context MR_saveToPersistentStoreAndWait];
     
     return YES;
 }
