@@ -257,11 +257,14 @@ typedef CMathParser<char, double> MathParser;
     else if (A3E_PI <= key && key < A3E_CONSTANT_END) {
         [self constantHandler:key];
     }
+	[self saveExpression];
+}
 
+- (void)saveExpression {
 	NSDate *updateDate = [NSDate date];
 	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3CalculatorUserDefaultsUpdateDate];
 	[[NSUserDefaults standardUserDefaults] setValue:mathexpression forKey:A3CalculatorUserDefaultsSavedLastExpression];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];

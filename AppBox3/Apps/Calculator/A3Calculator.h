@@ -17,6 +17,9 @@
 @property (nonatomic, weak) id<A3CalcMessagShowDelegate> delegate;
 @property BOOL isLandScape;
 - (void)keyboardButtonPressed:(NSUInteger)key;
+
+- (void)saveExpression;
+
 - (id) initWithLabel:(HTCopyableLabel *) expression result:(HTCopyableLabel *) result;
 - (void) setLabel:(HTCopyableLabel *) expression result:(HTCopyableLabel *) result;
 - (void) setRadian:(bool) bRadian;

@@ -191,6 +191,8 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Calculation *calculation = [_fetchedResultsController objectAtIndexPath:indexPath];
     [self.calculator setMathExpression:calculation.expression];
+	[self.calculator saveExpression];
+
     if (IS_IPAD) {
 		[self.A3RootViewController dismissRightSideViewController];
 	} else {

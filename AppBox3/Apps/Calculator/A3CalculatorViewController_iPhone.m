@@ -122,6 +122,7 @@
     [_keyboardView.radianDegreeButton setTitle:([self radian] == YES ? @"Deg" : @"Rad") forState:UIControlStateNormal];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 }
 
 - (void)cloudStoreDidImport {
@@ -149,8 +150,8 @@
 }
 
 - (void)removeObserver {
-	FNLOG();
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

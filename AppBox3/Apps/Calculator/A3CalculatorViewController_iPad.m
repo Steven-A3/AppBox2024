@@ -92,7 +92,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-    
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+
     // Radian / Degrees 버튼 초기화
     [_calculator setRadian:[self radian]];
     _degreeandradianLabel.text = [self radian] == YES ? @"Radian" : @"Degrees";
@@ -149,8 +150,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 }
 
 - (void)removeObserver {
-	FNLOG();
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 }
