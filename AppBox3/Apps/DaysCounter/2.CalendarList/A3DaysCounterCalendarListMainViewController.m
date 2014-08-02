@@ -180,7 +180,6 @@
 	[super viewWillDisappear:animated];
 
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-		FNLOG();
 		[self removeObserver];
 	}
 }
@@ -579,7 +578,6 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FNLOG();
     NSDictionary *calendarItem;
     if (tableView == self.tableView && (indexPath.row >= [_itemArray count])) {
         calendarItem = nil;
@@ -752,7 +750,6 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FNLOG();
     if ( editingStyle == UITableViewCellEditingStyleDelete ) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"DaysCalendar_CalendarDeleteConfirmMsg", @"Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") otherButtonTitles:nil];
         actionSheet.tag = ActionTag_DeleteCalendar;
@@ -763,7 +760,6 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FNLOG(@"indexPath: %@, _itemArray count: %ld", indexPath, (long)[_itemArray count]);
     if ( tableView == self.tableView && (indexPath.row >= [_itemArray count]) )
         return NO;
 
@@ -774,12 +770,10 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     
     NSDictionary *item = [_itemArray objectAtIndex:indexPath.row];
     if (!item) {
-        FNLOG(@"asdf");
         return NO;
     }
     
     if (!item[CalendarItem_Type] || [item[CalendarItem_Type] isKindOfClass:[NSNull class]]) {
-        FNLOG(@"asdf2");
         return NO;
     }
 

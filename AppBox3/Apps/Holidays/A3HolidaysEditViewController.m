@@ -354,12 +354,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-	if (IS_IPHONE) {
-		[self dismissViewControllerAnimated:YES completion:nil];
-	} else {
-		[_imagePickerPopoverController dismissPopoverAnimated:YES];
-		_imagePickerPopoverController = nil;
-	}
+	[self dismissImagePickerController];
 
 	UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
 	if (!image) {

@@ -51,7 +51,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	self = [super init];
 	if (self) {
 		_fileManager = [NSFileManager new];
-#ifdef DEBUG
+#ifdef DEBUG_ENSEMBLE_PROGRESS
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ensembleDidBeginActivity:) name:CDEPersistentStoreEnsembleDidBeginActivityNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ensembleDidMakeProgress:) name:CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ensembleWilEndActivity:) name:CDEPersistentStoreEnsembleWillEndActivityNotification object:nil];
@@ -61,7 +61,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	return self;
 }
 
-#ifdef DEBUG
+#ifdef DEBUG_ENSEMBLE_PROGRESS
 - (void)ensembleDidBeginActivity:(NSNotification *)notification {
 	FNLOG(@"%@", notification.userInfo[CDEEnsembleActivityKey]);
 }
