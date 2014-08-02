@@ -125,6 +125,7 @@
 		return;
 	}
 	[self reloadInputData];
+	[self reloadTableDataSource];
 	[self reloadTableHeaderView];
 	[self.tableView reloadData];
 	// 배경 설명
