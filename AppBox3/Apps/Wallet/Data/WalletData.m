@@ -140,16 +140,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 		[fileManager createDirectoryAtPath:videoThumbnailDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
 }
 
-+ (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow {
-	NSArray *object = [[NSUserDefaults standardUserDefaults] objectForKey:A3WalletUserDefaultsCategoryInfo];
-	if (object) {
-		if (hideDoNotShow) {
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != YES", W_DoNotShow_KEY];
-			return [object filteredArrayUsingPredicate:predicate];
-		}
-		return object;
-	}
-
++ (NSMutableArray *)localizedPresetCategories {
 	NSMutableArray *presetCategories = [[self categoryPresetData] mutableCopy];
 	NSMutableArray *newCategories = [NSMutableArray new];
 	[presetCategories enumerateObjectsUsingBlock:^(NSDictionary *category, NSUInteger idx, BOOL *stop) {
@@ -170,7 +161,20 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 		return [NSLocalizedStringFromTable(obj1[W_NAME_KEY], @"WalletPreset", nil)
 				compare:NSLocalizedStringFromTable(obj2[W_NAME_KEY], @"WalletPreset", nil)];
 	}];
+	return newCategories;
+}
 
++ (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow {
+	NSArray *object = [[NSUserDefaults standardUserDefaults] objectForKey:A3WalletUserDefaultsCategoryInfo];
+	if (object) {
+		if (hideDoNotShow) {
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != YES", W_DoNotShow_KEY];
+			return [object filteredArrayUsingPredicate:predicate];
+		}
+		return object;
+	}
+
+	NSMutableArray *newCategories = [WalletData localizedPresetCategories];
 	[newCategories insertObject:@{
 			W_ID_KEY : A3WalletUUIDFavoriteCategory,
 			W_NAME_KEY : NSLocalizedString(@"Favorites", nil),

@@ -55,6 +55,8 @@ extern NSString *const A3WalletUUIDMemoCategory;
 
 + (void)createDirectories;
 
++ (NSMutableArray *)localizedPresetCategories;
+
 + (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow;
 + (NSUInteger)visibleCategoryCount;
 + (NSDictionary *)firstEditableWalletCategory;

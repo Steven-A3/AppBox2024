@@ -33,4 +33,5 @@
 - (void)makeGraphCellClear:(A3LoanCalcLoanGraphCell *)graphCell;
 - (NSString *)defaultCurrencyCode;
 
+- (void)changeDefaultCurrencyCode:(NSString *)currencyCode;
 @end
