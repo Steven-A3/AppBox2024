@@ -141,6 +141,7 @@ static NSString *CellIdentifier = @"Cell";
     
     ExpenseListHistory *aHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
     ExpenseListBudget *aBudget = [aHistory budgetData];
+    [self.currencyFormatter setCurrencyCode:aBudget.currencyCode];
     [cell setExpenseBudgetData:aBudget currencyFormatter:self.currencyFormatter];
     
     return cell;

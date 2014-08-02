@@ -856,6 +856,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 {
 	// 현재 예산에 새 ID 를 부여하고 history 로 전환
 	_currentBudget.uniqueID = [[NSUUID UUID] UUIDString];
+    _currentBudget.currencyCode = [[self currencyFormatter] currencyCode];
 
 	ExpenseListHistory * history = [ExpenseListHistory MR_createEntity];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
@@ -1145,6 +1146,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     _currentBudget.title = aBudget.title;
     _currentBudget.totalAmount = aBudget.totalAmount;
     _currentBudget.usedAmount = aBudget.usedAmount;
+    _currentBudget.currencyCode = aBudget.currencyCode;
+    self.currencyFormatter.currencyCode = aBudget.currencyCode;
 
 	[[aBudget expenseItems] enumerateObjectsUsingBlock:^(ExpenseListItem *item, NSUInteger idx, BOOL *stop) {
 		ExpenseListItem *newCurrentItem = [ExpenseListItem MR_createEntity];
