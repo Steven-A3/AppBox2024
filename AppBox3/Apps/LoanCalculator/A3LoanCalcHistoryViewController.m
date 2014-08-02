@@ -215,8 +215,9 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
             loanCell.lowRightLb.text = @"";
         }
          */
-        
-        A3LoanCalcFrequencyType freqType = (A3LoanCalcFrequencyType) history.frequency.integerValue;
+		[self.currencyFormatter setCurrencyCode:history.currencyCode];
+
+		A3LoanCalcFrequencyType freqType = (A3LoanCalcFrequencyType) history.frequency.integerValue;
         NSNumber *repayNum = @(history.monthlyPayment.doubleValue);
         NSString *repayment = [self.currencyFormatter stringFromNumber:repayNum];
         NSString *shortTerm = [LoanCalcString shortTitleOfFrequency:freqType];
@@ -292,7 +293,8 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
         [df setDateFormat:@"MM/dd/yy HH:mm a"];
         comparisonCell.dateLb.text = [df stringFromDate:history.updateDate];
         */
-        comparisonCell.dateLb.text = [history.updateDate timeAgo];
+		[self.currencyFormatter setCurrencyCode:history.currencyCode];
+		comparisonCell.dateLb.text = [history.updateDate timeAgo];
         comparisonCell.dateLb.font = [UIFont systemFontOfSize:12];
         comparisonCell.dateLb.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
         

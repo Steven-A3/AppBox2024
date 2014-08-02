@@ -235,7 +235,9 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 			unitPriceBItem = item;
 		}
 	}
-    double unitPriceA = [unitPriceAItem unitPrice];
+	[self.currencyFormatter setCurrencyCode:unitPriceHistory.currencyCode];
+
+	double unitPriceA = [unitPriceAItem unitPrice];
     double unitPriceB = [unitPriceBItem unitPrice2WithPrice1:unitPriceAItem];
 
 	UIColor *blackColor = [UIColor blackColor];
