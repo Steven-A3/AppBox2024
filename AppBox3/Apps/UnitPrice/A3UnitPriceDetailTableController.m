@@ -876,27 +876,11 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
-	if ([currencyCode length]) {
-		NSDate *updateDate = [NSDate date];
-		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3UnitPriceUserDefaultsUpdateDate];
-		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3UnitPriceUserDefaultsCurrencyCode];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+	[UnitPriceInfo changeDefaultCurrencyCode:currencyCode];
 
-		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-			[store setObject:currencyCode forKey:A3UnitPriceUserDefaultsCurrencyCode];
-			[store setObject:updateDate forKey:A3UnitPriceUserDefaultsCloudUpdateDate];
-			[store synchronize];
-		}
-
-		[self.currencyFormatter setCurrencyCode:currencyCode];
-        self.currencyFormatter.maximumFractionDigits = 2;
-		[self.tableView reloadData];
-
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationUnitPriceCurrencyCodeChanged object:nil];
-		});
-	}
+	[self.currencyFormatter setCurrencyCode:currencyCode];
+	self.currencyFormatter.maximumFractionDigits = 2;
+	[self.tableView reloadData];
 }
 
 #pragma mark - Number Keyboard Calculator Button Notification

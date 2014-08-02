@@ -8,6 +8,9 @@
 
 #import "UnitPriceInfo+extension.h"
 #import "A3UnitDataManager.h"
+#import "A3UserDefaults.h"
+#import "A3SyncManager.h"
+#import "A3UnitPriceMainTableController.h"
 
 NSString *const PRICE_KEY		= @"price";
 NSString *const SIZE_KEY		= @"size";
@@ -272,6 +275,26 @@ NSString *const NOTES_KEY		= @"note";
 		}
 	}
 	return unitPriceTxt;
+}
+
++ (void)changeDefaultCurrencyCode:(NSString *)currencyCode {
+	if ([currencyCode length]) {
+		NSDate *updateDate = [NSDate date];
+		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3UnitPriceUserDefaultsUpdateDate];
+		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3UnitPriceUserDefaultsCurrencyCode];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+
+		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
+			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+			[store setObject:currencyCode forKey:A3UnitPriceUserDefaultsCurrencyCode];
+			[store setObject:updateDate forKey:A3UnitPriceUserDefaultsCloudUpdateDate];
+			[store synchronize];
+		}
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationUnitPriceCurrencyCodeChanged object:nil];
+		});
+	}
 }
 
 @end

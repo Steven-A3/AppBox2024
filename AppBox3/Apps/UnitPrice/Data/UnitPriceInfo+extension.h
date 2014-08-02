@@ -21,6 +21,8 @@ extern NSString *const NOTES_KEY;
 
 - (void)initValues;
 
++ (void)changeDefaultCurrencyCode:(NSString *)currencyCode;
+
 - (void)copyValueFrom:(NSDictionary *)store;
 
 - (NSDictionary *)dictionaryRepresentation;
