@@ -770,6 +770,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (void)didSelectHistoryData:(TipCalcHistory *)aHistory {
     [self.dataManager historyToRecently:aHistory];
+
     [self reloadTableDataSource];
 
     self.tableView.tableHeaderView = [self headerView];
@@ -1232,7 +1233,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (NSNumberFormatter *)currencyFormatterForTableViewInputElement {
-	return self.dataManager.currencyFormatter;
+	return [self.dataManager currencyFormatter];
 }
 
 @end

@@ -90,6 +90,11 @@
 - (void)historyToRecently:(TipCalcHistory*)aHistory
 {
 	TipCalcRecent *recent = [TipCalcRecent MR_findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID];
+
+	[[NSUserDefaults standardUserDefaults] setObject:[recent currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    self.currencyFormatter = nil;
+    
 	[self deepCopyRecently:recent dest:self.tipCalcData];
 }
 
@@ -291,6 +296,7 @@
 
 - (void)setTipCalcDataForHistoryData:(TipCalcHistory *)aHistory {
     _tipCalcData = [TipCalcRecent MR_findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID];
+    self.currencyFormatter.currencyCode = _tipCalcData.currencyCode;
 }
 
 #pragma mark Split Option
