@@ -275,7 +275,7 @@ enum A3TableElementCellType {
     BOOL result;
     A3TextViewElement *notes = (A3TextViewElement *)[self.root elementForIndexPath:[NSIndexPath indexPathForRow:2 inSection:2]];
     self.preferences.calcData.notes = notes.value;
-    result = [self.preferences.calcData saveData];
+    result = [self.preferences.calcData saveDataWithCurrencyCode:[self.currencyFormatter currencyCode]];
     
     if (result) {
         A3SalesCalcData *newData = [[A3SalesCalcData alloc] init];
@@ -315,14 +315,13 @@ enum A3TableElementCellType {
 
 -(void)didSelectHistoryData:(A3SalesCalcData *)aData
 {
-//    [self reloadSalesCalcData:aData];
-//    [self.firstResponder resignFirstResponder];
-//    [self.textViewResponder resignFirstResponder];
-//    self.firstResponder = nil;
-//    _textViewResponder = nil;
-    
     self.preferences.calcData = aData;
     [self saveInputTextData:aData];
+    
+	[[NSUserDefaults standardUserDefaults] setObject:aData.currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+	[self setCurrencyFormatter:nil];
+	self.headerView.currencyFormatter = self.currencyFormatter;
     
     NSMutableArray *sectionsArray = [NSMutableArray new];
     [sectionsArray addObject:[self knownValueTypeElements]];
@@ -514,7 +513,6 @@ enum A3TableElementCellType {
     discount.nextEnabled = YES;
     discount.onEditingBegin = [self cellTextInputBeginBlock];
     discount.onEditingValueChanged = [self cellTextInputChangedBlock];
-    //discount.onEditingFinished = [self cellTextInputFinishedBlock];
     discount.onEditingFinishAll = [self cellTextInputFinishAllBlock];
     discount.doneButtonPressed = [self cellInputDoneButtonPressed];
     discount.identifier = A3TableElementCellType_Discount;

@@ -93,20 +93,21 @@
 }
 
 -(void)setSalesCalcData:(A3SalesCalcData *)aData {
-    NSNumberFormatter *nFormatter = [NSNumberFormatter new];
-    [nFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    NSNumberFormatter *currencyFormatter = [NSNumberFormatter new];
+    currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    currencyFormatter.currencyCode = aData.currencyCode;
     
     NSNumber *salePriceWithTax = @([[A3SalesCalcCalculator salePriceWithoutTaxForCalcData:aData] doubleValue] + [[A3SalesCalcCalculator salePriceTaxForCalcData:aData] doubleValue]);
     NSNumber *originalPriceWithTax = [A3SalesCalcCalculator originalPriceWithTax:aData];
     NSNumber *savedAmount = [A3SalesCalcCalculator savedTotalAmountForCalcData:aData];
     
-    _salePriceLabel.text = [nFormatter stringFromNumber:salePriceWithTax];
+    _salePriceLabel.text = [currencyFormatter stringFromNumber:salePriceWithTax];
     _dateLabel.text = [aData.historyDate timeAgo];
     
     NSArray *strings;
-    strings = @[[nFormatter stringFromNumber:savedAmount],
+    strings = @[[currencyFormatter stringFromNumber:savedAmount],
 			NSLocalizedString(@" saved of ", @" saved of "),
-                [nFormatter stringFromNumber:originalPriceWithTax]];
+                [currencyFormatter stringFromNumber:originalPriceWithTax]];
     _resultPriceLabel.text = [strings componentsJoinedByString:@""];
     NSMutableAttributedString *savedPriceAttribute = [[NSMutableAttributedString alloc] initWithAttributedString:_resultPriceLabel.attributedText];
     [savedPriceAttribute addAttribute: NSForegroundColorAttributeName

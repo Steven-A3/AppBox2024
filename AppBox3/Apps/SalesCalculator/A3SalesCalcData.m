@@ -21,6 +21,7 @@ static NSString *const A3SalesCalcDataKeyAdditionalOffType = @"additionalOffType
 static NSString *const A3SalesCalcDataKeyTax = @"tax";
 static NSString *const A3SalesCalcDataKeyTaxType = @"taxType";
 static NSString *const A3SalesCalcDataKeyNotes = @"notes";
+static NSString *const A3SalesCalcDataKeyCurrencyCode = @"currencyCode";
 
 @implementation A3SalesCalcData
 
@@ -54,6 +55,7 @@ static NSString *const A3SalesCalcDataKeyNotes = @"notes";
         _tax = [aDecoder decodeObjectForKey:A3SalesCalcDataKeyTax];
         _taxType = (A3TableElementValueType) [aDecoder decodeIntegerForKey:A3SalesCalcDataKeyTaxType];
         _notes = [aDecoder decodeObjectForKey:A3SalesCalcDataKeyNotes];
+        _currencyCode = [aDecoder decodeObjectForKey:A3SalesCalcDataKeyCurrencyCode];
     }
     
     return self;
@@ -72,9 +74,10 @@ static NSString *const A3SalesCalcDataKeyNotes = @"notes";
     [aCoder encodeObject:_tax forKey:A3SalesCalcDataKeyTax];
     [aCoder encodeInteger:_taxType forKey:A3SalesCalcDataKeyTaxType];
     [aCoder encodeObject:_notes forKey:A3SalesCalcDataKeyNotes];
+    [aCoder encodeObject:_currencyCode forKey:A3SalesCalcDataKeyCurrencyCode];
 }
 
--(BOOL)saveData {
+-(BOOL)saveDataWithCurrencyCode:(NSString *)currencyCode {
 
     if (self.price == nil ||
         self.discount == nil ) {
@@ -100,13 +103,14 @@ static NSString *const A3SalesCalcDataKeyNotes = @"notes";
     entity.taxType = @(self.taxType);
     entity.notes = self.notes;
     entity.shownPriceType = @(self.shownPriceType);
+    entity.currencyCode = currencyCode;
 
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     return YES;
 }
 
--(BOOL)saveDataForcingly {
+-(BOOL)saveDataForcinglyWithCurrencyCode:(NSString *)currencyCode {
     
     if ([self.price isEqualToNumber:@0] ||
         [self.discount isEqualToNumber:@0]) {
@@ -135,7 +139,8 @@ static NSString *const A3SalesCalcDataKeyNotes = @"notes";
     entity.taxType = @(self.taxType);
     entity.notes = self.notes;
     entity.shownPriceType = @(self.shownPriceType);
-
+    entity.currencyCode = currencyCode;
+    
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     return YES;
@@ -155,6 +160,7 @@ static NSString *const A3SalesCalcDataKeyNotes = @"notes";
     data.taxType = (A3TableElementValueType) history.taxType.integerValue;
     data.notes = history.notes;
     data.shownPriceType = (A3SalesCalcShowPriceType) history.shownPriceType.unsignedIntegerValue;
+    data.currencyCode = history.currencyCode;
 
     return data;
 }

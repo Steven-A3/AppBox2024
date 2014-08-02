@@ -30,9 +30,10 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcShowPriceType) {
 @property (nonatomic, strong) NSNumber *tax;
 @property (nonatomic, assign) A3TableElementValueType taxType;
 @property (nonatomic, strong) NSString *notes;
+@property (nonatomic, strong) NSString *currencyCode;
 
--(BOOL)saveData;
--(BOOL)saveDataForcingly;
+-(BOOL)saveDataWithCurrencyCode:(NSString *)currencyCode;
+-(BOOL)saveDataForcinglyWithCurrencyCode:(NSString *)currencyCode;
 +(A3SalesCalcData *)loadDataFromHistory:(SalesCalcHistory *)history;
 
 @end
