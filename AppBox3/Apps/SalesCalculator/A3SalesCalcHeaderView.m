@@ -50,7 +50,6 @@
 {
     [super layoutSubviews];
     [self setupMeterViews];
-    //[self setResultWithAnimation:_result];
     [self setResultDataWithAnimation:_calcData];
     [self adjustConstraintLayout];
     [super layoutSubviews];
@@ -181,8 +180,6 @@
             aView.backgroundColor = COLOR_DEFAULT_GRAY;
             aLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
             aLabel.textColor = COLOR_DEFAULT_GRAY;
-//            [self addSubview:aView];
-//            [self addSubview:aLabel];
             [self insertSubview:aView atIndex:0];
             [self insertSubview:aLabel atIndex:0];
             [meterArray addObject:aView];
@@ -209,9 +206,6 @@
             [aLabel removeConstraints:aLabel.constraints];
             [aLabel sizeToFit];
             [aLabel makeConstraints:^(MASConstraintMaker *make) {
-                //make.leading.equalTo( @( self.frame.size.width / 5.0 * (idx+1) ) );
-                //make.trailing.equalTo(((UIView *)_sliderMeterViews[idx]).left).with.offset(-6.0);
-                //make.top.equalTo(_sliderBaseLineView.bottom).with.offset(6.0);
                 make.trailing.equalTo(((UIView *)_sliderMeterViews[idx]).left).with.offset(IS_RETINA? -4.5 : -5);
                 make.baseline.equalTo(self.bottom).with.offset(-75);//-> 75pt로 하면 slider와 겹치게 됩니다. 현재는 label의 상단이 slider에서 6pt 하단에 위치하게 되어 있습니다. 폰트는 Caption2 입니다.
             }];
@@ -308,7 +302,6 @@
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.25];
-        //[UIView setAnimationDidStopSelector:@selector(setNeedsLayout)];
 
         [self adjustConstraintLayout];
 

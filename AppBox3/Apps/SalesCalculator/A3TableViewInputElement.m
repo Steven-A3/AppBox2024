@@ -86,7 +86,7 @@
 					NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
 					[decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 					NSNumber *number = [decimalFormatter numberFromString:self.value];
-					cell.textField.text = [self.currencyFormatter stringFromNumber:number];
+					cell.textField.text = [[self currencyFormatter] stringFromNumber:number];
 				}
 			}
 			cell.textField.clearButtonMode = UITextFieldViewModeNever;
