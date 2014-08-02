@@ -2,7 +2,7 @@
 //  LoanCalcHistory.h
 //  AppBox3
 //
-//  Created by A3 on 7/17/14.
+//  Created by A3 on 8/2/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -13,6 +13,7 @@
 @interface LoanCalcHistory : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * calculationMode;
+@property (nonatomic, retain) NSString * comparisonHistoryID;
 @property (nonatomic, retain) NSString * downPayment;
 @property (nonatomic, retain) NSNumber * editing;
 @property (nonatomic, retain) NSString * extraPaymentMonthly;
@@ -37,7 +38,6 @@
 @property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSDate * updateDate;
 @property (nonatomic, retain) NSNumber * useSimpleInterest;
-@property (nonatomic, retain) NSString * comparisonHistoryID;
-@property (nonatomic, retain) NSNumber * isAPart;
+@property (nonatomic, retain) NSString * currencyCode;
 
 @end

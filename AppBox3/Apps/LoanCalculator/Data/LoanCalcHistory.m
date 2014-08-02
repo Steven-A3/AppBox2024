@@ -2,7 +2,7 @@
 //  LoanCalcHistory.m
 //  AppBox3
 //
-//  Created by A3 on 7/17/14.
+//  Created by A3 on 8/2/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -12,6 +12,7 @@
 @implementation LoanCalcHistory
 
 @dynamic calculationMode;
+@dynamic comparisonHistoryID;
 @dynamic downPayment;
 @dynamic editing;
 @dynamic extraPaymentMonthly;
@@ -36,7 +37,6 @@
 @dynamic uniqueID;
 @dynamic updateDate;
 @dynamic useSimpleInterest;
-@dynamic comparisonHistoryID;
-@dynamic isAPart;
+@dynamic currencyCode;
 
 @end

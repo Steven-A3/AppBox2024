@@ -2,7 +2,7 @@
 //  SalesCalcHistory.h
 //  AppBox3
 //
-//  Created by A3 on 7/1/14.
+//  Created by A3 on 8/2/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -22,7 +22,8 @@
 @property (nonatomic, retain) NSNumber * shownPriceType;
 @property (nonatomic, retain) NSNumber * tax;
 @property (nonatomic, retain) NSNumber * taxType;
-@property (nonatomic, retain) NSDate * updateDate;
 @property (nonatomic, retain) NSString * uniqueID;
+@property (nonatomic, retain) NSDate * updateDate;
+@property (nonatomic, retain) NSString * currencyCode;
 
 @end

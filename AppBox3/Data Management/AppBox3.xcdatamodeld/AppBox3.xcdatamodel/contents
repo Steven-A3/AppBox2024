@@ -83,6 +83,7 @@
     </entity>
     <entity name="ExpenseListBudget" representedClassName="ExpenseListBudget" syncable="YES">
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
@@ -146,6 +147,7 @@
     <entity name="LoanCalcHistory" representedClassName="LoanCalcHistory" syncable="YES">
         <attribute name="calculationMode" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="comparisonHistoryID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="downPayment" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="editing" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="extraPaymentMonthly" optional="YES" attributeType="String" syncable="YES"/>
@@ -179,6 +181,7 @@
     <entity name="SalesCalcHistory" representedClassName="SalesCalcHistory" syncable="YES">
         <attribute name="additionalOff" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="additionalOffType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="discount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="discountType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
@@ -256,6 +259,7 @@
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
     <entity name="UnitPriceInfo" representedClassName="UnitPriceInfo" syncable="YES">
+        <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="discountPercent" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="discountPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="historyID" optional="YES" attributeType="String" syncable="YES"/>
@@ -305,15 +309,15 @@
         <element name="DaysCounterEventLocation" positionX="-81" positionY="-801" width="162" height="208"/>
         <element name="DaysCounterFavorite" positionX="-432" positionY="-640" width="128" height="103"/>
         <element name="DaysCounterReminder" positionX="-83" positionY="-523" width="128" height="148"/>
-        <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="193"/>
+        <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="208"/>
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="193"/>
         <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="90"/>
         <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="193"/>
         <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="208"/>
         <element name="LoanCalcComparisonHistory" positionX="198" positionY="837" width="128" height="133"/>
-        <element name="LoanCalcHistory" positionX="441" positionY="531" width="128" height="433"/>
+        <element name="LoanCalcHistory" positionX="441" positionY="531" width="128" height="448"/>
         <element name="PercentCalcHistory" positionX="-783" positionY="15" width="128" height="90"/>
-        <element name="SalesCalcHistory" positionX="-407" positionY="-327" width="128" height="223"/>
+        <element name="SalesCalcHistory" positionX="-407" positionY="-327" width="128" height="238"/>
         <element name="TipCalcHistory" positionX="-587" positionY="-310" width="128" height="103"/>
         <element name="TipCalcRecent" positionX="-774" positionY="-306" width="128" height="313"/>
         <element name="TranslatorFavorite" positionX="304" positionY="-36" width="128" height="118"/>
@@ -322,7 +326,7 @@
         <element name="UnitHistory" positionX="-2" positionY="207" width="128" height="120"/>
         <element name="UnitHistoryItem" positionX="-191" positionY="252" width="128" height="118"/>
         <element name="UnitPriceHistory" positionX="-605" positionY="332" width="128" height="73"/>
-        <element name="UnitPriceInfo" positionX="-47" positionY="428" width="128" height="223"/>
+        <element name="UnitPriceInfo" positionX="-47" positionY="428" width="128" height="238"/>
         <element name="WalletFavorite" positionX="-335" positionY="764" width="128" height="103"/>
         <element name="WalletFieldItem" positionX="-506" positionY="558" width="128" height="208"/>
         <element name="WalletItem" positionX="-702" positionY="636" width="128" height="133"/>
