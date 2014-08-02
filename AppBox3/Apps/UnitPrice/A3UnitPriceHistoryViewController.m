@@ -26,7 +26,9 @@
 
 NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 
-@implementation A3UnitPriceHistoryViewController
+@implementation A3UnitPriceHistoryViewController {
+	NSNumberFormatter *_historyNumberFormatter;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -51,12 +53,14 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 																			 style:UIBarButtonItemStylePlain
 																			target:self
 																			action:@selector(clearButtonAction:)];
-    
+
+	_historyNumberFormatter = [[NSNumberFormatter alloc] init];
+	[_historyNumberFormatter setMaximumFractionDigits:2];
+
 	self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
 
     [self.tableView registerNib:[UINib nibWithNibName:@"A3UnitPriceHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitPriceHistoryCellID];
-    [self.currencyFormatter setMaximumFractionDigits:2];
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
@@ -235,7 +239,8 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 			unitPriceBItem = item;
 		}
 	}
-	[self.currencyFormatter setCurrencyCode:unitPriceHistory.currencyCode];
+	[_historyNumberFormatter setCurrencyCode:unitPriceHistory.currencyCode];
+	[_historyNumberFormatter setMaximumFractionDigits:2];
 
 	double unitPriceA = [unitPriceAItem unitPrice];
     double unitPriceB = [unitPriceBItem unitPrice2WithPrice1:unitPriceAItem];
@@ -246,8 +251,8 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 	cell.unitPriceALabel.textColor = unitPriceA < unitPriceB ? greenColor : blackColor;
 	cell.unitPriceBLabel.textColor = unitPriceB < unitPriceA ? greenColor : blackColor;
 	
-    cell.unitPriceALabel.text = [unitPriceAItem unitPriceStringWithFormatter:self.currencyFormatter showUnit:YES ];
-    cell.unitPriceBLabel.text = [unitPriceBItem unitPrice2StringWithPrice1:unitPriceAItem formatter:self.currencyFormatter showUnit:YES ];
+    cell.unitPriceALabel.text = [unitPriceAItem unitPriceStringWithFormatter:_historyNumberFormatter showUnit:YES ];
+    cell.unitPriceBLabel.text = [unitPriceBItem unitPrice2StringWithPrice1:unitPriceAItem formatter:_historyNumberFormatter showUnit:YES ];
     cell.timeLabel.text = [unitPriceHistory.updateDate timeAgo];
     
     return cell;
