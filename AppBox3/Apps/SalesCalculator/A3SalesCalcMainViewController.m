@@ -320,6 +320,14 @@ enum A3TableElementCellType {
     
 	[[NSUserDefaults standardUserDefaults] setObject:aData.currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode];
     [[NSUserDefaults standardUserDefaults] synchronize];
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
+        NSDate *updateDate = [NSDate date];
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:aData.currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode];
+		[store setObject:updateDate forKey:A3SalesCalcUserDefaultsCloudUpdateDate];
+		[store synchronize];
+	}
+    
 	[self setCurrencyFormatter:nil];
 	self.headerView.currencyFormatter = self.currencyFormatter;
     
