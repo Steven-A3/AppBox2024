@@ -2267,6 +2267,7 @@
             A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
             nextVC.eventModel = self.eventItem;
             nextVC.sharedManager = _sharedManager;
+            nextVC.savingContext = _savingContext;
             [self.navigationController pushViewController:nextVC animated:YES];
         }
     }

@@ -602,7 +602,7 @@
 
         DaysCounterEventLocation *locItem = [_eventModel location];
         if (!locItem) {
-            locItem = [DaysCounterEventLocation MR_createEntity];
+            locItem = [DaysCounterEventLocation MR_createEntityInContext:_savingContext];
             locItem.uniqueID = [[NSUUID UUID] UUIDString];
         }
 		
