@@ -9,6 +9,9 @@
 #import "A3TipCalcDataManager.h"
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
+#import "NSManagedObject+extension.h"
+
+NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 
 @implementation A3TipCalcDataManager
 {
@@ -72,41 +75,29 @@
     destination.valueType = source.valueType;
 }
 
-- (void)addHistory:(NSString*)aCaptionTip total:(NSString*)aCaptionTotal
-{
-    TipCalcHistory* history = [TipCalcHistory MR_createEntity];
-	history.uniqueID = [[NSUUID UUID] UUIDString];
-	history.updateDate = [NSDate date];
-    history.labelTip = aCaptionTip;
-    history.labelTotal = aCaptionTotal;
-
-	TipCalcRecent *recent = [TipCalcRecent MR_createEntity];
-	recent.uniqueID = [[NSUUID UUID] UUIDString];
-	recent.updateDate = [NSDate date];
-    recent.historyID = history.uniqueID;
-
-	[self deepCopyRecently:self.tipCalcData dest:recent];
-}
-
 - (void)historyToRecently:(TipCalcHistory*)aHistory
 {
-	TipCalcRecent *recent = [TipCalcRecent MR_findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID inContext:[NSManagedObjectContext MR_rootSavingContext]];
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+	TipCalcRecent *history = [TipCalcRecent MR_findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID inContext:savingContext];
 
-	[[NSUserDefaults standardUserDefaults] setObject:[recent currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode];
+	[[NSUserDefaults standardUserDefaults] setObject:[history currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
 	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
         NSDate *updateDate = [NSDate date];
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:[recent currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode];
+		[store setObject:[history currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode];
 		[store setObject:updateDate forKey:A3TipCalcUserDefaultsCloudUpdateDate];
 		[store synchronize];
 	}
     
     self.currencyFormatter = nil;
-    
-	[self deepCopyRecently:recent dest:self.tipCalcData];
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
+	TipCalcRecent *currentData = [self.tipCalcData MR_inContext:savingContext];
+	[self deepCopyRecently:history dest:currentData];
+    [savingContext MR_saveToPersistentStoreAndWait];
+
+	_tipCalcData = [TipCalcRecent MR_findFirstByAttribute:@"uniqueID" withValue:A3TipCalcRecentCurrentDataID];
 }
 
 #pragma mark - calculate
@@ -278,31 +269,35 @@
 #pragma mark Manipulate TipCalc Data
 
 - (void)setTipCalcDataForMainTableView {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMain == %@",[NSNumber numberWithBool:YES]];
-    NSArray* arrRecent = [TipCalcRecent MR_findAllWithPredicate:predicate];
-    
-    if(arrRecent.count > 0) {
-        _tipCalcData = arrRecent[0];
+    _tipCalcData = [TipCalcRecent MR_findFirstByAttribute:@"uniqueID" withValue:A3TipCalcRecentCurrentDataID];
+    if(_tipCalcData) {
         _tipCalcData.currencyCode = self.currencyCode;
     }
     else {
-        TipCalcRecent * recently = [TipCalcRecent MR_createEntity];
-		recently.uniqueID = [[NSUUID UUID] UUIDString];
+		NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+        TipCalcRecent * recently = [TipCalcRecent MR_createEntityInContext:savingContext];
+		recently.uniqueID = A3TipCalcRecentCurrentDataID;
 		recently.updateDate = [NSDate date];
-        recently.knownValue = @(TCKnownValue_CostsBeforeTax);
-        recently.isMain = [NSNumber numberWithBool:YES];
-        recently.tip = @20;
-        //recently.tax = _defaultTax;
-        recently.isPercentTip = @(YES);
-        recently.split = @1;
-		recently.currencyCode = self.currencyCode;
-        recently.showTax = @(YES);
-        recently.showSplit = @(YES);
-        recently.showRounding = @(YES);
-        recently.optionType = @(TCRoundingMethodOption_Exact);
-        
+		[self resetRecentValues:recently];
         _tipCalcData = recently;
+
+		[savingContext MR_saveToPersistentStoreAndWait];
     }
+}
+
+- (void)resetRecentValues:(TipCalcRecent *)recently {
+	recently.knownValue = @(TCKnownValue_CostsBeforeTax);
+	recently.isMain = [NSNumber numberWithBool:YES];
+	recently.costs = @0;
+	recently.tip = @20;
+	recently.tax = _defaultTax;
+	recently.isPercentTip = @(YES);
+	recently.split = @1;
+	recently.currencyCode = self.currencyCode;
+	recently.showTax = @YES;
+	recently.showSplit = @YES;
+	recently.showRounding = @YES;
+	recently.optionType = @(TCRoundingMethodOption_Exact);
 }
 
 - (void)setTipCalcDataForHistoryData:(TipCalcHistory *)aHistory {
@@ -360,31 +355,32 @@
 }
 
 - (void)saveToHistory {
-    TipCalcHistory* history = [TipCalcHistory MR_createEntity];
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+    TipCalcHistory* history = [TipCalcHistory MR_createEntityInContext:savingContext];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
 	history.updateDate = [NSDate date];
 	history.labelTip = [self currencyStringFromDouble:[[self tipValueWithSplitWithRounding:YES] doubleValue]];
 	history.labelTotal = [self currencyStringFromDouble:[[self totalBeforeSplitWithTax] doubleValue]];
 
-	self.tipCalcData.historyID = history.uniqueID;
-    self.tipCalcData.isMain = @(NO);
+	TipCalcRecent *historyData = (TipCalcRecent *) [_tipCalcData cloneInContext:savingContext ];
+	historyData.uniqueID = [[NSUUID UUID] UUIDString];
+	historyData.historyID = history.uniqueID;
+	historyData.isMain = @NO;
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    
-    TipCalcRecent * recently = [TipCalcRecent MR_createEntity];
-	recently.uniqueID = [[NSUUID UUID] UUIDString];
+    TipCalcRecent * recently = [self.tipCalcData MR_inContext:savingContext];
 	recently.updateDate = [NSDate date];
-	recently.isMain = @(YES);
-    recently.split = @1;
-    recently.knownValue = @(TCKnownValue_CostsBeforeTax);
-    recently.tip = @20;
-    recently.tax = _defaultTax;
-    recently.isPercentTip = @(YES);
-    recently.showTax = @(YES);
-    recently.showSplit = @(YES);
-    recently.showRounding = @(YES);
-    recently.currencyCode = self.currencyCode;
-    _tipCalcData = recently;
+	recently.knownValue = @(TCKnownValue_CostsBeforeTax);
+	recently.isMain = [NSNumber numberWithBool:YES];
+	recently.costs = @0;
+	recently.tip = @20;
+	recently.tax = _defaultTax;
+	recently.isPercentTip = @(YES);
+	recently.split = @1;
+	recently.currencyCode = self.currencyCode;
+
+	[savingContext MR_saveToPersistentStoreAndWait];
+
+	_tipCalcData = [TipCalcRecent MR_findFirstByAttribute:@"uniqueID" withValue:A3TipCalcRecentCurrentDataID];
 }
 
 #pragma mark Rounding Method

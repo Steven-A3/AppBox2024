@@ -63,7 +63,6 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
 - (NSString *)currencyCode;
 - (NSString *)currencyStringFromDouble:(double)value;
 
-- (void)addHistory:(NSString*)aCaptionTip total:(NSString*)aCaptionTotal;
 - (void)historyToRecently:(TipCalcHistory*)aHistory;
 
 - (NSString*)sharedDataIsMail:(BOOL)isMail;

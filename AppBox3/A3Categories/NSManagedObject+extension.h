@@ -12,7 +12,7 @@
 
 - (void)repairWithError:(NSError *)error;
 
-- (NSManagedObject *)clone;
+- (NSManagedObject *)cloneInContext:(NSManagedObjectContext *)context;
 
 - (void)nullifyAttributes;
 @end
