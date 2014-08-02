@@ -392,7 +392,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3WalletUserDefaultsCategoryInfo];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	NSMutableArray *V3CategoryInfo = [[WalletData categoryPresetData] mutableCopy];
+	NSMutableArray *V3CategoryInfo = [WalletData localizedPresetCategories];
 	NSMutableDictionary *categoryMap = [[self categoryMap] mutableCopy];
 	NSMutableDictionary *allFieldMap = [[self fieldMap] mutableCopy];
 
