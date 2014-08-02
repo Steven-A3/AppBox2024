@@ -361,6 +361,12 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 			}
 		}
 
+		if (![self.defaultCurrencyCode isEqualToString:history.currencyCode]) {
+			[UnitPriceInfo changeDefaultCurrencyCode:history.currencyCode];
+			[self.currencyFormatter setCurrencyCode:history.currencyCode];
+			[self.currencyFormatter setMaximumFractionDigits:2];
+		}
+
 		[self saveDataToUserDefaults];
         [self updateUnitPrices:NO];
 
