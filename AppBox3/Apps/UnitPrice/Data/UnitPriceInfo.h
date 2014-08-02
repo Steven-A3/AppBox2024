@@ -24,6 +24,5 @@
 @property (nonatomic, retain) NSNumber * unitCategoryID;
 @property (nonatomic, retain) NSNumber * unitID;
 @property (nonatomic, retain) NSDate * updateDate;
-@property (nonatomic, retain) NSString * currencyCode;
 
 @end

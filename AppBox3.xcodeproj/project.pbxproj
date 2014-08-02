@@ -394,7 +394,6 @@
 		687484A819783B9D00EA8F74 /* DaysCounterReminder.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484A719783B9D00EA8F74 /* DaysCounterReminder.m */; };
 		687484AB19783B9D00EA8F74 /* DaysCounterFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484AA19783B9D00EA8F74 /* DaysCounterFavorite.m */; };
 		687484AE19783B9D00EA8F74 /* DaysCounterDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484AD19783B9D00EA8F74 /* DaysCounterDate.m */; };
-		687484B119783BBF00EA8F74 /* UnitPriceHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484B019783BBF00EA8F74 /* UnitPriceHistory.m */; };
 		687484C019783BE100EA8F74 /* WalletItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484BF19783BE100EA8F74 /* WalletItem.m */; };
 		687484C319783BE100EA8F74 /* WalletFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484C219783BE100EA8F74 /* WalletFavorite.m */; };
 		687484C619783BE100EA8F74 /* WalletFieldItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484C519783BE100EA8F74 /* WalletFieldItem.m */; };
@@ -671,8 +670,9 @@
 		68E0B317198CAB3E00127229 /* ExpenseListBudget.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E0B316198CAB3E00127229 /* ExpenseListBudget.m */; };
 		68E0B31E198CAB6200127229 /* LoanCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E0B31D198CAB6200127229 /* LoanCalcHistory.m */; };
 		68E0B321198CAB8E00127229 /* SalesCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E0B320198CAB8E00127229 /* SalesCalcHistory.m */; };
-		68E0B324198CABC100127229 /* UnitPriceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E0B323198CABC100127229 /* UnitPriceInfo.m */; };
 		68E0B327198CAE3500127229 /* LoanCalcComparisonHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E0B326198CAE3500127229 /* LoanCalcComparisonHistory.m */; };
+		68E0B32A198CB0B400127229 /* UnitPriceHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E0B329198CB0B400127229 /* UnitPriceHistory.m */; };
+		68E0B32D198CB0B400127229 /* UnitPriceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E0B32C198CB0B400127229 /* UnitPriceInfo.m */; };
 		68E213BB19865C3100A82BBA /* UnitHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E213BA19865C3100A82BBA /* UnitHistory.m */; };
 		68E213BE1986615B00A82BBA /* UnitHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E213BD1986615B00A82BBA /* UnitHistoryItem.m */; };
 		68E27C831987AD3C00CA873D /* Currency.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68E27C811987AD3C00CA873D /* Currency.xcdatamodeld */; };
@@ -1587,8 +1587,6 @@
 		687484AA19783B9D00EA8F74 /* DaysCounterFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterFavorite.m; sourceTree = "<group>"; };
 		687484AC19783B9D00EA8F74 /* DaysCounterDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaysCounterDate.h; sourceTree = "<group>"; };
 		687484AD19783B9D00EA8F74 /* DaysCounterDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterDate.m; sourceTree = "<group>"; };
-		687484AF19783BBF00EA8F74 /* UnitPriceHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitPriceHistory.h; sourceTree = "<group>"; };
-		687484B019783BBF00EA8F74 /* UnitPriceHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitPriceHistory.m; sourceTree = "<group>"; };
 		687484BE19783BE100EA8F74 /* WalletItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletItem.h; sourceTree = "<group>"; };
 		687484BF19783BE100EA8F74 /* WalletItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletItem.m; sourceTree = "<group>"; };
 		687484C119783BE100EA8F74 /* WalletFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletFavorite.h; sourceTree = "<group>"; };
@@ -2144,10 +2142,12 @@
 		68E0B31D198CAB6200127229 /* LoanCalcHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanCalcHistory.m; sourceTree = "<group>"; };
 		68E0B31F198CAB8E00127229 /* SalesCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SalesCalcHistory.h; sourceTree = "<group>"; };
 		68E0B320198CAB8E00127229 /* SalesCalcHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SalesCalcHistory.m; sourceTree = "<group>"; };
-		68E0B322198CABC100127229 /* UnitPriceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitPriceInfo.h; sourceTree = "<group>"; };
-		68E0B323198CABC100127229 /* UnitPriceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitPriceInfo.m; sourceTree = "<group>"; };
 		68E0B325198CAE3400127229 /* LoanCalcComparisonHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanCalcComparisonHistory.h; sourceTree = "<group>"; };
 		68E0B326198CAE3500127229 /* LoanCalcComparisonHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanCalcComparisonHistory.m; sourceTree = "<group>"; };
+		68E0B328198CB0B400127229 /* UnitPriceHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitPriceHistory.h; sourceTree = "<group>"; };
+		68E0B329198CB0B400127229 /* UnitPriceHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitPriceHistory.m; sourceTree = "<group>"; };
+		68E0B32B198CB0B400127229 /* UnitPriceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitPriceInfo.h; sourceTree = "<group>"; };
+		68E0B32C198CB0B400127229 /* UnitPriceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitPriceInfo.m; sourceTree = "<group>"; };
 		68E213B919865C3100A82BBA /* UnitHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitHistory.h; sourceTree = "<group>"; };
 		68E213BA19865C3100A82BBA /* UnitHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitHistory.m; sourceTree = "<group>"; };
 		68E213BC1986615B00A82BBA /* UnitHistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitHistoryItem.h; sourceTree = "<group>"; };
@@ -4216,10 +4216,10 @@
 		68B6A20E18CEC76C004084EF /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				68E0B322198CABC100127229 /* UnitPriceInfo.h */,
-				68E0B323198CABC100127229 /* UnitPriceInfo.m */,
-				687484AF19783BBF00EA8F74 /* UnitPriceHistory.h */,
-				687484B019783BBF00EA8F74 /* UnitPriceHistory.m */,
+				68E0B32B198CB0B400127229 /* UnitPriceInfo.h */,
+				68E0B32C198CB0B400127229 /* UnitPriceInfo.m */,
+				68E0B328198CB0B400127229 /* UnitPriceHistory.h */,
+				68E0B329198CB0B400127229 /* UnitPriceHistory.m */,
 				6874847619780DCE00EA8F74 /* UnitPriceHistory+extension.h */,
 				6874847719780DCE00EA8F74 /* UnitPriceHistory+extension.m */,
 				6874847919780EFC00EA8F74 /* UnitPriceInfo+extension.h */,
@@ -5606,6 +5606,7 @@
 				681E1265193443F00077DCFA /* unzip.c in Sources */,
 				68B6A35818CEDDD1004084EF /* JVFloatLabeledTextField.m in Sources */,
 				689C9A4F1839CD7F007C97EE /* AFURLConnectionOperation.m in Sources */,
+				68E0B32A198CB0B400127229 /* UnitPriceHistory.m in Sources */,
 				68948B5017D9760A00BF4BE9 /* A3NavigationController.m in Sources */,
 				687484901978256A00EA8F74 /* UnitHistory+extension.m in Sources */,
 				68E2A64818D0B1FC00E834D9 /* A3ExpenseListColumnSectionView.m in Sources */,
@@ -5798,9 +5799,9 @@
 				689C9A571839CD7F007C97EE /* UIImageView+AFNetworking.m in Sources */,
 				680886E21891751B0093FD97 /* A3ClockWaveViewController.m in Sources */,
 				689C9A541839CD7F007C97EE /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				68E0B32D198CB0B400127229 /* UnitPriceInfo.m in Sources */,
 				681E11FD1932E2250077DCFA /* A3DataMigrationManager.m in Sources */,
 				68B6A34A18CEC76D004084EF /* A3WalletFieldTypeSelectViewController.m in Sources */,
-				68E0B324198CABC100127229 /* UnitPriceInfo.m in Sources */,
 				68B6A2EA18CEC76D004084EF /* A3UnitPriceCompareSliderCell.m in Sources */,
 				68030ABC17F063D100B04487 /* HTCopyableLabel.m in Sources */,
 				68B6A44B18CEE781004084EF /* PSTCollectionView.m in Sources */,
@@ -6127,7 +6128,6 @@
 				17D426A26D07018A5660B225 /* A3StandardLeft15Cell.m in Sources */,
 				17D42B5255C77BCC6928C271 /* A3StandardTableViewCell.m in Sources */,
 				17D426431E7AC7B8D2D21A72 /* A3CalculatorViewController.m in Sources */,
-				687484B119783BBF00EA8F74 /* UnitPriceHistory.m in Sources */,
 				17D424CF600CB7D3A03DA0EE /* A3WalletMoreTableViewCell.m in Sources */,
 				17D42B763E8AA60C7A8A80BB /* A3WalletListViewController.m in Sources */,
 				17D42AD4B40AD05375208131 /* LadyCalendarPeriod+extension.m in Sources */,

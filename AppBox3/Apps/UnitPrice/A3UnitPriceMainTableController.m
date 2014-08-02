@@ -457,6 +457,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	history.uniqueID = [[NSUUID UUID] UUIDString];
     NSDate *keyDate = [NSDate date];
     history.updateDate = keyDate;
+	history.currencyCode = [self defaultCurrencyCode];
     
     UnitPriceInfo *priceAItem = [UnitPriceInfo MR_createEntity];
 	priceAItem.uniqueID = [[NSUUID UUID] UUIDString];

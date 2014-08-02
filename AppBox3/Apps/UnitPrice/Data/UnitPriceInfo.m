@@ -23,6 +23,5 @@
 @dynamic unitCategoryID;
 @dynamic unitID;
 @dynamic updateDate;
-@dynamic currencyCode;
 
 @end
