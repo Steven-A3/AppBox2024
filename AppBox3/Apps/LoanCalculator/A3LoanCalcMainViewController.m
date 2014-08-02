@@ -152,6 +152,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		return;
 	}
 
+	[self reloadCurrencyCode];
+
 	[self loadPreviousCalculation];
 	[self selectSegmentChanged:self.selectSegment];
 
@@ -2338,6 +2340,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)historyViewController:(UIViewController *)viewController selectLoanCalcHistory:(LoanCalcHistory *)history
 {
     [self loadLoanCalcData:self.loanData fromLoanCalcHistory:history];
+	[self saveLoanData];
 
 	if (![self.defaultCurrencyCode isEqualToString:history.currencyCode]) {
 		[self changeDefaultCurrencyCode:history.currencyCode];
@@ -2366,7 +2369,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		}
 	}
 	[self loadLoanCalcData:self.loanDataA fromLoanCalcHistory:historyA];
+	[self saveLoanDataA];
 	[self loadLoanCalcData:self.loanDataB fromLoanCalcHistory:historyB];
+	[self saveLoanDataB];
 
 	_isComparisonMode = YES;
 	[self selectSegment].selectedSegmentIndex = 1;

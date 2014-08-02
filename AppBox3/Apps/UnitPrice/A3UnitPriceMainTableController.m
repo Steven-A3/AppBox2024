@@ -106,6 +106,10 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	_price1 = nil;
 	_price2 = nil;
 
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
+	[self.currencyFormatter setCurrencyCode:currencyCode];
+	[self.currencyFormatter setMaximumFractionDigits:2];
+
 	[self.tableView reloadData];
 	[self enableControls:_barButtonEnabled];
 }
