@@ -32,6 +32,7 @@
 #import "UITableView+utility.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "NSString+conversion.h"
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
@@ -1486,10 +1487,12 @@
         [_sharedManager addEvent:_eventItem inContext:_savingContext];
     }
     else {
-		if ([_originalPhotoID isEqualToString:_eventItem.photoID]) {
-
+		if ([_originalPhotoID length] && ![_originalPhotoID isEqualToString:_eventItem.photoID]) {
+			// Delete Old Image
+			NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:_originalPhotoID] pathInLibraryDirectory];
+			[[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
 		}
-		[_sharedManager modifyEvent:_eventItem inContext:_savingContext ];
+		[_sharedManager modifyEvent:_eventItem inContext:_savingContext];
 	}
 	[_eventItem moveImagesToOriginalDirectory];
     

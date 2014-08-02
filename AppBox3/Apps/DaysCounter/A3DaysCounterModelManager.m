@@ -463,7 +463,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         eventItem.hasReminder = ([eventItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventItem.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
     }
 
-	DaysCounterReminder *reminder = [eventItem reminderWithContext:[NSManagedObjectContext MR_rootSavingContext]];
+	DaysCounterReminder *reminder = [eventItem reminderWithContext:context];
     if ([eventItem.hasReminder boolValue] && reminder) {
         reminder.isUnread = @(YES);
         reminder.isOn = @(NO);
@@ -473,7 +473,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     
 	eventItem.updateDate = [NSDate date];
 
-	[[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
+	[context MR_saveToPersistentStoreAndWait];
     
     return YES;
 }
