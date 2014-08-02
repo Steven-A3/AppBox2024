@@ -1003,6 +1003,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     history.startDate = loan.startDate;
     history.term = loan.monthOfTerms.stringValue;
     history.termTypeMonth = loan.showsTermInMonths;
+	history.currencyCode = [self defaultCurrencyCode];
     
     return history;
 }
@@ -2039,6 +2040,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         comparison.totalInterestB = [_loanDataB totalInterest].stringValue;
         comparison.totalAmountA = [_loanDataA totalAmount].stringValue;
         comparison.totalAmountB = [_loanDataB totalAmount].stringValue;
+		comparison.currencyCode = [self defaultCurrencyCode];
 
 		historyA.comparisonHistoryID = comparison.uniqueID;
 		historyB.comparisonHistoryID = comparison.uniqueID;

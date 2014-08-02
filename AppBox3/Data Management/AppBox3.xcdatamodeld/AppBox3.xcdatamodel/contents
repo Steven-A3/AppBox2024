@@ -137,6 +137,7 @@
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
     <entity name="LoanCalcComparisonHistory" representedClassName="LoanCalcComparisonHistory" syncable="YES">
+        <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalAmountA" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalAmountB" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalInterestA" optional="YES" attributeType="String" syncable="YES"/>
@@ -314,7 +315,7 @@
         <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="90"/>
         <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="193"/>
         <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="208"/>
-        <element name="LoanCalcComparisonHistory" positionX="198" positionY="837" width="128" height="133"/>
+        <element name="LoanCalcComparisonHistory" positionX="198" positionY="837" width="128" height="148"/>
         <element name="LoanCalcHistory" positionX="441" positionY="531" width="128" height="448"/>
         <element name="PercentCalcHistory" positionX="-783" positionY="15" width="128" height="90"/>
         <element name="SalesCalcHistory" positionX="-407" positionY="-327" width="128" height="238"/>
