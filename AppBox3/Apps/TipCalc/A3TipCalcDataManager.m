@@ -8,6 +8,7 @@
 
 #import "A3TipCalcDataManager.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
 
 @implementation A3TipCalcDataManager
 {
@@ -93,6 +94,15 @@
 
 	[[NSUserDefaults standardUserDefaults] setObject:[recent currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
+        NSDate *updateDate = [NSDate date];
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:[recent currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode];
+		[store setObject:updateDate forKey:A3TipCalcUserDefaultsCloudUpdateDate];
+		[store synchronize];
+	}
+    
     self.currencyFormatter = nil;
     
 	[self deepCopyRecently:recent dest:self.tipCalcData];

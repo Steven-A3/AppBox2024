@@ -227,6 +227,14 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 - (void)currencyCodeChanged:(NSNotification *)notification {
 	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
 	[self.currencyFormatter setCurrencyCode:currencyCode];
+    
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
+        NSDate *updateDate = [NSDate date];
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
+		[store setObject:updateDate forKey:A3ExpenseListUserDefaultsCloudUpdateDate];
+		[store synchronize];
+	}
 
 	_headerView.currencyFormatter = self.currencyFormatter;
 	[self reloadBudgetDataWithAnimation:NO saveData:NO ];
@@ -1149,6 +1157,14 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     
 	[[NSUserDefaults standardUserDefaults] setObject:aBudget.currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+    NSDate *updateDate = [NSDate date];
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[store setObject:aBudget.currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
+		[store setObject:updateDate forKey:A3ExpenseListUserDefaultsCloudUpdateDate];
+		[store synchronize];
+	}
+    
     self.currencyFormatter.currencyCode = [self defaultCurrencyCode];
 	_headerView.currencyFormatter = self.currencyFormatter;
 
