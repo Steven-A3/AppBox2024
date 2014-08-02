@@ -21,4 +21,20 @@
 	}
 }
 
+- (NSManagedObject *)clone {
+	NSManagedObject *cloned = [[self entity] MR_createInstanceInContext:self.managedObjectContext];
+	NSDictionary *attributes = [[NSEntityDescription entityForName:[[self entity] name] inManagedObjectContext:self.managedObjectContext] attributesByName];
+	for (NSString *attribute in attributes) {
+		[cloned setValue:[self valueForKey:attribute] forKey:attribute];
+	}
+	return cloned;
+}
+
+- (void)nullifyAttributes {
+	NSDictionary *attributes = [[NSEntityDescription entityForName:[[self entity] name] inManagedObjectContext:self.managedObjectContext] attributesByName];
+	for (NSString *attribute in attributes) {
+		[self setValue:nil forKey:attribute];
+	}
+}
+
 @end

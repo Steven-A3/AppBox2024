@@ -11,4 +11,8 @@
 @interface NSManagedObject (extension)
 
 - (void)repairWithError:(NSError *)error;
+
+- (NSManagedObject *)clone;
+
+- (void)nullifyAttributes;
 @end

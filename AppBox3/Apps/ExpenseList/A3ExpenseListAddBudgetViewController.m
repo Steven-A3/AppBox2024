@@ -64,7 +64,6 @@ enum A3ExpenseListAddBudgetCellType {
 
 @property (nonatomic, strong) A3TableViewInputElement *calculatorTargetElement;
 @property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
-@property (nonatomic, assign) BOOL cancelInputNewCloudDataReceived;
 
 @end
 
@@ -143,8 +142,7 @@ enum A3ExpenseListAddBudgetCellType {
 
 - (void)cloudStoreDidImport {
 	if (self.firstResponder) {
-		_cancelInputNewCloudDataReceived = YES;
-		[self.firstResponder resignFirstResponder];
+		return;
 	}
 	// reload data
 	_currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:_currentBudget.uniqueID];
