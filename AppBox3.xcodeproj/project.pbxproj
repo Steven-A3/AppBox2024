@@ -6677,7 +6677,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
-					"$(PROJECT_DIR)/External/Ensembles2",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
@@ -6710,7 +6709,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
-					"$(PROJECT_DIR)/External/Ensembles2",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
