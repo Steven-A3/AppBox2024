@@ -343,11 +343,15 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
-		[favorite MR_deleteEntity];
-        [_itemArray removeObjectAtIndex:indexPath.row];
+		NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_newContext];
+		favorite = [favorite MR_inContext:savingContext];
+		[favorite MR_deleteEntityInContext:savingContext];
+
+		[_itemArray removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
 		// Save는 제일 나중에 하자. Save를 하는 순간 iCloud 상태에서는 notification이 와서 데이터가 reload 된다.
-		[favorite.managedObjectContext MR_saveToPersistentStoreAndWait];
+		[savingContext MR_saveToPersistentStoreAndWait];
     }
 }
 
