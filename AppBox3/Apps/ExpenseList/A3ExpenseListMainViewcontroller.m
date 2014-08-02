@@ -225,7 +225,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (void)currencyCodeChanged:(NSNotification *)notification {
-//	_priceNumberFormatter = nil;
 	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
 	[self.currencyFormatter setCurrencyCode:currencyCode];
 
@@ -1147,7 +1146,11 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     _currentBudget.totalAmount = aBudget.totalAmount;
     _currentBudget.usedAmount = aBudget.usedAmount;
     _currentBudget.currencyCode = aBudget.currencyCode;
-    self.currencyFormatter.currencyCode = aBudget.currencyCode;
+    
+	[[NSUserDefaults standardUserDefaults] setObject:aBudget.currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+    self.currencyFormatter.currencyCode = [self defaultCurrencyCode];
+	_headerView.currencyFormatter = self.currencyFormatter;
 
 	[[aBudget expenseItems] enumerateObjectsUsingBlock:^(ExpenseListItem *item, NSUInteger idx, BOOL *stop) {
 		ExpenseListItem *newCurrentItem = [ExpenseListItem MR_createEntity];
