@@ -9,12 +9,7 @@
 #import "A3AppDelegate+iCloud.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3DaysCounterModelManager.h"
-#import "DaysCounterEvent+extension.h"
-#import "NSString+conversion.h"
-#import "WalletFieldItem+initialize.h"
-#import "A3DateMainTableViewController.h"
 #import "NSDate-Utilities.h"
-#import "A3Calculator.h"
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
 
@@ -109,25 +104,6 @@
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:NSMetadataQueryDidUpdateNotification object:self.metadataQuery];
 		[self.metadataQuery stopQuery];
 		self.metadataQuery = nil;
-	}
-}
-
-- (void)deleteCloudFilesToResetCloud {
-	// iCloud 데이터를 초기화 하는 경우에, 이미지 파일들도 함께 지워야 한다.
-	// DaysCounter image, Wallet 사진, 비디오 이미지를 함께 삭제한다.
-	[self deleteCloudFilesToResetCloudInDirectory:A3DaysCounterImageDirectory];
-	[self deleteCloudFilesToResetCloudInDirectory:A3WalletImageDirectory];
-	[self deleteCloudFilesToResetCloudInDirectory:A3WalletVideoDirectory];
-}
-
-- (void)deleteCloudFilesToResetCloudInDirectory:(NSString *)directory {
-	NSFileManager *fileManager = [NSFileManager new];
-	NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
-	if (!ubiquityContainerURL || !directory) return;
-	NSArray *files = [fileManager contentsOfDirectoryAtURL:[ubiquityContainerURL URLByAppendingPathComponent:directory] includingPropertiesForKeys:nil options:0 error:NULL];
-	CDEICloudFileSystem *fileSystem = [[A3SyncManager sharedSyncManager] cloudFileSystem];
-	for (NSURL *fileURL in files) {
-		[fileSystem removeItemAtPath:[fileURL path] completion:NULL];
 	}
 }
 

@@ -916,3 +916,5 @@
 "DaysCalendar_CalendarDeleteConfirmMsg" = "您确定要删除此日历吗？所有与此日历关联的事件也都将被删除。";
 
 "%@ syncing is in progress. Try after 10 minutes." = "%@同步进行中。10分钟后尝试。";
+
+"iCloud delete is in progress. Try after 10 minutes." = "iCloud中删除正在进行中。10分钟后尝试。";

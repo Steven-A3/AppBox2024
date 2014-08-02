@@ -19,6 +19,12 @@ NSString * const A3SyncActivityDidEndNotification = @"A3SyncActivityDidEnd";
 NSString * const A3SyncDeviceSyncStartInfo = @"A3SyncDeviceSyncStartInfo";	// Dictionary. Time and device name.
 NSString * const A3SyncStartTime = @"A3SyncStartTime";
 NSString * const A3SyncStartDevice = @"A3SyncStartDevice";
+NSString * const A3SyncStartDenyReason = @"A3SyncStartDenyReason";
+
+typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
+	A3SyncStartDeniedBecauseOtherDeviceDidStartSyncWithin10Minutes,
+	A3SyncStartDeniedBecauseCloudDeleteStartedWithin10Minutes
+};
 
 @interface A3SyncManager () <CDEPersistentStoreEnsembleDelegate>
 @end
@@ -94,7 +100,14 @@ NSString * const A3SyncStartDevice = @"A3SyncStartDevice";
 		return YES;
 	}
 
-	NSString *message = [NSString stringWithFormat:NSLocalizedString(@"%@ syncing is in progress. Try after 10 minutes.", nil), syncInfo[A3SyncStartDevice]];
+	A3SyncStartDenyReasonValue reason = (A3SyncStartDenyReasonValue) [syncInfo[A3SyncStartDenyReason] unsignedIntegerValue];
+
+	NSString *message;
+	if (reason == A3SyncStartDeniedBecauseOtherDeviceDidStartSyncWithin10Minutes) {
+		message = [NSString stringWithFormat:NSLocalizedString(@"%@ syncing is in progress. Try after 10 minutes.", nil), syncInfo[A3SyncStartDevice]];
+	} else {
+		message = NSLocalizedString(@"iCloud delete is in progress. Try after 10 minutes.", nil);
+	}
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
 														message:message
 													   delegate:nil
@@ -126,14 +139,7 @@ NSString * const A3SyncStartDevice = @"A3SyncStartDevice";
 - (void)enableCloudSync {
 	if ([self isCloudEnabled]) return;
 
-	NSDictionary *syncInfo = @{
-			A3SyncStartTime : [NSDate date],
-			A3SyncStartDevice : [[UIDevice currentDevice] name]
-	};
-
-	NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
-	[keyValueStore setObject:syncInfo forKey:A3SyncDeviceSyncStartInfo];
-	[keyValueStore synchronize];
+	[self writeSyncInfoToKeyValueStore:A3SyncStartDeniedBecauseOtherDeviceDidStartSyncWithin10Minutes];
 
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SyncManagerCloudEnabled];
 	[[NSUserDefaults standardUserDefaults] synchronize];
@@ -144,9 +150,21 @@ NSString * const A3SyncStartDevice = @"A3SyncStartDevice";
 	}];
 }
 
+- (void)writeSyncInfoToKeyValueStore:(A3SyncStartDenyReasonValue)reason {
+	NSDictionary *syncInfo = @{
+			A3SyncStartTime : [NSDate date],
+			A3SyncStartDevice : [[UIDevice currentDevice] name],
+			A3SyncStartDenyReason : @(reason)
+	};
+
+	NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
+	[keyValueStore setObject:syncInfo forKey:A3SyncDeviceSyncStartInfo];
+	[keyValueStore synchronize];
+}
+
 - (void)setupEnsemble
 {
-	if (!self.isCloudEnabled) return;
+	if (!self.isCloudEnabled || _ensemble) return;
 
 	NSURL *storeURL = [NSPersistentStore MR_urlForStoreName:[[A3AppDelegate instance] storeFileName]];
 	NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"AppBox3" withExtension:@"momd"];
@@ -395,5 +413,53 @@ NSString * const A3SyncStartDevice = @"A3SyncStartDevice";
 		}];
 	}];
 }
+
+#ifdef ENABLE_DELETE_CLOUD
+#pragma mark - Delete iCloud Data
+
+/*! iCloud Sync는 꺼져 있어야 한다. device의 iCloud는 켜져 있어야 지울 수 있다.
+ *  ensemble을 셋업하고 지우고 닫는다.
+ * \param
+ * \returns
+ */
+- (void)deleteCloudData {
+	if (![self isCloudEnabled] || _ensemble) return;
+
+	[CDEPersistentStoreEnsemble removeEnsembleWithIdentifier:self.cloudStoreID inCloudFileSystem:self.cloudFileSystem completion:^(NSError *error) {
+		[self writeSyncInfoToKeyValueStore:A3SyncStartDeniedBecauseCloudDeleteStartedWithin10Minutes];
+		[self deleteKeyValueStore];
+		[self deleteCloudFilesToResetCloud];
+	}];
+}
+
+- (void)deleteCloudFilesToResetCloud {
+	// iCloud 데이터를 초기화 하는 경우에, 이미지 파일들도 함께 지워야 한다.
+	// DaysCounter image, Wallet 사진, 비디오 이미지를 함께 삭제한다.
+	[self deleteCloudFilesToResetCloudInDirectory:A3DaysCounterImageDirectory];
+	[self deleteCloudFilesToResetCloudInDirectory:A3WalletImageDirectory];
+	[self deleteCloudFilesToResetCloudInDirectory:A3WalletVideoDirectory];
+}
+
+- (void)deleteCloudFilesToResetCloudInDirectory:(NSString *)directory {
+	NSFileManager *fileManager = [NSFileManager new];
+	NSURL *ubiquityContainerURL = [fileManager URLForUbiquityContainerIdentifier:nil];
+	if (!ubiquityContainerURL || !directory) return;
+	NSArray *files = [fileManager contentsOfDirectoryAtURL:[ubiquityContainerURL URLByAppendingPathComponent:directory] includingPropertiesForKeys:nil options:0 error:NULL];
+	for (NSURL *fileURL in files) {
+		[self.cloudFileSystem removeItemAtPath:[fileURL path] completion:NULL];
+	}
+}
+
+- (void)deleteKeyValueStore {
+	NSArray *keysToDelete = @[
+
+	];
+	NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
+	for (NSString *key in keysToDelete) {
+		[keyValueStore removeObjectForKey:key];
+	}
+	[keyValueStore synchronize];
+}
+#endif
 
 @end
