@@ -90,7 +90,7 @@
 
 - (void)historyToRecently:(TipCalcHistory*)aHistory
 {
-	TipCalcRecent *recent = [TipCalcRecent MR_findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID];
+	TipCalcRecent *recent = [TipCalcRecent MR_findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID inContext:[NSManagedObjectContext MR_rootSavingContext]];
 
 	[[NSUserDefaults standardUserDefaults] setObject:[recent currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -106,6 +106,7 @@
     self.currencyFormatter = nil;
     
 	[self deepCopyRecently:recent dest:self.tipCalcData];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 #pragma mark - calculate
