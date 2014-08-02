@@ -438,6 +438,12 @@
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
+	[self changeDefaultCurrencyCode:currencyCode];
+
+	[self.tableView reloadData];
+}
+
+- (void)changeDefaultCurrencyCode:(NSString *)currencyCode {
 	if ([currencyCode length]) {
 		NSDate *updateDate = [NSDate date];
 		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
@@ -452,8 +458,6 @@
 		}
 
 		[self.loanFormatter setCurrencyCode:currencyCode];
-
-		[self.tableView reloadData];
 	}
 }
 

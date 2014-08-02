@@ -2338,7 +2338,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)historyViewController:(UIViewController *)viewController selectLoanCalcHistory:(LoanCalcHistory *)history
 {
     [self loadLoanCalcData:self.loanData fromLoanCalcHistory:history];
-    
+
+	if (![self.defaultCurrencyCode isEqualToString:history.currencyCode]) {
+		[self changeDefaultCurrencyCode:history.currencyCode];
+	}
+
     _isComparisonMode = NO;
     [self selectSegment].selectedSegmentIndex = 0;
 	self.calcItems = nil;
@@ -2348,8 +2352,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self refreshRightBarItems];
 }
 
-- (void)historyViewController:(UIViewController *)viewController selectLoanCalcComparisonHistory:(LoanCalcComparisonHistory *)comparison
-{
+- (void)historyViewController:(UIViewController *)viewController selectLoanCalcComparisonHistory:(LoanCalcComparisonHistory *)comparison {
+	if (![self.defaultCurrencyCode isEqualToString:comparison.currencyCode]) {
+		[self changeDefaultCurrencyCode:comparison.currencyCode];
+	}
+
 	LoanCalcHistory *historyA, *historyB;
 	for (LoanCalcHistory *history in comparison.details) {
 		if ([history.orderInComparison isEqualToString:@"A"]) {
@@ -2358,16 +2365,16 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 			historyB = history;
 		}
 	}
-    [self loadLoanCalcData:self.loanDataA fromLoanCalcHistory:historyA];
-    [self loadLoanCalcData:self.loanDataB fromLoanCalcHistory:historyB];
+	[self loadLoanCalcData:self.loanDataA fromLoanCalcHistory:historyA];
+	[self loadLoanCalcData:self.loanDataB fromLoanCalcHistory:historyB];
 
-    _isComparisonMode = YES;
-    [self selectSegment].selectedSegmentIndex = 1;
+	_isComparisonMode = YES;
+	[self selectSegment].selectedSegmentIndex = 1;
 	self.calcItems = nil;
-    [self.tableView reloadData];
-    
-    [self enableControls:YES];
-    [self refreshRightBarItems];
+	[self.tableView reloadData];
+
+	[self enableControls:YES];
+	[self refreshRightBarItems];
 }
 
 - (void)historyViewControllerDismissed:(UIViewController *)viewController {
