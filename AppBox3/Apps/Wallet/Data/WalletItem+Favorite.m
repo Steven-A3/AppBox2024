@@ -20,7 +20,7 @@
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.uniqueID];
         if ([WalletFavorite MR_countOfEntitiesWithPredicate:predicate] == 0) {
             WalletFavorite *favorite = [WalletFavorite MR_createEntity];
-			favorite.uniqueID = self.uniqueID;
+			favorite.uniqueID = [[NSUUID UUID] UUIDString];
 			favorite.updateDate = [NSDate date];
 			favorite.itemID = self.uniqueID;
 			[favorite assignOrder];
