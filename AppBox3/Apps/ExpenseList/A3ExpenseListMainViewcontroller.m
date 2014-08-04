@@ -984,6 +984,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (BOOL)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController shouldHideDraggableIndicatorForDraggingToRow:(NSIndexPath *)destinationIndexPath {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self arrangeDataSourceForValid];
+        [self.tableView reloadData];
+    });
 	return NO;
 }
 
@@ -1116,7 +1120,30 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
 	FNLOG();
 	[_tableDataSourceArray moveItemInSortedArrayFromIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
+    if (sourceIndexPath.row == destinationIndexPath.row) {
+        [self arrangeDataSourceForValid];
+    }
+    
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+}
+
+- (void)arrangeDataSourceForValid {
+    NSArray *hasDataArray = [_tableDataSourceArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"hasData == %@", @(YES)]];
+    hasDataArray = [hasDataArray sortedArrayUsingComparator:^NSComparisonResult(ExpenseListItem * obj1, ExpenseListItem * obj2) {
+        return [obj1.order integerValue] > [obj2.order integerValue];
+    }];
+    [hasDataArray enumerateObjectsUsingBlock:^(ExpenseListItem * obj, NSUInteger idx, BOOL *stop) {
+        obj.order = [NSString orderStringWithOrder:idx + 1000000];
+    }];
+
+    NSArray *emptyDataArray = [_tableDataSourceArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"hasData == %@", @(NO)]];
+    [emptyDataArray enumerateObjectsUsingBlock:^(ExpenseListItem * obj, NSUInteger idx, BOOL *stop) {
+        obj.order = [NSString orderStringWithOrder:([hasDataArray count] + idx) + 1000000];
+    }];
+    
+    [_tableDataSourceArray removeAllObjects];
+    [_tableDataSourceArray addObjectsFromArray:hasDataArray];
+    [_tableDataSourceArray addObjectsFromArray:emptyDataArray];
 }
 
 #pragma mark - BudgetSetting Delegate
@@ -1251,6 +1278,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     if (textField == self.firstResponder) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
         [self removeNumberKeyboardNotificationObservers];
+        [self arrangeDataSourceForValid];
+        [self.tableView reloadData];
     }
 
     textField.userInteractionEnabled = NO;
