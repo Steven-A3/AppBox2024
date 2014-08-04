@@ -869,24 +869,25 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	// 현재 예산에 새 ID 를 부여하고 history 로 전환
     _currentBudget.currencyCode = [self defaultCurrencyCode];
 
-	ExpenseListHistory *budgetInHistory = (ExpenseListHistory *) [_currentBudget cloneInContext:nil ];
+    NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_defaultContext];
+	ExpenseListBudget *budgetInHistory = (ExpenseListBudget *) [_currentBudget cloneInContext:savingContext];
 	budgetInHistory.uniqueID = [[NSUUID UUID] UUIDString];
 
-	ExpenseListHistory * history = [ExpenseListHistory MR_createEntity];
+	ExpenseListHistory * history = [ExpenseListHistory MR_createEntityInContext:savingContext];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
 	history.updateDate = [NSDate date];
 	history.budgetID = budgetInHistory.uniqueID;
 
 	for (ExpenseListItem *item in _tableDataSourceArray) {
-		ExpenseListItem *itemInHistory = (ExpenseListItem *) [item cloneInContext:nil ];
+		ExpenseListItem *itemInHistory = (ExpenseListItem *) [item cloneInContext:savingContext];
 		itemInHistory.uniqueID = [[NSUUID UUID] UUIDString];
 		itemInHistory.budgetID = budgetInHistory.uniqueID;
 		[item MR_deleteEntity];
 	}
 	[_currentBudget MR_deleteEntity];
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-
+    [savingContext MR_saveToPersistentStoreAndWait];
+    
 	_currentBudget = nil;
 
 	FNLOG(@"History count : %ld", (long)[ExpenseListHistory MR_countOfEntities]);
@@ -1178,9 +1179,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         // 편집중이던 데이터는 히스토리에 저장.
         [self saveCurrentBudgetToHistory];
     }
-
-	_currentBudget = (ExpenseListBudget *) [aBudget cloneInContext:nil ];
-	_currentBudget.uniqueID = A3ExpenseListCurrentBudgetID;
+    
+    NSManagedObjectContext * savingContext = [NSManagedObjectContext MR_defaultContext];
+	_currentBudget = (ExpenseListBudget *) [aBudget cloneInContext:savingContext];
+	_currentBudget.uniqueID = [aBudget uniqueID];
 	_currentBudget.updateDate = [NSDate date];
 
 	[[NSUserDefaults standardUserDefaults] setObject:aBudget.currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
@@ -1197,7 +1199,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	_headerView.currencyFormatter = self.currencyFormatter;
 
 	[[aBudget expenseItems] enumerateObjectsUsingBlock:^(ExpenseListItem *item, NSUInteger idx, BOOL *stop) {
-		ExpenseListItem *newCurrentItem = (ExpenseListItem *) [item cloneInContext:nil ];
+		ExpenseListItem *newCurrentItem = (ExpenseListItem *) [item cloneInContext:savingContext];
 		newCurrentItem.uniqueID = [self itemIDWithIndex:idx];
 		newCurrentItem.budgetID = _currentBudget.uniqueID;
 	}];
