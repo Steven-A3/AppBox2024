@@ -588,7 +588,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
     
     // percentType
     double resultTipValue = [[self costBeforeTax] doubleValue] * [tipValue doubleValue] / 100.0;
-    if ([self tipSplitOption] == TipSplitOption_BeforeSplit && [self isRoundingOptionSwitchOn]) {
+    if ([self isRoundingOptionSwitchOn]) {
         switch (self.roundingMethodValue) {
             case TCRoundingMethodValue_Tip:
                 resultTipValue = [[self numberByRoundingMethodForValue:@(resultTipValue)] doubleValue];
@@ -620,11 +620,6 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
                 
             default:
                 break;
-        }
-    }
-    else {
-        if (self.roundingMethodValue == TCRoundingMethodValue_TipPerPerson && [self isRoundingOptionSwitchOn] && rounding) {
-            resultTipValue = [[self numberByRoundingMethodForValue:@(resultTipValue)] doubleValue];
         }
     }
     
