@@ -74,7 +74,7 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
     // 기본 설정값을 저장한다.
     if ([[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarUserDefaultsSettings] == nil ){
         NSMutableDictionary *item = [self createDefaultSetting];
-		[[A3SyncManager sharedSyncManager] setObject:item forKey:A3LadyCalendarUserDefaultsAccounts state:A3KeyValueDBStateInitialized];
+		[[A3SyncManager sharedSyncManager] setObject:item forKey:A3LadyCalendarUserDefaultsSettings state:A3KeyValueDBStateInitialized];
     }
 
     [self makePredictedPerioedsBeforeCurrentPeriod];
