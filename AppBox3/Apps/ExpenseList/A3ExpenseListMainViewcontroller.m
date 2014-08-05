@@ -146,8 +146,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
 	[self.currencyFormatter setCurrencyCode:currencyCode];
 
-	[self reloadBudgetDataWithAnimation:YES saveData:NO ];
-
+	[self reloadBudgetDataWithAnimation:YES saveData:NO];
 	[self enableControls:_barButtonEnabled];
 }
 
@@ -789,6 +788,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 - (void)reloadBudgetDataWithAnimation:(BOOL)animation saveData:(BOOL)saveData {
     // 데이터 갱신.
     [self reloadBudgetDataCreateIfNotExist:saveData ];
+    [self re_sort_DataSourceToSeparateValidAndEmpty];
 
     // 계산 & 화면 갱신.
     [self calculateAndDisplayResultWithAnimation:animation saveData:saveData ];
@@ -1056,9 +1056,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     if (_tableDataSourceArray.count > defaultItemCount) {
         ExpenseListItem *aItem = _tableDataSourceArray[indexPath.row];
         [aItem MR_deleteEntity];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
-        [self re_sort_DataSourceToSeparateValidAndEmpty];
+
         [self reloadBudgetDataWithAnimation:YES saveData:NO ];
     }
     else {
@@ -1069,7 +1068,6 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         aItem.qty = nil;
         aItem.subTotal = nil;
         aItem.hasData = @(NO);
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
             ExpenseListItem * aItem = (ExpenseListItem *)evaluatedObject;
@@ -1084,12 +1082,12 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
             aItem.price = @0;
             aItem.qty = @1;
             aItem.hasData = @(NO);
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         }
         
-        [self re_sort_DataSourceToSeparateValidAndEmpty];
         [self reloadBudgetDataWithAnimation:YES saveData:NO ];
     }
+    
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
