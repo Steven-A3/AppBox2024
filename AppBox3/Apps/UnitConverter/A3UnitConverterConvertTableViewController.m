@@ -69,6 +69,7 @@
 	BOOL 		_isSwitchingFractionMode;
 	BOOL		_cancelInputNewCloudDataReceived;
 	BOOL		_barButtonEnabled;
+    BOOL        _isEditingFirstResponder;
 }
 
 NSString *const A3UnitConverterDataCellID = @"A3UnitConverterDataCell";
@@ -155,11 +156,16 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (void)cloudStoreDidImport {
     if ([self firstResponder]) {
         _cancelInputNewCloudDataReceived = YES;
-        return;
+        
+        if (_isEditingFirstResponder) {
+            return;
+        }
+        
+        [self.firstResponder resignFirstResponder];
     }
-
-	[self.fmMoveTableView reloadData];
-	[self enableControls:_barButtonEnabled];
+    
+    [self.fmMoveTableView reloadData];
+    [self enableControls:_barButtonEnabled];
 }
 
 - (void)removeObserver {
@@ -1285,6 +1291,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
 	[self setFirstResponder:nil];
+    
+    _isEditingFirstResponder = NO;
 
 	if (_cancelInputNewCloudDataReceived) {
 		_cancelInputNewCloudDataReceived = NO;
@@ -1335,6 +1343,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 - (void)textFieldDidChange:(NSNotification *)notification {
 	UITextField *textField = [notification object];
 	[self updateTextFieldsWithSourceTextField:textField];
+    
+    _isEditingFirstResponder = YES;
 
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
 	[cell updateMultiTextFieldModeConstraintsWithEditingTextField:textField];
