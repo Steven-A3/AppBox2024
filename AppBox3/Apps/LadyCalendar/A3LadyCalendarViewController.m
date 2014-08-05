@@ -25,6 +25,7 @@
 #import "A3InstructionViewController.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3LadyCalendarViewController () <A3InstructionViewControllerDelegate>
 
@@ -176,20 +177,9 @@
 		[_calendarHeaderView removeFromSuperview];
         _collectionView.delegate = nil;
         
-//        self.dataManager.currentAccount.watchingDate = self.currentMonth;
         [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
-		NSDate *updateDate = [NSDate date];
-		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
-		[[NSUserDefaults standardUserDefaults] setObject:self.dataManager.currentAccount[L_WatchingDate_KEY] forKey:A3LadyCalendarLastViewMonth];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-
-		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-			[store setObject:self.dataManager.currentAccount[L_WatchingDate_KEY] forKey:A3LadyCalendarLastViewMonth];
-			[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
-			[store synchronize];
-		}
+		[[A3SyncManager sharedSyncManager] setObject:self.dataManager.currentAccount[L_WatchingDate_KEY] forKey:A3LadyCalendarLastViewMonth state:A3KeyValueDBStateModified];
 	} else {
 		[_calendarHeaderView setHidden:YES];
 	}

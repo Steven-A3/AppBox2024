@@ -12,6 +12,10 @@
 #import "WalletFieldItem+initialize.h"
 #import "NSString+conversion.h"
 #import "NSManagedObject+extension.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3CurrencyDataManager.h"
+#import "A3DaysCounterModelManager.h"
+#import "WalletData.h"
 
 NSString * const A3SyncManagerCloudEnabled = @"A3SyncManagerCloudEnabled";
 NSString * const A3SyncActivityDidBeginNotification = @"A3SyncActivityDidBegin";
@@ -25,6 +29,19 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	A3SyncStartDeniedBecauseOtherDeviceDidStartSyncWithin10Minutes,
 	A3SyncStartDeniedBecauseCloudDeleteStartedWithin10Minutes
 };
+
+NSString * const A3DictionaryDBLogsDirectoryName = @"DictionaryTransactionLogs";
+NSString * const A3DictionaryDBDownloadedFileList = @"downloadedFilesSet";
+NSString * const A3DictionaryDBFirstHunkFilename = @"baseline";
+NSString * const A3DictionaryDBDeviceID = @"deviceID";					// [UIDevice identifierForVendor]
+NSString * const A3DictionaryDBTransactionID = @"transactionID";		// UUID
+NSString * const A3DictionaryDBEntityKey = @"entityKey";				// userDefaultsKeyName
+NSString * const A3DictionaryDBTransactionType = @"transactionType";	//
+NSString * const A3DictionaryDBTimestamp = @"timestamp";				// NSDate date
+NSString * const A3DictionaryDBUniqueID = @"uniqueID";
+NSString * const A3DictionaryDBObject = @"transactionObject";			// object for each transaction
+NSString * const A3DictionaryDBLastPlayedTransactionID = @"A3DictionaryDBLastPlayedTransactionByID";	// filename
+NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMergeObjects";
 
 @interface A3SyncManager () <CDEPersistentStoreEnsembleDelegate>
 @end
@@ -51,6 +68,9 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	self = [super init];
 	if (self) {
 		_fileManager = [NSFileManager new];
+		[_fileManager URLForUbiquityContainerIdentifier:nil];
+		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyValueStoreDidChangeExternally:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:store];
 #ifdef DEBUG_ENSEMBLE_PROGRESS
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ensembleDidBeginActivity:) name:CDEPersistentStoreEnsembleDidBeginActivityNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ensembleDidMakeProgress:) name:CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification object:nil];
@@ -96,7 +116,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	}
 	NSDate *lastSyncStartTime = syncInfo[A3SyncStartTime];
 	NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:lastSyncStartTime];
-	if (interval >= 60 * 10) {
+	if (interval >= 60 * 1) {
 		return YES;
 	}
 
@@ -139,15 +159,18 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 - (void)enableCloudSync {
 	if ([self isCloudEnabled]) return;
 
-	[self writeSyncInfoToKeyValueStore:A3SyncStartDeniedBecauseOtherDeviceDidStartSyncWithin10Minutes];
-
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SyncManagerCloudEnabled];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
+	[self writeSyncInfoToKeyValueStore:A3SyncStartDeniedBecauseOtherDeviceDidStartSyncWithin10Minutes];
+
+	[self createDirectories];
 	[self setupEnsemble];
 	[self synchronizeWithCompletion:^(NSError *error) {
 		[self.ensemble mergeWithCompletion:NULL];
 	}];
+
+	[self mergeNonCoreDataEntities];
 }
 
 - (void)writeSyncInfoToKeyValueStore:(A3SyncStartDenyReasonValue)reason {
@@ -172,11 +195,12 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	_ensemble.delegate = self;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localSaveOccurred:) name:CDEMonitoredManagedObjectContextDidSaveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(icloudDidDownload:) name:CDEICloudFileSystemDidDownloadFilesNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidDownload:) name:CDEICloudFileSystemDidDownloadFilesNotification object:nil];
 }
 
 - (void)disableCloudSync {
 	[_ensemble deleechPersistentStoreWithCompletion:^(NSError *error) {
+		[self deleteLogFiles];
 		[self reset];
 	}];
 }
@@ -195,7 +219,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 
 #pragma mark - Sync Methods
 
-- (void)icloudDidDownload:(NSNotification *)notif
+- (void)cloudDidDownload:(NSNotification *)notification
 {
 	FNLOG();
 	if (!self.isCloudEnabled) return;
@@ -203,7 +227,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	[self synchronizeWithCompletion:NULL];
 }
 
-- (void)localSaveOccurred:(NSNotification *)notif
+- (void)localSaveOccurred:(NSNotification *)notification
 {
 	FNLOG();
 	if (!self.isCloudEnabled) return;
@@ -223,8 +247,8 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	[self incrementMergeCount];
 	if (!_ensemble.isLeeched) {
 		[_ensemble leechPersistentStoreWithCompletion:^(NSError *error) {
-			[self uploadFilesToCloud];
-			[self downloadFilesFromCloud];
+			[self uploadMediaFilesToCloud];
+			[self downloadMediaFilesFromCloud];
 
 			[self decrementMergeCount];
 			if (error && !_ensemble.isLeeched) {
@@ -239,16 +263,19 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	}
 	else {
 		[_ensemble mergeWithCompletion:^(NSError *error) {
-			[self uploadFilesToCloud];
-			[self downloadFilesFromCloud];
+			[self uploadMediaFilesToCloud];
+			[self downloadMediaFilesFromCloud];
 
 			[self decrementMergeCount];
 			if (error) NSLog(@"Error merging: %@", error);
 			if (completion) completion(error);
 		}];
 	}
+
+	[self downloadAndPlayTransactions];
+
 	[_syncTimer invalidate];
-	_syncTimer = [NSTimer scheduledTimerWithTimeInterval:45 target:self selector:@selector(syncWithTimer) userInfo:nil repeats:NO];
+	_syncTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(syncWithTimer) userInfo:nil repeats:NO];
 }
 
 - (void)syncWithTimer {
@@ -359,7 +386,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 
 #pragma mark - Upload Download Manager
 
-- (void)uploadFilesToCloud {
+- (void)uploadMediaFilesToCloud {
 	[self uploadFilesToCloudInDirectory:A3DaysCounterImageDirectory];
 	[self uploadFilesToCloudInDirectory:A3WalletImageDirectory];
 	[self uploadFilesToCloudInDirectory:A3WalletVideoDirectory];
@@ -392,7 +419,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	}];
 }
 
-- (void)downloadFilesFromCloud {
+- (void)downloadMediaFilesFromCloud {
 	[self downloadFilesFromCloudInDirectory:A3DaysCounterImageDirectory];
 	[self downloadFilesFromCloudInDirectory:A3WalletImageDirectory];
 	[self downloadFilesFromCloudInDirectory:A3WalletVideoDirectory];
@@ -461,5 +488,481 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	[keyValueStore synchronize];
 }
 #endif
+
+#pragma mark --- DictionaryDB Transaction Management
+
+- (NSString *)transactionLogDirectoryPath {
+	return [A3DictionaryDBLogsDirectoryName pathInLibraryDirectory];
+}
+
+- (void)addTransaction:(NSString *)userDefaultsKeyName type:(A3DictionaryDBTransactionTypeValue)typeValue object:(id)object {
+	if (!self.isCloudEnabled) return;
+
+	NSString *transactionID = [[NSUUID UUID] UUIDString];
+	NSDictionary *transaction = @{
+			A3DictionaryDBTransactionID : transactionID,
+			A3DictionaryDBTransactionType : @(typeValue),
+			A3DictionaryDBTimestamp : [NSDate date],
+			A3DictionaryDBEntityKey : userDefaultsKeyName,
+			A3DictionaryDBDeviceID : [[[UIDevice currentDevice] identifierForVendor] UUIDString],
+			A3DictionaryDBObject : object
+	};
+	NSString *logFilePath = [[self transactionLogDirectoryPath] stringByAppendingPathComponent:transactionID];
+	// Each log file has array of transactions even if it has only one transaction.
+	NSError *conversionError;
+	NSData *data = [NSPropertyListSerialization dataWithPropertyList:@[transaction]
+															  format:NSPropertyListBinaryFormat_v1_0
+															 options:0
+															   error:&conversionError];
+	if ([data writeToFile:logFilePath atomically:YES]) {
+		FNLOG(@"File write success for key: %@", userDefaultsKeyName);
+	}
+
+	[_cloudFileSystem connect:^(NSError *error) {
+		NSString *cloudFilePath = [A3DictionaryDBLogsDirectoryName stringByAppendingPathComponent:transactionID];
+		[_cloudFileSystem fileExistsAtPath:cloudFilePath completion:^(BOOL exists, BOOL isDirectory, NSError *error_1) {
+			if (!exists) {
+				[_cloudFileSystem uploadLocalFile:logFilePath toPath:cloudFilePath completion:^(NSError *error_2) {
+					if (!error_2) {
+						FNLOG(@"Transaction log uploaded: %@", transaction);
+						NSString *listFilePath = [self downloadedFileListFilePath];
+						NSMutableArray *downloadedFileList = nil;
+						if ([_fileManager fileExistsAtPath:listFilePath]) {
+							downloadedFileList = [NSMutableArray arrayWithArray:[NSArray arrayWithContentsOfFile:listFilePath]];
+						} else {
+							downloadedFileList = [NSMutableArray new];
+						}
+						[downloadedFileList addObject:transactionID];
+						[downloadedFileList writeToFile:listFilePath atomically:YES];
+					} else {
+						FNLOG(@"Log upload faild with error: %@", error_2.localizedDescription);
+					}
+				}];
+			}
+		}];
+	}];
+}
+
+- (NSString *)downloadedFileListFilePath {
+	return [A3DictionaryDBDownloadedFileList pathInLibraryDirectory];
+}
+
+- (void)downloadAndPlayTransactions {
+	FNLOG();
+	[self uploadLogFiles];
+	FNLOG();
+	[self downloadLogFiles:^(NSError *error) {
+		[self aggregateLogFiles];
+	}];
+}
+
+- (void)downloadLogFiles:(CDECompletionBlock)completionBlock {
+	FNLOG();
+	NSString *localTransactionLogDirectoryPath = [self transactionLogDirectoryPath];
+	NSMutableSet *downloadedFilesSet = [self downloadedFilesSet];
+	FNLOG();
+	[_cloudFileSystem connect:^(NSError *error) {
+		FNLOG();
+		[_cloudFileSystem fileExistsAtPath:A3DictionaryDBLogsDirectoryName completion:^(BOOL exists, BOOL isDirectory, NSError *error_1) {
+			FNLOG();
+			if (!exists) {
+				FNLOG(@"Log Directory does not exist.");
+				return;
+			}
+			[_cloudFileSystem contentsOfDirectoryAtPath:A3DictionaryDBLogsDirectoryName completion:^(NSArray *contents, NSError *error_2) {
+				FNLOG();
+				NSMutableArray *downloadFiles = [NSMutableArray new];
+				for (CDECloudFile *cloudFile in contents) {
+					NSString *localFilePath = [localTransactionLogDirectoryPath stringByAppendingPathComponent:cloudFile.name];
+					if (![downloadedFilesSet containsObject:cloudFile.name] && ![_fileManager fileExistsAtPath:localFilePath]) {
+						[downloadFiles addObject:cloudFile];
+					} else {
+						[self addFilenameToDownloadedFileList:cloudFile.name];
+					}
+				}
+				FNLOG(@"Files to downlaod : %@", downloadFiles);
+
+				for (CDECloudFile *cloudFile in downloadFiles) {
+					NSString *localFilePath = [localTransactionLogDirectoryPath stringByAppendingPathComponent:cloudFile.name];
+					FNLOG(@"Try downloading file : %@", cloudFile.name);
+					[_cloudFileSystem downloadFromPath:cloudFile.path toLocalFile:localFilePath completion:^(NSError *error_3) {
+						FNLOG();
+						if (!error_2) {
+							FNLOG(@"Transaction Log downloaded: %@", cloudFile.name);
+							[self addFilenameToDownloadedFileList:cloudFile.name];
+
+							if ([cloudFile isEqual:[downloadFiles lastObject]]) {
+								[self playTransactions];
+
+								NSDictionary *mergeObjects = [[NSUserDefaults standardUserDefaults] objectForKey:A3DictionaryDBInitialMergeObjects];
+								if (mergeObjects) {
+									for (NSString *key in [mergeObjects allKeys]) {
+										[self mergeForKey:key withBackupData:mergeObjects[key]];
+									}
+									[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3DictionaryDBInitialMergeObjects];
+									[[NSUserDefaults standardUserDefaults] synchronize];
+								}
+								if (completionBlock) {
+									completionBlock(nil);
+								}
+							}
+						} else {
+							FNLOG(@"Failed to download file : %@\n%@", cloudFile.name, error_3.localizedDescription);
+							[self downloadLogFiles:completionBlock];
+						}
+					}];
+				}
+			}];
+		}];
+	}];
+}
+
+- (void)aggregateLogFiles {
+	NSArray *logFiles = [_fileManager contentsOfDirectoryAtPath:[self transactionLogDirectoryPath] error:NULL];
+	if ([logFiles count] < 32) return;
+
+	FNLOG(@"Try to aggregate log files");
+	NSString *firstHunkFilePath = [[self transactionLogDirectoryPath] stringByAppendingPathComponent:A3DictionaryDBFirstHunkFilename];
+	NSArray *firstHunkContents;
+	NSMutableArray *newFirstHunk = [NSMutableArray new];
+	NSMutableArray *mutableLogFiles = [logFiles mutableCopy];
+	if ([mutableLogFiles containsObject:A3DictionaryDBFirstHunkFilename]) {
+		[mutableLogFiles removeObject:A3DictionaryDBFirstHunkFilename];
+		firstHunkContents = [NSArray arrayWithContentsOfFile:firstHunkFilePath];
+		[newFirstHunk addObjectsFromArray:firstHunkContents];
+	}
+
+	[_cloudFileSystem connect:^(NSError *error) {
+		for (NSString *logPath in mutableLogFiles) {
+			NSArray *transactions = [NSArray arrayWithContentsOfFile:logPath];
+			if (transactions) {
+				[newFirstHunk addObjectsFromArray:transactions];
+			}
+			[_fileManager removeItemAtPath:logPath error:NULL];
+			NSString *cloudPath = [A3DictionaryDBLogsDirectoryName stringByAppendingPathComponent:[logPath lastPathComponent]];
+			[_cloudFileSystem removeItemAtPath:cloudPath completion:NULL];
+		}
+		[newFirstHunk writeToFile:firstHunkFilePath atomically:YES];
+		[_cloudFileSystem uploadLocalFile:firstHunkFilePath toPath:[A3DictionaryDBLogsDirectoryName stringByAppendingPathComponent:A3DictionaryDBFirstHunkFilename] completion:NULL];
+	}];
+}
+
+- (void)uploadLogFiles {
+	[_cloudFileSystem connect:^(NSError *error) {
+		[_cloudFileSystem fileExistsAtPath:A3DictionaryDBLogsDirectoryName completion:^(BOOL exists, BOOL isDirectory, NSError *error_1) {
+			if (exists) {
+				[self uploadLogFilesInLocalDirectoryToCloud];
+			} else {
+				FNLOG(@"Log directory does not exist. Trying create directory.");
+				[_cloudFileSystem createDirectoryAtPath:A3DictionaryDBLogsDirectoryName completion:^(NSError *error_2) {
+					if (!error_2) {
+						[self uploadLogFilesInLocalDirectoryToCloud];
+					}
+				}];
+			}
+		}];
+	}];
+}
+
+- (NSMutableSet *)downloadedFilesSet {
+	NSArray *array = [NSArray arrayWithContentsOfFile:[self downloadedFileListFilePath]];
+	if (array) {
+		return [NSMutableSet setWithArray:array];
+	}
+	return [NSMutableSet new];
+}
+
+- (void)addFilenameToDownloadedFileList:(NSString *)filename {
+	NSMutableSet *downloadedFileList = [self downloadedFilesSet];
+	[downloadedFileList addObject:filename];
+	[[downloadedFileList allObjects] writeToFile:[self downloadedFileListFilePath] atomically:YES];
+}
+
+- (void)uploadLogFilesInLocalDirectoryToCloud {
+	NSMutableSet *downloadedFileList = [self downloadedFilesSet];
+
+	NSArray *fileList = [_fileManager contentsOfDirectoryAtPath:[self transactionLogDirectoryPath] error:NULL];
+	for (NSString *path in fileList) {
+		if ([downloadedFileList containsObject:path.lastPathComponent]) continue;
+
+		NSString *cloudFilePath = [A3DictionaryDBLogsDirectoryName stringByAppendingPathComponent:path.lastPathComponent];
+		[_cloudFileSystem fileExistsAtPath:cloudFilePath completion:^(BOOL exists, BOOL isDirectory, NSError *error_1) {
+			if (!exists) {
+				FNLOG(@"Try uploading : %@", path.lastPathComponent);
+				[_cloudFileSystem uploadLocalFile:path toPath:cloudFilePath completion:^(NSError *error_2) {
+					if (!error_2) {
+						FNLOG(@"Successfully uploaded file : %@", cloudFilePath);
+						[self addFilenameToDownloadedFileList:path.lastPathComponent];
+					} else {
+						// No such file or directory. ??
+						if (error_2.code == 260) {
+
+						}
+						FNLOG(@"Failed to uploading file : %@", cloudFilePath);
+					}
+				}];
+			}
+		}];
+	}
+}
+
+- (void)playTransactions {
+	FNLOG();
+	NSMutableArray *allTransactions = [NSMutableArray new];
+	NSString *baselineFilePath = [[self transactionLogDirectoryPath] stringByAppendingPathComponent:A3DictionaryDBFirstHunkFilename];
+	if ([_fileManager fileExistsAtPath:baselineFilePath]) {
+		NSData *data = [NSData dataWithContentsOfFile:baselineFilePath];
+		if (data) {
+			NSError *conversionError;
+			NSArray *transactions = [NSPropertyListSerialization propertyListWithData:data
+																			  options:NSPropertyListMutableContainersAndLeaves
+																			   format:nil
+																				error:&conversionError];
+			if (!conversionError) {
+				[allTransactions addObjectsFromArray:transactions];
+			}
+		} else {
+			FNLOG(@"Failed to read log file: %@", baselineFilePath.lastPathComponent);
+		}
+	}
+
+	NSArray *logFiles = [_fileManager contentsOfDirectoryAtPath:[self transactionLogDirectoryPath] error:NULL];
+	for (NSString *logFile in logFiles) {
+		if (![[logFile lastPathComponent] isEqualToString:A3DictionaryDBFirstHunkFilename]) {
+			NSData *data = [NSData dataWithContentsOfFile:[[self transactionLogDirectoryPath] stringByAppendingPathComponent:logFile]];
+			if (data) {
+				NSError *error;
+				NSArray *transactions = [NSPropertyListSerialization propertyListWithData:data
+																				  options:NSPropertyListMutableContainersAndLeaves
+																				   format:nil
+																					error:&error];
+				if (!error) {
+					[allTransactions addObjectsFromArray:transactions];
+				}
+			} else {
+				FNLOG(@"Failed to read log file: %@", logFile.lastPathComponent);
+			}
+		}
+	}
+
+	[allTransactions sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+		return [obj1[A3DictionaryDBTimestamp] compare:obj2[A3DictionaryDBTimestamp]];
+	}];
+
+	NSString *lastPlayedTransactionIDPath = [A3DictionaryDBLastPlayedTransactionID pathInLibraryDirectory];
+	NSString *lastPlayedTransactionID = nil;
+	if ([_fileManager fileExistsAtPath:lastPlayedTransactionIDPath]) {
+		lastPlayedTransactionID = [NSString stringWithContentsOfFile:lastPlayedTransactionIDPath encoding:NSUTF8StringEncoding error:NULL];
+	}
+	NSUInteger indexOfTransaction = NSNotFound;
+	if (lastPlayedTransactionID) {
+		indexOfTransaction = [allTransactions indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+			return [obj[A3DictionaryDBTransactionID] isEqualToString:lastPlayedTransactionID];
+		}];
+	}
+
+	NSString *currentDeviceID = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+	
+	NSUInteger idx = indexOfTransaction == NSNotFound ? 0 : indexOfTransaction + 1;
+	for (; idx < [allTransactions count]; idx++ ) {
+		NSDictionary *transaction = allTransactions[idx];
+		FNLOG(@"Total: %ld, current: %ld\n%@:%@", (long)[allTransactions count], (long)idx, transaction[A3DictionaryDBEntityKey], transaction[A3DictionaryDBTransactionType]);
+		if (![transaction[A3DictionaryDBDeviceID] isEqualToString:currentDeviceID]) {
+			NSArray *targetObject = [self objectForKey:transaction[A3DictionaryDBEntityKey]];
+			NSMutableArray *mutableTargetEntity = [NSMutableArray new];
+			if (targetObject) {
+				[mutableTargetEntity addObjectsFromArray:targetObject];
+			}
+			switch ((A3DictionaryDBTransactionTypeValue)[transaction[A3DictionaryDBTransactionType] unsignedIntegerValue]) {
+				case A3DictionaryDBTransactionTypeSetBaseline:{
+					NSArray *baselineObject = transaction[A3DictionaryDBObject];
+					mutableTargetEntity = [baselineObject mutableCopy];
+					break;
+				}
+				case A3DictionaryDBTransactionTypeInsertTop:
+					[mutableTargetEntity insertObject:transaction[A3DictionaryDBObject] atIndex:0];
+					break;
+				case A3DictionaryDBTransactionTypeInsertBottom:
+					[mutableTargetEntity addObject:transaction[A3DictionaryDBObject]];
+					break;
+				case A3DictionaryDBTransactionTypeDelete: {
+					NSString *deletingID = transaction[A3DictionaryDBObject];
+					NSUInteger indexOfObject = [mutableTargetEntity indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx2, BOOL *stop) {
+						return [obj[A3DictionaryDBUniqueID] isEqualToString:deletingID];
+					}];
+					if (indexOfObject != NSNotFound) {
+						[mutableTargetEntity removeObjectAtIndex:indexOfObject];
+					}
+					break;
+				}
+				case A3DictionaryDBTransactionTypeUpdate: {
+					NSDictionary *updatingObject = transaction[A3DictionaryDBObject];
+					NSUInteger indexOfObject = [mutableTargetEntity indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx2, BOOL *stop) {
+						return [obj[A3DictionaryDBUniqueID] isEqualToString:updatingObject[A3DictionaryDBUniqueID]];
+					}];
+					if (indexOfObject != NSNotFound) {
+						[mutableTargetEntity replaceObjectAtIndex:indexOfObject withObject:updatingObject];
+					}
+					break;
+				}
+				case A3DictionaryDBTransactionTypeReplace: {
+					NSArray *updatingObject = transaction[A3DictionaryDBObject];
+					NSDictionary *oldObject = updatingObject[0];
+					NSDictionary *newObject = updatingObject[1];
+					NSUInteger indexOfObject = [mutableTargetEntity indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx2, BOOL *stop) {
+						return [obj[A3DictionaryDBUniqueID] isEqualToString:oldObject[A3DictionaryDBUniqueID]];
+					}];
+					if (indexOfObject != NSNotFound) {
+						[mutableTargetEntity replaceObjectAtIndex:indexOfObject withObject:newObject];
+					}
+					break;
+				}
+				case A3DictionaryDBTransactionTypeReorder: {
+					NSArray *newOrder = transaction[A3DictionaryDBObject];
+					NSMutableArray *newListByOrder = [NSMutableArray new];
+					for (NSString *objectID in newOrder) {
+						NSUInteger indexOfObject = [mutableTargetEntity indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx2, BOOL *stop) {
+							return [obj[A3DictionaryDBUniqueID] isEqualToString:objectID];
+						}];
+						if (indexOfObject != NSNotFound) {
+							[newListByOrder addObject:mutableTargetEntity[indexOfObject]];
+							[mutableTargetEntity removeObjectAtIndex:indexOfObject];
+						}
+					}
+					if ([mutableTargetEntity count]) {
+						[newListByOrder addObjectsFromArray:mutableTargetEntity];
+					}
+					mutableTargetEntity = newListByOrder;
+					break;
+				}
+			}
+			[self setSyncObject:mutableTargetEntity forKey:transaction[A3DictionaryDBEntityKey] state:A3KeyValueDBStateModified];
+//			FNLOG(@"Transaction Log played: %@", transaction);
+		} else {
+			FNLOG(@"Transaction from current device skipped to play.");
+		}
+	}
+
+	lastPlayedTransactionID = [allTransactions lastObject][A3DictionaryDBTransactionID];
+	[lastPlayedTransactionID writeToFile:lastPlayedTransactionIDPath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+}
+
+- (void)createDirectories {
+	NSString *logDirectory = [A3DictionaryDBLogsDirectoryName pathInLibraryDirectory];
+	if (![_fileManager fileExistsAtPath:logDirectory]) {
+		[_fileManager createDirectoryAtPath:logDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
+	}
+	[_cloudFileSystem connect:^(NSError *error) {
+		[_cloudFileSystem fileExistsAtPath:A3DictionaryDBLogsDirectoryName completion:^(BOOL exists, BOOL isDirectory, NSError *error_1) {
+			if (!exists) {
+				[_cloudFileSystem createDirectoryAtPath:A3DictionaryDBLogsDirectoryName completion:^(NSError *error_2) {
+					if (error_2) {
+						FNLOG(@"%@", error_2.localizedDescription);
+					}
+				}];
+			}
+		}];
+	}];
+}
+
+- (void)mergeNonCoreDataEntities {
+	[_cloudFileSystem connect:^(NSError *error) {
+		[_cloudFileSystem fileExistsAtPath:A3DictionaryDBLogsDirectoryName completion:^(BOOL exists, BOOL isDirectory, NSError *error_1) {
+			if (!exists) {
+				[_cloudFileSystem createDirectoryAtPath:A3DictionaryDBLogsDirectoryName completion:^(NSError *error_2) {
+					// code 516 means directory already exists. Any how directory is exist, we can upload files to that directory.
+					if (!error_2 || error_2.code == 516) {
+						[self uploadBaseline];
+					}
+				}];
+			} else {
+				[_cloudFileSystem contentsOfDirectoryAtPath:A3DictionaryDBLogsDirectoryName completion:^(NSArray *contents, NSError *error_3) {
+					if ([contents count]) {
+						NSArray *targetEntities = @[
+								A3CurrencyUserDefaultsFavorites,
+								A3DaysCounterUserDefaultsCalendars,
+								A3WalletUserDefaultsCategoryInfo
+						];
+
+						NSMutableDictionary *backupDataDictionary = [NSMutableDictionary new];
+						NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
+						for (NSString *key in targetEntities) {
+							id backup = [self backupObjectForKey:key];
+							if (backup) {
+								[backupDataDictionary setObject:backup forKey:key];
+							}
+							[userDefaults removeObjectForKey:key];
+						}
+						if ([[backupDataDictionary allKeys] count] > 0) {
+							[[NSUserDefaults standardUserDefaults] setObject:backupDataDictionary forKey:A3DictionaryDBInitialMergeObjects];
+							[[NSUserDefaults standardUserDefaults] synchronize];
+						}
+
+						[self downloadLogFiles:NULL];
+					} else {
+						[self uploadBaseline];
+					}
+				}];
+			}
+		}];
+	}];
+}
+
+- (void)uploadBaseline {
+	FNLOG();
+	[A3CurrencyDataManager setupFavorites];
+	NSArray *currencyFavorites = [self objectForKey:A3CurrencyUserDefaultsFavorites];
+	[self addTransaction:A3CurrencyUserDefaultsFavorites
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:currencyFavorites];
+
+	NSArray *daysCounterCalendars = [A3DaysCounterModelManager calendars];
+	[self addTransaction:A3DaysCounterUserDefaultsCalendars
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:daysCounterCalendars];
+
+	NSArray *walletCategories = [WalletData walletCategoriesFilterDoNotShow:NO];
+	[self addTransaction:A3WalletUserDefaultsCategoryInfo
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:walletCategories];
+}
+
+- (NSArray *)backupObjectForKey:(NSString *)key {
+	NSDictionary *dictionary = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+	if (dictionary && [dictionary[A3KeyValueDBState] unsignedIntegerValue] == A3KeyValueDBStateModified) {
+		return dictionary[A3KeyValueDBDataObject];
+	}
+	return nil;
+}
+
+- (void)mergeForKey:(NSString *)key withBackupData:(NSArray *)backup {
+	if (!backup) return;
+
+	NSMutableArray *array = [[self objectForKey:key] mutableCopy];
+	for (NSDictionary *object in backup) {
+		NSUInteger idx = [array indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx2, BOOL *stop) {
+			return [obj[A3DictionaryDBUniqueID] isEqualToString:object[A3DictionaryDBUniqueID]];
+		}];
+		if (idx == NSNotFound) {
+			[array addObject:object];
+			[self addTransaction:key type:A3DictionaryDBTransactionTypeInsertBottom object:object];
+		}
+	}
+	[self setSyncObject:array forKey:key state:A3KeyValueDBStateModified];
+}
+
+/*! iCloud를 끄면 log File 들을 모두 지운다.
+ * \param
+ * \returns
+ */
+- (void)deleteLogFiles {
+	[_fileManager removeItemAtPath:[self downloadedFileListFilePath] error:NULL];
+	[_fileManager removeItemAtPath:[A3DictionaryDBLastPlayedTransactionID pathInLibraryDirectory] error:NULL];
+	NSArray *logFiles = [_fileManager contentsOfDirectoryAtPath:[self transactionLogDirectoryPath] error:NULL];
+	for (NSString *path in logFiles) {
+		[_fileManager removeItemAtPath:path error:NULL];
+	}
+}
 
 @end

@@ -13,18 +13,14 @@
 #import "NSDate+LunarConverter.h"
 #import "NSDate+formatting.h"
 #import "UIViewController+A3Addition.h"
-#import "A3AppDelegate+appearance.h"
-#import "A3UserDefaults.h"
-#import "A3DateHelper.h"
 #import "NSDateFormatter+LunarDate.h"
-#import "NSUserDefaults+A3Addition.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIColor+A3Addition.h"
 #import "A3SettingsLunarViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSString+conversion.h"
-#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 
 @interface A3LunarConverterViewController () <UIScrollViewDelegate, A3DateKeyboardDelegate, UITextFieldDelegate, UIPopoverControllerDelegate, UIActivityItemSource>
@@ -147,11 +143,11 @@
 }
 
 - (void)reloadDataFromStore {
-	_inputDateComponents = [[NSUserDefaults standardUserDefaults] dateComponentsForKey:A3LunarConverterLastInputDateComponents];
+	_inputDateComponents = [[A3SyncManager sharedSyncManager] dateComponentsForKey:A3LunarConverterLastInputDateComponents];
 	if (!_inputDateComponents) {
 		_inputDateComponents = [_calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:[NSDate date]];
 	}
-	_isLunarInput = [[NSUserDefaults standardUserDefaults] boolForKey:A3LunarConverterLastInputDateIsLunar];
+	_isLunarInput = [[A3SyncManager sharedSyncManager] boolForKey:A3LunarConverterLastInputDateIsLunar];
 }
 
 - (void)removeObserver {
@@ -619,7 +615,7 @@
         return NO;
 
     BOOL resultLeapMonth = NO;
-    [NSDate lunarCalcWithComponents:dateComponents gregorianToLunar:gregorianToLunar leapMonth:YES korean:[[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion] resultLeapMonth:&resultLeapMonth];
+    [NSDate lunarCalcWithComponents:dateComponents gregorianToLunar:gregorianToLunar leapMonth:YES korean:[[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion] resultLeapMonth:&resultLeapMonth];
 
     return resultLeapMonth;
 }
@@ -717,7 +713,7 @@
         if ( [_inputDateComponents year] < 1900 || [_inputDateComponents year] > 2043)
             cellView.dateLabel.text = NSLocalizedString(@"Lunar calendar is available from year 1901 to 2042.", nil);
         if ( _isLunarInput ){
-            NSInteger monthDay = [NSDate lastMonthDayForLunarYear:[_inputDateComponents year] month:[_inputDateComponents month] isKorean:[[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion]];
+            NSInteger monthDay = [NSDate lastMonthDayForLunarYear:[_inputDateComponents year] month:[_inputDateComponents month] isKorean:[[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion]];
             if ( monthDay < 0 ){
                 cellView.dateLabel.text = NSLocalizedString(@"Lunar calendar is available from year 1901 to 2042.", nil);
             }
@@ -768,29 +764,17 @@
 
 - (void)calculateDate
 {
-    BOOL isInputLeapMonth = ( _isLunarInput ? [NSDate isLunarLeapMonthAtDateComponents:self.inputDateComponents isKorean:[[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion]] : NO );
+    BOOL isInputLeapMonth = ( _isLunarInput ? [NSDate isLunarLeapMonthAtDateComponents:self.inputDateComponents isKorean:[[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion]] : NO );
     BOOL isResultLeapMonth = ( _isLunarInput ? NO : [self isLeapMonthAtDateComponents:self.inputDateComponents gregorianToLunar:!_isLunarInput]);
     
     if ( self.inputDateComponents ) {
-		NSDate *updateDate = [NSDate date];
-		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LunarConverterUserDefaultsUpdateDate];
-		[[NSUserDefaults standardUserDefaults] setDateComponents:self.inputDateComponents forKey:A3LunarConverterLastInputDateComponents];
-		[[NSUserDefaults standardUserDefaults] setBool:_isLunarInput forKey:A3LunarConverterLastInputDateIsLunar];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-
-		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-			// Date Components 는 setDateComponents 에서 KVStore 에 저장함
-			[store setBool:_isLunarInput forKey:A3LunarConverterLastInputDateIsLunar];
-			[store setObject:updateDate forKey:A3LunarConverterUserDefaultsCloudUpdateDate];
-			[store synchronize];
-		}
+		[[A3SyncManager sharedSyncManager] setDateComponents:self.inputDateComponents forKey:A3LunarConverterLastInputDateComponents state:A3KeyValueDBStateModified];
 
         // 첫 페이지의 결과값
         // 첫페이지의 입력이 양력일 경우 leapmonth = NO
         // 첫페이지 입력이 양력이고 결과에 윤달이 있으면 leapmonth = YES
         // 첫페이지의 입력이 음력일 경우 leapmonth = NO
-        self.firstPageResultDateComponents = [NSDate lunarCalcWithComponents:self.inputDateComponents gregorianToLunar:!_isLunarInput leapMonth:(_isLunarInput ? NO : isResultLeapMonth) korean:[[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion] resultLeapMonth:&isResultLeapMonth];
+        self.firstPageResultDateComponents = [NSDate lunarCalcWithComponents:self.inputDateComponents gregorianToLunar:!_isLunarInput leapMonth:(_isLunarInput ? NO : isResultLeapMonth) korean:[[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion] resultLeapMonth:&isResultLeapMonth];
 		if (_isLunarInput && self.firstPageResultDateComponents) {
 			_inputDateComponents.weekday = self.firstPageResultDateComponents.weekday;
 		}
@@ -801,7 +785,7 @@
             self.secondPageResultDateComponents = [NSDate lunarCalcWithComponents:self.inputDateComponents
 																 gregorianToLunar:NO
 																		leapMonth:YES
-																		   korean:[[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion]
+																		   korean:[[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion]
 																  resultLeapMonth:&isResultLeapMonth];
 			[self updatePageData:_secondPageView resultDate:self.secondPageResultDateComponents isInputLeapMonth:isInputLeapMonth isResultLeapMonth:NO];
         }
@@ -903,8 +887,8 @@
     NSDateComponents *outputComponents = (_pageControl.currentPage > 0 ? self.secondPageResultDateComponents : self.firstPageResultDateComponents);
     NSMutableString *txt =[NSMutableString new];
 
-    BOOL isInputLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:_inputDateComponents isKorean:[[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion]];
-    BOOL isOutputLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:outputComponents isKorean:[[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion]];
+    BOOL isInputLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:_inputDateComponents isKorean:[[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion]];
+    BOOL isOutputLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:outputComponents isKorean:[[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion]];
 
     if (_isLunarInput) {
         BOOL resultLeapMonth = NO;
@@ -913,7 +897,7 @@
         solarFromLunarComp = [NSDate lunarCalcWithComponents:_inputDateComponents
                                             gregorianToLunar:NO
                                                    leapMonth:NO
-                                                      korean:[[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion]
+                                                      korean:[[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion]
                                              resultLeapMonth:&resultLeapMonth];
         NSString *prefix = [self stringOfLunarPrefixForDateComponents:_inputDateComponents leapMonth:NO];
 		[txt appendFormat:@"%@(%@) %@", NSLocalizedString(@"Lunar", @"Lunar"), prefix, [_dateFormatter stringFromDateComponents:_inputDateComponents]];
@@ -924,7 +908,7 @@
             solarFromLeapComp = [NSDate lunarCalcWithComponents:_inputDateComponents
                                                gregorianToLunar:NO
                                                       leapMonth:YES
-                                                         korean:[[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion]
+                                                         korean:[[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion]
                                                 resultLeapMonth:&resultLeapMonth];
             NSString *prefix = [self stringOfLunarPrefixForDateComponents:_inputDateComponents leapMonth:NO];
             [txt appendString:@"<br/>"];
@@ -1033,7 +1017,7 @@
 		[bottomLabel removeFromSuperview];
 
 		if (_isLunarInput) {
-			BOOL isKorean = [[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion];
+			BOOL isKorean = [[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion];
 			NSInteger maxDay = [NSDate lastMonthDayForLunarYear:_inputDateComponents.year month:_inputDateComponents.month isKorean:isKorean];
 			if (_inputDateComponents.day > maxDay) {
 				_inputDateComponents.day = maxDay;

@@ -32,6 +32,7 @@
 #import "UIColor+A3Addition.h"
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 #define kColorPlaceHolder [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 
@@ -1194,17 +1195,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3TipCalcUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3TipCalcUserDefaultsCurrencyCode];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:currencyCode forKey:A3TipCalcUserDefaultsCurrencyCode];
-		[store setObject:updateDate forKey:A3TipCalcUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:currencyCode forKey:A3TipCalcUserDefaultsCurrencyCode state:A3KeyValueDBStateModified];
 
 	[self.dataManager setCurrencyFormatter:nil];
 

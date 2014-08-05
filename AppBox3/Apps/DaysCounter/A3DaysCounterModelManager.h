@@ -19,7 +19,7 @@
 + (UIImage*)strokeCircleImageSize:(CGSize)size color:(UIColor*)color;
 + (NSString *)thumbnailDirectory;
 
-- (NSMutableArray *)calendars;
++ (NSMutableArray *)calendars;
 
 - (void)saveCalendars:(NSArray *)calendars;
 

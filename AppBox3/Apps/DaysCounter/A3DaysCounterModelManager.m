@@ -28,6 +28,7 @@
 #import "NSString+conversion.h"
 #import "A3CurrencyDataManager.h"
 #import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
@@ -59,21 +60,17 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return [cacheFolder stringByAppendingPathComponent:A3DaysCounterImageThumbnailDirectory];
 }
 
-- (NSMutableArray *)calendars {
-	NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterUserDefaultsCalendars];
-	if (data) {
-		NSMutableArray *calendars = [NSPropertyListSerialization propertyListWithData:data
-																			  options:NSPropertyListMutableContainersAndLeaves
-																			   format:NULL
-																				error:NULL];
-		if (calendars) {
-			return [calendars mutableCopy];
-		}
++ (NSMutableArray *)calendars {
+	NSArray *storedCalendars = [[A3SyncManager sharedSyncManager] objectForKey:A3DaysCounterUserDefaultsCalendars];
+	if (storedCalendars) {
+		NSMutableArray *mutableCalendars = [NSMutableArray arrayWithArray:storedCalendars];
+		return mutableCalendars;
 	}
 
-	return [NSMutableArray arrayWithArray:@[
+	NSMutableArray *calendars =
+	[NSMutableArray arrayWithArray:@[
 			[NSMutableDictionary dictionaryWithDictionary:@{
-					CalendarItem_ID : @"D4C43175-ED93-4497-91DD-7A9C5DF4E656",
+					ID_KEY : @"D4C43175-ED93-4497-91DD-7A9C5DF4E656",
 					CalendarItem_Name : NSLocalizedString(@"Anniversary", @"Anniversary"),
 					CalendarItem_ColorID : @0,
 					CalendarItem_IsShow : @YES,
@@ -81,7 +78,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 					CalendarItem_IsDefault : @YES
 			}],
 			[NSMutableDictionary dictionaryWithDictionary:@{
-					CalendarItem_ID : @"AA42D868-E781-4F57-AA12-77CF937A24A8",
+					ID_KEY : @"AA42D868-E781-4F57-AA12-77CF937A24A8",
 					CalendarItem_Name : NSLocalizedString(@"Appointment", @"Appointment"),
 					CalendarItem_ColorID : @1,
 					CalendarItem_IsShow : @YES,
@@ -89,7 +86,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 					CalendarItem_IsDefault : @NO
 			}],
 			[NSMutableDictionary dictionaryWithDictionary:@{
-					CalendarItem_ID : @"1D6C15F5-591A-49BF-A84A-4A9500C996EC",
+					ID_KEY : @"1D6C15F5-591A-49BF-A84A-4A9500C996EC",
 					CalendarItem_Name : NSLocalizedString(@"Birthday", @"Birthday"),
 					CalendarItem_ColorID : @2,
 					CalendarItem_IsShow : @YES,
@@ -97,7 +94,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 					CalendarItem_IsDefault : @NO
 			}],
 			[NSMutableDictionary dictionaryWithDictionary:@{
-					CalendarItem_ID : @"7E3A9673-39EE-4243-A3E5-F1859E06E66B",
+					ID_KEY : @"7E3A9673-39EE-4243-A3E5-F1859E06E66B",
 					CalendarItem_Name : NSLocalizedString(@"Journey", @"Journey"),
 					CalendarItem_ColorID : @3,
 					CalendarItem_IsShow : @YES,
@@ -105,7 +102,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 					CalendarItem_IsDefault : @NO
 			}],
 			[NSMutableDictionary dictionaryWithDictionary:@{
-					CalendarItem_ID : @"F4B138B7-C60D-4F15-BB42-8A83F8C48040",
+					ID_KEY : @"F4B138B7-C60D-4F15-BB42-8A83F8C48040",
 					CalendarItem_Name : NSLocalizedString(@"Holiday", @"Holiday"),
 					CalendarItem_ColorID : @4,
 					CalendarItem_IsShow : @YES,
@@ -113,7 +110,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 					CalendarItem_IsDefault : @NO
 			}],
 			[NSMutableDictionary dictionaryWithDictionary:@{
-					CalendarItem_ID : @"5A098AFF-3DD2-4264-8E46-E4D04952D750",
+					ID_KEY : @"5A098AFF-3DD2-4264-8E46-E4D04952D750",
 					CalendarItem_Name : NSLocalizedString(@"Work", @"Work"),
 					CalendarItem_ColorID : @5,
 					CalendarItem_IsShow : @YES,
@@ -121,7 +118,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 					CalendarItem_IsDefault : @NO
 			}],
 			[NSMutableDictionary dictionaryWithDictionary:@{
-					CalendarItem_ID: SystemCalendarID_All,
+					ID_KEY: SystemCalendarID_All,
 					CalendarItem_Name : @"All",
 					CalendarItem_ColorID : @9,
 					CalendarItem_IsShow : @YES,
@@ -129,14 +126,15 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 					CalendarItem_IsDefault : @YES
 			}],
 			[NSMutableDictionary dictionaryWithDictionary:@{
-					CalendarItem_ID: SystemCalendarID_Upcoming,
+					ID_KEY: SystemCalendarID_Upcoming,
 					CalendarItem_Name : @"Upcoming",
 					CalendarItem_ColorID : @10,
 					CalendarItem_IsShow : @YES,
 					CalendarItem_Type : @(CalendarCellType_System),
 					CalendarItem_IsDefault : @YES
 			}],
-			[NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: SystemCalendarID_Past,
+			[NSMutableDictionary dictionaryWithDictionary:@{
+					ID_KEY: SystemCalendarID_Past,
 					CalendarItem_Name : @"Past",
 					CalendarItem_ColorID : @11,
 					CalendarItem_IsShow : @YES,
@@ -144,41 +142,25 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 					CalendarItem_IsDefault : @YES
 			}]
 	]];
+	[[A3SyncManager sharedSyncManager] setSyncObject:calendars forKey:A3DaysCounterUserDefaultsCalendars state:A3KeyValueDBStateInitialized];
+	return [NSMutableArray arrayWithArray:calendars];
 }
 
 - (void)saveCalendars:(NSArray *)calendars {
-	NSData *data = [NSPropertyListSerialization dataWithPropertyList:calendars
-															  format:NSPropertyListBinaryFormat_v1_0
-															 options:0
-															   error:NULL];
-	[self saveDaysCounterObject:data forKey:A3DaysCounterUserDefaultsCalendars];
-}
-
-- (void)saveDaysCounterObject:(id)object forKey:(NSString *)key {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:object forKey:key];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DaysCounterUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:object forKey:key];
-		[store setObject:updateDate forKey:A3DaysCounterUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setSyncObject:calendars forKey:A3DaysCounterUserDefaultsCalendars state:A3KeyValueDBStateModified];
 }
 
 - (void)prepareInContext:(NSManagedObjectContext *)context {
     // Create Slide Show Option
-    NSDictionary *opt = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterUserDefaultsSlideShowOptions];
+    NSDictionary *opt = [[A3SyncManager sharedSyncManager] objectForKey:A3DaysCounterUserDefaultsSlideShowOptions];
     if ( opt == nil || [opt count] < 4 ) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         [dict setObject:@(TransitionType_Dissolve) forKey:OptionKey_Transition];
         [dict setObject:@(3) forKey:OptionKey_Showtime];
         [dict setObject:@(NO) forKey:OptionKey_Repeat];
         [dict setObject:@(NO) forKey:OptionKey_Shuffle];
-		[[NSUserDefaults standardUserDefaults] setObject:dict forKey:A3DaysCounterUserDefaultsSlideShowOptions];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+
+		[[A3SyncManager sharedSyncManager] setObject:dict forKey:A3DaysCounterUserDefaultsSlideShowOptions state:A3KeyValueDBStateInitialized];
     }
 }
 
@@ -480,14 +462,14 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSArray *)visibleCalendarList
 {
-	NSMutableArray *calendar = [self calendars];
+	NSMutableArray *calendar = [A3DaysCounterModelManager calendars];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", CalendarItem_IsShow, @YES];
     return [calendar filteredArrayUsingPredicate:predicate];
 }
 
 - (NSArray *)allUserCalendarList
 {
-	NSMutableArray *calendar = [self calendars];
+	NSMutableArray *calendar = [A3DaysCounterModelManager calendars];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", CalendarItem_Type, @(CalendarCellType_User)];
     return [calendar filteredArrayUsingPredicate:predicate];
 }
@@ -496,7 +478,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 {
     NSMutableDictionary *item = [NSMutableDictionary dictionary];
     
-    [item setObject:[[NSUUID UUID] UUIDString]  forKey:CalendarItem_ID];
+    [item setObject:[[NSUUID UUID] UUIDString]  forKey:ID_KEY];
     [item setObject:@"" forKey:CalendarItem_Name];
     [item setObject:@(YES) forKey:CalendarItem_IsShow];
     [item setObject:@(CalendarCellType_User) forKey:CalendarItem_Type];
@@ -506,14 +488,14 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 }
 
 - (id)calendarItemByID:(NSString *)calendarID {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", CalendarItem_ID, calendarID];
-	NSArray *filtered = [[self calendars] filteredArrayUsingPredicate:predicate];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", ID_KEY, calendarID];
+	NSArray *filtered = [[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:predicate];
     return [filtered count] ? filtered[0] : nil;
 }
 
 - (BOOL)removeCalendarItem:(NSMutableDictionary*)item
 {
-    return [self removeCalendarItemWithID:[item objectForKey:CalendarItem_ID]];
+    return [self removeCalendarItemWithID:[item objectForKey:ID_KEY]];
 }
 
 - (BOOL)removeEvent:(DaysCounterEvent *)event inContext:(NSManagedObjectContext *)context {
@@ -532,16 +514,20 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (BOOL)removeCalendarItemWithID:(NSString*)calendarID
 {
-	NSMutableArray *calendars = [self calendars];
+	NSMutableArray *calendars = [A3DaysCounterModelManager calendars];
 	NSUInteger idx = [calendars indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-		return [obj[CalendarItem_ID] isEqualToString:calendarID];
+		return [obj[ID_KEY] isEqualToString:calendarID];
 	}];
 
     if ( idx == NSNotFound )
         return NO;
-    
+
+	NSDictionary *deletingCalendar = calendars[idx];
 	[calendars removeObjectAtIndex:idx];
 	[self saveCalendars:calendars];
+	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterUserDefaultsCalendars
+												 type:A3DictionaryDBTransactionTypeDelete
+											   object:deletingCalendar[ID_KEY]];
 	
     BOOL retValue;
 	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
@@ -612,7 +598,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSArray *)hiddenCalendars {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isShow != YES"];
-	NSArray *hiddenCalendars = [[self calendars] filteredArrayUsingPredicate:predicate];
+	NSArray *hiddenCalendars = [[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:predicate];
 	return [hiddenCalendars valueForKeyPath:@"uniqueID"];
 }
 
@@ -649,7 +635,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 - (NSInteger)numberOfUserCalendarVisible
 {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@ AND %K == %@", CalendarItem_IsShow, @YES, CalendarItem_Type, @(CalendarCellType_User)];
-	return [[[self calendars] filteredArrayUsingPredicate:predicate] count];
+	return [[[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:predicate] count];
 }
 
 - (NSInteger)numberOfEventContainedImage
@@ -1200,16 +1186,16 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	// return Today or closest until
 	DaysCounterEvent *closestEvent = [DaysCounterEvent MR_findFirstWithPredicate:
 			[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate >= %@",
-					calendar[CalendarItem_ID],
+					calendar[ID_KEY],
 					today]
 																		sortedBy:@"effectiveStartDate"
 																	   ascending:YES];
 	if (closestEvent) return closestEvent;
 
 	// return closest since
-	closestEvent =  [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate < %@", calendar[CalendarItem_ID], today] sortedBy:@"effectiveStartDate" ascending:YES];
+	closestEvent =  [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate < %@", calendar[ID_KEY], today] sortedBy:@"effectiveStartDate" ascending:YES];
 	if (closestEvent) return closestEvent;
-	return [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendar[CalendarItem_ID]] sortedBy:@"effectiveStartDate" ascending:YES];
+	return [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendar[ID_KEY]] sortedBy:@"effectiveStartDate" ascending:YES];
 }
 
 + (NSDate *)effectiveDateForEvent:(DaysCounterEvent *)event basisTime:(NSDate *)now

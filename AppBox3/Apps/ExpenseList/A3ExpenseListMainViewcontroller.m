@@ -29,6 +29,7 @@
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
 #import "NSManagedObject+extension.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -143,7 +144,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 - (void)cloudStoreDidImport {
 	if (self.firstResponder) return;
 
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
+	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
 	[self.currencyFormatter setCurrencyCode:currencyCode];
 
 	[self reloadBudgetDataWithAnimation:YES saveData:NO ];
@@ -230,7 +231,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (void)currencyCodeChanged:(NSNotification *)notification {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
+	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
 	[self.currencyFormatter setCurrencyCode:currencyCode];
     
 	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
@@ -337,7 +338,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (NSString *)defaultCurrencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
+	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}
@@ -528,17 +529,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
     // 현재 상태 저장.
     [self saveCurrentBudgetToHistory];
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3ExpenseListUserDefaultsUpdateDate];
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3ExpenseListIsAddBudgetCanceledByUser];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setBool:NO forKey:A3ExpenseListIsAddBudgetCanceledByUser];
-		[store setObject:updateDate forKey:A3ExpenseListUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+    [[A3SyncManager sharedSyncManager] setBool:NO forKey:A3ExpenseListIsAddBudgetCanceledByUser state:A3KeyValueDBStateModified];
 
 	// 초기화.
     _currentBudget = nil;
@@ -900,27 +892,17 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         return;
     }
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:A3ExpenseListIsAddBudgetCanceledByUser]) {
+    if ([[A3SyncManager sharedSyncManager] boolForKey:A3ExpenseListIsAddBudgetCanceledByUser]) {
         return;
     }
 
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:A3ExpenseListIsAddBudgetInitiatedOnce]) {
+    if ([[A3SyncManager sharedSyncManager] boolForKey:A3ExpenseListIsAddBudgetInitiatedOnce]) {
         return;
     }
     
     // 버젯이 없는 경우 이동한다.
     if (!_currentBudget || _currentBudget.category==nil ) {
-		NSDate *updateDate = [NSDate date];
-		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3ExpenseListUserDefaultsUpdateDate];
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3ExpenseListIsAddBudgetInitiatedOnce];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-
-		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-			[store setObject:@YES forKey:A3ExpenseListIsAddBudgetInitiatedOnce];
-			[store setObject:updateDate forKey:A3ExpenseListUserDefaultsCloudUpdateDate];
-			[store synchronize];
-		}
+		[[A3SyncManager sharedSyncManager] setBool:YES forKey:A3ExpenseListIsAddBudgetInitiatedOnce state:A3KeyValueDBStateModified];
 
         [self performSelector:@selector(moveToAddBudgetViewController) withObject:nil afterDelay:delay];
         _isAutoMovingAddBudgetView = YES;
@@ -1156,16 +1138,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	_currentBudget.uniqueID = A3ExpenseListCurrentBudgetID;
 	_currentBudget.updateDate = [NSDate date];
 
-	[[NSUserDefaults standardUserDefaults] setObject:aBudget.currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-    NSDate *updateDate = [NSDate date];
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:aBudget.currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
-		[store setObject:updateDate forKey:A3ExpenseListUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
-    
+	[[A3SyncManager sharedSyncManager] setObject:aBudget.currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode state:A3KeyValueDBStateModified];
+
     self.currencyFormatter.currencyCode = [self defaultCurrencyCode];
 	_headerView.currencyFormatter = self.currencyFormatter;
 

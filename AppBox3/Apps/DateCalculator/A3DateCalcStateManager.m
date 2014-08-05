@@ -13,6 +13,7 @@
 #import "A3DateMainTableViewController.h"
 #import "A3SyncManager.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @implementation A3DateCalcStateManager
 
@@ -23,7 +24,7 @@ static DurationType g_currentDurationType;
 {
 //    DurationType result = DurationType_Year;
     DurationType result = DurationType_Day;
-    DurationType oldOptions = (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:A3DateCalcDefaultsDurationType];
+    DurationType oldOptions = (DurationType) [[A3SyncManager sharedSyncManager] integerForKey:A3DateCalcDefaultsDurationType];
     
     if (oldOptions == options) {
         // 선택 항목이 마지막 하나 남은 경우.
@@ -53,28 +54,18 @@ static DurationType g_currentDurationType;
         result = DurationType_Day;
     }
 
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:@(result) forKey:A3DateCalcDefaultsDurationType];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:@(result) forKey:A3DateCalcDefaultsDurationType];
-		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:@(result) forKey:A3DateCalcDefaultsDurationType state:A3KeyValueDBStateModified];
 }
 
 + (DurationType)durationType
 {
-    return (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:A3DateCalcDefaultsDurationType];
+    return (DurationType) [[A3SyncManager sharedSyncManager] integerForKey:A3DateCalcDefaultsDurationType];
 }
 
 + (NSCalendarUnit)calendarUnitByDurationType
 {
     NSCalendarUnit calUnit = 0;
-    DurationType durationType = (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:A3DateCalcDefaultsDurationType];
+    DurationType durationType = (DurationType) [[A3SyncManager sharedSyncManager] integerForKey:A3DateCalcDefaultsDurationType];
  
     if (durationType & DurationType_Year) {
         calUnit |= NSYearCalendarUnit;
@@ -94,7 +85,7 @@ static DurationType g_currentDurationType;
 
 + (NSString *)durationTypeString
 {
-    DurationType type = (DurationType) [[NSUserDefaults standardUserDefaults] integerForKey:A3DateCalcDefaultsDurationType];
+    DurationType type = (DurationType) [[A3SyncManager sharedSyncManager] integerForKey:A3DateCalcDefaultsDurationType];
     
     NSMutableArray *result = [[NSMutableArray alloc] init];
     if (type & DurationType_None || type & DurationType_Year) {
@@ -129,7 +120,7 @@ static DurationType g_currentDurationType;
 + (void)setExcludeOptions:(ExcludeOptions)options
 {
     ExcludeOptions result = ExcludeOptions_None;
-    ExcludeOptions oldOptions = (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:A3DateCalcDefaultsExcludeOptions];
+    ExcludeOptions oldOptions = (ExcludeOptions) [[A3SyncManager sharedSyncManager] integerForKey:A3DateCalcDefaultsExcludeOptions];
     
     if (oldOptions == options) {
         return;
@@ -146,28 +137,17 @@ static DurationType g_currentDurationType;
         }
     }
 
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
-    [[NSUserDefaults standardUserDefaults] setObject:@(result) forKey:A3DateCalcDefaultsExcludeOptions];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:@(result) forKey:A3DateCalcDefaultsExcludeOptions];
-		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
-
+	[[A3SyncManager sharedSyncManager] setObject:@(result) forKey:A3DateCalcDefaultsExcludeOptions state:A3KeyValueDBStateModified];
 }
 
 + (ExcludeOptions)excludeOptions
 {
-    return (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:A3DateCalcDefaultsExcludeOptions];
+    return (ExcludeOptions) [[A3SyncManager sharedSyncManager] integerForKey:A3DateCalcDefaultsExcludeOptions];
 }
 
 + (NSString *)excludeOptionsString
 {
-    ExcludeOptions options = (ExcludeOptions) [[NSUserDefaults standardUserDefaults] integerForKey:A3DateCalcDefaultsExcludeOptions];
+    ExcludeOptions options = (ExcludeOptions) [[A3SyncManager sharedSyncManager] integerForKey:A3DateCalcDefaultsExcludeOptions];
     if (ExcludeOptions_None == options) {
         return NSLocalizedString(@"DateCalcExclude_None", nil);
     }

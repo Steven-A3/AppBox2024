@@ -9,6 +9,8 @@
 #import "UIViewController+LoanCalcAddtion.h"
 #import "A3LoanCalcContentsTableViewController.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import <objc/runtime.h>
 
 static char const *const key_loanFormatter	= "key_loanFormatter";
@@ -39,7 +41,7 @@ static char const *const key_loanFormatter	= "key_loanFormatter";
 }
 
 - (NSString *)defaultLoanCurrencyCode {
-	NSString *customCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
+	NSString *customCurrencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 	if ([customCurrencyCode length]) {
 		return customCurrencyCode;
 	}

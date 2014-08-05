@@ -18,6 +18,7 @@
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "A3SyncManager.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -440,7 +441,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		[standardUserDefaults removeObjectForKey:A3SyncManagerCloudEnabled];
 		[standardUserDefaults synchronize];
 
-		NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
+		NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 		if (selectedColor) {
 			[A3AppDelegate instance].window.tintColor = [[A3AppDelegate instance] themeColor];
 		}

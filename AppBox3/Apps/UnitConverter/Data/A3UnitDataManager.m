@@ -9,9 +9,7 @@
 #import "A3UnitDataManager.h"
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
-
-NSString *const ID_KEY = @"ID";
-NSString *const NAME_KEY = @"name";
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 BOOL validUnit(NSNumber *value) {
 	return [value integerValue] != -1;
@@ -1337,7 +1335,7 @@ const double conversionTable[][34] = {
  * \returns NSArray of NSDictionary having ID_KEY and NAME_KEY
  */
 - (NSArray *)allCategories {
-	NSArray *categories = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitConverterUserDefaultsUnitCategories];
+	NSArray *categories = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitConverterUserDefaultsUnitCategories];
 	if (!categories) {
 		NSMutableArray *categoriesBeforeSort = [NSMutableArray new];
 
@@ -1348,8 +1346,7 @@ const double conversionTable[][34] = {
 		[categoriesBeforeSort sortUsingDescriptors:@[descriptor]];
 		categories = categoriesBeforeSort;
 
-		[[NSUserDefaults standardUserDefaults] setObject:categories forKey:A3UnitConverterUserDefaultsUnitCategories];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[[A3SyncManager sharedSyncManager] setObject:categories forKey:A3UnitConverterUserDefaultsUnitCategories state:A3KeyValueDBStateInitialized];
 	}
 	return categories;
 }
@@ -1445,7 +1442,7 @@ const double conversionTable[][34] = {
 }
 
 - (NSArray *)unitConvertItems {
-	NSArray *unitConvertItemsFromUserDefaults = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitConverterUserDefaultsConvertItems];
+	NSArray *unitConvertItemsFromUserDefaults = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitConverterUserDefaultsConvertItems];
 	if (unitConvertItemsFromUserDefaults) {
 		return unitConvertItemsFromUserDefaults;
 	}
@@ -1704,7 +1701,7 @@ const double conversionTable[][34] = {
 #pragma mark - Unit Favorites
 
 - (NSArray *)allFavorites {
-	NSArray *favoritesInDefaults = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitConverterUserDefaultsFavorites];
+	NSArray *favoritesInDefaults = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitConverterUserDefaultsFavorites];
 	if (favoritesInDefaults) return favoritesInDefaults;
 
 	NSMutableArray *unitFavorites = [[NSMutableArray alloc] init];
@@ -1964,23 +1961,13 @@ const double conversionTable[][34] = {
 #pragma mark - Save Unit Data
 
 - (void)saveUnitData:(id)data forKey:(NSString *)key {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3UnitConverterUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:data forKey:key];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:data forKey:key];
-		[store setObject:updateDate forKey:A3UnitConverterUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:data forKey:key state:A3KeyValueDBStateModified];
 }
 
 #pragma mark - Unit Price Favorites
 
 - (NSMutableArray *)allUnitPriceFavorites {
-	id favoriteData = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsUnitPriceFavorites];
+	id favoriteData = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsUnitPriceFavorites];
 	if (favoriteData) {
 		return [NSMutableArray arrayWithArray:favoriteData];
 	}
@@ -2224,17 +2211,7 @@ const double conversionTable[][34] = {
 #pragma mark - Save Unit Price Data
 
 - (void)saveUnitPriceData:(id)data forKey:(NSString *)key {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3UnitPriceUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:data forKey:key];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:data forKey:key];
-		[store setObject:updateDate forKey:A3UnitPriceUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:data forKey:key state:A3KeyValueDBStateModified];
 }
 
 

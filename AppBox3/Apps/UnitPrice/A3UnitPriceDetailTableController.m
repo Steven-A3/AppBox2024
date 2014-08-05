@@ -29,6 +29,7 @@
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
 #import "A3UnitDataManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
 	Price_Percent = 0,
@@ -113,9 +114,9 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 	NSDictionary *userDefaults;
 	if (_isPriceA) {
-		userDefaults = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsPriceA];
+		userDefaults = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsPriceA];
 	} else {
-		userDefaults = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsPriceB];
+		userDefaults = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsPriceB];
 	}
 	if (userDefaults) {
 		[_price copyValueFrom:userDefaults];
@@ -861,7 +862,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 }
 
 - (NSString *)defaultCurrencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
+	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}

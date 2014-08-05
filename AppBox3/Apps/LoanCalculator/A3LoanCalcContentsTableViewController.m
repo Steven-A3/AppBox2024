@@ -21,6 +21,7 @@
 #import "A3AppDelegate.h"
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3LoanCalcContentsTableViewController () <A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 @end
@@ -423,7 +424,7 @@
 #pragma mark --- Response to Calculator Button and result
 
 - (NSString *)defaultCurrencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
+	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}
@@ -445,17 +446,7 @@
 
 - (void)changeDefaultCurrencyCode:(NSString *)currencyCode {
 	if ([currencyCode length]) {
-		NSDate *updateDate = [NSDate date];
-		[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
-		[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-
-		if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-			NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-			[store setObject:currencyCode forKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
-			[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];
-			[store synchronize];
-		}
+		[[A3SyncManager sharedSyncManager] setObject:currencyCode forKey:A3LoanCalcUserDefaultsCustomCurrencyCode state:A3KeyValueDBStateModified];
 
 		[self.loanFormatter setCurrencyCode:currencyCode];
 	}

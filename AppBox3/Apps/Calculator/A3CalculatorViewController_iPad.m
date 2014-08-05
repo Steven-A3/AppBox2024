@@ -21,6 +21,8 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 NSString *const A3CalculatorModeBasic = @"basic";
 NSString *const A3CalculatorModeScientific = @"scientific";
@@ -77,8 +79,9 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     
     [self setupSubViews];
 
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorUserDefaultsSavedLastExpression]){
-        [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorUserDefaultsSavedLastExpression]];
+	NSString *expression = [[A3SyncManager sharedSyncManager] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
+    if (expression){
+        [_calculator setMathExpression:expression];
         [_calculator evaluateAndSet];
         [self checkRightButtonDisable];
     }
@@ -101,7 +104,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 }
 
 - (void)cloudStoreDidImport {
-	NSString *mathExpression = [[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
+	NSString *mathExpression = [[A3SyncManager sharedSyncManager] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
 	if (mathExpression){
 		[_calculator setMathExpression:mathExpression];
 		[_calculator evaluateAndSet];
@@ -144,8 +147,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
         
     }
 
-	[[NSUserDefaults standardUserDefaults] setValue:scientific == YES ? A3CalculatorModeScientific : A3CalculatorModeBasic forKey:A3CalculatorUserDefaultsCalculatorMode];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3SyncManager sharedSyncManager] setObject:scientific ? A3CalculatorModeScientific : A3CalculatorModeBasic forKey:A3CalculatorUserDefaultsCalculatorMode state:A3KeyValueDBStateModified];
 //    [self changeCalculatorKindString];
 }
 
@@ -267,8 +269,9 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     [self.view layoutIfNeeded];
 
     [self checkRightButtonDisable];
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorUserDefaultsCalculatorMode]){
-        if([[[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorUserDefaultsCalculatorMode] isEqualToString:A3CalculatorModeScientific]) {
+	NSString *modeString = [[A3SyncManager sharedSyncManager] objectForKey:A3CalculatorUserDefaultsCalculatorMode];
+    if (modeString){
+        if([modeString isEqualToString:A3CalculatorModeScientific]) {
 			[self setupScientificKeyPad];
             self.calculatorTypeSegment.selectedSegmentIndex = 1;
         } else {

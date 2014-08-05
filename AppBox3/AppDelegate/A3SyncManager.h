@@ -11,6 +11,16 @@
 extern NSString * const A3SyncManagerCloudEnabled;
 extern NSString * const A3SyncDeviceSyncStartInfo;
 
+typedef NS_ENUM(NSUInteger, A3DictionaryDBTransactionTypeValue) {
+	A3DictionaryDBTransactionTypeSetBaseline = 1,
+	A3DictionaryDBTransactionTypeInsertTop,
+	A3DictionaryDBTransactionTypeInsertBottom,
+	A3DictionaryDBTransactionTypeDelete,
+	A3DictionaryDBTransactionTypeUpdate,
+	A3DictionaryDBTransactionTypeReplace,	// object has array, [0]OLD / [1]new
+	A3DictionaryDBTransactionTypeReorder
+};
+
 @interface A3SyncManager : NSObject
 
 @property (nonatomic, readonly, strong) CDEPersistentStoreEnsemble *ensemble;
@@ -28,7 +38,8 @@ extern NSString * const A3SyncDeviceSyncStartInfo;
 - (BOOL)isCloudEnabled;
 - (void)synchronizeWithCompletion:(CDECompletionBlock)completion;
 
-- (void)uploadFilesToCloud;
-- (void)downloadFilesFromCloud;
+- (void)uploadMediaFilesToCloud;
+- (void)downloadMediaFilesFromCloud;
 
+- (void)addTransaction:(NSString *)userDefaultsKeyName type:(A3DictionaryDBTransactionTypeValue)typeValue object:(id)object;
 @end

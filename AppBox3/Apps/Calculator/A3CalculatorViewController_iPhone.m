@@ -22,6 +22,8 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate,MBProgressHUDDelegate, A3CalcMessagShowDelegate, A3InstructionViewControllerDelegate, UITextFieldDelegate>
 
@@ -97,8 +99,9 @@
 	}
     
 	[self setupSubviews];
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorUserDefaultsSavedLastExpression]){
-        [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorUserDefaultsSavedLastExpression]];
+	NSString *expression = [[A3SyncManager sharedSyncManager] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
+    if (expression){
+        [_calculator setMathExpression:expression];
         [_calculator evaluateAndSet];
         [self checkRightButtonDisable];
     }
@@ -126,7 +129,7 @@
 }
 
 - (void)cloudStoreDidImport {
-	NSString *mathExpression = [[NSUserDefaults standardUserDefaults] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
+	NSString *mathExpression = [[A3SyncManager sharedSyncManager] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
 	if (mathExpression){
 		[_calculator setMathExpression:mathExpression];
 		[_calculator evaluateAndSet];

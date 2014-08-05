@@ -32,6 +32,7 @@
 #import "UITableView+utility.h"
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 enum A3ExpenseListAddBudgetCellType {
     AddBudgetCellID_Budget = 100,
@@ -195,7 +196,7 @@ enum A3ExpenseListAddBudgetCellType {
 }
 
 - (NSString *)defaultCurrencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
+	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}
@@ -273,19 +274,9 @@ enum A3ExpenseListAddBudgetCellType {
 	else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3ExpenseListUserDefaultsUpdateDate];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3ExpenseListIsAddBudgetCanceledByUser];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[A3SyncManager sharedSyncManager] setBool:YES forKey:A3ExpenseListIsAddBudgetCanceledByUser state:A3KeyValueDBStateModified];
+
 	[self removeObserver];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setBool:YES forKey:A3ExpenseListIsAddBudgetCanceledByUser];
-		[store setObject:updateDate forKey:A3ExpenseListUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
-
 }
 
 -(NSString *) dateStringFromDate:(NSDate *)date {
@@ -897,17 +888,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3ExpenseListUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
-		[store setObject:updateDate forKey:A3ExpenseListUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode state:A3KeyValueDBStateModified];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationExpenseListCurrencyCodeChanged object:nil];
 

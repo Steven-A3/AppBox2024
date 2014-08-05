@@ -9,6 +9,7 @@
 #import "LoanCalcPreference.h"
 #import "A3AppDelegate.h"
 #import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 NSString *const A3LoanCalcNotificationDownPaymentEnabled = @"A3LoanCalcNotificationDownPaymentEnabled";
 NSString *const A3LoanCalcNotificationDownPaymentDisabled = @"A3LoanCalcNotificationDownPaymentDisabled";
@@ -22,7 +23,7 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
 @implementation LoanCalcPreference
 
 - (BOOL)showDownPayment {
-	NSNumber *value = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultShowDownPayment];
+	NSNumber *value = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultShowDownPayment];
 	if (value) {
 		return [value boolValue];
 	}
@@ -30,21 +31,11 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
 }
 
 - (void)setShowDownPayment:(BOOL)showDownPayment {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setBool:showDownPayment forKey:A3LoanCalcUserDefaultShowDownPayment];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setBool:showDownPayment forKey:A3LoanCalcUserDefaultShowDownPayment];
-		[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setBool:showDownPayment forKey:A3LoanCalcUserDefaultShowDownPayment state:A3KeyValueDBStateModified];
 }
 
 - (BOOL)showExtraPayment {
-	NSNumber *value = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultShowExtraPayment];
+	NSNumber *value = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultShowExtraPayment];
 	if (value) {
 		return [value boolValue];
 	}
@@ -52,21 +43,11 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
 }
 
 - (void)setShowExtraPayment:(BOOL)showExtraPayment {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setBool:showExtraPayment forKey:A3LoanCalcUserDefaultShowExtraPayment];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setBool:showExtraPayment forKey:A3LoanCalcUserDefaultShowExtraPayment];
-		[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setBool:showExtraPayment forKey:A3LoanCalcUserDefaultShowExtraPayment state:A3KeyValueDBStateModified];
 }
 
 - (BOOL)showAdvanced {
-	NSNumber *value = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultShowAdvanced];
+	NSNumber *value = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultShowAdvanced];
 	if (value) {
 		return [value boolValue];
 	}
@@ -76,17 +57,7 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
 }
 
 - (void)setShowAdvanced:(BOOL)showAdvanced {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setBool:showAdvanced forKey:A3LoanCalcUserDefaultShowAdvanced];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setBool:showAdvanced forKey:A3LoanCalcUserDefaultShowAdvanced];
-		[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setBool:showAdvanced forKey:A3LoanCalcUserDefaultShowAdvanced state:A3KeyValueDBStateModified];
 }
 
 @end

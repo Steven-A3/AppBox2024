@@ -7,17 +7,20 @@
 //
 
 #import "A3AppDelegate.h"
+#import "A3UserDefaults.h"
 
 @interface A3AppDelegate (mainMenu)
 
 - (NSArray *)allMenu;
 - (NSArray *)allMenuItems;
 - (NSArray *)allMenuArrayFromUserDefaults;
-- (void)storeAllMenu:(NSArray *)menuArray withDate:(NSDate *)date;
+
+- (void)storeAllMenu:(NSArray *)menuArray withDate:(NSDate *)date state:(A3KeyValueDBStateValue)state;
 - (NSDictionary *)favoriteMenuDictionary;
 - (NSArray *)favoriteItems;
 - (void)storeFavorites:(NSArray *)newFavorites;
-- (void)storeFavoriteMenuDictionary:(NSMutableDictionary *)dictionary withDate:(NSDate *)updateDate;
+
+- (void)storeFavoriteMenuDictionary:(NSMutableDictionary *)dictionary withDate:(NSDate *)updateDate state:(A3KeyValueDBStateValue)state;
 - (void)storeRecentlyUsedMenuDictionary:(NSMutableDictionary *)mutableDictionary withDate:(NSDate *)updateDate;
 - (NSUInteger)maximumRecentlyUsedMenus;
 - (void)storeMaximumNumberRecentlyUsedMenus:(NSUInteger)maxNumber;

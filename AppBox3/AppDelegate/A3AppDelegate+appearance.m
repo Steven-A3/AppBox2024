@@ -9,6 +9,8 @@
 #import "A3LaunchSceneViewController.h"
 #import "A3AppDelegate+appearance.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @implementation A3AppDelegate (appearance)
 
@@ -26,7 +28,7 @@
 }
 
 - (UIColor *)themeColor {
-	NSNumber *selectedIndex = [[NSUserDefaults standardUserDefaults] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
+	NSNumber *selectedIndex = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 	if (selectedIndex) {
 		return self.themeColors[[selectedIndex unsignedIntegerValue]];
 	}

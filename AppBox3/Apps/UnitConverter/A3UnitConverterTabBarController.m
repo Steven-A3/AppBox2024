@@ -9,10 +9,11 @@
 #import "A3UnitConverterTabBarController.h"
 #import "A3UnitConverterConvertTableViewController.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "NSUserDefaults+A3Defaults.h"
 #import "A3UnitConverterMoreTableViewController.h"
 #import "A3AppDelegate.h"
 #import "A3UnitDataManager.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3UnitConverterTabBarController ()
 
@@ -63,7 +64,7 @@
 }
 
 - (void)resetSelectedTab {
-	NSInteger unitID = [[NSUserDefaults standardUserDefaults] unitConverterSelectedCategory];
+	NSInteger unitID = [[A3SyncManager sharedSyncManager] integerForKey:A3UnitConverterDefaultSelectedCategoryID];
 	NSArray *allCategories = [self.dataManager allCategories];
 	NSInteger vcIdx = [allCategories indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 		return [obj[ID_KEY] unsignedIntegerValue] == unitID;
@@ -81,7 +82,7 @@
 }
 
 - (void)cloudStoreDidImport {
-	NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterSelectedCategory];
+	NSInteger vcIdx = [[A3SyncManager sharedSyncManager] integerForKey:A3UnitConverterDefaultSelectedCategoryID];
 	if (self.selectedIndex != vcIdx) {
 		[self resetSelectedTab];
 	}
