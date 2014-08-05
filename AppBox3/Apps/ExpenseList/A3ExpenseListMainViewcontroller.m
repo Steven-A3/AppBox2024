@@ -527,7 +527,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     [self clearEverything];
 
     // 현재 상태 저장.
-    [self saveCurrentBudgetToHistory];
+    if ([_currentBudget.isModified boolValue]) {
+        [self saveCurrentBudgetToHistory];
+    }
+
 	NSDate *updateDate = [NSDate date];
 	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3ExpenseListUserDefaultsUpdateDate];
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3ExpenseListIsAddBudgetCanceledByUser];
@@ -541,10 +544,20 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	}
 
 	// 초기화.
-    _currentBudget = nil;
+    [self clearCurrentBudget];
     _tableDataSourceArray = nil;
     [self reloadBudgetDataWithAnimation:YES saveData:YES ];
     [self moveToAddBudgetIfBudgetNotExistWithDelay:1.0];
+}
+
+- (void)clearCurrentBudget {
+    for (ExpenseListItem * item in [_currentBudget expenseItems]) {
+        [item MR_deleteEntity];
+    }
+    
+    [_currentBudget MR_deleteEntity];
+    _currentBudget = nil;
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)historyButtonAction:(id)sender
@@ -808,6 +821,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		_currentBudget = [ExpenseListBudget MR_createEntity];
 		_currentBudget.uniqueID = A3ExpenseListCurrentBudgetID;
 		_currentBudget.updateDate = [NSDate date];
+        _currentBudget.isModified = @(NO);
 
 		for (NSInteger idx = 0; idx < defaultCount; idx++) {
 			ExpenseListItem *item = [ExpenseListItem MR_createEntity];
@@ -869,7 +883,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	// 현재 예산에 새 ID 를 부여하고 history 로 전환
     _currentBudget.currencyCode = [self defaultCurrencyCode];
 
-    NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_defaultContext];
+    NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_newContext];
 	ExpenseListBudget *budgetInHistory = (ExpenseListBudget *) [_currentBudget cloneInContext:savingContext];
 	budgetInHistory.uniqueID = [[NSUUID UUID] UUIDString];
 
@@ -882,14 +896,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		ExpenseListItem *itemInHistory = (ExpenseListItem *) [item cloneInContext:savingContext];
 		itemInHistory.uniqueID = [[NSUUID UUID] UUIDString];
 		itemInHistory.budgetID = budgetInHistory.uniqueID;
-		[item MR_deleteEntity];
 	}
-	[_currentBudget MR_deleteEntity];
 
     [savingContext MR_saveToPersistentStoreAndWait];
     
-	_currentBudget = nil;
-
 	FNLOG(@"History count : %ld", (long)[ExpenseListHistory MR_countOfEntities]);
 	FNLOG(@"Budget count : %ld", (long)[ExpenseListBudget MR_countOfEntities]);
 }
@@ -1169,25 +1179,33 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 -(void)didSelectBudgetHistory:(ExpenseListBudget *)aBudget
 {
     // 현재 화면의 데이터 저장, 입력된 데이터가 없는 경우는 제외.
+    // - 새로 추가되어 편집중이던 예산
+    // - 히스토리로부터 복원되어 수정된 적이 있는 예산
+    // 위의 경우에만 저장이 되도록 한다.
 	NSArray *expenseItemsHasData = [_currentBudget expenseItemsHasData];
-    if ([expenseItemsHasData count] == 0 && ![self isAddedBudget:_currentBudget]) {
-        [ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID == %@", _currentBudget.uniqueID]];
-        [_currentBudget MR_deleteEntity];
-        _currentBudget = nil;
-    }
-    else if ([expenseItemsHasData count] > 0 || [self isAddedBudget:_currentBudget]) {
+    if ([expenseItemsHasData count] > 0 || [self isAddedBudget:_currentBudget]) {
         // 편집중이던 데이터는 히스토리에 저장.
-        [self saveCurrentBudgetToHistory];
+        if ([_currentBudget.isModified boolValue]) {
+            [self saveCurrentBudgetToHistory];
+        }
     }
     
+    [self clearCurrentBudget];
+
+    
+    
+    // 선택된 히스토리 버젯으로 복원.
     NSManagedObjectContext * savingContext = [NSManagedObjectContext MR_defaultContext];
+    NSDate *updateDate = [NSDate date];
+    
 	_currentBudget = (ExpenseListBudget *) [aBudget cloneInContext:savingContext];
-	_currentBudget.uniqueID = [aBudget uniqueID];
-	_currentBudget.updateDate = [NSDate date];
+    _currentBudget.uniqueID = A3ExpenseListCurrentBudgetID;
+	_currentBudget.updateDate = updateDate;
+    _currentBudget.isModified = @(NO);
 
 	[[NSUserDefaults standardUserDefaults] setObject:aBudget.currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
-    NSDate *updateDate = [NSDate date];
+    
 	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[store setObject:aBudget.currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode];
@@ -1201,11 +1219,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	[[aBudget expenseItems] enumerateObjectsUsingBlock:^(ExpenseListItem *item, NSUInteger idx, BOOL *stop) {
 		ExpenseListItem *newCurrentItem = (ExpenseListItem *) [item cloneInContext:savingContext];
 		newCurrentItem.uniqueID = [self itemIDWithIndex:idx];
+        FNLOG(@"uniqueID : %@", newCurrentItem.uniqueID);
 		newCurrentItem.budgetID = _currentBudget.uniqueID;
-        [item MR_deleteEntity];
 	}];
-    
-    [aBudget MR_deleteEntity];
 
     [savingContext MR_saveToPersistentStoreAndWait];
     
@@ -1298,6 +1314,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     }
 
     ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:index.row];
+    NSDate * updateDate = [NSDate date];
 
 	if (textField == aCell.nameTextField) {
 		item.itemName = textField.text;
@@ -1321,7 +1338,11 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     item.subTotal = @(item.price.floatValue * item.qty.floatValue);
     aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:item.subTotal];
 	item.hasData = @(YES);
-	item.updateDate = [NSDate date];
+	item.updateDate = updateDate;
+    
+    if ([item hasChanges]) {
+        _currentBudget.isModified = @(YES);
+    }
 
     // 전체 항목 계산 & 화면(헤더뷰) 반영.
     [self calculateAndDisplayResultWithAnimation:YES saveData:YES ];
@@ -1345,7 +1366,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         item.itemName = nil;
         item.price = nil;
         item.qty = nil;
-		item.updateDate = [NSDate date];
+		item.updateDate = updateDate;
 		
         aCell.nameTextField.text = @"";
         aCell.priceTextField.text = @"";

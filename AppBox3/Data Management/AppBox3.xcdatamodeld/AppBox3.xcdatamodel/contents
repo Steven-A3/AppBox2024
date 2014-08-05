@@ -85,6 +85,7 @@
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="isModified" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="paymentType" optional="YES" attributeType="String" syncable="YES"/>
@@ -310,7 +311,7 @@
         <element name="DaysCounterEventLocation" positionX="-81" positionY="-801" width="162" height="208"/>
         <element name="DaysCounterFavorite" positionX="-432" positionY="-640" width="128" height="103"/>
         <element name="DaysCounterReminder" positionX="-83" positionY="-523" width="128" height="148"/>
-        <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="208"/>
+        <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="223"/>
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="193"/>
         <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="90"/>
         <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="193"/>

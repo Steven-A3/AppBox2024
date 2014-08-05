@@ -247,22 +247,19 @@ enum A3ExpenseListAddBudgetCellType {
 		// Advanced.
 		A3TableViewInputElement *title = elements[0];
 		A3JHTableViewDateEntryElement *date = elements[1];
-        //		A3JHTableViewElement *location = elements[2];
-        //		A3TableViewInputElement *notes = elements[3];
-		
-//        A3TableViewInputElement *notes = elements[2];
         A3TextViewElement *notes = elements[2];
 
 		resultBudget.title = title.value;
-        //		resultBudget.location = [location.value dataUsingEncoding:NSUTF8StringEncoding];
 		resultBudget.date = date.dateValue;
 		resultBudget.notes = notes.value;
 		resultBudget.updateDate = [NSDate date];
+        resultBudget.isModified = @(YES);
 
 		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 		[_delegate setExpenseBudgetDataFor:resultBudget];
 	}
+    
 	[self removeObserver];
 }
 

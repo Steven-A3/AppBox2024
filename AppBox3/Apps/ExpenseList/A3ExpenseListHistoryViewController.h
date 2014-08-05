@@ -11,8 +11,10 @@
 @class ExpenseListBudget;
 
 @protocol A3ExpenseListHistoryDelegate <NSObject>
--(void)didSelectBudgetHistory:(ExpenseListBudget *)aBudget;
--(void)didDismissExpenseHistoryViewController;
+- (void)didSelectBudgetHistory:(ExpenseListBudget *)aBudget;
+- (void)didDismissExpenseHistoryViewController;
+@optional
+- (void)willRemoveHistoryItemBudgetID:(NSString *)aBudgetID;
 @end
 
 
