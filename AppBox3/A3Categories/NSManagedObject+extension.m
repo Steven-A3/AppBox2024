@@ -23,7 +23,7 @@
 
 - (NSManagedObject *)cloneInContext:(NSManagedObjectContext *)context {
 	NSManagedObject *cloned = [[self entity] MR_createInstanceInContext:context];
-	NSDictionary *attributes = [[NSEntityDescription entityForName:[[self entity] name] inManagedObjectContext:context] attributesByName];
+	NSDictionary *attributes = [[NSEntityDescription entityForName:[[self entity] name] inManagedObjectContext:(context ? context : self.managedObjectContext)] attributesByName];
 	for (NSString *attribute in attributes) {
 		[cloned setValue:[self valueForKey:attribute] forKey:attribute];
 	}

@@ -141,6 +141,10 @@ static NSString *CellIdentifier = @"Cell";
     
     ExpenseListHistory *aHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
     ExpenseListBudget *aBudget = [aHistory budgetData];
+    if (!aBudget) {
+        return cell;
+    }
+    
     self.currencyFormatter.currencyCode = aBudget.currencyCode;
     [cell setExpenseBudgetData:aBudget currencyFormatter:self.currencyFormatter];
     
@@ -175,6 +179,9 @@ static NSString *CellIdentifier = @"Cell";
         ExpenseListHistory *aHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
         ExpenseListBudget *aData = [aHistory budgetData];
 
+        if ([_delegate respondsToSelector:@selector(willRemoveHistoryItemBudgetID:)]) {
+            [_delegate willRemoveHistoryItemBudgetID:aData.uniqueID];
+        }
 		[ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID == %@", aData.uniqueID]];
 		[aData MR_deleteEntity];
 		[aHistory MR_deleteEntity];

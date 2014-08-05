@@ -154,13 +154,13 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)cloudStoreDidImport {
-	if ([self firstResponder]) {
-		_cancelInputNewCloudDataReceived = YES;
-		[self.firstResponder resignFirstResponder];
-	}
-
-	[self.fmMoveTableView reloadData];
-	[self enableControls:_barButtonEnabled];
+    if ([self firstResponder]) {
+        _cancelInputNewCloudDataReceived = YES;
+        return;
+    }
+    
+    [self.fmMoveTableView reloadData];
+    [self enableControls:_barButtonEnabled];
 }
 
 - (void)removeObserver {
@@ -577,7 +577,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 			if (_isTemperatureMode) {
 				float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:[_dataManager unitNameForUnitID:sourceID categoryID:_categoryID] andTemperature:self.unitValue.floatValue];
-				float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:[_dataManager unitNameForUnitID:sourceID categoryID:_categoryID]];
+				float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:[_dataManager unitNameForUnitID:targetID categoryID:_categoryID]];
 				convertInfoText = [NSString stringWithFormat:@"%@ %@ = %@ %@",
 															 [self.decimalFormatter stringFromNumber:self.unitValue],
 															 sourceShortName,

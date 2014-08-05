@@ -55,7 +55,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 																			action:@selector(clearButtonAction:)];
 
 	_historyNumberFormatter = [[NSNumberFormatter alloc] init];
-	[_historyNumberFormatter setMaximumFractionDigits:2];
+    _historyNumberFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
 
 	self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
@@ -240,7 +240,6 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 		}
 	}
 	[_historyNumberFormatter setCurrencyCode:unitPriceHistory.currencyCode];
-	[_historyNumberFormatter setMaximumFractionDigits:2];
 
 	double unitPriceA = [unitPriceAItem unitPrice];
     double unitPriceB = [unitPriceBItem unitPrice2WithPrice1:unitPriceAItem];

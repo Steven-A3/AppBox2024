@@ -271,8 +271,8 @@
         [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"add02"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
     }
     else {
-        usedAmount = budget.usedAmount;
-        totalAmount = budget.totalAmount;
+        usedAmount = budget.usedAmount ? budget.usedAmount : @0;
+        totalAmount = budget.totalAmount ? budget.totalAmount : @0;
         
         if (budget.totalAmount.floatValue == 0 || !budget.totalAmount) {
             resultAmount = nil;
