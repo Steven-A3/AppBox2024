@@ -27,6 +27,7 @@
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 @property (nonatomic, strong) UIButton *cameraButton;
+@property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UISwitch *lunarSwitch;
 
 @end
@@ -198,13 +199,8 @@ static NSString *CellIdentifier = @"Cell";
 			case 2: {
 				cell.textLabel.text = NSLocalizedString(@"Wallpaper", @"Wallpaper");
 				if ([[A3HolidaysFlickrDownloadManager sharedInstance] hasUserSuppliedImageForCountry:_countryCode]) {
-					UIImageView *imageView = [[A3HolidaysFlickrDownloadManager sharedInstance] thumbnailOfUserSuppliedImageForCountryCode:_countryCode];
-					imageView.contentMode = UIViewContentModeScaleAspectFill;
-					imageView.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
-					imageView.layer.borderWidth = 0.1;
-					imageView.layer.cornerRadius = 15;
-					imageView.layer.masksToBounds = YES;
-					cell.accessoryView = imageView;
+					_imageView = nil;
+					cell.accessoryView = [self imageView];
 				} else {
 					cell.accessoryView = [self cameraButton];
 				}
@@ -248,6 +244,18 @@ static NSString *CellIdentifier = @"Cell";
 		[_cameraButton sizeToFit];
 	}
 	return _cameraButton;
+}
+
+- (UIImageView *)imageView {
+	if (!_imageView) {
+		_imageView = [[A3HolidaysFlickrDownloadManager sharedInstance] thumbnailOfUserSuppliedImageForCountryCode:_countryCode];
+		_imageView.contentMode = UIViewContentModeScaleAspectFill;
+		_imageView.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
+		_imageView.layer.borderWidth = 0.1;
+		_imageView.layer.cornerRadius = 15;
+		_imageView.layer.masksToBounds = YES;
+	}
+	return _imageView;
 }
 
 - (void)switchControlAction:(UISwitch *)switchControl {
@@ -340,9 +348,16 @@ static NSString *CellIdentifier = @"Cell";
 				}
 				else {
 					self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-					UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
-					CGRect rect = [self.view convertRect:self.cameraButton.frame fromView:cell];
-					[_imagePickerPopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+					self.imagePickerPopoverController.delegate = self;
+					CGRect fromRect;
+					if ([[A3HolidaysFlickrDownloadManager sharedInstance] hasUserSuppliedImageForCountry:_countryCode]) {
+						UITableViewCell *cell = [self.tableView cellForCellSubview:_imageView];
+						fromRect = [self.view convertRect:_imageView.frame fromView:cell];
+					} else {
+						UITableViewCell *cell = [self.tableView cellForCellSubview:_cameraButton];
+						fromRect = [self.view convertRect:_cameraButton.frame fromView:cell];
+					}
+					[_imagePickerPopoverController presentPopoverFromRect:fromRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 				}
 			}
 			else {
@@ -370,15 +385,24 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [self dismissImagePickerController];
+	_imagePickerController = nil;
 }
 
 - (void)dismissImagePickerController {
-    if (IS_IPAD) {
+    if (IS_IPAD && _imagePickerPopoverController) {
         [_imagePickerPopoverController dismissPopoverAnimated:YES];
         _imagePickerPopoverController = nil;
     } else {
         [_imagePickerController dismissViewControllerAnimated:YES completion:NULL];
     }
+}
+
+#pragma mark - UIPopoverController Delegate
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+	[self.imagePickerController dismissViewControllerAnimated:YES completion:nil];
+	self.imagePickerController = nil;
+	self.imagePickerPopoverController = nil;
 }
 
 - (void)lunarOnOff:(UISwitch *)switchControl {
