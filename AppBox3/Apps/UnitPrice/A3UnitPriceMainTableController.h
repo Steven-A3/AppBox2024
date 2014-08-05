@@ -6,9 +6,9 @@
 //  Copyright (c) 2014년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 extern NSString *const A3NotificationUnitPriceCurrencyCodeChanged;
+extern NSString *const A3UnitPricePrice1DefaultID;
+extern NSString *const A3UnitPricePrice2DefaultID;
 
 @interface A3UnitPriceMainTableController : UITableViewController
 

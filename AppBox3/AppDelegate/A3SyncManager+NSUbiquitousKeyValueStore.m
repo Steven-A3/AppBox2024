@@ -119,7 +119,7 @@
 
 	if (state == A3KeyValueDBStateModified && [self isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
-		[keyValueStore setObject:object forKey:key];
+		[keyValueStore setObject:userDefaultsFormat forKey:key];
 		[keyValueStore synchronize];
 	}
 }

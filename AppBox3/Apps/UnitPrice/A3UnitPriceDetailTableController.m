@@ -112,16 +112,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	self.currencyFormatter = nil;
 	self.currencyFormatter.maximumFractionDigits = 2;
 
-	NSDictionary *userDefaults;
-	if (_isPriceA) {
-		userDefaults = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsPriceA];
-	} else {
-		userDefaults = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsPriceB];
-	}
-	if (userDefaults) {
-		[_price copyValueFrom:userDefaults];
-	}
-
+	_price = [UnitPriceInfo MR_findFirstByAttribute:ID_KEY withValue:_isPriceA ? A3UnitPricePrice1DefaultID : A3UnitPricePrice2DefaultID];
 	[self.tableView reloadData];
 }
 
@@ -478,15 +469,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
         }
 		textField.text = self.price.size ? [self.decimalFormatter stringFromNumber:self.price.size]: @"";
     }
-	[self saveToUserDefaults];
-}
-
-- (void)saveToUserDefaults {
-	if (_isPriceA) {
-		[self.unitDataManager saveUnitPriceData:[_price dictionaryRepresentation] forKey:A3UnitPriceUserDefaultsPriceA];
-	} else {
-		[self.unitDataManager saveUnitPriceData:[_price dictionaryRepresentation] forKey:A3UnitPriceUserDefaultsPriceB];
-	}
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (NSString *)unitName {
@@ -526,7 +509,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (void)textViewDidEndEditing:(UITextView *)textView {
 	self.price.note = textView.text;
 
-	[self saveToUserDefaults];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 #pragma mark - A3TbvCellTextInputDelegate
@@ -715,7 +698,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	self.price.unitCategoryID = @(categoryID);
 	self.price.unitID = @(unitID);
 
-	[self saveToUserDefaults];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	NSIndexPath *sliderIP = [NSIndexPath indexPathForRow:0 inSection:0];
 	NSIndexPath *unitIP = [NSIndexPath indexPathForRow:[self.items indexOfObject:self.unitItem] inSection:1];

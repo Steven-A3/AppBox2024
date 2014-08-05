@@ -548,23 +548,17 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 }
 
 - (void)downloadAndPlayTransactions {
-	FNLOG();
 	[self uploadLogFiles];
-	FNLOG();
 	[self downloadLogFiles:^(NSError *error) {
 		[self aggregateLogFiles];
 	}];
 }
 
 - (void)downloadLogFiles:(CDECompletionBlock)completionBlock {
-	FNLOG();
 	NSString *localTransactionLogDirectoryPath = [self transactionLogDirectoryPath];
 	NSMutableSet *downloadedFilesSet = [self downloadedFilesSet];
-	FNLOG();
 	[_cloudFileSystem connect:^(NSError *error) {
-		FNLOG();
 		[_cloudFileSystem fileExistsAtPath:A3DictionaryDBLogsDirectoryName completion:^(BOOL exists, BOOL isDirectory, NSError *error_1) {
-			FNLOG();
 			if (!exists) {
 				FNLOG(@"Log Directory does not exist.");
 				return;

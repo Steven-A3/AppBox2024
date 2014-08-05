@@ -216,8 +216,6 @@
 			A3UnitConverterUserDefaultsUnitCategories,
 
 			A3UnitPriceUserDefaultsCurrencyCode,
-			A3UnitPriceUserDefaultsPriceA,
-			A3UnitPriceUserDefaultsPriceB,
 			A3UnitPriceUserDefaultsUnitPriceFavorites,
 
 			A3MainMenuUserDefaultsFavorites,

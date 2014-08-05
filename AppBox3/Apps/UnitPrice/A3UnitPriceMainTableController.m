@@ -22,12 +22,13 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "UnitPriceHistory+extension.h"
 #import "UnitPriceInfo+extension.h"
-#import "A3UserDefaults.h"
 #import "A3UnitDataManager.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUnitPriceCurrencyCodeChanged";
+NSString *const A3UnitPricePrice1DefaultID = @"UnitPriceDefault1";
+NSString *const A3UnitPricePrice2DefaultID = @"UnitPriceDefault2";
 
 @interface A3UnitPriceMainTableController () <UnitPriceInputDelegate, A3UnitPriceModifyDelegate, UnitPriceHistoryViewControllerDelegate>
 {
@@ -43,7 +44,6 @@ NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUni
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3UnitDataManager *unitDataManager;
-@property (nonatomic, strong) NSManagedObjectContext *privateContext;
 
 @end
 
@@ -254,24 +254,16 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     return _historyBarItem;
 }
 
-- (NSManagedObjectContext *)privateContext {
-	if (!_privateContext) {
-		_privateContext = [NSManagedObjectContext MR_newContext];
-	}
-	return _privateContext;
-}
-
 - (UnitPriceInfo *)price1
 {
     if (!_price1) {
-		_price1 = [UnitPriceInfo MR_createEntityInContext:_privateContext];
-		_price1.uniqueID = [[NSUUID UUID] UUIDString];
-		_price1.priceName = @"A";
-		NSDictionary *store = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsPriceA];
-		if (store) {
-			[_price1 copyValueFrom:store];
-		} else {
+		_price1 = [UnitPriceInfo MR_findFirstByAttribute:ID_KEY withValue:A3UnitPricePrice1DefaultID];
+		if (!_price1) {
+			_price1 = [UnitPriceInfo MR_createEntity];
+			_price1.uniqueID = A3UnitPricePrice1DefaultID;
+			_price1.priceName = @"A";
 			[_price1 initValues];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		}
 	}
     return _price1;
@@ -280,14 +272,13 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (UnitPriceInfo *)price2
 {
 	if (!_price2) {
-		_price2 = [UnitPriceInfo MR_createEntity];
-		_price2.uniqueID = [[NSUUID UUID] UUIDString];
-		_price2.priceName = @"B";
-		NSDictionary *store = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsPriceB];
-		if (store) {
-			[_price2 copyValueFrom:store];
-		} else {
+		_price2 = [UnitPriceInfo MR_findFirstByAttribute:ID_KEY withValue:A3UnitPricePrice2DefaultID];
+		if (!_price2) {
+			_price2 = [UnitPriceInfo MR_createEntity];
+			_price2.uniqueID = A3UnitPricePrice2DefaultID;
+			_price2.priceName = @"B";
 			[_price2 initValues];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		}
 	}
     return _price2;
@@ -366,6 +357,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 				_price2.note = item.note;
 			}
 		}
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 		if (![self.defaultCurrencyCode isEqualToString:history.currencyCode]) {
 			[UnitPriceInfo changeDefaultCurrencyCode:history.currencyCode];
@@ -373,7 +365,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 			[self.currencyFormatter setMaximumFractionDigits:2];
 		}
 
-		[self saveDataToUserDefaults];
         [self updateUnitPrices:NO];
 
 	}
@@ -405,17 +396,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         priceOther.unitID = priceSelf.unitID;
     }
 
-	[self saveDataToUserDefaults];
-    
     [self updateUnitPrices:YES];
 
-}
-
-- (void)saveDataToUserDefaults {
-	NSDictionary *price1Dictionary = [_price1 dictionaryRepresentation];
-	NSDictionary *price2Dictionary = [_price2 dictionaryRepresentation];
-	[self.unitDataManager saveUnitPriceData:price1Dictionary forKey:A3UnitPriceUserDefaultsPriceA];
-	[self.unitDataManager saveUnitPriceData:price2Dictionary forKey:A3UnitPriceUserDefaultsPriceB];
 }
 
 #pragma mark - UnitPriceInputDelegate
@@ -452,15 +434,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     
     // 다시 계산. price 결과 들이 업데이트된다.
     [self.tableView reloadData];
-    
-    // 새로 계산이 되었으면 ...
-    if (price1UnitPrice>0 && price2UnitPrice>0) {
-        
-        // put History -> compose버튼을 누르는 시점으로 바꾸면서, 히스토리에 저장하지 않는다.
-        if (historyUpdate) {
-//            [self putHistory];
-        }
-    }
 }
 
 - (void)putHistory
@@ -515,8 +488,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 	[self.price1 initValues];
 	[self.price2 initValues];
-
-	[self saveDataToUserDefaults];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
     [self.tableView reloadData];
 }
@@ -907,7 +879,9 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 	if (indexPath.section == 0) {
 		A3UnitPriceCompareSliderCell *compareCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceCompareSliderCellID forIndexPath:indexPath];
+		[UIView setAnimationsEnabled:NO];
 		[self configureCompareCell:compareCell];
+		[UIView setAnimationsEnabled:YES];
 
 		cell = compareCell;
 	}
