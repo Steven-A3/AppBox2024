@@ -1396,8 +1396,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
             [self.tableView reloadData];
         }
     }
-
+    
 	[self enableControls:YES];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 
