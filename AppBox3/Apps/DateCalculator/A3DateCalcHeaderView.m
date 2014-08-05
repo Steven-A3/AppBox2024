@@ -594,6 +594,11 @@
         // DurationType durationType = [A3DateCalcStateManager durationType];
         DurationType durationType = [A3DateCalcStateManager currentDurationType];
         NSMutableArray *result = [[NSMutableArray alloc] init];
+        
+        resultDate.year = labs(resultDate.year);
+        resultDate.month = labs(resultDate.month);
+        resultDate.day = labs(resultDate.day);
+        resultDate.week = labs(resultDate.week);
 
         switch (durationType) {
             case DurationType_Year:

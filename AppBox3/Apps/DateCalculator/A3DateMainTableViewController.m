@@ -702,11 +702,7 @@
     }
     else {
         NSDateComponents *resultComp;
-        if ([_fromDate compare:_toDate] == NSOrderedAscending) {
-            resultComp = [A3DateCalcStateManager dateComponentFromDate:_fromDate toDate:_toDate];
-        } else {
-            resultComp = [A3DateCalcStateManager dateComponentFromDate:_toDate toDate:_fromDate];
-        }
+        resultComp = [A3DateCalcStateManager dateComponentFromDate:_fromDate toDate:_toDate];
         
         [self.headerView setCalcType:CALC_TYPE_BETWEEN];
         [self.headerView setFromDate:self.fromDate toDate:self.toDate];
