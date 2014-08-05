@@ -153,10 +153,10 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)cloudStoreDidImport {
-	if ([self firstResponder]) {
-		_cancelInputNewCloudDataReceived = YES;
-		[self.firstResponder resignFirstResponder];
-	}
+    if ([self firstResponder]) {
+        _cancelInputNewCloudDataReceived = YES;
+        return;
+    }
 
 	[self.fmMoveTableView reloadData];
 	[self enableControls:_barButtonEnabled];
