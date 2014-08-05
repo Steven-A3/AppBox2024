@@ -24,6 +24,8 @@
 #import "UnitPriceInfo+extension.h"
 #import "A3UserDefaults.h"
 #import "A3UnitDataManager.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUnitPriceCurrencyCodeChanged";
 
@@ -106,7 +108,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	_price1 = nil;
 	_price2 = nil;
 
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
+	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
 	[self.currencyFormatter setCurrencyCode:currencyCode];
 	[self.currencyFormatter setMaximumFractionDigits:2];
 
@@ -150,7 +152,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 }
 
 - (void)currencyCodeChanged:(NSNotification *)notification {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
+	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
 	[self.currencyFormatter setCurrencyCode:currencyCode];
     [self.currencyFormatter setMaximumFractionDigits:2];
 	[self.tableView reloadData];
@@ -265,7 +267,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 		_price1 = [UnitPriceInfo MR_createEntityInContext:_privateContext];
 		_price1.uniqueID = [[NSUUID UUID] UUIDString];
 		_price1.priceName = @"A";
-		NSDictionary *store = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsPriceA];
+		NSDictionary *store = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsPriceA];
 		if (store) {
 			[_price1 copyValueFrom:store];
 		} else {
@@ -281,7 +283,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 		_price2 = [UnitPriceInfo MR_createEntity];
 		_price2.uniqueID = [[NSUUID UUID] UUIDString];
 		_price2.priceName = @"B";
-		NSDictionary *store = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsPriceB];
+		NSDictionary *store = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsPriceB];
 		if (store) {
 			[_price2 copyValueFrom:store];
 		} else {
@@ -410,8 +412,10 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 }
 
 - (void)saveDataToUserDefaults {
-	[self.unitDataManager saveUnitPriceData:[_price1 dictionaryRepresentation] forKey:A3UnitPriceUserDefaultsPriceA];
-	[self.unitDataManager saveUnitPriceData:[_price2 dictionaryRepresentation] forKey:A3UnitPriceUserDefaultsPriceB];
+	NSDictionary *price1Dictionary = [_price1 dictionaryRepresentation];
+	NSDictionary *price2Dictionary = [_price2 dictionaryRepresentation];
+	[self.unitDataManager saveUnitPriceData:price1Dictionary forKey:A3UnitPriceUserDefaultsPriceA];
+	[self.unitDataManager saveUnitPriceData:price2Dictionary forKey:A3UnitPriceUserDefaultsPriceB];
 }
 
 #pragma mark - UnitPriceInputDelegate
@@ -509,8 +513,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     price1UnitPrice = 0;
     price2UnitPrice = 0;
 
-	[_price1 initValues];
-	[_price2 initValues];
+	[self.price1 initValues];
+	[self.price2 initValues];
 
 	[self saveDataToUserDefaults];
 
@@ -973,7 +977,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 }
 
 - (NSString *)defaultCurrencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
+	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}

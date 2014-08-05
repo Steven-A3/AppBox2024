@@ -21,6 +21,8 @@
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "LadyCalendarPeriod+extension.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -184,7 +186,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 {
 	BOOL canDeleteThisAccount = [self.dataManager numberOfAccount] > 1;
 	if (canDeleteThisAccount) {
-		NSString *currentUserID = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID];
+		NSString *currentUserID = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID];
 		canDeleteThisAccount = ![_accountItem[L_ID_KEY] isEqualToString:currentUserID];
 	}
 
@@ -378,7 +380,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         cell.selected = NO;
         
-        if([[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] isEqualToString:_accountItem[L_ID_KEY]]){
+        if([[[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID] isEqualToString:_accountItem[L_ID_KEY]]){
 			[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"Cannot remove current account.", @"Cannot remove current account.") title:nil];
             return;
         }

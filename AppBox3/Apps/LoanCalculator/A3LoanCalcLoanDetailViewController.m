@@ -24,6 +24,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3AppDelegate+appearance.h"
 #import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate, A3KeyboardDelegate, UITextFieldDelegate>
 {
@@ -84,7 +85,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	self.calcItems = nil;
 
 	NSString *key = _isLoanData_A ? A3LoanCalcUserDefaultsLoanDataKey_A : A3LoanCalcUserDefaultsLoanDataKey_B;
-	NSData *loanData = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+	NSData *loanData = [[A3SyncManager sharedSyncManager] objectForKey:key];
 	if (loanData) {
 		self.loanData = [NSKeyedUnarchiver unarchiveObjectWithData:loanData];
 	}
@@ -356,17 +357,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 {
 	NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:self.loanData];
 	NSString *key = _isLoanData_A ? A3LoanCalcUserDefaultsLoanDataKey_A : A3LoanCalcUserDefaultsLoanDataKey_B;
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LoanCalcUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:myLoanData forKey:key];
-	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:myLoanData forKey:key];
-		[store setObject:updateDate forKey:A3LoanCalcUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:myLoanData forKey:key state:A3KeyValueDBStateModified];
 }
 
 #pragma mark - LoanCalcSelectFrequencyDelegate
@@ -418,7 +410,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 			case A3LC_CalculationItemPrincipal:
 			case A3LC_CalculationItemRepayment:
 			{
-				NSString *customCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
+				NSString *customCurrencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 				if ([customCurrencyCode length]) {
 					[self.numberKeyboardViewController setCurrencyCode:customCurrencyCode];
 				}

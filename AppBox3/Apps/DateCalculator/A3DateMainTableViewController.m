@@ -25,6 +25,7 @@
 #import "NSDate+formatting.h"
 #import "A3SyncManager.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 #define kDefaultBackgroundColor [UIColor lightGrayColor]
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]
@@ -245,27 +246,17 @@
 
 -(void)setIsAddSubMode:(BOOL)isAddSubMode
 {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setBool:isAddSubMode forKey:A3DateCalcDefaultsIsAddSubMode];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-	
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
-		[store setBool:isAddSubMode forKey:A3DateCalcDefaultsIsAddSubMode];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setBool:isAddSubMode forKey:A3DateCalcDefaultsIsAddSubMode state:A3KeyValueDBStateModified];
 }
 
 -(BOOL)isAddSubMode
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:A3DateCalcDefaultsIsAddSubMode];
+    return [[A3SyncManager sharedSyncManager] boolForKey:A3DateCalcDefaultsIsAddSubMode];
 }
 
 -(BOOL)didSelectedAdd
 {
-    BOOL didSelectMinus = [[NSUserDefaults standardUserDefaults] boolForKey:A3DateCalcDefaultsDidSelectMinus];
+    BOOL didSelectMinus = [[A3SyncManager sharedSyncManager] boolForKey:A3DateCalcDefaultsDidSelectMinus];
     return didSelectMinus==YES? NO : YES;
 }
 
@@ -278,17 +269,7 @@
     comp.minute = 0;
     _fromDate = [[A3DateCalcStateManager currentCalendar] dateFromComponents:comp];
 
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
-    [[NSUserDefaults standardUserDefaults] setObject:_fromDate forKey:A3DateCalcDefaultsFromDate];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
-		[store setObject:_fromDate forKey:A3DateCalcDefaultsFromDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:_fromDate forKey:A3DateCalcDefaultsFromDate state:A3KeyValueDBStateModified];
 }
 
 -(void)setToDate:(NSDate *)toDate
@@ -300,50 +281,30 @@
     comp.minute = 0;
     _toDate = [[A3DateCalcStateManager currentCalendar] dateFromComponents:comp];
 
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
-    [[NSUserDefaults standardUserDefaults] setObject:_toDate forKey:A3DateCalcDefaultsToDate];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
-		[store setObject:_toDate forKey:A3DateCalcDefaultsToDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:_toDate forKey:A3DateCalcDefaultsToDate state:A3KeyValueDBStateModified];
 }
 
 -(void)setOffsetDate:(NSDate *)offsetDate
 {
     _offsetDate = [offsetDate copy];
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
-    [[NSUserDefaults standardUserDefaults] setObject:_offsetDate forKey:A3DateCalcDefaultsOffsetDate];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
-		[store setObject:_offsetDate forKey:A3DateCalcDefaultsOffsetDate];
-		[store synchronize];
-	}
+    [[A3SyncManager sharedSyncManager] setObject:_offsetDate forKey:A3DateCalcDefaultsOffsetDate state:A3KeyValueDBStateModified];
 }
 
 - (NSDate *)fromDate
 {
-    _fromDate = [[NSUserDefaults standardUserDefaults] objectForKey:A3DateCalcDefaultsFromDate];
+    _fromDate = [[A3SyncManager sharedSyncManager] objectForKey:A3DateCalcDefaultsFromDate];
     return _fromDate;
 }
 
 - (NSDate *)toDate
 {
-    _toDate = [[NSUserDefaults standardUserDefaults] objectForKey:A3DateCalcDefaultsToDate];
+    _toDate = [[A3SyncManager sharedSyncManager] objectForKey:A3DateCalcDefaultsToDate];
     return _toDate;
 }
 
 - (NSDate *)offsetDate
 {
-    _offsetDate = [[NSUserDefaults standardUserDefaults] objectForKey:A3DateCalcDefaultsOffsetDate];
+    _offsetDate = [[A3SyncManager sharedSyncManager] objectForKey:A3DateCalcDefaultsOffsetDate];
     return _offsetDate;
 }
 
@@ -359,19 +320,9 @@
 
 - (IBAction)addButtonTouchUpAction:(id)sender
 {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3DateCalcDefaultsDidSelectMinus];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[A3SyncManager sharedSyncManager] setBool:NO forKey:A3DateCalcDefaultsDidSelectMinus state:A3KeyValueDBStateModified];
 
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
-		[store setBool:NO forKey:A3DateCalcDefaultsDidSelectMinus];
-		[store synchronize];
-	}
-
-	BOOL isMinusSelected = [[NSUserDefaults standardUserDefaults] boolForKey:A3DateCalcDefaultsDidSelectMinus];
+	BOOL isMinusSelected = NO;
 
     A3DateCalcAddSubCell1 *footerAddSubCell = (A3DateCalcAddSubCell1 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
     footerAddSubCell.addModeButton.selected = isMinusSelected ? NO : YES;
@@ -386,19 +337,9 @@
 
 - (IBAction)subButtonTouchUpAction:(id)sender
 {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3DateCalcDefaultsDidSelectMinus];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[A3SyncManager sharedSyncManager] setBool:YES forKey:A3DateCalcDefaultsDidSelectMinus state:A3KeyValueDBStateModified];
 
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
-		[store setBool:YES forKey:A3DateCalcDefaultsDidSelectMinus];
-		[store synchronize];
-	}
-
-    BOOL isMinusSelected = [[NSUserDefaults standardUserDefaults] boolForKey:A3DateCalcDefaultsDidSelectMinus];
+    BOOL isMinusSelected = YES;
     
     A3DateCalcAddSubCell1 *footerAddSubCell = (A3DateCalcAddSubCell1 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
     footerAddSubCell.addModeButton.selected = isMinusSelected ? NO : YES;
@@ -1271,7 +1212,7 @@
     [footerAddSubCell.addModeButton addTarget:self action:@selector(addButtonTouchUpAction:) forControlEvents:UIControlEventTouchUpInside];
     [footerAddSubCell.subModeButton addTarget:self action:@selector(subButtonTouchUpAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    BOOL isMinusSelected = [[NSUserDefaults standardUserDefaults] boolForKey:A3DateCalcDefaultsDidSelectMinus];
+    BOOL isMinusSelected = [[A3SyncManager sharedSyncManager] boolForKey:A3DateCalcDefaultsDidSelectMinus];
     footerAddSubCell.addModeButton.selected = isMinusSelected ? NO : YES;
     footerAddSubCell.subModeButton.selected = isMinusSelected ? YES : NO;
     

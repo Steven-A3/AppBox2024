@@ -251,27 +251,4 @@
 	return 12;
 }
 
-#pragma mark - UnitConverter
-
-- (void)setUnitConverterSelectedCategoryID:(NSUInteger)categoryIndex
-{
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3UnitConverterUserDefaultsUpdateDate];
-	[self setInteger:categoryIndex forKey:A3UnitConverterDefaultSelectedCategoryID];
-	[self synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:@(categoryIndex) forKey:A3UnitConverterDefaultSelectedCategoryID];
-		[store setObject:updateDate forKey:A3UnitConverterUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
-
-}
-
-- (NSUInteger)unitConverterSelectedCategory
-{
-	return (NSUInteger) [self integerForKey:A3UnitConverterDefaultSelectedCategoryID];
-}
-
 @end

@@ -25,6 +25,8 @@
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3ClockMainViewController.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 NSString *const A3NotificationAppsMainMenuContentsChanged = @"A3NotificationAppsMainMenuContentsChanged";
 NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponder";
@@ -145,7 +147,9 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 #pragma mark - Data Handler
 
 - (NSDictionary *)recentlyUsedMenuItems {
-	return [[NSUserDefaults standardUserDefaults] objectForKey:A3MainMenuUserDefaultsRecentlyUsed];
+	NSDictionary *result = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuUserDefaultsRecentlyUsed];
+	if ([result isEqual:[NSNull null]]) return nil;
+	return result;
 }
 
 - (void)setupData {
@@ -456,9 +460,9 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		if (indexPath.row == 0) {
 			NSMutableDictionary *favoriteDictionary = [[[A3AppDelegate instance] favoriteMenuDictionary] mutableCopy];
 			favoriteDictionary[kA3AppsMenuCollapsed] = @(element.isCollapsed);
-			[[A3AppDelegate instance] storeFavoriteMenuDictionary:favoriteDictionary withDate:[NSDate date]];
+			[[A3AppDelegate instance] storeFavoriteMenuDictionary:favoriteDictionary withDate:[NSDate date] state:A3KeyValueDBStateModified];
 		} else {
-			NSMutableDictionary *recentDictionary = [[[NSUserDefaults standardUserDefaults] objectForKey:A3MainMenuUserDefaultsRecentlyUsed] mutableCopy];
+			NSMutableDictionary *recentDictionary = [[[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuUserDefaultsRecentlyUsed] mutableCopy];
 			recentDictionary[kA3AppsMenuCollapsed] = @(element.isCollapsed);
 			[[A3AppDelegate instance] storeRecentlyUsedMenuDictionary:recentDictionary withDate:[NSDate date]];
 		}
@@ -471,7 +475,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			NSMutableDictionary *expandableMenuDictionary = [allMenus[idx] mutableCopy];
 			expandableMenuDictionary[kA3AppsMenuCollapsed] = @(element.isCollapsed);
 			[allMenus replaceObjectAtIndex:idx withObject:expandableMenuDictionary];
-			[[A3AppDelegate instance] storeAllMenu:allMenus withDate:[NSDate date]];
+			[[A3AppDelegate instance] storeAllMenu:allMenus withDate:[NSDate date] state:A3KeyValueDBStateModified];
 		}
 	}
 }
@@ -480,8 +484,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	if (![element isKindOfClass:[A3TableViewMenuElement class]] || element.doNotKeepAsRecent) {
 		return;
 	}
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	NSMutableDictionary *recentlyUsed = [[userDefaults objectForKey:A3MainMenuUserDefaultsRecentlyUsed] mutableCopy];
+	NSMutableDictionary *recentlyUsed = [[[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuUserDefaultsRecentlyUsed] mutableCopy];
 	if (!recentlyUsed) {
 		recentlyUsed = [NSMutableDictionary new];
 		recentlyUsed[kA3AppsMenuName] = @"Recent";

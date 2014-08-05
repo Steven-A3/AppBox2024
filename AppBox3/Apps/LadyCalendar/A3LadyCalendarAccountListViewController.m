@@ -14,6 +14,7 @@
 #import "A3UserDefaults.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3LadyCalendarAccountListViewController ()
 
@@ -118,7 +119,7 @@
 	[editButton addTarget:self action:@selector(editButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     cell.editingAccessoryView = editButton;
 
-    NSString *defaultID = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID];
+    NSString *defaultID = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID];
     imageView.hidden = ![item[L_ID_KEY] isEqualToString:defaultID];
     
     return cell;
@@ -163,17 +164,7 @@
 	NSDictionary *account = [_itemArray objectAtIndex:indexPath.row];
 	[_dataManager setCurrentAccount:account];
 
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:account[L_ID_KEY] forKey:A3LadyCalendarCurrentAccountID];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:account[L_ID_KEY] forKey:A3LadyCalendarCurrentAccountID];
-		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:account[L_ID_KEY] forKey:A3LadyCalendarCurrentAccountID state:A3KeyValueDBStateModified];
 
 	[self.tableView reloadData];
 }

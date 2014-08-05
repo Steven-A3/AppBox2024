@@ -10,6 +10,7 @@
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
 #import "NSManagedObject+extension.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 
@@ -80,17 +81,8 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	TipCalcRecent *history = [TipCalcRecent MR_findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID inContext:savingContext];
 
-	[[NSUserDefaults standardUserDefaults] setObject:[history currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-        NSDate *updateDate = [NSDate date];
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:[history currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode];
-		[store setObject:updateDate forKey:A3TipCalcUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
-    
+	[[A3SyncManager sharedSyncManager] setObject:[history currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode state:A3KeyValueDBStateModified];
+
     self.currencyFormatter = nil;
 
 	TipCalcRecent *currentData = [self.tipCalcData MR_inContext:savingContext];
@@ -852,7 +844,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 }
 
 - (NSString *)currencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3TipCalcUserDefaultsCurrencyCode];
+	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3TipCalcUserDefaultsCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}

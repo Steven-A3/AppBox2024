@@ -13,6 +13,7 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3SyncManager.h"
 
 @interface A3DaysCounterAddAndEditCalendarViewController ()
 @property (strong, nonatomic) NSArray *colorArray;
@@ -117,7 +118,7 @@
 {
     if (_isEditMode) {
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarType == %@", @(CalendarCellType_User)];
-		if ([[[_sharedManager calendars] filteredArrayUsingPredicate:predicate] count] == 1) {
+		if ([[[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:predicate] count] == 1) {
             return 2;
         }
         
@@ -165,7 +166,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarType == %@", @(CalendarCellType_User)];
-    BOOL hasOneCalendar = [[[_sharedManager calendars] filteredArrayUsingPredicate:predicate] count] == 1;
+    BOOL hasOneCalendar = [[[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:predicate] count] == 1;
 
     if ( section == ((_isEditMode && !hasOneCalendar) ? 2 : 1) ) {
         return 38;
@@ -343,10 +344,13 @@
 		[_calendarItem setObject:NSLocalizedString(@"Untitled", @"Untitled") forKey:CalendarItem_Name];
     }
 
-	NSMutableArray *calendars = [_sharedManager calendars];
+	NSMutableArray *calendars = [A3DaysCounterModelManager calendars];
     if ( !_isEditMode ) {
 		[calendars insertObject:_calendarItem atIndex:0];
 		[_sharedManager saveCalendars:calendars];
+		[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterUserDefaultsCalendars
+													 type:A3DictionaryDBTransactionTypeInsertTop
+												   object:_calendarItem];
     }
     else {
 		NSUInteger idx = [calendars indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
@@ -355,6 +359,9 @@
 		if (![_calendarItem isEqualToDictionary:calendars[idx]]) {
 			calendars[idx] = _calendarItem;
 			[_sharedManager saveCalendars:calendars];
+			[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterUserDefaultsCalendars
+														 type:A3DictionaryDBTransactionTypeUpdate
+													   object:_calendarItem];
 		}
 	}
     

@@ -11,6 +11,7 @@
 #import "NSString+conversion.h"
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import <AVFoundation/AVFoundation.h>
 
 NSString *const W_DoNotShow_KEY				= @"doNotShow";
@@ -165,7 +166,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow {
-	NSArray *object = [[NSUserDefaults standardUserDefaults] objectForKey:A3WalletUserDefaultsCategoryInfo];
+	NSArray *object = [[A3SyncManager sharedSyncManager] objectForKey:A3WalletUserDefaultsCategoryInfo];
 	if (object) {
 		if (hideDoNotShow) {
 			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != YES", W_DoNotShow_KEY];
@@ -189,7 +190,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 			W_SYSTEM_KEY : W_SYSTEM_KEY
 	} atIndex:1];
 
-	[WalletData saveWalletObject:newCategories forKey:A3WalletUserDefaultsCategoryInfo];
+	[[A3SyncManager sharedSyncManager] setSyncObject:newCategories forKey:A3WalletUserDefaultsCategoryInfo state:A3KeyValueDBStateInitialized];
 	return newCategories;
 }
 
@@ -265,21 +266,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	} else {
 		[allCategories addObject:category];
 	}
-	[WalletData saveWalletObject:allCategories forKey:A3WalletUserDefaultsCategoryInfo];
-}
-
-+ (void)saveWalletObject:(id)object forKey:(NSString *)key {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:object forKey:key];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3WalletUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:object forKey:key];
-		[store setObject:updateDate forKey:A3WalletUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setSyncObject:allCategories forKey:A3WalletUserDefaultsCategoryInfo state:A3KeyValueDBStateModified];
 }
 
 + (NSDictionary *)fieldOfFieldItem:(WalletFieldItem *)fieldItem category:(NSDictionary *)category {

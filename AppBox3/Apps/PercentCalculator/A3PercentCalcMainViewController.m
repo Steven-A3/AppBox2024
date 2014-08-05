@@ -17,6 +17,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 
 @interface A3PercentCalcMainViewController () <UITextFieldDelegate, A3PercentCalcHistoryDelegate>
@@ -239,7 +240,7 @@
  * \returns 저장된 데이터가 있는 경우에는 YES, 아니면 NO
  */
 - (BOOL)reloadInputData {
-	NSData *inputData = [[NSUserDefaults standardUserDefaults] objectForKey:A3PercentCalcUserDefaultsSavedInputData];
+	NSData *inputData = [[A3SyncManager sharedSyncManager] objectForKey:A3PercentCalcUserDefaultsSavedInputData];
 	if (inputData) {
 		A3PercentCalcData *savedInputData = [NSKeyedUnarchiver unarchiveObjectWithData:inputData];
 
@@ -348,22 +349,12 @@
     if (self.headerView) {
         self.headerView.calcType = calcType;
     }
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3PercentCalcUserDefaultsUpdateDate];
-    [[NSUserDefaults standardUserDefaults] setObject:@(calcType) forKey:A3PercentCalcUserDefaultsCalculationType];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:@(calcType) forKey:A3PercentCalcUserDefaultsCalculationType];
-		[store setObject:updateDate forKey:A3PercentCalcUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+    [[A3SyncManager sharedSyncManager] setObject:@(calcType) forKey:A3PercentCalcUserDefaultsCalculationType state:A3KeyValueDBStateModified];
 }
 
 -(PercentCalcType)calcType
 {
-    PercentCalcType result = (PercentCalcType) [[NSUserDefaults standardUserDefaults] integerForKey:A3PercentCalcUserDefaultsCalculationType];
+    PercentCalcType result = (PercentCalcType) [[A3SyncManager sharedSyncManager] integerForKey:A3PercentCalcUserDefaultsCalculationType];
     return result;
 }
 
@@ -516,17 +507,7 @@
     }
 
 	id inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData];
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3PercentCalcUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:inputData forKey:A3PercentCalcUserDefaultsSavedInputData];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:inputData forKey:A3PercentCalcUserDefaultsSavedInputData];
-		[store setObject:updateDate forKey:A3PercentCalcUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:inputData forKey:A3PercentCalcUserDefaultsSavedInputData state:A3KeyValueDBStateModified];
 }
 
 #pragma mark - Table view data source

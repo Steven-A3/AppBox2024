@@ -11,6 +11,7 @@
 #import "A3DateMainTableViewController.h"
 #import "A3SyncManager.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @implementation A3DateCalcAddSubCell2
 
@@ -234,9 +235,9 @@
 
 +(NSDateComponents *)dateComponentBySavedText {
     NSDateComponents * date = [NSDateComponents new];
-    NSString *year = [[NSUserDefaults standardUserDefaults] objectForKey:A3DateCalcDefaultsSavedYear];
-    NSString *month = [[NSUserDefaults standardUserDefaults] objectForKey:A3DateCalcDefaultsSavedMonth];
-    NSString *day = [[NSUserDefaults standardUserDefaults] objectForKey:A3DateCalcDefaultsSavedDay];
+    NSString *year = [[A3SyncManager sharedSyncManager] objectForKey:A3DateCalcDefaultsSavedYear];
+    NSString *month = [[A3SyncManager sharedSyncManager] objectForKey:A3DateCalcDefaultsSavedMonth];
+    NSString *day = [[A3SyncManager sharedSyncManager] objectForKey:A3DateCalcDefaultsSavedDay];
     date.year = year.integerValue;
     date.month = month.integerValue;
     date.day = day.integerValue;
@@ -267,17 +268,7 @@
         return;
     }
 
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3DateCalcDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:value forKey:key];
-		[store setObject:updateDate forKey:A3DateCalcDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:value forKey:key state:A3KeyValueDBStateModified];
 }
 
 -(BOOL)hasEqualTextField:(UITextField *)textField {

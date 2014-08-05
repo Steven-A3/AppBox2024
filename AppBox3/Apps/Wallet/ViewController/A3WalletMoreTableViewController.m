@@ -23,6 +23,8 @@
 #import "WalletFavorite.h"
 #import "WalletData.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 
@@ -172,21 +174,12 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
-	NSMutableArray *modifiedArray = [NSMutableArray arrayWithArray:_sections[0]];
-	[modifiedArray addObjectsFromArray:_sections[1]];
-	[WalletData saveWalletObject:modifiedArray forKey:A3WalletUserDefaultsCategoryInfo];
 	[self.mainTabBarController setupTabBar];
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)addCategoryButtonAction {
 	_isAddingCategoryInProgress = YES;
-    
-    // Save List Order
-	NSMutableArray *modifiedArray = [NSMutableArray arrayWithArray:_sections[0]];
-	[modifiedArray addObjectsFromArray:_sections[1]];
-	[WalletData saveWalletObject:modifiedArray forKey:A3WalletUserDefaultsCategoryInfo];
-    
 
 	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
 	A3WalletCategoryEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletCategoryEditViewController"];
@@ -282,6 +275,20 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 	return _sections;
 }
 
+- (void)saveCategories {
+	NSMutableArray *modifiedArray = [NSMutableArray arrayWithArray:_sections[0]];
+	[modifiedArray addObjectsFromArray:_sections[1]];
+	[[A3SyncManager sharedSyncManager] setSyncObject:modifiedArray forKey:A3WalletUserDefaultsCategoryInfo state:A3KeyValueDBStateModified];
+}
+
+- (void)addReorderTransaction {
+	NSMutableArray *newOrder = [NSMutableArray arrayWithArray:[_sections[0] valueForKeyPath:W_ID_KEY]];
+	[newOrder addObjectsFromArray:[_sections[1] valueForKeyPath:W_ID_KEY]];
+	[[A3SyncManager sharedSyncManager] addTransaction:A3WalletUserDefaultsCategoryInfo
+												 type:A3DictionaryDBTransactionTypeReorder
+											   object:newOrder];
+}
+
 - (void)didReceiveCategoryAddedNotification:(NSNotification *)notification
 {
 	_categories = nil;
@@ -369,6 +376,9 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 		id movingObject = section[fromIndexPath.row];
 		[section removeObjectAtIndex:fromIndexPath.row];
 		[section insertObject:movingObject atIndex:toIndexPath.row];
+
+		[self saveCategories];
+		[self addReorderTransaction];
 	} else {
 		NSMutableArray *fromSection = self.sections[fromIndexPath.section];
 		id movingObject = fromSection[fromIndexPath.row];
@@ -402,6 +412,9 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 				[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:movingRow inSection:0] toIndexPath:adjustedIndexPath];
 			}
 			[self.tableView reloadRowsAtIndexPaths:@[adjustedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+			[self saveCategories];
+			[self addReorderTransaction];
 		});
 	}
 }
@@ -422,6 +435,11 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 		[cell setShowCheckMark:![walletCategory[W_DoNotShow_KEY] boolValue]];
 
 		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+		[self saveCategories];
+		[[A3SyncManager sharedSyncManager] addTransaction:A3WalletUserDefaultsCategoryInfo
+													 type:A3DictionaryDBTransactionTypeUpdate
+												   object:walletCategory];
 
 		return;
 	}

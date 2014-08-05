@@ -15,6 +15,7 @@
 #import "UIImage+imageWithColor.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "DaysCounterEvent.h"
+#import "A3SyncManager.h"
 
 @interface A3DaysCounterEditCalendarListViewController ()
 @property (strong, nonatomic) NSMutableArray *calendarArray;
@@ -56,7 +57,7 @@
     [super viewWillAppear:animated];
     self.modalVC = nil;
 
-	self.calendarArray = [_sharedManager calendars];
+	self.calendarArray = [A3DaysCounterModelManager calendars];
     
     [self.tableView reloadData];
     [self.tableView setEditing:YES];
@@ -162,6 +163,12 @@
     [_calendarArray insertObject:item atIndex:toIndexPath.row];
 
     [tableView reloadData];
+
+	[_sharedManager saveCalendars:_calendarArray];
+	NSArray *newOrder = [_calendarArray valueForKeyPath:ID_KEY];
+	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterUserDefaultsCalendars
+												 type:A3DictionaryDBTransactionTypeReorder
+											   object:newOrder];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
@@ -185,16 +192,17 @@
     [_calendarArray replaceObjectAtIndex:indexPath.row withObject:item];
 
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
+	[_sharedManager saveCalendars:_calendarArray];
+	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterUserDefaultsCalendars
+												 type:A3DictionaryDBTransactionTypeUpdate
+											   object:_calendarArray[indexPath.row]];
 }
  
 #pragma mark - action method
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-	if (![_calendarArray isEqualToArray:[_sharedManager calendars]]) {
-		[_sharedManager saveCalendars:_calendarArray];
-	}
-
     if ( IS_IPHONE ) {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
@@ -223,18 +231,20 @@
     if ( indexPath == nil )
         return;
     
-    NSMutableDictionary *item = [_calendarArray objectAtIndex:indexPath.row];
+    NSMutableDictionary *item = [[_calendarArray objectAtIndex:indexPath.row] mutableCopy];
     BOOL checkState = [item[CalendarItem_IsShow] boolValue];
     item[CalendarItem_IsShow] = @(!checkState);
     [_calendarArray replaceObjectAtIndex:indexPath.row withObject:item];
-	[_sharedManager saveCalendars:_calendarArray];
 	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
+	[_sharedManager saveCalendars:_calendarArray];
+	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterUserDefaultsCalendars
+												 type:A3DictionaryDBTransactionTypeUpdate
+											   object:_calendarArray[indexPath.row]];
 }
 
 - (void)addCalendarAction:(id)sender
 {
-    [_sharedManager saveCalendars:_calendarArray];
-    
     A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] init];
     viewCtrl.isEditMode = NO;
     viewCtrl.calendarItem = nil;

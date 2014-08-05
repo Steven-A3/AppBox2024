@@ -8,6 +8,15 @@
 
 #import "A3Utilities.h"
 
+NSString *const ID_KEY = @"uniqueID";
+NSString *const NAME_KEY = @"name";
+
+// A3KeyValueDB Key는 DaysCounter Calendar data, Wallet Category, Unit Data 저장시 Dictionary Key로 사용
+// A3KeyValueDBDataObject가 해당 데이터, 기타는 metadata로 iCloud 상황에서 Sync시 참고하기 위해 사용
+NSString *const A3KeyValueDBDataObject   = @"A3KeyValueDBDataObject";
+NSString *const A3KeyValueDBState		 = @"A3KeyValueDBState";
+NSString *const A3KeyValueDBUpdateDate	 = @"A3KeyValueDBUpdateDate";
+
 NSString *const A3SettingsUserDefaultsThemeColorIndex = @"A3SettingsUserDefaultsThemeColorIndex";
 NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseKoreanCalendarForLunarConversion";
 

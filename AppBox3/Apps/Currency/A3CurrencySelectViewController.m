@@ -12,7 +12,8 @@
 #import "CurrencyRateItem.h"
 #import "A3CurrencyDataManager.h"
 #import "UIViewController+A3Addition.h"
-#import "A3UserDefaults.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCodeSelected";
 
@@ -169,8 +170,8 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 }
 
 - (BOOL)isFavoriteItemForCurrencyItem:(id)object {
-	NSArray *favorites = [[NSUserDefaults standardUserDefaults] objectForKey:A3CurrencyUserDefaultsFavorites];
-	return [favorites containsObject:object];
+	NSArray *favorites = [[A3SyncManager sharedSyncManager] objectForKey:A3CurrencyUserDefaultsFavorites];
+	return [favorites containsObject:@{ID_KEY:object}];
 }
 
 #pragma mark - Table view delegate

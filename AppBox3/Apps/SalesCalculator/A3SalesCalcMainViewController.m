@@ -33,6 +33,7 @@
 #import "UITableView+utility.h"
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 enum A3TableElementCellType {
     A3TableElementCellType_Price = 100,
@@ -255,17 +256,7 @@ enum A3TableElementCellType {
 
 -(void)saveInputTextData:(A3SalesCalcData *)inputTextData {
 	NSData *inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData];
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3SalesCalcUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:inputData forKey:A3SalesCalcUserDefaultsSavedInputDataKey];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:inputData forKey:A3SalesCalcUserDefaultsSavedInputDataKey];
-		[store setObject:updateDate forKey:A3SalesCalcUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:inputData forKey:A3SalesCalcUserDefaultsSavedInputDataKey state:A3KeyValueDBStateModified];
 }
 
 -(void)saveToHistory:(id)sender {
@@ -318,16 +309,8 @@ enum A3TableElementCellType {
     self.preferences.calcData = aData;
     [self saveInputTextData:aData];
     
-	[[NSUserDefaults standardUserDefaults] setObject:aData.currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-        NSDate *updateDate = [NSDate date];
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:aData.currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode];
-		[store setObject:updateDate forKey:A3SalesCalcUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
-    
+	[[A3SyncManager sharedSyncManager] setObject:aData.currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode state:A3KeyValueDBStateModified];
+
 	[self setCurrencyFormatter:nil];
 	self.headerView.currencyFormatter = self.currencyFormatter;
     
@@ -365,7 +348,7 @@ enum A3TableElementCellType {
 - (A3SalesCalcPreferences *)preferences {
 	if (!_preferences) {
 		_preferences = [A3SalesCalcPreferences new];
-        NSData * saveData = [[NSUserDefaults standardUserDefaults] objectForKey:A3SalesCalcUserDefaultsSavedInputDataKey];
+        NSData * saveData = [[A3SyncManager sharedSyncManager] objectForKey:A3SalesCalcUserDefaultsSavedInputDataKey];
         if (saveData) {
             A3SalesCalcData * calcData = (A3SalesCalcData * )[NSKeyedUnarchiver unarchiveObjectWithData:saveData];
             _preferences.calcData = calcData;
@@ -433,7 +416,7 @@ enum A3TableElementCellType {
 }
 
 - (NSString *)defaultCurrencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3SalesCalcUserDefaultsCurrencyCode];
+	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3SalesCalcUserDefaultsCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}
@@ -1233,17 +1216,7 @@ enum A3TableElementCellType {
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3SalesCalcUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode];
-		[store setObject:updateDate forKey:A3SalesCalcUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode state:A3KeyValueDBStateModified];
 
 	[self setCurrencyFormatter:nil];
 	self.headerView.currencyFormatter = self.currencyFormatter;

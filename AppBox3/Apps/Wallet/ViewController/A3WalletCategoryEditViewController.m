@@ -23,6 +23,8 @@
 #import "WalletItem+initialize.h"
 #import "WalletData.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3WalletCategoryEditViewController () <UIActionSheetDelegate, WalletIconSelectDelegate, WalletEditFieldDelegate,  UITextFieldDelegate>
 
@@ -199,9 +201,16 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 	}
 
 	if (_isAddingCategory) {
+		[[A3SyncManager sharedSyncManager] addTransaction:A3WalletUserDefaultsCategoryInfo
+													 type:A3DictionaryDBTransactionTypeInsertBottom
+												   object:_category];
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryAdded object:nil];
 	}
     else {
+		[[A3SyncManager sharedSyncManager] addTransaction:A3WalletUserDefaultsCategoryInfo
+													 type:A3DictionaryDBTransactionTypeUpdate
+												   object:_category];
+
 		[self.navigationController popToRootViewControllerAnimated:NO];
 
 		NSNotification *notification = [[NSNotification alloc] initWithName:A3WalletNotificationCategoryChanged
@@ -668,8 +677,12 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 				[item deleteWalletItem];
 			}
 
+			NSString *deletingID = updatingCategories[idx][W_ID_KEY];
 			[updatingCategories removeObjectAtIndex:idx];
-			[WalletData saveWalletObject:updatingCategories forKey:A3WalletUserDefaultsCategoryInfo];
+			[[A3SyncManager sharedSyncManager] setSyncObject:updatingCategories forKey:A3WalletUserDefaultsCategoryInfo state:A3KeyValueDBStateModified];
+			[[A3SyncManager sharedSyncManager] addTransaction:A3WalletUserDefaultsCategoryInfo
+														 type:A3DictionaryDBTransactionTypeDelete
+													   object:deletingID];
 		}
 
 		[self dismissViewControllerAnimated:YES completion:NULL];
