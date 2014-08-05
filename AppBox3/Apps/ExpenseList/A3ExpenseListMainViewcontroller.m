@@ -1058,6 +1058,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         [aItem MR_deleteEntity];
 		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
+        [self re_sort_DataSourceToSeparateValidAndEmpty];
         [self reloadBudgetDataWithAnimation:YES saveData:NO ];
     }
     else {
@@ -1086,6 +1087,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         }
         
+        [self re_sort_DataSourceToSeparateValidAndEmpty];
         [self reloadBudgetDataWithAnimation:YES saveData:NO ];
     }
 }
@@ -1298,8 +1300,6 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     if (textField == self.firstResponder) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
         [self removeNumberKeyboardNotificationObservers];
-        [self re_sort_DataSourceToSeparateValidAndEmpty];
-        [self.tableView reloadData];
     }
 
     textField.userInteractionEnabled = NO;
@@ -1353,6 +1353,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         if ([self isSameFocusingOnItemRow:item toTextField:textField] || index.row==0) {
             if (textField == [self firstResponder]) {
                 self.firstResponder = nil;
+                [self re_sort_DataSourceToSeparateValidAndEmpty];
+                [self.tableView reloadData];
             }
             return;
         }
@@ -1373,6 +1375,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         aCell.qtyTextField.placeholder = @"";
         if (textField == [self firstResponder]) {
             self.firstResponder = nil;
+            [self re_sort_DataSourceToSeparateValidAndEmpty];
+            [self.tableView reloadData];
         }
 		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         return;
@@ -1380,12 +1384,16 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
     // 예외처리, itemName 편집 종료시, top scroll 적용.
     if (textField == aCell.nameTextField && textField == [self firstResponder]) {
+        [self re_sort_DataSourceToSeparateValidAndEmpty];
+        [self.tableView reloadData];
         [self scrollToTopOfTableView];
         self.firstResponder = nil;
     }
     else {
         if (textField == [self firstResponder]) {
             self.firstResponder = nil;
+            [self re_sort_DataSourceToSeparateValidAndEmpty];
+            [self.tableView reloadData];
         }
     }
 
