@@ -145,7 +145,7 @@
     
 	for (NSInteger idx=0; idx < [array count]; idx++) {
 		LadyCalendarPeriod *period = [array objectAtIndex:idx];
-		LadyCalendarPeriod *nextPeriod = ( idx + 1 < [array count] ? [array objectAtIndex:idx + 1] : nil);
+        LadyCalendarPeriod *prevPeriod = ( idx - 1 > 0 ? [array objectAtIndex:idx - 1] : nil);
 		NSInteger mensPeriod = [A3DateHelper diffDaysFromDate:period.startDate toDate:period.endDate];
 		[periodArray addObject:[NSValue valueWithCGPoint:CGPointMake(idx, mensPeriod)]];
 		_minMenstrualPeriod = ( _minMenstrualPeriod < 0 ? mensPeriod : MIN(_minMenstrualPeriod, mensPeriod) );
@@ -153,11 +153,11 @@
 		[_cycleXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:dateFormat]];
 
 		NSInteger diffDays = 0;
-		if ( nextPeriod == nil ) {
+		if ( prevPeriod == nil ) {
 			diffDays = [period.cycleLength integerValue];
 		}
 		else {
-			diffDays = [A3DateHelper diffDaysFromDate:period.startDate toDate:nextPeriod.startDate];
+			diffDays = [A3DateHelper diffDaysFromDate:prevPeriod.startDate toDate:period.startDate];
 		}
 		[cycleArray addObject:[NSValue valueWithCGPoint:CGPointMake(idx, diffDays)]];
 		_minCycleLength = ( _minCycleLength == 0 ? diffDays : MIN(_minCycleLength,diffDays));
