@@ -1125,7 +1125,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
         }
         else if (actionSheet.tag == 3) {
 
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.item.uniqueID];
 			[self.item MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
+			[WalletFavorite MR_deleteAllMatchingPredicate:predicate inContext:[NSManagedObjectContext MR_rootSavingContext]];
 			[[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
 
             [self dismissViewControllerAnimated:NO completion:NULL];
