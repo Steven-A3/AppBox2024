@@ -22,6 +22,8 @@
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "LadyCalendarPeriod+extension.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 extern NSString *const A3WalletItemFieldNoteCellID;
 
@@ -704,7 +706,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     
 	[_dataManager recalculateDates];
     
-    NSDictionary * settingDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarUserDefaultsSettings];
+    NSDictionary * settingDictionary = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarUserDefaultsSettings];
     if ([[settingDictionary objectForKey:SettingItem_AutoRecord] boolValue]) {
         [_dataManager makePredictedPerioedsBeforeCurrentPeriod];
         [_dataManager recalculateDates];

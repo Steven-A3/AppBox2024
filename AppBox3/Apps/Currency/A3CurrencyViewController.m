@@ -34,6 +34,8 @@
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
 #import "NSMutableArray+MoveObject.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3UnitDataManager.h"
 
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
 NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
@@ -476,7 +478,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyRatesUpdated) name:A3NotificationCurrencyRatesUpdated object:nil];
 
-
 	if (!self.firstResponder && animate) {
 		[self.refreshControl beginRefreshing];
 	}
@@ -599,7 +600,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (NSMutableArray *)favorites {
 	if (!_favorites) {
-		NSArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:A3CurrencyUserDefaultsFavorites];
+		NSArray *array = [[A3SyncManager sharedSyncManager] objectForKey:A3CurrencyUserDefaultsFavorites];
 		_favorites = [array mutableCopy];
 		[self addEqualItem];
 	}
@@ -654,7 +655,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	if ([self.favorites objectAtIndex:indexPath.row] == self.equalItem) {
 		A3CurrencyTVEqualCell *equalCell = [self reusableEqualCellForTableView:tableView];
 		cell = equalCell;
-	} else if ( [ [self.favorites objectAtIndex:indexPath.row] isKindOfClass:[NSString class] ] ) {
+	} else {
 		A3CurrencyTVDataCell *dataCell;
 		dataCell = [tableView dequeueReusableCellWithIdentifier:A3CurrencyDataCellID forIndexPath:indexPath];
 		if (nil == dataCell) {
@@ -677,7 +678,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 	dataCell.valueField.delegate = self;
 
-	NSString *favorite = self.favorites[dataIndex];
+	NSString *favorite = self.favorites[dataIndex][ID_KEY];
 	CurrencyRateItem *favoriteInfo = [[[A3AppDelegate instance] cacheStoreManager] currencyInfoWithCode:favorite];
 
 	[self.textFields setObject:dataCell.valueField forKey:favorite];
@@ -696,8 +697,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	} else {
 		NSString *favoriteZero = nil;
 		for (id object in self.favorites) {
-			if ([object isKindOfClass:[NSString class]]) {
-				favoriteZero = object;
+			if (![object isEqual:self.equalItem]) {
+				favoriteZero = object[ID_KEY];
 				break;
 			}
 		}
@@ -741,7 +742,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 // Override to support conditional rearranging of the table view.
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-	return [[self.favorites objectAtIndex:indexPath.row] isKindOfClass:[NSString class]];
+	return ![[self.favorites objectAtIndex:indexPath.row] isEqual:self.equalItem];
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
@@ -750,7 +751,15 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[_favorites removeObjectAtIndex:fromIndexPath.row];
 	[_favorites insertObject:fromObject atIndex:toIndexPath.row];
 
+	[self addTransactionForReorderAndSave];
+}
+
+- (void)addTransactionForReorderAndSave {
 	[A3CurrencyDataManager saveFavorites:_favorites];
+	NSArray *newOrder = [_favorites valueForKeyPath:ID_KEY];
+	NSMutableArray *filteredArray = [NSMutableArray arrayWithArray:newOrder];
+	[filteredArray removeObject:[NSNull null]];
+	[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyUserDefaultsFavorites type:A3DictionaryDBTransactionTypeReorder object:filteredArray];
 }
 
 #pragma mark -- A3SearchViewDelegate / A3CurrencySelectViewController delegate
@@ -761,17 +770,21 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedCode {
+	NSDictionary *newObject = @{ID_KEY : selectedCode};
 	if (_isAddingCurrency) {
-			[_favorites addObject:selectedCode];
-			[A3CurrencyDataManager saveFavorites:_favorites];
-			NSInteger insertIdx = [self.favorites count] - 1;
-			[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:insertIdx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
-	} else {
-		[_favorites replaceObjectAtIndex:_selectedRow withObject:selectedCode];
-		NSString *favorite = self.favorites[_selectedRow];
+		[_favorites addObject:newObject];
 		[A3CurrencyDataManager saveFavorites:_favorites];
+		[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyUserDefaultsFavorites type:A3DictionaryDBTransactionTypeInsertBottom object:newObject];
 
-		[self replaceTextFieldKeyFrom:favorite to:selectedCode];
+		NSInteger insertIdx = [self.favorites count] - 1;
+		[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:insertIdx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+	} else {
+		NSString *oldObject = self.favorites[_selectedRow];
+		[_favorites replaceObjectAtIndex:_selectedRow withObject:newObject];
+		[A3CurrencyDataManager saveFavorites:_favorites];
+		[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyUserDefaultsFavorites type:A3DictionaryDBTransactionTypeReplace object:@[oldObject, newObject]];
+
+		[self replaceTextFieldKeyFrom:oldObject to:selectedCode];
 		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
 
 		double delayInSeconds = 0.3;
@@ -865,7 +878,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	viewController.delegate = self;
 	viewController.allowChooseFavorite = NO;
 	if (selectedIndex >= 0 && selectedIndex < ([_favorites count] - 1) ) {
-		NSString *selectedItem = _favorites[selectedIndex];
+		NSString *selectedItem = _favorites[selectedIndex][ID_KEY];
 		viewController.placeHolder = selectedItem;
 	}
 	return viewController;
@@ -895,14 +908,12 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 			}
 		}
 
-		if (fromIndexPath.row == 0 || toIndexPath.row == 0) {
-			double delayInSeconds = 0.7;
-			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				[self.tableView reloadData];
-			});
-		}
-		[A3CurrencyDataManager saveFavorites:_favorites];
+		double delayInSeconds = 0.7;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[self.tableView reloadData];
+		});
+		[self addTransactionForReorderAndSave];
 	});
 }
 
@@ -911,7 +922,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     [self dismissMoreMenu];
 
-	NSString *favorite = self.favorites[0];
+	NSString *favorite = self.favorites[0][ID_KEY];
 
 	if (textField == _textFields[favorite]) {
 		self.previousValue = textField.text;
@@ -924,7 +935,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 		A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
 		self.numberKeyboardViewController = keyboardVC;
-		self.numberKeyboardViewController.currencyCode = self.favorites[0];
+		self.numberKeyboardViewController.currencyCode = self.favorites[0][ID_KEY];
 		self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
 		keyboardVC.textInputTarget = textField;
 		keyboardVC.delegate = self;
@@ -986,7 +997,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		textField.text = self.previousValue;
 	} else {
 		double value = [[self.decimalFormatter numberFromString:textField.text] doubleValue];
-		textField.text = [self stringFromNumber:@(value) withCurrencyCode:self.favorites[0] isShare:NO];
+		textField.text = [self stringFromNumber:@(value) withCurrencyCode:self.favorites[0][ID_KEY] isShare:NO];
 		if (![textField.text isEqualToString:self.previousValue]) {
 			valueChanged = YES;
 		}
@@ -1005,7 +1016,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	UITextField *textField = (UITextField *) self.numberKeyboardViewController.textInputTarget;
 	if ([textField isKindOfClass:[UITextField class]]) {
 		textField.text = @"";
-		self.previousValue = [self stringFromNumber:@1 withCurrencyCode:self.favorites[0] isShare:NO];
+		self.previousValue = [self stringFromNumber:@1 withCurrencyCode:self.favorites[0][ID_KEY] isShare:NO];
 	}
 }
 
@@ -1027,7 +1038,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
 	[numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
-	_calculatorTargetTextField.text = [self stringFromNumber:[numberFormatter numberFromString:value] withCurrencyCode:self.favorites[0] isShare:NO];
+	_calculatorTargetTextField.text = [self stringFromNumber:[numberFormatter numberFromString:value] withCurrencyCode:self.favorites[0][ID_KEY] isShare:NO];
 
 	if (![_calculatorTargetTextField.text isEqualToString:self.previousValue]) {
 		valueChanged = YES;
@@ -1041,9 +1052,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 }
 
 - (NSUInteger)indexForCurrencyCode:(NSString *)code {
-	NSUInteger targetIndex = [self.favorites indexOfObjectPassingTest:^BOOL(NSString *object, NSUInteger idx, BOOL *stop) {
-		if ([object isKindOfClass:[NSMutableDictionary class]]) return NO;
-		return ([object isEqualToString:code]);
+	NSUInteger targetIndex = [self.favorites indexOfObjectPassingTest:^BOOL(NSDictionary *object, NSUInteger idx, BOOL *stop) {
+		if ([object isEqual:self.equalItem]) return NO;
+		return ([object[ID_KEY] isEqualToString:code]);
 	}];
 	return targetIndex;
 }
@@ -1051,17 +1062,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 - (void)updateTextFieldsWithSourceTextField:(UITextField *)textField {
 	float fromValue = [textField.text floatValueEx];
 
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3CurrencyUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:@(fromValue) forKey:A3CurrencyUserDefaultsLastInputValue];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:@(fromValue) forKey:A3CurrencyUserDefaultsLastInputValue];
-		[store setObject:updateDate forKey:A3CurrencyUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:@(fromValue) forKey:A3CurrencyUserDefaultsLastInputValue state:A3KeyValueDBStateModified];
 
 	NSInteger fromIndex = 0;
 	FNLOG(@"%@", _textFields);
@@ -1071,10 +1072,13 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		if (targetTextField == textField) {
 			continue;
 		}
-		NSString *sourceCurrency = self.favorites[fromIndex];
-		NSUInteger targetIndex = [_favorites indexOfObject:key];
+		NSString *sourceCurrency = self.favorites[fromIndex][ID_KEY];
+		NSUInteger targetIndex = [_favorites indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+			if ([obj isEqual:self.equalItem]) return NO;
+			return [obj[ID_KEY] isEqualToString:key];
+		}];
 		if (targetIndex != NSNotFound) {
-			NSString *targetCurrency = self.favorites[targetIndex];
+			NSString *targetCurrency = self.favorites[targetIndex][ID_KEY];
 			float rate = [self rateForSource:sourceCurrency target:targetCurrency];
 			targetTextField.text = [self stringFromNumber:@(fromValue * rate) withCurrencyCode:targetCurrency isShare:NO];
 		}
@@ -1085,24 +1089,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	return [[A3AppDelegate instance].cacheStoreManager rateForCurrencyCode:target] / [[A3AppDelegate instance].cacheStoreManager rateForCurrencyCode:source];
 }
 
-#pragma mark --- Drag and Reorder
-
-- (NSInteger)indexOfObject:(NSDictionary *) target {
-	NSInteger idx = 0;
-	NSString *searchTerm = [target valueForKey:@"title"];
-	for (id obj in self.favorites) {
-		if ([obj isKindOfClass:[NSMutableDictionary class]]) {
-			NSDictionary *compareObj = obj;
-			if ([searchTerm isEqualToString:[compareObj valueForKey:@"title"]]) {
-				return idx;
-			}
-		}
-		idx++;
-	}
-	return NSNotFound;
-}
-
 #pragma mark - A3CurrencyMenuDelegate
+
 - (void)menuAdded {
 	[self clearEverything];
 }
@@ -1122,7 +1110,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	}
 
 	[self.favorites exchangeObjectAtIndex:sourceIndexPath.row withObjectAtIndex:targetIndexPath.row];
-	[A3CurrencyDataManager saveFavorites:_favorites];
+
+	[self addTransactionForReorderAndSave];
 
 	[self.tableView reloadRowsAtIndexPaths:@[sourceIndexPath, targetIndexPath] withRowAnimation:UITableViewRowAnimationMiddle];
 
@@ -1142,7 +1131,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	viewController.delegate = self;
 	viewController.initialValue = [self lastInputValue];
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-	NSString *favoriteZero = self.favorites[0], *favorite = self.favorites[indexPath.row == 0 ? 2 : indexPath.row ];
+	NSString *favoriteZero = self.favorites[0][ID_KEY], *favorite = self.favorites[indexPath.row == 0 ? 2 : indexPath.row ][ID_KEY];
 	viewController.sourceCurrencyCode = viewController.originalSourceCode = favoriteZero;
 	viewController.targetCurrencyCode = viewController.originalTargetCode = favorite;
 	[self.navigationController pushViewController:viewController animated:YES];
@@ -1158,8 +1147,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (void)chartViewControllerValueChangedChartViewController:(A3CurrencyChartViewController *)chartViewController valueChanged:(NSNumber *)newValue newCodes:(NSArray *)newCodesArray {
 	if ([newValue doubleValue] != [self.previousValue doubleValue]) {
-		[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:A3CurrencyUserDefaultsLastInputValue];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[[A3SyncManager sharedSyncManager] setObject:newValue forKey:A3CurrencyUserDefaultsLastInputValue state:A3KeyValueDBStateModified];
 		[self putHistoryWithValue:newValue];
 	}
 
@@ -1174,18 +1162,21 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 			![newDestination.currencyCode isEqualToString:chartViewController.originalTargetCode]) {
 		[self replaceTextFieldKeyFrom:chartViewController.originalTargetCode to:newDestination.currencyCode];
 
-		NSUInteger oldDestinationIndex = [self.favorites indexOfObjectPassingTest:^BOOL(NSString *obj, NSUInteger idx, BOOL *stop) {
-			if (![obj isKindOfClass:[NSString class]]) return NO;
-			return [obj isEqualToString:chartViewController.originalTargetCode];
+		NSUInteger oldDestinationIndex = [self.favorites indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+			if ([obj isEqual:self.equalItem]) return NO;
+			return [obj[ID_KEY] isEqualToString:chartViewController.originalTargetCode];
 		}];
 		if (oldDestinationIndex != NSNotFound) {
-			NSUInteger indexOfNewCodeInExistingFavorites = [self.favorites indexOfObjectPassingTest:^BOOL(NSString *obj, NSUInteger idx, BOOL *stop) {
-				if (![obj isKindOfClass:[NSString class]]) return NO;
-				return [obj isEqualToString:newDestination.currencyCode];
+			NSUInteger indexOfNewCodeInExistingFavorites = [self.favorites indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+				if ([obj isEqual:self.equalItem]) return NO;
+				return [obj[ID_KEY] isEqualToString:newDestination.currencyCode];
 			}];
 			if (indexOfNewCodeInExistingFavorites != NSNotFound) {
 				[_favorites removeObjectAtIndex:indexOfNewCodeInExistingFavorites];
 				[A3CurrencyDataManager saveFavorites:_favorites];
+				[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyUserDefaultsFavorites
+															 type:A3DictionaryDBTransactionTypeDelete
+														   object:_favorites[indexOfNewCodeInExistingFavorites][ID_KEY]];
 
 				NSIndexPath *indexPathToDelete = [NSIndexPath indexPathForRow:indexOfNewCodeInExistingFavorites inSection:0];
 				[self.tableView deleteRowsAtIndexPaths:@[indexPathToDelete] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -1219,14 +1210,18 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[swipedCell removeMenuView];
 
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-	NSString *favorite = self.favorites[indexPath.row];
-	if ([favorite isKindOfClass:[NSString class]]) {
-		[self.textFields removeObjectForKey:favorite];
+	NSString *deletingFavoriteID = self.favorites[indexPath.row][ID_KEY];
+
+	if (deletingFavoriteID) {
+		[self.textFields removeObjectForKey:deletingFavoriteID];
 
 		[self.favorites removeObjectAtIndex:indexPath.row];
 
 		[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 		[A3CurrencyDataManager saveFavorites:_favorites];
+		[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyUserDefaultsFavorites
+													 type:A3DictionaryDBTransactionTypeDelete
+												   object:deletingFavoriteID];
 
 		if (indexPath.row == 0) {
 			[_favorites moveObjectFromIndex:1 toIndex:0];
@@ -1325,7 +1320,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 }
 
 - (NSString *)stringForShareOfSource:(NSUInteger)sourceIdx target:(NSUInteger)targetIdx {
-	NSString *source = self.favorites[sourceIdx], *target = self.favorites[targetIdx];
+	NSString *source = self.favorites[sourceIdx][ID_KEY], *target = self.favorites[targetIdx][ID_KEY];
 	float rate = [self rateForSource:source target:target];
 	return [NSString stringWithFormat:@"%@ %@ = %@ %@<br/>",
 			source,
@@ -1337,7 +1332,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 #pragma mark - History
 
 - (NSNumber *)lastInputValue {
-	NSNumber *lastInput = [[NSUserDefaults standardUserDefaults] objectForKey:A3CurrencyUserDefaultsLastInputValue];
+	NSNumber *lastInput = [[A3SyncManager sharedSyncManager] objectForKey:A3CurrencyUserDefaultsLastInputValue];
 	_currentValueIsNotFromUser = lastInput == nil;
 	return lastInput ? lastInput : @1;
 }
@@ -1348,7 +1343,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	}
 	_currentValueIsNotFromUser = NO;
 
-	NSString *baseCurrency = self.favorites[0];
+	NSString *baseCurrency = self.favorites[0][ID_KEY];
 	CurrencyHistory *latestHistory = [CurrencyHistory MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
 
 	// Compare code and value.
@@ -1377,7 +1372,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		item.uniqueID = [[NSUUID UUID] UUIDString];
 		item.updateDate = [NSDate date];
 		item.historyID = history.uniqueID;
-		NSString *favorite = self.favorites[idx + 2];
+		NSString *favorite = self.favorites[idx + 2][ID_KEY];
 		item.currencyCode = favorite;
 		item.rate = @([[A3AppDelegate instance].cacheStoreManager rateForCurrencyCode:favorite]);
 		item.order = [NSString stringWithFormat:@"%010ld", (long)idx];

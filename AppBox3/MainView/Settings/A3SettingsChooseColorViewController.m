@@ -12,6 +12,8 @@
 #import "A3UIDevice.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3SettingsChooseColorViewController ()
 
@@ -32,7 +34,7 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 
 	_colorsArray = [[A3AppDelegate instance] themeColors];
 
-	NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
+	NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 	_selectedColorIndex = selectedColor ? [selectedColor unsignedIntegerValue] : 4;
 
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
@@ -135,8 +137,7 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 	self.selectedMarkView.tintColor = self.colorsArray[_selectedColorIndex];
     self.navigationController.navigationBar.tintColor = self.selectedMarkView.tintColor;
 
-	[[NSUserDefaults standardUserDefaults] setObject:@(_selectedColorIndex) forKey:A3SettingsUserDefaultsThemeColorIndex];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3SyncManager sharedSyncManager] setObject:@(_selectedColorIndex) forKey:A3SettingsUserDefaultsThemeColorIndex state:A3KeyValueDBStateInitialized];
 }
 
 @end

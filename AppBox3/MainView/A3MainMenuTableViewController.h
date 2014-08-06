@@ -12,4 +12,5 @@
 
 @interface A3MainMenuTableViewController : A3TableViewController
 
+- (BOOL)openRecentlyUsedMenu;
 @end

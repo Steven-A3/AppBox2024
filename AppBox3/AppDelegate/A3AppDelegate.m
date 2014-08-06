@@ -32,6 +32,7 @@
 #import "A3SyncManager.h"
 #import "AFHTTPRequestOperation.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -70,6 +71,8 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	CDESetCurrentLoggingLevel(CDELoggingLevelWarning);
 
+	[A3SyncManager sharedSyncManager];
+
 	[[NSUbiquitousKeyValueStore defaultStore] synchronize];
 
 	[self prepareDirectories];
@@ -103,9 +106,10 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 	if (IS_IPAD) {
 		_rootViewController = [[A3RootViewController_iPad alloc] initWithNibName:nil bundle:nil];
 		rootViewController = _rootViewController;
+		_mainMenuViewController = _rootViewController.mainMenuViewController;
 	} else {
-		A3MainMenuTableViewController *leftMenuViewController = [[A3MainMenuTableViewController alloc] init];
-		UINavigationController *menuNavigationController = [[UINavigationController alloc] initWithRootViewController:leftMenuViewController];
+		_mainMenuViewController = [[A3MainMenuTableViewController alloc] init];
+		UINavigationController *menuNavigationController = [[UINavigationController alloc] initWithRootViewController:_mainMenuViewController];
 
 		UIViewController *viewController = [A3MainViewController new];
 		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
@@ -131,14 +135,11 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 		rootViewController = _drawerController;
 	}
 
-	NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyValueStoreDidChangeExternally:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:store];
-
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = rootViewController;
 	self.window.backgroundColor = [UIColor whiteColor];
 
-	NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
+	NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 	if (selectedColor) {
 		self.window.tintColor = self.themeColors[[selectedColor unsignedIntegerValue]];
 	}
@@ -168,8 +169,12 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 	[self applicationDidEnterBackground_passcode];
 
-	UIBackgroundTaskIdentifier identifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
-	dispatch_async(dispatch_get_global_queue(0, 0), ^{
+	__block UIBackgroundTaskIdentifier identifier;
+	identifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+		[[UIApplication sharedApplication] endBackgroundTask:identifier];
+		identifier = UIBackgroundTaskInvalid;
+	}];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_defaultContext];
 		[managedObjectContext performBlock:^{
 			if (managedObjectContext.hasChanges) {
@@ -178,6 +183,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 
 			[[A3SyncManager sharedSyncManager] synchronizeWithCompletion:^(NSError *error) {
 				[[UIApplication sharedApplication] endBackgroundTask:identifier];
+				identifier = UIBackgroundTaskInvalid;
 			}];
 		}];
 	});
@@ -195,8 +201,8 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 	A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
 	[syncManager synchronizeWithCompletion:NULL];
 	if ([syncManager isCloudEnabled]) {
-		[syncManager uploadFilesToCloud];
-		[syncManager downloadFilesFromCloud];
+		[syncManager uploadMediaFilesToCloud];
+		[syncManager downloadMediaFilesFromCloud];
 	}
 
 	UINavigationController *navigationController = [self navigationController];
@@ -674,8 +680,8 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 		sharedSyncManager.storePath = [[self storeURL] path];
 		[sharedSyncManager setupEnsemble];
 		[sharedSyncManager synchronizeWithCompletion:NULL];
-		[sharedSyncManager uploadFilesToCloud];
-		[sharedSyncManager downloadFilesFromCloud];
+		[sharedSyncManager uploadMediaFilesToCloud];
+		[sharedSyncManager downloadMediaFilesFromCloud];
 	}
 }
 

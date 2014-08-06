@@ -14,8 +14,8 @@
 #import "A3UnitDataManager.h"
 #import "A3MoreTableViewCell.h"
 #import "A3UnitConverterTabBarController.h"
-#import "NSUserDefaults+A3Defaults.h"
-#import "A3UserDefaults.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3UnitConverterMoreTableViewController ()
 
@@ -54,7 +54,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 	[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 	self.tableView.showsVerticalScrollIndicator = NO;
 
-    NSInteger unitID = [[NSUserDefaults standardUserDefaults] unitConverterSelectedCategory];
+    NSInteger unitID = [[A3SyncManager sharedSyncManager] integerForKey:A3UnitConverterDefaultSelectedCategoryID];
 	NSInteger vcIdx = [self.categories indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 		return [obj[ID_KEY] unsignedIntegerValue] == unitID;
 	}];

@@ -16,6 +16,7 @@
 #import "A3AppDelegate.h"
 #import "A3SyncManager.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3Calculator ()
 
@@ -261,20 +262,10 @@ typedef CMathParser<char, double> MathParser;
 }
 
 - (void)saveExpression {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3CalculatorUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setValue:mathexpression forKey:A3CalculatorUserDefaultsSavedLastExpression];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setString:mathexpression forKey:A3CalculatorUserDefaultsSavedLastExpression];
-		[store setObject:updateDate forKey:A3CalculatorUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:mathexpression forKey:A3CalculatorUserDefaultsSavedLastExpression state:A3KeyValueDBStateModified];
 }
 
-- (void) eehandler {
+- (void)eehandler {
     if(([self checkIfexpressionisnull])) return;
     
     NSString* lastChar = [mathexpression substringFromIndex:[mathexpression length] -1];
@@ -286,7 +277,7 @@ typedef CMathParser<char, double> MathParser;
     }
 }
 
-- (void) constantHandler:(NSUInteger)key {
+- (void)constantHandler:(NSUInteger)key {
     NSString *constant;
     switch (key) {
         case A3E_PI:
@@ -322,14 +313,14 @@ typedef CMathParser<char, double> MathParser;
     [self evaluateAndSet];
 }
 
-- (void) doubleargHandler:(NSUInteger) key {
+- (void)doubleargHandler:(NSUInteger) key {
     
     [self changethelastnumberwithoperator:key];
     [self evaluateAndSet];
     return;
 }
 
-- (NSUInteger) getNumberLengthFromMathExpression:(NSString *)mExpression with:(NSUInteger)index {
+- (NSUInteger)getNumberLengthFromMathExpression:(NSString *)mExpression with:(NSUInteger)index {
     NSUInteger numberLength = 0, numParenthesis = 0;
     NSRange range;
     NSUInteger length = [mExpression length];
@@ -359,22 +350,22 @@ typedef CMathParser<char, double> MathParser;
     return numberLength;
 }
 
-- (void) convertMathExpressionToAttributedString {
+- (void)convertMathExpressionToAttributedString {
     _expressionLabel.attributedText = [self getExpressionWith:mathexpression isDefault:YES];
 }
 
-- (void) setMathExpression:(NSString *) mathExpr {
+- (void)setMathExpression:(NSString *) mathExpr {
     mathexpression = mathExpr;
     _expressionLabel.attributedText = [self getExpressionWith:mathexpression isDefault:YES];
     [self evaluateAndSet];
 }
 
-- (NSAttributedString *) getExpressionWith:(NSString *) mExpression {
+- (NSAttributedString *)getExpressionWith:(NSString *) mExpression {
     return [self getExpressionWith:mExpression isDefault:NO];
 }
 
 
-- (NSAttributedString *) getExpressionWith:(NSString *) mExpression isDefault:(BOOL)bDefault{
+- (NSAttributedString *)getExpressionWith:(NSString *) mExpression isDefault:(BOOL)bDefault{
 //    FNLOG(@"mExpression = %@",mExpression);
     //NSAttributedString *temp = [[NSAttributedString alloc] initWithAttributedString:[calutil invisibleString]];
     NSAttributedString *temp = [NSAttributedString new];

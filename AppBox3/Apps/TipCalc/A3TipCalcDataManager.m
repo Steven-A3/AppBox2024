@@ -10,6 +10,7 @@
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
 #import "NSManagedObject+extension.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 
@@ -80,17 +81,8 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	TipCalcRecent *history = [TipCalcRecent MR_findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID inContext:savingContext];
 
-	[[NSUserDefaults standardUserDefaults] setObject:[history currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-        NSDate *updateDate = [NSDate date];
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:[history currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode];
-		[store setObject:updateDate forKey:A3TipCalcUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
-    
+	[[A3SyncManager sharedSyncManager] setObject:[history currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode state:A3KeyValueDBStateModified];
+
     self.currencyFormatter = nil;
 
 	TipCalcRecent *currentData = [self.tipCalcData MR_inContext:savingContext];
@@ -167,7 +159,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 		[mstrOutput appendString:NSLocalizedString(@"Total Per Person", @"Total Per Person")];
 		[mstrOutput appendFormat:@" : %@<br>", [self currencyStringFromDouble:[[self totalPerPersonWithTax] doubleValue]]];
 		[mstrOutput appendString:NSLocalizedString(@"Tip Per Person", @"Tip Per Person")];
-		[mstrOutput appendFormat:@" : %@<br>", [self currencyStringFromDouble:[[self tipValueWithSplitWithRounding:self.roundingMethodValue == TCRoundingMethodValue_Tip ? YES : NO] doubleValue]]];
+        [mstrOutput appendFormat:@" : %@<br>", [self currencyStringFromDouble:[[self tipValueWithSplitWithRounding:YES] doubleValue]]];
     }
     
     if (!isMail) {
@@ -596,7 +588,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
     
     // percentType
     double resultTipValue = [[self costBeforeTax] doubleValue] * [tipValue doubleValue] / 100.0;
-    if ([self tipSplitOption] == TipSplitOption_BeforeSplit && [self isRoundingOptionSwitchOn]) {
+    if ([self isRoundingOptionSwitchOn]) {
         switch (self.roundingMethodValue) {
             case TCRoundingMethodValue_Tip:
                 resultTipValue = [[self numberByRoundingMethodForValue:@(resultTipValue)] doubleValue];
@@ -630,11 +622,6 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
                 break;
         }
     }
-    else {
-        if (self.roundingMethodValue == TCRoundingMethodValue_TipPerPerson && [self isRoundingOptionSwitchOn] && rounding) {
-            resultTipValue = [[self numberByRoundingMethodForValue:@(resultTipValue)] doubleValue];
-        }
-    }
     
     return @(resultTipValue);
 }
@@ -649,91 +636,76 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
     // valueType
     if (![self.tipCalcData.isPercentTip boolValue]) {
         tipValue = @([tipValue doubleValue]);
-        
-        if ([self tipSplitOption] == TipSplitOption_BeforeSplit) {
-            if (rounding) {
-                if (self.roundingMethodValue == TCRoundingMethodValue_Tip && [self isRoundingOptionSwitchOn]) {
-                    tipValue = [self numberByRoundingMethodForValue:tipValue];
-                }
-            }
-        }
-        else {
-            if (rounding && [self isRoundingOptionSwitchOn]) {
-                switch (self.roundingMethodValue) {
-                    case TCRoundingMethodValue_TipPerPerson:
-                        tipValue = @([tipValue doubleValue] / [self.tipCalcData.split doubleValue]);
-                        tipValue = [self numberByRoundingMethodForValue:tipValue];
-                        break;
-                        
-                    case TCRoundingMethodValue_Tip:
-                        tipValue = [self numberByRoundingMethodForValue:tipValue];
-                        tipValue = @([tipValue doubleValue] / [self.tipCalcData.split doubleValue]);
-                        break;
-                        
-                    case TCRoundingMethodValue_Total:
-                    case TCRoundingMethodValue_TotalPerPerson:
-                    {
-                        tipValue = @([tipValue doubleValue] / [self.tipCalcData.split doubleValue]);
-                        double totalBeforeRounding = [self.subtotalWithSplit doubleValue] + [tipValue doubleValue];
-                        double totalAfterRounding = [self.totalPerPersonWithTax doubleValue];
-                        tipValue = @([tipValue doubleValue] + (totalAfterRounding - totalBeforeRounding));
-                    }
-                        break;
-                        
-                    default:
-                        break;
-                }
-            }
-            else {
-                tipValue = @([tipValue doubleValue] / [self.tipCalcData.split doubleValue]);
-            }
-        }
-        
-        return tipValue;
-    }
-    
-    // percentType
-    double resultTipValue = [[self costBeforeTax] doubleValue] * [tipValue doubleValue] / 100.0;
-    
-    if ([self tipSplitOption] == TipSplitOption_BeforeSplit) {
-        if (rounding) {
-            if (self.roundingMethodValue == TCRoundingMethodValue_Tip && [self isRoundingOptionSwitchOn]) {
-                resultTipValue = [[self numberByRoundingMethodForValue:@(resultTipValue)] doubleValue];
-            }
-        }
-    }
-    else {
+
         if (rounding && [self isRoundingOptionSwitchOn]) {
             switch (self.roundingMethodValue) {
                 case TCRoundingMethodValue_TipPerPerson:
-                    resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
-                    resultTipValue = [[self numberByRoundingMethodForValue:@(resultTipValue)] doubleValue];
+                    tipValue = @([tipValue doubleValue] / [self.tipCalcData.split doubleValue]);
+                    tipValue = [self numberByRoundingMethodForValue:tipValue];
                     break;
                     
                 case TCRoundingMethodValue_Tip:
-                    resultTipValue = [[self numberByRoundingMethodForValue:@(resultTipValue)] doubleValue];
-                    resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
+                    tipValue = [self numberByRoundingMethodForValue:tipValue];
+                    tipValue = @([tipValue doubleValue] / [self.tipCalcData.split doubleValue]);
                     break;
                     
                 case TCRoundingMethodValue_Total:
                 case TCRoundingMethodValue_TotalPerPerson:
                 {
-                    resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
-                    double totalBeforeRounding = [self.subtotalWithSplit doubleValue] + resultTipValue;
+                    tipValue = @([tipValue doubleValue] / [self.tipCalcData.split doubleValue]);
+                    double totalBeforeRounding = [self.subtotalWithSplit doubleValue] + [tipValue doubleValue];
                     double totalAfterRounding = [self.totalPerPersonWithTax doubleValue];
-                    resultTipValue += totalAfterRounding - totalBeforeRounding;
+                    tipValue = @([tipValue doubleValue] + (totalAfterRounding - totalBeforeRounding));
                 }
                     break;
                     
                 default:
-                    resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
                     break;
             }
         }
         else {
-            resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
+            tipValue = @([tipValue doubleValue] / [self.tipCalcData.split doubleValue]);
+        }
+        
+        return tipValue;
+    }
+    
+    
+    
+    // percentType
+    double resultTipValue = [[self costBeforeTax] doubleValue] * [tipValue doubleValue] / 100.0;
+    
+    if (rounding && [self isRoundingOptionSwitchOn]) {
+        switch (self.roundingMethodValue) {
+            case TCRoundingMethodValue_TipPerPerson:
+                resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
+                resultTipValue = [[self numberByRoundingMethodForValue:@(resultTipValue)] doubleValue];
+                break;
+                
+            case TCRoundingMethodValue_Tip:
+                resultTipValue = [[self numberByRoundingMethodForValue:@(resultTipValue)] doubleValue];
+                resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
+                break;
+                
+            case TCRoundingMethodValue_Total:
+            case TCRoundingMethodValue_TotalPerPerson:
+            {
+                resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
+                double totalBeforeRounding = [self.subtotalWithSplit doubleValue] + resultTipValue;
+                double totalAfterRounding = [self.totalPerPersonWithTax doubleValue];
+                resultTipValue += totalAfterRounding - totalBeforeRounding;
+            }
+                break;
+                
+            default:
+                resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
+                break;
         }
     }
+    else {
+        resultTipValue = resultTipValue / [self.tipCalcData.split doubleValue];
+    }
+
     
     return @(resultTipValue);
 }
@@ -867,7 +839,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 }
 
 - (NSString *)currencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3TipCalcUserDefaultsCurrencyCode];
+	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3TipCalcUserDefaultsCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}

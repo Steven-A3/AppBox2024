@@ -14,6 +14,8 @@
 #import "A3UserDefaults.h"
 #import "DaysCounterEvent.h"
 #import "MPFoldTransition.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3DaysCounterSlideshowViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -53,7 +55,7 @@
     currentIndex = 0;
     
     if ( self.optionDict == nil )
-        self.optionDict = [[NSUserDefaults standardUserDefaults] objectForKey:A3DaysCounterUserDefaultsSlideShowOptions];
+        self.optionDict = [[A3SyncManager sharedSyncManager] objectForKey:A3DaysCounterUserDefaultsSlideShowOptions];
     self.itemArray = [_sharedManager allEventsListContainedImage];
     
     if ( [[_optionDict objectForKey:OptionKey_Shuffle] boolValue] ) {

@@ -9,6 +9,7 @@
 #import "HTCopyableLabel.h"
 #import "A3CalculatorViewController.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @implementation A3CalculatorViewController
 
@@ -31,12 +32,11 @@
 }
 
 - (void)setRadian:(BOOL)radian {
-	[[NSUserDefaults standardUserDefaults] setBool:radian forKey:A3CalculatorUserDefaultsRadianDegreeState];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3SyncManager sharedSyncManager] setBool:radian forKey:A3CalculatorUserDefaultsRadianDegreeState state:A3KeyValueDBStateModified];
 }
 
 - (BOOL)radian {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:A3CalculatorUserDefaultsRadianDegreeState];
+    return [[A3SyncManager sharedSyncManager] boolForKey:A3CalculatorUserDefaultsRadianDegreeState];
 }
 
 @end

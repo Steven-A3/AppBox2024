@@ -32,11 +32,9 @@
 - (void)layoutSubviews {
 	[super layoutSubviews];
 
-	FNLOGRECT(self.textLabel.frame);
 	CGRect frame = self.textLabel.frame;
 	frame.origin.x = 15;
 	self.textLabel.frame = frame;
-	FNLOG(@"%f", self.separatorInset.left);
 	self.separatorInset = UIEdgeInsetsMake(0, 54, 0, 0);
 }
 

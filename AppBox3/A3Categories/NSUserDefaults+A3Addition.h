@@ -10,12 +10,6 @@
 
 @interface NSUserDefaults (A3Addition)
 
-- (NSString *)stringForSyncMethod;
 - (NSString *)stringForRecentToKeep;
 
-- (BOOL)useKoreanLunarCalendarForConversion;
-
-- (void)setDateComponents:(NSDateComponents *)dateComponents forKey:(NSString *)key;
-
-- (NSDateComponents *)dateComponentsForKey:(NSString *)key;
 @end

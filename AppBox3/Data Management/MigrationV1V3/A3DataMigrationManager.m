@@ -27,6 +27,8 @@
 #import "NSString+conversion.h"
 #import "LadyCalendarPeriod+extension.h"
 #import "WalletFieldItem+initialize.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 NSString *const A3NotificationDataMigrationFinished = @"A3NotificationDataMigrationFinished";
 
@@ -165,7 +167,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 	A3DaysCounterModelManager *modelManager = [A3DaysCounterModelManager new];
 	[modelManager prepareInContext:context];
 
-	NSDictionary *daysCounterCalendar = [modelManager calendars][0];
+	NSDictionary *daysCounterCalendar = [A3DaysCounterModelManager calendars][0];
 	NSFileManager *fileManager = [NSFileManager new];
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
 	for (NSDictionary *v1Item in V1DataArray) {
@@ -258,7 +260,7 @@ NSString *const kMyGirlsDayHistoryTypeInput				= @"input";
 	A3LadyCalendarModelManager *dataManager = [A3LadyCalendarModelManager new];
 	[dataManager prepareAccount];
 
-	NSString *accountID = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID];
+	NSString *accountID = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID];
 
 	for (NSArray *item in history) {
 		if ([item[0] isEqualToString:kMyGirlsDayHistoryTypeInput]) {
@@ -567,8 +569,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 			W_SYSTEM_KEY : W_SYSTEM_KEY
 	} atIndex:1];
 
-	[[NSUserDefaults standardUserDefaults] setObject:V3CategoryInfo forKey:A3WalletUserDefaultsCategoryInfo];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3SyncManager sharedSyncManager] setSyncObject:V3CategoryInfo forKey:A3WalletUserDefaultsCategoryInfo state:A3KeyValueDBStateModified];
 
 	return YES;
 }

@@ -1379,15 +1379,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	FNLOG();
-    if (self.firstResponder) {
-        [self.firstResponder resignFirstResponder];
-    }
-
 	_currentIndexPath = indexPath;
 
 	if (indexPath.section == 0) {
 	    if ([self.sectionItems objectAtIndex:indexPath.row] == self.categoryItem) {
+			[self.firstResponder resignFirstResponder];
             // category
             A3WalletCategorySelectViewController *viewController = [[A3WalletCategorySelectViewController alloc] initWithStyle:UITableViewStyleGrouped];
             viewController.selectedCategory = self.category;
@@ -1402,6 +1398,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
             }
         }
 		else if ([self.sectionItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
+			[self.firstResponder resignFirstResponder];
 			WalletFieldItem *fieldItem = _sectionItems[indexPath.row];
 			if ([fieldItem.hasImage boolValue]) {
 				[self askDeleteImage];
@@ -1409,11 +1406,19 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 				[self askDeleteVideo];
 			}
 		}
+		else if ([self.sectionItems objectAtIndex:indexPath.row] == self.noteItem) {
+			A3WalletNoteCell *cell = (A3WalletNoteCell *) [self.tableView cellForRowAtIndexPath:indexPath];
+			if (self.firstResponder != cell.textView) {
+				[self.firstResponder resignFirstResponder];
+				[cell.textView becomeFirstResponder];
+			}
+		}
         else if ([self.sectionItems objectAtIndex:indexPath.row] != self.titleItem) {
 			NSDictionary *field = [_sectionItems objectAtIndex:indexPath.row];
 			_currentFieldItem = [self fieldItemForIndexPath:indexPath create:YES];
 
 			if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeDate]) {
+				[self.firstResponder resignFirstResponder];
 				if ([_sectionItems containsObject:self.dateInputItem]) {
 					if ([indexPath compare:self.dateInputIndexPath] == NSOrderedSame) {
 						// 현재 셀에 연결된 입력 picker
@@ -1431,6 +1436,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                 }
             }
             else if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage]) {
+				[self.firstResponder resignFirstResponder];
+
                 if ([_sectionItems containsObject:self.dateInputItem]) {
                     if (self.dateInputIndexPath.row < self.currentIndexPath.row) {
                         [self dismissDatePicker];
@@ -1449,17 +1456,23 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 				[actionSheet showInView:self.view];
             }
             else if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo]) {
+				[self.firstResponder resignFirstResponder];
 				[self dismissDatePicker];
 
 				[self askVideoPickupWithDelete:[_currentFieldItem.hasVideo boolValue]];
             }
             else {
                 A3WalletItemFieldCell *inputCell = (A3WalletItemFieldCell *)[tableView cellForRowAtIndexPath:indexPath];
-                [inputCell.valueTextField becomeFirstResponder];
+				if (self.firstResponder != inputCell.valueTextField) {
+					[self.firstResponder resignFirstResponder];
+					[inputCell.valueTextField becomeFirstResponder];
+				}
             }
         }
     }
     else {
+		[self.firstResponder resignFirstResponder];
+
         // delete category
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                  delegate:self

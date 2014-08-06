@@ -14,6 +14,8 @@
 #import "UIViewController+A3Addition.h"
 #import "A3DataMigrationManager.h"
 #import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3MainMenuTableViewController.h"
 
 NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 
@@ -69,18 +71,12 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 
 	if ([self isMovingToParentViewController]) {
 		if (!_showAsWhatsNew && [[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
-			A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
-			[self.navigationController pushViewController:clockVC animated:NO];
 
-//			if (IS_IPHONE && IS_PORTRAIT) {
-//				double delayInSeconds = 0.5;
-//				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-//				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//					[[UIApplication sharedApplication] setStatusBarHidden:NO];
-//					[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-//					[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-//				});
-//			}
+			if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu]) {
+				A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
+				[self.navigationController pushViewController:clockVC animated:NO];
+			}
+
 			[[A3AppDelegate instance] showLockScreen];
 		}
 		else

@@ -29,6 +29,7 @@
 #import "A3UserDefaults.h"
 #import "A3SyncManager.h"
 #import "NSUserDefaults+A3Defaults.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
@@ -153,13 +154,13 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)cloudStoreDidImport {
-	if ([self firstResponder]) {
-		_cancelInputNewCloudDataReceived = YES;
-		[self.firstResponder resignFirstResponder];
-	}
-
-	[self.fmMoveTableView reloadData];
-	[self enableControls:_barButtonEnabled];
+    if ([self firstResponder]) {
+        _cancelInputNewCloudDataReceived = YES;
+        return;
+    }
+    
+    [self.fmMoveTableView reloadData];
+    [self enableControls:_barButtonEnabled];
 }
 
 - (void)removeObserver {
@@ -263,7 +264,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
     [_fmMoveTableView reloadData];
 
-	[[NSUserDefaults standardUserDefaults] setUnitConverterSelectedCategoryID:_categoryID];
+	[[A3SyncManager sharedSyncManager] setInteger:_categoryID forKey:A3UnitConverterDefaultSelectedCategoryID state:A3KeyValueDBStateModified];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -431,21 +432,11 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)setUnitValue:(NSNumber *)unitValue {
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3UnitConverterUserDefaultsUpdateDate];
-    [[NSUserDefaults standardUserDefaults] setObject:unitValue forKey:A3UnitConverterTableViewUnitValueKey];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:unitValue forKey:A3UnitConverterTableViewUnitValueKey];
-		[store setObject:updateDate forKey:A3UnitConverterUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+    [[A3SyncManager sharedSyncManager] setObject:unitValue forKey:A3UnitConverterTableViewUnitValueKey state:A3KeyValueDBStateModified];
 }
 
 - (NSNumber *)unitValue {
-    NSNumber *_unitValue = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitConverterTableViewUnitValueKey];
+    NSNumber *_unitValue = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitConverterTableViewUnitValueKey];
     
     if (!_unitValue) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", @(_categoryID)];

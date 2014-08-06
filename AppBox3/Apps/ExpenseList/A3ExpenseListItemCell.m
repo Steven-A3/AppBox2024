@@ -14,6 +14,8 @@
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 #import "A3ExpenseListMainViewcontroller.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 
 @interface A3ExpenseListItemCell() <UITextFieldDelegate, A3KeyboardDelegate, A3ExpenseListAccessoryDelegate>
@@ -278,7 +280,7 @@
 }
 
 - (NSString *)defaultCurrencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
+	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
 	if (!currencyCode) {
 		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}

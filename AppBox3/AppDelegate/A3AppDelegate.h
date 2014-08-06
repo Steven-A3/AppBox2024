@@ -16,6 +16,7 @@
 @protocol A3PasscodeViewControllerProtocol;
 @class Reachability;
 @class A3DataMigrationManager;
+@class A3MainMenuTableViewController;
 
 extern NSString *const kA3ApplicationLastRunVersion;
 extern NSString *const kA3AppsMenuName;
@@ -55,22 +56,17 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 - (NSUInteger)a3SupportedInterfaceOrientations;
 @end
 
-@interface A3AppDelegate : UIResponder <UIApplicationDelegate> {
-	UIAlertView *_cloudContentCorruptedAlert;
-	UIAlertView *_cloudContentHealingAlert;
-	UIAlertView *_handleCloudContentWarningAlert;
-	UIAlertView *_handleLocalStoreAlert;
-}
+@interface A3AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MMDrawerController *drawerController;
 @property (strong, nonatomic) A3RootViewController_iPad *rootViewController;
 @property (strong, nonatomic) UIViewController *rootViewController_iPhone;
+@property (strong, nonatomic) A3MainMenuTableViewController *mainMenuViewController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSDate *wakeUpTime;
 @property (strong, nonatomic) MBProgressHUD *hud;
 @property (strong, nonatomic) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
-@property (assign, nonatomic) BOOL coreDataReadyToUse;
 @property (strong, nonatomic) Reachability *reachability;
 @property (strong, nonatomic) NSCalendar *calendar;
 @property (strong, nonatomic) A3CacheStoreManager *cacheStoreManager;
@@ -96,5 +92,4 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 #import "A3AppDelegate+iCloud.h"
 #import "A3AppDelegate+passcode.h"
 #import "A3AppDelegate+appearance.h"
-#import "A3AppDelegate+keyValueStore.h"
 #import "A3AppDelegate+mainMenu.h"

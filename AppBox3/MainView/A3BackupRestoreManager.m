@@ -18,6 +18,7 @@
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "A3SyncManager.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -146,12 +147,10 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			A3MainMenuUserDefaultsRecentlyUsed,
 			A3MainMenuUserDefaultsAllMenu,
 			A3MainMenuUserDefaultsMaxRecentlyUsed,
-			A3MainMenuUserDefaultsUpdateDate,
 
 			A3LoanCalcUserDefaultShowDownPayment,
 			A3LoanCalcUserDefaultShowExtraPayment,
 			A3LoanCalcUserDefaultShowAdvanced,
-			A3LoanCalcUserDefaultsUpdateDate,
 			A3LoanCalcUserDefaultsLoanDataKey,
 			A3LoanCalcUserDefaultsLoanDataKey_A,
 			A3LoanCalcUserDefaultsLoanDataKey_B,
@@ -160,25 +159,21 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			A3ExpenseListUserDefaultsCurrencyCode,
 			A3ExpenseListIsAddBudgetCanceledByUser,
 			A3ExpenseListIsAddBudgetInitiatedOnce,
-			A3ExpenseListUserDefaultsUpdateDate,
 
 			A3CurrencyUserDefaultsAutoUpdate,
 			A3CurrencyUserDefaultsUseCellularData,
 			A3CurrencyUserDefaultsShowNationalFlag,
 			A3CurrencyUserDefaultsLastInputValue,
-			A3CurrencyUserDefaultsUpdateDate,
 			A3CurrencyUserDefaultsFavorites,
 
 			A3LunarConverterLastInputDateComponents,
 			A3LunarConverterLastInputDateIsLunar,
-			A3LunarConverterUserDefaultsUpdateDate,
 
 			A3BatteryChosenThemeIndex,
 			A3BatteryChosenTheme,
 			A3BatteryAdjustedIndex,
 			A3BatteryShowIndex,
 
-			A3CalculatorUserDefaultsUpdateDate,
 			A3CalculatorUserDefaultsSavedLastExpression,
 			A3CalculatorUserDefaultsRadianDegreeState,
 			A3CalculatorUserDefaultsCalculatorMode,
@@ -202,7 +197,6 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			A3ClockLEDColorIndex,
 			A3ClockUserDefaultsCurrentPage,
 
-			A3DateCalcDefaultsUpdateDate,
 			A3DateCalcDefaultsIsAddSubMode,
 			A3DateCalcDefaultsFromDate,
 			A3DateCalcDefaultsToDate,
@@ -215,39 +209,30 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			A3DateCalcDefaultsExcludeOptions,
 
 			A3DaysCounterUserDefaultsSlideShowOptions,
-			A3DaysCounterUserDefaultsUpdateDate,
 			A3DaysCounterLastOpenedMainIndex,
 			A3DaysCounterUserDefaultsCalendars,
 
 			A3LadyCalendarCurrentAccountID,
 			A3LadyCalendarUserDefaultsSettings,
 			A3LadyCalendarLastViewMonth,
-			A3LadyCalendarUserDefaultsUpdateDate,
 			A3LadyCalendarUserDefaultsAccounts,
 
 			A3PercentCalcUserDefaultsCalculationType,
 			A3PercentCalcUserDefaultsSavedInputData,
-			A3PercentCalcUserDefaultsUpdateDate,
 
 			A3SalesCalcUserDefaultsSavedInputDataKey,
 			A3SalesCalcUserDefaultsCurrencyCode,
-			A3SalesCalcUserDefaultsUpdateDate,
 
 			A3TipCalcUserDefaultsCurrencyCode,
-			A3TipCalcUserDefaultsUpdateDate,
 
 			A3UnitConverterDefaultSelectedCategoryID,
 			A3UnitConverterTableViewUnitValueKey,
-			A3UnitConverterUserDefaultsUpdateDate,
 			A3UnitConverterUserDefaultsUnitCategories,
 			A3UnitConverterUserDefaultsConvertItems,
 			A3UnitConverterUserDefaultsFavorites,
 
 			A3UnitPriceUserDefaultsCurrencyCode,
-			A3UnitPriceUserDefaultsUpdateDate,
 			A3UnitPriceUserDefaultsUnitPriceFavorites,
-			A3UnitPriceUserDefaultsPriceA,
-			A3UnitPriceUserDefaultsPriceB,
 
 			kHolidayCountriesForCurrentDevice,
 			kHolidayCountryExcludedHolidays,
@@ -255,7 +240,6 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 			A3WalletUserDefaultsSelectedTab,
 			A3WalletUserDefaultsCategoryInfo,
-			A3WalletUserDefaultsUpdateDate,
 	];
 }
 
@@ -440,7 +424,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		[standardUserDefaults removeObjectForKey:A3SyncManagerCloudEnabled];
 		[standardUserDefaults synchronize];
 
-		NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
+		NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 		if (selectedColor) {
 			[A3AppDelegate instance].window.tintColor = [[A3AppDelegate instance] themeColor];
 		}

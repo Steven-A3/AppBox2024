@@ -18,7 +18,6 @@
 
 @interface A3RootViewController_iPad ()
 
-@property (nonatomic, strong)	A3MainMenuTableViewController *leftMenuViewController;
 @property (nonatomic, strong)	UIView *centerCoverView;
 
 @end
@@ -45,14 +44,20 @@
 	[self addChildViewController:_centerNavigationController];
 	[self.view addSubview:_centerNavigationController.view];
 
-	_leftMenuViewController = [[A3MainMenuTableViewController alloc] init];
-	_leftNavigationController = [[A3NavigationController alloc] initWithRootViewController:_leftMenuViewController];
+	_leftNavigationController = [[A3NavigationController alloc] initWithRootViewController:self.mainMenuViewController];
 	[self addChildViewController:_leftNavigationController];
 	[self.view addSubview:_leftNavigationController.view];
 
 	[self centerCoverView];
 
 	[self layoutSubviews];
+}
+
+- (A3MainMenuTableViewController *)mainMenuViewController {
+	if (!_mainMenuViewController) {
+		_mainMenuViewController = [[A3MainMenuTableViewController alloc] init];
+	}
+	return _mainMenuViewController;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -161,9 +166,9 @@ static const CGFloat kSideViewWidth = 320.0;
 	} completion:^(BOOL finished) {
 		[self layoutSubviews];
 		if (self.showLeftView) {
-			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidShow object:_leftMenuViewController];
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidShow object:_mainMenuViewController];
 		} else {
-			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:_leftMenuViewController];
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:_mainMenuViewController];
 		}
 	}];
 }

@@ -16,6 +16,7 @@
 #import "UIColor+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3LadyCalendarSetupAlertViewController () <UITextFieldDelegate, A3KeyboardDelegate>
 
@@ -119,17 +120,7 @@
     NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:ABS(type) inSection:indexPath.section];
     
     [_settingDict setObject:@(type) forKey:SettingItem_AlertType];
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings];
-		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
+	[[A3SyncManager sharedSyncManager] setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings state:A3KeyValueDBStateModified];
 
 	[A3LadyCalendarModelManager setupLocalNotification];
 
@@ -176,17 +167,8 @@
 	[_settingDict setObject:@(AlertType_Custom) forKey:SettingItem_AlertType];
 	[_settingDict setObject:@(customDay) forKey:SettingItem_CustomAlertDays];
 
-	NSDate *updateDate = [NSDate date];
-	[[NSUserDefaults standardUserDefaults] setObject:updateDate forKey:A3LadyCalendarUserDefaultsUpdateDate];
-	[[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3SyncManager sharedSyncManager] setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings state:A3KeyValueDBStateModified];
 
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-		[store setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings];
-		[store setObject:updateDate forKey:A3LadyCalendarUserDefaultsCloudUpdateDate];
-		[store synchronize];
-	}
 	[A3LadyCalendarModelManager setupLocalNotification];
 
 	[self.tableView reloadData];

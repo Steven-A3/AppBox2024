@@ -11,6 +11,8 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UIViewController+A3Addition.h"
 #import "A3UserDefaults.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3SettingsLunarViewController ()
 
@@ -64,14 +66,14 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (cell.tag) {
 		case 1100:
-			if (![[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion]) {
+			if (![[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion]) {
 				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 			} else {
 				cell.accessoryType = UITableViewCellAccessoryNone;
 			}
 			break;
 		case 1200:
-			if ([[NSUserDefaults standardUserDefaults] useKoreanLunarCalendarForConversion]) {
+			if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion]) {
 				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 			} else {
 				cell.accessoryType = UITableViewCellAccessoryNone;
