@@ -70,11 +70,13 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
         return;
     }
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 }
 
 - (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -90,7 +92,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 	[self removeObserver];
 }
 
-- (void)managedObjectContextDidSave:(NSNotification *)notification {
+- (void)cloudStoreDidImport {
 	_categories = nil;
 	[self.tableView reloadData];
 }

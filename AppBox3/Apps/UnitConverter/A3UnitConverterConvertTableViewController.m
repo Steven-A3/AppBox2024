@@ -68,7 +68,6 @@
     BOOL        _isTemperatureMode;
 
 	BOOL 		_isSwitchingFractionMode;
-	BOOL		_cancelInputNewCloudDataReceived;
 	BOOL		_barButtonEnabled;
 }
 
@@ -155,10 +154,10 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)cloudStoreDidImport {
     if ([self firstResponder]) {
-        _cancelInputNewCloudDataReceived = YES;
         return;
     }
-    
+
+	_convertItems = nil;
     [self.fmMoveTableView reloadData];
     [self enableControls:_barButtonEnabled];
 }
@@ -1277,10 +1276,6 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 	[self setFirstResponder:nil];
 
-	if (_cancelInputNewCloudDataReceived) {
-		_cancelInputNewCloudDataReceived = NO;
-		return;
-	}
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
 
 	if (_isSwitchingFractionMode) {

@@ -64,7 +64,14 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
     if (!_shouldPopViewController && IS_IPHONE) {
         self.navigationItem.leftBarButtonItem = self.cancelItem;
     }
-    
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)cloudStoreDidImport {
+	_favorites = nil;
+	_convertItems = nil;
+
+	[self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -84,14 +91,26 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
     }
 }
 
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
  -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    if (isEdited) {
-        // 보고
-        [self updateEditedDataToDelegate];
-    }
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		[self removeObserver];
+
+		if (isEdited) {
+			// 보고
+			[self updateEditedDataToDelegate];
+		}
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)didMoveToParentViewController:(UIViewController *)parent {

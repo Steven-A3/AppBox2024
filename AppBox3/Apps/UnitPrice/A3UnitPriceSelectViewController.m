@@ -60,6 +60,21 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     if (!_shouldPopViewController && IS_IPHONE) {
         self.tabBarController.navigationItem.leftBarButtonItem = self.cancelItem;
     }
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)cloudStoreDidImport {
+	_favorites = nil;
+
+	[self.tableView reloadData];
+}
+
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (NSMutableArray *)allData {
@@ -100,14 +115,18 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     }
 }
 
--(void)viewWillDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    if (isEdited) {
-        // 보고
-        [self updateEditedDataToDelegate];
-    }
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		[self removeObserver];
+
+		if (isEdited) {
+			// 보고
+			[self updateEditedDataToDelegate];
+		}
+	}
 }
 
 - (void)didReceiveMemoryWarning
