@@ -697,9 +697,11 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 				}
 			}];
             [self.items removeObject:item];
-			[item deleteWalletItem];
-            [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
 			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
+			[item deleteWalletItem];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
             // more button 활성화여부
             [self itemCountCheck];

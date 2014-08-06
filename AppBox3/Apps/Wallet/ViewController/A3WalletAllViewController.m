@@ -737,9 +737,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
         // Delete the row from the data source
         WalletItem *item = self.items[indexPath.row];
 		[self.items removeObject:item];
-		[item deleteWalletItem];
-        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-        
+
 		if ([self.items count] == 1) {
 			_dataEmpty = YES;
 			[self.items addObject:self.emptyItem];
@@ -753,6 +751,8 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 		if (_topViewRef) {
 			[self updateTopViewInfo:_topViewRef];
 		}
+		[item deleteWalletItem];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
