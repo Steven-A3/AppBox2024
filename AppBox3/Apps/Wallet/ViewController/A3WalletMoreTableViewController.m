@@ -120,9 +120,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if (_isEditing) {
-        [self.tableView reloadData];
-    }
+	[self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
