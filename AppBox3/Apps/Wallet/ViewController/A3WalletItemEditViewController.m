@@ -1131,15 +1131,15 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.item.uniqueID];
 			[self.item MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
 			[WalletFavorite MR_deleteAllMatchingPredicate:predicate inContext:[NSManagedObjectContext MR_rootSavingContext]];
-			[[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
 
-            [self dismissViewControllerAnimated:NO completion:NULL];
-            
             if (_delegate && [_delegate respondsToSelector:@selector(WalletItemDeleted)]) {
                 [_delegate WalletItemDeleted];
             }
-            
-            return;
+			[[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
+
+			[self dismissViewControllerAnimated:NO completion:NULL];
+
+			return;
         }
     }
     

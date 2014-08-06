@@ -44,7 +44,9 @@
 
 @end
 
-@implementation A3WalletVideoItemViewController
+@implementation A3WalletVideoItemViewController {
+	BOOL _itemDeleted;
+}
 
 extern NSString *const A3TableViewCellDefaultCellID;
 NSString *const A3WalletItemFieldCellID2 = @"A3WalletItemFieldCell";
@@ -157,6 +159,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (NSMutableArray *)videoFieldItems
 {
+	if (_itemDeleted) return nil;
     if (!_videoFieldItems) {
         _videoFieldItems = [[NSMutableArray alloc] init];
         
@@ -175,6 +178,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (NSMutableArray *)normalFieldItems
 {
+	if (_itemDeleted) return nil;
     if (!_normalFieldItems) {
 		_normalFieldItems = [[NSMutableArray alloc] init];
 
@@ -526,7 +530,8 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (void)WalletItemDeleted
 {
-    [self.navigationController popViewControllerAnimated:YES];
+	_itemDeleted = YES;
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 #pragma mark - textField delegate

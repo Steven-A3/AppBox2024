@@ -51,6 +51,7 @@
 {
     NSIndexPath *currentIndexPath;
     UITextField *firstResponder;
+	BOOL _itemDeleted;
 }
 
 extern NSString *const A3WalletItemTitleCellID;
@@ -94,6 +95,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 }
 
 - (void)cloudStoreDidImport {
+	if (_itemDeleted) return;
+
 	_fieldItems = nil;
 	[self.tableView reloadData];
 }
@@ -139,6 +142,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (NSMutableArray *)fieldItems
 {
+	if (_itemDeleted) return nil;
+
 	if (!_fieldItems) {
 		[_item verifyNULLField];
 
@@ -496,8 +501,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (void)WalletItemDeleted
 {
-	_fieldItems = nil;
-    [self.navigationController popViewControllerAnimated:YES];
+	_itemDeleted = YES;
+	[self.navigationController popViewControllerAnimated:NO];
 }
 
 #pragma mark - textView delegate

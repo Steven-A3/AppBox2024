@@ -53,7 +53,9 @@ NSString *const A3WalletItemPhotoFieldCellID1 = @"A3WalletItemPhotoFieldCell";
 NSString *const A3WalletItemMapCellID1 = @"A3WalletMapCell";
 NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
-@implementation A3WalletPhotoItemViewController
+@implementation A3WalletPhotoItemViewController {
+	BOOL _itemDeleted;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -158,6 +160,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 - (NSMutableArray *)photoFieldItems
 {
+	if (_itemDeleted) return nil;
     if (!_photoFieldItems) {
         _photoFieldItems = [[NSMutableArray alloc] init];
         
@@ -176,6 +179,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 - (NSMutableArray *)normalFieldItems
 {
+	if (_itemDeleted) return nil;
     if (!_normalFieldItems) {
         _normalFieldItems = [[NSMutableArray alloc] init];
 
@@ -588,7 +592,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 - (void)WalletItemDeleted
 {
-    [self.navigationController popViewControllerAnimated:YES];
+	_itemDeleted = YES;
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 #pragma mark - textField delegate
