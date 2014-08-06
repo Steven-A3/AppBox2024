@@ -1235,12 +1235,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
             FNLOG(@"Calculated : %f", value);
         }
         
-//		if (value != 0.0 && value != [[self unitValue] floatValue]) {
-//        if ([self.unitValue integerValue] != 1 && [UnitHistory MR_countOfEntities] != 0 ) {
         if ([self.unitValue floatValue] != 1.0 || ([self.unitValue floatValue] != 1.0 && [UnitHistory MR_countOfEntities] > 0)) {
 			[self putHistoryWithValue:@(value)];
-			self.unitValue = nil;
-			[self unitValue];
 		}
 	}
 	textField.text = @"";
@@ -1718,8 +1714,6 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	}
 
 	[savingContext MR_saveToPersistentStoreAndWait];
-
-	self.unitValue = nil;
 
 	[self enableControls:YES];
 }
