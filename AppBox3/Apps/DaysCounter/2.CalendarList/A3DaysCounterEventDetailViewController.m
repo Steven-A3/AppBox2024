@@ -710,9 +710,6 @@
         if ([markLabel.text isEqualToString:NSLocalizedString(@"Today", @"Today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
             if (hasEndDate) {
                 daysLabel.text = @"";
-//                dateLabel1.text = [NSString stringWithFormat:@"from %@", [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:NO isAllDay:[info.isAllDay boolValue]]];
-//                dateLabel2.text = [NSString stringWithFormat:@"to %@", [A3DaysCounterModelManager dateStringFromDateModel:info.endDate isLunar:NO isAllDay:[info.isAllDay boolValue]]];
-
                 dateLabel1.text = [NSString stringWithFormat:NSLocalizedString(@"from %@", @"from %@"), [A3DateHelper dateStringFromDate:nextDate
 																															  withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
                 NSTimeInterval diff = [endDate timeIntervalSince1970] - [startDate timeIntervalSince1970];

@@ -774,7 +774,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         }
             break;
         case RepeatType_EveryYear:{
-            NSInteger year = [A3DateHelper diffYearsFromDate:firstDate toDate:fromDate];
+            NSInteger year = [A3DateHelper diffYearsFromDate:firstDate
+                                                      toDate:fromDate];
             retDate = [A3DateHelper dateByAddingYears:year+1 fromDate:firstDate];
         }
             break;
@@ -1249,7 +1250,6 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     }
 }
 
-//- (BOOL)isTodayEvent:(DaysCounterEvent *)event fromDate:(NSDate *)now
 + (BOOL)isTodayEventForDate:(NSDate *)eventDate fromDate:(NSDate *)now repeatType:(NSInteger)repeatType
 {
     NSCalendarUnit calendarUnit = NSDayCalendarUnit;
@@ -1273,7 +1273,10 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             break;
     }
     
-    NSDateComponents *daysComp = [A3DateHelper diffCompFromDate:eventDate toDate:now calendarUnit:calendarUnit];
+    NSDateComponents *daysComp = [A3DateHelper diffCompFromDate:[A3DateHelper dateMake12PM:eventDate]
+                                                         toDate:[A3DateHelper dateMake12PM:now]
+                                                   calendarUnit:calendarUnit];
+
     if (repeatType == RepeatType_EveryDay) {
         return YES;
     }
