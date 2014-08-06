@@ -24,7 +24,6 @@
 #import "A3DaysCounterReminderListViewController.h"
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3ClockMainViewController.h"
-#import "A3UserDefaults.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
@@ -37,9 +36,9 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
-@property (nonatomic, strong) id usmStoreDidImportChangesObserver;
 @property (nonatomic, weak) A3TableViewElement *selectedElement;
 @property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
+@property (nonatomic, strong) A3TableViewElement *mostRecentMenuElement;
 
 @end
 
@@ -60,27 +59,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
     [super viewDidLoad];
 
 	self.title = @"AppBox Pro";
-//	UISearchBar *searchBar = [UISearchBar new];
-//	searchBar.placeholder = @"Search by App or Contents";
-//	searchBar.frame = self.navigationController.navigationBar.bounds;
-//
-//	self.navigationItem.titleView = searchBar;
-//
-//	self.mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-//	_mySearchDisplayController.delegate = self;
-//	_mySearchDisplayController.searchBar.delegate = self;
-//	_mySearchDisplayController.searchResultsTableView.delegate = self;
-//	_mySearchDisplayController.searchResultsTableView.dataSource = self;
-//	_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
-//	_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
-//
-//	_mySearchDisplayController.searchBar.barTintColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:248.0/255.0 alpha:1.0];
-
-	__typeof(self) __weak weakSelf = self;
-	self.usmStoreDidImportChangesObserver =
-			[[NSNotificationCenter defaultCenter] addObserverForName:A3NotificationCloudCoreDataStoreDidImport object:nil queue:nil usingBlock:^(NSNotification *note) {
-				[weakSelf.tableView reloadData];
-			}];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentsChanged) name:A3NotificationAppsMainMenuContentsChanged object:nil];
@@ -92,7 +70,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationAppsMainMenuContentsChanged object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:_usmStoreDidImportChangesObserver];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -164,7 +141,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	NSArray *recentMenuItems = recentlyUsedMenuDictionary[kA3AppsExpandableChildren];
 	if ([recentMenuItems count]) {
 		NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
-		  if ([recentMenuItems count] > maxRecent) {
+		if ([recentMenuItems count] > maxRecent) {
 			recentMenuItems = [recentMenuItems subarrayWithRange:NSMakeRange(0, maxRecent)];
 			NSMutableDictionary *mutableDictionary = [recentlyUsedMenuDictionary mutableCopy];
 			mutableDictionary[kA3AppsExpandableChildren] = recentMenuItems;
@@ -175,6 +152,14 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	}
 
 	self.rootElement.sectionsArray = @[[self sectionWithData:section0], self.appSection, self.bottomSection];
+
+	if ([recentMenuItems count]) {
+		A3TableViewSection *section = self.rootElement.sectionsArray[0];
+		A3TableViewExpandableElement *recentElement = section.elements[1];
+		_mostRecentMenuElement = recentElement.elements[0];
+	} else {
+		_mostRecentMenuElement = nil;
+	}
 }
 
 - (id)appSection {
@@ -534,6 +519,14 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3MainMenuBecameFirstResponder object:self];
 	}
+}
+
+- (BOOL)openRecentlyUsedMenu {
+	if (_mostRecentMenuElement) {
+		_mostRecentMenuElement.onSelected(_mostRecentMenuElement);
+		return YES;
+	}
+	return NO;
 }
 
 @end

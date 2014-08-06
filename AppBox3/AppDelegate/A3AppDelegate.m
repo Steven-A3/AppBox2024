@@ -106,9 +106,10 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 	if (IS_IPAD) {
 		_rootViewController = [[A3RootViewController_iPad alloc] initWithNibName:nil bundle:nil];
 		rootViewController = _rootViewController;
+		_mainMenuViewController = _rootViewController.mainMenuViewController;
 	} else {
-		A3MainMenuTableViewController *leftMenuViewController = [[A3MainMenuTableViewController alloc] init];
-		UINavigationController *menuNavigationController = [[UINavigationController alloc] initWithRootViewController:leftMenuViewController];
+		_mainMenuViewController = [[A3MainMenuTableViewController alloc] init];
+		UINavigationController *menuNavigationController = [[UINavigationController alloc] initWithRootViewController:_mainMenuViewController];
 
 		UIViewController *viewController = [A3MainViewController new];
 		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
@@ -168,8 +169,12 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 	[self applicationDidEnterBackground_passcode];
 
-	UIBackgroundTaskIdentifier identifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
-	dispatch_async(dispatch_get_global_queue(0, 0), ^{
+	__block UIBackgroundTaskIdentifier identifier;
+	identifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+		[[UIApplication sharedApplication] endBackgroundTask:identifier];
+		identifier = UIBackgroundTaskInvalid;
+	}];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_defaultContext];
 		[managedObjectContext performBlock:^{
 			if (managedObjectContext.hasChanges) {
@@ -178,6 +183,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 
 			[[A3SyncManager sharedSyncManager] synchronizeWithCompletion:^(NSError *error) {
 				[[UIApplication sharedApplication] endBackgroundTask:identifier];
+				identifier = UIBackgroundTaskInvalid;
 			}];
 		}];
 	});

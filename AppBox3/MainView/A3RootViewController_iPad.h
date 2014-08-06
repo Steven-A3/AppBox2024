@@ -9,8 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "A3NavigationController.h"
 
+@class A3MainMenuTableViewController;
+
 @interface A3RootViewController_iPad : UIViewController
 
+@property (nonatomic, strong)	A3MainMenuTableViewController *mainMenuViewController;
 @property (nonatomic, strong)	A3NavigationController *leftNavigationController;
 @property (nonatomic, strong)	A3NavigationController *centerNavigationController;
 @property (nonatomic, strong)	A3NavigationController *rightNavigationController;
