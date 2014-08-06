@@ -93,7 +93,7 @@
 	[self.view addSubview:_weatherCondition];
 
 	_temperature = [[UILabel alloc] init];
-	[_temperature setFont:[UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:IS_IPHONE ? 64 : 88]];
+	[_temperature setFont:[UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:IS_IPHONE ? 44 : 88]];
 	[_temperature setTextColor:kColorClockFlipLabel];
 	[self.view addSubview:_temperature];
 
