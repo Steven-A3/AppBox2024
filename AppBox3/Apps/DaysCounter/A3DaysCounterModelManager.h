@@ -44,6 +44,7 @@
 - (BOOL)removeEvent:(DaysCounterEvent *)eventItem inContext:(NSManagedObjectContext *)context;
 
 - (NSArray *)visibleCalendarList;
+- (NSArray *)allUserVisibleCalendarList;
 - (NSArray *)allUserCalendarList;
 - (NSMutableDictionary *)itemForNewUserCalendar;
 

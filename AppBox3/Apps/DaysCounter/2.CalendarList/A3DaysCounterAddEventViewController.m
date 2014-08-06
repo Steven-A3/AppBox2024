@@ -133,7 +133,7 @@
 			_eventItem.calendarID = self.calendarID;
         }
         else {
-			NSDictionary *anniversaryCalendar = [_sharedManager visibleCalendarList][0];
+			NSDictionary *anniversaryCalendar = [_sharedManager allUserVisibleCalendarList][0];
             NSAssert(anniversaryCalendar, @"anniversaryCalendar");
             
 			_eventItem.calendarID = anniversaryCalendar[CalendarItem_ID];

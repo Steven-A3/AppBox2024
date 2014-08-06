@@ -467,6 +467,18 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return [calendar filteredArrayUsingPredicate:predicate];
 }
 
+- (NSArray *)allUserVisibleCalendarList
+{
+	NSMutableArray *calendar = [A3DaysCounterModelManager calendars];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@ AND %K == %@",
+															  CalendarItem_Type,
+															  @(CalendarCellType_User),
+															  CalendarItem_IsShow,
+															  @YES
+	];
+    return [calendar filteredArrayUsingPredicate:predicate];
+}
+
 - (NSArray *)allUserCalendarList
 {
 	NSMutableArray *calendar = [A3DaysCounterModelManager calendars];
