@@ -258,6 +258,8 @@
 		self.headerView.factorValues.values = savedInputData.values;
 		_formattedFactorValues = [savedInputData formattedStringValuesByCalcType];
 		self.headerView.factorValues = savedInputData;
+		_sectionALabel.hidden = YES;
+		_sectionBLabel.hidden = YES;
 		return YES;
 	}
 	return NO;
