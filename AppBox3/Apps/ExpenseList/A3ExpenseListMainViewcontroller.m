@@ -1281,8 +1281,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	else if (textField == aCell.priceTextField) {
         item.price = [self.decimalFormatter numberFromString:textField.text];
         if (![item price]) {
-            item.price = [self.decimalFormatter numberFromString:[textField.text stringByReplacingOccurrencesOfString:[self.currencyFormatter currencySymbol] withString:@""]];
+            item.price = [self.currencyFormatter numberFromString:textField.text];
         }
+
 		textField.text = [self.currencyFormatter stringFromNumber:item.price];
 	}
 	else if (textField == aCell.qtyTextField) {
