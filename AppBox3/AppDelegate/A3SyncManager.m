@@ -116,7 +116,7 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 	}
 	NSDate *lastSyncStartTime = syncInfo[A3SyncStartTime];
 	NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:lastSyncStartTime];
-	if (interval >= 60 * 1) {
+	if (interval >= 60 * 5) {
 		return YES;
 	}
 

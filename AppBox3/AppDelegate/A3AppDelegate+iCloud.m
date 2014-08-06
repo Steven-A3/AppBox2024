@@ -46,12 +46,8 @@
 	self.wakeUpTime = [NSDate date];
 	FNLOG(@"%@", self.wakeUpTime);
 
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		[[A3SyncManager sharedSyncManager] synchronizeWithCompletion:^(NSError *error) {
-			[A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_newContext] ];
-			[A3LadyCalendarModelManager setupLocalNotification];
-		}];
-	}
+	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_newContext] ];
+	[A3LadyCalendarModelManager setupLocalNotification];
 
 	// pass on the completion handler to another method with delay to allow any imports to occur
 	// the API Allows 30 seconds so I only delay for 28 seconds just to be safe
@@ -59,11 +55,7 @@
 }
 
 - (void)sendBGFetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		completionHandler(UIBackgroundFetchResultNewData);
-	} else {
-		completionHandler(UIBackgroundFetchResultNoData);
-	}
+	completionHandler(UIBackgroundFetchResultNewData);
 }
 
 #pragma mark - Image and Video files
