@@ -241,7 +241,9 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 			unitPriceBItem = item;
 		}
 	}
-	[_historyNumberFormatter setCurrencyCode:unitPriceHistory.currencyCode];
+    
+    _historyNumberFormatter.currencyCode = unitPriceHistory.currencyCode;
+    _historyNumberFormatter.maximumFractionDigits = 2;
 
 	double unitPriceA = [unitPriceAItem unitPrice];
     double unitPriceB = [unitPriceBItem unitPrice2WithPrice1:unitPriceAItem];
