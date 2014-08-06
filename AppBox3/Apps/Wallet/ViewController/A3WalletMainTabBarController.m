@@ -160,15 +160,28 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
     return YES;
 }
 
+- (void)popToRootViewControllerForCategoryID:(NSString *)categoryID {
+	NSUInteger indexOfCategory = [self.categories indexOfObjectPassingTest:^BOOL(NSDictionary *category, NSUInteger idx, BOOL *stop) {
+		return [category[W_ID_KEY] isEqualToString:categoryID];
+	}];
+	if (indexOfCategory < [self numberOfCategoriesInTabBar]) {
+		UINavigationController *oldCategoryNavigationController = self.viewControllers[indexOfCategory];
+		[oldCategoryNavigationController popToRootViewControllerAnimated:NO];
+	}
+}
+
 - (void)didReceiveItemCategoryMovedNotification:(NSNotification *)notification {
 	if (notification.userInfo) {
+		NSString *oldCategoryID = [notification.userInfo valueForKey:@"oldCategoryID"];
 		NSString *categoryID = [notification.userInfo valueForKey:@"categoryID"];
 		NSString *itemID = [notification.userInfo valueForKey:@"itemID"];
 
+		[self popToRootViewControllerForCategoryID:oldCategoryID];
+		[self popToRootViewControllerForCategoryID:A3WalletUUIDAllCategory];
+		[self popToRootViewControllerForCategoryID:A3WalletUUIDFavoriteCategory];
+
 		NSUInteger indexOfSelectedCategory = [self.categories indexOfObjectPassingTest:^BOOL(NSDictionary *category, NSUInteger idx, BOOL *stop) {
-			BOOL match = [category[W_ID_KEY] isEqualToString:categoryID];
-			if (match) *stop = YES;
-			return match;
+			return [category[W_ID_KEY] isEqualToString:categoryID];
 		}];
 		NSUInteger numberOfCategoriesInTabBar = [self numberOfCategoriesInTabBar];
 		UINavigationController *categoryNavigationController;

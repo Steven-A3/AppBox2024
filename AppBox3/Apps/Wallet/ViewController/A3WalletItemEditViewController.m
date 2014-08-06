@@ -687,8 +687,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 		NSNotification *notification = [[NSNotification alloc] initWithName:A3WalletNotificationItemCategoryMoved
 																	 object:nil
-																   userInfo:@{@"categoryID":_item.categoryID,
-																              @"itemID":_item.uniqueID}];
+																   userInfo:@{
+																		   @"oldCategoryID" : self.originalCategoryUniqueID,
+																		   @"categoryID":_item.categoryID,
+																		   @"itemID":_item.uniqueID
+																   }];
 		[[NSNotificationCenter defaultCenter] postNotification:notification];
 	}
 }
