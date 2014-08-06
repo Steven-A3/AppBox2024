@@ -237,9 +237,6 @@ enum A3ExpenseListAddBudgetCellType {
 		A3JHTableViewSelectElement *category = section0[1];
 		A3JHTableViewSelectElement *payment = section0[2];
 
-        if (!budget.value || [budget.value length] == 0) {
-            budget.value = @"0";
-        }
 		NSNumber *totalBudget = [self.decimalFormatter numberFromString:[budget value]];
 		NSString *categoryName = [self getCategoryNameForIndex:category.selectedIndex];
 		NSString *paymentName = [self getPaymentNameForIndex:payment.selectedIndex];
@@ -807,7 +804,7 @@ static NSString *CellIdentifier = @"Cell";
             switch ([element identifier]) {
                 case AddBudgetCellID_Budget:
                 {
-                    if (![element value]) {
+                    if (![element value] || [element.value length] == 0) {
                         element.value = @"0";
                     }
                 }
