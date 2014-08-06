@@ -109,7 +109,7 @@ on all your devices"; ObjectID = "mal-lH-ucN"; */
 sur tous vos dispositifs";
 
 /* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "noh-Kb-lie"; */
-"noh-Kb-lie.text" = "Calendrier dame";
+"noh-Kb-lie.text" = "Calendrier féminin";
 
 /* Class = "IBUILabel"; text = "Expense List"; ObjectID = "oCV-n4-Pex"; */
 "oCV-n4-Pex.text" = "Liste de dépense";

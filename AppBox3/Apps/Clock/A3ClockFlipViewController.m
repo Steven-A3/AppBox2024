@@ -288,6 +288,7 @@
 				[_weatherConstraints addObject:make.centerX.equalTo(self.view.centerX)];
 				[_weatherConstraints addObject:make.baseline.equalTo(self.view.top).with.offset(125)];
 			}];
+			[_temperature setFont:[UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:44]];
 		} else {
 			[_weatherCondition makeConstraints:^(MASConstraintMaker *make) {
 				[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(15)];
@@ -297,6 +298,7 @@
 				[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(15)];
 				[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(-11)];
 			}];
+			[_temperature setFont:[UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:64]];
 		}
 
 		[_weatherHumidity makeConstraints:^(MASConstraintMaker *make) {
