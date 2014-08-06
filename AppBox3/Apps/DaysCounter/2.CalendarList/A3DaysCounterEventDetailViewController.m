@@ -603,18 +603,7 @@
         
         if ([markLabel.text isEqualToString:NSLocalizedString(@"Today", @"Today")] || [markLabel.text isEqualToString:NSLocalizedString(@"Now", @"Now")]) {
             daysLabel.text = @"";
-//            if (IS_IPAD || ![info.isLunar boolValue]) {
-//                dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:NO isAllDay:[info.isAllDay boolValue]];
-//                dateLabel2.text = @"";
-//                dateLabel3.text = @"";
-//                dateLabel4.text = @"";
-//            }
-//            else {
-//                dateLabel1.text = [NSString stringWithFormat:@"from %@", [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:NO isAllDay:[info.isAllDay boolValue]]];
-//                dateLabel2.text = [NSString stringWithFormat:@"%@", [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:YES isAllDay:[info.isAllDay boolValue]]];
-//                dateLabel3.text = @"";
-//                dateLabel4.text = @"";
-//            }
+
             if ([info.isLunar boolValue]) {
                 dateLabel1.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"DaysCounter_from", nil), [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:NO isAllDay:[info.isAllDay boolValue]]];
                 dateLabel2.text = [NSString stringWithFormat:@"%@", [A3DaysCounterModelManager dateStringFromDateModel:info.startDate isLunar:YES isAllDay:[info.isAllDay boolValue]]];

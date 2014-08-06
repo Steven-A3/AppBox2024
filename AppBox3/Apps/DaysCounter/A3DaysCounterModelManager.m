@@ -896,11 +896,10 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     if (IS_IPAD && !isShortStyle && flagCount == 6) {
         isShortStyle = YES;
     }
-//    NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.effectiveStartDate isAllDay:YES];
+    //    NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.effectiveStartDate isAllDay:YES];
     // DurationOption 이 day 이상인 경우에 대한 예외처리. (하루가 안 되는 기간은 0day가 아닌 시분초를 출력함), (또한 hms 에 대한 옵션이 없는 경우만 해당함.)
     if ( (([largeDate timeIntervalSince1970] - [smallDate timeIntervalSince1970]) < 86400) &&
          (!(flag & NSHourCalendarUnit) && !(flag & NSMinuteCalendarUnit)) &&
-//         (!(flag & NSHourCalendarUnit) && !(flag & NSMinuteCalendarUnit) && !(flag & NSSecondCalendarUnit)) &&
         !isAllDay ) {
             flag = NSHourCalendarUnit | NSMinuteCalendarUnit;
             option = DurationOption_Minutes | DurationOption_Hour;
@@ -927,9 +926,13 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
                                      options:0];
     }
     else {
+        flag |= NSSecondCalendarUnit;
         diffComponent = [calendar components:flag
                                     fromDate:smallDate
                                       toDate:largeDate options:0];
+        if (flag & NSMinuteCalendarUnit && ([fromDate timeIntervalSince1970] < [toDate timeIntervalSince1970])) {
+            diffComponent.minute += diffComponent.second > 2 ? 1 : 0;
+        }
     }
 
     NSMutableArray * resultArray = [NSMutableArray new];
