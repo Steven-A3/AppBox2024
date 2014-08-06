@@ -56,6 +56,8 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 
 	_historyNumberFormatter = [[NSNumberFormatter alloc] init];
     _historyNumberFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    _historyNumberFormatter.maximumFractionDigits = 2;
+    
 
 	self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
