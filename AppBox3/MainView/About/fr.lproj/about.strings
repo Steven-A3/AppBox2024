@@ -48,7 +48,7 @@
 "rPK-fC-u92.text" = "Version";
 
 /* Class = "IBUINavigationItem"; title = "About"; ObjectID = "vLL-sw-MLM"; */
-"vLL-sw-MLM.title" = "À propos de";
+"vLL-sw-MLM.title" = "Informations";
 
 /* Class = "IBUILabel"; text = "Tell a Friend by message"; ObjectID = "ygM-lV-AEG"; */
 "ygM-lV-AEG.text" = "Envoyer à un ami par message";
