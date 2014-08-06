@@ -272,6 +272,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	viewController.item = [self.item MR_inContext:[NSManagedObjectContext MR_rootSavingContext]];
 	viewController.hidesBottomBarWhenPushed = YES;
 	viewController.alwaysReturnToOriginalCategory = self.alwaysReturnToOriginalCategory;
+	viewController.delegate = self;
     
 	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
 	nav.modalPresentationStyle = UIModalPresentationCurrentContext;
