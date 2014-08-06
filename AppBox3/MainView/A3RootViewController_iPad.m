@@ -55,7 +55,7 @@
 
 - (A3MainMenuTableViewController *)mainMenuViewController {
 	if (!_mainMenuViewController) {
-		_mainMenuViewController = [[A3MainMenuTableViewController alloc] initWithNibName:nil bundle:nil];
+		_mainMenuViewController = [[A3MainMenuTableViewController alloc] init];
 	}
 	return _mainMenuViewController;
 }
