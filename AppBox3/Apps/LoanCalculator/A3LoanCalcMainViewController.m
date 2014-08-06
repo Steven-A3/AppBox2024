@@ -726,7 +726,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 			// clear
 			[self clearLoanData:self.loanData];
 
-			[self deleteLoanData];
+			[self saveLoanData];
 
 			[self.tableView reloadData];
 		}
@@ -739,8 +739,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 			[self clearLoanData:_loanDataA];
 			[self clearLoanData:_loanDataB];
 
-			[self deleteLoanDataA];
-			[self deleteLoanDataB];
+			[self saveLoanDataA];
+			[self saveLoanDataB];
 
 			[self.tableView reloadData];
 		}
@@ -1462,21 +1462,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:_loanDataB];
 
 	[[A3SyncManager sharedSyncManager] setObject:myLoanData forKey:A3LoanCalcUserDefaultsLoanDataKey_B state:A3KeyValueDBStateModified];
-}
-
-- (void)deleteLoanData
-{
-	[[A3SyncManager sharedSyncManager] setObject:[NSNull null] forKey:A3LoanCalcUserDefaultsLoanDataKey state:A3KeyValueDBStateModified];
-}
-
-- (void)deleteLoanDataA
-{
-	[[A3SyncManager sharedSyncManager] setObject:[NSNull null] forKey:A3LoanCalcUserDefaultsLoanDataKey_A state:A3KeyValueDBStateModified];
-}
-
-- (void)deleteLoanDataB
-{
-	[[A3SyncManager sharedSyncManager] setObject:[NSNull null] forKey:A3LoanCalcUserDefaultsLoanDataKey_B state:A3KeyValueDBStateModified];
 }
 
 #pragma mark - Compare mode calculation
@@ -2734,6 +2719,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 #pragma mark Configure TableView Cell
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	UITableViewCell *cell;
@@ -2752,6 +2738,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     UITableViewCell *cell=nil;
     
     if (indexPath.section == 0) {
+		[UIView setAnimationsEnabled:NO];
         A3LoanCalcCompareGraphCell *compareCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcCompareGraphCellID forIndexPath:indexPath];
         compareCell.selectionStyle = UITableViewCellSelectionStyleNone;
         [compareCell adjustSubviewsFontSize];
@@ -2765,6 +2752,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         }
         
         cell = compareCell;
+
+		[UIView setAnimationsEnabled:YES];
     }
     else if (indexPath.section == 1){
         A3LoanCalcLoanInfoCell *infoCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanInfoCellID forIndexPath:indexPath];
@@ -2824,6 +2813,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     switch ([indexPath section]) {
         case 0:
         {
+			[UIView setAnimationsEnabled:NO];
             // graph
             A3LoanCalcLoanGraphCell *graphCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanGraphCellID forIndexPath:indexPath];
             [graphCell.monthlyButton addTarget:self action:@selector(monthlyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -2843,6 +2833,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             graphCell.totalButton.titleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 
             cell = graphCell;
+			[UIView setAnimationsEnabled:YES];
 			break;
 		}
 
