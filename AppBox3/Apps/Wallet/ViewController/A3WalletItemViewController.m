@@ -496,6 +496,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (void)WalletItemDeleted
 {
+	_item = nil;
+	_fieldItems = nil;
     [self.navigationController popViewControllerAnimated:YES];
 }
 

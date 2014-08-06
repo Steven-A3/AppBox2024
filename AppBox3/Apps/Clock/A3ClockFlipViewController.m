@@ -286,7 +286,7 @@
 			}];
 			[_temperature makeConstraints:^(MASConstraintMaker *make) {
 				[_weatherConstraints addObject:make.centerX.equalTo(self.view.centerX)];
-				[_weatherConstraints addObject:make.baseline.equalTo(self.view.top).with.offset(132)];
+				[_weatherConstraints addObject:make.baseline.equalTo(self.view.top).with.offset(125)];
 			}];
 		} else {
 			[_weatherCondition makeConstraints:^(MASConstraintMaker *make) {
