@@ -7,10 +7,10 @@
 //
 
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
-#import "A3UserDefaults.h"
 #import "NSDate-Utilities.h"
 #import "A3AppDelegate.h"
 
+NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 
 @implementation A3SyncManager (NSUbiquitousKeyValueStore)
 
@@ -59,7 +59,7 @@
 					NSDate *cloudTimestamp = objectInCloud[A3KeyValueDBUpdateDate];
 					NSDate *localTimestamp = objectInLocal[A3KeyValueDBUpdateDate];
 					if ([localTimestamp isEarlierThanDate:cloudTimestamp]) {
-						if ([objectInCloud[A3KeyValueDBDataObject] isEqual:[NSNull null]]) {
+						if ([objectInCloud[A3KeyValueDBDataObject] isEqual:A3SyncManagerEmptyObject]) {
 							[userDefaults removeObjectForKey:key];
 						} else {
 							[userDefaults setObject:objectInCloud forKey:key];
@@ -93,7 +93,10 @@
 - (id)objectForKey:(NSString *)key {
 	NSDictionary *object = [[NSUserDefaults standardUserDefaults] objectForKey:key];
 	if ([object isKindOfClass:[NSDictionary class]]) {
-		return object[A3KeyValueDBDataObject];
+		id dataObject = object[A3KeyValueDBDataObject];
+		if ([dataObject isEqual:A3SyncManagerEmptyObject])
+			return nil;
+		return dataObject;
 	}
 	return nil;
 }

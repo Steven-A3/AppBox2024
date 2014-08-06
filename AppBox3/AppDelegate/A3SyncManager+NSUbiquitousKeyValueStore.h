@@ -10,6 +10,8 @@
 #import "A3SyncManager.h"
 #import "A3UserDefaults.h"
 
+extern NSString *const A3SyncManagerEmptyObject;
+
 @interface A3SyncManager (NSUbiquitousKeyValueStore)
 
 - (void)keyValueStoreDidChangeExternally:(NSNotification *)notification;

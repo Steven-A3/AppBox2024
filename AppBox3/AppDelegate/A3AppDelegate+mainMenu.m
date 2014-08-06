@@ -200,7 +200,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 }
 
 - (void)clearRecentlyUsedMenus {
-	[[A3SyncManager sharedSyncManager] setObject:[NSNull null] forKey:A3MainMenuUserDefaultsRecentlyUsed state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:A3SyncManagerEmptyObject forKey:A3MainMenuUserDefaultsRecentlyUsed state:A3KeyValueDBStateModified];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
 }
