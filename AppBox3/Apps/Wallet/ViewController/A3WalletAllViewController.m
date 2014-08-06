@@ -467,6 +467,7 @@ enum SortingKind {
 {
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
     A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
+	viewController.alwaysReturnToOriginalCategory = YES;
     viewController.isAddNewItem = YES;
     viewController.hidesBottomBarWhenPushed = YES;
     
