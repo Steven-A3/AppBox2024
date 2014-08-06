@@ -351,11 +351,13 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 		[TranslatorFavorite MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]];
 		[group MR_deleteEntity];
 
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-
 		[self.fetchedResultsController performFetch:nil];
 
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+		// Save를 호출하는 순간, Notification이 도착, data reload 됨 save는 UI animation이 모두 종료된 후에 ...
+		// 가능한 가장 늦은 시점에 하도록 해야 함
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	}
 }
 

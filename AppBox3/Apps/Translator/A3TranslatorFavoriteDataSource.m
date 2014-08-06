@@ -85,11 +85,12 @@
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		TranslatorFavorite *favorite = [self.fetchedResultsController objectAtIndexPath:indexPath];
 		[favorite MR_deleteEntity];
-		[favorite.managedObjectContext MR_saveToPersistentStoreAndWait];
 
 		[self.fetchedResultsController performFetch:nil];
 
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+		[favorite.managedObjectContext MR_saveToPersistentStoreAndWait];
 	}
 }
 

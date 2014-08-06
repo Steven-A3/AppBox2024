@@ -859,8 +859,6 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		_translatingMessage.originalText = _textView.text;
 		self.originalText = _textView.text; // Save to async operation
 
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-
 		if ([_languageSelectView superview]) {
 			[self switchToMessageView];
 		}
@@ -885,6 +883,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[self askTranslateWithText:_originalText];
 		});
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	}
 }
 
@@ -1450,14 +1449,15 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 		[TranslatorFavorite MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", itemToDelete.uniqueID]];
 		[itemToDelete MR_deleteEntity];
 	}
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    
+
 	// Reload messages
 	_messages = nil;
 	[self messages];
     
 	[_messageTableView deleteRowsAtIndexPaths:selectedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-    
+
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
 	[self setEnabledForAllToolbarButtons:NO];
     
 	[self setupBarButtons];
@@ -1484,7 +1484,9 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 }
 
 - (void)deleteAllMessages {
-	[TranslatorHistory MR_deleteAllMatchingPredicate:[self predicateForMessages]];
+	NSPredicate *predicate = [self predicateForMessages];
+	[TranslatorHistory MR_deleteAllMatchingPredicate:predicate];
+	[TranslatorFavorite MR_deleteAllMatchingPredicate:predicate];
 
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
