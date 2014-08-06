@@ -794,39 +794,45 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             
         case RepeatType_EveryDay:
         {
-            NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
+            NSInteger days = [A3DateHelper diffDaysFromDate:[A3DateHelper dateMake12PM:firstDate]
+                                                     toDate:[A3DateHelper dateMake12PM:fromDate]];
             retDate = [A3DateHelper dateByAddingDays:days fromDate:firstDate];
         }
             break;
             
         case RepeatType_EveryWeek:
         {
-            NSInteger weeks = [A3DateHelper diffWeeksFromDate:firstDate toDate:fromDate];
+            NSInteger weeks = [A3DateHelper diffWeeksFromDate:[A3DateHelper dateMake12PM:firstDate]
+                                                       toDate:[A3DateHelper dateMake12PM:fromDate]];
             retDate = [A3DateHelper dateByAddingWeeks:weeks fromDate:firstDate];
         }
             break;
         case RepeatType_Every2Week:
         {
-            NSInteger weeks = [A3DateHelper diffWeeksFromDate:firstDate toDate:fromDate];
+            NSInteger weeks = [A3DateHelper diffWeeksFromDate:[A3DateHelper dateMake12PM:firstDate]
+                                                       toDate:[A3DateHelper dateMake12PM:fromDate]];
             NSInteger remainNum = weeks % 2;
             retDate = [A3DateHelper dateByAddingWeeks:weeks + remainNum fromDate:firstDate];
         }
             break;
         case RepeatType_EveryMonth:
         {
-            NSInteger month = [A3DateHelper diffMonthsFromDate:firstDate toDate:fromDate];
+            NSInteger month = [A3DateHelper diffMonthsFromDate:[A3DateHelper dateMake12PM:firstDate]
+                                                        toDate:[A3DateHelper dateMake12PM:fromDate]];
             retDate = [A3DateHelper dateByAddingMonth:month fromDate:firstDate];
         }
             break;
         case RepeatType_EveryYear:{
-            NSInteger year = [A3DateHelper diffYearsFromDate:firstDate toDate:fromDate];
+            NSInteger year = [A3DateHelper diffYearsFromDate:[A3DateHelper dateMake12PM:firstDate]
+                                                      toDate:[A3DateHelper dateMake12PM:fromDate]];
             retDate = [A3DateHelper dateByAddingYears:year fromDate:firstDate];
         }
             break;
             
         default:{
             NSInteger dayUnit = repeatType;
-            NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
+            NSInteger days = [A3DateHelper diffDaysFromDate:[A3DateHelper dateMake12PM:firstDate]
+                                                     toDate:[A3DateHelper dateMake12PM:fromDate]];
             NSInteger remainNum = days % dayUnit;
             retDate = [A3DateHelper dateByAddingDays:days + (dayUnit - remainNum) fromDate:firstDate];
         }
