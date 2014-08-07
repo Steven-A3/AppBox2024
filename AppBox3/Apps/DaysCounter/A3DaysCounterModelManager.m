@@ -1329,7 +1329,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         }
     }];
 
-	NSArray *alertItems = [DaysCounterEvent MR_findAllSortedBy:@"alertDatetime" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"alertDatetime != nil"] inContext:context];
+    NSArray *alertItems = [DaysCounterEvent MR_findAllInContext:context];
 	if (![alertItems count])
         return;
 
@@ -1350,6 +1350,10 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         }
 
         event.effectiveStartDate = [A3DaysCounterModelManager effectiveDateForEvent:event basisTime:now];    // 현재 기준 앞으로 발생할 실제 이벤트 시간을 얻는다.
+        if (!event.alertDatetime) {
+            return;
+        }
+        
         event.alertDatetime = [self effectiveAlertDateForEvent:event];                  // 이벤트 시간 기준, 실제 발생할 이벤트 얼럿 시간을 얻는다.
         FNLOG(@"\n[%ld] EventID: %@, EventName: %@\nEffectiveStartDate: %@, \nAlertDatetime: %@", (long)idx, event.uniqueID, event.eventName, event.effectiveStartDate, event.alertDatetime);
 
