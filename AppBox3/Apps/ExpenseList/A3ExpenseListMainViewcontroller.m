@@ -56,6 +56,7 @@ NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationE
 @property (nonatomic, strong) UITextField *calculatorTargetTextField;
 @property (nonatomic, strong) A3ExpenseListItemCell *calculatorTargetCell;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
 @end
 
 @implementation A3ExpenseListMainViewController
@@ -226,6 +227,15 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		}];
 	}
 	[_headerView.detailInfoButton setEnabled:enable];
+}
+
+- (NSNumberFormatter *)decimalFormatter {
+	if (!_decimalFormatter) {
+		_decimalFormatter = [NSNumberFormatter new];
+		[_decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+		[_decimalFormatter setMaximumFractionDigits:3];
+	}
+	return _decimalFormatter;
 }
 
 - (void)currencyCodeChanged:(NSNotification *)notification {
@@ -1240,7 +1250,6 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		item.price = @([textField.text floatValueEx]);
 	}
 	else if (textField == aCell.qtyTextField) {
-		[self.decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 		item.qty = [self.decimalFormatter numberFromString:textField.text];
 	}
     
@@ -1259,6 +1268,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 -(void)itemCellTextFieldFinished:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
 {
+	FNLOG(@"textField.text = %@", textField.text);
     if (textField == self.firstResponder) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
         [self removeNumberKeyboardNotificationObservers];
@@ -1279,15 +1289,17 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		item.itemName = textField.text;
 	}
 	else if (textField == aCell.priceTextField) {
+		FNLOG(@"%@", self.decimalFormatter);
         item.price = [self.decimalFormatter numberFromString:textField.text];
+		FNLOG(@"item.price = %@", item.price);
         if (![item price]) {
             item.price = [self.currencyFormatter numberFromString:textField.text];
         }
 
 		textField.text = [self.currencyFormatter stringFromNumber:item.price];
+		FNLOG(@"textField.text = %@", textField.text);
 	}
 	else if (textField == aCell.qtyTextField) {
-		[self.decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 		if (![textField.text length]) {
 			textField.text = [self.decimalFormatter stringFromNumber:@0];
 		}
