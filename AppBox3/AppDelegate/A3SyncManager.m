@@ -567,10 +567,10 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 			}
 			[_cloudFileSystem contentsOfDirectoryAtPath:A3DictionaryDBLogsDirectoryName completion:^(NSArray *contents, NSError *error_2) {
 				FNLOG();
-				NSMutableArray *downloadFiles = [NSMutableArray new];
+				__block NSMutableArray *downloadFiles = [NSMutableArray new];
 				for (CDECloudFile *cloudFile in contents) {
 					NSString *localFilePath = [localTransactionLogDirectoryPath stringByAppendingPathComponent:cloudFile.name];
-					if (![downloadedFilesSet containsObject:cloudFile.name] && ![_fileManager fileExistsAtPath:localFilePath]) {
+					if (![downloadedFilesSet containsObject:cloudFile.name] || ![_fileManager fileExistsAtPath:localFilePath]) {
 						[downloadFiles addObject:cloudFile];
 					} else {
 						[self addFilenameToDownloadedFileList:cloudFile.name];
