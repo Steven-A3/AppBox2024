@@ -439,7 +439,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	UIView *flashView = [[UIView alloc] initWithFrame:[self screenBoundsAdjustedWithOrientation]];
 	[flashView setBackgroundColor:[UIColor blackColor]];
 	[flashView setAlpha:0.f];
-	[[[self view] window] addSubview:flashView];
+	[[self view] addSubview:flashView];
 
 	[UIView animateWithDuration:.1f
 					 animations:^{

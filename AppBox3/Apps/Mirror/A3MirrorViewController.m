@@ -1173,7 +1173,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
     UIView *flashView = [[UIView alloc] initWithFrame:[self screenBoundsAdjustedWithOrientation]];
     [flashView setBackgroundColor:[UIColor blackColor]];
     [flashView setAlpha:0.f];
-    [[[self view] window] addSubview:flashView];
+    [[self view] addSubview:flashView];
     
     [UIView animateWithDuration:.1f
                      animations:^{
