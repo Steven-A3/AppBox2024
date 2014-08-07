@@ -66,7 +66,6 @@ enum A3TableElementCellType {
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3TableViewInputElement *calculatorTargetElement;
 @property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
-@property (nonatomic, assign) BOOL cancelInputNewCloudDataReceived;
 
 @end
 
@@ -127,8 +126,7 @@ enum A3TableElementCellType {
 
 - (void)cloudStoreDidImport {
 	if (self.firstResponder) {
-		_cancelInputNewCloudDataReceived = YES;
-		[self.firstResponder resignFirstResponder];
+		return;
 	}
 
 	[self setCurrencyFormatter:nil];
@@ -581,10 +579,7 @@ enum A3TableElementCellType {
     };
 	_notes.onEditingDidEnd = ^(A3TextViewElement *element, UITextView *textView) {
 		[weakSelf.tableView setContentOffset:CGPointMake(0, -weakSelf.tableView.contentInset.top )];
-		if (weakSelf.cancelInputNewCloudDataReceived) {
-			weakSelf.cancelInputNewCloudDataReceived = NO;
-			return;
-		}
+
 		weakSelf.preferences.calcData.notes = textView.text;
 		[weakSelf saveInputTextData:weakSelf.preferences.calcData];
 	};
@@ -640,12 +635,6 @@ enum A3TableElementCellType {
                 weakSelf.firstResponder = nil;
             }
 			[weakSelf removeNumberKeyboardNotificationObservers];
-
-			if (weakSelf.cancelInputNewCloudDataReceived) {
-				weakSelf.cancelInputNewCloudDataReceived = NO;
-				return;
-			}
-
 
 			NSNumber *inputNumber = ([textField.text length] == 0 && [element.value length] > 0) ? [weakSelf.decimalFormatter numberFromString:element.value] : [weakSelf.decimalFormatter numberFromString:textField.text];
 

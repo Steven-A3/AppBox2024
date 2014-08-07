@@ -65,7 +65,6 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UITableViewController *tableViewController;
-@property (nonatomic, assign) BOOL cancelInputNewCloudDataReceived;
 
 @end
 
@@ -152,8 +151,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (void)cloudDidImportChanges:(NSNotification *)note {
 	if (self.firstResponder) {
-		_cancelInputNewCloudDataReceived = YES;
-		[self.firstResponder resignFirstResponder];
+		return;
 	}
 
 	_favorites = nil;
@@ -988,10 +986,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[self setFirstResponder:nil];
 	[self setNumberKeyboardViewController:nil];
 
-	if (_cancelInputNewCloudDataReceived) {
-		_cancelInputNewCloudDataReceived = NO;
-		return;
-	}
 	BOOL valueChanged = NO;
 	if (![textField.text length]) {
 		textField.text = self.previousValue;
