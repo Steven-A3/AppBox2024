@@ -135,7 +135,7 @@
 		entity.currencyCode = yahooCurrency.currencyCode;
 		entity.flagImageName = [self countryNameForCurrencyCode:entity.currencyCode];
 		entity.rateToUSD = yahooCurrency.rateToUSD;
-		entity.updated = yahooCurrency.updated;
+		entity.updateDate = yahooCurrency.updated;
 		updated = [yahooCurrency.updated laterDate:updated];
 		NSUInteger idx = [validLocales indexOfObject:@{NSLocaleCurrencyCode:yahooCurrency.currencyCode}
 										 inSortedRange:NSMakeRange(0, [validLocales count])

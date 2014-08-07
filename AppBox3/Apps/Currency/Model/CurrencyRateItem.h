@@ -17,6 +17,6 @@
 @property (nonatomic, retain) NSString * flagImageName;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * rateToUSD;
-@property (nonatomic, retain) NSDate * updated;
+@property (nonatomic, retain) NSDate *updateDate;
 
 @end

@@ -16,6 +16,6 @@
 @dynamic flagImageName;
 @dynamic name;
 @dynamic rateToUSD;
-@dynamic updated;
+@dynamic updateDate;
 
 @end

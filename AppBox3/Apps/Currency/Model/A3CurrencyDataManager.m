@@ -115,7 +115,7 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 				entity.name = yahoo.name;
 			}
 			entity.rateToUSD = yahoo.rateToUSD;
-			entity.updated = yahoo.updated;
+			entity.updateDate = yahoo.updated;
 		}];
 
 		[context MR_saveToPersistentStoreAndWait];
