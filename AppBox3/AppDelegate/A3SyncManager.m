@@ -534,6 +534,8 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 						}
 						[downloadedFileList addObject:transactionID];
 						[downloadedFileList writeToFile:listFilePath atomically:YES];
+						
+						[self aggregateLogFiles];
 					} else {
 						FNLOG(@"Log upload faild with error: %@", error_2.localizedDescription);
 					}
@@ -629,13 +631,14 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 	}
 
 	[_cloudFileSystem connect:^(NSError *error) {
-		for (NSString *logPath in mutableLogFiles) {
-			NSArray *transactions = [NSArray arrayWithContentsOfFile:logPath];
+		for (NSString *logFilename in mutableLogFiles) {
+			NSString *logFilePath = [[self transactionLogDirectoryPath] stringByAppendingPathComponent:logFilename];
+			NSArray *transactions = [NSArray arrayWithContentsOfFile:logFilePath];
 			if (transactions) {
 				[newAggregatedHunkContents addObjectsFromArray:transactions];
 			}
-			[_fileManager removeItemAtPath:logPath error:NULL];
-			NSString *cloudPath = [A3DictionaryDBLogsDirectoryName stringByAppendingPathComponent:[logPath lastPathComponent]];
+			[_fileManager removeItemAtPath:logFilePath error:NULL];
+			NSString *cloudPath = [A3DictionaryDBLogsDirectoryName stringByAppendingPathComponent:logFilename];
 			[_cloudFileSystem removeItemAtPath:cloudPath completion:NULL];
 		}
 		[[newAggregatedHunkContents allObjects] writeToFile:aggregatedHunkFilePath atomically:YES];
