@@ -146,11 +146,19 @@
 		FNLOG();
 		[self removeObserver];
 	}
+    
+    self.navigationController.delegate = nil;
+
 
 	[self stopTimer];
 }
 
 - (void)dealloc {
+    if (self.navigationController.delegate == self)
+    {
+        self.navigationController.delegate = nil;
+    }
+    
 	[self cleanUp];
 	[self removeObserver];
 }
@@ -195,7 +203,6 @@
     [super viewWillAppear:animated];
 	
     self.isRotating = NO;
-    self.navigationController.delegate = self;
     self.eventsArray = [_sharedManager allEventsListContainedImage];
     
     NSDate *now = [NSDate date];
