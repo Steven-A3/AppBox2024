@@ -29,7 +29,6 @@
 @interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate, A3KeyboardDelegate, UITextFieldDelegate>
 {
     BOOL _isLoanCalcEdited;
-	BOOL _cancelInputNewCloudDataRecieved;
 }
 
 @end
@@ -548,10 +547,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
         }
     }
 
-	if (!_cancelInputNewCloudDataRecieved) {
-		[self updateLoanCalculation];
-	}
-	_cancelInputNewCloudDataRecieved = NO;
+	[self updateLoanCalculation];
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField

@@ -287,7 +287,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     [super viewWillAppear:animated];
 
+	[self reloadCurrencyCode];
     [self refreshRightBarItems];
+	[self loadPreviousCalculation];
     [self.tableView reloadData];
 }
 

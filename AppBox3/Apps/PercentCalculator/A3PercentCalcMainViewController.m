@@ -125,8 +125,8 @@
 	if (self.firstResponder) {
 		return;
 	}
-	[self reloadInputData];
 	[self reloadTableDataSource];
+	[self reloadInputData];
 	[self reloadTableHeaderView];
 	[self.tableView reloadData];
 	// 배경 설명

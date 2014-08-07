@@ -462,12 +462,6 @@
     FNLOG(@"%@, %@", textField.text, textField);
 	if (![textField.text length]) {
 		textField.text = self.previousValue;
-
-		if (textField == _sourceTextField) {
-			_targetTextField.text = self.targetValueString;
-		} else {
-			_sourceTextField.text = self.sourceValueString;
-		}
 	}
     
 	float value = [textField.text floatValueEx];
@@ -483,6 +477,12 @@
 		nf = [self currencyFormatterWithCurrencyCode:self.targetItem.currencyCode];
 	}
 	textField.text = [nf stringFromNumber:@(value)];
+
+	if (textField == _sourceTextField) {
+		_targetTextField.text = self.targetValueString;
+	} else {
+		_sourceTextField.text = self.sourceValueString;
+	}
 }
 
 - (void)textFieldDidChange:(NSNotification *)notification {
