@@ -436,7 +436,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 }
 
 - (void) snapAnimation{
-	UIView *flashView = [[UIView alloc] initWithFrame:[self.view bounds]];
+	UIView *flashView = [[UIView alloc] initWithFrame:[self screenBoundsAdjustedWithOrientation]];
 	[flashView setBackgroundColor:[UIColor blackColor]];
 	[flashView setAlpha:0.f];
 	[[[self view] window] addSubview:flashView];

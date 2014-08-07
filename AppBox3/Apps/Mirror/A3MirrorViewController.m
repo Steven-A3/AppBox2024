@@ -1168,30 +1168,33 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	}];
 }
 
-- (void) snapAnimation{
-	UIView *flashView = [[UIView alloc] initWithFrame:[_videoPreviewViewNoFilter frame]];
-	[flashView setBackgroundColor:[UIColor whiteColor]];
-	[flashView setAlpha:0.f];
-	[[[self view] window] addSubview:flashView];
-
-	[UIView animateWithDuration:.4f
-					 animations:^{
-						 [flashView setAlpha:1.f];
-					 }
-					 completion:^(BOOL finished) {
-						 [UIView animateWithDuration:.4f
-										  animations:^{
-											  [flashView setAlpha:0.f];
-										  }
-										  completion:^(BOOL finished){
-											  [flashView removeFromSuperview];
-										  }
-						 ];
-					 }
-	];
+- (void)snapAnimation
+{
+    UIView *flashView = [[UIView alloc] initWithFrame:[self screenBoundsAdjustedWithOrientation]];
+    [flashView setBackgroundColor:[UIColor blackColor]];
+    [flashView setAlpha:0.f];
+    [[[self view] window] addSubview:flashView];
+    
+    [UIView animateWithDuration:.1f
+                     animations:^{
+                         [flashView setAlpha:1.f];
+                     }
+                     completion:^(BOOL finished) {
+                         [UIView animateWithDuration:.1f
+                                          animations:^{
+                                              [flashView setAlpha:0.f];
+                                          }
+                                          completion:^(BOOL finished){
+                                              [flashView removeFromSuperview];
+                                          }
+                          ];
+                     }
+     ];
 }
 
 - (IBAction)captureButton:(id)sender {
+    [self snapAnimation];
+    
 	dispatch_async(_captureSessionQueue, ^{
 		// Flash set to Auto for Still Capture
 		// [self setFlashMode:AVCaptureFlashModeAuto forDevice:_videoDevice];
@@ -1200,7 +1203,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 			AVCaptureConnection *stillImageConnection = [stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
 			[stillImageConnection setVideoScaleAndCropFactor:effectiveScale];
 		}
-		//[self snapAnimation];
+        
 		[stillImageOutput captureStillImageAsynchronouslyFromConnection:[stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
 			if (imageDataSampleBuffer)
 			{
