@@ -581,7 +581,7 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 					FNLOG(@"Try downloading file : %@", cloudFile.name);
 					[_cloudFileSystem downloadFromPath:cloudFile.path toLocalFile:localFilePath completion:^(NSError *error_3) {
 						FNLOG();
-						if (!error_2) {
+						if (!error_3) {
 							FNLOG(@"Transaction Log downloaded: %@", cloudFile.name);
 							[self addFilenameToDownloadedFileList:cloudFile.name];
 
@@ -616,28 +616,30 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 	if ([logFiles count] < 32) return;
 
 	FNLOG(@"Try to aggregate log files");
-	NSString *firstHunkFilePath = [[self transactionLogDirectoryPath] stringByAppendingPathComponent:A3DictionaryDBFirstHunkFilename];
-	NSArray *firstHunkContents;
-	NSMutableArray *newFirstHunk = [NSMutableArray new];
+	NSString *aggregatedHunkFilePath = [[self transactionLogDirectoryPath] stringByAppendingPathComponent:A3DictionaryDBFirstHunkFilename];
+
+	NSArray *oldAggregatedHunkContents;
+	NSMutableSet *newAggregatedHunkContents = [NSMutableSet new];
+	
 	NSMutableArray *mutableLogFiles = [logFiles mutableCopy];
 	if ([mutableLogFiles containsObject:A3DictionaryDBFirstHunkFilename]) {
 		[mutableLogFiles removeObject:A3DictionaryDBFirstHunkFilename];
-		firstHunkContents = [NSArray arrayWithContentsOfFile:firstHunkFilePath];
-		[newFirstHunk addObjectsFromArray:firstHunkContents];
+		oldAggregatedHunkContents = [NSArray arrayWithContentsOfFile:aggregatedHunkFilePath];
+		[newAggregatedHunkContents addObjectsFromArray:oldAggregatedHunkContents];
 	}
 
 	[_cloudFileSystem connect:^(NSError *error) {
 		for (NSString *logPath in mutableLogFiles) {
 			NSArray *transactions = [NSArray arrayWithContentsOfFile:logPath];
 			if (transactions) {
-				[newFirstHunk addObjectsFromArray:transactions];
+				[newAggregatedHunkContents addObjectsFromArray:transactions];
 			}
 			[_fileManager removeItemAtPath:logPath error:NULL];
 			NSString *cloudPath = [A3DictionaryDBLogsDirectoryName stringByAppendingPathComponent:[logPath lastPathComponent]];
 			[_cloudFileSystem removeItemAtPath:cloudPath completion:NULL];
 		}
-		[newFirstHunk writeToFile:firstHunkFilePath atomically:YES];
-		[_cloudFileSystem uploadLocalFile:firstHunkFilePath toPath:[A3DictionaryDBLogsDirectoryName stringByAppendingPathComponent:A3DictionaryDBFirstHunkFilename] completion:NULL];
+		[[newAggregatedHunkContents allObjects] writeToFile:aggregatedHunkFilePath atomically:YES];
+		[_cloudFileSystem uploadLocalFile:aggregatedHunkFilePath toPath:[A3DictionaryDBLogsDirectoryName stringByAppendingPathComponent:A3DictionaryDBFirstHunkFilename] completion:NULL];
 	}];
 }
 
@@ -673,12 +675,8 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 }
 
 - (void)uploadLogFilesInLocalDirectoryToCloud {
-	NSMutableSet *downloadedFileList = [self downloadedFilesSet];
-
 	NSArray *fileList = [_fileManager contentsOfDirectoryAtPath:[self transactionLogDirectoryPath] error:NULL];
 	for (NSString *path in fileList) {
-		if ([downloadedFileList containsObject:path.lastPathComponent]) continue;
-
 		NSString *cloudFilePath = [A3DictionaryDBLogsDirectoryName stringByAppendingPathComponent:path.lastPathComponent];
 		[_cloudFileSystem fileExistsAtPath:cloudFilePath completion:^(BOOL exists, BOOL isDirectory, NSError *error_1) {
 			if (!exists) {
@@ -688,10 +686,6 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 						FNLOG(@"Successfully uploaded file : %@", cloudFilePath);
 						[self addFilenameToDownloadedFileList:path.lastPathComponent];
 					} else {
-						// No such file or directory. ??
-						if (error_2.code == 260) {
-
-						}
 						FNLOG(@"Failed to uploading file : %@", cloudFilePath);
 					}
 				}];
@@ -721,6 +715,7 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 	}
 
 	NSArray *logFiles = [_fileManager contentsOfDirectoryAtPath:[self transactionLogDirectoryPath] error:NULL];
+	FNLOG(@"%@", logFiles);
 	for (NSString *logFile in logFiles) {
 		if (![[logFile lastPathComponent] isEqualToString:A3DictionaryDBFirstHunkFilename]) {
 			NSData *data = [NSData dataWithContentsOfFile:[[self transactionLogDirectoryPath] stringByAppendingPathComponent:logFile]];
@@ -732,6 +727,7 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 																					error:&error];
 				if (!error) {
 					[allTransactions addObjectsFromArray:transactions];
+					FNLOG(@"%@", transactions);
 				}
 			} else {
 				FNLOG(@"Failed to read log file: %@", logFile.lastPathComponent);
