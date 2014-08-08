@@ -22,6 +22,6 @@
 
 @interface A3ExpenseListHistoryViewController : UITableViewController
 
-@property (nonatomic, assign) id<A3ExpenseListHistoryDelegate> delegate;
+@property (nonatomic, weak) id<A3ExpenseListHistoryDelegate> delegate;
 
 @end

@@ -27,7 +27,7 @@
 @property (nonatomic, strong) UITextField *priceTextField;
 @property (nonatomic, strong) UITextField *qtyTextField;
 @property (nonatomic, strong) UILabel *subTotalLabel;
-@property (nonatomic, assign) id<A3ExpenseListItemCellDelegate> delegate;
+@property (nonatomic, weak) id<A3ExpenseListItemCellDelegate> delegate;
 
 - (NSString *)defaultCurrencyCode;
 @end

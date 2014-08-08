@@ -544,7 +544,6 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 - (NSNumber *)tipValueWithRounding {
     
     NSNumber *tipValue = self.tipCalcData.tip;
-    BOOL rounding = (self.roundingMethodValue == TCRoundingMethodValue_Tip || self.roundingMethodValue == TCRoundingMethodValue_TipPerPerson) ? YES : NO;
     
     // valueType
     if (![self.tipCalcData.isPercentTip boolValue]) {

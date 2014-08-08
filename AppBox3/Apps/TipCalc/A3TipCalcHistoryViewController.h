@@ -17,6 +17,6 @@
 
 @interface A3TipCalcHistoryViewController : UITableViewController
 
-@property (nonatomic, assign) id<A3TipCalcHistorySelectDelegate> delegate;
+@property (nonatomic, weak) id<A3TipCalcHistorySelectDelegate> delegate;
 
 @end

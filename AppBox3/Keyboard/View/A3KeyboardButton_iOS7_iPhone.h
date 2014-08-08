@@ -13,6 +13,6 @@
 
 @property (nonatomic, strong) CALayer *highlightedMarkLayer;
 @property (nonatomic, strong) NSString *markInsetsString;
-@property (assign) NSUInteger *identifier;
+@property (nonatomic, assign) NSUInteger *identifier;
 
 @end

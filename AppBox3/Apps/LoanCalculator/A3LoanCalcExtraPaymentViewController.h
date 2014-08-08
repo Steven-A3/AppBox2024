@@ -19,7 +19,7 @@
 
 @interface A3LoanCalcExtraPaymentViewController : UITableViewController
 
-@property (nonatomic, assign) id<LoanCalcExtraPaymentDelegate> delegate;
+@property (nonatomic, weak) id<LoanCalcExtraPaymentDelegate> delegate;
 @property (nonatomic, readwrite) A3LoanCalcExtraPaymentType exPaymentType;
 @property (nonatomic, strong) LoanCalcData *loanCalcData;
 

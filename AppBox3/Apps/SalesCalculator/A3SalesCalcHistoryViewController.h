@@ -16,6 +16,6 @@
 
 @interface A3SalesCalcHistoryViewController : UITableViewController
 
-@property (nonatomic, assign) id<A3SalesCalcHistorySelectDelegate> delegate;
+@property (nonatomic, weak) id<A3SalesCalcHistorySelectDelegate> delegate;
 
 @end

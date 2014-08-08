@@ -17,6 +17,6 @@
 @interface A3WalletFieldTypeSelectViewController : UITableViewController
 
 @property (nonatomic, assign) NSString *selectedType;
-@property (nonatomic, assign) id<WalletFieldTypeSelectDelegate> delegate;
+@property (nonatomic, weak) id<WalletFieldTypeSelectDelegate> delegate;
 
 @end

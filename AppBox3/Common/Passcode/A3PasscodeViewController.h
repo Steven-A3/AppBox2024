@@ -12,7 +12,7 @@
 
 @interface A3PasscodeViewController : A3PasscodeCommonViewController
 
-@property (assign) BOOL isCurrentlyOnScreen;
+@property (nonatomic, assign) BOOL isCurrentlyOnScreen;
 
 - (id)initWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;
 

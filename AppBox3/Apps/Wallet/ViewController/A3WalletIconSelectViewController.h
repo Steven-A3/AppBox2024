@@ -20,7 +20,7 @@
 
 @interface A3WalletIconSelectViewController : UIViewController
 
-@property (assign) id<WalletIconSelectDelegate> delegate;
+@property (nonatomic, weak) id<WalletIconSelectDelegate> delegate;
 @property (nonatomic, strong) NSString *selecteIconName;
 
 @end

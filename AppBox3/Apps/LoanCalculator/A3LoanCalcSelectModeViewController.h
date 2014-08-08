@@ -18,7 +18,7 @@
 
 @interface A3LoanCalcSelectModeViewController : UITableViewController
 
-@property (nonatomic, assign) id<LoanCalcSelectCalcForDelegate> delegate;
+@property (nonatomic, weak) id<LoanCalcSelectCalcForDelegate> delegate;
 @property (readwrite) A3LoanCalcCalculationMode currentCalcMode;
 
 @end

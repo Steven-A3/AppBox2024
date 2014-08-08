@@ -20,6 +20,6 @@
 
 @interface A3UnitPriceHistoryViewController : UITableViewController
 
-@property (nonatomic, assign) id<UnitPriceHistoryViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<UnitPriceHistoryViewControllerDelegate> delegate;
 
 @end

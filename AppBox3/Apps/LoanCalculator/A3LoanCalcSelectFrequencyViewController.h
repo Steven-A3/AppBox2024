@@ -18,7 +18,7 @@
 
 @interface A3LoanCalcSelectFrequencyViewController : UITableViewController
 
-@property (nonatomic, assign) id<LoanCalcSelectFrequencyDelegate> delegate;
+@property (nonatomic, weak) id<LoanCalcSelectFrequencyDelegate> delegate;
 @property (readwrite) A3LoanCalcFrequencyType currentFrequency;
 
 @end
