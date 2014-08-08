@@ -79,4 +79,6 @@ extern NSString *const A3AnimationIDKeyboardWillShow;
 + (BOOL)shouldSupportLunarCalendar;
 
 + (BOOL)useKoreanLunarCalendar;
+
++ (BOOL)useKoreanLunarCalendarForConversion;
 @end
