@@ -116,7 +116,9 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 	}
 	NSDate *lastSyncStartTime = syncInfo[A3SyncStartTime];
 	NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:lastSyncStartTime];
-	if (interval >= 60 * 5) {
+	// TODO:
+	NSDate *unusedVariable = nil;
+	if (interval >= 30) {
 		return YES;
 	}
 
@@ -730,7 +732,6 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 																					error:&error];
 				if (!error) {
 					[allTransactions addObjectsFromArray:transactions];
-					FNLOG(@"%@", transactions);
 				}
 			} else {
 				FNLOG(@"Failed to read log file: %@", logFile.lastPathComponent);
@@ -739,7 +740,9 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 	}
 
 	[allTransactions sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-		return [obj1[A3DictionaryDBTimestamp] compare:obj2[A3DictionaryDBTimestamp]];
+		NSDate *dateObj1 = obj1[A3DictionaryDBTimestamp];
+		NSDate *dateObj2 = obj2[A3DictionaryDBTimestamp];
+		return [dateObj1 compare:dateObj2];
 	}];
 
 	NSString *lastPlayedTransactionIDPath = [A3DictionaryDBLastPlayedTransactionID pathInLibraryDirectory];
@@ -759,7 +762,7 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 	NSUInteger idx = indexOfTransaction == NSNotFound ? 0 : indexOfTransaction + 1;
 	for (; idx < [allTransactions count]; idx++ ) {
 		NSDictionary *transaction = allTransactions[idx];
-		FNLOG(@"Total: %ld, current: %ld\n%@:%@", (long)[allTransactions count], (long)idx, transaction[A3DictionaryDBEntityKey], transaction[A3DictionaryDBTransactionType]);
+		FNLOG(@"Total: %ld, current: %ld, %@:%@, %@", (long)[allTransactions count], (long)idx, transaction[A3DictionaryDBEntityKey], transaction[A3DictionaryDBTransactionType], transaction[A3DictionaryDBTimestamp]);
 		if (![transaction[A3DictionaryDBDeviceID] isEqualToString:currentDeviceID]) {
 			NSArray *targetObject = [self objectForKey:transaction[A3DictionaryDBEntityKey]];
 			NSMutableArray *mutableTargetEntity = [NSMutableArray new];
@@ -891,6 +894,11 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 							[[NSUserDefaults standardUserDefaults] setObject:backupDataDictionary forKey:A3DictionaryDBInitialMergeObjects];
 							[[NSUserDefaults standardUserDefaults] synchronize];
 						}
+						
+						// Reset data to inital state.
+						[A3CurrencyDataManager setupFavorites];
+						[A3DaysCounterModelManager calendars];
+						[WalletData walletCategoriesFilterDoNotShow:NO];
 
 						[self downloadLogFiles:NULL];
 					} else {
