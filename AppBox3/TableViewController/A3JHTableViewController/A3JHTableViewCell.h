@@ -11,5 +11,5 @@
 #define A3TableViewCell_TextView_Tag 1  // KJH
 
 @interface A3JHTableViewCell : UITableViewCell
-@property (assign) CGFloat leftSeparatorInset; // KJH, separatorInset 이 특수한 경우를 위하여 추가하였습니다.
+@property (assign, nonatomic) CGFloat leftSeparatorInset; // KJH, separatorInset 이 특수한 경우를 위하여 추가하였습니다.
 @end

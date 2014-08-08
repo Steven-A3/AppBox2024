@@ -20,6 +20,6 @@
 
 @interface A3PercentCalcHistoryViewController : UITableViewController
 
-@property (nonatomic, assign) id<A3PercentCalcHistoryDelegate> delegate;
+@property (nonatomic, weak) id<A3PercentCalcHistoryDelegate> delegate;
 
 @end

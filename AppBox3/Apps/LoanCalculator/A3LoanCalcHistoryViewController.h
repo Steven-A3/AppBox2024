@@ -21,7 +21,7 @@
 
 @interface A3LoanCalcHistoryViewController : UITableViewController
 
-@property (nonatomic, assign) id<LoanCalcHistoryViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<LoanCalcHistoryViewControllerDelegate> delegate;
 @property (readwrite) BOOL isComparisonMode;
 
 @end

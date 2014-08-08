@@ -18,7 +18,7 @@
 
 @interface A3UnitPriceInputView : UIView
 
-@property (nonatomic, assign) id<UnitPriceInputDelegate> delegate;
+@property (nonatomic, weak) id<UnitPriceInputDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UILabel *markLabel;
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *unitLabel;

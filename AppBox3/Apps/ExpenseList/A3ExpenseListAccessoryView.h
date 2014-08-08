@@ -20,7 +20,7 @@
 
 @interface A3ExpenseListAccessoryView : UIView
 
-@property (nonatomic, assign) id<A3ExpenseListAccessoryDelegate> delegate;
+@property (nonatomic, weak) id<A3ExpenseListAccessoryDelegate> delegate;
 
 @property (nonatomic, strong) UIBarButtonItem *prevButton;
 

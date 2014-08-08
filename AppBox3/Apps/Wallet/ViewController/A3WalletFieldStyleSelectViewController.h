@@ -18,6 +18,6 @@
 
 @property (nonatomic, strong) NSString *typeName;
 @property (nonatomic, strong) NSString *selectedStyle;
-@property (nonatomic, assign) id<WalletFieldStyleSelectDelegate> delegate;
+@property (nonatomic, weak) id<WalletFieldStyleSelectDelegate> delegate;
 
 @end

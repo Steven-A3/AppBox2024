@@ -28,7 +28,7 @@ extern NSString *const A3WalletNotificationItemCategoryMoved;
 @property (nonatomic, assign) BOOL isAddNewItem;
 @property (nonatomic, strong) WalletItem *item;
 @property (nonatomic, strong) NSDictionary *category;
-@property (nonatomic, assign) id<WalletItemEditDelegate> delegate;
+@property (nonatomic, weak) id<WalletItemEditDelegate> delegate;
 @property (nonatomic, assign) BOOL alwaysReturnToOriginalCategory;
 
 @end

@@ -44,7 +44,7 @@
 @end
 
 @interface A3LadyCalendarCalendarView ()
-@property (assign, nonatomic) UIFont *dateFont;
+@property (strong, nonatomic) UIFont *dateFont;
 @property (strong, nonatomic) UIColor *dateTextColor;
 @property (strong, nonatomic) UIColor *weekendTextColor;
 @property (readonly, nonatomic) NSInteger year;

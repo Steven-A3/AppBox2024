@@ -14,7 +14,7 @@ typedef void (^CellExpandedBlock)(A3JHTableViewExpandableElement *);
 @interface A3JHTableViewExpandableElement : A3JHTableViewElement
 
 @property (nonatomic, copy) NSString *title;
-@property (assign, getter=isCollapsed) BOOL collapsed;
+@property (nonatomic, assign, getter=isCollapsed) BOOL collapsed;
 @property (nonatomic, strong) NSArray *elements;
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, strong) NSIndexPath *indexPath;

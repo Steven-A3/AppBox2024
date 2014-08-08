@@ -17,7 +17,7 @@
 
 @interface A3WalletCategorySelectViewController : UITableViewController
 
-@property (assign) id<WalletCategorySelectDelegate> delegate;
+@property (nonatomic, weak) id<WalletCategorySelectDelegate> delegate;
 @property (nonatomic, strong) NSDictionary *selectedCategory;
 
 @end

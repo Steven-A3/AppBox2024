@@ -20,7 +20,7 @@
 
 @interface A3WalletCategoryEditViewController : UITableViewController
 
-@property (nonatomic, assign) id<WalletCategoryEditDelegate> delegate;
+@property (nonatomic, weak) id<WalletCategoryEditDelegate> delegate;
 @property (nonatomic, strong) NSString *categoryID;
 @property (nonatomic, assign) BOOL isAddingCategory;
 

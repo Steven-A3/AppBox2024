@@ -28,7 +28,7 @@ extern NSString *const kHolidayDuration;
 
 @interface HolidayData : NSObject
 
-@property (assign)	NSUInteger year;
+@property (nonatomic, assign)	NSUInteger year;
 
 + (NSDate *)adjustDate:(NSDate *)date calendar:(NSCalendar *)calendar option:(int)option;
 + (NSDate *)dateWithDay:(NSUInteger)day month:(NSUInteger)month year:(NSUInteger) year withCalendar:(NSCalendar *)calendar option:(int)option;

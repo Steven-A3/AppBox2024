@@ -28,7 +28,7 @@
 
 @interface A3LadyCalendarCalendarView : UIView
 
-@property (assign, nonatomic) id<A3CalendarViewDelegate> delegate;
+@property (weak, nonatomic) id<A3CalendarViewDelegate> delegate;
 @property (strong, nonatomic) NSDate *dateMonth;
 @property (assign, nonatomic) CGSize cellSize;
 @property (assign, nonatomic) BOOL isSmallCell;

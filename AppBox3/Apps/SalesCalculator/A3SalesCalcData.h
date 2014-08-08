@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcShowPriceType) {
 @interface A3SalesCalcData : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSDate *historyDate;
-@property (assign) A3SalesCalcShowPriceType shownPriceType;
+@property (nonatomic, assign) A3SalesCalcShowPriceType shownPriceType;
 @property (nonatomic, strong) NSNumber *price;
 @property (nonatomic, assign) A3TableElementValueType priceType; // must be AMOUNT
 @property (nonatomic, strong) NSNumber *discount;
