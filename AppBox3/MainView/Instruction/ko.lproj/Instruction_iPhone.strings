@@ -18,7 +18,7 @@
 "4Y2-hA-ExK.text" = "키패드를 왼쪽이나 오른쪽으로 밀어서\n기본 계산기나 공학용 계산기로 변경합니다.";
 
 /* Class = "IBUILabel"; text = "Tap to add an item"; ObjectID = "55x-Hd-Yyy"; */
-"55x-Hd-Yyy.text" = "탭하여 아이템을 추가합니다.";
+"55x-Hd-Yyy.text" = "탭하여 항목을 추가합니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "5vX-h0-0KZ"; */
 "5vX-h0-0KZ.text" = "화면을 탭하여\n버튼을 표시합니다.";
@@ -42,7 +42,7 @@
 "EHY-52-AW9.text" = "탭하여 색상을 바꿉니다.";
 
 /* Class = "IBUILabel"; text = "slide the item to left,\nthen tap Delete"; ObjectID = "FNw-cz-Xbp"; */
-"FNw-cz-Xbp.text" = "아이템을 왼쪽으로 밀어서\n지울 수 있습니다.";
+"FNw-cz-Xbp.text" = "항목을                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      왼쪽으로 밀면\n지울 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to see more categories"; ObjectID = "Hom-fh-Uyk"; */
 "Hom-fh-Uyk.text" = "탭하면 더 많은 카테고리를\n볼 수 있습니다.";
@@ -66,7 +66,7 @@
 "UOR-Dm-haV.text" = "화면을 끌어 내려서 환율 정보를 갱신할 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "UvH-ng-N3W"; */
-"UvH-ng-N3W.text" = "아이템을 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
+"UvH-ng-N3W.text" = "항목을 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to add a currency"; ObjectID = "Wca-7F-aIC"; */
 "Wca-7F-aIC.text" = "탭하여 통화를 추가합니다.";
@@ -102,7 +102,7 @@
 "k0p-RN-RCK.text" = "화면을 탭하여\n버튼을 표시합니다.";
 
 /* Class = "IBUILabel"; text = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down"; ObjectID = "ls1-5i-Gos"; */
-"ls1-5i-Gos.text" = "아이템의 오른쪽≡을\n터치하고 누르고 있으면\n위 아래로 움직여서\n순서를 바꿀 수 있습니다.";
+"ls1-5i-Gos.text" = "항목의 오른쪽≡을\n터치하고 누르고 있으면\n위 아래로 움직여서\n순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to see more info"; ObjectID = "m1h-st-ypH"; */
 "m1h-st-ypH.text" = "탭하여 더 많은 정보를 봅니다.";
@@ -117,7 +117,7 @@
 "nP5-9M-28L.text" = "더하기 버튼을 탭하여 국가를 추가합니다.";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "nPF-RG-8hQ"; */
-"nPF-RG-8hQ.text" = "아이템을 터치한 후 누르고 있으면\n위 아래로 움직여서\n순서를 바꿀 수 있습니다.";
+"nPF-RG-8hQ.text" = "항목을 터치한 후 누르고 있으면\n위 아래로 움직여서\n순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to add a unit"; ObjectID = "o5S-tb-Jbp"; */
 "o5S-tb-Jbp.text" = "탭하여 단위를 추가합니다.";
@@ -129,7 +129,7 @@
 "qF4-08-u3n.text" = "탭하여 목록을 볼 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "slide the item to the left,\nthen tap Delete"; ObjectID = "qMW-Th-lrs"; */
-"qMW-Th-lrs.text" = "아이템을 왼쪽으로 밀면\n지울 수 있습니다.";
+"qMW-Th-lrs.text" = "항목을 왼쪽으로 밀면\n지울 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "slide the language to the left,\nthen tap Delete"; ObjectID = "qRC-cW-j6h"; */
 "qRC-cW-j6h.text" = "언어를 왼쪽으로 밀면\n지울 수 있습니다.";
@@ -138,7 +138,7 @@
 "rHi-Jq-5Rp.text" = "보기/가리기를\n설정합니다.";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "rqI-qD-Dqd"; */
-"rqI-qD-Dqd.text" = "아이템을 터치한 후 누르고 있으면\n위 아래로 움직여서\n순서를 바꿀 수 있습니다.";
+"rqI-qD-Dqd.text" = "항목을 터치한 후 누르고 있으면\n위 아래로 움직여서\n순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "sxx-vG-Pll"; */
 "sxx-vG-Pll.text" = "화면을 탭하여\n버튼을 표시합니다.";
@@ -150,7 +150,7 @@
 "tZj-CP-DIE.text" = "언어를 터치한 후 누르고 있으면\n위 아래로 움직여서\n순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "slide the item to the left,\nthen tap Delete"; ObjectID = "tkT-KJ-PpW"; */
-"tkT-KJ-PpW.text" = "아이템을 왼쪽으로 밀면\n지울 수 있습니다.";
+"tkT-KJ-PpW.text" = "항목을 왼쪽으로 밀면\n지울 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to see more categories"; ObjectID = "uz1-Ap-8Ft"; */
 "uz1-Ap-8Ft.text" = "탭하면 더 많은 카테고리를\n볼 수 있습니다.";

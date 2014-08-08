@@ -6,13 +6,13 @@
 "0ks-Wf-Yju.text" = "화면을 왼쪽이나 오른쪽으로 밀어서\n다른 스타일의 시계를 볼 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "Touch and hold ≡\nto the right of an item,\nthen drag it up or down"; ObjectID = "0lp-cl-Yp6"; */
-"0lp-cl-Yp6.text" = "아이템의 오른쪽≡을\n터치하고 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
+"0lp-cl-Yp6.text" = "항목의 오른쪽≡을\n터치하고 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a unit,\nthen drag it up or down"; ObjectID = "1ry-vN-Hwz"; */
 "1ry-vN-Hwz.text" = "단위를 터치한 후 누르고 있으면\n위 아래로 움직여 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "4cl-y6-WyE"; */
-"4cl-y6-WyE.text" = "아이템을 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
+"4cl-y6-WyE.text" = "항목을 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to view larger"; ObjectID = "6rS-5S-grs"; */
 "6rS-5S-grs.text" = "탭하면 크게 볼 수 있습니다.";
@@ -33,7 +33,7 @@
 "HRH-SL-EGk.text" = "탭하여 색상을 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "Hg8-OO-NUZ"; */
-"Hg8-OO-NUZ.text" = "아이템을 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
+"Hg8-OO-NUZ.text" = "항목을 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "select which categories\nto view"; ObjectID = "JFG-2D-dxV"; */
 "JFG-2D-dxV.text" = "보기/가리기를 설정합니다.";
@@ -69,7 +69,7 @@
 "SYZ-xq-Dcb.text" = "탭하여 더 많은 정보를 봅니다.";
 
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "UKH-uM-FHa"; */
-"UKH-uM-FHa.text" = "아이템을 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
+"UKH-uM-FHa.text" = "항목을 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "touch and hold a language,\nthen drag it up or down"; ObjectID = "Vz2-2z-yFf"; */
 "Vz2-2z-yFf.text" = "언어를 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
@@ -141,19 +141,19 @@
 "s0L-Sq-3OK.text" = "언어를 터치한 후 누르고 있으면\n위 아래로 움직여서 순서를 바꿀 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "Tap to add an item"; ObjectID = "s4i-R2-JdL"; */
-"s4i-R2-JdL.text" = "탭하여 아이템을 추가합니다.";
+"s4i-R2-JdL.text" = "탭하여 항목을 추가합니다.";
 
 /* Class = "IBUILabel"; text = "tap to see more categories"; ObjectID = "sgz-bU-EMv"; */
 "sgz-bU-EMv.text" = "탭하면 더 많은 카테고리를 볼 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "slide the item to left,\nthen tap Delete"; ObjectID = "tXi-Lo-F3x"; */
-"tXi-Lo-F3x.text" = "아이템을 왼쪽으로 밀어서\n지울 수 있습니다.";
+"tXi-Lo-F3x.text" = "항목을 왼쪽으로 밀면\n지울 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "slide the item to the left,\nthen tap Delete"; ObjectID = "u2A-KR-aV4"; */
-"u2A-KR-aV4.text" = "아이템을 왼쪽으로 밀면\n지울 수 있습니다.";
+"u2A-KR-aV4.text" = "항목을 왼쪽으로 밀면\n지울 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "slide the item to the left,\nthen tap Delete"; ObjectID = "uJK-as-eio"; */
-"uJK-as-eio.text" = "아이템을 왼쪽으로 밀면\n지울 수 있습니다.";
+"uJK-as-eio.text" = "항목을 왼쪽으로 밀면\n지울 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to add a new list"; ObjectID = "xAk-aO-P8z"; */
 "xAk-aO-P8z.text" = "탭하여 새로운 리스트를 만듭니다.";
