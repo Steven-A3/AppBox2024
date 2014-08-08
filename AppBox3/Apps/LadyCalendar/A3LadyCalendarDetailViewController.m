@@ -175,7 +175,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     LadyCalendarPeriod *period = [array firstObject];
 
     if (period && [period.isPredict boolValue] && ([A3DateHelper diffDaysFromDate:[NSDate date] toDate:[period startDate] isAllDay:YES] > 0)) {
-        self.navigationItem.rightBarButtonItem = nil;
+        if (_isFromNotification != YES) {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
     }
 
     self.rowDataArray = rowDataArray;
