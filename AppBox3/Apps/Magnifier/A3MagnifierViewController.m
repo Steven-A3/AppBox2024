@@ -73,7 +73,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     
     [self setNavigationBarHidden:YES];
     [self setToolBarsHidden:YES];
-    
+
     lastimageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,47,47)];
     [lastimageButton addTarget:_cameraRollButton.target action:_cameraRollButton.action forControlEvents:UIControlEventTouchUpInside];
     lastimageButton.layer.cornerRadius = 23.5;
@@ -87,7 +87,6 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     [self setupBrightness];
     [self setupTorchLevelBar];
     
-
     if ([self getMaxZoom] == 1) {
         bLosslessZoom = NO;
     } else {
@@ -334,7 +333,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	}
 }
 
-- (IBAction)invertButton:(id)sender {
+- (IBAction)invertButtonAction:(id)sender {
     bInvertedColor = !bInvertedColor;
 }
 
