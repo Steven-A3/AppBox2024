@@ -13,7 +13,7 @@
 @protocol A3DaysCounterEventDetailViewControllerDelegate;
 
 @interface A3DaysCounterEventDetailViewController : UITableViewController
-@property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
+@property (strong, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) DaysCounterEvent *eventItem;
 @property (weak, nonatomic) id<A3DaysCounterEventDetailViewControllerDelegate> delegate;
 @property (assign, nonatomic) BOOL isNotificationPopup;

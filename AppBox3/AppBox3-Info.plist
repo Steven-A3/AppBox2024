@@ -25,12 +25,6 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>appbox://foursquare</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
 				<string>db-ody0cjvmnaxvob4</string>
 			</array>
 		</dict>

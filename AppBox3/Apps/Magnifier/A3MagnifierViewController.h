@@ -12,7 +12,7 @@
 
 @interface A3MagnifierViewController : UIViewController <MWPhotoBrowserDelegate, AVCaptureVideoDataOutputSampleBufferDelegate, UIGestureRecognizerDelegate>
 - (IBAction)appsButton:(id)sender;
-- (IBAction)invertButton:(id)sender;
+- (IBAction)invertButtonAction:(id)sender;
 - (IBAction)lightButton:(id)sender;
 - (IBAction)brightSlider:(id)sender;
 - (IBAction)manifierslider:(id)sender;
@@ -30,6 +30,5 @@
 @property (weak, nonatomic) IBOutlet UISlider *flashbrightslider;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *lightButton;
 @property (weak, nonatomic) IBOutlet UIToolbar *flashToolBar;
-
 
 @end
