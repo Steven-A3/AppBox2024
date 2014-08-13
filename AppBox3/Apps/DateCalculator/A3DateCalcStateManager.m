@@ -244,10 +244,10 @@ static DurationType g_currentDurationType;
 
     if ( (rangeDayComp.day % 7 == 0) || (fromWeekDay.weekday < toWeekDay.weekday) ) {
         if (exclude & ExcludeOptions_Sunday) {
-            totalWeeks += weeks.week;
+            totalWeeks += weeks.weekOfYear;
         }
         if (exclude & ExcludeOptions_Saturday) {
-            totalWeeks += weeks.week;
+            totalWeeks += weeks.weekOfYear;
         }
     } else {
         // from > to
@@ -255,32 +255,32 @@ static DurationType g_currentDurationType;
             // toDate가 주말인 경우
             if (exclude & ExcludeOptions_Sunday) {
                 if (fromWeekDay.weekday > toWeekDay.weekday && toWeekDay.weekday == [calendar firstWeekday]+6) {
-                    totalWeeks += weeks.week + 1;
+                    totalWeeks += weeks.weekOfYear + 1;
                 } else {
-                    totalWeeks += weeks.week;
+                    totalWeeks += weeks.weekOfYear;
                 }
             }
             if (exclude & ExcludeOptions_Saturday) {
                 if (fromWeekDay.weekday > toWeekDay.weekday && toWeekDay.weekday == [calendar firstWeekday]) {
-                    totalWeeks += weeks.week + 1;
+                    totalWeeks += weeks.weekOfYear + 1;
                 } else {
-                    totalWeeks += weeks.week;
+                    totalWeeks += weeks.weekOfYear;
                 }
             }
         } else {
             // toDate가 주중인 경우
             if (exclude & ExcludeOptions_Sunday) {
                 if (fromWeekDay.weekday > toWeekDay.weekday) {
-                    totalWeeks += weeks.week + 1;
+                    totalWeeks += weeks.weekOfYear + 1;
                 } else {
-                    totalWeeks += weeks.week;
+                    totalWeeks += weeks.weekOfYear;
                 }
             }
             if (exclude & ExcludeOptions_Saturday) {
                 if (fromWeekDay.weekday > toWeekDay.weekday) {
-                    totalWeeks += weeks.week + 1;
+                    totalWeeks += weeks.weekOfYear + 1;
                 } else {
-                    totalWeeks += weeks.week;
+                    totalWeeks += weeks.weekOfYear;
                 }
             }
         }

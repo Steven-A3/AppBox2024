@@ -270,7 +270,7 @@
 												  fromDate:fromDate
 													toDate:toDate options:0];
 	
-	return [diffComponent week];
+	return [diffComponent weekOfYear];
 }
 
 + (NSInteger)diffMonthsFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate
@@ -377,7 +377,7 @@
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
 	NSDateComponents *addComponent = [[NSDateComponents alloc] init];
-	[addComponent setWeek:weeks];
+	[addComponent setWeekOfYear:weeks];
 	return [calendar dateByAddingComponents:addComponent toDate:date options:0];
 }
 

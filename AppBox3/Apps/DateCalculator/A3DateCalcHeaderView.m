@@ -598,7 +598,7 @@
         resultDate.year = labs(resultDate.year);
         resultDate.month = labs(resultDate.month);
         resultDate.day = labs(resultDate.day);
-        resultDate.week = labs(resultDate.week);
+        resultDate.weekOfYear = labs(resultDate.weekOfYear);
 
         switch (durationType) {
             case DurationType_Year:
@@ -608,7 +608,7 @@
                 [result addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld months", @"StringsDict", nil), (long) resultDate.month]];
                 break;
             case DurationType_Week:
-                [result addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld weeks", @"StringsDict", nil), (long)resultDate.week]];
+                [result addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld weeks", @"StringsDict", nil), (long)resultDate.weekOfYear]];
                 break;
             case DurationType_Day:
                 [result addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), (long) resultDate.day]];
@@ -627,8 +627,8 @@
                     }
                 }
                 if (durationType & DurationType_Week) {
-                    if (resultDate.week != 0) {
-                        [result addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld weeks", @"StringsDict", nil), (long)resultDate.week]];
+                    if (resultDate.weekOfYear != 0) {
+                        [result addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld weeks", @"StringsDict", nil), (long)resultDate.weekOfYear]];
                     }
                 }
                 if (durationType & DurationType_Day) {
@@ -667,7 +667,7 @@
             [result addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld months", @"StringsDict", nil), labs((long)resultDate.month)]];
             break;
         case DurationType_Week:
-            [result addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld weeks", @"StringsDict", nil), labs((long)resultDate.week)]];
+            [result addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld weeks", @"StringsDict", nil), labs((long)resultDate.weekOfYear)]];
             break;
         case DurationType_Day:
             [result addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), labs((long)resultDate.day)]];
@@ -713,12 +713,12 @@
                 }
             }
             if (durationType & DurationType_Week) {
-                if (resultDate.week != 0) {
+                if (resultDate.weekOfYear != 0) {
                     if (durationFlagCount >= 3) {
-                        [result addObject:[NSString stringWithFormat:NSLocalizedString(@"%ldw", @"%ldw"), labs((long) resultDate.week)]];
+                        [result addObject:[NSString stringWithFormat:NSLocalizedString(@"%ldw", @"%ldw"), labs((long) resultDate.weekOfYear)]];
                     }
                     else {
-                        [result addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld weeks", @"StringsDict", nil), labs((long) resultDate.week)]];
+                        [result addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld weeks", @"StringsDict", nil), labs((long) resultDate.weekOfYear)]];
                     }
                 }
             }

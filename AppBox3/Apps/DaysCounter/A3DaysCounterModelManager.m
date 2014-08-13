@@ -957,8 +957,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         if ( option & DurationOption_Month && [diffComponent month] != 0) {
             [resultArray addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld months", @"StringsDict", nil), labs([diffComponent month]) ] ];
         }
-        if ( option & DurationOption_Week && [diffComponent week] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld weeks", @"StringsDict", nil), labs([diffComponent week]) ] ];
+        if ( option & DurationOption_Week && [diffComponent weekOfYear] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld weeks", @"StringsDict", nil), labs([diffComponent weekOfYear]) ] ];
         }
         if (option & DurationOption_Day && [diffComponent day] != 0) {
             [resultArray addObject:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), labs([diffComponent day]) ] ];
@@ -982,8 +982,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         if ( option & DurationOption_Month && [diffComponent month] != 0) {
             [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld m", @"%ld m"), labs([diffComponent month])]];
         }
-        if ( option & DurationOption_Week && [diffComponent week] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld w", @"%ld w"), labs([diffComponent week])]];
+        if ( option & DurationOption_Week && [diffComponent weekOfYear] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld w", @"%ld w"), labs([diffComponent weekOfYear])]];
         }
         if (option & DurationOption_Day && [diffComponent day] != 0) {
             [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld d", @"%ld d"), labs([diffComponent day])]];

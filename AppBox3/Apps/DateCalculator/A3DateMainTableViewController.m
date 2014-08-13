@@ -483,19 +483,19 @@
     DurationType durationType = [A3DateCalcStateManager durationType];
     NSMutableString *intervals = [[NSMutableString alloc] init];
     
-    if ( (durationType & DurationType_Year) && intervalComp.year!=0 ) {
+    if ( (durationType & DurationType_Year) && intervalComp.year !=0 ) {
 		[intervals appendString:@" "];
         [intervals appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), labs((long) intervalComp.year)]];
     }
     
-    if ( (durationType & DurationType_Month) && intervalComp.month!=0 ) {
+    if ( (durationType & DurationType_Month) && intervalComp.month != 0 ) {
 		[intervals appendString:@" "];
         [intervals appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld months", @"StringsDict", nil), labs((long)intervalComp.month)]];
     }
     
-    if ( (durationType & DurationType_Week) && intervalComp.week!=0 ) {
+    if ( (durationType & DurationType_Week) && intervalComp.weekOfYear !=0 ) {
 		[intervals appendString:@" "];
-        [intervals appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld weeks", @"StringsDict", nil), labs((long)intervalComp.week)]];
+        [intervals appendString:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld weeks", @"StringsDict", nil), labs((long)intervalComp.weekOfYear)]];
     }
     
     if ( (durationType & DurationType_Day) && intervalComp.day!=0 ) {

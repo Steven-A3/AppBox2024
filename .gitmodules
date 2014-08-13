@@ -1,48 +1,42 @@
 [submodule "External/NSDate-TimeAgo"]
 	path = External/NSDate-TimeAgo
-	url = https://github.com/kevinlawler/NSDate-TimeAgo.git
+	url = https://github.com/Steven-A3/NSDate-TimeAgo.git
 [submodule "External/Masonry"]
 	path = External/Masonry
-	url = https://github.com/Steven-Gwug/Masonry.git
+	url = https://github.com/Steven-A3/Masonry.git
 [submodule "External/FXPageControl"]
 	path = External/FXPageControl
-	url = https://github.com/Steven-Gwug/FXPageControl.git
+	url = https://github.com/Steven-A3/FXPageControl.git
 [submodule "External/FMMoveTableView"]
 	path = External/FMMoveTableView
-	url = https://github.com/Steven-Gwug/FMMoveTableView.git
+	url = https://github.com/Steven-A3/FMMoveTableView.git
 [submodule "External/MMDrawerController"]
 	path = External/MMDrawerController
-	url = https://github.com/Steven-Gwug/MMDrawerController.git
+	url = https://github.com/Steven-A3/MMDrawerController.git
 [submodule "External/NSDate-Extensions"]
 	path = External/NSDate-Extensions
-	url = https://github.com/Steven-Gwug/NSDate-Extensions.git
+	url = https://github.com/Steven-A3/NSDate-Extensions.git
 [submodule "External/FXLabel"]
 	path = External/FXLabel
-	url = https://github.com/Steven-Gwug/FXLabel.git
+	url = https://github.com/Steven-A3/FXLabel.git
 [submodule "External/HTCopyableLabel"]
 	path = External/HTCopyableLabel
-	url = https://github.com/Steven-Gwug/HTCopyableLabel.git
+	url = https://github.com/Steven-A3/HTCopyableLabel.git
 [submodule "External/DKLiveBlur"]
 	path = External/DKLiveBlur
-	url = https://github.com/Steven-Gwug/DKLiveBlur.git
+	url = https://github.com/Steven-A3/DKLiveBlur.git
 [submodule "External/AFNetworking"]
 	path = External/AFNetworking
 	url = https://github.com/AFNetworking/AFNetworking.git
-[submodule "External/UbiquityStoreManager"]
-	path = External/UbiquityStoreManager
-	url = https://github.com/Steven-Gwug/UbiquityStoreManager.git
 [submodule "External/MBProgressHUD"]
 	path = External/MBProgressHUD
 	url = https://github.com/jdg/MBProgressHUD.git
-[submodule "External/JNJProgressButton"]
-	path = External/JNJProgressButton
-	url = https://github.com/jnjosh/JNJProgressButton.git
 [submodule "External/JVFloatLabeledTextField"]
 	path = External/JVFloatLabeledTextField
-	url = https://github.com/Steven-Gwug/JVFloatLabeledTextField.git
+	url = https://github.com/Steven-A3/JVFloatLabeledTextField.git
 [submodule "External/MWPhotoBrowser"]
 	path = External/MWPhotoBrowser
-	url = https://github.com/Steven-Gwug/MWPhotoBrowser.git
+	url = https://github.com/Steven-A3/MWPhotoBrowser.git
 [submodule "External/MPFoldTransition"]
 	path = External/MPFoldTransition
-	url = https://github.com/Steven-Gwug/MPFoldTransition.git
+	url = https://github.com/Steven-A3/MPFoldTransition.git
