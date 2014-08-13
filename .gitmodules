@@ -40,10 +40,4 @@
 [submodule "External/MPFoldTransition"]
 	path = External/MPFoldTransition
 	url = https://github.com/Steven-A3/MPFoldTransition.git
-[submodule "External/UbiquityStoreManager"]
-	path = External/UbiquityStoreManager
-	url = https://github.com/Steven-A3/UbiquityStoreManager.git
-[submodule "External/JNJProgressButton"]
-	path = External/JNJProgressButton
-	url = https://github.com/Steven-A3/JNJProgressButton.git
 
