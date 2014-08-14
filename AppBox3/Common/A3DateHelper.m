@@ -266,7 +266,7 @@
 		return 0;
     
 	NSCalendar *calendar = [NSCalendar currentCalendar];
-	NSDateComponents *diffComponent = [calendar components:NSWeekCalendarUnit
+	NSDateComponents *diffComponent = [calendar components:NSWeekOfYearCalendarUnit
 												  fromDate:fromDate
 													toDate:toDate options:0];
 	
@@ -407,7 +407,7 @@
 {
 	NSCalendar *calendar = [NSCalendar currentCalendar];
 	NSDate *startDate = [A3DateHelper dateFromYear:[A3DateHelper yearFromDate:month] month:[A3DateHelper monthFromDate:month] day:1 hour:12 minute:0 second:0];
-	NSRange range = [calendar rangeOfUnit:NSWeekCalendarUnit inUnit:NSMonthCalendarUnit forDate:startDate];
+	NSRange range = [calendar rangeOfUnit:NSWeekOfYearCalendarUnit inUnit:NSMonthCalendarUnit forDate:startDate];
 	
 	return range.length;
 }

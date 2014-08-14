@@ -74,7 +74,7 @@ static DurationType g_currentDurationType;
         calUnit |= NSMonthCalendarUnit;
     }
     if (durationType & DurationType_Week) {
-        calUnit |= NSWeekCalendarUnit;
+        calUnit |= NSWeekOfYearCalendarUnit;
     }
     if (durationType & DurationType_Day) {
         calUnit |= NSDayCalendarUnit;
@@ -237,7 +237,7 @@ static DurationType g_currentDurationType;
     NSInteger resultDays = 0;
     
     NSDateComponents *rangeDayComp = [calendar components:NSDayCalendarUnit fromDate:fromDate toDate:toDate options:0];
-    NSDateComponents *weeks = [calendar components:NSWeekCalendarUnit fromDate:fromDate toDate:toDate options:0];
+    NSDateComponents *weeks = [calendar components:NSWeekOfYearCalendarUnit fromDate:fromDate toDate:toDate options:0];
     NSDateComponents *fromWeekDay = [calendar components:NSWeekdayCalendarUnit fromDate:fromDate];
     NSDateComponents *toWeekDay = [calendar components:NSWeekdayCalendarUnit fromDate:toDate];
     NSInteger totalWeeks = 0;

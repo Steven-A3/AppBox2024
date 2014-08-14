@@ -883,7 +883,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         flagCount++;
     }
     if ( option & DurationOption_Week ) {
-        flag |= NSWeekCalendarUnit;
+        flag |= NSWeekOfYearCalendarUnit;
         flagCount++;
     }
     if ( option & DurationOption_Month ) {
@@ -1269,7 +1269,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             break;
         case RepeatType_Every2Week:
         case RepeatType_EveryWeek:
-            calendarUnit |= NSWeekCalendarUnit;
+            calendarUnit |= NSWeekOfYearCalendarUnit;
             break;
         case RepeatType_EveryDay:
             break;
