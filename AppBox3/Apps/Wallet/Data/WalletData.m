@@ -166,7 +166,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow {
-	NSArray *object = [[A3SyncManager sharedSyncManager] objectForKey:A3WalletUserDefaultsCategoryInfo];
+	NSArray *object = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3WalletDataEntityCategoryInfo];
 	if (object) {
 		if (hideDoNotShow) {
 			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != YES", W_DoNotShow_KEY];
@@ -190,7 +190,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 			W_SYSTEM_KEY : W_SYSTEM_KEY
 	} atIndex:1];
 
-	[[A3SyncManager sharedSyncManager] setSyncObject:newCategories forKey:A3WalletUserDefaultsCategoryInfo state:A3KeyValueDBStateInitialized];
+	[[A3SyncManager sharedSyncManager] saveDataObject:newCategories forFilename:A3WalletDataEntityCategoryInfo state:A3DataObjectStateInitialized];
 	return newCategories;
 }
 
@@ -266,7 +266,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	} else {
 		[allCategories addObject:category];
 	}
-	[[A3SyncManager sharedSyncManager] setSyncObject:allCategories forKey:A3WalletUserDefaultsCategoryInfo state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] saveDataObject:allCategories forFilename:A3WalletDataEntityCategoryInfo state:A3DataObjectStateModified];
 }
 
 + (NSDictionary *)fieldOfFieldItem:(WalletFieldItem *)fieldItem category:(NSDictionary *)category {

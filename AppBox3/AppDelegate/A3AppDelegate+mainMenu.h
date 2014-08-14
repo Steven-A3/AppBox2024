@@ -13,15 +13,15 @@
 
 - (NSArray *)allMenu;
 - (NSArray *)allMenuItems;
-- (NSArray *)allMenuArrayFromUserDefaults;
+- (NSArray *)allMenuArrayFromStoredDataFile;
 
-- (void)storeAllMenu:(NSArray *)menuArray withDate:(NSDate *)date state:(A3KeyValueDBStateValue)state;
+- (void)storeAllMenu:(NSArray *)menuArray withDate:(NSDate *)date state:(A3DataObjectStateValue)state;
 - (NSDictionary *)favoriteMenuDictionary;
 - (NSArray *)favoriteItems;
 - (void)storeFavorites:(NSArray *)newFavorites;
 
-- (void)storeFavoriteMenuDictionary:(NSMutableDictionary *)dictionary withDate:(NSDate *)updateDate state:(A3KeyValueDBStateValue)state;
-- (void)storeRecentlyUsedMenuDictionary:(NSMutableDictionary *)mutableDictionary withDate:(NSDate *)updateDate;
+- (void)saveToFileFavoriteMenuDictionary:(NSMutableDictionary *)dictionary withDate:(NSDate *)updateDate state:(A3DataObjectStateValue)state;
+- (void)saveToFileRecentlyUsedMenuDictionary:(NSMutableDictionary *)mutableDictionary withDate:(NSDate *)updateDate;
 - (NSUInteger)maximumRecentlyUsedMenus;
 - (void)storeMaximumNumberRecentlyUsedMenus:(NSUInteger)maxNumber;
 - (void)clearRecentlyUsedMenus;

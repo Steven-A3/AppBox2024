@@ -166,7 +166,7 @@
 
 	[_sharedManager saveCalendars:_calendarArray];
 	NSArray *newOrder = [_calendarArray valueForKeyPath:ID_KEY];
-	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterUserDefaultsCalendars
+	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterDataEntityCalendars
 												 type:A3DictionaryDBTransactionTypeReorder
 											   object:newOrder];
 }
@@ -194,7 +194,7 @@
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
 	[_sharedManager saveCalendars:_calendarArray];
-	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterUserDefaultsCalendars
+	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterDataEntityCalendars
 												 type:A3DictionaryDBTransactionTypeUpdate
 											   object:_calendarArray[indexPath.row]];
 }
@@ -238,7 +238,7 @@
 	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
 	[_sharedManager saveCalendars:_calendarArray];
-	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterUserDefaultsCalendars
+	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterDataEntityCalendars
 												 type:A3DictionaryDBTransactionTypeUpdate
 											   object:_calendarArray[indexPath.row]];
 }

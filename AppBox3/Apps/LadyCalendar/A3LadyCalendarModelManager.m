@@ -57,7 +57,7 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 			L_NAME_KEY : [self defaultAccountName]
 	};
 
-	[self saveLadyCalendarObject:@[defaultAccount] forKey:A3LadyCalendarUserDefaultsAccounts];
+	[self saveLadyCalendarObject:@[defaultAccount] forKey:A3LadyCalendarDataEntityAccounts];
 }
 
 - (NSDateFormatter *)dateFormatter {
@@ -74,7 +74,7 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
     // 기본 설정값을 저장한다.
     if ([[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarUserDefaultsSettings] == nil ){
         NSMutableDictionary *item = [self createDefaultSetting];
-		[[A3SyncManager sharedSyncManager] setObject:item forKey:A3LadyCalendarUserDefaultsSettings state:A3KeyValueDBStateInitialized];
+		[[A3SyncManager sharedSyncManager] setObject:item forKey:A3LadyCalendarUserDefaultsSettings state:A3DataObjectStateInitialized];
     }
 
     [self makePredictedPerioedsBeforeCurrentPeriod];
@@ -87,7 +87,7 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 		[self addDefaultAccount];
 
 		if ( [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID] == nil ) {
-			[self saveLadyCalendarObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID];
+			[[A3SyncManager sharedSyncManager] setObject:DefaultAccountID forKey:A3LadyCalendarCurrentAccountID state:A3DataObjectStateInitialized];
 		}
 	}
 }
@@ -100,7 +100,7 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 	if (idx != NSNotFound) {
 		[accounts removeObjectAtIndex:idx];
 	}
-	[self saveLadyCalendarObject:accounts forKey:A3LadyCalendarUserDefaultsAccounts];
+	[self saveLadyCalendarObject:accounts forKey:A3LadyCalendarDataEntityAccounts];
 }
 
 - (void)saveAccount:(NSDictionary *)account {
@@ -113,15 +113,18 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 	} else {
 		[accounts replaceObjectAtIndex:idx withObject:account];
 	}
-	[self saveLadyCalendarObject:accounts forKey:A3LadyCalendarUserDefaultsAccounts];
+	[self saveLadyCalendarObject:accounts forKey:A3LadyCalendarDataEntityAccounts];
 }
 
 - (void)saveAccountList:(NSArray *)accountList {
-	[self saveLadyCalendarObject:accountList forKey:A3LadyCalendarUserDefaultsAccounts];
+	[self saveLadyCalendarObject:accountList forKey:A3LadyCalendarDataEntityAccounts];
 }
 
 - (void)saveLadyCalendarObject:(id)object forKey:(NSString *)key {
-	[[A3SyncManager sharedSyncManager] setObject:object forKey:key state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] saveDataObject:object forFilename:key state:A3DataObjectStateModified];
+	[[A3SyncManager sharedSyncManager] addTransaction:A3LadyCalendarDataEntityAccounts
+												 type:A3DictionaryDBTransactionTypeSetBaseline
+											   object:object];
 }
 
 - (void)makePredictedPerioedsBeforeCurrentPeriod
@@ -166,12 +169,12 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 #pragma mark - account
 
 - (NSInteger)numberOfAccount {
-	NSArray *accounts = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarUserDefaultsAccounts];
+	NSArray *accounts = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3LadyCalendarDataEntityAccounts];
     return [accounts count];
 }
 
 - (NSArray *)accountList {
-    return [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarUserDefaultsAccounts];
+    return [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3LadyCalendarDataEntityAccounts];
 }
 
 - (NSDictionary *)currentAccount {

@@ -164,7 +164,7 @@
 	NSDictionary *account = [_itemArray objectAtIndex:indexPath.row];
 	[_dataManager setCurrentAccount:account];
 
-	[[A3SyncManager sharedSyncManager] setObject:account[L_ID_KEY] forKey:A3LadyCalendarCurrentAccountID state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:account[L_ID_KEY] forKey:A3LadyCalendarCurrentAccountID state:A3DataObjectStateModified];
 
 	[self.tableView reloadData];
 }

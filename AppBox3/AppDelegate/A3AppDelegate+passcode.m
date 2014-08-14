@@ -10,7 +10,6 @@
 #import "A3PasscodeViewController.h"
 #import "A3KeychainUtils.h"
 #import "UIViewController+A3Addition.h"
-#import "A3UIDevice.h"
 #import "UIViewController+MMDrawerController.h"
 #import "A3SettingsViewController.h"
 #import "A3DaysCounterSlideShowMainViewController.h"
@@ -19,7 +18,6 @@
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3LadyCalendarViewController.h"
 #import "A3WalletMainTabBarController.h"
-#import "A3UserDefaults.h"
 
 @implementation A3AppDelegate (passcode)
 

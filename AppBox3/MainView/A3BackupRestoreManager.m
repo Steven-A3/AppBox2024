@@ -17,8 +17,8 @@
 #import "HolidayData+Country.h"
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "A3SyncManager.h"
-#import "A3UserDefaults.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "NSFileManager+A3Addtion.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -68,6 +68,20 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 	path = [NSString stringWithFormat:@"%@%@", _backupCoreDataStorePath, @"-wal"];
 	[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-wal"]}];
+
+	// Backup data files
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	[self addToFileList:fileList forDataFilename:A3CurrencyDataEntityFavorites fileManager:fileManager];
+	[self addToFileList:fileList forDataFilename:A3DaysCounterDataEntityCalendars fileManager:fileManager];
+	[self addToFileList:fileList forDataFilename:A3LadyCalendarDataEntityAccounts fileManager:fileManager];
+	[self addToFileList:fileList forDataFilename:A3WalletDataEntityCategoryInfo fileManager:fileManager];
+	[self addToFileList:fileList forDataFilename:A3UnitConverterDataEntityUnitCategories fileManager:fileManager];
+	[self addToFileList:fileList forDataFilename:A3UnitConverterDataEntityConvertItems fileManager:fileManager];
+	[self addToFileList:fileList forDataFilename:A3UnitConverterDataEntityFavorites fileManager:fileManager];
+	[self addToFileList:fileList forDataFilename:A3UnitPriceUserDataEntityPriceFavorites fileManager:fileManager];
+	[self addToFileList:fileList forDataFilename:A3MainMenuDataEntityRecentlyUsed fileManager:fileManager];
+	[self addToFileList:fileList forDataFilename:A3MainMenuDataEntityAllMenu fileManager:fileManager];
+	[self addToFileList:fileList forDataFilename:A3MainMenuDataEntityFavorites fileManager:fileManager];
 
 	NSArray *daysCounterEvents = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"photoID != NULL"]];
 	for (DaysCounterEvent *event in daysCounterEvents) {
@@ -138,14 +152,16 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	[zip createZipFile:_backupFilePath withArray:fileList];
 }
 
+- (void)addToFileList:(NSMutableArray *)fileList forDataFilename:(NSString *)filename fileManager:(NSFileManager *)fileManager {
+	NSString *filePath = [[fileManager applicationSupportPath] stringByAppendingPathComponent:filename];
+	[fileList addObject:@{A3ZipFilename : filePath, A3ZipNewFilename : filename}];
+}
+
 - (NSArray *)userDefaultsKeys {
 	return @[
 			A3SettingsUserDefaultsThemeColorIndex,
 			A3SettingsUseKoreanCalendarForLunarConversion,
 
-			A3MainMenuUserDefaultsFavorites,
-			A3MainMenuUserDefaultsRecentlyUsed,
-			A3MainMenuUserDefaultsAllMenu,
 			A3MainMenuUserDefaultsMaxRecentlyUsed,
 
 			A3LoanCalcUserDefaultShowDownPayment,
@@ -164,7 +180,6 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			A3CurrencyUserDefaultsUseCellularData,
 			A3CurrencyUserDefaultsShowNationalFlag,
 			A3CurrencyUserDefaultsLastInputValue,
-			A3CurrencyUserDefaultsFavorites,
 
 			A3LunarConverterLastInputDateComponents,
 			A3LunarConverterLastInputDateIsLunar,
@@ -210,12 +225,10 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 			A3DaysCounterUserDefaultsSlideShowOptions,
 			A3DaysCounterLastOpenedMainIndex,
-			A3DaysCounterUserDefaultsCalendars,
 
 			A3LadyCalendarCurrentAccountID,
 			A3LadyCalendarUserDefaultsSettings,
 			A3LadyCalendarLastViewMonth,
-			A3LadyCalendarUserDefaultsAccounts,
 
 			A3PercentCalcUserDefaultsCalculationType,
 			A3PercentCalcUserDefaultsSavedInputData,
@@ -227,19 +240,14 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 			A3UnitConverterDefaultSelectedCategoryID,
 			A3UnitConverterTableViewUnitValueKey,
-			A3UnitConverterUserDefaultsUnitCategories,
-			A3UnitConverterUserDefaultsConvertItems,
-			A3UnitConverterUserDefaultsFavorites,
 
 			A3UnitPriceUserDefaultsCurrencyCode,
-			A3UnitPriceUserDefaultsUnitPriceFavorites,
 
 			kHolidayCountriesForCurrentDevice,
 			kHolidayCountryExcludedHolidays,
 			kHolidayCountriesShowLunarDates,
 
 			A3WalletUserDefaultsSelectedTab,
-			A3WalletUserDefaultsCategoryInfo,
 	];
 }
 
@@ -299,28 +307,13 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	_deleteFilesAfterZip = nil;
 }
 
-- (NSString *)uniquePathInDocumentDirectory {
-	NSDate *date = [NSDate date];
-	NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:date];
-	NSString *seedFilename = [NSString stringWithFormat:@"storeBackupFile-%ld-%ld-%ld-%ld-%ld-%ld", (long) components.year, (long) components.month, (long) components.day, (long) components.hour, (long) components.minute, (long) components.second];
-	NSString *filename = seedFilename;
-	NSString *path = [[filename stringByAppendingPathExtension:@"sqlite"] pathInDocumentDirectory];
-	NSFileManager *fileManager = [NSFileManager new];
-	NSInteger option = 1;
-	while ([fileManager fileExistsAtPath:path]) {
-		filename = [seedFilename stringByAppendingFormat:@"-%ld", (long)option++];
-		path = [[filename stringByAppendingPathExtension:@"sqlite"] pathInDocumentDirectory];
-	}
-	return path;
-}
-
 - (NSString *)uniqueBackupFilename {
 	NSDate *date = [NSDate date];
 	NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:date];
 	NSString *seedFilename = [NSString stringWithFormat:@"AppBoxBackup-%0ld-%02ld-%02ld-%02ld-%02ld", (long) components.year, (long) components.month, (long) components.day, (long) components.hour, (long) components.minute];
 	NSString *filename = seedFilename;
 	NSString *path = [[filename stringByAppendingPathExtension:@"backup"] pathInDocumentDirectory];
-	NSFileManager *fileManager = [NSFileManager new];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSInteger option = 1;
 	while ([fileManager fileExistsAtPath:path]) {
 		filename = [seedFilename stringByAppendingFormat:@"-%ld", (long)option++];
@@ -372,14 +365,14 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)deleteBackupFile {
-	NSFileManager *fileManager = [NSFileManager new];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
 	[fileManager removeItemAtPath:_backupFilePath error:NULL];
 }
 
 #pragma mark - Restore data
 
 - (void)restoreDataAt:(NSString *)backupFilePath toURL:(NSURL *)toURL {
-	NSFileManager *fileManager = [NSFileManager new];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
 
 	[MagicalRecord cleanUp];
 
@@ -396,6 +389,18 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		[self moveComponent:filename fromURL:sourceBaseURL toURL:targetBaseURL];
 		[self moveComponent:[NSString stringWithFormat:@"%@%@", filename, @"-wal"] fromURL:sourceBaseURL toURL:targetBaseURL];
 		[self moveComponent:[NSString stringWithFormat:@"%@%@", filename, @"-shm"] fromURL:sourceBaseURL toURL:targetBaseURL];
+
+		[self moveComponent:A3CurrencyDataEntityFavorites fromURL:sourceBaseURL toURL:targetBaseURL];
+		[self moveComponent:A3DaysCounterDataEntityCalendars fromURL:sourceBaseURL toURL:targetBaseURL];
+		[self moveComponent:A3LadyCalendarDataEntityAccounts fromURL:sourceBaseURL toURL:targetBaseURL];
+		[self moveComponent:A3WalletDataEntityCategoryInfo fromURL:sourceBaseURL toURL:targetBaseURL];
+		[self moveComponent:A3MainMenuDataEntityRecentlyUsed fromURL:sourceBaseURL toURL:targetBaseURL];
+		[self moveComponent:A3MainMenuDataEntityFavorites fromURL:sourceBaseURL toURL:targetBaseURL];
+		[self moveComponent:A3MainMenuDataEntityAllMenu fromURL:sourceBaseURL toURL:targetBaseURL];
+		[self moveComponent:A3UnitConverterDataEntityUnitCategories fromURL:sourceBaseURL toURL:targetBaseURL];
+		[self moveComponent:A3UnitConverterDataEntityConvertItems fromURL:sourceBaseURL toURL:targetBaseURL];
+		[self moveComponent:A3UnitConverterDataEntityFavorites fromURL:sourceBaseURL toURL:targetBaseURL];
+		[self moveComponent:A3UnitPriceUserDataEntityPriceFavorites fromURL:sourceBaseURL toURL:targetBaseURL];
 
 		targetBaseURL = [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0]];
 
@@ -456,14 +461,30 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	}
 }
 
+/*! toURL 에 있는 파일을 지우고, 원본이 있으면 옮긴다.
+ *  원본이 없더라도 대상 파일은 지워진다. 만약 원본이 없다면 대상도 없어야 하기 때문임
+ *  복원을 목적으로 만들어진 것이므로 기타 용도로는 사용하면 안됨
+ * \param
+ * \returns
+ */
 - (void)moveComponent:(NSString *)component fromURL:(NSURL *)fromURL toURL:(NSURL *)toURL {
-	[[NSFileManager new] moveItemAtURL:[fromURL URLByAppendingPathComponent:component]
-											toURL:[toURL URLByAppendingPathComponent:component]
+	NSURL *sourceURL = [fromURL URLByAppendingPathComponent:component];
+	NSURL *targetURL = [toURL URLByAppendingPathComponent:component];
+
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if ([fileManager fileExistsAtPath:[targetURL path]]) {
+		[fileManager removeItemAtURL:targetURL error:NULL];
+	}
+	if (![fileManager fileExistsAtPath:[sourceURL path]]) {
+		return;
+	}
+	[fileManager moveItemAtURL:[fromURL URLByAppendingPathComponent:component]
+											toURL:targetURL
 											error:NULL];
 }
 
 - (void)moveFilesFromURL:(NSURL *)fromURL toURL:(NSURL *)toURL {
-	NSFileManager *fileManager = [NSFileManager new];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *files = [fileManager contentsOfDirectoryAtPath:[fromURL path] error:NULL];
 	for (NSString *filename in files) {
 		[fileManager moveItemAtURL:[fromURL URLByAppendingPathComponent:filename]
@@ -480,7 +501,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)deleteCoreDataStoreFilesAt:(NSURL *)targetURL {
-	NSFileManager *fileManager = [NSFileManager new];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
 
 	// Delete existing Core Data Store
 	NSString *storeFilename = [targetURL lastPathComponent];
@@ -505,7 +526,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)removeFilesAtDirectory:(NSString *)path {
-	NSFileManager *fileManager = [NSFileManager new];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *filesInDirectory = [fileManager contentsOfDirectoryAtPath:path error:NULL];
 	for (NSString *filename in filesInDirectory) {
 		[fileManager removeItemAtPath:[path stringByAppendingPathComponent:filename] error:NULL];

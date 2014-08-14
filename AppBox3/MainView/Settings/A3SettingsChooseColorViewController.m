@@ -137,7 +137,7 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 	self.selectedMarkView.tintColor = self.colorsArray[_selectedColorIndex];
     self.navigationController.navigationBar.tintColor = self.selectedMarkView.tintColor;
 
-	[[A3SyncManager sharedSyncManager] setObject:@(_selectedColorIndex) forKey:A3SettingsUserDefaultsThemeColorIndex state:A3KeyValueDBStateInitialized];
+	[[A3SyncManager sharedSyncManager] setObject:@(_selectedColorIndex) forKey:A3SettingsUserDefaultsThemeColorIndex state:A3DataObjectStateInitialized];
 }
 
 @end

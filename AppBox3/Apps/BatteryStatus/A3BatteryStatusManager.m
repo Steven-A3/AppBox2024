@@ -7,7 +7,6 @@
 //
 
 #import "A3BatteryStatusManager.h"
-#import "A3UIDevice.h"
 #import "A3UserDefaults.h"
 
 NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorChanged";

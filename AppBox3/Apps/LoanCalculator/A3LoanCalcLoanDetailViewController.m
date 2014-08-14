@@ -357,7 +357,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:self.loanData];
 	NSString *key = _isLoanData_A ? A3LoanCalcUserDefaultsLoanDataKey_A : A3LoanCalcUserDefaultsLoanDataKey_B;
 
-	[[A3SyncManager sharedSyncManager] setObject:myLoanData forKey:key state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:myLoanData forKey:key state:A3DataObjectStateModified];
 }
 
 #pragma mark - LoanCalcSelectFrequencyDelegate

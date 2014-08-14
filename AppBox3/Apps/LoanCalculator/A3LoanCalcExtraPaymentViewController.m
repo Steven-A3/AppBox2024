@@ -747,7 +747,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
 	if ([selectedItem length]) {
-		[[A3SyncManager sharedSyncManager] setObject:selectedItem forKey:A3LoanCalcUserDefaultsCustomCurrencyCode state:A3KeyValueDBStateModified];
+		[[A3SyncManager sharedSyncManager] setObject:selectedItem forKey:A3LoanCalcUserDefaultsCustomCurrencyCode state:A3DataObjectStateModified];
 
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3LoanCalcCurrencyCodeChanged object:nil];
 

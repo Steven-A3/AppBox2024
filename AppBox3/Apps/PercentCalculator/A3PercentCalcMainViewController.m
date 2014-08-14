@@ -351,7 +351,7 @@
     if (self.headerView) {
         self.headerView.calcType = calcType;
     }
-    [[A3SyncManager sharedSyncManager] setObject:@(calcType) forKey:A3PercentCalcUserDefaultsCalculationType state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:@(calcType) forKey:A3PercentCalcUserDefaultsCalculationType state:A3DataObjectStateModified];
 }
 
 -(PercentCalcType)calcType
@@ -509,7 +509,7 @@
     }
 
 	id inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData];
-	[[A3SyncManager sharedSyncManager] setObject:inputData forKey:A3PercentCalcUserDefaultsSavedInputData state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:inputData forKey:A3PercentCalcUserDefaultsSavedInputData state:A3DataObjectStateModified];
 }
 
 #pragma mark - Table view data source

@@ -391,9 +391,6 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 	}
 	FNLOG(@"%@", walletDictionary);
 
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3WalletUserDefaultsCategoryInfo];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
 	NSMutableArray *V3CategoryInfo = [WalletData localizedPresetCategories];
 	NSMutableDictionary *categoryMap = [[self categoryMap] mutableCopy];
 	NSMutableDictionary *allFieldMap = [[self fieldMap] mutableCopy];
@@ -569,7 +566,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 			W_SYSTEM_KEY : W_SYSTEM_KEY
 	} atIndex:1];
 
-	[[A3SyncManager sharedSyncManager] setSyncObject:V3CategoryInfo forKey:A3WalletUserDefaultsCategoryInfo state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] saveDataObject:V3CategoryInfo forFilename:A3WalletDataEntityCategoryInfo state:A3DataObjectStateModified];
 
 	return YES;
 }

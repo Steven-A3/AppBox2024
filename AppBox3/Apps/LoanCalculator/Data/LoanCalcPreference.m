@@ -31,7 +31,7 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
 }
 
 - (void)setShowDownPayment:(BOOL)showDownPayment {
-	[[A3SyncManager sharedSyncManager] setBool:showDownPayment forKey:A3LoanCalcUserDefaultShowDownPayment state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setBool:showDownPayment forKey:A3LoanCalcUserDefaultShowDownPayment state:A3DataObjectStateModified];
 }
 
 - (BOOL)showExtraPayment {
@@ -43,7 +43,7 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
 }
 
 - (void)setShowExtraPayment:(BOOL)showExtraPayment {
-	[[A3SyncManager sharedSyncManager] setBool:showExtraPayment forKey:A3LoanCalcUserDefaultShowExtraPayment state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setBool:showExtraPayment forKey:A3LoanCalcUserDefaultShowExtraPayment state:A3DataObjectStateModified];
 }
 
 - (BOOL)showAdvanced {
@@ -57,7 +57,7 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
 }
 
 - (void)setShowAdvanced:(BOOL)showAdvanced {
-	[[A3SyncManager sharedSyncManager] setBool:showAdvanced forKey:A3LoanCalcUserDefaultShowAdvanced state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setBool:showAdvanced forKey:A3LoanCalcUserDefaultShowAdvanced state:A3DataObjectStateModified];
 }
 
 @end

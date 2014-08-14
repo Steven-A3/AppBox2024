@@ -81,7 +81,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	TipCalcRecent *history = [TipCalcRecent MR_findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID inContext:savingContext];
 
-	[[A3SyncManager sharedSyncManager] setObject:[history currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:[history currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode state:A3DataObjectStateModified];
 
     self.currencyFormatter = nil;
 

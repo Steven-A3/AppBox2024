@@ -274,7 +274,7 @@ enum A3ExpenseListAddBudgetCellType {
 	else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
-    [[A3SyncManager sharedSyncManager] setBool:YES forKey:A3ExpenseListIsAddBudgetCanceledByUser state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setBool:YES forKey:A3ExpenseListIsAddBudgetCanceledByUser state:A3DataObjectStateModified];
 
 	[self removeObserver];
 }
@@ -901,7 +901,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
-	[[A3SyncManager sharedSyncManager] setObject:currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode state:A3DataObjectStateModified];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationExpenseListCurrencyCodeChanged object:nil];
 

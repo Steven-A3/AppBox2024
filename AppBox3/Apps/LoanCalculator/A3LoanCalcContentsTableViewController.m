@@ -446,7 +446,7 @@
 
 - (void)changeDefaultCurrencyCode:(NSString *)currencyCode {
 	if ([currencyCode length]) {
-		[[A3SyncManager sharedSyncManager] setObject:currencyCode forKey:A3LoanCalcUserDefaultsCustomCurrencyCode state:A3KeyValueDBStateModified];
+		[[A3SyncManager sharedSyncManager] setObject:currencyCode forKey:A3LoanCalcUserDefaultsCustomCurrencyCode state:A3DataObjectStateModified];
 
 		[self.loanFormatter setCurrencyCode:currencyCode];
 	}

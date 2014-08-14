@@ -1195,7 +1195,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
-	[[A3SyncManager sharedSyncManager] setObject:currencyCode forKey:A3TipCalcUserDefaultsCurrencyCode state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:currencyCode forKey:A3TipCalcUserDefaultsCurrencyCode state:A3DataObjectStateModified];
 
 	[self.dataManager setCurrencyFormatter:nil];
 

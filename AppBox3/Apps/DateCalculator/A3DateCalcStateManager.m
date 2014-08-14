@@ -54,7 +54,7 @@ static DurationType g_currentDurationType;
         result = DurationType_Day;
     }
 
-	[[A3SyncManager sharedSyncManager] setObject:@(result) forKey:A3DateCalcDefaultsDurationType state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:@(result) forKey:A3DateCalcDefaultsDurationType state:A3DataObjectStateModified];
 }
 
 + (DurationType)durationType
@@ -137,7 +137,7 @@ static DurationType g_currentDurationType;
         }
     }
 
-	[[A3SyncManager sharedSyncManager] setObject:@(result) forKey:A3DateCalcDefaultsExcludeOptions state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:@(result) forKey:A3DateCalcDefaultsExcludeOptions state:A3DataObjectStateModified];
 }
 
 + (ExcludeOptions)excludeOptions

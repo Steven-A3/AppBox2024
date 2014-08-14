@@ -598,7 +598,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (NSMutableArray *)favorites {
 	if (!_favorites) {
-		NSArray *array = [[A3SyncManager sharedSyncManager] objectForKey:A3CurrencyUserDefaultsFavorites];
+		NSArray *array = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3CurrencyDataEntityFavorites];
 		_favorites = [array mutableCopy];
 		[self addEqualItem];
 	}
@@ -757,7 +757,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	NSArray *newOrder = [_favorites valueForKeyPath:ID_KEY];
 	NSMutableArray *filteredArray = [NSMutableArray arrayWithArray:newOrder];
 	[filteredArray removeObject:[NSNull null]];
-	[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyUserDefaultsFavorites type:A3DictionaryDBTransactionTypeReorder object:filteredArray];
+	[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyDataEntityFavorites type:A3DictionaryDBTransactionTypeReorder object:filteredArray];
 }
 
 #pragma mark -- A3SearchViewDelegate / A3CurrencySelectViewController delegate
@@ -772,7 +772,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	if (_isAddingCurrency) {
 		[_favorites addObject:newObject];
 		[A3CurrencyDataManager saveFavorites:_favorites];
-		[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyUserDefaultsFavorites type:A3DictionaryDBTransactionTypeInsertBottom object:newObject];
+		[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyDataEntityFavorites type:A3DictionaryDBTransactionTypeInsertBottom object:newObject];
 
 		NSInteger insertIdx = [self.favorites count] - 1;
 		[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:insertIdx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
@@ -780,7 +780,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		NSString *oldObject = self.favorites[_selectedRow];
 		[_favorites replaceObjectAtIndex:_selectedRow withObject:newObject];
 		[A3CurrencyDataManager saveFavorites:_favorites];
-		[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyUserDefaultsFavorites type:A3DictionaryDBTransactionTypeReplace object:@[oldObject, newObject]];
+		[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyDataEntityFavorites type:A3DictionaryDBTransactionTypeReplace object:@[oldObject, newObject]];
 
 		[self replaceTextFieldKeyFrom:oldObject to:selectedCode];
 		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
@@ -1056,7 +1056,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 - (void)updateTextFieldsWithSourceTextField:(UITextField *)textField {
 	float fromValue = [textField.text floatValueEx];
 
-	[[A3SyncManager sharedSyncManager] setObject:@(fromValue) forKey:A3CurrencyUserDefaultsLastInputValue state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:@(fromValue) forKey:A3CurrencyUserDefaultsLastInputValue state:A3DataObjectStateModified];
 
 	NSInteger fromIndex = 0;
 	FNLOG(@"%@", _textFields);
@@ -1141,7 +1141,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (void)chartViewControllerValueChangedChartViewController:(A3CurrencyChartViewController *)chartViewController valueChanged:(NSNumber *)newValue newCodes:(NSArray *)newCodesArray {
 	if ([newValue doubleValue] != [self.previousValue doubleValue]) {
-		[[A3SyncManager sharedSyncManager] setObject:newValue forKey:A3CurrencyUserDefaultsLastInputValue state:A3KeyValueDBStateModified];
+		[[A3SyncManager sharedSyncManager] setObject:newValue forKey:A3CurrencyUserDefaultsLastInputValue state:A3DataObjectStateModified];
 		[self putHistoryWithValue:newValue];
 	}
 
@@ -1168,7 +1168,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 			if (indexOfNewCodeInExistingFavorites != NSNotFound) {
 				[_favorites removeObjectAtIndex:indexOfNewCodeInExistingFavorites];
 				[A3CurrencyDataManager saveFavorites:_favorites];
-				[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyUserDefaultsFavorites
+				[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyDataEntityFavorites
 															 type:A3DictionaryDBTransactionTypeDelete
 														   object:_favorites[indexOfNewCodeInExistingFavorites][ID_KEY]];
 
@@ -1213,7 +1213,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 		[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 		[A3CurrencyDataManager saveFavorites:_favorites];
-		[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyUserDefaultsFavorites
+		[[A3SyncManager sharedSyncManager] addTransaction:A3CurrencyDataEntityFavorites
 													 type:A3DictionaryDBTransactionTypeDelete
 												   object:deletingFavoriteID];
 

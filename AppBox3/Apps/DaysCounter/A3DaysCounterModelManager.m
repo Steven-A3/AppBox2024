@@ -61,7 +61,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 }
 
 + (NSMutableArray *)calendars {
-	NSArray *storedCalendars = [[A3SyncManager sharedSyncManager] objectForKey:A3DaysCounterUserDefaultsCalendars];
+	NSArray *storedCalendars = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3DaysCounterDataEntityCalendars];
 	if (storedCalendars) {
 		NSMutableArray *mutableCalendars = [NSMutableArray arrayWithArray:storedCalendars];
 		return mutableCalendars;
@@ -142,12 +142,12 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 					CalendarItem_IsDefault : @YES
 			}]
 	]];
-	[[A3SyncManager sharedSyncManager] setSyncObject:calendars forKey:A3DaysCounterUserDefaultsCalendars state:A3KeyValueDBStateInitialized];
+	[[A3SyncManager sharedSyncManager] saveDataObject:calendars forFilename:A3DaysCounterDataEntityCalendars state:A3DataObjectStateInitialized];
 	return [NSMutableArray arrayWithArray:calendars];
 }
 
 - (void)saveCalendars:(NSArray *)calendars {
-	[[A3SyncManager sharedSyncManager] setSyncObject:calendars forKey:A3DaysCounterUserDefaultsCalendars state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] saveDataObject:calendars forFilename:A3DaysCounterDataEntityCalendars state:A3DataObjectStateModified];
 }
 
 - (void)prepareInContext:(NSManagedObjectContext *)context {
@@ -160,7 +160,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         [dict setObject:@(NO) forKey:OptionKey_Repeat];
         [dict setObject:@(NO) forKey:OptionKey_Shuffle];
 
-		[[A3SyncManager sharedSyncManager] setObject:dict forKey:A3DaysCounterUserDefaultsSlideShowOptions state:A3KeyValueDBStateInitialized];
+		[[A3SyncManager sharedSyncManager] setObject:dict forKey:A3DaysCounterUserDefaultsSlideShowOptions state:A3DataObjectStateInitialized];
     }
 }
 
@@ -537,7 +537,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	NSDictionary *deletingCalendar = calendars[idx];
 	[calendars removeObjectAtIndex:idx];
 	[self saveCalendars:calendars];
-	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterUserDefaultsCalendars
+	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterDataEntityCalendars
 												 type:A3DictionaryDBTransactionTypeDelete
 											   object:deletingCalendar[ID_KEY]];
 	

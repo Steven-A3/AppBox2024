@@ -7,15 +7,12 @@
 //
 
 #import "A3Calculator.h"
-#import "HTCopyableLabel.h"
 #import "A3ExpressionComponent.h"
-#import "common.h"
 #import "MathParser.h"
 #import "A3CalculatorUtil.h"
 #import "NSAttributedString+Append.h"
 #import "A3AppDelegate.h"
 #import "A3SyncManager.h"
-#import "A3UserDefaults.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3Calculator ()
@@ -262,7 +259,7 @@ typedef CMathParser<char, double> MathParser;
 }
 
 - (void)saveExpression {
-	[[A3SyncManager sharedSyncManager] setObject:mathexpression forKey:A3CalculatorUserDefaultsSavedLastExpression state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:mathexpression forKey:A3CalculatorUserDefaultsSavedLastExpression state:A3DataObjectStateModified];
 }
 
 - (void)eehandler {

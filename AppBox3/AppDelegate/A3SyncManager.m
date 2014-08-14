@@ -16,6 +16,8 @@
 #import "A3CurrencyDataManager.h"
 #import "A3DaysCounterModelManager.h"
 #import "WalletData.h"
+#import "A3LadyCalendarModelManager.h"
+#import "A3UnitDataManager.h"
 
 NSString * const A3SyncManagerCloudEnabled = @"A3SyncManagerCloudEnabled";
 NSString * const A3SyncActivityDidBeginNotification = @"A3SyncActivityDidBegin";
@@ -762,7 +764,7 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 		NSDictionary *transaction = allTransactions[idx];
 		FNLOG(@"Total: %ld, current: %ld, %@:%@, %@", (long)[allTransactions count], (long)idx, transaction[A3DictionaryDBEntityKey], transaction[A3DictionaryDBTransactionType], transaction[A3DictionaryDBTimestamp]);
 		if (![transaction[A3DictionaryDBDeviceID] isEqualToString:currentDeviceID]) {
-			NSArray *targetObject = [self objectForKey:transaction[A3DictionaryDBEntityKey]];
+			NSArray *targetObject = [self dataObjectForFilename:transaction[A3DictionaryDBEntityKey]];
 			NSMutableArray *mutableTargetEntity = [NSMutableArray new];
 			if (targetObject) {
 				[mutableTargetEntity addObjectsFromArray:targetObject];
@@ -770,7 +772,11 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 			switch ((A3DictionaryDBTransactionTypeValue)[transaction[A3DictionaryDBTransactionType] unsignedIntegerValue]) {
 				case A3DictionaryDBTransactionTypeSetBaseline:{
 					NSArray *baselineObject = transaction[A3DictionaryDBObject];
-					mutableTargetEntity = [baselineObject mutableCopy];
+					if ([baselineObject isEqual:A3SyncManagerEmptyObject]) {
+						[mutableTargetEntity removeAllObjects];
+					} else {
+						mutableTargetEntity = [baselineObject mutableCopy];
+					}
 					break;
 				}
 				case A3DictionaryDBTransactionTypeInsertTop:
@@ -830,7 +836,7 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 					break;
 				}
 			}
-			[self setSyncObject:mutableTargetEntity forKey:transaction[A3DictionaryDBEntityKey] state:A3KeyValueDBStateModified];
+			[self saveDataObject:mutableTargetEntity forFilename:transaction[A3DictionaryDBEntityKey] state:A3DataObjectStateModified];
 //			FNLOG(@"Transaction Log played: %@", transaction);
 		} else {
 			FNLOG(@"Transaction from current device skipped to play.");
@@ -873,9 +879,17 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 				[_cloudFileSystem contentsOfDirectoryAtPath:A3DictionaryDBLogsDirectoryName completion:^(NSArray *contents, NSError *error_3) {
 					if ([contents count]) {
 						NSArray *targetEntities = @[
-								A3CurrencyUserDefaultsFavorites,
-								A3DaysCounterUserDefaultsCalendars,
-								A3WalletUserDefaultsCategoryInfo
+								A3CurrencyDataEntityFavorites,
+								A3DaysCounterDataEntityCalendars,
+								A3LadyCalendarDataEntityAccounts,
+								A3WalletDataEntityCategoryInfo,
+								A3UnitConverterDataEntityConvertItems,
+								A3UnitConverterDataEntityFavorites,
+								A3UnitConverterDataEntityUnitCategories,
+								A3UnitPriceUserDataEntityPriceFavorites,
+								A3MainMenuDataEntityFavorites,
+								A3MainMenuDataEntityRecentlyUsed,
+								A3MainMenuDataEntityAllMenu
 						];
 
 						NSMutableDictionary *backupDataDictionary = [NSMutableDictionary new];
@@ -897,6 +911,14 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 						[A3CurrencyDataManager setupFavorites];
 						[A3DaysCounterModelManager calendars];
 						[WalletData walletCategoriesFilterDoNotShow:NO];
+						[self removeDataObjectForKey:A3MainMenuDataEntityAllMenu];
+						[self removeDataObjectForKey:A3MainMenuDataEntityFavorites];
+						[self removeDataObjectForKey:A3MainMenuDataEntityRecentlyUsed];
+						[self removeDataObjectForKey:A3UnitConverterDataEntityUnitCategories];
+						[self removeDataObjectForKey:A3UnitConverterDataEntityConvertItems];
+						[self removeDataObjectForKey:A3UnitConverterDataEntityFavorites];
+						[self removeDataObjectForKey:A3UnitPriceUserDataEntityPriceFavorites];
+						[self removeDataObjectForKey:A3LadyCalendarDataEntityAccounts];
 
 						[self downloadLogFiles:NULL];
 					} else {
@@ -909,27 +931,60 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 }
 
 - (void)uploadBaseline {
-	FNLOG();
 	[A3CurrencyDataManager setupFavorites];
-	NSArray *currencyFavorites = [self objectForKey:A3CurrencyUserDefaultsFavorites];
-	[self addTransaction:A3CurrencyUserDefaultsFavorites
+	NSArray *currencyFavorites = [self dataObjectForFilename:A3CurrencyDataEntityFavorites];
+	[self addTransaction:A3CurrencyDataEntityFavorites
 					type:A3DictionaryDBTransactionTypeSetBaseline
 				  object:currencyFavorites];
 
 	NSArray *daysCounterCalendars = [A3DaysCounterModelManager calendars];
-	[self addTransaction:A3DaysCounterUserDefaultsCalendars
+	[self addTransaction:A3DaysCounterDataEntityCalendars
 					type:A3DictionaryDBTransactionTypeSetBaseline
 				  object:daysCounterCalendars];
 
 	NSArray *walletCategories = [WalletData walletCategoriesFilterDoNotShow:NO];
-	[self addTransaction:A3WalletUserDefaultsCategoryInfo
+	[self addTransaction:A3WalletDataEntityCategoryInfo
 					type:A3DictionaryDBTransactionTypeSetBaseline
 				  object:walletCategories];
+
+	A3LadyCalendarModelManager *ladyCalendarModelManager = [A3LadyCalendarModelManager new];
+	[ladyCalendarModelManager prepareAccount];
+	NSArray *ladyCalendarAccounts = [ladyCalendarModelManager accountList];
+	[self addTransaction:A3LadyCalendarDataEntityAccounts
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:ladyCalendarAccounts];
+
+	A3UnitDataManager *unitDataManager = [A3UnitDataManager new];
+	[self addTransaction:A3UnitConverterDataEntityFavorites
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:[unitDataManager allFavorites]];
+	[self addTransaction:A3UnitConverterDataEntityUnitCategories
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:[unitDataManager allCategories]];
+	[self addTransaction:A3UnitConverterDataEntityConvertItems
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:[unitDataManager unitConvertItems]];
+	[self addTransaction:A3UnitPriceUserDataEntityPriceFavorites
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:[unitDataManager allUnitPriceFavorites]];
+
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+	[self addTransaction:A3MainMenuDataEntityAllMenu
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:[appDelegate allMenuArrayFromStoredDataFile]];
+	NSArray *favoriteItems = [self dataObjectForFilename:A3MainMenuDataEntityFavorites];
+	[self addTransaction:A3MainMenuDataEntityFavorites
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:favoriteItems ? favoriteItems : A3SyncManagerEmptyObject];
+	NSArray *recentMenus = [self dataObjectForFilename:A3MainMenuDataEntityRecentlyUsed];
+	[self addTransaction:A3MainMenuDataEntityRecentlyUsed
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:recentMenus ? recentMenus : A3SyncManagerEmptyObject];
 }
 
 - (NSArray *)backupObjectForKey:(NSString *)key {
 	NSDictionary *dictionary = [[NSUserDefaults standardUserDefaults] objectForKey:key];
-	if (dictionary && [dictionary[A3KeyValueDBState] unsignedIntegerValue] == A3KeyValueDBStateModified) {
+	if (dictionary && [dictionary[A3KeyValueDBState] unsignedIntegerValue] == A3DataObjectStateModified) {
 		return dictionary[A3KeyValueDBDataObject];
 	}
 	return nil;
@@ -948,7 +1003,7 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 			[self addTransaction:key type:A3DictionaryDBTransactionTypeInsertBottom object:object];
 		}
 	}
-	[self setSyncObject:array forKey:key state:A3KeyValueDBStateModified];
+	[self saveDataObject:array forFilename:key state:A3DataObjectStateModified];
 }
 
 /*! iCloud를 끄면 log File 들을 모두 지운다.

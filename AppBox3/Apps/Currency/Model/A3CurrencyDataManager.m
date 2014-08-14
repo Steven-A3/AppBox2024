@@ -38,7 +38,7 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 }
 
 + (void)setupFavorites {
-	NSArray *currencyFavorites = [[A3SyncManager sharedSyncManager] objectForKey:A3CurrencyUserDefaultsFavorites];
+	NSArray *currencyFavorites = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3CurrencyDataEntityFavorites];
 	if ([currencyFavorites count]) {
 		return;
 	}
@@ -67,7 +67,7 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 			[favorites moveObjectFromIndex:idx toIndex:1];
 		}
 	}
-	[[A3SyncManager sharedSyncManager] setSyncObject:favorites forKey:A3CurrencyUserDefaultsFavorites state:A3KeyValueDBStateInitialized];
+	[[A3SyncManager sharedSyncManager] saveDataObject:favorites forFilename:A3CurrencyDataEntityFavorites state:A3DataObjectStateInitialized];
 }
 
 + (void)saveFavorites:(NSArray *)favorites {
@@ -77,7 +77,7 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 			[savingFavorites addObject:item];
 		}
 	}
-	[[A3SyncManager sharedSyncManager] setSyncObject:savingFavorites forKey:A3CurrencyUserDefaultsFavorites state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] saveDataObject:savingFavorites forFilename:A3CurrencyDataEntityFavorites state:A3DataObjectStateModified];
 }
 
 + (BOOL)yahooNetworkAvailable {

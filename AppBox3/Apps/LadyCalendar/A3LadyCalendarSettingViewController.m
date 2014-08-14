@@ -360,13 +360,13 @@
 
 - (void)willDismissFromRightSide
 {
-	[[A3SyncManager sharedSyncManager] setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings state:A3DataObjectStateModified];
 
 	[_dataManager recalculateDates];
 }
 
 - (void)saveSettings {
-	[[A3SyncManager sharedSyncManager] setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings state:A3DataObjectStateModified];
 }
 
 @end

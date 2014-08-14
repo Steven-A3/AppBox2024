@@ -348,7 +348,7 @@
     if ( !_isEditMode ) {
 		[calendars insertObject:_calendarItem atIndex:0];
 		[_sharedManager saveCalendars:calendars];
-		[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterUserDefaultsCalendars
+		[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterDataEntityCalendars
 													 type:A3DictionaryDBTransactionTypeInsertTop
 												   object:_calendarItem];
     }
@@ -359,7 +359,7 @@
 		if (![_calendarItem isEqualToDictionary:calendars[idx]]) {
 			calendars[idx] = _calendarItem;
 			[_sharedManager saveCalendars:calendars];
-			[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterUserDefaultsCalendars
+			[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterDataEntityCalendars
 														 type:A3DictionaryDBTransactionTypeUpdate
 													   object:_calendarItem];
 		}

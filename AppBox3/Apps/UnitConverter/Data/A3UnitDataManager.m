@@ -1335,7 +1335,7 @@ const double conversionTable[][34] = {
  * \returns NSArray of NSDictionary having ID_KEY and NAME_KEY
  */
 - (NSArray *)allCategories {
-	NSArray *categories = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitConverterUserDefaultsUnitCategories];
+	NSArray *categories = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3UnitConverterDataEntityUnitCategories];
 	if (!categories) {
 		NSMutableArray *categoriesBeforeSort = [NSMutableArray new];
 
@@ -1346,7 +1346,10 @@ const double conversionTable[][34] = {
 		[categoriesBeforeSort sortUsingDescriptors:@[descriptor]];
 		categories = categoriesBeforeSort;
 
-		[[A3SyncManager sharedSyncManager] setObject:categories forKey:A3UnitConverterUserDefaultsUnitCategories state:A3KeyValueDBStateInitialized];
+		[[A3SyncManager sharedSyncManager] saveDataObject:categories forFilename:A3UnitConverterDataEntityUnitCategories state:A3DataObjectStateInitialized];
+		[[A3SyncManager sharedSyncManager] addTransaction:A3UnitConverterDataEntityUnitCategories
+													 type:A3DictionaryDBTransactionTypeSetBaseline
+												   object:categories];
 	}
 	return categories;
 }
@@ -1442,7 +1445,7 @@ const double conversionTable[][34] = {
 }
 
 - (NSArray *)unitConvertItems {
-	NSArray *unitConvertItemsFromUserDefaults = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitConverterUserDefaultsConvertItems];
+	NSArray *unitConvertItemsFromUserDefaults = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3UnitConverterDataEntityConvertItems];
 	if (unitConvertItemsFromUserDefaults) {
 		return unitConvertItemsFromUserDefaults;
 	}
@@ -1678,7 +1681,7 @@ const double conversionTable[][34] = {
 	[newConvertItems addObject:@(unitID)];
 	newData[categoryID] = newConvertItems;
 
-	[self saveUnitData:newData forKey:A3UnitConverterUserDefaultsConvertItems];
+	[self saveUnitData:newData forKey:A3UnitConverterDataEntityConvertItems];
 }
 
 - (void)replaceConvertItems:(NSArray *)newConvertItems forCategory:(NSUInteger)categoryID {
@@ -1695,13 +1698,13 @@ const double conversionTable[][34] = {
 	NSMutableArray *newData = [NSMutableArray arrayWithArray:[self unitConvertItems]];
 	newData[categoryID] = filteredArray;
 
-	[self saveUnitData:newData forKey:A3UnitConverterUserDefaultsConvertItems];
+	[self saveUnitData:newData forKey:A3UnitConverterDataEntityConvertItems];
 }
 
 #pragma mark - Unit Favorites
 
 - (NSArray *)allFavorites {
-	NSArray *favoritesInDefaults = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitConverterUserDefaultsFavorites];
+	NSArray *favoritesInDefaults = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3UnitConverterDataEntityFavorites];
 	if (favoritesInDefaults) return favoritesInDefaults;
 
 	NSMutableArray *unitFavorites = [[NSMutableArray alloc] init];
@@ -1951,7 +1954,7 @@ const double conversionTable[][34] = {
 	NSMutableArray *allFavorites = [NSMutableArray arrayWithArray:[self allFavorites]];
 	allFavorites[categoryID] = favorites;
 
-	[self saveUnitData:allFavorites forKey:A3UnitConverterUserDefaultsFavorites];
+	[self saveUnitData:allFavorites forKey:A3UnitConverterDataEntityFavorites];
 }
 
 - (BOOL)isFavoriteForUnitID:(NSUInteger)unitID categoryID:(NSUInteger)categoryID {
@@ -1961,13 +1964,16 @@ const double conversionTable[][34] = {
 #pragma mark - Save Unit Data
 
 - (void)saveUnitData:(id)data forKey:(NSString *)key {
-	[[A3SyncManager sharedSyncManager] setObject:data forKey:key state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] saveDataObject:data forFilename:key state:A3DataObjectStateModified];
+	[[A3SyncManager sharedSyncManager] addTransaction:key
+												 type:A3DictionaryDBTransactionTypeSetBaseline
+											   object:data];
 }
 
 #pragma mark - Unit Price Favorites
 
 - (NSMutableArray *)allUnitPriceFavorites {
-	id favoriteData = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsUnitPriceFavorites];
+	id favoriteData = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3UnitPriceUserDataEntityPriceFavorites];
 	if (favoriteData) {
 		return [NSMutableArray arrayWithArray:favoriteData];
 	}
@@ -2205,13 +2211,16 @@ const double conversionTable[][34] = {
 	NSMutableArray *allFavorites = [self allUnitPriceFavorites];
 	allFavorites[categoryID] = favorites;
 
-	[self saveUnitPriceData:allFavorites forKey:A3UnitPriceUserDefaultsUnitPriceFavorites];
+	[self saveUnitPriceData:allFavorites forKey:A3UnitPriceUserDataEntityPriceFavorites];
 }
 
 #pragma mark - Save Unit Price Data
 
 - (void)saveUnitPriceData:(id)data forKey:(NSString *)key {
-	[[A3SyncManager sharedSyncManager] setObject:data forKey:key state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] saveDataObject:data forFilename:key state:A3DataObjectStateModified];
+	[[A3SyncManager sharedSyncManager] addTransaction:key
+												 type:A3DictionaryDBTransactionTypeSetBaseline
+											   object:data];
 }
 
 

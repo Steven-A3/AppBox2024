@@ -254,7 +254,7 @@ enum A3TableElementCellType {
 
 -(void)saveInputTextData:(A3SalesCalcData *)inputTextData {
 	NSData *inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData];
-	[[A3SyncManager sharedSyncManager] setObject:inputData forKey:A3SalesCalcUserDefaultsSavedInputDataKey state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:inputData forKey:A3SalesCalcUserDefaultsSavedInputDataKey state:A3DataObjectStateModified];
 }
 
 -(void)saveToHistory:(id)sender {
@@ -306,8 +306,8 @@ enum A3TableElementCellType {
 {
     self.preferences.calcData = aData;
     [self saveInputTextData:aData];
-    
-	[[A3SyncManager sharedSyncManager] setObject:aData.currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode state:A3KeyValueDBStateModified];
+
+	[[A3SyncManager sharedSyncManager] setObject:aData.currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode state:A3DataObjectStateModified];
 
 	[self setCurrencyFormatter:nil];
 	self.headerView.currencyFormatter = self.currencyFormatter;
@@ -1205,7 +1205,7 @@ enum A3TableElementCellType {
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
-	[[A3SyncManager sharedSyncManager] setObject:currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:currencyCode forKey:A3SalesCalcUserDefaultsCurrencyCode state:A3DataObjectStateModified];
 
 	[self setCurrencyFormatter:nil];
 	self.headerView.currencyFormatter = self.currencyFormatter;

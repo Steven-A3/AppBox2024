@@ -32,7 +32,7 @@
 }
 
 - (void)setRadian:(BOOL)radian {
-	[[A3SyncManager sharedSyncManager] setBool:radian forKey:A3CalculatorUserDefaultsRadianDegreeState state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setBool:radian forKey:A3CalculatorUserDefaultsRadianDegreeState state:A3DataObjectStateModified];
 }
 
 - (BOOL)radian {

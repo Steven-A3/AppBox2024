@@ -9,6 +9,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "NSDate-Utilities.h"
 #import "A3AppDelegate.h"
+#import "NSFileManager+A3Addtion.h"
 
 NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 
@@ -45,7 +46,7 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 			NSDictionary *objectInCloud = [store objectForKey:key];
 			NSDictionary *objectInLocal = [userDefaults objectForKey:key];
 
-			if (!objectInLocal || [objectInLocal[A3KeyValueDBState] unsignedIntegerValue] == A3KeyValueDBStateInitialized) {
+			if (!objectInLocal || [objectInLocal[A3KeyValueDBState] unsignedIntegerValue] == A3DataObjectStateInitialized) {
 				[userDefaults setObject:objectInCloud forKey:key];
 			} else {
 				if (![objectInCloud isKindOfClass:[NSDictionary class]]) {
@@ -78,11 +79,11 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 	return [[self objectForKey:key] integerValue];
 }
 
-- (void)setInteger:(NSInteger)value forKey:(NSString *)key state:(A3KeyValueDBStateValue)state {
+- (void)setInteger:(NSInteger)value forKey:(NSString *)key state:(A3DataObjectStateValue)state {
 	[self setObject:@(value) forKey:key state:state];
 }
 
-- (void)setBool:(BOOL)value forKey:(NSString *)key state:(A3KeyValueDBStateValue)state {
+- (void)setBool:(BOOL)value forKey:(NSString *)key state:(A3DataObjectStateValue)state {
 	[self setObject:@(value) forKey:key state:state];
 }
 
@@ -101,17 +102,36 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 	return nil;
 }
 
-- (void)setSyncObject:(id)object forKey:(NSString *)key state:(A3KeyValueDBStateValue)state {
-	FNLOG(@"%@", key);
-	NSDictionary *userDefaultsFormat = @{
-			A3KeyValueDBDataObject : object,
-			A3KeyValueDBState : @(state),
-			A3KeyValueDBUpdateDate : [NSDate date]
-	};
-	[[NSUserDefaults standardUserDefaults] setObject:userDefaultsFormat forKey:key];
+- (id)dataObjectForFilename:(NSString *)key {
+	NSString *dataFilePath = [[self.fileManager applicationSupportPath] stringByAppendingPathComponent:key];
+	NSDictionary *dataStoreDictionary = [NSDictionary dictionaryWithContentsOfFile:dataFilePath];
+	if (dataStoreDictionary) {
+		id dataObject = dataStoreDictionary[A3KeyValueDBDataObject];
+		if ([dataObject isEqual:A3SyncManagerEmptyObject]) {
+			return nil;
+		}
+		return dataObject;
+	}
+	return nil;
 }
 
-- (void)setObject:(id)object forKey:(NSString *)key state:(A3KeyValueDBStateValue)state {
+- (void)saveDataObject:(id)object forFilename:(NSString *)key state:(A3DataObjectStateValue)state {
+	FNLOG(@"%@", key);
+	NSDictionary *dataStoreFormat = @{
+			A3KeyValueDBDataObject : object,
+			A3KeyValueDBState : @(state),
+			A3KeyValueDBUpdateDate : [NSDate date]
+	};
+	NSString *dataFilePath = [[self.fileManager applicationSupportPath] stringByAppendingPathComponent:key];
+	[dataStoreFormat writeToFile:dataFilePath atomically:YES];
+}
+
+- (void)removeDataObjectForKey:(NSString *)key {
+	NSString *dataFilePath = [[self.fileManager applicationSupportPath] stringByAppendingPathComponent:key];
+	[self.fileManager removeItemAtPath:dataFilePath error:NULL];
+}
+
+- (void)setObject:(id)object forKey:(NSString *)key state:(A3DataObjectStateValue)state {
 	FNLOG(@"%@", key);
 	NSDictionary *userDefaultsFormat = @{
 			A3KeyValueDBDataObject : object,
@@ -120,14 +140,14 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 	};
 	[[NSUserDefaults standardUserDefaults] setObject:userDefaultsFormat forKey:key];
 
-	if (state == A3KeyValueDBStateModified && [self isCloudEnabled]) {
+	if (state == A3DataObjectStateModified && [self isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
 		[keyValueStore setObject:userDefaultsFormat forKey:key];
 		[keyValueStore synchronize];
 	}
 }
 
-- (void)setDateComponents:(NSDateComponents *)dateComponents forKey:(NSString *)key state:(A3KeyValueDBStateValue)state {
+- (void)setDateComponents:(NSDateComponents *)dateComponents forKey:(NSString *)key state:(A3DataObjectStateValue)state {
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dateComponents];
 	[self setObject:data forKey:key state:state];
 }

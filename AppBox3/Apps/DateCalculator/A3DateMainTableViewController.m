@@ -246,7 +246,7 @@
 
 -(void)setIsAddSubMode:(BOOL)isAddSubMode
 {
-	[[A3SyncManager sharedSyncManager] setBool:isAddSubMode forKey:A3DateCalcDefaultsIsAddSubMode state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setBool:isAddSubMode forKey:A3DateCalcDefaultsIsAddSubMode state:A3DataObjectStateModified];
 }
 
 -(BOOL)isAddSubMode
@@ -269,7 +269,7 @@
     comp.minute = 0;
     _fromDate = [[A3DateCalcStateManager currentCalendar] dateFromComponents:comp];
 
-	[[A3SyncManager sharedSyncManager] setObject:_fromDate forKey:A3DateCalcDefaultsFromDate state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:_fromDate forKey:A3DateCalcDefaultsFromDate state:A3DataObjectStateModified];
 }
 
 -(void)setToDate:(NSDate *)toDate
@@ -281,13 +281,13 @@
     comp.minute = 0;
     _toDate = [[A3DateCalcStateManager currentCalendar] dateFromComponents:comp];
 
-	[[A3SyncManager sharedSyncManager] setObject:_toDate forKey:A3DateCalcDefaultsToDate state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:_toDate forKey:A3DateCalcDefaultsToDate state:A3DataObjectStateModified];
 }
 
 -(void)setOffsetDate:(NSDate *)offsetDate
 {
     _offsetDate = [offsetDate copy];
-    [[A3SyncManager sharedSyncManager] setObject:_offsetDate forKey:A3DateCalcDefaultsOffsetDate state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:_offsetDate forKey:A3DateCalcDefaultsOffsetDate state:A3DataObjectStateModified];
 }
 
 - (NSDate *)fromDate
@@ -320,7 +320,7 @@
 
 - (IBAction)addButtonTouchUpAction:(id)sender
 {
-    [[A3SyncManager sharedSyncManager] setBool:NO forKey:A3DateCalcDefaultsDidSelectMinus state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setBool:NO forKey:A3DateCalcDefaultsDidSelectMinus state:A3DataObjectStateModified];
 
 	BOOL isMinusSelected = NO;
 
@@ -337,7 +337,7 @@
 
 - (IBAction)subButtonTouchUpAction:(id)sender
 {
-    [[A3SyncManager sharedSyncManager] setBool:YES forKey:A3DateCalcDefaultsDidSelectMinus state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setBool:YES forKey:A3DateCalcDefaultsDidSelectMinus state:A3DataObjectStateModified];
 
     BOOL isMinusSelected = YES;
     

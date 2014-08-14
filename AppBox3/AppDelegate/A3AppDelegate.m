@@ -31,7 +31,6 @@
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "A3SyncManager.h"
 #import "AFHTTPRequestOperation.h"
-#import "A3UserDefaults.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -71,11 +70,11 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	CDESetCurrentLoggingLevel(CDELoggingLevelWarning);
 
+	[self prepareDirectories];
 	[A3SyncManager sharedSyncManager];
 
 	[[NSUbiquitousKeyValueStore defaultStore] synchronize];
 
-	[self prepareDirectories];
 	[self setupContext];
 	[self registerPasscodeUserDefaults];
 
@@ -461,6 +460,10 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 
 - (void)prepareDirectories {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSString *applicationSupportPath = [fileManager applicationSupportPath];
+	if (![fileManager fileExistsAtPath:applicationSupportPath]) {
+		[fileManager createDirectoryAtPath:applicationSupportPath withIntermediateDirectories:YES attributes:nil error:NULL];
+	}
 	if ( ![fileManager fileExistsAtPath:[A3DaysCounterModelManager thumbnailDirectory]] ) {
 		[fileManager createDirectoryAtPath:[A3DaysCounterModelManager thumbnailDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
 	}

@@ -50,7 +50,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NSDictionary *recentMenus = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuUserDefaultsRecentlyUsed];
+	NSDictionary *recentMenus = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3MainMenuDataEntityRecentlyUsed];
 	return recentMenus ? 2 : 1;
 }
 

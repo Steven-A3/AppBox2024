@@ -115,7 +115,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	NSMutableArray *modifiedCategories = [NSMutableArray arrayWithArray:_sections[0]];
 	[modifiedCategories addObjectsFromArray:_sections[1]];
-	[_dataManager saveUnitData:modifiedCategories forKey:A3UnitConverterUserDefaultsUnitCategories];
+	[_dataManager saveUnitData:modifiedCategories forKey:A3UnitConverterDataEntityUnitCategories];
 
 	[self.mainTabBarController setupTabBar];
 

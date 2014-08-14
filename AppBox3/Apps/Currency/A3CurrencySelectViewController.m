@@ -170,7 +170,7 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 }
 
 - (BOOL)isFavoriteItemForCurrencyItem:(id)object {
-	NSArray *favorites = [[A3SyncManager sharedSyncManager] objectForKey:A3CurrencyUserDefaultsFavorites];
+	NSArray *favorites = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3CurrencyDataEntityFavorites];
 	return [favorites containsObject:@{ID_KEY:object}];
 }
 

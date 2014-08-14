@@ -268,7 +268,7 @@
         return;
     }
 
-	[[A3SyncManager sharedSyncManager] setObject:value forKey:key state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:value forKey:key state:A3DataObjectStateModified];
 }
 
 -(BOOL)hasEqualTextField:(UITextField *)textField {

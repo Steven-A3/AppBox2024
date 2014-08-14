@@ -7,7 +7,6 @@
 //
 
 #import "A3AppDelegate+mainMenu.h"
-#import "A3UserDefaults.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
@@ -99,8 +98,8 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 	return tempArray;
 }
 
-- (NSArray *)allMenuArrayFromUserDefaults {
-	NSMutableDictionary *allMenusDictionary = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuUserDefaultsAllMenu];
+- (NSArray *)allMenuArrayFromStoredDataFile {
+	NSMutableDictionary *allMenusDictionary = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3MainMenuDataEntityAllMenu];
 	
 	NSArray *allMenuArray;
 	if (allMenusDictionary) {
@@ -131,15 +130,15 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 	return sortedMenuArray;
 }
 
-- (void)storeAllMenu:(NSArray *)menuArray withDate:(NSDate *)date state:(A3KeyValueDBStateValue)state {
+- (void)storeAllMenu:(NSArray *)menuArray withDate:(NSDate *)date state:(A3DataObjectStateValue)state {
 	NSMutableDictionary *mutableDictionary = [NSMutableDictionary new];
 	mutableDictionary[kA3AppsMenuArray] = menuArray;
 	mutableDictionary[kA3AppsDataUpdateDate] = date;
-	[self storeMenuDictionary:mutableDictionary forKey:A3MainMenuUserDefaultsAllMenu state:state];
+	[self saveToFileMenuDictionary:mutableDictionary forKey:A3MainMenuDataEntityAllMenu state:state];
 }
 
 - (NSDictionary *)favoriteMenuDictionary {
-	NSDictionary *dictionary = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuUserDefaultsFavorites];
+	NSDictionary *dictionary = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3MainMenuDataEntityFavorites];
 	if (!dictionary) {
 		dictionary = @{
 				kA3AppsMenuName : @"Favorites",
@@ -155,38 +154,41 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 						@{kA3AppsMenuName : @"Wallet", kA3AppsClassName_iPhone : @"A3WalletMainTabBarController", kA3AppsMenuImageName : @"Wallet", kA3AppsMenuNeedSecurityCheck : @YES},
 				]
 		};
-		[self storeFavoriteMenuDictionary:[dictionary mutableCopy] withDate:[NSDate distantPast] state:A3KeyValueDBStateInitialized];
+		[self saveToFileFavoriteMenuDictionary:[dictionary mutableCopy] withDate:[NSDate distantPast] state:A3DataObjectStateInitialized];
 	}
 	return dictionary;
 }
 
 - (NSArray *)favoriteItems {
-	NSDictionary *favoriteObject = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuUserDefaultsFavorites];
+	NSDictionary *favoriteObject = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3MainMenuDataEntityFavorites];
 	return favoriteObject[kA3AppsExpandableChildren];
 }
 
 - (void)storeFavorites:(NSArray *)newFavorites {
-	NSMutableDictionary *favoriteObject = [[[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuUserDefaultsFavorites] mutableCopy];
+	NSMutableDictionary *favoriteObject = [[[A3SyncManager sharedSyncManager] dataObjectForFilename:A3MainMenuDataEntityFavorites] mutableCopy];
 
 	favoriteObject[kA3AppsExpandableChildren] = newFavorites;
 
-	[self storeFavoriteMenuDictionary:favoriteObject withDate:[NSDate date] state:A3KeyValueDBStateModified];
+	[self saveToFileFavoriteMenuDictionary:favoriteObject withDate:[NSDate date] state:A3DataObjectStateModified];
 }
 
-- (void)storeFavoriteMenuDictionary:(NSMutableDictionary *)mutableDictionary withDate:(NSDate *)updateDate state:(A3KeyValueDBStateValue)state {
+- (void)saveToFileFavoriteMenuDictionary:(NSMutableDictionary *)mutableDictionary withDate:(NSDate *)updateDate state:(A3DataObjectStateValue)state {
 	mutableDictionary[kA3AppsDataUpdateDate] = updateDate;
-	[self storeMenuDictionary:mutableDictionary forKey:A3MainMenuUserDefaultsFavorites state:state];
+	[self saveToFileMenuDictionary:mutableDictionary forKey:A3MainMenuDataEntityFavorites state:state];
 }
 
-- (void)storeRecentlyUsedMenuDictionary:(NSMutableDictionary *)mutableDictionary withDate:(NSDate *)updateDate {
+- (void)saveToFileRecentlyUsedMenuDictionary:(NSMutableDictionary *)mutableDictionary withDate:(NSDate *)updateDate {
 	mutableDictionary[kA3AppsDataUpdateDate] = updateDate;
-	[self storeMenuDictionary:mutableDictionary forKey:A3MainMenuUserDefaultsRecentlyUsed state:A3KeyValueDBStateModified];
+	[self saveToFileMenuDictionary:mutableDictionary forKey:A3MainMenuDataEntityRecentlyUsed state:A3DataObjectStateModified];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
 }
 
-- (void)storeMenuDictionary:(NSMutableDictionary *)mutableDictionary forKey:(NSString *)key state:(A3KeyValueDBStateValue)state {
-	[[A3SyncManager sharedSyncManager] setObject:mutableDictionary forKey:key state:state];
+- (void)saveToFileMenuDictionary:(NSMutableDictionary *)mutableDictionary forKey:(NSString *)key state:(A3DataObjectStateValue)state {
+	[[A3SyncManager sharedSyncManager] saveDataObject:mutableDictionary forFilename:key state:state];
+	[[A3SyncManager sharedSyncManager] addTransaction:key
+												 type:A3DictionaryDBTransactionTypeSetBaseline
+											   object:mutableDictionary];
 }
 
 - (NSUInteger)maximumRecentlyUsedMenus {
@@ -196,11 +198,14 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 }
 
 - (void)storeMaximumNumberRecentlyUsedMenus:(NSUInteger)maxNumber {
-	[[A3SyncManager sharedSyncManager] setInteger:maxNumber forKey:A3MainMenuUserDefaultsMaxRecentlyUsed state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setInteger:maxNumber forKey:A3MainMenuUserDefaultsMaxRecentlyUsed state:A3DataObjectStateModified];
 }
 
 - (void)clearRecentlyUsedMenus {
-	[[A3SyncManager sharedSyncManager] setObject:A3SyncManagerEmptyObject forKey:A3MainMenuUserDefaultsRecentlyUsed state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] saveDataObject:A3SyncManagerEmptyObject forFilename:A3MainMenuDataEntityRecentlyUsed state:A3DataObjectStateModified];
+	[[A3SyncManager sharedSyncManager] addTransaction:A3MainMenuDataEntityRecentlyUsed
+												 type:A3DictionaryDBTransactionTypeSetBaseline
+											   object:A3SyncManagerEmptyObject];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
 }

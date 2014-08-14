@@ -120,7 +120,7 @@
     NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:ABS(type) inSection:indexPath.section];
     
     [_settingDict setObject:@(type) forKey:SettingItem_AlertType];
-	[[A3SyncManager sharedSyncManager] setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings state:A3DataObjectStateModified];
 
 	[A3LadyCalendarModelManager setupLocalNotification];
 
@@ -167,7 +167,7 @@
 	[_settingDict setObject:@(AlertType_Custom) forKey:SettingItem_AlertType];
 	[_settingDict setObject:@(customDay) forKey:SettingItem_CustomAlertDays];
 
-	[[A3SyncManager sharedSyncManager] setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:self.settingDict forKey:A3LadyCalendarUserDefaultsSettings state:A3DataObjectStateModified];
 
 	[A3LadyCalendarModelManager setupLocalNotification];
 

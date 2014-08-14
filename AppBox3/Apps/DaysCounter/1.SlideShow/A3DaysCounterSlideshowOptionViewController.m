@@ -47,7 +47,7 @@
 
 - (void)saveCurrentOption
 {
-	[[A3SyncManager sharedSyncManager] setObject:_optionDict forKey:A3DaysCounterUserDefaultsSlideShowOptions state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:_optionDict forKey:A3DaysCounterUserDefaultsSlideShowOptions state:A3DataObjectStateModified];
 }
 
 - (NSDictionary*)itemAtIndexPath:(NSIndexPath*)indexPath

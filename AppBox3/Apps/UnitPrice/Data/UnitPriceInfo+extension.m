@@ -280,7 +280,7 @@ NSString *const NOTES_KEY		= @"note";
 
 + (void)changeDefaultCurrencyCode:(NSString *)currencyCode {
 	if ([currencyCode length]) {
-		[[A3SyncManager sharedSyncManager] setObject:currencyCode forKey:A3UnitPriceUserDefaultsCurrencyCode state:A3KeyValueDBStateModified];
+		[[A3SyncManager sharedSyncManager] setObject:currencyCode forKey:A3UnitPriceUserDefaultsCurrencyCode state:A3DataObjectStateModified];
 
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationUnitPriceCurrencyCodeChanged object:nil];

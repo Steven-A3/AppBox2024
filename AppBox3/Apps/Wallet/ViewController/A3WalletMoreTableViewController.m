@@ -276,13 +276,13 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 - (void)saveCategories {
 	NSMutableArray *modifiedArray = [NSMutableArray arrayWithArray:_sections[0]];
 	[modifiedArray addObjectsFromArray:_sections[1]];
-	[[A3SyncManager sharedSyncManager] setSyncObject:modifiedArray forKey:A3WalletUserDefaultsCategoryInfo state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] saveDataObject:modifiedArray forFilename:A3WalletDataEntityCategoryInfo state:A3DataObjectStateModified];
 }
 
 - (void)addReorderTransaction {
 	NSMutableArray *newOrder = [NSMutableArray arrayWithArray:[_sections[0] valueForKeyPath:W_ID_KEY]];
 	[newOrder addObjectsFromArray:[_sections[1] valueForKeyPath:W_ID_KEY]];
-	[[A3SyncManager sharedSyncManager] addTransaction:A3WalletUserDefaultsCategoryInfo
+	[[A3SyncManager sharedSyncManager] addTransaction:A3WalletDataEntityCategoryInfo
 												 type:A3DictionaryDBTransactionTypeReorder
 											   object:newOrder];
 }
@@ -435,7 +435,7 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 		[self saveCategories];
-		[[A3SyncManager sharedSyncManager] addTransaction:A3WalletUserDefaultsCategoryInfo
+		[[A3SyncManager sharedSyncManager] addTransaction:A3WalletDataEntityCategoryInfo
 													 type:A3DictionaryDBTransactionTypeUpdate
 												   object:walletCategory];
 

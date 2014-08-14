@@ -16,13 +16,19 @@ extern NSString *const A3SyncManagerEmptyObject;
 
 - (void)keyValueStoreDidChangeExternally:(NSNotification *)notification;
 - (NSInteger)integerForKey:(NSString *)key;
-- (void)setInteger:(NSInteger)value forKey:(NSString *)key state:(A3KeyValueDBStateValue)state;
-- (void)setBool:(BOOL)value forKey:(NSString *)key state:(A3KeyValueDBStateValue)state;
+- (void)setInteger:(NSInteger)value forKey:(NSString *)key state:(A3DataObjectStateValue)state;
+- (void)setBool:(BOOL)value forKey:(NSString *)key state:(A3DataObjectStateValue)state;
 - (BOOL)boolForKey:(NSString *)key;
 - (id)objectForKey:(NSString *)key;
-- (void)setSyncObject:(id)object forKey:(NSString *)key state:(A3KeyValueDBStateValue)state;
-- (void)setObject:(id)object forKey:(NSString *)key state:(A3KeyValueDBStateValue)state;
-- (void)setDateComponents:(NSDateComponents *)dateComponents forKey:(NSString *)key state:(A3KeyValueDBStateValue)state;
+
+- (id)dataObjectForFilename:(NSString *)key;
+
+- (void)saveDataObject:(id)object forFilename:(NSString *)key state:(A3DataObjectStateValue)state;
+
+- (void)removeDataObjectForKey:(NSString *)key;
+
+- (void)setObject:(id)object forKey:(NSString *)key state:(A3DataObjectStateValue)state;
+- (void)setDateComponents:(NSDateComponents *)dateComponents forKey:(NSString *)key state:(A3DataObjectStateValue)state;
 - (NSDateComponents *)dateComponentsForKey:(NSString *)key;
 
 @end

@@ -26,6 +26,7 @@ typedef NS_ENUM(NSUInteger, A3DictionaryDBTransactionTypeValue) {
 @property (nonatomic, readonly, strong) CDEPersistentStoreEnsemble *ensemble;
 @property (nonatomic, strong) CDEICloudFileSystem *cloudFileSystem;
 @property (nonatomic, copy) NSString *storePath;
+@property (nonatomic, strong) NSFileManager *fileManager;
 
 + (instancetype)sharedSyncManager;
 

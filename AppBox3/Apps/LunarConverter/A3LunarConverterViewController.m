@@ -774,7 +774,7 @@
     BOOL isResultLeapMonth = ( _isLunarInput ? NO : [self isLeapMonthAtDateComponents:self.inputDateComponents gregorianToLunar:!_isLunarInput]);
     
     if ( self.inputDateComponents ) {
-		[[A3SyncManager sharedSyncManager] setDateComponents:self.inputDateComponents forKey:A3LunarConverterLastInputDateComponents state:A3KeyValueDBStateModified];
+		[[A3SyncManager sharedSyncManager] setDateComponents:self.inputDateComponents forKey:A3LunarConverterLastInputDateComponents state:A3DataObjectStateModified];
 
         // 첫 페이지의 결과값
         // 첫페이지의 입력이 양력일 경우 leapmonth = NO

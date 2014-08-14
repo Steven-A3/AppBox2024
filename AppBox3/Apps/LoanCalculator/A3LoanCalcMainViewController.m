@@ -644,7 +644,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self dismissMoreMenu];
     [self refreshRightBarItems];
 
-    [[A3SyncManager sharedSyncManager] setBool:_isComparisonMode forKey:LoanCalcModeSave state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setBool:_isComparisonMode forKey:LoanCalcModeSave state:A3DataObjectStateModified];
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
@@ -1449,21 +1449,21 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:self.loanData];
 
-	[[A3SyncManager sharedSyncManager] setObject:myLoanData forKey:A3LoanCalcUserDefaultsLoanDataKey state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:myLoanData forKey:A3LoanCalcUserDefaultsLoanDataKey state:A3DataObjectStateModified];
 }
 
 - (void)saveLoanDataA
 {
     NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:_loanDataA];
 
-	[[A3SyncManager sharedSyncManager] setObject:myLoanData forKey:A3LoanCalcUserDefaultsLoanDataKey_A state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:myLoanData forKey:A3LoanCalcUserDefaultsLoanDataKey_A state:A3DataObjectStateModified];
 }
 
 - (void)saveLoanDataB
 {
     NSData *myLoanData = [NSKeyedArchiver archivedDataWithRootObject:_loanDataB];
 
-	[[A3SyncManager sharedSyncManager] setObject:myLoanData forKey:A3LoanCalcUserDefaultsLoanDataKey_B state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:myLoanData forKey:A3LoanCalcUserDefaultsLoanDataKey_B state:A3DataObjectStateModified];
 }
 
 #pragma mark - Compare mode calculation

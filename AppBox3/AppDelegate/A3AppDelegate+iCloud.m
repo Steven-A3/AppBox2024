@@ -10,7 +10,6 @@
 #import "A3LadyCalendarModelManager.h"
 #import "A3DaysCounterModelManager.h"
 #import "NSDate-Utilities.h"
-#import "A3UserDefaults.h"
 #import "A3SyncManager.h"
 
 @implementation A3AppDelegate (iCloud)
@@ -125,10 +124,10 @@
 			objectInLocal = nil;
 		}
 
-		if (!objectInCloud && [objectInLocal[A3KeyValueDBState] unsignedIntegerValue] == A3KeyValueDBStateInitialized)
+		if (!objectInCloud && [objectInLocal[A3KeyValueDBState] unsignedIntegerValue] == A3DataObjectStateInitialized)
 			continue;
 
-		if (objectInCloud && [objectInLocal[A3KeyValueDBState] unsignedIntegerValue] == A3KeyValueDBStateInitialized) {
+		if (objectInCloud && [objectInLocal[A3KeyValueDBState] unsignedIntegerValue] == A3DataObjectStateInitialized) {
 			[userDefaults setObject:objectInCloud forKey:key];
 			continue;
 		}
@@ -178,7 +177,6 @@
 			A3ExpenseListIsAddBudgetInitiatedOnce,
 
 			A3LadyCalendarCurrentAccountID,
-			A3LadyCalendarUserDefaultsAccounts,
 			A3LadyCalendarUserDefaultsSettings,
 			A3LadyCalendarLastViewMonth,
 
@@ -203,16 +201,9 @@
 
 			A3UnitConverterDefaultSelectedCategoryID,
 			A3UnitConverterTableViewUnitValueKey,
-			A3UnitConverterUserDefaultsConvertItems,
-			A3UnitConverterUserDefaultsFavorites,
-			A3UnitConverterUserDefaultsUnitCategories,
 
 			A3UnitPriceUserDefaultsCurrencyCode,
-			A3UnitPriceUserDefaultsUnitPriceFavorites,
 
-			A3MainMenuUserDefaultsFavorites,
-			A3MainMenuUserDefaultsRecentlyUsed,
-			A3MainMenuUserDefaultsAllMenu,
 			A3MainMenuUserDefaultsMaxRecentlyUsed,
 	];
 }

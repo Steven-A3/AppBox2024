@@ -263,7 +263,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
     [_fmMoveTableView reloadData];
 
-	[[A3SyncManager sharedSyncManager] setInteger:_categoryID forKey:A3UnitConverterDefaultSelectedCategoryID state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setInteger:_categoryID forKey:A3UnitConverterDefaultSelectedCategoryID state:A3DataObjectStateModified];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -431,7 +431,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)setUnitValue:(NSNumber *)unitValue {
-    [[A3SyncManager sharedSyncManager] setObject:unitValue forKey:A3UnitConverterTableViewUnitValueKey state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:unitValue forKey:A3UnitConverterTableViewUnitValueKey state:A3DataObjectStateModified];
 }
 
 - (NSNumber *)unitValue {

@@ -532,7 +532,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         [self saveCurrentBudgetToHistory];
     }
 
-    [[A3SyncManager sharedSyncManager] setBool:NO forKey:A3ExpenseListIsAddBudgetCanceledByUser state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setBool:NO forKey:A3ExpenseListIsAddBudgetCanceledByUser state:A3DataObjectStateModified];
 
 	// 초기화.
     [self clearCurrentBudget];
@@ -913,7 +913,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     
     // 버젯이 없는 경우 이동한다.
     if (!_currentBudget || _currentBudget.category==nil ) {
-		[[A3SyncManager sharedSyncManager] setBool:YES forKey:A3ExpenseListIsAddBudgetInitiatedOnce state:A3KeyValueDBStateModified];
+		[[A3SyncManager sharedSyncManager] setBool:YES forKey:A3ExpenseListIsAddBudgetInitiatedOnce state:A3DataObjectStateModified];
 
         [self performSelector:@selector(moveToAddBudgetViewController) withObject:nil afterDelay:delay];
         _isAutoMovingAddBudgetView = YES;
@@ -1182,7 +1182,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	_currentBudget.updateDate = updateDate;
     _currentBudget.isModified = @(NO);
 
-	[[A3SyncManager sharedSyncManager] setObject:aBudget.currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:aBudget.currencyCode forKey:A3ExpenseListUserDefaultsCurrencyCode state:A3DataObjectStateModified];
 
     self.currencyFormatter.currencyCode = [self defaultCurrencyCode];
 	_headerView.currencyFormatter = self.currencyFormatter;

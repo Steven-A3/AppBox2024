@@ -15,12 +15,10 @@
 #import "Calculation.h"
 #import "A3ExpressionComponent.h"
 #import "A3CalculatorHistoryViewController.h"
-#import "UILabel+Boldify.h"
 #import "A3KeyboardView.h"
 #import "NSAttributedString+Append.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "A3UserDefaults.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
@@ -147,7 +145,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
         
     }
 
-	[[A3SyncManager sharedSyncManager] setObject:scientific ? A3CalculatorModeScientific : A3CalculatorModeBasic forKey:A3CalculatorUserDefaultsCalculatorMode state:A3KeyValueDBStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:scientific ? A3CalculatorModeScientific : A3CalculatorModeBasic forKey:A3CalculatorUserDefaultsCalculatorMode state:A3DataObjectStateModified];
 //    [self changeCalculatorKindString];
 }
 
