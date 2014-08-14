@@ -211,7 +211,7 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
         } else if ([languageCode isEqualToString:@"es"]) {
             urlString = @"http://www.apple.com/es/batteries/ipods.html";
         } else {
-            urlString = @"http://www.apple.com/batteries/ipods.html";
+            urlString = @"http://www.apple.com/batteries/maximizing-performance/";
         }
         
     } else if ([[[UIDevice currentDevice] model] isEqualToString:@"iPhone"]) {
@@ -232,7 +232,7 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
         } else if ([languageCode isEqualToString:@"es"]) {
             urlString = @"http://www.apple.com/es/batteries/ipods.html";
         } else {
-            urlString = @"http://www.apple.com/batteries/iphone.html";
+            urlString = @"http://www.apple.com/batteries/maximizing-performance/";
         }
     } else if ([[[UIDevice currentDevice] model] isEqualToString:@"iPad"]) {
         if ([languageCode isEqualToString:@"zh-Hans"] || [languageCode isEqualToString:@"zh-Hant"]) {
@@ -252,11 +252,11 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
         } else if ([languageCode isEqualToString:@"es"]) {
             urlString = @"http://www.apple.com/es/batteries/ipad.html";
         } else {
-            urlString = @"http://www.apple.com/batteries/ipad.html";
+            urlString = @"http://www.apple.com/batteries/maximizing-performance/";
         }
     } else {
         // simulator
-        urlString = @"http://www.apple.com/batteries/ipad.html";
+        urlString = @"http://www.apple.com/batteries/maximizing-performance/";
     }
     
     NSURL *url = [NSURL URLWithString:urlString];
