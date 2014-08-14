@@ -57,7 +57,11 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 			L_NAME_KEY : [self defaultAccountName]
 	};
 
-	[self saveLadyCalendarObject:@[defaultAccount] forKey:A3LadyCalendarDataEntityAccounts];
+	NSArray *defaultAccounts = @[defaultAccount];
+	[[A3SyncManager sharedSyncManager] saveDataObject:defaultAccounts forFilename:A3LadyCalendarDataEntityAccounts state:A3DataObjectStateInitialized];
+	[[A3SyncManager sharedSyncManager] addTransaction:A3LadyCalendarDataEntityAccounts
+												 type:A3DictionaryDBTransactionTypeSetBaseline
+											   object:defaultAccounts];
 }
 
 - (NSDateFormatter *)dateFormatter {
@@ -178,18 +182,16 @@ NSString *const L_WatchingDate_KEY = @"watchingDate";
 }
 
 - (NSDictionary *)currentAccount {
-	if (!_currentAccount) {
-		NSString *accountID = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID];
-		NSAssert(accountID != nil, @"Default account ID must be set in initialization.");
-		NSArray *accounts = [self accountList];
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", L_ID_KEY, accountID];
-		NSArray *filtered = [accounts filteredArrayUsingPredicate:predicate];
-		if ([filtered count]) {
-			_currentAccount = filtered[0];
-		} else {
-			[self prepareAccount];
-			_currentAccount = [self accountList][0];
-		}
+	NSString *accountID = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID];
+	NSAssert(accountID != nil, @"Default account ID must be set in initialization.");
+	NSArray *accounts = [self accountList];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", L_ID_KEY, accountID];
+	NSArray *filtered = [accounts filteredArrayUsingPredicate:predicate];
+	if ([filtered count]) {
+		_currentAccount = filtered[0];
+	} else {
+		[self prepareAccount];
+		_currentAccount = [self accountList][0];
 	}
 
 	return _currentAccount;

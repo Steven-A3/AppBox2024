@@ -13,6 +13,8 @@
 #import "A3SettingsAddFavoritesViewController.h"
 #import "A3CenterViewDelegate.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3SettingsFavoritesViewController () <A3ChildViewControllerDelegate>
 
@@ -121,11 +123,9 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
 		[self.favorites removeObjectAtIndex:indexPath.row];
-		[[A3AppDelegate instance] storeFavorites:self.favorites];
-		
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		[self saveData];
 
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:self];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
 		if ([self.tableView numberOfRowsInSection:0] < 2) {
 			[self.tableView reloadData];
@@ -136,9 +136,7 @@
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	[self.favorites moveObjectFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-	[[A3AppDelegate instance] storeFavorites:self.favorites];
-
-	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:self];
+	[self saveData];
 }
 
 // Override to support conditional rearranging of the table view.
@@ -162,6 +160,22 @@
 
 - (void)childViewControllerWillDismiss {
 	[self.tableView reloadData];
+}
+
+- (void)saveData {
+	NSDictionary *favoriteDictionary = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3MainMenuDataEntityFavorites];
+
+	NSMutableDictionary *editingFavorites = [NSMutableDictionary dictionaryWithDictionary:favoriteDictionary];
+	editingFavorites[kA3AppsExpandableChildren] = self.favorites;
+
+	[[A3SyncManager sharedSyncManager] saveDataObject:editingFavorites
+										  forFilename:A3MainMenuDataEntityFavorites
+												state:A3DataObjectStateModified];
+	[[A3SyncManager sharedSyncManager] addTransaction:A3MainMenuDataEntityFavorites
+												 type:A3DictionaryDBTransactionTypeSetBaseline
+											   object:editingFavorites];
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:self];
 }
 
 @end

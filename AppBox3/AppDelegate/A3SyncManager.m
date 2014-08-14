@@ -18,6 +18,7 @@
 #import "WalletData.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3UnitDataManager.h"
+#import "NSFileManager+A3Addtion.h"
 
 NSString * const A3SyncManagerCloudEnabled = @"A3SyncManagerCloudEnabled";
 NSString * const A3SyncActivityDidBeginNotification = @"A3SyncActivityDidBegin";
@@ -497,7 +498,7 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 	return [A3DictionaryDBLogsDirectoryName pathInLibraryDirectory];
 }
 
-- (void)addTransaction:(NSString *)userDefaultsKeyName type:(A3DictionaryDBTransactionTypeValue)typeValue object:(id)object {
+- (void)addTransaction:(NSString *)dataFilename type:(A3DictionaryDBTransactionTypeValue)typeValue object:(id)object {
 	if (!self.isCloudEnabled) return;
 
 	NSString *transactionID = [[NSUUID UUID] UUIDString];
@@ -505,7 +506,7 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 			A3DictionaryDBTransactionID : transactionID,
 			A3DictionaryDBTransactionType : @(typeValue),
 			A3DictionaryDBTimestamp : [NSDate date],
-			A3DictionaryDBEntityKey : userDefaultsKeyName,
+			A3DictionaryDBEntityKey : dataFilename,
 			A3DictionaryDBDeviceID : [[[UIDevice currentDevice] identifierForVendor] UUIDString],
 			A3DictionaryDBObject : object
 	};
@@ -517,7 +518,7 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 															 options:0
 															   error:&conversionError];
 	if ([data writeToFile:logFilePath atomically:YES]) {
-		FNLOG(@"File write success for key: %@", userDefaultsKeyName);
+		FNLOG(@"File write success for filename: %@", dataFilename);
 	}
 
 	[_cloudFileSystem connect:^(NSError *error) {
@@ -538,6 +539,10 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 						[downloadedFileList writeToFile:listFilePath atomically:YES];
 						
 						[self aggregateLogFiles];
+
+						if (typeValue == A3DictionaryDBTransactionTypeSetBaseline) {
+							[self removePreviousTransactionsBeforeBaselineForFilename:dataFilename lastTransactionFileName:transactionID ];
+						}
 					} else {
 						FNLOG(@"Log upload faild with error: %@", error_2.localizedDescription);
 					}
@@ -545,6 +550,54 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 			}
 		}];
 	}];
+}
+
+- (void)removePreviousTransactionsBeforeBaselineForFilename:(NSString *)entityName lastTransactionFileName:(NSString *)lastTransactionFilename {
+	NSError *error;
+	NSString *directoryPath = [self transactionLogDirectoryPath];
+	NSArray *logFiles = [_fileManager contentsOfDirectoryAtPath:directoryPath error:&error];
+	if (error) return;
+	for (NSString *filename in logFiles) {
+		if ([filename isEqualToString:lastTransactionFilename]) continue;
+
+		NSString *filePath = [directoryPath stringByAppendingPathComponent:filename];
+		NSData *rawData = [NSData dataWithContentsOfFile:filePath];
+		if (!rawData) {
+			continue;
+		}
+		NSArray *transactions = [NSPropertyListSerialization propertyListWithData:rawData
+																		  options:0
+																		   format:NULL
+																			error:NULL];
+		if ([transactions count] == 1) {
+			NSDictionary *transaction = transactions[0];
+			if (transaction && [transaction[A3DictionaryDBEntityKey] isEqualToString:entityName]) {
+				[_fileManager removeItemAtPath:filePath error:NULL];
+				[_cloudFileSystem removeItemAtPath:[A3DictionaryDBLogsDirectoryName stringByAppendingPathComponent:filename] completion:NULL];
+			}
+		} else {
+			NSMutableArray *editingTransactions = [NSMutableArray arrayWithArray:transactions];
+			NSMutableArray *willDeleteTransactions = [NSMutableArray new];
+			for (NSDictionary *transaction in editingTransactions) {
+				if ([transaction[A3DictionaryDBEntityKey] isEqualToString:filename]) {
+					[willDeleteTransactions addObject:transaction];
+				}
+			}
+			if ([willDeleteTransactions count]) {
+				[editingTransactions removeObjectsInArray:willDeleteTransactions];
+				if ([editingTransactions count]) {
+					NSData *data = [NSPropertyListSerialization dataWithPropertyList:editingTransactions
+																			  format:NSPropertyListBinaryFormat_v1_0
+																			 options:0
+																			   error:NULL];
+					[data writeToFile:filePath atomically:YES];
+				} else {
+					[_fileManager removeItemAtPath:filePath error:NULL];
+					[_cloudFileSystem removeItemAtPath:[A3DictionaryDBLogsDirectoryName stringByAppendingPathComponent:filename] completion:NULL];
+				}
+			}
+		}
+	}
 }
 
 - (NSString *)downloadedFileListFilePath {
@@ -628,14 +681,27 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 	NSMutableArray *mutableLogFiles = [logFiles mutableCopy];
 	if ([mutableLogFiles containsObject:A3DictionaryDBFirstHunkFilename]) {
 		[mutableLogFiles removeObject:A3DictionaryDBFirstHunkFilename];
-		oldAggregatedHunkContents = [NSArray arrayWithContentsOfFile:aggregatedHunkFilePath];
-		[newAggregatedHunkContents addObjectsFromArray:oldAggregatedHunkContents];
+
+		NSData *aggregatedHunkFileData = [NSData dataWithContentsOfFile:aggregatedHunkFilePath];
+		if (aggregatedHunkFileData) {
+			oldAggregatedHunkContents = [NSPropertyListSerialization propertyListWithData:aggregatedHunkFileData
+																				  options:0
+																				   format:NULL
+																					error:NULL];
+			if (oldAggregatedHunkContents) {
+				[newAggregatedHunkContents addObjectsFromArray:oldAggregatedHunkContents];
+			}
+		}
 	}
 
 	[_cloudFileSystem connect:^(NSError *error) {
 		for (NSString *logFilename in mutableLogFiles) {
 			NSString *logFilePath = [[self transactionLogDirectoryPath] stringByAppendingPathComponent:logFilename];
-			NSArray *transactions = [NSArray arrayWithContentsOfFile:logFilePath];
+			NSData *transactionsData = [NSData dataWithContentsOfFile:logFilePath];
+			NSArray *transactions = [NSPropertyListSerialization propertyListWithData:transactionsData
+																			  options:0
+																			   format:NULL
+																				error:NULL];
 			if (transactions) {
 				[newAggregatedHunkContents addObjectsFromArray:transactions];
 			}
@@ -643,7 +709,11 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 			NSString *cloudPath = [A3DictionaryDBLogsDirectoryName stringByAppendingPathComponent:logFilename];
 			[_cloudFileSystem removeItemAtPath:cloudPath completion:NULL];
 		}
-		[[newAggregatedHunkContents allObjects] writeToFile:aggregatedHunkFilePath atomically:YES];
+		NSData *newData = [NSPropertyListSerialization dataWithPropertyList:[newAggregatedHunkContents allObjects]
+																	 format:NSPropertyListBinaryFormat_v1_0
+																	options:0
+																	  error:NULL];
+		[newData writeToFile:aggregatedHunkFilePath atomically:YES];
 		[_cloudFileSystem uploadLocalFile:aggregatedHunkFilePath toPath:[A3DictionaryDBLogsDirectoryName stringByAppendingPathComponent:A3DictionaryDBFirstHunkFilename] completion:NULL];
 	}];
 }
@@ -931,55 +1001,28 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 }
 
 - (void)uploadBaseline {
-	[A3CurrencyDataManager setupFavorites];
-	NSArray *currencyFavorites = [self dataObjectForFilename:A3CurrencyDataEntityFavorites];
-	[self addTransaction:A3CurrencyDataEntityFavorites
-					type:A3DictionaryDBTransactionTypeSetBaseline
-				  object:currencyFavorites];
+	[self uploadBaselineForFilename:A3CurrencyDataEntityFavorites];
+	[self uploadBaselineForFilename:A3DaysCounterDataEntityCalendars];
+	[self uploadBaselineForFilename:A3WalletDataEntityCategoryInfo];
+	[self uploadBaselineForFilename:A3LadyCalendarDataEntityAccounts];
+	[self uploadBaselineForFilename:A3UnitConverterDataEntityFavorites];
+	[self uploadBaselineForFilename:A3UnitConverterDataEntityUnitCategories];
+	[self uploadBaselineForFilename:A3UnitConverterDataEntityConvertItems];
+	[self uploadBaselineForFilename:A3UnitPriceUserDataEntityPriceFavorites];
+	[self uploadBaselineForFilename:A3MainMenuDataEntityAllMenu];
+	[self uploadBaselineForFilename:A3MainMenuDataEntityFavorites];
+	[self uploadBaselineForFilename:A3MainMenuDataEntityRecentlyUsed];
+}
 
-	NSArray *daysCounterCalendars = [A3DaysCounterModelManager calendars];
-	[self addTransaction:A3DaysCounterDataEntityCalendars
-					type:A3DictionaryDBTransactionTypeSetBaseline
-				  object:daysCounterCalendars];
-
-	NSArray *walletCategories = [WalletData walletCategoriesFilterDoNotShow:NO];
-	[self addTransaction:A3WalletDataEntityCategoryInfo
-					type:A3DictionaryDBTransactionTypeSetBaseline
-				  object:walletCategories];
-
-	A3LadyCalendarModelManager *ladyCalendarModelManager = [A3LadyCalendarModelManager new];
-	[ladyCalendarModelManager prepareAccount];
-	NSArray *ladyCalendarAccounts = [ladyCalendarModelManager accountList];
-	[self addTransaction:A3LadyCalendarDataEntityAccounts
-					type:A3DictionaryDBTransactionTypeSetBaseline
-				  object:ladyCalendarAccounts];
-
-	A3UnitDataManager *unitDataManager = [A3UnitDataManager new];
-	[self addTransaction:A3UnitConverterDataEntityFavorites
-					type:A3DictionaryDBTransactionTypeSetBaseline
-				  object:[unitDataManager allFavorites]];
-	[self addTransaction:A3UnitConverterDataEntityUnitCategories
-					type:A3DictionaryDBTransactionTypeSetBaseline
-				  object:[unitDataManager allCategories]];
-	[self addTransaction:A3UnitConverterDataEntityConvertItems
-					type:A3DictionaryDBTransactionTypeSetBaseline
-				  object:[unitDataManager unitConvertItems]];
-	[self addTransaction:A3UnitPriceUserDataEntityPriceFavorites
-					type:A3DictionaryDBTransactionTypeSetBaseline
-				  object:[unitDataManager allUnitPriceFavorites]];
-
-	A3AppDelegate *appDelegate = [A3AppDelegate instance];
-	[self addTransaction:A3MainMenuDataEntityAllMenu
-					type:A3DictionaryDBTransactionTypeSetBaseline
-				  object:[appDelegate allMenuArrayFromStoredDataFile]];
-	NSArray *favoriteItems = [self dataObjectForFilename:A3MainMenuDataEntityFavorites];
-	[self addTransaction:A3MainMenuDataEntityFavorites
-					type:A3DictionaryDBTransactionTypeSetBaseline
-				  object:favoriteItems ? favoriteItems : A3SyncManagerEmptyObject];
-	NSArray *recentMenus = [self dataObjectForFilename:A3MainMenuDataEntityRecentlyUsed];
-	[self addTransaction:A3MainMenuDataEntityRecentlyUsed
-					type:A3DictionaryDBTransactionTypeSetBaseline
-				  object:recentMenus ? recentMenus : A3SyncManagerEmptyObject];
+- (void)uploadBaselineForFilename:(NSString *)filename {
+	NSString *dataFilePath = [[self.fileManager applicationSupportPath] stringByAppendingPathComponent:filename];
+	NSDictionary *dataStoreDictionary = [NSDictionary dictionaryWithContentsOfFile:dataFilePath];
+	if (dataStoreDictionary && [dataStoreDictionary[A3KeyValueDBState] unsignedIntegerValue] != A3DataObjectStateInitialized) {
+		id dataObject = dataStoreDictionary[A3KeyValueDBDataObject];
+		[self addTransaction:filename
+						type:A3DictionaryDBTransactionTypeSetBaseline
+					  object:dataObject];
+	}
 }
 
 - (NSArray *)backupObjectForKey:(NSString *)key {

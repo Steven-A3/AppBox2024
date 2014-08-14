@@ -87,6 +87,8 @@ enum SortingKind {
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
+	[self.searchBar removeFromSuperview];
+
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
 		FNLOG();
 		[self removeObserver];
@@ -178,6 +180,7 @@ enum SortingKind {
 {
     [super viewWillAppear:animated];
 
+	[self.view addSubview:self.searchBar];
 	[self showLeftNavigationBarItems];
 
     // 데이타 갱신

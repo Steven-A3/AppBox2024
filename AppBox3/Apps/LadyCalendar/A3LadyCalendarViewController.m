@@ -179,7 +179,10 @@
         
         [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
-		[[A3SyncManager sharedSyncManager] setObject:self.dataManager.currentAccount[L_WatchingDate_KEY] forKey:A3LadyCalendarLastViewMonth state:A3DataObjectStateModified];
+		id watchDate = self.dataManager.currentAccount[L_WatchingDate_KEY];
+		if (watchDate) {
+			[[A3SyncManager sharedSyncManager] setObject:watchDate forKey:A3LadyCalendarLastViewMonth state:A3DataObjectStateModified];
+		}
 	} else {
 		[_calendarHeaderView setHidden:YES];
 	}

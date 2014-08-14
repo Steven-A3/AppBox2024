@@ -425,7 +425,6 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
 	if (_isEditing) {
 		NSMutableDictionary *walletCategory = self.sections[indexPath.section][indexPath.row];
 		walletCategory[W_DoNotShow_KEY] = @(![walletCategory[W_DoNotShow_KEY] boolValue]);

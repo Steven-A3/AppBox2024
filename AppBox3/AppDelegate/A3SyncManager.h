@@ -42,5 +42,5 @@ typedef NS_ENUM(NSUInteger, A3DictionaryDBTransactionTypeValue) {
 - (void)uploadMediaFilesToCloud;
 - (void)downloadMediaFilesFromCloud;
 
-- (void)addTransaction:(NSString *)userDefaultsKeyName type:(A3DictionaryDBTransactionTypeValue)typeValue object:(id)object;
+- (void)addTransaction:(NSString *)dataFilename type:(A3DictionaryDBTransactionTypeValue)typeValue object:(id)object;
 @end

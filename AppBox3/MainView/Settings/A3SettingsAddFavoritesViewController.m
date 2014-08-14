@@ -12,6 +12,8 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3CenterViewDelegate.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3SettingsAddFavoritesViewController ()
 
@@ -182,26 +184,15 @@
 		isFavorite = NO;
 		if (idxFavorite != NSNotFound) {
 			[self.favoritesMenuItems removeObjectAtIndex:idxFavorite];
-			[[A3AppDelegate instance] storeFavorites:self.favoritesMenuItems];
-
-			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:self];
-
+			[self saveData];
 			[button setSelected:NO];
-		} else {
-			FNLOG(@"Data changed before re-load tableview");
 		}
 	} else {
 		isFavorite = YES;
 		if (idxFavorite == NSNotFound) {
 			[self.favoritesMenuItems addObject:menuItem];
-			FNLOG(@"%@", menuItem);
-			[[A3AppDelegate instance] storeFavorites:self.favoritesMenuItems];
-
-			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:self];
-
+			[self saveData];
 			[button setSelected:YES];
-		} else {
-			FNLOG(@"Data changed before re-load tableview");
 		}
 	}
 
@@ -210,6 +201,22 @@
 
 - (void)setTextColorForCell:(UITableViewCell *)cell favorite:(BOOL)isFavorite {
 	cell.textLabel.textColor = isFavorite ? [self selectedTextColor] : [UIColor blackColor];
+}
+
+- (void)saveData {
+	NSDictionary *favoriteDictionary = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3MainMenuDataEntityFavorites];
+
+	NSMutableDictionary *editingFavorites = [NSMutableDictionary dictionaryWithDictionary:favoriteDictionary];
+	editingFavorites[kA3AppsExpandableChildren] = self.favoritesMenuItems;
+	[[A3SyncManager sharedSyncManager] saveDataObject:editingFavorites
+										  forFilename:A3MainMenuDataEntityFavorites
+												state:A3DataObjectStateModified];
+	[[A3SyncManager sharedSyncManager] addTransaction:A3MainMenuDataEntityFavorites
+												 type:A3DictionaryDBTransactionTypeSetBaseline
+											   object:editingFavorites];
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:self];
+
 }
 
 @end
