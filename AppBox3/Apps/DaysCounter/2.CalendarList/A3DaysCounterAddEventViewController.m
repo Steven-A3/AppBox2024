@@ -743,12 +743,12 @@
     titleLabel.text = title;
     
     BOOL isStartDateLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.startDate toLunar:YES]
-                                                                isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+                                                                isKorean:[A3UIDevice useKoreanLunarCalendar]];
     BOOL isEndDateLeapMonth = NO;
 	DaysCounterDate *endDate = [_eventItem endDateCreateIfNotExist:NO ];
     if (endDate) {
         isEndDateLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:endDate toLunar:YES]
-                                                             isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+                                                             isKorean:[A3UIDevice useKoreanLunarCalendar]];
     }
     
     if (isStartDateLeapMonth || isEndDateLeapMonth) {
@@ -1459,7 +1459,7 @@
         _eventItem.isAllDay = @(YES);
         
         NSDateComponents *startComp = [A3DaysCounterModelManager dateComponentsFromDateModelObject:[_eventItem startDate] toLunar:YES];
-        BOOL isLunarStartDate = [NSDate isLunarDateComponents:startComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+        BOOL isLunarStartDate = [NSDate isLunarDateComponents:startComp isKorean:[A3UIDevice useKoreanLunarCalendar]];
         if (!isLunarStartDate) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Start date is not a lunar date.", @"Message in adding event.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                   otherButtonTitles:nil, nil];
@@ -1469,7 +1469,7 @@
         
         if ( [_eventItem.isPeriod boolValue] ) {
             NSDateComponents *startComp = [A3DaysCounterModelManager dateComponentsFromDateModelObject:[_eventItem endDateCreateIfNotExist:NO ] toLunar:YES];
-            BOOL isLunarEndDate = [NSDate isLunarDateComponents:startComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+            BOOL isLunarEndDate = [NSDate isLunarDateComponents:startComp isKorean:[A3UIDevice useKoreanLunarCalendar]];
             if (!isLunarEndDate) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"End date is not a lunar date.", @"Message in adding event.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                       otherButtonTitles:nil, nil] ;
@@ -1859,7 +1859,7 @@
     
     // 음력 날짜 유효성 체크.
     if ([_eventItem.isLunar boolValue]) {
-        BOOL isLunarDate = [NSDate isLunarDateComponents:dateComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+        BOOL isLunarDate = [NSDate isLunarDateComponents:dateComp isKorean:[A3UIDevice useKoreanLunarCalendar]];
         [self leapMonthCellEnable:[NSDate isLunarLeapMonthAtDateComponents:dateComp isKorean:YES]];
 
         if (!isLunarDate) {
@@ -2102,7 +2102,7 @@
 
     // 음력 날짜 유효성 체크.
     if ([_eventItem.isLunar boolValue]) {
-        //BOOL isLunarDate = [NSDate isLunarDate:[calendar dateFromComponents:dateComponents] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+        //BOOL isLunarDate = [NSDate isLunarDate:[calendar dateFromComponents:dateComponents] isKorean:[A3UIDevice useKoreanLunarCalendar]];
         [self leapMonthCellEnable:[NSDate isLunarLeapMonthAtDateComponents:dateComponents isKorean:YES]];
     }
     

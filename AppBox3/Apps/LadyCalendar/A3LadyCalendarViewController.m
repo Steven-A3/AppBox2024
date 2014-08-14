@@ -19,7 +19,6 @@
 #import "A3LadyCalendarAddPeriodViewController.h"
 #import "LadyCalendarPeriod.h"
 #import "A3LadyCalendarCalendarView.h"
-#import "A3UserDefaults.h"
 #import "A3LadyCalendarAccountListViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3InstructionViewController.h"
@@ -248,7 +247,7 @@
 
 	[self setupNavigationTitle];
 
-	[self.navigationController setToolbarHidden:NO];
+//	[self.navigationController setToolbarHidden:NO];
     _collectionView.delegate = self;
 
 	if( isFirst ) {

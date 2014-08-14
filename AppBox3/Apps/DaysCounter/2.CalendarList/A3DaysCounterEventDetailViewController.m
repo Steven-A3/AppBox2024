@@ -416,7 +416,7 @@
 		NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
                                                             gregorianToLunar:YES
                                                                    leapMonth:NO
-                                                                      korean:[A3DateHelper isCurrentLocaleIsKorea]
+                                                                      korean:[A3UIDevice useKoreanLunarCalendar]
                                                              resultLeapMonth:&isResultLeapMonth];
         NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
         startDate = convertDate;
@@ -426,7 +426,7 @@
             dateComp = [NSDate lunarCalcWithComponents:dateComp
                                       gregorianToLunar:YES
                                              leapMonth:NO
-                                                korean:[A3DateHelper isCurrentLocaleIsKorea]
+                                                korean:[A3UIDevice useKoreanLunarCalendar]
                                        resultLeapMonth:&isResultLeapMonth];
 			convertDate = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
             endDate = convertDate;
@@ -459,7 +459,7 @@
         
         BOOL isLeapMonth = NO;
         if ([info.startDate.isLeapMonth boolValue]) {
-            isLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:startDateCompLunar isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+            isLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:startDateCompLunar isKorean:[A3UIDevice useKoreanLunarCalendar]];
         }
         
         NSDateComponents *startDateComp = [A3DaysCounterModelManager nextSolarDateComponentsFromLunarDateComponents:startDateCompLunar
@@ -1027,7 +1027,7 @@ EXIT_FUCTION:
             NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
                                                                 gregorianToLunar:YES
                                                                        leapMonth:NO
-                                                                          korean:[A3DateHelper isCurrentLocaleIsKorea]
+                                                                          korean:[A3UIDevice useKoreanLunarCalendar]
                                                                  resultLeapMonth:&isResultLeapMonth];
             NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
             
@@ -1038,7 +1038,7 @@ EXIT_FUCTION:
                 dateComp = [NSDate lunarCalcWithComponents:dateComp
                                           gregorianToLunar:YES
                                                  leapMonth:NO
-                                                    korean:[A3DateHelper isCurrentLocaleIsKorea]
+                                                    korean:[A3UIDevice useKoreanLunarCalendar]
                                            resultLeapMonth:&isResultLeapMonth];
                 convertDate = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
                 endDate = convertDate;
@@ -1108,7 +1108,7 @@ EXIT_FUCTION:
             dateComp = [NSDate lunarCalcWithComponents:dateComp
                                       gregorianToLunar:YES
                                              leapMonth:NO
-                                                korean:[A3DateHelper isCurrentLocaleIsKorea]
+                                                korean:[A3UIDevice useKoreanLunarCalendar]
                                        resultLeapMonth:&isResultLeapMonth];
             NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
             startDate = convertDate;

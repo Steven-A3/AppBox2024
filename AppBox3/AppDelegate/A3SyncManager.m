@@ -1001,28 +1001,55 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 }
 
 - (void)uploadBaseline {
-	[self uploadBaselineForFilename:A3CurrencyDataEntityFavorites];
-	[self uploadBaselineForFilename:A3DaysCounterDataEntityCalendars];
-	[self uploadBaselineForFilename:A3WalletDataEntityCategoryInfo];
-	[self uploadBaselineForFilename:A3LadyCalendarDataEntityAccounts];
-	[self uploadBaselineForFilename:A3UnitConverterDataEntityFavorites];
-	[self uploadBaselineForFilename:A3UnitConverterDataEntityUnitCategories];
-	[self uploadBaselineForFilename:A3UnitConverterDataEntityConvertItems];
-	[self uploadBaselineForFilename:A3UnitPriceUserDataEntityPriceFavorites];
-	[self uploadBaselineForFilename:A3MainMenuDataEntityAllMenu];
-	[self uploadBaselineForFilename:A3MainMenuDataEntityFavorites];
-	[self uploadBaselineForFilename:A3MainMenuDataEntityRecentlyUsed];
-}
+	[A3CurrencyDataManager setupFavorites];
+	NSArray *currencyFavorites = [self dataObjectForFilename:A3CurrencyDataEntityFavorites];
+	[self addTransaction:A3CurrencyDataEntityFavorites
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:currencyFavorites];
 
-- (void)uploadBaselineForFilename:(NSString *)filename {
-	NSString *dataFilePath = [[self.fileManager applicationSupportPath] stringByAppendingPathComponent:filename];
-	NSDictionary *dataStoreDictionary = [NSDictionary dictionaryWithContentsOfFile:dataFilePath];
-	if (dataStoreDictionary && [dataStoreDictionary[A3KeyValueDBState] unsignedIntegerValue] != A3DataObjectStateInitialized) {
-		id dataObject = dataStoreDictionary[A3KeyValueDBDataObject];
-		[self addTransaction:filename
-						type:A3DictionaryDBTransactionTypeSetBaseline
-					  object:dataObject];
-	}
+	NSArray *daysCounterCalendars = [A3DaysCounterModelManager calendars];
+	[self addTransaction:A3DaysCounterDataEntityCalendars
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:daysCounterCalendars];
+
+	NSArray *walletCategories = [WalletData walletCategoriesFilterDoNotShow:NO];
+	[self addTransaction:A3WalletDataEntityCategoryInfo
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:walletCategories];
+
+	A3LadyCalendarModelManager *ladyCalendarModelManager = [A3LadyCalendarModelManager new];
+	[ladyCalendarModelManager prepareAccount];
+	NSArray *ladyCalendarAccounts = [ladyCalendarModelManager accountList];
+	[self addTransaction:A3LadyCalendarDataEntityAccounts
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:ladyCalendarAccounts];
+
+	A3UnitDataManager *unitDataManager = [A3UnitDataManager new];
+	[self addTransaction:A3UnitConverterDataEntityFavorites
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:[unitDataManager allFavorites]];
+	[self addTransaction:A3UnitConverterDataEntityUnitCategories
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:[unitDataManager allCategories]];
+	[self addTransaction:A3UnitConverterDataEntityConvertItems
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:[unitDataManager unitConvertItems]];
+	[self addTransaction:A3UnitPriceUserDataEntityPriceFavorites
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:[unitDataManager allUnitPriceFavorites]];
+
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+	[self addTransaction:A3MainMenuDataEntityAllMenu
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:[appDelegate allMenuArrayFromStoredDataFile]];
+	NSArray *favoriteItems = [self dataObjectForFilename:A3MainMenuDataEntityFavorites];
+	[self addTransaction:A3MainMenuDataEntityFavorites
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:favoriteItems ? favoriteItems : A3SyncManagerEmptyObject];
+	NSArray *recentMenus = [self dataObjectForFilename:A3MainMenuDataEntityRecentlyUsed];
+	[self addTransaction:A3MainMenuDataEntityRecentlyUsed
+					type:A3DictionaryDBTransactionTypeSetBaseline
+				  object:recentMenus ? recentMenus : A3SyncManagerEmptyObject];
 }
 
 - (NSArray *)backupObjectForKey:(NSString *)key {
