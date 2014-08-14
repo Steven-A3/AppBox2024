@@ -247,7 +247,7 @@
 
 	[self setupNavigationTitle];
 
-//	[self.navigationController setToolbarHidden:NO];
+	[self.navigationController setToolbarHidden:NO];
     _collectionView.delegate = self;
 
 	if( isFirst ) {
