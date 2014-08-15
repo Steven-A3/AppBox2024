@@ -9,9 +9,9 @@
 #import "A3ClockDataManager.h"
 #import <CoreLocation/CoreLocation.h>
 #import "A3ClockInfo.h"
-#import "NSUserDefaults+A3Defaults.h"
+#import "A3UserDefaults+A3Defaults.h"
 #import "AFHTTPRequestOperation.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3AppDelegate.h"
 #import "Reachability.h"
 
@@ -97,12 +97,12 @@
 	} else {
 		[waveCirclesArray removeObject:@(type)];
 	}
-	[[NSUserDefaults standardUserDefaults] setObject:waveCirclesArray forKey:A3ClockWaveCircleLayout];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setObject:waveCirclesArray forKey:A3ClockWaveCircleLayout];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSMutableArray *)waveCirclesArray {
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
 	NSMutableArray *circleArray = [[userDefaults objectForKey:A3ClockWaveCircleLayout] mutableCopy];
 
 	if (circleArray) return circleArray;
@@ -370,7 +370,7 @@
 
 
 - (void)getWeatherInfoWithWOEID:(NSString *)WOEID {
-	NSString *weatherUnit = [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? @"f" : @"c";
+	NSString *weatherUnit = [[A3UserDefaults standardUserDefaults] clockUsesFahrenheit] ? @"f" : @"c";
 	NSURL *weatherURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://weather.yahooapis.com/forecastrss?w=%@&u=%@&language=", WOEID, weatherUnit]];
 
 	NSURLRequest *weatherRequest = [NSURLRequest requestWithURL:weatherURL];
@@ -402,7 +402,7 @@
 			FNLOG(@"%@", log);
 #endif
 
-			self.clockInfo.currentWeather.unit = [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;
+			self.clockInfo.currentWeather.unit = [[A3UserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;
 			self.clockInfo.currentWeather.representation = [self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyText];
 			self.clockInfo.currentWeather.currentTemperature = [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyTemp] intValue];
 			self.clockInfo.currentWeather.condition = (A3WeatherCondition) [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyCondition] intValue];

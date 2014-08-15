@@ -10,7 +10,7 @@
 #import "A3ClockInfo.h"
 #import "A3ClockDataManager.h"
 #import "A3ClockLEDViewController.h"
-#import "NSUserDefaults+A3Defaults.h"
+#import "A3UserDefaults+A3Defaults.h"
 
 @interface A3ClockLEDViewController ()
 
@@ -281,7 +281,7 @@
 }
 
 - (void)setupTextColor {
-	UIColor *textColor = [[NSUserDefaults standardUserDefaults] clockLEDColor];
+	UIColor *textColor = [[A3UserDefaults standardUserDefaults] clockLEDColor];
 	for (UILabel *label in self.view.subviews) {
 		if ([label isKindOfClass:[UILabel class]]) {
 			label.textColor = textColor;
@@ -326,7 +326,7 @@
 }
 
 - (void)setGradientColor {
-	NSUInteger colorIndex = [[NSUserDefaults standardUserDefaults] clockLEDColorIndex];
+	NSUInteger colorIndex = [[A3UserDefaults standardUserDefaults] clockLEDColorIndex];
 	_gradientLayer.colors = @[
 			(id)[UIColor clearColor].CGColor,
 			(id) [self.clockDataManager LEDColorAtIndex:colorIndex alpha:0.05].CGColor,
@@ -456,7 +456,7 @@
 - (UILabel *)makeLabel {
 	UILabel *label = [UILabel new];
 	label.textAlignment = NSTextAlignmentCenter;
-	label.textColor = [[NSUserDefaults standardUserDefaults] clockLEDColor];
+	label.textColor = [[A3UserDefaults standardUserDefaults] clockLEDColor];
 	return label;
 }
 

@@ -26,9 +26,9 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIColor+A3Addition.h"
 #import "A3InstructionViewController.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
-#import "NSUserDefaults+A3Defaults.h"
+#import "A3UserDefaults+A3Defaults.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
@@ -533,7 +533,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForUnitConverter]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForUnitConverter]) {
         [self showInstructionView];
     }
 }
@@ -542,8 +542,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 {
     [self dismissMoreMenu];
 
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForUnitConverter];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForUnitConverter];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"UnitConverter"];

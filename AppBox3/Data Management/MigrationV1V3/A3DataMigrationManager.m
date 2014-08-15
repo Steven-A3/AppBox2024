@@ -18,7 +18,7 @@
 #import "TranslatorHistory+manager.h"
 #import "NSData-AES.h"
 #import "WalletItem.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "WalletData.h"
 #import "WalletItem+initialize.h"
 #import "A3DaysCounterModelManager.h"

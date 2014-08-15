@@ -9,7 +9,7 @@
 #import "A3CurrencySettingsViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
-#import "NSUserDefaults+A3Defaults.h"
+#import "A3UserDefaults+A3Defaults.h"
 #import "A3CurrencyViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
 
@@ -126,40 +126,40 @@ NSString *const CellIdentifier = @"Cell";
 - (UISwitch *)autoUpdateSwitch {
 	if (!_autoUpdateSwitch) {
 		_autoUpdateSwitch = [UISwitch new];
-		[_autoUpdateSwitch setOn:[[NSUserDefaults standardUserDefaults] currencyAutoUpdate]];
+		[_autoUpdateSwitch setOn:[[A3UserDefaults standardUserDefaults] currencyAutoUpdate]];
 		[_autoUpdateSwitch addTarget:self action:@selector(autoUpdateValueChanged:) forControlEvents:UIControlEventValueChanged];
 	}
 	return _autoUpdateSwitch;
 }
 
 - (void)autoUpdateValueChanged:(UISwitch *)control {
-	[[NSUserDefaults standardUserDefaults] setCurrencyAutoUpdate:control.isOn];
+	[[A3UserDefaults standardUserDefaults] setCurrencyAutoUpdate:control.isOn];
 }
 
 - (UISwitch *)useCellularDataSwitch {
 	if (!_useCellularDataSwitch) {
 		_useCellularDataSwitch = [UISwitch new];
-		[_useCellularDataSwitch setOn:[[NSUserDefaults standardUserDefaults] currencyUseCellularData]];
+		[_useCellularDataSwitch setOn:[[A3UserDefaults standardUserDefaults] currencyUseCellularData]];
 		[_useCellularDataSwitch addTarget:self action:@selector(useCellularDataValueChanged:) forControlEvents:UIControlEventValueChanged];
 	}
 	return _useCellularDataSwitch;
 }
 
 - (void)useCellularDataValueChanged:(UISwitch *)control {
-	[[NSUserDefaults standardUserDefaults] setCurrencyUseCellularData:control.isOn];
+	[[A3UserDefaults standardUserDefaults] setCurrencyUseCellularData:control.isOn];
 }
 
 - (UISwitch *)showFlagSwitch {
 	if (!_showFlagSwitch) {
 		_showFlagSwitch = [UISwitch new];
-		[_showFlagSwitch setOn:[[NSUserDefaults standardUserDefaults] currencyShowNationalFlag]];
+		[_showFlagSwitch setOn:[[A3UserDefaults standardUserDefaults] currencyShowNationalFlag]];
 		[_showFlagSwitch addTarget:self action:@selector(showFlagValueChanged:) forControlEvents:UIControlEventValueChanged];
 	}
 	return _showFlagSwitch;
 }
 
 - (void)showFlagValueChanged:(UISwitch *)control {
-	[[NSUserDefaults standardUserDefaults] setCurrencyShowNationalFlag:control.isOn];
+	[[A3UserDefaults standardUserDefaults] setCurrencyShowNationalFlag:control.isOn];
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3CurrencySettingsChangedNotification object:nil];
 }
 

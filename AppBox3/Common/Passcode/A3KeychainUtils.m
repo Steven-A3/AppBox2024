@@ -9,6 +9,7 @@
 #import "A3KeychainUtils.h"
 #import "A3AppDelegate+passcode.h"
 #import "NSData-AES.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 #import <Security/Security.h>
 
@@ -93,7 +94,7 @@ static NSString *kA3KeychainAccountName = @"A3AppBox3Passcode";
 }
 
 + (double)passcodeTime {
-	return [[NSUserDefaults standardUserDefaults] doubleForKey:kUserDefaultsKeyForPasscodeTimerDuration];
+	return [[A3UserDefaults standardUserDefaults] doubleForKey:kUserDefaultsKeyForPasscodeTimerDuration];
 }
 
 + (NSString *)passcodeTimeString {
@@ -126,15 +127,15 @@ NSString *const kUserUseSimplePasscode				= @"kUserUseSimplePasscode";
 			NSString *decryptedHint = [[NSString alloc] initWithData:[encryptedHintData AESDecryptWithPassphrase:USERPASSCODEDECRYPTKEY] encoding:NSUTF8StringEncoding];
 
 			if (![[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForUseSimplePasscode]) {
-				[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
+				[[A3UserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
 			} else {
 				// Verify is it simple passcode.
 				NSCharacterSet *digitCharacterSet = [NSCharacterSet decimalDigitCharacterSet];
 				NSString *verification = [decryptedPasscode stringByTrimmingCharactersInSet:digitCharacterSet];
 				if ([decryptedPasscode length] != 4 || [verification length] != 0) {
-					[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
+					[[A3UserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
 				} else {
-					[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kUserDefaultsKeyForUseSimplePasscode];
+					[[A3UserDefaults standardUserDefaults] setBool:YES forKey:kUserDefaultsKeyForUseSimplePasscode];
 				}
 			}
 			[A3KeychainUtils storePassword:decryptedPasscode hint:decryptedHint];

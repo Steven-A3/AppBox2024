@@ -26,6 +26,7 @@
 #import "A3ClockMainViewController.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3UserDefaults.h"
 
 NSString *const A3NotificationAppsMainMenuContentsChanged = @"A3NotificationAppsMainMenuContentsChanged";
 NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponder";
@@ -226,7 +227,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 						proceedPasscodeCheck = YES;
 
 						if ([menuElement.storyboardName_iPhone isEqualToString:@"A3Settings"]) {
-							proceedPasscodeCheck &= [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
+							proceedPasscodeCheck &= [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
 						}
 					}
 					if (proceedPasscodeCheck) {
@@ -306,7 +307,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
         A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
 		[sharedManager prepareInContext:[A3AppDelegate instance].managedObjectContext];
 
-        NSInteger lastOpenedMainIndex = [[NSUserDefaults standardUserDefaults] integerForKey:A3DaysCounterLastOpenedMainIndex];
+        NSInteger lastOpenedMainIndex = [[A3UserDefaults standardUserDefaults] integerForKey:A3DaysCounterLastOpenedMainIndex];
         switch (lastOpenedMainIndex) {
             case 1:
                 targetViewController = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];

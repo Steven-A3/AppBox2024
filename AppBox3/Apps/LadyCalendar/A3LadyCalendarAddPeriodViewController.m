@@ -15,7 +15,7 @@
 #import "A3DateHelper.h"
 #import "A3NumberKeyboardViewController.h"
 #import "UIColor+A3Addition.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3AppDelegate+appearance.h"
 #import "A3WalletNoteCell.h"
 #import "UIViewController+tableViewStandardDimension.h"

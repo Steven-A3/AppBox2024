@@ -10,6 +10,7 @@
 #import "HolidayData+Country.h"
 #import "A3UIDevice.h"
 #import "A3AppDelegate.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 
 NSString *const kHolidayCountryCode = @"kHolidayCountryCode";
@@ -606,7 +607,7 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 	self.year = year;
 	NSMutableArray *holidays = [self valueForKeyPath:[NSString stringWithFormat:@"%@_HolidaysInYear", [countryCode lowercaseString]]];
 	if (!fullSet) {
-		NSArray *excludedHoliday = [[NSUserDefaults standardUserDefaults] objectForKey:[[self class] keyForExcludedHolidaysForCountry:countryCode]];
+		NSArray *excludedHoliday = [[A3UserDefaults standardUserDefaults] objectForKey:[[self class] keyForExcludedHolidaysForCountry:countryCode]];
 		NSMutableArray *needToDelete = [NSMutableArray new];
 		for (NSDictionary *item in holidays) {
 			if ([excludedHoliday containsObject:item[kHolidayName]]) {
@@ -622,7 +623,7 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 }
 
 + (NSArray *)userSelectedCountries {
-	NSArray *countries = [[NSUserDefaults standardUserDefaults] objectForKey:kHolidayCountriesForCurrentDevice];
+	NSArray *countries = [[A3UserDefaults standardUserDefaults] objectForKey:kHolidayCountriesForCurrentDevice];
 	if (!countries) {
 
 		countries = @[@"us", @"kr", @"jp", @"gb"];
@@ -637,15 +638,15 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 			[mutableCountries insertObject:systemCountry atIndex:0];
 			countries = [[NSArray alloc] initWithArray:mutableCountries];
 		}
-		[[NSUserDefaults standardUserDefaults] setObject:countries forKey:kHolidayCountriesForCurrentDevice];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[[A3UserDefaults standardUserDefaults] setObject:countries forKey:kHolidayCountriesForCurrentDevice];
+		[[A3UserDefaults standardUserDefaults] synchronize];
 	}
 	return countries;
 }
 
 + (void)setUserSelectedCountries:(NSArray *)newData {
-	[[NSUserDefaults standardUserDefaults] setObject:newData forKey:kHolidayCountriesForCurrentDevice];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setObject:newData forKey:kHolidayCountriesForCurrentDevice];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 + (NSInteger)thisYear {
@@ -663,11 +664,11 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 }
 
 + (NSMutableArray *)arrayOfShowingLunarDates {
-	NSArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:kHolidayCountriesShowLunarDates];
+	NSArray *array = [[A3UserDefaults standardUserDefaults] objectForKey:kHolidayCountriesShowLunarDates];
 	if (!array) {
 		array = [HolidayData candidateForLunarDates];
-		[[NSUserDefaults standardUserDefaults] setObject:array forKey:kHolidayCountriesShowLunarDates];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[[A3UserDefaults standardUserDefaults] setObject:array forKey:kHolidayCountriesShowLunarDates];
+		[[A3UserDefaults standardUserDefaults] synchronize];
 	}
 	return [array mutableCopy];
 }
@@ -685,8 +686,8 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 	NSMutableArray *array = [HolidayData arrayOfShowingLunarDates];
 	if (![array containsObject:countryCode]) {
 		[array addObject:countryCode];
-		[[NSUserDefaults standardUserDefaults] setObject:array forKey:kHolidayCountriesShowLunarDates];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[[A3UserDefaults standardUserDefaults] setObject:array forKey:kHolidayCountriesShowLunarDates];
+		[[A3UserDefaults standardUserDefaults] synchronize];
 	}
 }
 
@@ -694,8 +695,8 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 	NSMutableArray *array = [HolidayData arrayOfShowingLunarDates];
 	if ([array containsObject:countryCode]) {
 		[array removeObject:countryCode];
-		[[NSUserDefaults standardUserDefaults] setObject:array forKey:kHolidayCountriesShowLunarDates];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[[A3UserDefaults standardUserDefaults] setObject:array forKey:kHolidayCountriesShowLunarDates];
+		[[A3UserDefaults standardUserDefaults] synchronize];
 	}
 }
 

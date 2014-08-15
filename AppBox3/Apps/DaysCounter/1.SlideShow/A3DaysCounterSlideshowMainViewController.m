@@ -29,6 +29,7 @@
 #import "NSDate+formatting.h"
 #import "A3InstructionViewController.h"
 #import "A3DaysCounterSlideShowCollectionViewLayout.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 
 #define VISIBLE_INDEX_INTERVAL      2
@@ -248,8 +249,8 @@
 
     [_collectionView reloadData];
     
-    [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:A3DaysCounterLastOpenedMainIndex];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[A3UserDefaults standardUserDefaults] setInteger:1 forKey:A3DaysCounterLastOpenedMainIndex];
+    [[A3UserDefaults standardUserDefaults] synchronize];
     
     if (_prevShownEventID) {
 		NSUInteger eventIdx = [_eventsArray indexOfObjectPassingTest:^BOOL(DaysCounterEvent *item, NSUInteger idx, BOOL *stop) {
@@ -507,7 +508,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForDaysCounterSlideshow]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForDaysCounterSlideshow]) {
         [self showInstructionView];
     }
 }
@@ -521,8 +522,8 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 {
     [self dismissMoreMenu];
 
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForDaysCounterSlideshow];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForDaysCounterSlideshow];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
 	UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"DaysCounter_2"];

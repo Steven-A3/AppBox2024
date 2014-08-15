@@ -28,6 +28,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "A3InstructionViewController.h"
 #import "DaysCounterFavorite+extension.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 
 
@@ -134,8 +135,8 @@
     self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager favoriteEventsList]];
     [self.tableView reloadData];
     
-    [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:A3DaysCounterLastOpenedMainIndex];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[A3UserDefaults standardUserDefaults] setInteger:4 forKey:A3DaysCounterLastOpenedMainIndex];
+    [[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)didReceiveMemoryWarning
@@ -154,15 +155,15 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForDaysCounterFavorite]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForDaysCounterFavorite]) {
         [self showInstructionView];
     }
 }
 
 - (void)showInstructionView
 {
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForDaysCounterFavorite];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForDaysCounterFavorite];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
 	UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"DaysCounter_3"];

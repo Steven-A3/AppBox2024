@@ -1,18 +1,18 @@
 //
-//  NSUserDefaults+A3Addition.m
+//  A3UserDefaults+A3Addition.m
 //  AppBox3
 //
 //  Created by A3 on 12/6/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "NSUserDefaults+A3Addition.h"
+#import "A3UserDefaults+A3Addition.h"
 #import "A3AppDelegate+iCloud.h"
 #import "A3AppDelegate+mainMenu.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 
-@implementation NSUserDefaults (A3Addition)
+@implementation A3UserDefaults (A3Addition)
 
 - (NSString *)stringForRecentToKeep {
 	NSInteger numberOfItemsToKeep = [[A3AppDelegate instance] maximumRecentlyUsedMenus];

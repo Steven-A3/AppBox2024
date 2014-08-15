@@ -8,7 +8,7 @@
 
 #import "HTCopyableLabel.h"
 #import "A3CalculatorViewController.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @implementation A3CalculatorViewController

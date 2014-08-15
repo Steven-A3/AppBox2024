@@ -16,7 +16,7 @@
 #import "DaysCounterDate.h"
 #import "NYXImagesKit.h"
 #import "A3DateHelper.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3DaysCounterSlideshowEventSummaryView.h"
 #import "NSDate+LunarConverter.h"
 #import "NSDate+formatting.h"

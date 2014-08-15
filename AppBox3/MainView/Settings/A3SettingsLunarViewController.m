@@ -7,12 +7,13 @@
 //
 
 #import "A3SettingsLunarViewController.h"
-#import "NSUserDefaults+A3Addition.h"
+#import "A3UserDefaults+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UIViewController+A3Addition.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3UserDefaults.h"
 
 @interface A3SettingsLunarViewController ()
 
@@ -86,12 +87,12 @@
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 	switch (cell.tag) {
 		case 1100:
-			[[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3SettingsUseKoreanCalendarForLunarConversion];
-			[[NSUserDefaults standardUserDefaults] synchronize];
+			[[A3UserDefaults standardUserDefaults] setBool:NO forKey:A3SettingsUseKoreanCalendarForLunarConversion];
+			[[A3UserDefaults standardUserDefaults] synchronize];
 			break;
 		case 1200:
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsUseKoreanCalendarForLunarConversion];
-			[[NSUserDefaults standardUserDefaults] synchronize];
+			[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsUseKoreanCalendarForLunarConversion];
+			[[A3UserDefaults standardUserDefaults] synchronize];
 			break;
 	}
 	[tableView reloadData];

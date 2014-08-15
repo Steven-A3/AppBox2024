@@ -25,6 +25,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3UserDefaults.h"
 
 @interface A3LadyCalendarViewController () <A3InstructionViewControllerDelegate>
 
@@ -110,7 +111,7 @@
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDefaultsDidChange) name:NSUserDefaultsDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDefaultsDidChange) name:A3UserDefaultsDidChangeNotification object:nil];
     [self setupInstructionView];
 }
 
@@ -138,8 +139,8 @@
 	[super viewDidAppear:animated];
 
 	static NSString *const A3DisclaimerSigned = @"kDefaultPCalendarWarningMessageSigned";
-	if (![[NSUserDefaults standardUserDefaults] boolForKey:A3DisclaimerSigned]) {
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3DisclaimerSigned];
+	if (![[A3UserDefaults standardUserDefaults] boolForKey:A3DisclaimerSigned]) {
+		[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3DisclaimerSigned];
 
 		UIAlertView *disclaimer = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Disclaimer", @"Disclaimer")
 															 message:NSLocalizedString(@"LadyCalendarDisclaimerMsg", nil)
@@ -151,7 +152,7 @@
 }
 
 - (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3UserDefaultsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationLadyCalendarPeriodDataChanged object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
@@ -439,15 +440,15 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForLadyCalendar]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForLadyCalendar]) {
         [self showInstructionView];
     }
 }
 
 - (void)showInstructionView
 {
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForLadyCalendar];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForLadyCalendar];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"LadyCalendar"];

@@ -9,6 +9,7 @@
 #import "A3SettingsRequireForViewController.h"
 #import "A3AppDelegate+passcode.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 
 @interface A3SettingsRequireForViewController ()
@@ -56,14 +57,14 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	double seconds = [[NSUserDefaults standardUserDefaults] doubleForKey:kUserDefaultsKeyForPasscodeTimerDuration];
+	double seconds = [[A3UserDefaults standardUserDefaults] doubleForKey:kUserDefaultsKeyForPasscodeTimerDuration];
 
 	cell.accessoryType = seconds == [self.durations[indexPath.row] doubleValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[[NSUserDefaults standardUserDefaults] setObject:self.durations[indexPath.row] forKey:kUserDefaultsKeyForPasscodeTimerDuration];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setObject:self.durations[indexPath.row] forKey:kUserDefaultsKeyForPasscodeTimerDuration];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
 	[self.tableView reloadData];
 }

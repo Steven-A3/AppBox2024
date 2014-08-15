@@ -10,7 +10,7 @@
 #import "A3ClockLEDViewController.h"
 #import "A3ClockDataManager.h"
 #import "A3ClockWaveViewController.h"
-#import "NSUserDefaults+A3Defaults.h"
+#import "A3UserDefaults+A3Defaults.h"
 
 @interface A3ClockViewController ()
 
@@ -40,31 +40,31 @@
 }
 
 - (BOOL)showSeconds {
-	return [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
+	return [[A3UserDefaults standardUserDefaults] clockTheTimeWithSeconds];
 }
 
 - (BOOL)showWeather {
-	return [[NSUserDefaults standardUserDefaults] clockShowWeather];
+	return [[A3UserDefaults standardUserDefaults] clockShowWeather];
 }
 
 - (BOOL)flashSeparator {
-	return [[NSUserDefaults standardUserDefaults] clockFlashTheTimeSeparators];
+	return [[A3UserDefaults standardUserDefaults] clockFlashTheTimeSeparators];
 }
 
 - (BOOL)use24hourClock {
-	return [[NSUserDefaults standardUserDefaults] clockUse24hourClock];
+	return [[A3UserDefaults standardUserDefaults] clockUse24hourClock];
 }
 
 - (BOOL)showAMPM {
-	return [[NSUserDefaults standardUserDefaults] clockShowAMPM];
+	return [[A3UserDefaults standardUserDefaults] clockShowAMPM];
 }
 
 - (BOOL)showDate {
-	return [[NSUserDefaults standardUserDefaults] clockShowDate];
+	return [[A3UserDefaults standardUserDefaults] clockShowDate];
 }
 
 - (BOOL)showTheDayOfTheWeek {
-	return [[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek];
+	return [[A3UserDefaults standardUserDefaults] clockShowTheDayOfTheWeek];
 }
 
 @end

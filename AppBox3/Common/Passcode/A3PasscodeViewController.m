@@ -11,6 +11,7 @@
 #import "A3KeychainUtils.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3NumberKeyboardViewController.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 
 static NSString *const kPasscodeCharacter = @"\u2014"; // A longer "-"
@@ -363,7 +364,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 					[[A3AppDelegate instance] saveTimerStartTime];
 					[A3KeychainUtils storePassword:_tempPasscode hint:nil];
 
-					NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+					A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 					[defaults setBool:YES forKey:kUserDefaultsKeyForUseSimplePasscode];
 					[defaults synchronize];
 				}

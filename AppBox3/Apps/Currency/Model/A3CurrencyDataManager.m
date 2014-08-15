@@ -12,7 +12,7 @@
 #import "AFHTTPRequestOperation.h"
 #import "A3YahooCurrency.h"
 #import "Reachability.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 

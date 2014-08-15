@@ -29,6 +29,7 @@
 #import "A3SyncManager.h"
 #import "NSManagedObject+extension.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3UserDefaults.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -351,7 +352,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForExpenseList]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForExpenseList]) {
         if (IS_IPHONE) {
             [self moreButtonAction:nil];
         }
@@ -361,8 +362,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)showInstructionView
 {
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForExpenseList];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForExpenseList];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"ExpenseList"];
@@ -899,7 +900,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 #pragma mark - misc
 
 - (void)moveToAddBudgetIfBudgetNotExistWithDelay:(CGFloat)delay {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForExpenseList]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForExpenseList]) {
         return;
     }
     

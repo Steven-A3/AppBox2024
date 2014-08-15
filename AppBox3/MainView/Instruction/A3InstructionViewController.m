@@ -9,6 +9,7 @@
 #import "A3InstructionViewController.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
+#import "A3UserDefaults.h"
 
 NSString *const A3StoryboardInstruction_iPhone = @"Instruction_iPhone";
 NSString *const A3StoryboardInstruction_iPad = @"Instruction_iPad";
@@ -32,7 +33,7 @@ NSString *const A3StoryboardInstruction_iPad = @"Instruction_iPad";
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _isFirstInstruction = ![[NSUserDefaults standardUserDefaults] boolForKey:self.restorationIdentifier];
+    _isFirstInstruction = ![[A3UserDefaults standardUserDefaults] boolForKey:self.restorationIdentifier];
     
     [self.childImageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop) {
         imageView.image = [imageView.image tintedImageWithColor:[A3AppDelegate instance].themeColor];

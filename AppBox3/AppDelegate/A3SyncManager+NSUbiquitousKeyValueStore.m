@@ -10,6 +10,7 @@
 #import "NSDate-Utilities.h"
 #import "A3AppDelegate.h"
 #import "NSFileManager+A3Addtion.h"
+#import "A3UserDefaults.h"
 
 NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 
@@ -38,7 +39,7 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 		// and update the corresponding keys locally.
 		NSArray* changedKeys = [userInfo objectForKey:NSUbiquitousKeyValueStoreChangedKeysKey];
 		NSUbiquitousKeyValueStore* store = [NSUbiquitousKeyValueStore defaultStore];
-		NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+		A3UserDefaults* userDefaults = [A3UserDefaults standardUserDefaults];
 
 		// This loop assumes you are using the same key names in both
 		// the user defaults database and the iCloud key-value store
@@ -92,7 +93,7 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 }
 
 - (id)objectForKey:(NSString *)key {
-	NSDictionary *object = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+	NSDictionary *object = [[A3UserDefaults standardUserDefaults] objectForKey:key];
 	if ([object isKindOfClass:[NSDictionary class]]) {
 		id dataObject = object[A3KeyValueDBDataObject];
 		if ([dataObject isEqual:A3SyncManagerEmptyObject])
@@ -138,7 +139,7 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 			A3KeyValueDBState : @(state),
 			A3KeyValueDBUpdateDate : [NSDate date]
 	};
-	[[NSUserDefaults standardUserDefaults] setObject:userDefaultsFormat forKey:key];
+	[[A3UserDefaults standardUserDefaults] setObject:userDefaultsFormat forKey:key];
 
 	if (state == A3DataObjectStateModified && [self isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];

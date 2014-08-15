@@ -1,14 +1,14 @@
 //
-//  NSUserDefaults+A3Addition.h
+//  A3UserDefaults+A3Addition.h
 //  AppBox3
 //
 //  Created by A3 on 12/6/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "A3UserDefaults.h"
 
-@interface NSUserDefaults (A3Addition)
+@interface A3UserDefaults (A3Addition)
 
 - (NSString *)stringForRecentToKeep;
 

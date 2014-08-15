@@ -11,6 +11,7 @@
 #import "UIViewController+MMDrawerController.h"
 #import "FrameRateCalculator.h"
 #import "A3InstructionViewController.h"
+#import "A3UserDefaults.h"
 
 static const int MAX_ZOOM_FACTOR = 6;
 
@@ -632,15 +633,15 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForMirror]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForMirror]) {
         [self showInstructionView:nil];
     }
 }
 
 - (IBAction)showInstructionView:(id)sender
 {
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForMirror];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForMirror];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
 	BOOL toolBarHidden = self.topBar.hidden;
     [self setToolBarsHidden:!toolBarHidden];
@@ -1448,15 +1449,15 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
 	nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	[self presentViewController:nc animated:YES completion:^{
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:A3MirrorFirstLoadCameraRoll]) {
+        if (![[A3UserDefaults standardUserDefaults] boolForKey:A3MirrorFirstLoadCameraRoll]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
 																message:NSLocalizedString(@"The photos you take with Mirror are saved in your Camera Roll album in the Photos app.", nil)
 															   delegate:nil
 													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 													  otherButtonTitles:nil];
             [alertView show];
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3MirrorFirstLoadCameraRoll];
-			[[NSUserDefaults standardUserDefaults] synchronize];
+            [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3MirrorFirstLoadCameraRoll];
+			[[A3UserDefaults standardUserDefaults] synchronize];
         }
     }];
 }

@@ -18,7 +18,7 @@
 #import "A3CurrencySelectViewController.h"
 #import "Reachability.h"
 #import "A3CurrencySettingsViewController.h"
-#import "NSUserDefaults+A3Defaults.h"
+#import "A3UserDefaults+A3Defaults.h"
 #import "CurrencyHistoryItem.h"
 #import "A3CurrencyHistoryViewController.h"
 #import "UIViewController+MMDrawerController.h"
@@ -31,7 +31,7 @@
 #import "UIColor+A3Addition.h"
 #import "A3CalculatorViewController.h"
 #import "A3InstructionViewController.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "NSMutableArray+MoveObject.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
@@ -226,8 +226,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		}];
 
 		Reachability *reachability = [Reachability reachabilityForInternetConnection];
-		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-		if ([[NSUserDefaults standardUserDefaults] currencyAutoUpdate]) {
+		A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
+		if ([[A3UserDefaults standardUserDefaults] currencyAutoUpdate]) {
 			if ([reachability isReachableViaWiFi] ||
 					([userDefaults currencyUseCellularData] && [A3UIDevice hasCellularNetwork])) {
 				[self updateCurrencyRatesWithAnimation:NO ];
@@ -488,8 +488,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 - (void)currencyRatesUpdated {
 	_isUpdating = NO;
 
-	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3CurrencyUpdateDate];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3CurrencyUpdateDate];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
@@ -537,7 +537,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)setRefreshControlTitle {
-	NSDate *updateDate = [[NSUserDefaults standardUserDefaults] objectForKey:A3CurrencyUpdateDate];
+	NSDate *updateDate = [[A3UserDefaults standardUserDefaults] objectForKey:A3CurrencyUpdateDate];
 	if (updateDate) {
 		NSString *updateTitle = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [updateDate timeAgo]];
 
@@ -565,7 +565,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForCurrency]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForCurrency]) {
         [self showInstructionView];
     }
 }
@@ -577,8 +577,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (void)showInstructionView
 {
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForCurrency];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForCurrency];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"CurrencyConverter"];
@@ -720,7 +720,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		dataCell.valueField.textColor = [UIColor blackColor];
 		[dataCell.valueField setEnabled:NO];
 	}
-	if ([[NSUserDefaults standardUserDefaults] currencyShowNationalFlag]) {
+	if ([[A3UserDefaults standardUserDefaults] currencyShowNationalFlag]) {
 		dataCell.flagImageView.image = [UIImage imageNamed:favoriteInfo.flagImageName];
 	} else {
 		dataCell.flagImageView.image = nil;

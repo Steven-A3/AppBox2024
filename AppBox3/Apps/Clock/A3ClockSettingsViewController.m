@@ -8,7 +8,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 #import "A3ClockSettingsViewController.h"
-#import "NSUserDefaults+A3Defaults.h"
+#import "A3UserDefaults+A3Defaults.h"
 #import "UIViewController+A3Addition.h"
 #import "A3ClockDataManager.h"
 #import "UIViewController+NumberKeyboard.h"
@@ -118,8 +118,8 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 	if (!_segmentedControl) {
 		_segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"°F", @"°C"]];
 		[_segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
-		[_segmentedControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? 0 : 1];
-		[_segmentedControl setEnabled:[[NSUserDefaults standardUserDefaults] clockShowWeather]];
+		[_segmentedControl setSelectedSegmentIndex:[[A3UserDefaults standardUserDefaults] clockUsesFahrenheit] ? 0 : 1];
+		[_segmentedControl setEnabled:[[A3UserDefaults standardUserDefaults] clockShowWeather]];
 	}
 	return _segmentedControl;
 }
@@ -158,7 +158,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 		}
 
 		[cell addSubview:self.segmentedControl];
-		[self setSegmentedControlEnabled:[[NSUserDefaults standardUserDefaults] clockShowWeather]];
+		[self setSegmentedControlEnabled:[[A3UserDefaults standardUserDefaults] clockShowWeather]];
 
 		[_segmentedControl removeConstraints:_segmentedControl.constraints];
 		[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
@@ -202,26 +202,26 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 
 		switch((A3ClockSettingsTypes)switchControl.tag) {
 			case kTagSwitchWithSecond:
-				switchControl.on = [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
+				switchControl.on = [[A3UserDefaults standardUserDefaults] clockTheTimeWithSeconds];
 				break;
 			case kTagSwitchFlash:
-				switchControl.on = [[NSUserDefaults standardUserDefaults] clockFlashTheTimeSeparators];
+				switchControl.on = [[A3UserDefaults standardUserDefaults] clockFlashTheTimeSeparators];
 				break;
 			case kTagSwitch24Hour:
-				switchControl.on = [[NSUserDefaults standardUserDefaults] clockUse24hourClock];
+				switchControl.on = [[A3UserDefaults standardUserDefaults] clockUse24hourClock];
 				break;
 			case kTagSwitchAMPM:
-				[switchControl setEnabled:![[NSUserDefaults standardUserDefaults] clockUse24hourClock]];
-				switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowAMPM];
+				[switchControl setEnabled:![[A3UserDefaults standardUserDefaults] clockUse24hourClock]];
+				switchControl.on = [[A3UserDefaults standardUserDefaults] clockShowAMPM];
 				break;
 			case kTagSwitchWeek:
-				switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek];
+				switchControl.on = [[A3UserDefaults standardUserDefaults] clockShowTheDayOfTheWeek];
 				break;
 			case kTagSwitchDate:
-				switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowDate];
+				switchControl.on = [[A3UserDefaults standardUserDefaults] clockShowDate];
 				break;
 			case kTagSwitchWeather:
-				switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowWeather];
+				switchControl.on = [[A3UserDefaults standardUserDefaults] clockShowWeather];
 				break;
 		}
 	}
@@ -230,7 +230,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 }
 
 - (void)segmentedControlValueChanged:(UISegmentedControl *)segmentedControl {
-	[[NSUserDefaults standardUserDefaults] setClockUsesFahrenheit:segmentedControl.selectedSegmentIndex == 0];
+	[[A3UserDefaults standardUserDefaults] setClockUsesFahrenheit:segmentedControl.selectedSegmentIndex == 0];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationClockSettingsChanged object:nil];
 }
@@ -248,32 +248,32 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 {
 	switch ((A3ClockSettingsTypes)switchControl.tag) {
 		case kTagSwitchWithSecond:
-			[[NSUserDefaults standardUserDefaults] setClockTheTimeWithSeconds:switchControl.on];
+			[[A3UserDefaults standardUserDefaults] setClockTheTimeWithSeconds:switchControl.on];
 			break;
 		case kTagSwitchFlash:
-			[[NSUserDefaults standardUserDefaults] setClockFlashTheTimeSeparators:switchControl.on];
+			[[A3UserDefaults standardUserDefaults] setClockFlashTheTimeSeparators:switchControl.on];
 			break;
 		case kTagSwitch24Hour:{
-			[[NSUserDefaults standardUserDefaults] setClockUse24hourClock:switchControl.on];
+			[[A3UserDefaults standardUserDefaults] setClockUse24hourClock:switchControl.on];
 
 			UISwitch *AMPMSwitchControl = (UISwitch *) [_myTableView viewWithTag:kTagSwitchAMPM];
 			[AMPMSwitchControl setEnabled:!switchControl.on];
 			if (switchControl.on) {
 				[AMPMSwitchControl setOn:NO];
 			} else {
-				[AMPMSwitchControl setOn:[[NSUserDefaults standardUserDefaults] clockShowAMPM]];
+				[AMPMSwitchControl setOn:[[A3UserDefaults standardUserDefaults] clockShowAMPM]];
 			}
 			break;
 		}
 		case kTagSwitchAMPM:
-			[[NSUserDefaults standardUserDefaults] setClockShowAMPM:switchControl.on];
+			[[A3UserDefaults standardUserDefaults] setClockShowAMPM:switchControl.on];
 			break;
 		case kTagSwitchWeek:
-			[[NSUserDefaults standardUserDefaults] setClockShowTheDayOfTheWeek:switchControl.on];
+			[[A3UserDefaults standardUserDefaults] setClockShowTheDayOfTheWeek:switchControl.on];
 			[self.clockDataManager enableWeekdayCircle:switchControl.on];
 			break;
 		case kTagSwitchDate:
-			[[NSUserDefaults standardUserDefaults] setClockShowDate:switchControl.on];
+			[[A3UserDefaults standardUserDefaults] setClockShowDate:switchControl.on];
 			[self.clockDataManager enableDateCircle:switchControl.on];
 			break;
 		case kTagSwitchWeather:
@@ -293,7 +293,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 }
 
 - (void)setWeatherStatus:(BOOL)on {
-	[[NSUserDefaults standardUserDefaults] setClockShowWeather:on];
+	[[A3UserDefaults standardUserDefaults] setClockShowWeather:on];
 	[self.clockDataManager enableWeatherCircle:on];
 	[self setSegmentedControlEnabled:on];
 }

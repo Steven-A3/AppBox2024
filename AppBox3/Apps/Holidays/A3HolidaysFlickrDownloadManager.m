@@ -15,6 +15,7 @@
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 #import "UIImage+imageWithColor.h"
+#import "A3UserDefaults.h"
 
 NSString *const A3HolidaysFlickrDownloadManagerDownloadComplete = @"A3HolidaysFlickrDownloadManagerDownloadComplete";
 NSString *const kA3HolidayScreenImagePath = @"kA3HolidayScreenImagePath";		// USE key + country code
@@ -78,7 +79,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 }
 
 - (NSString *)holidayImagePathForCountryCode:(NSString *)countryCode {
-	NSString *savedImageFilename = [[NSUserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];
+	NSString *savedImageFilename = [[A3UserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];
 	if ([savedImageFilename length]) {
 		return [savedImageFilename pathInLibraryDirectory];
 	}
@@ -231,61 +232,61 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 }
 
 - (NSString *)imageNameForCountryCode:(NSString *)countryCode {
-	return [[NSUserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];
+	return [[A3UserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];
 }
 
 - (void)setImageName:(NSString *)path forCountryCode:(NSString *)countryCode {
 	if (!path) {
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:[self imageNameKeyForCountryCode:countryCode]];
+		[[A3UserDefaults standardUserDefaults] removeObjectForKey:[self imageNameKeyForCountryCode:countryCode]];
 	} else {
-		[[NSUserDefaults standardUserDefaults] setObject:path forKey:[self imageNameKeyForCountryCode:countryCode]];
+		[[A3UserDefaults standardUserDefaults] setObject:path forKey:[self imageNameKeyForCountryCode:countryCode]];
 	}
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)ownerStringForCountryCode:(NSString *)countryCode {
-	return [[NSUserDefaults standardUserDefaults] objectForKey:[self ownerKeyForCountryCode:countryCode]];
+	return [[A3UserDefaults standardUserDefaults] objectForKey:[self ownerKeyForCountryCode:countryCode]];
 }
 
 - (void)setOwner:(NSString *)owner forCountryCode:(NSString *)countryCode {
-	[[NSUserDefaults standardUserDefaults] setObject:owner forKey:[self ownerKeyForCountryCode:countryCode]];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setObject:owner forKey:[self ownerKeyForCountryCode:countryCode]];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)urlStringForCountryCode:(NSString *)countryCode {
-	return [[NSUserDefaults standardUserDefaults] objectForKey:[self urlKeyForCountryCode:countryCode]];
+	return [[A3UserDefaults standardUserDefaults] objectForKey:[self urlKeyForCountryCode:countryCode]];
 }
 
 - (void)setURLString:(NSString *)urlString forCountryCode:(NSString *)countryCode {
-	[[NSUserDefaults standardUserDefaults] setObject:urlString forKey:[self urlKeyForCountryCode:countryCode]];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setObject:urlString forKey:[self urlKeyForCountryCode:countryCode]];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)licenseStringForCountryCode:(NSString *)countryCode {
-	return [[NSUserDefaults standardUserDefaults] objectForKey:[self licenseKeyForCountryCode:countryCode]];
+	return [[A3UserDefaults standardUserDefaults] objectForKey:[self licenseKeyForCountryCode:countryCode]];
 }
 
 - (void)setLicenseString:(NSString *)urlString forCountryCode:(NSString *)countryCode {
-	[[NSUserDefaults standardUserDefaults] setObject:urlString forKey:[self licenseKeyForCountryCode:countryCode]];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setObject:urlString forKey:[self licenseKeyForCountryCode:countryCode]];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)imageIDForCountryCode:(NSString *)countryCode {
-	return [[NSUserDefaults standardUserDefaults] objectForKey:[self idKeyForCountryCode:countryCode]];
+	return [[A3UserDefaults standardUserDefaults] objectForKey:[self idKeyForCountryCode:countryCode]];
 }
 
 - (void)setImageID:(NSString *)urlString forCountryCode:(NSString *)countryCode {
-	[[NSUserDefaults standardUserDefaults] setObject:urlString forKey:[self idKeyForCountryCode:countryCode]];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setObject:urlString forKey:[self idKeyForCountryCode:countryCode]];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSDate *)downloadDateForCountryCode:(NSString *)countryCode {
-	return [[NSUserDefaults standardUserDefaults] objectForKey:[self dateKeyForCountryCode:countryCode]];
+	return [[A3UserDefaults standardUserDefaults] objectForKey:[self dateKeyForCountryCode:countryCode]];
 }
 
 - (void)setDownloadDateForCountryCode:(NSString *)countryCode {
-	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:[self dateKeyForCountryCode:countryCode]];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setObject:[NSDate date] forKey:[self dateKeyForCountryCode:countryCode]];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)ownerKeyForCountryCode:(NSString *)countryCode {
@@ -320,11 +321,11 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 			[self.downloadQueue removeObject:countryCode];
 		}
 	}
-	NSString *filename = [[NSUserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];
+	NSString *filename = [[A3UserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];
 	NSFileManager *fileManager = [NSFileManager new];
 	[fileManager removeItemAtPath:[filename pathInLibraryDirectory] error:NULL];
 
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 	[defaults removeObjectForKey:[self imageNameKeyForCountryCode:countryCode]];
 	[defaults removeObjectForKey:[self ownerKeyForCountryCode:countryCode]];
 	[defaults removeObjectForKey:[self urlKeyForCountryCode:countryCode]];

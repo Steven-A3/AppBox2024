@@ -14,9 +14,9 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3ClockSettingsViewController.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3ClockInfo.h"
-#import "NSUserDefaults+A3Defaults.h"
+#import "A3UserDefaults+A3Defaults.h"
 #import "UIViewController+MMDrawerController.h"
 #import "A3ChooseColorView.h"
 #import "A3InstructionViewController.h"
@@ -146,7 +146,7 @@
 		if (self.instructionViewController) {
 			[self adjustInstructionFingerPositionForPortrait:IS_PORTRAIT];
 		}
-		_pageControl.currentPage = [[NSUserDefaults standardUserDefaults] integerForKey:A3ClockUserDefaultsCurrentPage];
+		_pageControl.currentPage = [[A3UserDefaults standardUserDefaults] integerForKey:A3ClockUserDefaultsCurrentPage];
 		[self scrollToPage:_pageControl.currentPage];
 		[self gotoPage:_pageControl.currentPage];
 	}
@@ -161,7 +161,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 	[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
 
 	if ([self isMovingToParentViewController]) {
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1] && ![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
+        if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1] && ![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
             [self showMenus:NO];
         }
         else {
@@ -257,7 +257,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 - (void)settingsChanged {
 	[_currentClockViewController updateLayout];
 
-	if ([[NSUserDefaults standardUserDefaults] clockShowWeather]) {
+	if ([[A3UserDefaults standardUserDefaults] clockShowWeather]) {
 		[_clockDataManager updateWeather];
 	}
 }
@@ -398,12 +398,12 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 
     if (_useInstruction) {
         if (show) {
-            if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
+            if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
                 [self showInstructionView];
             }
         }
         else {
-            if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1]) {
+            if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1]) {
                 [self showInstructionView];
             }
         }
@@ -437,7 +437,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 {
     _useInstruction = YES;
     
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1]) {
         [self showInstructionView];
     }
 }
@@ -459,14 +459,14 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
     
     
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1] && ![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1] && ![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
         self.instructionViewController.disableAnimation = YES;
     }
     else {
         self.instructionViewController.disableAnimation = NO;
     }
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:(_chooseColorButton.isHidden || !_chooseColorButton) ? A3V3InstructionDidShowForClock1 : A3V3InstructionDidShowForClock2];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:(_chooseColorButton.isHidden || !_chooseColorButton) ? A3V3InstructionDidShowForClock1 : A3V3InstructionDidShowForClock2];
+	[[A3UserDefaults standardUserDefaults] synchronize];
  
     [self adjustInstructionFingerPositionForPortrait:IS_PORTRAIT];
 }
@@ -476,11 +476,11 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
     [self.instructionViewController.view removeFromSuperview];
     self.instructionViewController = nil;
     
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1]) {
         [self showMenus:NO];
         [self showInstructionView];
     }
-    else if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
+    else if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
         [self showMenus:YES];
         [self showInstructionView];
     }
@@ -533,7 +533,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 	switch (self.pageControl.currentPage) {
 		case 0:{
 			NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:aColor];
-			NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+			A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
 			[userDefaults setObject:colorData forKey:A3ClockWaveClockColor];
 			[userDefaults setObject:@(selectedIndex) forKey:A3ClockWaveClockColorIndex];
 			[userDefaults synchronize];
@@ -541,7 +541,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 		}
 		case 1: {
 			NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:aColor];
-			NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+			A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
 			[userDefaults setObject:colorData forKey:A3ClockFlipDarkColor];
 			[userDefaults setObject:@(selectedIndex) forKey:A3ClockFlipDarkColorIndex];
 			[userDefaults synchronize];
@@ -549,7 +549,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 		}
 		case 2: {
 			NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:aColor];
-			NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+			A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
 			[userDefaults setObject:colorData forKey:A3ClockFlipLightColor];
 			[userDefaults setObject:@(selectedIndex) forKey:A3ClockFlipLightColorIndex];
 			[userDefaults synchronize];
@@ -557,7 +557,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 		}
 		case 3: {
 			NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:aColor];
-			NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+			A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
 			[userDefaults setObject:colorData forKey:A3ClockLEDColor];
 			[userDefaults setObject:@(selectedIndex) forKey:A3ClockLEDColorIndex];
 			[userDefaults synchronize];
@@ -598,21 +598,21 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 	NSUInteger selectedColorIndex = 0;
 	switch (_pageControl.currentPage) {
 		case 0:
-			selectedColorIndex = [[NSUserDefaults standardUserDefaults] clockWaveColorIndex];
+			selectedColorIndex = [[A3UserDefaults standardUserDefaults] clockWaveColorIndex];
 			colors = [self.clockDataManager waveColors];
 			break;
 		case 1:{
-			selectedColorIndex = [[NSUserDefaults standardUserDefaults] clockFlipDarkColorIndex];
+			selectedColorIndex = [[A3UserDefaults standardUserDefaults] clockFlipDarkColorIndex];
 			colors = [self.clockDataManager flipColors];
 			break;
 		}
 		case 2:{
-			selectedColorIndex = [[NSUserDefaults standardUserDefaults] clockFlipLightColorIndex];
+			selectedColorIndex = [[A3UserDefaults standardUserDefaults] clockFlipLightColorIndex];
 			colors = [self.clockDataManager flipColors];
 			break;
 		}
 		case 3:
-			selectedColorIndex = [[NSUserDefaults standardUserDefaults] clockLEDColorIndex];
+			selectedColorIndex = [[A3UserDefaults standardUserDefaults] clockLEDColorIndex];
 			colors = [self.clockDataManager ledColors];
 			break;
 	}
@@ -640,8 +640,8 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 - (void)helpButtonAction:(id)aSende
 {
     [self showMenus:NO];
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3V3InstructionDidShowForClock1];
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3V3InstructionDidShowForClock2];
+    [[A3UserDefaults standardUserDefaults] setBool:NO forKey:A3V3InstructionDidShowForClock1];
+    [[A3UserDefaults standardUserDefaults] setBool:NO forKey:A3V3InstructionDidShowForClock2];
     [self showInstructionView];
 }
 
@@ -708,8 +708,8 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 }
 
 - (void)gotoPage:(NSInteger)page {
-	[[NSUserDefaults standardUserDefaults] setInteger:_pageControl.currentPage forKey:A3ClockUserDefaultsCurrentPage];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setInteger:_pageControl.currentPage forKey:A3ClockUserDefaultsCurrentPage];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
 	_currentClockViewController = self.viewControllers[(NSUInteger) _pageControl.currentPage];
 	[self.view setBackgroundColor:_currentClockViewController.view.backgroundColor];
@@ -730,21 +730,21 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 			tintColor = [UIColor whiteColor];
 			break;
 		case 1:
-			if ([[NSUserDefaults standardUserDefaults] clockFlipDarkColorIndex] == 12) {
+			if ([[A3UserDefaults standardUserDefaults] clockFlipDarkColorIndex] == 12) {
 				tintColor = [UIColor whiteColor];
 			} else {
-				tintColor = [[NSUserDefaults standardUserDefaults] clockFlipDarkColor];
+				tintColor = [[A3UserDefaults standardUserDefaults] clockFlipDarkColor];
 			}
 			break;
 		case 2:
-			if ([[NSUserDefaults standardUserDefaults] clockFlipLightColorIndex] == 13) {
+			if ([[A3UserDefaults standardUserDefaults] clockFlipLightColorIndex] == 13) {
 				tintColor = [UIColor blackColor];
 			} else {
-				tintColor = [[NSUserDefaults standardUserDefaults] clockFlipLightColor];
+				tintColor = [[A3UserDefaults standardUserDefaults] clockFlipLightColor];
 			}
 			break;
 		case 3:
-			tintColor = [[NSUserDefaults standardUserDefaults] clockLEDColor];
+			tintColor = [[A3UserDefaults standardUserDefaults] clockLEDColor];
 			break;
 	}
 	_clockAppsButton.tintColor = tintColor;

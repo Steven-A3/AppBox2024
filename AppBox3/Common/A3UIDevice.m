@@ -12,6 +12,7 @@
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import "A3UIDevice.h"
 #import "common.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 #import <sys/types.h>
 #import <sys/sysctl.h>
@@ -273,7 +274,7 @@ https://github.com/andrealufino/ALSystemUtilities/blob/develop/ALSystemUtilities
 }
 
 + (BOOL)useKoreanLunarCalendarForConversion {
-	NSNumber *setting = [[NSUserDefaults standardUserDefaults] objectForKey:A3SettingsUseKoreanCalendarForLunarConversion];
+	NSNumber *setting = [[A3UserDefaults standardUserDefaults] objectForKey:A3SettingsUseKoreanCalendarForLunarConversion];
 	if (setting) {
 		return [setting boolValue];
 	}

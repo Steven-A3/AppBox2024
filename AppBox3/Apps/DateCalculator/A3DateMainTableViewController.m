@@ -24,7 +24,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSDate+formatting.h"
 #import "A3SyncManager.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 #define kDefaultBackgroundColor [UIColor lightGrayColor]

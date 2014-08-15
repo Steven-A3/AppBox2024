@@ -16,6 +16,7 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 
 @implementation UIViewController (A3Addition)
@@ -479,7 +480,7 @@
 + (UIViewController<A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id<A3PasscodeViewControllerDelegate>)delegate {
 	UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForUseSimplePasscode]) {
+	if ([[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForUseSimplePasscode]) {
 		passcodeViewController = [[A3PasscodeViewController alloc] initWithDelegate:delegate];
 	} else {
 		passcodeViewController = [[A3PasswordViewController alloc] initWithDelegate:delegate];

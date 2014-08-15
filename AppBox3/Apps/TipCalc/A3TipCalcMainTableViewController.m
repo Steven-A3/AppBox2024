@@ -30,7 +30,7 @@
 #import "A3CalculatorViewController.h"
 #import "UITableView+utility.h"
 #import "UIColor+A3Addition.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 

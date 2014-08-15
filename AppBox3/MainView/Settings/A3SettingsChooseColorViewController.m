@@ -11,7 +11,7 @@
 #import "A3AppDelegate+appearance.h"
 #import "A3UIDevice.h"
 #import "UIViewController+tableViewStandardDimension.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 

@@ -62,13 +62,12 @@ extern NSString *const kHolidayDuration;
 
 + (NSDate *)chinaLunarDateWithSolarDay:(NSUInteger)day month:(NSUInteger)month year:(NSUInteger)year;
 
-+ (NSDate *)lunarDateWithSolarDay:(NSUInteger)day month:(NSUInteger)month year:(NSUInteger)year;
 + (NSDate *)getLastWeekday:(NSUInteger)weekday OfMonth:(NSUInteger)month forYear:(NSUInteger)year withCalendar:(NSCalendar *)calendar;
 
 + (NSDate *)lunarCalcWithComponents:(NSDateComponents *)components gregorianToLunar:(BOOL)isGregorianToLunar leapMonth:(BOOL)isLeapMonth korean:(BOOL)isKorean;
 
 + (NSDate *)koreaLunarDateWithGregorianDate:(NSDate *)date;
-+ (NSDate *)lunarDateWithGregorianDate:(NSDate *)date;
+
 + (NSDate *)justDateWithDate:(NSDate *)date;
 + (NSString *)stringFromDate:(NSDate *)date;
 + (NSDate *)dateFrom:(NSDate *)from withOffset:(NSInteger)offset;

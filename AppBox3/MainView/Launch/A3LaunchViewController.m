@@ -16,6 +16,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3MainMenuTableViewController.h"
+#import "A3UserDefaults.h"
 
 NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 
@@ -46,7 +47,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-	if (!_showAsWhatsNew && [[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
+	if (!_showAsWhatsNew && [[A3UserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
 		return;
 	}
 	
@@ -70,7 +71,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 	[super viewWillAppear:animated];
 
 	if ([self isMovingToParentViewController]) {
-		if (!_showAsWhatsNew && [[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
+		if (!_showAsWhatsNew && [[A3UserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
 
 			if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu]) {
 				A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
@@ -89,8 +90,8 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 			[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 			[self.navigationController.navigationBar setShadowImage:image];
 			
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowWhatsNew_3_0];
-			[[NSUserDefaults standardUserDefaults] synchronize];
+			[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowWhatsNew_3_0];
+			[[A3UserDefaults standardUserDefaults] synchronize];
 
 			if ([[A3AppDelegate instance] shouldMigrateV1Data]) {
 				[_currentSceneViewController hideButtons];

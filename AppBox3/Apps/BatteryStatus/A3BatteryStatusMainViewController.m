@@ -16,6 +16,7 @@
 #import "A3BatteryStatusSettingViewController.h"
 #import "A3DefaultColorDefines.h"
 #import "A3InstructionViewController.h"
+#import "A3UserDefaults.h"
 
 @interface A3BatteryStatusMainViewController () <A3InstructionViewControllerDelegate>
 @property (nonatomic, strong) A3BatteryStatusSettingViewController *settingsViewController;
@@ -170,7 +171,7 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
 
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForBattery]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForBattery]) {
         [self showInstructionView];
     }
 }
@@ -181,7 +182,7 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
         return;
     }
 
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForBattery];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForBattery];
 
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"BatteryStatus"];

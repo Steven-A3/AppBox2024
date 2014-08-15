@@ -11,6 +11,7 @@
 #import "A3DaysCounterModelManager.h"
 #import "NSDate-Utilities.h"
 #import "A3SyncManager.h"
+#import "A3UserDefaults.h"
 
 @implementation A3AppDelegate (iCloud)
 
@@ -24,8 +25,8 @@
 	else {
 		[sharedSyncManager disableCloudSync];
 
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SyncManagerCloudEnabled];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[[A3UserDefaults standardUserDefaults] removeObjectForKey:A3SyncManagerCloudEnabled];
+		[[A3UserDefaults standardUserDefaults] synchronize];
 	}
 	[self enableCloudForFiles:enable];
 
@@ -45,16 +46,17 @@
 	self.wakeUpTime = [NSDate date];
 	FNLOG(@"%@", self.wakeUpTime);
 
-	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_newContext] ];
-	[A3LadyCalendarModelManager setupLocalNotification];
-
-	// pass on the completion handler to another method with delay to allow any imports to occur
-	// the API Allows 30 seconds so I only delay for 28 seconds just to be safe
-	[self performSelector:@selector(sendBGFetchCompletionHandler:) withObject:completionHandler afterDelay:28];
-}
-
-- (void)sendBGFetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-	completionHandler(UIBackgroundFetchResultNewData);
+	if ([[UIApplication sharedApplication] isProtectedDataAvailable]) {
+		FNLOG(@"Protected Data is Available.");
+		
+		[A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_newContext] ];
+		[A3LadyCalendarModelManager setupLocalNotification];
+		
+		completionHandler(UIBackgroundFetchResultNewData);
+	} else {
+		FNLOG(@"Protected Data is NOT Available.");
+		completionHandler(UIBackgroundFetchResultNoData);
+	}
 }
 
 #pragma mark - Image and Video files
@@ -66,50 +68,12 @@
 	[[A3SyncManager sharedSyncManager] downloadMediaFilesFromCloud];
 }
 
-#pragma mark - NSMetadataQuery
-
-- (void)startCloudFileQuery {
-	FNLOG();
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudFileChanged) name:NSMetadataQueryDidUpdateNotification object:self.metadataQuery];
-
-	[self.metadataQuery startQuery];
-}
-
-- (void)cloudFileChanged {
-	FNLOG();
-	[self.metadataQuery disableUpdates];
-
-	for (NSMetadataItem *metaData in [self.metadataQuery results]) {
-		FNLOG(@"%@", [metaData valueForAttribute:NSMetadataItemFSNameKey]);
-		if (![[metaData valueForAttribute:NSMetadataUbiquitousItemDownloadingStatusKey] isEqualToString:NSMetadataUbiquitousItemDownloadingStatusDownloaded]) {
-			NSURL *fileURL = [metaData valueForKey:NSMetadataItemURLKey];
-			[[NSFileManager new] startDownloadingUbiquitousItemAtURL:fileURL error:NULL];
-		}
-	}
-
-	[self.metadataQuery enableUpdates];
-}
-
-- (void)stopCloudFileQuery {
-	if (self.metadataQuery) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:NSMetadataQueryDidUpdateNotification object:self.metadataQuery];
-		[self.metadataQuery stopQuery];
-		self.metadataQuery = nil;
-	}
-}
-
-- (BOOL)isLocalLaterForLocal:(NSDate *)local cloud:(NSDate *)cloud {
-	if (!cloud) return YES;
-	if (!local) return NO;
-	return [cloud isEarlierThanDate:local];
-}
-
-#pragma mark - NSUserDefaults & NSUbiquitousKeyValueStore
+#pragma mark - A3UserDefaults & NSUbiquitousKeyValueStore
 
 - (void)mergeUserDefaultsDeleteCloud:(BOOL)deleteCloud {
 	NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
 	[keyValueStore synchronize];
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
 
 	for (NSString *key in [self syncKeys]) {
 		NSDictionary *objectInCloud = [keyValueStore objectForKey:key];

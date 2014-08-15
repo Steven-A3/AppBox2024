@@ -11,6 +11,7 @@
 #import "A3KeychainUtils.h"
 #import "A3StandardTableViewCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 
 #define kFailedAttemptLabelBackgroundColor [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f]
@@ -530,7 +531,7 @@
 			if (passcodeValid && [self isNewPasscodeValid]) {
 				[[A3AppDelegate instance] saveTimerStartTime];
 				[A3KeychainUtils storePassword:_aNewPasswordField.text hint:_passwordHintField.text];
-				NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+				A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 				[defaults setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
 				[defaults synchronize];
 
@@ -553,7 +554,7 @@
 			if ([self isNewPasscodeValid]) {
 				[[A3AppDelegate instance] saveTimerStartTime];
 				[A3KeychainUtils storePassword:_aNewPasswordField.text hint:_passwordHintField.text];
-				NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+				A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 				[defaults setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
 				[defaults synchronize];
 

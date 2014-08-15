@@ -1,5 +1,5 @@
 //
-//  NSUserDefaults+A3Defaults.h
+//  A3UserDefaults+A3Defaults.h
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 8/7/13.
@@ -7,24 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "A3UserDefaults.h"
 
-@interface NSUserDefaults (A3Defaults)
+@interface A3UserDefaults (A3Defaults)
 
 - (BOOL)currencyAutoUpdate;
-
 - (void)setCurrencyAutoUpdate:(BOOL)boolValue;
-
 - (BOOL)currencyUseCellularData;
-
 - (void)setCurrencyUseCellularData:(BOOL)boolValue;
-
 - (BOOL)currencyShowNationalFlag;
-
 - (void)setCurrencyShowNationalFlag:(BOOL)boolValue;
-
 - (BOOL)clockTheTimeWithSeconds;
 - (void)setClockTheTimeWithSeconds:(BOOL)boolValue;
-
 - (BOOL)clockFlashTheTimeSeparators;
 - (void)setClockFlashTheTimeSeparators:(BOOL)boolValue;
 

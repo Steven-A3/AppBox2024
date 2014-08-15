@@ -19,6 +19,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "NSFileManager+A3Addtion.h"
+#import "A3UserDefaults.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -253,7 +254,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 - (NSDictionary *)userDefaultsDictionary {
 	NSArray *defaultKeys = [self userDefaultsKeys];
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
 	NSMutableDictionary *keysAndValues = [NSMutableDictionary new];
 	for (NSString *key in defaultKeys) {
 		[self addKey:key ifHasValueTo:keysAndValues];
@@ -269,7 +270,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)addKey:(NSString *)key ifHasValueTo:(NSMutableDictionary *)target {
-	id object = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+	id object = [[A3UserDefaults standardUserDefaults] objectForKey:key];
 	if (object) {
 		[target setObject:object forKey:key];
 	}
@@ -417,7 +418,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 		NSDictionary *backupInfo = [[NSDictionary alloc] initWithContentsOfFile:backupInfoFilePath];
 		NSDictionary *userDefaults = backupInfo[A3BackupFileUserDefaultsKey];
-		NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+		A3UserDefaults *standardUserDefaults = [A3UserDefaults standardUserDefaults];
 		for (NSString *key in [self userDefaultsKeys]) {
 			id object = [userDefaults objectForKey:key];
 			if (object) {

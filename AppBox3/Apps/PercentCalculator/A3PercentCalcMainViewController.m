@@ -15,7 +15,7 @@
 #import "PercentCalcHistory.h"
 #import "A3JHTableViewEntryCell.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
@@ -235,7 +235,7 @@
     [self reloadTableHeaderView];
 }
 
-/*! NSUserDefaults 에 저장한 데이터를 읽어온다.
+/*! A3UserDefaults 에 저장한 데이터를 읽어온다.
  * \param none
  * \returns 저장된 데이터가 있는 경우에는 YES, 아니면 NO
  */

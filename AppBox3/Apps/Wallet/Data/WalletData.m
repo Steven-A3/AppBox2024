@@ -9,7 +9,7 @@
 #import "WalletData.h"
 #import "WalletFieldItem+initialize.h"
 #import "NSString+conversion.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import <AVFoundation/AVFoundation.h>

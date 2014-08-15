@@ -18,6 +18,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3BackgroundWithPatternView.h"
 #import "UIViewController+NumberKeyboard.h"
+#import "A3UserDefaults.h"
 
 typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	HolidaysHeaderViewSegmentedControl = 1000,
@@ -132,7 +133,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 - (void)alertAcknowledgment {
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		if (![[NSUserDefaults standardUserDefaults] boolForKey:A3HolidaysDoesNotNeedsShowAcknowledgement]) {
+		if (![[A3UserDefaults standardUserDefaults] boolForKey:A3HolidaysDoesNotNeedsShowAcknowledgement]) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Acknowledgement", @"Acknowledgement")
 															message:NSLocalizedString(@"HOLIDAYS_ACKNOWLEDGEMENT", @"HOLIDAYS_ACKNOWLEDGEMENT")
 														   delegate:self
@@ -146,8 +147,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (alertView.tag == 894234) {
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3HolidaysDoesNotNeedsShowAcknowledgement];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3HolidaysDoesNotNeedsShowAcknowledgement];
+		[[A3UserDefaults standardUserDefaults] synchronize];
 	}
 }
 

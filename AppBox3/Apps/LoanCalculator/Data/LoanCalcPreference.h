@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 
 typedef NS_ENUM(NSUInteger, A3LoanCalcCalculationFor) {
 	A3_LCCF_MonthlyPayment = 1,

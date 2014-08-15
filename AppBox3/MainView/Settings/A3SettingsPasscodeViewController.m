@@ -15,6 +15,7 @@
 #import "A3UIDevice.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "Reachability.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 
 @interface A3SettingsPasscodeViewController () <A3PasscodeViewControllerDelegate, UIAlertViewDelegate>
@@ -141,7 +142,7 @@
 				[_askPasscodeForStarting addTarget:self action:@selector(askPasscodeForStartingValueChanged:) forControlEvents:UIControlEventValueChanged];
 			}
 			[_askPasscodeForStarting setEnabled:passcodeEnabled];
-			[_askPasscodeForStarting setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting]];
+			[_askPasscodeForStarting setOn:[[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting]];
 			cell.accessoryView = _askPasscodeForStarting;
 			break;
 		case 1:
@@ -150,7 +151,7 @@
 				[_askPasscodeForSettings addTarget:self action:@selector(askPasscodeForSettingsValueChanged:) forControlEvents:UIControlEventValueChanged];
 			}
 			[_askPasscodeForSettings setEnabled:passcodeEnabled];
-			[_askPasscodeForSettings setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings]];
+			[_askPasscodeForSettings setOn:[[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings]];
 			cell.accessoryView = _askPasscodeForSettings;
 			break;
 		case 2:
@@ -159,7 +160,7 @@
 				[_askPasscodeForDaysCounter addTarget:self action:@selector(askPasscodeForDaysCounterValueChanged:) forControlEvents:UIControlEventValueChanged];
 			}
 			[_askPasscodeForDaysCounter setEnabled:passcodeEnabled];
-			[_askPasscodeForDaysCounter setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForDaysCounter]];
+			[_askPasscodeForDaysCounter setOn:[[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForDaysCounter]];
 			cell.accessoryView = _askPasscodeForDaysCounter;
 			break;
 		case 3:
@@ -168,7 +169,7 @@
 				[_askPasscodeForLadyCalendar addTarget:self action:@selector(askPasscodeForLadyCalendarValuedChanged:) forControlEvents:UIControlEventValueChanged];
 			}
 			[_askPasscodeForLadyCalendar setEnabled:passcodeEnabled];
-			[_askPasscodeForLadyCalendar setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar]];
+			[_askPasscodeForLadyCalendar setOn:[[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar]];
 			cell.accessoryView = _askPasscodeForLadyCalendar;
 			break;
 		case 4:
@@ -177,7 +178,7 @@
 				[_askPasscodeForWallet addTarget:self action:@selector(askPasscodeForWalletValuedChanged:) forControlEvents:UIControlEventValueChanged];
 			}
 			[_askPasscodeForWallet setEnabled:passcodeEnabled];
-			[_askPasscodeForWallet setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForWallet]];
+			[_askPasscodeForWallet setOn:[[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForWallet]];
 			cell.accessoryView = _askPasscodeForWallet;
 			break;
 	}
@@ -190,7 +191,7 @@
 
 - (void)maintainPasscodeCheckCondition {
 	BOOL isEnabled = NO;
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 	isEnabled |= [defaults boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
 	isEnabled |= [defaults boolForKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
 	isEnabled |= [defaults boolForKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
@@ -202,28 +203,28 @@
 }
 
 - (void)askPasscodeForSettingsValueChanged:(UISwitch *)control {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 	[defaults setBool:control.isOn forKey:kUserDefaultsKeyForAskPasscodeForSettings];
 	[defaults synchronize];
 	[self maintainPasscodeCheckCondition];
 }
 
 - (void)askPasscodeForDaysCounterValueChanged:(UISwitch *)control {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 	[defaults setBool:control.isOn forKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
 	[defaults synchronize];
 	[self maintainPasscodeCheckCondition];
 }
 
 - (void)askPasscodeForLadyCalendarValuedChanged:(UISwitch *)control {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 	[defaults setBool:control.isOn forKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
 	[defaults synchronize];
 	[self maintainPasscodeCheckCondition];
 }
 
 - (void)askPasscodeForWalletValuedChanged:(UISwitch *)control {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 	[defaults setBool:control.isOn forKey:kUserDefaultsKeyForAskPasscodeForWallet];
 	[defaults synchronize];
 	[self maintainPasscodeCheckCondition];
@@ -335,7 +336,7 @@
 		}
 		[_passcodeViewController showLockscreenInViewController:self];
 	} else {
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 		[defaults setBool:control.isOn forKey:kUserDefaultsKeyForUseSimplePasscode];
 		[defaults synchronize];
 	}

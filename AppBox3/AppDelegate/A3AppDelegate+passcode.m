@@ -18,22 +18,23 @@
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3LadyCalendarViewController.h"
 #import "A3WalletMainTabBarController.h"
+#import "A3UserDefaults.h"
 
 @implementation A3AppDelegate (passcode)
 
 - (double)timerDuration {
-	return [[NSUserDefaults standardUserDefaults] doubleForKey:kUserDefaultsKeyForPasscodeTimerDuration];
+	return [[A3UserDefaults standardUserDefaults] doubleForKey:kUserDefaultsKeyForPasscodeTimerDuration];
 }
 
 - (NSTimeInterval)timerStartTime {
-	NSDate *date = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultTimerStart];
+	NSDate *date = [[A3UserDefaults standardUserDefaults] objectForKey:kUserDefaultTimerStart];
 	if (!date) return -1;
 	return [date timeIntervalSinceReferenceDate];
 }
 
 
 - (void)saveTimerStartTime {
-	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kUserDefaultTimerStart];
+	[[A3UserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kUserDefaultTimerStart];
 	FNLOG(@"**************************************************************");
 	FNLOG(@"%@", [NSDate date]);
 	FNLOG(@"**************************************************************");
@@ -47,7 +48,7 @@
 }
 
 - (BOOL)isSimplePasscode {
-	NSNumber *obj = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForUseSimplePasscode];
+	NSNumber *obj = [[A3UserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForUseSimplePasscode];
 	if (obj) {
 		return [obj boolValue];
 	}
@@ -72,7 +73,7 @@
 
 - (BOOL)shouldProtectScreen {
 	BOOL presentLockScreen = NO;
-	BOOL shouldAskForStarting = [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
+	BOOL shouldAskForStarting = [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 	if (shouldAskForStarting) {
 		presentLockScreen = YES;
 	} else {
@@ -146,7 +147,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
-	NSNumber *flag = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
+	NSNumber *flag = [[A3UserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 
 	if ([flag boolValue] && [A3KeychainUtils getPassword]) {
 		[application ignoreSnapshotOnNextApplicationLaunch];
@@ -173,48 +174,49 @@
 }
 
 - (BOOL)shouldAskPasscodeForStarting {
-	NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
+	NSNumber *number = [[A3UserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 	if (number) {
 		return [number boolValue];
 	} else {
 		// Initialize Value with NO
-		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForAskPasscodeForStarting];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[[A3UserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForAskPasscodeForStarting];
+		[[A3UserDefaults standardUserDefaults] synchronize];
 		return NO;
 	}
 }
 
 - (void)setEnableAskPasscodeForStarting:(BOOL)enable {
-	[[NSUserDefaults standardUserDefaults] setBool:enable forKey:kUserDefaultsKeyForAskPasscodeForStarting];
-	[[NSUserDefaults standardUserDefaults] setBool:!enable forKey:kUserDefaultsKeyForAskPasscodeForSettings];
-	[[NSUserDefaults standardUserDefaults] setBool:!enable forKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
-	[[NSUserDefaults standardUserDefaults] setBool:!enable forKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
-	[[NSUserDefaults standardUserDefaults] setBool:!enable forKey:kUserDefaultsKeyForAskPasscodeForWallet];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setBool:enable forKey:kUserDefaultsKeyForAskPasscodeForStarting];
+	[[A3UserDefaults standardUserDefaults] setBool:!enable forKey:kUserDefaultsKeyForAskPasscodeForSettings];
+	[[A3UserDefaults standardUserDefaults] setBool:!enable forKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
+	[[A3UserDefaults standardUserDefaults] setBool:!enable forKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
+	[[A3UserDefaults standardUserDefaults] setBool:!enable forKey:kUserDefaultsKeyForAskPasscodeForWallet];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)registerPasscodeUserDefaults {
-	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForStarting : @YES}];
-	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForSettings : @NO}];
-	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForDaysCounter : @NO}];
-	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForLadyCalendar : @NO}];
-	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kUserDefaultsKeyForAskPasscodeForWallet : @NO}];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:kUserDefaultsKeyForAskPasscodeForStarting];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:kUserDefaultsKeyForAskPasscodeForSettings];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:kUserDefaultsKeyForAskPasscodeForWallet];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (BOOL)shouldAskPasscodeForSettings {
-	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
+	return [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
 }
 
 - (BOOL)shouldAskPasscodeForDaysCounter {
-	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
+	return [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
 }
 
 - (BOOL)shouldAskPasscodeForLadyCalendar {
-	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
+	return [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
 }
 
 - (BOOL)shouldAskPasscodeForWallet {
-	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForWallet];
+	return [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForWallet];
 }
 
 #pragma mark - Security Cover View orientation change handling

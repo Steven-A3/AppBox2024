@@ -26,7 +26,7 @@
 #import "A3CalculatorViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UnitPriceInfo+extension.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3UnitDataManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"

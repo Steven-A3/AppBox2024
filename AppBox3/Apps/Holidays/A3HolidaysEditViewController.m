@@ -18,6 +18,7 @@
 #import "A3HolidaysPageViewController.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UITableView+utility.h"
+#import "A3UserDefaults.h"
 
 @interface A3HolidaysEditViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate>
 
@@ -140,7 +141,7 @@ static NSString *CellIdentifier = @"Cell";
 	_countryCode = [countryCode mutableCopy];
 	HolidayData *holidayData = [HolidayData new];
 	_holidaysForCountry = [holidayData holidaysForCountry:_countryCode year:[HolidayData thisYear] fullSet:YES ];
-	NSArray *excludedList = [[NSUserDefaults standardUserDefaults] objectForKey:[HolidayData keyForExcludedHolidaysForCountry:_countryCode]];
+	NSArray *excludedList = [[A3UserDefaults standardUserDefaults] objectForKey:[HolidayData keyForExcludedHolidaysForCountry:_countryCode]];
 	_excludedHolidays = [excludedList mutableCopy];
 
 	self.title = [NSString stringWithFormat:@"%@ (%lu)",
@@ -267,8 +268,8 @@ static NSString *CellIdentifier = @"Cell";
 			[self.excludedHolidays addObject:holiday[kHolidayName]];
 		}
 	}
-	[[NSUserDefaults standardUserDefaults] setObject:_excludedHolidays forKey:[HolidayData keyForExcludedHolidaysForCountry:_countryCode]];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setObject:_excludedHolidays forKey:[HolidayData keyForExcludedHolidaysForCountry:_countryCode]];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
 	_dataUpdated = YES;
 }
@@ -298,8 +299,8 @@ static NSString *CellIdentifier = @"Cell";
 	switch (actionSheet.tag) {
 		case 100: {
 			if (buttonIndex == actionSheet.destructiveButtonIndex) {
-				[[NSUserDefaults standardUserDefaults] removeObjectForKey:[HolidayData keyForExcludedHolidaysForCountry:_countryCode]];
-				[[NSUserDefaults standardUserDefaults] synchronize];
+				[[A3UserDefaults standardUserDefaults] removeObjectForKey:[HolidayData keyForExcludedHolidaysForCountry:_countryCode]];
+				[[A3UserDefaults standardUserDefaults] synchronize];
 				_excludedHolidays = nil;
 				[self.tableView reloadData];
 				_dataUpdated = YES;

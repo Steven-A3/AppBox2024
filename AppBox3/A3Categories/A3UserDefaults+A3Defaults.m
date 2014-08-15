@@ -1,17 +1,15 @@
 //
-//  NSUserDefaults+A3Defaults.m
+//  A3UserDefaults+A3Defaults.m
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 8/7/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "NSUserDefaults+A3Defaults.h"
-#import "A3UserDefaults.h"
-#import "A3AppDelegate.h"
-#import "A3SyncManager.h"
+#import "A3UserDefaults+A3Defaults.h"
+#import "A3UserDefaultsKeys.h"
 
-@implementation NSUserDefaults (A3Defaults)
+@implementation A3UserDefaults (A3Defaults)
 
 - (BOOL)currencyAutoUpdate {
 	NSNumber *object;

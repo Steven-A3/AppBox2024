@@ -8,7 +8,7 @@
 
 #import "A3SettingsViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "NSUserDefaults+A3Addition.h"
+#import "A3UserDefaults+A3Addition.h"
 #import "A3KeychainUtils.h"
 #import "A3AppDelegate+appearance.h"
 #import "A3UIDevice.h"
@@ -16,6 +16,7 @@
 #import "A3AppDelegate+iCloud.h"
 #import "Reachability.h"
 #import "A3SyncManager.h"
+#import "A3UserDefaults.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowUseiCloud = 1100,
@@ -104,7 +105,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		case A3SettingsRowEditFavorites:
 			break;
 		case A3SettingsRowRecentToKeep:
-			cell.detailTextLabel.text = [[NSUserDefaults standardUserDefaults] stringForRecentToKeep];
+			cell.detailTextLabel.text = [[A3UserDefaults standardUserDefaults] stringForRecentToKeep];
 			break;
 		case A3SettingsRowThemeColor: {
 			if (!_colorButton) {

@@ -9,8 +9,9 @@
 #import "A3ClockInfo.h"
 #import "A3ClockDataManager.h"
 #import "A3ClockFlipViewController.h"
-#import "NSUserDefaults+A3Defaults.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "A3UserDefaults.h"
+#import "A3UserDefaults+A3Defaults.h"
 
 #define kColorClockFlipLabel [UIColor colorWithRed:142.f/255.f green:142.f/255.f blue:147.f/255.f alpha:1.f]
 
@@ -161,7 +162,7 @@
 
 	_weekdayMonthDayBaseline.offset(IS_IPHONE && IS_LANDSCAPE ? 27 : 50);
 
-	[self setWeatherHidden:![[NSUserDefaults standardUserDefaults] clockShowWeather] ];
+	[self setWeatherHidden:![[A3UserDefaults standardUserDefaults] clockShowWeather] ];
 	[self layoutWeather];
 
 	if (!_timeViewConstraints) {
@@ -175,7 +176,7 @@
 
     [self.view addSubview:self.hourView];
     [self.view addSubview:self.minuteView];
-	if ([[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds]) {
+	if ([[A3UserDefaults standardUserDefaults] clockTheTimeWithSeconds]) {
 		[self.view addSubview:self.secondView];
 	} else if (_secondView) {
 		[_secondView removeFromSuperview];
@@ -183,7 +184,7 @@
 	}
 
 	CGFloat boxSize, interimSpace;
-	BOOL showSeconds = [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
+	BOOL showSeconds = [[A3UserDefaults standardUserDefaults] clockTheTimeWithSeconds];
 	if (IS_IPHONE) {
 		if (IS_PORTRAIT) {
 			boxSize = showSeconds ? 90 : 140;
@@ -251,7 +252,7 @@
 		[_timeViewConstraints addObject:make.bottom.equalTo(_hourView.top).with.offset(-8)];
 	}];
 
-	[_lbAMPM setHidden:![[NSUserDefaults standardUserDefaults] clockShowAMPM]];
+	[_lbAMPM setHidden:![[A3UserDefaults standardUserDefaults] clockShowAMPM]];
 
 	_centerLineView.backgroundColor = self.view.backgroundColor;
 	[self.view bringSubviewToFront:_centerLineView];
@@ -383,7 +384,7 @@
 	UILabel *frontView = (UILabel *)tickerView.frontView;
 	UILabel *backView = (UILabel *)tickerView.backView;
 	CGFloat fontSize;
-	BOOL showSeconds = [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
+	BOOL showSeconds = [[A3UserDefaults standardUserDefaults] clockTheTimeWithSeconds];
 	if (IS_IPHONE) {
 		if (IS_PORTRAIT) {
 			fontSize = showSeconds ? 64 : 112;
@@ -410,19 +411,19 @@
 	backView.font = font;
 
 	if (self.style == A3ClockFlipViewStyleDark) {
-		UIColor *textColor = [[NSUserDefaults standardUserDefaults] clockFlipDarkColorIndex] == 13 ? [UIColor blackColor] : [UIColor whiteColor];
+		UIColor *textColor = [[A3UserDefaults standardUserDefaults] clockFlipDarkColorIndex] == 13 ? [UIColor blackColor] : [UIColor whiteColor];
 		UIColor *color = isForSecond ? [UIColor colorWithRed:255.0/255.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0] : textColor;
 		frontView.textColor = color;
 		backView.textColor = color;
-		UIColor *backgroundColor = [[NSUserDefaults standardUserDefaults] clockFlipDarkColor];
+		UIColor *backgroundColor = [[A3UserDefaults standardUserDefaults] clockFlipDarkColor];
 		frontView.backgroundColor = backgroundColor;
 		backView.backgroundColor = backgroundColor;
 	} else {
-		UIColor *textColor = [[NSUserDefaults standardUserDefaults] clockFlipLightColorIndex] == 12 ? [UIColor whiteColor] : [UIColor blackColor];
+		UIColor *textColor = [[A3UserDefaults standardUserDefaults] clockFlipLightColorIndex] == 12 ? [UIColor whiteColor] : [UIColor blackColor];
 		UIColor *color = isForSecond ? [UIColor colorWithRed:255.0/255.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0] : textColor;
 		frontView.textColor = color;
 		backView.textColor = color;
-		UIColor *backgroundColor = [[NSUserDefaults standardUserDefaults] clockFlipLightColor];
+		UIColor *backgroundColor = [[A3UserDefaults standardUserDefaults] clockFlipLightColor];
 		frontView.backgroundColor = backgroundColor;
 		backView.backgroundColor = backgroundColor;
 	}
@@ -504,10 +505,10 @@
 	}
 	[self setWeatherHidden:NO];
 
-	if (clockInfo.currentWeather.unit == SCWeatherUnitFahrenheit && ![[NSUserDefaults standardUserDefaults] clockUsesFahrenheit]) {
+	if (clockInfo.currentWeather.unit == SCWeatherUnitFahrenheit && ![[A3UserDefaults standardUserDefaults] clockUsesFahrenheit]) {
 		// convert fahrenheit to celsius
 		clockInfo.currentWeather.unit = SCWeatherUnitCelsius;
-	} else if (clockInfo.currentWeather.unit == SCWeatherUnitCelsius && [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit]) {
+	} else if (clockInfo.currentWeather.unit == SCWeatherUnitCelsius && [[A3UserDefaults standardUserDefaults] clockUsesFahrenheit]) {
 		// convert celsius to fahrenheit
 		clockInfo.currentWeather.unit = SCWeatherUnitFahrenheit;
 	}

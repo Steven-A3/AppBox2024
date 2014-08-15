@@ -19,6 +19,7 @@
 #import "A3LadyCalendarModelManager.h"
 #import "A3UnitDataManager.h"
 #import "NSFileManager+A3Addtion.h"
+#import "A3UserDefaults.h"
 
 NSString * const A3SyncManagerCloudEnabled = @"A3SyncManagerCloudEnabled";
 NSString * const A3SyncActivityDidBeginNotification = @"A3SyncActivityDidBegin";
@@ -162,8 +163,8 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 - (void)enableCloudSync {
 	if ([self isCloudEnabled]) return;
 
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SyncManagerCloudEnabled];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3SyncManagerCloudEnabled];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
 	[self writeSyncInfoToKeyValueStore:A3SyncStartDeniedBecauseOtherDeviceDidStartSyncWithin10Minutes];
 
@@ -216,8 +217,8 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 	_ensemble.delegate = nil;
 	_ensemble = nil;
 
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SyncManagerCloudEnabled];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] removeObjectForKey:A3SyncManagerCloudEnabled];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - Sync Methods
@@ -240,7 +241,7 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 
 - (BOOL)isCloudEnabled {
 	return [[NSFileManager defaultManager] ubiquityIdentityToken] &&
-			[[NSUserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled];
+			[[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled];
 }
 
 - (void)synchronizeWithCompletion:(CDECompletionBlock)completion
@@ -645,13 +646,13 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 							if ([cloudFile isEqual:[downloadFiles lastObject]]) {
 								[self playTransactions];
 
-								NSDictionary *mergeObjects = [[NSUserDefaults standardUserDefaults] objectForKey:A3DictionaryDBInitialMergeObjects];
+								NSDictionary *mergeObjects = [[A3UserDefaults standardUserDefaults] objectForKey:A3DictionaryDBInitialMergeObjects];
 								if (mergeObjects) {
 									for (NSString *key in [mergeObjects allKeys]) {
 										[self mergeForKey:key withBackupData:mergeObjects[key]];
 									}
-									[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3DictionaryDBInitialMergeObjects];
-									[[NSUserDefaults standardUserDefaults] synchronize];
+									[[A3UserDefaults standardUserDefaults] removeObjectForKey:A3DictionaryDBInitialMergeObjects];
+									[[A3UserDefaults standardUserDefaults] synchronize];
 								}
 								if (completionBlock) {
 									completionBlock(nil);
@@ -963,7 +964,7 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 						];
 
 						NSMutableDictionary *backupDataDictionary = [NSMutableDictionary new];
-						NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+						A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
 
 						for (NSString *key in targetEntities) {
 							id backup = [self backupObjectForKey:key];
@@ -973,8 +974,8 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 							[userDefaults removeObjectForKey:key];
 						}
 						if ([[backupDataDictionary allKeys] count] > 0) {
-							[[NSUserDefaults standardUserDefaults] setObject:backupDataDictionary forKey:A3DictionaryDBInitialMergeObjects];
-							[[NSUserDefaults standardUserDefaults] synchronize];
+							[[A3UserDefaults standardUserDefaults] setObject:backupDataDictionary forKey:A3DictionaryDBInitialMergeObjects];
+							[[A3UserDefaults standardUserDefaults] synchronize];
 						}
 						
 						// Reset data to inital state.
@@ -1053,7 +1054,7 @@ NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMerg
 }
 
 - (NSArray *)backupObjectForKey:(NSString *)key {
-	NSDictionary *dictionary = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+	NSDictionary *dictionary = [[A3UserDefaults standardUserDefaults] objectForKey:key];
 	if (dictionary && [dictionary[A3KeyValueDBState] unsignedIntegerValue] == A3DataObjectStateModified) {
 		return dictionary[A3KeyValueDBDataObject];
 	}

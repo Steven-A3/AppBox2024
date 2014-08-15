@@ -8,7 +8,7 @@
 
 #import "UIViewController+LoanCalcAddtion.h"
 #import "A3LoanCalcContentsTableViewController.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import <objc/runtime.h>

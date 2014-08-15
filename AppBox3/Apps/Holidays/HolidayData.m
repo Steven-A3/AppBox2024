@@ -580,20 +580,6 @@ static NSUInteger Eid_al_adha[][2] = {
 	return date;
 }
 
-+ (NSDate *)lunarDateWithSolarDay:(NSUInteger)day month:(NSUInteger)month year:(NSUInteger)year
-{
-	NSDateComponents *lunarComponents = [[NSDateComponents alloc] init];
-	[lunarComponents setDay:day];
-	[lunarComponents setMonth:month];
-	[lunarComponents setYear:year];
-	
-// TODO: Global Settings for Korean/Chinese Lunar calendar usage
-//	BOOL korean = [[[NSUserDefaults standardUserDefaults] objectForKey:APPBOX_KEY_GLOBAL_LUNAR_CALENDAR] isEqualToString:APPBOX_VALUE_LUNAR_CALENDAR_KOREA];
-	
-	NSDate *date = [HolidayData lunarCalcWithComponents:lunarComponents gregorianToLunar:NO leapMonth:NO korean:NO];
-	return date;
-}
-
 + (NSDate *)getLastWeekday:(NSUInteger)weekday OfMonth:(NSUInteger)month forYear:(NSUInteger)year withCalendar:(NSCalendar *)calendar
 {
 	NSDateComponents *dc = [[NSDateComponents alloc] init];
@@ -1141,19 +1127,6 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
 	NSDateComponents *lunarComponents = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
 	NSDate *newDate = [self lunarCalcWithComponents:lunarComponents gregorianToLunar:YES leapMonth:NO korean:YES];
 	
-	return newDate;
-}
-
-/*! This calculates Chinese lunar dates
- */
-+ (NSDate *)lunarDateWithGregorianDate:(NSDate *)date
-{
-	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];;
-	
-	NSDateComponents *lunarComponents = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
-	// TODO: Lunar calendar usage for China or Korean
-//	BOOL korean = [[[NSUserDefaults standardUserDefaults] objectForKey:APPBOX_KEY_GLOBAL_LUNAR_CALENDAR] isEqualToString:APPBOX_VALUE_LUNAR_CALENDAR_KOREA];
-	NSDate *newDate = [self lunarCalcWithComponents:lunarComponents gregorianToLunar:YES leapMonth:NO korean:NO];
 	return newDate;
 }
 

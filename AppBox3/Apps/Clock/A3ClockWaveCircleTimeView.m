@@ -7,7 +7,7 @@
 //
 
 #import "A3ClockWaveCircleTimeView.h"
-#import "NSUserDefaults+A3Defaults.h"
+#import "A3UserDefaults+A3Defaults.h"
 
 
 @interface A3ClockWaveCircleTimeView ()
@@ -41,7 +41,7 @@
 
 
 	self.colonView = [UIView new];
-	BOOL showSeconds = [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
+	BOOL showSeconds = [[A3UserDefaults standardUserDefaults] clockTheTimeWithSeconds];
 	if (showSeconds) {
 		_upperLeftCircle = [UIView new];
 		[self.colonView addSubview:_upperLeftCircle];
@@ -70,7 +70,7 @@
 - (void)updateConstraints {
 	[super updateConstraints];
 
-	BOOL showSeconds = [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
+	BOOL showSeconds = [[A3UserDefaults standardUserDefaults] clockTheTimeWithSeconds];
 	BOOL bigCircle = self.position == ClockWaveLocationBig;
 
 	CGFloat cornerRadius;

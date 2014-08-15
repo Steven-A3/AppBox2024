@@ -22,7 +22,7 @@
 #import "WalletItem.h"
 #import "WalletItem+initialize.h"
 #import "WalletData.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 

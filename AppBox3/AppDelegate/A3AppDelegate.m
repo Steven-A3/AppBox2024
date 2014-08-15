@@ -32,6 +32,7 @@
 #import "A3SyncManager.h"
 #import "AFHTTPRequestOperation.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3UserDefaults.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -84,14 +85,16 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
         [[UIApplication sharedApplication] cancelLocalNotification:localNotification];
 	}
 
+	// Check if it is running first time after update from 1.x.x
 	_previousVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
 	if (_previousVersion) {
-		if ([_previousVersion floatValue] < 3.0) {
-			_shouldMigrateV1Data = YES;
-			[A3KeychainUtils migrateV1Passcode];
-		}
+		_shouldMigrateV1Data = YES;
+		[A3KeychainUtils migrateV1Passcode];
 	} else {
-		[A3KeychainUtils removePassword];
+		_previousVersion = [[A3UserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
+		if (_previousVersion) {
+			[A3KeychainUtils removePassword];
+		}
 	}
 
 	self.reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
@@ -145,8 +148,11 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 
 	[self.window makeKeyAndVisible];
 
-	[[NSUserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:kA3ApplicationLastRunVersion];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kA3ApplicationLastRunVersion];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	[[A3UserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:kA3ApplicationLastRunVersion];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
 	[application registerForRemoteNotificationTypes:
 			(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
@@ -681,7 +687,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 
 	self.managedObjectContext = [NSManagedObjectContext MR_defaultContext];
 
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
+	if ([[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
 		A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
 		sharedSyncManager.storePath = [[self storeURL] path];
 		[sharedSyncManager setupEnsemble];

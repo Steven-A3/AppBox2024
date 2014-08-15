@@ -12,6 +12,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "FrameRateCalculator.h"
 #import "A3InstructionViewController.h"
+#import "A3UserDefaults.h"
 
 static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCaptureStillImageIsCapturingStillImageContext";
 static const int MAX_ZOOM_FACTOR = 6;
@@ -536,14 +537,14 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
     nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:nc animated:YES completion:^{
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:A3MagnifierFirstLoadCameraRoll]) {
+        if (![[A3UserDefaults standardUserDefaults] boolForKey:A3MagnifierFirstLoadCameraRoll]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
 																message:NSLocalizedString(@"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.", @"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.")
 															   delegate:nil
 													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 													  otherButtonTitles:nil];
             [alertView show];
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3MagnifierFirstLoadCameraRoll];
+            [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3MagnifierFirstLoadCameraRoll];
         }
     }];
 }
@@ -565,15 +566,15 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
 
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForMagnifier]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForMagnifier]) {
         [self showInstructionView:nil];
     }
 }
 
 - (IBAction)showInstructionView:(id)sender
 {
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForMagnifier];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForMagnifier];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Magnifier"];

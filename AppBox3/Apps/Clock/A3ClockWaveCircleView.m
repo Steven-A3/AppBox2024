@@ -10,7 +10,7 @@
 #import "A3ClockWaveCircleView.h"
 #import "A3ClockWaveCircleTimeView.h"
 #import "A3ClockDataManager.h"
-#import "NSUserDefaults+A3Defaults.h"
+#import "A3UserDefaults+A3Defaults.h"
 #import "UIImage+imageWithColor.h"
 
 @interface A3ClockWaveCircleView () <UIGestureRecognizerDelegate>
@@ -105,7 +105,7 @@
 	}
 	_waveImageView.frame = frame;
 
-	UIImage *tintedImage = [[UIImage imageNamed:imageName] tintedImageWithColor:[[NSUserDefaults standardUserDefaults] clockWaveColor]];
+	UIImage *tintedImage = [[UIImage imageNamed:imageName] tintedImageWithColor:[[A3UserDefaults standardUserDefaults] clockWaveColor]];
 	_waveImageView.image = [tintedImage resizableImageWithCapInsets:slicingEdge resizingMode:UIImageResizingModeTile];
 
 	CGSize textSize = [[self.textLabel text] sizeWithAttributes:@{NSFontAttributeName:[self.textLabel font], NSForegroundColorAttributeName:[UIColor blackColor]}];

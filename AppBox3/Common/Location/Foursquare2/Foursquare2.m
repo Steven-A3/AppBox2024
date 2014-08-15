@@ -10,6 +10,8 @@
 #import "FSTargetCallback.h"
 #ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 #import "FSOAuth.h"
+#import "A3UserDefaults.h"
+
 #endif
 
 //update this date to use up-to-date Foursquare API
@@ -22,7 +24,7 @@ static NSString * kFOURSQUARE_BASE_URL = @"https://api.foursquare.com/v2/";
 
 static NSString const * kFOURSQUARE_CLIET_ID = @"B3K4HF0AMLNYXAI42X0CDP3E0B5DXNYKT1JIUNL4EQ1AP0W5";
 static NSString const * kFOURSQUARE_OAUTH_SECRET = @"IWACU25PDFAJZ1WKLKEDL4LJWI41MXV535CQE5YQOQT3NALA";
-static NSString const * kFOURSQUARE_CALLBACK_URL = @"A3TeamWork://foursquare";
+static NSString const * kFOURSQUARE_CALLBACK_URL = @"";
 
 static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"";
 
@@ -63,7 +65,7 @@ static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"";
 static NSMutableDictionary *attributes;
 
 + (void)initialize {
-	NSUserDefaults *usDef = [NSUserDefaults standardUserDefaults];
+	A3UserDefaults *usDef = [A3UserDefaults standardUserDefaults];
 	if ([usDef objectForKey:@"FOURSQUARE_ACCESS_TOKEN"] != nil) {
 		[self classAttributes][kFOURSQUARE_ACCESS_TOKEN] = [usDef objectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
         
@@ -94,15 +96,15 @@ static NSMutableDictionary *attributes;
 
 + (void)setAccessToken:(NSString *)token {
 	[self classAttributes][kFOURSQUARE_ACCESS_TOKEN] = token;
-	[[NSUserDefaults standardUserDefaults] setObject:token
+	[[A3UserDefaults standardUserDefaults] setObject:token
                                               forKey:@"FOURSQUARE_ACCESS_TOKEN"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 + (void)removeAccessToken {
 	[[self classAttributes]removeObjectForKey:kFOURSQUARE_ACCESS_TOKEN];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] removeObjectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 + (BOOL)isAuthorized {

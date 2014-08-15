@@ -23,10 +23,11 @@
 #import "UIViewController+A3Addition.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "NSDate+LunarConverter.h"
-#import "NSUserDefaults+A3Addition.h"
+#import "A3UserDefaults+A3Addition.h"
 #import "NSDateFormatter+LunarDate.h"
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "A3InstructionViewController.h"
+#import "A3UserDefaults.h"
 
 @interface A3HolidaysPageViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource,
 		A3HolidaysEditViewControllerDelegate, FXPageControlDelegate, A3HolidaysCountryViewControllerDelegate,
@@ -154,7 +155,7 @@
 }
 
 - (void)alertDisclaimer {
-	if (![[NSUserDefaults standardUserDefaults] boolForKey:A3HolidaysDoesNotNeedsShowDisclaimer]) {
+	if (![[A3UserDefaults standardUserDefaults] boolForKey:A3HolidaysDoesNotNeedsShowDisclaimer]) {
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Disclaimer", nil)
 															message:NSLocalizedString(@"DISCLAIMER_MESSAGE", @"DISCLAIMER_MESSAGE")
 														   delegate:self
@@ -167,8 +168,8 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (alertView.tag == 82093) {
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3HolidaysDoesNotNeedsShowDisclaimer];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3HolidaysDoesNotNeedsShowDisclaimer];
+		[[A3UserDefaults standardUserDefaults] synchronize];
 	}
 }
 
@@ -189,15 +190,15 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForHoliday]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForHoliday]) {
         [self showInstructionView];
     }
 }
 
 - (void)showInstructionView
 {
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForHoliday];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForHoliday];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Holidays_1"];
@@ -577,8 +578,8 @@ extern NSString *const kA3HolidayScreenImageOwner;		// USE key + country code
 extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 
 - (void)updatePhotoLabelText {
-	NSString *license = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageLicense, self.countryCode]];
-	NSString *owner = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageOwner, self.countryCode]];
+	NSString *license = [[A3UserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageLicense, self.countryCode]];
+	NSString *owner = [[A3UserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageOwner, self.countryCode]];
 
 	if ([owner length]) {
 		NSMutableAttributedString *licenseString;
@@ -611,7 +612,7 @@ extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 }
 
 - (void)openURL {
-	NSString *urlString = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageURL, self.countryCode]];
+	NSString *urlString = [[A3UserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageURL, self.countryCode]];
 	if ([urlString length]) {
 		NSURL *url = [NSURL URLWithString:urlString];
 		UIApplication *application = [UIApplication sharedApplication];

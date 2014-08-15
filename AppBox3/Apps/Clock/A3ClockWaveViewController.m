@@ -10,8 +10,8 @@
 #import "A3ClockInfo.h"
 #import "A3ClockDataManager.h"
 #import "A3ClockWaveViewController.h"
-#import "NSUserDefaults+A3Defaults.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaults+A3Defaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3UIDevice.h"
 #import "A3AppDelegate.h"
 #import "Reachability.h"
@@ -63,7 +63,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-	NSData *backgroundColorData = [[NSUserDefaults standardUserDefaults] objectForKey:A3ClockWaveClockColor];
+	NSData *backgroundColorData = [[A3UserDefaults standardUserDefaults] objectForKey:A3ClockWaveClockColor];
 	if (backgroundColorData) {
 		UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:backgroundColorData];
 		[self.view setBackgroundColor:color];
@@ -713,8 +713,8 @@
 			[circleArrayToSave insertObject:@(A3ClockWaveCircleTypeWeather) atIndex:_weatherCircleIndex];
 		}
 	}
-	[[NSUserDefaults standardUserDefaults] setObject:circleArrayToSave forKey:A3ClockWaveCircleLayout];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setObject:circleArrayToSave forKey:A3ClockWaveCircleLayout];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
 	[self.clockDataManager stopTimer];
 
@@ -742,7 +742,7 @@
 	} else {
 		timeString = [NSString stringWithFormat:@"%02ld %02ld", clockInfo.hour, (long) clockInfo.dateComponents.minute];
 	}
-	if ([[NSUserDefaults standardUserDefaults] clockFlashTheTimeSeparators]) {
+	if ([[A3UserDefaults standardUserDefaults] clockFlashTheTimeSeparators]) {
 		[self.timeCircle.colonView setHidden:_showTimeSeparator];
 		_showTimeSeparator = !_showTimeSeparator;
 	} else {
@@ -753,12 +753,12 @@
 }
 
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo {
-	if([[NSUserDefaults standardUserDefaults] clockUse24hourClock])
+	if([[A3UserDefaults standardUserDefaults] clockUse24hourClock])
 		self.am_pm24Label.text = @"24";
 	else
 		self.am_pm24Label.text = @"12";
 
-	if([[NSUserDefaults standardUserDefaults] clockShowAMPM])
+	if([[A3UserDefaults standardUserDefaults] clockShowAMPM])
 	{
 		self.am_pm24Label.text = [NSString stringWithFormat:@"%@ %@", self.am_pm24Label.text, clockInfo.AMPM];
 	}
@@ -787,7 +787,7 @@
 			self.timeCircle.smallFont = timeFont;
 		}
 	}
-	if ([[NSUserDefaults standardUserDefaults] clockFlashTheTimeSeparators]) {
+	if ([[A3UserDefaults standardUserDefaults] clockFlashTheTimeSeparators]) {
 		[self.timeCircle.colonView setHidden:_showTimeSeparator];
 		_showTimeSeparator = !_showTimeSeparator;
 	} else {
@@ -850,10 +850,10 @@
 		return;
 	}
 
-	if (clockInfo.currentWeather.unit == SCWeatherUnitFahrenheit && ![[NSUserDefaults standardUserDefaults] clockUsesFahrenheit]) {
+	if (clockInfo.currentWeather.unit == SCWeatherUnitFahrenheit && ![[A3UserDefaults standardUserDefaults] clockUsesFahrenheit]) {
 		// convert fahrenheit to celsius
 		clockInfo.currentWeather.unit = SCWeatherUnitCelsius;
-	} else if (clockInfo.currentWeather.unit == SCWeatherUnitCelsius && [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit]) {
+	} else if (clockInfo.currentWeather.unit == SCWeatherUnitCelsius && [[A3UserDefaults standardUserDefaults] clockUsesFahrenheit]) {
 		// convert celsius to fahrenheit
 		clockInfo.currentWeather.unit = SCWeatherUnitFahrenheit;
 	}

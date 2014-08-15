@@ -22,6 +22,7 @@
 #import "NSMutableArray+A3Sort.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3InstructionViewController.h"
+#import "A3UserDefaults.h"
 
 @interface A3TranslatorViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate, A3InstructionViewControllerDelegate>
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
@@ -146,7 +147,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 
 - (void)setupInstructionView
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForTranslator]) {
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForTranslator]) {
         [self showInstructionView];
     }
     self.navigationItem.rightBarButtonItem = [self instructionHelpBarButton];
@@ -158,8 +159,8 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
         return;
     }
 
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForTranslator];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForTranslator];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Translator"];

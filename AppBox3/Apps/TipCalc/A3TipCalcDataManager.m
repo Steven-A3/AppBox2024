@@ -7,7 +7,7 @@
 //
 
 #import "A3TipCalcDataManager.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "NSManagedObject+extension.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"

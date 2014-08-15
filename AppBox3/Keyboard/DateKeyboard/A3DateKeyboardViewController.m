@@ -10,7 +10,7 @@
 #import "A3KeyboardButton_iOS7.h"
 #import "NSDateFormatter+LunarDate.h"
 #import "NSDate+LunarConverter.h"
-#import "NSUserDefaults+A3Addition.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3DateKeyboardViewController ()
 @property (nonatomic, strong) NSCalendar *gregorian;

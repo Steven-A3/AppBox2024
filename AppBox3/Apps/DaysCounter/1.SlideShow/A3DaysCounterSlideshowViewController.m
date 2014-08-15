@@ -11,7 +11,7 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
-#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
 #import "DaysCounterEvent.h"
 #import "MPFoldTransition.h"
 #import "A3SyncManager.h"

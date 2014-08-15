@@ -22,6 +22,7 @@
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "DaysCounterReminder+extension.h"
+#import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 
 @interface A3DaysCounterReminderListViewController ()
@@ -110,8 +111,8 @@
     [self.tableView reloadData];
     [self.navigationController setToolbarHidden:NO];
     
-    [[NSUserDefaults standardUserDefaults] setInteger:3 forKey:A3DaysCounterLastOpenedMainIndex];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[A3UserDefaults standardUserDefaults] setInteger:3 forKey:A3DaysCounterLastOpenedMainIndex];
+    [[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)didReceiveMemoryWarning

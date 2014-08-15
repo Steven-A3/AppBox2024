@@ -8,7 +8,7 @@
 
 #import "A3ClockInfo.h"
 #import "NSDateFormatter+A3Addition.h"
-#import "NSUserDefaults+A3Defaults.h"
+#import "A3UserDefaults+A3Defaults.h"
 
 @implementation A3ClockInfo
 
@@ -42,15 +42,15 @@
 
 - (NSString *)dateStringConsideringOptions {
 	NSString *dateString;
-	if([[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek] && [[NSUserDefaults standardUserDefaults] clockShowDate])
+	if([[A3UserDefaults standardUserDefaults] clockShowTheDayOfTheWeek] && [[A3UserDefaults standardUserDefaults] clockShowDate])
 	{
 		dateString = self.fullStyleDateStringWithoutYear;
 	}
-	else if([[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek])
+	else if([[A3UserDefaults standardUserDefaults] clockShowTheDayOfTheWeek])
 	{
 		dateString = [NSString stringWithFormat:@"%@", self.weekday];
 	}
-	else if([[NSUserDefaults standardUserDefaults] clockShowDate])
+	else if([[A3UserDefaults standardUserDefaults] clockShowDate])
 	{
 		dateString = self.mediumStyleDateStringWithoutYear;
 	}
@@ -62,7 +62,7 @@
 
 - (long)hour {
 	long hour = self.dateComponents.hour;
-	if (![[NSUserDefaults standardUserDefaults] clockUse24hourClock]) {
+	if (![[A3UserDefaults standardUserDefaults] clockUse24hourClock]) {
 		hour %= 12;
 		if (hour == 0) {
 			hour = 12;
