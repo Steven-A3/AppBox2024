@@ -28,6 +28,12 @@
 				<string>db-ody0cjvmnaxvob4</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>AppBoxPro</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>3.0.0</string>

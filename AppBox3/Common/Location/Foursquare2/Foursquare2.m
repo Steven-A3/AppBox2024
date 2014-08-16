@@ -22,9 +22,9 @@
 static NSString * kFOURSQUARE_BASE_URL = @"https://api.foursquare.com/v2/";
 
 
-static NSString const * kFOURSQUARE_CLIET_ID = @"B3K4HF0AMLNYXAI42X0CDP3E0B5DXNYKT1JIUNL4EQ1AP0W5";
-static NSString const * kFOURSQUARE_OAUTH_SECRET = @"IWACU25PDFAJZ1WKLKEDL4LJWI41MXV535CQE5YQOQT3NALA";
-static NSString const * kFOURSQUARE_CALLBACK_URL = @"";
+static NSString const *kFOURSQUARE_CLIENT_ID = @"S41X1SN5JUC0LEOG5PIAQODH3YIQHQQOK5S1XE5TOMON2AXT";
+static NSString const * kFOURSQUARE_OAUTH_SECRET = @"KQWO4HZHJLETEZNCLZULIEC3S2VIV3PFPZ0RJ4YMYDZOAHBU";
+static NSString const * kFOURSQUARE_CALLBACK_URL = @"AppBoxPro";
 
 static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"";
 
@@ -75,7 +75,7 @@ static NSMutableDictionary *attributes;
 + (void)setupFoursquareWithClientId:(NSString *)clientId
                              secret:(NSString *)secret
                         callbackURL:(NSString *)callbackURL {
-    [self classAttributes][kFOURSQUARE_CLIET_ID] = clientId;
+    [self classAttributes][kFOURSQUARE_CLIENT_ID] = clientId;
     [self classAttributes][kFOURSQUARE_OAUTH_SECRET] = secret;
     [self classAttributes][kFOURSQUARE_CALLBACK_URL] = callbackURL;
 }
@@ -1140,7 +1140,7 @@ static NSMutableDictionary *attributes;
     
     [paramStr appendString:methodName];
     NSDictionary *dic = [self classAttributes];
-    NSString *key = dic[kFOURSQUARE_CLIET_ID];
+    NSString *key = dic[kFOURSQUARE_CLIENT_ID];
     NSString *secret = dic[kFOURSQUARE_OAUTH_SECRET];
 	[paramStr appendFormat:@"?client_id=%@",key];
     [paramStr appendFormat:@"&client_secret=%@",secret];
@@ -1312,7 +1312,7 @@ static NSMutableDictionary *attributes;
 
 + (BOOL)nativeAuthorization {
     NSDictionary *dic = [self classAttributes];
-    NSString *key = dic[kFOURSQUARE_CLIET_ID];
+    NSString *key = dic[kFOURSQUARE_CLIENT_ID];
     NSString *callbackURL = dic[kFOURSQUARE_CALLBACK_URL];
     FSOAuthStatusCode statusCode = [FSOAuth authorizeUserUsingClientId:key callbackURIString:callbackURL];
     if (statusCode == FSOAuthStatusSuccess) {
@@ -1323,7 +1323,7 @@ static NSMutableDictionary *attributes;
 
 + (void)webAuthorization {
     NSDictionary *dic = [self classAttributes];
-    NSString *key = dic[kFOURSQUARE_CLIET_ID];
+    NSString *key = dic[kFOURSQUARE_CLIENT_ID];
     NSString *callbackURL = dic[kFOURSQUARE_CALLBACK_URL];
 	NSString *url = [NSString stringWithFormat:
                      @"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",
@@ -1358,7 +1358,7 @@ Foursquare2Callback authorizeCallbackDelegate;
         NSString *code = [FSOAuth accessCodeForFSOAuthURL:url
                                                     error:&errorCode];
         if (errorCode == FSOAuthErrorNone) {
-            NSString *key = dic[kFOURSQUARE_CLIET_ID];
+            NSString *key = dic[kFOURSQUARE_CLIENT_ID];
             NSString *secret = dic[kFOURSQUARE_OAUTH_SECRET];
             [FSOAuth requestAccessTokenForCode:code
                                       clientId:key

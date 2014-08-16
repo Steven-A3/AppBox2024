@@ -501,6 +501,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     viewController.delegate = self;
     viewController.shouldPopViewController = NO;    // modal
 	viewController.categoryID = _categoryID;
+	viewController.currentUnitID = NSNotFound;
 
 	return viewController;
 }
@@ -1090,30 +1091,40 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	}
 
 	if (_isAddingUnit) {
-		if (unitID) {
-			if ([_convertItems containsObject:@(unitID)]) {
-				return;
-			}
-
-			[_convertItems addObject:@(unitID)];
-			[_dataManager addUnitToConvertItemForUnit:unitID categoryID:_categoryID];
-
-			[_fmMoveTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_convertItems count] - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
-
-			double delayInSeconds = 0.3;
-			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				[_fmMoveTableView reloadData];
-			});
+		if ([_convertItems containsObject:@(unitID)]) {
+			return;
 		}
+
+		[_convertItems addObject:@(unitID)];
+		[_dataManager addUnitToConvertItemForUnit:unitID categoryID:_categoryID];
+
+		[_fmMoveTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_convertItems count] - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+
+		double delayInSeconds = 0.3;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[_fmMoveTableView reloadData];
+		});
 	}
 	else {
 		// 선택된 unitItem이 이미 convertItems에 추가된 unit이면, swap을 한다.
-		if (unitID) {
-			NSInteger existingIndex = [_convertItems indexOfObject:@(unitID)];
-			if (existingIndex != NSNotFound) {
-				if (_selectedRow == 0) {
-					NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:existingIndex inSection:0];
+		NSInteger existingIndex = [_convertItems indexOfObject:@(unitID)];
+		if (existingIndex != NSNotFound) {
+			if (_selectedRow == 0) {
+				NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:existingIndex inSection:0];
+				NSIndexPath *targetIndexPath;
+				if (sourceIndexPath.row == 0) {
+					targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+				} else {
+					targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+				}
+
+				[self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
+			}
+			else {
+				// 선택된 unitItem이 첫번째 unit이면, swap한다.
+				if (existingIndex == 0) {
+					NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:_selectedRow inSection:0];
 					NSIndexPath *targetIndexPath;
 					if (sourceIndexPath.row == 0) {
 						targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
@@ -1123,42 +1134,28 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 					[self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
 				}
+						// 선택된 unitItem이 첫번째 unit이 아닐경우, swap한다.
 				else {
-					// 선택된 unitItem이 첫번째 unit이면, swap한다.
-					if (existingIndex == 0) {
-						NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:_selectedRow inSection:0];
-						NSIndexPath *targetIndexPath;
-						if (sourceIndexPath.row == 0) {
-							targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
-						} else {
-							targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-						}
 
-						[self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
-					}
-							// 선택된 unitItem이 첫번째 unit이 아닐경우, swap한다.
-					else {
+					NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:_selectedRow inSection:0];
+					NSIndexPath *targetIndexPath = [NSIndexPath indexPathForRow:existingIndex inSection:0];
 
-						NSIndexPath *sourceIndexPath = [NSIndexPath indexPathForRow:_selectedRow inSection:0];
-						NSIndexPath *targetIndexPath = [NSIndexPath indexPathForRow:existingIndex inSection:0];
-
-						[self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
-					}
+					[self swapCellOfFromIndexPath:sourceIndexPath toIndexPath:targetIndexPath];
 				}
 			}
-					// 아니면, 현재 unit을 교체한다.
-			else {
-				[_convertItems replaceObjectAtIndex:_selectedRow withObject:@(unitID)];
-				[_dataManager replaceConvertItems:[_convertItems copy] forCategory:_categoryID];
+		}
+				// 아니면, 현재 unit을 교체한다.
+		else {
+			[_convertItems replaceObjectAtIndex:_selectedRow withObject:@(unitID)];
+			[_dataManager replaceConvertItems:[_convertItems copy] forCategory:_categoryID];
 
-				[_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+			[_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
 
-				double delayInSeconds = 0.3;
-				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-					[_fmMoveTableView reloadData];
-				});
-			}
+			double delayInSeconds = 0.3;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[_fmMoveTableView reloadData];
+			});
 		}
 	}
 }

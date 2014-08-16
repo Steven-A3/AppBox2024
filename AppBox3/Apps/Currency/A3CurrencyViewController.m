@@ -1104,6 +1104,13 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	}
 
 	[self.favorites exchangeObjectAtIndex:sourceIndexPath.row withObjectAtIndex:targetIndexPath.row];
+
+	CurrencyFavorite *sourceCurrency = self.favorites[sourceIndexPath.row];
+	CurrencyFavorite *targetCurrency = self.favorites[targetIndexPath.row];
+	NSString *orderOfSource = sourceCurrency.order;
+	sourceCurrency.order = targetCurrency.order;
+	targetCurrency.order = orderOfSource;
+
 	[self.savingContext MR_saveToPersistentStoreAndWait];
 
 	[self.tableView reloadRowsAtIndexPaths:@[sourceIndexPath, targetIndexPath] withRowAnimation:UITableViewRowAnimationMiddle];
