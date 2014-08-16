@@ -909,7 +909,7 @@
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
-	viewCtrl.savingContext = [NSManagedObjectContext MR_newContext];
+	viewCtrl.savingContext = [NSManagedObjectContext MR_rootSavingContext];
     viewCtrl.calendarID = _calendarItem.uniqueID;
     viewCtrl.sharedManager = _sharedManager;
     if ([_calendarItem.type integerValue] == CalendarCellType_System) {

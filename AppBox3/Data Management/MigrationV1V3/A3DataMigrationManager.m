@@ -66,7 +66,7 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 - (instancetype)init {
 	self = [super init];
 	if (self) {
-		_context = [NSManagedObjectContext MR_newContext];
+		_context = [NSManagedObjectContext MR_rootSavingContext];
 		_context.undoManager = nil;
 	}
 	return self;

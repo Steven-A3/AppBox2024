@@ -125,6 +125,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+	_categories = nil;
 	[self.tableView reloadData];
 }
 
@@ -237,7 +238,7 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 
 - (NSManagedObjectContext *)savingContext {
 	if (!_savingContext) {
-		_savingContext = [NSManagedObjectContext MR_newContext];
+		_savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	}
 	return _savingContext;
 }
@@ -389,20 +390,19 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 			NSInteger from, to;
 			if (fromIndexPath.section == 0) {
 				from = fromIndexPath.row;
-				to = [self.sections[0] count] + toIndexPath.row - 1;
+				to = [self.sections[0] count] + toIndexPath.row;
 			} else {
 				from = [self.sections[0] count] + fromIndexPath.row - 1;
 				to = toIndexPath.row;
 			}
 			[self.categories moveItemInSortedArrayFromIndex:from toIndex:to];
-			[self.savingContext MR_saveToPersistentStoreAndWait];
 
 			self.sections = nil;
 			[self sections];
 
 			NSIndexPath *adjustedIndexPath;
 			if (fromIndexPath.section == 0) {
-				adjustedIndexPath = [NSIndexPath indexPathForRow:[fromSection count] - 1 inSection:0];
+				adjustedIndexPath = [NSIndexPath indexPathForRow:[fromSection count] inSection:0];
 				[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] toIndexPath:adjustedIndexPath];
 			} else {
 				NSUInteger movingRow = [toSection count] - 1;
@@ -410,6 +410,8 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 				[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:movingRow inSection:0] toIndexPath:adjustedIndexPath];
 			}
 			[self.tableView reloadRowsAtIndexPaths:@[adjustedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+			[self.savingContext MR_saveToPersistentStoreAndWait];
 		});
 	}
 }

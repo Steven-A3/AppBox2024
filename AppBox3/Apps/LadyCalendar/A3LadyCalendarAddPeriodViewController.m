@@ -701,7 +701,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	_periodItem.updateDate = [NSDate date];
 	_periodItem.isPredict = @NO;
 
-	LadyCalendarAccount *account = [self.dataManager.currentAccount MR_inContext:[NSManagedObjectContext MR_newContext]];
+	LadyCalendarAccount *account = [self.dataManager.currentAccount MR_inContext:[NSManagedObjectContext MR_rootSavingContext]];
 	account.watchingDate = _periodItem.startDate;
 	[account.managedObjectContext MR_saveToPersistentStoreAndWait];
 

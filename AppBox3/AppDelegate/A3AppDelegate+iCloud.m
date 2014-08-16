@@ -49,7 +49,7 @@
 	if ([[UIApplication sharedApplication] isProtectedDataAvailable]) {
 		FNLOG(@"Protected Data is Available.");
 		
-		[A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_newContext] ];
+		[A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_rootSavingContext] ];
 		[A3LadyCalendarModelManager setupLocalNotification];
 		
 		completionHandler(UIBackgroundFetchResultNewData);

@@ -344,7 +344,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
-		NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_newContext];
+		NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 		favorite = [favorite MR_inContext:savingContext];
 		[favorite MR_deleteEntityInContext:savingContext];
 
@@ -398,7 +398,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
-	viewCtrl.savingContext = [NSManagedObjectContext MR_newContext];
+	viewCtrl.savingContext = [NSManagedObjectContext MR_rootSavingContext];
     viewCtrl.sharedManager = _sharedManager;
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];

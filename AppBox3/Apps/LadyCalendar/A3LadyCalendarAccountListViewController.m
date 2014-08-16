@@ -78,7 +78,7 @@
 
 - (NSManagedObjectContext *)savingContext {
 	if (!_savingContext) {
-		_savingContext = [NSManagedObjectContext MR_newContext];
+		_savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	}
 	return _savingContext;
 }

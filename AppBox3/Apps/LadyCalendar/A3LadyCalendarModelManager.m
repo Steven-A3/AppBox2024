@@ -47,7 +47,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (void)addDefaultAccount {
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_newContext];
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	LadyCalendarAccount *account = [LadyCalendarAccount MR_createEntityInContext:savingContext];
 	account.uniqueID = DefaultAccountID;
 	account.name = [self defaultAccountName];
@@ -87,7 +87,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (void)deleteAccount:(LadyCalendarAccount *)account {
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_newContext];
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	LadyCalendarAccount *deletingAccount = [account MR_inContext:savingContext];
 	[deletingAccount MR_deleteEntityInContext:savingContext];
 }

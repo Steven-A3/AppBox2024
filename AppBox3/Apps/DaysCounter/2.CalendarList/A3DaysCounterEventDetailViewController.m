@@ -1727,7 +1727,7 @@ EXIT_FUCTION:
     self.initialCalendarID = _eventItem.calendarID;
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
 	viewCtrl.delegate = self;
-	viewCtrl.savingContext = [NSManagedObjectContext MR_newContext];
+	viewCtrl.savingContext = [NSManagedObjectContext MR_rootSavingContext];
     viewCtrl.eventItem = [_eventItem MR_inContext:viewCtrl.savingContext];
     viewCtrl.sharedManager = _sharedManager;
     

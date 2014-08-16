@@ -69,7 +69,7 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 		}
 	}
 	NSInteger order = 1000000;
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_newContext];
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	for (NSDictionary *favorite in favorites) {
 		CurrencyFavorite *newFavorite = [CurrencyFavorite MR_createEntityInContext:savingContext];
 		newFavorite.uniqueID = favorite[ID_KEY];

@@ -582,7 +582,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
     [self dismissMoreMenu];
 
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
-	viewCtrl.savingContext = [NSManagedObjectContext MR_newContext];
+	viewCtrl.savingContext = [NSManagedObjectContext MR_rootSavingContext];
     viewCtrl.landscapeFullScreen = YES;
     viewCtrl.sharedManager = _sharedManager;
     if ( IS_IPHONE ) {

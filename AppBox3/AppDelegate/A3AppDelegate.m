@@ -373,7 +373,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 		return;
 	}
 
-	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_newContext]];
+	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_rootSavingContext]];
 
 	FNLOG(@"%@", _localNotificationUserInfo[A3LocalNotificationDataID]);
 

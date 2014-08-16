@@ -136,7 +136,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 			}]
 	]];
 
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_newContext];
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	NSInteger order = 1000000;
 	for (NSDictionary *calendar in calendars) {
 		DaysCounterCalendar *newCalendar = [DaysCounterCalendar MR_createEntityInContext:savingContext];
@@ -509,7 +509,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (BOOL)removeCalendar:(DaysCounterCalendar *)calendar
 {
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_newContext];
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	DaysCounterCalendar *deletingCalendar = [calendar MR_inContext:savingContext];
 	[deletingCalendar MR_deleteEntityInContext:savingContext];
 

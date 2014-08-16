@@ -281,7 +281,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (NSManagedObjectContext *)savingContext {
 	if (!_savingContext) {
-		_savingContext = [NSManagedObjectContext MR_newContext];
+		_savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	}
 	return _savingContext;
 }
@@ -773,20 +773,21 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		[newObject assignOrderAsLastInContext:self.savingContext];
 		[_favorites addObject:newObject];
 
-		[_savingContext MR_saveToPersistentStoreAndWait];
-
 		NSInteger insertIdx = [self.favorites count] - 1;
 		[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:insertIdx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+
+		[_savingContext MR_saveToPersistentStoreAndWait];
 	} else {
 		CurrencyFavorite *oldObject = self.favorites[_selectedRow];
 		newObject.order = oldObject.order;
 		[_favorites replaceObjectAtIndex:_selectedRow withObject:newObject];
 
 		[oldObject MR_deleteEntityInContext:_savingContext];
-		[_savingContext MR_saveToPersistentStoreAndWait];
 
 		[self replaceTextFieldKeyFrom:oldObject.uniqueID to:selectedCode];
 		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+
+		[_savingContext MR_saveToPersistentStoreAndWait];
 
 		double delayInSeconds = 0.3;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -1144,52 +1145,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		[self putHistoryWithValue:newValue];
 	}
 
-//	NSMutableArray *reloadingRows = [NSMutableArray new];
-//	[reloadingRows addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
-//
-//	CurrencyRateItem *newSource = newCodesArray[0], *newDestination = newCodesArray[1];
-//	if (![chartViewController.originalSourceCode isEqualToString:newSource.currencyCode]) {
-//		[self replaceTextFieldKeyFrom:chartViewController.originalSourceCode to:newSource.currencyCode];
-//		NSUInteger replacingIndex = [self indexForCurrencyCode:chartViewController.originalSourceCode];
-//		if (replacingIndex != NSNotFound) {
-//			CurrencyFavorite *oldFavorite = _favorites[replacingIndex];
-//			CurrencyFavorite *newFavorite = [CurrencyFavorite MR_createEntityInContext:self.savingContext];
-//			newFavorite.uniqueID = newSource.currencyCode;
-//			newFavorite.order = oldFavorite.order;
-//			[_favorites replaceObjectAtIndex:replacingIndex withObject:newFavorite];
-//		}
-//	}
-//	if (![newSource.currencyCode isEqualToString:newDestination.currencyCode] &&
-//			![newDestination.currencyCode isEqualToString:chartViewController.originalTargetCode]) {
-//		[self replaceTextFieldKeyFrom:chartViewController.originalTargetCode to:newDestination.currencyCode];
-//
-//		NSUInteger oldDestinationIndex = [self.favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite *obj, NSUInteger idx, BOOL *stop) {
-//			if ([obj isEqual:self.equalItem]) return NO;
-//			return [obj.uniqueID isEqualToString:chartViewController.originalTargetCode];
-//		}];
-//		if (oldDestinationIndex != NSNotFound) {
-//			NSUInteger indexOfNewCodeInExistingFavorites = [self.favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite *obj, NSUInteger idx, BOOL *stop) {
-//				if ([obj isEqual:self.equalItem]) return NO;
-//				return [obj.uniqueID isEqualToString:newDestination.currencyCode];
-//			}];
-//			if (indexOfNewCodeInExistingFavorites != NSNotFound) {
-//				CurrencyFavorite *oldObject = _favorites[indexOfNewCodeInExistingFavorites];
-//				[_favorites removeObjectAtIndex:indexOfNewCodeInExistingFavorites];
-//				[oldObject MR_deleteEntityInContext:self.savingContext];
-//
-//				[self.savingContext MR_saveToPersistentStoreAndWait];
-//
-//				NSIndexPath *indexPathToDelete = [NSIndexPath indexPathForRow:indexOfNewCodeInExistingFavorites inSection:0];
-//				[self.tableView deleteRowsAtIndexPaths:@[indexPathToDelete] withRowAnimation:UITableViewRowAnimationAutomatic];
-//			}
-//			[reloadingRows addObject:[NSIndexPath indexPathForRow:oldDestinationIndex inSection:0]];
-//		}
-//	}
-//	if ([reloadingRows count]) {
-//		[self.tableView reloadRowsAtIndexPaths:reloadingRows withRowAnimation:UITableViewRowAnimationAutomatic];
-//	}
-//
-//	[self updateTextFieldsWithSourceTextField:_textFields[newSource.currencyCode]];
+	[self updateTextFieldsWithSourceTextField:_textFields[chartViewController.originalSourceCode]];
 }
 
 #pragma mark --- Share
