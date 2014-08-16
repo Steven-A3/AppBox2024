@@ -26,8 +26,8 @@
 #import "NSDate+formatting.h"
 #import "A3InstructionViewController.h"
 #import "DaysCounterEvent+extension.h"
-#import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
+#import "DaysCounterCalendar.h"
 
 #define ActionTag_DeleteCalendar 100
 
@@ -408,7 +408,6 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 - (IBAction)addCalendarAction:(id)sender {
     A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] init];
     viewCtrl.isEditMode = NO;
-    viewCtrl.calendarItem = nil;
     viewCtrl.sharedManager = _sharedManager;
     
     if ( IS_IPHONE ) {
@@ -455,7 +454,6 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
         return [_searchResultArray count];
     }
     
-//    return [_itemArray count];
     NSInteger numberOfPage = (tableView.frame.size.height - _headerView.frame.size.height - _bottomToolbar.frame.size.height) / 84.0;
     
     if (_itemArray && [_itemArray count] > numberOfPage) {
@@ -579,7 +577,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *calendarItem;
+    DaysCounterCalendar *calendarItem;
     if (tableView == self.tableView && (indexPath.row >= [_itemArray count])) {
         calendarItem = nil;
     }
@@ -605,7 +603,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
         return cell;
     }
     
-    NSInteger cellType = [calendarItem[CalendarItem_Type] integerValue];
+    NSInteger cellType = [calendarItem.type integerValue];
     NSString *CellIdentifier = (cellType == CalendarCellType_System) ? @"systemCalendarListCell" : @"userCalendarListCell";
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -626,12 +624,12 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     UILabel *countLabel = (UILabel*)[cell viewWithTag:11];
-	NSUInteger colorIndex = [calendarItem[CalendarItem_ColorID] unsignedIntegerValue];
+	NSUInteger colorIndex = [calendarItem.colorID unsignedIntegerValue];
     textLabel.textColor = [_sharedManager calendarColorArray][colorIndex][CalendarItem_Color];
     countLabel.textColor = [_sharedManager calendarColorArray][colorIndex][CalendarItem_Color];
-    textLabel.text = calendarItem[CalendarItem_Name];
+    textLabel.text = calendarItem.name;
 
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", calendarItem[CalendarItem_ID]];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", calendarItem.uniqueID];
 	long eventCount = [DaysCounterEvent MR_countOfEntitiesWithPredicate:predicate];
     switch (cellType) {
         case CalendarCellType_User:
@@ -702,15 +700,15 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
             
         case CalendarCellType_System:
         {
-			textLabel.text = [_sharedManager localizedSystemCalendarNameForCalendarID:calendarItem[CalendarItem_ID]];
+			textLabel.text = [_sharedManager localizedSystemCalendarNameForCalendarID:calendarItem.uniqueID];
             NSInteger numberOfEvents = 0;
-            if ( [calendarItem[CalendarItem_ID] isEqualToString:SystemCalendarID_All] ) {
+            if ( [calendarItem.uniqueID isEqualToString:SystemCalendarID_All] ) {
                 numberOfEvents = [_sharedManager numberOfAllEvents];
             }
-            else if ( [calendarItem[CalendarItem_ID] isEqualToString:SystemCalendarID_Upcoming]) {
+            else if ( [calendarItem.uniqueID isEqualToString:SystemCalendarID_Upcoming]) {
                 numberOfEvents = [_sharedManager numberOfUpcomingEventsWithDate:[NSDate date] withHiddenCalendar:NO];
             }
-            else if ( [calendarItem[CalendarItem_ID] isEqualToString:SystemCalendarID_Past] ) {
+            else if ( [calendarItem.uniqueID isEqualToString:SystemCalendarID_Past] ) {
                 numberOfEvents = [_sharedManager numberOfPastEventsWithDate:[NSDate date] withHiddenCalendar:NO];
             }
             
@@ -727,10 +725,8 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     return cell;
 }
 
-
-
-
 #pragma mark - Table view delegate
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 84.0;
@@ -742,7 +738,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
         return;
     }
     
-    NSDictionary *item = [(tableView == self.tableView ?_itemArray : _searchResultArray) objectAtIndex:indexPath.row];
+    DaysCounterCalendar *item = [(tableView == self.tableView ?_itemArray : _searchResultArray) objectAtIndex:indexPath.row];
     A3DaysCounterEventListViewController *viewCtrl = [[A3DaysCounterEventListViewController alloc] initWithNibName:@"A3DaysCounterEventListViewController" bundle:nil];
     viewCtrl.calendarItem = item;
     viewCtrl.sharedManager = _sharedManager;
@@ -769,16 +765,16 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
         return NO;
     }
     
-    NSDictionary *item = [_itemArray objectAtIndex:indexPath.row];
-    if (!item) {
+    DaysCounterCalendar *calendar = [_itemArray objectAtIndex:indexPath.row];
+    if (!calendar) {
         return NO;
     }
     
-    if (!item[CalendarItem_Type] || [item[CalendarItem_Type] isKindOfClass:[NSNull class]]) {
+    if (!calendar.type || [calendar.type isKindOfClass:[NSNull class]]) {
         return NO;
     }
 
-    return ([item[CalendarItem_Type] integerValue] == CalendarCellType_User);
+    return ([calendar.type integerValue] == CalendarCellType_User);
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -810,13 +806,14 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 //            [CATransaction commit];
             return;
         }
-        
-        NSDictionary *item = [_itemArray objectAtIndex:_selectedRowIndex];
-        if ( [item[CalendarItem_Type] integerValue] == CalendarCellType_System ) {
+
+		DaysCounterCalendar *calendar = _itemArray[_selectedRowIndex];
+        if ( [calendar.type integerValue] == CalendarCellType_System ) {
             return;
         }
-        
-		[_sharedManager removeCalendarItemWithID:item[CalendarItem_ID]];
+
+		[_sharedManager removeCalendar:calendar];
+
         self.itemArray = [_sharedManager visibleCalendarList];
         [self setupHeaderInfo];
         [self.tableView reloadData];

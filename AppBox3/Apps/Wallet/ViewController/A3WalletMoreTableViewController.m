@@ -26,6 +26,8 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
+#import "WalletCategory.h"
+#import "NSMutableArray+A3Sort.h"
 
 NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 
@@ -34,6 +36,8 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 @property (nonatomic, strong) NSMutableArray *categories;
 @property (nonatomic, strong) NSArray *sections;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (nonatomic, strong) NSManagedObjectContext *savingContext;
+
 @end
 
 @implementation A3WalletMoreTableViewController {
@@ -231,12 +235,19 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 
 #pragma mark - Prepare Data
 
+- (NSManagedObjectContext *)savingContext {
+	if (!_savingContext) {
+		_savingContext = [NSManagedObjectContext MR_newContext];
+	}
+	return _savingContext;
+}
+
 - (NSMutableArray *)categories {
 	if (nil == _categories) {
 		if (_isEditing) {
-			_categories = [[WalletData walletCategoriesFilterDoNotShow:NO] mutableCopy];
+			_categories = [[WalletData walletCategoriesFilterDoNotShow:NO inContext:self.savingContext ] mutableCopy];
 		} else {
-			_categories = [[WalletData walletCategoriesFilterDoNotShow:YES] mutableCopy];
+			_categories = [[WalletData walletCategoriesFilterDoNotShow:YES inContext:self.savingContext ] mutableCopy];
 		}
 	}
 	return _categories;
@@ -256,7 +267,7 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 		if (self.isEditing) {
 			NSMutableArray *section0 = [NSMutableArray new];
 			for (; idx < numberOfItemsOnTapBar; idx++) {
-				[section0 addObject:[self.categories[idx] mutableCopy]];
+				[section0 addObject:self.categories[idx]];
 			}
 			[sections addObject:section0];
 		} else {
@@ -265,27 +276,13 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 
 		NSMutableArray *section1 = [NSMutableArray new];
 		for (; idx < [self.categories count]; idx++) {
-			[section1 addObject:[self.categories[idx] mutableCopy]];
+			[section1 addObject:self.categories[idx]];
 		}
 		[sections addObject:section1];
 		_sections = sections;
 	}
 
 	return _sections;
-}
-
-- (void)saveCategories {
-	NSMutableArray *modifiedArray = [NSMutableArray arrayWithArray:_sections[0]];
-	[modifiedArray addObjectsFromArray:_sections[1]];
-	[[A3SyncManager sharedSyncManager] saveDataObject:modifiedArray forFilename:A3WalletDataEntityCategoryInfo state:A3DataObjectStateModified];
-}
-
-- (void)addReorderTransaction {
-	NSMutableArray *newOrder = [NSMutableArray arrayWithArray:[_sections[0] valueForKeyPath:W_ID_KEY]];
-	[newOrder addObjectsFromArray:[_sections[1] valueForKeyPath:W_ID_KEY]];
-	[[A3SyncManager sharedSyncManager] addTransaction:A3WalletDataEntityCategoryInfo
-												 type:A3DictionaryDBTransactionTypeReorder
-											   object:newOrder];
 }
 
 - (void)didReceiveCategoryAddedNotification:(NSNotification *)notification
@@ -322,11 +319,11 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 {
 	A3WalletMoreTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:A3WalletMoreTableViewCellIdentifier forIndexPath:indexPath];
 
-	NSDictionary *walletCategory = self.sections[indexPath.section][indexPath.row];
-	cell.cellImageView.image = [[UIImage imageNamed:walletCategory[W_ICON_KEY]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+	WalletCategory *walletCategory = self.sections[indexPath.section][indexPath.row];
+	cell.cellImageView.image = [[UIImage imageNamed:walletCategory.icon] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 	cell.cellImageView.tintColor = [UIColor colorWithRed:146.0/255.0 green:146.0/255.0 blue:146.0/255.0 alpha:1.0];
 	[cell.cellImageView sizeToFit];
-	cell.cellTitleLabel.text = NSLocalizedStringFromTable(walletCategory[W_NAME_KEY], @"WalletPreset", nil);
+	cell.cellTitleLabel.text = NSLocalizedStringFromTable(walletCategory.name, @"WalletPreset", nil);
 	cell.separatorInset = A3UITableViewSeparatorInset;
 	[cell setShowCheckImageView:indexPath.section == 1];
 	if (_isEditing) {
@@ -336,16 +333,16 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 	}
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-	[cell setShowCheckMark:![walletCategory[W_DoNotShow_KEY] boolValue]];
+	[cell setShowCheckMark:![walletCategory.doNotShow boolValue]];
 
-    if ([walletCategory[W_ID_KEY] isEqualToString:A3WalletUUIDAllCategory]) {
+    if ([walletCategory.uniqueID isEqualToString:A3WalletUUIDAllCategory]) {
         cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([WalletItem MR_countOfEntities])];
     }
-    else if ([walletCategory[W_ID_KEY] isEqualToString:A3WalletUUIDFavoriteCategory]) {
+    else if ([walletCategory.uniqueID isEqualToString:A3WalletUUIDFavoriteCategory]) {
         cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([WalletFavorite MR_countOfEntities])];
     }
     else {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", walletCategory[W_ID_KEY]];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", walletCategory.uniqueID];
         cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([WalletItem MR_countOfEntitiesWithPredicate:predicate])];
     }
     
@@ -372,48 +369,47 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 	FNLOG(@"%ld - %ld, %ld - %ld", (long)fromIndexPath.section, (long)fromIndexPath.row, (long)toIndexPath.section, (long)toIndexPath.row);
 	if (fromIndexPath.section == toIndexPath.section) {
 		NSMutableArray *section = self.sections[fromIndexPath.section];
-		id movingObject = section[fromIndexPath.row];
-		[section removeObjectAtIndex:fromIndexPath.row];
-		[section insertObject:movingObject atIndex:toIndexPath.row];
+		[section moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
-		[self saveCategories];
-		[self addReorderTransaction];
+		[self.savingContext MR_saveToPersistentStoreAndWait];
 	} else {
 		NSMutableArray *fromSection = self.sections[fromIndexPath.section];
-		id movingObject = fromSection[fromIndexPath.row];
+		WalletCategory *movingObject = fromSection[fromIndexPath.row];
 		[fromSection removeObjectAtIndex:fromIndexPath.row];
 		NSMutableArray *toSection = self.sections[toIndexPath.section];
 		[toSection insertObject:movingObject atIndex:toIndexPath.row];
 
-		if (fromIndexPath.section == 0) {
-			NSMutableDictionary *category = [movingObject mutableCopy];
-			category[W_DoNotShow_KEY] = @NO;
-			toSection[toIndexPath.row] = category;
+		if (fromIndexPath.section == 1) {
+			movingObject.doNotShow = @NO;
 		}
 
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[self.tableView reloadRowsAtIndexPaths:@[toIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 
-			id movingObject;
+			NSInteger from, to;
+			if (fromIndexPath.section == 0) {
+				from = fromIndexPath.row;
+				to = [self.sections[0] count] + toIndexPath.row - 1;
+			} else {
+				from = [self.sections[0] count] + fromIndexPath.row - 1;
+				to = toIndexPath.row;
+			}
+			[self.categories moveItemInSortedArrayFromIndex:from toIndex:to];
+			[self.savingContext MR_saveToPersistentStoreAndWait];
+
+			self.sections = nil;
+			[self sections];
+
 			NSIndexPath *adjustedIndexPath;
 			if (fromIndexPath.section == 0) {
-				movingObject = toSection[0];
-				[toSection removeObjectAtIndex:0];
-				[fromSection addObject:movingObject];
 				adjustedIndexPath = [NSIndexPath indexPathForRow:[fromSection count] - 1 inSection:0];
 				[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] toIndexPath:adjustedIndexPath];
 			} else {
 				NSUInteger movingRow = [toSection count] - 1;
-				movingObject = toSection[movingRow];
-				[toSection removeObjectAtIndex:movingRow];
-				[fromSection insertObject:movingObject atIndex:0];
 				adjustedIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
 				[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:movingRow inSection:0] toIndexPath:adjustedIndexPath];
 			}
 			[self.tableView reloadRowsAtIndexPaths:@[adjustedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-
-			[self saveCategories];
-			[self addReorderTransaction];
 		});
 	}
 }
@@ -427,33 +423,29 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (_isEditing) {
-		NSMutableDictionary *walletCategory = self.sections[indexPath.section][indexPath.row];
-		walletCategory[W_DoNotShow_KEY] = @(![walletCategory[W_DoNotShow_KEY] boolValue]);
+		WalletCategory *walletCategory = self.sections[indexPath.section][indexPath.row];
+		walletCategory.doNotShow = @(![walletCategory.doNotShow boolValue]);
 		A3WalletMoreTableViewCell *cell = (A3WalletMoreTableViewCell *) [self.tableView cellForRowAtIndexPath:indexPath];
-		[cell setShowCheckMark:![walletCategory[W_DoNotShow_KEY] boolValue]];
+		[cell setShowCheckMark:![walletCategory.doNotShow boolValue]];
 
 		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-		[self saveCategories];
-		[[A3SyncManager sharedSyncManager] addTransaction:A3WalletDataEntityCategoryInfo
-													 type:A3DictionaryDBTransactionTypeUpdate
-												   object:walletCategory];
-
+		[self.savingContext MR_saveToPersistentStoreAndWait];
 		return;
 	}
 
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-	NSDictionary *category = self.sections[indexPath.section][indexPath.row];
+	WalletCategory *category = self.sections[indexPath.section][indexPath.row];
 
 	UIViewController *viewController;
-	if ([category[W_ID_KEY] isEqualToString:A3WalletUUIDAllCategory]) {
+	if ([category.uniqueID isEqualToString:A3WalletUUIDAllCategory]) {
 		A3WalletAllViewController *vc = [[A3WalletAllViewController alloc] initWithNibName:nil bundle:nil];
 		vc.isFromMoreTableViewController = YES;
 		vc.category = category;
 		viewController = vc;
 	}
-	else if ([category[W_ID_KEY] isEqualToString:A3WalletUUIDFavoriteCategory]) {
+	else if ([category.uniqueID isEqualToString:A3WalletUUIDFavoriteCategory]) {
 		A3WalletFavoritesViewController *vc = [[A3WalletFavoritesViewController alloc] init];
 		vc.isFromMoreTableViewController = YES;
 		vc.category = category;

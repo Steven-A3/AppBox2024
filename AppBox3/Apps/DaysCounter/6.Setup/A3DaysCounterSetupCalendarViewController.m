@@ -13,10 +13,11 @@
 #import "DaysCounterEvent.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3DaysCounterDefine.h"
+#import "DaysCounterCalendar.h"
 
 @interface A3DaysCounterSetupCalendarViewController ()
-@property (strong, nonatomic) NSArray *itemArray;
-@property (strong, nonatomic) NSDictionary *originalValue;
+@property (strong, nonatomic) NSArray *calendarArray;
+@property (strong, nonatomic) DaysCounterCalendar *originalValue;
 
 - (void)cancelAction:(id)sender;
 @end
@@ -46,7 +47,7 @@
     self.title = NSLocalizedString(@"Calendar", @"Calendar");
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     
-    self.itemArray = [_sharedManager allUserCalendarList];
+    self.calendarArray = [_sharedManager allUserCalendarList];
 }
 
 - (void)didReceiveMemoryWarning
@@ -71,7 +72,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_itemArray count];
+    return [_calendarArray count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -93,17 +94,17 @@
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:10];
     UILabel *textLabel = (UILabel*)[cell viewWithTag:11];
     
-    NSDictionary *item = [_itemArray objectAtIndex:indexPath.row];
-    textLabel.text = item[CalendarItem_Name];
-    if ([item[CalendarItem_IsShow] boolValue]) {
+    DaysCounterCalendar *calendar = [_calendarArray objectAtIndex:indexPath.row];
+    textLabel.text = calendar.name;
+    if ([calendar.isShow boolValue]) {
         textLabel.textColor = [UIColor blackColor];
     }
     else {
         textLabel.textColor = [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
     }
     
-    imageView.tintColor = [_sharedManager colorForCalendar:item];
-    cell.accessoryType = [item[CalendarItem_ID] isEqualToString:_eventModel.calendarID] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    imageView.tintColor = [_sharedManager colorForCalendar:calendar];
+    cell.accessoryType = [calendar.uniqueID isEqualToString:_eventModel.calendarID] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     
     return cell;
 }
@@ -112,8 +113,8 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *calendar = [_itemArray objectAtIndex:indexPath.row];
-    _eventModel.calendarID = calendar[CalendarItem_ID];
+    DaysCounterCalendar *calendar = [_calendarArray objectAtIndex:indexPath.row];
+    _eventModel.calendarID = calendar.uniqueID;
     
     [tableView reloadData];
     [self doneButtonAction:nil];
@@ -126,7 +127,7 @@
 #pragma mark - action method
 - (void)cancelAction:(id)sender
 {
-    _eventModel.calendarID = self.originalValue[CalendarItem_ID];
+    _eventModel.calendarID = self.originalValue.uniqueID;
 
     if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];

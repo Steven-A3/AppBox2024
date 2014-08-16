@@ -27,6 +27,7 @@
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "DaysCounterCalendar.h"
 
 @interface A3DaysCounterEventDetailViewController () <UIAlertViewDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate, UIActivityItemSource, A3DaysCounterAddEventViewControllerDelegate>
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -284,9 +285,9 @@
             UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
             UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
             
-            NSDictionary *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
+            DaysCounterCalendar *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
             if ( calendar ) {
-                nameLabel.text = calendar[CalendarItem_Name];
+                nameLabel.text = calendar.name;
                 colorImageView.tintColor = [_sharedManager colorForCalendar:calendar];
 			}
             else {

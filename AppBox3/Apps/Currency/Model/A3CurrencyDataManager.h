@@ -16,7 +16,7 @@ extern NSString *const A3KeyCurrencyCode;
 @interface A3CurrencyDataManager : NSObject
 
 + (void)setupFavorites;
-+ (void)saveFavorites:(NSArray *)favorites;
+
 + (void)updateCurrencyRatesInContext:(NSManagedObjectContext *)context;
 
 - (NSString *)localizedNameForCode:(NSString *)currencyCode;

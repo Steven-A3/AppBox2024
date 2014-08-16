@@ -33,6 +33,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "NSString+conversion.h"
+#import "DaysCounterCalendar.h"
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
@@ -133,10 +134,8 @@
 			_eventItem.calendarID = self.calendarID;
         }
         else {
-			NSDictionary *anniversaryCalendar = [_sharedManager allUserVisibleCalendarList][0];
-            NSAssert(anniversaryCalendar, @"anniversaryCalendar");
-            
-			_eventItem.calendarID = anniversaryCalendar[CalendarItem_ID];
+			DaysCounterCalendar *firstVisibleUserCalendar = [_sharedManager allUserVisibleCalendarList][0];
+			_eventItem.calendarID = firstVisibleUserCalendar.uniqueID;
         }
     }
 
@@ -907,9 +906,9 @@
     UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
     UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
     
-	NSDictionary *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
+	DaysCounterCalendar *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
     if (calendar) {
-        nameLabel.text = calendar[CalendarItem_Name];
+        nameLabel.text = calendar.name;
         colorImageView.tintColor = [_sharedManager colorForCalendar:calendar];
     }
     else {
@@ -1270,9 +1269,9 @@
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:calendarIndexPath];
         UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
         UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
-        NSDictionary *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
+        DaysCounterCalendar *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
         if (calendar) {
-            nameLabel.text = calendar[CalendarItem_Name];
+            nameLabel.text = calendar.name;
             colorImageView.tintColor = [_sharedManager colorForCalendar:calendar];
 		}
         else {

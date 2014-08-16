@@ -16,12 +16,14 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "DaysCounterEvent.h"
 #import "A3SyncManager.h"
+#import "DaysCounterCalendar.h"
+#import "NSMutableArray+A3Sort.h"
 
 @interface A3DaysCounterEditCalendarListViewController ()
 @property (strong, nonatomic) NSMutableArray *calendarArray;
 @property (strong, nonatomic) UINavigationController *modalVC;
+@property (strong, nonatomic) NSManagedObjectContext *savingContext;
 
-- (void)checkAction:(id)sender;
 @end
 
 @implementation A3DaysCounterEditCalendarListViewController
@@ -57,7 +59,8 @@
     [super viewWillAppear:animated];
     self.modalVC = nil;
 
-	self.calendarArray = [A3DaysCounterModelManager calendars];
+	NSArray *calendars = [DaysCounterCalendar MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES inContext:self.savingContext];
+	self.calendarArray = [NSMutableArray arrayWithArray:calendars];
     
     [self.tableView reloadData];
     [self.tableView setEditing:YES];
@@ -66,6 +69,13 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (NSManagedObjectContext *)savingContext {
+	if (!_savingContext) {
+		_savingContext = [NSManagedObjectContext MR_newContext];
+	}
+	return _savingContext;
 }
 
 #pragma mark - Table view data source
@@ -101,10 +111,10 @@
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:11];
     UILabel *textLabel = (UILabel*)[cell viewWithTag:12];
     UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:13];
-    NSDictionary *item = [_calendarArray objectAtIndex:indexPath.row];
-    NSInteger cellType = [item[CalendarItem_Type] integerValue];
-    
-    if ( cellType == CalendarCellType_System ) {
+    DaysCounterCalendar *calendar = [_calendarArray objectAtIndex:indexPath.row];
+    NSInteger cellType = [calendar.type integerValue];
+
+	if ( cellType == CalendarCellType_System ) {
         imageView.hidden = YES;
         cell.editingAccessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         cell.editingAccessoryType = UITableViewCellAccessoryNone;
@@ -117,26 +127,26 @@
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
 
-    imageView.tintColor = [_sharedManager colorForCalendar:item];
-    textLabel.text = item[CalendarItem_Name];
-    checkButton.selected = [item[CalendarItem_IsShow] boolValue];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", item[CalendarItem_ID]];
+    imageView.tintColor = [_sharedManager colorForCalendar:calendar];
+    textLabel.text = calendar.name;
+    checkButton.selected = [calendar.isShow boolValue];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", calendar.uniqueID];
 	long eventCounts = [DaysCounterEvent MR_countOfEntitiesWithPredicate:predicate];
     detailTextLabel.text = [NSString stringWithFormat:@"%ld", eventCounts];
     
     textLabel.font = [UIFont systemFontOfSize:17];
     
-    if ( [item[CalendarItem_Type] integerValue] == CalendarCellType_System ) {
+    if ( [calendar.type integerValue] == CalendarCellType_System ) {
         NSInteger numberOfEvents = 0;
-        if ( [item[CalendarItem_ID] isEqualToString:SystemCalendarID_All] ) {
+        if ( [calendar.uniqueID isEqualToString:SystemCalendarID_All] ) {
             numberOfEvents = [_sharedManager numberOfAllEventsToIncludeHiddenCalendar];
 			textLabel.text = NSLocalizedString(@"DaysCounter_ALL", nil);
 		}
-        else if ( [item[CalendarItem_ID] isEqualToString:SystemCalendarID_Upcoming]) {
+        else if ( [calendar.uniqueID isEqualToString:SystemCalendarID_Upcoming]) {
             numberOfEvents = [_sharedManager numberOfUpcomingEventsWithDate:[NSDate date] withHiddenCalendar:YES];
 			textLabel.text = NSLocalizedString(@"List_Upcoming", nil);
 		}
-        else if ( [item[CalendarItem_ID] isEqualToString:SystemCalendarID_Past] ) {
+        else if ( [calendar.uniqueID isEqualToString:SystemCalendarID_Past] ) {
             numberOfEvents = [_sharedManager numberOfPastEventsWithDate:[NSDate date] withHiddenCalendar:YES];
 			textLabel.text = NSLocalizedString(@"List_Past", nil);
 		}
@@ -158,17 +168,11 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    NSDictionary *item = [_calendarArray objectAtIndex:fromIndexPath.row];
-    [_calendarArray removeObjectAtIndex:fromIndexPath.row];
-    [_calendarArray insertObject:item atIndex:toIndexPath.row];
+	[_calendarArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+	[self.savingContext MR_saveToPersistentStoreAndWait];
 
     [tableView reloadData];
 
-	[_sharedManager saveCalendars:_calendarArray];
-	NSArray *newOrder = [_calendarArray valueForKeyPath:ID_KEY];
-	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterDataEntityCalendars
-												 type:A3DictionaryDBTransactionTypeReorder
-											   object:newOrder];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
@@ -186,17 +190,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSMutableDictionary *item = [[_calendarArray objectAtIndex:indexPath.row] mutableCopy];
-    BOOL checkState = [item[CalendarItem_IsShow] boolValue];
-    item[CalendarItem_IsShow] = @(!checkState);
-    [_calendarArray replaceObjectAtIndex:indexPath.row withObject:item];
+    DaysCounterCalendar *calendar = [_calendarArray objectAtIndex:indexPath.row];
+    BOOL checkState = [calendar.isShow boolValue];
+    calendar.isShow = @(!checkState);
+	[self.savingContext MR_saveToPersistentStoreAndWait];
 
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-
-	[_sharedManager saveCalendars:_calendarArray];
-	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterDataEntityCalendars
-												 type:A3DictionaryDBTransactionTypeUpdate
-											   object:_calendarArray[indexPath.row]];
 }
  
 #pragma mark - action method
@@ -231,23 +230,18 @@
     if ( indexPath == nil )
         return;
     
-    NSMutableDictionary *item = [[_calendarArray objectAtIndex:indexPath.row] mutableCopy];
-    BOOL checkState = [item[CalendarItem_IsShow] boolValue];
-    item[CalendarItem_IsShow] = @(!checkState);
-    [_calendarArray replaceObjectAtIndex:indexPath.row withObject:item];
-	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    DaysCounterCalendar *calendar = [_calendarArray objectAtIndex:indexPath.row];
+    BOOL checkState = [calendar.isShow boolValue];
+    calendar.isShow = @(!checkState);
+	[self.savingContext MR_saveToPersistentStoreAndWait];
 
-	[_sharedManager saveCalendars:_calendarArray];
-	[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterDataEntityCalendars
-												 type:A3DictionaryDBTransactionTypeUpdate
-											   object:_calendarArray[indexPath.row]];
+	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)addCalendarAction:(id)sender
 {
     A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] init];
     viewCtrl.isEditMode = NO;
-    viewCtrl.calendarItem = nil;
     viewCtrl.sharedManager = _sharedManager;
     
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
@@ -273,13 +267,13 @@
     if ( indexPath == nil )
         return;
 
-    NSDictionary *item = [_calendarArray objectAtIndex:indexPath.row];
-    if ( [item[CalendarItem_Type] integerValue] == CalendarCellType_System )
+	DaysCounterCalendar *calendar = _calendarArray[indexPath.row];
+    if ( [calendar.type integerValue] == CalendarCellType_System )
         return;
     
     A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] init];
     viewCtrl.isEditMode = YES;
-    viewCtrl.calendarItem = [item mutableCopy];
+	viewCtrl.calendar = [calendar MR_inContext:viewCtrl.savingContext];
     viewCtrl.sharedManager = _sharedManager;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;

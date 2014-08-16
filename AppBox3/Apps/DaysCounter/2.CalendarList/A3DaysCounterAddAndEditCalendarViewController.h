@@ -6,14 +6,15 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 
 @class A3DaysCounterModelManager;
+@class DaysCounterCalendar;
 
 @interface A3DaysCounterAddAndEditCalendarViewController : UITableViewController <UITextFieldDelegate, UIActionSheetDelegate>
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
-@property (strong, nonatomic) NSMutableDictionary *calendarItem;
+@property (strong, nonatomic) DaysCounterCalendar *calendar;
 @property (assign, nonatomic) BOOL isEditMode;
+@property (strong, nonatomic) NSManagedObjectContext *savingContext;
 
 - (IBAction)deleteCalendarAction:(id)sender;
 

@@ -6,11 +6,12 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "A3WalletCategoryEditViewController.h"
+
+@class WalletCategory;
 
 @interface A3WalletCategoryInfoViewController : UITableViewController <WalletCategoryEditDelegate>
 
-@property (nonatomic, strong) NSDictionary *category;
+@property (nonatomic, strong) WalletCategory *category;
 
 @end

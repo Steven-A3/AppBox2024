@@ -125,7 +125,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 #pragma mark - Data Handler
 
 - (NSDictionary *)recentlyUsedMenuItems {
-	NSDictionary *result = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3MainMenuDataEntityRecentlyUsed];
+	NSDictionary *result = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuDataEntityRecentlyUsed];
 	if ([result isEqual:[NSNull null]]) return nil;
 	return result;
 }
@@ -446,22 +446,15 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		if (indexPath.row == 0) {
 			NSMutableDictionary *favoriteDictionary = [[[A3AppDelegate instance] favoriteMenuDictionary] mutableCopy];
 			favoriteDictionary[kA3AppsMenuCollapsed] = @(element.isCollapsed);
-			[[A3SyncManager sharedSyncManager] saveDataObject:favoriteDictionary
-												  forFilename:A3MainMenuDataEntityFavorites
-														state:A3DataObjectStateModified];
-			[[A3SyncManager sharedSyncManager] addTransaction:A3MainMenuDataEntityFavorites
-														 type:A3DictionaryDBTransactionTypeSetBaseline
-													   object:favoriteDictionary];
-
+			[[A3SyncManager sharedSyncManager] setObject:favoriteDictionary
+												  forKey:A3MainMenuDataEntityFavorites
+												   state:A3DataObjectStateModified];
 		} else {
-			NSMutableDictionary *recentDictionary = [[[A3SyncManager sharedSyncManager] dataObjectForFilename:A3MainMenuDataEntityRecentlyUsed] mutableCopy];
+			NSMutableDictionary *recentDictionary = [[[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuDataEntityRecentlyUsed] mutableCopy];
 			recentDictionary[kA3AppsMenuCollapsed] = @(element.isCollapsed);
-			[[A3SyncManager sharedSyncManager] saveDataObject:recentDictionary
-												  forFilename:A3MainMenuDataEntityRecentlyUsed
-														state:A3DataObjectStateModified];
-			[[A3SyncManager sharedSyncManager] addTransaction:A3MainMenuDataEntityRecentlyUsed
-														 type:A3DictionaryDBTransactionTypeSetBaseline
-													   object:recentDictionary];
+			[[A3SyncManager sharedSyncManager] setObject:recentDictionary
+												  forKey:A3MainMenuDataEntityRecentlyUsed
+												   state:A3DataObjectStateModified];
 		}
 	} else if (indexPath.section == 1) {
 		NSMutableArray *allMenus = [[[A3AppDelegate instance] allMenuArrayFromStoredDataFile]	mutableCopy];
@@ -472,10 +465,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			NSMutableDictionary *expandableMenuDictionary = [allMenus[idx] mutableCopy];
 			expandableMenuDictionary[kA3AppsMenuCollapsed] = @(element.isCollapsed);
 			[allMenus replaceObjectAtIndex:idx withObject:expandableMenuDictionary];
-			[[A3SyncManager sharedSyncManager] saveDataObject:allMenus forFilename:A3MainMenuDataEntityAllMenu state:A3DataObjectStateModified];
-			[[A3SyncManager sharedSyncManager] addTransaction:A3MainMenuDataEntityAllMenu
-														 type:A3DictionaryDBTransactionTypeSetBaseline
-													   object:allMenus];
+			[[A3SyncManager sharedSyncManager] setObject:allMenus forKey:A3MainMenuDataEntityAllMenu state:A3DataObjectStateModified];
 		}
 	}
 }
@@ -484,7 +474,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	if (![element isKindOfClass:[A3TableViewMenuElement class]] || element.doNotKeepAsRecent) {
 		return;
 	}
-	NSMutableDictionary *recentlyUsed = [[[A3SyncManager sharedSyncManager] dataObjectForFilename:A3MainMenuDataEntityRecentlyUsed] mutableCopy];
+	NSMutableDictionary *recentlyUsed = [[[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuDataEntityRecentlyUsed] mutableCopy];
 	if (!recentlyUsed) {
 		recentlyUsed = [NSMutableDictionary new];
 		recentlyUsed[kA3AppsMenuName] = @"Recent";
@@ -524,12 +514,9 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		}
 	}
 
-	[[A3SyncManager sharedSyncManager] saveDataObject:recentlyUsed
-										  forFilename:A3MainMenuDataEntityRecentlyUsed
-												state:A3DataObjectStateModified];
-	[[A3SyncManager sharedSyncManager] addTransaction:A3MainMenuDataEntityRecentlyUsed
-												 type:A3DictionaryDBTransactionTypeSetBaseline
-											   object:recentlyUsed];
+	[[A3SyncManager sharedSyncManager] setObject:recentlyUsed
+										  forKey:A3MainMenuDataEntityRecentlyUsed
+										   state:A3DataObjectStateModified];
 
 	[self setupData];
 	[self.tableView reloadData];

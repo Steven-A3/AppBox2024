@@ -9,19 +9,20 @@
 #import "WalletData.h"
 #import "WalletFieldItem+initialize.h"
 #import "NSString+conversion.h"
-#import "A3UserDefaultsKeys.h"
-#import "A3SyncManager.h"
-#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "WalletCategory.h"
+#import "NSManagedObject+extension.h"
+#import "WalletField.h"
+#import "NSMutableArray+A3Sort.h"
 #import <AVFoundation/AVFoundation.h>
 
-NSString *const W_DoNotShow_KEY				= @"doNotShow";
-NSString *const W_SYSTEM_KEY				= @"SYSTEM";
-NSString *const W_NAME_KEY					= @"name";
-NSString *const W_ICON_KEY					= @"icon";
-NSString *const W_ID_KEY					= @"uniqueID";
-NSString *const W_FIELDS_KEY				= @"Fields";
-NSString *const W_STYLE_KEY					= @"style";
-NSString *const W_TYPE_KEY					= @"type";
+NSString *const PRESET_DoNotShow_KEY		= @"doNotShow";
+NSString *const PRESET_SYSTEM_KEY			= @"SYSTEM";
+NSString *const PRESET_NAME_KEY				= @"name";
+NSString *const PRESET_ICON_KEY				= @"icon";
+NSString *const PRESET_ID_KEY				= @"uniqueID";
+NSString *const PRESET_FIELDS_KEY			= @"Fields";
+NSString *const PRESET_STYLE_KEY			= @"style";
+NSString *const PRESET_TYPE_KEY				= @"type";
 
 NSString *const WalletFieldTypeText			= @"Text";
 NSString *const WalletFieldTypeNumber		= @"Number";
@@ -141,76 +142,89 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 		[fileManager createDirectoryAtPath:videoThumbnailDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
 }
 
-+ (NSMutableArray *)localizedPresetCategories {
-	NSMutableArray *presetCategories = [[self categoryPresetData] mutableCopy];
-	NSMutableArray *newCategories = [NSMutableArray new];
++ (void)createLocalizedPresetCategoriesInContext:(NSManagedObjectContext *)context {
+	NSArray *presetCategories = [self categoryPresetData];
+	NSMutableArray *categories = [NSMutableArray new];
 	[presetCategories enumerateObjectsUsingBlock:^(NSDictionary *category, NSUInteger idx, BOOL *stop) {
-		NSMutableDictionary *newCategory = [category mutableCopy];
-		newCategory[W_NAME_KEY] = NSLocalizedStringFromTable(category[W_NAME_KEY], @"WalletPreset", nil);
+		WalletCategory *newCategory = [WalletCategory MR_createEntityInContext:context];
+		newCategory.uniqueID = category[PRESET_ID_KEY];
+		newCategory.name = NSLocalizedStringFromTable(category[PRESET_NAME_KEY], @"WalletPreset", nil);
+		newCategory.icon = category[PRESET_ICON_KEY];
+		newCategory.isSystem = @NO;
+		newCategory.doNotShow = @NO;
+		[categories addObject:newCategory];
 
-		NSMutableArray *newFields = [NSMutableArray new];
-		[category[W_FIELDS_KEY] enumerateObjectsUsingBlock:^(NSDictionary *field, NSUInteger idx, BOOL *stop) {
-			NSMutableDictionary *newField = [field mutableCopy];
-			newField[W_NAME_KEY] = NSLocalizedStringFromTable(field[W_NAME_KEY], @"WalletPreset", nil);
-			[newFields addObject:newField];
+		[category[PRESET_FIELDS_KEY] enumerateObjectsUsingBlock:^(NSDictionary *field, NSUInteger idx, BOOL *stop) {
+			WalletField *newField = [WalletField MR_createEntityInContext:context];
+			newField.uniqueID = field[PRESET_ID_KEY];
+			newField.categoryID = newCategory.uniqueID;
+			newField.name = NSLocalizedStringFromTable(field[PRESET_NAME_KEY], @"WalletPreset", nil);
+			newField.style = field[PRESET_STYLE_KEY];
+			newField.type = field[PRESET_TYPE_KEY];
+			[newField assignOrderAsLastInContext:context];
 		}];
-		newCategory[W_FIELDS_KEY] = newFields;
-
-		[newCategories addObject:newCategory];
 	}];
-	[newCategories sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-		return [NSLocalizedStringFromTable(obj1[W_NAME_KEY], @"WalletPreset", nil)
-				compare:NSLocalizedStringFromTable(obj2[W_NAME_KEY], @"WalletPreset", nil)];
-	}];
-	return newCategories;
-}
 
-+ (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow {
-	NSArray *object = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3WalletDataEntityCategoryInfo];
-	if (object) {
-		if (hideDoNotShow) {
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != YES", W_DoNotShow_KEY];
-			return [object filteredArrayUsingPredicate:predicate];
-		}
-		return object;
+	[categories sortUsingComparator:^NSComparisonResult(WalletCategory *obj1, WalletCategory *obj2) {
+		return [obj1.name compare:obj2.name];
+	}];
+	NSInteger order = 1000000;
+	for (WalletCategory *category in categories) {
+		category.order = [NSString orderStringWithOrder:order];
+		order += 1000000;
 	}
 
-	NSMutableArray *newCategories = [WalletData localizedPresetCategories];
-	[newCategories insertObject:@{
-			W_ID_KEY : A3WalletUUIDFavoriteCategory,
-			W_NAME_KEY : NSLocalizedString(@"Favorites", nil),
-			W_ICON_KEY : @"star01",
-			W_SYSTEM_KEY : W_SYSTEM_KEY
-	} atIndex:0];
+	return;
+}
 
-	[newCategories insertObject:@{
-			W_ID_KEY : A3WalletUUIDAllCategory,
-			W_NAME_KEY : NSLocalizedString(@"Wallet_All_Category", @"All"),
-			W_ICON_KEY : @"wallet_folder",
-			W_SYSTEM_KEY : W_SYSTEM_KEY
-	} atIndex:1];
++ (void)createSystemCategoryInContext:(NSManagedObjectContext *)context {
+	WalletCategory *allCategory = [WalletCategory MR_createEntityInContext:context];
+	allCategory.uniqueID = A3WalletUUIDAllCategory;
+	allCategory.name = NSLocalizedString(@"Wallet_All_Category", @"All");
+	allCategory.icon = @"wallet_folder";
+	allCategory.isSystem = @YES;
+	allCategory.doNotShow = @NO;
+	[allCategory assignOrderAsFirstInContext:context];
 
-	[[A3SyncManager sharedSyncManager] saveDataObject:newCategories forFilename:A3WalletDataEntityCategoryInfo state:A3DataObjectStateInitialized];
-	return newCategories;
+	WalletCategory *favoriteCategory = [WalletCategory MR_createEntityInContext:context];
+	favoriteCategory.uniqueID = A3WalletUUIDFavoriteCategory;
+	favoriteCategory.name = NSLocalizedString(@"Favorites", nil);
+	favoriteCategory.icon = @"star01";
+	favoriteCategory.isSystem = @YES;
+	favoriteCategory.doNotShow = @NO;
+	[favoriteCategory assignOrderAsFirstInContext:context];
+}
+
++ (void)initializeWalletCategories {
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_newContext];
+	[WalletData createLocalizedPresetCategoriesInContext:savingContext];
+	[WalletData createSystemCategoryInContext:savingContext];
+	[savingContext MR_saveToPersistentStoreAndWait];
+}
+
++ (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow inContext:(NSManagedObjectContext *)context {
+	NSManagedObjectContext *workingContext = context ? context : [NSManagedObjectContext MR_defaultContext];
+	if (hideDoNotShow) {
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != %@", @"doNotShow", @(hideDoNotShow)];
+		return [WalletCategory MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate inContext:workingContext];
+	} else {
+		return [WalletCategory MR_findAllSortedBy:@"order" ascending:YES inContext:workingContext];
+	}
 }
 
 + (NSUInteger)visibleCategoryCount {
-	NSArray *walletCategories = [WalletData walletCategoriesFilterDoNotShow:YES];
+	NSArray *walletCategories = [WalletData walletCategoriesFilterDoNotShow:YES inContext:nil ];
 	return [walletCategories count] - 2;
 }
 
-+ (NSDictionary *)firstEditableWalletCategory {
-	NSArray *walletCategories = [WalletData walletCategoriesFilterDoNotShow:YES];
-	NSUInteger idx = [walletCategories indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-		return obj[W_SYSTEM_KEY] == nil && obj[W_DoNotShow_KEY] == nil;
-	}];
-	return walletCategories[idx];
++ (WalletCategory *)firstEditableWalletCategory {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isSystem == NO AND doNotShow = NO"];
+	return [WalletCategory MR_findFirstWithPredicate:predicate];
 }
 
 + (NSArray *)categoriesExcludingSystemCategories {
-	NSArray *allCategories = [WalletData walletCategoriesFilterDoNotShow:YES];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == NULL", W_SYSTEM_KEY];
-	return [allCategories filteredArrayUsingPredicate:predicate];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isSystem == NO"];
+	return [WalletCategory MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:predicate];
 }
 
 + (NSArray *)iconList
@@ -246,37 +260,12 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
              @"wallet_wallet"];
 }
 
-+ (NSDictionary *)categoryItemWithID:(NSString *)categoryID {
-	NSArray *allCategories = [WalletData walletCategoriesFilterDoNotShow:NO];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", W_ID_KEY, categoryID];
-	NSArray *result = [allCategories filteredArrayUsingPredicate:predicate];
-	if ([result count] >= 1) {
-		return result[0];
-	}
-	return nil;
++ (WalletCategory *)categoryItemWithID:(NSString *)categoryID {
+	return [WalletCategory MR_findFirstByAttribute:@"uniqueID" withValue:categoryID];
 }
 
-+ (void)saveCategory:(NSDictionary *)category {
-	NSMutableArray *allCategories = [[WalletData walletCategoriesFilterDoNotShow:NO] mutableCopy];
-	NSUInteger idx = [allCategories indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-		return [obj[W_ID_KEY] isEqualToString:category[W_ID_KEY]];
-	}];
-	if (idx != NSNotFound) {
-		allCategories[idx] = category;
-	} else {
-		[allCategories addObject:category];
-	}
-	[[A3SyncManager sharedSyncManager] saveDataObject:allCategories forFilename:A3WalletDataEntityCategoryInfo state:A3DataObjectStateModified];
-}
-
-+ (NSDictionary *)fieldOfFieldItem:(WalletFieldItem *)fieldItem category:(NSDictionary *)category {
-	NSArray *fields = category[W_FIELDS_KEY];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", W_ID_KEY, fieldItem.fieldID];
-	NSArray *filtered = [fields filteredArrayUsingPredicate:predicate];
-	if ([filtered count]) {
-		return filtered[0];
-	}
-	return nil;
++ (WalletField *)fieldOfFieldItem:(WalletFieldItem *)fieldItem {
+	return [WalletField MR_findFirstByAttribute:@"uniqueID" withValue:fieldItem.fieldID];
 }
 
 @end

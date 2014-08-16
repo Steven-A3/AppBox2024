@@ -9,12 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @class WalletItem;
+@class WalletCategory;
 
 @interface A3WalletVideoItemViewController : UIViewController
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) WalletItem *item;
 @property (nonatomic, assign) BOOL alwaysReturnToOriginalCategory;
-@property (nonatomic, weak) NSDictionary *category;
+@property (nonatomic, weak) WalletCategory *category;
 
 @end

@@ -103,35 +103,6 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 	return nil;
 }
 
-- (id)dataObjectForFilename:(NSString *)key {
-	NSString *dataFilePath = [[self.fileManager applicationSupportPath] stringByAppendingPathComponent:key];
-	NSDictionary *dataStoreDictionary = [NSDictionary dictionaryWithContentsOfFile:dataFilePath];
-	if (dataStoreDictionary) {
-		id dataObject = dataStoreDictionary[A3KeyValueDBDataObject];
-		if ([dataObject isEqual:A3SyncManagerEmptyObject]) {
-			return nil;
-		}
-		return dataObject;
-	}
-	return nil;
-}
-
-- (void)saveDataObject:(id)object forFilename:(NSString *)key state:(A3DataObjectStateValue)state {
-	FNLOG(@"%@", key);
-	NSDictionary *dataStoreFormat = @{
-			A3KeyValueDBDataObject : object,
-			A3KeyValueDBState : @(state),
-			A3KeyValueDBUpdateDate : [NSDate date]
-	};
-	NSString *dataFilePath = [[self.fileManager applicationSupportPath] stringByAppendingPathComponent:key];
-	[dataStoreFormat writeToFile:dataFilePath atomically:YES];
-}
-
-- (void)removeDataObjectForKey:(NSString *)key {
-	NSString *dataFilePath = [[self.fileManager applicationSupportPath] stringByAppendingPathComponent:key];
-	[self.fileManager removeItemAtPath:dataFilePath error:NULL];
-}
-
 - (void)setObject:(id)object forKey:(NSString *)key state:(A3DataObjectStateValue)state {
 	FNLOG(@"%@", key);
 	NSDictionary *userDefaultsFormat = @{

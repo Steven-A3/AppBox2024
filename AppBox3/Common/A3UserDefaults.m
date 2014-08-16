@@ -106,6 +106,7 @@ NSString *const A3UserDefaultsChangedKey = @"A3UserDefaultsChangedKey";
 }
 
 - (void)setObject:(id)object forKey:(id)key {
+	if (!object) return;
 	[_defaultsDictionary setObject:object forKey:key];
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3UserDefaultsDidChangeNotification object:self userInfo:@{A3UserDefaultsChangedKey:key}];
 }

@@ -12,6 +12,7 @@
 #import "A3LadyCalendarDefine.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3DateHelper.h"
+#import "LadyCalendarAccount.h"
 #import "A3UserDefaultsKeys.h"
 #import "GCPlaceholderTextView.h"
 #import "NSString+conversion.h"
@@ -29,7 +30,6 @@
 @property (strong, nonatomic) NSMutableArray *itemArray;
 @property (copy, nonatomic) NSString *textBeforeEditingTextField;
 @property (nonatomic, strong) MBProgressHUD *alertHUD;
-@property (copy, nonatomic) NSString *originalName;
 
 @end
 
@@ -76,10 +76,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			}
 	]];
 	if ( !_isEditMode ) {
-		_accountItem = [NSMutableDictionary new];
-		_accountItem[L_ID_KEY] = [[NSUUID UUID] UUIDString];
-	} else {
-		self.originalName = _accountItem[L_NAME_KEY];
+		_accountItem = [LadyCalendarAccount MR_createEntityInContext:self.savingContext];
+		_accountItem.uniqueID = [[NSUUID UUID] UUIDString];
 	}
 
 	self.navigationItem.rightBarButtonItem.enabled = _isEditMode;
@@ -117,11 +115,6 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 }
 
 - (void)willDismissRightSideView {
-	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
-	if ([context hasChanges]) {
-		[context rollback];
-	}
-
 	[self dismissViewControllerAnimated:NO completion:nil];
 }
 
@@ -146,6 +139,13 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
 	[self.tableView reloadData];
+}
+
+- (NSManagedObjectContext *)savingContext {
+	if (!_savingContext) {
+		_savingContext = [NSManagedObjectContext MR_newContext];
+	}
+	return _savingContext;
 }
 
 - (void)reloadItemAtCellType:(NSInteger)cellType
@@ -187,7 +187,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	BOOL canDeleteThisAccount = [self.dataManager numberOfAccount] > 1;
 	if (canDeleteThisAccount) {
 		NSString *currentUserID = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID];
-		canDeleteThisAccount = ![_accountItem[L_ID_KEY] isEqualToString:currentUserID];
+		canDeleteThisAccount = ![_accountItem.uniqueID isEqualToString:currentUserID];
 	}
 
 	return (_isEditMode && canDeleteThisAccount ? 2 : 1);
@@ -246,7 +246,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			noteCell.keepShortInset = YES;
 			[noteCell setupTextView];
 			noteCell.textView.delegate = self;
-			noteCell.textView.text = _accountItem[L_NOTES_KEY];
+			noteCell.textView.text = _accountItem.notes;
 			cell = noteCell;
         }
         else if( cellType == AccountCell_Birthday){
@@ -273,11 +273,11 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     
     if( cellType == AccountCell_Name ){
         UITextField *textField = (UITextField *)[cell viewWithTag:10];
-        textField.text = _accountItem[L_NAME_KEY];
+        textField.text = _accountItem.name;
     }
     else if( cellType == AccountCell_Birthday ){
         cell.textLabel.text = [item objectForKey:ItemKey_Title];
-        NSDate *birthDay = _accountItem[L_BIRTHDAY_KEY];
+        NSDate *birthDay = _accountItem.birthday;
         if( birthDay ) {
             NSDateFormatter *formatter = [NSDateFormatter new];
             if ([NSDate isFullStyleLocale]) {
@@ -305,7 +305,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     else if( cellType == AccountCell_DateInput ){
         UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
         datePicker.datePickerMode = UIDatePickerModeDate;
-        datePicker.date = (_accountItem[L_BIRTHDAY_KEY] ? _accountItem[L_BIRTHDAY_KEY] : [NSDate date]);
+        datePicker.date = _accountItem.birthday ? _accountItem.birthday : [NSDate date];
     }
     
     return cell;
@@ -380,7 +380,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         cell.selected = NO;
         
-        if([[[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID] isEqualToString:_accountItem[L_ID_KEY]]){
+        if([[[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID] isEqualToString:_accountItem.uniqueID]){
 			[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"Cannot remove current account.", @"Cannot remove current account.") title:nil];
             return;
         }
@@ -421,11 +421,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
 	NSString *inputName = [text stringByTrimmingSpaceCharacters];
 
-	_accountItem[L_NAME_KEY] = inputName;
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", L_NAME_KEY, inputName];
-	NSArray *accounts = [self.dataManager accountList];
-	NSArray *filtered = [accounts filteredArrayUsingPredicate:predicate];
-	_sameNameExists = [filtered count] > 1;
+	_accountItem.name = inputName;
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"name", inputName];
+	_sameNameExists = [LadyCalendarAccount MR_countOfEntitiesWithPredicate:predicate] > 1;
 
 	if (_sameNameExists) {
 		[self.alertHUD show:YES];
@@ -441,7 +439,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	if (![textField.text length]) {
 		textField.text = _textBeforeEditingTextField;
 	}
-	_accountItem[L_NAME_KEY] = [textField.text stringByTrimmingSpaceCharacters];
+	_accountItem.name = [textField.text stringByTrimmingSpaceCharacters];
 }
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField {
@@ -487,14 +485,14 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-	_accountItem[L_NOTES_KEY] = [textView.text stringByTrimmingSpaceCharacters];
+	_accountItem.notes = [textView.text stringByTrimmingSpaceCharacters];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     NSString *str = [textView.text stringByReplacingCharactersInRange:range withString:text];
 
-	_accountItem[L_NOTES_KEY] = [str length] > 0 ? str : @"";
+	_accountItem.notes = [str length] > 0 ? str : @"";
     [self checkInputValues];
     
     return YES;
@@ -531,12 +529,12 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     // 입력값 체크
     [self resignAllAction];
 
-    if( ![_accountItem[L_NAME_KEY] length] ){
+    if( ![_accountItem.name length] ){
         NSInteger totalUser = [self.dataManager numberOfAccount];
-		_accountItem[L_NAME_KEY] = [NSString stringWithFormat:@"%@%02ld", NSLocalizedString(@"User", nil), (long) totalUser + 1];
+		_accountItem.name = [NSString stringWithFormat:@"%@%02ld", NSLocalizedString(@"User", nil), (long) totalUser + 1];
     }
 
-	[self.dataManager saveAccount:_accountItem];
+	[self.savingContext MR_saveToPersistentStoreAndWait];
 
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -544,14 +542,14 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (void)dateChangeAction:(id)sender
 {
     UIDatePicker *datePicker = (UIDatePicker*)sender;
-	_accountItem[L_BIRTHDAY_KEY] = datePicker.date;
+	_accountItem.birthday = datePicker.date;
     [self reloadItemAtCellType:AccountCell_Birthday];
     [self checkInputValues];
 }
 
 - (void)checkInputValues
 {
-    self.navigationItem.rightBarButtonItem.enabled = ([[_accountItem[L_NAME_KEY] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) && !_sameNameExists;
+    self.navigationItem.rightBarButtonItem.enabled = ([[_accountItem.name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) && !_sameNameExists;
 }
 
 @end

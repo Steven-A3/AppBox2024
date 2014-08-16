@@ -13,6 +13,8 @@
 #import "DaysCounterEvent.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3DaysCounterDefine.h"
+#import "DaysCounterCalendar.h"
+#import "NSMutableArray+A3Sort.h"
 
 @interface A3DaysCounterEventChangeCalendarViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -49,8 +51,8 @@
     
     self.navigationController.navigationBar.topItem.prompt = NSLocalizedString(@"Move these events to a new calendar.", @"Move these events to a new calendar.");
     
-    NSArray *array = [_sharedManager allUserCalendarList];
-    self.itemArray = [array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@", _currentCalendar[CalendarItem_ID]]];
+    self.itemArray = [DaysCounterCalendar MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@", _currentCalendar.uniqueID]];
+
     [self.tableView reloadData];
 }
 
@@ -87,10 +89,10 @@
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:10];
     UILabel *textLabel = (UILabel*)[cell viewWithTag:11];
     
-    NSDictionary *item = [_itemArray objectAtIndex:indexPath.row];
-    textLabel.text = item[CalendarItem_Name];
-    textLabel.textColor = ( item[CalendarItem_IsShow] ? [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0] : [UIColor colorWithRed:143.0/255.0 green:143.0/255.0 blue:143.0/255.0 alpha:1.0] );
-    imageView.tintColor = [_sharedManager colorForCalendar:item];
+    DaysCounterCalendar *calendar = [_itemArray objectAtIndex:indexPath.row];
+    textLabel.text = calendar.name;
+    textLabel.textColor = [calendar.isShow boolValue] ? [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0] : [UIColor colorWithRed:143.0/255.0 green:143.0/255.0 blue:143.0/255.0 alpha:1.0];
+    imageView.tintColor = [_sharedManager colorForCalendar:calendar];
     cell.accessoryType = ( _selectedIndexPath && (_selectedIndexPath.row == indexPath.row) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
     
     return cell;
@@ -125,10 +127,10 @@
         return;
     }
     
-    NSDictionary *targetCalendar = [_itemArray objectAtIndex:self.selectedIndexPath.row];
+    DaysCounterCalendar *targetCalendar = [_itemArray objectAtIndex:self.selectedIndexPath.row];
 
     for(DaysCounterEvent *event in _eventArray){
-        event.calendarID = targetCalendar[CalendarItem_ID];
+        event.calendarID = targetCalendar.uniqueID;
     }
 	DaysCounterEvent *event = _eventArray[0];
     [event.managedObjectContext MR_saveToPersistentStoreAndWait];

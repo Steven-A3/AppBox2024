@@ -6,14 +6,14 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @class A3LadyCalendarModelManager;
+@class LadyCalendarAccount;
 
 @interface A3LadyCalendarAddAccountViewController : UITableViewController<UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate>
 
-@property (strong, nonatomic) NSMutableDictionary *accountItem;
-@property (assign,nonatomic) BOOL isEditMode;
-@property(nonatomic, weak) A3LadyCalendarModelManager *dataManager;
+@property (strong, nonatomic) LadyCalendarAccount *accountItem;
+@property (assign, nonatomic) BOOL isEditMode;
+@property (weak, nonatomic) A3LadyCalendarModelManager *dataManager;
+@property (strong, nonatomic) NSManagedObjectContext *savingContext;
 
 @end

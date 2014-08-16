@@ -11,6 +11,8 @@
 
 @class A3WalletSegmentedControl;
 @class A3DaysCounterModelManager;
+@class DaysCounterCalendar;
+
 @interface A3DaysCounterEventListViewController : UIViewController
 {
     NSInteger _sortType;
@@ -18,7 +20,7 @@
     BOOL _isNameAscending;
 }
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
-@property (strong, nonatomic) NSDictionary *calendarItem;
+@property (strong, nonatomic) DaysCounterCalendar *calendarItem;
 @property (weak, nonatomic) IBOutlet A3WalletSegmentedControl *sortTypeSegmentCtrl;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolbar;

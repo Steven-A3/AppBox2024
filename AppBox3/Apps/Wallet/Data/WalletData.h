@@ -6,15 +6,6 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-extern NSString *const W_DoNotShow_KEY;
-extern NSString *const W_SYSTEM_KEY;
-extern NSString *const W_NAME_KEY;
-extern NSString *const W_ICON_KEY;
-extern NSString *const W_ID_KEY;
-extern NSString *const W_FIELDS_KEY;
-extern NSString *const W_STYLE_KEY;
-extern NSString *const W_TYPE_KEY;
-
 extern NSString *const WalletFieldTypeText;
 extern NSString *const WalletFieldTypeNumber;
 extern NSString *const WalletFieldTypePhone;
@@ -42,6 +33,8 @@ extern NSString *const A3WalletUUIDVideoCategory;
 extern NSString *const A3WalletUUIDMemoCategory;
 
 @class WalletFieldItem;
+@class WalletField;
+@class WalletCategory;
 
 @interface WalletData : NSObject
 
@@ -55,17 +48,20 @@ extern NSString *const A3WalletUUIDMemoCategory;
 
 + (void)createDirectories;
 
-+ (NSMutableArray *)localizedPresetCategories;
++ (void)createLocalizedPresetCategoriesInContext:(NSManagedObjectContext *)context;
 
-+ (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow;
++ (void)createSystemCategoryInContext:(NSManagedObjectContext *)context;
+
++ (void)initializeWalletCategories;
+
++ (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow inContext:(NSManagedObjectContext *)context;
 + (NSUInteger)visibleCategoryCount;
-+ (NSDictionary *)firstEditableWalletCategory;
++ (WalletCategory *)firstEditableWalletCategory;
 
 + (NSArray *)categoriesExcludingSystemCategories;
 
 + (NSArray *)iconList;
-+ (NSDictionary *)categoryItemWithID:(NSString *)categoryID;
-+ (void)saveCategory:(NSDictionary *)category;
++ (WalletCategory *)categoryItemWithID:(NSString *)categoryID;
 
-+ (NSDictionary *)fieldOfFieldItem:(WalletFieldItem *)fieldItem category:(NSDictionary *)category;
++ (WalletField *)fieldOfFieldItem:(WalletFieldItem *)fieldItem;
 @end

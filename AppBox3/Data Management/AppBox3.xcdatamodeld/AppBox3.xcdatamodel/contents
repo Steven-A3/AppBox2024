@@ -6,6 +6,10 @@
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
+    <entity name="CurrencyFavorite" representedClassName="CurrencyFavorite" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="CurrencyHistory" representedClassName="CurrencyHistory" syncable="YES">
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -20,6 +24,14 @@
         <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+    </entity>
+    <entity name="DaysCounterCalendar" representedClassName="DaysCounterCalendar" syncable="YES">
+        <attribute name="colorID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="isShow" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="DaysCounterDate" representedClassName="DaysCounterDate" syncable="YES">
         <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -123,6 +135,14 @@
         <attribute name="subTotal" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+    </entity>
+    <entity name="LadyCalendarAccount" representedClassName="LadyCalendarAccount" syncable="YES">
+        <attribute name="birthday" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="watchingDate" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
     <entity name="LadyCalendarPeriod" representedClassName="LadyCalendarPeriod" syncable="YES">
         <attribute name="accountID" attributeType="String" syncable="YES"/>
@@ -275,11 +295,27 @@
         <attribute name="unitID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
+    <entity name="WalletCategory" representedClassName="WalletCategory" syncable="YES">
+        <attribute name="doNotShow" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isSystem" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="WalletFavorite" representedClassName="WalletFavorite" syncable="YES">
         <attribute name="itemID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+    </entity>
+    <entity name="WalletField" representedClassName="WalletField" syncable="YES">
+        <attribute name="categoryID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="style" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="WalletFieldItem" representedClassName="WalletFieldItem" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
@@ -304,13 +340,15 @@
     </entity>
     <elements>
         <element name="Calculation" positionX="-783" positionY="-441" width="128" height="105"/>
+        <element name="CurrencyFavorite" positionX="-576" positionY="-684" width="128" height="73"/>
         <element name="CurrencyHistory" positionX="207" positionY="-549" width="128" height="118"/>
         <element name="CurrencyHistoryItem" positionX="54" positionY="-621" width="128" height="133"/>
+        <element name="DaysCounterCalendar" positionX="-567" positionY="-675" width="128" height="28"/>
         <element name="DaysCounterDate" positionX="-578" positionY="-646" width="128" height="208"/>
         <element name="DaysCounterEvent" positionX="-236" positionY="-837" width="128" height="300"/>
         <element name="DaysCounterEventLocation" positionX="-81" positionY="-801" width="162" height="208"/>
         <element name="DaysCounterFavorite" positionX="-432" positionY="-640" width="128" height="103"/>
-        <element name="DaysCounterReminder" positionX="-83" positionY="-523" width="128" height="148"/>
+        <element name="DaysCounterReminder" positionX="-83" positionY="-523" width="128" height="150"/>
         <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="223"/>
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="193"/>
         <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="90"/>
@@ -332,5 +370,8 @@
         <element name="WalletFavorite" positionX="-335" positionY="764" width="128" height="103"/>
         <element name="WalletFieldItem" positionX="-506" positionY="558" width="128" height="208"/>
         <element name="WalletItem" positionX="-702" positionY="636" width="128" height="133"/>
+        <element name="LadyCalendarAccount" positionX="-576" positionY="-684" width="128" height="133"/>
+        <element name="WalletCategory" positionX="-567" positionY="-675" width="128" height="133"/>
+        <element name="WalletField" positionX="-558" positionY="-666" width="128" height="133"/>
     </elements>
 </model>

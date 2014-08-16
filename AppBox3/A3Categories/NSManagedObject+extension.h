@@ -15,4 +15,8 @@
 - (NSManagedObject *)cloneInContext:(NSManagedObjectContext *)context;
 
 - (void)nullifyAttributes;
+
+- (void)assignOrderAsFirstInContext:(NSManagedObjectContext *)context;
+
+- (void)assignOrderAsLastInContext:(NSManagedObjectContext *)context;
 @end

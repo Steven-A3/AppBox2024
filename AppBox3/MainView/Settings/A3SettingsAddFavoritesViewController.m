@@ -204,16 +204,13 @@
 }
 
 - (void)saveData {
-	NSDictionary *favoriteDictionary = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3MainMenuDataEntityFavorites];
+	NSDictionary *favoriteDictionary = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuDataEntityFavorites];
 
 	NSMutableDictionary *editingFavorites = [NSMutableDictionary dictionaryWithDictionary:favoriteDictionary];
 	editingFavorites[kA3AppsExpandableChildren] = self.favoritesMenuItems;
-	[[A3SyncManager sharedSyncManager] saveDataObject:editingFavorites
-										  forFilename:A3MainMenuDataEntityFavorites
+	[[A3SyncManager sharedSyncManager] setObject:editingFavorites
+										  forKey:A3MainMenuDataEntityFavorites
 												state:A3DataObjectStateModified];
-	[[A3SyncManager sharedSyncManager] addTransaction:A3MainMenuDataEntityFavorites
-												 type:A3DictionaryDBTransactionTypeSetBaseline
-											   object:editingFavorites];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:self];
 

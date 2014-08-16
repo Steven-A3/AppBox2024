@@ -9,9 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @class A3DaysCounterModelManager;
+@class DaysCounterCalendar;
+
 @interface A3DaysCounterEventListEditViewController : UITableViewController
+
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
-@property (strong, nonatomic) NSDictionary *calendarItem;
+@property (strong, nonatomic) DaysCounterCalendar *calendarItem;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *trashBarButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *calendarBarButton;
@@ -20,4 +23,5 @@
 - (IBAction)removeAction:(id)sender;
 - (IBAction)changeCalendarAction:(id)sender;
 - (IBAction)shareAction:(id)sender;
+
 @end

@@ -15,6 +15,7 @@
 #import "A3LineChartView.h"
 #import "UIColor+A3Addition.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "LadyCalendarAccount.h"
 
 @interface A3LadyCalendarChartViewController ()
 
@@ -334,8 +335,8 @@
     }
     NSDate *currentMonth = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
     NSDate *fromMonth = [A3DateHelper dateByAddingMonth:1 fromDate:currentMonth];
-    NSDictionary *account = [_dataManager currentAccount];
-    self.itemArray = [_dataManager periodListWithMonth:fromMonth period:periodMonth accountID:account[L_ID_KEY]];
+    LadyCalendarAccount *account = [_dataManager currentAccount];
+    self.itemArray = [_dataManager periodListWithMonth:fromMonth period:periodMonth accountID:account.uniqueID];
     if ( [self.itemArray count] > 0 ) {
         [self makeChartDataWithArray:_itemArray];
     }

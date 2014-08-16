@@ -26,6 +26,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
+#import "LadyCalendarAccount.h"
 
 @interface A3LadyCalendarViewController () <A3InstructionViewControllerDelegate>
 
@@ -179,7 +180,7 @@
         
         [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
-		id watchDate = self.dataManager.currentAccount[L_WatchingDate_KEY];
+		id watchDate = self.dataManager.currentAccount.watchingDate;
 		if (watchDate) {
 			[[A3SyncManager sharedSyncManager] setObject:watchDate forKey:A3LadyCalendarLastViewMonth state:A3DataObjectStateModified];
 		}
@@ -218,7 +219,7 @@
 	[self.addButton setEnabled:enable];
 	if (enable) {
         [_helpBarButton setEnabled:YES];
-		[_chartBarButton setEnabled:[self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount][L_ID_KEY] ] > 0];
+		[_chartBarButton setEnabled:[self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount].uniqueID ] > 0];
 		[_accountBarButton setEnabled:YES];
 		[_settingBarButton setEnabled:YES];
 	} else {
@@ -235,9 +236,7 @@
 	[self setupCalendarRange];
 	[_collectionView reloadData];
 
-	NSMutableDictionary *mutableAccount = [self.dataManager.currentAccount mutableCopy];
-    mutableAccount[L_WatchingDate_KEY] = [notification.userInfo objectForKey:A3LadyCalendarChangedDateKey];
-	[self.dataManager saveAccount:mutableAccount];
+	[self.dataManager setWatchingDateForCurrentAccount:[notification.userInfo objectForKey:A3LadyCalendarChangedDateKey]];
 
 	[self moveToCurrentMonth];
 }
@@ -266,18 +265,16 @@
 		[self.collectionView reloadData];
 	}
 
-	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount][L_ID_KEY]] > 0);
+	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount].uniqueID] > 0);
 
 	double delayInSeconds = 0.1;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        NSDate *currentWatchingDate = [self.dataManager currentAccount][L_WatchingDate_KEY];
+        NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
         currentWatchingDate = (currentWatchingDate == nil ? [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]] : currentWatchingDate);
         _currentMonth = currentWatchingDate;
 
-		NSMutableDictionary *mutableAccount = [self.dataManager.currentAccount mutableCopy];
-		mutableAccount[L_WatchingDate_KEY] = currentWatchingDate;
-		[self.dataManager saveAccount:mutableAccount];
+		[self.dataManager setWatchingDateForCurrentAccount:currentWatchingDate];
 
 		[self moveToCurrentMonth];
 		[self updateCurrentMonthLabel];
@@ -285,11 +282,11 @@
 }
 
 - (void)setupNavigationTitle {
-	if([self.dataManager numberOfAccount] == 1 && [[self.dataManager currentAccount][L_NAME_KEY] isEqualToString:[self.dataManager defaultAccountName]]){
+	if([self.dataManager numberOfAccount] == 1 && [[self.dataManager currentAccount].name isEqualToString:[self.dataManager defaultAccountName]]){
 		self.navigationItem.title = NSLocalizedString(@"Ladies Calendar", nil);
 	}
 	else{
-		self.navigationItem.title = [self.dataManager currentAccount][L_NAME_KEY];
+		self.navigationItem.title = [self.dataManager currentAccount].name;
 	}
 }
 
@@ -372,7 +369,7 @@
 
     NSDate *todayMonth = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
 
-    if( [self.dataManager.currentAccount[L_WatchingDate_KEY] isEqualToDate:todayMonth] )
+    if( [self.dataManager.currentAccount.watchingDate isEqualToDate:todayMonth] )
         _currentMonthLabel.textColor = [[A3AppDelegate instance] themeColor];
     else
         _currentMonthLabel.textColor = [UIColor blackColor];
@@ -380,7 +377,7 @@
 
 - (void)moveToCurrentMonth
 {
-    NSDate *currentWatchingDate = [self.dataManager currentAccount][L_WatchingDate_KEY];
+    NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
     if (!currentWatchingDate) {
         currentWatchingDate = [self.dataManager startDateForCurrentAccount];
     }
@@ -542,13 +539,10 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
     if( ![currentWatchingDate isEqual:month] ){
         _currentMonth = month;
         if (currentWatchingDate) {
-			NSMutableDictionary *mutableAccount = [self.dataManager.currentAccount mutableCopy];
-			mutableAccount[L_WatchingDate_KEY] = month;
-			[self.dataManager saveAccount:mutableAccount];
+			[self.dataManager setWatchingDateForCurrentAccount:month];
         }
 		[self updateCurrentMonthLabel];
     }
-    
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -580,7 +574,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 
 - (void)calendarView:(A3LadyCalendarCalendarView *)calendarView didSelectDay:(NSInteger)day
 {
-    NSArray *periods = [self.dataManager periodListWithMonth:calendarView.dateMonth accountID:[self.dataManager currentAccount][L_ID_KEY] containPredict:YES];
+    NSArray *periods = [self.dataManager periodListWithMonth:calendarView.dateMonth accountID:[self.dataManager currentAccount].uniqueID containPredict:YES];
     if( [periods count] < 1 )
         return;
     LadyCalendarPeriod *period = [periods objectAtIndex:0];
@@ -618,7 +612,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 		_moreMenuView.alpha = 1.0;
 	}];
 	[self rightBarButtonDoneButton];
-    _chartButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount][L_ID_KEY] ] > 0);
+    _chartButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount].uniqueID ] > 0);
 
 	_tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(moreMenuDismissAction:)];
 	[self.view addGestureRecognizer:_tapGestureRecognizer];
@@ -644,9 +638,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 }
 
 - (IBAction)moveToTodayAction:(id)sender {
-	NSMutableDictionary *mutableAccount = [self.dataManager.currentAccount mutableCopy];
-	mutableAccount[L_WatchingDate_KEY] = [NSDate date];
-	[self.dataManager saveAccount:mutableAccount];
+	[self.dataManager setWatchingDateForCurrentAccount:[NSDate date]];
 
 	[self moveToCurrentMonth];
 }

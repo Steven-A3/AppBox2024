@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class WalletCategory;
+
 @protocol WalletCategoryEditDelegate <NSObject>
 
 @required
-- (void)walletCategoryEdited:(NSDictionary *)category;
+- (void)walletCategoryEdited:(WalletCategory *)category;
 
 @optional
 - (void)walletCateEditCanceled;
@@ -23,5 +25,6 @@
 @property (nonatomic, weak) id<WalletCategoryEditDelegate> delegate;
 @property (nonatomic, strong) NSString *categoryID;
 @property (nonatomic, assign) BOOL isAddingCategory;
+@property (nonatomic, strong) NSManagedObjectContext *savingContext;
 
 @end

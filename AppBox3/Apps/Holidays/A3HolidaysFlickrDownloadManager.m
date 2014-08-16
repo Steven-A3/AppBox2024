@@ -178,12 +178,14 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
     
     NSString *imageName = [NSString stringWithFormat:@"Downloaded_%@", countryCode];
     [self setImageName:imageName forCountryCode:countryCode];
-    
-    [self setImageID:self.photoInfo[@"photo_id"] forCountryCode:countryCode];
-    [self setOwner:self.photoInfo[@"owner"] forCountryCode:countryCode];
-    [self setURLString:self.photoInfo[@"flickr_url"] forCountryCode:countryCode];
-    [self setLicenseString:@"cc" forCountryCode:countryCode];
-    
+
+	if (self.photoInfo) {
+		[self setImageID:self.photoInfo[@"photo_id"] forCountryCode:countryCode];
+		[self setOwner:self.photoInfo[@"owner"] forCountryCode:countryCode];
+		[self setURLString:self.photoInfo[@"flickr_url"] forCountryCode:countryCode];
+		[self setLicenseString:@"cc" forCountryCode:countryCode];
+	}
+
     [self setDownloadDateForCountryCode:countryCode];
     
     NSData *data = [NSData dataWithContentsOfURL:downloadURL];
@@ -276,6 +278,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 }
 
 - (void)setImageID:(NSString *)urlString forCountryCode:(NSString *)countryCode {
+	if (!urlString) return;
 	[[A3UserDefaults standardUserDefaults] setObject:urlString forKey:[self idKeyForCountryCode:countryCode]];
 	[[A3UserDefaults standardUserDefaults] synchronize];
 }

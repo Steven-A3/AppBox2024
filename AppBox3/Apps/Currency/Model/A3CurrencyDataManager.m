@@ -15,6 +15,8 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "CurrencyFavorite.h"
+#import "NSString+conversion.h"
 
 NSString *const A3KeyCurrencyCode = @"currencyCode";
 NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRatesUdpated";
@@ -38,8 +40,7 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 }
 
 + (void)setupFavorites {
-	NSArray *currencyFavorites = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3CurrencyDataEntityFavorites];
-	if ([currencyFavorites count]) {
+	if ([CurrencyFavorite MR_countOfEntities] > 0) {
 		return;
 	}
 
@@ -67,17 +68,15 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 			[favorites moveObjectFromIndex:idx toIndex:1];
 		}
 	}
-	[[A3SyncManager sharedSyncManager] saveDataObject:favorites forFilename:A3CurrencyDataEntityFavorites state:A3DataObjectStateInitialized];
-}
-
-+ (void)saveFavorites:(NSArray *)favorites {
-	NSMutableArray *savingFavorites = [NSMutableArray new];
-	for (id item in favorites) {
-		if (item[ID_KEY] && [item[ID_KEY] isKindOfClass:[NSString class]] && [item[ID_KEY] length] == 3) {
-			[savingFavorites addObject:item];
-		}
+	NSInteger order = 1000000;
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_newContext];
+	for (NSDictionary *favorite in favorites) {
+		CurrencyFavorite *newFavorite = [CurrencyFavorite MR_createEntityInContext:savingContext];
+		newFavorite.uniqueID = favorite[ID_KEY];
+		newFavorite.order = [NSString orderStringWithOrder:order];
+		order += 1000000;
 	}
-	[[A3SyncManager sharedSyncManager] saveDataObject:savingFavorites forFilename:A3CurrencyDataEntityFavorites state:A3DataObjectStateModified];
+	[savingContext MR_saveToPersistentStoreAndWait];
 }
 
 + (BOOL)yahooNetworkAvailable {

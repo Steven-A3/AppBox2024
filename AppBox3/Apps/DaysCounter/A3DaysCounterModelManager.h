@@ -13,6 +13,7 @@
 @class DaysCounterEvent;
 @class DaysCounterEventLocation;
 @class DaysCounterDate;
+@class DaysCounterCalendar;
 
 @interface A3DaysCounterModelManager : NSObject
 
@@ -20,8 +21,6 @@
 + (NSString *)thumbnailDirectory;
 
 + (NSMutableArray *)calendars;
-
-- (void)saveCalendars:(NSArray *)calendars;
 
 - (void)prepareInContext:(NSManagedObjectContext *)context;
 - (NSString*)repeatTypeStringFromValue:(NSInteger)repeatType;
@@ -46,11 +45,10 @@
 - (NSArray *)visibleCalendarList;
 - (NSArray *)allUserVisibleCalendarList;
 - (NSArray *)allUserCalendarList;
-- (NSMutableDictionary *)itemForNewUserCalendar;
 
 - (id)calendarItemByID:(NSString *)calendarID;
-- (BOOL)removeCalendarItem:(NSMutableDictionary*)item;
-- (BOOL)removeCalendarItemWithID:(NSString*)calendarID;
+
+- (BOOL)removeCalendar:(DaysCounterCalendar *)calendar;
 
 - (NSInteger)numberOfAllEvents;
 - (NSInteger)numberOfAllEventsToIncludeHiddenCalendar;
@@ -60,9 +58,7 @@
 - (NSInteger)numberOfEventContainedImage;
 - (NSDate*)dateOfLatestEvent;
 
-- (UIColor *)colorForCalendar:(NSDictionary *)calendar;
-
-- (NSString *)colorNameForCalendar:(NSDictionary *)calendar;
+- (UIColor *)colorForCalendar:(DaysCounterCalendar *)calendar;
 
 - (NSArray *)calendarColorArray;
 
@@ -88,7 +84,7 @@
 + (BOOL)hasHourMinDurationOption:(NSInteger)durationOption;
 
 #pragma mark - Period
-- (DaysCounterEvent *)closestEventObjectOfCalendar:(NSDictionary *)calendar;
+- (DaysCounterEvent *)closestEventObjectOfCalendar:(DaysCounterCalendar *)calendar;
 + (NSDate *)effectiveDateForEvent:(DaysCounterEvent *)event basisTime:(NSDate *)now;
 #pragma mark EventModel Dictionary
 - (void)recalculateEventDatesForEvent:(DaysCounterEvent *)event;

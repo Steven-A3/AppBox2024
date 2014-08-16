@@ -11,15 +11,17 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3LadyCalendarAddAccountViewController.h"
-#import "A3UserDefaultsKeys.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "NSMutableArray+A3Sort.h"
+#import "LadyCalendarAccount.h"
 
 @interface A3LadyCalendarAccountListViewController ()
 
-@property (strong, nonatomic) NSMutableArray *itemArray;
+@property (strong, nonatomic) NSMutableArray *ladyCalendarAccounts;
 @property (strong, nonatomic) UIImage *checkImage;
+@property (strong, nonatomic) NSManagedObjectContext *savingContext;
 
 @end
 
@@ -59,7 +61,8 @@
 {
     [super viewWillAppear:animated];
 
-    self.itemArray = [NSMutableArray arrayWithArray:[_dataManager accountList]];
+	[self.savingContext reset];
+	_ladyCalendarAccounts = nil;
     [self.tableView reloadData];
 
 	if (IS_IPAD) {
@@ -73,6 +76,21 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (NSManagedObjectContext *)savingContext {
+	if (!_savingContext) {
+		_savingContext = [NSManagedObjectContext MR_newContext];
+	}
+	return _savingContext;
+}
+
+- (NSMutableArray *)ladyCalendarAccounts {
+	if (!_ladyCalendarAccounts) {
+		NSArray *accounts = [LadyCalendarAccount MR_findAllInContext:self.savingContext];
+		_ladyCalendarAccounts = [NSMutableArray arrayWithArray:accounts];
+	}
+	return _ladyCalendarAccounts;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -82,7 +100,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_itemArray count];
+    return [self.ladyCalendarAccounts count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -97,17 +115,17 @@
 		imageView.tintColor = [[A3AppDelegate instance] themeColor];
 	}
     
-    NSDictionary *item = [_itemArray objectAtIndex:indexPath.row];
+    LadyCalendarAccount *account = [self.ladyCalendarAccounts objectAtIndex:indexPath.row];
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:12];
     
-    textLabel.text = item[L_NAME_KEY];
+    textLabel.text = account.name;
 
-	if (item[L_BIRTHDAY_KEY]) {
+	if (account.birthday) {
 		NSDateFormatter *dateFormatter = [NSDateFormatter new];
 		[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-		detailTextLabel.text = [dateFormatter stringFromDate:item[L_BIRTHDAY_KEY]];
+		detailTextLabel.text = [dateFormatter stringFromDate:account.birthday];
 	} else {
 		detailTextLabel.text = @"";
 	}
@@ -120,7 +138,7 @@
     cell.editingAccessoryView = editButton;
 
     NSString *defaultID = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID];
-    imageView.hidden = ![item[L_ID_KEY] isEqualToString:defaultID];
+    imageView.hidden = ![account.uniqueID isEqualToString:defaultID];
     
     return cell;
 }
@@ -142,16 +160,14 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    NSDictionary *item = [_itemArray objectAtIndex:fromIndexPath.row];
-    [_itemArray removeObjectAtIndex:fromIndexPath.row];
-    [_itemArray insertObject:item atIndex:toIndexPath.row];
+	[_ladyCalendarAccounts moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+	[self.savingContext MR_saveToPersistentStoreAndWait];
     
 	double delayInSeconds = 0.15;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
 		[self.tableView reloadData];
 	});
-	[self.dataManager saveAccountList:_itemArray];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
@@ -161,10 +177,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSDictionary *account = [_itemArray objectAtIndex:indexPath.row];
+	LadyCalendarAccount *account = [_ladyCalendarAccounts objectAtIndex:indexPath.row];
 	[_dataManager setCurrentAccount:account];
 
-	[[A3SyncManager sharedSyncManager] setObject:account[L_ID_KEY] forKey:A3LadyCalendarCurrentAccountID state:A3DataObjectStateModified];
+	[[A3SyncManager sharedSyncManager] setObject:account.uniqueID forKey:A3LadyCalendarCurrentAccountID state:A3DataObjectStateModified];
 
 	[self.tableView reloadData];
 }
@@ -173,15 +189,13 @@
 
 - (void)editButtonAction:(UIButton *)button
 {
-    [self.dataManager saveAccountList:_itemArray];
-    
-	NSDictionary *item = [_itemArray objectAtIndex:button.tag];
+	LadyCalendarAccount *account = [_ladyCalendarAccounts objectAtIndex:button.tag];
 	
     A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;
 	viewCtrl.isEditMode = YES;
-	viewCtrl.accountItem = [item mutableCopy];
-    
+	viewCtrl.accountItem = [account MR_inContext:viewCtrl.savingContext];
+
 	A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
 	navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
 	[self presentViewController:navCtrl animated:YES completion:nil];
@@ -200,10 +214,9 @@
 
 - (void)addAction:(id)sender
 {
-    [self.dataManager saveAccountList:_itemArray];
-    
     A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;
+	viewCtrl.isEditMode = NO;
     A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self presentViewController:navCtrl animated:YES completion:nil];

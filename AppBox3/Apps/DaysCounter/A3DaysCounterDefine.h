@@ -26,13 +26,11 @@
 #define EventKey_Date                           @"date"
 #define EventKey_Items                          @"items"
 
-#define CalendarItem_ID                         @"uniqueID"
 #define CalendarItem_Name                       @"calendarName"
 #define CalendarItem_Color                      @"calendarColor"
 #define CalendarItem_ColorID                    @"calendarColorID"
 #define CalendarItem_IsShow                     @"isShow"
-#define CalendarItem_Type                       @"calendarType"
-#define CalendarItem_IsDefault                  @"isDefault"
+#define CalendarItem_Type                       @"type"
 
 #define SystemCalendarID_All                    @"A"
 #define SystemCalendarID_Upcoming               @"U"
@@ -40,9 +38,6 @@
 
 #define EventItem_StartDate                     @"startDate"
 #define EventItem_EndDate                       @"endDate"
-
-#define AlertMessage_NoPhoto                    @"No Photos\nYou can add photos into events."
-
 
 typedef NS_ENUM(NSInteger, A3DaysCounterDurationOption) {
     DurationOption_Seconds  = 0x00000001,
@@ -114,12 +109,6 @@ typedef NS_ENUM(NSInteger, A3DaysCounterAlertType) {
     AlertType_2DaysBefore,
     AlertType_1WeekBefore,
     AlertType_Custom,
-};
-
-typedef NS_ENUM(NSInteger, A3DaysCounterCustomAlertCellType) {
-    CustomAlertCell_DaysBefore,
-    CustomAlertCell_Time,
-    CustomAlertCell_TimeInput,
 };
 
 typedef NS_ENUM(NSInteger, A3DaysCounterEventListSortType) {

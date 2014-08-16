@@ -10,11 +10,12 @@
 #import "FMMoveTableView.h"
 
 @class WalletItem;
+@class WalletCategory;
 
 @interface A3WalletListViewController : UIViewController <FMMoveTableViewDelegate, FMMoveTableViewDataSource>
 
 @property (nonatomic, strong) FMMoveTableView *tableView;
-@property (nonatomic, strong) NSDictionary *category;
+@property (nonatomic, strong) WalletCategory *category;
 @property (nonatomic, assign) BOOL isFromMoreTableViewController;
 @property (nonatomic, strong) UIButton *addButton;
 @property (nonatomic, strong) NSMutableArray *items;

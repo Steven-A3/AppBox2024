@@ -24,6 +24,7 @@
 #import "LadyCalendarPeriod+extension.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "LadyCalendarAccount.h"
 
 extern NSString *const A3WalletItemFieldNoteCellID;
 
@@ -100,7 +101,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		_periodItem.cycleLength = @28;
 		_periodItem.isPredict = @NO;
 		_periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
-		_periodItem.accountID = _dataManager.currentAccount[L_ID_KEY];
+		_periodItem.accountID = _dataManager.currentAccount.uniqueID;
 	}
 
 	if ( _isEditMode ) {
@@ -684,7 +685,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"Cannot Save Period.\nThe start date must be before the end date.", @"Cannot Save Period.\nThe start date must be before the end date.") title:nil];
         return;
     }
-    else if ( [_dataManager isOverlapStartDate:_periodItem.startDate endDate:_periodItem.endDate accountID:_dataManager.currentAccount[L_ID_KEY] periodID:_periodItem.uniqueID] ) {
+    else if ( [_dataManager isOverlapStartDate:_periodItem.startDate endDate:_periodItem.endDate accountID:_dataManager.currentAccount.uniqueID periodID:_periodItem.uniqueID] ) {
 		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"The new date you entered overlaps with previous dates.", @"The new date you entered overlaps with previous dates.") title:nil];
         return;
     }
@@ -700,15 +701,15 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	_periodItem.updateDate = [NSDate date];
 	_periodItem.isPredict = @NO;
 
-	NSMutableDictionary *mutableAccount = [self.dataManager.currentAccount mutableCopy];
-	mutableAccount[L_WatchingDate_KEY] = _periodItem.startDate;
-	[self.dataManager saveAccount:mutableAccount];
-    
+	LadyCalendarAccount *account = [self.dataManager.currentAccount MR_inContext:[NSManagedObjectContext MR_newContext]];
+	account.watchingDate = _periodItem.startDate;
+	[account.managedObjectContext MR_saveToPersistentStoreAndWait];
+
 	[_dataManager recalculateDates];
     
     NSDictionary * settingDictionary = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarUserDefaultsSettings];
     if ([[settingDictionary objectForKey:SettingItem_AutoRecord] boolValue]) {
-        [_dataManager makePredictedPerioedsBeforeCurrentPeriod];
+		[_dataManager makePredictPeriodsBeforeCurrentPeriod];
         [_dataManager recalculateDates];
     }
 

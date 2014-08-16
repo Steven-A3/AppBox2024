@@ -11,6 +11,9 @@
 #import "WalletFieldItem+initialize.h"
 #import "NSString+conversion.h"
 #import "WalletData.h"
+#import "WalletCategory.h"
+#import "WalletField.h"
+#import "A3UserDefaultsKeys.h"
 
 @implementation WalletItem (initialize)
 
@@ -27,9 +30,9 @@
 
 - (NSArray *)fieldItemsArraySortedByFieldOrder
 {
-	NSDictionary *category = [WalletData categoryItemWithID:self.categoryID];
-	NSArray *fields = category[W_FIELDS_KEY];
-	NSArray *fieldIDs = [fields valueForKeyPath:W_ID_KEY];
+	WalletCategory *category = [WalletData categoryItemWithID:self.categoryID];
+	NSArray *fields = [WalletField MR_findByAttribute:@"categoryID" withValue:category.uniqueID andOrderBy:@"order" ascending:YES];
+	NSArray *fieldIDs = [fields valueForKeyPath:ID_KEY];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", self.uniqueID];
 	NSArray *fieldItems = [WalletFieldItem MR_findAllWithPredicate:predicate inContext:self.managedObjectContext];
 	fieldItems = [fieldItems sortedArrayUsingComparator:^NSComparisonResult(WalletFieldItem *obj1, WalletFieldItem *obj2) {
@@ -53,26 +56,26 @@
 - (void)verifyNULLField {
 	NSArray *fieldItems = [self fieldItemsArraySortedByFieldOrder];
 	NSMutableArray *fieldItemsFieldDoesNotExist = [NSMutableArray new];
-	NSDictionary *category = [WalletData categoryItemWithID:self.categoryID];
-	NSArray *fields = category[W_FIELDS_KEY];
+	WalletCategory *category = [WalletData categoryItemWithID:self.categoryID];
+	NSArray *fields = [WalletField MR_findByAttribute:@"categoryID" withValue:category.uniqueID andOrderBy:@"order" ascending:YES];
 	for (WalletFieldItem *fieldItem in fieldItems) {
 		if (![fieldItem.fieldID length]) {
 			[fieldItemsFieldDoesNotExist addObject:fieldItem];
 			continue;
 		}
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", W_ID_KEY, fieldItem.fieldID];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", ID_KEY, fieldItem.fieldID];
 		NSArray *filteredArray = [fields filteredArrayUsingPredicate:predicate];
 		if (![filteredArray count]) {
 			fieldItem.fieldID = nil;
 			[fieldItemsFieldDoesNotExist addObject:fieldItem];
 			continue;
 		}
-		NSDictionary *field = filteredArray[0];
-		if ([fieldItem.hasImage boolValue] && ![field[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage]) {
+		WalletField *field = filteredArray[0];
+		if ([fieldItem.hasImage boolValue] && ![field.type isEqualToString:WalletFieldTypeImage]) {
 			fieldItem.fieldID = nil;
 			continue;
 		}
-		if ([fieldItem.hasVideo boolValue] && ![field[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo]) {
+		if ([fieldItem.hasVideo boolValue] && ![field.type isEqualToString:WalletFieldTypeVideo]) {
 			fieldItem.fieldID = nil;
 		}
 	}

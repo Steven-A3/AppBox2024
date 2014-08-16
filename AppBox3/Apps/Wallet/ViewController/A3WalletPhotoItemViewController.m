@@ -16,6 +16,7 @@
 #import "A3WalletNoteCell.h"
 #import "WalletData.h"
 #import "WalletItem.h"
+#import "WalletCategory.h"
 #import "WalletItem+initialize.h"
 #import "WalletItem+Favorite.h"
 #import "WalletFieldItem.h"
@@ -27,6 +28,7 @@
 #import "NSDate+Formatting.h"
 #import "WalletFavorite.h"
 #import "WalletFavorite+initialize.h"
+#import "WalletField.h"
 
 @interface A3WalletPhotoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, MWPhotoBrowserDelegate>
 
@@ -151,7 +153,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 	}
 }
 
-- (NSDictionary *)category {
+- (WalletCategory *)category {
 	if (!_category) {
 		_category = [WalletData categoryItemWithID:_item.categoryID];
 	}
@@ -167,8 +169,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         NSArray *fieldItems = [_item fieldItemsArraySortedByFieldOrder];
         for (int i = 0; i<fieldItems.count; i++) {
             WalletFieldItem *fieldItem = fieldItems[i];
-			NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];
-            if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage]) {
+			WalletField *field = [WalletData fieldOfFieldItem:fieldItem];
+            if ([field.type isEqualToString:WalletFieldTypeImage]) {
                 [_photoFieldItems addObject:fieldItem];
             }
         }
@@ -195,11 +197,11 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         NSArray *fieldItems = [_item fieldItemsArraySortedByFieldOrder];
         for (NSUInteger idx = 0; idx < fieldItems.count; idx++) {
             WalletFieldItem *fieldItem = fieldItems[idx];
-			NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];;
-			if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeDate] && !fieldItem.date) {
+			WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
+			if ([field.type isEqualToString:WalletFieldTypeDate] && !fieldItem.date) {
 				continue;
 			}
-            if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage] || ![fieldItem.value length]) {
+            if ([field.type isEqualToString:WalletFieldTypeImage] || ![fieldItem.value length]) {
 				continue;
 			}
 			[_normalFieldItems addObject:fieldItem];
@@ -351,8 +353,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     }
     
     WalletFieldItem *fieldItem = _photoFieldItems[page];
-	NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];;
-    if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage]) {
+	WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
+    if ([field.type isEqualToString:WalletFieldTypeImage]) {
         NSDictionary *metadata;
 		if (fieldItem.imageMetaData) {
 			NSPropertyListFormat format;
@@ -544,8 +546,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 {
     NSInteger index = floorf(_photoScrollView.contentOffset.x/_photoScrollView.bounds.size.width);
     WalletFieldItem *fieldItem = _photoFieldItems[index];
-    NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];;
-    if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage]) {
+    WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
+    if ([field.type isEqualToString:WalletFieldTypeImage]) {
         // Create browser
         MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
         browser.displayActionButton = YES;
@@ -753,14 +755,14 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     }
     else if ([_normalFieldItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
         WalletFieldItem *fieldItem = _normalFieldItems[indexPath.row];
-        NSDictionary *field = [WalletData fieldOfFieldItem:fieldItem category:self.category];;
-        if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeImage] || [field[W_TYPE_KEY] isEqualToString:WalletFieldTypeVideo]) {
+        WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
+        if ([field.type isEqualToString:WalletFieldTypeImage] || [field.type isEqualToString:WalletFieldTypeVideo]) {
             A3WalletItemPhotoFieldCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemPhotoFieldCellID1 forIndexPath:indexPath];
             
             photoCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			[self configureFloatingTextField:photoCell.valueTextField];
             
-            photoCell.valueTextField.placeholder = field[W_NAME_KEY];
+            photoCell.valueTextField.placeholder = field.name;
             
             if (fieldItem) {
                 photoCell.valueTextField.text = @" ";
@@ -780,13 +782,13 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
             
             cell = photoCell;
         }
-        else if ([field[W_TYPE_KEY] isEqualToString:WalletFieldTypeDate]) {
+        else if ([field.type isEqualToString:WalletFieldTypeDate]) {
             A3WalletItemFieldCell *dateCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCellID1 forIndexPath:indexPath];
             
             dateCell.selectionStyle = UITableViewCellSelectionStyleNone;
             [self configureFloatingTextField:dateCell.valueTextField];
             
-            dateCell.valueTextField.placeholder = field[W_NAME_KEY];
+            dateCell.valueTextField.placeholder = field.name;
             if (fieldItem.date) {
                 NSDateFormatter *df = [[NSDateFormatter alloc] init];
                 [df setDateStyle:NSDateFormatterMediumStyle];
@@ -804,7 +806,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
             textCell.selectionStyle = UITableViewCellSelectionStyleNone;
             [self configureFloatingTextField:textCell.valueTextField];
             
-            textCell.valueTextField.placeholder = field[W_NAME_KEY];
+            textCell.valueTextField.placeholder = field.name;
             textCell.valueTextField.text = fieldItem.value;
             
             if (fieldItem.value) {

@@ -21,12 +21,6 @@ extern NSString *const A3SyncManagerEmptyObject;
 - (BOOL)boolForKey:(NSString *)key;
 - (id)objectForKey:(NSString *)key;
 
-- (id)dataObjectForFilename:(NSString *)key;
-
-- (void)saveDataObject:(id)object forFilename:(NSString *)key state:(A3DataObjectStateValue)state;
-
-- (void)removeDataObjectForKey:(NSString *)key;
-
 - (void)setObject:(id)object forKey:(NSString *)key state:(A3DataObjectStateValue)state;
 - (void)setDateComponents:(NSDateComponents *)dateComponents forKey:(NSString *)key state:(A3DataObjectStateValue)state;
 - (NSDateComponents *)dateComponentsForKey:(NSString *)key;

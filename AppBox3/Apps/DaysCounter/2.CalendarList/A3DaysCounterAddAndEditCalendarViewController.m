@@ -14,13 +14,12 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3SyncManager.h"
+#import "DaysCounterCalendar.h"
+#import "NSManagedObject+extension.h"
 
 @interface A3DaysCounterAddAndEditCalendarViewController ()
 @property (strong, nonatomic) NSArray *colorArray;
-@property (strong, nonatomic) NSString *colorID;
 
-- (void)cancelAction:(id)sender;
-- (NSInteger)indexOfCurrentColor:(UIColor*)color;
 @end
 
 @implementation A3DaysCounterAddAndEditCalendarViewController
@@ -32,12 +31,6 @@
 	}
 
 	return self;
-}
-
-
-- (NSInteger)indexOfCurrentColor:(UIColor*)color
-{
-	return [_calendarItem[CalendarItem_ColorID] unsignedIntegerValue];
 }
 
 - (void)viewDidLoad
@@ -57,10 +50,12 @@
     self.colorArray = [_sharedManager calendarColorArray];
     
     if ( !_isEditMode ) {
-        self.calendarItem = [_sharedManager itemForNewUserCalendar];
+		self.calendar = [DaysCounterCalendar MR_createEntityInContext:self.savingContext];
+		_calendar.uniqueID = [[NSUUID UUID] UUIDString];
+		_calendar.isShow = @YES;
+		_calendar.colorID = @6;
+		_calendar.type = @(CalendarCellType_User);
     }
-
-    _colorID = [self.calendarItem objectForKey:CalendarItem_ColorID];
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willDismissRightSideView) name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -112,12 +107,19 @@
 	[self dismissViewControllerAnimated:NO completion:nil];
 }
 
+- (NSManagedObjectContext *)savingContext {
+	if (!_savingContext) {
+		_savingContext = [NSManagedObjectContext MR_newContext];
+	}
+	return _savingContext;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (_isEditMode) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarType == %@", @(CalendarCellType_User)];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"type == %@", @(CalendarCellType_User)];
 		if ([[[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:predicate] count] == 1) {
             return 2;
         }
@@ -165,7 +167,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarType == %@", @(CalendarCellType_User)];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"type == %@", @(CalendarCellType_User)];
     BOOL hasOneCalendar = [[[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:predicate] count] == 1;
 
     if ( section == ((_isEditMode && !hasOneCalendar) ? 2 : 1) ) {
@@ -206,11 +208,11 @@
         
         if ( indexPath.section == 0 ) {
             UITextField *textField = (UITextField*)[cell viewWithTag:10];
-            if ( [[self.calendarItem objectForKey:CalendarItem_Name] length] > 0 ) {
-                textField.text = [self.calendarItem objectForKey:CalendarItem_Name];
+            if ([_calendar.name length] > 0 ) {
+                textField.text = _calendar.name;
             }
-            NSInteger colorID = [[_calendarItem objectForKey:CalendarItem_ColorID] integerValue];
-            cell.imageView.tintColor = [[_colorArray objectAtIndex:colorID] objectForKey:CalendarItem_Color];
+            NSInteger colorID = [_calendar.colorID integerValue];
+			cell.imageView.tintColor = [[_colorArray objectAtIndex:colorID] objectForKey:CalendarItem_Color];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         else if ( indexPath.section == 1 ) {
@@ -219,7 +221,7 @@
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             cell.imageView.tintColor = [colorItem objectForKey:CalendarItem_Color];
 
-            if ([_calendarItem[CalendarItem_ColorID] unsignedIntegerValue] == indexPath.row) {
+            if ([_calendar.colorID unsignedIntegerValue] == indexPath.row) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }
             else {
@@ -253,12 +255,11 @@
 {
     if ( indexPath.section == 1 )
     {
-        NSInteger index = [_calendarItem[CalendarItem_ColorID] unsignedIntegerValue];
+        NSInteger index = [_calendar.colorID unsignedIntegerValue];
 		if ( index == indexPath.row )
             return;
-        
-        [_calendarItem setObject:@(indexPath.row) forKey:CalendarItem_ColorID];
-        
+        _calendar.colorID = @(indexPath.row);
+
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         UITableViewCell *prevCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:indexPath.section]];
         UITableViewCell *curCell = [tableView cellForRowAtIndexPath:indexPath];
@@ -266,7 +267,8 @@
         curCell.accessoryType = UITableViewCellAccessoryCheckmark;
         
         UITableViewCell *calendarNameCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-		NSUInteger colorID = [_calendarItem[CalendarItem_ColorID] unsignedIntegerValue];
+		NSUInteger colorID = [_calendar.colorID unsignedIntegerValue];
+
 		calendarNameCell.imageView.tintColor = self.colorArray[colorID][CalendarItem_Color];
     }
     else if ( indexPath.section == 2) {
@@ -292,18 +294,18 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    [_calendarItem setObject:str forKey:CalendarItem_Name];
+	_calendar.name = str;
     return YES;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    [_calendarItem setObject:textField.text forKey:CalendarItem_Name];
+	_calendar.name = textField.text;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [_calendarItem setObject:textField.text forKey:CalendarItem_Name];
+	_calendar.name = textField.text;
     [textField resignFirstResponder];
     return YES;
 }
@@ -320,7 +322,7 @@
 
 - (IBAction)deleteCalendarAction:(id)sender {
     // 모델 삭제 하고
-    [_sharedManager removeCalendarItem:_calendarItem];
+	[_sharedManager removeCalendar:_calendar];
     // 창 닫기
 	[self dismissSelf];
 }
@@ -340,31 +342,15 @@
     [self resignAllAction];
 
     // 모델 업데이트 하고
-    if ( [[_calendarItem objectForKey:CalendarItem_Name] length] < 1 ) {
-		[_calendarItem setObject:NSLocalizedString(@"Untitled", @"Untitled") forKey:CalendarItem_Name];
+    if ( [_calendar.name length] < 1 ) {
+		_calendar.name = NSLocalizedString(@"Untitled", @"Untitled");
     }
 
-	NSMutableArray *calendars = [A3DaysCounterModelManager calendars];
     if ( !_isEditMode ) {
-		[calendars insertObject:_calendarItem atIndex:0];
-		[_sharedManager saveCalendars:calendars];
-		[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterDataEntityCalendars
-													 type:A3DictionaryDBTransactionTypeInsertTop
-												   object:_calendarItem];
+		[_calendar assignOrderAsFirstInContext:self.savingContext];
     }
-    else {
-		NSUInteger idx = [calendars indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-			return [obj[CalendarItem_ID] isEqualToString:_calendarItem[CalendarItem_ID]];
-		}];
-		if (![_calendarItem isEqualToDictionary:calendars[idx]]) {
-			calendars[idx] = _calendarItem;
-			[_sharedManager saveCalendars:calendars];
-			[[A3SyncManager sharedSyncManager] addTransaction:A3DaysCounterDataEntityCalendars
-														 type:A3DictionaryDBTransactionTypeUpdate
-													   object:_calendarItem];
-		}
-	}
-    
+	[self.savingContext MR_saveToPersistentStoreAndWait];
+
 	[self dismissSelf];
 }
 

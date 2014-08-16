@@ -99,7 +99,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 }
 
 - (NSArray *)allMenuArrayFromStoredDataFile {
-	NSArray *allMenuArray = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3MainMenuDataEntityAllMenu];;
+	NSArray *allMenuArray = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuDataEntityAllMenu];;
 	if (!allMenuArray) {
 		allMenuArray = [self allMenu];
 	}
@@ -127,7 +127,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 }
 
 - (NSDictionary *)favoriteMenuDictionary {
-	NSDictionary *dictionary = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3MainMenuDataEntityFavorites];
+	NSDictionary *dictionary = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuDataEntityFavorites];
 	if (!dictionary) {
 		dictionary = @{
 				kA3AppsMenuName : @"Favorites",
@@ -143,16 +143,13 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 						@{kA3AppsMenuName : @"Wallet", kA3AppsClassName_iPhone : @"A3WalletMainTabBarController", kA3AppsMenuImageName : @"Wallet", kA3AppsMenuNeedSecurityCheck : @YES},
 				]
 		};
-		[[A3SyncManager sharedSyncManager] saveDataObject:dictionary forFilename:A3MainMenuDataEntityFavorites state:A3DataObjectStateInitialized];
-		[[A3SyncManager sharedSyncManager] addTransaction:A3MainMenuDataEntityFavorites
-													 type:A3DictionaryDBTransactionTypeSetBaseline
-												   object:dictionary];
+		[[A3SyncManager sharedSyncManager] setObject:dictionary forKey:A3MainMenuDataEntityFavorites state:A3DataObjectStateInitialized];
 	}
 	return dictionary;
 }
 
 - (NSArray *)favoriteItems {
-	NSDictionary *favoriteObject = [[A3SyncManager sharedSyncManager] dataObjectForFilename:A3MainMenuDataEntityFavorites];
+	NSDictionary *favoriteObject = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuDataEntityFavorites];
 	return favoriteObject[kA3AppsExpandableChildren];
 }
 
@@ -167,10 +164,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 }
 
 - (void)clearRecentlyUsedMenus {
-	[[A3SyncManager sharedSyncManager] saveDataObject:A3SyncManagerEmptyObject forFilename:A3MainMenuDataEntityRecentlyUsed state:A3DataObjectStateModified];
-	[[A3SyncManager sharedSyncManager] addTransaction:A3MainMenuDataEntityRecentlyUsed
-												 type:A3DictionaryDBTransactionTypeSetBaseline
-											   object:A3SyncManagerEmptyObject];
+	[[A3SyncManager sharedSyncManager] setObject:A3SyncManagerEmptyObject forKey:A3MainMenuDataEntityRecentlyUsed state:A3DataObjectStateModified];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
 }

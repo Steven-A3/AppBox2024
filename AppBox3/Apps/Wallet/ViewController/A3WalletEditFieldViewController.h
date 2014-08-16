@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class WalletField;
+
 @protocol WalletEditFieldDelegate <NSObject>
 
 @required
-- (void)walletFieldEdited:(NSDictionary *)field;
+- (void)walletFieldEdited:(WalletField *)field;
 
 @optional
-- (void)walletFieldAdded:(NSDictionary *)field;
+- (void)walletFieldAdded:(WalletField *)field;
 - (void)dismissedViewController:(UIViewController *)viewController;
 
 @end
@@ -23,7 +25,7 @@
 
 @property (nonatomic, weak) id<WalletEditFieldDelegate> delegate;
 @property (nonatomic, weak) NSArray *fields;
-@property (nonatomic, strong) NSMutableDictionary *field;
+@property (nonatomic, strong) WalletField *field;
 @property (readwrite) BOOL isAddMode;
 
 @end
