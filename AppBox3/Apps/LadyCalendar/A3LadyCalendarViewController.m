@@ -119,6 +119,7 @@
 - (void)userDefaultsDidChange {
 	self.dataManager.currentAccount = nil;
 	[self.dataManager currentAccount];
+	[self rightSideViewWillDismiss];
 }
 
 - (void)cloudDidImportChanges {
