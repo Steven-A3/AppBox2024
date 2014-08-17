@@ -14,6 +14,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3DaysCounterDefine.h"
 #import "DaysCounterCalendar.h"
+#import "NSMutableArray+A3Sort.h"
 
 @interface A3DaysCounterSetupCalendarViewController ()
 @property (strong, nonatomic) NSArray *calendarArray;
@@ -47,7 +48,7 @@
     self.title = NSLocalizedString(@"Calendar", @"Calendar");
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     
-    self.calendarArray = [_sharedManager allUserCalendarList];
+    self.calendarArray = [DaysCounterCalendar MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@ AND type == %@", self.eventModel.calendarID, @(CalendarCellType_User)]];
 }
 
 - (void)didReceiveMemoryWarning

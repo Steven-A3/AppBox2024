@@ -51,7 +51,7 @@
     
     self.navigationController.navigationBar.topItem.prompt = NSLocalizedString(@"Move these events to a new calendar.", @"Move these events to a new calendar.");
     
-    self.itemArray = [DaysCounterCalendar MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@", _currentCalendar.uniqueID]];
+    self.itemArray = [DaysCounterCalendar MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@ AND type == %@", _currentCalendar.uniqueID, @(CalendarCellType_User)]];
 
     [self.tableView reloadData];
 }
