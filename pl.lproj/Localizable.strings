@@ -905,3 +905,5 @@
 
 "iCloud delete is in progress. Try after 10 minutes." = "iCloud kasowania jest w toku. Starają się po 10 minutach.";
 
+
+"Syncing...(%@)" = "Synchonizacja...(%@)";

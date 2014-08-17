@@ -895,3 +895,5 @@
 "%@ syncing is in progress. Try after 10 minutes." = "%@ sincronizzazione è in corso. Prova dopo 10 minuti.";
 
 "iCloud delete is in progress. Try after 10 minutes." = "iCloud eliminazione in corso. Prova dopo 10 minuti.";
+
+"Syncing...(%@)" = "Syncing...(%@)";

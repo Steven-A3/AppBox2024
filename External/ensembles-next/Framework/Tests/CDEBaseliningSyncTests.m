@@ -71,16 +71,13 @@
     XCTAssertTrue(json.count > 0, @"JSON dictionary empty");
     
     // Merge second store. Should consolidate baselines.
-    [self mergeEnsemble:ensemble2];
-    
-    XCTAssertFalse([[NSFileManager defaultManager] fileExistsAtPath:baseline1Path], @"After second store merges, first baseline should not exist");
+    XCTAssertNil([self mergeEnsemble:ensemble2], @"Error during merge");
     
     // Check new baseline file
     baselineFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:cloudBaselinesDir error:NULL];
     NSString *baseline2 = baselineFiles.lastObject;
     NSString *baseline2Path = [cloudBaselinesDir stringByAppendingPathComponent:baseline2];
     XCTAssertEqual(baselineFiles.count, (NSUInteger)1, @"Should be a baseline");
-    XCTAssertNotEqualObjects(baseline1, baseline2, @"Baselines not have same file name");
     
     // Check content
     json = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:baseline2Path] options:0 error:NULL];

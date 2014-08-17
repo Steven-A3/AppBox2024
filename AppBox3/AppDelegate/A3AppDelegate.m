@@ -19,13 +19,11 @@
 #import "DaysCounterEvent.h"
 #import "A3DaysCounterEventDetailViewController.h"
 #import "A3DaysCounterModelManager.h"
-
 #import "A3LadyCalendarDetailViewController.h"
 #import "DaysCounterEvent+extension.h"
 #import "NSString+conversion.h"
 #import "WalletData.h"
 #import "A3SettingsBackupRestoreViewController.h"
-#import "AAAZip.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 #import "A3HolidaysFlickrDownloadManager.h"
@@ -44,14 +42,13 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 NSString *const A3NotificationCloudKeyValueStoreDidImport = @"A3CloudKeyValueStoreDidImport";
 NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataStoreDidImport";
 
-@interface A3AppDelegate () <UIAlertViewDelegate, A3DataMigrationManagerDelegate, NSURLSessionDownloadDelegate, AAAZipDelegate, CLLocationManagerDelegate>
+@interface A3AppDelegate () <UIAlertViewDelegate, A3DataMigrationManagerDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, strong) NSString *previousVersion;
 @property (nonatomic, strong) NSDictionary *localNotificationUserInfo;
 @property (nonatomic, strong) UILocalNotification *storedLocalNotification;
 @property (nonatomic, strong) NSMutableArray *downloadList;
 @property (nonatomic, strong) NSURLSessionDownloadTask *downloadTask;
-@property (nonatomic, strong) AAAZip *zipArchive;
 @property (nonatomic, strong) NSURLSession *backgroundDownloadSession;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSTimer *locationUpdateTimer;
@@ -69,7 +66,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	CDESetCurrentLoggingLevel(CDELoggingLevelWarning);
+	CDESetCurrentLoggingLevel(CDELoggingLevelVerbose);
 
 	[self prepareDirectories];
 	[A3SyncManager sharedSyncManager];
@@ -514,11 +511,11 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 	if ([A3UIDevice shouldSupportLunarCalendar]) {
 		NSString *kanjiDataFile = [@"data/LunarConverter.sqlite" pathInCachesDirectory];
 		if (![fileManager fileExistsAtPath:kanjiDataFile]) {
-			[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/LunarConverter.sqlite.zip"]];
+			[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/LunarConverter.sqlite"]];
 		}
 	}
-	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/FlickrRecommendation.json.zip"]];
-//	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/message.zip"]];
+	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/FlickrRecommendation.json"]];
+//	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/message.plist"]];
 
 	[self startDownloadDataFiles];
 }
@@ -544,14 +541,15 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 	if ([_downloadList count]) {
 		[_downloadList removeObjectAtIndex:0];
 	}
-
+	
+	NSString *filename = [downloadTask.originalRequest.URL lastPathComponent];
+	NSString *destinationPath =	[@"data" pathInCachesDirectory];
+	destinationPath = [destinationPath stringByAppendingPathComponent:filename];
+	FNLOG(@"%@", destinationPath);
 	NSFileManager *fileManager = [NSFileManager new];
-	NSString *filename = [[location path] lastPathComponent];
-	NSString *tempPath = [filename pathInTemporaryDirectory];
-	[fileManager moveItemAtURL:location toURL:[NSURL fileURLWithPath:tempPath] error:NULL];
-	_zipArchive = [[AAAZip alloc] init];
-	_zipArchive.delegate = self;
-	[_zipArchive unzipFile:tempPath unzipFileto:[@"data" pathInCachesDirectory]];
+	[fileManager moveItemAtURL:location toURL:[NSURL fileURLWithPath:destinationPath] error:NULL];
+	
+	[self startDownloadDataFiles];
 }
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
@@ -574,13 +572,6 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 		}
 	}
 	_downloadTask = nil;
-}
-
-#pragma mark - AAAZip delegate
-
-- (void)completedUnzipProcess:(BOOL)bResult {
-	_zipArchive = nil;
-	[self startDownloadDataFiles];
 }
 
 #pragma mark - HolidayNations

@@ -360,9 +360,6 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
             [self.delegate persistentStoreEnsembleWillImportStore:self];
         }
         
-        CDEPersistentStoreImporter *importer = [[CDEPersistentStoreImporter alloc] initWithPersistentStoreAtPath:self.storeURL.path managedObjectModel:self.managedObjectModel eventStore:self.eventStore];
-        importer.persistentStoreOptions = self.persistentStoreOptions;
-        importer.ensemble = self;
         [importer importWithCompletion:^(NSError *error) {
             [self endObservingSaveNotifications];
             
@@ -387,7 +384,6 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         if (saveOccurredDuringImport) {
             NSError *error = nil;
             error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeSaveOccurredDuringLeeching userInfo:nil];
-            [self forceDeleechDueToError:error];
             [self incrementProgress];
             next(error, NO);
             return;
@@ -403,6 +399,8 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     [tasks addObject:completeLeechTask];
     
     CDEAsynchronousTaskQueue *taskQueue = [[CDEAsynchronousTaskQueue alloc] initWithTasks:tasks terminationPolicy:CDETaskQueueTerminationPolicyStopOnError completion:^(NSError *error) {
+        if (error) [eventStore removeEventStore];
+        
         if (self.leeching) {
             [[NSNotificationCenter defaultCenter] postNotificationName:CDEPersistentStoreEnsembleWillEndActivityNotification object:self userInfo:@{CDEEnsembleActivityKey : @(CDEEnsembleActivityLeeching)}];
         }

@@ -34,13 +34,18 @@
 {
     if (changes.count == 0) return YES;
     
-    NSMapTable *objectsByGlobalId = [self fetchObjectsByGlobalIdentifierForChanges:changes relationshipsToInclude:self.relationshipsToUpdate error:error];
-    if (!objectsByGlobalId) return NO;
-    
-    NSMapTable *globalIdsByObject = [NSMapTable cde_strongToStrongObjectsMapTable];
-    for (CDEGlobalIdentifier *globalId in objectsByGlobalId) {
-        id object = [objectsByGlobalId objectForKey:globalId];
-        [globalIdsByObject setObject:globalId forKey:object];
+    NSDictionary *objectsByGlobalIdStringByEntity = [self fetchObjectsByGlobalIdStringByEntityNameForChanges:changes relationshipsToInclude:self.relationshipsToUpdate error:error];
+    NSMutableDictionary *globalIdStringsByObjectByEntity = [[NSMutableDictionary alloc] initWithCapacity:10];
+    for (NSString *entityName in objectsByGlobalIdStringByEntity) {
+        NSMapTable *objectsByGlobalIdString = objectsByGlobalIdStringByEntity[entityName];
+        if (!objectsByGlobalIdString) return NO;
+        
+        NSMapTable *globalIdStringsByObject = [NSMapTable cde_strongToStrongObjectsMapTable];
+        for (NSString *globalIdString in objectsByGlobalIdString) {
+            id object = [objectsByGlobalIdString objectForKey:globalIdString];
+            [globalIdStringsByObject setObject:globalIdString forKey:object];
+        }
+        globalIdStringsByObjectByEntity[entityName] = globalIdStringsByObject;
     }
     
     @try {
@@ -52,6 +57,8 @@
         
         for (CDEObjectChange *change in changes) {
             @autoreleasepool {
+                NSString *entityName = change.nameOfEntity;
+                NSMapTable *objectsByGlobalId = objectsByGlobalIdStringByEntity[entityName];
                 NSManagedObject *object = [objectsByGlobalId objectForKey:change.globalIdentifier.globalIdentifier];
                 NSArray *propertyChangeValues = change.propertyChangeValues;
                 if (!object || propertyChangeValues.count == 0) continue;
@@ -62,18 +69,18 @@
                         NSArray *attributeChanges = [propertyChangeValues filteredArrayUsingPredicate:attributePredicate];
                         [self applyAttributeChanges:attributeChanges toObject:object];
                     }
-
+                    
                     // To-one relationship changes
                     NSArray *toOneChanges = [propertyChangeValues filteredArrayUsingPredicate:toOneRelationshipPredicate];
-                    [self applyToOneRelationshipChanges:toOneChanges toObject:object withObjectsByGlobalId:objectsByGlobalId];
+                    [self applyToOneRelationshipChanges:toOneChanges toObject:object withObjectsByGlobalIdByEntityName:objectsByGlobalIdStringByEntity];
                     
                     // To-many relationship changes
                     NSArray *toManyChanges = [propertyChangeValues filteredArrayUsingPredicate:toManyRelationshipPredicate];
-                    [self applyToManyRelationshipChanges:toManyChanges toObject:object withObjectsByGlobalId:objectsByGlobalId];
+                    [self applyToManyRelationshipChanges:toManyChanges toObject:object withObjectsByGlobalIdByEntityName:objectsByGlobalIdStringByEntity];
                     
                     // Ordered to-many relationship changes
                     NSArray *orderedToManyChanges = [propertyChangeValues filteredArrayUsingPredicate:orderedToManyRelationshipPredicate];
-                    [self applyOrderedToManyRelationshipChanges:orderedToManyChanges toObject:object withObjectsByGlobalId:objectsByGlobalId andGlobalIdsByObject:globalIdsByObject];
+                    [self applyOrderedToManyRelationshipChanges:orderedToManyChanges toObject:object withObjectsByGlobalIdByEntityName:objectsByGlobalIdStringByEntity andGlobalIdsByObjectByEntityName:globalIdStringsByObjectByEntity];
                 }];
             }
         }
@@ -82,7 +89,7 @@
         *error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeUnknown userInfo:@{NSLocalizedFailureReasonErrorKey:exception.reason}];
         return NO;
     }
-    
+
     return YES;
 }
 
@@ -105,7 +112,7 @@
 }
 
 // Called on main context queue
-- (void)applyToOneRelationshipChanges:(NSArray *)changes toObject:(NSManagedObject *)object withObjectsByGlobalId:(NSMapTable *)objectsByGlobalId
+- (void)applyToOneRelationshipChanges:(NSArray *)changes toObject:(NSManagedObject *)object withObjectsByGlobalIdByEntityName:(NSDictionary *)objectsByGlobalIdByEntityName
 {
     NSEntityDescription *entity = object.entity;
     for (CDEPropertyChangeValue *relationshipChange in changes) {
@@ -115,6 +122,7 @@
             continue;
         }
         
+        NSMapTable *objectsByGlobalId = objectsByGlobalIdByEntityName[relationship.destinationEntity.name];
         id newRelatedObject = nil;
         if (relationshipChange.relatedIdentifier && (id)relationshipChange.relatedIdentifier != [NSNull null]) {
             newRelatedObject = [objectsByGlobalId objectForKey:relationshipChange.relatedIdentifier];
@@ -129,7 +137,7 @@
 }
 
 // Called on main context queue
-- (void)applyToManyRelationshipChanges:(NSArray *)changes toObject:(NSManagedObject *)object withObjectsByGlobalId:(NSMapTable *)objectsByGlobalId
+- (void)applyToManyRelationshipChanges:(NSArray *)changes toObject:(NSManagedObject *)object withObjectsByGlobalIdByEntityName:(NSDictionary *)objectsByGlobalIdByEntityName
 {
     NSEntityDescription *entity = object.entity;
     for (CDEPropertyChangeValue *relationshipChange in changes) {
@@ -139,6 +147,7 @@
             continue;
         }
         
+        NSMapTable *objectsByGlobalId = objectsByGlobalIdByEntityName[relationship.destinationEntity.name];
         NSMutableSet *relatedObjects = [object mutableSetValueForKey:relationshipChange.propertyName];
         for (NSString *identifier in relationshipChange.addedIdentifiers) {
             id newRelatedObject = [objectsByGlobalId objectForKey:identifier];
@@ -156,7 +165,7 @@
 }
 
 // Called on main context queue
-- (void)applyOrderedToManyRelationshipChanges:(NSArray *)changes toObject:(NSManagedObject *)object withObjectsByGlobalId:(NSMapTable *)objectsByGlobalId andGlobalIdsByObject:(NSMapTable *)globalIdsByObject
+- (void)applyOrderedToManyRelationshipChanges:(NSArray *)changes toObject:(NSManagedObject *)object withObjectsByGlobalIdByEntityName:(NSDictionary *)objectsByGlobalIdByEntityName andGlobalIdsByObjectByEntityName:(NSDictionary *)globalIdsByObjectByEntityName
 {
     NSEntityDescription *entity = object.entity;
     for (CDEPropertyChangeValue *relationshipChange in changes) {
@@ -174,6 +183,7 @@
         }
         
         // Added objects
+        NSMapTable *objectsByGlobalId = objectsByGlobalIdByEntityName[relationship.destinationEntity.name];
         for (NSString *identifier in relationshipChange.addedIdentifiers) {
             id newRelatedObject = [objectsByGlobalId objectForKey:identifier];
             if (newRelatedObject)
@@ -197,6 +207,7 @@
         }
         
         // Apply new ordering. Sort first on index, and use global id to resolve conflicts.
+        NSMapTable *globalIdsByObject = globalIdsByObjectByEntityName[relationship.destinationEntity.name];
         [relatedObjects sortUsingComparator:^NSComparisonResult(id object1, id object2) {
             NSNumber *index1 = [finalIndexesByObject objectForKey:object1];
             NSNumber *index2 = [finalIndexesByObject objectForKey:object2];
@@ -206,6 +217,7 @@
             
             NSString *globalId1 = [globalIdsByObject objectForKey:object1];
             NSString *globalId2 = [globalIdsByObject objectForKey:object2];
+            NSAssert(globalId1 && globalId2, @"Global id was nil when sorting ordered relationship");
             NSComparisonResult globalIdResult = [globalId1 compare:globalId2];
             
             return globalIdResult;

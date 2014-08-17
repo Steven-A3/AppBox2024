@@ -307,9 +307,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             //[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
 			[self updateLoanCalculation];
-        } else {
-			[self saveLoanData];
-		}
+        }
     }
     else if ([noti.name isEqualToString:A3LoanCalcNotificationExtraPaymentDisabled]) {
         self.loanData.extraPaymentMonthly = nil;
@@ -337,9 +335,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             //[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
             [self updateLoanCalculation];
-        } else {
-			[self saveLoanData];
-		}
+        }
     }
     else if ([noti.name isEqualToString:A3LoanCalcNotificationDownPaymentEnabled]) {
 
@@ -356,9 +352,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         if (!_isComparisonMode) {
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationFade];
 			[self updateLoanCalculation];
-        } else {
-			[self saveLoanData];
-		}
+        }
     }
     else if ([noti.name isEqualToString:A3LoanCalcNotificationDownPaymentDisabled]) {
 
@@ -387,10 +381,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         if (!_isComparisonMode) {
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationFade];
             [self updateLoanCalculation];
-        } else {
-			[self saveLoanData];
-		}
+        }
     }
+	[self saveLoanData];
+	[self saveLoanDataA];
+	[self saveLoanDataB];
 }
 
 - (void)didReceiveMemoryWarning

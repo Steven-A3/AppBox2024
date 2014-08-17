@@ -28,19 +28,6 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	A3SyncStartDeniedBecauseCloudDeleteStartedWithin10Minutes
 };
 
-NSString * const A3DictionaryDBLogsDirectoryName = @"DictionaryTransactionLogs";
-NSString * const A3DictionaryDBDownloadedFileList = @"downloadedFilesSet";
-NSString * const A3DictionaryDBFirstHunkFilename = @"baseline";
-NSString * const A3DictionaryDBDeviceID = @"deviceID";					// [UIDevice identifierForVendor]
-NSString * const A3DictionaryDBTransactionID = @"transactionID";		// UUID
-NSString * const A3DictionaryDBEntityKey = @"entityKey";				// userDefaultsKeyName
-NSString * const A3DictionaryDBTransactionType = @"transactionType";	//
-NSString * const A3DictionaryDBTimestamp = @"timestamp";				// NSDate date
-NSString * const A3DictionaryDBUniqueID = @"uniqueID";
-NSString * const A3DictionaryDBObject = @"transactionObject";			// object for each transaction
-NSString * const A3DictionaryDBLastPlayedTransactionID = @"A3DictionaryDBLastPlayedTransactionByID";	// filename
-NSString * const A3DictionaryDBInitialMergeObjects = @"A3DictionaryDBInitialMergeObjects";
-
 @interface A3SyncManager () <CDEPersistentStoreEnsembleDelegate>
 @end
 

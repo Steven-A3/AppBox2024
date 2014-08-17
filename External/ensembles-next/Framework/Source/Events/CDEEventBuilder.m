@@ -22,7 +22,9 @@
 #import "CDERevision.h"
 #import "CDERevisionManager.h"
 
-@implementation CDEEventBuilder
+@implementation CDEEventBuilder {
+    NSManagedObjectID *eventID;
+}
 
 @synthesize event = event;
 @synthesize eventStore = eventStore;
@@ -38,6 +40,7 @@
         eventStore = newStore;
         eventManagedObjectContext = newContext;
         eventType = CDEStoreModificationEventTypeIncomplete;
+        eventID = nil;
     }
     return self;
 }
@@ -61,7 +64,14 @@
         CDERevisionManager *revisionManager = [[CDERevisionManager alloc] initWithEventStore:eventStore];
         revisionManager.managedObjectModelURL = self.ensemble.managedObjectModelURL;
 
+        NSError *error = nil;
         event = [NSEntityDescription insertNewObjectForEntityForName:@"CDEStoreModificationEvent" inManagedObjectContext:eventManagedObjectContext];
+        if ([eventManagedObjectContext obtainPermanentIDsForObjects:@[event] error:&error]) {
+            eventID = [event.objectID copy];
+        }
+        else {
+            CDELog(CDELoggingLevelError, @"Could not obtain permanent id for event: %@", error);
+        }
         
         event.type = CDEStoreModificationEventTypeIncomplete;
         event.timestamp = [NSDate timeIntervalSinceReferenceDate];
@@ -96,6 +106,8 @@
 - (void)finalizeNewEvent
 {
     [eventManagedObjectContext performBlockAndWait:^{
+        [self refetchEvent];
+
         CDERevisionManager *revisionManager = [[CDERevisionManager alloc] initWithEventStore:eventStore];
         revisionManager.managedObjectModelURL = self.ensemble.managedObjectModelURL;
         
@@ -105,11 +117,27 @@
     }];
 }
 
+#pragma mark - Accessors
+
+- (CDEStoreModificationEvent *)event
+{
+    [self refetchEvent];
+    return event;
+}
+
+- (void)refetchEvent
+{
+    event = (id)[eventManagedObjectContext existingObjectWithID:eventID error:NULL];
+}
+
 #pragma mark - Modifying Events
 
 - (void)performBlockAndWait:(CDECodeBlock)block
 {
-    [eventManagedObjectContext performBlockAndWait:block];
+    [eventManagedObjectContext performBlockAndWait:^{
+        [self refetchEvent];
+        if (block) block();
+    }];
 }
 
 #pragma mark - Saving
@@ -118,12 +146,14 @@
 {
     __block BOOL result = YES;
     [eventManagedObjectContext performBlockAndWait:^{
+        [self refetchEvent];
+
         result = [eventManagedObjectContext save:error];
         if (!result) return;
         
-        NSManagedObjectID *eventID = self.event.objectID;
         [eventManagedObjectContext reset];
-        event = (id)[eventManagedObjectContext existingObjectWithID:eventID error:error];
+        
+        [self refetchEvent];
         result = (event != nil);
     }];
     return result;
@@ -154,6 +184,8 @@
     NSArray *entityNames = [objectIDs valueForKeyPath:@"entity.name"];
     NSMutableArray *globalIDs = [[NSMutableArray alloc] init];
     [eventManagedObjectContext performBlockAndWait:^{
+        [self refetchEvent];
+
         NSArray *existingGlobalIdentifiers = nil;
         if (globalIDStrings) existingGlobalIdentifiers = [CDEGlobalIdentifier fetchGlobalIdentifiersForIdentifierStrings:globalIDStrings withEntityNames:entityNames inManagedObjectContext:eventManagedObjectContext];
         
@@ -242,6 +274,7 @@
     [eventManagedObjectContext performBlockAndWait:^{
         @autoreleasepool {
             __block NSUInteger i = 0;
+            [self refetchEvent];
             NSArray *allPropertyChanges = [changeArrays valueForKeyPath:@"@unionOfArrays.self"];
             NSDictionary *globalIdsByObjectID = [self globalIdentifiersByObjectIDForPropertyChangeValues:allPropertyChanges];
             [changeArrays cde_enumerateObjectsDrainingEveryIterations:50 usingBlock:^(NSArray *propertyChanges, NSUInteger index, BOOL *stop) {
@@ -269,6 +302,7 @@
 {
     [eventManagedObjectContext performBlockAndWait:^{
         @autoreleasepool {
+            [self refetchEvent];
             NSArray *globalIds = [CDEGlobalIdentifier fetchGlobalIdentifiersForObjectIDs:objectIDs inManagedObjectContext:eventManagedObjectContext];
             [globalIds enumerateObjectsUsingBlock:^(CDEGlobalIdentifier *globalId, NSUInteger i, BOOL *stop) {
                 NSManagedObjectID *objectID = objectIDs[i];
@@ -333,6 +367,7 @@
 {
     [eventManagedObjectContext performBlockAndWait:^{
         @autoreleasepool {
+            [self refetchEvent];
             NSArray *globalIds = [CDEGlobalIdentifier fetchGlobalIdentifiersForObjectIDs:objectIDs inManagedObjectContext:eventManagedObjectContext];
             [globalIds cde_enumerateObjectsDrainingEveryIterations:50 usingBlock:^(CDEGlobalIdentifier *globalId, NSUInteger index, BOOL *stop) {
                 if ((id)globalId == [NSNull null]) {
@@ -519,6 +554,8 @@
 {
     __block BOOL success = YES;
     [eventManagedObjectContext performBlockAndWait:^{
+        [self refetchEvent];
+
         NSFetchRequest *changeRequest = [NSFetchRequest fetchRequestWithEntityName:@"CDEObjectChange"];
         changeRequest.resultType = NSManagedObjectIDResultType;
         changeRequest.predicate = [NSPredicate predicateWithFormat:@"storeModificationEvent = %@", event];

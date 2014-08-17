@@ -918,3 +918,5 @@
 "%@ syncing is in progress. Try after 10 minutes." = "%@同步进行中。10分钟后尝试。";
 
 "iCloud delete is in progress. Try after 10 minutes." = "iCloud中删除正在进行中。10分钟后尝试。";
+
+"Syncing...(%@)" = "同步...(%@)";

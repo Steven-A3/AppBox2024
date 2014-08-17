@@ -26,10 +26,12 @@
         return [eventContext objectWithID:changeID];
     }];
     
-    NSMapTable *objectsByGlobalId = [self fetchObjectsByGlobalIdentifierForChanges:changes relationshipsToInclude:nil error:error];
-    if (!objectsByGlobalId) return NO;
+    NSDictionary *objectsByGlobalIdByEntity = [self fetchObjectsByGlobalIdStringByEntityNameForChanges:changes relationshipsToInclude:nil error:error];
     
     for (CDEObjectChange *change in changes) {
+        NSMapTable *objectsByGlobalId = objectsByGlobalIdByEntity[change.nameOfEntity];
+        if (!objectsByGlobalId) return NO;
+
         NSManagedObject *object = [objectsByGlobalId objectForKey:change.globalIdentifier.globalIdentifier];
         
         // Clear the store URI in the global id

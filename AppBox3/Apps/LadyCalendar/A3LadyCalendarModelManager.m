@@ -90,6 +90,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	LadyCalendarAccount *deletingAccount = [account MR_inContext:savingContext];
 	[deletingAccount MR_deleteEntityInContext:savingContext];
+	[savingContext MR_saveToPersistentStoreAndWait];
 }
 
 - (void)makePredictPeriodsBeforeCurrentPeriod

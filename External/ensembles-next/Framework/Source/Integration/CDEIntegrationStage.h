@@ -27,7 +27,7 @@
 
 - (BOOL)applyNextBatchOfChanges:(NSError * __autoreleasing *)error;
 
-- (NSMapTable *)fetchObjectsByGlobalIdentifierForChanges:(id)objectChanges relationshipsToInclude:(NSArray *)relationships error:(NSError * __autoreleasing *)error;
+- (NSDictionary *)fetchObjectsByGlobalIdStringByEntityNameForChanges:(id)objectChanges relationshipsToInclude:(NSArray *)relationships error:(NSError * __autoreleasing *)error;
 - (void)enumerateObjectChangeIDs:(NSArray *)changeIDs withBlock:(void(^)(NSArray *batchIDs))block;
 
 // Use these to avoid calling a custom accessor. Fires KVO.

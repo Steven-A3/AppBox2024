@@ -32,7 +32,18 @@
 
 	self.hud.labelText = enable ? NSLocalizedString(@"Enabling iCloud", @"Enabling iCloud") : NSLocalizedString(@"Disabling iCloud", @"Disableing iCloud");
 	[self.hud show:YES];
-	[self.hud hide:YES afterDelay:3];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(persistentStoreActivityWillEndActivity:) name:CDEPersistentStoreEnsembleWillEndActivityNotification object:nil];
+}
+
+- (void)persistentStoreActivityWillEndActivity:(NSNotification *)notification {
+	FNLOG();
+	
+	CDEEnsembleActivity activity = (CDEEnsembleActivity) [[notification.userInfo objectForKey:CDEEnsembleActivityKey] unsignedIntegerValue];
+	if (activity == CDEEnsembleActivityLeeching || activity == CDEEnsembleActivityDeleeching) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:CDEPersistentStoreEnsembleWillEndActivityNotification object:nil];
+		[self.hud hide:YES];
+	}
 }
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {

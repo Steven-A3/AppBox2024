@@ -75,6 +75,39 @@
     XCTAssertEqualObjects([parentOnDevice2 valueForKey:@"name"], @"dave", @"Wrong name on device 2");
 }
 
+- (void)testRepeatedGlobalIdentifiers
+{
+    [self leechStores];
+    
+    NSManagedObject *parent = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    [parent setValue:@"bob" forKey:@"name"];
+    
+    parent = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    [parent setValue:@"tom" forKey:@"name"];
+    
+    NSManagedObject *child = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
+    [child setValue:@"bob" forKey:@"name"];
+    
+    child = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
+    [child setValue:@"tom" forKey:@"name"];
+    
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+    XCTAssertNil([self syncChanges], @"First sync failed");
+    
+    // Fetch on device 2
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Parent"];
+    NSArray *parents = [context2 executeFetchRequest:fetch error:NULL];
+    NSSet *expected = [NSSet setWithObjects:@"bob", @"tom", nil];
+    NSSet *found = [NSSet setWithArray:[parents valueForKeyPath:@"name"]];
+    XCTAssertEqualObjects(found, expected, @"Wrong names for parents");
+    
+    // Fetch children
+    fetch = [NSFetchRequest fetchRequestWithEntityName:@"Child"];
+    NSArray *children = [context2 executeFetchRequest:fetch error:NULL];
+    found = [NSSet setWithArray:[children valueForKeyPath:@"name"]];
+    XCTAssertEqualObjects(found, expected, @"Wrong names for children");
+}
+
 - (void)testConcurrentInsertsOfSameObject
 {
     [self leechStores];

@@ -910,3 +910,5 @@
 "%@ syncing is in progress. Try after 10 minutes." = "%@の同期が進行中です。10分後に試してみてください。";
 
 "iCloud delete is in progress. Try after 10 minutes." = "iCloud削除を進行中です。10分後に試してみてください。";
+
+"Syncing...(%@)" = "同期化...(%@)";
