@@ -279,7 +279,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
     A3WalletEditFieldViewController *editFieldViewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletEditFieldViewController"];
     editFieldViewController.delegate = self;
-	editFieldViewController.field = [field mutableCopy];
+	editFieldViewController.field = field;
 	editFieldViewController.fields = _fields;
 
     return editFieldViewController;
@@ -555,8 +555,9 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
 
-        NSDictionary *field = [_fields objectAtIndex:indexPath.row];
+        WalletField *field = [_fields objectAtIndex:indexPath.row];
         [_fields removeObject:field];
+		[field MR_deleteEntityInContext:self.savingContext];
 
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   

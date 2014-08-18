@@ -124,9 +124,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 - (void)closeEditing {
 	[self.firstResponder resignFirstResponder];
 
-	if ([_field.name length] > 0 && !_sameFieldNameExists) {
-		[self updateEditedInfo];
-	}
+	[self updateEditedInfo];
 
 	if (_delegate && [_delegate respondsToSelector:@selector(dismissedViewController:)]) {
 		[_delegate dismissedViewController:self];
@@ -163,7 +161,9 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
     if (_isAddMode) {
         if ([_field.name length] && _delegate && [_delegate respondsToSelector:@selector(walletFieldAdded:)]) {
             [_delegate walletFieldAdded:_field];
-        }
+        } else {
+			[_field MR_deleteEntityInContext:_field.managedObjectContext];
+		}
     }
     // 편집모드
     else {
