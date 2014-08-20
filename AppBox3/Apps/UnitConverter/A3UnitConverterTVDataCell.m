@@ -174,14 +174,14 @@
     }
     
     [self.touchCoverRectButton makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.contentView.left);
+        make.left.equalTo(self.contentView.left);
         make.top.equalTo(self.contentView.top);
         make.bottom.equalTo(self.contentView.bottom);
         if (IS_IPAD) {
             make.right.equalTo(self.contentView.right).with.offset(-160);
         }
         else {
-            make.trailing.equalTo(self.rateLabel.right).with.offset(-20);
+            make.right.equalTo(self.rateLabel.right).with.offset(-20);
         }
     }];
 }

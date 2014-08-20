@@ -60,8 +60,8 @@
     [self.view addSubview:self.tableViewTopBlurView];
     [self.tableViewTopBlurView bringSubviewToFront:self.mapView];
     [self.tableViewTopBlurView makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.mapView.left);
-        make.trailing.equalTo(self.mapView.right);
+        make.left.equalTo(self.mapView.left);
+        make.right.equalTo(self.mapView.right);
         make.height.equalTo(@5);
         make.bottom.equalTo(self.mapView.bottom);
     }];

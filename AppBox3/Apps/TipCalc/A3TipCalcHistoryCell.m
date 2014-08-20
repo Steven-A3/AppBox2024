@@ -62,7 +62,6 @@
 
 -(void)setupConstraintLayout {
     [_dateLabel makeConstraints:^(MASConstraintMaker *make) {
-        //make.trailing.equalTo(@-15);
         make.leading.equalTo(@15);
         make.baseline.equalTo(self.bottom).with.offset(-41);
     }];

@@ -60,7 +60,7 @@
     [_factorLabel makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_dateLabel.bottom).with.offset(10.0);
         make.leading.equalTo(leftInset);
-        make.trailing.equalTo(self.right).with.offset(-15.0);
+        make.right.equalTo(self.right).with.offset(-15.0);
     }];
     
     _dateLabel.font = [UIFont systemFontOfSize:12];

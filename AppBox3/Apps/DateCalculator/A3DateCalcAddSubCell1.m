@@ -27,20 +27,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
-//        [_addModeButton makeConstraints:^(MASConstraintMaker *make) {
-//            _addLeftConst = make.leading.equalTo(self.contentView.left);
-//            _addTopConst = make.top.equalTo(self.contentView.top);
-//            _addBottomConst = make.bottom.equalTo(self.contentView.bottom);
-//            _addRightConst = make.trailing.equalTo(self.contentView.centerX);
-//        }];
-//        
-//        [_subModeButton makeConstraints:^(MASConstraintMaker *make) {
-//            _subLeftConst = make.leading.equalTo(self.contentView.centerX);
-//            _subTopConst = make.top.equalTo(self.contentView.top);
-//            _subBottomConst = make.bottom.equalTo(self.contentView.bottom);
-//            _subRightConst = make.trailing.equalTo(self.contentView.right);
-//        }];
+		
     }
     return self;
 }
@@ -50,20 +37,6 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
-        
-//        [_addModeButton makeConstraints:^(MASConstraintMaker *make) {
-//            self.addLeftConst = make.leading.equalTo(self.contentView.left);
-//            self.addTopConst = make.top.equalTo(self.contentView.top);
-//            self.addBottomConst = make.bottom.equalTo(self.contentView.bottom);
-//            self.addRightConst = make.trailing.equalTo(self.contentView.centerX);
-//        }];
-//        
-//        [_subModeButton makeConstraints:^(MASConstraintMaker *make) {
-//            self.subLeftConst = make.leading.equalTo(self.contentView.centerX);
-//            self.subTopConst = make.top.equalTo(self.contentView.top);
-//            self.subBottomConst = make.bottom.equalTo(self.contentView.bottom);
-//            self.subRightConst = make.trailing.equalTo(self.contentView.right);
-//        }];
     }
     return self;
 }

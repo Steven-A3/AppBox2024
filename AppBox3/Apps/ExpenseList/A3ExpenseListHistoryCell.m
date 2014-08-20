@@ -63,16 +63,16 @@
 
 -(void)setupConstraintLayout {
     [_usedAmountLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(@15);
-        make.trailing.equalTo(_dateLabel.left);
+		make.left.equalTo(self.left).with.offset(15);
+        make.right.equalTo(_dateLabel.left);
         make.top.equalTo(@10);
     }];
     [_dateLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.equalTo(self.contentView.right).with.offset(-15);
+        make.right.equalTo(self.contentView.right).with.offset(-15);
         make.top.equalTo(@10);
     }];
     [_resultAmountLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(@15);
+        make.left.equalTo(self.left).with.offset(15);
         make.bottom.equalTo(self.bottom).with.offset(-10.0);
         make.right.equalTo(self.right).with.offset(-15);
     }];

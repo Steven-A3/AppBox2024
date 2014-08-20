@@ -69,8 +69,8 @@
     footerSeparator.backgroundColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
     [_tableFooterView addSubview:footerSeparator];
     [footerSeparator makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(_tableFooterView.left);
-        make.trailing.equalTo(_tableFooterView.right);
+        make.left.equalTo(_tableFooterView.left);
+        make.right.equalTo(_tableFooterView.right);
         make.bottom.equalTo(_tableFooterView.top);
         make.height.equalTo(IS_RETINA ? @(0.5) : @(1.0));
     }];
@@ -104,8 +104,8 @@
 
     [self.view addSubview:self.tableViewTopBlurView];
     [self.tableViewTopBlurView makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.infoTableView.left);
-        make.trailing.equalTo(self.infoTableView.right);
+        make.left.equalTo(self.infoTableView.left);
+        make.right.equalTo(self.infoTableView.right);
         make.height.equalTo(@5);
         make.bottom.equalTo(self.mapView.bottom);
     }];

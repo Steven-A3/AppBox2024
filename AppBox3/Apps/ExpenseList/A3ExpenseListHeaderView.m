@@ -116,7 +116,7 @@
     [_sliderBaseLineView makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(self.width);
         make.height.equalTo(@5.0);
-        make.leading.equalTo(self.left);
+        make.left.equalTo(self.left);
         if (IS_IPAD) {
             make.top.equalTo(@65);
         } else {
@@ -128,44 +128,43 @@
         make.width.equalTo(@44);
         make.height.equalTo(@44);
         make.centerY.equalTo(_sliderBaseLineView.centerY);
-        _sliderThumbLeadingConst = make.leading.equalTo(self.left);
+        _sliderThumbLeadingConst = make.left.equalTo(self.left);
     }];
     
     [_sliderRedLineView makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.equalTo(_sliderThumbView.centerX);
+        make.right.equalTo(_sliderThumbView.centerX);
         make.height.equalTo(@5.0);
-        make.leading.equalTo(self.left);
+        make.left.equalTo(self.left);
         make.centerY.equalTo(_sliderBaseLineView.centerY);
     }];
     
     [_usedAmountLabel makeConstraints:^(MASConstraintMaker *make) {
         if (IS_IPAD) {
-            make.leading.equalTo(self.left).with.offset(28.0);
+            make.left.equalTo(self.left).with.offset(28.0);
             //make.bottom.equalTo(_sliderBaseLineView.top).with.offset(-10.0);
             make.baseline.equalTo(self.bottom).with.offset(IS_RETINA? -103.5 : -103.0);
         }
         else {
-            make.leading.equalTo(self.left).with.offset(15.0);
+            make.left.equalTo(self.left).with.offset(15.0);
             make.baseline.equalTo(self.bottom).with.offset(-72.5);
         }
     }];
     
     [_resultLabel makeConstraints:^(MASConstraintMaker *make) {
         if (IS_IPAD) {
-            _savedPriceLabelTrailingConst = make.trailing.equalTo(_detailInfoButton.left).with.offset(2);
-            make.leading.greaterThanOrEqualTo(@10);
-            //make.top.equalTo(_sliderBaseLineView.bottom).with.offset(28.0);
+            _savedPriceLabelTrailingConst = make.right.equalTo(_detailInfoButton.left).with.offset(2);
+            make.left.greaterThanOrEqualTo(@10);
             make.baseline.equalTo(self.bottom).with.offset(IS_RETINA? -46.5 : -46);
             
         } else {
-            _savedPriceLabelTrailingConst = make.trailing.equalTo(_detailInfoButton.left).with.offset(2);
+            _savedPriceLabelTrailingConst = make.right.equalTo(_detailInfoButton.left).with.offset(2);
             make.leading.greaterThanOrEqualTo(@10);
             make.baseline.equalTo(self.bottom).with.offset(-27.5);
         }
     }];
     
     [_detailInfoButton makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.equalTo(self.right).with.offset(-4);
+        make.right.equalTo(self.right).with.offset(-4);
         make.centerY.equalTo(_resultLabel.centerY);
         make.width.equalTo(@44);
         make.height.equalTo(@44);
@@ -192,7 +191,7 @@
             [aLabel sizeToFit];
             [aLabel removeConstraints:aLabel.constraints];
             [aLabel makeConstraints:^(MASConstraintMaker *make) {
-                make.trailing.equalTo(((UIView *)_sliderMeterViews[idx]).left).with.offset(IS_RETINA ? -4.5 : -5.0);
+                make.right.equalTo(((UIView *)_sliderMeterViews[idx]).left).with.offset(IS_RETINA ? -4.5 : -5.0);
                 make.baseline.equalTo(self.bottom).with.offset(IS_RETINA ? -74.5 : -74);
             }];
         }];

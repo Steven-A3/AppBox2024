@@ -120,14 +120,14 @@
     }];
     
     [_topLineView makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.left);
-        make.trailing.equalTo(self.right);
+        make.left.equalTo(self.left);
+        make.right.equalTo(self.right);
         make.top.equalTo(self.top);
         make.height.equalTo(@0.5);
     }];
     [_bottomLineView makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.left);
-        make.trailing.equalTo(self.right);
+        make.left.equalTo(self.left);
+        make.right.equalTo(self.right);
         make.bottom.equalTo(self.bottom);
         make.height.equalTo(@0.5);
     }];

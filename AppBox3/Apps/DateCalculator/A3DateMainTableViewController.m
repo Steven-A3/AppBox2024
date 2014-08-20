@@ -1273,7 +1273,7 @@
             make.width.equalTo(@10);
             make.top.equalTo(cell.contentView.top);
             make.bottom.equalTo(cell.contentView.bottom);
-            make.trailing.equalTo(cell.contentView.right);
+            make.right.equalTo(cell.contentView.right);
         }];
         textField.hidden = YES;
         textField.delegate = self;

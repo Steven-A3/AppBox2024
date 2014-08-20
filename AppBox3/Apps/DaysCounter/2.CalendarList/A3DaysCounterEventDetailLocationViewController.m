@@ -50,8 +50,8 @@
     self.tableView.tableFooterView = [UIView new];
     [self.view addSubview:self.tableViewTopBlurView];
     [self.tableViewTopBlurView makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.tableView.left);
-        make.trailing.equalTo(self.tableView.right);
+        make.left.equalTo(self.tableView.left);
+        make.right.equalTo(self.tableView.right);
         make.height.equalTo(@5);
         make.bottom.equalTo(self.mapView.bottom);
     }];

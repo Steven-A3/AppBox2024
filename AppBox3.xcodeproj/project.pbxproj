@@ -311,6 +311,7 @@
 		683224BD17CE1B7800973F34 /* A3HolidaysCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 683224BC17CE1B7800973F34 /* A3HolidaysCell.m */; };
 		6832ADE216A8D38500BEEEE6 /* A3CurrencySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */; };
 		6835659418FA663100C3494C /* A3WalletMoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6835659318FA663100C3494C /* A3WalletMoreTableViewController.m */; };
+		683A291B19A1B25200265484 /* A3DateCalculationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A291A19A1B25200265484 /* A3DateCalculationTest.m */; };
 		683B959315EB252400575377 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683B959215EB252400575377 /* QuartzCore.framework */; };
 		68425D581977BD5F007C1AAE /* DaysCounterReminder+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D571977BD5F007C1AAE /* DaysCounterReminder+extension.m */; };
 		68425D5B1977BF63007C1AAE /* DaysCounterFavorite+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D5A1977BF63007C1AAE /* DaysCounterFavorite+extension.m */; };
@@ -1414,6 +1415,7 @@
 		6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencySelectViewController.m; path = Apps/Currency/A3CurrencySelectViewController.m; sourceTree = "<group>"; };
 		6835659218FA663100C3494C /* A3WalletMoreTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletMoreTableViewController.h; sourceTree = "<group>"; };
 		6835659318FA663100C3494C /* A3WalletMoreTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletMoreTableViewController.m; sourceTree = "<group>"; };
+		683A291A19A1B25200265484 /* A3DateCalculationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3DateCalculationTest.m; path = DateCalculation/A3DateCalculationTest.m; sourceTree = "<group>"; };
 		683B953E15EB233500575377 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = common.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		683B959215EB252400575377 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		68425D561977BD5F007C1AAE /* DaysCounterReminder+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DaysCounterReminder+extension.h"; sourceTree = "<group>"; };
@@ -3501,6 +3503,14 @@
 			name = DKLiveBlur;
 			sourceTree = "<group>";
 		};
+		683A291519A1B20900265484 /* DateCalculation */ = {
+			isa = PBXGroup;
+			children = (
+				683A291A19A1B25200265484 /* A3DateCalculationTest.m */,
+			);
+			name = DateCalculation;
+			sourceTree = "<group>";
+		};
 		683B94BE15EB230000575377 /* {Resources} */ = {
 			isa = PBXGroup;
 			children = (
@@ -3800,6 +3810,7 @@
 		6876D6FE17A75DAE00E16991 /* AppBox3 Tests */ = {
 			isa = PBXGroup;
 			children = (
+				683A291519A1B20900265484 /* DateCalculation */,
 				8079DFBA190F93B90084BD89 /* DateLunar */,
 				6819A86A18A6084600E63C8B /* Formatter */,
 				68DBF04717CB8831009CAC33 /* Holidays */,
@@ -5254,7 +5265,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = A3;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = ALLABOUTAPPS;
 				TargetAttributes = {
 					6829688D18505E3800B70E13 = {
@@ -6200,6 +6211,7 @@
 				68E6D12018A48C0F00109183 /* A3FormatterTest.m in Sources */,
 				685946D118C371C800528190 /* A3SpeechTest.m in Sources */,
 				68DBF05017CB8AA0009CAC33 /* HolidayData.m in Sources */,
+				683A291B19A1B25200265484 /* A3DateCalculationTest.m in Sources */,
 				8079DFBC190F93B90084BD89 /* A3DateLunarTest.m in Sources */,
 				68DBF05417CB8AAB009CAC33 /* HolidayData+Asia.m in Sources */,
 				689E9856197C1BB5003710C3 /* A3UnitDataManager.m in Sources */,
@@ -6625,10 +6637,12 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$PROJECT_DIR/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -6649,7 +6663,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0BA11441-1B91-4E06-8C75-8C330C0E187B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -6671,10 +6685,12 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$PROJECT_DIR/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -6688,7 +6704,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-ObjC";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0BA11441-1B91-4E06-8C75-8C330C0E187B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

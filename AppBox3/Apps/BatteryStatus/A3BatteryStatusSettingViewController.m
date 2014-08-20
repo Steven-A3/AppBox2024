@@ -148,7 +148,7 @@ NSString *const A3BatteryTitleKey = @"title";
 
             [themeColorView makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(cell.contentView.centerY);
-                make.trailing.equalTo(cell.contentView.right).with.offset(-27.5);
+                make.right.equalTo(cell.contentView.right).with.offset(-27.5);
                 make.width.equalTo(@30);
                 make.height.equalTo(@30);
             }];
@@ -195,7 +195,7 @@ NSString *const A3BatteryTitleKey = @"title";
             [cell.contentView addSubview:info];
             [info makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(cell.centerY);
-                make.trailing.equalTo(cell.contentView.right).with.offset(-15);
+                make.right.equalTo(cell.contentView.right).with.offset(-15);
             }];
         }
         
@@ -212,7 +212,7 @@ NSString *const A3BatteryTitleKey = @"title";
             [cell.contentView addSubview:info];
             [info makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(cell.centerY);
-                make.trailing.equalTo(cell.contentView.right).with.offset(-15);
+                make.right.equalTo(cell.contentView.right).with.offset(-15);
             }];
         }
         

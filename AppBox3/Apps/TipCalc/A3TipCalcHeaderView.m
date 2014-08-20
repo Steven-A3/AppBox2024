@@ -145,7 +145,7 @@
     }];
     
     [_detailInfoButton makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.equalTo(self.right).with.offset(-4);
+        make.right.equalTo(self.right).with.offset(-4);
         make.centerY.equalTo(_totalLabel.centerY);
         make.width.equalTo(@44);
         make.height.equalTo(@44);
@@ -153,22 +153,22 @@
     
     // Layout Views
     [_sliderBaseLineView makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.left);
-        make.trailing.equalTo(self.right);
+        make.left.equalTo(self.left);
+        make.right.equalTo(self.right);
         make.top.equalTo(IS_IPHONE ? @40 : @65);
         make.height.equalTo(@5);
     }];
     
     [_sliderGaugeLineView makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.left);
-        make.trailing.equalTo(_sliderThumbView.centerX);
+        make.left.equalTo(self.left);
+        make.right.equalTo(_sliderThumbView.centerX);
         make.top.equalTo(IS_IPHONE ? @40 : @65);
         make.height.equalTo(@5);
     }];
     
     [_bottomGrayLineView makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.left);
-        make.trailing.equalTo(self.right);
+        make.left.equalTo(self.left);
+        make.right.equalTo(self.right);
         make.bottom.equalTo(self.bottom);
         make.height.equalTo(IS_RETINA ? @0.5 : @1);
     }];
@@ -188,7 +188,7 @@
         NSMutableArray *baselineConsts = [NSMutableArray new];
         [_sliderMeterLabelViews enumerateObjectsUsingBlock:^(UILabel *aLabel, NSUInteger idx, BOOL *stop) {
             [aLabel makeConstraints:^(MASConstraintMaker *make) {
-                make.trailing.equalTo(((UIView *)_sliderMeterViews[idx]).left).with.offset(IS_RETINA ? -4.5 : -5);
+                make.right.equalTo(((UIView *)_sliderMeterViews[idx]).left).with.offset(IS_RETINA ? -4.5 : -5);
                 [baselineConsts addObject: make.baseline.equalTo(self.top).with.offset(83) ];
             }];
         }];
@@ -199,13 +199,13 @@
         make.width.equalTo(@44);
         make.height.equalTo(@44);
         make.centerY.equalTo(_sliderBaseLineView.centerY);
-        _sliderThumbLeadingConst = make.leading.equalTo(self.left).with.offset(-22);
+        _sliderThumbLeadingConst = make.left.equalTo(self.left).with.offset(-22);
     }];
     
     // Labels
     [_tipLabel makeConstraints:^(MASConstraintMaker *make) {
         make.baseline.equalTo(self.top).with.offset(IS_IPHONE ? 31 : 54 );
-		make.leading.equalTo(self.left).with.offset(IS_IPHONE ? 15.0 : 28.0); }];
+		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15.0 : 28.0); }];
     [_totalLabel makeConstraints:^(MASConstraintMaker *make) {
         if (IS_IPHONE) {
             //make.baseline.equalTo(self.top).with.offset(75);
@@ -213,7 +213,7 @@
         } else {
 			make.baseline.equalTo(self.top).with.offset(IS_RETINA? 110.5 : 111);
         }
-        _totalLabelTrailingConst = make.trailing.equalTo(self.right);
+        _totalLabelTrailingConst = make.right.equalTo(self.right);
     }];
 }
 

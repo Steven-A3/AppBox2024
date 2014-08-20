@@ -66,14 +66,14 @@
     
     [_factorALabel makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_ALabel.centerY);
-        make.leading.equalTo(_ALabel.right).with.offset(10.0);
-        make.trailing.equalTo(self.right);
+        make.left.equalTo(_ALabel.right).with.offset(10.0);
+        make.right.equalTo(self.right);
     }];
     
     [_factorBLabel makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_BLabel.centerY);
-        make.leading.equalTo(_BLabel.right).with.offset(10.0);
-        make.trailing.equalTo(self.right);
+        make.left.equalTo(_BLabel.right).with.offset(10.0);
+        make.right.equalTo(self.right);
     }];
 
     _ALabel.layer.cornerRadius = _ALabel.bounds.size.width / 2.0;

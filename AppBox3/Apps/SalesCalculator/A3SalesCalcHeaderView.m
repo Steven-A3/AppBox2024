@@ -90,15 +90,15 @@
 {
     [_bottomGrayLineView makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@0.5);
-        make.leading.equalTo(self.left);
-        make.trailing.equalTo(self.right);
+        make.left.equalTo(self.left);
+        make.right.equalTo(self.right);
         make.bottom.equalTo(self.bottom);
     }];
     
     [_sliderBaseLineView makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(self.width);
         make.height.equalTo(@5.0);
-        make.leading.equalTo(self.left);
+        make.left.equalTo(self.left);
         if (IS_IPAD) {
             make.top.equalTo(@65.0);
         } else {
@@ -110,36 +110,35 @@
         make.width.equalTo(@44);
         make.height.equalTo(@44);
         make.centerY.equalTo(_sliderBaseLineView.centerY);
-        _sliderThumbLeadingConst = make.leading.equalTo(self.left);
+        _sliderThumbLeadingConst = make.left.equalTo(self.left);
     }];
     
     [_sliderRedLineView makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.equalTo(_sliderThumbView.left).with.offset(22.0);
-        //make.trailing.equalTo(_sliderThumbView.centerY);
+        make.right.equalTo(_sliderThumbView.left).with.offset(22.0);
         make.height.equalTo(@5.0);
-        make.leading.equalTo(self.left);
+        make.left.equalTo(self.left);
         make.centerY.equalTo(_sliderBaseLineView.centerY);
     }];
     
     [_salesPricePrintLabel makeConstraints:^(MASConstraintMaker *make) {
         if (IS_IPAD) {
-			make.leading.equalTo(self.left).with.offset(28.0);
+			make.left.equalTo(self.left).with.offset(28.0);
             make.baseline.equalTo(self.bottom).with.offset(-104.0);
             
         } else {
-			make.leading.equalTo(self.left).with.offset(15.0);
+			make.left.equalTo(self.left).with.offset(15.0);
             make.baseline.equalTo(self.bottom).with.offset(-73.0);
         }
     }];
     
     [_savedPricePrintLabel makeConstraints:^(MASConstraintMaker *make) {
         if (IS_IPAD) {
-		   _savedPriceLabelTrailingConst = make.trailing.equalTo(self.right).with.offset(-15);
+		   _savedPriceLabelTrailingConst = make.right.equalTo(self.right).with.offset(-15);
             make.leading.greaterThanOrEqualTo(@10);
             //make.top.equalTo(_sliderBaseLineView.bottom).with.offset(28.0);
             make.baseline.equalTo(self.bottom).with.offset(-47);
         } else {
-			_savedPriceLabelTrailingConst = make.trailing.equalTo(self.right).with.offset(-15);
+			_savedPriceLabelTrailingConst = make.right.equalTo(self.right).with.offset(-15);
             make.leading.greaterThanOrEqualTo(@10);
             make.baseline.equalTo(self.bottom).with.offset(-28.0);
         }
@@ -147,10 +146,10 @@
     
     [_detailInfoButton makeConstraints:^(MASConstraintMaker *make) {
         if (IS_IPAD) {
-            make.trailing.equalTo(self.right).with.offset(-4);
+            make.right.equalTo(self.right).with.offset(-4);
             make.centerY.equalTo(_savedPricePrintLabel.centerY);
         } else {
-            make.trailing.equalTo(self.right).with.offset(-4);
+            make.right.equalTo(self.right).with.offset(-4);
             make.centerY.equalTo(_savedPricePrintLabel.centerY);
         }
         make.width.equalTo(@44);
@@ -206,7 +205,7 @@
             [aLabel removeConstraints:aLabel.constraints];
             [aLabel sizeToFit];
             [aLabel makeConstraints:^(MASConstraintMaker *make) {
-                make.trailing.equalTo(((UIView *)_sliderMeterViews[idx]).left).with.offset(IS_RETINA? -4.5 : -5);
+                make.right.equalTo(((UIView *)_sliderMeterViews[idx]).left).with.offset(IS_RETINA? -4.5 : -5);
                 make.baseline.equalTo(self.bottom).with.offset(-75);//-> 75pt로 하면 slider와 겹치게 됩니다. 현재는 label의 상단이 slider에서 6pt 하단에 위치하게 되어 있습니다. 폰트는 Caption2 입니다.
             }];
         }];

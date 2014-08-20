@@ -54,11 +54,11 @@
     }];
     
     [_leftTextLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.left).with.offset(10.0);
+        make.left.equalTo(self.left).with.offset(10.0);
         make.bottom.equalTo(self.bottom).with.offset(-10.0);
     }];
     [_rightTextLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.equalTo(self.right).with.offset(-10.0);
+        make.right.equalTo(self.right).with.offset(-10.0);
         make.bottom.equalTo(self.bottom).with.offset(-10.0);
     }];
 }

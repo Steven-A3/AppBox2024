@@ -794,13 +794,13 @@
                     [aView makeConstraints:^(MASConstraintMaker *make) {
                         make.width.lessThanOrEqualTo(@(rect.size.width));
                         make.height.greaterThanOrEqualTo(@25);
-                        make.trailing.equalTo(preView.leading).with.offset(0);
+                        make.right.equalTo(preView.left).with.offset(0);
                         make.centerY.equalTo(preView.centerY);
                     }];
                 } else {
                     [aView makeConstraints:^(MASConstraintMaker *make) {
                         make.width.lessThanOrEqualTo(@(rect.size.width));
-                        make.trailing.equalTo(preView.leading).with.offset(0);
+                        make.right.equalTo(preView.left).with.offset(0);
                         make.baseline.equalTo(self.top).with.offset(centerY);
                     }];
                 }
@@ -865,7 +865,7 @@
                     if (i == views.count-1) {
                         make.leading.greaterThanOrEqualTo(@(_padding));
                     }
-                    make.trailing.equalTo(preView.leading).with.offset(0);
+                    make.right.equalTo(preView.left).with.offset(0);
                     
                     if (aView.tag==kAnswer1Tag || aView.tag==kAnswer2Tag) {
                         if (aView.frame.size.width > 52.0) {
@@ -1028,8 +1028,8 @@
 -(void)setupContraints {
     [_sliderLine1View makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@5);
-        make.leading.equalTo(self.left);
-        make.trailing.equalTo(self.right);
+        make.left.equalTo(self.left);
+        make.right.equalTo(self.right);
         if (IS_IPHONE) {
             _sliderLine1TopConst = make.top.equalTo(@40);
         } else {
@@ -1041,11 +1041,11 @@
         make.height.equalTo(@44);
         make.centerY.equalTo(_sliderLine1View.centerY);
         //_sliderThumb1LeadingCenter = make.leading.equalTo(@0);
-        _sliderThumb1LeadingCenter = make.leading.equalTo(self.left);
+        _sliderThumb1LeadingCenter = make.left.equalTo(self.left);
     }];
     [_sliderLine1GaugeView makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.left);
-        make.trailing.equalTo(_sliderLine1Thumb.left).with.offset(22.0);
+        make.left.equalTo(self.left);
+        make.right.equalTo(_sliderLine1Thumb.left).with.offset(22.0);
         make.centerY.equalTo(_sliderLine1View.centerY);
         make.height.equalTo(_sliderLine1View.height);
     }];
@@ -1070,8 +1070,8 @@
     
     [_sliderLine2View makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@5);
-        make.leading.equalTo(self.left);
-        make.trailing.equalTo(self.right);
+        make.left.equalTo(self.left);
+        make.right.equalTo(self.right);
         if (IS_IPHONE) {
             _sliderLine2TopCont = make.top.equalTo(@107);
         } else {
@@ -1081,7 +1081,7 @@
     [_sliderLine2GaugeView makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(_sliderLine2View.height);
         make.leading.equalTo(@0);
-        make.trailing.equalTo(_sliderLine2Thumb.centerX);
+        make.right.equalTo(_sliderLine2Thumb.centerX);
         make.centerY.equalTo(_sliderLine2View.centerY);
     }];
     [_slider2BMarkLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -1106,8 +1106,8 @@
     }];
     
     [_bottomLineView makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.left);
-        make.trailing.equalTo(self.right);
+        make.left.equalTo(self.left);
+        make.right.equalTo(self.right);
         if (IS_RETINA) {
             make.height.equalTo(@0.5);
         } else {
@@ -1128,23 +1128,6 @@
     if (IS_IPAD) {
         if (_slider1MeterViews) {
             return;
-            
-            for (UIView *aView in _slider1MeterViews) {
-                [aView removeFromSuperview];
-            }
-            _slider1MeterViews = nil;
-            for (UIView *aView in _slider2MeterViews) {
-                [aView removeFromSuperview];
-            }
-            _slider2MeterViews = nil;
-            for (UIView *aView in _slider1MeterLabelViews) {
-                [aView removeFromSuperview];
-            }
-            _slider1MeterLabelViews = nil;
-            for (UIView *aView in _slider2MeterLabelViews) {
-                [aView removeFromSuperview];
-            }
-            _slider2MeterLabelViews = nil;
         }
         
         if (!_slider1MeterViews) {
@@ -1197,7 +1180,7 @@
                 [meterLabel sizeToFit];
                 [meterLabel makeConstraints:^(MASConstraintMaker *make) {
                     make.baseline.equalTo(_sliderLine1View.bottom).with.offset(13);
-                    make.trailing.equalTo(meterView.left).with.offset(IS_RETINA ? -4.5 : -5);
+                    make.right.equalTo(meterView.left).with.offset(IS_RETINA ? -4.5 : -5);
                 }];
             }];
             
@@ -1220,7 +1203,7 @@
                 [meterLabel sizeToFit];
                 [meterLabel makeConstraints:^(MASConstraintMaker *make) {
                     make.baseline.equalTo(_sliderLine2View.bottom).with.offset(13);
-                    make.trailing.equalTo(meterView.left).with.offset(IS_RETINA ? -4.5 : -5);
+                    make.right.equalTo(meterView.left).with.offset(IS_RETINA ? -4.5 : -5);
                 }];
 
                 if (self.calcType != PercentCalcType_5) {

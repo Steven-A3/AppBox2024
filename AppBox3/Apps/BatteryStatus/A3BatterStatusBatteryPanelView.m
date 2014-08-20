@@ -120,8 +120,8 @@
     
     [_bottomLineView makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@0.5);
-        make.leading.equalTo(self.left);
-        make.trailing.equalTo(self.right);
+        make.left.equalTo(self.left);
+        make.right.equalTo(self.right);
         make.bottom.equalTo(self.bottom);
     }];
 }
@@ -311,7 +311,7 @@
         if (_remainingPercent <= 20) {
             [SFKImage setDefaultColor:COLOR_BATTERY_RUNNINGOUT];
         } else {
-            [SFKImage setDefaultColor:UIDeviceBatteryStateCharging ? COLOR_BATTERY_CHARGING : [A3BatteryStatusManager chosenTheme]];
+            [SFKImage setDefaultColor:batteryState == UIDeviceBatteryStateCharging ? COLOR_BATTERY_CHARGING : [A3BatteryStatusManager chosenTheme]];
         }
 
         _chargingImageView.image = [SFKImage imageNamed:@"c"];

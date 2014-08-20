@@ -154,28 +154,28 @@
 		} else {
 			make.leading.equalTo(@28);
 		}
-		make.trailing.equalTo(_sep1View.left);
+		make.right.equalTo(_sep1View.left);
         make.centerY.equalTo(self.contentView.centerY);
         make.height.equalTo(@23.0);
     }];
     
     [_priceTextField makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(_sep1View.right);
-        make.trailing.equalTo(_sep2View.left).with.offset(IS_IPHONE ? -5 : IS_RETINA ? -9.5 : -9);
+        make.left.equalTo(_sep1View.right);
+        make.right.equalTo(_sep2View.left).with.offset(IS_IPHONE ? -5 : IS_RETINA ? -9.5 : -9);
         make.centerY.equalTo(self.contentView.centerY);
         make.height.equalTo(@23.0);
     }];
     
     [_qtyTextField makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(_sep2View.right);
-        make.trailing.equalTo(_sep3View.left);
+        make.left.equalTo(_sep2View.right);
+        make.right.equalTo(_sep3View.left);
         make.centerY.equalTo(self.contentView.centerY);
         make.height.equalTo(@23.0);
     }];
     
     [_subTotalLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(_sep3View.right);
-        make.trailing.equalTo(self.contentView.right).with.offset(IS_IPHONE ? -5 : IS_RETINA ? -9.5 : -9);
+        make.left.equalTo(_sep3View.right);
+        make.right.equalTo(self.contentView.right).with.offset(IS_IPHONE ? -5 : IS_RETINA ? -9.5 : -9);
         make.centerY.equalTo(self.contentView.centerY);
         make.height.equalTo(@23.0);
     }];
