@@ -17,6 +17,7 @@
 #import "A3DefaultColorDefines.h"
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
+#import "A3StandardTableViewCell.h"
 
 @interface A3BatteryStatusMainViewController () <A3InstructionViewControllerDelegate>
 @property (nonatomic, strong) A3BatteryStatusSettingViewController *settingsViewController;
@@ -285,6 +286,21 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
 	[self refreshHeaderView];
 }
 
+/*! If you override this method in your custom view controllers, always call super at some point in 
+ *  your implementation so that UIKit can forward the size change message appropriately. 
+ *  View controllers forward the size change message to their views and child view controllers. 
+ *  Presentation controllers forward the size change to their presented view controller.
+ * \param
+ * \returns
+ */
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)transitionCoordinator {
+	[super viewWillTransitionToSize:size withTransitionCoordinator:transitionCoordinator];
+	
+	UIInterfaceOrientation orientation;
+	orientation = size.width < size.height ? UIInterfaceOrientationPortrait : UIInterfaceOrientationLandscapeLeft;
+	[self willRotateToInterfaceOrientation:orientation duration: 0];
+}
+
 #pragma mark - Actions
 
 - (void)settingsButtonAction:(id)sender {
@@ -361,9 +377,9 @@ static NSString *CellIdentifier = @"Cell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	A3StandardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         ///cell.textLabel.font = IS_IPHONE ? [UIFont fontWithName:cell.textLabel.font.fontName size:15] : [UIFont fontWithName:cell.textLabel.font.fontName size:17];
         //cell.detailTextLabel.font = IS_IPHONE ? [UIFont fontWithName:cell.textLabel.font.fontName size:15] : [UIFont fontWithName:cell.textLabel.font.fontName size:17];
@@ -375,11 +391,8 @@ static NSString *CellIdentifier = @"Cell";
         
         cell.detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.detailTextLabel.numberOfLines = 0;
-        
-        [cell.textLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(cell.centerY);
-        }];
     }
+	cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 :28, 0, 0);
     
     // Configure the cell...
     NSDictionary *rowData = [_tableDataSourceArray objectAtIndex:indexPath.row];
@@ -423,6 +436,7 @@ static NSString *CellIdentifier = @"Cell";
             }
         }
     }
+	[cell layoutIfNeeded];
     
     return cell;
 }
