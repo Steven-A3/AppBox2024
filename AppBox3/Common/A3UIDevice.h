@@ -38,6 +38,7 @@
 #define IS_IPHONE   ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
 #define IS_IPHONE35 ([[UIScreen mainScreen] bounds].size.height == 480)
 
+#define IS_IOS7			([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0)
 #define IS_LANDSCAPE	(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
 #define IS_PORTRAIT		(UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]))
 #define CURRENT_ORIENTATION        [[UIApplication sharedApplication] statusBarOrientation]
