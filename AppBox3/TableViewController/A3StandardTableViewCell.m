@@ -50,6 +50,9 @@
 		frame.origin.x = originX;
 		self.textLabel.frame = frame;
 	}
+	CGPoint center = self.textLabel.center;
+	center.y = self.frame.size.height / 2.0;
+	self.textLabel.center = center;
 }
 
 @end
