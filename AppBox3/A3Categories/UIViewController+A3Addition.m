@@ -33,7 +33,7 @@
 
 - (CGRect)screenBoundsAdjustedWithOrientation {
 	CGRect bounds = [[UIScreen mainScreen] bounds];
-	if (IS_LANDSCAPE) {
+	if (IS_IOS7 && IS_LANDSCAPE) {
 		CGFloat width = bounds.size.width;
 		bounds.size.width = bounds.size.height;
 		bounds.size.height = width;
@@ -101,7 +101,7 @@
 	}
 
     if (viewController) {
-        [navigationController pushViewController:viewController animated:YES];
+        [navigationController pushViewController:viewController animated:NO];
     }
 }
 
