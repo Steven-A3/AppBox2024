@@ -56,6 +56,7 @@ NSString *const A3BatteryTitleKey = @"title";
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
+	self.tableView.rowHeight = 44.0;
     [self.tableView setEditing:YES];
     
     _chosenTheme = [A3BatteryStatusManager chosenTheme];
