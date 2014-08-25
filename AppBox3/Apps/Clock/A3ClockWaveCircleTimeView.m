@@ -39,7 +39,6 @@
 	[_lowerCircle removeFromSuperview]; _lowerCircle = nil;
 	[self.colonView removeFromSuperview]; self.colonView = nil;
 
-
 	self.colonView = [UIView new];
 	BOOL showSeconds = [[A3UserDefaults standardUserDefaults] clockTheTimeWithSeconds];
 	if (showSeconds) {
@@ -62,7 +61,7 @@
 		[self.colonView addSubview:_lowerCircle];
 	}
 
-	[self.textLabel addSubview:self.colonView];
+	[self addSubview:self.colonView];
 
 	[self setNeedsUpdateConstraints];
 }
@@ -146,8 +145,8 @@
 	}
 
 	[self.colonView makeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.equalTo(self.textLabel.centerX).with.offset(-1);
-		make.centerY.equalTo(self.textLabel.centerY).with.offset(bigCircle ? 3 : 0);
+		make.centerX.equalTo(self.centerX);
+		self.colonViewCenterY = make.centerY.equalTo(self.top).with.offset(self.frame.size.height / 2);
 		if (self.position == ClockWaveLocationBig) {
 			make.width.equalTo(showSeconds ? (IS_IPHONE ? @94 : @187) : @(width));
 			make.height.equalTo(showSeconds ? (IS_IPHONE ? @35 : @78) : (IS_IPHONE ? @49: @110));

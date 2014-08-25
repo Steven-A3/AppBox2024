@@ -112,16 +112,21 @@
 
 	CGFloat rate = textSize.height > 200.0 ? 0.4 : 0.5;
 	CGFloat offset = self.position == ClockWaveLocationBig ? textSize.height * rate : textSize.height / 2 + (IS_IPHONE ? 0 : 10);
+	CGFloat centerY;
 	if(self.fillPercent < 0.35f || self.fillPercent > 0.65f) {
-		_textLabelCenterY.offset(self.frame.size.height * 0.5);
+		centerY = self.frame.size.height * 0.5;
 	}
 	else if(self.fillPercent <= 0.5f)
 	{
-		_textLabelCenterY.offset(self.frame.size.height * (1 - self.fillPercent) - offset);
+		centerY = self.frame.size.height * (1 - self.fillPercent) - offset;
 	}
 	else
 	{
-		_textLabelCenterY.offset(self.frame.size.height * (1.f - self.fillPercent) + offset);
+		centerY = self.frame.size.height * (1.f - self.fillPercent) + offset;
+	}
+	_textLabelCenterY.offset(centerY);
+	if (_colonViewCenterY) {
+		_colonViewCenterY.offset(centerY);
 	}
 
 	if (_fillPercent <= 0.5) {
@@ -170,7 +175,6 @@
 - (void)addColonView {
 
 }
-
 
 - (void)setColonColor:(UIColor *)color {
 

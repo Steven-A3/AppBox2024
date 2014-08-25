@@ -493,6 +493,7 @@
 	self.timeCircle.isShowWave = YES;
 
 	[self.view addSubview:self.timeCircle];
+	[self.timeCircle addColonView];
 
 	[self.am_pm24Label makeConstraints:^(MASConstraintMaker *make) {
 		make.bottom.equalTo(self.timeCircle.top).with.offset(IS_IPHONE ? -4 : -10);
