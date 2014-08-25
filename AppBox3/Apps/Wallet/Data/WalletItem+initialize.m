@@ -30,7 +30,7 @@
 
 - (NSArray *)fieldItemsArraySortedByFieldOrder
 {
-	WalletCategory *category = [WalletData categoryItemWithID:self.categoryID];
+	WalletCategory *category = [WalletData categoryItemWithID:self.categoryID inContext:nil];
 	NSArray *fields = [WalletField MR_findByAttribute:@"categoryID" withValue:category.uniqueID andOrderBy:@"order" ascending:YES];
 	NSArray *fieldIDs = [fields valueForKeyPath:ID_KEY];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", self.uniqueID];
@@ -56,7 +56,7 @@
 - (void)verifyNULLField {
 	NSArray *fieldItems = [self fieldItemsArraySortedByFieldOrder];
 	NSMutableArray *fieldItemsFieldDoesNotExist = [NSMutableArray new];
-	WalletCategory *category = [WalletData categoryItemWithID:self.categoryID];
+	WalletCategory *category = [WalletData categoryItemWithID:self.categoryID inContext:nil];
 	NSArray *fields = [WalletField MR_findByAttribute:@"categoryID" withValue:category.uniqueID andOrderBy:@"order" ascending:YES];
 	for (WalletFieldItem *fieldItem in fieldItems) {
 		if (![fieldItem.fieldID length]) {
@@ -99,9 +99,12 @@
 	[[self managedObjectContext] MR_saveToPersistentStoreAndWait];
 }
 
-- (void)deleteWalletItem {
+- (void)deleteWalletItemInContext:(NSManagedObjectContext *)context {
+	if (!context) {
+		context = [NSManagedObjectContext MR_defaultContext];
+	}
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", self.uniqueID];
-	NSArray *fieldItems = [WalletFieldItem MR_findAllWithPredicate:predicate];
+	NSArray *fieldItems = [WalletFieldItem MR_findAllWithPredicate:predicate inContext:context];
 	[fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem *fieldItem, NSUInteger idx, BOOL *stop) {
 		NSFileManager *fileManager = [[NSFileManager alloc] init];
 		BOOL result;
@@ -133,10 +136,10 @@
 			}
 		}
 	}];
-	[WalletFieldItem MR_deleteAllMatchingPredicate:predicate];
+	[WalletFieldItem MR_deleteAllMatchingPredicate:predicate inContext:context];
 	predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.uniqueID];
-	[WalletFavorite MR_deleteAllMatchingPredicate:predicate];
-	[self MR_deleteEntity];
+	[WalletFavorite MR_deleteAllMatchingPredicate:predicate inContext:context];
+	[self MR_deleteEntityInContext:context];
 }
 
 @end

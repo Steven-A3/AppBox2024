@@ -71,9 +71,11 @@
 		_locationManager = [[CLLocationManager alloc] init];
 		[_locationManager setDesiredAccuracy:kCLLocationAccuracyKilometer];
 		[_locationManager setDelegate:self];
+#ifdef __IPHONE_8_0
 		if ([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
 			[_locationManager requestWhenInUseAuthorization];
 		}
+#endif
 	}
 	return _locationManager;
 }

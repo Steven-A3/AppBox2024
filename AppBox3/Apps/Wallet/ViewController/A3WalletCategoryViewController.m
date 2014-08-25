@@ -538,7 +538,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
                     WalletItem *item = self.items[idx];
                     [self.items removeObject:item];
-					[item deleteWalletItem];
+					[item deleteWalletItemInContext:nil];
 				}
             }
             [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
@@ -565,7 +565,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
                 if ([self.items[indexPath.row] isKindOfClass:[WalletItem class]]) {
 
                     WalletItem *item = self.items[indexPath.row];
-					[item deleteWalletItem];
+					[item deleteWalletItemInContext:nil];
 				}
             }
             [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
@@ -703,7 +703,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
 			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
-			[item deleteWalletItem];
+			[item deleteWalletItemInContext:nil];
 			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
             // more button 활성화여부

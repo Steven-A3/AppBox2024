@@ -154,7 +154,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (WalletCategory *)category {
 	if (!_category) {
-		_category = [WalletData categoryItemWithID:_item.categoryID];
+		_category = [WalletData categoryItemWithID:_item.categoryID inContext:nil];
 	}
 	return _category;
 }

@@ -668,8 +668,9 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 		NSArray *items = [WalletItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID] inContext:self.savingContext];
 		for (WalletItem *item in items) {
-			[item deleteWalletItem];
+			[item deleteWalletItemInContext:self.savingContext];
 		}
+		[self.savingContext MR_saveToPersistentStoreAndWait];
 
 		[self dismissViewControllerAnimated:YES completion:NULL];
         

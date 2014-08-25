@@ -582,12 +582,14 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 			_locationManager = [[CLLocationManager alloc] init];
 			_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
 			_locationManager.delegate = self;
+#ifdef __IPHONE_8_0
 			if ([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
 				[_locationManager requestWhenInUseAuthorization];
 			}
+#endif
 			[_locationManager startUpdatingLocation];
 
-//			_locationUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(locationDidNotRespond) userInfo:nil repeats:NO];
+			_locationUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(locationDidNotRespond) userInfo:nil repeats:NO];
 		} else {
 			NSArray *holidayCountries = [HolidayData userSelectedCountries];
 			for (NSString *countryCode in holidayCountries) {

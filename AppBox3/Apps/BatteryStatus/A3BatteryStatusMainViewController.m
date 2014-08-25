@@ -286,7 +286,8 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
 	[self refreshHeaderView];
 }
 
-/*! If you override this method in your custom view controllers, always call super at some point in 
+#ifdef __IPHONE_8_0
+/*! If you override this method in your custom view controllers, always call super at some point in
  *  your implementation so that UIKit can forward the size change message appropriately. 
  *  View controllers forward the size change message to their views and child view controllers. 
  *  Presentation controllers forward the size change to their presented view controller.
@@ -300,6 +301,7 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
 	orientation = size.width < size.height ? UIInterfaceOrientationPortrait : UIInterfaceOrientationLandscapeLeft;
 	[self willRotateToInterfaceOrientation:orientation duration: 0];
 }
+#endif
 
 #pragma mark - Actions
 
