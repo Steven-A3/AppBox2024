@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  AppBox3
+
+  Created by A3 on 8/25/14.
+  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
+*/
+
+NSLocationWhenInUseUsageDescription = "Su información de ubicación se utiliza para mostrar el tiempo y los días festivos.";

@@ -277,7 +277,9 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 			[self.clockDataManager enableDateCircle:switchControl.on];
 			break;
 		case kTagSwitchWeather:
-			if ([switchControl isOn] && (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized)) {
+			FNLOG(@"locationServicesEnabled : %@", @([CLLocationManager locationServicesEnabled]));
+			FNLOG(@"authorizationStatus %@", @([CLLocationManager authorizationStatus]));
+			if ([switchControl isOn] && (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] <= kCLAuthorizationStatusDenied)) {
 				[self alertLocationDisabled];
 				[switchControl setOn:NO];
 			} else {

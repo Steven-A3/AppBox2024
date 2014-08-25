@@ -1160,7 +1160,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 			_locationManager = [CLLocationManager new];
 			_locationManager.delegate = self;
-			[_locationManager startMonitoringSignificantLocationChanges];
+			[_locationManager startUpdatingLocation];
 			break;
 		case 1:
 			_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
