@@ -150,6 +150,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 	nextSceneViewController.delegate = self;
 	nextSceneViewController.showAsWhatsNew = _showAsWhatsNew;
 
+	self.view.backgroundColor = [nextSceneViewController.view backgroundColor];
 	CGRect currentViewFrame = _currentSceneViewController.view.frame;
 
 	nextSceneViewController.view.frame = CGRectMake(currentViewFrame.size.width, 0, currentViewFrame.size.width, currentViewFrame.size.height);
@@ -161,7 +162,6 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		  initialSpringVelocity:6.0
 						options:UIViewAnimationOptionCurveEaseIn
 					 animations:^{
-						 _currentSceneViewController.view.frame = CGRectMake(-currentViewFrame.size.width, 0, currentViewFrame.size.width, currentViewFrame.size.height);
 						 nextSceneViewController.view.frame = currentViewFrame;
 					 }
 			completion:^(BOOL finished) {
