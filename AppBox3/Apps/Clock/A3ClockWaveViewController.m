@@ -697,7 +697,7 @@
 
 - (void)clockWaveCircleTapped:(A3ClockWaveCircleView *)circleView {
 	if (circleView == _temperatureCircle && !_weatherInfoAvailable) {
-		if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
+		if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] <= kCLAuthorizationStatusDenied) {
 			[self alertLocationDisabled];
 		}
 	}

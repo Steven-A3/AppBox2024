@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  AppBox3
+
+  Created by A3 on 8/25/14.
+  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
+*/
+
+NSLocationWhenInUseUsageDescription = "您的位置信息，用于显示天气和假期。";

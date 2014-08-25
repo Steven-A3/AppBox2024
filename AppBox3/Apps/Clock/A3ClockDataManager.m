@@ -35,7 +35,7 @@
 	self = [super init];
 	if (self) {
 		if ([[A3AppDelegate instance].reachability isReachable]) {
-			[self.locationManager startMonitoringSignificantLocationChanges];
+			[self.locationManager startUpdatingLocation];
 		}
 
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
@@ -71,6 +71,9 @@
 		_locationManager = [[CLLocationManager alloc] init];
 		[_locationManager setDesiredAccuracy:kCLLocationAccuracyKilometer];
 		[_locationManager setDelegate:self];
+		if ([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+			[_locationManager requestWhenInUseAuthorization];
+		}
 	}
 	return _locationManager;
 }
@@ -434,14 +437,14 @@
 			_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 60 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
 		}
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		[self.locationManager startMonitoringSignificantLocationChanges];
+		[self.locationManager startUpdatingLocation];
 	}];
 	[weatherOperation start];
 }
 
 - (void)getWOEIDWithCandidates {
 	if (![_addressCandidates count]) {
-		[_locationManager startMonitoringSignificantLocationChanges];
+		[_locationManager startUpdatingLocation];
 		return;
 	}
 
@@ -473,7 +476,7 @@
 	_weatherTimer = nil;
 
 	if ([[A3AppDelegate instance].reachability isReachable]) {
-		[self.locationManager startMonitoringSignificantLocationChanges];
+		[self.locationManager startUpdatingLocation];
 	}
 }
 
@@ -525,7 +528,7 @@
 		if ([_addressCandidates count]) {
 			[self getWOEIDWithCandidates];
 		} else {
-			[manager startMonitoringSignificantLocationChanges];
+			[manager startUpdatingLocation];
 		}
 	}];
 }
