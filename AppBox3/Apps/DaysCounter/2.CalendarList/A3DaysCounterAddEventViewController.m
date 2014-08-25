@@ -1566,7 +1566,7 @@
 {
     [self resignAllAction];
     UISwitch *swButton = (UISwitch*)sender;
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[swButton superview] superview] superview]];
+    NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:swButton];
     if ( indexPath == nil ) {
         return;
     }
@@ -1829,7 +1829,7 @@
     [self resignAllAction];
     UIDatePicker *datePicker = (UIDatePicker*)sender;
     
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[datePicker superview] superview] superview]];
+    NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:datePicker];
     if ( indexPath == nil )
         return;
     
@@ -1928,7 +1928,7 @@
 {
     [self resignAllAction];
     UIButton *button = (UIButton*)sender;
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[button superview] superview] superview]];
+    NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:button];
     if ( indexPath == nil )
         return;
     
