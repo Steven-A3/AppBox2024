@@ -39,6 +39,7 @@
 #define ActionTag_Photo         101
 #define ActionTag_DeleteEvent   102
 
+
 @interface A3DaysCounterAddEventViewController ()
 		<
 		UITextFieldDelegate,
@@ -1045,8 +1046,8 @@
             break;
         case EventCellType_Photo:
         {
-            [self photoAction:nil];
             [self closeDatePickerCell];
+            [self photoAction:nil];
         }
             break;
         case EventCellType_StartDate:
@@ -1101,9 +1102,9 @@
     if ([_eventItem.isLunar boolValue]) {
         self.inputDateKey = rowItemType == EventCellType_StartDate ? EventItem_StartDate : EventItem_EndDate;
         
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         UITextField *textField = (UITextField *)[cell viewWithTag:14];
         [textField becomeFirstResponder];
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     else {
         UIButton *button = (UIButton*)[cell viewWithTag:13];
@@ -1536,9 +1537,12 @@
 {
     [self resignAllAction];
 
-	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_eventItem.photoID length] > 0 delegate:self];
-	actionSheet.tag = ActionTag_Photo;
-	[actionSheet showInView:self.view];
+
+    UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_eventItem.photoID length] > 0 delegate:self];
+    actionSheet.tag = ActionTag_Photo;
+    // TODO
+//    [actionSheet showInView:self.view];
+    [actionSheet showFromRect:CGRectMake(10, 20, 300, 300) inView:self.view animated:YES];
 }
 
 - (void)updateEndDateDiffFromStartDate:(NSDate*)startDate
@@ -2293,6 +2297,23 @@
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event") otherButtonTitles:nil];
     actionSheet.tag = ActionTag_DeleteEvent;
     [actionSheet showInView:self.view];
+}
+
+#pragma mark - A3ImagePickerOnActionSheetDelegate
+- (void)takePhotoActionTouched {
+    
+}
+- (void)chooseExistingTouched {
+    
+}
+- (void)ChooseAndResizeTouched {
+    
+}
+- (void)cancelTouched {
+    
+}
+- (void)deletePhotoTouched {
+    
 }
 
 #pragma mark - UIPopoverControllerDelegate
