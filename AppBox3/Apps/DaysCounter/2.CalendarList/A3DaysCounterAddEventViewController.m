@@ -1541,7 +1541,7 @@
     UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_eventItem.photoID length] > 0 delegate:self];
     actionSheet.tag = ActionTag_Photo;
     // TODO
-//    [actionSheet showInView:self.view];
+    //    [actionSheet showInView:self.view];
     [actionSheet showFromRect:CGRectMake(10, 20, 300, 300) inView:self.view animated:YES];
 }
 
