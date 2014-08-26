@@ -1213,7 +1213,10 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (void)shareAll:(id)sender {
 	_shareAll = YES;
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completion:^{
+		[self unSwipeAll];
+		[self enableControls:YES];
+	}];
 	if (IS_IPAD) {
 		_sharePopoverController.delegate = self;
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {

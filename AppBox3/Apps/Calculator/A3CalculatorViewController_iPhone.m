@@ -626,7 +626,8 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 }
 
 - (void)shareAll:(id)sender {
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completion:^{
+	}];
 }
 
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType

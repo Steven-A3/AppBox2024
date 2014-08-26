@@ -1181,11 +1181,15 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     if (_isComparisonMode) {
         NSURL *fileUrlA = [NSURL fileURLWithPath:[_loanDataA filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanA.csv"]];
         NSURL *fileUrlB = [NSURL fileURLWithPath:[_loanDataB filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanB.csv"]];
-        self.sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self, fileUrlA, fileUrlB] fromBarButtonItem:sender];
+        self.sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self, fileUrlA, fileUrlB] fromBarButtonItem:sender completion:^{
+			[self enableControls:YES];
+		}];
     }
     else {
         NSURL *fileUrl = [NSURL fileURLWithPath:[[self loanData] filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization.csv"]];
-        self.sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self, fileUrl] fromBarButtonItem:sender];
+        self.sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self, fileUrl] fromBarButtonItem:sender completion:^{
+			[self enableControls:YES];
+		}];
     }
     
     if (IS_IPAD) {

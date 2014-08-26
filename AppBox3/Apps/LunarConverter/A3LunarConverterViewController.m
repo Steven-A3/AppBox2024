@@ -849,7 +849,10 @@
 	[self enableControls:NO];
 	[self dateKeyboardDoneButtonPressed:nil];
     
-    self.popoverVC = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+    self.popoverVC = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completion:^{
+		[self showKeyboardAnimated:YES];
+		[self enableControls:YES];
+	}];
     if (IS_IPAD) {
         self.popoverVC.delegate = self;
     }

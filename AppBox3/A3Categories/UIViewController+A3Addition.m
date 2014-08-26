@@ -447,14 +447,29 @@
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
-- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem {
+/*! iOS 7 : iPad 에서는 UIPopoverController 를 만들고 이를 돌려준다.
+ *  iOS 8 : 항상 nil 을 돌려준다.
+ * \param
+ * completionBlock 은 iOS 8 에서만 유효하다.
+ * \returns
+ */
+- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem completion:(void (^)())completionBlock {
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
-	if (IS_IPHONE) {
-		[self presentViewController:activityController animated:YES completion:NULL];
+	if (IS_IOS7) {
+		if (IS_IPHONE) {
+			[self presentViewController:activityController animated:YES completion:NULL];
+		} else {
+			UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+			[popoverController presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			return popoverController;
+		}
 	} else {
-		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
-		[popoverController presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		return popoverController;
+		activityController.modalPresentationStyle = UIModalPresentationPopover;
+		[self presentViewController:activityController animated:YES completion:completionBlock];
+		UIPopoverPresentationController *presentationController = [activityController popoverPresentationController];
+		presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+		presentationController.sourceView = self.view;
+		presentationController.barButtonItem = barButtonItem;
 	}
 	return nil;
 }
@@ -465,7 +480,6 @@
         FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
     }];
     
-//    [activityController setValue:@"My Subject Text" forKey:@"subject"];
 	if (IS_IPHONE) {
 		[self presentViewController:activityController animated:YES completion:NULL];
 	} else {

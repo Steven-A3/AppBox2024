@@ -414,7 +414,9 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 #pragma mark - Right Button more
 
 - (void)shareAll:(id)sender {
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completion:^{
+		[self enableControls:YES];
+	}];
 	_sharePopoverController.delegate = self;
 	[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
 		[buttonItem setEnabled:NO];

@@ -1078,8 +1078,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
     [self disposeInitializedCondition];
 
-//    NSString *activityItem = [self.dataManager sharedData];
-    self.localPopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+    self.localPopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completion:^{
+		[self setBarButtonsEnable:YES];
+		self.localPopoverController = nil;
+	}];
     if (IS_IPAD) {
         self.localPopoverController.delegate = self;
         [self setBarButtonsEnable:NO];
