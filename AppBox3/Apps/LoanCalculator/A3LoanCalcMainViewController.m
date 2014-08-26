@@ -2067,7 +2067,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	self.loanData.note = textView.text;
     [self saveLoanData];
     
-    UITableViewCell *currentCell = (UITableViewCell *)[[[textView superview] superview] superview];
+    UITableViewCell *currentCell = [self.tableView cellForCellSubview:textView];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:currentCell];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
