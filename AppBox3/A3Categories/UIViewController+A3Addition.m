@@ -515,36 +515,87 @@
 }
 
 - (UIActionSheet *)actionSheetAskingImagePickupWithDelete:(BOOL)deleteEnable delegate:(id <UIActionSheetDelegate>)delegate {
-	UIActionSheet *actionSheet;
+    UIActionSheet *actionSheet;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-		actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-												  delegate:delegate
-										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-									destructiveButtonTitle:deleteEnable ? NSLocalizedString(@"Delete Photo", nil) : nil
-										 otherButtonTitles:NSLocalizedString(@"Take Photo", nil),
-														   NSLocalizedString(@"Choose Existing", nil),
-														   NSLocalizedString(@"Choose and Resize", nil), nil];
-
-	} else {
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                  delegate:delegate
+                                         cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                    destructiveButtonTitle:deleteEnable ? NSLocalizedString(@"Delete Photo", nil) : nil
+                                         otherButtonTitles:NSLocalizedString(@"Take Photo", nil),
+                       NSLocalizedString(@"Choose Existing", nil),
+                       NSLocalizedString(@"Choose and Resize", nil), nil];
+        
+    }
+    else {
         if (deleteEnable) {
-			actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-													  delegate:delegate
-											 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-										destructiveButtonTitle:NSLocalizedString(@"Delete Photo", nil)
-											 otherButtonTitles:
-													 NSLocalizedString(@"Choose Existing", nil),
-													 NSLocalizedString(@"Choose and Resize", nil), nil];
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                      delegate:delegate
+                                             cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                        destructiveButtonTitle:NSLocalizedString(@"Delete Photo", nil)
+                                             otherButtonTitles:
+                           NSLocalizedString(@"Choose Existing", nil),
+                           NSLocalizedString(@"Choose and Resize", nil), nil];
         }
         else {
-			actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-													  delegate:delegate
-											 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-										destructiveButtonTitle:nil
-											 otherButtonTitles:NSLocalizedString(@"Choose Existing", nil),
-															   NSLocalizedString(@"Choose and Resize", nil), nil];
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                      delegate:delegate
+                                             cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                        destructiveButtonTitle:nil
+                                             otherButtonTitles:NSLocalizedString(@"Choose Existing", nil),
+                           NSLocalizedString(@"Choose and Resize", nil), nil];
         }
-	}
+    }
+
 	return actionSheet;
+}
+
+- (UIAlertController *)actionSheetOfAlertViewControllerAskingImagePickupWithDelete:(BOOL)deleteEnable delegate:(id <A3ImagePickerOnActionSheetDelegate>)delegate {
+    UIAlertController *actionSheetController = [UIAlertController alertControllerWithTitle:@"" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action) {
+                                                             [delegate cancelTouched];
+                                                         }];
+    [actionSheetController addAction:cancelAction];
+    
+    if (deleteEnable) {
+        UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Photo", nil)
+                                                               style:UIAlertActionStyleDestructive
+                                                             handler:^(UIAlertAction *action) {
+                                                                 [delegate deletePhotoTouched];
+                                                             }];
+        [actionSheetController addAction:deleteAction];
+    }
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIAlertAction *takePhotoAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Take Photo", nil)
+                                                                  style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction *action) {
+                                                                    [delegate takePhotoActionTouched];
+                                                                }];
+        [actionSheetController addAction:takePhotoAction];
+    }
+
+    
+    UIAlertAction *chooseExistingAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Choose Existing", nil)
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction *action) {
+                                                                [delegate chooseExistingTouched];
+                                                            }];
+    [actionSheetController addAction:chooseExistingAction];
+    
+    UIAlertAction *chooseAndResizeAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Choose and Resize", nil)
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction *action) {
+                                                                [delegate ChooseAndResizeTouched];
+                                                            }];
+    [actionSheetController addAction:chooseAndResizeAction];
+    
+    UIPopoverPresentationController *popPresenter = [actionSheetController popoverPresentationController];
+    popPresenter.sourceView = self.view;
+
+    return actionSheetController;
 }
 
 #pragma mark - Custom Date String Related

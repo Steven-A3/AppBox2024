@@ -1047,7 +1047,10 @@
         case EventCellType_Photo:
         {
             [self closeDatePickerCell];
-            [self photoAction:nil];
+
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            UIButton *button = (UIButton*)[cell viewWithTag:11];
+            [self photoAction:button];
         }
             break;
         case EventCellType_StartDate:
@@ -1533,7 +1536,7 @@
     ((UIButton *)sender).tintColor = [A3AppDelegate instance].themeColor;
 }
 
-- (void)photoAction:(id)sender
+- (void)photoAction:(UIButton *)sender
 {
     [self resignAllAction];
 
@@ -1541,8 +1544,12 @@
     UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_eventItem.photoID length] > 0 delegate:self];
     actionSheet.tag = ActionTag_Photo;
     // TODO
-    //    [actionSheet showInView:self.view];
-    [actionSheet showFromRect:CGRectMake(10, 20, 300, 300) inView:self.view animated:YES];
+    if (IS_IPAD) {
+        [actionSheet showFromRect:sender.frame inView:self.view animated:YES];
+    }
+    else {
+        [actionSheet showInView:self.view];
+    }
 }
 
 - (void)updateEndDateDiffFromStartDate:(NSDate*)startDate
