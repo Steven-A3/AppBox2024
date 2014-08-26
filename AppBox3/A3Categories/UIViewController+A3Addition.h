@@ -19,14 +19,6 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
     A3RightBarButtonTagHelpButton,
 };
 
-@protocol A3ImagePickerOnActionSheetDelegate <NSObject>
-- (void)takePhotoActionTouched;
-- (void)chooseExistingTouched;
-- (void)ChooseAndResizeTouched;
-- (void)cancelTouched;
-- (void)deletePhotoTouched;
-@end
-
 @interface UIViewController (A3Addition)
 
 - (void)cleanUp;
@@ -76,7 +68,6 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (void)alertCloudNotEnabled;
 
 - (UIActionSheet *)actionSheetAskingImagePickupWithDelete:(BOOL)deleteEnable delegate:(id <UIActionSheetDelegate>)delegate;
-//- (UIAlertController *)actionSheetOfAlertViewControllerAskingImagePickupWithDelete:(BOOL)deleteEnable delegate:(id <A3ImagePickerOnActionSheetDelegate>)delegate;
 
 #pragma mark - Custom Date String Related
 - (NSString *)fullStyleDateStringFromDate:(NSDate *)date withShortTime:(BOOL)shortTime;
