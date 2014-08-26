@@ -42,12 +42,15 @@
 	if (IS_IPHONE) {
 		[_yearLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.left).with.offset(320 / 3 / 2);
+			make.bottom.equalTo(self.bottom).with.offset(-10);
 		}];
 		[_monthLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.centerX);
+			make.bottom.equalTo(self.bottom).with.offset(-10);
 		}];
 		[_dayLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.right).with.offset(- 320 / 3 / 2);
+			make.bottom.equalTo(self.bottom).with.offset(-10);
 		}];
 	}
 }
