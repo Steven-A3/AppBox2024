@@ -228,7 +228,7 @@ static NSString *CellIdentifier = @"Cell";
 			[self resetButtonAction:nil];
 			break;
 		case 2:
-			[self photoButtonAction];
+            [self photoButtonAction];
 			break;
 		case 3: {
 			UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -241,7 +241,7 @@ static NSString *CellIdentifier = @"Cell";
 	if (!_cameraButton) {
 		_cameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_cameraButton setImage:[UIImage imageNamed:@"camera.png"] forState:UIControlStateNormal];
-		[_cameraButton addTarget:self action:@selector(photoButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        [_cameraButton addTarget:self action:@selector(photoButtonAction) forControlEvents:UIControlEventTouchUpInside];
 		[_cameraButton sizeToFit];
 	}
 	return _cameraButton;
@@ -288,7 +288,19 @@ static NSString *CellIdentifier = @"Cell";
 	A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
 	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[downloadManager hasUserSuppliedImageForCountry:_countryCode] delegate:self];
 	actionSheet.tag = 200;
-	[actionSheet showInView:self.view];
+    // TODO
+#ifdef __IPHONE_8_0
+    if (IS_IPAD) {
+        UITableViewCell *cell = [self.tableView cellForCellSubview:_cameraButton];
+        CGRect rect = [self.tableView convertRect:_cameraButton.frame fromView:cell.contentView];
+        [actionSheet showFromRect:rect inView:self.view animated:NO];
+    }
+    else {
+        [actionSheet showInView:self.view];
+    }
+#else
+    [actionSheet showInView:self.view];
+#endif
 }
 
 #pragma mark - UIActionSheet delegate

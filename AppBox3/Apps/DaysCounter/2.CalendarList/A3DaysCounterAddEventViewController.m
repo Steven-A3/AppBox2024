@@ -1544,12 +1544,18 @@
     UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_eventItem.photoID length] > 0 delegate:self];
     actionSheet.tag = ActionTag_Photo;
     // TODO
+#ifdef __IPHONE_8_0
     if (IS_IPAD) {
-        [actionSheet showFromRect:sender.frame inView:self.view animated:YES];
+        UITableViewCell *cell = [self.tableView cellForCellSubview:sender];
+        CGRect rect = [self.tableView convertRect:sender.frame fromView:cell.contentView];
+        [actionSheet showFromRect:rect inView:self.view animated:NO];
     }
     else {
         [actionSheet showInView:self.view];
     }
+#else
+    [actionSheet showInView:self.view];
+#endif
 }
 
 - (void)updateEndDateDiffFromStartDate:(NSDate*)startDate

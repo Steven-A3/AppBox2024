@@ -1462,7 +1462,19 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 				UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_currentFieldItem.hasImage boolValue] delegate:self];
 				actionSheet.tag = 1;
-				[actionSheet showInView:self.view];
+                // TODO
+#ifdef __IPHONE_8_0
+                if (IS_IPAD) {
+                    A3WalletItemRightIconCell *cell = (A3WalletItemRightIconCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+                    CGRect rect = [self.tableView convertRect:cell.iconImgView.frame fromView:cell.contentView];
+                    [actionSheet showFromRect:rect inView:self.view animated:NO];
+                }
+                else {
+                    [actionSheet showInView:self.view];
+                }
+#else
+                [actionSheet showInView:self.view];
+#endif
             }
             else if ([field.type isEqualToString:WalletFieldTypeVideo]) {
 				[self.firstResponder resignFirstResponder];
