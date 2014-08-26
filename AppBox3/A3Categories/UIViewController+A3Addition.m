@@ -312,9 +312,6 @@
 				offset.y = -108.0;
 				tableView.contentOffset = offset;
 			}
-		} else {
-			newFrame = CGRectOffset(self.view.frame, 0.0, clippingViewFrame.size.height);
-			self.view.frame = newFrame;
 		}
 	}];
 
