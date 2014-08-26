@@ -42,7 +42,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 @interface A3CurrencyViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate,
 		UITextFieldDelegate, A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate,
 		UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource, A3CalculatorViewControllerDelegate,
-		A3InstructionViewControllerDelegate, UIPopoverPresentationControllerDelegate>
+		A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *equalItem;
@@ -1211,21 +1211,13 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	_sharePopoverController = nil;
 }
 
-- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
-	[self unSwipeAll];
-	[self enableControls:YES];
-}
-
 - (void)shareAll:(id)sender {
 	_shareAll = YES;
-	if (IS_IOS7) {
-		_sharePopoverController = [self presentActivityViewControllerInOS7WithActivityItems:@[self] fromBarButtonItem:sender];
-		_sharePopoverController.delegate = self;
-	} else {
-		UIActivityViewController *activityViewController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
-		UIPopoverPresentationController *popoverPresentationController = [activityViewController popoverPresentationController];
-		popoverPresentationController.delegate = self;
-	}
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
+		[self unSwipeAll];
+		[self enableControls:YES];
+	}];
+	_sharePopoverController.delegate = self;
 	if (IS_IPAD) {
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
 			[buttonItem setEnabled:NO];

@@ -12,7 +12,7 @@
 
 extern NSString *const A3CalculatorUserDefaultsCalculatorMode;
 
-@interface A3CalculatorViewController_iPad : A3CalculatorViewController<UIActivityItemSource, UIPopoverPresentationControllerDelegate>
+@interface A3CalculatorViewController_iPad : A3CalculatorViewController<UIActivityItemSource>
 
 - (void) checkRightButtonDisable;
 

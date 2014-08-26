@@ -1756,7 +1756,7 @@ EXIT_FUCTION:
     if (!IS_IOS7 && IS_IPAD) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [alertController dismissViewControllerAnimated:YES completion:NO];
+            [alertController dismissViewControllerAnimated:YES completion:NULL];
         }]];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Event", @"Delete Event") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
             if ( self.delegate && [self.delegate respondsToSelector:@selector(willDeleteEvent:daysCounterEventDetailViewController:)]) {

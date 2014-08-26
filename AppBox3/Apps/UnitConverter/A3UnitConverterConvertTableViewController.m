@@ -624,18 +624,26 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		}
 	}
 
-	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
-	[activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-		FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
-	}];
 	if (IS_IPHONE) {
+		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+		[activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+			[self enableControls:YES];
+			FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+		}];
 		[self presentViewController:activityController animated:YES completion:NULL];
 	}
     else {
         if ([sender isKindOfClass:[UIButton class]]) {
-            _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromSubView:sender];
+            _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromSubView:sender completionHandler:^(NSString *activityType, BOOL completed) {
+				[self enableControls:YES];
+			}];
         }
         else {
+			UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+			[activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+				[self enableControls:YES];
+				FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+			}];
             UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
             [popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             _sharePopoverController = popoverController;
@@ -644,7 +652,6 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 	if (IS_IPAD) {
 		[self enableControls:NO];
-		_sharePopoverController.delegate = self;
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
 			[buttonItem setEnabled:NO];
 		}];
@@ -708,22 +715,16 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	}
 	[_shareTextList addObject:convertInfoText];
 
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromSubView:sender];
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromSubView:sender completionHandler:^(NSString *activityType, BOOL completed) {
+		[self enableControls:YES];
+	}];
 	if (IS_IPAD) {
 		[self enableControls:NO];
 
-		_sharePopoverController.delegate = self;
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
 			[buttonItem setEnabled:NO];
 		}];
 	}
-}
-
-#pragma mark - UIPopOVerControllerDelegate
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-	[self enableControls:YES];
 }
 
 #pragma mark - UIActivityItemSource

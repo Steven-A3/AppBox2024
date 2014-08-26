@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface A3DateMainTableViewController : UITableViewController <UIPopoverPresentationControllerDelegate>
+@interface A3DateMainTableViewController : UITableViewController
 
 @end

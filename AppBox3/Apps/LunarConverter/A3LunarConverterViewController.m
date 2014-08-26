@@ -23,7 +23,8 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 
-@interface A3LunarConverterViewController () <UIScrollViewDelegate, A3DateKeyboardDelegate, UITextFieldDelegate, UIPopoverControllerDelegate, UIActivityItemSource, UIPopoverPresentationControllerDelegate>
+@interface A3LunarConverterViewController () <UIScrollViewDelegate, A3DateKeyboardDelegate, UITextFieldDelegate,
+		UIPopoverControllerDelegate, UIActivityItemSource>
 
 @property (strong, nonatomic) A3DateKeyboardViewController *dateKeyboardVC;
 @property (strong, nonatomic) NSDateComponents *firstPageResultDateComponents;
@@ -849,14 +850,11 @@
 	[self enableControls:NO];
 	[self dateKeyboardDoneButtonPressed:nil];
 
-	if (IS_IOS7) {
-		self.popoverVC = [self presentActivityViewControllerInOS7WithActivityItems:@[self] fromBarButtonItem:sender];
-		self.popoverVC.delegate = self;
-	} else {
-		UIActivityViewController *activityViewController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
-		UIPopoverPresentationController *popoverPresentationController = [activityViewController popoverPresentationController];
-		popoverPresentationController.delegate = self;
-	}
+	self.popoverVC = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
+		[self showKeyboardAnimated:YES];
+		[self enableControls:YES];
+	}];
+	self.popoverVC.delegate = self;
     if (IS_IPAD) {
         self.popoverVC.delegate = self;
     }

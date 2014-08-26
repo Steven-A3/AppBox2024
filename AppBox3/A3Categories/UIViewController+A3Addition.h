@@ -59,11 +59,9 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (void)moreButtonAction:(UIBarButtonItem *)button;
 - (void)makeBackButtonEmptyArrow;
 
-- (UIPopoverController *)presentActivityViewControllerInOS7WithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem;
+- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem completionHandler:(UIActivityViewControllerCompletionHandler)completionHandler;
 
-- (UIActivityViewController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem;
-
-- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromSubView:(UIView *)subView;
+- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromSubView:(UIView *)subView completionHandler:(UIActivityViewControllerCompletionHandler)completionHandler;
 
 - (void)alertInternetConnectionIsNotAvailable;
 + (UIViewController <A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;

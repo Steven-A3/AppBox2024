@@ -444,8 +444,9 @@
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
-- (UIPopoverController *)presentActivityViewControllerInOS7WithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem {
+- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem completionHandler:(UIActivityViewControllerCompletionHandler)completionHandler {
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+	activityController.completionHandler = completionHandler;
 	if (IS_IPHONE) {
 		[self presentViewController:activityController animated:YES completion:NULL];
 	} else {
@@ -456,19 +457,9 @@
 	return nil;
 }
 
-- (UIActivityViewController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem {
+- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromSubView:(UIView *)subView completionHandler:(UIActivityViewControllerCompletionHandler)completionHandler {
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
-	activityController.modalPresentationStyle = UIModalPresentationPopover;
-	[self presentViewController:activityController animated:YES completion:nil];
-	UIPopoverPresentationController *presentationController = [activityController popoverPresentationController];
-	presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-	presentationController.sourceView = self.view;
-	presentationController.barButtonItem = barButtonItem;
-	return activityController;
-}
-
-- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromSubView:(UIView *)subView {
-	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+	activityController.completionHandler = completionHandler;
     [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
         FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
     }];
