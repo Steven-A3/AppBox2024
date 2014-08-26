@@ -42,6 +42,7 @@
 	[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.contentView.left).with.offset(IS_IPHONE ? 15 : 28);
 		make.width.equalTo(self.contentView.width).with.multipliedBy(0.5);
+		make.centerY.equalTo(self.centerY);
 	}];
 }
 

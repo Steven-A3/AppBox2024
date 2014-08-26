@@ -205,7 +205,11 @@
 
 	if (_useDotAsClearButton) {
 		[self.dotButton setTitle:IS_IPHONE ? @"C" : NSLocalizedString(@"Clear", @"Clear") forState:UIControlStateNormal];
-		self.dotButton.titleLabel.font = [UIFont systemFontOfSize:IS_LANDSCAPE ? 25 : 18];
+		if (IS_IPAD) {
+			self.dotButton.titleLabel.font = [UIFont systemFontOfSize:IS_LANDSCAPE ? 25 : 18];
+		} else {
+			self.dotButton.titleLabel.font = [UIFont systemFontOfSize:26];
+		}
 	} else {
 		switch (_keyboardType) {
 			case A3NumberKeyboardTypeCurrency:
