@@ -6,4 +6,4 @@
   Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 */
 
-NSLocationWhenInUseUsageDescription = "Votre information de localisation est utilisée pour afficher la météo et les jours fériés.";
+NSLocationWhenInUseUsageDescription = "Votre information de localisation est utilisée pour afficher la météo et les jours fériés. Il est utilisé pour indiquer votre position à contre-jour.";

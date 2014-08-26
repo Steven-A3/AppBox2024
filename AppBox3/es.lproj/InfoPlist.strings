@@ -6,4 +6,4 @@
   Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 */
 
-NSLocationWhenInUseUsageDescription = "Su información de ubicación se utiliza para mostrar el tiempo y los días festivos.";
+NSLocationWhenInUseUsageDescription = "Su información de ubicación se utiliza para mostrar el tiempo y los días festivos. Se utiliza para introducir su ubicación en días mostrador.";

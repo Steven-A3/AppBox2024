@@ -6,4 +6,4 @@
   Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 */
 
-NSLocationWhenInUseUsageDescription = "Twoja informacja o lokalizacji jest używany, aby pokazać pogodę i wakacje.";
+NSLocationWhenInUseUsageDescription = "Twoja informacja o lokalizacji jest używany, aby pokazać pogodę i wakacje. Jest on używany do wpisz lokalizację w dzień licznika.";

@@ -6,4 +6,4 @@
   Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 */
 
-NSLocationWhenInUseUsageDescription = "Your location is used to show weather and holidays.";
+NSLocationWhenInUseUsageDescription = "Your location is used to show weather and holidays. It is used to help you enter your location into the Days Counter.";
