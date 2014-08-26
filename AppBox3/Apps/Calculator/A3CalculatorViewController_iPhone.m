@@ -21,7 +21,6 @@
 #import "A3InstructionViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
-#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
