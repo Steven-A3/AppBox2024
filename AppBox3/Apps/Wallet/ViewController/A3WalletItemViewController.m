@@ -137,7 +137,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (WalletCategory *)category {
 	if (!_category) {
-		_category = [WalletData categoryItemWithID:_item.categoryID];
+		_category = [WalletData categoryItemWithID:_item.categoryID inContext:nil];
 	}
 	return _category;
 }
@@ -593,7 +593,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
         textCell.valueTextField.font = [UIFont systemFontOfSize:17];
         textCell.valueTextField.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         textCell.valueTextField.placeholder = NSLocalizedString(@"Category", @"Category");
-		WalletCategory *category = [WalletData categoryItemWithID:_item.categoryID];
+		WalletCategory *category = [WalletData categoryItemWithID:_item.categoryID inContext:nil];
 		textCell.valueTextField.text = category.name;
 
         cell = textCell;

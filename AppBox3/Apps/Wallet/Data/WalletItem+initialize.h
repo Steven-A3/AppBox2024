@@ -17,6 +17,7 @@
 - (NSArray *)fieldItemsArraySortedByFieldOrder;
 - (void)assignOrder;
 - (void)verifyNULLField;
-- (void)deleteWalletItem;
+
+- (void)deleteWalletItemInContext:(NSManagedObjectContext *)context;
 
 @end

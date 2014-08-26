@@ -260,8 +260,11 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
              @"wallet_wallet"];
 }
 
-+ (WalletCategory *)categoryItemWithID:(NSString *)categoryID {
-	return [WalletCategory MR_findFirstByAttribute:@"uniqueID" withValue:categoryID];
++ (WalletCategory *)categoryItemWithID:(NSString *)categoryID inContext:(NSManagedObjectContext *)context {
+	if (!context) {
+		context = [NSManagedObjectContext MR_defaultContext];
+	}
+	return [WalletCategory MR_findFirstByAttribute:@"uniqueID" withValue:categoryID inContext:context];
 }
 
 + (WalletField *)fieldOfFieldItem:(WalletFieldItem *)fieldItem {

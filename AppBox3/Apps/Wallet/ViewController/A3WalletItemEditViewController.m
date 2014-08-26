@@ -106,7 +106,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	} else {
 		self.navigationItem.title = NSLocalizedString(@"Edit Item", @"Edit Item");
 
-		_category = [WalletData categoryItemWithID:_item.categoryID];
+		_category = [WalletData categoryItemWithID:_item.categoryID inContext:[NSManagedObjectContext MR_rootSavingContext]];
 
 		[self copyThumbnailImagesToTemporaryPath];
 

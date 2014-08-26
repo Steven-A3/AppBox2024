@@ -478,7 +478,7 @@ enum SortingKind {
     // 마지막으로 추가되었던 walletItem의 카테고리가 선택되도록 한다.
     WalletItem *lastItem = [WalletItem MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (lastItem) {
-        viewController.category = [WalletData categoryItemWithID:lastItem.categoryID];
+        viewController.category = [WalletData categoryItemWithID:lastItem.categoryID inContext:nil];
     }
     else {
         viewController.category = [WalletData firstEditableWalletCategory];
@@ -756,7 +756,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 		if (_topViewRef) {
 			[self updateTopViewInfo:_topViewRef];
 		}
-		[item deleteWalletItem];
+		[item deleteWalletItemInContext:[NSManagedObjectContext MR_defaultContext]];
 		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {

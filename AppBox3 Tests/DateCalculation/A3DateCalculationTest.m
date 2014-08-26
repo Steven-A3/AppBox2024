@@ -40,21 +40,21 @@
     // This is an example of a functional test case.
 	
 	NSDateComponents *resultComponents = [_gregorian components:NSWeekOfMonthCalendarUnit fromDate:[NSDate date] toDate:_olderDate options:0];
-	NSLog(@"%ld", resultComponents.weekOfMonth);
+	NSLog(@"%ld", (long)resultComponents.weekOfMonth);
 	resultComponents = [_gregorian components:NSWeekOfMonthCalendarUnit fromDate:[NSDate date] toDate:_futureDate options:0];
-	NSLog(@"%ld", resultComponents.weekOfMonth);
+	NSLog(@"%ld", (long)resultComponents.weekOfMonth);
 
 	resultComponents = [_gregorian components:NSWeekOfYearCalendarUnit fromDate:[NSDate date] toDate:_olderDate options:0];
-	NSLog(@"%ld", resultComponents.weekOfYear);
+	NSLog(@"%ld", (long)resultComponents.weekOfYear);
 	resultComponents = [_gregorian components:NSWeekOfYearCalendarUnit fromDate:[NSDate date] toDate:_futureDate options:0];
-	NSLog(@"%ld", resultComponents.weekOfYear);
+	NSLog(@"%ld", (long)resultComponents.weekOfYear);
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 	resultComponents = [_gregorian components:NSWeekCalendarUnit fromDate:[NSDate date] toDate:_olderDate options:0];
-	NSLog(@"%ld, %ld, %ld", resultComponents.week, resultComponents.weekOfMonth, resultComponents.weekOfYear);
+	NSLog(@"%ld, %ld, %ld", (long)resultComponents.week, (long)resultComponents.weekOfMonth, (long)resultComponents.weekOfYear);
 	resultComponents = [_gregorian components:NSWeekCalendarUnit fromDate:[NSDate date] toDate:_futureDate options:0];
-	NSLog(@"%ld, %ld, %ld", resultComponents.week, resultComponents.weekOfMonth, resultComponents.weekOfYear);
+	NSLog(@"%ld, %ld, %ld", (long)resultComponents.week, (long)resultComponents.weekOfMonth, (long)resultComponents.weekOfYear);
 	
 	NSDateComponents *addingComponents = [NSDateComponents new];
 	addingComponents.weekOfYear = 8;

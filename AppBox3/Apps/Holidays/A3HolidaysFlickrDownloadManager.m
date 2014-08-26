@@ -81,7 +81,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 - (NSString *)holidayImagePathForCountryCode:(NSString *)countryCode {
 	NSString *savedImageFilename = [[A3UserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];
 	if ([savedImageFilename length]) {
-		return [savedImageFilename pathInLibraryDirectory];
+		return [savedImageFilename pathInCachesDirectory];
 	}
 	return nil;
 }
@@ -191,7 +191,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
     NSData *data = [NSData dataWithContentsOfURL:downloadURL];
     UIImage *image = [UIImage imageWithData:data];
 
-	[UIImageJPEGRepresentation(image, 1.0) writeToFile:[imageName pathInLibraryDirectory] atomically:YES];
+	[UIImageJPEGRepresentation(image, 1.0) writeToFile:[imageName pathInCachesDirectory] atomically:YES];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:A3HolidaysFlickrDownloadManagerDownloadComplete object:self userInfo:@{@"CountryCode" : countryCode}];
 }
@@ -222,7 +222,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 	UIImage *portraitImage = [image portraitImage];
 	NSString *imageName = [self userSuppliedImageNameForCountryCode:countryCode];
 	[self setImageName:imageName forCountryCode:countryCode];
-	[UIImageJPEGRepresentation(portraitImage, 1.0) writeToFile:[imageName pathInLibraryDirectory] atomically:YES];
+	[UIImageJPEGRepresentation(portraitImage, 1.0) writeToFile:[imageName pathInCachesDirectory] atomically:YES];
 }
 
 - (NSString *)userSuppliedImageNameForCountryCode:(NSString *)countryCode {
@@ -326,7 +326,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 	}
 	NSString *filename = [[A3UserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];
 	NSFileManager *fileManager = [NSFileManager new];
-	[fileManager removeItemAtPath:[filename pathInLibraryDirectory] error:NULL];
+	[fileManager removeItemAtPath:[filename pathInCachesDirectory] error:NULL];
 
 	A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 	[defaults removeObjectForKey:[self imageNameKeyForCountryCode:countryCode]];
