@@ -410,7 +410,9 @@
 - (void)shareButtonAction:(id)sender {
     [self clearEverything];
     
-    _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+    _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completion:^{
+		[self enableControls:YES];
+	}];
     if (IS_IPAD) {
         _sharePopoverController.delegate = self;
 		[self enableControls:NO];
