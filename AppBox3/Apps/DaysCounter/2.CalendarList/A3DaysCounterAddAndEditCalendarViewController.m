@@ -104,6 +104,9 @@
 }
 
 - (void)willDismissRightSideView {
+	if ([self.savingContext hasChanges]) {
+		[self.savingContext rollback];
+	}
 	[self dismissViewControllerAnimated:NO completion:nil];
 }
 
@@ -329,6 +332,9 @@
 
 - (void)cancelAction:(id)sender
 {
+	if ([self.savingContext hasChanges]) {
+		[self.savingContext rollback];
+	}
 	[self dismissSelf];
 }
 
