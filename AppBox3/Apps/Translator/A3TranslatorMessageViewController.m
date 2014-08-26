@@ -34,7 +34,7 @@ const NSInteger kTranslatorAlertViewType_DeleteAll = 2;
 		<UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource,
 		A3TranslatorMessageCellDelegate, UIKeyInput, A3TranslatorLanguageTVDelegateDelegate,
 		A3SearchViewControllerDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate,
-		UIActivityItemSource>
+		UIActivityItemSource, UIPopoverPresentationControllerDelegate>
 
 // Language Select
 @property (nonatomic, strong) UIView *languageSelectView;
@@ -1341,9 +1341,12 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 #pragma mark - Share action
 
 - (void)shareActionFromToolbar:(UIBarButtonItem *)barButtonItem {
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:barButtonItem completion:^{
-	}];
-	_sharePopoverController.delegate = self;
+	if (IS_IOS7) {
+		_sharePopoverController = [self presentActivityViewControllerInOS7WithActivityItems:@[self] fromBarButtonItem:barButtonItem];
+		_sharePopoverController.delegate = self;
+	} else {
+		[self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:barButtonItem];
+	}
 }
 
 - (NSString *)shareContentsAsHTML:(BOOL)asHTML {

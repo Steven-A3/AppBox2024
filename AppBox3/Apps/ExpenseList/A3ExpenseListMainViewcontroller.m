@@ -37,7 +37,7 @@
 NSString *const A3ExpenseListCurrentBudgetID = @"CurrentBudget";
 NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationExpenseListCurrencyCodeChanged";
 
-@interface A3ExpenseListMainViewController () <ATSDragToReorderTableViewControllerDelegate, UIPopoverControllerDelegate, A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate, A3ExpenseListHistoryDelegate, A3CalculatorViewControllerDelegate, A3InstructionViewControllerDelegate>
+@interface A3ExpenseListMainViewController () <ATSDragToReorderTableViewControllerDelegate, UIPopoverControllerDelegate, A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate, A3ExpenseListHistoryDelegate, A3CalculatorViewControllerDelegate, A3InstructionViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, strong) A3ExpenseListHeaderView *headerView;
 @property (nonatomic, strong) UIView *sep1View;
@@ -590,13 +590,22 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		return;
 	}
 
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[@"test"] fromBarButtonItem:sender completion:^{
-		[self enableControls:YES];
-	}];
+	if (IS_IOS7) {
+		_sharePopoverController = [self presentActivityViewControllerInOS7WithActivityItems:@[@"test"] fromBarButtonItem:sender];
+		_sharePopoverController.delegate = self;
+	} else {
+		UIActivityViewController *activityViewController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+		UIPopoverPresentationController *popoverPresentationController = [activityViewController popoverPresentationController];
+		popoverPresentationController.delegate = self;
+	}
 	if (IS_IPAD) {
 		_sharePopoverController.delegate = self;
 		[self enableControls:NO];
 	}
+}
+
+- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
+	[self enableControls:YES];
 }
 
 - (void)moveToAddBudgetViewController {

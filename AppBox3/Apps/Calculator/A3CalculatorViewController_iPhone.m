@@ -625,8 +625,11 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 }
 
 - (void)shareAll:(id)sender {
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completion:^{
-	}];
+	if (IS_IOS7) {
+		_sharePopoverController = [self presentActivityViewControllerInOS7WithActivityItems:@[self] fromBarButtonItem:sender];
+	} else {
+		[self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+	}
 }
 
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType

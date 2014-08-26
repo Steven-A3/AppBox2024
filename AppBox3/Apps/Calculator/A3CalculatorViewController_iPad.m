@@ -411,13 +411,21 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     [self checkRightButtonDisable];
 }
 
+- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
+	[self enableControls:YES];
+}
+
 #pragma mark - Right Button more
 
 - (void)shareAll:(id)sender {
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completion:^{
-		[self enableControls:YES];
-	}];
-	_sharePopoverController.delegate = self;
+	if (IS_IOS7) {
+		_sharePopoverController = [self presentActivityViewControllerInOS7WithActivityItems:@[self] fromBarButtonItem:sender];
+		_sharePopoverController.delegate = self;
+	} else {
+		UIActivityViewController *activityViewController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+		UIPopoverPresentationController *popoverPresentationController = [activityViewController popoverPresentationController];
+		popoverPresentationController.delegate = self;
+	}
 	[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
 		[buttonItem setEnabled:NO];
 	}];

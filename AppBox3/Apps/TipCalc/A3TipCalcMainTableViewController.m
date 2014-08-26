@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 };
 
 
-@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, UIActivityItemSource, UIPopoverControllerDelegate, CLLocationManagerDelegate,A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
+@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, UIActivityItemSource, UIPopoverControllerDelegate, CLLocationManagerDelegate,A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *tableDataSource;
 @property (nonatomic, strong) NSArray * tableSectionTitles;
@@ -1078,14 +1078,21 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
     [self disposeInitializedCondition];
 
-    self.localPopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completion:^{
-		[self setBarButtonsEnable:YES];
-		self.localPopoverController = nil;
-	}];
+	if (IS_IOS7) {
+		self.localPopoverController = [self presentActivityViewControllerInOS7WithActivityItems:@[self] fromBarButtonItem:sender];
+		self.localPopoverController.delegate = self;
+	} else {
+		UIActivityViewController *activityViewController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+		UIPopoverPresentationController *popoverPresentationController = [activityViewController popoverPresentationController];
+		popoverPresentationController.delegate = self;
+	}
     if (IS_IPAD) {
-        self.localPopoverController.delegate = self;
         [self setBarButtonsEnable:NO];
     }
+}
+
+- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
+	[self setBarButtonsEnable:YES];
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {

@@ -405,14 +405,23 @@
 	[self.navigationItem.rightBarButtonItem setEnabled:enable];
 }
 
+- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
+	[self enableControls:YES];
+}
+
 #pragma mark Share
 
 - (void)shareButtonAction:(id)sender {
     [self clearEverything];
-    
-    _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completion:^{
-		[self enableControls:YES];
-	}];
+
+	if (IS_IOS7) {
+		_sharePopoverController = [self presentActivityViewControllerInOS7WithActivityItems:@[self] fromBarButtonItem:sender];
+		_sharePopoverController.delegate = self;
+	} else {
+		UIActivityViewController *activityViewController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+		UIPopoverPresentationController *popoverPresentationController = [activityViewController popoverPresentationController];
+		popoverPresentationController.delegate = self;
+	}
     if (IS_IPAD) {
         _sharePopoverController.delegate = self;
 		[self enableControls:NO];
