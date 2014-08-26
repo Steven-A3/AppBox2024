@@ -59,6 +59,9 @@
 @property (strong, nonatomic) NSString *inputDateKey;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) UIPopoverController *imagePickerPopoverController;
+#ifdef __IPHONE_8_0
+@property (strong, nonatomic) UIPopoverPresentationController *imagePickerPopoverPresentationController;
+#endif
 @property (assign, nonatomic) BOOL isAdvancedCellOpen;
 @property (assign, nonatomic) BOOL isDurationInitialized;//temp...
 @property (weak, nonatomic) UITextView *textViewResponder;
@@ -93,6 +96,10 @@
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+    self.tableView.separatorInset = UIEdgeInsetsZero;
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+    }
 
     self.cellIDArray = @[@"titleCell", @"photoCell", @"switchCell", @"switchCell", @"switchCell",       // 0 ~ 4
                          @"dateCell", @"dateCell", @"value1Cell", @"value1Cell", @"value1Cell",         // 5 ~ 9
@@ -180,7 +187,10 @@
         
     [self.navigationController setToolbarHidden:YES];
     isFirstAppear = YES;
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+    self.tableView.separatorInset = UIEdgeInsetsZero;
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+    }
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
@@ -831,7 +841,10 @@
             cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
         }
         else {
-            cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+            [cell setSeparatorInset:UIEdgeInsetsMake(0, -20, 0, 0)];
+            if ([cell respondsToSelector:@selector(layoutMargins)]) {
+                cell.layoutMargins = UIEdgeInsetsMake(0, -20, 0, 0);
+            }
         }
     }
     
@@ -1322,10 +1335,21 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
-        [self alertLocationDisabled];
-        return;
+    if (IS_IOS7) {
+        if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
+            [self alertLocationDisabled];
+            return;
+        }
     }
+    else {
+#ifdef __IPHONE_8_0
+        if (![CLLocationManager locationServicesEnabled] || ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedAlways)) {
+            [self alertLocationDisabled];
+            return;
+        }
+#endif
+    }
+
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 															 delegate:self
@@ -2249,11 +2273,21 @@
 				[self presentViewController:_imagePickerController animated:YES completion:NULL];
 			}
 			else {
-				self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+//				self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
                 UIButton *button = (UIButton*)[cell viewWithTag:11];
                 CGRect rect = [self.tableView convertRect:button.frame fromView:cell.contentView];
-				[_imagePickerPopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//
+//                self.imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
+                
+                _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
+                
+                UIPopoverPresentationController *presentationController = [_imagePickerController popoverPresentationController];
+                presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+                presentationController.sourceView = self.view;
+                presentationController.sourceRect = rect;
+                
+                [self presentViewController:_imagePickerController animated:YES completion:NULL];
 			}
 		}
 		else {
@@ -2310,23 +2344,6 @@
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event") otherButtonTitles:nil];
     actionSheet.tag = ActionTag_DeleteEvent;
     [actionSheet showInView:self.view];
-}
-
-#pragma mark - A3ImagePickerOnActionSheetDelegate
-- (void)takePhotoActionTouched {
-    
-}
-- (void)chooseExistingTouched {
-    
-}
-- (void)ChooseAndResizeTouched {
-    
-}
-- (void)cancelTouched {
-    
-}
-- (void)deletePhotoTouched {
-    
 }
 
 #pragma mark - UIPopoverControllerDelegate
