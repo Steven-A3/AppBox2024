@@ -172,6 +172,8 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+	[[A3UserDefaults standardUserDefaults] synchronize];
+
 	[self applicationDidEnterBackground_passcode];
 
 	__block UIBackgroundTaskIdentifier identifier;
