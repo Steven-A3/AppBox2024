@@ -24,6 +24,7 @@
 #import "DaysCounterReminder+extension.h"
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
+#import "UITableView+utility.h"
 
 @interface A3DaysCounterReminderListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -307,7 +308,7 @@
 - (void)clearAction:(id)sender
 {
     UIButton *button = (UIButton*)sender;
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[button superview] superview] superview]];
+    NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:button];
     if ( indexPath == nil ) {
         return;
     }
@@ -325,7 +326,7 @@
 - (void)changeClearAction:(id)sender
 {
     UIButton *button = (UIButton*)sender;
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[button superview] superview] superview]];
+    NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:button];
     if ( indexPath == nil ) {
         return;
     }

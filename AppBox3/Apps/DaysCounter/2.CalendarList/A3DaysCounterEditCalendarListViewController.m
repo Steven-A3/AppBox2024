@@ -18,6 +18,7 @@
 #import "A3SyncManager.h"
 #import "DaysCounterCalendar.h"
 #import "NSMutableArray+A3Sort.h"
+#import "UITableView+utility.h"
 
 @interface A3DaysCounterEditCalendarListViewController ()
 @property (strong, nonatomic) NSMutableArray *calendarArray;
@@ -180,6 +181,10 @@
     return YES;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 44;
+}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     //return IS_RETINA ? 35.5 : 36;
@@ -226,7 +231,7 @@
 - (void)checkAction:(id)sender
 {
     UIButton *button = (UIButton*)sender;
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[button superview] superview] superview]];
+    NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:button];
     if ( indexPath == nil )
         return;
     
@@ -263,7 +268,7 @@
 - (void)editCalendarAction:(id)sender
 {
     UIButton *button = (UIButton*)sender;
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[button superview] superview] superview]];
+    NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:button];
     if ( indexPath == nil )
         return;
 
