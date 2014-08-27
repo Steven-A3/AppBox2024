@@ -1375,7 +1375,7 @@
         UIPopoverPresentationController *popover = alertController.popoverPresentationController;
         popover.sourceView = self.view;
         UITableViewCell *senderCell = [tableView cellForRowAtIndexPath:indexPath];
-        popover.sourceRect = CGRectMake(self.view.center.x, ((UITableViewCell *)senderCell).center.y + 22, 0, 0);
+        popover.sourceRect = CGRectMake(self.view.center.x, ((UITableViewCell *)senderCell).center.y, 0, 0);
         popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
         
         [self presentViewController:alertController animated:YES completion:NULL];
