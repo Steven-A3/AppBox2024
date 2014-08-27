@@ -926,23 +926,13 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     }
 }
 
--(void)scrollToTopOfTableView {
-    if (IS_LANDSCAPE) {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.35];
-        self.tableView.contentOffset = CGPointMake(0.0, CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width)).y);
-        [UIView commitAnimations];
-    }
-    else {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.35];
-        self.tableView.contentOffset = CGPointMake(0.0, CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height)).y);
-        [UIView commitAnimations];
-    }
+- (void)scrollToTopOfTableView {
+	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+	[UIView setAnimationCurve:7];
+	[UIView setAnimationDuration:0.35];
+	self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight] ) );
+	[UIView commitAnimations];
 }
 
 #pragma mark - Table view data source

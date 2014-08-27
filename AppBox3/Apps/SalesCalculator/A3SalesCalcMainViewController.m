@@ -963,7 +963,7 @@ enum A3TableElementCellType {
 	}
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section==0) {
         return NSLocalizedString(@"KNOWN VALUE", @"KNOWN VALUE");
@@ -972,22 +972,13 @@ enum A3TableElementCellType {
     return nil;
 }
 
--(void)scrollToTopOfTableView {
-    if (IS_LANDSCAPE) {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.35];
-        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
-        [UIView commitAnimations];
-    } else {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.35];
-        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height));
-        [UIView commitAnimations];
-    }
+- (void)scrollToTopOfTableView {
+	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+	[UIView setAnimationCurve:7];
+	[UIView setAnimationDuration:0.35];
+	self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
+	[UIView commitAnimations];
 }
 
 #pragma mark - etc_countries Rate List

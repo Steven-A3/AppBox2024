@@ -2723,32 +2723,17 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 -(void)scrollToTopOfTableView {
-    if (IS_IOS7 && IS_LANDSCAPE) {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.35];
-        if (self.tableView.contentInset.top == 0) {
-            self.tableView.contentOffset = CGPointMake(0.0, 0.0);
-        }
-        else {
-			self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
-        }
-        [UIView commitAnimations];
-    }
-    else {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.35];
-        if (self.tableView.contentInset.top == 0) {
-            self.tableView.contentOffset = CGPointMake(0.0, 0.0);
-        }
-        else {
-            self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height));
-        }
-        [UIView commitAnimations];
-    }
+	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+	[UIView setAnimationCurve:7];
+	[UIView setAnimationDuration:0.35];
+	if (self.tableView.contentInset.top == 0) {
+		self.tableView.contentOffset = CGPointMake(0.0, 0.0);
+	}
+	else {
+		self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
+	}
+	[UIView commitAnimations];
 }
 
 #pragma mark Configure TableView Cell

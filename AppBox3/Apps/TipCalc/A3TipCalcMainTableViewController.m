@@ -735,21 +735,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 -(void)scrollToTopOfTableView {
-    if (IS_LANDSCAPE) {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.35];
-        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
-        [UIView commitAnimations];
-    } else {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.35];
-        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height));
-        [UIView commitAnimations];
-    }
+	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+	[UIView setAnimationCurve:7];
+	[UIView setAnimationDuration:0.35];
+	self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
+	[UIView commitAnimations];
 }
 
 #pragma mark Settings

@@ -101,16 +101,10 @@
     [self setBarButtonEnable:YES];
 
     self.automaticallyAdjustsScrollViewInsets = NO;
-    if (IS_LANDSCAPE) {
-        _oldTableOffset = self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width;
-        self.tableView.contentInset = UIEdgeInsetsMake(_oldTableOffset, 0, 0, 0);
-        self.tableView.contentOffset = CGPointMake(0.0, -_oldTableOffset);
-    } else {
-        _oldTableOffset = self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
-        self.tableView.contentInset = UIEdgeInsetsMake(_oldTableOffset, 0, 0, 0);
-        self.tableView.contentOffset = CGPointMake(0.0, -_oldTableOffset);
-    }
-    
+	_oldTableOffset = self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight];
+	self.tableView.contentInset = UIEdgeInsetsMake(_oldTableOffset, 0, 0, 0);
+	self.tableView.contentOffset = CGPointMake(0.0, -_oldTableOffset);
+
     _isKeyboardShown = NO;
 
 	if (IS_IPAD) {
@@ -188,12 +182,12 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)contentSizeDidChange:(NSNotification *)notification {
+- (void)contentSizeDidChange:(NSNotification *)notification {
     FNLOG(@"%@", notification);
     [_headerView setNeedsLayout];
 }
 
--(void)initSectionABMark {
+- (void)initSectionABMark {
     _sectionALabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 20.0, 20.0)];
     _sectionALabel.hidden = NO;
     [_sectionALabel setTextAlignment:NSTextAlignmentCenter];
@@ -296,7 +290,7 @@
 	[self setFirstResponder:nil];
 }
 
--(void)setBarButtonEnable:(BOOL)enable
+- (void)setBarButtonEnable:(BOOL)enable
 {
 	_barButtonEnabled = enable;
     if (enable) {
@@ -346,7 +340,7 @@
 
 #pragma mark -
 
--(void)setCalcType:(PercentCalcType)calcType
+- (void)setCalcType:(PercentCalcType)calcType
 {
     if (self.headerView) {
         self.headerView.calcType = calcType;
@@ -354,13 +348,13 @@
 	[[A3SyncManager sharedSyncManager] setObject:@(calcType) forKey:A3PercentCalcUserDefaultsCalculationType state:A3DataObjectStateModified];
 }
 
--(PercentCalcType)calcType
+- (PercentCalcType)calcType
 {
     PercentCalcType result = (PercentCalcType) [[A3SyncManager sharedSyncManager] integerForKey:A3PercentCalcUserDefaultsCalculationType];
     return result;
 }
 
--(void)clearData
+- (void)clearData
 {
     _factorX1 = @0;
     _factorY1 = @0;
@@ -373,7 +367,7 @@
     _formattedFactorValues = [formattedData formattedStringValuesByCalcType];
 }
 
--(void)historyButtonAction:(id)sender {
+- (void)historyButtonAction:(id)sender {
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
@@ -394,7 +388,7 @@
 	_modalNavigationController = nil;
 }
 
--(void)saveToHistory:(id)sender
+- (void)saveToHistory:(id)sender
 {
     [self saveCalcHistoryData:self.headerView.factorValues calcType:self.calcType];
     
@@ -441,7 +435,7 @@
     
 }
 
--(void)saveCalcHistoryData:(A3PercentCalcData *)aData calcType:(PercentCalcType)calcType {
+- (void)saveCalcHistoryData:(A3PercentCalcData *)aData calcType:(PercentCalcType)calcType {
     
     // 최근 데이터에 저장했던 데이터인지 체크.
     NSFetchRequest * fetch = [[NSFetchRequest alloc] initWithEntityName:@"PercentCalcHistory"];
@@ -453,9 +447,9 @@
         if (!entityHistory) {
             continue;
         }
-//        if (calcType != entityHistory.dataType) {updateSection3EntryCell
-//            continue;
-//        }
+        if (calcType != entityHistory.dataType) {
+            continue;
+        }
         
         if ([aData.values isEqualToArray:entityHistory.values]) {
             // 최근에 저장한 데이터와 일치. 덮어쓰기.
@@ -501,7 +495,7 @@
     }
 }
 
--(void)saveInputTextData:(A3PercentCalcData *)inputTextData calculated:(BOOL)calculated {
+- (void)saveInputTextData:(A3PercentCalcData *)inputTextData calculated:(BOOL)calculated {
     inputTextData.calculated = calculated;
     
     if (inputTextData.dataType!=PercentCalcType_5 && inputTextData.values.count>2) {
@@ -595,7 +589,7 @@
     return nil;
 }
 
--(UITableViewCell *)updateCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
+- (UITableViewCell *)updateCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
     if (IS_IPAD) {
         cell.separatorInset = UIEdgeInsetsMake(0, 28.0, 0, 0);
     } else {
@@ -609,7 +603,7 @@
     return cell;
 }
 
--(A3JHTableViewEntryCell *)updateSection2EntryCell:(A3JHTableViewEntryCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
+- (A3JHTableViewEntryCell *)updateSection2EntryCell:(A3JHTableViewEntryCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
     cell.accessoryType = UITableViewCellAccessoryNone;
     
     if (indexPath.row==0) {
@@ -660,7 +654,7 @@
    return cell;
 }
 
--(A3JHTableViewEntryCell *)updateSection3EntryCell:(A3JHTableViewEntryCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
+- (A3JHTableViewEntryCell *)updateSection3EntryCell:(A3JHTableViewEntryCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
     cell.accessoryType = UITableViewCellAccessoryNone;
     
     if (indexPath.row==0) {
@@ -715,7 +709,7 @@
    return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([indexPath section]==1) {
         if (!_selectedOptionIndexPath) {
@@ -921,11 +915,6 @@
     self.headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 }
 
-- (void)reloadAnimationEnded
-{
-    [self.tableView reloadData];
-}
-
 - (void)scrollTableViewToIndexPath:(NSIndexPath *)indexPath
 {
     _oldTableOffset = self.tableView.contentOffset.y;
@@ -937,25 +926,16 @@
     self.tableView.contentOffset = CGPointMake(0.0, offset);
 }
 
--(void)scrollToTopOfTableView {
-    if (IS_LANDSCAPE) {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.35];
-        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
-        [UIView commitAnimations];
-    } else {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.35];
-        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height));
-        [UIView commitAnimations];
-    }
+- (void)scrollToTopOfTableView {
+	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+	[UIView setAnimationCurve:7];
+	[UIView setAnimationDuration:0.35];
+	self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
+	[UIView commitAnimations];
 }
 
--(BOOL)checkNeedToClearDetail {
+- (BOOL)checkNeedToClearDetail {
     if (_selectedIndexPath.section==2) {
         if (_selectedIndexPath.row==0) {
             _currentFactor = _factorX1;
@@ -973,7 +953,7 @@
     return [_currentFactor isEqualToNumber:@0]==NO ? YES : NO;
 }
 
--(void)showKeyboardIfXFieldIsZeroAtTableView:(UITableView *)tableView {
+- (void)showKeyboardIfXFieldIsZeroAtTableView:(UITableView *)tableView {
     // 옵션 선택시 무조건 키보드 올라오도록.
     if ([_factorX1 isEqualToNumber:@0] && [_factorY1 isEqualToNumber:@0]) {
         _selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:2];
@@ -986,13 +966,13 @@
     }
 }
 
--(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     //FNLOG(@"scrollViewDidEndDragging: %@, decelerate: %d", NSStringFromUIEdgeInsets(scrollView.contentInset), decelerate);
     FNLOG(@"scrollViewDidEndDragging: %@, decelerate: %d", NSStringFromCGPoint(scrollView.contentOffset), decelerate);
 }
 
 #pragma mark - UITextField Delegate
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     _isKeyboardShown = YES;
     self.firstResponder = textField;
@@ -1088,7 +1068,7 @@
     }
 }
 
--(void)textFieldDidEndEditing:(UITextField *)textField {
+- (void)textFieldDidEndEditing:(UITextField *)textField {
     _isKeyboardShown = NO;
     if (textField == self.firstResponder) {
         [self setFirstResponder:nil];
@@ -1231,7 +1211,7 @@
 
 #pragma mark
 
--(void)reloadPrevNextButtonStatus {
+- (void)reloadPrevNextButtonStatus {
     if (_selectedIndexPath.section==2&&_selectedIndexPath.row==0) {
         _prevShow = NO;
         _nextShow = YES;
@@ -1294,64 +1274,17 @@
     [self.tableView reloadData];
 }
 
-//-(void)keyboardWillShow:(NSNotification *)aNoti
-//{
-//    NSDictionary *aDict = [aNoti userInfo];
-//    CGRect keyboardSize = [self.view convertRect:[[aDict valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue] fromView:nil];
-//    keyboardSize.size.height = keyboardSize.size.height-90.0;
-//    NSNumber *animationCurve = [aNoti.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey];    // 7
-//    NSNumber *animationDuration = [aNoti.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey];  // 0.25
-//    
-//    [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-//    [UIView setAnimationBeginsFromCurrentState:YES];
-//    [UIView setAnimationCurve:[animationCurve intValue]];
-//    [UIView setAnimationDuration:[animationDuration doubleValue]];
-//    
-//    [self scrollTableViewToIndexPath:_selectedIndexPath];
-//    
-//    [UIView commitAnimations];
-//}
-//
-//-(void)keyboardWillDisappear:(NSNotification *)aNoti
-//{
-//    NSDictionary *aDict = [aNoti userInfo];
-//    CGRect keyboardSize = [self.view convertRect:[[aDict valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue] fromView:nil];
-//    keyboardSize.size.height = keyboardSize.size.height-90.0;
-//    NSNumber *animationCurve = [aNoti.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey];
-//    NSNumber *animationDuration = [aNoti.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey];
-//    
-//    [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-//    [UIView setAnimationBeginsFromCurrentState:YES];
-//    [UIView setAnimationCurve:[animationCurve intValue]];
-//    [UIView setAnimationDuration:[animationDuration doubleValue]];
-//    
-//    [self movePreviousContentOffset];
-//    
-//    [UIView commitAnimations];
-//}
+#pragma mark - Number Keyboard
 
--(void)movePreviousContentOffset
-{
-    if (IS_LANDSCAPE) {
-        _oldTableOffset = self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width;
-        self.tableView.contentOffset = CGPointMake(0.0, -_oldTableOffset);
-    } else {
-        _oldTableOffset = self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
-        self.tableView.contentOffset = CGPointMake(0.0, -_oldTableOffset);
-    }
-}
-
-#pragma mark - NumberKeyabord
-
--(BOOL)isPreviousEntryExists{
+- (BOOL)isPreviousEntryExists{
     return _prevShow;
 }
 
--(BOOL)isNextEntryExists{
+- (BOOL)isNextEntryExists{
     return _nextShow;
 }
 
--(void)prevButtonPressed{
+- (void)prevButtonPressed{
     A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
     
 //    A3PercentCalcData *factorData = [A3PercentCalcData new];
@@ -1400,7 +1333,7 @@
     [_simpleNormalNumberKeyboard reloadPrevNextButtons];
 }
 
--(void)nextButtonPressed{
+- (void)nextButtonPressed{
     A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
 
     if (_selectedIndexPath.section == 2 && _selectedIndexPath.row == 0) {
@@ -1443,7 +1376,12 @@
 }
 
 #pragma mark - A3PercentCalcHistoryViewController Delegate
--(void)setHistoryData:(A3PercentCalcData *)history {
+
+- (void)setHistoryData:(A3PercentCalcData *)history {
+	// Save current data to history
+	[self saveCalcHistoryData:self.headerView.factorValues calcType:self.calcType];
+
+	// replace current data with history data
     _formattedFactorValues = [history formattedStringValuesByCalcType];
     _factorX1 = [history.values objectAtIndex:ValueIdx_X1];
     _factorY1 = [history.values objectAtIndex:ValueIdx_Y1];
@@ -1465,6 +1403,8 @@
         _sectionBLabel.hidden = YES;
     }
 
+	_selectedOptionIndexPath = nil;
+
     [UIView animateWithDuration:0.3
                           delay:0
          usingSpringWithDamping:500.0f
@@ -1479,11 +1419,11 @@
                      }];
 }
 
--(void)didDeleteHistory {
+- (void)didDeleteHistory {
     [self setBarButtonEnable:YES];
 }
 
--(void)dismissHistoryViewController {
+- (void)dismissHistoryViewController {
     [self setBarButtonEnable:YES];
 }
 

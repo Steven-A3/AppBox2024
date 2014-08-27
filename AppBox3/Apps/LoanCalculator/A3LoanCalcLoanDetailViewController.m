@@ -770,32 +770,18 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     return nil;
 }
 
--(void)scrollToTopOfTableView {
-    if (IS_LANDSCAPE) {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.35];
-        if (self.tableView.contentInset.top == 0) {
-            self.tableView.contentOffset = CGPointMake(0.0, 0.0);
-        }
-        else {
-            self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
-        }
-        [UIView commitAnimations];
-    } else {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.35];
-        if (self.tableView.contentInset.top == 0) {
-            self.tableView.contentOffset = CGPointMake(0.0, 0.0);
-        }
-        else {
-            self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height));
-        }
-        [UIView commitAnimations];
-    }
+- (void)scrollToTopOfTableView {
+	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+	[UIView setAnimationCurve:7];
+	[UIView setAnimationDuration:0.35];
+	if (self.tableView.contentInset.top == 0) {
+		self.tableView.contentOffset = CGPointMake(0.0, 0.0);
+	}
+	else {
+		self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
+	}
+	[UIView commitAnimations];
 }
 
 @end
