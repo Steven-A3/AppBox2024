@@ -1039,7 +1039,7 @@
 {
     [self resignAllAction];
     if ( _eventItem && indexPath.section == [_sectionTitleArray count] ) {
-        [self deleteEventAction:nil];
+        [self deleteEventAction:[tableView cellForRowAtIndexPath:indexPath]];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
@@ -2293,6 +2293,23 @@
     [self.navigationController pushViewController:nextVC animated:YES];
 }
 
+- (void)deleteEventActionByActionSheet
+{
+    [_sharedManager removeEvent:_eventItem inContext:_savingContext];
+    id <A3DaysCounterAddEventViewControllerDelegate> o = self.delegate;
+    if ([o respondsToSelector:@selector(viewControllerWillDismissByDeletingEvent)]) {
+        [o viewControllerWillDismissByDeletingEvent];
+    }
+    
+    if (IS_IPAD) {
+        A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+        [rootViewController dismissCenterViewController];
+    }
+    else {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if ( actionSheet.tag == ActionTag_Photo ) {
@@ -2366,27 +2383,34 @@
     }
     else if ( actionSheet.tag == ActionTag_DeleteEvent ) {
         if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
-			[_sharedManager removeEvent:_eventItem inContext:_savingContext ];
-			id <A3DaysCounterAddEventViewControllerDelegate> o = self.delegate;
-			if ([o respondsToSelector:@selector(viewControllerWillDismissByDeletingEvent)]) {
-				[o viewControllerWillDismissByDeletingEvent];
-			}
-
-            if (IS_IPAD) {
-                A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
-                [rootViewController dismissCenterViewController];
-            }
-            else {
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
+            [self deleteEventActionByActionSheet];
         }
     }
 }
 
 - (IBAction)deleteEventAction:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event") otherButtonTitles:nil];
-    actionSheet.tag = ActionTag_DeleteEvent;
-    [actionSheet showInView:self.view];
+    
+    if (!IS_IOS7 && IS_IPAD) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            [alertController dismissViewControllerAnimated:YES completion:NULL];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Event", @"Delete Event") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+            [alertController dismissViewControllerAnimated:YES completion:NULL];
+            [self deleteEventActionByActionSheet];
+        }]];
+        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+        popover.sourceView = self.view;
+        popover.sourceRect = CGRectMake(self.view.center.x, ((UITableViewCell *)sender).center.y + 22, 0, 0);
+        popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        
+        [self presentViewController:alertController animated:YES completion:NULL];
+    }
+    else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event") otherButtonTitles:nil];
+        actionSheet.tag = ActionTag_DeleteEvent;
+        [actionSheet showInView:self.view];
+    }
 }
 
 #pragma mark - UIPopoverControllerDelegate
