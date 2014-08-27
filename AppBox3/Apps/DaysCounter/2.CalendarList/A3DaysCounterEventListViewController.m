@@ -113,15 +113,6 @@
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-
-	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-		FNLOG();
-		[self removeObserver];
-	}
-}
-
 - (void)dealloc {
 	[self removeObserver];
 }
@@ -146,6 +137,16 @@
 	[self loadEventData];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+        FNLOG();
+        [self removeObserver];
+        [self.tableView setEditing:NO];
+    }
+}
+
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     
@@ -157,12 +158,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-//- (void)dealloc
-//{
-//    self.sourceArray = nil;
-//    self.itemArray = nil;
-//}
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
     [self.tableView reloadData];
