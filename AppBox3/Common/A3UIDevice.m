@@ -32,6 +32,14 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 	return bounds;
 }
 
++ (CGFloat)statusBarHeight {
+	CGRect frame = [[UIApplication sharedApplication] statusBarFrame];
+	if (IS_IOS7) {
+		return IS_LANDSCAPE ? frame.size.width : frame.size.height;
+	}
+	return frame.size.height;
+}
+
 + (double)memoryUsage {
 	vm_statistics_data_t	vm_stat;
 	mach_msg_type_number_t	count;

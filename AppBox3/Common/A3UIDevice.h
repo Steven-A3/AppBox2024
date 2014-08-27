@@ -53,6 +53,8 @@ extern NSString *const A3AnimationIDKeyboardWillShow;
 
 + (CGRect)screenBoundsAdjustedWithOrientation;
 
++ (CGFloat)statusBarHeight;
+
 + (double)memoryUsage;
 + (double)storageUsage;
 + (UIInterfaceOrientation)deviceOrientation;
