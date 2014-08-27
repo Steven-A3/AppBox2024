@@ -31,7 +31,7 @@
 
 #define ActionTag_DeleteCalendar 100
 
-@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, A3InstructionViewControllerDelegate>
+@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, A3InstructionViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) NSArray *searchResultArray;
 @property (nonatomic, strong) UISearchBar *searchBar;
@@ -748,11 +748,48 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ( editingStyle == UITableViewCellEditingStyleDelete ) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"DaysCalendar_CalendarDeleteConfirmMsg", @"Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") otherButtonTitles:nil];
-        actionSheet.tag = ActionTag_DeleteCalendar;
-        [actionSheet showInView:self.view];
-        _selectedRowIndex = indexPath.row;
+        if (!IS_IOS7 && IS_IPAD) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"DaysCalendar_CalendarDeleteConfirmMsg", @"Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.") preferredStyle:UIAlertControllerStyleActionSheet];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                [alertController dismissViewControllerAnimated:YES completion:NULL];
+            }]];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+                [alertController dismissViewControllerAnimated:YES completion:NULL];
+
+                DaysCounterCalendar *calendar = _itemArray[indexPath.row];
+                if ( [calendar.type integerValue] == CalendarCellType_System ) {
+                    return;
+                }
+                
+                [_sharedManager removeCalendar:calendar];
+                
+                self.itemArray = [_sharedManager visibleCalendarList];
+                [self setupHeaderInfo];
+                [self.tableView reloadData];
+            }]];
+            
+            UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+            popover.sourceView = self.view;
+            popover.delegate = self;
+            UITableViewCell *senderCell = [tableView cellForRowAtIndexPath:indexPath];
+            CGFloat deleteButtonWidth = 82; //  UITableViewCellDeleteConfirmationView
+
+            popover.sourceRect = CGRectMake(CGRectGetWidth(self.view.frame) - deleteButtonWidth, senderCell.center.y + senderCell.contentView.bounds.size.height/2, 0, 0);
+            popover.permittedArrowDirections = UIPopoverArrowDirectionRight;
+            
+            [self presentViewController:alertController animated:YES completion:NULL];
+        }
+        else {
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"DaysCalendar_CalendarDeleteConfirmMsg", @"Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") otherButtonTitles:nil];
+            actionSheet.tag = ActionTag_DeleteCalendar;
+            [actionSheet showInView:self.view];
+            _selectedRowIndex = indexPath.row;
+        }
     }
+}
+
+- (void)popoverPresentationController:(UIPopoverPresentationController *)popoverPresentationController willRepositionPopoverToRect:(inout CGRect *)rect inView:(inout UIView **)view {
+    
 }
 
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -798,12 +835,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 {
     if ( actionSheet.tag == ActionTag_DeleteCalendar ) {
 		if (buttonIndex == actionSheet.cancelButtonIndex) {
-//            [CATransaction begin];
-//            [CATransaction setCompletionBlock:^{
-//                [self.tableView setEditing:YES];
-//            }];
             [self.tableView setEditing:NO animated:YES];
-//            [CATransaction commit];
             return;
         }
 

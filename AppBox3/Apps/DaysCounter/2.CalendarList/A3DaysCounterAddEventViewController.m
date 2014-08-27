@@ -2210,7 +2210,6 @@
         NSIndexPath *endDateIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_EndDate atSectionArray:section1_items]
                                                              inSection:AddSection_Section_1];
         if (endDateIndexPath) {
-            //[self.tableView reloadRowsAtIndexPaths:@[endDateIndexPath] withRowAnimation:UITableViewRowAnimationNone];
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:endDateIndexPath];
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:12];
 
