@@ -559,6 +559,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
     if (_items[indexPath.row] == self.amountItem) {
         A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID1 forIndexPath:indexPath];
+		inputCell.textLabelOffset = 15;
+		[inputCell setNeedsUpdateConstraints];
         inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
         inputCell.textField.font = [UIFont systemFontOfSize:17];
         inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
@@ -588,6 +590,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     }
     else if (_items[indexPath.row] == self.dateItem) {
         A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID1 forIndexPath:indexPath];
+		inputCell.textLabelOffset = 15;
+		[inputCell setNeedsUpdateConstraints];
         inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
         inputCell.textField.font = [UIFont systemFontOfSize:17];
         
@@ -633,7 +637,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     }
     else if (_items[indexPath.row] == self.dateInputItem) {
         A3LoanCalcDateInputCell *pickerCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcDatePickerCellID1 forIndexPath:indexPath];
-        pickerCell.selectionStyle = UITableViewCellSelectionStyleNone;
+		pickerCell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         pickerCell.picker.delegate = self;
         pickerCell.picker.dataSource = self;

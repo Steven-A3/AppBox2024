@@ -14,9 +14,22 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
+        [self initialize];
     }
     return self;
+}
+
+- (id)initWithCoder:(NSCoder *)coder {
+	self = [super initWithCoder:coder];
+	if (self) {
+		[self initialize];
+	}
+
+	return self;
+}
+
+- (void)initialize {
+	_textLabelOffset = IS_IPHONE ? 15 : 28;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -40,7 +53,7 @@
     [super awakeFromNib];
 
 	[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.contentView.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.left.equalTo(self.contentView.left).with.offset(_textLabelOffset);
 		make.width.equalTo(self.contentView.width).with.multipliedBy(0.5);
 		make.centerY.equalTo(self.centerY);
 	}];
@@ -55,6 +68,13 @@
     _textField.hidden = NO;
 	_textField.attributedPlaceholder = nil;
     _detailLabel.hidden = YES;
+}
+
+- (void)updateConstraints {
+	[_titleLabel updateConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.contentView.left).with.offset(_textLabelOffset);
+	}];
+	[super updateConstraints];
 }
 
 @end
