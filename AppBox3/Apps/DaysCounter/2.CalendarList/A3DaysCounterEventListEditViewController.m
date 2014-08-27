@@ -33,9 +33,6 @@
 @property (strong, nonatomic) UINavigationController *modalVC;
 @property (assign, nonatomic) NSInteger shareItemTitleIndex;
 
-- (void)cancelAction:(id)sender;
-- (void)deleteAllAction:(id)sender;
-- (void)toggleSelectAction:(id)sender;
 @end
 
 
@@ -203,35 +200,45 @@
 }
 
 #pragma mark - UIActionSheetDelegate
+- (void)deleteAllEventsAction
+{
+    for(DaysCounterEvent *event in _itemArray){
+        [event MR_deleteEntity];
+    }
+    [_checkStatusDict removeAllObjects];
+    [_itemArray removeAllObjects];
+    [self.tableView reloadData];
+}
+
+- (void)deleteSelectedEventsAction
+{
+    NSMutableArray *removeItems = [NSMutableArray array];
+    NSMutableArray *indexPaths = [NSMutableArray array];
+    
+    for(NSInteger i=0; i < [_itemArray count]; i++){
+        DaysCounterEvent *item = [_itemArray objectAtIndex:i];
+        if( [[_checkStatusDict objectForKey:item.uniqueID] boolValue] ) {
+            [removeItems addObject:item];
+            [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+        }
+    }
+    
+    for(DaysCounterEvent *event in removeItems){
+        [event MR_deleteEntity];
+    }
+    [_itemArray removeObjectsInArray:removeItems];
+    removeItems = nil;
+    [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if( buttonIndex == actionSheet.destructiveButtonIndex ){
         if( actionSheet.tag == ActionSheet_DeleteAll ){
-            for(DaysCounterEvent *event in _itemArray){
-                [event MR_deleteEntity];
-            }
-            [_checkStatusDict removeAllObjects];
-            [_itemArray removeAllObjects];
-            [self.tableView reloadData];
+            [self deleteAllEventsAction];
         }
         else if( actionSheet.tag == ActionSheet_DeleteSelected ){
-            NSMutableArray *removeItems = [NSMutableArray array];
-            NSMutableArray *indexPaths = [NSMutableArray array];
-            
-            for(NSInteger i=0; i < [_itemArray count]; i++){
-                DaysCounterEvent *item = [_itemArray objectAtIndex:i];
-                if( [[_checkStatusDict objectForKey:item.uniqueID] boolValue] ) {
-                    [removeItems addObject:item];
-                    [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-                }
-            }
-            
-            for(DaysCounterEvent *event in removeItems){
-                [event MR_deleteEntity];
-            }
-            [_itemArray removeObjectsInArray:removeItems];
-            removeItems = nil;
-            [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self deleteSelectedEventsAction];
         }
         
         [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
@@ -261,9 +268,26 @@
 
 - (void)deleteAllAction:(id)sender
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete All", @"Delete All") otherButtonTitles:nil];
-    actionSheet.tag = ActionSheet_DeleteAll;
-    [actionSheet showInView:self.view];
+    if (!IS_IOS7 && IS_IPAD) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            [alertController dismissViewControllerAnimated:YES completion:NULL];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete All", @"Delete All") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+            [alertController dismissViewControllerAnimated:YES completion:NULL];
+            [self deleteAllEventsAction];
+        }]];
+        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+        popover.barButtonItem = self.navigationItem.leftBarButtonItem;
+        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        
+        [self presentViewController:alertController animated:YES completion:NULL];
+    }
+    else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete All", @"Delete All") otherButtonTitles:nil];
+        actionSheet.tag = ActionSheet_DeleteAll;
+        [actionSheet showInView:self.view];
+    }
 }
 
 - (void)toggleSelectAction:(id)sender
@@ -284,9 +308,26 @@
 }
 
 - (IBAction)removeAction:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Events", @"Delete Events") otherButtonTitles:nil];
-    actionSheet.tag = ActionSheet_DeleteSelected;
-    [actionSheet showInView:self.view];
+    if (!IS_IOS7 && IS_IPAD) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            [alertController dismissViewControllerAnimated:YES completion:NULL];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Events", @"Delete Events") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+            [alertController dismissViewControllerAnimated:YES completion:NULL];
+            [self deleteSelectedEventsAction];
+        }]];
+        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+        popover.barButtonItem = self.trashBarButton;
+        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        
+        [self presentViewController:alertController animated:YES completion:NULL];
+    }
+    else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Events", @"Delete Events") otherButtonTitles:nil];
+        actionSheet.tag = ActionSheet_DeleteSelected;
+        [actionSheet showInView:self.view];
+    }
 }
 
 - (IBAction)changeCalendarAction:(id)sender {
