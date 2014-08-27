@@ -111,6 +111,7 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 			A3KeyValueDBUpdateDate : [NSDate date]
 	};
 	[[A3UserDefaults standardUserDefaults] setObject:userDefaultsFormat forKey:key];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 
 	if (state == A3DataObjectStateModified && [self isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
