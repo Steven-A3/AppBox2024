@@ -2046,7 +2046,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     if (newSize.height < 180) {
         return;
     }
-    UITableViewCell *currentCell = (UITableViewCell *)[[[textView superview] superview] superview];
+    
+    UITableViewCell *currentCell = [self.tableView cellForCellSubview:textView];
     CGFloat diffHeight = newSize.height - currentCell.frame.size.height;
     
     currentCell.frame = CGRectMake(currentCell.frame.origin.x,

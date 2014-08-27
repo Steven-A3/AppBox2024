@@ -24,6 +24,7 @@
 #import "LadyCalendarPeriod+extension.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "UITableView+utility.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -407,7 +408,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     [self closeDateInputCell];
-    UITableViewCell *cell = (UITableViewCell*)[[textField.superview superview] superview];
+    UITableViewCell *cell = [self.tableView cellForCellSubview:textField];
     cell.selected = YES;
     return YES;
 }

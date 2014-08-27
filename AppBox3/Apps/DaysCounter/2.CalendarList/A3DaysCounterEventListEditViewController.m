@@ -19,6 +19,7 @@
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "DaysCounterCalendar.h"
+#import "UITableView+utility.h"
 
 #define ActionSheet_DeleteAll           100
 #define ActionSheet_DeleteSelected      101
@@ -264,7 +265,7 @@
 - (void)toggleSelectAction:(id)sender
 {
     UIButton *button = (UIButton*)sender;
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[button superview] superview] superview]];
+    NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:button];
     if (indexPath == nil )
         return;
     

@@ -1342,23 +1342,54 @@
         }
     }
     else {
-#ifdef __IPHONE_8_0
         if (![CLLocationManager locationServicesEnabled] || ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedAlways)) {
             [self alertLocationDisabled];
             return;
         }
-#endif
     }
 
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-															 delegate:self
-													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-											   destructiveButtonTitle:_eventItem.location ? NSLocalizedString(@"Delete Location", @"Delete Location") : nil
-													otherButtonTitles:NSLocalizedString(@"Use My Location", @"Use My Location"), NSLocalizedString(@"Search Location", @"Search Location"), nil];
-    actionSheet.tag = ActionTag_Location;
-    [actionSheet showInView:self.view];
-    [self closeDatePickerCell];
+    if (!IS_IOS7 && IS_IPAD) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            [alertController dismissViewControllerAnimated:YES completion:NO];
+        }]];
+
+        if (_eventItem.location) {
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Location", @"Delete Location") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+                [self deleteLocationAction];
+                [alertController dismissViewControllerAnimated:YES completion:NO];
+            }]];
+            
+        }
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Use My Location", @"Use My Location") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self useMyLocationAction];
+            [alertController dismissViewControllerAnimated:YES completion:NO];
+        }]];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Search Location", @"Search Location") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self searchLocationAction];
+            [alertController dismissViewControllerAnimated:YES completion:NO];
+        }]];
+        
+        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+        popover.sourceView = self.view;
+        UITableViewCell *senderCell = [tableView cellForRowAtIndexPath:indexPath];
+        popover.sourceRect = CGRectMake(self.view.center.x, ((UITableViewCell *)senderCell).center.y, 0, 0);
+        popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        
+        [self presentViewController:alertController animated:YES completion:NULL];
+    }
+    else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                 delegate:self
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                   destructiveButtonTitle:_eventItem.location ? NSLocalizedString(@"Delete Location", @"Delete Location") : nil
+                                                        otherButtonTitles:NSLocalizedString(@"Use My Location", @"Use My Location"), NSLocalizedString(@"Search Location", @"Search Location"), nil];
+        actionSheet.tag = ActionTag_Location;
+        [actionSheet showInView:self.view];
+        [self closeDatePickerCell];
+    }
 }
 
 #pragma mark etc
@@ -2231,6 +2262,37 @@
 
 #pragma mark - UIActionSheetDelegate
 
+- (void)deleteLocationAction
+{
+    DaysCounterEventLocation *location = [_eventItem location];
+    [location MR_deleteEntityInContext:_savingContext];
+    
+    [self.tableView reloadData];
+}
+
+- (void)useMyLocationAction
+{
+    self.locationManager = [[CLLocationManager alloc] init];
+				_locationManager.delegate = self;
+				_locationManager.distanceFilter = kCLDistanceFilterNone;
+				_locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+				[_locationManager startUpdatingLocation];
+}
+
+- (void)searchLocationAction
+{
+    if (![[A3AppDelegate instance].reachability isReachable]) {
+        [self alertInternetConnectionIsNotAvailable];
+        return;
+    }
+    
+    A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
+    nextVC.eventModel = self.eventItem;
+    nextVC.sharedManager = _sharedManager;
+    nextVC.savingContext = _savingContext;
+    [self.navigationController pushViewController:nextVC animated:YES];
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if ( actionSheet.tag == ActionTag_Photo ) {
@@ -2273,12 +2335,9 @@
 				[self presentViewController:_imagePickerController animated:YES completion:NULL];
 			}
 			else {
-//				self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
                 UIButton *button = (UIButton*)[cell viewWithTag:11];
                 CGRect rect = [self.tableView convertRect:button.frame fromView:cell.contentView];
-//
-//                self.imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
                 
                 _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
                 
@@ -2296,29 +2355,13 @@
     }
     else if ( actionSheet.tag == ActionTag_Location ) {
         if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
-			DaysCounterEventLocation *location = [_eventItem location];
-			[location MR_deleteEntityInContext:_savingContext];
-
-            [self.tableView reloadData];
+            [self deleteLocationAction];
         }
         else if ( buttonIndex == actionSheet.firstOtherButtonIndex ) {
-				self.locationManager = [[CLLocationManager alloc] init];
-				_locationManager.delegate = self;
-				_locationManager.distanceFilter = kCLDistanceFilterNone;
-				_locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-				[_locationManager startUpdatingLocation];
+            [self useMyLocationAction];
         }
         else if ( buttonIndex == (actionSheet.firstOtherButtonIndex + 1)) {
-            if (![[A3AppDelegate instance].reachability isReachable]) {
-				[self alertInternetConnectionIsNotAvailable];
-                return;
-            }
-            
-            A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
-            nextVC.eventModel = self.eventItem;
-            nextVC.sharedManager = _sharedManager;
-            nextVC.savingContext = _savingContext;
-            [self.navigationController pushViewController:nextVC animated:YES];
+            [self searchLocationAction];
         }
     }
     else if ( actionSheet.tag == ActionTag_DeleteEvent ) {
