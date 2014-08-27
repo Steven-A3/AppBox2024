@@ -332,8 +332,23 @@
 
 - (IBAction)changeCalendarAction:(id)sender {
     if( [_selectedArray count] < 1 ){
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Please select events.", @"Please select events.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
-        [alertView show];
+		if (IS_IOS7) {
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Please select events.", @"Please select events.")
+																message:@""
+															   delegate:nil
+													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+													  otherButtonTitles:nil];
+			[alertView show];
+		}
+		else {
+			UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please select events.", @"Please select events.")
+																					 message:@""
+																			  preferredStyle:UIAlertControllerStyleAlert];
+			[alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+				[alertController dismissViewControllerAnimated:YES completion:NULL];
+			}]];
+			[self.navigationController presentViewController:alertController animated:YES completion:NULL];
+		}
         return;
     }
 
@@ -358,11 +373,17 @@
 - (IBAction)shareAction:(id)sender {
     if( [_selectedArray count] < 1 ){
         if (IS_IOS7) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Please select events.", @"Please select events.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Please select events.", @"Please select events.")
+																message:@""
+															   delegate:nil
+													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+													  otherButtonTitles:nil];
             [alertView show];
         }
         else {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"" message:NSLocalizedString(@"Please select events.", @"Please select events.") preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please select events.", @"Please select events.")
+																					 message:@""
+																			  preferredStyle:UIAlertControllerStyleAlert];
             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                 [alertController dismissViewControllerAnimated:YES completion:NULL];
             }]];
