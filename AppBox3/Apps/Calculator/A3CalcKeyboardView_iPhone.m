@@ -27,16 +27,6 @@
     return self;
 }
 
-- (CGRect)screenBoundsAdjustedWithOrientation {
-	CGRect bounds = [[UIScreen mainScreen] bounds];
-	if (IS_LANDSCAPE) {
-		CGFloat width = bounds.size.width;
-		bounds.size.width = bounds.size.height;
-		bounds.size.height = width;
-	}
-	return bounds;
-}
-
 NSString *kA3CalcButtonTitle = @"kA3CalcButtonItle";
 NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 NSString *kA3CalcButtonFont = @"kA3CalcButtonFont";
@@ -348,8 +338,8 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 
 - (void)layoutSubviews {
     CGFloat x, y, width, height;
-    CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-    NSArray *buttonTitle = nil;
+    CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	NSArray *buttonTitle = nil;
     
     if(IS_PORTRAIT) {
         width = 80, height = 54;
