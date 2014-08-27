@@ -50,7 +50,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 };
 
 
-@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, UIActivityItemSource, UIPopoverControllerDelegate, CLLocationManagerDelegate,A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
+@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, UIActivityItemSource, UIPopoverControllerDelegate,
+		CLLocationManagerDelegate,A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate,
+		A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate,
+		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *tableDataSource;
 @property (nonatomic, strong) NSArray * tableSectionTitles;
@@ -1076,21 +1079,20 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         return;
     }
 
-    [self disposeInitializedCondition];
+	[self disposeInitializedCondition];
 
-    self.localPopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completion:^{
+	self.localPopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
 		[self setBarButtonsEnable:YES];
 		self.localPopoverController = nil;
 	}];
+	self.localPopoverController.delegate = self;
     if (IS_IPAD) {
-        self.localPopoverController.delegate = self;
         [self setBarButtonsEnable:NO];
     }
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
     [self setBarButtonsEnable:YES];
-    
     self.localPopoverController = nil;
 }
 

@@ -26,10 +26,10 @@ NSString *const A3CalculatorModeBasic = @"basic";
 NSString *const A3CalculatorModeScientific = @"scientific";
 
 @interface A3CalculatorViewController_iPad ()<A3CalcKeyboardViewIPadDelegate, UIPopoverControllerDelegate, MBProgressHUDDelegate, A3CalcMessagShowDelegate, UITextFieldDelegate>
+
 @property (nonatomic, strong) HTCopyableLabel *expressionLabel;
 @property (nonatomic, strong) HTCopyableLabel *evaluatedResultLabel;
 @property (nonatomic, strong) UILabel *degreeandradianLabel;
-//@property (nonatomic, strong) UIView *outline;
 @property (nonatomic, strong) A3Calculator *calculator;
 @property (strong, nonatomic) A3CalculatorButtonsViewController_iPad *calculatorkeypad;
 @property (nonatomic, strong) MASConstraint *calctopconstraint;
@@ -414,10 +414,11 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 #pragma mark - Right Button more
 
 - (void)shareAll:(id)sender {
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completion:^{
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
 		[self enableControls:YES];
 	}];
 	_sharePopoverController.delegate = self;
+
 	[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
 		[buttonItem setEnabled:NO];
 	}];
@@ -430,7 +431,6 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     }
     return @"";
 }
-
 
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
 {

@@ -37,7 +37,9 @@
 NSString *const A3ExpenseListCurrentBudgetID = @"CurrentBudget";
 NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationExpenseListCurrencyCodeChanged";
 
-@interface A3ExpenseListMainViewController () <ATSDragToReorderTableViewControllerDelegate, UIPopoverControllerDelegate, A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate, A3ExpenseListHistoryDelegate, A3CalculatorViewControllerDelegate, A3InstructionViewControllerDelegate>
+@interface A3ExpenseListMainViewController () <ATSDragToReorderTableViewControllerDelegate, UIPopoverControllerDelegate,
+		A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate,
+		A3ExpenseListHistoryDelegate, A3CalculatorViewControllerDelegate, A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) A3ExpenseListHeaderView *headerView;
 @property (nonatomic, strong) UIView *sep1View;
@@ -590,9 +592,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		return;
 	}
 
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[@"test"] fromBarButtonItem:sender completion:^{
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[@"test"] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
 		[self enableControls:YES];
 	}];
+	_sharePopoverController.delegate = self;
 	if (IS_IPAD) {
 		_sharePopoverController.delegate = self;
 		[self enableControls:NO];

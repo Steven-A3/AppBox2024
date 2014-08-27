@@ -6,4 +6,4 @@
   Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 */
 
-NSLocationWhenInUseUsageDescription = "Ihre Standortinformationen wird verwendet, um Wetter und Feiertage zu zeigen.";
+NSLocationWhenInUseUsageDescription = "Ihre Standortinformationen wird verwendet, um Wetter und Feiertage zu zeigen. Es wird verwendet, um Ihren Standort in Tagen Zähler eingeben.";

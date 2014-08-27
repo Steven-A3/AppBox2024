@@ -6,4 +6,4 @@
   Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 */
 
-NSLocationWhenInUseUsageDescription = "위치정보는 날씨와 휴일정보를 표시하기 위해서 사용합니다.";
+NSLocationWhenInUseUsageDescription = "위치정보는 날씨와 휴일정보를 표시하기 위해서 사용합니다. 이벤트 캘린더의 위치 정보 입력을 위해서도 사용합니다.";

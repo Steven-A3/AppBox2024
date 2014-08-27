@@ -49,7 +49,7 @@ const NSInteger kTranslatorAlertViewType_DeleteAll = 2;
 @property (nonatomic, strong) NSArray *messages;
 @property (nonatomic, copy) NSString *originalText;
 @property (nonatomic, weak) A3TranslatorMessageCell *selectedCell;
-@property (readwrite, retain) UIView *inputView;
+@property (nonatomic, readwrite, retain) UIView *inputView;
 @property (nonatomic, strong) UITableView *searchResultsTableView;
 @property (nonatomic, strong) A3TranslatorLanguageTVDelegate *searchResultsDelegate;
 @property (nonatomic, strong) NSArray *languages;
@@ -1341,7 +1341,8 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 #pragma mark - Share action
 
 - (void)shareActionFromToolbar:(UIBarButtonItem *)barButtonItem {
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:barButtonItem completion:^{
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:barButtonItem completionHandler:^(NSString *activityType, BOOL completed) {
+		_sharePopoverController = nil;
 	}];
 	_sharePopoverController.delegate = self;
 }

@@ -6,4 +6,4 @@
   Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 */
 
-NSLocationWhenInUseUsageDescription = "あなたの位置情報は、天候や祝日を表示するために使用されます。";
+NSLocationWhenInUseUsageDescription = "あなたの位置情報は、天候や祝日を表示するために使用されます。イベントカレンダーの位置情報入力のためにも使用します。";

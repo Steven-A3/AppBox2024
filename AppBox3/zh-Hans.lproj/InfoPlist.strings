@@ -6,4 +6,4 @@
   Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 */
 
-NSLocationWhenInUseUsageDescription = "您的位置信息，用于显示天气和假期。";
+NSLocationWhenInUseUsageDescription = "您的位置信息，用于显示天气和假期。它是用来在天计数器输入你的位置。";

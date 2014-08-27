@@ -49,7 +49,9 @@ NSString *const A3LoanCalcLoanNoteCellID = @"A3WalletNoteCell";
 NSString *const A3LoanCalcCompareGraphCellID = @"A3LoanCalcCompareGraphCell";
 NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
-@interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate, LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate, UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate, UIActivityItemSource>
+@interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate,
+		LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate,
+		UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate, UIActivityItemSource>
 
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
@@ -1177,28 +1179,29 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)shareButtonAction:(id)sender {
 	[self clearEverything];
-    
-    if (_isComparisonMode) {
-        NSURL *fileUrlA = [NSURL fileURLWithPath:[_loanDataA filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanA.csv"]];
-        NSURL *fileUrlB = [NSURL fileURLWithPath:[_loanDataB filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanB.csv"]];
-        self.sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self, fileUrlA, fileUrlB] fromBarButtonItem:sender completion:^{
+
+	if (_isComparisonMode) {
+		NSURL *fileUrlA = [NSURL fileURLWithPath:[_loanDataA filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanA.csv"]];
+		NSURL *fileUrlB = [NSURL fileURLWithPath:[_loanDataB filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanB.csv"]];
+		self.sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self, fileUrlA, fileUrlB] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
 			[self enableControls:YES];
 		}];
-    }
-    else {
-        NSURL *fileUrl = [NSURL fileURLWithPath:[[self loanData] filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization.csv"]];
-        self.sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self, fileUrl] fromBarButtonItem:sender completion:^{
+	}
+	else {
+		NSURL *fileUrl = [NSURL fileURLWithPath:[[self loanData] filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization.csv"]];
+		self.sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self, fileUrl] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
 			[self enableControls:YES];
 		}];
-    }
-    
+	}
+
     if (IS_IPAD) {
         self.sharePopoverController.delegate = self;
 		[self enableControls:NO];
     }
 }
 
-#pragma mark Share Activities releated
+#pragma mark Share Activities related
+
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
@@ -2064,7 +2067,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	self.loanData.note = textView.text;
     [self saveLoanData];
     
-    UITableViewCell *currentCell = (UITableViewCell *)[[[textView superview] superview] superview];
+    UITableViewCell *currentCell = [self.tableView cellForCellSubview:textView];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:currentCell];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
@@ -2700,7 +2703,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 -(void)scrollToTopOfTableView {
-    if (IS_LANDSCAPE) {
+    if (IS_IOS7 && IS_LANDSCAPE) {
         [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
@@ -2709,7 +2712,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             self.tableView.contentOffset = CGPointMake(0.0, 0.0);
         }
         else {
-            self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
+			self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width));
         }
         [UIView commitAnimations];
     }

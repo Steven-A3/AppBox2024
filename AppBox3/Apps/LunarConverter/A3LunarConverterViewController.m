@@ -23,7 +23,8 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 
-@interface A3LunarConverterViewController () <UIScrollViewDelegate, A3DateKeyboardDelegate, UITextFieldDelegate, UIPopoverControllerDelegate, UIActivityItemSource>
+@interface A3LunarConverterViewController () <UIScrollViewDelegate, A3DateKeyboardDelegate, UITextFieldDelegate,
+		UIPopoverControllerDelegate, UIActivityItemSource>
 
 @property (strong, nonatomic) A3DateKeyboardViewController *dateKeyboardVC;
 @property (strong, nonatomic) NSDateComponents *firstPageResultDateComponents;
@@ -848,17 +849,24 @@
 {
 	[self enableControls:NO];
 	[self dateKeyboardDoneButtonPressed:nil];
-    
-    self.popoverVC = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completion:^{
+
+	self.popoverVC = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
 		[self showKeyboardAnimated:YES];
 		[self enableControls:YES];
 	}];
+	self.popoverVC.delegate = self;
     if (IS_IPAD) {
         self.popoverVC.delegate = self;
     }
 }
 
-#pragma mark Share Activities releated
+- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
+	[self showKeyboardAnimated:YES];
+	[self enableControls:YES];
+}
+
+#pragma mark Share Activities
+
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
