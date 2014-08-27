@@ -360,17 +360,37 @@ static NSString *CellIdentifier = @"Cell";
 					[self presentViewController:_imagePickerController animated:YES completion:NULL];
 				}
 				else {
-					self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-					self.imagePickerPopoverController.delegate = self;
-					CGRect fromRect;
-					if ([[A3HolidaysFlickrDownloadManager sharedInstance] hasUserSuppliedImageForCountry:_countryCode]) {
-						UITableViewCell *cell = [self.tableView cellForCellSubview:_imageView];
-						fromRect = [self.view convertRect:_imageView.frame fromView:cell];
-					} else {
-						UITableViewCell *cell = [self.tableView cellForCellSubview:_cameraButton];
-						fromRect = [self.view convertRect:_cameraButton.frame fromView:cell];
-					}
-					[_imagePickerPopoverController presentPopoverFromRect:fromRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//					self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+//					self.imagePickerPopoverController.delegate = self;
+                    _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
+                    
+                    CGRect fromRect;
+                    if ([[A3HolidaysFlickrDownloadManager sharedInstance] hasUserSuppliedImageForCountry:_countryCode]) {
+                        UITableViewCell *cell = [self.tableView cellForCellSubview:_imageView];
+                        fromRect = [self.view convertRect:_imageView.frame fromView:cell];
+                    } else {
+                        UITableViewCell *cell = [self.tableView cellForCellSubview:_cameraButton];
+                        fromRect = [self.view convertRect:_cameraButton.frame fromView:cell];
+                    }
+
+                    UIPopoverPresentationController *popover = _imagePickerController.popoverPresentationController;
+                    popover.sourceView = self.view;
+                    popover.sourceRect = fromRect;
+                    popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+                    
+					[self.navigationController presentViewController:_imagePickerController animated:YES completion:NULL];
+
+//					CGRect fromRect;
+//					if ([[A3HolidaysFlickrDownloadManager sharedInstance] hasUserSuppliedImageForCountry:_countryCode]) {
+//						UITableViewCell *cell = [self.tableView cellForCellSubview:_imageView];
+//						fromRect = [self.view convertRect:_imageView.frame fromView:cell];
+//					} else {
+//						UITableViewCell *cell = [self.tableView cellForCellSubview:_cameraButton];
+//						fromRect = [self.view convertRect:_cameraButton.frame fromView:cell];
+//					}
+//					[_imagePickerPopoverController presentPopoverFromRect:fromRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+                    
+                    
 				}
 			}
 			else {

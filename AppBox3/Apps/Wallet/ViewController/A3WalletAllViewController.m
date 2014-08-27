@@ -490,8 +490,14 @@ enum SortingKind {
 - (void)addWalletItemAction {
 	A3WalletItemEditViewController *viewController = [self itemAddViewController];
 
-	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-	[self presentViewController:nav animated:YES completion:NULL];
+//	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
+//	[self presentViewController:nav animated:YES completion:NULL];
+//    sdf
+    A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+    [rootViewController presentCenterViewController:[[A3NavigationController alloc] initWithRootViewController:viewController]
+                                 fromViewController:self
+                                     withCompletion:^{
+                                     }];
 }
 
 #pragma mark Instruction Related
