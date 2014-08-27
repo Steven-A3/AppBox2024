@@ -833,6 +833,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     if (self.loanData.showAdvanced) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:self.loanData.showExtraPayment ? 4 : 3] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
+	[self saveLoanData];
 }
 
 - (void)settingsButtonAction:(UIButton *)button
@@ -2270,8 +2271,24 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 #pragma mark - LoanCalcHistoryViewController delegate
 
+- (void)putCurrentDataToHistory
+{
+	if (!_isComparisonMode) {
+		if ([self.loanData calculated]) {
+			[self putLoanHistory];
+		}
+	}
+	else {
+		if ([_loanDataA calculated] && [_loanDataB calculated]) {
+			[self putComparisonHistory];
+		}
+	}
+}
+
 - (void)historyViewController:(UIViewController *)viewController selectLoanCalcHistory:(LoanCalcHistory *)history
 {
+	[self putCurrentDataToHistory];
+
     [self loadLoanCalcData:self.loanData fromLoanCalcHistory:history];
 	[self saveLoanData];
 
@@ -2289,6 +2306,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)historyViewController:(UIViewController *)viewController selectLoanCalcComparisonHistory:(LoanCalcComparisonHistory *)comparison {
+	[self putCurrentDataToHistory];
+
 	if (![self.defaultCurrencyCode isEqualToString:comparison.currencyCode]) {
 		[self changeDefaultCurrencyCode:comparison.currencyCode];
 	}
