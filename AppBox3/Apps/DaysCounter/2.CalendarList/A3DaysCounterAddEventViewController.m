@@ -59,9 +59,6 @@
 @property (strong, nonatomic) NSString *inputDateKey;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) UIPopoverController *imagePickerPopoverController;
-#ifdef __IPHONE_8_0
-@property (strong, nonatomic) UIPopoverPresentationController *imagePickerPopoverPresentationController;
-#endif
 @property (assign, nonatomic) BOOL isAdvancedCellOpen;
 @property (assign, nonatomic) BOOL isDurationInitialized;//temp...
 @property (weak, nonatomic) UITextView *textViewResponder;
@@ -1599,7 +1596,6 @@
     UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_eventItem.photoID length] > 0 delegate:self];
     actionSheet.tag = ActionTag_Photo;
     // TODO
-#ifdef __IPHONE_8_0
     if (IS_IPAD) {
         UITableViewCell *cell = [self.tableView cellForCellSubview:sender];
         CGRect rect = [self.tableView convertRect:sender.frame fromView:cell.contentView];
@@ -1608,9 +1604,6 @@
     else {
         [actionSheet showInView:self.view];
     }
-#else
-    [actionSheet showInView:self.view];
-#endif
 }
 
 - (void)updateEndDateDiffFromStartDate:(NSDate*)startDate

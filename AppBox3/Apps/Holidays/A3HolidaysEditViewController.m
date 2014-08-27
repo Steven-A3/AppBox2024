@@ -289,7 +289,6 @@ static NSString *CellIdentifier = @"Cell";
 	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[downloadManager hasUserSuppliedImageForCountry:_countryCode] delegate:self];
 	actionSheet.tag = 200;
     // TODO
-#ifdef __IPHONE_8_0
     if (IS_IPAD) {
         UITableViewCell *cell = [self.tableView cellForCellSubview:_cameraButton];
         CGRect rect = [self.tableView convertRect:_cameraButton.frame fromView:cell.contentView];
@@ -298,9 +297,6 @@ static NSString *CellIdentifier = @"Cell";
     else {
         [actionSheet showInView:self.view];
     }
-#else
-    [actionSheet showInView:self.view];
-#endif
 }
 
 #pragma mark - UIActionSheet delegate

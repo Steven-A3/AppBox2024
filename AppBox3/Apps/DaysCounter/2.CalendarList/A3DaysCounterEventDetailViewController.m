@@ -1754,7 +1754,6 @@ EXIT_FUCTION:
 
 - (IBAction)deleteEventAction:(id)sender {
     
-#ifdef __IPHONE_8_0
     if (!IS_IOS7 && IS_IPAD) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
@@ -1787,14 +1786,6 @@ EXIT_FUCTION:
                                                         otherButtonTitles:nil];
         [actionSheet showInView:self.view];
     }
-#else
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                               destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event")
-                                                    otherButtonTitles:nil];
-    [actionSheet showInView:self.view];
-#endif
 }
 
 #pragma mark - UIActivityItemSource
