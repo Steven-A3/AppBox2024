@@ -13,5 +13,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UILabel *detailLabel;
+@property (assign, nonatomic) CGFloat textLabelOffset;
 
 @end
