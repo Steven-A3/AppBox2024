@@ -330,6 +330,7 @@
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.text = NSLocalizedString(@"Share Event", @"Share Event");
             textLabel.textColor = [A3AppDelegate instance].themeColor;
+            cell.accessoryType = UITableViewCellAccessoryNone;
         }
             break;
             
@@ -338,6 +339,7 @@
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.text = _eventItem.favorite != nil ? NSLocalizedString(@"Remove from Favorites", @"Remove from Favorites") : NSLocalizedString(@"Add to Favorites", @"Add to Favorites");
             textLabel.textColor = [A3AppDelegate instance].themeColor;
+            cell.accessoryType = UITableViewCellAccessoryNone;
         }
             break;
     }
