@@ -298,7 +298,19 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
 	FNLOG();
-	_localNotificationUserInfo = [notification.userInfo copy];
+    [self handleActionForLocalNotification:notification application:application];
+}
+
+#ifdef __IPHONE_8_0
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void (^)())completionHandler {
+    [self handleActionForLocalNotification:notification application:application];
+    
+    completionHandler();
+}
+#endif
+
+- (void)handleActionForLocalNotification:(UILocalNotification *)notification application:(UIApplication *)application {
+    _localNotificationUserInfo = [notification.userInfo copy];
     self.storedLocalNotification = notification;
     
     if ([application applicationState] == UIApplicationStateInactive) {
