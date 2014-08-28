@@ -1485,13 +1485,53 @@
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
     [self resignAllAction];
+    
+    if (!IS_IOS7 && _eventItem.alertDatetime) {
+        UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+        if ([currentNotificationSettings types] == UIUserNotificationTypeNone) {
+            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userNotificationSettingsRegistered:) name:A3NotificationsUserNotificationSettingsRegistered object:nil];
+            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+            return;
+        }
+    }
+
+    [self registerEvent];
+}
+
+- (void)userNotificationSettingsRegistered:(NSNotification *)notification
+{
+    UIUserNotificationSettings *settings = notification.object;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationsUserNotificationSettingsRegistered object:nil];
+
+    if (settings.types == UIUserNotificationTypeNone) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@""
+                                                                                 message:@"알림 권한이 없어서, 알람을 받지 못하지만 이벤트는 계속 등록하시겠습니까? (알람 권한을 얻으려면 셋팅 -> AppBox Pro 로 이동해주세요.)"
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:NULL]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {
+                                                              [self registerEvent];
+                                                          }]];
+        [self presentViewController:alertController animated:YES completion:NULL];
+    }
+    else {
+        [self registerEvent];
+    }
+}
+
+- (void)registerEvent
+{
     // 디비추가 처리
     // 입력값이 있어야 하는것들에 대한 체크
     if ( [_eventItem.eventName length] < 1 ) {
         _eventItem.eventName = NSLocalizedString(@"Untitled", @"Untitled");
     }
     if ( [_eventItem.isPeriod boolValue] && ![_eventItem endDateCreateIfNotExist:NO ]) {
-		[self alertMessage:NSLocalizedString(@"Please enter the end date.", @"Please enter the end date.")];
+        [self alertMessage:NSLocalizedString(@"Please enter the end date.", @"Please enter the end date.")];
         return;
     }
     
@@ -1533,7 +1573,7 @@
             }
         }
     }
-
+    
     if ( _isAddingEvent ) {
         if (_eventItem.location) {
             _eventItem.location.eventID = _eventItem.uniqueID;
@@ -1542,26 +1582,54 @@
         [_sharedManager addEvent:_eventItem inContext:_savingContext];
     }
     else {
-		if ([_originalPhotoID length] && ![_originalPhotoID isEqualToString:_eventItem.photoID]) {
-			// Delete Old Image
-			NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:_originalPhotoID] pathInLibraryDirectory];
-			[[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
-		}
-		[_sharedManager modifyEvent:_eventItem inContext:_savingContext];
-	}
-	[_eventItem moveImagesToOriginalDirectory];
+        if ([_originalPhotoID length] && ![_originalPhotoID isEqualToString:_eventItem.photoID]) {
+            // Delete Old Image
+            NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:_originalPhotoID] pathInLibraryDirectory];
+            [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
+        }
+        [_sharedManager modifyEvent:_eventItem inContext:_savingContext];
+    }
+    [_eventItem moveImagesToOriginalDirectory];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:_savingContext ];
-
     
-	if (IS_IPAD) {
-		[self.A3RootViewController dismissCenterViewController];
-	}
-	else {
-		[self dismissViewControllerAnimated:YES completion:nil];
-	}
-	[self removeObserver];
+    
+    if (IS_IPAD) {
+        [self.A3RootViewController dismissCenterViewController];
+    }
+    else {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    [self removeObserver];
 }
+
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+    application.delegate = nil;
+    
+    if (notificationSettings.types == UIUserNotificationTypeNone) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@""
+                                                                                 message:@"알림 권한이 없어서, 알람을 받지 못하지만 계속 등록합니다."
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:^(UIAlertAction *action) {
+                                                              [alertController dismissViewControllerAnimated:YES completion:NULL];
+                                                          }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {
+                                                              [self registerEvent];
+//                                                              [alertController dismissViewControllerAnimated:YES completion:NULL];
+                                                          }]];
+        [self presentViewController:alertController animated:YES completion:NULL];
+    }
+    else {
+        [self registerEvent];
+    }
+}
+
+
 
 - (void)cancelButtonAction:(UIBarButtonItem *)button
 {
@@ -2348,14 +2416,20 @@
                 UIButton *button = (UIButton*)[cell viewWithTag:11];
                 CGRect rect = [self.tableView convertRect:button.frame fromView:cell.contentView];
                 
-                _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
-                
-                UIPopoverPresentationController *presentationController = [_imagePickerController popoverPresentationController];
-                presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-                presentationController.sourceView = self.view;
-                presentationController.sourceRect = rect;
-                
-                [self presentViewController:_imagePickerController animated:YES completion:NULL];
+                if (IS_IOS7) {
+                    self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+                    [_imagePickerPopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+                }
+                else {
+                    _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
+                    
+                    UIPopoverPresentationController *presentationController = [_imagePickerController popoverPresentationController];
+                    presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+                    presentationController.sourceView = self.view;
+                    presentationController.sourceRect = rect;
+                    
+                    [self presentViewController:_imagePickerController animated:YES completion:NULL];
+                }
 			}
 		}
 		else {

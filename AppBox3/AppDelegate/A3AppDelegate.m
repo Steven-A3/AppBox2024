@@ -41,6 +41,7 @@ NSString *const A3LocalNotificationFromLadyCalendar = @"Ladies Calendar";
 NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 NSString *const A3NotificationCloudKeyValueStoreDidImport = @"A3CloudKeyValueStoreDidImport";
 NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataStoreDidImport";
+NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3NotificationsUserNotificationSettingsRegistered";
 
 @interface A3AppDelegate () <UIAlertViewDelegate, A3DataMigrationManagerDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate>
 
@@ -821,6 +822,11 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 		[alertView addButtonWithTitle:urlTitle];
 	}
 	[alertView show];
+}
+
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsUserNotificationSettingsRegistered object:notificationSettings];
 }
 
 @end

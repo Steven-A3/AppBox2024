@@ -45,6 +45,7 @@ extern NSString *const A3DropboxLoginWithSuccess;
 extern NSString *const A3DropboxLoginFailed;
 extern NSString *const A3NotificationCloudKeyValueStoreDidImport;
 extern NSString *const A3NotificationCloudCoreDataStoreDidImport;
+extern NSString *const A3NotificationsUserNotificationSettingsRegistered;
 
 /* Global Settings */
 extern NSString *const A3LocalNotificationOwner;
