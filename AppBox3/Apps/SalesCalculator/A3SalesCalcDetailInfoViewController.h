@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @class A3SalesCalcData;
-@interface A3SalesCalcDetailInfoPopOverView : UITableViewController
+@interface A3SalesCalcDetailInfoViewController : UITableViewController
 
 -(void)setResult:(A3SalesCalcData *)resultData;
 

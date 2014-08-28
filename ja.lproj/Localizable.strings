@@ -906,9 +906,7 @@
 "Loading" = "読み込み中";
 
 "DaysCalendar_CalendarDeleteConfirmMsg" = "このカレンダーを削除してもよろしいですか？ このカレンダーに登録されているすべてのイベントとリマインダーも削除されます。";
-
 "%@ syncing is in progress. Try after 10 minutes." = "%@の同期が進行中です。10分後に試してみてください。";
-
 "iCloud delete is in progress. Try after 10 minutes." = "iCloud削除を進行中です。10分後に試してみてください。";
-
 "Syncing...(%@)" = "同期化...(%@)";
+"Detail" = "详细";

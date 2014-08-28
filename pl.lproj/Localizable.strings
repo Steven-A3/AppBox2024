@@ -900,10 +900,7 @@
 "Loading" = "Ładowanie";
 
 "DaysCalendar_CalendarDeleteConfirmMsg" = "Czy na pewno chcesz usunąć ten kalendarz? Wszystkie wydarzenia z nim powiązane zostaną usunięte.";
-
 "%@ syncing is in progress. Try after 10 minutes." = "%@ jest w trakcie synchronizacji. Starają się po 10 minutach.";
-
 "iCloud delete is in progress. Try after 10 minutes." = "iCloud kasowania jest w toku. Starają się po 10 minutach.";
-
-
 "Syncing...(%@)" = "Synchonizacja...(%@)";
+"Detail" = "Szczegóły";

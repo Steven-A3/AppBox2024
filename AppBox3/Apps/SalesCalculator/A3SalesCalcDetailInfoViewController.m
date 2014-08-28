@@ -6,17 +6,18 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3SalesCalcDetailInfoPopOverView.h"
+#import "A3SalesCalcDetailInfoViewController.h"
 #import "A3SalesCalcData.h"
 #import "A3SalesCalcCalculator.h"
 #import "A3DefaultColorDefines.h"
 #import "UIViewController+NumberKeyboard.h"
+#import "UIViewController+A3Addition.h"
 
-@interface A3SalesCalcDetailInfoPopOverView ()
+@interface A3SalesCalcDetailInfoViewController ()
 
 @end
 
-@implementation A3SalesCalcDetailInfoPopOverView
+@implementation A3SalesCalcDetailInfoViewController
 {
     NSDictionary *_resultDic;
     A3SalesCalcData *_resultData;
@@ -33,6 +34,10 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
+
+	self.title = NSLocalizedString(@"Detail", @"Detail");
+	[self rightBarButtonDoneButton];
+
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
     self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
 
@@ -67,8 +72,13 @@
     [self.tableView reloadData];
 }
 
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	[self dismissViewControllerAnimated:YES completion:NULL];
+}
+
 #pragma mark - 
--(void)setResult:(A3SalesCalcData *)resultData
+
+- (void)setResult:(A3SalesCalcData *)resultData
 {
     _resultData = resultData;
     _resultDic = [A3SalesCalcCalculator resultInfoForSalesCalcData:resultData];
