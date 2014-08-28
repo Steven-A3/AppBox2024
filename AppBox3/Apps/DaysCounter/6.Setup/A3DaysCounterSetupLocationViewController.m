@@ -131,6 +131,8 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    isSearchActive = NO;
+    [_searchBar resignFirstResponder];
     [self hideCurrentLocationTableView];
 }
 
@@ -377,8 +379,10 @@
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-    _infoTableView.contentInset = _infoTableViewInsetOld;
-    [_infoTableView setContentOffset:_infoTableViewOldOffset animated:YES];
+    if (isSearchActive) {
+        _infoTableView.contentInset = _infoTableViewInsetOld;
+        [_infoTableView setContentOffset:_infoTableViewOldOffset animated:YES];
+    }
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
