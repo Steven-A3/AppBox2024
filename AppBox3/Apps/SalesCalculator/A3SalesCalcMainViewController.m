@@ -22,7 +22,7 @@
 #import "A3SalesCalcData.h"
 #import "A3SalesCalcPreferences.h"
 #import "A3SalesCalcCalculator.h"
-#import "A3SalesCalcDetailInfoPopOverView.h"
+#import "A3SalesCalcDetailInfoViewController.h"
 #import "A3DefaultColorDefines.h"
 #import "A3TextViewElement.h"
 #import "SalesCalcHistory.h"
@@ -45,7 +45,7 @@ enum A3TableElementCellType {
 
 @interface A3SalesCalcMainViewController () <CLLocationManagerDelegate, UIPopoverControllerDelegate,
 		A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, A3TableViewInputElementDelegate,
-		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
+		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *root;
 @property (nonatomic, strong) A3SalesCalcPreferences *preferences;
@@ -167,6 +167,12 @@ enum A3TableElementCellType {
 
 - (void)dealloc {
 	[self removeObserver];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	[self enableControls:YES];
 }
 
 - (void)rightSideViewWillHide {
@@ -367,7 +373,7 @@ enum A3TableElementCellType {
 	return _preferences;
 }
 
--(A3SalesCalcHeaderView *)headerView {
+- (A3SalesCalcHeaderView *)headerView {
     
     if (!_headerView) {
         _headerView = [[A3SalesCalcHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, IS_IPAD? 158.0 : 104.0 )];
@@ -378,35 +384,52 @@ enum A3TableElementCellType {
     return _headerView;
 }
 
--(void)detailInfoButtonTouchedUp {
+- (void)detailInfoButtonTouchedUp {
     [self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
     [self.textViewResponder resignFirstResponder];
     
     _headerView.detailInfoButton.enabled = NO;
-    
-    A3SalesCalcDetailInfoPopOverView *infoView = [[A3SalesCalcDetailInfoPopOverView alloc] initWithStyle:UITableViewStylePlain];
-    
-    if ([UIScreen mainScreen].bounds.size.height == 480.0) {
-        infoView.tableView.scrollEnabled = YES;
-    } else {
-        infoView.tableView.scrollEnabled = NO;
-    }
-    infoView.tableView.showsVerticalScrollIndicator = NO;
-    [infoView setResult:_preferences.calcData];
-    self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:infoView];
-    self.localPopoverController.backgroundColor = [UIColor whiteColor];
-    self.localPopoverController.delegate = self;
-    [self.localPopoverController setPopoverContentSize:CGSizeMake(224, 311) animated:NO];
-    [self.localPopoverController presentPopoverFromRect:[_headerView convertRect:_headerView.detailInfoButton.frame fromView:self.view]
-                                                 inView:self.view
-                               permittedArrowDirections:UIPopoverArrowDirectionUp
-                                               animated:YES];
 
-    [self.localPopoverController setPopoverContentSize:CGSizeMake(224, infoView.tableView.contentSize.height) animated:NO];
-    
+    A3SalesCalcDetailInfoViewController *infoViewController = [[A3SalesCalcDetailInfoViewController alloc] initWithStyle:UITableViewStylePlain];
+	if (IS_IOS7 || IS_IPAD) {
+		if ([UIScreen mainScreen].bounds.size.height == 480.0) {
+			infoViewController.tableView.scrollEnabled = YES;
+		} else {
+			infoViewController.tableView.scrollEnabled = NO;
+		}
+		infoViewController.tableView.showsVerticalScrollIndicator = NO;
+		[infoViewController setResult:_preferences.calcData];
+		self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:infoViewController];
+		self.localPopoverController.backgroundColor = [UIColor whiteColor];
+		self.localPopoverController.delegate = self;
+		[self.localPopoverController setPopoverContentSize:CGSizeMake(224, 311) animated:NO];
+		[self.localPopoverController presentPopoverFromRect:[_headerView convertRect:_headerView.detailInfoButton.frame fromView:self.view]
+													 inView:self.view
+								   permittedArrowDirections:UIPopoverArrowDirectionUp
+												   animated:YES];
+
+		[self.localPopoverController setPopoverContentSize:CGSizeMake(224, infoViewController.tableView.contentSize.height) animated:NO];
+	} else {
+		infoViewController.modalPresentationStyle = UIModalPresentationPopover;
+		UIPopoverPresentationController *popoverPresentationController = infoViewController.popoverPresentationController;
+		popoverPresentationController.sourceView = _headerView.detailInfoButton;
+		popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+		popoverPresentationController.delegate = self;
+		[self presentViewController:infoViewController animated:YES completion:nil];
+	}
+
     // 기타 & 버튼들, 비활성 처리.
 	[self enableControls:NO];
+}
+
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
+	return UIModalPresentationFullScreen;
+}
+
+- (UIViewController *)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style {
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller.presentedViewController];
+	return navigationController;
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {

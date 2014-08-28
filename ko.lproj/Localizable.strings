@@ -913,3 +913,5 @@
 "iCloud delete is in progress. Try after 10 minutes." = "iCloud 데이터를 지우는 중입니다. 10분후에 다시 해보세요.";
 
 "Syncing...(%@)" = "동기화...(%@)";
+
+"Detail" = "세부 정보";
