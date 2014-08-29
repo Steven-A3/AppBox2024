@@ -42,6 +42,12 @@
 															 toItem:self
 														  attribute:NSLayoutAttributeCenterX
 														 multiplier:1.0 constant:0.0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_sortingSegment
+                                                     attribute:NSLayoutAttributeBottom
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeBottom
+                                                    multiplier:1.0 constant:-11.0]];
 }
 
 - (void)awakeFromNib
