@@ -269,6 +269,7 @@
 - (void)deleteAllAction:(id)sender
 {
     if (!IS_IOS7 && IS_IPAD) {
+#ifdef __IPHONE_8_0
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             [alertController dismissViewControllerAnimated:YES completion:NULL];
@@ -282,6 +283,7 @@
         popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
         
         [self presentViewController:alertController animated:YES completion:NULL];
+#endif
     }
     else {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete All", @"Delete All") otherButtonTitles:nil];
@@ -309,6 +311,7 @@
 
 - (IBAction)removeAction:(id)sender {
     if (!IS_IOS7 && IS_IPAD) {
+#ifdef __IPHONE_8_0
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             [alertController dismissViewControllerAnimated:YES completion:NULL];
@@ -322,6 +325,7 @@
         popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
         
         [self presentViewController:alertController animated:YES completion:NULL];
+#endif
     }
     else {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Events", @"Delete Events") otherButtonTitles:nil];
@@ -341,6 +345,7 @@
 			[alertView show];
 		}
 		else {
+#ifdef __IPHONE_8_0
 			UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please select events.", @"Please select events.")
 																					 message:@""
 																			  preferredStyle:UIAlertControllerStyleAlert];
@@ -348,6 +353,7 @@
 				[alertController dismissViewControllerAnimated:YES completion:NULL];
 			}]];
 			[self.navigationController presentViewController:alertController animated:YES completion:NULL];
+#endif
 		}
         return;
     }
@@ -381,6 +387,7 @@
             [alertView show];
         }
         else {
+#ifdef __IPHONE_8_0
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please select events.", @"Please select events.")
 																					 message:@""
 																			  preferredStyle:UIAlertControllerStyleAlert];
@@ -388,6 +395,7 @@
                 [alertController dismissViewControllerAnimated:YES completion:NULL];
             }]];
             [self.navigationController presentViewController:alertController animated:YES completion:NULL];
+#endif
         }
         
         return;

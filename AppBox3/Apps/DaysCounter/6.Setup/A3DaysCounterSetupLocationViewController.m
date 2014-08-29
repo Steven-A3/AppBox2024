@@ -121,9 +121,11 @@
             }
         }
         else {
+#ifdef __IPHONE_8_0
             if (![CLLocationManager locationServicesEnabled] || ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedAlways)) {
                 [self alertLocationDisabled];
             }
+#endif
         }
 	}
 }

@@ -836,9 +836,11 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	[alertView show];
 }
 
+#ifdef __IPHONE8_0
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsUserNotificationSettingsRegistered object:notificationSettings];
 }
+#endif
 
 @end

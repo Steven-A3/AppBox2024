@@ -43,9 +43,15 @@ enum A3TableElementCellType {
     A3TableElementCellType_Note
 };
 
+#ifdef __IPHONE8_0
 @interface A3SalesCalcMainViewController () <CLLocationManagerDelegate, UIPopoverControllerDelegate,
 		A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, A3TableViewInputElementDelegate,
 		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPresentationControllerDelegate>
+#else
+@interface A3SalesCalcMainViewController () <CLLocationManagerDelegate, UIPopoverControllerDelegate,
+A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, A3TableViewInputElementDelegate,
+A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
+#endif
 
 @property (nonatomic, strong) A3JHTableViewRootElement *root;
 @property (nonatomic, strong) A3SalesCalcPreferences *preferences;
@@ -392,6 +398,7 @@ enum A3TableElementCellType {
     _headerView.detailInfoButton.enabled = NO;
 
     A3SalesCalcDetailInfoViewController *infoViewController = [[A3SalesCalcDetailInfoViewController alloc] initWithStyle:UITableViewStylePlain];
+    
 	if (IS_IOS7 || IS_IPAD) {
 		if ([UIScreen mainScreen].bounds.size.height == 480.0) {
 			infoViewController.tableView.scrollEnabled = YES;
@@ -411,18 +418,21 @@ enum A3TableElementCellType {
 
 		[self.localPopoverController setPopoverContentSize:CGSizeMake(224, infoViewController.tableView.contentSize.height) animated:NO];
 	} else {
+#ifdef __IPHONE_8_0
 		infoViewController.modalPresentationStyle = UIModalPresentationPopover;
 		UIPopoverPresentationController *popoverPresentationController = infoViewController.popoverPresentationController;
 		popoverPresentationController.sourceView = _headerView.detailInfoButton;
 		popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
 		popoverPresentationController.delegate = self;
 		[self presentViewController:infoViewController animated:YES completion:nil];
+#endif
 	}
 
     // 기타 & 버튼들, 비활성 처리.
 	[self enableControls:NO];
 }
 
+#ifdef __IPHONE_8_0
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
 	return UIModalPresentationFullScreen;
 }
@@ -431,6 +441,7 @@ enum A3TableElementCellType {
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller.presentedViewController];
 	return navigationController;
 }
+#endif
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
 	[self enableControls:YES];

@@ -860,10 +860,12 @@
     }
 }
 
+#ifdef __IPHONE_8_0
 - (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
 	[self showKeyboardAnimated:YES];
 	[self enableControls:YES];
 }
+#endif
 
 #pragma mark Share Activities
 

@@ -94,9 +94,6 @@
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
     self.tableView.separatorInset = UIEdgeInsetsZero;
-    if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
-        self.tableView.layoutMargins = UIEdgeInsetsZero;
-    }
 
     self.cellIDArray = @[@"titleCell", @"photoCell", @"switchCell", @"switchCell", @"switchCell",       // 0 ~ 4
                          @"dateCell", @"dateCell", @"value1Cell", @"value1Cell", @"value1Cell",         // 5 ~ 9
@@ -185,9 +182,6 @@
     [self.navigationController setToolbarHidden:YES];
     isFirstAppear = YES;
     self.tableView.separatorInset = UIEdgeInsetsZero;
-    if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
-        self.tableView.layoutMargins = UIEdgeInsetsZero;
-    }
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
@@ -838,10 +832,7 @@
             cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
         }
         else {
-            [cell setSeparatorInset:UIEdgeInsetsMake(0, -20, 0, 0)];
-            if ([cell respondsToSelector:@selector(layoutMargins)]) {
-                cell.layoutMargins = UIEdgeInsetsMake(0, -20, 0, 0);
-            }
+            [cell setSeparatorInset:UIEdgeInsetsMake(0, 0, 0, 0)];
         }
     }
     
@@ -1339,13 +1330,16 @@
         }
     }
     else {
+#ifdef __IPHONE_8_0
         if (![CLLocationManager locationServicesEnabled] || ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedAlways)) {
             [self alertLocationDisabled];
             return;
         }
+#endif
     }
 
     if (!IS_IOS7 && IS_IPAD) {
+#ifdef __IPHONE_8_0
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             [alertController dismissViewControllerAnimated:YES completion:NULL];
@@ -1376,6 +1370,7 @@
         popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
         
         [self presentViewController:alertController animated:YES completion:NULL];
+#endif
     }
     else {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -1486,6 +1481,7 @@
 {
     [self resignAllAction];
     
+#ifdef __IPHONE_8_0
     if (!IS_IOS7 && _eventItem.alertDatetime) {
         UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
         if ([currentNotificationSettings types] == UIUserNotificationTypeNone) {
@@ -1495,10 +1491,12 @@
             return;
         }
     }
+#endif
 
     [self registerEvent];
 }
 
+#ifdef __IPHONE_8_0
 - (void)userNotificationSettingsRegistered:(NSNotification *)notification
 {
     UIUserNotificationSettings *settings = notification.object;
@@ -1522,6 +1520,7 @@
         [self registerEvent];
     }
 }
+#endif
 
 - (void)registerEvent
 {
@@ -1603,6 +1602,7 @@
     [self removeObserver];
 }
 
+#ifdef __IPHONE8_0
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
     application.delegate = nil;
@@ -1628,8 +1628,7 @@
         [self registerEvent];
     }
 }
-
-
+#endif
 
 - (void)cancelButtonAction:(UIBarButtonItem *)button
 {
@@ -2421,6 +2420,7 @@
                     [_imagePickerPopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
                 }
                 else {
+#ifdef __IPHONE_8_0
                     _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
                     
                     UIPopoverPresentationController *presentationController = [_imagePickerController popoverPresentationController];
@@ -2429,6 +2429,7 @@
                     presentationController.sourceRect = rect;
                     
                     [self presentViewController:_imagePickerController animated:YES completion:NULL];
+#endif
                 }
 			}
 		}
@@ -2457,6 +2458,7 @@
 - (IBAction)deleteEventAction:(id)sender {
     
     if (!IS_IOS7 && IS_IPAD) {
+#ifdef __IPHONE_8_0
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             [alertController dismissViewControllerAnimated:YES completion:NULL];
@@ -2471,6 +2473,7 @@
         popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
         
         [self presentViewController:alertController animated:YES completion:NULL];
+#endif
     }
     else {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event") otherButtonTitles:nil];

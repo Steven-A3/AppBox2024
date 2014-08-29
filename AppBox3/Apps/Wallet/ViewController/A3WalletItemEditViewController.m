@@ -53,7 +53,7 @@ NSString *const A3WalletItemDateInputCellID4 = @"A3WalletDateInputCell";
 NSString *const A3WalletItemDateCellID4 = @"A3WalletItemFieldCell";
 NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
-@interface A3WalletItemEditViewController () <WalletCategorySelectDelegate, UITextFieldDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate, NSFileManagerDelegate, UIPopoverPresentationControllerDelegate>
+@interface A3WalletItemEditViewController () <WalletCategorySelectDelegate, UITextFieldDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate, NSFileManagerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *sectionItems;
 @property (nonatomic, strong) NSMutableDictionary *titleItem;
@@ -1192,39 +1192,15 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			[self presentViewController:_imagePickerController animated:YES completion:NULL];
 		}
         else {
-            _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
-
-            
-            UIPopoverPresentationController *popoverController = _imagePickerController.popoverPresentationController;
-            popoverController.sourceView = self.view;
+            self.popOverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+            self.popOverController.delegate = self;
             CGRect rect = [self frameOfImageViewInCellForIndexPath:_currentIndexPath];
-            popoverController.sourceRect = rect;
-            popoverController.delegate = self;
-            
-            popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-            [self.navigationController presentViewController:_imagePickerController animated:YES completion:NULL];
-//            [self presentViewController:_imagePickerController animated:YES completion:NULL];
-            
-//            self.popOverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-//            self.popOverController.delegate = self;
-//            CGRect rect = [self frameOfImageViewInCellForIndexPath:_currentIndexPath];
-//            [_popOverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-//            [_popOverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            [_popOverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         }
     }
     else {
 		[self presentViewController:_imagePickerController animated:YES completion:NULL];
     }
-}
-
-- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
-    return UIModalPresentationFullScreen;
-}
-
-- (UIViewController *)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style
-{
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller.presentedViewController];
-    return nav;
 }
 
 #pragma mark - CategorySelect delegate

@@ -1755,6 +1755,7 @@ EXIT_FUCTION:
 - (IBAction)deleteEventAction:(id)sender {
     
     if (!IS_IOS7 && IS_IPAD) {
+#ifdef __IPHONE_8_0
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             [alertController dismissViewControllerAnimated:YES completion:NULL];
@@ -1777,6 +1778,7 @@ EXIT_FUCTION:
         popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
 
         [self presentViewController:alertController animated:YES completion:NULL];
+#endif
     }
     else {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
