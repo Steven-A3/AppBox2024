@@ -129,7 +129,7 @@
         make.left.equalTo(self.left);
         make.right.equalTo(self.right);
         make.bottom.equalTo(self.bottom);
-        make.height.equalTo(@0.5);
+        make.height.equalTo(IS_RETINA? @0.5 : @1.0);
     }];
 }
 
