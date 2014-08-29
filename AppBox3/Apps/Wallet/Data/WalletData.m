@@ -219,7 +219,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 
 + (WalletCategory *)firstEditableWalletCategory {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isSystem == NO AND doNotShow = NO"];
-	return [WalletCategory MR_findFirstWithPredicate:predicate];
+    return [WalletCategory MR_findFirstWithPredicate:predicate sortedBy:A3CommonPropertyOrder ascending:YES];
 }
 
 + (NSArray *)categoriesExcludingSystemCategories {
