@@ -616,14 +616,12 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
     A3SlideshowActivity *slideActivity = [[A3SlideshowActivity alloc] init];
     slideActivity.sharedManager = _sharedManager;
     slideActivity.completionBlock = ^(NSDictionary *userInfo, UIActivity *activity) {
-        [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
-            [activity activityDidFinish:YES];
-            A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:nil bundle:nil];
-            viewCtrl.optionDict = userInfo;
-            viewCtrl.sharedManager = _sharedManager;
-            viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [self presentViewController:viewCtrl animated:YES completion:nil];
-        }];
+        [activity activityDidFinish:YES];
+        A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:nil bundle:nil];
+        viewCtrl.optionDict = userInfo;
+        viewCtrl.sharedManager = _sharedManager;
+        viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentViewController:viewCtrl animated:YES completion:nil];
     };
 
     UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:@[slideActivity]];
