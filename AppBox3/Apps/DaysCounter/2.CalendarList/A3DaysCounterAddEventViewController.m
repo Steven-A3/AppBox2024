@@ -1482,10 +1482,24 @@
     [self resignAllAction];
     
 #ifdef __IPHONE_8_0
+    
+
     if (!IS_IOS7 && _eventItem.alertDatetime) {
         UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+        
+        BOOL didRegisterBefore = [[NSUserDefaults standardUserDefaults] boolForKey:A3NotificationsUserNotificationSettingsRegistered];
+        if (didRegisterBefore && [currentNotificationSettings types] == UIUserNotificationTypeNone) {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userNotificationSettingsRegistered:) name:A3NotificationsUserNotificationSettingsRegistered object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsUserNotificationSettingsRegistered object:currentNotificationSettings];
+            return;
+        }
+        
         if ([currentNotificationSettings types] == UIUserNotificationTypeNone) {
             UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:nil];
+            
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3NotificationsUserNotificationSettingsRegistered];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userNotificationSettingsRegistered:) name:A3NotificationsUserNotificationSettingsRegistered object:nil];
             [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
             return;
@@ -1509,7 +1523,7 @@
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
                                                             style:UIAlertActionStyleCancel
                                                           handler:NULL]];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Continue", @"Continue")
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction *action) {
                                                               [self registerEvent];

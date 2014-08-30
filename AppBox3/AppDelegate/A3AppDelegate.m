@@ -839,6 +839,8 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 #ifdef __IPHONE8_0
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
+//    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3NotificationsUserNotificationSettingsRegistered];
+//	[[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsUserNotificationSettingsRegistered object:notificationSettings];
 }
 #endif
