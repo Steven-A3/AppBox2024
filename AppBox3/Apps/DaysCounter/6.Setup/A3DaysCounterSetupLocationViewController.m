@@ -109,6 +109,14 @@
         make.height.equalTo(@5);
         make.bottom.equalTo(self.mapView.bottom);
     }];
+    
+#ifdef __IPHONE_8_0
+    if ([self.currentLocationTableView respondsToSelector:@selector(separatorInset)])
+    {
+        self.currentLocationTableView.separatorInset = UIEdgeInsetsZero;
+    }
+#endif
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -136,6 +144,18 @@
     isSearchActive = NO;
     [_searchBar resignFirstResponder];
     [self hideCurrentLocationTableView];
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+#ifdef __IPHONE_8_0
+    // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
+    if ([self.currentLocationTableView respondsToSelector:@selector(layoutMargins)])
+    {
+        self.currentLocationTableView.layoutMargins = UIEdgeInsetsZero;
+    }
+#endif
 }
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -361,6 +381,7 @@
     //_infoTableView.contentOffset = CGPointMake(0, CGRectGetHeight(self.view.frame));
     _infoTableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight(self.view.frame), 0, 0, 0);
     [_infoTableView setContentOffset:CGPointMake(0, -CGRectGetHeight(self.view.frame)) animated:YES];
+    _infoTableView.layoutMargins = UIEdgeInsetsZero;
     
     return YES;
 }
@@ -443,6 +464,14 @@
     
     if ( tableView == _currentLocationTableView ) {
         cell = [self tableView:tableView cellOfChangeLocationAtIndexPath:indexPath];
+        
+#ifdef __IPHONE_8_0
+        if ([cell respondsToSelector:@selector(layoutMargins)])
+        {
+            cell.layoutMargins = UIEdgeInsetsZero;
+        }
+#endif
+        
         return cell;
     }
     

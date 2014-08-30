@@ -187,6 +187,13 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
+    
+#ifdef __IPHONE_8_0
+    if ([self.tableView respondsToSelector:@selector(separatorInset)])
+    {
+        self.tableView.separatorInset = UIEdgeInsetsZero;
+    }
+#endif
 }
 
 - (void)removeObserver {
@@ -248,6 +255,18 @@
         [textField becomeFirstResponder];
         isFirstAppear = NO;
     }
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+#ifdef __IPHONE_8_0
+    // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+    {
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+    }
+#endif
 }
 
 - (BOOL)usesFullScreenInLandscape
@@ -485,6 +504,14 @@
     if (!(_eventItem && indexPath.section == [_sectionTitleArray count])) {
         [self updateTableViewCell:cell atIndexPath:indexPath];
     }
+    
+#ifdef __IPHONE_8_0
+    // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
+    if ([cell respondsToSelector:@selector(layoutMargins)])
+    {
+        cell.layoutMargins = UIEdgeInsetsZero;
+    }
+#endif
     
     return cell;
 }
