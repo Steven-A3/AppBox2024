@@ -50,7 +50,7 @@ enum A3TableElementCellType {
 #else
 @interface A3SalesCalcMainViewController () <CLLocationManagerDelegate, UIPopoverControllerDelegate,
 A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, A3TableViewInputElementDelegate,
-A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
+A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 #endif
 
 @property (nonatomic, strong) A3JHTableViewRootElement *root;

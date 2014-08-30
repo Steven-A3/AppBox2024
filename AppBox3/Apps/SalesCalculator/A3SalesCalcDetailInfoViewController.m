@@ -12,6 +12,7 @@
 #import "A3DefaultColorDefines.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
+#import "A3StandardLeft15Cell.h"
 
 @interface A3SalesCalcDetailInfoViewController ()
 
@@ -40,8 +41,12 @@
 
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
     self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
+	UITableView *view = self.tableView;
+	if ([view respondsToSelector:@selector(setLayoutMargins:)]) {
+		[view setLayoutMargins:UIEdgeInsetsMake(0, -1, 0, 0)];
+	}
 
-    [self registerContentSizeCategoryDidChangeNotification];
+	[self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)removeObserver {
@@ -70,6 +75,15 @@
 -(void)contentSizeDidChange:(NSNotification *)notification {
     FNLOG(@"%@", notification);
     [self.tableView reloadData];
+}
+
+- (void)viewWillLayoutSubviews {
+	[super viewWillLayoutSubviews];
+
+	UITableView *view = self.tableView;
+	if ([view respondsToSelector:@selector(setLayoutMargins:)]) {
+		[view setLayoutMargins:UIEdgeInsetsZero];
+	}
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
@@ -110,15 +124,18 @@ static NSString *CellIdentifier = @"Cell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    A3StandardLeft15Cell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (!cell) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+		cell = [[A3StandardLeft15Cell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         cell.textLabel.adjustsFontSizeToFitWidth = YES;
         cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.textLabel.font = [UIFont systemFontOfSize:15];
         cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
 		cell.detailTextLabel.textColor = COLOR_DEFAULT_TEXT_GRAY;
+		if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+			[cell setLayoutMargins:UIEdgeInsetsZero];
+		}
 	}
     
     cell.backgroundColor = [UIColor whiteColor];
@@ -137,12 +154,12 @@ static NSString *CellIdentifier = @"Cell";
 			[cell.textLabel setText:NSLocalizedString(@"Sale Price Tax", @"Sale Price Tax")];
             NSNumber *salePriceTax = [A3SalesCalcCalculator salePriceTaxForCalcData:_resultData];
             cell.detailTextLabel.text = [formatter stringFromNumber:salePriceTax];
-            cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+            cell.separatorInset = UIEdgeInsetsZero;
         }
     }
     else if (indexPath.section == 1) {
         cell.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
-        cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        cell.separatorInset = UIEdgeInsetsZero;
     }
     else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
@@ -154,12 +171,12 @@ static NSString *CellIdentifier = @"Cell";
         else {
 			[cell.textLabel setText:NSLocalizedString(@"Original Price Tax", @"Original Price Tax")];
             cell.detailTextLabel.text = [formatter stringFromNumber:[A3SalesCalcCalculator originalPriceTaxForCalcData:_resultData]];
-            cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+            cell.separatorInset = UIEdgeInsetsZero;
         }
     }
     else if (indexPath.section == 3) {
         cell.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
-        cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        cell.separatorInset = UIEdgeInsetsZero;
     }
     else if (indexPath.section == 4) {
         if (indexPath.row == 0) {
@@ -170,7 +187,9 @@ static NSString *CellIdentifier = @"Cell";
         else {
 			[cell.textLabel setText:NSLocalizedString(@"Saved Amount Tax", @"Saved Amount Tax")];
             cell.detailTextLabel.text = [formatter stringFromNumber:[A3SalesCalcCalculator savedAmountTaxForCalcData:_resultData]];
-            cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, cell.bounds.size.width);
+			if (IS_IOS7) {
+				cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, cell.bounds.size.width);
+			}
         }
     }
 
