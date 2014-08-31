@@ -141,7 +141,10 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    isSearchActive = NO;
+    if (self.isMovingFromParentViewController) {
+        isSearchActive = NO;
+    }
+    
     [_searchBar resignFirstResponder];
     [self hideCurrentLocationTableView];
 }

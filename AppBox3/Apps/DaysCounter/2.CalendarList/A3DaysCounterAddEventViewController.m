@@ -266,6 +266,10 @@
     {
         self.tableView.layoutMargins = UIEdgeInsetsZero;
     }
+    
+    // fix for separators bug in iOS 7
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 #endif
 }
 
@@ -2157,6 +2161,10 @@
     [UIView animateWithDuration:0.35 animations:^{
         expandableCell.expandButton.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((_isAdvancedCellOpen ?  0 : -179.9)));
     }];
+    
+    // fix for separators bug in iOS 7
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 
     [CATransaction begin];
     [CATransaction setCompletionBlock:^{
@@ -2168,6 +2176,9 @@
 
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+    // fix for separators bug in iOS 7
+//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     
     if (!_isAdvancedCellOpen) {
         NSUInteger advancedCellRowIndex = [self indexOfRowForItemType:EventCellType_Advanced atSectionArray:section1_items];
@@ -2203,8 +2214,16 @@
         [self.tableView insertRowsAtIndexPaths:indexPathsToAdd withRowAnimation:UITableViewRowAnimationMiddle];
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
+    
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+    // fix for separators bug in iOS 7
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.tableView endUpdates];
     [CATransaction commit];
+    // fix for separators bug in iOS 7
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 }
 
 #pragma mark - UITextField Related
@@ -2510,8 +2529,15 @@
         }]];
         UIPopoverPresentationController *popover = alertController.popoverPresentationController;
         popover.sourceView = self.view;
-        popover.sourceRect = CGRectMake(self.view.center.x, ((UITableViewCell *)sender).center.y + 22, 0, 0);
-        popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        
+        if (IS_LANDSCAPE) {
+            popover.sourceRect = CGRectMake(self.view.center.x, ((UITableViewCell *)sender).center.y - 22, 0, 0);
+            popover.permittedArrowDirections = UIPopoverArrowDirectionDown;
+        }
+        else {
+            popover.sourceRect = CGRectMake(self.view.center.x, ((UITableViewCell *)sender).center.y + 22, 0, 0);
+            popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        }
         
         [self presentViewController:alertController animated:YES completion:NULL];
 #endif

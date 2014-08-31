@@ -166,6 +166,13 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+    
+#ifdef __IPHONE_8_0
+    if ([self.tableView respondsToSelector:@selector(separatorInset)])
+    {
+        self.tableView.separatorInset = UIEdgeInsetsZero;
+    }
+#endif
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)notification {
@@ -247,6 +254,14 @@
         _headerView_view2_widthConst_iPad.constant = barWidth / 3.0;
         _headerView_view3_widthConst_iPad.constant = barWidth / 3.0;
     }
+    
+#ifdef __IPHONE_8_0
+    // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+    {
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+    }
+#endif
 }
 
 - (void)setupHeaderInfo
@@ -604,6 +619,15 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
         cell.textLabel.text = @"";
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+#ifdef __IPHONE_8_0
+        // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
+        if ([cell respondsToSelector:@selector(layoutMargins)])
+        {
+            cell.layoutMargins = UIEdgeInsetsZero;
+        }
+#endif
+        
         return cell;
     }
     
@@ -725,6 +749,13 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     
     [self adjustFontSizeOfCell:cell withCellType:cellType];
     
+#ifdef __IPHONE_8_0
+    // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
+    if ([cell respondsToSelector:@selector(layoutMargins)])
+    {
+        cell.layoutMargins = UIEdgeInsetsZero;
+    }
+#endif
     
     return cell;
 }
