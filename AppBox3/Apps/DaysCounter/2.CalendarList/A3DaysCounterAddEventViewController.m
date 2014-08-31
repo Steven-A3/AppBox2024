@@ -266,10 +266,6 @@
     {
         self.tableView.layoutMargins = UIEdgeInsetsZero;
     }
-    
-    // fix for separators bug in iOS 7
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 #endif
 }
 
@@ -2175,9 +2171,7 @@
     }];
 
     [self.tableView beginUpdates];
-    // fix for separators bug in iOS 7
-//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
     
     if (!_isAdvancedCellOpen) {
         NSUInteger advancedCellRowIndex = [self indexOfRowForItemType:EventCellType_Advanced atSectionArray:section1_items];
@@ -2214,15 +2208,9 @@
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
     
-    // fix for separators bug in iOS 7
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.tableView endUpdates];
     [CATransaction commit];
-    // fix for separators bug in iOS 7
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+
 }
 
 #pragma mark - UITextField Related
