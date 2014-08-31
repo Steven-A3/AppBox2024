@@ -89,7 +89,7 @@
 -(void)setupConstraintLayout
 {
     [_bottomGrayLineView makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@0.5);
+        make.height.equalTo(IS_RETINA ? @0.5 : @1.0);
         make.left.equalTo(self.left);
         make.right.equalTo(self.right);
         make.bottom.equalTo(self.bottom);
