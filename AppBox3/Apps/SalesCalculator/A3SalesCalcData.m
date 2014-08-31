@@ -25,7 +25,7 @@ static NSString *const A3SalesCalcDataKeyCurrencyCode = @"currencyCode";
 
 @implementation A3SalesCalcData
 
--(id)init{
+- (id)init{
     self = [super init];
     if (self) {
         self.price = @0;
@@ -40,7 +40,7 @@ static NSString *const A3SalesCalcDataKeyCurrencyCode = @"currencyCode";
     return self;
 }
 
--(id)initWithCoder:(NSCoder *)aDecoder
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super init])
     {
@@ -61,7 +61,7 @@ static NSString *const A3SalesCalcDataKeyCurrencyCode = @"currencyCode";
     return self;
 }
 
--(void)encodeWithCoder:(NSCoder *)aCoder
+- (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeObject:_historyDate forKey:A3SalesCalcDataKeyHistoryDate];
     [aCoder encodeInteger:_shownPriceType forKey:A3SalesCalcDataKeyShownPriceType];
@@ -77,7 +77,7 @@ static NSString *const A3SalesCalcDataKeyCurrencyCode = @"currencyCode";
     [aCoder encodeObject:_currencyCode forKey:A3SalesCalcDataKeyCurrencyCode];
 }
 
--(BOOL)saveDataWithCurrencyCode:(NSString *)currencyCode {
+- (BOOL)saveDataToHistoryWithCurrencyCode:(NSString *)currencyCode {
 
     if (self.price == nil ||
         self.discount == nil ) {
@@ -88,65 +88,47 @@ static NSString *const A3SalesCalcDataKeyCurrencyCode = @"currencyCode";
         [self.discount isEqualToNumber:@0]) {
         return NO;
     }
-    
-    
-    SalesCalcHistory *entity = [SalesCalcHistory MR_createEntity];
-	entity.uniqueID = [[NSUUID UUID] UUIDString];
-    entity.updateDate = [NSDate date];
-    entity.price = self.price;
-    entity.priceType = @(self.priceType);
-    entity.discount = self.discount;
-    entity.discountType = @(self.discountType);
-    entity.additionalOff = self.additionalOff;
-    entity.additionalOffType = @(self.additionalOffType);
-    entity.tax = self.tax;
-    entity.taxType = @(self.taxType);
-    entity.notes = self.notes;
-    entity.shownPriceType = @(self.shownPriceType);
-    entity.currencyCode = currencyCode;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:
+			@"price == %@ AND \
+			priceType == %@ AND \
+			discount == %@ AND \
+			discountType == %@ AND \
+			additionalOff == %@ AND \
+            additionalOffType == %@ AND \
+			tax == %@ AND \
+    		taxType == %@ AND \
+			notes == %@ AND \
+			shownPriceType == %@ AND \
+			currencyCode == %@",
+			self.price, @(self.priceType), self.discount, @(self.discountType), self.additionalOff, @(self.additionalOffType),
+			self.tax, @(self.taxType), self.notes, @(self.shownPriceType), self.currencyCode];
+
+	SalesCalcHistory *sameData = [SalesCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+	if (sameData) {
+		return NO;
+	} else {
+		SalesCalcHistory *entity = [SalesCalcHistory MR_createEntity];
+		entity.uniqueID = [[NSUUID UUID] UUIDString];
+		entity.updateDate = [NSDate date];
+		entity.price = self.price;
+		entity.priceType = @(self.priceType);
+		entity.discount = self.discount;
+		entity.discountType = @(self.discountType);
+		entity.additionalOff = self.additionalOff;
+		entity.additionalOffType = @(self.additionalOffType);
+		entity.tax = self.tax;
+		entity.taxType = @(self.taxType);
+		entity.notes = self.notes;
+		entity.shownPriceType = @(self.shownPriceType);
+		entity.currencyCode = currencyCode;
+	}
 
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     return YES;
 }
 
--(BOOL)saveDataForcinglyWithCurrencyCode:(NSString *)currencyCode {
-    
-    if ([self.price isEqualToNumber:@0] ||
-        [self.discount isEqualToNumber:@0]) {
-        return NO;
-    }
-    
-    if (self.historyDate != nil) {
-        NSArray *oldDate = [NSArray arrayWithObjects:self.historyDate, nil];
-        NSArray *oldHistory = [SalesCalcHistory MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"updateDate IN %@", oldDate]];
-        if (oldHistory.count!=0) {
-            FNLOG(@"존재하는 히스토리입니다.");
-            return NO;
-        }
-    }
-    
-    SalesCalcHistory *entity = [SalesCalcHistory MR_createEntity];
-	entity.uniqueID = [[NSUUID UUID] UUIDString];
-    entity.updateDate = [NSDate date];
-    entity.price = self.price;
-    entity.priceType = @(self.priceType);
-    entity.discount = self.discount;
-    entity.discountType = @(self.discountType);
-    entity.additionalOff = self.additionalOff;
-    entity.additionalOffType = @(self.additionalOffType);
-    entity.tax = self.tax;
-    entity.taxType = @(self.taxType);
-    entity.notes = self.notes;
-    entity.shownPriceType = @(self.shownPriceType);
-    entity.currencyCode = currencyCode;
-    
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    
-    return YES;
-}
-
-+(A3SalesCalcData *)loadDataFromHistory:(SalesCalcHistory *)history
++ (A3SalesCalcData *)loadDataFromHistory:(SalesCalcHistory *)history
 {
     A3SalesCalcData *data = [A3SalesCalcData new];
     data.historyDate = history.updateDate;

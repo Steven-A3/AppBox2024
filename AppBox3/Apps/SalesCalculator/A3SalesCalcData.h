@@ -32,8 +32,8 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcShowPriceType) {
 @property (nonatomic, strong) NSString *notes;
 @property (nonatomic, strong) NSString *currencyCode;
 
--(BOOL)saveDataWithCurrencyCode:(NSString *)currencyCode;
--(BOOL)saveDataForcinglyWithCurrencyCode:(NSString *)currencyCode;
+-(BOOL)saveDataToHistoryWithCurrencyCode:(NSString *)currencyCode;
+
 +(A3SalesCalcData *)loadDataFromHistory:(SalesCalcHistory *)history;
 
 @end

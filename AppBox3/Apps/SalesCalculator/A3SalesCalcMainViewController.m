@@ -264,33 +264,34 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPre
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 }
 
--(void)saveInputTextData:(A3SalesCalcData *)inputTextData {
+- (void)saveInputTextData:(A3SalesCalcData *)inputTextData {
 	NSData *inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData];
 	[[A3SyncManager sharedSyncManager] setObject:inputData forKey:A3SalesCalcUserDefaultsSavedInputDataKey state:A3DataObjectStateModified];
 }
 
--(void)saveToHistory:(id)sender {
+- (void)saveToHistory:(id)sender {
     [self.firstResponder resignFirstResponder];
     [self.textViewResponder resignFirstResponder];
-    
-    BOOL result;
-    A3TextViewElement *notes = (A3TextViewElement *)[self.root elementForIndexPath:[NSIndexPath indexPathForRow:2 inSection:2]];
-    self.preferences.calcData.notes = notes.value;
-    result = [self.preferences.calcData saveDataWithCurrencyCode:[self.currencyFormatter currencyCode]];
-    
-    if (result) {
-        A3SalesCalcData *newData = [[A3SalesCalcData alloc] init];
-        [self saveInputTextData:newData];
-        [self reloadSalesCalcData:newData];
-    }
-    
+
+	[self saveDataToHistoryWithNotes];
+
+	A3SalesCalcData *newData = [[A3SalesCalcData alloc] init];
+	[self saveInputTextData:newData];
+	[self reloadSalesCalcData:newData];
+
     [self scrollToTopOfTableView];
 	[self enableControls:YES];
 }
 
+- (void)saveDataToHistoryWithNotes {
+	A3TextViewElement *notes = (A3TextViewElement *)[self.root elementForIndexPath:[NSIndexPath indexPathForRow:2 inSection:2]];
+	self.preferences.calcData.notes = notes.value;
+	[self.preferences.calcData saveDataToHistoryWithCurrencyCode:[self.currencyFormatter currencyCode]];
+}
+
 #pragma mark - History
 
--(void)historyButtonAction:(id)sender
+- (void)historyButtonAction:(id)sender
 {
     [self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
@@ -314,8 +315,10 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPre
 	_modalNavigationController = nil;
 }
 
--(void)didSelectHistoryData:(A3SalesCalcData *)aData
+- (void)didSelectHistoryData:(A3SalesCalcData *)aData
 {
+	[self saveDataToHistoryWithNotes];
+
     self.preferences.calcData = aData;
     [self saveInputTextData:aData];
 
