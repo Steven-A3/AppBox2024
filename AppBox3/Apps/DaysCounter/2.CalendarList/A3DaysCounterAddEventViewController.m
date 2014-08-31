@@ -2175,7 +2175,6 @@
     }];
 
     [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
     // fix for separators bug in iOS 7
 //    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 //    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
@@ -2215,7 +2214,6 @@
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
     
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
     // fix for separators bug in iOS 7
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
@@ -2224,6 +2222,7 @@
     // fix for separators bug in iOS 7
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark - UITextField Related
