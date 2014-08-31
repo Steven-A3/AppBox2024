@@ -305,6 +305,7 @@
 }
 
 #pragma mark - Table view delegate
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if( indexPath.section == 1 ){
@@ -324,12 +325,67 @@
         NSDictionary *item = [items objectAtIndex:indexPath.row];
         
         if( [[item objectForKey:ItemKey_Type] integerValue] == SettingCell_Alert ){
-            A3LadyCalendarSetupAlertViewController *viewCtrl = [[A3LadyCalendarSetupAlertViewController alloc] init];
-			viewCtrl.dataManager = _dataManager;
-            viewCtrl.settingDict = self.settingDict;
-            [self.navigationController pushViewController:viewCtrl animated:YES];
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+#ifdef __IPHONE_8_0
+            if (!IS_IOS7) {
+                UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+                BOOL didRegisterBefore = [[NSUserDefaults standardUserDefaults] boolForKey:A3NotificationsUserNotificationSettingsRegistered];
+                if (didRegisterBefore && [currentNotificationSettings types] == UIUserNotificationTypeNone) {
+                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userNotificationSettingsRegistered:) name:A3NotificationsUserNotificationSettingsRegistered object:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsUserNotificationSettingsRegistered object:currentNotificationSettings];
+                    return;
+                }
+                
+                if ([currentNotificationSettings types] == UIUserNotificationTypeNone) {
+                    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:nil];
+                    
+                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3NotificationsUserNotificationSettingsRegistered];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userNotificationSettingsRegistered:) name:A3NotificationsUserNotificationSettingsRegistered object:nil];
+                    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+                    return;
+                }
+            }
+#endif
+            
+            [self moveToAlertSetupViewController];
         }
     }
+}
+
+#ifdef __IPHONE_8_0
+- (void)userNotificationSettingsRegistered:(NSNotification *)notification
+{
+    UIUserNotificationSettings *settings = notification.object;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationsUserNotificationSettingsRegistered object:nil];
+    
+    if (settings.types == UIUserNotificationTypeNone) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@""
+                                                                                 message:@"알림 권한이 없어서, 알람을 받지 못하지만 계속해서 설정하시겠습니까? (알람 권한을 얻으려면 셋팅 -> AppBox Pro 로 이동해주세요.)"
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:NULL]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Continue", @"Continue")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {
+                                                              [self moveToAlertSetupViewController];
+                                                          }]];
+        [self presentViewController:alertController animated:YES completion:NULL];
+    }
+    else {
+        [self moveToAlertSetupViewController];
+    }
+}
+#endif
+
+- (void)moveToAlertSetupViewController
+{
+    A3LadyCalendarSetupAlertViewController *viewCtrl = [[A3LadyCalendarSetupAlertViewController alloc] init];
+    viewCtrl.dataManager = _dataManager;
+    viewCtrl.settingDict = self.settingDict;
+    [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 
 #pragma mark - action method
