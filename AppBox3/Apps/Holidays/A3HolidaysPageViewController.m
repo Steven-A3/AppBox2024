@@ -312,15 +312,19 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 	viewController.delegate = self;
 	viewController.pageViewController = self;
 	viewController.countryCode = _countries[_pageControl.currentPage];
-
-//	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-//	[self presentViewController:navigationController animated:YES completion:nil];
     
-    A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
-    [rootViewController presentCenterViewController:[[A3NavigationController alloc] initWithRootViewController:viewController]
-                                 fromViewController:self
-                                     withCompletion:^{
-                                     }];
+    if (IS_IPAD) {
+        A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+        [rootViewController presentCenterViewController:[[A3NavigationController alloc] initWithRootViewController:viewController]
+                                     fromViewController:self
+                                         withCompletion:^{
+                                         }];
+    }
+    else {
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+        [self presentViewController:navigationController animated:YES completion:nil];
+
+    }
 }
 
 - (NSArray *)countries {
