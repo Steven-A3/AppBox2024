@@ -2472,10 +2472,12 @@
                     
                     UIPopoverPresentationController *presentationController = [_imagePickerController popoverPresentationController];
                     presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-                    presentationController.sourceView = self.view;
-                    presentationController.sourceRect = rect;
+                    presentationController.sourceView = button;
                     
-                    [self presentViewController:_imagePickerController animated:YES completion:NULL];
+                    // 이전 화면을 덮었던 ActionSheet 가 사라진 후에도 영향을 주어서, 현재의 스택을 벗어나서 실행하도록 하였습니다.
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self presentViewController:_imagePickerController animated:YES completion:NULL];
+                    });
 #endif
                 }
 			}
@@ -2609,7 +2611,12 @@
         [picker dismissViewControllerAnimated:YES completion:nil];
     }
     else {
-        [_imagePickerPopoverController dismissPopoverAnimated:YES];
+        if (IS_IOS7) {
+            [_imagePickerPopoverController dismissPopoverAnimated:YES];
+        }
+        else {
+            [picker dismissViewControllerAnimated:YES completion:NULL];
+        }
     }
 	_imagePickerController = nil;
 	_imagePickerPopoverController = nil;
@@ -2634,7 +2641,12 @@
         [picker dismissViewControllerAnimated:YES completion:nil];
     }
     else {
-        [_imagePickerPopoverController dismissPopoverAnimated:YES];
+        if (IS_IOS7) {
+            [_imagePickerPopoverController dismissPopoverAnimated:YES];
+        }
+        else {
+            [picker dismissViewControllerAnimated:YES completion:NULL];
+        }
     }
 	_imagePickerController = nil;
 	_imagePickerPopoverController = nil;
