@@ -401,7 +401,8 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPre
     _headerView.detailInfoButton.enabled = NO;
 
     A3SalesCalcDetailInfoViewController *infoViewController = [[A3SalesCalcDetailInfoViewController alloc] initWithStyle:UITableViewStylePlain];
-    
+	[infoViewController setResult:_preferences.calcData];
+
 	if (IS_IOS7 || IS_IPAD) {
 		if ([UIScreen mainScreen].bounds.size.height == 480.0) {
 			infoViewController.tableView.scrollEnabled = YES;
@@ -409,7 +410,6 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPre
 			infoViewController.tableView.scrollEnabled = NO;
 		}
 		infoViewController.tableView.showsVerticalScrollIndicator = NO;
-		[infoViewController setResult:_preferences.calcData];
 		self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:infoViewController];
 		self.localPopoverController.backgroundColor = [UIColor whiteColor];
 		self.localPopoverController.delegate = self;
