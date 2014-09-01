@@ -1116,6 +1116,19 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 #pragma mark - UIActionSheet delegate
 
+- (void)deleteItemByActionSheet {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.item.uniqueID];
+    [self.item MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
+    [WalletFavorite MR_deleteAllMatchingPredicate:predicate inContext:[NSManagedObjectContext MR_rootSavingContext]];
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(WalletItemDeleted)]) {
+        [_delegate WalletItemDeleted];
+    }
+    [[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
+    
+    [self dismissViewControllerAnimated:NO completion:NULL];
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	
     if (buttonIndex == actionSheet.cancelButtonIndex) {
@@ -1132,16 +1145,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
         }
         else if (actionSheet.tag == 3) {
 
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.item.uniqueID];
-			[self.item MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
-			[WalletFavorite MR_deleteAllMatchingPredicate:predicate inContext:[NSManagedObjectContext MR_rootSavingContext]];
-
-            if (_delegate && [_delegate respondsToSelector:@selector(WalletItemDeleted)]) {
-                [_delegate WalletItemDeleted];
-            }
-			[[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
-
-			[self dismissViewControllerAnimated:NO completion:NULL];
+            [self deleteItemByActionSheet];
 
 			return;
         }
@@ -1508,13 +1512,35 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		[self.firstResponder resignFirstResponder];
 
         // delete category
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                 delegate:self
-                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                   destructiveButtonTitle:NSLocalizedString(@"Delete Item", @"Delete Item")
-                                                        otherButtonTitles:nil];
-        actionSheet.tag = 3;
-        [actionSheet showInView:self.view];
+        if (!IS_IOS7 && IS_IPAD) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet
+                                                  ];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Item", @"Delete Item") style:UIAlertActionStyleDestructive     handler:^(UIAlertAction *action) {
+                [self deleteItemByActionSheet];
+            }]];
+            
+            alertController.modalPresentationStyle = UIModalPresentationPopover;
+            UIPopoverPresentationController *popoverPresentation = [alertController popoverPresentationController];
+            popoverPresentation.permittedArrowDirections = UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown;
+            popoverPresentation.sourceView = self.view;
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            CGRect rect = [self.tableView convertRect:cell.bounds fromView:cell];
+            rect.origin.x = self.view.center.x;
+            rect.size = CGSizeZero;
+            popoverPresentation.sourceRect = rect;
+            
+            [self presentViewController:alertController animated:YES completion:NULL];
+        }
+        else {
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                     delegate:self
+                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                       destructiveButtonTitle:NSLocalizedString(@"Delete Item", @"Delete Item")
+                                                            otherButtonTitles:nil];
+            actionSheet.tag = 3;
+            [actionSheet showInView:self.view];
+        }
     }
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
