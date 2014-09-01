@@ -1368,26 +1368,21 @@
     if (!IS_IOS7 && IS_IPAD) {
 #ifdef __IPHONE_8_0
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [alertController dismissViewControllerAnimated:YES completion:NULL];
-        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
 
         if (_eventItem.location) {
             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Location", @"Delete Location") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
                 [self deleteLocationAction];
-                [alertController dismissViewControllerAnimated:YES completion:NULL];
             }]];
             
         }
         
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Use My Location", @"Use My Location") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self useMyLocationAction];
-            [alertController dismissViewControllerAnimated:YES completion:NULL];
         }]];
         
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Search Location", @"Search Location") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self searchLocationAction];
-            [alertController dismissViewControllerAnimated:YES completion:NULL];
         }]];
         
         UIPopoverPresentationController *popover = alertController.popoverPresentationController;
