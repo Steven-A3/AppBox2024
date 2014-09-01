@@ -393,6 +393,8 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPre
     return _headerView;
 }
 
+#pragma mark - Detail Popover View Controller
+
 - (void)detailInfoButtonTouchedUp {
     [self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
@@ -403,12 +405,8 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPre
     A3SalesCalcDetailInfoViewController *infoViewController = [[A3SalesCalcDetailInfoViewController alloc] initWithStyle:UITableViewStylePlain];
 	[infoViewController setResult:_preferences.calcData];
 
-	if (IS_IOS7 || IS_IPAD) {
-		if ([UIScreen mainScreen].bounds.size.height == 480.0) {
-			infoViewController.tableView.scrollEnabled = YES;
-		} else {
-			infoViewController.tableView.scrollEnabled = NO;
-		}
+	if (IS_IOS7) {
+		infoViewController.tableView.scrollEnabled = IS_IPHONE35;
 		infoViewController.tableView.showsVerticalScrollIndicator = NO;
 		self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:infoViewController];
 		self.localPopoverController.backgroundColor = [UIColor whiteColor];
@@ -423,9 +421,10 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPre
 	} else {
 #ifdef __IPHONE_8_0
 		infoViewController.modalPresentationStyle = UIModalPresentationPopover;
+		[infoViewController setPreferredContentSize:CGSizeMake(224, 308)];
 		UIPopoverPresentationController *popoverPresentationController = infoViewController.popoverPresentationController;
 		popoverPresentationController.sourceView = _headerView.detailInfoButton;
-		popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+		popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
 		popoverPresentationController.delegate = self;
 		[self presentViewController:infoViewController animated:YES completion:nil];
 #endif
@@ -448,6 +447,15 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPre
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
 	[self enableControls:YES];
+	self.localPopoverController = nil;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	if (self.localPopoverController) {
+		[self.localPopoverController dismissPopoverAnimated:NO];
+		[self detailInfoButtonTouchedUp];
+	}
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 - (NSString *)defaultCurrencyCode {
