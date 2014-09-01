@@ -290,7 +290,7 @@ static NSString *CellIdentifier = @"Cell";
 	actionSheet.tag = 200;
     // TODO
     if (IS_IPAD) {
-        UITableViewCell *cell = [self.tableView cellForCellSubview:_cameraButton];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
         CGRect rect = [self.tableView convertRect:_cameraButton.frame fromView:cell.contentView];
         [actionSheet showFromRect:rect inView:self.view animated:NO];
     }
@@ -356,9 +356,6 @@ static NSString *CellIdentifier = @"Cell";
 					[self presentViewController:_imagePickerController animated:YES completion:NULL];
 				}
 				else {
-					self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-					self.imagePickerPopoverController.delegate = self;
-                    
                     CGRect fromRect;
                     if ([[A3HolidaysFlickrDownloadManager sharedInstance] hasUserSuppliedImageForCountry:_countryCode]) {
                         UITableViewCell *cell = [self.tableView cellForCellSubview:_imageView];
@@ -368,7 +365,26 @@ static NSString *CellIdentifier = @"Cell";
                         fromRect = [self.view convertRect:_cameraButton.frame fromView:cell];
                     }
                     
-					[_imagePickerPopoverController presentPopoverFromRect:fromRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+                    if (IS_IOS7) {
+                        self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+                        self.imagePickerPopoverController.delegate = self;
+                        [_imagePickerPopoverController presentPopoverFromRect:fromRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+                    }
+                    else {
+#ifdef __IPHONE_8_0
+                        _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
+                        UIPopoverPresentationController *popoverPresentation = [_imagePickerController popoverPresentationController];
+                        popoverPresentation.permittedArrowDirections = UIPopoverArrowDirectionAny;
+                        popoverPresentation.sourceView = self.view;
+                        popoverPresentation.sourceRect = fromRect;
+
+                        // 이전 화면을 덮었던 ActionSheet 가 사라진 후에도 영향을 주어서, 현재의 스택을 벗어나서 실행하도록 하였습니다.
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            [self presentViewController:_imagePickerController animated:YES completion:NULL];
+                        });
+#endif
+                    }
+                    
 				}
 			}
 			else {
