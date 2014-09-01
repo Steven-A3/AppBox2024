@@ -632,7 +632,6 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
             // icon
             UIViewController *viewController = [self iconSelectViewController];
             [self presentSubViewController:viewController];
-            
             [self disableBarItems];
         }
     }
@@ -641,24 +640,44 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
             
             UIViewController *viewController = [self editFieldViewController:indexPath.row];
             [self presentSubViewController:viewController];
-            
             [self disableBarItems];
         }
         else if (_fields[indexPath.row] == self.plusItem) {
             
             // add wallet field
             [self addWalletField];
-            
             [self disableBarItems];
         }
     }
     else if (indexPath.section == 2) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                 delegate:self
-                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                   destructiveButtonTitle:NSLocalizedString(@"Delete Category", @"Delete Category")
-                                                        otherButtonTitles:nil];
-        [actionSheet showInView:self.view];
+        if (!IS_IOS7 && IS_IPAD) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Category", @"Delete Category") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+                [self deleteCategoryByActionSheet];
+            }]];
+            
+            alertController.modalPresentationStyle = UIModalPresentationPopover;
+            
+            UIPopoverPresentationController *popoverPresentation = [alertController popoverPresentationController];
+            popoverPresentation.permittedArrowDirections = UIPopoverArrowDirectionDown | UIPopoverArrowDirectionUp;
+            popoverPresentation.sourceView = self.view;
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            CGRect fromRect = [tableView convertRect:cell.bounds fromView:cell];
+            fromRect.origin.x = self.view.center.x;
+            fromRect.size = CGSizeZero;
+            popoverPresentation.sourceRect = fromRect;
+            
+            [self presentViewController:alertController animated:YES completion:NULL];
+        }
+        else {
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                     delegate:self
+                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                       destructiveButtonTitle:NSLocalizedString(@"Delete Category", @"Delete Category")
+                                                            otherButtonTitles:nil];
+            [actionSheet showInView:self.view];
+        }
         
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -666,19 +685,23 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 #pragma mark - UIActionSheetDelegate
 
+- (void)deleteCategoryByActionSheet {
+    [_category MR_deleteEntityInContext:self.savingContext];
+    
+    NSArray *items = [WalletItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID] inContext:self.savingContext];
+    for (WalletItem *item in items) {
+        [item deleteWalletItemInContext:self.savingContext];
+    }
+    [self.savingContext MR_saveToPersistentStoreAndWait];
+    
+    [self dismissViewControllerAnimated:YES completion:NULL];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryDeleted object:nil];
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-		[_category MR_deleteEntityInContext:self.savingContext];
-
-		NSArray *items = [WalletItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID] inContext:self.savingContext];
-		for (WalletItem *item in items) {
-			[item deleteWalletItemInContext:self.savingContext];
-		}
-		[self.savingContext MR_saveToPersistentStoreAndWait];
-
-		[self dismissViewControllerAnimated:YES completion:NULL];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryDeleted object:nil];
+        [self deleteCategoryByActionSheet];
 	}
 }
 
