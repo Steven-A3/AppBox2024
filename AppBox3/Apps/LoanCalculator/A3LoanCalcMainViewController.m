@@ -38,6 +38,7 @@
 #import "LoanCalcComparisonHistory+extension.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "LoanCalcHistory+extension.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
@@ -1358,44 +1359,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     return body;
 }
 
-
 #pragma mark - Loan Mode Calculation
-
-- (BOOL)isSameHistory:(LoanCalcHistory *)history withLan:(LoanCalcData *)loan
-{
-    LoanCalcData *tmpLoan = [LoanCalcData new];
-    [self loadLoanCalcData:tmpLoan fromLoanCalcHistory:history];
-    
-    if (tmpLoan.downPayment.doubleValue != loan.downPayment.doubleValue) {
-        return NO;
-    }
-    
-    if (tmpLoan.frequencyIndex != loan.frequencyIndex) {
-        return NO;
-    }
-    
-    if (tmpLoan.annualInterestRate.floatValue != loan.annualInterestRate.floatValue) {
-        return NO;
-    }
-    
-    if (tmpLoan.repayment.doubleValue != loan.repayment.doubleValue) {
-        return NO;
-    }
-    
-    if (tmpLoan.principal.doubleValue != loan.principal.doubleValue) {
-        return NO;
-    }
-    
-    if (tmpLoan.monthOfTerms.floatValue != loan.monthOfTerms.floatValue) {
-        return NO;
-    }
-    
-    if (tmpLoan.calculationMode != loan.calculationMode) {
-        return NO;
-    }
-    
-    return YES;
-}
 
 - (void)updateLoanCalculation
 {
@@ -1438,19 +1402,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)putLoanHistory
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"orderInComparison == nil"];
-    LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
-    
-    BOOL shouldSave = NO;
-    if (history) {
-        shouldSave = ![self isSameHistory:history withLan:self.loanData];
-    }
-    else {
-        shouldSave = YES;
-    }
-    
-    if (shouldSave) {
+    if (![LoanCalcHistory sameDataExistForLoanCalcData:self.loanData type:nil]) {
         [self loanHistoryForLoanData:self.loanData];
+
 		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     }
 }
@@ -1942,26 +1896,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)putComparisonHistory
 {
-    BOOL shouldSave = NO;
+    BOOL shouldSave;
     
-    LoanCalcComparisonHistory *lastComparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
-    
-    if (lastComparison) {
-		LoanCalcHistory *historyA, *historyB;
-		for (LoanCalcHistory *history in [lastComparison details]) {
-			if ([history.orderInComparison isEqualToString:@"A"]) {
-				historyA = history;
-			} else {
-				historyB = history;
-			}
-		}
-        if (![self isSameHistory:historyA withLan:_loanDataA] || ![self isSameHistory:historyB withLan:_loanDataB]) {
-            shouldSave = YES;
-        }
-    }
-    else {
-        shouldSave = YES;
-    }
+	shouldSave = ![LoanCalcHistory sameDataExistForLoanCalcData:_loanDataA type:@"A"] ||
+			![LoanCalcHistory sameDataExistForLoanCalcData:_loanDataB type:@"B"];
     
     if (shouldSave) {
         LoanCalcHistory *historyA = [self loanHistoryForLoanData:_loanDataA];

@@ -8,6 +8,10 @@
 
 #import "LoanCalcHistory.h"
 
+@class LoanCalcData;
+
 @interface LoanCalcHistory (extension)
+
++ (BOOL)sameDataExistForLoanCalcData:(LoanCalcData *)data type:(NSString *)type;
 
 @end
