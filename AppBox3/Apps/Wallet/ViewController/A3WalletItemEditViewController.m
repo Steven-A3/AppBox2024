@@ -1192,10 +1192,28 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			[self presentViewController:_imagePickerController animated:YES completion:NULL];
 		}
         else {
-            self.popOverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-            self.popOverController.delegate = self;
-            CGRect rect = [self frameOfImageViewInCellForIndexPath:_currentIndexPath];
-            [_popOverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            if (IS_IOS7) {
+                self.popOverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+                self.popOverController.delegate = self;
+                CGRect rect = [self frameOfImageViewInCellForIndexPath:_currentIndexPath];
+                [_popOverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            }
+            else {
+#ifdef __IPHONE_8_0
+                _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
+                
+                UIPopoverPresentationController *presentationController = [_imagePickerController popoverPresentationController];
+                presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+                presentationController.sourceView = self.view;
+                CGRect rect = [self frameOfImageViewInCellForIndexPath:_currentIndexPath];
+                presentationController.sourceRect = rect;
+                
+                // 이전 화면을 덮었던 ActionSheet 가 사라진 후에도 영향을 주어서, 현재의 스택을 벗어나서 실행하도록 하였습니다.
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self presentViewController:_imagePickerController animated:YES completion:NULL];
+                });
+#endif
+            }
         }
     }
     else {
