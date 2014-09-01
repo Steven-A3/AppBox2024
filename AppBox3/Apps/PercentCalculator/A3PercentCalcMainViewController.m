@@ -1412,8 +1412,10 @@
                         options:UIViewAnimationOptionCurveLinear
                      animations:^{
                          [self reloadTableDataSource];
+						 [self reloadInputData];
                          [self reloadTableHeaderView];
-                     } completion:^(BOOL finished) {
+						 [self.headerView setNeedsLayout];
+					 } completion:^(BOOL finished) {
                          //[self reloadTableDataSource];
                          [self.tableView reloadData];
                      }];
