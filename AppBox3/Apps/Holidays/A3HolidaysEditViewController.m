@@ -20,6 +20,9 @@
 #import "UITableView+utility.h"
 #import "A3UserDefaults.h"
 
+static const NSInteger A3HolidaysResetActionSheet = 100;
+static const NSInteger A3HolidaysPhotoActionSheet = 200;
+
 @interface A3HolidaysEditViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) NSArray *holidaysForCountry;
@@ -125,14 +128,42 @@ static NSString *CellIdentifier = @"Cell";
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)resetButtonAction:(UIBarButtonItem *)button {
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will reset all settings.\nNo data will be deleted.", nil)
-															 delegate:self
-													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-											   destructiveButtonTitle:NSLocalizedString(@"Reset All", @"Reset All")
-													otherButtonTitles:nil];
-	actionSheet.tag = 100;
-	[actionSheet showInView:self.view];
+- (void)resetButtonAction:(UITableViewCell *)sender {
+
+    
+    if (!IS_IOS7 && IS_IPAD) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"This will reset all settings.\nNo data will be deleted.", nil)
+                                                                                 message:@""
+                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Reset All", @"Reset All") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+            [self resetForItemShowHide];
+        }]];
+        
+        alertController.modalPresentationStyle = UIModalPresentationPopover;
+        UIPopoverPresentationController *popoverPresentation = [alertController popoverPresentationController];
+        popoverPresentation.sourceView = self.view;
+        
+        CGRect rect = [self.tableView convertRect:sender.bounds fromView:sender];
+        rect.origin.x = self.view.center.x;
+        rect.size = CGSizeZero;
+        popoverPresentation.sourceRect = rect;
+        popoverPresentation.permittedArrowDirections = UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown;
+
+        [self presentViewController:alertController animated:YES completion:NULL];
+    }
+    else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will reset all settings.\nNo data will be deleted.", nil)
+                                                                 delegate:self
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                   destructiveButtonTitle:NSLocalizedString(@"Reset All", @"Reset All")
+                                                        otherButtonTitles:nil];
+        actionSheet.tag = A3HolidaysResetActionSheet;
+        
+        [actionSheet showInView:self.view];
+    }
+
+    
 }
 
 #pragma mark - Setup data
@@ -225,7 +256,10 @@ static NSString *CellIdentifier = @"Cell";
     
 	switch (indexPath.section) {
 		case 1:
-			[self resetButtonAction:nil];
+        {
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+			[self resetButtonAction:cell];
+        }
 			break;
 		case 2:
             [self photoButtonAction];
@@ -305,17 +339,14 @@ static NSString *CellIdentifier = @"Cell";
 	if (buttonIndex == actionSheet.cancelButtonIndex) return;
 
 	switch (actionSheet.tag) {
-		case 100: {
+		case A3HolidaysResetActionSheet: {
 			if (buttonIndex == actionSheet.destructiveButtonIndex) {
-				[[A3UserDefaults standardUserDefaults] removeObjectForKey:[HolidayData keyForExcludedHolidaysForCountry:_countryCode]];
-				[[A3UserDefaults standardUserDefaults] synchronize];
-				_excludedHolidays = nil;
-				[self.tableView reloadData];
-				_dataUpdated = YES;
+                [self resetForItemShowHide];
 			}
 			break;
 		}
-		case 200: {
+		case A3HolidaysPhotoActionSheet:
+        {
 			if (buttonIndex == actionSheet.destructiveButtonIndex) {
 				A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
 				[downloadManager deleteImageForCountryCode:_countryCode];
@@ -393,6 +424,14 @@ static NSString *CellIdentifier = @"Cell";
 			break;
 		}
 	}
+}
+
+- (void)resetForItemShowHide {
+    [[A3UserDefaults standardUserDefaults] removeObjectForKey:[HolidayData keyForExcludedHolidaysForCountry:_countryCode]];
+    [[A3UserDefaults standardUserDefaults] synchronize];
+    _excludedHolidays = nil;
+    [self.tableView reloadData];
+    _dataUpdated = YES;
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
