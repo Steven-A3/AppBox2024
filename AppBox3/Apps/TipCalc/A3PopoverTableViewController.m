@@ -8,6 +8,8 @@
 
 #import "A3PopoverTableViewController.h"
 #import "A3DefaultColorDefines.h"
+#import "UIColor+A3Addition.h"
+#import "UIViewController+A3Addition.h"
 
 typedef NS_ENUM(NSInteger, SectionType) {
     SectionType_Empty = 0,
@@ -51,12 +53,38 @@ typedef NS_ENUM(NSInteger, SectionType) {
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
     self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
+	if (!IS_IOS7) {
+		UITableView *view = self.tableView;
+		if ([view respondsToSelector:@selector(setLayoutMargins:)]) {
+			[view setLayoutMargins:UIEdgeInsetsZero];
+		}
+		self.tableView.backgroundColor = [UIColor colorWithRGBRed:239 green:239 blue:244 alpha:255];
+		UIView *footerView = [UIView new];
+		self.tableView.tableFooterView = footerView;
+
+		if (IS_IPHONE) {
+			[self rightBarButtonDoneButton];
+		}
+	}
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillLayoutSubviews {
+	[super viewWillLayoutSubviews];
+
+	UITableView *view = self.tableView;
+	if ([view respondsToSelector:@selector(setLayoutMargins:)]) {
+		[view setLayoutMargins:UIEdgeInsetsZero];
+	}
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	[self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - Sections Rows Manipulate
@@ -111,9 +139,11 @@ typedef NS_ENUM(NSInteger, SectionType) {
         cell.textLabel.font = [UIFont systemFontOfSize:15];
         cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
 		cell.detailTextLabel.textColor = COLOR_DEFAULT_TEXT_GRAY;
+		if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+			[cell setLayoutMargins:UIEdgeInsetsZero];
+		}
 	}
 
-    
     SectionArrayDataEntity * section = [self.tableDataSourceArray objectAtIndex:[indexPath section]];
     switch (section.sectionType) {
         case SectionType_Rows:
