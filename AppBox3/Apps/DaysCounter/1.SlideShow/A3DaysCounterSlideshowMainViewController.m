@@ -655,6 +655,9 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 					});
 				}
             }
+            else if ([activityType isEqualToString:UIActivityTypeMail]) {
+                [self enableControls:YES];
+            }
         };
 	}
 }
