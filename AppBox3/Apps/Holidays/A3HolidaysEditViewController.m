@@ -262,7 +262,10 @@ static NSString *CellIdentifier = @"Cell";
         }
 			break;
 		case 2:
-            [self photoButtonAction];
+        {
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            [self photoButtonAction:cell];
+        }
 			break;
 		case 3: {
 			UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -275,7 +278,7 @@ static NSString *CellIdentifier = @"Cell";
 	if (!_cameraButton) {
 		_cameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_cameraButton setImage:[UIImage imageNamed:@"camera.png"] forState:UIControlStateNormal];
-        [_cameraButton addTarget:self action:@selector(photoButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        [_cameraButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 		[_cameraButton sizeToFit];
 	}
 	return _cameraButton;
@@ -316,16 +319,19 @@ static NSString *CellIdentifier = @"Cell";
 	return _lunarSwitch;
 }
 
-- (void)photoButtonAction {
-	self.currentIndexPath = [self.tableView indexPathForCellSubview:self.cameraButton];
-
+- (void)photoButtonAction:(id)sender {
 	A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
 	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[downloadManager hasUserSuppliedImageForCountry:_countryCode] delegate:self];
 	actionSheet.tag = 200;
     // TODO
     if (IS_IPAD) {
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
-        CGRect rect = [self.tableView convertRect:_cameraButton.frame fromView:cell.contentView];
+        CGRect rect;
+        if ([sender isKindOfClass:[UITableViewCell class]]) {
+            rect = [self.tableView convertRect:((UITableViewCell *)sender).accessoryView.frame fromView:((UITableViewCell *)sender)];
+        }
+        else {
+            rect = [self.tableView convertRect:[((UIView *)sender) bounds] fromView:sender];
+        }
         [actionSheet showFromRect:rect inView:self.view animated:NO];
     }
     else {
