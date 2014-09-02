@@ -46,7 +46,7 @@
 	if (!IS_IOS7) {
 		UITableView *view = self.tableView;
 		if ([view respondsToSelector:@selector(setLayoutMargins:)]) {
-			[view setLayoutMargins:UIEdgeInsetsMake(0, -1, 0, 0)];
+			[view setLayoutMargins:UIEdgeInsetsZero];
 		}
 		self.tableView.backgroundColor = [UIColor colorWithRGBRed:239 green:239 blue:244 alpha:255];
 		UIView *footerView = [UIView new];

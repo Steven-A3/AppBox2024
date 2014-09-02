@@ -411,17 +411,17 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPre
 		self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:infoViewController];
 		self.localPopoverController.backgroundColor = [UIColor whiteColor];
 		self.localPopoverController.delegate = self;
-		[self.localPopoverController setPopoverContentSize:CGSizeMake(224, 311) animated:NO];
+		[self.localPopoverController setPopoverContentSize:CGSizeMake(320, 311) animated:NO];
 		[self.localPopoverController presentPopoverFromRect:[_headerView convertRect:_headerView.detailInfoButton.frame fromView:self.view]
 													 inView:self.view
 								   permittedArrowDirections:UIPopoverArrowDirectionUp
 												   animated:YES];
 
-		[self.localPopoverController setPopoverContentSize:CGSizeMake(224, infoViewController.tableView.contentSize.height) animated:NO];
+		[self.localPopoverController setPopoverContentSize:CGSizeMake(320, infoViewController.tableView.contentSize.height) animated:NO];
 	} else {
 #ifdef __IPHONE_8_0
 		infoViewController.modalPresentationStyle = UIModalPresentationPopover;
-		[infoViewController setPreferredContentSize:CGSizeMake(224, 308)];
+		[infoViewController setPreferredContentSize:CGSizeMake(320, 308)];
 		UIPopoverPresentationController *popoverPresentationController = infoViewController.popoverPresentationController;
 		popoverPresentationController.sourceView = _headerView.detailInfoButton;
 		popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
@@ -448,6 +448,10 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPre
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
 	[self enableControls:YES];
 	self.localPopoverController = nil;
+}
+
+- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
+	[self enableControls:YES];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
