@@ -500,10 +500,12 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
             if (!IS_IOS7 && IS_IPAD) {
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];   // ActionSheet 타입으로 하는 경우에 cancel이 동작하지 않아서 alert으로 하였습니다.
-                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Period", @"Delete Period") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
                     [self deletePeriodAction];
+                }]];
+                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    [alertController dismissViewControllerAnimated:YES completion:NULL];
                 }]];
                 alertController.modalInPopover = UIModalPresentationPopover;
                 
