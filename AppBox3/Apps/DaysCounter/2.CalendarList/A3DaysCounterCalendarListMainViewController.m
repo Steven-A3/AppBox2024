@@ -783,12 +783,10 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ( editingStyle == UITableViewCellEditingStyleDelete ) {
-#ifdef __IPHONE8_0
+#ifdef __IPHONE_8_0
         if (!IS_IOS7 && IS_IPAD) {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"DaysCalendar_CalendarDeleteConfirmMsg", @"Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.") preferredStyle:UIAlertControllerStyleActionSheet];
-            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                [alertController dismissViewControllerAnimated:YES completion:NULL];
-            }]];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
                 [alertController dismissViewControllerAnimated:YES completion:NULL];
                 
