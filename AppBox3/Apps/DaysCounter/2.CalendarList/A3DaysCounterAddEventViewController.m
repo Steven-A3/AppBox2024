@@ -1695,7 +1695,6 @@
 {
     [self resignAllAction];
 
-
     UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_eventItem.photoID length] > 0 delegate:self];
     actionSheet.tag = ActionTag_Photo;
     // TODO
@@ -2450,7 +2449,15 @@
 		if (IS_IPAD) {
 			if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
 				_imagePickerController.showsCameraControls = YES;
-				[self presentViewController:_imagePickerController animated:YES completion:NULL];
+                
+                if (IS_IOS7) {
+                    [self presentViewController:_imagePickerController animated:YES completion:NULL];
+                }
+                else {
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self presentViewController:_imagePickerController animated:YES completion:NULL];
+                    });
+                }
 			}
 			else {
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
