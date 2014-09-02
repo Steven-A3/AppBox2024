@@ -124,6 +124,7 @@
     // Labels
     _tipLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _totalLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+	_totalLabel.textAlignment = NSTextAlignmentRight;
     [self addSubview:_tipLabel];
     [self addSubview:_totalLabel];
 }
@@ -207,6 +208,7 @@
         make.baseline.equalTo(self.top).with.offset(IS_IPHONE ? 31 : 54 );
 		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15.0 : 28.0); }];
     [_totalLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.left);
         if (IS_IPHONE) {
             //make.baseline.equalTo(self.top).with.offset(75);
             make.baseline.equalTo(self.top).with.offset(76);
@@ -231,11 +233,10 @@
 #pragma mark - adjust Layout
 
 - (void)adjustMeterViewConstraints {
-    [_meterViewLeadingConstArray enumerateObjectsUsingBlock:^(MASConstraint *leadingConst, NSUInteger idx, BOOL *stop) {
-        leadingConst.equalTo( @(self.frame.size.width / 5.0 * (idx+1)) );
-    }]; } - (void)adjustConstraintLayout {
-        
-    }
+	[_meterViewLeadingConstArray enumerateObjectsUsingBlock:^(MASConstraint *leadingConst, NSUInteger idx, BOOL *stop) {
+		leadingConst.equalTo( @(self.frame.size.width / 5.0 * (idx+1)) );
+	}];
+}
 
 #pragma mark -
 
@@ -270,9 +271,7 @@
                              value: COLOR_DEFAULT_TEXT_GRAY
                              range: NSMakeRange([strings[0] length], [strings[1] length])];
     _tipLabel.attributedText = tipAttributeText;
-    
-    
-    
+
     // totalLabel
     double dTotal = 0.0;
     if (result) {
@@ -343,7 +342,6 @@
         [UIView setAnimationCurve:7];
         [UIView setAnimationDuration:0.25];
         [UIView setAnimationDidStopSelector:@selector(setNeedsLayout)];
-        [self adjustConstraintLayout];
         [self setResult:result];
         [_sliderBaseLineView layoutIfNeeded];
         [_sliderGaugeLineView layoutIfNeeded];
