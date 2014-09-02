@@ -92,21 +92,61 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	_selectedIndex = (NSUInteger) indexPath.row;
 
-	UIActionSheet *confirmRestore = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you going to replace existing data with the backup data?", @"")
-																delegate:self
-													   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-												  destructiveButtonTitle:NSLocalizedString( @"Replace", @"")
-													   otherButtonTitles:nil];
-	confirmRestore.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-	[confirmRestore showInView:self.view];
+
+#ifdef __IPHONE_8_0
+    if (!IS_IOS7 && IS_IPAD) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"" message:NSLocalizedString(@"Are you going to replace existing data with the backup data?", @"") preferredStyle:UIAlertControllerStyleActionSheet];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString( @"Replace", @"") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+            [self selectBackUpFileAction];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [alertController dismissViewControllerAnimated:YES completion:NULL];
+        }]];
+        alertController.modalInPopover = UIModalPresentationPopover;
+        
+        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        CGRect fromRect = [self.tableView convertRect:cell.bounds fromView:cell];
+        fromRect.origin.x = self.view.center.x;
+        fromRect.size = CGSizeZero;
+        popover.sourceView = self.view;
+        popover.sourceRect = fromRect;
+        popover.permittedArrowDirections = UIPopoverArrowDirectionDown;
+        
+        [self presentViewController:alertController animated:YES completion:NULL];
+    }
+    else {
+        UIActionSheet *confirmRestore = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you going to replace existing data with the backup data?", @"")
+                                                                    delegate:self
+                                                           cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                                      destructiveButtonTitle:NSLocalizedString( @"Replace", @"")
+                                                           otherButtonTitles:nil];
+        confirmRestore.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+        [confirmRestore showInView:self.view];
+    }
+#else
+    UIActionSheet *confirmRestore = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you going to replace existing data with the backup data?", @"")
+                                                                delegate:self
+                                                       cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                                  destructiveButtonTitle:NSLocalizedString( @"Replace", @"")
+                                                       otherButtonTitles:nil];
+    confirmRestore.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    [confirmRestore showInView:self.view];
+#endif
+    
+    
+}
+
+- (void)selectBackUpFileAction {
+    DBMetadata *selectedData = self.dropboxMetadata.contents[_selectedIndex];
+    if ([_delegate respondsToSelector:@selector(dropboxSelectBackupViewController:backupFileSelected:)]) {
+        [_delegate dropboxSelectBackupViewController:self backupFileSelected:selectedData];
+    }
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-		DBMetadata *selectedData = self.dropboxMetadata.contents[_selectedIndex];
-		if ([_delegate respondsToSelector:@selector(dropboxSelectBackupViewController:backupFileSelected:)]) {
-			[_delegate dropboxSelectBackupViewController:self backupFileSelected:selectedData];
-		}
+        [self selectBackUpFileAction];
 	}
 }
 
