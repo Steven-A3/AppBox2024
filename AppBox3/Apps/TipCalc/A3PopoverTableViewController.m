@@ -153,7 +153,7 @@ typedef NS_ENUM(NSInteger, SectionType) {
             cell.backgroundColor = [UIColor whiteColor];
             
             if (([indexPath row] == [section.sectionTitleRows count] - 1)) {
-                if (([indexPath section] == [self.tableDataSourceArray count] - 1)) {
+                if ((IS_IPAD || IS_IOS7) && ([indexPath section] == [self.tableDataSourceArray count] - 1)) {
                     cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, cell.bounds.size.width);
                 } else {
                     cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
