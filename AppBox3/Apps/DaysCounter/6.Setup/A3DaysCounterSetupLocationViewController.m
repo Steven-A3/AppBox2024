@@ -154,7 +154,7 @@
     
 #ifdef __IPHONE_8_0
     // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
-    if ([self.currentLocationTableView respondsToSelector:@selector(layoutMargins)])
+    if (!IS_IOS7 && [self.currentLocationTableView respondsToSelector:@selector(layoutMargins)])
     {
         self.currentLocationTableView.layoutMargins = UIEdgeInsetsZero;
     }
@@ -381,10 +381,12 @@
 
     _infoTableViewOldOffset = _infoTableView.contentOffset;
     _infoTableViewInsetOld = _infoTableView.contentInset;
-    //_infoTableView.contentOffset = CGPointMake(0, CGRectGetHeight(self.view.frame));
+    
     _infoTableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight(self.view.frame), 0, 0, 0);
     [_infoTableView setContentOffset:CGPointMake(0, -CGRectGetHeight(self.view.frame)) animated:YES];
-    _infoTableView.layoutMargins = UIEdgeInsetsZero;
+    if (!IS_IOS7) {
+        _infoTableView.layoutMargins = UIEdgeInsetsZero;
+    }
     
     return YES;
 }
@@ -469,7 +471,7 @@
         cell = [self tableView:tableView cellOfChangeLocationAtIndexPath:indexPath];
         
 #ifdef __IPHONE_8_0
-        if ([cell respondsToSelector:@selector(layoutMargins)])
+        if (!IS_IOS7 && [cell respondsToSelector:@selector(layoutMargins)])
         {
             cell.layoutMargins = UIEdgeInsetsZero;
         }
@@ -900,6 +902,14 @@
         self.searchText = nil;
         [searchBar resignFirstResponder];
     }
+    
+    _infoTableView.contentInset = _infoTableViewInsetOld;
+    [_infoTableView setContentOffset:_infoTableViewOldOffset animated:YES];
+    
+    if (!IS_IOS7) {
+        _infoTableView.layoutMargins = UIEdgeInsetsZero;
+    }
+    
 }
 
 #pragma mark - action method
