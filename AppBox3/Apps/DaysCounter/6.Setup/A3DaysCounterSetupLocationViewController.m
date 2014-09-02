@@ -912,8 +912,14 @@
         [searchBar resignFirstResponder];
     }
     
-    _infoTableView.contentInset = _infoTableViewInsetOld;
-    [_infoTableView setContentOffset:_infoTableViewOldOffset animated:YES];
+    if (_infoTableViewInsetOld.top > CGRectGetHeight(self.view.bounds)) {
+        _infoTableViewInsetOld.top = CGRectGetHeight(self.view.bounds) - 88;
+        _infoTableView.contentInset = _infoTableViewInsetOld;
+    }
+    else {
+        _infoTableView.contentInset = _infoTableViewInsetOld;
+        [_infoTableView setContentOffset:_infoTableViewOldOffset animated:YES];
+    }
     
     if (!IS_IOS7) {
         _infoTableView.layoutMargins = UIEdgeInsetsZero;
