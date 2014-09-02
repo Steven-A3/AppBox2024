@@ -171,6 +171,11 @@
     return 23.0;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44.0;
+}
+
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *headerView = [[[NSBundle mainBundle] loadNibNamed:@"A3LadyCalendarListCell" owner:nil options:nil] objectAtIndex:2];

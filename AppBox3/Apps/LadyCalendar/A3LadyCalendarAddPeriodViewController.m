@@ -498,12 +498,33 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             
         case PeriodCellType_Delete: {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-																	 delegate:self
-															cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-													   destructiveButtonTitle:NSLocalizedString(@"Delete Period", @"Delete Period")
-															otherButtonTitles:nil];
-            [actionSheet showInView:self.view];
+            
+            if (!IS_IOS7 && IS_IPAD) {
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];   // ActionSheet 타입으로 하는 경우에 cancel이 동작하지 않아서 alert으로 하였습니다.
+                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
+                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Period", @"Delete Period") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+                    [self deletePeriodAction];
+                }]];
+                alertController.modalInPopover = UIModalPresentationPopover;
+                
+                UIPopoverPresentationController *popoverPresent = alertController.popoverPresentationController;
+                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                CGRect fromRect = [self.tableView convertRect:cell.bounds fromView:cell];
+                fromRect.origin.x = self.view.center.x;
+                fromRect.size = CGSizeZero;
+                popoverPresent.sourceView = self.view;
+                popoverPresent.sourceRect = fromRect;
+                popoverPresent.permittedArrowDirections = UIPopoverArrowDirectionDown;
+                [self presentViewController:alertController animated:YES completion:NULL];
+            }
+            else {
+                UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                         delegate:self
+                                                                cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                           destructiveButtonTitle:NSLocalizedString(@"Delete Period", @"Delete Period")
+                                                                otherButtonTitles:nil];
+                [actionSheet showInView:self.view];
+            }
         }
             break;
     }
@@ -511,15 +532,20 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 #pragma mark - UIActionSheetDelegate
 
+- (void)deletePeriodAction
+{
+    [_periodItem MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
+    [[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
+    
+    [_dataManager recalculateDates];
+    
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
-		[_periodItem MR_deleteEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
-		[[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
-
-		[_dataManager recalculateDates];
-
-		[self dismissViewControllerAnimated:YES completion:NULL];
+        [self deletePeriodAction];
     }
 }
 

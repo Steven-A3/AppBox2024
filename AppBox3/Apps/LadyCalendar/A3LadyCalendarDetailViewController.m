@@ -119,7 +119,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		[self.dataManager recalculateDates];
 		_periodItems = [NSMutableArray arrayWithArray:[_dataManager periodListStartsInMonth:[_month firstDateOfMonth]]];
 		if ([_periodItems count] == 0) {
-			[self.navigationController popViewControllerAnimated:YES];
+			[self.navigationController popViewControllerAnimated:NO];
 			return;
 		}
 	}
@@ -342,6 +342,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat retHeight = 74.0;
+    if ([_periodItems count] == 0) {
+        return retHeight;   
+    }
     
     NSDictionary *rowInfo = [_rowDataArray objectAtIndex:indexPath.row];
     NSInteger cellType = [[rowInfo objectForKey:ItemKey_Type] integerValue];
