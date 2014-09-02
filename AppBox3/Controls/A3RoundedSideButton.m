@@ -8,6 +8,7 @@
 
 #import "A3RoundedSideButton.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIColor+A3Addition.h"
 
 @implementation A3RoundedSideButton
 
@@ -39,7 +40,7 @@
 
 	if (selected) {
 		self.layer.cornerRadius = self.bounds.size.height / 2.0;
-		self.layer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
+		self.layer.borderColor = [self isEnabled] ? [[A3AppDelegate instance] themeColor].CGColor : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255].CGColor;
 	} else {
 		self.layer.borderColor = [UIColor clearColor].CGColor;
 	}
@@ -53,6 +54,20 @@
 
 - (void)setBorderColor:(UIColor *)color {
 	self.layer.borderColor = color.CGColor;
+}
+
+- (void)setEnabled:(BOOL)enabled {
+	[super setEnabled:enabled];
+
+	if (enabled) {
+		[self setSelected:[self isSelected]];
+	} else {
+		if ([self isSelected]) {
+			self.layer.borderColor = [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255].CGColor;
+		} else {
+			self.layer.borderColor = [UIColor clearColor].CGColor;
+		}
+	}
 }
 
 @end

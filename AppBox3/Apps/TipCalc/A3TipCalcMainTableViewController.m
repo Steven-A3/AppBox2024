@@ -53,7 +53,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 @interface A3TipCalcMainTableViewController () <UITextFieldDelegate, UIActivityItemSource, UIPopoverControllerDelegate,
 		CLLocationManagerDelegate,A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate,
 		A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate,
-		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
+		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *tableDataSource;
 @property (nonatomic, strong) NSArray * tableSectionTitles;
@@ -132,7 +132,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	_headerView.dataManager = self.dataManager;
 	[self outputAllResultWithAnimation:YES];
 
-	[self setBarButtonsEnable:_barButtonEnabled];
+	[self enableControls:_barButtonEnabled];
 }
 
 - (void)removeObserver {
@@ -143,6 +143,11 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	}
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[self enableControls:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -175,14 +180,14 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 #pragma mark -
 
 - (void)mainMenuViewDidHide {
-	[self setBarButtonsEnable:YES];
+	[self enableControls:YES];
 }
 
 - (void)rightSideViewWillDismiss {
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
-	[self setBarButtonsEnable:YES];
+	[self enableControls:YES];
 }
 
 - (void)initialize {
@@ -218,7 +223,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     }
 }
 
-- (void)setBarButtonsEnable:(BOOL)enable {
+- (void)enableControls:(BOOL)enable {
 	_barButtonEnabled = enable;
     self.headerView.detailInfoButton.enabled = enable;
     self.navigationItem.leftBarButtonItem.enabled = enable;
@@ -229,12 +234,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	[self.headerView.beforeSplitButton setTitleColor:color forState:UIControlStateNormal];
 	[self.headerView.perPersonButton setTitleColor:color forState:UIControlStateNormal];
 
-	if ([self.headerView.beforeSplitButton isSelected]) {
-		[self.headerView.beforeSplitButton setBorderColor:color];
-	}
-	if ([self.headerView.perPersonButton isSelected]) {
-		[self.headerView.perPersonButton setBorderColor:color];
-	}
+//	if ([self.headerView.beforeSplitButton isSelected]) {
+//		[self.headerView.beforeSplitButton setBorderColor:color];
+//	}
+//	if ([self.headerView.perPersonButton isSelected]) {
+//		[self.headerView.perPersonButton setBorderColor:color];
+//	}
 
 	if (enable) {
         [self refreshMoreButtonState];
@@ -377,7 +382,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     
     [self dismissMoreMenu];
     
-    A3PopoverTableViewController * popoverTableView = [[A3PopoverTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    A3PopoverTableViewController *popoverTableViewController = [[A3PopoverTableViewController alloc] initWithStyle:UITableViewStylePlain];
     NSMutableArray *titles = [NSMutableArray new];
     NSMutableArray *details = [NSMutableArray new];
     NSMutableArray *values;
@@ -410,18 +415,57 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         [titles addObject:@[NSLocalizedString(@"Subtotal", @"Subtotal"), NSLocalizedString(@"Tip", @"Tip")]];
         [details addObject:values];
     }
-    [popoverTableView setSectionArrayForTitles:titles withDetails:details];
-    
-    self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:popoverTableView];
-    self.localPopoverController.backgroundColor = [UIColor whiteColor];
-    self.localPopoverController.delegate = self;
-    [self.localPopoverController setPopoverContentSize:CGSizeMake(224, 266) animated:NO];
-    [self.localPopoverController presentPopoverFromRect:aSender.frame
-                                                 inView:aSender.superview
-                               permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    [self.localPopoverController setPopoverContentSize:CGSizeMake(224, popoverTableView.tableView.contentSize.height)
-                                              animated:NO];
-    [self setBarButtonsEnable:NO];
+    [popoverTableViewController setSectionArrayForTitles:titles withDetails:details];
+
+	if (IS_IOS7) {
+		self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:popoverTableViewController];
+		self.localPopoverController.backgroundColor = [UIColor whiteColor];
+		self.localPopoverController.delegate = self;
+		[self.localPopoverController presentPopoverFromRect:aSender.frame
+													 inView:aSender.superview
+								   permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self.localPopoverController setPopoverContentSize:CGSizeMake(320, popoverTableViewController.tableView.contentSize.height)
+												  animated:NO];
+	} else {
+		popoverTableViewController.title = NSLocalizedString(@"Detail", @"Detail");
+		popoverTableViewController.modalPresentationStyle = UIModalPresentationPopover;
+		[popoverTableViewController setPreferredContentSize:CGSizeMake(320, popoverTableViewController.tableView.contentSize.height)];
+		UIPopoverPresentationController *popoverPresentationController = popoverTableViewController.popoverPresentationController;
+		popoverPresentationController.sourceView = _headerView.detailInfoButton;
+		popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+		popoverPresentationController.delegate = self;
+		[self presentViewController:popoverTableViewController animated:YES completion:nil];
+
+	}
+	[self enableControls:NO];
+}
+
+#ifdef __IPHONE_8_0
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
+	return UIModalPresentationFullScreen;
+}
+
+- (UIViewController *)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style {
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller.presentedViewController];
+	return navigationController;
+}
+#endif
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+	[self enableControls:YES];
+	self.localPopoverController = nil;
+}
+
+- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
+	[self enableControls:YES];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	if (self.localPopoverController) {
+		[self.localPopoverController dismissPopoverAnimated:NO];
+		[self detailInfoButtonTouchedUp:nil];
+	}
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 - (void)beforeSplitButtonTouchedUp:(id)aSender
@@ -753,12 +797,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [_headerView showDetailInfoButton];
 
 	if (IS_IPAD && self.A3RootViewController.showRightView) {
-		[self setBarButtonsEnable:NO];
+		[self enableControls:NO];
 	}
 }
 
 - (void)dismissTipCalcSettingsViewController {
-	[self setBarButtonsEnable:YES];
+	[self enableControls:YES];
 }
 
 #pragma mark A3TipCalcHistorySelectDelegate
@@ -779,7 +823,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)dismissHistoryViewController {
-    [self setBarButtonsEnable:YES];
+	[self enableControls:YES];
 }
 
 - (void)tipCalcRoundingChanged {
@@ -791,7 +835,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 #pragma mark A3SelectTableViewController Delegate
 
 -(void)selectTableViewController:(A3JHSelectTableViewController *)viewController selectedItemIndex:(NSInteger)index indexPathOrigin:(NSIndexPath *)indexPathOrigin {
-    [self setBarButtonsEnable:YES];
+	[self enableControls:YES];
     viewController.root.selectedIndex = index;
     
     if ([viewController.root.title isEqualToString:NSLocalizedString(@"Methods", @"Methods")]) {
@@ -973,7 +1017,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                 [self.navigationController pushViewController:selectTableViewController animated:YES];
             }
             else {
-				[self setBarButtonsEnable:NO];
+				[self enableControls:NO];
 				[self.A3RootViewController presentRightSideViewController:selectTableViewController];
 				[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 			}
@@ -1002,7 +1046,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	}
 	else {
 		[self.A3RootViewController toggleLeftMenuViewOnOff];
-		[self setBarButtonsEnable:NO];
+		[self enableControls:NO];
 	}
 }
 
@@ -1073,23 +1117,18 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	[self disposeInitializedCondition];
 
 	self.localPopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
-		[self setBarButtonsEnable:YES];
+		[self enableControls:YES];
 		self.localPopoverController = nil;
 	}];
 	self.localPopoverController.delegate = self;
     if (IS_IPAD) {
-        [self setBarButtonsEnable:NO];
+		[self enableControls:NO];
     }
-}
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    [self setBarButtonsEnable:YES];
-    self.localPopoverController = nil;
 }
 
 - (void)historyButtonAction:(UIButton *)button {
     [self disposeInitializedCondition];
-    [self setBarButtonsEnable:NO];
+	[self enableControls:NO];
     
     A3TipCalcHistoryViewController* viewController = [[A3TipCalcHistoryViewController alloc] init];
     viewController.delegate = self;
@@ -1111,7 +1150,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (void)settingsButtonAction:(UIButton *)button {
 	[self disposeInitializedCondition];
-	[self setBarButtonsEnable:NO];
+	[self enableControls:NO];
 
 	A3TipCalcSettingViewController *viewController = [[A3TipCalcSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	viewController.dataManager = self.dataManager;
