@@ -161,12 +161,21 @@
 #endif
 }
 
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+#ifdef __IPHONE_8_0
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    self.infoTableView.contentInset = UIEdgeInsetsMake(size.height - 88, 0, 0, 0);
+}
+#else
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     
     self.infoTableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight(self.view.frame) - 88, 0, 0, 0);
 }
+
+#endif
 
 - (void)didReceiveMemoryWarning
 {
