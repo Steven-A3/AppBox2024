@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="go4-fr-Ah2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.8" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="go4-fr-Ah2">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
     </dependencies>
     <scenes>
-        <!--Settings View Controller - Settings-->
+        <!--Settings-->
         <scene sceneID="YrI-Mn-bnV">
             <objects>
                 <tableViewController title="Settings" id="go4-fr-Ah2" customClass="A3SettingsViewController" sceneMemberID="viewController">
@@ -174,7 +174,7 @@
             </objects>
             <point key="canvasLocation" x="-36" y="119"/>
         </scene>
-        <!--Settings Backup Restore View Controller - Sync-->
+        <!--Sync-->
         <scene sceneID="q6d-Uf-u36">
             <objects>
                 <tableViewController title="Sync" id="o9N-EA-Uky" customClass="A3SettingsBackupRestoreViewController" sceneMemberID="viewController">
@@ -286,7 +286,7 @@
             </objects>
             <point key="canvasLocation" x="505" y="119"/>
         </scene>
-        <!--Settings Dropbox Select Backup View Controller - Dropbox Files-->
+        <!--Dropbox Files-->
         <scene sceneID="ZQd-XN-EPE">
             <objects>
                 <tableViewController title="Dropbox Files" id="5tS-iN-3NI" customClass="A3SettingsDropboxSelectBackupViewController" sceneMemberID="viewController">
@@ -296,7 +296,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="0.75" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="dropboxFilesCell" textLabel="xJM-LO-q65" detailTextLabel="6F3-BB-fcx" rowHeight="55" style="IBUITableViewCellStyleSubtitle" id="Kqb-Hi-Lsi" customClass="A3StandardTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="dropboxFilesCell" textLabel="xJM-LO-q65" detailTextLabel="6F3-BB-fcx" rowHeight="55" style="IBUITableViewCellStyleSubtitle" id="Kqb-Hi-Lsi">
                                 <rect key="frame" x="0.0" y="22" width="320" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kqb-Hi-Lsi" id="iX7-eV-Tya">
@@ -339,7 +339,7 @@
             </objects>
             <point key="canvasLocation" x="1571" y="119"/>
         </scene>
-        <!--Settings Passcode View Controller - Passcode Lock-->
+        <!--Passcode Lock-->
         <scene sceneID="N8J-lo-eBg">
             <objects>
                 <tableViewController title="Passcode Lock" id="KML-Ub-d8M" customClass="A3SettingsPasscodeViewController" sceneMemberID="viewController">
@@ -557,7 +557,7 @@
             </objects>
             <point key="canvasLocation" x="505" y="787"/>
         </scene>
-        <!--Settings Require For View Controller - Require Passcode-->
+        <!--Require Passcode-->
         <scene sceneID="nKi-gm-Rnp">
             <objects>
                 <tableViewController title="Require Passcode" id="Xb7-yr-Jd6" customClass="A3SettingsRequireForViewController" sceneMemberID="viewController">
@@ -685,7 +685,7 @@
             </objects>
             <point key="canvasLocation" x="1045" y="787"/>
         </scene>
-        <!--Settings Favorites View Controller - Edit Favorites-->
+        <!--Edit Favorites-->
         <scene sceneID="JoA-kY-rVI">
             <objects>
                 <tableViewController title="Edit Favorites" id="vRR-Rd-eut" customClass="A3SettingsFavoritesViewController" sceneMemberID="viewController">
@@ -730,7 +730,7 @@
             </objects>
             <point key="canvasLocation" x="505" y="1450"/>
         </scene>
-        <!--Settings Add Favorites View Controller - Apps-->
+        <!--Apps-->
         <scene sceneID="U03-os-oC5">
             <objects>
                 <tableViewController id="FXC-z3-diR" customClass="A3SettingsAddFavoritesViewController" sceneMemberID="viewController">
@@ -786,7 +786,7 @@
             </objects>
             <point key="canvasLocation" x="955" y="1450"/>
         </scene>
-        <!--Settings Recent To Keep View Controller - Recent To Keep-->
+        <!--Recent To Keep-->
         <scene sceneID="vpw-Gw-8gr">
             <objects>
                 <tableViewController title="Recent To Keep" id="srb-MD-eSG" customClass="A3SettingsRecentToKeepViewController" sceneMemberID="viewController">
@@ -901,7 +901,7 @@
             </objects>
             <point key="canvasLocation" x="505" y="2112"/>
         </scene>
-        <!--Settings Choose Color View Controller - Theme Color-->
+        <!--Theme Color-->
         <scene sceneID="3Nt-Kd-f0R">
             <objects>
                 <tableViewController title="Theme Color" id="RpU-td-Vej" customClass="A3SettingsChooseColorViewController" sceneMemberID="viewController">
@@ -935,7 +935,7 @@
             </objects>
             <point key="canvasLocation" x="505" y="2781"/>
         </scene>
-        <!--Settings Lunar View Controller - Lunar Calendar-->
+        <!--Lunar Calendar-->
         <scene sceneID="mcD-Z5-2cl">
             <objects>
                 <tableViewController storyboardIdentifier="SettingsLunarViewController" title="Lunar Calendar" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7oW-es-0Zb" customClass="A3SettingsLunarViewController" sceneMemberID="viewController">
@@ -1017,6 +1017,9 @@
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination"/>
+        <simulatedScreenMetrics key="destination">
+            <size key="portraitSize" width="320" height="480"/>
+            <size key="landscapeSize" width="480" height="320"/>
+        </simulatedScreenMetrics>
     </simulatedMetricsContainer>
 </document>
