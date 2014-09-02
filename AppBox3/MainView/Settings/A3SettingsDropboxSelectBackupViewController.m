@@ -108,10 +108,11 @@
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
         CGRect fromRect = [self.tableView convertRect:cell.bounds fromView:cell];
         fromRect.origin.x = self.view.center.x;
+        fromRect.origin.y = fromRect.origin.y + 22.0;
         fromRect.size = CGSizeZero;
         popover.sourceView = self.view;
         popover.sourceRect = fromRect;
-        popover.permittedArrowDirections = UIPopoverArrowDirectionDown;
+        popover.permittedArrowDirections = UIPopoverArrowDirectionDown | UIPopoverArrowDirectionUp;
         
         [self presentViewController:alertController animated:YES completion:NULL];
     }
