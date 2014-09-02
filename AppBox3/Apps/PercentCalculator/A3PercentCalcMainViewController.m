@@ -452,11 +452,6 @@
         }
         
         if ([aData.values isEqualToArray:entityHistory.values]) {
-            // 최근에 저장한 데이터와 일치. 덮어쓰기.
-            entity.updateDate = [NSDate date];
-            entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData];
-
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
             return;
         }
     }
