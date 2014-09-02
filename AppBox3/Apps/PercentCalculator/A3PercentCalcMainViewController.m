@@ -386,6 +386,8 @@
 - (void)historyViewControllerDidDismiss {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
 	_modalNavigationController = nil;
+
+	[self enableControls:YES];
 }
 
 - (void)saveToHistory:(id)sender
