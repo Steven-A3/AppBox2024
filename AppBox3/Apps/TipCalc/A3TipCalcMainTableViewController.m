@@ -808,7 +808,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 #pragma mark A3TipCalcHistorySelectDelegate
 
 - (void)didSelectHistoryData:(TipCalcHistory *)aHistory {
+	[self.dataManager saveToHistory];
+
     [self.dataManager historyToRecently:aHistory];
+	FNLOG(@"%@", self.dataManager.tipCalcData);
 
     [self reloadTableDataSource];
 
@@ -1175,19 +1178,19 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [self disposeInitializedCondition];
     
     [self.dataManager saveToHistory];
-    
-    if ([self.dataManager isTaxOptionOn]) {
-        [self.dataManager getUSTaxRateByLocation];     // to calledFromAreaTax
-    }
-    
-    // Initialize
-    [self.headerView showDetailInfoButton];
-    //[self.headerView setResult:[self.dataManager tipCalcData] withAnimation:YES];
-    self.tableView.tableHeaderView = self.headerView;
-    [self.headerView setResult:nil withAnimation:YES];
-    [self reloadTableDataSource];
-    [self.tableView reloadData];
-    [self refreshMoreButtonState];
+
+	if ([self.dataManager isTaxOptionOn]) {
+		[self.dataManager getUSTaxRateByLocation];     // to calledFromAreaTax
+	}
+
+	// Initialize
+	[self.headerView showDetailInfoButton];
+	//[self.headerView setResult:[self.dataManager tipCalcData] withAnimation:YES];
+	self.tableView.tableHeaderView = self.headerView;
+	[self.headerView setResult:nil withAnimation:YES];
+	[self reloadTableDataSource];
+	[self.tableView reloadData];
+	[self refreshMoreButtonState];
 }
 
 #pragma mark Share Activities
