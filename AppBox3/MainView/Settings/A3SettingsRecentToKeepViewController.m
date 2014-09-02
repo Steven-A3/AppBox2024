@@ -93,23 +93,62 @@
 	}
 	else if (indexPath.section == 1)
 	{
-		[self askClearUsedItems];
+		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        [self askClearUsedItems:cell];
 	}
 }
 
-- (void)askClearUsedItems {
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-															 delegate:self
-													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-											   destructiveButtonTitle:NSLocalizedString(@"Clear Recent", @"Clear Recent")
-													otherButtonTitles:nil];
-	[actionSheet showInView:self.view];
+- (void)askClearUsedItems:(UITableViewCell *)cell {
+#ifdef __IPHONE_8_0
+    if (!IS_IOS7 && IS_IPAD) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Clear Recent", @"Clear Recent") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+            [self clearRecentAction];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [alertController dismissViewControllerAnimated:YES completion:NULL];
+        }]];
+        alertController.modalInPopover = UIModalPresentationPopover;
+        
+        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+        
+        CGRect fromRect = [self.tableView convertRect:cell.bounds fromView:cell];
+        fromRect.origin.x = self.view.center.x;
+        fromRect.size = CGSizeZero;
+        popover.sourceView = self.view;
+        popover.sourceRect = fromRect;
+        popover.permittedArrowDirections = UIPopoverArrowDirectionDown;
+        
+        [self presentViewController:alertController animated:YES completion:NULL];
+    }
+    else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                 delegate:self
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                   destructiveButtonTitle:NSLocalizedString(@"Clear Recent", @"Clear Recent")
+                                                        otherButtonTitles:nil];
+        [actionSheet showInView:self.view];
+    }
+#else
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:NSLocalizedString(@"Clear Recent", @"Clear Recent")
+                                                    otherButtonTitles:nil];
+    [actionSheet showInView:self.view];
+#endif
+    
+    
+}
+
+- (void)clearRecentAction {
+    [[A3AppDelegate instance] clearRecentlyUsedMenus];
+    [self.tableView reloadData];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-		[[A3AppDelegate instance] clearRecentlyUsedMenus];
-		[self.tableView reloadData];
+        [self clearRecentAction];
 	}
 }
 
