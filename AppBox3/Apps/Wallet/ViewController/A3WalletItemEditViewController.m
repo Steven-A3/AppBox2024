@@ -1264,14 +1264,15 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                 
                 UIPopoverPresentationController *presentationController = [_imagePickerController popoverPresentationController];
                 presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-                presentationController.sourceView = self.view;
-                CGRect rect = [self frameOfImageViewInCellForIndexPath:_currentIndexPath];
-                presentationController.sourceRect = rect;
+                presentationController.sourceView = [self imageViewInCellForIndexPath:_currentIndexPath];
+                //CGRect rect = [self frameOfImageViewInCellForIndexPath:_currentIndexPath];
                 
                 // 이전 화면을 덮었던 ActionSheet 가 사라진 후에도 영향을 주어서, 현재의 스택을 벗어나서 실행하도록 하였습니다.
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self presentViewController:_imagePickerController animated:YES completion:NULL];
                 });
+                
+                
 #endif
             }
         }
@@ -1288,7 +1289,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	}
     
     if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        
         if (actionSheet.tag == 1 || actionSheet.tag == 2) {
             // 삭제하기
             [self deleteMediaItem];
@@ -1562,16 +1562,58 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                     [self.tableView reloadRowsAtIndexPaths:@[self.currentIndexPath] withRowAnimation:UITableViewRowAnimationNone];
                 }
 
-				UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_currentFieldItem.hasImage boolValue] delegate:self];
-				actionSheet.tag = 1;
-                // TODO
-                if (IS_IPAD) {
-                    CGRect rect = [self frameOfImageViewInCellForIndexPath:indexPath];
-                    [actionSheet showFromRect:rect inView:self.view animated:NO];
+                if (!IS_IOS7 && IS_IPAD) {
+                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+                    
+                    NSInteger hasDestructive = [_currentFieldItem.hasImage boolValue] ? 0 : -1;
+                    BOOL hasCamera = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+                    if ([_currentFieldItem.hasImage boolValue]) {
+                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Photo", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+                            [self deleteMediaItem];
+                        }]];
+                    }
+                    
+                    if (hasCamera) {
+                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Take Photo", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                            [self imagePickerActionForButtonIndex:hasDestructive == 0 ? 1 : 0 destructiveButtonIndex:hasDestructive actionSheetTag:1];
+                        }]];
+                    }
+
+                    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose Existing", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                        NSInteger index = 0;
+                        if (hasCamera) {
+                            index++;
+                        }
+                        if (hasDestructive == 0) {
+                            index++;
+                        }
+                        [self imagePickerActionForButtonIndex:index destructiveButtonIndex:hasDestructive actionSheetTag:1];
+                    }]];
+                    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose and Resize", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                        NSInteger index = 1;
+                        if (hasCamera) {
+                            index++;
+                        }
+                        if (hasDestructive == 0) {
+                            index++;
+                        }
+                        [self imagePickerActionForButtonIndex:index destructiveButtonIndex:hasDestructive actionSheetTag:1];
+                    }]];
+                    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
+                    
+                    alertController.modalPresentationStyle = UIModalPresentationPopover;
+                    UIPopoverPresentationController *popoverPresentation = [alertController popoverPresentationController];
+                    popoverPresentation.permittedArrowDirections = UIPopoverArrowDirectionAny;
+                    popoverPresentation.sourceView = [self imageViewInCellForIndexPath:indexPath];
+    
+                    [self presentViewController:alertController animated:YES completion:NULL];
                 }
                 else {
+                    UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_currentFieldItem.hasImage boolValue] delegate:self];
+                    actionSheet.tag = 1;
                     [actionSheet showInView:self.view];
                 }
+                
             }
             else if ([field.type isEqualToString:WalletFieldTypeVideo]) {
 				[self.firstResponder resignFirstResponder];
@@ -1638,6 +1680,21 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		frame = [self.view convertRect:photoCell.photoButton.bounds fromView:photoCell.photoButton];
 	}
 	return frame;
+}
+
+- (UIView *)imageViewInCellForIndexPath:(NSIndexPath *)indexPath {
+    UIView *imageView = nil;
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
+        A3WalletItemRightIconCell *iconCell = (A3WalletItemRightIconCell *)cell;
+        imageView = iconCell.iconImgView;
+    }
+    else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
+        A3WalletItemPhotoFieldCell *photoCell = (A3WalletItemPhotoFieldCell *)cell;
+        imageView = photoCell.photoButton;
+    }
+    
+    return imageView;
 }
 
 #pragma mark - Table view data source
