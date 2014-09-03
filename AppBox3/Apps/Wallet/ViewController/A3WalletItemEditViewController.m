@@ -1443,7 +1443,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			NSIndexPath *ip = [NSIndexPath indexPathForRow:startIdx inSection:0];
 			A3WalletNoteCell *noteCell = (A3WalletNoteCell *)[self.tableView cellForRowAtIndexPath:ip];
 			[noteCell.textView becomeFirstResponder];
-            self.firstResponder = nil;
 		});
 	}
 	else {
