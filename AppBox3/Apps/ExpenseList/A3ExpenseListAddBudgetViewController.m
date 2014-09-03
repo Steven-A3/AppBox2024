@@ -171,6 +171,17 @@ enum A3ExpenseListAddBudgetCellType {
 	}
 }
 
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];;;;;;;;;
+#ifdef __IPHONE_8_0
+    // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+    {
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+    }
+#endif
+}
+
 - (void)dealloc {
 	[self removeObserver];
 }
@@ -566,6 +577,14 @@ static NSString *CellIdentifier = @"Cell";
     UITableViewCell * cell = [self.root cellForRowAtIndexPath:indexPath];
     [self updateTableViewCell:cell atIndexPath:indexPath];
     cell.textLabel.font = [UIFont systemFontOfSize:17.0];
+    
+#ifdef __IPHONE_8_0
+    // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
+    if ([cell respondsToSelector:@selector(layoutMargins)])
+    {
+        cell.layoutMargins = UIEdgeInsetsZero;
+    }
+#endif
 
     return cell;
 }
