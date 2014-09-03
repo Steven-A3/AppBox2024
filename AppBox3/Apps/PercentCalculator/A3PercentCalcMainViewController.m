@@ -1415,6 +1415,7 @@
                          //[self reloadTableDataSource];
                          [self.tableView reloadData];
                      }];
+	[self setBarButtonEnable:YES];
 }
 
 - (void)didDeleteHistory {
