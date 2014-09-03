@@ -50,15 +50,17 @@
     }];
     
     // Import files
-    __block NSError *localError = nil;
     __block BOOL success = YES;
     for (NSURL *fileURL in importURLs) {
         [eventContext performBlockAndWait:^{
             @try {
                 CDELog(CDELoggingLevelVerbose, @"Importing file at URL: %@", fileURL);
                 @autoreleasepool {
+                    NSError *localError = nil;
+                    
                     if (fileURL == importURLs[0]) {
                         CDEStoreModificationEvent *event = [self importFirstFileAtURL:fileURL error:&localError];
+                        success = event != nil;
                         if (success) {
                             eventType = event.type;
                             event.type = CDEStoreModificationEventTypeIncomplete;
@@ -67,14 +69,20 @@
                     else {
                         success = [self importSubsequentFileAtURL:fileURL error:&localError];
                     }
-                    if (!success) return;
+                    
+                    if (!success) {
+                        error = localError;
+                        return;
+                    }
+                    
                     success = [eventContext save:&localError];
+                    if (!success) error = localError;
                     [eventContext reset];
                 }
             }
             @catch ( NSException *exception ) {
                 success = NO;
-                localError = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeExceptionRaised userInfo:nil];
+                error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeExceptionRaised userInfo:nil];
             }
         }];
         if (!success) break;
@@ -83,9 +91,17 @@
     // Finalize event and save
     if (success && eventID) {
         [eventContext performBlockAndWait:^{
+            NSError *localError = nil;
             CDEStoreModificationEvent *event = (id)[eventContext existingObjectWithID:self.eventID error:&localError];
+            success = event != nil;
+            if (!success) {
+                error = localError;
+                return;
+            }
+            
             event.type = eventType;
             success = [eventContext save:&localError];
+            if (!success) error = localError;
             [eventContext reset];
         }];
     }
@@ -98,16 +114,15 @@
                 NSError *saveError;
                 [eventContext deleteObject:event];
                 BOOL saved = [eventContext save:&saveError];
-                if (!saved) CDELog(CDELoggingLevelError, @"Could not save the vent store after import: %@", saveError);
+                if (!saved) CDELog(CDELoggingLevelError, @"Could not save the event store after import: %@", saveError);
                 [eventContext reset];
             }
         }];
         eventID = nil;
     }
     
-    // Set error
-    error = localError;
-    if (error) CDELog(CDELoggingLevelError, @"Failed to migrate modification events: %@", error);
+    // Report error
+    if (!success) CDELog(CDELoggingLevelError, @"Failed to migrate modification events: %@", error);
 }
 
 @end

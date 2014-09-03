@@ -22,9 +22,9 @@ typedef int64_t CDEGlobalCount;
 
 #pragma mark Model User Info Keys
 
-extern NSString * const CDEMigrationBatchSizeKey;
-extern NSString * const CDEMigrationPriorityKey;
-extern NSString * const CDEExcludePropertyKey;
+extern NSString * const CDEMigrationBatchSizeKey; /// Batch size to use when handling data for a given entity
+extern NSString * const CDEMigrationPriorityKey;  /// Integer stipulating rank of entity in traversal. Larger is earlier.
+extern NSString * const CDEIgnoredKey;            /// With a non-zero value, the entity or property is ignored.
 
 
 #pragma mark Errors

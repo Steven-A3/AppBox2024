@@ -17,6 +17,7 @@
 typedef BOOL (^CDEEventIntegratorShouldSaveBlock)(NSManagedObjectContext *savingContext, NSManagedObjectContext *reparationContext);
 typedef BOOL (^CDEEventIntegratorFailedSaveBlock)(NSManagedObjectContext *savingContext, NSError *error, NSManagedObjectContext *reparationContext);
 typedef void (^CDEEventIntegratorDidSaveBlock)(NSManagedObjectContext *savingContext, NSDictionary *info);
+typedef void (^CDEEventIntegratorMergingEntityBlock)(NSEntityDescription *entity);
 
 @interface CDEEventIntegrator : NSObject <CDEProgression>
 
@@ -28,6 +29,8 @@ typedef void (^CDEEventIntegratorDidSaveBlock)(NSManagedObjectContext *savingCon
 @property (nonatomic, copy, readwrite) CDEEventIntegratorShouldSaveBlock shouldSaveBlock;
 @property (nonatomic, copy, readwrite) CDEEventIntegratorFailedSaveBlock failedSaveBlock;
 @property (nonatomic, copy, readwrite) CDEEventIntegratorDidSaveBlock didSaveBlock;
+@property (nonatomic, copy, readwrite) CDEEventIntegratorMergingEntityBlock willBeginMergingEntityBlock;
+@property (nonatomic, copy, readwrite) CDEEventIntegratorMergingEntityBlock didFinishMergingEntityBlock;
 
 @property (readonly) NSManagedObjectContext *managedObjectContext;
 

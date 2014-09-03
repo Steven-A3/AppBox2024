@@ -557,4 +557,178 @@
     XCTAssertEqual(contents.count, (NSUInteger)2, @"Should be a 2 data files for event store 2.");
 }
 
+- (void)testInheritedOneToManyRelationshipsBetweenSubentities
+{
+    [self leechStores];
+    
+    id parent = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedParent" inManagedObjectContext:context1];
+    [parent setName:@"item1"];
+
+    id child1OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
+    [child1OnDevice1 setName:@"item1"];
+    [child1OnDevice1 setValue:parent forKey:@"parentWithSiblings"];
+    
+    id child2OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
+    [child2OnDevice1 setName:@"item2"];
+    [child2OnDevice1 setValue:parent forKey:@"parentWithSiblings"];
+    
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"DerivedChild"];
+    NSArray *children = [context2 executeFetchRequest:fetch error:NULL];
+    id child1OnDevice2 = [children filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name = 'item1'"]][0];
+    [context2 deleteObject:child1OnDevice2];
+    
+    XCTAssertTrue([context2 save:NULL], @"Could not save");
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    NSSet *childrenOnDevice1 = [parent valueForKey:@"children"];
+    XCTAssertEqualObjects([child2OnDevice1 valueForKey:@"name"], @"item2", @"Wrong name for child");
+    XCTAssertEqual(childrenOnDevice1.count, (NSUInteger)1, @"Wrong number of children");
+    XCTAssertEqualObjects(parent, [child2OnDevice1 valueForKey:@"parentWithSiblings"], @"Wrong child");
+}
+
+- (void)testInheritedOneToOneRelationshipsBetweenSubentities
+{
+    [self leechStores];
+    
+    id parent = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedParent" inManagedObjectContext:context1];
+    [parent setName:@"item"]; // Deliberately use the same global id for child and parent
+    
+    id child1OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
+    [child1OnDevice1 setName:@"item"];
+    [child1OnDevice1 setValue:parent forKey:@"parent"];
+    
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"DerivedChild"];
+    NSArray *children = [context2 executeFetchRequest:fetch error:NULL];
+    id child1OnDevice2 = [children filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name = 'item'"]][0];
+    XCTAssertNotNil(child1OnDevice2, @"Child not synced over");
+    XCTAssertNotNil([child1OnDevice2 valueForKey:@"parent"], @"No parent found");
+}
+
+- (void)testUninheritedRelationshipsBetweenSubentities
+{
+    [self leechStores];
+    
+    id parent = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedParent" inManagedObjectContext:context1];
+    [parent setName:@"item1"];
+    
+    id child1OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
+    [child1OnDevice1 setName:@"item1"];
+    [child1OnDevice1 setValue:parent forKey:@"derivedParent"];
+    
+    id child2OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
+    [child2OnDevice1 setName:@"item2"];
+    [child2OnDevice1 setValue:parent forKey:@"derivedParent"];
+    
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"DerivedChild"];
+    NSArray *children = [context2 executeFetchRequest:fetch error:NULL];
+    id child1OnDevice2 = [children filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name = 'item1'"]][0];
+    [context2 deleteObject:child1OnDevice2];
+    
+    XCTAssertTrue([context2 save:NULL], @"Could not save");
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    NSSet *childrenOnDevice1 = [parent valueForKey:@"derivedChildren"];
+    XCTAssertEqualObjects([child2OnDevice1 valueForKey:@"name"], @"item2", @"Wrong name for child");
+    XCTAssertEqual(childrenOnDevice1.count, (NSUInteger)1, @"Wrong number of children");
+    XCTAssertEqualObjects(parent, [child2OnDevice1 valueForKey:@"derivedParent"], @"Wrong child");
+}
+
+- (void)testSelfReferentialRelationships
+{
+    [self leechStores];
+    
+    id parent1 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    [parent1 setName:@"item1"];
+    
+    id parent2 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    [parent2 setName:@"item2"];
+    
+    id parent3 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    [parent3 setName:@"item3"];
+    
+    [parent1 setValue:[NSSet setWithObjects:parent2, parent3, nil] forKeyPath:@"relatedParents"];
+    
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Parent"];
+    NSArray *parents = [context2 executeFetchRequest:fetch error:NULL];
+    id parent1OnDevice2 = [parents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name = 'item1'"]][0];
+    XCTAssertEqual([[parent1OnDevice2 valueForKey:@"relatedParents"] count], (NSUInteger)2, @"Wrong related parents count");
+}
+
+- (void)testInheritedOrderedRelationship
+{
+    [self leechStores];
+    
+    // Create parent with ordered children on device 1
+    id parent = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedParent" inManagedObjectContext:context1];
+    
+    id child1OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
+    id child2OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
+    id child3OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
+    
+    [child1OnDevice1 setName:@"child1"];
+    [child2OnDevice1 setName:@"child2"];
+    [child3OnDevice1 setName:@"child3"];
+    
+    NSOrderedSet *set = [NSOrderedSet orderedSetWithArray:@[child1OnDevice1, child2OnDevice1, child3OnDevice1]];
+    [parent setValue:set forKey:@"orderedChildren"];
+    
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    // Check that sync objects came over
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"DerivedParent"];
+    NSArray *parents = [context2 executeFetchRequest:fetch error:NULL];
+    id parentOnDevice2 = parents.lastObject;
+    XCTAssertNotNil(parentOnDevice2, @"Parent should not be nil after sync");
+    XCTAssertEqualObjects([parentOnDevice2 entity].name, @"DerivedParent", @"Parent should not be nil after sync");
+
+    NSMutableOrderedSet *childrenOnDevice2 = [[parentOnDevice2 valueForKey:@"orderedChildren"] mutableCopy];
+    XCTAssertEqual(childrenOnDevice2.count, (NSUInteger)3, @"Expected 3 children");
+    XCTAssertEqualObjects([childrenOnDevice2[0] name], @"child1", @"Wrong child at index 0");
+    XCTAssertEqualObjects([childrenOnDevice2[1] name], @"child2", @"Wrong child at index 1");
+    XCTAssertEqualObjects([childrenOnDevice2[2] name], @"child3", @"Wrong child at index 2");
+    XCTAssertEqualObjects([[childrenOnDevice2[1] entity] name], @"Child", @"Wrong entity at index 1");
+
+    // Reorder the children on device 2 and sync changes back to device 1
+    [childrenOnDevice2 moveObjectsAtIndexes:[NSIndexSet indexSetWithIndex:2] toIndex:1];
+    [parentOnDevice2 setValue:childrenOnDevice2 forKey:@"orderedChildren"];
+    XCTAssertTrue([context2 save:NULL], @"Could not save");
+    
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    id parentOnDevice1 = [child1OnDevice1 valueForKey:@"orderedParent"];
+    
+    NSOrderedSet *orderedChildrenOnDevice1 = [parentOnDevice1 valueForKey:@"orderedChildren"];
+    XCTAssertEqual(orderedChildrenOnDevice1.count, (NSUInteger)3, @"Expected 3 children");
+    XCTAssertNotNil(parentOnDevice1, @"No parent");
+    
+    XCTAssertEqualObjects(orderedChildrenOnDevice1[0], child1OnDevice1, @"Incorrect order");
+    XCTAssertEqualObjects(orderedChildrenOnDevice1[1], child3OnDevice1, @"Incorrect order");
+    XCTAssertEqualObjects(orderedChildrenOnDevice1[2], child2OnDevice1, @"Incorrect order");
+    XCTAssertEqualObjects([orderedChildrenOnDevice1[2] entity].name, @"Child", @"Incorrect entity");
+    
+    [context2 deleteObject:childrenOnDevice2[1]];
+    
+    XCTAssertTrue([context2 save:NULL], @"Could not save");
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    orderedChildrenOnDevice1 = [parentOnDevice1 valueForKey:@"orderedChildren"];
+    XCTAssertEqual(orderedChildrenOnDevice1.count, (NSUInteger)2, @"Expected 2 children");
+    
+    XCTAssertEqualObjects(orderedChildrenOnDevice1[0], child1OnDevice1, @"Incorrect order");
+    XCTAssertEqualObjects(orderedChildrenOnDevice1[1], child2OnDevice1, @"Incorrect order");
+}
+
 @end

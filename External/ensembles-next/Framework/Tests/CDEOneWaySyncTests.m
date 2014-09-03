@@ -117,6 +117,24 @@
     XCTAssertEqualObjects([syncedParent valueForKey:@"date"], date, @"Wrong date");
 }
 
+- (void)testNotANumberAttribute
+{
+    [self leechStores];
+    
+    id parent = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    [parent setValue:@(NAN) forKeyPath:@"doubleProperty"];
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+
+    NSError *syncError = [self syncChanges];
+    XCTAssertNil(syncError, @"Sync failed");
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Parent"];
+    NSArray *parents = [context2 executeFetchRequest:fetch error:NULL];    
+    id syncedParent = parents.lastObject;
+    XCTAssertNil([syncedParent valueForKey:@"doubleProperty"], @"Wrong sync value");
+    XCTAssertNil([parent valueForKey:@"doubleProperty"], @"Wrong original value");
+}
+
 - (void)testToOneRelationship
 {
     [self leechStores];

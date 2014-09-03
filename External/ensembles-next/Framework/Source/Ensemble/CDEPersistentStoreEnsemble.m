@@ -154,6 +154,26 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:CDEPersistentStoreEnsembleDidSaveMergeChangesNotification object:strongSelf userInfo:@{CDEManagedObjectContextSaveNotificationKey : notification}];
     };
+    
+    self.eventIntegrator.willBeginMergingEntityBlock = ^(NSEntityDescription *entity) {
+        __strong typeof(self) strongSelf = weakSelf;
+        if (!strongSelf) return;
+        if ([strongSelf.delegate respondsToSelector:@selector(persistentStoreEnsemble:willMergeChangesForEntity:)]) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [strongSelf.delegate persistentStoreEnsemble:strongSelf willMergeChangesForEntity:entity];
+            });
+        }
+    };
+    
+    self.eventIntegrator.didFinishMergingEntityBlock = ^(NSEntityDescription *entity) {
+        __strong typeof(self) strongSelf = weakSelf;
+        if (!strongSelf) return;
+        if ([strongSelf.delegate respondsToSelector:@selector(persistentStoreEnsemble:didMergeChangesForEntity:)]) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [strongSelf.delegate persistentStoreEnsemble:strongSelf didMergeChangesForEntity:entity];
+            });
+        }
+    };
 }
 
 - (void)dealloc

@@ -50,12 +50,15 @@
         context.persistentStoreCoordinator = coordinator;
         context.undoManager = nil;
         
+        NSError *localError = nil;
         NSURL *storeURL = [NSURL fileURLWithPath:persistentStorePath];
         NSDictionary *options = self.persistentStoreOptions;
         if (!options) options = @{NSMigratePersistentStoresAutomaticallyOption: @YES, NSInferMappingModelAutomaticallyOption: @YES};
         [coordinator lock];
-        [coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error];
+        id store = [coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&localError];
         [coordinator unlock];
+        
+        if (!store) error = localError;
     }];
     
     if (error) {
@@ -80,27 +83,28 @@
         @try {
             // Add global ids for all objects first. Otherwise we can't setup relationships.
             CDELog(CDELoggingLevelTrace, @"Adding Global Identifiers");
-            success = [self addGlobalIdentifiersWithEventBuilder:eventBuilder forObjectsInContext:context error:&error];
+            NSError *localError = nil;
+            success = [self addGlobalIdentifiersWithEventBuilder:eventBuilder forObjectsInContext:context error:&localError];
             if (!success) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (completion) completion(error);
+                    if (completion) completion(localError);
                 });
                 return;
             }
             
             // Now generate object changes.
             CDELog(CDELoggingLevelTrace, @"Adding Object Changes");
-            success = [self addObjectChangesWithEventBuilder:eventBuilder forObjectsInContext:context error:&error];
+            success = [self addObjectChangesWithEventBuilder:eventBuilder forObjectsInContext:context error:&localError];
             
             // Finalize event, which makes its type no longer incomplete
             if (success) {
                 CDELog(CDELoggingLevelTrace, @"Saving");
                 [eventBuilder finalizeNewEvent];
-                success = [eventBuilder saveAndReset:&error];
+                success = [eventBuilder saveAndReset:&localError];
             }
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (completion) completion(error);
+                if (completion) completion(success ? nil : localError);
             });
         }
         @catch ( NSException *exception ) {
@@ -117,7 +121,8 @@
 {
     __block BOOL success = YES;
     if (error) *error = nil;
-    for (NSEntityDescription *entity in managedObjectModel) {
+    NSArray *entities = [managedObjectModel cde_entitiesOrderedByMigrationPriority];
+    for (NSEntityDescription *entity in entities) {
         NSFetchRequest *fetch = [[NSFetchRequest alloc] initWithEntityName:entity.name];
         fetch.returnsObjectsAsFaults = NO;
         fetch.includesSubentities = NO;
@@ -143,7 +148,8 @@
 {
     __block BOOL success = YES;
     if (error) *error = nil;
-    for (NSEntityDescription *entity in managedObjectModel) {
+    NSArray *entities = [managedObjectModel cde_entitiesOrderedByMigrationPriority];
+    for (NSEntityDescription *entity in entities) {
         CDELog(CDELoggingLevelVerbose, @"Importing Entity %@", entity.name);
         
         NSFetchRequest *fetch = [[NSFetchRequest alloc] initWithEntityName:entity.name];
