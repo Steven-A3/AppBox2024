@@ -128,7 +128,7 @@
 		detailTextLabel.text = [dateFormatter stringFromDate:account.birthday];
 	} else {
 		detailTextLabel.text = @"";
-	}acc
+	}
 
 	UIButton *editButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[editButton setImage:[UIImage imageNamed:@"arrow"] forState:UIControlStateNormal];
@@ -187,7 +187,7 @@
 
 	[[A3SyncManager sharedSyncManager] setObject:account.uniqueID forKey:A3LadyCalendarCurrentAccountID state:A3DataObjectStateModified];
 
-	[self.tableView reloadData];
+    [self.tableView reloadData];
 }
 
 #pragma mark - action method
