@@ -421,8 +421,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:popoverTableViewController];
 		self.localPopoverController.backgroundColor = [UIColor whiteColor];
 		self.localPopoverController.delegate = self;
-		[self.localPopoverController presentPopoverFromRect:aSender.frame
-													 inView:aSender.superview
+		[self.localPopoverController presentPopoverFromRect:_headerView.detailInfoButton.frame
+													 inView:self.view
 								   permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 		[self.localPopoverController setPopoverContentSize:CGSizeMake(320, popoverTableViewController.tableView.contentSize.height)
 												  animated:NO];
@@ -463,6 +463,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	if (self.localPopoverController) {
 		[self.localPopoverController dismissPopoverAnimated:NO];
+		self.localPopoverController = nil;
 		[self detailInfoButtonTouchedUp:nil];
 	}
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
