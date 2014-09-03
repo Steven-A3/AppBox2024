@@ -578,9 +578,14 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 - (void)hideChooseColorView {
 	[UIView animateWithDuration:0.3
 					 animations:^{
-						 CGRect frame = _chooseColorView.frame;
-						 frame.origin.y += frame.size.height;
-						 _chooseColorView.frame = frame;
+						 CGFloat height = _chooseColorView.bounds.size.height;
+						 [_chooseColorView mas_remakeConstraints:^(MASConstraintMaker *make) {
+							 make.left.equalTo(self.view.left);
+							 make.right.equalTo(self.view.right);
+							 make.top.equalTo(self.view.bottom);
+							 make.height.equalTo(@(height));
+						 }];
+						[self.view layoutIfNeeded];
 					 }
 					 completion:^(BOOL finished) {
 						 [_chooseColorView removeFromSuperview];

@@ -567,6 +567,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	[self startDownloadDataFiles];
 }
 
+/*
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
 
 }
@@ -574,13 +575,19 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes {
 
 }
-
+*/
+ 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
 	FNLOG();
 	if (error) {
-		FNLOG(@"%ld", (long)error.code);
+//		FNLOG(@"%ld, %@, %@, %@", (long)error.code, error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions);
 		if (error.code == -1100) {
 			[_downloadList removeObjectAtIndex:0];
+		}
+		if (error.code == -997) {
+			_downloadList = nil;
+			_downloadTask = nil;
+			return;
 		}
 		if ([self.reachability isReachableViaWiFi]) {
 			[self startDownloadDataFiles];

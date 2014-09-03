@@ -67,8 +67,8 @@ typedef CMathParser<char, double> MathParser;
 }
 
 - (NSString *) replaceSpecialCharactersExpression:(NSString *) expression {
+	expression = [expression stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"+-/x"]];
     expression = [expression stringByReplacingOccurrencesOfString:@"x" withString:@"*"];
-    expression = [expression stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"+-/x"]];
     expression = [expression stringByReplacingOccurrencesOfString:@"sin-1" withString:@"asin"];
     expression = [expression stringByReplacingOccurrencesOfString:@"cos-1" withString:@"acos"];
     expression = [expression stringByReplacingOccurrencesOfString:@"tan-1" withString:@"atan"];
