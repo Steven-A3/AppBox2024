@@ -64,7 +64,7 @@
 
 	[self leftBarButtonAppsButton];
 
-	if( IS_IPHONE ){
+	if ( IS_IPHONE ) {
 		[self rightButtonMoreButton];
 
 		self.chartButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -251,39 +251,37 @@
 	[self.navigationController setToolbarHidden:NO];
     _collectionView.delegate = self;
 
-	if( isFirst ) {
+	if ( isFirst ) {
 		isFirst = NO;
 
 		[self showCalendarHeaderView];
 		[self updateAddButton];
 
-		[_collectionView reloadData];
+//		[_collectionView reloadData];
 	} else {
 		[_calendarHeaderView setHidden:NO];
-
 		[self setupCalendarRange];
 
-		[self.collectionView reloadData];
+//		[self.collectionView reloadData];
 	}
 
 	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount].uniqueID] > 0);
 
-	double delayInSeconds = 0.1;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
         currentWatchingDate = (currentWatchingDate == nil ? [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]] : currentWatchingDate);
         _currentMonth = currentWatchingDate;
-
-		[self.dataManager setWatchingDateForCurrentAccount:currentWatchingDate];
-
-		[self moveToCurrentMonth];
-		[self updateCurrentMonthLabel];
-	});
+        
+        [self.dataManager setWatchingDateForCurrentAccount:currentWatchingDate];
+        
+        [self moveToCurrentMonth];
+        [self updateCurrentMonthLabel];
+		[self.collectionView reloadData];
+    });
 }
 
 - (void)setupNavigationTitle {
-	if([self.dataManager numberOfAccount] == 1 && [[self.dataManager currentAccount].name isEqualToString:[self.dataManager defaultAccountName]]){
+	if ([self.dataManager numberOfAccount] == 1 && [[self.dataManager currentAccount].name isEqualToString:[self.dataManager defaultAccountName]]) {
 		self.navigationItem.title = NSLocalizedString(@"Ladies Calendar", nil);
 	}
 	else{
@@ -298,7 +296,7 @@
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	if( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ){
+	if ( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ) {
 		_calendarHeaderView.frame = CGRectMake(_calendarHeaderView.frame.origin.x, _calendarHeaderView.frame.origin.y, self.view.frame.size.width, _calendarHeaderView.frame.size.height);
 	}
 	else{
@@ -370,7 +368,7 @@
 
     NSDate *todayMonth = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
 
-    if( [self.dataManager.currentAccount.watchingDate isEqualToDate:todayMonth] ) {
+    if ( [self.dataManager.currentAccount.watchingDate isEqualToDate:todayMonth] ) {
         _currentMonthLabel.textColor = [[A3AppDelegate instance] themeColor];
     }
     else {
@@ -413,7 +411,7 @@
 
 - (LadyCalendarPeriod*)previousPeriodFromIndexPath:(NSIndexPath*)indexPath
 {
-    if( indexPath.section == 0 )
+    if ( indexPath.section == 0 )
         return nil;
 
     NSInteger prevSection = indexPath.section-1;
@@ -425,7 +423,7 @@
 
 - (void)updateAddButton
 {
-    if( ![_addButton isDescendantOfView:self.view] ){
+    if ( ![_addButton isDescendantOfView:self.view] ) {
         [self.view addSubview:_addButton];
 		[_addButton makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.view.centerX);
@@ -532,16 +530,17 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 
 - (void)calculateCurrentMonthWithScrollView:(UIScrollView*)scrollView
 {
-    CGPoint pos = CGPointMake(scrollView.contentOffset.x + scrollView.contentInset.left, scrollView.contentOffset.y+scrollView.contentInset.top + (IS_IPHONE ? 185 : 275)/numberOfMonthInPage );
+    CGPoint pos = CGPointMake(scrollView.contentOffset.x + scrollView.contentInset.left,
+                              scrollView.contentOffset.y + scrollView.contentInset.top + (IS_IPHONE ? 185 : 275) / numberOfMonthInPage );
     self.currentIndexPath = [_collectionView indexPathForItemAtPoint:pos];
-    if( self.currentIndexPath == nil ){
+    if ( self.currentIndexPath == nil ) {
         self.currentIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     }
 
     NSDate *currentWatchingDate = _currentMonth;
     NSDate *month = [self dateFromIndexPath:_currentIndexPath];
 
-    if( ![currentWatchingDate isEqual:month] ){
+    if ( ![currentWatchingDate isEqual:month] ) {
         _currentMonth = month;
         if (currentWatchingDate) {
 			[self.dataManager setWatchingDateForCurrentAccount:month];
@@ -559,7 +558,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if( !decelerate) {
+    if ( !decelerate) {
         [self calculateCurrentMonthWithScrollView:scrollView];
 		[self.collectionView scrollToItemAtIndexPath:_currentIndexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
     }
@@ -580,7 +579,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 - (void)calendarView:(A3LadyCalendarCalendarView *)calendarView didSelectDay:(NSInteger)day
 {
     NSArray *periods = [self.dataManager periodListWithMonth:calendarView.dateMonth accountID:[self.dataManager currentAccount].uniqueID containPredict:YES];
-    if( [periods count] < 1 )
+    if ( [periods count] < 1 )
         return;
     LadyCalendarPeriod *period = [periods objectAtIndex:0];
     A3LadyCalendarDetailViewController *viewController = [[A3LadyCalendarDetailViewController alloc] init];
@@ -651,21 +650,21 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 - (IBAction)changeListTypeAction:(id)sender {
     UIBarButtonItem *button = (UIBarButtonItem*)sender;
     
-    if( numberOfMonthInPage == 1 )
+    if ( numberOfMonthInPage == 1 )
         numberOfMonthInPage = 2;
-    else if( numberOfMonthInPage == 2 )
+    else if ( numberOfMonthInPage == 2 )
         numberOfMonthInPage = 1;
     [_collectionView reloadData];
 	[self updateCurrentMonthLabel];
     
-    if( numberOfMonthInPage == 1 )
+    if ( numberOfMonthInPage == 1 )
         button.image = [UIImage imageNamed:@"calendar02"];
     else
         button.image = [UIImage imageNamed:@"calendar"];
 }
 
 - (IBAction)moveToListAction:(id)sender {
-    if( IS_IPHONE )
+    if ( IS_IPHONE )
         [self doneButtonAction:nil];
     A3LadyCalendarListViewController *viewCtrl = [[A3LadyCalendarListViewController alloc] initWithNibName:@"A3LadyCalendarListViewController" bundle:nil];
 	viewCtrl.dataManager = _dataManager;
@@ -675,7 +674,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 }
 
 - (IBAction)moveToChartAction:(id)sender {
-    if( IS_IPHONE )
+    if ( IS_IPHONE )
         [self doneButtonAction:nil];
     A3LadyCalendarChartViewController *viewCtrl = [[A3LadyCalendarChartViewController alloc] initWithNibName:@"A3LadyCalendarChartViewController" bundle:nil];
 	viewCtrl.dataManager = _dataManager;
@@ -683,11 +682,11 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 }
 
 - (IBAction)moveToAccountAction:(id)sender {
-    if( IS_IPHONE )
+    if ( IS_IPHONE )
         [self doneButtonAction:nil];
     A3LadyCalendarAccountListViewController *viewCtrl = [[A3LadyCalendarAccountListViewController alloc] init];
 	viewCtrl.dataManager = self.dataManager;
-    if( IS_IPHONE ){
+    if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
@@ -697,11 +696,11 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 }
 
 - (IBAction)settingAction:(id)sender {
-    if( IS_IPHONE )
+    if ( IS_IPHONE )
         [self doneButtonAction:nil];
 	A3LadyCalendarSettingViewController *viewCtrl = [[A3LadyCalendarSettingViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;
-    if( IS_IPHONE ){
+    if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
