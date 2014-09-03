@@ -43,7 +43,9 @@
     NSString *batchGrandParent = model.entityVersionHashesByName[@"BatchGrandParent"];
     NSString *batchParentHash = model.entityVersionHashesByName[@"BatchParent"];
     NSString *batchChildHash = model.entityVersionHashesByName[@"BatchChild"];
-    NSString *expectedHash = [NSString stringWithFormat:@"BatchChild_%@__BatchGrandParent_%@__BatchParent_%@__Child_%@__Parent_%@", batchChildHash, batchGrandParent, batchParentHash, childHash, parentHash];
+    NSString *derivedParentHash = model.entityVersionHashesByName[@"DerivedParent"];
+    NSString *derivedChildHash = model.entityVersionHashesByName[@"DerivedChild"];
+    NSString *expectedHash = [NSString stringWithFormat:@"BatchChild_%@__BatchGrandParent_%@__BatchParent_%@__Child_%@__DerivedChild_%@__DerivedParent_%@__Parent_%@", batchChildHash, batchGrandParent, batchParentHash, childHash, derivedChildHash, derivedParentHash, parentHash];
     XCTAssertEqualObjects(hash, expectedHash, @"Hash wrong");
 }
 

@@ -13,6 +13,7 @@
 #import "CDEGlobalIdentifier.h"
 #import "CDEEventRevision.h"
 #import "CDEEventMigrator.h"
+#import "CDEPropertyChangeValue.h"
 
 @interface CDEEventMigratorTests : CDEEventStoreTestCase
 
@@ -164,6 +165,51 @@
     XCTAssertEqual([json[@"timestamp"] doubleValue], (NSTimeInterval)123, @"Wrong save timestamp");
     XCTAssertEqual([[self changesInFileByEntity][@"Child"] count], (NSUInteger)2, @"Wrong number of changes");
     XCTAssertEqual([[self changesInFileByEntity][@"Parent"] count], (NSUInteger)1, @"Wrong number of changes");
+}
+
+- (void)testMigrationOfNotANumber
+{
+    CDEPropertyChangeValue *notANumberChange = [[CDEPropertyChangeValue alloc] initWithType:CDEPropertyChangeTypeAttribute propertyName:@"someNumber"];
+    notANumberChange.value = @(NAN);
+    objectChange1.propertyChangeValues = @[notANumberChange];
+    
+    [self migrateToFileEventWithRevision:0];
+    
+    NSArray *changes = [self changesInFileByEntity][@"Parent"];
+    NSDictionary *change = changes.lastObject;
+    NSDictionary *property = [change[@"properties"] lastObject];
+    XCTAssertEqualObjects(property[@"value"][0], @"number", @"Wrong type");
+    XCTAssertEqualObjects(property[@"value"][1], @"nan", @"Wrong string value");
+}
+
+- (void)testMigrationOfInfinity
+{
+    CDEPropertyChangeValue *notANumberChange = [[CDEPropertyChangeValue alloc] initWithType:CDEPropertyChangeTypeAttribute propertyName:@"someNumber"];
+    notANumberChange.value = @(INFINITY);
+    objectChange1.propertyChangeValues = @[notANumberChange];
+    
+    [self migrateToFileEventWithRevision:0];
+    
+    NSArray *changes = [self changesInFileByEntity][@"Parent"];
+    NSDictionary *change = changes.lastObject;
+    NSDictionary *property = [change[@"properties"] lastObject];
+    XCTAssertEqualObjects(property[@"value"][0], @"number", @"Wrong type");
+    XCTAssertEqualObjects(property[@"value"][1], @"+inf", @"Wrong string value");
+}
+
+- (void)testMigrationOfNegativeInfinity
+{
+    CDEPropertyChangeValue *notANumberChange = [[CDEPropertyChangeValue alloc] initWithType:CDEPropertyChangeTypeAttribute propertyName:@"someNumber"];
+    notANumberChange.value = @(-INFINITY);
+    objectChange1.propertyChangeValues = @[notANumberChange];
+    
+    [self migrateToFileEventWithRevision:0];
+    
+    NSArray *changes = [self changesInFileByEntity][@"Parent"];
+    NSDictionary *change = changes.lastObject;
+    NSDictionary *property = [change[@"properties"] lastObject];
+    XCTAssertEqualObjects(property[@"value"][0], @"number", @"Wrong type");
+    XCTAssertEqualObjects(property[@"value"][1], @"-inf", @"Wrong string value");
 }
 
 - (void)testMigrationToFileMigratesObjectChanges

@@ -177,6 +177,26 @@ extern NSString * const CDEProgressFractionKey;
  */
 - (void)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble didSaveMergeChangesWithNotification:(NSNotification *)notification;
 
+/**
+ Invoked during a merge, just before the passed entity is merged.
+ 
+ This is useful when batched traversals are used. By monitoring the entity, you can determine how much of the object graph has been merged, and perform any updates or repairs as appropriate.
+ 
+ @param ensemble The `CDEPersistentStoreEnsemble` that is merging the changes.
+ @param entity The entity that is about to be merged.
+ */
+- (void)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble willMergeChangesForEntity:(NSEntityDescription *)entity;
+
+/**
+ Invoked during a merge, just after the passed entity has been merged.
+ 
+ This is useful when batched traversals are used. By monitoring the entity, you can determine how much of the object graph has been merged, and perform any updates or repairs as appropriate.
+ 
+ @param ensemble The `CDEPersistentStoreEnsemble` that is merging the changes.
+ @param entity The entity that has just been merged.
+ */
+- (void)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble didMergeChangesForEntity:(NSEntityDescription *)entity;
+
 
 ///
 /// @name Deleeching

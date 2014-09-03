@@ -13,7 +13,7 @@ NSString * const CDEErrorDomain = @"CDEErrorDomain";
 
 NSString * const CDEMigrationBatchSizeKey = @"CDEMigrationBatchSizeKey";
 NSString * const CDEMigrationPriorityKey = @"CDEMigrationPriorityKey";
-NSString * const CDEExcludePropertyKey = @"CDEExcludePropertyKey";
+NSString * const CDEIgnoredKey = @"CDEIgnoredKey";
 
 NSUInteger currentLoggingLevel = CDELoggingLevelError;
 

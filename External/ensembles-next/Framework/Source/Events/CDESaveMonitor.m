@@ -93,6 +93,7 @@
     for (NSManagedObject *object in objectsSet) {
         NSManagedObjectID *objectID = object.objectID;
         if (objectID.persistentStore != monitoredStore) continue;
+        if ([object.entity.userInfo[CDEIgnoredKey] boolValue]) continue;
         [returned addObject:object];
     }
     
@@ -130,8 +131,12 @@
     NSMutableDictionary *changedValuesByObjectID = [NSMutableDictionary dictionaryWithCapacity:monitoredObjects.count];
     [monitoredObjects.allObjects cde_enumerateObjectsDrainingEveryIterations:50 usingBlock:^(NSManagedObject *object, NSUInteger index, BOOL *stop) {
         NSArray *propertyChanges = [CDEPropertyChangeValue propertyChangesForObject:object eventStore:self.eventStore propertyNames:object.changedValues.allKeys isPreSave:YES storeValues:NO];
-        NSManagedObjectID *objectID = object.objectID;
-        changedValuesByObjectID[objectID] = propertyChanges;
+        
+        // If all changes are in excluded properties, we don't need to store them pre save
+        if (propertyChanges.count > 0) {
+            NSManagedObjectID *objectID = object.objectID;
+            changedValuesByObjectID[objectID] = propertyChanges;
+        }
     }];
     
     NSManagedObjectContext *context = [objects.anyObject managedObjectContext];
@@ -199,15 +204,16 @@
     [eventBuilder updatePropertyChangeValuesForUpdatedObjects:orderedUpdatedObjects inManagedObjectContext:context options:CDEUpdateStoreOptionSavedValue propertyChangeValuesByObjectID:changedValuesByObjectID];
 
     // Make sure the event is saved atomically
-    [self.eventStore.managedObjectContext performBlock:^{
+    NSManagedObjectContext *eventContext = self.eventStore.managedObjectContext;
+    [eventContext performBlock:^{
         // Add a store mod event
         [eventBuilder makeNewEventOfType:CDEStoreModificationEventTypeSave uniqueIdentifier:newUniqueId];
         
         // Insert global ids
-        NSArray *globalIDsForInserts = [eventBuilder addGlobalIdentifiersForManagedObjectIDs:insertedObjectIDs identifierStrings:globalIDStrings];
+        NSArray *globalIDObjectIDs = [eventBuilder addGlobalIdentifiersForManagedObjectIDs:insertedObjectIDs identifierStrings:globalIDStrings];
     
         // Inserted Objects. Do inserts before updates to make sure each object has a global identifier.
-        [eventBuilder addInsertChangesForPropertyChangeValueArrays:changeValueArraysForInserts globalIdentifiers:globalIDsForInserts];
+        [eventBuilder addInsertChangesForPropertyChangeValueArrays:changeValueArraysForInserts globalIdentifierObjectIDs:globalIDObjectIDs];
         [self saveEventBuilder:eventBuilder];
         
         // Updated Objects

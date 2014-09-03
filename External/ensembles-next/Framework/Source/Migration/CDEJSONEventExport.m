@@ -79,22 +79,36 @@
     return YES;
 }
 
-- (BOOL)saveToFile:(NSError * __autoreleasing *)localError
+- (BOOL)saveToFile:(NSError * __autoreleasing *)returnError
 {
     NSInteger bytesWritten = 0;
+    BOOL success = YES;
+    
     @try {
+        NSError *localError = nil;
         NSOutputStream *stream = [NSOutputStream outputStreamToFileAtPath:fileURL.path append:NO];
         [stream open];
         eventDictionary[@"changesByEntity"] = changesByEntity;
-        bytesWritten = [NSJSONSerialization writeJSONObject:eventDictionary toStream:stream options:0 error:localError];
+        bytesWritten = [NSJSONSerialization writeJSONObject:eventDictionary toStream:stream options:0 error:&localError];
         [stream close];
+        
+        success = bytesWritten != 0;
+        if (!success)
+            *returnError = localError;
+        else if (stream.streamError) {
+            success = NO;
+            *returnError = stream.streamError;
+        }
     }
     @catch ( NSException *exception ) {
         CDELog(CDELoggingLevelError, @"Exception thrown writing JSON file: %@", exception);
+        NSString *description = [NSString stringWithFormat:@"Exception raised while exporting JSON: %@", exception];
+        *returnError = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeExceptionRaised userInfo:@{NSLocalizedDescriptionKey : description}];
         bytesWritten = 0;
+        success = NO;
     }
 
-    return (bytesWritten != 0);
+    return success;
 }
 
 - (BOOL)prepareNewFile
@@ -191,6 +205,18 @@
     }
     else if ([value isKindOfClass:[NSData class]]) {
         value = @[@"data", [value cde_base64EncodedString]];
+    }
+    else if ([value isKindOfClass:[NSNumber class]]) {
+        NSNumber *number = value;
+        if ([number isEqualToNumber:(id)kCFNumberNaN]) {
+            value = @[@"number", @"nan"];
+        }
+        else if ([number isEqualToNumber:(id)kCFNumberPositiveInfinity]) {
+            value = @[@"number", @"+inf"];
+        }
+        else if ([number isEqualToNumber:(id)kCFNumberNegativeInfinity]) {
+            value = @[@"number", @"-inf"];
+        }
     }
     else if ([value isKindOfClass:[NSManagedObjectID class]]) {
         @throw [NSException exceptionWithName:CDEException reason:@"ObjectID type is not supported" userInfo:nil];

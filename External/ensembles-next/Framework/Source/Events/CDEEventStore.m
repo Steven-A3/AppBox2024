@@ -103,22 +103,27 @@ static NSString *defaultPathToEventDataRootDirectory = nil;
 
 - (void)saveStoreMetadata
 {
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    if (self.persistentStoreIdentifier) {
-        NSData *identityData = [NSKeyedArchiver archivedDataWithRootObject:self.cloudFileSystemIdentityToken];
-        [dictionary addEntriesFromDictionary:@{
-           kCDEPersistentStoreIdentifierKey : self.persistentStoreIdentifier,
-           kCDECloudFileSystemIdentityKey : identityData,
-           kCDEIncompleteMandatoryEventIdentifiersKey : mandatoryEventCountedSet.allObjects,
-           kCDEVerifiesStoreRegistrationInCloudKey : @(self.verifiesStoreRegistrationInCloud)
-        }];
+    @try {
+        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+        if (self.persistentStoreIdentifier) {
+            NSData *identityData = [NSKeyedArchiver archivedDataWithRootObject:self.cloudFileSystemIdentityToken];
+            [dictionary addEntriesFromDictionary:@{
+                kCDEPersistentStoreIdentifierKey : self.persistentStoreIdentifier,
+                kCDECloudFileSystemIdentityKey : identityData,
+                kCDEIncompleteMandatoryEventIdentifiersKey : mandatoryEventCountedSet.allObjects,
+                kCDEVerifiesStoreRegistrationInCloudKey : @(self.verifiesStoreRegistrationInCloud)
+            }];
+            
+            NSString *baseline = self.identifierOfBaselineUsedToConstructStore;
+            if (baseline) dictionary[kCDEIdentifierOfBaselineUsedToConstructStore] = baseline;
+        }
         
-        NSString *baseline = self.identifierOfBaselineUsedToConstructStore;
-        if (baseline) dictionary[kCDEIdentifierOfBaselineUsedToConstructStore] = baseline;
+        if (![dictionary writeToFile:self.pathToStoreInfoFile atomically:YES]) {
+            CDELog(CDELoggingLevelError, @"Could not write store info file");
+        }
     }
-    
-    if (![dictionary writeToFile:self.pathToStoreInfoFile atomically:YES]) {
-        CDELog(CDELoggingLevelError, @"Could not write store info file");
+    @catch ( NSException *exception ) {
+        CDELog(CDELoggingLevelError, @"Could not save store metadata. Exception: %@", exception);
     }
 }
 

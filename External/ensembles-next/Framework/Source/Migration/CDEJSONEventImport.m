@@ -160,6 +160,21 @@
     else if ([type isEqualToString:@"data"]) {
         value = [NSData cde_dataWithBase64EncodedString:value];
     }
+    else if ([type isEqualToString:@"number"]) {
+        if ([value isEqualToString:@"nan"]) {
+            value = (id)kCFNumberNaN;
+        }
+        else if ([value isEqualToString:@"+inf"]) {
+            value = (id)kCFNumberPositiveInfinity;
+        }
+        else if ([value isEqualToString:@"-inf"]) {
+            value = (id)kCFNumberNegativeInfinity;
+        }
+        else {
+            CDELog(CDELoggingLevelError, @"Unknown number string found in JSON: %@", value);
+            value = nil;
+        }
+    }
     
     return value;
 }

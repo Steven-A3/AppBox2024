@@ -7,6 +7,7 @@
 //
 
 #import "NSManagedObjectModel+CDEAdditions.h"
+#import "CDEFoundationAdditions.h"
 #import "CDEDefines.h"
 
 @implementation NSManagedObjectModel (CDEAdditions)
@@ -51,7 +52,11 @@
 
 - (NSArray *)cde_entitiesOrderedByMigrationPriority
 {
-    return [self.entities sortedArrayUsingComparator:^NSComparisonResult(NSEntityDescription *entity1, NSEntityDescription *entity2) {
+    NSArray *filteredEntities = [self.entities filteredArrayUsingPredicate:
+        [NSPredicate predicateWithBlock:^BOOL(NSEntityDescription *entity, NSDictionary *bindings) {
+        return ![entity.userInfo[CDEIgnoredKey] boolValue];
+    }]];
+    return [filteredEntities sortedArrayUsingComparator:^NSComparisonResult(NSEntityDescription *entity1, NSEntityDescription *entity2) {
         // Order first on priority stipulated by user in model
         NSNumber *priority1 = @([entity1.userInfo[CDEMigrationPriorityKey] integerValue]);
         NSNumber *priority2 = @([entity2.userInfo[CDEMigrationPriorityKey] integerValue]);
@@ -93,7 +98,7 @@
     NSMutableArray *properties = [[NSMutableArray alloc] init];
     for (NSPropertyDescription *property in self.properties) {
         if (property.isTransient) continue;
-        if ([property.userInfo[CDEExcludePropertyKey] boolValue]) continue;
+        if ([property.userInfo[CDEIgnoredKey] boolValue]) continue;
         if ([property isKindOfClass:[NSRelationshipDescription class]]) {
             NSRelationshipDescription *relationship = (id)property;
             if (!relationship.cde_isRedundant) [properties addObject:property];
@@ -105,6 +110,16 @@
     return properties;
 }
 
+- (NSArray *)cde_descendantEntities
+{
+    NSMutableArray *descendants = [[NSMutableArray alloc] init];
+    for (NSEntityDescription *subentity in self.subentities) {
+        [descendants addObject:subentity];
+        [descendants addObjectsFromArray:[subentity cde_descendantEntities]];
+    }
+    return descendants;
+}
+
 @end
 
 
@@ -113,10 +128,12 @@
 - (BOOL)cde_isRedundant
 {
     NSDictionary *info = self.userInfo;
-    if ([info[CDEExcludePropertyKey] boolValue]) return YES;
+    if ([info[CDEIgnoredKey] boolValue]) return YES;
+    if ([self.entity.userInfo[CDEIgnoredKey] boolValue]) return YES;
+    if ([self.destinationEntity.userInfo[CDEIgnoredKey] boolValue]) return YES;
 
     NSDictionary *inverseInfo = self.inverseRelationship.userInfo;
-    if (!self.inverseRelationship || self.inverseRelationship.isTransient || [inverseInfo[CDEExcludePropertyKey] boolValue]) return NO;
+    if (!self.inverseRelationship || self.inverseRelationship.isTransient || [inverseInfo[CDEIgnoredKey] boolValue]) return NO;
     
     if (self.isOrdered) return NO;
     if (self.isToMany && self.inverseRelationship.isToMany) return NO;

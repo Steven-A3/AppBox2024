@@ -49,6 +49,8 @@
 @synthesize shouldSaveBlock = shouldSaveBlock;
 @synthesize didSaveBlock = didSaveBlock;
 @synthesize failedSaveBlock = failedSaveBlock;
+@synthesize willBeginMergingEntityBlock = willBeginMergingEntityBlock;
+@synthesize didFinishMergingEntityBlock = didFinishMergingEntityBlock;
 @synthesize ensemble = ensemble;
 
 
@@ -400,6 +402,8 @@
     for (NSEntityDescription *entity in entities) {
         CDELog(CDELoggingLevelVerbose, @"Integrating entity: %@", entity.name);
         
+        if (willBeginMergingEntityBlock) willBeginMergingEntityBlock(entity);
+        
         NSUInteger batchSize = entity.cde_migrationBatchSize;
         NSMutableSet *allInsertedObjectIDs = fullIntegration ? [NSMutableSet set] : nil;
         NSArray *currentAndMigratedEntities = [migratedEntities arrayByAddingObject:entity];
@@ -520,6 +524,8 @@
         }
         
         migratedEntities = currentAndMigratedEntities;
+        
+        if (didFinishMergingEntityBlock) didFinishMergingEntityBlock(entity);
     
         [self.ensemble incrementProgress];
     }

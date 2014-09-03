@@ -48,7 +48,7 @@ typedef NS_ENUM(uint16_t, CDEUpdateStoreOption) {
 
 - (void)addChangesForInsertedObjects:(NSSet *)insertedObjects objectsAreSaved:(BOOL)saved inManagedObjectContext:(NSManagedObjectContext *)context;
 - (NSArray *)propertyChangeValueArraysForInsertedObjects:(NSArray *)insertedObjects objectsAreSaved:(BOOL)saved inManagedObjectContext:(NSManagedObjectContext *)context;
-- (void)addInsertChangesForPropertyChangeValueArrays:(NSArray *)changeArrays globalIdentifiers:(NSArray *)globalIds;
+- (void)addInsertChangesForPropertyChangeValueArrays:(NSArray *)changeArrays globalIdentifierObjectIDs:(NSArray *)globalIds;
 
 - (void)addChangesForDeletedObjects:(NSSet *)deleted inManagedObjectContext:(NSManagedObjectContext *)context;
 - (void)addDeleteChangesForObjectIDs:(NSArray *)objectIDs;

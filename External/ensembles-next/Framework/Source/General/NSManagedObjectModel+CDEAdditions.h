@@ -24,6 +24,7 @@
 
 @property (nonatomic, readonly) NSUInteger cde_migrationBatchSize;
 @property (nonatomic, readonly) NSArray *cde_nonRedundantProperties;
+@property (nonatomic, readonly) NSArray *cde_descendantEntities;
 
 - (NSArray *)cde_nonRedundantRelationshipsDestinedForEntities:(NSArray *)targetEntities;
 

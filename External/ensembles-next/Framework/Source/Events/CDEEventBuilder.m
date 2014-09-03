@@ -127,7 +127,12 @@
 
 - (void)refetchEvent
 {
-    event = (id)[eventManagedObjectContext existingObjectWithID:eventID error:NULL];
+    if (!eventID) {
+        event = nil;
+    }
+    else {
+        event = (id)[eventManagedObjectContext existingObjectWithID:eventID error:NULL];
+    }
 }
 
 #pragma mark - Modifying Events
@@ -183,6 +188,7 @@
 {
     NSArray *entityNames = [objectIDs valueForKeyPath:@"entity.name"];
     NSMutableArray *globalIDs = [[NSMutableArray alloc] init];
+    __block NSArray *globalIDObjectIDs = nil;
     [eventManagedObjectContext performBlockAndWait:^{
         [self refetchEvent];
 
@@ -209,9 +215,11 @@
         
         NSError *error;
         if (![eventManagedObjectContext save:&error]) CDELog(CDELoggingLevelError, @"Error saving event store: %@", error);
+        
+        globalIDObjectIDs = [globalIDs valueForKey:@"objectID"];
     }];
     
-    return globalIDs;
+    return globalIDObjectIDs;
 }
 
 #pragma mark - Insertion Object Changes
@@ -223,11 +231,11 @@
     // This method must be called on context thread
     NSArray *orderedObjects = insertedObjects.allObjects;
     NSArray *globalIdStrings = [self retrieveGlobalIdentifierStringsForManagedObjects:orderedObjects];
-    NSArray *globalIds = [self addGlobalIdentifiersForManagedObjectIDs:[orderedObjects valueForKeyPath:@"objectID"] identifierStrings:globalIdStrings];
+    NSArray *globalIdObjectIDs = [self addGlobalIdentifiersForManagedObjectIDs:[orderedObjects valueForKeyPath:@"objectID"] identifierStrings:globalIdStrings];
     NSArray *changeValueArrays = [self propertyChangeValueArraysForInsertedObjects:orderedObjects objectsAreSaved:saved inManagedObjectContext:context];
     
     // Add changes
-    [self addInsertChangesForPropertyChangeValueArrays:changeValueArrays globalIdentifiers:globalIds];
+    [self addInsertChangesForPropertyChangeValueArrays:changeValueArrays globalIdentifierObjectIDs:globalIdObjectIDs];
 }
 
 - (NSArray *)propertyChangeValueArraysForInsertedObjects:(NSArray *)insertedObjects objectsAreSaved:(BOOL)saved inManagedObjectContext:(NSManagedObjectContext *)context
@@ -268,7 +276,7 @@
     return changeArrays;
 }
 
-- (void)addInsertChangesForPropertyChangeValueArrays:(NSArray *)changeArrays globalIdentifiers:(NSArray *)globalIds
+- (void)addInsertChangesForPropertyChangeValueArrays:(NSArray *)changeArrays globalIdentifierObjectIDs:(NSArray *)globalIdObjectIDs
 {
     // Build the event from the property changes on the event store thread
     [eventManagedObjectContext performBlockAndWait:^{
@@ -278,7 +286,8 @@
             NSArray *allPropertyChanges = [changeArrays valueForKeyPath:@"@unionOfArrays.self"];
             NSDictionary *globalIdsByObjectID = [self globalIdentifiersByObjectIDForPropertyChangeValues:allPropertyChanges];
             [changeArrays cde_enumerateObjectsDrainingEveryIterations:50 usingBlock:^(NSArray *propertyChanges, NSUInteger index, BOOL *stop) {
-                CDEGlobalIdentifier *newGlobalId = globalIds[i];
+                NSManagedObjectID *globalIDObjectID = globalIdObjectIDs[i];
+                CDEGlobalIdentifier *newGlobalId = (id)[eventManagedObjectContext objectWithID:globalIDObjectID];
                 NSString *entityName = newGlobalId.nameOfEntity;
                 [self addObjectChangeOfType:CDEObjectChangeTypeInsert forGlobalIdentifier:newGlobalId entityName:entityName propertyChanges:propertyChanges globalIdentifiersByObjectID:globalIdsByObjectID];
                 i++;

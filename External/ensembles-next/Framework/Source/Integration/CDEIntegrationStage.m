@@ -110,9 +110,14 @@
 {
     id currentValue = [self valueForKey:key inObject:object];
     if (value != currentValue && ![value isEqual:currentValue]) {
-        [object willChangeValueForKey:key];
-        [object setPrimitiveValue:value forKey:key];
-        [object didChangeValueForKey:key];
+        @try {
+            [object willChangeValueForKey:key];
+            [object setPrimitiveValue:value forKey:key];
+            [object didChangeValueForKey:key];
+        }
+        @catch ( NSException *exception ) {
+            CDELog(CDELoggingLevelError, @"Exception thrown setting value during integration. Possibly DB corruption. Ignoring: %@", exception);
+        }
     }
 }
 
@@ -334,6 +339,7 @@
     NSMutableDictionary *globalIdStringsByEntity = [NSMutableDictionary dictionary];
     NSManagedObjectModel *model = self.managedObjectContext.persistentStoreCoordinator.managedObjectModel;
     
+    NSMutableDictionary *destinationEntitiesByEntityName = [NSMutableDictionary dictionary];
     for (CDEObjectChange *change in objectChanges) {
         NSString *entityName = change.nameOfEntity;
         NSEntityDescription *entity = model.entitiesByName[entityName];
@@ -359,17 +365,29 @@
                 continue;
             }
             
-            NSString *relatedEntityName = relationship.destinationEntity.name;
-            NSMutableSet *globalIdStrings = globalIdStringsByEntity[relatedEntityName];
-            if (!globalIdStrings) {
-                globalIdStrings = [[NSMutableSet alloc] initWithCapacity:100];
-                globalIdStringsByEntity[relatedEntityName] = globalIdStrings;
+            // A relationship may reference a parent entity, rather than the entity of the
+            // related object. For that reason, we need to include all descendant entities.
+            NSString *destinationName = relationship.destinationEntity.name;
+            NSArray *destinationEntities = destinationEntitiesByEntityName[destinationName];
+            if (!destinationEntities) {
+                destinationEntities = [relationship.destinationEntity cde_descendantEntities];
+                destinationEntities = [destinationEntities arrayByAddingObject:relationship.destinationEntity];
+                destinationEntitiesByEntityName[destinationName] = destinationEntities;
             }
             
-            if (value.relatedIdentifier) [globalIdStrings addObject:value.relatedIdentifier];
-            if (value.addedIdentifiers) [globalIdStrings unionSet:value.addedIdentifiers];
-            if (value.removedIdentifiers) [globalIdStrings unionSet:value.removedIdentifiers];
-            if (value.movedIdentifiersByIndex) [globalIdStrings addObjectsFromArray:value.movedIdentifiersByIndex.allValues];
+            for (NSEntityDescription *relatedEntity in destinationEntities) {
+                NSString *relatedEntityName = relatedEntity.name;
+                NSMutableSet *globalIdStrings = globalIdStringsByEntity[relatedEntityName];
+                if (!globalIdStrings) {
+                    globalIdStrings = [[NSMutableSet alloc] initWithCapacity:100];
+                    globalIdStringsByEntity[relatedEntityName] = globalIdStrings;
+                }
+                
+                if (value.relatedIdentifier) [globalIdStrings addObject:value.relatedIdentifier];
+                if (value.addedIdentifiers) [globalIdStrings unionSet:value.addedIdentifiers];
+                if (value.removedIdentifiers) [globalIdStrings unionSet:value.removedIdentifiers];
+                if (value.movedIdentifiersByIndex) [globalIdStrings addObjectsFromArray:value.movedIdentifiersByIndex.allValues];
+            }
         }
     }
     
