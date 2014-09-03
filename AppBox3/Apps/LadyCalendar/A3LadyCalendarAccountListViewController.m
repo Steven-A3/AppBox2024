@@ -128,7 +128,7 @@
 		detailTextLabel.text = [dateFormatter stringFromDate:account.birthday];
 	} else {
 		detailTextLabel.text = @"";
-	}
+	}acc
 
 	UIButton *editButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[editButton setImage:[UIImage imageNamed:@"arrow"] forState:UIControlStateNormal];
@@ -146,6 +146,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 35.0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44.0;
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
