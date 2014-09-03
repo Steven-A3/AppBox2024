@@ -370,10 +370,14 @@
 
     NSDate *todayMonth = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
 
-    if( [self.dataManager.currentAccount.watchingDate isEqualToDate:todayMonth] )
+    if( [self.dataManager.currentAccount.watchingDate isEqualToDate:todayMonth] ) {
         _currentMonthLabel.textColor = [[A3AppDelegate instance] themeColor];
-    else
+    }
+    else {
         _currentMonthLabel.textColor = [UIColor blackColor];
+    }
+    
+    [_currentMonthLabel sizeToFit];
 }
 
 - (void)moveToCurrentMonth
