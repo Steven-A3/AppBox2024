@@ -335,6 +335,10 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (void)historyViewController:(UIViewController *)viewController selectHistory:(UnitPriceHistory *)history
 {
     if (history) {
+        if (price1UnitPrice > 0 && price2UnitPrice > 0) {
+            [self putHistory];
+        }
+        
         FNLOG(@"Selected History\n%@", [history description]);
 		for (UnitPriceInfo *item in [history unitPrices]) {
 			if ([item.priceName isEqualToString:@"A"]) {
@@ -346,6 +350,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 				_price1.discountPercent = item.discountPercent;
 				_price1.discountPrice = item.discountPrice;
 				_price1.note = item.note;
+                _price1.historyID = item.historyID;
 			} else {
 				_price2.price = item.price;
 				_price2.unitCategoryID = item.unitCategoryID;
@@ -355,6 +360,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 				_price2.discountPercent = item.discountPercent;
 				_price2.discountPrice = item.discountPrice;
 				_price2.note = item.note;
+                _price2.historyID = item.historyID;
 			}
 		}
 		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
@@ -405,7 +411,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (void)inputViewTapped:(A3UnitPriceInputView *)inputView
 {
     if (inputView.tag == 1) {
-
 		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:IS_IPAD ? @"UnitPriceStoryboard_iPad" : @"UnitPriceStoryboard" bundle:nil];
         A3UnitPriceDetailTableController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"A3UnitPriceDetailTableController"];
         viewController.delegate = self;
@@ -436,45 +441,75 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     [self.tableView reloadData];
 }
 
+- (BOOL)hasChangesOfPriceWithHistory {
+    if (!_price1.historyID || !_price2.historyID) {
+        return YES; // 신규
+    }
+    
+    UnitPriceInfo *price1History = [UnitPriceInfo MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"historyID == %@ && priceName == %@ && uniqueID != %@", _price1.historyID, @"A", @"UnitPriceDefault1"]];
+    UnitPriceInfo *price2History = [UnitPriceInfo MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"historyID == %@ && priceName == %@ && uniqueID != %@", _price2.historyID, @"B", @"UnitPriceDefault2"]];
+    
+    NSArray *allkeys = [[[_price1 entity] attributesByName] allKeys];
+    for (NSString *key in allkeys) {
+        if ([key isEqualToString:@"uniqueID"]) {
+            continue;
+        }
+        
+        NSObject *value1 = [_price1 valueForKey:key];
+        if (value1 && ![value1 isEqual:[price1History valueForKey:key]]) {
+            return YES;
+        }
+        
+        NSObject *value2 = [_price2 valueForKey:key];
+        if (value2 && ![value2 isEqual:[price2History valueForKey:key]]) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
 - (void)putHistory
 {
     FNLOG(@"+ putHistory !!");
-    
-    UnitPriceHistory *history = [UnitPriceHistory MR_createEntity];
-	history.uniqueID = [[NSUUID UUID] UUIDString];
-    NSDate *keyDate = [NSDate date];
-    history.updateDate = keyDate;
-	history.currencyCode = [self defaultCurrencyCode];
-    
-    UnitPriceInfo *priceAItem = [UnitPriceInfo MR_createEntity];
-	priceAItem.uniqueID = [[NSUUID UUID] UUIDString];
-	priceAItem.updateDate = [NSDate date];
-	priceAItem.priceName = @"A";
-    priceAItem.price = [self.price1 price];
-	priceAItem.unitCategoryID = _price1.unitCategoryID;
-    priceAItem.unitID = _price1.unitID;
-    priceAItem.size = _price1.size;
-    priceAItem.quantity = _price1.quantity;
-    priceAItem.discountPercent = _price1.discountPercent;
-    priceAItem.discountPrice = _price1.discountPrice;
-    priceAItem.note = _price1.note;
-	priceAItem.historyID = history.uniqueID;
-    
-    UnitPriceInfo *priceBItem = [UnitPriceInfo MR_createEntity];
-	priceBItem.uniqueID = [[NSUUID UUID] UUIDString];
-	priceBItem.updateDate = [NSDate date];
-	priceBItem.priceName = @"B";
-    priceBItem.price = [self.price2 price];
-	priceBItem.unitCategoryID = _price2.unitCategoryID;
-    priceBItem.unitID = _price2.unitID;
-    priceBItem.size = _price2.size;
-    priceBItem.quantity = _price2.quantity;
-    priceBItem.discountPercent = _price2.discountPercent;
-    priceBItem.discountPrice = _price2.discountPrice;
-    priceBItem.note = _price2.note;
-	priceBItem.historyID = history.uniqueID;
-    
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
+    if ([self hasChangesOfPriceWithHistory]) {
+        UnitPriceHistory *history = [UnitPriceHistory MR_createEntity];
+        history.uniqueID = [[NSUUID UUID] UUIDString];
+        NSDate *keyDate = [NSDate date];
+        history.updateDate = keyDate;
+        history.currencyCode = [self defaultCurrencyCode];
+        
+        UnitPriceInfo *priceAItem = [UnitPriceInfo MR_createEntity];
+        priceAItem.uniqueID = [[NSUUID UUID] UUIDString];
+        priceAItem.updateDate = [NSDate date];
+        priceAItem.priceName = @"A";
+        priceAItem.price = [self.price1 price];
+        priceAItem.unitCategoryID = _price1.unitCategoryID;
+        priceAItem.unitID = _price1.unitID;
+        priceAItem.size = _price1.size;
+        priceAItem.quantity = _price1.quantity;
+        priceAItem.discountPercent = _price1.discountPercent;
+        priceAItem.discountPrice = _price1.discountPrice;
+        priceAItem.note = _price1.note;
+        priceAItem.historyID = history.uniqueID;
+        
+        UnitPriceInfo *priceBItem = [UnitPriceInfo MR_createEntity];
+        priceBItem.uniqueID = [[NSUUID UUID] UUIDString];
+        priceBItem.updateDate = [NSDate date];
+        priceBItem.priceName = @"B";
+        priceBItem.price = [self.price2 price];
+        priceBItem.unitCategoryID = _price2.unitCategoryID;
+        priceBItem.unitID = _price2.unitID;
+        priceBItem.size = _price2.size;
+        priceBItem.quantity = _price2.quantity;
+        priceBItem.discountPercent = _price2.discountPercent;
+        priceBItem.discountPrice = _price2.discountPrice;
+        priceBItem.note = _price2.note;
+        priceBItem.historyID = history.uniqueID;
+        
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    }
 
     self.historyBarItem.enabled = YES;
 }
