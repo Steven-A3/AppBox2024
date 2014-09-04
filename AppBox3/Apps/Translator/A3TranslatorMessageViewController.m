@@ -1044,6 +1044,9 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	CGRect keyboardFrame = [kbFrame CGRectValue];
 
 	CGFloat height = IS_IPAD && IS_LANDSCAPE ? keyboardFrame.size.width : keyboardFrame.size.height;
+    if (!IS_IOS7) {
+        height = keyboardFrame.size.height;
+    }
 	_keyboardHeight = height;
 
 	[UIView animateWithDuration:animationDuration animations:^{
