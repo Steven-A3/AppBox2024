@@ -27,7 +27,7 @@ NSString *const NOTES_KEY		= @"note";
 - (void)initValues {
 	self.unitCategoryID = @(-1);
 	self.unitID = @(-1);
-	self.quantity = @0;
+	self.quantity = @1;
 	self.size = @0;
 	self.price = @0;
 	self.note = nil;

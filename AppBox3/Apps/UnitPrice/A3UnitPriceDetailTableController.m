@@ -87,7 +87,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     self.tableView.contentInset = UIEdgeInsetsMake(-1, 0, 36, 0);
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
-    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;     // KJH
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     
     self.title = _isPriceA ? NSLocalizedString(@"Price A", @"Price A") : NSLocalizedString(@"Price B", @"Price B");
     self.currencyFormatter.maximumFractionDigits = 2;
@@ -386,7 +386,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     }
     else if ([self.items objectAtIndex:indexPath.row] == self.quantityItem) {
         inputCell.titleLB.text = NSLocalizedString(@"Quantity", @"Quantity");
-        inputCell.textField.text = priceInfo.quantity ? [self.decimalFormatter stringFromNumber:priceInfo.quantity]:[self.decimalFormatter stringFromNumber:@0];
+        inputCell.textField.text = priceInfo.quantity ? [self.decimalFormatter stringFromNumber:priceInfo.quantity] : [self.decimalFormatter stringFromNumber:@1];
     }
     else if ([self.items objectAtIndex:indexPath.row] == self.discountItem) {
         inputCell.titleLB.text = NSLocalizedString(@"Discount", @"Discount");
