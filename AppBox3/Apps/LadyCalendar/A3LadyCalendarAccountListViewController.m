@@ -48,9 +48,7 @@
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addAction:)];
-	if (IS_IPHONE) {
-		[self rightBarButtonDoneButton];
-	}
+    [self rightBarButtonDoneButton];
 
 	self.checkImage = [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 
@@ -64,10 +62,6 @@
 	[self.savingContext reset];
 	_ladyCalendarAccounts = nil;
     [self.tableView reloadData];
-
-	if (IS_IPAD) {
-		[A3AppDelegate instance].rootViewController.modalPresentedInRightNavigationViewController = nil;
-	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -204,17 +198,11 @@
 	A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
 	navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
 	[self presentViewController:navCtrl animated:YES completion:nil];
-
-	if (IS_IPAD) {
-		[A3AppDelegate instance].rootViewController.modalPresentedInRightNavigationViewController = navCtrl;
-	}
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-	if ( IS_IPHONE ) {
-		[self dismissViewControllerAnimated:YES completion:nil];
-	}
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)addAction:(id)sender
@@ -225,10 +213,6 @@
     A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self presentViewController:navCtrl animated:YES completion:nil];
-
-	if (IS_IPAD) {
-		[A3AppDelegate instance].rootViewController.modalPresentedInRightNavigationViewController = navCtrl;
-	}
 }
 
 @end

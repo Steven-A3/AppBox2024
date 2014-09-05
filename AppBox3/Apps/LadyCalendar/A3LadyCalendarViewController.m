@@ -682,17 +682,15 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 }
 
 - (IBAction)moveToAccountAction:(id)sender {
-    if ( IS_IPHONE )
+    if ( IS_IPHONE ) {
         [self doneButtonAction:nil];
+    }
+    
     A3LadyCalendarAccountListViewController *viewCtrl = [[A3LadyCalendarAccountListViewController alloc] init];
 	viewCtrl.dataManager = self.dataManager;
-    if ( IS_IPHONE ) {
-        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-        [self presentViewController:navCtrl animated:YES completion:nil];
-    }
-    else{
-        [self.A3RootViewController presentRightSideViewController:viewCtrl];
-    }
+    
+    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+    [self presentViewController:navCtrl animated:YES completion:nil];
 }
 
 - (IBAction)settingAction:(id)sender {
