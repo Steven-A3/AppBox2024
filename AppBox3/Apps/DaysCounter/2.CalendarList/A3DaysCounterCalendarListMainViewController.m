@@ -255,13 +255,11 @@
         _headerView_view3_widthConst_iPad.constant = barWidth / 3.0;
     }
     
-#ifdef __IPHONE_8_0
     // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
     if ([self.tableView respondsToSelector:@selector(layoutMargins)])
     {
         self.tableView.layoutMargins = UIEdgeInsetsZero;
     }
-#endif
 }
 
 - (void)setupHeaderInfo

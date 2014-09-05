@@ -53,6 +53,12 @@
 	self.checkImage = [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 
 	[self.tableView setEditing:YES];
+    
+    // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+    {
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -62,6 +68,16 @@
 	[self.savingContext reset];
 	_ladyCalendarAccounts = nil;
     [self.tableView reloadData];
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+    // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+    {
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -130,6 +146,7 @@
 	editButton.tag = indexPath.row;
 	[editButton addTarget:self action:@selector(editButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     cell.editingAccessoryView = editButton;
+    cell.separatorInset = A3UITableViewSeparatorInset;
 
     NSString *defaultID = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID];
     imageView.hidden = ![account.uniqueID isEqualToString:defaultID];
