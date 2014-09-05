@@ -17,6 +17,7 @@
 #import "UnitPriceInfo.h"
 #import "UnitPriceInfo+extension.h"
 #import "A3DefaultColorDefines.h"
+#import "A3UnitPriceMainTableController.h"
 
 @interface A3UnitPriceHistoryViewController () <UIActionSheetDelegate>
 
@@ -154,6 +155,8 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 
 - (void)deleteHistory:(UnitPriceHistory *)history
 {
+    [self releaseMainDefaultPriceObjects];
+    
 	[UnitPriceInfo MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
     [history MR_deleteEntity];
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
@@ -277,6 +280,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        [self releaseMainDefaultPriceObjects];
         
         UnitPriceHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
         [self deleteHistory:history];
@@ -288,6 +292,17 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
             [_delegate didHistoryDeletedHistoryViewController:self];
         }
     }
+}
+
+- (void)releaseMainDefaultPriceObjects
+{
+    // Main화면에서 관리되던 Price 오브젝트의, history로 부터 복원됨 여부를 표시하던 historyID 를 초기화 합니다.
+    UnitPriceInfo *price1 = [UnitPriceInfo MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", A3UnitPricePrice1DefaultID]];
+    price1.historyID = nil;
+    UnitPriceInfo *price2 = [UnitPriceInfo MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", A3UnitPricePrice2DefaultID]];
+    price2.historyID = nil;
+    
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 
