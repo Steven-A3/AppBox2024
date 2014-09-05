@@ -730,7 +730,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 				[self.firstResponder resignFirstResponder];
 				[self setFirstResponder:nil];
 
-				[self.A3RootViewController presentRightSideViewController:[self unitsTabBarController]];
+                UINavigationController *unitTabBarNavigationController = [[UINavigationController alloc] initWithRootViewController:[self unitsTabBarController]];
+                [self presentViewController:unitTabBarNavigationController animated:YES completion:NULL];
 			}
 		}
 		else {

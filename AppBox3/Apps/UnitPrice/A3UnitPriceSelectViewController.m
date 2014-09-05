@@ -57,7 +57,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	[self.view addSubview:self.searchBar];
 	[self mySearchDisplayController];
     
-    if (!_shouldPopViewController && IS_IPHONE) {
+    if ((!_shouldPopViewController && IS_IPHONE) || IS_IPAD) {
         self.tabBarController.navigationItem.leftBarButtonItem = self.cancelItem;
     }
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
@@ -103,7 +103,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     self.isFavoriteMode = segment.selectedSegmentIndex==1 ? YES:NO;
     
     if (![self isEditing]) {
-        if (!_shouldPopViewController && IS_IPHONE) {
+        if ((!_shouldPopViewController && IS_IPHONE) || IS_IPAD) {
             self.tabBarController.navigationItem.leftBarButtonItem = self.cancelItem;
         }
         else {
@@ -225,7 +225,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
         self.tabBarController.navigationItem.leftBarButtonItem = self.plusItem;
     }
     else {
-        if (!_shouldPopViewController && IS_IPHONE) {
+        if ((!_shouldPopViewController && IS_IPHONE) || IS_IPAD) {
             self.tabBarController.navigationItem.leftBarButtonItem = self.cancelItem;
         }
         else {
@@ -274,7 +274,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
         }
     }
     else {
-        [self.A3RootViewController dismissRightSideViewController];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
