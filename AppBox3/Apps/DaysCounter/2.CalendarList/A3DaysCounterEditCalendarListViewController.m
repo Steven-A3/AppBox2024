@@ -50,9 +50,8 @@
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addCalendarAction:)];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
-    if (IS_IPHONE) {
-        [self rightBarButtonDoneButton];
-    }
+
+    [self rightBarButtonDoneButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -207,25 +206,7 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-    if ( IS_IPHONE ) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    else {
-        if ( self.modalVC ) {
-            [self.modalVC dismissViewControllerAnimated:NO completion:^{
-                [self.A3RootViewController dismissRightSideViewController];
-                UINavigationController *navCtrl = self.A3RootViewController.centerNavigationController;
-                UIViewController *viewCtrl = navCtrl.topViewController;
-                [viewCtrl viewWillAppear:YES];
-            }];
-        }
-        else {
-            [self.A3RootViewController dismissRightSideViewController];
-            UINavigationController *navCtrl = self.A3RootViewController.centerNavigationController;
-            UIViewController *viewCtrl = navCtrl.topViewController;
-            [viewCtrl viewWillAppear:YES];
-       }
-    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)checkAction:(id)sender
@@ -290,10 +271,6 @@
     [navCtrl.view addSubview:leftLineView];
     
     [self presentViewController:navCtrl animated:YES completion:nil];
-
-	if (IS_IPAD) {
-		[A3AppDelegate instance].rootViewController.modalPresentedInRightNavigationViewController = navCtrl;
-	}
 }
 
 @end

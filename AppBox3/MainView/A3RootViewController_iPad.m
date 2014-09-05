@@ -111,8 +111,8 @@ static const CGFloat kSideViewWidth = 320.0;
             [presentedViewController.view addSubview:_centerCoverView];
         }
         [_centerNavigationController.view bringSubviewToFront:_centerCoverView];
-        
-    } else {
+    }
+    else {
         if (![_centerCoverView.superview isEqual:_centerNavigationController.view]) {
             [_centerNavigationController.view addSubview:_centerCoverView];
         }

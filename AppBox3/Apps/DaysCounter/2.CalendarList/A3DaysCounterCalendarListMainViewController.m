@@ -414,14 +414,8 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     A3DaysCounterEditCalendarListViewController *viewCtrl = [[A3DaysCounterEditCalendarListViewController alloc] init];
     viewCtrl.sharedManager = _sharedManager;
     
-    if ( IS_IPHONE ) {
-        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-        [self presentViewController:navCtrl animated:YES completion:nil];
-    }
-    else {
-		[self enableControls:NO];
-        [self.A3RootViewController presentRightSideViewController:viewCtrl];
-    }
+    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+    [self presentViewController:navCtrl animated:YES completion:nil];
 }
 
 - (IBAction)addCalendarAction:(id)sender {
