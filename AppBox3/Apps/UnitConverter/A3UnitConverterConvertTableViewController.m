@@ -479,14 +479,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	_isAddingUnit = YES;
 	UIViewController *viewController = [self unitAddViewController];
 
-	if (IS_IPHONE) {
-		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unitAddViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
-	} else {
-		[self enableControls:NO];
-		[self.A3RootViewController presentRightSideViewController:viewController];
-	}
+    _modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    [self presentViewController:_modalNavigationController animated:YES completion:NULL];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unitAddViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 }
 
 - (void)unitAddViewControllerDidDismiss {
@@ -499,7 +494,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	viewController.dataManager = _dataManager;
     viewController.editingDelegate = self;
     viewController.delegate = self;
-    viewController.shouldPopViewController = NO;    // modal
+    viewController.isModal = NO;    // modal
 	viewController.categoryID = _categoryID;
 	viewController.currentUnitID = NSNotFound;
 
@@ -984,17 +979,14 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		_isAddingUnit = NO;
 		A3UnitConverterSelectViewController *viewController = [self unitSelectViewControllerWithSelectedUnit:_selectedRow];
 		if (IS_IPHONE) {
-			viewController.shouldPopViewController = YES;
+			viewController.isModal = YES;
 			[self.navigationController pushViewController:viewController animated:YES];
-		} else {
-			[self enableControls:NO];
-
-			viewController.shouldPopViewController = NO;
-			A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
-			[rootViewController presentRightSideViewController:viewController];
-
-			// share, history, more item disable 처리하기
-			[self rightBarItemsEnabling:NO];
+		}
+        else {
+			viewController.isModal = YES;
+            _modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+            [self presentViewController:_modalNavigationController animated:YES completion:NULL];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unitAddViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 		}
 	}
 	else {

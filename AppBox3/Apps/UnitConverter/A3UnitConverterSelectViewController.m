@@ -61,7 +61,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 	[self.view addSubview:self.searchBar];
 	[self mySearchDisplayController];
     
-    if (!_shouldPopViewController && IS_IPHONE) {
+    if ((!_isModal && IS_IPHONE) || IS_IPAD) {
         self.navigationItem.leftBarButtonItem = self.cancelItem;
     }
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
@@ -244,7 +244,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
         self.navigationItem.leftBarButtonItem = self.plusBarButtonItem;
     }
     else {
-        if (!_shouldPopViewController && IS_IPHONE) {
+        if ((!_isModal && IS_IPHONE) || IS_IPAD) {
             self.navigationItem.leftBarButtonItem = self.cancelItem;
         }
         else {
@@ -263,13 +263,13 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 		[_delegate selectViewController:self didSelectCategoryID:_categoryID unitID:selectedUnitID];
 	}
 	if (IS_IPHONE) {
-		if (_shouldPopViewController) {
+		if (_isModal) {
 			[self.navigationController popViewControllerAnimated:YES];
 		} else {
 			[self dismissViewControllerAnimated:YES completion:nil];
 		}
 	} else {
-		[self.A3RootViewController dismissRightSideViewController];
+        [self dismissViewControllerAnimated:YES completion:nil];
 	}
 }
 
@@ -515,13 +515,13 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 	if (selectedUnitID == _currentUnitID) {
 		// 원래 아이템을 선택하였으므로 아무일 없이 돌아간다.
 		if (IS_IPHONE) {
-			if (_shouldPopViewController) {
+			if (_isModal) {
 				[self.navigationController popViewControllerAnimated:YES];
 			} else {
 				[self dismissViewControllerAnimated:YES completion:nil];
 			}
 		} else {
-			[self.A3RootViewController dismissRightSideViewController];
+            [self dismissViewControllerAnimated:YES completion:nil];
 		}
 
 		return;

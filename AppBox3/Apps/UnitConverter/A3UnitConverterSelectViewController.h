@@ -28,7 +28,7 @@
 @property (nonatomic, weak) id<A3UnitSelectViewControllerDelegate> delegate;
 @property (nonatomic, weak) id<A3UnitConverterFavoriteEditDelegate> editingDelegate;
 @property (nonatomic, copy) NSString *placeHolder;
-@property (nonatomic)		BOOL shouldPopViewController;
+@property (nonatomic)		BOOL isModal;
 @property (nonatomic, assign) NSUInteger categoryID;
 @property (nonatomic, assign) NSUInteger currentUnitID;
 @property (nonatomic, weak) A3UnitDataManager *dataManager;
