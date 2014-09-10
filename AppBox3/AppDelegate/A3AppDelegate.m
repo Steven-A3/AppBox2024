@@ -67,6 +67,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	FNLOG();
 	CDESetCurrentLoggingLevel(CDELoggingLevelVerbose);
 
 	[self prepareDirectories];
@@ -90,7 +91,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		[A3KeychainUtils migrateV1Passcode];
 	} else {
 		_previousVersion = [[A3UserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
-		if (_previousVersion) {
+		if (!_previousVersion) {
 			[A3KeychainUtils removePassword];
 		}
 	}
@@ -199,13 +200,14 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+	FNLOG();
 	// Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 	[self applicationWillEnterForeground_passcode];
-	FNLOG();
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+	FNLOG();
 	A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
 	[syncManager synchronizeWithCompletion:NULL];
 	if ([syncManager isCloudEnabled]) {
@@ -851,5 +853,14 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
     [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsUserNotificationSettingsRegistered object:notificationSettings];
 }
 #endif
+
+- (void)applicationProtectedDataWillBecomeUnavailable:(UIApplication *)application {
+	FNLOG();
+}
+
+- (void)applicationProtectedDataDidBecomeAvailable:(UIApplication *)application {
+	FNLOG();
+}
+
 
 @end
