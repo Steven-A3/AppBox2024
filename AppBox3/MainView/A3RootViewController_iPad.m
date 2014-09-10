@@ -174,6 +174,10 @@ static const CGFloat kSideViewWidth = 320.0;
 }
 
 - (void)animateHideLeftViewForFullScreenCenterView:(BOOL)fullScreenCenterView {
+    if ([self isFullScreenCenterViewAlreadyIfDaysCounter]) {
+        return;
+    }
+    
 	[UIView animateWithDuration:0.3 animations:^{
         [_centerCoverView setHidden:YES];
         
@@ -184,7 +188,7 @@ static const CGFloat kSideViewWidth = 320.0;
 		CGRect frame = _leftNavigationController.view.frame;
         if (IS_PORTRAIT || (IS_LANDSCAPE && fullScreenCenterView)) {
             frame.origin.x = -kSideViewWidth - 1;
-        } else {
+        } else {    
             frame.origin.x = 0;
         }
 		_leftNavigationController.view.frame = frame;
@@ -206,6 +210,17 @@ static const CGFloat kSideViewWidth = 320.0;
 
     } completion:^(BOOL finished) {
     }];
+}
+
+- (BOOL)isFullScreenCenterViewAlreadyIfDaysCounter {
+    CGRect leftFrame = _leftNavigationController.view.frame;
+    CGRect centerFrame = _centerNavigationController.view.frame;
+    CGRect bounds = [self screenBoundsAdjustedWithOrientation];
+    if (IS_IPAD && IS_LANDSCAPE && (leftFrame.origin.x == -kSideViewWidth - 1) && (centerFrame.origin.x == 0) && (centerFrame.size.width == bounds.size.width)) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (void)toggleLeftMenuViewOnOff {
