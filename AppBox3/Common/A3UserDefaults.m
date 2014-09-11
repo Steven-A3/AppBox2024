@@ -77,7 +77,11 @@ NSString *const A3UserDefaultsChangedKey = @"A3UserDefaultsChangedKey";
 	}
 	NSError *error;
 	NSData *data = [NSPropertyListSerialization dataWithPropertyList:database
-															  format:NSPropertyListBinaryFormat_v1_0
+#if TARGET_IPHONE_SIMULATOR
+															  format:NSPropertyListXMLFormat_v1_0
+#else
+															  format:NSPropertyListXMLFormat_v1_0
+#endif
 															 options:0
 															   error:&error];
 	if (error) {

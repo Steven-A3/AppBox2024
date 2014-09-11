@@ -25,7 +25,7 @@
 
 - (void)setEnableAskPasscodeForStarting:(BOOL)enable;
 
-- (void)registerPasscodeUserDefaults;
+- (void)initializePasscodeUserDefaults;
 
 - (BOOL)shouldAskPasscodeForSettings;
 

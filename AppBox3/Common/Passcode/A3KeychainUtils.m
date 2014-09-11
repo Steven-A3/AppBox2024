@@ -112,7 +112,7 @@ static NSString *kA3KeychainAccountName = @"A3AppBox3Passcode";
 
 #pragma mark - Migration from V1
 
-NSString *const kUserEnabledPasscode					= @"kUserEnabledPasscode";
+NSString *const kUserEnabledPasscode				= @"kUserEnabledPasscode";
 NSString *const kUserSavedPasscode					= @"kUserSavedPasscode";
 NSString *const kUserSavedPasscodeHint				= @"kUserSavedPasscodHint";
 NSString *const USERPASSCODEDECRYPTKEY				= @"d54?qjS8QD[.,UasG2R7FhS8?uk-D9+L";

@@ -76,7 +76,6 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	[[NSUbiquitousKeyValueStore defaultStore] synchronize];
 
 	[self setupContext];
-	[self registerPasscodeUserDefaults];
 
 	UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
 	if (localNotification) {
@@ -93,6 +92,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		_previousVersion = [[A3UserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
 		if (!_previousVersion) {
 			[A3KeychainUtils removePassword];
+			[self initializePasscodeUserDefaults];
 		}
 	}
 
