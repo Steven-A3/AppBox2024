@@ -33,11 +33,19 @@
 
 - (CGRect)screenBoundsAdjustedWithOrientation {
 	CGRect bounds = [[UIScreen mainScreen] bounds];
+	#ifdef __IPHONE_8_0
 	if (IS_IOS7 && IS_LANDSCAPE) {
 		CGFloat width = bounds.size.width;
 		bounds.size.width = bounds.size.height;
 		bounds.size.height = width;
 	}
+	#else
+	if (IS_LANDSCAPE) {
+		CGFloat width = bounds.size.width;
+		bounds.size.width = bounds.size.height;
+		bounds.size.height = width;
+	}
+	#endif
 	return bounds;
 }
 

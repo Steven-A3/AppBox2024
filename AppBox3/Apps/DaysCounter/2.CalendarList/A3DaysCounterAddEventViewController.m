@@ -1350,23 +1350,25 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+#ifdef __IPHONE_8_0
     if (IS_IOS7) {
+#endif
         if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
             [self alertLocationDisabled];
             return;
         }
+#ifdef __IPHONE_8_0
     }
     else {
-#ifdef __IPHONE_8_0
         if (![CLLocationManager locationServicesEnabled] || ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedAlways)) {
             [self alertLocationDisabled];
             return;
         }
-#endif
     }
+#endif
 
-    if (!IS_IOS7 && IS_IPAD) {
 #ifdef __IPHONE_8_0
+    if (!IS_IOS7 && IS_IPAD) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
 
@@ -1392,9 +1394,10 @@
         popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
         
         [self presentViewController:alertController animated:YES completion:NULL];
-#endif
     }
-    else {
+    else
+#endif
+	{
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                  delegate:self
                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
@@ -1504,8 +1507,6 @@
     [self resignAllAction];
     
 #ifdef __IPHONE_8_0
-    
-
     if (!IS_IOS7 && _eventItem.alertDatetime) {
         UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
         
