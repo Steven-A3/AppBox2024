@@ -164,6 +164,9 @@
     
 	repayment = (interestRateOfFrequency / (1 - pow(1 + interestRateOfFrequency, -termsInFrequency))) * (principal - downPayment);
     repayment = round(repayment * 100) / 100;
+    if (isnan(repayment)) {
+        repayment = 0;
+    }
     
 	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterminMonth = %f\ndownPayment = %f", principal, repayment, interestRateOfFrequency, termsInFrequency, downPayment);
     
@@ -405,6 +408,10 @@
 #pragma mark - Manage
 - (BOOL)calculated
 {
+    if ([self.totalAmount isEqualToNumber:[NSDecimalNumber notANumber]]) {
+        return NO;
+    }
+    
     if ([self repaymentValid] && [self principalValid] && [self interestValid] && [self termsValid]) {
         return YES;
     }
@@ -435,7 +442,7 @@
 
 - (BOOL)interestValid
 {
-    if (self.annualInterestRate && (self.annualInterestRate.floatValue>=0)) {
+    if (self.annualInterestRate && (self.annualInterestRate.floatValue >= 0)) {
         return YES;
     }
     else {
