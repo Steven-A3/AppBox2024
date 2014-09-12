@@ -34,6 +34,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "NSString+conversion.h"
 #import "DaysCounterCalendar.h"
+#import "CLLocationManager+authorization.h"
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
@@ -1353,7 +1354,7 @@
 #ifdef __IPHONE_8_0
     if (IS_IOS7) {
 #endif
-        if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
+        if (![CLLocationManager locationServicesEnabled] || ![CLLocationManager hasAuthorization]) {
             [self alertLocationDisabled];
             return;
         }

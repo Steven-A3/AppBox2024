@@ -74,6 +74,7 @@
 		17D42F9D1879F6925F0A7A02 /* A3SettingsChooseColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4228D8D938C6FD778BB35 /* A3SettingsChooseColorViewController.m */; };
 		17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEFB63D5877A0449693 /* A3TranslatorCircleView.m */; };
 		3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */; };
+		57213EFB19C328FD005AD0ED /* CLLocationManager+authorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */; };
 		57888EC21940667000306028 /* A3InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57888EC11940667000306028 /* A3InstructionViewController.m */; };
 		68024AD81631637600D396F0 /* A3UIDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 68024AD71631637600D396F0 /* A3UIDevice.m */; };
 		68030ABC17F063D100B04487 /* HTCopyableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68030ABB17F063D100B04487 /* HTCopyableLabel.m */; };
@@ -1047,6 +1048,8 @@
 		3E21D15318FB1BF100B88D62 /* FrameRateCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameRateCalculator.h; sourceTree = "<group>"; };
 		3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrameRateCalculator.m; sourceTree = "<group>"; };
 		5718E4991988E91400B4C7ED /* A3DefaultColorDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DefaultColorDefines.h; sourceTree = "<group>"; };
+		57213EF919C328FD005AD0ED /* CLLocationManager+authorization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLLocationManager+authorization.h"; sourceTree = "<group>"; };
+		57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocationManager+authorization.m"; sourceTree = "<group>"; };
 		57888EC01940667000306028 /* A3InstructionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3InstructionViewController.h; path = Instruction/A3InstructionViewController.h; sourceTree = "<group>"; };
 		57888EC11940667000306028 /* A3InstructionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3InstructionViewController.m; path = Instruction/A3InstructionViewController.m; sourceTree = "<group>"; };
 		68024AD61631637600D396F0 /* A3UIDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIDevice.h; sourceTree = "<group>"; };
@@ -2740,6 +2743,8 @@
 				17D42CE8989EC0F3EED05376 /* NSDate+calculation.h */,
 				17D426C577E54ADD2419E6DB /* NSManagedObject+extension.m */,
 				17D428A55CFBBBAC10E994F1 /* NSManagedObject+extension.h */,
+				57213EF919C328FD005AD0ED /* CLLocationManager+authorization.h */,
+				57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */,
 			);
 			path = A3Categories;
 			sourceTree = "<group>";
@@ -5732,6 +5737,7 @@
 				68E2A65018D0B1FC00E834D9 /* A3TableViewDatePickerCell.m in Sources */,
 				68B6A33918CEC76D004084EF /* A3WalletPhotoItemTitleView.m in Sources */,
 				6895347E178686AF007061CA /* UIImage+Reflection.m in Sources */,
+				57213EFB19C328FD005AD0ED /* CLLocationManager+authorization.m in Sources */,
 				68B6A30A18CEC76D004084EF /* WalletData.m in Sources */,
 				6825365318A7AA4C00EAFB84 /* MASViewAttribute.m in Sources */,
 				6872DD3217B3D56600C1BF44 /* NSDate+TimeAgo.m in Sources */,
