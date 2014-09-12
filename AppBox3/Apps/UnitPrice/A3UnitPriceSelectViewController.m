@@ -12,6 +12,7 @@
 #import "A3UnitConverterTVActionCell.h"
 #import "A3UnitPriceAddViewController.h"
 #import "UIColor+A3Addition.h"
+#import "UIViewController+tableViewStandardDimension.h"
 #import "A3UnitDataManager.h"
 
 @interface A3UnitPriceSelectViewController () <UISearchDisplayDelegate, A3UnitPriceAddViewControllerDelegate>
@@ -61,6 +62,14 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
         self.tabBarController.navigationItem.leftBarButtonItem = self.cancelItem;
     }
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+    
+#ifdef __IPHONE_8_0
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+    {
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+    }
+#endif
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
 
 - (void)cloudStoreDidImport {
@@ -129,6 +138,17 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	}
 }
 
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+#ifdef __IPHONE_8_0
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+    {
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+    }
+#endif
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -145,7 +165,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 - (UIBarButtonItem *)cancelItem
 {
     if (!_cancelItem) {
-        _cancelItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
+        _cancelItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done") style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
     }
     
     return _cancelItem;
@@ -426,6 +446,8 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 		toCell = cell;
 	}
 
+    toCell.separatorInset = A3UITableViewSeparatorInset;
+    
     return toCell;
 }
 

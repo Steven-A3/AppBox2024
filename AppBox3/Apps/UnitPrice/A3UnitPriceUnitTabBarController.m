@@ -126,8 +126,8 @@
 - (UISegmentedControl *)selectSegment
 {
     UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"All Units", @"All Units"), NSLocalizedString(@"Favorites", @"Favorites")]];
-    [segment setWidth:85 forSegmentAtIndex:0];
-    [segment setWidth:85 forSegmentAtIndex:1];
+    [segment setWidth:150 forSegmentAtIndex:0];
+    [segment setWidth:150 forSegmentAtIndex:1];
     [segment setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:13.0]
                                                                 forKey:NSFontAttributeName]
                            forState:UIControlStateNormal];
