@@ -32,10 +32,15 @@
 #define ActionTag_DeleteCalendar 100
 
 #ifdef __IPHONE8_0
+
 @interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, A3InstructionViewControllerDelegate, UIPopoverPresentationControllerDelegate>
+
 #else
-@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, A3InstructionViewControllerDelegate, UIPopoverPresentationControllerDelegate>
+
+@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, A3InstructionViewControllerDelegate>
+
 #endif
+
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) NSArray *searchResultArray;
 @property (nonatomic, strong) UISearchBar *searchBar;
@@ -256,10 +261,12 @@
     }
     
     // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
+#ifdef __IPHONE_8_0
     if ([self.tableView respondsToSelector:@selector(layoutMargins)])
     {
         self.tableView.layoutMargins = UIEdgeInsetsZero;
     }
+#endif
 }
 
 - (void)setupHeaderInfo

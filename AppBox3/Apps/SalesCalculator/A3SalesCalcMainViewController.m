@@ -50,7 +50,7 @@ enum A3TableElementCellType {
 #else
 @interface A3SalesCalcMainViewController () <CLLocationManagerDelegate, UIPopoverControllerDelegate,
 A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, A3TableViewInputElementDelegate,
-A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPresentationControllerDelegate>
+A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 #endif
 
 @property (nonatomic, strong) A3JHTableViewRootElement *root;
@@ -450,9 +450,11 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPre
 	self.localPopoverController = nil;
 }
 
+#ifdef __IPHONE_8_0
 - (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
 	[self enableControls:YES];
 }
+#endif
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	if (self.localPopoverController) {

@@ -1562,6 +1562,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                     [self.tableView reloadRowsAtIndexPaths:@[self.currentIndexPath] withRowAnimation:UITableViewRowAnimationNone];
                 }
 
+#ifdef __IPHONE_8_0
                 if (!IS_IOS7 && IS_IPAD) {
                     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
                     
@@ -1608,10 +1609,13 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     
                     [self presentViewController:alertController animated:YES completion:NULL];
                 }
-                else {
+                else
+#endif
+                {
                     UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_currentFieldItem.hasImage boolValue] delegate:self];
                     actionSheet.tag = 1;
                     [actionSheet showInView:self.view];
+
                 }
                 
             }
@@ -1634,6 +1638,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		[self.firstResponder resignFirstResponder];
 
         // delete category
+#ifdef __IPHONE_8_0
         if (!IS_IOS7 && IS_IPAD) {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet
                                                   ];
@@ -1654,7 +1659,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
             
             [self presentViewController:alertController animated:YES completion:NULL];
         }
-        else {
+        else
+#endif
+		{
             UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                      delegate:self
                                                             cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")

@@ -498,7 +498,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             
         case PeriodCellType_Delete: {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            
+
+#ifdef __IPHONE_8_0
             if (!IS_IOS7 && IS_IPAD) {
                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Period", @"Delete Period") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
@@ -519,7 +520,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
                 popoverPresent.permittedArrowDirections = UIPopoverArrowDirectionDown;
                 [self presentViewController:alertController animated:YES completion:NULL];
             }
-            else {
+            else
+#endif
+			{
                 UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                          delegate:self
                                                                 cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")

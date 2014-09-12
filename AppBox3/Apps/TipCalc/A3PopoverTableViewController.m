@@ -53,6 +53,7 @@ typedef NS_ENUM(NSInteger, SectionType) {
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
     self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
+#ifdef __IPHONE_8_0
 	if (!IS_IOS7) {
 		UITableView *view = self.tableView;
 		if ([view respondsToSelector:@selector(setLayoutMargins:)]) {
@@ -66,6 +67,7 @@ typedef NS_ENUM(NSInteger, SectionType) {
 			[self rightBarButtonDoneButton];
 		}
 	}
+#endif
 }
 
 - (void)didReceiveMemoryWarning
@@ -77,10 +79,12 @@ typedef NS_ENUM(NSInteger, SectionType) {
 - (void)viewWillLayoutSubviews {
 	[super viewWillLayoutSubviews];
 
+#ifdef __IPHONE_8_0
 	UITableView *view = self.tableView;
 	if ([view respondsToSelector:@selector(setLayoutMargins:)]) {
 		[view setLayoutMargins:UIEdgeInsetsZero];
 	}
+#endif
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
@@ -139,9 +143,11 @@ typedef NS_ENUM(NSInteger, SectionType) {
         cell.textLabel.font = [UIFont systemFontOfSize:15];
         cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
 		cell.detailTextLabel.textColor = COLOR_DEFAULT_TEXT_GRAY;
+#ifdef __IPHONE_8_0
 		if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
 			[cell setLayoutMargins:UIEdgeInsetsZero];
 		}
+#endif
 	}
 
     SectionArrayDataEntity * section = [self.tableDataSourceArray objectAtIndex:[indexPath section]];

@@ -129,8 +129,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)resetButtonAction:(UITableViewCell *)sender {
-
-    
+#ifdef __IPHONE_8_0
     if (!IS_IOS7 && IS_IPAD) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"This will reset all settings.\nNo data will be deleted.", nil)
                                                                                  message:@""
@@ -152,7 +151,9 @@ static NSString *CellIdentifier = @"Cell";
 
         [self presentViewController:alertController animated:YES completion:NULL];
     }
-    else {
+    else
+#endif
+    {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will reset all settings.\nNo data will be deleted.", nil)
                                                                  delegate:self
                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")

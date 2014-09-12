@@ -650,6 +650,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
         }
     }
     else if (indexPath.section == 2) {
+#ifdef __IPHONE_8_0
         if (!IS_IOS7 && IS_IPAD) {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
@@ -670,7 +671,9 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
             
             [self presentViewController:alertController animated:YES completion:NULL];
         }
-        else {
+        else
+#endif
+		{
             UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                      delegate:self
                                                             cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")

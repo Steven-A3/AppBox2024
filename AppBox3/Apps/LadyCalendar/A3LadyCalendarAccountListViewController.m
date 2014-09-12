@@ -53,12 +53,14 @@
 	self.checkImage = [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 
 	[self.tableView setEditing:YES];
-    
+
+	#ifdef __IPHONE_8_0
     // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
     if ([self.tableView respondsToSelector:@selector(layoutMargins)])
     {
         self.tableView.layoutMargins = UIEdgeInsetsZero;
     }
+	#endif
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -72,12 +74,14 @@
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    
+
+	#ifdef __IPHONE_8_0
     // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
     if ([self.tableView respondsToSelector:@selector(layoutMargins)])
     {
         self.tableView.layoutMargins = UIEdgeInsetsZero;
     }
+	#endif
 }
 
 - (void)didReceiveMemoryWarning

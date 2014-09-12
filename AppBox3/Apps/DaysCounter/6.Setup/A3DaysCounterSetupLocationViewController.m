@@ -393,9 +393,12 @@
     
     _infoTableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight(self.view.frame), 0, 0, 0);
     [_infoTableView setContentOffset:CGPointMake(0, -CGRectGetHeight(self.view.frame)) animated:YES];
-    if (!IS_IOS7) {
+
+#ifdef __IPHONE_8_0
+	if (!IS_IOS7) {
         _infoTableView.layoutMargins = UIEdgeInsetsZero;
     }
+#endif
     
     return YES;
 }
@@ -920,11 +923,12 @@
         _infoTableView.contentInset = _infoTableViewInsetOld;
         [_infoTableView setContentOffset:_infoTableViewOldOffset animated:YES];
     }
-    
+
+#ifdef __IPHONE_8_0
     if (!IS_IOS7) {
         _infoTableView.layoutMargins = UIEdgeInsetsZero;
     }
-    
+#endif
 }
 
 #pragma mark - action method

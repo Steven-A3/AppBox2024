@@ -43,6 +43,7 @@
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
     self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
 
+#ifdef __IPHONE_8_0
 	if (!IS_IOS7) {
 		UITableView *view = self.tableView;
 		if ([view respondsToSelector:@selector(setLayoutMargins:)]) {
@@ -52,6 +53,7 @@
 		UIView *footerView = [UIView new];
 		self.tableView.tableFooterView = footerView;
 	}
+#endif
 
 	[self registerContentSizeCategoryDidChangeNotification];
 }
@@ -84,6 +86,7 @@
     [self.tableView reloadData];
 }
 
+#ifdef __IPHONE_8_0
 - (void)viewWillLayoutSubviews {
 	[super viewWillLayoutSubviews];
 
@@ -92,6 +95,7 @@
 		[view setLayoutMargins:UIEdgeInsetsZero];
 	}
 }
+#endif
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	[self dismissViewControllerAnimated:YES completion:NULL];
@@ -140,11 +144,12 @@ static NSString *CellIdentifier = @"Cell";
         cell.textLabel.font = [UIFont systemFontOfSize:15];
         cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
 		cell.detailTextLabel.textColor = COLOR_DEFAULT_TEXT_GRAY;
+#ifdef __IPHONE_8_0
 		if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
 			[cell setLayoutMargins:UIEdgeInsetsZero];
 		}
+#endif
 	}
-    
     cell.backgroundColor = [UIColor whiteColor];
 
     NSNumberFormatter *formatter = [NSNumberFormatter new];

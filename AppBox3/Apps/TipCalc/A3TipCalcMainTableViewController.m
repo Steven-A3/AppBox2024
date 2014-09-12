@@ -53,7 +53,11 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 @interface A3TipCalcMainTableViewController () <UITextFieldDelegate, UIActivityItemSource, UIPopoverControllerDelegate,
 		CLLocationManagerDelegate,A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate,
 		A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate,
-		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPresentationControllerDelegate>
+		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate
+#ifdef __IPHONE_8_0
+		, UIPopoverPresentationControllerDelegate
+#endif
+>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *tableDataSource;
 @property (nonatomic, strong) NSArray * tableSectionTitles;
@@ -417,7 +421,9 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     }
     [popoverTableViewController setSectionArrayForTitles:titles withDetails:details];
 
+#ifdef __IPHONE_8_0
 	if (IS_IOS7) {
+#endif
 		self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:popoverTableViewController];
 		self.localPopoverController.backgroundColor = [UIColor whiteColor];
 		self.localPopoverController.delegate = self;
@@ -426,7 +432,9 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 								   permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 		[self.localPopoverController setPopoverContentSize:CGSizeMake(320, popoverTableViewController.tableView.contentSize.height)
 												  animated:NO];
-	} else {
+#ifdef __IPHONE_8_0
+	}
+	else {
 		popoverTableViewController.title = NSLocalizedString(@"Detail", @"Detail");
 		popoverTableViewController.modalPresentationStyle = UIModalPresentationPopover;
 		[popoverTableViewController setPreferredContentSize:CGSizeMake(320, popoverTableViewController.tableView.contentSize.height)];
@@ -437,6 +445,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		[self presentViewController:popoverTableViewController animated:YES completion:nil];
 
 	}
+#endif
 	[self enableControls:NO];
 }
 
@@ -449,15 +458,15 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller.presentedViewController];
 	return navigationController;
 }
+
+- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
+	[self enableControls:YES];
+}
 #endif
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
 	[self enableControls:YES];
 	self.localPopoverController = nil;
-}
-
-- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
-	[self enableControls:YES];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
