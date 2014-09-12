@@ -1279,7 +1279,7 @@ typedef CMathParser<char, double> MathParser;
 - (void) clearCalculation {
     _expressionLabel.text = @"";
     _evaluatedResultLabel.text = @"0";
-    mathexpression = nil;
+    mathexpression = @"";
 }
 
 - (void) specialkeyHandler:(NSUInteger) key {
@@ -1406,14 +1406,20 @@ typedef CMathParser<char, double> MathParser;
             break;
         case A3E_DECIMAL_SEPARATOR:
         {
-            if (!mathexpression) {
+            if (![mathexpression length]) {
                 mathexpression = @"0.";
                 [self convertMathExpressionToAttributedString];
                 break;
             }
             
+            NSRange range = [mathexpression rangeOfString:@"."];
+            if (range.location != NSNotFound) {
+                break;
+            }
+            
+            
             NSString* lastChar = [mathexpression substringFromIndex:[mathexpression length] -1];
-            NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]];
+            range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]];
             if(range.location != NSNotFound)
             {
                 mathexpression = [mathexpression stringByAppendingString:@"."];
