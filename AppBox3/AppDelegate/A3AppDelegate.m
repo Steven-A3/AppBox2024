@@ -638,6 +638,14 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		}
 
 		if ([_countryCodeOfCurrentLocation length]) {
+			NSArray *supportedCountries = [HolidayData supportedCountries];
+			NSInteger indexOfCountry = [supportedCountries indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+				return [_countryCodeOfCurrentLocation isEqualToString:obj[kHolidayCountryCode]];
+			}];
+
+			if (indexOfCountry == NSNotFound)
+				return;
+
 			if (![countries[0] isEqualToString:_countryCodeOfCurrentLocation]) {
 				NSInteger idx = [countries indexOfObject:_countryCodeOfCurrentLocation];
 				if (idx != NSNotFound) {

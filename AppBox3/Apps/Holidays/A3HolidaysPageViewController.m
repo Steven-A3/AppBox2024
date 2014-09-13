@@ -31,7 +31,7 @@
 
 @interface A3HolidaysPageViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource,
 		A3HolidaysEditViewControllerDelegate, FXPageControlDelegate, A3HolidaysCountryViewControllerDelegate,
-		A3HolidaysPageViewControllerProtocol, CLLocationManagerDelegate, A3CenterViewDelegate, UIAlertViewDelegate, A3InstructionViewControllerDelegate>
+		A3HolidaysPageViewControllerProtocol, A3CenterViewDelegate, UIAlertViewDelegate, A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *countries;
 @property (nonatomic, strong) FXPageControl *pageControl;
