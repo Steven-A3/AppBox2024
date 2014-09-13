@@ -36,6 +36,7 @@
 @end
 
 @implementation A3PasswordViewController {
+	BOOL _isWalletEncryptionKeyMode;
 	BOOL _isUserBeingAskedForNewPasscode;
 	BOOL _isUserTurningPasscodeOff;
 	BOOL _isUserChangingPasscode;
@@ -201,7 +202,12 @@
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)showLockscreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton {
+- (void)showEncryptionKeyCheckScreen {
+	_isWalletEncryptionKeyMode = YES;
+	[self showLockScreenWithAnimation:YES showCacelButton:NO];
+}
+
+- (void)showLockScreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton {
 	FNLOG();
 	_beingDisplayedAsLockscreen = YES;
 	_showCancelButton = showCancelButton;
