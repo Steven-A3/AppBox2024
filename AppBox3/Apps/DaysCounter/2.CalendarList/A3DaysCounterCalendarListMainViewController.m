@@ -808,7 +808,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
         //popover.sourceRect = CGRectMake(CGRectGetWidth(self.view.frame) - deleteButtonWidth, senderCell.center.y + senderCell.contentView.bounds.size.height/2, 0, 0);
         popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
         
-        [[self presentViewController:alertController animated:YES completion:NULL];
+        [self presentViewController:alertController animated:YES completion:NULL];
 #else
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"DaysCalendar_CalendarDeleteConfirmMsg", @"Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") otherButtonTitles:nil];
         actionSheet.tag = ActionTag_DeleteCalendar;

@@ -1353,12 +1353,10 @@
     
 #ifdef __IPHONE_8_0
     if (IS_IOS7) {
-#endif
         if (![CLLocationManager locationServicesEnabled] || ![CLLocationManager hasAuthorization]) {
             [self alertLocationDisabled];
             return;
         }
-#ifdef __IPHONE_8_0
     }
     else {
         if (![CLLocationManager locationServicesEnabled] || ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedAlways)) {
@@ -1366,7 +1364,14 @@
             return;
         }
     }
+#else
+    if (![CLLocationManager locationServicesEnabled] || ![CLLocationManager hasAuthorization]) {
+        [self alertLocationDisabled];
+        return;
+    }
 #endif
+    
+    
 
 #ifdef __IPHONE_8_0
     if (!IS_IOS7 && IS_IPAD) {
@@ -1396,9 +1401,7 @@
         
         [self presentViewController:alertController animated:YES completion:NULL];
     }
-    else
-#endif
-	{
+    else {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                  delegate:self
                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
@@ -1408,6 +1411,17 @@
         [actionSheet showInView:self.view];
         [self closeDatePickerCell];
     }
+#else 
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:_eventItem.location ? NSLocalizedString(@"Delete Location", @"Delete Location") : nil
+                                                    otherButtonTitles:NSLocalizedString(@"Use My Location", @"Use My Location"), NSLocalizedString(@"Search Location", @"Search Location"), nil];
+    actionSheet.tag = ActionTag_Location;
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [actionSheet showFromRect:[cell bounds] inView:cell animated:YES];
+    [self closeDatePickerCell];
+#endif
 }
 
 #pragma mark etc
