@@ -268,28 +268,22 @@
 
 - (void)deleteAllAction:(id)sender
 {
-    if (!IS_IOS7 && IS_IPAD) {
 #ifdef __IPHONE_8_0
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [alertController dismissViewControllerAnimated:YES completion:NULL];
-        }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete All", @"Delete All") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-            [alertController dismissViewControllerAnimated:YES completion:NULL];
-            [self deleteAllEventsAction];
-        }]];
-        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
-        popover.barButtonItem = self.navigationItem.leftBarButtonItem;
-        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
-        
-        [self presentViewController:alertController animated:YES completion:NULL];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete All", @"Delete All") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+        [self deleteAllEventsAction];
+    }]];
+    UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+    popover.sourceView = self.view;
+    popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    
+    [self presentViewController:alertController animated:YES completion:NULL];
+#else
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete All", @"Delete All") otherButtonTitles:nil];
+    actionSheet.tag = ActionSheet_DeleteAll;
+    [actionSheet showInView:self.view];
 #endif
-    }
-    else {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete All", @"Delete All") otherButtonTitles:nil];
-        actionSheet.tag = ActionSheet_DeleteAll;
-        [actionSheet showInView:self.view];
-    }
 }
 
 - (void)toggleSelectAction:(id)sender
@@ -310,28 +304,22 @@
 }
 
 - (IBAction)removeAction:(id)sender {
-    if (!IS_IOS7 && IS_IPAD) {
 #ifdef __IPHONE_8_0
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [alertController dismissViewControllerAnimated:YES completion:NULL];
-        }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Events", @"Delete Events") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-            [alertController dismissViewControllerAnimated:YES completion:NULL];
-            [self deleteSelectedEventsAction];
-        }]];
-        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
-        popover.barButtonItem = self.trashBarButton;
-        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
-        
-        [self presentViewController:alertController animated:YES completion:NULL];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Events", @"Delete Events") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+        [self deleteSelectedEventsAction];
+    }]];
+    UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+    popover.sourceView = self.view;
+    popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    
+    [self presentViewController:alertController animated:YES completion:NULL];
+#else
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Events", @"Delete Events") otherButtonTitles:nil];
+    actionSheet.tag = ActionSheet_DeleteSelected;
+    [actionSheet showInView:self.view];
 #endif
-    }
-    else {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Events", @"Delete Events") otherButtonTitles:nil];
-        actionSheet.tag = ActionSheet_DeleteSelected;
-        [actionSheet showInView:self.view];
-    }
 }
 
 - (IBAction)changeCalendarAction:(id)sender {
