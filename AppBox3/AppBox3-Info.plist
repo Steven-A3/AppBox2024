@@ -74,5 +74,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSUbiquitousDisplaySet</key>
+	<string>net.allaboutapps.AppBox</string>
 </dict>
 </plist>
