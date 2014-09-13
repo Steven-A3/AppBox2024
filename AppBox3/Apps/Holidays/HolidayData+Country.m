@@ -624,22 +624,46 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 
 + (NSArray *)userSelectedCountries {
 	NSArray *countries = [[A3UserDefaults standardUserDefaults] objectForKey:kHolidayCountriesForCurrentDevice];
+	NSArray *supportedCountries = [HolidayData supportedCountries];
 	if (!countries) {
-
-		countries = @[@"us", @"kr", @"jp", @"gb"];
+		countries = @[@"us", @"gb", @"de", @"cn", @"jp"];
 
 		NSString *systemCountry = [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] lowercaseString];
+		NSInteger indexOfCountry = [supportedCountries indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+			return [systemCountry isEqualToString:obj[kHolidayCountryCode]];
+		}];
 
-		if (![countries containsObject:systemCountry]) {
-			countries = [@[systemCountry] arrayByAddingObjectsFromArray:countries];
-		} else {
-			NSMutableArray *mutableCountries = [countries mutableCopy];
-			[mutableCountries removeObject:systemCountry];
-			[mutableCountries insertObject:systemCountry atIndex:0];
-			countries = [[NSArray alloc] initWithArray:mutableCountries];
+		if (indexOfCountry != NSNotFound) {
+			if (![countries containsObject:systemCountry]) {
+				countries = [@[systemCountry] arrayByAddingObjectsFromArray:countries];
+			} else {
+				NSMutableArray *mutableCountries = [countries mutableCopy];
+				[mutableCountries removeObject:systemCountry];
+				[mutableCountries insertObject:systemCountry atIndex:0];
+				countries = [[NSArray alloc] initWithArray:mutableCountries];
+			}
 		}
 		[[A3UserDefaults standardUserDefaults] setObject:countries forKey:kHolidayCountriesForCurrentDevice];
 		[[A3UserDefaults standardUserDefaults] synchronize];
+	} else {
+		NSMutableArray *unsupportedCountry = [NSMutableArray new];
+		for (NSString *countryCode in countries) {
+			NSInteger indexOfCountry = [supportedCountries indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+				return [countryCode isEqualToString:obj[kHolidayCountryCode]];
+			}];
+
+			if (indexOfCountry == NSNotFound) {
+				[unsupportedCountry addObject:countryCode];
+			}
+		}
+		if ([unsupportedCountry count]) {
+			NSMutableArray *mutableCountries = [NSMutableArray arrayWithArray:countries];
+			[mutableCountries removeObjectsInArray:unsupportedCountry];
+			countries = mutableCountries;
+
+			[[A3UserDefaults standardUserDefaults] setObject:countries forKey:kHolidayCountriesForCurrentDevice];
+			[[A3UserDefaults standardUserDefaults] synchronize];
+		}
 	}
 	return countries;
 }
