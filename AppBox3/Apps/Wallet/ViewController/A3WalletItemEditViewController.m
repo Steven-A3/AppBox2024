@@ -766,10 +766,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     fromRect.size = CGSizeZero;
     
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-
-		{
-            if (!IS_IOS7 && IS_IPAD) {
 #ifdef __IPHONE_8_0
+            if (!IS_IOS7) {
                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
                 
@@ -788,11 +786,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                 
                 UIPopoverPresentationController *popover = alertController.popoverPresentationController;
                 popover.sourceView = self.view;
-                popover.sourceRect = fromRect;
-                popover.permittedArrowDirections = UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown;
+                popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
                 
                 [self presentViewController:alertController animated:YES completion:NULL];
-#endif
             }
             else {
                 UIActionSheet *actionSheet = deleteEnable ? [[UIActionSheet alloc] initWithTitle:nil
@@ -811,11 +807,33 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                 actionSheet.tag = 2;
                 [actionSheet showInView:self.view];
             }
+#else
+        UIActionSheet *actionSheet = deleteEnable ? [[UIActionSheet alloc] initWithTitle:nil
+                                                                                delegate:self
+                                                                       cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                                                  destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
+                                                                       otherButtonTitles:NSLocalizedString(@"Take Video", nil),
+                                                     NSLocalizedString(@"Choose Existing", nil), nil] :
+        [[UIActionSheet alloc] initWithTitle:nil
+                                    delegate:self
+                           cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                      destructiveButtonTitle:nil
+                           otherButtonTitles:NSLocalizedString(@"Take Video", nil),
+         NSLocalizedString(@"Choose Existing", nil),
+         nil];
+        actionSheet.tag = 2;
+        
+        if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
+            [actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
         }
+        else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
+            [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
+        }
+#endif
 	} else {
 		if (deleteEnable) {
-            if (!IS_IOS7 && IS_IPAD) {
 #ifdef __IPHONE_8_0
+            if (!IS_IOS7) {
                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Video", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
@@ -827,11 +845,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                 
                 UIPopoverPresentationController *popover = alertController.popoverPresentationController;
                 popover.sourceView = self.view;
-                popover.sourceRect = fromRect;
-                popover.permittedArrowDirections = UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown;
+                popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
                 
                 [self presentViewController:alertController animated:YES completion:NULL];
-#endif
             }
             else {
                 UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -842,12 +858,33 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                                               NSLocalizedString(@"Choose Existing", nil),
                                               nil];
                 actionSheet.tag = 2;
-                [actionSheet showInView:self.view];
+                if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
+                    [actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
+                }
+                else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
+                    [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
+                }
             }
+#else
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                     delegate:self
+                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                                       destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
+                                                            otherButtonTitles:
+                                          NSLocalizedString(@"Choose Existing", nil),
+                                          nil];
+            actionSheet.tag = 2;
+            if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
+                [actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
+            }
+            else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
+                [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
+            }
+#endif
         }
         else {
-            if (!IS_IOS7 && IS_IPAD) {
 #ifdef __IPHONE_8_0
+            if (!IS_IOS7 && IS_IPAD) {
                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose Existing", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
@@ -860,7 +897,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                 popover.permittedArrowDirections = UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown;
                 
                 [self presentViewController:alertController animated:YES completion:NULL];
-#endif
             }
             else {
                 UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -871,8 +907,29 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                                               NSLocalizedString(@"Choose Existing", nil),
                                               nil];
                 actionSheet.tag = 2;
-                [actionSheet showInView:self.view];
+                if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
+                    [actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
+                }
+                else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
+                    [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
+                }
             }
+#else
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                     delegate:self
+                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                                       destructiveButtonTitle:nil
+                                                            otherButtonTitles:
+                                          NSLocalizedString(@"Choose Existing", nil),
+                                          nil];
+            actionSheet.tag = 2;
+            if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
+                [actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
+            }
+            else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
+                [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
+            }
+#endif
         }
 	}
 }
@@ -1239,27 +1296,16 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     _imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
     _imagePickerController.delegate = self;
     
+    
+    
     if (IS_IPAD) {
         if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
             _imagePickerController.showsCameraControls = YES;
-            if (IS_IOS7) {
                 [self presentViewController:_imagePickerController animated:YES completion:NULL];
-            }
-            else {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self presentViewController:_imagePickerController animated:YES completion:NULL];
-                });
-            }
         }
         else {
-            if (IS_IOS7) {
-                self.popOverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-                self.popOverController.delegate = self;
-                CGRect rect = [self frameOfImageViewInCellForIndexPath:_currentIndexPath];
-                [_popOverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            }
-            else {
 #ifdef __IPHONE_8_0
+            if (!IS_IOS7) {
                 _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
                 
                 UIPopoverPresentationController *presentationController = [_imagePickerController popoverPresentationController];
@@ -1271,9 +1317,21 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self presentViewController:_imagePickerController animated:YES completion:NULL];
                 });
-                
-                
+            }
+            else
 #endif
+            {
+
+                self.popOverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+                self.popOverController.delegate = self;
+
+                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
+                if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
+                    [_popOverController presentPopoverFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+                }
+                else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
+                    [_popOverController presentPopoverFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+                }
             }
         }
     }
@@ -1612,12 +1670,17 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                 else
 #endif
                 {
+                    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
                     UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_currentFieldItem.hasImage boolValue] delegate:self];
                     actionSheet.tag = 1;
-                    [actionSheet showInView:self.view];
 
+                    if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
+                        [actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
+                    }
+                    else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
+                        [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
+                    }
                 }
-                
             }
             else if ([field.type isEqualToString:WalletFieldTypeVideo]) {
 				[self.firstResponder resignFirstResponder];
