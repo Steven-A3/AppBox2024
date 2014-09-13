@@ -405,7 +405,20 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
     A3SalesCalcDetailInfoViewController *infoViewController = [[A3SalesCalcDetailInfoViewController alloc] initWithStyle:UITableViewStylePlain];
 	[infoViewController setResult:_preferences.calcData];
 
-	if (IS_IOS7) {
+#ifdef __IPHONE_8_0
+	if (!IS_IOS7) {
+		[self.localPopoverController setPopoverContentSize:CGSizeMake(320, infoViewController.tableView.contentSize.height) animated:NO];
+		infoViewController.modalPresentationStyle = UIModalPresentationPopover;
+		[infoViewController setPreferredContentSize:CGSizeMake(320, 308)];
+		UIPopoverPresentationController *popoverPresentationController = infoViewController.popoverPresentationController;
+		popoverPresentationController.sourceView = _headerView.detailInfoButton;
+		popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+		popoverPresentationController.delegate = self;
+		[self presentViewController:infoViewController animated:YES completion:nil];
+	}
+    else
+#endif
+    {
 		infoViewController.tableView.scrollEnabled = IS_IPHONE35;
 		infoViewController.tableView.showsVerticalScrollIndicator = NO;
 		self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:infoViewController];
@@ -416,18 +429,6 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 													 inView:self.view
 								   permittedArrowDirections:UIPopoverArrowDirectionUp
 												   animated:YES];
-
-		[self.localPopoverController setPopoverContentSize:CGSizeMake(320, infoViewController.tableView.contentSize.height) animated:NO];
-	} else {
-#ifdef __IPHONE_8_0
-		infoViewController.modalPresentationStyle = UIModalPresentationPopover;
-		[infoViewController setPreferredContentSize:CGSizeMake(320, 308)];
-		UIPopoverPresentationController *popoverPresentationController = infoViewController.popoverPresentationController;
-		popoverPresentationController.sourceView = _headerView.detailInfoButton;
-		popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
-		popoverPresentationController.delegate = self;
-		[self presentViewController:infoViewController animated:YES completion:nil];
-#endif
 	}
 
     // 기타 & 버튼들, 비활성 처리.
