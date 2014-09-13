@@ -1753,41 +1753,46 @@ EXIT_FUCTION:
 }
 
 - (IBAction)deleteEventAction:(id)sender {
-    
-    if (!IS_IOS7 && IS_IPAD) {
-#ifdef __IPHONE_8_0
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [alertController dismissViewControllerAnimated:YES completion:NULL];
-        }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Event", @"Delete Event") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-            if ( self.delegate && [self.delegate respondsToSelector:@selector(willDeleteEvent:daysCounterEventDetailViewController:)]) {
-                [alertController dismissViewControllerAnimated:YES completion:^{
-                    [self.delegate willDeleteEvent:self.eventItem daysCounterEventDetailViewController:self];
-                }];
-            }
-            else {
-                [_sharedManager removeEvent:_eventItem inContext:[NSManagedObjectContext MR_rootSavingContext] ];
-                [alertController dismissViewControllerAnimated:YES completion:NULL];
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-        }]];
-        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
-        popover.sourceView = self.view;
-        popover.sourceRect = CGRectMake(self.view.center.x, ((UITableViewCell *)sender).center.y + 22, 0, 0);
-        popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
-
-        [self presentViewController:alertController animated:YES completion:NULL];
-#endif
-    }
-    else {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                 delegate:self
-                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                   destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event")
-                                                        otherButtonTitles:nil];
-        [actionSheet showInView:self.view];
-    }
+//#ifdef __IPHONE_8_0
+//    if (!IS_IOS7 && IS_IPAD) {
+//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+//        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+//            [alertController dismissViewControllerAnimated:YES completion:NULL];
+//        }]];
+//        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Event", @"Delete Event") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+//            if ( self.delegate && [self.delegate respondsToSelector:@selector(willDeleteEvent:daysCounterEventDetailViewController:)]) {
+//                [alertController dismissViewControllerAnimated:YES completion:^{
+//                    [self.delegate willDeleteEvent:self.eventItem daysCounterEventDetailViewController:self];
+//                }];
+//            }
+//            else {
+//                [_sharedManager removeEvent:_eventItem inContext:[NSManagedObjectContext MR_rootSavingContext] ];
+//                [alertController dismissViewControllerAnimated:YES completion:NULL];
+//                [self.navigationController popViewControllerAnimated:YES];
+//            }
+//        }]];
+//        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+//        popover.sourceView = self.view;
+//        popover.sourceRect = CGRectMake(self.view.center.x, ((UITableViewCell *)sender).center.y + 22, 0, 0);
+//        popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
+//
+//        [self presentViewController:alertController animated:YES completion:NULL];
+//    }
+//    else {
+//        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+//                                                                 delegate:self
+//                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+//                                                   destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event")
+//                                                        otherButtonTitles:nil];
+//        [actionSheet showInView:self.view];
+//    }
+//#endif
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event")
+                                                    otherButtonTitles:nil];
+    [actionSheet showInView:self.view];
 }
 
 #pragma mark - UIActivityItemSource
