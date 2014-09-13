@@ -1701,9 +1701,7 @@
     actionSheet.tag = ActionTag_Photo;
     // TODO
     if (IS_IPAD) {
-        UITableViewCell *cell = [self.tableView cellForCellSubview:sender];
-        CGRect rect = [self.tableView convertRect:sender.frame fromView:cell.contentView];
-        [actionSheet showFromRect:rect inView:self.view animated:NO];
+        [actionSheet showFromRect:[sender bounds] inView:sender animated:NO];
     }
     else {
         [actionSheet showInView:self.view];
