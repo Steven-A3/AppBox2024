@@ -467,10 +467,15 @@
 
 - (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromSubView:(UIView *)subView completionHandler:(UIActivityViewControllerCompletionHandler)completionHandler {
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
-	activityController.completionHandler = completionHandler;
-    [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-        FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
-    }];
+    if (!completionHandler) {
+        [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+            FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+        }];
+    }
+    else {
+        activityController.completionHandler = completionHandler;
+    }
+    
     
 	if (IS_IPHONE) {
 		[self presentViewController:activityController animated:YES completion:NULL];
