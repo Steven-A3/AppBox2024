@@ -38,7 +38,7 @@
 
 - (float)floatValueEx {
 	NSError *error;
-	NSString *pattern = @"([\\d\\s,\\.]+)";
+	NSString *pattern = @"([\\d\\s',\\.]+)";
 	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
 
 	NSNumberFormatter *decimalStyleFormatter = [[NSNumberFormatter alloc] init];
