@@ -255,6 +255,8 @@ static NSString *CellIdentifier = @"Cell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    _currentIndexPath = indexPath;
+    
 	switch (indexPath.section) {
 		case 1:
         {
@@ -326,14 +328,12 @@ static NSString *CellIdentifier = @"Cell";
 	actionSheet.tag = 200;
     // TODO
     if (IS_IPAD) {
-        CGRect rect;
         if ([sender isKindOfClass:[UITableViewCell class]]) {
-            rect = [self.tableView convertRect:((UITableViewCell *)sender).accessoryView.frame fromView:((UITableViewCell *)sender)];
+            [actionSheet showFromRect:[((UITableViewCell *)sender).accessoryView bounds] inView:[(UITableViewCell *)sender accessoryView] animated:NO];
         }
         else {
-            rect = [self.tableView convertRect:[((UIView *)sender) bounds] fromView:sender];
+            [actionSheet showFromRect:[((UIView *)sender) bounds] inView:sender animated:NO];
         }
-        [actionSheet showFromRect:rect inView:self.view animated:NO];
     }
     else {
         [actionSheet showInView:self.view];
@@ -391,14 +391,7 @@ static NSString *CellIdentifier = @"Cell";
 			if (IS_IPAD) {
 				if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
 					_imagePickerController.showsCameraControls = YES;
-                    if (IS_IOS7) {
-                        [self presentViewController:_imagePickerController animated:YES completion:NULL];
-                    }
-                    else {
-                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                            [self presentViewController:_imagePickerController animated:YES completion:NULL];
-                        });
-                    }
+                    [self presentViewController:_imagePickerController animated:YES completion:NULL];
 				}
 				else {
                     CGRect fromRect;
@@ -410,24 +403,26 @@ static NSString *CellIdentifier = @"Cell";
                         fromRect = [self.view convertRect:_cameraButton.frame fromView:cell];
                     }
                     
-                    if (IS_IOS7) {
-                        self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-                        self.imagePickerPopoverController.delegate = self;
-                        [_imagePickerPopoverController presentPopoverFromRect:fromRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-                    }
-                    else {
 #ifdef __IPHONE_8_0
+                    if (!IS_IOS7) {
                         _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
                         UIPopoverPresentationController *popoverPresentation = [_imagePickerController popoverPresentationController];
                         popoverPresentation.permittedArrowDirections = UIPopoverArrowDirectionAny;
                         popoverPresentation.sourceView = self.view;
                         popoverPresentation.sourceRect = fromRect;
-
+                        
                         // 이전 화면을 덮었던 ActionSheet 가 사라진 후에도 영향을 주어서, 현재의 스택을 벗어나서 실행하도록 하였습니다.
                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                             [self presentViewController:_imagePickerController animated:YES completion:NULL];
                         });
+                    }
+                    else
 #endif
+                    {
+                        self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+                        self.imagePickerPopoverController.delegate = self;
+                        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
+                        [_imagePickerPopoverController presentPopoverFromRect:[cell.accessoryView bounds] inView:[cell accessoryView] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
                     }
                     
 				}
