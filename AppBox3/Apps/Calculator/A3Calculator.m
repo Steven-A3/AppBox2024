@@ -1406,25 +1406,22 @@ typedef CMathParser<char, double> MathParser;
             break;
         case A3E_DECIMAL_SEPARATOR:
         {
-            if (![mathexpression length]) {
+            if (!mathexpression || ![mathexpression length]) {
                 mathexpression = @"0.";
                 [self convertMathExpressionToAttributedString];
                 break;
             }
             
-            NSRange range = [mathexpression rangeOfString:@"."];
+            // . 중복 검색.
+            NSRange range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"(x/+-="] options:NSBackwardsSearch];
+            NSString *lastValue = [mathexpression substringFromIndex:range.location != NSNotFound? range.location + 1 : 0];
+            range = [lastValue rangeOfString:@"."];
             if (range.location != NSNotFound) {
-                break;
+                break;  // 마지막 입력값이 이미 소수점을 갖고 있습니다.
             }
             
-            
-            NSString* lastChar = [mathexpression substringFromIndex:[mathexpression length] -1];
-            range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]];
-            if(range.location != NSNotFound)
-            {
-                mathexpression = [mathexpression stringByAppendingString:@"."];
-                [self convertMathExpressionToAttributedString];
-            }
+            mathexpression = [mathexpression stringByAppendingString:[lastValue length] == 0 ? @"0." : @"."];
+            [self convertMathExpressionToAttributedString];
         }
             break;
     }
