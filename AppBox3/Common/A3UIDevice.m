@@ -42,10 +42,14 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 
 + (CGFloat)statusBarHeight {
 	CGRect frame = [[UIApplication sharedApplication] statusBarFrame];
+	#ifdef __IPHONE_8_0
 	if (IS_IOS7) {
 		return IS_LANDSCAPE ? frame.size.width : frame.size.height;
 	}
 	return frame.size.height;
+	#else
+	return IS_LANDSCAPE ? frame.size.width : frame.size.height;
+	#endif
 }
 
 + (double)memoryUsage {
