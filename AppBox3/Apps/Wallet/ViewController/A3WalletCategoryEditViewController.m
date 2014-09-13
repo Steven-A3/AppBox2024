@@ -169,7 +169,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
     if (!_fields) {
         _fields = [NSMutableArray new];
 		if (!_isAddingCategory) {
-			[_fields addObjectsFromArray:[WalletField MR_findByAttribute:@"categoryID" withValue:_category.uniqueID andOrderBy:A3CommonPropertyOrder ascending:YES]];
+			[_fields addObjectsFromArray:[WalletField MR_findByAttribute:@"categoryID" withValue:_category.uniqueID andOrderBy:A3CommonPropertyOrder ascending:YES inContext:self.savingContext]];
 		}
 		[_fields addObject:self.plusItem];
 	}
@@ -583,6 +583,13 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
 	id fromObject = [_fields objectAtIndex:fromIndexPath.row];
+    
+    WalletField *fromItem = [_fields objectAtIndex:fromIndexPath.row];
+    WalletField *toItem = [_fields objectAtIndex:toIndexPath.row];
+    NSString *temp = fromItem.order;
+    fromItem.order = toItem.order;
+    toItem.order = temp;
+    
 	[_fields removeObjectAtIndex:fromIndexPath.row];
 	[_fields insertObject:fromObject atIndex:toIndexPath.row];
 
