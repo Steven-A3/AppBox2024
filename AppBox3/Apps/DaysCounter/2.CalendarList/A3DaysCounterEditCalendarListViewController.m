@@ -216,12 +216,21 @@
     if ( indexPath == nil )
         return;
     
+    NSArray *shownUserCalendar = [_calendarArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isShow == %@ AND type == %@", @(YES), @(CalendarCellType_User)]];
     DaysCounterCalendar *calendar = [_calendarArray objectAtIndex:indexPath.row];
     BOOL checkState = [calendar.isShow boolValue];
+    if (checkState && [shownUserCalendar count] <= 1) {
+        return;
+    }
+    
     calendar.isShow = @(!checkState);
 	[self.savingContext MR_saveToPersistentStoreAndWait];
-
-	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    if (checkState == [shownUserCalendar count] == 2) {
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    else {
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 - (void)addCalendarAction:(id)sender

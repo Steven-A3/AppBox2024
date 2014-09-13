@@ -2466,12 +2466,12 @@
                 UIButton *button = (UIButton*)[cell viewWithTag:11];
                 CGRect rect = [self.tableView convertRect:button.frame fromView:cell.contentView];
                 
+#ifdef __IPHONE_8_0
                 if (IS_IOS7) {
                     self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
                     [_imagePickerPopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
                 }
                 else {
-#ifdef __IPHONE_8_0
                     _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
                     
                     UIPopoverPresentationController *presentationController = [_imagePickerController popoverPresentationController];
@@ -2482,8 +2482,11 @@
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         [self presentViewController:_imagePickerController animated:YES completion:NULL];
                     });
-#endif
                 }
+#else
+                    self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+                    [_imagePickerPopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+#endif
 			}
 		}
 		else {
@@ -2645,12 +2648,16 @@
         [picker dismissViewControllerAnimated:YES completion:nil];
     }
     else {
+#ifdef __IPHONE_8_0
         if (IS_IOS7) {
             [_imagePickerPopoverController dismissPopoverAnimated:YES];
         }
         else {
             [picker dismissViewControllerAnimated:YES completion:NULL];
         }
+#else 
+        [_imagePickerPopoverController dismissPopoverAnimated:YES];
+#endif
     }
 	_imagePickerController = nil;
 	_imagePickerPopoverController = nil;
