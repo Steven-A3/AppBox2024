@@ -11,6 +11,7 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3UnitConverterAddViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIViewController+tableViewStandardDimension.h"
 #import "A3UnitDataManager.h"
 
 @interface A3UnitConverterSelectViewController () <UISearchDisplayDelegate, A3UnitConverterAddViewControllerDelegate>
@@ -65,6 +66,14 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
         self.navigationItem.leftBarButtonItem = self.cancelItem;
     }
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+    
+#ifdef __IPHONE_8_0
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+    {
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+    }
+#endif
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
 
 - (void)cloudStoreDidImport {
@@ -109,6 +118,16 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 	}
 }
 
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+#ifdef __IPHONE_8_0
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+    {
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+    }
+#endif
+}
+
 - (void)dealloc {
 	[self removeObserver];
 }
@@ -130,7 +149,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 - (UIBarButtonItem *)cancelItem
 {
     if (!_cancelItem) {
-        _cancelItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+        _cancelItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done")
 													   style:UIBarButtonItemStylePlain
 													  target:self
 													  action:@selector(cancelButtonAction:)];
@@ -178,8 +197,8 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 {
     UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"All Units", @"All Units"), NSLocalizedString(@"Favorites", @"Favorites")]];
     
-    [segment setWidth:85 forSegmentAtIndex:0];
-    [segment setWidth:85 forSegmentAtIndex:1];
+    [segment setWidth:IS_IPAD? 150 : 85 forSegmentAtIndex:0];
+    [segment setWidth:IS_IPAD? 150 : 85 forSegmentAtIndex:1];
 
     UIFont *font = [UIFont systemFontOfSize:13.0];
     NSDictionary *attributes = [NSDictionary dictionaryWithObject:font
@@ -446,7 +465,8 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 	FNLOG(@"%@", cell.textLabel.text);
 
 	toCell = cell;
-
+    toCell.separatorInset = A3UITableViewSeparatorInset;
+    
     return toCell;
 }
 
