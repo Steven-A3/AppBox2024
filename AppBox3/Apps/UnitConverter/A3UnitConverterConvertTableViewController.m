@@ -568,7 +568,13 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			NSString *targetShortName = NSLocalizedStringFromTable([_dataManager unitNameForUnitID:targetID categoryID:_categoryID], @"unitShort", nil);
 			NSString *convertInfoText = @"";
 
-			float rate = conversionTable[_categoryID][sourceID] / conversionTable[_categoryID][targetID];
+			float rate;
+            if ([self isSeparatedRateCategory]) {
+                rate = conversionTable[_categoryID][targetID] / conversionTable[_categoryID][sourceID];
+            }
+            else {
+                rate = conversionTable[_categoryID][sourceID] / conversionTable[_categoryID][targetID];
+            }
 
 			if (_isTemperatureMode) {
 				float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:[_dataManager unitNameForUnitID:sourceID categoryID:_categoryID] andTemperature:self.unitValue.floatValue];
@@ -583,7 +589,6 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 				float targetValue = self.unitValue.floatValue * rate;
 
                 if ([[_dataManager unitNameForUnitID:sourceID categoryID:_categoryID] isEqualToString:@"feet inches"]) {
-                    //float rate = [item.item.conversionRate floatValue] / [first.item.conversionRate floatValue];
                     float value = [self.unitValue floatValue];
                     int feet = (int)value;
                     float inch = (value -feet) * kInchesPerFeet;
@@ -662,7 +667,13 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	NSUInteger targetID = [_convertItems[targetIdx] unsignedIntegerValue];
 	NSString *targetShortName = NSLocalizedStringFromTable([_dataManager unitNameForUnitID:targetID categoryID:_categoryID], @"unitShort", nil);
 
-	float rate = conversionTable[_categoryID][sourceID] / conversionTable[_categoryID][targetID];
+	float rate;
+    if ([self isSeparatedRateCategory]) {
+        rate = conversionTable[_categoryID][targetID] / conversionTable[_categoryID][sourceID];
+    }
+    else {
+        rate = conversionTable[_categoryID][sourceID] / conversionTable[_categoryID][targetID];
+    }
 
 	if (_isTemperatureMode) {
 		float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:[_dataManager unitNameForUnitID:sourceID categoryID:_categoryID] andTemperature:self.unitValue.floatValue];
@@ -894,10 +905,16 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			// 섭씨온도를 해당 unit값으로 변환한다
 			float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:sourceUnitName andTemperature:value.floatValue];
 			value = @([TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnitName]);
-
 		}
 		else {
-			conversionRate = (float) (conversionTable[_categoryID][sourceID] / conversionTable[_categoryID][targetID]);
+            if ([self isSeparatedRateCategory]) {
+                conversionRate = conversionTable[_categoryID][targetID] / conversionTable[_categoryID][sourceID];
+            }
+            else {
+                conversionRate = conversionTable[_categoryID][sourceID] / conversionTable[_categoryID][targetID];
+            }
+            
+            
 			value = @(value.floatValue * conversionRate);
 		}
 
@@ -1393,7 +1410,15 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 				if ([key isEqualToString:@"feet inches"]) {
 					isFeetInchMode = YES;
 				}
-				float rate = (float) (conversionTable[_categoryID][sourceID] / conversionTable[_categoryID][targetID]);
+                
+				float rate;
+                if ([self isSeparatedRateCategory]) {
+                    rate = (float) (conversionTable[_categoryID][targetID] / conversionTable[_categoryID][sourceID]);
+                }
+                else {
+                    rate = (float) (conversionTable[_categoryID][sourceID] / conversionTable[_categoryID][targetID]);
+                }
+
 				if (isFeetInchMode) {
 					// 0.3048, 0.0254
 					// feet 계산
@@ -1414,6 +1439,19 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 }
 
 #pragma mark - A3UnitConverterMenuDelegate
+- (BOOL)isCategoryNameEqualWithName:(NSString *)name
+{
+    return [[_dataManager categoryNameForID:_categoryID] isEqualToString:name];
+}
+
+- (BOOL)isSeparatedRateCategory
+{
+    if ([self isCategoryNameEqualWithName:@"Cooking"] || [self isCategoryNameEqualWithName:@"Fuel Consumption"]) {
+        return YES;
+    }
+    
+    return NO;
+}
 
 - (void)menuAdded
 {
