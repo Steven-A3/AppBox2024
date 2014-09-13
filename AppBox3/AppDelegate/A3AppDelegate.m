@@ -43,6 +43,17 @@ NSString *const A3NotificationCloudKeyValueStoreDidImport = @"A3CloudKeyValueSto
 NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataStoreDidImport";
 NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3NotificationsUserNotificationSettingsRegistered";
 
+#ifndef __IPHONE_8_0
+@interface NSURLSessionConfiguration (iOS8Edition)
++ (NSURLSessionConfiguration *)backgroundSessionConfigurationWithIdentifier:(NSString *)identifier;
+@end
+
+@interface CLLocationManager (iOS8Edition)
+- (void)requestWhenInUseAuthorization;
+@end
+
+#endif
+
 @interface A3AppDelegate () <UIAlertViewDelegate, A3DataMigrationManagerDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, strong) NSString *previousVersion;
@@ -502,8 +513,13 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 - (NSURLSession *)backgroundDownloadSession {
 	if (!_backgroundDownloadSession) {
-		NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:@"net.allaboutapps.backgroundTransfer.backgroundSession"];
-		_backgroundDownloadSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+		if (IS_IOS7) {
+			NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:@"net.allaboutapps.backgroundTransfer.backgroundSession"];
+			_backgroundDownloadSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+		} else {
+			NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"net.allaboutapps.backgroundTransfer.backgroundSession"];
+			_backgroundDownloadSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+		}
 	}
 	return _backgroundDownloadSession;
 }
@@ -604,11 +620,13 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 			_locationManager = [[CLLocationManager alloc] init];
 			_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
 			_locationManager.delegate = self;
-#ifdef __IPHONE_8_0
-			if ([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-				[_locationManager requestWhenInUseAuthorization];
+
+			if (!IS_IOS7 && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
+				if ([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+					[_locationManager requestWhenInUseAuthorization];
+				}
 			}
-#endif
+
 			[_locationManager startUpdatingLocation];
 
 			_locationUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(locationDidNotRespond) userInfo:nil repeats:NO];
