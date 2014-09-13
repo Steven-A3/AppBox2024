@@ -114,18 +114,20 @@ static NSString *const kTranslatorLocalizedName = @"localizedName";
 		NSString *format;
 		if (includeDetectLanguage) {
 			format = @"name contains[cd] %@ OR name.componentsSeparatedByKorean contains %@";
+            predicate = [NSPredicate predicateWithFormat:format, trimmed, trimmed];
 		} else {
-			format = @"(name contains[cd] %@ OR name.componentsSeparatedByKorean contains %@) AND code.length >= 1";
+			format = @"(name contains[cd] %@ OR name.componentsSeparatedByKorean contains %@) AND code.length >= 1 AND code != %@";
+            predicate = [NSPredicate predicateWithFormat:format, trimmed, trimmed, @"Detect"];
 		}
-		predicate = [NSPredicate predicateWithFormat:format, trimmed, trimmed];
 	} else {
-		NSString *format;
+        NSString *format;
 		if (includeDetectLanguage) {
 			format = @"name contains[cd] %@";
+            predicate = [NSPredicate predicateWithFormat:format, searchString];
 		} else {
-			format = @"name contains[cd] %@ AND code.length >= 1";
+			format = @"name contains[cd] %@ AND code.length >= 1 AND code != %@";
+            predicate = [NSPredicate predicateWithFormat:format, searchString, @"Detect"];
 		}
-		predicate = [NSPredicate predicateWithFormat:format, searchString];
 	}
 	return [array filteredArrayUsingPredicate:predicate];
 }
