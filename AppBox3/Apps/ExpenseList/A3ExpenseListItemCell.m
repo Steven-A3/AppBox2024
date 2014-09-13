@@ -238,10 +238,15 @@
     }
     else if (textField == _priceTextField) {
         A3NumberKeyboardViewController *keyboardViewController;
+//        if (IS_IPHONE) {
+//            keyboardViewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardSimpleVC_iPhone" bundle:nil];
+//        } else {
+//            keyboardViewController = [[A3NumberKeyboardSimpleVC_iPad alloc] initWithNibName:@"A3NumberKeyboardSimpleVC_iPad" bundle:nil];
+//        }
         if (IS_IPHONE) {
-            keyboardViewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardSimpleVC_iPhone" bundle:nil];
+            keyboardViewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardSimplePrevNextVC_iPhone" bundle:nil];
         } else {
-            keyboardViewController = [[A3NumberKeyboardSimpleVC_iPad alloc] initWithNibName:@"A3NumberKeyboardSimpleVC_iPad" bundle:nil];
+            keyboardViewController = [[A3NumberKeyboardSimpleVC_iPad alloc] initWithNibName:@"A3NumberKeyboardSimplePrevNextVC_iPad" bundle:nil];
         }
         self.inputViewController = keyboardViewController;
         
