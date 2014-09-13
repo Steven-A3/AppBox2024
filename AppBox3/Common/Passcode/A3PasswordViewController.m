@@ -95,10 +95,7 @@
 	_failedAttemptLabel.layer.cornerRadius = 22 * 0.5;
 	[self.view addSubview:_failedAttemptLabel];
 
-	CGSize size = [_failedAttemptLabel.text sizeWithAttributes:@{NSFontAttributeName:_failedAttemptLabel.font, NSForegroundColorAttributeName:[UIColor blackColor]}];
 	[_failedAttemptLabel makeConstraints:^(MASConstraintMaker *make) {
-		_labelWidth = make.width.equalTo(@(size.width));
-		_labelHeight = make.height.equalTo(@(size.height));
 		make.centerX.equalTo(self.view.centerX);
 		_footerY = make.centerY.equalTo(self.view.top).with.offset(headerHeight + headerHeight/2.0 + offset);
 	}];
@@ -612,14 +609,12 @@
 }
 
 - (void)setMessage:(NSString *)text {
-	_failedAttemptLabel.text = text;
-	_failedAttemptLabel.hidden = NO;
-	NSArray *lines = [_failedAttemptLabel.text componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
-	_failedAttemptLabel.numberOfLines = [lines count];
-	CGSize size = [text sizeWithAttributes:@{NSFontAttributeName:_failedAttemptLabel.font, NSForegroundColorAttributeName:[UIColor blackColor]}];
-	_labelWidth.equalTo(@(size.width + 30));
-	_labelHeight.equalTo(@(size.height));
-	[_failedAttemptLabel.superview layoutIfNeeded];
+	if (!IS_IOS7 && (_isUserEnablingPasscode || _isUserChangingPasscode)) {
+		_headerLabel.text = text;
+	} else {
+		_failedAttemptLabel.text = text;
+		_failedAttemptLabel.hidden = NO;
+	}
 }
 
 - (void)showHint:(NSString *)text {
