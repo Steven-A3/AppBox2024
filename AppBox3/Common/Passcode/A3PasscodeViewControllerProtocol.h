@@ -20,7 +20,7 @@
 @protocol A3PasscodeViewControllerProtocol <NSObject>
 @optional
 
-- (void)showLockscreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton;
+- (void)showLockScreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton;
 - (void)showLockscreenInViewController:(UIViewController *)viewController;
 - (void)showForEnablingPasscodeInViewController:(UIViewController *)viewController;
 - (void)showForChangingPasscodeInViewController:(UIViewController *)viewController;

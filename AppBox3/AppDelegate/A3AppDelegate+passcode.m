@@ -66,7 +66,7 @@
 	if (presentLockScreen) {
 		if (!self.passcodeViewController) {
 			self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-			[self.passcodeViewController showLockscreenWithAnimation:NO showCacelButton:NO];
+			[self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:NO];
 		}
 	}
 }
