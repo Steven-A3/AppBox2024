@@ -2510,37 +2510,9 @@
 }
 
 - (IBAction)deleteEventAction:(id)sender {
-    
-    if (!IS_IOS7 && IS_IPAD) {
-#ifdef __IPHONE_8_0
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [alertController dismissViewControllerAnimated:YES completion:NULL];
-        }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Event", @"Delete Event") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-            [alertController dismissViewControllerAnimated:YES completion:NULL];
-            [self deleteEventActionByActionSheet];
-        }]];
-        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
-        popover.sourceView = self.view;
-        
-        if (IS_LANDSCAPE) {
-            popover.sourceRect = CGRectMake(self.view.center.x, ((UITableViewCell *)sender).center.y - 22, 0, 0);
-            popover.permittedArrowDirections = UIPopoverArrowDirectionDown;
-        }
-        else {
-            popover.sourceRect = CGRectMake(self.view.center.x, ((UITableViewCell *)sender).center.y + 22, 0, 0);
-            popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
-        }
-        
-        [self presentViewController:alertController animated:YES completion:NULL];
-#endif
-    }
-    else {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event") otherButtonTitles:nil];
-        actionSheet.tag = ActionTag_DeleteEvent;
-        [actionSheet showInView:self.view];
-    }
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event") otherButtonTitles:nil];
+    actionSheet.tag = ActionTag_DeleteEvent;
+    [actionSheet showInView:self.view];
 }
 
 #pragma mark - UIPopoverControllerDelegate
