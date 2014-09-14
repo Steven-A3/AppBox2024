@@ -399,7 +399,8 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 
 #pragma mark - Displaying
-- (void)showLockscreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton {
+
+- (void)showLockScreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton {
 	_beingDisplayedAsLockscreen = YES;
 //	// In case the user leaves the app while changing/disabling Passcode.
 //	if (!_beingDisplayedAsLockscreen) [self cancelAndDismissMe];
