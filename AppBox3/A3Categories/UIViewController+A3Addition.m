@@ -18,6 +18,9 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
+#import <objc/runtime.h>
+
+static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 
 @implementation UIViewController (A3Addition)
 
@@ -636,5 +639,24 @@
 	[alertView show];
 }
 
+
+- (UIActionSheet *)firstActionSheet {
+	return objc_getAssociatedObject(self, key_firstActionSheet);
+}
+
+- (void)setFirstActionSheet:(UIActionSheet *)actionSheet {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+    if (actionSheet) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rotateFirstActionSheet) name:UIDeviceOrientationDidChangeNotification object:nil];
+    }
+
+    
+	objc_setAssociatedObject(self, key_firstActionSheet, actionSheet, OBJC_ASSOCIATION_ASSIGN);
+}
+
+- (void)rotateFirstActionSheet {
+    [[self firstActionSheet] dismissWithClickedButtonIndex:[self.firstActionSheet cancelButtonIndex] animated:NO];
+}
 
 @end

@@ -84,4 +84,9 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (void)alertLocationDisabled;
 
 - (NSString *)shareMailMessageWithHeader:(NSString *)header contents:(NSString *)contents tail:(NSString *)tail;
+
+
+- (void)setFirstActionSheet:(UIActionSheet *)actionSheet;
+- (UIActionSheet *)firstActionSheet;
+- (void)rotateFirstActionSheet;
 @end
