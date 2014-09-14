@@ -385,23 +385,54 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"Cannot remove current account.", @"Cannot remove current account.") title:nil];
             return;
         }
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-																 delegate:self
-														cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-												   destructiveButtonTitle:NSLocalizedString(@"Delete Account", @"Delete Account")
-														otherButtonTitles:nil];
-        [actionSheet showInView:self.view];
+        
+        [self showDeleteAccountActionSheet];
     }
 }
 
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+    [self setFirstActionSheet:nil];
+    
     if( buttonIndex == actionSheet.destructiveButtonIndex ) {
 		[self.dataManager deleteAccount:_accountItem];
 
 		[self dismissViewControllerAnimated:YES completion:nil];
     }
+}
+
+#pragma mark ActionSheet Rotation Related
+- (void)rotateFirstActionSheet {
+    [super rotateFirstActionSheet];
+    NSInteger currentActionSheetTag = [self.firstActionSheet tag];
+    [self setFirstActionSheet:nil];
+    
+    [self showActionSheetAdaptivelyInViewWithTag:currentActionSheetTag];
+}
+
+- (void)showActionSheetAdaptivelyInViewWithTag:(NSInteger)actionSheetTag {
+    switch (actionSheetTag) {
+        case 0:
+            [self showDeleteAccountActionSheet];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)showDeleteAccountActionSheet
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:NSLocalizedString(@"Delete Account", @"Delete Account")
+                                                    otherButtonTitles:nil];
+    [actionSheet showInView:self.view];
+    actionSheet.tag = 0;
+    
+    [self setFirstActionSheet:actionSheet];
 }
 
 #pragma mark - UITextFieldDelegate
