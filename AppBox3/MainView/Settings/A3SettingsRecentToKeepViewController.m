@@ -9,6 +9,7 @@
 #import "A3SettingsRecentToKeepViewController.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "UIViewController+A3Addition.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3SettingsRecentToKeepViewController () <UIActionSheetDelegate>
@@ -121,24 +122,11 @@
         
         [self presentViewController:alertController animated:YES completion:NULL];
     }
-    else {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                 delegate:self
-                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                   destructiveButtonTitle:NSLocalizedString(@"Clear Recent", @"Clear Recent")
-                                                        otherButtonTitles:nil];
-        [actionSheet showInView:self.view];
-    }
-#else
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                               destructiveButtonTitle:NSLocalizedString(@"Clear Recent", @"Clear Recent")
-                                                    otherButtonTitles:nil];
-    [actionSheet showInView:self.view];
+    else
 #endif
-    
-    
+    {
+        [self showClearRecentActionSheet];
+    }
 }
 
 - (void)clearRecentAction {
@@ -147,9 +135,41 @@
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [self setFirstActionSheet:nil];
+    
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         [self clearRecentAction];
 	}
 }
 
+#pragma mark ActionSheet Rotation Related
+- (void)rotateFirstActionSheet {
+    NSInteger currentActionSheetTag = [self.firstActionSheet tag];
+    [super rotateFirstActionSheet];
+    [self setFirstActionSheet:nil];
+    
+    [self showActionSheetAdaptivelyInViewWithTag:currentActionSheetTag];
+}
+
+- (void)showActionSheetAdaptivelyInViewWithTag:(NSInteger)actionSheetTag {
+    switch (actionSheetTag) {
+        case 0:
+            [self showClearRecentActionSheet];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)showClearRecentActionSheet {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:NSLocalizedString(@"Clear Recent", @"Clear Recent")
+                                                    otherButtonTitles:nil];
+    [actionSheet showInView:self.view];
+    actionSheet.tag = 0;
+    [self setFirstActionSheet:actionSheet];
+}
 @end
