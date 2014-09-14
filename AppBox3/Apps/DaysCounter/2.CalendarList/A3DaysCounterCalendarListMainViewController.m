@@ -863,6 +863,8 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+    [self setFirstActionSheet:nil];
+    
     if ( actionSheet.tag == ActionTag_DeleteCalendar ) {
 		if (buttonIndex == actionSheet.cancelButtonIndex) {
             [self.tableView setEditing:NO animated:YES];
@@ -884,8 +886,8 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 #pragma mark ActionSheet Rotation Related
 - (void)rotateFirstActionSheet {
-    [super rotateFirstActionSheet];
     NSInteger currentActionSheetTag = [self.firstActionSheet tag];
+    [super rotateFirstActionSheet];
     [self setFirstActionSheet:nil];
     
     [self showActionSheetAdaptivelyInViewWithTag:currentActionSheetTag];

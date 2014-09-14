@@ -11,6 +11,7 @@
 #import "NSDate+TimeAgo.h"
 #import "MBProgressHUD.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3SettingsDropboxSelectBackupViewController () <UIActionSheetDelegate, DBRestClientDelegate, MBProgressHUDDelegate>
 
@@ -124,26 +125,11 @@
         
         [self presentViewController:alertController animated:YES completion:NULL];
     }
-    else {
-        UIActionSheet *confirmRestore = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you going to replace existing data with the backup data?", @"")
-                                                                    delegate:self
-                                                           cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                                      destructiveButtonTitle:NSLocalizedString( @"Replace", @"")
-                                                           otherButtonTitles:nil];
-        confirmRestore.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-        [confirmRestore showInView:self.view];
-    }
-#else
-    UIActionSheet *confirmRestore = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you going to replace existing data with the backup data?", @"")
-                                                                delegate:self
-                                                       cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                                  destructiveButtonTitle:NSLocalizedString( @"Replace", @"")
-                                                       otherButtonTitles:nil];
-    confirmRestore.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-    [confirmRestore showInView:self.view];
+    else
 #endif
-    
-    
+    {
+        [self showReplaceActionSheet];
+    }
 }
 
 - (void)selectBackUpFileAction {
@@ -154,10 +140,45 @@
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    [self setFirstActionSheet:nil];
+    
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         [self selectBackUpFileAction];
 	}
 }
+
+#pragma mark ActionSheet Rotation Related
+- (void)rotateFirstActionSheet {
+    NSInteger currentActionSheetTag = [self.firstActionSheet tag];
+    [super rotateFirstActionSheet];
+    [self setFirstActionSheet:nil];
+    
+    [self showActionSheetAdaptivelyInViewWithTag:currentActionSheetTag];
+}
+
+- (void)showActionSheetAdaptivelyInViewWithTag:(NSInteger)actionSheetTag {
+    switch (actionSheetTag) {
+        case 0:
+            [self showReplaceActionSheet];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)showReplaceActionSheet {
+    UIActionSheet *confirmRestore = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you going to replace existing data with the backup data?", @"")
+                                                                delegate:self
+                                                       cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                                  destructiveButtonTitle:NSLocalizedString( @"Replace", @"")
+                                                       otherButtonTitles:nil];
+    confirmRestore.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    [confirmRestore showInView:self.view];
+    confirmRestore.tag = 0;
+    [self setFirstActionSheet:confirmRestore];
+}
+
 
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

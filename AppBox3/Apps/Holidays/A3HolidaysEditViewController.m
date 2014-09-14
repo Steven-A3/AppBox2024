@@ -154,14 +154,7 @@ static NSString *CellIdentifier = @"Cell";
     else
 #endif
     {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will reset all settings.\nNo data will be deleted.", nil)
-                                                                 delegate:self
-                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                   destructiveButtonTitle:NSLocalizedString(@"Reset All", @"Reset All")
-                                                        otherButtonTitles:nil];
-        actionSheet.tag = A3HolidaysResetActionSheet;
-        
-        [actionSheet showInView:self.view];
+        [self showResetActionSheet];
     }
 
     
@@ -343,6 +336,7 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - UIActionSheet delegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [self setFirstActionSheet:nil];
 	if (buttonIndex == actionSheet.cancelButtonIndex) return;
 
 	switch (actionSheet.tag) {
@@ -470,6 +464,38 @@ static NSString *CellIdentifier = @"Cell";
     } else {
         [_imagePickerController dismissViewControllerAnimated:YES completion:NULL];
     }
+}
+
+#pragma mark ActionSheet Rotation Related
+- (void)rotateFirstActionSheet {
+    NSInteger currentActionSheetTag = [self.firstActionSheet tag];
+    [super rotateFirstActionSheet];
+    [self setFirstActionSheet:nil];
+    
+    [self showActionSheetAdaptivelyInViewWithTag:currentActionSheetTag];
+}
+
+- (void)showActionSheetAdaptivelyInViewWithTag:(NSInteger)actionSheetTag {
+    switch (actionSheetTag) {
+        case A3HolidaysResetActionSheet:
+            [self showResetActionSheet];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)showResetActionSheet {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will reset all settings.\nNo data will be deleted.", nil)
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:NSLocalizedString(@"Reset All", @"Reset All")
+                                                    otherButtonTitles:nil];
+    actionSheet.tag = A3HolidaysResetActionSheet;
+    [actionSheet showInView:self.view];
+    
+    [self setFirstActionSheet:actionSheet];
 }
 
 #pragma mark - UIPopoverController Delegate

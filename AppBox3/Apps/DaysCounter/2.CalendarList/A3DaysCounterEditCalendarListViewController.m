@@ -219,7 +219,7 @@
     NSArray *shownUserCalendar = [_calendarArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isShow == %@ AND type == %@", @(YES), @(CalendarCellType_User)]];
     DaysCounterCalendar *calendar = [_calendarArray objectAtIndex:indexPath.row];
     BOOL checkState = [calendar.isShow boolValue];
-    if (checkState && [shownUserCalendar count] <= 1) {
+    if (checkState && [shownUserCalendar count] <= 1 && [calendar.type isEqualToNumber:@(CalendarCellType_User)]) {
         return;
     }
     

@@ -285,16 +285,6 @@
     [super didReceiveMemoryWarning];
 }
 
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    if (self.imagePickerPopoverController) {
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-        UIButton *button = (UIButton*)[cell viewWithTag:11];
-        CGRect rect = [self.tableView convertRect:button.frame fromView:cell.contentView];
-        [self.imagePickerPopoverController presentPopoverFromRect:rect inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    }
-}
-
 #pragma mark -
 
 - (BOOL)hasAdvancedData
@@ -2411,6 +2401,8 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+    [self setFirstActionSheet:nil];
+    
     if ( actionSheet.tag == ActionTag_Photo ) {
 		if (buttonIndex == actionSheet.cancelButtonIndex) return;
 
@@ -2461,14 +2453,9 @@
 			else {
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
                 UIButton *button = (UIButton*)[cell viewWithTag:11];
-                CGRect rect = [self.tableView convertRect:button.frame fromView:cell.contentView];
                 
 #ifdef __IPHONE_8_0
-                if (IS_IOS7) {
-                    self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-                    [_imagePickerPopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-                }
-                else {
+                if (!IS_IOS7) {
                     _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
                     
                     UIPopoverPresentationController *presentationController = [_imagePickerController popoverPresentationController];
@@ -2480,10 +2467,12 @@
                         [self presentViewController:_imagePickerController animated:YES completion:NULL];
                     });
                 }
-#else
-                    self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-                    [_imagePickerPopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+                else
 #endif
+                {
+                    self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+                    [_imagePickerPopoverController presentPopoverFromRect:[button bounds] inView:button permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+                }
 			}
 		}
 		else {
@@ -2514,8 +2503,8 @@
 
 #pragma mark ActionSheet Rotation Related
 - (void)rotateFirstActionSheet {
-    [super rotateFirstActionSheet];
     NSInteger currentActionSheetTag = [self.firstActionSheet tag];
+    [super rotateFirstActionSheet];
     [self setFirstActionSheet:nil];
     
     [self showActionSheetAdaptivelyInViewWithTag:currentActionSheetTag];

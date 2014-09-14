@@ -681,12 +681,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
         else
 #endif
 		{
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                     delegate:self
-                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                       destructiveButtonTitle:NSLocalizedString(@"Delete Category", @"Delete Category")
-                                                            otherButtonTitles:nil];
-            [actionSheet showInView:self.view];
+            [self showDeleteCategoryActionSheet];
         }
         
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -710,9 +705,43 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [self setFirstActionSheet:nil];
+    
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         [self deleteCategoryByActionSheet];
 	}
+}
+
+#pragma mark ActionSheet Rotation Related
+- (void)rotateFirstActionSheet {
+    NSInteger currentActionSheetTag = [self.firstActionSheet tag];
+    [super rotateFirstActionSheet];
+    [self setFirstActionSheet:nil];
+    
+    [self showActionSheetAdaptivelyInViewWithTag:currentActionSheetTag];
+}
+
+- (void)showActionSheetAdaptivelyInViewWithTag:(NSInteger)actionSheetTag {
+    switch (actionSheetTag) {
+        case 100:
+            [self showDeleteCategoryActionSheet];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)showDeleteCategoryActionSheet
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:NSLocalizedString(@"Delete Category", @"Delete Category")
+                                                    otherButtonTitles:nil];
+    [actionSheet showInView:self.view];
+    actionSheet.tag = 100;
+    [self setFirstActionSheet:actionSheet];
 }
 
 @end
