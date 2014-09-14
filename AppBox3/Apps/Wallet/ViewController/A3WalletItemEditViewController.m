@@ -782,7 +782,9 @@ static const NSInteger ActionTag_DeleteItem = 300;
                 
                 [self presentViewController:alertController animated:YES completion:NULL];
             }
-            else {
+            else
+#endif
+            {
                 UIActionSheet *actionSheet = deleteEnable ? [[UIActionSheet alloc] initWithTitle:nil
                                                                                         delegate:self
                                                                                cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
@@ -797,32 +799,16 @@ static const NSInteger ActionTag_DeleteItem = 300;
                  NSLocalizedString(@"Choose Existing", nil),
                  nil];
                 actionSheet.tag = 2;
-                [actionSheet showInView:self.view];
+                
+                if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
+                    [actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
+                }
+                else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
+                    [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
+                }
             }
-#else
-        UIActionSheet *actionSheet = deleteEnable ? [[UIActionSheet alloc] initWithTitle:nil
-                                                                                delegate:self
-                                                                       cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                                                  destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
-                                                                       otherButtonTitles:NSLocalizedString(@"Take Video", nil),
-                                                     NSLocalizedString(@"Choose Existing", nil), nil] :
-        [[UIActionSheet alloc] initWithTitle:nil
-                                    delegate:self
-                           cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                      destructiveButtonTitle:nil
-                           otherButtonTitles:NSLocalizedString(@"Take Video", nil),
-         NSLocalizedString(@"Choose Existing", nil),
-         nil];
-        actionSheet.tag = 2;
-        
-        if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
-            [actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
-        }
-        else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
-            [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
-        }
-#endif
-	} else {
+	}
+    else {
 		if (deleteEnable) {
 #ifdef __IPHONE_8_0
             if (!IS_IOS7) {
@@ -841,7 +827,9 @@ static const NSInteger ActionTag_DeleteItem = 300;
                 
                 [self presentViewController:alertController animated:YES completion:NULL];
             }
-            else {
+            else
+#endif
+            {
                 UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                          delegate:self
                                                                 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
@@ -857,22 +845,6 @@ static const NSInteger ActionTag_DeleteItem = 300;
                     [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
                 }
             }
-#else
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                     delegate:self
-                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                                       destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
-                                                            otherButtonTitles:
-                                          NSLocalizedString(@"Choose Existing", nil),
-                                          nil];
-            actionSheet.tag = 2;
-            if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
-                [actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
-            }
-            else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
-                [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
-            }
-#endif
         }
         else {
 #ifdef __IPHONE_8_0
@@ -890,7 +862,9 @@ static const NSInteger ActionTag_DeleteItem = 300;
                 
                 [self presentViewController:alertController animated:YES completion:NULL];
             }
-            else {
+            else
+#endif
+            {
                 UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                          delegate:self
                                                                 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
@@ -906,22 +880,6 @@ static const NSInteger ActionTag_DeleteItem = 300;
                     [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
                 }
             }
-#else
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                     delegate:self
-                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                                       destructiveButtonTitle:nil
-                                                            otherButtonTitles:
-                                          NSLocalizedString(@"Choose Existing", nil),
-                                          nil];
-            actionSheet.tag = 2;
-            if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
-                [actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
-            }
-            else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
-                [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
-            }
-#endif
         }
 	}
 }
