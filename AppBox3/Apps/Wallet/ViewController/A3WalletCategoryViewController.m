@@ -150,7 +150,8 @@
 		FNLOG();
 		NSMutableArray *items;
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID];
-        items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
+//        items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
+        items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"name" ascending:YES withPredicate:predicate]];
 		[super setItems:items];
     }
 
