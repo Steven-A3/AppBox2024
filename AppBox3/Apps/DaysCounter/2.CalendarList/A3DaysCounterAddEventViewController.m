@@ -1401,27 +1401,11 @@
         
         [self presentViewController:alertController animated:YES completion:NULL];
     }
-    else {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                 delegate:self
-                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                   destructiveButtonTitle:_eventItem.location ? NSLocalizedString(@"Delete Location", @"Delete Location") : nil
-                                                        otherButtonTitles:NSLocalizedString(@"Use My Location", @"Use My Location"), NSLocalizedString(@"Search Location", @"Search Location"), nil];
-        actionSheet.tag = ActionTag_Location;
-        [actionSheet showInView:self.view];
-        [self closeDatePickerCell];
-    }
-#else 
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                               destructiveButtonTitle:_eventItem.location ? NSLocalizedString(@"Delete Location", @"Delete Location") : nil
-                                                    otherButtonTitles:NSLocalizedString(@"Use My Location", @"Use My Location"), NSLocalizedString(@"Search Location", @"Search Location"), nil];
-    actionSheet.tag = ActionTag_Location;
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    [actionSheet showFromRect:[cell bounds] inView:cell animated:YES];
-    [self closeDatePickerCell];
+    else
 #endif
+    {
+        [self showSearchLocationActionSheet];
+    }
 }
 
 #pragma mark etc
@@ -2376,6 +2360,7 @@
 
 #pragma mark - UIActionSheetDelegate
 
+
 - (void)deleteLocationAction
 {
     DaysCounterEventLocation *location = [_eventItem location];
@@ -2524,10 +2509,53 @@
 }
 
 - (IBAction)deleteEventAction:(id)sender {
+    [self showDeleteEventActionSheet];
+}
+
+#pragma mark ActionSheet Rotation Related
+- (void)rotateFirstActionSheet {
+    [super rotateFirstActionSheet];
+    NSInteger currentActionSheetTag = [self.firstActionSheet tag];
+    [self setFirstActionSheet:nil];
+    
+    [self showActionSheetAdaptivelyInViewWithTag:currentActionSheetTag];
+}
+
+- (void)showActionSheetAdaptivelyInViewWithTag:(NSInteger)actionSheetTag {
+    switch (actionSheetTag) {
+        case ActionTag_Location:
+            [self showSearchLocationActionSheet];
+            break;
+            
+        case ActionTag_DeleteEvent:
+            [self showDeleteEventActionSheet];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)showSearchLocationActionSheet
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:_eventItem.location ? NSLocalizedString(@"Delete Location", @"Delete Location") : nil
+                                                    otherButtonTitles:NSLocalizedString(@"Use My Location", @"Use My Location"), NSLocalizedString(@"Search Location", @"Search Location"), nil];
+    actionSheet.tag = ActionTag_Location;
+    [actionSheet showInView:self.view];
+    [self setFirstActionSheet:actionSheet];
+    [self closeDatePickerCell];
+}
+
+- (void)showDeleteEventActionSheet {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event") otherButtonTitles:nil];
     actionSheet.tag = ActionTag_DeleteEvent;
     [actionSheet showInView:self.view];
+    [self setFirstActionSheet:actionSheet];
 }
+
 
 #pragma mark - UIPopoverControllerDelegate
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
