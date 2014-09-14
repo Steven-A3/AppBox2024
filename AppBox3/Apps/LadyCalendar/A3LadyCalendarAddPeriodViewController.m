@@ -523,12 +523,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             else
 #endif
 			{
-                UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                         delegate:self
-                                                                cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                           destructiveButtonTitle:NSLocalizedString(@"Delete Period", @"Delete Period")
-                                                                otherButtonTitles:nil];
-                [actionSheet showInView:self.view];
+                [self showDeletePeriodActionSheet];
             }
         }
             break;
@@ -549,9 +544,43 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+    [self setFirstActionSheet:nil];
+    
     if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
         [self deletePeriodAction];
     }
+}
+
+#pragma mark ActionSheet Rotation Related
+- (void)rotateFirstActionSheet {
+    [super rotateFirstActionSheet];
+    NSInteger currentActionSheetTag = [self.firstActionSheet tag];
+    [self setFirstActionSheet:nil];
+    
+    [self showActionSheetAdaptivelyInViewWithTag:currentActionSheetTag];
+}
+
+- (void)showActionSheetAdaptivelyInViewWithTag:(NSInteger)actionSheetTag {
+    switch (actionSheetTag) {
+        case 0:
+            [self showDeletePeriodActionSheet];
+            break;
+
+        default:
+            break;
+    }
+}
+
+- (void)showDeletePeriodActionSheet
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:NSLocalizedString(@"Delete Period", @"Delete Period")
+                                                    otherButtonTitles:nil];
+    [actionSheet showInView:self.view];
+    actionSheet.tag = 0;
+    [self setFirstActionSheet:actionSheet];
 }
 
 #pragma mark - UIScrollViewDelegate
