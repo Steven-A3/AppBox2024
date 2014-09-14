@@ -68,6 +68,8 @@
 			self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
 			[self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:NO];
 		}
+	} else {
+		[self showReceivedLocalNotifications];
 	}
 }
 
@@ -165,8 +167,9 @@
 	}
 }
 
-- (void)passcodeViewControllerWasDismissedWithSuccess:(BOOL)success {
+- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
 	self.passcodeViewController = nil;
+	[self showReceivedLocalNotifications];
 }
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {

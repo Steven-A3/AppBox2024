@@ -899,3 +899,10 @@
 "Syncing...(%@)" = "Syncing...(%@)";
 
 "Detail" = "Dettaglio";
+
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "La migrazione dei dati è in corso.\
+Inserire chiave di crittografia per il portafoglio.";
+"Data migration is in progress." = "La migrazione dei dati è in corso.";
+"Encryption key did not match." = "Chiave di crittografia non ha prodotto risultati.";
+"No hint" = "Nessun suggerimento.";
+"Restore canceled" = "Ripristinare annullata";

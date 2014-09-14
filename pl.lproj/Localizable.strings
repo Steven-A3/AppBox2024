@@ -904,3 +904,10 @@
 "iCloud delete is in progress. Try after 10 minutes." = "iCloud kasowania jest w toku. Starają się po 10 minutach.";
 "Syncing...(%@)" = "Synchonizacja...(%@)";
 "Detail" = "Szczegóły";
+
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "Migracja danych jest w toku.\
+Wprowadź klucz szyfrowania dla portfela.";
+"Data migration is in progress." = "Migracja danych jest w toku.";
+"Encryption key did not match." = "Klucz szyfrowania nie dało.";
+"No hint" = "Śladu.";
+"Restore canceled" = "Przywrócić odwołany";

@@ -915,3 +915,10 @@
 "Syncing...(%@)" = "동기화...(%@)";
 
 "Detail" = "세부 정보";
+
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "데이터를 변환하고 있습니다.\
+전자지갑 암호키를 입력해 주세요.";
+"Data migration is in progress." = "데이터를 변환하고 있습니다.";
+"Encryption key did not match." = "암호키가 일치하지 않습니다.";
+"No hint" = "힌트가 없습니다.";
+"Restore canceled" = "복원이 취소되었습니다.";

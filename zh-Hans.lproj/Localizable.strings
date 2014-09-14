@@ -922,3 +922,10 @@
 "Syncing...(%@)" = "同步...(%@)";
 
 "Detail" = "详细";
+
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "数据迁移正在进行中。\
+输入加密密钥的钱包。 ";
+"Data migration is in progress." = "数据迁移正在进行中。";
+"Encryption key did not match." = "加密密钥不匹配。";
+"No hint" = "没有任何提示。";
+"Restore canceled" = "还原取消";

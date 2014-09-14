@@ -320,8 +320,8 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 	_passcodeValid = NO;
 
-	if ([self.delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
-		[self.delegate passcodeViewControllerWasDismissedWithSuccess:NO];
+	if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
+		[self.delegate passcodeViewControllerDidDismissWithSuccess:NO];
 	}
 	[self dismissViewControllerAnimated: YES completion: nil];
 }
@@ -385,8 +385,8 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 		_passcodeValid = YES;
 
-		if ([self.delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
-			[self.delegate passcodeViewControllerWasDismissedWithSuccess:YES];
+		if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
+			[self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
 		}
 	}];
 	[[NSNotificationCenter defaultCenter] removeObserver: self

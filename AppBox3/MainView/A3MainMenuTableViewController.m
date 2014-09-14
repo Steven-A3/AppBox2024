@@ -261,7 +261,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 						} else {
 							passcodeTargetViewController = [[A3AppDelegate instance] rootViewController];
 						}
-						[_passcodeViewController showLockscreenInViewController:passcodeTargetViewController];
+						[_passcodeViewController showLockScreenInViewController:passcodeTargetViewController];
 					} else {
 						[weakSelf popToRootAndPushViewController:targetViewController];
 						[weakSelf updateRecentlyUsedAppsWithElement:menuElement];

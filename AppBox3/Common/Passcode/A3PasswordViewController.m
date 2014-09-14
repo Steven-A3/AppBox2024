@@ -75,7 +75,16 @@
 	_headerLabel = [UILabel new];
 	_headerLabel.font = [UIFont systemFontOfSize:17];
 	_headerLabel.textColor = [UIColor colorWithWhite:0.31f alpha:1.0f];
-	_headerLabel.text = NSLocalizedString(@"Enter your passcode", @"Enter your passcode");
+	if (_isWalletEncryptionKeyMode) {
+		if (_beingPresentedInViewController) {
+			_headerLabel.text = NSLocalizedString(@"Data migration is in progress.", nil);
+		} else {
+			_headerLabel.text = NSLocalizedString(@"Data migration is in progress.\nEnter Encryption Key for Wallet.", nil);
+			_headerLabel.numberOfLines = 2;
+		}
+	} else {
+		_headerLabel.text = NSLocalizedString(@"Enter your passcode", @"Enter your passcode");
+	}
 	_headerLabel.textAlignment = NSTextAlignmentCenter;
 	[self.view addSubview:_headerLabel];
 
@@ -111,6 +120,8 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
+    FNLOG();
+    
 	[self.tableView reloadData];
 
 	if (_isUserEnablingPasscode) {
@@ -196,15 +207,21 @@
 	[_confirmPasswordField resignFirstResponder];
 	[_passwordHintField resignFirstResponder];
 
-	if ([self.delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
-		[self.delegate passcodeViewControllerWasDismissedWithSuccess:NO];
+	if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
+		[self.delegate passcodeViewControllerDidDismissWithSuccess:NO];
 	}
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)showEncryptionKeyScreenInViewController:(UIViewController *)viewController {
+	_isWalletEncryptionKeyMode = YES;
+	[self showLockScreenInViewController:viewController];
+	self.title = NSLocalizedString(@"Encryption Key for Wallet", @"");
+}
+
 - (void)showEncryptionKeyCheckScreen {
 	_isWalletEncryptionKeyMode = YES;
-	[self showLockScreenWithAnimation:YES showCacelButton:NO];
+	[self showLockScreenWithAnimation:NO showCacelButton:NO];
 }
 
 - (void)showLockScreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton {
@@ -238,7 +255,7 @@
 	self.title = NSLocalizedString(@"Enter Passcode", @"");
 }
 
-- (void)showLockscreenInViewController:(UIViewController *)viewController {
+- (void)showLockScreenInViewController:(UIViewController *)viewController {
 	_showCancelButton = YES;
 	_beingDisplayedAsLockscreen = YES;
 	_beingPresentedInViewController = viewController != nil;
@@ -331,8 +348,13 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	// Show hint
-	NSString *hintString = [A3KeychainUtils getHint];
-	[self showHint:hintString];
+	if (_isWalletEncryptionKeyMode) {
+		NSString *hintString = [self.delegate encryptionKeyHintStringForEncryptionKeyCheckViewController];
+		[self showHint:hintString];
+	} else {
+		NSString *hintString = [A3KeychainUtils getHint];
+		[self showHint:hintString];
+	}
 }
 
 - (UITextField *)setupPasscodeField {
@@ -344,6 +366,7 @@
 }
 
 - (void)setupCell:(UITableViewCell *)cell forRowAskingPasscodeAtIndexPath:(NSIndexPath *)indexPath {
+    FNLOG();
 	if (!_passwordField) {
 		_passwordField = [self setupPasscodeField];
 	}
@@ -466,8 +489,8 @@
 		[self removeFromParentViewController];
 	}
 
-	if ([self.delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
-		[self.delegate passcodeViewControllerWasDismissedWithSuccess:YES];
+	if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
+		[self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
 	}
 }
 
@@ -484,10 +507,14 @@
 //														object: self
 //													  userInfo: nil];
 
-	if (_failedAttempts == 1) {
-		[self setMessage:NSLocalizedString(@"1 Passcode Failed Attempt", @"")];
+	if (_isWalletEncryptionKeyMode) {
+		[self setMessage:NSLocalizedString(@"Encryption key did not match.", @"")];
 	} else {
-		[self setMessage:[NSString stringWithFormat: NSLocalizedString(@"%li Passcode Failed Attempts", @""), (long)_failedAttempts]];
+		if (_failedAttempts == 1) {
+			[self setMessage:NSLocalizedString(@"1 Passcode Failed Attempt", @"")];
+		} else {
+			[self setMessage:[NSString stringWithFormat: NSLocalizedString(@"%li Passcode Failed Attempts", @""), (long)_failedAttempts]];
+		}
 	}
 }
 
@@ -514,6 +541,15 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	if (_isWalletEncryptionKeyMode) {
+		if ([_passwordField.text length] && [self.delegate verifyEncryptionKeyEncryptionKeyCheckViewController:_passwordField.text]) {
+			[self dismissMe];
+			return YES;
+		} else {
+			[self denyAccess];
+		}
+		return NO;
+	}
 	if (_beingDisplayedAsLockscreen || _isUserTurningPasscodeOff) {
 		if ([self isPasswordValid]) {
 			if (_isUserTurningPasscodeOff) {

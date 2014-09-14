@@ -910,3 +910,10 @@
 "iCloud delete is in progress. Try after 10 minutes." = "iCloud削除を進行中です。10分後に試してみてください。";
 "Syncing...(%@)" = "同期化...(%@)";
 "Detail" = "详细";
+
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "データを変換しています。\
+電子財布暗号化キーを入力してください。";
+"Data migration is in progress." = "データを変換しています。";
+"Encryption key did not match." = "無効なキーです。再度入力してください。";
+"No hint" = "ヒントはありません。";
+"Restore canceled" = "復元がキャンセルされました。";

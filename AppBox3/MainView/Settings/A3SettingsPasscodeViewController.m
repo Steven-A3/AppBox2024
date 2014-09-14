@@ -334,7 +334,7 @@
 		} else {
 			_passcodeViewController = [[A3PasscodeViewController alloc] initWithDelegate:self];
 		}
-		[_passcodeViewController showLockscreenInViewController:self];
+		[_passcodeViewController showLockScreenInViewController:self];
 	} else {
 		A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 		[defaults setBool:control.isOn forKey:kUserDefaultsKeyForUseSimplePasscode];
@@ -344,7 +344,7 @@
 
 #pragma mark - A3PasscodeViewControllerDelegate
 
-- (void)passcodeViewControllerWasDismissedWithSuccess:(BOOL)success {
+- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
 	_passcodeViewController = nil;
 
 	if (_changingPasscodeType) {

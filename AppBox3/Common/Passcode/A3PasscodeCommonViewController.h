@@ -18,6 +18,6 @@
 @property (nonatomic, weak) id<A3PasscodeViewControllerDelegate> delegate;
 
 - (void)statusBarFrameOrOrientationChanged:(NSNotification *)notification;
-
 - (void)rotateAccordingToStatusBarOrientationAndSupportedOrientations;
+
 @end

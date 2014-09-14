@@ -856,3 +856,10 @@
 "Syncing...(%@)" = "Syncing...(%@)";
 
 "Detail" = "Detail";
+
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "Data migration is in progress.\
+Enter Encryption Key for Wallet.";
+"Data migration is in progress." = "Data migration is in progress.";
+"Encryption key did not match." = "Encryption key did not match.";
+"No hint" = "No hint";
+"Restore canceled" = "Restore canceled";

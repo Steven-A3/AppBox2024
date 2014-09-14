@@ -898,3 +898,10 @@
 "iCloud delete is in progress. Try after 10 minutes." = "iCloud eliminación está en curso. Pruebe después de 10 minutos.";
 "Syncing...(%@)" = "Sincronizando...(%@)";
 "Detail" = "Detalle";
+
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "La migración de datos está en curso.\
+Introduzca la clave de cifrado para el bolsillo.";
+"Data migration is in progress." = "La migración de datos está en curso.";
+"Encryption key did not match." = "Clave de cifrado no coinciden.";
+"No hint" = "No se toque.";
+"Restore canceled" = "Restaurar cancelado";

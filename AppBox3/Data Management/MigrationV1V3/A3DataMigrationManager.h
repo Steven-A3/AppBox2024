@@ -18,6 +18,8 @@ extern NSString *const A3NotificationDataMigrationFinished;
 
 @property (nonatomic, weak) id<A3DataMigrationManagerDelegate> delegate;
 @property (nonatomic, copy) NSString *migrationDirectory;
+@property (nonatomic, assign) BOOL canCancelInEncryptionKeyView;
+@property (nonatomic, weak) UIViewController *hostingViewController;
 
 - (instancetype)init;
 - (void)migrateV1DataWithPassword:(NSString *)password;

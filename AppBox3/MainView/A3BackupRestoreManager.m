@@ -449,6 +449,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 		A3DataMigrationManager *migrationManager = [[A3DataMigrationManager alloc] init];
 		migrationManager.migrationDirectory = backupFilePath;
+		migrationManager.canCancelInEncryptionKeyView = YES;
+		migrationManager.hostingViewController = self.hostingViewController;
 		if ([migrationManager walletDataFileExists] && ![migrationManager walletDataWithPassword:nil]) {
 			migrationManager.delegate = self;
 			self.migrationManager = migrationManager;

@@ -912,3 +912,10 @@ Erneut versuchen.";
 "Syncing...(%@)" = "Synchronisieren(%@)";
 
 "Detail" = "Detail";
+
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "Datenmigration ist in Arbeit.\
+Geben Sie Verschlüsselung für die Geldbörse.";
+"Data migration is in progress." = "Datenmigration ist in Arbeit.";
+"Encryption key did not match." = "Falscher Schlüssel. Versuchen Sie es erneut.";
+"No hint" = "Kein Hinweis";
+"Restore canceled" = "Wiederherstellung abgebrochen";

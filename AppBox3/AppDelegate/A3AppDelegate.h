@@ -74,20 +74,20 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 @property (strong, nonatomic) UIImageView *coverView;
 @property (assign, nonatomic) BOOL shouldMigrateV1Data;
 @property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (strong, nonatomic) A3DataMigrationManager *migrationManager;
 @property (nonatomic, strong) NSMetadataQuery *metadataQuery;
 
 + (A3AppDelegate *)instance;
-- (void)coreDataReady;
+
 - (void)showReceivedLocalNotifications;
 - (UINavigationController *)navigationController;
 - (UIViewController *)visibleViewController;
 
+- (void)downloadDataFiles;
+
 - (void)setupContext;
-
 - (NSURL *)storeURL;
-
 - (NSString *)storeFileName;
+
 @end
 
 #import "A3AppDelegate+iCloud.h"

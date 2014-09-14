@@ -11,9 +11,12 @@
 
 @protocol A3PasscodeViewControllerDelegate <NSObject>
 @optional
-- (void)passcodeViewControllerWasDismissedWithSuccess:(BOOL)success;
+- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success;
 - (void)maxNumberOfFailedAttemptsReached;
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success;
+
+- (NSString *)encryptionKeyHintStringForEncryptionKeyCheckViewController;
+- (BOOL)verifyEncryptionKeyEncryptionKeyCheckViewController:(NSString *)key;
 
 @end
 
@@ -21,7 +24,7 @@
 @optional
 
 - (void)showLockScreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton;
-- (void)showLockscreenInViewController:(UIViewController *)viewController;
+- (void)showLockScreenInViewController:(UIViewController *)viewController;
 - (void)showForEnablingPasscodeInViewController:(UIViewController *)viewController;
 - (void)showForChangingPasscodeInViewController:(UIViewController *)viewController;
 - (void)showForTurningOffPasscodeInViewController:(UIViewController *)viewController;

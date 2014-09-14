@@ -362,6 +362,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 	if (!_backupRestoreManager) {
 		_backupRestoreManager = [A3BackupRestoreManager new];
 		_backupRestoreManager.hostingView = self.navigationController.view;
+		_backupRestoreManager.hostingViewController = self;
 	}
 	return _backupRestoreManager;
 }

@@ -20,11 +20,11 @@
 
 NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 
-@interface A3LaunchViewController () <UIViewControllerTransitioningDelegate, UIActionSheetDelegate>
+@interface A3LaunchViewController () <UIViewControllerTransitioningDelegate, UIActionSheetDelegate, A3DataMigrationManagerDelegate>
 
 @property (nonatomic, strong) UIStoryboard *launchStoryboard;
 @property (nonatomic, strong) A3LaunchSceneViewController *currentSceneViewController;
-@property (nonatomic, strong) id migrationFinishObserver;
+@property (nonatomic, strong) A3DataMigrationManager *migrationManager;
 
 @end
 
@@ -46,6 +46,11 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+
+	if ([[A3AppDelegate instance] shouldMigrateV1Data]) {
+		[[A3UserDefaults standardUserDefaults] setBool:NO forKey:A3UserDefaultsDidShowWhatsNew_3_0];
+		[[A3UserDefaults standardUserDefaults] synchronize];
+	}
 
 	if (!_showAsWhatsNew && [[A3UserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
 		return;
@@ -71,6 +76,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 	[super viewWillAppear:animated];
 
 	if ([self isMovingToParentViewController]) {
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
 		if (!_showAsWhatsNew && [[A3UserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
 
 			if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu]) {
@@ -78,7 +84,8 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 				[self.navigationController pushViewController:clockVC animated:NO];
 			}
 
-			[[A3AppDelegate instance] showLockScreen];
+			[appDelegate showLockScreen];
+			[appDelegate downloadDataFiles];
 		}
 		else
 		{
@@ -93,30 +100,35 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 			[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowWhatsNew_3_0];
 			[[A3UserDefaults standardUserDefaults] synchronize];
 
-			if ([[A3AppDelegate instance] shouldMigrateV1Data]) {
+			A3AppDelegate *appDelegate = [A3AppDelegate instance];
+			if ([appDelegate shouldMigrateV1Data]) {
+				self.migrationManager = [[A3DataMigrationManager alloc] init];
+				self.migrationManager.delegate = self;
+				if ([_migrationManager walletDataFileExists] && ![_migrationManager walletDataWithPassword:nil]) {
+					_migrationManager.delegate = self;
+					[_migrationManager askWalletPassword];
+				} else {
+					[_migrationManager migrateV1DataWithPassword:nil];
+				}
+
 				[_currentSceneViewController hideButtons];
-				_migrationFinishObserver = [[NSNotificationCenter defaultCenter] addObserverForName:A3NotificationDataMigrationFinished object:nil queue:nil usingBlock:^(NSNotification *note) {
-					[_currentSceneViewController showButtons];
-					[[NSNotificationCenter defaultCenter] removeObserver:_migrationFinishObserver];
-					_migrationFinishObserver = nil;
-				}];
-				[self checkMigrationFinished];
+			} else {
+				[appDelegate downloadDataFiles];
 			}
 		}
 	}
 }
 
-- (void)checkMigrationFinished {
-	FNLOG();
-	if ([[A3AppDelegate instance] shouldMigrateV1Data]) {
-		double delayInSeconds = 1.0;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[self checkMigrationFinished];
-		});
-	} else {
-		[_currentSceneViewController showButtons];
-	}
+- (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {
+	[_currentSceneViewController showButtons];
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+	appDelegate.shouldMigrateV1Data = NO;
+	_migrationManager = nil;
+
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kA3ApplicationLastRunVersion];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	[appDelegate downloadDataFiles];
 }
 
 - (void)useICloudButtonPressedInViewController:(UIViewController *)viewController {

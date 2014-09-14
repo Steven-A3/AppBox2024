@@ -22,6 +22,7 @@ extern NSString *const A3BackupInfoFilename;
 
 @property (nonatomic, weak) id<A3BackupRestoreManagerDelegate> delegate;
 @property (nonatomic, weak) UIView *hostingView;
+@property (nonatomic, weak) UIViewController *hostingViewController;
 
 - (void)backupData;
 - (void)restoreDataAt:(NSString *)backupFilePath toURL:(NSURL *)toURL;

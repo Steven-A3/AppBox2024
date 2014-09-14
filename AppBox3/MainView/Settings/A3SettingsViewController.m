@@ -137,7 +137,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	if (indexPath.row == 0 && indexPath.section == 1) {
 		if ([self checkPasscode]) {
 			_passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-			[_passcodeViewController showLockscreenInViewController:self];
+			[_passcodeViewController showLockScreenInViewController:self];
 		} else {
 			[self performSegueWithIdentifier:@"passcode" sender:nil];
 		}

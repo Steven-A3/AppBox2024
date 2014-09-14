@@ -54,7 +54,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 #endif
 
-@interface A3AppDelegate () <UIAlertViewDelegate, A3DataMigrationManagerDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate>
+@interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, strong) NSString *previousVersion;
 @property (nonatomic, strong) NSDictionary *localNotificationUserInfo;
@@ -95,16 +95,24 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	}
 
 	// Check if it is running first time after update from 1.x.x
+	// 아래 값은 마이그레이션이 끝나면 지운다.
 	_previousVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
 	if (_previousVersion) {
 		_shouldMigrateV1Data = YES;
 		[A3KeychainUtils migrateV1Passcode];
 	} else {
+		// TODO: 지우고 새로 설치해도 암호가 지워지지 않는 오류 수정해야 함
 		_previousVersion = [[A3UserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
 		if (!_previousVersion) {
 			[A3KeychainUtils removePassword];
 			[self initializePasscodeUserDefaults];
 		}
+	}
+
+	// toolsconf.db가 library directory에 남아 있으면 마이그레이션이 끝나지 않았으므로 확실히 점검한다.
+	NSString *oldFilePath = [@"toolsconf.db" pathInLibraryDirectory];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:oldFilePath]) {
+		_shouldMigrateV1Data = YES;
 	}
 
 	self.reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
@@ -158,17 +166,11 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 	[self.window makeKeyAndVisible];
 
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kA3ApplicationLastRunVersion];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
 	[[A3UserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:kA3ApplicationLastRunVersion];
 	[[A3UserDefaults standardUserDefaults] synchronize];
 
 	[application registerForRemoteNotificationTypes:
 			(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
-
-	[self coreDataReady];
-	[self downloadDataFiles];
 
 	return YES;
 }
@@ -276,34 +278,6 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	}
 	// Add whatever other url handling code your app requires here
 	return NO;
-}
-
-- (void)coreDataReady {
-	double delayInSeconds = 0.01;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (self.shouldMigrateV1Data) {
-				A3DataMigrationManager *migrationManager = [[A3DataMigrationManager alloc] init];
-				if ([migrationManager walletDataFileExists] && ![migrationManager walletDataWithPassword:nil]) {
-					self.migrationManager = migrationManager;
-					self.migrationManager.delegate = self;
-					[migrationManager askWalletPassword];
-				} else {
-					[migrationManager migrateV1DataWithPassword:nil];
-					self.shouldMigrateV1Data = NO;
-					[self.managedObjectContext reset];
-				}
-			}
-			[self showReceivedLocalNotifications];
-		});
-	});
-}
-
-- (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {
-	[self.managedObjectContext reset];
-	self.shouldMigrateV1Data = NO;
-	self.migrationManager = nil;
 }
 
 #pragma mark Notification

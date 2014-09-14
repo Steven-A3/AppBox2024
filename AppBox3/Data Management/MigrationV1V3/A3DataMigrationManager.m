@@ -33,6 +33,7 @@
 #import "WalletCategory.h"
 #import "WalletField.h"
 #import "NSManagedObject+extension.h"
+#import "A3PasswordViewController.h"
 
 NSString *const A3NotificationDataMigrationFinished = @"A3NotificationDataMigrationFinished";
 
@@ -54,8 +55,9 @@ NSString *const kKeyForDDayImageFilename			= @"kKeyForDDayImageFilename";
 NSString *const kKeyForDDayMemo						= @"kKeyForDDayMemo";
 NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 
-@interface A3DataMigrationManager () <UITextFieldDelegate, UIAlertViewDelegate>
+@interface A3DataMigrationManager () <UITextFieldDelegate, UIAlertViewDelegate, A3PasscodeViewControllerDelegate>
 @property (nonatomic, strong) NSManagedObjectContext *context;
+@property (nonatomic, copy) NSString *savedEncryptionKey;
 @property (nonatomic, strong) UIAlertView *passwordAlertView;
 @end
 
@@ -85,6 +87,8 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 	[self migrateLadyCalendarInContext:_context];
 	[self migrateTranslatorHistoryInContext:_context];
 	[self migrateWalletDataInContext:_context withPassword:password];
+
+	[[NSManagedObjectContext MR_defaultContext] reset];
 
 	[self deleteV1DataFiles];
 
@@ -683,22 +687,81 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 }
 
 - (void)askWalletPassword {
-	_passwordAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Encryption Key for Wallet", @"Encryption Key for Wallet")
-													message:nil
-												   delegate:self
-										  cancelButtonTitle:nil
-										  otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
-	_passwordAlertView.alertViewStyle = UIAlertViewStyleSecureTextInput;
-	_passwordAlertView.delegate = self;
-	[_passwordAlertView show];
+	A3PasswordViewController *passwordViewController = [[A3PasswordViewController alloc] initWithDelegate:self];
+	if (_canCancelInEncryptionKeyView) {
+		[passwordViewController showEncryptionKeyScreenInViewController:self.hostingViewController];
+	} else {
+		[passwordViewController showEncryptionKeyCheckScreen];
+	}
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	NSString *password = [[alertView textFieldAtIndex:0] text];
-	if ([self walletDataWithPassword:password]) {
-		[self migrateV1DataWithPassword:password];
+#pragma mark EncryptionKeyCheck
+
+#define kWalletPasswordHint				@"KeyWalletPasswordHint"
+#define kWalletPasswordHintEncrypted 	@"KeyWalletPasswordHintEncrypted"
+
+- (NSString *)encryptionKeyHintStringForEncryptionKeyCheckViewController {
+	if (_canCancelInEncryptionKeyView) {
+		NSString *preferencesPath = [_migrationDirectory stringByAppendingPathComponent:@"Preferences/com.e2ndesign.TPremium2.plist"];
+		NSData *data = [NSData dataWithContentsOfFile:preferencesPath];
+		if (data) {
+			NSDictionary *preferenceInBackup = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:nil];
+			id hintSource = [preferenceInBackup objectForKey:kWalletPasswordHint];
+			if (hintSource && [hintSource isKindOfClass:[NSString class]]) {
+				return hintSource;
+			}
+			if (hintSource && [hintSource isKindOfClass:[NSData class]]) {
+				NSData *hintInData = hintSource;
+				return [[NSString alloc] initWithData:[hintInData AESDecryptWithPassphrase:DEFAULT_SECURITY_KEY] encoding:NSUTF8StringEncoding];
+			}
+			NSData *hintData = [preferenceInBackup objectForKey:kWalletPasswordHintEncrypted];
+			if (hintData) {
+				return [[NSString alloc] initWithData:[hintData AESDecryptWithPassphrase:DEFAULT_SECURITY_KEY] encoding:NSUTF8StringEncoding];
+			}
+		}
+		return NSLocalizedString(@"No hint", @"No hint");
+	}
+
+	id hintSource = [[NSUserDefaults standardUserDefaults] objectForKey:kWalletPasswordHint];
+	if (hintSource && [hintSource isKindOfClass:[NSString class]]) {
+		return hintSource;
+	}
+	if (hintSource && [hintSource isKindOfClass:[NSData class]]) {
+		NSData *hintInData = hintSource;
+		return [[NSString alloc] initWithData:[hintInData AESDecryptWithPassphrase:DEFAULT_SECURITY_KEY] encoding:NSUTF8StringEncoding];
+	}
+	NSData *hintData = [[NSUserDefaults standardUserDefaults] objectForKey:kWalletPasswordHintEncrypted];
+	if (hintData) {
+		return [[NSString alloc] initWithData:[hintData AESDecryptWithPassphrase:DEFAULT_SECURITY_KEY] encoding:NSUTF8StringEncoding];
+	}
+	return NSLocalizedString(@"No hint", @"No hint");
+}
+
+- (BOOL)verifyEncryptionKeyEncryptionKeyCheckViewController:(NSString *)key {
+	id walletData = [self walletDataWithPassword:key];
+	if (walletData) {
+		_savedEncryptionKey = key;
+		return YES;
+	}
+	return NO;
+}
+
+- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+	if (success) {
+		[self migrateV1DataWithPassword:_savedEncryptionKey];
 	} else {
-		[self askWalletPassword];
+		// 복원하는 경우에만 데이터 파일을 지운다.
+		// 그 외의 경우에는 일단 데이터 파일을 지우지 않는다.
+		if (_canCancelInEncryptionKeyView) {
+			[self deleteV1DataFiles];
+
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", nil)
+																message:NSLocalizedString(@"Restore canceled", nil)
+															   delegate:self
+													  cancelButtonTitle:NSLocalizedString(@"OK", nil)
+													  otherButtonTitles:nil];
+			[alertView show];
+		}
 	}
 }
 
