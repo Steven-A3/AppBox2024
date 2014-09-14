@@ -53,6 +53,10 @@ NSString *const A3WalletItemDateInputCellID4 = @"A3WalletDateInputCell";
 NSString *const A3WalletItemDateCellID4 = @"A3WalletItemFieldCell";
 NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
+static const NSInteger ActionTag_DeleteImage = 100;
+static const NSInteger ActionTag_DeleteVideo = 200;
+static const NSInteger ActionTag_DeleteItem = 300;
+
 @interface A3WalletItemEditViewController () <WalletCategorySelectDelegate, UITextFieldDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate, NSFileManagerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *sectionItems;
@@ -740,23 +744,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 }
 
 - (void)askDeleteImage {
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-															 delegate:self
-													cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-											   destructiveButtonTitle:NSLocalizedString(@"Delete Photo", nil)
-													otherButtonTitles:nil];
-	actionSheet.tag = 1;
-	[actionSheet showInView:self.view];
+	[self showDeleteImageActionSheet];
 }
 
 - (void)askDeleteVideo {
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-															 delegate:self
-													cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-											   destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
-													otherButtonTitles:nil];
-	actionSheet.tag = 1;
-	[actionSheet showInView:self.view];
+	[self showDeleteVideoActionSheet];
 }
 
 - (void)askVideoPickupWithDelete:(BOOL)deleteEnable withSender:(UITableViewCell *)cell
@@ -1347,12 +1339,12 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	}
     
     if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        if (actionSheet.tag == 1 || actionSheet.tag == 2) {
+        if (actionSheet.tag == ActionTag_DeleteImage || actionSheet.tag == ActionTag_DeleteVideo) {
             // 삭제하기
             [self deleteMediaItem];
             return;
         }
-        else if (actionSheet.tag == 3) {
+        else if (actionSheet.tag == ActionTag_DeleteItem) {
             [self deleteItemByActionSheet];
 			return;
         }
@@ -1362,6 +1354,68 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     NSInteger destructiveButtonIndex = actionSheet.destructiveButtonIndex;
     NSInteger actionSheetTag = actionSheet.tag;
     [self imagePickerActionForButtonIndex:myButtonIndex destructiveButtonIndex:destructiveButtonIndex actionSheetTag:actionSheetTag];
+}
+
+#pragma mark ActionSheet Rotation Related
+- (void)rotateFirstActionSheet {
+    [super rotateFirstActionSheet];
+    NSInteger currentActionSheetTag = [self.firstActionSheet tag];
+    [self setFirstActionSheet:nil];
+    
+    [self showActionSheetAdaptivelyInViewWithTag:currentActionSheetTag];
+}
+
+- (void)showActionSheetAdaptivelyInViewWithTag:(NSInteger)actionSheetTag {
+    switch (actionSheetTag) {
+        case ActionTag_DeleteImage:
+            [self showDeleteImageActionSheet];
+            break;
+            
+        case ActionTag_DeleteVideo:
+            [self showDeleteVideoActionSheet];
+            break;
+            
+        case ActionTag_DeleteItem:
+            [self showDeleteItemActionSheet];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)showDeleteItemActionSheet
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:NSLocalizedString(@"Delete Item", @"Delete Item")
+                                                    otherButtonTitles:nil];
+    actionSheet.tag = ActionTag_DeleteItem;
+    [actionSheet showInView:self.view];
+    [self setFirstActionSheet:actionSheet];
+}
+
+- (void)showDeleteImageActionSheet {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+															 delegate:self
+													cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+											   destructiveButtonTitle:NSLocalizedString(@"Delete Photo", nil)
+													otherButtonTitles:nil];
+	actionSheet.tag = ActionTag_DeleteImage;
+	[actionSheet showInView:self.view];
+    [self setFirstActionSheet:actionSheet];
+}
+
+- (void)showDeleteVideoActionSheet {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+															 delegate:self
+													cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+											   destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
+													otherButtonTitles:nil];
+	actionSheet.tag = ActionTag_DeleteVideo;
+	[actionSheet showInView:self.view];
+    [self setFirstActionSheet:actionSheet];
 }
 
 #pragma mark - CategorySelect delegate
@@ -1725,13 +1779,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
         else
 #endif
 		{
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                     delegate:self
-                                                            cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                       destructiveButtonTitle:NSLocalizedString(@"Delete Item", @"Delete Item")
-                                                            otherButtonTitles:nil];
-            actionSheet.tag = 3;
-            [actionSheet showInView:self.view];
+            [self showDeleteItemActionSheet];
         }
     }
 
