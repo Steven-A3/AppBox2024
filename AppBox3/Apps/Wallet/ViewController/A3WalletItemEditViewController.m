@@ -1322,8 +1322,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 #pragma mark ActionSheet Rotation Related
 - (void)rotateFirstActionSheet {
-    [super rotateFirstActionSheet];
     NSInteger currentActionSheetTag = [self.firstActionSheet tag];
+    [super rotateFirstActionSheet];
     [self setFirstActionSheet:nil];
     
     [self showActionSheetAdaptivelyInViewWithTag:currentActionSheetTag];

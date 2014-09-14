@@ -714,8 +714,8 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 #pragma mark ActionSheet Rotation Related
 - (void)rotateFirstActionSheet {
-    [super rotateFirstActionSheet];
     NSInteger currentActionSheetTag = [self.firstActionSheet tag];
+    [super rotateFirstActionSheet];
     [self setFirstActionSheet:nil];
     
     [self showActionSheetAdaptivelyInViewWithTag:currentActionSheetTag];
