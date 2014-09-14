@@ -328,16 +328,49 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
         
         [self presentViewController:alertController animated:YES completion:NULL];
     }
-    else {
-        UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil
-                                                                  delegate:self
-                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                    destructiveButtonTitle:NSLocalizedString(@"Delete All", @"Delete All")
-                                                         otherButtonTitles:nil];
-        askDeleteAll.tag = 192874;
-        [askDeleteAll showInView:self.view];
+    else
+#endif
+    {
+        [self showDeleteAllActionSheet];
     }
-#else
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    [self setFirstActionSheet:nil];
+    
+	if (actionSheet.tag == 192874 && buttonIndex == actionSheet.destructiveButtonIndex) {
+		[self deleteAllMessages];
+	}
+    else if (actionSheet.tag == kTranslatorAlertViewType_ToolBarDelete && buttonIndex == actionSheet.destructiveButtonIndex) {
+        [self deleteSelectedMessageItems];
+    }
+}
+
+#pragma mark ActionSheet Rotation Related
+- (void)rotateFirstActionSheet {
+    [super rotateFirstActionSheet];
+    NSInteger currentActionSheetTag = [self.firstActionSheet tag];
+    [self setFirstActionSheet:nil];
+    
+    [self showActionSheetAdaptivelyInViewWithTag:currentActionSheetTag];
+}
+
+- (void)showActionSheetAdaptivelyInViewWithTag:(NSInteger)actionSheetTag {
+    switch (actionSheetTag) {
+        case 192874:
+            [self showDeleteAllActionSheet];
+            break;
+            
+        case kTranslatorAlertViewType_ToolBarDelete:
+            [self showDeleteTranslationActionSheet];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)showDeleteAllActionSheet {
     UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil
                                                               delegate:self
                                                      cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
@@ -345,17 +378,18 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
                                                      otherButtonTitles:nil];
     askDeleteAll.tag = 192874;
     [askDeleteAll showInView:self.view];
-#endif
-    
+    [self setFirstActionSheet:askDeleteAll];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-	if (actionSheet.tag == 192874 && buttonIndex == actionSheet.destructiveButtonIndex) {
-		[self deleteAllMessages];
-	}
-    else if (actionSheet.tag == kTranslatorAlertViewType_ToolBarDelete && buttonIndex == actionSheet.destructiveButtonIndex) {
-        [self deleteSelectedMessageItems];
-    }
+- (void)showDeleteTranslationActionSheet {
+    UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil
+                                                              delegate:self
+                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                destructiveButtonTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld Delete Translation", @"StringsDict", nil), [_messageTableView.indexPathsForSelectedRows count]]
+                                                     otherButtonTitles:nil];
+    askDeleteAll.tag = kTranslatorAlertViewType_ToolBarDelete;
+    [askDeleteAll showInView:self.view];
+    [self setFirstActionSheet:askDeleteAll];
 }
 
 #pragma mark - Language Select View
@@ -1456,7 +1490,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 }
 
 - (void)deleteActionFromToolbar:(UIBarButtonItem *)barButtonItem {
-	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
+    NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
     
 #ifdef __IPHONE_8_0
     if (!IS_IOS7 && IS_IPAD) {
@@ -1483,48 +1517,16 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
         
         [self presentViewController:alertController animated:YES completion:NULL];
     }
-    else {
+    else
+#endif
+    {
         if ([selectedIndexPaths count] == [_messages count]) {
-            UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil
-                                                                      delegate:self
-                                                             cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                        destructiveButtonTitle:NSLocalizedString(@"Delete All", @"Delete All")
-                                                             otherButtonTitles:nil];
-            askDeleteAll.tag = 192874;
-            [askDeleteAll showInView:self.view];
+            [self showDeleteAllActionSheet];
         }
         else {
-            UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil
-                                                                      delegate:self
-                                                             cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                        destructiveButtonTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld Delete Translation", @"StringsDict", nil), [selectedIndexPaths count]]
-                                                             otherButtonTitles:nil];
-            askDeleteAll.tag = kTranslatorAlertViewType_ToolBarDelete;
-            
-            [askDeleteAll showInView:self.view];
+            [self showDeleteTranslationActionSheet];
         }
     }
-#else
-    if ([selectedIndexPaths count] == [_messages count]) {
-        UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil
-                                                                  delegate:self
-                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                    destructiveButtonTitle:NSLocalizedString(@"Delete All", @"Delete All")
-                                                         otherButtonTitles:nil];
-        askDeleteAll.tag = 192874;
-        [askDeleteAll showInView:self.view];
-    }
-    else {
-        UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil
-                                                                  delegate:self
-                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                    destructiveButtonTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld Delete Translation", @"StringsDict", nil), [selectedIndexPaths count]]
-                                                         otherButtonTitles:nil];
-        askDeleteAll.tag = kTranslatorAlertViewType_ToolBarDelete;
-        
-        [askDeleteAll showInView:self.view];
-    }
-#endif
 }
 
 - (void)deleteSelectedMessageItems
