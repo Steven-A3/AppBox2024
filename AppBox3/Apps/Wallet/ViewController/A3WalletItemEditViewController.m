@@ -1294,8 +1294,10 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     }
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-	
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    [self setFirstActionSheet:nil];
+    
     if (buttonIndex == actionSheet.cancelButtonIndex) {
 		return;
 	}

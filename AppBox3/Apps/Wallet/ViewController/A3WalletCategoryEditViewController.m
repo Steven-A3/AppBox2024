@@ -705,6 +705,8 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [self setFirstActionSheet:nil];
+    
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         [self deleteCategoryByActionSheet];
 	}

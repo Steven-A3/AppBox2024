@@ -233,6 +233,8 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+    [self setFirstActionSheet:nil];
+    
     if( buttonIndex == actionSheet.destructiveButtonIndex ){
         if( actionSheet.tag == ActionSheet_DeleteAll ){
             [self deleteAllEventsAction];

@@ -2411,6 +2411,8 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+    [self setFirstActionSheet:nil];
+    
     if ( actionSheet.tag == ActionTag_Photo ) {
 		if (buttonIndex == actionSheet.cancelButtonIndex) return;
 
