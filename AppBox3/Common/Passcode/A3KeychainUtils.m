@@ -117,6 +117,10 @@ NSString *const kUserSavedPasscode					= @"kUserSavedPasscode";
 NSString *const kUserSavedPasscodeHint				= @"kUserSavedPasscodHint";
 NSString *const USERPASSCODEDECRYPTKEY				= @"d54?qjS8QD[.,UasG2R7FhS8?uk-D9+L";
 NSString *const kUserUseSimplePasscode				= @"kUserUseSimplePasscode";
+#define kUserRequirePasscodeAppBoxPro		@"kUserRequirePasscodeAppBoxPro"
+#define kUserRequirePasscodeSettings		@"kUserRequirePasscodeSettiings"
+#define kUserRequirePasscodeDaysUntil		@"kUserRequirePasscodeDaysUntil"
+#define kUserRequirePasscodePCalendar		@"kUserRequirePasscodePCalendar"
 
 + (void)migrateV1Passcode {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:kUserEnabledPasscode]) {
@@ -140,6 +144,32 @@ NSString *const kUserUseSimplePasscode				= @"kUserUseSimplePasscode";
 			}
 			[A3KeychainUtils storePassword:decryptedPasscode hint:decryptedHint];
 		}
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kUserRequirePasscodeAppBoxPro]) {
+            [[A3UserDefaults standardUserDefaults] setBool:YES
+                                                    forKey:kUserDefaultsKeyForAskPasscodeForStarting];
+        }
+        BOOL appLockEnabled = NO;
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kUserRequirePasscodeSettings]) {
+            appLockEnabled = YES;
+            [[A3UserDefaults standardUserDefaults] setBool:YES
+                                                    forKey:kUserDefaultsKeyForAskPasscodeForSettings];
+        }
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kUserRequirePasscodeDaysUntil]) {
+            appLockEnabled = YES;
+            [[A3UserDefaults standardUserDefaults] setBool:YES
+                                                    forKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
+        }
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kUserRequirePasscodePCalendar]) {
+            appLockEnabled = YES;
+            [[A3UserDefaults standardUserDefaults] setBool:YES
+                                                    forKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
+        }
+        if (!appLockEnabled) {
+            [[A3UserDefaults standardUserDefaults] setBool:YES
+                                                    forKey:kUserDefaultsKeyForAskPasscodeForStarting];
+        }
+        [[A3UserDefaults standardUserDefaults] synchronize];
 	}
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserEnabledPasscode];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserSavedPasscode];

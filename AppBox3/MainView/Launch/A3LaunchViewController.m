@@ -31,6 +31,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 @implementation A3LaunchViewController {
 	NSUInteger _sceneNumber;
 	BOOL _cloudButtonUsed;
+    BOOL _migrationIsInProgress;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -75,7 +76,9 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	if ([self isMovingToParentViewController]) {
+    if (_migrationIsInProgress) return;
+    
+	if ([self isMovingToParentViewController] ) {
 		A3AppDelegate *appDelegate = [A3AppDelegate instance];
 		if (!_showAsWhatsNew && [[A3UserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
             A3MainMenuTableViewController *mainMenuTableViewController = [[A3AppDelegate instance] mainMenuViewController];
@@ -99,11 +102,9 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 			[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 			[self.navigationController.navigationBar setShadowImage:image];
 			
-			[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowWhatsNew_3_0];
-			[[A3UserDefaults standardUserDefaults] synchronize];
-
 			A3AppDelegate *appDelegate = [A3AppDelegate instance];
 			if ([appDelegate shouldMigrateV1Data]) {
+                _migrationIsInProgress = YES;
 				self.migrationManager = [[A3DataMigrationManager alloc] init];
 				self.migrationManager.delegate = self;
 				if ([_migrationManager walletDataFileExists] && ![_migrationManager walletDataWithPassword:nil]) {
@@ -115,6 +116,9 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 
 				[_currentSceneViewController hideButtons];
 			} else {
+                [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowWhatsNew_3_0];
+                [[A3UserDefaults standardUserDefaults] synchronize];
+                
 				[appDelegate downloadDataFiles];
 			}
 		}
@@ -132,6 +136,8 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 
     [appDelegate showLockScreen];
 	[appDelegate downloadDataFiles];
+    
+    _migrationIsInProgress = NO;
 }
 
 - (void)useICloudButtonPressedInViewController:(UIViewController *)viewController {
