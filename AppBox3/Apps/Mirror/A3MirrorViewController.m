@@ -489,9 +489,14 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 
 	// then start everything
 	[frameCaculator reset];
-	[_captureSession startRunning];
-
-
+    if (!IS_IOS7) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            	[_captureSession startRunning];
+        });
+    }
+    else {
+        [_captureSession startRunning];
+    }
 }
 
 - (void) searchSlowCameraFrameRate {
