@@ -1426,7 +1426,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	}
 
     if (cell.inputType == UnitInput_FeetInch) {
-        if ([cell.valueField.text floatValue] > 0 && [cell.value2Field.text floatValue] > 0) {
+        if ([cell.valueField.text floatValue] > 0 || [cell.value2Field.text floatValue] > 0) {
             self.unitValue = @(fromValue);
         }
         else {
