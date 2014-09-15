@@ -153,6 +153,11 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (void)userDefaultsDidChange {
+    if (_isEditing) {
+    //  TODO : Edit 모드에서 행 순서를 변경하는 중에 멈추는 문제를 방지하기 위하여 일단 반환하도록 하였습니다.
+        return;
+    }
+    
 	_categories = nil;
 	_sections = nil;
 	[self.tableView reloadData];
@@ -371,9 +376,12 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 	if (fromIndexPath.section == toIndexPath.section) {
 		NSMutableArray *section = self.sections[fromIndexPath.section];
 		[section moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-
 		[self.savingContext MR_saveToPersistentStoreAndWait];
-	} else {
+        self.categories = nil;
+        self.sections = nil;
+        [self.tableView reloadData];
+	}
+    else {
 		NSMutableArray *fromSection = self.sections[fromIndexPath.section];
 		WalletCategory *movingObject = fromSection[fromIndexPath.row];
 		[fromSection removeObjectAtIndex:fromIndexPath.row];
@@ -386,7 +394,7 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[self.tableView reloadRowsAtIndexPaths:@[toIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-
+            
 			NSInteger from, to;
 			if (fromIndexPath.section == 0) {
 				from = fromIndexPath.row;
@@ -396,10 +404,10 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 				to = toIndexPath.row;
 			}
 			[self.categories moveItemInSortedArrayFromIndex:from toIndex:to];
-
+			[self.savingContext MR_saveToPersistentStoreAndWait];
 			self.sections = nil;
 			[self sections];
-
+            
 			NSIndexPath *adjustedIndexPath;
 			if (fromIndexPath.section == 0) {
 				adjustedIndexPath = [NSIndexPath indexPathForRow:[fromSection count] inSection:0];
@@ -410,8 +418,9 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 				[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:movingRow inSection:0] toIndexPath:adjustedIndexPath];
 			}
 			[self.tableView reloadRowsAtIndexPaths:@[adjustedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            
 
-			[self.savingContext MR_saveToPersistentStoreAndWait];
+            [self.tableView reloadData];
 		});
 	}
 }
