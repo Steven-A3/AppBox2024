@@ -58,6 +58,14 @@
 
     [self setupInstructionView];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+    
+// TODO
+// 카테코리 테이블에서 임시로 순서변경 제스쳐 제거.
+    for (UIGestureRecognizer *gesture in [self.tableView gestureRecognizers]) {
+        if ([gesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
+            [self.tableView removeGestureRecognizer:gesture];
+        }
+    }
 }
 
 - (void)removeObserver {
