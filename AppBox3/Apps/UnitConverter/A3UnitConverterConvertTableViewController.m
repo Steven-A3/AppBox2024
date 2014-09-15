@@ -586,7 +586,26 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 															 targetShortName];
 			}
 			else {
-				float targetValue = self.unitValue.floatValue * rate;
+                float targetValue;
+                if (_categoryID == 8) {
+                    targetValue = [self getFuelValue:sourceID value:self.unitValue.floatValue];
+                    switch (targetID) {
+                        case 0:
+                        case 1:
+                        case 3:
+                        case 4:
+                            targetValue = targetValue / conversionTable[_categoryID][targetID];
+                            break;
+                        case 2:
+                        case 5:
+                        case 6:
+                            targetValue = conversionTable[_categoryID][targetID] / targetValue;
+                            break;
+                    }
+                }
+                else {
+                    targetValue = self.unitValue.floatValue * rate;
+                }
 
                 if ([[_dataManager unitNameForUnitID:sourceID categoryID:_categoryID] isEqualToString:@"feet inches"]) {
                     float value = [self.unitValue floatValue];
@@ -686,7 +705,23 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	}
 	else {
 		float targetValue = self.unitValue.floatValue * rate;
-        
+        if (_categoryID == 8) {
+            targetValue = [self getFuelValue:sourceID value:self.unitValue.floatValue];
+            switch (targetID) {
+                case 0:
+                case 1:
+                case 3:
+                case 4:
+                    targetValue = targetValue / conversionTable[_categoryID][targetID];
+                    break;
+                case 2:
+                case 5:
+                case 6:
+                    targetValue = conversionTable[_categoryID][targetID] / targetValue;
+                    break;
+            }
+        }
+
         if ([[_dataManager unitNameForUnitID:sourceID categoryID:_categoryID] isEqualToString:@"feet inches"]) {
             float value = [self.unitValue floatValue];
             int feet = (int)value;
@@ -907,24 +942,44 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			value = @([TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnitName]);
 		}
 		else {
-            if ([self isSeparatedRateCategory]) {
-                conversionRate = conversionTable[_categoryID][targetID] / conversionTable[_categoryID][sourceID];
+            if (_categoryID == 8) { // Fuel Consumption
+                float targetValue = value.floatValue;
+                targetValue = [self getFuelValue:sourceID value:targetValue];
+                switch (targetID) {
+                    case 0:
+                    case 1:
+                    case 3:
+                    case 4:
+                        targetValue = targetValue / conversionTable[_categoryID][targetID];
+                        break;
+                    case 2:
+                    case 5:
+                    case 6:
+                        targetValue = conversionTable[_categoryID][targetID] / targetValue;
+                        break;
+                }
+                value = @(targetValue);
+            } else {
+                if ([self isSeparatedRateCategory]) {
+                    conversionRate = conversionTable[_categoryID][targetID] / conversionTable[_categoryID][sourceID];
+                }
+                else {
+                    conversionRate = conversionTable[_categoryID][sourceID] / conversionTable[_categoryID][targetID];
+                }
+                value = @(value.floatValue * conversionRate);
             }
-            else {
-                conversionRate = conversionTable[_categoryID][sourceID] / conversionTable[_categoryID][targetID];
-            }
-            
-            
-			value = @(value.floatValue * conversionRate);
 		}
 
 		// code 및 rate 정보 표시
 		dataCell.codeLabel.text = NSLocalizedStringFromTable(targetUnitName, @"unit", nil);
-		// 온도 모드에서는 rate값에 일정 비율이 없으므로 표시하지 않는다.
+		// 온도 모드, Fuel Consumption 에서는 rate 값에 일정 비율이 없으므로 표시하지 않는다.
 		if (_isTemperatureMode) {
 			dataCell.rateLabel.text = [TemperatureConverter rateStringFromTemperUnit:sourceUnitName
 																		toTemperUnit:targetUnitName];
 		}
+        else if (_categoryID == 8) {
+            dataCell.rateLabel.text = [NSString stringWithFormat:@"%@", NSLocalizedStringFromTable(targetUnitName, @"unitShort", nil)];
+        }
 		else {
 			dataCell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, rate = %@", @"%@, rate = %@"),
 							NSLocalizedStringFromTable(targetUnitName, @"unitShort", nil),
@@ -1371,7 +1426,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	}
 
     if (cell.inputType == UnitInput_FeetInch) {
-        if ([cell.valueField.text floatValue] > 0 && [cell.value2Field.text floatValue] > 0) {
+        if ([cell.valueField.text floatValue] > 0 || [cell.value2Field.text floatValue] > 0) {
             self.unitValue = @(fromValue);
         }
         else {
@@ -1405,7 +1460,25 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 				float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnitName];
 				targetTextField.text = [self.decimalFormatter stringFromNumber:@(targetValue)];
 			}
-			else {
+            else if (_categoryID == 8) {
+                float value = [self getFuelValue:sourceID value:fromValue];
+                switch (targetID) {
+                    case 0:
+                    case 1:
+                    case 3:
+                    case 4:
+                        value = value / conversionTable[_categoryID][targetID];
+                        break;
+                    case 2:
+                    case 5:
+                    case 6:
+                        value = conversionTable[_categoryID][targetID] / value;
+                        break;
+                }
+                targetTextField.text = [self.decimalFormatter stringFromNumber:@(value)];
+            }
+			else
+            {
 				BOOL isFeetInchMode = NO;
 				if ([key isEqualToString:@"feet inches"]) {
 					isFeetInchMode = YES;
@@ -1438,7 +1511,26 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	}
 }
 
+- (float)getFuelValue:(NSUInteger)type value:(float)value{
+    double result = 0.0;
+    switch (type) {
+        case 0:
+        case 1:
+        case 3:
+        case 4:
+            result = conversionTable[_categoryID][type] * value;
+            break;
+        case 2:
+        case 5:
+        case 6:
+            result = conversionTable[_categoryID][type] / value;
+            break;
+    }
+    return result;
+}
+
 #pragma mark - A3UnitConverterMenuDelegate
+
 - (BOOL)isCategoryNameEqualWithName:(NSString *)name
 {
     return [[_dataManager categoryNameForID:_categoryID] isEqualToString:name];
