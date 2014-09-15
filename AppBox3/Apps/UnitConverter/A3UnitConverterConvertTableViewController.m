@@ -602,7 +602,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
                             targetValue = conversionTable[_categoryID][targetID] / targetValue;
                             break;
                     }
-                } else {
+                }
+                else {
                     targetValue = self.unitValue.floatValue * rate;
                 }
 
@@ -971,11 +972,14 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 		// code 및 rate 정보 표시
 		dataCell.codeLabel.text = NSLocalizedStringFromTable(targetUnitName, @"unit", nil);
-		// 온도 모드에서는 rate값에 일정 비율이 없으므로 표시하지 않는다.
+		// 온도 모드, Fuel Consumption 에서는 rate 값에 일정 비율이 없으므로 표시하지 않는다.
 		if (_isTemperatureMode) {
 			dataCell.rateLabel.text = [TemperatureConverter rateStringFromTemperUnit:sourceUnitName
 																		toTemperUnit:targetUnitName];
 		}
+        else if (_categoryID == 8) {
+            dataCell.rateLabel.text = [NSString stringWithFormat:@"%@", NSLocalizedStringFromTable(targetUnitName, @"unitShort", nil)];
+        }
 		else {
 			dataCell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, rate = %@", @"%@, rate = %@"),
 							NSLocalizedStringFromTable(targetUnitName, @"unitShort", nil),
