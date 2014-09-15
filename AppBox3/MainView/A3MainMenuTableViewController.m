@@ -435,7 +435,14 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	[element didSelectCellInViewController:(id) self tableView:self.tableView atIndexPath:indexPath];
 }
 
-- (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
+- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+    if (!success && _pushClockViewControllerOnPasscodeFailure) {
+        _pushClockViewControllerOnPasscodeFailure = NO;
+        A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
+        [self popToRootAndPushViewController:clockVC];
+
+        return;
+    }
 	if (success && _selectedElement) {
 		UIViewController *viewController = [self getViewControllerForElement:(A3TableViewMenuElement *) _selectedElement];
 		[self popToRootAndPushViewController:viewController];
@@ -448,7 +455,10 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		}
 	}
 	_selectedElement = nil;
-	_passcodeViewController = nil;
+}
+
+- (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
+    _passcodeViewController = nil;
 }
 
 - (void)applicationWillResignActive {

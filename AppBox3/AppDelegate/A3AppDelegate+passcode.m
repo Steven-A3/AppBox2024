@@ -19,6 +19,8 @@
 #import "A3LadyCalendarViewController.h"
 #import "A3WalletMainTabBarController.h"
 #import "A3UserDefaults.h"
+#import "A3ClockMainViewController.h"
+#import "A3MainMenuTableViewController.h"
 
 @implementation A3AppDelegate (passcode)
 
@@ -66,7 +68,14 @@
 	if (presentLockScreen) {
 		if (!self.passcodeViewController) {
 			self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-			[self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:NO];
+            BOOL showCancelButton = ![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
+            if (showCancelButton) {
+                UIViewController *visibleViewController = [self.navigationController visibleViewController];
+                [self.passcodeViewController showLockScreenInViewController:visibleViewController];
+                self.pushClockViewControllerIfFailPasscode = YES;
+            } else {
+                [self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:showCancelButton];
+            }
 		}
 	} else {
 		[self showReceivedLocalNotifications];
@@ -168,6 +177,10 @@
 }
 
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+    if (!success && self.pushClockViewControllerIfFailPasscode) {
+        A3ClockMainViewController *clockViewController = [A3ClockMainViewController new];
+        [self.mainMenuViewController popToRootAndPushViewController:clockViewController];
+    }
 	self.passcodeViewController = nil;
 	[self showReceivedLocalNotifications];
 }
@@ -194,6 +207,7 @@
 }
 
 - (void)initializePasscodeUserDefaults {
+    [[A3UserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
 	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:kUserDefaultsKeyForAskPasscodeForStarting];
 	[[A3UserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForAskPasscodeForSettings];
 	[[A3UserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
