@@ -436,6 +436,11 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 }
 
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+    if (IS_IPHONE) {
+        [self.mm_drawerController closeDrawerAnimated:NO completion:^(BOOL finished) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
+        }];
+    }
     if (!success && _pushClockViewControllerOnPasscodeFailure) {
         _pushClockViewControllerOnPasscodeFailure = NO;
         A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
@@ -447,12 +452,6 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		UIViewController *viewController = [self getViewControllerForElement:(A3TableViewMenuElement *) _selectedElement];
 		[self popToRootAndPushViewController:viewController];
 		[self updateRecentlyUsedAppsWithElement:(A3TableViewMenuElement *) _selectedElement];
-		
-		if (IS_IPHONE) {
-			[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
-				[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
-			}];
-		}
 	}
 	_selectedElement = nil;
 }

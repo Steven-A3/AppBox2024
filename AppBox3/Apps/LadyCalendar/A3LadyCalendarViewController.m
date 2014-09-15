@@ -178,7 +178,7 @@
 	// TODO: 아래 코드 검증
 	[self doneButtonAction:nil];
 
-	if ([self isMovingFromParentViewController]) {
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
 		[_calendarHeaderView removeFromSuperview];
         _collectionView.delegate = nil;
         

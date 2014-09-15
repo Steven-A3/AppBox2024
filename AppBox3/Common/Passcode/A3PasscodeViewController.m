@@ -338,57 +338,37 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 	[[A3AppDelegate instance] saveTimerStartTime];
 
-	[UIView animateWithDuration: kLockAnimationDuration animations: ^{
-		if (_beingDisplayedAsLockscreen) {
-//			if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft) {
-//				self.view.center = CGPointMake(self.view.center.x * -1.f, self.view.center.y);
-//			}
-//			else if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeRight) {
-//				self.view.center = CGPointMake(self.view.center.x * 2.f, self.view.center.y);
-//			}
-//			else if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) {
-//				self.view.center = CGPointMake(self.view.center.x, self.view.center.y * -1.f);
-//			}
-//			else {
-//				self.view.center = CGPointMake(self.view.center.x, self.view.center.y * 2.f);
-//			}
-		}
-		else {
-			// Delete from Keychain
-			if (_isUserTurningPasscodeOff) {
-				[A3KeychainUtils removePassword];
-			}
-					// Update the Keychain if adding or changing passcode
-			else {
-				if (_isUserEnablingPasscode|| _isUserChangingPasscode) {
-					[[A3AppDelegate instance] saveTimerStartTime];
-					[A3KeychainUtils storePassword:_tempPasscode hint:nil];
+    if (!_beingDisplayedAsLockscreen) {
+        // Delete from Keychain
+        if (_isUserTurningPasscodeOff) {
+            [A3KeychainUtils removePassword];
+        }
+            // Update the Keychain if adding or changing passcode
+        else {
+            if (_isUserEnablingPasscode|| _isUserChangingPasscode) {
+                [[A3AppDelegate instance] saveTimerStartTime];
+                [A3KeychainUtils storePassword:_tempPasscode hint:nil];
 
-					A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
-					[defaults setBool:YES forKey:kUserDefaultsKeyForUseSimplePasscode];
-					[defaults synchronize];
-				}
-			}
-		}
-	} completion: ^(BOOL finished) {
-		// Or, if you prefer by notifications:
-//		[[NSNotificationCenter defaultCenter] postNotificationName: @"dismissPasscodeViewController"
-//															object: self
-//														  userInfo: nil];
-		if (_beingDisplayedAsLockscreen && !self.navigationController && !_shouldDismissViewController) {
-			[self.view removeFromSuperview];
-			[self removeFromParentViewController];
-		}
-		else {
-			[self dismissViewControllerAnimated: YES completion: nil];
-		}
+                A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
+                [defaults setBool:YES forKey:kUserDefaultsKeyForUseSimplePasscode];
+                [defaults synchronize];
+            }
+        }
+    }
+    if (_beingDisplayedAsLockscreen && !self.navigationController && !_shouldDismissViewController) {
+        [self.view removeFromSuperview];
+        [self removeFromParentViewController];
+    }
+    else {
+        [self dismissViewControllerAnimated: YES completion: nil];
+    }
 
-		_passcodeValid = YES;
+    _passcodeValid = YES;
 
-		if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
-			[self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
-		}
-	}];
+    if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
+        [self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
+    }
+
 	[[NSNotificationCenter defaultCenter] removeObserver: self
 													name: UIApplicationDidChangeStatusBarOrientationNotification
 												  object: nil];

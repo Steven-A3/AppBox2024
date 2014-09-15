@@ -104,6 +104,8 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 			
 			A3AppDelegate *appDelegate = [A3AppDelegate instance];
 			if ([appDelegate shouldMigrateV1Data]) {
+                [_currentSceneViewController hideButtons];
+
                 _migrationIsInProgress = YES;
 				self.migrationManager = [[A3DataMigrationManager alloc] init];
 				self.migrationManager.delegate = self;
@@ -113,8 +115,6 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 				} else {
 					[_migrationManager migrateV1DataWithPassword:nil];
 				}
-
-				[_currentSceneViewController hideButtons];
 			} else {
                 [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowWhatsNew_3_0];
                 [[A3UserDefaults standardUserDefaults] synchronize];
@@ -127,6 +127,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 
 - (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {
 	[_currentSceneViewController showButtons];
+
 	A3AppDelegate *appDelegate = [A3AppDelegate instance];
 	appDelegate.shouldMigrateV1Data = NO;
 	_migrationManager = nil;
