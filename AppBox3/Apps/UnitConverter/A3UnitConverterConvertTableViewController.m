@@ -1446,7 +1446,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 - (BOOL)isSeparatedRateCategory
 {
-    if ([self isCategoryNameEqualWithName:@"Cooking"] || [self isCategoryNameEqualWithName:@"Fuel Consumption"]) {
+    if ([self isCategoryNameEqualWithName:@"Cooking"]) {
         return YES;
     }
     
