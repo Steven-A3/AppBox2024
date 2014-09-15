@@ -130,6 +130,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kA3ApplicationLastRunVersion];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
+    [appDelegate showLockScreen];
 	[appDelegate downloadDataFiles];
 }
 
