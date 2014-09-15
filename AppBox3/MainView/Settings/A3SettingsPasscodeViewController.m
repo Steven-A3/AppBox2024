@@ -189,45 +189,28 @@
 	[self.tableView reloadData];
 }
 
-- (void)maintainPasscodeCheckCondition {
-	BOOL isEnabled = NO;
-	A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
-	isEnabled |= [defaults boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
-	isEnabled |= [defaults boolForKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
-	isEnabled |= [defaults boolForKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
-	isEnabled |= [defaults boolForKey:kUserDefaultsKeyForAskPasscodeForWallet];
-
-	[defaults setBool:!isEnabled forKey:kUserDefaultsKeyForAskPasscodeForStarting];
-	[defaults synchronize];
-	[self.tableView reloadData];
-}
-
 - (void)askPasscodeForSettingsValueChanged:(UISwitch *)control {
 	A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 	[defaults setBool:control.isOn forKey:kUserDefaultsKeyForAskPasscodeForSettings];
 	[defaults synchronize];
-	[self maintainPasscodeCheckCondition];
 }
 
 - (void)askPasscodeForDaysCounterValueChanged:(UISwitch *)control {
 	A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 	[defaults setBool:control.isOn forKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
 	[defaults synchronize];
-	[self maintainPasscodeCheckCondition];
 }
 
 - (void)askPasscodeForLadyCalendarValuedChanged:(UISwitch *)control {
 	A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 	[defaults setBool:control.isOn forKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
 	[defaults synchronize];
-	[self maintainPasscodeCheckCondition];
 }
 
 - (void)askPasscodeForWalletValuedChanged:(UISwitch *)control {
 	A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 	[defaults setBool:control.isOn forKey:kUserDefaultsKeyForAskPasscodeForWallet];
 	[defaults synchronize];
-	[self maintainPasscodeCheckCondition];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -476,7 +476,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	}
 }
 
-
 - (void)prepareNavigationControllerWithController:(UIViewController *)viewController {
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: self];
 	[viewController presentViewController: navController animated: YES completion: nil];
@@ -486,7 +485,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 																						   action: @selector(cancelAndDismissMe)];
 }
 
-- (void)showLockscreenInViewController:(UIViewController *)viewController {
+- (void)showLockScreenInViewController:(UIViewController *)viewController {
 	[self prepareAsLockscreen];
 	[self prepareNavigationControllerWithController:viewController];
 	self.title = NSLocalizedString(@"Passcode", @"View title while confirm passcode");

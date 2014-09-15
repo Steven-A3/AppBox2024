@@ -146,9 +146,13 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	FNLOG();
-	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	if ([self isMovingToParentViewController]) {
+		[self.navigationController setNavigationBarHidden:YES animated:NO];
+
+		UIImage *image = [UIImage new];
+		[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+		[self.navigationController.navigationBar setShadowImage:image];
+	}
 }
 
 - (NSMutableArray *)categories {
@@ -156,10 +160,6 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 		_categories = [[WalletData walletCategoriesFilterDoNotShow:YES inContext:nil ] mutableCopy];
 	}
 	return _categories;
-}
-
-- (BOOL)hidesNavigationBar {
-    return YES;
 }
 
 - (void)popToRootViewControllerForCategoryID:(NSString *)categoryID {

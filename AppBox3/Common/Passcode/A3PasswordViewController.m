@@ -470,6 +470,10 @@
 		} else {
 			textField.returnKeyType = UIReturnKeyNext;
 		}
+		if (textField != _passwordHintField) {
+			[self setMessage:nil];
+			_headerLabel.text = NSLocalizedString(@"Enter your passcode", @"Enter your passcode");
+		}
 	}
 }
 
