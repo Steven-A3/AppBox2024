@@ -14,6 +14,7 @@
 #import "A3UnitDataManager.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3UnitConverterTabBarController ()
 
@@ -52,7 +53,7 @@
     [super viewDidLoad];
 
     [self resetSelectedTab];
-
+    
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 }
 
@@ -106,8 +107,11 @@
 	[super viewWillAppear:animated];
 
 	if ([self isMovingToParentViewController]) {
-		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+		[self.navigationController setNavigationBarHidden:YES animated:NO];
+
+		UIImage *image = [UIImage new];
+		[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+		[self.navigationController.navigationBar setShadowImage:image];
 	}
 }
 
@@ -118,10 +122,6 @@
 		[self.navigationController setNavigationBarHidden:NO animated:NO];
 		[self removeObserver];
 	}
-}
-
-- (BOOL)hidesNavigationBar {
-    return YES;
 }
 
 #pragma mark - UITabBarControllerDelegate
