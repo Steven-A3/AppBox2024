@@ -190,10 +190,6 @@
 
 - (void)setEnableAskPasscodeForStarting:(BOOL)enable {
 	[[A3UserDefaults standardUserDefaults] setBool:enable forKey:kUserDefaultsKeyForAskPasscodeForStarting];
-	[[A3UserDefaults standardUserDefaults] setBool:!enable forKey:kUserDefaultsKeyForAskPasscodeForSettings];
-	[[A3UserDefaults standardUserDefaults] setBool:!enable forKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
-	[[A3UserDefaults standardUserDefaults] setBool:!enable forKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
-	[[A3UserDefaults standardUserDefaults] setBool:!enable forKey:kUserDefaultsKeyForAskPasscodeForWallet];
 	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
