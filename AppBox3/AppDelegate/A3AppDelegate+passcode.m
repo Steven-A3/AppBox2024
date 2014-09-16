@@ -183,7 +183,6 @@
         A3ClockMainViewController *clockViewController = [A3ClockMainViewController new];
         [self.mainMenuViewController popToRootAndPushViewController:clockViewController];
     }
-	self.passcodeViewController = nil;
 	[self showReceivedLocalNotifications];
 }
 
