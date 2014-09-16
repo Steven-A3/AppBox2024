@@ -125,8 +125,18 @@
 	[self.tableView reloadData];
 
 	if (_isUserEnablingPasscode) {
-		[_aNewPasswordField becomeFirstResponder];
-	} else {
+        if (_aNewPasswordField) {
+            [_aNewPasswordField becomeFirstResponder];
+        } else {
+            double delayInSeconds = 0.5;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [_aNewPasswordField becomeFirstResponder];
+            });
+        }
+	}
+    else
+    {
 		if (_passwordField) {
 			[_passwordField becomeFirstResponder];
 		} else {
