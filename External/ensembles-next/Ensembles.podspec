@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Ensembles"
-  s.version      = "2.0"
+  s.version      = "2.0.3"
   s.summary      = "A peer-to-peer synchronization framework for Core Data."
 
   s.description  =  <<-DESC
@@ -45,6 +45,7 @@ Pod::Spec.new do |s|
     ss.dependency 'Ensembles/Core'
     ss.ios.dependency 'Dropbox-iOS-SDK'
     ss.osx.dependency 'Dropbox-OSX-SDK'
+    ss.source = {:git => 'git://github.com/drewmccormack/dropbox-sdk-ios.git'}
     ss.source_files = 'Framework/Extensions/CDEDropboxCloudFileSystem.{h,m}'
   end
 
@@ -53,8 +54,6 @@ Pod::Spec.new do |s|
     ss.dependency 'SSZipArchive'
     ss.framework = 'MultipeerConnectivity'
     ss.source_files = 'Framework/Extensions/CDEMultipeerCloudFileSystem.{h,m}'
-    s.ios.deployment_target = '7.0'
-    s.osx.deployment_target = '10.10'
   end
 
   s.subspec 'WebDAV' do |ss|

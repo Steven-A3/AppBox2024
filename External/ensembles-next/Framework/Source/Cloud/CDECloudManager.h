@@ -21,6 +21,8 @@
 
 - (instancetype)initWithEventStore:(CDEEventStore *)newStore cloudFileSystem:(id <CDECloudFileSystem>)cloudFileSystem managedObjectModel:(NSManagedObjectModel *)newModel;
 
+- (void)setup;
+
 - (void)createRemoteDirectoryStructureWithCompletion:(CDECompletionBlock)completion;
 
 - (void)snapshotRemoteFilesWithCompletion:(CDECompletionBlock)completion;

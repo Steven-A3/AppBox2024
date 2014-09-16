@@ -355,6 +355,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     }
 
     CDEAsynchronousTaskBlock remoteStructureTask = ^(CDEAsynchronousTaskCallbackBlock next) {
+        [self.cloudManager setup];
         [self.cloudManager createRemoteDirectoryStructureWithCompletion:^(NSError *error) {
             [self incrementProgress];
             next(error, NO);
@@ -640,18 +641,17 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     };
     [tasks addObject:processChangesTask];
     
-    CDEAsynchronousTaskBlock remoteStructureTask = ^(CDEAsynchronousTaskCallbackBlock next) {
-        [self.cloudManager createRemoteDirectoryStructureWithCompletion:^(NSError *error) {
-            [self incrementProgress];
-            next(error, NO);
-        }];
-    };
-    [tasks addObject:remoteStructureTask];
-    
     CDEAsynchronousTaskBlock snapshotRemoteFilesTask = ^(CDEAsynchronousTaskCallbackBlock next) {
-        [self.cloudManager snapshotRemoteFilesWithCompletion:^(NSError *error) {
+        [self.cloudManager snapshotRemoteFilesWithCompletion:^(NSError *snapshotError) {
             [self incrementProgress];
-            next(error, NO);
+            if (snapshotError) {
+                [self.cloudManager createRemoteDirectoryStructureWithCompletion:^(NSError *error) {
+                    next(snapshotError, NO);
+                }];
+            }
+            else {
+                next(nil, NO);
+            }
         }];
     };
     [tasks addObject:snapshotRemoteFilesTask];
@@ -674,6 +674,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 
     CDEAsynchronousTaskBlock importDataFilesTask = ^(CDEAsynchronousTaskCallbackBlock next) {
         [self.cloudManager importNewDataFilesWithCompletion:^(NSError *error) {
+            if (error) [self.cloudManager setup];
             [self incrementProgress];
             next(error, NO);
         }];
@@ -682,6 +683,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 
     CDEAsynchronousTaskBlock importBaselinesTask = ^(CDEAsynchronousTaskCallbackBlock next) {
         [self.cloudManager importNewBaselineEventsWithCompletion:^(NSError *error) {
+            if (error) [self.cloudManager setup];
             [self incrementProgress];
             next(error, NO);
         }];
@@ -698,6 +700,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     
     CDEAsynchronousTaskBlock importRemoteEventsTask = ^(CDEAsynchronousTaskCallbackBlock next) {
         [self.cloudManager importNewRemoteNonBaselineEventsWithCompletion:^(NSError *error) {
+            if (error) [self.cloudManager setup];
             [self incrementProgress];
             next(error, NO);
         }];

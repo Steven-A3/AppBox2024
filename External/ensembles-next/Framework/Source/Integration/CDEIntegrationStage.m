@@ -268,6 +268,11 @@
                 NSOrderedSet *relatedSet = [object valueForKey:propertyName];
                 
                 NSRelationshipDescription *relationship = object.entity.relationshipsByName[propertyName];
+                if (!relationship)  {
+                    CDELog(CDELoggingLevelVerbose, @"Did not find relationship property in model: %@", propertyName);
+                    continue;
+                }
+                
                 NSString *relatedEntityName = relationship.destinationEntity.name;
                 NSMutableSet *relatedEntityObjects = relatedObjectsByEntity[relatedEntityName];
                 if (!relatedEntityObjects) {
@@ -361,7 +366,7 @@
             
             NSRelationshipDescription *relationship = entity.relationshipsByName[value.propertyName];
             if (!relationship)  {
-                CDELog(CDELoggingLevelWarning, @"Did not find relationship property in model: %@", value.propertyName);
+                CDELog(CDELoggingLevelVerbose, @"Did not find relationship property in model: %@", value.propertyName);
                 continue;
             }
             
