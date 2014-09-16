@@ -185,7 +185,7 @@
 
 - (void)prepareNavigationControllerWithController:(UIViewController *)viewController {
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: self];
-	[viewController presentViewController: navController animated: YES completion: nil];
+	[viewController presentViewController: navController animated:NO completion: nil];
 
 	if (_showCancelButton) {
 		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
