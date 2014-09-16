@@ -56,9 +56,11 @@ NSString *const kKeyForDDayMemo						= @"kKeyForDDayMemo";
 NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 
 @interface A3DataMigrationManager () <UITextFieldDelegate, UIAlertViewDelegate, A3PasscodeViewControllerDelegate>
+
 @property (nonatomic, strong) NSManagedObjectContext *context;
 @property (nonatomic, copy) NSString *savedEncryptionKey;
-@property (nonatomic, strong) UIAlertView *passwordAlertView;
+@property (nonatomic, strong) A3PasswordViewController *passwordViewController;
+
 @end
 
 @implementation A3DataMigrationManager {
@@ -687,11 +689,11 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 }
 
 - (void)askWalletPassword {
-	A3PasswordViewController *passwordViewController = [[A3PasswordViewController alloc] initWithDelegate:self];
+	_passwordViewController = [[A3PasswordViewController alloc] initWithDelegate:self];
 	if (_canCancelInEncryptionKeyView) {
-		[passwordViewController showEncryptionKeyScreenInViewController:self.hostingViewController];
+		[_passwordViewController showEncryptionKeyScreenInViewController:self.hostingViewController];
 	} else {
-		[passwordViewController showEncryptionKeyCheckScreen];
+		[_passwordViewController showEncryptionKeyCheckScreen];
 	}
 }
 
@@ -763,6 +765,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 			[alertView show];
 		}
 	}
+    _passwordViewController = nil;
 }
 
 - (void)migrateFilesForV1_7 {
