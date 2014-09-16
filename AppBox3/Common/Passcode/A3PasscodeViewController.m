@@ -368,12 +368,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
     if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
         [self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
     }
-    // TODO
-    // - (void)viewDidDisappear:(BOOL)animated 와 중복 호출될 수 있습니다. 코드수정시급.
-    else if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
-        [self.delegate passcodeViewDidDisappearWithSuccess:_passcodeValid ];
-    }
-        
+
 	[[NSNotificationCenter defaultCenter] removeObserver: self
 													name: UIApplicationDidChangeStatusBarOrientationNotification
 												  object: nil];
@@ -494,7 +489,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	[self prepareNavigationControllerWithController: viewController];
 	self.title = NSLocalizedString(@"Turn Off Passcode", @"");
 }
-
 
 #pragma mark - Preparing
 - (void)prepareAsLockscreen {

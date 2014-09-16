@@ -338,28 +338,18 @@
 				[_useSimpleCodeSwitch setOn:!_useSimpleCodeSwitch.isOn];
 				_changingPasscodeType = NO;
 			}
+            if ([_useSimpleCodeSwitch isOn]) {
+                _passcodeViewController = [[A3PasscodeViewController alloc] initWithDelegate:self];
+            } else {
+                _passcodeViewController = [[A3PasswordViewController alloc] initWithDelegate:self];
+            }
+            [_passcodeViewController showForEnablingPasscodeInViewController:self];
 		} else {
 			_changingPasscodeType = NO;
 			_passwordConfirmedWhileSwitchingSimplePasscodeUse = NO;
 		}
 	} else {
 		[self.tableView reloadData];
-	}
-}
-
-- (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
-	if (_changingPasscodeType) {
-		if (_passwordConfirmedWhileSwitchingSimplePasscodeUse) {
-			if ([_useSimpleCodeSwitch isOn]) {
-				_passcodeViewController = [[A3PasscodeViewController alloc] initWithDelegate:self];
-			} else {
-				_passcodeViewController = [[A3PasswordViewController alloc] initWithDelegate:self];
-			}
-			[_passcodeViewController showForEnablingPasscodeInViewController:self];
-		} else {
-			_changingPasscodeType = NO;
-			_passwordConfirmedWhileSwitchingSimplePasscodeUse = NO;
-		}
 	}
 }
 

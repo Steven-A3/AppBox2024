@@ -163,10 +163,10 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	[self performSegueWithIdentifier:@"themeColor" sender:nil];
 }
 
-- (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
-	if (success) {
-		[self performSegueWithIdentifier:@"passcode" sender:nil];
-	}
+- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+    if (success) {
+        [self performSegueWithIdentifier:@"passcode" sender:nil];
+    }
 }
 
 #pragma mark - UIActionSheet Delegate
