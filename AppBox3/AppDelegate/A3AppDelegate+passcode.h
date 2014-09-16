@@ -14,7 +14,7 @@
 - (void)saveTimerStartTime;
 - (BOOL)isSimplePasscode;
 
-- (void)showLockScreen;
+- (BOOL)showLockScreen;
 
 - (void)applicationDidEnterBackground_passcode;
 - (void)applicationDidBecomeActive_passcode;

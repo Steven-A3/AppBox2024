@@ -57,12 +57,12 @@
 	return NO;
 }
 
-- (void)showLockScreen {
+- (BOOL)showLockScreen {
 
 	BOOL passwordEnabled = [A3KeychainUtils getPassword] != nil;
 	BOOL passcodeTimerEnd = [self didPasscodeTimerEnd];
 
-	if (!passwordEnabled || !passcodeTimerEnd) return;
+	if (!passwordEnabled || !passcodeTimerEnd) return NO;
 
 	BOOL presentLockScreen = [self shouldProtectScreen];
 	if (presentLockScreen) {
@@ -77,9 +77,11 @@
                 [self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:showCancelButton];
             }
 		}
+        return YES;
 	} else {
 		[self showReceivedLocalNotifications];
 	}
+    return NO;
 }
 
 - (BOOL)shouldProtectScreen {

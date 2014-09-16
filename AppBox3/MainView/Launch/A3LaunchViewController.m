@@ -17,14 +17,16 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3MainMenuTableViewController.h"
 #import "A3UserDefaults.h"
+#import "A3KeychainUtils.h"
 
 NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 
-@interface A3LaunchViewController () <UIViewControllerTransitioningDelegate, UIActionSheetDelegate, A3DataMigrationManagerDelegate>
+@interface A3LaunchViewController () <UIViewControllerTransitioningDelegate, UIActionSheetDelegate, A3DataMigrationManagerDelegate, A3PasscodeViewControllerDelegate>
 
 @property (nonatomic, strong) UIStoryboard *launchStoryboard;
 @property (nonatomic, strong) A3LaunchSceneViewController *currentSceneViewController;
 @property (nonatomic, strong) A3DataMigrationManager *migrationManager;
+@property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 
 @end
 
@@ -84,12 +86,12 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
             A3MainMenuTableViewController *mainMenuTableViewController = [[A3AppDelegate instance] mainMenuViewController];
             mainMenuTableViewController.pushClockViewControllerOnPasscodeFailure = YES;
 
-			if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu]) {
-				A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
-				[self.navigationController pushViewController:clockVC animated:NO];
-			}
-
-			[appDelegate showLockScreen];
+			if (![self showLockScreen]) {
+                if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu]) {
+                    A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
+                    [self.navigationController pushViewController:clockVC animated:NO];
+                }
+            }
 			[appDelegate downloadDataFiles];
 		}
 		else
@@ -123,6 +125,36 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 			}
 		}
 	}
+}
+
+- (BOOL)showLockScreen {
+    A3AppDelegate *appDelegate = [A3AppDelegate instance];
+    BOOL passwordEnabled = [A3KeychainUtils getPassword] != nil;
+    BOOL passcodeTimerEnd = [appDelegate didPasscodeTimerEnd];
+
+    if (!passwordEnabled || !passcodeTimerEnd) return NO;
+
+    BOOL presentLockScreen = [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
+    if (presentLockScreen) {
+        if (!self.passcodeViewController) {
+            self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+            [self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:NO];
+        }
+        return YES;
+    } else {
+        [appDelegate showReceivedLocalNotifications];
+    }
+    return NO;
+}
+
+- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+    // Cancel Button 이 없으므로 성공하지 않고서는 이곳에 올수 없다. 하지만 그래도 체크
+    if (!success) return;
+
+    if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu]) {
+        A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
+        [self.navigationController pushViewController:clockVC animated:NO];
+    }
 }
 
 - (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {

@@ -498,13 +498,21 @@
 
 	if ([self navigationController] || _beingPresentedInViewController || _shouldDismissViewController) {
 		[self dismissViewControllerAnimated:NO completion:nil];
+
+        if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
+            [self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
+        }
 	} else {
 		[self.view removeFromSuperview];
 		[self removeFromParentViewController];
-	}
 
-	if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
-		[self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
+        if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
+            [self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
+        }
+
+        if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
+            [self.delegate passcodeViewDidDisappearWithSuccess:_passcodeValid ];
+        }
 	}
 }
 

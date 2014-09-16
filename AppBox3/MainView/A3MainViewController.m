@@ -34,14 +34,6 @@
 	[self leftBarButtonAppsButton];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-
-	if ([self isMovingToParentViewController]) {
-		[[A3AppDelegate instance] showLockScreen];
-	}
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

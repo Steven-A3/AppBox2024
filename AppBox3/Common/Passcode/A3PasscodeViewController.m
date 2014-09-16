@@ -358,16 +358,25 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
     if (_beingDisplayedAsLockscreen && !self.navigationController && !_shouldDismissViewController) {
         [self.view removeFromSuperview];
         [self removeFromParentViewController];
+
+        if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
+            [self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
+        }
+
+        if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
+            [self.delegate passcodeViewDidDisappearWithSuccess:_passcodeValid ];
+        }
     }
     else {
         [self dismissViewControllerAnimated:NO completion: nil];
+
+        if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
+            [self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
+        }
     }
 
     _passcodeValid = YES;
 
-    if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
-        [self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
-    }
 
 	[[NSNotificationCenter defaultCenter] removeObserver: self
 													name: UIApplicationDidChangeStatusBarOrientationNotification
