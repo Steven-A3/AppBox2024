@@ -14,6 +14,7 @@
     #import <CoreData/CoreData.h>
     #import <SystemConfiguration/SystemConfiguration.h>
 	#import <MobileCoreServices/MobileCoreServices.h>
+	#import <CoreLocation/CoreLocation.h>
 
 	#import "common.h"
 	#import "A3UIDevice.h"

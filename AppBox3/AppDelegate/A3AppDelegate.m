@@ -43,17 +43,6 @@ NSString *const A3NotificationCloudKeyValueStoreDidImport = @"A3CloudKeyValueSto
 NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataStoreDidImport";
 NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3NotificationsUserNotificationSettingsRegistered";
 
-#ifndef __IPHONE_8_0
-@interface NSURLSessionConfiguration (iOS8Edition)
-+ (NSURLSessionConfiguration *)backgroundSessionConfigurationWithIdentifier:(NSString *)identifier;
-@end
-
-@interface CLLocationManager (iOS8Edition)
-- (void)requestWhenInUseAuthorization;
-@end
-
-#endif
-
 @interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, strong) NSString *previousVersion;

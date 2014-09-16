@@ -24,4 +24,16 @@
 #define SEGMENTED_CONTROL_DISABLED_TINT_COLOR	[UIColor colorWithRed:140.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0]
 #define SEGMENTED_CONTROL_DISABLED_TINT_COLOR2	[UIColor colorWithRed:140.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0]
 
+#ifndef __IPHONE_8_0
+
+@interface NSURLSessionConfiguration (iOS8Edition)
++ (NSURLSessionConfiguration *)backgroundSessionConfigurationWithIdentifier:(NSString *)identifier;
+@end
+
+@interface CLLocationManager (iOS8Edition)
+- (void)requestWhenInUseAuthorization;
+@end
+
+#endif
+
 #endif

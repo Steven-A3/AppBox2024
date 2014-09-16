@@ -55,8 +55,13 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 	static NSURLSession *session = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:@"net.allaboutapps.backgroundTransfer.flickrImageDownloadSession"];
-		session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+        if (IS_IOS7) {
+            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:@"net.allaboutapps.backgroundTransfer.flickrImageDownloadSession"];
+            session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+        } else {
+            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"net.allaboutapps.backgroundTransfer.flickrImageDownloadSession"];
+            session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+        }
 	});
 	return session;
 }
