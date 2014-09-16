@@ -486,8 +486,8 @@
 
 - (void)dismissMe {
 
-	if ([self navigationController] || _shouldDismissViewController) {
-		[self dismissViewControllerAnimated:YES completion:nil];
+	if ([self navigationController] || _beingPresentedInViewController || _shouldDismissViewController) {
+		[self dismissViewControllerAnimated:NO completion:nil];
 	} else {
 		[self.view removeFromSuperview];
 		[self removeFromParentViewController];

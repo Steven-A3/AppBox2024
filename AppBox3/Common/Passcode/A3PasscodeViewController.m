@@ -360,7 +360,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
         [self removeFromParentViewController];
     }
     else {
-        [self dismissViewControllerAnimated: YES completion: nil];
+        [self dismissViewControllerAnimated:NO completion: nil];
     }
 
     _passcodeValid = YES;
@@ -476,7 +476,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	[self prepareNavigationControllerWithController: viewController];
 	self.title = NSLocalizedString(@"Set Passcode", @"");
 }
-
 
 - (void)showForChangingPasscodeInViewController:(UIViewController *)viewController {
 	[self prepareForChangingPasscode];
