@@ -812,6 +812,11 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
             [self presentViewController:alertController animated:YES completion:NULL];
         }
         else
+        {
+            _selectedRowIndex = indexPath.row;
+            
+            [self showDeleteCalendarActionSheet];
+        }
 #else
         {
             _selectedRowIndex = indexPath.row;

@@ -323,6 +323,9 @@
         [self presentViewController:alertController animated:YES completion:NULL];
     }
     else
+    {
+        [self showDeleteAllActionSheet];
+    }
 #else
     {
         [self showDeleteAllActionSheet];
@@ -366,6 +369,9 @@
         [self presentViewController:alertController animated:YES completion:NULL];
     }
     else
+    {
+        [self showDeleteSeletedActionSheet];
+    }
 #else
     {
         [self showDeleteSeletedActionSheet];
