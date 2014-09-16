@@ -54,7 +54,7 @@
 	if (obj) {
 		return [obj boolValue];
 	}
-	return YES;
+	return NO;
 }
 
 - (void)showLockScreen {
