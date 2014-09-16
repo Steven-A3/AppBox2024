@@ -193,6 +193,11 @@
 	}
 }
 
+- (void)cleanUp {
+    [_calendarHeaderView removeFromSuperview];
+    _collectionView.delegate = nil;
+}
+
 - (void)dealloc {
 	[self removeObserver];
 }
