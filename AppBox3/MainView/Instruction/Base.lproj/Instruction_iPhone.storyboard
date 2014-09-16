@@ -13,14 +13,10 @@
                         <viewControllerLayoutGuide type="top" id="rkS-g2-XdD"/>
                         <viewControllerLayoutGuide type="bottom" id="N3F-7G-ehx"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Wd6-dN-vyO">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="Wd6-dN-vyO">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tcm-zc-xSO">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="NMQ-xY-zn5">
                                 <rect key="frame" x="50" y="75" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -75,17 +71,14 @@ different clock styles</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="2E0-oc-3KW" secondAttribute="bottom" constant="62" id="0rQ-Ev-I8X"/>
                             <constraint firstAttribute="centerX" secondItem="8OM-Xa-7AG" secondAttribute="centerX" id="13L-ZA-umq"/>
                             <constraint firstItem="Nw8-e0-0Uz" firstAttribute="top" secondItem="Wd6-dN-vyO" secondAttribute="top" constant="265" id="AdP-bj-1oy"/>
-                            <constraint firstItem="Tcm-zc-xSO" firstAttribute="top" secondItem="Wd6-dN-vyO" secondAttribute="top" id="Arf-g3-grb"/>
                             <constraint firstItem="sxx-vG-Pll" firstAttribute="top" secondItem="NMQ-xY-zn5" secondAttribute="top" id="Edl-nV-XMc"/>
                             <constraint firstItem="8OM-Xa-7AG" firstAttribute="top" secondItem="2E0-oc-3KW" secondAttribute="bottom" constant="10" id="G1H-JA-YDm"/>
-                            <constraint firstItem="Tcm-zc-xSO" firstAttribute="leading" secondItem="Wd6-dN-vyO" secondAttribute="leading" id="IUy-Dl-Ny6"/>
-                            <constraint firstAttribute="bottom" secondItem="Tcm-zc-xSO" secondAttribute="bottom" id="KSj-lS-z1R"/>
                             <constraint firstItem="NMQ-xY-zn5" firstAttribute="top" secondItem="Wd6-dN-vyO" secondAttribute="top" constant="75" id="M2T-RL-vij"/>
                             <constraint firstItem="sxx-vG-Pll" firstAttribute="leading" secondItem="NMQ-xY-zn5" secondAttribute="trailing" constant="10" id="M57-Re-LmN"/>
                             <constraint firstItem="0q1-C7-F7b" firstAttribute="top" secondItem="2E0-oc-3KW" secondAttribute="top" id="Man-Hr-XpX"/>
@@ -98,7 +91,6 @@ different clock styles</string>
                             <constraint firstItem="NMQ-xY-zn5" firstAttribute="leading" secondItem="Wd6-dN-vyO" secondAttribute="leading" constant="50" id="oZB-3g-kKY"/>
                             <constraint firstAttribute="trailing" secondItem="8OM-Xa-7AG" secondAttribute="trailing" constant="10" id="qlf-KZ-b9L"/>
                             <constraint firstItem="zdJ-br-tkO" firstAttribute="leading" secondItem="Wd6-dN-vyO" secondAttribute="leading" constant="10" id="xCY-Ij-EJq"/>
-                            <constraint firstAttribute="trailing" secondItem="Tcm-zc-xSO" secondAttribute="trailing" id="xOz-Xe-QSw"/>
                             <constraint firstItem="8OM-Xa-7AG" firstAttribute="leading" secondItem="Wd6-dN-vyO" secondAttribute="leading" constant="10" id="zIi-30-uCb"/>
                         </constraints>
                         <connections>
@@ -129,14 +121,10 @@ different clock styles</string>
                         <viewControllerLayoutGuide type="top" id="6ET-DL-QRc"/>
                         <viewControllerLayoutGuide type="bottom" id="Nhf-q9-Iow"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Xkh-1s-pQ6">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="Xkh-1s-pQ6">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HkA-jk-juy">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="7E9-sD-GeY">
                                 <rect key="frame" x="240" y="32" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -161,15 +149,11 @@ color and more</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="7E9-sD-GeY" firstAttribute="leading" secondItem="EHY-52-AW9" secondAttribute="trailing" constant="10" id="4It-2Z-VrT"/>
                             <constraint firstItem="SGE-Qu-e10" firstAttribute="leading" secondItem="7E9-sD-GeY" secondAttribute="trailing" constant="10" id="E3C-yh-Qi0"/>
-                            <constraint firstAttribute="bottom" secondItem="HkA-jk-juy" secondAttribute="bottom" id="Skq-Ct-S2z"/>
-                            <constraint firstAttribute="trailing" secondItem="HkA-jk-juy" secondAttribute="trailing" id="Uoj-MJ-aFO"/>
-                            <constraint firstItem="HkA-jk-juy" firstAttribute="leading" secondItem="Xkh-1s-pQ6" secondAttribute="leading" id="V0B-FT-dEf"/>
-                            <constraint firstItem="HkA-jk-juy" firstAttribute="top" secondItem="Xkh-1s-pQ6" secondAttribute="top" id="cNO-GQ-zhi"/>
                             <constraint firstItem="EHY-52-AW9" firstAttribute="leading" secondItem="Xkh-1s-pQ6" secondAttribute="leading" constant="10" id="gKr-mA-OC1"/>
                             <constraint firstItem="7E9-sD-GeY" firstAttribute="top" secondItem="EHY-52-AW9" secondAttribute="top" id="tmW-dM-PGC"/>
                             <constraint firstItem="SGE-Qu-e10" firstAttribute="top" secondItem="6ET-DL-QRc" secondAttribute="bottom" constant="12" id="tuU-Ua-HC2"/>
@@ -202,14 +186,10 @@ color and more</string>
                         <viewControllerLayoutGuide type="top" id="GnR-W6-NUG"/>
                         <viewControllerLayoutGuide type="bottom" id="rF6-js-3uf"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="y9c-JX-lrL">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="y9c-JX-lrL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vyj-7k-K32">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_down" translatesAutoresizingMaskIntoConstraints="NO" id="R09-iC-0lZ">
                                 <rect key="frame" x="139" y="506" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -234,19 +214,15 @@ keypad for basic/scientific</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="R09-iC-0lZ" secondAttribute="centerX" id="2Bb-fj-BRp"/>
                             <constraint firstItem="apQ-zL-mFz" firstAttribute="leading" secondItem="R09-iC-0lZ" secondAttribute="trailing" id="4ET-JS-Eqg"/>
                             <constraint firstAttribute="trailing" secondItem="4Y2-hA-ExK" secondAttribute="trailing" constant="10" id="B8h-ZG-34F"/>
                             <constraint firstItem="4Y2-hA-ExK" firstAttribute="leading" secondItem="y9c-JX-lrL" secondAttribute="leading" constant="10" id="M9i-0T-7Xu"/>
-                            <constraint firstItem="vyj-7k-K32" firstAttribute="leading" secondItem="y9c-JX-lrL" secondAttribute="leading" id="SEg-XD-ULN"/>
                             <constraint firstItem="R09-iC-0lZ" firstAttribute="top" secondItem="4Y2-hA-ExK" secondAttribute="bottom" constant="10" id="WeI-6I-NLR"/>
-                            <constraint firstAttribute="bottom" secondItem="vyj-7k-K32" secondAttribute="bottom" id="cl6-aE-v0t"/>
-                            <constraint firstItem="vyj-7k-K32" firstAttribute="top" secondItem="y9c-JX-lrL" secondAttribute="top" id="mmS-rB-5Me"/>
                             <constraint firstAttribute="bottom" secondItem="R09-iC-0lZ" secondAttribute="bottom" constant="20" id="qxv-po-VMn"/>
-                            <constraint firstAttribute="trailing" secondItem="vyj-7k-K32" secondAttribute="trailing" id="tg1-su-0bj"/>
                             <constraint firstItem="R09-iC-0lZ" firstAttribute="top" secondItem="apQ-zL-mFz" secondAttribute="top" id="xO4-9p-ei1"/>
                         </constraints>
                         <connections>
@@ -275,27 +251,10 @@ keypad for basic/scientific</string>
                         <viewControllerLayoutGuide type="top" id="tDt-Ql-btQ"/>
                         <viewControllerLayoutGuide type="bottom" id="ebW-GO-RC8"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="WgE-eU-a2a">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="WgE-eU-a2a">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kwK-Om-eS2">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="208" translatesAutoresizingMaskIntoConstraints="NO" id="mYi-2r-6n3">
-                                        <rect key="frame" x="102" y="77" width="208" height="40"/>
-                                        <string key="text">Tap the screen to display
-the controls</string>
-                                        <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="mYi-2r-6n3" secondAttribute="trailing" constant="10" id="Fso-Ex-5gP"/>
-                                </constraints>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="PxO-xt-eN7">
                                 <rect key="frame" x="50" y="76" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -358,7 +317,7 @@ more holidays</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="fOb-uW-XaZ" secondAttribute="bottom" constant="94" id="14f-dH-M1i"/>
@@ -368,18 +327,12 @@ more holidays</string>
                             <constraint firstAttribute="bottom" secondItem="QSq-Bz-Ppf" secondAttribute="bottom" constant="8" id="Dxz-89-W7s"/>
                             <constraint firstItem="1GA-EC-PDP" firstAttribute="leading" secondItem="QSq-Bz-Ppf" secondAttribute="trailing" constant="5" id="FiA-cn-3Ja"/>
                             <constraint firstItem="QSq-Bz-Ppf" firstAttribute="top" secondItem="1GA-EC-PDP" secondAttribute="top" constant="-5" id="IEm-Tp-Jam"/>
-                            <constraint firstAttribute="bottom" secondItem="kwK-Om-eS2" secondAttribute="bottom" id="Ju6-AU-waA"/>
                             <constraint firstItem="d8D-UW-O72" firstAttribute="centerY" secondItem="f7p-pa-V3C" secondAttribute="centerY" id="Kmn-fY-f2Z"/>
                             <constraint firstItem="RQJ-Od-NDI" firstAttribute="leading" secondItem="fOb-uW-XaZ" secondAttribute="trailing" constant="10" id="Krh-95-a76"/>
-                            <constraint firstItem="kwK-Om-eS2" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" id="WoW-l7-eI9"/>
                             <constraint firstItem="9Oc-Jc-FLn" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" constant="10" id="Zcp-Ta-rwT"/>
-                            <constraint firstItem="kwK-Om-eS2" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="top" id="atf-8W-jSL"/>
-                            <constraint firstItem="mYi-2r-6n3" firstAttribute="leading" secondItem="PxO-xt-eN7" secondAttribute="trailing" constant="10" id="avi-Pk-CNS"/>
-                            <constraint firstItem="mYi-2r-6n3" firstAttribute="centerY" secondItem="PxO-xt-eN7" secondAttribute="centerY" id="dqB-CK-OHJ"/>
                             <constraint firstItem="PxO-xt-eN7" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="top" constant="76" id="fsS-BN-oGH"/>
                             <constraint firstAttribute="trailing" secondItem="QSq-Bz-Ppf" secondAttribute="trailing" constant="51" id="kR9-rZ-Bfg"/>
                             <constraint firstAttribute="trailing" secondItem="RQJ-Od-NDI" secondAttribute="trailing" constant="10" id="lKF-iB-mS9"/>
-                            <constraint firstAttribute="trailing" secondItem="kwK-Om-eS2" secondAttribute="trailing" id="m3f-67-QP0"/>
                             <constraint firstItem="9Oc-Jc-FLn" firstAttribute="centerY" secondItem="QSq-Bz-Ppf" secondAttribute="centerY" constant="-4" id="nNg-JA-2el"/>
                             <constraint firstAttribute="trailing" secondItem="d8D-UW-O72" secondAttribute="trailing" constant="35" id="p5a-Kk-epV"/>
                             <constraint firstItem="PxO-xt-eN7" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" constant="50" id="rnD-sv-sJw"/>
@@ -416,14 +369,10 @@ more holidays</string>
                         <viewControllerLayoutGuide type="top" id="vOl-Lq-CD3"/>
                         <viewControllerLayoutGuide type="bottom" id="tjc-MU-oEU"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="SSJ-nS-OBd">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="SSJ-nS-OBd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3O3-MW-PM0">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="cR3-VQ-03J">
                                 <rect key="frame" x="241" y="32" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -460,7 +409,7 @@ more holidays</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="g69-at-Gdn" firstAttribute="leading" secondItem="SSJ-nS-OBd" secondAttribute="leading" constant="10" id="2R4-iy-tt8"/>
@@ -469,17 +418,13 @@ more holidays</string>
                             <constraint firstItem="gsy-pY-fd2" firstAttribute="top" secondItem="M8N-Gv-yfO" secondAttribute="top" id="9XS-hX-6XE"/>
                             <constraint firstItem="cR3-VQ-03J" firstAttribute="centerY" secondItem="t5T-1i-yhB" secondAttribute="centerY" id="AOz-ql-aCk"/>
                             <constraint firstItem="t5T-1i-yhB" firstAttribute="leading" secondItem="SSJ-nS-OBd" secondAttribute="leading" constant="10" id="GKH-zJ-9qn"/>
-                            <constraint firstAttribute="bottom" secondItem="3O3-MW-PM0" secondAttribute="bottom" id="LBb-VJ-bIW"/>
                             <constraint firstItem="cR3-VQ-03J" firstAttribute="leading" secondItem="t5T-1i-yhB" secondAttribute="trailing" constant="10" id="PRO-hO-WXD"/>
                             <constraint firstAttribute="trailing" secondItem="cR3-VQ-03J" secondAttribute="trailing" constant="37" id="ZVJ-RX-mta"/>
                             <constraint firstItem="cR3-VQ-03J" firstAttribute="top" secondItem="t5T-1i-yhB" secondAttribute="top" id="awo-41-v3V"/>
-                            <constraint firstItem="3O3-MW-PM0" firstAttribute="leading" secondItem="SSJ-nS-OBd" secondAttribute="leading" id="cpz-Ky-ihy"/>
                             <constraint firstItem="gsy-pY-fd2" firstAttribute="leading" secondItem="M8N-Gv-yfO" secondAttribute="trailing" id="cxz-Hf-42F"/>
                             <constraint firstAttribute="trailing" secondItem="M8N-Gv-yfO" secondAttribute="trailing" constant="28" id="nq5-0Y-wnM"/>
                             <constraint firstAttribute="bottom" secondItem="M8N-Gv-yfO" secondAttribute="bottom" constant="14" id="pGs-ll-ajS"/>
                             <constraint firstItem="M8N-Gv-yfO" firstAttribute="trailing" secondItem="g69-at-Gdn" secondAttribute="trailing" id="pPT-wp-vbt"/>
-                            <constraint firstAttribute="trailing" secondItem="3O3-MW-PM0" secondAttribute="trailing" id="slM-7Z-SWz"/>
-                            <constraint firstItem="3O3-MW-PM0" firstAttribute="top" secondItem="SSJ-nS-OBd" secondAttribute="top" id="v7S-wU-Nc5"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="jTh-kF-PDR" appends="YES" id="Quo-CX-OOb"/>
@@ -508,14 +453,10 @@ more holidays</string>
                         <viewControllerLayoutGuide type="top" id="39L-fg-duX"/>
                         <viewControllerLayoutGuide type="bottom" id="uCp-D9-AIH"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="mT1-kh-YL2">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="mT1-kh-YL2">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VSP-vN-prH">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="0Hk-19-LXE">
                                 <rect key="frame" x="139" y="170" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -584,16 +525,13 @@ then tap options</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="VSP-vN-prH" firstAttribute="leading" secondItem="mT1-kh-YL2" secondAttribute="leading" id="0Gt-Zg-T16"/>
                             <constraint firstItem="3r1-n4-BZx" firstAttribute="top" secondItem="4vp-4T-yE8" secondAttribute="bottom" constant="2" id="5Tk-kx-GNO"/>
                             <constraint firstItem="Wca-7F-aIC" firstAttribute="bottom" secondItem="tiv-Sl-w35" secondAttribute="top" constant="-3" id="5eV-nB-BVw"/>
                             <constraint firstItem="dMm-lL-O9p" firstAttribute="leading" secondItem="tiv-Sl-w35" secondAttribute="trailing" id="6rG-Nf-rLd"/>
                             <constraint firstItem="UOR-Dm-haV" firstAttribute="top" secondItem="0Hk-19-LXE" secondAttribute="bottom" constant="2" id="7iA-Mr-rMK"/>
-                            <constraint firstAttribute="bottom" secondItem="VSP-vN-prH" secondAttribute="bottom" id="7ve-id-suW"/>
-                            <constraint firstAttribute="trailing" secondItem="VSP-vN-prH" secondAttribute="trailing" id="Bys-0x-Q1z"/>
                             <constraint firstItem="0Hk-19-LXE" firstAttribute="top" secondItem="mT1-kh-YL2" secondAttribute="top" constant="170" id="DQY-4k-EQt"/>
                             <constraint firstItem="Wca-7F-aIC" firstAttribute="leading" secondItem="mT1-kh-YL2" secondAttribute="leading" constant="10" id="ISL-Qs-DlH"/>
                             <constraint firstItem="3eg-qq-Bz6" firstAttribute="top" secondItem="2ma-Z4-hX7" secondAttribute="top" constant="-13" id="Ozw-KI-hNN"/>
@@ -610,7 +548,6 @@ then tap options</string>
                             <constraint firstAttribute="centerX" secondItem="0Hk-19-LXE" secondAttribute="centerX" id="i6M-vo-1RS"/>
                             <constraint firstItem="3r1-n4-BZx" firstAttribute="leading" secondItem="mT1-kh-YL2" secondAttribute="leading" constant="10" id="q8p-8L-0oL"/>
                             <constraint firstItem="UOR-Dm-haV" firstAttribute="leading" secondItem="mT1-kh-YL2" secondAttribute="leading" constant="10" id="uqo-rv-XlY"/>
-                            <constraint firstItem="VSP-vN-prH" firstAttribute="top" secondItem="mT1-kh-YL2" secondAttribute="top" id="wdi-42-twM"/>
                             <constraint firstAttribute="centerX" secondItem="4vp-4T-yE8" secondAttribute="centerX" id="wrj-2Z-mNB"/>
                             <constraint firstItem="2ma-Z4-hX7" firstAttribute="leading" secondItem="mT1-kh-YL2" secondAttribute="leading" constant="10" id="x92-qe-uSf"/>
                         </constraints>
@@ -643,14 +580,10 @@ then tap options</string>
                         <viewControllerLayoutGuide type="top" id="Vrq-sS-dFh"/>
                         <viewControllerLayoutGuide type="bottom" id="emc-HG-67a"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Lqa-Hb-HII">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="Lqa-Hb-HII">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q7n-tD-D4b">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="VEA-FH-9Qn">
                                 <rect key="frame" x="261" y="119" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -691,11 +624,10 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="VxI-zM-zGx" secondAttribute="centerX" id="1Gk-Sg-KJo"/>
-                            <constraint firstAttribute="trailing" secondItem="q7n-tD-D4b" secondAttribute="trailing" id="1iB-HR-9aG"/>
                             <constraint firstItem="VEA-FH-9Qn" firstAttribute="top" secondItem="Lqa-Hb-HII" secondAttribute="top" constant="119" id="6vQ-hG-BbN"/>
                             <constraint firstItem="Wl0-Ir-Vwx" firstAttribute="leading" secondItem="Lqa-Hb-HII" secondAttribute="leading" constant="10" id="Bhd-f4-PN8"/>
                             <constraint firstAttribute="trailing" secondItem="VEA-FH-9Qn" secondAttribute="trailing" constant="17" id="GfX-LS-1XD"/>
@@ -704,10 +636,7 @@ then drag it up or down</string>
                             <constraint firstItem="qRC-cW-j6h" firstAttribute="leading" secondItem="Lqa-Hb-HII" secondAttribute="leading" constant="10" id="Kb7-Aw-8i3"/>
                             <constraint firstItem="VEA-FH-9Qn" firstAttribute="leading" secondItem="qRC-cW-j6h" secondAttribute="trailing" constant="10" id="NRO-Ll-seU"/>
                             <constraint firstItem="Wl0-Ir-Vwx" firstAttribute="top" secondItem="VxI-zM-zGx" secondAttribute="bottom" constant="10" id="QiK-kg-at2"/>
-                            <constraint firstAttribute="bottom" secondItem="q7n-tD-D4b" secondAttribute="bottom" id="WgB-QY-NpH"/>
-                            <constraint firstItem="q7n-tD-D4b" firstAttribute="top" secondItem="Lqa-Hb-HII" secondAttribute="top" id="kiz-bn-xGU"/>
                             <constraint firstAttribute="trailing" secondItem="Wl0-Ir-Vwx" secondAttribute="trailing" constant="10" id="kmj-Ay-u5z"/>
-                            <constraint firstItem="q7n-tD-D4b" firstAttribute="leading" secondItem="Lqa-Hb-HII" secondAttribute="leading" id="teY-3R-vg0"/>
                             <constraint firstItem="VxI-zM-zGx" firstAttribute="top" secondItem="Lqa-Hb-HII" secondAttribute="top" constant="229" id="vhy-t8-hZB"/>
                             <constraint firstItem="VxI-zM-zGx" firstAttribute="trailing" secondItem="frS-OQ-6ny" secondAttribute="leading" id="wb6-Ze-ip8"/>
                         </constraints>
@@ -738,14 +667,10 @@ then drag it up or down</string>
                         <viewControllerLayoutGuide type="top" id="GnV-NX-vwE"/>
                         <viewControllerLayoutGuide type="bottom" id="t97-V2-oIz"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kOB-iF-nAf">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="kOB-iF-nAf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zS7-fj-7iA">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="Qaa-p0-sY2">
                                 <rect key="frame" x="261" y="119" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -800,26 +725,22 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Qaa-p0-sY2" secondAttribute="trailing" constant="17" id="2df-Vm-H4r"/>
                             <constraint firstItem="Qaa-p0-sY2" firstAttribute="leading" secondItem="M6u-St-Kuv" secondAttribute="trailing" constant="10" id="2hJ-jE-beo"/>
-                            <constraint firstAttribute="trailing" secondItem="zS7-fj-7iA" secondAttribute="trailing" id="52E-yH-f2J"/>
                             <constraint firstItem="qDX-1u-CmJ" firstAttribute="leading" secondItem="kOB-iF-nAf" secondAttribute="leading" constant="10" id="6hU-Wx-7Gl"/>
                             <constraint firstAttribute="centerX" secondItem="eA5-9u-7gf" secondAttribute="centerX" id="8jM-TH-Lc5"/>
                             <constraint firstItem="T2Q-9r-hGp" firstAttribute="top" secondItem="eA5-9u-7gf" secondAttribute="top" id="AxO-Nn-0b3"/>
                             <constraint firstItem="tZj-CP-DIE" firstAttribute="top" secondItem="x7G-ny-4aE" secondAttribute="bottom" constant="10" id="CcY-Hs-yMa"/>
                             <constraint firstItem="tZj-CP-DIE" firstAttribute="leading" secondItem="kOB-iF-nAf" secondAttribute="leading" constant="10" id="DKV-dc-h05"/>
-                            <constraint firstAttribute="bottom" secondItem="zS7-fj-7iA" secondAttribute="bottom" id="GaE-bs-NEJ"/>
-                            <constraint firstItem="zS7-fj-7iA" firstAttribute="leading" secondItem="kOB-iF-nAf" secondAttribute="leading" id="GeI-BT-pDH"/>
                             <constraint firstAttribute="trailing" secondItem="qDX-1u-CmJ" secondAttribute="trailing" constant="10" id="J6j-Wo-0fz"/>
                             <constraint firstItem="Qaa-p0-sY2" firstAttribute="centerY" secondItem="M6u-St-Kuv" secondAttribute="centerY" id="Nwg-dk-JRp"/>
                             <constraint firstAttribute="centerX" secondItem="x7G-ny-4aE" secondAttribute="centerX" id="TBi-o7-gEg"/>
                             <constraint firstItem="M6u-St-Kuv" firstAttribute="leading" secondItem="kOB-iF-nAf" secondAttribute="leading" constant="10" id="VxG-v1-fwa"/>
                             <constraint firstItem="T2Q-9r-hGp" firstAttribute="leading" secondItem="eA5-9u-7gf" secondAttribute="trailing" id="WvI-hO-psV"/>
                             <constraint firstAttribute="trailing" secondItem="tZj-CP-DIE" secondAttribute="trailing" constant="10" id="gIk-zt-nLC"/>
-                            <constraint firstItem="zS7-fj-7iA" firstAttribute="top" secondItem="kOB-iF-nAf" secondAttribute="top" id="gMh-lY-0ka"/>
                             <constraint firstItem="x7G-ny-4aE" firstAttribute="top" secondItem="kOB-iF-nAf" secondAttribute="top" constant="229" id="gzI-IL-Unv"/>
                             <constraint firstItem="eA5-9u-7gf" firstAttribute="top" secondItem="qDX-1u-CmJ" secondAttribute="bottom" constant="10" id="rXI-BG-Odc"/>
                             <constraint firstItem="Qaa-p0-sY2" firstAttribute="top" secondItem="kOB-iF-nAf" secondAttribute="top" constant="119" id="sbf-qM-osQ"/>
@@ -853,14 +774,10 @@ then drag it up or down</string>
                         <viewControllerLayoutGuide type="top" id="Ve2-77-aDe"/>
                         <viewControllerLayoutGuide type="bottom" id="Oem-JJ-tsB"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="nYH-86-fbC">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="nYH-86-fbC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eQz-QK-Wyn">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="1N7-jy-etd">
                                 <rect key="frame" x="261" y="240" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -929,17 +846,14 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="m5m-AR-sdb" secondAttribute="centerX" id="3w7-sC-x7F"/>
-                            <constraint firstItem="eQz-QK-Wyn" firstAttribute="leading" secondItem="nYH-86-fbC" secondAttribute="leading" id="A2Z-Hx-Io9"/>
                             <constraint firstItem="o5S-tb-Jbp" firstAttribute="bottom" secondItem="K4O-Uu-agC" secondAttribute="top" constant="-2" id="AOu-rW-nuu"/>
                             <constraint firstAttribute="trailing" secondItem="DNP-PL-5me" secondAttribute="trailing" constant="10" id="Gap-KJ-tft"/>
                             <constraint firstItem="1N7-jy-etd" firstAttribute="centerY" secondItem="fgC-K0-IiZ" secondAttribute="centerY" id="HfC-ji-thF"/>
-                            <constraint firstAttribute="bottom" secondItem="eQz-QK-Wyn" secondAttribute="bottom" id="Jgd-Oc-PiI"/>
                             <constraint firstAttribute="bottom" secondItem="3A2-Bq-Ou3" secondAttribute="bottom" constant="15" id="KXh-tD-yvR"/>
-                            <constraint firstAttribute="trailing" secondItem="eQz-QK-Wyn" secondAttribute="trailing" id="MT5-GN-a2T"/>
                             <constraint firstAttribute="trailing" secondItem="3A2-Bq-Ou3" secondAttribute="trailing" constant="37" id="Nao-fn-LEj"/>
                             <constraint firstAttribute="trailing" secondItem="o5S-tb-Jbp" secondAttribute="trailing" constant="10" id="Pdx-pn-Cc6"/>
                             <constraint firstItem="fgC-K0-IiZ" firstAttribute="leading" secondItem="nYH-86-fbC" secondAttribute="leading" constant="10" id="Rhc-Cb-pEv"/>
@@ -948,7 +862,6 @@ then drag it up or down</string>
                             <constraint firstItem="3A2-Bq-Ou3" firstAttribute="top" secondItem="eXM-ex-5QK" secondAttribute="top" constant="-5" id="Wbb-WJ-IOH"/>
                             <constraint firstItem="m5m-AR-sdb" firstAttribute="top" secondItem="nYH-86-fbC" secondAttribute="top" constant="90" id="Y3I-74-8QU"/>
                             <constraint firstAttribute="trailing" secondItem="1N7-jy-etd" secondAttribute="trailing" constant="17" id="YKj-Go-TCg"/>
-                            <constraint firstItem="eQz-QK-Wyn" firstAttribute="top" secondItem="nYH-86-fbC" secondAttribute="top" id="aAC-Uc-xsn"/>
                             <constraint firstItem="1N7-jy-etd" firstAttribute="top" secondItem="nYH-86-fbC" secondAttribute="top" constant="240" id="bYI-c1-qg9"/>
                             <constraint firstItem="eXM-ex-5QK" firstAttribute="leading" secondItem="3A2-Bq-Ou3" secondAttribute="trailing" constant="5" id="cur-Yk-Glo"/>
                             <constraint firstItem="3A2-Bq-Ou3" firstAttribute="centerY" secondItem="uz1-Ap-8Ft" secondAttribute="centerY" id="dwb-aH-7gu"/>
@@ -988,14 +901,10 @@ then drag it up or down</string>
                         <viewControllerLayoutGuide type="top" id="eBD-pt-OOB"/>
                         <viewControllerLayoutGuide type="bottom" id="Dmu-OP-2xX"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="9Vx-H2-4ze">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="9Vx-H2-4ze">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vvC-KG-eho">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_down" translatesAutoresizingMaskIntoConstraints="NO" id="cDA-UI-abJ">
                                 <rect key="frame" x="139" y="425" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1032,22 +941,18 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="hZ0-8j-Qjm" secondAttribute="trailing" constant="37" id="3Wv-Y6-22G"/>
                             <constraint firstAttribute="trailing" secondItem="55x-Hd-Yyy" secondAttribute="trailing" constant="10" id="3rz-3O-FdY"/>
-                            <constraint firstAttribute="trailing" secondItem="vvC-KG-eho" secondAttribute="trailing" id="FdA-Q9-DmR"/>
                             <constraint firstItem="Hom-fh-Uyk" firstAttribute="leading" secondItem="9Vx-H2-4ze" secondAttribute="leading" constant="10" id="HN0-o9-38p"/>
-                            <constraint firstItem="vvC-KG-eho" firstAttribute="top" secondItem="9Vx-H2-4ze" secondAttribute="top" id="Mh0-rF-gt9"/>
                             <constraint firstAttribute="centerX" secondItem="cDA-UI-abJ" secondAttribute="centerX" id="Ovj-ml-VO1"/>
                             <constraint firstAttribute="bottom" secondItem="cDA-UI-abJ" secondAttribute="bottom" constant="101" id="SL3-lb-XG1"/>
                             <constraint firstItem="vo4-7J-uU8" firstAttribute="leading" secondItem="hZ0-8j-Qjm" secondAttribute="trailing" constant="5" id="WbS-hQ-FJe"/>
-                            <constraint firstAttribute="bottom" secondItem="vvC-KG-eho" secondAttribute="bottom" id="WmN-9w-NZf"/>
                             <constraint firstItem="55x-Hd-Yyy" firstAttribute="bottom" secondItem="cDA-UI-abJ" secondAttribute="top" constant="-10" id="enH-Iw-NjY"/>
                             <constraint firstItem="hZ0-8j-Qjm" firstAttribute="centerY" secondItem="Hom-fh-Uyk" secondAttribute="centerY" id="hGf-75-JZt"/>
                             <constraint firstAttribute="bottom" secondItem="hZ0-8j-Qjm" secondAttribute="bottom" constant="15" id="oh5-O6-GYn"/>
-                            <constraint firstItem="vvC-KG-eho" firstAttribute="leading" secondItem="9Vx-H2-4ze" secondAttribute="leading" id="rFO-ZC-gq8"/>
                             <constraint firstItem="55x-Hd-Yyy" firstAttribute="leading" secondItem="9Vx-H2-4ze" secondAttribute="leading" constant="10" id="rbm-fl-yrx"/>
                             <constraint firstItem="hZ0-8j-Qjm" firstAttribute="leading" secondItem="Hom-fh-Uyk" secondAttribute="trailing" constant="10" id="stH-8m-xrr"/>
                             <constraint firstItem="hZ0-8j-Qjm" firstAttribute="top" secondItem="vo4-7J-uU8" secondAttribute="top" constant="-5" id="vCV-iA-mkZ"/>
@@ -1079,14 +984,10 @@ then drag it up or down</string>
                         <viewControllerLayoutGuide type="top" id="IPA-2v-GmW"/>
                         <viewControllerLayoutGuide type="bottom" id="1SF-eQ-ima"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="YLh-Fg-eRh">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="YLh-Fg-eRh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sbh-em-Wk8">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="6iN-1o-f26">
                                 <rect key="frame" x="228" y="28" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1141,11 +1042,10 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="nPF-RG-8hQ" secondAttribute="trailing" constant="10" id="51V-zi-nMq"/>
-                            <constraint firstAttribute="trailing" secondItem="sbh-em-Wk8" secondAttribute="trailing" id="5Z0-np-Z6x"/>
                             <constraint firstItem="nPF-RG-8hQ" firstAttribute="top" secondItem="2Qv-uJ-bDn" secondAttribute="bottom" constant="10" id="67g-62-bZB"/>
                             <constraint firstAttribute="centerX" secondItem="2Qv-uJ-bDn" secondAttribute="centerX" id="ADC-z1-jc2"/>
                             <constraint firstAttribute="trailing" secondItem="6iN-1o-f26" secondAttribute="trailing" constant="50" id="FKV-JY-n1c"/>
@@ -1153,12 +1053,9 @@ then drag it up or down</string>
                             <constraint firstItem="2Qv-uJ-bDn" firstAttribute="top" secondItem="YLh-Fg-eRh" secondAttribute="top" constant="226" id="JAv-rD-nmF"/>
                             <constraint firstItem="YDr-cP-huy" firstAttribute="centerY" secondItem="tkT-KJ-PpW" secondAttribute="centerY" id="Kbn-Lx-ti9"/>
                             <constraint firstItem="o7F-5b-l1S" firstAttribute="leading" secondItem="2Qv-uJ-bDn" secondAttribute="trailing" constant="5" id="Kmt-if-MYk"/>
-                            <constraint firstItem="sbh-em-Wk8" firstAttribute="top" secondItem="YLh-Fg-eRh" secondAttribute="top" id="L7m-mv-8Fj"/>
                             <constraint firstItem="tkT-KJ-PpW" firstAttribute="leading" secondItem="YLh-Fg-eRh" secondAttribute="leading" constant="10" id="MNr-qT-5fO"/>
-                            <constraint firstItem="sbh-em-Wk8" firstAttribute="leading" secondItem="YLh-Fg-eRh" secondAttribute="leading" id="NNE-e3-6oe"/>
                             <constraint firstItem="YDr-cP-huy" firstAttribute="top" secondItem="YLh-Fg-eRh" secondAttribute="top" constant="119" id="Nv2-ua-444"/>
                             <constraint firstItem="2Qv-uJ-bDn" firstAttribute="top" secondItem="o7F-5b-l1S" secondAttribute="top" id="YYJ-mm-GmM"/>
-                            <constraint firstAttribute="bottom" secondItem="sbh-em-Wk8" secondAttribute="bottom" id="Z3a-hb-nwd"/>
                             <constraint firstItem="m1h-st-ypH" firstAttribute="centerY" secondItem="6iN-1o-f26" secondAttribute="centerY" id="cdl-0P-lAg"/>
                             <constraint firstItem="6iN-1o-f26" firstAttribute="top" secondItem="YLh-Fg-eRh" secondAttribute="top" constant="28" id="fYf-eN-2R5"/>
                             <constraint firstAttribute="trailing" secondItem="YDr-cP-huy" secondAttribute="trailing" constant="17" id="lfP-Cx-uqc"/>
@@ -1194,14 +1091,10 @@ then drag it up or down</string>
                         <viewControllerLayoutGuide type="top" id="W2e-Mq-A1Y"/>
                         <viewControllerLayoutGuide type="bottom" id="48R-jm-Hbu"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="gkS-8h-tzO">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="gkS-8h-tzO">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zh0-F5-Jm8">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_left" translatesAutoresizingMaskIntoConstraints="NO" id="wjt-Kq-a4W">
                                 <rect key="frame" x="42" y="20" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1257,20 +1150,17 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="0gd-1F-IlN" firstAttribute="leading" secondItem="wjt-Kq-a4W" secondAttribute="trailing" constant="10" id="1HM-bO-MuU"/>
                             <constraint firstAttribute="trailing" secondItem="UFc-4O-EbR" secondAttribute="trailing" constant="55" id="1VO-g1-ly8"/>
                             <constraint firstItem="ls1-5i-Gos" firstAttribute="leading" secondItem="gkS-8h-tzO" secondAttribute="leading" constant="10" id="32y-4A-IbS"/>
-                            <constraint firstAttribute="trailing" secondItem="Zh0-F5-Jm8" secondAttribute="trailing" id="4J5-Gv-apJ"/>
                             <constraint firstAttribute="trailing" secondItem="0gd-1F-IlN" secondAttribute="trailing" constant="10" id="6RB-Ko-P1G"/>
                             <constraint firstItem="UFc-4O-EbR" firstAttribute="centerY" secondItem="ls1-5i-Gos" secondAttribute="centerY" id="EoH-3I-7Zb"/>
                             <constraint firstItem="wjt-Kq-a4W" firstAttribute="top" secondItem="gkS-8h-tzO" secondAttribute="top" constant="20" id="Szj-1t-VZu"/>
                             <constraint firstItem="CJz-2K-52H" firstAttribute="leading" secondItem="gkS-8h-tzO" secondAttribute="leading" constant="50" id="TMI-uf-kbC"/>
                             <constraint firstItem="wjt-Kq-a4W" firstAttribute="centerY" secondItem="0gd-1F-IlN" secondAttribute="centerY" id="VUE-MY-kMp"/>
-                            <constraint firstAttribute="bottom" secondItem="Zh0-F5-Jm8" secondAttribute="bottom" id="dzQ-qI-2dP"/>
-                            <constraint firstItem="Zh0-F5-Jm8" firstAttribute="top" secondItem="gkS-8h-tzO" secondAttribute="top" id="iV3-97-rf2"/>
                             <constraint firstItem="UFc-4O-EbR" firstAttribute="leading" secondItem="ls1-5i-Gos" secondAttribute="trailing" constant="10" id="mGH-FG-JG1"/>
                             <constraint firstItem="CJz-2K-52H" firstAttribute="trailing" secondItem="rHi-Jq-5Rp" secondAttribute="leading" constant="-10" id="oyB-jD-cWS"/>
                             <constraint firstItem="CJz-2K-52H" firstAttribute="centerY" secondItem="rHi-Jq-5Rp" secondAttribute="centerY" id="r9u-Cc-KQg"/>
@@ -1278,7 +1168,6 @@ then drag it up or down</string>
                             <constraint firstItem="wjt-Kq-a4W" firstAttribute="leading" secondItem="gkS-8h-tzO" secondAttribute="leading" constant="42" id="twX-3N-Cfr"/>
                             <constraint firstItem="48R-jm-Hbu" firstAttribute="top" secondItem="UFc-4O-EbR" secondAttribute="bottom" constant="109" id="uVg-Va-0WT"/>
                             <constraint firstAttribute="trailing" secondItem="rHi-Jq-5Rp" secondAttribute="trailing" constant="10" id="uYw-e7-65k"/>
-                            <constraint firstItem="Zh0-F5-Jm8" firstAttribute="leading" secondItem="gkS-8h-tzO" secondAttribute="leading" id="yU5-V3-Hwh"/>
                             <constraint firstAttribute="bottom" secondItem="CJz-2K-52H" secondAttribute="bottom" constant="238" id="zM3-Vt-mfa"/>
                             <constraint firstItem="UFc-4O-EbR" firstAttribute="top" secondItem="AE6-fy-46s" secondAttribute="top" id="zQU-se-01N"/>
                         </constraints>
@@ -1312,14 +1201,10 @@ then drag it up or down</string>
                         <viewControllerLayoutGuide type="top" id="0wh-dV-rJy"/>
                         <viewControllerLayoutGuide type="bottom" id="ZQt-ig-GlO"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="naR-7Q-eRX">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="naR-7Q-eRX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6xW-yR-vZJ">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="Mez-kf-gJI">
                                 <rect key="frame" x="241" y="22" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1372,11 +1257,10 @@ then tap Delete</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="uuv-Tb-Oej" firstAttribute="top" secondItem="naR-7Q-eRX" secondAttribute="top" constant="233" id="7fX-jQ-B35"/>
-                            <constraint firstItem="6xW-yR-vZJ" firstAttribute="leading" secondItem="naR-7Q-eRX" secondAttribute="leading" id="B1P-mf-a9z"/>
                             <constraint firstAttribute="centerX" secondItem="cEZ-6S-HPg" secondAttribute="centerX" id="BKc-Xx-w92"/>
                             <constraint firstItem="M89-TC-emC" firstAttribute="leading" secondItem="naR-7Q-eRX" secondAttribute="leading" constant="10" id="FNn-5e-f2r"/>
                             <constraint firstItem="j7s-5h-AsK" firstAttribute="leading" secondItem="naR-7Q-eRX" secondAttribute="leading" constant="10" id="Lm9-QS-4xV"/>
@@ -1384,7 +1268,6 @@ then tap Delete</string>
                             <constraint firstItem="Mez-kf-gJI" firstAttribute="top" secondItem="naR-7Q-eRX" secondAttribute="top" constant="22" id="Wp5-SS-gR1"/>
                             <constraint firstAttribute="trailing" secondItem="Mez-kf-gJI" secondAttribute="trailing" constant="37" id="YU1-gb-Vab"/>
                             <constraint firstAttribute="trailing" secondItem="uuv-Tb-Oej" secondAttribute="trailing" constant="17" id="cmS-6y-I9K"/>
-                            <constraint firstAttribute="trailing" secondItem="6xW-yR-vZJ" secondAttribute="trailing" id="gZ9-Gv-Kx7"/>
                             <constraint firstItem="Mez-kf-gJI" firstAttribute="centerY" secondItem="j7s-5h-AsK" secondAttribute="centerY" id="hCA-PL-YuV"/>
                             <constraint firstItem="Mez-kf-gJI" firstAttribute="leading" secondItem="j7s-5h-AsK" secondAttribute="trailing" constant="10" id="m4p-MQ-xEj"/>
                             <constraint firstItem="M89-TC-emC" firstAttribute="bottom" secondItem="cEZ-6S-HPg" secondAttribute="top" constant="-10" id="mQF-h8-lWa"/>
@@ -1393,8 +1276,6 @@ then tap Delete</string>
                             <constraint firstItem="p7z-Xt-zJ7" firstAttribute="leading" secondItem="cEZ-6S-HPg" secondAttribute="trailing" id="pmF-cb-Wgl"/>
                             <constraint firstAttribute="trailing" secondItem="M89-TC-emC" secondAttribute="trailing" constant="10" id="qCI-uh-VSV"/>
                             <constraint firstItem="afl-C5-OsY" firstAttribute="leading" secondItem="naR-7Q-eRX" secondAttribute="leading" constant="10" id="sjr-Pq-7zW"/>
-                            <constraint firstAttribute="bottom" secondItem="6xW-yR-vZJ" secondAttribute="bottom" id="tqd-yl-NmI"/>
-                            <constraint firstItem="6xW-yR-vZJ" firstAttribute="top" secondItem="naR-7Q-eRX" secondAttribute="top" id="xea-iS-8Wz"/>
                             <constraint firstItem="uuv-Tb-Oej" firstAttribute="top" secondItem="afl-C5-OsY" secondAttribute="top" constant="5" id="zm9-rv-i2r"/>
                         </constraints>
                         <connections>
@@ -1425,27 +1306,10 @@ then tap Delete</string>
                         <viewControllerLayoutGuide type="top" id="TYE-4Z-dRk"/>
                         <viewControllerLayoutGuide type="bottom" id="d34-Za-gHW"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="dKN-6d-SOe">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="dKN-6d-SOe">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9b3-Pq-w3B">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="208" translatesAutoresizingMaskIntoConstraints="NO" id="5vX-h0-0KZ">
-                                        <rect key="frame" x="102" y="77" width="208" height="40"/>
-                                        <string key="text">Tap the screen to display
-the controls</string>
-                                        <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="5vX-h0-0KZ" secondAttribute="trailing" constant="10" id="QMT-tP-pyE"/>
-                                </constraints>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="yL6-t8-Rsz">
                                 <rect key="frame" x="50" y="76" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1478,23 +1342,17 @@ prev/next events</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="yXR-Yi-555" firstAttribute="centerY" secondItem="Tub-Vc-yVU" secondAttribute="centerY" id="3jD-dl-qve"/>
                             <constraint firstItem="yXR-Yi-555" firstAttribute="leading" secondItem="dKN-6d-SOe" secondAttribute="leading" constant="10" id="CCz-St-BGc"/>
                             <constraint firstItem="Tub-Vc-yVU" firstAttribute="leading" secondItem="yXR-Yi-555" secondAttribute="trailing" constant="10" id="Ep2-f2-eiZ"/>
                             <constraint firstAttribute="trailing" secondItem="Tub-Vc-yVU" secondAttribute="trailing" constant="36" id="N3c-9p-8ql"/>
-                            <constraint firstItem="9b3-Pq-w3B" firstAttribute="leading" secondItem="dKN-6d-SOe" secondAttribute="leading" id="TFg-n5-gZh"/>
                             <constraint firstItem="Adg-z8-lei" firstAttribute="top" secondItem="Tub-Vc-yVU" secondAttribute="top" id="UPB-2a-ScL"/>
                             <constraint firstItem="yL6-t8-Rsz" firstAttribute="leading" secondItem="dKN-6d-SOe" secondAttribute="leading" constant="50" id="Yje-aU-wLZ"/>
                             <constraint firstItem="Tub-Vc-yVU" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="top" constant="207" id="ZlN-NI-PPf"/>
-                            <constraint firstAttribute="trailing" secondItem="9b3-Pq-w3B" secondAttribute="trailing" id="dan-QV-ZEP"/>
-                            <constraint firstItem="9b3-Pq-w3B" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="top" id="eZ8-4E-8Dv"/>
-                            <constraint firstItem="5vX-h0-0KZ" firstAttribute="leading" secondItem="yL6-t8-Rsz" secondAttribute="trailing" constant="10" id="jVV-ZW-umi"/>
-                            <constraint firstItem="yL6-t8-Rsz" firstAttribute="centerY" secondItem="5vX-h0-0KZ" secondAttribute="centerY" id="lux-bu-9XD"/>
                             <constraint firstItem="yL6-t8-Rsz" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="top" constant="76" id="pWi-8t-deg"/>
-                            <constraint firstAttribute="bottom" secondItem="9b3-Pq-w3B" secondAttribute="bottom" id="tqQ-Ho-QqD"/>
                             <constraint firstItem="Adg-z8-lei" firstAttribute="leading" secondItem="Tub-Vc-yVU" secondAttribute="trailing" id="zgv-0Q-9gx"/>
                         </constraints>
                         <connections>
@@ -1524,14 +1382,10 @@ prev/next events</string>
                         <viewControllerLayoutGuide type="top" id="lKk-bg-33f"/>
                         <viewControllerLayoutGuide type="bottom" id="Npb-Ao-czp"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="1rt-wf-O4Q">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="1rt-wf-O4Q">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zRN-X0-Yq3">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="XWc-yO-6so">
                                 <rect key="frame" x="261" y="76" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1572,20 +1426,16 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="zRN-X0-Yq3" secondAttribute="trailing" id="2bp-sV-WHk"/>
                             <constraint firstAttribute="trailing" secondItem="g74-h9-vmQ" secondAttribute="trailing" constant="10" id="2gL-V2-hf8"/>
                             <constraint firstItem="XWc-yO-6so" firstAttribute="top" secondItem="1rt-wf-O4Q" secondAttribute="top" constant="76" id="57B-n0-7fP"/>
                             <constraint firstAttribute="centerX" secondItem="DGY-Qa-nOV" secondAttribute="centerX" id="91i-8Z-vbz"/>
                             <constraint firstItem="XWc-yO-6so" firstAttribute="leading" secondItem="7qV-NL-Ajb" secondAttribute="trailing" constant="10" id="Dsh-HT-enT"/>
                             <constraint firstItem="7qV-NL-Ajb" firstAttribute="leading" secondItem="1rt-wf-O4Q" secondAttribute="leading" constant="10" id="GHB-Z1-hmt"/>
-                            <constraint firstItem="zRN-X0-Yq3" firstAttribute="top" secondItem="1rt-wf-O4Q" secondAttribute="top" id="HH8-uO-ABd"/>
                             <constraint firstItem="93e-Mv-Dn4" firstAttribute="leading" secondItem="DGY-Qa-nOV" secondAttribute="trailing" id="HOO-ZM-y1E"/>
-                            <constraint firstAttribute="bottom" secondItem="zRN-X0-Yq3" secondAttribute="bottom" id="L86-Kh-fz8"/>
                             <constraint firstItem="g74-h9-vmQ" firstAttribute="top" secondItem="DGY-Qa-nOV" secondAttribute="bottom" constant="10" id="NHe-rl-gNd"/>
-                            <constraint firstItem="zRN-X0-Yq3" firstAttribute="leading" secondItem="1rt-wf-O4Q" secondAttribute="leading" id="NSh-ZZ-deg"/>
                             <constraint firstItem="DGY-Qa-nOV" firstAttribute="top" secondItem="1rt-wf-O4Q" secondAttribute="top" constant="207" id="RXs-9B-2NZ"/>
                             <constraint firstItem="XWc-yO-6so" firstAttribute="centerY" secondItem="7qV-NL-Ajb" secondAttribute="centerY" id="eTU-ux-nqU"/>
                             <constraint firstItem="g74-h9-vmQ" firstAttribute="leading" secondItem="1rt-wf-O4Q" secondAttribute="leading" constant="10" id="gfc-m8-Ine"/>
@@ -1619,14 +1469,10 @@ then drag it up or down</string>
                         <viewControllerLayoutGuide type="top" id="Wk6-6L-hqt"/>
                         <viewControllerLayoutGuide type="bottom" id="GF5-2D-ojf"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="37m-vv-SpE">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="37m-vv-SpE">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="STc-Hk-Jxz">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="r3l-6O-Uzp">
                                 <rect key="frame" x="261" y="120" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1667,25 +1513,21 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="r3l-6O-Uzp" firstAttribute="centerY" secondItem="FNw-cz-Xbp" secondAttribute="centerY" id="37E-Y1-fr9"/>
                             <constraint firstItem="rqI-qD-Dqd" firstAttribute="top" secondItem="yLq-EI-3vy" secondAttribute="bottom" constant="10" id="3gQ-eJ-0cw"/>
-                            <constraint firstItem="STc-Hk-Jxz" firstAttribute="top" secondItem="37m-vv-SpE" secondAttribute="top" id="4XX-0F-Xa9"/>
                             <constraint firstAttribute="trailing" secondItem="r3l-6O-Uzp" secondAttribute="trailing" constant="17" id="5hP-sw-yuv"/>
                             <constraint firstItem="ue3-0I-qib" firstAttribute="leading" secondItem="yLq-EI-3vy" secondAttribute="trailing" id="74Z-t7-bhP"/>
-                            <constraint firstItem="STc-Hk-Jxz" firstAttribute="leading" secondItem="37m-vv-SpE" secondAttribute="leading" id="K4h-Hk-CYI"/>
                             <constraint firstItem="rqI-qD-Dqd" firstAttribute="leading" secondItem="37m-vv-SpE" secondAttribute="leading" constant="10" id="Sar-zm-pcg"/>
                             <constraint firstItem="FNw-cz-Xbp" firstAttribute="leading" secondItem="37m-vv-SpE" secondAttribute="leading" constant="10" id="W2M-uE-IAy"/>
                             <constraint firstItem="r3l-6O-Uzp" firstAttribute="leading" secondItem="FNw-cz-Xbp" secondAttribute="trailing" constant="10" id="ZM7-fr-Fjd"/>
                             <constraint firstAttribute="centerX" secondItem="yLq-EI-3vy" secondAttribute="centerX" id="a7a-Wx-AXQ"/>
-                            <constraint firstAttribute="bottom" secondItem="STc-Hk-Jxz" secondAttribute="bottom" id="aJh-4J-rcX"/>
                             <constraint firstItem="r3l-6O-Uzp" firstAttribute="top" secondItem="37m-vv-SpE" secondAttribute="top" constant="120" id="byQ-SE-ccS"/>
                             <constraint firstItem="ue3-0I-qib" firstAttribute="top" secondItem="yLq-EI-3vy" secondAttribute="top" id="cHC-um-hmo"/>
                             <constraint firstItem="yLq-EI-3vy" firstAttribute="top" secondItem="37m-vv-SpE" secondAttribute="top" constant="226" id="gxn-6V-m6K"/>
                             <constraint firstAttribute="trailing" secondItem="rqI-qD-Dqd" secondAttribute="trailing" constant="10" id="pns-0S-gWA"/>
-                            <constraint firstAttribute="trailing" secondItem="STc-Hk-Jxz" secondAttribute="trailing" id="yss-em-HbW"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="OS1-fv-zTb" appends="YES" id="mue-Th-Qh3"/>
@@ -1714,14 +1556,10 @@ then drag it up or down</string>
                         <viewControllerLayoutGuide type="top" id="0WP-2Y-U3P"/>
                         <viewControllerLayoutGuide type="bottom" id="Nce-2W-ZCs"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Zlj-Dm-tA5">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="Zlj-Dm-tA5">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nr2-kr-PTg">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="XSW-3J-Xgf">
                                 <rect key="frame" x="176" y="92" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1790,7 +1628,7 @@ then tap Delete</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="rEC-MK-OMc" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="top" constant="190" id="4Y5-2I-2Hh"/>
@@ -1802,7 +1640,6 @@ then tap Delete</string>
                             <constraint firstAttribute="trailing" secondItem="rEC-MK-OMc" secondAttribute="trailing" constant="10" id="DbQ-XA-xoA"/>
                             <constraint firstAttribute="centerX" secondItem="8pP-NA-IQY" secondAttribute="centerX" id="Igw-pc-7af"/>
                             <constraint firstItem="UvH-ng-N3W" firstAttribute="top" secondItem="8pP-NA-IQY" secondAttribute="bottom" constant="10" id="OE0-Dv-QKt"/>
-                            <constraint firstAttribute="bottom" secondItem="nr2-kr-PTg" secondAttribute="bottom" id="P7H-yR-tR7"/>
                             <constraint firstItem="qMW-Th-lrs" firstAttribute="trailing" secondItem="yvc-2S-7eq" secondAttribute="leading" constant="-10" id="Sjj-gp-yxE"/>
                             <constraint firstAttribute="trailing" secondItem="1dD-l5-TzF" secondAttribute="trailing" constant="10" id="VYi-KW-tJp"/>
                             <constraint firstAttribute="trailing" secondItem="yvc-2S-7eq" secondAttribute="trailing" constant="37" id="ZiH-oK-qtg"/>
@@ -1813,10 +1650,7 @@ then tap Delete</string>
                             <constraint firstItem="rEC-MK-OMc" firstAttribute="bottom" secondItem="U1j-Mc-LaR" secondAttribute="bottom" id="huq-ZG-ATS"/>
                             <constraint firstItem="yvc-2S-7eq" firstAttribute="top" secondItem="tzz-zS-7rf" secondAttribute="top" id="lG2-n8-Rh6"/>
                             <constraint firstAttribute="trailing" secondItem="XSW-3J-Xgf" secondAttribute="trailing" constant="102" id="lJU-Gh-4p8"/>
-                            <constraint firstItem="nr2-kr-PTg" firstAttribute="leading" secondItem="Zlj-Dm-tA5" secondAttribute="leading" id="piO-og-a0E"/>
-                            <constraint firstItem="nr2-kr-PTg" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="top" id="pyh-aT-LvN"/>
                             <constraint firstItem="qMW-Th-lrs" firstAttribute="centerY" secondItem="yvc-2S-7eq" secondAttribute="centerY" id="srE-Hh-9e5"/>
-                            <constraint firstAttribute="trailing" secondItem="nr2-kr-PTg" secondAttribute="trailing" id="tNT-zu-g8N"/>
                             <constraint firstItem="U1j-Mc-LaR" firstAttribute="leading" secondItem="Zlj-Dm-tA5" secondAttribute="leading" constant="10" id="ujp-Gx-clb"/>
                             <constraint firstItem="rEC-MK-OMc" firstAttribute="leading" secondItem="U1j-Mc-LaR" secondAttribute="trailing" constant="10" id="uuo-Rf-A61"/>
                         </constraints>
@@ -1849,27 +1683,10 @@ then tap Delete</string>
                         <viewControllerLayoutGuide type="top" id="hdq-bo-LiA"/>
                         <viewControllerLayoutGuide type="bottom" id="0gG-Qe-Zxx"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="9Q7-aH-fjF">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="9Q7-aH-fjF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pKq-Pc-32E">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="O49-bh-b9I">
-                                        <rect key="frame" x="10" y="48" width="241" height="40"/>
-                                        <string key="text">Slide the country to the left,
-then tap Delete</string>
-                                        <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="O49-bh-b9I" firstAttribute="leading" secondItem="pKq-Pc-32E" secondAttribute="leading" constant="10" id="I9p-Sl-BvU"/>
-                                </constraints>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="xdE-si-SAi">
                                 <rect key="frame" x="261" y="47" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1908,25 +1725,19 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="pKq-Pc-32E" secondAttribute="trailing" id="4FL-5r-FVP"/>
                             <constraint firstItem="zc4-ox-WX3" firstAttribute="leading" secondItem="8Bb-Xt-gYd" secondAttribute="trailing" constant="5" id="4js-46-YQA"/>
                             <constraint firstItem="zc4-ox-WX3" firstAttribute="top" secondItem="8Bb-Xt-gYd" secondAttribute="top" id="AEt-OS-Sd8"/>
                             <constraint firstAttribute="bottom" secondItem="nP5-9M-28L" secondAttribute="bottom" constant="40" id="B5j-Ie-U56"/>
                             <constraint firstAttribute="trailing" secondItem="0ze-pQ-4fo" secondAttribute="trailing" constant="10" id="DoK-bw-RMu"/>
                             <constraint firstItem="0ze-pQ-4fo" firstAttribute="top" secondItem="8Bb-Xt-gYd" secondAttribute="bottom" constant="10" id="JDO-re-LbB"/>
-                            <constraint firstAttribute="bottom" secondItem="pKq-Pc-32E" secondAttribute="bottom" id="NfF-OZ-Xwb"/>
                             <constraint firstItem="xdE-si-SAi" firstAttribute="top" secondItem="9Q7-aH-fjF" secondAttribute="top" constant="47" id="TI1-Df-iCw"/>
                             <constraint firstItem="0ze-pQ-4fo" firstAttribute="leading" secondItem="9Q7-aH-fjF" secondAttribute="leading" constant="10" id="VLF-gK-bBW"/>
-                            <constraint firstItem="O49-bh-b9I" firstAttribute="centerY" secondItem="xdE-si-SAi" secondAttribute="centerY" id="YXL-jS-Iru"/>
                             <constraint firstItem="nP5-9M-28L" firstAttribute="leading" secondItem="9Q7-aH-fjF" secondAttribute="leading" constant="10" id="Ybo-sQ-Bry"/>
                             <constraint firstAttribute="trailing" secondItem="nP5-9M-28L" secondAttribute="trailing" constant="10" id="Z0b-3Q-k9M"/>
-                            <constraint firstItem="xdE-si-SAi" firstAttribute="leading" secondItem="O49-bh-b9I" secondAttribute="trailing" constant="10" id="ZBQ-Ad-15Z"/>
-                            <constraint firstItem="pKq-Pc-32E" firstAttribute="leading" secondItem="9Q7-aH-fjF" secondAttribute="leading" id="eW5-st-ds3"/>
                             <constraint firstAttribute="trailing" secondItem="xdE-si-SAi" secondAttribute="trailing" constant="17" id="fGe-r7-NAk"/>
-                            <constraint firstItem="pKq-Pc-32E" firstAttribute="top" secondItem="9Q7-aH-fjF" secondAttribute="top" id="o77-96-iio"/>
                             <constraint firstAttribute="centerX" secondItem="8Bb-Xt-gYd" secondAttribute="centerX" id="oI2-bC-UNy"/>
                             <constraint firstItem="8Bb-Xt-gYd" firstAttribute="top" secondItem="9Q7-aH-fjF" secondAttribute="top" constant="149" id="zw2-ou-E6s"/>
                         </constraints>
@@ -1957,14 +1768,10 @@ then drag it up or down</string>
                         <viewControllerLayoutGuide type="top" id="M8R-tU-W0E"/>
                         <viewControllerLayoutGuide type="bottom" id="niv-17-Asp"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="G3r-so-6LW">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="G3r-so-6LW">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zjB-Wc-3zv">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="Z6w-KA-rfd">
                                 <rect key="frame" x="262" y="34" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -2029,12 +1836,11 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Z6w-KA-rfd" secondAttribute="trailing" constant="16" id="4cq-wN-kuH"/>
                             <constraint firstItem="Z6w-KA-rfd" firstAttribute="trailing" secondItem="ZkW-mi-nXJ" secondAttribute="trailing" id="8Sk-LR-NUq"/>
-                            <constraint firstAttribute="bottom" secondItem="zjB-Wc-3zv" secondAttribute="bottom" id="8pZ-5W-NMT"/>
                             <constraint firstItem="r9Y-2d-qlN" firstAttribute="leading" secondItem="qF4-08-u3n" secondAttribute="trailing" constant="10" id="C83-Vr-ZQY"/>
                             <constraint firstItem="qF4-08-u3n" firstAttribute="leading" secondItem="G3r-so-6LW" secondAttribute="leading" constant="10" id="Ctq-Oh-TMz"/>
                             <constraint firstItem="Z6w-KA-rfd" firstAttribute="top" secondItem="G3r-so-6LW" secondAttribute="top" constant="34" id="EwG-zl-yI2"/>
@@ -2044,17 +1850,14 @@ then drag it up or down</string>
                             <constraint firstItem="RUR-9p-HGC" firstAttribute="leading" secondItem="r9Y-2d-qlN" secondAttribute="trailing" constant="5" id="KqM-AS-r1z"/>
                             <constraint firstItem="cXb-sm-2AK" firstAttribute="leading" secondItem="G3r-so-6LW" secondAttribute="leading" constant="10" id="U2K-bn-gsJ"/>
                             <constraint firstItem="n3c-eW-iPb" firstAttribute="top" secondItem="YcB-fl-yv1" secondAttribute="bottom" constant="10" id="WNb-jC-wJY"/>
-                            <constraint firstItem="zjB-Wc-3zv" firstAttribute="leading" secondItem="G3r-so-6LW" secondAttribute="leading" id="aIa-XL-kRU"/>
                             <constraint firstItem="r9Y-2d-qlN" firstAttribute="top" secondItem="RUR-9p-HGC" secondAttribute="top" constant="-5" id="ckk-bj-S1x"/>
                             <constraint firstAttribute="trailing" secondItem="n3c-eW-iPb" secondAttribute="trailing" constant="10" id="cyr-mC-6ns"/>
                             <constraint firstItem="n3c-eW-iPb" firstAttribute="leading" secondItem="G3r-so-6LW" secondAttribute="leading" constant="10" id="czr-Bm-cYQ"/>
                             <constraint firstItem="R5z-eZ-0ii" firstAttribute="top" secondItem="cXb-sm-2AK" secondAttribute="bottom" constant="10" id="fGr-fR-p0f"/>
                             <constraint firstAttribute="centerX" secondItem="YcB-fl-yv1" secondAttribute="centerX" id="gxx-Uj-qkW"/>
-                            <constraint firstAttribute="trailing" secondItem="zjB-Wc-3zv" secondAttribute="trailing" id="hzK-1Q-tlx"/>
                             <constraint firstAttribute="trailing" secondItem="cXb-sm-2AK" secondAttribute="trailing" constant="10" id="i7W-TX-inh"/>
                             <constraint firstItem="r9Y-2d-qlN" firstAttribute="centerY" secondItem="qF4-08-u3n" secondAttribute="centerY" id="keL-NC-EES"/>
                             <constraint firstAttribute="bottom" secondItem="r9Y-2d-qlN" secondAttribute="bottom" constant="10" id="mSK-rf-F8S"/>
-                            <constraint firstItem="zjB-Wc-3zv" firstAttribute="top" secondItem="G3r-so-6LW" secondAttribute="top" id="mdR-Yk-f4h"/>
                             <constraint firstItem="YcB-fl-yv1" firstAttribute="top" secondItem="G3r-so-6LW" secondAttribute="top" constant="185" id="nt4-xb-wTD"/>
                             <constraint firstAttribute="trailing" secondItem="r9Y-2d-qlN" secondAttribute="trailing" constant="38" id="qpc-9a-Qeg"/>
                             <constraint firstAttribute="centerX" secondItem="R5z-eZ-0ii" secondAttribute="centerX" id="wQw-TB-T9A"/>
@@ -2088,14 +1891,10 @@ then drag it up or down</string>
                         <viewControllerLayoutGuide type="top" id="E95-e2-YSv"/>
                         <viewControllerLayoutGuide type="bottom" id="hVp-CH-x9w"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="MRm-p5-tZc">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="MRm-p5-tZc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ijC-BQ-1yx">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="51h-tn-90N">
                                 <rect key="frame" x="139" y="115" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -2120,17 +1919,13 @@ the controls</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="51h-tn-90N" firstAttribute="top" secondItem="uPL-io-99J" secondAttribute="top" constant="-5" id="18t-FC-NCZ"/>
                             <constraint firstItem="uPL-io-99J" firstAttribute="leading" secondItem="51h-tn-90N" secondAttribute="trailing" constant="5" id="E2w-tB-GMW"/>
                             <constraint firstAttribute="trailing" secondItem="BOF-lT-L6x" secondAttribute="trailing" constant="10" id="H8p-qA-iki"/>
-                            <constraint firstAttribute="trailing" secondItem="ijC-BQ-1yx" secondAttribute="trailing" id="RHc-yY-hfI"/>
                             <constraint firstItem="BOF-lT-L6x" firstAttribute="top" secondItem="51h-tn-90N" secondAttribute="bottom" constant="10" id="bJb-R2-J5p"/>
-                            <constraint firstItem="ijC-BQ-1yx" firstAttribute="top" secondItem="MRm-p5-tZc" secondAttribute="top" id="fIC-0K-Nr5"/>
-                            <constraint firstItem="ijC-BQ-1yx" firstAttribute="leading" secondItem="MRm-p5-tZc" secondAttribute="leading" id="jbV-mH-TFG"/>
-                            <constraint firstAttribute="bottom" secondItem="ijC-BQ-1yx" secondAttribute="bottom" id="nB7-QK-tAc"/>
                             <constraint firstAttribute="centerX" secondItem="51h-tn-90N" secondAttribute="centerX" id="pEw-bX-tJO"/>
                             <constraint firstItem="51h-tn-90N" firstAttribute="top" secondItem="MRm-p5-tZc" secondAttribute="top" constant="115" id="qr4-TG-M7U"/>
                             <constraint firstItem="BOF-lT-L6x" firstAttribute="leading" secondItem="MRm-p5-tZc" secondAttribute="leading" constant="10" id="xzI-Uj-Knj"/>
@@ -2161,14 +1956,10 @@ the controls</string>
                         <viewControllerLayoutGuide type="top" id="MXT-rK-fVX"/>
                         <viewControllerLayoutGuide type="bottom" id="Bwp-nx-ohn"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="jJb-mI-9yk">
+                    <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="jJb-mI-9yk">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8vQ-4u-4Gf">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="yHE-dj-Eqt">
                                 <rect key="frame" x="139" y="115" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -2193,19 +1984,15 @@ the controls</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="RQO-Dj-ecx" firstAttribute="leading" secondItem="yHE-dj-Eqt" secondAttribute="trailing" constant="5" id="0fg-2P-LU3"/>
-                            <constraint firstItem="8vQ-4u-4Gf" firstAttribute="leading" secondItem="jJb-mI-9yk" secondAttribute="leading" id="1zJ-Lw-TWY"/>
                             <constraint firstAttribute="centerX" secondItem="yHE-dj-Eqt" secondAttribute="centerX" id="N7N-ep-vb6"/>
-                            <constraint firstAttribute="trailing" secondItem="8vQ-4u-4Gf" secondAttribute="trailing" id="O8K-81-DPh"/>
                             <constraint firstItem="yHE-dj-Eqt" firstAttribute="top" secondItem="jJb-mI-9yk" secondAttribute="top" constant="115" id="X4w-dQ-7qA"/>
                             <constraint firstItem="yHE-dj-Eqt" firstAttribute="top" secondItem="RQO-Dj-ecx" secondAttribute="top" constant="-5" id="bVv-25-r8g"/>
                             <constraint firstItem="k0p-RN-RCK" firstAttribute="leading" secondItem="jJb-mI-9yk" secondAttribute="leading" constant="10" id="bgt-fZ-uha"/>
-                            <constraint firstAttribute="bottom" secondItem="8vQ-4u-4Gf" secondAttribute="bottom" id="hKA-XA-86N"/>
                             <constraint firstAttribute="trailing" secondItem="k0p-RN-RCK" secondAttribute="trailing" constant="10" id="kmx-oj-B4n"/>
-                            <constraint firstItem="8vQ-4u-4Gf" firstAttribute="top" secondItem="jJb-mI-9yk" secondAttribute="top" id="so2-M5-xSQ"/>
                             <constraint firstItem="k0p-RN-RCK" firstAttribute="top" secondItem="yHE-dj-Eqt" secondAttribute="bottom" constant="10" id="t1m-3t-Dud"/>
                         </constraints>
                         <connections>
