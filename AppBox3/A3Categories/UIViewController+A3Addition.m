@@ -67,12 +67,25 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
         }
 	}
 
-	NSArray *poppedVCs = [navigationController popToRootViewControllerAnimated:NO];
-	for (UIViewController<A3CenterViewDelegate> *vc in poppedVCs) {
-		if ([vc respondsToSelector:@selector(cleanUp)]) {
-			[vc performSelector:@selector(cleanUp)];
-		}
-	}
+    NSMutableArray *currentViewControllers = [[navigationController viewControllers] mutableCopy];
+    // Xcode 5로 빌드하고 iOS 8에서 실행했을때, poppedVCs가 nil이 돌아옵니다. 다른 경우는 더 테스트가 필요합니다.
+    // 이 경우에는 pop하기 전과 후의 뷰컨트롤러를 비교해서 없어진 뷰 컨트롤러들의 cleanUp을 호출해 주어야 합니다.
+    NSArray *poppedVCs = [navigationController popToRootViewControllerAnimated:NO];
+    if (![poppedVCs count]) {
+        [currentViewControllers removeObjectsInArray:navigationController.viewControllers];
+        for (UIViewController<A3CenterViewDelegate> *vc in currentViewControllers) {
+            if ([vc respondsToSelector:@selector(cleanUp)]) {
+                [vc performSelector:@selector(cleanUp)];
+            }
+        }
+    } else {
+        for (UIViewController<A3CenterViewDelegate> *vc in poppedVCs) {
+            if ([vc respondsToSelector:@selector(cleanUp)]) {
+                [vc performSelector:@selector(cleanUp)];
+            }
+        }
+    }
+    
 	[navigationController setToolbarHidden:YES];
 	[navigationController setNavigationBarHidden:NO animated:NO];
 
