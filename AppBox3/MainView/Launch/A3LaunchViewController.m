@@ -158,6 +158,9 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 }
 
 - (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {
+    [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowWhatsNew_3_0];
+    [[A3UserDefaults standardUserDefaults] synchronize];
+
 	[_currentSceneViewController showButtons];
 
 	A3AppDelegate *appDelegate = [A3AppDelegate instance];
