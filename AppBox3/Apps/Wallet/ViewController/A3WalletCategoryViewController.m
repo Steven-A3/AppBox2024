@@ -26,8 +26,10 @@
 #import "A3UserDefaults.h"
 #import "WalletCategory.h"
 #import "WalletField.h"
+#import "NSString+conversion.h"
 
 @interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate, NSFileManagerDelegate>
+
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) UIButton *infoButton;
@@ -37,6 +39,12 @@
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, strong) NSMutableArray *shareTextList;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (nonatomic, strong) UILocalizedIndexedCollation *collation;
+@property (nonatomic, strong) NSMutableArray *sectionsArray;
+@property (nonatomic, strong) NSMutableArray *sectionTitles;
+@property (nonatomic, strong) NSMutableArray *sectionIndexTitles;
+@property (nonatomic, strong) NSArray *filteredResults;
+
 @end
 
 @implementation A3WalletCategoryViewController
@@ -289,9 +297,10 @@
 
 	for (NSInteger index = 0; index < ips.count; index++) {
 		NSIndexPath *ip = ips[index];
-		if ([self.items[ip.row] isKindOfClass:[WalletItem class]]) {
+        NSArray *section = self.sectionsArray[ip.section];
+		if ([section[ip.row] isKindOfClass:[WalletItem class]]) {
 
-			WalletItem *item = self.items[ip.row];
+			WalletItem *item = section[ip.row];
 			NSString *convertInfoText = @"";
 
 			if ([self.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory]) {
@@ -452,6 +461,7 @@
 - (void)refreshItems
 {
     self.items = nil;
+    [self configureSections];
     [self.tableView reloadData];
 }
 
@@ -571,9 +581,10 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
                 NSIndexPath *indexPath = ips[i];
                 [mis addIndex:indexPath.row];
 
-                if ([self.items[indexPath.row] isKindOfClass:[WalletItem class]]) {
+                NSArray *section = self.sectionsArray[indexPath.section];
+                if ([section[indexPath.row] isKindOfClass:[WalletItem class]]) {
 
-                    WalletItem *item = self.items[indexPath.row];
+                    WalletItem *item = section[indexPath.row];
 					[item deleteWalletItemInContext:nil];
 				}
             }
@@ -601,6 +612,74 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
 }
 
+- (UILocalizedIndexedCollation *)collation {
+    if (!_collation) {
+        [self configureSections];
+    }
+    return _collation;
+}
+
+- (void)configureSections {
+    // Get the current collation and keep a reference to it.
+    _collation = [UILocalizedIndexedCollation currentCollation];
+
+    NSInteger index, sectionTitlesCount = [[self.collation sectionTitles] count];
+
+    NSMutableArray *newSectionsArray = [[NSMutableArray alloc] initWithCapacity:sectionTitlesCount];
+
+    // Set up the sections array: elements are mutable arrays that will contain the time zones for that section.
+    for (index = 0; index < sectionTitlesCount; index++) {
+        NSMutableArray *array = [[NSMutableArray alloc] init];
+        [newSectionsArray addObject:array];
+    }
+
+    // Segregate the time zones into the appropriate arrays.
+    for (id object in self.items) {
+
+        // Ask the collation which section number the time zone belongs in, based on its locale name.
+        NSInteger sectionNumber = [self.collation sectionForObject:object collationStringSelector:NSSelectorFromString(@"name")];
+
+        // Get the array for the section.
+        NSMutableArray *sections = newSectionsArray[sectionNumber];
+
+        //  Add the time zone to the section.
+        [sections addObject:object];
+    }
+
+    NSMutableArray *dataContainingSectionsArray = [NSMutableArray new];
+    NSMutableArray *sectionTitles = [NSMutableArray new];
+    NSMutableArray *sectionIndexTitles = [NSMutableArray new];
+
+    // Now that all the data's in place, each section array needs to be sorted.
+    for (index = 0; index < sectionTitlesCount; index++) {
+
+        NSMutableArray *dataArrayForSection = newSectionsArray[index];
+
+        if ([dataArrayForSection count]) {
+            // If the table view or its contents were editable, you would make a mutable copy here.
+            NSArray *sortedDataArrayForSection = [self.collation sortedArrayFromArray:dataArrayForSection collationStringSelector:NSSelectorFromString(@"name")];
+
+            WalletItem *firstItem = sortedDataArrayForSection[0];
+            NSString *firstLetter = [[[firstItem name] substringToIndex:1] componentsSeparatedByKorean];
+            [dataContainingSectionsArray addObject:sortedDataArrayForSection];
+            NSInteger sectionTitleIndex = [[_collation sectionTitles] indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+                return [obj isEqualToString:firstLetter];
+            }];
+            if (sectionTitleIndex != NSNotFound) {
+                [sectionTitles addObject:[_collation sectionTitles][sectionTitleIndex]];
+                [sectionIndexTitles addObject:[_collation sectionTitles][sectionTitleIndex]];
+            } else {
+                [sectionTitles addObject:[_collation sectionTitles][index]];
+                [sectionIndexTitles addObject:[_collation sectionTitles][index]];
+            }
+        }
+    }
+
+    self.sectionsArray = dataContainingSectionsArray;
+    self.sectionTitles = sectionTitles;
+    self.sectionIndexTitles = sectionIndexTitles;
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -623,21 +702,46 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
         return;
     }
 
-	[super tableView:tableView didSelectRowAtIndexPath:indexPath withItem:self.items[indexPath.row]];
+    NSArray *section = self.sectionsArray[indexPath.section];
+	[super tableView:tableView didSelectRowAtIndexPath:indexPath withItem:section[indexPath.row]];
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return 1;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return 1;
+    } else {
+        return [self.sectionTitles count];
+    }
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    return [self.items count];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return [_filteredResults count];
+    } else {
+        NSArray *rowsInSection = (self.sectionsArray)[section];
+
+        return [rowsInSection count];
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (tableView == self.tableView) {
+        return self.sectionTitles[section];
+    }
+    return nil;
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    if (tableView == self.tableView) {
+        return self.sectionIndexTitles;
+    }
+    return nil;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
+    return index;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -654,7 +758,8 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 {
 	if ([[self.items objectAtIndex:indexPath.row] isKindOfClass:[WalletItem class]]) {
 
-		WalletItem *item = self.items[indexPath.row];
+        NSArray *section = self.sectionsArray[indexPath.section];
+		WalletItem *item = section[indexPath.row];
 		return [self tableView:tableView cellForRowAtIndexPath:indexPath walletItem:item];
 	}
 	return nil;
@@ -673,8 +778,9 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
 
-        if ([self.items[indexPath.row] isKindOfClass:[WalletItem class]]) {
-            WalletItem *item = self.items[indexPath.row];
+        NSArray *section = self.sectionsArray[indexPath.section];
+        if ([section[indexPath.row] isKindOfClass:[WalletItem class]]) {
+            WalletItem *item = section[indexPath.row];
 			NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 			[fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem *fieldItem, NSUInteger idx, BOOL *stop) {
 				BOOL result;
@@ -708,12 +814,18 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 					}
 				}
 			}];
-            [self.items removeObject:item];
 
-			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [item deleteWalletItemInContext:nil];
+            [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
-			[item deleteWalletItemInContext:nil];
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+            self.items = nil;
+            [self configureSections];
+
+            if ([section count] == 1) {
+                [tableView reloadData];
+            } else {
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            }
 
             // more button 활성화여부
             [self itemCountCheck];
@@ -826,27 +938,6 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
 - (BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error removingItemAtURL:(NSURL *)URL {
     FNLOG(@"Error : %@", error);
-    return NO;
-}
-
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-	[self.items moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-}
-
-- (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-	[self.items moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-}
-
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
     return NO;
 }
 
