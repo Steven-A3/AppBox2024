@@ -178,7 +178,7 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	A3SearchTargetItem *data;
+    A3SearchTargetItem *data;
 	if (tableView == self.searchDisplayController.searchResultsTableView) {
 		data = self.filteredResults[indexPath.row];
 	} else {
