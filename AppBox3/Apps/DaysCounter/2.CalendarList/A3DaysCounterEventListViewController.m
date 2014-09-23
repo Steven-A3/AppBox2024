@@ -26,17 +26,25 @@
 #import "A3DaysCounterEventListSectionHeader.h"
 #import "A3WalletSegmentedControl.h"
 #import "DaysCounterEvent+extension.h"
+#import "A3UserDefaults.h"
 
 @interface A3DaysCounterEventListViewController () <UINavigationControllerDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, A3DaysCounterEventDetailViewControllerDelegate>
-@property (strong, nonatomic) NSArray *itemArray;
-@property (strong, nonatomic) NSArray *sourceArray;
-@property (strong, nonatomic) NSArray *searchResultArray;
-@property (strong, nonatomic) NSString *changedCalendarID;
+@property (nonatomic, strong) NSArray *itemArray;
+@property (nonatomic, strong) NSArray *sourceArray;
+@property (nonatomic, strong) NSArray *searchResultArray;
+@property (nonatomic, strong) NSString *changedCalendarID;
 @property (nonatomic, strong) UIImageView *sortArrowImgView;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
+@property (nonatomic, assign) NSInteger sortType;
+@property (nonatomic, assign) BOOL isAscending;
 
 @end
+
+NSString *const A3DaysCounterListSortKey = @"A3DaysCounterListSortKey";
+NSString *const A3DaysCounterListSortAscending = @"A3DaysCounterListSortAscending";
+NSString *const A3DaysCounterListSortKeyDate = @"date";
+NSString *const A3DaysCounterListSortKeyName = @"name";
 
 @implementation A3DaysCounterEventListViewController
 
@@ -62,10 +70,9 @@
     UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.rightBarButtonItems = @[edit, search];
     [self makeBackButtonEmptyArrow];
-    _sortType = EventSortType_Name;
-    _sortTypeSegmentCtrl.selectedSegmentIndex = _sortType;
-    _isDateAscending = YES;
-    _isNameAscending = YES;
+
+    _sortTypeSegmentCtrl.selectedSegmentIndex = self.sortType;
+
     self.toolbarItems = _bottomToolbar.items;
     [self.navigationController setToolbarHidden:NO];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
@@ -81,7 +88,7 @@
 	[self.sortTypeSegmentCtrl setTitle:NSLocalizedString(@"Name", nil) forSegmentAtIndex:1];
 
 	_segmentControlWidthConst.constant = ( IS_IPHONE ? 171 : 300.0);
-    
+
     [self.view addSubview:_addEventButton];
     _addEventButton.tintColor = [A3AppDelegate instance].themeColor;
     [_addEventButton makeConstraints:^(MASConstraintMaker *make) {
@@ -247,11 +254,11 @@
         }
     }
     
-    if ( _sortType == EventSortType_Name ) {
-        self.itemArray = [self sortedArrayByNameAscending:_isNameAscending];
+    if ( self.sortType == EventSortType_Name ) {
+        self.itemArray = [self sortedArrayByNameAscending:self.isAscending];
     }
-    else if ( _sortType == EventSortType_Date ) {
-        self.itemArray = [self sortedArrayByDateAscending:_isDateAscending];
+    else if ( self.sortType == EventSortType_Date ) {
+        self.itemArray = [self sortedArrayByDateAscending:self.isAscending];
     }
     
     [self.tableView reloadData];
@@ -263,6 +270,35 @@
     UIBarButtonItem *search = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
     edit.enabled = ([_sourceArray count] > 0);
     search.enabled = ([_sourceArray count] > 0);
+}
+
+#pragma mark - Sort
+
+- (NSInteger)sortType {
+    NSString *sortKey = [[A3UserDefaults standardUserDefaults] objectForKey:A3DaysCounterListSortKey];
+    if ([sortKey isEqualToString:A3DaysCounterListSortKeyName]) {
+        return EventSortType_Name;
+    }
+    return EventSortType_Date;
+}
+
+- (void)setSortType:(NSInteger)sortType {
+    [[A3UserDefaults standardUserDefaults] setObject:sortType == EventSortType_Name ? A3DaysCounterListSortKeyName : A3DaysCounterListSortKeyDate
+                                              forKey:A3DaysCounterListSortKey];
+    [[A3UserDefaults standardUserDefaults] synchronize];
+}
+
+- (BOOL)isAscending {
+    id value = [[A3UserDefaults standardUserDefaults] objectForKey:A3DaysCounterListSortAscending];
+    if (value) {
+        return [value boolValue];
+    }
+    return YES;
+}
+
+- (void)setIsAscending:(BOOL)isAscending {
+    [[A3UserDefaults standardUserDefaults] setBool:isAscending forKey:A3DaysCounterListSortAscending];
+    [[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (UIImageView *)sortArrowImgView
@@ -281,12 +317,12 @@
     float segmentWidth = self.sortTypeSegmentCtrl.frame.size.width;
     float arrowRightMargin = IS_IPAD ? 30 : 15;
     
-    switch (_sortType) {
+    switch (self.sortType) {
         case EventSortType_Date:
         {
             self.sortArrowImgView.center = CGPointMake(topViewWidth / 2.0 - arrowRightMargin, self.sortTypeSegmentCtrl.center.y);
             
-            if (_isDateAscending) {
+            if (self.isAscending) {
                 _sortArrowImgView.transform = CGAffineTransformIdentity;
             }
             else {
@@ -298,7 +334,7 @@
         {
             self.sortArrowImgView.center = CGPointMake(topViewWidth / 2.0 + segmentWidth / 2.0 - arrowRightMargin, self.sortTypeSegmentCtrl.center.y);
             
-            if (_isNameAscending) {
+            if (self.isAscending) {
                 _sortArrowImgView.transform = CGAffineTransformIdentity;
             }
             else {
@@ -347,7 +383,7 @@
         return [_searchResultArray count];
     
 
-    if ( _sortType == EventSortType_Date ) {
+    if ( self.sortType == EventSortType_Date ) {
         NSInteger retNumber = 0;
         if ( section+1 >= [_itemArray count] ) {
             CGFloat totalHeight = 0.0;
@@ -396,7 +432,7 @@
         return nil;
     }
     
-    if ( _sortType != EventSortType_Date ) {
+    if ( self.sortType != EventSortType_Date ) {
         return nil;
     }
     
@@ -447,7 +483,7 @@
         return 0.01;
     }
     
-    return (_sortType == EventSortType_Date ? 23.0 : 0.01);
+    return (self.sortType == EventSortType_Date ? 23.0 : 0.01);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -488,10 +524,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *CellIdentifier = (_sortType == EventSortType_Name ? @"eventListNameCell" : @"eventListDateCell");
+    NSString *CellIdentifier = (self.sortType == EventSortType_Name ? @"eventListNameCell" : @"eventListDateCell");
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        switch (_sortType) {
+        switch (self.sortType) {
             case EventSortType_Name:
                 cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListNameCell" owner:nil options:nil] lastObject];
                 break;
@@ -560,7 +596,7 @@
         imageView.hidden = NO;
         
         // RoundDateView
-        if ( _sortType == EventSortType_Date ) {
+        if ( self.sortType == EventSortType_Date ) {
             UIImageView *favoriteView = (UIImageView*)[cell viewWithTag:15];
 			DaysCounterCalendar *calendar = [_sharedManager calendarItemByID:item.calendarID];
 			roundDateView.fillColor = [_sharedManager colorForCalendar:calendar];
@@ -597,7 +633,7 @@
         markLabel.hidden = YES;
         imageView.hidden = YES;
         
-        if ( _sortType == EventSortType_Date ) {
+        if ( self.sortType == EventSortType_Date ) {
             UIImageView *favoriteView = (UIImageView*)[cell viewWithTag:15];
             roundDateView.hidden = YES;
             favoriteView.hidden = YES;
@@ -719,7 +755,7 @@
 		imageView.layer.masksToBounds = YES;
         imageView.image = image;
         
-        if ( _sortType == EventSortType_Name ) {
+        if ( self.sortType == EventSortType_Name ) {
             ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
             ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 52 : 65;
             ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 52 : 65;
@@ -734,7 +770,7 @@
     else {
         imageView.image = nil;
         
-        if ( _sortType == EventSortType_Name ) {
+        if ( self.sortType == EventSortType_Name ) {
             ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 15 : 28;
             ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 15 : 28;
         }
@@ -836,14 +872,11 @@
 {
     UISegmentedControl *segCtrl = (UISegmentedControl*)sender;
     
-    if ( _sortType == EventSortType_Date && _sortType == segCtrl.selectedSegmentIndex ) {
-        _isDateAscending = !_isDateAscending;
+    if (self.sortType == segCtrl.selectedSegmentIndex ) {
+        [self setIsAscending:!self.isAscending];
     }
-    else if ( _sortType == EventSortType_Name && _sortType == segCtrl.selectedSegmentIndex ) {
-        _isNameAscending = !_isNameAscending;
-    }
-    
-    _sortType = segCtrl.selectedSegmentIndex;
+
+    self.sortType = segCtrl.selectedSegmentIndex;
 
 	[self loadEventData];
     [self setupSegmentSortArrow];
