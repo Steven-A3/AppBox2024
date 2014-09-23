@@ -48,6 +48,11 @@ enum SortingKind {
     kSortingName,
 };
 
+NSString *const A3WalletAllViewSortKey = @"A3WalletAllViewSortKey";
+NSString *const A3WalletAllViewSortIsAscending = @"A3WalletAllViewSortIsAscending";
+NSString *const A3WalletAllViewSortKeyName = @"name";
+NSString *const A3WalletAllViewSortKeyDate = @"date";
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -57,9 +62,6 @@ enum SortingKind {
 	self.navigationItem.title = NSLocalizedString(@"All Items", @"All Items");
 	self.showCategoryInDetailViewController = YES;
 
-    self.sortingMode = kSortingDate;
-    self.isAscendingSort = YES;
-    
     [self.view addSubview:self.searchBar];
 	[self mySearchDisplayController];
 
@@ -213,8 +215,8 @@ enum SortingKind {
 {
     if (!super.items) {
 		NSMutableArray *items;
-        NSString *sortValue = (_sortingMode == kSortingDate) ? @"updateDate" : @"name";
-        items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:sortValue ascending:_isAscendingSort]];
+        NSString *sortValue = (self.sortingMode == kSortingDate) ? @"updateDate" : @"name";
+        items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:sortValue ascending:self.isAscendingSort]];
 		_dataEmpty = ![items count];
 		if (_dataEmpty) {
 			[items addObject:self.emptyItem];
@@ -278,7 +280,6 @@ enum SortingKind {
 {
     if (!_sortArrowImgView) {
         _sortArrowImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sort"]];
-        _sortArrowImgView.frame = CGRectMake(0, 0, 9, 5);
     }
     
     return _sortArrowImgView;
@@ -396,16 +397,18 @@ enum SortingKind {
 
 - (void)segmentTitleSet:(A3WalletAllTopView *)topView;
 {
-    float topViewWidth = topView.bounds.size.width;
-    float segmentWidth = topView.sortingSegment.frame.size.width;
+    CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+    float topViewWidth = screenBounds.size.width;
+    float segmentWidth = IS_IPAD ? 301 : 85 * 2;
     float arrowRightMargin = IS_IPAD ? 30 : 15;
     
-    switch (_sortingMode) {
+    switch (self.sortingMode) {
         case kSortingDate:
         {
             self.sortArrowImgView.center = CGPointMake(topViewWidth/2.0-arrowRightMargin, topView.sortingSegment.center.y);
-            
-            if (_isAscendingSort) {
+            FNLOGRECT(self.sortArrowImgView.frame);
+
+            if (self.isAscendingSort) {
 				_sortArrowImgView.transform = CGAffineTransformIdentity;
             }
             else {
@@ -416,8 +419,9 @@ enum SortingKind {
         case kSortingName:
         {
             self.sortArrowImgView.center = CGPointMake(topViewWidth/2.0+segmentWidth/2.0-arrowRightMargin, topView.sortingSegment.center.y);
+            FNLOGRECT(self.sortArrowImgView.frame);
             
-            if (_isAscendingSort) {
+            if (self.isAscendingSort) {
 				_sortArrowImgView.transform = CGAffineTransformIdentity;
             }
             else {
@@ -430,13 +434,15 @@ enum SortingKind {
     }
 }
 
+#pragma mark -- SegmentedControl
+
 - (void)sortingSegTapped:(UISegmentedControl *)segment
 {
     switch (segment.selectedSegmentIndex) {
         case 0:
         {
-            if (_sortingMode == kSortingDate) {
-                self.isAscendingSort = !_isAscendingSort;
+            if (self.sortingMode == kSortingDate) {
+                self.isAscendingSort = !self.isAscendingSort;
             }
             else {
                 self.sortingMode = kSortingDate;
@@ -446,11 +452,11 @@ enum SortingKind {
         }
         case 1:
         {
-            if (_sortingMode == kSortingDate) {
+            if (self.sortingMode == kSortingDate) {
                 self.sortingMode = kSortingName;
             }
             else {
-                self.isAscendingSort = !_isAscendingSort;
+                self.isAscendingSort = !self.isAscendingSort;
             }
             
             break;
@@ -460,6 +466,33 @@ enum SortingKind {
     }
     
     [self refreshItems];
+}
+
+- (NSUInteger)sortingMode {
+    NSString *sortKeyString = [[A3UserDefaults standardUserDefaults] objectForKey:A3WalletAllViewSortKey];
+    if ([sortKeyString isEqualToString:A3WalletAllViewSortKeyDate]) {
+        return kSortingDate;
+    }
+    return kSortingName;
+}
+
+- (void)setSortingMode:(NSUInteger)sortingMode {
+    [[A3UserDefaults standardUserDefaults] setObject:sortingMode == kSortingDate ? A3WalletAllViewSortKeyDate : A3WalletAllViewSortKeyName
+                                              forKey:A3WalletAllViewSortKey];
+    [[A3UserDefaults standardUserDefaults] synchronize];
+}
+
+- (BOOL)isAscendingSort {
+    id value = [[A3UserDefaults standardUserDefaults] objectForKey:A3WalletAllViewSortIsAscending];
+    if (value) {
+        return [value boolValue];
+    }
+    return YES;
+}
+
+- (void)setIsAscendingSort:(BOOL)isAscendingSort {
+    [[A3UserDefaults standardUserDefaults] setBool:isAscendingSort forKey:A3WalletAllViewSortIsAscending];
+    [[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)searchButtonAction:(id)sender
@@ -704,12 +737,13 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 		[topCell.topView.sortingSegment setTitleTextAttributes:segTextAttributes forState:UIControlStateNormal];
 
 		[self updateTopViewInfo:topCell.topView];
+        [topCell.topView.sortingSegment setSelectedSegmentIndex:self.sortingMode == kSortingDate ? 0 : 1];
 		[self segmentTitleSet:topCell.topView];
 
 		BOOL itemHave = (self.items.count>1) ? YES:NO;
 		[self topView:topCell.topView enabledSet:itemHave];
 
-		topCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        topCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
 
 		_segmentedControlRef = topCell.topView.sortingSegment;
 		_topViewRef = topCell.topView;
