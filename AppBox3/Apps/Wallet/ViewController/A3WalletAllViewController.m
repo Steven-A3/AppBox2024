@@ -598,7 +598,6 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 #pragma mark - SearchBarDelegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-	_searchBar.text = @"";
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
