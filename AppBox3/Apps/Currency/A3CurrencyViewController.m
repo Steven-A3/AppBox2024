@@ -767,23 +767,32 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedCode {
     
-    __block UITableViewCell *alreadyAddedFavoriteCell = nil;
-    [_favorites enumerateObjectsUsingBlock:^(CurrencyFavorite *favorite, NSUInteger idx, BOOL *stop) {
-        if ([favorite respondsToSelector:@selector(uniqueID)] && [favorite.uniqueID isEqualToString:selectedCode]) {
-            if (idx == 0) {
-                alreadyAddedFavoriteCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_selectedRow inSection:0]];
-            }
-            else {
+    UITableViewCell *alreadyAddedFavoriteCell = nil;
+    for (NSInteger idx = 0; idx < [_favorites count]; idx++) {
+        CurrencyFavorite *favorite = [_favorites objectAtIndex:idx];
+        if (![favorite respondsToSelector:@selector(uniqueID)] || ![favorite.uniqueID isEqualToString:selectedCode]) {
+            continue;
+        }
+        
+        if (idx == 0) {     // n -> 0
+            alreadyAddedFavoriteCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_selectedRow inSection:0]];
+        }
+        else {
+            if (_selectedRow == 0) {    // 0 -> n
                 alreadyAddedFavoriteCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
             }
-            
-            *stop = YES;
+            else {      // n -> n
+                [self moveTableView:self.tableView moveRowFromIndexPath:[NSIndexPath indexPathForRow:idx inSection:0] toIndexPath:[NSIndexPath indexPathForRow:_selectedRow inSection:0]];
+                return;
+            }
         }
-    }];
+    }
+    
     if (alreadyAddedFavoriteCell) {
         [self swapActionForCell:alreadyAddedFavoriteCell];
         return;
     }
+    
     
 	CurrencyFavorite *newObject = [CurrencyFavorite MR_createEntityInContext:self.savingContext];
 	newObject.uniqueID = selectedCode;
@@ -897,7 +906,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 - (A3CurrencySelectViewController *)currencySelectViewControllerWithSelectedCurrency:(NSInteger)selectedIndex {
 	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self;
-	viewController.allowChooseFavorite = selectedIndex == 0 ? YES : NO;
+	//viewController.allowChooseFavorite = selectedIndex == 0 ? YES : NO;
+    viewController.allowChooseFavorite = YES;
+
 	if (selectedIndex >= 0 && selectedIndex < ([_favorites count] - 1) ) {
 		CurrencyFavorite *selectedFavorite = _favorites[selectedIndex];
 		NSString *selectedItem = selectedFavorite.uniqueID;
