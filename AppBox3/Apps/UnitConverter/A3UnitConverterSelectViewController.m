@@ -205,7 +205,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
                                                            forKey:NSFontAttributeName];
     [segment setTitleTextAttributes:attributes forState:UIControlStateNormal];
     
-    segment.selectedSegmentIndex = 0;
+    segment.selectedSegmentIndex = 1;
     isFavoriteMode = NO;
     [segment addTarget:self action:@selector(selectSegmentChanged:) forControlEvents:UIControlEventValueChanged];
     

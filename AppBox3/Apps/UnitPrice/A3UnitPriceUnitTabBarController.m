@@ -33,7 +33,7 @@
     if (self) {
         self.delegate = self;
         
-        [self setupTapBar];
+        [self setupTabBar];
     }
     return self;
 }
@@ -46,7 +46,7 @@
         self.delegate = self;
         tossedDelegate = delegate;
         self.price = price;
-        [self setupTapBar];
+        [self setupTabBar];
     }
     
     return self;
@@ -83,7 +83,7 @@
 	}
 }
 
-- (void)setupTapBar
+- (void)setupTabBar
 {
     NSDictionary *textAttributes = @{
                                      NSFontAttributeName : [UIFont systemFontOfSize:12]
@@ -131,7 +131,7 @@
     [segment setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:13.0]
                                                                 forKey:NSFontAttributeName]
                            forState:UIControlStateNormal];
-    segment.selectedSegmentIndex = 0;
+    segment.selectedSegmentIndex = 1;
     [segment addTarget:self action:@selector(selectSegmentChanged:) forControlEvents:UIControlEventValueChanged];
     
     return segment;
