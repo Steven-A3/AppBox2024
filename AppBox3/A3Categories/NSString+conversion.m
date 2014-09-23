@@ -38,8 +38,8 @@
 
 - (float)floatValueEx {
 	NSError *error;
-	NSString *pattern = @"([\\d\\s',\\.]+)";
-	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
+	NSString *pattern = @"([\\d\\s’',\\.]+)";
+	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
 
 	NSNumberFormatter *decimalStyleFormatter = [[NSNumberFormatter alloc] init];
 	[decimalStyleFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -56,7 +56,7 @@
 
 	float result = 0.0;
 
-	range = [regex rangeOfFirstMatchInString:self options:0 range:NSMakeRange(0, [self length])];
+	range = [regex rangeOfFirstMatchInString:self options:NSMatchingReportProgress range:NSMakeRange(0, [self length])];
 	if (!NSEqualRanges(range, NSMakeRange(NSNotFound, 0) )) {
 		numberString = [self substringWithRange:range];
 		result = [[decimalStyleFormatter numberFromString:numberString] floatValue];
