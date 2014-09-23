@@ -28,9 +28,8 @@
 #import "WalletField.h"
 #import "NSString+conversion.h"
 
-@interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate, NSFileManagerDelegate>
+@interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate, NSFileManagerDelegate, UISearchDisplayDelegate, UISearchBarDelegate>
 
-@property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) UIButton *infoButton;
 @property (nonatomic, strong) UIButton *editButton;
@@ -45,6 +44,10 @@
 @property (nonatomic, strong) NSMutableArray *sectionIndexTitles;
 @property (nonatomic, strong) NSArray *filteredResults;
 
+@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) UIBarButtonItem *searchItem;
+
 @end
 
 @implementation A3WalletCategoryViewController
@@ -57,12 +60,15 @@
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.category.name style:UIBarButtonItemStylePlain target:nil action:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
-        self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:self.infoButton], [self instructionHelpBarButton]];
+        self.navigationItem.rightBarButtonItems = @[self.searchItem, [[UIBarButtonItem alloc] initWithCustomView:self.infoButton], [self instructionHelpBarButton]];
     }
     else {
         [self makeBackButtonEmptyArrow];
-        self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:self.infoButton]];
+        self.navigationItem.rightBarButtonItems = @[self.searchItem, [[UIBarButtonItem alloc] initWithCustomView:self.infoButton]];
     }
+
+    [self.view addSubview:self.searchBar];
+    [self mySearchDisplayController];
 
     [self setupInstructionView];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
@@ -87,8 +93,9 @@
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
+    [self.searchBar removeFromSuperview];
+
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-		FNLOG();
 		[self removeObserver];
 	}
 }
@@ -116,6 +123,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [self.view addSubview:self.searchBar];
 
     // 테이블 항목을 선택시에는 카테고리 이름이 backBar Item 이 되고,나머지는 공백.
     // viewWillAppear 에서 공백으로 초기화해줌 (테이블 항목 선택시, 타이틀을 카테고리 이름으로 함)
@@ -495,6 +504,115 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     self.instructionViewController = nil;
 }
 
+#pragma mark - Search relative
+
+- (UIBarButtonItem *)searchItem {
+    if (!_searchItem) {
+        _searchItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchButtonAction:)];
+    }
+    return _searchItem;
+}
+
+- (void)searchButtonAction:(id)sender
+{
+    [self.searchBar becomeFirstResponder];
+}
+
+- (UISearchDisplayController *)mySearchDisplayController {
+    if (!_mySearchDisplayController) {
+        _mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+        _mySearchDisplayController.delegate = self;
+        _mySearchDisplayController.searchBar.delegate = self;
+        _mySearchDisplayController.searchResultsTableView.delegate = self;
+        _mySearchDisplayController.searchResultsTableView.dataSource = self;
+        _mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+        _mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
+        _mySearchDisplayController.searchResultsTableView.rowHeight = 48;
+    }
+    return _mySearchDisplayController;
+}
+
+- (UISearchBar *)searchBar {
+    if (!_searchBar) {
+        _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, kSearchBarHeight)];
+        _searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        _searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
+        _searchBar.delegate = self;
+    }
+    return _searchBar;
+}
+
+- (void)filterContentForSearchText:(NSString*)searchText
+{
+    FNLOG();
+    NSPredicate *predicate;
+    if (searchText && searchText.length) {
+        predicate = [NSPredicate predicateWithFormat:@"categoryID == %@ AND name contains[cd] %@", self.category.uniqueID, searchText];
+    } else {
+        predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID];
+    }
+    self.items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"name" ascending:YES withPredicate:predicate]];
+    [self configureSections];
+    [self.tableView reloadData];
+}
+
+#pragma mark- UISearchDisplayControllerDelegate
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView {
+    [self.tableView setHidden:YES];
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
+    [self.tableView setHidden:NO];
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
+
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView {
+
+}
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
+    CGRect frame = _searchBar.frame;
+    frame.origin.y = 20.0;
+    _searchBar.frame = frame;
+
+    frame = self.tableView.frame;
+    frame.origin.y += 20.0;
+    self.tableView.frame = frame;
+}
+
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+    CGRect frame = _searchBar.frame;
+    frame.origin.y = 0.0;
+    _searchBar.frame = frame;
+
+    frame = self.tableView.frame;
+    frame.origin.y -= 20.0;
+    self.tableView.frame = frame;
+}
+
+#pragma mark - SearchBarDelegate
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    [self filterContentForSearchText:searchText];
+}
+
+// called when cancel button pressed
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [self filterContentForSearchText:nil];
+}
+
+// called when Search (in our case "Done") button pressed
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+}
 
 #pragma mark - PopOverController delegate
 
@@ -709,35 +827,20 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        return 1;
-    } else {
-        return [self.sectionTitles count];
-    }
+    return [self.sectionTitles count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        return [_filteredResults count];
-    } else {
-        NSArray *rowsInSection = (self.sectionsArray)[section];
-
-        return [rowsInSection count];
-    }
+    NSArray *rowsInSection = (self.sectionsArray)[section];
+    return [rowsInSection count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (tableView == self.tableView) {
-        return self.sectionTitles[section];
-    }
-    return nil;
+    return self.sectionTitles[section];
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    if (tableView == self.tableView) {
-        return self.sectionIndexTitles;
-    }
-    return nil;
+    return self.sectionIndexTitles;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
