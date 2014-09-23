@@ -56,6 +56,8 @@ NSString *const A3ClockFlipLightColorIndex					= @"A3ClockFlipLightColorIndex";
 NSString *const A3ClockLEDColor								= @"A3ClockLEDColor";
 NSString *const A3ClockLEDColorIndex						= @"A3ClockLEDColorIndex";
 NSString *const A3ClockUserDefaultsCurrentPage 				= @"A3ClockUserDefaultsCurrentPage";
+NSString *const A3ClockUseAutoLock                          = @"A3ClockUseAutoLock";
+NSString *const A3ClockAutoDim                              = @"A3ClockAutoDim";
 
 #pragma mark ------ Currency Converter
 NSString *const A3CurrencyUserDefaultsAutoUpdate 			= @"A3CurrencyUserDefaultsAutoUpdate";

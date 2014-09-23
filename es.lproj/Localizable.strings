@@ -905,3 +905,8 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Encryption key did not match." = "Clave de cifrado no coinciden.";
 "No hint" = "No se toque.";
 "Restore canceled" = "Restaurar cancelado";
+
+"Display" = "Mostrar";
+"Use Auto-Lock" = "Usar Auto-Lock";
+"Auto Dim" = "Auto Dim";
+"ExplainAutoDim" = "Esta opción será muy útil cuando se utiliza despertador en la cama. Conecte su dispositivo a una toma de corriente eléctrica. Desactivar \"Usar Auto Lock\" para evitar que el dispositivo de entrar en modo de suspensión. Esta opción le ayudará a su sueño, reduciendo el brillo automáticamente.";

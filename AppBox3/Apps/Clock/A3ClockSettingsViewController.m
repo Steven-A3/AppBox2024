@@ -12,6 +12,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3ClockDataManager.h"
 #import "UIViewController+NumberKeyboard.h"
+#import "A3ClockAutoDimViewController.h"
 
 typedef NS_ENUM(NSUInteger, A3ClockSettingsTypes) {
 	kTagSwitchWithSecond = 1000,
@@ -20,7 +21,8 @@ typedef NS_ENUM(NSUInteger, A3ClockSettingsTypes) {
 	kTagSwitchAMPM = 1003,
 	kTagSwitchWeek = 1010,
 	kTagSwitchDate = 1011,
-	kTagSwitchWeather = 1020
+	kTagSwitchWeather = 1020,
+    kTagSwitchUseAutoLock = 1030
 };
 
 NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettingsChanged";
@@ -31,6 +33,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 @property (nonatomic, strong) NSArray *timeSection;
 @property (nonatomic, strong) NSArray *dateSection;
 @property (nonatomic, strong) NSArray *weatherSection;
+@property (nonatomic, strong) NSArray *displaySection;
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) UITableView *myTableView;
 
@@ -53,7 +56,8 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
     _sections = @[
 			NSLocalizedString(@"TIME", @"TIME"),
 			NSLocalizedString(@"DATE", @"DATE"),
-			NSLocalizedString(@"WEATHER", @"WEATHER")
+			NSLocalizedString(@"WEATHER", @"WEATHER"),
+			NSLocalizedString(@"Display", @"Display")
 	];
     
     _timeSection = @[
@@ -69,6 +73,10 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
     _weatherSection = @[
 			NSLocalizedString(@"Show Weather", @"Show Weather"),
 			@""
+	];
+    _displaySection = @[
+			NSLocalizedString(@"Use Auto-Lock", nil),
+            NSLocalizedString(@"Auto Dim", @"Auto Dim")
 	];
 
 	[self.view setBackgroundColor:[UIColor whiteColor]];
@@ -91,6 +99,8 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
+    [self.myTableView reloadData];
 }
 
 - (void)doneButtonAction:(id)button {
@@ -138,6 +148,9 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
         case 2:
             nRst = _weatherSection.count;
             break;
+        case 3:
+            nRst = _displaySection.count;
+            break;
         default:
             break;
     }
@@ -149,7 +162,17 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 {
 	UITableViewCell *cell = nil;
 
-	if (indexPath.section == 2 && indexPath.row == 1) {
+    if (indexPath.section == 3 && indexPath.row == 1) {
+        static NSString *normalCell = @"normalCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:normalCell];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:normalCell];
+        }
+        cell.textLabel.text = _displaySection[1];
+        cell.detailTextLabel.text = [_clockDataManager autoDimString];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    } else if (indexPath.section == 2 && indexPath.row == 1) {
 		static NSString *CellWithSegmentedControl = @"A3ClockSettingsWithSegmentedControl";
 
 		cell = [tableView dequeueReusableCellWithIdentifier:CellWithSegmentedControl];
@@ -167,6 +190,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 			make.width.equalTo(@290);
 			make.height.equalTo(@29);
 		}];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	} else {
 		static NSString *CellWithSwitch = @"A3ClockSettingsCellWithSwitch";
 
@@ -194,6 +218,9 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 			case 2:
 				titlesArray = _weatherSection;
 				break;
+            case 3:
+                titlesArray = _displaySection;
+                break;
 			default:
 				break;
 		}
@@ -223,9 +250,12 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 			case kTagSwitchWeather:
 				switchControl.on = [[A3UserDefaults standardUserDefaults] clockShowWeather];
 				break;
+            case kTagSwitchUseAutoLock:
+                switchControl.on = [[A3UserDefaults standardUserDefaults] clockUseAutoLock];
+                break;
 		}
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	}
-	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	return cell;
 }
 
@@ -239,6 +269,12 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 3 && indexPath.row == 1) {
+        A3ClockAutoDimViewController *viewController = [[A3ClockAutoDimViewController alloc] init];
+        viewController.dataManager = _clockDataManager;
+
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -286,6 +322,10 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 				[self setWeatherStatus:[switchControl isOn]];
 			}
 			break;
+        case kTagSwitchUseAutoLock:
+            [[A3UserDefaults standardUserDefaults] setBool:switchControl.isOn forKey:A3ClockUseAutoLock];
+            [[A3UserDefaults standardUserDefaults] synchronize];
+            break;
 	}
 	double delayInSeconds = 0.1;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -315,6 +355,5 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 	if (IS_IPHONE) return UIInterfaceOrientationMaskPortrait;
 	return UIInterfaceOrientationMaskAll;
 }
-
 
 @end

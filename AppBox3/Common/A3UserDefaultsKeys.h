@@ -63,6 +63,8 @@ extern NSString *const A3ClockFlipLightColorIndex;
 extern NSString *const A3ClockLEDColor;
 extern NSString *const A3ClockLEDColorIndex;
 extern NSString *const A3ClockUserDefaultsCurrentPage;
+extern NSString *const A3ClockUseAutoLock;
+extern NSString *const A3ClockAutoDim;
 
 #pragma mark ------ Currency Converter
 extern NSString *const A3CurrencyUserDefaultsAutoUpdate;

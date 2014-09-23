@@ -929,3 +929,8 @@
 "Encryption key did not match." = "加密密钥不匹配。";
 "No hint" = "没有任何提示。";
 "Restore canceled" = "还原取消";
+
+"Display" = "时钟背景";
+"Use Auto-Lock" = "开启自动锁定";
+"Auto Dim" = "自动变暗";
+"ExplainAutoDim" = "这个选项将非常有用，当您使用在床上闹钟。将设备插入到电源插座。关掉\"使用自动锁定\"来防止设备进入睡眠模式。此选项将有助于通过降低亮度自动睡眠。";

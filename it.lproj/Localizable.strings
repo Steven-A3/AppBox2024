@@ -906,3 +906,8 @@ Inserire chiave di crittografia per il portafoglio.";
 "Encryption key did not match." = "Chiave di crittografia non ha prodotto risultati.";
 "No hint" = "Nessun suggerimento.";
 "Restore canceled" = "Ripristinare annullata";
+
+"Display" = "Grafica";
+"Use Auto-Lock" = "Usa Blocco Automatico";
+"Auto Dim" = "Auto Dim";
+"ExplainAutoDim" = "Questa opzione ti sarà utile quando usi la Sveglia mentre sei nel letto. Collega il tuo dispositivo alla presa di corrente. Disabilita il \"Blocco Automatico\" nelle impostazioni del dispositivo per evitare che esso vada in sleep. Questa opzione ti aiuterà così ad addormentarti riducendo automaticamente la luminosità dello schermo.";

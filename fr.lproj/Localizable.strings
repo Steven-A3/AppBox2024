@@ -913,3 +913,8 @@ Entrez la clé de cryptage pour le portefeuille.";
 "Encryption key did not match." = "La clé de chiffrement ne correspondent pas.";
 "No hint" = "Aucune indication.";
 "Restore canceled" = "Restaurer annulé";
+
+"Display" = "Affichage";
+"Use Auto-Lock" = "Utiliser le Verrouillage autom.";
+"Auto Dim" = "Auto Dim";
+"ExplainAutoDim" = "Cette option sera très utile si vous utilisez l'Alarme au lit. Connectez votre appareil à une prise électrique. Désactivez \"Utiliser le verrouillage automatique\" pour éviter à l'appareil de se mettre en mode sommeil. Cette option vous aidera à trouver le sommeil en réduisant la uminosité automatiquement.";

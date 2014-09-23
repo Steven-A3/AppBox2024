@@ -683,6 +683,7 @@
 		68E213BB19865C3100A82BBA /* UnitHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E213BA19865C3100A82BBA /* UnitHistory.m */; };
 		68E213BE1986615B00A82BBA /* UnitHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E213BD1986615B00A82BBA /* UnitHistoryItem.m */; };
 		68E2777E19D177DB000EC931 /* MWPhotoBrowser+rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2777D19D177DB000EC931 /* MWPhotoBrowser+rotation.m */; };
+		68E2778519D180FE000EC931 /* A3ClockAutoDimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2778419D180FE000EC931 /* A3ClockAutoDimViewController.m */; };
 		68E27C831987AD3C00CA873D /* Currency.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68E27C811987AD3C00CA873D /* Currency.xcdatamodeld */; };
 		68E27C841987AF8B00CA873D /* Currency.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68E27C811987AD3C00CA873D /* Currency.xcdatamodeld */; };
 		68E2A5DB18D0AC5200E834D9 /* A3DateMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A5D818D0AC5200E834D9 /* A3DateMainTableViewController.m */; };
@@ -2186,6 +2187,8 @@
 		68E213BD1986615B00A82BBA /* UnitHistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitHistoryItem.m; sourceTree = "<group>"; };
 		68E2777C19D177DB000EC931 /* MWPhotoBrowser+rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MWPhotoBrowser+rotation.h"; sourceTree = "<group>"; };
 		68E2777D19D177DB000EC931 /* MWPhotoBrowser+rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MWPhotoBrowser+rotation.m"; sourceTree = "<group>"; };
+		68E2778319D180FE000EC931 /* A3ClockAutoDimViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ClockAutoDimViewController.h; sourceTree = "<group>"; };
+		68E2778419D180FE000EC931 /* A3ClockAutoDimViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ClockAutoDimViewController.m; sourceTree = "<group>"; };
 		68E27C821987AD3C00CA873D /* Currency.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Currency.xcdatamodel; sourceTree = "<group>"; };
 		68E2A5D718D0AC5200E834D9 /* A3DateMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateMainTableViewController.h; sourceTree = "<group>"; };
 		68E2A5D818D0AC5200E834D9 /* A3DateMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateMainTableViewController.m; sourceTree = "<group>"; };
@@ -2883,6 +2886,8 @@
 				680886CE1891751B0093FD97 /* SBTickerView.m */,
 				680886CF1891751B0093FD97 /* UIView+SBExtras.h */,
 				680886D01891751B0093FD97 /* UIView+SBExtras.m */,
+				68E2778319D180FE000EC931 /* A3ClockAutoDimViewController.h */,
+				68E2778419D180FE000EC931 /* A3ClockAutoDimViewController.m */,
 			);
 			path = Clock;
 			sourceTree = "<group>";
@@ -6152,6 +6157,7 @@
 				17D4269E6891386E9B4ADD5C /* NSMutableArray+MoveObject.m in Sources */,
 				682FDF321981CC0400C6C83D /* MagicalRecord+Setup.m in Sources */,
 				68143D1118E3EC1F00569691 /* A3KeyboardMoveMarkView.m in Sources */,
+				68E2778519D180FE000EC931 /* A3ClockAutoDimViewController.m in Sources */,
 				687484A519783B9D00EA8F74 /* DaysCounterEventLocation.m in Sources */,
 				68B6A2BD18CEC76D004084EF /* A3LoanCalcComparisonHistoryCell.m in Sources */,
 				68B6A34418CEC76D004084EF /* A3WalletCategorySelectViewController.m in Sources */,

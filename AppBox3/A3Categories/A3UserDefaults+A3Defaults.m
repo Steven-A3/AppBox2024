@@ -163,6 +163,15 @@
 	return YES;
 }
 
+- (BOOL)clockUseAutoLock {
+    NSNumber *object;
+    object = [self objectForKey:A3ClockUseAutoLock];
+    if (object) {
+        return [object boolValue];
+    }
+    return YES;
+}
+
 - (void)setClockShowWeather:(BOOL)boolValue
 {
 	[self setBool:boolValue forKey:A3ClockShowWeather];

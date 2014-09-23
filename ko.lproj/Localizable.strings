@@ -922,3 +922,8 @@
 "Encryption key did not match." = "암호키가 일치하지 않습니다.";
 "No hint" = "힌트가 없습니다.";
 "Restore canceled" = "복원이 취소되었습니다.";
+
+"Display" = "화면설정";
+"Use Auto-Lock" = "자동잠금 기능 사용";
+"Auto Dim" = "자동 화면 밝기 조정";
+"ExplainAutoDim" = "이 설정은 알람시계를 켜놓고 잠자리에 들때 이용하시면 좋습니다. 전원에 연결한 후에 주무셔도 지정된 시간이 되면 화면이 어두워져 잠자리를 방해하지 않을 것 입니다.";

@@ -911,3 +911,8 @@ Wprowadź klucz szyfrowania dla portfela.";
 "Encryption key did not match." = "Klucz szyfrowania nie dało.";
 "No hint" = "Śladu.";
 "Restore canceled" = "Przywrócić odwołany";
+
+"Display" = "Wygląd";
+"Use Auto-Lock" = "Autoblokada";
+"Auto Dim" = "Auto Dim";
+"ExplainAutoDim" = "Ta opcja jest przydatna kiedy używasz Alarm Clock w łóżku. Podłącz urządzenie do zasilania. Wyłącz opcje autoblokady aby zapobiec wyłączeniu urządzenia. Ta opcja ułatwia zasypanie przez automatyczne zmniejszanie jasności ekranu.";

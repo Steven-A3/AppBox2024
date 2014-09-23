@@ -553,4 +553,18 @@
     }
 }
 
+- (NSString *)autoDimString {
+    NSInteger autoDimValue = [[A3UserDefaults standardUserDefaults] integerForKey:A3ClockAutoDim];
+    return [self autoDimStringWithValue:autoDimValue];
+}
+
+- (NSString *)autoDimStringWithValue:(NSInteger)autoDimValue {
+    if (autoDimValue == 0) {
+        return NSLocalizedString(@"Never", @"Never");
+    } else if (autoDimValue == 60) {
+        return [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours", @"stringsDict", nil), 1];
+    }
+    return [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld minutes", @"stringsDict", nil), autoDimValue];
+}
+
 @end

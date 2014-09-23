@@ -35,6 +35,9 @@
 - (void)setClockShowDate:(BOOL)boolValue;
 
 - (BOOL)clockShowWeather;
+
+- (BOOL)clockUseAutoLock;
+
 - (void)setClockShowWeather:(BOOL)boolValue;
 
 - (BOOL)clockUsesFahrenheit;

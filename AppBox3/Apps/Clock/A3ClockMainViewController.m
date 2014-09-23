@@ -46,9 +46,13 @@
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @property (nonatomic, assign) BOOL useInstruction;
+@property (nonatomic, strong) NSTimer *autoDimTimer;
+
 @end
 
-@implementation A3ClockMainViewController
+@implementation A3ClockMainViewController {
+    CGFloat _originalBrightness;
+}
 
 - (A3ClockDataManager *)clockDataManager {
 	if (!_clockDataManager) {
@@ -61,6 +65,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    _originalBrightness = (CGFloat) MAX([[UIScreen mainScreen] brightness], 0.5);
 
 	self.automaticallyAdjustsScrollViewInsets = NO;
 
@@ -105,12 +111,24 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawerStateChanged) name:A3DrawerStateChanged object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3NotificationClockSettingsChanged object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)applicationDidBecomeActive {
+    [self resetAndStartAutoDimTimer];
+}
+
+- (void)applicationWillResignActive {
+    [self turnOffAutoDim];
 }
 
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3DrawerStateChanged object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationClockSettingsChanged object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -122,10 +140,17 @@
 }
 
 - (void)cleanUp {
-	[self removeObserver];
+    [[UIScreen mainScreen] setBrightness:_originalBrightness];
+    [_autoDimTimer invalidate];
+    _autoDimTimer = nil;
+
+    [self removeObserver];
 	[_clockDataManager cleanUp];
 	[_buttonsTimer invalidate];
 	_buttonsTimer = nil;
+
+    FNLOG(@"[[UIApplication sharedApplication] setIdleTimerDisabled:NO];");
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 }
 
 - (void)dealloc {
@@ -133,6 +158,7 @@
 }
 
 - (void)drawerStateChanged {
+    [self resetAndStartAutoDimTimer];
 	[self.scrollView setScrollEnabled:self.mm_drawerController.openSide == MMDrawerSideNone];
 }
 
@@ -168,6 +194,37 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
             [self showMenus:YES];
         }
 	}
+    [self resetAndStartAutoDimTimer];
+}
+
+- (void)turnOffAutoDim {
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+
+    [[UIScreen mainScreen] setBrightness:_originalBrightness];
+    [_autoDimTimer invalidate];
+    _autoDimTimer = nil;
+}
+
+- (void)resetAndStartAutoDimTimer {
+    [self turnOffAutoDim];
+
+    if (![[A3UserDefaults standardUserDefaults] clockUseAutoLock]) {
+        [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+    }
+    NSInteger autoDimMinutes = [[A3UserDefaults standardUserDefaults] integerForKey:A3ClockAutoDim];
+    if (autoDimMinutes) {
+        _autoDimTimer = [NSTimer scheduledTimerWithTimeInterval:autoDimMinutes * 60
+                                                         target:self
+                                                       selector:@selector(activateAutoDim)
+                                                       userInfo:nil
+                                                        repeats:NO];
+    }
+}
+
+- (void)activateAutoDim {
+    [_autoDimTimer invalidate];
+    _autoDimTimer = nil;
+    [[UIScreen mainScreen] setBrightness:0.01];
 }
 
 - (UIButton *)clockAppsButton {
@@ -347,6 +404,8 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+    [self turnOffAutoDim];
+
 	if (IS_IPHONE) {
 		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:^(BOOL finished) {
 			[self.scrollView setScrollEnabled:self.mm_drawerController.openSide == MMDrawerSideNone];
@@ -370,9 +429,12 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
     if (IS_IPAD) {
         [self setupInstructionView];
     }
+    [self resetAndStartAutoDimTimer];
 }
 
 - (void)onTapMainView {
+    [self resetAndStartAutoDimTimer];
+
 	if (_chooseColorView) {
 		[self chooseColorDidCancel];
 	}
@@ -483,6 +545,8 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
     else if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
         [self showMenus:YES];
         [self showInstructionView];
+    } else {
+        [self resetAndStartAutoDimTimer];
     }
 }
 
@@ -590,6 +654,8 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 					 completion:^(BOOL finished) {
 						 [_chooseColorView removeFromSuperview];
 						 _chooseColorView = nil;
+
+                         [self resetAndStartAutoDimTimer];
 					 }];
 }
 
@@ -597,6 +663,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 
 - (void)chooseColorButtonAction
 {
+    [self turnOffAutoDim];
 	[self showMenus:NO];
 
 	NSArray *colors = nil;
@@ -629,6 +696,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 
 - (void)settingsButtonAction:(id)aSender
 {
+    [self turnOffAutoDim];
 	[self showMenus:NO];
 
 	A3ClockSettingsViewController *viewController = [[A3ClockSettingsViewController alloc] init];
@@ -644,6 +712,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 
 - (void)helpButtonAction:(id)aSende
 {
+    [self turnOffAutoDim];
     [self showMenus:NO];
     [[A3UserDefaults standardUserDefaults] setBool:NO forKey:A3V3InstructionDidShowForClock1];
     [[A3UserDefaults standardUserDefaults] setBool:NO forKey:A3V3InstructionDidShowForClock2];
