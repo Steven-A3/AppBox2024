@@ -100,7 +100,24 @@
 				return;
 			}
 		} else {
-			NSUInteger maximumIntegerDigits = IS_IPHONE ? 11 : 13;
+            NSUInteger maximumIntegerDigits;
+            if (numberFormatter.maximumFractionDigits == 0) {
+                maximumIntegerDigits = IS_IPHONE ? 11 : 16;
+            }
+            else {
+                BOOL hasFraction = [textField.text rangeOfString:numberFormatter.decimalSeparator].location != NSNotFound;
+                if ([inputString isEqualToString:numberFormatter.decimalSeparator]) {
+                    hasFraction = YES;
+                }
+                
+                if (hasFraction) {
+                    maximumIntegerDigits = IS_IPHONE ? (11 + 1) : (16 + 1);
+                }
+                else {
+                    maximumIntegerDigits = IS_IPHONE ? (11 - numberFormatter.maximumFractionDigits) : (16 - numberFormatter.maximumFractionDigits);
+                }
+            }
+
 			if ([textField.text length] >= maximumIntegerDigits) {
 				return;
 			}
