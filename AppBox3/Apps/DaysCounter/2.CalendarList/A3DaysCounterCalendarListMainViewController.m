@@ -91,12 +91,36 @@
     return self;
 }
 
+- (void)checkCalendarListToFixExceptionOfOldVersion {
+    NSArray *shownUserCalendarList = [[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@ AND isShow == %@", @(CalendarCellType_User), @(YES)]];
+    if ([shownUserCalendarList count] > 0) {
+        return;
+    }
+    
+    shownUserCalendarList = [[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@ AND name == %@", @(CalendarCellType_User), NSLocalizedString(@"Anniversary", @"Anniversary")]];
+    if ([shownUserCalendarList count] != 0) {
+        DaysCounterCalendar *calendar = [shownUserCalendarList lastObject];
+        calendar.isShow = @(YES);
+        [[calendar managedObjectContext] MR_saveToPersistentStoreAndWait];
+        return;
+    }
+    
+    
+    shownUserCalendarList = [[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@", @(CalendarCellType_User)]];
+    DaysCounterCalendar *calendar = [shownUserCalendarList firstObject];
+    if (calendar) {
+        calendar.isShow = @(YES);
+        [[calendar managedObjectContext] MR_saveToPersistentStoreAndWait];
+    }
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     self.navigationItem.title = NSLocalizedString(@"Days Counter", @"Days Counter");
+    [self checkCalendarListToFixExceptionOfOldVersion];
+    
 
     [self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
