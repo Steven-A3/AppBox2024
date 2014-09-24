@@ -11,6 +11,8 @@
 
 @class UnitPriceInfo;
 
+extern NSString *const A3UnitPriceSegmentIndex;
+
 @interface A3UnitPriceUnitTabBarController : UITabBarController
 
 @property (nonatomic, strong) UnitPriceInfo *price;

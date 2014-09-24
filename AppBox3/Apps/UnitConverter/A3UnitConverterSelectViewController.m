@@ -38,6 +38,7 @@
 @implementation A3UnitConverterSelectViewController
 
 NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
+NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 
 - (void)viewDidLoad
 {
@@ -203,9 +204,9 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
     UIFont *font = [UIFont systemFontOfSize:13.0];
     NSDictionary *attributes = [NSDictionary dictionaryWithObject:font
                                                            forKey:NSFontAttributeName];
+    NSNumber *selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitConverterSegmentIndex];
     [segment setTitleTextAttributes:attributes forState:UIControlStateNormal];
-    
-    segment.selectedSegmentIndex = 1;
+    segment.selectedSegmentIndex = !selectedSegmentIndex ? 1 : [selectedSegmentIndex integerValue];
     isFavoriteMode = NO;
     [segment addTarget:self action:@selector(selectSegmentChanged:) forControlEvents:UIControlEventValueChanged];
     
@@ -247,6 +248,9 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
         default:
             break;
     }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:@(segment.selectedSegmentIndex) forKey:A3UnitConverterSegmentIndex];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated

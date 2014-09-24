@@ -25,6 +25,8 @@
 
 @end
 
+NSString *const A3UnitPriceSegmentIndex = @"A3UnitPriceSegmentIndex";
+
 @implementation A3UnitPriceUnitTabBarController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -131,7 +133,8 @@
     [segment setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:13.0]
                                                                 forKey:NSFontAttributeName]
                            forState:UIControlStateNormal];
-    segment.selectedSegmentIndex = 1;
+    NSNumber *selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceSegmentIndex];
+    segment.selectedSegmentIndex = !selectedSegmentIndex ? 1 : [selectedSegmentIndex integerValue];
     [segment addTarget:self action:@selector(selectSegmentChanged:) forControlEvents:UIControlEventValueChanged];
     
     return segment;
@@ -163,6 +166,9 @@
         default:
             break;
     }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:@(segment.selectedSegmentIndex) forKey:A3UnitPriceSegmentIndex];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSMutableArray *)unitCategories

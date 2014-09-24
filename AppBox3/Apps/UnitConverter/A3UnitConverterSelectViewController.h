@@ -23,6 +23,8 @@
 
 @end
 
+extern NSString *const A3UnitConverterSegmentIndex;
+
 @interface A3UnitConverterSelectViewController : UIViewController <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, weak) id<A3UnitSelectViewControllerDelegate> delegate;
