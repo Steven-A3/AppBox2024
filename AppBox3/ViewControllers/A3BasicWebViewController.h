@@ -14,4 +14,6 @@
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, assign) BOOL showDoneButton;
 @property (nonatomic, strong) NSString *titleString;
+
+- (void)doneAction;
 @end

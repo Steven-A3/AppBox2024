@@ -76,6 +76,7 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 @property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) NSMetadataQuery *metadataQuery;
 @property (nonatomic, assign) BOOL pushClockViewControllerIfFailPasscode;
+@property (nonatomic, weak) UIViewController *parentOfPasscodeViewController;
 
 + (A3AppDelegate *)instance;
 
