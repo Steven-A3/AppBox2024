@@ -141,9 +141,12 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
     if ([platform isEqualToString:@"iPhone5,2"]) return @"iPhone 5";          // "iPhone5 GSM+CDMA"
     if ([platform isEqualToString:@"iPhone5,3"]) return @"iPhone 5c";       // GSM
     if ([platform isEqualToString:@"iPhone5,4"]) return @"iPhone 5c";       // Global
-//    if ([platform isEqualToString:@"iPhone5,4"]) return @"iPhone 5c";       // Global
+
     if ([platform isEqualToString:@"iPhone6,1"]) return @"iPhone 5s";       // GSM
     if ([platform isEqualToString:@"iPhone6,2"]) return @"iPhone 5s";       // Global
+
+    if ([platform isEqualToString:@"iPhone7,2"]) return @"iPhone 6";        // Model Nums : A1549, A1586
+    if ([platform isEqualToString:@"iPhone7,1"]) return @"iPhone 6 Plus";   // Model Nums : A1522, A1524
 
 	if ([platform isEqualToString:@"i386"])   return @"iPhone Simulator";
     if ([platform isEqualToString:@"x86_64"])   return @"iPhone Simulator";
