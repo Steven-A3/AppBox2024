@@ -11,7 +11,7 @@
 #import "A3AppDelegate.h"
 #import "A3MainMenuTableViewController.h"
 #import "MMDrawerController.h"
-#import "NSFileManager+A3Addtion.h"
+#import "NSFileManager+A3Addition.h"
 #import "Reachability.h"
 #import "A3KeychainUtils.h"
 #import "A3LaunchViewController.h"

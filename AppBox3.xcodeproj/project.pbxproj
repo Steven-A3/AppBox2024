@@ -226,7 +226,7 @@
 		6825367D18A7BD4E00EAFB84 /* SQLiteWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6825367C18A7BD4E00EAFB84 /* SQLiteWrapper.m */; };
 		6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6825367E18A7C1B800EAFB84 /* libsqlite3.0.dylib */; };
 		682961D2174267C6008D025E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682961D1174267C6008D025E /* MapKit.framework */; };
-		682968851850401200B70E13 /* NSFileManager+A3Addtion.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968841850401200B70E13 /* NSFileManager+A3Addtion.m */; };
+		682968851850401200B70E13 /* NSFileManager+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968841850401200B70E13 /* NSFileManager+A3Addition.m */; };
 		6829688F18505E3900B70E13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
 		6829689018505E3900B70E13 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D915EB10B000BD6AD4 /* CoreGraphics.framework */; };
 		6829689118505E3900B70E13 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D515EB10B000BD6AD4 /* UIKit.framework */; };
@@ -302,7 +302,7 @@
 		6831407F18C20C9700896819 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6831407E18C20C9700896819 /* AVFoundation.framework */; };
 		68315CF6195696560095CF7A /* A3DaysCounterCalendarListMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68315CF5195696560095CF7A /* A3DaysCounterCalendarListMainViewController.xib */; };
 		6831DF0B16C3D30100EABB2A /* A3ActionMenuBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */; };
-		6831EBF518617CCF00BAF15B /* NSFileManager+A3Addtion.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968841850401200B70E13 /* NSFileManager+A3Addtion.m */; };
+		6831EBF518617CCF00BAF15B /* NSFileManager+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968841850401200B70E13 /* NSFileManager+A3Addition.m */; };
 		6831EBFB18619CC800BAF15B /* AppBox3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */; };
 		6831EBFC18619CC800BAF15B /* AppBoxCacheStore.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6831EBF818619CC800BAF15B /* AppBoxCacheStore.sqlite */; };
 		6831EBFD18619CC800BAF15B /* AppBoxCacheStore.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 6831EBF918619CC800BAF15B /* AppBoxCacheStore.sqlite-shm */; };
@@ -321,6 +321,8 @@
 		684609C4194E161C00FD5F53 /* unit.strings in Resources */ = {isa = PBXBuildFile; fileRef = 684609C0194E161C00FD5F53 /* unit.strings */; };
 		684609C5194E161C00FD5F53 /* unitShort.strings in Resources */ = {isa = PBXBuildFile; fileRef = 684609C2194E161C00FD5F53 /* unitShort.strings */; };
 		68476949177D309800EBE7CF /* WeatherIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68476948177D309800EBE7CF /* WeatherIcons.xcassets */; };
+		6848249319D2723700E5184C /* A3SettingsBackupRestoreiTunesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6848249219D2723700E5184C /* A3SettingsBackupRestoreiTunesViewController.m */; };
+		6848249A19D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6848249919D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.m */; };
 		6848FB8D17A39C1100EBDBED /* NSMutableArray+A3Sort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6848FB8C17A39C1100EBDBED /* NSMutableArray+A3Sort.m */; };
 		684A71BB1852E0100004A9FE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BA1852E0100004A9FE /* Security.framework */; };
 		684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BC1852E0250004A9FE /* libc++.dylib */; };
@@ -1317,8 +1319,8 @@
 		6825367E18A7C1B800EAFB84 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		682961D1174267C6008D025E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		6829687D18503D0E00B70E13 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
-		682968831850401200B70E13 /* NSFileManager+A3Addtion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+A3Addtion.h"; sourceTree = "<group>"; };
-		682968841850401200B70E13 /* NSFileManager+A3Addtion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+A3Addtion.m"; sourceTree = "<group>"; };
+		682968831850401200B70E13 /* NSFileManager+A3Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+A3Addition.h"; sourceTree = "<group>"; };
+		682968841850401200B70E13 /* NSFileManager+A3Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+A3Addition.m"; sourceTree = "<group>"; };
 		6829688E18505E3800B70E13 /* A3SetupDefaultData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = A3SetupDefaultData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6829689418505E3900B70E13 /* A3SetupDefaultData-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "A3SetupDefaultData-Info.plist"; sourceTree = "<group>"; };
 		6829689818505E3900B70E13 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -1470,6 +1472,10 @@
 		684609D6194E165100FD5F53 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = AppBox3/pl.lproj/unitShort.strings; sourceTree = "<group>"; };
 		684609D7194E165200FD5F53 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = AppBox3/es.lproj/unitShort.strings; sourceTree = "<group>"; };
 		68476948177D309800EBE7CF /* WeatherIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = WeatherIcons.xcassets; path = "AppBox3/Asset Catalogs/WeatherIcons.xcassets"; sourceTree = "<group>"; };
+		6848249119D2723700E5184C /* A3SettingsBackupRestoreiTunesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsBackupRestoreiTunesViewController.h; path = Settings/A3SettingsBackupRestoreiTunesViewController.h; sourceTree = "<group>"; };
+		6848249219D2723700E5184C /* A3SettingsBackupRestoreiTunesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsBackupRestoreiTunesViewController.m; path = Settings/A3SettingsBackupRestoreiTunesViewController.m; sourceTree = "<group>"; };
+		6848249819D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsiTunesSelectBackupViewController.h; path = Settings/A3SettingsiTunesSelectBackupViewController.h; sourceTree = "<group>"; };
+		6848249919D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsiTunesSelectBackupViewController.m; path = Settings/A3SettingsiTunesSelectBackupViewController.m; sourceTree = "<group>"; };
 		6848FB8B17A39C1100EBDBED /* NSMutableArray+A3Sort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+A3Sort.h"; sourceTree = "<group>"; };
 		6848FB8C17A39C1100EBDBED /* NSMutableArray+A3Sort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+A3Sort.m"; sourceTree = "<group>"; };
 		684A71BA1852E0100004A9FE /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -2713,8 +2719,8 @@
 				17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */,
 				68C1ABF818B1C05200021001 /* NSDateFormatter+LunarDate.h */,
 				68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */,
-				682968831850401200B70E13 /* NSFileManager+A3Addtion.h */,
-				682968841850401200B70E13 /* NSFileManager+A3Addtion.m */,
+				682968831850401200B70E13 /* NSFileManager+A3Addition.h */,
+				682968841850401200B70E13 /* NSFileManager+A3Addition.m */,
 				6848FB8B17A39C1100EBDBED /* NSMutableArray+A3Sort.h */,
 				6848FB8C17A39C1100EBDBED /* NSMutableArray+A3Sort.m */,
 				17D424B361556658F3728E3C /* NSMutableArray+MoveObject.h */,
@@ -2810,6 +2816,10 @@
 				17D42E0A671D2A779483EA05 /* A3SettingsViewController.m */,
 				17D421EA50E505169E8AFD88 /* A3BackupRestoreManager.h */,
 				17D4252487F63A66936B54FC /* A3BackupRestoreManager.m */,
+				6848249119D2723700E5184C /* A3SettingsBackupRestoreiTunesViewController.h */,
+				6848249219D2723700E5184C /* A3SettingsBackupRestoreiTunesViewController.m */,
+				6848249819D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.h */,
+				6848249919D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.m */,
 			);
 			name = Settings;
 			path = AppBox3/MainView;
@@ -5575,7 +5585,7 @@
 				682FDF231981CC0400C6C83D /* NSManagedObjectContext+MagicalThreading.m in Sources */,
 				682FDF1F1981CC0400C6C83D /* NSManagedObjectContext+MagicalRecord.m in Sources */,
 				6823F70B186358A200E6E90D /* A3CacheStoreManager.m in Sources */,
-				6831EBF518617CCF00BAF15B /* NSFileManager+A3Addtion.m in Sources */,
+				6831EBF518617CCF00BAF15B /* NSFileManager+A3Addition.m in Sources */,
 				682FDF091981CC0400C6C83D /* NSEntityDescription+MagicalDataImport.m in Sources */,
 				682FDF071981CC0400C6C83D /* NSAttributeDescription+MagicalDataImport.m in Sources */,
 				6823F711186358F500E6E90D /* AFNetworkReachabilityManager.m in Sources */,
@@ -5740,6 +5750,7 @@
 				6825365618A7AA4C00EAFB84 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				680886E61891751B0093FD97 /* UIView+SBExtras.m in Sources */,
 				68143D0818E3EC1F00569691 /* A3NumberKeyboardViewController_iPhone.m in Sources */,
+				6848249319D2723700E5184C /* A3SettingsBackupRestoreiTunesViewController.m in Sources */,
 				689C9A581839CD7F007C97EE /* UIProgressView+AFNetworking.m in Sources */,
 				68B6A2BB18CEC76D004084EF /* UIViewController+LoanCalcAddtion.m in Sources */,
 				68B6A45618CEE781004084EF /* PSTGridLayoutSection.m in Sources */,
@@ -5876,7 +5887,7 @@
 				68E2A6AC18D0B22800E834D9 /* UIImage+JHExtension.m in Sources */,
 				6825365118A7AA4C00EAFB84 /* MASConstraintMaker.m in Sources */,
 				68E2A6B718D0B22800E834D9 /* A3TipCalcSettingViewController.m in Sources */,
-				682968851850401200B70E13 /* NSFileManager+A3Addtion.m in Sources */,
+				682968851850401200B70E13 /* NSFileManager+A3Addition.m in Sources */,
 				6882802617E5ECED000D8069 /* A3HolidaysPageContentViewController.m in Sources */,
 				68F1C8D118D7F37D009FAE8A /* A3LadyCalendarSetupAlertViewController.m in Sources */,
 				68B6A2B718CEC76D004084EF /* LoanCalcString.m in Sources */,
@@ -5886,6 +5897,7 @@
 				68B6A2AE18CEC76D004084EF /* A3LoanCalcMonthlyDataViewController.m in Sources */,
 				68F14FC819485E8500159EAD /* A3DaysCounterEventListEditViewController.m in Sources */,
 				68B6A34B18CEC76D004084EF /* A3WalletIconSelectViewController.m in Sources */,
+				6848249A19D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.m in Sources */,
 				684E9F04188A43C300FAA48E /* NJKWebViewProgress.m in Sources */,
 				684D92F318BC1FBC005016F7 /* A3DateCalcEditEventViewController.m in Sources */,
 				68E2A6A218D0B22800E834D9 /* A3SalesCalcDetailInfoViewController.m in Sources */,

@@ -868,3 +868,6 @@ Enter Encryption Key for Wallet.";
 "Use Auto-Lock" = "Use Auto-Lock";
 "Auto Dim" = "Auto Dim";
 "ExplainAutoDim" = "This option will be very useful when you use Alarm Clock in the bed. Plug in your device to an electrical outlet. Switch Off \"Use Auto-Lock\" to prevent the device going into sleep mode. This option will help your sleep by reducing the brightness automatically.";
+
+"Please save the backup file to your desktop in iTunes." = "Please save the backup file to your desktop in iTunes.";
+"Backup file does not exist." = "No backup files.";

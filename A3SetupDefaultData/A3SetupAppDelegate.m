@@ -8,7 +8,7 @@
 
 #import "A3SetupAppDelegate.h"
 #import "A3YahooCurrency.h"
-#import "NSFileManager+A3Addtion.h"
+#import "NSFileManager+A3Addition.h"
 #import "CurrencyRateItem.h"
 #import "Reachability.h"
 #import "A3CacheStoreManager.h"

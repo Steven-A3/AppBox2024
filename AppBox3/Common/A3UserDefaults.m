@@ -7,7 +7,7 @@
 //
 
 #import "A3UserDefaults.h"
-#import "NSFileManager+A3Addtion.h"
+#import "NSFileManager+A3Addition.h"
 
 NSString *const A3PrivatePreferencesFilename = @"A3PrivatePreferences";
 NSString *const A3UserDefaultsDidChangeNotification = @"A3UserDefaultsDidChangeNotification";

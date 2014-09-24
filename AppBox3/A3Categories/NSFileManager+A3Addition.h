@@ -1,5 +1,5 @@
 //
-//  NSFileManager+A3Addtion.h
+//  NSFileManager+A3Addition.h
 //  AppBox3
 //
 //  Created by A3 on 12/5/13.
@@ -8,15 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSFileManager (A3Addtion)
+@interface NSFileManager (A3Addition)
 
 - (NSString *)applicationSupportPath;
-
+- (NSString *)documentDirectoryPath;
 - (NSString *)storePath;
-
 - (NSString *)storeName;
-
 - (void)setupCacheStoreFile;
-
 - (NSString *)cacheStorePath;
+
+- (NSString *)humanReadableFileSize:(unsigned long long)size;
 @end

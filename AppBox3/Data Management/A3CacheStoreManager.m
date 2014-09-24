@@ -7,7 +7,7 @@
 //
 
 #import "A3CacheStoreManager.h"
-#import "NSFileManager+A3Addtion.h"
+#import "NSFileManager+A3Addition.h"
 #import "CurrencyRateItem.h"
 
 @interface A3CacheStoreManager ()

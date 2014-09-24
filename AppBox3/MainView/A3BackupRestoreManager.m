@@ -18,7 +18,7 @@
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
-#import "NSFileManager+A3Addtion.h"
+#import "NSFileManager+A3Addition.h"
 #import "A3UserDefaults.h"
 
 NSString *const A3ZipFilename = @"name";
@@ -31,6 +31,7 @@ NSString *const A3BackupFileUserDefaultsKey = @"UserDefaults";
 NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 @interface A3BackupRestoreManager () <AAAZipDelegate, DBRestClientDelegate, A3DataMigrationManagerDelegate>
+
 @property (nonatomic, strong) MBProgressHUD *HUD;
 @property (nonatomic, strong) NSNumberFormatter *percentFormatter;
 @property (nonatomic, strong) DBRestClient *restClient;
@@ -38,13 +39,22 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 @property (nonatomic, copy) NSString *backupCoreDataStorePath;
 @property (nonatomic, strong) A3DataMigrationManager *migrationManager;
 @property (nonatomic, strong) NSMutableArray *deleteFilesAfterZip;
+
 @end
 
-@implementation A3BackupRestoreManager
+@implementation A3BackupRestoreManager {
+	BOOL _backupToDocumentDirectory;
+}
 
 #pragma mark - Backup Data
 
 - (void)backupData {
+	_backupToDocumentDirectory = NO;
+	[self backupCoreDataStore];
+}
+
+- (void)backupToDocumentDirectory {
+	_backupToDocumentDirectory = YES;
 	[self backupCoreDataStore];
 }
 
@@ -296,11 +306,21 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)completedZipProcess:(BOOL)bResult {
-	_HUD.labelText = NSLocalizedString(@"Uploading", @"Uploading");
-	_HUD.detailsLabelText = @"";
+	if (_backupToDocumentDirectory) {
+		[_HUD hide:YES];
 
-	[self.restClient uploadFile:[_backupFilePath lastPathComponent] toPath:kDropboxDir withParentRev:nil fromPath:_backupFilePath];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+														message:NSLocalizedString(@"Please save the backup file to your desktop in iTunes.", nil)
+													   delegate:nil
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
+		[alert show];
+	} else {
+		_HUD.labelText = NSLocalizedString(@"Uploading", @"Uploading");
+		_HUD.detailsLabelText = @"";
 
+		[self.restClient uploadFile:[_backupFilePath lastPathComponent] toPath:kDropboxDir withParentRev:nil fromPath:_backupFilePath];
+	}
 	NSFileManager *fileManager = [[NSFileManager alloc] init];
 	for (NSString *path in _deleteFilesAfterZip) {
 		[fileManager removeItemAtPath:path error:NULL];
@@ -344,7 +364,11 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 - (void)restClient:(DBRestClient *)client uploadedFile:(NSString *)destPath from:(NSString *)srcPath metadata:(DBMetadata *)metadata {
 	[_HUD hide:YES];
 	_HUD = nil;
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"Backup file has been uploaded to Dropbox successfully.", @"Backup file has been uploaded to Dropbox successfully.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+													message:NSLocalizedString(@"Backup file has been uploaded to Dropbox successfully.", @"Backup file has been uploaded to Dropbox successfully.")
+												   delegate:nil
+										  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+										  otherButtonTitles:nil];
 	[alert show];
 
 	[self deleteBackupFile];

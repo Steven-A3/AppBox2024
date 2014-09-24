@@ -910,3 +910,6 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Use Auto-Lock" = "Usar Auto-Lock";
 "Auto Dim" = "Auto Dim";
 "ExplainAutoDim" = "Esta opción será muy útil cuando se utiliza despertador en la cama. Conecte su dispositivo a una toma de corriente eléctrica. Desactivar \"Usar Auto Lock\" para evitar que el dispositivo de entrar en modo de suspensión. Esta opción le ayudará a su sueño, reduciendo el brillo automáticamente.";
+
+"Please save the backup file to your desktop in iTunes." = "Por favor, guarde el archivo de copia de seguridad en el escritorio en iTunes.";
+"Backup file does not exist." = "Archivo de copia de seguridad no existe.";
