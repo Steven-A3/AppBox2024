@@ -522,6 +522,16 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 }
 
 - (IBAction)loadCameraRoll:(id)sender {
+    if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied || [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusRestricted) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Please Allow Photo Access", @"Please Allow Photo Access")
+                                                            message:NSLocalizedString(@"You need authorization to see your photo library. Move to Settings App and allow your privacy permission of photo.", @"You need authorization to see your photo library. Move to Settings App and allow your privacy permission of photo.")
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                  otherButtonTitles:nil];
+        [alertView show];
+        return;
+    }
+    
     // Create browser
 	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
     browser.displayActionButton = NO;
