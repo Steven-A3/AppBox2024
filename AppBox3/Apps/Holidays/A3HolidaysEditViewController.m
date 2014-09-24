@@ -19,6 +19,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UITableView+utility.h"
 #import "A3UserDefaults.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 static const NSInteger A3HolidaysResetActionSheet = 100;
 static const NSInteger A3HolidaysPhotoActionSheet = 200;
@@ -363,6 +364,20 @@ static NSString *CellIdentifier = @"Cell";
 				myButtonIndex++;
 			if (actionSheet.destructiveButtonIndex>=0)
 				myButtonIndex--;
+            
+            if (myButtonIndex == 1 || myButtonIndex == 2) {
+                if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied || [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusRestricted) {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Please Allow Photo Access", @"Please Allow Photo Access")
+                                                                        message:NSLocalizedString(@"You need authorization to see your photo library. Move to Settings App and allow your privacy permission of photo.", @"You need authorization to see your photo library. Move to Settings App and allow your privacy permission of photo.")
+                                                                       delegate:nil
+                                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                              otherButtonTitles:nil];
+                    [alertView show];
+                    return;
+                }
+            }
+            
+            
 			switch (myButtonIndex) {
 				case 0:
 					_imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
