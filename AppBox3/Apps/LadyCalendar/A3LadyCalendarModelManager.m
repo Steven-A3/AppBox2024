@@ -328,14 +328,17 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
     NSArray *periodArray =  [LadyCalendarPeriod MR_findAllSortedBy:@"startDate"
                                                          ascending:YES
                                                      withPredicate:predicate];
+    LadyCalendarPeriod *latestPeriod = [[self periodListSortedByStartDateIsAscending:YES] lastObject];
 
     [periodArray enumerateObjectsUsingBlock:^(LadyCalendarPeriod *aPeriod, NSUInteger idx, BOOL *stop) {
         LadyCalendarPeriod *prevPeriod;
+        BOOL isLatestPeriod = [aPeriod.startDate isEqualToDate:latestPeriod.startDate];
+        
         if (idx > 0) {
             prevPeriod = [periodArray objectAtIndex:idx - 1];
         }
 
-        if (prevPeriod && ![aPeriod.isPredict boolValue]) {
+        if (prevPeriod && ![aPeriod.isPredict boolValue] && !isLatestPeriod) {
             aPeriod.cycleLength = @(labs([A3DateHelper diffDaysFromDate:[prevPeriod startDate] toDate:[aPeriod startDate] isAllDay:YES]));
         }
     }];

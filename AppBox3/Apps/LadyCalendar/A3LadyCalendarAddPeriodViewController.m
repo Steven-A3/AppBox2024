@@ -38,6 +38,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 @end
 
 @implementation A3LadyCalendarAddPeriodViewController
+{
+    BOOL _isCustomCycleLengthMode;
+    BOOL _isLatestPeriod;
+}
 
 - (id)init {
 	self = [super initWithStyle:UITableViewStyleGrouped];
@@ -46,6 +50,31 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	}
 
 	return self;
+}
+
+- (void)initSectionsArray
+{
+    self.sectionsArray = [NSMutableArray arrayWithArray:@[
+                                                          @{ItemKey_Items : [NSMutableArray arrayWithArray:@[
+                                                                                                             @{
+                                                                                                                 ItemKey_Title : NSLocalizedString(@"LadyCalendar_Start Date", @"Start Date"),
+                                                                                                                 ItemKey_Type : @(PeriodCellType_StartDate)
+                                                                                                                 },
+                                                                                                             @{
+                                                                                                                 ItemKey_Title : NSLocalizedString(@"End Date", @"End Date"),
+                                                                                                                 ItemKey_Type : @(PeriodCellType_EndDate)
+                                                                                                                 }]]},
+                                                          @{ItemKey_Items : [NSMutableArray arrayWithArray:@[
+                                                                                                             @{
+                                                                                                                 ItemKey_Title : NSLocalizedString(@"Cycle Length", @"Cycle Length"),
+                                                                                                                 ItemKey_Type : @(PeriodCellType_CycleLength)
+                                                                                                                 }]]},
+                                                          /*@{ItemKey_Items : [NSMutableArray arrayWithArray:@[@{ItemKey_Title : @"Ovulation",ItemKey_Type : @(PeriodCellType_Ovulation)}]]},*/
+                                                          @{ItemKey_Items : [NSMutableArray arrayWithArray:@[
+                                                                                                             @{
+                                                                                                                 ItemKey_Title : NSLocalizedString(@"Notes", @"Notes"),
+                                                                                                                 ItemKey_Type : @(PeriodCellType_Notes)
+                                                                                                                 }]]} ]];
 }
 
 - (void)viewDidLoad
@@ -63,29 +92,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 																						  target:self
 																						  action:@selector(cancelAction:)];
 	[self rightBarButtonDoneButton];
-
-	self.sectionsArray = [NSMutableArray arrayWithArray:@[
-			@{ItemKey_Items : [NSMutableArray arrayWithArray:@[
-					@{
-							ItemKey_Title : NSLocalizedString(@"LadyCalendar_Start Date", @"Start Date"),
-							ItemKey_Type : @(PeriodCellType_StartDate)
-					},
-					@{
-							ItemKey_Title : NSLocalizedString(@"End Date", @"End Date"),
-							ItemKey_Type : @(PeriodCellType_EndDate)
-					}]]},
-			@{ItemKey_Items : [NSMutableArray arrayWithArray:@[
-					@{
-							ItemKey_Title : NSLocalizedString(@"Cycle Length", @"Cycle Length"),
-							ItemKey_Type : @(PeriodCellType_CycleLength)
-					}]]},
-					/*@{ItemKey_Items : [NSMutableArray arrayWithArray:@[@{ItemKey_Title : @"Ovulation",ItemKey_Type : @(PeriodCellType_Ovulation)}]]},*/
-			@{ItemKey_Items : [NSMutableArray arrayWithArray:@[
-					@{
-							ItemKey_Title : NSLocalizedString(@"Notes", @"Notes"),
-							ItemKey_Type : @(PeriodCellType_Notes)
-					}]]} ]];
-
+	[self initSectionsArray];
 
     if ( _isEditMode /*&& ![_periodItem.isPredict boolValue]*/ ) {
 		[self.sectionsArray addObject:@{ItemKey_Items : [NSMutableArray arrayWithArray:@[
@@ -106,6 +113,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 	if ( _isEditMode ) {
 		self.prevPeriod = [_dataManager previousPeriodFromDate:_periodItem.startDate];
+        LadyCalendarPeriod *latestPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
+        _isLatestPeriod = [_periodItem.startDate isEqualToDate:latestPeriod.startDate];
 	}
 	else
 	{
@@ -364,8 +373,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
             UITextField *textField = (UITextField*)cell.accessoryView;
             textField.text = [NSString stringWithFormat:@"%ld",[_periodItem.cycleLength longValue]];
-            textField.textColor = !_prevPeriod ? [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] : [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
-            textField.userInteractionEnabled = !_prevPeriod ? YES : NO;
+            textField.textColor = (!_prevPeriod || _isLatestPeriod) ? [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] : [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
+            textField.userInteractionEnabled = (!_prevPeriod || _isLatestPeriod) ? YES : NO;
 			break;
 		}
 
@@ -648,6 +657,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		textField.text = @"0";
 	}
     
+    if (![textField.text isEqualToString:_textBeforeEditingTextField]) {
+        _isCustomCycleLengthMode = YES;
+    }
+    
     if (self.firstResponder == textField) {
         [self.firstResponder resignFirstResponder];
         self.firstResponder = nil;
@@ -699,7 +712,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)calculateCycleLengthFromDate:(NSDate *)fromDate
 {
-    if (_isEditMode) {
+//    if (_isEditMode) {
+//        return;
+//    }
+    if (_isCustomCycleLengthMode) {
         return;
     }
 
@@ -749,7 +765,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"The new date you entered overlaps with previous dates.", @"The new date you entered overlaps with previous dates.") title:nil];
         return;
     }
-    if ( _prevPeriod ) {
+    if ( _prevPeriod && !_isCustomCycleLengthMode ) {
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:_prevPeriod.startDate toDate:_periodItem.startDate];
         _periodItem.cycleLength = @(diffDays);
     }
