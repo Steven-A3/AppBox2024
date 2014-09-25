@@ -57,7 +57,14 @@ const NSInteger MAXCOLUMN = 1;
     [_limitNumberPickerView selectRow:1 inComponent:MINCOLUMN animated:YES];
     [_limitNumberPickerView selectRow:100 inComponent:MAXCOLUMN animated:YES];
     
-    [self setupMotionManager];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setupMotionManager)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(releaseMotionManager)
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -76,6 +83,18 @@ const NSInteger MAXCOLUMN = 1;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)dealloc {
+    [self removeObserver];
+    if (randomNumberTimer && [randomNumberTimer isValid]) {
+        [randomNumberTimer invalidate];
+        randomNumberTimer = nil;
+    }
+}
+
+- (void)removeObserver {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 #pragma mark - accelerometer Related
@@ -116,11 +135,6 @@ const NSInteger MAXCOLUMN = 1;
             lastTime = CFAbsoluteTimeGetCurrent();
         }
     }];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(releaseMotionManager)
-                                                 name:UIApplicationDidEnterBackgroundNotification
-                                               object:nil];
 }
 
 - (void)releaseMotionManager {
@@ -130,14 +144,11 @@ const NSInteger MAXCOLUMN = 1;
     
     [_motionManager stopAccelerometerUpdates];
     _motionManager = nil;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 #pragma mark - 
 
 - (IBAction)randomButtonTouchUp:(id)sender {
-    
     if (!audioPlayer) {
         NSString *wavPath = [[NSBundle mainBundle] pathForResource:@"Erase" ofType:@"caf"];
         audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:wavPath] error:NULL];
