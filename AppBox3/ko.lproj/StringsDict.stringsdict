@@ -373,7 +373,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>최근에 사용한 1개</string>
+			<string>끔</string>
 			<key>one</key>
 			<string>최근에 사용한 1개</string>
 			<key>other</key>

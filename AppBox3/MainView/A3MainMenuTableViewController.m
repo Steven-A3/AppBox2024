@@ -160,17 +160,20 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	NSMutableArray *section0 = [NSMutableArray new];
 	[section0 addObject:favoritesDict];
 
-	NSDictionary *recentlyUsedMenuDictionary = [self recentlyUsedMenuItems];
-	NSArray *recentMenuItems = recentlyUsedMenuDictionary[kA3AppsExpandableChildren];
-	if ([recentMenuItems count]) {
-		NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
-		if ([recentMenuItems count] > maxRecent) {
-			recentMenuItems = [recentMenuItems subarrayWithRange:NSMakeRange(0, maxRecent)];
-			NSMutableDictionary *mutableDictionary = [recentlyUsedMenuDictionary mutableCopy];
-			mutableDictionary[kA3AppsExpandableChildren] = recentMenuItems;
-			[section0 addObject:mutableDictionary];
-		} else {
-			[section0 addObject:recentlyUsedMenuDictionary];
+	NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
+	NSArray *recentMenuItems = nil;
+	if (maxRecent) {
+		NSDictionary *recentlyUsedMenuDictionary = [self recentlyUsedMenuItems];
+		recentMenuItems = recentlyUsedMenuDictionary[kA3AppsExpandableChildren];
+		if ([recentMenuItems count]) {
+			if ([recentMenuItems count] > maxRecent) {
+				recentMenuItems = [recentMenuItems subarrayWithRange:NSMakeRange(0, maxRecent)];
+				NSMutableDictionary *mutableDictionary = [recentlyUsedMenuDictionary mutableCopy];
+				mutableDictionary[kA3AppsExpandableChildren] = recentMenuItems;
+				[section0 addObject:mutableDictionary];
+			} else {
+				[section0 addObject:recentlyUsedMenuDictionary];
+			}
 		}
 	}
 

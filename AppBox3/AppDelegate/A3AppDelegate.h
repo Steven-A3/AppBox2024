@@ -34,6 +34,7 @@ extern NSString *const kA3AppsMenuNeedSecurityCheck;
 
 extern NSString *const kA3AppsMenuArray;
 extern NSString *const kA3AppsDataUpdateDate;
+extern NSString *const kA3AppsStartingAppName;
 
 /* Notifications */
 extern NSString *const A3NotificationAppsMainMenuContentsChanged;

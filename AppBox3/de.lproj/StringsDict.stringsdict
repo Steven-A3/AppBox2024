@@ -391,7 +391,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Die neueste</string>
+			<string>Aus</string>
 			<key>one</key>
 			<string>Die 3 neueste</string>
 			<key>other</key>

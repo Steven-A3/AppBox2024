@@ -22,8 +22,9 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowUseiCloud = 1100,
 	A3SettingsRowPasscodeLock = 2100,
 	A3SettingsRowWalletSecurity = 2200,
-	A3SettingsRowEditFavorites = 3100,
-	A3SettingsRowRecentToKeep = 3200,
+	A3SettingsRowStartingApp = 3100,
+	A3SettingsRowEditFavorites = 3200,
+	A3SettingsRowRecentToKeep = 3300,
 	A3SettingsRowThemeColor = 4100,
 	sA3SettingsRowLunarCalendar = 4200,
 };
@@ -102,6 +103,15 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			break;
 		case A3SettingsRowWalletSecurity:
 			break;
+		case A3SettingsRowStartingApp: {
+			NSString *startAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+			if ([startAppName length]) {
+				cell.detailTextLabel.text = NSLocalizedString(startAppName, nil);
+			} else {
+				cell.detailTextLabel.text = NSLocalizedString(@"None", @"None");
+			}
+			break;
+		}
 		case A3SettingsRowEditFavorites:
 			break;
 		case A3SettingsRowRecentToKeep:

@@ -28,6 +28,7 @@ NSString *const kA3AppsMenuNeedSecurityCheck = @"kA3AppsMenuNeedSecurityCheck";
 
 NSString *const kA3AppsMenuArray = @"kA3AppsMenuArray";
 NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
+NSString *const kA3AppsStartingAppName = @"kA3AppsStartingAppName";
 
 - (NSArray *)allMenu {
 	return @[
@@ -156,9 +157,8 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 }
 
 - (NSUInteger)maximumRecentlyUsedMenus {
-	NSUInteger maximum = (NSUInteger) [[A3SyncManager sharedSyncManager] integerForKey:A3MainMenuUserDefaultsMaxRecentlyUsed];
-	maximum = !maximum ? 3 : maximum;
-	return maximum;
+	id value = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuUserDefaultsMaxRecentlyUsed];
+	return value ? [value unsignedIntegerValue] : 3;
 }
 
 - (void)storeMaximumNumberRecentlyUsedMenus:(NSUInteger)maxNumber {

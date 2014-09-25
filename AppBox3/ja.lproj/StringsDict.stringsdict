@@ -373,7 +373,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>最新</string>
+			<string>"オフ"</string>
 			<key>one</key>
 			<string>最新</string>
 			<key>other</key>

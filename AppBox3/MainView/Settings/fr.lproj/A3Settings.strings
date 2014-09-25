@@ -76,7 +76,7 @@
 "McJ-yq-SBi.text" = "Après 4 heures";
 
 /* Class = "IBUILabel"; text = "Off"; ObjectID = "Mzm-Rw-Yrb"; */
-"Mzm-Rw-Yrb.text" = " Éteint";
+"Mzm-Rw-Yrb.text" = "Éteint";
 
 /* Class = "IBUILabel"; text = "Backup"; ObjectID = "NGG-P3-DCE"; */
 "NGG-P3-DCE.text" = "Sauvegarde";

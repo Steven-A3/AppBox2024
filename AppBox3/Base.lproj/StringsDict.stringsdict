@@ -377,7 +377,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Most Recent</string>
+			<string>Off</string>
 			<key>one</key>
 			<string>Most Recent</string>
 			<key>other</key>

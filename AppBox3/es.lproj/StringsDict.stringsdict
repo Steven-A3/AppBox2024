@@ -373,7 +373,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>Más reciente</string>
+			<string>Redondeo</string>
 			<key>one</key>
 			<string>Más reciente</string>
 			<key>other</key>

@@ -373,7 +373,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>最新的1集</string>
+			<string>关闭</string>
 			<key>one</key>
 			<string>最新的1集</string>
 			<key>other</key>
