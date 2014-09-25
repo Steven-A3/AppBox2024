@@ -21,6 +21,7 @@
 #import "A3UserDefaults.h"
 #import "A3ClockMainViewController.h"
 #import "A3MainMenuTableViewController.h"
+#import "A3BasicWebViewController.h"
 
 @implementation A3AppDelegate (passcode)
 
@@ -71,6 +72,7 @@
             BOOL showCancelButton = ![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
             if (showCancelButton) {
                 UIViewController *visibleViewController = [self.navigationController visibleViewController];
+				self.parentOfPasscodeViewController = visibleViewController;
                 [self.passcodeViewController showLockScreenInViewController:visibleViewController];
                 self.pushClockViewControllerIfFailPasscode = YES;
             } else {
@@ -180,9 +182,13 @@
 
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
     if (!success && self.pushClockViewControllerIfFailPasscode) {
-        A3ClockMainViewController *clockViewController = [A3ClockMainViewController new];
-        [self.mainMenuViewController popToRootAndPushViewController:clockViewController];
-    }
+		if (self.parentOfPasscodeViewController.navigationController != self.navigationController) {
+			[self.navigationController dismissViewControllerAnimated:NO completion:NULL];
+		}
+
+		A3ClockMainViewController *clockViewController = [A3ClockMainViewController new];
+		[self.mainMenuViewController popToRootAndPushViewController:clockViewController];
+	}
 	[self showReceivedLocalNotifications];
 }
 

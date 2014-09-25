@@ -911,3 +911,6 @@ Inserire chiave di crittografia per il portafoglio.";
 "Use Auto-Lock" = "Usa Blocco Automatico";
 "Auto Dim" = "Auto Dim";
 "ExplainAutoDim" = "Questa opzione ti sarà utile quando usi la Sveglia mentre sei nel letto. Collega il tuo dispositivo alla presa di corrente. Disabilita il \"Blocco Automatico\" nelle impostazioni del dispositivo per evitare che esso vada in sleep. Questa opzione ti aiuterà così ad addormentarti riducendo automaticamente la luminosità dello schermo.";
+
+"Please save the backup file to your desktop in iTunes." = "Si prega di salvare il file di backup sul desktop in iTunes.";
+"Backup file does not exist." = "Il file di backup non esiste.";

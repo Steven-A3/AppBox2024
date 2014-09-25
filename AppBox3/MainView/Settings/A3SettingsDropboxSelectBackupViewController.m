@@ -148,6 +148,7 @@
 }
 
 #pragma mark ActionSheet Rotation Related
+
 - (void)rotateFirstActionSheet {
     NSInteger currentActionSheetTag = [self.firstActionSheet tag];
     [super rotateFirstActionSheet];

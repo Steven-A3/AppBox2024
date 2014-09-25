@@ -9,7 +9,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "NSDate-Utilities.h"
 #import "A3AppDelegate.h"
-#import "NSFileManager+A3Addtion.h"
+#import "NSFileManager+A3Addition.h"
 #import "A3UserDefaults.h"
 
 NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
