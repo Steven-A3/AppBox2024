@@ -19,7 +19,7 @@
 const NSInteger MINCOLUMN = 0;
 const NSInteger MAXCOLUMN = 1;
 
-@interface A3RandomViewController () <UIAccelerometerDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface A3RandomViewController () <UIAccelerometerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIScrollViewDelegate>
 @property (strong, nonatomic) CMMotionManager *motionManager;
 @end
 
@@ -54,8 +54,15 @@ const NSInteger MAXCOLUMN = 1;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.title = NSLocalizedString(@"Random", @"Random");
+    
+	[self makeBackButtonEmptyArrow];
+	[self leftBarButtonAppsButton];
+    
     [_limitNumberPickerView selectRow:1 inComponent:MINCOLUMN animated:YES];
     [_limitNumberPickerView selectRow:100 inComponent:MAXCOLUMN animated:YES];
+    _resultPrintLabel.adjustsFontSizeToFitWidth = YES;
+    _resultPrintLabel.shadowColor = [UIColor grayColor];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(setupMotionManager)
@@ -95,6 +102,13 @@ const NSInteger MAXCOLUMN = 1;
 
 - (void)removeObserver {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)setNavigationBarHidden:(BOOL)hidden {
+	[self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+	[self.navigationController.navigationBar setShadowImage:nil];
+    
+	[self.navigationController setNavigationBarHidden:hidden];
 }
 
 #pragma mark - accelerometer Related
@@ -159,6 +173,9 @@ const NSInteger MAXCOLUMN = 1;
 	
 	numGen = 0.0;
 	_generatorButton.enabled = NO;
+    _limitNumberPickerView.userInteractionEnabled = NO;
+    [self setNavigationBarHidden:YES];
+    
 	NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.1];
 	randomNumberTimer = [[NSTimer alloc] initWithFireDate:fireDate
                                                  interval:0.1
@@ -204,6 +221,8 @@ const NSInteger MAXCOLUMN = 1;
 
 		randomNumberTimer = nil;
 		_generatorButton.enabled = YES;
+        _limitNumberPickerView.userInteractionEnabled = YES;
+        [self setNavigationBarHidden:NO];
 
 		return;
 	}
@@ -217,6 +236,10 @@ const NSInteger MAXCOLUMN = 1;
     //	srand(time(NULL));
 	NSInteger	newNum = arc4random() % (maxNumber - minNumber + 1) + minNumber;
     _resultPrintLabel.text = [NSString stringWithFormat:@"%ld", (long)newNum];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    
 }
 
 @end
