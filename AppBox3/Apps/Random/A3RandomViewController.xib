@@ -29,7 +29,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="centerX" secondItem="lNb-E0-1a7" secondAttribute="centerX" id="8fY-aH-7ZZ"/>
                         <constraint firstAttribute="centerY" secondItem="lNb-E0-1a7" secondAttribute="centerY" id="r00-RJ-ZgR"/>
@@ -72,7 +72,6 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="100" id="4Sm-YQ-sIl"/>
                         <constraint firstAttribute="trailing" secondItem="ewU-Qs-Dog" secondAttribute="trailing" constant="20" id="SCX-Kh-JSZ"/>

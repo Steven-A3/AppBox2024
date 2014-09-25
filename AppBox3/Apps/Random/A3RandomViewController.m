@@ -131,8 +131,10 @@ const NSInteger MAXCOLUMN = 1;
         if((length >= kEraseAccelerationThreshold) && (CFAbsoluteTimeGetCurrent() > lastTime + kMinEraseInterval)) {
             
             // Reset Value to zero
-            [self randomButtonTouchUp:nil];
-            lastTime = CFAbsoluteTimeGetCurrent();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self randomButtonTouchUp:nil];
+                lastTime = CFAbsoluteTimeGetCurrent();
+            });
         }
     }];
 }
@@ -202,7 +204,7 @@ const NSInteger MAXCOLUMN = 1;
 
 		randomNumberTimer = nil;
 		_generatorButton.enabled = YES;
-        
+
 		return;
 	}
     
