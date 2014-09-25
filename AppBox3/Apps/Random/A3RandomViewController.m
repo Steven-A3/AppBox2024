@@ -19,7 +19,8 @@
 const NSInteger MINCOLUMN = 0;
 const NSInteger MAXCOLUMN = 1;
 
-@interface A3RandomViewController () <UIAccelerometerDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface A3RandomViewController () <UIAccelerometerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIScrollViewDelegate>
+@property (strong, nonatomic) CMMotionManager *motionManager;
 @end
 
 @implementation A3RandomViewController
@@ -53,11 +54,36 @@ const NSInteger MAXCOLUMN = 1;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.title = NSLocalizedString(@"Random", @"Random");
+    
+	[self makeBackButtonEmptyArrow];
+	[self leftBarButtonAppsButton];
+    
     [_limitNumberPickerView selectRow:1 inComponent:MINCOLUMN animated:YES];
     [_limitNumberPickerView selectRow:100 inComponent:MAXCOLUMN animated:YES];
+    _resultPrintLabel.adjustsFontSizeToFitWidth = YES;
+    _resultPrintLabel.shadowColor = [UIColor grayColor];
     
-	[[UIAccelerometer sharedAccelerometer] setUpdateInterval:(1.0 / kAccelerometerFrequency)];
-	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setupMotionManager)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(releaseMotionManager)
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self setupMotionManager];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [self releaseMotionManager];
 }
 
 - (void)didReceiveMemoryWarning
@@ -66,8 +92,79 @@ const NSInteger MAXCOLUMN = 1;
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)randomButtonTouchUp:(id)sender {
+-(void)dealloc {
+    [self removeObserver];
+    if (randomNumberTimer && [randomNumberTimer isValid]) {
+        [randomNumberTimer invalidate];
+        randomNumberTimer = nil;
+    }
+}
+
+- (void)removeObserver {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)setNavigationBarHidden:(BOOL)hidden {
+	[self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+	[self.navigationController.navigationBar setShadowImage:nil];
     
+	[self.navigationController setNavigationBarHidden:hidden];
+}
+
+#pragma mark - accelerometer Related
+- (void)setupMotionManager {
+    if (_motionManager) {
+        return;
+    }
+    
+    _motionManager = [[CMMotionManager alloc] init];
+    if (!_motionManager.isAccelerometerAvailable) {
+        return;
+    }
+    
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    _motionManager.accelerometerUpdateInterval = (1.0 / kAccelerometerFrequency);
+    [_motionManager startAccelerometerUpdatesToQueue:queue withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
+        UIAccelerationValue length,
+        x,
+        y,
+        z;
+        
+        //Use a basic high-pass filter to remove the influence of the gravity
+        myAccelerometer[0] = accelerometerData.acceleration.x * kFilteringFactorForErase + myAccelerometer[0] * (1.0 - kFilteringFactorForErase);
+        myAccelerometer[1] = accelerometerData.acceleration.y * kFilteringFactorForErase + myAccelerometer[1] * (1.0 - kFilteringFactorForErase);
+        myAccelerometer[2] = accelerometerData.acceleration.z * kFilteringFactorForErase + myAccelerometer[2] * (1.0 - kFilteringFactorForErase);
+        // Compute values for the three axes of the acceleromater
+        x = accelerometerData.acceleration.x - myAccelerometer[0];
+        y = accelerometerData.acceleration.y - myAccelerometer[0];
+        z = accelerometerData.acceleration.z - myAccelerometer[0];
+        
+        //Compute the intensity of the current acceleration
+        length = sqrt(x * x + y * y + z * z);
+        // If above a given threshold, play the erase sounds and erase the drawing view
+        if((length >= kEraseAccelerationThreshold) && (CFAbsoluteTimeGetCurrent() > lastTime + kMinEraseInterval)) {
+            
+            // Reset Value to zero
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self randomButtonTouchUp:nil];
+                lastTime = CFAbsoluteTimeGetCurrent();
+            });
+        }
+    }];
+}
+
+- (void)releaseMotionManager {
+    if (!_motionManager) {
+        return;
+    }
+    
+    [_motionManager stopAccelerometerUpdates];
+    _motionManager = nil;
+}
+
+#pragma mark - 
+
+- (IBAction)randomButtonTouchUp:(id)sender {
     if (!audioPlayer) {
         NSString *wavPath = [[NSBundle mainBundle] pathForResource:@"Erase" ofType:@"caf"];
         audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:wavPath] error:NULL];
@@ -76,6 +173,9 @@ const NSInteger MAXCOLUMN = 1;
 	
 	numGen = 0.0;
 	_generatorButton.enabled = NO;
+    _limitNumberPickerView.userInteractionEnabled = NO;
+    [self setNavigationBarHidden:YES];
+    
 	NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.1];
 	randomNumberTimer = [[NSTimer alloc] initWithFireDate:fireDate
                                                  interval:0.1
@@ -121,7 +221,9 @@ const NSInteger MAXCOLUMN = 1;
 
 		randomNumberTimer = nil;
 		_generatorButton.enabled = YES;
-        
+        _limitNumberPickerView.userInteractionEnabled = YES;
+        [self setNavigationBarHidden:NO];
+
 		return;
 	}
     
@@ -136,36 +238,8 @@ const NSInteger MAXCOLUMN = 1;
     _resultPrintLabel.text = [NSString stringWithFormat:@"%ld", (long)newNum];
 }
 
-#pragma mark -
-#pragma mark accelerometer notification methods
-#pragma mark -
-
-// Called when the accelerometer detects motion; plays the erase sound and redraws the view if the motion is over a threshold.
-- (void) accelerometer:(UIAccelerometer*)accelerometer didAccelerate:(UIAcceleration*)acceleration
-{
-	UIAccelerationValue				length,
-	x,
-	y,
-	z;
-	
-	//Use a basic high-pass filter to remove the influence of the gravity
-	myAccelerometer[0] = acceleration.x * kFilteringFactorForErase + myAccelerometer[0] * (1.0 - kFilteringFactorForErase);
-	myAccelerometer[1] = acceleration.y * kFilteringFactorForErase + myAccelerometer[1] * (1.0 - kFilteringFactorForErase);
-	myAccelerometer[2] = acceleration.z * kFilteringFactorForErase + myAccelerometer[2] * (1.0 - kFilteringFactorForErase);
-	// Compute values for the three axes of the acceleromater
-	x = acceleration.x - myAccelerometer[0];
-	y = acceleration.y - myAccelerometer[0];
-	z = acceleration.z - myAccelerometer[0];
-	
-	//Compute the intensity of the current acceleration
-	length = sqrt(x * x + y * y + z * z);
-	// If above a given threshold, play the erase sounds and erase the drawing view
-	if((length >= kEraseAccelerationThreshold) && (CFAbsoluteTimeGetCurrent() > lastTime + kMinEraseInterval)) {
-		
-		// Reset Value to zero
-		[self randomButtonTouchUp:nil];
-		lastTime = CFAbsoluteTimeGetCurrent();
-	}
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    
 }
 
 @end

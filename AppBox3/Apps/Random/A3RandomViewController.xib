@@ -21,18 +21,22 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="306"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lNb-E0-1a7">
-                            <rect key="frame" x="139" y="143" width="42" height="21"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="lNb-E0-1a7">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="306"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="180"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
+                            <color key="shadowColor" cocoaTouchSystemColor="lightTextColor"/>
+                            <size key="shadowOffset" width="5" height="5"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="centerX" secondItem="lNb-E0-1a7" secondAttribute="centerX" id="8fY-aH-7ZZ"/>
-                        <constraint firstAttribute="centerY" secondItem="lNb-E0-1a7" secondAttribute="centerY" id="r00-RJ-ZgR"/>
+                        <constraint firstAttribute="bottom" secondItem="lNb-E0-1a7" secondAttribute="bottom" id="9Fa-CU-vmm"/>
+                        <constraint firstAttribute="trailing" secondItem="lNb-E0-1a7" secondAttribute="trailing" id="FlI-Wg-GMG"/>
+                        <constraint firstItem="lNb-E0-1a7" firstAttribute="top" secondItem="BNl-6b-rRD" secondAttribute="top" id="NqK-DB-dZv"/>
+                        <constraint firstItem="lNb-E0-1a7" firstAttribute="leading" secondItem="BNl-6b-rRD" secondAttribute="leading" id="R8b-7n-sXK"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KB9-q2-mhA" userLabel="limit - View">
@@ -72,7 +76,6 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="100" id="4Sm-YQ-sIl"/>
                         <constraint firstAttribute="trailing" secondItem="ewU-Qs-Dog" secondAttribute="trailing" constant="20" id="SCX-Kh-JSZ"/>

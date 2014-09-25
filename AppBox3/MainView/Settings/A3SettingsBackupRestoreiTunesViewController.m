@@ -140,6 +140,16 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        cell.textLabel.textColor = [[A3AppDelegate instance] themeColor];
+    }
+    else {
+        cell.textLabel.textColor = [UIColor blackColor];
+    }
+}
+
 /*
 #pragma mark - Navigation
 
