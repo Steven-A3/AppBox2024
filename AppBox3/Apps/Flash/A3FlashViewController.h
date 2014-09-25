@@ -28,7 +28,7 @@ extern NSString *const A3UserDefaultFlashViewMode;
 - (IBAction)sliderControlValueChanged:(UISlider *)sender;
 - (IBAction)LEDlightOnButtonTouchUp:(id)sender;
 
-#if	!TARGET_IPHONE_SIMULATOR
+//#if	!TARGET_IPHONE_SIMULATOR
 @property (strong, nonatomic) AVCaptureSession *LEDSession;
-#endif
+//#endif
 @end

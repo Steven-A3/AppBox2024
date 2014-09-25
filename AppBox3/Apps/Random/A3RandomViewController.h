@@ -10,4 +10,9 @@
 
 @interface A3RandomViewController : UIViewController
 
+- (IBAction)randomButtonTouchUp:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *resultPrintLabel;
+@property (weak, nonatomic) IBOutlet UIPickerView *limitNumberPickerView;
+@property (weak, nonatomic) IBOutlet UIButton *generatorButton;
+
 @end

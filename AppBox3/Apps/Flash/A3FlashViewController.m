@@ -130,9 +130,10 @@ NSString *const A3UserDefaultFlashViewMode = @"A3UserDefaultFlashViewMode";
 NSString *const A3UserDefaultFlashColorIndex = @"A3UserDefaultFlashColorIndex";
 NSString *const A3UserDefaultFlashBrightnessValue = @"A3UserDefaultFlashBrightnessValue";
 NSString *const A3UserDefaultFlashEffectIndex = @"A3UserDefaultFlashEffectIndex";
+NSString *const A3UserDefaultFlashTurnLEDOnAtStart = @"A3UserDefaultFlashTurnLEDOnAtStart";
 NSString *const cellID = @"flashEffectID";
 
-@interface A3FlashViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface A3FlashViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIAlertViewDelegate>
 @end
 
 @implementation A3FlashViewController
@@ -169,6 +170,16 @@ NSString *const cellID = @"flashEffectID";
     [self initializeStatus];
 //    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
 //    [self.view addGestureRecognizer:tapGesture];
+    NSNumber *isLedOnStart = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashTurnLEDOnAtStart];
+    if (!isLedOnStart) {
+        UIAlertView *question = [[UIAlertView alloc] initWithTitle:nil
+                                                           message:NSLocalizedStringFromTable(@"Turn LED on always? You can change it in the Settings.", @"common", @"Messagews")
+                                                          delegate:self
+                                                 cancelButtonTitle:NSLocalizedStringFromTable(@"NO", @"common", @"Messages")
+                                                 otherButtonTitles:NSLocalizedStringFromTable(@"YES", @"common", @"Messages"), nil];
+        question.delegate = self;
+        [question show];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -417,7 +428,6 @@ NSString *const cellID = @"flashEffectID";
 #endif
 }
 
-#if !TARGET_IPHONE_SIMULATOR
 - (void)initializeLED {
 	if (!_LEDInitialized) {
 		AVCaptureDevice *myTorch = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
@@ -473,8 +483,6 @@ NSString *const cellID = @"flashEffectID";
     
 	_LEDInitialized = NO;
 }
-
-#endif
 
 #pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -839,6 +847,11 @@ NSString *const cellID = @"flashEffectID";
 	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
 	[runLoop addTimer:strobeTimer forMode:NSDefaultRunLoopMode];
 	effectLoopCount = (effectLoopCount + 1) % STROBE_LOOP_TRAFFICLIGHT_COUNT;
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [[NSUserDefaults standardUserDefaults] setObject:@(buttonIndex) forKey:A3UserDefaultFlashTurnLEDOnAtStart];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end
