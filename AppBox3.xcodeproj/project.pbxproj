@@ -121,6 +121,7 @@
 		680D63A018CFF9D400938AD0 /* A3MirrorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680D638B18CFF9D400938AD0 /* A3MirrorViewController.xib */; };
 		680D63A318CFFC2500938AD0 /* VerticalSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D63A218CFFC2500938AD0 /* VerticalSlider.m */; };
 		680D63A418D06B3F00938AD0 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */; };
+		680E837119D41D83007CF12C /* A3SettingsStartingAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680E837019D41D83007CF12C /* A3SettingsStartingAppViewController.m */; };
 		680FF7131980B88D00C736F5 /* A3SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 680FF7121980B88D00C736F5 /* A3SyncManager.m */; };
 		68143CF718E3EC1F00569691 /* appbox.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC518E3EC1F00569691 /* appbox.ttf */; };
 		68143CF818E3EC1F00569691 /* Digit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC618E3EC1F00569691 /* Digit.ttf */; };
@@ -1145,6 +1146,8 @@
 		680D638B18CFF9D400938AD0 /* A3MirrorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3MirrorViewController.xib; sourceTree = "<group>"; };
 		680D63A118CFFC2500938AD0 /* VerticalSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticalSlider.h; sourceTree = "<group>"; };
 		680D63A218CFFC2500938AD0 /* VerticalSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticalSlider.m; sourceTree = "<group>"; };
+		680E836F19D41D83007CF12C /* A3SettingsStartingAppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsStartingAppViewController.h; path = Settings/A3SettingsStartingAppViewController.h; sourceTree = "<group>"; };
+		680E837019D41D83007CF12C /* A3SettingsStartingAppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsStartingAppViewController.m; path = Settings/A3SettingsStartingAppViewController.m; sourceTree = "<group>"; };
 		680FF7111980B88D00C736F5 /* A3SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SyncManager.h; path = AppDelegate/A3SyncManager.h; sourceTree = "<group>"; };
 		680FF7121980B88D00C736F5 /* A3SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SyncManager.m; path = AppDelegate/A3SyncManager.m; sourceTree = "<group>"; };
 		68143CC518E3EC1F00569691 /* appbox.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = appbox.ttf; sourceTree = "<group>"; };
@@ -2830,6 +2833,8 @@
 				6848249219D2723700E5184C /* A3SettingsBackupRestoreiTunesViewController.m */,
 				6848249819D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.h */,
 				6848249919D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.m */,
+				680E836F19D41D83007CF12C /* A3SettingsStartingAppViewController.h */,
+				680E837019D41D83007CF12C /* A3SettingsStartingAppViewController.m */,
 			);
 			name = Settings;
 			path = AppBox3/MainView;
@@ -6141,6 +6146,7 @@
 				68B6A33818CEC76D004084EF /* A3WalletNoteCell.m in Sources */,
 				68B6A32D18CEC76D004084EF /* A3WalletItemRightIconCell.m in Sources */,
 				17D42129FB82BFB4E56A8D7A /* A3TranslatorLanguage.m in Sources */,
+				680E837119D41D83007CF12C /* A3SettingsStartingAppViewController.m in Sources */,
 				68143D6818E3EC7C00569691 /* A3TableViewRootElement.m in Sources */,
 				68F1C8FE18D7FA41009FAE8A /* MPFoldSegue.m in Sources */,
 				17D4262AB96A4454B8EF3B49 /* A3LanguagePickerController.m in Sources */,

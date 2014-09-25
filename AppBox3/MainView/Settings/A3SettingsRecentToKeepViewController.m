@@ -60,18 +60,22 @@
 	if (indexPath.section == 0) {
 		switch (indexPath.row) {
 			case 0:
+				cell.accessoryType = maxMenus == 0 ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+				cell.tag = 0;
+				break;
+			case 1:
 				cell.accessoryType = maxMenus == 1 ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 				cell.tag = 1;
 				break;
-			case 1:
+			case 2:
 				cell.accessoryType = maxMenus == 2 ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 				cell.tag = 2;
 				break;
-			case 2:
+			case 3:
 				cell.accessoryType = maxMenus == 3 ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 				cell.tag = 3;
 				break;
-			case 3:
+			case 4:
 				cell.accessoryType = maxMenus == 5 ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 				cell.tag = 5;
 				break;
