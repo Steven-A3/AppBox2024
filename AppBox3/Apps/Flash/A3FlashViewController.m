@@ -165,8 +165,9 @@ NSString *const cellID = @"flashEffectID";
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-	[self setNavigationBarHidden:YES];
-    
+//	[self setNavigationBarHidden:YES];
+	[self makeBackButtonEmptyArrow];
+	[self leftBarButtonAppsButton];
     [self initializeStatus];
 //    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
 //    [self.view addGestureRecognizer:tapGesture];
@@ -250,6 +251,12 @@ NSString *const cellID = @"flashEffectID";
 - (IBAction)exitBarButtonAction:(id)sender {
     _subMenuPanelView.hidden = YES;
     [self releaseStrobelight];
+    
+    if (IS_IPHONE) {
+		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+	} else {
+		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+	}
 }
 
 - (IBAction)colorBarButtonAction:(id)sender {
