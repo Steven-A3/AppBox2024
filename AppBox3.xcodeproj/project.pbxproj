@@ -75,6 +75,8 @@
 		17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEFB63D5877A0449693 /* A3TranslatorCircleView.m */; };
 		3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */; };
 		57213EFB19C328FD005AD0ED /* CLLocationManager+authorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */; };
+		5727A57219D411F100ADB17C /* Erase.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5727A57119D411F100ADB17C /* Erase.caf */; };
+		5727A57419D41B9200ADB17C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5727A57319D41B9200ADB17C /* CoreMotion.framework */; };
 		57888EC21940667000306028 /* A3InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57888EC11940667000306028 /* A3InstructionViewController.m */; };
 		57E4E1C819D2DCC20037371B /* A3FlashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E4E1C619D2DCC20037371B /* A3FlashViewController.m */; };
 		57E4E1C919D2DCC20037371B /* A3FlashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E4E1C719D2DCC20037371B /* A3FlashViewController.xib */; };
@@ -1059,6 +1061,8 @@
 		5718E4991988E91400B4C7ED /* A3DefaultColorDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DefaultColorDefines.h; sourceTree = "<group>"; };
 		57213EF919C328FD005AD0ED /* CLLocationManager+authorization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLLocationManager+authorization.h"; sourceTree = "<group>"; };
 		57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocationManager+authorization.m"; sourceTree = "<group>"; };
+		5727A57119D411F100ADB17C /* Erase.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Erase.caf; sourceTree = "<group>"; };
+		5727A57319D41B9200ADB17C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		57888EC01940667000306028 /* A3InstructionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3InstructionViewController.h; path = Instruction/A3InstructionViewController.h; sourceTree = "<group>"; };
 		57888EC11940667000306028 /* A3InstructionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3InstructionViewController.m; path = Instruction/A3InstructionViewController.m; sourceTree = "<group>"; };
 		57E4E1C519D2DCC20037371B /* A3FlashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3FlashViewController.h; path = Flash/A3FlashViewController.h; sourceTree = "<group>"; };
@@ -2634,6 +2638,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5727A57419D41B9200ADB17C /* CoreMotion.framework in Frameworks */,
 				68636000198BF88F00C3A323 /* libensembles.a in Frameworks */,
 				681E1281193447D70077DCFA /* libz.dylib in Frameworks */,
 				680D63A418D06B3F00938AD0 /* DropboxSDK.framework in Frameworks */,
@@ -3390,6 +3395,7 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5727A57319D41B9200ADB17C /* CoreMotion.framework */,
 				681E1280193447D70077DCFA /* libz.dylib */,
 				68DBAB6C18C4C2B2003A67E5 /* MediaPlayer.framework */,
 				6831407E18C20C9700896819 /* AVFoundation.framework */,
@@ -3444,6 +3450,7 @@
 		682EA2DE15EB10B000BD6AD4 /* {Supporting Files} */ = {
 			isa = PBXGroup;
 			children = (
+				5727A57119D411F100ADB17C /* Erase.caf */,
 				689A203C19AB3650009144B6 /* AppBox3-Info.plist */,
 				6830C77818517D2D0075010F /* AppBox3.entitlements */,
 				682EA2E315EB10B000BD6AD4 /* main.m */,
@@ -5499,6 +5506,7 @@
 				68F14FF319485E8500159EAD /* A3DaysCounterSetupCalendarCell.xib in Resources */,
 				686BC1DB184639CA00FA5C94 /* A3CurrencyChartViewController.xib in Resources */,
 				68B6A32318CEC76D004084EF /* A3WalletCateInfoFieldCell.xib in Resources */,
+				5727A57219D411F100ADB17C /* Erase.caf in Resources */,
 				68C802DB19571A2000BC19EE /* WalletPreset.strings in Resources */,
 				68F1C8D718D7F37D009FAE8A /* CalendarCell.xib in Resources */,
 				57E4E1C919D2DCC20037371B /* A3FlashViewController.xib in Resources */,
