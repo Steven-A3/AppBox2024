@@ -64,6 +64,7 @@ extern NSString *const A3AnimationIDKeyboardWillShow;
 + (CGRect)appFrame;
 
 + (BOOL)hasCellularNetwork;
++ (BOOL)hasTorch;
 
 // KJH
 + (NSString *)platform;

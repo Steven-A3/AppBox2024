@@ -76,6 +76,10 @@
 		3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */; };
 		57213EFB19C328FD005AD0ED /* CLLocationManager+authorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */; };
 		57888EC21940667000306028 /* A3InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57888EC11940667000306028 /* A3InstructionViewController.m */; };
+		57E4E1C819D2DCC20037371B /* A3FlashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E4E1C619D2DCC20037371B /* A3FlashViewController.m */; };
+		57E4E1C919D2DCC20037371B /* A3FlashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E4E1C719D2DCC20037371B /* A3FlashViewController.xib */; };
+		57E4E1CE19D2DD360037371B /* A3RandomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E4E1CC19D2DD360037371B /* A3RandomViewController.m */; };
+		57E4E1CF19D2DD360037371B /* A3RandomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E4E1CD19D2DD360037371B /* A3RandomViewController.xib */; };
 		68024AD81631637600D396F0 /* A3UIDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 68024AD71631637600D396F0 /* A3UIDevice.m */; };
 		68030ABC17F063D100B04487 /* HTCopyableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68030ABB17F063D100B04487 /* HTCopyableLabel.m */; };
 		68067C8C186E867C00D1A1D1 /* A3PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68067C8B186E867C00D1A1D1 /* A3PasswordViewController.m */; };
@@ -1054,6 +1058,12 @@
 		57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocationManager+authorization.m"; sourceTree = "<group>"; };
 		57888EC01940667000306028 /* A3InstructionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3InstructionViewController.h; path = Instruction/A3InstructionViewController.h; sourceTree = "<group>"; };
 		57888EC11940667000306028 /* A3InstructionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3InstructionViewController.m; path = Instruction/A3InstructionViewController.m; sourceTree = "<group>"; };
+		57E4E1C519D2DCC20037371B /* A3FlashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3FlashViewController.h; path = Flash/A3FlashViewController.h; sourceTree = "<group>"; };
+		57E4E1C619D2DCC20037371B /* A3FlashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3FlashViewController.m; path = Flash/A3FlashViewController.m; sourceTree = "<group>"; };
+		57E4E1C719D2DCC20037371B /* A3FlashViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3FlashViewController.xib; path = Flash/A3FlashViewController.xib; sourceTree = "<group>"; };
+		57E4E1CB19D2DD360037371B /* A3RandomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3RandomViewController.h; path = Random/A3RandomViewController.h; sourceTree = "<group>"; };
+		57E4E1CC19D2DD360037371B /* A3RandomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3RandomViewController.m; path = Random/A3RandomViewController.m; sourceTree = "<group>"; };
+		57E4E1CD19D2DD360037371B /* A3RandomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3RandomViewController.xib; path = Random/A3RandomViewController.xib; sourceTree = "<group>"; };
 		68024AD61631637600D396F0 /* A3UIDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIDevice.h; sourceTree = "<group>"; };
 		68024AD71631637600D396F0 /* A3UIDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3UIDevice.m; sourceTree = "<group>"; };
 		68030ABA17F063D100B04487 /* HTCopyableLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTCopyableLabel.h; path = External/HTCopyableLabel/HTCopyableLabel.h; sourceTree = "<group>"; };
@@ -2836,6 +2846,26 @@
 			name = Instruction;
 			sourceTree = "<group>";
 		};
+		57E4E1C019D2DC5E0037371B /* Flash */ = {
+			isa = PBXGroup;
+			children = (
+				57E4E1C519D2DCC20037371B /* A3FlashViewController.h */,
+				57E4E1C619D2DCC20037371B /* A3FlashViewController.m */,
+				57E4E1C719D2DCC20037371B /* A3FlashViewController.xib */,
+			);
+			name = Flash;
+			sourceTree = "<group>";
+		};
+		57E4E1CA19D2DD090037371B /* Random */ = {
+			isa = PBXGroup;
+			children = (
+				57E4E1CB19D2DD360037371B /* A3RandomViewController.h */,
+				57E4E1CC19D2DD360037371B /* A3RandomViewController.m */,
+				57E4E1CD19D2DD360037371B /* A3RandomViewController.xib */,
+			);
+			name = Random;
+			sourceTree = "<group>";
+		};
 		68030AB717F063B400B04487 /* HTCopyableLabel */ = {
 			isa = PBXGroup;
 			children = (
@@ -3571,6 +3601,7 @@
 				684D92C518BC1FBC005016F7 /* DateCalculator */,
 				68F1C7CD18D7F37D009FAE8A /* DaysCounter */,
 				68E2A60118D0B1FC00E834D9 /* ExpenseList */,
+				57E4E1C019D2DC5E0037371B /* Flash */,
 				6888091217C640BC008B2856 /* Holidays */,
 				68F1C83A18D7F37D009FAE8A /* LadyCalendar */,
 				68B6A16918CEC76C004084EF /* LoanCalculator */,
@@ -3578,6 +3609,7 @@
 				680D638418CFF9D400938AD0 /* Magnifier */,
 				680D638818CFF9D400938AD0 /* Mirror */,
 				68E2A62A18D0B1FC00E834D9 /* PercentCalculator */,
+				57E4E1CA19D2DD090037371B /* Random */,
 				68E2A66718D0B22800E834D9 /* SalesCalculator */,
 				68E2A68418D0B22800E834D9 /* TipCalc */,
 				17D426FC856AC9AFCB19292B /* Translator */,
@@ -5454,6 +5486,7 @@
 				68B6A32318CEC76D004084EF /* A3WalletCateInfoFieldCell.xib in Resources */,
 				68C802DB19571A2000BC19EE /* WalletPreset.strings in Resources */,
 				68F1C8D718D7F37D009FAE8A /* CalendarCell.xib in Resources */,
+				57E4E1C919D2DCC20037371B /* A3FlashViewController.xib in Resources */,
 				68F14FDE19485E8500159EAD /* A3DaysCounterAddEventTitleCell.xib in Resources */,
 				68E50B241945E1E600FAD986 /* Instruction_iPad.storyboard in Resources */,
 				68F14FDD19485E8500159EAD /* A3DaysCounterAddEventSwitchCell.xib in Resources */,
@@ -5490,6 +5523,7 @@
 				68C802D819571A0200BC19EE /* WalletCategoryPreset.plist in Resources */,
 				68B6A18B17CC398A008E0296 /* indian.plist in Resources */,
 				68F150CA194C21E300159EAD /* about.storyboard in Resources */,
+				57E4E1CF19D2DD360037371B /* A3RandomViewController.xib in Resources */,
 				6846099F194E10A700FD5F53 /* UnitPriceStoryboard_iPad.storyboard in Resources */,
 				68F14FF919485E8500159EAD /* A3DaysCounterSetupDurationViewController.xib in Resources */,
 				6872DD3317B3D56600C1BF44 /* NSDateTimeAgo.bundle in Resources */,
@@ -6102,6 +6136,7 @@
 				680D639618CFF9D400938AD0 /* A3CalculatorHistoryViewController.m in Sources */,
 				17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */,
 				6874847819780DCE00EA8F74 /* UnitPriceHistory+extension.m in Sources */,
+				57E4E1C819D2DCC20037371B /* A3FlashViewController.m in Sources */,
 				68B6A31318CEC76D004084EF /* GCPlaceholderTextView.m in Sources */,
 				68B6A2BE18CEC76D004084EF /* A3LoanCalcDateInputCell.m in Sources */,
 				68067C8C186E867C00D1A1D1 /* A3PasswordViewController.m in Sources */,
@@ -6124,6 +6159,7 @@
 				17D42C81893E3C1784CE162E /* A3TranslatorMessageViewController.m in Sources */,
 				682FDF0E1981CC0400C6C83D /* NSRelationshipDescription+MagicalDataImport.m in Sources */,
 				68F14FC519485E8500159EAD /* A3DaysCounterEventDetailViewController.m in Sources */,
+				57E4E1CE19D2DD360037371B /* A3RandomViewController.m in Sources */,
 				68143D6218E3EC7C00569691 /* A3TableViewExpandableCell.m in Sources */,
 				17D42E23FC78EEE74D1E160D /* A3TranslatorViewController.m in Sources */,
 				68B6A44018CEE781004084EF /* MWGridCell.m in Sources */,
