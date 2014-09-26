@@ -119,12 +119,11 @@
     if (section == 0 && _backupInfoString) {
         return 56 - 26;
     }
-    BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
-    return [self standardHeightForFooterIsLastSection:isLastSection];
+	return [super tableView:tableView heightForFooterInSection:section];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-	return section == 0 ? _backupInfoString : nil;
+	return section == 0 ? _backupInfoString : [super tableView:tableView titleForFooterInSection:section];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

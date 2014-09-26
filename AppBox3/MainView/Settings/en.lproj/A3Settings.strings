@@ -2,14 +2,23 @@
 /* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "05t-yj-k37"; */
 "05t-yj-k37.text" = "Ladies Calendar";
 
-/* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Ladies Calendar periods and Wallet items.
+/* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
+"0Me-nY-VE5.text" = "5 Most Recent";
 
-"; ObjectID = "1dJ-y3-yh7"; */
-"1dJ-y3-yh7.footerTitle" = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Ladies Calendar periods and Wallet items.
-";
+/* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items."; ObjectID = "1dJ-y3-yh7"; */
+"1dJ-y3-yh7.footerTitle" = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.";
 
 /* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "2E1-Z8-v5l"; */
 "2E1-Z8-v5l.title" = "Select Backup";
+
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "2dL-Yp-Ofk"; */
+"2dL-Yp-Ofk.text" = "Title";
+
+/* Class = "IBUITableViewController"; title = "Sync"; ObjectID = "2iF-5j-eQz"; */
+"2iF-5j-eQz.title" = "Sync";
+
+/* Class = "IBUILabel"; text = "Backup & Restore on iTunes"; ObjectID = "3V3-lS-rew"; */
+"3V3-lS-rew.text" = "Backup & Restore on iTunes";
 
 /* Class = "IBUITableViewSection"; headerTitle = "PASSCODE REQUIRED FOR"; ObjectID = "4da-k5-f71"; */
 "4da-k5-f71.headerTitle" = "PASSCODE REQUIRED FOR";
@@ -80,6 +89,12 @@
 /* Class = "IBUILabel"; text = "Wallet"; ObjectID = "O52-H9-qgV"; */
 "O52-H9-qgV.text" = "Wallet";
 
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "OCy-uN-mAB"; */
+"OCy-uN-mAB.text" = "Title";
+
+/* Class = "IBUILabel"; text = "Default App"; ObjectID = "Of0-YK-9dc"; */
+"Of0-YK-9dc.text" = "Default App";
+
 /* Class = "IBUILabel"; text = "After 1 minute"; ObjectID = "OmZ-rj-JvF"; */
 "OmZ-rj-JvF.text" = "After 1 minute";
 
@@ -98,20 +113,40 @@
 /* Class = "IBUILabel"; text = "Chinese"; ObjectID = "S47-yQ-cP7"; */
 "S47-yQ-cP7.text" = "Chinese";
 
+/* Class = "IBUITableViewSection"; footerTitle = "SaveToiTunes"; ObjectID = "Scy-Ii-bsP"; */
+"Scy-Ii-bsP.footerTitle" = "Please move the backup file to your computer and delete the backup file.
+If you don't move the backup file, when you delete the app, the backup file will delete together.
+";
+
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "TG9-5P-YDf"; */
 "TG9-5P-YDf.text" = "Days Counter";
+
+/* Class = "IBUILabel"; text = "3 Most Recent"; ObjectID = "UKS-0H-yut"; */
+"UKS-0H-yut.text" = "3 Most Recent";
 
 /* Class = "IBUILabel"; text = "Title"; ObjectID = "UnN-yq-AkZ"; */
 "UnN-yq-AkZ.text" = "Title";
 
+/* Class = "IBUILabel"; text = "How to use iTunes Files Sharing"; ObjectID = "VFX-hm-AIs"; */
+"VFX-hm-AIs.text" = "How to use iTunes Files Sharing";
+
 /* Class = "IBUILabel"; text = "Theme Color"; ObjectID = "Vgb-6m-SyM"; */
 "Vgb-6m-SyM.text" = "Theme Color";
+
+/* Class = "IBUILabel"; text = "Detail"; ObjectID = "WZi-Up-6bJ"; */
+"WZi-Up-6bJ.text" = "Detail";
 
 /* Class = "IBUITableViewController"; title = "Require Passcode"; ObjectID = "Xb7-yr-Jd6"; */
 "Xb7-yr-Jd6.title" = "Require Passcode";
 
+/* Class = "IBUILabel"; text = "Backup"; ObjectID = "a5g-em-hMv"; */
+"a5g-em-hMv.text" = "Backup";
+
 /* Class = "IBUILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
 "alM-Rl-6AW.text" = "Korean";
+
+/* Class = "IBUILabel"; text = "3 Most Recent"; ObjectID = "bWw-QS-8Fs"; */
+"bWw-QS-8Fs.text" = "3 Most Recent";
 
 /* Class = "IBUILabel"; text = "After 5 minutes"; ObjectID = "cHo-o5-yl0"; */
 "cHo-o5-yl0.text" = "After 5 minutes";
@@ -131,8 +166,17 @@
 /* Class = "IBUINavigationItem"; title = "Favorites"; ObjectID = "fqW-Vk-vP5"; */
 "fqW-Vk-vP5.title" = "Favorites";
 
+/* Class = "IBUILabel"; text = "Subtitle"; ObjectID = "g7p-gR-ciH"; */
+"g7p-gR-ciH.text" = "Subtitle";
+
 /* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "go4-fr-Ah2"; */
 "go4-fr-Ah2.title" = "Settings";
+
+/* Class = "IBUILabel"; text = "Most Recent"; ObjectID = "h1H-Ma-NYM"; */
+"h1H-Ma-NYM.text" = "Most Recent";
+
+/* Class = "IBUILabel"; text = "2 Most Recent"; ObjectID = "hXr-2r-LdP"; */
+"hXr-2r-LdP.text" = "2 Most Recent";
 
 /* Class = "IBUILabel"; text = "Unlink from Dropbox"; ObjectID = "iav-1w-bex"; */
 "iav-1w-bex.text" = "Unlink from Dropbox";
@@ -143,8 +187,14 @@
 /* Class = "IBUITableViewController"; title = "Sync"; ObjectID = "o9N-EA-Uky"; */
 "o9N-EA-Uky.title" = "Sync";
 
+/* Class = "IBUILabel"; text = "Restore"; ObjectID = "oMh-UG-rWE"; */
+"oMh-UG-rWE.text" = "Restore";
+
 /* Class = "IBUINavigationItem"; title = "Settings"; ObjectID = "oSP-yD-m2L"; */
 "oSP-yD-m2L.title" = "Settings";
+
+/* Class = "IBUILabel"; text = "OFF"; ObjectID = "obV-5c-EMP"; */
+"obV-5c-EMP.text" = "OFF";
 
 /* Class = "IBUINavigationItem"; title = "Backup & Restore on Dropbox"; ObjectID = "oxS-sd-8U7"; */
 "oxS-sd-8U7.title" = "Backup & Restore on Dropbox";
@@ -161,11 +211,17 @@
 /* Class = "IBUILabel"; text = "Settings"; ObjectID = "sL2-cQ-mx7"; */
 "sL2-cQ-mx7.text" = "Settings";
 
+/* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "sf0-2F-cNr"; */
+"sf0-2F-cNr.title" = "Select Backup";
+
 /* Class = "IBUILabel"; text = "After 1 hour"; ObjectID = "sks-IW-96W"; */
 "sks-IW-96W.text" = "After 1 hour";
 
 /* Class = "IBUITableViewController"; title = "Recent To Keep"; ObjectID = "srb-MD-eSG"; */
 "srb-MD-eSG.title" = "Recent To Keep";
+
+/* Class = "IBUINavigationItem"; title = "Starting App"; ObjectID = "u8Z-Fp-NHQ"; */
+"u8Z-Fp-NHQ.title" = "Starting App";
 
 /* Class = "IBUILabel"; text = "Title"; ObjectID = "uQK-1o-GIR"; */
 "uQK-1o-GIR.text" = "Title";
@@ -179,14 +235,11 @@
 /* Class = "IBUITableViewController"; title = "Edit Favorites"; ObjectID = "vRR-Rd-eut"; */
 "vRR-Rd-eut.title" = "Edit Favorites";
 
+/* Class = "IBUINavigationItem"; title = "Backup & Restore on iTunes"; ObjectID = "wZg-tr-J14"; */
+"wZg-tr-J14.title" = "Backup & Restore on iTunes";
+
 /* Class = "IBUILabel"; text = "Restore"; ObjectID = "xJL-au-A2W"; */
 "xJL-au-A2W.text" = "Restore";
 
-/* Class = "IBUILabel"; text = "Chinese"; ObjectID = "S47-yQ-cP7"; */
-"S47-yQ-cP7.text" = "Chinese";
-
-/* Class = "IBUILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
-"alM-Rl-6AW.text" = "Korean";
-
-/* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
-"0Me-nY-VE5.text" = "5 Most Recent";
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "xJM-LO-q65"; */
+"xJM-LO-q65.text" = "Title";
