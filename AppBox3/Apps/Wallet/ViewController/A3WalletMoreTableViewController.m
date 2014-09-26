@@ -109,6 +109,11 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	[self removeObserver];
 }
 
+- (void)cleanUp {
+	[self dismissInstructionViewController:nil];
+	[self removeObserver];
+}
+
 - (void)mainMenuDidShow {
 	[self enableControls:NO];
 }

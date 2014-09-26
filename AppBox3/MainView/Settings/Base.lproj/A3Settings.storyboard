@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="go4-fr-Ah2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="go4-fr-Ah2">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
-        <!--Settings View Controller - Settings-->
+        <!--Settings-->
         <scene sceneID="YrI-Mn-bnV">
             <objects>
                 <tableViewController title="Settings" id="go4-fr-Ah2" customClass="A3SettingsViewController" sceneMemberID="viewController">
@@ -221,7 +222,7 @@
             </objects>
             <point key="canvasLocation" x="-36" y="119"/>
         </scene>
-        <!--Settings Backup Restore View Controller - Sync-->
+        <!--Sync-->
         <scene sceneID="q6d-Uf-u36">
             <objects>
                 <tableViewController title="Sync" id="o9N-EA-Uky" customClass="A3SettingsBackupRestoreViewController" sceneMemberID="viewController">
@@ -333,7 +334,7 @@
             </objects>
             <point key="canvasLocation" x="505" y="119"/>
         </scene>
-        <!--Settings Dropbox Select Backup View Controller - Dropbox Files-->
+        <!--Dropbox Files-->
         <scene sceneID="ZQd-XN-EPE">
             <objects>
                 <tableViewController title="Dropbox Files" id="5tS-iN-3NI" customClass="A3SettingsDropboxSelectBackupViewController" sceneMemberID="viewController">
@@ -386,7 +387,7 @@
             </objects>
             <point key="canvasLocation" x="1571" y="119"/>
         </scene>
-        <!--Settings Passcode View Controller - Passcode Lock-->
+        <!--Passcode Lock-->
         <scene sceneID="N8J-lo-eBg">
             <objects>
                 <tableViewController title="Passcode Lock" id="KML-Ub-d8M" customClass="A3SettingsPasscodeViewController" sceneMemberID="viewController">
@@ -604,7 +605,7 @@
             </objects>
             <point key="canvasLocation" x="505" y="1267"/>
         </scene>
-        <!--Settings Require For View Controller - Require Passcode-->
+        <!--Require Passcode-->
         <scene sceneID="nKi-gm-Rnp">
             <objects>
                 <tableViewController title="Require Passcode" id="Xb7-yr-Jd6" customClass="A3SettingsRequireForViewController" sceneMemberID="viewController">
@@ -732,7 +733,7 @@
             </objects>
             <point key="canvasLocation" x="1045" y="1267"/>
         </scene>
-        <!--Settings Favorites View Controller - Edit Favorites-->
+        <!--Edit Favorites-->
         <scene sceneID="JoA-kY-rVI">
             <objects>
                 <tableViewController title="Edit Favorites" id="vRR-Rd-eut" customClass="A3SettingsFavoritesViewController" sceneMemberID="viewController">
@@ -777,7 +778,7 @@
             </objects>
             <point key="canvasLocation" x="505" y="1930"/>
         </scene>
-        <!--Settings Add Favorites View Controller - Apps-->
+        <!--Apps-->
         <scene sceneID="U03-os-oC5">
             <objects>
                 <tableViewController id="FXC-z3-diR" customClass="A3SettingsAddFavoritesViewController" sceneMemberID="viewController">
@@ -833,7 +834,7 @@
             </objects>
             <point key="canvasLocation" x="1045" y="1930"/>
         </scene>
-        <!--Settings Recent To Keep View Controller - Recent To Keep-->
+        <!--Recent To Keep-->
         <scene sceneID="vpw-Gw-8gr">
             <objects>
                 <tableViewController title="Recent To Keep" id="srb-MD-eSG" customClass="A3SettingsRecentToKeepViewController" sceneMemberID="viewController">
@@ -965,7 +966,7 @@
             </objects>
             <point key="canvasLocation" x="505" y="2592"/>
         </scene>
-        <!--Settings Choose Color View Controller - Theme Color-->
+        <!--Theme Color-->
         <scene sceneID="3Nt-Kd-f0R">
             <objects>
                 <tableViewController title="Theme Color" id="RpU-td-Vej" customClass="A3SettingsChooseColorViewController" sceneMemberID="viewController">
@@ -999,7 +1000,7 @@
             </objects>
             <point key="canvasLocation" x="505" y="3261"/>
         </scene>
-        <!--Settings Lunar View Controller - Lunar Calendar-->
+        <!--Lunar Calendar-->
         <scene sceneID="mcD-Z5-2cl">
             <objects>
                 <tableViewController storyboardIdentifier="SettingsLunarViewController" title="Lunar Calendar" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7oW-es-0Zb" customClass="A3SettingsLunarViewController" sceneMemberID="viewController">
@@ -1077,7 +1078,7 @@
             </objects>
             <point key="canvasLocation" x="1045" y="119"/>
         </scene>
-        <!--Settings Starting App View Controller - Starting App-->
+        <!--Starting App-->
         <scene sceneID="lu0-G7-0sG">
             <objects>
                 <tableViewController id="vRJ-7t-sk5" customClass="A3SettingsStartingAppViewController" sceneMemberID="viewController">
@@ -1199,7 +1200,7 @@
             </objects>
             <point key="canvasLocation" x="505" y="679"/>
         </scene>
-        <!--Settingsi Tunes Select Backup View Controller - Select Backup-->
+        <!--Select Backup-->
         <scene sceneID="3Tu-ua-wMK">
             <objects>
                 <tableViewController id="0d9-h1-z0E" customClass="A3SettingsiTunesSelectBackupViewController" sceneMemberID="viewController">

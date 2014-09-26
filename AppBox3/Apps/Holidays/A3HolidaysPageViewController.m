@@ -54,6 +54,7 @@
 
 - (void)cleanUp {
 	FNLOG();
+	[self dismissInstructionViewController:nil];
 	[self removeObserver];
 
 	[_pageViewController.viewControllers enumerateObjectsUsingBlock:^(id<A3CenterViewDelegate> obj, NSUInteger idx, BOOL *stop) {
@@ -213,7 +214,6 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
     [self.instructionViewController.view removeFromSuperview];
     self.instructionViewController = nil;
 }
-
 
 #pragma mark - Find location and udpate country list
 

@@ -187,6 +187,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (void)cleanUp {
+	[self dismissInstructionViewController:nil];
 	[self removeObserver];
 }
 

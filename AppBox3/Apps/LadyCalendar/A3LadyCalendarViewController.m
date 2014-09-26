@@ -194,6 +194,7 @@
 }
 
 - (void)cleanUp {
+	[self dismissInstructionViewController:nil];
     [_calendarHeaderView removeFromSuperview];
     _collectionView.delegate = nil;
 }

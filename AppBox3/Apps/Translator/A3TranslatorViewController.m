@@ -104,6 +104,7 @@
 }
 
 - (void)cleanUp {
+	[self dismissInstructionViewController:nil];
 	[self removeObserver];
 
 	_fetchedResultsController = nil;

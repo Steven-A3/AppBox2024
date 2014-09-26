@@ -59,7 +59,6 @@
 }
 
 - (BOOL)showLockScreen {
-
 	BOOL passwordEnabled = [A3KeychainUtils getPassword] != nil;
 	BOOL passcodeTimerEnd = [self didPasscodeTimerEnd];
 
@@ -130,7 +129,17 @@
 }
 
 - (void)applicationWillEnterForeground_passcode {
-	[self showLockScreen];
+	if ([[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting]) {
+		[self showLockScreen];
+	} else {
+		NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+		if ([startingAppName length]) {
+			[self.mainMenuViewController openRecentlyUsedMenu];
+		} else {
+			// 현재 사용중인 앱에 암호 설정이 있는 경우 암호 확인을 해야 하므로
+			[self showLockScreen];
+		}
+	}
 
 	[self removeSecurityCoverView];
 }
@@ -181,15 +190,24 @@
 }
 
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
     if (!success && self.pushClockViewControllerIfFailPasscode) {
 		if (self.parentOfPasscodeViewController.navigationController != self.navigationController) {
 			[self.navigationController dismissViewControllerAnimated:NO completion:NULL];
 		}
 
-		A3ClockMainViewController *clockViewController = [A3ClockMainViewController new];
-		[self.mainMenuViewController popToRootAndPushViewController:clockViewController];
+		if (![startingAppName length]) {
+			A3ClockMainViewController *clockViewController = [A3ClockMainViewController new];
+			[self.mainMenuViewController popToRootAndPushViewController:clockViewController];
+		} else {
+			[self.mainMenuViewController openRecentlyUsedMenu];
+		}
+		[self showReceivedLocalNotifications];
+		return;
 	}
-	[self showReceivedLocalNotifications];
+	if ([startingAppName length]) {
+		[self.mainMenuViewController openRecentlyUsedMenu];
+	}
 }
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {

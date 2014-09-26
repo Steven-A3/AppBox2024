@@ -76,6 +76,7 @@ NSString *const A3UnitConverterActionCellID = @"A3UnitConverterActionCell";
 NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)cleanUp{
+	[self dismissInstructionViewController:nil];
     _convertItems = nil;
     _equalItem = nil;
 	_addButton = nil;

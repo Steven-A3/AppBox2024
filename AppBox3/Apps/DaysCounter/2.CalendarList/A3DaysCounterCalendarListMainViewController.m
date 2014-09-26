@@ -229,6 +229,11 @@
 	[self removeObserver];
 }
 
+- (void)cleanUp {
+	[self dismissInstructionViewController:nil];
+	[self removeObserver];
+}
+
 - (void)mainMenuViewDidHide {
 	[self enableControls:YES];
 }

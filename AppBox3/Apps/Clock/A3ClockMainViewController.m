@@ -140,6 +140,7 @@
 }
 
 - (void)cleanUp {
+	[self dismissInstructionViewController:nil];
     [[UIScreen mainScreen] setBrightness:_originalBrightness];
     [_autoDimTimer invalidate];
     _autoDimTimer = nil;

@@ -41,6 +41,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 @property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 @property (nonatomic, strong) A3TableViewElement *mostRecentMenuElement;
 @property (nonatomic, strong) NSTimer *titleResetTimer;
+@property (nonatomic, strong) NSString *activeAppName;
 
 @end
 
@@ -238,6 +239,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			__typeof(self) __weak weakSelf = self;
 
 			element.onSelected = ^(A3TableViewElement *elementObject) {
+				self.activeAppName = elementObject.title;
+				FNLOG(@"self.activeAppName = %@", self.activeAppName);
 				A3TableViewMenuElement *menuElement = (A3TableViewMenuElement *) elementObject;
 				UIViewController *targetViewController= [self getViewControllerForElement:menuElement];
 
@@ -563,11 +566,33 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 }
 
 - (BOOL)openRecentlyUsedMenu {
-	if (_mostRecentMenuElement) {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length]) {
+		if ([startingAppName isEqualToString:self.activeAppName]) return YES;
+
+		A3TableViewMenuElement *menuElement = [self menuElementWithName:startingAppName];
+		if (menuElement) {
+			menuElement.onSelected(menuElement);
+			return YES;
+		}
+	}
+	else if (_mostRecentMenuElement) {
 		_mostRecentMenuElement.onSelected(_mostRecentMenuElement);
 		return YES;
 	}
 	return NO;
+}
+
+- (A3TableViewMenuElement *)menuElementWithName:(NSString *)name {
+	A3TableViewSection *appMenuSection = self.rootElement.sectionsArray[1];
+	for (A3TableViewExpandableElement *menuGroup in appMenuSection.elements) {
+		for (A3TableViewMenuElement *menuElement in menuGroup.elements) {
+			if ([menuElement.title isEqualToString:name]) {
+				return menuElement;
+			}
+		}
+	}
+	return nil;
 }
 
 @end

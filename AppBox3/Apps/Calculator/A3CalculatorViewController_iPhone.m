@@ -167,6 +167,7 @@
 }
 
 - (void)cleanUp {
+	[self dismissInstructionViewController:nil];
 	[self removeObserver];
 }
 
@@ -508,8 +509,6 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
     [self.instructionViewController.view removeFromSuperview];
     self.instructionViewController = nil;
 }
-
-
 
 #pragma mark - UIScrollViewDelegate
 
