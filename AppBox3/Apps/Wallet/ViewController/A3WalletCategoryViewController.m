@@ -100,6 +100,11 @@
 	}
 }
 
+- (void)cleanUp {
+	[self dismissInstructionViewController:nil];
+	[self removeObserver];
+}
+
 - (void)dealloc {
 	[self removeObserver];
 }

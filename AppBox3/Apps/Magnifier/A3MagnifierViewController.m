@@ -717,6 +717,8 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
 
 - (void)cleanUp
 {
+	[self dismissInstructionViewController:nil];
+
     [session stopRunning];
     for(AVCaptureInput *input in session.inputs) {
         [session removeInput:input];

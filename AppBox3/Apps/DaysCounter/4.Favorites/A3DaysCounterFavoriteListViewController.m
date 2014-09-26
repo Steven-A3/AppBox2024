@@ -106,6 +106,12 @@
 	[self removeObserver];
 }
 
+- (void)cleanUp {
+	[self dismissInstructionViewController:nil];
+	self.itemArray = nil;
+	[self removeObserver];
+}
+
 - (void)mainMenuViewDidHide {
 	[self enableControls:YES];
 }

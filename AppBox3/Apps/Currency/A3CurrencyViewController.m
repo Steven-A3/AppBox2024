@@ -182,7 +182,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 }
 
-- (void)cleanUp{
+- (void)cleanUp {
+	[self dismissInstructionViewController:nil];
 	[self removeObserver];
 
 	_favorites = nil;

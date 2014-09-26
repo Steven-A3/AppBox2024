@@ -121,6 +121,7 @@
 }
 
 - (void)cleanUp {
+	[self dismissInstructionViewController:nil];
 	[self removeObserver];
 	[UIDevice currentDevice].batteryMonitoringEnabled = NO;
 }

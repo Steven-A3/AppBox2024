@@ -1028,8 +1028,9 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 }
 
 
-- (void)cleanUp
-{
+- (void)cleanUp {
+	[self dismissInstructionViewController:nil];
+
 	// remove the _videoPreviewNoFilter
 	[self removeAllFilterViews];
 
