@@ -24,7 +24,8 @@ extern NSString *const A3UserDefaultFlashViewMode;
 
 @property (weak, nonatomic) IBOutlet UISlider *sliderControl;
 @property (weak, nonatomic) IBOutlet UIImageView *contentImageView;
-@property (weak, nonatomic) IBOutlet UIButton *lightOffButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *pauseSwitchButton;
 
 
 - (IBAction)sliderControlValueChanged:(UISlider *)sender;

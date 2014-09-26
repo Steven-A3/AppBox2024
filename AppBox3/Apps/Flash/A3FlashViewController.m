@@ -213,7 +213,7 @@ NSString *const cellID = @"flashEffectID";
                          NSLocalizedString(@"Caution Flare", @"Caution Flare"),
                          NSLocalizedString(@"Traffic Light", @"Traffic Light")];
     
-    [self configureFlashViewMode:_currentFlashViewMode];
+    [self configureFlashViewMode:_currentFlashViewMode animation:NO];
     [_contentImageView setBackgroundColor:[UIColor blackColor]];
 }
 
@@ -248,7 +248,7 @@ NSString *const cellID = @"flashEffectID";
     
     if (_showAllMenu) {
         _middleToolBarBottomConst.constant = 44;
-        [self configureFlashViewMode:_currentFlashViewMode];
+        [self configureFlashViewMode:_currentFlashViewMode animation:YES];
     }
     else {
         [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
@@ -272,11 +272,11 @@ NSString *const cellID = @"flashEffectID";
 #pragma mark - menu bar actions
 - (IBAction)brightnessBarButtonAction:(id)sender {
     [self releaseStrobelight];
-    [self configureFlashViewMode:A3FlashViewModeTypeBrightness];
+    [self configureFlashViewMode:A3FlashViewModeTypeBrightness animation:YES];
 }
 
 - (IBAction)effectBarButtonAction:(id)sender {
-    [self configureFlashViewMode:A3FlashViewModeTypeEffect];
+    [self configureFlashViewMode:A3FlashViewModeTypeEffect animation:YES];
 }
 
 - (IBAction)sliderControlValueChanged:(UISlider *)sender {
@@ -342,12 +342,12 @@ NSString *const cellID = @"flashEffectID";
 
 - (IBAction)colorMenuButtonTouchUp:(id)sender {
     [self releaseStrobelight];
-    [self configureFlashViewMode:A3FlashViewModeTypeColor];
+    [self configureFlashViewMode:A3FlashViewModeTypeColor animation:YES];
 }
 
 - (IBAction)effectsMenuButtonTouchUp:(id)sender {
     [self releaseStrobelight];
-    [self configureFlashViewMode:A3FlashViewModeTypeEffect];
+    [self configureFlashViewMode:A3FlashViewModeTypeEffect animation:YES];
 }
 
 
@@ -368,19 +368,34 @@ NSString *const cellID = @"flashEffectID";
 
 #pragma mark -
 
-- (void)configureFlashViewMode:(A3FlashViewModeType)type {
+- (void)configureFlashViewMode:(A3FlashViewModeType)type animation:(BOOL)animate {
     _currentFlashViewMode = type;
     [[NSUserDefaults standardUserDefaults] setInteger:_currentFlashViewMode forKey:A3UserDefaultFlashViewMode];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    
-    [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationCurve:7];
-    [UIView setAnimationDuration:0.25];
-    
-    _topToolBarTopConst.constant = 20;
+    if (animate) {
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationCurve:7];
+        [UIView setAnimationDuration:0.25];
+        
+        [self adjustConfigurationLayoutValueForFlashViewMode:_currentFlashViewMode];
+        
+        [_topToolBar layoutIfNeeded];
+        [_sliderToolBar layoutIfNeeded];
+        [_pickerPanelView layoutIfNeeded];
+        [_bottomToolBar layoutIfNeeded];
+        
+        [UIView commitAnimations];
+    }
+    else {
+        [self adjustConfigurationLayoutValueForFlashViewMode:_currentFlashViewMode];
+    }
+}
 
+- (void)adjustConfigurationLayoutValueForFlashViewMode:(A3FlashViewModeType)type {
+    _topToolBarTopConst.constant = 20;
+    
     switch (_currentFlashViewMode) {
         case A3FlashViewModeTypeColor:
         {
@@ -416,12 +431,8 @@ NSString *const cellID = @"flashEffectID";
             break;
     }
     
-    [_topToolBar layoutIfNeeded];
-    [_sliderToolBar layoutIfNeeded];
-    [_pickerPanelView layoutIfNeeded];
-    [_bottomToolBar layoutIfNeeded];
-    
-    [UIView commitAnimations];
+    _pauseSwitchButton.hidden = _currentFlashViewMode == A3FlashViewModeTypeEffect ? NO : YES;
+    _pauseSwitchButton.alpha = _currentFlashViewMode == A3FlashViewModeTypeEffect ? 1.0 : 0.0;
 }
 
 #pragma mark - LED Related

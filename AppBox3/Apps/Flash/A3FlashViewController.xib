@@ -10,6 +10,7 @@
                 <outlet property="bottomToolBarBottomConst" destination="JyY-xt-XBm" id="JVA-IZ-tB6"/>
                 <outlet property="contentImageView" destination="CyN-5t-mnB" id="b5A-Cj-YGR"/>
                 <outlet property="middleToolBarBottomConst" destination="JbI-nb-ifB" id="vcv-cD-52A"/>
+                <outlet property="pauseSwitchButton" destination="5cE-hh-fow" id="FjK-DG-qAq"/>
                 <outlet property="pickerPanelView" destination="lV0-Pf-aVj" id="qA9-Ne-mOc"/>
                 <outlet property="pickerViewBottomConst" destination="Pui-v2-Z1R" id="AUD-0u-uMj"/>
                 <outlet property="sliderControl" destination="e0I-jN-Ngd" id="Pxj-us-8Lu"/>
@@ -125,9 +126,13 @@
                     </items>
                     <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 </toolbar>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5cE-hh-fow">
-                    <rect key="frame" x="264" y="72" width="46" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5cE-hh-fow">
+                    <rect key="frame" x="256" y="84" width="44" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="44" id="Bot-ci-NOz"/>
+                        <constraint firstAttribute="height" constant="44" id="ily-CJ-GKY"/>
+                    </constraints>
                     <state key="normal" title="pause">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -138,12 +143,14 @@
                 <constraint firstAttribute="bottom" secondItem="CyN-5t-mnB" secondAttribute="bottom" id="0eR-6N-myT"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="EeY-IL-v5n"/>
                 <constraint firstItem="2hZ-lZ-LJE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="H6y-o7-Yyv"/>
+                <constraint firstItem="5cE-hh-fow" firstAttribute="top" secondItem="x8x-tH-EhC" secondAttribute="bottom" constant="20" id="IR0-NH-EWt"/>
                 <constraint firstAttribute="bottom" secondItem="2hZ-lZ-LJE" secondAttribute="bottom" constant="44" id="JbI-nb-ifB"/>
                 <constraint firstAttribute="bottom" secondItem="0cB-eB-uh6" secondAttribute="bottom" id="JyY-xt-XBm"/>
                 <constraint firstAttribute="trailing" secondItem="x8x-tH-EhC" secondAttribute="trailing" id="KHF-po-NbS"/>
                 <constraint firstAttribute="bottom" secondItem="lV0-Pf-aVj" secondAttribute="bottom" constant="100" id="Pui-v2-Z1R"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Q45-yy-szA"/>
                 <constraint firstItem="0cB-eB-uh6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="W8c-zL-67f"/>
+                <constraint firstAttribute="trailing" secondItem="5cE-hh-fow" secondAttribute="trailing" constant="20" id="WnO-rg-YEY"/>
                 <constraint firstAttribute="trailing" secondItem="lV0-Pf-aVj" secondAttribute="trailing" id="cLW-1v-clE"/>
                 <constraint firstAttribute="trailing" secondItem="2hZ-lZ-LJE" secondAttribute="trailing" id="cWt-a6-u23"/>
                 <constraint firstAttribute="trailing" secondItem="CyN-5t-mnB" secondAttribute="trailing" id="e4a-di-FjD"/>
