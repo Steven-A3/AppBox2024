@@ -127,19 +127,19 @@ const CGFloat strobeLoop_TRAFFICLIGHT[][6] = {
 
 
 NSString *const A3UserDefaultFlashViewMode = @"A3UserDefaultFlashViewMode";
-NSString *const A3UserDefaultFlashColorIndex = @"A3UserDefaultFlashColorIndex";
+NSString *const A3UserDefaultFlashSelectedColor = @"A3UserDefaultFlashSelectedColor";
 NSString *const A3UserDefaultFlashBrightnessValue = @"A3UserDefaultFlashBrightnessValue";
 NSString *const A3UserDefaultFlashEffectIndex = @"A3UserDefaultFlashEffectIndex";
 NSString *const A3UserDefaultFlashTurnLEDOnAtStart = @"A3UserDefaultFlashTurnLEDOnAtStart";
 NSString *const cellID = @"flashEffectID";
 
-@interface A3FlashViewController () <UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface A3FlashViewController () <UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, NPColorPickerViewDelegate>
+@property (strong, nonatomic) UIColor *selectedColor;
 @end
 
 @implementation A3FlashViewController
 {
     A3FlashViewModeType _currentFlashViewMode;
-    NSInteger _currentColorIndex;
     CGFloat _currentBrightnessValue;
     CGFloat _currentDeviceBrightness;
     BOOL _isTorchOn;
@@ -201,9 +201,16 @@ NSString *const cellID = @"flashEffectID";
 - (void)initializeStatus
 {
     _currentFlashViewMode = [[NSUserDefaults standardUserDefaults] integerForKey:A3UserDefaultFlashViewMode];
-    _currentColorIndex = [[NSUserDefaults standardUserDefaults] integerForKey:A3UserDefaultFlashColorIndex];
+    
+    _selectedColor = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashSelectedColor]];
+    if (!_selectedColor) {
+        _selectedColor = [UIColor blackColor];
+    }
+    
     _currentDeviceBrightness = [[UIScreen mainScreen] brightness];
     _isTorchOn = YES;
+    _colorPickerView.delegate = self;
+    _colorPickerView.backgroundColor = _selectedColor;
     
     _flashEffectList = @[NSLocalizedString(@"SOS", @"SOS"),
                          NSLocalizedString(@"Strobe", @"Strobe"),
@@ -214,18 +221,11 @@ NSString *const cellID = @"flashEffectID";
                          NSLocalizedString(@"Traffic Light", @"Traffic Light")];
     
     [self configureFlashViewMode:_currentFlashViewMode animation:NO];
-    [_contentImageView setBackgroundColor:[UIColor blackColor]];
-}
-
-- (UIColor *)flashlightColorAtIndex:(NSInteger)index withAlpha:(CGFloat)alpha {
-    return [UIColor colorWithRed:colorsForFlashlight[index][0]
-                           green:colorsForFlashlight[index][1]
-                            blue:colorsForFlashlight[index][2]
-                           alpha:alpha];
+    [_contentImageView setBackgroundColor:_selectedColor];
 }
 
 - (UIColor *)currentColor {
-    return [self flashlightColorAtIndex:_currentColorIndex withAlpha:1.0];
+    return self.selectedColor;
 }
 
 
@@ -260,6 +260,7 @@ NSString *const cellID = @"flashEffectID";
         _middleToolBarBottomConst.constant = -88;
         _bottomToolBarBottomConst.constant = -44;
         _pickerViewBottomConst.constant = -162;
+        _colorPickerViewBottomConst.constant = -CGRectGetHeight(_colorPickerView.bounds);
         
         [_topToolBar layoutIfNeeded];
         [_sliderToolBar layoutIfNeeded];
@@ -352,8 +353,8 @@ NSString *const cellID = @"flashEffectID";
 
 
 - (void)colorModeSliderValueChanged:(UISlider *)slider {
-    _currentColorIndex = floor(slider.value / (slider.maximumValue / 28.0));
-    [self.contentImageView setBackgroundColor:[self flashlightColorAtIndex:_currentColorIndex withAlpha:1.0]];
+//    _currentColorIndex = floor(slider.value / (slider.maximumValue / 28.0));
+//    [self.contentImageView setBackgroundColor:[self flashlightColorAtIndex:_currentColorIndex withAlpha:1.0]];
 }
 
 - (void)brightnessModeSliderValueChanged:(UISlider *)slider {
@@ -405,6 +406,7 @@ NSString *const cellID = @"flashEffectID";
             
             _middleToolBarBottomConst.constant = 44;
             _pickerViewBottomConst.constant = -162;
+            _colorPickerViewBottomConst.constant = 88;
             _bottomToolBarBottomConst.constant = 0;
         }
             break;
@@ -422,6 +424,7 @@ NSString *const cellID = @"flashEffectID";
             [_sliderControl setValue:0.0];
             
             _middleToolBarBottomConst.constant = 44 + 162;
+            _colorPickerViewBottomConst.constant = -CGRectGetHeight(_colorPickerView.bounds);
             _pickerViewBottomConst.constant = 44;
             _bottomToolBarBottomConst.constant = 0;
         }
@@ -475,7 +478,7 @@ NSString *const cellID = @"flashEffectID";
 	[myTorch unlockForConfiguration];
 	
     if (_currentFlashViewMode != A3FlashViewModeTypeEffect) {
-        _contentImageView.backgroundColor = [self flashlightColorAtIndex:_currentColorIndex withAlpha:1.0];
+        _contentImageView.backgroundColor = _selectedColor;
     }
 //#endif
 }
@@ -569,7 +572,7 @@ NSString *const cellID = @"flashEffectID";
 - (void)effectSOS:(NSTimer *)timer {
 	UIImageView *contentsView = (UIImageView *)[self.view viewWithTag:1003];
 	if (strobeLoop_SOS[effectLoopCount][1] == 0) {
-		[contentsView setBackgroundColor:[self flashlightColorAtIndex:_currentColorIndex withAlpha:1.0]];
+		[contentsView setBackgroundColor:_selectedColor];
 	} else {
 		[contentsView setBackgroundColor: [UIColor colorWithRed:strobeLoop_SOS[effectLoopCount][2]
                                                           green:strobeLoop_SOS[effectLoopCount][3]
@@ -910,6 +913,18 @@ NSString *const cellID = @"flashEffectID";
 	}
 	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
 	[runLoop addTimer:strobeTimer forMode:NSDefaultRunLoopMode];
+}
+
+#pragma mark - NPColorPickerViewDelegate
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-(void)NPColorPickerView:(NPColorPickerView *)view didSelectColor:(UIColor *)color {
+    _selectedColor = color;
+    _contentImageView.backgroundColor = _selectedColor;
+    _colorPickerView.backgroundColor = _selectedColor;
+    
+    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:_selectedColor] forKey:A3UserDefaultFlashSelectedColor];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "NPColorPickerView.h"
 
 extern NSString *const A3UserDefaultFlashViewMode;
 
@@ -17,10 +18,12 @@ extern NSString *const A3UserDefaultFlashViewMode;
 @property (weak, nonatomic) IBOutlet UIToolbar *sliderToolBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolBar;
 @property (weak, nonatomic) IBOutlet UIView *pickerPanelView;
+@property (weak, nonatomic) IBOutlet NPColorPickerView *colorPickerView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topToolBarTopConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *middleToolBarBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBarBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerViewBottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerViewBottomConst;
 
 @property (weak, nonatomic) IBOutlet UISlider *sliderControl;
 @property (weak, nonatomic) IBOutlet UIImageView *contentImageView;

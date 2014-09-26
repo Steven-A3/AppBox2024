@@ -8,6 +8,8 @@
             <connections>
                 <outlet property="bottomToolBar" destination="0cB-eB-uh6" id="DgP-pB-FG3"/>
                 <outlet property="bottomToolBarBottomConst" destination="JyY-xt-XBm" id="JVA-IZ-tB6"/>
+                <outlet property="colorPickerView" destination="DZe-m5-3wU" id="dpe-hZ-bdx"/>
+                <outlet property="colorPickerViewBottomConst" destination="TaE-2i-bGO" id="7WK-I3-2wY"/>
                 <outlet property="contentImageView" destination="CyN-5t-mnB" id="b5A-Cj-YGR"/>
                 <outlet property="middleToolBarBottomConst" destination="JbI-nb-ifB" id="vcv-cD-52A"/>
                 <outlet property="pauseSwitchButton" destination="5cE-hh-fow" id="FjK-DG-qAq"/>
@@ -137,6 +139,15 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DZe-m5-3wU" userLabel="color picker - View" customClass="NPColorPickerView">
+                    <rect key="frame" x="60" y="83" width="200" height="280"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="280" id="2CE-Uw-5TJ"/>
+                        <constraint firstAttribute="width" constant="200" id="IEV-Yt-dOZ"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
@@ -149,6 +160,7 @@
                 <constraint firstAttribute="trailing" secondItem="x8x-tH-EhC" secondAttribute="trailing" id="KHF-po-NbS"/>
                 <constraint firstAttribute="bottom" secondItem="lV0-Pf-aVj" secondAttribute="bottom" constant="100" id="Pui-v2-Z1R"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Q45-yy-szA"/>
+                <constraint firstAttribute="bottom" secondItem="DZe-m5-3wU" secondAttribute="bottom" constant="205" id="TaE-2i-bGO"/>
                 <constraint firstItem="0cB-eB-uh6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="W8c-zL-67f"/>
                 <constraint firstAttribute="trailing" secondItem="5cE-hh-fow" secondAttribute="trailing" constant="20" id="WnO-rg-YEY"/>
                 <constraint firstAttribute="trailing" secondItem="lV0-Pf-aVj" secondAttribute="trailing" id="cLW-1v-clE"/>
@@ -159,6 +171,7 @@
                 <constraint firstAttribute="trailing" secondItem="x8x-tH-EhC" secondAttribute="trailing" id="lCI-iw-SV1"/>
                 <constraint firstItem="CyN-5t-mnB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lXA-TD-dZl"/>
                 <constraint firstAttribute="trailing" secondItem="0cB-eB-uh6" secondAttribute="trailing" id="lXz-bZ-QAy"/>
+                <constraint firstAttribute="centerX" secondItem="DZe-m5-3wU" secondAttribute="centerX" id="nJ4-1F-Xdt"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="smG-UI-y0d"/>
                 <constraint firstItem="lV0-Pf-aVj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="uVQ-OV-orJ"/>
             </constraints>

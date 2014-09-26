@@ -77,6 +77,10 @@
 		57213EFB19C328FD005AD0ED /* CLLocationManager+authorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */; };
 		5727A57219D411F100ADB17C /* Erase.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5727A57119D411F100ADB17C /* Erase.caf */; };
 		5727A57419D41B9200ADB17C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5727A57319D41B9200ADB17C /* CoreMotion.framework */; };
+		577707F219D57CB900DC066A /* NPColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 577707EF19D57CB900DC066A /* NPColorPickerView.m */; };
+		577707F319D57CB900DC066A /* NPConicGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 577707F119D57CB900DC066A /* NPConicGradient.m */; };
+		577707F619D57E1F00DC066A /* CGColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 577707F519D57E1F00DC066A /* CGColor+Additions.m */; };
+		577707FB19D57E5B00DC066A /* NPPickerIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 577707F819D57E5B00DC066A /* NPPickerIndicator.m */; };
 		57888EC21940667000306028 /* A3InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57888EC11940667000306028 /* A3InstructionViewController.m */; };
 		57E4E1C819D2DCC20037371B /* A3FlashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E4E1C619D2DCC20037371B /* A3FlashViewController.m */; };
 		57E4E1C919D2DCC20037371B /* A3FlashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E4E1C719D2DCC20037371B /* A3FlashViewController.xib */; };
@@ -1063,6 +1067,14 @@
 		57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocationManager+authorization.m"; sourceTree = "<group>"; };
 		5727A57119D411F100ADB17C /* Erase.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Erase.caf; sourceTree = "<group>"; };
 		5727A57319D41B9200ADB17C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		577707EE19D57CB900DC066A /* NPColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NPColorPickerView.h; path = NPColorPicker/NPColorPickerView.h; sourceTree = "<group>"; };
+		577707EF19D57CB900DC066A /* NPColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NPColorPickerView.m; path = NPColorPicker/NPColorPickerView.m; sourceTree = "<group>"; };
+		577707F019D57CB900DC066A /* NPConicGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NPConicGradient.h; path = NPColorPicker/NPConicGradient.h; sourceTree = "<group>"; };
+		577707F119D57CB900DC066A /* NPConicGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NPConicGradient.m; path = NPColorPicker/NPConicGradient.m; sourceTree = "<group>"; };
+		577707F419D57E1F00DC066A /* CGColor+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CGColor+Additions.h"; path = "NPColorPicker/CGColor+Additions.h"; sourceTree = "<group>"; };
+		577707F519D57E1F00DC066A /* CGColor+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CGColor+Additions.m"; path = "NPColorPicker/CGColor+Additions.m"; sourceTree = "<group>"; };
+		577707F719D57E5B00DC066A /* NPPickerIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NPPickerIndicator.h; path = NPColorPicker/NPPickerIndicator.h; sourceTree = "<group>"; };
+		577707F819D57E5B00DC066A /* NPPickerIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NPPickerIndicator.m; path = NPColorPicker/NPPickerIndicator.m; sourceTree = "<group>"; };
 		57888EC01940667000306028 /* A3InstructionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3InstructionViewController.h; path = Instruction/A3InstructionViewController.h; sourceTree = "<group>"; };
 		57888EC11940667000306028 /* A3InstructionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3InstructionViewController.m; path = Instruction/A3InstructionViewController.m; sourceTree = "<group>"; };
 		57E4E1C519D2DCC20037371B /* A3FlashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3FlashViewController.h; path = Flash/A3FlashViewController.h; sourceTree = "<group>"; };
@@ -2866,6 +2878,21 @@
 			name = Instruction;
 			sourceTree = "<group>";
 		};
+		577707E919D57CA500DC066A /* NPColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				577707F719D57E5B00DC066A /* NPPickerIndicator.h */,
+				577707F819D57E5B00DC066A /* NPPickerIndicator.m */,
+				577707F419D57E1F00DC066A /* CGColor+Additions.h */,
+				577707F519D57E1F00DC066A /* CGColor+Additions.m */,
+				577707EE19D57CB900DC066A /* NPColorPickerView.h */,
+				577707EF19D57CB900DC066A /* NPColorPickerView.m */,
+				577707F019D57CB900DC066A /* NPConicGradient.h */,
+				577707F119D57CB900DC066A /* NPConicGradient.m */,
+			);
+			name = NPColorPicker;
+			sourceTree = "<group>";
+		};
 		57E4E1C019D2DC5E0037371B /* Flash */ = {
 			isa = PBXGroup;
 			children = (
@@ -3673,6 +3700,7 @@
 		683B954015EB233500575377 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				577707E919D57CA500DC066A /* NPColorPicker */,
 				68F4EE8D17E4C0F9009BDE05 /* A3FSegmentedControl.h */,
 				68F4EE8E17E4C0F9009BDE05 /* A3FSegmentedControl.m */,
 				68D0731E18210B5100D34870 /* A3RoundedSideButton.h */,
@@ -5846,6 +5874,7 @@
 				68B6A34D18CEC76D004084EF /* A3WalletItemViewController.m in Sources */,
 				68E2A6B118D0B22800E834D9 /* A3TipCalcHeaderView.m in Sources */,
 				68B6A2C218CEC76D004084EF /* A3LoanCalcLoanHistoryCell.m in Sources */,
+				577707F619D57E1F00DC066A /* CGColor+Additions.m in Sources */,
 				68953486178686AF007061CA /* UIScrollView+Screenshot.m in Sources */,
 				68F14FF819485E8500159EAD /* A3DaysCounterSetupDurationViewController.m in Sources */,
 				68E2A6AE18D0B22800E834D9 /* A3PopoverTableViewController.m in Sources */,
@@ -5921,6 +5950,7 @@
 				68143D5D18E3EC7C00569691 /* A3TableViewController.m in Sources */,
 				680D639118CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.m in Sources */,
 				680886DB1891751B0093FD97 /* A3ClockMainViewController.m in Sources */,
+				577707F319D57CB900DC066A /* NPConicGradient.m in Sources */,
 				68236CDD186AA7B4006F442B /* A3AppDelegate+passcode.m in Sources */,
 				689C9A571839CD7F007C97EE /* UIImageView+AFNetworking.m in Sources */,
 				680886E21891751B0093FD97 /* A3ClockWaveViewController.m in Sources */,
@@ -6122,6 +6152,7 @@
 				6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */,
 				68B6A2C318CEC76D004084EF /* A3LoanCalcLoanInfo2Cell.m in Sources */,
 				17D42461C66EA03739D41FA8 /* A3CurrencyTableViewCell.m in Sources */,
+				577707FB19D57E5B00DC066A /* NPPickerIndicator.m in Sources */,
 				17D42B8113D2415FDF33A0DB /* A3CurrencyTVDataCell.m in Sources */,
 				68E2A65E18D0B1FC00E834D9 /* A3PercentCalcHistoryCell.m in Sources */,
 				68B6A31A18CEC76D004084EF /* A3WalletAddPhotoThumbCell.m in Sources */,
@@ -6139,6 +6170,7 @@
 				683224BD17CE1B7800973F34 /* A3HolidaysCell.m in Sources */,
 				68E2A6A918D0B22800E834D9 /* A3TableViewInputElement.m in Sources */,
 				17D42CEB95809CCFCB72DCB2 /* UITableViewCell+accessory.m in Sources */,
+				577707F219D57CB900DC066A /* NPColorPickerView.m in Sources */,
 				17D425D8B8511A61A52DBE3E /* A3SearchViewController.m in Sources */,
 				68F1C8C318D7F37D009FAE8A /* A3LadyCalendarAddPeriodViewController.m in Sources */,
 				68B6A32118CEC76D004084EF /* A3WalletCateEditTitleCell.m in Sources */,
