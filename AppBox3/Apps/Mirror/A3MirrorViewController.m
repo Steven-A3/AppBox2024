@@ -14,6 +14,7 @@
 #import "A3UserDefaults.h"
 
 static const int MAX_ZOOM_FACTOR = 6;
+NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 
 @interface A3MirrorViewController() <A3InstructionViewControllerDelegate>
 {
@@ -1444,8 +1445,12 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
     imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
     imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
 
-	static NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
+	
     void (^completion)(void) = ^{
+        if ([[A3UserDefaults standardUserDefaults] objectForKey:A3MirrorFirstLoadCameraRoll]) {
+            return;
+        }
+        
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
                                                             message:NSLocalizedString(@"The photos you take with Mirror are saved in your Camera Roll album in the Photos app.", nil)
                                                            delegate:nil
