@@ -214,7 +214,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
     }
     NSInteger autoDimMinutes = [[A3UserDefaults standardUserDefaults] integerForKey:A3ClockAutoDim];
     if (autoDimMinutes) {
-        _autoDimTimer = [NSTimer scheduledTimerWithTimeInterval:autoDimMinutes * 60
+        _autoDimTimer = [NSTimer scheduledTimerWithTimeInterval:autoDimMinutes
                                                          target:self
                                                        selector:@selector(activateAutoDim)
                                                        userInfo:nil
@@ -225,7 +225,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 - (void)activateAutoDim {
     [_autoDimTimer invalidate];
     _autoDimTimer = nil;
-    [[UIScreen mainScreen] setBrightness:0.01];
+    [[UIScreen mainScreen] setBrightness:0.0];
 }
 
 - (UIButton *)clockAppsButton {

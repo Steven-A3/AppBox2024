@@ -5,7 +5,8 @@
 /* Class = "IBUITableViewSection"; footerTitle = "Sync or Backup of History of every apps, Days Counter events, Expense Lists, Ladies Calendar periods and Wallet items.
 
 "; ObjectID = "1dJ-y3-yh7"; */
-"1dJ-y3-yh7.footerTitle" = "同步或备份每个应用的历史记录、天数计算事件、费用清单、淑女日历周期和钱包信息。";
+"1dJ-y3-yh7.footerTitle" = "同步或备份每个应用的历史记录、天数计算事件、费用清单、淑女日历周期和钱包信息。
+";
 
 /* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "2E1-Z8-v5l"; */
 "2E1-Z8-v5l.title" = "选择备份";
