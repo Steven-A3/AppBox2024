@@ -120,6 +120,22 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 }
 
 #pragma mark - video setup
+- (void)notifyCameraShotSaveRule
+{
+    if ([[A3UserDefaults standardUserDefaults] objectForKey:A3MirrorFirstLoadCameraRoll]) {
+        return;
+    }
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                        message:NSLocalizedString(@"The photos you take with Mirror are saved in your Camera Roll album in the Photos app.", nil)
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                              otherButtonTitles:nil];
+    [alertView show];
+    [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3MirrorFirstLoadCameraRoll];
+    [[A3UserDefaults standardUserDefaults] synchronize];
+}
+
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
@@ -213,6 +229,8 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
                      barMetrics:UIBarMetricsDefault];
     [_topBar setShadowImage:[UIImage new]
          forToolbarPosition:UIToolbarPositionAny];
+    
+    [self notifyCameraShotSaveRule];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -1439,36 +1457,39 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 #pragma mark - load camera roll
 - (IBAction)loadCameraRoll:(id)sender {
-    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-    imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    imagePickerController.allowsEditing = NO;
-    imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
-    imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
-
-	
-    void (^completion)(void) = ^{
-        if ([[A3UserDefaults standardUserDefaults] objectForKey:A3MirrorFirstLoadCameraRoll]) {
-            return;
-        }
+    if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied || [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusRestricted) {
+        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+        imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        imagePickerController.allowsEditing = NO;
+        imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
+        imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
         
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-                                                            message:NSLocalizedString(@"The photos you take with Mirror are saved in your Camera Roll album in the Photos app.", nil)
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                  otherButtonTitles:nil];
-        [alertView show];
-        [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3MirrorFirstLoadCameraRoll];
-        [[A3UserDefaults standardUserDefaults] synchronize];
-    };
+        if (IS_IOS7) {
+            [self presentViewController:imagePickerController animated:YES completion:NULL];
+        }
+        else {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self presentViewController:imagePickerController animated:YES completion:NULL];
+            });
+        }
+        return;
+    }
     
-    if (IS_IOS7) {
-        [self presentViewController:imagePickerController animated:YES completion:completion];
-    }
-    else {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self presentViewController:imagePickerController animated:YES completion:completion];
-        });
-    }
+	// Create browser
+	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+	browser.displayActionButton = NO;
+	browser.displayNavArrows = YES;
+	browser.displaySelectionButtons = NO;
+	browser.alwaysShowControls = YES;
+	//browser.wantsFullScreenLayout = YES; deprecated
+	browser.zoomPhotosToFill = YES;
+	browser.enableGrid = YES;
+	browser.startOnGrid = NO;
+	[browser setCurrentPhotoIndex:0];
+    
+	UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
+	nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+	[self presentViewController:nc animated:YES completion:NULL];
 }
 
 #pragma mark - MWPhotoBrowserDelegate

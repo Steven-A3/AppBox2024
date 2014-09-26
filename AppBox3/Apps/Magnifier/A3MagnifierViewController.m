@@ -99,6 +99,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     bLightOn = NO;
     self.flashbrightslider.value = 0.5;
     [self setupInstructionView];
+    [self notifyCameraShotSaveRule];
 }
 
 - (BOOL)usesFullScreenInLandscape {
@@ -231,6 +232,19 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     self.brightnessslider.maximumValue = 1.0;
     self.brightnessslider.continuous = YES;
     self.brightnessslider.value = 0.0;
+}
+
+- (void)notifyCameraShotSaveRule
+{
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3MagnifierFirstLoadCameraRoll]) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                            message:NSLocalizedString(@"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.", @"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.")
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                  otherButtonTitles:nil];
+        [alertView show];
+        [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3MagnifierFirstLoadCameraRoll];
+    }
 }
 
 - (void)tapOnPreviewView {
@@ -522,32 +536,38 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 }
 
 - (IBAction)loadCameraRoll:(id)sender {
-    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-    imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    imagePickerController.allowsEditing = NO;
-    imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
-    imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
-    
-    void (^completion)(void) = ^{
-        if (![[A3UserDefaults standardUserDefaults] boolForKey:A3MagnifierFirstLoadCameraRoll]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-																message:NSLocalizedString(@"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.", @"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.")
-															   delegate:nil
-													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-													  otherButtonTitles:nil];
-            [alertView show];
-            [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3MagnifierFirstLoadCameraRoll];
+    if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied || [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusRestricted) {
+        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+        imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        imagePickerController.allowsEditing = NO;
+        imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
+        imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
+        if (IS_IOS7) {
+            [self presentViewController:imagePickerController animated:YES completion:NULL];
         }
-    };
+        else {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self presentViewController:imagePickerController animated:YES completion:NULL];
+            });
+        }
+        return;
+    }
     
-    if (IS_IOS7) {
-        [self presentViewController:imagePickerController animated:YES completion:completion];
-    }
-    else {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self presentViewController:imagePickerController animated:YES completion:completion];
-        });
-    }
+    // Create browser
+	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+    browser.displayActionButton = NO;
+    browser.displayNavArrows = YES;
+    browser.displaySelectionButtons = NO;
+    browser.alwaysShowControls = NO;
+    //browser.wantsFullScreenLayout = YES; deprecated
+    browser.zoomPhotosToFill = YES;
+    browser.enableGrid = YES;
+    browser.startOnGrid = NO;
+    [browser setCurrentPhotoIndex:0];
+    
+    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
+    nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:nc animated:YES completion:NULL];
 }
 
 - (IBAction)flashbrightslider:(id)sender {
