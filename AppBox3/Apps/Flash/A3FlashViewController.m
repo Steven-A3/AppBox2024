@@ -386,6 +386,7 @@ NSString *const cellID = @"flashEffectID";
         [_sliderToolBar layoutIfNeeded];
         [_pickerPanelView layoutIfNeeded];
         [_bottomToolBar layoutIfNeeded];
+        [_colorPickerView layoutIfNeeded];
         
         [UIView commitAnimations];
     }
