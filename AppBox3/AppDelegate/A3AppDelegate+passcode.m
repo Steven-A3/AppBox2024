@@ -134,7 +134,9 @@
 	} else {
 		NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 		if ([startingAppName length]) {
-			[self.mainMenuViewController openRecentlyUsedMenu];
+			if (![self showLockScreen]) {
+				[self.mainMenuViewController openRecentlyUsedMenu];
+			}
 		} else {
 			// 현재 사용중인 앱에 암호 설정이 있는 경우 암호 확인을 해야 하므로
 			[self showLockScreen];

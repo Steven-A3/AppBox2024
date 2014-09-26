@@ -85,7 +85,7 @@ NSString *const kA3AppsStartingAppName = @"kA3AppsStartingAppName";
 						 @{kA3AppsMenuName : @"Battery Status", kA3AppsClassName_iPhone : @"A3BatteryStatusMainViewController", kA3AppsMenuImageName : @"BatteryStatus"},
 						 @{kA3AppsMenuName : @"Mirror", kA3AppsClassName_iPhone : @"A3MirrorViewController", kA3AppsNibName_iPhone :@"A3MirrorViewController", kA3AppsMenuImageName : @"Mirror"},
 						 @{kA3AppsMenuName : @"Magnifier", kA3AppsClassName_iPhone : @"A3MagnifierViewController", kA3AppsNibName_iPhone:@"A3MagnifierViewController", kA3AppsMenuImageName : @"Magnifier"},
-						 @{kA3AppsMenuName : @"Flash", kA3AppsClassName_iPhone : @"A3FlashViewController", kA3AppsNibName_iPhone:@"A3FlashViewController", kA3AppsMenuImageName : @"Magnifier"},
+						 @{kA3AppsMenuName : @"Flashlight", kA3AppsClassName_iPhone : @"A3FlashViewController", kA3AppsNibName_iPhone:@"A3FlashViewController", kA3AppsMenuImageName : @"Magnifier"},
 						 @{kA3AppsMenuName : @"Random", kA3AppsClassName_iPhone : @"A3RandomViewController", kA3AppsNibName_iPhone:@"A3RandomViewController", kA3AppsMenuImageName : @"Magnifier"},
 						 ]
 				 },

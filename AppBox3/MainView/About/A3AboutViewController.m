@@ -51,7 +51,6 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0 && indexPath.row == 2 && ![MFMessageComposeViewController canSendText]) return 0;
 	return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
@@ -103,26 +102,7 @@
 			[[UIApplication sharedApplication] openURL:twitterURL];
 			break;
 		}
-		case 2: {
-			MFMessageComposeViewController *viewController = [[MFMessageComposeViewController alloc] init];
-			if (viewController) {
-				viewController.messageComposeDelegate = self;
-				NSString *messageBody = NSLocalizedString(@"tellafriend", nil);
-				[viewController setBody:[NSString stringWithFormat:@"%@\n\n%@", messageBody, [self appITunesURL]]];
-
-				[self presentViewController:viewController animated:YES completion:nil];
-			}
-			break;
-		}
 		case 3: {
-			NSString *messageBody = NSLocalizedString(@"tellafriend", nil);
-			[self openMailComposerWithSubject:NSLocalizedString(@"A friend has recommended AppBox Pro™ from the iTunes App Store", @"")
-									 withBody:[NSString stringWithFormat:@"<html><body>%@</br></br>%@", messageBody, [self commonShareFooter]]
-								withRecipient:nil
-									   isHTML:YES ];
-			break;
-		}
-		case 4: {
 			NSString *review_url = @"itms-apps://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/addUserReview?id=318404385";
 			NSURL *url = [[NSURL alloc] initWithString:review_url];
 			[[UIApplication sharedApplication] openURL:url];
