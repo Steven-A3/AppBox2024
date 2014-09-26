@@ -49,6 +49,14 @@
 	[self groupingPeriodByYearInArray:_fullArray];
 	[self.tableView reloadData];
 
+    if (self.isMovingToParentViewController) {
+        NSDictionary *dict = [_itemArray lastObject];
+        NSArray *items = [dict objectForKey:ItemKey_Items];
+        if (dict && [items count] > 0) {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:items.count-1 inSection:_itemArray.count-1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
+    }
+    
 	[self setupAddButton];
 }
 
