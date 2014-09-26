@@ -43,13 +43,14 @@
 {
 	[super viewWillAppear:animated];
 	[self.navigationController setToolbarHidden:YES];
-	self.sourceArray = [_dataManager periodListSortedByStartDateIsAscending:YES ];
-	self.predictArray = [_dataManager predictPeriodListSortedByStartDateIsAscending:YES ];
+	self.sourceArray = [_dataManager periodListSortedByStartDateIsAscending:YES];
+	self.predictArray = [_dataManager predictPeriodListSortedByStartDateIsAscending:YES];
 	self.fullArray = [_sourceArray arrayByAddingObjectsFromArray:_predictArray];
 	[self groupingPeriodByYearInArray:_fullArray];
 	[self.tableView reloadData];
 
     if (self.isMovingToParentViewController) {
+        // 최신 날짜가 보이도록 하단으로 스크롤.
         NSDictionary *dict = [_itemArray lastObject];
         NSArray *items = [dict objectForKey:ItemKey_Items];
         if (dict && [items count] > 0) {

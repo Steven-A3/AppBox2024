@@ -13,7 +13,13 @@ extern NSString *const A3UserDefaultFlashViewMode;
 
 @interface A3FlashViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UIToolbar *topMenuToolbar;
+@property (weak, nonatomic) IBOutlet UIToolbar *topToolBar;
+@property (weak, nonatomic) IBOutlet UIToolbar *sliderToolBar;
+@property (weak, nonatomic) IBOutlet UIToolbar *bottomToolBar;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topToolBarTopConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *middleToolBarBottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBarBottomConst;
+
 @property (weak, nonatomic) IBOutlet UIView *subMenuPanelView;
 @property (weak, nonatomic) IBOutlet UISlider *sliderControl;
 @property (weak, nonatomic) IBOutlet UIImageView *contentImageView;

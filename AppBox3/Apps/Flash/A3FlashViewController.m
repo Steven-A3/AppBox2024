@@ -150,6 +150,7 @@ NSString *const cellID = @"flashEffectID";
 	NSTimer		*strobeTimer;
 	NSInteger	effectLoopCount;
     CGFloat		strobeSpeedFactor;
+    BOOL    _showAllMenu;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -165,12 +166,12 @@ NSString *const cellID = @"flashEffectID";
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-//	[self setNavigationBarHidden:YES];
-	[self makeBackButtonEmptyArrow];
-	[self leftBarButtonAppsButton];
+	[self setNavigationBarHidden:YES];
+    
     [self initializeStatus];
-//    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
-//    [self.view addGestureRecognizer:tapGesture];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
+    [_contentImageView addGestureRecognizer:tapGesture];
     NSNumber *isLedOnStart = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashTurnLEDOnAtStart];
     if (!isLedOnStart) {
         UIAlertView *question = [[UIAlertView alloc] initWithTitle:nil
@@ -243,7 +244,30 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)flashScreenTapped:(UITapGestureRecognizer *)gesture {
-    _topMenuToolbar.hidden = !_topMenuToolbar.hidden;
+//    _topMenuToolbar.hidden = !_topMenuToolbar.hidden;
+    _showAllMenu = !_showAllMenu;
+    
+    [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationCurve:7];
+    [UIView setAnimationDuration:0.25];
+    
+    if (_showAllMenu) {
+        _topToolBarTopConst.constant = 20;
+        _middleToolBarBottomConst.constant = 44;
+        _bottomToolBarBottomConst.constant = 0;
+    }
+    else {
+        _topToolBarTopConst.constant = -65;
+        _middleToolBarBottomConst.constant = -88;
+        _bottomToolBarBottomConst.constant = -44;
+    }
+    
+    [_topToolBar layoutIfNeeded];
+    [_sliderToolBar layoutIfNeeded];
+    [_bottomToolBar layoutIfNeeded];
+    
+    [UIView commitAnimations];
 }
 
 #pragma mark - menu bar actions
