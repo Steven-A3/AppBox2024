@@ -261,7 +261,7 @@ static NSString *CellIdentifier = @"Cell";
 		case 2:
         {
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            [self photoButtonAction:cell];
+            [self photoButtonAction:[cell accessoryView]];
         }
 			break;
 		case 3: {
@@ -317,6 +317,8 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)photoButtonAction:(id)sender {
+    _currentIndexPath = [self.tableView indexPathForCellSubview:sender];
+    
 	A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
 	UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[downloadManager hasUserSuppliedImageForCountry:_countryCode] delegate:self];
 	actionSheet.tag = 200;
@@ -364,19 +366,6 @@ static NSString *CellIdentifier = @"Cell";
 				myButtonIndex++;
 			if (actionSheet.destructiveButtonIndex>=0)
 				myButtonIndex--;
-            
-            if (myButtonIndex == 1 || myButtonIndex == 2) {
-                if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied || [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusRestricted) {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Please Allow Photo Access", @"Please Allow Photo Access")
-                                                                        message:NSLocalizedString(@"You need authorization to see your photo library. Move to Settings App and allow your privacy permission of photo.", @"You need authorization to see your photo library. Move to Settings App and allow your privacy permission of photo.")
-                                                                       delegate:nil
-                                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                              otherButtonTitles:nil];
-                    [alertView show];
-                    return;
-                }
-            }
-            
             
 			switch (myButtonIndex) {
 				case 0:
@@ -431,6 +420,9 @@ static NSString *CellIdentifier = @"Cell";
                         self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
                         self.imagePickerPopoverController.delegate = self;
                         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
+                        if (!cell) {
+                            return;
+                        }
                         [_imagePickerPopoverController presentPopoverFromRect:[cell.accessoryView bounds] inView:[cell accessoryView] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
                     }
                     

@@ -522,31 +522,13 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 }
 
 - (IBAction)loadCameraRoll:(id)sender {
-    if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied || [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusRestricted) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Please Allow Photo Access", @"Please Allow Photo Access")
-                                                            message:NSLocalizedString(@"You need authorization to see your photo library. Move to Settings App and allow your privacy permission of photo.", @"You need authorization to see your photo library. Move to Settings App and allow your privacy permission of photo.")
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                  otherButtonTitles:nil];
-        [alertView show];
-        return;
-    }
+    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+    imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    imagePickerController.allowsEditing = NO;
+    imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
+    imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
     
-    // Create browser
-	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
-    browser.displayActionButton = NO;
-    browser.displayNavArrows = YES;
-    browser.displaySelectionButtons = NO;
-    browser.alwaysShowControls = NO;
-    //browser.wantsFullScreenLayout = YES; deprecated
-    browser.zoomPhotosToFill = YES;
-    browser.enableGrid = YES;
-    browser.startOnGrid = NO;
-    [browser setCurrentPhotoIndex:0];
-    
-    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
-    nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:nc animated:YES completion:^{
+    void (^completion)(void) = ^{
         if (![[A3UserDefaults standardUserDefaults] boolForKey:A3MagnifierFirstLoadCameraRoll]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
 																message:NSLocalizedString(@"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.", @"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.")
@@ -556,7 +538,16 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
             [alertView show];
             [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3MagnifierFirstLoadCameraRoll];
         }
-    }];
+    };
+    
+    if (IS_IOS7) {
+        [self presentViewController:imagePickerController animated:YES completion:completion];
+    }
+    else {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self presentViewController:imagePickerController animated:YES completion:completion];
+        });
+    }
 }
 
 - (IBAction)flashbrightslider:(id)sender {
