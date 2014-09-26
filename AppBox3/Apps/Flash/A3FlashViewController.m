@@ -133,7 +133,7 @@ NSString *const A3UserDefaultFlashEffectIndex = @"A3UserDefaultFlashEffectIndex"
 NSString *const A3UserDefaultFlashTurnLEDOnAtStart = @"A3UserDefaultFlashTurnLEDOnAtStart";
 NSString *const cellID = @"flashEffectID";
 
-@interface A3FlashViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIAlertViewDelegate>
+@interface A3FlashViewController () <UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 @end
 
 @implementation A3FlashViewController
@@ -205,9 +205,6 @@ NSString *const cellID = @"flashEffectID";
     _currentDeviceBrightness = [[UIScreen mainScreen] brightness];
     _isTorchOn = YES;
     
-    [self configureFlashViewMode:_currentFlashViewMode];
-    [_contentImageView setBackgroundColor:[UIColor blackColor]];
-    
     _flashEffectList = @[NSLocalizedString(@"SOS", @"SOS"),
                          NSLocalizedString(@"Strobe", @"Strobe"),
                          NSLocalizedString(@"Trippy", @"Trippy"),
@@ -216,7 +213,8 @@ NSString *const cellID = @"flashEffectID";
                          NSLocalizedString(@"Caution Flare", @"Caution Flare"),
                          NSLocalizedString(@"Traffic Light", @"Traffic Light")];
     
-    [_effectListCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:cellID];
+    [self configureFlashViewMode:_currentFlashViewMode];
+    [_contentImageView setBackgroundColor:[UIColor blackColor]];
 }
 
 - (UIColor *)flashlightColorAtIndex:(NSInteger)index withAlpha:(CGFloat)alpha {
@@ -247,47 +245,31 @@ NSString *const cellID = @"flashEffectID";
 //    _topMenuToolbar.hidden = !_topMenuToolbar.hidden;
     _showAllMenu = !_showAllMenu;
     
-    [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationCurve:7];
-    [UIView setAnimationDuration:0.25];
     
     if (_showAllMenu) {
-        _topToolBarTopConst.constant = 20;
         _middleToolBarBottomConst.constant = 44;
-        _bottomToolBarBottomConst.constant = 0;
+        [self configureFlashViewMode:_currentFlashViewMode];
     }
     else {
+        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationCurve:7];
+        [UIView setAnimationDuration:0.25];
+        
         _topToolBarTopConst.constant = -65;
         _middleToolBarBottomConst.constant = -88;
         _bottomToolBarBottomConst.constant = -44;
+        _pickerViewBottomConst.constant = -162;
+        
+        [_topToolBar layoutIfNeeded];
+        [_sliderToolBar layoutIfNeeded];
+        [_bottomToolBar layoutIfNeeded];
+        
+        [UIView commitAnimations];
     }
-    
-    [_topToolBar layoutIfNeeded];
-    [_sliderToolBar layoutIfNeeded];
-    [_bottomToolBar layoutIfNeeded];
-    
-    [UIView commitAnimations];
 }
 
 #pragma mark - menu bar actions
-
-- (IBAction)exitBarButtonAction:(id)sender {
-    _subMenuPanelView.hidden = YES;
-    [self releaseStrobelight];
-    
-    if (IS_IPHONE) {
-		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-	} else {
-		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
-	}
-}
-
-- (IBAction)colorBarButtonAction:(id)sender {
-    [self releaseStrobelight];
-    [self configureFlashViewMode:A3FlashViewModeTypeColor];
-}
-
 - (IBAction)brightnessBarButtonAction:(id)sender {
     [self releaseStrobelight];
     [self configureFlashViewMode:A3FlashViewModeTypeBrightness];
@@ -342,6 +324,33 @@ NSString *const cellID = @"flashEffectID";
 	}
 }
 
+- (IBAction)appsButtonTouchUp:(id)sender {
+    [self releaseStrobelight];
+    
+    if (IS_IPHONE) {
+		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+	} else {
+		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+	}
+}
+
+- (IBAction)detailInfoButtonTouchUp:(id)sender {
+}
+
+- (IBAction)LEDonOffButtonTouchUp:(id)sender {
+}
+
+- (IBAction)colorMenuButtonTouchUp:(id)sender {
+    [self releaseStrobelight];
+    [self configureFlashViewMode:A3FlashViewModeTypeColor];
+}
+
+- (IBAction)effectsMenuButtonTouchUp:(id)sender {
+    [self releaseStrobelight];
+    [self configureFlashViewMode:A3FlashViewModeTypeEffect];
+}
+
+
 - (void)colorModeSliderValueChanged:(UISlider *)slider {
     _currentColorIndex = floor(slider.value / (slider.maximumValue / 28.0));
     [self.contentImageView setBackgroundColor:[self flashlightColorAtIndex:_currentColorIndex withAlpha:1.0]];
@@ -364,18 +373,28 @@ NSString *const cellID = @"flashEffectID";
     [[NSUserDefaults standardUserDefaults] setInteger:_currentFlashViewMode forKey:A3UserDefaultFlashViewMode];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
+    
+    [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationCurve:7];
+    [UIView setAnimationDuration:0.25];
+    
+    _topToolBarTopConst.constant = 20;
+
     switch (_currentFlashViewMode) {
         case A3FlashViewModeTypeColor:
         {
-            _subMenuPanelView.hidden = NO;
             [_sliderControl setMinimumValue:0.0];
             [_sliderControl setMaximumValue:100.0];
             [_sliderControl setValue:0.0];
+            
+            _middleToolBarBottomConst.constant = 44;
+            _pickerViewBottomConst.constant = -162;
+            _bottomToolBarBottomConst.constant = 0;
         }
             break;
         case A3FlashViewModeTypeBrightness:
         {
-            _subMenuPanelView.hidden = NO;
             [_sliderControl setMinimumValue:0.0];
             [_sliderControl setMaximumValue:100.0];
             [_sliderControl setValue:0.0];
@@ -383,16 +402,26 @@ NSString *const cellID = @"flashEffectID";
             break;
         case A3FlashViewModeTypeEffect:
         {
-            _subMenuPanelView.hidden = NO;
             [_sliderControl setMinimumValue:-80.0];
             [_sliderControl setMaximumValue:80.0];
             [_sliderControl setValue:0.0];
+            
+            _middleToolBarBottomConst.constant = 44 + 162;
+            _pickerViewBottomConst.constant = 44;
+            _bottomToolBarBottomConst.constant = 0;
         }
             break;
             
         default:
             break;
     }
+    
+    [_topToolBar layoutIfNeeded];
+    [_sliderToolBar layoutIfNeeded];
+    [_pickerPanelView layoutIfNeeded];
+    [_bottomToolBar layoutIfNeeded];
+    
+    [UIView commitAnimations];
 }
 
 #pragma mark - LED Related
@@ -515,33 +544,6 @@ NSString *const cellID = @"flashEffectID";
 	_LEDInitialized = NO;
 }
 
-#pragma mark - UICollectionViewDelegate
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    return [_flashEffectList count];
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor whiteColor];
-    
-    UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:100];
-    if (!titleLabel) {
-        titleLabel = [UILabel new];
-        [cell.contentView addSubview:titleLabel];
-        [titleLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.equalTo(cell.contentView.left);
-            make.trailing.equalTo(cell.contentView.right);
-            make.top.equalTo(cell.contentView.top);
-            make.bottom.equalTo(cell.contentView.bottom);
-        }];
-    }
-    titleLabel.text = _flashEffectList[indexPath.row];
-    
-    return cell;
-}
-
 - (void)releaseStrobelight
 {
     effectLoopCount = 0;
@@ -550,90 +552,6 @@ NSString *const cellID = @"flashEffectID";
         [strobeTimer invalidate];
         strobeTimer = nil;
     }
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self releaseStrobelight];
-    if (!_LEDSession) {
-        [self initializeLED];
-    }
-    
-	switch ([indexPath row]) {
-		case 0: {
-			// SOS
-			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
-			strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
-                                                   interval:0.0
-                                                     target:self
-                                                   selector:@selector(effectSOS:)
-                                                   userInfo:nil
-                                                    repeats:NO];
-			break;
-		}
-		case 1: {
-			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
-			strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
-												   interval:0.0
-													 target:self
-												   selector:@selector(effectSTROBE:)
-												   userInfo:nil
-													repeats:NO];
-			break;
-		}
-		case 2: {
-			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
-			strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
-												   interval:0.0
-													 target:self
-												   selector:@selector(effectTRIPPIN:)
-												   userInfo:nil
-													repeats:NO];
-			break;
-		}
-		case 3: {
-			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
-			strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
-												   interval:0.0
-													 target:self
-												   selector:@selector(effectPOLICECAR:)
-												   userInfo:nil
-													repeats:NO];
-			break;
-		}
-		case 4: {
-			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
-			strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
-												   interval:0.0
-													 target:self
-												   selector:@selector(effectFIRETRUCK:)
-												   userInfo:nil
-													repeats:NO];
-			break;
-		}
-		case 5: {
-			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
-			strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
-												   interval:0.0
-													 target:self
-												   selector:@selector(effectCAUTINFLARE:)
-												   userInfo:nil
-													repeats:NO];
-			break;
-		}
-		case 6: {
-			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
-			strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
-												   interval:0.0
-													 target:self
-												   selector:@selector(effectTRAFFICLIGHT:)
-												   userInfo:nil
-													repeats:NO];
-			break;
-		}
-	}
-	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-	[runLoop addTimer:strobeTimer forMode:NSDefaultRunLoopMode];
 }
 
 #pragma mark - Effects
@@ -883,6 +801,104 @@ NSString *const cellID = @"flashEffectID";
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [[NSUserDefaults standardUserDefaults] setObject:@(buttonIndex) forKey:A3UserDefaultFlashTurnLEDOnAtStart];
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+#pragma mark - UIPickerViewDelegate
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return [_flashEffectList count];
+}
+
+- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:[_flashEffectList objectAtIndex:row]
+                                                                     attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    return attrString;
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    [self releaseStrobelight];
+    if (!_LEDSession) {
+        [self initializeLED];
+    }
+    
+	switch (row) {
+		case 0: {
+			// SOS
+			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
+			strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
+                                                   interval:0.0
+                                                     target:self
+                                                   selector:@selector(effectSOS:)
+                                                   userInfo:nil
+                                                    repeats:NO];
+			break;
+		}
+		case 1: {
+			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
+			strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
+												   interval:0.0
+													 target:self
+												   selector:@selector(effectSTROBE:)
+												   userInfo:nil
+													repeats:NO];
+			break;
+		}
+		case 2: {
+			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
+			strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
+												   interval:0.0
+													 target:self
+												   selector:@selector(effectTRIPPIN:)
+												   userInfo:nil
+													repeats:NO];
+			break;
+		}
+		case 3: {
+			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
+			strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
+												   interval:0.0
+													 target:self
+												   selector:@selector(effectPOLICECAR:)
+												   userInfo:nil
+													repeats:NO];
+			break;
+		}
+		case 4: {
+			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
+			strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
+												   interval:0.0
+													 target:self
+												   selector:@selector(effectFIRETRUCK:)
+												   userInfo:nil
+													repeats:NO];
+			break;
+		}
+		case 5: {
+			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
+			strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
+												   interval:0.0
+													 target:self
+												   selector:@selector(effectCAUTINFLARE:)
+												   userInfo:nil
+													repeats:NO];
+			break;
+		}
+		case 6: {
+			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
+			strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
+												   interval:0.0
+													 target:self
+												   selector:@selector(effectTRAFFICLIGHT:)
+												   userInfo:nil
+													repeats:NO];
+			break;
+		}
+	}
+	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+	[runLoop addTimer:strobeTimer forMode:NSDefaultRunLoopMode];
 }
 
 @end

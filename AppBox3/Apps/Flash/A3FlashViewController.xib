@@ -10,6 +10,8 @@
                 <outlet property="bottomToolBarBottomConst" destination="JyY-xt-XBm" id="JVA-IZ-tB6"/>
                 <outlet property="contentImageView" destination="CyN-5t-mnB" id="b5A-Cj-YGR"/>
                 <outlet property="middleToolBarBottomConst" destination="JbI-nb-ifB" id="vcv-cD-52A"/>
+                <outlet property="pickerPanelView" destination="lV0-Pf-aVj" id="qA9-Ne-mOc"/>
+                <outlet property="pickerViewBottomConst" destination="Pui-v2-Z1R" id="AUD-0u-uMj"/>
                 <outlet property="sliderControl" destination="e0I-jN-Ngd" id="Pxj-us-8Lu"/>
                 <outlet property="sliderToolBar" destination="2hZ-lZ-LJE" id="Q0W-jz-wUw"/>
                 <outlet property="topToolBar" destination="x8x-tH-EhC" id="bQs-93-7N3"/>
@@ -35,9 +37,17 @@
                         <constraint firstAttribute="height" constant="44" id="FdY-Fs-nzI"/>
                     </constraints>
                     <items>
-                        <barButtonItem title="Apps" id="2Z1-hf-L5J"/>
+                        <barButtonItem title="Apps" id="2Z1-hf-L5J">
+                            <connections>
+                                <action selector="appsButtonTouchUp:" destination="-1" id="7PO-t7-XeC"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="1cU-rE-Hbf"/>
-                        <barButtonItem image="information" id="WXn-ZS-ayf"/>
+                        <barButtonItem image="information" id="WXn-ZS-ayf">
+                            <connections>
+                                <action selector="detailInfoButtonTouchUp:" destination="-1" id="aLk-z4-PnP"/>
+                            </connections>
+                        </barButtonItem>
                     </items>
                     <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 </toolbar>
@@ -62,6 +72,31 @@
                     </items>
                     <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 </toolbar>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lV0-Pf-aVj" userLabel="pickerPanel - View">
+                    <rect key="frame" x="0.0" y="306" width="320" height="162"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vNj-3P-xTb">
+                            <rect key="frame" x="10" y="0.0" width="300" height="162"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="300" id="9qC-Ge-3pd"/>
+                                <constraint firstAttribute="height" constant="162" id="tLU-mq-rYn"/>
+                            </constraints>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="Jla-Ul-Eha"/>
+                                <outlet property="delegate" destination="-1" id="Upw-Nt-jGm"/>
+                            </connections>
+                        </pickerView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="162" id="QSV-t1-TNy"/>
+                        <constraint firstAttribute="centerY" secondItem="vNj-3P-xTb" secondAttribute="centerY" id="Qw1-L0-9cW"/>
+                        <constraint firstAttribute="centerX" secondItem="vNj-3P-xTb" secondAttribute="centerX" id="mJG-w6-Pg9"/>
+                    </constraints>
+                </view>
                 <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0cB-eB-uh6" userLabel="bottom - Toolbar">
                     <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -70,11 +105,23 @@
                         <constraint firstAttribute="height" constant="44" id="ygp-jg-Gdy"/>
                     </constraints>
                     <items>
-                        <barButtonItem title="LED" width="44" id="FwG-bh-VC7"/>
+                        <barButtonItem title="LED" width="44" id="FwG-bh-VC7">
+                            <connections>
+                                <action selector="LEDonOffButtonTouchUp:" destination="-1" id="vzs-r0-LV3"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="OTw-vZ-2dw"/>
-                        <barButtonItem title="Color" width="44" id="cMT-7q-00U"/>
+                        <barButtonItem title="Color" width="44" id="cMT-7q-00U">
+                            <connections>
+                                <action selector="colorMenuButtonTouchUp:" destination="-1" id="lBr-IT-jlk"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="f3d-qf-kF6"/>
-                        <barButtonItem title="Effect" width="44" id="ejK-Gp-dua"/>
+                        <barButtonItem title="Effect" width="44" id="ejK-Gp-dua">
+                            <connections>
+                                <action selector="effectsMenuButtonTouchUp:" destination="-1" id="TN2-0r-GCs"/>
+                            </connections>
+                        </barButtonItem>
                     </items>
                     <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 </toolbar>
@@ -94,8 +141,10 @@
                 <constraint firstAttribute="bottom" secondItem="2hZ-lZ-LJE" secondAttribute="bottom" constant="44" id="JbI-nb-ifB"/>
                 <constraint firstAttribute="bottom" secondItem="0cB-eB-uh6" secondAttribute="bottom" id="JyY-xt-XBm"/>
                 <constraint firstAttribute="trailing" secondItem="x8x-tH-EhC" secondAttribute="trailing" id="KHF-po-NbS"/>
+                <constraint firstAttribute="bottom" secondItem="lV0-Pf-aVj" secondAttribute="bottom" constant="100" id="Pui-v2-Z1R"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Q45-yy-szA"/>
                 <constraint firstItem="0cB-eB-uh6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="W8c-zL-67f"/>
+                <constraint firstAttribute="trailing" secondItem="lV0-Pf-aVj" secondAttribute="trailing" id="cLW-1v-clE"/>
                 <constraint firstAttribute="trailing" secondItem="2hZ-lZ-LJE" secondAttribute="trailing" id="cWt-a6-u23"/>
                 <constraint firstAttribute="trailing" secondItem="CyN-5t-mnB" secondAttribute="trailing" id="e4a-di-FjD"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="izJ-ZD-Rlh"/>
@@ -104,6 +153,7 @@
                 <constraint firstItem="CyN-5t-mnB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lXA-TD-dZl"/>
                 <constraint firstAttribute="trailing" secondItem="0cB-eB-uh6" secondAttribute="trailing" id="lXz-bZ-QAy"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="smG-UI-y0d"/>
+                <constraint firstItem="lV0-Pf-aVj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="uVQ-OV-orJ"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>

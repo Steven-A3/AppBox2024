@@ -16,23 +16,25 @@ extern NSString *const A3UserDefaultFlashViewMode;
 @property (weak, nonatomic) IBOutlet UIToolbar *topToolBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *sliderToolBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolBar;
+@property (weak, nonatomic) IBOutlet UIView *pickerPanelView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topToolBarTopConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *middleToolBarBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBarBottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerViewBottomConst;
 
-@property (weak, nonatomic) IBOutlet UIView *subMenuPanelView;
 @property (weak, nonatomic) IBOutlet UISlider *sliderControl;
 @property (weak, nonatomic) IBOutlet UIImageView *contentImageView;
 @property (weak, nonatomic) IBOutlet UIButton *lightOffButton;
-@property (weak, nonatomic) IBOutlet UICollectionView *effectListCollectionView;
 
-- (IBAction)exitBarButtonAction:(id)sender;
-- (IBAction)colorBarButtonAction:(id)sender;
-- (IBAction)brightnessBarButtonAction:(id)sender;
-- (IBAction)effectBarButtonAction:(id)sender;
 
 - (IBAction)sliderControlValueChanged:(UISlider *)sender;
-- (IBAction)LEDlightOnButtonTouchUp:(id)sender;
+
+- (IBAction)appsButtonTouchUp:(id)sender;
+- (IBAction)detailInfoButtonTouchUp:(id)sender;
+
+- (IBAction)LEDonOffButtonTouchUp:(id)sender;
+- (IBAction)colorMenuButtonTouchUp:(id)sender;
+- (IBAction)effectsMenuButtonTouchUp:(id)sender;
 
 //#if	!TARGET_IPHONE_SIMULATOR
 @property (strong, nonatomic) AVCaptureSession *LEDSession;
