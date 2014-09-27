@@ -148,16 +148,16 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="effectPauseButtonTouchUp:" destination="-1" eventType="touchUpOutside" id="VPy-7m-zKv"/>
+                        <action selector="effectPauseButtonTouchUp:" destination="-1" eventType="touchUpInside" id="IZA-iC-kz8"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="CyN-5t-mnB" secondAttribute="bottom" id="0eR-6N-myT"/>
+                <constraint firstItem="5cE-hh-fow" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="84" id="0fN-fl-TWf"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="EeY-IL-v5n"/>
                 <constraint firstItem="2hZ-lZ-LJE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="H6y-o7-Yyv"/>
-                <constraint firstItem="5cE-hh-fow" firstAttribute="top" secondItem="x8x-tH-EhC" secondAttribute="bottom" constant="20" id="IR0-NH-EWt"/>
                 <constraint firstAttribute="bottom" secondItem="2hZ-lZ-LJE" secondAttribute="bottom" constant="44" id="JbI-nb-ifB"/>
                 <constraint firstAttribute="bottom" secondItem="0cB-eB-uh6" secondAttribute="bottom" id="JyY-xt-XBm"/>
                 <constraint firstAttribute="trailing" secondItem="x8x-tH-EhC" secondAttribute="trailing" id="KHF-po-NbS"/>
