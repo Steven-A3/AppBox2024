@@ -13,7 +13,6 @@
 
 typedef NS_ENUM(NSUInteger, A3FlashViewModeType) {
     A3FlashViewModeTypeColor = 0,
-    A3FlashViewModeTypeBrightness,
     A3FlashViewModeTypeEffect,
 };
 
@@ -141,14 +140,17 @@ NSString *const cellID = @"flashEffectID";
 {
     A3FlashViewModeType _currentFlashViewMode;
     CGFloat _currentBrightnessValue;
-    CGFloat _currentDeviceBrightness;
+    CGFloat _deviceBrightnessBefore;
+    CGFloat _effectSpeedValue;
     BOOL _isTorchOn;
     BOOL _LEDInitialized;
     BOOL _isLEDAvailable;
     BOOL LEDOnInSTROBE_mode;
+    BOOL _isEffectWorking;
     NSArray *_flashEffectList;
 	NSTimer		*strobeTimer;
 	NSInteger	effectLoopCount;
+	NSInteger	_selectedEffectIndex;
     CGFloat		strobeSpeedFactor;
     BOOL    _showAllMenu;
 }
@@ -174,16 +176,8 @@ NSString *const cellID = @"flashEffectID";
     [_contentImageView addGestureRecognizer:tapGesture];
     UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
     [_colorPickerView addGestureRecognizer:tapGesture2];
-    NSNumber *isLedOnStart = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashTurnLEDOnAtStart];
-    if (!isLedOnStart) {
-        UIAlertView *question = [[UIAlertView alloc] initWithTitle:nil
-                                                           message:NSLocalizedStringFromTable(@"Turn LED on always? You can change it in the Settings.", @"common", @"Messagews")
-                                                          delegate:self
-                                                 cancelButtonTitle:NSLocalizedStringFromTable(@"NO", @"common", @"Messages")
-                                                 otherButtonTitles:NSLocalizedStringFromTable(@"YES", @"common", @"Messages"), nil];
-        question.delegate = self;
-        [question show];
-    }
+    
+    [self checkTorchOnStartIfNeeded];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -209,10 +203,9 @@ NSString *const cellID = @"flashEffectID";
         _selectedColor = [UIColor blackColor];
     }
     
-    _currentDeviceBrightness = [[UIScreen mainScreen] brightness];
-    _isTorchOn = YES;
+    _deviceBrightnessBefore = [[UIScreen mainScreen] brightness];
     _colorPickerView.delegate = self;
-    _colorPickerView.backgroundColor = _selectedColor;
+    _colorPickerView.backgroundColor = [UIColor clearColor];
     
     _flashEffectList = @[NSLocalizedString(@"SOS", @"SOS"),
                          NSLocalizedString(@"Strobe", @"Strobe"),
@@ -224,6 +217,25 @@ NSString *const cellID = @"flashEffectID";
     
     [self configureFlashViewMode:_currentFlashViewMode animation:NO];
     [_contentImageView setBackgroundColor:_selectedColor];
+}
+
+- (void)checkTorchOnStartIfNeeded {
+    NSNumber *isLedOnStart = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashTurnLEDOnAtStart];
+    if (!isLedOnStart) {
+        UIAlertView *question = [[UIAlertView alloc] initWithTitle:nil
+                                                           message:NSLocalizedStringFromTable(@"Turn LED on always? You can change it in the Settings.", @"common", @"Messagews")
+                                                          delegate:self
+                                                 cancelButtonTitle:NSLocalizedStringFromTable(@"NO", @"common", @"Messages")
+                                                 otherButtonTitles:NSLocalizedStringFromTable(@"YES", @"common", @"Messages"), nil];
+        question.delegate = self;
+        [question show];
+        
+        return;
+    }
+    
+    if ([isLedOnStart boolValue]) {
+        [self LEDlightOnButtonTouchUp:nil];
+    }
 }
 
 - (UIColor *)currentColor {
@@ -273,11 +285,6 @@ NSString *const cellID = @"flashEffectID";
 }
 
 #pragma mark - menu bar actions
-- (IBAction)brightnessBarButtonAction:(id)sender {
-    [self releaseStrobelight];
-    [self configureFlashViewMode:A3FlashViewModeTypeBrightness animation:YES];
-}
-
 - (IBAction)effectBarButtonAction:(id)sender {
     [self configureFlashViewMode:A3FlashViewModeTypeEffect animation:YES];
 }
@@ -290,11 +297,7 @@ NSString *const cellID = @"flashEffectID";
             [self colorModeSliderValueChanged:sender];
         }
             break;
-        case A3FlashViewModeTypeBrightness:
-        {
-            [self brightnessModeSliderValueChanged:sender];
-        }
-            break;
+            
         case A3FlashViewModeTypeEffect:
         {
             [self effectModeSliderValueChanged:sender];
@@ -341,26 +344,56 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (IBAction)LEDonOffButtonTouchUp:(id)sender {
+	Class myClass = NSClassFromString(@"AVCaptureDevice");
+	if (!myClass) {
+		return;
+	}
+	
+	AVCaptureDevice *myTorch = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+	if (myTorch) {
+		if ([myTorch isTorchModeSupported:AVCaptureTorchModeOn]) {
+			if (_isTorchOn) {
+				[self setTorchOff];
+				_isTorchOn = NO;
+			} else {
+				[self initializeLED];
+				[self setTorchOn];
+				_isTorchOn = YES;
+			}
+		}
+	}
 }
 
 - (IBAction)colorMenuButtonTouchUp:(id)sender {
     [self releaseStrobelight];
     [self configureFlashViewMode:A3FlashViewModeTypeColor animation:YES];
+    _isEffectWorking = NO;
 }
 
 - (IBAction)effectsMenuButtonTouchUp:(id)sender {
-    [self releaseStrobelight];
+    if ((_currentFlashViewMode == A3FlashViewModeTypeEffect && !strobeTimer) || (_isEffectWorking && !strobeTimer) ) {
+        [self startStrobeLightEffectForIndex:_selectedEffectIndex];
+    }
+    else {
+        [self releaseStrobelight];
+    }
+    
     [self configureFlashViewMode:A3FlashViewModeTypeEffect animation:YES];
+}
+
+- (IBAction)effectPauseButtonTouchUp:(id)sender {
+    if ((_currentFlashViewMode == A3FlashViewModeTypeEffect && !strobeTimer) || (_isEffectWorking && !strobeTimer) ) {
+        [self startStrobeLightEffectForIndex:_selectedEffectIndex];
+    }
+    else {
+        [self releaseStrobelight];
+    }
 }
 
 
 - (void)colorModeSliderValueChanged:(UISlider *)slider {
-//    _currentColorIndex = floor(slider.value / (slider.maximumValue / 28.0));
-//    [self.contentImageView setBackgroundColor:[self flashlightColorAtIndex:_currentColorIndex withAlpha:1.0]];
-}
-
-- (void)brightnessModeSliderValueChanged:(UISlider *)slider {
-    NSInteger brightnessIndex = floor(slider.value / (slider.maximumValue / 25.0));
+    _currentBrightnessValue = (slider.maximumValue - slider.value);
+    NSInteger brightnessIndex = floor(_currentBrightnessValue / (slider.maximumValue / 25.0));
     UIScreen *mainScreen = [UIScreen mainScreen];
     [mainScreen setBrightness:1.0 - (brightnessIndex / 25.0)];
 }
@@ -405,21 +438,16 @@ NSString *const cellID = @"flashEffectID";
         {
             [_sliderControl setMinimumValue:0.0];
             [_sliderControl setMaximumValue:100.0];
-            [_sliderControl setValue:0.0];
+            [_sliderControl setValue:_sliderControl.maximumValue - _currentBrightnessValue];
             
+            _contentImageView.backgroundColor = _selectedColor;
             _sliderToolBarBottomConst.constant = 44;
             _pickerViewBottomConst.constant = -162;
             _bottomToolBarBottomConst.constant = 0;
             _colorPickerViewBottomConst.constant = IS_IPHONE35 ? 61 : 88;
         }
             break;
-        case A3FlashViewModeTypeBrightness:
-        {
-            [_sliderControl setMinimumValue:0.0];
-            [_sliderControl setMaximumValue:100.0];
-            [_sliderControl setValue:0.0];
-        }
-            break;
+
         case A3FlashViewModeTypeEffect:
         {
             [_sliderControl setMinimumValue:-80.0];
@@ -437,8 +465,14 @@ NSString *const cellID = @"flashEffectID";
             break;
     }
     
-    _pauseSwitchButton.hidden = _currentFlashViewMode == A3FlashViewModeTypeEffect ? NO : YES;
-    _pauseSwitchButton.alpha = _currentFlashViewMode == A3FlashViewModeTypeEffect ? 1.0 : 0.0;
+    if (_isEffectWorking) {
+        _pauseSwitchButton.hidden = _currentFlashViewMode == A3FlashViewModeTypeEffect ? NO : YES;
+        _pauseSwitchButton.alpha = _currentFlashViewMode == A3FlashViewModeTypeEffect ? 1.0 : 0.0;
+    }
+    else {
+        _pauseSwitchButton.hidden = YES;
+        _pauseSwitchButton.alpha = 0.0;
+    }
 }
 
 #pragma mark - LED Related
@@ -471,7 +505,7 @@ NSString *const cellID = @"flashEffectID";
 	if (!myClass) {
 		return;
 	}
-	
+
 	AVCaptureDevice *myTorch = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 	[myTorch lockForConfiguration:nil];
 	
@@ -818,6 +852,9 @@ NSString *const cellID = @"flashEffectID";
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [[NSUserDefaults standardUserDefaults] setObject:@(buttonIndex) forKey:A3UserDefaultFlashTurnLEDOnAtStart];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    if (buttonIndex == 1) {
+        [self LEDlightOnButtonTouchUp:nil];
+    }
 }
 
 #pragma mark - UIPickerViewDelegate
@@ -836,12 +873,18 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    _selectedEffectIndex = row;
+    [self startStrobeLightEffectForIndex:_selectedEffectIndex];
+}
+
+
+- (void)startStrobeLightEffectForIndex:(NSInteger)selectedIndex {
     [self releaseStrobelight];
     if (!_LEDSession) {
         [self initializeLED];
     }
     
-	switch (row) {
+	switch (selectedIndex) {
 		case 0: {
 			// SOS
 			NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.0];
@@ -916,6 +959,18 @@ NSString *const cellID = @"flashEffectID";
 	}
 	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
 	[runLoop addTimer:strobeTimer forMode:NSDefaultRunLoopMode];
+    _isEffectWorking = YES;
+
+    
+    [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationCurve:7];
+    [UIView setAnimationDuration:0.25];
+    
+    _pauseSwitchButton.hidden = NO;
+    _pauseSwitchButton.alpha = 1.0;
+    
+    [UIView commitAnimations];
 }
 
 #pragma mark - NPColorPickerViewDelegate
@@ -924,7 +979,6 @@ NSString *const cellID = @"flashEffectID";
 -(void)NPColorPickerView:(NPColorPickerView *)view didSelectColor:(UIColor *)color {
     _selectedColor = color;
     _contentImageView.backgroundColor = _selectedColor;
-    _colorPickerView.backgroundColor = _selectedColor;
     
     [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:_selectedColor] forKey:A3UserDefaultFlashSelectedColor];
     [[NSUserDefaults standardUserDefaults] synchronize];

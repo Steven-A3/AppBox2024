@@ -39,6 +39,7 @@ extern NSString *const A3UserDefaultFlashViewMode;
 - (IBAction)LEDonOffButtonTouchUp:(id)sender;
 - (IBAction)colorMenuButtonTouchUp:(id)sender;
 - (IBAction)effectsMenuButtonTouchUp:(id)sender;
+- (IBAction)effectPauseButtonTouchUp:(id)sender;
 
 //#if	!TARGET_IPHONE_SIMULATOR
 @property (strong, nonatomic) AVCaptureSession *LEDSession;
