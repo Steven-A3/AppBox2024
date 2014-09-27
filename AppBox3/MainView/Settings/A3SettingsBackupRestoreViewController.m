@@ -168,7 +168,9 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 																  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 																  otherButtonTitles:nil];
 						[alertView show];
-					} else {
+					}
+					else
+					{
 						_selectBackupInProgress = YES;
 						[self.restClient loadMetadata:kDropboxDir];
 					}
