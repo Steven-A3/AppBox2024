@@ -135,6 +135,35 @@
 	}
 }
 
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	// Return NO if you do not want the specified item to be editable.
+	return YES;
+}
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		// Delete the row from the data source
+		NSFileManager *fileManager = [NSFileManager defaultManager];
+		NSError *error;
+		[fileManager removeItemAtPath:[_backupFiles[indexPath.row] pathInDocumentDirectory] error:&error];
+		if (!error) {
+			_backupFiles = nil;
+			[self.tableView reloadData];
+		} else {
+			UIAlertView *alertError = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+																 message:error.localizedDescription
+																delegate:nil
+													   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+													   otherButtonTitles:nil];
+			[alertError show];
+		}
+	}
+}
+
 - (void)selectBackUpFileAction {
 	if ([_delegate respondsToSelector:@selector(iTunesSelectBackupViewController:backupFileSelected:)]) {
 		[_delegate iTunesSelectBackupViewController:self backupFileSelected:self.backupFiles[_selectedIndex]];

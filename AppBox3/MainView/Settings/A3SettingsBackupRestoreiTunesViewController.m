@@ -129,7 +129,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) { 	// Restore
-
+			if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
+				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+																	message:NSLocalizedString(@"Please turn iCloud sync off.", @"Please turn iCloud sync off.")
+																   delegate:nil
+														  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+														  otherButtonTitles:nil];
+				[alertView show];
+			} else {
+				[self performSegueWithIdentifier:@"iTunesSelectBackup" sender:self];
+			}
 		} else {					// Backup
 			[self.backupRestoreManager backupToDocumentDirectory];
 		}

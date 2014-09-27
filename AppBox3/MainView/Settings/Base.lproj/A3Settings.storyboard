@@ -1144,9 +1144,6 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="OOq-C1-5os" kind="modal" identifier="iTunesSelectBackup" id="Qun-Uy-93v"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="a5g-em-hMv" style="IBUITableViewCellStyleDefault" id="xTh-Of-d6g" customClass="A3StandardTableViewCell">
                                         <rect key="frame" x="0.0" y="79" width="320" height="44"/>
@@ -1195,6 +1192,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Backup &amp; Restore on iTunes" id="wZg-tr-J14"/>
+                    <connections>
+                        <segue destination="OOq-C1-5os" kind="modal" identifier="iTunesSelectBackup" id="lrw-hy-mS9"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="68r-a2-zJF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1255,6 +1255,7 @@
         <scene sceneID="2sl-ga-jiv">
             <objects>
                 <navigationController definesPresentationContext="YES" id="OOq-C1-5os" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="kG2-52-UaZ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="fKX-3d-Dy0">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
