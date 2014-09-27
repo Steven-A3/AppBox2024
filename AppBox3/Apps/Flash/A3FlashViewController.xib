@@ -11,12 +11,12 @@
                 <outlet property="colorPickerView" destination="DZe-m5-3wU" id="dpe-hZ-bdx"/>
                 <outlet property="colorPickerViewBottomConst" destination="TaE-2i-bGO" id="7WK-I3-2wY"/>
                 <outlet property="contentImageView" destination="CyN-5t-mnB" id="b5A-Cj-YGR"/>
-                <outlet property="middleToolBarBottomConst" destination="JbI-nb-ifB" id="vcv-cD-52A"/>
                 <outlet property="pauseSwitchButton" destination="5cE-hh-fow" id="FjK-DG-qAq"/>
-                <outlet property="pickerPanelView" destination="lV0-Pf-aVj" id="qA9-Ne-mOc"/>
+                <outlet property="pickerPanelView" destination="lV0-Pf-aVj" id="SIm-IJ-7i5"/>
                 <outlet property="pickerViewBottomConst" destination="Pui-v2-Z1R" id="AUD-0u-uMj"/>
                 <outlet property="sliderControl" destination="e0I-jN-Ngd" id="Pxj-us-8Lu"/>
-                <outlet property="sliderToolBar" destination="2hZ-lZ-LJE" id="Q0W-jz-wUw"/>
+                <outlet property="sliderToolBar" destination="2hZ-lZ-LJE" id="arC-Mo-Yfw"/>
+                <outlet property="sliderToolBarBottomConst" destination="JbI-nb-ifB" id="2M5-gP-zhw"/>
                 <outlet property="topToolBar" destination="x8x-tH-EhC" id="bQs-93-7N3"/>
                 <outlet property="topToolBarTopConst" destination="izJ-ZD-Rlh" id="tDn-BU-wSs"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -32,12 +32,12 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DZe-m5-3wU" userLabel="color picker - View" customClass="NPColorPickerView">
-                    <rect key="frame" x="60" y="83" width="200" height="280"/>
+                    <rect key="frame" x="0.0" y="-37" width="320" height="400"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="280" id="2CE-Uw-5TJ"/>
-                        <constraint firstAttribute="width" constant="200" id="IEV-Yt-dOZ"/>
+                        <constraint firstAttribute="height" constant="400" id="2CE-Uw-5TJ"/>
+                        <constraint firstAttribute="width" constant="320" id="IEV-Yt-dOZ"/>
                     </constraints>
                 </view>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x8x-tH-EhC" userLabel="top - Toolbar">
@@ -63,7 +63,7 @@
                     </items>
                     <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 </toolbar>
-                <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2hZ-lZ-LJE" userLabel="middle - Toolbar">
+                <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2hZ-lZ-LJE" userLabel="slider - Toolbar">
                     <rect key="frame" x="0.0" y="480" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -85,7 +85,7 @@
                     <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 </toolbar>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lV0-Pf-aVj" userLabel="pickerPanel - View">
-                    <rect key="frame" x="0.0" y="306" width="320" height="162"/>
+                    <rect key="frame" x="0.0" y="568" width="320" height="162"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vNj-3P-xTb">
@@ -158,7 +158,7 @@
                 <constraint firstAttribute="bottom" secondItem="2hZ-lZ-LJE" secondAttribute="bottom" constant="44" id="JbI-nb-ifB"/>
                 <constraint firstAttribute="bottom" secondItem="0cB-eB-uh6" secondAttribute="bottom" id="JyY-xt-XBm"/>
                 <constraint firstAttribute="trailing" secondItem="x8x-tH-EhC" secondAttribute="trailing" id="KHF-po-NbS"/>
-                <constraint firstAttribute="bottom" secondItem="lV0-Pf-aVj" secondAttribute="bottom" constant="100" id="Pui-v2-Z1R"/>
+                <constraint firstAttribute="bottom" secondItem="lV0-Pf-aVj" secondAttribute="bottom" constant="-162" id="Pui-v2-Z1R"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Q45-yy-szA"/>
                 <constraint firstAttribute="bottom" secondItem="DZe-m5-3wU" secondAttribute="bottom" constant="205" id="TaE-2i-bGO"/>
                 <constraint firstItem="0cB-eB-uh6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="W8c-zL-67f"/>

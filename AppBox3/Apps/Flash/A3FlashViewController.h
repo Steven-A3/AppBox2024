@@ -20,7 +20,7 @@ extern NSString *const A3UserDefaultFlashViewMode;
 @property (weak, nonatomic) IBOutlet UIView *pickerPanelView;
 @property (weak, nonatomic) IBOutlet NPColorPickerView *colorPickerView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topToolBarTopConst;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *middleToolBarBottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *sliderToolBarBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBarBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerViewBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerViewBottomConst;

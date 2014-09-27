@@ -172,6 +172,8 @@ NSString *const cellID = @"flashEffectID";
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
     [_contentImageView addGestureRecognizer:tapGesture];
+    UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
+    [_colorPickerView addGestureRecognizer:tapGesture2];
     NSNumber *isLedOnStart = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashTurnLEDOnAtStart];
     if (!isLedOnStart) {
         UIAlertView *question = [[UIAlertView alloc] initWithTitle:nil
@@ -247,7 +249,7 @@ NSString *const cellID = @"flashEffectID";
     
     
     if (_showAllMenu) {
-        _middleToolBarBottomConst.constant = 44;
+        _sliderToolBarBottomConst.constant = 44;
         [self configureFlashViewMode:_currentFlashViewMode animation:YES];
     }
     else {
@@ -257,7 +259,7 @@ NSString *const cellID = @"flashEffectID";
         [UIView setAnimationDuration:0.25];
         
         _topToolBarTopConst.constant = -65;
-        _middleToolBarBottomConst.constant = -88;
+        _sliderToolBarBottomConst.constant = 0;
         _bottomToolBarBottomConst.constant = -44;
         _pickerViewBottomConst.constant = -162;
         _colorPickerViewBottomConst.constant = -CGRectGetHeight(_colorPickerView.bounds);
@@ -375,20 +377,20 @@ NSString *const cellID = @"flashEffectID";
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     if (animate) {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.25];
+//        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
+//        [UIView setAnimationBeginsFromCurrentState:YES];
+//        [UIView setAnimationCurve:7];
+//        [UIView setAnimationDuration:0.25];
         
         [self adjustConfigurationLayoutValueForFlashViewMode:_currentFlashViewMode];
         
-        [_topToolBar layoutIfNeeded];
-        [_sliderToolBar layoutIfNeeded];
-        [_pickerPanelView layoutIfNeeded];
-        [_bottomToolBar layoutIfNeeded];
-        [_colorPickerView layoutIfNeeded];
-        
-        [UIView commitAnimations];
+//        [_topToolBar layoutIfNeeded];
+//        [_sliderToolBar layoutIfNeeded];
+//        [_bottomToolBar layoutIfNeeded];
+//        [_pickerPanelView layoutIfNeeded];
+//        [_colorPickerView layoutIfNeeded];
+//        
+//        [UIView commitAnimations];
     }
     else {
         [self adjustConfigurationLayoutValueForFlashViewMode:_currentFlashViewMode];
@@ -405,10 +407,10 @@ NSString *const cellID = @"flashEffectID";
             [_sliderControl setMaximumValue:100.0];
             [_sliderControl setValue:0.0];
             
-            _middleToolBarBottomConst.constant = 44;
+            _sliderToolBarBottomConst.constant = 44;
             _pickerViewBottomConst.constant = -162;
-            _colorPickerViewBottomConst.constant = 88;
             _bottomToolBarBottomConst.constant = 0;
+            _colorPickerViewBottomConst.constant = IS_IPHONE35 ? 61 : 88;
         }
             break;
         case A3FlashViewModeTypeBrightness:
@@ -424,10 +426,10 @@ NSString *const cellID = @"flashEffectID";
             [_sliderControl setMaximumValue:80.0];
             [_sliderControl setValue:0.0];
             
-            _middleToolBarBottomConst.constant = 44 + 162;
-            _colorPickerViewBottomConst.constant = -CGRectGetHeight(_colorPickerView.bounds);
+            _sliderToolBarBottomConst.constant = 44 + 162;
             _pickerViewBottomConst.constant = 44;
             _bottomToolBarBottomConst.constant = 0;
+            _colorPickerViewBottomConst.constant = -CGRectGetHeight(_colorPickerView.bounds);
         }
             break;
             
