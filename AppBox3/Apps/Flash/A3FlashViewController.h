@@ -23,12 +23,13 @@ extern NSString *const A3UserDefaultFlashViewMode;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *sliderToolBarBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBarBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerViewBottomConst;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerViewBottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerHeightConst;
 
 @property (weak, nonatomic) IBOutlet UISlider *sliderControl;
 @property (weak, nonatomic) IBOutlet UIImageView *contentImageView;
 
 @property (weak, nonatomic) IBOutlet UIButton *pauseSwitchButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerTopConst;
 
 
 - (IBAction)sliderControlValueChanged:(UISlider *)sender;

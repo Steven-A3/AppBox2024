@@ -74,6 +74,7 @@
 		17D42F9D1879F6925F0A7A02 /* A3SettingsChooseColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4228D8D938C6FD778BB35 /* A3SettingsChooseColorViewController.m */; };
 		17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEFB63D5877A0449693 /* A3TranslatorCircleView.m */; };
 		3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */; };
+		571795CE19D7CD6600DEF2FB /* RGB-HSL.m in Sources */ = {isa = PBXBuildFile; fileRef = 571795CD19D7CD6600DEF2FB /* RGB-HSL.m */; };
 		57213EFB19C328FD005AD0ED /* CLLocationManager+authorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */; };
 		5727A57219D411F100ADB17C /* Erase.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5727A57119D411F100ADB17C /* Erase.caf */; };
 		5727A57419D41B9200ADB17C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5727A57319D41B9200ADB17C /* CoreMotion.framework */; };
@@ -1063,6 +1064,8 @@
 		17D42FEEE5D02AC4D6E1CB7A /* A3TranslatorMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorMessageViewController.m; path = Translator/A3TranslatorMessageViewController.m; sourceTree = "<group>"; };
 		3E21D15318FB1BF100B88D62 /* FrameRateCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameRateCalculator.h; sourceTree = "<group>"; };
 		3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrameRateCalculator.m; sourceTree = "<group>"; };
+		571795CC19D7CD6500DEF2FB /* RGB-HSL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RGB-HSL.h"; path = "NPColorPicker/RGB-HSL.h"; sourceTree = "<group>"; };
+		571795CD19D7CD6600DEF2FB /* RGB-HSL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RGB-HSL.m"; path = "NPColorPicker/RGB-HSL.m"; sourceTree = "<group>"; };
 		5718E4991988E91400B4C7ED /* A3DefaultColorDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DefaultColorDefines.h; sourceTree = "<group>"; };
 		57213EF919C328FD005AD0ED /* CLLocationManager+authorization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLLocationManager+authorization.h"; sourceTree = "<group>"; };
 		57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocationManager+authorization.m"; sourceTree = "<group>"; };
@@ -2883,6 +2886,8 @@
 		577707E919D57CA500DC066A /* NPColorPicker */ = {
 			isa = PBXGroup;
 			children = (
+				571795CC19D7CD6500DEF2FB /* RGB-HSL.h */,
+				571795CD19D7CD6600DEF2FB /* RGB-HSL.m */,
 				577707F719D57E5B00DC066A /* NPPickerIndicator.h */,
 				577707F819D57E5B00DC066A /* NPPickerIndicator.m */,
 				577707F419D57E1F00DC066A /* CGColor+Additions.h */,
@@ -6202,6 +6207,7 @@
 				68B6A31318CEC76D004084EF /* GCPlaceholderTextView.m in Sources */,
 				68B6A2BE18CEC76D004084EF /* A3LoanCalcDateInputCell.m in Sources */,
 				68067C8C186E867C00D1A1D1 /* A3PasswordViewController.m in Sources */,
+				571795CE19D7CD6600DEF2FB /* RGB-HSL.m in Sources */,
 				68143D0F18E3EC1F00569691 /* A3KeyboardButton_iOS7_iPhone.m in Sources */,
 				17D427E06C341B1B48478B6A /* A3TranslatorLanguageTVDelegate.m in Sources */,
 				68B6A44D18CEE781004084EF /* PSTCollectionViewController.m in Sources */,

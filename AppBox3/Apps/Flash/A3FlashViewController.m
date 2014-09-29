@@ -172,10 +172,10 @@ NSString *const cellID = @"flashEffectID";
     
     [self initializeStatus];
     
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
-    [_contentImageView addGestureRecognizer:tapGesture];
-    UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
-    [_colorPickerView addGestureRecognizer:tapGesture2];
+//    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
+//    [_contentImageView addGestureRecognizer:tapGesture];
+//    UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
+//    [_colorPickerView addGestureRecognizer:tapGesture2];
     
     [self checkTorchOnStartIfNeeded];
 }
@@ -194,6 +194,13 @@ NSString *const cellID = @"flashEffectID";
 #endif
 }
 
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+    [self configureFlashViewMode:_currentFlashViewMode animation:NO];
+    [_contentImageView setBackgroundColor:_selectedColor];
+}
+
 - (void)initializeStatus
 {
     _currentFlashViewMode = [[NSUserDefaults standardUserDefaults] integerForKey:A3UserDefaultFlashViewMode];
@@ -203,9 +210,12 @@ NSString *const cellID = @"flashEffectID";
         _selectedColor = [UIColor blackColor];
     }
     
+    _isLEDAvailable = [A3UIDevice hasTorch];
+    
     _deviceBrightnessBefore = [[UIScreen mainScreen] brightness];
     _colorPickerView.delegate = self;
     _colorPickerView.backgroundColor = [UIColor clearColor];
+    _colorPickerHeightConst.constant = IS_IPHONE35 ? 390 : 480;
     
     _flashEffectList = @[NSLocalizedString(@"SOS", @"SOS"),
                          NSLocalizedString(@"Strobe", @"Strobe"),
@@ -215,8 +225,8 @@ NSString *const cellID = @"flashEffectID";
                          NSLocalizedString(@"Caution Flare", @"Caution Flare"),
                          NSLocalizedString(@"Traffic Light", @"Traffic Light")];
     
-    [self configureFlashViewMode:_currentFlashViewMode animation:NO];
-    [_contentImageView setBackgroundColor:_selectedColor];
+//    [self configureFlashViewMode:_currentFlashViewMode animation:NO];
+//    [_contentImageView setBackgroundColor:_selectedColor];
 }
 
 - (void)checkTorchOnStartIfNeeded {
@@ -231,6 +241,10 @@ NSString *const cellID = @"flashEffectID";
         [question show];
         
         return;
+    }
+    
+    if (!_isLEDAvailable) {
+        isLedOnStart = NO;
     }
     
     if ([isLedOnStart boolValue]) {
@@ -274,7 +288,8 @@ NSString *const cellID = @"flashEffectID";
         _sliderToolBarBottomConst.constant = 0;
         _bottomToolBarBottomConst.constant = -44;
         _pickerViewBottomConst.constant = -162;
-        _colorPickerViewBottomConst.constant = -CGRectGetHeight(_colorPickerView.bounds);
+//        _colorPickerViewBottomConst.constant = -CGRectGetHeight(_colorPickerView.bounds);
+        _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
         
         [_topToolBar layoutIfNeeded];
         [_sliderToolBar layoutIfNeeded];
@@ -444,7 +459,14 @@ NSString *const cellID = @"flashEffectID";
             _sliderToolBarBottomConst.constant = 44;
             _pickerViewBottomConst.constant = -162;
             _bottomToolBarBottomConst.constant = 0;
-            _colorPickerViewBottomConst.constant = IS_IPHONE35 ? 61 : 88;
+            
+            if (IS_IPAD) {
+                _colorPickerTopConst.constant = 74;
+            }
+            else {
+                _colorPickerTopConst.constant = 30;
+            }
+            
         }
             break;
 
@@ -457,7 +479,7 @@ NSString *const cellID = @"flashEffectID";
             _sliderToolBarBottomConst.constant = 44 + 162;
             _pickerViewBottomConst.constant = 44;
             _bottomToolBarBottomConst.constant = 0;
-            _colorPickerViewBottomConst.constant = -CGRectGetHeight(_colorPickerView.bounds);
+            _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
         }
             break;
             
@@ -540,7 +562,7 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)initializeLED {
-	if (!_LEDInitialized) {
+	if (!_LEDInitialized && _isLEDAvailable) {
 		AVCaptureDevice *myTorch = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 		AVCaptureDeviceInput *flashInput = [AVCaptureDeviceInput deviceInputWithDevice:myTorch error: nil];
 		AVCaptureVideoDataOutput *output = [[AVCaptureVideoDataOutput alloc] init];
@@ -563,8 +585,6 @@ NSString *const cellID = @"flashEffectID";
 		[_LEDSession commitConfiguration];
 		[_LEDSession startRunning];
 		_LEDInitialized = YES;
-        
-        _isLEDAvailable = [A3UIDevice hasTorch];
 	}
 }
 

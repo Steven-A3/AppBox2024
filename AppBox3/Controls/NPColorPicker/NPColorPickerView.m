@@ -21,6 +21,7 @@
 #import "NPConicGradient.h"
 #import "CGColor+Additions.h"
 #import "NPPickerIndicator.h"
+#import "RGB-HSL.h"
 
 #define M_PI_3    M_PI/3 
 
@@ -550,9 +551,12 @@ NSString * kColorProperty = @"color";
          viewFrame.size.width - self.insets.left - self.insets.right, viewFrame.size.height - self.insets.top - self.insets.bottom};
       CGPoint center = CGPointMake(CGRectGetMidX(viewFrame), CGRectGetMidY(viewFrame));
       CGPoint t = [recognizer locationOfTouch:0 inView:self];
+       
+//       NSLog(@"gesture point : %@", NSStringFromCGPoint(t));
       
-      float sat, brigt, hue = (M_PI - atan2f(t.y-center.y,center.x-t.x)) / (2 * M_PI);
+      CGFloat sat, brigt, hue = (M_PI - atan2f(t.y-center.y,center.x-t.x)) / (2 * M_PI);
       [color_ getHue:NULL saturation:&sat brightness:&brigt alpha:NULL];
+//       NSLog(@"hue : %@", @(hue));
       [self setColor:[UIColor colorWithHue:hue saturation:sat brightness:brigt alpha:1.0f]];
    } else if ([recognizer state] == UIGestureRecognizerStateEnded) {
       [[self delegate] NPColorPickerView:self didSelectColor:color_]; 
@@ -575,7 +579,7 @@ NSString * kColorProperty = @"color";
 -(void)onMoveSVIndicator:(UIPanGestureRecognizer *) recognizer {
    if ([recognizer state] == UIGestureRecognizerStateBegan || [recognizer state] == UIGestureRecognizerStateChanged) {
       CGPoint t = [recognizer locationOfTouch:0 inView:self];
-      float sat, brigt, hue;
+      CGFloat sat, brigt, hue;
       [color_ getHue:&hue saturation:NULL brightness:NULL alpha:NULL];
       [self getSaturation:&sat brightness:&brigt position:CGPointMake(t.x,t.y)];
       [self setColor:[UIColor colorWithHue:hue saturation:sat brightness:brigt alpha:1.0f]];
