@@ -2039,6 +2039,71 @@ then drag it up or down</string>
             </objects>
             <point key="canvasLocation" x="872" y="1799"/>
         </scene>
+        <!--Flashlight Instruction View Controller-->
+        <scene sceneID="nPz-TT-T9M">
+            <objects>
+                <viewController storyboardIdentifier="Flashlight" useStoryboardIdentifierAsRestorationIdentifier="YES" id="U17-fj-NPF" userLabel="Flashlight Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="zK3-Qo-Nmc"/>
+                        <viewControllerLayoutGuide type="bottom" id="ywf-Dw-CUs"/>
+                    </layoutGuides>
+                    <view key="view" alpha="0.69999998807907104" contentMode="scaleToFill" id="VSQ-cR-jpS">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="NzG-vY-uGt">
+                                <rect key="frame" x="363" y="115" width="42" height="42"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="kfp-Z2-laZ"/>
+                                    <constraint firstAttribute="width" constant="42" id="plM-jv-UcY"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="tRY-KN-Eze">
+                                <rect key="frame" x="410" y="120" width="14" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="14" id="Kfj-LI-yod"/>
+                                    <constraint firstAttribute="width" constant="14" id="Kjv-mQ-tPA"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="768" translatesAutoresizingMaskIntoConstraints="NO" id="Vlo-oI-hX9" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="0.0" y="167" width="768" height="40"/>
+                                <string key="text">Tap the screen to display
+the controls</string>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="NzG-vY-uGt" secondAttribute="centerX" id="23y-bS-z2d"/>
+                            <constraint firstItem="NzG-vY-uGt" firstAttribute="top" secondItem="tRY-KN-Eze" secondAttribute="top" constant="-5" id="NCj-jG-Fcl"/>
+                            <constraint firstItem="tRY-KN-Eze" firstAttribute="leading" secondItem="NzG-vY-uGt" secondAttribute="trailing" constant="5" id="PC6-O6-54Q"/>
+                            <constraint firstAttribute="trailing" secondItem="Vlo-oI-hX9" secondAttribute="trailing" id="Pq1-rF-yqb"/>
+                            <constraint firstItem="NzG-vY-uGt" firstAttribute="top" secondItem="VSQ-cR-jpS" secondAttribute="top" constant="115" id="UW5-dX-EBg"/>
+                            <constraint firstItem="Vlo-oI-hX9" firstAttribute="top" secondItem="NzG-vY-uGt" secondAttribute="bottom" constant="10" id="e8U-r6-xcX"/>
+                            <constraint firstItem="Vlo-oI-hX9" firstAttribute="leading" secondItem="VSQ-cR-jpS" secondAttribute="leading" id="yLO-ev-7mP"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="5OH-wH-nDm" appends="YES" id="imz-XK-hXl"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="tRY-KN-Eze" id="Dcu-hg-57x"/>
+                        <outletCollection property="childImageViews" destination="NzG-vY-uGt" id="Pwm-hS-Hqz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lSl-Ph-ZeO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="5OH-wH-nDm">
+                    <connections>
+                        <action selector="viewTapped:" destination="U17-fj-NPF" id="24e-BC-qpB"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="5" y="4023"/>
+        </scene>
     </scenes>
     <resources>
         <image name="delete03" width="14" height="14"/>

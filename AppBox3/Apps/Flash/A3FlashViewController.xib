@@ -8,10 +8,13 @@
             <connections>
                 <outlet property="bottomToolBar" destination="0cB-eB-uh6" id="DgP-pB-FG3"/>
                 <outlet property="bottomToolBarBottomConst" destination="JyY-xt-XBm" id="JVA-IZ-tB6"/>
+                <outlet property="colorBarButton" destination="cMT-7q-00U" id="3dy-Sf-jP8"/>
                 <outlet property="colorPickerHeightConst" destination="2CE-Uw-5TJ" id="Il5-iv-gzW"/>
                 <outlet property="colorPickerTopConst" destination="nbO-T0-RKV" id="icU-3v-k9d"/>
                 <outlet property="colorPickerView" destination="DZe-m5-3wU" id="dpe-hZ-bdx"/>
                 <outlet property="contentImageView" destination="CyN-5t-mnB" id="b5A-Cj-YGR"/>
+                <outlet property="effectBarButton" destination="ejK-Gp-dua" id="LiT-Aa-dE0"/>
+                <outlet property="ledBarButton" destination="FwG-bh-VC7" id="RXA-9P-D5E"/>
                 <outlet property="pauseSwitchButton" destination="5cE-hh-fow" id="FjK-DG-qAq"/>
                 <outlet property="pickerPanelView" destination="lV0-Pf-aVj" id="SIm-IJ-7i5"/>
                 <outlet property="pickerViewBottomConst" destination="Pui-v2-Z1R" id="AUD-0u-uMj"/>
@@ -65,7 +68,7 @@
                     <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 </toolbar>
                 <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2hZ-lZ-LJE" userLabel="slider - Toolbar">
-                    <rect key="frame" x="0.0" y="480" width="320" height="44"/>
+                    <rect key="frame" x="0.0" y="450" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <items>
@@ -111,26 +114,26 @@
                     </constraints>
                 </view>
                 <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0cB-eB-uh6" userLabel="bottom - Toolbar">
-                    <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                    <rect key="frame" x="0.0" y="494" width="320" height="74"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="44" id="ygp-jg-Gdy"/>
+                        <constraint firstAttribute="height" constant="74" id="ygp-jg-Gdy"/>
                     </constraints>
                     <items>
-                        <barButtonItem title="LED" width="44" id="FwG-bh-VC7">
+                        <barButtonItem image="f_flash_on" width="44" id="FwG-bh-VC7">
                             <connections>
                                 <action selector="LEDonOffButtonTouchUp:" destination="-1" id="vzs-r0-LV3"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="OTw-vZ-2dw"/>
-                        <barButtonItem title="Color" width="44" id="cMT-7q-00U">
+                        <barButtonItem image="f_color_off" width="44" id="cMT-7q-00U">
                             <connections>
                                 <action selector="colorMenuButtonTouchUp:" destination="-1" id="lBr-IT-jlk"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="f3d-qf-kF6"/>
-                        <barButtonItem title="Effect" width="44" id="ejK-Gp-dua">
+                        <barButtonItem image="f_effect_off" width="44" id="ejK-Gp-dua">
                             <connections>
                                 <action selector="effectsMenuButtonTouchUp:" destination="-1" id="TN2-0r-GCs"/>
                             </connections>
@@ -138,14 +141,14 @@
                     </items>
                     <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 </toolbar>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5cE-hh-fow">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5cE-hh-fow">
                     <rect key="frame" x="256" y="84" width="44" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="44" id="Bot-ci-NOz"/>
                         <constraint firstAttribute="height" constant="44" id="ily-CJ-GKY"/>
                     </constraints>
-                    <state key="normal" title="pause">
+                    <state key="normal" image="delete02">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -160,7 +163,7 @@
                 <constraint firstItem="DZe-m5-3wU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="5gN-Hh-ufF"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="EeY-IL-v5n"/>
                 <constraint firstItem="2hZ-lZ-LJE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="H6y-o7-Yyv"/>
-                <constraint firstAttribute="bottom" secondItem="2hZ-lZ-LJE" secondAttribute="bottom" constant="44" id="JbI-nb-ifB"/>
+                <constraint firstAttribute="bottom" secondItem="2hZ-lZ-LJE" secondAttribute="bottom" constant="74" id="JbI-nb-ifB"/>
                 <constraint firstAttribute="bottom" secondItem="0cB-eB-uh6" secondAttribute="bottom" id="JyY-xt-XBm"/>
                 <constraint firstAttribute="trailing" secondItem="x8x-tH-EhC" secondAttribute="trailing" id="KHF-po-NbS"/>
                 <constraint firstAttribute="bottom" secondItem="lV0-Pf-aVj" secondAttribute="bottom" constant="-162" id="Pui-v2-Z1R"/>
@@ -185,6 +188,10 @@
         </view>
     </objects>
     <resources>
+        <image name="delete02" width="17" height="17"/>
+        <image name="f_color_off" width="60" height="60"/>
+        <image name="f_effect_off" width="60" height="60"/>
+        <image name="f_flash_on" width="60" height="60"/>
         <image name="information" width="22" height="22"/>
         <image name="m_zoomin" width="23" height="23"/>
         <image name="m_zoomout" width="23" height="23"/>

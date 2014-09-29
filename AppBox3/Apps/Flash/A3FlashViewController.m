@@ -10,6 +10,10 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+MMDrawerController.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults.h"
+#import "A3InstructionViewController.h"
+
+#define kBottomToolBarHeight        74
 
 typedef NS_ENUM(NSUInteger, A3FlashViewModeType) {
     A3FlashViewModeTypeColor = 0,
@@ -129,11 +133,11 @@ NSString *const A3UserDefaultFlashViewMode = @"A3UserDefaultFlashViewMode";
 NSString *const A3UserDefaultFlashSelectedColor = @"A3UserDefaultFlashSelectedColor";
 NSString *const A3UserDefaultFlashBrightnessValue = @"A3UserDefaultFlashBrightnessValue";
 NSString *const A3UserDefaultFlashEffectIndex = @"A3UserDefaultFlashEffectIndex";
-NSString *const A3UserDefaultFlashTurnLEDOnAtStart = @"A3UserDefaultFlashTurnLEDOnAtStart";
 NSString *const cellID = @"flashEffectID";
 
-@interface A3FlashViewController () <UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, NPColorPickerViewDelegate>
+@interface A3FlashViewController () <UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, NPColorPickerViewDelegate, A3InstructionViewControllerDelegate>
 @property (strong, nonatomic) UIColor *selectedColor;
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
 @implementation A3FlashViewController
@@ -172,12 +176,20 @@ NSString *const cellID = @"flashEffectID";
     
     [self initializeStatus];
     
-//    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
-//    [_contentImageView addGestureRecognizer:tapGesture];
-//    UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
-//    [_colorPickerView addGestureRecognizer:tapGesture2];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
+    [_contentImageView addGestureRecognizer:tapGesture];
+    UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
+    [_colorPickerView addGestureRecognizer:tapGesture2];
     
     [self checkTorchOnStartIfNeeded];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if ([self isMovingToParentViewController]) {
+        [self setupInstructionView];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -200,6 +212,8 @@ NSString *const cellID = @"flashEffectID";
     [self configureFlashViewMode:_currentFlashViewMode animation:NO];
     [_contentImageView setBackgroundColor:_selectedColor];
 }
+
+#pragma mark
 
 - (void)initializeStatus
 {
@@ -230,24 +244,7 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)checkTorchOnStartIfNeeded {
-    NSNumber *isLedOnStart = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashTurnLEDOnAtStart];
-    if (!isLedOnStart) {
-        UIAlertView *question = [[UIAlertView alloc] initWithTitle:nil
-                                                           message:NSLocalizedStringFromTable(@"Turn LED on always? You can change it in the Settings.", @"common", @"Messagews")
-                                                          delegate:self
-                                                 cancelButtonTitle:NSLocalizedStringFromTable(@"NO", @"common", @"Messages")
-                                                 otherButtonTitles:NSLocalizedStringFromTable(@"YES", @"common", @"Messages"), nil];
-        question.delegate = self;
-        [question show];
-        
-        return;
-    }
-    
-    if (!_isLEDAvailable) {
-        isLedOnStart = NO;
-    }
-    
-    if ([isLedOnStart boolValue]) {
+    if (_isLEDAvailable) {
         [self LEDlightOnButtonTouchUp:nil];
     }
 }
@@ -268,6 +265,37 @@ NSString *const cellID = @"flashEffectID";
 	[self.navigationController.navigationBar setShadowImage:nil];
 	[self.navigationController setNavigationBarHidden:hidden];
 }
+#pragma mark Instruction Related
+
+static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShowForFlash";
+
+- (void)setupInstructionView
+{
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForFlash]) {
+        [self showInstructionView:nil];
+    }
+}
+
+- (IBAction)showInstructionView:(id)sender
+{
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForFlash];
+	[[A3UserDefaults standardUserDefaults] synchronize];
+    
+    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
+    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Flashlight"];
+    self.instructionViewController.delegate = self;
+    [self.navigationController.view addSubview:self.instructionViewController.view];
+    self.instructionViewController.view.frame = self.navigationController.view.frame;
+    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+    [self.instructionViewController.view removeFromSuperview];
+    self.instructionViewController = nil;
+}
+
+#pragma mark -
 
 - (void)flashScreenTapped:(UITapGestureRecognizer *)gesture {
 //    _topMenuToolbar.hidden = !_topMenuToolbar.hidden;
@@ -275,7 +303,7 @@ NSString *const cellID = @"flashEffectID";
     
     
     if (_showAllMenu) {
-        _sliderToolBarBottomConst.constant = 44;
+        _sliderToolBarBottomConst.constant = kBottomToolBarHeight;
         [self configureFlashViewMode:_currentFlashViewMode animation:YES];
     }
     else {
@@ -286,7 +314,7 @@ NSString *const cellID = @"flashEffectID";
         
         _topToolBarTopConst.constant = -65;
         _sliderToolBarBottomConst.constant = 0;
-        _bottomToolBarBottomConst.constant = -44;
+        _bottomToolBarBottomConst.constant = kBottomToolBarHeight;
         _pickerViewBottomConst.constant = -162;
 //        _colorPickerViewBottomConst.constant = -CGRectGetHeight(_colorPickerView.bounds);
         _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
@@ -356,9 +384,14 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (IBAction)detailInfoButtonTouchUp:(id)sender {
+    [self showInstructionView:nil];
 }
 
 - (IBAction)LEDonOffButtonTouchUp:(id)sender {
+    _ledBarButton.image = [UIImage imageNamed:@"f_flash_on"];
+    _colorBarButton.image = [UIImage imageNamed:@"f_color_off"];
+    _effectBarButton.image = [UIImage imageNamed:@"f_effect_off"];
+    
 	Class myClass = NSClassFromString(@"AVCaptureDevice");
 	if (!myClass) {
 		return;
@@ -456,7 +489,7 @@ NSString *const cellID = @"flashEffectID";
             [_sliderControl setValue:_sliderControl.maximumValue - _currentBrightnessValue];
             
             _contentImageView.backgroundColor = _selectedColor;
-            _sliderToolBarBottomConst.constant = 44;
+            _sliderToolBarBottomConst.constant = kBottomToolBarHeight;
             _pickerViewBottomConst.constant = -162;
             _bottomToolBarBottomConst.constant = 0;
             
@@ -466,7 +499,10 @@ NSString *const cellID = @"flashEffectID";
             else {
                 _colorPickerTopConst.constant = 30;
             }
-            
+
+            _ledBarButton.image = [UIImage imageNamed:@"f_flash_off"];
+            _colorBarButton.image = [UIImage imageNamed:@"f_color_on"];
+            _effectBarButton.image = [UIImage imageNamed:@"f_effect_off"];
         }
             break;
 
@@ -476,10 +512,14 @@ NSString *const cellID = @"flashEffectID";
             [_sliderControl setMaximumValue:80.0];
             [_sliderControl setValue:0.0];
             
-            _sliderToolBarBottomConst.constant = 44 + 162;
-            _pickerViewBottomConst.constant = 44;
+            _sliderToolBarBottomConst.constant = kBottomToolBarHeight + 162;
+            _pickerViewBottomConst.constant = kBottomToolBarHeight;
             _bottomToolBarBottomConst.constant = 0;
             _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
+            
+            _ledBarButton.image = [UIImage imageNamed:@"f_flash_off"];
+            _colorBarButton.image = [UIImage imageNamed:@"f_color_off"];
+            _effectBarButton.image = [UIImage imageNamed:@"f_effect_on"];
         }
             break;
             
@@ -867,14 +907,6 @@ NSString *const cellID = @"flashEffectID";
 	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
 	[runLoop addTimer:strobeTimer forMode:NSDefaultRunLoopMode];
 	effectLoopCount = (effectLoopCount + 1) % STROBE_LOOP_TRAFFICLIGHT_COUNT;
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    [[NSUserDefaults standardUserDefaults] setObject:@(buttonIndex) forKey:A3UserDefaultFlashTurnLEDOnAtStart];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    if (buttonIndex == 1) {
-        [self LEDlightOnButtonTouchUp:nil];
-    }
 }
 
 #pragma mark - UIPickerViewDelegate

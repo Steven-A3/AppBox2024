@@ -2013,6 +2013,71 @@ the controls</string>
             </objects>
             <point key="canvasLocation" x="-949" y="7147"/>
         </scene>
+        <!--Flashlight Instruction View Controller-->
+        <scene sceneID="063-PG-vee">
+            <objects>
+                <viewController storyboardIdentifier="Flashlight" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Jyf-5k-ept" userLabel="Flashlight Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="svz-Dg-m3o"/>
+                        <viewControllerLayoutGuide type="bottom" id="J1b-JY-KY6"/>
+                    </layoutGuides>
+                    <view key="view" alpha="0.69999998807907104" contentMode="scaleToFill" id="vzN-PV-l0D">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="4Ji-D7-GjZ">
+                                <rect key="frame" x="139" y="115" width="42" height="42"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="cj5-tJ-nU6"/>
+                                    <constraint firstAttribute="height" constant="42" id="meL-1c-UII"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="WpF-0L-7tw">
+                                <rect key="frame" x="186" y="120" width="14" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="14" id="6E9-Nh-JnO"/>
+                                    <constraint firstAttribute="width" constant="14" id="xlA-sF-vUV"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="hpm-3C-8l8" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="10" y="167" width="300" height="40"/>
+                                <string key="text">Tap the screen to display
+the controls</string>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="4Ji-D7-GjZ" secondAttribute="centerX" id="0Pw-zO-RJY"/>
+                            <constraint firstItem="hpm-3C-8l8" firstAttribute="top" secondItem="4Ji-D7-GjZ" secondAttribute="bottom" constant="10" id="Afm-U6-xEa"/>
+                            <constraint firstAttribute="trailing" secondItem="hpm-3C-8l8" secondAttribute="trailing" constant="10" id="DeG-kM-SJZ"/>
+                            <constraint firstItem="hpm-3C-8l8" firstAttribute="leading" secondItem="vzN-PV-l0D" secondAttribute="leading" constant="10" id="L7Z-XE-25D"/>
+                            <constraint firstItem="WpF-0L-7tw" firstAttribute="leading" secondItem="4Ji-D7-GjZ" secondAttribute="trailing" constant="5" id="SHc-Mm-sR0"/>
+                            <constraint firstItem="4Ji-D7-GjZ" firstAttribute="top" secondItem="vzN-PV-l0D" secondAttribute="top" constant="115" id="eBG-4O-8LM"/>
+                            <constraint firstItem="4Ji-D7-GjZ" firstAttribute="top" secondItem="WpF-0L-7tw" secondAttribute="top" constant="-5" id="nBC-11-Rq0"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Lbz-kt-gHp" appends="YES" id="4XD-kl-rEk"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="WpF-0L-7tw" id="uzl-02-vaC"/>
+                        <outletCollection property="childImageViews" destination="4Ji-D7-GjZ" id="g90-ZG-wyh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZzI-HG-Lje" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Lbz-kt-gHp">
+                    <connections>
+                        <action selector="viewTapped:" destination="Jyf-5k-ept" id="op3-3h-F1F"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-949" y="7147"/>
+        </scene>
     </scenes>
     <resources>
         <image name="delete03" width="14" height="14"/>

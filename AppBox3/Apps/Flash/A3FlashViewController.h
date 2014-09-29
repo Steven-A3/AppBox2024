@@ -31,6 +31,9 @@ extern NSString *const A3UserDefaultFlashViewMode;
 @property (weak, nonatomic) IBOutlet UIButton *pauseSwitchButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerTopConst;
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *ledBarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *colorBarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *effectBarButton;
 
 - (IBAction)sliderControlValueChanged:(UISlider *)sender;
 
