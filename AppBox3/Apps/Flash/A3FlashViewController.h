@@ -17,6 +17,7 @@ extern NSString *const A3UserDefaultFlashViewMode;
 @property (weak, nonatomic) IBOutlet UIToolbar *topToolBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *sliderToolBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolBar;
+@property (weak, nonatomic) IBOutlet UIToolbar *LEDBrightnessToolBar;
 @property (weak, nonatomic) IBOutlet UIView *pickerPanelView;
 @property (weak, nonatomic) IBOutlet NPColorPickerView *colorPickerView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topToolBarTopConst;
@@ -24,8 +25,10 @@ extern NSString *const A3UserDefaultFlashViewMode;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBarBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerViewBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerHeightConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *flashBrightnessSliderBottomConst;
 
 @property (weak, nonatomic) IBOutlet UISlider *sliderControl;
+@property (weak, nonatomic) IBOutlet UISlider *flashBrightnessSlider;
 @property (weak, nonatomic) IBOutlet UIImageView *contentImageView;
 
 @property (weak, nonatomic) IBOutlet UIButton *pauseSwitchButton;
@@ -40,7 +43,7 @@ extern NSString *const A3UserDefaultFlashViewMode;
 - (IBAction)appsButtonTouchUp:(id)sender;
 - (IBAction)detailInfoButtonTouchUp:(id)sender;
 
-- (IBAction)LEDonOffButtonTouchUp:(id)sender;
+- (IBAction)LEDMenuButtonTouchUp:(id)sender;
 - (IBAction)colorMenuButtonTouchUp:(id)sender;
 - (IBAction)effectsMenuButtonTouchUp:(id)sender;
 - (IBAction)effectPauseButtonTouchUp:(id)sender;
