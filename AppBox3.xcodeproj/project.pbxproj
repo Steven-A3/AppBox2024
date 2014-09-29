@@ -129,6 +129,7 @@
 		680D63A418D06B3F00938AD0 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */; };
 		680E837119D41D83007CF12C /* A3SettingsStartingAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680E837019D41D83007CF12C /* A3SettingsStartingAppViewController.m */; };
 		680FF7131980B88D00C736F5 /* A3SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 680FF7121980B88D00C736F5 /* A3SyncManager.m */; };
+		6810C64619D9246F00BE75A9 /* Flashlight.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6810C64519D9246F00BE75A9 /* Flashlight.xcassets */; };
 		68143CF718E3EC1F00569691 /* appbox.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC518E3EC1F00569691 /* appbox.ttf */; };
 		68143CF818E3EC1F00569691 /* Digit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC618E3EC1F00569691 /* Digit.ttf */; };
 		68143CF918E3EC1F00569691 /* REGISTER.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC718E3EC1F00569691 /* REGISTER.TTF */; };
@@ -1166,6 +1167,8 @@
 		680E837019D41D83007CF12C /* A3SettingsStartingAppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsStartingAppViewController.m; path = Settings/A3SettingsStartingAppViewController.m; sourceTree = "<group>"; };
 		680FF7111980B88D00C736F5 /* A3SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SyncManager.h; path = AppDelegate/A3SyncManager.h; sourceTree = "<group>"; };
 		680FF7121980B88D00C736F5 /* A3SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SyncManager.m; path = AppDelegate/A3SyncManager.m; sourceTree = "<group>"; };
+		6810C64419D90E4E00BE75A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3Settings.strings; sourceTree = "<group>"; };
+		6810C64519D9246F00BE75A9 /* Flashlight.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Flashlight.xcassets; path = "AppBox3/Asset Catalogs/Flashlight.xcassets"; sourceTree = "<group>"; };
 		68143CC518E3EC1F00569691 /* appbox.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = appbox.ttf; sourceTree = "<group>"; };
 		68143CC618E3EC1F00569691 /* Digit.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Digit.ttf; sourceTree = "<group>"; };
 		68143CC718E3EC1F00569691 /* REGISTER.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = REGISTER.TTF; sourceTree = "<group>"; };
@@ -1575,7 +1578,6 @@
 		6852297F18FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+iPad_rightSideView.m"; sourceTree = "<group>"; };
 		685560041670448D00F200B7 /* A3Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Utilities.h; sourceTree = "<group>"; };
 		685560051670448D00F200B7 /* A3Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Utilities.m; sourceTree = "<group>"; };
-		68563E0C19D59BC100CD203E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3Settings.strings; sourceTree = "<group>"; };
 		685946D018C371C800528190 /* A3SpeechTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SpeechTest.m; sourceTree = "<group>"; };
 		685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3CurrencyTVActionCell.xib; path = Apps/Currency/A3CurrencyTVActionCell.xib; sourceTree = "<group>"; };
 		685E319D17917879001A0EC8 /* A3CurrencyTVActionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyTVActionCell.h; path = Apps/Currency/A3CurrencyTVActionCell.h; sourceTree = "<group>"; };
@@ -3635,6 +3637,7 @@
 				682B37C418AB369500C6BD66 /* Unit.xcassets */,
 				682B37C618AB36B600C6BD66 /* Wallet.xcassets */,
 				68961FE118B311D100C89F16 /* Mirror.xcassets */,
+				6810C64519D9246F00BE75A9 /* Flashlight.xcassets */,
 			);
 			name = "{Resources}";
 			path = ..;
@@ -5518,6 +5521,7 @@
 				682B37C518AB369500C6BD66 /* Unit.xcassets in Resources */,
 				68B6A46818CEE781004084EF /* MWPhotoBrowser.bundle in Resources */,
 				6831EBFD18619CC800BAF15B /* AppBoxCacheStore.sqlite-shm in Resources */,
+				6810C64619D9246F00BE75A9 /* Flashlight.xcassets in Resources */,
 				68F1C8CC18D7F37D009FAE8A /* A3LadyCalendarListViewController.xib in Resources */,
 				68F14FE919485E8500159EAD /* A3DaysCounterEventListNameCell.xib in Resources */,
 				68143D0718E3EC1F00569691 /* A3NumberKeyboardViewController_iPad.xib in Resources */,
@@ -6624,7 +6628,7 @@
 				68F150B0194C0E0E00159EAD /* fr */,
 				68F150B2194C0E1100159EAD /* pl */,
 				68F150B4194C0E1200159EAD /* es */,
-				68563E0C19D59BC100CD203E /* en */,
+				6810C64419D90E4E00BE75A9 /* en */,
 			);
 			name = A3Settings.storyboard;
 			path = Settings;

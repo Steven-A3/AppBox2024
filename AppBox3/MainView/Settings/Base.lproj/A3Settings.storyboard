@@ -1078,7 +1078,7 @@
             </objects>
             <point key="canvasLocation" x="1045" y="119"/>
         </scene>
-        <!--Settings Starting App View Controller - Starting App-->
+        <!--Settings Starting App View Controller - Default App-->
         <scene sceneID="lu0-G7-0sG">
             <objects>
                 <tableViewController id="vRJ-7t-sk5" customClass="A3SettingsStartingAppViewController" sceneMemberID="viewController">
@@ -1110,7 +1110,7 @@
                             <outlet property="delegate" destination="vRJ-7t-sk5" id="1pH-Z1-iHs"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Starting App" id="u8Z-Fp-NHQ"/>
+                    <navigationItem key="navigationItem" title="Default App" id="u8Z-Fp-NHQ"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eQn-Mn-pTd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1164,7 +1164,9 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection footerTitle="SaveToiTunes" id="Scy-Ii-bsP">
+                            <tableViewSection id="Scy-Ii-bsP">
+                                <string key="footerTitle">Please move the backup file to your computer. Delete the backup file to save the storage space in your device.
+Deleting the app will delete the backup file in your device together.</string>
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="VFX-hm-AIs" style="IBUITableViewCellStyleDefault" id="UVd-e0-t7O" customClass="A3StandardTableViewCell">
                                         <rect key="frame" x="0.0" y="143" width="320" height="44"/>

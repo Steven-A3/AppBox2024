@@ -188,3 +188,33 @@
 
 /* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
 "0Me-nY-VE5.text" = "最新 5 集";
+
+/* Class = "IBUILabel"; text = "Backup & Restore on iTunes"; ObjectID = "3V3-lS-rew"; */
+"3V3-lS-rew.text" = "Backup & Restore on iTunes";
+
+/* Class = "IBUINavigationItem"; title = "Backup & Restore on iTunes"; ObjectID = "wZg-tr-J14"; */
+"wZg-tr-J14.title" = "Backup & Restore on iTunes";
+
+/* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "sf0-2F-cNr"; */
+"sf0-2F-cNr.title" = "Select Backup";
+
+/* Class = "IBUILabel"; text = "OFF"; ObjectID = "obV-5c-EMP"; */
+"obV-5c-EMP.text" = "OFF";
+
+/* Class = "IBUILabel"; text = "Restore"; ObjectID = "oMh-UG-rWE"; */
+"oMh-UG-rWE.text" = "Restore";
+
+/* Class = "IBUILabel"; text = "Backup"; ObjectID = "a5g-em-hMv"; */
+"a5g-em-hMv.text" = "Backup";
+
+/* Class = "IBUILabel"; text = "Default App"; ObjectID = "Of0-YK-9dc"; */
+"Of0-YK-9dc.text" = "Default App";
+
+/* Class = "IBUINavigationItem"; title = "Default App"; ObjectID = "u8Z-Fp-NHQ"; */
+"u8Z-Fp-NHQ.title" = "Default App";
+
+/* Class = "IBUILabel"; text = "How to use iTunes Files Sharing"; ObjectID = "VFX-hm-AIs"; */
+"VFX-hm-AIs.text" = "How to use iTunes Files Sharing";
+
+/* Class = "IBUITableViewSection"; footerTitle = "Please move the backup file to your computer. Delete the backup file to save the storage space in your device.\nDeleting the app will delete the backup file in your device together."; ObjectID = "Scy-Ii-bsP"; */
+"Scy-Ii-bsP.footerTitle" = "Please move the backup file to your computer. Delete the backup file to save the storage space in your device.\nDeleting the app will delete the backup file in your device together.";
