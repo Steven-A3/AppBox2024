@@ -138,7 +138,7 @@
 		[A3DateCalcStateManager setExcludeOptions:ExcludeOptions_None];
 	}
 	if ([A3DateCalcStateManager durationType]==0) {
-		[A3DateCalcStateManager setDurationType:DurationType_Year|DurationType_Month|DurationType_Day];
+        [A3DateCalcStateManager setDurationType:DurationType_Day];
 	}
 }
 

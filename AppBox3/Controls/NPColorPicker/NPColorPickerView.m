@@ -21,6 +21,7 @@
 #import "NPConicGradient.h"
 #import "CGColor+Additions.h"
 #import "NPPickerIndicator.h"
+#import "RGB-HSL.h"
 
 #define M_PI_3    M_PI/3 
 
