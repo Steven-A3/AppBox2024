@@ -8,8 +8,9 @@
             <connections>
                 <outlet property="bottomToolBar" destination="0cB-eB-uh6" id="DgP-pB-FG3"/>
                 <outlet property="bottomToolBarBottomConst" destination="JyY-xt-XBm" id="JVA-IZ-tB6"/>
+                <outlet property="colorPickerHeightConst" destination="2CE-Uw-5TJ" id="Il5-iv-gzW"/>
+                <outlet property="colorPickerTopConst" destination="nbO-T0-RKV" id="icU-3v-k9d"/>
                 <outlet property="colorPickerView" destination="DZe-m5-3wU" id="dpe-hZ-bdx"/>
-                <outlet property="colorPickerViewBottomConst" destination="TaE-2i-bGO" id="7WK-I3-2wY"/>
                 <outlet property="contentImageView" destination="CyN-5t-mnB" id="b5A-Cj-YGR"/>
                 <outlet property="pauseSwitchButton" destination="5cE-hh-fow" id="FjK-DG-qAq"/>
                 <outlet property="pickerPanelView" destination="lV0-Pf-aVj" id="SIm-IJ-7i5"/>
@@ -32,11 +33,11 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DZe-m5-3wU" userLabel="color picker - View" customClass="NPColorPickerView">
-                    <rect key="frame" x="0.0" y="-37" width="320" height="400"/>
+                    <rect key="frame" x="0.0" y="84" width="320" height="500"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="400" id="2CE-Uw-5TJ"/>
+                        <constraint firstAttribute="height" constant="500" id="2CE-Uw-5TJ"/>
                         <constraint firstAttribute="width" constant="320" id="IEV-Yt-dOZ"/>
                     </constraints>
                 </view>
@@ -156,6 +157,7 @@
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="CyN-5t-mnB" secondAttribute="bottom" id="0eR-6N-myT"/>
                 <constraint firstItem="5cE-hh-fow" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="84" id="0fN-fl-TWf"/>
+                <constraint firstItem="DZe-m5-3wU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="5gN-Hh-ufF"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="EeY-IL-v5n"/>
                 <constraint firstItem="2hZ-lZ-LJE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="H6y-o7-Yyv"/>
                 <constraint firstAttribute="bottom" secondItem="2hZ-lZ-LJE" secondAttribute="bottom" constant="44" id="JbI-nb-ifB"/>
@@ -163,7 +165,6 @@
                 <constraint firstAttribute="trailing" secondItem="x8x-tH-EhC" secondAttribute="trailing" id="KHF-po-NbS"/>
                 <constraint firstAttribute="bottom" secondItem="lV0-Pf-aVj" secondAttribute="bottom" constant="-162" id="Pui-v2-Z1R"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Q45-yy-szA"/>
-                <constraint firstAttribute="bottom" secondItem="DZe-m5-3wU" secondAttribute="bottom" constant="205" id="TaE-2i-bGO"/>
                 <constraint firstItem="0cB-eB-uh6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="W8c-zL-67f"/>
                 <constraint firstAttribute="trailing" secondItem="5cE-hh-fow" secondAttribute="trailing" constant="20" id="WnO-rg-YEY"/>
                 <constraint firstAttribute="trailing" secondItem="lV0-Pf-aVj" secondAttribute="trailing" id="cLW-1v-clE"/>
@@ -174,9 +175,10 @@
                 <constraint firstAttribute="trailing" secondItem="x8x-tH-EhC" secondAttribute="trailing" id="lCI-iw-SV1"/>
                 <constraint firstItem="CyN-5t-mnB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lXA-TD-dZl"/>
                 <constraint firstAttribute="trailing" secondItem="0cB-eB-uh6" secondAttribute="trailing" id="lXz-bZ-QAy"/>
-                <constraint firstAttribute="centerX" secondItem="DZe-m5-3wU" secondAttribute="centerX" id="nJ4-1F-Xdt"/>
+                <constraint firstItem="DZe-m5-3wU" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="84" id="nbO-T0-RKV"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="smG-UI-y0d"/>
                 <constraint firstItem="lV0-Pf-aVj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="uVQ-OV-orJ"/>
+                <constraint firstAttribute="trailing" secondItem="DZe-m5-3wU" secondAttribute="trailing" id="zG3-8P-9uo"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
