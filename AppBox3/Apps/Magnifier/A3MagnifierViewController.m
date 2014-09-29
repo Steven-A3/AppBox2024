@@ -804,8 +804,10 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
 				*stop = YES;
 			}
 		}];
-		ALAsset *asset = [assetArray objectAtIndex:0];
-		return [MWPhoto photoWithURL:asset.defaultRepresentation.url];
+        if ([assetArray count]) {
+            ALAsset *asset = [assetArray objectAtIndex:0];
+            return [MWPhoto photoWithURL:asset.defaultRepresentation.url];
+        }
 	}
 	return nil;
 }
@@ -820,8 +822,10 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
 				*stop = YES;
 			}
 		}];
-		ALAsset *asset = [assetArray objectAtIndex:0];
-		return [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
+        if ([assetArray count]) {
+            ALAsset *asset = [assetArray objectAtIndex:0];
+            return [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
+        }
 	}
 	return nil;
 }
