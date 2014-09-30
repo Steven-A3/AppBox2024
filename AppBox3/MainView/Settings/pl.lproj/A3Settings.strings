@@ -188,3 +188,33 @@
 
 /* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
 "0Me-nY-VE5.text" = "5 najnowszych";
+
+/* Class = "IBUILabel"; text = "Backup & Restore on iTunes"; ObjectID = "3V3-lS-rew"; */
+"3V3-lS-rew.text" = "Backup z iTunes udostępniania plików";
+
+/* Class = "IBUINavigationItem"; title = "Backup & Restore on iTunes"; ObjectID = "wZg-tr-J14"; */
+"wZg-tr-J14.title" = "Backup z iTunes udostępniania plików";
+
+/* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "sf0-2F-cNr"; */
+"sf0-2F-cNr.title" = "Wybierz kopię";
+
+/* Class = "IBUILabel"; text = "OFF"; ObjectID = "obV-5c-EMP"; */
+"obV-5c-EMP.text" = "Wyłączony";
+
+/* Class = "IBUILabel"; text = "Restore"; ObjectID = "oMh-UG-rWE"; */
+"oMh-UG-rWE.text" = "Przywróć";
+
+/* Class = "IBUILabel"; text = "Backup"; ObjectID = "a5g-em-hMv"; */
+"a5g-em-hMv.text" = "Kopia";
+
+/* Class = "IBUILabel"; text = "Default App"; ObjectID = "Of0-YK-9dc"; */
+"Of0-YK-9dc.text" = "Uruchamianie aplikacji";
+
+/* Class = "IBUINavigationItem"; title = "Default App"; ObjectID = "u8Z-Fp-NHQ"; */
+"u8Z-Fp-NHQ.title" = "Uruchamianie aplikacji";
+
+/* Class = "IBUILabel"; text = "How to use iTunes Files Sharing"; ObjectID = "VFX-hm-AIs"; */
+"VFX-hm-AIs.text" = "Jak korzystać z udostępniania plików iTunes";
+
+/* Class = "IBUITableViewSection"; footerTitle = "Please move the backup file to your computer. Delete the backup file to save the storage space in your device.\nDeleting the app will delete the backup file in your device together."; ObjectID = "Scy-Ii-bsP"; */
+"Scy-Ii-bsP.footerTitle" = "Proszę przenieść plik kopii zapasowej na komputerze. Usunąć plik kopii zapasowej, aby zaoszczędzić przestrzeń pamięci w urządzeniu.\nUsuwanie aplikacji będzie usunąć plik kopii zapasowej w urządzeniu razem.";

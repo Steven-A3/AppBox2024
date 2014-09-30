@@ -188,3 +188,34 @@
 
 /* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
 "0Me-nY-VE5.text" = "最新5個";
+
+/* Class = "IBUILabel"; text = "Backup & Restore on iTunes"; ObjectID = "3V3-lS-rew"; */
+"3V3-lS-rew.text" = "iTunesのファイル共有にバックアップする";
+
+/* Class = "IBUINavigationItem"; title = "Backup & Restore on iTunes"; ObjectID = "wZg-tr-J14"; */
+"wZg-tr-J14.title" = "iTunesのファイル共有にバックアップする";
+
+/* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "sf0-2F-cNr"; */
+"sf0-2F-cNr.title" = "バックアップ選択";
+
+/* Class = "IBUILabel"; text = "OFF"; ObjectID = "obV-5c-EMP"; */
+"obV-5c-EMP.text" = "オフ";
+
+/* Class = "IBUILabel"; text = "Restore"; ObjectID = "oMh-UG-rWE"; */
+"oMh-UG-rWE.text" = "復元";
+
+/* Class = "IBUILabel"; text = "Backup"; ObjectID = "a5g-em-hMv"; */
+"a5g-em-hMv.text" = "バックアップ";
+
+/* Class = "IBUILabel"; text = "Default App"; ObjectID = "Of0-YK-9dc"; */
+"Of0-YK-9dc.text" = "開始アプリ";
+
+/* Class = "IBUINavigationItem"; title = "Default App"; ObjectID = "u8Z-Fp-NHQ"; */
+"u8Z-Fp-NHQ.title" = "開始アプリ";
+
+/* Class = "IBUILabel"; text = "How to use iTunes Files Sharing"; ObjectID = "VFX-hm-AIs"; */
+"VFX-hm-AIs.text" = "iTunesのファイル共有の使用法";
+
+/* Class = "IBUITableViewSection"; footerTitle = "Please move the backup file to your computer. Delete the backup file to save the storage space in your device.\nDeleting the app will delete the backup file in your device together."; ObjectID = "Scy-Ii-bsP"; */
+"Scy-Ii-bsP.footerTitle" = "バックアップファイルを必ずコンピュータに保存してアプリ内のバックアップファイルは削除されます。これにより、ストレージ容量を節約することができます。\nアプリを削除すると、アプリ内に保存されたバックアップファイルも一緒に削除されるので注意してください。";
+

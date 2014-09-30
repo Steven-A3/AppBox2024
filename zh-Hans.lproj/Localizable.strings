@@ -931,5 +931,5 @@
 "Auto Dim" = "自动变暗";
 "ExplainAutoDim" = "这个选项将非常有用，当您使用在床上闹钟。将设备插入到电源插座。关掉\"使用自动锁定\"来防止设备进入睡眠模式。此选项将有助于通过降低亮度自动睡眠。";
 
-"Please save the backup file to your desktop in iTunes." = "请备份文件保存在iTunes桌面。";
+"Backup file is ready." = "备份文件已准备就绪。";
 "Backup file does not exist." = "备份文件不存在。";

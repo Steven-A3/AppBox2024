@@ -925,5 +925,5 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Auto Dim" = "Auto Dimmen";
 "ExplainAutoDim" = "Diese Option ist sehr nützlich wenn Sie den Wecker beim Schlafengehen nutzen möchten. Schließen Sie Ihr Gerät an eine Steckdose. Schalten Sie \"Automatische Sperre\" aus, um den Schlaf-Modus zu deaktivieren. Diese Option wird den Bildschirm automatisch dimmen, um besser einzuschlafen.";
 
-"Please save the backup file to your desktop in iTunes." = "Bitte speichern Sie die Sicherungsdatei auf Ihrem Desktop in iTunes.";
+"Backup file is ready." = "Backup-Datei ist fertig.";
 "Backup file does not exist." = "Backup-Datei nicht existiert.";
