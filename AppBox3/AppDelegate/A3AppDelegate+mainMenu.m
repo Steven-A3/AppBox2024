@@ -85,8 +85,8 @@ NSString *const kA3AppsStartingAppName = @"kA3AppsStartingAppName";
 						 @{kA3AppsMenuName : @"Battery Status", kA3AppsClassName_iPhone : @"A3BatteryStatusMainViewController", kA3AppsMenuImageName : @"BatteryStatus"},
 						 @{kA3AppsMenuName : @"Mirror", kA3AppsClassName_iPhone : @"A3MirrorViewController", kA3AppsNibName_iPhone :@"A3MirrorViewController", kA3AppsMenuImageName : @"Mirror"},
 						 @{kA3AppsMenuName : @"Magnifier", kA3AppsClassName_iPhone : @"A3MagnifierViewController", kA3AppsNibName_iPhone:@"A3MagnifierViewController", kA3AppsMenuImageName : @"Magnifier"},
-						 @{kA3AppsMenuName : @"Flashlight", kA3AppsClassName_iPhone : @"A3FlashViewController", kA3AppsNibName_iPhone:@"A3FlashViewController", kA3AppsMenuImageName : @"Magnifier"},
-						 @{kA3AppsMenuName : @"Random", kA3AppsClassName_iPhone : @"A3RandomViewController", kA3AppsNibName_iPhone:@"A3RandomViewController", kA3AppsMenuImageName : @"Magnifier"},
+						 @{kA3AppsMenuName : @"Flashlight", kA3AppsClassName_iPhone : @"A3FlashViewController", kA3AppsNibName_iPhone:@"A3FlashViewController", kA3AppsMenuImageName : @"Flashlight"},
+						 @{kA3AppsMenuName : @"Random", kA3AppsClassName_iPhone : @"A3RandomViewController", kA3AppsNibName_iPhone:@"A3RandomViewController", kA3AppsMenuImageName : @"Random"},
 						 ]
 				 },
 			 ];
@@ -102,10 +102,43 @@ NSString *const kA3AppsStartingAppName = @"kA3AppsStartingAppName";
 }
 
 - (NSArray *)allMenuArrayFromStoredDataFile {
-	NSArray *allMenuArray = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuDataEntityAllMenu];;
+	NSArray *allMenuArray = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuDataEntityAllMenu];
 	if (!allMenuArray) {
 		allMenuArray = [self allMenu];
 	}
+
+	{
+		for (NSDictionary *section in allMenuArray) {
+			if ([section[kA3AppsMenuName] isEqualToString:@"Utility"]) {
+				BOOL hasFlashlight = NO;
+				for (NSDictionary *menus in section[kA3AppsExpandableChildren]) {
+					if ([menus[kA3AppsMenuName] isEqualToString:@"Flashlight"]) {
+						hasFlashlight = YES;
+						break;
+					}
+				}
+				if (!hasFlashlight) {
+					NSMutableArray *newMenus = [section[kA3AppsExpandableChildren] mutableCopy];
+					NSArray *newItems = @[
+							@{kA3AppsMenuName : @"Flashlight", kA3AppsClassName_iPhone : @"A3FlashViewController", kA3AppsNibName_iPhone:@"A3FlashViewController", kA3AppsMenuImageName : @"Flashlight"},
+							@{kA3AppsMenuName : @"Random", kA3AppsClassName_iPhone : @"A3RandomViewController", kA3AppsNibName_iPhone:@"A3RandomViewController", kA3AppsMenuImageName : @"Random"},
+					];
+					[newMenus addObjectsFromArray:newItems];
+
+					NSMutableDictionary *newSection = [section mutableCopy];
+					newSection[kA3AppsExpandableChildren] = newMenus;
+
+					NSMutableArray *newAllMenu = [allMenuArray mutableCopy];
+					[newAllMenu removeObject:section];
+					[newAllMenu addObject:newSection];
+					allMenuArray = newAllMenu;
+
+					[[A3SyncManager sharedSyncManager] setObject:allMenuArray forKey:A3MainMenuDataEntityAllMenu state:A3DataObjectStateModified];
+				}
+			}
+		}
+	}
+
 	NSMutableArray *sortedMenuArray = [NSMutableArray new];
 	for (NSDictionary *section in allMenuArray) {
 		@autoreleasepool {
