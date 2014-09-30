@@ -3,13 +3,13 @@
         "iPhone 6": {
             "Chips": "A8 with 64-bit architecture\nM8 motion coprocessor",
             "CPU": "1.4 GHz dual-core Apple-designed ARMv8-A",
-            "GPU": "PowerVR Series 6 GX6450 (four clusters)",
+            "GPU": "PowerVR Series 6 GX6450\n(four clusters)",
             "Memory": "1GB LPDDR3 DRAM"
         },
         "iPhone 6 Plus": {
             "Chips": "A8 with 64-bit architecture\nM8 motion coprocessor",
             "CPU": "1.4 GHz dual-core Apple-designed ARMv8-A",
-            "GPU": "PowerVR Series 6 GX6450 (four clusters)",
+            "GPU": "PowerVR Series 6 GX6450\n(four clusters)",
             "Memory": "1GB LPDDR3 DRAM"
         },
         "iPhone 5s": {
