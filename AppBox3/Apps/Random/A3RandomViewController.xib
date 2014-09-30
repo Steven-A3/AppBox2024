@@ -27,11 +27,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BNl-6b-rRD" userLabel="result - View">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="306"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="252"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="lNb-E0-1a7">
-                            <rect key="frame" x="0.0" y="107" width="320" height="92"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="lNb-E0-1a7">
+                            <rect key="frame" x="0.0" y="80" width="320" height="92"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="80"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -39,7 +39,7 @@
                             <size key="shadowOffset" width="0.0" height="0.0"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Wg-vU-mvi" userLabel="top separator - View">
-                            <rect key="frame" x="0.0" y="305" width="320" height="1"/>
+                            <rect key="frame" x="0.0" y="251" width="320" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -58,7 +58,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KB9-q2-mhA" userLabel="limit - View">
-                    <rect key="frame" x="0.0" y="306" width="320" height="162"/>
+                    <rect key="frame" x="0.0" y="252" width="320" height="216"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="joO-pL-8Cp">
@@ -70,7 +70,7 @@
                             </connections>
                         </pickerView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ym1-cA-eYD" userLabel="separator - View">
-                            <rect key="frame" x="159" y="0.0" width="1" height="162"/>
+                            <rect key="frame" x="159" y="0.0" width="1" height="216"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -78,7 +78,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PLe-Ef-zI7" userLabel="separator bottom - View">
-                            <rect key="frame" x="0.0" y="161" width="320" height="1"/>
+                            <rect key="frame" x="0.0" y="215" width="320" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -90,7 +90,7 @@
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="Ym1-cA-eYD" secondAttribute="bottom" id="9b4-zZ-rNe"/>
                         <constraint firstItem="PLe-Ef-zI7" firstAttribute="leading" secondItem="KB9-q2-mhA" secondAttribute="leading" id="NJT-gl-Pvo"/>
-                        <constraint firstAttribute="height" constant="162" id="P80-SF-9XL"/>
+                        <constraint firstAttribute="height" constant="216" id="P80-SF-9XL"/>
                         <constraint firstAttribute="bottom" secondItem="PLe-Ef-zI7" secondAttribute="bottom" id="RDT-el-IdD"/>
                         <constraint firstAttribute="centerX" secondItem="Ym1-cA-eYD" secondAttribute="centerX" id="e3Q-Pd-M1L"/>
                         <constraint firstItem="joO-pL-8Cp" firstAttribute="top" secondItem="KB9-q2-mhA" secondAttribute="top" id="gU2-YV-0NF"/>

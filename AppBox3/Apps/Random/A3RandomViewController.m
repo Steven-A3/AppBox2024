@@ -84,13 +84,12 @@ const NSInteger MAXCOLUMN = 1;
     [_limitNumberPickerView selectRow:100 inComponent:MAXCOLUMN animated:YES];
     _resultPrintLabel.adjustsFontSizeToFitWidth = YES;
     _resultPrintLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:80];
-    _generatorButton.layer.cornerRadius = CGRectGetHeight(_generatorButton.bounds) / 2.0;
-    _generatorButton.layer.borderColor = [[A3AppDelegate instance].themeColor CGColor];
-    _generatorButton.layer.borderWidth = 1.5;
+
     _limitPickerViewSeparatorWidthConst.constant =IS_RETINA ? 0.5 : 1.0;
     _limitPickerViewSeparatorTopHeightConst.constant =IS_RETINA ? 0.5 : 1.0;
     _limitPickerViewSeparatorBottomHeightConst.constant =IS_RETINA ? 0.5 : 1.0;
-    _generatorButton.titleLabel.textColor = [A3AppDelegate instance].themeColor;
+    [_generatorButton setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
+    
     _controlPanelView.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:244/255.0 alpha:1.0];
     _controlPanelViewHeightConst.constant = 103;
     
@@ -117,6 +116,11 @@ const NSInteger MAXCOLUMN = 1;
     [super viewWillAppear:animated];
     
     [self setupMotionManager];
+    if (self.isMovingToParentViewController) {
+        _generatorButton.layer.cornerRadius = CGRectGetHeight(_generatorButton.bounds) / 2.0;
+        _generatorButton.layer.borderColor = [[A3AppDelegate instance].themeColor CGColor];
+        _generatorButton.layer.borderWidth = 1.5;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
