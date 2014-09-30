@@ -99,7 +99,6 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     bLightOn = NO;
     self.flashbrightslider.value = 0.5;
     [self setupInstructionView];
-    [self notifyCameraShotSaveRule];
 }
 
 - (BOOL)usesFullScreenInLandscape {
@@ -567,7 +566,9 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
     nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:nc animated:YES completion:NULL];
+    [self presentViewController:nc animated:YES completion:^{
+        [self notifyCameraShotSaveRule];
+    }];
 }
 
 - (IBAction)flashbrightslider:(id)sender {

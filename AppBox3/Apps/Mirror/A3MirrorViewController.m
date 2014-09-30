@@ -229,8 +229,6 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
                      barMetrics:UIBarMetricsDefault];
     [_topBar setShadowImage:[UIImage new]
          forToolbarPosition:UIToolbarPositionAny];
-    
-    [self notifyCameraShotSaveRule];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -1490,7 +1488,9 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
     
 	UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
 	nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-	[self presentViewController:nc animated:YES completion:NULL];
+	[self presentViewController:nc animated:YES completion:^{
+        [self notifyCameraShotSaveRule];
+    }];
 }
 
 #pragma mark - MWPhotoBrowserDelegate
