@@ -21,6 +21,7 @@
 @protocol NPColorPickerViewDelegate <NSObject> 
 
 -(void)NPColorPickerView:(NPColorPickerView *)view didSelectColor:(UIColor *) color;
+-(void)NPColorPickerView:(NPColorPickerView *)view selecting:(UIColor *) color;
 
 @end
 

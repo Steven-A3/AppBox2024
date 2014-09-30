@@ -175,7 +175,7 @@ NSString *const cellID = @"flashEffectID";
 @property (strong, nonatomic) UIColor *selectedColor;
 @property (strong, nonatomic) A3InstructionViewController *instructionViewController;
 @property (strong, nonatomic) AVCaptureSession *LEDSession;
-
+@property (strong, nonatomic) NSTimer *hideMenuTimer;
 @end
 
 @implementation A3FlashViewController
@@ -241,6 +241,8 @@ NSString *const cellID = @"flashEffectID";
     [super viewWillDisappear:animated];
     
     [self saveUserDefaults];
+    [self releaseHideMenuTimer];
+    [self releaseStrobelight];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
     
 #if !TARGET_IPHONE_SIMULATOR
@@ -511,6 +513,19 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     strobeSpeedFactor = [slider value];
 }
 
+- (void)startTimerToHideMenu {
+    [self releaseHideMenuTimer];
+    
+    _hideMenuTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(hideMenuTimerFireMethod:) userInfo:nil repeats:NO];
+}
+
+- (void)hideMenuTimerFireMethod:(NSTimer *)timer {
+    [self releaseHideMenuTimer];
+    
+    _showAllMenu = YES;
+    [self flashScreenTapped:nil];
+}
+
 #pragma mark -
 
 - (void)configureFlashViewMode:(A3FlashViewModeType)type animation:(BOOL)animate {
@@ -524,6 +539,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     else {
         [self adjustConfigurationLayoutValueForFlashViewMode:_currentFlashViewMode];
     }
+    
+    [self startTimerToHideMenu];
 }
 
 - (void)adjustConfigurationLayoutValueForFlashViewMode:(A3FlashViewModeType)type {
@@ -730,6 +747,13 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     if (strobeTimer) {
         [strobeTimer invalidate];
         strobeTimer = nil;
+    }
+}
+
+- (void)releaseHideMenuTimer {
+    if (_hideMenuTimer) {
+        [_hideMenuTimer invalidate];
+        _hideMenuTimer = nil;
     }
 }
 
@@ -1087,6 +1111,9 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 #pragma mark - NPColorPickerViewDelegate
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)NPColorPickerView:(NPColorPickerView *)view selecting:(UIColor *)color {
+    _contentImageView.backgroundColor = color;
+}
 
 -(void)NPColorPickerView:(NPColorPickerView *)view didSelectColor:(UIColor *)color {
     _selectedColor = color;

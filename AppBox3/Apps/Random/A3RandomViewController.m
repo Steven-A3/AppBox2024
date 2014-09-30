@@ -10,6 +10,8 @@
 #import <AVFoundation/AVAudioPlayer.h>
 #import "UIViewController+A3Addition.h"
 #import <CoreMotion/CoreMotion.h>
+#import "A3AppDelegate+appearance.h"
+#import "A3DefaultColorDefines.h"
 
 #define kAccelerometerFrequency			25 //Hz
 #define kFilteringFactorForErase		0.1
@@ -20,7 +22,22 @@ const NSInteger MINCOLUMN = 0;
 const NSInteger MAXCOLUMN = 1;
 
 @interface A3RandomViewController () <UIAccelerometerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIScrollViewDelegate>
+
+- (IBAction)randomButtonTouchUp:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UIView *resultPanelView;
+@property (weak, nonatomic) IBOutlet UIView *controlPanelView;
+@property (weak, nonatomic) IBOutlet UILabel *resultPrintLabel;
+@property (weak, nonatomic) IBOutlet UIPickerView *limitNumberPickerView;
+@property (weak, nonatomic) IBOutlet UIButton *generatorButton;
+
 @property (strong, nonatomic) CMMotionManager *motionManager;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlPanelViewHeightConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *limitPickerViewSeparatorWidthConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *limitPickerViewSeparatorTopHeightConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *limitPickerViewSeparatorBottomHeightConst;
+
+
 @end
 
 @implementation A3RandomViewController
@@ -59,10 +76,20 @@ const NSInteger MAXCOLUMN = 1;
 	[self makeBackButtonEmptyArrow];
 	[self leftBarButtonAppsButton];
     
+    _resultPanelView.backgroundColor = COLOR_HEADERVIEW_BG;
     [_limitNumberPickerView selectRow:1 inComponent:MINCOLUMN animated:YES];
     [_limitNumberPickerView selectRow:100 inComponent:MAXCOLUMN animated:YES];
     _resultPrintLabel.adjustsFontSizeToFitWidth = YES;
-    _resultPrintLabel.shadowColor = [UIColor grayColor];
+    _resultPrintLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:80];
+    _generatorButton.layer.cornerRadius = CGRectGetHeight(_generatorButton.bounds) / 2.0;
+    _generatorButton.layer.borderColor = [[A3AppDelegate instance].themeColor CGColor];
+    _generatorButton.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
+    _limitPickerViewSeparatorWidthConst.constant =IS_RETINA ? 0.5 : 1.0;
+    _limitPickerViewSeparatorTopHeightConst.constant =IS_RETINA ? 0.5 : 1.0;
+    _limitPickerViewSeparatorBottomHeightConst.constant =IS_RETINA ? 0.5 : 1.0;
+    _generatorButton.titleLabel.textColor = [A3AppDelegate instance].themeColor;
+    _controlPanelView.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:244/255.0 alpha:1.0];
+    _controlPanelViewHeightConst.constant = 103;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(setupMotionManager)
