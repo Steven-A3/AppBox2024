@@ -16,6 +16,8 @@ extern NSString *const A3BackupInfoFilename;
 
 @protocol A3BackupRestoreManagerDelegate <NSObject>
 - (void)backupRestoreManager:(A3BackupRestoreManager *)manager restoreCompleteWithSuccess:(BOOL)success;
+@optional
+- (void)backupRestoreManager:(A3BackupRestoreManager *)manager backupCompleteWithSuccess:(BOOL)success;
 @end
 
 @interface A3BackupRestoreManager : NSObject
@@ -25,8 +27,7 @@ extern NSString *const A3BackupInfoFilename;
 @property (nonatomic, weak) UIViewController *hostingViewController;
 
 - (void)backupData;
-
 - (void)backupToDocumentDirectory;
-
 - (void)restoreDataAt:(NSString *)backupFilePath toURL:(NSURL *)toURL;
+
 @end

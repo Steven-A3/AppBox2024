@@ -917,5 +917,5 @@ Wprowadź klucz szyfrowania dla portfela.";
 "Auto Dim" = "Auto Dim";
 "ExplainAutoDim" = "Ta opcja jest przydatna kiedy używasz Alarm Clock w łóżku. Podłącz urządzenie do zasilania. Wyłącz opcje autoblokady aby zapobiec wyłączeniu urządzenia. Ta opcja ułatwia zasypanie przez automatyczne zmniejszanie jasności ekranu.";
 
-"Please save the backup file to your desktop in iTunes." = "Proszę zapisać plik kopii zapasowej na pulpicie w iTunes.";
+"Backup file is ready." = "Plik kopii zapasowej jest gotowa.";
 "Backup file does not exist." = "Plik kopii zapasowej nie istnieje.";

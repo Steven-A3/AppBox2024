@@ -751,8 +751,8 @@
 "Move and Scale" = "Déplacer et faire évoluer";
 
 "CALCULATION" = "CALCUL";
-"DoneButton" = "retour";
-"Off" = " Éteint";
+"DoneButton" = "Retour";
+"Off" = "Compléter";
 "Passcode_Off" = "Désactivé";
 
 "DaysCounter_All" = "Tout";
@@ -919,5 +919,5 @@ Entrez la clé de cryptage pour le portefeuille.";
 "Auto Dim" = "Auto Dim";
 "ExplainAutoDim" = "Cette option sera très utile si vous utilisez l'Alarme au lit. Connectez votre appareil à une prise électrique. Désactivez \"Utiliser le verrouillage automatique\" pour éviter à l'appareil de se mettre en mode sommeil. Cette option vous aidera à trouver le sommeil en réduisant la uminosité automatiquement.";
 
-"Please save the backup file to your desktop in iTunes." = "S'il vous plaît enregistrer le fichier de sauvegarde sur votre ordinateur de bureau dans iTunes.";
+"Backup file is ready." = "Le fichier de sauvegarde est prêt.";
 "Backup file does not exist." = "N'existe pas le fichier de sauvegarde.";

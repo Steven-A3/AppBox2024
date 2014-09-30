@@ -310,7 +310,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		[_HUD hide:YES];
 
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-														message:NSLocalizedString(@"Please save the backup file to your desktop in iTunes.", nil)
+														message:NSLocalizedString(@"Backup file is ready.", nil)
 													   delegate:nil
 											  cancelButtonTitle:@"OK"
 											  otherButtonTitles:nil];

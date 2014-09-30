@@ -928,5 +928,5 @@
 "Auto Dim" = "자동 화면 밝기 조정";
 "ExplainAutoDim" = "이 설정은 알람시계를 켜놓고 잠자리에 들때 이용하시면 좋습니다. 전원에 연결한 후에 주무셔도 지정된 시간이 되면 화면이 어두워져 잠자리를 방해하지 않을 것 입니다.";
 
-"Please save the backup file to your desktop in iTunes." = "백업 파일을 iTunes를 통해서 PC에 저장하세요.";
+"Backup file is ready." = "백업 파일이 준비되었습니다.";
 "Backup file does not exist." = "백업 파일이 없습니다.";

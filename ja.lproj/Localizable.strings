@@ -923,5 +923,5 @@
 "Auto Dim" = "オトディム";
 "ExplainAutoDim" = "この設定はアラーム時計をセットしてから寝る場合利用します。電源を付けたあと寝ても指定した時間になると画面が暗くなるので睡眠時に気になりません。";
 
-"Please save the backup file to your desktop in iTunes." = "iTunesでデスクトップにバックアップファイルを保存してください。";
+"Backup file is ready." = "バックアップファイルの準備ができました。";
 "Backup file does not exist." = "バックアップファイルが存在しません。";
