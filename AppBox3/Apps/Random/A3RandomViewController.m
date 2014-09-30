@@ -30,6 +30,7 @@ const NSInteger MAXCOLUMN = 1;
 @property (weak, nonatomic) IBOutlet UILabel *resultPrintLabel;
 @property (weak, nonatomic) IBOutlet UIPickerView *limitNumberPickerView;
 @property (weak, nonatomic) IBOutlet UIButton *generatorButton;
+@property (weak, nonatomic) IBOutlet UILabel *orShakeLabel;
 
 @property (strong, nonatomic) CMMotionManager *motionManager;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlPanelViewHeightConst;
@@ -37,6 +38,8 @@ const NSInteger MAXCOLUMN = 1;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *limitPickerViewSeparatorTopHeightConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *limitPickerViewSeparatorBottomHeightConst;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *generateButtonWidthConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *generateButtonHeightConst;
 
 @end
 
@@ -83,13 +86,22 @@ const NSInteger MAXCOLUMN = 1;
     _resultPrintLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:80];
     _generatorButton.layer.cornerRadius = CGRectGetHeight(_generatorButton.bounds) / 2.0;
     _generatorButton.layer.borderColor = [[A3AppDelegate instance].themeColor CGColor];
-    _generatorButton.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
+    _generatorButton.layer.borderWidth = 1.5;
     _limitPickerViewSeparatorWidthConst.constant =IS_RETINA ? 0.5 : 1.0;
     _limitPickerViewSeparatorTopHeightConst.constant =IS_RETINA ? 0.5 : 1.0;
     _limitPickerViewSeparatorBottomHeightConst.constant =IS_RETINA ? 0.5 : 1.0;
     _generatorButton.titleLabel.textColor = [A3AppDelegate instance].themeColor;
     _controlPanelView.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:244/255.0 alpha:1.0];
     _controlPanelViewHeightConst.constant = 103;
+    
+    if (IS_IPAD) {
+        _generateButtonWidthConst.constant = 111;
+        _generateButtonHeightConst.constant = 111;
+        _generatorButton.titleLabel.font = [UIFont systemFontOfSize:22];
+        _orShakeLabel.font = [UIFont systemFontOfSize:22];
+        _controlPanelViewHeightConst.constant = 226;
+        _resultPrintLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:152.0];
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(setupMotionManager)

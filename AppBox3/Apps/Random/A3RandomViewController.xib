@@ -8,11 +8,14 @@
             <connections>
                 <outlet property="controlPanelView" destination="v0q-yF-6Ev" id="rMM-uY-9Q9"/>
                 <outlet property="controlPanelViewHeightConst" destination="4Sm-YQ-sIl" id="dvf-ay-d5h"/>
+                <outlet property="generateButtonHeightConst" destination="tbr-8w-1pM" id="2Mz-UE-WDj"/>
+                <outlet property="generateButtonWidthConst" destination="AXm-tn-2oj" id="jhG-vc-CGn"/>
                 <outlet property="generatorButton" destination="ewU-Qs-Dog" id="yA9-As-jSq"/>
                 <outlet property="limitNumberPickerView" destination="joO-pL-8Cp" id="KpR-Fr-F2b"/>
                 <outlet property="limitPickerViewSeparatorBottomHeightConst" destination="dBZ-yi-5a2" id="iao-fk-BOQ"/>
                 <outlet property="limitPickerViewSeparatorTopHeightConst" destination="oXN-Qe-ujd" id="Pog-I9-s22"/>
                 <outlet property="limitPickerViewSeparatorWidthConst" destination="WIf-D0-I5T" id="s24-Ni-BPc"/>
+                <outlet property="orShakeLabel" destination="zxo-wW-mPK" id="sA3-pw-MCk"/>
                 <outlet property="resultPanelView" destination="BNl-6b-rRD" id="udl-39-BV3"/>
                 <outlet property="resultPrintLabel" destination="lNb-E0-1a7" id="2y7-Dv-ZLu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
