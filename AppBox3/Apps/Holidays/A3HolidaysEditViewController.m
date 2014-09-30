@@ -389,7 +389,13 @@ static NSString *CellIdentifier = @"Cell";
 			if (IS_IPAD) {
 				if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
 					_imagePickerController.showsCameraControls = YES;
-                    [self presentViewController:_imagePickerController animated:YES completion:NULL];
+                    
+                    if (IS_IOS7) {
+                        [self presentViewController:_imagePickerController animated:YES completion:NULL];
+                    }
+                    else {
+                        [self presentViewController:_imagePickerController animated:NO completion:NULL];
+                    }
 				}
 				else {
                     CGRect fromRect;
@@ -429,7 +435,12 @@ static NSString *CellIdentifier = @"Cell";
 				}
 			}
 			else {
-				[self presentViewController:_imagePickerController animated:YES completion:NULL];
+                if (IS_IOS7) {
+                    [self presentViewController:_imagePickerController animated:YES completion:NULL];
+                }
+                else {
+                    [self presentViewController:_imagePickerController animated:NO completion:NULL];
+                }
 			}
 			break;
 		}

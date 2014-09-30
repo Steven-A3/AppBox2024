@@ -1470,7 +1470,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
         }
         else {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self presentViewController:imagePickerController animated:YES completion:NULL];
+                [self presentViewController:imagePickerController animated:NO completion:NULL];
             });
         }
         return;

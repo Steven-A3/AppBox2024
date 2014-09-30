@@ -1255,7 +1255,13 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     if (IS_IPAD) {
         if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
             _imagePickerController.showsCameraControls = YES;
-            [self presentViewController:_imagePickerController animated:YES completion:NULL];
+
+            if (IS_IOS7) {
+                [self presentViewController:_imagePickerController animated:YES completion:NULL];
+            }
+            else {
+                [self presentViewController:_imagePickerController animated:NO completion:NULL];
+            }
         }
         else {
 #ifdef __IPHONE_8_0
@@ -1290,7 +1296,12 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
         }
     }
     else {
-        [self presentViewController:_imagePickerController animated:YES completion:NULL];
+        if (IS_IOS7) {
+            [self presentViewController:_imagePickerController animated:YES completion:NULL];
+        }
+        else {
+            [self presentViewController:_imagePickerController animated:NO completion:NULL];
+        }
     }
 }
 
