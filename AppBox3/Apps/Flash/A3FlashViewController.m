@@ -138,8 +138,44 @@ NSString *const A3UserDefaultFlashEffectIndex = @"A3UserDefaultFlashEffectIndex"
 NSString *const cellID = @"flashEffectID";
 
 @interface A3FlashViewController () <UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, NPColorPickerViewDelegate, A3InstructionViewControllerDelegate>
+
+@property (weak, nonatomic) IBOutlet UIToolbar *topToolBar;
+@property (weak, nonatomic) IBOutlet UIToolbar *sliderToolBar;
+@property (weak, nonatomic) IBOutlet UIToolbar *bottomToolBar;
+@property (weak, nonatomic) IBOutlet UIToolbar *LEDBrightnessToolBar;
+@property (weak, nonatomic) IBOutlet UIView *pickerPanelView;
+@property (weak, nonatomic) IBOutlet NPColorPickerView *colorPickerView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topToolBarTopConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *sliderToolBarBottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBarBottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerViewBottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerHeightConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *flashBrightnessSliderBottomConst;
+
+@property (weak, nonatomic) IBOutlet UISlider *sliderControl;
+@property (weak, nonatomic) IBOutlet UISlider *flashBrightnessSlider;
+@property (weak, nonatomic) IBOutlet UIImageView *contentImageView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerTopConst;
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *ledBarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *colorBarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *effectBarButton;
+@property (weak, nonatomic) IBOutlet UIPickerView *effectPickerView;
+
+- (IBAction)sliderControlValueChanged:(UISlider *)sender;
+
+- (IBAction)appsButtonTouchUp:(id)sender;
+- (IBAction)detailInfoButtonTouchUp:(id)sender;
+
+- (IBAction)LEDMenuButtonTouchUp:(id)sender;
+- (IBAction)colorMenuButtonTouchUp:(id)sender;
+- (IBAction)effectsMenuButtonTouchUp:(id)sender;
+
 @property (strong, nonatomic) UIColor *selectedColor;
-@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (strong, nonatomic) A3InstructionViewController *instructionViewController;
+@property (strong, nonatomic) AVCaptureSession *LEDSession;
+
 @end
 
 @implementation A3FlashViewController
@@ -254,6 +290,7 @@ NSString *const cellID = @"flashEffectID";
     
     _colorPickerView.delegate = self;
     _colorPickerView.backgroundColor = [UIColor clearColor];
+    _colorPickerView.color = _selectedColor;
     _colorPickerHeightConst.constant = IS_IPHONE35 ? 390 : 480;
     
     _flashEffectList = @[NSLocalizedString(@"SOS", @"SOS"),
@@ -438,6 +475,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     }
     else {
         [self releaseStrobelight];
+        _contentImageView.backgroundColor = _selectedColor;
     }
     
     [self configureFlashViewMode:A3FlashViewModeTypeEffect animation:YES];
@@ -478,21 +516,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     [[NSUserDefaults standardUserDefaults] setInteger:_currentFlashViewMode forKey:A3UserDefaultFlashViewMode];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    if (animate) {
-//        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-//        [UIView setAnimationBeginsFromCurrentState:YES];
-//        [UIView setAnimationCurve:7];
-//        [UIView setAnimationDuration:0.25];
-        
+    if (animate) {  // RESERVED?
         [self adjustConfigurationLayoutValueForFlashViewMode:_currentFlashViewMode];
-        
-//        [_topToolBar layoutIfNeeded];
-//        [_sliderToolBar layoutIfNeeded];
-//        [_bottomToolBar layoutIfNeeded];
-//        [_pickerPanelView layoutIfNeeded];
-//        [_colorPickerView layoutIfNeeded];
-//        
-//        [UIView commitAnimations];
     }
     else {
         [self adjustConfigurationLayoutValueForFlashViewMode:_currentFlashViewMode];
@@ -501,6 +526,10 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 - (void)adjustConfigurationLayoutValueForFlashViewMode:(A3FlashViewModeType)type {
     _currentFlashViewMode = type;
+    if ((_currentFlashViewMode != A3FlashViewModeTypeLED) && !_isEffectWorking) {
+        [self setTorchOff];
+    }
+    
     _topToolBarTopConst.constant = 20;
     
     switch (_currentFlashViewMode) {
@@ -576,6 +605,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 #pragma mark - LED Related
 - (void)setTorchOn {
+    _isTorchOn = YES;
 #if !TARGET_IPHONE_SIMULATOR
 	Class myClass = NSClassFromString(@"AVCaptureDevice");
 	if (!myClass) {
@@ -599,6 +629,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 }
 
 - (void)setTorchOff {
+    _isTorchOn = NO;
 //#if !TARGET_IPHONE_SIMULATOR
 	Class myClass = NSClassFromString(@"AVCaptureDevice");
 	if (!myClass) {
@@ -629,10 +660,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 	if (_LEDSession) {
 		if (_isTorchOn) {
 			[self setTorchOff];
-			_isTorchOn = NO;
 		} else {
 			[self setTorchOn];
-			_isTorchOn = YES;
 		}
 	}
 #endif
