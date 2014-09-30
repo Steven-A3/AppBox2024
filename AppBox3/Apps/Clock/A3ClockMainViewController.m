@@ -113,6 +113,9 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationRightSideViewDidDismiss object:nil];
+	}
 }
 
 - (void)applicationDidBecomeActive {
@@ -129,6 +132,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationClockSettingsChanged object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidDismiss object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -214,7 +218,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
     }
     NSInteger autoDimMinutes = [[A3UserDefaults standardUserDefaults] integerForKey:A3ClockAutoDim];
     if (autoDimMinutes) {
-        _autoDimTimer = [NSTimer scheduledTimerWithTimeInterval:autoDimMinutes
+        _autoDimTimer = [NSTimer scheduledTimerWithTimeInterval:autoDimMinutes * 60
                                                          target:self
                                                        selector:@selector(activateAutoDim)
                                                        userInfo:nil
