@@ -189,8 +189,8 @@ NSString *const cellID = @"flashEffectID";
     [self checkTorchOnStartIfNeeded];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     if ([self isMovingToParentViewController]) {
         [self configureFlashViewMode:_currentFlashViewMode animation:NO];
@@ -245,7 +245,6 @@ NSString *const cellID = @"flashEffectID";
     NSNumber *effectIndex = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashEffectIndex];
     _selectedEffectIndex = !effectIndex ? 2 : [effectIndex integerValue];
     
-    
     _selectedColor = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashSelectedColor]];
     if (!_selectedColor) {
         _selectedColor = [UIColor blackColor];
@@ -264,14 +263,15 @@ NSString *const cellID = @"flashEffectID";
                          NSLocalizedString(@"Fire Truck", @"Fire Truck"),
                          NSLocalizedString(@"Caution Flare", @"Caution Flare"),
                          NSLocalizedString(@"Traffic Light", @"Traffic Light")];
-    
-//    [self configureFlashViewMode:_currentFlashViewMode animation:NO];
-//    [_contentImageView setBackgroundColor:_selectedColor];
 }
 
 - (void)checkTorchOnStartIfNeeded {
     if (_isLEDAvailable) {
         [self ledTorchONOFF];
+    }
+    else {
+        _ledBarButton.enabled = NO;
+        [_ledBarButton setImage:[UIImage imageNamed:@"f_flash_off"]];
     }
 }
 
@@ -324,9 +324,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 #pragma mark -
 
 - (void)flashScreenTapped:(UITapGestureRecognizer *)gesture {
-//    _topMenuToolbar.hidden = !_topMenuToolbar.hidden;
     _showAllMenu = !_showAllMenu;
-    
     
     if (_showAllMenu) {
         _sliderToolBarBottomConst.constant = kBottomToolBarHeight;
@@ -401,12 +399,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     [self showInstructionView:nil];
 }
 
-- (IBAction)LEDMenuButtonTouchUp:(id)sender {
-    [self adjustConfigurationLayoutValueForFlashViewMode:A3FlashViewModeTypeLED];
-    
-    [self ledTorchONOFF];
-}
-
 - (void)ledTorchONOFF {
 	Class myClass = NSClassFromString(@"AVCaptureDevice");
 	if (!myClass) {
@@ -428,7 +420,12 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 	}
 }
 
-#pragma mark
+#pragma mark Menu Status Change
+- (IBAction)LEDMenuButtonTouchUp:(id)sender {
+    [self configureFlashViewMode:A3FlashViewModeTypeLED animation:YES];
+    [self ledTorchONOFF];
+}
+
 - (IBAction)colorMenuButtonTouchUp:(id)sender {
     [self releaseStrobelight];
     [self configureFlashViewMode:A3FlashViewModeTypeColor animation:YES];
@@ -445,16 +442,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     
     [self configureFlashViewMode:A3FlashViewModeTypeEffect animation:YES];
 }
-
-- (IBAction)effectPauseButtonTouchUp:(id)sender {
-    if ((_currentFlashViewMode == A3FlashViewModeTypeEffect && !strobeTimer) || (_isEffectWorking && !strobeTimer) ) {
-        [self startStrobeLightEffectForIndex:_selectedEffectIndex];
-    }
-    else {
-        [self releaseStrobelight];
-    }
-}
-
 
 - (void)colorModeSliderValueChanged:(UISlider *)slider {
     _screenBrightnessValue = (slider.maximumValue - slider.value);
@@ -566,6 +553,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
             [_sliderControl setMaximumValue:80.0];
             [_sliderControl setValue:0.0];
             
+            [_effectPickerView selectRow:_selectedEffectIndex inComponent:0 animated:NO];
+            
             _sliderToolBarBottomConst.constant = kBottomToolBarHeight + 162;
             _pickerViewBottomConst.constant = kBottomToolBarHeight;
             _bottomToolBarBottomConst.constant = 0;
@@ -582,15 +571,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
             
         default:
             break;
-    }
-    
-    if (_isEffectWorking) {
-        _pauseSwitchButton.hidden = _currentFlashViewMode == A3FlashViewModeTypeEffect ? NO : YES;
-        _pauseSwitchButton.alpha = _currentFlashViewMode == A3FlashViewModeTypeEffect ? 1.0 : 0.0;
-    }
-    else {
-        _pauseSwitchButton.hidden = YES;
-        _pauseSwitchButton.alpha = 0.0;
     }
 }
 
@@ -977,7 +957,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 - (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component {
     NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:[_flashEffectList objectAtIndex:row]
-                                                                     attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+                                                                     attributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
     return attrString;
 }
 
@@ -1072,17 +1052,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
 	[runLoop addTimer:strobeTimer forMode:NSDefaultRunLoopMode];
     _isEffectWorking = YES;
-
-    
-    [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationCurve:7];
-    [UIView setAnimationDuration:0.25];
-    
-    _pauseSwitchButton.hidden = NO;
-    _pauseSwitchButton.alpha = 1.0;
-    
-    [UIView commitAnimations];
 }
 
 #pragma mark - NPColorPickerViewDelegate

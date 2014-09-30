@@ -78,8 +78,8 @@ NSString * kColorProperty = @"color";
    
    CGContextRestoreGState(context);
    
-   CGContextSetStrokeColorWithColor(context, [UIColor colorWithWhite:0.80 alpha:0.45] .CGColor);
-   CGContextSetLineWidth(context, 2.0f);
+    CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
+    CGContextSetLineWidth(context, IS_RETINA ? 0.5 : 1.0f);
    
    path = CGPathCreateMutable();
    CGPathAddRelativeArc(path, &CGAffineTransformIdentity, center.x, center.y, maxRadius, 0, 2*M_PI);
