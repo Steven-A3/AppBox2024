@@ -459,14 +459,16 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 #pragma mark Menu Status Change
 - (IBAction)LEDMenuButtonTouchUp:(id)sender {
+    [self releaseStrobelight];
+    _isEffectWorking = NO;
     [self configureFlashViewMode:A3FlashViewModeTypeLED animation:YES];
     [self ledTorchONOFF];
 }
 
 - (IBAction)colorMenuButtonTouchUp:(id)sender {
     [self releaseStrobelight];
-    [self configureFlashViewMode:A3FlashViewModeTypeColor animation:YES];
     _isEffectWorking = NO;
+    [self configureFlashViewMode:A3FlashViewModeTypeColor animation:YES];
 }
 
 - (IBAction)effectsMenuButtonTouchUp:(id)sender {
