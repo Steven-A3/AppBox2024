@@ -67,6 +67,11 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
         }
 	}
 
+	// Modal 이 있는 경우, 제거한다.
+	if (self.navigationController.presentedViewController) {
+		[self.navigationController dismissViewControllerAnimated:NO completion:NULL];
+	}
+
     NSMutableArray *currentViewControllers = [[navigationController viewControllers] mutableCopy];
     // Xcode 5로 빌드하고 iOS 8에서 실행했을때, poppedVCs가 nil이 돌아옵니다. 다른 경우는 더 테스트가 필요합니다.
     // 이 경우에는 pop하기 전과 후의 뷰컨트롤러를 비교해서 없어진 뷰 컨트롤러들의 cleanUp을 호출해 주어야 합니다.
