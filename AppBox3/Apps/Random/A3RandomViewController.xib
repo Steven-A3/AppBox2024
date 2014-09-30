@@ -18,6 +18,7 @@
                 <outlet property="orShakeLabel" destination="zxo-wW-mPK" id="sA3-pw-MCk"/>
                 <outlet property="resultPanelView" destination="BNl-6b-rRD" id="udl-39-BV3"/>
                 <outlet property="resultPrintLabel" destination="lNb-E0-1a7" id="2y7-Dv-ZLu"/>
+                <outlet property="resultViewTopConst" destination="eVD-vP-5mK" id="DIL-ML-ufb"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -30,7 +31,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="252"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="lNb-E0-1a7">
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="lNb-E0-1a7">
                             <rect key="frame" x="0.0" y="80" width="320" height="92"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="80"/>
@@ -152,6 +153,7 @@
                 <constraint firstAttribute="centerX" secondItem="KB9-q2-mhA" secondAttribute="centerX" id="yUs-Il-vD5"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>

@@ -40,6 +40,7 @@ const NSInteger MAXCOLUMN = 1;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *generateButtonWidthConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *generateButtonHeightConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *resultViewTopConst;
 
 @end
 
@@ -120,6 +121,8 @@ const NSInteger MAXCOLUMN = 1;
         _generatorButton.layer.cornerRadius = CGRectGetHeight(_generatorButton.bounds) / 2.0;
         _generatorButton.layer.borderColor = [[A3AppDelegate instance].themeColor CGColor];
         _generatorButton.layer.borderWidth = 1.5;
+
+        _resultViewTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.bounds);
     }
 }
 
@@ -217,7 +220,7 @@ const NSInteger MAXCOLUMN = 1;
 	numGen = 0.0;
 	_generatorButton.enabled = NO;
     _limitNumberPickerView.userInteractionEnabled = NO;
-    [self setNavigationBarHidden:YES];
+//    [self setNavigationBarHidden:YES];
     
 	NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:0.1];
 	randomNumberTimer = [[NSTimer alloc] initWithFireDate:fireDate
@@ -265,7 +268,7 @@ const NSInteger MAXCOLUMN = 1;
 		randomNumberTimer = nil;
 		_generatorButton.enabled = YES;
         _limitNumberPickerView.userInteractionEnabled = YES;
-        [self setNavigationBarHidden:NO];
+//        [self setNavigationBarHidden:NO];
 
 		return;
 	}
