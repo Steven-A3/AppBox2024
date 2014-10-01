@@ -294,6 +294,15 @@ keypad for basic/scientific</string>
                                     <constraint firstAttribute="height" constant="14" id="dvw-4Q-y0V"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="208" translatesAutoresizingMaskIntoConstraints="NO" id="ljC-z5-F29">
+                                <rect key="frame" x="102" y="77" width="208" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">Tap the screen to display
+the controls</string>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="223" translatesAutoresizingMaskIntoConstraints="NO" id="f7p-pa-V3C">
                                 <rect key="frame" x="10" y="204" width="223" height="40"/>
                                 <string key="text">Swipe left or right to see
@@ -320,12 +329,14 @@ more holidays</string>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="ljC-z5-F29" firstAttribute="leading" secondItem="PxO-xt-eN7" secondAttribute="trailing" constant="10" id="0E3-81-iJd"/>
                             <constraint firstAttribute="bottom" secondItem="fOb-uW-XaZ" secondAttribute="bottom" constant="94" id="14f-dH-M1i"/>
                             <constraint firstItem="d8D-UW-O72" firstAttribute="leading" secondItem="f7p-pa-V3C" secondAttribute="trailing" constant="10" id="5ee-bK-g1L"/>
                             <constraint firstItem="fOb-uW-XaZ" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" constant="32" id="6c6-QV-XKZ"/>
                             <constraint firstItem="d8D-UW-O72" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="top" constant="203" id="An8-JA-4Cl"/>
                             <constraint firstAttribute="bottom" secondItem="QSq-Bz-Ppf" secondAttribute="bottom" constant="8" id="Dxz-89-W7s"/>
                             <constraint firstItem="1GA-EC-PDP" firstAttribute="leading" secondItem="QSq-Bz-Ppf" secondAttribute="trailing" constant="5" id="FiA-cn-3Ja"/>
+                            <constraint firstItem="PxO-xt-eN7" firstAttribute="centerY" secondItem="ljC-z5-F29" secondAttribute="centerY" id="GES-3J-Moh"/>
                             <constraint firstItem="QSq-Bz-Ppf" firstAttribute="top" secondItem="1GA-EC-PDP" secondAttribute="top" constant="-5" id="IEm-Tp-Jam"/>
                             <constraint firstItem="d8D-UW-O72" firstAttribute="centerY" secondItem="f7p-pa-V3C" secondAttribute="centerY" id="Kmn-fY-f2Z"/>
                             <constraint firstItem="RQJ-Od-NDI" firstAttribute="leading" secondItem="fOb-uW-XaZ" secondAttribute="trailing" constant="10" id="Krh-95-a76"/>
@@ -336,6 +347,7 @@ more holidays</string>
                             <constraint firstItem="9Oc-Jc-FLn" firstAttribute="centerY" secondItem="QSq-Bz-Ppf" secondAttribute="centerY" constant="-4" id="nNg-JA-2el"/>
                             <constraint firstAttribute="trailing" secondItem="d8D-UW-O72" secondAttribute="trailing" constant="35" id="p5a-Kk-epV"/>
                             <constraint firstItem="PxO-xt-eN7" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" constant="50" id="rnD-sv-sJw"/>
+                            <constraint firstAttribute="trailing" secondItem="ljC-z5-F29" secondAttribute="trailing" constant="10" id="s3r-BE-c5R"/>
                             <constraint firstItem="fOb-uW-XaZ" firstAttribute="centerY" secondItem="RQJ-Od-NDI" secondAttribute="centerY" id="trc-MN-uNN"/>
                             <constraint firstItem="f7p-pa-V3C" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" constant="10" id="yO4-5B-qPJ"/>
                             <constraint firstItem="9Oc-Jc-FLn" firstAttribute="trailing" secondItem="QSq-Bz-Ppf" secondAttribute="leading" constant="-10" id="yb8-xv-g7e"/>
@@ -1710,6 +1722,15 @@ then tap Delete</string>
                                     <constraint firstAttribute="height" constant="14" id="jnd-ji-eHO"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DHT-qK-x4H" userLabel="Label - Slide the country to the left then tap Delete">
+                                <rect key="frame" x="10" y="58" width="241" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">Slide the country to the left
+then tap Delete</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="0ze-pQ-4fo">
                                 <rect key="frame" x="10" y="201" width="300" height="40"/>
                                 <string key="text">Touch and hold a country,
@@ -1733,12 +1754,15 @@ then drag it up or down</string>
                             <constraint firstAttribute="bottom" secondItem="nP5-9M-28L" secondAttribute="bottom" constant="40" id="B5j-Ie-U56"/>
                             <constraint firstAttribute="trailing" secondItem="0ze-pQ-4fo" secondAttribute="trailing" constant="10" id="DoK-bw-RMu"/>
                             <constraint firstItem="0ze-pQ-4fo" firstAttribute="top" secondItem="8Bb-Xt-gYd" secondAttribute="bottom" constant="10" id="JDO-re-LbB"/>
+                            <constraint firstItem="DHT-qK-x4H" firstAttribute="centerY" secondItem="xdE-si-SAi" secondAttribute="centerY" id="NIx-ZU-doL"/>
                             <constraint firstItem="xdE-si-SAi" firstAttribute="top" secondItem="9Q7-aH-fjF" secondAttribute="top" constant="47" id="TI1-Df-iCw"/>
                             <constraint firstItem="0ze-pQ-4fo" firstAttribute="leading" secondItem="9Q7-aH-fjF" secondAttribute="leading" constant="10" id="VLF-gK-bBW"/>
                             <constraint firstItem="nP5-9M-28L" firstAttribute="leading" secondItem="9Q7-aH-fjF" secondAttribute="leading" constant="10" id="Ybo-sQ-Bry"/>
                             <constraint firstAttribute="trailing" secondItem="nP5-9M-28L" secondAttribute="trailing" constant="10" id="Z0b-3Q-k9M"/>
                             <constraint firstAttribute="trailing" secondItem="xdE-si-SAi" secondAttribute="trailing" constant="17" id="fGe-r7-NAk"/>
+                            <constraint firstItem="DHT-qK-x4H" firstAttribute="leading" secondItem="9Q7-aH-fjF" secondAttribute="leading" constant="10" id="niU-Qd-s7y"/>
                             <constraint firstAttribute="centerX" secondItem="8Bb-Xt-gYd" secondAttribute="centerX" id="oI2-bC-UNy"/>
+                            <constraint firstItem="xdE-si-SAi" firstAttribute="leading" secondItem="DHT-qK-x4H" secondAttribute="trailing" constant="10" id="vmN-lz-4ee"/>
                             <constraint firstItem="8Bb-Xt-gYd" firstAttribute="top" secondItem="9Q7-aH-fjF" secondAttribute="top" constant="149" id="zw2-ou-E6s"/>
                         </constraints>
                         <connections>

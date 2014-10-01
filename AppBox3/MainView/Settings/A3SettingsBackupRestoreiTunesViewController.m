@@ -106,6 +106,7 @@
 	[super viewWillAppear:animated];
 
 	[self updateBackupInfo];
+	[self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -180,6 +181,7 @@
 		_backupRestoreManager = [A3BackupRestoreManager new];
 		_backupRestoreManager.hostingView = self.navigationController.view;
 		_backupRestoreManager.hostingViewController = self;
+		_backupRestoreManager.delegate = self;
 	}
 	return _backupRestoreManager;
 }
@@ -243,6 +245,13 @@
 		self.view.tintColor = [[A3AppDelegate instance] themeColor];
 		[A3AppDelegate instance].window.tintColor = [[A3AppDelegate instance] themeColor];
 		self.navigationController.navigationBar.tintColor = [[A3AppDelegate instance] themeColor];
+		[self.tableView reloadData];
+	}
+}
+
+- (void)backupRestoreManager:(A3BackupRestoreManager *)manager backupCompleteWithSuccess:(BOOL)success {
+	if (success) {
+		[self updateBackupInfo];
 		[self.tableView reloadData];
 	}
 }

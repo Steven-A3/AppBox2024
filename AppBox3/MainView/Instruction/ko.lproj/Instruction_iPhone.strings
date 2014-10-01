@@ -53,8 +53,8 @@
 /* Class = "IBUILabel"; text = "tap to add an event"; ObjectID = "M89-TC-emC"; */
 "M89-TC-emC.text" = "탭하여 이벤트를 추가합니다.";
 
-/* Class = "IBUILabel"; text = "slide the country to the left,\nthen tap Delete"; ObjectID = "O49-bh-b9I"; */
-"O49-bh-b9I.text" = "국가를 왼쪽으로 밀어서\n지울 수 있습니다.";
+/* Class = "IBUILabel"; text = "slide the country to the left,\nthen tap Delete"; ObjectID = "DHT-qK-x4H"; */
+"DHT-qK-x4H.text" = "국가를 왼쪽으로 밀어서\n지울 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "pull up to see\nmore holidays"; ObjectID = "RQJ-Od-NDI"; */
 "RQJ-Od-NDI.text" = "위로 밀어 올리면 더 많은\n휴일 정보를 볼 수 있습니다.";
@@ -160,3 +160,6 @@
 
 /* Class = "IBUILabel"; text = "swipe left or right to see\ndifferent clock styles"; ObjectID = "zdJ-br-tkO"; */
 "zdJ-br-tkO.text" = "화면을 왼쪽이나 오른쪽으로\n밀어서 다른 스타일의\n시계를 볼 수 있습니다.";
+
+/* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "ljC-z5-F29"; */
+"ljC-z5-F29.text" = "화면을 탭하여\n버튼을 표시합니다.";

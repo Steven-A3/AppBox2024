@@ -309,10 +309,14 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	if (_backupToDocumentDirectory) {
 		[_HUD hide:YES];
 
+		if ([_delegate respondsToSelector:@selector(backupRestoreManager:backupCompleteWithSuccess:)]) {
+			[_delegate backupRestoreManager:self backupCompleteWithSuccess:YES];
+		}
+
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
 														message:NSLocalizedString(@"Backup file is ready.", nil)
 													   delegate:nil
-											  cancelButtonTitle:@"OK"
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 											  otherButtonTitles:nil];
 		[alert show];
 	} else {
