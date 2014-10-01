@@ -239,6 +239,20 @@ NSString *const cellID = @"flashEffectID";
 	}
 }
 
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+    CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+    if(!IS_IPHONE) {
+        [self.sliderControl setFrame:CGRectMake(self.sliderControl.frame.origin.x, self.sliderControl.frame.origin.y, screenBounds.size.width - 106, self.sliderControl.frame.size.height)];
+        [self.flashBrightnessSlider setFrame:CGRectMake(self.flashBrightnessSlider.frame.origin.x, self.flashBrightnessSlider.frame.origin.y , screenBounds.size.width - 106, self.flashBrightnessSlider.frame.size.height)];
+    }
+    else {
+        [self.sliderControl setFrame:CGRectMake(self.sliderControl.frame.origin.x, self.sliderControl.frame.origin.y, screenBounds.size.width - 98, self.sliderControl.frame.size.height)];
+        [self.flashBrightnessSlider setFrame:CGRectMake(self.flashBrightnessSlider.frame.origin.x, self.flashBrightnessSlider.frame.origin.y , screenBounds.size.width - 98, self.flashBrightnessSlider.frame.size.height)];
+    }
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
