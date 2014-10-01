@@ -134,12 +134,14 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 
 	UIColor *textColor;
 	if (self.allowChooseFavorite) {
-		if ([_selectedCurrencyCode isEqualToString:data.code]) {
-			textColor = A3_TEXT_COLOR_DISABLED;
+		if ([self isFavoriteItemForCurrencyItem:data.code]) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
 		} else {
-			textColor = [UIColor blackColor];
+            cell.accessoryType = UITableViewCellAccessoryNone;
 		}
-	} else {
+        textColor = [UIColor blackColor];
+	}
+    else {
 		if ([self isFavoriteItemForCurrencyItem:data.code]) {
 			textColor = A3_TEXT_COLOR_DISABLED;
 		} else {
@@ -148,9 +150,10 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 	}
 
 	NSAttributedString *codeString = [[NSAttributedString alloc] initWithString:data.code
-																	 attributes:[self codeStringAttributeWithColor:textColor ]];
+																	 attributes:[self codeStringAttributeWithColor:textColor]];
 	NSAttributedString *nameString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"   %@", data.name]
-																	 attributes:[self nameStringAttributeWithColor:textColor ]];
+																	 attributes:[self nameStringAttributeWithColor:textColor
+                                                                                                              bold:[_selectedCurrencyCode isEqualToString:data.code]]];
 	NSMutableAttributedString *cellString = [[NSMutableAttributedString alloc] init];
 	[cellString appendAttributedString:codeString];
 	[cellString appendAttributedString:nameString];
@@ -160,14 +163,16 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 
 - (NSDictionary *)codeStringAttributeWithColor:(UIColor *)color {
 	return @{
-			NSFontAttributeName : [UIFont boldSystemFontOfSize:17],
-			NSForegroundColorAttributeName:color};
+             NSFontAttributeName : [UIFont boldSystemFontOfSize:17],
+             NSForegroundColorAttributeName:color
+             };
 }
 
-- (NSDictionary *)nameStringAttributeWithColor:(UIColor *)color {
+- (NSDictionary *)nameStringAttributeWithColor:(UIColor *)color bold:(BOOL)isBold {
 	return @{
-			NSFontAttributeName : [UIFont systemFontOfSize:15],
-			NSForegroundColorAttributeName:color};
+             NSFontAttributeName : isBold? [UIFont boldSystemFontOfSize:15] : [UIFont systemFontOfSize:15],
+             NSForegroundColorAttributeName:color
+             };
 }
 
 - (BOOL)isFavoriteItemForCurrencyItem:(id)object {

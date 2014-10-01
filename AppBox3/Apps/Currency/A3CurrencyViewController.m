@@ -914,6 +914,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		CurrencyFavorite *selectedFavorite = _favorites[selectedIndex];
 		NSString *selectedItem = selectedFavorite.uniqueID;
 		viewController.placeHolder = selectedItem;
+        viewController.selectedCurrencyCode = selectedItem;
 	}
 	return viewController;
 }
