@@ -554,9 +554,9 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     switch (_currentFlashViewMode) {
         case A3FlashViewModeTypeLED:
         {
-            _ledBarButton.image = [UIImage imageNamed:@"f_flash_on"];
-            _colorBarButton.image = [UIImage imageNamed:@"f_color_off"];
-            _effectBarButton.image = [UIImage imageNamed:@"f_effect_off"];
+            [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+            [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+            [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
             
             _flashBrightnessSlider.value = _flashBrightnessValue;
             _LEDBrightnessToolBar.hidden = NO;
@@ -587,9 +587,9 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
             }
             _flashBrightnessSliderBottomConst.constant = -44;
 
-            _ledBarButton.image = [UIImage imageNamed:@"f_flash_off"];
-            _colorBarButton.image = [UIImage imageNamed:@"f_color_on"];
-            _effectBarButton.image = [UIImage imageNamed:@"f_effect_off"];
+            [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+            [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+            [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
             
             _LEDBrightnessToolBar.hidden = YES;
         }
@@ -609,9 +609,9 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
             _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
             _flashBrightnessSliderBottomConst.constant = -44;
             
-            _ledBarButton.image = [UIImage imageNamed:@"f_flash_off"];
-            _colorBarButton.image = [UIImage imageNamed:@"f_color_off"];
-            _effectBarButton.image = [UIImage imageNamed:@"f_effect_on"];
+            [_ledBarButton setImage:[[UIImage imageNamed:@"f_effect_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+            [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+            [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
             
             _LEDBrightnessToolBar.hidden = YES;
         }
