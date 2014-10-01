@@ -76,10 +76,19 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     [self initializeViews];
     
     [self registerContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+	if (_moviePlayerViewController) {
+		[self dismissMoviePlayerViewControllerAnimated];
+		_moviePlayerViewController = nil;
+	}
 }
 
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 	if (_moviePlayerViewController) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayerViewController.moviePlayer];
 	}
