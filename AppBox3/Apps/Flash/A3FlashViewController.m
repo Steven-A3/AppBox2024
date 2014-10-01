@@ -609,7 +609,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
             _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
             _flashBrightnessSliderBottomConst.constant = -44;
             
-            [_ledBarButton setImage:[[UIImage imageNamed:@"f_effect_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+            [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
             [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
             [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
             
