@@ -17,13 +17,13 @@
                 <outlet property="effectBarButton" destination="ejK-Gp-dua" id="LiT-Aa-dE0"/>
                 <outlet property="effectPickerView" destination="vNj-3P-xTb" id="Lrt-3Q-Obj"/>
                 <outlet property="flashBrightnessSlider" destination="bb1-Zu-W86" id="oLX-Sd-Uof"/>
-                <outlet property="flashBrightnessSliderBottomConst" destination="GSe-Ly-vwW" id="SGO-GC-rPE"/>
                 <outlet property="ledBarButton" destination="FwG-bh-VC7" id="RXA-9P-D5E"/>
-                <outlet property="pickerPanelView" destination="lV0-Pf-aVj" id="SIm-IJ-7i5"/>
+                <outlet property="pickerPanelView" destination="lV0-Pf-aVj" id="MtI-YF-uIO"/>
+                <outlet property="pickerTopSeparatorHeightConst" destination="KC6-NS-6KP" id="i8l-Kz-3cc"/>
                 <outlet property="pickerViewBottomConst" destination="Pui-v2-Z1R" id="AUD-0u-uMj"/>
                 <outlet property="sliderControl" destination="e0I-jN-Ngd" id="Pxj-us-8Lu"/>
                 <outlet property="sliderToolBar" destination="2hZ-lZ-LJE" id="arC-Mo-Yfw"/>
-                <outlet property="sliderToolBarBottomConst" destination="JbI-nb-ifB" id="2M5-gP-zhw"/>
+                <outlet property="statusBarView" destination="eei-Fu-sIu" id="Lp4-DE-RHL"/>
                 <outlet property="topToolBar" destination="x8x-tH-EhC" id="bQs-93-7N3"/>
                 <outlet property="topToolBarTopConst" destination="izJ-ZD-Rlh" id="tDn-BU-wSs"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -79,30 +79,8 @@
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 </toolbar>
-                <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2hZ-lZ-LJE" userLabel="slider - Toolbar">
-                    <rect key="frame" x="0.0" y="450" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
-                    <items>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Dbf-D9-gSo"/>
-                        <barButtonItem image="m_zoomout" id="sjK-U4-hDw"/>
-                        <barButtonItem style="plain" id="Bf5-gJ-Ykt">
-                            <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="e0I-jN-Ngd">
-                                <rect key="frame" x="42" y="7" width="237" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="sliderControlValueChanged:" destination="-1" eventType="valueChanged" id="pBt-Tl-vHL"/>
-                                </connections>
-                            </slider>
-                        </barButtonItem>
-                        <barButtonItem image="m_zoomin" id="TOQ-IM-fvP"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="1Bk-S8-Azd"/>
-                    </items>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                </toolbar>
                 <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gPl-q8-ipV" userLabel="flash brightness slider - Toolbar">
-                    <rect key="frame" x="0.0" y="406" width="320" height="44"/>
+                    <rect key="frame" x="0.0" y="190" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
                     <items>
@@ -123,29 +101,62 @@
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 </toolbar>
+                <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2hZ-lZ-LJE" userLabel="screen brightness slider - Toolbar">
+                    <rect key="frame" x="0.0" y="234" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
+                    <items>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Dbf-D9-gSo"/>
+                        <barButtonItem image="m_zoomout" id="sjK-U4-hDw"/>
+                        <barButtonItem style="plain" id="Bf5-gJ-Ykt">
+                            <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="e0I-jN-Ngd">
+                                <rect key="frame" x="42" y="7" width="237" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="sliderControlValueChanged:" destination="-1" eventType="valueChanged" id="pBt-Tl-vHL"/>
+                                </connections>
+                            </slider>
+                        </barButtonItem>
+                        <barButtonItem image="m_zoomin" id="TOQ-IM-fvP"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="1Bk-S8-Azd"/>
+                    </items>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                </toolbar>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lV0-Pf-aVj" userLabel="pickerPanel - View">
-                    <rect key="frame" x="0.0" y="568" width="320" height="162"/>
+                    <rect key="frame" x="0.0" y="278" width="320" height="216"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vNj-3P-xTb">
-                            <rect key="frame" x="10" y="0.0" width="300" height="162"/>
+                            <rect key="frame" x="10" y="0.0" width="300" height="216"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="300" id="9qC-Ge-3pd"/>
-                                <constraint firstAttribute="height" constant="162" id="tLU-mq-rYn"/>
+                                <constraint firstAttribute="height" constant="216" id="tLU-mq-rYn"/>
                             </constraints>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="Jla-Ul-Eha"/>
                                 <outlet property="delegate" destination="-1" id="Upw-Nt-jGm"/>
                             </connections>
                         </pickerView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jmb-gS-sDi" userLabel="separator - View">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="KC6-NS-6KP"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="162" id="QSV-t1-TNy"/>
+                        <constraint firstItem="Jmb-gS-sDi" firstAttribute="leading" secondItem="lV0-Pf-aVj" secondAttribute="leading" id="15K-CV-Paq"/>
+                        <constraint firstAttribute="height" constant="216" id="QSV-t1-TNy"/>
                         <constraint firstAttribute="centerY" secondItem="vNj-3P-xTb" secondAttribute="centerY" id="Qw1-L0-9cW"/>
+                        <constraint firstAttribute="trailing" secondItem="Jmb-gS-sDi" secondAttribute="trailing" id="XsF-M6-BYl"/>
+                        <constraint firstItem="Jmb-gS-sDi" firstAttribute="top" secondItem="lV0-Pf-aVj" secondAttribute="top" id="fD9-ra-XEo"/>
                         <constraint firstAttribute="centerX" secondItem="vNj-3P-xTb" secondAttribute="centerX" id="mJG-w6-Pg9"/>
                     </constraints>
                 </view>
@@ -176,7 +187,7 @@
                         </barButtonItem>
                     </items>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="barTintColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
                 </toolbar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -186,18 +197,18 @@
                 <constraint firstAttribute="trailing" secondItem="gPl-q8-ipV" secondAttribute="trailing" id="7gc-Xd-Las"/>
                 <constraint firstItem="eei-Fu-sIu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="9Qt-nF-qw2"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="EeY-IL-v5n"/>
-                <constraint firstAttribute="bottom" secondItem="gPl-q8-ipV" secondAttribute="bottom" constant="118" id="GSe-Ly-vwW"/>
                 <constraint firstItem="2hZ-lZ-LJE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="H6y-o7-Yyv"/>
-                <constraint firstAttribute="bottom" secondItem="2hZ-lZ-LJE" secondAttribute="bottom" constant="74" id="JbI-nb-ifB"/>
                 <constraint firstAttribute="bottom" secondItem="0cB-eB-uh6" secondAttribute="bottom" id="JyY-xt-XBm"/>
                 <constraint firstAttribute="trailing" secondItem="x8x-tH-EhC" secondAttribute="trailing" id="KHF-po-NbS"/>
-                <constraint firstAttribute="bottom" secondItem="lV0-Pf-aVj" secondAttribute="bottom" constant="-162" id="Pui-v2-Z1R"/>
+                <constraint firstAttribute="bottom" secondItem="lV0-Pf-aVj" secondAttribute="bottom" constant="74" id="Pui-v2-Z1R"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Q45-yy-szA"/>
+                <constraint firstItem="lV0-Pf-aVj" firstAttribute="top" secondItem="2hZ-lZ-LJE" secondAttribute="bottom" id="RS0-OB-gaF"/>
                 <constraint firstAttribute="trailing" secondItem="eei-Fu-sIu" secondAttribute="trailing" id="TLM-gf-xux"/>
                 <constraint firstItem="0cB-eB-uh6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="W8c-zL-67f"/>
                 <constraint firstItem="gPl-q8-ipV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="YRJ-Gx-9Vm"/>
                 <constraint firstAttribute="trailing" secondItem="lV0-Pf-aVj" secondAttribute="trailing" id="cLW-1v-clE"/>
                 <constraint firstAttribute="trailing" secondItem="2hZ-lZ-LJE" secondAttribute="trailing" id="cWt-a6-u23"/>
+                <constraint firstItem="2hZ-lZ-LJE" firstAttribute="top" secondItem="gPl-q8-ipV" secondAttribute="bottom" id="dAJ-6a-WWq"/>
                 <constraint firstAttribute="trailing" secondItem="CyN-5t-mnB" secondAttribute="trailing" id="e4a-di-FjD"/>
                 <constraint firstItem="eei-Fu-sIu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="enU-Y0-Lch"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="izJ-ZD-Rlh"/>
@@ -210,7 +221,7 @@
                 <constraint firstItem="lV0-Pf-aVj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="uVQ-OV-orJ"/>
                 <constraint firstAttribute="trailing" secondItem="DZe-m5-3wU" secondAttribute="trailing" id="zG3-8P-9uo"/>
             </constraints>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
