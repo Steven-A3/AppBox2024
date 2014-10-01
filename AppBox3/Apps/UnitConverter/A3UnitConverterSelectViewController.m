@@ -60,6 +60,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
     [self.tableView registerNib:[UINib nibWithNibName:@"A3UnitConverterTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitConverterActionCellID2];
     
     self.navigationItem.titleView = self.selectSegment;
+    [self selectSegmentChanged:self.selectSegment];
 	[self.view addSubview:self.searchBar];
 	[self mySearchDisplayController];
     
