@@ -53,8 +53,8 @@
 /* Class = "IBUILabel"; text = "Tap to add an event"; ObjectID = "M89-TC-emC"; */
 "M89-TC-emC.text" = "Hier tippen um ein Ereignis hinzuzufügen";
 
-/* Class = "IBUILabel"; text = "Slide the country to the left,\nthen tap Delete"; ObjectID = "O49-bh-b9I"; */
-"O49-bh-b9I.text" = "Schieben Sie das Land nach links, dann tippen Sie auf Löschen";
+/* Class = "IBUILabel"; text = "Slide the country to the left,\nthen tap Delete"; ObjectID = "DHT-qK-x4H"; */
+"DHT-qK-x4H.text" = "Schieben Sie das Land nach links, dann tippen Sie auf Löschen";
 
 /* Class = "IBUILabel"; text = "Pull up to see more holidays"; ObjectID = "RQJ-Od-NDI"; */
 "RQJ-Od-NDI.text" = "Ziehen Sie nach Oben um weitere Feiertage zu sehen";
@@ -160,3 +160,6 @@
 
 /* Class = "IBUILabel"; text = "Swipe left or right to see\ndifferent clock styles"; ObjectID = "zdJ-br-tkO"; */
 "zdJ-br-tkO.text" = "Wischen Sie nach links oder rechts um die verschiedenen Uhrdesigns zu sehen";
+
+/* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "ljC-z5-F29"; */
+"ljC-z5-F29.text" = "Berühren Sie den Touchscreen um die Steuerelemente anzuzeigen";

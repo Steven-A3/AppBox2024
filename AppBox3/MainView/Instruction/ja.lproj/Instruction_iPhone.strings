@@ -84,8 +84,8 @@
 /* Class = "IBUILabel"; text = "Tap to add an event"; ObjectID = "M89-TC-emC"; */
 "M89-TC-emC.text" = "タップしてイベントを追加します。";
 
-/* Class = "IBUILabel"; text = "Slide the country to the left,\nthen tap Delete"; ObjectID = "O49-bh-b9I"; */
-"O49-bh-b9I.text" =
+/* Class = "IBUILabel"; text = "Slide the country to the left,\nthen tap Delete"; ObjectID = "DHT-qK-x4H"; */
+"DHT-qK-x4H.text" =
 "国家を左にスライドすると画面
 から消す事が出来ます。";
 
@@ -256,3 +256,11 @@
 "画面を左右にスライドすると
 様々なスタイルの時計を見る
 事が出来ます。";
+
+
+
+/* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "ljC-z5-F29"; */
+"ljC-z5-F29.text" =
+"画面をタップすると、
+コントロールが表示
+されます。";

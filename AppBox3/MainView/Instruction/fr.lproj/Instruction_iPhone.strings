@@ -54,8 +54,8 @@ les pays";
 /* Class = "IBUILabel"; text = "Tap to add an event"; ObjectID = "M89-TC-emC"; */
 "M89-TC-emC.text" = "Appuyer pour ajouter un évènement";
 
-/* Class = "IBUILabel"; text = "Slide the country to the left,\nthen tap Delete"; ObjectID = "O49-bh-b9I"; */
-"O49-bh-b9I.text" = "Glisser le pays vers la
+/* Class = "IBUILabel"; text = "Slide the country to the left,\nthen tap Delete"; ObjectID = "DHT-qK-x4H"; */
+"DHT-qK-x4H.text" = "Glisser le pays vers la
 gauche, puis cliquer Effacer";
 
 /* Class = "IBUILabel"; text = "Pull up to see\nmore holidays"; ObjectID = "RQJ-Od-NDI"; */
@@ -165,3 +165,6 @@ pour ajouter un pays";
 
 /* Class = "IBUILabel"; text = "Swipe left or right to see\ndifferent clock styles"; ObjectID = "zdJ-br-tkO"; */
 "zdJ-br-tkO.text" = "Tirer vers la gauche ou la droite pour voir différents styles d’horloges";
+
+/* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "ljC-z5-F29"; */
+"ljC-z5-F29.text" = "Touchez l’écran pour\nafficher les commandes.";
