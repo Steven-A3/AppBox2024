@@ -273,11 +273,11 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	cell.textLabel.text = NSLocalizedString(@"None", @"None");
     if (_currentUnitID == NSNotFound) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        cell.textLabel.textColor = [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
     }
     else {
         cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.textLabel.textColor = [UIColor blackColor];
+        cell.textLabel.font = [UIFont systemFontOfSize:17];
     }
 }
 
@@ -396,7 +396,6 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (cell == nil) {
 			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-			cell.textLabel.font = [UIFont systemFontOfSize:17];
 		}
 		[self configureNoneCell:cell];
 		toCell = cell;
@@ -432,15 +431,17 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 		if (_currentUnitID == unitID) {
 			checkedItem = YES;
+			cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
 		}
+        else {
+			cell.textLabel.font = [UIFont systemFontOfSize:17];
+        }
 
 		if (checkedItem) {
 			cell.accessoryType = UITableViewCellAccessoryCheckmark;
-			cell.textLabel.textColor = [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0];
 		}
 		else {
 			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.textLabel.textColor = [UIColor blackColor];
 		}
 
 		toCell = cell;
