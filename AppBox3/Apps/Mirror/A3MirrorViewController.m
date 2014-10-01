@@ -15,6 +15,7 @@
 
 static const int MAX_ZOOM_FACTOR = 6;
 NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
+NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 
 @interface A3MirrorViewController() <A3InstructionViewControllerDelegate>
 {
@@ -134,6 +135,21 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     [alertView show];
     [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3MirrorFirstLoadCameraRoll];
     [[A3UserDefaults standardUserDefaults] synchronize];
+}
+
+- (BOOL)hasAuthorizationToAccessPhoto
+{
+    if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied || [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusRestricted) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                            message:NSLocalizedString(@"This app does not have access to your photos. You can enable access in Privacy Settings.", nil)
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                  otherButtonTitles:nil];
+        [alertView show];
+        return NO;
+    }
+
+    return YES;
 }
 
 - (void)viewDidLoad
@@ -1218,6 +1234,10 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 }
 
 - (IBAction)captureButton:(id)sender {
+    if (![self hasAuthorizationToAccessPhoto]) {
+        return;
+    }
+    
     [self snapAnimation];
     
 	dispatch_async(_captureSessionQueue, ^{
