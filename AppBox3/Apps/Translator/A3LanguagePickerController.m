@@ -101,12 +101,14 @@ static NSString *CellIdentifier = @"Cell";
 		// Configure the cell with the time zone's name.
 		data = rowsInSection[indexPath.row];
 	}
-	cell.textLabel.font = A3UITableViewTextLabelFont;
+	
 	cell.textLabel.text = data.displayName;
 	if (_selectedCode && data.code && [_selectedCode isEqualToString:data.code]) {
-		cell.textLabel.textColor = [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
 	} else {
-		cell.textLabel.textColor = [UIColor blackColor];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.textLabel.font = A3UITableViewTextLabelFont;
 	}
 
 	return cell;
