@@ -129,9 +129,7 @@
 }
 
 - (void)applicationWillEnterForeground_passcode {
-	if ([[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting]) {
-		[self showLockScreen];
-	} else {
+	if (![self showLockScreen]) {
 		NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 		if ([startingAppName length]) {
 			if (![self showLockScreen]) {
