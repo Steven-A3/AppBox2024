@@ -83,7 +83,7 @@ static NSString *const CellIdentifier = @"Cell";
 	cell.textLabel.text = data.displayName;
 
 	NSArray *existingCountries = [HolidayData userSelectedCountries];
-	cell.textLabel.textColor = [existingCountries containsObject:data.code] ? [UIColor colorWithRed:142.0 / 255.0 green:142.0 / 255.0 blue:147.0 / 255.0 alpha:1.0] : [UIColor blackColor];
+	cell.accessoryType = [existingCountries containsObject:data.code] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 
 	return cell;
 }
