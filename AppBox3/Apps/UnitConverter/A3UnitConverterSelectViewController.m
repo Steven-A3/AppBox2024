@@ -451,23 +451,18 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 
 	if (unitID == _currentUnitID) {
 		checkedItem = YES;
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
 	}
+    else {
+        cell.textLabel.font = [UIFont systemFontOfSize:17.0];
+    }
 
 	if (checkedItem) {
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
-		cell.textLabel.textColor = [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0];
-		FNLOG(@"%@", cell.textLabel.text);
 	}
 	else {
 		cell.accessoryType = UITableViewCellAccessoryNone;
-		cell.textLabel.textColor = [UIColor blackColor];
 	}
-
-	if ([self.convertItems containsObject:@(unitID)]) {
-		cell.textLabel.textColor = [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0];
-		FNLOG(@"%@", cell.textLabel.text);
-	}
-	FNLOG(@"%@", cell.textLabel.text);
 
 	toCell = cell;
     toCell.separatorInset = A3UITableViewSeparatorInset;
