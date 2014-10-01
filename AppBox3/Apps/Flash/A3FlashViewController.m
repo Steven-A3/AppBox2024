@@ -302,6 +302,11 @@ NSString *const cellID = @"flashEffectID";
                          NSLocalizedString(@"Fire Truck", @"Fire Truck"),
                          NSLocalizedString(@"Caution Flare", @"Caution Flare"),
                          NSLocalizedString(@"Traffic Light", @"Traffic Light")];
+    
+    if (!_isLEDAvailable) {
+        NSArray *bottomBarItems = @[_bottomToolBar.items[1], _bottomToolBar.items[2], _bottomToolBar.items[3], _bottomToolBar.items[4], _bottomToolBar.items[1]];
+        [_bottomToolBar setItems:bottomBarItems];
+    }
 }
 
 - (void)checkTorchOnStartIfNeeded {
