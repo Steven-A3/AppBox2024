@@ -75,7 +75,7 @@ NSString *const A3CommonPropertyOrder = @"order";
 	id prevToObject = self[toIndex - 1];
 	NSInteger orderA = [[prevToObject valueForKey:A3CommonPropertyOrder] integerValue];
 	NSInteger orderB = [[toObject valueForKey:A3CommonPropertyOrder] integerValue];
-    NSInteger newOrder = orderB + (orderB - orderA) / 2;
+    NSInteger newOrder = orderA + (orderB - orderA) / 2;
 	if ((newOrder == 0) || (newOrder == orderA) || (newOrder == orderB)) {
 		resetOrder();
 		return;
