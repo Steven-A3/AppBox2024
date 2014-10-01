@@ -91,7 +91,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	if (section == 1) return UITableViewAutomaticDimension;
+	if (section < 2) return UITableViewAutomaticDimension;
 	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
 	return [self standardHeightForFooterIsLastSection:isLastSection];
 }

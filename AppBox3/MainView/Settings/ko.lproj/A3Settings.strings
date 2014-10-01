@@ -190,10 +190,10 @@
 "0Me-nY-VE5.text" = "최근 5 개";
 
 /* Class = "IBUILabel"; text = "Backup & Restore on iTunes"; ObjectID = "3V3-lS-rew"; */
-"3V3-lS-rew.text" = "iTunesのファイル共有にバックアップする";
+"3V3-lS-rew.text" = "백업 - iTunes 파일공유";
 
 /* Class = "IBUINavigationItem"; title = "Backup & Restore on iTunes"; ObjectID = "wZg-tr-J14"; */
-"wZg-tr-J14.title" = "iTunesのファイル共有にバックアップする";
+"wZg-tr-J14.title" = "백업 - iTunes 파일공유";
 
 /* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "sf0-2F-cNr"; */
 "sf0-2F-cNr.title" = "백업 파일 선택";
@@ -218,4 +218,7 @@
 
 /* Class = "IBUITableViewSection"; footerTitle = "Please move the backup file to your computer. Delete the backup file to save the storage space in your device.\nDeleting the app will delete the backup file in your device together."; ObjectID = "Scy-Ii-bsP"; */
 "Scy-Ii-bsP.footerTitle" = "백업 파일은 반드시 컴퓨터에 저장하고 앱 안에 있는 백업 파일은 삭제합니다. 그러면 저장 공간을 절약할 수 있습니다. \n앱을 지우면 앱안에 저장된 백업파일도 함께 지워지니 주의해 주십시요.";
+
+/* Class = "IBUITableViewSection"; footerTitle = "IMPORTANT: If you forget your passcode, you must delete the app and reinstall it. (Your data will be deleted if you reinstall the app.)"; ObjectID = "Sb9-sM-r8l"; */
+"Sb9-sM-r8l.footerTitle" = "중요한정보: 암호를 분실하시면 앱을 삭제하고 다시 설치해야 합니다. 앱을 다시 설치하는 경우 App에 저장된 정보는 함께 삭제됩니다.";
 

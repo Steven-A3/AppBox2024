@@ -205,3 +205,7 @@
 
 /* Class = "IBUITableViewSection"; footerTitle = "Please move the backup file to your computer. Delete the backup file to save the storage space in your device.\nDeleting the app will delete the backup file in your device together."; ObjectID = "Scy-Ii-bsP"; */
 "Scy-Ii-bsP.footerTitle" = "Por favor, mueva el archivo de copia de seguridad para su equipo. Elimine el archivo de copia de seguridad para guardar el espacio de almacenamiento en su dispositivo.\nEliminación de la aplicación va a eliminar el archivo de copia de seguridad en su dispositivo juntos.";
+
+/* Class = "IBUITableViewSection"; footerTitle = "IMPORTANT: If you forget your passcode, you must delete the app and reinstall it. (Your data will be deleted if you reinstall the app.)"; ObjectID = "Sb9-sM-r8l"; */
+"Sb9-sM-r8l.footerTitle" = "IMPORTANTE: Si olvida su contraseña, deberá eliminar la aplicación y volver a instalarlo. (Se borrarán sus datos, si vuelve a instalar la aplicación.)";
+
