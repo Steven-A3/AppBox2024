@@ -840,8 +840,19 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     return [rowsInSection count];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 28;
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return self.sectionTitles[section];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
+	if ([view isKindOfClass:[UITableViewHeaderFooterView class]]) {
+		UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView *) view;
+		headerView.textLabel.font = [UIFont fontWithName:headerView.textLabel.font.fontName size:17];
+	}
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
