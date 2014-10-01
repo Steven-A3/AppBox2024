@@ -456,13 +456,14 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
     else {
         cell.textLabel.font = [UIFont systemFontOfSize:17.0];
     }
-
-	if (checkedItem) {
+    
+	if ([self.convertItems containsObject:@(unitID)]) {
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	}
-	else {
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	}
+    else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+
 
 	toCell = cell;
     toCell.separatorInset = A3UITableViewSeparatorInset;
