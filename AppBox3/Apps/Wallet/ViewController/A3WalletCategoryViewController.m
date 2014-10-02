@@ -27,6 +27,7 @@
 #import "WalletCategory.h"
 #import "WalletField.h"
 #import "NSString+conversion.h"
+#import "A3WalletListPhotoCell.h"
 
 @interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate, NSFileManagerDelegate, UISearchDisplayDelegate, UISearchBarDelegate>
 
@@ -533,6 +534,12 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
         _mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
         _mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
         _mySearchDisplayController.searchResultsTableView.rowHeight = 48;
+
+		UITableView *searchResultTableView = _mySearchDisplayController.searchResultsTableView;
+		[searchResultTableView registerClass:[A3WalletListBigVideoCell class] forCellReuseIdentifier:A3WalletBigVideoCellID1];
+		[searchResultTableView registerClass:[A3WalletListBigPhotoCell class] forCellReuseIdentifier:A3WalletBigPhotoCellID1];
+		[searchResultTableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID];
+		[searchResultTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3WalletNormalCellID];
     }
     return _mySearchDisplayController;
 }
