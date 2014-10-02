@@ -121,8 +121,9 @@ const NSInteger MAXCOLUMN = 1;
         _generatorButton.layer.cornerRadius = CGRectGetHeight(_generatorButton.bounds) / 2.0;
         _generatorButton.layer.borderColor = [[A3AppDelegate instance].themeColor CGColor];
         _generatorButton.layer.borderWidth = 1.5;
+        _generatorButton.backgroundColor = [UIColor whiteColor];
 
-        _resultViewTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.bounds);
+        _resultViewTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.bounds) + 20;
     }
 }
 
