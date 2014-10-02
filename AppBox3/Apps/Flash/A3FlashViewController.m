@@ -234,14 +234,19 @@ NSString *const cellID = @"flashEffectID";
     
     if ([self isMovingToParentViewController]) {
         [self configureFlashViewMode:_currentFlashViewMode animation:NO];
-        [_contentImageView setBackgroundColor:_selectedColor];
-        
+
+        if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
+            [self startStrobeLightEffectForIndex:_selectedEffectIndex];
+        }
+    
         [self setupInstructionView];
 	}
 }
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
+    
+    _bottomToolBar.backgroundColor = _sliderToolBar.backgroundColor;
     
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     if(!IS_IPHONE) {
@@ -299,7 +304,14 @@ NSString *const cellID = @"flashEffectID";
     NSNumber *ledBrightness = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashLEDBrightnessValue];
     _flashBrightnessValue = !ledBrightness ? 1.0 : [ledBrightness floatValue];
     NSNumber *screenBrightness = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashBrightnessValue];
-    _screenBrightnessValue = !screenBrightness ? _deviceBrightnessBefore : [screenBrightness floatValue];
+    _screenBrightnessValue = !screenBrightness ? (_deviceBrightnessBefore * 100.0) : [screenBrightness floatValue];
+    if (_currentFlashViewMode == A3FlashViewModeTypeNone) {
+        [self alphaSliderValueChanged:nil];
+    }
+    else if (_currentFlashViewMode == A3FlashViewModeTypeColor) {
+        [self colorModeSliderValueChanged:nil];
+    }
+    
     NSNumber *effectIndex = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashEffectIndex];
     _selectedEffectIndex = !effectIndex ? 2 : [effectIndex integerValue];
     
@@ -313,7 +325,7 @@ NSString *const cellID = @"flashEffectID";
     _colorPickerView.delegate = self;
     _colorPickerView.backgroundColor = [UIColor clearColor];
     _colorPickerView.color = _selectedColor;
-    _colorPickerHeightConst.constant = IS_IPHONE35 ? 390 : 480;
+    _colorPickerHeightConst.constant = IS_IPHONE35 ? 366 : 480;
     
     _pickerTopSeparatorHeightConst.constant = IS_RETINA ? 0.5 : 1.0;
     
@@ -584,8 +596,11 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 }
 
 - (void)alphaSliderValueChanged:(UISlider *)slider {
-    _screenBrightnessValue = (slider.maximumValue - slider.value);
-    NSInteger brightnessIndex = floor(_screenBrightnessValue / (slider.maximumValue / 25.0));
+    if (slider) {
+        _screenBrightnessValue = (slider.maximumValue - slider.value);
+    }
+    
+    NSInteger brightnessIndex = floor(_screenBrightnessValue / (100.0 / 25.0));
     UIScreen *mainScreen = [UIScreen mainScreen];
     [mainScreen setBrightness:1.0 - (brightnessIndex / 25.0)];
     
@@ -594,8 +609,11 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 }
 
 - (void)colorModeSliderValueChanged:(UISlider *)slider {
-    _screenBrightnessValue = (slider.maximumValue - slider.value);
-    NSInteger brightnessIndex = floor(_screenBrightnessValue / (slider.maximumValue / 25.0));
+    if (slider) {
+        _screenBrightnessValue = (slider.maximumValue - slider.value);
+    }
+    
+    NSInteger brightnessIndex = floor(_screenBrightnessValue / (100 / 25.0));
     UIScreen *mainScreen = [UIScreen mainScreen];
     [mainScreen setBrightness:1.0 - (brightnessIndex / 25.0)];
 }
@@ -668,6 +686,10 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _sliderToolBar.hidden = NO;
         _LEDBrightnessToolBar.hidden = YES;
         _effectPickerView.hidden = YES;
+        [_sliderControl setMinimumValue:0.0];
+        [_sliderControl setMaximumValue:100.0];
+        [_sliderControl setValue:_sliderControl.maximumValue - _screenBrightnessValue];
+
         [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
@@ -1224,10 +1246,15 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     _isEffectWorking = YES;
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesBegan:touches withEvent:event];
+}
+
 #pragma mark - NPColorPickerViewDelegate
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)NPColorPickerView:(NPColorPickerView *)view selecting:(UIColor *)color {
     _contentImageView.backgroundColor = color;
+    [self releaseHideMenuTimer];
 }
 
 -(void)NPColorPickerView:(NPColorPickerView *)view didSelectColor:(UIColor *)color {
@@ -1236,6 +1263,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     
     [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:_selectedColor] forKey:A3UserDefaultFlashSelectedColor];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    [self startTimerToHideMenu];
 }
 
 @end

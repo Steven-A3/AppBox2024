@@ -163,7 +163,7 @@
                 <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0cB-eB-uh6" userLabel="bottom - Toolbar">
                     <rect key="frame" x="0.0" y="494" width="320" height="74"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="74" id="ygp-jg-Gdy"/>
                     </constraints>
@@ -187,7 +187,7 @@
                         </barButtonItem>
                     </items>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="barTintColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
+                    <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </toolbar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
