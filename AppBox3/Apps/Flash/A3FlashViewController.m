@@ -16,6 +16,7 @@
 #define kBottomToolBarHeight        74
 
 typedef NS_ENUM(NSUInteger, A3FlashViewModeType) {
+    A3FlashViewModeTypeNone = 0x00000000,
     A3FlashViewModeTypeLED = 0x00000001,
     A3FlashViewModeTypeColor = 0x00000002,
     A3FlashViewModeTypeEffect = 0x00000004
@@ -422,28 +423,61 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 }
 
 - (IBAction)sliderControlValueChanged:(UISlider *)sender {
-    switch (_currentFlashViewMode) {
-        case A3FlashViewModeTypeLED:
-        case A3FlashViewModeTypeColor:
-        {
-            if (_flashBrightnessSlider == sender) {
-                [self flashBrightnessSliderValueChanged:sender];
-            }
-            else {
-                [self colorModeSliderValueChanged:sender];
-            }
-        }
-            break;
-            
-        case A3FlashViewModeTypeEffect:
-        {
-            [self effectModeSliderValueChanged:sender];
-        }
-            break;
-            
-        default:
-            break;
+    
+    if (_currentFlashViewMode == A3FlashViewModeTypeNone) {
+        [self alphaSliderValueChanged:sender];
     }
+    else if (_currentFlashViewMode == A3FlashViewModeTypeLED) {
+        if (_flashBrightnessSlider == sender) {
+            [self flashBrightnessSliderValueChanged:sender];
+        }
+        else {
+            [self alphaSliderValueChanged:sender];
+        }
+    }
+    else if (_currentFlashViewMode & A3FlashViewModeTypeColor) {
+        [self colorModeSliderValueChanged:sender];
+    }
+    else if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
+        [self effectModeSliderValueChanged:sender];
+    }
+    
+//    switch (_currentFlashViewMode) {
+//        case A3FlashViewModeTypeNone: {
+//            [self alphaSliderValueChanged:sender];
+//        }
+//            break;
+//        case A3FlashViewModeTypeLED:
+//        {
+//            if (_flashBrightnessSlider == sender) {
+//                [self flashBrightnessSliderValueChanged:sender];
+//            }
+//            else {
+//                [self alphaSliderValueChanged:sender];
+//            }
+//        }
+//            break;
+//            
+//        case A3FlashViewModeTypeLED | A3FlashViewModeTypeColor:
+//        {
+//            if (_flashBrightnessSlider == sender) {
+//                [self flashBrightnessSliderValueChanged:sender];
+//            }
+//            else {
+//                [self colorModeSliderValueChanged:sender];
+//            }
+//        }
+//            break;
+//            
+//        case A3FlashViewModeTypeEffect:
+//        {
+//            [self effectModeSliderValueChanged:sender];
+//        }
+//            break;
+//            
+//        default:
+//            break;
+//    }
     
     [self startTimerToHideMenu];
 }
@@ -495,15 +529,17 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
         [self initializeLED];
+        _isTorchOn = YES;
         [self setTorchOn];
     }
     else {
+        _isTorchOn = NO;
         [self setTorchOff];
     }
 }
 
 - (IBAction)colorMenuButtonTouchUp:(id)sender {
-    if (!(_currentFlashViewMode & A3FlashViewModeTypeEffect)) {
+    if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
         [self releaseStrobelight];
         _isEffectWorking = NO;
     }
@@ -516,13 +552,13 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 }
 
 - (IBAction)effectsMenuButtonTouchUp:(id)sender {
-    if ((_currentFlashViewMode == A3FlashViewModeTypeEffect && !strobeTimer) || (_isEffectWorking && !strobeTimer) ) {
-        [self startStrobeLightEffectForIndex:_selectedEffectIndex];
-    }
-    else {
-        [self releaseStrobelight];
-        _contentImageView.backgroundColor = _selectedColor;
-    }
+//    if ((_currentFlashViewMode == A3FlashViewModeTypeEffect && !strobeTimer) || (_isEffectWorking && !strobeTimer) ) {
+//        [self startStrobeLightEffectForIndex:_selectedEffectIndex];
+//    }
+//    else {
+//        [self releaseStrobelight];
+//        _contentImageView.backgroundColor = _selectedColor;
+//    }
     
     _currentFlashViewMode = _currentFlashViewMode ^ A3FlashViewModeTypeEffect;
     if (_currentFlashViewMode & A3FlashViewModeTypeColor) {
@@ -530,6 +566,25 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     }
     
     [self configureFlashViewMode:_currentFlashViewMode animation:YES];
+    
+    if (!(_currentFlashViewMode & A3FlashViewModeTypeEffect)) {
+        [self releaseStrobelight];
+        _contentImageView.backgroundColor = _selectedColor;
+        return;
+    }
+    if ((_currentFlashViewMode & A3FlashViewModeTypeEffect && !strobeTimer) || (_isEffectWorking && !strobeTimer) ) {
+        [self startStrobeLightEffectForIndex:_selectedEffectIndex];
+    }
+}
+
+- (void)alphaSliderValueChanged:(UISlider *)slider {
+    _screenBrightnessValue = (slider.maximumValue - slider.value);
+    NSInteger brightnessIndex = floor(_screenBrightnessValue / (slider.maximumValue / 25.0));
+    UIScreen *mainScreen = [UIScreen mainScreen];
+    [mainScreen setBrightness:1.0 - (brightnessIndex / 25.0)];
+    
+    CGFloat offset = 1.0 - (brightnessIndex / 25.0);
+    _contentImageView.backgroundColor = [UIColor colorWithRed:offset green:offset blue:offset alpha:1.0];
 }
 
 - (void)colorModeSliderValueChanged:(UISlider *)slider {
@@ -594,11 +649,24 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 - (void)adjustConfigurationLayoutValueForFlashViewMode:(A3FlashViewModeType)type {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    if (!(_currentFlashViewMode & A3FlashViewModeTypeLED)) {
-        [self setTorchOff];
-    }
+//    if (!(_currentFlashViewMode & A3FlashViewModeTypeLED)) {
+//        [self setTorchOff];
+//    }
     
     _topToolBarTopConst.constant = 20;
+    
+    if (_currentFlashViewMode == A3FlashViewModeTypeNone) {
+        _bottomToolBarBottomConst.constant = 0;
+        _pickerViewBottomConst.constant = -(CGRectGetHeight(_pickerPanelView.bounds) - kBottomToolBarHeight);
+        _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
+        _sliderToolBar.hidden = NO;
+        _LEDBrightnessToolBar.hidden = YES;
+        _effectPickerView.hidden = YES;
+        [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        return;
+    }
     
     
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
@@ -643,9 +711,11 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         
         _pickerViewBottomConst.constant = kBottomToolBarHeight;
         _pickerPanelView.hidden = NO;
+        _effectPickerView.hidden = NO;
     }
     else {
         [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        _effectPickerView.hidden = YES;
     }
 
 
@@ -662,7 +732,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 #pragma mark - LED Related
 - (void)setTorchOn {
-    _isTorchOn = YES;
 #if !TARGET_IPHONE_SIMULATOR
 	Class myClass = NSClassFromString(@"AVCaptureDevice");
 	if (!myClass) {
@@ -686,7 +755,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 }
 
 - (void)setTorchOff {
-    _isTorchOn = NO;
 //#if !TARGET_IPHONE_SIMULATOR
 	Class myClass = NSClassFromString(@"AVCaptureDevice");
 	if (!myClass) {
@@ -703,6 +771,9 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 	
     if (_currentFlashViewMode & A3FlashViewModeTypeColor) {
         _contentImageView.backgroundColor = _selectedColor;
+    }
+    else if (_currentFlashViewMode == A3FlashViewModeTypeNone) {
+        _contentImageView.backgroundColor = [UIColor whiteColor];
     }
 //#endif
 }
