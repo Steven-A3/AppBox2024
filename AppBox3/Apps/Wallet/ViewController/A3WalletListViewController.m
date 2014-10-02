@@ -34,7 +34,6 @@ NSString *const A3WalletTextCellID = @"A3WalletListTextCell";
 NSString *const A3WalletPhotoCellID = @"A3WalletListPhotoCell";
 NSString *const A3WalletAllTopCellID = @"A3WalletAllTopCell";
 NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
-NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 
 @implementation A3WalletListViewController
 
@@ -99,7 +98,6 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 	[_tableView registerClass:[A3WalletListBigPhotoCell class] forCellReuseIdentifier:A3WalletBigPhotoCellID1];
 	[_tableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID];
 	[_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3WalletNormalCellID];
-	[_tableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID2];
 }
 
 - (void)viewWillLayoutSubviews {
