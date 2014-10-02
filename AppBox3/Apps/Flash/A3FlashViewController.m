@@ -12,6 +12,7 @@
 #import "A3UIDevice.h"
 #import "A3UserDefaults.h"
 #import "A3InstructionViewController.h"
+#import "MBProgressHUD.h"
 
 #define kBottomToolBarHeight        74
 
@@ -180,6 +181,7 @@ NSString *const cellID = @"flashEffectID";
 @property (strong, nonatomic) AVCaptureSession *LEDSession;
 @property (strong, nonatomic) NSTimer *hideMenuTimer;
 @property (strong, nonatomic) UITapGestureRecognizer *effectPickerViewTapGesture;
+@property (strong, nonatomic) MBProgressHUD *progressHud;
 @end
 
 @implementation A3FlashViewController
@@ -340,6 +342,29 @@ NSString *const cellID = @"flashEffectID";
     if (!_isLEDAvailable) {
         NSArray *bottomBarItems = @[_bottomToolBar.items[1], _bottomToolBar.items[2], _bottomToolBar.items[3], _bottomToolBar.items[4], _bottomToolBar.items[1]];
         [_bottomToolBar setItems:bottomBarItems];
+    }
+}
+
+- (void)showHUD {
+    [self hideHUD];
+    
+    self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.progressHud.mode = MBProgressHUDModeCustomView;
+    self.progressHud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:_isTorchOn ? @"f_flash_on" : @"f_flash_off"]];
+	self.progressHud.labelText = _isTorchOn ? NSLocalizedString(@"LED On", @"LED On") : NSLocalizedString(@"LED Off", @"LED Off");
+	self.progressHud.minShowTime = 3;
+	self.progressHud.removeFromSuperViewOnHide = YES;
+	__typeof(self) __weak weakSelf = self;
+	self.progressHud.completionBlock = ^{
+		weakSelf.progressHud = nil;
+	};
+    [self.progressHud hide:YES afterDelay:3];
+}
+
+- (void)hideHUD {
+    if (self.progressHud) {
+        [self.progressHud hide:YES];
+        self.progressHud = nil;
     }
 }
 
@@ -518,12 +543,14 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 	if (myTorch) {
 		if ([myTorch isTorchModeSupported:AVCaptureTorchModeOn]) {
 			if (_isTorchOn) {
-				[self setTorchOff];
 				_isTorchOn = NO;
+                [self showHUD];
+				[self setTorchOff];
 			} else {
+				_isTorchOn = YES;
+                [self showHUD];
 				[self initializeLED];
 				[self setTorchOn];
-				_isTorchOn = YES;
 			}
 		}
 	}
@@ -540,12 +567,14 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     [self configureFlashViewMode:_currentFlashViewMode animation:YES];
     
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
-        [self initializeLED];
         _isTorchOn = YES;
+        [self showHUD];
+        [self initializeLED];
         [self setTorchOn];
     }
     else {
         _isTorchOn = NO;
+        [self showHUD];
         [self setTorchOff];
     }
 }
