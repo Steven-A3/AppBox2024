@@ -33,7 +33,9 @@
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
-@implementation A3TranslatorViewController
+@implementation A3TranslatorViewController {
+	BOOL _instructionPresentedVeryFirst;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -97,7 +99,7 @@
 	[super viewDidAppear:animated];
 
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		if ([TranslatorGroup MR_countOfEntities] == 0) {
+		if (!_instructionViewController && [TranslatorGroup MR_countOfEntities] == 0) {
 			double delayInSeconds = 0.2;
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -163,6 +165,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 - (void)setupInstructionView
 {
     if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForTranslator]) {
+		_instructionPresentedVeryFirst = YES;
         [self showInstructionView];
     }
     self.navigationItem.rightBarButtonItem = [self instructionHelpBarButton];
@@ -189,6 +192,14 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 {
     [self.instructionViewController.view removeFromSuperview];
     self.instructionViewController = nil;
+
+	if (_instructionPresentedVeryFirst && [TranslatorGroup MR_countOfEntities] == 0) {
+		double delayInSeconds = 0.2;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[self addButtonAction];
+		});
+	}
 }
 
 #pragma mark - Setup Subview
