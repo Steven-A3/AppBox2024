@@ -56,7 +56,6 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	UILabel *transferLabel;
 	UILabel *instantLabel;
 
-	UIButton *lastimageButton;
 	dispatch_queue_t _captureSessionQueue;
 	UIBackgroundTaskIdentifier _backgroundRecordingID;
 	CIImage *ciimg;
@@ -72,12 +71,10 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	CMTime      currentMaxDuration;
 	CMTime      currentMinDuration;
 	AVFrameRateRange *slowFrameRateRange;
-    CGPoint           centerxy;
-	FrameRateCalculator *frameCaculator;
+    CGPoint center;
+	FrameRateCalculator *frameCalculator;
 }
 
-@property (nonatomic, strong) ALAssetsLibrary *assetLibrary;
-@property (nonatomic, strong) ALAssetsGroup *assetrollGroup;
 @property (nonatomic, strong) UIView *statusBarBackground;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 
@@ -115,12 +112,13 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 				@[@[@-1,@-2],@[@0,@-2],@[@1,@-2],@[@-1,@-1],@[@0,@-1],@[@1,@-1],@[@-1,@0],@[@0,@0], @[@1,@0]],
 				@[@[@-2,@-2],@[@1,@-2],@[@0,@-2],@[@-2,@-1],@[@-1,@-1],@[@0,@-1],@[@-2,@0],@[@-1,@0], @[@0,@0]]
 		];
-		frameCaculator = [[FrameRateCalculator alloc] init];
+		frameCalculator = [[FrameRateCalculator alloc] init];
 	}
 	return self;
 }
 
 #pragma mark - video setup
+
 - (void)notifyCameraShotSaveRule
 {
     if ([[A3UserDefaults standardUserDefaults] objectForKey:A3MirrorFirstLoadCameraRoll]) {
@@ -232,11 +230,12 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	}
 	[self setupGestureRecognizer];
 
-	lastimageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,47,47)];
-	[lastimageButton addTarget:_cameraRollButton.target action:_cameraRollButton.action forControlEvents:UIControlEventTouchUpInside];
-	lastimageButton.layer.cornerRadius = 23.5;
-	lastimageButton.layer.masksToBounds = YES;
-	[self.bottomBar.items[0] setCustomView:lastimageButton];
+
+	self.lastimageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,47,47)];
+	[self.lastimageButton addTarget:_cameraRollButton.target action:_cameraRollButton.action forControlEvents:UIControlEventTouchUpInside];
+	self.lastimageButton.layer.cornerRadius = 23.5;
+	self.lastimageButton.layer.masksToBounds = YES;
+	[self.bottomBar.items[0] setCustomView:self.lastimageButton];
 	[self loadFirstPhoto];
     
     [_topBar setTranslucent:YES];
@@ -521,7 +520,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	[self setupZoomSlider];
 
 	// then start everything
-	[frameCaculator reset];
+	[frameCalculator reset];
     if (!IS_IOS7) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             	[_captureSession startRunning];
@@ -588,7 +587,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	ciimg = [CIImage imageWithCVPixelBuffer:(CVPixelBufferRef)imageBuffer options:nil];
 
 	CMTime timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
-	[frameCaculator calculateFramerateAtTimestamp:timestamp];
+	[frameCalculator calculateFramerateAtTimestamp:timestamp];
 	//FNLOG(@"%f fps",frameCalculator.frameRate);
 	/*
 	CGRect sourceExtent = ciimg.extent;
@@ -1099,8 +1098,8 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	}
     else {
         if (bLosslessZoom == YES) {
-            centerxy.x = [self currentFilterView].center.y;
-            centerxy.y = [self currentFilterView].center.x;
+            center.x = [self currentFilterView].center.y;
+            center.y = [self currentFilterView].center.x;
         }
         
     }
@@ -1117,7 +1116,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
     else
     {
         if (bLosslessZoom == YES) {
-            [self currentFilterView].center = centerxy;
+            [self currentFilterView].center = center;
             
         }
         
@@ -1316,7 +1315,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 }
 
 #pragma mark - FIlter Control
-- (IBAction)ColorButton:(id)sender {
+- (IBAction)colorButton:(id)sender {
 	bMultipleView = !bMultipleView;
 
 	if (bMultipleView == YES) {
@@ -1327,7 +1326,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	}
 }
 
-- (void) ShowOneFilterView:(NSUInteger) nViewIndex {
+- (void)ShowOneFilterView:(NSUInteger) nViewIndex {
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	CGFloat width = screenBounds.size.width;
 	CGFloat height = screenBounds.size.height;
@@ -1376,7 +1375,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 }
 
-- (void) ShowMultipleViews:(BOOL)bSizeChange {
+- (void)ShowMultipleViews:(BOOL)bSizeChange {
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	CGFloat height = (screenBounds.size.height-84)/3;
 	CGFloat width  = (screenBounds.size.width*height)/screenBounds.size.height;
@@ -1472,153 +1471,6 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 						 }];
 					 }];
 
-}
-
-#pragma mark - load camera roll
-- (IBAction)loadCameraRoll:(id)sender {
-    if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied || [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusRestricted) {
-        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-        imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        imagePickerController.allowsEditing = NO;
-        imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
-        imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
-        
-        if (IS_IOS7) {
-            [self presentViewController:imagePickerController animated:YES completion:NULL];
-        }
-        else {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self presentViewController:imagePickerController animated:NO completion:NULL];
-            });
-        }
-        return;
-    }
-    
-	// Create browser
-	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
-	browser.displayActionButton = NO;
-	browser.displayNavArrows = YES;
-	browser.displaySelectionButtons = NO;
-	browser.alwaysShowControls = YES;
-	//browser.wantsFullScreenLayout = YES; deprecated
-	browser.zoomPhotosToFill = YES;
-	browser.enableGrid = YES;
-	browser.startOnGrid = NO;
-	[browser setCurrentPhotoIndex:0];
-    
-	UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
-	nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-	[self presentViewController:nc animated:YES completion:^{
-        [self notifyCameraShotSaveRule];
-    }];
-}
-
-#pragma mark - MWPhotoBrowserDelegate
-
-- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
-	return [_assetrollGroup numberOfAssets];
-}
-
-- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
-	NSMutableArray *assetArray = [NSMutableArray new];
-	if (index < [_assetrollGroup numberOfAssets])
-	{
-		[_assetrollGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[_assetrollGroup numberOfAssets] - index-1] options:NSEnumerationConcurrent usingBlock:^(ALAsset *result, NSUInteger i, BOOL *stop) {
-			if (result != nil) {
-				[assetArray addObject:result];
-				*stop = YES;
-			}
-		}];
-        if ([assetArray count]) {
-            ALAsset *asset = [assetArray objectAtIndex:0];
-            return [MWPhoto photoWithURL:asset.defaultRepresentation.url];
-        }
-	}
-	return nil;
-}
-
-- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index {
-	NSMutableArray *assetArray = [NSMutableArray new];
-	if (index < [_assetrollGroup numberOfAssets])
-	{
-		[_assetrollGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[_assetrollGroup numberOfAssets] - index-1] options:NSEnumerationConcurrent usingBlock:^(ALAsset *result, NSUInteger i, BOOL *stop) {
-			if (result != nil) {
-				[assetArray addObject:result];
-				*stop = YES;
-			}
-		}];
-        if ([assetArray count]) {
-            ALAsset *asset = [assetArray objectAtIndex:0];
-            return [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
-        }
-	}
-	return nil;
-}
-
-//- (MWCaptionView *)photoBrowser:(MWPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index {
-//    MWPhoto *photo = [self.photos objectAtIndex:index];
-//    MWCaptionView *captionView = [[MWCaptionView alloc] initWithPhoto:photo];
-//    return [captionView autorelease];
-//}
-
-- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser actionButtonPressedForPhotoAtIndex:(NSUInteger)index {
-    FNLOG(@"ACTION!");
-}
-
-- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
-    FNLOG(@"Did start viewing photo at index %lu", (unsigned long)index);
-}
-
-#pragma mark - Load Assets
-
--(UIImage *)cropImageWithSquare:(UIImage *)source
-{
-    CGSize finalsize = CGSizeMake(47,47);
-    
-    CGFloat scale = MAX(
-                        finalsize.width/source.size.width,
-                        finalsize.height/source.size.height);
-    CGFloat width = source.size.width * scale;
-    CGFloat height = source.size.height * scale;
-    
-    CGRect rr = CGRectMake( 0, 0, width, height);
-    
-    UIGraphicsBeginImageContextWithOptions(finalsize, NO, 0);
-    [source drawInRect:rr];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
-
-- (void) loadFirstPhoto {
-    _assetLibrary = [ALAssetsLibrary new];
-    [_assetLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos
-                                 usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-                                     if (group != nil) {
-                                         [group setAssetsFilter:[ALAssetsFilter allPhotos]];
-                                         _assetrollGroup = group;
-                                         [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *alAsset, NSUInteger index, BOOL *innerStop) {
-                                             if (alAsset) {
-                                                 ALAssetRepresentation *representation = [alAsset defaultRepresentation];
-                                                 UIImage *latestPhoto = [UIImage imageWithCGImage:[representation fullScreenImage]];
-                                                 // Stop the enumerations
-                                                 *innerStop = YES;
-                                                 [self setImageOnCameraRollButton:latestPhoto];
-                                             }
-                                         }];
-                                     }
-                                 }
-                               failureBlock:^(NSError *error) {
-                                   FNLOG("NO GroupSavedPhotos:%@", error);
-                               }
-     ];
-    
-}
-
-#pragma mark - set image icon
-
-- (void) setImageOnCameraRollButton:(UIImage *)image {
-    [lastimageButton setBackgroundImage:[self cropImageWithSquare:image] forState:UIControlStateNormal];
 }
 
 @end

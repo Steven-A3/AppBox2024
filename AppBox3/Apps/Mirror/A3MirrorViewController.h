@@ -14,6 +14,7 @@
 #import <CoreImage/CoreImage.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "MWPhotoBrowser.h"
+#import "A3CameraViewController.h"
 
 typedef NS_ENUM(NSUInteger, A3MirrorFilterType) {
     A3MirrorMonoFilter= 0,
@@ -27,7 +28,7 @@ typedef NS_ENUM(NSUInteger, A3MirrorFilterType) {
     A3MirrorInstantFilter,
 };
 
-@interface A3MirrorViewController : UIViewController <AVCaptureVideoDataOutputSampleBufferDelegate,MWPhotoBrowserDelegate, GLKViewDelegate, UIGestureRecognizerDelegate>
+@interface A3MirrorViewController : A3CameraViewController <AVCaptureVideoDataOutputSampleBufferDelegate, GLKViewDelegate, UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIToolbar *topBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomBar;
@@ -41,9 +42,7 @@ typedef NS_ENUM(NSUInteger, A3MirrorFilterType) {
 - (IBAction)flipButton:(id)sender;
 - (IBAction)showInstructionView:(id)sender;
 - (IBAction)captureButton:(id)sender;
-
-- (IBAction)loadCameraRoll:(id)sender;
-- (IBAction)ColorButton:(id)sender;
+- (IBAction)colorButton:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIView *viewOutlet;
 

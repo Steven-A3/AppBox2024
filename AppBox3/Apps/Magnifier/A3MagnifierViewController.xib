@@ -8,13 +8,13 @@
             <connections>
                 <outlet property="bottomToolBar" destination="O1O-Nj-Osb" id="LhV-ER-mf4"/>
                 <outlet property="brightnessToolBar" destination="YpF-Zt-14A" id="CmE-F2-EqH"/>
-                <outlet property="brightnessslider" destination="odj-7y-xmn" id="uuL-UE-rlt"/>
+                <outlet property="brightnessSlider" destination="odj-7y-xmn" id="uuL-UE-rlt"/>
                 <outlet property="cameraRollButton" destination="kvd-IK-1j1" id="YwS-oQ-cJX"/>
                 <outlet property="flashToolBar" destination="VNC-ds-Hi4" id="gbx-AN-LE7"/>
-                <outlet property="flashbrightslider" destination="2dF-jI-xRn" id="ueh-DU-fE5"/>
+                <outlet property="flashBrightSlider" destination="2dF-jI-xRn" id="ueh-DU-fE5"/>
                 <outlet property="lightButton" destination="V3Z-ZX-qW7" id="o1U-34-Had"/>
                 <outlet property="magnifierToolBar" destination="cPy-Lx-SnA" id="hRY-aN-quI"/>
-                <outlet property="magnifierslider" destination="XkM-xa-vJh" id="VHN-xz-lIf"/>
+                <outlet property="magnifierSlider" destination="XkM-xa-vJh" id="VHN-xz-lIf"/>
                 <outlet property="topToolBar" destination="uR2-5Q-sX3" id="tBU-1Y-i2p"/>
                 <outlet property="view" destination="1" id="rO6-jj-wuU"/>
             </connections>
@@ -37,7 +37,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="YH6-Tz-3I9"/>
                         <barButtonItem image="m_snap" id="2lD-eU-atl">
                             <connections>
-                                <action selector="snapButton:" destination="-1" id="boU-Hb-h3S"/>
+                                <action selector="snapButtonAction:" destination="-1" id="boU-Hb-h3S"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="KUZ-xt-tr4"/>
@@ -52,13 +52,13 @@
                     <items>
                         <barButtonItem title="Apps" id="muc-m2-GWx">
                             <connections>
-                                <action selector="appsButton:" destination="-1" id="pnc-t5-be6"/>
+                                <action selector="appsButtonAction:" destination="-1" id="pnc-t5-be6"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="gUz-wQ-jb0"/>
                         <barButtonItem image="m_flash_off" width="44" id="V3Z-ZX-qW7">
                             <connections>
-                                <action selector="lightButton:" destination="-1" id="6Hs-8x-4Ih"/>
+                                <action selector="lightButtonAction:" destination="-1" id="6Hs-8x-4Ih"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem width="5" style="plain" systemItem="flexibleSpace" id="ZRx-Xg-jMV"/>
@@ -90,7 +90,7 @@
                                 <rect key="frame" x="49" y="6" width="236" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
-                                    <action selector="manifierslider:" destination="-1" eventType="valueChanged" id="8Jn-FC-oDt"/>
+                                    <action selector="magnifierSliderAction:" destination="-1" eventType="valueChanged" id="8Jn-FC-oDt"/>
                                 </connections>
                             </slider>
                         </barButtonItem>
@@ -113,7 +113,7 @@
                                 <rect key="frame" x="49" y="-1" width="237" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
-                                    <action selector="brightSlider:" destination="-1" eventType="valueChanged" id="gus-S4-XUl"/>
+                                    <action selector="brightSliderAction:" destination="-1" eventType="valueChanged" id="gus-S4-XUl"/>
                                 </connections>
                             </slider>
                         </barButtonItem>
@@ -136,11 +136,11 @@
                                 <rect key="frame" x="49" y="8" width="233" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
-                                    <action selector="flashbrightslider:" destination="-1" eventType="valueChanged" id="7W5-W0-cdK"/>
+                                    <action selector="flashBrightSliderAction:" destination="-1" eventType="valueChanged" id="7W5-W0-cdK"/>
                                 </connections>
                             </slider>
                             <connections>
-                                <action selector="flashbrightslider:" destination="-1" id="EKB-PQ-rAw"/>
+                                <action selector="flashBrightSliderAction:" destination="-1" id="EKB-PQ-rAw"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem enabled="NO" image="m_flash_right" id="IGd-JE-axe">

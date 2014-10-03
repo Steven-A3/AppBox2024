@@ -21,7 +21,6 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 
 @interface A3MagnifierViewController () <A3InstructionViewControllerDelegate>
 {
-    UIButton                    *lastimageButton;
     GLKView                     *previewLayer;
     CIContext                   *_ciContext;
     EAGLContext                 *_eaglContext;
@@ -75,11 +74,11 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     [self setNavigationBarHidden:YES];
     [self setToolBarsHidden:YES];
 
-    lastimageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,47,47)];
-    [lastimageButton addTarget:_cameraRollButton.target action:_cameraRollButton.action forControlEvents:UIControlEventTouchUpInside];
-    lastimageButton.layer.cornerRadius = 23.5;
-    lastimageButton.layer.masksToBounds = YES;
-    [self.bottomToolBar.items[0] setCustomView:lastimageButton];
+    self.lastimageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,47,47)];
+    [self.lastimageButton addTarget:_cameraRollButton.target action:_cameraRollButton.action forControlEvents:UIControlEventTouchUpInside];
+	self.lastimageButton.layer.cornerRadius = 23.5;
+	self.lastimageButton.layer.masksToBounds = YES;
+    [self.bottomToolBar.items[0] setCustomView:self.lastimageButton];
     [self loadFirstPhoto];
     
     [self setupPreview];
@@ -97,7 +96,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     
     bInvertedColor = NO;
     bLightOn = NO;
-    self.flashbrightslider.value = 0.5;
+    self.flashBrightSlider.value = 0.5;
     [self setupInstructionView];
 }
 
@@ -106,7 +105,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 }
 
 
-- (void) setPreviewRotation:(CGRect)screenBounds {
+- (void)setPreviewRotation:(CGRect)screenBounds {
     if (!IS_IPHONE) {
                 CGAffineTransform   transform;
         UIInterfaceOrientation curInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
@@ -140,15 +139,15 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     if(!IS_IPHONE) {
         [self setPreviewRotation:screenBounds];
-        [self.flashbrightslider setFrame:CGRectMake(self.flashbrightslider.frame.origin.x, self.flashbrightslider.frame.origin.y, screenBounds.size.width - 106, self.flashbrightslider.frame.size.height)];
-        [self.brightnessslider setFrame:CGRectMake(self.brightnessslider.frame.origin.x, self.brightnessslider.frame.origin.y , screenBounds.size.width - 106, self.brightnessslider.frame.size.height)];
-        [self.magnifierslider setFrame:CGRectMake(self.magnifierslider.frame.origin.x, self.magnifierslider.frame.origin.y  , screenBounds.size.width - 106, self.magnifierslider.frame.size.height)];
+        [self.flashBrightSlider setFrame:CGRectMake(self.flashBrightSlider.frame.origin.x, self.flashBrightSlider.frame.origin.y, screenBounds.size.width - 106, self.flashBrightSlider.frame.size.height)];
+        [self.brightnessSlider setFrame:CGRectMake(self.brightnessSlider.frame.origin.x, self.brightnessSlider.frame.origin.y, screenBounds.size.width - 106, self.brightnessSlider.frame.size.height)];
+        [self.magnifierSlider setFrame:CGRectMake(self.magnifierSlider.frame.origin.x, self.magnifierSlider.frame.origin.y, screenBounds.size.width - 106, self.magnifierSlider.frame.size.height)];
 
     }
     else {
-        [self.flashbrightslider setFrame:CGRectMake(self.flashbrightslider.frame.origin.x, self.flashbrightslider.frame.origin.y, screenBounds.size.width - 98, self.flashbrightslider.frame.size.height)];
-        [self.brightnessslider setFrame:CGRectMake(self.brightnessslider.frame.origin.x, self.brightnessslider.frame.origin.y , screenBounds.size.width - 98, self.brightnessslider.frame.size.height)];
-        [self.magnifierslider setFrame:CGRectMake(self.magnifierslider.frame.origin.x, self.magnifierslider.frame.origin.y  , screenBounds.size.width - 98, self.magnifierslider.frame.size.height)];
+        [self.flashBrightSlider setFrame:CGRectMake(self.flashBrightSlider.frame.origin.x, self.flashBrightSlider.frame.origin.y, screenBounds.size.width - 98, self.flashBrightSlider.frame.size.height)];
+        [self.brightnessSlider setFrame:CGRectMake(self.brightnessSlider.frame.origin.x, self.brightnessSlider.frame.origin.y, screenBounds.size.width - 98, self.brightnessSlider.frame.size.height)];
+        [self.magnifierSlider setFrame:CGRectMake(self.magnifierSlider.frame.origin.x, self.magnifierSlider.frame.origin.y, screenBounds.size.width - 98, self.magnifierSlider.frame.size.height)];
         
     }
  
@@ -157,7 +156,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 
 }
 
-- (void) setupPreview {
+- (void)setupPreview {
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     _eaglContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     previewLayer = [[GLKView alloc] initWithFrame:self.view.bounds context:_eaglContext];
@@ -210,27 +209,27 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 }
 
 - (void)setupMagnifier {
-    self.magnifierslider.minimumValue = 1;
-    self.magnifierslider.continuous = YES;
-    self.magnifierslider.value = 1;
+    self.magnifierSlider.minimumValue = 1;
+    self.magnifierSlider.continuous = YES;
+    self.magnifierSlider.value = 1;
 
     if (bLosslessZoom == NO) {
         if ([[stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor] > MAX_ZOOM_FACTOR) {
-            self.magnifierslider.maximumValue = MAX_ZOOM_FACTOR;
+            self.magnifierSlider.maximumValue = MAX_ZOOM_FACTOR;
         } else {
-            self.magnifierslider.maximumValue = [[stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor];
+            self.magnifierSlider.maximumValue = [[stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor];
         }
     } else {
-        self.magnifierslider.maximumValue = [self getMaxZoom];
+        self.magnifierSlider.maximumValue = [self getMaxZoom];
     }
 
 }
 
 - (void) setupBrightness {
-    self.brightnessslider.minimumValue = -1.0;
-    self.brightnessslider.maximumValue = 1.0;
-    self.brightnessslider.continuous = YES;
-    self.brightnessslider.value = 0.0;
+    self.brightnessSlider.minimumValue = -1.0;
+    self.brightnessSlider.maximumValue = 1.0;
+    self.brightnessSlider.continuous = YES;
+    self.brightnessSlider.value = 0.0;
 }
 
 - (void)notifyCameraShotSaveRule
@@ -262,9 +261,9 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 - (void) handlePinchFrom:(UIPinchGestureRecognizer *)recognizer {
     effectiveScale = beginGestureScale*recognizer.scale;
     FNLOG(@"effectiveScale = %f, beginGeustureScale = %f, recognizer.scale = %f", effectiveScale, beginGestureScale, recognizer.scale);
-    if (effectiveScale < self.magnifierslider.minimumValue ) effectiveScale = self.magnifierslider.minimumValue;
-    if(effectiveScale > self.magnifierslider.maximumValue) effectiveScale = self.magnifierslider.maximumValue;
-    if(effectiveScale == self.magnifierslider.value) return;
+    if (effectiveScale < self.magnifierSlider.minimumValue ) effectiveScale = self.magnifierSlider.minimumValue;
+    if(effectiveScale > self.magnifierSlider.maximumValue) effectiveScale = self.magnifierSlider.maximumValue;
+    if(effectiveScale == self.magnifierSlider.value) return;
     if (bLosslessZoom == YES) {
         if (!_device.isRampingVideoZoom) {
             _device.videoZoomFactor = effectiveScale;
@@ -288,7 +287,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
         }
     }
     
-    self.magnifierslider.value = effectiveScale;
+    self.magnifierSlider.value = effectiveScale;
 }
 
 - (void)setNavigationBarHidden:(BOOL)hidden {
@@ -331,15 +330,13 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	[[UIApplication sharedApplication] setStatusBarHidden:hidden];
 }
 
-
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)appsButton:(id)sender {
+- (IBAction)appsButtonAction:(id)sender {
     if (IS_IPHONE) {
 		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 	} else {
@@ -351,7 +348,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     bInvertedColor = !bInvertedColor;
 }
 
-- (IBAction)lightButton:(id)sender {
+- (IBAction)lightButtonAction:(id)sender {
     bLightOn = !bLightOn;
     
     if ([_device hasTorch]) {
@@ -359,9 +356,9 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
        // if ([_device lockForConfiguration:&error]) {
             
             if (bLightOn == YES) {
-                if (self.flashbrightslider.value != 0.0) {
+                if (self.flashBrightSlider.value != 0.0) {
                     [_device setTorchMode:AVCaptureTorchModeOn];
-                    if([_device setTorchModeOnWithLevel:self.flashbrightslider.value error:&error]!= YES) {
+                    if([_device setTorchModeOnWithLevel:self.flashBrightSlider.value error:&error]!= YES) {
                             FNLOG(@"setTorchModeOnWithLevel error: %@", error);
                     }
                 } else {
@@ -384,13 +381,13 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     }
 }
 
-- (IBAction)brightSlider:(id)sender {
+- (IBAction)brightSliderAction:(id)sender {
     UISlider *bright = (UISlider *) sender;
     
     brightFactor = bright.value;
 }
 
-- (IBAction)manifierslider:(id)sender {
+- (IBAction)magnifierSliderAction:(id)sender {
     UISlider *magnify = (UISlider *) sender;
    // FNLOG(@"slider value = %f", magnify.value);
     if (bLosslessZoom == YES) {
@@ -448,7 +445,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     return sourceImage;
 }
 
-- (void) snapAnimation{
+- (void)snapAnimation{
 	UIView *flashView = [[UIView alloc] initWithFrame:[self screenBoundsAdjustedWithOrientation]];
 	[flashView setBackgroundColor:[UIColor blackColor]];
 	[flashView setAlpha:0.f];
@@ -486,7 +483,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     return YES;
 }
 
-- (IBAction)snapButton:(id)sender {
+- (IBAction)snapButtonAction:(id)sender {
     if (![self hasAuthorizationToAccessPhoto]) {
         return;
     }
@@ -552,44 +549,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	];
 }
 
-- (IBAction)loadCameraRoll:(id)sender {
-    if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied || [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusRestricted) {
-        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-        imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        imagePickerController.allowsEditing = NO;
-        imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
-        imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
-        if (IS_IOS7) {
-            [self presentViewController:imagePickerController animated:YES completion:NULL];
-        }
-        else {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self presentViewController:imagePickerController animated:NO completion:NULL];
-            });
-        }
-        return;
-    }
-    
-    // Create browser
-	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
-    browser.displayActionButton = NO;
-    browser.displayNavArrows = YES;
-    browser.displaySelectionButtons = NO;
-    browser.alwaysShowControls = NO;
-    //browser.wantsFullScreenLayout = YES; deprecated
-    browser.zoomPhotosToFill = YES;
-    browser.enableGrid = YES;
-    browser.startOnGrid = NO;
-    [browser setCurrentPhotoIndex:0];
-    
-    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
-    nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:nc animated:YES completion:^{
-        [self notifyCameraShotSaveRule];
-    }];
-}
-
-- (IBAction)flashbrightslider:(id)sender {
+- (IBAction)flashBrightSliderAction:(id)sender {
     UISlider  *flashslider = (UISlider  *)sender;
     if(_device.torchAvailable == YES) {
         if (flashslider.value == 0.0) {
@@ -631,6 +591,7 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
 }
 
 #pragma mark - AVCapture Setup
+
 - (void)configureCameraForHighestFrameRate:(AVCaptureDevice *)device
 {
     AVCaptureDeviceFormat *bestFormat = nil;
@@ -756,7 +717,7 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
     _assetrollGroup = nil;
     _device = nil;
     _statusBarBackground = nil;
-    lastimageButton = nil;
+    self.lastimageButton = nil;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 - (CGFloat) getMaxZoom {
@@ -807,112 +768,13 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
 
 #pragma mark - AVCapture Setup End
 
-#pragma mark - MWPhotoBrowserDelegate
-
-- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
-    return [_assetrollGroup numberOfAssets];
-}
-
-- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
-	NSMutableArray *assetArray = [NSMutableArray new];
-	if (index < [_assetrollGroup numberOfAssets])
-	{
-		[_assetrollGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[_assetrollGroup numberOfAssets] - index-1] options:NSEnumerationConcurrent usingBlock:^(ALAsset *result, NSUInteger i, BOOL *stop) {
-			if (result != nil) {
-				[assetArray addObject:result];
-				*stop = YES;
-			}
-		}];
-        if ([assetArray count]) {
-            ALAsset *asset = [assetArray objectAtIndex:0];
-            return [MWPhoto photoWithURL:asset.defaultRepresentation.url];
-        }
-	}
-	return nil;
-}
-
-- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index {
-	NSMutableArray *assetArray = [NSMutableArray new];
-	if (index < [_assetrollGroup numberOfAssets])
-	{
-		[_assetrollGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[_assetrollGroup numberOfAssets] - index-1] options:NSEnumerationConcurrent usingBlock:^(ALAsset *result, NSUInteger i, BOOL *stop) {
-			if (result != nil) {
-				[assetArray addObject:result];
-				*stop = YES;
-			}
-		}];
-        if ([assetArray count]) {
-            ALAsset *asset = [assetArray objectAtIndex:0];
-            return [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
-        }
-	}
-	return nil;
-}
-
-//- (MWCaptionView *)photoBrowser:(MWPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index {
-//    MWPhoto *photo = [self.photos objectAtIndex:index];
-//    MWCaptionView *captionView = [[MWCaptionView alloc] initWithPhoto:photo];
-//    return [captionView autorelease];
-//}
-
-//- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser actionButtonPressedForPhotoAtIndex:(NSUInteger)index {
-//    FNLOG(@"ACTION!");
-//}
-
-- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
-    //  FNLOG(@"Did start viewing photo at index %lu", (unsigned long)index);
-}
-
-#pragma mark - Load Assets
--(UIImage *)cropImageWithSquare:(UIImage *)source
-{
-    CGSize finalsize = CGSizeMake(47,47);
-    
-    CGFloat scale = MAX(
-                        finalsize.width/source.size.width,
-                        finalsize.height/source.size.height);
-    CGFloat width = source.size.width * scale;
-    CGFloat height = source.size.height * scale;
-    
-    CGRect rr = CGRectMake( 0, 0, width, height);
-    
-    UIGraphicsBeginImageContextWithOptions(finalsize, NO, 0);
-    [source drawInRect:rr];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
-
-
-- (void) loadFirstPhoto {
-    _assetLibrary = [ALAssetsLibrary new];
-    [_assetLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos
-                                 usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-                                     if (group != nil) {
-                                         [group setAssetsFilter:[ALAssetsFilter allPhotos]];
-                                         _assetrollGroup = group;
-                                         [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *alAsset, NSUInteger index, BOOL *innerStop) {
-                                             if (alAsset) {
-                                                 ALAssetRepresentation *representation = [alAsset defaultRepresentation];
-                                                 UIImage *latestPhoto = [UIImage imageWithCGImage:[representation fullScreenImage]];
-                                                 // Stop the enumerations
-                                                 *innerStop = YES;
-                                                 [self setImageOnCameraRollButton:latestPhoto];
-                                             }
-                                         }];
-                                     }
-                                 }
-                               failureBlock:^(NSError *error) {
-                                   FNLOG("NO GroupSavedPhotos");
-                               }
-     ];
-    
-}
 #pragma mark - set view rotate
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
 }
+
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     // makes the UI more Camera.app like
@@ -942,10 +804,6 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
     [self setPreviewRotation:screenBounds];
     
 
-}
-#pragma mark - set image icon
-- (void) setImageOnCameraRollButton:(UIImage *)image {
-    [lastimageButton setBackgroundImage:[self cropImageWithSquare:image] forState:UIControlStateNormal];
 }
 
 @end

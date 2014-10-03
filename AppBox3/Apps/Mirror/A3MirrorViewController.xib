@@ -88,7 +88,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Kgc-aP-7UM"/>
                         <barButtonItem image="m_color" style="plain" id="smY-uD-rws">
                             <connections>
-                                <action selector="ColorButton:" destination="-1" id="CAg-ol-x47"/>
+                                <action selector="colorButton:" destination="-1" id="CAg-ol-x47"/>
                             </connections>
                         </barButtonItem>
                     </items>

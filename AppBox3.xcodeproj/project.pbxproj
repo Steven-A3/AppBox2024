@@ -679,6 +679,7 @@
 		68D6E903199ECC0A00166A47 /* LadyCalendarAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D6E902199ECC0A00166A47 /* LadyCalendarAccount.m */; };
 		68D6E90C199EE0A200166A47 /* WalletCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D6E90B199EE0A200166A47 /* WalletCategory.m */; };
 		68D6E90F199EE0A200166A47 /* WalletField.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D6E90E199EE0A200166A47 /* WalletField.m */; };
+		68DA1E2519DE7CA30058AF50 /* A3CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DA1E2419DE7CA30058AF50 /* A3CameraViewController.m */; };
 		68DAF6F116BFE3B000775372 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68DAF6EF16BFE3B000775372 /* Localizable.strings */; };
 		68DBAB6D18C4C2B2003A67E5 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68DBAB6C18C4C2B2003A67E5 /* MediaPlayer.framework */; };
 		68DBF04B17CB884F009CAC33 /* A3HolidaysTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF04A17CB884F009CAC33 /* A3HolidaysTest.m */; };
@@ -2207,6 +2208,8 @@
 		68D6E90D199EE0A200166A47 /* WalletField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletField.h; sourceTree = "<group>"; };
 		68D6E90E199EE0A200166A47 /* WalletField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletField.m; sourceTree = "<group>"; };
 		68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "External/dropbox-ios-sdk-1.3.9/DropboxSDK.framework"; sourceTree = "<group>"; };
+		68DA1E2319DE7CA30058AF50 /* A3CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CameraViewController.h; sourceTree = "<group>"; };
+		68DA1E2419DE7CA30058AF50 /* A3CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CameraViewController.m; sourceTree = "<group>"; };
 		68DBAB6C18C4C2B2003A67E5 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		68DBF04A17CB884F009CAC33 /* A3HolidaysTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysTest.m; path = Holidays/A3HolidaysTest.m; sourceTree = "<group>"; };
 		68DC38231871BD0C0088DDA0 /* A3KeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3KeychainUtils.h; path = Passcode/A3KeychainUtils.h; sourceTree = "<group>"; };
@@ -3023,6 +3026,8 @@
 				680D638518CFF9D400938AD0 /* A3MagnifierViewController.h */,
 				680D638618CFF9D400938AD0 /* A3MagnifierViewController.m */,
 				680D638718CFF9D400938AD0 /* A3MagnifierViewController.xib */,
+				68DA1E2319DE7CA30058AF50 /* A3CameraViewController.h */,
+				68DA1E2419DE7CA30058AF50 /* A3CameraViewController.m */,
 			);
 			path = Magnifier;
 			sourceTree = "<group>";
@@ -6288,6 +6293,7 @@
 				68B6A2EB18CEC76D004084EF /* A3UnitPriceDetailTableController.m in Sources */,
 				68B6A34E18CEC76D004084EF /* A3WalletMainTabBarController.m in Sources */,
 				17D420FD697D545A9027AB7C /* A3PasscodeCommonViewController.m in Sources */,
+				68DA1E2519DE7CA30058AF50 /* A3CameraViewController.m in Sources */,
 				68F319FC18D83D1F0003BE62 /* A3LaunchSceneViewController.m in Sources */,
 				17D425CA8B84A776935B9382 /* Foursquare2.m in Sources */,
 				17D42E4EE3830FB7CC709BC8 /* FSOAuth.m in Sources */,
