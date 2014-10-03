@@ -867,7 +867,7 @@ Enter Encryption Key for Wallet.";
 "Display" = "Display";
 "Use Auto-Lock" = "Use Auto-Lock";
 "Auto Dim" = "Auto Dim";
-"ExplainAutoDim" = "This option will be very useful when you use Alarm Clock in the bed. Plug in your device to an electrical outlet. Switch Off \"Use Auto-Lock\" to prevent the device going into sleep mode. This option will help your sleep by reducing the brightness automatically.";
+"ExplainAutoDim" = "This option will be very useful when you use Clock in the bed. Plug in your device to an electrical outlet. Switch Off \"Use Auto-Lock\" to prevent the device going into sleep mode. This option will help your sleep by reducing the brightness automatically.";
 
 "Backup file is ready." = "Backup file is ready.";
 "Backup file does not exist." = "No backup files.";

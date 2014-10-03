@@ -923,7 +923,7 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Display" = "ANZEIGE";
 "Use Auto-Lock" = "Automatische Sperre";
 "Auto Dim" = "Auto Dimmen";
-"ExplainAutoDim" = "Diese Option ist sehr nützlich wenn Sie den Wecker beim Schlafengehen nutzen möchten. Schließen Sie Ihr Gerät an eine Steckdose. Schalten Sie \"Automatische Sperre\" aus, um den Schlaf-Modus zu deaktivieren. Diese Option wird den Bildschirm automatisch dimmen, um besser einzuschlafen.";
+"ExplainAutoDim" = "Diese Option ist sehr nützlich wenn Sie die Uhr beim Schlafengehen nutzen möchten. Schließen Sie Ihr Gerät an eine Steckdose. Schalten Sie \"Automatische Sperre\" aus, um den Schlaf-Modus zu deaktivieren. Diese Option wird den Bildschirm automatisch dimmen, um besser einzuschlafen.";
 
 "Backup file is ready." = "Backup-Datei ist fertig.";
 "Backup file does not exist." = "Backup-Datei nicht existiert.";

@@ -915,7 +915,7 @@ Wprowadź klucz szyfrowania dla portfela.";
 "Display" = "Wygląd";
 "Use Auto-Lock" = "Autoblokada";
 "Auto Dim" = "Auto Dim";
-"ExplainAutoDim" = "Ta opcja jest przydatna kiedy używasz Alarm Clock w łóżku. Podłącz urządzenie do zasilania. Wyłącz opcje autoblokady aby zapobiec wyłączeniu urządzenia. Ta opcja ułatwia zasypanie przez automatyczne zmniejszanie jasności ekranu.";
+"ExplainAutoDim" = "Ta opcja jest przydatna kiedy używasz Clock w łóżku. Podłącz urządzenie do zasilania. Wyłącz opcje autoblokady aby zapobiec wyłączeniu urządzenia. Ta opcja ułatwia zasypanie przez automatyczne zmniejszanie jasności ekranu.";
 
 "Backup file is ready." = "Plik kopii zapasowej jest gotowa.";
 "Backup file does not exist." = "Plik kopii zapasowej nie istnieje.";
