@@ -11,17 +11,24 @@
                 <outlet property="bottomToolBar2" destination="xzf-yf-ykM" id="2uJ-XY-hys"/>
                 <outlet property="bottomToolBar2BottomConst" destination="5rT-W1-Jxh" id="OJI-gp-Kbj"/>
                 <outlet property="colorBarButton" destination="cMT-7q-00U" id="3dy-Sf-jP8"/>
+                <outlet property="colorBarButton2" destination="u6o-JB-SwI" id="5QV-8H-PM4"/>
                 <outlet property="colorPickerHeightConst" destination="2CE-Uw-5TJ" id="Il5-iv-gzW"/>
                 <outlet property="colorPickerTopConst" destination="nbO-T0-RKV" id="icU-3v-k9d"/>
                 <outlet property="colorPickerView" destination="DZe-m5-3wU" id="dpe-hZ-bdx"/>
+                <outlet property="colorPickerWidthConst" destination="IEV-Yt-dOZ" id="IPR-8W-e1C"/>
                 <outlet property="contentImageView" destination="CyN-5t-mnB" id="b5A-Cj-YGR"/>
                 <outlet property="effectBarButton" destination="ejK-Gp-dua" id="LiT-Aa-dE0"/>
+                <outlet property="effectBarButton2" destination="FNM-PF-S8Q" id="qqf-nm-hN6"/>
                 <outlet property="effectPickerView" destination="vNj-3P-xTb" id="Lrt-3Q-Obj"/>
+                <outlet property="flashBrightnessMaxButton" destination="Nda-6n-6ZQ" id="zQQ-If-5qD"/>
+                <outlet property="flashBrightnessMinButton" destination="Glw-pc-gxV" id="Ph4-nQ-mdy"/>
                 <outlet property="flashBrightnessSlider" destination="bb1-Zu-W86" id="oLX-Sd-Uof"/>
                 <outlet property="ledBarButton" destination="FwG-bh-VC7" id="RXA-9P-D5E"/>
                 <outlet property="pickerPanelView" destination="lV0-Pf-aVj" id="MtI-YF-uIO"/>
                 <outlet property="pickerTopSeparatorHeightConst" destination="KC6-NS-6KP" id="i8l-Kz-3cc"/>
                 <outlet property="pickerViewBottomConst" destination="Pui-v2-Z1R" id="AUD-0u-uMj"/>
+                <outlet property="screenBrightnessMaxButton" destination="TOQ-IM-fvP" id="sRC-8d-XZn"/>
+                <outlet property="screenBrightnessMinButton" destination="sjK-U4-hDw" id="0Zu-dm-LTa"/>
                 <outlet property="sliderControl" destination="e0I-jN-Ngd" id="Pxj-us-8Lu"/>
                 <outlet property="sliderToolBar" destination="2hZ-lZ-LJE" id="arC-Mo-Yfw"/>
                 <outlet property="statusBarView" destination="eei-Fu-sIu" id="Lp4-DE-RHL"/>
@@ -86,7 +93,7 @@
                     <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
                     <items>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ork-QR-NrK"/>
-                        <barButtonItem image="m_zoomout" id="Glw-pc-gxV"/>
+                        <barButtonItem enabled="NO" image="f_flash_black" id="Glw-pc-gxV"/>
                         <barButtonItem style="plain" id="yyU-2o-ceP">
                             <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="bb1-Zu-W86">
                                 <rect key="frame" x="42" y="7" width="237" height="31"/>
@@ -96,7 +103,7 @@
                                 </connections>
                             </slider>
                         </barButtonItem>
-                        <barButtonItem image="m_zoomin" id="Nda-6n-6ZQ"/>
+                        <barButtonItem enabled="NO" image="f_flash_white" id="Nda-6n-6ZQ"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="5ot-mR-2lr"/>
                     </items>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -108,7 +115,7 @@
                     <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
                     <items>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Dbf-D9-gSo"/>
-                        <barButtonItem image="m_zoomout" id="sjK-U4-hDw"/>
+                        <barButtonItem enabled="NO" image="f_color_brightness_left" id="sjK-U4-hDw"/>
                         <barButtonItem style="plain" id="Bf5-gJ-Ykt">
                             <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="e0I-jN-Ngd">
                                 <rect key="frame" x="42" y="7" width="237" height="31"/>
@@ -118,7 +125,7 @@
                                 </connections>
                             </slider>
                         </barButtonItem>
-                        <barButtonItem image="m_zoomin" id="TOQ-IM-fvP"/>
+                        <barButtonItem enabled="NO" image="f_color_brightness_right" id="TOQ-IM-fvP"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="1Bk-S8-Azd"/>
                     </items>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -255,11 +262,13 @@
         </view>
     </objects>
     <resources>
+        <image name="f_color_brightness_left" width="23" height="23"/>
+        <image name="f_color_brightness_right" width="23" height="23"/>
         <image name="f_color_off" width="60" height="60"/>
         <image name="f_effect_off" width="60" height="60"/>
+        <image name="f_flash_black" width="23" height="23"/>
         <image name="f_flash_on" width="60" height="60"/>
+        <image name="f_flash_white" width="23" height="23"/>
         <image name="information" width="22" height="22"/>
-        <image name="m_zoomin" width="23" height="23"/>
-        <image name="m_zoomout" width="23" height="23"/>
     </resources>
 </document>

@@ -189,7 +189,7 @@ NSString * kColorProperty = @"color";
    panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onMoveSVIndicator:)];
    [svIndicator_ addGestureRecognizer:panGesture];
    
-   self.color = [UIColor colorWithHue:1.00 saturation:1.0f brightness:0.001f alpha:1.0f];
+   self.color = [UIColor colorWithHue:1.00 saturation:1.0f brightness:1.0f alpha:1.0f];
    
    [donutLayer_ setNeedsDisplay];
 }

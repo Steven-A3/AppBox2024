@@ -154,6 +154,8 @@ NSString *const cellID = @"flashEffectID";
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBarBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerViewBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerHeightConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerWidthConst;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBar2BottomConst;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerTopSeparatorHeightConst;
@@ -169,6 +171,14 @@ NSString *const cellID = @"flashEffectID";
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *colorBarButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *effectBarButton;
 @property (weak, nonatomic) IBOutlet UIPickerView *effectPickerView;
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *colorBarButton2;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *effectBarButton2;
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *screenBrightnessMinButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *screenBrightnessMaxButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *flashBrightnessMinButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *flashBrightnessMaxButton;
 
 - (IBAction)sliderControlValueChanged:(UISlider *)sender;
 
@@ -328,8 +338,14 @@ NSString *const cellID = @"flashEffectID";
     
     _colorPickerView.delegate = self;
     _colorPickerView.backgroundColor = [UIColor clearColor];
-    _colorPickerView.color = _selectedColor;
-    _colorPickerHeightConst.constant = IS_IPHONE35 ? 366 : 480;
+//    _colorPickerView.color = _selectedColor;
+    if (IS_IPAD) {
+        _colorPickerHeightConst.constant = 960;
+        _colorPickerWidthConst.constant = 640;
+    }
+    else {
+        _colorPickerHeightConst.constant = IS_IPHONE35 ? 366 : 480;
+    }
     
     _pickerTopSeparatorHeightConst.constant = IS_RETINA ? 0.5 : 1.0;
     
@@ -344,6 +360,8 @@ NSString *const cellID = @"flashEffectID";
     if (!_isLEDAvailable) {
         _bottomToolBar.hidden = YES;
         _bottomToolBar = _bottomToolBar2;
+        _colorBarButton = _colorBarButton2;
+        _effectBarButton = _effectBarButton2;
         _bottomToolBarBottomConst = _bottomToolBar2BottomConst;
     }
     else {
@@ -752,7 +770,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [_sliderControl setValue:_sliderControl.maximumValue - _screenBrightnessValue];
         
         if (IS_IPAD) {
-            _colorPickerTopConst.constant = 74;
+            _colorPickerTopConst.constant = 5;
         }
         else {
             _colorPickerTopConst.constant = 30;
