@@ -43,8 +43,6 @@ static NSString *const reuseIdentifier = @"Cell";
     self.title = NSLocalizedString(@"Auto Dim", @"Auto Dim");
 
     _items = @[ @0, @5, @10, @15, @20, @30, @60 ];
-
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:reuseIdentifier];
 }
 
 - (void)didReceiveMemoryWarning
@@ -73,7 +71,10 @@ static NSString *const reuseIdentifier = @"Cell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+	if (!cell) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier];
+	}
 
     NSInteger cellValue = [_items[indexPath.row] integerValue];
     cell.textLabel.text = [_dataManager autoDimStringWithValue:cellValue];
