@@ -80,7 +80,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	BOOL        _isComparisonMode;
 
 	NSDate 		*preDate;
-	BOOL		_cancelInputCloudDataRecieved;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -2012,7 +2011,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
 	[self setFirstResponder:nil];
-	_cancelInputCloudDataRecieved = NO;
 }
 
 #pragma mark - TextFieldDelegate
@@ -2201,10 +2199,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		}
 	}
 
-	if (!_cancelInputCloudDataRecieved) {
-		[self updateLoanCalculation];
-	}
-	_cancelInputCloudDataRecieved = NO;
+	[self updateLoanCalculation];
 }
 
 #pragma mark - LoanCalcHistoryViewController delegate

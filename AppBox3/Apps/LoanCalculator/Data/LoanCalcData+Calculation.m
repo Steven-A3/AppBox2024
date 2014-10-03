@@ -150,7 +150,7 @@
 
 - (void)calculateRepayment {
     
-    if (![self principalValid] || ![self termsValid] || ![self interestValid]) {
+    if (![self principalValid] || ![self termsValid]) {
         return;
     }
     
@@ -161,13 +161,17 @@
     
 	principal = self.principal.doubleValue;
     downPayment = self.downPayment ? self.downPayment.floatValue : 0;
-    
-	repayment = (interestRateOfFrequency / (1 - pow(1 + interestRateOfFrequency, -termsInFrequency))) * (principal - downPayment);
-    repayment = round(repayment * 100) / 100;
-    if (isnan(repayment)) {
-        repayment = 0;
-    }
-    
+
+	if (interestRateOfFrequency > 0) {
+		repayment = (interestRateOfFrequency / (1 - pow(1 + interestRateOfFrequency, -termsInFrequency))) * (principal - downPayment);
+		repayment = round(repayment * 100) / 100;
+		if (isnan(repayment)) {
+			repayment = 0;
+		}
+	} else {
+		repayment = principal / termsInFrequency;
+	}
+
 	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterminMonth = %f\ndownPayment = %f", principal, repayment, interestRateOfFrequency, termsInFrequency, downPayment);
     
 	self.repayment = @(repayment);
@@ -175,7 +179,7 @@
 
 - (void)calculatePrincipal {
     
-    if (![self repaymentValid] || ![self termsValid] || ![self interestValid]) {
+    if (![self repaymentValid] || ![self termsValid]) {
         return;
     }
     
@@ -186,9 +190,13 @@
 	double termsInFrequency = [self termsInFrequency];
     
 	repayment = self.repayment.doubleValue;
-    
-	principal = (repayment*pow(interestRateOfFrequency+1,termsInFrequency)-repayment)/(interestRateOfFrequency*pow(interestRateOfFrequency+1,termsInFrequency));
-    
+
+	if (interestRateOfFrequency > 0) {
+		principal = (repayment*pow(interestRateOfFrequency+1,termsInFrequency)-repayment)/(interestRateOfFrequency*pow(interestRateOfFrequency+1,termsInFrequency));
+	} else {
+		principal = repayment * termsInFrequency;
+	}
+
     downPayment = self.downPayment ? self.downPayment.doubleValue : 0;
     principal += downPayment;
     
@@ -199,7 +207,7 @@
 
 - (void)calculateDownPayment {
     
-    if (![self principalValid] || ![self repaymentValid] || ![self termsValid] || ![self interestValid]) {
+    if (![self principalValid] || ![self repaymentValid] || ![self termsValid]) {
         return;
     }
     
@@ -208,9 +216,14 @@
 	double repayment = self.repayment.floatValue;
 	double interestRateOfFrequency = [self interestRateOfFrequency];
 	double termsInFrequency = [self termsInFrequency];
-    
-	double calculatedPrincipal = (repayment*pow(interestRateOfFrequency+1,termsInFrequency)-repayment)/(interestRateOfFrequency*pow(interestRateOfFrequency+1,termsInFrequency));
-	downPayment = principal - calculatedPrincipal;
+
+	double calculatedPrincipal;
+	if (interestRateOfFrequency > 0) {
+		calculatedPrincipal = (repayment*pow(interestRateOfFrequency+1,termsInFrequency)-repayment)/(interestRateOfFrequency*pow(interestRateOfFrequency+1,termsInFrequency));
+	} else {
+		calculatedPrincipal = repayment * termsInFrequency;
+	}
+	downPayment = round(principal - calculatedPrincipal);
     
 	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterminMonth = %f\ndownPayment = %f", principal, repayment, interestRateOfFrequency, termsInFrequency, downPayment);
     
@@ -219,7 +232,7 @@
 
 - (void)calculateTermInMonth
 {
-    if (![self principalValid] || ![self repaymentValid] || ![self interestValid]) {
+    if (![self principalValid] || ![self repaymentValid]) {
         return;
     }
     
@@ -229,8 +242,13 @@
 	double interestRateOfFrequency = [self interestRateOfFrequency];
     
 	float calculatedPrincipal = principal - downPayment;
-    double term = log(repayment / (repayment - calculatedPrincipal * interestRateOfFrequency)) / log(interestRateOfFrequency + 1);
-    
+	double term;
+	if (interestRateOfFrequency > 0) {
+		term = log(repayment / (repayment - calculatedPrincipal * interestRateOfFrequency)) / log(interestRateOfFrequency + 1);
+	} else {
+		term = calculatedPrincipal / repayment;
+	}
+
 	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterm = %f\ndownPayment = %f", principal, repayment, interestRateOfFrequency, term, downPayment);  
     self.monthOfTerms = @([self termsInMonth:term]);
 }
@@ -243,6 +261,8 @@
 
 - (NSNumber *)totalInterest {
     float downPayment = self.downPayment ? self.downPayment.floatValue : 0;
+	if (isnan(downPayment))
+		downPayment = 0.0;
 	float totalInterest = self.repayment.floatValue * [self termsInFrequency] - (self.principal.floatValue - downPayment);
 	return [NSNumber numberWithFloat:totalInterest];
 }
@@ -412,7 +432,7 @@
         return NO;
     }
     
-    if ([self repaymentValid] && [self principalValid] && [self interestValid] && [self termsValid]) {
+    if ([self repaymentValid] && [self principalValid] && [self termsValid]) {
         return YES;
     }
     else {
@@ -433,16 +453,6 @@
 - (BOOL)principalValid
 {
     if (self.principal && (self.principal.floatValue>0)) {
-        return YES;
-    }
-    else {
-        return NO;
-    }
-}
-
-- (BOOL)interestValid
-{
-    if (self.annualInterestRate && (self.annualInterestRate.floatValue >= 0)) {
         return YES;
     }
     else {
