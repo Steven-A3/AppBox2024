@@ -144,17 +144,20 @@ NSString *const cellID = @"flashEffectID";
 @property (weak, nonatomic) IBOutlet UIToolbar *topToolBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *sliderToolBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolBar;
+@property (weak, nonatomic) IBOutlet UIToolbar *bottomToolBar2;
 @property (weak, nonatomic) IBOutlet UIToolbar *LEDBrightnessToolBar;
 @property (weak, nonatomic) IBOutlet UIView *pickerPanelView;
 @property (weak, nonatomic) IBOutlet UIView *statusBarView;
 @property (weak, nonatomic) IBOutlet NPColorPickerView *colorPickerView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topToolBarTopConst;
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *sliderToolBarBottomConst;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBarBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerViewBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerHeightConst;
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *flashBrightnessSliderBottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBar2BottomConst;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerTopSeparatorHeightConst;
+
 
 @property (weak, nonatomic) IBOutlet UISlider *sliderControl;
 @property (weak, nonatomic) IBOutlet UISlider *flashBrightnessSlider;
@@ -248,8 +251,6 @@ NSString *const cellID = @"flashEffectID";
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     
-    _bottomToolBar.backgroundColor = _sliderToolBar.backgroundColor;
-    
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     if(!IS_IPHONE) {
         [self.sliderControl setFrame:CGRectMake(self.sliderControl.frame.origin.x, self.sliderControl.frame.origin.y, screenBounds.size.width - 106, self.sliderControl.frame.size.height)];
@@ -304,7 +305,8 @@ NSString *const cellID = @"flashEffectID";
     _deviceBrightnessBefore = [[UIScreen mainScreen] brightness];
     
     NSNumber *ledBrightness = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashLEDBrightnessValue];
-    _flashBrightnessValue = !ledBrightness ? 1.0 : [ledBrightness floatValue];
+    _flashBrightnessValue = !ledBrightness ? 0.5 : [ledBrightness floatValue];
+    
     NSNumber *screenBrightness = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashBrightnessValue];
     _screenBrightnessValue = !screenBrightness ? (_deviceBrightnessBefore * 100.0) : [screenBrightness floatValue];
     if (_currentFlashViewMode == A3FlashViewModeTypeNone) {
@@ -340,8 +342,12 @@ NSString *const cellID = @"flashEffectID";
                          NSLocalizedString(@"Traffic Light", @"Traffic Light")];
     
     if (!_isLEDAvailable) {
-        NSArray *bottomBarItems = @[_bottomToolBar.items[1], _bottomToolBar.items[2], _bottomToolBar.items[3], _bottomToolBar.items[4], _bottomToolBar.items[1]];
-        [_bottomToolBar setItems:bottomBarItems];
+        _bottomToolBar.hidden = YES;
+        _bottomToolBar = _bottomToolBar2;
+        _bottomToolBarBottomConst = _bottomToolBar2BottomConst;
+    }
+    else {
+        _bottomToolBar2.hidden = YES;
     }
 }
 
@@ -648,7 +654,10 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 }
 
 - (void)flashBrightnessSliderValueChanged:(UISlider *)slider {
-    _flashBrightnessValue = [slider value];
+    if (slider) {
+        _flashBrightnessValue = [slider value];
+    }
+    
     if(_isLEDAvailable == YES) {
         AVCaptureDevice *myTorch = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
         
@@ -715,6 +724,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _sliderToolBar.hidden = NO;
         _LEDBrightnessToolBar.hidden = YES;
         _effectPickerView.hidden = YES;
+        _pickerPanelView.hidden = YES;
         [_sliderControl setMinimumValue:0.0];
         [_sliderControl setMaximumValue:100.0];
         [_sliderControl setValue:_sliderControl.maximumValue - _screenBrightnessValue];
@@ -724,7 +734,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         return;
     }
-    
+
     
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
         [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
@@ -749,6 +759,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         }
         _pickerViewBottomConst.constant = -(CGRectGetHeight(_pickerPanelView.bounds) - kBottomToolBarHeight);
         _pickerPanelView.hidden = YES;
+        _colorPickerView.hidden = NO;
         _contentImageView.backgroundColor = _selectedColor;
     }
     else {
@@ -767,12 +778,13 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [_effectPickerView selectRow:_selectedEffectIndex inComponent:0 animated:NO];
         
         _pickerViewBottomConst.constant = kBottomToolBarHeight;
-        _pickerPanelView.hidden = NO;
         _effectPickerView.hidden = NO;
+        _pickerPanelView.hidden = NO;
     }
     else {
         [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         _effectPickerView.hidden = YES;
+        _pickerPanelView.hidden = YES;
     }
 
 
@@ -867,6 +879,12 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 		
 		[myTorch setTorchMode:AVCaptureTorchModeOn];
 		[myTorch setFlashMode:AVCaptureFlashModeOn];
+        
+        if (_flashBrightnessValue == 0.0) {
+            [myTorch setTorchMode:AVCaptureTorchModeOff];
+        } else {
+            [myTorch setTorchModeOnWithLevel:_flashBrightnessValue error:nil];
+        }
 		
 		[_LEDSession addInput:flashInput];
 		[_LEDSession addOutput:output];
