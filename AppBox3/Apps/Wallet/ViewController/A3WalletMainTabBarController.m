@@ -280,10 +280,6 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 
 	[[A3UserDefaults standardUserDefaults] setInteger:self.selectedIndex forKey:A3WalletUserDefaultsSelectedTab];
     [[A3UserDefaults standardUserDefaults] synchronize];
-    
-    if (_myMoreNavigationController && (_myMoreNavigationController.viewControllers.count>1)) {
-        [_myMoreNavigationController popToRootViewControllerAnimated:NO];
-    }
 }
 
 - (NSUInteger)numberOfCategoriesInTabBar {
