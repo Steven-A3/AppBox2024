@@ -137,6 +137,8 @@ NSString *const A3UserDefaultFlashSelectedColor = @"A3UserDefaultFlashSelectedCo
 NSString *const A3UserDefaultFlashBrightnessValue = @"A3UserDefaultFlashBrightnessValue";
 NSString *const A3UserDefaultFlashLEDBrightnessValue = @"A3UserDefaultFlashLEDBrightnessValue";
 NSString *const A3UserDefaultFlashEffectIndex = @"A3UserDefaultFlashEffectIndex";
+NSString *const A3UserDefaultFlashStrobeSpeedValue = @"A3UserDefaultFlashStrobeSpeedValue";
+
 NSString *const cellID = @"flashEffectID";
 
 @interface A3FlashViewController () <UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, NPColorPickerViewDelegate, A3InstructionViewControllerDelegate>
@@ -213,7 +215,7 @@ NSString *const cellID = @"flashEffectID";
 	NSTimer		*strobeTimer;
 	NSInteger	effectLoopCount;
 	NSInteger	_selectedEffectIndex;
-    CGFloat		strobeSpeedFactor;
+    CGFloat		_strobeSpeedFactor;
     BOOL    _showAllMenu;
 }
 
@@ -232,15 +234,22 @@ NSString *const cellID = @"flashEffectID";
     // Do any additional setup after loading the view from its nib.
 	[self setNavigationBarHidden:YES];
     
-    [self initializeStatus];
+    _isLEDAvailable = [A3UIDevice hasTorch];
+    
+    [self initializeCurrentFlashViewModeType];
+    [self initializeBrightnessAndStorbeSpeedSliderRelated];
+    [self initializeCurrentContentColorWithColorPickerView];
+    [self initializeStrobeEffectList];
+    
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
     [_contentImageView addGestureRecognizer:tapGesture];
     UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
     [_colorPickerView addGestureRecognizer:tapGesture2];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActiveNotification:) name:UIApplicationWillResignActiveNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -284,6 +293,9 @@ NSString *const cellID = @"flashEffectID";
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     
+    UIScreen *mainScreen = [UIScreen mainScreen];
+    mainScreen.brightness = _deviceBrightnessBefore;
+    
     [self saveUserDefaults];
     [self releaseHideMenuTimer];
     [self releaseStrobelight];
@@ -305,12 +317,16 @@ NSString *const cellID = @"flashEffectID";
 
 - (void)removeObservers
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
-
-- (void)applicationDidEnterBackground:(NSNotification *)notification {
+- (void)applicationWillResignActiveNotification:(NSNotification *)notification {
+    if (_isTorchOn) {
+        [self setTorchOff];
+    }
+    
+    [self releaseStrobelight];
     [self saveUserDefaults];
 }
 
@@ -318,20 +334,26 @@ NSString *const cellID = @"flashEffectID";
     if (_isTorchOn) {
         [self setTorchOn];
     }
+    
+    if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
+        [self startStrobeLightEffectForIndex:_selectedEffectIndex];
+    }
+    
+    UIScreen *mainScreen = [UIScreen mainScreen];
+    CGFloat offset = (_screenBrightnessValue / 100.0);
+    mainScreen.brightness = offset;
 }
 
 - (void)saveUserDefaults {
     [[NSUserDefaults standardUserDefaults] setObject:@(_flashBrightnessValue) forKey:A3UserDefaultFlashLEDBrightnessValue];
     [[NSUserDefaults standardUserDefaults] setObject:@(_screenBrightnessValue) forKey:A3UserDefaultFlashBrightnessValue];
+    [[NSUserDefaults standardUserDefaults] setObject:@(_strobeSpeedFactor) forKey:A3UserDefaultFlashStrobeSpeedValue];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark
 
-- (void)initializeStatus
-{
-    _isLEDAvailable = [A3UIDevice hasTorch];
-    
+- (void)initializeCurrentFlashViewModeType {
     NSNumber *flashViewMode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashViewMode];
     if (!flashViewMode) {
         if (_isLEDAvailable) {
@@ -346,6 +368,19 @@ NSString *const cellID = @"flashEffectID";
         _currentFlashViewMode = [flashViewMode integerValue];
     }
     
+    if (!_isLEDAvailable) {
+        _bottomToolBar.hidden = YES;
+        _bottomToolBar = _bottomToolBar2;
+        _colorBarButton = _colorBarButton2;
+        _effectBarButton = _effectBarButton2;
+        _bottomToolBarBottomConst = _bottomToolBar2BottomConst;
+    }
+    else {
+        _bottomToolBar2.hidden = YES;
+    }
+}
+
+- (void)initializeBrightnessAndStorbeSpeedSliderRelated {
     _deviceBrightnessBefore = [[UIScreen mainScreen] brightness];
     
     NSNumber *ledBrightness = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashLEDBrightnessValue];
@@ -355,13 +390,18 @@ NSString *const cellID = @"flashEffectID";
     _screenBrightnessValue = !screenBrightness ? (_deviceBrightnessBefore * 100.0) : [screenBrightness floatValue];
     NSLog(@"start screen: %f", _screenBrightnessValue);
     
+    NSNumber *strobeSpeedValue = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashStrobeSpeedValue];
+    _strobeSpeedFactor = !strobeSpeedValue ? 0.0 : [strobeSpeedValue floatValue];
+    
     if (_currentFlashViewMode == A3FlashViewModeTypeNone) {
         [self alphaSliderValueChanged:nil];
     }
     else if (_currentFlashViewMode == A3FlashViewModeTypeColor) {
         [self colorModeSliderValueChanged:nil];
     }
-    
+}
+
+- (void)initializeCurrentContentColorWithColorPickerView {
     NSNumber *effectIndex = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashEffectIndex];
     _selectedEffectIndex = !effectIndex ? 2 : [effectIndex integerValue];
     
@@ -382,7 +422,9 @@ NSString *const cellID = @"flashEffectID";
     }
     
     _pickerTopSeparatorHeightConst.constant = IS_RETINA ? 0.5 : 1.0;
-    
+}
+
+- (void)initializeStrobeEffectList {
     _flashEffectList = @[NSLocalizedString(@"SOS", @"SOS"),
                          NSLocalizedString(@"Strobe", @"Strobe"),
                          NSLocalizedString(@"Trippy", @"Trippy"),
@@ -390,18 +432,8 @@ NSString *const cellID = @"flashEffectID";
                          NSLocalizedString(@"Fire Truck", @"Fire Truck"),
                          NSLocalizedString(@"Caution Flare", @"Caution Flare"),
                          NSLocalizedString(@"Traffic Light", @"Traffic Light")];
-    
-    if (!_isLEDAvailable) {
-        _bottomToolBar.hidden = YES;
-        _bottomToolBar = _bottomToolBar2;
-        _colorBarButton = _colorBarButton2;
-        _effectBarButton = _effectBarButton2;
-        _bottomToolBarBottomConst = _bottomToolBar2BottomConst;
-    }
-    else {
-        _bottomToolBar2.hidden = YES;
-    }
 }
+
 
 - (void)showHUD {
     return;
@@ -651,14 +683,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 }
 
 - (IBAction)effectsMenuButtonTouchUp:(id)sender {
-//    if ((_currentFlashViewMode == A3FlashViewModeTypeEffect && !strobeTimer) || (_isEffectWorking && !strobeTimer) ) {
-//        [self startStrobeLightEffectForIndex:_selectedEffectIndex];
-//    }
-//    else {
-//        [self releaseStrobelight];
-//        _contentImageView.backgroundColor = _selectedColor;
-//    }
-    
     _currentFlashViewMode = _currentFlashViewMode ^ A3FlashViewModeTypeEffect;
     if (_currentFlashViewMode & A3FlashViewModeTypeColor) {
         _currentFlashViewMode = _currentFlashViewMode & (_currentFlashViewMode ^ A3FlashViewModeTypeColor);
@@ -730,7 +754,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 }
 
 - (void)effectModeSliderValueChanged:(UISlider *)slider {
-    strobeSpeedFactor = [slider value];
+    _strobeSpeedFactor = [slider value];
 }
 
 - (void)startTimerToHideMenu {
@@ -1013,7 +1037,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 		}
 	}
 #endif
-	double speedFactor = strobeLoop_SOS[effectLoopCount][0] - (strobeSpeedFactor/100.0 * strobeLoop_SOS[effectLoopCount][0]);
+	double speedFactor = strobeLoop_SOS[effectLoopCount][0] - (_strobeSpeedFactor/100.0 * strobeLoop_SOS[effectLoopCount][0]);
 	NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:speedFactor];
 	strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
                                            interval:0.0
@@ -1053,7 +1077,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 			[self setTorchOff];
 	}
 	
-	double speedFactor = strobeLoop_STROBE[effectLoopCount][0] - (strobeSpeedFactor/100.0 * strobeLoop_STROBE[effectLoopCount][0]);
+	double speedFactor = strobeLoop_STROBE[effectLoopCount][0] - (_strobeSpeedFactor/100.0 * strobeLoop_STROBE[effectLoopCount][0]);
 	NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:speedFactor];
 	strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
 										   interval:0.0
@@ -1086,7 +1110,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 			[self setTorchOff];
 	}
 	
-	double speedFactor = strobeLoop_TRIPPIN[effectLoopCount][0] - (strobeSpeedFactor/100.0 * strobeLoop_TRIPPIN[effectLoopCount][0]);
+	double speedFactor = strobeLoop_TRIPPIN[effectLoopCount][0] - (_strobeSpeedFactor/100.0 * strobeLoop_TRIPPIN[effectLoopCount][0]);
 	NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:speedFactor];
 	strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
 										   interval:0.0
@@ -1119,7 +1143,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 			[self setTorchOff];
 	}
 	
-	double speedFactor = strobeLoop_POLICECAR[effectLoopCount][0] - (strobeSpeedFactor/100.0 * strobeLoop_POLICECAR[effectLoopCount][0]);
+	double speedFactor = strobeLoop_POLICECAR[effectLoopCount][0] - (_strobeSpeedFactor/100.0 * strobeLoop_POLICECAR[effectLoopCount][0]);
 	NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:speedFactor];
 	strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
 										   interval:0.0
@@ -1152,7 +1176,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 			[self setTorchOff];
 	}
 	
-	double speedFactor = strobeLoop_FIRETRUCK[effectLoopCount][0] - (strobeSpeedFactor/100.0 * strobeLoop_FIRETRUCK[effectLoopCount][0]);
+	double speedFactor = strobeLoop_FIRETRUCK[effectLoopCount][0] - (_strobeSpeedFactor/100.0 * strobeLoop_FIRETRUCK[effectLoopCount][0]);
 	NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:speedFactor];
 	strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
 										   interval:0.0
@@ -1185,7 +1209,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 			[self setTorchOff];
 	}
 	
-	double speedFactor = strobeLoop_CAUTINFLARE[effectLoopCount][0] - (strobeSpeedFactor/100.0 * strobeLoop_CAUTINFLARE[effectLoopCount][0]);
+	double speedFactor = strobeLoop_CAUTINFLARE[effectLoopCount][0] - (_strobeSpeedFactor/100.0 * strobeLoop_CAUTINFLARE[effectLoopCount][0]);
 	NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:speedFactor];
 	strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
 										   interval:0.0
@@ -1218,7 +1242,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 			[self setTorchOff];
 	}
 	
-	double speedFactor = strobeLoop_TRAFFICLIGHT[effectLoopCount][0] - (strobeSpeedFactor/100.0 * strobeLoop_TRAFFICLIGHT[effectLoopCount][0]);
+	double speedFactor = strobeLoop_TRAFFICLIGHT[effectLoopCount][0] - (_strobeSpeedFactor/100.0 * strobeLoop_TRAFFICLIGHT[effectLoopCount][0]);
 	NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:speedFactor];
 	strobeTimer = [[NSTimer alloc] initWithFireDate:fireDate
 										   interval:0.0
