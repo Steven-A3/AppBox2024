@@ -34,54 +34,50 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	CGRect _videoPreviewViewBounds;
 	AVCaptureDevice *_videoDevice;
 	AVCaptureSession *_captureSession;
-	AVCaptureStillImageOutput *stillImageOutput;
+	AVCaptureStillImageOutput *_stillImageOutput;
 
-	UITapGestureRecognizer *previewNoFilterGestureRecognizer;
-	UITapGestureRecognizer *previewMonoFilterGestureRecognizer;
-	UITapGestureRecognizer *previewTonalFilterGestureRecognizer;
-	UITapGestureRecognizer *previewNoirFilterGestureRecognizer;
-	UITapGestureRecognizer *previewFadeFilterGestureRecognizer;
-	UITapGestureRecognizer *previewChromeFilterGestureRecognizer;
-	UITapGestureRecognizer *previewProcessFilterGestureRecognizer;
-	UITapGestureRecognizer *previewTransferFilterGestureRecognizer;
-	UITapGestureRecognizer *previewInstantFilterGestureRecognizer;
+	UITapGestureRecognizer *_previewNoFilterGestureRecognizer;
+	UITapGestureRecognizer *_previewMonoFilterGestureRecognizer;
+	UITapGestureRecognizer *_previewTonalFilterGestureRecognizer;
+	UITapGestureRecognizer *_previewNoirFilterGestureRecognizer;
+	UITapGestureRecognizer *_previewFadeFilterGestureRecognizer;
+	UITapGestureRecognizer *_previewChromeFilterGestureRecognizer;
+	UITapGestureRecognizer *_previewProcessFilterGestureRecognizer;
+	UITapGestureRecognizer *_previewTransferFilterGestureRecognizer;
+	UITapGestureRecognizer *_previewInstantFilterGestureRecognizer;
 
-	UILabel *monoLabel;
-	UILabel *tonalLabel;
-	UILabel *noirLabel;
-	UILabel *fadeLabel;
-	UILabel *noneLabel;
-	UILabel *chromeLabel;
-	UILabel *processLabel;
-	UILabel *transferLabel;
-	UILabel *instantLabel;
+	UILabel *_monoLabel;
+	UILabel *_tonalLabel;
+	UILabel *_noirLabel;
+	UILabel *_fadeLabel;
+	UILabel *_noneLabel;
+	UILabel *_chromeLabel;
+	UILabel *_processLabel;
+	UILabel *_transferLabel;
+	UILabel *_instantLabel;
 
 	dispatch_queue_t _captureSessionQueue;
-	UIBackgroundTaskIdentifier _backgroundRecordingID;
-	CIImage *ciimg;
+	CIImage *_ciImage;
 	//GLuint _renderBuffer;
-	BOOL    bFlip;
-	BOOL    bMultipleView;
-	CGSize  originalsize;
-	BOOL    bFiltersEnabled;
-	BOOL    bLosslessZoom;
-	NSUInteger  nFilterIndex;
-	CGFloat     effectiveScale;
-	CGFloat     beginGestureScale;
-	CMTime      currentMaxDuration;
-	CMTime      currentMinDuration;
-	AVFrameRateRange *slowFrameRateRange;
-    CGPoint center;
-	FrameRateCalculator *frameCalculator;
+	BOOL _isFlip;
+	BOOL _isMultipleView;
+	CGSize _originalsize;
+	BOOL _isFiltersEnabled;
+	BOOL _isLosslessZoom;
+	NSUInteger _filterIndex;
+	CGFloat _effectiveScale;
+	CGFloat _beginGestureScale;
+	CMTime _currentMaxDuration;
+	CMTime _currentMinDuration;
+	AVFrameRateRange *_slowFrameRateRange;
+    CGPoint _center;
+	FrameRateCalculator *_frameCalculator;
 }
 
 @property (nonatomic, strong) UIView *statusBarBackground;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 
 @end
-
-
-static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 
 @implementation A3MirrorViewController {
 	NSArray *filterViewCoordinate;
@@ -91,13 +87,6 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 {
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
-		// Custom initialization
-		// create the shared color space object once
-		static dispatch_once_t onceToken;
-		dispatch_once(&onceToken, ^{
-			sDeviceRgbColorSpace = CGColorSpaceCreateDeviceRGB();
-		});
-
 		// create the dispatch queue for handling capture session delegate method calls
 		_captureSessionQueue = dispatch_queue_create("capture_session_queue", DISPATCH_QUEUE_SERIAL);
 
@@ -112,7 +101,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 				@[@[@-1,@-2],@[@0,@-2],@[@1,@-2],@[@-1,@-1],@[@0,@-1],@[@1,@-1],@[@-1,@0],@[@0,@0], @[@1,@0]],
 				@[@[@-2,@-2],@[@1,@-2],@[@0,@-2],@[@-2,@-1],@[@-1,@-1],@[@0,@-1],@[@-2,@0],@[@-1,@0], @[@0,@0]]
 		];
-		frameCalculator = [[FrameRateCalculator alloc] init];
+		_frameCalculator = [[FrameRateCalculator alloc] init];
 	}
 	return self;
 }
@@ -167,7 +156,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	[self.view addSubview:self.statusBarBackground];
 	[self.statusBarBackground setHidden:YES];
-	bFlip = YES;
+	_isFlip = YES;
 
 	_eaglContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 
@@ -210,23 +199,23 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	//    _videoPreviewViewNoFilter.frame.size.height,
 	//  _videoPreviewViewBounds.size.width,
 	//_videoPreviewViewBounds.size.height);
-	originalsize = _videoPreviewViewBounds.size;
-	bMultipleView = NO;
-	bFiltersEnabled = NO;
-	effectiveScale  = 1.0;
-	nFilterIndex = A3MirrorNoFilter;
+	_originalsize = _videoPreviewViewBounds.size;
+	_isMultipleView = NO;
+	_isFiltersEnabled = NO;
+	_effectiveScale = 1.0;
+	_filterIndex = A3MirrorNoFilter;
 	[self _start];
-	if(bLosslessZoom == YES) bFiltersEnabled = YES;
-	if (bFiltersEnabled == YES) {
+	if(_isLosslessZoom == YES) _isFiltersEnabled = YES;
+	if (_isFiltersEnabled == YES) {
 		[self.filterButton setImage:[[UIImage imageNamed:@"m_color"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
 	} else {
 		[self.filterButton setImage:nil];
 		[self.filterButton setEnabled:NO];
 	}
 	// create multi filter view with GestureRecognizer which should be done after AVCaptureSession initialize(_start)
-	if (bFiltersEnabled == YES) {
+	if (_isFiltersEnabled == YES) {
 		[self createFilterViews];
-		[self ShowOneFilterView:nFilterIndex];
+		[self showOneFilterView:_filterIndex];
 	}
 	[self setupGestureRecognizer];
 
@@ -256,7 +245,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 - (void)viewWillLayoutSubviews {
 
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-	if (bMultipleView == YES) {
+	if (_isMultipleView == YES) {
 		[self setViewRotation:_videoPreviewViewMonoFilter];
 		[self setViewRotation:_videoPreviewViewTonalFilter];
 		[self setViewRotation:_videoPreviewViewNoirFilter];
@@ -266,16 +255,16 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 		[self setViewRotation:_videoPreviewViewProcessFilter];
 		[self setViewRotation:_videoPreviewViewInstantFilter];
 		[self setViewRotation:_videoPreviewViewTransferFilter];
-		[self setLabelRotation:monoLabel];
-		[self setLabelRotation:tonalLabel];
-		[self setLabelRotation:noirLabel];
-		[self setLabelRotation:chromeLabel];
-		[self setLabelRotation:fadeLabel];
-		[self setLabelRotation:noneLabel];
-		[self setLabelRotation:processLabel];
-		[self setLabelRotation:instantLabel];
-		[self setLabelRotation:transferLabel];
-		[self ShowMultipleViews:NO];
+		[self setLabelRotation:_monoLabel];
+		[self setLabelRotation:_tonalLabel];
+		[self setLabelRotation:_noirLabel];
+		[self setLabelRotation:_chromeLabel];
+		[self setLabelRotation:_fadeLabel];
+		[self setLabelRotation:_noneLabel];
+		[self setLabelRotation:_processLabel];
+		[self setLabelRotation:_instantLabel];
+		[self setLabelRotation:_transferLabel];
+		[self showMultipleViews:NO];
 		[self.zoomSlider  setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 106, self.zoomSlider.frame.size.height)];
         [_topBar setItems:@[[self appsBarButton]] animated:YES];
 	}
@@ -308,7 +297,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 - (void) setFilterViewRotation:(GLKView *)filterView withScreenBounds:(CGRect)screenBounds{
 
 	[self setViewRotation:filterView];
-	if (effectiveScale <= 1) {
+	if (_effectiveScale <= 1) {
 		filterView.frame = screenBounds;
 	}
 }
@@ -349,13 +338,13 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 			transform = CGAffineTransformMakeRotation(M_PI);
 
 		}
-		if (bFlip) {
+		if (_isFlip) {
 			[label setTransform:CGAffineTransformScale(transform, -1, 1)];
 		} else {
 			[label setTransform:transform];
 		}
 	} else {
-		if (bFlip) {
+		if (_isFlip) {
 			label.transform = CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), -1, 1);
 		} else {
 			label.transform = CGAffineTransformMakeRotation(-M_PI_2);
@@ -367,10 +356,10 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 - (void) setViewRotation:(UIView *)view {
 
     CGFloat scalefactor = 1.0;
-    if(bLosslessZoom == NO) {
-        scalefactor = effectiveScale;
+    if(_isLosslessZoom == NO) {
+        scalefactor = _effectiveScale;
     }
-	if (bFlip) {
+	if (_isFlip) {
 		[view setTransform:CGAffineTransformConcat([self getTransform], CGAffineTransformMakeScale(-scalefactor, scalefactor))];
 	} else {
 		[view setTransform:CGAffineTransformConcat([self getTransform], CGAffineTransformMakeScale(scalefactor, scalefactor))];
@@ -426,7 +415,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 
 
 	// CoreImage wants BGRA pixel format
-	NSDictionary *outputSettings = @{ (id)kCVPixelBufferPixelFormatTypeKey : [NSNumber numberWithInteger:kCVPixelFormatType_32BGRA]};
+	NSDictionary *outputSettings = @{ (id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)};
 
 
 	// create and configure video data output
@@ -443,12 +432,12 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 		return;
 	}
 	// Make a still image output
-	stillImageOutput = [AVCaptureStillImageOutput new];
-	if (stillImageOutput.stillImageStabilizationSupported == YES) {
-		stillImageOutput.automaticallyEnablesStillImageStabilizationWhenAvailable = YES;
+	_stillImageOutput = [AVCaptureStillImageOutput new];
+	if (_stillImageOutput.stillImageStabilizationSupported) {
+		_stillImageOutput.automaticallyEnablesStillImageStabilizationWhenAvailable = YES;
 	}
-	if ( [_captureSession canAddOutput:stillImageOutput] )
-		[_captureSession addOutput:stillImageOutput];
+	if ([_captureSession canAddOutput:_stillImageOutput] )
+		[_captureSession addOutput:_stillImageOutput];
 
 
 	// connect the video device input and video data and still image outputs
@@ -469,13 +458,13 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
 		if ([[A3UIDevice platform] isEqualToString:@"iPhone 4"] ||
 				[[A3UIDevice platform] isEqualToString:@"iPhone 4s"]) {
-			if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetMedium] == YES) {
+			if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetMedium]) {
 				[_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
 			} else {
 				[_captureSession setSessionPreset:AVCaptureSessionPresetLow];
 			}
 		} else {
-			if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetHigh] == YES) {
+			if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetHigh]) {
 				[_captureSession setSessionPreset:AVCaptureSessionPresetHigh];
 			} else {
 				[_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
@@ -486,7 +475,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	}
 
 	[_captureSession commitConfiguration];
-	if([_videoDevice lockForConfiguration:&error] == NO) {
+	if(![_videoDevice lockForConfiguration:&error]) {
 		FNLOG(@"Device is locking failure : %@", error);
 	}
 
@@ -513,14 +502,14 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	 */
 	FNLOG(@"FocusMode = %d, ExposureMode = %d, AVCaptureAutoFocusRangeRestriction = %d, smoothfocus = %d", (int)_videoDevice.focusMode, (int)_videoDevice.exposureMode, (int)_videoDevice.autoFocusRangeRestriction, _videoDevice.smoothAutoFocusEnabled);
 	if ([self getMaxZoom] != 1) {   // support at loselessZoom
-		bLosslessZoom = YES;
+		_isLosslessZoom = YES;
 	} else {
-		bLosslessZoom = NO;
+		_isLosslessZoom = NO;
 	}
 	[self setupZoomSlider];
 
 	// then start everything
-	[frameCalculator reset];
+	[_frameCalculator reset];
     if (!IS_IOS7) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             	[_captureSession startRunning];
@@ -532,29 +521,29 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 }
 
 - (void) searchSlowCameraFrameRate {
-	currentMaxDuration = _videoDevice.activeVideoMaxFrameDuration;
-	currentMinDuration = _videoDevice.activeVideoMinFrameDuration;
-	slowFrameRateRange = nil;
+	_currentMaxDuration = _videoDevice.activeVideoMaxFrameDuration;
+	_currentMinDuration = _videoDevice.activeVideoMinFrameDuration;
+	_slowFrameRateRange = nil;
 
 	for (AVFrameRateRange *range in _videoDevice.activeFormat.videoSupportedFrameRateRanges) {
 		FNLOG(@"%f", range.maxFrameRate);
-		if (slowFrameRateRange == nil ) {
-			slowFrameRateRange = range;
+		if (_slowFrameRateRange == nil ) {
+			_slowFrameRateRange = range;
 		}
-		if(range.maxFrameRate < slowFrameRateRange.maxFrameRate) {
-			slowFrameRateRange = range;
+		if(range.maxFrameRate < _slowFrameRateRange.maxFrameRate) {
+			_slowFrameRateRange = range;
 		}
 	}
 }
 
 -(void) restoreOriginalFrameRate {
-	_videoDevice.activeVideoMinFrameDuration = currentMaxDuration;
-	_videoDevice.activeVideoMaxFrameDuration = currentMinDuration;
+	_videoDevice.activeVideoMinFrameDuration = _currentMaxDuration;
+	_videoDevice.activeVideoMaxFrameDuration = _currentMinDuration;
 }
 
 -(void) setSlowFrameRate {
-	_videoDevice.activeVideoMinFrameDuration = slowFrameRateRange.minFrameDuration;
-	_videoDevice.activeVideoMaxFrameDuration = slowFrameRateRange.maxFrameDuration;
+	_videoDevice.activeVideoMinFrameDuration = _slowFrameRateRange.minFrameDuration;
+	_videoDevice.activeVideoMaxFrameDuration = _slowFrameRateRange.maxFrameDuration;
 }
 - (void)_stop
 {
@@ -584,10 +573,10 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 -(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
 
 	CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-	ciimg = [CIImage imageWithCVPixelBuffer:(CVPixelBufferRef)imageBuffer options:nil];
+	_ciImage = [CIImage imageWithCVPixelBuffer:(CVPixelBufferRef)imageBuffer options:nil];
 
 	CMTime timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
-	[frameCalculator calculateFramerateAtTimestamp:timestamp];
+	[_frameCalculator calculateFramerateAtTimestamp:timestamp];
 	//FNLOG(@"%f fps",frameCalculator.frameRate);
 	/*
 	CGRect sourceExtent = ciimg.extent;
@@ -615,7 +604,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-	if(bMultipleView == NO) {
+	if(_isMultipleView == NO) {
 		GLKView *currentFilter = [self currentFilterView];
 		[currentFilter bindDrawable];
 		[currentFilter display];
@@ -652,13 +641,13 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	self.zoomSlider.value = 1;
 	self.zoomSlider.continuous = YES;
 
-	if (bLosslessZoom == YES) {
+	if (_isLosslessZoom == YES) {
 		self.zoomSlider.maximumValue = [self getMaxZoom];
 	} else {
-		if ([[stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor] > MAX_ZOOM_FACTOR) {
+		if ([[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor] > MAX_ZOOM_FACTOR) {
 			self.zoomSlider.maximumValue = MAX_ZOOM_FACTOR;
 		} else {
-			self.zoomSlider.maximumValue = [[stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor];
+			self.zoomSlider.maximumValue = [[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor];
 		}
 	}
 	FNLOG(@"minum = %f maximum = %f current = %f", self.zoomSlider.minimumValue, self.zoomSlider.maximumValue, self.zoomSlider.value);
@@ -701,7 +690,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 #pragma GLKViewDelegate
 - (void) glkView:(GLKView *)view drawInRect:(CGRect)rect {
-	CGRect sourceExtent = ciimg.extent;
+	CGRect sourceExtent = _ciImage.extent;
 
 	CGFloat sourceAspect = sourceExtent.size.width / sourceExtent.size.height;
 	CGFloat previewAspect = _videoPreviewViewBounds.size.width  / _videoPreviewViewBounds.size.height;
@@ -726,29 +715,29 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 	CIImage *filteredImage = nil;
 
-	if (bFiltersEnabled == YES) {
+	if (_isFiltersEnabled == YES) {
 		if ([view isEqual:_videoPreviewViewMonoFilter]) {
-			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectMono" keysAndValues:kCIInputImageKey, ciimg, nil].outputImage;
+			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectMono" keysAndValues:kCIInputImageKey, _ciImage, nil].outputImage;
 		} else if ([view isEqual:_videoPreviewViewTonalFilter]) {
-			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectTonal" keysAndValues:kCIInputImageKey, ciimg, nil].outputImage;
+			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectTonal" keysAndValues:kCIInputImageKey, _ciImage, nil].outputImage;
 
 		} else if ([view isEqual:_videoPreviewViewNoirFilter]) {
-			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectNoir" keysAndValues:kCIInputImageKey, ciimg, nil].outputImage;
+			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectNoir" keysAndValues:kCIInputImageKey, _ciImage, nil].outputImage;
 
 		} else if ([view isEqual:_videoPreviewViewFadeFilter]) {
-			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectFade" keysAndValues:kCIInputImageKey, ciimg, nil].outputImage;
+			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectFade" keysAndValues:kCIInputImageKey, _ciImage, nil].outputImage;
 
 		} else if ([view isEqual:_videoPreviewViewChromeFilter]) {
-			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectChrome" keysAndValues:kCIInputImageKey, ciimg, nil].outputImage;
+			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectChrome" keysAndValues:kCIInputImageKey, _ciImage, nil].outputImage;
 
 		} else if ([view isEqual:_videoPreviewViewProcessFilter]) {
-			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectProcess" keysAndValues:kCIInputImageKey, ciimg, nil].outputImage;
+			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectProcess" keysAndValues:kCIInputImageKey, _ciImage, nil].outputImage;
 
 		} else if ([view isEqual:_videoPreviewViewTransferFilter]) {
-			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectTransfer" keysAndValues:kCIInputImageKey, ciimg, nil].outputImage;
+			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectTransfer" keysAndValues:kCIInputImageKey, _ciImage, nil].outputImage;
 
 		} else if([view isEqual:_videoPreviewViewInstantFilter]) {
-			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectInstant" keysAndValues:kCIInputImageKey, ciimg, nil].outputImage;
+			filteredImage = [CIFilter filterWithName:@"CIPhotoEffectInstant" keysAndValues:kCIInputImageKey, _ciImage, nil].outputImage;
 
 		}
 	}
@@ -760,7 +749,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	if (filteredImage != nil) {
 		[_ciContext drawImage:filteredImage inRect:_videoPreviewViewBounds fromRect:drawRect];
 	} else {
-		[_ciContext drawImage:ciimg inRect:_videoPreviewViewBounds fromRect:drawRect];
+		[_ciContext drawImage:_ciImage inRect:_videoPreviewViewBounds fromRect:drawRect];
 	}
 	// });
 
@@ -771,41 +760,41 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 #pragma mark - TapGesture setup
 - (void)setupGestureRecognizer {
-	previewNoFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-	[_videoPreviewViewNoFilter addGestureRecognizer:previewNoFilterGestureRecognizer];
+	_previewNoFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+	[_videoPreviewViewNoFilter addGestureRecognizer:_previewNoFilterGestureRecognizer];
 
-	if (bFiltersEnabled == YES) {
-		previewMonoFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewMonoFilter addGestureRecognizer:previewMonoFilterGestureRecognizer];
-
-
-
-		previewTonalFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewTonalFilter addGestureRecognizer:previewTonalFilterGestureRecognizer];
-
-
-		previewNoirFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewNoirFilter addGestureRecognizer:previewNoirFilterGestureRecognizer];
-
-
-		previewFadeFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewFadeFilter addGestureRecognizer:previewFadeFilterGestureRecognizer];
-
-
-		previewChromeFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewChromeFilter addGestureRecognizer:previewChromeFilterGestureRecognizer];
-
-
-		previewProcessFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewProcessFilter addGestureRecognizer:previewProcessFilterGestureRecognizer];
+	if (_isFiltersEnabled == YES) {
+		_previewMonoFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+		[_videoPreviewViewMonoFilter addGestureRecognizer:_previewMonoFilterGestureRecognizer];
 
 
 
-		previewTransferFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewTransferFilter addGestureRecognizer:previewTransferFilterGestureRecognizer];
+		_previewTonalFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+		[_videoPreviewViewTonalFilter addGestureRecognizer:_previewTonalFilterGestureRecognizer];
 
-		previewInstantFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewInstantFilter addGestureRecognizer:previewInstantFilterGestureRecognizer];
+
+		_previewNoirFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+		[_videoPreviewViewNoirFilter addGestureRecognizer:_previewNoirFilterGestureRecognizer];
+
+
+		_previewFadeFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+		[_videoPreviewViewFadeFilter addGestureRecognizer:_previewFadeFilterGestureRecognizer];
+
+
+		_previewChromeFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+		[_videoPreviewViewChromeFilter addGestureRecognizer:_previewChromeFilterGestureRecognizer];
+
+
+		_previewProcessFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+		[_videoPreviewViewProcessFilter addGestureRecognizer:_previewProcessFilterGestureRecognizer];
+
+
+
+		_previewTransferFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+		[_videoPreviewViewTransferFilter addGestureRecognizer:_previewTransferFilterGestureRecognizer];
+
+		_previewInstantFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+		[_videoPreviewViewInstantFilter addGestureRecognizer:_previewInstantFilterGestureRecognizer];
 	}
 
 
@@ -813,7 +802,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	noFilterPinchGesture.delegate = self;
 	[_videoPreviewViewNoFilter addGestureRecognizer:noFilterPinchGesture];
 
-	if (bFiltersEnabled == YES ) {
+	if (_isFiltersEnabled == YES ) {
 		UIGestureRecognizer *monoFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
 		monoFilterPinchGesture.delegate = self;
 		[_videoPreviewViewMonoFilter addGestureRecognizer:monoFilterPinchGesture];
@@ -851,69 +840,69 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
 	if ( [gestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]] ) {
-		beginGestureScale = effectiveScale;
+		_beginGestureScale = _effectiveScale;
 	}
 	return YES;
 }
 
 - (void) handlePinchFrom:(UIPinchGestureRecognizer *)recognizer {
-	effectiveScale = beginGestureScale*recognizer.scale;
+	_effectiveScale = _beginGestureScale *recognizer.scale;
 	//FNLOG(@"effectiveScale = %f, beginGeustureScale = %f, recognizer.scale = %f", effectiveScale, beginGestureScale, recognizer.scale);
-	if (effectiveScale < self.zoomSlider.minimumValue ) effectiveScale = self.zoomSlider.minimumValue;
-	if(effectiveScale > self.zoomSlider.maximumValue) effectiveScale = self.zoomSlider.maximumValue;
-	if(effectiveScale == self.zoomSlider.value) return;
+	if (_effectiveScale < self.zoomSlider.minimumValue ) _effectiveScale = self.zoomSlider.minimumValue;
+	if(_effectiveScale > self.zoomSlider.maximumValue) _effectiveScale = self.zoomSlider.maximumValue;
+	if(_effectiveScale == self.zoomSlider.value) return;
 
-	if (bLosslessZoom == YES) {
+	if (_isLosslessZoom == YES) {
 		if (!_videoDevice.isRampingVideoZoom) {
-			_videoDevice.videoZoomFactor = effectiveScale;
+			_videoDevice.videoZoomFactor = _effectiveScale;
 
 		}
 	} else {
 		[self currentViewTransformScale];
 	}
-	self.zoomSlider.value = effectiveScale;
+	self.zoomSlider.value = _effectiveScale;
 }
 
 - (void)tapOnPreviewView:(UITapGestureRecognizer *) tap {
-	if (bMultipleView == YES) {
+	if (_isMultipleView == YES) {
 		[self restoreOriginalFrameRate];
-		if ([tap isEqual:previewNoFilterGestureRecognizer ]) {
-			nFilterIndex = A3MirrorNoFilter;
-			[self ShowOneFilterView:A3MirrorNoFilter];
-		} else if ([tap isEqual:previewMonoFilterGestureRecognizer]) {
-			nFilterIndex = A3MirrorMonoFilter;
-			[self ShowOneFilterView:A3MirrorMonoFilter];
-		} else if ([tap isEqual:previewTonalFilterGestureRecognizer]) {
-			nFilterIndex = A3MirrorTonalFilter;
-			[self ShowOneFilterView:A3MirrorTonalFilter];
-		} else if ([tap isEqual:previewNoirFilterGestureRecognizer]) {
-			nFilterIndex = A3MirrorNoirFilter;
-			[self ShowOneFilterView:A3MirrorNoirFilter];
-		} else if ([tap isEqual:previewFadeFilterGestureRecognizer]) {
-			nFilterIndex = A3MirrorFadeFilter;
-			[self ShowOneFilterView:A3MirrorFadeFilter];
-		} else if ([tap isEqual:previewChromeFilterGestureRecognizer]) {
-			nFilterIndex = A3MirrorChromeFilter;
-			[self ShowOneFilterView:A3MirrorChromeFilter];
-		} else if ([tap isEqual:previewProcessFilterGestureRecognizer]) {
-			nFilterIndex = A3MirrorProcessFilter;
-			[self ShowOneFilterView:A3MirrorProcessFilter];
-		} else if ([tap isEqual:previewTransferFilterGestureRecognizer]) {
-			nFilterIndex = A3MirrorTransferFilter;
-			[self ShowOneFilterView:A3MirrorTransferFilter];
-		} else if([tap isEqual:previewInstantFilterGestureRecognizer]) {
-			nFilterIndex = A3MirrorInstantFilter;
-			[self ShowOneFilterView:A3MirrorInstantFilter];
+		if ([tap isEqual:_previewNoFilterGestureRecognizer]) {
+			_filterIndex = A3MirrorNoFilter;
+			[self showOneFilterView:A3MirrorNoFilter];
+		} else if ([tap isEqual:_previewMonoFilterGestureRecognizer]) {
+			_filterIndex = A3MirrorMonoFilter;
+			[self showOneFilterView:A3MirrorMonoFilter];
+		} else if ([tap isEqual:_previewTonalFilterGestureRecognizer]) {
+			_filterIndex = A3MirrorTonalFilter;
+			[self showOneFilterView:A3MirrorTonalFilter];
+		} else if ([tap isEqual:_previewNoirFilterGestureRecognizer]) {
+			_filterIndex = A3MirrorNoirFilter;
+			[self showOneFilterView:A3MirrorNoirFilter];
+		} else if ([tap isEqual:_previewFadeFilterGestureRecognizer]) {
+			_filterIndex = A3MirrorFadeFilter;
+			[self showOneFilterView:A3MirrorFadeFilter];
+		} else if ([tap isEqual:_previewChromeFilterGestureRecognizer]) {
+			_filterIndex = A3MirrorChromeFilter;
+			[self showOneFilterView:A3MirrorChromeFilter];
+		} else if ([tap isEqual:_previewProcessFilterGestureRecognizer]) {
+			_filterIndex = A3MirrorProcessFilter;
+			[self showOneFilterView:A3MirrorProcessFilter];
+		} else if ([tap isEqual:_previewTransferFilterGestureRecognizer]) {
+			_filterIndex = A3MirrorTransferFilter;
+			[self showOneFilterView:A3MirrorTransferFilter];
+		} else if([tap isEqual:_previewInstantFilterGestureRecognizer]) {
+			_filterIndex = A3MirrorInstantFilter;
+			[self showOneFilterView:A3MirrorInstantFilter];
 		}
 
 		[self.filterButton setBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-		if (nFilterIndex == A3MirrorNoFilter) {
+		if (_filterIndex == A3MirrorNoFilter) {
 			[self.filterButton setImage:[[UIImage imageNamed:@"m_color"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
 		} else {
 			[self.filterButton setImage:[[UIImage imageNamed:@"m_color_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
 		}
 		self.bottomBar.hidden = NO;
-		bMultipleView = NO;
+		_isMultipleView = NO;
 
 	}
 	else {
@@ -979,15 +968,15 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	_videoPreviewViewInstantFilter = [self filterView];
 	[self addAllFilterViews];
 
-	monoLabel = [self filterLabelWithText:NSLocalizedString(@"Mono", @"Mono")];
-	tonalLabel = [self filterLabelWithText:NSLocalizedString(@"Tonal", @"Tonal")];
-	noirLabel = [self filterLabelWithText:NSLocalizedString(@"Noir", @"Noir")];
-	fadeLabel = [self filterLabelWithText:NSLocalizedString(@"Fade", @"Fade")];
-	noneLabel = [self filterLabelWithText:NSLocalizedString(@"None_Mirror", nil)];
-	chromeLabel = [self filterLabelWithText:NSLocalizedString(@"Chrome", @"Chrome")];
-	processLabel = [self filterLabelWithText:NSLocalizedString(@"Process", @"Process")];
-	transferLabel = [self filterLabelWithText:NSLocalizedString(@"Transfer", @"Transfer")];
-	instantLabel = [self filterLabelWithText:NSLocalizedString(@"Instant", @"Instant")];
+	_monoLabel = [self filterLabelWithText:NSLocalizedString(@"Mono", @"Mono")];
+	_tonalLabel = [self filterLabelWithText:NSLocalizedString(@"Tonal", @"Tonal")];
+	_noirLabel = [self filterLabelWithText:NSLocalizedString(@"Noir", @"Noir")];
+	_fadeLabel = [self filterLabelWithText:NSLocalizedString(@"Fade", @"Fade")];
+	_noneLabel = [self filterLabelWithText:NSLocalizedString(@"None_Mirror", nil)];
+	_chromeLabel = [self filterLabelWithText:NSLocalizedString(@"Chrome", @"Chrome")];
+	_processLabel = [self filterLabelWithText:NSLocalizedString(@"Process", @"Process")];
+	_transferLabel = [self filterLabelWithText:NSLocalizedString(@"Transfer", @"Transfer")];
+	_instantLabel = [self filterLabelWithText:NSLocalizedString(@"Instant", @"Instant")];
 }
 
 - (GLKView *)filterView {
@@ -1010,7 +999,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 }
 
 - (GLKView *) currentFilterView {
-	switch (nFilterIndex) {
+	switch (_filterIndex) {
 		case A3MirrorMonoFilter: return _videoPreviewViewMonoFilter;
 		case A3MirrorTonalFilter: return _videoPreviewViewTonalFilter;
 		case A3MirrorNoirFilter: return  _videoPreviewViewNoirFilter;
@@ -1022,13 +1011,13 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 		case A3MirrorInstantFilter:return _videoPreviewViewInstantFilter;
 	}
 
-	FNLOG("nFilterIndex is invalide %ld", (unsigned long)nFilterIndex);
+	FNLOG("nFilterIndex is invalide %ld", (unsigned long) _filterIndex);
 	return _videoPreviewViewNoFilter;
 
 }
 -(void) removeAllFilterViews {
 	[_videoPreviewViewNoFilter removeFromSuperview];
-	if (bFiltersEnabled == YES){
+	if (_isFiltersEnabled == YES){
 		[_videoPreviewViewMonoFilter removeFromSuperview];
 		[_videoPreviewViewTonalFilter removeFromSuperview];
 		[_videoPreviewViewNoirFilter removeFromSuperview];
@@ -1048,7 +1037,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	[self removeAllFilterViews];
 
 	_videoPreviewViewNoFilter = nil;
-	if (bFiltersEnabled == YES) {
+	if (_isFiltersEnabled == YES) {
 		_videoPreviewViewMonoFilter = nil;
 		_videoPreviewViewTonalFilter = nil;
 		_videoPreviewViewNoirFilter = nil;
@@ -1061,26 +1050,26 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 	[self _stop];
 
-	previewNoFilterGestureRecognizer = nil;
-	if (bFiltersEnabled == YES) {
-		previewMonoFilterGestureRecognizer = nil;
-		previewTonalFilterGestureRecognizer = nil;
-		previewNoirFilterGestureRecognizer = nil;
-		previewFadeFilterGestureRecognizer = nil;
-		previewChromeFilterGestureRecognizer = nil;
-		previewProcessFilterGestureRecognizer = nil;
-		previewTransferFilterGestureRecognizer = nil;
-		previewInstantFilterGestureRecognizer = nil;
+	_previewNoFilterGestureRecognizer = nil;
+	if (_isFiltersEnabled == YES) {
+		_previewMonoFilterGestureRecognizer = nil;
+		_previewTonalFilterGestureRecognizer = nil;
+		_previewNoirFilterGestureRecognizer = nil;
+		_previewFadeFilterGestureRecognizer = nil;
+		_previewChromeFilterGestureRecognizer = nil;
+		_previewProcessFilterGestureRecognizer = nil;
+		_previewTransferFilterGestureRecognizer = nil;
+		_previewInstantFilterGestureRecognizer = nil;
 
-		monoLabel = nil;
-		tonalLabel = nil;
-		noirLabel = nil;
-		fadeLabel = nil;
-		noneLabel = nil;
-		chromeLabel = nil;
-		processLabel = nil;
-		transferLabel = nil;
-		instantLabel = nil;
+		_monoLabel = nil;
+		_tonalLabel = nil;
+		_noirLabel = nil;
+		_fadeLabel = nil;
+		_noneLabel = nil;
+		_chromeLabel = nil;
+		_processLabel = nil;
+		_transferLabel = nil;
+		_instantLabel = nil;
 	}
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
@@ -1097,9 +1086,9 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 		[UIView setAnimationsEnabled:NO];
 	}
     else {
-        if (bLosslessZoom == YES) {
-            center.x = [self currentFilterView].center.y;
-            center.y = [self currentFilterView].center.x;
+        if (_isLosslessZoom == YES) {
+            _center.x = [self currentFilterView].center.y;
+            _center.y = [self currentFilterView].center.x;
         }
         
     }
@@ -1115,13 +1104,13 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	}
     else
     {
-        if (bLosslessZoom == YES) {
-            [self currentFilterView].center = center;
+        if (_isLosslessZoom == YES) {
+            [self currentFilterView].center = _center;
             
         }
         
         CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-        if (bMultipleView == YES) {
+        if (_isMultipleView == YES) {
             [self setViewRotation:_videoPreviewViewMonoFilter];
             [self setViewRotation:_videoPreviewViewTonalFilter];
             [self setViewRotation:_videoPreviewViewNoirFilter];
@@ -1148,33 +1137,32 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 {
 	GLKView *currentView = [self currentFilterView];
 
-	if (bFlip) {
-		[currentView setTransform:CGAffineTransformScale([self getTransform], -1*effectiveScale, effectiveScale)];
+	if (_isFlip) {
+		[currentView setTransform:CGAffineTransformScale([self getTransform], -1* _effectiveScale, _effectiveScale)];
 	} else {
 
-		[currentView setTransform:CGAffineTransformScale([self getTransform], effectiveScale, effectiveScale)];
+		[currentView setTransform:CGAffineTransformScale([self getTransform], _effectiveScale, _effectiveScale)];
 	}
 
 }
 
 #pragma mark - IB Action Buttons
+
 - (IBAction)zoomIng:(id)sender {
 	UISlider *zoomFactor = (UISlider *) sender;
 
-	if (bLosslessZoom == YES) {
+	if (_isLosslessZoom == YES) {
 
 		if (!_videoDevice.isRampingVideoZoom) {
 			_videoDevice.videoZoomFactor = zoomFactor.value;
-			effectiveScale = zoomFactor.value;
+			_effectiveScale = zoomFactor.value;
 		}
 	} else {
-		effectiveScale = zoomFactor.value;
+		_effectiveScale = zoomFactor.value;
 		[self currentViewTransformScale];
 	}
 
 }
-
-
 
 - (IBAction)appsButton:(id)sender {
 	if (IS_IPHONE) {
@@ -1194,7 +1182,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 						//  [[self currentFilterView] removeFromSuperview];
 						// }
 						[_captureSession stopRunning];
-						bFlip = !bFlip;
+						_isFlip = !_isFlip;
 						[self setViewRotation:[self currentFilterView]];
 						[_captureSession startRunning];
 					}completion:^(BOOL finished) {
@@ -1243,27 +1231,26 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 		// Flash set to Auto for Still Capture
 		// [self setFlashMode:AVCaptureFlashModeAuto forDevice:_videoDevice];
 
-		if (bLosslessZoom == NO) {
-			AVCaptureConnection *stillImageConnection = [stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
-			[stillImageConnection setVideoScaleAndCropFactor:effectiveScale];
+		if (_isLosslessZoom == NO) {
+			AVCaptureConnection *stillImageConnection = [_stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
+			[stillImageConnection setVideoScaleAndCropFactor:_effectiveScale];
 		}
         
-		[stillImageOutput captureStillImageAsynchronouslyFromConnection:[stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-			if (imageDataSampleBuffer)
-			{
+		[_stillImageOutput captureStillImageAsynchronouslyFromConnection:[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+			if (imageDataSampleBuffer) {
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
 				CIImage *ciSaveImg = [[CIImage alloc] initWithData:imageData];
 				UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-                if (IS_IPHONE) {
-                    orientation = (UIInterfaceOrientation)[[UIDevice currentDevice] orientation];
-                }
+				if (IS_IPHONE) {
+					orientation = (UIInterfaceOrientation) [[UIDevice currentDevice] orientation];
+				}
 
 
-				if (bFlip == YES) {
-					if(IS_LANDSCAPE||
-                       orientation == UIDeviceOrientationLandscapeRight||
-                       orientation == UIDeviceOrientationLandscapeLeft) {
-						CGAffineTransform f = CGAffineTransformMake(-1, 0, 0, 1, ciSaveImg.extent.size.width,0);
+				if (_isFlip == YES) {
+					if (IS_LANDSCAPE ||
+							orientation == UIDeviceOrientationLandscapeRight ||
+							orientation == UIDeviceOrientationLandscapeLeft) {
+						CGAffineTransform f = CGAffineTransformMake(-1, 0, 0, 1, ciSaveImg.extent.size.width, 0);
 						ciSaveImg = [ciSaveImg imageByApplyingTransform:f];
 					} else {
 						CGAffineTransform f = CGAffineTransformMake(1, 0, 0, -1, 0, ciSaveImg.extent.size.height);
@@ -1285,48 +1272,50 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 				}
 
 
-				if (nFilterIndex == A3MirrorMonoFilter) {
+				if (_filterIndex == A3MirrorMonoFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectMono" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
-				} else if (nFilterIndex == A3MirrorTonalFilter) {
+				} else if (_filterIndex == A3MirrorTonalFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectTonal" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
-				} else if (nFilterIndex == A3MirrorNoirFilter) {
+				} else if (_filterIndex == A3MirrorNoirFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectNoir" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
-				} else if (nFilterIndex == A3MirrorFadeFilter) {
+				} else if (_filterIndex == A3MirrorFadeFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectFade" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
-				} else if (nFilterIndex == A3MirrorChromeFilter) {
+				} else if (_filterIndex == A3MirrorChromeFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectChrome" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
-				} else if (nFilterIndex == A3MirrorProcessFilter) {
+				} else if (_filterIndex == A3MirrorProcessFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectProcess" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
-				} else if (nFilterIndex == A3MirrorTransferFilter) {
+				} else if (_filterIndex == A3MirrorTransferFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectTransfer" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
-				} else if(nFilterIndex == A3MirrorInstantFilter) {
+				} else if (_filterIndex == A3MirrorInstantFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectInstant" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
 				}
 
 				ciSaveImg = [ciSaveImg imageByApplyingTransform:t];
 				CGImageRef cgimg = [_ciContext createCGImage:ciSaveImg fromRect:[ciSaveImg extent]];
-				[[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:cgimg metadata:[ciimg properties] completionBlock:nil];
-				[self setImageOnCameraRollButton:[UIImage imageWithCGImage:cgimg]];
+				[self.assetLibrary writeImageToSavedPhotosAlbum:cgimg metadata:[_ciImage properties] completionBlock:^(NSURL *assetURL, NSError *error) {
+					self.capturedPhotoURL = assetURL;
+					[self setImageOnCameraRollButton:[UIImage imageWithCGImage:cgimg]];
+					[_captureSession startRunning];
+				}];
 			}
 		}];
-
-
 	});
 }
 
-#pragma mark - FIlter Control
-- (IBAction)colorButton:(id)sender {
-	bMultipleView = !bMultipleView;
+#pragma mark - Filter Control
 
-	if (bMultipleView == YES) {
+- (IBAction)colorButton:(id)sender {
+	_isMultipleView = !_isMultipleView;
+
+	if (_isMultipleView == YES) {
 		[self setSlowFrameRate];
 		self.bottomBar.hidden = YES;
 		self.zoomToolBar.hidden =  YES;
-		[self ShowMultipleViews:YES];
+		[self showMultipleViews:YES];
 	}
 }
 
-- (void)ShowOneFilterView:(NSUInteger) nViewIndex {
+- (void)showOneFilterView:(NSUInteger) nViewIndex {
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	CGFloat width = screenBounds.size.width;
 	CGFloat height = screenBounds.size.height;
@@ -1335,15 +1324,15 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 	NSArray *coordinate = filterViewCoordinate[nViewIndex];
 
-	[monoLabel removeFromSuperview];
-	[tonalLabel removeFromSuperview];
-	[noirLabel removeFromSuperview];
-	[fadeLabel removeFromSuperview];
-	[noneLabel removeFromSuperview];
-	[chromeLabel removeFromSuperview];
-	[processLabel removeFromSuperview];
-	[transferLabel removeFromSuperview];
-	[instantLabel removeFromSuperview];
+	[_monoLabel removeFromSuperview];
+	[_tonalLabel removeFromSuperview];
+	[_noirLabel removeFromSuperview];
+	[_fadeLabel removeFromSuperview];
+	[_noneLabel removeFromSuperview];
+	[_chromeLabel removeFromSuperview];
+	[_processLabel removeFromSuperview];
+	[_transferLabel removeFromSuperview];
+	[_instantLabel removeFromSuperview];
 
 	[UIView animateWithDuration:0.3
 						  delay:0
@@ -1370,12 +1359,12 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 					 }
 					 completion:nil];
 
-	_videoPreviewViewBounds.size = originalsize;
+	_videoPreviewViewBounds.size = _originalsize;
 	self.zoomToolBar.hidden = NO;
 
 }
 
-- (void)ShowMultipleViews:(BOOL)bSizeChange {
+- (void)showMultipleViews:(BOOL)bSizeChange {
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	CGFloat height = (screenBounds.size.height-84)/3;
 	CGFloat width  = (screenBounds.size.width*height)/screenBounds.size.height;
@@ -1424,48 +1413,48 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 					 completion:^(BOOL finised) {
 
-						 [_videoPreviewViewMonoFilter addSubview:monoLabel];
-						 [monoLabel makeConstraints:^(MASConstraintMaker *make) {
+						 [_videoPreviewViewMonoFilter addSubview:_monoLabel];
+						 [_monoLabel makeConstraints:^(MASConstraintMaker *make) {
 							 make.top.equalTo(_videoPreviewViewMonoFilter.top);
 							 make.right.equalTo(_videoPreviewViewMonoFilter.right);
 						 }];
-						 [_videoPreviewViewTonalFilter addSubview:tonalLabel];
-						 [tonalLabel makeConstraints:^(MASConstraintMaker *make) {
+						 [_videoPreviewViewTonalFilter addSubview:_tonalLabel];
+						 [_tonalLabel makeConstraints:^(MASConstraintMaker *make) {
 							 make.top.equalTo(_videoPreviewViewTonalFilter.top);
 							 make.right.equalTo(_videoPreviewViewTonalFilter.right);
 						 }];
-						 [_videoPreviewViewNoirFilter addSubview:noirLabel];
-						 [noirLabel makeConstraints:^(MASConstraintMaker *make) {
+						 [_videoPreviewViewNoirFilter addSubview:_noirLabel];
+						 [_noirLabel makeConstraints:^(MASConstraintMaker *make) {
 							 make.top.equalTo(_videoPreviewViewNoirFilter.top);
 							 make.right.equalTo(_videoPreviewViewNoirFilter.right);
 						 }];
-						 [_videoPreviewViewFadeFilter addSubview:fadeLabel];
-						 [fadeLabel makeConstraints:^(MASConstraintMaker *make) {
+						 [_videoPreviewViewFadeFilter addSubview:_fadeLabel];
+						 [_fadeLabel makeConstraints:^(MASConstraintMaker *make) {
 							 make.top.equalTo(_videoPreviewViewFadeFilter.top);
 							 make.right.equalTo(_videoPreviewViewFadeFilter.right);
 						 }];
-						 [_videoPreviewViewNoFilter addSubview:noneLabel];
-						 [noneLabel makeConstraints:^(MASConstraintMaker *make) {
+						 [_videoPreviewViewNoFilter addSubview:_noneLabel];
+						 [_noneLabel makeConstraints:^(MASConstraintMaker *make) {
 							 make.top.equalTo(_videoPreviewViewNoFilter.top);
 							 make.right.equalTo(_videoPreviewViewNoFilter.right);
 						 }];
-						 [_videoPreviewViewChromeFilter addSubview:chromeLabel];
-						 [chromeLabel makeConstraints:^(MASConstraintMaker *make) {
+						 [_videoPreviewViewChromeFilter addSubview:_chromeLabel];
+						 [_chromeLabel makeConstraints:^(MASConstraintMaker *make) {
 							 make.top.equalTo(_videoPreviewViewChromeFilter.top);
 							 make.right.equalTo(_videoPreviewViewChromeFilter.right);
 						 }];
-						 [_videoPreviewViewProcessFilter addSubview:processLabel];
-						 [processLabel makeConstraints:^(MASConstraintMaker *make) {
+						 [_videoPreviewViewProcessFilter addSubview:_processLabel];
+						 [_processLabel makeConstraints:^(MASConstraintMaker *make) {
 							 make.top.equalTo(_videoPreviewViewProcessFilter.top);
 							 make.right.equalTo(_videoPreviewViewProcessFilter.right);
 						 }];
-						 [_videoPreviewViewTransferFilter addSubview:transferLabel];
-						 [transferLabel makeConstraints:^(MASConstraintMaker *make) {
+						 [_videoPreviewViewTransferFilter addSubview:_transferLabel];
+						 [_transferLabel makeConstraints:^(MASConstraintMaker *make) {
 							 make.top.equalTo(_videoPreviewViewTransferFilter.top);
 							 make.right.equalTo(_videoPreviewViewTransferFilter.right);
 						 }];
-						 [_videoPreviewViewInstantFilter addSubview:instantLabel];
-						 [instantLabel makeConstraints:^(MASConstraintMaker *make) {
+						 [_videoPreviewViewInstantFilter addSubview:_instantLabel];
+						 [_instantLabel makeConstraints:^(MASConstraintMaker *make) {
 							 make.top.equalTo(_videoPreviewViewInstantFilter.top);
 							 make.right.equalTo(_videoPreviewViewInstantFilter.right);
 						 }];

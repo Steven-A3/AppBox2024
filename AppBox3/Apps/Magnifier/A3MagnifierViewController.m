@@ -21,27 +21,25 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 
 @interface A3MagnifierViewController () <A3InstructionViewControllerDelegate>
 {
-    GLKView                     *previewLayer;
+    GLKView                     *_previewLayer;
     CIContext                   *_ciContext;
     EAGLContext                 *_eaglContext;
     CGRect                      _videoPreviewViewBounds;
-	AVCaptureVideoDataOutput    *videoDataOutput;
-    AVCaptureSession            *session;
-	dispatch_queue_t            videoDataOutputQueue;
-	AVCaptureStillImageOutput   *stillImageOutput;
-    CIImage                     *ciimg;
-	CGFloat                     effectiveScale;
-    CGFloat                     brightFactor;
-    BOOL                        bInvertedColor;
-    BOOL                        bLightOn;
-    BOOL                        bLosslessZoom;
-    CGFloat                     beginGestureScale;
-    CGPoint                     centerxy;
-    FrameRateCalculator *frameCalculator;
+	AVCaptureVideoDataOutput    *_videoDataOutput;
+    AVCaptureSession            *_session;
+	dispatch_queue_t 			_videoDataOutputQueue;
+	AVCaptureStillImageOutput   *_stillImageOutput;
+    CIImage                     *_ciImage;
+	CGFloat 					_effectiveScale;
+    CGFloat 					_brightFactor;
+    BOOL 						_isInvertedColor;
+    BOOL 						_isLightOn;
+    BOOL						_isLosslessZoom;
+    CGFloat						_beginGestureScale;
+    CGPoint 					_centerXY;
+    FrameRateCalculator 		*_frameCalculator;
 }
 
-@property (nonatomic, strong) ALAssetsLibrary *assetLibrary;
-@property (nonatomic, strong) ALAssetsGroup *assetrollGroup;
 @property (nonatomic, strong) AVCaptureDevice *device;
 @property (nonatomic, strong) UIView *statusBarBackground;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
@@ -55,7 +53,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        frameCalculator = [[FrameRateCalculator alloc] init];
+        _frameCalculator = [[FrameRateCalculator alloc] init];
     }
     return self;
 }
@@ -88,14 +86,14 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     [self setupTorchLevelBar];
     
     if ([self getMaxZoom] == 1) {
-        bLosslessZoom = NO;
+        _isLosslessZoom = NO;
     } else {
-        bLosslessZoom = YES;
+        _isLosslessZoom = YES;
     }
     [self setupMagnifier];
     
-    bInvertedColor = NO;
-    bLightOn = NO;
+    _isInvertedColor = NO;
+    _isLightOn = NO;
     self.flashBrightSlider.value = 0.5;
     [self setupInstructionView];
 }
@@ -118,19 +116,19 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
         } else {
             transform = CGAffineTransformMakeRotation(0);
         }
-        if (bLosslessZoom == NO &&
-            effectiveScale > 1) {
-        [previewLayer setTransform:CGAffineTransformScale(transform, effectiveScale, effectiveScale)];
+        if (_isLosslessZoom == NO &&
+            _effectiveScale > 1) {
+        [_previewLayer setTransform:CGAffineTransformScale(transform, _effectiveScale, _effectiveScale)];
         } else {
-        [previewLayer setTransform:transform];
+        [_previewLayer setTransform:transform];
         }
     } else {
-        previewLayer.transform = CGAffineTransformMakeRotation(M_PI_2);
+        _previewLayer.transform = CGAffineTransformMakeRotation(M_PI_2);
     }
     
 
-    if (effectiveScale <= 1) {
-        previewLayer.frame = screenBounds;
+    if (_effectiveScale <= 1) {
+        _previewLayer.frame = screenBounds;
     }
 
 }
@@ -159,10 +157,10 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 - (void)setupPreview {
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     _eaglContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-    previewLayer = [[GLKView alloc] initWithFrame:self.view.bounds context:_eaglContext];
-    previewLayer.drawableDepthFormat = GLKViewDrawableDepthFormat24;
-    previewLayer.enableSetNeedsDisplay = NO;
-    previewLayer.userInteractionEnabled = YES;
+    _previewLayer = [[GLKView alloc] initWithFrame:self.view.bounds context:_eaglContext];
+    _previewLayer.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+    _previewLayer.enableSetNeedsDisplay = NO;
+    _previewLayer.userInteractionEnabled = YES;
     
     // because the native video image from the back camera is in UIDeviceOrientationLandscapeLeft (i.e. the home button is on the right), we need to apply a clockwise 90 degree transform so that we can draw the video preview as if we were in a landscape-oriented view; if you're using the front camera and you want to have a mirrored preview (so that the user is seeing themselves in the mirror), you need to apply an additional horizontal flip (by concatenating CGAffineTransformMakeScale(-1.0, 1.0) to the rotation transform)
 
@@ -171,8 +169,8 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     //
     //
     //
-    [self.view addSubview:previewLayer];
-    [self.view sendSubviewToBack:previewLayer];
+	[self.view addSubview:_previewLayer];
+	[self.view sendSubviewToBack:_previewLayer];
     
     // create the CIContext instance, note that this must be done after _videoPreviewView is properly set up
     //glGenRenderbuffers(1, &_renderBuffer);
@@ -185,12 +183,12 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     // in addition, since we will be accessing the bounds in another queue (_captureSessionQueue),
     // we want to obtain this piece of information so that we won't be
     // accessing _videoPreviewView's properties from another thread/queue
-    [previewLayer bindDrawable];
+    [_previewLayer bindDrawable];
     
     
     _videoPreviewViewBounds = CGRectZero;
-    _videoPreviewViewBounds.size.width = previewLayer.drawableWidth;
-    _videoPreviewViewBounds.size.height = previewLayer.drawableHeight;
+    _videoPreviewViewBounds.size.width = _previewLayer.drawableWidth;
+    _videoPreviewViewBounds.size.height = _previewLayer.drawableHeight;
 
 }
 
@@ -201,11 +199,11 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 - (void)setupGestureRecognizer {
 	UIGestureRecognizer *recognizer;
 	recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView)];
-	[previewLayer addGestureRecognizer:recognizer];
+	[_previewLayer addGestureRecognizer:recognizer];
 
 	recognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
 	recognizer.delegate = self;
-	[previewLayer addGestureRecognizer:recognizer];
+	[_previewLayer addGestureRecognizer:recognizer];
 }
 
 - (void)setupMagnifier {
@@ -213,11 +211,11 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     self.magnifierSlider.continuous = YES;
     self.magnifierSlider.value = 1;
 
-    if (bLosslessZoom == NO) {
-        if ([[stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor] > MAX_ZOOM_FACTOR) {
+    if (_isLosslessZoom == NO) {
+        if ([[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor] > MAX_ZOOM_FACTOR) {
             self.magnifierSlider.maximumValue = MAX_ZOOM_FACTOR;
         } else {
-            self.magnifierSlider.maximumValue = [[stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor];
+            self.magnifierSlider.maximumValue = [[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor];
         }
     } else {
         self.magnifierSlider.maximumValue = [self getMaxZoom];
@@ -253,41 +251,41 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
 	if ( [gestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]] ) {
-		beginGestureScale = effectiveScale;
+		_beginGestureScale = _effectiveScale;
 	}
 	return YES;
 }
 
 - (void) handlePinchFrom:(UIPinchGestureRecognizer *)recognizer {
-    effectiveScale = beginGestureScale*recognizer.scale;
-    FNLOG(@"effectiveScale = %f, beginGeustureScale = %f, recognizer.scale = %f", effectiveScale, beginGestureScale, recognizer.scale);
-    if (effectiveScale < self.magnifierSlider.minimumValue ) effectiveScale = self.magnifierSlider.minimumValue;
-    if(effectiveScale > self.magnifierSlider.maximumValue) effectiveScale = self.magnifierSlider.maximumValue;
-    if(effectiveScale == self.magnifierSlider.value) return;
-    if (bLosslessZoom == YES) {
+    _effectiveScale = _beginGestureScale *recognizer.scale;
+    FNLOG(@"effectiveScale = %f, beginGeustureScale = %f, recognizer.scale = %f", _effectiveScale, _beginGestureScale, recognizer.scale);
+    if (_effectiveScale < self.magnifierSlider.minimumValue ) _effectiveScale = self.magnifierSlider.minimumValue;
+    if(_effectiveScale > self.magnifierSlider.maximumValue) _effectiveScale = self.magnifierSlider.maximumValue;
+    if(_effectiveScale == self.magnifierSlider.value) return;
+    if (_isLosslessZoom == YES) {
         if (!_device.isRampingVideoZoom) {
-            _device.videoZoomFactor = effectiveScale;
+            _device.videoZoomFactor = _effectiveScale;
         }
         
     } else {
         if (IS_IPHONE) {
-            [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
+            [_previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), _effectiveScale, _effectiveScale)];
         }
         else {
             UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
             if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-                [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
+                [_previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), _effectiveScale, _effectiveScale)];
             } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-                [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), effectiveScale, effectiveScale)];
+                [_previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), _effectiveScale, _effectiveScale)];
             } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
-                [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI), effectiveScale, effectiveScale)];
+                [_previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI), _effectiveScale, _effectiveScale)];
             } else {
-                [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(0), effectiveScale, effectiveScale)];
+                [_previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(0), _effectiveScale, _effectiveScale)];
             }
         }
     }
     
-    self.magnifierSlider.value = effectiveScale;
+    self.magnifierSlider.value = _effectiveScale;
 }
 
 - (void)setNavigationBarHidden:(BOOL)hidden {
@@ -345,17 +343,17 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 }
 
 - (IBAction)invertButtonAction:(id)sender {
-    bInvertedColor = !bInvertedColor;
+    _isInvertedColor = !_isInvertedColor;
 }
 
 - (IBAction)lightButtonAction:(id)sender {
-    bLightOn = !bLightOn;
+    _isLightOn = !_isLightOn;
     
     if ([_device hasTorch]) {
         NSError *error = nil;
        // if ([_device lockForConfiguration:&error]) {
             
-            if (bLightOn == YES) {
+            if (_isLightOn == YES) {
                 if (self.flashBrightSlider.value != 0.0) {
                     [_device setTorchMode:AVCaptureTorchModeOn];
                     if([_device setTorchModeOnWithLevel:self.flashBrightSlider.value error:&error]!= YES) {
@@ -384,23 +382,23 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 - (IBAction)brightSliderAction:(id)sender {
     UISlider *bright = (UISlider *) sender;
     
-    brightFactor = bright.value;
+    _brightFactor = bright.value;
 }
 
 - (IBAction)magnifierSliderAction:(id)sender {
     UISlider *magnify = (UISlider *) sender;
    // FNLOG(@"slider value = %f", magnify.value);
-    if (bLosslessZoom == YES) {
+    if (_isLosslessZoom == YES) {
         if (!_device.isRampingVideoZoom) {
                 //CGFloat sliderValue = pow( [self getMaxZoom], magnify.value );
                 //FNLOG(@"max slider value = %f", sliderValue);
                 _device.videoZoomFactor = magnify.value;
-                    effectiveScale = magnify.value;
+                    _effectiveScale = magnify.value;
         }
         
     } else {
-        effectiveScale = magnify.value;
-        [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
+        _effectiveScale = magnify.value;
+        [_previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), _effectiveScale, _effectiveScale)];
     }
 
 }
@@ -430,13 +428,13 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 }
 
 - (CIImage *) ApplyFilters:(CIImage *) sourceImage {
-    if (brightFactor != 0.0) {
+    if (_brightFactor != 0.0) {
         sourceImage = [CIFilter filterWithName:@"CIColorControls" keysAndValues:
                          kCIInputImageKey, sourceImage,
-                         @"inputBrightness", [NSNumber numberWithFloat:brightFactor],
+                         @"inputBrightness", [NSNumber numberWithFloat:_brightFactor],
                          nil].outputImage;
     }
-    if (bInvertedColor == YES) {
+    if (_isInvertedColor == YES) {
         sourceImage = [CIFilter filterWithName:@"CIColorInvert" keysAndValues:
                          kCIInputImageKey, sourceImage,
                          nil].outputImage;
@@ -489,63 +487,63 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     }
     
 	// Find out the current orientation and tell the still image output.
-	AVCaptureConnection *stillImageConnection = [stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
+	AVCaptureConnection *stillImageConnection = [_stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
 	UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
     if (IS_IPHONE) {
         curDeviceOrientation = (UIInterfaceOrientation)[[UIDevice currentDevice] orientation];
     }
 	AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation:curDeviceOrientation];
 	[stillImageConnection setVideoOrientation:avcaptureOrientation];
-	if (bLosslessZoom == NO) {
-		[stillImageConnection setVideoScaleAndCropFactor:effectiveScale];
+	if (_isLosslessZoom == NO) {
+		[stillImageConnection setVideoScaleAndCropFactor:_effectiveScale];
 	}
 
-	[stillImageOutput setOutputSettings:[NSDictionary dictionaryWithObject:AVVideoCodecJPEG
-																	forKey:AVVideoCodecKey]];
+	[_stillImageOutput setOutputSettings:@{AVVideoCodecKey : AVVideoCodecJPEG}];
 	[self snapAnimation];
-	[stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection
-												  completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-													  if (error) {
-														  [self displayErrorOnMainQueue:error withMessage:NSLocalizedString(@"Take picture failed.", @"Take picture failed.")];
-													  }
-													  else {
-														  // trivial simple JPEG case
-														  NSData *jpegData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-														  // CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault,
-														  //                                                             imageDataSampleBuffer,
-														  //                                                            kCMAttachmentMode_ShouldPropagate);
+	[_stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection
+												   completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+													   if (error) {
+														   [self displayErrorOnMainQueue:error withMessage:NSLocalizedString(@"Take picture failed.", @"Take picture failed.")];
+													   }
+													   else {
+														   // trivial simple JPEG case
+														   NSData *jpegData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+														   // CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault,
+														   //                                                             imageDataSampleBuffer,
+														   //                                                            kCMAttachmentMode_ShouldPropagate);
 
-														  CIImage *ciSaveImg = [[CIImage alloc] initWithData:jpegData];
+														   CIImage *ciSaveImg = [[CIImage alloc] initWithData:jpegData];
 
-														  ciSaveImg = [self ApplyFilters:ciSaveImg];
+														   ciSaveImg = [self ApplyFilters:ciSaveImg];
 
-														  CGAffineTransform t;
+														   CGAffineTransform t;
 
-														  if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-															  t = CGAffineTransformMakeRotation(-M_PI / 2);
-														  } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-															  t = CGAffineTransformMakeRotation(M_PI / 2);
-														  } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight ||
-																  curDeviceOrientation == UIDeviceOrientationFaceUp) {
-															  t = CGAffineTransformMakeRotation(M_PI);
-														  } else {
-															  t = CGAffineTransformMakeRotation(0);
-														  }
-                                                          
-                                                          ciSaveImg = [ciSaveImg imageByApplyingTransform:t];
-                                                          CGImageRef cgimg = [_ciContext createCGImage:ciSaveImg fromRect:[ciSaveImg extent]];
-                                                          [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:cgimg metadata:[ciimg properties] completionBlock:^(NSURL *assetURL, NSError *error) {
-															  if (error) {
-																  [self displayErrorOnMainQueue:error withMessage:NSLocalizedString(@"Save to camera roll failed.", @"Save to camera roll failed.")];
-															  } else {
-																  [self setImageOnCameraRollButton:[UIImage imageWithCGImage:cgimg]];
-															  }
-														  }];
+														   if (curDeviceOrientation == UIDeviceOrientationPortrait) {
+															   t = CGAffineTransformMakeRotation(-M_PI / 2);
+														   } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+															   t = CGAffineTransformMakeRotation(M_PI / 2);
+														   } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight ||
+																   curDeviceOrientation == UIDeviceOrientationFaceUp) {
+															   t = CGAffineTransformMakeRotation(M_PI);
+														   } else {
+															   t = CGAffineTransformMakeRotation(0);
+														   }
 
-														  // if (attachments)
-														  //   CFRelease(attachments);
-													  }
-												  }
+														   ciSaveImg = [ciSaveImg imageByApplyingTransform:t];
+														   CGImageRef cgimg = [_ciContext createCGImage:ciSaveImg fromRect:[ciSaveImg extent]];
+														   [self.assetLibrary writeImageToSavedPhotosAlbum:cgimg metadata:[_ciImage properties] completionBlock:^(NSURL *assetURL, NSError *error) {
+															   if (error) {
+																   [self displayErrorOnMainQueue:error withMessage:NSLocalizedString(@"Save to camera roll failed.", @"Save to camera roll failed.")];
+															   } else {
+																   self.capturedPhotoURL = assetURL;
+																   [self setImageOnCameraRollButton:[UIImage imageWithCGImage:cgimg]];
+															   }
+														   }];
+
+														   // if (attachments)
+														   //   CFRelease(attachments);
+													   }
+												   }
 	];
 }
 
@@ -616,8 +614,8 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
 - (void)setupAVCapture {
     NSError *error = nil;
 	
-	session = [AVCaptureSession new];
-    [session beginConfiguration];
+	_session = [AVCaptureSession new];
+    [_session beginConfiguration];
 
 
 	
@@ -636,13 +634,13 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
     
     
 	AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:_device error:&error];
-    if ( [session canAddInput:deviceInput] )
-		[session addInput:deviceInput];
+    if ( [_session canAddInput:deviceInput] )
+		[_session addInput:deviceInput];
     
     if ([_device supportsAVCaptureSessionPreset:AVCaptureSessionPresetHigh] == YES) {
-        [session setSessionPreset:AVCaptureSessionPresetHigh];
+        [_session setSessionPreset:AVCaptureSessionPresetHigh];
     } else {
-        [session setSessionPreset:AVCaptureSessionPresetMedium];
+        [_session setSessionPreset:AVCaptureSessionPresetMedium];
     }
   
      if (_device.isAdjustingFocus == YES) {
@@ -663,58 +661,56 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
     
     // Make a still image output
     
-	stillImageOutput = [AVCaptureStillImageOutput new];
-    if (stillImageOutput.stillImageStabilizationSupported == YES) {
-        stillImageOutput.automaticallyEnablesStillImageStabilizationWhenAvailable = YES;
+	_stillImageOutput = [AVCaptureStillImageOutput new];
+    if (_stillImageOutput.stillImageStabilizationSupported == YES) {
+        _stillImageOutput.automaticallyEnablesStillImageStabilizationWhenAvailable = YES;
     }
-	if ( [session canAddOutput:stillImageOutput] )
-		[session addOutput:stillImageOutput];
+	if ([_session canAddOutput:_stillImageOutput] )
+		[_session addOutput:_stillImageOutput];
 	
     // Make a video data output
-	videoDataOutput = [AVCaptureVideoDataOutput new];
+	_videoDataOutput = [AVCaptureVideoDataOutput new];
 	
     // we want BGRA, both CoreGraphics and OpenGL work well with 'BGRA'
 	NSDictionary *rgbOutputSettings = [NSDictionary dictionaryWithObject:
 									   [NSNumber numberWithInt:kCMPixelFormat_32BGRA] forKey:(id)kCVPixelBufferPixelFormatTypeKey];
-	[videoDataOutput setVideoSettings:rgbOutputSettings];
-	[videoDataOutput setAlwaysDiscardsLateVideoFrames:YES]; // discard if the data output queue is blocked (as we process the still image)
+	[_videoDataOutput setVideoSettings:rgbOutputSettings];
+	[_videoDataOutput setAlwaysDiscardsLateVideoFrames:YES]; // discard if the data output queue is blocked (as we process the still image)
     
     // create a serial dispatch queue used for the sample buffer delegate as well as when a still image is captured
     // a serial dispatch queue must be used to guarantee that video frames will be delivered in order
     // see the header doc for setSampleBufferDelegate:queue: for more information
-	videoDataOutputQueue = dispatch_queue_create("VideoDataOutputQueue", DISPATCH_QUEUE_SERIAL);
-	[videoDataOutput setSampleBufferDelegate:self queue:videoDataOutputQueue];
+	_videoDataOutputQueue = dispatch_queue_create("VideoDataOutputQueue", DISPATCH_QUEUE_SERIAL);
+	[_videoDataOutput setSampleBufferDelegate:self queue:_videoDataOutputQueue];
 
     
-    if ( [session canAddOutput:videoDataOutput] )
-		[session addOutput:videoDataOutput];
-	[session commitConfiguration];
-	effectiveScale = 1.0;
+    if ([_session canAddOutput:_videoDataOutput] )
+		[_session addOutput:_videoDataOutput];
+	[_session commitConfiguration];
+	_effectiveScale = 1.0;
     
-    [frameCalculator reset];
-	[session startRunning];
+    [_frameCalculator reset];
+	[_session startRunning];
 }
 
 - (void)cleanUp
 {
 	[self dismissInstructionViewController:nil];
 
-    [session stopRunning];
-    for(AVCaptureInput *input in session.inputs) {
-        [session removeInput:input];
+    [_session stopRunning];
+    for(AVCaptureInput *input in _session.inputs) {
+        [_session removeInput:input];
     }
     
-    for(AVCaptureOutput *output in session.outputs) {
-        [session removeOutput:output];
+    for(AVCaptureOutput *output in _session.outputs) {
+        [_session removeOutput:output];
     }
-    session = nil;
+    _session = nil;
     [_device unlockForConfiguration];
     _device = nil;
-    [previewLayer removeFromSuperview];
-    previewLayer = nil;
+    [_previewLayer removeFromSuperview];
+    _previewLayer = nil;
     
-    _assetLibrary = nil;
-    _assetrollGroup = nil;
     _device = nil;
     _statusBarBackground = nil;
     self.lastimageButton = nil;
@@ -729,13 +725,13 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
 	// got an image
 	CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
     CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate);
-    ciimg = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:CFBridgingRelease(attachments)];
+    _ciImage = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:CFBridgingRelease(attachments)];
 
     CMTime timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
-    [frameCalculator calculateFramerateAtTimestamp:timestamp];
+    [_frameCalculator calculateFramerateAtTimestamp:timestamp];
     //FNLOG(@"%f fps",frameCalculator.frameRate);
 
-    CGRect sourceExtent = ciimg.extent;
+    CGRect sourceExtent = _ciImage.extent;
     
     CGFloat sourceAspect = sourceExtent.size.width / sourceExtent.size.height;
     CGFloat previewAspect = _videoPreviewViewBounds.size.width  / _videoPreviewViewBounds.size.height;
@@ -756,11 +752,11 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
         drawRect.size.height = drawRect.size.width / previewAspect;
         
     }
-        ciimg = [self ApplyFilters:ciimg];
+        _ciImage = [self ApplyFilters:_ciImage];
     //dispatch_async(dispatch_get_main_queue(), ^(void) {
 
-        [_ciContext drawImage:ciimg inRect:_videoPreviewViewBounds fromRect:drawRect];
-           [previewLayer display];
+	[_ciContext drawImage:_ciImage inRect:_videoPreviewViewBounds fromRect:drawRect];
+           [_previewLayer display];
    // });
 
 
@@ -782,9 +778,9 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
     {
         [UIView setAnimationsEnabled:NO];
     }
-    if (bLosslessZoom == YES) {
-        centerxy.x = previewLayer.center.y;
-        centerxy.y = previewLayer.center.x;
+    if (_isLosslessZoom == YES) {
+        _centerXY.x = _previewLayer.center.y;
+        _centerXY.y = _previewLayer.center.x;
     }
 }
 
@@ -796,8 +792,8 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
         [UIView setAnimationDuration:0.75];
         [UIView commitAnimations];
     }
-    if (bLosslessZoom == YES) {
-        previewLayer.center = centerxy;
+    if (_isLosslessZoom == YES) {
+        _previewLayer.center = _centerXY;
     }
     
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];

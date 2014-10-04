@@ -6,8 +6,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
 #import <GLKit/GLKit.h>
+#import <AVFoundation/AVFoundation.h>
 #import "MWPhotoBrowser.h"
 #import "A3CameraViewController.h"
 

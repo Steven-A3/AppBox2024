@@ -12,7 +12,6 @@
 
 @interface A3CameraViewController () <MWPhotoBrowserDelegate>
 
-@property (nonatomic, strong) ALAssetsLibrary *assetLibrary;
 @property (nonatomic, strong) ALAssetsGroup *assetrollGroup;
 @property (nonatomic, strong) NSMutableArray *availablePhotos;
 
@@ -59,9 +58,11 @@
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
+	if (index == 0 && self.capturedPhotoURL) {
+		return [MWPhoto photoWithURL:self.capturedPhotoURL];
+	}
 	NSMutableArray *assetArray = [NSMutableArray new];
-	if (index < [_assetrollGroup numberOfAssets])
-	{
+	if (index < [_availablePhotos count]) {
 		[_assetrollGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[_availablePhotos[index] integerValue]] options:NSEnumerationConcurrent usingBlock:^(ALAsset *result, NSUInteger i, BOOL *stop) {
 			if (result != nil) {
 				[assetArray addObject:result];
@@ -77,9 +78,11 @@
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index {
+	if (index == 0 && self.capturedPhotoURL) {
+		return [MWPhoto photoWithURL:self.capturedPhotoURL];
+	}
 	NSMutableArray *assetArray = [NSMutableArray new];
-	if (index < [_assetrollGroup numberOfAssets])
-	{
+	if (index < [_availablePhotos count]) {
 		[_assetrollGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[_availablePhotos[index] integerValue]] options:NSEnumerationConcurrent usingBlock:^(ALAsset *result, NSUInteger i, BOOL *stop) {
 			if (result != nil) {
 				[assetArray addObject:result];
@@ -129,15 +132,17 @@
 	return newImage;
 }
 
-- (void) loadFirstPhoto {
-	_assetLibrary = [ALAssetsLibrary new];
-	[_assetLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos
+- (void)loadFirstPhoto {
+	[self.assetLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos
 								 usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
 									 if (group != nil) {
 										 [group setAssetsFilter:[ALAssetsFilter allPhotos]];
 										 _assetrollGroup = group;
 
 										 _availablePhotos = [NSMutableArray new];
+										 if (self.capturedPhotoURL) {
+											 [_availablePhotos addObject:@0];
+										 }
 
 										 [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_assetrollGroup numberOfAssets] - 1)]
 																 options:NSEnumerationReverse
@@ -150,25 +155,34 @@
 										 FNLOG(@"%@", _availablePhotos);
 										 FNLOG(@"%ld", (long)[_availablePhotos count]);
 
-										 [_assetrollGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[_availablePhotos[0] integerValue]] options:NSEnumerationConcurrent usingBlock:^(ALAsset *result, NSUInteger i, BOOL *stop) {
-											 if (result) {
-												 ALAssetRepresentation *representation = [result defaultRepresentation];
-												 UIImage *latestPhoto = [UIImage imageWithCGImage:[representation fullScreenImage]];
-												 [self setImageOnCameraRollButton:latestPhoto];
-											 }
-										 }];
+										 if (self.capturedPhotoURL) {
+											 [self.assetLibrary assetForURL:self.capturedPhotoURL resultBlock:^(ALAsset *asset) {
+												 ALAssetRepresentation *representation = [asset defaultRepresentation];
+												 UIImage *image = [UIImage imageWithCGImage:[representation fullScreenImage]];
+												 [self setImageOnCameraRollButton:image];
+											 } failureBlock:NULL];
+										 } else {
+											 [_assetrollGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[_availablePhotos[0] integerValue]]
+																			   options:NSEnumerationConcurrent
+																			usingBlock:^(ALAsset *result, NSUInteger i, BOOL *stop) {
+												 if (result) {
+													 ALAssetRepresentation *representation = [result defaultRepresentation];
+													 UIImage *latestPhoto = [UIImage imageWithCGImage:[representation fullScreenImage]];
+													 [self setImageOnCameraRollButton:latestPhoto];
+												 }
+											 }];
+										 }
 									 }
 								 }
 							   failureBlock:^(NSError *error) {
 								   FNLOG("NO GroupSavedPhotos:%@", error);
 							   }
 	];
-
 }
 
 #pragma mark - set image icon
 
-- (void) setImageOnCameraRollButton:(UIImage *)image {
+- (void)setImageOnCameraRollButton:(UIImage *)image {
 	[_lastimageButton setBackgroundImage:[self cropImageWithSquare:image] forState:UIControlStateNormal];
 }
 
@@ -193,6 +207,8 @@
 		return;
 	}
 
+	[self loadFirstPhoto];
+
 	// Create browser
 	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
 	browser.displayActionButton = NO;
@@ -213,6 +229,13 @@
 }
 
 - (void)notifyCameraShotSaveRule {
+}
+
+- (ALAssetsLibrary *)assetLibrary {
+	if (!_assetLibrary) {
+		_assetLibrary = [[ALAssetsLibrary alloc] init];
+	}
+	return _assetLibrary;
 }
 
 @end

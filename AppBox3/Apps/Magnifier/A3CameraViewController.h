@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface A3CameraViewController : UIViewController
 
+@property (nonatomic, strong) ALAssetsLibrary *assetLibrary;
 @property (nonatomic, strong) UIButton *lastimageButton;
+@property (nonatomic, strong) NSURL *capturedPhotoURL;
 
 - (UIImage *)cropImageWithSquare:(UIImage *)source;
 - (void)loadFirstPhoto;
