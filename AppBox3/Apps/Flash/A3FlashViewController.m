@@ -345,16 +345,16 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)saveUserDefaults {
-    [[NSUserDefaults standardUserDefaults] setObject:@(_flashBrightnessValue) forKey:A3UserDefaultFlashLEDBrightnessValue];
-    [[NSUserDefaults standardUserDefaults] setObject:@(_screenBrightnessValue) forKey:A3UserDefaultFlashBrightnessValue];
-    [[NSUserDefaults standardUserDefaults] setObject:@(_strobeSpeedFactor) forKey:A3UserDefaultFlashStrobeSpeedValue];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[A3UserDefaults standardUserDefaults] setObject:@(_flashBrightnessValue) forKey:A3UserDefaultFlashLEDBrightnessValue];
+    [[A3UserDefaults standardUserDefaults] setObject:@(_screenBrightnessValue) forKey:A3UserDefaultFlashBrightnessValue];
+    [[A3UserDefaults standardUserDefaults] setObject:@(_strobeSpeedFactor) forKey:A3UserDefaultFlashStrobeSpeedValue];
+    [[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark
 
 - (void)initializeCurrentFlashViewModeType {
-    NSNumber *flashViewMode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashViewMode];
+    NSNumber *flashViewMode = [[A3UserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashViewMode];
     if (!flashViewMode) {
         if (_isLEDAvailable) {
             _currentFlashViewMode = A3FlashViewModeTypeLED;
@@ -383,14 +383,14 @@ NSString *const cellID = @"flashEffectID";
 - (void)initializeBrightnessAndStorbeSpeedSliderRelated {
     _deviceBrightnessBefore = [[UIScreen mainScreen] brightness];
     
-    NSNumber *ledBrightness = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashLEDBrightnessValue];
+    NSNumber *ledBrightness = [[A3UserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashLEDBrightnessValue];
     _flashBrightnessValue = !ledBrightness ? 0.5 : [ledBrightness floatValue];
     
-    NSNumber *screenBrightness = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashBrightnessValue];
+    NSNumber *screenBrightness = [[A3UserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashBrightnessValue];
     _screenBrightnessValue = !screenBrightness ? (_deviceBrightnessBefore * 100.0) : [screenBrightness floatValue];
     NSLog(@"start screen: %f", _screenBrightnessValue);
     
-    NSNumber *strobeSpeedValue = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashStrobeSpeedValue];
+    NSNumber *strobeSpeedValue = [[A3UserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashStrobeSpeedValue];
     _strobeSpeedFactor = !strobeSpeedValue ? 0.0 : [strobeSpeedValue floatValue];
     
     if (_currentFlashViewMode == A3FlashViewModeTypeNone) {
@@ -402,10 +402,10 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)initializeCurrentContentColorWithColorPickerView {
-    NSNumber *effectIndex = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashEffectIndex];
+    NSNumber *effectIndex = [[A3UserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashEffectIndex];
     _selectedEffectIndex = !effectIndex ? 2 : [effectIndex integerValue];
     
-    _selectedColor = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashSelectedColor]];
+    _selectedColor = [NSKeyedUnarchiver unarchiveObjectWithData:[[A3UserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashSelectedColor]];
     if (!_selectedColor) {
         _selectedColor = [UIColor whiteColor];
     }
@@ -775,8 +775,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 - (void)configureFlashViewMode:(A3FlashViewModeType)type animation:(BOOL)animate {
     _currentFlashViewMode = type;
     
-    [[NSUserDefaults standardUserDefaults] setObject:@(_currentFlashViewMode) forKey:A3UserDefaultFlashViewMode];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[A3UserDefaults standardUserDefaults] setObject:@(_currentFlashViewMode) forKey:A3UserDefaultFlashViewMode];
+    [[A3UserDefaults standardUserDefaults] synchronize];
     
     if (animate) {  // RESERVED?
         [self adjustConfigurationLayoutValueForFlashViewMode:_currentFlashViewMode];
@@ -1273,8 +1273,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     _selectedEffectIndex = row;
-    [[NSUserDefaults standardUserDefaults] setObject:@(_selectedEffectIndex) forKey:A3UserDefaultFlashEffectIndex];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[A3UserDefaults standardUserDefaults] setObject:@(_selectedEffectIndex) forKey:A3UserDefaultFlashEffectIndex];
+    [[A3UserDefaults standardUserDefaults] synchronize];
     
     [self startStrobeLightEffectForIndex:_selectedEffectIndex];
 }
@@ -1379,8 +1379,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     _selectedColor = color;
     _contentImageView.backgroundColor = _selectedColor;
     
-    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:_selectedColor] forKey:A3UserDefaultFlashSelectedColor];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[A3UserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:_selectedColor] forKey:A3UserDefaultFlashSelectedColor];
+    [[A3UserDefaults standardUserDefaults] synchronize];
     [self startTimerToHideMenu];
 }
 
