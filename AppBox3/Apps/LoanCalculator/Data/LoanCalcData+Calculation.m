@@ -260,6 +260,9 @@
 }
 
 - (NSNumber *)totalInterest {
+	if (self.interestRateOfFrequency == 0.0) {
+		return @0;
+	}
     float downPayment = self.downPayment ? self.downPayment.floatValue : 0;
 	if (isnan(downPayment))
 		downPayment = 0.0;
@@ -268,6 +271,9 @@
 }
 
 - (NSNumber *)monthlyAverageInterest {
+	if (self.interestRateOfFrequency == 0.0) {
+		return @0;
+	}
     float totalInterest = [self totalInterest].floatValue;
     float termsInFrequency = [self termsInFrequency];
 	float average = totalInterest/termsInFrequency;
