@@ -687,7 +687,10 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     CGFloat offset = (_screenBrightnessValue / 100.0);
     UIScreen *mainScreen = [UIScreen mainScreen];
     mainScreen.brightness = offset;
-    _contentImageView.backgroundColor = [UIColor colorWithRed:offset green:offset blue:offset alpha:1.0];
+    if (!_isTorchOn) {
+        _contentImageView.backgroundColor = [UIColor colorWithRed:offset green:offset blue:offset alpha:1.0];
+    }
+    
     NSLog(@"screen: %f", _screenBrightnessValue);
     NSLog(@"offset: %f", offset);
 }
