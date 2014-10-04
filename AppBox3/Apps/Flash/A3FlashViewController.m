@@ -240,8 +240,7 @@ NSString *const cellID = @"flashEffectID";
     [_colorPickerView addGestureRecognizer:tapGesture2];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-    
-    [self checkTorchOnStartIfNeeded];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -250,6 +249,13 @@ NSString *const cellID = @"flashEffectID";
     if ([self isMovingToParentViewController]) {
         [self configureFlashViewMode:_currentFlashViewMode animation:NO];
 
+        if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
+            _isTorchOn = YES;
+            [self showHUD];
+            [self initializeLED];
+            [self setTorchOn];
+        }
+        
         if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
             [self startStrobeLightEffectForIndex:_selectedEffectIndex];
         }
@@ -281,7 +287,7 @@ NSString *const cellID = @"flashEffectID";
     [self saveUserDefaults];
     [self releaseHideMenuTimer];
     [self releaseStrobelight];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[self removeObservers];
     
 #if !TARGET_IPHONE_SIMULATOR
 	if (_LEDSession) {
@@ -294,11 +300,24 @@ NSString *const cellID = @"flashEffectID";
 }
 
 -(void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[self removeObservers];
 }
+
+- (void)removeObservers
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification {
     [self saveUserDefaults];
+}
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification {
+    if (_isTorchOn) {
+        [self setTorchOn];
+    }
 }
 
 - (void)saveUserDefaults {
@@ -311,7 +330,22 @@ NSString *const cellID = @"flashEffectID";
 
 - (void)initializeStatus
 {
-    _currentFlashViewMode = [[NSUserDefaults standardUserDefaults] integerForKey:A3UserDefaultFlashViewMode];
+    _isLEDAvailable = [A3UIDevice hasTorch];
+    
+    NSNumber *flashViewMode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashViewMode];
+    if (!flashViewMode) {
+        if (_isLEDAvailable) {
+            _currentFlashViewMode = A3FlashViewModeTypeLED;
+            _isTorchOn = YES;
+        }
+        else {
+            _currentFlashViewMode = A3FlashViewModeTypeNone;
+        }
+    }
+    else {
+        _currentFlashViewMode = [flashViewMode integerValue];
+    }
+    
     _deviceBrightnessBefore = [[UIScreen mainScreen] brightness];
     
     NSNumber *ledBrightness = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashLEDBrightnessValue];
@@ -319,6 +353,8 @@ NSString *const cellID = @"flashEffectID";
     
     NSNumber *screenBrightness = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashBrightnessValue];
     _screenBrightnessValue = !screenBrightness ? (_deviceBrightnessBefore * 100.0) : [screenBrightness floatValue];
+    NSLog(@"start screen: %f", _screenBrightnessValue);
+    
     if (_currentFlashViewMode == A3FlashViewModeTypeNone) {
         [self alphaSliderValueChanged:nil];
     }
@@ -331,14 +367,12 @@ NSString *const cellID = @"flashEffectID";
     
     _selectedColor = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashSelectedColor]];
     if (!_selectedColor) {
-        _selectedColor = [UIColor blackColor];
+        _selectedColor = [UIColor whiteColor];
     }
-    
-    _isLEDAvailable = [A3UIDevice hasTorch];
     
     _colorPickerView.delegate = self;
     _colorPickerView.backgroundColor = [UIColor clearColor];
-//    _colorPickerView.color = _selectedColor;
+    _colorPickerView.color = _selectedColor;
     if (IS_IPAD) {
         _colorPickerHeightConst.constant = 960;
         _colorPickerWidthConst.constant = 640;
@@ -370,6 +404,7 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)showHUD {
+    return;
     [self hideHUD];
     
     self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -393,12 +428,8 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)checkTorchOnStartIfNeeded {
-    if (_isLEDAvailable) {
-        [self ledTorchONOFF];
-    }
-    else {
-        _ledBarButton.enabled = NO;
-        [_ledBarButton setImage:[UIImage imageNamed:@"f_flash_off"]];
+    if (_isLEDAvailable && (_currentFlashViewMode & A3FlashViewModeTypeLED)) {
+        [self LEDMenuButtonTouchUp:nil];
     }
 }
 
@@ -650,31 +681,35 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 - (void)alphaSliderValueChanged:(UISlider *)slider {
     if (slider) {
-        _screenBrightnessValue = (slider.maximumValue - slider.value);
+        _screenBrightnessValue = slider.value;
     }
     
-    NSInteger brightnessIndex = floor(_screenBrightnessValue / (100.0 / 25.0));
+    CGFloat offset = (_screenBrightnessValue / 100.0);
     UIScreen *mainScreen = [UIScreen mainScreen];
-    [mainScreen setBrightness:1.0 - (brightnessIndex / 25.0)];
-    
-    CGFloat offset = 1.0 - (brightnessIndex / 25.0);
+    mainScreen.brightness = offset;
     _contentImageView.backgroundColor = [UIColor colorWithRed:offset green:offset blue:offset alpha:1.0];
+    NSLog(@"screen: %f", _screenBrightnessValue);
+    NSLog(@"offset: %f", offset);
 }
 
 - (void)colorModeSliderValueChanged:(UISlider *)slider {
     if (slider) {
-        _screenBrightnessValue = (slider.maximumValue - slider.value);
+        _screenBrightnessValue = slider.value;
     }
     
-    NSInteger brightnessIndex = floor(_screenBrightnessValue / (100 / 25.0));
     UIScreen *mainScreen = [UIScreen mainScreen];
-    [mainScreen setBrightness:1.0 - (brightnessIndex / 25.0)];
+    CGFloat offset = (_screenBrightnessValue / 100.0);
+    mainScreen.brightness = offset;
+    NSLog(@"screen: %f", _screenBrightnessValue);
+    NSLog(@"offset: %f", offset);
 }
 
 - (void)flashBrightnessSliderValueChanged:(UISlider *)slider {
     if (slider) {
         _flashBrightnessValue = [slider value];
     }
+    
+    NSLog(@"flash: %f", _flashBrightnessValue);
     
     if(_isLEDAvailable == YES) {
         AVCaptureDevice *myTorch = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
@@ -713,7 +748,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 - (void)configureFlashViewMode:(A3FlashViewModeType)type animation:(BOOL)animate {
     _currentFlashViewMode = type;
     
-    [[NSUserDefaults standardUserDefaults] setInteger:_currentFlashViewMode forKey:A3UserDefaultFlashViewMode];
+    [[NSUserDefaults standardUserDefaults] setObject:@(_currentFlashViewMode) forKey:A3UserDefaultFlashViewMode];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     if (animate) {  // RESERVED?
@@ -729,11 +764,12 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 - (void)adjustConfigurationLayoutValueForFlashViewMode:(A3FlashViewModeType)type {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
-//    if (!(_currentFlashViewMode & A3FlashViewModeTypeLED)) {
-//        [self setTorchOff];
-//    }
     
     _topToolBarTopConst.constant = 20;
+    
+    [_sliderControl setMinimumValue:0.0];
+    [_sliderControl setMaximumValue:100.0];
+    [_sliderControl setValue:_screenBrightnessValue];
     
     if (_currentFlashViewMode == A3FlashViewModeTypeNone) {
         _bottomToolBarBottomConst.constant = 0;
@@ -743,9 +779,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _LEDBrightnessToolBar.hidden = YES;
         _effectPickerView.hidden = YES;
         _pickerPanelView.hidden = YES;
-        [_sliderControl setMinimumValue:0.0];
-        [_sliderControl setMaximumValue:100.0];
-        [_sliderControl setValue:_sliderControl.maximumValue - _screenBrightnessValue];
 
         [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
@@ -767,7 +800,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [_sliderControl setMinimumValue:0.0];
         [_sliderControl setMaximumValue:100.0];
-        [_sliderControl setValue:_sliderControl.maximumValue - _screenBrightnessValue];
+        [_sliderControl setValue:_screenBrightnessValue];
         
         if (IS_IPAD) {
             _colorPickerTopConst.constant = 5;
@@ -832,6 +865,11 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 	
 	[myTorch setTorchMode:AVCaptureTorchModeOn];
 	[myTorch setFlashMode:AVCaptureFlashModeOn];
+    if (_flashBrightnessValue == 0.0) {
+        [myTorch setTorchMode:AVCaptureTorchModeOff];
+    } else {
+        [myTorch setTorchModeOnWithLevel:_flashBrightnessValue error:nil];
+    }
 	
 	[myTorch unlockForConfiguration];
 
@@ -894,14 +932,15 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 		[_LEDSession beginConfiguration];
 		
 		[myTorch lockForConfiguration:nil];
-		
-		[myTorch setTorchMode:AVCaptureTorchModeOn];
-		[myTorch setFlashMode:AVCaptureFlashModeOn];
         
-        if (_flashBrightnessValue == 0.0) {
+        if (!_isTorchOn || _flashBrightnessValue == 0.0) {
             [myTorch setTorchMode:AVCaptureTorchModeOff];
+            [myTorch setTorchMode:AVCaptureTorchModeOff];
+            [myTorch setFlashMode:AVCaptureFlashModeOff];
         } else {
             [myTorch setTorchModeOnWithLevel:_flashBrightnessValue error:nil];
+            [myTorch setTorchMode:AVCaptureTorchModeOn];
+            [myTorch setFlashMode:AVCaptureFlashModeOn];
         }
 		
 		[_LEDSession addInput:flashInput];
@@ -912,19 +951,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 		[_LEDSession commitConfiguration];
 		[_LEDSession startRunning];
 		_LEDInitialized = YES;
-	}
-}
-
-- (void)turnOnLED {
-	NSLog(@"%s", __FUNCTION__);
-	
-	AVCaptureDevice *myTorch = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-	if (myTorch) {
-		if ([myTorch isTorchModeSupported:AVCaptureTorchModeOn]) {
-			[self initializeLED];
-			[self setTorchOn];
-			_isTorchOn = YES;
-		}
 	}
 }
 
