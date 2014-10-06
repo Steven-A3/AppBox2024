@@ -167,7 +167,7 @@ NSString * kColorProperty = @"color";
    
    [donutLayer_ setConicGradient:conicGradient];
    
-   self.donutThickness = 50;
+    self.donutThickness = IS_IPAD ? 100 : 50;
    
    [[self layer] addSublayer: donutLayer_];
    
