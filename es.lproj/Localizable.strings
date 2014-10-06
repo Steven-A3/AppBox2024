@@ -913,3 +913,5 @@ Introduzca la clave de cifrado para el bolsillo.";
 
 "Backup file is ready." = "Archivo de copia de seguridad está listo.";
 "Backup file does not exist." = "Archivo de copia de seguridad no existe.";
+
+"This app does not have access to your photos. You can enable access in Privacy Settings." = "Esta aplicación no tiene acceso a sus fotos ni vídeos.\nPuede activar el acceso en los ajustes de privacidad.";
