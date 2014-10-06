@@ -94,7 +94,7 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <items>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ork-QR-NrK"/>
-                        <barButtonItem enabled="NO" image="f_flash_black" id="Glw-pc-gxV"/>
+                        <barButtonItem image="f_flash_black" id="Glw-pc-gxV"/>
                         <barButtonItem style="plain" id="yyU-2o-ceP">
                             <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="bb1-Zu-W86">
                                 <rect key="frame" x="42" y="7" width="237" height="31"/>
@@ -104,7 +104,7 @@
                                 </connections>
                             </slider>
                         </barButtonItem>
-                        <barButtonItem enabled="NO" image="f_flash_white" id="Nda-6n-6ZQ"/>
+                        <barButtonItem image="f_flash_white" id="Nda-6n-6ZQ"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="5ot-mR-2lr"/>
                     </items>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -116,7 +116,7 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <items>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Dbf-D9-gSo"/>
-                        <barButtonItem enabled="NO" image="f_color_brightness_left" id="sjK-U4-hDw"/>
+                        <barButtonItem image="f_color_brightness_left" id="sjK-U4-hDw"/>
                         <barButtonItem style="plain" id="Bf5-gJ-Ykt">
                             <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="e0I-jN-Ngd">
                                 <rect key="frame" x="42" y="7" width="237" height="31"/>
@@ -126,7 +126,7 @@
                                 </connections>
                             </slider>
                         </barButtonItem>
-                        <barButtonItem enabled="NO" image="f_color_brightness_right" id="TOQ-IM-fvP"/>
+                        <barButtonItem image="f_color_brightness_right" id="TOQ-IM-fvP"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="1Bk-S8-Azd"/>
                     </items>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
