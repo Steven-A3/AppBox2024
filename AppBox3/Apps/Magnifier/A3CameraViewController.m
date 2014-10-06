@@ -139,6 +139,9 @@
 										 [group setAssetsFilter:[ALAssetsFilter allPhotos]];
 										 _assetrollGroup = group;
 
+                                         if (![_assetrollGroup numberOfAssets]) {
+                                             return;
+                                         }
 										 _availablePhotos = [NSMutableArray new];
 										 if (self.capturedPhotoURL) {
 											 [_availablePhotos addObject:@0];
