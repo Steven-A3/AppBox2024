@@ -135,7 +135,7 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 	UIColor *textColor;
     BOOL isBold = NO;
 	if (self.allowChooseFavorite) {
-		if ([self isFavoriteItemForCurrencyItem:data.code]) {
+		if ([self isFavoriteItemForCurrencyItem:data.code] || [_selectedCurrencyCode isEqualToString:data.code]) {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
             isBold = YES;
 		} else {
@@ -175,6 +175,10 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 }
 
 - (BOOL)isFavoriteItemForCurrencyItem:(id)object {
+    if (!_isFromCurrencyConverter) {
+        return NO;
+    }
+    
 	return [CurrencyFavorite MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"%K == %@", ID_KEY, object]] > 0;
 }
 

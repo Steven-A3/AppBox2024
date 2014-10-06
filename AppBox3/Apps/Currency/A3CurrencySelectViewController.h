@@ -14,6 +14,7 @@ extern NSString *const A3NotificationCurrencyCodeSelected;	// Object has selecte
 @interface A3CurrencySelectViewController : A3SearchViewController
 
 @property (nonatomic, strong) NSString *selectedCurrencyCode;
+@property (nonatomic, assign) BOOL isFromCurrencyConverter;
 
 - (instancetype)initWithPresentingViewController:(UIViewController *)modalPresentingParentViewController;
 

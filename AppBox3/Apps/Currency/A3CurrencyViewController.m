@@ -909,6 +909,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	viewController.delegate = self;
 	//viewController.allowChooseFavorite = selectedIndex == 0 ? YES : NO;
     viewController.allowChooseFavorite = YES;
+    viewController.isFromCurrencyConverter = YES;
 
 	if (selectedIndex >= 0 && selectedIndex < ([_favorites count] - 1) ) {
 		CurrencyFavorite *selectedFavorite = _favorites[selectedIndex];
