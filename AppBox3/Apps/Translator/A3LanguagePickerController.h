@@ -11,7 +11,7 @@
 
 @interface A3LanguagePickerController : A3SearchViewController
 
-@property (nonatomic, copy) NSString *selectedCode;
+@property (nonatomic, copy) NSArray *selectedCodes;
 - (instancetype)initWithLanguages:(NSArray *)languages;
 
 @end

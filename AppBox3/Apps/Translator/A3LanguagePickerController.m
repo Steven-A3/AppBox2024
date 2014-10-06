@@ -103,7 +103,7 @@ static NSString *CellIdentifier = @"Cell";
 	}
 	
 	cell.textLabel.text = data.displayName;
-	if (_selectedCode && data.code && [_selectedCode isEqualToString:data.code]) {
+	if (_selectedCodes && data.code && [_selectedCodes containsObject:data.code]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
 	} else {
