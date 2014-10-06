@@ -507,7 +507,18 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 - (A3LanguagePickerController *)presentLanguagePickerControllerWithDetectLanguage:(BOOL)detectLanguage {
 	A3LanguagePickerController *viewController = [[A3LanguagePickerController alloc] initWithLanguages:[A3TranslatorLanguage findAllWithDetectLanguage:detectLanguage]];
 	viewController.delegate = self;
-	viewController.selectedCode = detectLanguage ? _originalTextLanguage : _translatedTextLanguage;
+    
+    NSMutableArray *selectedCodes = [NSMutableArray new];
+    if (_originalTextLanguage) {
+        [selectedCodes addObject:_originalTextLanguage];
+    }
+    if (_translatedTextLanguage) {
+        [selectedCodes addObject:_translatedTextLanguage];
+    }
+    
+    viewController.selectedCodes = selectedCodes;
+
+
 	if (IS_IPHONE) {
 		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];

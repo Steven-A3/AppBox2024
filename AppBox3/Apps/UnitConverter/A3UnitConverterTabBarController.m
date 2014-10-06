@@ -129,11 +129,6 @@
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
 	self.title = tabBarController.selectedViewController.tabBarItem.title;
-	if (viewController != _myMoreNavigationController) {
-		if ([_myMoreNavigationController.viewControllers count] > 1) {
-			[_myMoreNavigationController popToRootViewControllerAnimated:NO];
-		}
-	}
 }
 
 #pragma mark - Added Function

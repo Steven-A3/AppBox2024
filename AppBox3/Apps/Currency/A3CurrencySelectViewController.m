@@ -133,27 +133,26 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 	}
 
 	UIColor *textColor;
+    BOOL isBold = NO;
 	if (self.allowChooseFavorite) {
 		if ([self isFavoriteItemForCurrencyItem:data.code]) {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            isBold = YES;
 		} else {
             cell.accessoryType = UITableViewCellAccessoryNone;
 		}
         textColor = [UIColor blackColor];
 	}
     else {
-		if ([self isFavoriteItemForCurrencyItem:data.code]) {
-			textColor = A3_TEXT_COLOR_DISABLED;
-		} else {
-			textColor = [UIColor blackColor];
-		}
+        textColor = [UIColor blackColor];
 	}
 
 	NSAttributedString *codeString = [[NSAttributedString alloc] initWithString:data.code
 																	 attributes:[self codeStringAttributeWithColor:textColor]];
 	NSAttributedString *nameString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"   %@", data.name]
 																	 attributes:[self nameStringAttributeWithColor:textColor
-                                                                                                              bold:[_selectedCurrencyCode isEqualToString:data.code]]];
+                                                                                                              bold:isBold]];
+    
 	NSMutableAttributedString *cellString = [[NSMutableAttributedString alloc] init];
 	[cellString appendAttributedString:codeString];
 	[cellString appendAttributedString:nameString];

@@ -154,11 +154,10 @@ NSString *const cellID = @"flashEffectID";
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topToolBarTopConst;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBarBottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBar2BottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerViewBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerHeightConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerWidthConst;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBar2BottomConst;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerTopSeparatorHeightConst;
 
@@ -312,6 +311,7 @@ NSString *const cellID = @"flashEffectID";
 }
 
 -(void)dealloc {
+    [self saveUserDefaults];
 	[self removeObservers];
 }
 
@@ -548,7 +548,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 }
 
 - (IBAction)sliderControlValueChanged:(UISlider *)sender {
-    
     if (_currentFlashViewMode == A3FlashViewModeTypeNone) {
         [self alphaSliderValueChanged:sender];
     }
@@ -603,7 +602,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 //        default:
 //            break;
 //    }
-    
     [self startTimerToHideMenu];
 }
 
@@ -1363,10 +1361,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
 	[runLoop addTimer:strobeTimer forMode:NSDefaultRunLoopMode];
     _isEffectWorking = YES;
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    [super touchesBegan:touches withEvent:event];
 }
 
 #pragma mark - NPColorPickerViewDelegate
