@@ -10,6 +10,7 @@
 #import "A3ClockDataManager.h"
 #import "A3UserDefaults.h"
 #import "A3UserDefaultsKeys.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3ClockAutoDimViewController ()
 @property (nonatomic, strong) NSArray *items;
@@ -43,6 +44,10 @@ static NSString *const reuseIdentifier = @"Cell";
     self.title = NSLocalizedString(@"Auto Dim", @"Auto Dim");
 
     _items = @[ @0, @5, @10, @15, @20, @30, @60 ];
+
+	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+
 }
 
 - (void)didReceiveMemoryWarning
