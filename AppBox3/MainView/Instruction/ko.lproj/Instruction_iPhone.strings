@@ -21,7 +21,7 @@
 "55x-Hd-Yyy.text" = "탭하여 항목을 추가합니다.";
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "5vX-h0-0KZ"; */
-"5vX-h0-0KZ.text" = "화면을 탭하여\n버튼을 표시합니다.";
+"hpm-3C-8l8.text" = "화면을 탭하여\n버튼을 표시합니다.";
 
 /* Class = "IBUILabel"; text = "slide the event to the left,\nthen tap Delete"; ObjectID = "7qV-NL-Ajb"; */
 "7qV-NL-Ajb.text" = "이벤트를 왼쪽으로 밀어서,\n지울 수 있습니다.";

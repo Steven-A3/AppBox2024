@@ -1587,6 +1587,7 @@
 		685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyTVActionCell.m; path = Apps/Currency/A3CurrencyTVActionCell.m; sourceTree = "<group>"; };
 		685F723B16A64ADD004C7222 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		685F723D16A64C91004C7222 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		6860478C19E2A96D007A216E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPhone.strings; sourceTree = "<group>"; };
 		6861117319DBBD14003DA63F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3Settings.strings; sourceTree = "<group>"; };
 		6862375D1974E7C300001DE7 /* LadyCalendarPeriod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LadyCalendarPeriod.h; sourceTree = "<group>"; };
 		6862375E1974E7C300001DE7 /* LadyCalendarPeriod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LadyCalendarPeriod.m; sourceTree = "<group>"; };
@@ -2176,7 +2177,6 @@
 		68CAB47F19557C9400A4D2B9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Instruction_iPad.strings; sourceTree = "<group>"; };
 		68CAB48119557C9600A4D2B9 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Instruction_iPad.strings; sourceTree = "<group>"; };
 		68CAB48319557C9800A4D2B9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Instruction_iPad.strings; sourceTree = "<group>"; };
-		68CAB48519557DA500A4D2B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPhone.strings; sourceTree = "<group>"; };
 		68CAB48719557DAA00A4D2B9 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Instruction_iPhone.strings"; sourceTree = "<group>"; };
 		68CAB48919557DAE00A4D2B9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Instruction_iPhone.strings; sourceTree = "<group>"; };
 		68CAB48B19557DB000A4D2B9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Instruction_iPhone.strings; sourceTree = "<group>"; };
@@ -6561,7 +6561,6 @@
 			children = (
 				68E50B201945E18800FAD986 /* Base */,
 				68F15015194B1FB800159EAD /* ko */,
-				68CAB48519557DA500A4D2B9 /* en */,
 				68CAB48719557DAA00A4D2B9 /* zh-Hans */,
 				68CAB48919557DAE00A4D2B9 /* de */,
 				68CAB48B19557DB000A4D2B9 /* ja */,
@@ -6569,6 +6568,7 @@
 				68CAB48F19557DB400A4D2B9 /* it */,
 				68CAB49119557DB600A4D2B9 /* fr */,
 				68CAB49319557DB900A4D2B9 /* es */,
+				6860478C19E2A96D007A216E /* en */,
 			);
 			name = Instruction_iPhone.storyboard;
 			path = Instruction;
