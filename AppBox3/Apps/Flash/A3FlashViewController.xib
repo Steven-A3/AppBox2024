@@ -10,6 +10,7 @@
                 <outlet property="bottomToolBar" destination="0cB-eB-uh6" id="DgP-pB-FG3"/>
                 <outlet property="bottomToolBar2" destination="xzf-yf-ykM" id="2uJ-XY-hys"/>
                 <outlet property="bottomToolBar2BottomConst" destination="5rT-W1-Jxh" id="OJI-gp-Kbj"/>
+                <outlet property="bottomToolBarBottomConst" destination="JyY-xt-XBm" id="ZFy-yw-SBS"/>
                 <outlet property="colorBarButton" destination="cMT-7q-00U" id="3dy-Sf-jP8"/>
                 <outlet property="colorBarButton2" destination="u6o-JB-SwI" id="5QV-8H-PM4"/>
                 <outlet property="colorPickerHeightConst" destination="2CE-Uw-5TJ" id="Il5-iv-gzW"/>

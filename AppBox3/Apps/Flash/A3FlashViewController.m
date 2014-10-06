@@ -154,11 +154,10 @@ NSString *const cellID = @"flashEffectID";
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topToolBarTopConst;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBarBottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBar2BottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerViewBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerHeightConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *colorPickerWidthConst;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToolBar2BottomConst;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerTopSeparatorHeightConst;
 
