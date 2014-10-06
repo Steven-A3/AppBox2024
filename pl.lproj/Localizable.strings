@@ -32,6 +32,8 @@
 "Clock" = "Zegar";
 "Mirror" = "Lustro";
 "Magnifier" = "Lupa";
+"Flashlight" = "Latarka";
+"Random" = "Losowanie";
 
 "Select Currency" = "Wybierz walutę";
 "Principal" = "Kapitał";
@@ -921,3 +923,6 @@ Wprowadź klucz szyfrowania dla portfela.";
 "Backup file does not exist." = "Plik kopii zapasowej nie istnieje.";
 
 "This app does not have access to your photos. You can enable access in Privacy Settings." = "Ten program nie ma dostępu do Twoich zdjęć i wideo.\n Dostęp możesz włączyć w ustawieniach prywatności.";
+
+"Tap" = "Dotknij";
+"or Shake!" = "lub\nWstrząsnąć!";

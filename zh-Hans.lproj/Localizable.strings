@@ -32,6 +32,8 @@
 "Clock" = "时钟";
 "Mirror" = "镜子";
 "Magnifier" = "放大镜";
+"Flashlight" = "手电灯";
+"Random" = "随机数据生成";
 
 "Select Currency" = "选取货币";
 "Principal" = "本金";
@@ -935,3 +937,6 @@
 "Backup file does not exist." = "备份文件不存在。";
 
 "This app does not have access to your photos. You can enable access in Privacy Settings." = "此应用程序没有权限来访问您的照片或视频。\n您可以在“隐私设置”中启用访问心。";
+
+"Tap" = "点击";
+"or Shake!" = "或动摇!";

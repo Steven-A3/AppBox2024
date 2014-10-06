@@ -32,6 +32,8 @@
 "Clock" = "Reloj";
 "Mirror" = "Espejo";
 "Magnifier" = "Amplificador";
+"Flashlight" = "Linterna";
+"Random" = "Random";
 
 "Select Currency" = "Seleccione Moneda";
 "Principal" = "Capital prestado";
@@ -915,3 +917,6 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Backup file does not exist." = "Archivo de copia de seguridad no existe.";
 
 "This app does not have access to your photos. You can enable access in Privacy Settings." = "Esta aplicación no tiene acceso a sus fotos ni vídeos.\nPuede activar el acceso en los ajustes de privacidad.";
+
+"Tap" = "Toque";
+"or Shake!" = "o Sacuda!";

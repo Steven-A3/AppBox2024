@@ -79,6 +79,9 @@ const NSInteger MAXCOLUMN = 1;
     
 	[self makeBackButtonEmptyArrow];
 	[self leftBarButtonAppsButton];
+
+    [_generatorButton setTitle:NSLocalizedString(@"Tap", nil) forState:UIControlStateNormal];
+    _orShakeLabel.text = NSLocalizedString(@"or Shake!", nil);
     
     _resultPanelView.backgroundColor = COLOR_HEADERVIEW_BG;
     [_limitNumberPickerView selectRow:1 inComponent:MINCOLUMN animated:YES];

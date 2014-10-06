@@ -32,6 +32,8 @@
 "Clock" = "Uhr";
 "Mirror" = "Spiegel";
 "Magnifier" = "Lupe";
+"Flashlight"  = "Taschenlampe";
+"Random"  = "Zufallszahl";
 
 "Select Currency" = "Währung wählen";
 "Principal" = "Betrag";
@@ -928,3 +930,6 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Backup file is ready." = "Backup-Datei ist fertig.";
 "Backup file does not exist." = "Backup-Datei nicht existiert.";
 "This app does not have access to your photos. You can enable access in Privacy Settings." = "Diese App hat keinen Zugriff auf Ihre Fotos oder Videos.\nDer Zugriff kann in den Datenschutzeinstellungen aktiviert werden.";
+
+"Tap" = "Tippen";
+"or Shake!"  = "oder\nSchütteln!";

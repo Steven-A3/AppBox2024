@@ -32,6 +32,8 @@
 "Clock" = "Horloge";
 "Mirror" = "Miroir";
 "Magnifier" = "Magnifier";
+"Flashlight" = "Lampe de poche";
+"Random" = "Aléatoire";
 
 "Select Currency" = "Sélectionner la devise";
 "Principal" = "Capital de Prêt";
@@ -922,3 +924,5 @@ Entrez la clé de cryptage pour le portefeuille.";
 "Backup file is ready." = "Le fichier de sauvegarde est prêt.";
 "Backup file does not exist." = "N'existe pas le fichier de sauvegarde.";
 "This app does not have access to your photos. You can enable access in Privacy Settings." = "Cette app n'a pas accès à vos photos ou vidéos.\nVous pouvez autoriser l'accès dans les réglages Confidentialité.";
+"Tap" = "Taper";
+"or Shake!" = "ou Secouer!";

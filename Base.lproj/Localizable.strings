@@ -32,6 +32,8 @@
 "Clock" = "Clock";
 "Mirror" = "Mirror";
 "Magnifier" = "Magnifier";
+"Flashlight" = "Flashlight";
+"Random" = "Random";
 
 "Select Currency" = "Select Currency";
 "Principal" = "Principal";
@@ -872,3 +874,6 @@ Enter Encryption Key for Wallet.";
 "Backup file is ready." = "Backup file is ready.";
 "Backup file does not exist." = "Backup file does not exist.";
 "This app does not have access to your photos. You can enable access in Privacy Settings." = "This app does not have access to your photos. You can enable access in Privacy Settings.";
+
+"Tap" = "Tap";
+"or Shake!" = "or Shake!";
