@@ -407,12 +407,13 @@ NSString *const cellID = @"flashEffectID";
     
     _selectedColor = [NSKeyedUnarchiver unarchiveObjectWithData:[[A3UserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashSelectedColor]];
     if (!_selectedColor) {
-        _selectedColor = [UIColor whiteColor];
+        _selectedColor = [UIColor colorWithHue:1.0 saturation:0.0 brightness:1.0 alpha:1.0];
     }
     
     _colorPickerView.delegate = self;
     _colorPickerView.backgroundColor = [UIColor clearColor];
     _colorPickerView.color = _selectedColor;
+    
     if (IS_IPAD) {
         _colorPickerHeightConst.constant = 960;
         _colorPickerWidthConst.constant = 640;
