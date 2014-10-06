@@ -627,6 +627,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     }
     
     _currentFlashViewMode = _currentFlashViewMode ^ A3FlashViewModeTypeLED;
+    [self adjustToolBarColorToPreventVeryWhiteColor];
     [self configureFlashViewMode:_currentFlashViewMode animation:YES];
     
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
@@ -655,6 +656,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
         [self setTorchOn];
     }
+    
+    [self adjustToolBarColorToPreventVeryWhiteColor];
     [self configureFlashViewMode:_currentFlashViewMode animation:YES];
 }
 
@@ -664,6 +667,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _currentFlashViewMode = _currentFlashViewMode & (_currentFlashViewMode ^ A3FlashViewModeTypeColor);
     }
     
+    [self adjustToolBarColorToPreventVeryWhiteColor];
     [self configureFlashViewMode:_currentFlashViewMode animation:YES];
     
     if (!(_currentFlashViewMode & A3FlashViewModeTypeEffect)) {
@@ -686,13 +690,36 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     
     CGFloat offset = (_screenBrightnessValue / 100.0);
     UIScreen *mainScreen = [UIScreen mainScreen];
-    mainScreen.brightness = offset;
+    
+    mainScreen.brightness = MAX(0.3, offset);
     if (!_isTorchOn) {
         _contentImageView.backgroundColor = [UIColor colorWithRed:offset green:offset blue:offset alpha:1.0];
     }
     
+    [self adjustToolBarColorToPreventVeryWhiteColor];
+    
     NSLog(@"screen: %f", _screenBrightnessValue);
     NSLog(@"offset: %f", offset);
+}
+
+- (void)adjustToolBarColorToPreventVeryWhiteColor {
+    CGFloat offset = (_screenBrightnessValue / 100.0);
+    
+    if (offset > 0.6 && _currentFlashViewMode == A3FlashViewModeTypeNone) {
+        UIColor *adjustedColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.7 - fabs(1.0 - offset)];
+        _topToolBar.backgroundColor = adjustedColor;
+        _sliderToolBar.backgroundColor = adjustedColor;
+        _pickerPanelView.backgroundColor = adjustedColor;
+        _colorPickerView.backgroundColor = adjustedColor;
+        _bottomToolBar.backgroundColor = adjustedColor;
+    }
+    else {
+        _topToolBar.backgroundColor = [UIColor clearColor];
+        _sliderToolBar.backgroundColor = [UIColor clearColor];
+        _pickerPanelView.backgroundColor = [UIColor clearColor];
+        _colorPickerView.backgroundColor = [UIColor clearColor];
+        _bottomToolBar.backgroundColor = [UIColor clearColor];
+    }
 }
 
 - (void)colorModeSliderValueChanged:(UISlider *)slider {
@@ -702,7 +729,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     
     UIScreen *mainScreen = [UIScreen mainScreen];
     CGFloat offset = (_screenBrightnessValue / 100.0);
-    mainScreen.brightness = offset;
+    mainScreen.brightness = MAX(0.3, offset);
     NSLog(@"screen: %f", _screenBrightnessValue);
     NSLog(@"offset: %f", offset);
 }
@@ -782,25 +809,26 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _LEDBrightnessToolBar.hidden = YES;
         _effectPickerView.hidden = YES;
         _pickerPanelView.hidden = YES;
-
-        [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-        [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-        [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        
+        [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [self alphaSliderValueChanged:nil];
         return;
     }
 
     
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
-        [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         _flashBrightnessSlider.value = _flashBrightnessValue;
     }
     else {
-        [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     }
 
 
     if (_currentFlashViewMode & A3FlashViewModeTypeColor) {
-        [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [_sliderControl setMinimumValue:0.0];
         [_sliderControl setMaximumValue:100.0];
         [_sliderControl setValue:_screenBrightnessValue];
@@ -817,13 +845,13 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _contentImageView.backgroundColor = _selectedColor;
     }
     else {
-        [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
     }
 
 
     if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
-        [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         
         [_sliderControl setMinimumValue:-80.0];
         [_sliderControl setMaximumValue:80.0];
@@ -837,7 +865,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _colorPickerView.hidden = YES;
     }
     else {
-        [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         _effectPickerView.hidden = YES;
         _pickerPanelView.hidden = YES;
     }
