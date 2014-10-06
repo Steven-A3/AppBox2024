@@ -248,6 +248,10 @@ NSString *const cellID = @"flashEffectID";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActiveNotification:) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3DrawerStateChanged object:nil];
+    if (IS_IPAD) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -318,6 +322,13 @@ NSString *const cellID = @"flashEffectID";
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    if (IS_IPAD) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+    }
+    else {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:A3DrawerStateChanged object:nil];
+    }
 }
 
 - (void)applicationWillResignActiveNotification:(NSNotification *)notification {
@@ -341,6 +352,24 @@ NSString *const cellID = @"flashEffectID";
     UIScreen *mainScreen = [UIScreen mainScreen];
     CGFloat offset = (_screenBrightnessValue / 100.0);
     mainScreen.brightness = offset;
+}
+
+- (void)mainMenuDidHide {
+    if (IS_IPHONE && ([self.mm_drawerController openSide] == MMDrawerSideLeft)) {
+        if (_isTorchOn) {
+            [self setTorchOff];
+        }
+        [self releaseStrobelight];
+        return;
+    }
+    
+    if (_isTorchOn) {
+        [self setTorchOn];
+    }
+    
+    if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
+        [self startStrobeLightEffectForIndex:_selectedEffectIndex];
+    }
 }
 
 - (void)saveUserDefaults {
@@ -565,80 +594,25 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [self effectModeSliderValueChanged:sender];
     }
     
-//    switch (_currentFlashViewMode) {
-//        case A3FlashViewModeTypeNone: {
-//            [self alphaSliderValueChanged:sender];
-//        }
-//            break;
-//        case A3FlashViewModeTypeLED:
-//        {
-//            if (_flashBrightnessSlider == sender) {
-//                [self flashBrightnessSliderValueChanged:sender];
-//            }
-//            else {
-//                [self alphaSliderValueChanged:sender];
-//            }
-//        }
-//            break;
-//            
-//        case A3FlashViewModeTypeLED | A3FlashViewModeTypeColor:
-//        {
-//            if (_flashBrightnessSlider == sender) {
-//                [self flashBrightnessSliderValueChanged:sender];
-//            }
-//            else {
-//                [self colorModeSliderValueChanged:sender];
-//            }
-//        }
-//            break;
-//            
-//        case A3FlashViewModeTypeEffect:
-//        {
-//            [self effectModeSliderValueChanged:sender];
-//        }
-//            break;
-//            
-//        default:
-//            break;
-//    }
     [self startTimerToHideMenu];
 }
 
 - (IBAction)appsButtonTouchUp:(id)sender {
     [self releaseStrobelight];
+    if (_isTorchOn) {
+        [self setTorchOff];
+    }
     
     if (IS_IPHONE) {
-		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-	} else {
+		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:NULL];
+	}
+    else {
 		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 	}
 }
 
 - (IBAction)detailInfoButtonTouchUp:(id)sender {
     [self showInstructionView:nil];
-}
-
-- (void)ledTorchONOFF {
-	Class myClass = NSClassFromString(@"AVCaptureDevice");
-	if (!myClass) {
-		return;
-	}
-	
-	AVCaptureDevice *myTorch = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-	if (myTorch) {
-		if ([myTorch isTorchModeSupported:AVCaptureTorchModeOn]) {
-			if (_isTorchOn) {
-				_isTorchOn = NO;
-                [self showHUD];
-				[self setTorchOff];
-			} else {
-				_isTorchOn = YES;
-                [self showHUD];
-				[self initializeLED];
-				[self setTorchOn];
-			}
-		}
-	}
 }
 
 #pragma mark Menu Status Change
@@ -978,20 +952,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 		[_LEDSession startRunning];
 		_LEDInitialized = YES;
 	}
-}
-
-- (void)applicationWillResignActive {
-#ifdef TRACE_LOG
-	NSLog(@"%s", __func__);
-#endif
-	if (_isTorchOn) {
-        [self ledTorchONOFF];
-	}
-    
-	[_LEDSession stopRunning];
-	_LEDSession = nil;
-    
-	_LEDInitialized = NO;
 }
 
 - (void)releaseStrobelight
