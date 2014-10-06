@@ -925,3 +925,4 @@
 
 "Backup file is ready." = "バックアップファイルの準備ができました。";
 "Backup file does not exist." = "バックアップファイルが存在しません。";
+"This app does not have access to your photos. You can enable access in Privacy Settings." = "このAppには写真およびビデオへのアクセス権がありません。\n”プライバシー設定”でアクセスを有効にできます。";

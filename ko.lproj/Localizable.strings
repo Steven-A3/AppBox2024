@@ -930,3 +930,4 @@
 
 "Backup file is ready." = "백업 파일이 준비되었습니다.";
 "Backup file does not exist." = "백업 파일이 없습니다.";
+"This app does not have access to your photos. You can enable access in Privacy Settings." = "이 App은 사용자의 사진 또는 비디오에 접근할 수 없습니다.\n개인 정보 설정에서 접근을 활성화할 수 있습니다.";
