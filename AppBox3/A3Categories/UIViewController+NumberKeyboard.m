@@ -257,7 +257,7 @@ static char const *const key_navigationControllerForKeyboard	= "key_navigationCo
 - (A3CurrencySelectViewController *)presentCurrencySelectViewControllerWithCurrencyCode:(NSString *)currencyCode {
 	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] init];
 	viewController.showCancelButton = YES;
-	viewController.allowChooseFavorite = NO;
+	viewController.allowChooseFavorite = YES;
 	viewController.selectedCurrencyCode = currencyCode;
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 	[self presentViewController:navigationController animated:YES completion:nil];

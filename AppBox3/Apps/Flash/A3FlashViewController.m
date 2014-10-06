@@ -298,6 +298,10 @@ NSString *const cellID = @"flashEffectID";
     UIScreen *mainScreen = [UIScreen mainScreen];
     mainScreen.brightness = _deviceBrightnessBefore;
     
+    if (_isTorchOn) {
+        [self setTorchOff];
+    }
+    
     [self saveUserDefaults];
     [self releaseHideMenuTimer];
     [self releaseStrobelight];
