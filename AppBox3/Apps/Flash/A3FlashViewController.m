@@ -13,6 +13,7 @@
 #import "A3UserDefaults.h"
 #import "A3InstructionViewController.h"
 #import "MBProgressHUD.h"
+#import "UIImage+imageWithColor.h"
 
 #define kBottomToolBarHeight        74
 
@@ -176,10 +177,10 @@ NSString *const cellID = @"flashEffectID";
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *colorBarButton2;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *effectBarButton2;
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *screenBrightnessMinButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *screenBrightnessMaxButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *flashBrightnessMinButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *flashBrightnessMaxButton;
+@property (weak, nonatomic) IBOutlet UIImageView *screenBrightnessMinButton;
+@property (weak, nonatomic) IBOutlet UIImageView *screenBrightnessMaxButton;
+@property (weak, nonatomic) IBOutlet UIImageView *flashBrightnessMinButton;
+@property (weak, nonatomic) IBOutlet UIImageView *flashBrightnessMaxButton;
 
 - (IBAction)sliderControlValueChanged:(UISlider *)sender;
 
@@ -252,6 +253,9 @@ NSString *const cellID = @"flashEffectID";
     if (IS_IPAD) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
     }
+    
+    
+    self.flashBrightnessMinButton.image = [[UIImage imageNamed:@"f_flash_black"] tintedImageWithColor:[UIColor grayColor]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -657,7 +661,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [self setTorchOn];
     }
     
-    [self adjustToolBarColorToPreventVeryWhiteColor];
     [self configureFlashViewMode:_currentFlashViewMode animation:YES];
 }
 
@@ -667,7 +670,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _currentFlashViewMode = _currentFlashViewMode & (_currentFlashViewMode ^ A3FlashViewModeTypeColor);
     }
     
-    [self adjustToolBarColorToPreventVeryWhiteColor];
     [self configureFlashViewMode:_currentFlashViewMode animation:YES];
     
     if (!(_currentFlashViewMode & A3FlashViewModeTypeEffect)) {
@@ -817,6 +819,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         return;
     }
 
+    [self adjustToolBarColorToPreventVeryWhiteColor];
     
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
         [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
