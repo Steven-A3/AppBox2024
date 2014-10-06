@@ -627,9 +627,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     }
     
     _currentFlashViewMode = _currentFlashViewMode ^ A3FlashViewModeTypeLED;
-    [self adjustToolBarColorToPreventVeryWhiteColor];
-    [self configureFlashViewMode:_currentFlashViewMode animation:YES];
-    
+
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
         _isTorchOn = YES;
         [self showHUD];
@@ -641,6 +639,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [self showHUD];
         [self setTorchOff];
     }
+    
+    [self configureFlashViewMode:_currentFlashViewMode animation:YES];
 }
 
 - (IBAction)colorMenuButtonTouchUp:(id)sender {
@@ -928,9 +928,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 	
     if (_currentFlashViewMode & A3FlashViewModeTypeColor) {
         _contentImageView.backgroundColor = _selectedColor;
-    }
-    else if (_currentFlashViewMode == A3FlashViewModeTypeNone) {
-        _contentImageView.backgroundColor = [UIColor whiteColor];
     }
 //#endif
 }
