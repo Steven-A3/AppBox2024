@@ -336,10 +336,12 @@
 	flowLayout.minimumInteritemSpacing = 0;
 	flowLayout.minimumLineSpacing = 0;
     [_collectionView setCollectionViewLayout:flowLayout animated:NO];
-    [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
-                            atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
-                                    animated:NO];
 
+	if ([_eventsArray count] > 0) {
+		[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
+								atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+										animated:NO];
+	}
 }
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
