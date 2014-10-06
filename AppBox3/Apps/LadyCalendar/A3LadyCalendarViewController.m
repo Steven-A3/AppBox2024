@@ -97,7 +97,7 @@
 	[self.dataManager currentAccount];
 	
 	[self setupCalendarRange];
-	numberOfMonthInPage = 1;
+	numberOfMonthInPage = 2;
 	self.topSeparatorViewConst.constant = 1.0 / [[UIScreen mainScreen] scale];
 	isFirst = YES;
 
