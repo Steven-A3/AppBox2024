@@ -203,7 +203,6 @@ NSString *const cellID = @"flashEffectID";
     A3FlashViewModeType _currentFlashViewMode;
     CGFloat _screenBrightnessValue;
     CGFloat _deviceBrightnessBefore;
-    CGFloat _effectSpeedValue;
     CGFloat _flashBrightnessValue;
     BOOL _isTorchOn;
     BOOL _LEDInitialized;
@@ -850,13 +849,14 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         
         [_sliderControl setMinimumValue:-80.0];
         [_sliderControl setMaximumValue:80.0];
-        [_sliderControl setValue:0.0];
+        [_sliderControl setValue:_strobeSpeedFactor];
         
         [_effectPickerView selectRow:_selectedEffectIndex inComponent:0 animated:NO];
         
         _pickerViewBottomConst.constant = kBottomToolBarHeight;
         _effectPickerView.hidden = NO;
         _pickerPanelView.hidden = NO;
+        _colorPickerView.hidden = YES;
     }
     else {
         [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
