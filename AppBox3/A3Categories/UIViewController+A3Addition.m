@@ -60,6 +60,8 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 		[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
 	} else {
 		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+		[rootViewController dismissRightSideViewController];
+
 		navigationController = [rootViewController centerNavigationController];
         // KJH
         if (rootViewController.presentViewControllers && [rootViewController.presentViewControllers count] > 0) {
