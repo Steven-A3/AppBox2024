@@ -165,6 +165,7 @@
 												 [self setImageOnCameraRollButton:image];
 											 } failureBlock:NULL];
 										 } else {
+											 if (![_availablePhotos count]) return;
 											 [_assetrollGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[_availablePhotos[0] integerValue]]
 																			   options:NSEnumerationConcurrent
 																			usingBlock:^(ALAsset *result, NSUInteger i, BOOL *stop) {
