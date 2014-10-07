@@ -11,6 +11,7 @@
 
 @class WalletItem;
 @class WalletCategory;
+@class A3InstructionViewController;
 
 @interface A3WalletListViewController : UIViewController <FMMoveTableViewDelegate, FMMoveTableViewDataSource>
 
@@ -20,6 +21,7 @@
 @property (nonatomic, strong) UIButton *addButton;
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, assign) BOOL showCategoryInDetailViewController;
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 
 - (void)initializeViews;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath walletItem:(WalletItem *)item;
@@ -27,6 +29,11 @@
 - (void)addButtonConstraints;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath withItem:(WalletItem *)item;
 
+- (void)dismissInstructionViewController:(UIView *)view;
+
+- (void)statusBarFrameOrOrientationChanged:(NSNotification *)notification;
+
+- (void)rotateAccordingToStatusBarOrientationAndSupportedOrientations;
 @end
 
 extern NSString *const A3WalletTextCellID1;

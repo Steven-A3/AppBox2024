@@ -466,21 +466,6 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	];
 }
 
-- (BOOL)hasAuthorizationToAccessPhoto
-{
-    if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied || [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusRestricted) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-                                                            message:NSLocalizedString(@"This app does not have access to your photos. You can enable access in Privacy Settings.", nil)
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                  otherButtonTitles:nil];
-        [alertView show];
-        return NO;
-    }
-    
-    return YES;
-}
-
 - (IBAction)snapButtonAction:(id)sender {
     if (![self hasAuthorizationToAccessPhoto]) {
         return;

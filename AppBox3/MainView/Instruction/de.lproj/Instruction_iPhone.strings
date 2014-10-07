@@ -163,3 +163,6 @@
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "ljC-z5-F29"; */
 "ljC-z5-F29.text" = "Berühren Sie den Touchscreen um die Steuerelemente anzuzeigen";
+
+/* Class = "IBUILabel"; text = "Tap the screen to display the controls"; ObjectID = "p6a-KD-zgx"; */
+"p6a-KD-zgx.text" = "Berühren Sie den Touchscreen um die Steuerelemente anzuzeigen";

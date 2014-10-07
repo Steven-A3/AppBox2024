@@ -359,7 +359,7 @@
 			<key>one</key>
 			<string>1天期间</string>
 			<key>other</key>
-			<string>28天 期间</string>
+			<string>%ld天 期间</string>
 		</dict>
 	</dict>
 	<key>%ld Most Recent</key>

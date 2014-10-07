@@ -916,7 +916,8 @@ Inserire chiave di crittografia per il portafoglio.";
 
 "Backup file is ready." = "Il file di backup è pronto.";
 "Backup file does not exist." = "Il file di backup non esiste.";
-"This app does not have access to your photos. You can enable access in Privacy Settings." = "Questa app non ha accesso alle tue foto o ai tuoi video.\nPuoi abilitare l'accesso dalle impostazioni Privacy.";
 
 "Tap" = "Toccare";
 "or Shake!" = "o Scuotere!";
+"This app does not have access to your photos." = "Questa app non ha accesso alle tue foto o ai tuoi video.";
+"You can enable access in Privacy Settings." = "Puoi abilitare l'accesso dalle impostazioni Privacy.";

@@ -122,6 +122,10 @@
 /* Class = "IBUILabel"; text = "Tap to add a unit"; ObjectID = "o5S-tb-Jbp"; */
 "o5S-tb-Jbp.text" = "Tap to add a unit";
 
+/* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "p6a-KD-zgx"; */
+"p6a-KD-zgx.text" = "Tap the screen to display
+the controls";
+
 /* Class = "IBUILabel"; text = "Tap to add a language"; ObjectID = "qDX-1u-CmJ"; */
 "qDX-1u-CmJ.text" = "Tap to add a language";
 

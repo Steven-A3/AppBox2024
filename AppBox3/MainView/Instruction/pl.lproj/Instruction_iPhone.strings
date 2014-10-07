@@ -166,3 +166,6 @@ więcej kategorii";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "ljC-z5-F29"; */
 "ljC-z5-F29.text" = "Naciśnij w ekran aby\nwyświetlić przyciski.";
+
+/* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "p6a-KD-zgx"; */
+"p6a-KD-zgx.text" = "Naciśnij w ekran aby\nwyświetlić przyciski.";

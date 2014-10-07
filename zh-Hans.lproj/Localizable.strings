@@ -936,7 +936,8 @@
 "Backup file is ready." = "备份文件已准备就绪。";
 "Backup file does not exist." = "备份文件不存在。";
 
-"This app does not have access to your photos. You can enable access in Privacy Settings." = "此应用程序没有权限来访问您的照片或视频。\n您可以在“隐私设置”中启用访问心。";
-
 "Tap" = "点击";
 "or Shake!" = "或动摇!";
+
+"This app does not have access to your photos." = "此应用程序没有权限来访问您的照片或视频。";
+"You can enable access in Privacy Settings." = "您可以在“隐私设置”中启用访问心。";

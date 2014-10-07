@@ -22,4 +22,5 @@
 - (IBAction)loadCameraRoll:(id)sender;
 - (void)notifyCameraShotSaveRule;
 
+- (BOOL)hasAuthorizationToAccessPhoto;
 @end

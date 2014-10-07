@@ -72,10 +72,19 @@ NSString *const A3CommonPropertyOrder = @"order";
 		[self moveObjectFromIndex:fromIndex toIndex:toIndex];
 		return;
 	}
-	id prevToObject = self[toIndex - 1];
-	NSInteger orderA = [[prevToObject valueForKey:A3CommonPropertyOrder] integerValue];
-	NSInteger orderB = [[toObject valueForKey:A3CommonPropertyOrder] integerValue];
-    NSInteger newOrder = orderA + (orderB - orderA) / 2;
+	NSInteger orderA, orderB, newOrder;
+	if (fromIndex < toIndex) {
+		id nextToTargetObject = self[toIndex + 1];
+		orderA = [[toObject valueForKey:A3CommonPropertyOrder] integerValue];
+		orderB = [[nextToTargetObject valueForKey:A3CommonPropertyOrder] integerValue];
+		newOrder = orderA + (orderB - orderA) / 2;
+	} else {
+		id previousToTargetObject = self[toIndex - 1];
+		orderA = [[previousToTargetObject valueForKey:A3CommonPropertyOrder] integerValue];
+		orderB = [[toObject valueForKey:A3CommonPropertyOrder] integerValue];
+		newOrder = orderA + (orderB - orderA) / 2;
+	}
+
 	if ((newOrder == 0) || (newOrder == orderA) || (newOrder == orderB)) {
 		resetOrder();
 		return;

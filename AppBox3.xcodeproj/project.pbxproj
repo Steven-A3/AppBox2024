@@ -1587,7 +1587,6 @@
 		685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyTVActionCell.m; path = Apps/Currency/A3CurrencyTVActionCell.m; sourceTree = "<group>"; };
 		685F723B16A64ADD004C7222 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		685F723D16A64C91004C7222 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		6860478C19E2A96D007A216E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPhone.strings; sourceTree = "<group>"; };
 		6861117319DBBD14003DA63F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3Settings.strings; sourceTree = "<group>"; };
 		6862375D1974E7C300001DE7 /* LadyCalendarPeriod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LadyCalendarPeriod.h; sourceTree = "<group>"; };
 		6862375E1974E7C300001DE7 /* LadyCalendarPeriod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LadyCalendarPeriod.m; sourceTree = "<group>"; };
@@ -1818,6 +1817,7 @@
 		689D41F91966F33900D7F1A7 /* A3DateKeyboardViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DateKeyboardViewController_iPad.xib; sourceTree = "<group>"; };
 		689D41FA1966F33900D7F1A7 /* A3DateKeyboardViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DateKeyboardViewController_iPhone.xib; sourceTree = "<group>"; };
 		689E9854197C1B99003710C3 /* A3UnitNamesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitNamesTest.m; sourceTree = "<group>"; };
+		68A6126E19E394350006B4CC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPhone.strings; sourceTree = "<group>"; };
 		68ADE13E17D83D28009618A7 /* MMDrawerBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDrawerBarButtonItem.h; path = MMDrawerController/MMDrawerBarButtonItem.h; sourceTree = "<group>"; };
 		68ADE13F17D83D28009618A7 /* MMDrawerBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMDrawerBarButtonItem.m; path = MMDrawerController/MMDrawerBarButtonItem.m; sourceTree = "<group>"; };
 		68ADE14017D83D28009618A7 /* MMDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDrawerController.h; path = MMDrawerController/MMDrawerController.h; sourceTree = "<group>"; };
@@ -6568,7 +6568,7 @@
 				68CAB48F19557DB400A4D2B9 /* it */,
 				68CAB49119557DB600A4D2B9 /* fr */,
 				68CAB49319557DB900A4D2B9 /* es */,
-				6860478C19E2A96D007A216E /* en */,
+				68A6126E19E394350006B4CC /* en */,
 			);
 			name = Instruction_iPhone.storyboard;
 			path = Instruction;
