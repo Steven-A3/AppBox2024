@@ -19,7 +19,7 @@
 @interface A3WalletFavoritesViewController () <A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) FMMoveTableView *tableView;
-@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+
 @end
 
 @implementation A3WalletFavoritesViewController
@@ -155,17 +155,26 @@ static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3Instructi
 	[[A3UserDefaults standardUserDefaults] synchronize];
 
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
-    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_4"];
+    self.instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_4"];
     self.instructionViewController.delegate = self;
-    [self.tabBarController.view addSubview:self.instructionViewController.view];
+
+	UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+	[mainWindow addSubview:self.instructionViewController.view];
+	[mainWindow.rootViewController addChildViewController:self.instructionViewController];
+
     self.instructionViewController.view.frame = self.tabBarController.view.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
-}
 
-- (void)dismissInstructionViewController:(UIView *)view
-{
-    [self.instructionViewController.view removeFromSuperview];
-    self.instructionViewController = nil;
+	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(statusBarFrameOrOrientationChanged:)
+												 name:UIApplicationDidChangeStatusBarOrientationNotification
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(statusBarFrameOrOrientationChanged:)
+												 name:UIApplicationDidChangeStatusBarFrameNotification
+											   object:nil];
 }
 
 #pragma mark - Table view data source

@@ -23,6 +23,7 @@
 #import "A3WalletItemViewController.h"
 #import "A3WalletVideoItemViewController.h"
 #import "A3WalletPhotoItemViewController.h"
+#import "A3InstructionViewController.h"
 #import "NSMutableArray+A3Sort.h"
 #import "NSString+WalletStyle.h"
 #import "WalletField.h"
@@ -392,6 +393,80 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 	[self.items moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+
+	[self.instructionViewController.view removeFromSuperview];
+	[self.instructionViewController removeFromParentViewController];
+	self.instructionViewController = nil;
+}
+
+// All of the rotation handling is thanks to Håvard Fossli's - https://github.com/hfossli
+// answer: http://stackoverflow.com/a/4960988/793916
+#pragma mark - Handling rotation of instruction view
+
+- (NSUInteger)supportedInterfaceOrientations {
+	if (IS_IPHONE) {
+		return UIInterfaceOrientationMaskPortrait;
+	} else {
+		return UIInterfaceOrientationMaskAll;
+	}
+}
+
+- (void)statusBarFrameOrOrientationChanged:(NSNotification *)notification {
+	/*
+	 This notification is most likely triggered inside an animation block,
+	 therefore no animation is needed to perform this nice transition.
+	 */
+	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+}
+
+// And to his AGWindowView: https://github.com/hfossli/AGWindowView
+// Without the 'desiredOrientation' method, using showLockscreen in one orientation,
+// then presenting it inside a modal in another orientation would display the view in the first orientation.
+- (UIInterfaceOrientation)desiredOrientation {
+	UIInterfaceOrientation statusBarOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+	UIInterfaceOrientationMask statusBarOrientationAsMask = UIInterfaceOrientationMaskFromOrientation(statusBarOrientation);
+	if(self.supportedInterfaceOrientations & statusBarOrientationAsMask) {
+		return statusBarOrientation;
+	}
+	else {
+		if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskPortrait) {
+			return UIInterfaceOrientationPortrait;
+		}
+		else if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskLandscapeLeft) {
+			return UIInterfaceOrientationLandscapeLeft;
+		}
+		else if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskLandscapeRight) {
+			return UIInterfaceOrientationLandscapeRight;
+		}
+		else {
+			return UIInterfaceOrientationPortraitUpsideDown;
+		}
+	}
+}
+
+- (void)rotateAccordingToStatusBarOrientationAndSupportedOrientations {
+	UIInterfaceOrientation orientation = [self desiredOrientation];
+	CGFloat angle = UIInterfaceOrientationAngleOfOrientation(orientation);
+	CGAffineTransform transform = CGAffineTransformMakeRotation(angle);
+
+	[self setIfNotEqualTransform: transform
+						   frame: self.instructionViewController.view.window.bounds];
+}
+
+
+- (void)setIfNotEqualTransform:(CGAffineTransform)transform frame:(CGRect)frame {
+	if(!CGAffineTransformEqualToTransform(self.instructionViewController.view.transform, transform)) {
+		self.instructionViewController.view.transform = transform;
+	}
+	if(!CGRectEqualToRect(self.instructionViewController.view.frame, frame)) {
+		self.instructionViewController.view.frame = frame;
+	}
 }
 
 @end

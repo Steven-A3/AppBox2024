@@ -35,7 +35,6 @@
 @property (nonatomic, strong) NSArray *filteredResults;
 @property (nonatomic, weak) UISegmentedControl *segmentedControlRef;
 @property (nonatomic, weak) A3WalletAllTopView *topViewRef;
-@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 
 @end
 
@@ -544,17 +543,25 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 	[[A3UserDefaults standardUserDefaults] synchronize];
 
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
-    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_1"];
+    self.instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_1"];
     self.instructionViewController.delegate = self;
-    [self.tabBarController.view addSubview:self.instructionViewController.view];
+
+	UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+    [mainWindow addSubview:self.instructionViewController.view];
+	[mainWindow.rootViewController addChildViewController:self.instructionViewController];
+
     self.instructionViewController.view.frame = self.tabBarController.view.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
-}
+	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
 
-- (void)dismissInstructionViewController:(UIView *)view
-{
-    [self.instructionViewController.view removeFromSuperview];
-    self.instructionViewController = nil;
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(statusBarFrameOrOrientationChanged:)
+												 name:UIApplicationDidChangeStatusBarOrientationNotification
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(statusBarFrameOrOrientationChanged:)
+												 name:UIApplicationDidChangeStatusBarFrameNotification
+											   object:nil];
 }
 
 #pragma mark - Search relative
