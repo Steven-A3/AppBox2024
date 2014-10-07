@@ -640,7 +640,12 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _isEffectWorking = NO;
     }
     
-    _currentFlashViewMode = _currentFlashViewMode ^ A3FlashViewModeTypeLED;
+    if (_currentFlashViewMode == A3FlashViewModeTypeColor) {
+        _currentFlashViewMode = A3FlashViewModeTypeLED;
+    }
+    else {
+        _currentFlashViewMode = _currentFlashViewMode ^ A3FlashViewModeTypeLED;
+    }
 
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
         _isTorchOn = YES;
