@@ -517,6 +517,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
     }
     
     viewController.selectedCodes = selectedCodes;
+    viewController.currentCode = detectLanguage ? _originalTextLanguage : _translatedTextLanguage;
 
 
 	if (IS_IPHONE) {

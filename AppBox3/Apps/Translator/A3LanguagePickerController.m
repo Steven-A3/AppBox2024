@@ -104,9 +104,15 @@ static NSString *CellIdentifier = @"Cell";
 	
 	cell.textLabel.text = data.displayName;
 	if (_selectedCodes && data.code && [_selectedCodes containsObject:data.code]) {
+        if (_currentCode && [_currentCode isEqualToString:data.code]) {
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
+        }
+        else {
+            cell.textLabel.font = A3UITableViewTextLabelFont;
+        }
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
-	} else {
+	}
+    else {
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.textLabel.font = A3UITableViewTextLabelFont;
 	}
