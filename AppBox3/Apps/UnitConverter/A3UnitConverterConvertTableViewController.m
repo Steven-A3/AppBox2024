@@ -545,15 +545,98 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"UnitConverter"];
     self.instructionViewController.delegate = self;
-    [self.tabBarController.view addSubview:self.instructionViewController.view];
+
+	UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+	[mainWindow addSubview:self.instructionViewController.view];
+	[mainWindow.rootViewController addChildViewController:self.instructionViewController];
+
     self.instructionViewController.view.frame = self.tabBarController.view.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+
+	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(statusBarFrameOrOrientationChanged:)
+												 name:UIApplicationDidChangeStatusBarOrientationNotification
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(statusBarFrameOrOrientationChanged:)
+												 name:UIApplicationDidChangeStatusBarFrameNotification
+											   object:nil];
 }
 
 - (void)dismissInstructionViewController:(UIView *)view
 {
-    [self.instructionViewController.view removeFromSuperview];
-    self.instructionViewController = nil;
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+
+	[self.instructionViewController.view removeFromSuperview];
+	[self.instructionViewController removeFromParentViewController];
+	self.instructionViewController = nil;
+}
+
+// All of the rotation handling is thanks to Håvard Fossli's - https://github.com/hfossli
+// answer: http://stackoverflow.com/a/4960988/793916
+#pragma mark - Handling rotation of instruction view
+
+- (NSUInteger)supportedInterfaceOrientations {
+	if (IS_IPHONE) {
+		return UIInterfaceOrientationMaskPortrait;
+	} else {
+		return UIInterfaceOrientationMaskAll;
+	}
+}
+
+- (void)statusBarFrameOrOrientationChanged:(NSNotification *)notification {
+	/*
+	 This notification is most likely triggered inside an animation block,
+	 therefore no animation is needed to perform this nice transition.
+	 */
+	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+}
+
+// And to his AGWindowView: https://github.com/hfossli/AGWindowView
+// Without the 'desiredOrientation' method, using showLockscreen in one orientation,
+// then presenting it inside a modal in another orientation would display the view in the first orientation.
+- (UIInterfaceOrientation)desiredOrientation {
+	UIInterfaceOrientation statusBarOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+	UIInterfaceOrientationMask statusBarOrientationAsMask = UIInterfaceOrientationMaskFromOrientation(statusBarOrientation);
+	if(self.supportedInterfaceOrientations & statusBarOrientationAsMask) {
+		return statusBarOrientation;
+	}
+	else {
+		if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskPortrait) {
+			return UIInterfaceOrientationPortrait;
+		}
+		else if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskLandscapeLeft) {
+			return UIInterfaceOrientationLandscapeLeft;
+		}
+		else if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskLandscapeRight) {
+			return UIInterfaceOrientationLandscapeRight;
+		}
+		else {
+			return UIInterfaceOrientationPortraitUpsideDown;
+		}
+	}
+}
+
+- (void)rotateAccordingToStatusBarOrientationAndSupportedOrientations {
+	UIInterfaceOrientation orientation = [self desiredOrientation];
+	CGFloat angle = UIInterfaceOrientationAngleOfOrientation(orientation);
+	CGAffineTransform transform = CGAffineTransformMakeRotation(angle);
+
+	[self setIfNotEqualTransform: transform
+						   frame: self.instructionViewController.view.window.bounds];
+}
+
+
+- (void)setIfNotEqualTransform:(CGAffineTransform)transform frame:(CGRect)frame {
+	if(!CGAffineTransformEqualToTransform(self.instructionViewController.view.transform, transform)) {
+		self.instructionViewController.view.transform = transform;
+	}
+	if(!CGRectEqualToRect(self.instructionViewController.view.frame, frame)) {
+		self.instructionViewController.view.frame = frame;
+	}
 }
 
 #pragma mark - Action
