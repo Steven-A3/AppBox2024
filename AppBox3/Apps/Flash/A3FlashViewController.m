@@ -720,33 +720,63 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 }
 
 - (void)adjustToolBarColorToPreventVeryWhiteColor {
-    CGFloat offset = (_screenBrightnessValue / 100.0);
     CGFloat whiteOffset = 0.0, alphaOffset = 0.0;
     [_contentImageView.backgroundColor getWhite:&whiteOffset alpha:&alphaOffset];
+    CGFloat offset = 0.6 - (whiteOffset/2.0);
+    UIColor *adjustedColor = [UIColor colorWithRed:offset green:offset blue:offset alpha:0.7 - (whiteOffset/10.0)];
+
+    _topToolBar.backgroundColor = adjustedColor;
+    _sliderToolBar.backgroundColor = adjustedColor;
+    _pickerPanelView.backgroundColor = adjustedColor;
+    _colorPickerView.backgroundColor = _currentFlashViewMode & A3FlashViewModeTypeColor ? [UIColor clearColor] : adjustedColor;
+    _bottomToolBar.backgroundColor = adjustedColor;
+    _LEDBrightnessToolBar.backgroundColor = adjustedColor;
     
-    if (offset > 0.6 && _currentFlashViewMode == A3FlashViewModeTypeNone) {
-        UIColor *adjustedColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.7 - fabs(1.0 - offset)];
-        _topToolBar.backgroundColor = adjustedColor;
-        _sliderToolBar.backgroundColor = adjustedColor;
-        _pickerPanelView.backgroundColor = adjustedColor;
-        _colorPickerView.backgroundColor = adjustedColor;
-        _bottomToolBar.backgroundColor = adjustedColor;
-    }
-    else if (whiteOffset > 0.6 && _currentFlashViewMode == A3FlashViewModeTypeColor) {
-        UIColor *adjustedColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.7 - fabs(1.0 - whiteOffset)];
-        _topToolBar.backgroundColor = adjustedColor;
-        _sliderToolBar.backgroundColor = adjustedColor;
-        _pickerPanelView.backgroundColor = adjustedColor;
-        _colorPickerView.backgroundColor = [UIColor clearColor];
-        _bottomToolBar.backgroundColor = adjustedColor;
-    }
-    else {
-        _topToolBar.backgroundColor = [UIColor clearColor];
-        _sliderToolBar.backgroundColor = [UIColor clearColor];
-        _pickerPanelView.backgroundColor = [UIColor clearColor];
-        _colorPickerView.backgroundColor = [UIColor clearColor];
-        _bottomToolBar.backgroundColor = [UIColor clearColor];
-    }
+    
+//    if (_currentFlashViewMode == A3FlashViewModeTypeLED) {
+//        UIColor *adjustedColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.7];
+//        _topToolBar.backgroundColor = adjustedColor;
+//        _sliderToolBar.backgroundColor = adjustedColor;
+//        _pickerPanelView.backgroundColor = adjustedColor;
+//        _colorPickerView.backgroundColor = [UIColor clearColor];
+//        _bottomToolBar.backgroundColor = adjustedColor;
+//    }
+//    else {
+//        _topToolBar.backgroundColor = [UIColor clearColor];
+//        _sliderToolBar.backgroundColor = [UIColor clearColor];
+//        _pickerPanelView.backgroundColor = [UIColor clearColor];
+//        _colorPickerView.backgroundColor = [UIColor clearColor];
+//        _bottomToolBar.backgroundColor = [UIColor clearColor];
+//    }
+    
+    
+//    CGFloat offset = (_screenBrightnessValue / 100.0);
+//    CGFloat whiteOffset = 0.0, alphaOffset = 0.0;
+//    [_contentImageView.backgroundColor getWhite:&whiteOffset alpha:&alphaOffset];
+//
+//    if (offset > 0.6 && _currentFlashViewMode == A3FlashViewModeTypeNone) {
+//        UIColor *adjustedColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.7 - fabs(1.0 - offset)];
+//        _topToolBar.backgroundColor = adjustedColor;
+//        _sliderToolBar.backgroundColor = adjustedColor;
+//        _pickerPanelView.backgroundColor = adjustedColor;
+//        _colorPickerView.backgroundColor = adjustedColor;
+//        _bottomToolBar.backgroundColor = adjustedColor;
+//    }
+//    else if (whiteOffset > 0.6 && _currentFlashViewMode == A3FlashViewModeTypeColor) {
+//        UIColor *adjustedColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.7 - fabs(1.0 - whiteOffset)];
+//        _topToolBar.backgroundColor = adjustedColor;
+//        _sliderToolBar.backgroundColor = adjustedColor;
+//        _pickerPanelView.backgroundColor = adjustedColor;
+//        _colorPickerView.backgroundColor = [UIColor clearColor];
+//        _bottomToolBar.backgroundColor = adjustedColor;
+//    }
+//    else {
+//        _topToolBar.backgroundColor = [UIColor clearColor];
+//        _sliderToolBar.backgroundColor = [UIColor clearColor];
+//        _pickerPanelView.backgroundColor = [UIColor clearColor];
+//        _colorPickerView.backgroundColor = [UIColor clearColor];
+//        _bottomToolBar.backgroundColor = [UIColor clearColor];
+//    }
 }
 
 - (void)colorModeSliderValueChanged:(UISlider *)slider {
