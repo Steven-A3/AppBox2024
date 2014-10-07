@@ -193,21 +193,7 @@
 #pragma mark - load camera roll
 
 - (IBAction)loadCameraRoll:(id)sender {
-	if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied || [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusRestricted) {
-		UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-		imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-		imagePickerController.allowsEditing = NO;
-		imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
-		imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
-
-		if (IS_IOS7) {
-			[self presentViewController:imagePickerController animated:YES completion:NULL];
-		}
-		else {
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-				[self presentViewController:imagePickerController animated:NO completion:NULL];
-			});
-		}
+	if (![self hasAuthorizationToAccessPhoto]) {
 		return;
 	}
 
@@ -240,6 +226,21 @@
 		_assetLibrary = [[ALAssetsLibrary alloc] init];
 	}
 	return _assetLibrary;
+}
+
+- (BOOL)hasAuthorizationToAccessPhoto
+{
+	if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied || [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusRestricted) {
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This app does not have access to your photos.", nil)
+															message:NSLocalizedString(@"You can enable access in Privacy Settings.", nil)
+														   delegate:nil
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												  otherButtonTitles:nil];
+		[alertView show];
+		return NO;
+	}
+
+	return YES;
 }
 
 @end

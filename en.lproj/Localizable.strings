@@ -873,7 +873,9 @@ Enter Encryption Key for Wallet.";
 
 "Backup file is ready." = "Backup file is ready.";
 "Backup file does not exist." = "No backup files.";
-"This app does not have access to your photos. You can enable access in Privacy Settings." = "This app does not have access to your photos. You can enable access in Privacy Settings.";
 
 "Tap" = "Tap";
 "or Shake!"  = "or Shake!";
+
+"This app does not have access to your photos." = "This app does not have access to your photos.";
+"You can enable access in Privacy Settings." = "You can enable access in Privacy Settings.";

@@ -41,7 +41,7 @@ typedef NS_ENUM(NSUInteger, A3MirrorFilterType) {
 - (IBAction)appsButton:(id)sender;
 - (IBAction)flipButton:(id)sender;
 - (IBAction)showInstructionView:(id)sender;
-- (IBAction)captureButton:(id)sender;
+- (IBAction)captureButtonAction:(id)sender;
 - (IBAction)colorButton:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIView *viewOutlet;
