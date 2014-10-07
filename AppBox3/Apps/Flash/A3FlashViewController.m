@@ -721,6 +721,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 - (void)adjustToolBarColorToPreventVeryWhiteColor {
     CGFloat offset = (_screenBrightnessValue / 100.0);
+    CGFloat whiteOffset = 0.0, alphaOffset = 0.0;
+    [_contentImageView.backgroundColor getWhite:&whiteOffset alpha:&alphaOffset];
     
     if (offset > 0.6 && _currentFlashViewMode == A3FlashViewModeTypeNone) {
         UIColor *adjustedColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.7 - fabs(1.0 - offset)];
@@ -728,6 +730,14 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _sliderToolBar.backgroundColor = adjustedColor;
         _pickerPanelView.backgroundColor = adjustedColor;
         _colorPickerView.backgroundColor = adjustedColor;
+        _bottomToolBar.backgroundColor = adjustedColor;
+    }
+    else if (whiteOffset > 0.6 && _currentFlashViewMode == A3FlashViewModeTypeColor) {
+        UIColor *adjustedColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.7 - fabs(1.0 - whiteOffset)];
+        _topToolBar.backgroundColor = adjustedColor;
+        _sliderToolBar.backgroundColor = adjustedColor;
+        _pickerPanelView.backgroundColor = adjustedColor;
+        _colorPickerView.backgroundColor = [UIColor clearColor];
         _bottomToolBar.backgroundColor = adjustedColor;
     }
     else {
@@ -747,6 +757,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     UIScreen *mainScreen = [UIScreen mainScreen];
     CGFloat offset = (_screenBrightnessValue / 100.0);
     mainScreen.brightness = MAX(0.3, offset);
+    
     NSLog(@"screen: %f", _screenBrightnessValue);
     NSLog(@"offset: %f", offset);
 }
@@ -862,6 +873,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _pickerPanelView.hidden = YES;
         _colorPickerView.hidden = NO;
         _contentImageView.backgroundColor = _selectedColor;
+        [self adjustToolBarColorToPreventVeryWhiteColor];
     }
     else {
         [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
@@ -1376,12 +1388,16 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)NPColorPickerView:(NPColorPickerView *)view selecting:(UIColor *)color {
     _contentImageView.backgroundColor = color;
+    
+    [self adjustToolBarColorToPreventVeryWhiteColor];
     [self releaseHideMenuTimer];
 }
 
 -(void)NPColorPickerView:(NPColorPickerView *)view didSelectColor:(UIColor *)color {
     _selectedColor = color;
     _contentImageView.backgroundColor = _selectedColor;
+    
+    [self adjustToolBarColorToPreventVeryWhiteColor];
     
     [[A3UserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:_selectedColor] forKey:A3UserDefaultFlashSelectedColor];
     [[A3UserDefaults standardUserDefaults] synchronize];
