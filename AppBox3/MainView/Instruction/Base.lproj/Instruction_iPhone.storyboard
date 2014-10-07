@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ysT-2a-nae">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ysT-2a-nae">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -1353,6 +1353,12 @@ prev/next events</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the screen to display the controls" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="270" translatesAutoresizingMaskIntoConstraints="NO" id="p6a-KD-zgx" userLabel="Label - Tap the screen to display the controls">
+                                <rect key="frame" x="50" y="126" width="270" height="40"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -1364,7 +1370,10 @@ prev/next events</string>
                             <constraint firstItem="Adg-z8-lei" firstAttribute="top" secondItem="Tub-Vc-yVU" secondAttribute="top" id="UPB-2a-ScL"/>
                             <constraint firstItem="yL6-t8-Rsz" firstAttribute="leading" secondItem="dKN-6d-SOe" secondAttribute="leading" constant="50" id="Yje-aU-wLZ"/>
                             <constraint firstItem="Tub-Vc-yVU" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="top" constant="207" id="ZlN-NI-PPf"/>
+                            <constraint firstItem="p6a-KD-zgx" firstAttribute="leading" secondItem="yL6-t8-Rsz" secondAttribute="leading" id="huS-GP-oea"/>
+                            <constraint firstItem="p6a-KD-zgx" firstAttribute="top" secondItem="yL6-t8-Rsz" secondAttribute="bottom" constant="8" id="pMy-ve-IgA"/>
                             <constraint firstItem="yL6-t8-Rsz" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="top" constant="76" id="pWi-8t-deg"/>
+                            <constraint firstAttribute="trailing" secondItem="p6a-KD-zgx" secondAttribute="trailing" id="wXb-Mm-Kah"/>
                             <constraint firstItem="Adg-z8-lei" firstAttribute="leading" secondItem="Tub-Vc-yVU" secondAttribute="trailing" id="zgv-0Q-9gx"/>
                         </constraints>
                         <connections>
@@ -1722,8 +1731,8 @@ then tap Delete</string>
                                     <constraint firstAttribute="height" constant="14" id="jnd-ji-eHO"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DHT-qK-x4H" userLabel="Label - Slide the country to the left then tap Delete">
-                                <rect key="frame" x="10" y="58" width="241" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="DHT-qK-x4H" userLabel="Label - Slide the country to the left then tap Delete">
+                                <rect key="frame" x="10" y="48" width="241" height="41"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <string key="text">Slide the country to the left
 then tap Delete</string>

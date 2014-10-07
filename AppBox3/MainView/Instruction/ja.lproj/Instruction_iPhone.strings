@@ -257,10 +257,14 @@
 様々なスタイルの時計を見る
 事が出来ます。";
 
-
-
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "ljC-z5-F29"; */
 "ljC-z5-F29.text" =
+"画面をタップすると、
+コントロールが表示
+されます。";
+
+/* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "p6a-KD-zgx"; */
+"p6a-KD-zgx.text" =
 "画面をタップすると、
 コントロールが表示
 されます。";

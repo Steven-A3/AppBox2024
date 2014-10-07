@@ -180,3 +180,6 @@ più categorie";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "ljC-z5-F29"; */
 "ljC-z5-F29.text" = "Tocca lo schermo per\nvisualizzare i controlli.";
+
+/* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "p6a-KD-zgx"; */
+"p6a-KD-zgx.text" = "Tocca lo schermo per\nvisualizzare i controlli.";

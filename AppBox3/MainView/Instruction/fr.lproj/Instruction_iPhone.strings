@@ -168,3 +168,6 @@ pour ajouter un pays";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "ljC-z5-F29"; */
 "ljC-z5-F29.text" = "Touchez l’écran pour\nafficher les commandes.";
+
+/* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "p6a-KD-zgx"; */
+"p6a-KD-zgx.text" = "Touchez l’écran pour\nafficher les commandes.";

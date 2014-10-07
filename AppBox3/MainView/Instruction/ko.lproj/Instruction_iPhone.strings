@@ -163,3 +163,6 @@
 
 /* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "ljC-z5-F29"; */
 "ljC-z5-F29.text" = "화면을 탭하여\n버튼을 표시합니다.";
+
+/* Class = "IBUILabel"; text = "tap the screen to display\nthe controls"; ObjectID = "p6a-KD-zgx"; */
+"p6a-KD-zgx.text" = "화면을 탭하여\n버튼을 표시합니다.";
