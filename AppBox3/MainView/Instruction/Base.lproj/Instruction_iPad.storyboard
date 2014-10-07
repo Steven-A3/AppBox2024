@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="s55-Nm-cjw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="s55-Nm-cjw">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -537,6 +537,12 @@ then tap Delete</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to add period" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="768" translatesAutoresizingMaskIntoConstraints="NO" id="dw0-mi-UhI" userLabel="Label - touch and hold a country, then drag it up or down">
+                                <rect key="frame" x="0.0" y="872" width="768" height="20"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to view list of periods" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="678" translatesAutoresizingMaskIntoConstraints="NO" id="k1V-zB-30E" userLabel="Label - swipe left or right to change keypad for basic/scientific">
                                 <rect key="frame" x="0.0" y="983" width="678" height="20"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -548,8 +554,10 @@ then tap Delete</string>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="Jc6-JH-cJx" firstAttribute="top" secondItem="3xr-zz-sff" secondAttribute="bottom" constant="10" id="2WU-Hi-0sQ"/>
+                            <constraint firstItem="dw0-mi-UhI" firstAttribute="leading" secondItem="Ixs-cb-aRL" secondAttribute="leading" id="33z-p7-ku4"/>
                             <constraint firstItem="F5U-ls-szF" firstAttribute="leading" secondItem="Ixs-cb-aRL" secondAttribute="leading" id="5ki-5r-AQl"/>
                             <constraint firstItem="fod-W7-3WS" firstAttribute="leading" secondItem="k1V-zB-30E" secondAttribute="trailing" constant="10" id="5qr-XM-TLP"/>
+                            <constraint firstAttribute="trailing" secondItem="dw0-mi-UhI" secondAttribute="trailing" id="6OY-XR-gg6"/>
                             <constraint firstAttribute="trailing" secondItem="F5U-ls-szF" secondAttribute="trailing" id="AbG-oR-C2W"/>
                             <constraint firstItem="3xr-zz-sff" firstAttribute="top" secondItem="Ixs-cb-aRL" secondAttribute="top" constant="34" id="DuP-1S-YrE"/>
                             <constraint firstAttribute="bottom" secondItem="fod-W7-3WS" secondAttribute="bottom" constant="10" id="Fmf-sn-1B1"/>
@@ -559,7 +567,9 @@ then tap Delete</string>
                             <constraint firstItem="Y9G-RL-Ien" firstAttribute="leading" secondItem="fod-W7-3WS" secondAttribute="trailing" constant="5" id="cTh-WC-e73"/>
                             <constraint firstItem="F5U-ls-szF" firstAttribute="top" secondItem="6We-94-7TK" secondAttribute="bottom" constant="10" id="cjt-Jc-A5x"/>
                             <constraint firstItem="k1V-zB-30E" firstAttribute="leading" secondItem="Ixs-cb-aRL" secondAttribute="leading" id="dvU-24-bK5"/>
+                            <constraint firstAttribute="centerX" secondItem="dw0-mi-UhI" secondAttribute="centerX" id="gjH-3C-3Cy"/>
                             <constraint firstAttribute="centerX" secondItem="6We-94-7TK" secondAttribute="centerX" id="i0I-lR-mh6"/>
+                            <constraint firstItem="cHd-Tc-CAz" firstAttribute="top" secondItem="dw0-mi-UhI" secondAttribute="bottom" constant="10" id="k4O-Oc-d1O"/>
                             <constraint firstItem="fod-W7-3WS" firstAttribute="top" secondItem="Y9G-RL-Ien" secondAttribute="top" constant="-5" id="pjW-kF-Uzv"/>
                             <constraint firstItem="Jc6-JH-cJx" firstAttribute="leading" secondItem="Ixs-cb-aRL" secondAttribute="leading" id="ra5-Rw-Xdq"/>
                             <constraint firstAttribute="trailing" secondItem="3xr-zz-sff" secondAttribute="trailing" constant="16" id="t69-48-00f"/>
