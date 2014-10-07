@@ -423,7 +423,16 @@ NSString *const cellID = @"flashEffectID";
     _flashBrightnessValue = !ledBrightness ? 0.5 : [ledBrightness floatValue];
     
     NSNumber *screenBrightness = [[A3UserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashBrightnessValue];
-    _screenBrightnessValue = !screenBrightness ? (_deviceBrightnessBefore * 100.0) : [screenBrightness floatValue];
+    if (!screenBrightness) {
+        _screenBrightnessValue = _deviceBrightnessBefore * 100.0;
+    }
+    else {
+        _screenBrightnessValue = [screenBrightness floatValue];
+        UIScreen *mainScreen = [UIScreen mainScreen];
+        CGFloat offset = (_screenBrightnessValue / 100.0);
+        mainScreen.brightness = MAX(0.3, offset);
+    }
+    
     NSLog(@"start screen: %f", _screenBrightnessValue);
     
     NSNumber *strobeSpeedValue = [[A3UserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashStrobeSpeedValue];
@@ -540,6 +549,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     [self.navigationController.view addSubview:self.instructionViewController.view];
     self.instructionViewController.view.frame = self.navigationController.view.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+    
+    [self flashScreenTapped:nil];
 }
 
 - (void)dismissInstructionViewController:(UIView *)view
@@ -565,7 +576,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [UIView setAnimationDuration:0.25];
         
         _topToolBarTopConst.constant = -65;
-        _bottomToolBarBottomConst.constant = -kBottomToolBarHeight;
+        _bottomToolBarBottomConst.constant = -(kBottomToolBarHeight + 5);
         _pickerViewBottomConst.constant = -(CGRectGetHeight(_pickerPanelView.bounds) + 88);
         _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
         
@@ -811,6 +822,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _LEDBrightnessToolBar.hidden = YES;
         _effectPickerView.hidden = YES;
         _pickerPanelView.hidden = YES;
+        _colorPickerView.hidden = YES;
         
         [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
