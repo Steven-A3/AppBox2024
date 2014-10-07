@@ -102,7 +102,7 @@
 			[[UIApplication sharedApplication] openURL:twitterURL];
 			break;
 		}
-		case 3: {
+		case 2: {
 			NSString *review_url = @"itms-apps://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/addUserReview?id=318404385";
 			NSURL *url = [[NSURL alloc] initWithString:review_url];
 			[[UIApplication sharedApplication] openURL:url];

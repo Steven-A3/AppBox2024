@@ -1,4 +1,7 @@
 
+/* Class = "IBUILabel"; text = "Flashlight"; ObjectID = "1LD-Du-cEp"; */
+"1LD-Du-cEp.text" = "Flashlight";
+
 /* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "2Pn-I6-0xR"; */
 "2Pn-I6-0xR.text" = "Days Counter";
 
@@ -6,8 +9,7 @@
 "2eu-dh-CwY.normalTitle" = "Use AppBox Pro";
 
 /* Class = "IBUILabel"; text = "well designed for both iPhone and iPad"; ObjectID = "3ye-4w-mZR"; */
-"3ye-4w-mZR.text" = "enhanced designed 
-for iPhone, iPod touch and iPad";
+"3ye-4w-mZR.text" = "well designed for both iPhone and iPad";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "4vD-c0-4t2"; */
 "4vD-c0-4t2.normalTitle" = "Use AppBox Pro";
@@ -27,13 +29,14 @@ for iPhone, iPod touch and iPad";
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Cyd-xI-Wjv"; */
 "Cyd-xI-Wjv.normalTitle" = "Continue";
 
+/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "D9z-d7-61u"; */
+"D9z-d7-61u.text" = "Magnifier";
+
 /* Class = "IBUILabel"; text = "Lunar Converter"; ObjectID = "DKJ-oV-07R"; */
 "DKJ-oV-07R.text" = "Lunar Converter";
 
-/* Class = "IBUILabel"; text = "easy, faster and more focused,
-64Bit and much more"; ObjectID = "Dxm-da-st4"; */
-"Dxm-da-st4.text" = "easy, faster and more focused,
-64Bit and much more";
+/* Class = "IBUILabel"; text = "easy, faster and more focused, 64Bit and much more"; ObjectID = "Dxm-da-st4"; */
+"Dxm-da-st4.text" = "easy, faster and more focused, 64Bit and much more";
 
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "EVR-ah-KPZ"; */
 "EVR-ah-KPZ.normalTitle" = "Continue";
@@ -59,8 +62,8 @@ for iPhone, iPod touch and iPad";
 /* Class = "IBUILabel"; text = "Currency Converter"; ObjectID = "TX8-le-6Df"; */
 "TX8-le-6Df.text" = "Currency Converter";
 
-/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "VV8-za-92e"; */
-"VV8-za-92e.text" = "Magnifier";
+/* Class = "IBUILabel"; text = "Mirror"; ObjectID = "VV8-za-92e"; */
+"VV8-za-92e.text" = "Mirror";
 
 /* Class = "IBUILabel"; text = "Improvements and Optimizations"; ObjectID = "X9q-e5-Qlr"; */
 "X9q-e5-Qlr.text" = "Improvements and Optimizations";
@@ -83,8 +86,8 @@ for iPhone, iPod touch and iPad";
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "bwe-yZ-jRu"; */
 "bwe-yZ-jRu.text" = "Calculator";
 
-/* Class = "IBUILabel"; text = "Mirror"; ObjectID = "cFb-hc-ow3"; */
-"cFb-hc-ow3.text" = "Mirror";
+/* Class = "IBUILabel"; text = "Random"; ObjectID = "cFb-hc-ow3"; */
+"cFb-hc-ow3.text" = "Random";
 
 /* Class = "IBUILabel"; text = "Translator"; ObjectID = "e4s-HD-NMM"; */
 "e4s-HD-NMM.text" = "Translator";
@@ -104,10 +107,8 @@ for iPhone, iPod touch and iPad";
 /* Class = "IBUILabel"; text = "What's New"; ObjectID = "k96-nV-XIl"; */
 "k96-nV-XIl.text" = "What's New";
 
-/* Class = "IBUILabel"; text = "keep your data up to date
-on all your devices"; ObjectID = "mal-lH-ucN"; */
-"mal-lH-ucN.text" = "keep your data, keep up-to-date
-on all your devices";
+/* Class = "IBUILabel"; text = "keep your data up to date on all your devices"; ObjectID = "mal-lH-ucN"; */
+"mal-lH-ucN.text" = "keep your data up to date on all your devices";
 
 /* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "noh-Kb-lie"; */
 "noh-Kb-lie.text" = "Ladies Calendar";

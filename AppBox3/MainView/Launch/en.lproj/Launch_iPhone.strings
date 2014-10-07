@@ -5,21 +5,26 @@
 /* Class = "IBUILabel"; text = "Utility"; ObjectID = "3pq-Ua-ezN"; */
 "3pq-Ua-ezN.text" = "Utility";
 
+/* Class = "IBUILabel"; text = "Mirror"; ObjectID = "3xJ-Ct-Vtk"; */
+"3xJ-Ct-Vtk.text" = "Mirror";
+
 /* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "3xh-WT-2qJ"; */
 "3xh-WT-2qJ.text" = "Ladies Calendar";
+
+/* Class = "IBUILabel"; text = "Random"; ObjectID = "4JO-f3-Yeq"; */
+"4JO-f3-Yeq.text" = "Random";
 
 /* Class = "IBUILabel"; text = "Loan Calculator"; ObjectID = "5dF-dl-Cfh"; */
 "5dF-dl-Cfh.text" = "Loan Calculator";
 
-/* Class = "IBUILabel"; text = "well designed for both iPhone and iPad"; ObjectID = "73z-Fm-nHB"; */
-"73z-Fm-nHB.text" = "enhanced designed
-for iPhone, iPod touch and iPad";
+/* Class = "IBUILabel"; text = "well designed for both \niPhone and iPad"; ObjectID = "73z-Fm-nHB"; */
+"73z-Fm-nHB.text" = "well designed for both \niPhone and iPad";
 
 /* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7KY-kl-Ksz"; */
 "7KY-kl-Ksz.text" = "Basic/Scientific Calculator";
 
-/* Class = "IBUILabel"; text = "Mirror"; ObjectID = "86S-LG-bmW"; */
-"86S-LG-bmW.text" = "Mirror";
+/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "86S-LG-bmW"; */
+"86S-LG-bmW.text" = "Magnifier";
 
 /* Class = "IBUILabel"; text = "Percent Calculator"; ObjectID = "C7O-ix-OQV"; */
 "C7O-ix-OQV.text" = "Percent Calculator";
@@ -33,10 +38,8 @@ for iPhone, iPod touch and iPad";
 /* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Ixg-rR-GNM"; */
 "Ixg-rR-GNM.normalTitle" = "Continue";
 
-/* Class = "IBUILabel"; text = "keep your data up to date
-on all your devices"; ObjectID = "K25-Dj-0hb"; */
-"K25-Dj-0hb.text" = "keep your data, keep up-to-date
-on all your devices";
+/* Class = "IBUILabel"; text = "keep your data up to date on all your devices"; ObjectID = "K25-Dj-0hb"; */
+"K25-Dj-0hb.text" = "keep your data up to date on all your devices";
 
 /* Class = "IBUILabel"; text = "Improvements and Optimizations"; ObjectID = "LH1-Sz-F5c"; */
 "LH1-Sz-F5c.text" = "Improvements and Optimizations";
@@ -56,10 +59,8 @@ on all your devices";
 /* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "XOG-GS-v6Y"; */
 "XOG-GS-v6Y.text" = "Unit Price";
 
-/* Class = "IBUILabel"; text = "easy, faster and more focused,
-64Bit and much more"; ObjectID = "ZZQ-VK-PjS"; */
-"ZZQ-VK-PjS.text" = "easy, faster and more focused,
-64Bit and much more";
+/* Class = "IBUILabel"; text = "easy, faster and more focused, 64Bit and much more"; ObjectID = "ZZQ-VK-PjS"; */
+"ZZQ-VK-PjS.text" = "easy, faster and more focused, 64Bit and much more";
 
 /* Class = "IBUILabel"; text = "Expense List"; ObjectID = "c42-0X-ouA"; */
 "c42-0X-ouA.text" = "Expense List";
@@ -109,8 +110,8 @@ on all your devices";
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "mUw-5N-ug2"; */
 "mUw-5N-ug2.normalTitle" = "Use AppBox Pro";
 
-/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "ni3-pI-wdj"; */
-"ni3-pI-wdj.text" = "Magnifier";
+/* Class = "IBUILabel"; text = "Flashlight"; ObjectID = "ni3-pI-wdj"; */
+"ni3-pI-wdj.text" = "Flashlight";
 
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "pMI-GK-toN"; */
 "pMI-GK-toN.text" = "Calculator";

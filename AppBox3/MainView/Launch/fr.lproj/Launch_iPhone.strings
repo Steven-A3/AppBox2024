@@ -17,9 +17,6 @@
 /* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7KY-kl-Ksz"; */
 "7KY-kl-Ksz.text" = "Élémentaire/Scientifique";
 
-/* Class = "IBUILabel"; text = "Mirror"; ObjectID = "86S-LG-bmW"; */
-"86S-LG-bmW.text" = "Miroir";
-
 /* Class = "IBUILabel"; text = "Percent Calculator"; ObjectID = "C7O-ix-OQV"; */
 "C7O-ix-OQV.text" = "Calculette de pourcentage";
 
@@ -108,9 +105,6 @@ sur tous vos dispositifs";
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "mUw-5N-ug2"; */
 "mUw-5N-ug2.normalTitle" = "Utiliser AppBox Pro";
 
-/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "ni3-pI-wdj"; */
-"ni3-pI-wdj.text" = "Magnifier";
-
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "pMI-GK-toN"; */
 "pMI-GK-toN.text" = "Calculette";
 
@@ -134,3 +128,14 @@ sur tous vos dispositifs";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "xk9-a9-WGh"; */
 "xk9-a9-WGh.normalTitle" = "Utiliser AppBox Pro";
+
+"3xJ-Ct-Vtk.text" = "Miroir";  // Mirror
+"4JO-f3-Yeq.text" = "Aléatoire";  // Random
+
+/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "86S-LG-bmW"; */
+"86S-LG-bmW.text" = "Magnifier";
+
+/* Class = "IBUILabel"; text = "Flashlight"; ObjectID = "ni3-pI-wdj"; */
+"ni3-pI-wdj.text" = "Lampe de poche";
+
+

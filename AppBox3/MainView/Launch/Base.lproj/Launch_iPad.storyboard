@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="yAf-s0-c7R">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="yAf-s0-c7R">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -745,15 +745,15 @@
                                         <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Ao-cl-gMQ">
-                                        <rect key="frame" x="162" y="370" width="606" height="1"/>
+                                        <rect key="frame" x="162" y="310" width="606" height="1"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kZW-bu-vyd">
-                                        <rect key="frame" x="162" y="511" width="606" height="1"/>
+                                        <rect key="frame" x="162" y="565" width="606" height="1"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F8T-kE-kUz">
-                                        <rect key="frame" x="162" y="652" width="606" height="1"/>
+                                        <rect key="frame" x="162" y="650" width="606" height="1"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Utility" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fFN-V5-j3K">
@@ -766,13 +766,13 @@
                                         <rect key="frame" x="121" y="192" width="29" height="29"/>
                                     </imageView>
                                     <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="Clock" translatesAutoresizingMaskIntoConstraints="NO" id="Y3B-yV-T9h">
-                                        <rect key="frame" x="121" y="333" width="29" height="29"/>
+                                        <rect key="frame" x="121" y="273" width="29" height="29"/>
                                     </imageView>
-                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="Magnifier" translatesAutoresizingMaskIntoConstraints="NO" id="R6m-yR-BBL">
-                                        <rect key="frame" x="121" y="474" width="29" height="29"/>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="Mirror" translatesAutoresizingMaskIntoConstraints="NO" id="R6m-yR-BBL">
+                                        <rect key="frame" x="121" y="528" width="29" height="29"/>
                                     </imageView>
-                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="Mirror" translatesAutoresizingMaskIntoConstraints="NO" id="PiC-wk-4B7">
-                                        <rect key="frame" x="121" y="615" width="29" height="29"/>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="Random" translatesAutoresizingMaskIntoConstraints="NO" id="PiC-wk-4B7">
+                                        <rect key="frame" x="121" y="613" width="29" height="29"/>
                                     </imageView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Battery Status" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zic-Ru-M9D">
                                         <rect key="frame" x="162" y="183" width="606" height="47"/>
@@ -780,17 +780,41 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Clock" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pqo-MO-BYd">
-                                        <rect key="frame" x="162" y="324" width="606" height="47"/>
+                                        <rect key="frame" x="162" y="264" width="606" height="47"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="33"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Magnifier" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VV8-za-92e">
-                                        <rect key="frame" x="162" y="465" width="606" height="47"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Mirror" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VV8-za-92e">
+                                        <rect key="frame" x="162" y="519" width="606" height="47"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="33"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Mirror" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cFb-hc-ow3">
-                                        <rect key="frame" x="162" y="606" width="606" height="47"/>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d4R-MC-e0x">
+                                        <rect key="frame" x="162" y="478" width="606" height="1"/>
+                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="Magnifier" translatesAutoresizingMaskIntoConstraints="NO" id="AKQ-xv-Euk">
+                                        <rect key="frame" x="121" y="441" width="29" height="29"/>
+                                    </imageView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Magnifier" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D9z-d7-61u">
+                                        <rect key="frame" x="162" y="432" width="606" height="47"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Cz-dx-UD9">
+                                        <rect key="frame" x="162" y="391" width="606" height="1"/>
+                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="Flashlight" translatesAutoresizingMaskIntoConstraints="NO" id="POx-du-hDM">
+                                        <rect key="frame" x="121" y="354" width="29" height="29"/>
+                                    </imageView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Flashlight" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1LD-Du-cEp">
+                                        <rect key="frame" x="162" y="345" width="606" height="47"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Random" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cFb-hc-ow3">
+                                        <rect key="frame" x="162" y="604" width="606" height="47"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="33"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -839,6 +863,7 @@
         <image name="DateCalculator" width="29" height="29"/>
         <image name="DaysCounter" width="29" height="29"/>
         <image name="ExpenseList" width="29" height="29"/>
+        <image name="Flashlight" width="29" height="29"/>
         <image name="Holidays" width="29" height="29"/>
         <image name="LadyCalendar" width="29" height="29"/>
         <image name="LoanCalculator" width="29" height="29"/>
@@ -846,6 +871,7 @@
         <image name="Magnifier" width="29" height="29"/>
         <image name="Mirror" width="29" height="29"/>
         <image name="PercentCalculator" width="29" height="29"/>
+        <image name="Random" width="29" height="29"/>
         <image name="SalesCalculator" width="29" height="29"/>
         <image name="TipCalculator" width="29" height="29"/>
         <image name="Translator" width="29" height="29"/>

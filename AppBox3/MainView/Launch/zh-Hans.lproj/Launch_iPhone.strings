@@ -17,9 +17,6 @@
 /* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7KY-kl-Ksz"; */
 "7KY-kl-Ksz.text" = "基本型/科学型计算器";
 
-/* Class = "IBUILabel"; text = "Mirror"; ObjectID = "86S-LG-bmW"; */
-"86S-LG-bmW.text" = "镜子";
-
 /* Class = "IBUILabel"; text = "Percent Calculator"; ObjectID = "C7O-ix-OQV"; */
 "C7O-ix-OQV.text" = "百分比计算器";
 
@@ -107,9 +104,6 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "mUw-5N-ug2"; */
 "mUw-5N-ug2.normalTitle" = "使用 AppBox Pro";
 
-/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "ni3-pI-wdj"; */
-"ni3-pI-wdj.text" = "放大镜";
-
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "pMI-GK-toN"; */
 "pMI-GK-toN.text" = "计算器";
 
@@ -133,3 +127,13 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "xk9-a9-WGh"; */
 "xk9-a9-WGh.normalTitle" = "使用 AppBox Pro";
+
+"3xJ-Ct-Vtk.text" = "镜子";  // Mirror
+"4JO-f3-Yeq.text" = "随机数据生成";  // Random
+
+/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "86S-LG-bmW"; */
+"86S-LG-bmW.text" = "放大镜";
+
+/* Class = "IBUILabel"; text = "Flashlight"; ObjectID = "ni3-pI-wdj"; */
+"ni3-pI-wdj.text" = "手电灯";
+

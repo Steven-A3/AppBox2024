@@ -58,9 +58,6 @@ a 64Bit e molto altro";
 /* Class = "IBUILabel"; text = "Currency Converter"; ObjectID = "TX8-le-6Df"; */
 "TX8-le-6Df.text" = "Convertitore Valuta";
 
-/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "VV8-za-92e"; */
-"VV8-za-92e.text" = "Lente d'ingrandimento";
-
 /* Class = "IBUILabel"; text = "Improvements and Optimizations"; ObjectID = "X9q-e5-Qlr"; */
 "X9q-e5-Qlr.text" = "Miglioramenti ed ottimizzazioni";
 
@@ -81,9 +78,6 @@ a 64Bit e molto altro";
 
 /* Class = "IBUILabel"; text = "Calculator"; ObjectID = "bwe-yZ-jRu"; */
 "bwe-yZ-jRu.text" = "Calcolatrice";
-
-/* Class = "IBUILabel"; text = "Mirror"; ObjectID = "cFb-hc-ow3"; */
-"cFb-hc-ow3.text" = "Specchio";
 
 /* Class = "IBUILabel"; text = "Translator"; ObjectID = "e4s-HD-NMM"; */
 "e4s-HD-NMM.text" = "Traduttore";
@@ -134,3 +128,12 @@ su tutti i tuoi dispositivi";
 
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "zB9-QC-DdP"; */
 "zB9-QC-DdP.normalTitle" = "Usa AppBox Pro";
+
+/* Class = "IBUILabel"; text = "Random"; ObjectID = "cFb-hc-ow3"; */
+"cFb-hc-ow3.text" = "Casuale";
+
+/* Class = "IBUILabel"; text = "Mirror"; ObjectID = "VV8-za-92e"; */
+"VV8-za-92e.text" = "Specchio";
+
+"1LD-Du-cEp.text" = "Torcia";  // Flashlight
+"D9z-d7-61u.text" = "Lente d'ingrandimento";  // Magnifier
