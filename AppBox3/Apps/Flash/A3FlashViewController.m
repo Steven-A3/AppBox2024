@@ -1284,6 +1284,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     [[A3UserDefaults standardUserDefaults] synchronize];
     
     [self startStrobeLightEffectForIndex:_selectedEffectIndex];
+    [self startTimerToHideMenu];
 }
 
 
