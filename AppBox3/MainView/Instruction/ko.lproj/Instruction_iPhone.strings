@@ -42,7 +42,7 @@
 "EHY-52-AW9.text" = "탭하여 색상을 바꿉니다.";
 
 /* Class = "IBUILabel"; text = "slide the item to left,\nthen tap Delete"; ObjectID = "FNw-cz-Xbp"; */
-"FNw-cz-Xbp.text" = "항목을                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      왼쪽으로 밀면\n지울 수 있습니다.";
+"FNw-cz-Xbp.text" = "항목을 왼쪽으로 밀면\n지울 수 있습니다.";
 
 /* Class = "IBUILabel"; text = "tap to see more categories"; ObjectID = "Hom-fh-Uyk"; */
 "Hom-fh-Uyk.text" = "탭하면 더 많은 카테고리를\n볼 수 있습니다.";
