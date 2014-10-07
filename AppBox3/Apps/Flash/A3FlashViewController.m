@@ -482,7 +482,6 @@ NSString *const cellID = @"flashEffectID";
 
 
 - (void)showHUD {
-    return;
     [self hideHUD];
     
     self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
