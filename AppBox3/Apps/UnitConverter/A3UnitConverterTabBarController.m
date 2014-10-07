@@ -65,11 +65,15 @@
 }
 
 - (void)resetSelectedTab {
-	NSInteger unitID = [[A3SyncManager sharedSyncManager] integerForKey:A3UnitConverterDefaultSelectedCategoryID];
-	NSArray *allCategories = [self.dataManager allCategories];
-	NSInteger vcIdx = [allCategories indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-		return [obj[ID_KEY] unsignedIntegerValue] == unitID;
-	}];
+    id defaultID = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitConverterDefaultSelectedCategoryID];
+	NSInteger vcIdx = 0;
+    if (defaultID) {
+        NSInteger unitID = [defaultID integerValue];
+        NSArray *allCategories = [self.dataManager allCategories];
+		vcIdx = [allCategories indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+				return [obj[ID_KEY] unsignedIntegerValue] == unitID;
+			}];
+    }
 
 	if (vcIdx > [self.viewControllers count] - 1) {
 		self.selectedViewController = [self.viewControllers lastObject];
@@ -152,11 +156,11 @@
         converterViewController.categoryID = categoryID;
         converterViewController.title = categoryName;
 		converterViewController.dataManager = _dataManager;
-        
+
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:converterViewController];
         navigationController.tabBarItem.image = [UIImage imageNamed:[_dataManager iconNameForID:categoryID]];
         navigationController.tabBarItem.selectedImage = [UIImage imageNamed:[_dataManager selectedIconNameForID:categoryID]];
-        
+
         NSArray *unitNameArray = [categoryName componentsSeparatedByString:@" "];
         if (unitNameArray.count > 1) {
             if (IS_IPHONE) {
