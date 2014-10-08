@@ -620,7 +620,9 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView {
-    
+	self.items = nil;
+    _filteredResults = nil;
+	[self.tableView reloadData];
 }
 
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
@@ -771,37 +773,44 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the specified item to be editable.
-    return indexPath.row != 0;
+    return !_dataEmpty;
 }
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        WalletItem *item = self.items[indexPath.row];
-		[self.items removeObject:item];
+		WalletItem *item;
+		if ([_filteredResults count]) {
+			item = _filteredResults[indexPath.row];
 
-		if ([self.items count] == 1) {
-			_dataEmpty = YES;
-			[self.items addObject:self.emptyItem];
-			[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-		} else {
+			NSMutableArray *newArray = [_filteredResults mutableCopy];
+			[newArray removeObject:item];
+			_filteredResults = newArray;
+
 			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		} else {
+			item = self.items[indexPath.row];
+			[self.items removeObject:item];
+
+			// Delete the row from the data source
+			if ([self.items count] == 1) {
+				_dataEmpty = YES;
+				[self.items addObject:self.emptyItem];
+				[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+			} else {
+				[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			}
 		}
 
 		// 버튼 기능 활성화 여부
-        [self itemCountCheck];
+		[self itemCountCheck];
 		if (_topViewRef) {
 			[self updateTopViewInfo:_topViewRef];
 		}
 		[item deleteWalletItemInContext:[NSManagedObjectContext MR_defaultContext]];
 		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }
+	}
 }
 
 // Override to support conditional rearranging of the table view.
