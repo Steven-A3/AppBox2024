@@ -155,8 +155,6 @@
 																  }
 
 															  }];
-										 FNLOG(@"%@", _availablePhotos);
-										 FNLOG(@"%ld", (long)[_availablePhotos count]);
 
 										 if (self.capturedPhotoURL) {
 											 [self.assetLibrary assetForURL:self.capturedPhotoURL resultBlock:^(ALAsset *asset) {

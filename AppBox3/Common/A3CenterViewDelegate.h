@@ -13,6 +13,7 @@
 - (void)cleanUp;
 
 @optional
+- (void)prepareClose;
 - (BOOL)usesFullScreenInLandscape;
 - (BOOL)hidesNavigationBar;
 

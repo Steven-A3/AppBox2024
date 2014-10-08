@@ -20,6 +20,7 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 #import "WalletCategory.h"
+#import "A3CenterViewDelegate.h"
 
 #define kDefaultTabSelection    1	// default tab value is 0 (tab #1), stored in A3UserDefaults
 
@@ -135,6 +136,18 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 
 - (void)cleanUp {
 	[self removeObserver];
+}
+
+- (void)prepareClose {
+	for (UIViewController *childViewController in self.viewControllers) {
+		if ([childViewController isKindOfClass:[UINavigationController class]]) {
+			UINavigationController *navigationController = (UINavigationController *)childViewController;
+			UIViewController<A3CenterViewDelegate> *contentViewController = navigationController.viewControllers[0];
+			if ([contentViewController respondsToSelector:@selector(prepareClose)]) {
+				[contentViewController prepareClose];
+			}
+		}
+	}
 }
 
 - (void)didReceiveMemoryWarning

@@ -120,10 +120,13 @@
 	}
 }
 
-- (void)cleanUp {
+- (void)prepareClose {
 	[self dismissInstructionViewController:nil];
 	[self removeObserver];
 	[UIDevice currentDevice].batteryMonitoringEnabled = NO;
+}
+
+- (void)cleanUp {
 }
 
 - (void)dealloc {

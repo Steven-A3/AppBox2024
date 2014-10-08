@@ -143,19 +143,22 @@
 	}
 }
 
-- (void)cleanUp {
+- (void)prepareClose {
 	[self dismissInstructionViewController:nil];
-    [[UIScreen mainScreen] setBrightness:_originalBrightness];
-    [_autoDimTimer invalidate];
-    _autoDimTimer = nil;
+	[[UIScreen mainScreen] setBrightness:_originalBrightness];
+	[_autoDimTimer invalidate];
+	_autoDimTimer = nil;
 
-    [self removeObserver];
+	[self removeObserver];
 	[_clockDataManager cleanUp];
 	[_buttonsTimer invalidate];
 	_buttonsTimer = nil;
 
-    FNLOG(@"[[UIApplication sharedApplication] setIdleTimerDisabled:NO];");
-    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+	FNLOG(@"[[UIApplication sharedApplication] setIdleTimerDisabled:NO];");
+	[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+}
+
+- (void)cleanUp {
 }
 
 - (void)dealloc {

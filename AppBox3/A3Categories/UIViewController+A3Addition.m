@@ -34,6 +34,14 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 	[self removeObserver];
 }
 
+- (void)prepareClose {
+	[self dismissInstructionViewController:nil];
+}
+
+- (void)dismissInstructionViewController:(id)sender {
+
+}
+
 - (CGRect)screenBoundsAdjustedWithOrientation {
 	CGRect bounds = [[UIScreen mainScreen] bounds];
 	#ifdef __IPHONE_8_0
@@ -50,6 +58,16 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 	}
 	#endif
 	return bounds;
+}
+
+- (void)callPrepareCloseOnActiveMainAppViewController {
+	UINavigationController *navigationController = [[A3AppDelegate instance] navigationController];
+	if ([navigationController.viewControllers count] > 1) {
+		UIViewController<A3CenterViewDelegate> *activeMainAppViewController = navigationController.viewControllers[1];
+		if ([activeMainAppViewController respondsToSelector:@selector(prepareClose)]) {
+			[activeMainAppViewController prepareClose];
+		}
+	}
 }
 
 - (void)popToRootAndPushViewController:(UIViewController *)viewController {
@@ -133,63 +151,6 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 
     if (viewController) {
         [navigationController pushViewController:viewController animated:NO];
-    }
-}
-
-- (void)popToRootAndPushViewController:(UIViewController *)viewController animate:(BOOL)animate
-{
-    UINavigationController *navigationController;
-    
-	if (IS_IPHONE) {
-		navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
-		[self.mm_drawerController closeDrawerAnimated:animate completion:nil];
-	} else {
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
-		navigationController = [rootViewController centerNavigationController];
-	}
-    
-	[navigationController setToolbarHidden:YES];
-    
-	BOOL hidesNavigationBar = NO;
-	UIViewController<A3CenterViewDelegate> *targetViewController = (UIViewController <A3CenterViewDelegate> *) viewController;
-	if ([viewController respondsToSelector:@selector(hidesNavigationBar)]) {
-		hidesNavigationBar = [targetViewController hidesNavigationBar];
-	}
-    if (hidesNavigationBar) {
-        [navigationController setNavigationBarHidden:YES animated:NO];
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
-        
-        UIImage *image = [UIImage new];
-        [navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-        [navigationController.navigationBar setShadowImage:image];
-    } else {
-        [navigationController setNavigationBarHidden:NO animated:animate];
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:(animate ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone)];
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:animate];
-        
-        [navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        [navigationController.navigationBar setShadowImage:nil];
-    }
-    
-	NSArray *poppedVCs = [navigationController popToRootViewControllerAnimated:NO];
-	for (UIViewController<A3CenterViewDelegate> *vc in poppedVCs) {
-		if ([vc respondsToSelector:@selector(cleanUp)]) {
-			[vc performSelector:@selector(cleanUp)];
-		}
-	}
-    
-	if (IS_IPAD) {
-		BOOL usesFullScreenInLandscape = NO;
-		if ([viewController respondsToSelector:@selector(usesFullScreenInLandscape)]) {
-			usesFullScreenInLandscape = [targetViewController usesFullScreenInLandscape];
-		}
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
-        [rootViewController animateHideLeftViewForFullScreenCenterView:usesFullScreenInLandscape];
-	}
-    
-    if (viewController) {
-        [navigationController pushViewController:viewController animated:animate];
     }
 }
 

@@ -391,15 +391,19 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 #pragma mark - action method
 
 - (IBAction)photoViewAction:(id)sender {
-    A3DaysCounterSlideShowMainViewController *viewCtrl = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];
+	[self callPrepareCloseOnActiveMainAppViewController];
+
+	A3DaysCounterSlideShowMainViewController *viewCtrl = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
-    [self popToRootAndPushViewController:viewCtrl animate:NO];
+    [self popToRootAndPushViewController:viewCtrl];
 }
 
 - (IBAction)calendarViewAction:(id)sender {
-    A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
+	[self callPrepareCloseOnActiveMainAppViewController];
+
+	A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
-    [self popToRootAndPushViewController:viewCtrl animate:NO];
+    [self popToRootAndPushViewController:viewCtrl];
 }
 
 - (IBAction)addEventAction:(id)sender {
@@ -417,9 +421,11 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 }
 
 - (IBAction)reminderAction:(id)sender {
+	[self callPrepareCloseOnActiveMainAppViewController];
+
     A3DaysCounterReminderListViewController *viewCtrl = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
-    [self popToRootAndPushViewController:viewCtrl animate:NO];
+    [self popToRootAndPushViewController:viewCtrl];
 }
 
 - (void)editAction:(id)sender

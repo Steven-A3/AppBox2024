@@ -229,6 +229,11 @@
 	[self removeObserver];
 }
 
+- (void)prepareClose {
+	[self dismissInstructionViewController:nil];
+	[self removeObserver];
+}
+
 - (void)cleanUp {
 	[self dismissInstructionViewController:nil];
 	[self removeObserver];
@@ -403,9 +408,11 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 #pragma mark - action method
 - (IBAction)photoViewAction:(id)sender {
-    A3DaysCounterSlideShowMainViewController *viewCtrl = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];
+	[self callPrepareCloseOnActiveMainAppViewController];
+
+	A3DaysCounterSlideShowMainViewController *viewCtrl = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
-    [self popToRootAndPushViewController:viewCtrl animate:NO];
+    [self popToRootAndPushViewController:viewCtrl];
 }
 
 - (IBAction)addEventAction:(id)sender {
@@ -433,15 +440,19 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 }
 
 - (IBAction)reminderAction:(id)sender {
-    A3DaysCounterReminderListViewController *viewCtrl = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
+	[self callPrepareCloseOnActiveMainAppViewController];
+
+	A3DaysCounterReminderListViewController *viewCtrl = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
-    [self popToRootAndPushViewController:viewCtrl animate:NO];
+    [self popToRootAndPushViewController:viewCtrl];
 }
 
 - (IBAction)favoriteAction:(id)sender {
-    A3DaysCounterFavoriteListViewController *viewCtrl = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];
+	[self callPrepareCloseOnActiveMainAppViewController];
+
+	A3DaysCounterFavoriteListViewController *viewCtrl = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
-    [self popToRootAndPushViewController:viewCtrl animate:NO];
+    [self popToRootAndPushViewController:viewCtrl];
 }
 
 - (IBAction)editAction:(id)sender {

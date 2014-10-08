@@ -239,14 +239,12 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			__typeof(self) __weak weakSelf = self;
 
 			element.onSelected = ^(A3TableViewElement *elementObject) {
-				self.activeAppName = elementObject.title;
 				FNLOG(@"self.activeAppName = %@", self.activeAppName);
 				A3TableViewMenuElement *menuElement = (A3TableViewMenuElement *) elementObject;
-				UIViewController *targetViewController= [self getViewControllerForElement:menuElement];
 
 				BOOL proceedPasscodeCheck = NO;
 				// Check active view controller
-				if (![weakSelf isActiveViewController:[targetViewController class]]) {
+				if (![self.activeAppName isEqualToString:elementObject.title]) {
 					if (   [A3KeychainUtils getPassword]
 						&& [menuElement securitySettingsIsOn]
 						&& [[A3AppDelegate instance] didPasscodeTimerEnd]
@@ -269,6 +267,9 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 						}
 						[_passcodeViewController showLockScreenInViewController:passcodeTargetViewController];
 					} else {
+						[self callPrepareCloseOnActiveMainAppViewController];
+
+						UIViewController *targetViewController= [self getViewControllerForElement:menuElement];
 						[weakSelf popToRootAndPushViewController:targetViewController];
 						[weakSelf updateRecentlyUsedAppsWithElement:menuElement];
 
@@ -278,8 +279,10 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 							}];
 						}
 					}
+					self.activeAppName = elementObject.title;
 				}
-                else {
+                else
+				{
 					if (IS_IPHONE) {
 						[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
 							[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
@@ -289,9 +292,6 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 					}
 				}
                 
-                if ([targetViewController isKindOfClass:[A3ClockMainViewController class]]) {
-                    [((A3ClockMainViewController *)targetViewController) setupInstructionView];
-                }
 			};
 			[elementsArray addObject:element];
 		}
@@ -448,13 +448,17 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
         }];
     }
     if (!success && _pushClockViewControllerOnPasscodeFailure) {
-        _pushClockViewControllerOnPasscodeFailure = NO;
+		[self callPrepareCloseOnActiveMainAppViewController];
+
+		_pushClockViewControllerOnPasscodeFailure = NO;
         A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
         [self popToRootAndPushViewController:clockVC];
 
         return;
     }
 	if (success && _selectedElement) {
+		[self callPrepareCloseOnActiveMainAppViewController];
+
 		UIViewController *viewController = [self getViewControllerForElement:(A3TableViewMenuElement *) _selectedElement];
 		[self popToRootAndPushViewController:viewController];
 		[self updateRecentlyUsedAppsWithElement:(A3TableViewMenuElement *) _selectedElement];

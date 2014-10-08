@@ -15,6 +15,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "UIViewController+A3Addition.h"
+#import "A3CenterViewDelegate.h"
 
 @interface A3UnitConverterTabBarController ()
 
@@ -55,6 +56,18 @@
     [self resetSelectedTab];
     
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+}
+
+- (void)prepareClose {
+	for (UIViewController *childViewController in self.viewControllers) {
+		if ([childViewController isKindOfClass:[UINavigationController class]]) {
+			UINavigationController *navigationController = (UINavigationController *)childViewController;
+			UIViewController<A3CenterViewDelegate> *contentViewController = navigationController.viewControllers[0];
+			if ([contentViewController respondsToSelector:@selector(prepareClose)]) {
+				[contentViewController prepareClose];
+			}
+		}
+	}
 }
 
 - (A3UnitDataManager *)dataManager {
