@@ -886,6 +886,9 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
 
+        _screenBrightnessMinButton.image = [UIImage imageNamed:@"f_flash_black"];
+        _screenBrightnessMaxButton.image = [UIImage imageNamed:@"f_flash_white"];
+
         [self alphaSliderValueChanged:nil];
         return;
     }
