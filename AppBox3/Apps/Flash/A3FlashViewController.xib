@@ -79,7 +79,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="1cU-rE-Hbf"/>
-                        <barButtonItem image="information" id="WXn-ZS-ayf">
+                        <barButtonItem image="help" id="WXn-ZS-ayf">
                             <connections>
                                 <action selector="detailInfoButtonTouchUp:" destination="-1" id="aLk-z4-PnP"/>
                             </connections>
@@ -99,7 +99,7 @@
                                 <rect key="frame" x="9" y="11" width="23" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="f_flash_black" translatesAutoresizingMaskIntoConstraints="NO" id="9f0-Qb-wCA">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="f_color_brightness_left" translatesAutoresizingMaskIntoConstraints="NO" id="9f0-Qb-wCA">
                                         <rect key="frame" x="0.0" y="0.0" width="23" height="23"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
@@ -121,7 +121,7 @@
                                 <rect key="frame" x="289" y="11" width="23" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="f_flash_white" translatesAutoresizingMaskIntoConstraints="NO" id="qdC-1j-MBb">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="f_color_brightness_right" translatesAutoresizingMaskIntoConstraints="NO" id="qdC-1j-MBb">
                                         <rect key="frame" x="0.0" y="0.0" width="23" height="23"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
@@ -145,7 +145,7 @@
                                 <rect key="frame" x="9" y="11" width="23" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="f_color_brightness_left" translatesAutoresizingMaskIntoConstraints="NO" id="AMX-fA-AyD">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="f_flash_black" translatesAutoresizingMaskIntoConstraints="NO" id="AMX-fA-AyD">
                                         <rect key="frame" x="0.0" y="0.0" width="23" height="23"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
@@ -167,7 +167,7 @@
                                 <rect key="frame" x="289" y="11" width="23" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="f_color_brightness_right" translatesAutoresizingMaskIntoConstraints="NO" id="ael-h3-guQ">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="f_flash_white" translatesAutoresizingMaskIntoConstraints="NO" id="ael-h3-guQ">
                                         <rect key="frame" x="0.0" y="0.0" width="23" height="23"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
@@ -317,6 +317,6 @@
         <image name="f_flash_black" width="23" height="23"/>
         <image name="f_flash_on" width="60" height="60"/>
         <image name="f_flash_white" width="23" height="23"/>
-        <image name="information" width="22" height="22"/>
+        <image name="help" width="22" height="22"/>
     </resources>
 </document>

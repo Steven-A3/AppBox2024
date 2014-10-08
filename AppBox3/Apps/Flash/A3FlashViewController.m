@@ -253,9 +253,6 @@ NSString *const cellID = @"flashEffectID";
     if (IS_IPAD) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
     }
-    
-    
-    self.flashBrightnessMinButton.image = [[UIImage imageNamed:@"f_flash_black"] tintedImageWithColor:[UIColor grayColor]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -715,9 +712,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     UIScreen *mainScreen = [UIScreen mainScreen];
     
     mainScreen.brightness = MAX(0.3, offset);
-    if (!_isTorchOn) {
-        _contentImageView.backgroundColor = [UIColor colorWithRed:offset green:offset blue:offset alpha:1.0];
-    }
+
+    _contentImageView.backgroundColor = [UIColor colorWithRed:offset green:offset blue:offset alpha:1.0];
     
     [self adjustToolBarColorToPreventVeryWhiteColor];
     
@@ -878,6 +874,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+
         [self alphaSliderValueChanged:nil];
         return;
     }
@@ -887,6 +884,9 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
         [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         _flashBrightnessSlider.value = _flashBrightnessValue;
+        _screenBrightnessMinButton.image = [UIImage imageNamed:@"f_flash_black"];
+        _screenBrightnessMaxButton.image = [UIImage imageNamed:@"f_flash_white"];
+        [self alphaSliderValueChanged:nil];
     }
     else {
         [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
@@ -898,6 +898,10 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [_sliderControl setMinimumValue:0.0];
         [_sliderControl setMaximumValue:100.0];
         [_sliderControl setValue:_screenBrightnessValue];
+
+        _screenBrightnessMinButton.image = [UIImage imageNamed:@"f_color_brightness_left"];
+        _screenBrightnessMaxButton.image = [UIImage imageNamed:@"f_color_brightness_right"];
+        
         
         if (IS_IPAD) {
             CGFloat offset = CGRectGetHeight(self.view.bounds) - CGRectGetHeight(_topToolBar.bounds) - CGRectGetHeight(_sliderControl.bounds) - CGRectGetHeight(_bottomToolBar.bounds) - CGRectGetHeight(_colorPickerView.bounds) - 20;
@@ -924,6 +928,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [_sliderControl setMinimumValue:-80.0];
         [_sliderControl setMaximumValue:80.0];
         [_sliderControl setValue:_strobeSpeedFactor];
+        _screenBrightnessMinButton.image = [UIImage imageNamed:@"m_zoomout"];
+        _screenBrightnessMaxButton.image = [UIImage imageNamed:@"m_zoomin"];
         
         [_effectPickerView selectRow:_selectedEffectIndex inComponent:0 animated:NO];
         
@@ -952,7 +958,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 #pragma mark - LED Related
 - (void)setTorchOn {
-#if !TARGET_IPHONE_SIMULATOR
 	Class myClass = NSClassFromString(@"AVCaptureDevice");
 	if (!myClass) {
 		return;
@@ -972,15 +977,9 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     }
 	
 	[myTorch unlockForConfiguration];
-
-    if (_currentFlashViewMode == A3FlashViewModeTypeLED) {
-        _contentImageView.backgroundColor = [UIColor blackColor];
-    }
-#endif
 }
 
 - (void)setTorchOff {
-//#if !TARGET_IPHONE_SIMULATOR
 	Class myClass = NSClassFromString(@"AVCaptureDevice");
 	if (!myClass) {
 		return;
@@ -997,7 +996,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     if (_currentFlashViewMode & A3FlashViewModeTypeColor) {
         _contentImageView.backgroundColor = _selectedColor;
     }
-//#endif
 }
 
 - (void)toggleTorch {
