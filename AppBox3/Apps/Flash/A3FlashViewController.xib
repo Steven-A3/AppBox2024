@@ -275,11 +275,11 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="CyN-5t-mnB" secondAttribute="bottom" id="0eR-6N-myT"/>
-                <constraint firstItem="DZe-m5-3wU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="5gN-Hh-ufF"/>
                 <constraint firstAttribute="bottom" secondItem="xzf-yf-ykM" secondAttribute="bottom" id="5rT-W1-Jxh"/>
                 <constraint firstAttribute="trailing" secondItem="gPl-q8-ipV" secondAttribute="trailing" id="7gc-Xd-Las"/>
                 <constraint firstItem="eei-Fu-sIu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="9Qt-nF-qw2"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="EeY-IL-v5n"/>
+                <constraint firstAttribute="centerX" secondItem="DZe-m5-3wU" secondAttribute="centerX" id="Epa-gh-Inl"/>
                 <constraint firstItem="2hZ-lZ-LJE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="H6y-o7-Yyv"/>
                 <constraint firstAttribute="bottom" secondItem="0cB-eB-uh6" secondAttribute="bottom" id="JyY-xt-XBm"/>
                 <constraint firstAttribute="trailing" secondItem="x8x-tH-EhC" secondAttribute="trailing" id="KHF-po-NbS"/>
@@ -304,7 +304,6 @@
                 <constraint firstItem="DZe-m5-3wU" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="84" id="nbO-T0-RKV"/>
                 <constraint firstItem="x8x-tH-EhC" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="smG-UI-y0d"/>
                 <constraint firstItem="lV0-Pf-aVj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="uVQ-OV-orJ"/>
-                <constraint firstAttribute="trailing" secondItem="DZe-m5-3wU" secondAttribute="trailing" id="zG3-8P-9uo"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>

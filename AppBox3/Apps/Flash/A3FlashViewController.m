@@ -262,6 +262,7 @@ NSString *const cellID = @"flashEffectID";
     [super viewWillAppear:animated];
     
     if ([self isMovingToParentViewController]) {
+        _showAllMenu = YES;
         [self configureFlashViewMode:_currentFlashViewMode animation:NO];
 
         if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
@@ -290,6 +291,16 @@ NSString *const cellID = @"flashEffectID";
     else {
         [self.sliderControl setFrame:CGRectMake(self.sliderControl.frame.origin.x, self.sliderControl.frame.origin.y, screenBounds.size.width - 98, self.sliderControl.frame.size.height)];
         [self.flashBrightnessSlider setFrame:CGRectMake(self.flashBrightnessSlider.frame.origin.x, self.flashBrightnessSlider.frame.origin.y , screenBounds.size.width - 98, self.flashBrightnessSlider.frame.size.height)];
+    }
+    
+    if (IS_IPAD && (_currentFlashViewMode & A3FlashViewModeTypeColor)) {
+        if (_showAllMenu) {
+            CGFloat offset = CGRectGetHeight(self.view.bounds) - CGRectGetHeight(_topToolBar.bounds) - CGRectGetHeight(_sliderControl.bounds) - CGRectGetHeight(_bottomToolBar.bounds) - CGRectGetHeight(_colorPickerView.bounds) - 20;
+            _colorPickerTopConst.constant = offset / 2 + CGRectGetHeight(_topToolBar.bounds) + 10;
+        }
+        else {
+            _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
+        }
     }
 }
 
@@ -460,8 +471,8 @@ NSString *const cellID = @"flashEffectID";
     _colorPickerView.color = _selectedColor;
     
     if (IS_IPAD) {
-        _colorPickerHeightConst.constant = 960;
-        _colorPickerWidthConst.constant = 640;
+        _colorPickerHeightConst.constant = 510;
+        _colorPickerWidthConst.constant = 510;
     }
     else {
         _colorPickerHeightConst.constant = IS_IPHONE35 ? 366 : 480;
@@ -640,12 +651,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _isEffectWorking = NO;
     }
     
-    if (_currentFlashViewMode == A3FlashViewModeTypeColor) {
-        _currentFlashViewMode = A3FlashViewModeTypeLED;
-    }
-    else {
-        _currentFlashViewMode = _currentFlashViewMode ^ A3FlashViewModeTypeLED;
-    }
+    _currentFlashViewMode = _currentFlashViewMode ^ A3FlashViewModeTypeLED;
 
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
         _isTorchOn = YES;
@@ -894,7 +900,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [_sliderControl setValue:_screenBrightnessValue];
         
         if (IS_IPAD) {
-            _colorPickerTopConst.constant = 5;
+            CGFloat offset = CGRectGetHeight(self.view.bounds) - CGRectGetHeight(_topToolBar.bounds) - CGRectGetHeight(_sliderControl.bounds) - CGRectGetHeight(_bottomToolBar.bounds) - CGRectGetHeight(_colorPickerView.bounds) - 20;
+            _colorPickerTopConst.constant = offset / 2 + CGRectGetHeight(_topToolBar.bounds) + 10;
         }
         else {
             _colorPickerTopConst.constant = 30;
