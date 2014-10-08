@@ -220,6 +220,8 @@ NSString *const cellID = @"flashEffectID";
 	BOOL	_isBeingDismiss;
 }
 
+#pragma mark
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

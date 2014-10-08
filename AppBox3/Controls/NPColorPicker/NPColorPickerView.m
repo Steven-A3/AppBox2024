@@ -275,6 +275,8 @@ NSString * kColorProperty = @"color";
    svIndicator_. frame = CGRectMake(floorf(0.5f + center.x - (self.donutThickness/2)),
                                     floorf(0.5f + center.y  - (self.donutThickness/2)), 
                                     self.donutThickness, self.donutThickness);
+    [hueIndicator_ setNeedsDisplay];
+    [svIndicator_ setNeedsDisplay];
 }
 
 
@@ -551,12 +553,12 @@ NSString * kColorProperty = @"color";
             viewFrame.size.width - self.insets.left - self.insets.right, viewFrame.size.height - self.insets.top - self.insets.bottom};
         CGPoint center = CGPointMake(CGRectGetMidX(viewFrame), CGRectGetMidY(viewFrame));
         CGPoint t = [recognizer locationOfTouch:0 inView:self];
-        
-        //       NSLog(@"gesture point : %@", NSStringFromCGPoint(t));
+        t.x += self.frame.origin.x;
+        t.y += self.frame.origin.y;
         
         CGFloat sat, brigt, hue = (M_PI - atan2f(t.y-center.y,center.x-t.x)) / (2 * M_PI);
         [color_ getHue:NULL saturation:&sat brightness:&brigt alpha:NULL];
-        //       NSLog(@"hue : %@", @(hue));
+
         [self setColor:[UIColor colorWithHue:hue saturation:sat brightness:brigt alpha:1.0f]];
         [self.delegate NPColorPickerView:self selecting:color_];
     }
