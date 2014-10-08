@@ -632,7 +632,7 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
      _device.focusMode = AVCaptureFocusModeAutoFocus;
      }
      
-     if (_device.isAdjustingExposure == YES) {
+     if (_device.isAdjustingExposure == YES && [_device isExposureModeSupported:AVCaptureExposureModeAutoExpose]) {
      _device.exposureMode = AVCaptureExposureModeAutoExpose;
      }
      
