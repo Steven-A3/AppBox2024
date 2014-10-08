@@ -26,6 +26,7 @@
                 <outlet property="flashBrightnessSlider" destination="bb1-Zu-W86" id="oLX-Sd-Uof"/>
                 <outlet property="ledBarButton" destination="FwG-bh-VC7" id="RXA-9P-D5E"/>
                 <outlet property="pickerPanelView" destination="lV0-Pf-aVj" id="MtI-YF-uIO"/>
+                <outlet property="pickerSeparatorView" destination="Jmb-gS-sDi" id="Tbq-tA-oWr"/>
                 <outlet property="pickerTopSeparatorHeightConst" destination="KC6-NS-6KP" id="i8l-Kz-3cc"/>
                 <outlet property="pickerViewBottomConst" destination="Pui-v2-Z1R" id="AUD-0u-uMj"/>
                 <outlet property="screenBrightnessMaxButton" destination="ael-h3-guQ" id="he4-X9-KqC"/>

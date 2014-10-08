@@ -181,6 +181,7 @@ NSString *const cellID = @"flashEffectID";
 @property (weak, nonatomic) IBOutlet UIImageView *screenBrightnessMaxButton;
 @property (weak, nonatomic) IBOutlet UIImageView *flashBrightnessMinButton;
 @property (weak, nonatomic) IBOutlet UIImageView *flashBrightnessMaxButton;
+@property (weak, nonatomic) IBOutlet UIView *pickerSeparatorView;
 
 - (IBAction)sliderControlValueChanged:(UISlider *)sender;
 
@@ -476,6 +477,7 @@ NSString *const cellID = @"flashEffectID";
     }
     
     _pickerTopSeparatorHeightConst.constant = IS_RETINA ? 0.5 : 1.0;
+    _pickerSeparatorView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.15];
 }
 
 - (void)initializeStrobeEffectList {
