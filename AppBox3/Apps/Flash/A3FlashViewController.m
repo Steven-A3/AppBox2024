@@ -311,8 +311,6 @@ NSString *const cellID = @"flashEffectID";
 {
     [super viewWillDisappear:animated];
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-    
     UIScreen *mainScreen = [UIScreen mainScreen];
     mainScreen.brightness = _deviceBrightnessBefore;
     
@@ -335,7 +333,8 @@ NSString *const cellID = @"flashEffectID";
 #endif
 }
 
--(void)dealloc {
+-(void)cleanUp {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     [self saveUserDefaults];
 	[self removeObservers];
 }
@@ -888,8 +887,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
 
-        _screenBrightnessMinButton.image = [UIImage imageNamed:@"f_flash_black"];
-        _screenBrightnessMaxButton.image = [UIImage imageNamed:@"f_flash_white"];
+        _screenBrightnessMinButton.image = [UIImage imageNamed:@"f_color_brightness_left"];
+        _screenBrightnessMaxButton.image = [UIImage imageNamed:@"f_color_brightness_right"];
 
         [self alphaSliderValueChanged:nil];
         return;
