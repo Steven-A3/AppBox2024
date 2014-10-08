@@ -706,17 +706,18 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _currentFlashViewMode = _currentFlashViewMode & (_currentFlashViewMode ^ A3FlashViewModeTypeColor);
     }
     
-    [self configureFlashViewMode:_currentFlashViewMode animation:YES];
-    
     if (!(_currentFlashViewMode & A3FlashViewModeTypeEffect)) {
         [self releaseStrobelight];
-        _contentImageView.backgroundColor = _selectedColor;
+        [self configureFlashViewMode:_currentFlashViewMode animation:YES];
+        
         if (_currentFlashViewMode == A3FlashViewModeTypeLED) {
             [self setTorchOn];
         }
         return;
     }
+    
     if ((_currentFlashViewMode & A3FlashViewModeTypeEffect && !strobeTimer) || (_isEffectWorking && !strobeTimer) ) {
+        [self configureFlashViewMode:_currentFlashViewMode animation:YES];
         [self startStrobeLightEffectForIndex:_selectedEffectIndex];
     }
 }
