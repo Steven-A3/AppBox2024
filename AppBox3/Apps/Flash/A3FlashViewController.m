@@ -135,6 +135,7 @@ const CGFloat strobeLoop_TRAFFICLIGHT[][6] = {
 
 NSString *const A3UserDefaultFlashViewMode = @"A3UserDefaultFlashViewMode";
 NSString *const A3UserDefaultFlashSelectedColor = @"A3UserDefaultFlashSelectedColor";
+NSString *const A3UserDefaultFlashBlackWhiteValue = @"A3UserDefaultFlashBlackWhiteValue";
 NSString *const A3UserDefaultFlashBrightnessValue = @"A3UserDefaultFlashBrightnessValue";
 NSString *const A3UserDefaultFlashLEDBrightnessValue = @"A3UserDefaultFlashLEDBrightnessValue";
 NSString *const A3UserDefaultFlashEffectIndex = @"A3UserDefaultFlashEffectIndex";
@@ -203,6 +204,7 @@ NSString *const cellID = @"flashEffectID";
 @implementation A3FlashViewController
 {
     A3FlashViewModeType _currentFlashViewMode;
+    CGFloat _blackWhiteValue;
     CGFloat _screenBrightnessValue;
     CGFloat _deviceBrightnessBefore;
     CGFloat _flashBrightnessValue;
@@ -400,6 +402,7 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)saveUserDefaults {
+    [[A3UserDefaults standardUserDefaults] setObject:@(_blackWhiteValue) forKey:A3UserDefaultFlashBlackWhiteValue];
     [[A3UserDefaults standardUserDefaults] setObject:@(_flashBrightnessValue) forKey:A3UserDefaultFlashLEDBrightnessValue];
     [[A3UserDefaults standardUserDefaults] setObject:@(_screenBrightnessValue) forKey:A3UserDefaultFlashBrightnessValue];
     [[A3UserDefaults standardUserDefaults] setObject:@(_strobeSpeedFactor) forKey:A3UserDefaultFlashStrobeSpeedValue];
@@ -438,6 +441,9 @@ NSString *const cellID = @"flashEffectID";
 - (void)initializeBrightnessAndStorbeSpeedSliderRelated {
     _deviceBrightnessBefore = [[UIScreen mainScreen] brightness];
     
+    NSNumber *blackWhite = [[A3UserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashBlackWhiteValue];
+    _blackWhiteValue = !blackWhite ? 100.0 : [blackWhite floatValue];
+    
     NSNumber *ledBrightness = [[A3UserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashLEDBrightnessValue];
     _flashBrightnessValue = !ledBrightness ? 0.5 : [ledBrightness floatValue];
     
@@ -471,7 +477,7 @@ NSString *const cellID = @"flashEffectID";
     
     _selectedColor = [NSKeyedUnarchiver unarchiveObjectWithData:[[A3UserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashSelectedColor]];
     if (!_selectedColor) {
-        _selectedColor = [UIColor colorWithHue:1.0 saturation:0.0001 brightness:1.0 alpha:1.0];
+        _selectedColor = [UIColor colorWithHue:1.0 saturation:1.0 brightness:1.0 alpha:1.0];
     }
     
     _colorPickerView.delegate = self;
@@ -717,14 +723,10 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 - (void)alphaSliderValueChanged:(UISlider *)slider {
     if (slider) {
-        _screenBrightnessValue = slider.value;
+        _blackWhiteValue = slider.value;
     }
     
-    CGFloat offset = (_screenBrightnessValue / 100.0);
-    UIScreen *mainScreen = [UIScreen mainScreen];
-    
-    mainScreen.brightness = MAX(0.3, offset);
-
+    CGFloat offset = (_blackWhiteValue / 100.0);
     _contentImageView.backgroundColor = [UIColor colorWithRed:offset green:offset blue:offset alpha:1.0];
     
     [self adjustToolBarColorToPreventVeryWhiteColor];
@@ -866,14 +868,14 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 - (void)adjustConfigurationLayoutValueForFlashViewMode:(A3FlashViewModeType)type {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    
     _topToolBarTopConst.constant = 20;
     
-    [_sliderControl setMinimumValue:0.0];
-    [_sliderControl setMaximumValue:100.0];
-    [_sliderControl setValue:_screenBrightnessValue];
     
     if (_currentFlashViewMode == A3FlashViewModeTypeNone) {
+        [_sliderControl setMinimumValue:0.0];
+        [_sliderControl setMaximumValue:100.0];
+        [_sliderControl setValue:_blackWhiteValue];
+        
         _bottomToolBarBottomConst.constant = 0;
         _pickerViewBottomConst.constant = -(CGRectGetHeight(_pickerPanelView.bounds) - kBottomToolBarHeight);
         _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
@@ -887,20 +889,26 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
 
-        _screenBrightnessMinButton.image = [UIImage imageNamed:@"f_color_brightness_left"];
-        _screenBrightnessMaxButton.image = [UIImage imageNamed:@"f_color_brightness_right"];
+        _screenBrightnessMinButton.image = [UIImage imageNamed:@"f_flash_black"];
+        _screenBrightnessMaxButton.image = [UIImage imageNamed:@"f_flash_white"];
 
         [self alphaSliderValueChanged:nil];
         return;
     }
 
+
     [self adjustToolBarColorToPreventVeryWhiteColor];
     
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
         [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [_sliderControl setMinimumValue:0.0];
+        [_sliderControl setMaximumValue:100.0];
+        [_sliderControl setValue:_blackWhiteValue];
+        
         _flashBrightnessSlider.value = _flashBrightnessValue;
         _screenBrightnessMinButton.image = [UIImage imageNamed:@"f_flash_black"];
         _screenBrightnessMaxButton.image = [UIImage imageNamed:@"f_flash_white"];
+        
         [self alphaSliderValueChanged:nil];
     }
     else {
@@ -916,7 +924,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
         _screenBrightnessMinButton.image = [UIImage imageNamed:@"f_color_brightness_left"];
         _screenBrightnessMaxButton.image = [UIImage imageNamed:@"f_color_brightness_right"];
-        
         
         if (IS_IPAD) {
             CGFloat offset = CGRectGetHeight(self.view.bounds) - CGRectGetHeight(_topToolBar.bounds) - CGRectGetHeight(_sliderControl.bounds) - CGRectGetHeight(_bottomToolBar.bounds) - CGRectGetHeight(_colorPickerView.bounds) - 20;
