@@ -217,6 +217,7 @@ NSString *const cellID = @"flashEffectID";
 	NSInteger	_selectedEffectIndex;
     CGFloat		_strobeSpeedFactor;
     BOOL    _showAllMenu;
+	BOOL	_isBeingDismiss;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -258,7 +259,9 @@ NSString *const cellID = @"flashEffectID";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
+	if (_isBeingDismiss) return;
+
     if ([self isMovingToParentViewController]) {
         _showAllMenu = YES;
         [self configureFlashViewMode:_currentFlashViewMode animation:NO];
@@ -335,6 +338,10 @@ NSString *const cellID = @"flashEffectID";
 	[self removeObservers];
 }
 
+- (void)prepareClose {
+	_isBeingDismiss = YES;
+}
+
 - (void)removeObservers
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
@@ -372,6 +379,8 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)mainMenuDidHide {
+	if (_isBeingDismiss) return;
+
     if (IS_IPHONE && ([self.mm_drawerController openSide] == MMDrawerSideLeft)) {
         if (_isTorchOn) {
             [self setTorchOff];
