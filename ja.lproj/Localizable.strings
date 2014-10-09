@@ -712,7 +712,7 @@
 "Passcode did not match. Try again." = "パスコードが一致しません。";
 "Enter Passcode" = "パスコードを入力";
 "New Passcode" = "新しいパスコード";
-"Confirm Passcode" = "新しいパスコードを再入力";
+"Confirm Passcode" = "パスコード再入力";
 "Hint" = "ヒント";
 "Old Passcode" = "古いパスコード";
 "Please enter new passcode." = " 新しいパスコードを入力してください。";
