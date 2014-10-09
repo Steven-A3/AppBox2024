@@ -3267,15 +3267,15 @@
 		68236CD3186A8D34006F442B /* Passcode */ = {
 			isa = PBXGroup;
 			children = (
-				68236CD4186A8D75006F442B /* A3PasscodeViewController.h */,
-				68236CD5186A8D75006F442B /* A3PasscodeViewController.m */,
-				68067C8A186E867C00D1A1D1 /* A3PasswordViewController.h */,
-				68067C8B186E867C00D1A1D1 /* A3PasswordViewController.m */,
-				68067C90186E926D00D1A1D1 /* A3PasscodeViewControllerProtocol.h */,
 				68DC38231871BD0C0088DDA0 /* A3KeychainUtils.h */,
 				68DC38241871BD0C0088DDA0 /* A3KeychainUtils.m */,
-				17D42647DF41660948614893 /* A3PasscodeCommonViewController.m */,
 				17D42289427C0BC32E80BBA4 /* A3PasscodeCommonViewController.h */,
+				17D42647DF41660948614893 /* A3PasscodeCommonViewController.m */,
+				68236CD4186A8D75006F442B /* A3PasscodeViewController.h */,
+				68236CD5186A8D75006F442B /* A3PasscodeViewController.m */,
+				68067C90186E926D00D1A1D1 /* A3PasscodeViewControllerProtocol.h */,
+				68067C8A186E867C00D1A1D1 /* A3PasswordViewController.h */,
+				68067C8B186E867C00D1A1D1 /* A3PasswordViewController.m */,
 			);
 			name = Passcode;
 			sourceTree = "<group>";
